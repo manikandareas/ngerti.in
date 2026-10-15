@@ -6,7 +6,7 @@ requires-python = ">=3.12,<3.14"
 dependencies = [
   "fastapi", "uvicorn[standard]", "sqlmodel", "alembic", "psycopg[binary,pool]",
   "pgvector", "procrastinate", "langchain", "langgraph", "langgraph-checkpoint-postgres",
-  "clerk-backend-api", "pydantic-settings", "boto3", "structlog", "python-multipart"
+  "clerk-backend-api", "pydantic", "pydantic-settings", "boto3", "structlog", "python-multipart"
 ]
 
 [dependency-groups]

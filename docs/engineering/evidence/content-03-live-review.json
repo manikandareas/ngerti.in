@@ -1,0 +1,125 @@
+{
+  "purpose": "Two manual provider contract probes on one synthetic node; not a quality calibration or generation latency benchmark.",
+  "packet_hash": "5e3693c955f52a46637adc90a8b2d6a2d42909d263d2a3719830ed2ed7697368",
+  "results": [
+    {
+      "scope": "lesson",
+      "model": "gpt-6-luna",
+      "response_id": "resp_0475ec3883e15660016ad0ee68efac87d0a1f0090db440aa7d",
+      "status": "completed",
+      "elapsed_seconds": 5.21,
+      "usage": {
+        "input_tokens": 1627,
+        "input_tokens_details": {
+          "cache_write_tokens": 1624,
+          "cached_tokens": 0
+        },
+        "output_tokens": 319,
+        "output_tokens_details": {
+          "reasoning_tokens": 149
+        },
+        "total_tokens": 1946
+      },
+      "review": {
+        "rubric_version": 1,
+        "input_hash": "14cf211e11c0ab144022552a8b8ef6b2701107d3d2d46662479eaca48dd3e27a",
+        "scope": "lesson",
+        "target_ids": [
+          "successive-discounts-l1"
+        ],
+        "sufficient_evidence": true,
+        "missing_evidence": [],
+        "findings": [],
+        "coverage": [
+          {
+            "criterion_id": "c1",
+            "lesson_ids": [
+              "successive-discounts-l1"
+            ],
+            "question_ids": [],
+            "rationale": "Lesson explains that after a 20% discount the remaining price is 80 ribu rupiah, so the second 10% discount uses that smaller amount rather than the original price. It connects this changed basis to why the percentages cannot simply be added."
+          }
+        ]
+      },
+      "decision": {
+        "outcome": "ready",
+        "contract_issues": [],
+        "rewrite_lesson_ids": [],
+        "rewrite_question_ids": [],
+        "recheck_question_ids": [],
+        "preserved_lesson_ids": [
+          "successive-discounts-l1",
+          "successive-discounts-l2"
+        ]
+      }
+    },
+    {
+      "scope": "practice",
+      "model": "gpt-6-luna",
+      "response_id": "resp_0484895a82f362f9016ad0ee68e9b087d081d53ad3a136c639",
+      "status": "completed",
+      "elapsed_seconds": 9.31,
+      "usage": {
+        "input_tokens": 2410,
+        "input_tokens_details": {
+          "cache_write_tokens": 2407,
+          "cached_tokens": 0
+        },
+        "output_tokens": 649,
+        "output_tokens_details": {
+          "reasoning_tokens": 317
+        },
+        "total_tokens": 3059
+      },
+      "review": {
+        "rubric_version": 1,
+        "input_hash": "27d08d58fcb8c9fe9c3356dab65eb20c974f43d09cc03a2b0fea12bf5c6d2a8a",
+        "scope": "practice",
+        "target_ids": [
+          "successive-discounts-practice"
+        ],
+        "sufficient_evidence": true,
+        "missing_evidence": [],
+        "findings": [],
+        "coverage": [
+          {
+            "criterion_id": "c1",
+            "lesson_ids": [
+              "successive-discounts-l1"
+            ],
+            "question_ids": [
+              "successive-discounts-q1",
+              "successive-discounts-q3"
+            ],
+            "rationale": "Lesson 1 explains that the second discount uses the reduced price rather than the original price. Q1 asks why successive discounts are not equivalent to adding the percentages; Q3 checks recall of the remaining-price basis."
+          },
+          {
+            "criterion_id": "c2",
+            "lesson_ids": [
+              "successive-discounts-l2"
+            ],
+            "question_ids": [
+              "successive-discounts-q2",
+              "successive-discounts-q4"
+            ],
+            "rationale": "Lesson 2 demonstrates the calculation and checks it using remaining-price factors. Q2 directly assesses the final-price calculation; Q4 checks whether the learner distinguishes the resulting 28% total discount from 30%."
+          }
+        ]
+      },
+      "decision": {
+        "outcome": "ready",
+        "contract_issues": [],
+        "rewrite_lesson_ids": [],
+        "rewrite_question_ids": [],
+        "recheck_question_ids": [],
+        "preserved_lesson_ids": [
+          "successive-discounts-l1",
+          "successive-discounts-l2"
+        ]
+      }
+    }
+  ],
+  "schema_sha256": "7fc572c7250c3f080aaaaaea8561491933d10696c589cf070cb13fe48074e08b",
+  "recorded_at": "2026-10-15T15:23:00.498284+00:00",
+  "schema_sha256_basis": "UTF-8 json.dumps(provider_schema(QualityReview)['parameters'], sort_keys=True, ensure_ascii=False), without trailing newline"
+}

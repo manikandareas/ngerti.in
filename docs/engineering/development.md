@@ -9,6 +9,11 @@
 
 ## Startup
 
+Standar konten #003 dapat diperiksa tanpa provider atau database melalui `make content-inspect`.
+Lihat [kontrak konten](course-content-standard.md), [handoff engine](course-generation-design.md),
+dan [bukti penerimaan #003](content-03-manual-acceptance.md). Root `.env` menyimpan credentials
+provider server-only; inspector fixture tidak membacanya dan CI tidak memanggil provider.
+
 1. Salin `.env.example` ke `.env` hanya jika file belum ada.
 2. Isi `VITE_CLERK_PUBLISHABLE_KEY` dan `CLERK_SECRET_KEY` dari instance Clerk development khusus Ngertiin. Semua credentials server tetap di `.env`, yang diabaikan Git.
 3. `make install` memasang dependency JS dan Python dari lockfile.

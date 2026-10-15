@@ -6,4 +6,5 @@ Spesifikasi yang disepakati berada pada [dokumentasi utama](../README.md). Dokum
 - [Model bisnis dan biaya](business-model-2026-10-13.md)
 - [Pemilihan framework agent](agent-framework-selection.md)
 - [Riset lanjutan: stack agent proaktif](proactive-agent-frameworks-2026-10-14.md)
+- [Engine generation Course: kualitas dan waktu mulai belajar](course-generation-engine-2026-10-15.md)
 - [Arsip brainstorming user flow](archive/user-flow-brainstorm-2026-10-13.md)

@@ -55,20 +55,30 @@ Data aplikasi memiliki approval, revision, kuota, dan progress. Checkpoint melan
 
 ```mermaid
 flowchart TD
-  A["Outline disetujui"] --> B["Generate node pertama"]
-  B --> C["Checks deterministik dan review semantik"]
-  C --> D{"Lolos standar?"}
-  D -->|Ya| E["Publish node siap belajar"]
-  D -->|Belum| F{"Masih ada jatah repair?"}
-  F -->|Ya| R["Repair bagian terkait"]
+  A["Outline dan blueprint disetujui"] --> B["Prioritaskan Lesson pertama"]
+  A --> H["Pool worker: kelompok Lesson lain"]
+  B --> C["Checks dan review pengajaran"]
+  C -->|Lolos| D["Publikasikan revisi Lesson: mulai belajar"]
+  C -->|Defect| R["Repair terarah, maksimal dua putaran"]
   R --> C
-  F -->|Tidak| G["Hold: tampilkan pemulihan"]
-  E --> H["Generate node berikutnya di background"]
-  H --> C
-
+  H --> I["Checks, review, dan publikasi per kelompok"]
+  D --> J["Snapshot seluruh Lesson wajib"]
+  I --> J
+  J --> K["Generate satu paket Practice"]
+  K --> L["Checks key dan review cakupan/keterjawaban"]
+  L -->|Lolos| M["Practice siap"]
+  L -->|Belum| N["Repair bagian terkait; hold bila budget habis"]
 ```
 
-Port standar Lesson/soal dari prototipe dengan rubric dan fixture. Kedalaman, grounding, jawaban, ambiguitas dan variasi format diperiksa sebelum publish; bagian valid dipertahankan saat repair. Batas repair menghentikan loop tanpa menerbitkan hasil gagal.
+Standar konten v1 ditetapkan melalui audit prototipe dan riset pengajaran; kontrak Python, validator, rubrik serta fixture menjadi deliverable #003. Blueprint memiliki tujuan teramati, kontribusi Lesson, evidence dan intent asesmen. Jumlah mengikuti kebutuhan belajar; billing tidak memangkas outline.
+
+Lesson dapat dibaca sesudah pemeriksaan pengajaran, sebelum Practice selesai. Practice dibuat dari seluruh snapshot Lesson terbit lalu diperiksa terhadap cakupan, kunci, ambiguitas, format dan keterjawaban. Publikasi selalu memeriksa revisi; koreksi konten terbit membuat revisi baru dengan penanganan pembaca. Penyelesaian belajar dan unlock tidak berasal dari selesainya generation.
+
+Pool worker dinamis membagi job Lesson/kelompok, review, Practice dan repair. Jalur Lesson pertama tidak menunggu join seluruh Course; review/publish-nya juga mendapat prioritas. Kelompok independen berjalan paralel, dengan admission RPS/TPM/biaya global lintas worker. Batching dan concurrency ditetapkan melalui pengukuran waktu ke Lesson pertama yang lolos, kesiapan Practice, kualitas, repair dan biaya.
+
+Kode memiliki aturan pasti. Jev dapat membatch keputusan semantik sempit bila manfaatnya terukur; ia bukan penulis konten atau kalkulator. Model generatif/reasoning menangani pengajaran dan review sesuai evaluasi per peran. Temuan defect material aktif menghalangi publikasi; suggestion/resolved tidak. Satu hasil awal dan maksimal dua repair mempertahankan bagian valid. Retry transport dibatasi terpisah.
+
+Implementasi runtime planner berada pada #008, generation multi-worker pada #009, player pada #011 dan Practice pada #012. Dokumen lokal: `docs/engineering/course-content-standard.md`, `docs/engineering/course-generation-design.md`, dan `docs/engineering/content-03-manual-acceptance.md`.
 
 ## Model dan biaya
 

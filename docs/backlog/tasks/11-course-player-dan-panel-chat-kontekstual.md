@@ -20,7 +20,7 @@ Pengguna belajar Lesson dan berbicara dengan agent tanpa kehilangan sesi.
 - [ ] Panel chat mengetahui Course/Lesson aktif; di HP memakai drawer dan composer dengan attachment.
 - [ ] Buka/tutup atau pergantian Lesson mempertahankan posisi, draft dan jawaban.
 - [ ] Main chat, thread Course dan side chat tetap memakai agent yang sama dengan konteks jelas.
-- [ ] Node belum siap menampilkan status; node siap dan progress yang tersimpan tetap dapat diakses.
+- [ ] Lesson yang sudah lolos pemeriksaan dapat dibaca ketika Lesson lain/Practice masih disiapkan; status membedakan readiness Lesson, Practice dan kelengkapan node dari progress/unlock. Konten terbit serta progress tetap dapat diakses, dan revisi koreksi tidak diam-diam mengganti isi yang telah dibaca.
 
 ## Spesifikasi
 

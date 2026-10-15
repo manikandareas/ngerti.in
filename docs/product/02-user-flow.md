@@ -14,13 +14,15 @@ flowchart TD
   E --> F["Agent menyusun outline"]
   F --> G{"Review pengguna"}
   G -->|Revisi| F
-  G -->|Setujui| H["Prioritaskan node pertama"]
+  G -->|Setujui| H["Prioritaskan Lesson pertama"]
   H --> I["Mulai belajar"]
-  H --> J["Node berikutnya dibuat di background"]
+  H --> J["Lesson lain dan Practice dibuat di background"]
 
 ```
 
 Tour kontekstual menunjukkan kemampuan composer dan attachment. Pengguna membuat Course nyata sebagai demo. Sumber dipilih pengguna; Course berdiri mandiri dari Study Space.
+
+Lesson pertama yang lolos checks dan review pengajaran boleh langsung dipelajari ketika Lesson berikutnya dan Practice masih dibuat. Practice dibuka setelah paket soal lolos pemeriksaan terhadap versi Lesson terbit yang tepat. Kesiapan Lesson, kesiapan Practice, kelengkapan konten node, dan penyelesaian belajar pengguna adalah state berbeda.
 
 ## Menyelesaikan node
 
@@ -77,12 +79,12 @@ Membuka chat mempertahankan sesi belajar. Slash command menuju flow yang sama da
 ```mermaid
 stateDiagram-v2
   [*] --> Menyiapkan
-  Menyiapkan --> BisaBelajar: node pertama valid
+  Menyiapkan --> BisaBelajar: Lesson pertama lolos checks dan review
   BisaBelajar --> Selesai: semua node inti selesai
   Menyiapkan --> PerluPemulihan: gagal
   BisaBelajar --> PerluPemulihan: node berikutnya gagal
   PerluPemulihan --> Menyiapkan: retry bagian yang gagal
-  PerluPemulihan --> BisaBelajar: node siap dipertahankan
+  PerluPemulihan --> BisaBelajar: Lesson dan Practice siap dipertahankan
   Selesai --> [*]
 
 ```

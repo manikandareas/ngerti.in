@@ -2,13 +2,13 @@
 
 Sumber: [Notion](https://app.notion.com/p/f1b4f3a60ca341dfac73288b51726162?v=61625f86d8934b7eb99b491fcc025768) · Snapshot: 2026-10-13 11:37:14 UTC
 
-Status tiket #01 dan #02 diselaraskan dengan Notion pada **15 Oktober 2026**.
+Status tiket #01–#03 diselaraskan dengan Notion pada **15 Oktober 2026**.
 
 | Tugas | Status | Prioritas | Area | Depends on |
 | --- | --- | --- | --- | --- |
 | [Walkthrough UX: signup sampai Course pertama](../tasks/01-walkthrough-ux-signup-sampai-course-pertama.md) | Done | P0 | Course | — |
 | [Fondasi production: workspace, auth dan data](../tasks/02-fondasi-production-workspace-auth-dan-data.md) | Done | P0 | Fondasi | — |
-| [Port standar Lesson dan soal dari prototipe](../tasks/03-port-standar-lesson-dan-soal-dari-prototipe.md) | Ready | P0 | Course | — |
+| [Port standar Lesson dan soal dari prototipe](../tasks/03-port-standar-lesson-dan-soal-dari-prototipe.md) | Done | P0 | Course | — |
 | [Chat personal: thread dan streaming resumable](../tasks/04-chat-personal-thread-dan-streaming-resumable.md) | Backlog | P0 | Agent | [Fondasi production: workspace, auth dan data](../tasks/02-fondasi-production-workspace-auth-dan-data.md) |
 | [Kuota Course, chat dan materi per periode](../tasks/05-kuota-course-chat-dan-materi-per-periode.md) | Backlog | P0 | Billing | [Fondasi production: workspace, auth dan data](../tasks/02-fondasi-production-workspace-auth-dan-data.md) |
 | [Ingestion materi reusable dari file dan web](../tasks/06-ingestion-materi-reusable-dari-file-dan-web.md) | Backlog | P0 | Course | [Fondasi production: workspace, auth dan data](../tasks/02-fondasi-production-workspace-auth-dan-data.md), [Kuota Course, chat dan materi per periode](../tasks/05-kuota-course-chat-dan-materi-per-periode.md) |

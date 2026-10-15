@@ -51,3 +51,5 @@ Perubahan keputusan dan status dicatat di Notion lalu disalin kembali ke repo ag
 ## Desain
 
 [Walkthrough UX di pen.dev](walkthrough-ux.pen) — file desain untuk tiket #01 yang sudah **Done**.
+
+Standar konten #003 sudah **Done** pada 15 Oktober 2026. [Kontrak konten](engineering/course-content-standard.md), [desain engine multi-worker](engineering/course-generation-design.md), dan [bukti penerimaan](engineering/content-03-manual-acceptance.md) tersedia. User Flow, Arsitektur, serta tiket #009/#011 diselaraskan dengan keputusan Lesson dapat dibaca sebelum Practice siap.

@@ -13,14 +13,14 @@ Depends on:
 <!-- notion-content:start -->
 ## Hasil
 
-Pengguna mulai belajar dari node pertama valid sambil node lain dibuat.
+Pengguna mulai membaca Lesson pertama yang lolos pemeriksaan sambil Lesson lain dan Practice dibuat oleh pool worker paralel.
 
 ## Acceptance criteria
 
-- [ ] Worker memprioritaskan node pertama lengkap; node lain diproses background dengan concurrency terbatas.
-- [ ] Setiap node lolos checks/review sebelum publish; repair terarah mempertahankan bagian valid dan berhenti pada batas.
+- [ ] Pool worker dinamis memprioritaskan writer, review dan publish Lesson pertama; kelompok Lesson independen berjalan paralel tanpa barrier seluruh Course, dengan admission global lintas worker.
+- [ ] Lesson lolos checks/review pengajaran sebelum dibaca. Satu paket Practice dibuat dari versi Lesson terbit lalu lolos checks key dan review cakupan/keterjawaban sebelum dibuka. Repair terarah maksimal dua putaran mempertahankan bagian valid; koreksi Lesson terbit membuat revisi baru dan memeriksa dependency.
 - [ ] Browser ditutup atau worker restart tidak kehilangan state; resume tidak menagih Course atau menggandakan node.
-- [ ] Status per node membedakan readiness dari unlock; bagian gagal dapat dipulihkan tanpa menghapus node siap.
+- [ ] Status membedakan lesson_ready, practice_ready, node_content_ready dan penyelesaian belajar/unlock; bagian gagal dapat dipulihkan tanpa menghapus konten siap. Ukuran batch/concurrency diukur dari waktu Lesson pertama yang lolos, kesiapan Practice, kualitas, repair dan biaya.
 
 ## Spesifikasi
 

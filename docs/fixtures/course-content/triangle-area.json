@@ -1,0 +1,263 @@
+{
+  "standard_version": 1,
+  "blueprint": {
+    "id": "triangle-area",
+    "revision": 1,
+    "objective": "Menghitung luas segitiga dari alas dan tinggi tegak lurus.",
+    "scope": "Segitiga dengan ukuran positif dan satuan panjang sama.",
+    "prerequisites": [],
+    "criteria": [
+      {
+        "id": "c1",
+        "description": "Mengidentifikasi tinggi tegak lurus yang sesuai dengan alas."
+      },
+      {
+        "id": "c2",
+        "description": "Menghitung luas dan menyatakan satuan luas."
+      }
+    ],
+    "lesson_count_reason": "Dua kontribusi: membangun aturan lalu menerapkan dan memeriksa hasil.",
+    "shared_context": "Segitiga dengan ukuran positif dan satuan panjang sama.",
+    "lessons": [
+      {
+        "id": "triangle-area-l1",
+        "title": "Memilih alas dan tinggi",
+        "contribution": "Membedakan tinggi tegak lurus dari panjang sisi sembarang.",
+        "criterion_ids": [
+          "c1"
+        ],
+        "evidence_ids": [
+          "e1"
+        ],
+        "depends_on": []
+      },
+      {
+        "id": "triangle-area-l2",
+        "title": "Menghitung dan memeriksa satuan",
+        "contribution": "Perhitungan contoh dan alasan satuan persegi.",
+        "criterion_ids": [
+          "c2"
+        ],
+        "evidence_ids": [
+          "e1"
+        ],
+        "depends_on": [
+          "triangle-area-l1"
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "id": "triangle-area-q1",
+        "type": "multiple_choice",
+        "criterion_ids": [
+          "c1"
+        ],
+        "intent": "Apa yang harus dipastikan sebelum memakai panjang 5 cm sebagai tinggi?",
+        "demand": "relationship"
+      },
+      {
+        "id": "triangle-area-q2",
+        "type": "short_answer",
+        "criterion_ids": [
+          "c2"
+        ],
+        "intent": "Alas 12 cm dan tinggi tegak lurus 5 cm. Berapa luasnya dalam cm²?",
+        "demand": "application"
+      },
+      {
+        "id": "triangle-area-q3",
+        "type": "ordering",
+        "criterion_ids": [
+          "c2"
+        ],
+        "intent": "Urutkan operasi yang ditetapkan berikut; setiap operasi memakai hasil operasi sebelumnya.",
+        "demand": "recall"
+      },
+      {
+        "id": "triangle-area-q4",
+        "type": "word_bank",
+        "criterion_ids": [
+          "c1"
+        ],
+        "intent": "Pilih satu token. Setiap token boleh dipakai paling banyak sekali.",
+        "demand": "application"
+      }
+    ]
+  },
+  "evidence": [
+    {
+      "id": "e1",
+      "source_id": "source-triangle-area",
+      "source_revision": 1,
+      "locator": "Sumber sintetis editorial lengkap",
+      "excerpt": "Luas segitiga adalah setengah hasil kali panjang alas dan tinggi tegak lurus terhadap alas tersebut. Jika alas dan tinggi dinyatakan dalam sentimeter, luas dinyatakan dalam sentimeter persegi. Sisi miring tidak otomatis merupakan tinggi. Untuk alas 12 cm dan tinggi tegak lurus 5 cm, luasnya (12 × 5) / 2 = 30 cm². Prosedur hitung yang ditetapkan untuk latihan ini: identifikasi pasangan alas dan tinggi tegak lurus, kalikan kedua panjang, bagi hasil perkalian dengan dua, lalu tulis hasil bersama satuan luas. Urutan ini berlaku pada empat operasi yang didefinisikan tersebut; bentuk aljabar lain yang setara juga dapat digunakan di luar soal ordering."
+    }
+  ],
+  "lessons": [
+    {
+      "id": "triangle-area-l1",
+      "revision": 1,
+      "draft": {
+        "title": "Memilih alas dan tinggi",
+        "body": "## Tinggi selalu terkait dengan alas pilihan\nRumus luas memakai satu alas dan tinggi yang tegak lurus terhadap alas itu. Karena itu, dua panjang yang tertulis pada gambar belum tentu dapat langsung dikalikan. Kita perlu memastikan salah satunya adalah jarak tegak lurus terhadap alas pilihan.\n\nSisi miring tidak otomatis menjadi tinggi. Jika soal menyatakan alas 12 cm dan tinggi tegak lurus 5 cm, pasangan itulah yang digunakan. Jika soal hanya memberi panjang alas dan sebuah sisi tanpa hubungan tegak lurus, informasi untuk memakai rumus ini belum tentu cukup. Langkah memilih ukuran yang benar mendahului pekerjaan menghitung: hasil aritmetika yang rapi tetap salah jika panjang yang dipilih bukan tinggi yang sesuai.",
+        "evidence_ids": [
+          "e1"
+        ]
+      }
+    },
+    {
+      "id": "triangle-area-l2",
+      "revision": 1,
+      "draft": {
+        "title": "Menghitung dan memeriksa satuan",
+        "body": "## Separuh hasil kali dua panjang\nUntuk alas 12 cm dan tinggi tegak lurus 5 cm, kalikan keduanya: $12\\times5=60$. Ambil setengahnya: $60/2=30$. Luas segitiganya adalah **30 cm²**, bukan 30 cm.\n\nSatuan menjadi persegi karena kita mengalikan dua besaran panjang dalam sentimeter. Faktor setengah tidak mengubah jenis satuan. Dalam prosedur latihan ini kita memilih pasangan ukuran, menghitung perkaliannya, membagi hasil dengan dua, lalu menuliskan nilai dengan satuan luas. Soal ordering menyebut operasi ini secara khusus. Pada perhitungan bebas, mengalikan alas dengan setengah tinggi juga dapat memberi hasil setara; urutan tampilan tidak boleh diklaim sebagai satu-satunya bentuk aljabar yang benar.",
+        "evidence_ids": [
+          "e1"
+        ]
+      }
+    }
+  ],
+  "practice": {
+    "id": "triangle-area-practice",
+    "revision": 1,
+    "lesson_revisions": [
+      {
+        "id": "triangle-area-l1",
+        "revision": 1,
+        "content_hash": "db8ab7b853cac903fbfe106fabc033539a496b5b9e7c0fd08716aed3b088f4a9"
+      },
+      {
+        "id": "triangle-area-l2",
+        "revision": 1,
+        "content_hash": "9c6e6dcc0bfa576f5a04d42bca2ebf711ea06ed763e22129cedb1a5d480e3a40"
+      }
+    ],
+    "draft": {
+      "questions": [
+        {
+          "id": "triangle-area-q1",
+          "type": "multiple_choice",
+          "criterion_ids": [
+            "c1"
+          ],
+          "explanation": "Rumus membutuhkan tinggi tegak lurus terhadap alas.",
+          "prompt": "Apa yang harus dipastikan sebelum memakai panjang 5 cm sebagai tinggi?",
+          "options": [
+            {
+              "id": "o1",
+              "text": "Panjang itu tegak lurus terhadap alas pilihan."
+            },
+            {
+              "id": "o2",
+              "text": "Panjang itu merupakan sisi terpanjang."
+            },
+            {
+              "id": "o3",
+              "text": "Panjang itu sama dengan alas."
+            }
+          ],
+          "correct_option_id": "o1",
+          "distractor_reasons": [
+            {
+              "option_id": "o2",
+              "reason": "Mengira sisi terpanjang selalu tinggi."
+            },
+            {
+              "option_id": "o3",
+              "reason": "Mengira semua segitiga harus sama sisi."
+            }
+          ]
+        },
+        {
+          "id": "triangle-area-q2",
+          "type": "short_answer",
+          "criterion_ids": [
+            "c2"
+          ],
+          "explanation": "12 × 5 / 2 = 30 cm².",
+          "prompt": "Alas 12 cm dan tinggi tegak lurus 5 cm. Berapa luasnya dalam cm²?",
+          "key": {
+            "canonical_answer": "30 cm²",
+            "accepted_variants": [
+              "30"
+            ],
+            "numeric": {
+              "value": 30,
+              "unit": "cm²",
+              "tolerance": 0
+            }
+          }
+        },
+        {
+          "id": "triangle-area-q3",
+          "type": "ordering",
+          "criterion_ids": [
+            "c2"
+          ],
+          "explanation": "Ukuran dipilih sebelum dikalikan; hasil perkalian dibagi dua, lalu dilaporkan.",
+          "prompt": "Urutkan operasi yang ditetapkan berikut; setiap operasi memakai hasil operasi sebelumnya.",
+          "items": [
+            {
+              "id": "i3",
+              "text": "Bagi hasil perkalian dengan dua."
+            },
+            {
+              "id": "i1",
+              "text": "Identifikasi alas dan tinggi tegak lurus."
+            },
+            {
+              "id": "i4",
+              "text": "Tulis hasil pembagian dengan satuan luas."
+            },
+            {
+              "id": "i2",
+              "text": "Kalikan dua panjang yang teridentifikasi."
+            }
+          ],
+          "correct_order": [
+            "i1",
+            "i2",
+            "i3",
+            "i4"
+          ]
+        },
+        {
+          "id": "triangle-area-q4",
+          "type": "word_bank",
+          "criterion_ids": [
+            "c1"
+          ],
+          "explanation": "Tinggi harus tegak lurus terhadap alas yang dipilih.",
+          "prompt": "Pilih satu token. Setiap token boleh dipakai paling banyak sekali.",
+          "blanks": [
+            {
+              "id": "b1",
+              "text": "Pasangan ukuran yang tepat adalah alas dan tinggi {{blank}}."
+            }
+          ],
+          "tokens": [
+            {
+              "id": "t1",
+              "text": "tegak lurus"
+            },
+            {
+              "id": "t2",
+              "text": "terpanjang"
+            },
+            {
+              "id": "t3",
+              "text": "sejajar"
+            }
+          ],
+          "answers": [
+            {
+              "blank_id": "b1",
+              "token_id": "t1"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

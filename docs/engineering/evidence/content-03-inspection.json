@@ -1,0 +1,632 @@
+{
+  "cases": [
+    {
+      "case": "successive-discounts-valid",
+      "matches_labels": true,
+      "result": {
+        "structural_codes": [],
+        "outcome": "ready",
+        "contract_codes": [],
+        "contract_issues": [],
+        "rewrite_lesson_ids": [],
+        "rewrite_question_ids": [],
+        "recheck_question_ids": [],
+        "preserved_lesson_ids": [
+          "successive-discounts-l1",
+          "successive-discounts-l2"
+        ]
+      }
+    },
+    {
+      "case": "tank-controller-valid",
+      "matches_labels": true,
+      "result": {
+        "structural_codes": [],
+        "outcome": "ready",
+        "contract_codes": [],
+        "contract_issues": [],
+        "rewrite_lesson_ids": [],
+        "rewrite_question_ids": [],
+        "recheck_question_ids": [],
+        "preserved_lesson_ids": [
+          "tank-controller-l1",
+          "tank-controller-l2"
+        ]
+      }
+    },
+    {
+      "case": "triangle-area-valid",
+      "matches_labels": true,
+      "result": {
+        "structural_codes": [],
+        "outcome": "ready",
+        "contract_codes": [],
+        "contract_issues": [],
+        "rewrite_lesson_ids": [],
+        "rewrite_question_ids": [],
+        "recheck_question_ids": [],
+        "preserved_lesson_ids": [
+          "triangle-area-l1",
+          "triangle-area-l2"
+        ]
+      }
+    },
+    {
+      "case": "bug-report-valid",
+      "matches_labels": true,
+      "result": {
+        "structural_codes": [],
+        "outcome": "ready",
+        "contract_codes": [],
+        "contract_issues": [],
+        "rewrite_lesson_ids": [],
+        "rewrite_question_ids": [],
+        "recheck_question_ids": [],
+        "preserved_lesson_ids": [
+          "bug-report-l1",
+          "bug-report-l2"
+        ]
+      }
+    },
+    {
+      "case": "electricity-cost-valid",
+      "matches_labels": true,
+      "result": {
+        "structural_codes": [],
+        "outcome": "ready",
+        "contract_codes": [],
+        "contract_issues": [],
+        "rewrite_lesson_ids": [],
+        "rewrite_question_ids": [],
+        "recheck_question_ids": [],
+        "preserved_lesson_ids": [
+          "electricity-cost-l1",
+          "electricity-cost-l2"
+        ]
+      }
+    },
+    {
+      "case": "insufficient-source-clarification",
+      "matches_labels": true,
+      "result": {
+        "structural_codes": [],
+        "outcome": "needs_context",
+        "contract_codes": [],
+        "contract_issues": [],
+        "rewrite_lesson_ids": [],
+        "rewrite_question_ids": [],
+        "recheck_question_ids": [],
+        "preserved_lesson_ids": [
+          "osmosis-l1",
+          "osmosis-l2"
+        ]
+      }
+    },
+    {
+      "case": "first-lesson-before-practice",
+      "matches_labels": true,
+      "result": {
+        "structural_codes": [],
+        "outcome": "ready",
+        "contract_codes": [],
+        "contract_issues": [],
+        "rewrite_lesson_ids": [],
+        "rewrite_question_ids": [],
+        "recheck_question_ids": [],
+        "preserved_lesson_ids": [
+          "successive-discounts-l1",
+          "successive-discounts-l2"
+        ],
+        "readiness": {
+          "lesson_ready_ids": [
+            "successive-discounts-l1"
+          ],
+          "practice_ready": false,
+          "node_content_ready": false
+        },
+        "public_fields": [
+          "body",
+          "id",
+          "revision",
+          "title"
+        ]
+      }
+    },
+    {
+      "case": "all-lessons-before-practice",
+      "matches_labels": true,
+      "result": {
+        "structural_codes": [],
+        "outcome": "unreviewed",
+        "contract_codes": [],
+        "readiness": {
+          "lesson_ready_ids": [
+            "successive-discounts-l1",
+            "successive-discounts-l2"
+          ],
+          "practice_ready": false,
+          "node_content_ready": false
+        },
+        "public_fields": [
+          "body",
+          "id",
+          "revision",
+          "title"
+        ]
+      }
+    },
+    {
+      "case": "complete-ready-projection",
+      "matches_labels": true,
+      "result": {
+        "structural_codes": [],
+        "outcome": "ready",
+        "contract_codes": [],
+        "contract_issues": [],
+        "rewrite_lesson_ids": [],
+        "rewrite_question_ids": [],
+        "recheck_question_ids": [],
+        "preserved_lesson_ids": [
+          "successive-discounts-l1",
+          "successive-discounts-l2"
+        ],
+        "readiness": {
+          "lesson_ready_ids": [
+            "successive-discounts-l1",
+            "successive-discounts-l2"
+          ],
+          "practice_ready": true,
+          "node_content_ready": true
+        },
+        "public_fields": [
+          "body",
+          "id",
+          "questions",
+          "revision",
+          "title"
+        ]
+      }
+    },
+    {
+      "case": "unknown-generated-field",
+      "matches_labels": true,
+      "result": {
+        "structural_codes": [
+          "SCHEMA"
+        ],
+        "outcome": "hold",
+        "contract_codes": []
+      }
+    },
+    {
+      "case": "foreign-evidence",
+      "matches_labels": true,
+      "result": {
+        "structural_codes": [
+          "EVIDENCE_SET_MISMATCH",
+          "UNKNOWN_REFERENCE"
+        ],
+        "outcome": "hold",
+        "contract_codes": []
+      }
+    },
+    {
+      "case": "cyclic-lesson-dependency",
+      "matches_labels": true,
+      "result": {
+        "structural_codes": [
+          "UNKNOWN_REFERENCE"
+        ],
+        "outcome": "hold",
+        "contract_codes": []
+      }
+    },
+    {
+      "case": "stale-practice-snapshot",
+      "matches_labels": true,
+      "result": {
+        "structural_codes": [
+          "STALE_LESSON_REVISION"
+        ],
+        "outcome": "hold",
+        "contract_codes": []
+      }
+    },
+    {
+      "case": "invalid-numeric-unit",
+      "matches_labels": true,
+      "result": {
+        "structural_codes": [
+          "NUMERIC_CANONICAL_MISMATCH"
+        ],
+        "outcome": "hold",
+        "contract_codes": []
+      }
+    },
+    {
+      "case": "word-bank-duplicate-token",
+      "matches_labels": true,
+      "result": {
+        "structural_codes": [
+          "DUPLICATE_TOKEN"
+        ],
+        "outcome": "hold",
+        "contract_codes": []
+      }
+    },
+    {
+      "case": "missing-blank-marker",
+      "matches_labels": true,
+      "result": {
+        "structural_codes": [
+          "BLANK_MARKER"
+        ],
+        "outcome": "hold",
+        "contract_codes": []
+      }
+    },
+    {
+      "case": "true-false-word-limit",
+      "matches_labels": true,
+      "result": {
+        "structural_codes": [
+          "STATEMENT_WORD_LIMIT"
+        ],
+        "outcome": "hold",
+        "contract_codes": []
+      }
+    },
+    {
+      "case": "ordering-reveals-key",
+      "matches_labels": true,
+      "result": {
+        "structural_codes": [
+          "ORDERING_NOT_SHUFFLED"
+        ],
+        "outcome": "hold",
+        "contract_codes": []
+      }
+    },
+    {
+      "case": "shallow-but-schema-valid",
+      "matches_labels": true,
+      "result": {
+        "structural_codes": [],
+        "outcome": "repair",
+        "contract_codes": [],
+        "contract_issues": [],
+        "rewrite_lesson_ids": [
+          "successive-discounts-l1",
+          "successive-discounts-l2"
+        ],
+        "rewrite_question_ids": [],
+        "recheck_question_ids": [
+          "successive-discounts-q1",
+          "successive-discounts-q2",
+          "successive-discounts-q3",
+          "successive-discounts-q4"
+        ],
+        "preserved_lesson_ids": []
+      }
+    },
+    {
+      "case": "two-repairs-then-hold",
+      "matches_labels": true,
+      "result": {
+        "structural_codes": [],
+        "outcome": "hold",
+        "contract_codes": [],
+        "contract_issues": [],
+        "rewrite_lesson_ids": [
+          "successive-discounts-l1",
+          "successive-discounts-l2"
+        ],
+        "rewrite_question_ids": [],
+        "recheck_question_ids": [
+          "successive-discounts-q1",
+          "successive-discounts-q2",
+          "successive-discounts-q3",
+          "successive-discounts-q4"
+        ],
+        "preserved_lesson_ids": []
+      }
+    },
+    {
+      "case": "untaught-question-source-is-sufficient",
+      "matches_labels": true,
+      "result": {
+        "structural_codes": [],
+        "outcome": "repair",
+        "contract_codes": [],
+        "contract_issues": [],
+        "rewrite_lesson_ids": [],
+        "rewrite_question_ids": [
+          "successive-discounts-q2"
+        ],
+        "recheck_question_ids": [],
+        "preserved_lesson_ids": [
+          "successive-discounts-l1",
+          "successive-discounts-l2"
+        ]
+      }
+    },
+    {
+      "case": "word-bank-semantic-ambiguity",
+      "matches_labels": true,
+      "result": {
+        "structural_codes": [],
+        "outcome": "repair",
+        "contract_codes": [],
+        "contract_issues": [],
+        "rewrite_lesson_ids": [],
+        "rewrite_question_ids": [
+          "successive-discounts-q3"
+        ],
+        "recheck_question_ids": [],
+        "preserved_lesson_ids": [
+          "successive-discounts-l1",
+          "successive-discounts-l2"
+        ]
+      }
+    },
+    {
+      "case": "ordering-multiple-valid-orders",
+      "matches_labels": true,
+      "result": {
+        "structural_codes": [],
+        "outcome": "repair",
+        "contract_codes": [],
+        "contract_issues": [],
+        "rewrite_lesson_ids": [],
+        "rewrite_question_ids": [
+          "successive-discounts-q4"
+        ],
+        "recheck_question_ids": [],
+        "preserved_lesson_ids": [
+          "successive-discounts-l1",
+          "successive-discounts-l2"
+        ]
+      }
+    },
+    {
+      "case": "assessment-gap-preserves-lessons",
+      "matches_labels": true,
+      "result": {
+        "structural_codes": [],
+        "outcome": "repair",
+        "contract_codes": [],
+        "contract_issues": [],
+        "rewrite_lesson_ids": [],
+        "rewrite_question_ids": [
+          "successive-discounts-q1",
+          "successive-discounts-q2",
+          "successive-discounts-q3",
+          "successive-discounts-q4"
+        ],
+        "recheck_question_ids": [],
+        "preserved_lesson_ids": [
+          "successive-discounts-l1",
+          "successive-discounts-l2"
+        ]
+      }
+    },
+    {
+      "case": "editorial-suggestion-does-not-block",
+      "matches_labels": true,
+      "result": {
+        "structural_codes": [],
+        "outcome": "ready",
+        "contract_codes": [],
+        "contract_issues": [],
+        "rewrite_lesson_ids": [],
+        "rewrite_question_ids": [],
+        "recheck_question_ids": [],
+        "preserved_lesson_ids": [
+          "successive-discounts-l1",
+          "successive-discounts-l2"
+        ]
+      }
+    },
+    {
+      "case": "resolved-finding-does-not-repair",
+      "matches_labels": true,
+      "result": {
+        "structural_codes": [],
+        "outcome": "ready",
+        "contract_codes": [],
+        "contract_issues": [],
+        "rewrite_lesson_ids": [],
+        "rewrite_question_ids": [],
+        "recheck_question_ids": [],
+        "preserved_lesson_ids": [
+          "successive-discounts-l1",
+          "successive-discounts-l2"
+        ]
+      }
+    },
+    {
+      "case": "stale-review-content-binding",
+      "matches_labels": true,
+      "result": {
+        "structural_codes": [],
+        "outcome": "hold",
+        "contract_codes": [
+          "STALE_REVIEW"
+        ],
+        "contract_issues": [
+          {
+            "code": "STALE_REVIEW",
+            "path": "review.input",
+            "message": "Host input changed since review request."
+          }
+        ],
+        "rewrite_lesson_ids": [],
+        "rewrite_question_ids": [],
+        "recheck_question_ids": [],
+        "preserved_lesson_ids": [
+          "successive-discounts-l1",
+          "successive-discounts-l2"
+        ]
+      }
+    },
+    {
+      "case": "tampered-review-hash",
+      "matches_labels": true,
+      "result": {
+        "structural_codes": [],
+        "outcome": "hold",
+        "contract_codes": [
+          "STALE_REVIEW"
+        ],
+        "contract_issues": [
+          {
+            "code": "STALE_REVIEW",
+            "path": "review.input_hash",
+            "message": "Content, rubric or source input changed."
+          }
+        ],
+        "rewrite_lesson_ids": [],
+        "rewrite_question_ids": [],
+        "recheck_question_ids": [],
+        "preserved_lesson_ids": [
+          "successive-discounts-l1",
+          "successive-discounts-l2"
+        ]
+      }
+    },
+    {
+      "case": "fabricated-review-quote",
+      "matches_labels": true,
+      "result": {
+        "structural_codes": [],
+        "outcome": "hold",
+        "contract_codes": [
+          "REVIEW_QUOTE"
+        ],
+        "contract_issues": [
+          {
+            "code": "REVIEW_QUOTE",
+            "path": "review.findings",
+            "message": "Evidence quote is not in the current input."
+          }
+        ],
+        "rewrite_lesson_ids": [],
+        "rewrite_question_ids": [
+          "successive-discounts-q1"
+        ],
+        "recheck_question_ids": [],
+        "preserved_lesson_ids": [
+          "successive-discounts-l1",
+          "successive-discounts-l2"
+        ]
+      }
+    },
+    {
+      "case": "review-missing-coverage",
+      "matches_labels": true,
+      "result": {
+        "structural_codes": [],
+        "outcome": "hold",
+        "contract_codes": [
+          "REVIEW_COVERAGE"
+        ],
+        "contract_issues": [
+          {
+            "code": "REVIEW_COVERAGE",
+            "path": "review.coverage",
+            "message": "Map each requested criterion exactly once."
+          }
+        ],
+        "rewrite_lesson_ids": [],
+        "rewrite_question_ids": [],
+        "recheck_question_ids": [],
+        "preserved_lesson_ids": [
+          "successive-discounts-l1",
+          "successive-discounts-l2"
+        ]
+      }
+    }
+  ],
+  "label_mismatches": 0,
+  "provider_schemas": [
+    {
+      "name": "NodeBlueprint",
+      "closed_objects": 4,
+      "sha256": "93dab73bbf56fd7872d78e1b5ef4f454c1cb2345304cfcf2fb9a6dcd39e118ff"
+    },
+    {
+      "name": "LessonDraft",
+      "closed_objects": 1,
+      "sha256": "62a6dff338dd2f66dbc2ff07ac35a3938c12452b002e3e30807cf3ac78e7b552"
+    },
+    {
+      "name": "PracticeSlots",
+      "closed_objects": 14,
+      "sha256": "2d75808bd463742472a388d923ad790da32742e007c7a4071b301d05cbc10410"
+    },
+    {
+      "name": "QualityReview",
+      "closed_objects": 3,
+      "sha256": "98667b5d6a4c51735850f659b3e93a32c686695755f3a165fa2776689ffacf84"
+    }
+  ],
+  "answer_cases": [
+    {
+      "case": "equivalent-unit-name",
+      "problems": [],
+      "match": true,
+      "matches_labels": true
+    },
+    {
+      "case": "explicit-bare-value",
+      "problems": [],
+      "match": true,
+      "matches_labels": true
+    },
+    {
+      "case": "implicit-bare-value-needs-equivalence-review",
+      "problems": [],
+      "match": null,
+      "matches_labels": true
+    },
+    {
+      "case": "unit-scale-is-not-case-insensitive",
+      "problems": [],
+      "match": null,
+      "matches_labels": true
+    },
+    {
+      "case": "wrong-spelled-key-unit",
+      "problems": [
+        "NUMERIC_VARIANT_MISMATCH"
+      ],
+      "match": null,
+      "matches_labels": true
+    },
+    {
+      "case": "comma-and-tolerance",
+      "problems": [],
+      "match": true,
+      "matches_labels": true
+    },
+    {
+      "case": "beyond-tolerance",
+      "problems": [],
+      "match": null,
+      "matches_labels": true
+    },
+    {
+      "case": "long-learner-answer-needs-semantic-review",
+      "problems": [],
+      "match": null,
+      "matches_labels": true
+    },
+    {
+      "case": "extreme-exponent-does-not-crash",
+      "problems": [],
+      "match": null,
+      "matches_labels": true
+    }
+  ],
+  "limits": "Offline editorial labels, not live AI review or teacher calibration; no latency benchmark."
+}

@@ -1,0 +1,234 @@
+{
+  "standard_version": 1,
+  "blueprint": {
+    "id": "tank-controller",
+    "revision": 1,
+    "objective": "Menentukan perubahan status pompa dari ambang dan status sebelumnya.",
+    "scope": "Aturan sintetis kontrol tangki; level 0–100; bukan panduan instalasi perangkat.",
+    "prerequisites": [],
+    "criteria": [
+      {
+        "id": "c1",
+        "description": "Menjelaskan mengapa status sebelumnya diperlukan di antara ambang."
+      },
+      {
+        "id": "c2",
+        "description": "Menentukan tindakan pompa pada nilai batas dan lintasan level."
+      }
+    ],
+    "lesson_count_reason": "Dua kontribusi: membangun aturan lalu menerapkan dan memeriksa hasil.",
+    "shared_context": "Aturan sintetis kontrol tangki; level 0–100; bukan panduan instalasi perangkat.",
+    "lessons": [
+      {
+        "id": "tank-controller-l1",
+        "title": "Aturan dan ingatan status",
+        "contribution": "Menghubungkan rentang tengah dengan status sebelumnya.",
+        "criterion_ids": [
+          "c1"
+        ],
+        "evidence_ids": [
+          "e1"
+        ],
+        "depends_on": []
+      },
+      {
+        "id": "tank-controller-l2",
+        "title": "Menelusuri batas secara tepat",
+        "contribution": "Menggunakan ketidaksamaan ketat dan lintasan status.",
+        "criterion_ids": [
+          "c2"
+        ],
+        "evidence_ids": [
+          "e1"
+        ],
+        "depends_on": [
+          "tank-controller-l1"
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "id": "tank-controller-q1",
+        "type": "multiple_choice",
+        "criterion_ids": [
+          "c1"
+        ],
+        "intent": "Pada level 50, pompa sebelumnya mati. Apa hasil pengendali?",
+        "demand": "relationship"
+      },
+      {
+        "id": "tank-controller-q2",
+        "type": "short_answer",
+        "criterion_ids": [
+          "c2"
+        ],
+        "intent": "Pompa menyala pada level 70. Level berikutnya 71. Apa status barunya?",
+        "demand": "application"
+      },
+      {
+        "id": "tank-controller-q3",
+        "type": "true_false",
+        "criterion_ids": [
+          "c2"
+        ],
+        "intent": "Pompa yang menyala pasti mati tepat ketika level mencapai 70.",
+        "demand": "recall"
+      },
+      {
+        "id": "tank-controller-q4",
+        "type": "word_bank",
+        "criterion_ids": [
+          "c1"
+        ],
+        "intent": "Pilih satu token. Setiap token boleh dipakai paling banyak sekali.",
+        "demand": "application"
+      }
+    ]
+  },
+  "evidence": [
+    {
+      "id": "e1",
+      "source_id": "source-tank-controller",
+      "source_revision": 1,
+      "locator": "Sumber sintetis editorial lengkap",
+      "excerpt": "Spesifikasi sintetis pengendali tangki: level kurang dari 30 membuat pompa menyala. Level lebih dari 70 membuat pompa mati. Pada level 30 sampai 70, termasuk kedua batas, status pompa dipertahankan. Status awal diketahui dari catatan sistem. Karena tindakan pada rentang tengah mempertahankan status, level yang sama bisa menghasilkan status berbeda jika riwayatnya berbeda. Contoh: pompa awalnya mati pada level 40. Ketika level turun ke 29, pompa menyala. Pada 30 lalu 70 pompa masih menyala. Pada 71 pompa mati. Pemisahan dua ambang mencegah perubahan status setiap kali level berfluktuasi dekat satu batas."
+    }
+  ],
+  "lessons": [
+    {
+      "id": "tank-controller-l1",
+      "revision": 1,
+      "draft": {
+        "title": "Aturan dan ingatan status",
+        "body": "## Level saja belum selalu cukup\nPengendali ini mempunyai dua ambang: di bawah 30 pompa menyala, sedangkan di atas 70 pompa mati. Pada rentang 30–70, pengendali tidak memberi status baru: ia mempertahankan status yang sudah ada.\n\nArtinya, level 50 bukan perintah untuk selalu menyalakan atau selalu mematikan. Jika sebelumnya menyala, pompa tetap menyala; jika sebelumnya mati, ia tetap mati. Karena itu kita perlu membaca catatan status sebelum memutuskan hasil di rentang tengah. Pemisahan ambang membantu menghindari perubahan status berulang akibat fluktuasi dekat satu titik. Aturan ini adalah spesifikasi contoh, bukan aturan universal semua pompa.",
+        "evidence_ids": [
+          "e1"
+        ]
+      }
+    },
+    {
+      "id": "tank-controller-l2",
+      "revision": 1,
+      "draft": {
+        "title": "Menelusuri batas secara tepat",
+        "body": "## Periksa simbol batas, lalu bawa status ke langkah berikutnya\nMulai dari pompa mati pada level 40. Saat level turun ke 29, syarat kurang dari 30 terpenuhi sehingga pompa menyala. Ketika level naik ke 30, status tetap menyala: tepat 30 termasuk rentang mempertahankan status.\n\nPada level 70 pompa juga masih menyala. Perintah mati baru terjadi di 71 karena syaratnya **lebih dari 70**, bukan lebih dari atau sama dengan 70. Setelah mati di 71, turun kembali ke 50 tidak menyalakannya; rentang tengah mempertahankan status mati tersebut. Saat menelusuri tabel, tulis status hasil setiap langkah agar riwayat tidak hilang. Kesalahan umum ialah mengganti tanda ketat dengan tanda yang menyertakan batas.",
+        "evidence_ids": [
+          "e1"
+        ]
+      }
+    }
+  ],
+  "practice": {
+    "id": "tank-controller-practice",
+    "revision": 1,
+    "lesson_revisions": [
+      {
+        "id": "tank-controller-l1",
+        "revision": 1,
+        "content_hash": "1aac1d133183a7f2e9ebafb4a1ae0442f2ef5946321c4972a173bcbe9ce5acb8"
+      },
+      {
+        "id": "tank-controller-l2",
+        "revision": 1,
+        "content_hash": "80a13f7cc18185b2c5f40efbfbb22db1c855bc12bd1f219839ecb69d31e4d001"
+      }
+    ],
+    "draft": {
+      "questions": [
+        {
+          "id": "tank-controller-q1",
+          "type": "multiple_choice",
+          "criterion_ids": [
+            "c1"
+          ],
+          "explanation": "Level 50 berada di rentang yang mempertahankan status mati.",
+          "prompt": "Pada level 50, pompa sebelumnya mati. Apa hasil pengendali?",
+          "options": [
+            {
+              "id": "o1",
+              "text": "Tetap mati."
+            },
+            {
+              "id": "o2",
+              "text": "Menyala karena di atas 30."
+            },
+            {
+              "id": "o3",
+              "text": "Status tidak dapat ditentukan walau status awal diketahui."
+            }
+          ],
+          "correct_option_id": "o1",
+          "distractor_reasons": [
+            {
+              "option_id": "o2",
+              "reason": "Menciptakan aturan baru pada rentang tengah."
+            },
+            {
+              "option_id": "o3",
+              "reason": "Mengabaikan aturan mempertahankan status."
+            }
+          ]
+        },
+        {
+          "id": "tank-controller-q2",
+          "type": "short_answer",
+          "criterion_ids": [
+            "c2"
+          ],
+          "explanation": "71 lebih dari 70 sehingga pompa mati.",
+          "prompt": "Pompa menyala pada level 70. Level berikutnya 71. Apa status barunya?",
+          "key": {
+            "canonical_answer": "mati",
+            "accepted_variants": [],
+            "numeric": null
+          }
+        },
+        {
+          "id": "tank-controller-q3",
+          "type": "true_false",
+          "criterion_ids": [
+            "c2"
+          ],
+          "explanation": "Tepat 70 mempertahankan status; syarat mati adalah lebih dari 70.",
+          "statement": "Pompa yang menyala pasti mati tepat ketika level mencapai 70.",
+          "correct_answer": false
+        },
+        {
+          "id": "tank-controller-q4",
+          "type": "word_bank",
+          "criterion_ids": [
+            "c1"
+          ],
+          "explanation": "Riwayat menentukan status yang dipertahankan.",
+          "prompt": "Pilih satu token. Setiap token boleh dipakai paling banyak sekali.",
+          "blanks": [
+            {
+              "id": "b1",
+              "text": "Dalam rentang tengah, keputusan memerlukan status {{blank}}."
+            }
+          ],
+          "tokens": [
+            {
+              "id": "t1",
+              "text": "sebelumnya"
+            },
+            {
+              "id": "t2",
+              "text": "maksimum"
+            },
+            {
+              "id": "t3",
+              "text": "terbalik"
+            }
+          ],
+          "answers": [
+            {
+              "blank_id": "b1",
+              "token_id": "t1"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

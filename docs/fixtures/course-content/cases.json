@@ -1,0 +1,1467 @@
+{
+  "standard_version": 1,
+  "label_provenance": "Authored and manually inspected by Codex against the supplied synthetic source and standard v1. Offline policy fixtures; not independent teacher labels, model-review accuracy, learner-outcome evidence, or a latency benchmark.",
+  "cases": [
+    {
+      "id": "successive-discounts-valid",
+      "packet": "successive-discounts.json",
+      "packet_sha256": "dc267fbeaefb27a161db1fb01a31a2789152a98c12331c083d2b2ca928d1e2c9",
+      "complete": true,
+      "edits": [],
+      "refresh_snapshot": false,
+      "expected": {
+        "structural_codes": [],
+        "outcome": "ready"
+      },
+      "review": {
+        "rubric_version": 1,
+        "scope": "practice",
+        "target_ids": [
+          "successive-discounts-practice"
+        ],
+        "sufficient_evidence": true,
+        "missing_evidence": [],
+        "findings": [],
+        "coverage": [
+          {
+            "criterion_id": "c1",
+            "lesson_ids": [
+              "successive-discounts-l1"
+            ],
+            "question_ids": [
+              "successive-discounts-q1",
+              "successive-discounts-q3"
+            ],
+            "rationale": "Konten contoh menjelaskan Menentukan dasar diskon kedua dan membedakannya dari penjumlahan persentase. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          },
+          {
+            "criterion_id": "c2",
+            "lesson_ids": [
+              "successive-discounts-l2"
+            ],
+            "question_ids": [
+              "successive-discounts-q2",
+              "successive-discounts-q4"
+            ],
+            "rationale": "Konten contoh menjelaskan Menghitung harga setelah dua diskon. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          }
+        ]
+      }
+    },
+    {
+      "id": "tank-controller-valid",
+      "packet": "tank-controller.json",
+      "packet_sha256": "ce7e40154b100f639ae19cb47fa23e6aff79309af3c5e1bb73b4209b6e346691",
+      "complete": true,
+      "edits": [],
+      "refresh_snapshot": false,
+      "expected": {
+        "structural_codes": [],
+        "outcome": "ready"
+      },
+      "review": {
+        "rubric_version": 1,
+        "scope": "practice",
+        "target_ids": [
+          "tank-controller-practice"
+        ],
+        "sufficient_evidence": true,
+        "missing_evidence": [],
+        "findings": [],
+        "coverage": [
+          {
+            "criterion_id": "c1",
+            "lesson_ids": [
+              "tank-controller-l1"
+            ],
+            "question_ids": [
+              "tank-controller-q1",
+              "tank-controller-q4"
+            ],
+            "rationale": "Konten contoh menjelaskan Menjelaskan mengapa status sebelumnya diperlukan di antara ambang. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          },
+          {
+            "criterion_id": "c2",
+            "lesson_ids": [
+              "tank-controller-l2"
+            ],
+            "question_ids": [
+              "tank-controller-q2",
+              "tank-controller-q3"
+            ],
+            "rationale": "Konten contoh menjelaskan Menentukan tindakan pompa pada nilai batas dan lintasan level. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          }
+        ]
+      }
+    },
+    {
+      "id": "triangle-area-valid",
+      "packet": "triangle-area.json",
+      "packet_sha256": "692b2b5e17e1376e6d09ccc52d797fb282edffadac3db66f18384f1ff0b26a5b",
+      "complete": true,
+      "edits": [],
+      "refresh_snapshot": false,
+      "expected": {
+        "structural_codes": [],
+        "outcome": "ready"
+      },
+      "review": {
+        "rubric_version": 1,
+        "scope": "practice",
+        "target_ids": [
+          "triangle-area-practice"
+        ],
+        "sufficient_evidence": true,
+        "missing_evidence": [],
+        "findings": [],
+        "coverage": [
+          {
+            "criterion_id": "c1",
+            "lesson_ids": [
+              "triangle-area-l1"
+            ],
+            "question_ids": [
+              "triangle-area-q1",
+              "triangle-area-q4"
+            ],
+            "rationale": "Konten contoh menjelaskan Mengidentifikasi tinggi tegak lurus yang sesuai dengan alas. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          },
+          {
+            "criterion_id": "c2",
+            "lesson_ids": [
+              "triangle-area-l2"
+            ],
+            "question_ids": [
+              "triangle-area-q2",
+              "triangle-area-q3"
+            ],
+            "rationale": "Konten contoh menjelaskan Menghitung luas dan menyatakan satuan luas. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          }
+        ]
+      }
+    },
+    {
+      "id": "bug-report-valid",
+      "packet": "bug-report.json",
+      "packet_sha256": "c0de15974b72d92e0d2b00b7a801c4fd0048a9ffb05caefb61a2dd5701511f5a",
+      "complete": true,
+      "edits": [],
+      "refresh_snapshot": false,
+      "expected": {
+        "structural_codes": [],
+        "outcome": "ready"
+      },
+      "review": {
+        "rubric_version": 1,
+        "scope": "practice",
+        "target_ids": [
+          "bug-report-practice"
+        ],
+        "sufficient_evidence": true,
+        "missing_evidence": [],
+        "findings": [],
+        "coverage": [
+          {
+            "criterion_id": "c1",
+            "lesson_ids": [
+              "bug-report-l1"
+            ],
+            "question_ids": [
+              "bug-report-q1",
+              "bug-report-q2"
+            ],
+            "rationale": "Konten contoh menjelaskan Membedakan hasil yang diharapkan dari hasil aktual. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          },
+          {
+            "criterion_id": "c2",
+            "lesson_ids": [
+              "bug-report-l2"
+            ],
+            "question_ids": [
+              "bug-report-q3",
+              "bug-report-q4"
+            ],
+            "rationale": "Konten contoh menjelaskan Memilih laporan dengan langkah dan konteks yang cukup untuk reproduksi. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          }
+        ]
+      }
+    },
+    {
+      "id": "electricity-cost-valid",
+      "packet": "electricity-cost.json",
+      "packet_sha256": "a2cc41998f1d49abc672165ac668f96ece9dd58008de3a39901a1bc213226e9d",
+      "complete": true,
+      "edits": [],
+      "refresh_snapshot": false,
+      "expected": {
+        "structural_codes": [],
+        "outcome": "ready"
+      },
+      "review": {
+        "rubric_version": 1,
+        "scope": "practice",
+        "target_ids": [
+          "electricity-cost-practice"
+        ],
+        "sufficient_evidence": true,
+        "missing_evidence": [],
+        "findings": [],
+        "coverage": [
+          {
+            "criterion_id": "c1",
+            "lesson_ids": [
+              "electricity-cost-l1"
+            ],
+            "question_ids": [
+              "electricity-cost-q1",
+              "electricity-cost-q3"
+            ],
+            "rationale": "Konten contoh menjelaskan Membedakan daya kW dan energi kWh. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          },
+          {
+            "criterion_id": "c2",
+            "lesson_ids": [
+              "electricity-cost-l2"
+            ],
+            "question_ids": [
+              "electricity-cost-q2",
+              "electricity-cost-q4"
+            ],
+            "rationale": "Konten contoh menjelaskan Menghitung energi lalu biaya dari satuan yang sesuai. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          }
+        ]
+      }
+    },
+    {
+      "id": "insufficient-source-clarification",
+      "packet": "insufficient-source.json",
+      "packet_sha256": "55bf2905ef2020bd78957d7e5bcd4f1733997ec3e32206c8517f9601ce055a65",
+      "complete": false,
+      "edits": [],
+      "refresh_snapshot": false,
+      "expected": {
+        "structural_codes": [],
+        "outcome": "needs_context"
+      },
+      "review": {
+        "rubric_version": 1,
+        "scope": "lesson",
+        "target_ids": [
+          "osmosis-l1"
+        ],
+        "sufficient_evidence": false,
+        "missing_evidence": [
+          "Sumber tidak menjelaskan mekanisme osmosis atau kondisi penentu arah perpindahan air."
+        ],
+        "findings": [],
+        "coverage": []
+      }
+    },
+    {
+      "id": "first-lesson-before-practice",
+      "packet": "successive-discounts.json",
+      "packet_sha256": "dc267fbeaefb27a161db1fb01a31a2789152a98c12331c083d2b2ca928d1e2c9",
+      "complete": false,
+      "edits": [
+        {
+          "path": [
+            "lessons"
+          ],
+          "value": [
+            {
+              "id": "successive-discounts-l1",
+              "revision": 1,
+              "draft": {
+                "title": "Dasar diskon kedua",
+                "body": "## Harga yang menjadi dasar berubah\nDiskon 20% berarti pembeli masih membayar 80% dari harga awal. Jika harga awal 100 ribu rupiah, sisa harganya 80 ribu rupiah. Saat toko kemudian memberi diskon 10%, angka 10% itu bekerja pada **80 ribu**, bukan pada 100 ribu.\n\nInilah alasan dua persentase tidak langsung dijumlahkan. Menjumlahkan 20% dan 10% menganggap keduanya memakai dasar yang sama. Dalam aturan toko ini, dasar kedua sudah lebih kecil. Sebelum menghitung, tanyakan: diskon ini diterapkan pada harga awal atau pada harga yang sudah dipotong? Ketentuan toko menentukan jawabannya; contoh ini secara khusus memakai diskon berurutan.",
+                "evidence_ids": [
+                  "e1"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "path": [
+            "practice"
+          ],
+          "value": null
+        }
+      ],
+      "refresh_snapshot": false,
+      "expected": {
+        "structural_codes": [],
+        "outcome": "ready",
+        "readiness": {
+          "lesson_ready_ids": [
+            "successive-discounts-l1"
+          ],
+          "practice_ready": false,
+          "node_content_ready": false
+        }
+      },
+      "review": {
+        "rubric_version": 1,
+        "scope": "lesson",
+        "target_ids": [
+          "successive-discounts-l1"
+        ],
+        "sufficient_evidence": true,
+        "missing_evidence": [],
+        "findings": [],
+        "coverage": [
+          {
+            "criterion_id": "c1",
+            "lesson_ids": [
+              "successive-discounts-l1"
+            ],
+            "question_ids": [],
+            "rationale": "Konten contoh menjelaskan Menentukan dasar diskon kedua dan membedakannya dari penjumlahan persentase. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          }
+        ]
+      },
+      "published_lesson_ids": [
+        "successive-discounts-l1"
+      ]
+    },
+    {
+      "id": "all-lessons-before-practice",
+      "packet": "successive-discounts.json",
+      "packet_sha256": "dc267fbeaefb27a161db1fb01a31a2789152a98c12331c083d2b2ca928d1e2c9",
+      "complete": false,
+      "edits": [
+        {
+          "path": [
+            "practice"
+          ],
+          "value": null
+        }
+      ],
+      "refresh_snapshot": false,
+      "expected": {
+        "structural_codes": [],
+        "outcome": "unreviewed",
+        "readiness": {
+          "lesson_ready_ids": [
+            "successive-discounts-l1",
+            "successive-discounts-l2"
+          ],
+          "practice_ready": false,
+          "node_content_ready": false
+        }
+      },
+      "published_lesson_ids": [
+        "successive-discounts-l1",
+        "successive-discounts-l2"
+      ]
+    },
+    {
+      "id": "complete-ready-projection",
+      "packet": "successive-discounts.json",
+      "packet_sha256": "dc267fbeaefb27a161db1fb01a31a2789152a98c12331c083d2b2ca928d1e2c9",
+      "complete": true,
+      "edits": [],
+      "refresh_snapshot": false,
+      "expected": {
+        "structural_codes": [],
+        "outcome": "ready",
+        "readiness": {
+          "lesson_ready_ids": [
+            "successive-discounts-l1",
+            "successive-discounts-l2"
+          ],
+          "practice_ready": true,
+          "node_content_ready": true
+        },
+        "public_fields": [
+          "body",
+          "id",
+          "questions",
+          "revision",
+          "title"
+        ]
+      },
+      "review": {
+        "rubric_version": 1,
+        "scope": "practice",
+        "target_ids": [
+          "successive-discounts-practice"
+        ],
+        "sufficient_evidence": true,
+        "missing_evidence": [],
+        "findings": [],
+        "coverage": [
+          {
+            "criterion_id": "c1",
+            "lesson_ids": [
+              "successive-discounts-l1"
+            ],
+            "question_ids": [
+              "successive-discounts-q1",
+              "successive-discounts-q3"
+            ],
+            "rationale": "Konten contoh menjelaskan Menentukan dasar diskon kedua dan membedakannya dari penjumlahan persentase. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          },
+          {
+            "criterion_id": "c2",
+            "lesson_ids": [
+              "successive-discounts-l2"
+            ],
+            "question_ids": [
+              "successive-discounts-q2",
+              "successive-discounts-q4"
+            ],
+            "rationale": "Konten contoh menjelaskan Menghitung harga setelah dua diskon. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          }
+        ]
+      },
+      "published_lesson_ids": [
+        "successive-discounts-l1",
+        "successive-discounts-l2"
+      ],
+      "published_practice": true
+    },
+    {
+      "id": "unknown-generated-field",
+      "packet": "successive-discounts.json",
+      "packet_sha256": "dc267fbeaefb27a161db1fb01a31a2789152a98c12331c083d2b2ca928d1e2c9",
+      "complete": true,
+      "edits": [
+        {
+          "path": [
+            "lessons",
+            0,
+            "draft",
+            "invented_field"
+          ],
+          "value": "unexpected"
+        }
+      ],
+      "refresh_snapshot": false,
+      "expected": {
+        "structural_codes": [
+          "SCHEMA"
+        ],
+        "outcome": "hold"
+      }
+    },
+    {
+      "id": "foreign-evidence",
+      "packet": "successive-discounts.json",
+      "packet_sha256": "dc267fbeaefb27a161db1fb01a31a2789152a98c12331c083d2b2ca928d1e2c9",
+      "complete": true,
+      "edits": [
+        {
+          "path": [
+            "lessons",
+            0,
+            "draft",
+            "evidence_ids"
+          ],
+          "value": [
+            "foreign"
+          ]
+        }
+      ],
+      "refresh_snapshot": true,
+      "expected": {
+        "structural_codes": [
+          "EVIDENCE_SET_MISMATCH",
+          "UNKNOWN_REFERENCE"
+        ],
+        "outcome": "hold"
+      }
+    },
+    {
+      "id": "cyclic-lesson-dependency",
+      "packet": "successive-discounts.json",
+      "packet_sha256": "dc267fbeaefb27a161db1fb01a31a2789152a98c12331c083d2b2ca928d1e2c9",
+      "complete": true,
+      "edits": [
+        {
+          "path": [
+            "blueprint",
+            "lessons",
+            0,
+            "depends_on"
+          ],
+          "value": [
+            "successive-discounts-l2"
+          ]
+        }
+      ],
+      "refresh_snapshot": false,
+      "expected": {
+        "structural_codes": [
+          "UNKNOWN_REFERENCE"
+        ],
+        "outcome": "hold"
+      }
+    },
+    {
+      "id": "stale-practice-snapshot",
+      "packet": "successive-discounts.json",
+      "packet_sha256": "dc267fbeaefb27a161db1fb01a31a2789152a98c12331c083d2b2ca928d1e2c9",
+      "complete": true,
+      "edits": [
+        {
+          "path": [
+            "lessons",
+            0,
+            "revision"
+          ],
+          "value": 2
+        }
+      ],
+      "refresh_snapshot": false,
+      "expected": {
+        "structural_codes": [
+          "STALE_LESSON_REVISION"
+        ],
+        "outcome": "hold"
+      }
+    },
+    {
+      "id": "invalid-numeric-unit",
+      "packet": "triangle-area.json",
+      "packet_sha256": "692b2b5e17e1376e6d09ccc52d797fb282edffadac3db66f18384f1ff0b26a5b",
+      "complete": true,
+      "edits": [
+        {
+          "path": [
+            "practice",
+            "draft",
+            "questions",
+            1,
+            "key",
+            "canonical_answer"
+          ],
+          "value": "30 cm"
+        }
+      ],
+      "refresh_snapshot": false,
+      "expected": {
+        "structural_codes": [
+          "NUMERIC_CANONICAL_MISMATCH"
+        ],
+        "outcome": "hold"
+      }
+    },
+    {
+      "id": "word-bank-duplicate-token",
+      "packet": "successive-discounts.json",
+      "packet_sha256": "dc267fbeaefb27a161db1fb01a31a2789152a98c12331c083d2b2ca928d1e2c9",
+      "complete": true,
+      "edits": [
+        {
+          "path": [
+            "practice",
+            "draft",
+            "questions",
+            2,
+            "tokens",
+            2,
+            "text"
+          ],
+          "value": "tersisa"
+        }
+      ],
+      "refresh_snapshot": false,
+      "expected": {
+        "structural_codes": [
+          "DUPLICATE_TOKEN"
+        ],
+        "outcome": "hold"
+      }
+    },
+    {
+      "id": "missing-blank-marker",
+      "packet": "successive-discounts.json",
+      "packet_sha256": "dc267fbeaefb27a161db1fb01a31a2789152a98c12331c083d2b2ca928d1e2c9",
+      "complete": true,
+      "edits": [
+        {
+          "path": [
+            "practice",
+            "draft",
+            "questions",
+            2,
+            "blanks",
+            0,
+            "text"
+          ],
+          "value": "Tidak ada blank di kalimat ini."
+        }
+      ],
+      "refresh_snapshot": false,
+      "expected": {
+        "structural_codes": [
+          "BLANK_MARKER"
+        ],
+        "outcome": "hold"
+      }
+    },
+    {
+      "id": "true-false-word-limit",
+      "packet": "successive-discounts.json",
+      "packet_sha256": "dc267fbeaefb27a161db1fb01a31a2789152a98c12331c083d2b2ca928d1e2c9",
+      "complete": true,
+      "edits": [
+        {
+          "path": [
+            "practice",
+            "draft",
+            "questions",
+            3,
+            "statement"
+          ],
+          "value": "klaim klaim klaim klaim klaim klaim klaim klaim klaim klaim klaim klaim klaim klaim klaim klaim klaim klaim klaim klaim klaim klaim klaim klaim klaim klaim"
+        }
+      ],
+      "refresh_snapshot": false,
+      "expected": {
+        "structural_codes": [
+          "STATEMENT_WORD_LIMIT"
+        ],
+        "outcome": "hold"
+      }
+    },
+    {
+      "id": "ordering-reveals-key",
+      "packet": "triangle-area.json",
+      "packet_sha256": "692b2b5e17e1376e6d09ccc52d797fb282edffadac3db66f18384f1ff0b26a5b",
+      "complete": true,
+      "edits": [
+        {
+          "path": [
+            "practice",
+            "draft",
+            "questions",
+            2,
+            "items"
+          ],
+          "value": [
+            {
+              "id": "i1",
+              "text": "Identifikasi alas dan tinggi tegak lurus."
+            },
+            {
+              "id": "i2",
+              "text": "Kalikan dua panjang yang teridentifikasi."
+            },
+            {
+              "id": "i3",
+              "text": "Bagi hasil perkalian dengan dua."
+            },
+            {
+              "id": "i4",
+              "text": "Tulis hasil pembagian dengan satuan luas."
+            }
+          ]
+        }
+      ],
+      "refresh_snapshot": false,
+      "expected": {
+        "structural_codes": [
+          "ORDERING_NOT_SHUFFLED"
+        ],
+        "outcome": "hold"
+      }
+    },
+    {
+      "id": "shallow-but-schema-valid",
+      "packet": "successive-discounts.json",
+      "packet_sha256": "dc267fbeaefb27a161db1fb01a31a2789152a98c12331c083d2b2ca928d1e2c9",
+      "complete": true,
+      "edits": [
+        {
+          "path": [
+            "lessons",
+            0,
+            "draft",
+            "body"
+          ],
+          "value": "Diskon adalah potongan harga. Pelajari diskon agar paham diskon."
+        }
+      ],
+      "refresh_snapshot": true,
+      "expected": {
+        "structural_codes": [],
+        "outcome": "repair",
+        "rewrite_lesson_ids": [
+          "successive-discounts-l1",
+          "successive-discounts-l2"
+        ],
+        "rewrite_question_ids": [],
+        "recheck_question_ids": [
+          "successive-discounts-q1",
+          "successive-discounts-q2",
+          "successive-discounts-q3",
+          "successive-discounts-q4"
+        ],
+        "preserved_lesson_ids": []
+      },
+      "review": {
+        "rubric_version": 1,
+        "scope": "practice",
+        "target_ids": [
+          "successive-discounts-practice"
+        ],
+        "sufficient_evidence": true,
+        "missing_evidence": [],
+        "findings": [
+          {
+            "status": "defect",
+            "scope": "lesson",
+            "target_ids": [
+              "successive-discounts-l1"
+            ],
+            "criterion_ids": [
+              "c1"
+            ],
+            "evidence": "Diskon adalah potongan harga. Pelajari diskon agar paham diskon.",
+            "reason": "Definisi berulang tidak mengajarkan perubahan dasar persentase yang diperlukan c1.",
+            "correction": "Jelaskan dasar diskon kedua dengan harga tersisa dan bandingkan dengan penjumlahan persentase."
+          }
+        ],
+        "coverage": [
+          {
+            "criterion_id": "c1",
+            "lesson_ids": [
+              "successive-discounts-l1"
+            ],
+            "question_ids": [
+              "successive-discounts-q1",
+              "successive-discounts-q3"
+            ],
+            "rationale": "Konten contoh menjelaskan Menentukan dasar diskon kedua dan membedakannya dari penjumlahan persentase. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          },
+          {
+            "criterion_id": "c2",
+            "lesson_ids": [
+              "successive-discounts-l2"
+            ],
+            "question_ids": [
+              "successive-discounts-q2",
+              "successive-discounts-q4"
+            ],
+            "rationale": "Konten contoh menjelaskan Menghitung harga setelah dua diskon. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          }
+        ]
+      }
+    },
+    {
+      "id": "two-repairs-then-hold",
+      "packet": "successive-discounts.json",
+      "packet_sha256": "dc267fbeaefb27a161db1fb01a31a2789152a98c12331c083d2b2ca928d1e2c9",
+      "complete": true,
+      "edits": [
+        {
+          "path": [
+            "lessons",
+            0,
+            "draft",
+            "body"
+          ],
+          "value": "Diskon adalah potongan harga. Pelajari diskon agar paham diskon."
+        }
+      ],
+      "refresh_snapshot": true,
+      "expected": {
+        "structural_codes": [],
+        "outcome": "hold"
+      },
+      "review": {
+        "rubric_version": 1,
+        "scope": "practice",
+        "target_ids": [
+          "successive-discounts-practice"
+        ],
+        "sufficient_evidence": true,
+        "missing_evidence": [],
+        "findings": [
+          {
+            "status": "defect",
+            "scope": "lesson",
+            "target_ids": [
+              "successive-discounts-l1"
+            ],
+            "criterion_ids": [
+              "c1"
+            ],
+            "evidence": "Diskon adalah potongan harga. Pelajari diskon agar paham diskon.",
+            "reason": "Definisi berulang tidak mengajarkan perubahan dasar persentase yang diperlukan c1.",
+            "correction": "Jelaskan dasar diskon kedua dengan harga tersisa dan bandingkan dengan penjumlahan persentase."
+          }
+        ],
+        "coverage": [
+          {
+            "criterion_id": "c1",
+            "lesson_ids": [
+              "successive-discounts-l1"
+            ],
+            "question_ids": [
+              "successive-discounts-q1",
+              "successive-discounts-q3"
+            ],
+            "rationale": "Konten contoh menjelaskan Menentukan dasar diskon kedua dan membedakannya dari penjumlahan persentase. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          },
+          {
+            "criterion_id": "c2",
+            "lesson_ids": [
+              "successive-discounts-l2"
+            ],
+            "question_ids": [
+              "successive-discounts-q2",
+              "successive-discounts-q4"
+            ],
+            "rationale": "Konten contoh menjelaskan Menghitung harga setelah dua diskon. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          }
+        ]
+      },
+      "repair_round": 2
+    },
+    {
+      "id": "untaught-question-source-is-sufficient",
+      "packet": "successive-discounts.json",
+      "packet_sha256": "dc267fbeaefb27a161db1fb01a31a2789152a98c12331c083d2b2ca928d1e2c9",
+      "complete": true,
+      "edits": [
+        {
+          "path": [
+            "practice",
+            "draft",
+            "questions",
+            1,
+            "prompt"
+          ],
+          "value": "Berapa tarif pajak transaksi ini dalam persen?"
+        }
+      ],
+      "refresh_snapshot": false,
+      "expected": {
+        "structural_codes": [],
+        "outcome": "repair",
+        "rewrite_lesson_ids": [],
+        "rewrite_question_ids": [
+          "successive-discounts-q2"
+        ],
+        "recheck_question_ids": [],
+        "preserved_lesson_ids": [
+          "successive-discounts-l1",
+          "successive-discounts-l2"
+        ]
+      },
+      "review": {
+        "rubric_version": 1,
+        "scope": "practice",
+        "target_ids": [
+          "successive-discounts-practice"
+        ],
+        "sufficient_evidence": true,
+        "missing_evidence": [],
+        "findings": [
+          {
+            "status": "defect",
+            "scope": "assessment",
+            "target_ids": [
+              "successive-discounts-q2"
+            ],
+            "criterion_ids": [
+              "c2"
+            ],
+            "evidence": "Berapa tarif pajak transaksi ini dalam persen?",
+            "reason": "Pajak berada di luar scope dan tidak diajarkan. Tujuan diskon tetap dapat diajarkan dari sumber yang ada.",
+            "correction": "Kembalikan soal ke perhitungan harga setelah dua diskon."
+          }
+        ],
+        "coverage": [
+          {
+            "criterion_id": "c1",
+            "lesson_ids": [
+              "successive-discounts-l1"
+            ],
+            "question_ids": [
+              "successive-discounts-q1",
+              "successive-discounts-q3"
+            ],
+            "rationale": "Konten contoh menjelaskan Menentukan dasar diskon kedua dan membedakannya dari penjumlahan persentase. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          },
+          {
+            "criterion_id": "c2",
+            "lesson_ids": [
+              "successive-discounts-l2"
+            ],
+            "question_ids": [
+              "successive-discounts-q2",
+              "successive-discounts-q4"
+            ],
+            "rationale": "Konten contoh menjelaskan Menghitung harga setelah dua diskon. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          }
+        ]
+      }
+    },
+    {
+      "id": "word-bank-semantic-ambiguity",
+      "packet": "successive-discounts.json",
+      "packet_sha256": "dc267fbeaefb27a161db1fb01a31a2789152a98c12331c083d2b2ca928d1e2c9",
+      "complete": true,
+      "edits": [
+        {
+          "path": [
+            "practice",
+            "draft",
+            "questions",
+            2,
+            "tokens",
+            1,
+            "text"
+          ],
+          "value": "yang masih harus dibayar"
+        }
+      ],
+      "refresh_snapshot": false,
+      "expected": {
+        "structural_codes": [],
+        "outcome": "repair"
+      },
+      "review": {
+        "rubric_version": 1,
+        "scope": "practice",
+        "target_ids": [
+          "successive-discounts-practice"
+        ],
+        "sufficient_evidence": true,
+        "missing_evidence": [],
+        "findings": [
+          {
+            "status": "defect",
+            "scope": "assessment",
+            "target_ids": [
+              "successive-discounts-q3"
+            ],
+            "criterion_ids": [
+              "c1"
+            ],
+            "evidence": "yang masih harus dibayar",
+            "reason": "Token tersisa dan yang masih harus dibayar sama-sama cocok secara semantik.",
+            "correction": "Ganti token sinonim dengan pengecoh yang berbeda makna."
+          }
+        ],
+        "coverage": [
+          {
+            "criterion_id": "c1",
+            "lesson_ids": [
+              "successive-discounts-l1"
+            ],
+            "question_ids": [
+              "successive-discounts-q1",
+              "successive-discounts-q3"
+            ],
+            "rationale": "Konten contoh menjelaskan Menentukan dasar diskon kedua dan membedakannya dari penjumlahan persentase. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          },
+          {
+            "criterion_id": "c2",
+            "lesson_ids": [
+              "successive-discounts-l2"
+            ],
+            "question_ids": [
+              "successive-discounts-q2",
+              "successive-discounts-q4"
+            ],
+            "rationale": "Konten contoh menjelaskan Menghitung harga setelah dua diskon. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          }
+        ]
+      }
+    },
+    {
+      "id": "ordering-multiple-valid-orders",
+      "packet": "successive-discounts.json",
+      "packet_sha256": "dc267fbeaefb27a161db1fb01a31a2789152a98c12331c083d2b2ca928d1e2c9",
+      "complete": true,
+      "edits": [
+        {
+          "path": [
+            "practice",
+            "draft",
+            "questions",
+            3
+          ],
+          "value": {
+            "id": "successive-discounts-q4",
+            "type": "ordering",
+            "criterion_ids": [
+              "c2"
+            ],
+            "explanation": "Hitung dua faktor sisa lalu kalikan keduanya dengan harga awal.",
+            "prompt": "Urutkan operasi untuk menghitung harga akhir.",
+            "items": [
+              {
+                "id": "i3",
+                "text": "Kalikan dua faktor sisa."
+              },
+              {
+                "id": "i1",
+                "text": "Hitung faktor sisa diskon pertama."
+              },
+              {
+                "id": "i4",
+                "text": "Kalikan hasil perkalian faktor dengan harga awal."
+              },
+              {
+                "id": "i2",
+                "text": "Hitung faktor sisa diskon kedua."
+              }
+            ],
+            "correct_order": [
+              "i1",
+              "i2",
+              "i3",
+              "i4"
+            ]
+          }
+        },
+        {
+          "path": [
+            "blueprint",
+            "questions",
+            3,
+            "type"
+          ],
+          "value": "ordering"
+        }
+      ],
+      "refresh_snapshot": false,
+      "expected": {
+        "structural_codes": [],
+        "outcome": "repair"
+      },
+      "review": {
+        "rubric_version": 1,
+        "scope": "practice",
+        "target_ids": [
+          "successive-discounts-practice"
+        ],
+        "sufficient_evidence": true,
+        "missing_evidence": [],
+        "findings": [
+          {
+            "status": "defect",
+            "scope": "assessment",
+            "target_ids": [
+              "successive-discounts-q4"
+            ],
+            "criterion_ids": [
+              "c2"
+            ],
+            "evidence": "Hitung faktor sisa diskon pertama.",
+            "reason": "i2,i1,i3,i4 juga sah: dua faktor sisa dapat dihitung secara independen.",
+            "correction": "Gabungkan operasi independen atau pilih format lain yang memenuhi intent tanpa memaksa urutan."
+          }
+        ],
+        "coverage": [
+          {
+            "criterion_id": "c1",
+            "lesson_ids": [
+              "successive-discounts-l1"
+            ],
+            "question_ids": [
+              "successive-discounts-q1",
+              "successive-discounts-q3"
+            ],
+            "rationale": "Konten contoh menjelaskan Menentukan dasar diskon kedua dan membedakannya dari penjumlahan persentase. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          },
+          {
+            "criterion_id": "c2",
+            "lesson_ids": [
+              "successive-discounts-l2"
+            ],
+            "question_ids": [
+              "successive-discounts-q2",
+              "successive-discounts-q4"
+            ],
+            "rationale": "Konten contoh menjelaskan Menghitung harga setelah dua diskon. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          }
+        ]
+      }
+    },
+    {
+      "id": "assessment-gap-preserves-lessons",
+      "packet": "successive-discounts.json",
+      "packet_sha256": "dc267fbeaefb27a161db1fb01a31a2789152a98c12331c083d2b2ca928d1e2c9",
+      "complete": true,
+      "edits": [],
+      "refresh_snapshot": false,
+      "expected": {
+        "structural_codes": [],
+        "outcome": "repair",
+        "rewrite_lesson_ids": [],
+        "rewrite_question_ids": [
+          "successive-discounts-q1",
+          "successive-discounts-q2",
+          "successive-discounts-q3",
+          "successive-discounts-q4"
+        ],
+        "preserved_lesson_ids": [
+          "successive-discounts-l1",
+          "successive-discounts-l2"
+        ]
+      },
+      "review": {
+        "rubric_version": 1,
+        "scope": "practice",
+        "target_ids": [
+          "successive-discounts-practice"
+        ],
+        "sufficient_evidence": true,
+        "missing_evidence": [],
+        "findings": [
+          {
+            "status": "defect",
+            "scope": "assessment",
+            "target_ids": [],
+            "criterion_ids": [
+              "c2"
+            ],
+            "evidence": "Menghitung harga setelah dua diskon.",
+            "reason": "Review menilai seluruh asesmen c2 belum memadai; target paket asesmen, bukan pengajaran.",
+            "correction": "Revisi soal terkait untuk memberi bukti perhitungan yang cukup."
+          }
+        ],
+        "coverage": [
+          {
+            "criterion_id": "c1",
+            "lesson_ids": [
+              "successive-discounts-l1"
+            ],
+            "question_ids": [
+              "successive-discounts-q1",
+              "successive-discounts-q3"
+            ],
+            "rationale": "Konten contoh menjelaskan Menentukan dasar diskon kedua dan membedakannya dari penjumlahan persentase. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          },
+          {
+            "criterion_id": "c2",
+            "lesson_ids": [
+              "successive-discounts-l2"
+            ],
+            "question_ids": [
+              "successive-discounts-q2",
+              "successive-discounts-q4"
+            ],
+            "rationale": "Konten contoh menjelaskan Menghitung harga setelah dua diskon. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          }
+        ]
+      }
+    },
+    {
+      "id": "editorial-suggestion-does-not-block",
+      "packet": "successive-discounts.json",
+      "packet_sha256": "dc267fbeaefb27a161db1fb01a31a2789152a98c12331c083d2b2ca928d1e2c9",
+      "complete": true,
+      "edits": [],
+      "refresh_snapshot": false,
+      "expected": {
+        "structural_codes": [],
+        "outcome": "ready"
+      },
+      "review": {
+        "rubric_version": 1,
+        "scope": "practice",
+        "target_ids": [
+          "successive-discounts-practice"
+        ],
+        "sufficient_evidence": true,
+        "missing_evidence": [],
+        "findings": [
+          {
+            "status": "resolved",
+            "scope": "assessment",
+            "target_ids": [
+              "successive-discounts-q1"
+            ],
+            "criterion_ids": [
+              "c1"
+            ],
+            "evidence": "Diskon kedua memakai harga yang sudah turun.",
+            "reason": "Temuan lama telah diperbaiki pada konten sekarang.",
+            "correction": null
+          }
+        ],
+        "coverage": [
+          {
+            "criterion_id": "c1",
+            "lesson_ids": [
+              "successive-discounts-l1"
+            ],
+            "question_ids": [
+              "successive-discounts-q1",
+              "successive-discounts-q3"
+            ],
+            "rationale": "Konten contoh menjelaskan Menentukan dasar diskon kedua dan membedakannya dari penjumlahan persentase. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          },
+          {
+            "criterion_id": "c2",
+            "lesson_ids": [
+              "successive-discounts-l2"
+            ],
+            "question_ids": [
+              "successive-discounts-q2",
+              "successive-discounts-q4"
+            ],
+            "rationale": "Konten contoh menjelaskan Menghitung harga setelah dua diskon. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          }
+        ]
+      }
+    },
+    {
+      "id": "resolved-finding-does-not-repair",
+      "packet": "successive-discounts.json",
+      "packet_sha256": "dc267fbeaefb27a161db1fb01a31a2789152a98c12331c083d2b2ca928d1e2c9",
+      "complete": true,
+      "edits": [],
+      "refresh_snapshot": false,
+      "expected": {
+        "structural_codes": [],
+        "outcome": "ready"
+      },
+      "review": {
+        "rubric_version": 1,
+        "scope": "practice",
+        "target_ids": [
+          "successive-discounts-practice"
+        ],
+        "sufficient_evidence": true,
+        "missing_evidence": [],
+        "findings": [
+          {
+            "status": "resolved",
+            "scope": "assessment",
+            "target_ids": [
+              "successive-discounts-q1"
+            ],
+            "criterion_ids": [
+              "c1"
+            ],
+            "evidence": "Diskon kedua memakai harga yang sudah turun.",
+            "reason": "Temuan lama telah diperbaiki pada konten sekarang.",
+            "correction": null
+          }
+        ],
+        "coverage": [
+          {
+            "criterion_id": "c1",
+            "lesson_ids": [
+              "successive-discounts-l1"
+            ],
+            "question_ids": [
+              "successive-discounts-q1",
+              "successive-discounts-q3"
+            ],
+            "rationale": "Konten contoh menjelaskan Menentukan dasar diskon kedua dan membedakannya dari penjumlahan persentase. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          },
+          {
+            "criterion_id": "c2",
+            "lesson_ids": [
+              "successive-discounts-l2"
+            ],
+            "question_ids": [
+              "successive-discounts-q2",
+              "successive-discounts-q4"
+            ],
+            "rationale": "Konten contoh menjelaskan Menghitung harga setelah dua diskon. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          }
+        ]
+      }
+    },
+    {
+      "id": "stale-review-content-binding",
+      "packet": "successive-discounts.json",
+      "packet_sha256": "dc267fbeaefb27a161db1fb01a31a2789152a98c12331c083d2b2ca928d1e2c9",
+      "complete": true,
+      "edits": [],
+      "refresh_snapshot": false,
+      "expected": {
+        "structural_codes": [],
+        "outcome": "hold",
+        "contract_codes": [
+          "STALE_REVIEW"
+        ]
+      },
+      "review": {
+        "rubric_version": 1,
+        "scope": "practice",
+        "target_ids": [
+          "successive-discounts-practice"
+        ],
+        "sufficient_evidence": true,
+        "missing_evidence": [],
+        "findings": [],
+        "coverage": [
+          {
+            "criterion_id": "c1",
+            "lesson_ids": [
+              "successive-discounts-l1"
+            ],
+            "question_ids": [
+              "successive-discounts-q1",
+              "successive-discounts-q3"
+            ],
+            "rationale": "Konten contoh menjelaskan Menentukan dasar diskon kedua dan membedakannya dari penjumlahan persentase. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          },
+          {
+            "criterion_id": "c2",
+            "lesson_ids": [
+              "successive-discounts-l2"
+            ],
+            "question_ids": [
+              "successive-discounts-q2",
+              "successive-discounts-q4"
+            ],
+            "rationale": "Konten contoh menjelaskan Menghitung harga setelah dua diskon. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          }
+        ]
+      },
+      "stale_input": true
+    },
+    {
+      "id": "tampered-review-hash",
+      "packet": "successive-discounts.json",
+      "packet_sha256": "dc267fbeaefb27a161db1fb01a31a2789152a98c12331c083d2b2ca928d1e2c9",
+      "complete": true,
+      "edits": [],
+      "refresh_snapshot": false,
+      "expected": {
+        "structural_codes": [],
+        "outcome": "hold",
+        "contract_codes": [
+          "STALE_REVIEW"
+        ]
+      },
+      "review": {
+        "rubric_version": 1,
+        "scope": "practice",
+        "target_ids": [
+          "successive-discounts-practice"
+        ],
+        "sufficient_evidence": true,
+        "missing_evidence": [],
+        "findings": [],
+        "coverage": [
+          {
+            "criterion_id": "c1",
+            "lesson_ids": [
+              "successive-discounts-l1"
+            ],
+            "question_ids": [
+              "successive-discounts-q1",
+              "successive-discounts-q3"
+            ],
+            "rationale": "Konten contoh menjelaskan Menentukan dasar diskon kedua dan membedakannya dari penjumlahan persentase. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          },
+          {
+            "criterion_id": "c2",
+            "lesson_ids": [
+              "successive-discounts-l2"
+            ],
+            "question_ids": [
+              "successive-discounts-q2",
+              "successive-discounts-q4"
+            ],
+            "rationale": "Konten contoh menjelaskan Menghitung harga setelah dua diskon. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          }
+        ]
+      },
+      "tamper_review_hash": true
+    },
+    {
+      "id": "fabricated-review-quote",
+      "packet": "successive-discounts.json",
+      "packet_sha256": "dc267fbeaefb27a161db1fb01a31a2789152a98c12331c083d2b2ca928d1e2c9",
+      "complete": true,
+      "edits": [],
+      "refresh_snapshot": false,
+      "expected": {
+        "structural_codes": [],
+        "outcome": "hold",
+        "contract_codes": [
+          "REVIEW_QUOTE"
+        ]
+      },
+      "review": {
+        "rubric_version": 1,
+        "scope": "practice",
+        "target_ids": [
+          "successive-discounts-practice"
+        ],
+        "sufficient_evidence": true,
+        "missing_evidence": [],
+        "findings": [
+          {
+            "status": "defect",
+            "scope": "assessment",
+            "target_ids": [
+              "successive-discounts-q1"
+            ],
+            "criterion_ids": [
+              "c1"
+            ],
+            "evidence": "kutipan yang tidak pernah ada dalam sumber maupun konten",
+            "reason": "Tuduhan tanpa quote yang dapat diperiksa.",
+            "correction": "Periksa ulang artefak sebenarnya."
+          }
+        ],
+        "coverage": [
+          {
+            "criterion_id": "c1",
+            "lesson_ids": [
+              "successive-discounts-l1"
+            ],
+            "question_ids": [
+              "successive-discounts-q1",
+              "successive-discounts-q3"
+            ],
+            "rationale": "Konten contoh menjelaskan Menentukan dasar diskon kedua dan membedakannya dari penjumlahan persentase. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          },
+          {
+            "criterion_id": "c2",
+            "lesson_ids": [
+              "successive-discounts-l2"
+            ],
+            "question_ids": [
+              "successive-discounts-q2",
+              "successive-discounts-q4"
+            ],
+            "rationale": "Konten contoh menjelaskan Menghitung harga setelah dua diskon. Lihat Lesson dan soal yang dirujuk; label editorial ini memerlukan penilaian isi, bukan sekadar keberadaan ID."
+          }
+        ]
+      }
+    },
+    {
+      "id": "review-missing-coverage",
+      "packet": "successive-discounts.json",
+      "packet_sha256": "dc267fbeaefb27a161db1fb01a31a2789152a98c12331c083d2b2ca928d1e2c9",
+      "complete": true,
+      "edits": [],
+      "refresh_snapshot": false,
+      "expected": {
+        "structural_codes": [],
+        "outcome": "hold",
+        "contract_codes": [
+          "REVIEW_COVERAGE"
+        ]
+      },
+      "review": {
+        "rubric_version": 1,
+        "scope": "practice",
+        "target_ids": [
+          "successive-discounts-practice"
+        ],
+        "sufficient_evidence": true,
+        "missing_evidence": [],
+        "findings": [],
+        "coverage": []
+      }
+    }
+  ]
+}

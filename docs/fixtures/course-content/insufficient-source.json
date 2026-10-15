@@ -1,0 +1,111 @@
+{
+  "standard_version": 1,
+  "blueprint": {
+    "id": "insufficient-source",
+    "revision": 1,
+    "objective": "Menjelaskan perpindahan air melalui membran pada osmosis.",
+    "scope": "Mekanisme osmosis dan arah perpindahan air.",
+    "prerequisites": [],
+    "criteria": [
+      {
+        "id": "c1",
+        "description": "Menjelaskan peran membran pada osmosis."
+      },
+      {
+        "id": "c2",
+        "description": "Menentukan arah perpindahan air dari informasi konsentrasi."
+      }
+    ],
+    "lesson_count_reason": "Mengajarkan mekanisme lalu penerapan; sumber untuk keduanya belum tersedia.",
+    "shared_context": "Sumber awal belum cukup untuk tujuan osmosis.",
+    "lessons": [
+      {
+        "id": "osmosis-l1",
+        "title": "Informasi yang belum tersedia",
+        "contribution": "Mengajarkan mekanisme osmosis.",
+        "criterion_ids": [
+          "c1"
+        ],
+        "evidence_ids": [
+          "e1"
+        ],
+        "depends_on": []
+      },
+      {
+        "id": "osmosis-l2",
+        "title": "Informasi yang belum tersedia",
+        "contribution": "Menentukan arah perpindahan air.",
+        "criterion_ids": [
+          "c2"
+        ],
+        "evidence_ids": [
+          "e1"
+        ],
+        "depends_on": [
+          "osmosis-l1"
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "id": "osmosis-q1",
+        "type": "multiple_choice",
+        "criterion_ids": [
+          "c1"
+        ],
+        "intent": "Memeriksa peran membran.",
+        "demand": "relationship"
+      },
+      {
+        "id": "osmosis-q2",
+        "type": "short_answer",
+        "criterion_ids": [
+          "c2"
+        ],
+        "intent": "Menentukan arah perpindahan air.",
+        "demand": "application"
+      },
+      {
+        "id": "osmosis-q3",
+        "type": "true_false",
+        "criterion_ids": [
+          "c2"
+        ],
+        "intent": "Menentukan arah perpindahan air.",
+        "demand": "recall"
+      },
+      {
+        "id": "osmosis-q4",
+        "type": "word_bank",
+        "criterion_ids": [
+          "c1"
+        ],
+        "intent": "Memeriksa peran membran.",
+        "demand": "application"
+      }
+    ]
+  },
+  "evidence": [
+    {
+      "id": "e1",
+      "source_id": "source-insufficient",
+      "source_revision": 1,
+      "locator": "Sumber sintetis editorial lengkap",
+      "excerpt": "Daftar istilah pada lembar awal: sel, inti sel, membran."
+    }
+  ],
+  "lessons": [
+    {
+      "id": "osmosis-l1",
+      "revision": 1,
+      "draft": {
+        "title": "Informasi osmosis belum memadai",
+        "body": "Sumber awal hanya menyebut sel, inti sel, dan membran. Sumber tersebut belum menerangkan mekanisme osmosis atau kondisi yang menentukan arah perpindahan air.",
+        "evidence_ids": [
+          "e1"
+        ]
+      }
+    }
+  ],
+  "practice": null
+}

@@ -1,0 +1,240 @@
+{
+  "standard_version": 1,
+  "blueprint": {
+    "id": "successive-discounts",
+    "revision": 1,
+    "objective": "Menghitung harga akhir diskon berturut-turut dan menjelaskan dasar perhitungannya.",
+    "scope": "Dua diskon atas harga tersisa; tanpa pajak, ongkir, atau pembulatan.",
+    "prerequisites": [],
+    "criteria": [
+      {
+        "id": "c1",
+        "description": "Menentukan dasar diskon kedua dan membedakannya dari penjumlahan persentase."
+      },
+      {
+        "id": "c2",
+        "description": "Menghitung harga setelah dua diskon."
+      }
+    ],
+    "lesson_count_reason": "Dua kontribusi: membangun aturan lalu menerapkan dan memeriksa hasil.",
+    "shared_context": "Dua diskon atas harga tersisa; tanpa pajak, ongkir, atau pembulatan.",
+    "lessons": [
+      {
+        "id": "successive-discounts-l1",
+        "title": "Dasar diskon kedua",
+        "contribution": "Mengapa persentase kedua memakai harga tersisa.",
+        "criterion_ids": [
+          "c1"
+        ],
+        "evidence_ids": [
+          "e1"
+        ],
+        "depends_on": []
+      },
+      {
+        "id": "successive-discounts-l2",
+        "title": "Menghitung harga akhir",
+        "contribution": "Contoh lengkap dan pemeriksaan hasil dengan faktor sisa.",
+        "criterion_ids": [
+          "c2"
+        ],
+        "evidence_ids": [
+          "e1"
+        ],
+        "depends_on": [
+          "successive-discounts-l1"
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "id": "successive-discounts-q1",
+        "type": "multiple_choice",
+        "criterion_ids": [
+          "c1"
+        ],
+        "intent": "Mengapa diskon 20% lalu 10% tidak sama dengan diskon 30%?",
+        "demand": "relationship"
+      },
+      {
+        "id": "successive-discounts-q2",
+        "type": "short_answer",
+        "criterion_ids": [
+          "c2"
+        ],
+        "intent": "Harga awal 100 ribu rupiah mendapat diskon 20% lalu 10%. Berapa harga akhir dalam ribu rupiah?",
+        "demand": "application"
+      },
+      {
+        "id": "successive-discounts-q3",
+        "type": "word_bank",
+        "criterion_ids": [
+          "c1"
+        ],
+        "intent": "Pilih satu token. Setiap token boleh dipakai paling banyak sekali.",
+        "demand": "recall"
+      },
+      {
+        "id": "successive-discounts-q4",
+        "type": "true_false",
+        "criterion_ids": [
+          "c2"
+        ],
+        "intent": "Harga akhir 72 ribu dari harga awal 100 ribu berarti total potongan 30%.",
+        "demand": "application"
+      }
+    ]
+  },
+  "evidence": [
+    {
+      "id": "e1",
+      "source_id": "source-successive-discounts",
+      "source_revision": 1,
+      "locator": "Sumber sintetis editorial lengkap",
+      "excerpt": "Dalam contoh toko ini, diskon diterapkan berurutan pada harga yang tersisa. Diskon 20% menyisakan 80% harga. Jika harga awal 100 ribu rupiah, harga setelah diskon pertama 80 ribu rupiah. Diskon kedua 10% dihitung dari 80 ribu rupiah, sehingga potongannya 8 ribu rupiah dan harga akhirnya 72 ribu rupiah. Faktor sisa harga dikalikan: 0,8 × 0,9 = 0,72. Jadi diskon gabungannya 28%, bukan 30%. Ketentuan ini tidak mencakup pajak dan biaya tambahan."
+    }
+  ],
+  "lessons": [
+    {
+      "id": "successive-discounts-l1",
+      "revision": 1,
+      "draft": {
+        "title": "Dasar diskon kedua",
+        "body": "## Harga yang menjadi dasar berubah\nDiskon 20% berarti pembeli masih membayar 80% dari harga awal. Jika harga awal 100 ribu rupiah, sisa harganya 80 ribu rupiah. Saat toko kemudian memberi diskon 10%, angka 10% itu bekerja pada **80 ribu**, bukan pada 100 ribu.\n\nInilah alasan dua persentase tidak langsung dijumlahkan. Menjumlahkan 20% dan 10% menganggap keduanya memakai dasar yang sama. Dalam aturan toko ini, dasar kedua sudah lebih kecil. Sebelum menghitung, tanyakan: diskon ini diterapkan pada harga awal atau pada harga yang sudah dipotong? Ketentuan toko menentukan jawabannya; contoh ini secara khusus memakai diskon berurutan.",
+        "evidence_ids": [
+          "e1"
+        ]
+      }
+    },
+    {
+      "id": "successive-discounts-l2",
+      "revision": 1,
+      "draft": {
+        "title": "Menghitung harga akhir",
+        "body": "## Ikuti uang yang masih harus dibayar\nHarga awal 100 ribu rupiah. Potongan pertama adalah 20 ribu, sehingga tersisa 80 ribu. Potongan kedua 10% dari 80 ribu, yaitu 8 ribu. Harga akhirnya $80-8=72$ ribu rupiah.\n\nCara lain menghitung hasil yang sama adalah mengalikan faktor sisa: $100\\times0{,}8\\times0{,}9=72$. Faktor 0,72 berarti pembeli membayar 72% harga awal. Dengan demikian, total potongannya 28%. Hasil 70 ribu menunjukkan persentase dijumlahkan tanpa memperhatikan perubahan dasar. Perhitungan ini belum memasukkan pajak atau biaya tambahan, sehingga angka akhir transaksi nyata dapat berbeda bila biaya itu ada.",
+        "evidence_ids": [
+          "e1"
+        ]
+      }
+    }
+  ],
+  "practice": {
+    "id": "successive-discounts-practice",
+    "revision": 1,
+    "lesson_revisions": [
+      {
+        "id": "successive-discounts-l1",
+        "revision": 1,
+        "content_hash": "436eb3f8bec6a11fcc113bf29600337ad35732feb28ef862a1ca8dfe0e30fc5a"
+      },
+      {
+        "id": "successive-discounts-l2",
+        "revision": 1,
+        "content_hash": "5253a52e0c9a5b65fa40ce81f0756aba82ebe7ae978a64a1cf92ae1ee900367d"
+      }
+    ],
+    "draft": {
+      "questions": [
+        {
+          "id": "successive-discounts-q1",
+          "type": "multiple_choice",
+          "criterion_ids": [
+            "c1"
+          ],
+          "explanation": "Dasar diskon kedua adalah harga tersisa.",
+          "prompt": "Mengapa diskon 20% lalu 10% tidak sama dengan diskon 30%?",
+          "options": [
+            {
+              "id": "o1",
+              "text": "Diskon kedua memakai harga yang sudah turun."
+            },
+            {
+              "id": "o2",
+              "text": "Diskon kedua selalu diabaikan."
+            },
+            {
+              "id": "o3",
+              "text": "Kedua diskon dihitung dari harga awal."
+            }
+          ],
+          "correct_option_id": "o1",
+          "distractor_reasons": [
+            {
+              "option_id": "o2",
+              "reason": "Mengabaikan langkah kedua."
+            },
+            {
+              "option_id": "o3",
+              "reason": "Menganggap dasar persentase tetap."
+            }
+          ]
+        },
+        {
+          "id": "successive-discounts-q2",
+          "type": "short_answer",
+          "criterion_ids": [
+            "c2"
+          ],
+          "explanation": "100 × 0,8 × 0,9 = 72 ribu rupiah.",
+          "prompt": "Harga awal 100 ribu rupiah mendapat diskon 20% lalu 10%. Berapa harga akhir dalam ribu rupiah?",
+          "key": {
+            "canonical_answer": "72",
+            "accepted_variants": [
+              "72,0"
+            ],
+            "numeric": {
+              "value": 72,
+              "unit": null,
+              "tolerance": 0
+            }
+          }
+        },
+        {
+          "id": "successive-discounts-q3",
+          "type": "word_bank",
+          "criterion_ids": [
+            "c1"
+          ],
+          "explanation": "Dasar tiap langkah adalah harga tersisa.",
+          "prompt": "Pilih satu token. Setiap token boleh dipakai paling banyak sekali.",
+          "blanks": [
+            {
+              "id": "b1",
+              "text": "Diskon berikutnya dihitung dari harga {{blank}}."
+            }
+          ],
+          "tokens": [
+            {
+              "id": "t1",
+              "text": "tersisa"
+            },
+            {
+              "id": "t2",
+              "text": "awal"
+            },
+            {
+              "id": "t3",
+              "text": "maksimum"
+            }
+          ],
+          "answers": [
+            {
+              "blank_id": "b1",
+              "token_id": "t1"
+            }
+          ]
+        },
+        {
+          "id": "successive-discounts-q4",
+          "type": "true_false",
+          "criterion_ids": [
+            "c2"
+          ],
+          "explanation": "Potongannya 28 ribu atau 28%, bukan 30%.",
+          "statement": "Harga akhir 72 ribu dari harga awal 100 ribu berarti total potongan 30%.",
+          "correct_answer": false
+        }
+      ]
+    }
+  }
+}

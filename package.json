@@ -1,0 +1,23 @@
+{
+  "name": "ngertiin",
+  "private": true,
+  "packageManager": "bun@1.3.10",
+  "workspaces": ["apps/web"],
+  "scripts": {
+    "dev": "python3 scripts/dev.py",
+    "dev:web": "bun --env-file=.env --filter @ngertiin/web dev",
+    "dev:api": "uv run --project apps/backend uvicorn ngertiin.api.app:app --reload --host 127.0.0.1 --port 8000",
+    "dev:worker": "uv run --project apps/backend python -m ngertiin.worker",
+    "build": "bun --filter @ngertiin/web build",
+    "typecheck": "bun --filter @ngertiin/web typecheck",
+    "lint": "biome check apps/web",
+    "format": "biome check --write apps/web",
+    "check": "python3 scripts/check.py"
+  },
+  "engines": {
+    "node": ">=22.12"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.15"
+  }
+}

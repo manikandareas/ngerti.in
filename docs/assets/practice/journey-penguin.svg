@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 250" aria-hidden="true" >
+
+      <ellipse
+        cx="121"
+        cy="233"
+        rx="67"
+        ry="8"
+        class="result-penguin-shadow"
+        fill="#46766d"
+        opacity="0.18"
+      />
+      <g class="result-penguin-body">
+        <path d="M78 209c-15 2-29 13-25 20 4 8 39 5 49-2l-3-17Z" fill="#efb078" />
+        <path d="M143 209c15-1 36 8 34 17-2 9-34 9-47 1l2-17Z" fill="#efb078" />
+        <path d="M74 111c-17 8-32 35-30 53 1 10 9 13 16 5l27-32Z" fill="#348c83" />
+        <path
+          d="M166 119c21-7 29-24 34-42 3-12 14-12 16-1 5 28-11 61-38 70Z"
+          class="result-penguin-wing"
+          fill="#348c83"
+        />
+        <path
+          d="M66 102c0-45 23-68 55-68 35 0 57 25 57 68l10 63c7 41-19 61-66 61s-70-22-63-61Z"
+          fill="#65b8a5"
+        />
+        <path
+          d="M112 38c-9-14-5-23 2-24 7-1 13 11 13 20 6-11 15-14 19-9 5 6-3 14-13 19Z"
+          fill="#9bd3b9"
+        />
+        <path
+          d="M120 88c-20-28-44-10-44 15 0 17 5 25 1 42-10 43 5 65 45 65s56-22 44-65c-5-17 0-25 0-42 0-25-26-43-46-15Z"
+          fill="#fff5df"
+        />
+        <g class="result-penguin-eyes">
+          <ellipse cx="99" cy="103" rx="5" ry="7" fill="#243f3c" />
+          <ellipse cx="143" cy="103" rx="5" ry="7" fill="#243f3c" />
+          <circle cx="101" cy="101" r="1.5" fill="#fff5df" />
+          <circle cx="145" cy="101" r="1.5" fill="#fff5df" />
+        </g>
+        <g
+          class="result-penguin-happy-eyes"
+          fill="none"
+          stroke="#243f3c"
+          stroke-width="3.5"
+          stroke-linecap="round"
+        >
+          <path d="M94 104q5-8 10 0M138 104q5-8 10 0" />
+        </g>
+        <g class="result-penguin-cheeks">
+          <ellipse cx="85" cy="119" rx="9" ry="5" fill="#eaa18a" />
+          <ellipse cx="157" cy="119" rx="9" ry="5" fill="#eaa18a" />
+        </g>
+        <path d="M109 116q12-8 24 0-3 15-12 15t-12-15" fill="#efb078" />
+        <path
+          class="result-penguin-smile"
+          d="M115 123q6 7 12 0"
+          fill="none"
+          stroke="#995f43"
+          stroke-width="2.5"
+          stroke-linecap="round"
+        />
+      </g>
+      <g class="result-penguin-sparkle" stroke="#efb078" stroke-width="4" stroke-linecap="round">
+        <path d="M29 66v16m-8-8h16" />
+      </g>
+      <g
+        class="result-penguin-sparkle result-penguin-sparkle-late"
+        stroke="#eaa18a"
+        stroke-width="4"
+        stroke-linecap="round"
+      >
+        <path d="M209 31v12m-6-6h12" />
+      </g>
+      <circle class="result-penguin-confetti" cx="28" cy="161" r="5" fill="#65b8a5" />
+      <circle
+        class="result-penguin-confetti result-penguin-sparkle-late"
+        cx="217"
+        cy="153"
+        r="4"
+        fill="#9bd3b9"
+      />
+    </svg>

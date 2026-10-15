@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 260 300" aria-hidden="true">
+      <ellipse
+        class="streak-goat-shadow"
+        cx="130"
+        cy="284"
+        rx="48"
+        ry="7"
+        fill="#302B27"
+        opacity=".08"
+      />
+      <ellipse
+        class="streak-goat-ring"
+        cx="130"
+        cy="282"
+        rx="42"
+        ry="7"
+        fill="none"
+        stroke="#f3a536"
+        stroke-width="3"
+      />
+      <g class="streak-goat-embers" fill="#f3a536">
+        <path d="M30 195q-9-12 1-23 9 14-1 23ZM225 183q-8-11 2-23 7 14-2 23Z" />
+        <circle cx="52" cy="233" r="3" />
+        <circle cx="211" cy="221" r="4" />
+        <path d="m38 129 3-7 3 7-3 7ZM218 114l3-7 3 7-3 7Z" />
+      </g>
+      <g class="streak-goat-float">
+        <g fill="#fff0d8" stroke="#66503b" stroke-width="13" stroke-linecap="round">
+          <path d="m104 248-9 16" />
+          <path d="m153 248 9 16" />
+        </g>
+        <path
+          fill="#f3a536"
+          d="M69 123C97 93 135 78 151 35c8-21 13-25 19-12 13 30-2 64 15 93 13 23 41 44 40 79-1 48-42 70-94 70-54 0-94-28-94-75 0-29 14-47 32-67Z"
+        />
+        <path
+          class="streak-goat-flame"
+          fill="#ffc34f"
+          d="M131 96c16-18 26-38 30-58 6 25-5 40 0 61 2 9 7 16 12 22-19 2-34-9-42-25Z"
+        />
+        <path
+          fill="#ffdb65"
+          d="M130 162c-31 0-57 35-57 60 0 26 25 39 57 39s57-13 57-39c0-25-26-60-57-60Z"
+        />
+        <path
+          fill="#ffe58b"
+          d="M131 186c-11 17-36 27-36 46 0 18 16 27 35 27 24 0 39-13 36-29-3-15-15-20-17-38-6 9-10 15-14 17 2-9 1-16-4-23Z"
+        />
+        <g class="streak-goat-ear-left">
+          <path fill="#e8932c" d="M90 130c-18-5-28 6-51 7 0 22 26 29 51 12Z" />
+          <path fill="#fff0d8" d="M80 137c-10 0-17 7-30 7 8 9 22 9 30-7Z" />
+        </g>
+        <g class="streak-goat-ear-right">
+          <path fill="#e8932c" d="M170 130c18-5 28 6 51 7 0 22-26 29-51 12Z" />
+          <path fill="#fff0d8" d="M180 137c10 0 17 7 30 7-8 9-22 9-30-7Z" />
+        </g>
+        <g fill="#776044">
+          <path d="M101 122C78 120 72 101 80 96c10-6 27 9 28 25Z" />
+          <path d="M159 122c23-2 29-21 21-26-10-6-27 9-28 25Z" />
+        </g>
+        <g stroke="#594632" stroke-width="4" fill="none">
+          <path d="m82 104 16 0M87 113l16-2M178 104h-16m11 9-16-2" />
+        </g>
+        <path
+          fill="#fff0d8"
+          d="M87 147c0-17 14-25 25-21 12 5 24 5 36 0 14-4 25 6 25 21v18c0 28-18 43-43 43s-43-15-43-43Z"
+        />
+        <path
+          fill="#f3a536"
+          d="M86 133c9-15 25-15 44-14 18-1 34-1 44 14-6 10-15 12-23 5-6 11-16 10-21 3-8 8-18 6-22-3-9 7-16 5-22-5Z"
+        />
+        <g class="streak-goat-eyes">
+          <ellipse cx="109" cy="155" rx="10" ry="12" fill="#fffdf7" />
+          <ellipse cx="151" cy="155" rx="10" ry="12" fill="#fffdf7" />
+          <circle cx="111" cy="155" r="3.5" fill="#483a2b" />
+          <circle cx="149" cy="155" r="3.5" fill="#483a2b" />
+        </g>
+        <g fill="#edc9ab">
+          <ellipse cx="98" cy="172" rx="8" ry="4" />
+          <ellipse cx="162" cy="172" rx="8" ry="4" />
+        </g>
+        <path d="M123 171h14q0 9-7 9t-7-9" fill="#59412e" />
+        <path d="M130 179v6" stroke="#59412e" stroke-width="3" />
+        <path d="M117 187q13-5 26 0v7c0 17-26 17-26 0Z" fill="#874c39" />
+        <path d="M120 199q10-9 20 0c-5 8-15 8-20 0" fill="#ee9399" />
+        <path
+          class="streak-goat-arm-left"
+          d="M67 211c-22 7-25-17-24-35"
+          fill="none"
+          stroke="#fff0d8"
+          stroke-width="15"
+          stroke-linecap="round"
+        />
+        <path
+          class="streak-goat-arm-right"
+          d="M193 211c22 7 25-17 24-35"
+          fill="none"
+          stroke="#fff0d8"
+          stroke-width="15"
+          stroke-linecap="round"
+        />
+      </g>
+    </svg>

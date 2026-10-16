@@ -2,17 +2,16 @@
 
 Sumber: [Notion](https://app.notion.com/p/f1b4f3a60ca341dfac73288b51726162?v=3f8abdd6187381f4ad67000cd142e454) · Snapshot: 2026-10-13 11:37:14 UTC
 
-Status tiket #01–#03 diselaraskan dengan Notion pada **15 Oktober 2026**.
+Status tiket #01–#03 diselaraskan dengan Notion pada **15 Oktober 2026**. Status #04 diperbarui ke **Done** melalui readback Notion pada **16 Oktober 2026**.
 
 Group by: Status. Urutan kartu mengikuti Urutan ascending.
 
 | Backlog | Done |
 | --- | --- |
-| [Chat personal: thread dan streaming resumable](../tasks/04-chat-personal-thread-dan-streaming-resumable.md) · P0 · Agent | [Walkthrough UX: signup sampai Course pertama](../tasks/01-walkthrough-ux-signup-sampai-course-pertama.md) · P0 · Course |
-| [Kuota Course, chat dan materi per periode](../tasks/05-kuota-course-chat-dan-materi-per-periode.md) · P0 · Billing | [Fondasi production: workspace, auth dan data](../tasks/02-fondasi-production-workspace-auth-dan-data.md) · P0 · Fondasi |
-| [Ingestion materi reusable dari file dan web](../tasks/06-ingestion-materi-reusable-dari-file-dan-web.md) · P0 · Course | [Port standar Lesson dan soal dari prototipe](../tasks/03-port-standar-lesson-dan-soal-dari-prototipe.md) · P0 · Course |
-| [Pencarian sumber dan pemilihan melalui HITL](../tasks/07-pencarian-sumber-dan-pemilihan-melalui-hitl.md) · P0 · Course | — |
-| [Outline Course: perencanaan, revisi dan approval](../tasks/08-outline-course-perencanaan-revisi-dan-approval.md) · P0 · Course | — |
+| [Kuota Course, chat dan materi per periode](../tasks/05-kuota-course-chat-dan-materi-per-periode.md) · P0 · Billing | [Walkthrough UX: signup sampai Course pertama](../tasks/01-walkthrough-ux-signup-sampai-course-pertama.md) · P0 · Course |
+| [Ingestion materi reusable dari file dan web](../tasks/06-ingestion-materi-reusable-dari-file-dan-web.md) · P0 · Course | [Fondasi production: workspace, auth dan data](../tasks/02-fondasi-production-workspace-auth-dan-data.md) · P0 · Fondasi |
+| [Pencarian sumber dan pemilihan melalui HITL](../tasks/07-pencarian-sumber-dan-pemilihan-melalui-hitl.md) · P0 · Course | [Port standar Lesson dan soal dari prototipe](../tasks/03-port-standar-lesson-dan-soal-dari-prototipe.md) · P0 · Course |
+| [Outline Course: perencanaan, revisi dan approval](../tasks/08-outline-course-perencanaan-revisi-dan-approval.md) · P0 · Course | [Chat personal: thread dan streaming resumable](../tasks/04-chat-personal-thread-dan-streaming-resumable.md) · P0 · Agent |
 | [Generation: node pertama lalu background](../tasks/09-generation-node-pertama-lalu-background.md) · P0 · Course | — |
 | [Onboarding dan tour Course pertama](../tasks/10-onboarding-dan-tour-course-pertama.md) · P0 · Course | — |
 | [Course player dan panel chat kontekstual](../tasks/11-course-player-dan-panel-chat-kontekstual.md) · P0 · Belajar | — |

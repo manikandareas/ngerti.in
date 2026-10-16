@@ -53,3 +53,5 @@ Perubahan keputusan dan status dicatat di Notion lalu disalin kembali ke repo ag
 [Walkthrough UX di pen.dev](walkthrough-ux.pen) — file desain untuk tiket #01 yang sudah **Done**.
 
 Standar konten #003 sudah **Done** pada 15 Oktober 2026. [Kontrak konten](engineering/course-content-standard.md), [desain engine multi-worker](engineering/course-generation-design.md), dan [bukti penerimaan](engineering/content-03-manual-acceptance.md) tersedia. User Flow, Arsitektur, serta tiket #009/#011 diselaraskan dengan keputusan Lesson dapat dibaca sebelum Practice siap.
+
+Chat #04 sudah **Done** pada **16 Oktober 2026**, berdasarkan readback Notion. [Implementasi dan penerimaan Chat](engineering/chat-04-implementation.md) serta [cleanup React](engineering/react-cleanup-2026-10-16.md) tersedia; status tiket, kanban, dan manifest lokal sudah diselaraskan.

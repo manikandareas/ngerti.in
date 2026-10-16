@@ -16,7 +16,7 @@
       },
       "notion_content_sha256": "639053c4ff3c0e91adb47fc37c3f3fd0d0a640d294840861364d95651f94be0d",
       "local_content_sha256": "14e607b2e06a54de735f987384f276b6ec7d9f858770fa87d5ec29fe17e30b57",
-      "local_file_sha256": "b8271f06225277bcb3e49ca8f9701d0e1e5e02b7ca43c0afba0779d9bcda0a7a"
+      "local_file_sha256": "467c571406e259365fb2142fe8fc394fe1af9b1830490bc79f9bcb10ebc406b7"
     },
     {
       "id": "3f8abdd6-1873-8122-878d-de3cb0661765",
@@ -266,21 +266,21 @@
       "url": "https://app.notion.com/p/3f8abdd61873816d8b15ed7b7b1b82a9",
       "file": "backlog/tasks/04-chat-personal-thread-dan-streaming-resumable.md",
       "kind": "task",
-      "page_last_edited_at": "2026-10-13T11:02:04.135Z",
+      "page_last_edited_at": "2026-10-16T11:17:28.101Z",
       "properties": {
         "Area": "Agent",
         "Depends on": [
           "https://app.notion.com/p/3f8abdd61873817d9529f43e39a5979f"
         ],
         "Prioritas": "P0",
-        "Status": "Backlog",
+        "Status": "Done",
         "Tugas": "Chat personal: thread dan streaming resumable",
         "Urutan": 4,
         "url": "https://app.notion.com/p/3f8abdd61873816d8b15ed7b7b1b82a9"
       },
-      "notion_content_sha256": "4a9ce831cca4c1a7d0a533cfb88a3d648a0c5a5a790f65cedbd281c8f9792364",
-      "local_content_sha256": "42b80c42306f203bdcbf45d3ad8f2fb29fa9e6029564f8e40c9918dea7f19e5f",
-      "local_file_sha256": "dda01cecce837d509f8285dabcf5ce0ab923f1b7a58341dc5b12cb1f703c683c"
+      "notion_content_sha256": "41b6b2b83703a43ed1f22331fac6654d517452e789eec78274910b411d06c8dc",
+      "local_content_sha256": "b724933ed00d6360c7e24bfe77ab6fed649f68c53abed6f58b36b40c1c5b750c",
+      "local_file_sha256": "c0a52c09facd36cfc3cc826ff13dab99d3aebcf9363245658451cbfae58438be"
     },
     {
       "id": "3f8abdd6-1873-817b-b0e3-c16aef505ed4",
@@ -867,7 +867,7 @@
           "3f8abdd6-1873-81fd-a17d-d1af24cec8fb",
           "3f8abdd6-1873-81ac-90b6-df75b7e1a157"
         ],
-        "local_file_sha256": "ecfb45b53110a90970e5db82ab10d4f610d6110c284c67f95b5d86355ad96312"
+        "local_file_sha256": "67ad8c6c3d340e97ae204c3e35b1435a68325053decdc9b4116858fbdd6db59f"
       },
       {
         "id": "view://3f8abdd6-1873-81f4-ad67-000cd142e454",
@@ -953,7 +953,7 @@
           "3f8abdd6-1873-81fd-a17d-d1af24cec8fb",
           "3f8abdd6-1873-81ac-90b6-df75b7e1a157"
         ],
-        "local_file_sha256": "ee2235cb6a8c05a5217d2784b2eb3d909de2ea832c1fdf8295aeafcbc75c2d3f"
+        "local_file_sha256": "5aa0e7c6c03e6d96681dd4b2b88f35a97466048c972ac096f7bb7944e59def86"
       },
       {
         "id": "view://3f8abdd6-1873-81dd-9154-000c928cf26c",
@@ -993,7 +993,7 @@
           "type": "table"
         },
         "page_ids": [],
-        "local_file_sha256": "809575dc8e1de083ce402691e4cb1ad5620a93714be4f83423a757e943054d4a"
+        "local_file_sha256": "c8031d9b712b71d2c990b82a6372e588170322543a623682bc80d38cc16e076c"
       },
       {
         "id": "view://3f8abdd6-1873-804b-8bb1-000c1dd5af9b",
@@ -1045,7 +1045,7 @@
           "3f8abdd6-1873-81ea-a5fc-cda9bf6f8fb0",
           "3f8abdd6-1873-81fd-a17d-d1af24cec8fb"
         ],
-        "local_file_sha256": "b16bb230cab37ba4a35d39d5dedf068a4ce0df592dd8dc6166a470bf41b207fd"
+        "local_file_sha256": "9c64147f5fd8c7076d36208a374a2de1a26f57e487098e230eea20ba74d749ac"
       }
     ]
   },
@@ -1150,6 +1150,16 @@
       "source": "Implementation #003; exact Notion readback verified and mirrored locally",
       "summary": "Align approved progressive publication and generation handoff",
       "notion_content_sha256": "46a81ef2e38c1a017eb056b0d31222f258a2fa275343f8818b3dbf0651884b05"
+    },
+    {
+      "at": "2026-10-16T11:17:28.101Z",
+      "page_id": "3f8abdd6-1873-816d-8b15-ed7b7b1b82a9",
+      "properties": {
+        "Status": "Done"
+      },
+      "source": "User-requested React cleanup and progress update; exact Notion content/status readback verified and mirrored locally",
+      "summary": "Complete Chat #04, record runtime evidence and React cleanup acceptance; move card to Done in kanban snapshots",
+      "notion_content_sha256": "41b6b2b83703a43ed1f22331fac6654d517452e789eec78274910b411d06c8dc"
     }
   ]
 }

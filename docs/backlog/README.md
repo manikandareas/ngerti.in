@@ -24,4 +24,6 @@ Pada **15 Oktober 2026**, tiket #01 dan #02 sudah **Done**. Fondasi #02 diterima
 
 Setiap tiket memiliki salinan isi lengkap pada `tasks/`, termasuk acceptance criteria dan references ke spesifikasi. Konfigurasi native view serta identitas relation tersimpan di [manifest](../notion-manifest.json).
 
-Tiket #003 sudah **Done** pada 15 Oktober 2026. [Bukti penerimaan standar konten](../engineering/content-03-manual-acceptance.md) mencatat fixture, schema dan probe provider. View Siap dikerjakan saat ini kosong; status #004/#005 tetap Backlog.
+Tiket #003 sudah **Done** pada 15 Oktober 2026. [Bukti penerimaan standar konten](../engineering/content-03-manual-acceptance.md) mencatat fixture, schema dan probe provider. View Siap dikerjakan saat ini kosong; status #005 tetap Backlog.
+
+Tiket #004 sudah **Done** pada **16 Oktober 2026**. Penerimaan chat dan cleanup React tercatat pada [implementasi #04](../engineering/chat-04-implementation.md) serta [bukti cleanup](../engineering/react-cleanup-2026-10-16.md). Status dan isi Notion sudah dibaca kembali; kartu dipindahkan ke Done pada snapshot kanban lokal.

@@ -4,7 +4,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Literal
 
-from pydantic import SecretStr, model_validator
+from pydantic import Field, SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 ROOT = Path(__file__).resolve().parents[4]
@@ -26,6 +26,12 @@ class Settings(BaseSettings):
     s3_access_key_id: SecretStr
     s3_secret_access_key: SecretStr
     s3_addressing_style: Literal["path", "virtual", "auto"] = "path"
+    openai_api_key: SecretStr = SecretStr("")
+    openai_model: str = "gpt-6-luna"
+    openai_base_url: str = "https://api.openai.com/v1"
+    chat_max_output_tokens: int = Field(default=3000, ge=256, le=16000)
+    chat_run_timeout_seconds: int = Field(default=180, ge=15, le=600)
+    chat_max_model_calls: int = Field(default=6, ge=1, le=12)
 
     @model_validator(mode="after")
     def validate_production(self) -> "Settings":

@@ -1,6 +1,7 @@
 """HTTP startup is independent from migrations and worker lifecycle."""
 
 import time
+from contextlib import asynccontextmanager
 from typing import Annotated
 from uuid import uuid4
 
@@ -14,18 +15,33 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from ngertiin.accounts.auth import current_account
 from ngertiin.api.diagnostics import router as diagnostic_router
+from ngertiin.chat.api import router as chat_router
+from ngertiin.chat.db import close_pool
 from ngertiin.config import get_settings
 from ngertiin.health import system_status
 from ngertiin.models import Account
 
 settings = get_settings()
 logger = structlog.get_logger()
-app = FastAPI(title="Ngertiin API", docs_url="/docs" if settings.diagnostics_enabled else None)
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    yield
+    await close_pool()
+
+
+app = FastAPI(
+    title="Ngertiin API",
+    docs_url="/docs" if settings.diagnostics_enabled else None,
+    lifespan=lifespan,
+)
+app.include_router(chat_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.allowed_origins,
     allow_methods=["GET", "POST", "DELETE"],
-    allow_headers=["Authorization", "Content-Type"],
+    allow_headers=["Authorization", "Content-Type", "Last-Event-ID"],
     expose_headers=["X-Request-ID"],
 )
 

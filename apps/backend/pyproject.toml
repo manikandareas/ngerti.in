@@ -4,9 +4,23 @@ version = "0.1.0"
 description = "Ngertiin API and durable workers"
 requires-python = ">=3.12,<3.14"
 dependencies = [
-  "fastapi", "uvicorn[standard]", "sqlmodel", "alembic", "psycopg[binary,pool]",
-  "pgvector", "procrastinate", "langchain", "langgraph", "langgraph-checkpoint-postgres",
-  "clerk-backend-api", "pydantic", "pydantic-settings", "boto3", "structlog", "python-multipart"
+  "fastapi",
+  "uvicorn[standard]",
+  "sqlmodel",
+  "alembic",
+  "psycopg[binary,pool]",
+  "pgvector",
+  "procrastinate",
+  "langchain",
+  "langgraph",
+  "langgraph-checkpoint-postgres",
+  "clerk-backend-api",
+  "pydantic",
+  "pydantic-settings",
+  "boto3",
+  "structlog",
+  "python-multipart",
+  "langchain-openai>=1,<2",
 ]
 
 [dependency-groups]

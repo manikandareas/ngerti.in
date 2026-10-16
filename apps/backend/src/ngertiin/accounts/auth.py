@@ -19,7 +19,9 @@ def clerk_client() -> Clerk:
     return Clerk(bearer_auth=get_settings().clerk_secret_key.get_secret_value())
 
 
-def current_account(request: Request, session: Annotated[Session, Depends(get_session)]) -> Account:
+def current_account(
+    request: Request, session: Annotated[Session, Depends(get_session, scope="function")]
+) -> Account:
     settings = get_settings()
     if not settings.clerk_secret_key.get_secret_value():
         raise HTTPException(503, "Clerk belum dikonfigurasi pada server.")

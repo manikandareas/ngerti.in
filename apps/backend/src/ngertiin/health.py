@@ -41,7 +41,7 @@ def system_status() -> dict:
             ).fetchone()
             if exists and exists[0]:
                 migration = conn.execute("SELECT version_num FROM alembic_version").fetchone()
-                if migration and migration[0] == "0001_foundation":
+                if migration and migration[0] == "0003_chat_order":
                     components["migrations"] = {
                         "status": "ready",
                         "detail": "Migrasi aplikasi terbaru.",

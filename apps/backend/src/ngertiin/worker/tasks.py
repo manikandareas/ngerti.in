@@ -29,14 +29,18 @@ async def diagnostic_job(run_id: str) -> None:
     name="foundation.recover_stalled", queue="maintenance", queueing_lock="recover_stalled"
 )
 async def recover_stalled_jobs(timestamp: int | None = None) -> None:
-    jobs = await queue_app.job_manager.get_stalled_jobs(task_name="foundation.diagnostic")
-    for job in jobs:
-        if job.attempts < 3:
-            await queue_app.job_manager.retry_job(job)
-            logger.warning("job.recovered", job_id=job.id)
-        else:
-            await queue_app.job_manager.finish_job(job, status=Status.FAILED, delete_job=False)
-            logger.error("job.recovery_exhausted", job_id=job.id)
+    for name in ("foundation.diagnostic", "chat.turn"):
+        jobs = await queue_app.job_manager.get_stalled_jobs(task_name=name)
+        for job in jobs:
+            if job.attempts < 3:
+                await queue_app.job_manager.retry_job(job)
+                logger.warning("job.recovered", job_id=job.id)
+            else:
+                await queue_app.job_manager.finish_job(job, status=Status.FAILED, delete_job=False)
+                logger.error("job.recovery_exhausted", job_id=job.id)
+    from ngertiin.chat.recovery import reconcile_deliveries
+
+    await reconcile_deliveries()
 
 
 __all__ = ["diagnostic_job", "recover_stalled_jobs"]

@@ -1,0 +1,143 @@
+{
+  "pending_approval": {
+    "id": "39c1027b-c5ed-5594-9397-91dcc75fcb08",
+    "run_id": "2db61b79-1763-4554-b8e4-8f20405bbebf",
+    "thread_id": "37d57895-6cef-58dd-ab50-4df50433ecd3",
+    "run_status": "waiting_approval",
+    "delivery_status": "succeeded"
+  },
+  "natural_language_course_same_hitl": true,
+  "tool_order": [
+    "read_agent_profile",
+    "read_recent_messages",
+    "request_course"
+  ],
+  "approval_revision_409": true,
+  "foreign_approval_404": true,
+  "duplicate_approved_decision": {
+    "status": "approved"
+  },
+  "approved_side_effects": 1,
+  "rejected": {
+    "status": "rejected",
+    "side_effects": 0
+  },
+  "other_chat_completed_while_approval_pending": true,
+  "other_thread_id": "8bf57d34-3f8b-5fb3-89ba-e225e14db27e",
+  "terminal_cancel_kept_complete": true,
+  "hard_crash": {
+    "owner": "a2b4405f-baed-4bb4-a5b4-b1bc8125bbbe",
+    "thread_id": "6165f89f-b36d-56a0-a0b3-ce7405603fa7",
+    "run_id": "fc202fe6-5ef3-41aa-805e-6a33c31b6b52",
+    "before_crash": {
+      "status": "running",
+      "attempt": 1
+    },
+    "duplicate_submission_same_run": true,
+    "foreign_owner_404": true,
+    "parallel_turn_409": true,
+    "after_recovery": {
+      "status": "complete",
+      "attempt": 2
+    },
+    "message_counts": {
+      "n": 2,
+      "ids": 2
+    },
+    "public_part_types": [
+      {
+        "type": "tool"
+      },
+      {
+        "type": "text"
+      }
+    ]
+  },
+  "sse": {
+    "contiguous": true,
+    "duplicate_bubbles": false,
+    "future_cursor_status": 409,
+    "horizontal_overflow": false,
+    "last_applied_seq": 56,
+    "replay_count": 56,
+    "resumed_first_seq": 57,
+    "resumed_without_duplicate": true,
+    "run_id": "fc202fe6-5ef3-41aa-805e-6a33c31b6b52",
+    "snapshot_cursor": 254,
+    "snapshot_status": "complete",
+    "unauthenticated_status": 401
+  },
+  "history": {
+    "thread_id": "657b19d9-df8e-569b-b2c3-77e88cbedbfe",
+    "fixture": true,
+    "initial_messages": 60,
+    "earlier_messages": 2,
+    "ordered_unique_messages": 62,
+    "public_summary_fixture": true,
+    "browser_loaded_messages": 62,
+    "browser_unique_messages": 62,
+    "browser_load_button_disappeared": true
+  },
+  "stop_pending_approval": {
+    "thread_id": "e0f39f94-3c40-5d7c-afaf-67146b3a362c",
+    "run_id": "67c5c86f-9ca9-40c6-80c6-35f185a90702",
+    "status": "cancelled",
+    "approval_status": "cancelled",
+    "tool_status": "cancelled",
+    "side_effects": 0,
+    "terminal_events": [
+      "approval.upsert",
+      "message.upsert",
+      "run.status"
+    ],
+    "usage_response_count": 1
+  },
+  "stop_during_generation": {
+    "run_id": "d26d4363-b7b3-4ed3-8bca-69490c9ffcfa",
+    "status": "cancelled",
+    "message_status": "cancelled",
+    "saved_parts": 1
+  },
+  "authenticated_http_isolation": {
+    "foreign_thread_snapshot": 404,
+    "foreign_thread_events": 404
+  },
+  "browser": {
+    "desktop": [
+      1440,
+      900
+    ],
+    "mobile": [
+      390,
+      844
+    ],
+    "draft_survived_refresh": true,
+    "sheet_desktop": true,
+    "drawer_mobile": true,
+    "code_blocks": 1,
+    "katex_nodes": 3,
+    "mobile_horizontal_overflow": false,
+    "composer_background": "rgba(0, 0, 0, 0)"
+  },
+  "checks": {
+    "make_check": "passed",
+    "make_build": "passed",
+    "backend_wheel_and_sdist": "passed"
+  },
+  "verified_at": "2026-10-16T17:23:04.745843+08:00",
+  "environment": "local development; Clerk test account; real OpenAI calls except explicitly labelled history/public-summary fixture",
+  "limitations": [
+    "Provider returned text/tool parts in live probes; public reasoning summary UI was checked with a labelled fixture.",
+    "In-flight provider calls may repeat after worker failure. This does not establish exactly-once billing.",
+    "Course goal approval is real; full Course generation and Course/Lesson context integration remain in later backlogs."
+  ],
+  "owner_capacity": {
+    "paths": {
+      "submit": 429,
+      "retry": 429,
+      "decision": 429
+    },
+    "method": "manual operator probe; actual command handlers; temporary owned fixtures; worker paused",
+    "temporary_data_removed": true
+  }
+}

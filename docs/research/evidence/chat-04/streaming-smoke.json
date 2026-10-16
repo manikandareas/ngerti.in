@@ -1,0 +1,39 @@
+{
+  "observed_date": "2026-10-16",
+  "environment": "Bun; official packages downloaded only to temporary directory",
+  "application_dependencies_changed": false,
+  "provider_calls": 0,
+  "parser_smoke": {
+    "package": "eventsource-parser",
+    "version": "4.1.2",
+    "event_count": 2,
+    "utf8_split_chunks": "pass",
+    "crlf": "pass",
+    "multiline_data": "pass",
+    "heartbeat_comment": "pass"
+  },
+  "client_smoke": {
+    "package": "eventsource-client",
+    "version": "1.2.0",
+    "resolved_parser": "3.1.1",
+    "custom_fetch_calls": 2,
+    "request_cursors": [
+      "40",
+      "41"
+    ],
+    "received_event_ids": [
+      "41",
+      "42"
+    ],
+    "synthetic_token_refresh_hook": "pass",
+    "explicit_close_state": "closed"
+  },
+  "limits": [
+    "No real Clerk verification",
+    "No browser/proxy/network failure acceptance",
+    "No PostgreSQL durability proof",
+    "No worker crash acceptance",
+    "No live provider reasoning/tool stream proof",
+    "No scroller end-to-end acceptance"
+  ]
+}

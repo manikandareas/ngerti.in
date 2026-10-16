@@ -1,0 +1,111 @@
+{
+  "verified_at": "2026-10-16T18:06:51.669925+08:00",
+  "cause": "Public part identity switched from the LangChain fallback to a provider item ID received at output_text.done. Both parts survived until final reconciliation.",
+  "baseline": {
+    "duplicate_snapshots": 25,
+    "example": {
+      "thread_id": "b101585b-ab30-5b21-aa52-dcd7602f6a2c",
+      "seq": 59,
+      "message_id": "14d2866e-bb16-4330-ae56-27ed68d0f22e",
+      "status": "running",
+      "parts": [
+        {
+          "id": "lc_run--01a14425-9b8e-7a82-b67f-789f16ba7aee:0",
+          "length": 117
+        },
+        {
+          "id": "msg_05e623b11465d885006ad1f527774887d189c7c2652b9c1be7",
+          "length": 117
+        }
+      ]
+    },
+    "minimal_part_counts": [
+      1,
+      1,
+      2,
+      2
+    ],
+    "real_trace_duplicate_frames": [
+      64,
+      65
+    ]
+  },
+  "fix": {
+    "response_identity": "Resolve graph invocation, provider response, LangChain message, and late item aliases to one response key.",
+    "part_identity": "Response key + content type + ordinal; preserve multiple blocks even with the same provider item ID.",
+    "final_reconciliation": "Replace the same response slots; remove obsolete slots without removing other model iterations or tools."
+  },
+  "minimal_part_counts_after": [
+    1,
+    1,
+    1,
+    1
+  ],
+  "real_trace_replay": {
+    "real_trace_frames_checked": 66,
+    "single_text_part_every_frame": true,
+    "stable_text_part_ids": 1,
+    "final_text_matches": true,
+    "checkpoint_reconciliation_stable": true,
+    "repeated_final_update_idempotent": true,
+    "two_blocks_same_item_id_and_text_preserved": true,
+    "separate_model_calls_preserved": true,
+    "public_summary_id_stable": true,
+    "tool_result_preserved": true
+  },
+  "ui_reducer_replay": {
+    "frames_checked": 66,
+    "messages": 1,
+    "text_parts": 1,
+    "replayed_events_deduplicated": true
+  },
+  "live_browser_direct": {
+    "finalMarkers": 1,
+    "finalTextParts": 1,
+    "finished": true,
+    "maxMarkers": 1,
+    "maxMessages": 1,
+    "maxTextParts": 1,
+    "samples": 29,
+    "sawRunning": true
+  },
+  "live_browser_tools": {
+    "duplicateFrames": 0,
+    "finished": true,
+    "maxMarkers": 1,
+    "samples": 14,
+    "sawRunning": true
+  },
+  "live_ledger": {
+    "thread_id": "167eb5e0-a7ed-5899-a6e3-89d339c5f03d",
+    "assistant_snapshots_checked": 70,
+    "duplicate_frames": [],
+    "messages": 2,
+    "runs": [
+      {
+        "id": "2d89129f-f964-45ba-ace7-0bb52c7e513b",
+        "status": "complete",
+        "provider_responses": 1
+      },
+      {
+        "id": "f35b0c95-3fc9-46e3-ae72-4113ed60c723",
+        "status": "complete",
+        "provider_responses": 2
+      }
+    ],
+    "tool_names": [
+      "read_agent_profile",
+      "read_recent_messages"
+    ],
+    "frame_counts_per_run": {
+      "2d89129f-f964-45ba-ace7-0bb52c7e513b": 48,
+      "f35b0c95-3fc9-46e3-ae72-4113ed60c723": 22
+    }
+  },
+  "existing_transcripts": "No current assistant transcript contained overlapping duplicate text parts; historical faulty events were left intact.",
+  "checks": {
+    "ruff": "passed",
+    "ruff_format": "passed",
+    "mypy": "36 source files passed"
+  }
+}

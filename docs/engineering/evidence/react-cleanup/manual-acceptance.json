@@ -1,0 +1,63 @@
+{
+  "verified_at": "2026-10-16T11:18:10.853160+00:00",
+  "environment": "local development; actual web/API/worker/MinIO and existing Clerk development test account",
+  "method": "manual browser acceptance with agent-browser; no persistent test suite or fixture routes",
+  "desktop": {
+    "viewport": [
+      1440,
+      900
+    ],
+    "create_side_chat": true,
+    "panel_stays_open_on_create": true,
+    "search_empty_state": true,
+    "main_chat_visible_during_search": true,
+    "escape_closes_panel": true,
+    "escape_restores_toggle_focus": true,
+    "draft_preserved_on_panel_close": true,
+    "horizontal_overflow": false
+  },
+  "send_recovery": {
+    "thread_id": "bb26adad-8220-5bcd-8466-0603e21ded27",
+    "failure": "First submit intercepted in browser and returned a labelled HTTP 503 without sending to the API. Reload removed interception. The second submit used the real API/worker/provider.",
+    "draft_retained_after_503": true,
+    "pending_request_key_stored": true,
+    "draft_restored_after_reload": true,
+    "same_request_key_reused": true,
+    "assistant_bubbles": 1,
+    "response_text": "4",
+    "draft_cleared_after_success": true,
+    "pending_request_cleared": true
+  },
+  "mobile": {
+    "viewport": [
+      390,
+      844
+    ],
+    "drawer_opens": true,
+    "desktop_panel_absent": true,
+    "drawer_closes_on_selection": true,
+    "draft_restored_after_switching_to_main_and_back": true,
+    "horizontal_overflow": false
+  },
+  "diagnostics": {
+    "account_verified": true,
+    "system_readiness": "8 dari 9 komponen siap; Clerk terkonfigurasi",
+    "example_file_uploaded": true,
+    "cancel_delete_preserves_example": true,
+    "example_file_deleted_through_confirmation": true,
+    "preexisting_artifact_preserved": true,
+    "new_run_id": "c1e07b8f-70d5-49cf-a7b8-4a5cb10c82b4",
+    "new_run_status": "completed",
+    "horizontal_overflow": false
+  },
+  "checks": {
+    "make_check": "passed; Biome, TypeScript, Ruff lint/format and mypy (36 source files)",
+    "make_build": "passed",
+    "git_diff_check": "passed"
+  },
+  "limitations": [
+    "The 503 is a labelled browser failure probe, not a real infrastructure outage.",
+    "Full crash/recovery/HITL and cross-account acceptance matrices were not rerun during this refactor; their existing evidence remains under chat-04.",
+    "No production deploy, multi-replica load test, or exactly-once provider billing validation."
+  ]
+}

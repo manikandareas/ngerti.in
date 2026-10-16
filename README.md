@@ -8,7 +8,7 @@ Prasyarat: Docker/Compose, Bun 1.3.10, Node.js 22.12+, dan uv. uv mengelola Pyth
 
 ```sh
 cp .env.example .env
-# Isi dua key Clerk development di .env; gunakan aplikasi Clerk khusus proyek ini.
+# Isi key Clerk development dan OPENAI_API_KEY di .env.
 make install
 make infra-up
 make setup
@@ -33,6 +33,8 @@ make build
 ```
 
 Checks hanya lint, formatting, typecheck, dan build. Validasi fitur dilakukan manual di browser. Lihat [panduan development](docs/engineering/development.md), [checklist penerimaan #02](docs/engineering/foundation-02-manual-acceptance.md), dan [tiket fondasi](docs/backlog/tasks/02-fondasi-production-workspace-auth-dan-data.md).
+
+Chat personal #04 tersedia di halaman utama setelah login: main/side chat, streaming yang dapat dilanjutkan, tool, approval, stop, dan recovery worker. Lihat [implementasi dan penerimaan #04](docs/engineering/chat-04-implementation.md). `/course` menyimpan tujuan setelah persetujuan; sumber, outline, dan materi mengikuti backlog #07–09.
 
 ## Batas modul
 

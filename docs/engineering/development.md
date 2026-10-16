@@ -1,4 +1,4 @@
-# Development dan operasi fondasi
+# Development dan operasi
 
 ## Keputusan #02
 
@@ -21,6 +21,8 @@ provider server-only; inspector fixture tidak membacanya dan CI tidak memanggil 
 5. `make setup` menerapkan migrasi serta menyiapkan bucket lokal.
 6. `make dev` menjalankan API, worker, dan web. Buka `http://127.0.0.1:3000/dev/system`.
 
+Untuk chat #04, isi `OPENAI_API_KEY` dan `OPENAI_MODEL` sebelum menjalankan API/worker, lalu buka halaman utama setelah login. `make migrate` menerapkan tabel chat serta posisi pesan pada revision `0003_chat_order`. Worker harus aktif untuk menghasilkan jawaban; subscription browser hanya membaca event yang sudah tersimpan. [Kontrak dan penerimaan chat](chat-04-implementation.md) menjelaskan approval, replay, stop, dan recovery.
+
 Gunakan origin yang sama sepanjang sesi (`127.0.0.1` atau `localhost`). Kedua origin development diterima backend. Jika browser memblokir `localhost`, alamat IPv4 `127.0.0.1` adalah alamat listen aplikasi. Jangan menonaktifkan perlindungan browser untuk membuka aplikasi.
 
 ## Environment
@@ -34,6 +36,8 @@ Gunakan origin yang sama sepanjang sesi (`127.0.0.1` atau `localhost`). Kedua or
 | `VITE_API_URL` | Web | Alamat API yang dapat diakses browser |
 | `S3_*` | API, worker, setup | Endpoint, bucket, region, credentials, addressing style |
 | `MINIO_ROOT_*` | Container MinIO | Credentials lokal |
+| `OPENAI_API_KEY`, `OPENAI_MODEL`, `OPENAI_BASE_URL` | Worker; API memeriksa key tersedia | Adapter OpenAI Responses untuk chat |
+| `CHAT_MAX_OUTPUT_TOKENS`, `CHAT_MAX_MODEL_CALLS`, `CHAT_RUN_TIMEOUT_SECONDS` | Worker | Batas per panggilan, iterasi, dan waktu satu turn |
 | `APP_ENV`, `ENABLE_DEV_DIAGNOSTICS` | API dan build web | Membatasi fitur diagnostik ke development |
 
 `VITE_*` menjadi bagian bundle publik. Jangan menggunakan prefix tersebut untuk secret. Setelah mengubah environment, restart proses terkait. Untuk production, gunakan `APP_ENV=production`, matikan diagnostik, dan injeksikan credentials melalui environment deployment. Validasi konfigurasi menolak diagnostik production dan endpoint production tanpa HTTPS.
@@ -82,3 +86,14 @@ Untuk mencoba R2 kelak, ganti `S3_ENDPOINT_URL` menjadi endpoint account R2, isi
 ## Data lokal
 
 Namespace Compose `ngertiin-v1` memakai volume sendiri. `make infra-down` tidak menghapus data. Jangan menjalankan `down -v` pada data yang perlu dipertahankan. PostgreSQL memakai port 5433; MinIO memakai 9000/9001, sehingga instance lain yang memakai port yang sama perlu dihentikan atau port development disesuaikan.
+
+## Struktur frontend
+
+- `src/routes/` memuat kontrak route, search params, dan guard; detail fitur berada di `src/features/`.
+- `features/chat/` memisahkan query daftar thread (`use-chat-threads`), panel/Drawer (`use-chat-history`), snapshot dan SSE (`use-thread`), draft/pengiriman/idempotency (`use-thread-composer`), serta approval/stop/retry (`use-thread-actions`). Reducer replay ada di `thread-state.ts`, terpisah dari DTO di `types.ts`.
+- `Thread` menyusun transcript dan composer; `ThreadTranscript` mengelola tampilan history, pesan, approval, serta kontrol scroll. Pemilihan thread memberi key akun + thread agar state lokal dan subscription terisolasi.
+- `features/diagnostics/` memiliki halaman sistem, status publik, identitas akun, panel file/job, hooks query/mutation, dan DTO diagnostik sendiri. `use-object-download` dipakai bersama oleh file dan artifact job.
+- `components/ui/` menyimpan primitive shadcn; `ui/` menyimpan UI aplikasi bersama; `lib/api.ts` hanya menangani transport HTTP dan konfigurasi API. Gunakan import langsung dan Props bernama ketika komponen membutuhkan kontrak sendiri.
+- Pisahkan berdasarkan tanggung jawab dan siklus state. Hindari membuat hook serbaguna yang mencampur query, penyimpanan browser, event listener, dan markup; logika turunan sederhana tetap dihitung saat render.
+
+Jalankan `make check` dan `make build` setelah refactor. Verifikasi perilaku melalui browser; [bukti cleanup React](react-cleanup-2026-10-16.md) mencatat pemulihan draft/request key dan interaksi desktop/mobile.

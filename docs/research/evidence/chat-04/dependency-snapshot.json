@@ -1,0 +1,212 @@
+{
+  "streamdown": {
+    "name": "streamdown",
+    "version": "2.7.0",
+    "license": "Apache-2.0",
+    "peerDependencies": {
+      "react": "^18.0.0 || ^19.0.0",
+      "react-dom": "^18.0.0 || ^19.0.0"
+    },
+    "dependencies": {
+      "clsx": "^2.1.1",
+      "marked": "^18.0.11",
+      "remend": "1.4.0",
+      "unified": "^11.0.5",
+      "rehype-raw": "^7.0.0",
+      "remark-gfm": "^4.0.1",
+      "remark-parse": "^11.0.0",
+      "rehype-harden": "^1.1.8",
+      "remark-rehype": "^11.1.2",
+      "tailwind-merge": "^3.6.0",
+      "rehype-sanitize": "^6.0.0",
+      "unist-util-visit": "^5.1.0",
+      "html-url-attributes": "^3.0.1",
+      "hast-util-to-jsx-runtime": "^2.3.6",
+      "unist-util-visit-parents": "^6.0.2"
+    },
+    "engines": null,
+    "repository": {
+      "url": "git+https://github.com/vercel/streamdown.git",
+      "type": "git",
+      "directory": "packages/streamdown"
+    }
+  },
+  "@streamdown/math": {
+    "name": "@streamdown/math",
+    "version": "1.0.3",
+    "license": "Apache-2.0",
+    "peerDependencies": {
+      "react": "^18.0.0 || ^19.0.0"
+    },
+    "dependencies": {
+      "katex": "^0.16.27",
+      "remark-math": "^6.0.0",
+      "rehype-katex": "^7.0.1"
+    },
+    "engines": null,
+    "repository": {
+      "url": "git+https://github.com/vercel/streamdown.git",
+      "type": "git",
+      "directory": "packages/streamdown-math"
+    }
+  },
+  "@streamdown/code": {
+    "name": "@streamdown/code",
+    "version": "2.0.0",
+    "license": "Apache-2.0",
+    "peerDependencies": {
+      "react": "^18.0.0 || ^19.0.0"
+    },
+    "dependencies": {
+      "shiki": "^4.4.3"
+    },
+    "engines": {
+      "node": ">=20"
+    },
+    "repository": {
+      "url": "git+https://github.com/vercel/streamdown.git",
+      "type": "git",
+      "directory": "packages/streamdown-code"
+    }
+  },
+  "@ai-sdk/react": {
+    "name": "@ai-sdk/react",
+    "version": "4.0.146",
+    "license": "Apache-2.0",
+    "peerDependencies": {
+      "react": "^18 || ~19.0.1 || ~19.1.2 || ^19.2.1"
+    },
+    "dependencies": {
+      "ai": "7.0.142",
+      "swr": "^2.4.1",
+      "throttleit": "2.1.0",
+      "@ai-sdk/mcp": "2.0.77",
+      "@ai-sdk/provider": "4.0.28",
+      "@ai-sdk/provider-utils": "5.0.61"
+    },
+    "engines": {
+      "node": ">=22"
+    },
+    "repository": {
+      "url": "https://github.com/vercel/ai",
+      "type": "git",
+      "directory": "packages/react"
+    }
+  },
+  "ai": {
+    "name": "ai",
+    "version": "7.0.142",
+    "license": "Apache-2.0",
+    "peerDependencies": {
+      "zod": "^3.25.76 || ^4.1.8"
+    },
+    "dependencies": {
+      "@ai-sdk/gateway": "4.0.115",
+      "@ai-sdk/provider": "4.0.28",
+      "@ai-sdk/provider-utils": "5.0.61"
+    },
+    "engines": {
+      "node": ">=22"
+    },
+    "repository": {
+      "url": "https://github.com/vercel/ai",
+      "type": "git",
+      "directory": "packages/ai"
+    }
+  },
+  "@langchain/react": {
+    "name": "@langchain/react",
+    "version": "1.2.4",
+    "license": "MIT",
+    "peerDependencies": {
+      "react": "^18 || ^19",
+      "@langchain/core": "^1.1.48"
+    },
+    "dependencies": {
+      "@langchain/langgraph-sdk": "1.12.4"
+    },
+    "engines": null,
+    "repository": {
+      "url": "git+ssh://git@github.com/langchain-ai/langgraphjs.git",
+      "type": "git",
+      "directory": "libs/sdk-react"
+    }
+  },
+  "eventsource-parser": {
+    "name": "eventsource-parser",
+    "version": "4.1.2",
+    "license": "MIT",
+    "peerDependencies": null,
+    "dependencies": null,
+    "engines": {
+      "node": ">=22.12"
+    },
+    "repository": {
+      "url": "git+ssh://git@github.com/rexxars/eventsource-parser.git",
+      "type": "git"
+    }
+  },
+  "eventsource-client": {
+    "name": "eventsource-client",
+    "version": "1.2.0",
+    "license": "MIT",
+    "peerDependencies": null,
+    "dependencies": {
+      "eventsource-parser": "^3.0.0"
+    },
+    "engines": {
+      "node": ">=18.0.0"
+    },
+    "repository": {
+      "url": "git+ssh://git@github.com/rexxars/eventsource-client.git",
+      "type": "git"
+    }
+  },
+  "use-stick-to-bottom": {
+    "name": "use-stick-to-bottom",
+    "version": "1.1.6",
+    "license": "MIT",
+    "peerDependencies": {
+      "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
+    },
+    "dependencies": null,
+    "engines": null,
+    "repository": {
+      "url": "git+https://github.com/samdenty/use-stick-to-bottom.git",
+      "type": "git"
+    }
+  },
+  "@shadcn/react": {
+    "name": "@shadcn/react",
+    "version": "0.3.1",
+    "license": "MIT",
+    "peerDependencies": {
+      "react": ">=19",
+      "@types/react": ">=19"
+    },
+    "dependencies": null,
+    "engines": null,
+    "repository": {
+      "url": "git+https://github.com/shadcn-ui/ui.git",
+      "type": "git",
+      "directory": "packages/react"
+    }
+  },
+  "@shadcn/helpers": {
+    "name": "@shadcn/helpers",
+    "version": "0.2.0",
+    "license": "MIT",
+    "peerDependencies": {
+      "ai": ">=7.0.0 <8",
+      "@tanstack/ai": ">=0.40.0 <0.41.0",
+      "@tanstack/ai-client": ">=0.20.0 <0.21.0"
+    },
+    "dependencies": null,
+    "engines": null,
+    "repository": {
+      "url": "git+https://github.com/shadcn-ui/ui.git",
+      "type": "git",
+      "directory": "packages/helpers"
+    }
+  }
+}

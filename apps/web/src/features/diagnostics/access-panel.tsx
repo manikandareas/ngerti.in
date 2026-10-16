@@ -2,7 +2,10 @@ import { useAuth } from "@clerk/tanstack-react-start";
 import { useMutation } from "@tanstack/react-query";
 import { ShieldCheck } from "lucide-react";
 import { useState } from "react";
-import { api, type Run } from "../lib/api";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { api } from "@/lib/api";
+import type { Run } from "./types";
 
 export function AccessPanel() {
   const { getToken } = useAuth();
@@ -12,12 +15,12 @@ export function AccessPanel() {
       api<Run>(`/dev/runs/${encodeURIComponent(id.trim())}`, await getToken()),
   });
   return (
-    <section className="access-section">
+    <section className="col-span-full border-t py-6 [&_h2]:mb-3 [&_h2]:flex [&_h2]:items-center [&_h2]:gap-2 [&_form]:mt-4 [&_label]:mb-2 [&_label]:block [&_label]:text-xs [&_label]:font-extrabold [&_form>div]:flex [&_form>div]:gap-3">
       <h2>
         <ShieldCheck size={19} />
         Periksa kepemilikan pekerjaan
       </h2>
-      <p className="subtle">
+      <p className="text-[13px] text-muted-foreground">
         Salin ID pekerjaan dari akun pertama, lalu coba ID yang sama setelah masuk dengan akun
         kedua. Akun lain harus menerima “Pekerjaan tidak ditemukan”.
       </p>
@@ -29,7 +32,7 @@ export function AccessPanel() {
       >
         <label htmlFor="access-run-id">ID pekerjaan</label>
         <div>
-          <input
+          <Input
             id="access-run-id"
             value={id}
             onChange={(event) => {
@@ -39,17 +42,21 @@ export function AccessPanel() {
             placeholder="UUID pekerjaan"
             required
           />
-          <button className="button secondary" type="submit" disabled={lookup.isPending}>
+          <Button variant="outline" type="submit" disabled={lookup.isPending}>
             {lookup.isPending ? "Memeriksa…" : "Periksa akses"}
-          </button>
+          </Button>
         </div>
       </form>
       {lookup.data ? (
-        <p className="notice" role="status">
+        <p
+          className="my-6 flex flex-col items-start justify-between gap-4 rounded-xl bg-secondary px-5 py-4 text-sm min-[701px]:flex-row min-[701px]:items-center"
+          role="status"
+        >
           Pekerjaan ditemukan: {lookup.data.id} · {lookup.data.status}
         </p>
-      ) : lookup.error ? (
-        <p className="notice error" role="status">
+      ) : null}
+      {!lookup.data && lookup.error ? (
+        <p className="my-6 rounded-xl bg-danger-subtle px-5 py-4 text-sm text-danger" role="status">
           {lookup.error.message}
         </p>
       ) : null}

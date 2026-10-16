@@ -1,3 +1,5 @@
+import { fileURLToPath } from "node:url";
+import tailwindcss from "@tailwindcss/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import react from "@vitejs/plugin-react";
 import { nitro } from "nitro/vite";
@@ -12,6 +14,7 @@ export default defineConfig(({ mode }) => {
         env.APP_ENV === "development" && env.ENABLE_DEV_DIAGNOSTICS === "true",
       ),
     },
-    plugins: [tanstackStart(), nitro({ preset: "node-server" }), react()],
+    resolve: { alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) } },
+    plugins: [tailwindcss(), tanstackStart(), nitro({ preset: "node-server" }), react()],
   };
 });

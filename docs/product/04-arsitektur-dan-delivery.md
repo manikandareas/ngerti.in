@@ -1,6 +1,6 @@
 # 04 · Arsitektur, Runtime & Kontrak
 
-Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381198256f4ee69db1e78) · Readback: 2026-10-18T10:08:03.263Z
+Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381198256f4ee69db1e78) · Readback: 2026-10-18T14:17:35.163Z
 
 <!-- notion-content:start -->
 Stack aktual: TanStack Start/React, FastAPI, Clerk, PostgreSQL/pgvector, LangChain create_agent + LangGraph checkpoints, Procrastinate dan S3/MinIO. API dan worker adalah proses host untuk development; PostgreSQL/MinIO berada pada Compose ngertiin-v1. Pertahankan fondasi; LiteLLM/LlamaIndex/LangSmith/R2 production bukan dependency yang dianggap aktif hanya karena pernah tercantum pada riset.
@@ -39,7 +39,7 @@ Durable execution memberi state produk terpisah dari job/checkpoint.
 
 **State:** Task queued/running/waiting_user/succeeded/failed/cancelled; Action unknown/reconciling bila effect belum pasti.
 
-**Input → output:** NG-033 menyediakan GET/POST `/tasks`, GET `/tasks/{id}`, POST `/tasks/{id}/cancel`, `/retry`, `/revise`, `/reconcile`, dan `/approvals/{id}/decision`. Snapshot chat memuat Task; SSE version 1 menambah `task.upsert` untuk status/progress/draft/action serta `message.upsert` untuk delivery hasil teks. File result manifests mengikuti NG-034.
+**Input → output:** NG-033 menyediakan GET/POST `/tasks`, GET `/tasks/{id}`, POST `/tasks/{id}/cancel`, `/retry`, `/revise`, `/reconcile`, dan `/approvals/{id}/decision`. Snapshot chat memuat Task; SSE version 1 menambah `task.upsert` untuk status/progress/draft/action serta `message.upsert` untuk delivery hasil teks. NG-034 menambah file inputs/output spec dan result references dalam Task/chat. Publikasi file memakai manifest durable dan delivery atomik; detail tersedia di bagian File storage dan publication.
 
 **Kegagalan & pemulihan:** Procrastinate menjamin delivery/retry, LangGraph checkpoint menjaga workflow; keduanya bukan source of truth task success; crash di setiap boundary diuji.
 
@@ -59,15 +59,15 @@ File produk serta hasil menggunakan revision immutable dan manifest bertipe.
 
 **State:** File uploading/ready/failed/deleted; result constructing/ready/updating/failed/interrupted.
 
-**Input → output:** Target /files, /files/\{id\}/revisions, /results, signed download/preview; server owns object_key dan size/type validation.
+**Input → output:** NG-034 menyediakan GET/POST `/files`, POST `/files/{id}/revisions`, authenticated proxy `/files/revisions/{id}/content`, extraction status/retry serta GET/DELETE `/results`. File/output refs mengikat owner, immutable revision, SHA-256 dan exact page/line selection; object_key ditentukan server.
 
 **Kegagalan & pemulihan:** Publish parsial tidak menandai success; input revision hilang tidak diganti diam-diam; garbage collection/retention diaudit.
 
-**Izin:** S3 key per owner, short-lived URLs, owner checks sebelum signature, isolated preview origin, egress/output caps.
+**Izin:** S3 prefix per owner dan proxy berautentikasi memeriksa akses sebelum/sesudah I/O; tidak membagikan signed URL. HTML disanitasi (termasuk link/navigation/form/external URL), lalu iframe sandbox kosong dengan origin opaque, CSP dan no-referrer. Bytes download tetap asli.
 
-**Biaya:** Storage/disk/network/parser/model cost dipisah; diagnostics /dev tetap gated, bukan API produk.
+**Biaya:** PDF/PNG/JPEG memakai Mistral OCR `mistral-ocr-4-1`; TXT/MD/CSV/JSON lokal. Cache revision+model+policy menghindari redispatch. Admission halaman OCR akun/global atomik; unknown tetap terhitung dan retry berbiaya memerlukan keputusan eksplisit. Storage/parser/model cost terpisah; diagnostics /dev tetap gated.
 
-**Acceptance:** P09/P12/P13/P28: output tetap ada setelah runtime hilang dan tidak memuat credential aplikasi.
+**Acceptance:** NG-034 diterima lokal 18 Oktober 2026 untuk P09/P12/P13/P28 slice file/result. `docs/engineering/files-34-acceptance.md` memuat OCR nyata, review/revision dan desktop/mobile, 47 fault/owner contracts, serta tiga hasil dari sandbox Daytona nyata yang tetap terbaca sesudah sandbox dihapus. Produksi kode umum mengikuti NG-035; R2 production dan full Library search belum diterima.
 
 Bukti modul: [REA-3 · File & Artifact](../research/muse-ai-v1/evidence/file.md). Tiket: [NG-034 · File produk dan hasil tersimpan](../backlog/tasks/34-file-produk-dan-hasil-tersimpan.md).
 
@@ -113,7 +113,7 @@ Bukti modul: [REA-2 · Task & Scheduler](../research/muse-ai-v1/evidence/task.md
 
 ## Baseline data dan batas reset
 
-Baseline aplikasi adalah 0001_v1_baseline: accounts, agent_profiles, chat_threads/runs/messages/events/approvals, stored_objects, diagnostic_runs, runtime_schema_versions, quota_grants/periods/operations/events. Meter CHECK hanya chat; posisi transcript sudah ada sejak creation. Queue schema dibuat oleh Procrastinate schema_manager, checkpoint oleh PostgresSaver.setup. Readiness membandingkan migration head dari Alembic, queue library version, checkpoint migrations dan heartbeat. Migrasi incremental 0002_background_tasks menambah background_tasks, task_executions, task_revisions, task_actions, task_cost_events, task_deliveries dan task_commands tanpa reset data.
+Baseline aplikasi adalah 0001_v1_baseline: accounts, agent_profiles, chat_threads/runs/messages/events/approvals, stored_objects, diagnostic_runs, runtime_schema_versions, quota_grants/periods/operations/events. Meter CHECK hanya chat; posisi transcript sudah ada sejak creation. Queue schema dibuat oleh Procrastinate schema_manager, checkpoint oleh PostgresSaver.setup. Readiness membandingkan migration head dari Alembic, queue library version, checkpoint migrations dan heartbeat. Migrasi incremental 0002_background_tasks menambah background_tasks, task_executions, task_revisions, task_actions, task_cost_events, task_deliveries dan task_commands tanpa reset data. 0003_product_files menambah file/revision/extraction, task_file_inputs, result/revision dan file finalization; put+SHA verification mendahului transaksi manifest/Task success/action/delivery. Delete merevoke akses dahulu, maintenance purge berikutnya; upload tanpa penggunaan dibersihkan sesudah 24 jam.
 
 Reset sekali ini membuang seluruh data development proyek dan tidak menyediakan compatibility untuk pesan/approval/checkpoint pembelajaran lama. Migrasi masa depan kembali bersifat incremental; baseline ini bukan prosedur upgrade production.
 

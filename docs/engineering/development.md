@@ -1,6 +1,6 @@
 # 06 · Development, Operasi & Acceptance
 
-Sumber: [Notion](https://app.notion.com/p/3fdabdd6187381d39f94f7161d4ef570) · Readback: 2026-10-18T10:08:03.263Z
+Sumber: [Notion](https://app.notion.com/p/3fdabdd6187381d39f94f7161d4ef570) · Readback: 2026-10-18T14:17:35.163Z
 
 <!-- notion-content:start -->
 ## Setup development bersih
@@ -107,4 +107,12 @@ NG-026–030 telah diterima pada 18 Oktober 2026; NG-031 menjadi Ready tanpa mem
 Task teks dan approval umum diterima pada **2026-10-18**. Laporan `docs/engineering/task-33-acceptance.md` dan `docs/engineering/evidence/task-33/` memuat walkthrough model nyata, same-thread chat saat running/waiting_user, reload, revision/review, stop/retry/reject, desktop/mobile dan batas integrasi berikutnya.
 
 `make task-inspect` menjalankan 55 skenario PostgreSQL/checkpoint di database sementara yang dihapus setelah selesai; provider fault/race memakai adapter terkontrol. `make quota-inspect` 46 skenario, `make check`, `make build` dan `git diff --check` lulus. Real Task telemetry: 4.688 token confirmed dan satu stopped call unknown; invoice tidak dihitung. Migrasi incremental `0002_background_tasks` diperlukan; tidak menjalankan reset development.
+
+## Penerimaan file dan hasil NG-034
+
+Diterima lokal pada **2026-10-18**: upload/reuse immutable revisions, PDF/image OCR Mistral, local text/CSV/JSON, multi-file result manifest, review/edit/revision, authenticated preview/download dan delete/retention. Bukti repo `docs/engineering/files-34-acceptance.md` dan `docs/engineering/evidence/files-34/` memisahkan walkthrough provider nyata dari adapter fault terkontrol. `make files-inspect` lulus 47 skenario dengan PostgreSQL/MinIO; `make task-inspect` 55, `make quota-inspect` 46, `make check` dan `make build` lulus.
+
+P12 memakai fixture adapter terbatas di sandbox Daytona nyata (SDK0.225.0/provider v0.225.1, snapshot daytona-medium, TTL3 menit): tiga file dipersist, sandbox dihapus dan cleanup dikonfirmasi, kemudian bytes/hash hasil tetap sama. Ini tidak mengaktifkan eksekusi kode umum NG-035. HTML desktop/mobile disanitasi dan disandbox tanpa session aplikasi; navigasi/jaringan eksternal dilarang. R2 production, full Library search dan kualitas seluruh dokumen tetap memerlukan acceptance tersendiri.
+
+Upgrade memakai `make migrate` untuk 0003_product_files tanpa reset. Konfigurasi backend/worker: MISTRAL_API_KEY, MISTRAL_OCR_MODEL=mistral-ocr-4-1, OCR_ACCOUNT_DAILY_PAGES=100, OCR_GLOBAL_DAILY_PAGES=1000. Restart worker setelah perubahan Python/config; autoreload API tidak mereload worker. Cleanup lima menit merevoke/purge file dihapus dan upload tidak terpakai 24 jam; biaya OCR yang mungkin terpakai tidak dihapus dari ledger. Hasil turunan siap bertahan sampai hasilnya sendiri dihapus.
 <!-- notion-content:end -->

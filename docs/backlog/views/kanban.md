@@ -1,6 +1,6 @@
 # Kanban
 
-Snapshot readback Notion: 2026-10-18T10:08:03.263Z. 25 tiket.
+Snapshot readback Notion: 2026-10-18T14:17:35.163Z. 25 tiket.
 
 | Tiket | Urutan | Status | Lingkup | Area | Depends on |
 | --- | --- | --- | --- | --- | --- |
@@ -12,7 +12,7 @@ Snapshot readback Notion: 2026-10-18T10:08:03.263Z. 25 tiket.
 | [NG-031 · Validasi Daytona dengan trial terbatas](../tasks/31-validasi-daytona-dengan-trial-terbatas.md) | 6 | Done | Aktif V1 | Fondasi | [NG-030 · Terima baseline V1 yang bersih](../tasks/30-terima-baseline-v1-yang-bersih.md) |
 | [NG-032 · Shell onboarding dan walkthrough asisten umum](../tasks/32-shell-onboarding-dan-walkthrough-asisten-umum.md) | 7 | Done | Aktif V1 | Fondasi | [NG-031 · Validasi Daytona dengan trial terbatas](../tasks/31-validasi-daytona-dengan-trial-terbatas.md) |
 | [NG-033 · Task background dan approval umum](../tasks/33-task-background-dan-approval-umum.md) | 8 | Done | Aktif V1 | Agent | [NG-032 · Shell onboarding dan walkthrough asisten umum](../tasks/32-shell-onboarding-dan-walkthrough-asisten-umum.md) |
-| [NG-034 · File produk dan hasil tersimpan](../tasks/34-file-produk-dan-hasil-tersimpan.md) | 9 | Backlog | Aktif V1 | Agent | [NG-033 · Task background dan approval umum](../tasks/33-task-background-dan-approval-umum.md) |
+| [NG-034 · File produk dan hasil tersimpan](../tasks/34-file-produk-dan-hasil-tersimpan.md) | 9 | Done | Aktif V1 | Agent | [NG-033 · Task background dan approval umum](../tasks/33-task-background-dan-approval-umum.md) |
 | [NG-035 · Eksekusi kode dalam sandbox](../tasks/35-eksekusi-kode-dalam-sandbox.md) | 10 | Backlog | Aktif V1 | Agent | [NG-031 · Validasi Daytona dengan trial terbatas](../tasks/31-validasi-daytona-dengan-trial-terbatas.md) · [NG-033 · Task background dan approval umum](../tasks/33-task-background-dan-approval-umum.md) · [NG-034 · File produk dan hasil tersimpan](../tasks/34-file-produk-dan-hasil-tersimpan.md) |
 | [NG-036 · Browser VNC live desktop dan takeover](../tasks/36-browser-vnc-live-desktop-dan-takeover.md) | 11 | Backlog | Aktif V1 | Agent | [NG-035 · Eksekusi kode dalam sandbox](../tasks/35-eksekusi-kode-dalam-sandbox.md) |
 | [NG-037 · Scheduler pengguna saat offline](../tasks/37-scheduler-pengguna-saat-offline.md) | 12 | Backlog | Aktif V1 | Agent | [NG-036 · Browser VNC live desktop dan takeover](../tasks/36-browser-vnc-live-desktop-dan-takeover.md) · [NG-033 · Task background dan approval umum](../tasks/33-task-background-dan-approval-umum.md) |

@@ -1,6 +1,6 @@
 # 05 · Usage, Paket & Pembayaran
 
-Sumber: [Notion](https://app.notion.com/p/3fdabdd61873819ca2b5cc4e521b3587) · Readback: 2026-10-18T10:08:03.263Z
+Sumber: [Notion](https://app.notion.com/p/3fdabdd61873819ca2b5cc4e521b3587) · Readback: 2026-10-18T14:17:35.163Z
 
 <!-- notion-content:start -->
 Batas chat baseline adalah **Free 100 dan Plus 300 pesan pengguna per 30 × 24 jam**, policy chat-baseline-v1. Ini batas development sementara, bukan harga atau allowance komersial yang disetujui. Meter Course/halaman materi dan kontrak reservasinya telah dihapus. GET /quotas hanya memiliki `meters.chat` dengan limit/used/reserved/remaining serta period/plan.
@@ -70,4 +70,10 @@ Bukti modul: [REA-5 · Permissions](../research/muse-ai-v1/evidence/permissions.
 Policy text-task-work-v1 memakai conservative token work: 60.000 unit/task, 240.000/account/tanggal UTC, 2.400.000/global/tanggal UTC; dua task queued/running per account, maksimum tiga model calls, input 20.000 byte dan output 3.000 token/call. Policy/model disnapshot; input byte bound + framing allowance + output cap dicadangkan sebelum network call. Usage lengkap settle ke token aktual; usage terputus tetap unknown dengan cap panggilan dihitung. Retry mempertahankan bucket asal dan cap; waiting_user tidak memegang execution slot; terminal/expiry melepas sisa reservasi.
 
 Satu input chat/form task memakai satu chat unit. Langkah background, approval, replay, stop dan retry task tidak menambah pesan. Harga provider dalam uang/invoice dan allowance komersial belum dihitung; NG-040 tetap menentukan kontrak komersial. Bukti: `docs/engineering/task-33-acceptance.md`.
+
+## Batas file dan OCR NG-034
+
+Satu permintaan Task file memakai satu chat unit; upload, cache reuse, review, download dan retry Task tidak membuat pesan baru. Pengaman OCR terpisah dari paket komersial: 100 halaman/akun dan 1.000 global per tanggal UTC, PDF maksimal 20 halaman/file dan 40 halaman/Task. Reservasi atomik mendahului dispatch; outcome ambigu tetap menghitung halaman yang mungkin terpakai. Percobaan OCR baru memerlukan request identity dan pengakuan potensi biaya; retry Task tidak mendispatch ulang OCR.
+
+Policy `product-files-v1` menyimpan model snapshot `mistral-ocr-4-1`, versi tarif dan estimasi konfigurasi USD4/1.000 halaman. Cache mengikat revision/model/policy. Ledger charged pages tetap ada setelah bytes dihapus. Batas: 10 MiB/file, 5 lampiran/25 MiB, 10 hasil/25 MiB, storage akun 250 MiB; batas model Task tetap berlaku lebih dahulu bila perlu. Ini cap operasional internal, bukan harga pelanggan atau invoice. Detail telemetry dan batas bukti: `docs/engineering/files-34-acceptance.md`.
 <!-- notion-content:end -->

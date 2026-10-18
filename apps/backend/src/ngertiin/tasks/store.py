@@ -29,6 +29,8 @@ PUBLIC_COLUMNS = (
     "budget_policy",
     "created_at",
     "updated_at",
+    "output_spec",
+    "result_id",
 )
 MUTABLE = {
     "status",
@@ -99,6 +101,29 @@ async def change(conn, task: dict, **values):
 
 async def view(conn, task: dict, *, detail: bool = False):
     result = {key: task[key] for key in PUBLIC_COLUMNS}
+    from ngertiin.files.inputs import rows as file_rows
+
+    file_values = await file_rows(conn, task)
+    result["inputs"] = [
+        {
+            k: row[k]
+            for k in (
+                "revision_id",
+                "file_id",
+                "filename",
+                "revision",
+                "sha256",
+                "selection",
+                "file_status",
+                "extraction_status",
+                "error",
+                "reserved_pages",
+                "charged_pages",
+                "extraction_model",
+            )
+        }
+        for row in file_values
+    ]
     result["action"] = await one(
         conn,
         "SELECT id,revision,kind,target_id,content_hash,content,status,expires_at,outcome "
@@ -126,6 +151,9 @@ async def view(conn, task: dict, *, detail: bool = False):
 
 
 async def emit(conn, task: dict):
+    from ngertiin.files.results import sync_status
+
+    await sync_status(conn, task)
     await append_event(
         conn, task["thread_id"], {"type": "task.upsert", "task": await view(conn, task)}
     )

@@ -29,7 +29,7 @@ async def diagnostic_job(run_id: str) -> None:
     name="foundation.recover_stalled", queue="maintenance", queueing_lock="recover_stalled"
 )
 async def recover_stalled_jobs(timestamp: int | None = None) -> None:
-    for name in ("foundation.diagnostic", "chat.turn", "task.execute"):
+    for name in ("foundation.diagnostic", "chat.turn", "task.execute", "file.extract"):
         jobs = await queue_app.job_manager.get_stalled_jobs(task_name=name)
         for job in jobs:
             if job.attempts < 3:
@@ -44,6 +44,9 @@ async def recover_stalled_jobs(timestamp: int | None = None) -> None:
     from ngertiin.tasks.recovery import reconcile_deliveries as reconcile_tasks
 
     await reconcile_tasks()
+    from ngertiin.files.cleanup import reconcile as reconcile_files
+
+    await reconcile_files()
 
 
 __all__ = ["diagnostic_job", "recover_stalled_jobs"]

@@ -7,6 +7,7 @@ from fastapi import APIRouter, Depends
 from pydantic import BaseModel, ConfigDict, Field
 
 from ngertiin.accounts.auth import current_account
+from ngertiin.files.contracts import FileInput, OutputSpec
 from ngertiin.models import Account
 from ngertiin.tasks import actions, budget, commands, creation, store
 
@@ -23,6 +24,10 @@ class CreateInput(CommandInput):
     thread_id: UUID
     instruction: str = Field(min_length=1, max_length=6000)
     review_required: bool = False
+    inputs: list[FileInput] = Field(default_factory=list, max_length=5)
+    outputs: list[OutputSpec] = Field(default_factory=list, max_length=10)
+    result_id: UUID | None = None
+    expected_result_revision: int | None = Field(default=None, ge=1)
 
 
 class DecisionInput(CommandInput):
@@ -46,7 +51,15 @@ async def list_tasks(account: AccountDep, thread_id: UUID | None = None):
 @router.post("/tasks", status_code=202)
 async def create_task(body: CreateInput, account: AccountDep):
     return await creation.create(
-        account.id, body.thread_id, body.request_key, body.instruction, body.review_required
+        account.id,
+        body.thread_id,
+        body.request_key,
+        body.instruction,
+        body.review_required,
+        inputs=[v.model_dump(mode="json") for v in body.inputs],
+        outputs=[v.model_dump() for v in body.outputs],
+        result_id=body.result_id,
+        expected_result_revision=body.expected_result_revision,
     )
 
 

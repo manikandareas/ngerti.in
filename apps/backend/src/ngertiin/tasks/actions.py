@@ -10,23 +10,42 @@ from ngertiin.quotas.policy import fingerprint
 from ngertiin.tasks import budget, store
 
 
+def review_hash(task):
+    if not task.get("output_spec"):
+        return fingerprint(task["draft"])
+    return fingerprint(
+        {
+            "draft": task["draft"],
+            "outputs": task["output_spec"],
+            "inputs": task["input_snapshot"].get("files", []),
+            "previous_result": task["input_snapshot"].get("previous_result"),
+            "result_id": str(task["result_id"]),
+        }
+    )
+
+
 async def ensure(execution: dict):
     async with store.locked(execution["owner_id"], execution["id"]) as (conn, task):
         store.fence(task, execution)
         if not task["draft"].strip():
             raise ValueError("Belum ada draft yang dapat difinalisasi.")
+        if task.get("output_spec"):
+            from ngertiin.files.validation import outputs
+
+            outputs(task["draft"], task["output_spec"])
         await store.persist_revision(conn, task, uuid5(task["id"], f"draft:{task['revision']}"))
         action_id = uuid5(task["id"], f"finalize:{task['revision']}")
         await conn.execute(
             "INSERT INTO "
             "task_actions(id,task_id,revision,kind,target_id,content_hash,content,status) "
-            "VALUES (%s,%s,%s,'finalize_text',%s,%s,%s,%s) ON CONFLICT DO NOTHING",
+            "VALUES (%s,%s,%s,%s,%s,%s,%s,%s) ON CONFLICT DO NOTHING",
             (
                 action_id,
                 task["id"],
                 task["revision"],
+                "finalize_result" if task.get("output_spec") else "finalize_text",
                 task["thread_id"],
-                fingerprint(task["draft"]),
+                review_hash(task),
                 task["draft"],
                 "proposed" if task["review_required"] else "approved",
             ),
@@ -45,7 +64,7 @@ async def approved(conn, task: dict, action_id: UUID):
         not action
         or action["revision"] != task["revision"]
         or action["target_id"] != task["thread_id"]
-        or action["content_hash"] != fingerprint(task["draft"])
+        or action["content_hash"] != review_hash(task)
         or action["status"] not in ("approved", "executing", "succeeded")
     ):
         raise ValueError("Persetujuan tidak cocok dengan versi draft saat ini.")
@@ -67,7 +86,7 @@ async def decide(owner: UUID, action_id: UUID, revision: int, approve: bool, req
         if (
             revision != task["revision"]
             or revision != action["revision"]
-            or action["content_hash"] != fingerprint(task["draft"])
+            or action["content_hash"] != review_hash(task)
         ):
             raise HTTPException(
                 409, "Draft sudah berubah. Tinjau versi terbaru sebelum memutuskan."
@@ -123,10 +142,20 @@ async def begin(execution: dict, action_id: UUID):
         await store.emit(conn, task)
 
 
-async def publish(execution: dict, action_id: UUID):
+async def publish(execution: dict, action_id: UUID, *, version_id=None):
     async with store.locked(execution["owner_id"], execution["id"]) as (conn, task):
         store.fence(task, execution)
         action = await approved(conn, task, action_id)
+        delivered_text = action["content"]
+        result_parts = []
+        if task.get("result_id"):
+            from ngertiin.files.results import commit
+
+            if version_id is None:
+                raise ValueError("Manifest hasil belum dipublikasikan.")
+            manifest = await commit(conn, task, version_id)
+            delivered_text = manifest["summary"]
+            result_parts = [{"id": "result", "type": "result", "result_id": str(task["result_id"])}]
         previous = await one(
             conn, "SELECT message_id FROM task_deliveries WHERE task_id=%s", (task["id"],)
         )
@@ -148,9 +177,10 @@ async def publish(execution: dict, action_id: UUID):
                             {
                                 "id": "text",
                                 "type": "text",
-                                "text": f"Hasil task: {task['title']}\n\n{action['content']}",
+                                "text": f"Hasil task: {task['title']}\n\n{delivered_text}",
                             }
                         ]
+                        + result_parts
                     ),
                     thread["seq"] + 1,
                 ),
@@ -170,7 +200,7 @@ async def publish(execution: dict, action_id: UUID):
         await store.change(
             conn,
             task,
-            result=action["content"],
+            result=delivered_text,
             status="succeeded",
             stage="complete",
             lease_token=None,

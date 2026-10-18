@@ -97,6 +97,13 @@ async def revise(owner: UUID, task_id: UUID, revision: int, draft: str, request_
     if not draft or len(draft) > 24000:
         raise HTTPException(422, "Draft harus berisi 1–24000 karakter.")
     async with store.locked(owner, task_id) as (conn, task):
+        if task.get("output_spec"):
+            from ngertiin.files.validation import outputs
+
+            try:
+                outputs(draft, task["output_spec"])
+            except ValueError as error:
+                raise HTTPException(422, str(error)) from error
         previous = await one(
             conn,
             "SELECT fingerprint FROM task_revisions WHERE task_id=%s AND request_key=%s",

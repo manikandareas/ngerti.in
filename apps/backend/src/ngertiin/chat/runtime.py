@@ -68,12 +68,38 @@ def build_agent(run: dict, saver, projection: Projection):
         }
 
     @tool
-    async def start_background_task(instruction: str, review_before_finish: bool = False) -> dict:
-        """Titipkan satu pekerjaan teks ke background hanya atas permintaan eksplisit pengguna.
+    async def read_thread_files() -> dict:
+        """Temukan revision file yang benar-benar dilampirkan pada percakapan ini.
+
+        Hanya metadata; gunakan referensi exact untuk pekerjaan file melalui start_background_task.
+        """
+        async with transaction() as conn:
+            rows = await (
+                await conn.execute(
+                    "SELECT DISTINCT r.id AS revision_id,r.filename,r.revision,r.sha256 "
+                    "FROM task_file_inputs i JOIN background_tasks t ON t.id=i.task_id "
+                    "JOIN file_revisions r ON r.id=i.revision_id "
+                    "JOIN product_files f ON f.id=r.file_id WHERE t.owner_id=%s "
+                    "AND t.thread_id=%s AND r.status='ready' AND f.deleted_at IS NULL LIMIT 20",
+                    (run["owner_id"], run["thread_id"]),
+                )
+            ).fetchall()
+        return {"files": [{**row, "revision_id": str(row["revision_id"])} for row in rows]}
+
+    @tool
+    async def start_background_task(
+        instruction: str,
+        review_before_finish: bool = False,
+        file_inputs: list[dict] | None = None,
+        output_files: list[dict] | None = None,
+    ) -> dict:
+        """Titipkan satu pekerjaan teks/file atas permintaan eksplisit pengguna.
 
         Gunakan untuk menulis, merangkum, atau menyusun rencana dari konteks chat.
         review_before_finish=True bila pengguna meminta review sebelum finalisasi.
-        Tidak menyediakan web, file, eksekusi kode, jadwal, atau aksi eksternal.
+        file_inputs: [{revision_id,start:1,end:null}] dari read_thread_files, tanpa menebak ID.
+        output_files: [{filename:'hasil.md',format:'md'}]; format md/txt/csv/json/html statis.
+        Tidak menyediakan web, eksekusi kode, jadwal, atau aksi eksternal.
         """
         from uuid import uuid5
 
@@ -86,6 +112,8 @@ def build_agent(run: dict, saver, projection: Projection):
             instruction,
             review_before_finish,
             source_run=run,
+            inputs=file_inputs,
+            outputs=output_files,
         )
         return {
             "task_id": str(task["id"]),
@@ -132,13 +160,15 @@ def build_agent(run: dict, saver, projection: Projection):
     ]
     return create_agent(
         model,
-        tools=[read_recent_messages, read_agent_profile, start_background_task],
+        tools=[read_recent_messages, read_agent_profile, read_thread_files, start_background_task],
         system_prompt=run["profile"]["soul"]
         + (
             "\nJika pengguna secara eksplisit meminta pekerjaan teks di background, gunakan "
             "start_background_task satu kali, lalu beri konfirmasi singkat dan akhiri giliran. "
             "Pertanyaan biasa dijawab langsung. Pesan baru tidak mengubah instruksi task lama. "
-            "Jangan menjanjikan web/file/kode/jadwal yang belum tersedia."
+            "Untuk mengolah file yang pernah dilampirkan, baca read_thread_files lalu buat satu "
+            "Task dengan revision exact dan output_files. Jangan mengklaim isi sudah dibaca hanya "
+            "dari metadata. Jangan menjanjikan web/kode/jadwal yang belum tersedia."
         ),
         middleware=middleware,
         checkpointer=saver,

@@ -35,6 +35,14 @@ class Settings(BaseSettings):
     task_budget_units: int = Field(default=60000, ge=30000, le=120000)
     task_account_daily_units: int = Field(default=240000, ge=60000, le=2000000)
     task_global_daily_units: int = Field(default=2400000, ge=60000, le=20000000)
+    mistral_api_key: SecretStr = SecretStr("")
+    mistral_ocr_model: str = "mistral-ocr-4-1"
+    mistral_ocr_usd_per_1000_pages: float = Field(default=4, ge=0, le=100)
+    file_max_bytes: int = Field(default=10485760, ge=1024, le=10485760)
+    file_batch_bytes: int = Field(default=26214400, ge=1024, le=26214400)
+    file_account_bytes: int = Field(default=262144000, ge=10485760, le=1073741824)
+    ocr_account_daily_pages: int = Field(default=100, ge=1, le=10000)
+    ocr_global_daily_pages: int = Field(default=1000, ge=1, le=100000)
     daytona_api_key: SecretStr = SecretStr("")
     daytona_api_url: str = "https://app.daytona.io/api"
     daytona_target: str | None = None

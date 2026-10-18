@@ -38,17 +38,40 @@ async def create(
     review_required: bool,
     *,
     source_run: dict | None = None,
+    inputs: list[dict] | None = None,
+    outputs: list[dict] | None = None,
+    result_id: UUID | None = None,
+    expected_result_revision: int | None = None,
 ):
+    from ngertiin.files import inputs as file_inputs
+    from ngertiin.files import results
+    from ngertiin.files.contracts import output_specs
+
+    inputs = inputs or []
+    try:
+        specs = output_specs(
+            outputs or ([{"filename": "hasil.md", "format": "md"}] if inputs else [])
+        )
+    except ValueError as error:
+        raise HTTPException(422, str(error)) from error
+    if result_id and not specs:
+        raise HTTPException(422, "Pembaruan hasil memerlukan format output.")
     instruction = instruction.strip()
     if not instruction or len(instruction.encode("utf-8")) > 6000:
         raise HTTPException(422, "Instruksi task harus berisi 1–6000 byte teks.")
-    digest = fingerprint(
-        {
-            "thread_id": str(thread_id),
-            "instruction": instruction,
-            "review_required": review_required,
-        }
-    )
+    identity = {
+        "thread_id": str(thread_id),
+        "instruction": instruction,
+        "review_required": review_required,
+    }
+    if inputs or specs or result_id:
+        identity.update(
+            inputs=inputs,
+            outputs=specs,
+            result_id=str(result_id),
+            expected_result_revision=expected_result_revision,
+        )
+    digest = fingerprint(identity)
     async with store.transaction() as conn:
         await lock_account(conn, owner)
         thread = await owned_thread(conn, owner, thread_id, lock=True)
@@ -73,6 +96,8 @@ async def create(
             if not valid:
                 raise store.StaleExecution()
         policy, task_id = snapshot(), uuid4()
+        if inputs or specs:
+            policy = {**policy, "version": "file-task-work-v1", "max_input_bytes": 48000}
         await budget.admit(conn, owner, policy)
         captured = await input_snapshot(conn, thread_id, instruction)
         title = " ".join(instruction.split())
@@ -99,6 +124,25 @@ async def create(
                 json_value(policy),
             ),
         )
+        captured_files = await file_inputs.capture(conn, owner, task_id, inputs)
+        if specs:
+            rid = await results.bind(conn, task, result_id, expected_result_revision)
+            captured["files"] = captured_files
+            if result_id:
+                prior = await results.detail(conn, owner, rid, expected_result_revision)
+                if not prior["selected"] or prior["selected"]["status"] != "ready":
+                    raise HTTPException(409, "Revision hasil sebelumnya belum siap.")
+                captured["previous_result"] = {
+                    "result_id": str(rid),
+                    "revision": prior["selected"]["revision"],
+                    "manifest": prior["selected"]["manifest"],
+                }
+            await conn.execute(
+                "UPDATE background_tasks SET "
+                "output_spec=%s,result_id=%s,input_snapshot=%s WHERE id=%s",
+                (json_value(specs), rid, json_value(captured), task_id),
+            )
+            task.update(output_spec=specs, result_id=rid, input_snapshot=captured)
         if not source_run:
             allocation = await reserve(conn, owner, "chat", f"task-input:{task_id}", 1, digest)
             for index, (role, text) in enumerate(
@@ -119,7 +163,17 @@ async def create(
                         uuid4(),
                         thread_id,
                         role,
-                        json_value([{"id": "text", "type": "text", "text": text}]),
+                        json_value(
+                            [{"id": "text", "type": "text", "text": text}]
+                            + (
+                                [
+                                    {"id": f"file:{f['revision_id']}", "type": "file", **f}
+                                    for f in captured_files
+                                ]
+                                if role == "user"
+                                else []
+                            )
+                        ),
                         thread["seq"] + index + 1,
                     ),
                 )

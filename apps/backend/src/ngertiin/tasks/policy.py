@@ -31,6 +31,11 @@ def snapshot() -> dict:
 def call_ceiling(messages: list, policy: dict) -> int:
     size = sum(len(str(message.content).encode("utf-8")) for message in messages)
     if size > policy["max_input_bytes"]:
+        if policy["version"] == "file-task-work-v1":
+            raise ValueError(
+                "Isi file melebihi budget konteks. Pilih rentang halaman/baris lebih kecil "
+                "pada lampiran lalu buat task baru. Tidak ada bagian yang dipotong diam-diam."
+            )
         raise ValueError("Konteks task terlalu panjang. Buat permintaan yang lebih ringkas.")
     # A byte-per-token upper bound plus framing allowance; output includes reasoning.
     return size + policy["input_overhead_units"] + policy["max_output_tokens"]

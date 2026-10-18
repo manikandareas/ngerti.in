@@ -10,7 +10,8 @@ async def reconcile_deliveries():
             await conn.execute(
                 "SELECT t.id,t.owner_id FROM background_tasks t JOIN "
                 "procrastinate_jobs j ON j.id=t.job_id "
-                "WHERE t.status IN ('queued','running') AND j.status::text "
+                "WHERE t.status IN ('queued','running') AND "
+                "t.stage<>'preparing_inputs' AND j.status::text "
                 "IN ('failed','aborted','succeeded') LIMIT 50"
             )
         ).fetchall()

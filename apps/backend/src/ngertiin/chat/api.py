@@ -11,6 +11,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from ngertiin.accounts.auth import current_account
 from ngertiin.async_db import transaction
 from ngertiin.chat import approvals, quota, store
+from ngertiin.files.contracts import FileInput, OutputSpec
 from ngertiin.models import Account
 
 router = APIRouter(prefix="/chat", tags=["chat"])
@@ -24,6 +25,8 @@ class ThreadInput(BaseModel):
 
 class MessageInput(ThreadInput):
     text: str = Field(min_length=1, max_length=12000)
+    inputs: list[FileInput] = Field(default_factory=list, max_length=5)
+    outputs: list[OutputSpec] = Field(default_factory=list, max_length=10)
 
 
 class DecisionInput(ThreadInput):
@@ -52,6 +55,19 @@ async def send(thread_id: UUID, body: MessageInput, account: AccountDep):
     text = body.text.strip()
     if not text:
         raise HTTPException(400, "Tulis pesanmu terlebih dahulu.")
+    if body.inputs or body.outputs:
+        from ngertiin.tasks.creation import create
+
+        task = await create(
+            account.id,
+            thread_id,
+            body.request_key,
+            text,
+            False,
+            inputs=[v.model_dump(mode="json") for v in body.inputs],
+            outputs=[v.model_dump() for v in body.outputs],
+        )
+        return {"id": task["id"], "task_id": task["id"]}
     return await store.submit(account.id, thread_id, body.request_key, text)
 
 

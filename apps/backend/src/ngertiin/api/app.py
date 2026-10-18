@@ -18,6 +18,8 @@ from ngertiin.api.diagnostics import router as diagnostic_router
 from ngertiin.async_db import close_pool
 from ngertiin.chat.api import router as chat_router
 from ngertiin.config import get_settings
+from ngertiin.files.api import router as file_router
+from ngertiin.files.limits import UploadBodyLimitMiddleware
 from ngertiin.health import system_status
 from ngertiin.models import Account
 from ngertiin.quotas.api import ERROR_TYPES, quota_error
@@ -42,8 +44,10 @@ app = FastAPI(
 app.include_router(chat_router)
 app.include_router(quota_router)
 app.include_router(task_router)
+app.include_router(file_router)
 for quota_error_type in ERROR_TYPES:
     app.add_exception_handler(quota_error_type, quota_error)
+app.add_middleware(UploadBodyLimitMiddleware, max_bytes=settings.file_max_bytes)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.allowed_origins,

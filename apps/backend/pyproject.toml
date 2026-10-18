@@ -21,6 +21,9 @@ dependencies = [
   "structlog",
   "python-multipart",
   "langchain-openai>=1,<2",
+  "httpx>=0.28.1",
+  "pypdf>=6.21.1",
+  "pillow>=13.0.0",
 ]
 
 [dependency-groups]

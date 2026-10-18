@@ -18,6 +18,10 @@ logger = structlog.get_logger()
 
 
 async def execute(execution: dict):
+    from ngertiin.files.inputs import prepare
+
+    if not await prepare(execution):
+        return
     settings = get_settings()
     config = {
         "configurable": {"thread_id": f"task:{execution['id']}:r{execution['revision']}"},

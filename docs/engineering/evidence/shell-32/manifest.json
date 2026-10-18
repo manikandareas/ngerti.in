@@ -1,0 +1,96 @@
+{
+  "ticket": 32,
+  "recorded_at": "2026-10-18T08:15:25.626981+00:00",
+  "files": [
+    {
+      "file": "browser-observations.json",
+      "sha256": "8dd158d26359ef5ae8016b2bd0f22335f810a2e19a338e7dbc35348ed4a54eab",
+      "bytes": 2803
+    },
+    {
+      "file": "capabilities-desktop.png",
+      "sha256": "688888edf32e7c3eff68263154a018f064038598f08781e74d13e1576fe91a73",
+      "bytes": 69839
+    },
+    {
+      "file": "chat-mobile.png",
+      "sha256": "4ede3f9a70bc5fe83fc28aed762903801dd3a80b6ba464f670510ad4532f53f6",
+      "bytes": 36182
+    },
+    {
+      "file": "checks.json",
+      "sha256": "8d4e864c1bc864fc6f87867cfc35306139ac0d60372dce6861b42c2e7d761e4f",
+      "bytes": 992
+    },
+    {
+      "file": "first-result.png",
+      "sha256": "d40d7315f64fe3de47092107e88e69d311ca6abebba0639e88b1cd3014daca56",
+      "bytes": 46011
+    },
+    {
+      "file": "history-error.png",
+      "sha256": "f824a32befda7f8e0c02b40b96c1b8ab7bf0a683228d05e17fb3e8c2b5a3d573",
+      "bytes": 29530
+    },
+    {
+      "file": "menu-mobile.png",
+      "sha256": "aafa4427ffed5e005195f25aa51da335d1043052f511a53374e01caff53ef9db",
+      "bytes": 31241
+    },
+    {
+      "file": "offline-mobile.png",
+      "sha256": "73ac00a276b543634dcd4dd2d54b99885c77dfe1fad360dbe4166abddc1cae59",
+      "bytes": 45430
+    },
+    {
+      "file": "onboarding-desktop.png",
+      "sha256": "c940b8ec47a661aa5e060406ba263e4ef10ac8e0096cf7aebed4ff198ddfc87e",
+      "bytes": 46150
+    },
+    {
+      "file": "onboarding-mobile.png",
+      "sha256": "d1be48495d16fa79846bd0aca770e20925829bc8c53219797479cd53da4dab9d",
+      "bytes": 39087
+    },
+    {
+      "file": "reconnecting.png",
+      "sha256": "93b391b84e6b5726d5d6bcb948fe15c56d6206b48509168b9e38e71752ddd5ef",
+      "bytes": 64341
+    },
+    {
+      "file": "runtime-usage.json",
+      "sha256": "8dc499c37c34e4d812e2cd3817c443a5125ff419f727a232fb4b53a94e11dc05",
+      "bytes": 742
+    },
+    {
+      "file": "settings-dark.png",
+      "sha256": "d74e4726c8f18534ecbbf7bfa64b16f992f55d99bfccac3161a0e2711ae6ee35",
+      "bytes": 36661
+    },
+    {
+      "file": "stop-desktop.png",
+      "sha256": "d8b24736b87e005579363908b3afeab835292bff5ea24e4e8d2fed5fefa592e0",
+      "bytes": 59214
+    },
+    {
+      "file": "usage-desktop.png",
+      "sha256": "34715875e10f8d2cc2a4eb7d8765b1d8ffa68848271fe768d9ba105a899136d4",
+      "bytes": 37376
+    },
+    {
+      "file": "usage-error.png",
+      "sha256": "c1c393e0be94a8adcd9dec4af70404c8cd0c5287e90f88b1c6dc41e6813217a7",
+      "bytes": 25604
+    },
+    {
+      "file": "usage-mobile.png",
+      "sha256": "c223790d527dc2bfc06ed41a1c17780502d315d21ea04e9750a2319d96eaf4f9",
+      "bytes": 42834
+    },
+    {
+      "file": "usage-zero-fixture.png",
+      "sha256": "29406d94ac3bd1235c474148f4bb2feaec3442e497528f493d46838e9ee5ae5e",
+      "bytes": 61495
+    }
+  ]
+}

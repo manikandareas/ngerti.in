@@ -1,0 +1,36 @@
+{
+  "at": "2026-10-18T08:15:25.621528+00:00",
+  "checks": [
+    {
+      "command": "make check",
+      "exit_code": 0,
+      "summary": [
+        "Checked 75 files in 27ms. No fixes applied.",
+        "$ bun --filter @ngertiin/web typecheck",
+        "@ngertiin/web typecheck: Exited with code 0",
+        "All checks passed!",
+        "51 files already formatted",
+        "Success: no issues found in 43 source files"
+      ]
+    },
+    {
+      "command": "make build",
+      "exit_code": 0,
+      "summary": [
+        "@ngertiin/web build: ℹ Generated .output/nitro.json",
+        "@ngertiin/web build: ",
+        "@ngertiin/web build: [nitro] ✔ You can preview this build using npx vite preview",
+        "@ngertiin/web build: Exited with code 0"
+      ]
+    },
+    {
+      "command": "make docs-check",
+      "exit_code": 0,
+      "summary": "65 page hashes, 41 tickets, 4 views, 959 local links OK"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "model": "gpt-6-luna",
+  "runs": [
+    {
+      "id": "03ea3451-3282-42e8-bc72-0efcf8dc1fac",
+      "status": "complete",
+      "usage": {
+        "resp_00d0d99c4f1c7086006ad47b680aa487d08bf87d5a0845fb31": {
+          "input_tokens": 214,
+          "total_tokens": 258,
+          "output_tokens": 44,
+          "input_token_details": {
+            "cache_read": 0,
+            "cache_creation": 0
+          },
+          "output_token_details": {
+            "reasoning": 0
+          }
+        }
+      },
+      "created_at": "2026-10-18 07:55:18.490162+00:00"
+    },
+    {
+      "id": "ae84de43-8bf2-43e5-88b4-4af4f11e6d74",
+      "status": "cancelled",
+      "usage": {},
+      "created_at": "2026-10-18 08:03:47.207582+00:00"
+    }
+  ]
+}

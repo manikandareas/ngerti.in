@@ -1,0 +1,102 @@
+{
+  "offline": {
+    "draft": "Draft NG032: rencana kecil yang belum dikirim.",
+    "offlineText": true,
+    "online": false,
+    "sendDisabled": true
+  },
+  "quota_zero_ui_fixture": {
+    "draft": "Draft NG032 saat kuota habis.",
+    "quotaZero": true,
+    "sendDisabled": true
+  },
+  "send_failure": {
+    "draft": "Tulis 100 ide kegiatan produktif, satu kalimat per ide.",
+    "error": true,
+    "pendingKeys": 1
+  },
+  "reconnect_before": {
+    "assistantMessages": 2,
+    "draft": "Draft NG032 saat reconnect.",
+    "reconnecting": true
+  },
+  "reconnect_after": {
+    "assistantMessages": 2,
+    "draft": "Draft NG032 saat reconnect.",
+    "reconnecting": false
+  },
+  "keyboard": {
+    "focus": "Buka riwayat chat",
+    "focusVisible": true,
+    "outline": "3px",
+    "reduced": true
+  },
+  "mobile_navigation_focus": {
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/148.0.0.0 Safari/537.36",
+    "focus": "workspace-heading",
+    "overflow": false,
+    "theme": "light",
+    "viewport": 320
+  },
+  "mobile_draft": {
+    "draft": "Draft NG032 pada side chat.\n",
+    "hasNewline": true,
+    "messages": 0,
+    "suggestionsDisabled": 3
+  },
+  "short_viewport": {
+    "composerBottom": 360,
+    "height": 400,
+    "overflow": false,
+    "transcriptScrollable": true
+  },
+  "live_snapshot": {
+    "messages": [
+      {
+        "id": "e6071a85-d0c0-4b8b-81f2-78863c85afec",
+        "role": "user",
+        "status": "complete",
+        "text": "Bantu aku menulis pesan singkat untuk menjadwalkan ulang pertemuan besok. Gunakan bahasa yang sopan."
+      },
+      {
+        "id": "e71c7141-0499-4f3a-83e1-ba882ab1a954",
+        "role": "assistant",
+        "status": "complete",
+        "text": "Halo, mohon maaf, apakah pertemuan kita besok bisa dijadwalkan ulang? Silakan beri tahu waktu lain yang cocok untuk Anda. Terima kasih atas pengertiannya."
+      },
+      {
+        "id": "a7037192-aa86-49a6-9a4c-97ef78981992",
+        "role": "user",
+        "status": "complete",
+        "text": "Tulis 100 ide kegiatan produktif, satu kalimat per ide."
+      },
+      {
+        "id": "e19a0922-67d2-4936-9073-7fb777214447",
+        "role": "assistant",
+        "status": "cancelled",
+        "text": ""
+      }
+    ],
+    "quota": {
+      "limit": 100,
+      "remaining": 99,
+      "reserved": 0,
+      "used": 1
+    },
+    "run": {
+      "attempt": 1,
+      "error": null,
+      "id": "ae84de43-8bf2-43e5-88b4-4af4f11e6d74",
+      "request_key": "c53d35bf-1619-468e-a861-3c698d239933",
+      "status": "cancelled"
+    },
+    "stopNotice": true,
+    "thread_id": "becb56d8-235b-53f3-a6ac-e32a129f8c9c",
+    "through_seq": 21
+  },
+  "final_visual": {
+    "assistantMessages": 2,
+    "cancelNotices": 1,
+    "reconnecting": true
+  }
+}

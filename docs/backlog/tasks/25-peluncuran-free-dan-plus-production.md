@@ -1,39 +1,36 @@
-# Peluncuran Free dan Plus production
+# NG-025 · Peluncuran asisten umum V1 production
 
-Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381ac90b6df75b7e1a157)
+Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381ac90b6df75b7e1a157) · Readback: 2026-10-18T06:04:56.780944+00:00
 
-Status: **Backlog** · Prioritas: **P0** · Area: **Release** · Urutan: **25**
-
-Depends on:
-
-- [Onboarding dan tour Course pertama](10-onboarding-dan-tour-course-pertama.md)
-- [Course player dan panel chat kontekstual](11-course-player-dan-panel-chat-kontekstual.md)
-- [Practice: review jawaban salah dan unlock](12-practice-review-jawaban-salah-dan-unlock.md)
-- [Pengayaan opsional dalam Course](13-pengayaan-opsional-dalam-course.md)
-- [Reward flashcard tersimpan dan review](14-reward-flashcard-tersimpan-dan-review.md)
-- [Streak dari aktivitas belajar valid](15-streak-dari-aktivitas-belajar-valid.md)
-- [Perubahan soul atas permintaan dan HITL](16-perubahan-soul-atas-permintaan-dan-hitl.md)
-- [Memory aktif: capture, evidence dan recall](17-memory-aktif-capture-evidence-dan-recall.md)
-- [Delivery proaktif per thread dan batas global](20-delivery-proaktif-per-thread-dan-batas-global.md)
-- [Paket pengguna: usage, expiry dan downgrade](22-paket-pengguna-usage-expiry-dan-downgrade.md)
-- [Recovery end-to-end dan konsistensi state](23-recovery-end-to-end-dan-konsistensi-state.md)
-- [Benchmark kualitas dan biaya lifecycle Course](24-benchmark-kualitas-dan-biaya-lifecycle-course.md)
+| Property | Value |
+| --- | --- |
+| Ticket | 25 |
+| Urutan | 25 |
+| Lingkup | Aktif V1 |
+| Status | Backlog |
+| Prioritas | P0 |
+| Area | Release |
+| Depends on | [NG-041 · Benchmark kualitas latency dan biaya asisten umum](41-benchmark-kualitas-latency-dan-biaya-asisten-umum.md) · [NG-032 · Shell onboarding dan walkthrough asisten umum](32-shell-onboarding-dan-walkthrough-asisten-umum.md) · [NG-022 · Paket pengguna usage expiry dan downgrade](22-paket-pengguna-usage-expiry-dan-downgrade.md) · [NG-023 · Recovery end-to-end dan konsistensi state](23-recovery-end-to-end-dan-konsistensi-state.md) |
 
 <!-- notion-content:start -->
-## Hasil
-
-Alur inti dan pembayaran tersedia dengan operasi yang dapat dipantau.
+Tujuan: Peluncuran asisten umum V1 production.
+Lingkup: **Aktif V1**. Identitas NG-025; Urutan delivery 25.
 
 ## Acceptance criteria
 
-- [ ] Deployment web/API/worker, migration, backup/restore, storage dan auth diverifikasi pada environment production.
-- [ ] Health, logs/traces dan funnel signup→Course→belajar→paid→renewal dapat dipantau.
-- [ ] Kebijakan publik/pembayaran sesuai perilaku implementasi; angka biaya dan entitlement divalidasi untuk launch.
-- [ ] Walkthrough pengguna baru/kembali desktop dan HP, recovery serta transaksi terverifikasi sebelum dibuka ke cohort awal.
+- [ ] Daytona, VNC/live view, takeover backend, offline schedules, memory/goals, file/result persistence serta usage/payment seluruhnya diterima.
+- [ ] Semua modul mempunyai spesifikasi, evidence, tiket dan bukti acceptance; walkthrough desktop/mobile dan P01–P30 lulus.
+- [ ] Production backup/restore, secrets, ownership, monitoring, cleanup/budget dan support/recovery diverifikasi; kemampuan belum diuji tidak dipasarkan.
 
-## Spesifikasi
+## Spesifikasi dan bukti
 
-[04 · Arsitektur & Delivery](../../product/04-arsitektur-dan-delivery.md)
+[06 · Development, Operasi & Acceptance](../../engineering/development.md) · [REA-6 · Browser & Computer](../../research/muse-ai-v1/evidence/computer.md)
 
-[01 · Produk & Paket](../../product/01-produk-dan-paket.md)
+## Dependencies
+
+[NG-041 · Benchmark kualitas latency dan biaya asisten umum](41-benchmark-kualitas-latency-dan-biaya-asisten-umum.md) · [NG-032 · Shell onboarding dan walkthrough asisten umum](32-shell-onboarding-dan-walkthrough-asisten-umum.md) · [NG-022 · Paket pengguna usage expiry dan downgrade](22-paket-pengguna-usage-expiry-dan-downgrade.md) · [NG-023 · Recovery end-to-end dan konsistensi state](23-recovery-end-to-end-dan-konsistensi-state.md)
+
+## Bukti penerimaan
+
+[NG-030 · Bukti penerimaan baseline V1](../../engineering/baseline-v1-acceptance.md). Bukti repo: docs/engineering/evidence/baseline-v1/. Status mengikuti hasil pemeriksaan baru; tidak mengandalkan penerimaan #01–05.
 <!-- notion-content:end -->

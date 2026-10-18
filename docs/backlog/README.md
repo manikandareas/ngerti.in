@@ -1,29 +1,24 @@
-# 05 · Backlog
+# 07 · Backlog Implementasi V1
 
-Sumber: [Notion](https://app.notion.com/p/f1b4f3a60ca341dfac73288b51726162) · Snapshot: 2026-10-13 11:37:14 UTC
+Sumber: [Notion](https://app.notion.com/p/3fdabdd61873812e9ed6c67417884b74) · Readback: 2026-10-18T06:04:56.780944+00:00
 
-Pada **15 Oktober 2026**, tiket #01 dan #02 sudah **Done**. Fondasi #02 diterima menggunakan MinIO lokal dan pengujian manual melalui browser sesuai keputusan pengguna; [bukti penerimaan](../engineering/foundation-02-manual-acceptance.md) tersedia. Status dibaca kembali dari Notion dan diselaraskan pada tiket serta view lokal.
+<!-- notion-content:start -->
+Nomor tiket adalah identitas tetap; Urutan adalah urutan delivery yang boleh berubah. Nomor baru dimulai NG-026 setelah tiket lama terakhir NG-025. Kolom Ticket menyimpan nomor dan Lingkup membedakan Aktif V1, Histori, Di luar V1. Status Done lama tidak direset dan tidak otomatis memenuhi V1 baru.
 
-## Views
+## Gerbang implementasi pertama
 
-- [Semua](views/semua.md) — 25 tiket.
-- [Kanban](views/kanban.md) — 25 tiket.
-- [Siap dikerjakan](views/siap-dikerjakan.md) — 0 tiket.
-- [Board tanpa nama](views/board-tanpa-nama.md) — 25 tiket.
+NG-026 hapus domain/runtime belajar → NG-027 UI/persona umum → NG-028 chat-only quota → NG-029 baseline/reset → NG-030 penerimaan baseline. **Seluruh fitur baru bergantung pada NG-030.** Trial Daytona belum dijalankan oleh reset ini.
 
-## Properties
+## Urutan setelah gerbang
 
-| Nama | Tipe | Pilihan / target |
-| --- | --- | --- |
-| Area | select | Fondasi, Course, Belajar, Agent, Billing, Release |
-| Depends on | relation | Tiket pada backlog yang sama |
-| Prioritas | select | P0, P1 |
-| Status | select | Backlog, Ready, In Progress, Review, Done, Blocked |
-| Tugas | title | — |
-| Urutan | number | — |
+NG-031 Daytona trial → NG-032 shell/onboarding → NG-033 Task/approval → NG-034 file/results → NG-035 code sandbox → NG-036 browser/VNC/live desktop/takeover → NG-037 offline scheduler → NG-016/017/018 persona/memory/controls → NG-038 goals → NG-019/020 proaktivitas → NG-039 Library/search → NG-040 compute usage → NG-021/022 payment/entitlement → NG-023 recovery → NG-041 benchmark → NG-025 release.
+Hard cost/resource caps dan telemetry hadir sejak Task/sandbox/scheduler awal; pekerjaan usage akhir menetapkan allowance dan harga komersial. Daytona, VNC, live view dan takeover tetap wajib V1. Workspace/hasil persisten; RAM/proses tidak dijanjikan sebelum PoC.
 
-Setiap tiket memiliki salinan isi lengkap pada `tasks/`, termasuk acceptance criteria dan references ke spesifikasi. Konfigurasi native view serta identitas relation tersimpan di [manifest](../notion-manifest.json).
+## Perlakuan tiket lama
 
-Tiket #003 sudah **Done** pada 15 Oktober 2026. [Bukti penerimaan standar konten](../engineering/content-03-manual-acceptance.md) mencatat fixture, schema dan probe provider. View Siap dikerjakan saat ini kosong; status #005 tetap Backlog.
-
-Tiket #004 sudah **Done** pada **16 Oktober 2026**. Penerimaan chat dan cleanup React tercatat pada [implementasi #04](../engineering/chat-04-implementation.md) serta [bukti cleanup](../engineering/react-cleanup-2026-10-16.md). Status dan isi Notion sudah dibaca kembali; kartu dipindahkan ke Done pada snapshot kanban lokal.
+NG-001–005 mempertahankan Done sebagai Histori, termasuk fondasi yang masih direuse (#02/#04/#05). NG-006–015 dan NG-024 berstatus historis sebelumnya namun diberi Lingkup Di luar V1, dikeluarkan dari board aktif dan tidak menjadi dependency fitur V1. Tidak dipindah menjadi proyek implementasi V2.
+NG-016–023 dan NG-025 mempertahankan identitas tetapi scope dan dependency diperbarui menjadi asisten umum. Kriteria lama disimpan sebagai riwayat di tiket; kriteria aktif ditulis di atasnya. View Semua memuat seluruh identitas; Kanban/Siap dikerjakan hanya Aktif V1; board riwayat memuat Histori/Di luar V1.
+Ready hanya bila seluruh dependencies sudah Done. Done memerlukan bukti acceptance yang cocok dengan scope aktif. Review/In Progress tetap dipakai bila masih ada verifikasi, tanpa menyamakan dokumentasi dengan kelulusan fitur.
+Database: [07 · Backlog Implementasi V1](README.md). Spesifikasi: [01 · Produk & Scope V1](../product/01-produk-dan-paket.md) · [02 · UX & User Flow](../product/02-user-flow.md) · [03 · Perilaku Agent](../product/03-agent.md) · [04 · Arsitektur, Runtime & Kontrak](../product/04-arsitektur-dan-delivery.md) · [05 · Usage, Paket & Pembayaran](../product/05-usage-paket-pembayaran.md) · [06 · Development, Operasi & Acceptance](../engineering/development.md)
+Indeks bukti: [08 · Bukti Riset & REA](../research/muse-ai-v1/README.md).
+<!-- notion-content:end -->

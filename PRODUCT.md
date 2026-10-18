@@ -10,16 +10,18 @@ web
 
 ## Users and purpose
 
-Pelajar SMA dan mahasiswa belajar dari materi dan tujuan mereka sendiri melalui Course dan satu agent personal. Spesifikasi produk berada di docs/product; Notion tetap menjadi sumber keputusan dan status.
+Asisten personal umum bagi orang yang ingin menyampaikan ide, meminta bantuan berpikir/menulis, mengolah file, menjalankan kode/browser, dan menjadwalkan pekerjaan tanpa mengoperasikan CLI/VPS sendiri. [Spesifikasi aktif](docs/product/01-produk-dan-paket.md) menetapkan scope; Notion adalah sumber keputusan/status.
 
 ## Product direction
 
-Satu agent menemani pengguna lintas percakapan dan Course. V1 mengikuti backlog; visi jangka panjang tidak menambah acceptance criteria v1.
+V1 wajib mencakup main/side chat, task background, approval umum, file/results persisten, Daytona sandbox, browser, VNC/live desktop/takeover pada sesi yang sama, scheduler offline, persona, memory, goals, proaktivitas terkontrol, Library/search, usage dan pembayaran. Baseline chat telah dipertahankan; fitur berikutnya adalah gap bertiket, bukan kemampuan yang dianggap tersedia. Course/Lesson/Practice hanya arah berikutnya, tanpa kode/fixture/tiket pembelajaran sebagai dependency aktif.
+
+Cleanup NG-026–030 menjadi gerbang pertama sebelum trial Daytona. Workspace/hasil persisten; proses/RAM hanya dijanjikan sesudah verifikasi provider. Harga/allowance komersial mengikuti telemetry dan benchmark, dengan batas chat development sementara.
 
 ## Design
 
-Gunakan sistem Soft Matcha yang telah disetujui di docs/walkthrough-ux.pen, termasuk light/dark semantic tokens. Pertahankan alur belajar, input, dan progress saat pengguna membuka chat atau memulihkan koneksi. UI task #02 meliputi autentikasi, shell awal, dan diagnostik development.
+Reuse Soft Matcha semantic tokens dan komponen yang ada. Pen walkthrough lama menyimpan riwayat pembelajaran; shell/onboarding/walkthrough asisten umum mengikuti NG-032. Pertahankan draft, history, replay serta kontrol stop/retry saat koneksi pulih. Panel komputer memakai session yang sama bagi agent/user; backend mengatur exclusive control dan agent membaca keadaan baru sebelum lanjut.
 
 ## Accessibility
 
-Gunakan semantic HTML, label input, navigasi keyboard, focus yang terlihat, dan hormati reduced motion. Persyaratan khusus lain belum ditetapkan.
+Semantic HTML, label input, keyboard navigation, visible focus, reduced motion, responsive layout dan user controls yang tetap tersedia saat allowance habis. Acceptance memakai browser nyata, static/build, targeted probes dan fault injection sesuai risiko modul.

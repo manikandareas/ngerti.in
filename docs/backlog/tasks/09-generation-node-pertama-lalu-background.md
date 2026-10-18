@@ -1,16 +1,21 @@
 # Generation: node pertama lalu background
 
-Sumber: [Notion](https://app.notion.com/p/3f8abdd61873816caeb2d24a482c6511)
+Sumber: [Notion](https://app.notion.com/p/3f8abdd61873816caeb2d24a482c6511) · Readback: 2026-10-18T06:04:56.780944+00:00
 
-Status: **Backlog** · Prioritas: **P0** · Area: **Course** · Urutan: **9**
-
-Depends on:
-
-- [Fondasi production: workspace, auth dan data](02-fondasi-production-workspace-auth-dan-data.md)
-- [Port standar Lesson dan soal dari prototipe](03-port-standar-lesson-dan-soal-dari-prototipe.md)
-- [Outline Course: perencanaan, revisi dan approval](08-outline-course-perencanaan-revisi-dan-approval.md)
+| Property | Value |
+| --- | --- |
+| Ticket | 9 |
+| Urutan | 1009 |
+| Lingkup | Di luar V1 |
+| Status | Backlog |
+| Prioritas | P0 |
+| Area | Course |
+| Depends on | [Fondasi production: workspace, auth dan data](02-fondasi-production-workspace-auth-dan-data.md) · [Port standar Lesson dan soal dari prototipe](03-port-standar-lesson-dan-soal-dari-prototipe.md) · [Outline Course: perencanaan, revisi dan approval](08-outline-course-perencanaan-revisi-dan-approval.md) |
 
 <!-- notion-content:start -->
+**Lingkup: Di luar V1 · NG-009 · reset 18 Oktober 2026.** Tiket pembelajaran ini dikeluarkan dari backlog aktif V1. Status lama dipertahankan sebagai riwayat; bukan dependency fitur asisten umum.
+Spesifikasi aktif: [01 · Produk & Scope V1](../../product/01-produk-dan-paket.md). Urutan/dependensi aktif: [07 · Backlog Implementasi V1](../README.md).
+
 ## Hasil
 
 Pengguna mulai membaca Lesson pertama yang lolos pemeriksaan sambil Lesson lain dan Practice dibuat oleh pool worker paralel.
@@ -24,7 +29,7 @@ Pengguna mulai membaca Lesson pertama yang lolos pemeriksaan sambil Lesson lain 
 
 ## Spesifikasi
 
-[04 · Arsitektur & Delivery](../../product/04-arsitektur-dan-delivery.md)
+[04 · Arsitektur, Runtime & Kontrak](../../product/04-arsitektur-dan-delivery.md)
 
-[02 · User Flow](../../product/02-user-flow.md)
+[02 · UX & User Flow](../../product/02-user-flow.md)
 <!-- notion-content:end -->

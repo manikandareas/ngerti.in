@@ -1,41 +1,29 @@
-# Ngertiin
+# Ngertiin V1
 
-Agent belajar personal untuk pelajar SMA dan mahasiswa. Spesifikasi dan backlog berasal dari [Notion](https://app.notion.com/p/3f8abdd6187381e39753f0d54ee2556b); salinan lokal dimulai dari [docs/README.md](docs/README.md).
+Asisten personal umum untuk percakapan, pekerjaan background, file/hasil, kode/browser, jadwal, memory dan goals. [Spesifikasi aktif](docs/README.md) dan [backlog](docs/backlog/README.md) membedakan target V1 dari kemampuan yang sudah diterima.
+
+Fondasi saat ini: Clerk/ownership, main/side chat, streaming SSE dan replay, stop/retry, LangGraph checkpoints, Procrastinate, S3/MinIO serta ledger chat. Daytona, VNC/live desktop/takeover, task umum, offline schedules dan fitur agent berikutnya masih mengikuti tiket implementasi. Course/Lesson/Practice tidak menjadi dependency aktif V1.
 
 ## Development
 
-Prasyarat: Docker/Compose, Bun 1.3.10, Node.js 22.12+, dan uv. uv mengelola Python 3.13. PostgreSQL/pgvector dan MinIO berjalan di Docker; web, API, dan worker berjalan di mesin.
+Prasyarat: Bun, uv, Docker/OrbStack. Isi `.env` dari `.env.example`, lalu:
 
 ```sh
-cp .env.example .env
-# Isi key Clerk development dan OPENAI_API_KEY di .env.
 make install
 make infra-up
 make setup
 make dev
 ```
 
-Jangan menyalin `.env.example` di atas `.env` yang sudah berisi credentials. Build MinIO pertama mengunduh binary release resmi yang dipin dan memeriksa checksum. Namespace Compose `ngertiin-v1` serta volume terpisah menjaga data prototipe tetap terpisah.
-
-- Web: <http://127.0.0.1:3000>
-- Diagnostik development: <http://127.0.0.1:3000/dev/system>
-- API: <http://127.0.0.1:8000/docs>
-- MinIO Console: <http://127.0.0.1:9001>
-- PostgreSQL: `localhost:5433`
-
-Jika ingin terminal terpisah, jalankan `make api`, `make worker`, dan `make web`. `make infra-down` menghentikan container tanpa menghapus volume. Ctrl+C pada `make dev` menghentikan ketiga proses aplikasi.
-
-## Pemeriksaan
+UI: http://localhost:3000 · API: http://127.0.0.1:8000. PostgreSQL/MinIO berada pada Compose `ngertiin-v1`; web/API/worker berjalan pada host. [Panduan operasi](docs/engineering/development.md) menjelaskan setup, readiness, diagnosis dan acceptance.
 
 ```sh
 make check
 make build
+make quota-inspect
+make docs-check
 ```
 
-Checks hanya lint, formatting, typecheck, dan build. Validasi fitur dilakukan manual di browser. Lihat [panduan development](docs/engineering/development.md), [checklist penerimaan #02](docs/engineering/foundation-02-manual-acceptance.md), dan [tiket fondasi](docs/backlog/tasks/02-fondasi-production-workspace-auth-dan-data.md).
+`make reset-dev` **menghapus seluruh data development lokal proyek**, lalu menjalankan baseline `0001_v1_baseline`, setup resmi queue/checkpoints dan bucket. Hentikan API/worker terlebih dahulu. Script memverifikasi environment, endpoint, project serta volume labels. Clerk, kredensial dan resource remote dipertahankan. Reset ini mengganti migrasi development lama; bukan jalur upgrade production.
 
-Chat personal #04 tersedia di halaman utama setelah login: main/side chat, streaming yang dapat dilanjutkan, tool, approval, stop, dan recovery worker. Lihat [implementasi dan penerimaan #04](docs/engineering/chat-04-implementation.md). `/course` menyimpan tujuan setelah persetujuan; sumber, outline, dan materi mengikuti backlog #07–09.
-
-## Batas modul
-
-`apps/web` menangani UI. `apps/backend/src/ngertiin` adalah satu package Python untuk API dan worker. Account ownership dan data aplikasi dimiliki backend; Procrastinate mengantarkan pekerjaan, sedangkan LangGraph menyimpan kemajuan workflow. Dokumentasi setup dan migrasi adalah bagian dari deliverable fondasi.
+[Bukti penerimaan baseline](docs/engineering/baseline-v1-acceptance.md) mencatat verifikasi baru. Bukti #01–05 serta Pen lama adalah riwayat, bukan bukti seluruh V1 sudah selesai. Keputusan/status Notion disalin melalui readback ke [manifest](docs/notion-manifest.json).

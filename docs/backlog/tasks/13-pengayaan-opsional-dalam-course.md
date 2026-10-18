@@ -1,15 +1,21 @@
 # Pengayaan opsional dalam Course
 
-Sumber: [Notion](https://app.notion.com/p/3f8abdd61873818d968deb21560778ae)
+Sumber: [Notion](https://app.notion.com/p/3f8abdd61873818d968deb21560778ae) · Readback: 2026-10-18T06:04:56.780944+00:00
 
-Status: **Backlog** · Prioritas: **P0** · Area: **Belajar** · Urutan: **13**
-
-Depends on:
-
-- [Generation: node pertama lalu background](09-generation-node-pertama-lalu-background.md)
-- [Practice: review jawaban salah dan unlock](12-practice-review-jawaban-salah-dan-unlock.md)
+| Property | Value |
+| --- | --- |
+| Ticket | 13 |
+| Urutan | 1013 |
+| Lingkup | Di luar V1 |
+| Status | Backlog |
+| Prioritas | P0 |
+| Area | Belajar |
+| Depends on | [Generation: node pertama lalu background](09-generation-node-pertama-lalu-background.md) · [Practice: review jawaban salah dan unlock](12-practice-review-jawaban-salah-dan-unlock.md) |
 
 <!-- notion-content:start -->
+**Lingkup: Di luar V1 · NG-013 · reset 18 Oktober 2026.** Tiket pembelajaran ini dikeluarkan dari backlog aktif V1. Status lama dipertahankan sebagai riwayat; bukan dependency fitur asisten umum.
+Spesifikasi aktif: [01 · Produk & Scope V1](../../product/01-produk-dan-paket.md). Urutan/dependensi aktif: [07 · Backlog Implementasi V1](../README.md).
+
 ## Hasil
 
 Pengayaan ditawarkan melalui screen tersendiri setelah Practice selesai, dengan CTA utama yang menonjol dan opsi lewati.
@@ -25,7 +31,7 @@ Pengayaan ditawarkan melalui screen tersendiri setelah Practice selesai, dengan 
 
 ## Spesifikasi
 
-[02 · User Flow](../../product/02-user-flow.md)
+[02 · UX & User Flow](../../product/02-user-flow.md)
 
-[01 · Produk & Paket](../../product/01-produk-dan-paket.md)
+[01 · Produk & Scope V1](../../product/01-produk-dan-paket.md)
 <!-- notion-content:end -->

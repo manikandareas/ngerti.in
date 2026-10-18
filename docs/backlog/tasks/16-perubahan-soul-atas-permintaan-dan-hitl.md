@@ -1,26 +1,36 @@
-# Perubahan soul atas permintaan dan HITL
+# NG-016 · Perubahan soul atas permintaan dan HITL
 
-Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381469879f976651f1717)
+Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381469879f976651f1717) · Readback: 2026-10-18T06:04:56.780944+00:00
 
-Status: **Backlog** · Prioritas: **P0** · Area: **Agent** · Urutan: **16**
-
-Depends on:
-
-- [Chat personal: thread dan streaming resumable](04-chat-personal-thread-dan-streaming-resumable.md)
+| Property | Value |
+| --- | --- |
+| Ticket | 16 |
+| Urutan | 13 |
+| Lingkup | Aktif V1 |
+| Status | Backlog |
+| Prioritas | P0 |
+| Area | Agent |
+| Depends on | [NG-037 · Scheduler pengguna saat offline](37-scheduler-pengguna-saat-offline.md) · [NG-033 · Task background dan approval umum](33-task-background-dan-approval-umum.md) |
 
 <!-- notion-content:start -->
-## Hasil
-
-Pengguna mengubah persona dengan proposal yang dapat ditinjau.
+Tujuan: Perubahan soul atas permintaan dan HITL.
+Lingkup: **Aktif V1**. Identitas NG-016; Urutan delivery 13.
 
 ## Acceptance criteria
 
-- [ ] Permintaan eksplisit menghasilkan usulan edit [soul.md](http://soul.md) yang menampilkan isi/revisi untuk review.
-- [ ] Backend menerapkan tepat isi yang disetujui; rejected/pending proposal tidak mengubah soul aktif.
-- [ ] Approval stale dan retry ditangani tanpa menimpa revisi baru atau membuat update ganda.
-- [ ] Tool memory dan job proaktif tidak dapat mengubah soul atau menerapkan persona ditolak melalui memory.
+- [ ] Persona revision baru ditinjau terhadap soul aktif; approve exact dan stale revision ditolak.
+- [ ] Penolakan tidak mengubah persona dan tidak ditangkap sebagai instruksi memory; source eksternal tidak dapat mengubah soul.
+- [ ] Pengguna dapat melihat revision aktif/history serta memulihkan revision secara eksplisit; uji P16/P27.
 
-## Spesifikasi
+## Spesifikasi dan bukti
 
-[03 · Agent](../../product/03-agent.md)
+[03 · Perilaku Agent](../../product/03-agent.md) · [REA-4 · Memory & Goals](../../research/muse-ai-v1/evidence/memory.md)
+
+## Dependencies
+
+[NG-037 · Scheduler pengguna saat offline](37-scheduler-pengguna-saat-offline.md) · [NG-033 · Task background dan approval umum](33-task-background-dan-approval-umum.md)
+
+## Bukti penerimaan
+
+[NG-030 · Bukti penerimaan baseline V1](../../engineering/baseline-v1-acceptance.md). Bukti repo: docs/engineering/evidence/baseline-v1/. Status mengikuti hasil pemeriksaan baru; tidak mengandalkan penerimaan #01–05.
 <!-- notion-content:end -->

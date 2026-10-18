@@ -1,6 +1,6 @@
 {
-  "format_version": 1,
-  "synced_at": "2026-10-13 11:37:14 UTC",
+  "format_version": 2,
+  "synced_at": "2026-10-18T06:04:56.780944+00:00",
   "source_of_truth": "Notion",
   "representation": "Markdown content mirror; native database views are static snapshots",
   "pages": [
@@ -10,69 +10,74 @@
       "url": "https://app.notion.com/p/3f8abdd6187381e39753f0d54ee2556b",
       "file": "README.md",
       "kind": "page",
-      "page_last_edited_at": "2026-10-14T14:54:38.551Z",
+      "page_last_edited_at": "2026-10-18T06:01:50.979Z",
       "properties": {
         "title": "Ngertiin"
       },
-      "notion_content_sha256": "639053c4ff3c0e91adb47fc37c3f3fd0d0a640d294840861364d95651f94be0d",
-      "local_content_sha256": "14e607b2e06a54de735f987384f276b6ec7d9f858770fa87d5ec29fe17e30b57",
-      "local_file_sha256": "467c571406e259365fb2142fe8fc394fe1af9b1830490bc79f9bcb10ebc406b7"
+      "notion_content_sha256": "8683032b40bb75fb3a66096aaca609cabbcce80266d1cb8aa515f3c2ac78181e",
+      "local_content_sha256": "801f9d06d6e4c7567923e16080a6ca96988fb7ea31076858396132428073981b",
+      "local_file_sha256": "bf69b4fe65c19823e14c9de43d4fd1a254252ee1c209b32e708cd6afb20fcc85",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
       "id": "3f8abdd6-1873-8122-878d-de3cb0661765",
-      "title": "01 · Produk & Paket",
+      "title": "01 · Produk & Scope V1",
       "url": "https://app.notion.com/p/3f8abdd618738122878dde3cb0661765",
       "file": "product/01-produk-dan-paket.md",
       "kind": "page",
-      "page_last_edited_at": "2026-10-14T14:54:39.369Z",
+      "page_last_edited_at": "2026-10-18T05:49:45.158Z",
       "properties": {
-        "title": "01 · Produk & Paket"
+        "title": "01 · Produk & Scope V1"
       },
-      "notion_content_sha256": "4e139fc6802a763d165c463fb15b19af8d58d803e84f5f3d025aefaa529969a9",
-      "local_content_sha256": "0d09de4c1c935a6da56b78f90f9e865b9e7b605ff1f70c4793587a2a3512d71f",
-      "local_file_sha256": "c94a5747bc7acbfe7831d6fcd51f7a76b92edeef600d5cdb2c677d88c464066f"
+      "notion_content_sha256": "ad8b073abf55c786ae913d3cc1a9530d2b8ff64d1aa43b201c72ae2c503256ca",
+      "local_content_sha256": "f1705764f6ba3b2cf3a24f284dcd3b23b21fb20d28b9b4f61789805c6ea07d60",
+      "local_file_sha256": "d9a7bc5f6fc3148e281f1620dd59e43cbedf351c39569338b546d3f771c79fc0",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
       "id": "3f8abdd6-1873-81fd-a2db-ea043a840c5a",
-      "title": "02 · User Flow",
+      "title": "02 · UX & User Flow",
       "url": "https://app.notion.com/p/3f8abdd6187381fda2dbea043a840c5a",
       "file": "product/02-user-flow.md",
       "kind": "page",
-      "page_last_edited_at": "2026-10-15T15:24:26.370Z",
+      "page_last_edited_at": "2026-10-18T05:49:46.966Z",
       "properties": {
-        "title": "02 · User Flow"
+        "title": "02 · UX & User Flow"
       },
-      "notion_content_sha256": "43bbbb3cf922650891a561f131bda77228e784e9dba33be1d2e30ce4ae769be9",
-      "local_content_sha256": "f0491146bc1fb963bbe914380c4020d07fd435f1c37cfb12a21c3e1867a9bb57",
-      "local_file_sha256": "86e3e6cae49688b3313878905c5d1bd2a9f64498c73ac9701025f333518f9fa7"
+      "notion_content_sha256": "300bc3e897cee9843eecd47077e0686bb523abe55d6f5bf8ad2176e32e518710",
+      "local_content_sha256": "74ed1537fcfbb01cfd80504a0d1011d2a2f6525155a9a1818ef4595040f0609f",
+      "local_file_sha256": "f2ae1a1bcd0d774c476787401d1f8292ccc98d28e7e618ef66494c4016f0eb7f",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
       "id": "3f8abdd6-1873-8165-8b61-f4283ee83428",
-      "title": "03 · Agent",
+      "title": "03 · Perilaku Agent",
       "url": "https://app.notion.com/p/3f8abdd6187381658b61f4283ee83428",
       "file": "product/03-agent.md",
       "kind": "page",
-      "page_last_edited_at": "2026-10-14T14:54:40.207Z",
+      "page_last_edited_at": "2026-10-18T05:49:49.471Z",
       "properties": {
-        "title": "03 · Agent"
+        "title": "03 · Perilaku Agent"
       },
-      "notion_content_sha256": "d97b121405d1370cb3423d131181c4d7b41690cbef55fd22beed8753aa1cfdcb",
-      "local_content_sha256": "dba8c69ea340d533e9c516481fe9d324a4cc0813564295ef3d78c837e7875960",
-      "local_file_sha256": "cddd6c6649e1552cf85f567a30cb5080010661038078f8d6d780e83050944e94"
+      "notion_content_sha256": "a8ad02d91a99b34c505155550787f6d04fe4ede3035c626bda612991748a0263",
+      "local_content_sha256": "9842fc566cc189bf008fbc8ae104f5e53f1622eb238f0dfecc48dcbba49bfd47",
+      "local_file_sha256": "0967f61994aab00ed205855ba0acd7e7310b5e9e0e8538bb152e7a73e5545f76",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
       "id": "3f8abdd6-1873-8119-8256-f4ee69db1e78",
-      "title": "04 · Arsitektur & Delivery",
+      "title": "04 · Arsitektur, Runtime & Kontrak",
       "url": "https://app.notion.com/p/3f8abdd6187381198256f4ee69db1e78",
       "file": "product/04-arsitektur-dan-delivery.md",
       "kind": "page",
-      "page_last_edited_at": "2026-10-15T15:24:27.147Z",
+      "page_last_edited_at": "2026-10-18T05:49:51.856Z",
       "properties": {
-        "title": "04 · Arsitektur & Delivery"
+        "title": "04 · Arsitektur, Runtime & Kontrak"
       },
-      "notion_content_sha256": "b383c013b022d14826dfe64a27bb34933bb2ccf449758bda225f70aa204cc963",
-      "local_content_sha256": "acff8e938eace71fe4e1da32fd37defe1f3ce4ba435188a65d015e2e0535f204",
-      "local_file_sha256": "e699cde3aa5fc499abcd1529ee55de4090637519d0cb9211bcb3cafb234afbb9"
+      "notion_content_sha256": "1c7fad68276ea3bd25f780d8b02a92b085a7b76ef74bb3bc42454397bb3a32c9",
+      "local_content_sha256": "79ec4bebcefdb7041a3b4f2fa63b71fe84d89a574f72dc35eaa5377b0e711dc7",
+      "local_file_sha256": "a12b910d0c71d87fd300a1c87406a309b94dc3326e07b510259973ecf8ece2c4",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
       "id": "3f8abdd6-1873-8120-90d8-e31cd02f0ce9",
@@ -80,70 +85,76 @@
       "url": "https://app.notion.com/p/3f8abdd61873812090d8e31cd02f0ce9",
       "file": "backlog/tasks/14-reward-flashcard-tersimpan-dan-review.md",
       "kind": "task",
-      "page_last_edited_at": "2026-10-13T10:15:50.900Z",
+      "page_last_edited_at": "2026-10-18T05:52:04.828Z",
       "properties": {
         "Area": "Belajar",
         "Depends on": [
           "https://app.notion.com/p/3f8abdd6187381a58ce9c8487ffe187e"
         ],
+        "Lingkup": "Di luar V1",
         "Prioritas": "P0",
         "Status": "Backlog",
+        "Ticket": 14,
         "Tugas": "Reward flashcard tersimpan dan review",
-        "Urutan": 14,
+        "Urutan": 1014,
         "url": "https://app.notion.com/p/3f8abdd61873812090d8e31cd02f0ce9"
       },
-      "notion_content_sha256": "0a084147930fe33827b820103f17fa1915cd56d9b4f687b42923824d91ebec3d",
-      "local_content_sha256": "01ba64c6fe267c82353a88ea207d64d4c37fa839c3e1abfae47c0dd6532c39c1",
-      "local_file_sha256": "b8e38fe3c6f23d207b862bc3b281a5699835ec28d88b8f0dbd3dcb4da9665c6b"
+      "notion_content_sha256": "8ed4e3b356431cff7e29c674d4957a8d25dddf39748f1ed63151191dffa9f7d2",
+      "local_content_sha256": "ea7545052c4ef504d5471f0aefa9bddc0ca9a79f83ca7d90d4b042c46f10a8f6",
+      "local_file_sha256": "3f230152178070f666e0a1bbb7e2af8e658707cb4b2854814335cd95e453c342",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
       "id": "3f8abdd6-1873-8129-b1d8-faf62a637a7b",
-      "title": "Paket pengguna: usage, expiry dan downgrade",
+      "title": "NG-022 · Paket pengguna usage expiry dan downgrade",
       "url": "https://app.notion.com/p/3f8abdd618738129b1d8faf62a637a7b",
       "file": "backlog/tasks/22-paket-pengguna-usage-expiry-dan-downgrade.md",
       "kind": "task",
-      "page_last_edited_at": "2026-10-13T10:15:57.022Z",
+      "page_last_edited_at": "2026-10-18T05:51:37.492Z",
       "properties": {
         "Area": "Billing",
         "Depends on": [
-          "https://app.notion.com/p/3f8abdd61873813a8393edbb6c77cb6b",
-          "https://app.notion.com/p/3f8abdd61873816caeb2d24a482c6511",
-          "https://app.notion.com/p/3f8abdd6187381c18df8efee586427c7"
+          "https://app.notion.com/p/3f8abdd6187381c18df8efee586427c7",
+          "https://app.notion.com/p/3fdabdd6187381639bd6f377668ee2f3"
         ],
+        "Lingkup": "Aktif V1",
         "Prioritas": "P0",
         "Status": "Backlog",
-        "Tugas": "Paket pengguna: usage, expiry dan downgrade",
+        "Ticket": 22,
+        "Tugas": "NG-022 · Paket pengguna usage expiry dan downgrade",
         "Urutan": 22,
         "url": "https://app.notion.com/p/3f8abdd618738129b1d8faf62a637a7b"
       },
-      "notion_content_sha256": "5ab000e30ae8aec94fe73c8bebde15c86e5cc93fd20d6e356eea2e3d7986580b",
-      "local_content_sha256": "beecee58297381bc91dad92e0db2f1e584adb8e6140308381ba7a4831fc37abb",
-      "local_file_sha256": "77c8a597a0653b849b4587cc2e768acc66e3c479e7823087f559bce2dd6538ad"
+      "notion_content_sha256": "fbfbcd02bc469a17f56c7850d662832e32d09e67934444a47237398a3f88afb1",
+      "local_content_sha256": "852e44540cdcea1f56aa361eb8f3625ef747fe78147fe9bc646f3b46a828c5b9",
+      "local_file_sha256": "8e96a121c64916e113a5bd3baf355342f0d1eaef635afdcd9a6b32f0a104aa97",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
       "id": "3f8abdd6-1873-8137-a8c9-c719f5b64bc4",
-      "title": "Delivery proaktif per thread dan batas global",
+      "title": "NG-020 · Delivery proaktif per thread dan batas global",
       "url": "https://app.notion.com/p/3f8abdd618738137a8c9c719f5b64bc4",
       "file": "backlog/tasks/20-delivery-proaktif-per-thread-dan-batas-global.md",
       "kind": "task",
-      "page_last_edited_at": "2026-10-13T10:15:55.358Z",
+      "page_last_edited_at": "2026-10-18T05:51:21.190Z",
       "properties": {
         "Area": "Agent",
         "Depends on": [
-          "https://app.notion.com/p/3f8abdd61873816d8b15ed7b7b1b82a9",
-          "https://app.notion.com/p/3f8abdd61873813a8393edbb6c77cb6b",
-          "https://app.notion.com/p/3f8abdd61873818d968deb21560778ae",
-          "https://app.notion.com/p/3f8abdd6187381a88a5cd665f17d979f"
+          "https://app.notion.com/p/3f8abdd6187381a88a5cd665f17d979f",
+          "https://app.notion.com/p/3fdabdd61873813a9603fb38d0df673f"
         ],
+        "Lingkup": "Aktif V1",
         "Prioritas": "P0",
         "Status": "Backlog",
-        "Tugas": "Delivery proaktif per thread dan batas global",
-        "Urutan": 20,
+        "Ticket": 20,
+        "Tugas": "NG-020 · Delivery proaktif per thread dan batas global",
+        "Urutan": 18,
         "url": "https://app.notion.com/p/3f8abdd618738137a8c9c719f5b64bc4"
       },
-      "notion_content_sha256": "b0d05747450edf075225cdacb1f2e70bf50421ee5689ab730438d00933d9198f",
-      "local_content_sha256": "fe460d91e6ca50463f078f47771525b583b3045bfa08112c73c17ab0dd7ba521",
-      "local_file_sha256": "113b12e76808c4d40eab12f64a7b8944a2a9cf6767795f8f5aa1fa148c48dd00"
+      "notion_content_sha256": "4ad792cd5b3e2d71c38952b6411e6184ee63144621e16b82dfbd15ebfda0cba2",
+      "local_content_sha256": "439cd9c2b01f50b12436a497acbb674f8bd31662963353b926fd96a6aa1dc458",
+      "local_file_sha256": "d62386ce8f34d369c522fc3ddefd27cf6818f001936110e98636b4265a11c0c9",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
       "id": "3f8abdd6-1873-813a-8393-edbb6c77cb6b",
@@ -151,43 +162,50 @@
       "url": "https://app.notion.com/p/3f8abdd61873813a8393edbb6c77cb6b",
       "file": "backlog/tasks/05-kuota-course-chat-dan-materi-per-periode.md",
       "kind": "task",
-      "page_last_edited_at": "2026-10-13T10:15:43.712Z",
+      "page_last_edited_at": "2026-10-18T05:52:06.127Z",
       "properties": {
         "Area": "Billing",
         "Depends on": [
           "https://app.notion.com/p/3f8abdd61873817d9529f43e39a5979f"
         ],
+        "Lingkup": "Histori",
         "Prioritas": "P0",
-        "Status": "Backlog",
+        "Status": "Done",
+        "Ticket": 5,
         "Tugas": "Kuota Course, chat dan materi per periode",
-        "Urutan": 5,
+        "Urutan": 1005,
         "url": "https://app.notion.com/p/3f8abdd61873813a8393edbb6c77cb6b"
       },
-      "notion_content_sha256": "b569586a4f290e9d7bd273212a2202ee0da06a8a298010c6cf059d47e25d3d60",
-      "local_content_sha256": "6cc3a846b342e7249d62b14a5e8ed0bd1fdb24276129157a102ccb5bad254143",
-      "local_file_sha256": "b3e1bdeb859691b29bda323888e6b93a4b897b2aca877360554a2252db7d86bc"
+      "notion_content_sha256": "fd1cc0ea349c675be18599d61a2df7c145a4b475510b7840af8a5c74c3ed24c1",
+      "local_content_sha256": "ba2a910434ae53ad7a46a9cb20527b0ca6712b6b5fcb9b476c0ee9a1c8c5446f",
+      "local_file_sha256": "39cd79ab92d52f5a4ec962ea594e88ebbd88c3a6eb038464eea3778a5d008fff",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
       "id": "3f8abdd6-1873-8146-9879-f976651f1717",
-      "title": "Perubahan soul atas permintaan dan HITL",
+      "title": "NG-016 · Perubahan soul atas permintaan dan HITL",
       "url": "https://app.notion.com/p/3f8abdd6187381469879f976651f1717",
       "file": "backlog/tasks/16-perubahan-soul-atas-permintaan-dan-hitl.md",
       "kind": "task",
-      "page_last_edited_at": "2026-10-13T10:15:52.462Z",
+      "page_last_edited_at": "2026-10-18T05:51:13.787Z",
       "properties": {
         "Area": "Agent",
         "Depends on": [
-          "https://app.notion.com/p/3f8abdd61873816d8b15ed7b7b1b82a9"
+          "https://app.notion.com/p/3fdabdd61873813a9603fb38d0df673f",
+          "https://app.notion.com/p/3fdabdd6187381ba979ac9f219c55a5a"
         ],
+        "Lingkup": "Aktif V1",
         "Prioritas": "P0",
         "Status": "Backlog",
-        "Tugas": "Perubahan soul atas permintaan dan HITL",
-        "Urutan": 16,
+        "Ticket": 16,
+        "Tugas": "NG-016 · Perubahan soul atas permintaan dan HITL",
+        "Urutan": 13,
         "url": "https://app.notion.com/p/3f8abdd6187381469879f976651f1717"
       },
-      "notion_content_sha256": "67c834dab3e9205eb1dcdfbccf45ec4eae7d23d4f4044f33b30fe557c7b19a7f",
-      "local_content_sha256": "a5b47c70fa2a5a7b84040bcdd4c13f000053be3560e1815840dea88d70224bbb",
-      "local_file_sha256": "ec6ab07d0e7ff7a59f99e4760c91da6fbd4f6815b700f5a866bdff2b17df8fe3"
+      "notion_content_sha256": "94893cda1e902c3373dcb54354c85a509d05b33261861969c13b07c184b1cecb",
+      "local_content_sha256": "6572218a3bdeff8a2b374224ebdc0e21abc9c1347b1a7802e1e84b9a464381dc",
+      "local_file_sha256": "bb1776899b257e047afc017b2fcc1a166b3b9cbeb946939e7e83ec0850443441",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
       "id": "3f8abdd6-1873-814a-8064-dde9dcc0fbf7",
@@ -195,46 +213,51 @@
       "url": "https://app.notion.com/p/3f8abdd61873814a8064dde9dcc0fbf7",
       "file": "backlog/tasks/12-practice-review-jawaban-salah-dan-unlock.md",
       "kind": "task",
-      "page_last_edited_at": "2026-10-13T10:15:49.472Z",
+      "page_last_edited_at": "2026-10-18T05:52:07.506Z",
       "properties": {
         "Area": "Belajar",
         "Depends on": [
           "https://app.notion.com/p/3f8abdd618738197962afe1cc626e01c",
           "https://app.notion.com/p/3f8abdd6187381a58ce9c8487ffe187e"
         ],
+        "Lingkup": "Di luar V1",
         "Prioritas": "P0",
         "Status": "Backlog",
+        "Ticket": 12,
         "Tugas": "Practice: review jawaban salah dan unlock",
-        "Urutan": 12,
+        "Urutan": 1012,
         "url": "https://app.notion.com/p/3f8abdd61873814a8064dde9dcc0fbf7"
       },
-      "notion_content_sha256": "c5a6117ce0254a1238856da58ae1d0fb05a1d64c1480778c4bd42571d43c4c50",
-      "local_content_sha256": "6607a6c46560d47672de61f93b0612ceef02c63d721beb8242feee426ef5aca1",
-      "local_file_sha256": "b72c683167b065da84f00a59baa409bd1a49eae9a89d5753c2d7da5a5239f41c"
+      "notion_content_sha256": "49fa2a6c9e5b9462272187b526d6ac7a81748dbd55914f124aad1fd61d0473c2",
+      "local_content_sha256": "313e60095b21d82925d7d28ff9b20af99384b2f21b514fbebdfac1e9b38d34c8",
+      "local_file_sha256": "da5408585ab193af92cdd6e035cf47f63d42ed8edce3a82d5568bdfe8de70b7b",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
       "id": "3f8abdd6-1873-8151-a38f-fb012be2c9ce",
-      "title": "Memory aktif: capture, evidence dan recall",
+      "title": "NG-017 · Memory aktif capture evidence dan recall",
       "url": "https://app.notion.com/p/3f8abdd618738151a38ffb012be2c9ce",
       "file": "backlog/tasks/17-memory-aktif-capture-evidence-dan-recall.md",
       "kind": "task",
-      "page_last_edited_at": "2026-10-13T10:15:53.149Z",
+      "page_last_edited_at": "2026-10-18T05:51:15.169Z",
       "properties": {
         "Area": "Agent",
         "Depends on": [
-          "https://app.notion.com/p/3f8abdd61873816d8b15ed7b7b1b82a9",
-          "https://app.notion.com/p/3f8abdd61873814a8064dde9dcc0fbf7",
-          "https://app.notion.com/p/3f8abdd6187381469879f976651f1717"
+          "https://app.notion.com/p/3f8abdd6187381469879f976651f1717",
+          "https://app.notion.com/p/3fdabdd618738108a7d9ed086cd2c1ea"
         ],
+        "Lingkup": "Aktif V1",
         "Prioritas": "P0",
         "Status": "Backlog",
-        "Tugas": "Memory aktif: capture, evidence dan recall",
-        "Urutan": 17,
+        "Ticket": 17,
+        "Tugas": "NG-017 · Memory aktif capture evidence dan recall",
+        "Urutan": 14,
         "url": "https://app.notion.com/p/3f8abdd618738151a38ffb012be2c9ce"
       },
-      "notion_content_sha256": "a3f3d38e974ee8dac2ae4f27d1705dee2de3de3390693daa1f8ceb1579fec123",
-      "local_content_sha256": "4de26f90c3e97e97e51e4ee04f85cb6cc5fea5e05ee44d637db61de0fbcb31c8",
-      "local_file_sha256": "05f0c3a66bbde9b8458b22dbb667771e1c952c59c4f0a50ee8cb998d444b4b6e"
+      "notion_content_sha256": "9eecfbc00b8d705e37628ed41f9d5d9ba7c94ff5551071bc23098f655793464d",
+      "local_content_sha256": "4d6dbd0822e5ee925b59aa99dfd48d319929a28721dfa080bd6bbb0cd13e250a",
+      "local_file_sha256": "dced897779059ccb92388a8b32d804387d75560652f38554eb5df863e71fd5e5",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
       "id": "3f8abdd6-1873-816c-aeb2-d24a482c6511",
@@ -242,7 +265,7 @@
       "url": "https://app.notion.com/p/3f8abdd61873816caeb2d24a482c6511",
       "file": "backlog/tasks/09-generation-node-pertama-lalu-background.md",
       "kind": "task",
-      "page_last_edited_at": "2026-10-15T15:24:28.133Z",
+      "page_last_edited_at": "2026-10-18T05:52:09.604Z",
       "properties": {
         "Area": "Course",
         "Depends on": [
@@ -250,15 +273,18 @@
           "https://app.notion.com/p/3f8abdd618738197962afe1cc626e01c",
           "https://app.notion.com/p/3f8abdd61873817bb0e3c16aef505ed4"
         ],
+        "Lingkup": "Di luar V1",
         "Prioritas": "P0",
         "Status": "Backlog",
+        "Ticket": 9,
         "Tugas": "Generation: node pertama lalu background",
-        "Urutan": 9,
+        "Urutan": 1009,
         "url": "https://app.notion.com/p/3f8abdd61873816caeb2d24a482c6511"
       },
-      "notion_content_sha256": "e3f2e910a79a22072bbd15f1925144338dedf664576a85987ca0e8d130617a94",
-      "local_content_sha256": "e29a690c3e7143aa2dc3b96f7952051ab6a22f18236c81c817eae80e06a80af7",
-      "local_file_sha256": "c96086592fe03779f64b04744629a18bd5a86501024d4eab23f1829cf1c9db4a"
+      "notion_content_sha256": "b3b1df8a48e68d6cf5b10f583c9a38da97c1fd467d0aa316ed1ff6b5ae8842e2",
+      "local_content_sha256": "fb77d55e2a6424ecb3d3b61a38a619721af9fa474f97df59aa7cddc044c778b5",
+      "local_file_sha256": "a42acb5d48d902b6234110cf0c1a8571677590bfbe76759cb69b41bbd98bc8c9",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
       "id": "3f8abdd6-1873-816d-8b15-ed7b7b1b82a9",
@@ -266,21 +292,24 @@
       "url": "https://app.notion.com/p/3f8abdd61873816d8b15ed7b7b1b82a9",
       "file": "backlog/tasks/04-chat-personal-thread-dan-streaming-resumable.md",
       "kind": "task",
-      "page_last_edited_at": "2026-10-16T11:17:28.101Z",
+      "page_last_edited_at": "2026-10-18T05:52:11.629Z",
       "properties": {
         "Area": "Agent",
         "Depends on": [
           "https://app.notion.com/p/3f8abdd61873817d9529f43e39a5979f"
         ],
+        "Lingkup": "Histori",
         "Prioritas": "P0",
         "Status": "Done",
+        "Ticket": 4,
         "Tugas": "Chat personal: thread dan streaming resumable",
-        "Urutan": 4,
+        "Urutan": 1004,
         "url": "https://app.notion.com/p/3f8abdd61873816d8b15ed7b7b1b82a9"
       },
-      "notion_content_sha256": "41b6b2b83703a43ed1f22331fac6654d517452e789eec78274910b411d06c8dc",
-      "local_content_sha256": "b724933ed00d6360c7e24bfe77ab6fed649f68c53abed6f58b36b40c1c5b750c",
-      "local_file_sha256": "c0a52c09facd36cfc3cc826ff13dab99d3aebcf9363245658451cbfae58438be"
+      "notion_content_sha256": "337a30d936cacd7b0d0e4f2259eb204f33c06f7ba9c5eb0ab979ed2f1c84545b",
+      "local_content_sha256": "1be57c6fbca9126e76efdf9c4610d3ab594aa9f3293f6e9068f04de9f3b91a77",
+      "local_file_sha256": "731ee14c43dd1a5fa0b436a36df69f7ecef099063cbf1a46944605d45246b25e",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
       "id": "3f8abdd6-1873-817b-b0e3-c16aef505ed4",
@@ -288,7 +317,7 @@
       "url": "https://app.notion.com/p/3f8abdd61873817bb0e3c16aef505ed4",
       "file": "backlog/tasks/08-outline-course-perencanaan-revisi-dan-approval.md",
       "kind": "task",
-      "page_last_edited_at": "2026-10-13T10:15:46.243Z",
+      "page_last_edited_at": "2026-10-18T05:52:14.298Z",
       "properties": {
         "Area": "Course",
         "Depends on": [
@@ -296,15 +325,18 @@
           "https://app.notion.com/p/3f8abdd61873813a8393edbb6c77cb6b",
           "https://app.notion.com/p/3f8abdd618738189a4f2d771500ea426"
         ],
+        "Lingkup": "Di luar V1",
         "Prioritas": "P0",
         "Status": "Backlog",
+        "Ticket": 8,
         "Tugas": "Outline Course: perencanaan, revisi dan approval",
-        "Urutan": 8,
+        "Urutan": 1008,
         "url": "https://app.notion.com/p/3f8abdd61873817bb0e3c16aef505ed4"
       },
-      "notion_content_sha256": "9c4a68914c7f642100808b1c6a5ffb88711b24bd8d5b5944698c405e3d84af5c",
-      "local_content_sha256": "f44f972b22e696c05ab12ac601fbd2c67cd180ce7f9c78807c07d2d5dc8b7929",
-      "local_file_sha256": "2f42cd88e5e0b9134ab92b48794a2d888beae830a953b454bdd726cc22b360da"
+      "notion_content_sha256": "ce8dc1536c9de8ef474e460ebecef2f706a5168968b4b47614bf2d47af6d9e67",
+      "local_content_sha256": "79a6c029d456b2d881ab6285d87d44d60d764be10bc9800ab8d9e7bdf6f14d45",
+      "local_file_sha256": "dd55e3b6295ac7ec37b59ac0f2278b7037d4919a59103787af596a3fd5aabaad",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
       "id": "3f8abdd6-1873-817d-9529-f43e39a5979f",
@@ -312,18 +344,21 @@
       "url": "https://app.notion.com/p/3f8abdd61873817d9529f43e39a5979f",
       "file": "backlog/tasks/02-fondasi-production-workspace-auth-dan-data.md",
       "kind": "task",
-      "page_last_edited_at": "2026-10-15T13:23:18.150Z",
+      "page_last_edited_at": "2026-10-18T05:52:12.958Z",
       "properties": {
         "Area": "Fondasi",
+        "Lingkup": "Histori",
         "Prioritas": "P0",
         "Status": "Done",
+        "Ticket": 2,
         "Tugas": "Fondasi production: workspace, auth dan data",
-        "Urutan": 2,
+        "Urutan": 1002,
         "url": "https://app.notion.com/p/3f8abdd61873817d9529f43e39a5979f"
       },
-      "notion_content_sha256": "4044602a3279ec7d5ad2cfc3772605c5a5d055449396362fc4d444567993eb77",
-      "local_content_sha256": "f287dd0eb722d5233c2af34f91e5d53977a2fdc47226a2719163f24aabd4f5c9",
-      "local_file_sha256": "2276a7f0a92bb24eb0b3a7c6ff8569dba5cb15349adecc8543f9313c970cb3d5"
+      "notion_content_sha256": "73cb9163348a6fab7c52003f4298625199f86995857c32d658a771b267423c78",
+      "local_content_sha256": "e98bbea4937446f2b1835f7a1de5cb99dbecc91deff57dad0177f45a3a948314",
+      "local_file_sha256": "71a2ac618dcecb74b1404c0b0cfdfa61c991d2b0b8f6f8add0b12f5bdac52adf",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
       "id": "3f8abdd6-1873-8183-8333-d654ecdf5ce3",
@@ -331,7 +366,7 @@
       "url": "https://app.notion.com/p/3f8abdd6187381838333d654ecdf5ce3",
       "file": "backlog/tasks/10-onboarding-dan-tour-course-pertama.md",
       "kind": "task",
-      "page_last_edited_at": "2026-10-13T10:15:47.795Z",
+      "page_last_edited_at": "2026-10-18T05:52:35.834Z",
       "properties": {
         "Area": "Course",
         "Depends on": [
@@ -340,15 +375,18 @@
           "https://app.notion.com/p/3f8abdd61873817bb0e3c16aef505ed4",
           "https://app.notion.com/p/3f8abdd61873816caeb2d24a482c6511"
         ],
+        "Lingkup": "Di luar V1",
         "Prioritas": "P0",
         "Status": "Backlog",
+        "Ticket": 10,
         "Tugas": "Onboarding dan tour Course pertama",
-        "Urutan": 10,
+        "Urutan": 1010,
         "url": "https://app.notion.com/p/3f8abdd6187381838333d654ecdf5ce3"
       },
-      "notion_content_sha256": "4e5eb67b8fc6453dbe0b73e15d026df128fc77a3cb50e6b010c9c2a03429abf5",
-      "local_content_sha256": "9344870c30b149a9e212bec4e806cc8f95733032bfbe380d1fbf47e26f1b79a0",
-      "local_file_sha256": "6880d6000df661a8e961d883aeb1a49bd60a7077df9367ad6e4ef68bbe1000de"
+      "notion_content_sha256": "07aa2103431f00336c530c4367733e9c59e361546c2ac99dd8668698efe7bb20",
+      "local_content_sha256": "35242a0c9d0af668ed7286961dd41bed8688397dfb24f36835c07c7bfc1f700f",
+      "local_file_sha256": "523d7fed78717712818fe28abc36ebddd9ce143cc3045a921c2ec472013cfdb6",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
       "id": "3f8abdd6-1873-8189-a4f2-d771500ea426",
@@ -356,22 +394,25 @@
       "url": "https://app.notion.com/p/3f8abdd618738189a4f2d771500ea426",
       "file": "backlog/tasks/07-pencarian-sumber-dan-pemilihan-melalui-hitl.md",
       "kind": "task",
-      "page_last_edited_at": "2026-10-13T10:15:45.303Z",
+      "page_last_edited_at": "2026-10-18T05:52:15.735Z",
       "properties": {
         "Area": "Course",
         "Depends on": [
           "https://app.notion.com/p/3f8abdd61873816d8b15ed7b7b1b82a9",
           "https://app.notion.com/p/3f8abdd6187381eaa5fccda9bf6f8fb0"
         ],
+        "Lingkup": "Di luar V1",
         "Prioritas": "P0",
         "Status": "Backlog",
+        "Ticket": 7,
         "Tugas": "Pencarian sumber dan pemilihan melalui HITL",
-        "Urutan": 7,
+        "Urutan": 1007,
         "url": "https://app.notion.com/p/3f8abdd618738189a4f2d771500ea426"
       },
-      "notion_content_sha256": "0acc88a50bec54e2fc44523c523f0fd8e045fb1634f115d2038705f778bdef1e",
-      "local_content_sha256": "5d09c93d9e74cb93b43684d7fa7d9591d42fe0fa815f4940c6b51df038e5a5d7",
-      "local_file_sha256": "caaa9a29a4cdba61c2ac8cc59e8d40b51519c64f25a8dc1d5aa7db1ee9649e5c"
+      "notion_content_sha256": "d972a898bf843e80e6de71ece1e6ce14a2be3be12ddf8ddd8dd527bc439e026d",
+      "local_content_sha256": "b984d27932fa4ec97959c91912840d0c073fa7d9757eed65616b3b8f5b6d9488",
+      "local_file_sha256": "2c22aeaf94578e3dde1487b2f9dfa54627104de255c4d6991d4bf2c036263f3a",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
       "id": "3f8abdd6-1873-818a-951c-cddcb203f907",
@@ -379,18 +420,21 @@
       "url": "https://app.notion.com/p/3f8abdd61873818a951ccddcb203f907",
       "file": "backlog/tasks/01-walkthrough-ux-signup-sampai-course-pertama.md",
       "kind": "task",
-      "page_last_edited_at": "2026-10-15T09:46:01.127Z",
+      "page_last_edited_at": "2026-10-18T05:52:38.996Z",
       "properties": {
         "Area": "Course",
+        "Lingkup": "Histori",
         "Prioritas": "P0",
         "Status": "Done",
+        "Ticket": 1,
         "Tugas": "Walkthrough UX: signup sampai Course pertama",
-        "Urutan": 1,
+        "Urutan": 1001,
         "url": "https://app.notion.com/p/3f8abdd61873818a951ccddcb203f907"
       },
-      "notion_content_sha256": "95691f439f9c4a84e52527cedef167d85296637cb8fce4adea7b1f49dfe5492b",
-      "local_content_sha256": "adec45535a495059cfa38e3b6a4eb8428f134ee5f3c82a241ea6e9be4044b4f8",
-      "local_file_sha256": "c06c16d24cfceb83dd01687a31fcda541f6a6d13be4957f42b6fc61bee279845"
+      "notion_content_sha256": "28f667c6e71caa6900142642269c7fda001dde5949f6ea0fcb634b3b1db7fb95",
+      "local_content_sha256": "23267ce194eaa4d443f5909eadbf560d05f6d8f1f8804ca16c0a163ed9037f9f",
+      "local_file_sha256": "e555cf239f7dc50c1718603143cc0b98cd0279b0209f35f7c8d48229a8009acf",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
       "id": "3f8abdd6-1873-818d-968d-eb21560778ae",
@@ -398,22 +442,25 @@
       "url": "https://app.notion.com/p/3f8abdd61873818d968deb21560778ae",
       "file": "backlog/tasks/13-pengayaan-opsional-dalam-course.md",
       "kind": "task",
-      "page_last_edited_at": "2026-10-13T11:16:32.267Z",
+      "page_last_edited_at": "2026-10-18T05:52:40.365Z",
       "properties": {
         "Area": "Belajar",
         "Depends on": [
           "https://app.notion.com/p/3f8abdd61873816caeb2d24a482c6511",
           "https://app.notion.com/p/3f8abdd61873814a8064dde9dcc0fbf7"
         ],
+        "Lingkup": "Di luar V1",
         "Prioritas": "P0",
         "Status": "Backlog",
+        "Ticket": 13,
         "Tugas": "Pengayaan opsional dalam Course",
-        "Urutan": 13,
+        "Urutan": 1013,
         "url": "https://app.notion.com/p/3f8abdd61873818d968deb21560778ae"
       },
-      "notion_content_sha256": "6d32d10d22396755d81f7c09aea78cd2e2e6a816b5e802857035b5fed374e8f5",
-      "local_content_sha256": "df2d80906a239d66b599de53104b9c87a04273b75b5b2220c95c5fc2105476dd",
-      "local_file_sha256": "05d8bfdd3064944c74d2f7ce052694ad3fb47df763dffc5642d5974f392de758"
+      "notion_content_sha256": "490cd35160ab2a1bd01abfbdce109bcd53643de9670e9801588f856638debc29",
+      "local_content_sha256": "a9e48a55e4c3733d33256d95d072c54d52d4a74e9d59496dac16fd616e68aad5",
+      "local_file_sha256": "4806a412edeee916fa8aa20923f46f46b3b1aa7ded55e9aea938b99794a7ccb6",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
       "id": "3f8abdd6-1873-8197-962a-fe1cc626e01c",
@@ -421,18 +468,21 @@
       "url": "https://app.notion.com/p/3f8abdd618738197962afe1cc626e01c",
       "file": "backlog/tasks/03-port-standar-lesson-dan-soal-dari-prototipe.md",
       "kind": "task",
-      "page_last_edited_at": "2026-10-15T15:25:25.985Z",
+      "page_last_edited_at": "2026-10-18T05:52:41.815Z",
       "properties": {
         "Area": "Course",
+        "Lingkup": "Histori",
         "Prioritas": "P0",
         "Status": "Done",
+        "Ticket": 3,
         "Tugas": "Port standar Lesson dan soal dari prototipe",
-        "Urutan": 3,
+        "Urutan": 1003,
         "url": "https://app.notion.com/p/3f8abdd618738197962afe1cc626e01c"
       },
-      "notion_content_sha256": "c482fc2aadcb0438710321dd4fd648e1fa5adb6fa7c891645c5aff1c20eb4387",
-      "local_content_sha256": "1efe0ca8b365b24acdbb3a0dcc7e623970998794a9776bf66e60755ead651ccb",
-      "local_file_sha256": "d76862d03adea01b4606a49d813631040a212a0275b1091e2f1f07608ad3f3cb"
+      "notion_content_sha256": "7989ed8ff12ca43d46e4d1578425063475c919b1f42e537d237a0e814accee18",
+      "local_content_sha256": "ccc242f35c58253fb8244e09f33e21ddc54d8a1d9d9c41ec35b06513e88d5eba",
+      "local_file_sha256": "a0f4ed0ad912d47312b4b73bb1530560193c0d0636de5024094fc2ecd8996ed6",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
       "id": "3f8abdd6-1873-81a5-8ce9-c8487ffe187e",
@@ -440,7 +490,7 @@
       "url": "https://app.notion.com/p/3f8abdd6187381a58ce9c8487ffe187e",
       "file": "backlog/tasks/11-course-player-dan-panel-chat-kontekstual.md",
       "kind": "task",
-      "page_last_edited_at": "2026-10-15T15:24:28.903Z",
+      "page_last_edited_at": "2026-10-18T05:52:37.268Z",
       "properties": {
         "Area": "Belajar",
         "Depends on": [
@@ -448,124 +498,126 @@
           "https://app.notion.com/p/3f8abdd61873816d8b15ed7b7b1b82a9",
           "https://app.notion.com/p/3f8abdd61873816caeb2d24a482c6511"
         ],
+        "Lingkup": "Di luar V1",
         "Prioritas": "P0",
         "Status": "Backlog",
+        "Ticket": 11,
         "Tugas": "Course player dan panel chat kontekstual",
-        "Urutan": 11,
+        "Urutan": 1011,
         "url": "https://app.notion.com/p/3f8abdd6187381a58ce9c8487ffe187e"
       },
-      "notion_content_sha256": "46a81ef2e38c1a017eb056b0d31222f258a2fa275343f8818b3dbf0651884b05",
-      "local_content_sha256": "06989aeaf35603798c3e7bbdca98589cffdbf974a4d7666341c8a8ade269c4a6",
-      "local_file_sha256": "194f16fd855e8dcaeef36c5dfbcee88f74154ab00f8119026e27e12b28309902"
+      "notion_content_sha256": "0a380ba62e0cb96a5d3dfaa83d641e29fe9935a0ff551d92132a5b41910bfaae",
+      "local_content_sha256": "f6310ac5bee5fd24a9daa4fc20f9cc175db214c7043e8304639f4cc6024742fb",
+      "local_file_sha256": "a134c269dd5cf5b2a2fc02fa7a4b5ce630ad600a75c1dfd73ac7774c5b426e5f",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
       "id": "3f8abdd6-1873-81a7-8cd0-f770a7db65d2",
-      "title": "Recovery end-to-end dan konsistensi state",
+      "title": "NG-023 · Recovery end-to-end dan konsistensi state",
       "url": "https://app.notion.com/p/3f8abdd6187381a78cd0f770a7db65d2",
       "file": "backlog/tasks/23-recovery-end-to-end-dan-konsistensi-state.md",
       "kind": "task",
-      "page_last_edited_at": "2026-10-13T10:15:57.812Z",
+      "page_last_edited_at": "2026-10-18T05:51:42.371Z",
       "properties": {
         "Area": "Release",
         "Depends on": [
-          "https://app.notion.com/p/3f8abdd61873816caeb2d24a482c6511",
-          "https://app.notion.com/p/3f8abdd6187381838333d654ecdf5ce3",
-          "https://app.notion.com/p/3f8abdd6187381a58ce9c8487ffe187e",
-          "https://app.notion.com/p/3f8abdd61873814a8064dde9dcc0fbf7",
-          "https://app.notion.com/p/3f8abdd61873818d968deb21560778ae",
-          "https://app.notion.com/p/3f8abdd61873812090d8e31cd02f0ce9",
-          "https://app.notion.com/p/3f8abdd6187381bf9174f9126e48a4f3",
-          "https://app.notion.com/p/3f8abdd618738137a8c9c719f5b64bc4",
-          "https://app.notion.com/p/3f8abdd618738129b1d8faf62a637a7b"
+          "https://app.notion.com/p/3f8abdd618738129b1d8faf62a637a7b",
+          "https://app.notion.com/p/3fdabdd618738198b295ca667c34f1b1",
+          "https://app.notion.com/p/3fdabdd61873813a9603fb38d0df673f",
+          "https://app.notion.com/p/3fdabdd61873814babd1c1bcd089effb",
+          "https://app.notion.com/p/3f8abdd618738137a8c9c719f5b64bc4"
         ],
+        "Lingkup": "Aktif V1",
         "Prioritas": "P0",
         "Status": "Backlog",
-        "Tugas": "Recovery end-to-end dan konsistensi state",
+        "Ticket": 23,
+        "Tugas": "NG-023 · Recovery end-to-end dan konsistensi state",
         "Urutan": 23,
         "url": "https://app.notion.com/p/3f8abdd6187381a78cd0f770a7db65d2"
       },
-      "notion_content_sha256": "6421e97623ef3381a253a75cd4b010c1f7c22dc7076f3e2e0bb398670840d7ee",
-      "local_content_sha256": "43e53bf32f0bfe8fed063f000e1cb0cbd066cc7dd4f172722bf9701ea498256d",
-      "local_file_sha256": "5a7db2d02e25174355c9c63d95c4f733e48d7563e46e4875830b2058e86c3817"
+      "notion_content_sha256": "95f5afd45921b79d36ccdd55d88070cce52b7a1b0a2a861484562ceee78165cc",
+      "local_content_sha256": "32e6b29601b4cc476e3ddabe9ce89f467cc1863ac6b31bd52cc1ca2063490434",
+      "local_file_sha256": "d4518b070a6e565d735041754549d71b71b466ec0ee6fe72d7fb767dbd27b199",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
       "id": "3f8abdd6-1873-81a8-8a5c-d665f17d979f",
-      "title": "Kandidat proaktif dinamis dan reranking",
+      "title": "NG-019 · Kandidat proaktif dinamis dan reranking",
       "url": "https://app.notion.com/p/3f8abdd6187381a88a5cd665f17d979f",
       "file": "backlog/tasks/19-kandidat-proaktif-dinamis-dan-reranking.md",
       "kind": "task",
-      "page_last_edited_at": "2026-10-13T10:15:54.620Z",
+      "page_last_edited_at": "2026-10-18T05:51:19.794Z",
       "properties": {
         "Area": "Agent",
         "Depends on": [
-          "https://app.notion.com/p/3f8abdd618738189a4f2d771500ea426",
-          "https://app.notion.com/p/3f8abdd6187381bf9174f9126e48a4f3",
+          "https://app.notion.com/p/3fdabdd61873814babd1c1bcd089effb",
           "https://app.notion.com/p/3f8abdd618738151a38ffb012be2c9ce"
         ],
+        "Lingkup": "Aktif V1",
         "Prioritas": "P0",
         "Status": "Backlog",
-        "Tugas": "Kandidat proaktif dinamis dan reranking",
-        "Urutan": 19,
+        "Ticket": 19,
+        "Tugas": "NG-019 · Kandidat proaktif dinamis dan reranking",
+        "Urutan": 17,
         "url": "https://app.notion.com/p/3f8abdd6187381a88a5cd665f17d979f"
       },
-      "notion_content_sha256": "17051dc86e5fc2bc0717aa6b0baac09c628fc02087da85337a2eb9b145a4e3ea",
-      "local_content_sha256": "02f96b11532b44906e0651ab96815c439b64c12ec6b36b24af98d4c21e4bd5ba",
-      "local_file_sha256": "ffef513f6fe474ba1013bd32ecd117d51869802ce12610ca8c7b589377583b06"
+      "notion_content_sha256": "5efa37c55018a04e24a0069119399c8b7a26170737c5d44f2ce636fd8d358d8e",
+      "local_content_sha256": "6c9b018d990bc9816a04b42f8b548c6910a913cbbb9d09ef2d19f3a88a6cd620",
+      "local_file_sha256": "e673f79ed1880e7e4d0416504ee3ac7ab0bcb2dbb763fe23b53b727361c09f35",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
       "id": "3f8abdd6-1873-81aa-be5c-f4a3355618cd",
-      "title": "Pengaturan untuk inspeksi dan koreksi memory",
+      "title": "NG-018 · Pengaturan inspeksi dan koreksi memory",
       "url": "https://app.notion.com/p/3f8abdd6187381aabe5cf4a3355618cd",
       "file": "backlog/tasks/18-pengaturan-untuk-inspeksi-dan-koreksi-memory.md",
       "kind": "task",
-      "page_last_edited_at": "2026-10-13T10:15:53.861Z",
+      "page_last_edited_at": "2026-10-18T05:51:16.814Z",
       "properties": {
         "Area": "Agent",
         "Depends on": [
           "https://app.notion.com/p/3f8abdd618738151a38ffb012be2c9ce"
         ],
+        "Lingkup": "Aktif V1",
         "Prioritas": "P1",
         "Status": "Backlog",
-        "Tugas": "Pengaturan untuk inspeksi dan koreksi memory",
-        "Urutan": 18,
+        "Ticket": 18,
+        "Tugas": "NG-018 · Pengaturan inspeksi dan koreksi memory",
+        "Urutan": 15,
         "url": "https://app.notion.com/p/3f8abdd6187381aabe5cf4a3355618cd"
       },
-      "notion_content_sha256": "56563cf39b08339739a6eb459ecef41e81b28b147a36804c6a48dbcdaca38160",
-      "local_content_sha256": "4aad25ef6f86945ca1746fa371d26946e72f2f12cfded1e577433ed4dd55fb38",
-      "local_file_sha256": "d682c4b5c285e3c0c5f8fe9a5f41261ae6e6ea86df0fcba8bd6d94b4ce7d57fe"
+      "notion_content_sha256": "53e777237e362fb8f2051bd875118ca7a98d206eb4fa8138f70f29b29880c205",
+      "local_content_sha256": "3308ad07b8fecab959feb106efab749420721e66818599ad4d8a974b0a6a3a68",
+      "local_file_sha256": "def76a0b5e127cb1cf61cda4fc3a74b20e418dbcb3be27f3fbc78c9d4b7ee35d",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
       "id": "3f8abdd6-1873-81ac-90b6-df75b7e1a157",
-      "title": "Peluncuran Free dan Plus production",
+      "title": "NG-025 · Peluncuran asisten umum V1 production",
       "url": "https://app.notion.com/p/3f8abdd6187381ac90b6df75b7e1a157",
       "file": "backlog/tasks/25-peluncuran-free-dan-plus-production.md",
       "kind": "task",
-      "page_last_edited_at": "2026-10-13T10:15:59.316Z",
+      "page_last_edited_at": "2026-10-18T05:51:47.216Z",
       "properties": {
         "Area": "Release",
         "Depends on": [
-          "https://app.notion.com/p/3f8abdd6187381838333d654ecdf5ce3",
-          "https://app.notion.com/p/3f8abdd6187381a58ce9c8487ffe187e",
-          "https://app.notion.com/p/3f8abdd61873814a8064dde9dcc0fbf7",
-          "https://app.notion.com/p/3f8abdd61873818d968deb21560778ae",
-          "https://app.notion.com/p/3f8abdd61873812090d8e31cd02f0ce9",
-          "https://app.notion.com/p/3f8abdd6187381bf9174f9126e48a4f3",
-          "https://app.notion.com/p/3f8abdd6187381469879f976651f1717",
-          "https://app.notion.com/p/3f8abdd618738151a38ffb012be2c9ce",
-          "https://app.notion.com/p/3f8abdd618738137a8c9c719f5b64bc4",
+          "https://app.notion.com/p/3fdabdd6187381f8ade2c7db2c75396e",
+          "https://app.notion.com/p/3fdabdd61873810b8159f4798fc39046",
           "https://app.notion.com/p/3f8abdd618738129b1d8faf62a637a7b",
-          "https://app.notion.com/p/3f8abdd6187381a78cd0f770a7db65d2",
-          "https://app.notion.com/p/3f8abdd6187381fda17dd1af24cec8fb"
+          "https://app.notion.com/p/3f8abdd6187381a78cd0f770a7db65d2"
         ],
+        "Lingkup": "Aktif V1",
         "Prioritas": "P0",
         "Status": "Backlog",
-        "Tugas": "Peluncuran Free dan Plus production",
+        "Ticket": 25,
+        "Tugas": "NG-025 · Peluncuran asisten umum V1 production",
         "Urutan": 25,
         "url": "https://app.notion.com/p/3f8abdd6187381ac90b6df75b7e1a157"
       },
-      "notion_content_sha256": "d58fc749484a8779b7f57d4bafc2352da05af31c12f12d121deaeed8c94e3c18",
-      "local_content_sha256": "e749df37f7e81275adb9cee3d04ef1011edf492db17b5bbbbfe8dc516d26731e",
-      "local_file_sha256": "a119704191bc4d305a42121e5a2587b594f05b9c737f996778342b0c75d4d7cc"
+      "notion_content_sha256": "a3a390ce1c1fd27e69b566dd4781e14623ac5dd25a4746b0505d1175fb24d891",
+      "local_content_sha256": "c4738357333aa4f1861709edbe75bba8669a5485ce2a74bdda36c9976fc1c467",
+      "local_file_sha256": "7fd4b48853d9bab8335bc2ce10a3779f78925cdfc043570ba8acf75f92a00bda",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
       "id": "3f8abdd6-1873-81bf-9174-f9126e48a4f3",
@@ -573,45 +625,50 @@
       "url": "https://app.notion.com/p/3f8abdd6187381bf9174f9126e48a4f3",
       "file": "backlog/tasks/15-streak-dari-aktivitas-belajar-valid.md",
       "kind": "task",
-      "page_last_edited_at": "2026-10-13T10:15:51.593Z",
+      "page_last_edited_at": "2026-10-18T05:52:43.454Z",
       "properties": {
         "Area": "Belajar",
         "Depends on": [
           "https://app.notion.com/p/3f8abdd61873814a8064dde9dcc0fbf7",
           "https://app.notion.com/p/3f8abdd61873812090d8e31cd02f0ce9"
         ],
+        "Lingkup": "Di luar V1",
         "Prioritas": "P0",
         "Status": "Backlog",
+        "Ticket": 15,
         "Tugas": "Streak dari aktivitas belajar valid",
-        "Urutan": 15,
+        "Urutan": 1015,
         "url": "https://app.notion.com/p/3f8abdd6187381bf9174f9126e48a4f3"
       },
-      "notion_content_sha256": "60dda830753ed270fc4dd2ac6de5ce2c4e338559129ecbd1c8cc815e371daa36",
-      "local_content_sha256": "aca742e471587a5adf1abb40892fce1a6b2b214b115c9c69277373c4a26b8c43",
-      "local_file_sha256": "147e0d061a3a3fcb1451b250610f1ccf69b4501d285231dc20a980c13b99c242"
+      "notion_content_sha256": "9bb312229b453bb3483c9373a80a94169bb42e185893e4628cf1a1fce29e0df2",
+      "local_content_sha256": "71413a69faaaa1ffb6efd804fc18d5d81b8fd660481caa6f0f5451b18cb83183",
+      "local_file_sha256": "170bc539a5839d82903b22faaee2b6af8f98359484c89d8570488e834aecd8ee",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
       "id": "3f8abdd6-1873-81c1-8df8-efee586427c7",
-      "title": "Checkout Plus dan aktivasi pembayaran",
+      "title": "NG-021 · Checkout dan aktivasi pembayaran V1",
       "url": "https://app.notion.com/p/3f8abdd6187381c18df8efee586427c7",
       "file": "backlog/tasks/21-checkout-plus-dan-aktivasi-pembayaran.md",
       "kind": "task",
-      "page_last_edited_at": "2026-10-13T10:15:56.195Z",
+      "page_last_edited_at": "2026-10-18T05:51:35.638Z",
       "properties": {
         "Area": "Billing",
         "Depends on": [
-          "https://app.notion.com/p/3f8abdd61873817d9529f43e39a5979f",
-          "https://app.notion.com/p/3f8abdd61873813a8393edbb6c77cb6b"
+          "https://app.notion.com/p/3fdabdd6187381639bd6f377668ee2f3"
         ],
+        "Lingkup": "Aktif V1",
         "Prioritas": "P0",
         "Status": "Backlog",
-        "Tugas": "Checkout Plus dan aktivasi pembayaran",
+        "Ticket": 21,
+        "Tugas": "NG-021 · Checkout dan aktivasi pembayaran V1",
         "Urutan": 21,
         "url": "https://app.notion.com/p/3f8abdd6187381c18df8efee586427c7"
       },
-      "notion_content_sha256": "dc5295eb1fd3139a301734762fc197f2dba6d56bca50b04e744f5ae9a8be1ce2",
-      "local_content_sha256": "f9e93e627c5d50429c8683ce3b69034068680dfae96913f9085daba4beacd0d1",
-      "local_file_sha256": "8eb3d066a760990b5c50cd6c9e1f281562267c62870c5cc5df57911ebfda6db1"
+      "notion_content_sha256": "17faeeaaac117bf89f173cd24afc0a7614497921f8fbec726a648a46894b5a81",
+      "local_content_sha256": "512b48aa69e0a5b10b9dd9feacde7dfc89975af15ceebd657ff36d914771f2af",
+      "local_file_sha256": "896e3f84763d69fc47eac686c96c31e27bfecc3f8258c541b49639fdd73d805c",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
       "id": "3f8abdd6-1873-81ea-a5fc-cda9bf6f8fb0",
@@ -619,22 +676,25 @@
       "url": "https://app.notion.com/p/3f8abdd6187381eaa5fccda9bf6f8fb0",
       "file": "backlog/tasks/06-ingestion-materi-reusable-dari-file-dan-web.md",
       "kind": "task",
-      "page_last_edited_at": "2026-10-13T10:15:44.454Z",
+      "page_last_edited_at": "2026-10-18T05:52:44.982Z",
       "properties": {
         "Area": "Course",
         "Depends on": [
           "https://app.notion.com/p/3f8abdd61873817d9529f43e39a5979f",
           "https://app.notion.com/p/3f8abdd61873813a8393edbb6c77cb6b"
         ],
+        "Lingkup": "Di luar V1",
         "Prioritas": "P0",
         "Status": "Backlog",
+        "Ticket": 6,
         "Tugas": "Ingestion materi reusable dari file dan web",
-        "Urutan": 6,
+        "Urutan": 1006,
         "url": "https://app.notion.com/p/3f8abdd6187381eaa5fccda9bf6f8fb0"
       },
-      "notion_content_sha256": "7e0b0430126e61a917a542fab81d8d89a246167db4a0417178ead544746aa53d",
-      "local_content_sha256": "37c61fffa6cd2927b79accb5c3b9e774d07d21b12cf637fdde4e3ccde23f3caf",
-      "local_file_sha256": "40f96686ea32cc8acda4d395b389a219af20acd081fae51305241a085f4db891"
+      "notion_content_sha256": "9ccf1da0dec6aa543c6d357a1bd6f6c5b072658cc2d4b4b7d779de0f5665cea4",
+      "local_content_sha256": "603e7e30e9516e0e7bcb841b2f3c77f358be475c45e50def89aceed4ebf188b9",
+      "local_file_sha256": "5d6578ae3e0eaca8a2047a3ba84125e3c5cc571db9a4deed8ef716777f162f93",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
       "id": "3f8abdd6-1873-81fd-a17d-d1af24cec8fb",
@@ -642,7 +702,7 @@
       "url": "https://app.notion.com/p/3f8abdd6187381fda17dd1af24cec8fb",
       "file": "backlog/tasks/24-benchmark-kualitas-dan-biaya-lifecycle-course.md",
       "kind": "task",
-      "page_last_edited_at": "2026-10-13T10:15:58.516Z",
+      "page_last_edited_at": "2026-10-18T05:52:46.439Z",
       "properties": {
         "Area": "Release",
         "Depends on": [
@@ -652,15 +712,705 @@
           "https://app.notion.com/p/3f8abdd618738151a38ffb012be2c9ce",
           "https://app.notion.com/p/3f8abdd618738137a8c9c719f5b64bc4"
         ],
+        "Lingkup": "Di luar V1",
         "Prioritas": "P0",
         "Status": "Backlog",
+        "Ticket": 24,
         "Tugas": "Benchmark kualitas dan biaya lifecycle Course",
-        "Urutan": 24,
+        "Urutan": 1024,
         "url": "https://app.notion.com/p/3f8abdd6187381fda17dd1af24cec8fb"
       },
-      "notion_content_sha256": "ad0926795d54f9cefa9264992bcf8af125c71a77efcea639017539a5f227c16e",
-      "local_content_sha256": "dd41abb3df248752b539048d1a33caa217688fce66994e79aded396dee229f34",
-      "local_file_sha256": "e9984dc6ec24eaa3abdc602d25fe3a84064f95b55f1e496d97fe3b07ea9fc2bc"
+      "notion_content_sha256": "c6457a043cc9d3b4218dcc188a7daaae7b89290f392448b027eb9a0827a5b677",
+      "local_content_sha256": "a9b00cfc766f7674c96621ebffe64c75cf413e46661a3b27e7c9dda5b8b777b0",
+      "local_file_sha256": "f76da3cc5d0cf9e1da81bc77e9ef82b4f960989fc7bcc817e80f018f3c3277c8",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
+    },
+    {
+      "id": "3fdabdd6-1873-81fd-93a0-e4ff81a00437",
+      "title": "01 · Peta Produk, UX & Interaksi",
+      "url": "https://app.notion.com/p/3fdabdd6187381fd93a0e4ff81a00437",
+      "file": "research/muse-ai-v1/01-produk-dan-ux.md",
+      "kind": "page",
+      "page_last_edited_at": "2026-10-18T04:43:59.599Z",
+      "properties": {
+        "title": "01 · Peta Produk, UX & Interaksi"
+      },
+      "notion_content_sha256": "cb72f62c46006f6e89e6934754ef40bf3763bc53932f910d19521f8475c3fbfb",
+      "local_content_sha256": "465d421508b84b36ff577317b818e33916033207f2a76d74088d739ad9dcd3ba",
+      "local_file_sha256": "9e7ba210e674660c0e5d00f9ba21268166970c6d5fbe763e6f310f2d27728e3c",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
+    },
+    {
+      "id": "3fdabdd6-1873-81de-af1a-d55aa8508cba",
+      "title": "02 · Arsitektur, Runtime & Keamanan Muse",
+      "url": "https://app.notion.com/p/3fdabdd6187381deaf1ad55aa8508cba",
+      "file": "research/muse-ai-v1/02-arsitektur-vendor.md",
+      "kind": "page",
+      "page_last_edited_at": "2026-10-18T04:44:08.505Z",
+      "properties": {
+        "title": "02 · Arsitektur, Runtime & Keamanan Muse"
+      },
+      "notion_content_sha256": "9a0c113b4fabba13ebeed27ec46e5a159effc19354c3ac8029f06be0e2162542",
+      "local_content_sha256": "0ce1102dfaa7c04701db15fddb64808dfbe59b35864b547924fc5ee14dc2c128",
+      "local_file_sha256": "2df7ad04304727fcee5b74784be2490c07c1fb505dbd189756e90b314e77ea71",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
+    },
+    {
+      "id": "3fdabdd6-1873-81e3-aaa8-f456a6dbd1cf",
+      "title": "03 · Frontend, Transport & Kontrak Data",
+      "url": "https://app.notion.com/p/3fdabdd6187381e3aaa8f456a6dbd1cf",
+      "file": "research/muse-ai-v1/03-frontend-dan-kontrak.md",
+      "kind": "page",
+      "page_last_edited_at": "2026-10-18T04:48:15.018Z",
+      "properties": {
+        "title": "03 · Frontend, Transport & Kontrak Data"
+      },
+      "notion_content_sha256": "618aeb102f667225611417579c1a48bb3e9a40bbd5dcefad2e44ecc13fae131c",
+      "local_content_sha256": "416d1e05ab2b7997e3529019fbac7f36b59d12897197051e6da0f8844946bbe4",
+      "local_file_sha256": "d7c2813b0e5ba9f082b072bd39b16a18a087e76718d79dbaa5d543e8948ffafe",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
+    },
+    {
+      "id": "3fdabdd6-1873-8164-bb8c-fabe53fd49f6",
+      "title": "Arsip · Blueprint sebelum reset",
+      "url": "https://app.notion.com/p/3fdabdd618738164bb8cfabe53fd49f6",
+      "file": "research/muse-ai-v1/04-blueprint-ngertiin.md",
+      "kind": "page",
+      "page_last_edited_at": "2026-10-18T05:53:46.634Z",
+      "properties": {
+        "title": "Arsip · Blueprint sebelum reset"
+      },
+      "notion_content_sha256": "2d19900350f7a9e10fdab5a1c09c14c29701e1c5ac688940b01d8bcd73b98e3f",
+      "local_content_sha256": "f2a05b20c9c8a0a686954159ea24d6bcc3529974c77792f76067cc5077eee758",
+      "local_file_sha256": "2fcc617d61e0dfd9eb79a985cd26ed779559bca2eec6021c72f65556817ce1da",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
+    },
+    {
+      "id": "3fdabdd6-1873-812c-8d5d-fa04b7f3e140",
+      "title": "Arsip · Roadmap sebelum reset",
+      "url": "https://app.notion.com/p/3fdabdd61873812c8d5dfa04b7f3e140",
+      "file": "research/muse-ai-v1/05-roadmap-dan-acceptance.md",
+      "kind": "page",
+      "page_last_edited_at": "2026-10-18T05:53:47.304Z",
+      "properties": {
+        "title": "Arsip · Roadmap sebelum reset"
+      },
+      "notion_content_sha256": "2d19900350f7a9e10fdab5a1c09c14c29701e1c5ac688940b01d8bcd73b98e3f",
+      "local_content_sha256": "f2a05b20c9c8a0a686954159ea24d6bcc3529974c77792f76067cc5077eee758",
+      "local_file_sha256": "04198e95d977b9747009d45f16c999e75d7feb7546f36397e659a7c9116b1ef5",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
+    },
+    {
+      "id": "3fdabdd6-1873-8169-8715-cbfd20430b35",
+      "title": "06 · Bukti, Hasil Uji & Batas Investigasi",
+      "url": "https://app.notion.com/p/3fdabdd6187381698715cbfd20430b35",
+      "file": "research/muse-ai-v1/06-bukti-dan-gap.md",
+      "kind": "page",
+      "page_last_edited_at": "2026-10-18T04:46:19.628Z",
+      "properties": {
+        "title": "06 · Bukti, Hasil Uji & Batas Investigasi"
+      },
+      "notion_content_sha256": "640c6cf71867fdf4c7edb848a3ff97a228d01b81091ed671ac3b1fad3d560eab",
+      "local_content_sha256": "b312cd9c5ce6ac73cbf029f351cf94a79da6e862dd4e1becd2007709396c2f75",
+      "local_file_sha256": "e69b680649975158697fe6eba2e5b83fb0495d98b27899123e5d1b7d84973208",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
+    },
+    {
+      "id": "3fdabdd6-1873-81a4-96a1-f4d88d7d68bf",
+      "title": "07 · Lampiran 338 RPC & Jejak Sumber",
+      "url": "https://app.notion.com/p/3fdabdd6187381a496a1f4d88d7d68bf",
+      "file": "research/muse-ai-v1/07-lampiran-rpc.md",
+      "kind": "page",
+      "page_last_edited_at": "2026-10-18T04:44:18.716Z",
+      "properties": {
+        "title": "07 · Lampiran 338 RPC & Jejak Sumber"
+      },
+      "notion_content_sha256": "388f25038119d0e424ae21a2e16f960ad9c7c4efce4d05175ebd8a28b2389fdd",
+      "local_content_sha256": "cff43f6dc1b754c0cb79acb951368933c4d514a207eedf5f483a8e1eb537305e",
+      "local_file_sha256": "c4902c0925a4cbc1c0115f40457566f05a326bfb8ab052a3dc0124587e468b11",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
+    },
+    {
+      "id": "3fdabdd6-1873-81ed-b593-cae8f95784e7",
+      "title": "08 · Bukti Riset & REA",
+      "url": "https://app.notion.com/p/3fdabdd6187381edb593cae8f95784e7",
+      "file": "research/muse-ai-v1/README.md",
+      "kind": "page",
+      "page_last_edited_at": "2026-10-18T06:03:47.969Z",
+      "properties": {
+        "title": "08 · Bukti Riset & REA"
+      },
+      "notion_content_sha256": "07b26f67f43a0af430a951607ef0be9f5a7ba70b264a5c2b3b8cd61c7292181c",
+      "local_content_sha256": "504d9e47383eef4f1f51128c8c269cbca48e979290ac8a98b954dd33a0b3822c",
+      "local_file_sha256": "7bf54a4419fd180835cf3d99f8c089ac1587a83417c68b0b00de0ca67bb6ec58",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00"
+    },
+    {
+      "id": "3fdabdd6-1873-819c-a2b5-cc4e521b3587",
+      "title": "05 · Usage, Paket & Pembayaran",
+      "url": "https://app.notion.com/p/3fdabdd61873819ca2b5cc4e521b3587",
+      "file": "product/05-usage-paket-pembayaran.md",
+      "kind": "page",
+      "properties": {
+        "title": "05 · Usage, Paket & Pembayaran"
+      },
+      "notion_content_sha256": "e3bd631d5c5a757524e6982fa057a256b6c93f48ca8778f24297f36ea579de45",
+      "local_content_sha256": "164f340486743c9d2614eb4ff877e0589dc3e7a6bb40f15932503171b4bf3247",
+      "local_file_sha256": "ac771dd2c194af34118e06da8820c26b7ac4ff57c19ce969f7e8e5f79a44dcac",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00",
+      "page_last_edited_at": "2026-10-18T06:01:36.179Z"
+    },
+    {
+      "id": "3fdabdd6-1873-81d3-9f94-f7161d4ef570",
+      "title": "06 · Development, Operasi & Acceptance",
+      "url": "https://app.notion.com/p/3fdabdd6187381d39f94f7161d4ef570",
+      "file": "engineering/development.md",
+      "kind": "page",
+      "properties": {
+        "title": "06 · Development, Operasi & Acceptance"
+      },
+      "notion_content_sha256": "b2c5ab260a72431d0de977f59f3e3fd99ff6433473ad6015b139421c3e3f21ef",
+      "local_content_sha256": "7516ac6997986a8d2be92676f73f19c1704db1b4b280154e0cde909034d4f0b0",
+      "local_file_sha256": "f7dcaba9e0e594026c43acffc5f10bd1dbc4046143f1e79d76f995418bd939a2",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00",
+      "page_last_edited_at": "2026-10-18T06:03:49.086Z"
+    },
+    {
+      "id": "3fdabdd6-1873-812e-9ed6-c67417884b74",
+      "title": "07 · Backlog Implementasi V1",
+      "url": "https://app.notion.com/p/3fdabdd61873812e9ed6c67417884b74",
+      "file": "backlog/README.md",
+      "kind": "page",
+      "properties": {
+        "title": "07 · Backlog Implementasi V1"
+      },
+      "notion_content_sha256": "ff427a85b252da3841a5489b0f59aaa7c56a3e481cccccceb80e4755158e4018",
+      "local_content_sha256": "6f8f141d26c06db4c4c1e0a38dc57315e043b485143d5fe24d3446116daec5b9",
+      "local_file_sha256": "7b341c72f3594104ca471970251960844b8d45332d81c33502eff49d90fcb276",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00",
+      "page_last_edited_at": "2026-10-18T05:49:58.871Z"
+    },
+    {
+      "id": "3fdabdd6-1873-8115-b121-fb4d564e2737",
+      "title": "REA-1 · Chat & Session",
+      "url": "https://app.notion.com/p/3fdabdd618738115b121fb4d564e2737",
+      "file": "research/muse-ai-v1/evidence/chat.md",
+      "kind": "page",
+      "properties": {
+        "title": "REA-1 · Chat & Session"
+      },
+      "notion_content_sha256": "41b77005a2eb14f18fa1e8ad7d27df3c1bc0f9f38e45e4e2ed24a9cb70359f1b",
+      "local_content_sha256": "e7b227b05c15eaff5828c6950d8ec7b1174cf1fcecf4f797d2ca70d838d7de84",
+      "local_file_sha256": "9e6481421518ffdef4d289e79bbfc1e9d524fc2518311b4bf8965b85b796a205",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00",
+      "page_last_edited_at": "2026-10-18T06:01:39.546Z"
+    },
+    {
+      "id": "3fdabdd6-1873-81c0-9fac-e8d0b458ad24",
+      "title": "REA-2 · Task & Scheduler",
+      "url": "https://app.notion.com/p/3fdabdd6187381c09face8d0b458ad24",
+      "file": "research/muse-ai-v1/evidence/task.md",
+      "kind": "page",
+      "properties": {
+        "title": "REA-2 · Task & Scheduler"
+      },
+      "notion_content_sha256": "017d4101c574cfa75cddefcb9709f68165b25281e9e78334f7e3cfa04c0a9a46",
+      "local_content_sha256": "68aa303e200f16f9de2d4d820b64f5ee9441863524adf8fee3ae40658e2fbcbb",
+      "local_file_sha256": "8192c326ad0b6165e1e1a68f79353b52bd1f585ac4d101fa6c8fd6d5257feb31",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00",
+      "page_last_edited_at": "2026-10-18T06:01:40.965Z"
+    },
+    {
+      "id": "3fdabdd6-1873-8128-940a-e28cf59a8578",
+      "title": "REA-3 · File & Artifact",
+      "url": "https://app.notion.com/p/3fdabdd618738128940ae28cf59a8578",
+      "file": "research/muse-ai-v1/evidence/file.md",
+      "kind": "page",
+      "properties": {
+        "title": "REA-3 · File & Artifact"
+      },
+      "notion_content_sha256": "90acf4bd668ca127e322bcfd1c2563fdbc3f7c638f3328d218847fd3b4e8ca16",
+      "local_content_sha256": "da81a5e93d5be5a2b959e014c6b0c5c6c92a4550f6c10d57f569b3a7e993022a",
+      "local_file_sha256": "afd17dbed81629b767076eddd3916875d17dc8433b1c474d65ecdd013df9143c",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00",
+      "page_last_edited_at": "2026-10-18T06:01:42.232Z"
+    },
+    {
+      "id": "3fdabdd6-1873-8119-b3de-f58e5565c18c",
+      "title": "REA-4 · Memory & Goals",
+      "url": "https://app.notion.com/p/3fdabdd618738119b3def58e5565c18c",
+      "file": "research/muse-ai-v1/evidence/memory.md",
+      "kind": "page",
+      "properties": {
+        "title": "REA-4 · Memory & Goals"
+      },
+      "notion_content_sha256": "e35902265a27687154014c031e5e68c90342f246d477b45d1f7ebfe2d5fae8bc",
+      "local_content_sha256": "bd225f5b6ffc1b91c53cbef07dc901c2bcb34f86de18898f40d565edb460f412",
+      "local_file_sha256": "2a76391c762b3880afbc8e606e44a75f7747ae63ef7d1cd377c447d100f093a9",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00",
+      "page_last_edited_at": "2026-10-18T06:01:43.605Z"
+    },
+    {
+      "id": "3fdabdd6-1873-8171-8c98-c853fea3d769",
+      "title": "REA-5 · Permissions",
+      "url": "https://app.notion.com/p/3fdabdd6187381718c98c853fea3d769",
+      "file": "research/muse-ai-v1/evidence/permissions.md",
+      "kind": "page",
+      "properties": {
+        "title": "REA-5 · Permissions"
+      },
+      "notion_content_sha256": "b5c399962d9266955bb307e3dcade5ff8ece04606d6c395941d7727f102d139d",
+      "local_content_sha256": "b3ccb670af8a887d4065db3302a2e27b778677a99e9b69feb05e31e5fa11c2e4",
+      "local_file_sha256": "106c23c1c7fee0e8dacbda356f07319df1fe2501c153bcabc54a8c8882b3580f",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00",
+      "page_last_edited_at": "2026-10-18T06:01:47.408Z"
+    },
+    {
+      "id": "3fdabdd6-1873-818c-b211-e29e7e07dc88",
+      "title": "REA-6 · Browser & Computer",
+      "url": "https://app.notion.com/p/3fdabdd61873818cb211e29e7e07dc88",
+      "file": "research/muse-ai-v1/evidence/computer.md",
+      "kind": "page",
+      "properties": {
+        "title": "REA-6 · Browser & Computer"
+      },
+      "notion_content_sha256": "8dbd3268446e1101897e6353b889836b1e6d6cc25f3e744ddc371b8c705645d0",
+      "local_content_sha256": "ecf17af499a064b479432d50d6041ba1297e9c690a54c9505b8cd5d0d21169dd",
+      "local_file_sha256": "d3b250cf009e4436e95254de4d08963bccf75672e33ce545ead4934d34ce966c",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00",
+      "page_last_edited_at": "2026-10-18T06:01:48.662Z"
+    },
+    {
+      "id": "3fdabdd6-1873-817a-b755-f7d9bf4c1ce8",
+      "title": "NG-030 · Bukti penerimaan baseline V1",
+      "url": "https://app.notion.com/p/3fdabdd61873817ab755f7d9bf4c1ce8",
+      "file": "engineering/baseline-v1-acceptance.md",
+      "kind": "page",
+      "properties": {
+        "title": "NG-030 · Bukti penerimaan baseline V1"
+      },
+      "notion_content_sha256": "9c3513981244d3d53e61a4414d6682c280c4fb0d0e4c01bdcf1edcb2716eec61",
+      "local_content_sha256": "7c0d0d60cb403a8a7edc81086c6a744be8221a2c40cf35787485e7ad38a948ca",
+      "local_file_sha256": "03d874d1eb61398140abe06e59b67fe19ca282f0eb814cc862742c89bab6abab",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00",
+      "page_last_edited_at": "2026-10-18T06:00:36.490Z"
+    },
+    {
+      "id": "3fdabdd6-1873-81ad-b916-f976e9095a4d",
+      "title": "NG-026 · Bersihkan domain dan runtime pembelajaran",
+      "url": "https://app.notion.com/p/3fdabdd6187381adb916f976e9095a4d",
+      "file": "backlog/tasks/26-bersihkan-domain-dan-runtime-pembelajaran.md",
+      "kind": "task",
+      "properties": {
+        "Area": "Fondasi",
+        "Lingkup": "Aktif V1",
+        "Prioritas": "P0",
+        "Status": "Done",
+        "Ticket": 26,
+        "Tugas": "NG-026 · Bersihkan domain dan runtime pembelajaran",
+        "Urutan": 1,
+        "url": "https://app.notion.com/p/3fdabdd6187381adb916f976e9095a4d"
+      },
+      "notion_content_sha256": "59b5fc2dc86d216c169fa33771888c7337a8e53d4a737065200d50709ab3b798",
+      "local_content_sha256": "0c14295c781af9813a80bed43bf9cfdd569696e6b82679d75eaa77644305f8c6",
+      "local_file_sha256": "436050069cb950408809f3d3d032f7f08cdda4f203a86f8c6a34184dfc38ff1a",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00",
+      "page_last_edited_at": "2026-10-18T05:50:23.923Z"
+    },
+    {
+      "id": "3fdabdd6-1873-8151-bff8-e309a84c12bd",
+      "title": "NG-027 · Bersihkan UI dan persona awal",
+      "url": "https://app.notion.com/p/3fdabdd618738151bff8e309a84c12bd",
+      "file": "backlog/tasks/27-bersihkan-ui-dan-persona-awal.md",
+      "kind": "task",
+      "properties": {
+        "Area": "Fondasi",
+        "Depends on": [
+          "https://app.notion.com/p/3fdabdd6187381adb916f976e9095a4d"
+        ],
+        "Lingkup": "Aktif V1",
+        "Prioritas": "P0",
+        "Status": "Done",
+        "Ticket": 27,
+        "Tugas": "NG-027 · Bersihkan UI dan persona awal",
+        "Urutan": 2,
+        "url": "https://app.notion.com/p/3fdabdd618738151bff8e309a84c12bd"
+      },
+      "notion_content_sha256": "ce6c1a79e878ad19c71278db004208960515d77a5df1b6c3e78f64141d2fc458",
+      "local_content_sha256": "a4cf28e7763643ac5c81ddcb2927ea7dd936836c3cab8194ff2d2de49210504d",
+      "local_file_sha256": "88eec4222491a226a7b9c44e9afcf8d2b505d2c3441b68e427c5667375d71778",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00",
+      "page_last_edited_at": "2026-10-18T05:50:39.711Z"
+    },
+    {
+      "id": "3fdabdd6-1873-8129-aadd-c538dc6ea258",
+      "title": "NG-028 · Sederhanakan kuota menjadi fondasi umum",
+      "url": "https://app.notion.com/p/3fdabdd618738129aaddc538dc6ea258",
+      "file": "backlog/tasks/28-sederhanakan-kuota-menjadi-fondasi-umum.md",
+      "kind": "task",
+      "properties": {
+        "Area": "Billing",
+        "Depends on": [
+          "https://app.notion.com/p/3fdabdd618738151bff8e309a84c12bd"
+        ],
+        "Lingkup": "Aktif V1",
+        "Prioritas": "P0",
+        "Status": "Done",
+        "Ticket": 28,
+        "Tugas": "NG-028 · Sederhanakan kuota menjadi fondasi umum",
+        "Urutan": 3,
+        "url": "https://app.notion.com/p/3fdabdd618738129aaddc538dc6ea258"
+      },
+      "notion_content_sha256": "dd1e5dff4dc7e70901dc7a3e5f221bf6b61f9b01c248c028681a434e4738f905",
+      "local_content_sha256": "74d03b713b94244dfca0c97b5bed652866b630e7f3184dfe43f4eb88a8212ffd",
+      "local_file_sha256": "7629e64406552af51788d4defa195a21a8ad625bc1e20268c1fa14c1977c5f7e",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00",
+      "page_last_edited_at": "2026-10-18T05:50:41.317Z"
+    },
+    {
+      "id": "3fdabdd6-1873-818f-b608-fde942a00855",
+      "title": "NG-029 · Buat baseline skema dan reset development",
+      "url": "https://app.notion.com/p/3fdabdd61873818fb608fde942a00855",
+      "file": "backlog/tasks/29-buat-baseline-skema-dan-reset-development.md",
+      "kind": "task",
+      "properties": {
+        "Area": "Fondasi",
+        "Depends on": [
+          "https://app.notion.com/p/3fdabdd618738129aaddc538dc6ea258"
+        ],
+        "Lingkup": "Aktif V1",
+        "Prioritas": "P0",
+        "Status": "Done",
+        "Ticket": 29,
+        "Tugas": "NG-029 · Buat baseline skema dan reset development",
+        "Urutan": 4,
+        "url": "https://app.notion.com/p/3fdabdd61873818fb608fde942a00855"
+      },
+      "notion_content_sha256": "523aa951d21b5648abf00c540f4e3779c0be499bcc84e2751fa214781ed66947",
+      "local_content_sha256": "d5bc93a65fb4cec083cb5ec1c8e6b621f514ff76dd9e6a47e3573f2e61c6e861",
+      "local_file_sha256": "3d1b639827cc0c366725229e786993e9353a4c0fa966306aa77b0df0719b00a0",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00",
+      "page_last_edited_at": "2026-10-18T05:50:42.919Z"
+    },
+    {
+      "id": "3fdabdd6-1873-819e-be51-d0445fb7da4e",
+      "title": "NG-030 · Terima baseline V1 yang bersih",
+      "url": "https://app.notion.com/p/3fdabdd61873819ebe51d0445fb7da4e",
+      "file": "backlog/tasks/30-terima-baseline-v1-yang-bersih.md",
+      "kind": "task",
+      "properties": {
+        "Area": "Fondasi",
+        "Depends on": [
+          "https://app.notion.com/p/3fdabdd61873818fb608fde942a00855"
+        ],
+        "Lingkup": "Aktif V1",
+        "Prioritas": "P0",
+        "Status": "Done",
+        "Ticket": 30,
+        "Tugas": "NG-030 · Terima baseline V1 yang bersih",
+        "Urutan": 5,
+        "url": "https://app.notion.com/p/3fdabdd61873819ebe51d0445fb7da4e"
+      },
+      "notion_content_sha256": "f326960be24d796dea1cef596667b3fb9fc3db2e2563cfd50a70d2bd0b874d1e",
+      "local_content_sha256": "46cc8fe1cdc6766f1b2d208cc3db5bd10320b2b003a53c1af6b39d38afdfb4db",
+      "local_file_sha256": "185a318a8932e31c0077f7d99c481678af302e609d1d1f679f8ed2ecc2e78efb",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00",
+      "page_last_edited_at": "2026-10-18T06:02:55.756Z"
+    },
+    {
+      "id": "3fdabdd6-1873-810a-91b6-f2e80f3fa704",
+      "title": "NG-031 · Validasi Daytona dengan trial terbatas",
+      "url": "https://app.notion.com/p/3fdabdd61873810a91b6f2e80f3fa704",
+      "file": "backlog/tasks/31-validasi-daytona-dengan-trial-terbatas.md",
+      "kind": "task",
+      "properties": {
+        "Area": "Fondasi",
+        "Depends on": [
+          "https://app.notion.com/p/3fdabdd61873819ebe51d0445fb7da4e"
+        ],
+        "Lingkup": "Aktif V1",
+        "Prioritas": "P0",
+        "Status": "Ready",
+        "Ticket": 31,
+        "Tugas": "NG-031 · Validasi Daytona dengan trial terbatas",
+        "Urutan": 6,
+        "url": "https://app.notion.com/p/3fdabdd61873810a91b6f2e80f3fa704"
+      },
+      "notion_content_sha256": "aa36488a6b245fe0c6b701ba8f8f1b6d2fb822cc14a40a09bda5fd75a6052cf7",
+      "local_content_sha256": "dbfdd1038b5ed22e7aa543e5f536cf756bfb38284a520bc725fe624b9794015e",
+      "local_file_sha256": "3be268e492cc8dafec4fc74e4df2a0cff5a4c43562e47fb94785421eaed996c6",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00",
+      "page_last_edited_at": "2026-10-18T06:02:57.417Z"
+    },
+    {
+      "id": "3fdabdd6-1873-810b-8159-f4798fc39046",
+      "title": "NG-032 · Shell onboarding dan walkthrough asisten umum",
+      "url": "https://app.notion.com/p/3fdabdd61873810b8159f4798fc39046",
+      "file": "backlog/tasks/32-shell-onboarding-dan-walkthrough-asisten-umum.md",
+      "kind": "task",
+      "properties": {
+        "Area": "Fondasi",
+        "Depends on": [
+          "https://app.notion.com/p/3fdabdd61873810a91b6f2e80f3fa704"
+        ],
+        "Lingkup": "Aktif V1",
+        "Prioritas": "P0",
+        "Status": "Backlog",
+        "Ticket": 32,
+        "Tugas": "NG-032 · Shell onboarding dan walkthrough asisten umum",
+        "Urutan": 7,
+        "url": "https://app.notion.com/p/3fdabdd61873810b8159f4798fc39046"
+      },
+      "notion_content_sha256": "d4b184d48f4ba520bef6e07f2031bc8f6adddd638f6540a14c8dadbc69c62f83",
+      "local_content_sha256": "eadccbca0d4e4ee459e938ef6ed5d166fa092fcf44c083636a4347da94356356",
+      "local_file_sha256": "9f82d36911b29163528c86e472d8a5eda0eb18f87ca7714ff438cfe1a9a3fee1",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00",
+      "page_last_edited_at": "2026-10-18T05:50:47.722Z"
+    },
+    {
+      "id": "3fdabdd6-1873-81ba-979a-c9f219c55a5a",
+      "title": "NG-033 · Task background dan approval umum",
+      "url": "https://app.notion.com/p/3fdabdd6187381ba979ac9f219c55a5a",
+      "file": "backlog/tasks/33-task-background-dan-approval-umum.md",
+      "kind": "task",
+      "properties": {
+        "Area": "Agent",
+        "Depends on": [
+          "https://app.notion.com/p/3fdabdd61873810b8159f4798fc39046"
+        ],
+        "Lingkup": "Aktif V1",
+        "Prioritas": "P0",
+        "Status": "Backlog",
+        "Ticket": 33,
+        "Tugas": "NG-033 · Task background dan approval umum",
+        "Urutan": 8,
+        "url": "https://app.notion.com/p/3fdabdd6187381ba979ac9f219c55a5a"
+      },
+      "notion_content_sha256": "bcaa7f257ba0b06da35f7ee718220d3012383eb64445d847b7448a4c1ed99ba4",
+      "local_content_sha256": "d7b077a06fe949e695f34c6174c7a444372440acd9d7c39a466a65b7f56a8f9f",
+      "local_file_sha256": "c64b43341aee6529a549d72c4c40c42fe50e11bd9f76c224575236d51f1c2a9b",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00",
+      "page_last_edited_at": "2026-10-18T05:50:49.274Z"
+    },
+    {
+      "id": "3fdabdd6-1873-8108-a7d9-ed086cd2c1ea",
+      "title": "NG-034 · File produk dan hasil tersimpan",
+      "url": "https://app.notion.com/p/3fdabdd618738108a7d9ed086cd2c1ea",
+      "file": "backlog/tasks/34-file-produk-dan-hasil-tersimpan.md",
+      "kind": "task",
+      "properties": {
+        "Area": "Agent",
+        "Depends on": [
+          "https://app.notion.com/p/3fdabdd6187381ba979ac9f219c55a5a"
+        ],
+        "Lingkup": "Aktif V1",
+        "Prioritas": "P0",
+        "Status": "Backlog",
+        "Ticket": 34,
+        "Tugas": "NG-034 · File produk dan hasil tersimpan",
+        "Urutan": 9,
+        "url": "https://app.notion.com/p/3fdabdd618738108a7d9ed086cd2c1ea"
+      },
+      "notion_content_sha256": "397e34de7449982bda84c351c8eb4be2e1ca72dc85058050184fb850b2fcc550",
+      "local_content_sha256": "dd9015b34f9c9f30397a4a1c473826360a0394a9e267958906e6b4fcebb295c4",
+      "local_file_sha256": "683a993925dbbfb294bbc580c2af25eb383b750facf321c0bc53a4b67f556222",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00",
+      "page_last_edited_at": "2026-10-18T05:50:51.043Z"
+    },
+    {
+      "id": "3fdabdd6-1873-8194-8c64-cf1f828a90c8",
+      "title": "NG-035 · Eksekusi kode dalam sandbox",
+      "url": "https://app.notion.com/p/3fdabdd6187381948c64cf1f828a90c8",
+      "file": "backlog/tasks/35-eksekusi-kode-dalam-sandbox.md",
+      "kind": "task",
+      "properties": {
+        "Area": "Agent",
+        "Depends on": [
+          "https://app.notion.com/p/3fdabdd61873810a91b6f2e80f3fa704",
+          "https://app.notion.com/p/3fdabdd6187381ba979ac9f219c55a5a",
+          "https://app.notion.com/p/3fdabdd618738108a7d9ed086cd2c1ea"
+        ],
+        "Lingkup": "Aktif V1",
+        "Prioritas": "P0",
+        "Status": "Backlog",
+        "Ticket": 35,
+        "Tugas": "NG-035 · Eksekusi kode dalam sandbox",
+        "Urutan": 10,
+        "url": "https://app.notion.com/p/3fdabdd6187381948c64cf1f828a90c8"
+      },
+      "notion_content_sha256": "d7451e893123f11a4496156ff1c7e21349b9ddc5eadbf910eaf9319e14ebebff",
+      "local_content_sha256": "26873c14ae70a2e2228af98237ffd8f267ec96e2742edb983a10cac4c12233e0",
+      "local_file_sha256": "f7b67abfc6cceaa41afdf711c9056e6399d852a57efa0c97fe717bd64700d999",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00",
+      "page_last_edited_at": "2026-10-18T05:50:52.699Z"
+    },
+    {
+      "id": "3fdabdd6-1873-8198-b295-ca667c34f1b1",
+      "title": "NG-036 · Browser VNC live desktop dan takeover",
+      "url": "https://app.notion.com/p/3fdabdd618738198b295ca667c34f1b1",
+      "file": "backlog/tasks/36-browser-vnc-live-desktop-dan-takeover.md",
+      "kind": "task",
+      "properties": {
+        "Area": "Agent",
+        "Depends on": [
+          "https://app.notion.com/p/3fdabdd6187381948c64cf1f828a90c8"
+        ],
+        "Lingkup": "Aktif V1",
+        "Prioritas": "P0",
+        "Status": "Backlog",
+        "Ticket": 36,
+        "Tugas": "NG-036 · Browser VNC live desktop dan takeover",
+        "Urutan": 11,
+        "url": "https://app.notion.com/p/3fdabdd618738198b295ca667c34f1b1"
+      },
+      "notion_content_sha256": "bac3881ed7f49424a649df2b28845311b88960a128a1aa14a50b2371c6e1e508",
+      "local_content_sha256": "fb777b91bd7e18dec4cfa3f54688c327d04639b854178eacb072f2cb8c9a09e0",
+      "local_file_sha256": "54b36a6cf89e2ff1fc95b6466f74e38f660695da160bb1df754cfcb8566c0d2c",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00",
+      "page_last_edited_at": "2026-10-18T05:51:10.463Z"
+    },
+    {
+      "id": "3fdabdd6-1873-813a-9603-fb38d0df673f",
+      "title": "NG-037 · Scheduler pengguna saat offline",
+      "url": "https://app.notion.com/p/3fdabdd61873813a9603fb38d0df673f",
+      "file": "backlog/tasks/37-scheduler-pengguna-saat-offline.md",
+      "kind": "task",
+      "properties": {
+        "Area": "Agent",
+        "Depends on": [
+          "https://app.notion.com/p/3fdabdd618738198b295ca667c34f1b1",
+          "https://app.notion.com/p/3fdabdd6187381ba979ac9f219c55a5a"
+        ],
+        "Lingkup": "Aktif V1",
+        "Prioritas": "P0",
+        "Status": "Backlog",
+        "Ticket": 37,
+        "Tugas": "NG-037 · Scheduler pengguna saat offline",
+        "Urutan": 12,
+        "url": "https://app.notion.com/p/3fdabdd61873813a9603fb38d0df673f"
+      },
+      "notion_content_sha256": "b7e3897f6cb932c2cc805e0ea2cca79f2b3520b1e007c1e19db5b4972a51ee31",
+      "local_content_sha256": "06b2bdb15a64208502425cc90f12c2bf3faffdbce2bf0dd0d9b187c9cb4d68a0",
+      "local_file_sha256": "88b682d5a249182aa040dfb976ce79d7c2f793994b8947c71be584aa34af2aec",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00",
+      "page_last_edited_at": "2026-10-18T05:51:12.126Z"
+    },
+    {
+      "id": "3fdabdd6-1873-814b-abd1-c1bcd089effb",
+      "title": "NG-038 · Goals umum dengan evidence progress",
+      "url": "https://app.notion.com/p/3fdabdd61873814babd1c1bcd089effb",
+      "file": "backlog/tasks/38-goals-umum-dengan-evidence-progress.md",
+      "kind": "task",
+      "properties": {
+        "Area": "Agent",
+        "Depends on": [
+          "https://app.notion.com/p/3f8abdd6187381aabe5cf4a3355618cd",
+          "https://app.notion.com/p/3fdabdd6187381ba979ac9f219c55a5a"
+        ],
+        "Lingkup": "Aktif V1",
+        "Prioritas": "P0",
+        "Status": "Backlog",
+        "Ticket": 38,
+        "Tugas": "NG-038 · Goals umum dengan evidence progress",
+        "Urutan": 16,
+        "url": "https://app.notion.com/p/3fdabdd61873814babd1c1bcd089effb"
+      },
+      "notion_content_sha256": "13794fb4fa664620444a0fee4a739d816b9d71fafa109b954e1db90217c55b2c",
+      "local_content_sha256": "17bd61cd37b46c3cc4a0ff9d638b77ca4bdd183cceb11fbacaa3621275a61979",
+      "local_file_sha256": "31582cf2deb0e53d960b664193a9baddedb068c0163bbeac409072521acfec1a",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00",
+      "page_last_edited_at": "2026-10-18T05:51:18.287Z"
+    },
+    {
+      "id": "3fdabdd6-1873-8192-b8f8-f919dedbb367",
+      "title": "NG-039 · Library pencarian dan penemuan kemampuan",
+      "url": "https://app.notion.com/p/3fdabdd618738192b8f8f919dedbb367",
+      "file": "backlog/tasks/39-library-pencarian-dan-penemuan-kemampuan.md",
+      "kind": "task",
+      "properties": {
+        "Area": "Agent",
+        "Depends on": [
+          "https://app.notion.com/p/3f8abdd618738137a8c9c719f5b64bc4",
+          "https://app.notion.com/p/3fdabdd618738108a7d9ed086cd2c1ea"
+        ],
+        "Lingkup": "Aktif V1",
+        "Prioritas": "P0",
+        "Status": "Backlog",
+        "Ticket": 39,
+        "Tugas": "NG-039 · Library pencarian dan penemuan kemampuan",
+        "Urutan": 19,
+        "url": "https://app.notion.com/p/3fdabdd618738192b8f8f919dedbb367"
+      },
+      "notion_content_sha256": "0454591c00849ea6dfa257738adc22b93c741e26c3486c4b30300b2c99a4a1df",
+      "local_content_sha256": "a46e658264ca320231ffab75b02953cfd116332f9bd141dda1b746a3b7a4e977",
+      "local_file_sha256": "ee842a1dd387d62fdbf9cd452f2ee656c61a472b0476b2025da8f80218a6d51c",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00",
+      "page_last_edited_at": "2026-10-18T05:51:22.950Z"
+    },
+    {
+      "id": "3fdabdd6-1873-8163-9bd6-f377668ee2f3",
+      "title": "NG-040 · Usage komputasi dan kontrak paket V1",
+      "url": "https://app.notion.com/p/3fdabdd6187381639bd6f377668ee2f3",
+      "file": "backlog/tasks/40-usage-komputasi-dan-kontrak-paket-v1.md",
+      "kind": "task",
+      "properties": {
+        "Area": "Billing",
+        "Depends on": [
+          "https://app.notion.com/p/3fdabdd618738192b8f8f919dedbb367"
+        ],
+        "Lingkup": "Aktif V1",
+        "Prioritas": "P0",
+        "Status": "Backlog",
+        "Ticket": 40,
+        "Tugas": "NG-040 · Usage komputasi dan kontrak paket V1",
+        "Urutan": 20,
+        "url": "https://app.notion.com/p/3fdabdd6187381639bd6f377668ee2f3"
+      },
+      "notion_content_sha256": "9e9e2aef48819a8d94d4ecc4de2ec0a8ae49acadd50d55806a24860c4c798ba4",
+      "local_content_sha256": "83f5d8e81f6d36696451be6bad84724d5a8f7d94dcfd39f1f78f8c47925d3d17",
+      "local_file_sha256": "6332982f9713ea0d4980e30bc6aa7e9be163c487024bcd65fde9551c38ae9f57",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00",
+      "page_last_edited_at": "2026-10-18T05:51:33.991Z"
+    },
+    {
+      "id": "3fdabdd6-1873-81f8-ade2-c7db2c75396e",
+      "title": "NG-041 · Benchmark kualitas latency dan biaya asisten umum",
+      "url": "https://app.notion.com/p/3fdabdd6187381f8ade2c7db2c75396e",
+      "file": "backlog/tasks/41-benchmark-kualitas-latency-dan-biaya-asisten-umum.md",
+      "kind": "task",
+      "properties": {
+        "Area": "Release",
+        "Depends on": [
+          "https://app.notion.com/p/3f8abdd6187381a78cd0f770a7db65d2"
+        ],
+        "Lingkup": "Aktif V1",
+        "Prioritas": "P0",
+        "Status": "Backlog",
+        "Ticket": 41,
+        "Tugas": "NG-041 · Benchmark kualitas latency dan biaya asisten umum",
+        "Urutan": 24,
+        "url": "https://app.notion.com/p/3fdabdd6187381f8ade2c7db2c75396e"
+      },
+      "notion_content_sha256": "52cf3a650c910c14ab9fa0256c6db10b9510a9ce2e5a27d6e2486ffe426dad33",
+      "local_content_sha256": "477f8ee27cf82090ce8276338eedf5a9915e8ba9915e15e05a1103c6c0254abe",
+      "local_file_sha256": "4c6f4ebd32aa7dae63afd5de29b8a237476aeea83fd54874932a2c380e696a8c",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00",
+      "page_last_edited_at": "2026-10-18T05:51:45.780Z"
+    },
+    {
+      "id": "3fdabdd6-1873-81ed-af69-ecd07a7842a8",
+      "title": "Arsip perencanaan sebelum reset",
+      "url": "https://app.notion.com/p/3fdabdd6187381edaf69ecd07a7842a8",
+      "file": "research/muse-ai-v1/archive/README.md",
+      "kind": "page",
+      "properties": {
+        "title": "Arsip perencanaan sebelum reset"
+      },
+      "notion_content_sha256": "736a75a823f5e19d1a414c792d3ce81f9994614d8334f140227c6f05c8979f94",
+      "local_content_sha256": "3b156255325d3cfb71f2ccf0061524160e062b6ee5e5a70ea12567a39ad5ef3d",
+      "local_file_sha256": "b5deb26549448c101ea377412eb7b6ca88a9e3b02385928f968adc861b29aaf4",
+      "readback_at": "2026-10-18T06:04:56.780944+00:00",
+      "page_last_edited_at": "2026-10-18T06:03:23.831Z"
     }
   ],
   "database": {
@@ -716,6 +1466,31 @@
         "description": "",
         "name": "Depends on",
         "type": "relation"
+      },
+      "Lingkup": {
+        "description": "",
+        "name": "Lingkup",
+        "options": [
+          {
+            "color": "blue",
+            "description": "",
+            "name": "Aktif V1",
+            "url": "collectionPropertyOption://52375548-71cd-4cce-a6d2-538ac000f9de/Wnd7aA/NTgxNjJjMTctYzgwYi00ODk2LTlmN2ItOTdkOWZiOTY2NmQy"
+          },
+          {
+            "color": "gray",
+            "description": "",
+            "name": "Histori",
+            "url": "collectionPropertyOption://52375548-71cd-4cce-a6d2-538ac000f9de/Wnd7aA/MDYyY2ViNDItMjk0NC00ZDY2LThkZDItOWZjMDBjNTVjYzIz"
+          },
+          {
+            "color": "brown",
+            "description": "",
+            "name": "Di luar V1",
+            "url": "collectionPropertyOption://52375548-71cd-4cce-a6d2-538ac000f9de/Wnd7aA/ZWU3NWRmYjgtZjM2Yi00ZTkzLTkxZTItMGUzN2Q1YmJjZTBi"
+          }
+        ],
+        "type": "select"
       },
       "Prioritas": {
         "description": "",
@@ -779,6 +1554,11 @@
         ],
         "type": "select"
       },
+      "Ticket": {
+        "description": "",
+        "name": "Ticket",
+        "type": "number"
+      },
       "Tugas": {
         "description": "",
         "name": "Tugas",
@@ -801,37 +1581,14 @@
           "displayProperties": [
             "Tugas",
             "Status",
-            "Prioritas",
+            "Ticket",
+            "Urutan",
+            "Lingkup",
             "Area",
+            "Prioritas",
             "Depends on"
           ],
           "name": "Semua",
-          "simpleFilters": [
-            {
-              "filter": {
-                "operator": "enum_is",
-                "property": "Area",
-                "propertyType": "select",
-                "type": "property",
-                "value": {
-                  "type": "exact"
-                }
-              },
-              "id": "ea2cd808-f815-434c-96b6-14246a56fc60"
-            },
-            {
-              "filter": {
-                "operator": "enum_is",
-                "property": "Prioritas",
-                "propertyType": "select",
-                "type": "property",
-                "value": {
-                  "type": "exact"
-                }
-              },
-              "id": "5bf659e9-dd4b-48f9-8580-4d46a033ad6d"
-            }
-          ],
           "sorts": [
             {
               "direction": "ascending",
@@ -841,6 +1598,31 @@
           "type": "table"
         },
         "page_ids": [
+          "3fdabdd6-1873-81ad-b916-f976e9095a4d",
+          "3fdabdd6-1873-8151-bff8-e309a84c12bd",
+          "3fdabdd6-1873-8129-aadd-c538dc6ea258",
+          "3fdabdd6-1873-818f-b608-fde942a00855",
+          "3fdabdd6-1873-819e-be51-d0445fb7da4e",
+          "3fdabdd6-1873-810a-91b6-f2e80f3fa704",
+          "3fdabdd6-1873-810b-8159-f4798fc39046",
+          "3fdabdd6-1873-81ba-979a-c9f219c55a5a",
+          "3fdabdd6-1873-8108-a7d9-ed086cd2c1ea",
+          "3fdabdd6-1873-8194-8c64-cf1f828a90c8",
+          "3fdabdd6-1873-8198-b295-ca667c34f1b1",
+          "3fdabdd6-1873-813a-9603-fb38d0df673f",
+          "3f8abdd6-1873-8146-9879-f976651f1717",
+          "3f8abdd6-1873-8151-a38f-fb012be2c9ce",
+          "3f8abdd6-1873-81aa-be5c-f4a3355618cd",
+          "3fdabdd6-1873-814b-abd1-c1bcd089effb",
+          "3f8abdd6-1873-81a8-8a5c-d665f17d979f",
+          "3f8abdd6-1873-8137-a8c9-c719f5b64bc4",
+          "3fdabdd6-1873-8192-b8f8-f919dedbb367",
+          "3fdabdd6-1873-8163-9bd6-f377668ee2f3",
+          "3f8abdd6-1873-81c1-8df8-efee586427c7",
+          "3f8abdd6-1873-8129-b1d8-faf62a637a7b",
+          "3f8abdd6-1873-81a7-8cd0-f770a7db65d2",
+          "3fdabdd6-1873-81f8-ade2-c7db2c75396e",
+          "3f8abdd6-1873-81ac-90b6-df75b7e1a157",
           "3f8abdd6-1873-818a-951c-cddcb203f907",
           "3f8abdd6-1873-817d-9529-f43e39a5979f",
           "3f8abdd6-1873-8197-962a-fe1cc626e01c",
@@ -856,18 +1638,11 @@
           "3f8abdd6-1873-818d-968d-eb21560778ae",
           "3f8abdd6-1873-8120-90d8-e31cd02f0ce9",
           "3f8abdd6-1873-81bf-9174-f9126e48a4f3",
-          "3f8abdd6-1873-8146-9879-f976651f1717",
-          "3f8abdd6-1873-8151-a38f-fb012be2c9ce",
-          "3f8abdd6-1873-81aa-be5c-f4a3355618cd",
-          "3f8abdd6-1873-81a8-8a5c-d665f17d979f",
-          "3f8abdd6-1873-8137-a8c9-c719f5b64bc4",
-          "3f8abdd6-1873-81c1-8df8-efee586427c7",
-          "3f8abdd6-1873-8129-b1d8-faf62a637a7b",
-          "3f8abdd6-1873-81a7-8cd0-f770a7db65d2",
-          "3f8abdd6-1873-81fd-a17d-d1af24cec8fb",
-          "3f8abdd6-1873-81ac-90b6-df75b7e1a157"
+          "3f8abdd6-1873-81fd-a17d-d1af24cec8fb"
         ],
-        "local_file_sha256": "67ad8c6c3d340e97ae204c3e35b1435a68325053decdc9b4116858fbdd6db59f"
+        "local_file_sha256": "5876f4f7ca5a8578132b1f5d0770c470f31a30ff08a9e62e90ac7d0968eb65be",
+        "readback_at": "2026-10-18T06:04:56.780944+00:00",
+        "queried_row_count": 41
       },
       {
         "id": "view://3f8abdd6-1873-81f4-ad67-000cd142e454",
@@ -875,12 +1650,33 @@
         "name": "Kanban",
         "file": "backlog/views/kanban.md",
         "config": {
+          "advancedFilter": {
+            "filters": [
+              {
+                "operator": "enum_is",
+                "property": "Lingkup",
+                "propertyType": "select",
+                "type": "property",
+                "value": {
+                  "type": "exact",
+                  "value": "Aktif V1"
+                }
+              }
+            ],
+            "operator": "and",
+            "type": "group"
+          },
           "cardLayoutMode": "default",
           "dataSourceUrl": "{{collection://52375548-71cd-4cce-a6d2-538ac000f9de}}",
           "displayProperties": [
             "Tugas",
+            "Status",
+            "Ticket",
+            "Urutan",
+            "Lingkup",
+            "Area",
             "Prioritas",
-            "Area"
+            "Depends on"
           ],
           "fullWidthProperties": [],
           "groupBy": {
@@ -892,32 +1688,6 @@
             }
           },
           "name": "Kanban",
-          "simpleFilters": [
-            {
-              "filter": {
-                "operator": "enum_is",
-                "property": "Area",
-                "propertyType": "select",
-                "type": "property",
-                "value": {
-                  "type": "exact"
-                }
-              },
-              "id": "42d014ce-ea0b-43a6-8b17-4c932b7bd220"
-            },
-            {
-              "filter": {
-                "operator": "enum_is",
-                "property": "Prioritas",
-                "propertyType": "select",
-                "type": "property",
-                "value": {
-                  "type": "exact"
-                }
-              },
-              "id": "27b73596-39a0-429e-89c1-bbc2734c4903"
-            }
-          ],
           "sorts": [
             {
               "direction": "ascending",
@@ -927,33 +1697,35 @@
           "type": "board"
         },
         "page_ids": [
-          "3f8abdd6-1873-818a-951c-cddcb203f907",
-          "3f8abdd6-1873-817d-9529-f43e39a5979f",
-          "3f8abdd6-1873-8197-962a-fe1cc626e01c",
-          "3f8abdd6-1873-816d-8b15-ed7b7b1b82a9",
-          "3f8abdd6-1873-813a-8393-edbb6c77cb6b",
-          "3f8abdd6-1873-81ea-a5fc-cda9bf6f8fb0",
-          "3f8abdd6-1873-8189-a4f2-d771500ea426",
-          "3f8abdd6-1873-817b-b0e3-c16aef505ed4",
-          "3f8abdd6-1873-816c-aeb2-d24a482c6511",
-          "3f8abdd6-1873-8183-8333-d654ecdf5ce3",
-          "3f8abdd6-1873-81a5-8ce9-c8487ffe187e",
-          "3f8abdd6-1873-814a-8064-dde9dcc0fbf7",
-          "3f8abdd6-1873-818d-968d-eb21560778ae",
-          "3f8abdd6-1873-8120-90d8-e31cd02f0ce9",
-          "3f8abdd6-1873-81bf-9174-f9126e48a4f3",
+          "3fdabdd6-1873-81ad-b916-f976e9095a4d",
+          "3fdabdd6-1873-8151-bff8-e309a84c12bd",
+          "3fdabdd6-1873-8129-aadd-c538dc6ea258",
+          "3fdabdd6-1873-818f-b608-fde942a00855",
+          "3fdabdd6-1873-819e-be51-d0445fb7da4e",
+          "3fdabdd6-1873-810a-91b6-f2e80f3fa704",
+          "3fdabdd6-1873-810b-8159-f4798fc39046",
+          "3fdabdd6-1873-81ba-979a-c9f219c55a5a",
+          "3fdabdd6-1873-8108-a7d9-ed086cd2c1ea",
+          "3fdabdd6-1873-8194-8c64-cf1f828a90c8",
+          "3fdabdd6-1873-8198-b295-ca667c34f1b1",
+          "3fdabdd6-1873-813a-9603-fb38d0df673f",
           "3f8abdd6-1873-8146-9879-f976651f1717",
           "3f8abdd6-1873-8151-a38f-fb012be2c9ce",
           "3f8abdd6-1873-81aa-be5c-f4a3355618cd",
+          "3fdabdd6-1873-814b-abd1-c1bcd089effb",
           "3f8abdd6-1873-81a8-8a5c-d665f17d979f",
           "3f8abdd6-1873-8137-a8c9-c719f5b64bc4",
+          "3fdabdd6-1873-8192-b8f8-f919dedbb367",
+          "3fdabdd6-1873-8163-9bd6-f377668ee2f3",
           "3f8abdd6-1873-81c1-8df8-efee586427c7",
           "3f8abdd6-1873-8129-b1d8-faf62a637a7b",
           "3f8abdd6-1873-81a7-8cd0-f770a7db65d2",
-          "3f8abdd6-1873-81fd-a17d-d1af24cec8fb",
+          "3fdabdd6-1873-81f8-ade2-c7db2c75396e",
           "3f8abdd6-1873-81ac-90b6-df75b7e1a157"
         ],
-        "local_file_sha256": "5aa0e7c6c03e6d96681dd4b2b88f35a97466048c972ac096f7bb7944e59def86"
+        "local_file_sha256": "0b870a9075f7c648de7fbed5f2c0623a518bda32180e325758afd5306af5a6da",
+        "readback_at": "2026-10-18T06:04:56.780944+00:00",
+        "queried_row_count": 25
       },
       {
         "id": "view://3f8abdd6-1873-81dd-9154-000c928cf26c",
@@ -963,6 +1735,16 @@
         "config": {
           "advancedFilter": {
             "filters": [
+              {
+                "operator": "enum_is",
+                "property": "Lingkup",
+                "propertyType": "select",
+                "type": "property",
+                "value": {
+                  "type": "exact",
+                  "value": "Aktif V1"
+                }
+              },
               {
                 "operator": "enum_is",
                 "property": "Status",
@@ -980,8 +1762,13 @@
           "dataSourceUrl": "{{collection://52375548-71cd-4cce-a6d2-538ac000f9de}}",
           "displayProperties": [
             "Tugas",
+            "Status",
+            "Ticket",
+            "Urutan",
+            "Lingkup",
+            "Area",
             "Prioritas",
-            "Area"
+            "Depends on"
           ],
           "name": "Siap dikerjakan",
           "sorts": [
@@ -992,19 +1779,46 @@
           ],
           "type": "table"
         },
-        "page_ids": [],
-        "local_file_sha256": "c8031d9b712b71d2c990b82a6372e588170322543a623682bc80d38cc16e076c"
+        "page_ids": [
+          "3fdabdd6-1873-810a-91b6-f2e80f3fa704"
+        ],
+        "local_file_sha256": "8e472d6b667c5d673d5c6ad3bc44d75655f7a28be890eca594b00f45cc9eeced",
+        "readback_at": "2026-10-18T06:04:56.780944+00:00",
+        "queried_row_count": 1
       },
       {
         "id": "view://3f8abdd6-1873-804b-8bb1-000c1dd5af9b",
         "url": "https://app.notion.com/p/f1b4f3a60ca341dfac73288b51726162?v=3f8abdd61873804b8bb1000c1dd5af9b",
-        "name": "",
+        "name": "Riwayat dan di luar V1",
         "file": "backlog/views/board-tanpa-nama.md",
         "config": {
+          "advancedFilter": {
+            "filters": [
+              {
+                "operator": "enum_is_not",
+                "property": "Lingkup",
+                "propertyType": "select",
+                "type": "property",
+                "value": {
+                  "type": "exact",
+                  "value": "Aktif V1"
+                }
+              }
+            ],
+            "operator": "and",
+            "type": "group"
+          },
           "cardLayoutMode": "default",
           "dataSourceUrl": "{{collection://52375548-71cd-4cce-a6d2-538ac000f9de}}",
           "displayProperties": [
-            "Tugas"
+            "Tugas",
+            "Status",
+            "Ticket",
+            "Urutan",
+            "Lingkup",
+            "Area",
+            "Prioritas",
+            "Depends on"
           ],
           "fullWidthProperties": [],
           "groupBy": {
@@ -1015,39 +1829,39 @@
               "type": "manual"
             }
           },
-          "name": "",
+          "name": "Riwayat dan di luar V1",
+          "sorts": [
+            {
+              "direction": "ascending",
+              "property": "Urutan"
+            }
+          ],
           "type": "board"
         },
         "page_ids": [
           "3f8abdd6-1873-818a-951c-cddcb203f907",
-          "3f8abdd6-1873-8197-962a-fe1cc626e01c",
-          "3f8abdd6-1873-8120-90d8-e31cd02f0ce9",
-          "3f8abdd6-1873-8129-b1d8-faf62a637a7b",
-          "3f8abdd6-1873-8137-a8c9-c719f5b64bc4",
-          "3f8abdd6-1873-813a-8393-edbb6c77cb6b",
-          "3f8abdd6-1873-8146-9879-f976651f1717",
-          "3f8abdd6-1873-814a-8064-dde9dcc0fbf7",
-          "3f8abdd6-1873-8151-a38f-fb012be2c9ce",
-          "3f8abdd6-1873-816c-aeb2-d24a482c6511",
-          "3f8abdd6-1873-816d-8b15-ed7b7b1b82a9",
-          "3f8abdd6-1873-817b-b0e3-c16aef505ed4",
           "3f8abdd6-1873-817d-9529-f43e39a5979f",
-          "3f8abdd6-1873-8183-8333-d654ecdf5ce3",
-          "3f8abdd6-1873-8189-a4f2-d771500ea426",
-          "3f8abdd6-1873-818d-968d-eb21560778ae",
-          "3f8abdd6-1873-81a5-8ce9-c8487ffe187e",
-          "3f8abdd6-1873-81a7-8cd0-f770a7db65d2",
-          "3f8abdd6-1873-81a8-8a5c-d665f17d979f",
-          "3f8abdd6-1873-81aa-be5c-f4a3355618cd",
-          "3f8abdd6-1873-81ac-90b6-df75b7e1a157",
-          "3f8abdd6-1873-81bf-9174-f9126e48a4f3",
-          "3f8abdd6-1873-81c1-8df8-efee586427c7",
+          "3f8abdd6-1873-8197-962a-fe1cc626e01c",
+          "3f8abdd6-1873-816d-8b15-ed7b7b1b82a9",
+          "3f8abdd6-1873-813a-8393-edbb6c77cb6b",
           "3f8abdd6-1873-81ea-a5fc-cda9bf6f8fb0",
+          "3f8abdd6-1873-8189-a4f2-d771500ea426",
+          "3f8abdd6-1873-817b-b0e3-c16aef505ed4",
+          "3f8abdd6-1873-816c-aeb2-d24a482c6511",
+          "3f8abdd6-1873-8183-8333-d654ecdf5ce3",
+          "3f8abdd6-1873-81a5-8ce9-c8487ffe187e",
+          "3f8abdd6-1873-814a-8064-dde9dcc0fbf7",
+          "3f8abdd6-1873-818d-968d-eb21560778ae",
+          "3f8abdd6-1873-8120-90d8-e31cd02f0ce9",
+          "3f8abdd6-1873-81bf-9174-f9126e48a4f3",
           "3f8abdd6-1873-81fd-a17d-d1af24cec8fb"
         ],
-        "local_file_sha256": "9c64147f5fd8c7076d36208a374a2de1a26f57e487098e230eea20ba74d749ac"
+        "local_file_sha256": "b3553d86bcc1d95c6256e1585b81c72406503d586df4dc2fe4b578c80f1d43a6",
+        "readback_at": "2026-10-18T06:04:56.780944+00:00",
+        "queried_row_count": 16
       }
-    ]
+    ],
+    "title": "Backlog Implementasi V1"
   },
   "local_updates": [
     {
@@ -1160,6 +1974,96 @@
       "source": "User-requested React cleanup and progress update; exact Notion content/status readback verified and mirrored locally",
       "summary": "Complete Chat #04, record runtime evidence and React cleanup acceptance; move card to Done in kanban snapshots",
       "notion_content_sha256": "41b6b2b83703a43ed1f22331fac6654d517452e789eec78274910b411d06c8dc"
+    },
+    {
+      "at": "2026-10-16T14:38:26.718Z",
+      "page_id": "3f8abdd6-1873-813a-8393-edbb6c77cb6b",
+      "source": "Implementation #005; exact Notion readback verified and mirrored locally",
+      "summary": "Complete quota ledger, chat enforcement, period and material/Course contracts",
+      "notion_content_sha256": "b5f95a1f38bf9fd7fa575e80cf4e3ccf0278a9e44f393528e60fa8f40e2fbf30"
+    },
+    {
+      "at": "2026-10-16T14:37:38.180Z",
+      "page_id": "3f8abdd6-1873-8122-878d-de3cb0661765",
+      "source": "Implementation #005; exact Notion readback verified and mirrored locally",
+      "summary": "Point quota policy to completed #005 and retain gateway/lifecycle scope in #21/#22",
+      "notion_content_sha256": "cacc761a6aeddfea10d6c4a9a2a17185a602e1c483939796d3523f56e8b1fba7"
+    },
+    {
+      "at": "2026-10-18T06:04:56.780944+00:00",
+      "source": "Notion exact readback after authorized reset/rewrite",
+      "summary": "General assistant V1; NG-026–030 cleanup; NG-031–041 and retained foundation tasks; historical Done preserved"
     }
-  ]
+  ],
+  "last_partial_sync": {
+    "at": "2026-10-18T06:04:56.780944+00:00",
+    "scope": "V1 reset specs, evidence modules, 41 task identities, four view readbacks; new feature runtime remains Backlog/Ready",
+    "page_ids": [
+      "3f8abdd6-1873-81e3-9753-f0d54ee2556b",
+      "3f8abdd6-1873-8122-878d-de3cb0661765",
+      "3f8abdd6-1873-81fd-a2db-ea043a840c5a",
+      "3f8abdd6-1873-8165-8b61-f4283ee83428",
+      "3f8abdd6-1873-8119-8256-f4ee69db1e78",
+      "3f8abdd6-1873-8120-90d8-e31cd02f0ce9",
+      "3f8abdd6-1873-8129-b1d8-faf62a637a7b",
+      "3f8abdd6-1873-8137-a8c9-c719f5b64bc4",
+      "3f8abdd6-1873-813a-8393-edbb6c77cb6b",
+      "3f8abdd6-1873-8146-9879-f976651f1717",
+      "3f8abdd6-1873-814a-8064-dde9dcc0fbf7",
+      "3f8abdd6-1873-8151-a38f-fb012be2c9ce",
+      "3f8abdd6-1873-816c-aeb2-d24a482c6511",
+      "3f8abdd6-1873-816d-8b15-ed7b7b1b82a9",
+      "3f8abdd6-1873-817b-b0e3-c16aef505ed4",
+      "3f8abdd6-1873-817d-9529-f43e39a5979f",
+      "3f8abdd6-1873-8183-8333-d654ecdf5ce3",
+      "3f8abdd6-1873-8189-a4f2-d771500ea426",
+      "3f8abdd6-1873-818a-951c-cddcb203f907",
+      "3f8abdd6-1873-818d-968d-eb21560778ae",
+      "3f8abdd6-1873-8197-962a-fe1cc626e01c",
+      "3f8abdd6-1873-81a5-8ce9-c8487ffe187e",
+      "3f8abdd6-1873-81a7-8cd0-f770a7db65d2",
+      "3f8abdd6-1873-81a8-8a5c-d665f17d979f",
+      "3f8abdd6-1873-81aa-be5c-f4a3355618cd",
+      "3f8abdd6-1873-81ac-90b6-df75b7e1a157",
+      "3f8abdd6-1873-81bf-9174-f9126e48a4f3",
+      "3f8abdd6-1873-81c1-8df8-efee586427c7",
+      "3f8abdd6-1873-81ea-a5fc-cda9bf6f8fb0",
+      "3f8abdd6-1873-81fd-a17d-d1af24cec8fb",
+      "3fdabdd6-1873-81fd-93a0-e4ff81a00437",
+      "3fdabdd6-1873-81de-af1a-d55aa8508cba",
+      "3fdabdd6-1873-81e3-aaa8-f456a6dbd1cf",
+      "3fdabdd6-1873-8164-bb8c-fabe53fd49f6",
+      "3fdabdd6-1873-812c-8d5d-fa04b7f3e140",
+      "3fdabdd6-1873-8169-8715-cbfd20430b35",
+      "3fdabdd6-1873-81a4-96a1-f4d88d7d68bf",
+      "3fdabdd6-1873-81ed-b593-cae8f95784e7",
+      "3fdabdd6-1873-819c-a2b5-cc4e521b3587",
+      "3fdabdd6-1873-81d3-9f94-f7161d4ef570",
+      "3fdabdd6-1873-812e-9ed6-c67417884b74",
+      "3fdabdd6-1873-8115-b121-fb4d564e2737",
+      "3fdabdd6-1873-81c0-9fac-e8d0b458ad24",
+      "3fdabdd6-1873-8128-940a-e28cf59a8578",
+      "3fdabdd6-1873-8119-b3de-f58e5565c18c",
+      "3fdabdd6-1873-8171-8c98-c853fea3d769",
+      "3fdabdd6-1873-818c-b211-e29e7e07dc88",
+      "3fdabdd6-1873-817a-b755-f7d9bf4c1ce8",
+      "3fdabdd6-1873-81ad-b916-f976e9095a4d",
+      "3fdabdd6-1873-8151-bff8-e309a84c12bd",
+      "3fdabdd6-1873-8129-aadd-c538dc6ea258",
+      "3fdabdd6-1873-818f-b608-fde942a00855",
+      "3fdabdd6-1873-819e-be51-d0445fb7da4e",
+      "3fdabdd6-1873-810a-91b6-f2e80f3fa704",
+      "3fdabdd6-1873-810b-8159-f4798fc39046",
+      "3fdabdd6-1873-81ba-979a-c9f219c55a5a",
+      "3fdabdd6-1873-8108-a7d9-ed086cd2c1ea",
+      "3fdabdd6-1873-8194-8c64-cf1f828a90c8",
+      "3fdabdd6-1873-8198-b295-ca667c34f1b1",
+      "3fdabdd6-1873-813a-9603-fb38d0df673f",
+      "3fdabdd6-1873-814b-abd1-c1bcd089effb",
+      "3fdabdd6-1873-8192-b8f8-f919dedbb367",
+      "3fdabdd6-1873-8163-9bd6-f377668ee2f3",
+      "3fdabdd6-1873-81f8-ade2-c7db2c75396e",
+      "3fdabdd6-1873-81ed-af69-ecd07a7842a8"
+    ]
+  }
 }

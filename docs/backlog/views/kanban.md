@@ -1,31 +1,31 @@
 # Kanban
 
-Sumber: [Notion](https://app.notion.com/p/f1b4f3a60ca341dfac73288b51726162?v=3f8abdd6187381f4ad67000cd142e454) · Snapshot: 2026-10-13 11:37:14 UTC
+Snapshot readback Notion: 2026-10-18T06:04:56.780944+00:00. 25 tiket.
 
-Status tiket #01–#03 diselaraskan dengan Notion pada **15 Oktober 2026**. Status #04 diperbarui ke **Done** melalui readback Notion pada **16 Oktober 2026**.
-
-Group by: Status. Urutan kartu mengikuti Urutan ascending.
-
-| Backlog | Done |
-| --- | --- |
-| [Kuota Course, chat dan materi per periode](../tasks/05-kuota-course-chat-dan-materi-per-periode.md) · P0 · Billing | [Walkthrough UX: signup sampai Course pertama](../tasks/01-walkthrough-ux-signup-sampai-course-pertama.md) · P0 · Course |
-| [Ingestion materi reusable dari file dan web](../tasks/06-ingestion-materi-reusable-dari-file-dan-web.md) · P0 · Course | [Fondasi production: workspace, auth dan data](../tasks/02-fondasi-production-workspace-auth-dan-data.md) · P0 · Fondasi |
-| [Pencarian sumber dan pemilihan melalui HITL](../tasks/07-pencarian-sumber-dan-pemilihan-melalui-hitl.md) · P0 · Course | [Port standar Lesson dan soal dari prototipe](../tasks/03-port-standar-lesson-dan-soal-dari-prototipe.md) · P0 · Course |
-| [Outline Course: perencanaan, revisi dan approval](../tasks/08-outline-course-perencanaan-revisi-dan-approval.md) · P0 · Course | [Chat personal: thread dan streaming resumable](../tasks/04-chat-personal-thread-dan-streaming-resumable.md) · P0 · Agent |
-| [Generation: node pertama lalu background](../tasks/09-generation-node-pertama-lalu-background.md) · P0 · Course | — |
-| [Onboarding dan tour Course pertama](../tasks/10-onboarding-dan-tour-course-pertama.md) · P0 · Course | — |
-| [Course player dan panel chat kontekstual](../tasks/11-course-player-dan-panel-chat-kontekstual.md) · P0 · Belajar | — |
-| [Practice: review jawaban salah dan unlock](../tasks/12-practice-review-jawaban-salah-dan-unlock.md) · P0 · Belajar | — |
-| [Pengayaan opsional dalam Course](../tasks/13-pengayaan-opsional-dalam-course.md) · P0 · Belajar | — |
-| [Reward flashcard tersimpan dan review](../tasks/14-reward-flashcard-tersimpan-dan-review.md) · P0 · Belajar | — |
-| [Streak dari aktivitas belajar valid](../tasks/15-streak-dari-aktivitas-belajar-valid.md) · P0 · Belajar | — |
-| [Perubahan soul atas permintaan dan HITL](../tasks/16-perubahan-soul-atas-permintaan-dan-hitl.md) · P0 · Agent | — |
-| [Memory aktif: capture, evidence dan recall](../tasks/17-memory-aktif-capture-evidence-dan-recall.md) · P0 · Agent | — |
-| [Pengaturan untuk inspeksi dan koreksi memory](../tasks/18-pengaturan-untuk-inspeksi-dan-koreksi-memory.md) · P1 · Agent | — |
-| [Kandidat proaktif dinamis dan reranking](../tasks/19-kandidat-proaktif-dinamis-dan-reranking.md) · P0 · Agent | — |
-| [Delivery proaktif per thread dan batas global](../tasks/20-delivery-proaktif-per-thread-dan-batas-global.md) · P0 · Agent | — |
-| [Checkout Plus dan aktivasi pembayaran](../tasks/21-checkout-plus-dan-aktivasi-pembayaran.md) · P0 · Billing | — |
-| [Paket pengguna: usage, expiry dan downgrade](../tasks/22-paket-pengguna-usage-expiry-dan-downgrade.md) · P0 · Billing | — |
-| [Recovery end-to-end dan konsistensi state](../tasks/23-recovery-end-to-end-dan-konsistensi-state.md) · P0 · Release | — |
-| [Benchmark kualitas dan biaya lifecycle Course](../tasks/24-benchmark-kualitas-dan-biaya-lifecycle-course.md) · P0 · Release | — |
-| [Peluncuran Free dan Plus production](../tasks/25-peluncuran-free-dan-plus-production.md) · P0 · Release | — |
+| Tiket | Urutan | Status | Lingkup | Area | Depends on |
+| --- | --- | --- | --- | --- | --- |
+| [NG-026 · Bersihkan domain dan runtime pembelajaran](../tasks/26-bersihkan-domain-dan-runtime-pembelajaran.md) | 1 | Done | Aktif V1 | Fondasi | — |
+| [NG-027 · Bersihkan UI dan persona awal](../tasks/27-bersihkan-ui-dan-persona-awal.md) | 2 | Done | Aktif V1 | Fondasi | [NG-026 · Bersihkan domain dan runtime pembelajaran](../tasks/26-bersihkan-domain-dan-runtime-pembelajaran.md) |
+| [NG-028 · Sederhanakan kuota menjadi fondasi umum](../tasks/28-sederhanakan-kuota-menjadi-fondasi-umum.md) | 3 | Done | Aktif V1 | Billing | [NG-027 · Bersihkan UI dan persona awal](../tasks/27-bersihkan-ui-dan-persona-awal.md) |
+| [NG-029 · Buat baseline skema dan reset development](../tasks/29-buat-baseline-skema-dan-reset-development.md) | 4 | Done | Aktif V1 | Fondasi | [NG-028 · Sederhanakan kuota menjadi fondasi umum](../tasks/28-sederhanakan-kuota-menjadi-fondasi-umum.md) |
+| [NG-030 · Terima baseline V1 yang bersih](../tasks/30-terima-baseline-v1-yang-bersih.md) | 5 | Done | Aktif V1 | Fondasi | [NG-029 · Buat baseline skema dan reset development](../tasks/29-buat-baseline-skema-dan-reset-development.md) |
+| [NG-031 · Validasi Daytona dengan trial terbatas](../tasks/31-validasi-daytona-dengan-trial-terbatas.md) | 6 | Ready | Aktif V1 | Fondasi | [NG-030 · Terima baseline V1 yang bersih](../tasks/30-terima-baseline-v1-yang-bersih.md) |
+| [NG-032 · Shell onboarding dan walkthrough asisten umum](../tasks/32-shell-onboarding-dan-walkthrough-asisten-umum.md) | 7 | Backlog | Aktif V1 | Fondasi | [NG-031 · Validasi Daytona dengan trial terbatas](../tasks/31-validasi-daytona-dengan-trial-terbatas.md) |
+| [NG-033 · Task background dan approval umum](../tasks/33-task-background-dan-approval-umum.md) | 8 | Backlog | Aktif V1 | Agent | [NG-032 · Shell onboarding dan walkthrough asisten umum](../tasks/32-shell-onboarding-dan-walkthrough-asisten-umum.md) |
+| [NG-034 · File produk dan hasil tersimpan](../tasks/34-file-produk-dan-hasil-tersimpan.md) | 9 | Backlog | Aktif V1 | Agent | [NG-033 · Task background dan approval umum](../tasks/33-task-background-dan-approval-umum.md) |
+| [NG-035 · Eksekusi kode dalam sandbox](../tasks/35-eksekusi-kode-dalam-sandbox.md) | 10 | Backlog | Aktif V1 | Agent | [NG-031 · Validasi Daytona dengan trial terbatas](../tasks/31-validasi-daytona-dengan-trial-terbatas.md) · [NG-033 · Task background dan approval umum](../tasks/33-task-background-dan-approval-umum.md) · [NG-034 · File produk dan hasil tersimpan](../tasks/34-file-produk-dan-hasil-tersimpan.md) |
+| [NG-036 · Browser VNC live desktop dan takeover](../tasks/36-browser-vnc-live-desktop-dan-takeover.md) | 11 | Backlog | Aktif V1 | Agent | [NG-035 · Eksekusi kode dalam sandbox](../tasks/35-eksekusi-kode-dalam-sandbox.md) |
+| [NG-037 · Scheduler pengguna saat offline](../tasks/37-scheduler-pengguna-saat-offline.md) | 12 | Backlog | Aktif V1 | Agent | [NG-036 · Browser VNC live desktop dan takeover](../tasks/36-browser-vnc-live-desktop-dan-takeover.md) · [NG-033 · Task background dan approval umum](../tasks/33-task-background-dan-approval-umum.md) |
+| [NG-016 · Perubahan soul atas permintaan dan HITL](../tasks/16-perubahan-soul-atas-permintaan-dan-hitl.md) | 13 | Backlog | Aktif V1 | Agent | [NG-037 · Scheduler pengguna saat offline](../tasks/37-scheduler-pengguna-saat-offline.md) · [NG-033 · Task background dan approval umum](../tasks/33-task-background-dan-approval-umum.md) |
+| [NG-017 · Memory aktif capture evidence dan recall](../tasks/17-memory-aktif-capture-evidence-dan-recall.md) | 14 | Backlog | Aktif V1 | Agent | [NG-016 · Perubahan soul atas permintaan dan HITL](../tasks/16-perubahan-soul-atas-permintaan-dan-hitl.md) · [NG-034 · File produk dan hasil tersimpan](../tasks/34-file-produk-dan-hasil-tersimpan.md) |
+| [NG-018 · Pengaturan inspeksi dan koreksi memory](../tasks/18-pengaturan-untuk-inspeksi-dan-koreksi-memory.md) | 15 | Backlog | Aktif V1 | Agent | [NG-017 · Memory aktif capture evidence dan recall](../tasks/17-memory-aktif-capture-evidence-dan-recall.md) |
+| [NG-038 · Goals umum dengan evidence progress](../tasks/38-goals-umum-dengan-evidence-progress.md) | 16 | Backlog | Aktif V1 | Agent | [NG-018 · Pengaturan inspeksi dan koreksi memory](../tasks/18-pengaturan-untuk-inspeksi-dan-koreksi-memory.md) · [NG-033 · Task background dan approval umum](../tasks/33-task-background-dan-approval-umum.md) |
+| [NG-019 · Kandidat proaktif dinamis dan reranking](../tasks/19-kandidat-proaktif-dinamis-dan-reranking.md) | 17 | Backlog | Aktif V1 | Agent | [NG-038 · Goals umum dengan evidence progress](../tasks/38-goals-umum-dengan-evidence-progress.md) · [NG-017 · Memory aktif capture evidence dan recall](../tasks/17-memory-aktif-capture-evidence-dan-recall.md) |
+| [NG-020 · Delivery proaktif per thread dan batas global](../tasks/20-delivery-proaktif-per-thread-dan-batas-global.md) | 18 | Backlog | Aktif V1 | Agent | [NG-019 · Kandidat proaktif dinamis dan reranking](../tasks/19-kandidat-proaktif-dinamis-dan-reranking.md) · [NG-037 · Scheduler pengguna saat offline](../tasks/37-scheduler-pengguna-saat-offline.md) |
+| [NG-039 · Library pencarian dan penemuan kemampuan](../tasks/39-library-pencarian-dan-penemuan-kemampuan.md) | 19 | Backlog | Aktif V1 | Agent | [NG-020 · Delivery proaktif per thread dan batas global](../tasks/20-delivery-proaktif-per-thread-dan-batas-global.md) · [NG-034 · File produk dan hasil tersimpan](../tasks/34-file-produk-dan-hasil-tersimpan.md) |
+| [NG-040 · Usage komputasi dan kontrak paket V1](../tasks/40-usage-komputasi-dan-kontrak-paket-v1.md) | 20 | Backlog | Aktif V1 | Billing | [NG-039 · Library pencarian dan penemuan kemampuan](../tasks/39-library-pencarian-dan-penemuan-kemampuan.md) |
+| [NG-021 · Checkout dan aktivasi pembayaran V1](../tasks/21-checkout-plus-dan-aktivasi-pembayaran.md) | 21 | Backlog | Aktif V1 | Billing | [NG-040 · Usage komputasi dan kontrak paket V1](../tasks/40-usage-komputasi-dan-kontrak-paket-v1.md) |
+| [NG-022 · Paket pengguna usage expiry dan downgrade](../tasks/22-paket-pengguna-usage-expiry-dan-downgrade.md) | 22 | Backlog | Aktif V1 | Billing | [NG-021 · Checkout dan aktivasi pembayaran V1](../tasks/21-checkout-plus-dan-aktivasi-pembayaran.md) · [NG-040 · Usage komputasi dan kontrak paket V1](../tasks/40-usage-komputasi-dan-kontrak-paket-v1.md) |
+| [NG-023 · Recovery end-to-end dan konsistensi state](../tasks/23-recovery-end-to-end-dan-konsistensi-state.md) | 23 | Backlog | Aktif V1 | Release | [NG-022 · Paket pengguna usage expiry dan downgrade](../tasks/22-paket-pengguna-usage-expiry-dan-downgrade.md) · [NG-036 · Browser VNC live desktop dan takeover](../tasks/36-browser-vnc-live-desktop-dan-takeover.md) · [NG-037 · Scheduler pengguna saat offline](../tasks/37-scheduler-pengguna-saat-offline.md) · [NG-038 · Goals umum dengan evidence progress](../tasks/38-goals-umum-dengan-evidence-progress.md) · [NG-020 · Delivery proaktif per thread dan batas global](../tasks/20-delivery-proaktif-per-thread-dan-batas-global.md) |
+| [NG-041 · Benchmark kualitas latency dan biaya asisten umum](../tasks/41-benchmark-kualitas-latency-dan-biaya-asisten-umum.md) | 24 | Backlog | Aktif V1 | Release | [NG-023 · Recovery end-to-end dan konsistensi state](../tasks/23-recovery-end-to-end-dan-konsistensi-state.md) |
+| [NG-025 · Peluncuran asisten umum V1 production](../tasks/25-peluncuran-free-dan-plus-production.md) | 25 | Backlog | Aktif V1 | Release | [NG-041 · Benchmark kualitas latency dan biaya asisten umum](../tasks/41-benchmark-kualitas-latency-dan-biaya-asisten-umum.md) · [NG-032 · Shell onboarding dan walkthrough asisten umum](../tasks/32-shell-onboarding-dan-walkthrough-asisten-umum.md) · [NG-022 · Paket pengguna usage expiry dan downgrade](../tasks/22-paket-pengguna-usage-expiry-dan-downgrade.md) · [NG-023 · Recovery end-to-end dan konsistensi state](../tasks/23-recovery-end-to-end-dan-konsistensi-state.md) |

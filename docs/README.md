@@ -1,57 +1,42 @@
 # Ngertiin
 
-Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381e39753f0d54ee2556b)
+Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381e39753f0d54ee2556b) · Readback: 2026-10-18T06:04:56.780944+00:00
 
 <!-- notion-content:start -->
-Agent belajar personal yang mengubah materi menjadi Course dan menemani pengguna sampai selesai.
+Ngertiin V1 adalah asisten personal umum untuk chat, task background, file/hasil persisten, kode/browser di Daytona, VNC/live desktop/takeover pada sesi yang sama, jadwal offline, persona, memory, goals dan proaktivitas terkontrol.
+Target V1 dibedakan dari current implementation. NG-026–030 menerima baseline sebelum trial Daytona; fitur baru tetap gap bertiket. Course/Lesson/Practice hanya arah berikutnya dan bukan dependency aktif.
 
-**Untuk:** pelajar SMA dan mahasiswa. **Status:** perencanaan implementasi v1.
+## Mulai membaca
 
-**Visi jangka panjang:** agent belajar personal yang proaktif, terinspirasi oleh pola kerja Muse AI, Grok Bot, Hermes Agent, dan OpenClaw. Arah dan batas delivery dijelaskan pada [01 · Produk & Paket](product/01-produk-dan-paket.md).
+1. [01 · Produk & Scope V1](product/01-produk-dan-paket.md)
+2. [02 · UX & User Flow](product/02-user-flow.md)
+3. [03 · Perilaku Agent](product/03-agent.md)
+4. [04 · Arsitektur, Runtime & Kontrak](product/04-arsitektur-dan-delivery.md)
+5. [05 · Usage, Paket & Pembayaran](product/05-usage-paket-pembayaran.md)
+6. [06 · Development, Operasi & Acceptance](engineering/development.md)
+7. [07 · Backlog Implementasi V1](backlog/README.md)
+8. [08 · Bukti Riset & REA](research/muse-ai-v1/README.md)
+Rantai: spesifikasi → bukti REA/riset → tiket → bukti penerimaan. Tiket Done lama tetap riwayat. Notion menjadi sumber keputusan/status; mirror repo dan manifest mengikuti readback.
 
-**Target v1:** pengalaman belajar end-to-end dan fondasi agent personal sesuai backlog yang disepakati, termasuk proaktivitas terbatas dalam konteks belajar. Kesetaraan kemampuan dengan produk referensi bukan syarat kelulusan v1.
+## Halaman sumber
 
-## Dokumentasi
+[01 · Produk & Scope V1](product/01-produk-dan-paket.md)
 
-- [01 · Produk & Paket](product/01-produk-dan-paket.md)
-- [02 · User Flow](product/02-user-flow.md)
-- [03 · Agent](product/03-agent.md)
-- [04 · Arsitektur & Delivery](product/04-arsitektur-dan-delivery.md)
+[02 · UX & User Flow](product/02-user-flow.md)
 
-## Implementasi
+[03 · Perilaku Agent](product/03-agent.md)
 
-Mulai dari view **Siap dikerjakan**. Dependencies dan acceptance criteria ada pada tiket.
+[04 · Arsitektur, Runtime & Kontrak](product/04-arsitektur-dan-delivery.md)
 
-- [05 · Backlog](backlog/README.md)
+[05 · Usage, Paket & Pembayaran](product/05-usage-paket-pembayaran.md)
 
-```mermaid
-flowchart LR
-  A["Backlog"] --> B["Ready"]
-  B --> C["In Progress"]
-  C --> D["Review"]
-  D -->|Lolos acceptance| E["Done"]
-  D -->|Perlu perbaikan| C
-  C --> F["Blocked"]
-  F -->|Hambatan selesai| B
-```
+[06 · Development, Operasi & Acceptance](engineering/development.md)
+
+[07 · Backlog Implementasi V1](backlog/README.md)
+
+[08 · Bukti Riset & REA](research/muse-ai-v1/README.md)
+
+## Database tugas
+
+[07 · Backlog Implementasi V1](backlog/README.md)
 <!-- notion-content:end -->
-
-## Salinan lokal
-
-Isi halaman dan tiket disalin dari Notion pada **2026-10-13 11:37:14 UTC**. Tabel dan tautan native diubah menjadi Markdown; Mermaid dipertahankan. View backlog adalah snapshot statis.
-
-Halaman Ngertiin, Produk & Paket, Agent, serta Arsitektur & Delivery diselaraskan kembali pada **14 Oktober 2026** untuk memperjelas visi jangka panjang dan batas v1. Waktu dan hash per halaman tercatat pada manifest.
-
-[Bahan riset](research/README.md) melengkapi spesifikasi. [Manifest sinkronisasi](notion-manifest.json) mencatat sumber, versi snapshot, schema, konfigurasi view, dan hash isi.
-
-Status backlog #01 dan #02 sudah **Done**, diselaraskan dengan readback Notion pada **15 Oktober 2026**. Fondasi #02 menggunakan MinIO lokal dan penerimaan manual melalui browser; [bukti penerimaan](engineering/foundation-02-manual-acceptance.md) serta [panduan development](engineering/development.md) tersedia di repo. Daftar Ready dan board lokal mengikuti perubahan tersebut.
-
-Perubahan keputusan dan status dicatat di Notion lalu disalin kembali ke repo agar keduanya tetap selaras.
-
-## Desain
-
-[Walkthrough UX di pen.dev](walkthrough-ux.pen) — file desain untuk tiket #01 yang sudah **Done**.
-
-Standar konten #003 sudah **Done** pada 15 Oktober 2026. [Kontrak konten](engineering/course-content-standard.md), [desain engine multi-worker](engineering/course-generation-design.md), dan [bukti penerimaan](engineering/content-03-manual-acceptance.md) tersedia. User Flow, Arsitektur, serta tiket #009/#011 diselaraskan dengan keputusan Lesson dapat dibaca sebelum Practice siap.
-
-Chat #04 sudah **Done** pada **16 Oktober 2026**, berdasarkan readback Notion. [Implementasi dan penerimaan Chat](engineering/chat-04-implementation.md) serta [cleanup React](engineering/react-cleanup-2026-10-16.md) tersedia; status tiket, kanban, dan manifest lokal sudah diselaraskan.

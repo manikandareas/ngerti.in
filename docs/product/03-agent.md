@@ -1,106 +1,67 @@
-# 03 · Agent
+# 03 · Perilaku Agent
 
-Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381658b61f4283ee83428)
+Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381658b61f4283ee83428) · Readback: 2026-10-18T06:04:56.780944+00:00
 
 <!-- notion-content:start -->
-## Visi agent dan batas v1
+Gwen adalah asisten personal yang hangat, jelas, jujur mengenai hasil dan kemampuan. Bahasa mengikuti pengguna. Jawaban langsung didahulukan untuk permintaan sederhana; Task digunakan untuk pekerjaan lama, bukan semua percakapan. Baseline hanya menyediakan read_recent_messages dan read_agent_profile. Tool baru ditambahkan melalui domain service berizin; tidak ada host shell tool atau setter kuota dari model.
 
-Visi jangka panjang adalah agent belajar personal yang proaktif dengan pola kerja yang terinspirasi Muse AI, Grok Bot, Hermes Agent, dan OpenClaw: memahami tujuan, menjaga konteks, mengambil inisiatif yang relevan, dan melanjutkan pekerjaan di background dengan kontrol pengguna. Arah produk dijelaskan pada [01 · Produk & Paket](01-produk-dan-paket.md).
+## Persona dan soul
 
-Spesifikasi di halaman ini menetapkan fondasi dan kemampuan v1 sesuai backlog. Proaktivitas v1 dibatasi pada konteks belajar, tools domain, budget, timing, dan approval yang dijelaskan di bawah. Kesetaraan keluasan kemampuan dengan produk referensi bukan kriteria kelulusan v1; kemampuan lebih luas dikembangkan bertahap setelah fondasi ini terbukti.
+Identitas/perilaku dipersonalisasi melalui perubahan yang dapat ditinjau.
+**Alur:** Permintaan user → usulan diff terhadap revision aktif → review → approve exact → revision baru.
+**State:** proposed/approved/rejected/expired; satu active revision.
+**Input → output:** Instruksi eksplisit → persona revision/history; fakta memory tetap domain berbeda.
+**Kegagalan & pemulihan:** Revision stale ditolak; penolakan tidak berubah menjadi instruksi memory; restore perlu keputusan eksplisit.
+**Izin:** Hanya owner, exact approval dan target version sah; data web/file tidak mengubah persona.
+**Biaya:** Model/context cap dan audit cost; tidak ada inference tanpa batas untuk personalisasi.
+**Acceptance:** P16/P27: reject mempertahankan soul, source injection tidak mengubah profil, restore dapat diperiksa.
+Bukti modul: [REA-4 · Memory & Goals](../research/muse-ai-v1/evidence/memory.md). Tiket: [NG-016 · Perubahan soul atas permintaan dan HITL](../backlog/tasks/16-perubahan-soul-atas-permintaan-dan-hitl.md).
 
-## Satu agent, soul dan memory berbeda tanggung jawab
+## Memory aktif dan kendali pengguna
 
-```mermaid
-flowchart LR
-  A["Agent personal"] --> B["Soul: karakter dan gaya"]
-  A --> C["Memory: profil dan pengamatan"]
-  A --> D["Thread: konteks percakapan"]
-  E["Domain belajar"] --> F["Nilai, progress, reward, streak"]
-  F --> C
+Konteks relevan lintas thread dapat diingat, diperiksa, dikoreksi atau dilupakan.
+**Alur:** Capture evidence → classify/candidate → simpan scope → recall relevan → correction/forget suppression.
+**State:** candidate/active/corrected/forgotten; evidence revision dan tombstone/suppression durable.
+**Input → output:** Pesan/file/result references → fact/preference/observation dengan confidence, waktu, owner dan evidence.
+**Kegagalan & pemulihan:** Evidence hilang/basi tidak dipakai sebagai fakta; retry curation history lama menghormati forgetting; conflicting entries terlihat.
+**Izin:** Secret tidak ditangkap; capture dapat dimatikan; memory bukan otoritas izin, saldo atau status tugas.
+**Biaya:** Budget extraction/recall, konteks dan evaluasi internal terpisah; kontrol user tetap ada saat allowance nol.
+**Acceptance:** P14/P15/P16/P27: recall thread baru, koreksi, forget dan re-curation tidak menghidupkan kembali fakta lama.
+Bukti modul: [REA-4 · Memory & Goals](../research/muse-ai-v1/evidence/memory.md). Tiket: [NG-017 · Memory aktif capture evidence dan recall](../backlog/tasks/17-memory-aktif-capture-evidence-dan-recall.md) · [NG-018 · Pengaturan inspeksi dan koreksi memory](../backlog/tasks/18-pengaturan-untuk-inspeksi-dan-koreksi-memory.md).
 
-```
+## Goals dan langkah berikutnya
 
-Soul dan memory berlaku lintas thread milik pengguna. Fakta belajar tetap dimiliki domain aplikasi. Catatan berarti history, event, progress dan percakapan penting.
+Tujuan umum memberi konteks dan bukti kemajuan tanpa menjadi izin eksekusi.
+**Alur:** User menyebut target → review success criteria → simpan → optional task/schedule → evaluasi evidence → user pause/ubah/selesaikan.
+**State:** active/paused/completed/archived; optimistic revision.
+**Input → output:** Target/horizon optional/evidence → next action dan progress bertaut task.
+**Kegagalan & pemulihan:** Task gagal tidak menyelesaikan goal; target berubah memerlukan replan eksplisit; pause berlaku untuk inisiatif berikutnya.
+**Izin:** Goal owner-scoped; tindakan eksternal dan schedule mengikuti izin tersendiri.
+**Biaya:** Parent goal/task/account budget membatasi child tasks; evaluasi progress dibatasi.
+**Acceptance:** P17/P09: banyak task untuk satu goal, kegagalan, perubahan target serta pause teruji.
+Bukti modul: [REA-4 · Memory & Goals](../research/muse-ai-v1/evidence/memory.md). Tiket: [NG-038 · Goals umum dengan evidence progress](../backlog/tasks/38-goals-umum-dengan-evidence-progress.md).
 
-## Percakapan dan tools dinamis
+## Tools permission dan approval
 
-Percakapan memakai LangChain `create_agent` dengan runtime LangGraph. Model menentukan kapan menjawab, mencari konteks, atau memanggil tool berikutnya berdasarkan hasil yang diperoleh. Percakapan dapat berjalan tanpa tool; urutan pemanggilan tool tidak ditentukan per topik.
+Agent mengusulkan aksi; backend menentukan legalitas scope, target dan revision.
+**Alur:** Model proposes → backend validate owner/grant/budget → exact review bila diperlukan → execute → reconcile outcome.
+**State:** proposed/allowed/waiting_user/executing/succeeded/failed/unknown/revoked.
+**Input → output:** Typed args, target/version, idempotency key → result/error/evidence.
+**Kegagalan & pemulihan:** Stale grant/approval ditolak; unknown external effect direkonsiliasi sebelum retry; cancellation fences worker lama.
+**Izin:** Read/reversible sandbox actions mengikuti scoped grant; external writes memerlukan izin eksplisit yang cocok target/risiko; tidak menjalankan nama fungsi dari client.
+**Biaya:** Per-tool/task/account hard cap; provider retry tetap dicatat meski product charge dipulihkan.
+**Acceptance:** P04/P05/P08/P09/P10/P27; input file/web tetap data dan tidak menciptakan grant.
+Bukti modul: [REA-5 · Permissions](../research/muse-ai-v1/evidence/permissions.md). Tiket: [NG-033 · Task background dan approval umum](../backlog/tasks/33-task-background-dan-approval-umum.md) · [NG-035 · Eksekusi kode dalam sandbox](../backlog/tasks/35-eksekusi-kode-dalam-sandbox.md) · [NG-036 · Browser VNC live desktop dan takeover](../backlog/tasks/36-browser-vnc-live-desktop-dan-takeover.md).
 
-```mermaid
-flowchart TD
-  A["Pesan dan konteks pengguna"] --> B["Model menentukan langkah"]
-  B -->|Cukup| C["Respons pengguna"]
-  B -->|Perlu tool| D["Pilih tool dan argumen"]
-  D --> E{"Perlu approval?"}
-  E -->|Tidak| F["Eksekusi dengan validasi backend"]
-  E -->|Ya| H["Proposal dan HITL"]
-  H -->|Setujui| F
-  H -->|Tolak| I["Feedback penolakan"]
-  F --> J["Hasil tool menjadi konteks"]
-  J --> B
-  I --> B
-```
+## Proaktivitas dan delivery
 
-Recall memory, membaca progress, dan pencarian sumber dapat berjalan otomatis dalam budget. Memory diperbarui melalui tool domain; perubahan soul dan Course mengikuti HITL. Tools tersedia sesuai konteks dan izin pengguna, dengan batas iterasi dan biaya.
-
-Workflow yang panjang memakai execution ID tersendiri dan job background; chat menyimpan thread dan konteksnya sendiri. Proposal tertunda tidak menahan worker atau mengunci seluruh agent personal. Backend tetap memiliki approval, revision, kuota, dan otorisasi.
-
-## Soul: pasif dengan HITL
-
-```mermaid
-flowchart TD
-  A["Pengguna meminta perubahan"] --> B["Agent mengusulkan edit soul.md"]
-  B --> C{"Review HITL"}
-  C -->|Setujui| D["Validasi pemilik dan revisi"]
-  D --> E["Simpan soul baru"]
-  C -->|Tolak| F["Soul tetap"]
-
-```
-
-Soul memakai Markdown dan revisi tersimpan di PostgreSQL. Backend menerapkan tepat isi yang disetujui. Memory atau job proaktif tidak mengubah soul; usulan persona yang ditolak tidak menjadi instruksi memory.
-
-## Memory: aktif dan berbukti
-
-```mermaid
-flowchart TD
-  A["Percakapan dan event tersimpan"] --> B["Pilih fakta atau pengamatan relevan"]
-  B --> C["Validasi bukti, scope dan duplikat"]
-  C --> D["Simpan atau supersede memory"]
-  D --> E["Recall sesuai topik dan Course"]
-  E --> F["Interaksi berikutnya"]
-  D --> G["Kandidat proaktivitas"]
-
-```
-
-Simpan profil ringkas, pengamatan belajar dengan evidence, serta history terpisah. Ambil konteks sesuai kebutuhan. Koreksi dan forgetting pengguna harus bertahan terhadap pengambilan ulang dari sumber yang sama. Detail UI dan budget memory berada pada tiket terkait.
-
-## Proaktivitas dinamis per thread
-
-```mermaid
-flowchart TD
-  A["Pembahasan terbaru, informasi baru, goal, event belajar"] --> B["Kandidat dengan evidence dan thread asal"]
-  B --> C["Filter duplikasi, mute dan saran yang sudah ditangani"]
-  C --> D["Rerank: relevansi, manfaat, kebaruan, urgensi"]
-  D --> E{"Ada kandidat bernilai?"}
-  E -->|Ya| F["Pilih kandidat"]
-  E -->|Tidak| G["Fallback pembahasan terakhir pengguna"]
-  F --> H{"Timing, mute, dedup dan budget mengizinkan?"}
-  G --> H
-  H -->|Belum| I["Tunda dan evaluasi ulang"]
-  I --> D
-  H -->|Ya| J["Compose sesuai soul, satu CTA utama"]
-  J --> K["Assistant message di thread terkait"]
-  K --> L["Respons pengguna memperbarui seleksi"]
-
-```
-
-- Maksimum **dua pesan proaktif per hari per pengguna, total lintas thread**.
-- Quiet hours **21.00–07.00**; tidak mengirim saat pengguna fokus.
-- Follow-up side chat masuk ke side chat itu; konteks Course masuk ke thread terkait. Pengingat umum dapat memakai main chat.
-- Fallback memakai pembahasan terakhir pengguna dan tetap tunduk pada timing, mute, serta pencegahan pengulangan.
-- Kandidat tidak dibroadcast ke beberapa thread. Informasi baru memiliki sumber yang dapat diperiksa.
-- Pesan memiliki badge dan mute. Aktivitas atau perubahan Course ditawarkan melalui HITL.
-
-Pemicu belajar tetap mencakup streak terancam, node selesai, dua hari absen, H-7 ujian jika jadwal diketahui, dan kondisi mentok. Timezone, focus detection, cooldown, ranking, serta jadwal evaluasi diselesaikan pada tiket proaktivitas.
+Agent boleh menawarkan bantuan yang relevan tanpa membanjiri pengguna.
+**Alur:** Evidence memory/goal/result → candidate/rank → no-op atau policy → dedup → kirim ke thread asal.
+**State:** candidate/eligible/snoozed/expired/delivered/discarded; delivery pending/sent/failed.
+**Input → output:** Evidence, relevansi, expiry, preferences → satu usulan/hasil yang punya alasan.
+**Kegagalan & pemulihan:** Tidak ada kandidat layak berarti diam; quiet hours/mute/cap dicek ulang saat kirim; dua worker tidak menggandakan pesan.
+**Izin:** Opt-in kontrol user, mute/snooze; proaktivitas tidak memberi izin aksi eksternal baru.
+**Biaya:** Global daily cap atomik dan evaluation budget; hasil Schedule yang diminta punya policy delivery terpisah.
+**Acceptance:** P21/P22/P23: no-op sah, cap lintas thread, kandidat basi dibuang, scheduled result tetap tersimpan.
+Bukti modul: [REA-2 · Task & Scheduler](../research/muse-ai-v1/evidence/task.md). Tiket: [NG-019 · Kandidat proaktif dinamis dan reranking](../backlog/tasks/19-kandidat-proaktif-dinamis-dan-reranking.md) · [NG-020 · Delivery proaktif per thread dan batas global](../backlog/tasks/20-delivery-proaktif-per-thread-dan-batas-global.md).
 <!-- notion-content:end -->

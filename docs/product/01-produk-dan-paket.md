@@ -1,60 +1,31 @@
-# 01 · Produk & Paket
+# 01 · Produk & Scope V1
 
-Sumber: [Notion](https://app.notion.com/p/3f8abdd618738122878dde3cb0661765)
+Sumber: [Notion](https://app.notion.com/p/3f8abdd618738122878dde3cb0661765) · Readback: 2026-10-18T06:04:56.780944+00:00
 
 <!-- notion-content:start -->
-## Arah produk
+Keputusan aktif per 18 Oktober 2026: **Ngertiin V1 adalah asisten personal umum** untuk orang yang ingin meminta bantuan berpikir, menulis, mengolah file, menjalankan kode/browser dan pekerjaan terjadwal melalui web. Satu agent personal mengikuti pengguna lintas percakapan, pekerjaan dan tujuan.
+V1 wajib mencakup chat utama/side chat, task background, approval umum, file/hasil persisten, Daytona sandbox, browser, **VNC/live desktop dan takeover pada sesi yang sama**, scheduler saat offline, persona, memory, goals, proaktivitas terkontrol, Library/pencarian, usage, pembayaran dan operasi production.
+Course, Lesson dan Practice adalah arah pengembangan berikutnya. Kode, fixture, meter dan tiket implementasi pembelajaran tidak menjadi dependency aktif V1. Pemulihan kode lama melalui Git; tidak disimpan di folder V2 atau feature flag.
 
-Ngertiin adalah SaaS belajar untuk pelajar SMA dan mahasiswa dengan materi serta tujuan belajar sendiri. Satu agent personal menemani pengguna lintas topik dan Course. Proyek production baru melanjutkan standar prototipe `ngerti.in`, memakai akun dan data baru.
+## Status delivery dan batas klaim
 
-## Visi jangka panjang
+Target di atas adalah syarat kelulusan V1, bukan klaim bahwa fitur sudah tersedia. Baseline mempertahankan Clerk/account ownership, chat utama/side, SSE replay, stop/retry, LangGraph, Procrastinate, S3/MinIO serta ledger chat. Approval hanya primitive umum; belum ada tool yang memerlukan persetujuan pada baseline. File masih berada pada diagnostics development, bukan attachment produk. Belum ada Task umum, Daytona runtime, schedules pengguna, memory aktif, goals atau pembayaran production.
+NG-026–030 membersihkan dan menerima fondasi sebelum fitur baru. Trial Daytona dimulai sesudah NG-030 lulus. Tiket Done lama adalah bukti historis dan tidak menggantikan acceptance V1 baru.
 
-Ngertiin berkembang menjadi agent belajar personal yang proaktif: memahami tujuan belajar pengguna, mengingat konteks lintas percakapan dan Course, mengambil inisiatif yang relevan, serta melanjutkan pekerjaan belajar di background. Agent memilih kapan hasil atau saran layak disampaikan, dengan kontrol pengguna atas tindakan dan tingkat proaktivitas.
+## Alur manfaat utama
 
-Pola kerja [Muse AI](https://muse.ai/), [Grok Bot](https://x.ai/bot), [Hermes Agent](https://hermes-agent.nousresearch.com/), dan [OpenClaw](https://openclaw.ai/) menjadi referensi untuk arah pengembangan ini. Referensi tersebut menginspirasi perilaku agent; kesetaraan seluruh fitur dan kemampuan bukan target v1.
+1. Pengguna masuk, membuka main atau side chat dan menyampaikan maksud tanpa formulir profil panjang.
+2. Permintaan sederhana dijawab di chat; pekerjaan lama menjadi Task terpisah agar percakapan tetap tersedia.
+3. Pengguna meninjau izin yang perlu, melihat progress/komputer yang sama, mengambil alih, atau menghentikan pekerjaan.
+4. Hasil dipersist dan dapat dibuka dari chat/Library setelah reload atau sandbox hilang.
+5. Pengguna menyimpan Goal atau Schedule secara eksplisit, menerima hasil saat kembali online, mengoreksi persona/memory dan mengatur proaktivitas.
 
-## Scope v1
+## Kontrak kelulusan
 
-- Onboarding interaktif menuju Course pertama.
-- Main chat, side chat, dan panel agent dalam Course; pada HP memakai drawer.
-- Composer dengan file, pencarian konteks, pemilihan sumber dan outline melalui HITL.
-- Course, Lesson, Practice per node, pengayaan opsional, flashcard tersimpan, dan streak.
-- Soul yang dipersonalisasi, memory aktif, serta pesan proaktif per thread.
-- Free dan Plus sejak peluncuran.
-
-Practice mandiri, Exam builder, fitur Notes, dan migrasi data prototipe berada di luar v1.
-
-V1 membuktikan pengalaman belajar end-to-end serta fondasi agent personal sesuai backlog yang telah disepakati. Agent pada akhir v1 memiliki soul, memory, tools belajar, dan proaktivitas terbatas dalam konteks belajar. Kelulusan v1 mengikuti acceptance criteria backlog, bukan keluasan kemampuan agent referensi.
-
-Kemampuan agent yang lebih luas dikembangkan bertahap setelah fondasi v1 terbukti, berdasarkan kebutuhan pengguna dan evaluasi kualitas serta biaya. Visi jangka panjang tidak menambah scope atau mengubah prioritas backlog v1.
-
-## Paket
-
-| Per 30 hari | Free | Plus |
-| --- | --- | --- |
-| Harga | Rp0 | Rp49.000 |
-| Course baru | 1 | 5 |
-| Chat pengguna | 100 pesan | 300 pesan |
-| Materi baru | 100 halaman ekuivalen | 200 halaman ekuivalen |
-
-Baseline sementara untuk diuji. Normalisasi halaman lintas format, storage, dan biaya Course diselesaikan sebelum harga dipublikasikan.
-
-Fitur, model, dan kualitas sama pada kedua paket. Satu Course mencakup seluruh outline yang disetujui; jumlah node dan aktivitas mengikuti kebutuhan belajar. Practice, flashcard, dan pengayaan tujuan yang sama tetap bagian Course.
-
-## Kuota dan akses
-
-```mermaid
-flowchart TD
-  A["Review outline"] --> B{"Slot Course tersedia?"}
-  B -->|Ya| C["Approval: reservasi satu Course"]
-  C --> D["Seluruh outline dibuat"]
-  D --> E["Belajar, review dan pengayaan"]
-  B -->|Habis| F["Tunggu reset atau upgrade"]
-  F --> G["Course tersimpan tetap dapat dipelajari"]
-  C --> H{"Gagal memenuhi outline?"}
-  H -->|Kegagalan sistem| I["Pulihkan slot sesuai kebijakan"]
-
-```
-
-Course dihitung sekali. Resume dan retry sistem tidak menagih Course kembali. Kebijakan periode, pembatalan, refund, dan downgrade diputuskan pada tiket billing.
+Semua modul mengikuti tujuan, alur, state, input/output, failure, izin, biaya dan acceptance pada spesifikasi terkait. Rantai rujukan: **spesifikasi → bukti REA/riset → tiket → bukti penerimaan**. Observasi Muse, dokumentasi vendor, shipped frontend, implementasi Ngertiin dan acceptance Ngertiin adalah tingkat bukti yang berbeda.
+Workspace serta hasil dibuat persisten. Keberlangsungan proses, RAM dan autentikasi website sesudah stop/resume hanya dijanjikan setelah PoC vendor membuktikannya. Harga/paket komersial ditetapkan setelah telemetry dan benchmark; batas chat development dipertahankan sementara.
+Release memerlukan walkthrough desktop/mobile, static/build, ledger/concurrency/ownership probes, fault injection, takeover, offline scheduler, privacy controls serta backup/restore. Near-parity pengalaman dinilai dari skenario berbukti; source backend, keamanan internal atau model Muse tidak diklaim sama.
+Spesifikasi: [02 · UX & User Flow](02-user-flow.md) · [03 · Perilaku Agent](03-agent.md) · [04 · Arsitektur, Runtime & Kontrak](04-arsitektur-dan-delivery.md) · [05 · Usage, Paket & Pembayaran](05-usage-paket-pembayaran.md) · [06 · Development, Operasi & Acceptance](../engineering/development.md)
+Bukti: [REA-1 · Chat & Session](../research/muse-ai-v1/evidence/chat.md) · [REA-2 · Task & Scheduler](../research/muse-ai-v1/evidence/task.md) · [REA-3 · File & Artifact](../research/muse-ai-v1/evidence/file.md) · [REA-4 · Memory & Goals](../research/muse-ai-v1/evidence/memory.md) · [REA-5 · Permissions](../research/muse-ai-v1/evidence/permissions.md) · [REA-6 · Browser & Computer](../research/muse-ai-v1/evidence/computer.md)
+Tiket gerbang: [NG-026 · Bersihkan domain dan runtime pembelajaran](../backlog/tasks/26-bersihkan-domain-dan-runtime-pembelajaran.md) · [NG-027 · Bersihkan UI dan persona awal](../backlog/tasks/27-bersihkan-ui-dan-persona-awal.md) · [NG-028 · Sederhanakan kuota menjadi fondasi umum](../backlog/tasks/28-sederhanakan-kuota-menjadi-fondasi-umum.md) · [NG-029 · Buat baseline skema dan reset development](../backlog/tasks/29-buat-baseline-skema-dan-reset-development.md) · [NG-030 · Terima baseline V1 yang bersih](../backlog/tasks/30-terima-baseline-v1-yang-bersih.md). Release: [NG-025 · Peluncuran asisten umum V1 production](../backlog/tasks/25-peluncuran-free-dan-plus-production.md).
 <!-- notion-content:end -->

@@ -1,14 +1,21 @@
 # Chat personal: thread dan streaming resumable
 
-Sumber: [Notion](https://app.notion.com/p/3f8abdd61873816d8b15ed7b7b1b82a9)
+Sumber: [Notion](https://app.notion.com/p/3f8abdd61873816d8b15ed7b7b1b82a9) · Readback: 2026-10-18T06:04:56.780944+00:00
 
-Status: **Done** · Prioritas: **P0** · Area: **Agent** · Urutan: **4**
-
-Depends on:
-
-- [Fondasi production: workspace, auth dan data](02-fondasi-production-workspace-auth-dan-data.md)
+| Property | Value |
+| --- | --- |
+| Ticket | 4 |
+| Urutan | 1004 |
+| Lingkup | Histori |
+| Status | Done |
+| Prioritas | P0 |
+| Area | Agent |
+| Depends on | [Fondasi production: workspace, auth dan data](02-fondasi-production-workspace-auth-dan-data.md) |
 
 <!-- notion-content:start -->
+**Lingkup: Histori · NG-004 · reset 18 Oktober 2026.** Penerimaan lama tetap Done sebagai catatan historis. Scope pembelajaran dan paket lama tidak menjadi acceptance V1 baru.
+Spesifikasi aktif: [01 · Produk & Scope V1](../../product/01-produk-dan-paket.md). Urutan/dependensi aktif: [07 · Backlog Implementasi V1](../README.md).
+
 ## Hasil
 
 Satu agent personal melayani main chat dan side chat melalui agent loop dinamis LangChain create_agent, dengan riwayat durable.
@@ -26,7 +33,7 @@ Satu agent personal melayani main chat dan side chat melalui agent loop dinamis 
 
 ## Progres implementasi
 
-16 Oktober 2026 — Implementasi chat selesai; delapan acceptance criteria di atas tercakup oleh penerimaan lokal dan pemeriksaan cleanup React.
+<mention-date start="2026-10-16"/> — Implementasi chat selesai; delapan acceptance criteria di atas tercakup oleh penerimaan lokal dan pemeriksaan cleanup React.
 - Runtime: main/side chat, soul/profil bersama, LangChain `create_agent`, batas akses dan budget, job/checkpoint durable, HITL approve/reject, `/course`, history per thread, SSE replay, stop/retry, serta recovery worker sudah diimplementasikan.
 - Bukti penerimaan di repo: `docs/engineering/chat-04-implementation.md`, `docs/engineering/evidence/chat-04/manual-acceptance.json`, dan `docs/engineering/evidence/chat-04/stream-duplication-audit.json`. Audit streaming memeriksa 70 snapshot baru tanpa duplikasi.
 - Cleanup React: query/pembuatan thread, panel/Drawer, subscription, draft/pengiriman/idempotency, aksi run, dan transcript mempunyai tanggung jawab terpisah. `Thread` turun dari 249 menjadi 93 baris; route diagnostik dari 198 menjadi 10 baris. Komponen dan hooks diagnostik berada di fitur sendiri.
@@ -39,6 +46,7 @@ Pemeriksaan cleanup ini melengkapi bukti runtime yang sudah tercatat; matriks cr
 
 ## Spesifikasi
 
-[03 · Agent](../../product/03-agent.md)
-[04 · Arsitektur & Delivery](../../product/04-arsitektur-dan-delivery.md)
+[03 · Perilaku Agent](../../product/03-agent.md)
+
+[04 · Arsitektur, Runtime & Kontrak](../../product/04-arsitektur-dan-delivery.md)
 <!-- notion-content:end -->

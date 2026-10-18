@@ -1,99 +1,85 @@
-# Development dan operasi
+# 06 · Development, Operasi & Acceptance
 
-## Keputusan #02
+Sumber: [Notion](https://app.notion.com/p/3fdabdd6187381d39f94f7161d4ef570) · Readback: 2026-10-18T06:04:56.780944+00:00
 
-- Baseline tetap LangChain `create_agent`, LangGraph, dan Procrastinate. Workflow diagnostik tidak memanggil model; percakapan dan generation Course mengikuti tiket berikutnya.
-- Docker hanya menjalankan PostgreSQL 16/pgvector serta MinIO. API, worker, dan web dijalankan langsung di mesin.
-- Sesuai arahan pengguna, penerimaan storage #02 menggunakan MinIO. Konfigurasi R2 disiapkan, tetapi verifikasi R2 ditunda.
-- Pengujian perilaku dilakukan manual melalui browser. CI menjalankan pemeriksaan statis dan build; tidak ada suite unit/integration/E2E otomatis.
+<!-- notion-content:start -->
+## Setup development bersih
 
-## Startup
+Prasyarat: Bun, uv, Python dan Docker/OrbStack. Salin .env.example ke .env, isi kredensial pada mesin sendiri, lalu make install → make infra-up → make setup → make dev. UI [http://localhost:3000](http://localhost:3000), API loopback :8000, PostgreSQL :5433, MinIO :9000/console :9001. Auth memakai Clerk; tidak ada auth bypass production.
+make setup menjalankan Alembic baseline, Procrastinate official schema dan LangGraph PostgresSaver.setup serta bucket lokal. make migrate hanya database. Keduanya dapat diulang; queue library version berbeda perlu official SQL migrations, bukan schema replacement diam-diam.
 
-Standar konten #003 dapat diperiksa tanpa provider atau database melalui `make content-inspect`.
-Lihat [kontrak konten](course-content-standard.md), [handoff engine](course-generation-design.md),
-dan [bukti penerimaan #003](content-03-manual-acceptance.md). Root `.env` menyimpan credentials
-provider server-only; inspector fixture tidak membacanya dan CI tidak memanggil provider.
+## Reset development yang telah diotorisasi
 
-1. Salin `.env.example` ke `.env` hanya jika file belum ada.
-2. Isi `VITE_CLERK_PUBLISHABLE_KEY` dan `CLERK_SECRET_KEY` dari instance Clerk development khusus Ngertiin. Semua credentials server tetap di `.env`, yang diabaikan Git.
-3. `make install` memasang dependency JS dan Python dari lockfile.
-4. `make infra-up` menjalankan container dan menunggu healthcheck.
-5. `make setup` menerapkan migrasi serta menyiapkan bucket lokal.
-6. `make dev` menjalankan API, worker, dan web. Buka `http://127.0.0.1:3000/dev/system`.
+Hentikan API/worker host sebelum reset agar tidak menulis data saat volume dibangun ulang. make reset-dev menjalankan script yang memverifikasi APP_ENV=development, local DATABASE_URL/S3 endpoint/kredensial, Compose project ngertiin-v1, service/mount dan label dua volume. Mode validasi: `uv run --project apps/backend python scripts/reset_dev.py`. Mode eksekusi: make reset-dev.
+Resource yang dihapus: ngertiin-v1_postgres-data dan ngertiin-v1_minio-data beserta container/network proyek. Akun lokal, chat, approval, checkpoint, queue, usage dan file MinIO hilang. Akun Clerk, .env, kredensial, Daytona dan environment lain dipertahankan. Tidak memakai docker system prune atau reset resource remote. Baseline baru tidak kompatibel dengan migration head/data pembelajaran lama.
 
-Untuk chat #04, isi `OPENAI_API_KEY` dan `OPENAI_MODEL` sebelum menjalankan API/worker, lalu buka halaman utama setelah login. `make migrate` menerapkan tabel chat serta posisi pesan pada revision `0003_chat_order`. Worker harus aktif untuk menghasilkan jawaban; subscription browser hanya membaca event yang sudah tersimpan. [Kontrak dan penerimaan chat](chat-04-implementation.md) menjelaskan approval, replay, stop, dan recovery.
+## Startup readiness diagnosis
 
-Gunakan origin yang sama sepanjang sesi (`127.0.0.1` atau `localhost`). Kedua origin development diterima backend. Jika browser memblokir `localhost`, alamat IPv4 `127.0.0.1` adalah alamat listen aplikasi. Jangan menonaktifkan perlindungan browser untuk membuka aplikasi.
+Pemeriksaan membedakan API hidup dari dependency dan worker yang siap.
+**Alur:** infra-up → setup → API/worker → /health/live, /health/ready → /dev/system bila enabled.
+**State:** ready/unavailable per database/migrations/pgvector/queue/checkpoints/worker/storage/auth.
+**Input → output:** Validated env, migration/library versions, heartbeat → readiness/detail tanpa secrets.
+**Kegagalan & pemulihan:** Database/MinIO mati, stale queue schema, worker heartbeat hilang dan provider failure mempunyai indikator; log request/run/job IDs dipakai untuk diagnosis.
+**Izin:** Diagnostics hanya APP_ENV development + ENABLE_DEV_DIAGNOSTICS; object/run commands owner-scoped; production diagnostics mati.
+**Biaya:** Diagnostics bounded; jangan mencatat token/secret/file pribadi; probe memakai resource dan budget kecil.
+**Acceptance:** Startup fresh DB, repeated setup, worker recovery dan storage ownership diuji; readiness current migration head.
+Bukti modul: [REA-1 · Chat & Session](../research/muse-ai-v1/evidence/chat.md). Tiket: [NG-029 · Buat baseline skema dan reset development](../backlog/tasks/29-buat-baseline-skema-dan-reset-development.md) · [NG-030 · Terima baseline V1 yang bersih](../backlog/tasks/30-terima-baseline-v1-yang-bersih.md) · [NG-023 · Recovery end-to-end dan konsistensi state](../backlog/tasks/23-recovery-end-to-end-dan-konsistensi-state.md).
 
-## Environment
+## Acceptance dan rekam bukti
 
-| Konfigurasi | Pemakai | Tujuan |
+Gate cleanup NG-026–030: make check, make build, make quota-inspect, startup, login nyata, main/side chat/model streaming, snapshot/replay, stop/retry, worker crash/recovery, cross-owner read/write/event rejection, storage upload/download/delete dan quota rejection/draft. Probe ledger menggunakan database sementara yang dihapus setelah selesai; tidak bergantung materi pembelajaran.
+Gate fitur baru: setiap tiket merekam environment/provider version, tanggal, input, expected/actual, resource IDs non-secret, trace/screenshot dan biaya. Walkthrough browser membuktikan alur pengguna; probe concurrency/ownership/fencing dan fault injection membuktikan failure boundaries. Static Pen atau bukti lama tidak menutup penerimaan baru.
+P01–P30 di matriks penerimaan aktif mencakup onboarding; same-thread task; approval/revision/replay; crash/stop/unknown effect; owner/isolation/resource caps; result persistence; file failure; memory/forget/persona; goals; offline schedules/DST/downtime; proactive cap/no-op/delivery; quota/cost version; source injection; isolated preview; deployment dan restore.
+Bukti baseline baru: repository docs/engineering/[NG-030 · Bukti penerimaan baseline V1](baseline-v1-acceptance.md) dan docs/engineering/evidence/baseline-v1/. Bukti lama #01–05 disimpan sebagai catatan historis; detail runtime lama tidak dianggap current.
+
+## Operasi menuju release
+
+NG-023 menguji pemulihan menyeluruh dan backup/restore, termasuk sandbox provider yang hilang setelah restore. NG-041 mengukur kualitas/latency/biaya lifecycle asisten umum. NG-025 hanya Done setelah semua capability wajib diterima, termasuk Daytona/VNC/takeover. Production R2, CI remote dan security/runtime efficacy tetap gap sampai bukti baru tersedia.
+Rujukan: [04 · Arsitektur, Runtime & Kontrak](../product/04-arsitektur-dan-delivery.md) · [05 · Usage, Paket & Pembayaran](../product/05-usage-paket-pembayaran.md) · [07 · Backlog Implementasi V1](../backlog/README.md) · [08 · Bukti Riset & REA](../research/muse-ai-v1/README.md)
+Tiket: [NG-026 · Bersihkan domain dan runtime pembelajaran](../backlog/tasks/26-bersihkan-domain-dan-runtime-pembelajaran.md) · [NG-027 · Bersihkan UI dan persona awal](../backlog/tasks/27-bersihkan-ui-dan-persona-awal.md) · [NG-028 · Sederhanakan kuota menjadi fondasi umum](../backlog/tasks/28-sederhanakan-kuota-menjadi-fondasi-umum.md) · [NG-029 · Buat baseline skema dan reset development](../backlog/tasks/29-buat-baseline-skema-dan-reset-development.md) · [NG-030 · Terima baseline V1 yang bersih](../backlog/tasks/30-terima-baseline-v1-yang-bersih.md) · [NG-023 · Recovery end-to-end dan konsistensi state](../backlog/tasks/23-recovery-end-to-end-dan-konsistensi-state.md) · [NG-041 · Benchmark kualitas latency dan biaya asisten umum](../backlog/tasks/41-benchmark-kualitas-latency-dan-biaya-asisten-umum.md) · [NG-025 · Peluncuran asisten umum V1 production](../backlog/tasks/25-peluncuran-free-dan-plus-production.md).
+
+## Matriks penerimaan fitur V1
+
+| ID | Skenario pengguna/failure | Bukti kelulusan yang harus terlihat |
 | --- | --- | --- |
-| `DATABASE_URL` | API, worker, migrasi | PostgreSQL yang sama |
-| `VITE_CLERK_PUBLISHABLE_KEY` | Web | Identitas instance Clerk publik |
-| `CLERK_SECRET_KEY` | Server web dan API | Validasi sesi, tidak dikirim ke client |
-| `WEB_ORIGIN` | API | CORS dan validasi authorized party token |
-| `VITE_API_URL` | Web | Alamat API yang dapat diakses browser |
-| `S3_*` | API, worker, setup | Endpoint, bucket, region, credentials, addressing style |
-| `MINIO_ROOT_*` | Container MinIO | Credentials lokal |
-| `OPENAI_API_KEY`, `OPENAI_MODEL`, `OPENAI_BASE_URL` | Worker; API memeriksa key tersedia | Adapter OpenAI Responses untuk chat |
-| `CHAT_MAX_OUTPUT_TOKENS`, `CHAT_MAX_MODEL_CALLS`, `CHAT_RUN_TIMEOUT_SECONDS` | Worker | Batas per panggilan, iterasi, dan waktu satu turn |
-| `APP_ENV`, `ENABLE_DEV_DIAGNOSTICS` | API dan build web | Membatasi fitur diagnostik ke development |
+| P01 | Pengguna baru melewati login dan meminta bantuan umum. | Tidak diwajibkan membuat artefak pembelajaran; agent menyelesaikan satu pekerjaan nyata dan hasil dapat dibuka kembali. |
+| P02 | Task berjalan; user bercakap lagi di thread asal lalu pindah side chat. | Semua percakapan tetap berfungsi; hasil task masuk ke thread asal dengan hubungan task yang jelas, tanpa mencampur token/respons. |
+| P03 | Task memerlukan approval, pengguna menundanya lalu refresh/menutup browser. | Proposal masih ditemukan; tidak ada worker/slot eksekusi aktif yang tertahan; user bisa bercakap; approval exact dapat dilanjutkan. |
+| P04 | Dua client menyetujui proposal sama atau mengirim decision request ulang. | Satu action sah, satu status final; replay identik konsisten, keputusan/input berbeda ditolak. |
+| P05 | Target/proposal berubah sesudah ditinjau. | Approval stale tidak diterapkan; user melihat perubahan dan dapat meninjau proposal baru. |
+| P06 | Worker mati sebelum task checkpoint, sesudah hasil tool, atau saat hasil dipublikasikan. | Recovery bertahap, completed effects tidak diduplikasi, progress/result terdahulu tetap bisa dibuka, biaya retry dapat diidentifikasi. |
+| P07 | User menekan stop saat model, code atau browser berjalan. | Lease dicabut; operasi baru tidak terjadi; resource berhenti/cleanup terkonfirmasi atau statusnya terlihat; partial result dan biaya yang terpakai dijelaskan. |
+| P08 | Browser/server disconnect setelah external effect terjadi sebelum acknowledgement. | Action menjadi unknown/reconciling bila perlu; tidak klik ulang buta; ada outcome atau langkah pemulihan yang dapat dipahami. |
+| P09 | Akun B mengetahui ID file/task/goal/schedule/session/memory akun A. | Semua read/write/download/event/approval ditolak; tools dan job tidak melintas owner; tidak membocorkan existence lewat isi hasil. |
+| P10 | Kode mencoba mengakses host/API secrets, filesystem task lain atau metadata internal. | Isolasi dan policy mencegah akses; task gagal terkendali; tidak ada akses credential/control-plane. |
+| P11 | Code hang, memakai memory/disk berlebihan, mengunduh besar atau browser berulang tanpa hasil. | Batas sumber daya/biaya menghentikan pekerjaan; task status, cleanup dan saldo konsisten. |
+| P12 | Task membuat beberapa file lalu sandbox dihentikan. | Manifest hasil telah dipersist sebelum success; download/preview tetap berfungsi setelah sandbox hilang. |
+| P13 | File upload gagal, format tak didukung, atau input revision dihapus saat task queued. | State dan pesan error jelas; tidak mengklaim analisis selesai; tidak memakai revision lain diam-diam; reservasi diselesaikan benar. |
+| P14 | User menyatakan preferensi, membuka thread baru, lalu mengoreksinya. | Recall relevan lintas thread berubah; evidence dan tipe claim dapat diperiksa; budget konteks tetap terukur. |
+| P15 | User melupakan memory lalu curation/retry membaca history lama. | Fakta yang dilupakan tidak hidup kembali dari evidence yang sama; efek forgetting dapat diperiksa setelah refresh. |
+| P16 | User menolak persona baru tetapi memory extraction membaca percakapan penolakan tersebut. | Soul tetap; memory tidak menerapkan instruksi persona yang ditolak. |
+| P17 | Goal mempunyai beberapa task; satu gagal dan user mengubah target. | Goal tidak otomatis completed; task memakai revision/intent yang jelas; user dapat memilih lanjut/replan/pause. |
+| P18 | Schedule berjalan saat user offline; dua dispatcher mengklaim waktu sama. | Satu occurrence, satu task dan satu delivery sah; semua tetap terlihat setelah login. |
+| P19 | Schedule diedit/pause tepat saat due; worker restart setelah downtime; timezone berubah. | Berlaku policy revision, overlap/misfire dan future occurrences yang dinyatakan; tidak ada burst tanpa batas atau task jadwal tak berizin. |
+| P20 | Reminder pukul lokal tertentu melintasi DST dan timezone berbeda. | Preview, occurrence dan timestamp hasil cocok dengan policy timezone yang dinyatakan. |
+| P21 | Dua kandidat proaktif lintas thread bertemu cap harian; user mute atau sedang fokus. | Cap global atomik; timing dicek lagi sebelum delivery; tidak broadcast; candidate expired dibuang. |
+| P22 | Tidak ada kandidat yang layak. | Agent boleh tidak mengirim; tidak membuat follow-up generik hanya untuk memenuhi cadence. |
+| P23 | Scheduled result selesai saat cap proaktif habis/quiet hours. | Task outcome tetap tercatat; delivery mengikuti pengaturan khusus hasil yang diminta, tidak hilang akibat cap proaktif. |
+| P24 | Usage hampir habis, task lain/reschedule berlomba mengambil sisa. | Admission atomik, estimated cap terlihat; admitted work punya aturan settlement; tidak melampaui account/global budget karena race. |
+| P25 | User retry gagal tanpa hasil, retry dengan partial hasil, replay SSE, atau approve saat chat quota nol. | Kebijakan charge tiap jenis eksplisit; replay/approval tidak menjadi pesan baru; ledger dan actual cost tidak digandakan. |
+| P26 | Harga provider/policy plan berubah ketika task/period lama masih ada. | Snapshot policy/price version tetap dapat diaudit; tidak menghitung ulang biaya lama dengan harga baru tanpa aturan eksplisit. |
+| P27 | Web/file berisi instruksi untuk mengganti soul, mencuri file atau mengubah jadwal. | Konten tetap data; tidak melahirkan grant, approval, memory instruction atau side effect terlarang. |
+| P28 | Result HTML/kode dibuka di preview mobile dan desktop. | Preview terisolasi, tidak punya session aplikasi; file dapat diunduh; scroll/focus/reduced motion/accessibility sesuai kemampuan tampilan. |
+| P29 | Deployment baru saat task, approval dan schedule versi lama masih ada. | Payload/action/workflow lama dapat dilanjutkan atau dimigrasikan secara eksplisit; tidak menjadi stalled state tersembunyi. |
+| P30 | Backup dikembalikan dan resource sandbox/provider tidak lagi sama. | State direkonsiliasi, task/occurrence/usage tidak digandakan; hasil durable tetap tersedia; run tak bisa dipulihkan diberi outcome jelas. |
 
-`VITE_*` menjadi bagian bundle publik. Jangan menggunakan prefix tersebut untuk secret. Setelah mengubah environment, restart proses terkait. Untuk production, gunakan `APP_ENV=production`, matikan diagnostik, dan injeksikan credentials melalui environment deployment. Validasi konfigurasi menolak diagnostik production dan endpoint production tanpa HTTPS.
+Cara verifikasi: walkthrough browser untuk alur pengguna; fixture/probe backend terarah untuk race, ownership, usage, revision dan replay; fault injection pada sandbox/worker; static/type/build gates. Catat account/environment, input, task/action IDs, timestamps, expected/actual, screenshot/trace dan biaya. Bukti dokumentasi saja tidak menutup acceptance fitur.
 
-## Migrasi
+## Bukti penerimaan baseline
 
-`make setup` menjalankan Alembic, membuat extension vector, memasang schema Procrastinate saat pertama kali, menjalankan migrasi checkpointer LangGraph, lalu memastikan bucket lokal tersedia. Proses ini dapat dijalankan ulang.
+[NG-030 · Bukti penerimaan baseline V1](baseline-v1-acceptance.md)
 
-Migrasi tidak dijalankan secara otomatis oleh tiap replica API/worker. Saat menambah migrasi aplikasi, perbarui pemeriksaan revision pada `health.py`. Saat mengubah versi Procrastinate, terapkan SQL migration yang disediakan library dan perbarui record `runtime_schema_versions` setelah verifikasi; setup sengaja menolak pergantian versi queue secara diam-diam. Versi dependency dan lockfile direview bersama.
+## Gate baseline dan pemeriksaan mirror
 
-## Identitas dan batas akses
-
-Request aplikasi menggunakan bearer session token Clerk. API memverifikasi token serta authorized party, lalu memetakan subject ke account UUID dengan constraint unik. Account baru dibuat pada request terautentikasi pertama. Identitas email bukan sumber otorisasi.
-
-Request pembuatan pekerjaan tidak menerima owner ID. Satu transaksi menyimpan pekerjaan milik akun dan enqueue Procrastinate. Request key menjaga retry request yang sama tetap menghasilkan satu pekerjaan. Worker menerima run ID, lalu membaca pemilik dari database. Pencarian run, file, signed URL, dan penghapusan selalu dibatasi pada akun yang terautentikasi. Akses akun lain menghasilkan 404.
-
-Halaman diagnostik hanya tersedia ketika environment development dan flag aktif. Status infrastrukturnya dapat dibaca sebelum login; menjalankan pekerjaan serta mengakses file selalu membutuhkan login.
-
-## Worker dan recovery
-
-Worker memperbarui heartbeat. Halaman sistem menandai worker belum siap ketika heartbeat melewati 30 detik. Pekerjaan diagnostik memakai execution/checkpoint ID yang ditentukan backend, terpisah dari sesi browser.
-
-Retry kegagalan dibatasi tiga percobaan. Recovery memeriksa stalled jobs saat worker mulai dan setiap menit. Setelah worker mati paksa, tunggu heartbeat lama kedaluwarsa serta satu siklus recovery. Batas recovery tidak didasarkan hanya pada durasi job sehingga pekerjaan yang masih aktif tidak dianggap gagal karena lambat.
-
-LangGraph menyimpan checkpoint secara sinkron pada batas task. Artifact menggunakan ID dan object key deterministik; mengulang langkah I/O dapat menulis ulang key yang sama, tetapi tidak membuat artifact atau hasil database ganda. Worker tidak menyimpan bearer token pengguna.
-
-Untuk mencoba recovery, pilih jeda 30 detik pada diagnostik, jalankan job, lalu hentikan worker yang sedang memproses. Gunakan terminal terpisah (`make api`, `make worker`, `make web`) untuk mengisolasi penghentian worker. Restart worker dan periksa run ID yang sama sampai selesai. Pekerjaan baru setelah `failed` dibuat dengan tombol Jalankan pekerjaan.
-
-## Storage
-
-Bucket lokal bersifat private. API mengotorisasi metadata terlebih dahulu, lalu memberikan signed download URL berumur lima menit. URL tersebut merupakan akses sementara; jangan membagikannya. Database menyimpan object key, bukan URL sementara. Upload diagnostik dibatasi 5 MB; batas ingestion produk ditentukan pada tiket ingestion.
-
-MinIO memakai release resmi `RELEASE.2025-09-07T16-13-09Z` yang diunduh dari GitHub Releases dan diverifikasi checksum-nya. Community repository telah diarsipkan; image ini dipakai untuk development lokal dan hanya bind pada loopback. Build image mendukung arm64 dan amd64.
-
-Untuk mencoba R2 kelak, ganti `S3_ENDPOINT_URL` menjadi endpoint account R2, isi credentials/bucket terkait, dan gunakan `S3_REGION=auto`. Modul storage menggunakan operasi S3 dasar dan konfigurasi checksum yang sesuai subset R2. Ulangi pemeriksaan upload/download/delete serta signed URL terhadap R2 sebelum menyatakan integrasi production terverifikasi.
-
-## Health dan diagnosis
-
-- `/health/live`: proses HTTP hidup.
-- `/health/ready`: koneksi DB, revision aplikasi, pgvector, schema queue, dan checkpoint siap. Worker/storage dilaporkan terpisah melalui diagnostik sehingga matinya worker tidak disamakan dengan matinya API.
-- `/dev/status`: rincian tiap dependensi ketika diagnostik development aktif. Status Clerk hanya menyatakan konfigurasi tersedia; login nyata menjadi bukti autentikasi.
-- Request ID dikirim melalui response header dan log. Worker mencatat run/job ID untuk menghubungkan gejala di browser dengan pekerjaan terkait. Token, secret, dan isi file tidak dicatat.
-
-`make check` dan `make build` adalah pemeriksaan statis/build. CI memiliki konfigurasi yang sama dan membangun package Python. Eksekusi CI remote baru terjadi setelah repository terhubung ke penyedia Git; tidak ada push otomatis dari task ini.
-
-## Data lokal
-
-Namespace Compose `ngertiin-v1` memakai volume sendiri. `make infra-down` tidak menghapus data. Jangan menjalankan `down -v` pada data yang perlu dipertahankan. PostgreSQL memakai port 5433; MinIO memakai 9000/9001, sehingga instance lain yang memakai port yang sama perlu dihentikan atau port development disesuaikan.
-
-## Struktur frontend
-
-- `src/routes/` memuat kontrak route, search params, dan guard; detail fitur berada di `src/features/`.
-- `features/chat/` memisahkan query daftar thread (`use-chat-threads`), panel/Drawer (`use-chat-history`), snapshot dan SSE (`use-thread`), draft/pengiriman/idempotency (`use-thread-composer`), serta approval/stop/retry (`use-thread-actions`). Reducer replay ada di `thread-state.ts`, terpisah dari DTO di `types.ts`.
-- `Thread` menyusun transcript dan composer; `ThreadTranscript` mengelola tampilan history, pesan, approval, serta kontrol scroll. Pemilihan thread memberi key akun + thread agar state lokal dan subscription terisolasi.
-- `features/diagnostics/` memiliki halaman sistem, status publik, identitas akun, panel file/job, hooks query/mutation, dan DTO diagnostik sendiri. `use-object-download` dipakai bersama oleh file dan artifact job.
-- `components/ui/` menyimpan primitive shadcn; `ui/` menyimpan UI aplikasi bersama; `lib/api.ts` hanya menangani transport HTTP dan konfigurasi API. Gunakan import langsung dan Props bernama ketika komponen membutuhkan kontrak sendiri.
-- Pisahkan berdasarkan tanggung jawab dan siklus state. Hindari membuat hook serbaguna yang mencampur query, penyimpanan browser, event listener, dan markup; logika turunan sederhana tetap dihitung saat render.
-
-Jalankan `make check` dan `make build` setelah refactor. Verifikasi perilaku melalui browser; [bukti cleanup React](react-cleanup-2026-10-16.md) mencatat pemulihan draft/request key dan interaksi desktop/mobile.
+NG-026–030 telah diterima pada 18 Oktober 2026; NG-031 menjadi Ready tanpa memulai trial. make docs-check memverifikasi hash 65 halaman, 41 identitas tiket, dependency graph/gate NG-030, empat view serta tautan lokal. dev:api memantau apps/backend/src saja dan graceful shutdown dibatasi 5 detik agar perubahan scratch tidak menahan SSE saat reload.
+<!-- notion-content:end -->

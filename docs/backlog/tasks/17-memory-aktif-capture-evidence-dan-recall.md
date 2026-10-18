@@ -1,28 +1,36 @@
-# Memory aktif: capture, evidence dan recall
+# NG-017 · Memory aktif capture evidence dan recall
 
-Sumber: [Notion](https://app.notion.com/p/3f8abdd618738151a38ffb012be2c9ce)
+Sumber: [Notion](https://app.notion.com/p/3f8abdd618738151a38ffb012be2c9ce) · Readback: 2026-10-18T06:04:56.780944+00:00
 
-Status: **Backlog** · Prioritas: **P0** · Area: **Agent** · Urutan: **17**
-
-Depends on:
-
-- [Chat personal: thread dan streaming resumable](04-chat-personal-thread-dan-streaming-resumable.md)
-- [Practice: review jawaban salah dan unlock](12-practice-review-jawaban-salah-dan-unlock.md)
-- [Perubahan soul atas permintaan dan HITL](16-perubahan-soul-atas-permintaan-dan-hitl.md)
+| Property | Value |
+| --- | --- |
+| Ticket | 17 |
+| Urutan | 14 |
+| Lingkup | Aktif V1 |
+| Status | Backlog |
+| Prioritas | P0 |
+| Area | Agent |
+| Depends on | [NG-016 · Perubahan soul atas permintaan dan HITL](16-perubahan-soul-atas-permintaan-dan-hitl.md) · [NG-034 · File produk dan hasil tersimpan](34-file-produk-dan-hasil-tersimpan.md) |
 
 <!-- notion-content:start -->
-## Hasil
-
-Agent mengingat profil dan pengamatan relevan dari history/event.
+Tujuan: Memory aktif capture evidence dan recall.
+Lingkup: **Aktif V1**. Identitas NG-017; Urutan delivery 14.
 
 ## Acceptance criteria
 
-- [ ] Capture membedakan pernyataan pengguna, fakta domain dan inferensi; entry menyimpan evidence, scope dan waktu.
-- [ ] Update/deduplikasi/supersede aman terhadap retry dan revisi; nilai/progress/reward tetap milik domain aplikasi.
-- [ ] Memory relevan tersedia pada interaksi berikutnya dengan budget konteks terukur dan isolasi akun.
-- [ ] Pengguna dapat mengoreksi atau meminta forgetting melalui chat; sumber yang sama tidak langsung menghidupkan memory dilupakan.
+- [ ] Entry bertipe fact/preference/observation, owner, evidence revision, waktu, confidence dan status.
+- [ ] Capture/recall lintas thread relevan dan dibatasi token/biaya; tidak menyimpan secret atau menjadikan memory otoritas domain.
+- [ ] Koreksi/suppression mencegah memory lama hidup kembali setelah forgetting; P14/P15/P16/P27.
 
-## Spesifikasi
+## Spesifikasi dan bukti
 
-[03 · Agent](../../product/03-agent.md)
+[03 · Perilaku Agent](../../product/03-agent.md) · [REA-4 · Memory & Goals](../../research/muse-ai-v1/evidence/memory.md)
+
+## Dependencies
+
+[NG-016 · Perubahan soul atas permintaan dan HITL](16-perubahan-soul-atas-permintaan-dan-hitl.md) · [NG-034 · File produk dan hasil tersimpan](34-file-produk-dan-hasil-tersimpan.md)
+
+## Bukti penerimaan
+
+[NG-030 · Bukti penerimaan baseline V1](../../engineering/baseline-v1-acceptance.md). Bukti repo: docs/engineering/evidence/baseline-v1/. Status mengikuti hasil pemeriksaan baru; tidak mengandalkan penerimaan #01–05.
 <!-- notion-content:end -->

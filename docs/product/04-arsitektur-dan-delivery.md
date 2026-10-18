@@ -1,105 +1,78 @@
-# 04 · Arsitektur & Delivery
+# 04 · Arsitektur, Runtime & Kontrak
 
-Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381198256f4ee69db1e78)
+Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381198256f4ee69db1e78) · Readback: 2026-10-18T06:04:56.780944+00:00
 
 <!-- notion-content:start -->
-## Prinsip delivery
+Stack aktual: TanStack Start/React, FastAPI, Clerk, PostgreSQL/pgvector, LangChain create_agent + LangGraph checkpoints, Procrastinate dan S3/MinIO. API dan worker adalah proses host untuk development; PostgreSQL/MinIO berada pada Compose ngertiin-v1. Pertahankan fondasi; LiteLLM/LlamaIndex/LangSmith/R2 production bukan dependency yang dianggap aktif hanya karena pernah tercantum pada riset.
 
-Arsitektur mendukung arah jangka panjang agent belajar personal yang proaktif, sebagaimana dijelaskan pada [01 · Produk & Paket](01-produk-dan-paket.md). Implementasi v1 mengikuti backlog dan acceptance criteria yang telah disepakati; kesiapan memperluas kemampuan agent tidak mengharuskan seluruh kemampuan produk referensi dibangun pada v1.
+## Model domain dan invariant lintas modul
 
-Pemilihan teknologi mempertimbangkan ruang pengembangan jangka panjang dan keterbacaan kode. Tambahkan kemampuan serta infrastruktur ketika kebutuhan dan manfaatnya terbukti. Kelulusan v1 diukur dari alur belajar, fondasi agent personal, dan proaktivitas terbatas yang berfungsi sesuai backlog.
+Account memiliki Thread, Profile, Task, Schedule, Goal, Memory, File, Result dan SandboxSession. ChatRun adalah satu giliran percakapan; Task/Execution adalah pekerjaan produk dan attempt yang terpisah. Schedule menghasilkan Occurrence, lalu Task, kemudian Delivery ke thread eksplisit. Goal dapat berdiri tanpa Schedule atau Task.
+Owner berasal dari konteks server. Simpan domain + reservasi + enqueue dalam transaksi singkat; network/model/provider calls di luar transaksi. Request key/fingerprint mengikat input exact; replay/retry tidak menciptakan charge, occurrence atau publikasi kedua. Lease/version mencabut hak worker lama. Hasil baru durable setelah manifest/domain dan object storage tersimpan.
 
-## Stack acuan
+## Chat event dan replay
 
-| Bagian | Pilihan |
-| --- | --- |
-| Web | TanStack Start + React |
-| API dan auth | FastAPI + SQLModel + Alembic; Clerk |
-| Worker | Procrastinate |
-| Agent dan retrieval | LangChain create_agent + LangGraph; LlamaIndex |
-| Data dan storage | PostgreSQL 16 + pgvector; Cloudflare R2 |
-| Model gateway | LiteLLM |
-| Observability dan checks | LangSmith + structlog; Ruff + pytest/anyio |
+Transcript durable terpisah dari koneksi browser.
+**Alur:** Submit validated text/request_key → reserve chat + run/message/event/enqueue → worker model → projection → SSE → snapshot/replay.
+**State:** Run queued/running/waiting_approval/cancelling/complete/failed/cancelled; message ordered by position.
+**Input → output:** POST /chat/threads/\{id\}/runs; GET snapshot/events dengan after/cursor → event version/thread_id/seq dan message/run/approval upserts.
+**Kegagalan & pemulihan:** Reconnect snapshot through_seq dan replay sesudahnya; stop mencabut lease; partial output tetap ada; retry bounded.
+**Izin:** Clerk verified account dan ownership pada command/snapshot/stream; satu active run per thread baseline.
+**Biaya:** Ledger chat commit pada public text/approval; failure tanpa usable output release; usage provider tercatat di run.
+**Acceptance:** NG-030 ulangi main/side, stop/retry/replay/ownership; NG-033 memisahkan long Task agar approval tidak mengunci percakapan.
+Bukti modul: [REA-1 · Chat & Session](../research/muse-ai-v1/evidence/chat.md). Tiket: [NG-026 · Bersihkan domain dan runtime pembelajaran](../backlog/tasks/26-bersihkan-domain-dan-runtime-pembelajaran.md) · [NG-028 · Sederhanakan kuota menjadi fondasi umum](../backlog/tasks/28-sederhanakan-kuota-menjadi-fondasi-umum.md) · [NG-030 · Terima baseline V1 yang bersih](../backlog/tasks/30-terima-baseline-v1-yang-bersih.md) · [NG-033 · Task background dan approval umum](../backlog/tasks/33-task-background-dan-approval-umum.md).
 
-Pembagian monorepo difinalkan pada tiket fondasi.
+## Task action dan result runtime
 
-## Agent dinamis dan workflow terstruktur
+Durable execution memberi state produk terpisah dari job/checkpoint.
+**Alur:** Create Task → Execution lease → bounded model/tools → action approval → output persistence → terminal + delivery.
+**State:** Task queued/running/waiting_user/succeeded/failed/cancelled; Action unknown/reconciling bila effect belum pasti.
+**Input → output:** Target API /tasks, /tasks/\{id\}/cancel\|retry, /approvals/\{id\}/decision; events task.progress/status, result.upsert dan action status, versioned pada implementasi.
+**Kegagalan & pemulihan:** Procrastinate menjamin delivery/retry, LangGraph checkpoint menjaga workflow; keduanya bukan source of truth task success; crash di setiap boundary diuji.
+**Izin:** Typed domain services, exact revision, owner/session/grant, cancellation fencing; waiting_user tidak memegang worker/stream/lock.
+**Biaya:** Hard cap + telemetry internal sejak NG-033; resource waiting memiliki TTL dan settlement eksplisit.
+**Acceptance:** P02–P08/P09/P24/P29/P30; task yang berhenti tidak mempublikasi hasil baru dari worker lama.
+Bukti modul: [REA-2 · Task & Scheduler](../research/muse-ai-v1/evidence/task.md). Tiket: [NG-033 · Task background dan approval umum](../backlog/tasks/33-task-background-dan-approval-umum.md) · [NG-023 · Recovery end-to-end dan konsistensi state](../backlog/tasks/23-recovery-end-to-end-dan-konsistensi-state.md).
 
-- **LangChain** `create_agent` menjalankan percakapan personal: model memilih tool, argumen, dan urutan langkah sesuai kebutuhan, atau langsung menjawab.
-- **LangGraph custom** menjalankan pipeline terstruktur seperti generation Course, validasi, repair, dan publikasi.
+## File storage dan publication
 
-Agent LangChain menggunakan runtime LangGraph; keduanya berbagi kemampuan checkpoint dan pause/resume. Urutan tool dalam percakapan tidak dikunci menjadi workflow per topik.
+File produk serta hasil menggunakan revision immutable dan manifest bertipe.
+**Alur:** Upload intent → storage → validate metadata → ready revision → task → persist output → result ready.
+**State:** File uploading/ready/failed/deleted; result constructing/ready/updating/failed/interrupted.
+**Input → output:** Target /files, /files/\{id\}/revisions, /results, signed download/preview; server owns object_key dan size/type validation.
+**Kegagalan & pemulihan:** Publish parsial tidak menandai success; input revision hilang tidak diganti diam-diam; garbage collection/retention diaudit.
+**Izin:** S3 key per owner, short-lived URLs, owner checks sebelum signature, isolated preview origin, egress/output caps.
+**Biaya:** Storage/disk/network/parser/model cost dipisah; diagnostics /dev tetap gated, bukan API produk.
+**Acceptance:** P09/P12/P13/P28: output tetap ada setelah runtime hilang dan tidak memuat credential aplikasi.
+Bukti modul: [REA-3 · File & Artifact](../research/muse-ai-v1/evidence/file.md). Tiket: [NG-034 · File produk dan hasil tersimpan](../backlog/tasks/34-file-produk-dan-hasil-tersimpan.md).
 
-Perilaku percakapan dan agent loop: [03 · Agent](03-agent.md). [Acuan framework](https://docs.langchain.com/oss/python/langchain/overview).
+## Daytona code browser dan komputer
 
-## Eksekusi durable
+Adapter terisolasi mengeksekusi kode serta satu sesi GUI yang bisa dilihat pengguna.
+**Alur:** Resolve owned SandboxSession → start/reconnect → bounded shell/code/browser → persist outputs → idle stop/cleanup. Takeover memakai control lease backend.
+**State:** Session provisioning/ready/stopping/stopped/failed; control agent/handoff/human/resuming, control_version monoton.
+**Input → output:** Sandbox ID, owner, task, workspace manifest, action/control revision → execution result, live-view URL, observed screen dan cost events.
+**Kegagalan & pemulihan:** Provider timeout/expired URL/unknown effect di-reconcile; stop/restart memulihkan disk/workspace sejauh PoC, tidak menjanjikan RAM atau session web.
+**Izin:** App secrets tetap di control plane. Viewer proxy/token memeriksa owner/expiry. Agent dan manusia memakai session yang sama; setiap dispatch mengecek lease.
+**Biaya:** CPU/RAM/disk/egress/runtime/concurrency/idle caps sejak awal, termasuk stopped disk; cleanup dikonfirmasi.
+**Acceptance:** NG-031 trial dahulu; NG-035 isolasi/timeout; NG-036 exclusive takeover + fresh observation; P07–P12/P24/P27.
+Bukti modul: [REA-6 · Browser & Computer](../research/muse-ai-v1/evidence/computer.md). Tiket: [NG-031 · Validasi Daytona dengan trial terbatas](../backlog/tasks/31-validasi-daytona-dengan-trial-terbatas.md) · [NG-035 · Eksekusi kode dalam sandbox](../backlog/tasks/35-eksekusi-kode-dalam-sandbox.md) · [NG-036 · Browser VNC live desktop dan takeover](../backlog/tasks/36-browser-vnc-live-desktop-dan-takeover.md).
 
-```mermaid
-flowchart LR
-  U["Web"] --> A["API: auth dan domain actions"]
-  A --> D[("PostgreSQL: data, event, approvals")]
-  A --> Q[("Queue Procrastinate")]
-  Q --> W["Worker: LangChain / LangGraph"]
-  W --> D
-  W --> R["LlamaIndex: konteks relevan"]
-  R --> S["R2 dan pgvector"]
-  W --> M["LiteLLM: Luna / Sol"]
-  W --> E["Persist stream dengan seq"]
-  E --> U
+## Schedule occurrence dan offline delivery
 
-```
+Jadwal pengguna berjalan tanpa browser terbuka di atas dispatcher durable.
+**Alur:** Schedule reviewed → due dispatcher claims occurrence → task with per-run budget → persist outcome → deliver target thread.
+**State:** Schedule active/paused/deleted; Occurrence pending/queued/running/succeeded/failed/skipped/blocked_budget.
+**Input → output:** Instruction snapshot, IANA timezone, recurrence/one-shot, revision, intended_at → unique occurrence/task/delivery and next_due.
+**Kegagalan & pemulihan:** Policy default: overlap skip bila run sebelumnya aktif; downtime coalesce satu occurrence terbaru, bukan burst semua yang terlewat. Edit/pause hanya future work, running task dibatalkan eksplisit.
+**Izin:** Grant dan ownership dievaluasi lagi saat execute; jadwal tidak memperoleh akses baru saat user offline.
+**Biaya:** Per-run max dan account cap; blocked_budget tidak terus retry berbiaya; schedule/delivery budget terpisah dari proactive cap.
+**Acceptance:** P18–P20/P23: duplicate dispatch, edit-pause race, DST, downtime, offline, budget nol serta satu delivery.
+Bukti modul: [REA-2 · Task & Scheduler](../research/muse-ai-v1/evidence/task.md). Tiket: [NG-037 · Scheduler pengguna saat offline](../backlog/tasks/37-scheduler-pengguna-saat-offline.md).
 
-Data aplikasi memiliki approval, revision, kuota, dan progress. Checkpoint melanjutkan pekerjaan. Identitas akun berasal dari auth server; read/write/job dibatasi pada pemiliknya.
+## Baseline data dan batas reset
 
-## Generasi dan quality gate
-
-```mermaid
-flowchart TD
-  A["Outline dan blueprint disetujui"] --> B["Prioritaskan Lesson pertama"]
-  A --> H["Pool worker: kelompok Lesson lain"]
-  B --> C["Checks dan review pengajaran"]
-  C -->|Lolos| D["Publikasikan revisi Lesson: mulai belajar"]
-  C -->|Defect| R["Repair terarah, maksimal dua putaran"]
-  R --> C
-  H --> I["Checks, review, dan publikasi per kelompok"]
-  D --> J["Snapshot seluruh Lesson wajib"]
-  I --> J
-  J --> K["Generate satu paket Practice"]
-  K --> L["Checks key dan review cakupan/keterjawaban"]
-  L -->|Lolos| M["Practice siap"]
-  L -->|Belum| N["Repair bagian terkait; hold bila budget habis"]
-```
-
-Standar konten v1 ditetapkan melalui audit prototipe dan riset pengajaran; kontrak Python, validator, rubrik serta fixture menjadi deliverable #003. Blueprint memiliki tujuan teramati, kontribusi Lesson, evidence dan intent asesmen. Jumlah mengikuti kebutuhan belajar; billing tidak memangkas outline.
-
-Lesson dapat dibaca sesudah pemeriksaan pengajaran, sebelum Practice selesai. Practice dibuat dari seluruh snapshot Lesson terbit lalu diperiksa terhadap cakupan, kunci, ambiguitas, format dan keterjawaban. Publikasi selalu memeriksa revisi; koreksi konten terbit membuat revisi baru dengan penanganan pembaca. Penyelesaian belajar dan unlock tidak berasal dari selesainya generation.
-
-Pool worker dinamis membagi job Lesson/kelompok, review, Practice dan repair. Jalur Lesson pertama tidak menunggu join seluruh Course; review/publish-nya juga mendapat prioritas. Kelompok independen berjalan paralel, dengan admission RPS/TPM/biaya global lintas worker. Batching dan concurrency ditetapkan melalui pengukuran waktu ke Lesson pertama yang lolos, kesiapan Practice, kualitas, repair dan biaya.
-
-Kode memiliki aturan pasti. Jev dapat membatch keputusan semantik sempit bila manfaatnya terukur; ia bukan penulis konten atau kalkulator. Model generatif/reasoning menangani pengajaran dan review sesuai evaluasi per peran. Temuan defect material aktif menghalangi publikasi; suggestion/resolved tidak. Satu hasil awal dan maksimal dua repair mempertahankan bagian valid. Retry transport dibatasi terpisah.
-
-Implementasi runtime planner berada pada #008, generation multi-worker pada #009, player pada #011 dan Practice pada #012. Dokumen lokal: `docs/engineering/course-content-standard.md`, `docs/engineering/course-generation-design.md`, dan `docs/engineering/content-03-manual-acceptance.md`.
-
-## Model dan biaya
-
-| Model | Tugas awal |
-| --- | --- |
-| GPT-6 Luna | Chat rutin, analisis materi, draf Lesson/soal, kandidat memory |
-| GPT-6.1 Sol | Perencanaan Course, review semantik, repair dan penalaran sulit |
-
-Routing sama untuk Free dan Plus. Target generasi **sekitar Rp2.000/Course belum terbukti**. Benchmark prototipe mengindikasikan Rp1.500–Rp3.400/node untuk teks; biaya lifecycle dan human review tetap perlu diukur sebelum publikasi paket.
-
-## Urutan delivery
-
-```mermaid
-flowchart LR
-  A["Fondasi dan walkthrough UX"] --> B["Course pertama end-to-end"]
-  B --> C["Practice, progress dan rewards"]
-  C --> D["Memory dan proaktivitas"]
-  D --> E["Billing, recovery dan evaluasi"]
-  E --> F["Peluncuran berbayar + Free"]
-
-```
-
-P0 diperlukan untuk peluncuran; P1 peningkatan setelah alur inti. Tiket menjadi tempat acceptance criteria, dependencies, dan keputusan implementasi. Status Done mensyaratkan verifikasi perilaku; estimasi biaya dan SLA harus dibuktikan dengan data.
+Migration aplikasi tunggal adalah 0001_v1_baseline: accounts, agent_profiles, chat_threads/runs/messages/events/approvals, stored_objects, diagnostic_runs, runtime_schema_versions, quota_grants/periods/operations/events. Meter CHECK hanya chat; posisi transcript sudah ada sejak creation. Queue schema dibuat oleh Procrastinate schema_manager, checkpoint oleh PostgresSaver.setup. Readiness membandingkan migration head dari Alembic, queue library version, checkpoint migrations dan heartbeat.
+Reset sekali ini membuang seluruh data development proyek dan tidak menyediakan compatibility untuk pesan/approval/checkpoint pembelajaran lama. Migrasi masa depan kembali bersifat incremental; baseline ini bukan prosedur upgrade production.
+Kontrak target yang belum diimplementasikan di atas diselesaikan pada tiket terkait sebelum endpoint/event dipasarkan. Memory, Goal dan Library mengikuti [03 · Perilaku Agent](03-agent.md) · [02 · UX & User Flow](02-user-flow.md). Usage dan operasi mengikuti [05 · Usage, Paket & Pembayaran](05-usage-paket-pembayaran.md) · [06 · Development, Operasi & Acceptance](../engineering/development.md).
 <!-- notion-content:end -->

@@ -22,6 +22,7 @@ from ngertiin.health import system_status
 from ngertiin.models import Account
 from ngertiin.quotas.api import ERROR_TYPES, quota_error
 from ngertiin.quotas.api import router as quota_router
+from ngertiin.tasks.api import router as task_router
 
 settings = get_settings()
 logger = structlog.get_logger()
@@ -40,6 +41,7 @@ app = FastAPI(
 )
 app.include_router(chat_router)
 app.include_router(quota_router)
+app.include_router(task_router)
 for quota_error_type in ERROR_TYPES:
     app.add_exception_handler(quota_error_type, quota_error)
 app.add_middleware(

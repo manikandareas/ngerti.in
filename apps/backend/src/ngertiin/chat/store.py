@@ -113,11 +113,23 @@ async def snapshot(owner: UUID, thread: UUID):
                 (thread,),
             )
         ).fetchall()
+        from ngertiin.tasks.store import view as task_view
+
+        task_rows = await (
+            await conn.execute(
+                "SELECT * FROM background_tasks WHERE thread_id=%s "
+                "ORDER BY (status IN ('queued','running','waiting_user')) "
+                "DESC,created_at DESC LIMIT 50",
+                (thread,),
+            )
+        ).fetchall()
+        tasks = [await task_view(conn, task) for task in task_rows]
     return {
         "thread": current,
         "messages": list(reversed(messages)),
         "run": run,
         "approvals": approvals,
+        "tasks": tasks,
         "through_seq": current["seq"],
         "has_more": len(messages) == 60,
     }

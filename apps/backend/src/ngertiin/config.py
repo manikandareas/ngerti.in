@@ -32,6 +32,9 @@ class Settings(BaseSettings):
     chat_max_output_tokens: int = Field(default=3000, ge=256, le=16000)
     chat_run_timeout_seconds: int = Field(default=180, ge=15, le=600)
     chat_max_model_calls: int = Field(default=6, ge=1, le=12)
+    task_budget_units: int = Field(default=60000, ge=30000, le=120000)
+    task_account_daily_units: int = Field(default=240000, ge=60000, le=2000000)
+    task_global_daily_units: int = Field(default=2400000, ge=60000, le=20000000)
     daytona_api_key: SecretStr = SecretStr("")
     daytona_api_url: str = "https://app.daytona.io/api"
     daytona_target: str | None = None

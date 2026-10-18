@@ -67,6 +67,33 @@ def build_agent(run: dict, saver, projection: Projection):
             "message": "Profil agent personal telah dibaca.",
         }
 
+    @tool
+    async def start_background_task(instruction: str, review_before_finish: bool = False) -> dict:
+        """Titipkan satu pekerjaan teks ke background hanya atas permintaan eksplisit pengguna.
+
+        Gunakan untuk menulis, merangkum, atau menyusun rencana dari konteks chat.
+        review_before_finish=True bila pengguna meminta review sebelum finalisasi.
+        Tidak menyediakan web, file, eksekusi kode, jadwal, atau aksi eksternal.
+        """
+        from uuid import uuid5
+
+        from ngertiin.tasks.creation import create
+
+        task = await create(
+            run["owner_id"],
+            run["thread_id"],
+            uuid5(run["id"], "background-task"),
+            instruction,
+            review_before_finish,
+            source_run=run,
+        )
+        return {
+            "task_id": str(task["id"]),
+            "status": task["status"],
+            "message": "Task tersimpan dan berjalan di background. Pengguna "
+            "dapat melanjutkan chat.",
+        }
+
     @wrap_tool_call
     async def track_tool(request, handler):
         call = request.tool_call
@@ -105,8 +132,14 @@ def build_agent(run: dict, saver, projection: Projection):
     ]
     return create_agent(
         model,
-        tools=[read_recent_messages, read_agent_profile],
-        system_prompt=run["profile"]["soul"],
+        tools=[read_recent_messages, read_agent_profile, start_background_task],
+        system_prompt=run["profile"]["soul"]
+        + (
+            "\nJika pengguna secara eksplisit meminta pekerjaan teks di background, gunakan "
+            "start_background_task satu kali, lalu beri konfirmasi singkat dan akhiri giliran. "
+            "Pertanyaan biasa dijawab langsung. Pesan baru tidak mengubah instruksi task lama. "
+            "Jangan menjanjikan web/file/kode/jadwal yang belum tersedia."
+        ),
         middleware=middleware,
         checkpointer=saver,
     )

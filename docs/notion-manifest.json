@@ -16,7 +16,7 @@
       },
       "notion_content_sha256": "8683032b40bb75fb3a66096aaca609cabbcce80266d1cb8aa515f3c2ac78181e",
       "local_content_sha256": "801f9d06d6e4c7567923e16080a6ca96988fb7ea31076858396132428073981b",
-      "local_file_sha256": "b1d6943760102514fd402527b5db04727843d3b3c6f67bc1c2694e3097292cc0",
+      "local_file_sha256": "df3cc9a069693db6a31f64ce21ad2f3e6e1764fbb93dddfb9bb0a15b278ce050",
       "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
@@ -40,14 +40,14 @@
       "url": "https://app.notion.com/p/3f8abdd6187381fda2dbea043a840c5a",
       "file": "product/02-user-flow.md",
       "kind": "page",
-      "page_last_edited_at": "2026-10-18T05:49:46.966Z",
+      "page_last_edited_at": "2026-10-18T08:12:18.236Z",
       "properties": {
         "title": "02 · UX & User Flow"
       },
-      "notion_content_sha256": "300bc3e897cee9843eecd47077e0686bb523abe55d6f5bf8ad2176e32e518710",
-      "local_content_sha256": "74ed1537fcfbb01cfd80504a0d1011d2a2f6525155a9a1818ef4595040f0609f",
-      "local_file_sha256": "f2ae1a1bcd0d774c476787401d1f8292ccc98d28e7e618ef66494c4016f0eb7f",
-      "readback_at": "2026-10-18T06:04:56.780944+00:00"
+      "notion_content_sha256": "77377c77955a268e5662e25abf00a7c99653c07c01ac949e530915cf0be2e39a",
+      "local_content_sha256": "d9e9d65e86d85a429a9aec925904059b5625e24bac88cbeb7312fe2fc6291898",
+      "local_file_sha256": "10c832ff63e115db5eec3f635243176fd890814924a01ee5035b4d7e42a30492",
+      "readback_at": "2026-10-18T08:14:37.582446+00:00"
     },
     {
       "id": "3f8abdd6-1873-8165-8b61-f4283ee83428",
@@ -869,11 +869,11 @@
       "properties": {
         "title": "06 · Development, Operasi & Acceptance"
       },
-      "notion_content_sha256": "b2c5ab260a72431d0de977f59f3e3fd99ff6433473ad6015b139421c3e3f21ef",
-      "local_content_sha256": "7516ac6997986a8d2be92676f73f19c1704db1b4b280154e0cde909034d4f0b0",
-      "local_file_sha256": "f7dcaba9e0e594026c43acffc5f10bd1dbc4046143f1e79d76f995418bd939a2",
-      "readback_at": "2026-10-18T06:04:56.780944+00:00",
-      "page_last_edited_at": "2026-10-18T06:03:49.086Z"
+      "notion_content_sha256": "c2f3ef67dc21ddddfe202588d7b67330c3ddfcee31cdbeedbc3650fd5ef57d7c",
+      "local_content_sha256": "084d7c260f311103c02c6d91131885c13e3c4b7317c0f3e52fbce97dceff89eb",
+      "local_file_sha256": "e0f2eb8530a1558215ad79ebb00e1b5c53fd1f2107f6f493174c00e9f23d6470",
+      "readback_at": "2026-10-18T08:14:37.582446+00:00",
+      "page_last_edited_at": "2026-10-18T08:12:18.865Z"
     },
     {
       "id": "3fdabdd6-1873-812e-9ed6-c67417884b74",
@@ -886,7 +886,7 @@
       },
       "notion_content_sha256": "ff427a85b252da3841a5489b0f59aaa7c56a3e481cccccceb80e4755158e4018",
       "local_content_sha256": "6f8f141d26c06db4c4c1e0a38dc57315e043b485143d5fe24d3446116daec5b9",
-      "local_file_sha256": "77bab20fced8301810d3542298a6730ae11c82787e1a05f752866cef210c277b",
+      "local_file_sha256": "4704d3d554de2e0ed5d7d67e79a57e7c8d3188c60e29bc2785d13f5f5a3d9bdb",
       "readback_at": "2026-10-18T06:04:56.780944+00:00",
       "page_last_edited_at": "2026-10-18T05:49:58.871Z"
     },
@@ -1155,17 +1155,17 @@
         ],
         "Lingkup": "Aktif V1",
         "Prioritas": "P0",
-        "Status": "Backlog",
+        "Status": "Done",
         "Ticket": 32,
         "Tugas": "NG-032 · Shell onboarding dan walkthrough asisten umum",
         "Urutan": 7,
         "url": "https://app.notion.com/p/3fdabdd61873810b8159f4798fc39046"
       },
-      "notion_content_sha256": "d4b184d48f4ba520bef6e07f2031bc8f6adddd638f6540a14c8dadbc69c62f83",
-      "local_content_sha256": "eadccbca0d4e4ee459e938ef6ed5d166fa092fcf44c083636a4347da94356356",
-      "local_file_sha256": "9f82d36911b29163528c86e472d8a5eda0eb18f87ca7714ff438cfe1a9a3fee1",
-      "readback_at": "2026-10-18T06:04:56.780944+00:00",
-      "page_last_edited_at": "2026-10-18T05:50:47.722Z"
+      "notion_content_sha256": "f590805bff72cdeaac4bdf32bc35fcb3fcda9c7e85e1f1d6ba1bd94faabf1381",
+      "local_content_sha256": "6a94340050d7732af396a03e1a33dfe2c39ff2744039cfc8353201fdf47198b6",
+      "local_file_sha256": "e9758be4fa48cbc7cfdfa43810b8b40c682efbf83dcdf055e70fcf8b61ff0767",
+      "readback_at": "2026-10-18T08:14:37.582446+00:00",
+      "page_last_edited_at": "2026-10-18T08:11:37.273Z"
     },
     {
       "id": "3fdabdd6-1873-81ba-979a-c9f219c55a5a",
@@ -1640,8 +1640,8 @@
           "3f8abdd6-1873-81bf-9174-f9126e48a4f3",
           "3f8abdd6-1873-81fd-a17d-d1af24cec8fb"
         ],
-        "local_file_sha256": "17863e45fc5bdda4881010a2c64b8d3d881cd0b704651a50fca9f362454214ee",
-        "readback_at": "2026-10-18T07:13:08.912354+00:00",
+        "local_file_sha256": "57400758e1ce2d984196c7d44d4be4028f5d88cf41ee4739d7440dc9f5ba9e76",
+        "readback_at": "2026-10-18T08:14:37.582446+00:00",
         "queried_row_count": 41
       },
       {
@@ -1723,8 +1723,8 @@
           "3fdabdd6-1873-81f8-ade2-c7db2c75396e",
           "3f8abdd6-1873-81ac-90b6-df75b7e1a157"
         ],
-        "local_file_sha256": "257624df9ca25ad7e2a4798d4ba43064ec3b111fae14370f28ef64a60741b04a",
-        "readback_at": "2026-10-18T07:13:08.912354+00:00",
+        "local_file_sha256": "ae65477561b127a3af9025884211eded7beaf01643005855c72faa0d8fb6688d",
+        "readback_at": "2026-10-18T08:14:37.582446+00:00",
         "queried_row_count": 25
       },
       {
@@ -1780,8 +1780,8 @@
           "type": "table"
         },
         "page_ids": [],
-        "local_file_sha256": "1a4f192f2946a6209caad3fb58c0bea868295da0775d693d34a66cc7ce89ba87",
-        "readback_at": "2026-10-18T07:13:08.912354+00:00",
+        "local_file_sha256": "8bb0f04d2ebaaf86aa9b7486d1778335f8921c7299bb669a755e3a227f149fec",
+        "readback_at": "2026-10-18T08:14:37.582446+00:00",
         "queried_row_count": 0
       },
       {
@@ -1854,8 +1854,8 @@
           "3f8abdd6-1873-81bf-9174-f9126e48a4f3",
           "3f8abdd6-1873-81fd-a17d-d1af24cec8fb"
         ],
-        "local_file_sha256": "49be26c7f11b80d3548bcc116a9b49803a1879113a34b894ed7c5450052e0c9a",
-        "readback_at": "2026-10-18T07:13:08.912354+00:00",
+        "local_file_sha256": "525d618f6cac1a3b2a17ba2fb96953bdfd6e77faf768ee74968db2950031ead3",
+        "readback_at": "2026-10-18T08:14:37.582446+00:00",
         "queried_row_count": 16
       }
     ],
@@ -2015,13 +2015,51 @@
       "notion_content_sha256": "affac8e9a3427dcd32a78ae8096609a47b2e646d23d4cbff1f5f0dca7a3e9d22",
       "acceptance_file": "engineering/daytona-31-acceptance.md",
       "evidence_file": "engineering/evidence/daytona-31/summary.json"
+    },
+    {
+      "at": "2026-10-18T07:40:29.161083+00:00",
+      "page_id": "3fdabdd6-1873-810b-8159-f4798fc39046",
+      "properties": {
+        "Status": "In Progress"
+      },
+      "source": "User-requested next ordered ticket; exact Notion property readback and four live views verified",
+      "summary": "Start NG-032 brainstorming and implementation scoping after NG-031 Done; preserve delivery order 7, all acceptance unchecked and all other task properties unchanged",
+      "notion_content_sha256": "d4b184d48f4ba520bef6e07f2031bc8f6adddd638f6540a14c8dadbc69c62f83"
+    },
+    {
+      "at": "2026-10-18T08:14:37.582446+00:00",
+      "page_id": "3fdabdd6-1873-810b-8159-f4798fc39046",
+      "source": "User-authorized NG-032 implementation; exact Notion content/status readback and four live views verified",
+      "summary": "Accept shell and onboarding with real first response, browser recovery/accessibility, future capability boundaries and token telemetry",
+      "notion_content_sha256": "f590805bff72cdeaac4bdf32bc35fcb3fcda9c7e85e1f1d6ba1bd94faabf1381",
+      "properties": {
+        "Status": "Done"
+      },
+      "acceptance_file": "engineering/shell-onboarding-32-acceptance.md",
+      "evidence_file": "engineering/evidence/shell-32/browser-observations.json"
+    },
+    {
+      "at": "2026-10-18T08:14:37.582446+00:00",
+      "page_id": "3f8abdd6-1873-81fd-a2db-ea043a840c5a",
+      "source": "User-authorized NG-032 implementation; exact Notion content/status readback and four live views verified",
+      "summary": "Accept shell and onboarding with real first response, browser recovery/accessibility, future capability boundaries and token telemetry",
+      "notion_content_sha256": "77377c77955a268e5662e25abf00a7c99653c07c01ac949e530915cf0be2e39a"
+    },
+    {
+      "at": "2026-10-18T08:14:37.582446+00:00",
+      "page_id": "3fdabdd6-1873-81d3-9f94-f7161d4ef570",
+      "source": "User-authorized NG-032 implementation; exact Notion content/status readback and four live views verified",
+      "summary": "Accept shell and onboarding with real first response, browser recovery/accessibility, future capability boundaries and token telemetry",
+      "notion_content_sha256": "c2f3ef67dc21ddddfe202588d7b67330c3ddfcee31cdbeedbc3650fd5ef57d7c"
     }
   ],
   "last_partial_sync": {
-    "at": "2026-10-18T07:13:08.912354+00:00",
-    "scope": "NG-031 completion and four exact view readbacks; all other task properties preserved",
+    "at": "2026-10-18T08:14:37.582446+00:00",
+    "scope": "NG-032 completion, UX/operations acceptance notes and four exact view readbacks; all unrelated ticket properties preserved",
     "page_ids": [
-      "3fdabdd6-1873-810a-91b6-f2e80f3fa704"
+      "3fdabdd6-1873-810b-8159-f4798fc39046",
+      "3f8abdd6-1873-81fd-a2db-ea043a840c5a",
+      "3fdabdd6-1873-81d3-9f94-f7161d4ef570"
     ]
   }
 }

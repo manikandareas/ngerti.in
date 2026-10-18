@@ -1,10 +1,10 @@
 # 02 · UX & User Flow
 
-Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381fda2dbea043a840c5a) · Readback: 2026-10-18T06:04:56.780944+00:00
+Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381fda2dbea043a840c5a) · Readback: 2026-10-18T08:14:37.582446+00:00
 
 <!-- notion-content:start -->
 Chat menjadi pintu utama; panel membantu pengguna menemukan pekerjaan, hasil dan kontrol yang hidup lebih lama dari satu respons. Soft Matcha dan primitive UI yang ada dipertahankan. Onboarding menghasilkan satu bantuan umum yang kecil, tidak meminta pengguna membuat artefak pembelajaran.
-Status saat reset: shell chat umum ada; panel task, file produk, goals, jadwal, memory dan komputer masih target pada tiket di bawah. File Pen walkthrough lama adalah bukti historis pembelajaran, bukan acceptance UI asisten umum.
+NG-032 diterima pada 18 Oktober 2026: shell desktop/mobile menyediakan Percakapan, Kemampuan Gwen, Penggunaan nyata dan Pengaturan akun/tema. Welcome mengisi draft tanpa mengirim; riwayat, draft, streaming, offline/reconnect, error/retry, focus dan reduced motion diverifikasi pada browser. Task, file produk, goals, jadwal, memory dan komputer tetap bertanda Belum tersedia dan mengikuti tiket integrasi di bawah. Kontrak state/pemulihan dan bukti: `docs/engineering/shell-onboarding-32-acceptance.md` serta `docs/engineering/evidence/shell-32/`. File Pen walkthrough lama adalah bukti historis pembelajaran, bukan acceptance UI asisten umum.
 
 ## Chat dan sesi
 

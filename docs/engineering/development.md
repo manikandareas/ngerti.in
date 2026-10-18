@@ -1,6 +1,6 @@
 # 06 · Development, Operasi & Acceptance
 
-Sumber: [Notion](https://app.notion.com/p/3fdabdd6187381d39f94f7161d4ef570) · Readback: 2026-10-18T06:04:56.780944+00:00
+Sumber: [Notion](https://app.notion.com/p/3fdabdd6187381d39f94f7161d4ef570) · Readback: 2026-10-18T08:14:37.582446+00:00
 
 <!-- notion-content:start -->
 ## Setup development bersih
@@ -82,4 +82,7 @@ Cara verifikasi: walkthrough browser untuk alur pengguna; fixture/probe backend 
 ## Gate baseline dan pemeriksaan mirror
 
 NG-026–030 telah diterima pada 18 Oktober 2026; NG-031 menjadi Ready tanpa memulai trial. make docs-check memverifikasi hash 65 halaman, 41 identitas tiket, dependency graph/gate NG-030, empat view serta tautan lokal. dev:api memantau apps/backend/src saja dan graceful shutdown dibatasi 5 detik agar perubahan scratch tidak menahan SSE saat reload.
+
+## Penerimaan shell dan onboarding NG-032
+[NG-032 · Shell onboarding dan walkthrough asisten umum](../backlog/tasks/32-shell-onboarding-dan-walkthrough-asisten-umum.md) diterima pada 18 Oktober 2026 untuk shell, onboarding chat, Usage, pengaturan dan navigasi kemampuan. Laporan repo `docs/engineering/shell-onboarding-32-acceptance.md` memuat kontrak state fitur berikutnya, walkthrough akun baru dengan model nyata, desktop/mobile, focus, reduced motion, offline/reconnect, pengiriman ulang, stop serta batas bukti. Artifact dan telemetry ada pada `docs/engineering/evidence/shell-32/`. make check dan make build lulus; kuota nol diuji sebagai fixture browser, bukan perubahan saldo; mobile memakai emulasi viewport. Task/file/sandbox/scheduler belum diterima oleh tiket ini.
 <!-- notion-content:end -->

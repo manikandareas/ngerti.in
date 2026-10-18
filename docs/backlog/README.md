@@ -25,4 +25,8 @@ Indeks bukti: [08 · Bukti Riset & REA](../research/muse-ai-v1/README.md).
 
 ## Status kerja terbaru
 
+Readback status 2026-10-18T08:14:37.582446+00:00: [NG-032 · Shell onboarding dan walkthrough asisten umum](tasks/32-shell-onboarding-dan-walkthrough-asisten-umum.md) berstatus **Done**. [Laporan penerimaan](../engineering/shell-onboarding-32-acceptance.md) memuat bantuan pertama dengan model nyata, navigasi/usage/pengaturan, walkthrough desktop/mobile dan batas fitur berikutnya. NG-033 belum dimulai.
+
+Readback status 2026-10-18T07:40:29.161083+00:00: [NG-032 · Shell onboarding dan walkthrough asisten umum](tasks/32-shell-onboarding-dan-walkthrough-asisten-umum.md) berstatus **In Progress** untuk brainstorming dan persiapan implementasi berikutnya, sesuai Urutan 7. NG-031 telah Done; acceptance NG-032 belum dijalankan.
+
 Readback status 2026-10-18T07:13:08.912354+00:00: [NG-031 · Validasi Daytona dengan trial terbatas](tasks/31-validasi-daytona-dengan-trial-terbatas.md) berstatus **Done**. Empat acceptance criteria memiliki bukti live; [laporan penerimaan](../engineering/daytona-31-acceptance.md) mencatat hasil dan batasnya. Dua sandbox trial sudah dihapus; readback provider mengonfirmasi tidak ada resource tersisa.

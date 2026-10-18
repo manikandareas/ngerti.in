@@ -1,7 +1,8 @@
 """Repair delivery gaps after queue aborts without retrying user-visible failures."""
 
-from ngertiin.chat.db import transaction
-from ngertiin.chat.store import append_event, enqueue, one, owned_thread
+from ngertiin.async_db import transaction
+from ngertiin.chat import quota
+from ngertiin.chat.store import append_event, enqueue, lock_account, one, owned_thread
 
 
 async def reconcile_deliveries():
@@ -16,6 +17,7 @@ async def reconcile_deliveries():
     for item in candidates:
         async with transaction() as conn:
             run = await one(conn, "SELECT * FROM chat_runs WHERE id=%s", (item["id"],))
+            await lock_account(conn, run["owner_id"])
             await owned_thread(conn, run["owner_id"], run["thread_id"], lock=True)
             run = await one(conn, "SELECT * FROM chat_runs WHERE id=%s FOR UPDATE", (item["id"],))
             job = await one(
@@ -49,6 +51,7 @@ async def reconcile_deliveries():
                     "RETURNING id,role,parts,status,run_id,position",
                     (run["id"],),
                 )
+                await quota.settle(conn, run, message["parts"], "failed")
                 await append_event(
                     conn, run["thread_id"], {"type": "message.upsert", "message": message}
                 )

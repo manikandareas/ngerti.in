@@ -3,9 +3,11 @@
 from importlib.metadata import version
 
 import psycopg
+from alembic.config import Config
+from alembic.script import ScriptDirectory
 from langgraph.checkpoint.postgres import PostgresSaver
 
-from ngertiin.config import get_settings
+from ngertiin.config import ROOT, get_settings
 from ngertiin.storage import s3_client
 
 
@@ -41,7 +43,13 @@ def system_status() -> dict:
             ).fetchone()
             if exists and exists[0]:
                 migration = conn.execute("SELECT version_num FROM alembic_version").fetchone()
-                if migration and migration[0] == "0003_chat_order":
+                if (
+                    migration
+                    and migration[0]
+                    == ScriptDirectory.from_config(
+                        Config(str(ROOT / "apps/backend/alembic.ini"))
+                    ).get_current_head()
+                ):
                     components["migrations"] = {
                         "status": "ready",
                         "detail": "Migrasi aplikasi terbaru.",

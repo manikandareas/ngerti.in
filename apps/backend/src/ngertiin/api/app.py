@@ -15,11 +15,13 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from ngertiin.accounts.auth import current_account
 from ngertiin.api.diagnostics import router as diagnostic_router
+from ngertiin.async_db import close_pool
 from ngertiin.chat.api import router as chat_router
-from ngertiin.chat.db import close_pool
 from ngertiin.config import get_settings
 from ngertiin.health import system_status
 from ngertiin.models import Account
+from ngertiin.quotas.api import ERROR_TYPES, quota_error
+from ngertiin.quotas.api import router as quota_router
 
 settings = get_settings()
 logger = structlog.get_logger()
@@ -37,6 +39,9 @@ app = FastAPI(
     lifespan=lifespan,
 )
 app.include_router(chat_router)
+app.include_router(quota_router)
+for quota_error_type in ERROR_TYPES:
+    app.add_exception_handler(quota_error_type, quota_error)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.allowed_origins,

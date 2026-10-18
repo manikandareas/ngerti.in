@@ -4,7 +4,8 @@ from uuid import UUID, uuid5
 
 from fastapi import HTTPException
 
-from ngertiin.chat.db import transaction
+from ngertiin.async_db import transaction
+from ngertiin.chat import quota
 from ngertiin.chat.store import (
     append_event,
     enqueue,
@@ -20,6 +21,7 @@ async def save_interrupts(run: dict, interrupts: list, parts: list, usage: dict)
     from ngertiin.chat.store import StaleRun
 
     async with transaction() as conn:
+        await lock_account(conn, run["owner_id"])
         await owned_thread(conn, run["owner_id"], run["thread_id"], lock=True)
         valid = await one(
             conn,
@@ -32,7 +34,14 @@ async def save_interrupts(run: dict, interrupts: list, parts: list, usage: dict)
         for item in interrupts:
             iid = str(item.id)
             value = item.value
-            if value.get("type") != "tool_approval" or value.get("name") != "request_course":
+            if (
+                value.get("type") != "tool_approval"
+                or not isinstance(value.get("name"), str)
+                or not value["name"]
+                or not isinstance(value.get("args"), dict)
+                or not isinstance(value.get("tool_call_id"), str)
+                or not value["tool_call_id"]
+            ):
                 raise ValueError("Unsupported approval request")
             action = {
                 "name": value["name"],
@@ -57,6 +66,7 @@ async def save_interrupts(run: dict, interrupts: list, parts: list, usage: dict)
             await append_event(
                 conn, run["thread_id"], {"type": "approval.upsert", "approval": approval}
             )
+        await quota.settle(conn, run, parts, "waiting_approval", approval=bool(interrupts))
         await conn.execute(
             "UPDATE chat_runs SET status='waiting_approval',resume=NULL,usage=%s WHERE id=%s",
             (json_value(usage), run["id"]),
@@ -153,36 +163,3 @@ async def decide(owner: UUID, proposal: UUID, revision: int, approved: bool, key
             },
         )
     return {"status": expected}
-
-
-async def save_course_request(run: dict, goal: str, background: str):
-    async with transaction() as conn:
-        current = await one(
-            conn,
-            "SELECT id FROM chat_runs WHERE id=%s AND lease_token=%s "
-            "AND status='running' AND NOT cancel_requested FOR UPDATE",
-            (run["id"], run["lease_token"]),
-        )
-        if not current:
-            raise RuntimeError("Run no longer owns this action")
-        approval = await one(
-            conn,
-            "SELECT * FROM chat_approvals WHERE run_id=%s AND status='approved' "
-            "AND action->>'name'='request_course' AND action->'args'->>'goal'=%s "
-            "AND action->'args'->>'background'=%s AND expires_at>now() FOR UPDATE",
-            (run["id"], goal, background),
-        )
-        if not approval:
-            raise RuntimeError("An exact, current human approval is required")
-        await conn.execute(
-            "INSERT INTO course_requests(id,owner_id,thread_id,goal,background) VALUES "
-            "(%s,%s,%s,%s,%s) "
-            "ON CONFLICT DO NOTHING",
-            (approval["id"], run["owner_id"], run["thread_id"], goal, background),
-        )
-    return {
-        "request_id": str(approval["id"]),
-        "status": "goal_saved",
-        "goal": goal,
-        "message": "Tujuan Course tersimpan. Materi dan outline belum dibuat.",
-    }

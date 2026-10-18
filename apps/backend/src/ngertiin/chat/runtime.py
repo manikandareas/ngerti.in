@@ -20,27 +20,15 @@ from langchain_core.tools import tool
 from langchain_openai import ChatOpenAI
 from langgraph.types import Command
 from psycopg.rows import dict_row
-from pydantic import BaseModel, Field
 
-from ngertiin.chat.approvals import save_course_request, save_interrupts
+from ngertiin.async_db import transaction
+from ngertiin.chat.approvals import save_interrupts
 from ngertiin.chat.checkpoints import RunSaver
-from ngertiin.chat.db import transaction
 from ngertiin.chat.projection import Projection
 from ngertiin.chat.store import StaleRun, claim, one, publish
 from ngertiin.config import get_settings
 
 logger = structlog.get_logger()
-
-
-class CourseGoal(BaseModel):
-    goal: str = Field(
-        description="Tujuan belajar yang spesifik dan sudah disebut pengguna",
-        min_length=3,
-        max_length=1000,
-    )
-    background: str = Field(
-        description="Pengetahuan awal yang diketahui; kosong bila belum disebut", max_length=2000
-    )
 
 
 def build_agent(run: dict, saver, projection: Projection):
@@ -79,11 +67,6 @@ def build_agent(run: dict, saver, projection: Projection):
             "message": "Profil agent personal telah dibaca.",
         }
 
-    @tool(args_schema=CourseGoal)
-    async def request_course(goal: str, background: str) -> dict:
-        """Simpan tujuan Course setelah persetujuan, tanpa membuat materi."""
-        return await save_course_request(run, goal, background)
-
     @wrap_tool_call
     async def track_tool(request, handler):
         call = request.tool_call
@@ -113,7 +96,7 @@ def build_agent(run: dict, saver, projection: Projection):
     )
     middleware: list[Any] = [
         HumanInTheLoopMiddleware(
-            interrupt_on={"request_course": {"allowed_decisions": ["approve", "reject"]}},
+            interrupt_on={},
             interrupt_mode="per_call",
         ),
         ModelCallLimitMiddleware(thread_limit=settings.chat_max_model_calls, exit_behavior="error"),
@@ -122,13 +105,8 @@ def build_agent(run: dict, saver, projection: Projection):
     ]
     return create_agent(
         model,
-        tools=[read_recent_messages, read_agent_profile, request_course],
-        system_prompt=run["profile"]["soul"]
-        + "\nPesan /course adalah permintaan menyimpan tujuan Course. "
-        "Jika tujuan belum jelas, tanyakan dahulu. Gunakan request_course hanya untuk tujuan "
-        "yang jelas. "
-        "Jangan meminta pengguna mengetik setuju: tool akan menampilkan kartu keputusan. "
-        "Utamakan menjawab pertanyaan belajar secara langsung; tools opsional.",
+        tools=[read_recent_messages, read_agent_profile],
+        system_prompt=run["profile"]["soul"],
         middleware=middleware,
         checkpointer=saver,
     )

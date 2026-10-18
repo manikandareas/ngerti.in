@@ -9,8 +9,8 @@ from fastapi.sse import EventSourceResponse, ServerSentEvent
 from pydantic import BaseModel, ConfigDict, Field
 
 from ngertiin.accounts.auth import current_account
-from ngertiin.chat import approvals, store
-from ngertiin.chat.db import transaction
+from ngertiin.async_db import transaction
+from ngertiin.chat import approvals, quota, store
 from ngertiin.models import Account
 
 router = APIRouter(prefix="/chat", tags=["chat"])
@@ -97,6 +97,7 @@ async def retry(run_id: UUID, body: ThreadInput, account: AccountDep):
                 409, "Percakapan sudah berlanjut. Kirim pesan baru untuk melanjutkan."
             )
         await store.require_capacity(conn, account.id)
+        await quota.retry(conn, run)
         await conn.execute(
             "UPDATE chat_runs SET status='queued',error=NULL,attempt=0 WHERE id=%s", (run_id,)
         )

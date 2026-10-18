@@ -1,0 +1,924 @@
+{
+  "recorded_at": "2026-10-18T14:16:31.613923+00:00",
+  "environment": "local PostgreSQL/MinIO + API/web/worker; synthetic Clerk account",
+  "versions": {
+    "langgraph": "1.2.15",
+    "langchain": "1.4.6",
+    "langchain-openai": "1.7.2",
+    "procrastinate": "3.10.0",
+    "psycopg": "3.3.6",
+    "pypdf": "6.21.1",
+    "pillow": "13.0.0",
+    "httpx": "0.28.1"
+  },
+  "tasks": [
+    {
+      "id": "e12e415b-543e-456e-bc1b-fa156e10efa3",
+      "thread_id": "026c51af-26fb-5aac-84e3-b03c860b8b8f",
+      "status": "succeeded",
+      "stage": "complete",
+      "revision": 1,
+      "attempt": 2,
+      "instruction": "Baca scan rapat yang dilampirkan. Buat hasil.html berisi ringkasan keputusan, penanggung jawab, dan anggaran dalam HTML statis. Buat hasil-2.csv berisi kolom item,jumlah dari tabel inventaris. Sebutkan halaman yang dipakai.",
+      "input_snapshot": {
+        "files": [
+          {
+            "sha256": "aa9817bc1bf1504411d4716350e0ff19b2ea637e8e1b58cf0a6438e49dec05d7",
+            "file_id": "341f6ecc-daa1-430b-ac0d-5993337b4307",
+            "filename": "scan-rapat.pdf",
+            "revision": 1,
+            "selection": {
+              "end": null,
+              "unit": "page",
+              "start": 1
+            },
+            "revision_id": "bab83df8-8d1e-4074-af07-6e1a39480989",
+            "extraction_id": "30483628-9525-4f1a-8adc-912cfdd5465e"
+          }
+        ],
+        "messages": [],
+        "instruction": "Baca scan rapat yang dilampirkan. Buat hasil.html berisi ringkasan keputusan, penanggung jawab, dan anggaran dalam HTML statis. Buat hasil-2.csv berisi kolom item,jumlah dari tabel inventaris. Sebutkan halaman yang dipakai."
+      },
+      "output_spec": [
+        {
+          "format": "html",
+          "filename": "hasil.html"
+        },
+        {
+          "format": "csv",
+          "filename": "hasil-2.csv"
+        }
+      ],
+      "result_id": "efe5750a-6577-59f5-bc68-c7b51d0d91e1",
+      "budget_policy": {
+        "unit": "conservative_token_work",
+        "model": "gpt-6-luna",
+        "version": "file-task-work-v1",
+        "task_cap": 60000,
+        "max_calls": 3,
+        "max_input_bytes": 48000,
+        "timeout_seconds": 180,
+        "global_daily_cap": 2400000,
+        "account_daily_cap": 240000,
+        "max_output_tokens": 3000,
+        "input_overhead_units": 4096
+      },
+      "usage_units": 789,
+      "created_at": "2026-10-18 13:49:53.127215+00:00",
+      "updated_at": "2026-10-18 13:50:02.176790+00:00",
+      "executions": [
+        {
+          "id": "601492b8-2699-49d7-8f6e-6f2bb43763b1",
+          "revision": 1,
+          "attempt": 1,
+          "status": "interrupted",
+          "started_at": "2026-10-18 13:49:54.623046+00:00",
+          "finished_at": "2026-10-18 13:49:54.667576+00:00"
+        },
+        {
+          "id": "b3e6c3ad-78df-4e0d-91b7-0980dc8fbbd7",
+          "revision": 1,
+          "attempt": 2,
+          "status": "succeeded",
+          "started_at": "2026-10-18 13:49:56.444774+00:00",
+          "finished_at": "2026-10-18 13:50:02.176790+00:00"
+        }
+      ],
+      "actions": [
+        {
+          "id": "cb9f3657-8c16-5a10-b766-cee4d0e0ae3d",
+          "revision": 1,
+          "kind": "finalize_result",
+          "target_id": "026c51af-26fb-5aac-84e3-b03c860b8b8f",
+          "content_hash": "9f722fa268ed7473c02e8153cdf63f0b74593570ace6c836669bdfc3c8788716",
+          "status": "succeeded",
+          "outcome": {
+            "effect": "confirmed",
+            "delivery": "e12e415b-543e-456e-bc1b-fa156e10efa3"
+          },
+          "created_at": "2026-10-18 13:50:02.090013+00:00",
+          "decided_at": null
+        }
+      ],
+      "cost_events": [
+        {
+          "id": "0bad3a2d-85e4-4d31-97a8-7974c2fc1e8f",
+          "provider": "openai-compatible",
+          "model": "gpt-6-luna",
+          "policy_version": "file-task-work-v1",
+          "reserved_units": 8559,
+          "charged_units": 789,
+          "state": "confirmed",
+          "usage": {
+            "response_id": "resp_00f3b696bccc5f5e006ad4ce858b5887d0af7a15bd47faea56",
+            "input_tokens": 458,
+            "total_tokens": 789,
+            "output_tokens": 331,
+            "response_status": "completed",
+            "input_token_details": {
+              "cache_read": 0,
+              "cache_creation": 0
+            },
+            "output_token_details": {
+              "reasoning": 42
+            }
+          },
+          "created_at": "2026-10-18 13:49:56.510421+00:00",
+          "settled_at": "2026-10-18 13:50:02.059155+00:00"
+        }
+      ],
+      "deliveries": [
+        {
+          "task_id": "e12e415b-543e-456e-bc1b-fa156e10efa3",
+          "action_id": "cb9f3657-8c16-5a10-b766-cee4d0e0ae3d",
+          "message_id": "f6aa4557-fe8e-5f0b-8c24-f3aa74db1aaf",
+          "created_at": "2026-10-18 13:50:02.176790+00:00"
+        }
+      ],
+      "result_revisions": [
+        {
+          "id": "97ce779a-bfe2-5840-898b-a7957c84f4da",
+          "revision": 1,
+          "task_revision": 1,
+          "status": "ready",
+          "manifest": {
+            "files": [
+              {
+                "size": 502,
+                "sha256": "acaf6c2307a04bebe61b9b9c35374c72896dff0170979cf5748850eb2b6893b9",
+                "file_id": "e5fb54bc-fe13-5dc6-ba7d-2438ad21ca4d",
+                "filename": "hasil.html",
+                "revision_id": "e5fb54bc-fe13-5dc6-ba7d-2438ad21ca4d",
+                "content_type": "text/html"
+              },
+              {
+                "size": 29,
+                "sha256": "83c61c42c05825778479b42f2bf0b31331d90ea207f4c4b0e6fef9e857dc65f0",
+                "file_id": "4978025b-2193-5812-b7ae-bf1831ea0b4d",
+                "filename": "hasil-2.csv",
+                "revision_id": "4978025b-2193-5812-b7ae-bf1831ea0b4d",
+                "content_type": "text/csv"
+              }
+            ],
+            "inputs": [
+              {
+                "sha256": "aa9817bc1bf1504411d4716350e0ff19b2ea637e8e1b58cf0a6438e49dec05d7",
+                "file_id": "341f6ecc-daa1-430b-ac0d-5993337b4307",
+                "filename": "scan-rapat.pdf",
+                "revision": 1,
+                "selection": {
+                  "end": null,
+                  "unit": "page",
+                  "start": 1
+                },
+                "revision_id": "bab83df8-8d1e-4074-af07-6e1a39480989",
+                "extraction_id": "30483628-9525-4f1a-8adc-912cfdd5465e"
+              }
+            ],
+            "summary": "Berdasarkan halaman 1: proposal dikirim pada Jumat, penanggung jawabnya Ayu, dan anggarannya Rp 1.500.000. Inventaris mencantumkan Buku (12) dan Pensil (24).",
+            "task_id": "e12e415b-543e-456e-bc1b-fa156e10efa3",
+            "version": 1,
+            "task_revision": 1
+          },
+          "created_at": "2026-10-18 13:50:02.124677+00:00",
+          "ready_at": "2026-10-18 13:50:02.176790+00:00"
+        }
+      ]
+    },
+    {
+      "id": "18195256-680d-4ec9-8f13-479f18d08c0b",
+      "thread_id": "026c51af-26fb-5aac-84e3-b03c860b8b8f",
+      "status": "succeeded",
+      "stage": "complete",
+      "revision": 2,
+      "attempt": 3,
+      "instruction": "Pertahankan isi hasil sebelumnya. Ubah judul HTML menjadi Ringkasan Rapat Final. Tambahkan kolom status pada CSV dengan nilai disepakati untuk semua item. Jangan ubah jumlahnya.",
+      "input_snapshot": {
+        "files": [
+          {
+            "sha256": "aa9817bc1bf1504411d4716350e0ff19b2ea637e8e1b58cf0a6438e49dec05d7",
+            "file_id": "341f6ecc-daa1-430b-ac0d-5993337b4307",
+            "filename": "scan-rapat.pdf",
+            "revision": 1,
+            "selection": {
+              "end": null,
+              "unit": "page",
+              "start": 1
+            },
+            "revision_id": "bab83df8-8d1e-4074-af07-6e1a39480989",
+            "extraction_id": "30483628-9525-4f1a-8adc-912cfdd5465e"
+          }
+        ],
+        "messages": [
+          {
+            "id": "2674304d-66f5-4c5a-95ef-0e237907975c",
+            "role": "user",
+            "text": "Baca scan rapat yang dilampirkan. Buat hasil.html berisi ringkasan keputusan, penanggung jawab, dan anggaran dalam HTML statis. Buat hasil-2.csv berisi kolom item,jumlah dari tabel inventaris. Sebutkan halaman yang dipakai."
+          },
+          {
+            "id": "8d6f9ddc-e124-4b35-ac85-9d6d4cb4251e",
+            "role": "assistant",
+            "text": "Task sudah dibuat. Kamu bisa melanjutkan percakapan sambil menunggu."
+          },
+          {
+            "id": "f6aa4557-fe8e-5f0b-8c24-f3aa74db1aaf",
+            "role": "assistant",
+            "text": "Hasil task: Baca scan rapat yang dilampirkan. Buat hasil.html berisi ringkasan keputusan, penanggung jawab,…\n\nBerdasarkan halaman 1: proposal dikirim pada Jumat, penanggung jawabnya Ayu, dan anggarannya Rp 1.500.000. Inventaris mencantumkan Buku (12) dan Pensil (24)."
+          }
+        ],
+        "instruction": "Pertahankan isi hasil sebelumnya. Ubah judul HTML menjadi Ringkasan Rapat Final. Tambahkan kolom status pada CSV dengan nilai disepakati untuk semua item. Jangan ubah jumlahnya.",
+        "previous_result": {
+          "manifest": {
+            "files": [
+              {
+                "size": 502,
+                "sha256": "acaf6c2307a04bebe61b9b9c35374c72896dff0170979cf5748850eb2b6893b9",
+                "file_id": "e5fb54bc-fe13-5dc6-ba7d-2438ad21ca4d",
+                "filename": "hasil.html",
+                "revision_id": "e5fb54bc-fe13-5dc6-ba7d-2438ad21ca4d",
+                "content_type": "text/html"
+              },
+              {
+                "size": 29,
+                "sha256": "83c61c42c05825778479b42f2bf0b31331d90ea207f4c4b0e6fef9e857dc65f0",
+                "file_id": "4978025b-2193-5812-b7ae-bf1831ea0b4d",
+                "filename": "hasil-2.csv",
+                "revision_id": "4978025b-2193-5812-b7ae-bf1831ea0b4d",
+                "content_type": "text/csv"
+              }
+            ],
+            "inputs": [
+              {
+                "sha256": "aa9817bc1bf1504411d4716350e0ff19b2ea637e8e1b58cf0a6438e49dec05d7",
+                "file_id": "341f6ecc-daa1-430b-ac0d-5993337b4307",
+                "filename": "scan-rapat.pdf",
+                "revision": 1,
+                "selection": {
+                  "end": null,
+                  "unit": "page",
+                  "start": 1
+                },
+                "revision_id": "bab83df8-8d1e-4074-af07-6e1a39480989",
+                "extraction_id": "30483628-9525-4f1a-8adc-912cfdd5465e"
+              }
+            ],
+            "summary": "Berdasarkan halaman 1: proposal dikirim pada Jumat, penanggung jawabnya Ayu, dan anggarannya Rp 1.500.000. Inventaris mencantumkan Buku (12) dan Pensil (24).",
+            "task_id": "e12e415b-543e-456e-bc1b-fa156e10efa3",
+            "version": 1,
+            "task_revision": 1
+          },
+          "revision": 1,
+          "result_id": "efe5750a-6577-59f5-bc68-c7b51d0d91e1"
+        }
+      },
+      "output_spec": [
+        {
+          "format": "html",
+          "filename": "hasil.html"
+        },
+        {
+          "format": "csv",
+          "filename": "hasil-2.csv"
+        }
+      ],
+      "result_id": "efe5750a-6577-59f5-bc68-c7b51d0d91e1",
+      "budget_policy": {
+        "unit": "conservative_token_work",
+        "model": "gpt-6-luna",
+        "version": "file-task-work-v1",
+        "task_cap": 60000,
+        "max_calls": 3,
+        "max_input_bytes": 48000,
+        "timeout_seconds": 180,
+        "global_daily_cap": 2400000,
+        "account_daily_cap": 240000,
+        "max_output_tokens": 3000,
+        "input_overhead_units": 4096
+      },
+      "usage_units": 1815,
+      "created_at": "2026-10-18 14:01:12.344679+00:00",
+      "updated_at": "2026-10-18 14:02:50.595883+00:00",
+      "executions": [
+        {
+          "id": "8952aeaa-ed11-44dc-9f33-c52cfe7b6c7b",
+          "revision": 1,
+          "attempt": 1,
+          "status": "waiting_user",
+          "started_at": "2026-10-18 14:01:13.491475+00:00",
+          "finished_at": "2026-10-18 14:01:20.397350+00:00"
+        },
+        {
+          "id": "46c0ca4d-850b-4537-87f3-742b6da067f4",
+          "revision": 2,
+          "attempt": 2,
+          "status": "waiting_user",
+          "started_at": "2026-10-18 14:02:11.680615+00:00",
+          "finished_at": "2026-10-18 14:02:11.771034+00:00"
+        },
+        {
+          "id": "cfbaf2d8-c473-4482-8334-5c9f3bb9c37b",
+          "revision": 2,
+          "attempt": 3,
+          "status": "succeeded",
+          "started_at": "2026-10-18 14:02:50.466429+00:00",
+          "finished_at": "2026-10-18 14:02:50.595883+00:00"
+        }
+      ],
+      "actions": [
+        {
+          "id": "c839fdfb-08af-548e-a905-afd3cd847fb6",
+          "revision": 1,
+          "kind": "finalize_result",
+          "target_id": "026c51af-26fb-5aac-84e3-b03c860b8b8f",
+          "content_hash": "aedb98c31a1f143717b300b853c6c1f473c2e0b0bb970a46278c11b8ce13f2bd",
+          "status": "cancelled",
+          "outcome": null,
+          "created_at": "2026-10-18 14:01:20.373785+00:00",
+          "decided_at": null
+        },
+        {
+          "id": "2d3bc208-d994-553b-a357-8365b498097c",
+          "revision": 2,
+          "kind": "finalize_result",
+          "target_id": "026c51af-26fb-5aac-84e3-b03c860b8b8f",
+          "content_hash": "097a61d736e1c4efa52773569241ba30aaf650a51802648a2e8e51b19939e13e",
+          "status": "succeeded",
+          "outcome": {
+            "effect": "confirmed",
+            "delivery": "18195256-680d-4ec9-8f13-479f18d08c0b"
+          },
+          "created_at": "2026-10-18 14:02:11.756436+00:00",
+          "decided_at": "2026-10-18 14:02:50.400916+00:00"
+        }
+      ],
+      "cost_events": [
+        {
+          "id": "a5a00e37-2c47-48da-aa19-2db39a012083",
+          "provider": "openai-compatible",
+          "model": "gpt-6-luna",
+          "policy_version": "file-task-work-v1",
+          "reserved_units": 11137,
+          "charged_units": 1815,
+          "state": "confirmed",
+          "usage": {
+            "response_id": "resp_0514ab2a469e792d006ad4d12b22d087d091655a7004c981f6",
+            "input_tokens": 1489,
+            "total_tokens": 1815,
+            "output_tokens": 326,
+            "response_status": "completed",
+            "input_token_details": {
+              "cache_read": 0,
+              "cache_creation": 1486
+            },
+            "output_token_details": {
+              "reasoning": 40
+            }
+          },
+          "created_at": "2026-10-18 14:01:13.932047+00:00",
+          "settled_at": "2026-10-18 14:01:20.332473+00:00"
+        }
+      ],
+      "deliveries": [
+        {
+          "task_id": "18195256-680d-4ec9-8f13-479f18d08c0b",
+          "action_id": "2d3bc208-d994-553b-a357-8365b498097c",
+          "message_id": "bdfb840c-db4d-559b-8c48-3df435adbf80",
+          "created_at": "2026-10-18 14:02:50.595883+00:00"
+        }
+      ],
+      "result_revisions": [
+        {
+          "id": "c643499e-5081-5837-88e7-d5106aca1ebc",
+          "revision": 2,
+          "task_revision": 2,
+          "status": "ready",
+          "manifest": {
+            "files": [
+              {
+                "size": 498,
+                "sha256": "5e389045385fd2cf911b5cc5f20bb47ccd36eb922f4de71702884f075219b9eb",
+                "file_id": "99d88bff-3166-5923-aa8d-a0238b0317d1",
+                "filename": "hasil.html",
+                "revision_id": "99d88bff-3166-5923-aa8d-a0238b0317d1",
+                "content_type": "text/html"
+              },
+              {
+                "size": 59,
+                "sha256": "863e2bbfb25a5af7574bafdfa2cc1f77dd4969a6601cf045028040fdb5ae43aa",
+                "file_id": "ac50e0b2-6e9e-5e47-8ef4-d6f1f3df81a6",
+                "filename": "hasil-2.csv",
+                "revision_id": "ac50e0b2-6e9e-5e47-8ef4-d6f1f3df81a6",
+                "content_type": "text/csv"
+              }
+            ],
+            "inputs": [
+              {
+                "sha256": "aa9817bc1bf1504411d4716350e0ff19b2ea637e8e1b58cf0a6438e49dec05d7",
+                "file_id": "341f6ecc-daa1-430b-ac0d-5993337b4307",
+                "filename": "scan-rapat.pdf",
+                "revision": 1,
+                "selection": {
+                  "end": null,
+                  "unit": "page",
+                  "start": 1
+                },
+                "revision_id": "bab83df8-8d1e-4074-af07-6e1a39480989",
+                "extraction_id": "30483628-9525-4f1a-8adc-912cfdd5465e"
+              }
+            ],
+            "summary": "Berkas diperbarui dengan mempertahankan isi sebelumnya. Ringkasan dan inventaris bersumber dari scan-rapat.pdf, halaman 1; jumlah inventaris tidak diubah.",
+            "task_id": "18195256-680d-4ec9-8f13-479f18d08c0b",
+            "version": 1,
+            "task_revision": 2,
+            "previous_result": {
+              "revision": 1,
+              "result_id": "efe5750a-6577-59f5-bc68-c7b51d0d91e1"
+            }
+          },
+          "created_at": "2026-10-18 14:02:50.542640+00:00",
+          "ready_at": "2026-10-18 14:02:50.595883+00:00"
+        }
+      ]
+    },
+    {
+      "id": "0ef19566-314f-431c-844f-6077d41b7063",
+      "thread_id": "becb56d8-235b-53f3-a6ac-e32a129f8c9c",
+      "status": "succeeded",
+      "stage": "complete",
+      "revision": 1,
+      "attempt": 1,
+      "instruction": "P12: simpan keluaran fixture sandbox dan uji preview terisolasi.",
+      "input_snapshot": {
+        "files": [],
+        "messages": [
+          {
+            "id": "e6071a85-d0c0-4b8b-81f2-78863c85afec",
+            "role": "user",
+            "text": "Bantu aku menulis pesan singkat untuk menjadwalkan ulang pertemuan besok. Gunakan bahasa yang sopan."
+          },
+          {
+            "id": "e71c7141-0499-4f3a-83e1-ba882ab1a954",
+            "role": "assistant",
+            "text": "Halo, mohon maaf, apakah pertemuan kita besok bisa dijadwalkan ulang? Silakan beri tahu waktu lain yang cocok untuk Anda. Terima kasih atas pengertiannya."
+          },
+          {
+            "id": "a7037192-aa86-49a6-9a4c-97ef78981992",
+            "role": "user",
+            "text": "Tulis 100 ide kegiatan produktif, satu kalimat per ide."
+          }
+        ],
+        "instruction": "P12: simpan keluaran fixture sandbox dan uji preview terisolasi."
+      },
+      "output_spec": [
+        {
+          "format": "md",
+          "filename": "sandbox-note.md"
+        },
+        {
+          "format": "csv",
+          "filename": "sandbox-data.csv"
+        },
+        {
+          "format": "html",
+          "filename": "preview-isolation.html"
+        }
+      ],
+      "result_id": "c94488f2-88c3-51f3-8fee-ea08bbe0c27d",
+      "budget_policy": {
+        "unit": "conservative_token_work",
+        "model": "gpt-6-luna",
+        "version": "file-task-work-v1",
+        "task_cap": 60000,
+        "max_calls": 3,
+        "max_input_bytes": 48000,
+        "timeout_seconds": 180,
+        "global_daily_cap": 2400000,
+        "account_daily_cap": 240000,
+        "max_output_tokens": 3000,
+        "input_overhead_units": 4096
+      },
+      "usage_units": 0,
+      "created_at": "2026-10-18 13:55:08.544625+00:00",
+      "updated_at": "2026-10-18 13:55:09.190855+00:00",
+      "executions": [
+        {
+          "id": "4c60567f-79e6-4dd4-ae83-eb62acd0850a",
+          "revision": 1,
+          "attempt": 1,
+          "status": "succeeded",
+          "started_at": "2026-10-18 13:55:08.621277+00:00",
+          "finished_at": "2026-10-18 13:55:09.190855+00:00"
+        }
+      ],
+      "actions": [
+        {
+          "id": "903ec615-ee9d-5932-96e6-8d2963b68423",
+          "revision": 1,
+          "kind": "finalize_result",
+          "target_id": "becb56d8-235b-53f3-a6ac-e32a129f8c9c",
+          "content_hash": "c5c2cebd5cfa5370beb41022b26f27b6e71cb07aef25d2e58d208072a30aa723",
+          "status": "succeeded",
+          "outcome": {
+            "effect": "confirmed",
+            "delivery": "0ef19566-314f-431c-844f-6077d41b7063"
+          },
+          "created_at": "2026-10-18 13:55:08.643223+00:00",
+          "decided_at": null
+        }
+      ],
+      "cost_events": [],
+      "deliveries": [
+        {
+          "task_id": "0ef19566-314f-431c-844f-6077d41b7063",
+          "action_id": "903ec615-ee9d-5932-96e6-8d2963b68423",
+          "message_id": "421437e0-18f4-53a1-822f-5e644476ee09",
+          "created_at": "2026-10-18 13:55:09.190855+00:00"
+        }
+      ],
+      "result_revisions": [
+        {
+          "id": "7ff748e8-d62f-5bb9-a581-9c27b499d55a",
+          "revision": 1,
+          "task_revision": 1,
+          "status": "ready",
+          "manifest": {
+            "files": [
+              {
+                "size": 73,
+                "sha256": "a098f2aeea161cd93d43d8cd0222d64a1fec634df6ffc96a984061b65e103bd8",
+                "file_id": "0370bc5b-791b-5229-87c6-4acd9c139572",
+                "filename": "sandbox-note.md",
+                "revision_id": "0370bc5b-791b-5229-87c6-4acd9c139572",
+                "content_type": "text/markdown"
+              },
+              {
+                "size": 30,
+                "sha256": "20be6c2fb4e9e85e60aa8daaecccd362ea08467ea77e3ba9a4fcc09dc11d4f06",
+                "file_id": "d269381f-b5ef-5bec-bbce-10dd32b4ebcc",
+                "filename": "sandbox-data.csv",
+                "revision_id": "d269381f-b5ef-5bec-bbce-10dd32b4ebcc",
+                "content_type": "text/csv"
+              },
+              {
+                "size": 342,
+                "sha256": "930327655d6904ebb37d06e0e98fdd3dae1d1a823ecf1095f7e5343e8a0eaa70",
+                "file_id": "d63b57d3-efce-569d-914e-ba65582d9dfc",
+                "filename": "preview-isolation.html",
+                "revision_id": "d63b57d3-efce-569d-914e-ba65582d9dfc",
+                "content_type": "text/html"
+              }
+            ],
+            "inputs": [],
+            "summary": "P12: tiga berkas berasal dari sandbox yang sudah dihapus.",
+            "task_id": "0ef19566-314f-431c-844f-6077d41b7063",
+            "version": 1,
+            "task_revision": 1
+          },
+          "created_at": "2026-10-18 13:55:08.662292+00:00",
+          "ready_at": "2026-10-18 13:55:09.190855+00:00"
+        }
+      ]
+    },
+    {
+      "id": "505f7dfa-47f0-4ad8-86d6-0c0af9c87976",
+      "thread_id": "026c51af-26fb-5aac-84e3-b03c860b8b8f",
+      "status": "succeeded",
+      "stage": "complete",
+      "revision": 1,
+      "attempt": 2,
+      "instruction": "Baca gambar rapat. Buat scan.json dengan field keputusan, penanggung_jawab, anggaran_rupiah dan inventaris. Gunakan halaman 1.",
+      "input_snapshot": {
+        "files": [
+          {
+            "sha256": "67ca7fa44750b5c0e9264dc2f213f14cd7711fe9a5e255071eee5ac1759a0f00",
+            "file_id": "bd020d03-99b6-4eb9-82bd-1374e5b73d5f",
+            "filename": "scan-rapat.png",
+            "revision": 1,
+            "selection": {
+              "end": null,
+              "unit": "page",
+              "start": 1
+            },
+            "revision_id": "82d1593e-ec9c-4ce9-8405-50cedba15df5",
+            "extraction_id": "7dcc36a1-eb9b-418f-99a8-0c1cee0a7790"
+          }
+        ],
+        "messages": [
+          {
+            "id": "2674304d-66f5-4c5a-95ef-0e237907975c",
+            "role": "user",
+            "text": "Baca scan rapat yang dilampirkan. Buat hasil.html berisi ringkasan keputusan, penanggung jawab, dan anggaran dalam HTML statis. Buat hasil-2.csv berisi kolom item,jumlah dari tabel inventaris. Sebutkan halaman yang dipakai."
+          },
+          {
+            "id": "8d6f9ddc-e124-4b35-ac85-9d6d4cb4251e",
+            "role": "assistant",
+            "text": "Task sudah dibuat. Kamu bisa melanjutkan percakapan sambil menunggu."
+          },
+          {
+            "id": "f6aa4557-fe8e-5f0b-8c24-f3aa74db1aaf",
+            "role": "assistant",
+            "text": "Hasil task: Baca scan rapat yang dilampirkan. Buat hasil.html berisi ringkasan keputusan, penanggung jawab,…\n\nBerdasarkan halaman 1: proposal dikirim pada Jumat, penanggung jawabnya Ayu, dan anggarannya Rp 1.500.000. Inventaris mencantumkan Buku (12) dan Pensil (24)."
+          },
+          {
+            "id": "acb6cb82-a2e4-4187-8589-7af5dc05bbe8",
+            "role": "user",
+            "text": "Pertahankan isi hasil sebelumnya. Ubah judul HTML menjadi Ringkasan Rapat Final. Tambahkan kolom status pada CSV dengan nilai disepakati untuk semua item. Jangan ubah jumlahnya."
+          },
+          {
+            "id": "4b523ade-3cce-4f83-85f5-8d467cccaf44",
+            "role": "assistant",
+            "text": "Task sudah dibuat. Kamu bisa melanjutkan percakapan sambil menunggu."
+          },
+          {
+            "id": "a17a82dd-0190-4e7d-ba85-5962704e2442",
+            "role": "user",
+            "text": "Sambil menunggu pembaruan file, berapa 2 ditambah 2? Jawab singkat."
+          },
+          {
+            "id": "a392cdd1-af03-4a69-a70c-93ec7be54c56",
+            "role": "assistant",
+            "text": "4"
+          },
+          {
+            "id": "bdfb840c-db4d-559b-8c48-3df435adbf80",
+            "role": "assistant",
+            "text": "Hasil task: Pertahankan isi hasil sebelumnya. Ubah judul HTML menjadi Ringkasan Rapat Final. Tambahkan…\n\nBerkas diperbarui dengan mempertahankan isi sebelumnya. Ringkasan dan inventaris bersumber dari scan-rapat.pdf, halaman 1; jumlah inventaris tidak diubah."
+          }
+        ],
+        "instruction": "Baca gambar rapat. Buat scan.json dengan field keputusan, penanggung_jawab, anggaran_rupiah dan inventaris. Gunakan halaman 1."
+      },
+      "output_spec": [
+        {
+          "format": "json",
+          "filename": "scan.json"
+        }
+      ],
+      "result_id": "0f7bbc8f-9f2b-5bc3-9408-bdd1edbca938",
+      "budget_policy": {
+        "unit": "conservative_token_work",
+        "model": "gpt-6-luna",
+        "version": "file-task-work-v1",
+        "task_cap": 60000,
+        "max_calls": 3,
+        "max_input_bytes": 48000,
+        "timeout_seconds": 180,
+        "global_daily_cap": 2400000,
+        "account_daily_cap": 240000,
+        "max_output_tokens": 3000,
+        "input_overhead_units": 4096
+      },
+      "usage_units": 1178,
+      "created_at": "2026-10-18 14:15:27.589317+00:00",
+      "updated_at": "2026-10-18 14:15:34.193608+00:00",
+      "executions": [
+        {
+          "id": "71f4dca8-1478-44cc-a298-1c8a79ee32d8",
+          "revision": 1,
+          "attempt": 1,
+          "status": "interrupted",
+          "started_at": "2026-10-18 14:15:28.641185+00:00",
+          "finished_at": "2026-10-18 14:15:28.662421+00:00"
+        },
+        {
+          "id": "f9d07e25-15b7-481e-add4-d77da88e6f60",
+          "revision": 1,
+          "attempt": 2,
+          "status": "succeeded",
+          "started_at": "2026-10-18 14:15:30.271519+00:00",
+          "finished_at": "2026-10-18 14:15:34.193608+00:00"
+        }
+      ],
+      "actions": [
+        {
+          "id": "6c82b77b-0617-5890-9914-ba02757023ad",
+          "revision": 1,
+          "kind": "finalize_result",
+          "target_id": "026c51af-26fb-5aac-84e3-b03c860b8b8f",
+          "content_hash": "8e9189d46ea38d5b2a6a1cf82bb5819fdd1e54e2ba0e448baab9c417ce1755a5",
+          "status": "succeeded",
+          "outcome": {
+            "effect": "confirmed",
+            "delivery": "505f7dfa-47f0-4ad8-86d6-0c0af9c87976"
+          },
+          "created_at": "2026-10-18 14:15:34.104628+00:00",
+          "decided_at": null
+        }
+      ],
+      "cost_events": [
+        {
+          "id": "7eed0302-6360-402e-978a-131150409fa5",
+          "provider": "openai-compatible",
+          "model": "gpt-6-luna",
+          "policy_version": "file-task-work-v1",
+          "reserved_units": 10184,
+          "charged_units": 1178,
+          "state": "confirmed",
+          "usage": {
+            "response_id": "resp_02bd5d7657d3e706006ad4d483854087d0b6a35b703b12c90c",
+            "input_tokens": 1040,
+            "total_tokens": 1178,
+            "output_tokens": 138,
+            "response_status": "completed",
+            "input_token_details": {
+              "cache_read": 0,
+              "cache_creation": 1037
+            },
+            "output_token_details": {
+              "reasoning": 50
+            }
+          },
+          "created_at": "2026-10-18 14:15:30.360263+00:00",
+          "settled_at": "2026-10-18 14:15:34.071647+00:00"
+        }
+      ],
+      "deliveries": [
+        {
+          "task_id": "505f7dfa-47f0-4ad8-86d6-0c0af9c87976",
+          "action_id": "6c82b77b-0617-5890-9914-ba02757023ad",
+          "message_id": "406f45e2-b2b7-5c69-b2ed-980544166029",
+          "created_at": "2026-10-18 14:15:34.193608+00:00"
+        }
+      ],
+      "result_revisions": [
+        {
+          "id": "1b0b1c0c-d3cc-51d1-9452-05304462a244",
+          "revision": 1,
+          "task_revision": 1,
+          "status": "ready",
+          "manifest": {
+            "files": [
+              {
+                "size": 168,
+                "sha256": "81468bebbc77fac5f5c534347e19844111f0696a76cf1b4f169454194a375b49",
+                "file_id": "341db0e8-1c51-59ed-9833-cd8e30c35d42",
+                "filename": "scan.json",
+                "revision_id": "341db0e8-1c51-59ed-9833-cd8e30c35d42",
+                "content_type": "application/json"
+              }
+            ],
+            "inputs": [
+              {
+                "sha256": "67ca7fa44750b5c0e9264dc2f213f14cd7711fe9a5e255071eee5ac1759a0f00",
+                "file_id": "bd020d03-99b6-4eb9-82bd-1374e5b73d5f",
+                "filename": "scan-rapat.png",
+                "revision": 1,
+                "selection": {
+                  "end": null,
+                  "unit": "page",
+                  "start": 1
+                },
+                "revision_id": "82d1593e-ec9c-4ce9-8405-50cedba15df5",
+                "extraction_id": "7dcc36a1-eb9b-418f-99a8-0c1cee0a7790"
+              }
+            ],
+            "summary": "Data dirangkum dari halaman 1 scan rapat.",
+            "task_id": "505f7dfa-47f0-4ad8-86d6-0c0af9c87976",
+            "version": 1,
+            "task_revision": 1
+          },
+          "created_at": "2026-10-18 14:15:34.144805+00:00",
+          "ready_at": "2026-10-18 14:15:34.193608+00:00"
+        }
+      ]
+    }
+  ],
+  "extractions": [
+    {
+      "id": "30483628-9525-4f1a-8adc-912cfdd5465e",
+      "revision_id": "bab83df8-8d1e-4074-af07-6e1a39480989",
+      "status": "failed",
+      "policy": {
+        "model": "mistral-ocr-4-1",
+        "version": "product-files-v1",
+        "provider": "mistral",
+        "retention": "until_deleted",
+        "orphan_hours": 24,
+        "max_pdf_pages": 20,
+        "price_version": "ocr-configured-v1",
+        "max_file_bytes": 10485760,
+        "max_task_pages": 40,
+        "max_attachments": 5,
+        "max_output_bytes": 26214400,
+        "max_output_files": 10,
+        "usd_per_1000_pages": "4.0",
+        "max_attachment_bytes": 26214400,
+        "max_extraction_bytes": 4194304,
+        "ocr_global_daily_pages": 1000,
+        "ocr_account_daily_pages": 100
+      },
+      "reserved_pages": 1,
+      "charged_pages": 1,
+      "usage": {},
+      "provider_request_id": null,
+      "created_at": "2026-10-18 13:49:53.127215+00:00",
+      "started_at": "2026-10-18 13:49:53.487402+00:00",
+      "finished_at": "2026-10-18 13:49:56.414419+00:00",
+      "purged_at": "2026-10-18 14:10:00.992286+00:00"
+    },
+    {
+      "id": "7dcc36a1-eb9b-418f-99a8-0c1cee0a7790",
+      "revision_id": "82d1593e-ec9c-4ce9-8405-50cedba15df5",
+      "status": "failed",
+      "policy": {
+        "model": "mistral-ocr-4-1",
+        "version": "product-files-v1",
+        "provider": "mistral",
+        "retention": "until_deleted",
+        "orphan_hours": 24,
+        "max_pdf_pages": 20,
+        "price_version": "ocr-configured-v1",
+        "max_file_bytes": 10485760,
+        "max_task_pages": 40,
+        "max_attachments": 5,
+        "max_output_bytes": 26214400,
+        "max_output_files": 10,
+        "usd_per_1000_pages": "4.0",
+        "max_attachment_bytes": 26214400,
+        "max_extraction_bytes": 4194304,
+        "ocr_global_daily_pages": 1000,
+        "ocr_account_daily_pages": 100
+      },
+      "reserved_pages": 1,
+      "charged_pages": 1,
+      "usage": {
+        "model": "mistral-ocr-4-1",
+        "sha256": "9c4a142a63b38b3be9e8c4972f7bde7dbb69d7c2d39bfd9f4821cc58de5a4b8e",
+        "provider_usage": {
+          "doc_size_bytes": 34566,
+          "pages_processed": 1
+        }
+      },
+      "provider_request_id": null,
+      "created_at": "2026-10-18 14:15:27.589317+00:00",
+      "started_at": "2026-10-18 14:15:27.810293+00:00",
+      "finished_at": "2026-10-18 14:15:30.224616+00:00",
+      "purged_at": "2026-10-18 14:16:02.054899+00:00"
+    }
+  ],
+  "uploads": [
+    {
+      "id": "bab83df8-8d1e-4074-af07-6e1a39480989",
+      "file_id": "341f6ecc-daa1-430b-ac0d-5993337b4307",
+      "revision": 1,
+      "filename": "scan-rapat.pdf",
+      "status": "deleted",
+      "sha256": "aa9817bc1bf1504411d4716350e0ff19b2ea637e8e1b58cf0a6438e49dec05d7",
+      "purged_at": "2026-10-18 14:10:00.952680+00:00"
+    },
+    {
+      "id": "4d1a0bb1-f365-483c-bcc7-b83edb44181b",
+      "file_id": "958641ee-1c6f-4345-8d37-92532e2f8451",
+      "revision": 1,
+      "filename": "catatan.txt",
+      "status": "ready",
+      "sha256": "d0d9cec81f59910e4edc7acb7e465707c0cfc3ad172eab1da79dc9c1e321b811",
+      "purged_at": null
+    },
+    {
+      "id": "196e234e-9cfa-4d0f-a23a-0205501312c4",
+      "file_id": "baf7897e-a694-4263-8525-e69418296340",
+      "revision": 1,
+      "filename": "penjualan.csv",
+      "status": "ready",
+      "sha256": "2089ae24b598b89e79801cf791ef8456c065dbe12460866a2edf5e17f914472a",
+      "purged_at": null
+    },
+    {
+      "id": "c6f609e8-adaf-4985-a17f-bb92de888da5",
+      "file_id": "baf7897e-a694-4263-8525-e69418296340",
+      "revision": 2,
+      "filename": "penjualan-baru.csv",
+      "status": "ready",
+      "sha256": "2f101a264d7e5d7a7c89c373866a51ffc5fcd855ae5e6c355ba37c7687c24ad6",
+      "purged_at": null
+    }
+  ],
+  "deleted_sandbox_result": {
+    "id": "c94488f2-88c3-51f3-8fee-ea08bbe0c27d",
+    "deleted_at": "2026-10-18 14:09:44.131425+00:00"
+  },
+  "confirmed_task_tokens": 3782,
+  "browser_download": {
+    "filename": "hasil.html",
+    "revision": 1,
+    "bytes": 502,
+    "sha256": "acaf6c2307a04bebe61b9b9c35374c72896dff0170979cf5748850eb2b6893b9",
+    "matches_manifest": true
+  },
+  "deletion_checks": {
+    "source_download_status": 404,
+    "derived_ready_files_downloaded_after_source_deletion": 2,
+    "sandbox_fixture_result_removed_via_browser": true
+  },
+  "ocr_cost_estimate": {
+    "configured_usd_per_1000_pages": 4,
+    "integrated_pages": 2,
+    "direct_png_smoke_pages": 1,
+    "estimated_usd_total": 0.012,
+    "invoice_verified": false,
+    "credits_balance_verified": false
+  },
+  "notes": [
+    "The first PDF trial ran before the maintenance usage-retention fix was loaded by the worker. Charged page count/policy survived; detailed usage was cleared on purge. Final worker was restarted, and the PNG trial verifies detailed usage retention after source purge (live-ocr-retention.json)."
+  ]
+}

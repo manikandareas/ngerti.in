@@ -1,0 +1,35 @@
+{
+  "draft": "Uji koneksi: ringkas file yang sama, pertahankan lampiran jika pengiriman gagal.",
+  "attachments": [
+    "Lepas scan-rapat.pdf"
+  ],
+  "outputs": [
+    "hasil.html",
+    "hasil-2.csv"
+  ],
+  "pending": [
+    {
+      "request_key": "7b400465-7bee-4f78-82e2-7d61c6a16c37",
+      "identity": {
+        "text": "Uji koneksi: ringkas file yang sama, pertahankan lampiran jika pengiriman gagal.",
+        "inputs": [
+          {
+            "revision_id": "bab83df8-8d1e-4074-af07-6e1a39480989",
+            "start": 1,
+            "end": null
+          }
+        ],
+        "outputs": [
+          {
+            "format": "html",
+            "filename": "hasil.html"
+          },
+          {
+            "format": "csv",
+            "filename": "hasil-2.csv"
+          }
+        ]
+      }
+    }
+  ]
+}

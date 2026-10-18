@@ -1,0 +1,31 @@
+{
+  "task_id": "505f7dfa-47f0-4ad8-86d6-0c0af9c87976",
+  "extraction_id": "7dcc36a1-eb9b-418f-99a8-0c1cee0a7790",
+  "before": {
+    "status": "ready",
+    "usage": {
+      "model": "mistral-ocr-4-1",
+      "sha256": "9c4a142a63b38b3be9e8c4972f7bde7dbb69d7c2d39bfd9f4821cc58de5a4b8e",
+      "provider_usage": {
+        "doc_size_bytes": 34566,
+        "pages_processed": 1
+      }
+    },
+    "charged_pages": 1
+  },
+  "after": {
+    "status": "failed",
+    "usage": {
+      "model": "mistral-ocr-4-1",
+      "sha256": "9c4a142a63b38b3be9e8c4972f7bde7dbb69d7c2d39bfd9f4821cc58de5a4b8e",
+      "provider_usage": {
+        "doc_size_bytes": 34566,
+        "pages_processed": 1
+      }
+    },
+    "charged_pages": 1,
+    "purged_at": "2026-10-18 14:16:02.054899+00:00",
+    "object_key": null
+  },
+  "passed": true
+}

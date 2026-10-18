@@ -1,0 +1,194 @@
+{
+  "passed": 47,
+  "scenarios": [
+    {
+      "scenario": "invalid_upload_bad.json",
+      "passed": true
+    },
+    {
+      "scenario": "invalid_upload_text.txt",
+      "passed": true
+    },
+    {
+      "scenario": "invalid_upload_fake.pdf",
+      "passed": true
+    },
+    {
+      "scenario": "invalid_upload_many.pdf",
+      "passed": true
+    },
+    {
+      "scenario": "global_ocr_admission_is_atomic",
+      "passed": true
+    },
+    {
+      "scenario": "concurrent_upload_replays_one_revision",
+      "passed": true
+    },
+    {
+      "scenario": "upload_identity_binds_exact_bytes",
+      "passed": true
+    },
+    {
+      "scenario": "file_content_owner_scoped",
+      "passed": true
+    },
+    {
+      "scenario": "revision_is_immutable",
+      "passed": true
+    },
+    {
+      "scenario": "upload_replay_preserves_exact_revision_after_new_upload",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_file_task_creation",
+      "passed": true
+    },
+    {
+      "scenario": "input_wait_releases_execution",
+      "passed": true
+    },
+    {
+      "scenario": "exact_line_selection_reaches_model",
+      "passed": true
+    },
+    {
+      "scenario": "stale_file_approval_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "multi_file_result_manifest_ready",
+      "passed": true
+    },
+    {
+      "scenario": "published_output_integrity_ringkasan.md",
+      "passed": true
+    },
+    {
+      "scenario": "published_output_integrity_tugas.csv",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_output_download",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_result_manifest",
+      "passed": true
+    },
+    {
+      "scenario": "result_update_receives_previous_content",
+      "passed": true
+    },
+    {
+      "scenario": "failed_update_preserves_ready_revision",
+      "passed": true
+    },
+    {
+      "scenario": "publication_retry_reuses_draft",
+      "passed": true
+    },
+    {
+      "scenario": "result_update_optimistic_revision",
+      "passed": true
+    },
+    {
+      "scenario": "deleted_input_fences_queued_task",
+      "passed": true
+    },
+    {
+      "scenario": "derived_result_survives_source_deletion",
+      "passed": true
+    },
+    {
+      "scenario": "deleted_output_access_revoked",
+      "passed": true
+    },
+    {
+      "scenario": "deleted_result_access_revoked",
+      "passed": true
+    },
+    {
+      "scenario": "deletion_physically_cleans_objects",
+      "passed": true
+    },
+    {
+      "scenario": "ocr_cache_reused_by_revision_and_policy",
+      "passed": true
+    },
+    {
+      "scenario": "ocr_accounting_survives_input_deletion",
+      "passed": true
+    },
+    {
+      "scenario": "ambiguous_ocr_retains_charge",
+      "passed": true
+    },
+    {
+      "scenario": "task_retry_does_not_redispatch_unknown_ocr",
+      "passed": true
+    },
+    {
+      "scenario": "ocr_retry_needs_explicit_charge_ack",
+      "passed": true
+    },
+    {
+      "scenario": "ocr_retry_identity_is_stable",
+      "passed": true
+    },
+    {
+      "scenario": "explicit_ocr_retry_recovers",
+      "passed": true
+    },
+    {
+      "scenario": "context_limit_has_no_silent_truncation_or_model_charge",
+      "passed": true
+    },
+    {
+      "scenario": "partial_output_is_not_success",
+      "passed": true
+    },
+    {
+      "scenario": "stop_after_storage_before_commit_fences_publication",
+      "passed": true
+    },
+    {
+      "scenario": "lost_ack_has_one_result_and_delivery",
+      "passed": true
+    },
+    {
+      "scenario": "late_storage_writer_is_revoked_and_cleaned",
+      "passed": true
+    },
+    {
+      "scenario": "file_api_requires_auth",
+      "passed": true
+    },
+    {
+      "scenario": "product_upload_endpoint",
+      "passed": true
+    },
+    {
+      "scenario": "download_is_authenticated_non_cacheable_attachment",
+      "passed": true
+    },
+    {
+      "scenario": "unsupported_upload_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "multipart_ingress_bounded_before_spooling",
+      "passed": true
+    },
+    {
+      "scenario": "chunked_upload_bound_retains_cors",
+      "passed": true
+    },
+    {
+      "scenario": "composer_routes_file_work_to_task",
+      "passed": true
+    }
+  ],
+  "temporary_resources_removed": true
+}

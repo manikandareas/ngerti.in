@@ -1,0 +1,57 @@
+{
+  "recorded_at": "2026-10-18T14:18:06.573919+00:00",
+  "checks": {
+    "make_check": "passed",
+    "make_build": "passed",
+    "make_files_inspect": 47,
+    "make_task_inspect": 55,
+    "make_quota_inspect": 46,
+    "make_docs_check": {
+      "pages": 65,
+      "tickets": 41,
+      "views": 4,
+      "links": 1003
+    },
+    "git_diff_check": "passed"
+  },
+  "notion": {
+    "ticket": 34,
+    "status": "Done",
+    "all_unrelated_ticket_properties_preserved": true,
+    "views_rows": [
+      41,
+      25,
+      0,
+      16
+    ]
+  },
+  "browser": {
+    "viewports": [
+      [
+        1280,
+        900
+      ],
+      [
+        390,
+        844
+      ],
+      [
+        320,
+        640
+      ]
+    ],
+    "horizontal_overflow": false,
+    "reduced_motion": true,
+    "draft_and_request_key_after_reload": true,
+    "real_mistral_pdf_png": true,
+    "real_model_html_csv_json": true,
+    "review_revision_and_once_delivery": true,
+    "source_delete_keeps_derived_result": true,
+    "html_sandbox_sanitizer_navigation_and_egress": true,
+    "mobile": "viewport emulation"
+  },
+  "ocr_cost_estimate_usd": 0.012,
+  "invoice_verified": false,
+  "task_confirmed_tokens": 3782,
+  "daytona_trial_cleanup_confirmed": true
+}

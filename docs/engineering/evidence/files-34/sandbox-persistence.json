@@ -1,0 +1,56 @@
+{
+  "kind": "live_daytona_output_persistence",
+  "started_at": 1792331695.022771,
+  "preflight": {
+    "sdk": "0.225.0",
+    "provider": "v0.225.1",
+    "snapshot": "daytona-medium",
+    "snapshot_id": "b27c211c-b320-4dca-a839-8459aaf10d3e",
+    "cpu": 2,
+    "ram_gib": 4,
+    "disk_gib": 8,
+    "budget_usd": 1.0,
+    "max_ttl_minutes": 30,
+    "existing_trial_sessions": 2
+  },
+  "session_id": "8fa0f329-62a0-436e-969b-75144f8ec0e3",
+  "sandbox_id": "2bd314fe-83c6-419f-a0d8-1823a5e62c9c",
+  "reserved_usd": 0.08333333333333333,
+  "ttl_minutes": 3,
+  "producer": {
+    "exit_code": 0,
+    "output": "ng034-fixtures-written\n",
+    "duration_ms": 1634
+  },
+  "task_id": "0ef19566-314f-431c-844f-6077d41b7063",
+  "result_id": "c94488f2-88c3-51f3-8fee-ea08bbe0c27d",
+  "manifest_id": "7ff748e8-d62f-5bb9-a581-9c27b499d55a",
+  "source": "bounded_static_fixture_adapter",
+  "cleanup": {
+    "session_id": "8fa0f329-62a0-436e-969b-75144f8ec0e3",
+    "remaining_resources": [],
+    "status": "deleted"
+  },
+  "files_after_deletion": [
+    {
+      "filename": "sandbox-note.md",
+      "revision_id": "0370bc5b-791b-5229-87c6-4acd9c139572",
+      "sha256": "a098f2aeea161cd93d43d8cd0222d64a1fec634df6ffc96a984061b65e103bd8",
+      "bytes": 73
+    },
+    {
+      "filename": "sandbox-data.csv",
+      "revision_id": "d269381f-b5ef-5bec-bbce-10dd32b4ebcc",
+      "sha256": "20be6c2fb4e9e85e60aa8daaecccd362ea08467ea77e3ba9a4fcc09dc11d4f06",
+      "bytes": 30
+    },
+    {
+      "filename": "preview-isolation.html",
+      "revision_id": "d63b57d3-efce-569d-914e-ba65582d9dfc",
+      "sha256": "930327655d6904ebb37d06e0e98fdd3dae1d1a823ecf1095f7e5343e8a0eaa70",
+      "bytes": 342
+    }
+  ],
+  "passed": true,
+  "seconds": 17.004730224609375
+}

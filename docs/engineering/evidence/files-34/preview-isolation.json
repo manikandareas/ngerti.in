@@ -1,0 +1,25 @@
+{
+  "live_preview": [
+    {
+      "title": "Preview preview-isolation.html",
+      "sandbox": "",
+      "referrerPolicy": "no-referrer",
+      "sameOriginAccessible": false,
+      "escaped": false,
+      "scriptCount": 0,
+      "formCount": 0,
+      "policy": "Content-Security-Policy\" content=\"default-src 'none'; script-src 'none'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'; connect-src 'none'; frame-src 'none'; object-src 'none'\""
+    }
+  ],
+  "sanitizer_probe": {
+    "scriptCount": 0,
+    "formCount": 0,
+    "navigationCount": 0,
+    "refreshCount": 0,
+    "styleRetained": 1,
+    "visibleText": "h1{color:green}Konten amanLinkKirim",
+    "iframeSandbox": "",
+    "renderedScriptCount": 0
+  },
+  "external_requests": "No requests captured"
+}

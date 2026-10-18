@@ -16,7 +16,7 @@
       },
       "notion_content_sha256": "8683032b40bb75fb3a66096aaca609cabbcce80266d1cb8aa515f3c2ac78181e",
       "local_content_sha256": "801f9d06d6e4c7567923e16080a6ca96988fb7ea31076858396132428073981b",
-      "local_file_sha256": "df3cc9a069693db6a31f64ce21ad2f3e6e1764fbb93dddfb9bb0a15b278ce050",
+      "local_file_sha256": "70d1740a990cd95f3cbe55c7822d71d16ec3d8cb497fa66645243c8f615e057e",
       "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
@@ -40,14 +40,14 @@
       "url": "https://app.notion.com/p/3f8abdd6187381fda2dbea043a840c5a",
       "file": "product/02-user-flow.md",
       "kind": "page",
-      "page_last_edited_at": "2026-10-18T08:12:18.236Z",
+      "page_last_edited_at": "2026-10-18T10:07:15.240Z",
       "properties": {
         "title": "02 · UX & User Flow"
       },
-      "notion_content_sha256": "77377c77955a268e5662e25abf00a7c99653c07c01ac949e530915cf0be2e39a",
-      "local_content_sha256": "d9e9d65e86d85a429a9aec925904059b5625e24bac88cbeb7312fe2fc6291898",
-      "local_file_sha256": "10c832ff63e115db5eec3f635243176fd890814924a01ee5035b4d7e42a30492",
-      "readback_at": "2026-10-18T08:14:37.582446+00:00"
+      "notion_content_sha256": "000cd49967c5a101c0160c549a84ccd42e91ac1656047e3775ad307c44ed8c02",
+      "local_content_sha256": "a7de8b97b0c2c797914ccf992ee9fa389da1d01a2eed31acb7465d081c5f395c",
+      "local_file_sha256": "8888088e00c99f7fbba16d7b48df896f78ddee314202202c2ceff4ea8e048f6a",
+      "readback_at": "2026-10-18T10:08:03.263Z"
     },
     {
       "id": "3f8abdd6-1873-8165-8b61-f4283ee83428",
@@ -55,14 +55,14 @@
       "url": "https://app.notion.com/p/3f8abdd6187381658b61f4283ee83428",
       "file": "product/03-agent.md",
       "kind": "page",
-      "page_last_edited_at": "2026-10-18T05:49:49.471Z",
+      "page_last_edited_at": "2026-10-18T10:07:16.127Z",
       "properties": {
         "title": "03 · Perilaku Agent"
       },
-      "notion_content_sha256": "a8ad02d91a99b34c505155550787f6d04fe4ede3035c626bda612991748a0263",
-      "local_content_sha256": "9842fc566cc189bf008fbc8ae104f5e53f1622eb238f0dfecc48dcbba49bfd47",
-      "local_file_sha256": "0967f61994aab00ed205855ba0acd7e7310b5e9e0e8538bb152e7a73e5545f76",
-      "readback_at": "2026-10-18T06:04:56.780944+00:00"
+      "notion_content_sha256": "5dc986fbefe1e4a88c9d91affd643af7b887a06b26bbb82274812a7c556f1da6",
+      "local_content_sha256": "9eb68077aaf202646901c623e5ea209f86a33d7e98b80f2425af7183acdacb94",
+      "local_file_sha256": "35934b5309e0cd0a58824f83b6b6e11086cfcaf8026047cf680170208f58d8cc",
+      "readback_at": "2026-10-18T10:08:03.263Z"
     },
     {
       "id": "3f8abdd6-1873-8119-8256-f4ee69db1e78",
@@ -70,14 +70,14 @@
       "url": "https://app.notion.com/p/3f8abdd6187381198256f4ee69db1e78",
       "file": "product/04-arsitektur-dan-delivery.md",
       "kind": "page",
-      "page_last_edited_at": "2026-10-18T05:49:51.856Z",
+      "page_last_edited_at": "2026-10-18T10:07:17.005Z",
       "properties": {
         "title": "04 · Arsitektur, Runtime & Kontrak"
       },
-      "notion_content_sha256": "1c7fad68276ea3bd25f780d8b02a92b085a7b76ef74bb3bc42454397bb3a32c9",
-      "local_content_sha256": "79ec4bebcefdb7041a3b4f2fa63b71fe84d89a574f72dc35eaa5377b0e711dc7",
-      "local_file_sha256": "a12b910d0c71d87fd300a1c87406a309b94dc3326e07b510259973ecf8ece2c4",
-      "readback_at": "2026-10-18T06:04:56.780944+00:00"
+      "notion_content_sha256": "00a58322bd62f57b93a4c9e15b4613455f22a0128322eb08cda936bb8780fdf5",
+      "local_content_sha256": "7882ed15bc162e84212b6b1c215b2817f3ac30db53fe80c4a3b422c63849d956",
+      "local_file_sha256": "d31fb10d4418c73a790ca39cfcd59db6d7d8e4f326815836d2a7813ca6da3c64",
+      "readback_at": "2026-10-18T10:08:03.263Z"
     },
     {
       "id": "3f8abdd6-1873-8120-90d8-e31cd02f0ce9",
@@ -854,11 +854,11 @@
       "properties": {
         "title": "05 · Usage, Paket & Pembayaran"
       },
-      "notion_content_sha256": "e3bd631d5c5a757524e6982fa057a256b6c93f48ca8778f24297f36ea579de45",
-      "local_content_sha256": "164f340486743c9d2614eb4ff877e0589dc3e7a6bb40f15932503171b4bf3247",
-      "local_file_sha256": "ac771dd2c194af34118e06da8820c26b7ac4ff57c19ce969f7e8e5f79a44dcac",
-      "readback_at": "2026-10-18T06:04:56.780944+00:00",
-      "page_last_edited_at": "2026-10-18T06:01:36.179Z"
+      "notion_content_sha256": "dda029c9908335d660e6314081ea306e7f4cb3249b245092e025b0d846a5e71c",
+      "local_content_sha256": "a099f0a37b9f7c9cba1ae0bb09eae16ddfcedaff678ee2bcd7a8909c2e7079b0",
+      "local_file_sha256": "98b6341cd1fed708acced7264a2b8abb4df35a69a8a4ec7cd33e2847188eee19",
+      "readback_at": "2026-10-18T10:08:03.263Z",
+      "page_last_edited_at": "2026-10-18T10:07:17.690Z"
     },
     {
       "id": "3fdabdd6-1873-81d3-9f94-f7161d4ef570",
@@ -869,11 +869,11 @@
       "properties": {
         "title": "06 · Development, Operasi & Acceptance"
       },
-      "notion_content_sha256": "c2f3ef67dc21ddddfe202588d7b67330c3ddfcee31cdbeedbc3650fd5ef57d7c",
-      "local_content_sha256": "084d7c260f311103c02c6d91131885c13e3c4b7317c0f3e52fbce97dceff89eb",
-      "local_file_sha256": "e0f2eb8530a1558215ad79ebb00e1b5c53fd1f2107f6f493174c00e9f23d6470",
-      "readback_at": "2026-10-18T08:14:37.582446+00:00",
-      "page_last_edited_at": "2026-10-18T08:12:18.865Z"
+      "notion_content_sha256": "cef309534cf7c61a9a0bddf12a1fc529f48da4d96ee76e750c42d28e77c45357",
+      "local_content_sha256": "54b91fd0fe1fdde16e6a5a658a2d6bc4cb39ae616bd89bf838bad44716a97afb",
+      "local_file_sha256": "372385bc758a0b456779bdf2f947e7cbb66f3bfd7733b6116c7567ef6b692055",
+      "readback_at": "2026-10-18T10:08:03.263Z",
+      "page_last_edited_at": "2026-10-18T10:07:18.458Z"
     },
     {
       "id": "3fdabdd6-1873-812e-9ed6-c67417884b74",
@@ -886,7 +886,7 @@
       },
       "notion_content_sha256": "ff427a85b252da3841a5489b0f59aaa7c56a3e481cccccceb80e4755158e4018",
       "local_content_sha256": "6f8f141d26c06db4c4c1e0a38dc57315e043b485143d5fe24d3446116daec5b9",
-      "local_file_sha256": "4704d3d554de2e0ed5d7d67e79a57e7c8d3188c60e29bc2785d13f5f5a3d9bdb",
+      "local_file_sha256": "817ad07081ce34ac800524c31f09838ed25137ca432fbec5932cd604016bc649",
       "readback_at": "2026-10-18T06:04:56.780944+00:00",
       "page_last_edited_at": "2026-10-18T05:49:58.871Z"
     },
@@ -1180,17 +1180,17 @@
         ],
         "Lingkup": "Aktif V1",
         "Prioritas": "P0",
-        "Status": "Backlog",
+        "Status": "Done",
         "Ticket": 33,
         "Tugas": "NG-033 · Task background dan approval umum",
         "Urutan": 8,
         "url": "https://app.notion.com/p/3fdabdd6187381ba979ac9f219c55a5a"
       },
-      "notion_content_sha256": "bcaa7f257ba0b06da35f7ee718220d3012383eb64445d847b7448a4c1ed99ba4",
-      "local_content_sha256": "d7b077a06fe949e695f34c6174c7a444372440acd9d7c39a466a65b7f56a8f9f",
-      "local_file_sha256": "c64b43341aee6529a549d72c4c40c42fe50e11bd9f76c224575236d51f1c2a9b",
-      "readback_at": "2026-10-18T06:04:56.780944+00:00",
-      "page_last_edited_at": "2026-10-18T05:50:49.274Z"
+      "notion_content_sha256": "7b0eb017b381a5db92978a6c3f4153f72ec32bb6d0842c8869a37a9c3fa1a273",
+      "local_content_sha256": "f5e8cbd0f68792210b10109b9cb30a2a058b6a1ed13ed68d3a101e2b2b2498cc",
+      "local_file_sha256": "87c9f5c6eb8dfd0d70dedfcbd78ace5976b1952bbf674f4d61a6444e75707fc3",
+      "readback_at": "2026-10-18T10:08:03.263Z",
+      "page_last_edited_at": "2026-10-18T10:07:57.788Z"
     },
     {
       "id": "3fdabdd6-1873-8108-a7d9-ed086cd2c1ea",
@@ -1640,8 +1640,8 @@
           "3f8abdd6-1873-81bf-9174-f9126e48a4f3",
           "3f8abdd6-1873-81fd-a17d-d1af24cec8fb"
         ],
-        "local_file_sha256": "57400758e1ce2d984196c7d44d4be4028f5d88cf41ee4739d7440dc9f5ba9e76",
-        "readback_at": "2026-10-18T08:14:37.582446+00:00",
+        "local_file_sha256": "a1dfbb66e189f875ea1fe1f65d7f0583896916b4b1d020e3963d71f364a8570b",
+        "readback_at": "2026-10-18T10:08:03.263Z",
         "queried_row_count": 41
       },
       {
@@ -1723,8 +1723,8 @@
           "3fdabdd6-1873-81f8-ade2-c7db2c75396e",
           "3f8abdd6-1873-81ac-90b6-df75b7e1a157"
         ],
-        "local_file_sha256": "ae65477561b127a3af9025884211eded7beaf01643005855c72faa0d8fb6688d",
-        "readback_at": "2026-10-18T08:14:37.582446+00:00",
+        "local_file_sha256": "9f68d94941139a868fea4015ed4c550c83cedb17e4f9ddc5b63f8d8477becbc5",
+        "readback_at": "2026-10-18T10:08:03.263Z",
         "queried_row_count": 25
       },
       {
@@ -1780,8 +1780,8 @@
           "type": "table"
         },
         "page_ids": [],
-        "local_file_sha256": "8bb0f04d2ebaaf86aa9b7486d1778335f8921c7299bb669a755e3a227f149fec",
-        "readback_at": "2026-10-18T08:14:37.582446+00:00",
+        "local_file_sha256": "220acfb3f5d389785332b256ec19b5dddefee3e9b8c69750caaa74048ad41631",
+        "readback_at": "2026-10-18T10:08:03.263Z",
         "queried_row_count": 0
       },
       {
@@ -1854,8 +1854,8 @@
           "3f8abdd6-1873-81bf-9174-f9126e48a4f3",
           "3f8abdd6-1873-81fd-a17d-d1af24cec8fb"
         ],
-        "local_file_sha256": "525d618f6cac1a3b2a17ba2fb96953bdfd6e77faf768ee74968db2950031ead3",
-        "readback_at": "2026-10-18T08:14:37.582446+00:00",
+        "local_file_sha256": "3f5ae2896a1ef8ce826fd6f1d1fd77f3e81be0fd7205deac1f75529d3be9b743",
+        "readback_at": "2026-10-18T10:08:03.263Z",
         "queried_row_count": 16
       }
     ],
@@ -2051,14 +2051,64 @@
       "source": "User-authorized NG-032 implementation; exact Notion content/status readback and four live views verified",
       "summary": "Accept shell and onboarding with real first response, browser recovery/accessibility, future capability boundaries and token telemetry",
       "notion_content_sha256": "c2f3ef67dc21ddddfe202588d7b67330c3ddfcee31cdbeedbc3650fd5ef57d7c"
+    },
+    {
+      "at": "2026-10-18T10:08:03.263Z",
+      "page_id": "3fdabdd6-1873-81ba-979a-c9f219c55a5a",
+      "source": "User-authorized NG-033 implementation; exact Notion readback and four views verified",
+      "summary": "Accept durable background text tasks, exact review, budget caps and browser/fault evidence",
+      "notion_content_sha256": "7b0eb017b381a5db92978a6c3f4153f72ec32bb6d0842c8869a37a9c3fa1a273",
+      "properties": {
+        "Status": "Done"
+      },
+      "acceptance_file": "engineering/task-33-acceptance.md",
+      "evidence_file": "engineering/evidence/task-33/live-readback.json"
+    },
+    {
+      "at": "2026-10-18T10:08:03.263Z",
+      "page_id": "3f8abdd6-1873-81fd-a2db-ea043a840c5a",
+      "source": "User-authorized NG-033 implementation; exact Notion readback and four views verified",
+      "summary": "Accept durable background text tasks, exact review, budget caps and browser/fault evidence",
+      "notion_content_sha256": "000cd49967c5a101c0160c549a84ccd42e91ac1656047e3775ad307c44ed8c02"
+    },
+    {
+      "at": "2026-10-18T10:08:03.263Z",
+      "page_id": "3f8abdd6-1873-8165-8b61-f4283ee83428",
+      "source": "User-authorized NG-033 implementation; exact Notion readback and four views verified",
+      "summary": "Accept durable background text tasks, exact review, budget caps and browser/fault evidence",
+      "notion_content_sha256": "5dc986fbefe1e4a88c9d91affd643af7b887a06b26bbb82274812a7c556f1da6"
+    },
+    {
+      "at": "2026-10-18T10:08:03.263Z",
+      "page_id": "3f8abdd6-1873-8119-8256-f4ee69db1e78",
+      "source": "User-authorized NG-033 implementation; exact Notion readback and four views verified",
+      "summary": "Accept durable background text tasks, exact review, budget caps and browser/fault evidence",
+      "notion_content_sha256": "00a58322bd62f57b93a4c9e15b4613455f22a0128322eb08cda936bb8780fdf5"
+    },
+    {
+      "at": "2026-10-18T10:08:03.263Z",
+      "page_id": "3fdabdd6-1873-819c-a2b5-cc4e521b3587",
+      "source": "User-authorized NG-033 implementation; exact Notion readback and four views verified",
+      "summary": "Accept durable background text tasks, exact review, budget caps and browser/fault evidence",
+      "notion_content_sha256": "dda029c9908335d660e6314081ea306e7f4cb3249b245092e025b0d846a5e71c"
+    },
+    {
+      "at": "2026-10-18T10:08:03.263Z",
+      "page_id": "3fdabdd6-1873-81d3-9f94-f7161d4ef570",
+      "source": "User-authorized NG-033 implementation; exact Notion readback and four views verified",
+      "summary": "Accept durable background text tasks, exact review, budget caps and browser/fault evidence",
+      "notion_content_sha256": "cef309534cf7c61a9a0bddf12a1fc529f48da4d96ee76e750c42d28e77c45357"
     }
   ],
   "last_partial_sync": {
-    "at": "2026-10-18T08:14:37.582446+00:00",
-    "scope": "NG-032 completion, UX/operations acceptance notes and four exact view readbacks; all unrelated ticket properties preserved",
+    "at": "2026-10-18T10:08:03.263Z",
+    "scope": "NG-033 acceptance, UX/agent/runtime/usage/operations notes, four exact views; unrelated ticket properties preserved",
     "page_ids": [
-      "3fdabdd6-1873-810b-8159-f4798fc39046",
+      "3fdabdd6-1873-81ba-979a-c9f219c55a5a",
       "3f8abdd6-1873-81fd-a2db-ea043a840c5a",
+      "3f8abdd6-1873-8165-8b61-f4283ee83428",
+      "3f8abdd6-1873-8119-8256-f4ee69db1e78",
+      "3fdabdd6-1873-819c-a2b5-cc4e521b3587",
       "3fdabdd6-1873-81d3-9f94-f7161d4ef570"
     ]
   }

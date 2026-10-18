@@ -1,41 +1,56 @@
 # 06 · Development, Operasi & Acceptance
 
-Sumber: [Notion](https://app.notion.com/p/3fdabdd6187381d39f94f7161d4ef570) · Readback: 2026-10-18T08:14:37.582446+00:00
+Sumber: [Notion](https://app.notion.com/p/3fdabdd6187381d39f94f7161d4ef570) · Readback: 2026-10-18T10:08:03.263Z
 
 <!-- notion-content:start -->
 ## Setup development bersih
 
 Prasyarat: Bun, uv, Python dan Docker/OrbStack. Salin .env.example ke .env, isi kredensial pada mesin sendiri, lalu make install → make infra-up → make setup → make dev. UI [http://localhost:3000](http://localhost:3000), API loopback :8000, PostgreSQL :5433, MinIO :9000/console :9001. Auth memakai Clerk; tidak ada auth bypass production.
+
 make setup menjalankan Alembic baseline, Procrastinate official schema dan LangGraph PostgresSaver.setup serta bucket lokal. make migrate hanya database. Keduanya dapat diulang; queue library version berbeda perlu official SQL migrations, bukan schema replacement diam-diam.
 
 ## Reset development yang telah diotorisasi
 
 Hentikan API/worker host sebelum reset agar tidak menulis data saat volume dibangun ulang. make reset-dev menjalankan script yang memverifikasi APP_ENV=development, local DATABASE_URL/S3 endpoint/kredensial, Compose project ngertiin-v1, service/mount dan label dua volume. Mode validasi: `uv run --project apps/backend python scripts/reset_dev.py`. Mode eksekusi: make reset-dev.
+
 Resource yang dihapus: ngertiin-v1_postgres-data dan ngertiin-v1_minio-data beserta container/network proyek. Akun lokal, chat, approval, checkpoint, queue, usage dan file MinIO hilang. Akun Clerk, .env, kredensial, Daytona dan environment lain dipertahankan. Tidak memakai docker system prune atau reset resource remote. Baseline baru tidak kompatibel dengan migration head/data pembelajaran lama.
 
 ## Startup readiness diagnosis
 
 Pemeriksaan membedakan API hidup dari dependency dan worker yang siap.
+
 **Alur:** infra-up → setup → API/worker → /health/live, /health/ready → /dev/system bila enabled.
+
 **State:** ready/unavailable per database/migrations/pgvector/queue/checkpoints/worker/storage/auth.
+
 **Input → output:** Validated env, migration/library versions, heartbeat → readiness/detail tanpa secrets.
+
 **Kegagalan & pemulihan:** Database/MinIO mati, stale queue schema, worker heartbeat hilang dan provider failure mempunyai indikator; log request/run/job IDs dipakai untuk diagnosis.
+
 **Izin:** Diagnostics hanya APP_ENV development + ENABLE_DEV_DIAGNOSTICS; object/run commands owner-scoped; production diagnostics mati.
+
 **Biaya:** Diagnostics bounded; jangan mencatat token/secret/file pribadi; probe memakai resource dan budget kecil.
+
 **Acceptance:** Startup fresh DB, repeated setup, worker recovery dan storage ownership diuji; readiness current migration head.
+
 Bukti modul: [REA-1 · Chat & Session](../research/muse-ai-v1/evidence/chat.md). Tiket: [NG-029 · Buat baseline skema dan reset development](../backlog/tasks/29-buat-baseline-skema-dan-reset-development.md) · [NG-030 · Terima baseline V1 yang bersih](../backlog/tasks/30-terima-baseline-v1-yang-bersih.md) · [NG-023 · Recovery end-to-end dan konsistensi state](../backlog/tasks/23-recovery-end-to-end-dan-konsistensi-state.md).
 
 ## Acceptance dan rekam bukti
 
 Gate cleanup NG-026–030: make check, make build, make quota-inspect, startup, login nyata, main/side chat/model streaming, snapshot/replay, stop/retry, worker crash/recovery, cross-owner read/write/event rejection, storage upload/download/delete dan quota rejection/draft. Probe ledger menggunakan database sementara yang dihapus setelah selesai; tidak bergantung materi pembelajaran.
+
 Gate fitur baru: setiap tiket merekam environment/provider version, tanggal, input, expected/actual, resource IDs non-secret, trace/screenshot dan biaya. Walkthrough browser membuktikan alur pengguna; probe concurrency/ownership/fencing dan fault injection membuktikan failure boundaries. Static Pen atau bukti lama tidak menutup penerimaan baru.
+
 P01–P30 di matriks penerimaan aktif mencakup onboarding; same-thread task; approval/revision/replay; crash/stop/unknown effect; owner/isolation/resource caps; result persistence; file failure; memory/forget/persona; goals; offline schedules/DST/downtime; proactive cap/no-op/delivery; quota/cost version; source injection; isolated preview; deployment dan restore.
+
 Bukti baseline baru: repository docs/engineering/[NG-030 · Bukti penerimaan baseline V1](baseline-v1-acceptance.md) dan docs/engineering/evidence/baseline-v1/. Bukti lama #01–05 disimpan sebagai catatan historis; detail runtime lama tidak dianggap current.
 
 ## Operasi menuju release
 
 NG-023 menguji pemulihan menyeluruh dan backup/restore, termasuk sandbox provider yang hilang setelah restore. NG-041 mengukur kualitas/latency/biaya lifecycle asisten umum. NG-025 hanya Done setelah semua capability wajib diterima, termasuk Daytona/VNC/takeover. Production R2, CI remote dan security/runtime efficacy tetap gap sampai bukti baru tersedia.
+
 Rujukan: [04 · Arsitektur, Runtime & Kontrak](../product/04-arsitektur-dan-delivery.md) · [05 · Usage, Paket & Pembayaran](../product/05-usage-paket-pembayaran.md) · [07 · Backlog Implementasi V1](../backlog/README.md) · [08 · Bukti Riset & REA](../research/muse-ai-v1/README.md)
+
 Tiket: [NG-026 · Bersihkan domain dan runtime pembelajaran](../backlog/tasks/26-bersihkan-domain-dan-runtime-pembelajaran.md) · [NG-027 · Bersihkan UI dan persona awal](../backlog/tasks/27-bersihkan-ui-dan-persona-awal.md) · [NG-028 · Sederhanakan kuota menjadi fondasi umum](../backlog/tasks/28-sederhanakan-kuota-menjadi-fondasi-umum.md) · [NG-029 · Buat baseline skema dan reset development](../backlog/tasks/29-buat-baseline-skema-dan-reset-development.md) · [NG-030 · Terima baseline V1 yang bersih](../backlog/tasks/30-terima-baseline-v1-yang-bersih.md) · [NG-023 · Recovery end-to-end dan konsistensi state](../backlog/tasks/23-recovery-end-to-end-dan-konsistensi-state.md) · [NG-041 · Benchmark kualitas latency dan biaya asisten umum](../backlog/tasks/41-benchmark-kualitas-latency-dan-biaya-asisten-umum.md) · [NG-025 · Peluncuran asisten umum V1 production](../backlog/tasks/25-peluncuran-free-dan-plus-production.md).
 
 ## Matriks penerimaan fitur V1
@@ -84,5 +99,12 @@ Cara verifikasi: walkthrough browser untuk alur pengguna; fixture/probe backend 
 NG-026–030 telah diterima pada 18 Oktober 2026; NG-031 menjadi Ready tanpa memulai trial. make docs-check memverifikasi hash 65 halaman, 41 identitas tiket, dependency graph/gate NG-030, empat view serta tautan lokal. dev:api memantau apps/backend/src saja dan graceful shutdown dibatasi 5 detik agar perubahan scratch tidak menahan SSE saat reload.
 
 ## Penerimaan shell dan onboarding NG-032
+
 [NG-032 · Shell onboarding dan walkthrough asisten umum](../backlog/tasks/32-shell-onboarding-dan-walkthrough-asisten-umum.md) diterima pada 18 Oktober 2026 untuk shell, onboarding chat, Usage, pengaturan dan navigasi kemampuan. Laporan repo `docs/engineering/shell-onboarding-32-acceptance.md` memuat kontrak state fitur berikutnya, walkthrough akun baru dengan model nyata, desktop/mobile, focus, reduced motion, offline/reconnect, pengiriman ulang, stop serta batas bukti. Artifact dan telemetry ada pada `docs/engineering/evidence/shell-32/`. make check dan make build lulus; kuota nol diuji sebagai fixture browser, bukan perubahan saldo; mobile memakai emulasi viewport. Task/file/sandbox/scheduler belum diterima oleh tiket ini.
+
+## Penerimaan Task NG-033
+
+Task teks dan approval umum diterima pada **2026-10-18**. Laporan `docs/engineering/task-33-acceptance.md` dan `docs/engineering/evidence/task-33/` memuat walkthrough model nyata, same-thread chat saat running/waiting_user, reload, revision/review, stop/retry/reject, desktop/mobile dan batas integrasi berikutnya.
+
+`make task-inspect` menjalankan 55 skenario PostgreSQL/checkpoint di database sementara yang dihapus setelah selesai; provider fault/race memakai adapter terkontrol. `make quota-inspect` 46 skenario, `make check`, `make build` dan `git diff --check` lulus. Real Task telemetry: 4.688 token confirmed dan satu stopped call unknown; invoice tidak dihitung. Migrasi incremental `0002_background_tasks` diperlukan; tidak menjalankan reset development.
 <!-- notion-content:end -->

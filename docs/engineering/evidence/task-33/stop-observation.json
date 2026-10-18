@@ -1,0 +1,30 @@
+{
+  "cost_events": [
+    {
+      "charged_units": 12618,
+      "created_at": "2026-10-18T09:59:00.838053+00:00",
+      "execution_id": "c8709b72-f0e2-4da4-ab2a-d3c86f1029d9",
+      "id": "b4a10141-fb80-46a9-8d9e-a9735272cf45",
+      "model": "gpt-6-luna",
+      "policy_version": "text-task-work-v1",
+      "provider": "openai-compatible",
+      "reserved_units": 12618,
+      "state": "unknown",
+      "usage": {}
+    }
+  ],
+  "executions": [
+    {
+      "attempt": 1,
+      "draft": "",
+      "finished_at": "2026-10-18T09:59:03.160817+00:00",
+      "id": "c8709b72-f0e2-4da4-ab2a-d3c86f1029d9",
+      "revision": 1,
+      "started_at": "2026-10-18T09:59:00.783791+00:00",
+      "status": "cancelled"
+    }
+  ],
+  "partial_length": 0,
+  "status": "cancelled",
+  "task_id": "28268e93-5e28-4d93-a0a5-745c6b550550"
+}

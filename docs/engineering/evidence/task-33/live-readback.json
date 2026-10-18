@@ -1,0 +1,292 @@
+{
+  "recorded_at": "2026-10-18T10:00:35.822254+00:00",
+  "environment": "local development / Clerk synthetic test account / browser viewport emulation",
+  "versions": {
+    "langgraph": "1.2.15",
+    "langchain": "1.4.6",
+    "langchain-openai": "1.7.2",
+    "procrastinate": "3.10.0",
+    "psycopg": "3.3.6"
+  },
+  "tasks": [
+    {
+      "id": "fe4c5331-9839-46b0-a1ba-da41121669bb",
+      "thread_id": "27ba54fc-7679-5b00-b97d-d2a276f969be",
+      "source_run_id": "468b7b48-2677-42a9-b271-a21047ebc4f8",
+      "status": "succeeded",
+      "stage": "complete",
+      "revision": 2,
+      "attempt": 3,
+      "model_calls": 1,
+      "budget_cap": 60000,
+      "usage_units": 748,
+      "draft_length": 259,
+      "result_matches_latest_draft": true
+    },
+    {
+      "id": "a3a42e33-6da2-46ad-8aa8-63f4cf427f51",
+      "thread_id": "27ba54fc-7679-5b00-b97d-d2a276f969be",
+      "source_run_id": null,
+      "status": "succeeded",
+      "stage": "complete",
+      "revision": 1,
+      "attempt": 1,
+      "model_calls": 1,
+      "budget_cap": 60000,
+      "usage_units": 1423,
+      "draft_length": 2711,
+      "result_matches_latest_draft": true
+    },
+    {
+      "id": "28268e93-5e28-4d93-a0a5-745c6b550550",
+      "thread_id": "27ba54fc-7679-5b00-b97d-d2a276f969be",
+      "source_run_id": null,
+      "status": "cancelled",
+      "stage": "rejected",
+      "revision": 1,
+      "attempt": 2,
+      "model_calls": 2,
+      "budget_cap": 60000,
+      "usage_units": 15135,
+      "draft_length": 3610,
+      "result_matches_latest_draft": null
+    }
+  ],
+  "actions": [
+    {
+      "id": "85a8ee4d-97d6-53ee-a827-96a6e439e1ec",
+      "task_id": "fe4c5331-9839-46b0-a1ba-da41121669bb",
+      "revision": 1,
+      "kind": "finalize_text",
+      "status": "cancelled",
+      "content_hash": "542e96fe601f723b494725426e87f5eedc552a19df18e86230c66f28a92f4dfe",
+      "outcome": null
+    },
+    {
+      "id": "9a63eb39-3ac8-5159-bd8a-a785fea04ddb",
+      "task_id": "fe4c5331-9839-46b0-a1ba-da41121669bb",
+      "revision": 2,
+      "kind": "finalize_text",
+      "status": "succeeded",
+      "content_hash": "02191b011cb0d33cb5673af1f17a224703a7ef6341e7b5ad62b772374d76c25e",
+      "outcome": {
+        "effect": "confirmed",
+        "delivery": "fe4c5331-9839-46b0-a1ba-da41121669bb"
+      }
+    },
+    {
+      "id": "565141d8-bf48-5f5e-bad5-8adda9235101",
+      "task_id": "a3a42e33-6da2-46ad-8aa8-63f4cf427f51",
+      "revision": 1,
+      "kind": "finalize_text",
+      "status": "succeeded",
+      "content_hash": "b272f099f6605170ef62560d78518451c108ba06b1da6d41e8c5ab40b85e55b5",
+      "outcome": {
+        "effect": "confirmed",
+        "delivery": "a3a42e33-6da2-46ad-8aa8-63f4cf427f51"
+      }
+    },
+    {
+      "id": "32b2bd98-6b70-5be7-914c-68386a72783b",
+      "task_id": "28268e93-5e28-4d93-a0a5-745c6b550550",
+      "revision": 1,
+      "kind": "finalize_text",
+      "status": "rejected",
+      "content_hash": "64b3864e37c275e8dc2410c7be153df9cf83eb5416d0714ea062f55508b3c8ac",
+      "outcome": null
+    }
+  ],
+  "executions": [
+    {
+      "task_id": "fe4c5331-9839-46b0-a1ba-da41121669bb",
+      "revision": 1,
+      "attempt": 1,
+      "status": "waiting_user",
+      "started_at": "2026-10-18 09:53:55.399103+00:00",
+      "finished_at": "2026-10-18 09:54:02.854831+00:00"
+    },
+    {
+      "task_id": "fe4c5331-9839-46b0-a1ba-da41121669bb",
+      "revision": 2,
+      "attempt": 2,
+      "status": "waiting_user",
+      "started_at": "2026-10-18 09:55:54.097939+00:00",
+      "finished_at": "2026-10-18 09:55:54.186150+00:00"
+    },
+    {
+      "task_id": "fe4c5331-9839-46b0-a1ba-da41121669bb",
+      "revision": 2,
+      "attempt": 3,
+      "status": "succeeded",
+      "started_at": "2026-10-18 09:56:43.395670+00:00",
+      "finished_at": "2026-10-18 09:56:43.465899+00:00"
+    },
+    {
+      "task_id": "a3a42e33-6da2-46ad-8aa8-63f4cf427f51",
+      "revision": 1,
+      "attempt": 1,
+      "status": "succeeded",
+      "started_at": "2026-10-18 09:57:10.162337+00:00",
+      "finished_at": "2026-10-18 09:57:20.082118+00:00"
+    },
+    {
+      "task_id": "28268e93-5e28-4d93-a0a5-745c6b550550",
+      "revision": 1,
+      "attempt": 1,
+      "status": "cancelled",
+      "started_at": "2026-10-18 09:59:00.783791+00:00",
+      "finished_at": "2026-10-18 09:59:03.160817+00:00"
+    },
+    {
+      "task_id": "28268e93-5e28-4d93-a0a5-745c6b550550",
+      "revision": 1,
+      "attempt": 2,
+      "status": "waiting_user",
+      "started_at": "2026-10-18 09:59:12.436254+00:00",
+      "finished_at": "2026-10-18 09:59:22.791503+00:00"
+    }
+  ],
+  "cost_events": [
+    {
+      "id": "fe4205f7-5356-4769-9604-e02332099144",
+      "task_id": "fe4c5331-9839-46b0-a1ba-da41121669bb",
+      "execution_id": "fd25410f-8b0e-4f4b-88c5-0bdedd6977d0",
+      "model": "gpt-6-luna",
+      "policy_version": "text-task-work-v1",
+      "reserved_units": 7977,
+      "charged_units": 748,
+      "state": "confirmed",
+      "usage": {
+        "input_tokens": 237,
+        "total_tokens": 748,
+        "output_tokens": 511,
+        "input_token_details": {
+          "cache_read": 0,
+          "cache_creation": 0
+        },
+        "output_token_details": {
+          "reasoning": 134
+        }
+      }
+    },
+    {
+      "id": "230d13cf-56d3-4d7e-aa2e-008756d3db94",
+      "task_id": "a3a42e33-6da2-46ad-8aa8-63f4cf427f51",
+      "execution_id": "106207b2-68ca-4d90-aa63-e69df1030094",
+      "model": "gpt-6-luna",
+      "policy_version": "text-task-work-v1",
+      "reserved_units": 8953,
+      "charged_units": 1423,
+      "state": "confirmed",
+      "usage": {
+        "input_tokens": 580,
+        "total_tokens": 1423,
+        "output_tokens": 843,
+        "input_token_details": {
+          "cache_read": 0,
+          "cache_creation": 0
+        },
+        "output_token_details": {
+          "reasoning": 164
+        }
+      }
+    },
+    {
+      "id": "b4a10141-fb80-46a9-8d9e-a9735272cf45",
+      "task_id": "28268e93-5e28-4d93-a0a5-745c6b550550",
+      "execution_id": "c8709b72-f0e2-4da4-ab2a-d3c86f1029d9",
+      "model": "gpt-6-luna",
+      "policy_version": "text-task-work-v1",
+      "reserved_units": 12618,
+      "charged_units": 12618,
+      "state": "unknown",
+      "usage": {}
+    },
+    {
+      "id": "1f96c821-6bbb-4cff-9034-cf4f60fd6ede",
+      "task_id": "28268e93-5e28-4d93-a0a5-745c6b550550",
+      "execution_id": "bb39e05e-63f0-4107-8c03-2d5ce8202ccb",
+      "model": "gpt-6-luna",
+      "policy_version": "text-task-work-v1",
+      "reserved_units": 12618,
+      "charged_units": 2517,
+      "state": "confirmed",
+      "usage": {
+        "response_id": "resp_0a996e38f4590c46006ad49870d00887d0be4617d3a32b2afe",
+        "input_tokens": 1587,
+        "total_tokens": 2517,
+        "output_tokens": 930,
+        "response_status": "completed",
+        "input_token_details": {
+          "cache_read": 1584,
+          "cache_creation": 0
+        },
+        "output_token_details": {
+          "reasoning": 0
+        }
+      }
+    }
+  ],
+  "deliveries": [
+    {
+      "task_id": "fe4c5331-9839-46b0-a1ba-da41121669bb",
+      "action_id": "9a63eb39-3ac8-5159-bd8a-a785fea04ddb",
+      "message_id": "275dc7e1-e6ba-5c4a-abe1-2f070935a182"
+    },
+    {
+      "task_id": "a3a42e33-6da2-46ad-8aa8-63f4cf427f51",
+      "action_id": "565141d8-bf48-5f5e-bad5-8adda9235101",
+      "message_id": "0ed432ca-2be7-5251-a29e-a3fa041c2581"
+    }
+  ],
+  "jobs": [
+    {
+      "id": 301,
+      "status": "succeeded",
+      "args": {
+        "task_id": "fe4c5331-9839-46b0-a1ba-da41121669bb"
+      },
+      "attempts": 1
+    },
+    {
+      "id": 305,
+      "status": "succeeded",
+      "args": {
+        "task_id": "fe4c5331-9839-46b0-a1ba-da41121669bb"
+      },
+      "attempts": 1
+    },
+    {
+      "id": 307,
+      "status": "succeeded",
+      "args": {
+        "task_id": "fe4c5331-9839-46b0-a1ba-da41121669bb"
+      },
+      "attempts": 1
+    },
+    {
+      "id": 309,
+      "status": "succeeded",
+      "args": {
+        "task_id": "a3a42e33-6da2-46ad-8aa8-63f4cf427f51"
+      },
+      "attempts": 1
+    },
+    {
+      "id": 312,
+      "status": "succeeded",
+      "args": {
+        "task_id": "28268e93-5e28-4d93-a0a5-745c6b550550"
+      },
+      "attempts": 1
+    },
+    {
+      "id": 314,
+      "status": "succeeded",
+      "args": {
+        "task_id": "28268e93-5e28-4d93-a0a5-745c6b550550"
+      },
+      "attempts": 1
+    }
+  ]
+}

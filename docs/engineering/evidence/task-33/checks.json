@@ -1,0 +1,50 @@
+{
+  "recorded_at": "2026-10-18T10:11:52.017534+00:00",
+  "checks": {
+    "make_check": "passed",
+    "make_build": "passed",
+    "make_task_inspect": 55,
+    "make_quota_inspect": 46,
+    "make_docs_check": {
+      "pages": 65,
+      "tickets": 41,
+      "views": 4,
+      "links": 976
+    },
+    "git_diff_check": "passed"
+  },
+  "notion": {
+    "ticket": 33,
+    "status": "Done",
+    "all_unrelated_ticket_properties_preserved": true,
+    "views_rows": [
+      41,
+      25,
+      0,
+      16
+    ]
+  },
+  "browser": {
+    "viewports": [
+      [
+        1280,
+        900
+      ],
+      [
+        390,
+        844
+      ],
+      [
+        320,
+        640
+      ]
+    ],
+    "horizontal_overflow": false,
+    "reduced_motion": true,
+    "draft_and_request_key_after_reload": true,
+    "real_model_background_concurrent_chat": true,
+    "review_revision_and_once_delivery": true,
+    "stop_retry_reject": true,
+    "mobile": "viewport emulation"
+  }
+}

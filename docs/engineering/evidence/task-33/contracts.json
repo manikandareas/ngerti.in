@@ -1,0 +1,226 @@
+{
+  "kind": "isolated_database_task_contract_probe",
+  "scenarios": [
+    {
+      "scenario": "concurrent_create_has_one_identity",
+      "passed": true
+    },
+    {
+      "scenario": "atomic_create_has_one_job",
+      "passed": true
+    },
+    {
+      "scenario": "create_fingerprint_conflict",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_task_read",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_task_stop",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_thread_create",
+      "passed": true
+    },
+    {
+      "scenario": "task_has_separate_execution",
+      "passed": true
+    },
+    {
+      "scenario": "same_and_side_chat_admitted_during_model_call",
+      "passed": true
+    },
+    {
+      "scenario": "interrupt_persists_proposal_and_releases_execution",
+      "passed": true
+    },
+    {
+      "scenario": "snapshot_does_not_absorb_later_chat",
+      "passed": true
+    },
+    {
+      "scenario": "usage_confirmed_once",
+      "passed": true
+    },
+    {
+      "scenario": "policy_snapshot_has_model_and_version",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_approval",
+      "passed": true
+    },
+    {
+      "scenario": "approval_race_is_one_decision",
+      "passed": true
+    },
+    {
+      "scenario": "conflicting_decision_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "resume_does_not_repeat_generation",
+      "passed": true
+    },
+    {
+      "scenario": "final_result_survives_reload",
+      "passed": true
+    },
+    {
+      "scenario": "one_durable_delivery",
+      "passed": true
+    },
+    {
+      "scenario": "approval_at_zero_chat_is_not_a_new_message",
+      "passed": true
+    },
+    {
+      "scenario": "snapshot_includes_task_projection",
+      "passed": true
+    },
+    {
+      "scenario": "revision_request_is_idempotent",
+      "passed": true
+    },
+    {
+      "scenario": "old_approval_rejected_after_edit",
+      "passed": true
+    },
+    {
+      "scenario": "edited_draft_gets_exact_new_proposal",
+      "passed": true
+    },
+    {
+      "scenario": "expired_approval_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "reject_keeps_draft_without_publication",
+      "passed": true
+    },
+    {
+      "scenario": "stop_fences_old_worker",
+      "passed": true
+    },
+    {
+      "scenario": "stop_retains_partial_per_attempt",
+      "passed": true
+    },
+    {
+      "scenario": "partial_retry_generates_complete_draft",
+      "passed": true
+    },
+    {
+      "scenario": "crash_keeps_unknown_cost_reserved",
+      "passed": true
+    },
+    {
+      "scenario": "late_cost_reconciliation_deduplicated",
+      "passed": true
+    },
+    {
+      "scenario": "recovery_fences_checkpoint_owner",
+      "passed": true
+    },
+    {
+      "scenario": "unknown_effect_cannot_retry",
+      "passed": true
+    },
+    {
+      "scenario": "transactional_effect_reconciled_before_replay",
+      "passed": true
+    },
+    {
+      "scenario": "provider_failure_is_visible_with_unknown_cost",
+      "passed": true
+    },
+    {
+      "scenario": "retry_preserves_task_identity_and_snapshot",
+      "passed": true
+    },
+    {
+      "scenario": "concurrent_admission_enforces_active_cap",
+      "passed": true
+    },
+    {
+      "scenario": "model_call_requires_budget_before_network",
+      "passed": true
+    },
+    {
+      "scenario": "resume_does_not_increase_budget",
+      "passed": true
+    },
+    {
+      "scenario": "task_api_requires_auth",
+      "passed": true
+    },
+    {
+      "scenario": "client_cannot_grant_owner_or_budget",
+      "passed": true
+    },
+    {
+      "scenario": "no_arbitrary_action_dispatch",
+      "passed": true
+    },
+    {
+      "scenario": "quota_failure_rolls_back_task_and_job",
+      "passed": true
+    },
+    {
+      "scenario": "last_account_budget_reservation_is_atomic",
+      "passed": true
+    },
+    {
+      "scenario": "terminal_settlement_releases_unspent_reservation",
+      "passed": true
+    },
+    {
+      "scenario": "last_global_budget_reservation_is_atomic",
+      "passed": true
+    },
+    {
+      "scenario": "cross_day_retry_keeps_original_reservation_bucket",
+      "passed": true
+    },
+    {
+      "scenario": "provider_model_policy_is_snapshotted",
+      "passed": true
+    },
+    {
+      "scenario": "source_injection_stays_in_data_message",
+      "passed": true
+    },
+    {
+      "scenario": "source_does_not_create_profile_mutation",
+      "passed": true
+    },
+    {
+      "scenario": "expired_proposal_releases_reservation_and_keeps_draft",
+      "passed": true
+    },
+    {
+      "scenario": "draft_before_checkpoint_is_reused_without_new_model_cost",
+      "passed": true
+    },
+    {
+      "scenario": "lost_publication_ack_does_not_repeat_delivery",
+      "passed": true
+    },
+    {
+      "scenario": "checkpoint_writes_reject_revoked_lease",
+      "passed": true
+    },
+    {
+      "scenario": "reconcile_does_not_restart_a_cancelled_task",
+      "passed": true
+    },
+    {
+      "scenario": "truncated_generation_is_partial_failure",
+      "passed": true
+    }
+  ],
+  "passed": 55
+}

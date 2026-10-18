@@ -3,7 +3,8 @@
 Keputusan aktif berada di [Produk & Scope V1](../product/01-produk-dan-paket.md), [spesifikasi runtime](../product/04-arsitektur-dan-delivery.md) dan [backlog](../backlog/README.md). Riset di sini mendukung keputusan dan menyimpan batas verifikasi; bukan sumber roadmap paralel.
 
 - [Bukti Riset & REA per modul](muse-ai-v1/README.md): chat/session, task/scheduler, file/artifact, memory/goals, permissions dan browser/computer.
-- [Mesin privat: Daytona, VNC dan takeover](agent-private-machine-options-2026-10-18.md): snapshot dokumen vendor; PoC belum dijalankan.
+- [Mesin privat: Daytona, VNC dan takeover](agent-private-machine-options-2026-10-18.md): snapshot dokumen vendor sebelum trial NG-031.
+- [NG-031 · Research dan rancangan trial Daytona](daytona-trial-31-2026-10-18.md): snapshot riset sebelum trial. [Hasil penerimaan](../engineering/daytona-31-acceptance.md) mencatat implementasi dan bukti live berikut batasnya.
 - [Soul dan memory](agent-soul-memory.md), [framework agent](agent-framework-selection.md), [stack proaktif](proactive-agent-frameworks-2026-10-14.md).
 - [Chat streaming/tools/recovery](chat-04-streaming-research-2026-10-16.md).
 - [Audit lingkungan REA](rea-environment-audit-2026-10-18.md) dan [penilaian awal Muse](muse-reverse-engineering-assessment-2026-10-18.md): catatan sesuai tanggalnya.

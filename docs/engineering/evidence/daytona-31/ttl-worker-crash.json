@@ -1,0 +1,180 @@
+{
+  "session_id": "73bf4aab-a3a0-416d-956b-a899b3495c71",
+  "sandbox_id": "586a408d-d632-4807-bd57-5468536685a6",
+  "worker_exit_code": -9,
+  "ttl_minutes": 2,
+  "observations": [
+    {
+      "elapsed_seconds": 3.4,
+      "resource_count": 1,
+      "states": [
+        "SandboxState.STARTED"
+      ]
+    },
+    {
+      "elapsed_seconds": 8.91,
+      "resource_count": 1,
+      "states": [
+        "SandboxState.STARTED"
+      ]
+    },
+    {
+      "elapsed_seconds": 14.43,
+      "resource_count": 1,
+      "states": [
+        "SandboxState.STARTED"
+      ]
+    },
+    {
+      "elapsed_seconds": 19.73,
+      "resource_count": 1,
+      "states": [
+        "SandboxState.STARTED"
+      ]
+    },
+    {
+      "elapsed_seconds": 25.06,
+      "resource_count": 1,
+      "states": [
+        "SandboxState.STARTED"
+      ]
+    },
+    {
+      "elapsed_seconds": 30.58,
+      "resource_count": 1,
+      "states": [
+        "SandboxState.STARTED"
+      ]
+    },
+    {
+      "elapsed_seconds": 36.18,
+      "resource_count": 1,
+      "states": [
+        "SandboxState.STARTED"
+      ]
+    },
+    {
+      "elapsed_seconds": 41.76,
+      "resource_count": 1,
+      "states": [
+        "SandboxState.STARTED"
+      ]
+    },
+    {
+      "elapsed_seconds": 47.28,
+      "resource_count": 1,
+      "states": [
+        "SandboxState.STARTED"
+      ]
+    },
+    {
+      "elapsed_seconds": 52.81,
+      "resource_count": 1,
+      "states": [
+        "SandboxState.STARTED"
+      ]
+    },
+    {
+      "elapsed_seconds": 58.13,
+      "resource_count": 1,
+      "states": [
+        "SandboxState.STARTED"
+      ]
+    },
+    {
+      "elapsed_seconds": 63.45,
+      "resource_count": 1,
+      "states": [
+        "SandboxState.STARTED"
+      ]
+    },
+    {
+      "elapsed_seconds": 68.96,
+      "resource_count": 1,
+      "states": [
+        "SandboxState.STARTED"
+      ]
+    },
+    {
+      "elapsed_seconds": 74.48,
+      "resource_count": 1,
+      "states": [
+        "SandboxState.STARTED"
+      ]
+    },
+    {
+      "elapsed_seconds": 80.07,
+      "resource_count": 1,
+      "states": [
+        "SandboxState.STARTED"
+      ]
+    },
+    {
+      "elapsed_seconds": 85.59,
+      "resource_count": 1,
+      "states": [
+        "SandboxState.STARTED"
+      ]
+    },
+    {
+      "elapsed_seconds": 91.11,
+      "resource_count": 1,
+      "states": [
+        "SandboxState.STARTED"
+      ]
+    },
+    {
+      "elapsed_seconds": 96.62,
+      "resource_count": 1,
+      "states": [
+        "SandboxState.STARTED"
+      ]
+    },
+    {
+      "elapsed_seconds": 102.14,
+      "resource_count": 1,
+      "states": [
+        "SandboxState.STARTED"
+      ]
+    },
+    {
+      "elapsed_seconds": 107.65,
+      "resource_count": 1,
+      "states": [
+        "SandboxState.STARTED"
+      ]
+    },
+    {
+      "elapsed_seconds": 113.17,
+      "resource_count": 1,
+      "states": [
+        "SandboxState.STARTED"
+      ]
+    },
+    {
+      "elapsed_seconds": 118.69,
+      "resource_count": 1,
+      "states": [
+        "SandboxState.STARTED"
+      ]
+    },
+    {
+      "elapsed_seconds": 124.21,
+      "resource_count": 1,
+      "states": [
+        "SandboxState.STARTED"
+      ]
+    },
+    {
+      "elapsed_seconds": 129.74,
+      "resource_count": 0,
+      "states": []
+    }
+  ],
+  "provider_cleanup_after_worker_crash": true,
+  "cleanup": {
+    "session_id": "73bf4aab-a3a0-416d-956b-a899b3495c71",
+    "remaining_resources": [],
+    "status": "deleted"
+  }
+}

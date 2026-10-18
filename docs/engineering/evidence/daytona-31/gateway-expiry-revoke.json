@@ -1,0 +1,24 @@
+{
+  "expiry": {
+    "banner_ms": 3886,
+    "banner_received": true,
+    "closure": {
+      "code": 1008,
+      "elapsed_ms": 10475
+    },
+    "mint_http": 200,
+    "new_connection_denied": true,
+    "revoke_http": null
+  },
+  "revocation": {
+    "banner_ms": 3637,
+    "banner_received": true,
+    "closure": {
+      "code": 1008,
+      "elapsed_ms": 3892
+    },
+    "mint_http": 200,
+    "new_connection_denied": true,
+    "revoke_http": 204
+  }
+}

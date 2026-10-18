@@ -1,0 +1,41 @@
+{
+  "session_id": "5a3da86f-a1f0-4163-956f-39a00f2afd7c",
+  "sandbox_id": "b211802e-3641-410e-8f3e-e98c909b8fe1",
+  "checks": {
+    "python_code": {
+      "duration_ms": 988,
+      "actual": {
+        "exit_code": 0,
+        "output": "42\n"
+      }
+    },
+    "file_roundtrip": {
+      "duration_ms": 491,
+      "actual": {
+        "bytes": 24,
+        "sha256": "37d7bcb75135c80d5f9513e0ac7f9f731f8013cadbb6d2fbcbe1d11086fb4027"
+      }
+    },
+    "computer_use": {
+      "duration_ms": 3832,
+      "actual": {
+        "marker": "AGENT-NG031-SAME-SESSION",
+        "screenshot": "agent-marker.png"
+      }
+    }
+  },
+  "provider_state": "SandboxState.STARTED",
+  "region_id": null,
+  "configuration": {
+    "sdk": "0.225.0",
+    "provider": "v0.225.1",
+    "snapshot": "daytona-medium",
+    "snapshot_id": "b27c211c-b320-4dca-a839-8459aaf10d3e",
+    "cpu": 2,
+    "ram_gib": 4,
+    "disk_gib": 8,
+    "budget_usd": 1.0,
+    "max_ttl_minutes": 30,
+    "existing_trial_sessions": 1
+  }
+}

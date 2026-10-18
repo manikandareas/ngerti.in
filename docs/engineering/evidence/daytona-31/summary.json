@@ -1,0 +1,35 @@
+{
+  "completed_at_utc": "2026-10-18T07:08:13Z",
+  "sdk": "0.225.0",
+  "provider": "v0.225.1",
+  "api_host": "app.daytona.io",
+  "target": "eu",
+  "snapshot": "daytona-medium",
+  "cpu": 2,
+  "ram_gib": 4,
+  "disk_gib": 8,
+  "trial_budget_usd": 1,
+  "total_reserved_usd": 0.6,
+  "sandbox_count": 2,
+  "remaining_provider_resources": [],
+  "open_gateway_channels": 0,
+  "main_elapsed_seconds_upper_bound": 1384.95,
+  "ttl_observed_seconds": 129.74,
+  "conservative_resource_estimate_usd": 0.070039,
+  "estimate_method": "All elapsed time charged as running; full 8GiB disk counted; public Linux rates. Not an invoice. No model calls, snapshots, volumes, upgrades or top-ups.",
+  "acceptance": {
+    "configuration_latency_budget": true,
+    "shell_code_browser_vnc_same_session_takeover": true,
+    "two_owner_expiry_revoke_idle_reconnect_disk_recovery": true,
+    "runtime_cost_admission_caps_cleanup": true
+  },
+  "validation": {
+    "make_check": "passed",
+    "make_build": "passed",
+    "offline_fault_groups": 6,
+    "production_route_gate": "passed",
+    "credential_literal_scan": "passed",
+    "docs_check": "passed"
+  },
+  "final_cleanup_readback_at_utc": "2026-10-18T07:14:19Z"
+}

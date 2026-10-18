@@ -1,0 +1,13 @@
+{
+  "application_credentials_present": {
+    "DAYTONA_API_KEY": false,
+    "CLERK_SECRET_KEY": false,
+    "OPENAI_API_KEY": false,
+    "DATABASE_URL": false,
+    "S3_SECRET_ACCESS_KEY": false
+  },
+  "target": "eu",
+  "snapshot_cpu": 2,
+  "snapshot_ram": 4,
+  "snapshot_disk": 8
+}

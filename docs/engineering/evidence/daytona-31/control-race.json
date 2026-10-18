@@ -1,0 +1,15 @@
+{
+  "inflight_outcome": {
+    "exit_code": 0,
+    "output": "drained",
+    "duration_ms": 2980
+  },
+  "handoff_ms": 4147,
+  "human_mode": "human",
+  "version_before": 1,
+  "version_after": 2,
+  "stale_and_human_dispatch_rejected": [
+    1,
+    2
+  ]
+}

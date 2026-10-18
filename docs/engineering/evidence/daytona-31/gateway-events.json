@@ -1,0 +1,189 @@
+[
+  {
+    "at": 1792306090.572144,
+    "session_id": "5a3da86f-a1f0-4163-956f-39a00f2afd7c",
+    "kind": "viewer.connected",
+    "data": {
+      "connect_ms": 3181,
+      "mode": "agent",
+      "version": 1
+    }
+  },
+  {
+    "at": 1792306108.719184,
+    "session_id": "5a3da86f-a1f0-4163-956f-39a00f2afd7c",
+    "kind": "viewer.closed",
+    "data": {
+      "error_type": "WebSocketDisconnect",
+      "status": null,
+      "rfb_handshake": 3,
+      "blocked_inputs": 0
+    }
+  },
+  {
+    "at": 1792306122.145767,
+    "session_id": "5a3da86f-a1f0-4163-956f-39a00f2afd7c",
+    "kind": "viewer.connected",
+    "data": {
+      "connect_ms": 3065,
+      "mode": "agent",
+      "version": 1
+    }
+  },
+  {
+    "at": 1792306169.121683,
+    "session_id": "5a3da86f-a1f0-4163-956f-39a00f2afd7c",
+    "kind": "viewer.closed",
+    "data": {
+      "error_type": "WebSocketDisconnect",
+      "status": null,
+      "rfb_handshake": 3,
+      "blocked_inputs": 0
+    }
+  },
+  {
+    "at": 1792306172.003125,
+    "session_id": "5a3da86f-a1f0-4163-956f-39a00f2afd7c",
+    "kind": "viewer.connected",
+    "data": {
+      "connect_ms": 3082,
+      "mode": "agent",
+      "version": 1
+    }
+  },
+  {
+    "at": 1792306194.566293,
+    "session_id": "5a3da86f-a1f0-4163-956f-39a00f2afd7c",
+    "kind": "viewer.closed",
+    "data": {
+      "error_type": "WebSocketDisconnect",
+      "status": null,
+      "rfb_handshake": 3,
+      "blocked_inputs": 3
+    }
+  },
+  {
+    "at": 1792306304.770299,
+    "session_id": "5a3da86f-a1f0-4163-956f-39a00f2afd7c",
+    "kind": "viewer.connected",
+    "data": {
+      "connect_ms": 4802,
+      "mode": "human",
+      "version": 2
+    }
+  },
+  {
+    "at": 1792306462.690432,
+    "session_id": "5a3da86f-a1f0-4163-956f-39a00f2afd7c",
+    "kind": "viewer.connected",
+    "data": {
+      "connect_ms": 4233,
+      "mode": "human",
+      "version": 2
+    }
+  },
+  {
+    "at": 1792306498.057605,
+    "session_id": "5a3da86f-a1f0-4163-956f-39a00f2afd7c",
+    "kind": "viewer.closed",
+    "data": {
+      "error_type": "TrialError",
+      "status": null,
+      "rfb_handshake": 3,
+      "blocked_inputs": 0
+    }
+  },
+  {
+    "at": 1792306618.8834949,
+    "session_id": "5a3da86f-a1f0-4163-956f-39a00f2afd7c",
+    "kind": "viewer.connected",
+    "data": {
+      "connect_ms": 2976,
+      "mode": "human",
+      "version": 4
+    }
+  },
+  {
+    "at": 1792306676.261438,
+    "session_id": "5a3da86f-a1f0-4163-956f-39a00f2afd7c",
+    "kind": "viewer.closed",
+    "data": {
+      "error_type": "TrialError",
+      "status": null,
+      "rfb_handshake": 3,
+      "blocked_inputs": 0
+    }
+  },
+  {
+    "at": 1792306786.686805,
+    "session_id": "5a3da86f-a1f0-4163-956f-39a00f2afd7c",
+    "kind": "control.fresh_observation",
+    "data": {
+      "sha256": "f916b3e56e3d081939884be28d95a798be42405ebd1cbe942de07c09300b4209",
+      "version": 5
+    }
+  },
+  {
+    "at": 1792306990.7606552,
+    "session_id": "5a3da86f-a1f0-4163-956f-39a00f2afd7c",
+    "kind": "viewer.connected",
+    "data": {
+      "connect_ms": 3398,
+      "mode": "agent",
+      "version": 5
+    }
+  },
+  {
+    "at": 1792306991.218718,
+    "session_id": "5a3da86f-a1f0-4163-956f-39a00f2afd7c",
+    "kind": "viewer.closed",
+    "data": {
+      "error_type": "TrialError",
+      "status": null,
+      "rfb_handshake": 0,
+      "blocked_inputs": 0
+    }
+  },
+  {
+    "at": 1792306994.9182248,
+    "session_id": "5a3da86f-a1f0-4163-956f-39a00f2afd7c",
+    "kind": "viewer.connected",
+    "data": {
+      "connect_ms": 3670,
+      "mode": "agent",
+      "version": 5
+    }
+  },
+  {
+    "at": 1792307001.702303,
+    "session_id": "5a3da86f-a1f0-4163-956f-39a00f2afd7c",
+    "kind": "viewer.closed",
+    "data": {
+      "error_type": "TrialError",
+      "status": null,
+      "rfb_handshake": 0,
+      "blocked_inputs": 0
+    }
+  },
+  {
+    "at": 1792307045.0329459,
+    "session_id": "5a3da86f-a1f0-4163-956f-39a00f2afd7c",
+    "kind": "viewer.connected",
+    "data": {
+      "connect_ms": 4574,
+      "mode": "agent",
+      "version": 5
+    }
+  },
+  {
+    "at": 1792307084.262353,
+    "session_id": "5a3da86f-a1f0-4163-956f-39a00f2afd7c",
+    "kind": "viewer.closed",
+    "data": {
+      "error_type": "TrialError",
+      "status": null,
+      "rfb_handshake": 3,
+      "blocked_inputs": 0
+    }
+  }
+]

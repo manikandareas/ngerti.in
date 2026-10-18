@@ -1,0 +1,19 @@
+{
+  "session_id": "5a3da86f-a1f0-4163-956f-39a00f2afd7c",
+  "sandbox_id": "b211802e-3641-410e-8f3e-e98c909b8fe1",
+  "states": [
+    {
+      "elapsed_seconds": 76.02,
+      "state": "SandboxState.STOPPED"
+    }
+  ],
+  "file_before_sha256": "37d7bcb75135c80d5f9513e0ac7f9f731f8013cadbb6d2fbcbe1d11086fb4027",
+  "ram_process_pid_before": "974",
+  "target": "eu",
+  "idle_stop_observed": true,
+  "restart_ms": 2191,
+  "file_after_sha256": "37d7bcb75135c80d5f9513e0ac7f9f731f8013cadbb6d2fbcbe1d11086fb4027",
+  "old_ram_process_after_start": "",
+  "filesystem_persisted": true,
+  "ram_process_persisted": false
+}

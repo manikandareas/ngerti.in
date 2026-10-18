@@ -1,0 +1,12 @@
+uv run --project apps/backend python scripts/inspect_daytona_trial.py
+{
+  "passed": 6,
+  "checks": [
+    "concurrent account admission allows one resource",
+    "foreign owner, wrong cookie, stale lease and unknown effect fail closed",
+    "cleanup and restart do not refund reserved account budget",
+    "control waits for upstream close and permits one viewer channel",
+    "fragmented key, pointer and QEMU input blocked outside human lease",
+    "unknown protocol and oversized packets fail closed"
+  ]
+}

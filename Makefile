@@ -43,3 +43,10 @@ reset-dev:
 
 docs-check:
 	python3 scripts/check_docs.py
+
+.PHONY: daytona-preflight daytona-inspect
+daytona-preflight:
+	uv run --project apps/backend python -m ngertiin.daytona_trial preflight
+
+daytona-inspect:
+	uv run --project apps/backend python scripts/inspect_daytona_trial.py

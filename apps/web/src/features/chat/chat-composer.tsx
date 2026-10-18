@@ -1,4 +1,5 @@
 import { ArrowUp, LoaderCircle, Square } from "lucide-react";
+import type { Ref } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -8,6 +9,8 @@ type ComposerProps = {
   sending: boolean;
   active: boolean;
   blocked: boolean;
+  offline: boolean;
+  inputRef: Ref<HTMLTextAreaElement>;
   onDraftChange: (value: string) => void;
   onSend: () => void;
   onStop: () => void;
@@ -19,6 +22,8 @@ export function ChatComposer({
   sending,
   active,
   blocked,
+  offline,
+  inputRef,
   onDraftChange,
   onSend,
   onStop,
@@ -32,6 +37,7 @@ export function ChatComposer({
       }}
     >
       <Textarea
+        ref={inputRef}
         value={draft}
         onChange={(event) => onDraftChange(event.target.value)}
         aria-label="Pesan untuk Gwen"
@@ -66,7 +72,7 @@ export function ChatComposer({
             type="submit"
             size="icon"
             className="rounded-full"
-            disabled={!draft.trim() || sending || blocked}
+            disabled={!draft.trim() || sending || blocked || offline}
             aria-label="Kirim pesan"
           >
             {sending ? <LoaderCircle className="animate-spin" /> : <ArrowUp />}

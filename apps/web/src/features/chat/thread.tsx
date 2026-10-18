@@ -1,11 +1,14 @@
 import { MessageScroller } from "@shadcn/react/message-scroller";
-import { LoaderCircle, RefreshCw, WifiOff } from "lucide-react";
+import { RefreshCw, WifiOff } from "lucide-react";
+import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { QuotaSummary } from "@/features/quotas/quota-summary";
 import { useQuota } from "@/features/quotas/use-quota";
+import { WorkspaceState } from "@/features/workspace/workspace-state";
 import { ChatComposer } from "./chat-composer";
 import { ThreadTranscript } from "./thread-transcript";
 import { activeStatuses } from "./types";
+import { useOnline } from "./use-online";
 import { useThread } from "./use-thread";
 import { useThreadActions } from "./use-thread-actions";
 import { useThreadComposer } from "./use-thread-composer";
@@ -16,6 +19,8 @@ interface ThreadProps {
 
 export function Thread({ threadId }: ThreadProps) {
   const { snapshot, connection, error, refresh, loadEarlier } = useThread(threadId);
+  const online = useOnline();
+  const input = useRef<HTMLTextAreaElement>(null);
   const quota = useQuota();
   const blocked = quota.data?.meters.chat.remaining === 0;
   const run = snapshot?.run;
@@ -28,22 +33,16 @@ export function Thread({ threadId }: ThreadProps) {
   });
   const actions = useThreadActions(run, composer.setSendError);
   const sendError = composer.sendError;
-  if (error)
+  if (error && !snapshot)
     return (
-      <div className="flex flex-1 flex-col items-center justify-center gap-4 p-7 text-center text-muted-foreground">
-        <p role="alert">{error}</p>
-        <Button variant="outline" onClick={refresh}>
-          <RefreshCw /> Muat ulang
-        </Button>
-      </div>
+      <WorkspaceState
+        kind="error"
+        title="Percakapan belum dapat dibuka"
+        description="Percakapan mungkin tidak tersedia atau koneksi sedang terganggu. Coba muat kembali."
+        onRetry={refresh}
+      />
     );
-  if (!snapshot)
-    return (
-      <div className="flex flex-1 flex-col items-center justify-center gap-4 p-7 text-center text-muted-foreground">
-        <LoaderCircle className="animate-spin" />
-        <p>Membuka percakapan…</p>
-      </div>
-    );
+  if (!snapshot) return <WorkspaceState kind="loading" title="Membuka percakapan…" />;
   const empty = snapshot.messages.length === 0;
   return (
     <MessageScroller.Provider autoScroll defaultScrollPosition={empty ? "start" : "end"}>
@@ -53,18 +52,37 @@ export function Thread({ threadId }: ThreadProps) {
           active={active}
           loadEarlier={loadEarlier}
           onHistoryError={composer.setSendError}
-          onDraftChange={composer.updateDraft}
+          hasDraft={composer.draft.length > 0}
+          onDraftChange={(value) => {
+            if (composer.draft.length > 0) return;
+            composer.updateDraft(value);
+            input.current?.focus();
+          }}
           onRetry={actions.retry}
           decide={actions.decide}
         />
         <div className="relative z-10 mx-auto w-full max-w-[800px] shrink-0 px-3 pb-[max(8px,env(safe-area-inset-bottom))] min-[701px]:px-6 min-[701px]:pb-3">
-          {connection === "reconnecting" ? (
+          {!online || connection === "reconnecting" ? (
             <p
               role="status"
               className="my-2.5 flex items-center gap-2 text-xs text-muted-foreground"
             >
-              <WifiOff size={14} /> Menyambungkan kembali. Pesanmu tetap tersimpan.
+              <WifiOff size={14} />{" "}
+              {!online
+                ? "Kamu sedang offline. Lanjutkan draft; kirim saat koneksi kembali."
+                : "Menyambungkan kembali. Riwayat akan disinkronkan; draftmu tetap ada."}
             </p>
+          ) : null}
+          {error ? (
+            <div
+              role="alert"
+              className="my-2.5 rounded-xl bg-warning p-3 text-sm text-warning-foreground"
+            >
+              <p>{error}</p>
+              <Button type="button" variant="outline" className="mt-2" onClick={refresh}>
+                <RefreshCw /> Sinkronkan percakapan
+              </Button>
+            </div>
           ) : null}
           {sendError ? (
             <p
@@ -88,8 +106,12 @@ export function Thread({ threadId }: ThreadProps) {
             sending={composer.sending}
             active={active}
             blocked={blocked}
+            offline={!online}
+            inputRef={input}
             onDraftChange={composer.updateDraft}
-            onSend={() => void composer.send()}
+            onSend={() => {
+              if (online) void composer.send();
+            }}
             onStop={actions.cancel}
           />
           <QuotaSummary

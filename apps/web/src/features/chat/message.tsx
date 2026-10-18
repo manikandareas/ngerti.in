@@ -57,8 +57,9 @@ export const Message = memo(function Message({ message }: { message: ChatMessage
           </div>
         ) : null}
         {message.status === "cancelled" ? (
-          <p className="text-xs text-muted-foreground">
-            Respons dihentikan. Bagian yang sudah diterima tetap tersimpan.
+          <p role="status" className="text-xs text-muted-foreground">
+            Respons dihentikan. Bagian yang sudah diterima tetap tersimpan. Kamu bisa melanjutkan
+            lewat pesan baru.
           </p>
         ) : null}
       </div>

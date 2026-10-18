@@ -13,6 +13,7 @@ interface ThreadTranscriptProps {
   loadEarlier: () => Promise<void>;
   onHistoryError: (message: string) => void;
   onDraftChange: (value: string) => void;
+  hasDraft: boolean;
   onRetry: () => void;
   decide: (approval: Approval, approved: boolean) => Promise<void>;
 }
@@ -23,6 +24,7 @@ export function ThreadTranscript({
   loadEarlier,
   onHistoryError,
   onDraftChange,
+  hasDraft,
   onRetry,
   decide,
 }: ThreadTranscriptProps) {
@@ -55,7 +57,7 @@ export function ThreadTranscript({
             </Button>
           ) : null}
           {empty ? (
-            <Welcome choose={onDraftChange} />
+            <Welcome choose={onDraftChange} hasDraft={hasDraft} />
           ) : (
             snapshot.messages.map((message) => (
               <MessageScroller.Item

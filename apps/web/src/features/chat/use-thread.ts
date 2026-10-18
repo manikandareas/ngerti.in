@@ -42,6 +42,9 @@ export function useThread(threadId: string | null) {
             return fetch(url, {
               ...init,
               headers,
+            }).catch((reason: unknown) => {
+              if (!disposed) setConnection("reconnecting");
+              throw reason;
             });
           };
           let response = await authorizedFetch(token);

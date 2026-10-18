@@ -87,7 +87,11 @@ export function useThreadComposer({
       }
     } catch (reason) {
       setSendError(
-        reason instanceof Error ? reason.message : "Pesan belum terkirim. Draftmu tetap ada.",
+        reason instanceof TypeError
+          ? "Pesan belum terkirim. Periksa koneksi, lalu coba lagi. Draftmu tetap ada."
+          : reason instanceof Error
+            ? reason.message
+            : "Pesan belum terkirim. Draftmu tetap ada.",
       );
     } finally {
       setSending(false);

@@ -11,6 +11,7 @@ from psycopg.rows import dict_row
 
 from ngertiin.chat.store import one
 from ngertiin.config import get_settings
+from ngertiin.sandbox.contracts import RuntimePending
 from ngertiin.tasks import budget, store, workflow
 from ngertiin.tasks.checkpoints import TaskSaver
 
@@ -89,6 +90,11 @@ async def run_task(task_id: str):
             await running
     except store.StaleExecution:
         pass
+    except RuntimePending as error:
+        from ngertiin.sandbox.lifecycle import pending
+
+        with suppress(store.StaleExecution):
+            await pending(execution, str(error))
     except asyncio.CancelledError:
         # A graceful worker shutdown fences this attempt and leaves recovery to
         # the durable job/domain reconciler. A user stop already revoked it.

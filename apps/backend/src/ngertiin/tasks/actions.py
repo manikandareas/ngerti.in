@@ -32,7 +32,13 @@ async def ensure(execution: dict):
         if task.get("output_spec"):
             from ngertiin.files.validation import outputs
 
-            outputs(task["draft"], task["output_spec"])
+            value = outputs(
+                task["draft"], task["output_spec"], allow_staged=task.get("runtime_kind") == "code"
+            )
+            if task.get("runtime_kind") == "code":
+                from ngertiin.sandbox.outputs import resolve
+
+                await resolve(conn, task, value)
         await store.persist_revision(conn, task, uuid5(task["id"], f"draft:{task['revision']}"))
         action_id = uuid5(task["id"], f"finalize:{task['revision']}")
         await conn.execute(

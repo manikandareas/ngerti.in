@@ -55,7 +55,7 @@ def validate_text(data: bytes, extension: str):
         raise ValueError("File teks harus UTF-8 dan isi JSON/CSV harus valid.") from error
 
 
-def outputs(draft: str, specs: list[dict]) -> dict:
+def outputs(draft: str, specs: list[dict], *, allow_staged: bool = False) -> dict:
     try:
         value = json.loads(draft)
         if not isinstance(value, dict) or not isinstance(value.get("files"), list):
@@ -65,6 +65,13 @@ def outputs(draft: str, specs: list[dict]) -> dict:
             raise ValueError("count")
         total = 0
         for file, spec in zip(files, specs, strict=True):
+            if allow_staged and isinstance(file, dict) and "staged_output_id" in file:
+                from uuid import UUID
+
+                UUID(file["staged_output_id"])
+                if file.get("filename") != spec["filename"] or "content" in file:
+                    raise ValueError("staged reference")
+                continue
             if (
                 not isinstance(file, dict)
                 or file.get("filename") != spec["filename"]

@@ -31,6 +31,7 @@ PUBLIC_COLUMNS = (
     "updated_at",
     "output_spec",
     "result_id",
+    "runtime_kind",
 )
 MUTABLE = {
     "status",
@@ -130,6 +131,10 @@ async def view(conn, task: dict, *, detail: bool = False):
         "FROM task_actions WHERE task_id=%s AND revision=%s",
         (task["id"], task["revision"]),
     )
+    if task.get("runtime_kind") == "code":
+        from ngertiin.sandbox.store import summary
+
+        result["sandbox_sessions"] = await summary(conn, task)
     if detail:
         result["input_snapshot"] = task["input_snapshot"]
         result["executions"] = await (

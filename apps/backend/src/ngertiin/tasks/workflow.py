@@ -22,6 +22,11 @@ class TaskState(TypedDict, total=False):
 
 
 async def draft(execution: dict):
+    if execution.get("runtime_kind") == "code":
+        from ngertiin.sandbox.compute import draft as compute
+
+        await compute(execution)
+        return
     async with store.locked(execution["owner_id"], execution["id"]) as (conn, task):
         store.fence(task, execution)
         if task["draft"].strip() and task["stage"] in ("review", "draft_ready", "publishing"):

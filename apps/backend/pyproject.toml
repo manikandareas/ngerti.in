@@ -24,6 +24,7 @@ dependencies = [
   "httpx>=0.28.1",
   "pypdf>=6.21.1",
   "pillow>=13.0.0",
+  "daytona==0.225.0",
 ]
 
 [dependency-groups]
@@ -31,7 +32,6 @@ dev = [
     "ruff",
     "mypy",
     "boto3-stubs[s3]",
-    "daytona==0.225.0",
     "websockets>=15,<16",
     "httpx>=0.28.1",
 ]

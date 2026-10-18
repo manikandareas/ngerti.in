@@ -24,12 +24,18 @@ async def cancel(owner: UUID, task_id: UUID):
             conn,
             task,
             status="cancelled",
-            stage="unknown" if task["stage"] == "unknown" else "cancelled",
+            stage=task["stage"] if task["stage"] in ("unknown", "sandbox_unknown") else "cancelled",
             lease_token=None,
             resume=None,
             error=None,
         )
         await store.emit(conn, task)
+        if task.get("runtime_kind") == "code":
+            from ngertiin.sandbox.jobs import cleanup_task
+
+            await cleanup_task.configure(connection=conn).defer_async(
+                task_id=str(task_id), owner_id=str(owner)
+            )
         return await store.view(conn, task)
 
 
@@ -58,6 +64,14 @@ async def retry(owner: UUID, task_id: UUID, request_key: UUID):
             raise HTTPException(
                 429, "Budget task sudah terpakai. Hasil sebelumnya tetap dapat dibuka."
             )
+        if task.get("runtime_kind") == "code":
+            from ngertiin.sandbox.contracts import RuntimePending
+            from ngertiin.sandbox.store import require_reconciled
+
+            try:
+                await require_reconciled(conn, task)
+            except RuntimePending as error:
+                raise HTTPException(409, str(error)) from error
         await budget.admit(
             conn,
             owner,
@@ -101,7 +115,13 @@ async def revise(owner: UUID, task_id: UUID, revision: int, draft: str, request_
             from ngertiin.files.validation import outputs
 
             try:
-                outputs(draft, task["output_spec"])
+                value = outputs(
+                    draft, task["output_spec"], allow_staged=task.get("runtime_kind") == "code"
+                )
+                if task.get("runtime_kind") == "code":
+                    from ngertiin.sandbox.outputs import resolve
+
+                    await resolve(conn, task, value)
             except ValueError as error:
                 raise HTTPException(422, str(error)) from error
         previous = await one(
@@ -116,7 +136,7 @@ async def revise(owner: UUID, task_id: UUID, revision: int, draft: str, request_
         if (
             task["revision"] != revision
             or task["status"] not in ("waiting_user", "failed", "cancelled")
-            or task["stage"] == "unknown"
+            or task["stage"] in ("unknown", "sandbox_unknown")
         ):
             raise HTTPException(409, "Task sudah berubah. Muat ulang sebelum mengedit draft.")
         if revision >= 6:

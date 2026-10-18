@@ -1,7 +1,7 @@
 """Authenticated commands and replay; the subscription never starts a model."""
 
 import asyncio
-from typing import Annotated
+from typing import Annotated, Literal
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Query, Request
@@ -27,6 +27,7 @@ class MessageInput(ThreadInput):
     text: str = Field(min_length=1, max_length=12000)
     inputs: list[FileInput] = Field(default_factory=list, max_length=5)
     outputs: list[OutputSpec] = Field(default_factory=list, max_length=10)
+    runtime_kind: Literal["text", "code"] = "text"
 
 
 class DecisionInput(ThreadInput):
@@ -55,7 +56,7 @@ async def send(thread_id: UUID, body: MessageInput, account: AccountDep):
     text = body.text.strip()
     if not text:
         raise HTTPException(400, "Tulis pesanmu terlebih dahulu.")
-    if body.inputs or body.outputs:
+    if body.inputs or body.outputs or body.runtime_kind == "code":
         from ngertiin.tasks.creation import create
 
         task = await create(
@@ -66,6 +67,7 @@ async def send(thread_id: UUID, body: MessageInput, account: AccountDep):
             False,
             inputs=[v.model_dump(mode="json") for v in body.inputs],
             outputs=[v.model_dump() for v in body.outputs],
+            runtime_kind=body.runtime_kind,
         )
         return {"id": task["id"], "task_id": task["id"]}
     return await store.submit(account.id, thread_id, body.request_key, text)

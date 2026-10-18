@@ -92,6 +92,7 @@ def build_agent(run: dict, saver, projection: Projection):
         review_before_finish: bool = False,
         file_inputs: list[dict] | None = None,
         output_files: list[dict] | None = None,
+        use_computation: bool = False,
     ) -> dict:
         """Titipkan satu pekerjaan teks/file atas permintaan eksplisit pengguna.
 
@@ -99,7 +100,8 @@ def build_agent(run: dict, saver, projection: Projection):
         review_before_finish=True bila pengguna meminta review sebelum finalisasi.
         file_inputs: [{revision_id,start:1,end:null}] dari read_thread_files, tanpa menebak ID.
         output_files: [{filename:'hasil.md',format:'md'}]; format md/txt/csv/json/html statis.
-        Tidak menyediakan web, eksekusi kode, jadwal, atau aksi eksternal.
+        use_computation=True untuk menghitung/mengolah data dengan Python offline di sandbox.
+        Tidak menyediakan web, jadwal, atau aksi eksternal.
         """
         from uuid import uuid5
 
@@ -114,6 +116,7 @@ def build_agent(run: dict, saver, projection: Projection):
             source_run=run,
             inputs=file_inputs,
             outputs=output_files,
+            runtime_kind="code" if use_computation else "text",
         )
         return {
             "task_id": str(task["id"]),
@@ -168,7 +171,8 @@ def build_agent(run: dict, saver, projection: Projection):
             "Pertanyaan biasa dijawab langsung. Pesan baru tidak mengubah instruksi task lama. "
             "Untuk mengolah file yang pernah dilampirkan, baca read_thread_files lalu buat satu "
             "Task dengan revision exact dan output_files. Jangan mengklaim isi sudah dibaca hanya "
-            "dari metadata. Jangan menjanjikan web/kode/jadwal yang belum tersedia."
+            "dari metadata. Untuk hitungan/analisis data nyata gunakan use_computation=True. "
+            "Python offline tersedia; jangan menjanjikan web/browser/jadwal."
         ),
         middleware=middleware,
         checkpointer=saver,

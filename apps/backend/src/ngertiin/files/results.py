@@ -67,7 +67,13 @@ async def sync_status(conn, task):
 
 
 async def reserve(conn, task):
-    value = outputs(task["draft"], task["output_spec"])
+    value = outputs(
+        task["draft"], task["output_spec"], allow_staged=task.get("runtime_kind") == "code"
+    )
+    if task.get("runtime_kind") == "code":
+        from ngertiin.sandbox.outputs import resolve
+
+        value = await resolve(conn, task, value)
     root = await one(
         conn,
         "SELECT * FROM product_results WHERE id=%s AND owner_id=%s "
@@ -167,7 +173,13 @@ async def prepare(execution):
         async with tasks.locked(execution["owner_id"], execution["id"]) as (conn, task):
             tasks.fence(task, execution)
             await inputs.validate_live(conn, task)
-        data = file["content"].encode()
+        data = (
+            (await asyncio.to_thread(get_object, file["staged_key"]))
+            if "staged_key" in file
+            else file["content"].encode()
+        )
+        if hashlib.sha256(data).hexdigest() != row["sha256"]:
+            raise ValueError("Integritas candidate hasil berubah sebelum publikasi.")
         await asyncio.to_thread(put_object, row["object_key"], data, row["content_type"])
         async with tasks.transaction() as conn:
             await files.written(conn, row["id"])
@@ -226,7 +238,8 @@ async def detail(conn, owner, result_id, revision=None):
     ).fetchall()
     root["selected"] = await one(
         conn,
-        "SELECT revision,manifest,status FROM result_revisions WHERE result_id=%s AND revision=%s",
+        "SELECT r.revision,r.manifest,r.status,t.runtime_kind FROM result_revisions r "
+        "JOIN background_tasks t ON t.id=r.task_id WHERE r.result_id=%s AND r.revision=%s",
         (result_id, revision or root["current_revision"]),
     )
     if revision and not root["selected"]:

@@ -42,15 +42,30 @@ async def create(
     outputs: list[dict] | None = None,
     result_id: UUID | None = None,
     expected_result_revision: int | None = None,
+    runtime_kind: str = "text",
 ):
     from ngertiin.files import inputs as file_inputs
     from ngertiin.files import results
     from ngertiin.files.contracts import output_specs
 
     inputs = inputs or []
+    if runtime_kind not in ("text", "code"):
+        raise HTTPException(422, "Jenis pekerjaan tidak tersedia.")
+    if runtime_kind == "code":
+        from ngertiin.sandbox.policy import get_runtime
+
+        try:
+            get_runtime()  # Configuration only; provisioning happens in the worker.
+        except ValueError as error:
+            raise HTTPException(503, "Komputasi belum tersedia. Draft tetap tersimpan.") from error
     try:
         specs = output_specs(
-            outputs or ([{"filename": "hasil.md", "format": "md"}] if inputs else [])
+            outputs
+            or (
+                [{"filename": "hasil.md", "format": "md"}]
+                if inputs or runtime_kind == "code"
+                else []
+            )
         )
     except ValueError as error:
         raise HTTPException(422, str(error)) from error
@@ -64,6 +79,8 @@ async def create(
         "instruction": instruction,
         "review_required": review_required,
     }
+    if runtime_kind == "code":
+        identity["runtime_kind"] = runtime_kind
     if inputs or specs or result_id:
         identity.update(
             inputs=inputs,
@@ -98,6 +115,16 @@ async def create(
         policy, task_id = snapshot(), uuid4()
         if inputs or specs:
             policy = {**policy, "version": "file-task-work-v1", "max_input_bytes": 48000}
+        if runtime_kind == "code":
+            from ngertiin.sandbox.policy import snapshot as sandbox_policy
+
+            policy = {
+                **policy,
+                "version": "code-task-work-v1",
+                "timeout_seconds": 300,
+                "max_input_bytes": 48000,
+                "sandbox": sandbox_policy(),
+            }
         await budget.admit(conn, owner, policy)
         captured = await input_snapshot(conn, thread_id, instruction)
         title = " ".join(instruction.split())
@@ -124,6 +151,11 @@ async def create(
                 json_value(policy),
             ),
         )
+        if runtime_kind == "code":
+            await conn.execute(
+                "UPDATE background_tasks SET runtime_kind='code' WHERE id=%s", (task_id,)
+            )
+            task["runtime_kind"] = "code"
         captured_files = await file_inputs.capture(conn, owner, task_id, inputs)
         if specs:
             rid = await results.bind(conn, task, result_id, expected_result_revision)

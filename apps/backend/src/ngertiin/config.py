@@ -46,6 +46,11 @@ class Settings(BaseSettings):
     daytona_api_key: SecretStr = SecretStr("")
     daytona_api_url: str = "https://app.daytona.io/api"
     daytona_target: str | None = None
+    sandbox_provider: str = "daytona"
+    sandbox_price_version: str = "daytona-linux-2026-10-18"
+    sandbox_resource_microusd_per_hour: int = Field(default=166464, ge=0, le=180000)
+    sandbox_account_daily_microusd: int = Field(default=1000000, ge=36000, le=10000000)
+    sandbox_global_daily_microusd: int = Field(default=5000000, ge=36000, le=50000000)
 
     @model_validator(mode="after")
     def validate_production(self) -> "Settings":

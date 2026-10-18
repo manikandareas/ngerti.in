@@ -1,6 +1,6 @@
 """Authenticated task commands; clients never select owners, tools or budgets."""
 
-from typing import Annotated
+from typing import Annotated, Literal
 from uuid import UUID
 
 from fastapi import APIRouter, Depends
@@ -28,6 +28,7 @@ class CreateInput(CommandInput):
     outputs: list[OutputSpec] = Field(default_factory=list, max_length=10)
     result_id: UUID | None = None
     expected_result_revision: int | None = Field(default=None, ge=1)
+    runtime_kind: Literal["text", "code"] = "text"
 
 
 class DecisionInput(CommandInput):
@@ -60,6 +61,7 @@ async def create_task(body: CreateInput, account: AccountDep):
         outputs=[v.model_dump() for v in body.outputs],
         result_id=body.result_id,
         expected_result_revision=body.expected_result_revision,
+        runtime_kind=body.runtime_kind,
     )
 
 
@@ -85,7 +87,36 @@ async def revise(task_id: UUID, body: RevisionInput, account: AccountDep):
 
 @router.post("/tasks/{task_id}/reconcile")
 async def reconcile(task_id: UUID, account: AccountDep):
+    task = await store.detail(account.id, task_id)
+    if task["stage"] == "sandbox_unknown":
+        from ngertiin.sandbox.lifecycle import reconcile as reconcile_sandbox
+
+        return await reconcile_sandbox(account.id, task_id)
     return await actions.reconcile(account.id, task_id)
+
+
+@router.get("/tasks/{task_id}/outputs/{output_id}")
+async def candidate_output(task_id: UUID, output_id: UUID, account: AccountDep):
+    from urllib.parse import quote
+
+    from fastapi import Response
+
+    from ngertiin.sandbox.outputs import content
+
+    row, data = await content(account.id, task_id, output_id)
+    return Response(
+        data,
+        media_type=row["content_type"],
+        headers={
+            "Content-Disposition": "attachment; filename*=UTF-8''"
+            + quote(row["filename"], safe=""),
+            "Cache-Control": "no-store",
+            "X-Content-Type-Options": "nosniff",
+            "Content-Security-Policy": (
+                "sandbox; default-src 'none'; base-uri 'none'; form-action 'none'"
+            ),
+        },
+    )
 
 
 @router.post("/approvals/{action_id}/decision")

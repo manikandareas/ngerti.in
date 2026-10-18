@@ -1271,6 +1271,7 @@ dependencies = [
     { name = "alembic" },
     { name = "boto3" },
     { name = "clerk-backend-api" },
+    { name = "daytona" },
     { name = "fastapi" },
     { name = "httpx" },
     { name = "langchain" },
@@ -1293,7 +1294,6 @@ dependencies = [
 [package.dev-dependencies]
 dev = [
     { name = "boto3-stubs", extra = ["s3"] },
-    { name = "daytona" },
     { name = "httpx" },
     { name = "mypy" },
     { name = "ruff" },
@@ -1305,6 +1305,7 @@ requires-dist = [
     { name = "alembic" },
     { name = "boto3" },
     { name = "clerk-backend-api" },
+    { name = "daytona", specifier = "==0.225.0" },
     { name = "fastapi" },
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "langchain" },
@@ -1327,7 +1328,6 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "boto3-stubs", extras = ["s3"] },
-    { name = "daytona", specifier = "==0.225.0" },
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "mypy" },
     { name = "ruff" },

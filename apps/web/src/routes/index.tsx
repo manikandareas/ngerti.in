@@ -21,7 +21,7 @@ function Home() {
         className="flex min-h-[80svh] flex-col items-center justify-center gap-5 p-6 text-center"
         aria-busy="true"
       >
-        <p>Menyiapkan ruang belajarmu…</p>
+        <p>Menyiapkan percakapanmu…</p>
       </main>
     );
   if (!isSignedIn) return <AuthPage />;

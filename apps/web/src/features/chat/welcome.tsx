@@ -1,14 +1,14 @@
-import { BookOpen, Lightbulb, Sparkles } from "lucide-react";
+import { Lightbulb, Pencil, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const suggestions = [
-  { icon: BookOpen, label: "Jelaskan topik yang ingin kupahami", prompt: "Bantu aku memahami " },
+  { icon: Pencil, label: "Bantu menulis", prompt: "Bantu aku menulis " },
   {
     icon: Lightbulb,
-    label: "Bantu hubungkan konsep-konsepnya",
-    prompt: "Bantu aku menghubungkan konsep ",
+    label: "Bantu menganalisis",
+    prompt: "Bantu aku menganalisis ",
   },
-  { icon: Sparkles, label: "Buatkan rencana belajarku", prompt: "/course Aku ingin belajar " },
+  { icon: Sparkles, label: "Susun rencana", prompt: "Bantu aku menyusun rencana untuk " },
 ];
 
 export function Welcome({ choose }: { choose: (text: string) => void }) {
@@ -21,10 +21,10 @@ export function Welcome({ choose }: { choose: (text: string) => void }) {
         height={104}
         className="mb-[18px] size-[104px] rounded-full"
       />
-      <h1 className="text-2xl font-extrabold min-[701px]:text-[28px]">Mau belajar apa hari ini?</h1>
-      <p className="mt-3 text-sm text-muted-foreground">
-        Dari rasa penasaran jadi paham. Kita mulai dari mana?
-      </p>
+      <h1 className="text-2xl font-extrabold min-[701px]:text-[28px]">
+        Apa yang ingin kamu kerjakan?
+      </h1>
+      <p className="mt-3 text-sm text-muted-foreground">Ceritakan idemu. Kita mulai dari mana?</p>
       <div className="mt-6 flex flex-col items-center justify-center gap-2 min-[701px]:flex-row min-[701px]:flex-wrap">
         {suggestions.map(({ icon: Icon, label, prompt }) => (
           <Button

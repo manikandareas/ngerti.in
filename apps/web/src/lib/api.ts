@@ -12,7 +12,11 @@ export async function api<T>(
   if (!response.ok) {
     const body = await response.json().catch(() => null);
     throw new Error(
-      typeof body?.detail === "string" ? body.detail : `Request gagal (${response.status}).`,
+      typeof body?.detail === "string"
+        ? body.detail
+        : typeof body?.detail?.message === "string"
+          ? body.detail.message
+          : `Request gagal (${response.status}).`,
     );
   }
   if (response.status === 204) return undefined as T;

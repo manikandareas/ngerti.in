@@ -14,7 +14,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           <Brand />
         </Link>
         <nav aria-label="Navigasi utama">
-          <Link to="/">Ruang belajar</Link>
+          <Link to="/">Percakapan</Link>
           {diagnosticsEnabled ? <Link to="/dev/system">Diagnostik</Link> : null}
           {isSignedIn ? (
             <UserButton />

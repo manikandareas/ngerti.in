@@ -72,6 +72,7 @@ export function useThread(threadId: string | null) {
             setSnapshot(next);
             if (event.type === "run.status") {
               void queryClient.invalidateQueries({ queryKey: ["chat-threads", userId] });
+              void queryClient.invalidateQueries({ queryKey: ["quotas", userId] });
             }
           } catch {
             setError("Pesan belum tersinkron. Muat ulang untuk melanjutkan.");

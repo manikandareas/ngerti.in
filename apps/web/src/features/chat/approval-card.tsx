@@ -46,16 +46,14 @@ export function ApprovalCard({ approval, decide }: ApprovalCardProps) {
             {pending ? "Perlu keputusanmu" : (statusLabels[approval.status] ?? "Tidak aktif")}
           </Badge>
         </div>
-        <CardTitle className="text-lg font-extrabold">Simpan tujuan Course ini?</CardTitle>
-        <CardDescription>Tujuannya disimpan dulu. Sumber dan outline belum dibuat.</CardDescription>
+        <CardTitle className="text-lg font-extrabold">Izinkan tindakan ini?</CardTitle>
+        <CardDescription>Periksa tindakan dan detailnya sebelum memberi izin.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-3">
-        <p className="font-bold">{approval.action.args.goal}</p>
-        {approval.action.args.background ? (
-          <p className="text-sm text-muted-foreground">
-            Pengetahuan awal: {approval.action.args.background}
-          </p>
-        ) : null}
+        <p className="font-bold">{approval.action.name}</p>
+        <pre className="overflow-auto whitespace-pre-wrap break-words text-sm">
+          {JSON.stringify(approval.action.args, null, 2)}
+        </pre>
         {error ? (
           <p role="alert" className="text-sm text-destructive">
             {error}
@@ -65,7 +63,7 @@ export function ApprovalCard({ approval, decide }: ApprovalCardProps) {
       {pending ? (
         <CardFooter className="flex flex-wrap gap-2 border-t border-border pt-4">
           <Button type="button" disabled={sending} onClick={() => respond(true)}>
-            {sending ? <LoaderCircle className="animate-spin" /> : <Check />} Ya, simpan
+            {sending ? <LoaderCircle className="animate-spin" /> : <Check />} Setujui
           </Button>
           <Button type="button" variant="ghost" disabled={sending} onClick={() => respond(false)}>
             <X /> Lewati dulu

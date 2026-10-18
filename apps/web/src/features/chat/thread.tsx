@@ -1,6 +1,8 @@
 import { MessageScroller } from "@shadcn/react/message-scroller";
 import { LoaderCircle, RefreshCw, WifiOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { QuotaSummary } from "@/features/quotas/quota-summary";
+import { useQuota } from "@/features/quotas/use-quota";
 import { ChatComposer } from "./chat-composer";
 import { ThreadTranscript } from "./thread-transcript";
 import { activeStatuses } from "./types";
@@ -14,11 +16,14 @@ interface ThreadProps {
 
 export function Thread({ threadId }: ThreadProps) {
   const { snapshot, connection, error, refresh, loadEarlier } = useThread(threadId);
+  const quota = useQuota();
+  const blocked = quota.data?.meters.chat.remaining === 0;
   const run = snapshot?.run;
   const active = run ? activeStatuses.has(run.status) : false;
   const composer = useThreadComposer({
     threadId,
     active,
+    blocked,
     acceptedRequestKey: run?.request_key,
   });
   const actions = useThreadActions(run, composer.setSendError);
@@ -82,9 +87,15 @@ export function Thread({ threadId }: ThreadProps) {
             empty={empty}
             sending={composer.sending}
             active={active}
+            blocked={blocked}
             onDraftChange={composer.updateDraft}
             onSend={() => void composer.send()}
             onStop={actions.cancel}
+          />
+          <QuotaSummary
+            usage={quota.data}
+            failed={quota.isError}
+            onRefresh={() => void quota.refetch()}
           />
         </div>
       </div>

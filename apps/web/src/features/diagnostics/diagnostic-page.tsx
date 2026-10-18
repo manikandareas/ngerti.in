@@ -36,7 +36,7 @@ function Diagnostics() {
     <AppShell>
       <Link className="mb-6 inline-flex items-center gap-2 text-xs text-muted-foreground" to="/">
         <ArrowLeft size={16} />
-        Kembali ke ruang belajar
+        Kembali ke percakapan
       </Link>
       <div className="mb-9 flex flex-col items-start justify-between gap-5 min-[701px]:flex-row min-[701px]:items-center [&_h1]:text-3xl [&_p]:mt-3 [&_p]:max-w-[60ch] [&_p]:text-muted-foreground">
         <div>

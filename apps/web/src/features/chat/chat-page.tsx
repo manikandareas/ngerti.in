@@ -116,7 +116,7 @@ export function ChatPage({ selectedThread, onSelect }: ChatPageProps) {
             <AgentProfile />
           </div>
           <span className="sr-only">
-            {threads.data?.threads.find((item) => item.id === threadId)?.title ?? "Ruang belajarmu"}
+            {threads.data?.threads.find((item) => item.id === threadId)?.title ?? "Percakapanmu"}
           </span>
         </header>
         {create.error ? (

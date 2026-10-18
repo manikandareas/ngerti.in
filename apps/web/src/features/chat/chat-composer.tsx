@@ -1,11 +1,5 @@
-import { ArrowUp, BookOpen, LoaderCircle, Plus, Square } from "lucide-react";
+import { ArrowUp, LoaderCircle, Square } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Textarea } from "@/components/ui/textarea";
 
 type ComposerProps = {
@@ -13,6 +7,7 @@ type ComposerProps = {
   empty: boolean;
   sending: boolean;
   active: boolean;
+  blocked: boolean;
   onDraftChange: (value: string) => void;
   onSend: () => void;
   onStop: () => void;
@@ -23,6 +18,7 @@ export function ChatComposer({
   empty,
   sending,
   active,
+  blocked,
   onDraftChange,
   onSend,
   onStop,
@@ -35,30 +31,11 @@ export function ChatComposer({
         onSend();
       }}
     >
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            className="rounded-full"
-            aria-label="Aksi percakapan"
-          >
-            <Plus />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="start" side="top">
-          <DropdownMenuItem onSelect={() => onDraftChange("/course ")}>
-            <BookOpen />
-            Mulai tujuan belajar
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
       <Textarea
         value={draft}
         onChange={(event) => onDraftChange(event.target.value)}
         aria-label="Pesan untuk Gwen"
-        placeholder={empty ? "Apa yang ingin kamu pahami?" : "Balas Gwen atau tanya sesuatu…"}
+        placeholder={empty ? "Apa yang ingin kamu kerjakan?" : "Balas Gwen atau tanya sesuatu…"}
         maxLength={12000}
         className="max-h-[180px] min-w-0 flex-1 resize-none leading-relaxed min-h-10 rounded-none border-0 bg-transparent px-1 py-2 text-base min-[701px]:text-[18px] shadow-none focus-visible:ring-0 dark:bg-transparent"
         onKeyDown={(event) => {
@@ -89,7 +66,7 @@ export function ChatComposer({
             type="submit"
             size="icon"
             className="rounded-full"
-            disabled={!draft.trim() || sending}
+            disabled={!draft.trim() || sending || blocked}
             aria-label="Kirim pesan"
           >
             {sending ? <LoaderCircle className="animate-spin" /> : <ArrowUp />}

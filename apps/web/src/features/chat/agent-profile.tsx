@@ -23,10 +23,9 @@ export function AgentProfile() {
       </PopoverTrigger>
       <PopoverContent className="max-w-[calc(100vw-2rem)] border border-border p-4 shadow-sm">
         <PopoverHeader>
-          <PopoverTitle>Gwen · Teman belajarmu</PopoverTitle>
+          <PopoverTitle>Gwen · Asisten personalmu</PopoverTitle>
           <PopoverDescription>
-            Tanyakan topik yang ingin kamu pahami, hubungkan konsep, atau ceritakan tujuan
-            belajarmu.
+            Ceritakan ide, minta bantuan menulis, analisis, atau susun rencana bersama Gwen.
           </PopoverDescription>
         </PopoverHeader>
       </PopoverContent>

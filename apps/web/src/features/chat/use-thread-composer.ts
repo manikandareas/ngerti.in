@@ -1,15 +1,23 @@
 import { useAuth } from "@clerk/tanstack-react-start";
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { postChatCommand } from "./chat-api";
 
 interface ThreadComposerOptions {
   threadId: string;
   active: boolean;
+  blocked: boolean;
   acceptedRequestKey?: string;
 }
 
-export function useThreadComposer({ threadId, active, acceptedRequestKey }: ThreadComposerOptions) {
+export function useThreadComposer({
+  threadId,
+  active,
+  blocked,
+  acceptedRequestKey,
+}: ThreadComposerOptions) {
   const { getToken, userId } = useAuth();
+  const queryClient = useQueryClient();
   const [draft, setDraft] = useState("");
   const draftValue = useRef("");
   const [sending, setSending] = useState(false);
@@ -54,7 +62,7 @@ export function useThreadComposer({ threadId, active, acceptedRequestKey }: Thre
   }
   async function send() {
     const text = draft.trim();
-    if (!text || sending || active) return;
+    if (!text || sending || active || blocked) return;
     const current =
       request.current?.text === text ? request.current : { text, key: crypto.randomUUID() };
     request.current = current;
@@ -83,6 +91,7 @@ export function useThreadComposer({ threadId, active, acceptedRequestKey }: Thre
       );
     } finally {
       setSending(false);
+      void queryClient.invalidateQueries({ queryKey: ["quotas", userId] });
     }
   }
 

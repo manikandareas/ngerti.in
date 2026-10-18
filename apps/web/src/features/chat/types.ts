@@ -33,7 +33,7 @@ export interface Approval {
   revision: number;
   status: string;
   expires_at: string;
-  action: { name: string; args: { goal?: string; background?: string } };
+  action: { name: string; args: Record<string, unknown> };
 }
 export interface Snapshot {
   thread: ChatThread;

@@ -23,3 +23,13 @@ export interface StoredObject {
   size: number;
   created_at: string;
 }
+
+export interface DaytonaSession {
+  id: string;
+  sandbox_id: string;
+  mode: string;
+  status: string;
+  version: number;
+  reserved_usd: number;
+  deadline: number;
+}

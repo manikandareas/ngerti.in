@@ -1,8 +1,9 @@
 import { useAuth } from "@clerk/tanstack-react-start";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { ChatPage } from "@/features/chat/chat-page";
-import { type WorkspaceView, workspaceLinks } from "@/features/workspace/workspace-views";
-import { AuthPage } from "@/ui/auth-page";
+import { AuthPage } from "@/features/auth/components/auth-page";
+import { workspaceLinks } from "@/features/workspace/config/navigation";
+import type { WorkspaceView } from "@/features/workspace/types";
+import { WorkspacePage } from "@/ui/workspace-page";
 
 export const Route = createFileRoute("/")({
   validateSearch: (search: Record<string, unknown>): { thread?: string; view?: WorkspaceView } => ({
@@ -30,7 +31,7 @@ function Home() {
     );
   if (!isSignedIn) return <AuthPage />;
   return (
-    <ChatPage
+    <WorkspacePage
       key={userId}
       selectedThread={thread}
       view={view}

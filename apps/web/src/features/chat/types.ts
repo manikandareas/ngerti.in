@@ -56,4 +56,5 @@ export interface ChatEvent {
   approval?: Approval;
   task?: BackgroundTask;
 }
-export const activeStatuses = new Set(["queued", "running", "waiting_approval", "cancelling"]);
+
+export type ThreadConnection = "connecting" | "connected" | "reconnecting";

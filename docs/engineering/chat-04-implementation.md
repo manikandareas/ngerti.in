@@ -117,7 +117,7 @@ Mengikuti referensi pengguna, history desktop tampil sebagai panel yang menempat
 
 Main chat dipisahkan dan tetap terlihat ketika pencarian memfilter Side chats. Tombol `+` membuat side chat kosong dan membersihkan pencarian. Memilih atau membuat percakapan mempertahankan panel terbuka pada desktop. Tombol rail, menu `…`, dan Escape dari dalam panel dapat menutupnya; penutupan melalui menu/Escape mengembalikan fokus ke tombol rail.
 
-[ThreadList](../../apps/web/src/features/chat/thread-list.tsx) dipakai bersama oleh panel desktop dan Drawer mobile. State buka/tutup keduanya dipisahkan agar membuka panel desktop tidak otomatis membuka Drawer ketika viewport menjadi mobile. Judul panjang dipotong satu baris; judul lengkap tetap tersedia lewat label dan tooltip native. Penyesuaian ini direview langsung dalam satu konteks, dibantu scan layout, typecheck, lint, build, dan pemeriksaan browser.
+[ThreadList](../../apps/web/src/features/chat/components/thread-list.tsx) dipakai bersama oleh panel desktop dan Drawer mobile. State buka/tutup keduanya dipisahkan agar membuka panel desktop tidak otomatis membuka Drawer ketika viewport menjadi mobile. Judul panjang dipotong satu baris; judul lengkap tetap tersedia lewat label dan tooltip native. Penyesuaian ini direview langsung dalam satu konteks, dibantu scan layout, typecheck, lint, build, dan pemeriksaan browser.
 
 ## Cleanup React dan penutupan #04 — 16 Oktober 2026
 

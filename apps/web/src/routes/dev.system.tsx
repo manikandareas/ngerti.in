@@ -1,5 +1,5 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { DiagnosticPage } from "@/features/diagnostics/diagnostic-page";
+import { DiagnosticPage } from "@/features/diagnostics/components/diagnostic-page";
 import { diagnosticsEnabled } from "@/lib/api";
 
 export const Route = createFileRoute("/dev/system")({

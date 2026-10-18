@@ -1,18 +1,22 @@
 import { useAuth } from "@clerk/tanstack-react-start";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ChatPage } from "@/features/chat/chat-page";
+import { type WorkspaceView, workspaceLinks } from "@/features/workspace/workspace-views";
 import { AuthPage } from "@/ui/auth-page";
 
 export const Route = createFileRoute("/")({
-  validateSearch: (search: Record<string, unknown>): { thread?: string } => ({
+  validateSearch: (search: Record<string, unknown>): { thread?: string; view?: WorkspaceView } => ({
     thread: typeof search.thread === "string" ? search.thread : undefined,
+    view: workspaceLinks.some((item) => item.view === search.view)
+      ? (search.view as WorkspaceView)
+      : undefined,
   }),
   component: Home,
 });
 
 function Home() {
-  const { isLoaded, isSignedIn } = useAuth();
-  const { thread } = Route.useSearch();
+  const { isLoaded, isSignedIn, userId } = useAuth();
+  const { thread, view = "chat" } = Route.useSearch();
   const navigate = useNavigate();
   if (!isLoaded)
     return (
@@ -27,7 +31,12 @@ function Home() {
   if (!isSignedIn) return <AuthPage />;
   return (
     <ChatPage
+      key={userId}
       selectedThread={thread}
+      view={view}
+      onNavigate={(next) => {
+        void navigate({ to: "/", search: { thread, view: next === "chat" ? undefined : next } });
+      }}
       onSelect={(id) => {
         void navigate({ to: "/", search: { thread: id } });
       }}

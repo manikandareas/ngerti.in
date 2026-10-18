@@ -21,6 +21,8 @@ interface ThreadListProps {
   onClose: () => void;
   creating: boolean;
   loading: boolean;
+  failed: boolean;
+  onRetry: () => void;
   mobile: boolean;
 }
 
@@ -34,6 +36,8 @@ export function ThreadList({
   onClose,
   creating,
   loading,
+  failed,
+  onRetry,
   mobile,
 }: ThreadListProps) {
   const input = useRef<HTMLInputElement>(null);
@@ -62,7 +66,13 @@ export function ThreadList({
         </div>
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
-            <Button type="button" variant="ghost" size="icon-sm" aria-label="Opsi riwayat chat">
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="size-11"
+              aria-label="Opsi riwayat chat"
+            >
               <Ellipsis />
             </Button>
           </DropdownMenuTrigger>
@@ -86,7 +96,8 @@ export function ThreadList({
         <Button
           type="button"
           variant="ghost"
-          size="icon-sm"
+          size="icon"
+          className="size-11"
           aria-label="Buat side chat"
           onClick={onCreate}
           disabled={creating}
@@ -111,7 +122,15 @@ export function ThreadList({
             Memuat riwayat…
           </p>
         ) : null}
-        {!loading && sideChats.length === 0 ? (
+        {failed ? (
+          <div role="status" className="px-3 py-4 text-sm text-muted-foreground">
+            <p>Riwayat belum dapat diperbarui.</p>
+            <Button type="button" variant="outline" className="mt-3" onClick={onRetry}>
+              Coba lagi
+            </Button>
+          </div>
+        ) : null}
+        {!loading && !failed && sideChats.length === 0 ? (
           <p className="px-4 py-3 text-[13px] leading-relaxed text-muted-foreground">
             {query ? "Chat tidak ditemukan." : "Mulai topik baru lewat tombol +."}
           </p>
@@ -137,7 +156,7 @@ function ThreadButton({ thread, selectedId, onSelect }: ThreadButtonProps) {
     <Button
       type="button"
       variant="ghost"
-      className="h-9 w-full justify-start rounded-lg px-3 text-sm font-normal aria-[current=page]:bg-muted"
+      className="min-h-11 h-auto w-full justify-start rounded-lg px-3 py-2 text-sm font-normal aria-[current=page]:bg-muted"
       aria-current={thread.id === selectedId ? "page" : undefined}
       title={thread.title}
       onClick={() => onSelect(thread.id)}

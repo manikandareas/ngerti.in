@@ -15,6 +15,8 @@ export function useChatThreads(onCreated: (id: string) => void) {
   const [search, setSearch] = useState("");
   const queryKey = ["chat-threads", userId];
   const threads = useQuery({
+    enabled: Boolean(userId),
+    retry: 1,
     queryKey,
     queryFn: async () => api<ThreadListResponse>("/chat/threads", await getToken()),
     staleTime: 10_000,

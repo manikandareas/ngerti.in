@@ -36,9 +36,8 @@ export function ThreadTranscript({
       >
         <MessageScroller.Content
           className={cn(
-            "mx-auto max-w-[800px] px-4 pt-28 pb-12 min-[701px]:px-6",
-            empty &&
-              "flex min-h-full items-start justify-center max-w-[800px] pt-40 min-[701px]:pt-[210px]",
+            "mx-auto max-w-[800px] px-4 pt-6 pb-12 min-[701px]:px-6",
+            empty && "flex min-h-full items-center justify-center py-8",
           )}
           aria-busy={active && run?.status !== "waiting_approval"}
         >

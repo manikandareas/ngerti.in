@@ -19,6 +19,8 @@ export function ThemeToggle() {
     <Button
       variant="outline"
       size="icon"
+      className="size-11"
+      aria-pressed={dark}
       type="button"
       onClick={toggle}
       aria-label={dark ? "Gunakan mode terang" : "Gunakan mode gelap"}

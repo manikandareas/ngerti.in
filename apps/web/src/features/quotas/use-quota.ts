@@ -15,6 +15,7 @@ export function useQuota() {
   return useQuery({
     queryKey: ["quotas", userId],
     enabled: Boolean(userId),
+    retry: 1,
     queryFn: async () => api<QuotaUsage>("/quotas", await getToken()),
     staleTime: 10_000,
     refetchInterval: (query) => {

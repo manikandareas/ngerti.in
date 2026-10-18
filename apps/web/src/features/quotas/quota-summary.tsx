@@ -77,7 +77,8 @@ export function QuotaSummary({ usage, failed, onRefresh }: QuotaSummaryProps) {
             })}
           </dl>
           <p className="text-xs leading-relaxed text-muted-foreground">
-            Batas development sementara. Penggunaan komputasi akan diukur terpisah.
+            Kuota ini berlaku untuk pesan chat. Penggunaan komputasi akan ditampilkan ketika
+            kemampuannya tersedia.
           </p>
           {failed ? (
             <button type="button" onClick={onRefresh} className="text-xs underline">

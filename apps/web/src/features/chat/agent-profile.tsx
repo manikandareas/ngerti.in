@@ -12,13 +12,9 @@ export function AgentProfile() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button
-          variant="ghost"
-          className="h-auto flex-col gap-1 rounded-2xl px-3 py-0 hover:bg-transparent"
-          aria-label="Tentang Gwen"
-        >
-          <img src="/images/Dh2gf.png" width={48} height={48} className="size-12" alt="" />
-          <span className="rounded-full bg-muted px-3 py-0.5 text-xs font-normal">Gwen</span>
+        <Button variant="ghost" className="h-10 gap-2 rounded-xl px-3" aria-label="Tentang Gwen">
+          <img src="/images/Dh2gf.png" width={32} height={32} className="size-8" alt="" />
+          <span className="text-sm font-bold">Gwen</span>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="max-w-[calc(100vw-2rem)] border border-border p-4 shadow-sm">

@@ -1,0 +1,153 @@
+{
+  "verified_at": "2026-10-16T14:36:18.328212+00:00",
+  "database": {
+    "kind": "temporary PostgreSQL database with real migrations and queue schema",
+    "passed": 55,
+    "dropped_after_probe": true,
+    "details": "ledger-probe.json"
+  },
+  "browser": {
+    "kind": "real Clerk development account, API, worker and model; no API responses mocked",
+    "accepted_user_turns": 2,
+    "chat_used_after_direct_answer": 1,
+    "chat_used_after_goal_proposal": 2,
+    "temporary_exhaustion_fixture": {
+      "reserved_chat_units": 98,
+      "released_after_probe": true
+    },
+    "denied_send": {
+      "alert": "Sisa kuota chat periode ini tidak cukup. Draftmu tetap tersimpan.",
+      "draft": "Draft QA kuota #05 harus tetap ada setelah penolakan dan reload.",
+      "responses": [
+        {
+          "body": {
+            "detail": {
+              "code": "quota_exceeded",
+              "limit": 100,
+              "message": "Sisa kuota chat periode ini tidak cukup. Draftmu tetap tersimpan.",
+              "meter": "chat",
+              "remaining": 0,
+              "required": 1,
+              "reserved": 98,
+              "reset_at": "2026-11-14T13:00:21.479221+00:00",
+              "used": 2
+            }
+          },
+          "status": 429
+        }
+      ],
+      "sendDisabled": true,
+      "thread": "89cc0613-5356-587e-8592-218080ce1490"
+    },
+    "after_reload_mobile": {
+      "documentWidth": 390,
+      "draft": "Draft QA kuota #05 harus tetap ada setelah penolakan dan reload.",
+      "popover": "Paket FreeKuota tersedia kembali 14 Nov, 21.00 WITACourse baru1 / 1 tersisaPesan pengguna0 / 100 tersisa98 sedang dipakai pekerjaan berjalanHalaman materi baru100 / 100 tersisaKuota pembuatan habis? Konten belajar yang sudah tersedia tetap dapat dipelajari.",
+      "sendDisabled": true,
+      "thread": "89cc0613-5356-587e-8592-218080ce1490",
+      "viewport": 390
+    },
+    "approval_at_zero": {
+      "usage": {
+        "plan": "free",
+        "period": {
+          "starts_at": "2026-10-15 13:00:21.479221+00:00",
+          "ends_at": "2026-11-14 13:00:21.479221+00:00",
+          "policy_version": "quota-v1"
+        },
+        "meters": {
+          "course": {
+            "limit": 1,
+            "reserved": 0,
+            "used": 0,
+            "remaining": 1
+          },
+          "chat": {
+            "limit": 100,
+            "reserved": 98,
+            "used": 2,
+            "remaining": 0
+          },
+          "material_pages": {
+            "limit": 100,
+            "reserved": 0,
+            "used": 0,
+            "remaining": 100
+          }
+        }
+      },
+      "runs": [
+        {
+          "id": "6bafb796-c276-4431-9591-0e3d160b7f3b",
+          "status": "complete",
+          "quota_operation_id": "b8fd3b9d-bb76-5390-8b35-0c50101ea411"
+        },
+        {
+          "id": "ef03d17d-7da2-4fd3-92e9-0a261fc2b178",
+          "status": "complete",
+          "quota_operation_id": "fbc1ee5f-b1ee-5d94-9459-67a6f7a47e2f"
+        }
+      ]
+    },
+    "cleanup": {
+      "usage": {
+        "plan": "free",
+        "period": {
+          "starts_at": "2026-10-15 13:00:21.479221+00:00",
+          "ends_at": "2026-11-14 13:00:21.479221+00:00",
+          "policy_version": "quota-v1"
+        },
+        "meters": {
+          "course": {
+            "limit": 1,
+            "reserved": 0,
+            "used": 0,
+            "remaining": 1
+          },
+          "chat": {
+            "limit": 100,
+            "reserved": 0,
+            "used": 2,
+            "remaining": 98
+          },
+          "material_pages": {
+            "limit": 100,
+            "reserved": 0,
+            "used": 0,
+            "remaining": 100
+          }
+        }
+      },
+      "runs": [
+        {
+          "id": "6bafb796-c276-4431-9591-0e3d160b7f3b",
+          "status": "complete",
+          "quota_operation_id": "b8fd3b9d-bb76-5390-8b35-0c50101ea411"
+        },
+        {
+          "id": "ef03d17d-7da2-4fd3-92e9-0a261fc2b178",
+          "status": "complete",
+          "quota_operation_id": "fbc1ee5f-b1ee-5d94-9459-67a6f7a47e2f"
+        }
+      ]
+    },
+    "screenshots": [
+      "desktop.png",
+      "mobile-exhausted.png",
+      "mobile-usage.png",
+      "approval-exhausted.png"
+    ]
+  },
+  "checks": {
+    "make_check": "passed",
+    "make_build": "passed",
+    "migration": "0004_quotas",
+    "backend_package": "wheel_and_sdist_passed",
+    "mirror_files_verified": 34,
+    "local_links_verified": 391
+  },
+  "limits": [
+    "Course/material workflows are transaction contracts; live integration is #06/#08/#09.",
+    "No production deployment or payment gateway verification in #05."
+  ]
+}

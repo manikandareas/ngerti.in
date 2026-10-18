@@ -1,3 +1,5 @@
+> Catatan historis sebelum reset V1 asisten umum pada 18 Oktober 2026. Kontrak/command pembelajaran, migration head dan hasil acceptance lama di bawah tidak menjadi persyaratan aktif. Lihat [spesifikasi V1](../product/01-produk-dan-paket.md) dan [baseline baru](baseline-v1-acceptance.md).
+
 # Penerimaan standar konten #003
 
 Selesai pada 15 Oktober 2026. Cakupan adalah kontrak/validator/policy/fixture/desain handoff, sesuai [tiket #003](../backlog/tasks/03-port-standar-lesson-dan-soal-dari-prototipe.md). Planner, queue generation Course, player dan grading pengguna diimplementasikan pada #008/#009/#011/#012.

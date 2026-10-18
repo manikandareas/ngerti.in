@@ -1,3 +1,5 @@
+> Catatan historis sebelum reset V1 asisten umum pada 18 Oktober 2026. Kontrak/command pembelajaran, migration head dan hasil acceptance lama di bawah tidak menjadi persyaratan aktif. Lihat [spesifikasi V1](../product/01-produk-dan-paket.md) dan [baseline baru](baseline-v1-acceptance.md).
+
 # Handoff generation Course: progressive, batch, multi-worker
 
 Status: kontrak/desain #003 untuk implementasi planner #008, engine #009, player #011 dan Practice #012. Runtime Course multi-worker belum dibangun oleh #003. [Standar konten](course-content-standard.md) dan [riset primer](../research/course-generation-engine-2026-10-15.md) menjadi acuannya.

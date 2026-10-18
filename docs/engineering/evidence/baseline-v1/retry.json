@@ -1,0 +1,8 @@
+{
+  "kind": "controlled_no_output_failure_then_real_browser_retry",
+  "run_id": "a3f2d674-69b4-419a-9d7a-b0a150cecf74",
+  "thread_id": "a3c9de10-f5d8-524e-869c-6e0948b0ee2c",
+  "status": "complete",
+  "text": "RETRY-OK",
+  "provider_run": true
+}

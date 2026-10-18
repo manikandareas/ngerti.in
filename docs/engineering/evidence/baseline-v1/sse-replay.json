@@ -1,0 +1,19 @@
+{
+  "initial_events": 13,
+  "initial_ordered": true,
+  "initial_unique": true,
+  "replay_exact": true,
+  "replayed_ids": [
+    8,
+    9,
+    10,
+    11,
+    12,
+    13
+  ],
+  "resume_after": 7,
+  "thread_id": "ba7199a2-5d9a-5026-9028-75657d7e6a32",
+  "through_seq": 13,
+  "transcript_rows": 2,
+  "transcript_unchanged": true
+}

@@ -1,0 +1,24 @@
+{
+  "main_run_id": "5dfeae7b-ae75-4cdc-af03-68160778d87d",
+  "main_status": "complete",
+  "main_thread_id": "ba7199a2-5d9a-5026-9028-75657d7e6a32",
+  "quota_meters": [
+    "chat"
+  ],
+  "sse": {
+    "event_ids": [
+      1
+    ],
+    "status": 200,
+    "strictly_increasing": true
+  },
+  "storage": {
+    "deleted": 204,
+    "download_matches": true,
+    "missing": 404,
+    "upload": 200
+  },
+  "thread_count": 2,
+  "transcript_rows": 2,
+  "transcript_text": "17 \u00d7 19 = 323.\n\nSaya bisa membantu menulis teks dan merencanakan pekerjaan."
+}

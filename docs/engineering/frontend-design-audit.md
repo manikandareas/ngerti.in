@@ -1,3 +1,5 @@
+> Catatan historis sebelum reset V1 asisten umum pada 18 Oktober 2026. Kontrak/command pembelajaran, migration head dan hasil acceptance lama di bawah tidak menjadi persyaratan aktif. Lihat [spesifikasi V1](../product/01-produk-dan-paket.md) dan [baseline baru](baseline-v1-acceptance.md).
+
 # Audit frontend terhadap walkthrough Pen
 
 Tanggal: 2026-10-16. Referensi: `docs/walkthrough-ux.pen`, dibaca melalui Pencil MCP. Scope implementasi: frontend yang sudah tersedia (auth, chat, diagnostik); tidak menambah runtime Course atau endpoint baru.

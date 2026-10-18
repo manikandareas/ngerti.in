@@ -1,3 +1,5 @@
+> Catatan historis sebelum reset V1 asisten umum pada 18 Oktober 2026. Kontrak/command pembelajaran, migration head dan hasil acceptance lama di bawah tidak menjadi persyaratan aktif. Lihat [spesifikasi V1](../product/01-produk-dan-paket.md) dan [baseline baru](baseline-v1-acceptance.md).
+
 # Standar konten Course v1
 
 Deliverable [backlog #003](../backlog/tasks/03-port-standar-lesson-dan-soal-dari-prototipe.md). Implementasi berada di `apps/backend/src/ngertiin/content/`. Modul ini murni: tidak membuka database, memanggil provider, menjalankan queue, atau menentukan progress pengguna.
@@ -84,4 +86,4 @@ Receipt berisi ID, revision dan fingerprint konten yang telah diterbitkan host. 
 
 ## Fixture dan verifikasi
 
-[Corpus](../fixtures/course-content/README.md) menyertakan enam sumber sintetis dan label editorial, termasuk struktur lolos tetapi semantik gagal. Operator menjalankan `make content-inspect`; output tidak mengklaim reviewer AI atau siswa pasti menghasilkan label yang sama. [Bukti penerimaan](content-03-manual-acceptance.md) mencatat pemeriksaan lokal/provider dan batasnya. Tidak ada suite unit/integration/E2E baru atau pemanggilan provider di CI.
+Corpus historis (fixture dihapus pada reset; tersedia melalui riwayat Git) menyertakan enam sumber sintetis dan label editorial, termasuk struktur lolos tetapi semantik gagal. Operator menjalankan `make content-inspect`; output tidak mengklaim reviewer AI atau siswa pasti menghasilkan label yang sama. [Bukti penerimaan](content-03-manual-acceptance.md) mencatat pemeriksaan lokal/provider dan batasnya. Tidak ada suite unit/integration/E2E baru atau pemanggilan provider di CI.

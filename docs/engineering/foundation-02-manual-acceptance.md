@@ -1,3 +1,5 @@
+> Catatan historis sebelum reset V1 asisten umum pada 18 Oktober 2026. Kontrak/command pembelajaran, migration head dan hasil acceptance lama di bawah tidak menjadi persyaratan aktif. Lihat [spesifikasi V1](../product/01-produk-dan-paket.md) dan [baseline baru](baseline-v1-acceptance.md).
+
 # Penerimaan manual fondasi #02
 
 Sumber: [tiket Notion](https://app.notion.com/p/3f8abdd61873817d9529f43e39a5979f). Pengujian perilaku melalui browser, sesuai keputusan pengguna. Storage acceptance menggunakan MinIO; R2 ditunda atas arahan pengguna.

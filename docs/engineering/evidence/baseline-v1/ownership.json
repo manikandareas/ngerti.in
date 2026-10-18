@@ -1,0 +1,41 @@
+{
+  "kind": "controlled_backend_probe_with_synthetic_second_account",
+  "checks": [
+    {
+      "method": "GET",
+      "path": "/chat/threads/ba7199a2-5d9a-5026-9028-75657d7e6a32",
+      "status": 404
+    },
+    {
+      "method": "GET",
+      "path": "/chat/threads/ba7199a2-5d9a-5026-9028-75657d7e6a32/events",
+      "status": 404
+    },
+    {
+      "method": "POST",
+      "path": "/chat/threads/ba7199a2-5d9a-5026-9028-75657d7e6a32/runs",
+      "status": 404
+    },
+    {
+      "method": "POST",
+      "path": "/chat/runs/5dfeae7b-ae75-4cdc-af03-68160778d87d/cancel",
+      "status": 404
+    },
+    {
+      "method": "POST",
+      "path": "/chat/runs/5dfeae7b-ae75-4cdc-af03-68160778d87d/retry",
+      "status": 404
+    },
+    {
+      "method": "GET",
+      "path": "/dev/objects/6a6ff49c-dab8-530d-af1a-d81a40a433fc/download",
+      "status": 404
+    },
+    {
+      "method": "DELETE",
+      "path": "/dev/objects/6a6ff49c-dab8-530d-af1a-d81a40a433fc",
+      "status": 404
+    }
+  ],
+  "all_foreign_commands_404": true
+}

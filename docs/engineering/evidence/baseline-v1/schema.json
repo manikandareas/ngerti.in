@@ -1,0 +1,31 @@
+{
+  "head": "0001_v1_baseline",
+  "tables": [
+    "accounts",
+    "agent_profiles",
+    "alembic_version",
+    "chat_approvals",
+    "chat_events",
+    "chat_messages",
+    "chat_runs",
+    "chat_threads",
+    "checkpoint_blobs",
+    "checkpoint_migrations",
+    "checkpoint_writes",
+    "checkpoints",
+    "diagnostic_runs",
+    "procrastinate_events",
+    "procrastinate_jobs",
+    "procrastinate_periodic_defers",
+    "procrastinate_workers",
+    "quota_events",
+    "quota_grants",
+    "quota_operations",
+    "quota_periods",
+    "runtime_schema_versions",
+    "stored_objects"
+  ],
+  "meters": [
+    "chat"
+  ]
+}

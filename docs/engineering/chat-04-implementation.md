@@ -1,3 +1,5 @@
+> Catatan historis sebelum reset V1 asisten umum pada 18 Oktober 2026. Kontrak/command pembelajaran, migration head dan hasil acceptance lama di bawah tidak menjadi persyaratan aktif. Lihat [spesifikasi V1](../product/01-produk-dan-paket.md) dan [baseline baru](baseline-v1-acceptance.md).
+
 # Chat personal #04 — implementasi dan penerimaan
 
 Implementasi lokal 16 Oktober 2026 untuk [backlog #04](../backlog/tasks/04-chat-personal-thread-dan-streaming-resumable.md). Rujukan: [riset framework, streaming, dan UI](../research/chat-04-streaming-research-2026-10-16.md) serta [desain Pen](../walkthrough-ux.pen). Catatan ini mencatat hasil implementasi; status mirror Notion tetap mengikuti snapshotnya.
@@ -62,7 +64,7 @@ Checkpoint adalah batas pemulihan langkah. Panggilan provider yang belum selesai
 | Keputusan | `POST /chat/approvals/{id}/decision` |
 | Stop / retry | `POST /chat/runs/{id}/cancel`, `POST /chat/runs/{id}/retry` |
 
-Owner ditentukan dari Clerk, bukan body. Akses akun lain mendapat 404. Pengiriman/keputusan memakai UUID request key; body menolak field tambahan. Satu thread hanya memiliki satu turn aktif; per akun maksimal tiga turn queued/running. Batas default: 12.000 karakter input, 3.000 output token per panggilan, enam model calls, sepuluh tool calls, timeout turn 180 detik. Kuota paket/periode dan pembukuan biaya adalah #05.
+Owner ditentukan dari Clerk, bukan body. Akses akun lain mendapat 404. Pengiriman/keputusan memakai UUID request key; body menolak field tambahan. Satu thread hanya memiliki satu turn aktif; per akun maksimal tiga turn queued/running. Batas default: 12.000 karakter input, 3.000 output token per panggilan, enam model calls, sepuluh tool calls, timeout turn 180 detik. Kuota paket/periode kini diterapkan melalui [#05](quota-05-implementation.md); pencatatan token provider tetap terpisah dari unit pesan pengguna.
 
 [Environment example](../../.env.example) mencantumkan konfigurasi server-only. Provider saat ini langsung melalui `langchain-openai` dan OpenAI Responses; LiteLLM gateway belum terlibat. Jalankan `make install`, `make infra-up`, `make migrate`, lalu `make dev`. Revision aplikasi: `0003_chat_order`.
 
@@ -124,3 +126,7 @@ Main chat dipisahkan dan tetap terlihat ketika pencarian memfilter Side chats. T
 [Pemeriksaan cleanup](react-cleanup-2026-10-16.md) melengkapi penerimaan runtime di atas. Probe browser baru memakai akun Clerk development dan backend nyata: kegagalan kirim yang disimulasikan mempertahankan draft/request key melewati reload; pengiriman ulang memakai key yang sama dan menghasilkan satu bubble jawaban. Panel desktop, pencarian, pemulihan fokus, Drawer mobile, perpindahan thread, serta upload/hapus file diagnostik diperiksa kembali. Ini tidak mengulang seluruh matriks crash/recovery/HITL; bukti untuk matriks tersebut tetap pada penerimaan #04 dan audit streaming sebelumnya.
 
 Status #04 diselaraskan ke **Done** di Notion berdasarkan delapan acceptance criteria dalam cakupan chat. `/course` dan bahasa natural menyimpan proposal tujuan melalui HITL yang sama. Generation Course lengkap dan konteks Course/Lesson tetap mengikuti tiket domain berikutnya; penutupan ini bukan bukti penerimaan generation/player atau deploy production.
+
+## Integrasi kuota #05 — 16 Oktober 2026
+
+Admission chat mereservasi satu pesan dalam transaksi run/message/enqueue. Commit terjadi ketika teks publik atau kartu HITL tersimpan; stop/error tanpa hasil melepas reserve. Replay, approval dan recovery tidak menambah unit. [Bukti #05](quota-05-implementation.md) mencakup kuota nol, draft/reload, dan approval asli pada kuota nol. Transaksi async bersama dipindahkan ke `ngertiin.async_db` agar kuota tidak bergantung pada modul chat.

@@ -1,0 +1,21 @@
+{
+  "kind": "real_worker_sigkill_recovery",
+  "before": {
+    "id": "aa39b4c4-293e-4a89-8a70-1597a957571d",
+    "status": "running",
+    "artifact_id": null,
+    "job_status": "doing",
+    "attempts": 0
+  },
+  "after": {
+    "id": "aa39b4c4-293e-4a89-8a70-1597a957571d",
+    "status": "completed",
+    "artifact_id": "5ed77623-b7ea-50c0-abeb-599d8d6c214e",
+    "job_status": "succeeded",
+    "attempts": 2
+  },
+  "single_artifact": true,
+  "checkpoint_rows_before_crash": 1,
+  "heartbeat_wait_seconds": 32,
+  "restarted_worker_pid": 47185
+}

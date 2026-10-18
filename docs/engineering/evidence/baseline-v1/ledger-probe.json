@@ -1,0 +1,192 @@
+{
+  "kind": "isolated_database_contract_probe",
+  "scenarios": [
+    {
+      "scenario": "free_limits",
+      "passed": true
+    },
+    {
+      "scenario": "last_slot_concurrency",
+      "passed": true,
+      "requests": 12,
+      "admitted": 1
+    },
+    {
+      "scenario": "idempotent_reservation",
+      "passed": true
+    },
+    {
+      "scenario": "identity_input_conflict",
+      "passed": true
+    },
+    {
+      "scenario": "commit_and_cancel_idempotent",
+      "passed": true
+    },
+    {
+      "scenario": "committed_replay_after_reset",
+      "passed": true
+    },
+    {
+      "scenario": "late_refund_does_not_credit_new_period",
+      "passed": true
+    },
+    {
+      "scenario": "explicit_retry_gets_new_fence",
+      "passed": true
+    },
+    {
+      "scenario": "stale_reservation_cannot_commit",
+      "passed": true
+    },
+    {
+      "scenario": "operation_owner_isolation",
+      "passed": true
+    },
+    {
+      "scenario": "release_recovers_capacity",
+      "passed": true
+    },
+    {
+      "scenario": "reserved_work_finishes_in_original_period",
+      "passed": true
+    },
+    {
+      "scenario": "domain_transaction_rolls_back_admission",
+      "passed": true
+    },
+    {
+      "scenario": "plus_limits_and_idempotent_activation",
+      "passed": true
+    },
+    {
+      "scenario": "early_renewal_is_scheduled",
+      "passed": true
+    },
+    {
+      "scenario": "boundary_activates_next_plus_period",
+      "passed": true
+    },
+    {
+      "scenario": "expiry_returns_to_free",
+      "passed": true
+    },
+    {
+      "scenario": "lazy_cycles_do_not_wait_for_login",
+      "passed": true
+    },
+    {
+      "scenario": "activation_closes_old_free_period",
+      "passed": true
+    },
+    {
+      "scenario": "activation_source_conflict",
+      "passed": true
+    },
+    {
+      "scenario": "timezone_stable_period_identity",
+      "passed": true
+    },
+    {
+      "scenario": "renewal_uses_exact_utc_duration_across_dst",
+      "passed": true
+    },
+    {
+      "scenario": "chat_duplicate_request_is_one_run",
+      "passed": true
+    },
+    {
+      "scenario": "chat_reserves_on_acceptance",
+      "passed": true
+    },
+    {
+      "scenario": "reasoning_does_not_commit",
+      "passed": true
+    },
+    {
+      "scenario": "failure_without_result_releases",
+      "passed": true
+    },
+    {
+      "scenario": "retry_after_release_rechecks_capacity",
+      "passed": true
+    },
+    {
+      "scenario": "chat_retry_reuses_run_with_new_quota_token",
+      "passed": true
+    },
+    {
+      "scenario": "old_chat_worker_is_fenced",
+      "passed": true
+    },
+    {
+      "scenario": "public_text_commits_once",
+      "passed": true
+    },
+    {
+      "scenario": "cancel_after_output_keeps_charge",
+      "passed": true
+    },
+    {
+      "scenario": "cancelled_submission_replay_does_not_charge",
+      "passed": true
+    },
+    {
+      "scenario": "chat_request_key_rejects_changed_input",
+      "passed": true
+    },
+    {
+      "scenario": "approval_card_commits_chat",
+      "passed": true
+    },
+    {
+      "scenario": "approval_at_zero_chat_does_not_charge_again",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_chat_snapshot_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "recovery_preserves_reservation",
+      "passed": true
+    },
+    {
+      "scenario": "terminal_recovery_releases_without_output",
+      "passed": true
+    },
+    {
+      "scenario": "recovery_fences_previous_worker",
+      "passed": true
+    },
+    {
+      "scenario": "usage_requires_authentication",
+      "passed": true
+    },
+    {
+      "scenario": "usage_ignores_client_owner_and_plan",
+      "passed": true
+    },
+    {
+      "scenario": "no_public_grant_endpoint",
+      "passed": true
+    },
+    {
+      "scenario": "chat_rejects_forged_billing_fields",
+      "passed": true
+    },
+    {
+      "scenario": "quota_error_has_machine_readable_context",
+      "passed": true
+    },
+    {
+      "scenario": "rejected_send_creates_no_message",
+      "passed": true
+    },
+    {
+      "scenario": "audit_tracks_latest_operation_revision",
+      "passed": true
+    }
+  ],
+  "passed": 46
+}

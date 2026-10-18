@@ -1,0 +1,304 @@
+{
+  "checked_at": "2026-10-18T04:21:11.579735+00:00",
+  "scope": "Codex REA MCP and shared skill; isolated local browser/JavaScript fixture",
+  "versions": {
+    "rea": "6.5.0",
+    "skill": "42",
+    "node": "v24.18.0"
+  },
+  "configuration": {
+    "node": "v24.18.0",
+    "command": "npx",
+    "args": [
+      "-y",
+      "rea-agents@6.5.0",
+      "mcp"
+    ],
+    "startup_timeout_sec": 30,
+    "unrelated_configuration_preserved": true,
+    "existing_rea_environment_preserved": true
+  },
+  "scoped_doctor": {
+    "healthy": true,
+    "checks": [
+      {
+        "name": "node",
+        "ok": true,
+        "classification": "healthy",
+        "detail": "24.18.0",
+        "details": {
+          "runtime": "node",
+          "version": "24.18.0"
+        }
+      },
+      {
+        "name": "registration:codex",
+        "ok": true,
+        "classification": "healthy",
+        "detail": "/Users/vitoandareasmanik/.codex/config.toml"
+      },
+      {
+        "name": "skill:identity",
+        "ok": true,
+        "classification": "healthy",
+        "detail": "Installed REA skill identity is aligned."
+      }
+    ]
+  },
+  "production_mcp": {
+    "healthy": true,
+    "server": {
+      "name": "rea",
+      "version": "6.5.0",
+      "protocol_version": "2025-11-25"
+    },
+    "inventory": {
+      "tools": {
+        "expected": 207,
+        "observed": 207,
+        "missing": [],
+        "unexpected": [],
+        "duplicates": []
+      },
+      "prompts": {
+        "expected": 6,
+        "observed": 6,
+        "missing": [],
+        "unexpected": [],
+        "duplicates": []
+      }
+    },
+    "request_flow": {
+      "tool": "binary_session",
+      "ok": true
+    }
+  },
+  "configured_launcher_handshake": {
+    "server": {
+      "name": "rea",
+      "version": "6.5.0"
+    },
+    "protocol": "2025-11-25",
+    "toolCount": 207,
+    "promptCount": 6,
+    "launcher": "npx",
+    "args": [
+      "-y",
+      "rea-agents@6.5.0",
+      "mcp"
+    ],
+    "configuredStartupTimeoutSeconds": 30,
+    "initializeAndInventoryMs": 3143
+  },
+  "browser": {
+    "steps": [
+      {
+        "step_id": "scenario_start",
+        "status": "completed"
+      },
+      {
+        "step_id": "fill-name",
+        "status": "completed"
+      },
+      {
+        "step_id": "run-check",
+        "status": "completed"
+      },
+      {
+        "step_id": "wait-result",
+        "status": "completed"
+      }
+    ],
+    "api_response_status": 200,
+    "expected_final_text_present": true,
+    "network_events_retained": 9,
+    "network_events_dropped": 0,
+    "completeness": {
+      "status": "incomplete",
+      "equality_eligible": false,
+      "missing_sections": [
+        "events"
+      ],
+      "truncated_sections": []
+    }
+  },
+  "web_bundle": {
+    "capture": {
+      "target_url": "http://127.0.0.1:53539/",
+      "scripts_observed": 1,
+      "scripts_analyzed": 1,
+      "source_artifacts": [
+        {
+          "sha256": "2267ba58d62afc94ffcf80fbdab9a1c4eeac991acaa0441758bc017051079867",
+          "bytes": 445,
+          "media_type": "text/javascript",
+          "charset": "utf-8",
+          "text_available": true
+        }
+      ]
+    },
+    "completeness": {
+      "status": "complete",
+      "parsed_scripts": 1,
+      "parse_failures": 0,
+      "visited_ast_nodes": 78
+    },
+    "endpoints": [
+      {
+        "value": "/api/status",
+        "mechanism": "call:fetch",
+        "location": {
+          "script_key": "scr_3727c15daae2c05e61bf06daf2dfc27582c1c28d5f0d84257532fcbff32830c1",
+          "line": 6,
+          "column": 25
+        }
+      }
+    ]
+  },
+  "static_javascript": {
+    "parent_evidence_id": "ev_04dd1d3b3d4dc823a985e1f6067780f0286752f2537f95a3337ea7428debc8fd",
+    "statistics": {
+      "relevant_files": 3,
+      "nested_asar_containers": 0,
+      "text_bytes_read": 902,
+      "invalid_utf8_files": 0,
+      "parsed_javascript_files": 1,
+      "visited_ast_nodes": 78,
+      "findings": 4,
+      "modules": 0,
+      "parse_failures": 0
+    },
+    "coverage": {
+      "application": {
+        "status": "complete",
+        "truncated": false,
+        "omitted_count": 0,
+        "limits": []
+      },
+      "semantic": {
+        "status": "unknown",
+        "truncated": false,
+        "omitted_nodes": 0,
+        "omitted_relations": 0,
+        "limits": [],
+        "families": [
+          {
+            "family": "boundary",
+            "status": "partial",
+            "retained_relations": 0,
+            "omitted_relations": 0,
+            "unknown_count": 0
+          },
+          {
+            "family": "call-flow",
+            "status": "partial",
+            "retained_relations": 4,
+            "omitted_relations": 0,
+            "unknown_count": 6
+          },
+          {
+            "family": "child-process",
+            "status": "partial",
+            "retained_relations": 0,
+            "omitted_relations": 0,
+            "unknown_count": 0
+          },
+          {
+            "family": "closure",
+            "status": "partial",
+            "retained_relations": 1,
+            "omitted_relations": 0,
+            "unknown_count": 0
+          },
+          {
+            "family": "configuration",
+            "status": "partial",
+            "retained_relations": 0,
+            "omitted_relations": 0,
+            "unknown_count": 0
+          },
+          {
+            "family": "data-flow",
+            "status": "partial",
+            "retained_relations": 23,
+            "omitted_relations": 0,
+            "unknown_count": 7
+          },
+          {
+            "family": "event",
+            "status": "partial",
+            "retained_relations": 0,
+            "omitted_relations": 0,
+            "unknown_count": 0
+          },
+          {
+            "family": "object-flow",
+            "status": "partial",
+            "retained_relations": 4,
+            "omitted_relations": 0,
+            "unknown_count": 9
+          },
+          {
+            "family": "promise-ownership",
+            "status": "partial",
+            "retained_relations": 2,
+            "omitted_relations": 0,
+            "unknown_count": 2
+          },
+          {
+            "family": "request",
+            "status": "partial",
+            "retained_relations": 2,
+            "omitted_relations": 0,
+            "unknown_count": 0
+          },
+          {
+            "family": "resource-lifecycle",
+            "status": "partial",
+            "retained_relations": 0,
+            "omitted_relations": 0,
+            "unknown_count": 0
+          },
+          {
+            "family": "timer",
+            "status": "partial",
+            "retained_relations": 0,
+            "omitted_relations": 0,
+            "unknown_count": 0
+          }
+        ]
+      },
+      "application_unknowns": 0,
+      "semantic_unknowns": 24
+    }
+  },
+  "evidence_ids": {
+    "02-list_browser_targets": "ev_1d4f3e97c5215b47179526136babe8f837c401d5112581639aa0865e46bcb19e",
+    "03-inspect_web_page": "ev_85ea1af8cfda76a518a6ef3f653ab5c3224eb050edd3a5a03d23cccb9c3c0c79",
+    "04-analyze_web_bundle": "ev_78166bd4f37a48e5105eca4526ccfd871ffc3aad81a5a08f567c35aa2cfdf13e",
+    "05-capture_browser_scenario": "ev_2bf191ead6e9a26ab367c64bc766c0b1c5220e5ed9d0b2ce02bf15db8c441f53",
+    "06-analyze_javascript_application": "ev_335141d9f00bde3bd4e9b128ed4a82c09d81fa652b5704e76cad308ba365ffe8"
+  },
+  "raw_evidence_bundle": {
+    "path": "/Users/vitoandareasmanik/.local/state/rea-audit/20261018T041055Z/evidence-bundle.json",
+    "bytes": 201927,
+    "sha256": "ea4699503565f02d4dade6b93fbef018e13552191dd5b1ad3ab52e200c31ece7",
+    "records": 6
+  },
+  "cleanup": {
+    "browser_stopped": true,
+    "temporary_profile_removed": true,
+    "server_stopped": true
+  },
+  "active_agent_tools_reloaded": false,
+  "client_restart_required": true,
+  "personal_muse_session_captured": false,
+  "cli_launcher": {
+    "path": "/Users/vitoandareasmanik/.local/bin/rea",
+    "rea_package": "rea-agents@6.5.0",
+    "node_directory": "/Users/vitoandareasmanik/.nvm/versions/node/v24.18.0/bin",
+    "replaced_existing_file": false,
+    "legacy_installation_untouched": true,
+    "scoped_doctor_healthy": true
+  }
+}

@@ -69,12 +69,23 @@ export interface ProductResult {
   status: "constructing" | "ready" | "updating" | "failed" | "interrupted";
   current_revision: number | null;
   revisions: Array<{ revision: number; status: string }>;
-  selected: { revision: number; status: string; manifest: ResultManifest } | null;
+  selected: {
+    revision: number;
+    status: string;
+    manifest: ResultManifest;
+    runtime_kind?: "text" | "code";
+  } | null;
 }
 
 export interface FileDraft {
   summary: string;
-  files: Array<{ filename: string; content: string }>;
+  files: Array<{
+    filename: string;
+    content?: string;
+    staged_output_id?: string;
+    preview?: string;
+    size?: number;
+  }>;
 }
 
 export function readFileDraft(value: string): FileDraft | null {
@@ -84,8 +95,15 @@ export function readFileDraft(value: string): FileDraft | null {
       typeof parsed?.summary === "string" &&
       Array.isArray(parsed.files) &&
       parsed.files.every(
-        (file: { filename?: unknown; content?: unknown }) =>
-          typeof file?.filename === "string" && typeof file?.content === "string",
+        (file: {
+          filename?: unknown;
+          content?: unknown;
+          staged_output_id?: unknown;
+          preview?: unknown;
+        }) =>
+          typeof file?.filename === "string" &&
+          (typeof file?.content === "string" ||
+            (typeof file?.staged_output_id === "string" && typeof file?.preview === "string")),
       )
     )
       return parsed;

@@ -10,6 +10,12 @@ export const taskStatus: Record<BackgroundTask["status"], string> = {
 };
 
 export const taskStage: Record<string, string> = {
+  planning_code: "Gwen sedang menyiapkan langkah pengolahan data.",
+  provisioning: "Menyiapkan ruang komputasi terisolasi.",
+  executing_code: "Menghitung dan mengolah data yang dipilih.",
+  collecting_outputs: "Memeriksa dan menyimpan berkas hasil komputasi.",
+  sandbox_unknown:
+    "Resource komputasi masih diperiksa. Eksekusi baru menunggu cleanup terkonfirmasi.",
   preparing_inputs: "Menunggu isi lampiran siap. Kamu tetap bisa melanjutkan chat.",
   inputs_ready: "Isi lampiran siap. Task akan dilanjutkan.",
   input_deleted: "Input telah dihapus. Task tidak memakai revision pengganti.",

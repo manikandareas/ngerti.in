@@ -6,10 +6,17 @@ interface TaskDraft {
   review: boolean;
   requestKey: string;
   outputs: OutputSpec[];
+  computation: boolean;
 }
 
 function empty(): TaskDraft {
-  return { instruction: "", review: true, requestKey: crypto.randomUUID(), outputs: [] };
+  return {
+    instruction: "",
+    review: true,
+    requestKey: crypto.randomUUID(),
+    outputs: [],
+    computation: false,
+  };
 }
 
 export function useTaskDraft(storageKey: string) {
@@ -22,14 +29,23 @@ export function useTaskDraft(storageKey: string) {
         typeof saved.review === "boolean" &&
         typeof saved.requestKey === "string"
       )
-        setDraft({ ...saved, outputs: Array.isArray(saved.outputs) ? saved.outputs : [] });
+        setDraft({
+          ...saved,
+          outputs: Array.isArray(saved.outputs) ? saved.outputs : [],
+          computation: saved.computation === true,
+        });
     } catch {
       /* A missing or invalid browser draft starts empty. */
     }
   }, [storageKey]);
 
-  function update(instruction: string, review: boolean, outputs = draft.outputs) {
-    const next = { instruction, review, outputs, requestKey: crypto.randomUUID() };
+  function update(
+    instruction: string,
+    review: boolean,
+    outputs = draft.outputs,
+    computation = draft.computation,
+  ) {
+    const next = { instruction, review, outputs, computation, requestKey: crypto.randomUUID() };
     setDraft(next);
     try {
       sessionStorage.setItem(storageKey, JSON.stringify(next));

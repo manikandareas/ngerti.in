@@ -73,7 +73,7 @@ export function FilePreview({ file }: { file: ResultFile }) {
   return (
     <div className="space-y-2">
       <div className="flex min-w-0 flex-wrap items-center gap-2 rounded-xl border p-3">
-        <div className="min-w-0 flex-1 wrap-anywhere">
+        <div className="min-w-0 flex-1 basis-full wrap-anywhere min-[701px]:basis-0">
           <p className="text-sm font-medium">{file.filename}</p>
           <p className="text-xs text-muted-foreground">
             {fileSize(file.size)} · SHA-256 {file.sha256.slice(0, 12)}

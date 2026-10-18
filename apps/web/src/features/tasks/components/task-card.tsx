@@ -24,7 +24,7 @@ export function TaskCard({ task, showResult = true }: TaskCardProps) {
   const { command, pending, error } = useTaskCommands(task);
   const active = task.status === "queued" || task.status === "running";
   const waiting = task.status === "waiting_user";
-  const unknown = task.stage === "unknown";
+  const unknown = task.stage === "unknown" || task.stage === "sandbox_unknown";
   const canReview = waiting && task.action?.status === "proposed" && !unknown;
   const expired = task.action ? Date.parse(task.action.expires_at) <= Date.now() : false;
   const canEdit = ["waiting_user", "failed", "cancelled"].includes(task.status) && !unknown;
@@ -111,6 +111,16 @@ export function TaskCard({ task, showResult = true }: TaskCardProps) {
             <strong>Instruksi saat dibuat:</strong> {task.instruction}
           </p>
           <TaskInputs task={task} />
+          {task.runtime_kind === "code" ? (
+            <p className="text-xs text-muted-foreground">
+              Pengolahan Python tanpa akses internet.{" "}
+              {task.sandbox_sessions?.some((session) => session.state !== "deleted")
+                ? "Resource komputasi aktif atau masih dibersihkan."
+                : task.sandbox_sessions?.length
+                  ? "Resource komputasi telah dibersihkan; berkas hasil tetap tersimpan."
+                  : "Resource belum dibuat."}
+            </p>
+          ) : null}
           <p className="text-xs text-muted-foreground">
             Batas kerja task: {percent}% terpakai atau dicadangkan untuk panggilan yang belum
             terkonfirmasi. Percobaan {task.attempt}. Penggunaan provider yang belum pasti tetap
@@ -142,7 +152,7 @@ export function TaskCard({ task, showResult = true }: TaskCardProps) {
                 {task.status === "succeeded" ? "Hasil" : "Draft · belum difinalisasi"}
               </h4>
               {task.output_spec?.length ? (
-                <FileDraft value={task.draft} />
+                <FileDraft value={task.draft} taskId={task.id} />
               ) : task.draft || task.result ? (
                 <div className="max-h-[55svh] overflow-auto rounded-xl bg-background p-4 text-sm leading-relaxed wrap-anywhere [&_pre]:overflow-auto">
                   <Streamdown mode="static">{task.result ?? task.draft}</Streamdown>

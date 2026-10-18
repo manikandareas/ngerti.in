@@ -32,6 +32,15 @@ export interface BackgroundTask {
   action: TaskAction | null;
   output_spec: Array<{ filename: string; format: string }>;
   result_id: string | null;
+  runtime_kind: "text" | "code";
+  sandbox_sessions?: Array<{
+    id: string;
+    state: string;
+    reserved_microusd: number;
+    charged_microusd: number;
+    cost_state: string;
+    error: string | null;
+  }>;
   inputs: Array<{
     revision_id: string;
     file_id: string;

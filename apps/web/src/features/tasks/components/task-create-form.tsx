@@ -35,6 +35,22 @@ export function TaskCreateForm({ threadId }: TaskCreateFormProps) {
         }}
       />
       <AttachmentPicker state={attachments} disabled={sending} />
+      <label className="flex items-start gap-3 text-sm">
+        <input
+          type="checkbox"
+          checked={form.computation}
+          disabled={sending}
+          onChange={(event) => form.update(instruction, review, form.outputs, event.target.checked)}
+          className="mt-1 size-4 accent-primary"
+        />
+        Hitung dan olah data dengan Python
+      </label>
+      {form.computation ? (
+        <p className="text-xs text-muted-foreground">
+          Mengolah file yang dipilih tanpa akses internet. Maksimal 5 menit per task dan 3 percobaan
+          kode. Review di bawah berlaku sebelum hasil difinalisasi.
+        </p>
+      ) : null}
       <OutputFields
         value={form.outputs}
         onChange={(outputs) => form.update(instruction, review, outputs)}

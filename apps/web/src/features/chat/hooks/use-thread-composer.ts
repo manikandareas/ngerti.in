@@ -80,7 +80,17 @@ export function useThreadComposer({
     if (!text || sending || active || blocked || attachments.progress !== null) return;
     const inputs = attachmentInputs(attachments.items);
     const selectedOutputs = inputs.length ? outputs : [];
-    const identity = JSON.stringify({ text, inputs, outputs: selectedOutputs });
+    const runtimeKind = attachments.items.some(({ file }) =>
+      ["text/csv", "application/json"].includes(file.content_type),
+    )
+      ? "code"
+      : "text";
+    const identity = JSON.stringify({
+      text,
+      inputs,
+      outputs: selectedOutputs,
+      runtime_kind: runtimeKind,
+    });
     const current =
       request.current?.identity === identity
         ? request.current
@@ -99,6 +109,7 @@ export function useThreadComposer({
         request_key: current.key,
         inputs,
         outputs: selectedOutputs,
+        runtime_kind: runtimeKind,
       });
       attachments.clear();
       if (draftValue.current.trim() === text) updateDraft("");

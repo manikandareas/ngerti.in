@@ -45,6 +45,13 @@ export function ChatComposer({
         {attachments.items.length ? (
           <OutputFields value={outputs} onChange={onOutputs} disabled={sending || active} />
         ) : null}
+        {attachments.items.some(({ file }) =>
+          ["text/csv", "application/json"].includes(file.content_type),
+        ) ? (
+          <p className="px-3 text-xs text-muted-foreground">
+            CSV/JSON diolah dengan Python tanpa akses internet. Hasil tersimpan sebagai Task.
+          </p>
+        ) : null}
       </div>
       <form
         className="flex items-end gap-2 rounded-[32px] border border-transparent bg-muted px-3 py-2.5 min-[701px]:px-[18px] focus-within:border-ring"

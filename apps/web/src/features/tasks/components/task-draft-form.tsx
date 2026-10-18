@@ -33,7 +33,7 @@ export function TaskDraftForm({
         Ubah isi draft
       </label>
       {structured ? (
-        <FileDraft value={draft} onChange={onChange} />
+        <FileDraft value={draft} onChange={onChange} taskId={taskId} />
       ) : (
         <Textarea
           id={`draft-${taskId}`}

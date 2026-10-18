@@ -1,13 +1,16 @@
 import { useId } from "react";
 import { Textarea } from "@/components/ui/textarea";
+import { TaskOutputDownload } from "@/features/tasks/components/task-output-download";
 import { readFileDraft } from "../types";
 
 export function FileDraft({
   value,
   onChange,
+  taskId,
 }: {
   value: string;
   onChange?: (value: string) => void;
+  taskId?: string;
 }) {
   const id = useId();
   const draft = readFileDraft(value);
@@ -36,10 +39,10 @@ export function FileDraft({
       {draft.files.map((file, index) => (
         <div key={file.filename} className="space-y-2 rounded-xl border p-3">
           <p className="text-sm font-bold wrap-anywhere">{file.filename}</p>
-          {onChange ? (
+          {onChange && !file.staged_output_id ? (
             <Textarea
               aria-label={`Isi ${file.filename}`}
-              value={file.content}
+              value={file.content ?? ""}
               className="min-h-52 font-mono text-sm"
               onChange={(event) =>
                 onChange(
@@ -54,9 +57,22 @@ export function FileDraft({
             />
           ) : (
             <pre className="max-h-80 overflow-auto whitespace-pre-wrap break-words text-sm">
-              {file.content}
+              {file.content ?? file.preview}
             </pre>
           )}
+          {file.staged_output_id && taskId ? (
+            <>
+              <p className="text-xs text-muted-foreground">
+                Cuplikan awal berkas. Unduh untuk memeriksa seluruh isi. Isi hasil komputasi tetap;
+                ringkasan dapat diedit.
+              </p>
+              <TaskOutputDownload
+                taskId={taskId}
+                outputId={file.staged_output_id}
+                filename={file.filename}
+              />
+            </>
+          ) : null}
         </div>
       ))}
     </div>

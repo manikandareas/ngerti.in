@@ -72,6 +72,7 @@ export function ResultCard({ resultId }: { resultId: string }) {
           instruction,
           request_key: current.key,
           review_required: true,
+          runtime_kind: result.selected.runtime_kind ?? "text",
           result_id: result.id,
           expected_result_revision: result.current_revision,
           inputs: manifest.inputs.map((v) => ({

@@ -37,6 +37,7 @@ export function useCreateTask(threadId: string | null) {
           request_key: requestKey,
           inputs,
           outputs: form.outputs,
+          runtime_kind: form.computation ? "code" : "text",
         }),
       });
       form.clear();

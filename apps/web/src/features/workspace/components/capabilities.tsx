@@ -41,7 +41,8 @@ export function Capabilities() {
         <p className="mt-2 text-sm text-muted-foreground">
           Minta Gwen menulis, merangkum, atau menyusun rencana di background. Ikuti progres dari
           menu Task, lanjutkan chat, lalu tinjau draft bila diperlukan. Lampirkan PDF, gambar, teks,
-          CSV atau JSON dan buka kembali berkas hasil dari menu File & hasil.
+          CSV atau JSON dan buka kembali berkas hasil dari menu File & hasil. Aktifkan pengolahan
+          Python pada Task untuk menghitung dan mengolah data tanpa akses internet.
         </p>
       </section>
       <section aria-labelledby="upcoming-heading">

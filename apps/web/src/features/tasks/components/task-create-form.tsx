@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { AttachmentPicker } from "@/features/files/components/attachment-picker";
+import { OutputFields } from "@/features/files/components/output-fields";
 import { useCreateTask } from "@/features/tasks/hooks/use-create-task";
 
 interface TaskCreateFormProps {
@@ -7,7 +9,7 @@ interface TaskCreateFormProps {
 }
 
 export function TaskCreateForm({ threadId }: TaskCreateFormProps) {
-  const { form, sending, error, create } = useCreateTask(threadId);
+  const { form, attachments, sending, error, create } = useCreateTask(threadId);
   const { instruction, review } = form;
   return (
     <form
@@ -18,7 +20,7 @@ export function TaskCreateForm({ threadId }: TaskCreateFormProps) {
       }}
     >
       <label htmlFor="task-instruction" className="block text-sm font-bold">
-        Titipkan pekerjaan teks
+        Titipkan pekerjaan
       </label>
       <Textarea
         id="task-instruction"
@@ -32,6 +34,17 @@ export function TaskCreateForm({ threadId }: TaskCreateFormProps) {
           form.update(value, review);
         }}
       />
+      <AttachmentPicker state={attachments} disabled={sending} />
+      <OutputFields
+        value={form.outputs}
+        onChange={(outputs) => form.update(instruction, review, outputs)}
+        disabled={sending}
+      />
+      {attachments.items.length && !form.outputs.length ? (
+        <p className="text-xs text-muted-foreground">
+          Hasil file disimpan sebagai hasil.md. Tambahkan format di atas untuk menyesuaikan.
+        </p>
+      ) : null}
       <label className="flex items-start gap-3 text-sm">
         <input
           type="checkbox"
@@ -47,7 +60,10 @@ export function TaskCreateForm({ threadId }: TaskCreateFormProps) {
         stop dan mencoba ulang task tidak menambah pesan. Pekerjaan dibatasi budget dan tetap
         berjalan saat browser ditutup.
       </p>
-      <Button type="submit" disabled={sending || !threadId || !instruction.trim()}>
+      <Button
+        type="submit"
+        disabled={sending || !threadId || !instruction.trim() || attachments.progress !== null}
+      >
         {sending ? "Menyimpan task…" : "Mulai task"}
       </Button>
       {error ? (

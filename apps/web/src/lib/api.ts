@@ -1,6 +1,16 @@
 export const apiUrl = (import.meta.env.VITE_API_URL || "http://localhost:8000").replace(/\/$/, "");
 export const diagnosticsEnabled = import.meta.env.VITE_DEV_DIAGNOSTICS === true;
 
+export class ApiError extends Error {
+  constructor(
+    message: string,
+    public status: number,
+  ) {
+    super(message);
+    this.name = "ApiError";
+  }
+}
+
 export async function api<T>(
   path: string,
   token: string | null,
@@ -11,12 +21,13 @@ export async function api<T>(
   const response = await fetch(`${apiUrl}${path}`, { ...init, headers });
   if (!response.ok) {
     const body = await response.json().catch(() => null);
-    throw new Error(
+    throw new ApiError(
       typeof body?.detail === "string"
         ? body.detail
         : typeof body?.detail?.message === "string"
           ? body.detail.message
           : `Request gagal (${response.status}).`,
+      response.status,
     );
   }
   if (response.status === 204) return undefined as T;

@@ -3,6 +3,9 @@ import { useState } from "react";
 import { Streamdown } from "streamdown";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { FileDraft } from "@/features/files/components/file-draft";
+import { ResultCard } from "@/features/files/components/result-card";
+import { TaskInputs } from "@/features/files/components/task-inputs";
 import { taskStage, taskStatus } from "@/features/tasks/constants";
 import { useTaskCommands } from "@/features/tasks/hooks/use-task-commands";
 import { useTaskEditor } from "@/features/tasks/hooks/use-task-editor";
@@ -11,9 +14,10 @@ import { TaskDraftForm } from "./task-draft-form";
 
 interface TaskCardProps {
   task: BackgroundTask;
+  showResult?: boolean;
 }
 
-export function TaskCard({ task }: TaskCardProps) {
+export function TaskCard({ task, showResult = true }: TaskCardProps) {
   const [open, setOpen] = useState(false);
   const editor = useTaskEditor(task);
   const { editing, draft } = editor;
@@ -48,6 +52,11 @@ export function TaskCard({ task }: TaskCardProps) {
         <p className="mt-3 text-sm text-danger" role="status">
           {task.error}
         </p>
+      ) : null}
+      {showResult && task.result_id && task.status === "succeeded" ? (
+        <div className="mt-4">
+          <ResultCard resultId={task.result_id} />
+        </div>
       ) : null}
       <div className="mt-4 flex flex-wrap gap-2">
         <Button
@@ -101,6 +110,7 @@ export function TaskCard({ task }: TaskCardProps) {
           <p className="text-sm whitespace-pre-wrap wrap-anywhere">
             <strong>Instruksi saat dibuat:</strong> {task.instruction}
           </p>
+          <TaskInputs task={task} />
           <p className="text-xs text-muted-foreground">
             Batas kerja task: {percent}% terpakai atau dicadangkan untuk panggilan yang belum
             terkonfirmasi. Percobaan {task.attempt}. Penggunaan provider yang belum pasti tetap
@@ -117,6 +127,7 @@ export function TaskCard({ task }: TaskCardProps) {
               taskId={task.id}
               draft={draft}
               pending={pending}
+              structured={Boolean(task.output_spec?.length)}
               onChange={editor.updateDraft}
               onCancel={editor.cancelEdit}
               onSave={() => {
@@ -130,7 +141,9 @@ export function TaskCard({ task }: TaskCardProps) {
               <h4 className="text-sm font-bold">
                 {task.status === "succeeded" ? "Hasil" : "Draft · belum difinalisasi"}
               </h4>
-              {task.draft || task.result ? (
+              {task.output_spec?.length ? (
+                <FileDraft value={task.draft} />
+              ) : task.draft || task.result ? (
                 <div className="max-h-[55svh] overflow-auto rounded-xl bg-background p-4 text-sm leading-relaxed wrap-anywhere [&_pre]:overflow-auto">
                   <Streamdown mode="static">{task.result ?? task.draft}</Streamdown>
                 </div>

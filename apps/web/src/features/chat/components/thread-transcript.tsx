@@ -95,7 +95,7 @@ export function ThreadTranscript({
                 .sort((a, b) => b.created_at.localeCompare(a.created_at))
                 .slice(0, 10)
                 .map((task) => (
-                  <TaskCard key={task.id} task={task} />
+                  <TaskCard key={task.id} task={task} showResult={false} />
                 ))}
             </section>
           ) : null}

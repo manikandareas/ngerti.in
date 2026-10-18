@@ -10,6 +10,9 @@ export const taskStatus: Record<BackgroundTask["status"], string> = {
 };
 
 export const taskStage: Record<string, string> = {
+  preparing_inputs: "Menunggu isi lampiran siap. Kamu tetap bisa melanjutkan chat.",
+  inputs_ready: "Isi lampiran siap. Task akan dilanjutkan.",
+  input_deleted: "Input telah dihapus. Task tidak memakai revision pengganti.",
   queued: "Menunggu giliran untuk mulai.",
   drafting: "Gwen sedang menyusun draft.",
   draft_ready: "Draft tersimpan; menyiapkan langkah berikutnya.",

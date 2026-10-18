@@ -2,7 +2,11 @@ import type { BackgroundTask } from "@/features/tasks/types";
 
 export interface ChatPart {
   id: string;
-  type: "text" | "reasoning" | "tool";
+  type: "text" | "reasoning" | "tool" | "file" | "result";
+  revision_id?: string;
+  filename?: string;
+  revision?: number;
+  result_id?: string;
   text?: string;
   name?: string;
   input?: Record<string, unknown>;

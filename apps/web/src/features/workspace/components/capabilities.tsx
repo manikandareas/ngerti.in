@@ -1,11 +1,6 @@
-import { Brain, CalendarClock, FolderOpen, ListTodo, Monitor, Target } from "lucide-react";
+import { Brain, CalendarClock, ListTodo, Monitor, Target } from "lucide-react";
 
 const capabilities = [
-  {
-    name: "Hasil",
-    icon: FolderOpen,
-    description: "Temukan file dan hasil pekerjaan untuk dibuka kembali atau diunduh.",
-  },
   {
     name: "Jadwal",
     icon: CalendarClock,
@@ -41,11 +36,12 @@ export function Capabilities() {
       </section>
       <section className="rounded-2xl border p-5">
         <h2 className="flex items-center gap-3">
-          <ListTodo className="size-5" /> Task teks sudah tersedia
+          <ListTodo className="size-5" /> Task dan file sudah tersedia
         </h2>
         <p className="mt-2 text-sm text-muted-foreground">
           Minta Gwen menulis, merangkum, atau menyusun rencana di background. Ikuti progres dari
-          menu Task, lanjutkan chat, lalu tinjau draft bila diperlukan.
+          menu Task, lanjutkan chat, lalu tinjau draft bila diperlukan. Lampirkan PDF, gambar, teks,
+          CSV atau JSON dan buka kembali berkas hasil dari menu File & hasil.
         </p>
       </section>
       <section aria-labelledby="upcoming-heading">

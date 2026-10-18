@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { FileDraft } from "@/features/files/components/file-draft";
 
 interface TaskDraftFormProps {
   taskId: string;
@@ -8,6 +9,7 @@ interface TaskDraftFormProps {
   onChange: (value: string) => void;
   onSave: () => void;
   onCancel: () => void;
+  structured?: boolean;
 }
 
 export function TaskDraftForm({
@@ -17,6 +19,7 @@ export function TaskDraftForm({
   onChange,
   onSave,
   onCancel,
+  structured = false,
 }: TaskDraftFormProps) {
   return (
     <form
@@ -29,13 +32,17 @@ export function TaskDraftForm({
       <label className="block text-sm font-bold" htmlFor={`draft-${taskId}`}>
         Ubah isi draft
       </label>
-      <Textarea
-        id={`draft-${taskId}`}
-        value={draft}
-        onChange={(event) => onChange(event.target.value)}
-        maxLength={24000}
-        className="min-h-64"
-      />
+      {structured ? (
+        <FileDraft value={draft} onChange={onChange} />
+      ) : (
+        <Textarea
+          id={`draft-${taskId}`}
+          value={draft}
+          onChange={(event) => onChange(event.target.value)}
+          maxLength={24000}
+          className="min-h-64"
+        />
+      )}
       <p className="text-xs text-muted-foreground">
         Menyimpan perubahan membuat versi baru. Persetujuan versi sebelumnya tidak berlaku.
       </p>

@@ -5,6 +5,7 @@ import { memo, useState } from "react";
 import { Streamdown } from "streamdown";
 import { Button } from "@/components/ui/button";
 import type { ChatMessage } from "@/features/chat/types";
+import { ResultCard } from "@/features/files/components/result-card";
 import { cn } from "@/lib/utils";
 
 const plugins = { code, math: createMathPlugin({ singleDollarTextMath: true }) };
@@ -19,6 +20,13 @@ export const Message = memo(function Message({ message }: { message: ChatMessage
     return (
       <div className="ml-auto w-fit max-w-[90%] rounded-3xl bg-muted px-[18px] py-3 text-[15px] leading-normal whitespace-pre-wrap wrap-anywhere min-[701px]:max-w-[80%] min-[701px]:text-base">
         {text}
+        {message.parts
+          .filter((part) => part.type === "file")
+          .map((part) => (
+            <p key={part.id} className="mt-2 text-xs text-muted-foreground">
+              Lampiran: {part.filename} · v{part.revision}
+            </p>
+          ))}
       </div>
     );
   }
@@ -63,6 +71,13 @@ export const Message = memo(function Message({ message }: { message: ChatMessage
           </p>
         ) : null}
       </div>
+      {message.parts
+        .filter((part) => part.type === "result" && part.result_id)
+        .map((part) => (
+          <div key={part.id} className="mt-3">
+            <ResultCard resultId={part.result_id ?? ""} />
+          </div>
+        ))}
       {text && !active ? (
         <div className="pointer-events-none absolute top-1/2 left-full -translate-y-1/2 pl-1 opacity-0 transition-opacity group-hover/message:pointer-events-auto group-hover/message:opacity-100 group-focus-within/message:pointer-events-auto group-focus-within/message:opacity-100 [@media(hover:none)]:pointer-events-auto [@media(hover:none)]:opacity-100 motion-reduce:transition-none">
           <Button

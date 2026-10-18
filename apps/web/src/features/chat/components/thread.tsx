@@ -113,6 +113,9 @@ export function Thread({ threadId }: ThreadProps) {
               if (online) void composer.send();
             }}
             onStop={actions.cancel}
+            attachments={composer.attachments}
+            outputs={composer.outputs}
+            onOutputs={composer.setOutputs}
           />
           <QuotaSummary
             usage={quota.data}

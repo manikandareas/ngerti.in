@@ -2,6 +2,8 @@ import { useAuth } from "@clerk/tanstack-react-start";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { postChatCommand } from "@/features/chat/api/chat-api";
+import { useAttachments } from "@/features/files/hooks/use-attachments";
+import { attachmentInputs, type OutputSpec } from "@/features/files/types";
 
 interface ThreadComposerOptions {
   threadId: string;
@@ -18,16 +20,21 @@ export function useThreadComposer({
 }: ThreadComposerOptions) {
   const { getToken, userId } = useAuth();
   const queryClient = useQueryClient();
+  const attachments = useAttachments(`chat:${threadId}`);
+  const [outputs, setOutputs] = useState<OutputSpec[]>([{ filename: "hasil.md", format: "md" }]);
   const [draft, setDraft] = useState("");
   const draftValue = useRef("");
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState("");
-  const request = useRef<{ text: string; key: string } | null>(null);
+  const request = useRef<{ text: string; key: string; identity?: string } | null>(null);
   const draftKey = `ngertiin-draft:v1:${userId}:${threadId}`;
   useEffect(() => {
     try {
       draftValue.current = sessionStorage.getItem(draftKey) ?? "";
       setDraft(draftValue.current);
+      const savedOutputs = JSON.parse(sessionStorage.getItem(`${draftKey}:outputs`) ?? "null");
+      if (Array.isArray(savedOutputs) && savedOutputs.every((v) => typeof v?.filename === "string"))
+        setOutputs(savedOutputs);
       const pending = JSON.parse(sessionStorage.getItem(`${draftKey}:pending`) ?? "null");
       if (typeof pending?.key === "string" && typeof pending.text === "string") {
         request.current = pending;
@@ -60,11 +67,24 @@ export function useThreadComposer({
       /* Optional browser draft storage. */
     }
   }
+  function updateOutputs(value: OutputSpec[]) {
+    setOutputs(value);
+    try {
+      sessionStorage.setItem(`${draftKey}:outputs`, JSON.stringify(value));
+    } catch {
+      /* Optional draft storage. */
+    }
+  }
   async function send() {
     const text = draft.trim();
-    if (!text || sending || active || blocked) return;
+    if (!text || sending || active || blocked || attachments.progress !== null) return;
+    const inputs = attachmentInputs(attachments.items);
+    const selectedOutputs = inputs.length ? outputs : [];
+    const identity = JSON.stringify({ text, inputs, outputs: selectedOutputs });
     const current =
-      request.current?.text === text ? request.current : { text, key: crypto.randomUUID() };
+      request.current?.identity === identity
+        ? request.current
+        : { text, identity, key: crypto.randomUUID() };
     request.current = current;
     try {
       sessionStorage.setItem(`${draftKey}:pending`, JSON.stringify(current));
@@ -77,7 +97,10 @@ export function useThreadComposer({
       await postChatCommand(`/chat/threads/${threadId}/runs`, await getToken(), {
         text,
         request_key: current.key,
+        inputs,
+        outputs: selectedOutputs,
       });
+      attachments.clear();
       if (draftValue.current.trim() === text) updateDraft("");
       request.current = null;
       try {
@@ -99,5 +122,15 @@ export function useThreadComposer({
     }
   }
 
-  return { draft, updateDraft, sending, sendError, setSendError, send };
+  return {
+    draft,
+    updateDraft,
+    sending,
+    sendError,
+    setSendError,
+    send,
+    attachments,
+    outputs,
+    setOutputs: updateOutputs,
+  };
 }

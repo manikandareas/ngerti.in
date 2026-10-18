@@ -73,8 +73,8 @@ export function TaskPanel({ threadId }: TaskPanelProps) {
         />
       )}
       <p className="text-xs text-muted-foreground">
-        Menampilkan hingga 50 task, dengan pekerjaan aktif didahulukan. Pekerjaan teks tersedia;
-        file, web, kode dan jadwal mengikuti kemampuan berikutnya.
+        Menampilkan hingga 50 task, dengan pekerjaan aktif didahulukan. Kamu dapat memakai file dan
+        menyimpan berkas hasil. Web, eksekusi kode dan jadwal mengikuti kemampuan berikutnya.
       </p>
     </div>
   );

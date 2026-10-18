@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as SignUpRouteImport } from './routes/sign-up'
+import { Route as DevDaytonaRouteImport } from './routes/dev.daytona'
 import { Route as DevSystemRouteImport } from './routes/dev.system'
 
 const IndexRoute = IndexRouteImport.update({
@@ -29,6 +30,11 @@ const SignUpRoute = SignUpRouteImport.update({
   path: '/sign-up',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DevDaytonaRoute = DevDaytonaRouteImport.update({
+  id: '/dev/daytona',
+  path: '/dev/daytona',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DevSystemRoute = DevSystemRouteImport.update({
   id: '/dev/system',
   path: '/dev/system',
@@ -39,12 +45,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
+  '/dev/daytona': typeof DevDaytonaRoute
   '/dev/system': typeof DevSystemRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
+  '/dev/daytona': typeof DevDaytonaRoute
   '/dev/system': typeof DevSystemRoute
 }
 export interface FileRoutesById {
@@ -52,20 +60,23 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
+  '/dev/daytona': typeof DevDaytonaRoute
   '/dev/system': typeof DevSystemRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/sign-in' | '/sign-up' | '/dev/system'
+  fullPaths: '/' | '/sign-in' | '/sign-up' | '/dev/daytona' | '/dev/system'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/sign-in' | '/sign-up' | '/dev/system'
-  id: '__root__' | '/' | '/sign-in' | '/sign-up' | '/dev/system'
+  to: '/' | '/sign-in' | '/sign-up' | '/dev/daytona' | '/dev/system'
+  id:
+    '__root__' | '/' | '/sign-in' | '/sign-up' | '/dev/daytona' | '/dev/system'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SignInRoute: typeof SignInRoute
   SignUpRoute: typeof SignUpRoute
+  DevDaytonaRoute: typeof DevDaytonaRoute
   DevSystemRoute: typeof DevSystemRoute
 }
 
@@ -92,6 +103,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignUpRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dev/daytona': {
+      id: '/dev/daytona'
+      path: '/dev/daytona'
+      fullPath: '/dev/daytona'
+      preLoaderRoute: typeof DevDaytonaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dev/system': {
       id: '/dev/system'
       path: '/dev/system'
@@ -106,6 +124,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SignInRoute: SignInRoute,
   SignUpRoute: SignUpRoute,
+  DevDaytonaRoute: DevDaytonaRoute,
   DevSystemRoute: DevSystemRoute,
 }
 export const routeTree = rootRouteImport

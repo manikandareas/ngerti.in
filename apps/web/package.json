@@ -11,6 +11,7 @@
   "dependencies": {
     "@clerk/localizations": "4.23.0",
     "@clerk/tanstack-react-start": "1.7.1",
+    "@novnc/novnc": "1.5.0",
     "@shadcn/react": "^0.3.1",
     "@streamdown/code": "^2.0.0",
     "@streamdown/math": "^1.0.3",
@@ -33,6 +34,7 @@
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
     "@types/node": "26.6.5",
+    "@types/novnc__novnc": "^1.6.0",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "6.1.2",

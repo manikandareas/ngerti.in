@@ -2,7 +2,7 @@
 
 Asisten personal umum untuk percakapan, pekerjaan background, file/hasil, kode/browser, jadwal, memory dan goals. [Spesifikasi aktif](docs/README.md) dan [backlog](docs/backlog/README.md) membedakan target V1 dari kemampuan yang sudah diterima.
 
-Fondasi saat ini: Clerk/ownership, main/side chat, streaming SSE dan replay, stop/retry, LangGraph checkpoints, Procrastinate, S3/MinIO serta ledger chat. [Task teks background](docs/engineering/task-33-acceptance.md) menyediakan snapshot instruksi, review/revisi draft, budget internal dan delivery persisten sambil chat tetap digunakan. Daytona runtime produk, VNC/live desktop/takeover, file/hasil, offline schedules dan fitur agent berikutnya mengikuti tiket integrasinya. Course/Lesson/Practice tidak menjadi dependency aktif V1.
+Fondasi saat ini: Clerk/ownership, main/side chat, streaming SSE/replay, LangGraph checkpoints, Procrastinate, S3/MinIO dan ledger chat. [Task background](docs/engineering/task-33-acceptance.md), [file/hasil persisten](docs/engineering/files-34-acceptance.md), serta [komputasi Python](docs/engineering/sandbox-35-acceptance.md) menyediakan review/revisi, stop/retry dan delivery sambil chat tetap digunakan. [Interface runtime](docs/engineering/sandbox-runtime.md) memakai Daytona sebagai adapter pertama. Browser/VNC/takeover dan offline schedules mengikuti tiket berikutnya. Course/Lesson/Practice tidak menjadi dependency aktif V1.
 
 ## Development
 
@@ -22,10 +22,12 @@ make check
 make build
 make quota-inspect
 make task-inspect
+make files-inspect
+make sandbox-inspect
 make docs-check
 ```
 
-`make setup` / `make migrate` menjalankan migration head saat ini, termasuk `0002_background_tasks`, tanpa reset data yang sudah ada.
+`make setup` / `make migrate` menjalankan migration head saat ini, termasuk `0004_sandbox_runtime`, tanpa reset data yang sudah ada. Restart worker setelah perubahan Python atau konfigurasi runtime.
 
 `make reset-dev` **menghapus seluruh data development lokal proyek**, lalu menjalankan baseline `0001_v1_baseline`, setup resmi queue/checkpoints dan bucket. Hentikan API/worker terlebih dahulu. Script memverifikasi environment, endpoint, project serta volume labels. Clerk, kredensial dan resource remote dipertahankan. Reset ini mengganti migrasi development lama; bukan jalur upgrade production.
 

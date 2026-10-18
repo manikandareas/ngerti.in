@@ -1,0 +1,325 @@
+{
+  "at": "2026-10-18T15:29:25.948622+00:00",
+  "environment": {
+    "platform": "Darwin",
+    "model": "gpt-6-luna",
+    "target": null,
+    "runtime": {
+      "provider": "daytona",
+      "version": "0.225.0",
+      "cpu": 2,
+      "ram_gib": 4,
+      "disk_gib": 8,
+      "provider_version": "v0.225.1"
+    }
+  },
+  "tasks": [
+    {
+      "id": "8be567c6-212a-48c6-9563-4ee65ba8bf9c",
+      "status": "succeeded",
+      "stage": "complete",
+      "revision": 2,
+      "runtime_kind": "code",
+      "created_at": "2026-10-18 15:14:03.831251+00:00",
+      "updated_at": "2026-10-18 15:25:25.374731+00:00",
+      "model_calls": 1,
+      "usage_units": 1982,
+      "attempt": 4,
+      "model_cost_events": [
+        {
+          "provider": "openai-compatible",
+          "model": "gpt-6-luna",
+          "state": "confirmed",
+          "charged_units": 1982,
+          "usage": {
+            "input_tokens": 1068,
+            "total_tokens": 1982,
+            "output_tokens": 914,
+            "input_token_details": {
+              "cache_read": 0,
+              "cache_creation": 1065
+            },
+            "output_token_details": {
+              "reasoning": 315
+            }
+          }
+        }
+      ],
+      "sandbox_sessions": [
+        {
+          "id": "1f3b2e0a-23d1-4778-b582-4e6335211db2",
+          "resource_name": "ng035-1f3b2e0a-23d1-4778-b582-4e6335211db2",
+          "resource_id": "dc1de223-cc83-4cb3-9cef-a9ee2b6e8fd1",
+          "state": "deleted",
+          "policy": {
+            "cpu": 2,
+            "network": "deny_all",
+            "ram_gib": 4,
+            "version": "code-sandbox-v1",
+            "disk_gib": 8,
+            "provider": "daytona",
+            "max_steps": 3,
+            "ttl_minutes": 10,
+            "max_sessions": 3,
+            "task_seconds": 300,
+            "max_log_bytes": 16000,
+            "price_version": "daytona-linux-2026-10-18",
+            "task_microusd": 108000,
+            "max_code_bytes": 20000,
+            "command_seconds": 60,
+            "session_microusd": 36000,
+            "microusd_per_hour": 166464,
+            "global_concurrency": 2,
+            "account_concurrency": 1,
+            "global_daily_microusd": 5000000,
+            "account_daily_microusd": 1000000,
+            "cleanup_margin_seconds": 120
+          },
+          "cost_state": "estimated",
+          "charged_microusd": 1132,
+          "reserved_microusd": 36000,
+          "usage": {
+            "gc_checked_at": "2026-10-18T15:29:00.762179+00:00",
+            "invoice_confirmed": false,
+            "observed_wall_seconds": 24.479
+          },
+          "created_at": "2026-10-18 15:14:07.435636+00:00",
+          "deleted_at": "2026-10-18 15:14:31.913382+00:00"
+        }
+      ],
+      "steps": [
+        {
+          "code_sha256": "f6b2dfd7bed04402607cf318af062bd92051bbc20279d508f784b744722e8cd6",
+          "state": "complete",
+          "receipt": {
+            "stdout": "Baris asli: 6; duplikasi: 1; transaksi unik: 5; total omzet: 500. Bulan: 2026-01, 2026-02. Asumsi: deduplikasi memakai kemunculan pertama; amount dijumlahkan sebagai Decimal.\n",
+            "exit_code": 0,
+            "duration_ms": 370
+          }
+        }
+      ],
+      "deliveries": 1,
+      "result_id": "8e8acbd4-a3dc-5927-8496-3363fd8f90ec",
+      "result_status": "ready",
+      "files": [
+        {
+          "filename": "hasil-1.csv",
+          "revision_id": "d4b5a6c4-24ab-5e57-8368-cef94eaa83d7",
+          "size": 39,
+          "sha256": "c83648287f0819d35c6c1e2a221034d134048ff6c11858a6472348c16864930b"
+        }
+      ],
+      "published_after_cleanup": true,
+      "csv_rows": [
+        {
+          "month": "2026-01",
+          "total": "250"
+        },
+        {
+          "month": "2026-02",
+          "total": "250"
+        }
+      ],
+      "browser_downloads_match_sha256": true
+    },
+    {
+      "id": "290a623e-47e6-46ac-bf59-daa459a2ca28",
+      "status": "succeeded",
+      "stage": "complete",
+      "revision": 1,
+      "runtime_kind": "code",
+      "created_at": "2026-10-18 15:20:02.778650+00:00",
+      "updated_at": "2026-10-18 15:20:24.108758+00:00",
+      "model_calls": 1,
+      "usage_units": 1179,
+      "attempt": 1,
+      "model_cost_events": [
+        {
+          "provider": "openai-compatible",
+          "model": "gpt-6-luna",
+          "state": "confirmed",
+          "charged_units": 1179,
+          "usage": {
+            "input_tokens": 867,
+            "total_tokens": 1179,
+            "output_tokens": 312,
+            "input_token_details": {
+              "cache_read": 0,
+              "cache_creation": 0
+            },
+            "output_token_details": {
+              "reasoning": 128
+            }
+          }
+        }
+      ],
+      "sandbox_sessions": [
+        {
+          "id": "2a217408-7383-4c33-b282-83eb5fa99caa",
+          "resource_name": "ng035-2a217408-7383-4c33-b282-83eb5fa99caa",
+          "resource_id": "6f323650-68b9-484b-92ba-e7c4157e040c",
+          "state": "deleted",
+          "policy": {
+            "cpu": 2,
+            "network": "deny_all",
+            "ram_gib": 4,
+            "version": "code-sandbox-v1",
+            "disk_gib": 8,
+            "provider": "daytona",
+            "max_steps": 3,
+            "ttl_minutes": 10,
+            "max_sessions": 3,
+            "task_seconds": 300,
+            "max_log_bytes": 16000,
+            "price_version": "daytona-linux-2026-10-18",
+            "task_microusd": 108000,
+            "max_code_bytes": 20000,
+            "command_seconds": 60,
+            "session_microusd": 36000,
+            "microusd_per_hour": 166464,
+            "global_concurrency": 2,
+            "account_concurrency": 1,
+            "global_daily_microusd": 5000000,
+            "account_daily_microusd": 1000000,
+            "cleanup_margin_seconds": 120
+          },
+          "cost_state": "estimated",
+          "charged_microusd": 958,
+          "reserved_microusd": 36000,
+          "usage": {
+            "gc_checked_at": "2026-10-18T15:29:00.770877+00:00",
+            "invoice_confirmed": false,
+            "observed_wall_seconds": 20.713
+          },
+          "created_at": "2026-10-18 15:20:03.237110+00:00",
+          "deleted_at": "2026-10-18 15:20:23.947394+00:00"
+        }
+      ],
+      "steps": [
+        {
+          "code_sha256": "1e20cdb62f63876f1f24e6e554b182ae6af95fd51760a28d5a2f9ce887f5527f",
+          "state": "complete",
+          "receipt": {
+            "stdout": "Perhitungan: 21 + 21 = 42. Cakupan: 1 perhitungan; asumsi: menggunakan bilangan bulat.\n",
+            "exit_code": 0,
+            "duration_ms": 320
+          }
+        }
+      ],
+      "deliveries": 1,
+      "result_id": "e1a845af-e02c-5337-82a0-5183bb0c6394",
+      "result_status": "ready",
+      "files": [
+        {
+          "filename": "angka.json",
+          "revision_id": "88a72474-583f-5f41-bec5-b7779e81215d",
+          "size": 18,
+          "sha256": "fa7938e735df00af52e2b69758b986e203dd825f4b013fb327cb7bcacb30a1b7"
+        },
+        {
+          "filename": "laporan.md",
+          "revision_id": "9d74b5a4-c3e1-5c00-bc27-228d26e2360c",
+          "size": 66,
+          "sha256": "1630d3e9a6f56a302418c6545f362505a78307e93abf3e6c16e3dc94ec6daf84"
+        }
+      ],
+      "published_after_cleanup": true
+    },
+    {
+      "id": "b0ca364f-be31-4b37-af9d-718035d909fb",
+      "status": "cancelled",
+      "stage": "cancelled",
+      "revision": 1,
+      "runtime_kind": "code",
+      "created_at": "2026-10-18 15:24:00.155485+00:00",
+      "updated_at": "2026-10-18 15:24:44.027218+00:00",
+      "model_calls": 1,
+      "usage_units": 1701,
+      "attempt": 1,
+      "model_cost_events": [
+        {
+          "provider": "openai-compatible",
+          "model": "gpt-6-luna",
+          "state": "confirmed",
+          "charged_units": 1701,
+          "usage": {
+            "input_tokens": 1207,
+            "total_tokens": 1701,
+            "output_tokens": 494,
+            "input_token_details": {
+              "cache_read": 0,
+              "cache_creation": 1204
+            },
+            "output_token_details": {
+              "reasoning": 378
+            }
+          }
+        }
+      ],
+      "sandbox_sessions": [
+        {
+          "id": "47d31eb1-1b0a-4d71-a58e-a5d412da0164",
+          "resource_name": "ng035-47d31eb1-1b0a-4d71-a58e-a5d412da0164",
+          "resource_id": "254c4926-171d-42e3-9e4d-d82c127c76b2",
+          "state": "deleted",
+          "policy": {
+            "cpu": 2,
+            "network": "deny_all",
+            "ram_gib": 4,
+            "version": "code-sandbox-v1",
+            "disk_gib": 8,
+            "provider": "daytona",
+            "max_steps": 3,
+            "ttl_minutes": 10,
+            "max_sessions": 3,
+            "task_seconds": 300,
+            "max_log_bytes": 16000,
+            "price_version": "daytona-linux-2026-10-18",
+            "task_microusd": 108000,
+            "max_code_bytes": 20000,
+            "command_seconds": 60,
+            "session_microusd": 36000,
+            "microusd_per_hour": 166464,
+            "global_concurrency": 2,
+            "account_concurrency": 1,
+            "global_daily_microusd": 5000000,
+            "account_daily_microusd": 1000000,
+            "cleanup_margin_seconds": 120
+          },
+          "cost_state": "estimated",
+          "charged_microusd": 2189,
+          "reserved_microusd": 36000,
+          "usage": {
+            "gc_checked_at": "2026-10-18T15:29:00.725986+00:00",
+            "invoice_confirmed": false,
+            "observed_wall_seconds": 47.324
+          },
+          "created_at": "2026-10-18 15:24:00.371837+00:00",
+          "deleted_at": "2026-10-18 15:24:47.677821+00:00"
+        }
+      ],
+      "steps": [
+        {
+          "code_sha256": "0c00e5a9fc6d4400791d9d14392b222eace052d7af0e044ed2a62a0a1cc53793",
+          "state": "unknown",
+          "receipt": {}
+        }
+      ],
+      "deliveries": 0,
+      "result_id": "71eafb5e-a493-5de2-b0fd-35cd6356b4b2",
+      "result_status": "interrupted",
+      "files": []
+    }
+  ],
+  "same_thread_chat": {
+    "run_id": "d5042aff-a60c-4a09-9939-fb1b185d0773",
+    "status": "complete",
+    "text": [
+      "7 \u00d7 6 = 42."
+    ],
+    "created_while_review_waited": true
+  },
+  "remaining_ng035_resources": [],
+  "passed": true,
+  "cost_limitation": "Measured model token usage and conservative resource wall-time estimates; provider invoice not verified. Initial adapter diagnostics used four additional deleted resources with aggregate reservation ceiling USD 0.056, separate from product ledger."
+}

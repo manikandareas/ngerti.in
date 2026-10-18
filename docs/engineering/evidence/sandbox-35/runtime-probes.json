@@ -1,0 +1,67 @@
+{
+  "kind": "live_controlled_runtime_contract",
+  "started_at": 1792336224.364748,
+  "task_id": "9d880aad-c6e4-408e-8fb4-4c9ed4b8c016",
+  "session_id": "ce019af5-8b74-4a14-9078-519fa2cebc5e",
+  "ceiling_microusd": 36000,
+  "info": {
+    "provider": "daytona",
+    "version": "0.225.0",
+    "cpu": 2,
+    "ram_gib": 4,
+    "disk_gib": 8
+  },
+  "security_receipt": {
+    "exit_code": 0,
+    "stdout": "{\"network_denied\": true, \"root_process_environment_denied\": true, \"uid_unprivileged\": true, \"secrets_absent\": true, \"sudo_denied\": true, \"child_network_denied\": true, \"hard_limit_cannot_be_raised\": true, \"io_uring_denied\": true, \"memory_hard_bytes\": 2147483648, \"file_hard_bytes\": 10485760, \"process_hard_count\": 64}\n",
+    "duration_ms": 363
+  },
+  "security": {
+    "network_denied": true,
+    "root_process_environment_denied": true,
+    "uid_unprivileged": true,
+    "secrets_absent": true,
+    "sudo_denied": true,
+    "child_network_denied": true,
+    "hard_limit_cannot_be_raised": true,
+    "io_uring_denied": true,
+    "memory_hard_bytes": 2147483648,
+    "file_hard_bytes": 10485760,
+    "process_hard_count": 64
+  },
+  "symlink_collection_rejected": true,
+  "stdout_bound": {
+    "bytes": 16000,
+    "exit_code": 0
+  },
+  "limits": {
+    "memory_stopped": true,
+    "oversize_file_stopped": true
+  },
+  "timeout": {
+    "exit_code": 124,
+    "stdout": "",
+    "duration_ms": 2292
+  },
+  "cleanup_confirmed": true,
+  "result_id": "c10fd578-0a01-5cef-9611-8d4d7aefe5e4",
+  "costs": [
+    {
+      "id": "ce019af5-8b74-4a14-9078-519fa2cebc5e",
+      "state": "deleted",
+      "reserved_microusd": 36000,
+      "charged_microusd": 1433,
+      "cost_state": "estimated",
+      "usage": {
+        "invoice_confirmed": false,
+        "observed_wall_seconds": 30.982
+      },
+      "error": null,
+      "created_at": "2026-10-18 15:10:24.446905+00:00",
+      "deleted_at": "2026-10-18 15:10:55.417339+00:00"
+    }
+  ],
+  "bytes_after_sandbox_deletion": true,
+  "passed": true,
+  "seconds": 31.405
+}

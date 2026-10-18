@@ -22,3 +22,7 @@ Ready hanya bila seluruh dependencies sudah Done. Done memerlukan bukti acceptan
 Database: [07 · Backlog Implementasi V1](README.md). Spesifikasi: [01 · Produk & Scope V1](../product/01-produk-dan-paket.md) · [02 · UX & User Flow](../product/02-user-flow.md) · [03 · Perilaku Agent](../product/03-agent.md) · [04 · Arsitektur, Runtime & Kontrak](../product/04-arsitektur-dan-delivery.md) · [05 · Usage, Paket & Pembayaran](../product/05-usage-paket-pembayaran.md) · [06 · Development, Operasi & Acceptance](../engineering/development.md)
 Indeks bukti: [08 · Bukti Riset & REA](../research/muse-ai-v1/README.md).
 <!-- notion-content:end -->
+
+## Status kerja terbaru
+
+Readback status 2026-10-18T07:13:08.912354+00:00: [NG-031 · Validasi Daytona dengan trial terbatas](tasks/31-validasi-daytona-dengan-trial-terbatas.md) berstatus **Done**. Empat acceptance criteria memiliki bukti live; [laporan penerimaan](../engineering/daytona-31-acceptance.md) mencatat hasil dan batasnya. Dua sandbox trial sudah dihapus; readback provider mengonfirmasi tidak ada resource tersisa.

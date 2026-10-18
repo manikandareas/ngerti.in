@@ -1,6 +1,6 @@
 # Kanban
 
-Snapshot readback Notion: 2026-10-18T06:04:56.780944+00:00. 25 tiket.
+Snapshot readback Notion: 2026-10-18T07:13:08.912354+00:00. 25 tiket.
 
 | Tiket | Urutan | Status | Lingkup | Area | Depends on |
 | --- | --- | --- | --- | --- | --- |
@@ -9,7 +9,7 @@ Snapshot readback Notion: 2026-10-18T06:04:56.780944+00:00. 25 tiket.
 | [NG-028 · Sederhanakan kuota menjadi fondasi umum](../tasks/28-sederhanakan-kuota-menjadi-fondasi-umum.md) | 3 | Done | Aktif V1 | Billing | [NG-027 · Bersihkan UI dan persona awal](../tasks/27-bersihkan-ui-dan-persona-awal.md) |
 | [NG-029 · Buat baseline skema dan reset development](../tasks/29-buat-baseline-skema-dan-reset-development.md) | 4 | Done | Aktif V1 | Fondasi | [NG-028 · Sederhanakan kuota menjadi fondasi umum](../tasks/28-sederhanakan-kuota-menjadi-fondasi-umum.md) |
 | [NG-030 · Terima baseline V1 yang bersih](../tasks/30-terima-baseline-v1-yang-bersih.md) | 5 | Done | Aktif V1 | Fondasi | [NG-029 · Buat baseline skema dan reset development](../tasks/29-buat-baseline-skema-dan-reset-development.md) |
-| [NG-031 · Validasi Daytona dengan trial terbatas](../tasks/31-validasi-daytona-dengan-trial-terbatas.md) | 6 | Ready | Aktif V1 | Fondasi | [NG-030 · Terima baseline V1 yang bersih](../tasks/30-terima-baseline-v1-yang-bersih.md) |
+| [NG-031 · Validasi Daytona dengan trial terbatas](../tasks/31-validasi-daytona-dengan-trial-terbatas.md) | 6 | Done | Aktif V1 | Fondasi | [NG-030 · Terima baseline V1 yang bersih](../tasks/30-terima-baseline-v1-yang-bersih.md) |
 | [NG-032 · Shell onboarding dan walkthrough asisten umum](../tasks/32-shell-onboarding-dan-walkthrough-asisten-umum.md) | 7 | Backlog | Aktif V1 | Fondasi | [NG-031 · Validasi Daytona dengan trial terbatas](../tasks/31-validasi-daytona-dengan-trial-terbatas.md) |
 | [NG-033 · Task background dan approval umum](../tasks/33-task-background-dan-approval-umum.md) | 8 | Backlog | Aktif V1 | Agent | [NG-032 · Shell onboarding dan walkthrough asisten umum](../tasks/32-shell-onboarding-dan-walkthrough-asisten-umum.md) |
 | [NG-034 · File produk dan hasil tersimpan](../tasks/34-file-produk-dan-hasil-tersimpan.md) | 9 | Backlog | Aktif V1 | Agent | [NG-033 · Task background dan approval umum](../tasks/33-task-background-dan-approval-umum.md) |

@@ -40,3 +40,7 @@ Rantai: spesifikasi → bukti REA/riset → tiket → bukti penerimaan. Tiket Do
 
 [07 · Backlog Implementasi V1](backlog/README.md)
 <!-- notion-content:end -->
+
+## Status kerja terbaru
+
+Readback status 2026-10-18T07:13:08.912354+00:00: [NG-031 · Validasi Daytona dengan trial terbatas](backlog/tasks/31-validasi-daytona-dengan-trial-terbatas.md) berstatus **Done**. Empat acceptance criteria memiliki bukti live; [laporan penerimaan](engineering/daytona-31-acceptance.md) mencatat hasil dan batasnya. Dua sandbox trial sudah dihapus; readback provider mengonfirmasi tidak ada resource tersisa.

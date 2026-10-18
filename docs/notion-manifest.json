@@ -16,7 +16,7 @@
       },
       "notion_content_sha256": "8683032b40bb75fb3a66096aaca609cabbcce80266d1cb8aa515f3c2ac78181e",
       "local_content_sha256": "801f9d06d6e4c7567923e16080a6ca96988fb7ea31076858396132428073981b",
-      "local_file_sha256": "bf69b4fe65c19823e14c9de43d4fd1a254252ee1c209b32e708cd6afb20fcc85",
+      "local_file_sha256": "b1d6943760102514fd402527b5db04727843d3b3c6f67bc1c2694e3097292cc0",
       "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
@@ -886,7 +886,7 @@
       },
       "notion_content_sha256": "ff427a85b252da3841a5489b0f59aaa7c56a3e481cccccceb80e4755158e4018",
       "local_content_sha256": "6f8f141d26c06db4c4c1e0a38dc57315e043b485143d5fe24d3446116daec5b9",
-      "local_file_sha256": "7b341c72f3594104ca471970251960844b8d45332d81c33502eff49d90fcb276",
+      "local_file_sha256": "77bab20fced8301810d3542298a6730ae11c82787e1a05f752866cef210c277b",
       "readback_at": "2026-10-18T06:04:56.780944+00:00",
       "page_last_edited_at": "2026-10-18T05:49:58.871Z"
     },
@@ -1130,17 +1130,17 @@
         ],
         "Lingkup": "Aktif V1",
         "Prioritas": "P0",
-        "Status": "Ready",
+        "Status": "Done",
         "Ticket": 31,
         "Tugas": "NG-031 · Validasi Daytona dengan trial terbatas",
         "Urutan": 6,
         "url": "https://app.notion.com/p/3fdabdd61873810a91b6f2e80f3fa704"
       },
-      "notion_content_sha256": "aa36488a6b245fe0c6b701ba8f8f1b6d2fb822cc14a40a09bda5fd75a6052cf7",
-      "local_content_sha256": "dbfdd1038b5ed22e7aa543e5f536cf756bfb38284a520bc725fe624b9794015e",
-      "local_file_sha256": "3be268e492cc8dafec4fc74e4df2a0cff5a4c43562e47fb94785421eaed996c6",
-      "readback_at": "2026-10-18T06:04:56.780944+00:00",
-      "page_last_edited_at": "2026-10-18T06:02:57.417Z"
+      "notion_content_sha256": "affac8e9a3427dcd32a78ae8096609a47b2e646d23d4cbff1f5f0dca7a3e9d22",
+      "local_content_sha256": "835b82498844ae44d07ea9c09f0e57412cfa96668275704272d94f13cbc9bdaf",
+      "local_file_sha256": "89bc1b0d910adc65bbad54bcbb41402656323dde05686322f71b720295eec47d",
+      "readback_at": "2026-10-18T07:13:08.912354+00:00",
+      "page_last_edited_at": "2026-10-18T07:12:13.591Z"
     },
     {
       "id": "3fdabdd6-1873-810b-8159-f4798fc39046",
@@ -1640,8 +1640,8 @@
           "3f8abdd6-1873-81bf-9174-f9126e48a4f3",
           "3f8abdd6-1873-81fd-a17d-d1af24cec8fb"
         ],
-        "local_file_sha256": "5876f4f7ca5a8578132b1f5d0770c470f31a30ff08a9e62e90ac7d0968eb65be",
-        "readback_at": "2026-10-18T06:04:56.780944+00:00",
+        "local_file_sha256": "17863e45fc5bdda4881010a2c64b8d3d881cd0b704651a50fca9f362454214ee",
+        "readback_at": "2026-10-18T07:13:08.912354+00:00",
         "queried_row_count": 41
       },
       {
@@ -1723,8 +1723,8 @@
           "3fdabdd6-1873-81f8-ade2-c7db2c75396e",
           "3f8abdd6-1873-81ac-90b6-df75b7e1a157"
         ],
-        "local_file_sha256": "0b870a9075f7c648de7fbed5f2c0623a518bda32180e325758afd5306af5a6da",
-        "readback_at": "2026-10-18T06:04:56.780944+00:00",
+        "local_file_sha256": "257624df9ca25ad7e2a4798d4ba43064ec3b111fae14370f28ef64a60741b04a",
+        "readback_at": "2026-10-18T07:13:08.912354+00:00",
         "queried_row_count": 25
       },
       {
@@ -1779,12 +1779,10 @@
           ],
           "type": "table"
         },
-        "page_ids": [
-          "3fdabdd6-1873-810a-91b6-f2e80f3fa704"
-        ],
-        "local_file_sha256": "8e472d6b667c5d673d5c6ad3bc44d75655f7a28be890eca594b00f45cc9eeced",
-        "readback_at": "2026-10-18T06:04:56.780944+00:00",
-        "queried_row_count": 1
+        "page_ids": [],
+        "local_file_sha256": "1a4f192f2946a6209caad3fb58c0bea868295da0775d693d34a66cc7ce89ba87",
+        "readback_at": "2026-10-18T07:13:08.912354+00:00",
+        "queried_row_count": 0
       },
       {
         "id": "view://3f8abdd6-1873-804b-8bb1-000c1dd5af9b",
@@ -1856,8 +1854,8 @@
           "3f8abdd6-1873-81bf-9174-f9126e48a4f3",
           "3f8abdd6-1873-81fd-a17d-d1af24cec8fb"
         ],
-        "local_file_sha256": "b3553d86bcc1d95c6256e1585b81c72406503d586df4dc2fe4b578c80f1d43a6",
-        "readback_at": "2026-10-18T06:04:56.780944+00:00",
+        "local_file_sha256": "49be26c7f11b80d3548bcc116a9b49803a1879113a34b894ed7c5450052e0c9a",
+        "readback_at": "2026-10-18T07:13:08.912354+00:00",
         "queried_row_count": 16
       }
     ],
@@ -1993,77 +1991,37 @@
       "at": "2026-10-18T06:04:56.780944+00:00",
       "source": "Notion exact readback after authorized reset/rewrite",
       "summary": "General assistant V1; NG-026–030 cleanup; NG-031–041 and retained foundation tasks; historical Done preserved"
+    },
+    {
+      "at": "2026-10-18T06:25:52.880870+00:00",
+      "page_id": "3fdabdd6-1873-810a-91b6-f2e80f3fa704",
+      "properties": {
+        "Status": "In Progress"
+      },
+      "source": "User-requested next ordered ticket; exact Notion status/content readback and four live views verified",
+      "summary": "Start NG-031 research and trial planning after NG-030 Done; retain all four acceptance items unchecked",
+      "notion_content_sha256": "7c004ca50c0a77f781008c04d35fe0c32f10b44d09c4850eb5108f8d06d79d84",
+      "research_file": "research/daytona-trial-31-2026-10-18.md",
+      "research_status": "Primary-source research and proposed scope only; no live trial or acceptance"
+    },
+    {
+      "at": "2026-10-18T07:13:08.912354+00:00",
+      "page_id": "3fdabdd6-1873-810a-91b6-f2e80f3fa704",
+      "properties": {
+        "Status": "Done"
+      },
+      "source": "User-authorized implementation; exact Notion content/status readback and four live views verified",
+      "summary": "Accept NG-031 live Daytona trial: shared desktop, takeover, two owners, expiry/revoke, persistence, idle-stop, TTL after SIGKILL, bounded resource budget and confirmed cleanup",
+      "notion_content_sha256": "affac8e9a3427dcd32a78ae8096609a47b2e646d23d4cbff1f5f0dca7a3e9d22",
+      "acceptance_file": "engineering/daytona-31-acceptance.md",
+      "evidence_file": "engineering/evidence/daytona-31/summary.json"
     }
   ],
   "last_partial_sync": {
-    "at": "2026-10-18T06:04:56.780944+00:00",
-    "scope": "V1 reset specs, evidence modules, 41 task identities, four view readbacks; new feature runtime remains Backlog/Ready",
+    "at": "2026-10-18T07:13:08.912354+00:00",
+    "scope": "NG-031 completion and four exact view readbacks; all other task properties preserved",
     "page_ids": [
-      "3f8abdd6-1873-81e3-9753-f0d54ee2556b",
-      "3f8abdd6-1873-8122-878d-de3cb0661765",
-      "3f8abdd6-1873-81fd-a2db-ea043a840c5a",
-      "3f8abdd6-1873-8165-8b61-f4283ee83428",
-      "3f8abdd6-1873-8119-8256-f4ee69db1e78",
-      "3f8abdd6-1873-8120-90d8-e31cd02f0ce9",
-      "3f8abdd6-1873-8129-b1d8-faf62a637a7b",
-      "3f8abdd6-1873-8137-a8c9-c719f5b64bc4",
-      "3f8abdd6-1873-813a-8393-edbb6c77cb6b",
-      "3f8abdd6-1873-8146-9879-f976651f1717",
-      "3f8abdd6-1873-814a-8064-dde9dcc0fbf7",
-      "3f8abdd6-1873-8151-a38f-fb012be2c9ce",
-      "3f8abdd6-1873-816c-aeb2-d24a482c6511",
-      "3f8abdd6-1873-816d-8b15-ed7b7b1b82a9",
-      "3f8abdd6-1873-817b-b0e3-c16aef505ed4",
-      "3f8abdd6-1873-817d-9529-f43e39a5979f",
-      "3f8abdd6-1873-8183-8333-d654ecdf5ce3",
-      "3f8abdd6-1873-8189-a4f2-d771500ea426",
-      "3f8abdd6-1873-818a-951c-cddcb203f907",
-      "3f8abdd6-1873-818d-968d-eb21560778ae",
-      "3f8abdd6-1873-8197-962a-fe1cc626e01c",
-      "3f8abdd6-1873-81a5-8ce9-c8487ffe187e",
-      "3f8abdd6-1873-81a7-8cd0-f770a7db65d2",
-      "3f8abdd6-1873-81a8-8a5c-d665f17d979f",
-      "3f8abdd6-1873-81aa-be5c-f4a3355618cd",
-      "3f8abdd6-1873-81ac-90b6-df75b7e1a157",
-      "3f8abdd6-1873-81bf-9174-f9126e48a4f3",
-      "3f8abdd6-1873-81c1-8df8-efee586427c7",
-      "3f8abdd6-1873-81ea-a5fc-cda9bf6f8fb0",
-      "3f8abdd6-1873-81fd-a17d-d1af24cec8fb",
-      "3fdabdd6-1873-81fd-93a0-e4ff81a00437",
-      "3fdabdd6-1873-81de-af1a-d55aa8508cba",
-      "3fdabdd6-1873-81e3-aaa8-f456a6dbd1cf",
-      "3fdabdd6-1873-8164-bb8c-fabe53fd49f6",
-      "3fdabdd6-1873-812c-8d5d-fa04b7f3e140",
-      "3fdabdd6-1873-8169-8715-cbfd20430b35",
-      "3fdabdd6-1873-81a4-96a1-f4d88d7d68bf",
-      "3fdabdd6-1873-81ed-b593-cae8f95784e7",
-      "3fdabdd6-1873-819c-a2b5-cc4e521b3587",
-      "3fdabdd6-1873-81d3-9f94-f7161d4ef570",
-      "3fdabdd6-1873-812e-9ed6-c67417884b74",
-      "3fdabdd6-1873-8115-b121-fb4d564e2737",
-      "3fdabdd6-1873-81c0-9fac-e8d0b458ad24",
-      "3fdabdd6-1873-8128-940a-e28cf59a8578",
-      "3fdabdd6-1873-8119-b3de-f58e5565c18c",
-      "3fdabdd6-1873-8171-8c98-c853fea3d769",
-      "3fdabdd6-1873-818c-b211-e29e7e07dc88",
-      "3fdabdd6-1873-817a-b755-f7d9bf4c1ce8",
-      "3fdabdd6-1873-81ad-b916-f976e9095a4d",
-      "3fdabdd6-1873-8151-bff8-e309a84c12bd",
-      "3fdabdd6-1873-8129-aadd-c538dc6ea258",
-      "3fdabdd6-1873-818f-b608-fde942a00855",
-      "3fdabdd6-1873-819e-be51-d0445fb7da4e",
-      "3fdabdd6-1873-810a-91b6-f2e80f3fa704",
-      "3fdabdd6-1873-810b-8159-f4798fc39046",
-      "3fdabdd6-1873-81ba-979a-c9f219c55a5a",
-      "3fdabdd6-1873-8108-a7d9-ed086cd2c1ea",
-      "3fdabdd6-1873-8194-8c64-cf1f828a90c8",
-      "3fdabdd6-1873-8198-b295-ca667c34f1b1",
-      "3fdabdd6-1873-813a-9603-fb38d0df673f",
-      "3fdabdd6-1873-814b-abd1-c1bcd089effb",
-      "3fdabdd6-1873-8192-b8f8-f919dedbb367",
-      "3fdabdd6-1873-8163-9bd6-f377668ee2f3",
-      "3fdabdd6-1873-81f8-ade2-c7db2c75396e",
-      "3fdabdd6-1873-81ed-af69-ecd07a7842a8"
+      "3fdabdd6-1873-810a-91b6-f2e80f3fa704"
     ]
   }
 }

@@ -1,6 +1,7 @@
 import { MessageScroller } from "@shadcn/react/message-scroller";
 import { ArrowDown, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { TaskCard } from "@/features/tasks/task-card";
 import { cn } from "@/lib/utils";
 import { ApprovalCard } from "./approval-card";
 import { Message } from "./message";
@@ -86,6 +87,17 @@ export function ThreadTranscript({
                 <RefreshCw /> Coba lagi
               </Button>
             </div>
+          ) : null}
+          {snapshot.tasks?.length ? (
+            <section className="mt-6 space-y-3" aria-label="Task di percakapan ini">
+              <h2 className="text-sm text-muted-foreground">Pekerjaan di percakapan ini</h2>
+              {[...snapshot.tasks]
+                .sort((a, b) => b.created_at.localeCompare(a.created_at))
+                .slice(0, 10)
+                .map((task) => (
+                  <TaskCard key={task.id} task={task} />
+                ))}
+            </section>
           ) : null}
         </MessageScroller.Content>
       </MessageScroller.Viewport>

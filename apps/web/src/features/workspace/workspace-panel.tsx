@@ -2,6 +2,7 @@ import { ArrowLeft } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { UsagePanel } from "@/features/quotas/usage-panel";
+import { TaskPanel } from "@/features/tasks/task-panel";
 import { Capabilities } from "./capabilities";
 import { SettingsPanel } from "./settings-panel";
 import { type WorkspaceView, workspaceLinks } from "./workspace-views";
@@ -9,9 +10,11 @@ import { type WorkspaceView, workspaceLinks } from "./workspace-views";
 export function WorkspacePanel({
   view,
   onNavigate,
+  threadId,
 }: {
   view: Exclude<WorkspaceView, "chat">;
   onNavigate: (view: WorkspaceView) => void;
+  threadId: string | null;
 }) {
   const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
@@ -37,13 +40,17 @@ export function WorkspacePanel({
           {workspaceLinks.find((item) => item.view === view)?.label}
         </h1>
         <p className="mb-8 max-w-prose text-sm text-muted-foreground">
-          {view === "capabilities"
-            ? "Kenali bantuan yang bisa kamu gunakan dan yang sedang disiapkan."
-            : view === "usage"
-              ? "Pantau penggunaanmu tanpa meninggalkan percakapan."
-              : "Atur pengalamanmu bersama Gwen."}
+          {view === "tasks"
+            ? "Titipkan pekerjaan, ikuti progres, dan tinjau keputusanmu."
+            : view === "capabilities"
+              ? "Kenali bantuan yang bisa kamu gunakan dan yang sedang disiapkan."
+              : view === "usage"
+                ? "Pantau penggunaanmu tanpa meninggalkan percakapan."
+                : "Atur pengalamanmu bersama Gwen."}
         </p>
-        {view === "capabilities" ? (
+        {view === "tasks" ? (
+          <TaskPanel key={threadId} threadId={threadId} />
+        ) : view === "capabilities" ? (
           <Capabilities />
         ) : view === "usage" ? (
           <UsagePanel />

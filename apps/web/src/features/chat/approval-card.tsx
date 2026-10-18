@@ -66,7 +66,7 @@ export function ApprovalCard({ approval, decide }: ApprovalCardProps) {
             {sending ? <LoaderCircle className="animate-spin" /> : <Check />} Setujui
           </Button>
           <Button type="button" variant="ghost" disabled={sending} onClick={() => respond(false)}>
-            <X /> Lewati dulu
+            <X /> Tolak tindakan
           </Button>
         </CardFooter>
       ) : null}

@@ -152,7 +152,9 @@ export function ChatPage({ selectedThread, view, onNavigate, onSelect }: ChatPag
             <WorkspaceState kind="loading" title="Menyiapkan percakapanmu…" />
           )}
         </div>
-        {view !== "chat" ? <WorkspacePanel key={view} view={view} onNavigate={onNavigate} /> : null}
+        {view !== "chat" ? (
+          <WorkspacePanel key={view} view={view} onNavigate={onNavigate} threadId={threadId} />
+        ) : null}
       </main>
       {history.mobile ? (
         <Sheet open={history.drawerOpen} onOpenChange={history.setDrawerOpen}>

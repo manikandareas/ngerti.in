@@ -2,12 +2,6 @@ import { Brain, CalendarClock, FolderOpen, ListTodo, Monitor, Target } from "luc
 
 const capabilities = [
   {
-    name: "Task",
-    icon: ListTodo,
-    description:
-      "Titipkan pekerjaan panjang, ikuti progresnya, dan tinjau keputusan yang diperlukan.",
-  },
-  {
     name: "Hasil",
     icon: FolderOpen,
     description: "Temukan file dan hasil pekerjaan untuk dibuka kembali atau diunduh.",
@@ -43,6 +37,15 @@ export function Capabilities() {
         <p className="mt-2 text-sm text-muted-foreground">
           Minta bantuan menulis, membandingkan pilihan, atau menyusun rencana. Main chat dan side
           chat bisa kamu buka kembali kapan saja.
+        </p>
+      </section>
+      <section className="rounded-2xl border p-5">
+        <h2 className="flex items-center gap-3">
+          <ListTodo className="size-5" /> Task teks sudah tersedia
+        </h2>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Minta Gwen menulis, merangkum, atau menyusun rencana di background. Ikuti progres dari
+          menu Task, lanjutkan chat, lalu tinjau draft bila diperlukan.
         </p>
       </section>
       <section aria-labelledby="upcoming-heading">

@@ -1,6 +1,6 @@
 COMPOSE = docker compose --env-file .env -f infra/compose.yaml
 
-.PHONY: install infra-up infra-down setup migrate dev web api worker check build quota-inspect task-inspect files-inspect reset-dev docs-check
+.PHONY: install infra-up infra-down setup migrate dev web api worker check build quota-inspect task-inspect files-inspect sandbox-inspect reset-dev docs-check
 install:
 	bun install
 	uv sync --project apps/backend
@@ -43,6 +43,9 @@ task-inspect:
 
 files-inspect:
 	uv run --project apps/backend python scripts/inspect_files.py
+
+sandbox-inspect:
+	uv run --project apps/backend python scripts/inspect_sandbox.py
 
 reset-dev:
 	uv run --project apps/backend python scripts/reset_dev.py --execute

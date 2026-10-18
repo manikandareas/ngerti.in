@@ -32,6 +32,9 @@ class Settings(BaseSettings):
     chat_max_output_tokens: int = Field(default=3000, ge=256, le=16000)
     chat_run_timeout_seconds: int = Field(default=180, ge=15, le=600)
     chat_max_model_calls: int = Field(default=6, ge=1, le=12)
+    daytona_api_key: SecretStr = SecretStr("")
+    daytona_api_url: str = "https://app.daytona.io/api"
+    daytona_target: str | None = None
 
     @model_validator(mode="after")
     def validate_production(self) -> "Settings":

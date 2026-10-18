@@ -45,6 +45,7 @@ for quota_error_type in ERROR_TYPES:
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.allowed_origins,
+    allow_credentials=True,
     allow_methods=["GET", "POST", "DELETE"],
     allow_headers=["Authorization", "Content-Type", "Last-Event-ID"],
     expose_headers=["X-Request-ID"],
@@ -106,6 +107,21 @@ def me(account: Annotated[Account, Depends(current_account)]):
 
 if settings.diagnostics_enabled:
     app.include_router(diagnostic_router)
+    from daytona import DaytonaError
+
+    from ngertiin.daytona_trial.api import router as daytona_router
+    from ngertiin.daytona_trial.store import TrialError
+
+    app.include_router(daytona_router)
+
+    @app.exception_handler(DaytonaError)
+    async def trial_provider_failure(request: Request, error: DaytonaError):
+        logger.warning("daytona.unavailable", error_type=type(error).__name__)
+        return JSONResponse(status_code=503, content={"detail": "Provider trial belum tersedia."})
+
+    @app.exception_handler(TrialError)
+    async def trial_precondition(request: Request, error: TrialError):
+        return JSONResponse(status_code=409, content={"detail": str(error)})
 
     @app.get("/dev/status")
     def development_status():

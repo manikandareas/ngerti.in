@@ -24,7 +24,14 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = ["ruff", "mypy", "boto3-stubs[s3]"]
+dev = [
+    "ruff",
+    "mypy",
+    "boto3-stubs[s3]",
+    "daytona==0.225.0",
+    "websockets>=15,<16",
+    "httpx>=0.28.1",
+]
 
 [build-system]
 requires = ["hatchling"]

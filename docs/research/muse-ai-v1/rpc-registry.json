@@ -1,0 +1,2629 @@
+{
+  "observation": "Static route declarations in downloaded public JS; not executed API requests",
+  "source_file": "147crb07jgq_3.js",
+  "source_sha256": "73db96d786ff3a16f360a61624302c1f98f71c45133d1bf27eff44b88ce18900",
+  "build": "dpl_13w2XhxKwKs7oW6RrPKNJxMESSbw",
+  "evidence_parent": "ev_1be87df5702e20626a0a9f7c6c743fc2c1ea4c6da588e5deed8be9f5df49c078",
+  "count": 338,
+  "routes": [
+    {
+      "method": "email.mailbox.get",
+      "httpMethod": "GET",
+      "path": "/api/email/mailbox",
+      "service": "daemon",
+      "noiseOnly": true,
+      "source_byte_start": 4725,
+      "source_byte_end": 4826
+    },
+    {
+      "method": "email.mailbox.setup",
+      "httpMethod": "GET",
+      "path": "/api/email/mailbox/setup",
+      "service": "daemon",
+      "noiseOnly": true,
+      "source_byte_start": 4827,
+      "source_byte_end": 4936
+    },
+    {
+      "method": "email.mailbox.create",
+      "httpMethod": "POST",
+      "path": "/api/email/mailbox",
+      "service": "daemon",
+      "noiseOnly": true,
+      "source_byte_start": 4937,
+      "source_byte_end": 5042
+    },
+    {
+      "method": "email.mailbox.delete",
+      "httpMethod": "DELETE",
+      "path": "/api/email/mailbox",
+      "service": "daemon",
+      "noiseOnly": true,
+      "requestBody": "empty",
+      "source_byte_start": 5043,
+      "source_byte_end": 5170
+    },
+    {
+      "method": "email.messages.get",
+      "httpMethod": "GET",
+      "path": "/api/email/messages/{message_id}",
+      "service": "daemon",
+      "noiseOnly": true,
+      "source_byte_start": 5171,
+      "source_byte_end": 5287
+    },
+    {
+      "method": "email.attachment.get",
+      "httpMethod": "GET",
+      "path": "/api/email/messages/{message_id}/attachments/{index}",
+      "service": "daemon",
+      "noiseOnly": true,
+      "source_byte_start": 5288,
+      "source_byte_end": 5426
+    },
+    {
+      "method": "email.threads.list",
+      "httpMethod": "GET",
+      "path": "/api/email/threads",
+      "service": "daemon",
+      "noiseOnly": true,
+      "source_byte_start": 5427,
+      "source_byte_end": 5529
+    },
+    {
+      "method": "email.threads.get",
+      "httpMethod": "GET",
+      "path": "/api/email/threads/{thread_id}",
+      "service": "daemon",
+      "noiseOnly": true,
+      "source_byte_start": 5530,
+      "source_byte_end": 5643
+    },
+    {
+      "method": "email.test_message",
+      "httpMethod": "POST",
+      "path": "/api/email/test-message",
+      "service": "daemon",
+      "noiseOnly": true,
+      "source_byte_start": 5644,
+      "source_byte_end": 5752
+    },
+    {
+      "method": "voice.user_speech_started",
+      "httpMethod": "POST",
+      "path": "/api/voice/user-speech-started",
+      "source_byte_start": 5796,
+      "source_byte_end": 5888
+    },
+    {
+      "method": "voice.calls.user_speech",
+      "httpMethod": "POST",
+      "path": "/api/voice/calls/user-speech",
+      "source_byte_start": 5889,
+      "source_byte_end": 5977
+    },
+    {
+      "method": "voice.active_voice",
+      "httpMethod": "GET",
+      "path": "/api/voice/active-voice",
+      "source_byte_start": 5978,
+      "source_byte_end": 6055
+    },
+    {
+      "method": "voice.calls.media_endpoint",
+      "httpMethod": "GET",
+      "path": "/api/voice/calls/media-endpoint",
+      "source_byte_start": 6056,
+      "source_byte_end": 6149
+    },
+    {
+      "method": "voice.available_voices",
+      "httpMethod": "GET",
+      "path": "/api/voice/available-voices",
+      "source_byte_start": 6150,
+      "source_byte_end": 6235
+    },
+    {
+      "method": "voice.catalog",
+      "httpMethod": "GET",
+      "path": "/api/voice/catalog",
+      "source_byte_start": 6236,
+      "source_byte_end": 6303
+    },
+    {
+      "method": "voice.catalog_filters",
+      "httpMethod": "GET",
+      "path": "/api/voice/catalog/filters",
+      "source_byte_start": 6304,
+      "source_byte_end": 6387
+    },
+    {
+      "method": "voice.custom_voices.list",
+      "httpMethod": "GET",
+      "path": "/api/voice/custom-voices",
+      "source_byte_start": 6388,
+      "source_byte_end": 6472
+    },
+    {
+      "method": "voice.custom_voices.rename",
+      "httpMethod": "PATCH",
+      "path": "/api/voice/custom-voices/{saved_voice_id}",
+      "source_byte_start": 6473,
+      "source_byte_end": 6578
+    },
+    {
+      "method": "voice.custom_voices.delete",
+      "httpMethod": "DELETE",
+      "path": "/api/voice/custom-voices/{saved_voice_id}",
+      "requestBody": "empty",
+      "source_byte_start": 6579,
+      "source_byte_end": 6705
+    },
+    {
+      "method": "voice.pipeline_profiles",
+      "httpMethod": "GET",
+      "path": "/api/voice/pipeline-profiles",
+      "source_byte_start": 6706,
+      "source_byte_end": 6793
+    },
+    {
+      "method": "voice.select_pipeline_profile",
+      "httpMethod": "POST",
+      "path": "/api/voice/pipeline-profile",
+      "source_byte_start": 6794,
+      "source_byte_end": 6887
+    },
+    {
+      "method": "voice.avatar_video.prepare",
+      "httpMethod": "POST",
+      "path": "/api/voice/avatar-video/prepare",
+      "noiseOnly": true,
+      "requestTimeoutMs": 8000,
+      "source_byte_start": 6888,
+      "source_byte_end": 7016
+    },
+    {
+      "method": "client.runtime_state",
+      "httpMethod": "POST",
+      "path": "/api/client/runtime-state",
+      "noiseOnly": true,
+      "source_byte_start": 7017,
+      "source_byte_end": 7112
+    },
+    {
+      "method": "voice.start_call",
+      "httpMethod": "POST",
+      "path": "/api/voice/start-call",
+      "source_byte_start": 7113,
+      "source_byte_end": 7187
+    },
+    {
+      "method": "voice.end_call",
+      "httpMethod": "POST",
+      "path": "/api/voice/end-call",
+      "source_byte_start": 7188,
+      "source_byte_end": 7258
+    },
+    {
+      "method": "voice.onboarding.reset",
+      "httpMethod": "POST",
+      "path": "/api/voice/onboarding/reset",
+      "source_byte_start": 7259,
+      "source_byte_end": 7345
+    },
+    {
+      "method": "oauth.callback",
+      "httpMethod": "POST",
+      "path": "/oauth/callback",
+      "service": "authd",
+      "source_byte_start": 7402,
+      "source_byte_end": 7484
+    },
+    {
+      "method": "ac_oauth.callback",
+      "httpMethod": "POST",
+      "path": "/ac_oauth/callback",
+      "source_byte_start": 7485,
+      "source_byte_end": 7557
+    },
+    {
+      "method": "github.installation.callback",
+      "httpMethod": "POST",
+      "path": "/api/github/installation/callback",
+      "source_byte_start": 7558,
+      "source_byte_end": 7656
+    },
+    {
+      "method": "sharing.eligibility",
+      "httpMethod": "GET",
+      "path": "/api/sharing/eligibility",
+      "service": "daemon",
+      "noiseOnly": true,
+      "requestTimeoutMs": 15000,
+      "source_byte_start": 7701,
+      "source_byte_end": 7832
+    },
+    {
+      "method": "sharing.attempt",
+      "httpMethod": "POST",
+      "path": "/api/sharing/attempt",
+      "service": "daemon",
+      "noiseOnly": true,
+      "requestTimeoutMs": 35000,
+      "source_byte_start": 7833,
+      "source_byte_end": 7957
+    },
+    {
+      "method": "browser_task.clipboard.readiness",
+      "httpMethod": "POST",
+      "path": "/api/browser-task/{task_id}/clipboard/readiness",
+      "noiseOnly": true,
+      "maxResponseBytes": 2048,
+      "source_byte_start": 8052,
+      "source_byte_end": 8203
+    },
+    {
+      "method": "browser_task.clipboard.copy",
+      "httpMethod": "POST",
+      "path": "/api/browser-task/{task_id}/clipboard/copy",
+      "noiseOnly": true,
+      "maxResponseBytes": 370688,
+      "source_byte_start": 8204,
+      "source_byte_end": 8347
+    },
+    {
+      "method": "browser_task.clipboard.paste",
+      "httpMethod": "POST",
+      "path": "/api/browser-task/{task_id}/clipboard/paste",
+      "noiseOnly": true,
+      "maxResponseBytes": 2048,
+      "source_byte_start": 8348,
+      "source_byte_end": 8491
+    },
+    {
+      "method": "ssh.operator.enable",
+      "httpMethod": "POST",
+      "path": "/v1/ssh/operator/enable",
+      "service": "ssh_access",
+      "requestBody": "empty",
+      "noiseOnly": true,
+      "source_byte_start": 8804,
+      "source_byte_end": 8937
+    },
+    {
+      "method": "ssh.operator.disable",
+      "httpMethod": "POST",
+      "path": "/v1/ssh/operator/disable",
+      "service": "ssh_access",
+      "requestBody": "empty",
+      "noiseOnly": true,
+      "source_byte_start": 8938,
+      "source_byte_end": 9073
+    },
+    {
+      "method": "credentials.list",
+      "httpMethod": "GET",
+      "path": "/v1/credentials/list",
+      "service": "authd",
+      "source_byte_start": 9074,
+      "source_byte_end": 9162
+    },
+    {
+      "method": "credentials.catalog",
+      "httpMethod": "GET",
+      "path": "/v1/credentials/catalog",
+      "service": "authd",
+      "noiseOnly": true,
+      "source_byte_start": 9163,
+      "source_byte_end": 9270
+    },
+    {
+      "method": "credentials.catalog.details",
+      "httpMethod": "GET",
+      "path": "/v1/credentials/catalog/details",
+      "service": "authd",
+      "noiseOnly": true,
+      "source_byte_start": 9271,
+      "source_byte_end": 9394
+    },
+    {
+      "method": "credentials.catalog.update",
+      "httpMethod": "POST",
+      "path": "/v1/credentials/catalog/update",
+      "service": "authd",
+      "noiseOnly": true,
+      "source_byte_start": 9395,
+      "source_byte_end": 9517
+    },
+    {
+      "method": "credentials.catalog.delete",
+      "httpMethod": "POST",
+      "path": "/v1/credentials/catalog/delete",
+      "service": "authd",
+      "noiseOnly": true,
+      "source_byte_start": 9518,
+      "source_byte_end": 9640
+    },
+    {
+      "method": "credentials.register",
+      "httpMethod": "POST",
+      "path": "/v1/credentials/register",
+      "service": "authd",
+      "source_byte_start": 9641,
+      "source_byte_end": 9738
+    },
+    {
+      "method": "credentials.capture",
+      "httpMethod": "POST",
+      "path": "/v1/credentials/capture",
+      "service": "authd",
+      "noiseOnly": true,
+      "source_byte_start": 9739,
+      "source_byte_end": 9847
+    },
+    {
+      "method": "credentials.capture.external_provider.request",
+      "httpMethod": "POST",
+      "path": "/v1/credentials/capture/external-provider/request",
+      "service": "authd",
+      "noiseOnly": true,
+      "source_byte_start": 9848,
+      "source_byte_end": 10008
+    },
+    {
+      "method": "credentials.capture.external_provider.fulfill",
+      "httpMethod": "POST",
+      "path": "/v1/credentials/capture/external-provider/fulfill",
+      "service": "authd",
+      "noiseOnly": true,
+      "source_byte_start": 10009,
+      "source_byte_end": 10169
+    },
+    {
+      "method": "credentials.delete",
+      "httpMethod": "POST",
+      "path": "/v1/credentials/delete",
+      "service": "authd",
+      "source_byte_start": 10170,
+      "source_byte_end": 10263
+    },
+    {
+      "method": "browser_task.refresh_environment",
+      "httpMethod": "POST",
+      "path": "/api/browser-task/{task_id}/refresh-environment",
+      "requestTimeoutMs": 150000,
+      "source_byte_start": 10313,
+      "source_byte_end": 10451
+    },
+    {
+      "method": "browser_task.end_and_release",
+      "httpMethod": "POST",
+      "path": "/api/browser-task/{task_id}/end-and-release",
+      "requestTimeoutMs": 120000,
+      "source_byte_start": 10452,
+      "source_byte_end": 10582
+    },
+    {
+      "method": "browser_task.lease_info",
+      "httpMethod": "GET",
+      "path": "/api/browser-task/{task_id}/lease",
+      "source_byte_start": 10583,
+      "source_byte_end": 10675
+    },
+    {
+      "method": "browser.debug_access.get",
+      "httpMethod": "GET",
+      "path": "/api/browser/debug-access",
+      "noiseOnly": true,
+      "source_byte_start": 10676,
+      "source_byte_end": 10774
+    },
+    {
+      "method": "browser.lease_overrides.get",
+      "httpMethod": "GET",
+      "path": "/api/browser/lease-overrides",
+      "noiseOnly": true,
+      "source_byte_start": 10775,
+      "source_byte_end": 10879
+    },
+    {
+      "method": "browser.lease_overrides.set",
+      "httpMethod": "PATCH",
+      "path": "/api/browser/lease-overrides",
+      "noiseOnly": true,
+      "source_byte_start": 10880,
+      "source_byte_end": 10986
+    },
+    {
+      "method": "browser.lease_overrides.release",
+      "httpMethod": "POST",
+      "path": "/api/browser/lease-overrides/release",
+      "noiseOnly": true,
+      "requestTimeoutMs": 120000,
+      "source_byte_start": 10987,
+      "source_byte_end": 11126
+    },
+    {
+      "method": "search.debug_overrides.get",
+      "httpMethod": "GET",
+      "path": "/api/search/debug-overrides",
+      "noiseOnly": true,
+      "source_byte_start": 11127,
+      "source_byte_end": 11229
+    },
+    {
+      "method": "search.debug_overrides.set",
+      "httpMethod": "PATCH",
+      "path": "/api/search/debug-overrides",
+      "noiseOnly": true,
+      "source_byte_start": 11230,
+      "source_byte_end": 11334
+    },
+    {
+      "method": "tasks.list",
+      "httpMethod": "GET",
+      "path": "/tasks",
+      "source_byte_start": 11377,
+      "source_byte_end": 11429
+    },
+    {
+      "method": "tasks.runs",
+      "httpMethod": "GET",
+      "path": "/tasks/runs",
+      "source_byte_start": 11430,
+      "source_byte_end": 11487
+    },
+    {
+      "method": "tasks.run",
+      "httpMethod": "POST",
+      "path": "/tasks/{job_id}/run",
+      "source_byte_start": 11488,
+      "source_byte_end": 11553
+    },
+    {
+      "method": "tasks.delete",
+      "httpMethod": "DELETE",
+      "path": "/api/tasks/{job_id}",
+      "requestBody": "empty",
+      "source_byte_start": 11554,
+      "source_byte_end": 11644
+    },
+    {
+      "method": "egress.approvals",
+      "httpMethod": "GET",
+      "path": "/approvals",
+      "service": "sentinel",
+      "source_byte_start": 11691,
+      "source_byte_end": 11772
+    },
+    {
+      "method": "egress.approval",
+      "httpMethod": "GET",
+      "path": "/approvals/{approval_id}",
+      "service": "sentinel",
+      "source_byte_start": 11773,
+      "source_byte_end": 11867
+    },
+    {
+      "method": "egress.approval.editable_message",
+      "httpMethod": "GET",
+      "path": "/approvals/{approval_id}/editable-message",
+      "service": "sentinel",
+      "source_byte_start": 11868,
+      "source_byte_end": 11996
+    },
+    {
+      "method": "egress.approval.decide",
+      "httpMethod": "POST",
+      "path": "/approvals/{approval_id}/decide",
+      "service": "sentinel",
+      "source_byte_start": 11997,
+      "source_byte_end": 12106
+    },
+    {
+      "method": "egress.approval.edit_message",
+      "httpMethod": "POST",
+      "path": "/approvals/{approval_id}/edit-message",
+      "service": "sentinel",
+      "source_byte_start": 12107,
+      "source_byte_end": 12228
+    },
+    {
+      "method": "egress.approval.history",
+      "httpMethod": "GET",
+      "path": "/approvals/history",
+      "service": "sentinel",
+      "source_byte_start": 12229,
+      "source_byte_end": 12325
+    },
+    {
+      "method": "chat.history",
+      "httpMethod": "GET",
+      "path": "/chat/history",
+      "source_byte_start": 12750,
+      "source_byte_end": 12811
+    },
+    {
+      "method": "professional_consent.resume",
+      "httpMethod": "POST",
+      "path": "/api/professional-consent/resume",
+      "source_byte_start": 12812,
+      "source_byte_end": 12908
+    },
+    {
+      "method": "chat.mark_seen",
+      "httpMethod": "POST",
+      "path": "/api/chat/{thread_id}/seen",
+      "source_byte_start": 12909,
+      "source_byte_end": 12986
+    },
+    {
+      "method": "chat.sxs.select",
+      "httpMethod": "POST",
+      "path": "/api/chat/sxs/select",
+      "source_byte_start": 12987,
+      "source_byte_end": 13059
+    },
+    {
+      "method": "activity.list",
+      "httpMethod": "GET",
+      "path": "/activity",
+      "source_byte_start": 13090,
+      "source_byte_end": 13148
+    },
+    {
+      "method": "activity.get",
+      "httpMethod": "GET",
+      "path": "/activity/{id}",
+      "source_byte_start": 13149,
+      "source_byte_end": 13211
+    },
+    {
+      "method": "sessions.list",
+      "httpMethod": "GET",
+      "path": "/api/session/list",
+      "source_byte_start": 13239,
+      "source_byte_end": 13305
+    },
+    {
+      "method": "sessions.get",
+      "httpMethod": "GET",
+      "path": "/api/session/list/{id}",
+      "source_byte_start": 13306,
+      "source_byte_end": 13376
+    },
+    {
+      "method": "skills.list",
+      "httpMethod": "GET",
+      "path": "/skills",
+      "source_byte_start": 13377,
+      "source_byte_end": 13431
+    },
+    {
+      "method": "skills.disconnect",
+      "httpMethod": "POST",
+      "path": "/skills/disconnect",
+      "source_byte_start": 13432,
+      "source_byte_end": 13504
+    },
+    {
+      "method": "skills.set_disabled",
+      "httpMethod": "POST",
+      "path": "/skills/set-disabled",
+      "source_byte_start": 13505,
+      "source_byte_end": 13581
+    },
+    {
+      "method": "subagents.list",
+      "httpMethod": "GET",
+      "path": "/subagents",
+      "source_byte_start": 13582,
+      "source_byte_end": 13642
+    },
+    {
+      "method": "subagents.status",
+      "httpMethod": "GET",
+      "path": "/subagents/status",
+      "source_byte_start": 13643,
+      "source_byte_end": 13712
+    },
+    {
+      "method": "config.get",
+      "httpMethod": "GET",
+      "path": "/config",
+      "source_byte_start": 13713,
+      "source_byte_end": 13766
+    },
+    {
+      "method": "config.update",
+      "httpMethod": "PATCH",
+      "path": "/config",
+      "source_byte_start": 13767,
+      "source_byte_end": 13825
+    },
+    {
+      "method": "vm.health",
+      "httpMethod": "GET",
+      "path": "/health",
+      "source_byte_start": 13826,
+      "source_byte_end": 13878
+    },
+    {
+      "method": "bug_report_logs.create",
+      "httpMethod": "POST",
+      "path": "/api/debug/bug-report-logs",
+      "noiseOnly": true,
+      "requestTimeoutMs": 900000,
+      "source_byte_start": 13879,
+      "source_byte_end": 13998
+    },
+    {
+      "method": "bug_report_logs.download",
+      "httpMethod": "GET",
+      "path": "/api/debug/bug-report-logs/{file_id}",
+      "noiseOnly": true,
+      "responseType": "binary",
+      "maxResponseBytes": 5242880,
+      "requestTimeoutMs": 120000,
+      "channel": "media",
+      "source_byte_start": 13999,
+      "source_byte_end": 14193
+    },
+    {
+      "method": "home_link_bug_reports.collect",
+      "httpMethod": "POST",
+      "path": "/api/debug/home-link-bug-reports",
+      "requestBody": "empty",
+      "noiseOnly": true,
+      "requestTimeoutMs": 35000,
+      "source_byte_start": 14194,
+      "source_byte_end": 14347
+    },
+    {
+      "method": "dyi.export",
+      "httpMethod": "POST",
+      "path": "/api/dyi/export",
+      "service": "daemon",
+      "requestBody": "empty",
+      "noiseOnly": true,
+      "responseType": "binary",
+      "maxResponseBytes": 1,
+      "requestTimeoutMs": 3900000,
+      "responseIdleTimeoutMs": 3900000,
+      "channel": "media",
+      "source_byte_start": 14348,
+      "source_byte_end": 14568
+    },
+    {
+      "method": "product_improvements.get",
+      "httpMethod": "GET",
+      "path": "/api/product-improvements",
+      "service": "daemon",
+      "noiseOnly": true,
+      "source_byte_start": 14569,
+      "source_byte_end": 14684
+    },
+    {
+      "method": "product_improvements.set",
+      "httpMethod": "POST",
+      "path": "/api/product-improvements",
+      "service": "daemon",
+      "noiseOnly": true,
+      "source_byte_start": 14685,
+      "source_byte_end": 14801
+    },
+    {
+      "method": "invite.badge.get",
+      "httpMethod": "GET",
+      "path": "/api/invite/badge",
+      "service": "daemon",
+      "noiseOnly": true,
+      "source_byte_start": 14830,
+      "source_byte_end": 14929
+    },
+    {
+      "method": "invite.badge.seen",
+      "httpMethod": "POST",
+      "path": "/api/invite/badge/seen",
+      "service": "daemon",
+      "noiseOnly": true,
+      "source_byte_start": 14930,
+      "source_byte_end": 15036
+    },
+    {
+      "method": "grants.list",
+      "httpMethod": "GET",
+      "path": "/grants",
+      "service": "daemon",
+      "noiseOnly": true,
+      "source_byte_start": 15064,
+      "source_byte_end": 15148
+    },
+    {
+      "method": "vm.enrollment_health",
+      "httpMethod": "GET",
+      "path": "/health/enrollment",
+      "source_byte_start": 15149,
+      "source_byte_end": 15223
+    },
+    {
+      "method": "vault.luks_status",
+      "httpMethod": "GET",
+      "path": "/luks/status",
+      "service": "vault",
+      "noiseOnly": true,
+      "source_byte_start": 15224,
+      "source_byte_end": 15318
+    },
+    {
+      "method": "messenger.fb-check",
+      "httpMethod": "GET",
+      "path": "/api/messenger/fb-check",
+      "source_byte_start": 15347,
+      "source_byte_end": 15424
+    },
+    {
+      "method": "messenger.pin_status",
+      "httpMethod": "GET",
+      "path": "/api/messenger_companion/pin-status",
+      "source_byte_start": 15425,
+      "source_byte_end": 15516
+    },
+    {
+      "method": "messenger_companion.unlock",
+      "httpMethod": "POST",
+      "path": "/api/messenger_companion/unlock",
+      "source_byte_start": 15517,
+      "source_byte_end": 15611
+    },
+    {
+      "method": "messenger-read.unlock",
+      "httpMethod": "POST",
+      "path": "/api/messenger-read/unlock",
+      "source_byte_start": 15612,
+      "source_byte_end": 15696
+    },
+    {
+      "method": "foa.accounts",
+      "httpMethod": "GET",
+      "path": "/api/foa/accounts",
+      "source_byte_start": 15697,
+      "source_byte_end": 15762
+    },
+    {
+      "method": "connectors.accounts",
+      "httpMethod": "GET",
+      "path": "/connectors/{id}/accounts",
+      "source_byte_start": 15763,
+      "source_byte_end": 15843
+    },
+    {
+      "method": "connectors.accounts_unlink",
+      "httpMethod": "POST",
+      "path": "/connectors/{id}/accounts/{account_id}/unlink",
+      "source_byte_start": 15844,
+      "source_byte_end": 15952
+    },
+    {
+      "method": "connectors.accounts_link",
+      "httpMethod": "POST",
+      "path": "/connectors/{id}/accounts/link",
+      "source_byte_start": 15953,
+      "source_byte_end": 16044
+    },
+    {
+      "method": "foa_auth.callback",
+      "httpMethod": "POST",
+      "path": "/api/foa_auth/callback",
+      "service": "authd",
+      "source_byte_start": 16045,
+      "source_byte_end": 16137
+    },
+    {
+      "method": "channels.status",
+      "httpMethod": "GET",
+      "path": "/channels/status",
+      "source_byte_start": 16138,
+      "source_byte_end": 16205
+    },
+    {
+      "method": "channels.link",
+      "httpMethod": "POST",
+      "path": "/channels/link",
+      "source_byte_start": 16206,
+      "source_byte_end": 16270
+    },
+    {
+      "method": "channels.unlink",
+      "httpMethod": "POST",
+      "path": "/channels/unlink",
+      "source_byte_start": 16271,
+      "source_byte_end": 16339
+    },
+    {
+      "method": "shared_agents.list",
+      "httpMethod": "GET",
+      "path": "/shared-agents",
+      "source_byte_start": 16340,
+      "source_byte_end": 16408
+    },
+    {
+      "method": "shared_agents.capabilities",
+      "httpMethod": "GET",
+      "path": "/shared-agents/capabilities",
+      "source_byte_start": 16409,
+      "source_byte_end": 16498
+    },
+    {
+      "method": "shared_agents.detail",
+      "httpMethod": "GET",
+      "path": "/shared-agents/{shared_agent_id}",
+      "source_byte_start": 16499,
+      "source_byte_end": 16587
+    },
+    {
+      "method": "shared_agents.delete",
+      "httpMethod": "DELETE",
+      "path": "/shared-agents/{shared_agent_id}",
+      "source_byte_start": 16588,
+      "source_byte_end": 16679
+    },
+    {
+      "method": "shared_agents.state.update",
+      "httpMethod": "PATCH",
+      "path": "/shared-agents/{shared_agent_id}/state",
+      "source_byte_start": 16680,
+      "source_byte_end": 16782
+    },
+    {
+      "method": "shared_agents.identity.update",
+      "httpMethod": "PATCH",
+      "path": "/shared-agents/{shared_agent_id}/identity",
+      "source_byte_start": 16783,
+      "source_byte_end": 16891
+    },
+    {
+      "method": "shared_agents.definition",
+      "httpMethod": "GET",
+      "path": "/shared-agents/{shared_agent_id}/definition",
+      "source_byte_start": 16892,
+      "source_byte_end": 16995
+    },
+    {
+      "method": "shared_agents.create",
+      "httpMethod": "POST",
+      "path": "/shared-agents/create-idempotent",
+      "source_byte_start": 16996,
+      "source_byte_end": 17085
+    },
+    {
+      "method": "shared_agents.definition.update",
+      "httpMethod": "PATCH",
+      "path": "/shared-agents/{shared_agent_id}/definition",
+      "source_byte_start": 17086,
+      "source_byte_end": 17198
+    },
+    {
+      "method": "shared_agents.shares.list",
+      "httpMethod": "GET",
+      "path": "/shared-agents/{shared_agent_id}/shares",
+      "source_byte_start": 17199,
+      "source_byte_end": 17299
+    },
+    {
+      "method": "shared_agents.shares.create",
+      "httpMethod": "POST",
+      "path": "/shared-agents/{shared_agent_id}/shares",
+      "source_byte_start": 17300,
+      "source_byte_end": 17403
+    },
+    {
+      "method": "shared_agents.shares.conversation",
+      "httpMethod": "GET",
+      "path": "/shared-agents/{shared_agent_id}/shares/{share_id}/conversation",
+      "source_byte_start": 17404,
+      "source_byte_end": 17536
+    },
+    {
+      "method": "shared_agents.shares.revoke",
+      "httpMethod": "POST",
+      "path": "/shared-agents/{shared_agent_id}/shares/{share_id}/revoke",
+      "source_byte_start": 17537,
+      "source_byte_end": 17658
+    },
+    {
+      "method": "shared_agents.remote.open",
+      "httpMethod": "POST",
+      "path": "/api/shared-agents/remote/open",
+      "noiseOnly": true,
+      "streamMode": "subscription",
+      "connectionClass": "shared_agent",
+      "source_byte_start": 17659,
+      "source_byte_end": 17821
+    },
+    {
+      "method": "shared_agents.remote.send",
+      "httpMethod": "POST",
+      "path": "/api/shared-agents/remote/send",
+      "noiseOnly": true,
+      "connectionClass": "shared_agent",
+      "source_byte_start": 17822,
+      "source_byte_end": 17958
+    },
+    {
+      "method": "memory.search",
+      "httpMethod": "POST",
+      "path": "/memory/search",
+      "source_byte_start": 17959,
+      "source_byte_end": 18023
+    },
+    {
+      "method": "memory.get",
+      "httpMethod": "POST",
+      "path": "/memory/get",
+      "source_byte_start": 18024,
+      "source_byte_end": 18082
+    },
+    {
+      "method": "memory.consolidate",
+      "httpMethod": "POST",
+      "path": "/memory/consolidate",
+      "source_byte_start": 18083,
+      "source_byte_end": 18157
+    },
+    {
+      "method": "memory.reindex",
+      "httpMethod": "POST",
+      "path": "/memory/reindex",
+      "source_byte_start": 18158,
+      "source_byte_end": 18224
+    },
+    {
+      "method": "bootstrap.reset",
+      "httpMethod": "POST",
+      "path": "/bootstrap/reset",
+      "source_byte_start": 18225,
+      "source_byte_end": 18293
+    },
+    {
+      "method": "subscription.callback",
+      "httpMethod": "POST",
+      "path": "/subscription/callback",
+      "source_byte_start": 18294,
+      "source_byte_end": 18374
+    },
+    {
+      "method": "subscription.redeem_complimentary",
+      "httpMethod": "POST",
+      "path": "/subscription/redeem-complimentary",
+      "requestTimeoutMs": 90000,
+      "source_byte_start": 18375,
+      "source_byte_end": 18500
+    },
+    {
+      "method": "reactions.toggle",
+      "httpMethod": "POST",
+      "path": "/reactions/toggle",
+      "source_byte_start": 18501,
+      "source_byte_end": 18571
+    },
+    {
+      "method": "api_key_auth.callback",
+      "httpMethod": "POST",
+      "path": "/api_key_auth/callback",
+      "service": "authd",
+      "source_byte_start": 18665,
+      "source_byte_end": 18761
+    },
+    {
+      "method": "custom_connectors.register",
+      "httpMethod": "POST",
+      "path": "/v1/custom-connectors/register",
+      "service": "authd",
+      "source_byte_start": 18762,
+      "source_byte_end": 18915
+    },
+    {
+      "method": "custom_connectors.list",
+      "httpMethod": "POST",
+      "path": "/v1/custom-connectors/list",
+      "service": "authd",
+      "source_byte_start": 18916,
+      "source_byte_end": 19017
+    },
+    {
+      "method": "custom_connectors.delete",
+      "httpMethod": "POST",
+      "path": "/v1/custom-connectors/delete",
+      "service": "authd",
+      "source_byte_start": 19018,
+      "source_byte_end": 19123
+    },
+    {
+      "method": "connectors.list",
+      "httpMethod": "GET",
+      "path": "/connectors",
+      "source_byte_start": 19124,
+      "source_byte_end": 19186
+    },
+    {
+      "method": "connectors.homepage",
+      "httpMethod": "GET",
+      "path": "/connectors/homepage",
+      "source_byte_start": 19187,
+      "source_byte_end": 19262
+    },
+    {
+      "method": "connectors.get",
+      "httpMethod": "GET",
+      "path": "/connectors/{id}",
+      "source_byte_start": 19263,
+      "source_byte_end": 19329
+    },
+    {
+      "method": "connectors.connect_info",
+      "httpMethod": "GET",
+      "path": "/connectors/{id}/connect/info",
+      "source_byte_start": 19330,
+      "source_byte_end": 19418
+    },
+    {
+      "method": "connectors.connect",
+      "httpMethod": "POST",
+      "path": "/connectors/{id}/connect",
+      "source_byte_start": 19419,
+      "source_byte_end": 19498
+    },
+    {
+      "method": "connectors.permissions",
+      "httpMethod": "GET",
+      "path": "/connectors/{id}/permissions",
+      "source_byte_start": 19499,
+      "source_byte_end": 19585
+    },
+    {
+      "method": "connectors.scope_link",
+      "httpMethod": "POST",
+      "path": "/connectors/{id}/scopes/{method}/link",
+      "source_byte_start": 19586,
+      "source_byte_end": 19681
+    },
+    {
+      "method": "connectors.disconnect",
+      "httpMethod": "POST",
+      "path": "/connectors/{id}/disconnect",
+      "source_byte_start": 19682,
+      "source_byte_end": 19767
+    },
+    {
+      "method": "consent_auth.callback",
+      "httpMethod": "POST",
+      "path": "/consent_auth/callback",
+      "source_byte_start": 19768,
+      "source_byte_end": 19848
+    },
+    {
+      "method": "username_password_auth.callback",
+      "httpMethod": "POST",
+      "path": "/username_password_auth/callback",
+      "service": "authd",
+      "source_byte_start": 19849,
+      "source_byte_end": 19965
+    },
+    {
+      "method": "whatsapp.login",
+      "httpMethod": "POST",
+      "path": "/whatsapp/login",
+      "source_byte_start": 19966,
+      "source_byte_end": 20032
+    },
+    {
+      "method": "whatsapp.install",
+      "httpMethod": "POST",
+      "path": "/whatsapp/install",
+      "source_byte_start": 20033,
+      "source_byte_end": 20103
+    },
+    {
+      "method": "whatsapp_companion.link",
+      "httpMethod": "POST",
+      "path": "/whatsapp_companion/link",
+      "source_byte_start": 20104,
+      "source_byte_end": 20188
+    },
+    {
+      "method": "whatsapp_companion.status",
+      "httpMethod": "GET",
+      "path": "/whatsapp_companion/status",
+      "source_byte_start": 20189,
+      "source_byte_end": 20276
+    },
+    {
+      "method": "browser_stream.attach",
+      "httpMethod": "POST",
+      "path": "/api/browser-task/{task_id}/websockify?mode=attach",
+      "noiseOnly": true,
+      "source_byte_start": 20277,
+      "source_byte_end": 20398
+    },
+    {
+      "method": "browser_activity.snapshot",
+      "httpMethod": "GET",
+      "path": "/api/browser-activity/actions/{action_id}/snapshot",
+      "responseType": "binary",
+      "channel": "media",
+      "source_byte_start": 20399,
+      "source_byte_end": 20548
+    },
+    {
+      "method": "voice.dictation",
+      "httpMethod": "POST",
+      "path": "/api/voice/dictation?sample_rate_hz={sample_rate_hz}",
+      "noiseOnly": true,
+      "source_byte_start": 20549,
+      "source_byte_end": 20666
+    },
+    {
+      "method": "browser_task.get",
+      "httpMethod": "GET",
+      "path": "/api/browser-task/{task_id}",
+      "source_byte_start": 20667,
+      "source_byte_end": 20746
+    },
+    {
+      "method": "browser_task.takeover",
+      "httpMethod": "POST",
+      "path": "/api/browser-task/{task_id}/takeover",
+      "source_byte_start": 20759,
+      "source_byte_end": 20853
+    },
+    {
+      "method": "browser_task.present",
+      "httpMethod": "POST",
+      "path": "/api/browser-task/{task_id}/present",
+      "source_byte_start": 20854,
+      "source_byte_end": 20946
+    },
+    {
+      "method": "browser_task.viewer",
+      "httpMethod": "PATCH",
+      "path": "/api/browser-task/{task_id}/viewer",
+      "service": "daemon",
+      "noiseOnly": true,
+      "source_byte_start": 20947,
+      "source_byte_end": 21068
+    },
+    {
+      "method": "browser_task.heartbeat",
+      "httpMethod": "POST",
+      "path": "/api/browser-task/{task_id}/heartbeat",
+      "source_byte_start": 21069,
+      "source_byte_end": 21165
+    },
+    {
+      "method": "browser_task.close",
+      "httpMethod": "POST",
+      "path": "/api/browser-task/{task_id}/close",
+      "source_byte_start": 21166,
+      "source_byte_end": 21254
+    },
+    {
+      "method": "browser_task.release",
+      "httpMethod": "POST",
+      "path": "/api/browser-task/{task_id}/release",
+      "source_byte_start": 21255,
+      "source_byte_end": 21347
+    },
+    {
+      "method": "browser_task.stop",
+      "httpMethod": "POST",
+      "path": "/api/browser-task/{task_id}/stop",
+      "source_byte_start": 21348,
+      "source_byte_end": 21434
+    },
+    {
+      "method": "browser.lease",
+      "httpMethod": "POST",
+      "path": "/api/browser/lease",
+      "requestTimeoutMs": 120000,
+      "source_byte_start": 21469,
+      "source_byte_end": 21559
+    },
+    {
+      "method": "computer.context",
+      "httpMethod": "GET",
+      "path": "/api/computer/context",
+      "source_byte_start": 21560,
+      "source_byte_end": 21633
+    },
+    {
+      "method": "computer.preview",
+      "httpMethod": "GET",
+      "path": "/api/computer/previews/{task_id}/{sha256}",
+      "responseType": "binary",
+      "channel": "media",
+      "source_byte_start": 21634,
+      "source_byte_end": 21765
+    },
+    {
+      "method": "browser.local_testing.get",
+      "httpMethod": "GET",
+      "path": "/api/browser/local-testing",
+      "noiseOnly": true,
+      "requestTimeoutMs": 90000,
+      "source_byte_start": 21766,
+      "source_byte_end": 21887
+    },
+    {
+      "method": "browser.local_testing.set",
+      "httpMethod": "PATCH",
+      "path": "/api/browser/local-testing",
+      "noiseOnly": true,
+      "requestTimeoutMs": 90000,
+      "source_byte_start": 21888,
+      "source_byte_end": 22011
+    },
+    {
+      "method": "identity",
+      "httpMethod": "GET",
+      "path": "/identity",
+      "source_byte_start": 22012,
+      "source_byte_end": 22065
+    },
+    {
+      "method": "chat.themes",
+      "httpMethod": "GET",
+      "path": "/api/chat/themes",
+      "source_byte_start": 22066,
+      "source_byte_end": 22129
+    },
+    {
+      "method": "chat.themes.set",
+      "httpMethod": "POST",
+      "path": "/api/chat/themes/set",
+      "source_byte_start": 22130,
+      "source_byte_end": 22202
+    },
+    {
+      "method": "iframe.call",
+      "httpMethod": "POST",
+      "path": "/call",
+      "source_byte_start": 22203,
+      "source_byte_end": 22256
+    },
+    {
+      "method": "voice.calls.join",
+      "httpMethod": "POST",
+      "path": "/voice/calls/join",
+      "source_byte_start": 22257,
+      "source_byte_end": 22327
+    },
+    {
+      "method": "artifacts.share",
+      "httpMethod": "POST",
+      "path": "/artifacts/share",
+      "source_byte_start": 22328,
+      "source_byte_end": 22396
+    },
+    {
+      "method": "artifacts.remove",
+      "httpMethod": "POST",
+      "path": "/artifacts/remove",
+      "source_byte_start": 22397,
+      "source_byte_end": 22467
+    },
+    {
+      "method": "artifacts.fetch_url",
+      "httpMethod": "GET",
+      "path": "/artifacts/fetch_url",
+      "source_byte_start": 22468,
+      "source_byte_end": 22543
+    },
+    {
+      "method": "artifacts.list",
+      "httpMethod": "GET",
+      "path": "/api/artifacts",
+      "source_byte_start": 22544,
+      "source_byte_end": 22608
+    },
+    {
+      "method": "artifacts.pin",
+      "httpMethod": "POST",
+      "path": "/api/artifacts/pin",
+      "noiseOnly": true,
+      "source_byte_start": 22609,
+      "source_byte_end": 22690
+    },
+    {
+      "method": "artifacts.slides.rebuild",
+      "httpMethod": "POST",
+      "path": "/api/artifacts/slides/rebuild",
+      "noiseOnly": true,
+      "requestTimeoutMs": 180000,
+      "source_byte_start": 22691,
+      "source_byte_end": 22816
+    },
+    {
+      "method": "onboarding.variants",
+      "httpMethod": "GET",
+      "path": "/api/onboarding/variants",
+      "source_byte_start": 22817,
+      "source_byte_end": 22896
+    },
+    {
+      "method": "onboarding.pages.start",
+      "httpMethod": "POST",
+      "path": "/onboarding/pages",
+      "source_byte_start": 22897,
+      "source_byte_end": 22973
+    },
+    {
+      "method": "onboarding.complete",
+      "httpMethod": "POST",
+      "path": "/onboarding/complete",
+      "source_byte_start": 22974,
+      "source_byte_end": 23050
+    },
+    {
+      "method": "onboarding.reset",
+      "httpMethod": "POST",
+      "path": "/onboarding/reset",
+      "source_byte_start": 23051,
+      "source_byte_end": 23121
+    },
+    {
+      "method": "onboarding.tasks",
+      "httpMethod": "GET",
+      "path": "/onboarding/tasks",
+      "source_byte_start": 23122,
+      "source_byte_end": 23191
+    },
+    {
+      "method": "onboarding.identity",
+      "httpMethod": "GET",
+      "path": "/onboarding/identity",
+      "source_byte_start": 23192,
+      "source_byte_end": 23267
+    },
+    {
+      "method": "onboarding.identity.set",
+      "httpMethod": "POST",
+      "path": "/onboarding/identity",
+      "source_byte_start": 23268,
+      "source_byte_end": 23348
+    },
+    {
+      "method": "goal_prompt",
+      "httpMethod": "POST",
+      "path": "/goal_prompt",
+      "source_byte_start": 23349,
+      "source_byte_end": 23409
+    },
+    {
+      "method": "goals.list",
+      "httpMethod": "GET",
+      "path": "/goals",
+      "source_byte_start": 23410,
+      "source_byte_end": 23462
+    },
+    {
+      "method": "goals.get",
+      "httpMethod": "GET",
+      "path": "/goals/{id}",
+      "source_byte_start": 23463,
+      "source_byte_end": 23519
+    },
+    {
+      "method": "goals.update",
+      "httpMethod": "PATCH",
+      "path": "/goals/{id}",
+      "source_byte_start": 23520,
+      "source_byte_end": 23581
+    },
+    {
+      "method": "goals.reorder",
+      "httpMethod": "PATCH",
+      "path": "/goals/{id}/order",
+      "source_byte_start": 23582,
+      "source_byte_end": 23650
+    },
+    {
+      "method": "goals.delete",
+      "httpMethod": "DELETE",
+      "path": "/goals/{id}",
+      "source_byte_start": 23651,
+      "source_byte_end": 23713
+    },
+    {
+      "method": "podcasts.episodes.list",
+      "httpMethod": "GET",
+      "path": "/api/podcasts/episodes",
+      "source_byte_start": 23714,
+      "source_byte_end": 23794
+    },
+    {
+      "method": "podcasts.feed.get",
+      "httpMethod": "GET",
+      "path": "/api/podcasts/feed",
+      "source_byte_start": 23795,
+      "source_byte_end": 23866
+    },
+    {
+      "method": "podcasts.feeds.list",
+      "httpMethod": "GET",
+      "path": "/api/podcasts/feeds",
+      "source_byte_start": 23867,
+      "source_byte_end": 23941
+    },
+    {
+      "method": "podcasts.episode.delete",
+      "httpMethod": "DELETE",
+      "path": "/api/podcasts/episodes/{slug}",
+      "source_byte_start": 23942,
+      "source_byte_end": 24033
+    },
+    {
+      "method": "goals.suggestions.decide",
+      "httpMethod": "POST",
+      "path": "/goals/{goal_id}/suggestions/{suggestion_id}/decision",
+      "source_byte_start": 24034,
+      "source_byte_end": 24148
+    },
+    {
+      "method": "api.idea-cards.list",
+      "httpMethod": "GET",
+      "path": "/api/idea-cards",
+      "source_byte_start": 24149,
+      "source_byte_end": 24219
+    },
+    {
+      "method": "api.ideas.reset",
+      "httpMethod": "POST",
+      "path": "/api/ideas/reset",
+      "source_byte_start": 24220,
+      "source_byte_end": 24288
+    },
+    {
+      "method": "api.ideas.engagement",
+      "httpMethod": "POST",
+      "path": "/api/ideas/{id}/engagement",
+      "source_byte_start": 24289,
+      "source_byte_end": 24372
+    },
+    {
+      "method": "api.ideas.feedback",
+      "httpMethod": "POST",
+      "path": "/api/ideas/{id}/feedback",
+      "source_byte_start": 24373,
+      "source_byte_end": 24452
+    },
+    {
+      "method": "api.idea-cards.detail",
+      "httpMethod": "GET",
+      "path": "/api/idea-cards/{ideaCardId}",
+      "source_byte_start": 24453,
+      "source_byte_end": 24538
+    },
+    {
+      "method": "api.idea-cards.execute",
+      "httpMethod": "POST",
+      "path": "/api/idea-cards/{ideaCardId}/execute",
+      "source_byte_start": 24539,
+      "source_byte_end": 24634
+    },
+    {
+      "method": "api.idea-cards.share",
+      "httpMethod": "POST",
+      "path": "/api/idea-cards/{ideaCardId}/share",
+      "source_byte_start": 24635,
+      "source_byte_end": 24726
+    },
+    {
+      "method": "api.idea-cards.debug",
+      "httpMethod": "GET",
+      "path": "/api/idea-cards/{ideaCardId}/debug",
+      "source_byte_start": 24727,
+      "source_byte_end": 24817
+    },
+    {
+      "method": "shopping.product_details",
+      "httpMethod": "GET",
+      "path": "/api/shopping",
+      "source_byte_start": 24818,
+      "source_byte_end": 24891
+    },
+    {
+      "method": "shopping.cart",
+      "httpMethod": "GET",
+      "path": "/api/shopping/cart",
+      "source_byte_start": 24892,
+      "source_byte_end": 24959
+    },
+    {
+      "method": "shopping.events",
+      "httpMethod": "POST",
+      "path": "/api/shopping/events",
+      "source_byte_start": 24960,
+      "source_byte_end": 25032
+    },
+    {
+      "method": "ads.details",
+      "httpMethod": "GET",
+      "path": "/api/ads/details",
+      "source_byte_start": 25033,
+      "source_byte_end": 25096
+    },
+    {
+      "method": "feed.list",
+      "httpMethod": "GET",
+      "path": "/api/feed",
+      "source_byte_start": 25097,
+      "source_byte_end": 25151
+    },
+    {
+      "method": "feed.infinite",
+      "httpMethod": "GET",
+      "path": "/api/feed/infinite",
+      "noiseOnly": true,
+      "streamMode": "records",
+      "source_byte_start": 25152,
+      "source_byte_end": 25253
+    },
+    {
+      "method": "feed.status",
+      "httpMethod": "GET",
+      "path": "/api/feed/status",
+      "source_byte_start": 25254,
+      "source_byte_end": 25317
+    },
+    {
+      "method": "feed.search",
+      "httpMethod": "GET",
+      "path": "/api/feed/search",
+      "source_byte_start": 25318,
+      "source_byte_end": 25381
+    },
+    {
+      "method": "feed.unit",
+      "httpMethod": "GET",
+      "path": "/api/feed/units/{unit_id}",
+      "source_byte_start": 25382,
+      "source_byte_end": 25452
+    },
+    {
+      "method": "feed.unit.delete",
+      "httpMethod": "DELETE",
+      "path": "/api/feed/units/{unit_id}",
+      "source_byte_start": 25453,
+      "source_byte_end": 25533
+    },
+    {
+      "method": "feed.unit.reaction",
+      "httpMethod": "POST",
+      "path": "/api/feed/units/{unit_id}/reaction",
+      "source_byte_start": 25534,
+      "source_byte_end": 25623
+    },
+    {
+      "method": "feed.unit.tap",
+      "httpMethod": "POST",
+      "path": "/api/feed/units/{unit_id}/tap",
+      "source_byte_start": 25624,
+      "source_byte_end": 25703
+    },
+    {
+      "method": "feed.units.seen",
+      "httpMethod": "POST",
+      "path": "/api/feed/units/seen",
+      "source_byte_start": 25704,
+      "source_byte_end": 25776
+    },
+    {
+      "method": "feed.reorder",
+      "httpMethod": "POST",
+      "path": "/api/feed/reorder",
+      "source_byte_start": 25777,
+      "source_byte_end": 25843
+    },
+    {
+      "method": "feed.regenerate",
+      "httpMethod": "POST",
+      "path": "/api/feed/regenerate",
+      "source_byte_start": 25844,
+      "source_byte_end": 25916
+    },
+    {
+      "method": "feed.prompt.get",
+      "httpMethod": "GET",
+      "path": "/api/feed/prompt",
+      "source_byte_start": 25917,
+      "source_byte_end": 25984
+    },
+    {
+      "method": "feed.prompt.update",
+      "httpMethod": "PATCH",
+      "path": "/api/feed/prompt",
+      "source_byte_start": 25985,
+      "source_byte_end": 26057
+    },
+    {
+      "method": "feed.prompts.delete",
+      "httpMethod": "DELETE",
+      "path": "/api/feed/prompts/{prompt_id}",
+      "source_byte_start": 26058,
+      "source_byte_end": 26145
+    },
+    {
+      "method": "feed.social_source_icon",
+      "httpMethod": "GET",
+      "path": "/api/feed/social-source-icon/{source}",
+      "responseType": "binary",
+      "channel": "media",
+      "source_byte_start": 26146,
+      "source_byte_end": 26280
+    },
+    {
+      "method": "feed.unit.media",
+      "httpMethod": "GET",
+      "path": "/api/feed/units/{unit_id}/media/{handle}",
+      "responseType": "binary",
+      "channel": "media",
+      "source_byte_start": 26281,
+      "source_byte_end": 26410
+    },
+    {
+      "method": "redteam.mocks.apply",
+      "httpMethod": "POST",
+      "path": "/redteam/mocks",
+      "source_byte_start": 26411,
+      "source_byte_end": 26481
+    },
+    {
+      "method": "redteam.mocks.clear",
+      "httpMethod": "DELETE",
+      "path": "/redteam/mocks",
+      "source_byte_start": 26482,
+      "source_byte_end": 26554
+    },
+    {
+      "method": "redteam.mocks.get",
+      "httpMethod": "GET",
+      "path": "/redteam/mocks",
+      "source_byte_start": 26555,
+      "source_byte_end": 26622
+    },
+    {
+      "method": "redteam.sidecar.tail",
+      "httpMethod": "GET",
+      "path": "/redteam/mocks/sidecar",
+      "source_byte_start": 26623,
+      "source_byte_end": 26701
+    },
+    {
+      "method": "check",
+      "httpMethod": "GET",
+      "path": "/check",
+      "source_byte_start": 26702,
+      "source_byte_end": 26749
+    },
+    {
+      "method": "session.start",
+      "httpMethod": "POST",
+      "path": "/session/start",
+      "source_byte_start": 26750,
+      "source_byte_end": 26814
+    },
+    {
+      "method": "session.archive",
+      "httpMethod": "POST",
+      "path": "/session/archive",
+      "source_byte_start": 26815,
+      "source_byte_end": 26883
+    },
+    {
+      "method": "session.unarchive",
+      "httpMethod": "POST",
+      "path": "/session/unarchive",
+      "source_byte_start": 26884,
+      "source_byte_end": 26956
+    },
+    {
+      "method": "session.pin",
+      "httpMethod": "POST",
+      "path": "/session/pin",
+      "source_byte_start": 26957,
+      "source_byte_end": 27017
+    },
+    {
+      "method": "session.unpin",
+      "httpMethod": "POST",
+      "path": "/session/unpin",
+      "source_byte_start": 27018,
+      "source_byte_end": 27082
+    },
+    {
+      "method": "session.rename",
+      "httpMethod": "POST",
+      "path": "/session/rename",
+      "source_byte_start": 27083,
+      "source_byte_end": 27149
+    },
+    {
+      "method": "session.delete",
+      "httpMethod": "POST",
+      "path": "/session/delete",
+      "source_byte_start": 27150,
+      "source_byte_end": 27216
+    },
+    {
+      "method": "chat.unread_count",
+      "httpMethod": "GET",
+      "path": "/chat/unread-count",
+      "source_byte_start": 27217,
+      "source_byte_end": 27288
+    },
+    {
+      "method": "chat.poke",
+      "httpMethod": "POST",
+      "path": "/chat/poke",
+      "source_byte_start": 27289,
+      "source_byte_end": 27345
+    },
+    {
+      "method": "onboarding.state",
+      "httpMethod": "GET",
+      "path": "/onboarding",
+      "source_byte_start": 27346,
+      "source_byte_end": 27409
+    },
+    {
+      "method": "onboarding.questions",
+      "httpMethod": "GET",
+      "path": "/onboarding/questions",
+      "source_byte_start": 27410,
+      "source_byte_end": 27487
+    },
+    {
+      "method": "spaces.list",
+      "httpMethod": "GET",
+      "path": "/spaces/v2",
+      "source_byte_start": 27488,
+      "source_byte_end": 27545
+    },
+    {
+      "method": "spaces.delete",
+      "httpMethod": "DELETE",
+      "path": "/spaces/v2/{slug}",
+      "source_byte_start": 27546,
+      "source_byte_end": 27615
+    },
+    {
+      "method": "spaces.saved.delete",
+      "httpMethod": "DELETE",
+      "path": "/spaces/v2/{slug}?source=saved_space",
+      "source_byte_start": 27616,
+      "source_byte_end": 27710
+    },
+    {
+      "method": "spaces.save",
+      "httpMethod": "POST",
+      "path": "/spaces/v2/{slug}/save",
+      "source_byte_start": 27711,
+      "source_byte_end": 27781
+    },
+    {
+      "method": "spaces.share.review",
+      "httpMethod": "GET",
+      "path": "/spaces/share/{slug}/review",
+      "source_byte_start": 27782,
+      "source_byte_end": 27864
+    },
+    {
+      "method": "spaces.share",
+      "httpMethod": "POST",
+      "path": "/spaces/share/{slug}",
+      "requestTimeoutMs": 600000,
+      "source_byte_start": 27865,
+      "source_byte_end": 27955
+    },
+    {
+      "method": "spaces.share.status",
+      "httpMethod": "GET",
+      "path": "/spaces/share/{slug}",
+      "source_byte_start": 27956,
+      "source_byte_end": 28031
+    },
+    {
+      "method": "spaces.unshare",
+      "httpMethod": "DELETE",
+      "path": "/spaces/share/{slug}",
+      "source_byte_start": 28032,
+      "source_byte_end": 28105
+    },
+    {
+      "method": "spaces.share.fix",
+      "httpMethod": "POST",
+      "path": "/spaces/share/{slug}/fix",
+      "source_byte_start": 28106,
+      "source_byte_end": 28183
+    },
+    {
+      "method": "spaces.debug.summary",
+      "httpMethod": "GET",
+      "path": "/spaces/{slug}/debug/summary",
+      "source_byte_start": 28184,
+      "source_byte_end": 28268
+    },
+    {
+      "method": "spaces.debug.invocations",
+      "httpMethod": "GET",
+      "path": "/spaces/{slug}/debug/invocations",
+      "source_byte_start": 28269,
+      "source_byte_end": 28361
+    },
+    {
+      "method": "spaces.debug.invocation",
+      "httpMethod": "GET",
+      "path": "/spaces/{slug}/debug/invocations/{invocation_id}",
+      "source_byte_start": 28362,
+      "source_byte_end": 28469
+    },
+    {
+      "method": "spaces.debug.log",
+      "httpMethod": "GET",
+      "path": "/spaces/{slug}/debug/log",
+      "source_byte_start": 28470,
+      "source_byte_end": 28546
+    },
+    {
+      "method": "spaces.export_html",
+      "httpMethod": "GET",
+      "path": "/spaces/{slug}/export.html",
+      "responseType": "binary",
+      "channel": "media",
+      "source_byte_start": 28547,
+      "source_byte_end": 28665
+    },
+    {
+      "method": "spaces.cvm.render",
+      "httpMethod": "GET",
+      "path": "/spaces/cvm/{slug}/",
+      "responseType": "binary",
+      "channel": "media",
+      "source_byte_start": 28666,
+      "source_byte_end": 28776
+    },
+    {
+      "method": "spaces.cvm.get",
+      "httpMethod": "GET",
+      "path": "/spaces/cvm/{slug}/{*subpath}",
+      "responseType": "binary",
+      "channel": "media",
+      "source_byte_start": 28777,
+      "source_byte_end": 28894
+    },
+    {
+      "method": "spaces.cvm.post",
+      "httpMethod": "POST",
+      "path": "/spaces/cvm/{slug}/{*subpath}",
+      "responseType": "binary",
+      "source_byte_start": 28895,
+      "source_byte_end": 28998
+    },
+    {
+      "method": "fs.stats",
+      "httpMethod": "POST",
+      "path": "/fs/stats",
+      "source_byte_start": 28999,
+      "source_byte_end": 29053
+    },
+    {
+      "method": "fs.list",
+      "httpMethod": "POST",
+      "path": "/fs/list",
+      "source_byte_start": 29054,
+      "source_byte_end": 29106
+    },
+    {
+      "method": "fs.stat",
+      "httpMethod": "POST",
+      "path": "/fs/stat",
+      "source_byte_start": 29107,
+      "source_byte_end": 29159
+    },
+    {
+      "method": "fs.read",
+      "httpMethod": "POST",
+      "path": "/fs/read",
+      "source_byte_start": 29160,
+      "source_byte_end": 29212
+    },
+    {
+      "method": "fs.reads",
+      "httpMethod": "POST",
+      "path": "/fs/reads",
+      "source_byte_start": 29213,
+      "source_byte_end": 29267
+    },
+    {
+      "method": "fs.write",
+      "httpMethod": "POST",
+      "path": "/fs/write",
+      "source_byte_start": 29268,
+      "source_byte_end": 29322
+    },
+    {
+      "method": "fs.delete",
+      "httpMethod": "POST",
+      "path": "/fs/delete",
+      "source_byte_start": 29323,
+      "source_byte_end": 29379
+    },
+    {
+      "method": "fs.rename",
+      "httpMethod": "POST",
+      "path": "/fs/rename",
+      "source_byte_start": 29380,
+      "source_byte_end": 29436
+    },
+    {
+      "method": "fs.mkdir",
+      "httpMethod": "POST",
+      "path": "/fs/mkdir",
+      "source_byte_start": 29437,
+      "source_byte_end": 29491
+    },
+    {
+      "method": "fs.library",
+      "httpMethod": "POST",
+      "path": "/fs/library",
+      "source_byte_start": 29492,
+      "source_byte_end": 29550
+    },
+    {
+      "method": "fs.export",
+      "httpMethod": "POST",
+      "path": "/fs/export",
+      "responseType": "binary",
+      "source_byte_start": 29551,
+      "source_byte_end": 29629
+    },
+    {
+      "method": "fs.raw",
+      "httpMethod": "GET",
+      "path": "/fs/raw/{*path}",
+      "responseType": "binary",
+      "maxResponseBytes": 1,
+      "channel": "media",
+      "source_byte_start": 29630,
+      "source_byte_end": 29746
+    },
+    {
+      "method": "idea-cards.media",
+      "httpMethod": "GET",
+      "path": "/api/idea-cards/media/{handle}",
+      "responseType": "binary",
+      "channel": "media",
+      "source_byte_start": 29747,
+      "source_byte_end": 29867
+    },
+    {
+      "method": "fs.search",
+      "httpMethod": "POST",
+      "path": "/fs/search",
+      "source_byte_start": 29868,
+      "source_byte_end": 29924
+    },
+    {
+      "method": "git.log",
+      "httpMethod": "POST",
+      "path": "/git/log",
+      "source_byte_start": 29925,
+      "source_byte_end": 29977
+    },
+    {
+      "method": "git.show_file",
+      "httpMethod": "POST",
+      "path": "/git/show_file",
+      "source_byte_start": 29978,
+      "source_byte_end": 30042
+    },
+    {
+      "method": "nodes.invoke_result",
+      "httpMethod": "POST",
+      "path": "/nodes/invoke-result",
+      "source_byte_start": 30043,
+      "source_byte_end": 30119
+    },
+    {
+      "method": "nodes.invoke_ack",
+      "httpMethod": "POST",
+      "path": "/nodes/invoke-ack",
+      "source_byte_start": 30120,
+      "source_byte_end": 30190
+    },
+    {
+      "method": "nodes.sync",
+      "httpMethod": "POST",
+      "path": "/nodes/sync",
+      "source_byte_start": 30191,
+      "source_byte_end": 30249
+    },
+    {
+      "method": "node.list",
+      "httpMethod": "POST",
+      "path": "/api/nodes/list",
+      "source_byte_start": 30250,
+      "source_byte_end": 30335
+    },
+    {
+      "method": "node.register",
+      "httpMethod": "POST",
+      "path": "/api/nodes/register",
+      "source_byte_start": 30336,
+      "source_byte_end": 30433
+    },
+    {
+      "method": "node.heartbeat",
+      "httpMethod": "POST",
+      "path": "/api/nodes/heartbeat",
+      "source_byte_start": 30434,
+      "source_byte_end": 30534
+    },
+    {
+      "method": "node.unpair",
+      "httpMethod": "POST",
+      "path": "/api/nodes/unpair",
+      "source_byte_start": 30535,
+      "source_byte_end": 30626
+    },
+    {
+      "method": "node.disconnect",
+      "httpMethod": "POST",
+      "path": "/api/nodes/disconnect",
+      "source_byte_start": 30627,
+      "source_byte_end": 30730
+    },
+    {
+      "method": "pin.update",
+      "httpMethod": "POST",
+      "path": "/api/pin-reminder/update",
+      "source_byte_start": 30731,
+      "source_byte_end": 30802
+    },
+    {
+      "method": "pin.reminder_confirm",
+      "httpMethod": "POST",
+      "path": "/api/pin-reminder/confirm",
+      "source_byte_start": 30803,
+      "source_byte_end": 30885
+    },
+    {
+      "method": "wallet.get",
+      "httpMethod": "GET",
+      "path": "/wallet",
+      "source_byte_start": 30886,
+      "source_byte_end": 30939
+    },
+    {
+      "method": "wallet.set",
+      "httpMethod": "POST",
+      "path": "/wallet",
+      "source_byte_start": 30940,
+      "source_byte_end": 30994
+    },
+    {
+      "method": "egress.permissions",
+      "httpMethod": "GET",
+      "path": "/permissions",
+      "service": "sentinel",
+      "source_byte_start": 31026,
+      "source_byte_end": 31111
+    },
+    {
+      "method": "permissions.settings",
+      "httpMethod": "GET",
+      "path": "/permissions/settings",
+      "service": "sentinel",
+      "source_byte_start": 31112,
+      "source_byte_end": 31208
+    },
+    {
+      "method": "permissions.inventory",
+      "httpMethod": "GET",
+      "path": "/permissions/inventory",
+      "service": "daemon",
+      "source_byte_start": 31209,
+      "source_byte_end": 31305
+    },
+    {
+      "method": "permissions.settings.update",
+      "httpMethod": "PATCH",
+      "path": "/permissions/settings",
+      "service": "sentinel",
+      "source_byte_start": 31306,
+      "source_byte_end": 31411
+    },
+    {
+      "method": "egress.permissions.hitl",
+      "httpMethod": "PATCH",
+      "path": "/permissions/hitl",
+      "service": "sentinel",
+      "source_byte_start": 31412,
+      "source_byte_end": 31509
+    },
+    {
+      "method": "egress.permissions.hitl.snooze.delete",
+      "httpMethod": "DELETE",
+      "path": "/permissions/hitl/snooze",
+      "service": "sentinel",
+      "source_byte_start": 31510,
+      "source_byte_end": 31629
+    },
+    {
+      "method": "egress.permissions.tproxy",
+      "httpMethod": "PATCH",
+      "path": "/permissions/tproxy",
+      "service": "sentinel",
+      "source_byte_start": 31630,
+      "source_byte_end": 31731
+    },
+    {
+      "method": "egress.permissions.mitm",
+      "httpMethod": "PATCH",
+      "path": "/permissions/mitm",
+      "service": "sentinel",
+      "source_byte_start": 31732,
+      "source_byte_end": 31829
+    },
+    {
+      "method": "egress.permissions.sni_rejection",
+      "httpMethod": "PATCH",
+      "path": "/permissions/sni-rejection",
+      "service": "sentinel",
+      "source_byte_start": 31830,
+      "source_byte_end": 31945
+    },
+    {
+      "method": "egress.permissions.active",
+      "httpMethod": "GET",
+      "path": "/permissions/active",
+      "service": "sentinel",
+      "source_byte_start": 31946,
+      "source_byte_end": 32045
+    },
+    {
+      "method": "egress.permissions.active.update",
+      "httpMethod": "PATCH",
+      "path": "/permissions/active",
+      "service": "sentinel",
+      "source_byte_start": 32046,
+      "source_byte_end": 32154
+    },
+    {
+      "method": "egress.permissions.scoped",
+      "httpMethod": "GET",
+      "path": "/permissions/scopes/{scope_type}/{scope_id}",
+      "service": "sentinel",
+      "source_byte_start": 32155,
+      "source_byte_end": 32278
+    },
+    {
+      "method": "egress.permissions.scoped.update",
+      "httpMethod": "PATCH",
+      "path": "/permissions/scopes/{scope_type}/{scope_id}",
+      "service": "sentinel",
+      "source_byte_start": 32279,
+      "source_byte_end": 32411
+    },
+    {
+      "method": "egress.permissions.revoke",
+      "httpMethod": "POST",
+      "path": "/permissions/revoke",
+      "service": "sentinel",
+      "source_byte_start": 32412,
+      "source_byte_end": 32512
+    },
+    {
+      "method": "egress.permissions.reset",
+      "httpMethod": "POST",
+      "path": "/permissions/reset",
+      "service": "sentinel",
+      "source_byte_start": 32513,
+      "source_byte_end": 32611
+    },
+    {
+      "method": "egress.permissions.network_rules",
+      "httpMethod": "PATCH",
+      "path": "/permissions/network-rules",
+      "service": "sentinel",
+      "source_byte_start": 32612,
+      "source_byte_end": 32727
+    },
+    {
+      "method": "egress.permissions.connector",
+      "httpMethod": "PATCH",
+      "path": "/permissions/connectors/{connector}",
+      "service": "sentinel",
+      "source_byte_start": 32728,
+      "source_byte_end": 32848
+    },
+    {
+      "method": "egress.permissions.connector.reset",
+      "httpMethod": "DELETE",
+      "path": "/permissions/connectors/{connector}",
+      "service": "sentinel",
+      "source_byte_start": 32849,
+      "source_byte_end": 32976
+    },
+    {
+      "method": "chat.history_window",
+      "httpMethod": "GET",
+      "path": "/chat/history-window",
+      "noiseOnly": true,
+      "source_byte_start": 33006,
+      "source_byte_end": 33094
+    },
+    {
+      "method": "chat.cancel",
+      "httpMethod": "POST",
+      "path": "/chat/cancel",
+      "noiseOnly": true,
+      "source_byte_start": 33095,
+      "source_byte_end": 33168
+    },
+    {
+      "method": "chat.delete_turn",
+      "httpMethod": "POST",
+      "path": "/api/chat/delete-turn",
+      "noiseOnly": true,
+      "source_byte_start": 33169,
+      "source_byte_end": 33256
+    },
+    {
+      "method": "chat.message_get",
+      "httpMethod": "GET",
+      "path": "/chat/message",
+      "noiseOnly": true,
+      "source_byte_start": 33257,
+      "source_byte_end": 33335
+    },
+    {
+      "method": "chat.search",
+      "httpMethod": "GET",
+      "path": "/chat/search",
+      "noiseOnly": true,
+      "source_byte_start": 33336,
+      "source_byte_end": 33408
+    },
+    {
+      "method": "client.register_capabilities",
+      "httpMethod": "POST",
+      "path": "/client/register-capabilities",
+      "noiseOnly": true,
+      "source_byte_start": 33409,
+      "source_byte_end": 33516
+    },
+    {
+      "method": "client.invoke.result",
+      "httpMethod": "POST",
+      "path": "/client/invoke-result",
+      "noiseOnly": true,
+      "source_byte_start": 33517,
+      "source_byte_end": 33608
+    },
+    {
+      "method": "connection.ping",
+      "httpMethod": "POST",
+      "path": "/api/ping",
+      "noiseOnly": true,
+      "source_byte_start": 33609,
+      "source_byte_end": 33683
+    },
+    {
+      "method": "model.get",
+      "httpMethod": "GET",
+      "path": "/model",
+      "noiseOnly": true,
+      "source_byte_start": 33684,
+      "source_byte_end": 33748
+    },
+    {
+      "method": "model.set",
+      "httpMethod": "POST",
+      "path": "/model",
+      "noiseOnly": true,
+      "source_byte_start": 33749,
+      "source_byte_end": 33814
+    },
+    {
+      "method": "widgets.state.set",
+      "httpMethod": "POST",
+      "path": "/widgets/state",
+      "noiseOnly": true,
+      "source_byte_start": 33815,
+      "source_byte_end": 33896
+    },
+    {
+      "method": "widgets.state.patch",
+      "httpMethod": "POST",
+      "path": "/widgets/state/patch",
+      "noiseOnly": true,
+      "source_byte_start": 33897,
+      "source_byte_end": 33986
+    },
+    {
+      "method": "navigation.subscribe",
+      "httpMethod": "POST",
+      "path": "/navigation/subscribe",
+      "noiseOnly": true,
+      "streamMode": "subscription",
+      "source_byte_start": 33987,
+      "source_byte_end": 34104
+    },
+    {
+      "method": "navigation.recents.touch",
+      "httpMethod": "POST",
+      "path": "/navigation/recents/touch",
+      "noiseOnly": true,
+      "source_byte_start": 34105,
+      "source_byte_end": 34204
+    },
+    {
+      "method": "navigation.pinned.set",
+      "httpMethod": "POST",
+      "path": "/navigation/pinned/set",
+      "noiseOnly": true,
+      "source_byte_start": 34205,
+      "source_byte_end": 34298
+    },
+    {
+      "method": "chat.stream",
+      "httpMethod": "POST",
+      "path": "/chat/stream",
+      "noiseOnly": true,
+      "streamMode": "subscription",
+      "source_byte_start": 34299,
+      "source_byte_end": 34398
+    },
+    {
+      "method": "chat.stream_events",
+      "httpMethod": "POST",
+      "path": "/chat/stream-events",
+      "noiseOnly": true,
+      "streamMode": "subscription",
+      "source_byte_start": 34399,
+      "source_byte_end": 34512
+    },
+    {
+      "method": "chat.subscribe",
+      "httpMethod": "POST",
+      "path": "/chat/subscribe",
+      "noiseOnly": true,
+      "streamMode": "subscription",
+      "requestTimeoutMs": 30000,
+      "source_byte_start": 34513,
+      "source_byte_end": 34639
+    },
+    {
+      "method": "activity.subscribe",
+      "httpMethod": "POST",
+      "path": "/activity/subscribe",
+      "noiseOnly": true,
+      "streamMode": "subscription",
+      "source_byte_start": 34640,
+      "source_byte_end": 34753
+    },
+    {
+      "method": "fs.subscribe",
+      "httpMethod": "POST",
+      "path": "/api/fs/subscribe",
+      "noiseOnly": true,
+      "streamMode": "subscription",
+      "source_byte_start": 34754,
+      "source_byte_end": 34859
+    },
+    {
+      "method": "identity.subscribe",
+      "httpMethod": "POST",
+      "path": "/identity/subscribe",
+      "noiseOnly": true,
+      "streamMode": "subscription",
+      "source_byte_start": 34860,
+      "source_byte_end": 34973
+    },
+    {
+      "method": "spaces.subscribe",
+      "httpMethod": "POST",
+      "path": "/spaces/subscribe",
+      "noiseOnly": true,
+      "streamMode": "subscription",
+      "source_byte_start": 34974,
+      "source_byte_end": 35083
+    },
+    {
+      "method": "artifacts.subscribe",
+      "httpMethod": "POST",
+      "path": "/api/artifacts/subscribe",
+      "noiseOnly": true,
+      "streamMode": "subscription",
+      "source_byte_start": 35084,
+      "source_byte_end": 35203
+    },
+    {
+      "method": "tasks.subscribe",
+      "httpMethod": "POST",
+      "path": "/tasks/subscribe",
+      "noiseOnly": true,
+      "streamMode": "subscription",
+      "source_byte_start": 35204,
+      "source_byte_end": 35311
+    },
+    {
+      "method": "theme.subscribe",
+      "httpMethod": "POST",
+      "path": "/themes/subscribe",
+      "noiseOnly": true,
+      "streamMode": "subscription",
+      "source_byte_start": 35312,
+      "source_byte_end": 35420
+    },
+    {
+      "method": "computer.subscribe",
+      "httpMethod": "POST",
+      "path": "/api/computer/subscribe",
+      "noiseOnly": true,
+      "streamMode": "subscription",
+      "source_byte_start": 35421,
+      "source_byte_end": 35538
+    },
+    {
+      "method": "peers.status",
+      "httpMethod": "GET",
+      "path": "/peers/status",
+      "service": "daemon",
+      "noiseOnly": true,
+      "source_byte_start": 36797,
+      "source_byte_end": 36888
+    },
+    {
+      "method": "peers.list",
+      "httpMethod": "GET",
+      "path": "/peers",
+      "service": "daemon",
+      "noiseOnly": true,
+      "source_byte_start": 36889,
+      "source_byte_end": 36971
+    },
+    {
+      "method": "peers.invites.list",
+      "httpMethod": "GET",
+      "path": "/peers/invites",
+      "service": "daemon",
+      "noiseOnly": true,
+      "source_byte_start": 36972,
+      "source_byte_end": 37070
+    },
+    {
+      "method": "peers.disconnect",
+      "httpMethod": "DELETE",
+      "path": "/peers/{muse_id}?relationship_generation_id={relationship_generation_id}&relationship_revision={relationship_revision}&relationship_started_at_ms={relationship_started_at_ms}&request_expires_at_ms={request_expires_at_ms}",
+      "requestBody": "empty",
+      "service": "daemon",
+      "noiseOnly": true,
+      "source_byte_start": 37071,
+      "source_byte_end": 37396
+    },
+    {
+      "method": "peers.update",
+      "httpMethod": "PATCH",
+      "path": "/peers/{muse_id}",
+      "service": "daemon",
+      "noiseOnly": true,
+      "source_byte_start": 37397,
+      "source_byte_end": 37493
+    },
+    {
+      "method": "peers.requests.list",
+      "httpMethod": "GET",
+      "path": "/peers/requests",
+      "service": "daemon",
+      "noiseOnly": true,
+      "source_byte_start": 37494,
+      "source_byte_end": 37594
+    },
+    {
+      "method": "peers.invites.create",
+      "httpMethod": "POST",
+      "path": "/peers/invites",
+      "service": "daemon",
+      "noiseOnly": true,
+      "source_byte_start": 37595,
+      "source_byte_end": 37696
+    },
+    {
+      "method": "peers.invites.accept",
+      "httpMethod": "POST",
+      "path": "/peers/invites/accept",
+      "service": "daemon",
+      "noiseOnly": true,
+      "source_byte_start": 37697,
+      "source_byte_end": 37805
+    },
+    {
+      "method": "peers.invites.open",
+      "httpMethod": "POST",
+      "path": "/peers/invites/open",
+      "service": "daemon",
+      "noiseOnly": true,
+      "source_byte_start": 37806,
+      "source_byte_end": 37910
+    },
+    {
+      "method": "peers.invites.revoke",
+      "httpMethod": "DELETE",
+      "path": "/peers/invites/{invite_id}",
+      "requestBody": "empty",
+      "service": "daemon",
+      "noiseOnly": true,
+      "source_byte_start": 37911,
+      "source_byte_end": 38046
+    },
+    {
+      "method": "peers.requests.sas",
+      "httpMethod": "GET",
+      "path": "/peers/requests/{relationship_generation_id}/sas",
+      "service": "daemon",
+      "noiseOnly": true,
+      "source_byte_start": 38047,
+      "source_byte_end": 38179
+    },
+    {
+      "method": "peers.requests.sas.confirm",
+      "httpMethod": "POST",
+      "path": "/peers/requests/{relationship_generation_id}/sas/confirm",
+      "service": "daemon",
+      "noiseOnly": true,
+      "source_byte_start": 38180,
+      "source_byte_end": 38329
+    },
+    {
+      "method": "peers.discretion.write",
+      "httpMethod": "POST",
+      "path": "/fs/write",
+      "noiseOnly": true,
+      "requestTimeoutMs": 360000,
+      "source_byte_start": 38330,
+      "source_byte_end": 38433
+    },
+    {
+      "method": "peers.photo",
+      "httpMethod": "GET",
+      "path": "/peers/{muse_id}/photo/{sha256}",
+      "service": "daemon",
+      "noiseOnly": true,
+      "responseType": "binary",
+      "maxResponseBytes": 32768,
+      "channel": "media",
+      "source_byte_start": 38434,
+      "source_byte_end": 38603
+    },
+    {
+      "method": "peers.avatar",
+      "httpMethod": "GET",
+      "path": "/peers/{muse_id}/avatar/{sha256}",
+      "service": "daemon",
+      "noiseOnly": true,
+      "responseType": "binary",
+      "maxResponseBytes": 131072,
+      "channel": "media",
+      "source_byte_start": 38604,
+      "source_byte_end": 38776
+    }
+  ],
+  "limitations": [
+    "One method uses a local variable for shared_space.callback and is omitted from this literal-only table.",
+    "Route declarations do not prove server availability, user entitlement, or backend deployment topology.",
+    "Fields absent from an entry may receive transport defaults elsewhere."
+  ]
+}

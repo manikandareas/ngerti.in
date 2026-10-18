@@ -1,6 +1,6 @@
 # 05 · Usage, Paket & Pembayaran
 
-Sumber: [Notion](https://app.notion.com/p/3fdabdd61873819ca2b5cc4e521b3587) · Readback: 2026-10-18T14:17:35.163Z
+Sumber: [Notion](https://app.notion.com/p/3fdabdd61873819ca2b5cc4e521b3587) · Readback: 2026-10-18T15:44:00.527Z
 
 <!-- notion-content:start -->
 Batas chat baseline adalah **Free 100 dan Plus 300 pesan pengguna per 30 × 24 jam**, policy chat-baseline-v1. Ini batas development sementara, bukan harga atau allowance komersial yang disetujui. Meter Course/halaman materi dan kontrak reservasinya telah dihapus. GET /quotas hanya memiliki `meters.chat` dengan limit/used/reserved/remaining serta period/plan.
@@ -76,4 +76,12 @@ Satu input chat/form task memakai satu chat unit. Langkah background, approval, 
 Satu permintaan Task file memakai satu chat unit; upload, cache reuse, review, download dan retry Task tidak membuat pesan baru. Pengaman OCR terpisah dari paket komersial: 100 halaman/akun dan 1.000 global per tanggal UTC, PDF maksimal 20 halaman/file dan 40 halaman/Task. Reservasi atomik mendahului dispatch; outcome ambigu tetap menghitung halaman yang mungkin terpakai. Percobaan OCR baru memerlukan request identity dan pengakuan potensi biaya; retry Task tidak mendispatch ulang OCR.
 
 Policy `product-files-v1` menyimpan model snapshot `mistral-ocr-4-1`, versi tarif dan estimasi konfigurasi USD4/1.000 halaman. Cache mengikat revision/model/policy. Ledger charged pages tetap ada setelah bytes dihapus. Batas: 10 MiB/file, 5 lampiran/25 MiB, 10 hasil/25 MiB, storage akun 250 MiB; batas model Task tetap berlaku lebih dahulu bila perlu. Ini cap operasional internal, bukan harga pelanggan atau invoice. Detail telemetry dan batas bukti: `docs/engineering/files-34-acceptance.md`.
+
+## Budget runtime kode NG-035
+
+Policy code-sandbox-v1 memisahkan chat, token model dan biaya resource. Snapshot menyimpan provider, price version, rate, alokasi, deadline dan caps. Reservasi resource mendahului model/provisioning; race akun/global ditangani atomik. Satu sesi mereservasi36.000microUSD; Task108.000, akun1.000.000/tanggal UTC dan global5.000.000/tanggal UTC. Satu resource aktif/akun, dua global, maksimal tiga sesi/Task. Token tetap memakai budget Task yang sudah ada.
+
+Rate awal166.464microUSD/jam adalah estimasi konfigurasi untuk2vCPU/4GiB/8GiB, versi daytona-linux-2026-10-18. TTL maksimal10menit plus margin120detik tercakup dalam reservasi. Unknown tetap terhitung penuh sampai konfirmasi cleanup; create timeout tidak diulang dengan resource baru. Penolakan pasti sebelum alokasi memiliki biaya resource nol. Konfirmasi delete menyelesaikan estimasi konservatif dari wall time teramati; invoice_confirmed=false. Sesi lama tidak dihitung ulang dengan konfigurasi baru.
+
+Walkthrough tiga Task model mencatat4.862token confirmed dan estimasi resource USD0.004279; probe runtime terkontrol USD0.001433. Ini bukan invoice atau harga pelanggan; biaya token model dalam uang belum ditetapkan. Percobaan terkontrol membuktikan retry/receipt/publication tidak menggandakan hasil dan cost events. Penerimaan `docs/engineering/sandbox-35-acceptance.md`; kontrak paket komersial dan benchmark tetap NG-040/NG-041.
 <!-- notion-content:end -->

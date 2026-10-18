@@ -25,6 +25,8 @@ Indeks bukti: [08 · Bukti Riset & REA](../research/muse-ai-v1/README.md).
 
 ## Status kerja terbaru
 
+Readback status 2026-10-18T15:44:00.527Z: [NG-035 · Eksekusi kode dalam sandbox](tasks/35-eksekusi-kode-dalam-sandbox.md) berstatus **Done**. [Laporan penerimaan](../engineering/sandbox-35-acceptance.md) memuat interface Python yang dapat diganti, adapter Daytona, isolasi kernel, 45 kontrak runtime, CSV/model nyata, review/revisi/download desktop/mobile serta stop/cleanup. NG-036 menjadi urutan implementasi berikutnya; status tiket lain dipertahankan.
+
 Readback status 2026-10-18T14:17:35.163Z: [NG-034 · File produk dan hasil tersimpan](tasks/34-file-produk-dan-hasil-tersimpan.md) berstatus **Done**. [Laporan penerimaan](../engineering/files-34-acceptance.md) memuat Mistral OCR, immutable revisions, result manifest, preview/download/delete, 47 kontrak file dan walkthrough desktop/mobile. Eksekusi kode umum dan full Library search mengikuti NG-035/NG-039.
 
 Readback status 2026-10-18T10:08:03.263Z: [NG-033 · Task background dan approval umum](tasks/33-task-background-dan-approval-umum.md) berstatus **Done**. [Laporan penerimaan](../engineering/task-33-acceptance.md) memuat Task teks, chat bersamaan, exact approval/revision, stop/retry, 55 kontrak backend dan walkthrough model nyata. NG-034 belum dimulai.

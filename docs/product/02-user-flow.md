@@ -1,6 +1,6 @@
 # 02 · UX & User Flow
 
-Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381fda2dbea043a840c5a) · Readback: 2026-10-18T14:17:35.163Z
+Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381fda2dbea043a840c5a) · Readback: 2026-10-18T15:44:00.527Z
 
 <!-- notion-content:start -->
 Chat menjadi pintu utama; panel membantu pengguna menemukan pekerjaan, hasil dan kontrol yang hidup lebih lama dari satu respons. Soft Matcha dan primitive UI yang ada dipertahankan. Onboarding menghasilkan satu bantuan umum yang kecil, tidak meminta pengguna membuat artefak pembelajaran.
@@ -106,4 +106,12 @@ Pengguna menemukan dan mengubah pekerjaan yang berjalan saat offline.
 **Acceptance:** P14–P23; user offline kembali melihat satu outcome; koreksi memory berpengaruh sesudah reload.
 
 Bukti modul: [REA-4 · Memory & Goals](../research/muse-ai-v1/evidence/memory.md). Tiket: [NG-016 · Perubahan soul atas permintaan dan HITL](../backlog/tasks/16-perubahan-soul-atas-permintaan-dan-hitl.md) · [NG-017 · Memory aktif capture evidence dan recall](../backlog/tasks/17-memory-aktif-capture-evidence-dan-recall.md) · [NG-018 · Pengaturan inspeksi dan koreksi memory](../backlog/tasks/18-pengaturan-untuk-inspeksi-dan-koreksi-memory.md) · [NG-037 · Scheduler pengguna saat offline](../backlog/tasks/37-scheduler-pengguna-saat-offline.md) · [NG-038 · Goals umum dengan evidence progress](../backlog/tasks/38-goals-umum-dengan-evidence-progress.md) · [NG-019 · Kandidat proaktif dinamis dan reranking](../backlog/tasks/19-kandidat-proaktif-dinamis-dan-reranking.md) · [NG-020 · Delivery proaktif per thread dan batas global](../backlog/tasks/20-delivery-proaktif-per-thread-dan-batas-global.md).
+
+## Pengolahan data Python NG-035
+
+Form Task menyediakan pilihan Hitung dan olah data dengan Python. Pengguna memilih lampiran/rentang, instruksi, output dan review opsional. CSV/JSON yang dilampirkan melalui composer memakai komputasi offline; chat juga dapat membuat Task komputasi melalui tool yang tersedia.
+
+Progres membedakan persiapan program, provisioning, pengolahan, pemeriksaan/penyimpanan dan cleanup yang belum pasti. Pengguna tetap dapat bercakap. Review berlaku pada finalisasi hasil; candidate sudah tersimpan sehingga sandbox tidak hidup hanya untuk menunggu keputusan. Ringkasan dapat direvisi, bytes candidate tetap dan seluruh file dapat diunduh untuk ditinjau.
+
+Hasil sukses tetap dapat dipreview/diunduh setelah sandbox dihapus. Update Result mempertahankan runtime asal. Stop mencabut eksekusi; pending cleanup/unknown memerlukan pemeriksaan sebelum retry. Walkthrough desktop/mobile dan bukti terdapat pada `docs/engineering/sandbox-35-acceptance.md`. [NG-035 · Eksekusi kode dalam sandbox](../backlog/tasks/35-eksekusi-kode-dalam-sandbox.md) diterima lokal; browser interaktif mengikuti NG-036.
 <!-- notion-content:end -->

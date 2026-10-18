@@ -1,6 +1,6 @@
 # 04 · Arsitektur, Runtime & Kontrak
 
-Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381198256f4ee69db1e78) · Readback: 2026-10-18T14:17:35.163Z
+Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381198256f4ee69db1e78) · Readback: 2026-10-18T15:44:00.527Z
 
 <!-- notion-content:start -->
 Stack aktual: TanStack Start/React, FastAPI, Clerk, PostgreSQL/pgvector, LangChain create_agent + LangGraph checkpoints, Procrastinate dan S3/MinIO. API dan worker adalah proses host untuk development; PostgreSQL/MinIO berada pada Compose ngertiin-v1. Pertahankan fondasi; LiteLLM/LlamaIndex/LangSmith/R2 production bukan dependency yang dianggap aktif hanya karena pernah tercantum pada riset.
@@ -118,4 +118,14 @@ Baseline aplikasi adalah 0001_v1_baseline: accounts, agent_profiles, chat_thread
 Reset sekali ini membuang seluruh data development proyek dan tidak menyediakan compatibility untuk pesan/approval/checkpoint pembelajaran lama. Migrasi masa depan kembali bersifat incremental; baseline ini bukan prosedur upgrade production.
 
 Kontrak target yang belum diimplementasikan di atas diselesaikan pada tiket terkait sebelum endpoint/event dipasarkan. Memory, Goal dan Library mengikuti [03 · Perilaku Agent](03-agent.md) · [02 · UX & User Flow](02-user-flow.md). Usage dan operasi mengikuti [05 · Usage, Paket & Pembayaran](05-usage-paket-pembayaran.md) · [06 · Development, Operasi & Acceptance](../engineering/development.md).
+
+## Runtime kode NG-035 yang sudah diterima
+
+Pada **2026-10-18**, [NG-035 · Eksekusi kode dalam sandbox](../backlog/tasks/35-eksekusi-kode-dalam-sandbox.md) menerima runtime kode produk melalui interface Python `SandboxRuntime`; Daytona adalah adapter pertama. Kontrak, tipe, error dan receipt milik aplikasi. SDK capability produk hanya berada di adapter; pemilihan runtime terpusat dan orkestrasi menerima dependency. ControlledRuntime membuktikan kontrak tanpa SDK/credential Daytona; provider produksi kedua belum tersedia.
+
+Migrasi `0004_sandbox_runtime` menambah runtime_kind, sandbox_sessions, sandbox_steps dan sandbox_outputs. Domain aplikasi mengatur owner/Task/execution, reservasi atomic, lease fencing, step receipt dan outcome unknown. Code memakai input revision/rentang exact; hanya sampel terbatas masuk model. Candidate bytes dipersist dan diverifikasi sebelum review, lalu publikasi manifest/delivery memakai File/Result. Update Result mempertahankan runtime komputasi. Worker tidak mengeksekusi program pada host.
+
+Daytona: 2vCPU/4GiB/8GiB, UID65534/no-new-privs, environment bersih, hard resource limits dan filter seccomp diwariskan ke child. Probe menemukan firewall flag saja belum menolak koneksi, sehingga filter kernel wajib dan fail-closed. Stop/delete terkonfirmasi, TTL absolut, unknown create/dispatch tidak diulang buta, sweep tiap menit dan candidate GC. Resource dibersihkan sebelum review/success. Hasil persisten tidak menjanjikan RAM/proses.
+
+Desain `docs/engineering/sandbox-runtime.md`; acceptance `docs/engineering/sandbox-35-acceptance.md` dan evidence `docs/engineering/evidence/sandbox-35/`. Browser/VNC/live desktop/takeover tetap NG-036.
 <!-- notion-content:end -->

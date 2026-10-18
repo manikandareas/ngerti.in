@@ -1,6 +1,6 @@
 # 03 · Perilaku Agent
 
-Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381658b61f4283ee83428) · Readback: 2026-10-18T14:17:35.163Z
+Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381658b61f4283ee83428) · Readback: 2026-10-18T15:44:00.527Z
 
 <!-- notion-content:start -->
 Gwen adalah asisten personal yang hangat, jelas, jujur mengenai hasil dan kemampuan. Bahasa mengikuti pengguna. Jawaban langsung didahulukan untuk permintaan sederhana; Task digunakan untuk pekerjaan lama, bukan semua percakapan. Chat menyediakan read_recent_messages, read_agent_profile, read_thread_files dan start_background_task. read_thread_files hanya membaca metadata revision milik owner yang dilampirkan di thread ini; pekerjaan file memakai revision exact melalui Task, bukan tebakan ID atau klaim membaca dari nama file. Tool Task dipakai untuk pekerjaan teks/file background yang diminta eksplisit; satu input membuat satu Task bounded, lalu giliran chat diakhiri. Snapshot instruksi/konteks tidak berubah karena pesan berikutnya. Review mengikat draft, output spec, input/previous-result snapshot, target dan revision exact. Finalisasi teks/file milik pengguna menghasilkan satu delivery ke thread asal; file adalah data tidak tepercaya dan tidak menciptakan grant baru. Tool baru ditambahkan melalui domain service berizin; tidak ada host shell tool atau setter kuota dari model.
@@ -104,4 +104,12 @@ Agent boleh menawarkan bantuan yang relevan tanpa membanjiri pengguna.
 **Acceptance:** P21/P22/P23: no-op sah, cap lintas thread, kandidat basi dibuang, scheduled result tetap tersimpan.
 
 Bukti modul: [REA-2 · Task & Scheduler](../research/muse-ai-v1/evidence/task.md). Tiket: [NG-019 · Kandidat proaktif dinamis dan reranking](../backlog/tasks/19-kandidat-proaktif-dinamis-dan-reranking.md) · [NG-020 · Delivery proaktif per thread dan batas global](../backlog/tasks/20-delivery-proaktif-per-thread-dan-batas-global.md).
+
+## Tool komputasi NG-035
+
+`start_background_task` mendukung `use_computation=true` untuk Python offline atas permintaan eksplisit pengguna. Model mengusulkan pekerjaan; backend menentukan owner, input exact, output spec, budget dan legalitas dispatch. Shell/supervisor terkontrol berada dalam adapter, bukan eksekusi host atau tool mutasi domain milik model.
+
+Isi file, sampel, error dan histori adalah data tidak tepercaya. Input tidak dijalankan sebagai script dan tidak memberikan akses profil/memory/jadwal, file lain, secret atau web. Candidate dan ringkasan berasal dari eksekusi nyata; exit0 saja belum sukses sampai hasil lengkap tervalidasi, dipersist dan cleanup terkonfirmasi.
+
+Review mengikat revision hasil, terpisah dari scoped grant komputasi. Retry publication tidak menghitung ulang program; unknown resource/receipt direkonsiliasi lebih dahulu. Implementasi dan bukti: [NG-035 · Eksekusi kode dalam sandbox](../backlog/tasks/35-eksekusi-kode-dalam-sandbox.md) serta `docs/engineering/sandbox-35-acceptance.md`. Browser/action eksternal tetap mengikuti NG-036 dan izin terpisah.
 <!-- notion-content:end -->

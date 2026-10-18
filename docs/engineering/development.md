@@ -1,6 +1,6 @@
 # 06 · Development, Operasi & Acceptance
 
-Sumber: [Notion](https://app.notion.com/p/3fdabdd6187381d39f94f7161d4ef570) · Readback: 2026-10-18T14:17:35.163Z
+Sumber: [Notion](https://app.notion.com/p/3fdabdd6187381d39f94f7161d4ef570) · Readback: 2026-10-18T15:44:00.527Z
 
 <!-- notion-content:start -->
 ## Setup development bersih
@@ -115,4 +115,14 @@ Diterima lokal pada **2026-10-18**: upload/reuse immutable revisions, PDF/image 
 P12 memakai fixture adapter terbatas di sandbox Daytona nyata (SDK0.225.0/provider v0.225.1, snapshot daytona-medium, TTL3 menit): tiga file dipersist, sandbox dihapus dan cleanup dikonfirmasi, kemudian bytes/hash hasil tetap sama. Ini tidak mengaktifkan eksekusi kode umum NG-035. HTML desktop/mobile disanitasi dan disandbox tanpa session aplikasi; navigasi/jaringan eksternal dilarang. R2 production, full Library search dan kualitas seluruh dokumen tetap memerlukan acceptance tersendiri.
 
 Upgrade memakai `make migrate` untuk 0003_product_files tanpa reset. Konfigurasi backend/worker: MISTRAL_API_KEY, MISTRAL_OCR_MODEL=mistral-ocr-4-1, OCR_ACCOUNT_DAILY_PAGES=100, OCR_GLOBAL_DAILY_PAGES=1000. Restart worker setelah perubahan Python/config; autoreload API tidak mereload worker. Cleanup lima menit merevoke/purge file dihapus dan upload tidak terpakai 24 jam; biaya OCR yang mungkin terpakai tidak dihapus dari ledger. Hasil turunan siap bertahan sampai hasilnya sendiri dihapus.
+
+## Penerimaan runtime kode NG-035
+
+Diterima lokal pada **2026-10-18**. Interface SandboxRuntime dan DaytonaAdapter, ledger/caps, kernel isolation, bounded repair, candidate persistence, review/revisi, stop/cleanup dan download memakai migrasi incremental0004_sandbox_runtime tanpa reset. Desain `docs/engineering/sandbox-runtime.md`; laporan `docs/engineering/sandbox-35-acceptance.md`; evidence `docs/engineering/evidence/sandbox-35/`.
+
+`make sandbox-inspect` lulus45kontrak PostgreSQL/MinIO dengan adapter terkontrol; Task55/File47/quota46 serta make check/build lulus. Probe nyata P10/P11 mengonfirmasi UID/no-new-privs/environment allowlist, network/root-env/sudo/child-network/io_uring denial, hard limits, output cap, timeout dan symlink rejection. CSV model nyata menghasilkan total500, revision2 disetujui dan checksum unduhan cocok setelah sandbox dihapus. Task multi-file nyata menghasilkan JSON+Markdown; stop UI saat kode berjalan berakhir cancelled/deleted tanpa delivery. Same-thread chat tetap berfungsi saat review.
+
+SDK0.225.0/provider v0.225.1, targeteu, 2vCPU/4GiB/8GiB. Mobile adalah emulasi viewport390x844/320x640; desktop1280x900. Usage token aktual dibedakan dari estimasi USD resource; invoice tidak diverifikasi. Akhir pengujian: nol resource NG-035 tersisa. Fault lost ack/crash boundary memakai adapter terkontrol; SIGKILL produk/production dan browser NG-036 bukan bukti penerimaan ini.
+
+Jalankan make install dan make migrate, lalu restart worker; autoreload API tidak mereload worker. SANDBOX_PROVIDER memilih adapter pertama; rate/price version dan cap internal terdapat pada .env.example. Probe berbayar harus eksplisit melalui `scripts/probe_sandbox_runtime.py --live --owner-file /path/to/private-owner.json`. Jangan menyimpan token, credential atau histori pribadi dalam evidence.
 <!-- notion-content:end -->

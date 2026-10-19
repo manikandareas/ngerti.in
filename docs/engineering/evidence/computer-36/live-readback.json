@@ -1,0 +1,1024 @@
+{
+  "at": "2026-10-18T17:52:42.079654+00:00",
+  "environment": "development-local",
+  "daytona_sdk": "0.225.0",
+  "target": null,
+  "task_timeout_default_seconds": 1200,
+  "worker_sigkill_at": "2026-10-18T17:47:31+00:00",
+  "tasks": [
+    {
+      "id": "a1625183-d8a0-401f-8ea9-6d220b8d1d99",
+      "status": "succeeded",
+      "stage": "complete",
+      "instruction": "Buka https://the-internet.herokuapp.com/login lalu minta saya login melalui takeover. Setelah saya mengembalikan kendali, baca apakah halaman menampilkan Secure Area dan simpan ringkasan dalam hasil.md. Jangan mengirim formulir sendiri.",
+      "review_required": true,
+      "revision": 1,
+      "attempt": 5,
+      "result_id": "61f86ed7-9052-525c-8096-e4b0daaf2835",
+      "result": "Halaman menampilkan Secure Area dan pesan “You logged into a secure area!”. Ringkasan disimpan dalam hasil.md.",
+      "created_at": "2026-10-18 17:27:20.740975+00:00",
+      "updated_at": "2026-10-18 17:44:16.885351+00:00",
+      "sessions": [
+        {
+          "id": "2c9df378-075a-4ab5-ad6c-05a5cba4d220",
+          "state": "stopped",
+          "policy": {
+            "seconds": 1200,
+            "version": "private-browser-v1",
+            "provider": "daytona",
+            "max_steps": 24,
+            "allowed_urls": [
+              "https://the-internet.herokuapp.com/login"
+            ],
+            "egress_bytes": 209715200,
+            "idle_minutes": 2,
+            "max_sessions": 3,
+            "price_version": "daytona-linux-2026-10-18",
+            "profile_bytes": 1073741824,
+            "download_bytes": 26214400,
+            "retention_days": 7,
+            "cleanup_seconds": 180,
+            "global_profiles": 20,
+            "microusd_per_hour": 166464,
+            "global_concurrency": 2,
+            "compute_reservation": 63812,
+            "storage_reservation": 145152,
+            "global_daily_microusd": 5000000,
+            "account_daily_microusd": 1000000,
+            "storage_microusd_per_hour": 864
+          },
+          "budget_day": "2026-10-18",
+          "reserved_microusd": 208964,
+          "charged_microusd": 146351,
+          "storage_microusd": 145152,
+          "cost_state": "estimated",
+          "usage": {
+            "egress_bytes": 27241,
+            "gc_checked_at": "2026-10-18T17:52:00.806605+00:00",
+            "profile_bytes": 3277795,
+            "invoice_confirmed": false,
+            "observed_wall_seconds": 25.928,
+            "storage_reservation_policy": "full_retention_window_each_use"
+          },
+          "created_at": "2026-10-18 17:27:22.395413+00:00",
+          "deadline": "2026-10-18 17:47:22.408023+00:00",
+          "stopped_at": "2026-10-18 17:27:48.314701+00:00"
+        },
+        {
+          "id": "dda137b7-907d-4ac8-964c-c5945e27e28e",
+          "state": "stopped",
+          "policy": {
+            "seconds": 1200,
+            "version": "private-browser-v1",
+            "provider": "daytona",
+            "max_steps": 24,
+            "allowed_urls": [
+              "https://the-internet.herokuapp.com/login"
+            ],
+            "egress_bytes": 209715200,
+            "idle_minutes": 2,
+            "max_sessions": 3,
+            "price_version": "daytona-linux-2026-10-18",
+            "profile_bytes": 1073741824,
+            "download_bytes": 26214400,
+            "retention_days": 7,
+            "cleanup_seconds": 180,
+            "global_profiles": 20,
+            "microusd_per_hour": 166464,
+            "global_concurrency": 2,
+            "compute_reservation": 63812,
+            "storage_reservation": 145152,
+            "global_daily_microusd": 5000000,
+            "account_daily_microusd": 1000000,
+            "storage_microusd_per_hour": 864
+          },
+          "budget_day": "2026-10-18",
+          "reserved_microusd": 208964,
+          "charged_microusd": 160927,
+          "storage_microusd": 145152,
+          "cost_state": "estimated",
+          "usage": {
+            "egress_bytes": 32937575,
+            "gc_checked_at": "2026-10-18T17:52:00.813773+00:00",
+            "profile_bytes": 137539747,
+            "invoice_confirmed": false,
+            "observed_wall_seconds": 341.147,
+            "storage_reservation_policy": "full_retention_window_each_use"
+          },
+          "created_at": "2026-10-18 17:29:00.065923+00:00",
+          "deadline": "2026-10-18 17:49:00.082943+00:00",
+          "stopped_at": "2026-10-18 17:34:41.209428+00:00"
+        }
+      ],
+      "steps": [
+        {
+          "id": "bc3de388-dd9f-496d-8c60-958b6856fd00",
+          "kind": "observe",
+          "state": "complete",
+          "control_version": 2,
+          "screen_hash": "",
+          "created_at": "2026-10-18 17:27:34.027283+00:00",
+          "finished_at": "2026-10-18 17:27:36.575007+00:00",
+          "description": null
+        },
+        {
+          "id": "7689ee36-ee68-4f3b-b95e-5eac6dd723ad",
+          "kind": "observe",
+          "state": "complete",
+          "control_version": 4,
+          "screen_hash": "",
+          "created_at": "2026-10-18 17:29:08.371389+00:00",
+          "finished_at": "2026-10-18 17:29:10.568450+00:00",
+          "description": null
+        },
+        {
+          "id": "ef583e55-b02e-4bfd-acb6-8ac9085a539b",
+          "kind": "navigate",
+          "state": "complete",
+          "control_version": 4,
+          "screen_hash": "be0f7a6237dd07d755d7b5891c3db605f0c9e31871843adb22864368bd1d2f69",
+          "created_at": "2026-10-18 17:29:13.886076+00:00",
+          "finished_at": "2026-10-18 17:29:17.650371+00:00",
+          "description": "Membuka halaman login yang diminta."
+        },
+        {
+          "id": "cf216794-86e0-404a-a011-b1770be4a40c",
+          "kind": "observe",
+          "state": "complete",
+          "control_version": 4,
+          "screen_hash": "",
+          "created_at": "2026-10-18 17:29:17.703509+00:00",
+          "finished_at": "2026-10-18 17:29:20.308306+00:00",
+          "description": null
+        },
+        {
+          "id": "55b6b38e-ec15-416a-a545-5d4c0f5f34c1",
+          "kind": "observe",
+          "state": "complete",
+          "control_version": 6,
+          "screen_hash": "",
+          "created_at": "2026-10-18 17:32:58.889227+00:00",
+          "finished_at": "2026-10-18 17:33:01.374019+00:00",
+          "description": null
+        },
+        {
+          "id": "4671bacc-3504-4d48-b1ca-643b6d5e2e12",
+          "kind": "control_return",
+          "state": "complete",
+          "control_version": 7,
+          "screen_hash": "e720094f8de04cf469f535052eed5e32ed0680e1849abcb4a9d7a498d2f5c9b1",
+          "created_at": "2026-10-18 17:34:27.629632+00:00",
+          "finished_at": "2026-10-18 17:34:27.629632+00:00",
+          "description": "Pengguna mengembalikan kendali. Periksa hasil perubahan pada layar dan lanjutkan tujuan Task; login mungkin sudah selesai."
+        },
+        {
+          "id": "800b9781-da52-4faf-8a4b-a7a139dc1cfe",
+          "kind": "observe",
+          "state": "complete",
+          "control_version": 7,
+          "screen_hash": "",
+          "created_at": "2026-10-18 17:34:29.069267+00:00",
+          "finished_at": "2026-10-18 17:34:31.201011+00:00",
+          "description": null
+        }
+      ],
+      "model_calls": [
+        {
+          "id": "ce6b55d8-1df6-4671-a5f7-ebbfc08a9147",
+          "model": "gpt-6-luna",
+          "policy_version": "browser-task-work-v1",
+          "reserved_units": 23477,
+          "charged_units": 1890,
+          "state": "confirmed",
+          "usage": {
+            "input_tokens": 1838,
+            "total_tokens": 1890,
+            "output_tokens": 52,
+            "input_token_details": {
+              "cache_read": 0,
+              "cache_creation": 1835
+            },
+            "output_token_details": {
+              "reasoning": 8
+            }
+          },
+          "created_at": "2026-10-18 17:27:36.598335+00:00",
+          "settled_at": "2026-10-18 17:27:42.375427+00:00"
+        },
+        {
+          "id": "a8abca49-a007-48e8-bde0-92c9da29d566",
+          "model": "gpt-6-luna",
+          "policy_version": "browser-task-work-v1",
+          "reserved_units": 23477,
+          "charged_units": 2119,
+          "state": "confirmed",
+          "usage": {
+            "input_tokens": 2036,
+            "total_tokens": 2119,
+            "output_tokens": 83,
+            "input_token_details": {
+              "cache_read": 0,
+              "cache_creation": 2033
+            },
+            "output_token_details": {
+              "reasoning": 22
+            }
+          },
+          "created_at": "2026-10-18 17:29:10.588652+00:00",
+          "settled_at": "2026-10-18 17:29:13.821680+00:00"
+        },
+        {
+          "id": "6d72661c-e7e7-4949-89ce-67fb9cfd742b",
+          "model": "gpt-6-luna",
+          "policy_version": "browser-task-work-v1",
+          "reserved_units": 23728,
+          "charged_units": 2232,
+          "state": "confirmed",
+          "usage": {
+            "input_tokens": 2116,
+            "total_tokens": 2232,
+            "output_tokens": 116,
+            "input_token_details": {
+              "cache_read": 0,
+              "cache_creation": 2113
+            },
+            "output_token_details": {
+              "reasoning": 27
+            }
+          },
+          "created_at": "2026-10-18 17:29:20.328098+00:00",
+          "settled_at": "2026-10-18 17:29:23.693230+00:00"
+        },
+        {
+          "id": "5118d1d9-d308-4a9c-a601-79a2e60dc94c",
+          "model": "gpt-6-luna",
+          "policy_version": "browser-task-work-v1",
+          "reserved_units": 23728,
+          "charged_units": 2261,
+          "state": "confirmed",
+          "usage": {
+            "input_tokens": 2116,
+            "total_tokens": 2261,
+            "output_tokens": 145,
+            "input_token_details": {
+              "cache_read": 0,
+              "cache_creation": 2113
+            },
+            "output_token_details": {
+              "reasoning": 45
+            }
+          },
+          "created_at": "2026-10-18 17:33:01.384101+00:00",
+          "settled_at": "2026-10-18 17:33:05.695688+00:00"
+        },
+        {
+          "id": "e6db76ad-9559-401a-bbf5-588c126b7474",
+          "model": "gpt-6-luna",
+          "policy_version": "browser-task-work-v1",
+          "reserved_units": 23930,
+          "charged_units": 2328,
+          "state": "confirmed",
+          "usage": {
+            "input_tokens": 2205,
+            "total_tokens": 2328,
+            "output_tokens": 123,
+            "input_token_details": {
+              "cache_read": 0,
+              "cache_creation": 2202
+            },
+            "output_token_details": {
+              "reasoning": 14
+            }
+          },
+          "created_at": "2026-10-18 17:34:31.219175+00:00",
+          "settled_at": "2026-10-18 17:34:34.646600+00:00"
+        }
+      ],
+      "results": [
+        {
+          "revision": 1,
+          "status": "ready",
+          "manifest": {
+            "files": [
+              {
+                "size": 101,
+                "sha256": "09d15b00a7b6af36cd1ae772041e826fa61484c8bcd9dcc7ad729fcdc4d44c8d",
+                "file_id": "b2a1ca90-a110-5a6b-ae1e-5f28fd9176e3",
+                "filename": "hasil.md",
+                "revision_id": "b2a1ca90-a110-5a6b-ae1e-5f28fd9176e3",
+                "content_type": "text/markdown",
+                "bytes_verified_after_reset": true
+              }
+            ],
+            "inputs": [],
+            "summary": "Halaman menampilkan Secure Area dan pesan “You logged into a secure area!”. Ringkasan disimpan dalam hasil.md.",
+            "task_id": "a1625183-d8a0-401f-8ea9-6d220b8d1d99",
+            "version": 1,
+            "task_revision": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "650e0d5f-cd11-4682-a65a-6fa3e66808db",
+      "status": "succeeded",
+      "stage": "complete",
+      "instruction": "Buka https://the-internet.herokuapp.com/secure dan periksa apakah login dari Task sebelumnya masih aktif. Jika Secure Area terlihat, jangan logout atau login ulang; simpan bukti yang terlihat ke hasil.md dan selesaikan.",
+      "review_required": false,
+      "revision": 1,
+      "attempt": 1,
+      "result_id": "b2c3f2d3-5373-5b33-8ca6-91321d23bb18",
+      "result": "Login sebelumnya masih aktif: halaman Secure Area terlihat dan menampilkan pesan sambutan serta tombol Logout. Tidak melakukan logout atau login ulang.",
+      "created_at": "2026-10-18 17:35:58.556375+00:00",
+      "updated_at": "2026-10-18 17:36:30.717542+00:00",
+      "sessions": [
+        {
+          "id": "83576c1b-1e40-4ad0-b3ca-1c65d6f9f217",
+          "state": "stopped",
+          "policy": {
+            "seconds": 1200,
+            "version": "private-browser-v1",
+            "provider": "daytona",
+            "max_steps": 24,
+            "allowed_urls": [
+              "https://the-internet.herokuapp.com/secure"
+            ],
+            "egress_bytes": 209715200,
+            "idle_minutes": 2,
+            "max_sessions": 3,
+            "price_version": "daytona-linux-2026-10-18",
+            "profile_bytes": 1073741824,
+            "download_bytes": 26214400,
+            "retention_days": 7,
+            "cleanup_seconds": 180,
+            "global_profiles": 20,
+            "microusd_per_hour": 166464,
+            "global_concurrency": 2,
+            "compute_reservation": 63812,
+            "storage_reservation": 145152,
+            "global_daily_microusd": 5000000,
+            "account_daily_microusd": 1000000,
+            "storage_microusd_per_hour": 864
+          },
+          "budget_day": "2026-10-18",
+          "reserved_microusd": 208964,
+          "charged_microusd": 146626,
+          "storage_microusd": 145152,
+          "cost_state": "estimated",
+          "usage": {
+            "egress_bytes": 71398,
+            "gc_checked_at": "2026-10-18T17:52:00.820848+00:00",
+            "profile_bytes": 133364054,
+            "invoice_confirmed": false,
+            "observed_wall_seconds": 31.87,
+            "storage_reservation_policy": "full_retention_window_each_use"
+          },
+          "created_at": "2026-10-18 17:35:58.697878+00:00",
+          "deadline": "2026-10-18 17:55:58.697071+00:00",
+          "stopped_at": "2026-10-18 17:36:30.565478+00:00"
+        }
+      ],
+      "steps": [
+        {
+          "id": "285b6038-a31c-4c86-bede-51d87160c223",
+          "kind": "observe",
+          "state": "complete",
+          "control_version": 9,
+          "screen_hash": "",
+          "created_at": "2026-10-18 17:36:07.137012+00:00",
+          "finished_at": "2026-10-18 17:36:09.307901+00:00",
+          "description": null
+        },
+        {
+          "id": "379b248b-4ad1-469c-8466-811f7d0a993b",
+          "kind": "navigate",
+          "state": "complete",
+          "control_version": 9,
+          "screen_hash": "e9984af8d083e08567a575ff7d3a53d26aec7f66bed246689ffd5dcb873a1966",
+          "created_at": "2026-10-18 17:36:12.992155+00:00",
+          "finished_at": "2026-10-18 17:36:17.954605+00:00",
+          "description": "Membuka halaman Secure yang diminta untuk memeriksa status sesi."
+        },
+        {
+          "id": "bc288845-c2f3-47c8-a54f-61117d02954d",
+          "kind": "observe",
+          "state": "complete",
+          "control_version": 9,
+          "screen_hash": "",
+          "created_at": "2026-10-18 17:36:17.977915+00:00",
+          "finished_at": "2026-10-18 17:36:20.300903+00:00",
+          "description": null
+        }
+      ],
+      "model_calls": [
+        {
+          "id": "4ac0dffa-fca6-44b0-aa81-7632280ded8a",
+          "model": "gpt-6-luna",
+          "policy_version": "browser-task-work-v1",
+          "reserved_units": 23460,
+          "charged_units": 2269,
+          "state": "confirmed",
+          "usage": {
+            "input_tokens": 2074,
+            "total_tokens": 2269,
+            "output_tokens": 195,
+            "input_token_details": {
+              "cache_read": 0,
+              "cache_creation": 2071
+            },
+            "output_token_details": {
+              "reasoning": 21
+            }
+          },
+          "created_at": "2026-10-18 17:36:09.323844+00:00",
+          "settled_at": "2026-10-18 17:36:12.952707+00:00"
+        },
+        {
+          "id": "6d7dcfc5-427e-4b4b-ad2b-2b12e7e8ba3e",
+          "model": "gpt-6-luna",
+          "policy_version": "browser-task-work-v1",
+          "reserved_units": 23741,
+          "charged_units": 2332,
+          "state": "confirmed",
+          "usage": {
+            "input_tokens": 2161,
+            "total_tokens": 2332,
+            "output_tokens": 171,
+            "input_token_details": {
+              "cache_read": 0,
+              "cache_creation": 2158
+            },
+            "output_token_details": {
+              "reasoning": 18
+            }
+          },
+          "created_at": "2026-10-18 17:36:20.312929+00:00",
+          "settled_at": "2026-10-18 17:36:23.272049+00:00"
+        }
+      ],
+      "results": [
+        {
+          "revision": 1,
+          "status": "ready",
+          "manifest": {
+            "files": [
+              {
+                "size": 300,
+                "sha256": "3f28630f91e802a937905f07048fc27c23f8bb36c46a0900100066404cc4c3be",
+                "file_id": "2030c0c1-e006-598d-bcb8-21e07817a65e",
+                "filename": "hasil.md",
+                "revision_id": "2030c0c1-e006-598d-bcb8-21e07817a65e",
+                "content_type": "text/markdown",
+                "bytes_verified_after_reset": true,
+                "browser_download_matches": true
+              }
+            ],
+            "inputs": [],
+            "summary": "Login sebelumnya masih aktif: halaman Secure Area terlihat dan menampilkan pesan sambutan serta tombol Logout. Tidak melakukan logout atau login ulang.",
+            "task_id": "650e0d5f-cd11-4682-a65a-6fa3e66808db",
+            "version": 1,
+            "task_revision": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "db6a4a24-4b19-451e-bfe3-c4c1565974e7",
+      "status": "succeeded",
+      "stage": "complete",
+      "instruction": "Buka https://the-internet.herokuapp.com/secure lalu klik Logout untuk mengakhiri sesi akun demo ini. Minta persetujuan sebelum mengklik Logout. Setelah selesai, simpan konfirmasi halaman login terlihat ke hasil.md.",
+      "review_required": false,
+      "revision": 1,
+      "attempt": 4,
+      "result_id": "8c2d2bc3-625b-512d-9e28-99a8538764f9",
+      "result": "Sesi demo telah diakhiri. Halaman Login menampilkan konfirmasi “You logged out of the secure area!”",
+      "created_at": "2026-10-18 17:43:58.479256+00:00",
+      "updated_at": "2026-10-18 17:46:37.113920+00:00",
+      "sessions": [
+        {
+          "id": "0c9e86b8-a9a1-4287-be96-bedef80537c8",
+          "state": "stopped",
+          "policy": {
+            "seconds": 1200,
+            "version": "private-browser-v1",
+            "provider": "daytona",
+            "max_steps": 24,
+            "allowed_urls": [
+              "https://the-internet.herokuapp.com/secure"
+            ],
+            "egress_bytes": 209715200,
+            "idle_minutes": 2,
+            "max_sessions": 3,
+            "price_version": "daytona-linux-2026-10-18",
+            "profile_bytes": 1073741824,
+            "download_bytes": 26214400,
+            "retention_days": 7,
+            "cleanup_seconds": 180,
+            "global_profiles": 20,
+            "microusd_per_hour": 166464,
+            "global_concurrency": 2,
+            "compute_reservation": 63812,
+            "storage_reservation": 145152,
+            "global_daily_microusd": 5000000,
+            "account_daily_microusd": 1000000,
+            "storage_microusd_per_hour": 864
+          },
+          "budget_day": "2026-10-18",
+          "reserved_microusd": 208964,
+          "charged_microusd": 152400,
+          "storage_microusd": 145152,
+          "cost_state": "estimated",
+          "usage": {
+            "egress_bytes": 131498,
+            "gc_checked_at": "2026-10-18T17:52:00.768715+00:00",
+            "profile_bytes": 137628452,
+            "invoice_confirmed": false,
+            "observed_wall_seconds": 156.731,
+            "storage_reservation_policy": "full_retention_window_each_use"
+          },
+          "created_at": "2026-10-18 17:43:59.962952+00:00",
+          "deadline": "2026-10-18 18:03:59.975745+00:00",
+          "stopped_at": "2026-10-18 17:46:36.679600+00:00"
+        }
+      ],
+      "steps": [
+        {
+          "id": "2f8151f9-dbb8-41f4-a58f-df149b59cd4c",
+          "kind": "observe",
+          "state": "complete",
+          "control_version": 11,
+          "screen_hash": "",
+          "created_at": "2026-10-18 17:44:10.382974+00:00",
+          "finished_at": "2026-10-18 17:44:12.484753+00:00",
+          "description": null
+        },
+        {
+          "id": "3776a76b-0e2e-4614-9114-be5fa6924f65",
+          "kind": "observe",
+          "state": "complete",
+          "control_version": 11,
+          "screen_hash": "",
+          "created_at": "2026-10-18 17:44:15.347607+00:00",
+          "finished_at": "2026-10-18 17:44:15.357633+00:00",
+          "description": null
+        },
+        {
+          "id": "469fb226-95cd-4300-88fe-f56407757551",
+          "kind": "navigate",
+          "state": "complete",
+          "control_version": 11,
+          "screen_hash": "c9282451f0a85991193c3182826c52b517a17ac14b41a1133c9259dea9696f3a",
+          "created_at": "2026-10-18 17:44:15.373382+00:00",
+          "finished_at": "2026-10-18 17:45:08.232989+00:00",
+          "description": "Buka halaman secure yang diminta untuk memeriksa status sesi."
+        },
+        {
+          "id": "7c87eade-13ff-4c59-906a-dcddacaeef6d",
+          "kind": "observe",
+          "state": "complete",
+          "control_version": 11,
+          "screen_hash": "",
+          "created_at": "2026-10-18 17:45:02.642846+00:00",
+          "finished_at": "2026-10-18 17:45:04.705956+00:00",
+          "description": null
+        },
+        {
+          "id": "a810fa5e-3864-422b-97a6-fce791fbaf8f",
+          "kind": "observe",
+          "state": "complete",
+          "control_version": 11,
+          "screen_hash": "",
+          "created_at": "2026-10-18 17:45:04.737762+00:00",
+          "finished_at": "2026-10-18 17:45:04.747255+00:00",
+          "description": null
+        },
+        {
+          "id": "a54fb2b7-0eb0-4d50-a80a-b9298fdfac3e",
+          "kind": "observe",
+          "state": "complete",
+          "control_version": 11,
+          "screen_hash": "",
+          "created_at": "2026-10-18 17:45:08.263910+00:00",
+          "finished_at": "2026-10-18 17:45:10.240564+00:00",
+          "description": null
+        },
+        {
+          "id": "14356748-8dcd-4986-aa0d-ff7983bd1a42",
+          "kind": "observe",
+          "state": "complete",
+          "control_version": 11,
+          "screen_hash": "",
+          "created_at": "2026-10-18 17:45:13.491000+00:00",
+          "finished_at": "2026-10-18 17:45:13.498830+00:00",
+          "description": null
+        },
+        {
+          "id": "e09aa24d-84e8-41d8-b510-261787b2882f",
+          "kind": "navigate",
+          "state": "complete",
+          "control_version": 11,
+          "screen_hash": "b13b13b8f6e2669e502265ce8daaefb4c381fdfb1396b69e602f0979f7dcb3d8",
+          "created_at": "2026-10-18 17:45:13.503378+00:00",
+          "finished_at": "2026-10-18 17:45:16.944781+00:00",
+          "description": "Buka URL secure yang benar untuk memeriksa status sesi demo."
+        },
+        {
+          "id": "8988d71a-f4fa-43fc-9f4a-22f51d46959c",
+          "kind": "observe",
+          "state": "complete",
+          "control_version": 11,
+          "screen_hash": "",
+          "created_at": "2026-10-18 17:45:16.981117+00:00",
+          "finished_at": "2026-10-18 17:45:19.137047+00:00",
+          "description": null
+        },
+        {
+          "id": "7ed1953e-e406-4029-b0bd-e2b18ff1b610",
+          "kind": "ask_user",
+          "state": "complete",
+          "control_version": 11,
+          "screen_hash": "fb312220d8bd1cce81a3ba78511c39eba699d0e60fcd9b542de0a2bedd86acdd",
+          "created_at": "2026-10-18 17:45:22.111917+00:00",
+          "finished_at": "2026-10-18 17:45:22.111917+00:00",
+          "description": "Halaman Secure Area menampilkan tombol Logout. Apakah Anda menyetujui saya mengklik Logout untuk mengakhiri sesi demo?"
+        },
+        {
+          "id": "ff73ae6f-201e-48df-869d-63ccc8472cbf",
+          "kind": "control_return",
+          "state": "complete",
+          "control_version": 12,
+          "screen_hash": "fb312220d8bd1cce81a3ba78511c39eba699d0e60fcd9b542de0a2bedd86acdd",
+          "created_at": "2026-10-18 17:45:51.625712+00:00",
+          "finished_at": "2026-10-18 17:45:51.625712+00:00",
+          "description": "Pengguna mengembalikan kendali. Baca perubahan layar dan lanjutkan tujuan Task; login mungkin sudah selesai."
+        },
+        {
+          "id": "190b7393-65e9-4744-9bf0-457fef40bb6d",
+          "kind": "observe",
+          "state": "complete",
+          "control_version": 12,
+          "screen_hash": "",
+          "created_at": "2026-10-18 17:45:52.961262+00:00",
+          "finished_at": "2026-10-18 17:45:55.208545+00:00",
+          "description": null
+        },
+        {
+          "id": "d4f2fde6-4f35-49d6-9d06-90ae02bbe622",
+          "kind": "observe",
+          "state": "complete",
+          "control_version": 12,
+          "screen_hash": "",
+          "created_at": "2026-10-18 17:45:58.414306+00:00",
+          "finished_at": "2026-10-18 17:46:00.335027+00:00",
+          "description": null
+        },
+        {
+          "id": "c666ea8e-805f-4130-a7d8-17d5b3a30067",
+          "kind": "click",
+          "state": "complete",
+          "control_version": 12,
+          "screen_hash": "dfe3e6c2670c67ba13e55ebbdfaa85625d81e5e5f18a212ad7da787d08032cfe",
+          "created_at": "2026-10-18 17:46:00.345096+00:00",
+          "finished_at": "2026-10-18 17:46:25.095681+00:00",
+          "description": "Klik tombol Logout yang terlihat untuk mengakhiri sesi demo."
+        },
+        {
+          "id": "0713efb2-e9dd-4d77-842a-95280a9fa8ac",
+          "kind": "observe",
+          "state": "complete",
+          "control_version": 12,
+          "screen_hash": "",
+          "created_at": "2026-10-18 17:46:17.981591+00:00",
+          "finished_at": "2026-10-18 17:46:20.610935+00:00",
+          "description": null
+        },
+        {
+          "id": "0f922a2c-ac75-4f6b-9c78-9acc796a6bc2",
+          "kind": "observe",
+          "state": "complete",
+          "control_version": 12,
+          "screen_hash": "",
+          "created_at": "2026-10-18 17:46:20.645567+00:00",
+          "finished_at": "2026-10-18 17:46:22.601563+00:00",
+          "description": null
+        },
+        {
+          "id": "5ca63ffc-1757-4de7-80e6-3b9ad7d917d4",
+          "kind": "observe",
+          "state": "complete",
+          "control_version": 12,
+          "screen_hash": "",
+          "created_at": "2026-10-18 17:46:25.119300+00:00",
+          "finished_at": "2026-10-18 17:46:27.430894+00:00",
+          "description": null
+        }
+      ],
+      "model_calls": [
+        {
+          "id": "5c93ef5e-6ab0-4a0a-b5f8-6642c6231650",
+          "model": "gpt-6-luna",
+          "policy_version": "browser-task-work-v1",
+          "reserved_units": 23455,
+          "charged_units": 2149,
+          "state": "confirmed",
+          "usage": {
+            "input_tokens": 2070,
+            "total_tokens": 2149,
+            "output_tokens": 79,
+            "input_token_details": {
+              "cache_read": 0,
+              "cache_creation": 2067
+            },
+            "output_token_details": {
+              "reasoning": 9
+            }
+          },
+          "created_at": "2026-10-18 17:44:12.491582+00:00",
+          "settled_at": "2026-10-18 17:44:15.260156+00:00"
+        },
+        {
+          "id": "f1b26727-f68c-4c44-9646-b99e167fef79",
+          "model": "gpt-6-luna",
+          "policy_version": "browser-task-work-v1",
+          "reserved_units": 23739,
+          "charged_units": 2242,
+          "state": "confirmed",
+          "usage": {
+            "input_tokens": 2158,
+            "total_tokens": 2242,
+            "output_tokens": 84,
+            "input_token_details": {
+              "cache_read": 0,
+              "cache_creation": 2155
+            },
+            "output_token_details": {
+              "reasoning": 17
+            }
+          },
+          "created_at": "2026-10-18 17:45:10.255580+00:00",
+          "settled_at": "2026-10-18 17:45:13.443499+00:00"
+        },
+        {
+          "id": "cfa3a0ea-f86a-4062-bca5-d340503ee955",
+          "model": "gpt-6-luna",
+          "policy_version": "browser-task-work-v1",
+          "reserved_units": 24018,
+          "charged_units": 2336,
+          "state": "confirmed",
+          "usage": {
+            "input_tokens": 2244,
+            "total_tokens": 2336,
+            "output_tokens": 92,
+            "input_token_details": {
+              "cache_read": 0,
+              "cache_creation": 2241
+            },
+            "output_token_details": {
+              "reasoning": 19
+            }
+          },
+          "created_at": "2026-10-18 17:45:19.154147+00:00",
+          "settled_at": "2026-10-18 17:45:22.077609+00:00"
+        },
+        {
+          "id": "b401fb64-c10a-40d9-9459-94cf78cf5838",
+          "model": "gpt-6-luna",
+          "policy_version": "browser-task-work-v1",
+          "reserved_units": 24502,
+          "charged_units": 2502,
+          "state": "confirmed",
+          "usage": {
+            "input_tokens": 2417,
+            "total_tokens": 2502,
+            "output_tokens": 85,
+            "input_token_details": {
+              "cache_read": 0,
+              "cache_creation": 2414
+            },
+            "output_token_details": {
+              "reasoning": 30
+            }
+          },
+          "created_at": "2026-10-18 17:45:55.227738+00:00",
+          "settled_at": "2026-10-18 17:45:58.375083+00:00"
+        },
+        {
+          "id": "25a78992-9c54-4366-a2bf-e98d7bf295f8",
+          "model": "gpt-6-luna",
+          "policy_version": "browser-task-work-v1",
+          "reserved_units": 24737,
+          "charged_units": 2614,
+          "state": "confirmed",
+          "usage": {
+            "input_tokens": 2491,
+            "total_tokens": 2614,
+            "output_tokens": 123,
+            "input_token_details": {
+              "cache_read": 0,
+              "cache_creation": 2488
+            },
+            "output_token_details": {
+              "reasoning": 10
+            }
+          },
+          "created_at": "2026-10-18 17:46:27.446008+00:00",
+          "settled_at": "2026-10-18 17:46:30.825554+00:00"
+        }
+      ],
+      "results": [
+        {
+          "revision": 1,
+          "status": "ready",
+          "manifest": {
+            "files": [
+              {
+                "size": 134,
+                "sha256": "b0f8a267edd1d5210a61d3de9ecbf7878d263faf945b2b0719dee65b4bbeb6f7",
+                "file_id": "b8accfad-93db-506e-b4d8-4264fba74998",
+                "filename": "hasil.md",
+                "revision_id": "b8accfad-93db-506e-b4d8-4264fba74998",
+                "content_type": "text/markdown",
+                "bytes_verified_after_reset": true
+              }
+            ],
+            "inputs": [],
+            "summary": "Sesi demo telah diakhiri. Halaman Login menampilkan konfirmasi “You logged out of the secure area!”",
+            "task_id": "db6a4a24-4b19-451e-bfe3-c4c1565974e7",
+            "version": 1,
+            "task_revision": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "a8c6bd35-a16a-4c58-a46d-73340dc7cc85",
+      "status": "failed",
+      "stage": "failed",
+      "instruction": "NG-036 probe batas waktu: buka https://the-internet.herokuapp.com/login dan minta saya login melalui takeover. Tunggu bantuan saya. Jangan mengirim formulir atau menghasilkan berkas sebelum bantuan selesai.",
+      "review_required": false,
+      "revision": 1,
+      "attempt": 1,
+      "result_id": "746cd5d5-f50d-5244-ab86-1fe19d6a035d",
+      "result": null,
+      "created_at": "2026-10-18 17:46:46.136720+00:00",
+      "updated_at": "2026-10-18 17:49:54.381484+00:00",
+      "sessions": [
+        {
+          "id": "3be63f18-e96b-4c33-b383-2525d65ef713",
+          "state": "stopped",
+          "policy": {
+            "seconds": 120,
+            "version": "private-browser-v1",
+            "provider": "daytona",
+            "max_steps": 24,
+            "allowed_urls": [
+              "https://the-internet.herokuapp.com/login"
+            ],
+            "egress_bytes": 209715200,
+            "idle_minutes": 2,
+            "max_sessions": 3,
+            "price_version": "daytona-linux-2026-10-18",
+            "profile_bytes": 1073741824,
+            "download_bytes": 26214400,
+            "retention_days": 7,
+            "cleanup_seconds": 180,
+            "global_profiles": 20,
+            "microusd_per_hour": 166464,
+            "global_concurrency": 2,
+            "compute_reservation": 13872,
+            "storage_reservation": 145152,
+            "global_daily_microusd": 5000000,
+            "account_daily_microusd": 1000000,
+            "storage_microusd_per_hour": 864
+          },
+          "budget_day": "2026-10-18",
+          "reserved_microusd": 159024,
+          "charged_microusd": 153845,
+          "storage_microusd": 145152,
+          "cost_state": "estimated",
+          "usage": {
+            "gc_checked_at": "2026-10-18T17:52:00.754339+00:00",
+            "invoice_confirmed": false,
+            "observed_wall_seconds": 187.995,
+            "storage_reservation_policy": "full_retention_window_each_use"
+          },
+          "created_at": "2026-10-18 17:46:46.367458+00:00",
+          "deadline": "2026-10-18 17:48:46.374638+00:00",
+          "stopped_at": "2026-10-18 17:49:54.359310+00:00"
+        }
+      ],
+      "steps": [
+        {
+          "id": "358ec8e3-fbb7-4df9-a445-f66aadc8a6d6",
+          "kind": "observe",
+          "state": "complete",
+          "control_version": 14,
+          "screen_hash": "",
+          "created_at": "2026-10-18 17:46:54.535362+00:00",
+          "finished_at": "2026-10-18 17:46:56.732760+00:00",
+          "description": null
+        },
+        {
+          "id": "1c555082-f7f9-45b2-9a22-32836ee352d4",
+          "kind": "observe",
+          "state": "complete",
+          "control_version": 14,
+          "screen_hash": "",
+          "created_at": "2026-10-18 17:46:59.302392+00:00",
+          "finished_at": "2026-10-18 17:46:59.310070+00:00",
+          "description": null
+        },
+        {
+          "id": "94de60d4-ebbe-4087-9836-10ea895bd445",
+          "kind": "navigate",
+          "state": "complete",
+          "control_version": 14,
+          "screen_hash": "6aba17d60a1d72e9f730b0eb4202a028d26576f6ae14adc6ef2024c2e5b4a053",
+          "created_at": "2026-10-18 17:46:59.314287+00:00",
+          "finished_at": "2026-10-18 17:47:02.452759+00:00",
+          "description": "Buka halaman login yang diminta agar Anda dapat mengambil alih untuk login."
+        },
+        {
+          "id": "0b481d56-9190-4d0d-8e87-242f04f9442f",
+          "kind": "observe",
+          "state": "complete",
+          "control_version": 14,
+          "screen_hash": "",
+          "created_at": "2026-10-18 17:47:02.495315+00:00",
+          "finished_at": "2026-10-18 17:47:04.870602+00:00",
+          "description": null
+        },
+        {
+          "id": "b8f36efa-8054-4912-8ded-c18c482d313c",
+          "kind": "ask_user",
+          "state": "complete",
+          "control_version": 14,
+          "screen_hash": "88b6d345591c07b45d8752c66e92dd82ed5b1b883acaa1a10cd377492444085e",
+          "created_at": "2026-10-18 17:47:07.570180+00:00",
+          "finished_at": "2026-10-18 17:47:07.570180+00:00",
+          "description": "Halaman login yang diminta sudah terbuka. Silakan ambil alih browser dan login sendiri; saya akan menunggu bantuan Anda selesai. Saya tidak akan mengirim formulir atau membuat berkas sebelum itu."
+        }
+      ],
+      "model_calls": [
+        {
+          "id": "5b936508-60c4-4357-9428-8250339f230d",
+          "model": "gpt-6-luna",
+          "policy_version": "browser-task-work-v1",
+          "reserved_units": 23447,
+          "charged_units": 2188,
+          "state": "confirmed",
+          "usage": {
+            "input_tokens": 2103,
+            "total_tokens": 2188,
+            "output_tokens": 85,
+            "input_token_details": {
+              "cache_read": 0,
+              "cache_creation": 2100
+            },
+            "output_token_details": {
+              "reasoning": 17
+            }
+          },
+          "created_at": "2026-10-18 17:46:56.744870+00:00",
+          "settled_at": "2026-10-18 17:46:59.248779+00:00"
+        },
+        {
+          "id": "9af5f69b-a7a7-4a05-94d0-1e5997a04953",
+          "model": "gpt-6-luna",
+          "policy_version": "browser-task-work-v1",
+          "reserved_units": 23734,
+          "charged_units": 2296,
+          "state": "confirmed",
+          "usage": {
+            "input_tokens": 2190,
+            "total_tokens": 2296,
+            "output_tokens": 106,
+            "input_token_details": {
+              "cache_read": 0,
+              "cache_creation": 2187
+            },
+            "output_token_details": {
+              "reasoning": 17
+            }
+          },
+          "created_at": "2026-10-18 17:47:04.886368+00:00",
+          "settled_at": "2026-10-18 17:47:07.529458+00:00"
+        }
+      ],
+      "results": []
+    }
+  ],
+  "workspace_after_reset": {
+    "id": "dc12b763-4e52-4603-8fa8-dcf1caff3233",
+    "state": "deleted",
+    "control": "agent",
+    "control_version": 16,
+    "active_task_id": null,
+    "unknown_effect": false,
+    "created_at": "2026-10-18 17:27:22.395413+00:00",
+    "retain_until": "2026-10-25 17:46:46.375882+00:00"
+  },
+  "remaining_ng036_provider_resources": [],
+  "total_resource_estimate_microusd": 760149,
+  "invoice_confirmed": false
+}

@@ -1,0 +1,194 @@
+{
+  "passed": 47,
+  "scenarios": [
+    {
+      "scenario": "reject_unsafe_navigation_file",
+      "passed": true
+    },
+    {
+      "scenario": "reject_unsafe_navigation_https",
+      "passed": true
+    },
+    {
+      "scenario": "reject_unsafe_navigation_http",
+      "passed": true
+    },
+    {
+      "scenario": "egress_proxy_blocks_private_ip",
+      "passed": true
+    },
+    {
+      "scenario": "login_wait_releases_execution",
+      "passed": true
+    },
+    {
+      "scenario": "second_task_queues_without_second_browser",
+      "passed": true
+    },
+    {
+      "scenario": "return_observes_before_agent_enabled",
+      "passed": true
+    },
+    {
+      "scenario": "first_task_publishes_and_stops_compute",
+      "passed": true
+    },
+    {
+      "scenario": "profile_survives_task_end",
+      "passed": true
+    },
+    {
+      "scenario": "waiter_wakes_after_confirmed_stop",
+      "passed": true
+    },
+    {
+      "scenario": "next_task_reuses_workspace_and_login",
+      "passed": true
+    },
+    {
+      "scenario": "candidate_survives_compute_stop",
+      "passed": true
+    },
+    {
+      "scenario": "profile_reset_preserves_results",
+      "passed": true
+    },
+    {
+      "scenario": "effect_not_dispatched_before_exact_approval",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_owner_cannot_takeover",
+      "passed": true
+    },
+    {
+      "scenario": "stale_control_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "two_tabs_do_not_steal_live_viewer",
+      "passed": true
+    },
+    {
+      "scenario": "expired_active_grant_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "duplicate_decision_dispatches_once",
+      "passed": true
+    },
+    {
+      "scenario": "final_review_separate_from_browser_action",
+      "passed": true
+    },
+    {
+      "scenario": "final_review_publishes_without_browser_reexecution",
+      "passed": true
+    },
+    {
+      "scenario": "late_model_cannot_act_after_takeover",
+      "passed": true
+    },
+    {
+      "scenario": "private_handoff_keeps_compute_but_no_worker",
+      "passed": true
+    },
+    {
+      "scenario": "stop_revokes_control_retains_profile",
+      "passed": true
+    },
+    {
+      "scenario": "lost_ack_enters_unknown_without_replay",
+      "passed": true
+    },
+    {
+      "scenario": "unknown_task_cannot_retry",
+      "passed": true
+    },
+    {
+      "scenario": "human_ack_never_replays_uncertain_effect",
+      "passed": true
+    },
+    {
+      "scenario": "acknowledged_task_stays_nonreplayable",
+      "passed": true
+    },
+    {
+      "scenario": "changed_screen_invalidates_approved_action",
+      "passed": true
+    },
+    {
+      "scenario": "browser_and_python_share_account_concurrency",
+      "passed": true
+    },
+    {
+      "scenario": "unconfirmed_stop_retains_reservation",
+      "passed": true
+    },
+    {
+      "scenario": "cleanup_failure_blocks_next_task",
+      "passed": true
+    },
+    {
+      "scenario": "private_input_requires_human_without_proposal",
+      "passed": true
+    },
+    {
+      "scenario": "retention_removes_stopped_profile",
+      "passed": true
+    },
+    {
+      "scenario": "agent_viewer_blocks_key_pointer_clipboard",
+      "passed": true
+    },
+    {
+      "scenario": "human_viewer_allows_private_input",
+      "passed": true
+    },
+    {
+      "scenario": "unknown_rfb_extension_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "active_browser_cannot_be_revised_into_publication",
+      "passed": true
+    },
+    {
+      "scenario": "computer_api_requires_auth",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_task_state_hidden",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_profile_reset_denied",
+      "passed": true
+    },
+    {
+      "scenario": "profile_reset_requires_explicit_confirmation",
+      "passed": true
+    },
+    {
+      "scenario": "owned_profile_state_available",
+      "passed": true
+    },
+    {
+      "scenario": "cleanup_failure_keeps_candidate_unpublished",
+      "passed": true
+    },
+    {
+      "scenario": "prepared_resume_still_requires_confirmed_stop",
+      "passed": true
+    },
+    {
+      "scenario": "reconciled_candidate_publishes_without_new_browser",
+      "passed": true
+    },
+    {
+      "scenario": "all_controlled_compute_stopped",
+      "passed": true
+    }
+  ],
+  "temporary_resources_removed": true
+}

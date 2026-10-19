@@ -25,6 +25,10 @@ Indeks bukti: [08 · Bukti Riset & REA](../research/muse-ai-v1/README.md).
 
 ## Status kerja terbaru
 
+Readback status 2026-10-19T06:29:38.106391+00:00: [NG-038 · Goals umum dengan evidence progress](tasks/38-goals-umum-dengan-evidence-progress.md) berstatus **Done**. [Penerimaan Goal](../engineering/goals-38-acceptance.md) mencatat 74 kontrak, integrasi Task/Jadwal, bukti per kriteria, model nyata serta desktop/mobile. NG-019 adalah urutan berikutnya; status tiket lain dipertahankan.
+
+Readback status 2026-10-19T05:53:03.400Z: [NG-038 · Goals umum dengan evidence progress](tasks/38-goals-umum-dengan-evidence-progress.md) berstatus **In Progress**. Implementasi dimulai sesuai scope yang disetujui; acceptance belum dinyatakan selesai.
+
 Readback status 2026-10-19T05:41:03.122Z: [NG-017](tasks/17-memory-aktif-capture-evidence-dan-recall.md) dan [NG-018](tasks/18-pengaturan-untuk-inspeksi-dan-koreksi-memory.md) berstatus **Done**. [Penerimaan memory](../engineering/memory-17-acceptance.md) dan [cara kerja memory](../engineering/memory-runtime.md) mencatat Mem0 OSS, evidence, recall dan kontrol pengguna. NG-038 adalah urutan berikutnya; status tiket lain dipertahankan.
 
 Readback status 2026-10-19T03:42:13.950127+00:00: [NG-016 · Perubahan soul atas permintaan dan HITL](tasks/16-perubahan-soul-atas-permintaan-dan-hitl.md) berstatus **Done**. [Penerimaan persona](../engineering/persona-16-acceptance.md) mencatat editor, review, history/restore, snapshot dan desktop/mobile. NG-017 adalah urutan berikutnya.

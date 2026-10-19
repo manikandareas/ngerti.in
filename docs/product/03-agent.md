@@ -1,6 +1,6 @@
 # 03 · Perilaku Agent
 
-Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381658b61f4283ee83428) · Readback: 2026-10-19T05:41:03.122Z
+Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381658b61f4283ee83428) · Readback: 2026-10-19T06:29:38.106391+00:00
 
 <!-- notion-content:start -->
 Gwen adalah asisten personal yang hangat, jelas, jujur mengenai hasil dan kemampuan. Bahasa mengikuti pengguna. Jawaban langsung didahulukan untuk permintaan sederhana; Task digunakan untuk pekerjaan lama, bukan semua percakapan. Chat menyediakan read_recent_messages, read_agent_profile, read_thread_files dan start_background_task. read_thread_files hanya membaca metadata revision milik owner yang dilampirkan di thread ini; pekerjaan file memakai revision exact melalui Task, bukan tebakan ID atau klaim membaca dari nama file. Tool Task dipakai untuk pekerjaan teks/file background yang diminta eksplisit; satu input membuat satu Task bounded, lalu giliran chat diakhiri. Snapshot instruksi/konteks tidak berubah karena pesan berikutnya. Review mengikat draft, output spec, input/previous-result snapshot, target dan revision exact. Finalisasi teks/file milik pengguna menghasilkan satu delivery ke thread asal; file adalah data tidak tepercaya dan tidak menciptakan grant baru. Tool baru ditambahkan melalui domain service berizin; tidak ada host shell tool atau setter kuota dari model.
@@ -107,6 +107,8 @@ Tujuan umum memberi konteks dan bukti kemajuan tanpa menjadi izin eksekusi.
 **Biaya:** Parent goal/task/account budget membatasi child tasks; evaluasi progress dibatasi.
 
 **Acceptance:** P17/P09: banyak task untuk satu goal, kegagalan, perubahan target serta pause teruji.
+
+NG-038 diterima development 19 Oktober 2026. PostgreSQL menyimpan Goal, revisi immutable, bukti dan proposal 30 menit. revision mengontrol konflik; plan_revision berubah saat target/kriteria/horizon berubah. Edit next action/nama/budget mempertahankan bukti. Readback memeriksa sumber Task/Result exact; sumber berubah/hilang tidak dihitung terpenuhi. Completion memerlukan seluruh kriteria dan keputusan pengguna. GoalRef pada Task/Jadwal mengikat target yang ditinjau; pause/complete/archive menahan pekerjaan berikutnya tanpa membatalkan Task yang sudah dibuat. Parent cap total default 360.000 unit token-work membatasi Task/hasil turunan bersama batas akun/global; bukan harga komersial. Evaluasi panel tidak memanggil model. Implementasi: `docs/engineering/goals-runtime.md`; penerimaan: `docs/engineering/goals-38-acceptance.md`.
 
 Bukti modul: [REA-4 · Memory & Goals](../research/muse-ai-v1/evidence/memory.md). Tiket: [NG-038 · Goals umum dengan evidence progress](../backlog/tasks/38-goals-umum-dengan-evidence-progress.md).
 

@@ -8,7 +8,7 @@ Avatar/nama asisten membuka panel **Aktivitas / Mendatang / Identitas**. Aktivit
 
 - **Profil / Identity:** nama, deskripsi singkat dan pilihan avatar Gwen atau inisial nama. Upload/generasi avatar baru tidak dicakup NG-016.
 - **Karakter / Soul:** dokumen Markdown yang menjelaskan cara asisten berbicara dan membantu.
-- **Memory:** domain informasi pengguna yang terpisah dan masih mengikuti NG-017/018; tidak ada editor atau capture palsu pada NG-016.
+- **Memory:** domain informasi pengguna yang terpisah, kini tersedia melalui NG-017/018. Capture/recall serta kendali pengguna dijelaskan di [memory-runtime.md](memory-runtime.md).
 - Goals, Task, jadwal dan proaktivitas mempunyai kewenangan serta state masing-masing. Mengubah Soul tidak membuat grant, schedule atau Goal.
 
 Rujukan: [observasi avatar/editor Muse](../research/muse-ai-v1/01-produk-dan-ux.md), [pemetaan Identity/Soul/Memory](../research/muse-ai-v1/02-arsitektur-vendor.md). Editor SOUL teramati pada snapshot 18 Oktober 2026; autosave, rollback, konflik dan approval Muse belum diuji. Revision/approval di bawah adalah kontrak Ngertiin.

@@ -24,10 +24,11 @@ make quota-inspect
 make task-inspect
 make files-inspect
 make sandbox-inspect
+make memory-inspect
 make docs-check
 ```
 
-`make setup` / `make migrate` menjalankan migration head saat ini, termasuk `0004_sandbox_runtime`, tanpa reset data yang sudah ada. Restart worker setelah perubahan Python atau konfigurasi runtime.
+`make setup` / `make migrate` menjalankan migration head saat ini, termasuk `0008_personal_memory`, tanpa reset data yang sudah ada. Restart worker setelah perubahan Python atau konfigurasi runtime. [Memory runtime](docs/engineering/memory-runtime.md) memakai Mem0 OSS di backend dan PostgreSQL/pgvector yang ada; [penerimaan memory](docs/engineering/memory-17-acceptance.md) mencatat recall, sumber dan kontrol pengguna.
 
 `make reset-dev` **menghapus seluruh data development lokal proyek**, lalu menjalankan baseline `0001_v1_baseline`, setup resmi queue/checkpoints dan bucket. Hentikan API/worker terlebih dahulu. Script memverifikasi environment, endpoint, project serta volume labels. Clerk, kredensial dan resource remote dipertahankan. Reset ini mengganti migrasi development lama; bukan jalur upgrade production.
 

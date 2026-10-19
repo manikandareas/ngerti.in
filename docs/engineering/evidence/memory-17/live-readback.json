@@ -1,0 +1,144 @@
+{
+  "environment": "development localhost:3000 / Brave",
+  "date": "2026-10-19",
+  "source_thread": "fd4970f6-c915-5970-acc4-e4b5acd7f086",
+  "recall_thread": "9bf882fe-8706-5bc3-bb99-0861f4fb29e3",
+  "runs": [
+    {
+      "id": "57fa2844-193a-402a-9b21-d3ddd485b233",
+      "thread_id": "fd4970f6-c915-5970-acc4-e4b5acd7f086",
+      "status": "complete",
+      "input": "Ingat bahwa nama proyek latihan saya adalah Lentera Uji17 dan saya lebih suka contoh dalam bahasa Indonesia.",
+      "memory_refs": [],
+      "memory_generation": 1,
+      "parts": [
+        {
+          "id": "call_HZ0E0dC6RGkzI8cj1aeyciTj",
+          "name": "remember_current_message",
+          "type": "tool",
+          "input": {},
+          "result": "Selesai.",
+          "status": "complete"
+        },
+        {
+          "id": "resp_0f8420d2ee9d4e7e006ad5a7ce1df887d08e3a2d5dacf1b738:text:0",
+          "text": "Aku sudah mengantrekan untuk mengingat bahwa nama proyek latihanmu **Lentera Uji17** dan kamu lebih suka contoh dalam bahasa Indonesia. Capture masih pending—kamu bisa memeriksa hasilnya di **Ingatan tentangmu**.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "id": "412a9745-0253-4352-a1fd-b1dedbf91d9b",
+      "thread_id": "9bf882fe-8706-5bc3-bb99-0861f4fb29e3",
+      "status": "complete",
+      "input": "Apa nama proyek latihan saya dan bahasa contoh yang saya sukai?",
+      "memory_refs": [
+        "e9a38f72-8ed3-50f4-a304-2ed9e45e0d1d",
+        "2f739c16-c354-59e9-8bdd-4c8a2487075b"
+      ],
+      "memory_generation": 1,
+      "parts": [
+        {
+          "id": "resp_07509053d1527c8c006ad5a7eb630087d08b33b8850a07ca8a:text:0",
+          "text": "Nama proyek latihanmu **Lentera Uji17**, dan kamu lebih suka contoh dalam **bahasa Indonesia**.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "id": "632d3865-f9da-4cce-b61d-689ad4b65ab3",
+      "thread_id": "9bf882fe-8706-5bc3-bb99-0861f4fb29e3",
+      "status": "complete",
+      "input": "Apa nama proyek latihan saya saat ini?",
+      "memory_refs": [
+        "89c21fbe-7d52-5bc0-b6ca-b44bf6d153df",
+        "2f739c16-c354-59e9-8bdd-4c8a2487075b"
+      ],
+      "memory_generation": 2,
+      "parts": [
+        {
+          "id": "resp_0a8fba72c93a7713006ad5aa0305b887d09ac19bd1c9a2064f:text:0",
+          "text": "Nama proyek latihanmu adalah **Lentera Revisi17**.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "id": "4b4b4fec-756d-4fe5-9dda-e30535f448b6",
+      "thread_id": "9bf882fe-8706-5bc3-bb99-0861f4fb29e3",
+      "status": "complete",
+      "input": "Apa nama proyek latihan saya dan bahasa contoh yang saya sukai?",
+      "memory_refs": [
+        "2f739c16-c354-59e9-8bdd-4c8a2487075b"
+      ],
+      "memory_generation": 5,
+      "parts": [
+        {
+          "id": "resp_0c7d51341a9a8320006ad5aad2b24887d0a6173c30af4ec8ad:text:0",
+          "text": "Saya belum melihat nama proyek latihanmu di konteks yang tersedia. Bahasa contoh yang kamu sukai adalah **bahasa Indonesia**.",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "entries_before_fixture_cleanup": [
+    {
+      "id": "860fcb63-98da-5b0a-a7f2-cdd5266d313b",
+      "kind": "preference",
+      "status": "active",
+      "revision": 1,
+      "statement": "User lebih suka contoh dalam bahasa Indonesia."
+    },
+    {
+      "id": "7a1426cc-6b87-53cd-9867-db1c197c12fb",
+      "kind": "fact",
+      "status": "forgotten",
+      "revision": 3,
+      "statement": null
+    }
+  ],
+  "provider_usage": [
+    {
+      "operation": "admission",
+      "state": "confirmed",
+      "requests": 1,
+      "charged_units": 604
+    },
+    {
+      "operation": "capture",
+      "state": "confirmed",
+      "requests": 3,
+      "charged_units": 7982
+    },
+    {
+      "operation": "index",
+      "state": "confirmed",
+      "requests": 3,
+      "charged_units": 43
+    },
+    {
+      "operation": "recall",
+      "state": "confirmed",
+      "requests": 3,
+      "charged_units": 50
+    }
+  ],
+  "index_cleanup": {
+    "pending": 0
+  },
+  "observations": [
+    "empty panel",
+    "capture pending response was honest",
+    "two memories with exact source quotes",
+    "cross-thread recall Lentera Uji17 and Indonesian",
+    "UI correction to Lentera Revisi17 and revision history",
+    "same-thread recall revised name",
+    "forget dialog scope inspected and canceled; fixture forgotten through domain service",
+    "after forget project absent; Indonesian preference remained",
+    "same-thread model abstains project name and retains Indonesian preference",
+    "capture off persists after reload; restored on",
+    "390x844 and 320x640 mobile layout",
+    "API interruption shows error and retry control; list recovers after API restart",
+    "zero allowance controls verified separately in disposable API inspector"
+  ]
+}

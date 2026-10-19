@@ -1,0 +1,274 @@
+{
+  "passed": 67,
+  "live": true,
+  "scenarios": [
+    {
+      "scenario": "typed_fact_with_owner",
+      "passed": true
+    },
+    {
+      "scenario": "exact_source_revision_hash_anchor",
+      "passed": true
+    },
+    {
+      "scenario": "active_evidence_is_usable",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_listing_empty",
+      "passed": true
+    },
+    {
+      "scenario": "capture_idempotency",
+      "passed": true
+    },
+    {
+      "scenario": "lexical_fallback_when_embedding_fails",
+      "passed": true
+    },
+    {
+      "scenario": "context_budget_includes_envelope",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_history_404",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_edit_404",
+      "passed": true
+    },
+    {
+      "scenario": "explicit_edit_increments_revision",
+      "passed": true
+    },
+    {
+      "scenario": "edit_retry_same_receipt",
+      "passed": true
+    },
+    {
+      "scenario": "stale_edit_409",
+      "passed": true
+    },
+    {
+      "scenario": "reused_key_new_content_409",
+      "passed": true
+    },
+    {
+      "scenario": "world_change_preserves_historical_truth",
+      "passed": true
+    },
+    {
+      "scenario": "previous_revision_no_longer_valid_current_context",
+      "passed": true
+    },
+    {
+      "scenario": "correction_not_historical_truth",
+      "passed": true
+    },
+    {
+      "scenario": "uncertain_candidate_not_active",
+      "passed": true
+    },
+    {
+      "scenario": "candidate_not_usable",
+      "passed": true
+    },
+    {
+      "scenario": "secret_rejected_before_inference",
+      "passed": true
+    },
+    {
+      "scenario": "forget_request_not_captured",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_forget_404",
+      "passed": true
+    },
+    {
+      "scenario": "forget_revokes_immediately",
+      "passed": true
+    },
+    {
+      "scenario": "forget_retry_same_receipt",
+      "passed": true
+    },
+    {
+      "scenario": "history_plaintext_erased",
+      "passed": true
+    },
+    {
+      "scenario": "evidence_anchor_erased",
+      "passed": true
+    },
+    {
+      "scenario": "source_exclusion_durable",
+      "passed": true
+    },
+    {
+      "scenario": "capture_payload_erased",
+      "passed": true
+    },
+    {
+      "scenario": "suppression_durable",
+      "passed": true
+    },
+    {
+      "scenario": "forgotten_source_replay_skipped",
+      "passed": true
+    },
+    {
+      "scenario": "same_topic_new_capture_not_resurrected",
+      "passed": true
+    },
+    {
+      "scenario": "forgotten_source_not_rehydrated",
+      "passed": true
+    },
+    {
+      "scenario": "capture_toggle_idempotent",
+      "passed": true
+    },
+    {
+      "scenario": "capture_off_blocks_new_job",
+      "passed": true
+    },
+    {
+      "scenario": "stale_toggle_409",
+      "passed": true
+    },
+    {
+      "scenario": "rrf_preserves_independent_lexical_candidates",
+      "passed": true
+    },
+    {
+      "scenario": "unicode_budget_never_splits_invalid_utf8",
+      "passed": true
+    },
+    {
+      "scenario": "orphan_vector_never_recalled",
+      "passed": true
+    },
+    {
+      "scenario": "concurrent_enqueue_one_request",
+      "passed": true
+    },
+    {
+      "scenario": "concurrent_capture_one_extraction",
+      "passed": true
+    },
+    {
+      "scenario": "source_hash_changed_before_inference_skipped",
+      "passed": true
+    },
+    {
+      "scenario": "forget_one_fact_preserves_other_fact_same_source",
+      "passed": true
+    },
+    {
+      "scenario": "shared_source_not_reingested",
+      "passed": true
+    },
+    {
+      "scenario": "rejected_persona_request_excluded",
+      "passed": true
+    },
+    {
+      "scenario": "control_edit_without_model_provider",
+      "passed": true
+    },
+    {
+      "scenario": "correction_revokes_running_chat_lease",
+      "passed": true
+    },
+    {
+      "scenario": "revoked_checkpoints_purged",
+      "passed": true
+    },
+    {
+      "scenario": "revoked_checkpoint_blobs_purged",
+      "passed": true
+    },
+    {
+      "scenario": "revoked_checkpoint_writes_purged",
+      "passed": true
+    },
+    {
+      "scenario": "forget_revokes_running_task_and_draft",
+      "passed": true
+    },
+    {
+      "scenario": "forget_purges_pending_task_approval_and_draft_history",
+      "passed": true
+    },
+    {
+      "scenario": "revoked_task_retry_uses_new_revision",
+      "passed": true
+    },
+    {
+      "scenario": "capture_off_revokes_inflight_output",
+      "passed": true
+    },
+    {
+      "scenario": "source_delete_preserves_independent_support",
+      "passed": true
+    },
+    {
+      "scenario": "source_delete_without_support_revokes_fact",
+      "passed": true
+    },
+    {
+      "scenario": "zero_allowance_fixture",
+      "passed": true
+    },
+    {
+      "scenario": "zero_allowance_memory_inspect_api",
+      "passed": true
+    },
+    {
+      "scenario": "zero_allowance_memory_edit_api",
+      "passed": true
+    },
+    {
+      "scenario": "zero_allowance_memory_settings_api",
+      "passed": true
+    },
+    {
+      "scenario": "zero_allowance_memory_forget_api",
+      "passed": true
+    },
+    {
+      "scenario": "fresh_explicit_remember_again_reopens_suppression",
+      "passed": true
+    },
+    {
+      "scenario": "unknown_provider_outcome_retains_reservation",
+      "passed": true
+    },
+    {
+      "scenario": "exhausted_memory_budget_blocks_before_network",
+      "passed": true
+    },
+    {
+      "scenario": "real_mem0_capture_projection_semantic_recall",
+      "passed": true
+    },
+    {
+      "scenario": "provider_usage_confirmed",
+      "passed": true
+    },
+    {
+      "scenario": "english_exact_project_code_recall",
+      "passed": true
+    },
+    {
+      "scenario": "english_negation_preserved",
+      "passed": true
+    },
+    {
+      "scenario": "fiction_not_promoted_to_personal_fact",
+      "passed": true
+    }
+  ]
+}

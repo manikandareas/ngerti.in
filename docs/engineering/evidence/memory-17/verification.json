@@ -1,0 +1,29 @@
+{
+  "environment": "development",
+  "date": "2026-10-19",
+  "memory_live_scenarios": 67,
+  "regressions": {
+    "persona": 36,
+    "task": 55,
+    "files": 47,
+    "schedules": 82,
+    "quota": 46
+  },
+  "static_checks": "make check passed: Biome, TypeScript, Ruff lint/format, mypy 131 files",
+  "build": "make build passed",
+  "migration": "0008_personal_memory applied without reset",
+  "browser": [
+    "cross-thread recall",
+    "correction revision/history and revised answer",
+    "forget abstention with independent shared-source fact intact",
+    "capture toggle persists after reload",
+    "mobile 390x844 and 320x640",
+    "API interruption error/recovery"
+  ],
+  "limits": [
+    "development acceptance only",
+    "destructive forget final click tested through domain service, not UI",
+    "zero chat allowance tested through disposable API owner",
+    "no population latency/quality benchmark"
+  ]
+}

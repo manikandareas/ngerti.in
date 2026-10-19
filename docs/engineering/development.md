@@ -1,6 +1,6 @@
 # 06 · Development, Operasi & Acceptance
 
-Sumber: [Notion](https://app.notion.com/p/3fdabdd6187381d39f94f7161d4ef570) · Readback: 2026-10-19T02:21:49.327704+00:00
+Sumber: [Notion](https://app.notion.com/p/3fdabdd6187381d39f94f7161d4ef570) · Readback: 2026-10-19T03:42:13.950127+00:00
 
 <!-- notion-content:start -->
 ## Setup development bersih
@@ -140,4 +140,7 @@ SDK0.225.0/provider v0.225.1, targeteu, snapshot daytona-medium. Archive nonakti
 Diterima development pada 2026-10-19 WITA. Jalankan `make migrate` untuk `0006_user_schedules` tanpa reset, lalu restart worker agar registrasi `schedule.dispatch` aktif; API autoreload tidak mereload worker. `make schedule-inspect` lulus 52 kontrak PostgreSQL/checkpoints sementara; regresi Task55/quota46/File47, make check/build dan docs-check lulus. Model nyata `gpt-6-luna`, Procrastinate3.10.0/LangGraph1.2.15/LangChain1.4.6/OpenAI SDK3.31.0.
 Jadwal 10.14 WITA dieksekusi saat halaman aplikasi about:blank: satu occurrence/Task/delivery, 2.806 token confirmed, hasil terlihat setelah kembali. Chat membuat/mengubah/jeda jadwal mingguan dengan revision exact; desktop1280x900/mobile emulasi390x844 dan320x640 tanpa overflow. Jadwal audit berulang paused; tidak ada future audit run. Laporan `docs/engineering/schedule-37-acceptance.md` dan evidence `docs/engineering/evidence/schedule-37/`.
 DST, misfire, overlap, races, owner, budget dan crash boundary memakai probes terkontrol. P23 memverifikasi independensi delivery terjadwal; proaktivitas/quiet-hours production belum tersedia. Scheduled runtime live memakai teks; tidak mengklaim semua provider/browser/Python schedule diuji ulang. Polling menit bukan SLA presisi detik; invoice, production deployment dan notifikasi eksternal tidak dicakup.
+
+## Penerimaan persona NG-016
+NG-016 diterima development 19 Oktober 2026. Jalankan make migrate untuk incremental 0007_persona_revisions lalu restart worker. Avatar panel, Identity/Soul, editor dan preview chat, exact decisions, history/restore serta snapshot per chat/Task tersedia. make persona-inspect lulus 36 skenario; Task 55 dan scheduler 82 lulus regresi. Model nyata lintas thread, rejection/approval, konflik dua tab, reload draft, restore dan mobile 390/320px diperiksa. File TXT dengan instruksi palsu tidak mengubah persona/jadwal. make check/build dan git diff --check lulus. Bukti repo: docs/engineering/[persona-16-acceptance.md](http://persona-16-acceptance.md) serta docs/engineering/evidence/persona-16/. Avatar memakai gambar yang ada atau inisial; capture/recall dan full P16 memory extraction mengikuti NG-017/018. Tidak mengklaim mobile fisik atau production deployment.
 <!-- notion-content:end -->

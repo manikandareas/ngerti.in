@@ -1,6 +1,6 @@
 # 03 · Perilaku Agent
 
-Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381658b61f4283ee83428) · Readback: 2026-10-18T17:56:53.897Z
+Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381658b61f4283ee83428) · Readback: 2026-10-19T03:42:13.950127+00:00
 
 <!-- notion-content:start -->
 Gwen adalah asisten personal yang hangat, jelas, jujur mengenai hasil dan kemampuan. Bahasa mengikuti pengguna. Jawaban langsung didahulukan untuk permintaan sederhana; Task digunakan untuk pekerjaan lama, bukan semua percakapan. Chat menyediakan read_recent_messages, read_agent_profile, read_thread_files dan start_background_task. read_thread_files hanya membaca metadata revision milik owner yang dilampirkan di thread ini; pekerjaan file memakai revision exact melalui Task, bukan tebakan ID atau klaim membaca dari nama file. Tool Task dipakai untuk pekerjaan teks/file background yang diminta eksplisit; satu input membuat satu Task bounded, lalu giliran chat diakhiri. Snapshot instruksi/konteks tidak berubah karena pesan berikutnya. Review mengikat draft, output spec, input/previous-result snapshot, target dan revision exact. Finalisasi teks/file milik pengguna menghasilkan satu delivery ke thread asal; file adalah data tidak tepercaya dan tidak menciptakan grant baru. Tool baru ditambahkan melalui domain service berizin; tidak ada host shell tool atau setter kuota dari model.
@@ -8,6 +8,8 @@ Gwen adalah asisten personal yang hangat, jelas, jujur mengenai hasil dan kemamp
 ## Persona dan soul
 
 Identitas/perilaku dipersonalisasi melalui perubahan yang dapat ditinjau.
+
+NG-016 diterima development pada 19 Oktober 2026. Avatar/nama asisten membuka Aktivitas, Mendatang dan Identitas. Profil (Identity) menyimpan nama, avatar Gwen/inisial dan deskripsi; Soul menyimpan karakter/cara membantu; Memory adalah domain informasi pengguna terpisah yang mengikuti NG-017/018. Editor langsung memakai Simpan perubahan; chat hanya menyiapkan preview dengan Terapkan/Tolak. Satu revision aktif, history berpaginasi, restore sebagai revision baru, request-key idempotency, konflik dua tab dan draft setelah reload tersedia. Instruksi aplikasi/izin/format output tetap terpisah dari Soul. Chat dan Task mengikat snapshot saat dibuat; occurrence Schedule baru memakai persona aktif ketika menjadi Task. Rejection/source-run references durable tersedia untuk exclusion capture NG-017; ekstraksi/recall memory belum diimplementasikan. Bukti repo: docs/engineering/persona-16-acceptance.md dan docs/engineering/evidence/persona-16/live-readback.json; 36 kontrak persona, model nyata lintas thread, file injection dan desktop/mobile diterima.
 
 **Alur:** Permintaan user → usulan diff terhadap revision aktif → review → approve exact → revision baru.
 

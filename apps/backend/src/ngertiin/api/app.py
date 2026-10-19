@@ -21,6 +21,7 @@ from ngertiin.computer.api import router as computer_router
 from ngertiin.config import get_settings
 from ngertiin.files.api import router as file_router
 from ngertiin.files.limits import UploadBodyLimitMiddleware
+from ngertiin.goals.api import router as goal_router
 from ngertiin.health import system_status
 from ngertiin.memory.api import router as memory_router
 from ngertiin.models import Account
@@ -51,6 +52,7 @@ app.include_router(memory_router)
 app.include_router(quota_router)
 app.include_router(task_router)
 app.include_router(schedule_router)
+app.include_router(goal_router)
 app.include_router(file_router)
 app.include_router(computer_router)
 for quota_error_type in ERROR_TYPES:

@@ -47,6 +47,17 @@ async def admit(conn, schedule: dict, intended_at: datetime, *, manual_id=None):
     )
     if not active:
         spec = ScheduleSpec.model_validate(revision["spec"])
+        from ngertiin.goals.work import schedule_block
+
+        blocked = await schedule_block(
+            conn, schedule["owner_id"], spec.goal.model_dump(mode="json") if spec.goal else None
+        )
+        if blocked:
+            await conn.execute(
+                "UPDATE schedule_occurrences SET status='skipped',reason=%s WHERE id=%s",
+                (blocked, oid),
+            )
+            return await one(conn, "SELECT * FROM schedule_occurrences WHERE id=%s", (oid,))
         try:
             # Savepoint retains the occurrence/outcome on rejected admission but
             # rolls back every partially-created Task/reservation/job.
@@ -60,6 +71,7 @@ async def admit(conn, schedule: dict, intended_at: datetime, *, manual_id=None):
                     inputs=[i.model_dump(mode="json") for i in spec.inputs],
                     outputs=[o.model_dump() for o in spec.outputs],
                     runtime_kind=spec.runtime_kind,
+                    goal=spec.goal,
                     connection=conn,
                     scheduled={
                         "occurrence_id": oid,

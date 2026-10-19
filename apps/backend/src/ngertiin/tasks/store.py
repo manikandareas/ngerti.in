@@ -33,6 +33,8 @@ PUBLIC_COLUMNS = (
     "result_id",
     "runtime_kind",
     "schedule_occurrence_id",
+    "goal_id",
+    "goal_revision",
 )
 MUTABLE = {
     "status",

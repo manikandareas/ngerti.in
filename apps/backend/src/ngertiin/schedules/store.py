@@ -37,8 +37,11 @@ async def listing(owner):
     async with transaction() as conn:
         schedules = await (
             await conn.execute(
-                "SELECT s.*,t.title AS thread_title FROM user_schedules s "
-                "JOIN chat_threads t ON t.id=s.thread_id WHERE s.owner_id=%s "
+                "SELECT s.*,t.title AS thread_title,g.state AS goal_state,"
+                "g.plan_revision AS goal_plan_revision,g.spec->>'title' AS goal_title "
+                "FROM user_schedules s JOIN chat_threads t ON t.id=s.thread_id "
+                "LEFT JOIN user_goals g ON g.id::text=s.spec->'goal'->>'id' "
+                "AND g.owner_id=s.owner_id WHERE s.owner_id=%s "
                 "ORDER BY (s.state<>'deleted') DESC,s.next_due NULLS LAST,"
                 "s.created_at DESC LIMIT 150",
                 (owner,),

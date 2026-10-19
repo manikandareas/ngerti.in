@@ -41,7 +41,9 @@ def tools_for(run: dict):
         dihitung dari tanggal/pukul mulai termasuk lintas malam, bukan sejak Task selesai.
         weekdays [0=Senin..6=Minggu] untuk weekly, runtime_kind text/code/browser,
         review_required false, per_run_cap 60000, inputs [{revision_id,start,end}],
-        outputs [{filename,format}]. Semua input/budget ditinjau pengguna.
+        outputs [{filename,format}], goal opsional {id,revision:plan_revision} dari read_user_goals.
+        Hubungkan tujuan hanya atas permintaan pengguna; menyimpan tujuan bukan izin jadwal.
+        Semua input/budget ditinjau pengguna.
         Untuk edit, baca jadwal dan salin field yang tidak berubah. operation lain
         cukup ID/revision exact. WIB=Asia/Jakarta, WITA=Asia/Makassar, WIT=Asia/Jayapura.
         Baca waktu UTC server melalui read_user_schedules untuk tanggal relatif.

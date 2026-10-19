@@ -8,6 +8,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from ngertiin.accounts.auth import current_account
 from ngertiin.files.contracts import FileInput, OutputSpec
+from ngertiin.goals.contracts import GoalRef
 from ngertiin.models import Account
 from ngertiin.tasks import actions, budget, commands, creation, store
 
@@ -29,6 +30,7 @@ class CreateInput(CommandInput):
     result_id: UUID | None = None
     expected_result_revision: int | None = Field(default=None, ge=1)
     runtime_kind: Literal["text", "code", "browser"] = "text"
+    goal: GoalRef | None = None
 
 
 class DecisionInput(CommandInput):
@@ -62,6 +64,7 @@ async def create_task(body: CreateInput, account: AccountDep):
         result_id=body.result_id,
         expected_result_revision=body.expected_result_revision,
         runtime_kind=body.runtime_kind,
+        goal=body.goal,
     )
 
 

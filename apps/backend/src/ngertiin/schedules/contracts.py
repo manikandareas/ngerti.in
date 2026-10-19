@@ -8,6 +8,7 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from ngertiin.files.contracts import FileInput, OutputSpec
+from ngertiin.goals.contracts import GoalRef
 
 
 class ScheduleSpec(BaseModel):
@@ -25,6 +26,7 @@ class ScheduleSpec(BaseModel):
     per_run_cap: int = Field(default=60000, ge=30000, le=120000)
     inputs: list[FileInput] = Field(default_factory=list, max_length=5)
     outputs: list[OutputSpec] = Field(default_factory=list, max_length=10)
+    goal: GoalRef | None = None
 
     @model_validator(mode="after")
     def valid(self):

@@ -52,6 +52,8 @@ async def propose(owner, body: ProposalInput, *, source_run=None):
     # Keep retries of calendar proposals created before interval support compatible.
     if identity["spec"] and identity["spec"]["interval_hours"] is None:
         identity["spec"].pop("interval_hours")
+    if identity["spec"] and identity["spec"]["goal"] is None:
+        identity["spec"].pop("goal")
     digest = fingerprint(identity)
     async with transaction() as conn:
         await lock_account(conn, owner)
@@ -103,6 +105,15 @@ async def propose(owner, body: ProposalInput, *, source_run=None):
         )
         if spec is None:
             raise HTTPException(422, "Spesifikasi jadwal diperlukan.")
+        goal_context = None
+        if spec.goal and body.operation in ("create", "update", "resume", "run"):
+            from ngertiin.goals.work import capture as capture_goal
+
+            linked_goal = await capture_goal(conn, owner, spec.goal)
+            goal_context = {
+                "title": linked_goal["spec"]["title"],
+                **spec.goal.model_dump(mode="json"),
+            }
         if (
             body.operation in ("create", "update")
             and spec.per_run_cap > get_settings().task_budget_units
@@ -126,6 +137,7 @@ async def propose(owner, body: ProposalInput, *, source_run=None):
             )
             captured = prior["input_snapshot"]
         preview = {
+            "goal": goal_context,
             "operation": body.operation,
             "spec": spec.model_dump(mode="json"),
             "target_thread_id": str(target),
@@ -195,6 +207,10 @@ async def decide(owner, proposal_id, approved: bool):
         target = proposal["preview"]["target_thread_id"]
         await owned_thread(conn, owner, target, lock=True)
         op = proposal["operation"]
+        if spec.goal and op in ("create", "update", "resume", "run"):
+            from ngertiin.goals.work import capture as capture_goal
+
+            await capture_goal(conn, owner, spec.goal)
         await validate_inputs(conn, owner, spec, required=op in ("create", "update"))
         schedule: dict = {}
         if op != "create":

@@ -96,6 +96,17 @@ async def retry(owner: UUID, task_id: UUID, request_key: UUID):
                 raise HTTPException(
                     409, "Periksa/hentikan sesi sebelumnya; aksi yang belum pasti tidak diulang."
                 )
+        if task.get("goal_id"):
+            from ngertiin.goals.contracts import GoalRef
+            from ngertiin.goals.work import admit as admit_goal
+
+            await admit_goal(
+                conn,
+                owner,
+                GoalRef(id=task["goal_id"], revision=task["goal_revision"]),
+                {"task_cap": task["budget_cap"] - task["usage_units"]},
+                task=task,
+            )
         await budget.admit(
             conn,
             owner,

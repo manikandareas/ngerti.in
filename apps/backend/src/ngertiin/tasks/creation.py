@@ -7,6 +7,7 @@ from fastapi import HTTPException
 
 from ngertiin.chat.store import append_event, json_value, lock_account, one, owned_thread
 from ngertiin.config import get_settings
+from ngertiin.goals.contracts import GoalRef
 from ngertiin.quotas import commit, reserve
 from ngertiin.quotas.policy import fingerprint
 from ngertiin.tasks import budget, store
@@ -46,6 +47,7 @@ async def create(
     runtime_kind: str = "text",
     connection=None,
     scheduled: dict | None = None,
+    goal: GoalRef | None = None,
 ):
     from ngertiin.files import inputs as file_inputs
     from ngertiin.files import results
@@ -96,6 +98,8 @@ async def create(
     }
     if runtime_kind in ("code", "browser"):
         identity["runtime_kind"] = runtime_kind
+    if goal:
+        identity["goal"] = goal.model_dump(mode="json")
     if inputs or specs or result_id:
         identity.update(
             inputs=inputs,
@@ -127,6 +131,19 @@ async def create(
             )
             if not valid:
                 raise store.StaleExecution()
+        if result_id:
+            parent = await one(
+                conn,
+                "SELECT t.goal_id,t.goal_revision FROM product_results r "
+                "JOIN background_tasks t ON t.id=r.active_task_id "
+                "WHERE r.id=%s AND r.owner_id=%s AND r.thread_id=%s AND r.deleted_at IS NULL",
+                (result_id, owner, thread_id),
+            )
+            if parent and parent["goal_id"]:
+                inherited = GoalRef(id=parent["goal_id"], revision=parent["goal_revision"])
+                if goal and goal != inherited:
+                    raise HTTPException(409, "Pembaruan hasil harus memakai target tujuan asal.")
+                goal = inherited
         policy, task_id = snapshot(), uuid4()
         if inputs or specs:
             policy = {**policy, "version": "file-task-work-v1", "max_input_bytes": 48000}
@@ -168,6 +185,11 @@ async def create(
             }
         if scheduled:
             policy["task_cap"] = min(policy["task_cap"], scheduled["per_run_cap"])
+        goal_context = None
+        if goal:
+            from ngertiin.goals.work import admit as admit_goal
+
+            goal_context = await admit_goal(conn, owner, goal, policy)
         await budget.admit(conn, owner, policy)
         captured = (
             {**scheduled["input_snapshot"], "schedule": scheduled["identity"]}
@@ -179,6 +201,8 @@ async def create(
         captured["persona"] = (
             source_run["profile"] if source_run else await current_persona(conn, owner)
         )
+        if goal_context:
+            captured["goal"] = goal_context
         title = " ".join(instruction.split())
         if len(title) > 100:
             title = title[:96].rsplit(" ", 1)[0] + "…"
@@ -208,6 +232,12 @@ async def create(
                 "UPDATE background_tasks SET runtime_kind=%s WHERE id=%s", (runtime_kind, task_id)
             )
             task["runtime_kind"] = runtime_kind
+        if goal:
+            await conn.execute(
+                "UPDATE background_tasks SET goal_id=%s,goal_revision=%s WHERE id=%s",
+                (goal.id, goal.revision, task_id),
+            )
+            task.update(goal_id=goal.id, goal_revision=goal.revision)
         if scheduled:
             await conn.execute(
                 "UPDATE background_tasks SET schedule_occurrence_id=%s WHERE id=%s",

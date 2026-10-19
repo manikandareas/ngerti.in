@@ -1,6 +1,6 @@
 # 04 · Arsitektur, Runtime & Kontrak
 
-Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381198256f4ee69db1e78) · Readback: 2026-10-18T17:56:53.897Z
+Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381198256f4ee69db1e78) · Readback: 2026-10-19T02:50:23.615600+00:00
 
 <!-- notion-content:start -->
 Stack aktual: TanStack Start/React, FastAPI, Clerk, PostgreSQL/pgvector, LangChain create_agent + LangGraph checkpoints, Procrastinate dan S3/MinIO. API dan worker adalah proses host untuk development; PostgreSQL/MinIO berada pada Compose ngertiin-v1. Pertahankan fondasi; LiteLLM/LlamaIndex/LangSmith/R2 production bukan dependency yang dianggap aktif hanya karena pernah tercantum pada riset.
@@ -95,6 +95,7 @@ Bukti modul: [REA-6 · Browser & Computer](../research/muse-ai-v1/evidence/compu
 
 ## Schedule occurrence dan offline delivery
 
+NG-037 diterima development pada 2026-10-19. Migrasi incremental `0006_user_schedules` menambah jadwal/revision immutable, preview keputusan dan occurrence unik. API GET `/schedules`, POST `/schedules/proposals` dan keputusan proposal mengikat owner, instruksi/input, expected revision, target thread dan per-run cap. Dispatcher Procrastinate per menit menyimpan occurrence + admission + Task + enqueue atomik; tidak membuat pesan user/charge chat otomatis. DST waktu hilang dilewati dan fold pertama dipilih sekali; overlap termasuk waiting_user dilewati, downtime coalesce terbaru dan blocked_budget tanpa retry berbiaya. Riwayat mengambil outcome Task/delivery durable. Perluasan interval memakai `frequency=interval` dan `interval_hours` bilangan bulat 1–8760, tanpa migration tambahan. Slot dihitung dalam durasi UTC dari tanggal/pukul mulai; resume/run-now dan waktu selesai Task tidak menggeser anchor. Preview dan dispatch memakai aritmetika slot yang sama, termasuk downtime panjang. Anchor DST yang hilang ditolak, anchor berulang memakai fold pertama; interval tetap N jam nyata. Kebijakan overlap, coalesce, budget dan idempotensi tetap berlaku. Payload jadwal/proposal lama dan replay request key kalender tetap kompatibel. Control pause/delete tetap tersedia ketika file hilang. Desain `docs/engineering/scheduler-runtime.md`; acceptance `docs/engineering/schedule-37-acceptance.md`. Bukti Muse menyediakan referensi UX/kontrak; scheduler internal Muse belum diperoleh.
 Jadwal pengguna berjalan tanpa browser terbuka di atas dispatcher durable.
 
 **Alur:** Schedule reviewed → due dispatcher claims occurrence → task with per-run budget → persist outcome → deliver target thread.

@@ -16,7 +16,7 @@
       },
       "notion_content_sha256": "8683032b40bb75fb3a66096aaca609cabbcce80266d1cb8aa515f3c2ac78181e",
       "local_content_sha256": "801f9d06d6e4c7567923e16080a6ca96988fb7ea31076858396132428073981b",
-      "local_file_sha256": "38976980cbe564d1f204dbb84629b59b28e1a3161809a82b9f0d430384492c4c",
+      "local_file_sha256": "68021a6e4d0cad78af10949bd0fc11f2520b9f07d073734bc1d7cda39ff6a19c",
       "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
@@ -40,14 +40,14 @@
       "url": "https://app.notion.com/p/3f8abdd6187381fda2dbea043a840c5a",
       "file": "product/02-user-flow.md",
       "kind": "page",
-      "page_last_edited_at": "2026-10-18T17:56:07.210Z",
+      "page_last_edited_at": "2026-10-19T02:45:57.511Z",
       "properties": {
         "title": "02 · UX & User Flow"
       },
-      "notion_content_sha256": "ff6fe2adfdb24fe417a94198385bc9f125d3efd3b0d18301cb3831d25810507d",
-      "local_content_sha256": "6db1cbb292586a6996d6e6c4f73285a0c0ea08741af35d0915043312e76a40dd",
-      "local_file_sha256": "89426be108cdec9a63611d2ef52e354aec2e2cb31f9748cf858cabfa70769550",
-      "readback_at": "2026-10-18T17:56:53.897Z"
+      "notion_content_sha256": "e244e3783a960c418278e17f47605579c1d1d07ac72d48366fe1c9ecdeb6cb71",
+      "local_content_sha256": "b30c2223f73ffa75d119dcaf4558289c060ded56ce76bda2acb80928247571d7",
+      "local_file_sha256": "ca46e248a8f92d89f97a4b196ebf3416b589d4df301db590c1883e9a780a2352",
+      "readback_at": "2026-10-19T02:50:23.615600+00:00"
     },
     {
       "id": "3f8abdd6-1873-8165-8b61-f4283ee83428",
@@ -70,14 +70,14 @@
       "url": "https://app.notion.com/p/3f8abdd6187381198256f4ee69db1e78",
       "file": "product/04-arsitektur-dan-delivery.md",
       "kind": "page",
-      "page_last_edited_at": "2026-10-18T17:56:08.121Z",
+      "page_last_edited_at": "2026-10-19T02:45:58.212Z",
       "properties": {
         "title": "04 · Arsitektur, Runtime & Kontrak"
       },
-      "notion_content_sha256": "95ab896f6a1c971d86a189da1c845f2cfc238be494d0cf53c6a53efb8cc3fe9d",
-      "local_content_sha256": "77c6c9d6b1844cefc8ba6894011dbfecb270b240b69f8e5dd5536a591561e6b4",
-      "local_file_sha256": "c93848dc8c8a1e21599b18cb68c09acb5f90d566ebeee8dcde4214f335276464",
-      "readback_at": "2026-10-18T17:56:53.897Z"
+      "notion_content_sha256": "0f2fc170181e064c10edc452dd18f16f36a15d32bddc80cb37d40269e90a1309",
+      "local_content_sha256": "fb176f5f528ab7672b8407228d9a4fc9164f8b958196b28704adb5feaa17808a",
+      "local_file_sha256": "2723b213fff1b2e2629af295eccdd014332975791af0d1d1d430af127908d1be",
+      "readback_at": "2026-10-19T02:50:23.615600+00:00"
     },
     {
       "id": "3f8abdd6-1873-8120-90d8-e31cd02f0ce9",
@@ -869,11 +869,11 @@
       "properties": {
         "title": "06 · Development, Operasi & Acceptance"
       },
-      "notion_content_sha256": "00930c94d7ddf7280f72de101a6b25e9134258336b49d2b291c74bae397bf29e",
-      "local_content_sha256": "3da7220dce57892444ca0896399c45745b00d434988b5866a835a0117b672951",
-      "local_file_sha256": "a991e7450751cb75cc79d8095a17241fa4c260bbb8777e20b73c0befe5c7ae5c",
-      "readback_at": "2026-10-18T17:56:53.897Z",
-      "page_last_edited_at": "2026-10-18T17:56:37.741Z"
+      "notion_content_sha256": "9ed99225f4bd527d17b6a2dda415e05b3feb5a61da4fcdc61e84eaa39da5b426",
+      "local_content_sha256": "58eb3450012b796832b96c16cbe4d7be9fed5bfb56c72f9b3c3aa247ae6fa2f6",
+      "local_file_sha256": "b7703e2059c05c67630219d745e8c363092ef8b77ca8545c7b2dc18d896dd542",
+      "readback_at": "2026-10-19T02:21:49.327704+00:00",
+      "page_last_edited_at": "2026-10-19T02:20:55.731Z"
     },
     {
       "id": "3fdabdd6-1873-812e-9ed6-c67417884b74",
@@ -886,7 +886,7 @@
       },
       "notion_content_sha256": "ff427a85b252da3841a5489b0f59aaa7c56a3e481cccccceb80e4755158e4018",
       "local_content_sha256": "6f8f141d26c06db4c4c1e0a38dc57315e043b485143d5fe24d3446116daec5b9",
-      "local_file_sha256": "fc19313cb496cfafd7619aa68e13cab24330ecd67c201c143248d2a90684166b",
+      "local_file_sha256": "69775f77d423f66c8336d1e160b659522b0a058186e6329f57b7e9e6d7e3de07",
       "readback_at": "2026-10-18T06:04:56.780944+00:00",
       "page_last_edited_at": "2026-10-18T05:49:58.871Z"
     },
@@ -1283,17 +1283,17 @@
         ],
         "Lingkup": "Aktif V1",
         "Prioritas": "P0",
-        "Status": "Backlog",
+        "Status": "Done",
         "Ticket": 37,
         "Tugas": "NG-037 · Scheduler pengguna saat offline",
         "Urutan": 12,
         "url": "https://app.notion.com/p/3fdabdd61873813a9603fb38d0df673f"
       },
-      "notion_content_sha256": "b7e3897f6cb932c2cc805e0ea2cca79f2b3520b1e007c1e19db5b4972a51ee31",
-      "local_content_sha256": "06b2bdb15a64208502425cc90f12c2bf3faffdbce2bf0dd0d9b187c9cb4d68a0",
-      "local_file_sha256": "88b682d5a249182aa040dfb976ce79d7c2f793994b8947c71be584aa34af2aec",
-      "readback_at": "2026-10-18T06:04:56.780944+00:00",
-      "page_last_edited_at": "2026-10-18T05:51:12.126Z"
+      "notion_content_sha256": "20805be7987630ef36a284c448e1e071a783c98636fee0d2f98a4c89c6b95f2e",
+      "local_content_sha256": "2e0c1d6020295f12970bfa3435bcaccc230765b41321da1999151e49e88c18b2",
+      "local_file_sha256": "05e663697d84ac15b109c7cd155aa06dd55f07d81f6ad31c09d176d4660cb4c2",
+      "readback_at": "2026-10-19T02:50:59.561159+00:00",
+      "page_last_edited_at": "2026-10-19T02:50:58.534Z"
     },
     {
       "id": "3fdabdd6-1873-814b-abd1-c1bcd089effb",
@@ -1640,8 +1640,8 @@
           "3f8abdd6-1873-81bf-9174-f9126e48a4f3",
           "3f8abdd6-1873-81fd-a17d-d1af24cec8fb"
         ],
-        "local_file_sha256": "c7efd5a199f3ab7d4b3bced3b93a727bdba719f27f43a40a94c3bbaeac7512fd",
-        "readback_at": "2026-10-18T17:56:53.897Z",
+        "local_file_sha256": "074445a6170251f575b7d8167c20bb7b8bac0226c6c061e4e2bd4b5d08bc289f",
+        "readback_at": "2026-10-19T02:50:23.615600+00:00",
         "queried_row_count": 41
       },
       {
@@ -1723,8 +1723,8 @@
           "3fdabdd6-1873-81f8-ade2-c7db2c75396e",
           "3f8abdd6-1873-81ac-90b6-df75b7e1a157"
         ],
-        "local_file_sha256": "bab1efc28bd5bf19e50924241c3b81ba1ae680fe7121d02972b4536fd6665f55",
-        "readback_at": "2026-10-18T17:56:53.897Z",
+        "local_file_sha256": "c7b5868518ee6ab377b54df82395f335e18e1dbb10e47a87dff54fd170af67de",
+        "readback_at": "2026-10-19T02:50:23.615600+00:00",
         "queried_row_count": 25
       },
       {
@@ -1780,8 +1780,8 @@
           "type": "table"
         },
         "page_ids": [],
-        "local_file_sha256": "b40942e2cc9c94b5d305717a306d48c93ca1ae8d7c9f3a83c76b5e2f52dbce21",
-        "readback_at": "2026-10-18T17:56:53.897Z",
+        "local_file_sha256": "c38ff73d64f9fc2e78ab43049c7104d4cfbb1aee6440c5f916040c30d0f6468b",
+        "readback_at": "2026-10-19T02:50:23.615600+00:00",
         "queried_row_count": 0
       },
       {
@@ -1854,8 +1854,8 @@
           "3f8abdd6-1873-81bf-9174-f9126e48a4f3",
           "3f8abdd6-1873-81fd-a17d-d1af24cec8fb"
         ],
-        "local_file_sha256": "8f54dcba43c4172ba64f23601243076b65346ae442d023e94e83993b9aa0fbd5",
-        "readback_at": "2026-10-18T17:56:53.897Z",
+        "local_file_sha256": "d9ed00ee0c1b391db762e7554abd044cdc974fc89e300286ea5af101141fdc26",
+        "readback_at": "2026-10-19T02:50:23.615600+00:00",
         "queried_row_count": 16
       }
     ],
@@ -2267,18 +2267,80 @@
       "source": "Exact final NG-036 readback",
       "summary": "Clarify public demo page screenshot contains public demo instructions; no private credentials",
       "notion_content_sha256": "ba9a83baca1f9dbdc5014b85b0279632603deabb4b5a8897afab77ecd283a19a"
+    },
+    {
+      "at": "2026-10-19T01:56:38.366Z",
+      "page_id": "3fdabdd6-1873-813a-9603-fb38d0df673f",
+      "source": "User-authorized NG-037 implementation; exact Notion readback and four views verified",
+      "summary": "Begin scheduler implementation; acceptance pending",
+      "properties": {
+        "Status": "In Progress"
+      }
+    },
+    {
+      "at": "2026-10-19T02:21:49.327704+00:00",
+      "page_id": "3fdabdd6-1873-813a-9603-fb38d0df673f",
+      "source": "User-authorized NG-037 implementation; exact Notion readback and four views verified",
+      "summary": "Accept offline schedules, reviewed chat controls, occurrence idempotency, timezone/DST, caps and durable results",
+      "notion_content_sha256": "67aed013299e9825d5b5c6612f596ec20d0c93923eefcc43be8a0d8ecd558226",
+      "properties": {
+        "Status": "Done"
+      },
+      "acceptance_file": "engineering/schedule-37-acceptance.md",
+      "evidence_file": "engineering/evidence/schedule-37/live-readback.json"
+    },
+    {
+      "at": "2026-10-19T02:21:49.327704+00:00",
+      "page_id": "3f8abdd6-1873-81fd-a2db-ea043a840c5a",
+      "source": "User-authorized NG-037 implementation; exact Notion readback and four views verified",
+      "summary": "Accept offline schedules, reviewed chat controls, occurrence idempotency, timezone/DST, caps and durable results",
+      "notion_content_sha256": "ae69b1a50bf2f38d7a0557057c2d318145ee91b680bb35eb3c2cf50d354f1474"
+    },
+    {
+      "at": "2026-10-19T02:21:49.327704+00:00",
+      "page_id": "3f8abdd6-1873-8119-8256-f4ee69db1e78",
+      "source": "User-authorized NG-037 implementation; exact Notion readback and four views verified",
+      "summary": "Accept offline schedules, reviewed chat controls, occurrence idempotency, timezone/DST, caps and durable results",
+      "notion_content_sha256": "99a6d73eab8a3d9123383f63574958190cf1b48729bb4c75339f888e8799df98"
+    },
+    {
+      "at": "2026-10-19T02:21:49.327704+00:00",
+      "page_id": "3fdabdd6-1873-81d3-9f94-f7161d4ef570",
+      "source": "User-authorized NG-037 implementation; exact Notion readback and four views verified",
+      "summary": "Accept offline schedules, reviewed chat controls, occurrence idempotency, timezone/DST, caps and durable results",
+      "notion_content_sha256": "9ed99225f4bd527d17b6a2dda415e05b3feb5a61da4fcdc61e84eaa39da5b426"
+    },
+    {
+      "at": "2026-10-19T02:50:59.561159+00:00",
+      "page_id": "3fdabdd6-1873-813a-9603-fb38d0df673f",
+      "source": "User-authorized hourly interval extension; exact Notion readback and four views verified",
+      "summary": "Every N hours from start anchor, form/chat preview, legacy compatibility, 82 contracts and real offline interval delivery",
+      "notion_content_sha256": "20805be7987630ef36a284c448e1e071a783c98636fee0d2f98a4c89c6b95f2e",
+      "acceptance_file": "engineering/schedule-37-acceptance.md",
+      "evidence_file": "engineering/evidence/schedule-37/interval-readback.json"
+    },
+    {
+      "at": "2026-10-19T02:50:23.615600+00:00",
+      "page_id": "3f8abdd6-1873-8119-8256-f4ee69db1e78",
+      "source": "User-authorized hourly interval extension; exact Notion readback and four views verified",
+      "summary": "Every N hours from start anchor, form/chat preview, legacy compatibility, 82 contracts and real offline interval delivery",
+      "notion_content_sha256": "0f2fc170181e064c10edc452dd18f16f36a15d32bddc80cb37d40269e90a1309"
+    },
+    {
+      "at": "2026-10-19T02:50:23.615600+00:00",
+      "page_id": "3f8abdd6-1873-81fd-a2db-ea043a840c5a",
+      "source": "User-authorized hourly interval extension; exact Notion readback and four views verified",
+      "summary": "Every N hours from start anchor, form/chat preview, legacy compatibility, 82 contracts and real offline interval delivery",
+      "notion_content_sha256": "e244e3783a960c418278e17f47605579c1d1d07ac72d48366fe1c9ecdeb6cb71"
     }
   ],
   "last_partial_sync": {
-    "at": "2026-10-18T17:56:53.897Z",
-    "scope": "NG-036 browser acceptance, UX/agent/runtime/usage/operations notes, four exact views; unrelated ticket properties preserved",
+    "at": "2026-10-19T02:50:59.561159+00:00",
+    "scope": "NG-037 hourly intervals, targeted UX/runtime notes and four live views; task statuses preserved",
     "page_ids": [
-      "3fdabdd6-1873-8198-b295-ca667c34f1b1",
-      "3f8abdd6-1873-81fd-a2db-ea043a840c5a",
+      "3fdabdd6-1873-813a-9603-fb38d0df673f",
       "3f8abdd6-1873-8119-8256-f4ee69db1e78",
-      "3f8abdd6-1873-8165-8b61-f4283ee83428",
-      "3fdabdd6-1873-819c-a2b5-cc4e521b3587",
-      "3fdabdd6-1873-81d3-9f94-f7161d4ef570"
+      "3f8abdd6-1873-81fd-a2db-ea043a840c5a"
     ]
   }
 }

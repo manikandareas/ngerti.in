@@ -1,6 +1,6 @@
 # 06 · Development, Operasi & Acceptance
 
-Sumber: [Notion](https://app.notion.com/p/3fdabdd6187381d39f94f7161d4ef570) · Readback: 2026-10-18T17:56:53.897Z
+Sumber: [Notion](https://app.notion.com/p/3fdabdd6187381d39f94f7161d4ef570) · Readback: 2026-10-19T02:21:49.327704+00:00
 
 <!-- notion-content:start -->
 ## Setup development bersih
@@ -135,4 +135,9 @@ Login demo nyata dipakai lintas Task setelah provider stop/start. Desktop1280x90
 Jalankan make install, make migrate lalu restart worker. Autoreload API tidak mereload worker. DAYTONA_API_KEY backend diperlukan; COMPUTER_TASK_SECONDS maksimal1200, COMPUTER_RETENTION_DAYS maksimal7 dan COMPUTER_STORAGE_MICROUSD_PER_HOUR pada .env.example. Konfigurasi cookie viewer memerlukan app/API same-site dan allowed origin. Maintenance computer.sweep tiap menit menghentikan deadline/stale compute serta menghapus profil lewat retensi; provider idle stop dan supervisor desktop tetap membatasi resource saat worker mati.
 
 SDK0.225.0/provider v0.225.1, targeteu, snapshot daytona-medium. Archive nonaktif; browser public-only tidak membuka akses jaringan/profil pada Python offline. Target fingerprint di-hash dalam Chromium, screenshot transient tidak masuk checkpoint. Jangan menaruh credential/profile/signed URL dalam evidence. Production, situs 2FA khusus, semua situs lain, invoice dan pemulihan menyeluruh tetap di luar walkthrough ini.
+
+## Penerimaan scheduler pengguna NG-037
+Diterima development pada 2026-10-19 WITA. Jalankan `make migrate` untuk `0006_user_schedules` tanpa reset, lalu restart worker agar registrasi `schedule.dispatch` aktif; API autoreload tidak mereload worker. `make schedule-inspect` lulus 52 kontrak PostgreSQL/checkpoints sementara; regresi Task55/quota46/File47, make check/build dan docs-check lulus. Model nyata `gpt-6-luna`, Procrastinate3.10.0/LangGraph1.2.15/LangChain1.4.6/OpenAI SDK3.31.0.
+Jadwal 10.14 WITA dieksekusi saat halaman aplikasi about:blank: satu occurrence/Task/delivery, 2.806 token confirmed, hasil terlihat setelah kembali. Chat membuat/mengubah/jeda jadwal mingguan dengan revision exact; desktop1280x900/mobile emulasi390x844 dan320x640 tanpa overflow. Jadwal audit berulang paused; tidak ada future audit run. Laporan `docs/engineering/schedule-37-acceptance.md` dan evidence `docs/engineering/evidence/schedule-37/`.
+DST, misfire, overlap, races, owner, budget dan crash boundary memakai probes terkontrol. P23 memverifikasi independensi delivery terjadwal; proaktivitas/quiet-hours production belum tersedia. Scheduled runtime live memakai teks; tidak mengklaim semua provider/browser/Python schedule diuji ulang. Polling menit bukan SLA presisi detik; invoice, production deployment dan notifikasi eksternal tidak dicakup.
 <!-- notion-content:end -->

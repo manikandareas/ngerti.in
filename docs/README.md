@@ -43,6 +43,10 @@ Rantai: spesifikasi → bukti REA/riset → tiket → bukti penerimaan. Tiket Do
 
 ## Status kerja terbaru
 
+Readback status 2026-10-19T02:21:49.327704+00:00: [NG-037 · Scheduler pengguna saat offline](backlog/tasks/37-scheduler-pengguna-saat-offline.md) berstatus **Done**. [Laporan penerimaan](engineering/schedule-37-acceptance.md) memuat eksekusi saat halaman tertutup, chat create/edit/pause, 82 kontrak scheduler, interval setiap N jam, timezone/DST, budget dan desktop/mobile. NG-016 menjadi urutan implementasi berikutnya; status tiket lain dipertahankan.
+
+Readback status 2026-10-19T01:56:38.366Z: [NG-037 · Scheduler pengguna saat offline](backlog/tasks/37-scheduler-pengguna-saat-offline.md) berstatus **In Progress**. Implementasi scheduler offline dimulai sesuai scope yang disetujui; acceptance belum dinyatakan selesai.
+
 Readback status 2026-10-18T17:56:53.897Z: [NG-036 · Browser VNC live desktop dan takeover](backlog/tasks/36-browser-vnc-live-desktop-dan-takeover.md) berstatus **Done**. [Laporan penerimaan](engineering/computer-36-acceptance.md) memuat login nyata lintas Task sesudah provider stop/start, VNC privat desktop/mobile, exact action approval, 47 kontrak, SIGKILL/idle stop, reset profil dan hasil persisten. NG-037 menjadi urutan berikutnya; status tiket lain dipertahankan.
 
 Readback status 2026-10-18T15:44:00.527Z: [NG-035 · Eksekusi kode dalam sandbox](backlog/tasks/35-eksekusi-kode-dalam-sandbox.md) berstatus **Done**. [Laporan penerimaan](engineering/sandbox-35-acceptance.md) memuat interface Python yang dapat diganti, adapter Daytona, isolasi kernel, 45 kontrak runtime, CSV/model nyata, review/revisi/download desktop/mobile serta stop/cleanup. NG-036 menjadi urutan implementasi berikutnya; status tiket lain dipertahankan.

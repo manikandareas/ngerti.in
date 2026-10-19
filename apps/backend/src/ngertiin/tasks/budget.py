@@ -72,6 +72,19 @@ async def reserve_call(execution: dict, ceiling: int):
                 ceiling,
             ),
         )
+        from ngertiin.usage.events import model_reserve, work_for_task
+
+        work = await work_for_task(conn, task)
+        if work:
+            await model_reserve(
+                conn,
+                task["owner_id"],
+                f"task-model:{call_id}",
+                policy["model"],
+                ceiling,
+                work=work,
+                kind="model",
+            )
         await store.change(
             conn,
             task,
@@ -104,6 +117,9 @@ async def settle_call(execution: dict, call_id, usage: dict | None):
         await store.change(
             conn, task, usage_units=task["usage_units"] - event["charged_units"] + charged
         )
+        from ngertiin.usage.events import refresh
+
+        await refresh(conn, task["owner_id"])
         await store.emit(conn, task)
 
 

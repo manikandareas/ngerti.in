@@ -199,6 +199,10 @@ async def submit(owner: UUID, thread: UUID, request_key: UUID, text: str):
             )
         run, user, assistant = uuid4(), uuid4(), uuid4()
         allocation = await quota.admit(conn, owner, run, text)
+        from ngertiin.usage.chat import admit as compute_admit
+
+        await compute_admit(conn, owner, run, thread)
+
         await conn.execute(
             "INSERT INTO chat_runs(id,thread_id,owner_id,request_key,input,"
             "quota_operation_id,quota_token) "

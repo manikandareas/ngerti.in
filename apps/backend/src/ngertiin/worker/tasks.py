@@ -62,6 +62,9 @@ async def recover_stalled_jobs(timestamp: int | None = None) -> None:
     from ngertiin.proactivity.jobs import recover as recover_proactivity
 
     await recover_proactivity()
+    from ngertiin.usage.recovery import reconcile
+
+    await reconcile()
 
 
 __all__ = ["diagnostic_job", "recover_stalled_jobs"]

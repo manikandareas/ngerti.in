@@ -31,3 +31,10 @@ async def settle(conn, run: dict, parts: list, status: str, *, approval: bool = 
     await settle_operation(
         conn, run["owner_id"], run["quota_operation_id"], run["quota_token"], action, reason
     )
+
+    if status in ("complete", "failed", "cancelled"):
+        from ngertiin.usage.ledger import finish
+
+        await finish(
+            conn, run["owner_id"], f"chat:{run['id']}", refund=not (public_text or approval)
+        )

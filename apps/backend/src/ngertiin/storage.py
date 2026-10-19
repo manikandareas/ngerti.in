@@ -35,22 +35,41 @@ def s3_client() -> "S3Client":
 
 
 def put_object(key: str, data: bytes, content_type: str) -> None:
-    s3_client().put_object(
-        Bucket=get_settings().s3_bucket,
-        Key=key,
-        Body=data,
-        ContentType=content_type,
-    )
+    from ngertiin.usage.storage import begin, finish
+
+    receipt = begin(key, "put", len(data))
+    response = None
+    try:
+        response = s3_client().put_object(
+            Bucket=get_settings().s3_bucket, Key=key, Body=data, ContentType=content_type
+        )
+    finally:
+        finish(receipt, response)
 
 
 def get_object(key: str) -> bytes:
-    response = s3_client().get_object(Bucket=get_settings().s3_bucket, Key=key)
-    with response["Body"] as body:
-        return body.read()
+    from ngertiin.usage.storage import begin, finish
+
+    receipt = begin(key, "get")
+    response, data = None, b""
+    try:
+        response = s3_client().get_object(Bucket=get_settings().s3_bucket, Key=key)
+        with response["Body"] as body:
+            data = body.read()
+        return data
+    finally:
+        finish(receipt, response if data else None, bytes_read=len(data))
 
 
 def delete_object(key: str) -> None:
-    s3_client().delete_object(Bucket=get_settings().s3_bucket, Key=key)
+    from ngertiin.usage.storage import begin, finish
+
+    receipt = begin(key, "delete")
+    response = None
+    try:
+        response = s3_client().delete_object(Bucket=get_settings().s3_bucket, Key=key)
+    finally:
+        finish(receipt, response)
 
 
 def download_url(key: str, filename: str) -> str:

@@ -9,7 +9,7 @@ Meter = Literal["chat"]
 Plan = Literal["free", "plus"]
 METERS: tuple[Meter, ...] = ("chat",)
 PERIOD = timedelta(days=30)
-POLICY_VERSION = "chat-baseline-v1"
+POLICY_VERSION = "chat-v1-2026-10-19"
 LIMITS: dict[Plan, dict[Meter, int]] = {
     "free": {"chat": 100},
     "plus": {"chat": 300},

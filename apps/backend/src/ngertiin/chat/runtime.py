@@ -232,6 +232,12 @@ def build_agent(run: dict, saver, projection: Projection):
             raise ValueError("Sumber berubah atau tidak tersedia.")
         return await handler(request)
 
+    @wrap_model_call
+    async def meter_compute(request, handler):
+        from ngertiin.usage.chat import call
+
+        return await call(run, request, handler)
+
     model = ChatOpenAI(
         model=settings.openai_model,
         api_key=settings.openai_api_key,
@@ -253,6 +259,7 @@ def build_agent(run: dict, saver, projection: Projection):
         ToolCallLimitMiddleware(thread_limit=10, exit_behavior="error"),
         track_tool,
         guard_memory,
+        meter_compute,
     ]
     return create_agent(
         model,

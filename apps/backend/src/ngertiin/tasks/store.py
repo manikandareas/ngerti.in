@@ -101,6 +101,15 @@ async def change(conn, task: dict, **values):
         )
     ).fetchone()
     task.update(row)
+    from ngertiin.usage import ledger as compute
+
+    key = f"task:{task['id']}"
+    if values.get("status") in ("queued", "running"):
+        await compute.reopen(conn, task["owner_id"], key)
+    elif values.get("status") in ("succeeded", "failed", "cancelled"):
+        await compute.finish(
+            conn, task["owner_id"], key, refund=not (task.get("draft") or task.get("result"))
+        )
 
 
 async def view(conn, task: dict, *, detail: bool = False):

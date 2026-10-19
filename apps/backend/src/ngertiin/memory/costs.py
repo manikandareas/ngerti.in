@@ -79,6 +79,9 @@ class ProviderBudget:
                     ceiling,
                 ),
             )
+            from ngertiin.usage.events import memory_reserve
+
+            memory_reserve(conn, self.owner, call, body.get("model", "unknown"), ceiling)
         request.extensions["memory_call_id"] = call
 
     def after(self, response: httpx.Response):

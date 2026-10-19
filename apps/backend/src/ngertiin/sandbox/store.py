@@ -60,7 +60,7 @@ async def reserve(execution):
         ):
             raise ValueError("Komputasi lain masih aktif. Tunggu cleanup sebelum mencoba lagi.")
         ident = uuid4()
-        return await one(
+        session = await one(
             conn,
             "INSERT INTO sandbox_sessions(id,owner_id,task_id,execution_id,task_revision,provider,"
             "resource_name,policy,budget_day,reserved_microusd,charged_microusd,deadline) "
@@ -80,6 +80,11 @@ async def reserve(execution):
                 datetime.now(UTC) + timedelta(minutes=rules["ttl_minutes"]),
             ),
         )
+
+        from ngertiin.usage.events import resource_reserve
+
+        await resource_reserve(conn, task, session, "sandbox")
+        return session
 
 
 async def active_change(execution, session_id, state, *, resource_id=None):
@@ -161,6 +166,9 @@ async def resource_state(session, state, error=None):
 
 async def deleted(session):
     async with tasks.transaction() as conn:
+        from ngertiin.chat.store import lock_account
+
+        await lock_account(conn, session["owner_id"])
         row = await one(
             conn, "SELECT * FROM sandbox_sessions WHERE id=%s FOR UPDATE", (session["id"],)
         )
@@ -187,6 +195,10 @@ async def deleted(session):
                 row["id"],
             ),
         )
+
+        from ngertiin.usage.events import refresh
+
+        await refresh(conn, session["owner_id"])
 
 
 async def summary(conn, task):

@@ -263,6 +263,33 @@ async def create(
                 (json_value(specs), rid, json_value(captured), task_id),
             )
             task.update(output_spec=specs, result_id=rid, input_snapshot=captured)
+        from ngertiin.usage import ledger as compute_ledger
+        from ngertiin.usage.policy import task_estimate
+
+        ocr = await one(
+            conn,
+            "SELECT COALESCE(sum(r.page_count),0) AS pages FROM file_extractions e "
+            "JOIN file_revisions r ON r.id=e.revision_id WHERE e.id IN "
+            "(SELECT extraction_id FROM task_file_inputs WHERE task_id=%s) "
+            "AND e.policy->>'provider'='mistral' AND e.status='queued'",
+            (task_id,),
+        )
+        from ngertiin.usage.prices import ceiling
+
+        compute_period = await compute_ledger.period(conn, owner)
+        compute_cap = task_estimate(
+            policy, compute_period["policy"]["prices"].get(policy["model"])
+        ) + ceiling(ocr["pages"] * get_settings().mistral_ocr_usd_per_1000_pages * 1000)
+        await compute_ledger.open_work(
+            conn,
+            owner,
+            f"task:{task_id}",
+            "task",
+            title,
+            compute_cap,
+            task=task_id,
+            thread=thread_id,
+        )
         if not source_run and not scheduled:
             allocation = await reserve(conn, owner, "chat", f"task-input:{task_id}", 1, digest)
             for index, (role, text) in enumerate(

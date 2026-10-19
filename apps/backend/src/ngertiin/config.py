@@ -32,6 +32,10 @@ class Settings(BaseSettings):
     chat_max_output_tokens: int = Field(default=3000, ge=256, le=16000)
     chat_run_timeout_seconds: int = Field(default=180, ge=15, le=600)
     chat_max_model_calls: int = Field(default=6, ge=1, le=12)
+    compute_free_credits: int = Field(default=1000, ge=100, le=100000)
+    compute_plus_credits: int = Field(default=5000, ge=1000, le=1000000)
+    compute_account_daily_microusd: int = Field(default=2000000, ge=100000, le=100000000)
+    compute_global_daily_microusd: int = Field(default=10000000, ge=100000, le=1000000000)
     memory_enabled: bool = True
     memory_extraction_model: str = "gpt-5-mini"
     memory_embedding_model: str = "text-embedding-3-small"

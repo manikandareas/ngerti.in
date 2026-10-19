@@ -54,6 +54,11 @@ async def reserve(job, stage, model, body):
             "'reserved')",
             (identity, job["owner_id"], job["id"], stage, model, ceiling, ceiling),
         )
+        from ngertiin.usage.events import model_reserve
+
+        await model_reserve(
+            conn, job["owner_id"], f"proactive:{identity}", model, ceiling, kind="proactive"
+        )
         return identity
 
 
@@ -63,6 +68,10 @@ async def settle(identity, usage):
     if total is None and "input_tokens" in counts and "output_tokens" in counts:
         total = counts["input_tokens"] + counts["output_tokens"]
     async with transaction() as conn:
+        owner = await one(
+            conn, "SELECT owner_id FROM proactive_cost_events WHERE id=%s", (identity,)
+        )
+        await lock_account(conn, owner["owner_id"])
         row = await one(
             conn, "SELECT * FROM proactive_cost_events WHERE id=%s FOR UPDATE", (identity,)
         )
@@ -77,6 +86,10 @@ async def settle(identity, usage):
                 identity,
             ),
         )
+
+        from ngertiin.usage.events import refresh
+
+        await refresh(conn, row["owner_id"])
 
 
 async def post(job, stage, model, url, key, body):

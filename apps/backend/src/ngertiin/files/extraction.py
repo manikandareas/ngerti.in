@@ -11,6 +11,7 @@ from ngertiin.async_db import transaction
 from ngertiin.chat.store import json_value, lock_account, one
 from ngertiin.files import inputs, mistral, store
 from ngertiin.storage import get_object, put_object
+from ngertiin.tasks.budget import AdmissionDenied
 
 
 async def claim(extraction_id):
@@ -67,6 +68,43 @@ async def claim(extraction_id):
                     "UPDATE file_extractions SET "
                     "status='failed',error=%s,finished_at=now() WHERE id=%s",
                     ("Batas halaman OCR hari ini tercapai. Coba ulang besok (UTC).", row["id"]),
+                )
+                return {**row, "blocked": True}
+        if paid:
+            from ngertiin.usage import events, ledger, prices
+
+            task = (
+                await one(conn, "SELECT * FROM background_tasks WHERE id=%s", (needed["id"],))
+                if needed
+                else None
+            )
+            work = await events.work_for_task(conn, task) if task else None
+            rate = float(row["policy"]["usd_per_1000_pages"]) * 1000
+            try:
+                if not work:
+                    work = await ledger.open_work(
+                        conn,
+                        row["owner_id"],
+                        f"ocr:{row['id']}",
+                        "ocr",
+                        "Ekstraksi dokumen",
+                        prices.ceiling(pages * rate),
+                    )
+                await ledger.reserve_event(
+                    conn,
+                    work,
+                    f"ocr:{row['id']}",
+                    "ocr",
+                    "mistral",
+                    {**row["policy"], "microusd_per_page": rate},
+                    prices.ceiling(pages * rate),
+                    model=row["policy"]["model"],
+                )
+            except AdmissionDenied as error:
+                await conn.execute(
+                    "UPDATE file_extractions SET status='failed',error=%s,"
+                    "finished_at=now() WHERE id=%s",
+                    (str(error.detail), row["id"]),
                 )
                 return {**row, "blocked": True}
         token = uuid4()
@@ -216,4 +254,8 @@ async def run(extraction_id: UUID):
             raise
     finally:
         if item:
+            from ngertiin.usage.events import refresh
+
+            async with transaction() as conn:
+                await refresh(conn, item["owner_id"])
             await inputs.wake(item["owner_id"])

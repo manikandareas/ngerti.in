@@ -34,7 +34,7 @@ async def reserve(conn, task, workspace, rules):
         )
     if usage["active"] >= rules["global_concurrency"] or usage["account_active"] >= 1:
         raise ValueError("Komputasi lain masih aktif. Tunggu penghentian resource.")
-    return await one(
+    session = await one(
         conn,
         "INSERT INTO computer_sessions(id,workspace_id,owner_id,task_id,"
         "task_revision,policy,budget_day,reserved_microusd,charged_microusd,storage_microusd,deadline)"
@@ -53,6 +53,11 @@ async def reserve(conn, task, workspace, rules):
             datetime.now(UTC) + timedelta(seconds=rules["seconds"]),
         ),
     )
+
+    from ngertiin.usage.events import resource_reserve
+
+    await resource_reserve(conn, task, session, "computer")
+    return session
 
 
 async def settle(conn, session, usage):
@@ -84,3 +89,7 @@ async def settle(conn, session, usage):
             session["id"],
         ),
     )
+
+    from ngertiin.usage.events import refresh
+
+    await refresh(conn, session["owner_id"])

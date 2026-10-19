@@ -33,6 +33,7 @@ from ngertiin.quotas.api import ERROR_TYPES, quota_error
 from ngertiin.quotas.api import router as quota_router
 from ngertiin.schedules.api import router as schedule_router
 from ngertiin.tasks.api import router as task_router
+from ngertiin.usage.api import router as usage_router
 
 settings = get_settings()
 logger = structlog.get_logger()
@@ -56,6 +57,7 @@ app.include_router(proactive_product_router)
 app.include_router(memory_router)
 app.include_router(quota_router)
 app.include_router(task_router)
+app.include_router(usage_router)
 app.include_router(schedule_router)
 app.include_router(goal_router)
 app.include_router(file_router)

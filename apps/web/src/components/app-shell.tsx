@@ -9,7 +9,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const { isSignedIn } = useUser();
   return (
     <div className="flex min-h-svh flex-col">
-      <header className="flex items-center justify-between gap-3 border-b py-5 pl-5 pr-20 min-[701px]:px-8 min-[701px]:pr-24 [&_nav]:flex [&_nav]:items-center [&_nav]:gap-4 [&_nav]:text-sm [&_nav]:font-bold">
+      <header className="flex flex-wrap items-center justify-between gap-3 border-b py-5 pl-5 pr-20 min-[701px]:px-8 min-[701px]:pr-24 [&_nav]:flex [&_nav]:max-w-full [&_nav]:flex-wrap [&_nav]:items-center [&_nav]:gap-4 [&_nav]:text-sm [&_nav]:font-bold">
         <Link to="/" aria-label="Ngertiin beranda">
           <Brand />
         </Link>

@@ -66,6 +66,10 @@ memory-inspect:
 goal-inspect:
 	uv run --project apps/backend python scripts/inspect_goals.py
 
+.PHONY: proactive-inspect
+proactive-inspect:
+	uv run --project apps/backend python scripts/inspect_proactivity.py
+
 reset-dev:
 	uv run --project apps/backend python scripts/reset_dev.py --execute
 

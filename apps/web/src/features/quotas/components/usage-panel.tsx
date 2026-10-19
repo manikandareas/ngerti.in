@@ -2,6 +2,7 @@ import { RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WorkspaceState } from "@/components/workspace-state";
 import { useQuota } from "@/features/quotas/hooks/use-quota";
+import { ComputeUsagePanel } from "./compute-usage";
 
 const dates = new Intl.DateTimeFormat("id-ID", {
   dateStyle: "medium",
@@ -90,9 +91,10 @@ export function UsagePanel() {
       ) : null}
       <p className="max-w-prose text-sm text-muted-foreground">
         Satu pesan yang kamu kirim memakai satu kuota chat. Membuka riwayat dan menyambungkan
-        kembali percakapan tidak memakai pesan baru. Penggunaan komputasi untuk pekerjaan lain akan
-        ditampilkan ketika kemampuannya tersedia.
+        kembali percakapan tidak memakai pesan baru. Penggunaan model dan pekerjaan lain juga
+        memakai allowance komputasi.
       </p>
+      <ComputeUsagePanel />
     </div>
   );
 }

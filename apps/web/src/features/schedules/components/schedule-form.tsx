@@ -12,6 +12,7 @@ import { AttachmentPicker } from "@/features/files/components/attachment-picker"
 import { OutputFields } from "@/features/files/components/output-fields";
 import { useAttachments } from "@/features/files/hooks/use-attachments";
 import { GoalSelector } from "@/features/goals/components/goal-selector";
+import { WorkEstimate } from "@/features/quotas/components/work-estimate";
 import { useScheduleDraft } from "@/features/schedules/hooks/use-schedule-draft";
 import { useScheduleCommands } from "@/features/schedules/hooks/use-schedules";
 import type { Schedule } from "@/features/schedules/types";
@@ -277,6 +278,15 @@ export function ScheduleForm({
         Instruksi dan konteks percakapan disimpan saat preview. Pekerjaan tetap dipicu saat browser
         ditutup; eksekusi otomatis memakai budget Task tanpa pesan chat baru.
       </p>
+      <WorkEstimate
+        scheduled
+        runtimeKind={value.runtime_kind}
+        perRunCap={value.per_run_cap}
+        inputs={[
+          ...value.inputs.map((item) => item.revision_id),
+          ...attachments.items.map((item) => item.file.id),
+        ]}
+      />
       <div className="flex flex-wrap gap-2">
         <Button
           type="submit"

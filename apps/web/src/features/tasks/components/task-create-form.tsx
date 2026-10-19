@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { AttachmentPicker } from "@/features/files/components/attachment-picker";
 import { OutputFields } from "@/features/files/components/output-fields";
 import { GoalSelector } from "@/features/goals/components/goal-selector";
+import { WorkEstimate } from "@/features/quotas/components/work-estimate";
 import { useCreateTask } from "@/features/tasks/hooks/use-create-task";
 
 interface TaskCreateFormProps {
@@ -111,6 +112,10 @@ export function TaskCreateForm({ threadId }: TaskCreateFormProps) {
         stop dan mencoba ulang task tidak menambah pesan. Pekerjaan dibatasi budget dan tetap
         berjalan saat browser ditutup.
       </p>
+      <WorkEstimate
+        runtimeKind={form.browser ? "browser" : form.computation ? "code" : "text"}
+        inputs={attachments.items.map((item) => item.file.id)}
+      />
       <Button
         type="submit"
         disabled={sending || !threadId || !instruction.trim() || attachments.progress !== null}

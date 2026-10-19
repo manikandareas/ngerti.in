@@ -1,0 +1,149 @@
+{
+  "passed": 36,
+  "scenarios": [
+    {
+      "scenario": "default_character_excludes_internal_policy",
+      "passed": true
+    },
+    {
+      "scenario": "immutable_policy_outside_soul",
+      "passed": true
+    },
+    {
+      "scenario": "direct_edit_exact_content",
+      "passed": true
+    },
+    {
+      "scenario": "direct_retry_same_receipt",
+      "passed": true
+    },
+    {
+      "scenario": "request_key_reuse_different_content",
+      "passed": true
+    },
+    {
+      "scenario": "stale_editor_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_decision_404",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_restore_404",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_profile_unchanged",
+      "passed": true
+    },
+    {
+      "scenario": "proposal_does_not_change_soul",
+      "passed": true
+    },
+    {
+      "scenario": "reject_preserves_profile",
+      "passed": true
+    },
+    {
+      "scenario": "reject_retry_idempotent",
+      "passed": true
+    },
+    {
+      "scenario": "reject_cannot_be_approved",
+      "passed": true
+    },
+    {
+      "scenario": "rejection_retains_capture_exclusion",
+      "passed": true
+    },
+    {
+      "scenario": "capture_exclusions_owner_scoped",
+      "passed": true
+    },
+    {
+      "scenario": "approve_creates_one_revision",
+      "passed": true
+    },
+    {
+      "scenario": "approve_retry_does_not_duplicate",
+      "passed": true
+    },
+    {
+      "scenario": "chat_snapshot_stable_after_edit",
+      "passed": true
+    },
+    {
+      "scenario": "stale_worker_cannot_propose",
+      "passed": true
+    },
+    {
+      "scenario": "two_tab_one_winner",
+      "passed": true
+    },
+    {
+      "scenario": "two_tab_loser_conflict",
+      "passed": true
+    },
+    {
+      "scenario": "restore_appends_new_revision",
+      "passed": true
+    },
+    {
+      "scenario": "restore_retry_stable",
+      "passed": true
+    },
+    {
+      "scenario": "new_task_captures_persona",
+      "passed": true
+    },
+    {
+      "scenario": "queued_task_keeps_snapshot",
+      "passed": true
+    },
+    {
+      "scenario": "next_task_uses_new_revision",
+      "passed": true
+    },
+    {
+      "scenario": "history_paginated_without_duplicates",
+      "passed": true
+    },
+    {
+      "scenario": "editor_does_not_charge_chat",
+      "passed": true
+    },
+    {
+      "scenario": "pending_not_hidden_by_editor_history",
+      "passed": true
+    },
+    {
+      "scenario": "legacy_run_binds_persona_once",
+      "passed": true
+    },
+    {
+      "scenario": "legacy_run_retry_keeps_snapshot",
+      "passed": true
+    },
+    {
+      "scenario": "expired_approval_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "expired_status_persisted",
+      "passed": true
+    },
+    {
+      "scenario": "reject_owner_in_content",
+      "passed": true
+    },
+    {
+      "scenario": "reject_blank_name",
+      "passed": true
+    },
+    {
+      "scenario": "bound_unicode_soul_bytes",
+      "passed": true
+    }
+  ]
+}

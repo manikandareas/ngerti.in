@@ -59,8 +59,22 @@ async def draft(execution: dict):
             "output_spec=" + json.dumps(execution["output_spec"])
         )
     source = {k: v for k, v in source.items() if k != "persona"}
+    from ngertiin.memory.invalidation import ensure, filter_history
+    from ngertiin.memory.recall import context as memory_context
+
+    if not await ensure(execution):
+        raise store.StaleExecution()
+    if source.get("messages"):
+        source = {
+            **source,
+            "messages": await filter_history(execution["owner_id"], source["messages"]),
+        }
     messages = [
-        SystemMessage(content=instructions + persona_context(execution)),
+        SystemMessage(
+            content=instructions
+            + persona_context(execution)
+            + memory_context(execution.get("memory_context"))
+        ),
         HumanMessage(content=json.dumps(source, ensure_ascii=False)),
     ]
     call_id = await budget.reserve_call(execution, call_ceiling(messages, policy))
@@ -149,6 +163,10 @@ def build(execution: dict, saver):
 
 
 async def finalize(execution: dict, state: dict):
+    from ngertiin.memory.invalidation import ensure
+
+    if not await ensure(execution):
+        raise store.StaleExecution()
     action_id = UUID(state["action_id"])
     await actions.begin(execution, action_id)
     version_id = None

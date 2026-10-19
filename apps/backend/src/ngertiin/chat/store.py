@@ -286,6 +286,14 @@ async def publish(
         )
         if not valid or valid["cancel_requested"]:
             raise StaleRun()
+        from ngertiin.memory.invalidation import revoke_locked
+        from ngertiin.memory.invalidation import valid as memory_valid
+
+        if not await memory_valid(
+            conn, run["owner_id"], run.get("memory_generation"), run.get("memory_refs", [])
+        ):
+            await revoke_locked(conn, run["owner_id"])
+            return
         await quota.settle(conn, run, parts, status)
         await conn.execute(
             "UPDATE chat_messages SET parts=%s,status=%s WHERE id=%s",
@@ -311,6 +319,10 @@ async def publish(
             },
         )
         if status != "running":
+            if status == "complete":
+                from ngertiin.memory.service import enqueue_run
+
+                await enqueue_run(conn, run)
             await append_event(
                 conn,
                 run["thread_id"],

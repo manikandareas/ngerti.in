@@ -22,6 +22,7 @@ from ngertiin.config import get_settings
 from ngertiin.files.api import router as file_router
 from ngertiin.files.limits import UploadBodyLimitMiddleware
 from ngertiin.health import system_status
+from ngertiin.memory.api import router as memory_router
 from ngertiin.models import Account
 from ngertiin.persona.api import router as persona_router
 from ngertiin.quotas.api import ERROR_TYPES, quota_error
@@ -46,6 +47,7 @@ app = FastAPI(
 )
 app.include_router(chat_router)
 app.include_router(persona_router)
+app.include_router(memory_router)
 app.include_router(quota_router)
 app.include_router(task_router)
 app.include_router(schedule_router)

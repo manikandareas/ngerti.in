@@ -13,6 +13,7 @@ from langchain.agents.middleware import (
     HumanInTheLoopMiddleware,
     ModelCallLimitMiddleware,
     ToolCallLimitMiddleware,
+    wrap_model_call,
     wrap_tool_call,
 )
 from langchain_core.messages import AIMessageChunk
@@ -32,6 +33,9 @@ logger = structlog.get_logger()
 
 
 def build_agent(run: dict, saver, projection: Projection):
+    from ngertiin.memory.invalidation import ensure, filter_history
+    from ngertiin.memory.recall import context as memory_context
+    from ngertiin.memory.tools import tools_for as memory_tools
     from ngertiin.persona.policy import CORE, context
     from ngertiin.persona.tools import tools_for as persona_tools
     from ngertiin.schedules.tools import tools_for
@@ -44,12 +48,14 @@ def build_agent(run: dict, saver, projection: Projection):
         async with transaction() as conn:
             rows = await (
                 await conn.execute(
-                    "SELECT role,parts FROM chat_messages WHERE thread_id=%s AND run_id<>%s "
+                    "SELECT id,run_id,role,parts FROM chat_messages WHERE "
+                    "thread_id=%s AND run_id<>%s "
                     "AND status='complete' "
                     "ORDER BY position DESC LIMIT 20",
                     (run["thread_id"], run["id"]),
                 )
             ).fetchall()
+        rows = await filter_history(run["owner_id"], rows)
         messages, remaining = [], 12000
         for row in rows:
             text = "\n".join(p.get("text", "") for p in row["parts"] if p["type"] == "text")
@@ -140,6 +146,8 @@ def build_agent(run: dict, saver, projection: Projection):
 
     @wrap_tool_call
     async def track_tool(request, handler):
+        if not await ensure(run):
+            raise StaleRun()
         call = request.tool_call
         projection.upsert(
             {
@@ -151,6 +159,12 @@ def build_agent(run: dict, saver, projection: Projection):
             }
         )
         await publish(run, projection.parts, "running", usage=projection.usage)
+        return await handler(request)
+
+    @wrap_model_call
+    async def guard_memory(request, handler):
+        if not await ensure(run):
+            raise StaleRun()
         return await handler(request)
 
     model = ChatOpenAI(
@@ -173,6 +187,7 @@ def build_agent(run: dict, saver, projection: Projection):
         ModelCallLimitMiddleware(thread_limit=settings.chat_max_model_calls, exit_behavior="error"),
         ToolCallLimitMiddleware(thread_limit=10, exit_behavior="error"),
         track_tool,
+        guard_memory,
     ]
     return create_agent(
         model,
@@ -183,9 +198,11 @@ def build_agent(run: dict, saver, projection: Projection):
             start_background_task,
             *tools_for(run),
             *persona_tools(run),
+            *memory_tools(run),
         ],
         system_prompt=CORE
         + context(run["profile"])
+        + memory_context(run.get("memory_context"))
         + (
             "\nJika pengguna secara eksplisit meminta pekerjaan teks di background, gunakan "
             "start_background_task satu kali, lalu beri konfirmasi singkat dan akhiri giliran. "
@@ -213,12 +230,16 @@ async def initial_history(run: dict):
     async with transaction() as conn:
         rows = await (
             await conn.execute(
-                "SELECT role,parts FROM chat_messages WHERE thread_id=%s AND status='complete' "
+                "SELECT id,run_id,role,parts FROM chat_messages WHERE "
+                "thread_id=%s AND status='complete' "
                 "AND created_at <= (SELECT created_at FROM chat_runs WHERE id=%s) "
                 "ORDER BY position DESC LIMIT 24",
                 (run["thread_id"], run["id"]),
             )
         ).fetchall()
+    from ngertiin.memory.invalidation import filter_history
+
+    rows = await filter_history(run["owner_id"], rows)
     history, remaining = [], 36000
     for row in rows:
         text = "\n".join(p.get("text", "") for p in row["parts"] if p["type"] == "text")
@@ -245,12 +266,18 @@ async def watch_cancellation(run: dict, task: asyncio.Task):
 
 
 async def execute(run: dict):
+    from ngertiin.memory.recall import bind_chat
+
+    await bind_chat(run)
     projection = Projection()
     projection.usage = {
         key: value for key, value in run["usage"].items() if not key.startswith("lc_run--")
     }
     # A graph per turn keeps abandoned approvals independent of later turns and workflows.
-    config = {"configurable": {"thread_id": f"chat:{run['id']}"}, "recursion_limit": 30}
+    config = {
+        "configurable": {"thread_id": f"chat:{run['id']}:m{run['memory_generation']}"},
+        "recursion_limit": 30,
+    }
     settings = get_settings()
     async with await psycopg.AsyncConnection.connect(
         settings.database_url.get_secret_value(),

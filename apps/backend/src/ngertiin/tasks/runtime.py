@@ -20,13 +20,22 @@ logger = structlog.get_logger()
 
 
 async def execute(execution: dict):
+    from ngertiin.memory.recall import bind_task
+
+    if execution.get("runtime_kind", "text") == "text":
+        await bind_task(execution)
     from ngertiin.files.inputs import prepare
 
     if not await prepare(execution):
         return
     settings = get_settings()
     config = {
-        "configurable": {"thread_id": f"task:{execution['id']}:r{execution['revision']}"},
+        "configurable": {
+            "thread_id": (
+                f"task:{execution['id']}:r{execution['revision']}:"
+                f"m{execution.get('memory_generation', 0)}"
+            )
+        },
         "recursion_limit": 12,
     }
     async with await psycopg.AsyncConnection.connect(

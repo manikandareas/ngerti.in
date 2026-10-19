@@ -240,6 +240,10 @@ async def claim(task_id: UUID):
 
 
 async def progress(execution: dict, stage: str, *, draft: str | None = None):
+    from ngertiin.memory.invalidation import ensure
+
+    if not await ensure(execution):
+        raise StaleExecution()
     async with locked(execution["owner_id"], execution["id"]) as (conn, task):
         fence(task, execution)
         values = {"stage": stage}

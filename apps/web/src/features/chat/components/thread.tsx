@@ -8,6 +8,7 @@ import { useOnline } from "@/features/chat/hooks/use-online";
 import { useThread } from "@/features/chat/hooks/use-thread";
 import { useThreadActions } from "@/features/chat/hooks/use-thread-actions";
 import { useThreadComposer } from "@/features/chat/hooks/use-thread-composer";
+import { SelectedResource } from "@/features/library/components/selected-resource";
 import { ProactivityScopeControl } from "@/features/proactivity/components/proactivity-scope";
 import { ProactivityOnboarding } from "@/features/proactivity/components/proactivity-settings";
 import { QuotaSummary } from "@/features/quotas/components/quota-summary";
@@ -38,12 +39,16 @@ export function Thread({ threadId, draftRequest, onDraftRequestConsumed }: Threa
   const actions = useThreadActions(run, composer.setSendError);
   const appliedDraft = useRef<string | null>(null);
   useEffect(() => {
-    if (!draftRequest || appliedDraft.current === draftRequest.id) return;
+    if (!draftRequest) {
+      appliedDraft.current = null;
+      return;
+    }
+    if (appliedDraft.current === draftRequest.id) return;
     appliedDraft.current = draftRequest.id;
-    composer.updateDraft([composer.draft, draftRequest.text].filter(Boolean).join("\n\n"));
+    composer.appendDraft(draftRequest.text);
     onDraftRequestConsumed?.();
     input.current?.focus();
-  }, [draftRequest, composer.updateDraft, composer.draft, onDraftRequestConsumed]);
+  }, [draftRequest, composer.appendDraft, onDraftRequestConsumed]);
   const sendError = composer.sendError;
   if (error && !snapshot)
     return (
@@ -116,6 +121,7 @@ export function Thread({ threadId, draftRequest, onDraftRequestConsumed }: Threa
               Gwen menunggu keputusanmu di atas. Kamu juga bisa membuka chat baru.
             </p>
           ) : null}
+          <SelectedResource threadId={threadId} />
           <ChatComposer
             draft={composer.draft}
             empty={empty}

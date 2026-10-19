@@ -67,6 +67,9 @@ export function useThreadComposer({
       /* Optional browser draft storage. */
     }
   }
+  function appendDraft(value: string) {
+    updateDraft([draftValue.current, value].filter(Boolean).join("\n\n"));
+  }
   function updateOutputs(value: OutputSpec[]) {
     setOutputs(value);
     try {
@@ -136,6 +139,7 @@ export function useThreadComposer({
   return {
     draft,
     updateDraft,
+    appendDraft,
     sending,
     sendError,
     setSendError,

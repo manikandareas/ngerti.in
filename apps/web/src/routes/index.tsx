@@ -6,7 +6,10 @@ import type { WorkspaceView } from "@/features/workspace/types";
 import { WorkspacePage } from "@/ui/workspace-page";
 
 export const Route = createFileRoute("/")({
-  validateSearch: (search: Record<string, unknown>): { thread?: string; view?: WorkspaceView } => ({
+  validateSearch: (
+    search: Record<string, unknown>,
+  ): { thread?: string; view?: WorkspaceView; prompt?: string } => ({
+    prompt: typeof search.prompt === "string" ? search.prompt.slice(0, 1000) : undefined,
     thread: typeof search.thread === "string" ? search.thread : undefined,
     view: workspaceLinks.some((item) => item.view === search.view)
       ? (search.view as WorkspaceView)
@@ -17,7 +20,7 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   const { isLoaded, isSignedIn, userId } = useAuth();
-  const { thread, view = "chat" } = Route.useSearch();
+  const { thread, view = "chat", prompt } = Route.useSearch();
   const navigate = useNavigate();
   if (!isLoaded)
     return (
@@ -34,6 +37,8 @@ function Home() {
     <WorkspacePage
       key={userId}
       selectedThread={thread}
+      prompt={prompt}
+      onPromptConsumed={() => void navigate({ to: "/", search: { thread }, replace: true })}
       view={view}
       onNavigate={(next) => {
         void navigate({ to: "/", search: { thread, view: next === "chat" ? undefined : next } });

@@ -18,10 +18,18 @@ const labels = {
   interrupted: "Terhenti",
 };
 
-export function ResultCard({ resultId }: { resultId: string }) {
+export function ResultCard({
+  resultId,
+  initialRevision,
+  onRevisionChange,
+}: {
+  resultId: string;
+  initialRevision?: number;
+  onRevisionChange?: (revision: number) => void;
+}) {
   const { getToken, userId } = useAuth();
   const client = useQueryClient();
-  const [revision, setRevision] = useState<number | undefined>();
+  const [revision, setRevision] = useState<number | undefined>(initialRevision);
   const [updating, setUpdating] = useState(false);
   const [instruction, setInstruction] = useState("");
   const [error, setError] = useState("");
@@ -118,7 +126,11 @@ export function ResultCard({ resultId }: { resultId: string }) {
               className="rounded-md border bg-card p-2 text-foreground"
               aria-label="Revision hasil"
               value={selected.revision}
-              onChange={(event) => setRevision(Number(event.target.value))}
+              onChange={(event) => {
+                const next = Number(event.target.value);
+                setRevision(next);
+                onRevisionChange?.(next);
+              }}
             >
               {result.revisions.map((v) => (
                 <option key={v.revision} value={v.revision}>

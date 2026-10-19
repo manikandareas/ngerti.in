@@ -1,8 +1,8 @@
 import { ArrowLeft } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { FilesPanel } from "@/features/files/components/files-panel";
 import { GoalPanel } from "@/features/goals/components/goal-panel";
+import { LibraryPanel } from "@/features/library/components/library-panel";
 import { UsagePanel } from "@/features/quotas/components/usage-panel";
 import { SchedulePanel } from "@/features/schedules/components/schedule-panel";
 import { TaskPanel } from "@/features/tasks/components/task-panel";
@@ -68,7 +68,7 @@ function WorkspaceContent({ view, onNavigate, threadId, onOpenAssistant }: Works
     case "schedules":
       return <SchedulePanel threadId={threadId} />;
     case "files":
-      return <FilesPanel />;
+      return <LibraryPanel />;
     case "tasks":
       return <TaskPanel key={threadId} threadId={threadId} />;
     case "capabilities":

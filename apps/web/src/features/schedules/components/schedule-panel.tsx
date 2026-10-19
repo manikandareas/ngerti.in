@@ -83,7 +83,7 @@ export function SchedulePanel({ threadId }: { threadId: string | null }) {
   );
 }
 
-function ScheduleCard({ schedule, onEdit }: { schedule: Schedule; onEdit: () => void }) {
+export function ScheduleCard({ schedule, onEdit }: { schedule: Schedule; onEdit: () => void }) {
   const command = useScheduleCommands();
   return (
     <article className="space-y-3 rounded-2xl border bg-card p-5 text-sm">

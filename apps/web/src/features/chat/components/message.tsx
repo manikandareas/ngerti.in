@@ -6,6 +6,7 @@ import { Streamdown } from "streamdown";
 import { Button } from "@/components/ui/button";
 import type { ChatMessage } from "@/features/chat/types";
 import { ResultCard } from "@/features/files/components/result-card";
+import { ResourceSearchCards } from "@/features/library/components/resource-card";
 import { cn } from "@/lib/utils";
 
 const plugins = { code, math: createMathPlugin({ singleDollarTextMath: true }) };
@@ -31,7 +32,8 @@ export const Message = memo(function Message({ message }: { message: ChatMessage
       </div>
     );
   }
-  if (!text && !pending && message.status !== "cancelled") return null;
+  const searches = message.parts.filter((part) => part.type === "resources");
+  if (!text && !searches.length && !pending && message.status !== "cancelled") return null;
   async function copy() {
     try {
       await navigator.clipboard.writeText(text);
@@ -87,6 +89,14 @@ export const Message = memo(function Message({ message }: { message: ChatMessage
           </details>
         ) : null}
       </div>
+      {searches.map((part) => (
+        <ResourceSearchCards
+          key={part.id}
+          refs={part.refs ?? []}
+          query={part.query}
+          hasMore={part.has_more}
+        />
+      ))}
       {message.parts
         .filter((part) => part.type === "result" && part.result_id)
         .map((part) => (

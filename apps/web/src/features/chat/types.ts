@@ -1,8 +1,12 @@
+import type { ResourceRef } from "@/features/library/types";
 import type { BackgroundTask } from "@/features/tasks/types";
 
 export interface ChatPart {
   id: string;
-  type: "text" | "reasoning" | "tool" | "file" | "result" | "proactive";
+  type: "text" | "reasoning" | "tool" | "file" | "result" | "proactive" | "resources";
+  refs?: ResourceRef[];
+  query?: string;
+  has_more?: boolean;
   candidate_id?: string;
   why_relevant?: string;
   created_at?: string;

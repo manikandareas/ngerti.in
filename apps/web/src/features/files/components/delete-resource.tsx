@@ -36,7 +36,16 @@ export function DeleteResource({
     try {
       await api(path, await getToken(), { method: "DELETE" });
       setOpen(false);
-      for (const key of ["files", "results", "result", "tasks"])
+      for (const key of [
+        "files",
+        "results",
+        "result",
+        "tasks",
+        "library",
+        "resource-hits",
+        "resource-detail",
+        "resource-selection",
+      ])
         void client.invalidateQueries({ queryKey: [key, userId] });
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Penghapusan gagal.");

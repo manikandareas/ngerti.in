@@ -93,3 +93,15 @@ library-backfill:
 .PHONY: usage-inspect
 usage-inspect:
 	uv run --project apps/backend python scripts/inspect_usage.py --output .dev/usage-contracts.json
+
+.PHONY: billing-inspect
+billing-inspect:
+	uv run --project apps/backend python scripts/inspect_billing.py --output .dev/billing-contracts.json
+
+.PHONY: entitlement-inspect
+entitlement-inspect:
+	uv run --project apps/backend python scripts/inspect_entitlements.py --output .dev/entitlement-contracts.json
+
+.PHONY: recovery-inspect
+recovery-inspect:
+	uv run --project apps/backend python scripts/inspect_recovery.py --output .dev/recovery-contracts.json

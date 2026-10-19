@@ -29,6 +29,9 @@ check, reject = harness.check, harness.reject
 class ControlledComputer:
     name = "controlled"
 
+    async def inspect(self, workspace):
+        return "stopped" if workspace["id"] in self.profiles else "absent"
+
     def __init__(self):
         self.profiles = {}
         self.running = set()

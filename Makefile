@@ -54,6 +54,10 @@ computer-inspect:
 schedule-inspect:
 	uv run --project apps/backend python scripts/inspect_schedules.py
 
+.PHONY: persona-inspect
+persona-inspect:
+	uv run --project apps/backend python scripts/inspect_persona.py
+
 reset-dev:
 	uv run --project apps/backend python scripts/reset_dev.py --execute
 

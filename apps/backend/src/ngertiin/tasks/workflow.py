@@ -58,8 +58,9 @@ async def draft(execution: dict):
             "eksternal atau credential. "
             "output_spec=" + json.dumps(execution["output_spec"])
         )
+    source = {k: v for k, v in source.items() if k != "persona"}
     messages = [
-        SystemMessage(content=instructions),
+        SystemMessage(content=instructions + persona_context(execution)),
         HumanMessage(content=json.dumps(source, ensure_ascii=False)),
     ]
     call_id = await budget.reserve_call(execution, call_ceiling(messages, policy))
@@ -113,6 +114,13 @@ async def draft(execution: dict):
             await store.persist_revision(conn, task, uuid5(task["id"], f"draft:{task['revision']}"))
     finally:
         await budget.settle_call(execution, call_id, usage)
+
+
+def persona_context(execution):
+    from ngertiin.persona.policy import context
+
+    profile = execution["input_snapshot"].get("persona")
+    return context(profile) if profile else ""
 
 
 def build(execution: dict, saver):

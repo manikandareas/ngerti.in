@@ -174,6 +174,11 @@ async def create(
             if scheduled
             else await input_snapshot(conn, thread_id, instruction)
         )
+        from ngertiin.persona.store import current as current_persona
+
+        captured["persona"] = (
+            source_run["profile"] if source_run else await current_persona(conn, owner)
+        )
         title = " ".join(instruction.split())
         if len(title) > 100:
             title = title[:96].rsplit(" ", 1)[0] + "…"

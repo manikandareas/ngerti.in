@@ -32,6 +32,8 @@ logger = structlog.get_logger()
 
 
 def build_agent(run: dict, saver, projection: Projection):
+    from ngertiin.persona.policy import CORE, context
+    from ngertiin.persona.tools import tools_for as persona_tools
     from ngertiin.schedules.tools import tools_for
 
     settings = get_settings()
@@ -66,6 +68,8 @@ def build_agent(run: dict, saver, projection: Projection):
         return {
             "name": run["profile"]["name"],
             "revision": run["profile"]["revision"],
+            "tagline": run["profile"]["tagline"],
+            "soul": run["profile"]["soul"],
             "message": "Profil agent personal telah dibaca.",
         }
 
@@ -178,8 +182,10 @@ def build_agent(run: dict, saver, projection: Projection):
             read_thread_files,
             start_background_task,
             *tools_for(run),
+            *persona_tools(run),
         ],
-        system_prompt=run["profile"]["soul"]
+        system_prompt=CORE
+        + context(run["profile"])
         + (
             "\nJika pengguna secara eksplisit meminta pekerjaan teks di background, gunakan "
             "start_background_task satu kali, lalu beri konfirmasi singkat dan akhiri giliran. "

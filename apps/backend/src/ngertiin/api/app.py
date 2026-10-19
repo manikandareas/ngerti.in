@@ -23,6 +23,7 @@ from ngertiin.files.api import router as file_router
 from ngertiin.files.limits import UploadBodyLimitMiddleware
 from ngertiin.health import system_status
 from ngertiin.models import Account
+from ngertiin.persona.api import router as persona_router
 from ngertiin.quotas.api import ERROR_TYPES, quota_error
 from ngertiin.quotas.api import router as quota_router
 from ngertiin.schedules.api import router as schedule_router
@@ -44,6 +45,7 @@ app = FastAPI(
     lifespan=lifespan,
 )
 app.include_router(chat_router)
+app.include_router(persona_router)
 app.include_router(quota_router)
 app.include_router(task_router)
 app.include_router(schedule_router)

@@ -32,6 +32,8 @@ Keluarkan JSON persis skema yang disediakan tanpa markdown. Tidak ada shell atau
 
 
 async def propose(execution, screen, history):
+    from ngertiin.tasks.workflow import persona_context
+
     settings, rules = get_settings(), execution["budget_policy"]
     context = {
         "instruction": execution["instruction"],
@@ -42,8 +44,9 @@ async def propose(execution, screen, history):
     text = json.dumps(context, ensure_ascii=False)
     if len(text.encode()) > 18000:
         raise ValueError("Konteks browser melebihi batas.")
+    character = persona_context(execution)
     call_id = await budget.reserve_call(
-        execution, len(text.encode()) + 18000 + rules["max_output_tokens"]
+        execution, len(text.encode()) + len(character.encode()) + 18000 + rules["max_output_tokens"]
     )
     usage = None
     try:
@@ -78,7 +81,7 @@ async def propose(execution, screen, history):
         )
         value = await structured.ainvoke(
             [
-                SystemMessage(content=INSTRUCTIONS),
+                SystemMessage(content=INSTRUCTIONS + character),
                 HumanMessage(
                     content=[
                         {"type": "text", "text": text},

@@ -27,9 +27,12 @@ SYSTEM = (
 
 
 async def generate(execution, context, previous_error=None):
+    from ngertiin.tasks.workflow import persona_context
+
     settings, policy = get_settings(), execution["budget_policy"]
+    context = {k: v for k, v in context.items() if k != "persona"}
     messages = [
-        SystemMessage(content=SYSTEM),
+        SystemMessage(content=SYSTEM + persona_context(execution)),
         HumanMessage(
             content=json.dumps(
                 {

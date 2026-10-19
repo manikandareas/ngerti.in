@@ -1,0 +1,338 @@
+{
+  "environment": "isolated development database; synthetic image and prompts",
+  "owner_id": "68926b29-0c07-4ffd-b52d-155d18c68aaf",
+  "task_id": "ec765bc5-bc0c-4fcc-a1fe-cff361974559",
+  "file_task_model": "controlled fixture; OCR and memory providers real",
+  "cost_events": [
+    {
+      "category": "memory",
+      "model": "text-embedding-3-small",
+      "state": "estimated",
+      "amount": 1,
+      "quantity": {
+        "total_tokens": 8,
+        "prompt_tokens": 8
+      },
+      "invoice_confirmed": false,
+      "price": {
+        "input": "0.02",
+        "known": true,
+        "model": "text-embedding-3-small",
+        "route": "standard-short-context",
+        "cached": "0.02",
+        "output": "0",
+        "version": "provider-list-2026-10-19",
+        "currency": "USD",
+        "invoice_confirmed": false
+      }
+    },
+    {
+      "category": "memory",
+      "model": "gpt-5-mini",
+      "state": "estimated",
+      "amount": 23,
+      "quantity": {
+        "total_tokens": 22,
+        "prompt_tokens": 12,
+        "completion_tokens": 10
+      },
+      "invoice_confirmed": false,
+      "price": {
+        "input": "0.25",
+        "known": true,
+        "model": "gpt-5-mini",
+        "route": "standard-short-context",
+        "cached": "0.025",
+        "output": "2.00",
+        "version": "provider-list-2026-10-19",
+        "currency": "USD",
+        "invoice_confirmed": false
+      }
+    },
+    {
+      "category": "storage",
+      "model": null,
+      "state": "estimated",
+      "amount": 5,
+      "quantity": {
+        "bytes": 12165,
+        "attempts": 1,
+        "capacity": "30-day upper estimate on put",
+        "operation": "put",
+        "sponsored": true,
+        "quantity_state": "confirmed",
+        "egress_cost_state": "unknown"
+      },
+      "invoice_confirmed": false,
+      "price": {
+        "route": "configured-standard-equivalent",
+        "billing": "sponsored",
+        "version": "s3-configured-2026-10-19",
+        "currency": "USD",
+        "capacity_days": 30,
+        "invoice_confirmed": false,
+        "per_attempt_microusd": 5
+      }
+    },
+    {
+      "category": "storage",
+      "model": null,
+      "state": "estimated",
+      "amount": 1,
+      "quantity": {
+        "bytes": 12165,
+        "attempts": 1,
+        "capacity": "30-day upper estimate on put",
+        "operation": "get",
+        "sponsored": true,
+        "quantity_state": "confirmed",
+        "egress_cost_state": "unknown"
+      },
+      "invoice_confirmed": false,
+      "price": {
+        "route": "configured-standard-equivalent",
+        "billing": "sponsored",
+        "version": "s3-configured-2026-10-19",
+        "currency": "USD",
+        "capacity_days": 0,
+        "invoice_confirmed": false,
+        "per_attempt_microusd": 1
+      }
+    },
+    {
+      "category": "ocr",
+      "model": "mistral-ocr-4-1",
+      "state": "estimated",
+      "amount": 4000,
+      "quantity": {
+        "model": "mistral-ocr-4-1",
+        "sha256": "4798b7e4ce4ea49b3e10148ee641feb85147ab22bcde10bc349a8cf74501b58e",
+        "provider_usage": {
+          "doc_size_bytes": 12165,
+          "pages_processed": 1
+        }
+      },
+      "invoice_confirmed": false,
+      "price": {
+        "model": "mistral-ocr-4-1",
+        "version": "product-files-v1",
+        "provider": "mistral",
+        "retention": "until_deleted",
+        "orphan_hours": 24,
+        "max_pdf_pages": 20,
+        "price_version": "ocr-configured-v1",
+        "max_file_bytes": 10485760,
+        "max_task_pages": 40,
+        "max_attachments": 5,
+        "max_output_bytes": 26214400,
+        "max_output_files": 10,
+        "microusd_per_page": 4000.0,
+        "usd_per_1000_pages": "4.0",
+        "max_attachment_bytes": 26214400,
+        "max_extraction_bytes": 4194304,
+        "ocr_global_daily_pages": 1000,
+        "ocr_account_daily_pages": 100
+      }
+    },
+    {
+      "category": "storage",
+      "model": null,
+      "state": "estimated",
+      "amount": 1,
+      "quantity": {
+        "bytes": 12165,
+        "attempts": 1,
+        "capacity": "30-day upper estimate on put",
+        "operation": "get",
+        "sponsored": true,
+        "quantity_state": "confirmed",
+        "egress_cost_state": "unknown"
+      },
+      "invoice_confirmed": false,
+      "price": {
+        "route": "configured-standard-equivalent",
+        "billing": "sponsored",
+        "version": "s3-configured-2026-10-19",
+        "currency": "USD",
+        "capacity_days": 0,
+        "invoice_confirmed": false,
+        "per_attempt_microusd": 1
+      }
+    },
+    {
+      "category": "storage",
+      "model": null,
+      "state": "estimated",
+      "amount": 5,
+      "quantity": {
+        "bytes": 230,
+        "attempts": 1,
+        "capacity": "30-day upper estimate on put",
+        "operation": "put",
+        "sponsored": true,
+        "quantity_state": "confirmed",
+        "egress_cost_state": "unknown"
+      },
+      "invoice_confirmed": false,
+      "price": {
+        "route": "configured-standard-equivalent",
+        "billing": "sponsored",
+        "version": "s3-configured-2026-10-19",
+        "currency": "USD",
+        "capacity_days": 30,
+        "invoice_confirmed": false,
+        "per_attempt_microusd": 5
+      }
+    },
+    {
+      "category": "storage",
+      "model": null,
+      "state": "estimated",
+      "amount": 1,
+      "quantity": {
+        "bytes": 230,
+        "attempts": 1,
+        "capacity": "30-day upper estimate on put",
+        "operation": "get",
+        "sponsored": true,
+        "quantity_state": "confirmed",
+        "egress_cost_state": "unknown"
+      },
+      "invoice_confirmed": false,
+      "price": {
+        "route": "configured-standard-equivalent",
+        "billing": "sponsored",
+        "version": "s3-configured-2026-10-19",
+        "currency": "USD",
+        "capacity_days": 0,
+        "invoice_confirmed": false,
+        "per_attempt_microusd": 1
+      }
+    },
+    {
+      "category": "storage",
+      "model": null,
+      "state": "estimated",
+      "amount": 1,
+      "quantity": {
+        "bytes": 12165,
+        "attempts": 1,
+        "capacity": "30-day upper estimate on put",
+        "operation": "get",
+        "sponsored": true,
+        "quantity_state": "confirmed",
+        "egress_cost_state": "unknown"
+      },
+      "invoice_confirmed": false,
+      "price": {
+        "route": "configured-standard-equivalent",
+        "billing": "sponsored",
+        "version": "s3-configured-2026-10-19",
+        "currency": "USD",
+        "capacity_days": 0,
+        "invoice_confirmed": false,
+        "per_attempt_microusd": 1
+      }
+    },
+    {
+      "category": "storage",
+      "model": null,
+      "state": "estimated",
+      "amount": 1,
+      "quantity": {
+        "bytes": 230,
+        "attempts": 1,
+        "capacity": "30-day upper estimate on put",
+        "operation": "get",
+        "sponsored": true,
+        "quantity_state": "confirmed",
+        "egress_cost_state": "unknown"
+      },
+      "invoice_confirmed": false,
+      "price": {
+        "route": "configured-standard-equivalent",
+        "billing": "sponsored",
+        "version": "s3-configured-2026-10-19",
+        "currency": "USD",
+        "capacity_days": 0,
+        "invoice_confirmed": false,
+        "per_attempt_microusd": 1
+      }
+    },
+    {
+      "category": "model",
+      "model": "gpt-6-luna",
+      "state": "estimated",
+      "amount": 20,
+      "quantity": {
+        "response_id": null,
+        "input_tokens": 100,
+        "total_tokens": 120,
+        "output_tokens": 20,
+        "response_status": null
+      },
+      "invoice_confirmed": false,
+      "price": {
+        "input": "0.10",
+        "known": true,
+        "model": "gpt-6-luna",
+        "route": "standard-short-context",
+        "cached": "0.01",
+        "output": "0.50",
+        "version": "provider-list-2026-10-19",
+        "currency": "USD",
+        "invoice_confirmed": false
+      }
+    },
+    {
+      "category": "storage",
+      "model": null,
+      "state": "estimated",
+      "amount": 5,
+      "quantity": {
+        "bytes": 44,
+        "attempts": 1,
+        "capacity": "30-day upper estimate on put",
+        "operation": "put",
+        "sponsored": true,
+        "quantity_state": "confirmed",
+        "egress_cost_state": "unknown"
+      },
+      "invoice_confirmed": false,
+      "price": {
+        "route": "configured-standard-equivalent",
+        "billing": "sponsored",
+        "version": "s3-configured-2026-10-19",
+        "currency": "USD",
+        "capacity_days": 30,
+        "invoice_confirmed": false,
+        "per_attempt_microusd": 5
+      }
+    },
+    {
+      "category": "storage",
+      "model": null,
+      "state": "estimated",
+      "amount": 1,
+      "quantity": {
+        "bytes": 44,
+        "attempts": 1,
+        "capacity": "30-day upper estimate on put",
+        "operation": "get",
+        "sponsored": true,
+        "quantity_state": "confirmed",
+        "egress_cost_state": "unknown"
+      },
+      "invoice_confirmed": false,
+      "price": {
+        "route": "configured-standard-equivalent",
+        "billing": "sponsored",
+        "version": "s3-configured-2026-10-19",
+        "currency": "USD",
+        "capacity_days": 0,
+        "invoice_confirmed": false,
+        "per_attempt_microusd": 1
+      }
+    }
+  ]
+}

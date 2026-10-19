@@ -1,0 +1,190 @@
+{
+  "passed": 46,
+  "scenarios": [
+    {
+      "scenario": "cached_input_separate_from_output",
+      "passed": true
+    },
+    {
+      "scenario": "missing_usage_stays_unknown",
+      "passed": true
+    },
+    {
+      "scenario": "unpriced_model_not_free",
+      "passed": true
+    },
+    {
+      "scenario": "unpriced_model_marked_unknown",
+      "passed": true
+    },
+    {
+      "scenario": "free_period_allowance_pinned",
+      "passed": true
+    },
+    {
+      "scenario": "reservation_visible",
+      "passed": true
+    },
+    {
+      "scenario": "same_work_is_idempotent",
+      "passed": true
+    },
+    {
+      "scenario": "event_dispatch_replay_deduplicated",
+      "passed": true
+    },
+    {
+      "scenario": "settlement_replay_has_one_audit",
+      "passed": true
+    },
+    {
+      "scenario": "settlement_releases_remainder",
+      "passed": true
+    },
+    {
+      "scenario": "other_owner_sees_no_history",
+      "passed": true
+    },
+    {
+      "scenario": "retry_reuses_period",
+      "passed": true
+    },
+    {
+      "scenario": "no_output_refunds_customer",
+      "passed": true
+    },
+    {
+      "scenario": "refund_retains_provider_expense",
+      "passed": true
+    },
+    {
+      "scenario": "retry_does_not_reverse_previous_refund",
+      "passed": true
+    },
+    {
+      "scenario": "parent_budget_cannot_be_exceeded",
+      "passed": true
+    },
+    {
+      "scenario": "unknown_holds_only_uncertain_amount",
+      "passed": true
+    },
+    {
+      "scenario": "late_settlement_releases_unknown",
+      "passed": true
+    },
+    {
+      "scenario": "account_admission_race_one_winner",
+      "passed": true
+    },
+    {
+      "scenario": "race_balance_never_negative",
+      "passed": true
+    },
+    {
+      "scenario": "period_price_snapshot_survives_config_change",
+      "passed": true
+    },
+    {
+      "scenario": "work_price_snapshot_survives_config_change",
+      "passed": true
+    },
+    {
+      "scenario": "task_still_completes",
+      "passed": true
+    },
+    {
+      "scenario": "task_costs_bound_to_parent",
+      "passed": true
+    },
+    {
+      "scenario": "task_release_does_not_leave_full_hold",
+      "passed": true
+    },
+    {
+      "scenario": "one_model_call_one_cost",
+      "passed": true
+    },
+    {
+      "scenario": "usage_requires_auth",
+      "passed": true
+    },
+    {
+      "scenario": "usage_http",
+      "passed": true
+    },
+    {
+      "scenario": "owner_can_audit_receipt",
+      "passed": true
+    },
+    {
+      "scenario": "client_cannot_set_price_or_cap",
+      "passed": true
+    },
+    {
+      "scenario": "server_code_estimate_includes_resource",
+      "passed": true
+    },
+    {
+      "scenario": "browser_estimate_includes_retained_disk",
+      "passed": true
+    },
+    {
+      "scenario": "cross_owner_receipt_hidden",
+      "passed": true
+    },
+    {
+      "scenario": "invalid_pagination_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "rollover_creates_new_allowance",
+      "passed": true
+    },
+    {
+      "scenario": "old_reservation_does_not_charge_new_period",
+      "passed": true
+    },
+    {
+      "scenario": "verified_grant_selects_plus_contract",
+      "passed": true
+    },
+    {
+      "scenario": "insufficient_allowance_rejects_task_atomically",
+      "passed": true
+    },
+    {
+      "scenario": "denied_task_creates_no_domain_or_queue_entry",
+      "passed": true
+    },
+    {
+      "scenario": "denied_task_does_not_charge_chat",
+      "passed": true
+    },
+    {
+      "scenario": "read_remains_available_with_low_balance",
+      "passed": true
+    },
+    {
+      "scenario": "storage_is_sponsored_not_customer_charge",
+      "passed": true
+    },
+    {
+      "scenario": "storage_attempts_have_cost_telemetry",
+      "passed": true
+    },
+    {
+      "scenario": "live_ocr_with_controlled_downstream_model",
+      "passed": true
+    },
+    {
+      "scenario": "live_memory_and_ocr_have_estimates",
+      "passed": true
+    },
+    {
+      "scenario": "live_estimates_do_not_claim_invoice",
+      "passed": true
+    }
+  ],
+  "temporary_resources_removed": true
+}

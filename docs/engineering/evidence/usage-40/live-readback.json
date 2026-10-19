@@ -1,0 +1,474 @@
+{
+  "environment": "local development",
+  "owner_id": "2ed0eb3f-1e58-42bf-bfb8-2a409c2c28c8",
+  "thread_id": "e6de8c92-0801-5b92-adc5-fc03fddbe5f3",
+  "quota": {
+    "plan": "free",
+    "period": {
+      "starts_at": "2026-10-18 05:43:59.705515+00:00",
+      "ends_at": "2026-11-17 05:43:59.705515+00:00",
+      "policy_version": "chat-baseline-v1"
+    },
+    "meters": {
+      "chat": {
+        "limit": 100,
+        "reserved": 0,
+        "used": 21,
+        "remaining": 79
+      }
+    }
+  },
+  "account": {
+    "plan": "free",
+    "plan_contract": {
+      "price_idr": 0,
+      "chat_messages": 100,
+      "compute_credits": 1000.0,
+      "period_days": 30,
+      "checkout_available": false
+    },
+    "policy_version": "compute-allowance-v1",
+    "period": {
+      "starts_at": "2026-10-18 05:43:59.705515+00:00",
+      "ends_at": "2026-11-17 05:43:59.705515+00:00"
+    },
+    "compute": {
+      "limit": 1000.0,
+      "used": 1.813,
+      "reserved": 0.0,
+      "remaining": 998.187
+    },
+    "storage": {
+      "bytes": "2364",
+      "limit_bytes": 262144000
+    },
+    "items": [
+      {
+        "id": "05915345-3703-5a5f-9df9-fe693079ddc5",
+        "kind": "probe",
+        "title": "NG-040 audit cadangan saldo nol",
+        "task_id": null,
+        "thread_id": null,
+        "state": "refunded",
+        "created_at": "2026-10-19 11:24:02.727425+00:00",
+        "cap": 998.187,
+        "used": 0.0,
+        "reserved": 0.0,
+        "pending": 0.0,
+        "refunded": true,
+        "sponsored": false
+      },
+      {
+        "id": "8552a182-3b27-5ba8-bdc5-81a0ee1be948",
+        "kind": "task",
+        "title": "NG-040: gunakan Python untuk menghitung jumlah bilangan 1 sampai 100. Simpan perhitungan dan\u2026",
+        "task_id": "bc6a797f-946c-413a-851a-854877945c3b",
+        "thread_id": "e6de8c92-0801-5b92-adc5-fc03fddbe5f3",
+        "state": "settled",
+        "created_at": "2026-10-19 11:21:44.270731+00:00",
+        "cap": 138.0,
+        "used": 1.338,
+        "reserved": 0.0,
+        "pending": 0.0,
+        "refunded": false,
+        "sponsored": false
+      },
+      {
+        "id": "7b0262b4-2fc4-54e5-b965-7f90d72081f4",
+        "kind": "task",
+        "title": "NG-040: susun laporan singkat berisi tiga langkah menyiapkan presentasi. Simpan sebagai hasil\u2026",
+        "task_id": "a42392ef-f53d-430a-9117-e0462acde758",
+        "thread_id": "e6de8c92-0801-5b92-adc5-fc03fddbe5f3",
+        "state": "settled",
+        "created_at": "2026-10-19 11:14:36.890660+00:00",
+        "cap": 30.0,
+        "used": 0.076,
+        "reserved": 0.0,
+        "pending": 0.0,
+        "refunded": false,
+        "sponsored": false
+      },
+      {
+        "id": "70cd4100-4ba9-52b9-beb9-ec09ac3408f0",
+        "kind": "chat",
+        "title": "Percakapan dengan Gwen",
+        "task_id": null,
+        "thread_id": "e6de8c92-0801-5b92-adc5-fc03fddbe5f3",
+        "state": "settled",
+        "created_at": "2026-10-19 11:12:21.510328+00:00",
+        "cap": 300.0,
+        "used": 0.399,
+        "reserved": 0.0,
+        "pending": 0.0,
+        "refunded": false,
+        "sponsored": false
+      }
+    ],
+    "next_offset": null
+  },
+  "tasks": [
+    {
+      "id": "a42392ef-f53d-430a-9117-e0462acde758",
+      "status": "succeeded",
+      "stage": "complete",
+      "runtime_kind": "text",
+      "budget_cap": 60000,
+      "usage_units": 487,
+      "result_id": null,
+      "attempt": 2
+    },
+    {
+      "id": "bc6a797f-946c-413a-851a-854877945c3b",
+      "status": "succeeded",
+      "stage": "complete",
+      "runtime_kind": "code",
+      "budget_cap": 60000,
+      "usage_units": 1095,
+      "result_id": "08ff0147-0da0-5701-9be4-9f5bce3c2d3e",
+      "attempt": 1
+    }
+  ],
+  "works": [
+    {
+      "id": "70cd4100-4ba9-52b9-beb9-ec09ac3408f0",
+      "resource_key": "chat:e2fce0af-3f6e-4e64-aa4b-a23840388b09",
+      "state": "settled",
+      "cap": 300000,
+      "vendor_cost": 399,
+      "used": 399,
+      "reserved": 0
+    },
+    {
+      "id": "7b0262b4-2fc4-54e5-b965-7f90d72081f4",
+      "resource_key": "task:a42392ef-f53d-430a-9117-e0462acde758",
+      "state": "settled",
+      "cap": 30000,
+      "vendor_cost": 76,
+      "used": 76,
+      "reserved": 0
+    },
+    {
+      "id": "8552a182-3b27-5ba8-bdc5-81a0ee1be948",
+      "resource_key": "task:bc6a797f-946c-413a-851a-854877945c3b",
+      "state": "settled",
+      "cap": 138000,
+      "vendor_cost": 1338,
+      "used": 1338,
+      "reserved": 0
+    },
+    {
+      "id": "1fc88dbf-e2c9-4b1e-bd84-7798532a5f24",
+      "resource_key": "storage:d10dafa8-33ae-4cbf-9833-c4c158464809",
+      "state": "refunded",
+      "cap": 15,
+      "vendor_cost": 5,
+      "used": 0,
+      "reserved": 0
+    },
+    {
+      "id": "48eaf1a9-49c6-4900-bb21-7a1afd9039d9",
+      "resource_key": "storage:713d5737-ec35-4cb2-8011-19a26d8228b5",
+      "state": "refunded",
+      "cap": 3,
+      "vendor_cost": 1,
+      "used": 0,
+      "reserved": 0
+    },
+    {
+      "id": "ba1253ea-3604-4af2-8f7e-29fe8cc1bf5d",
+      "resource_key": "storage:ec06fbe5-6c75-409a-a5bb-cb41eacf1e26",
+      "state": "refunded",
+      "cap": 3,
+      "vendor_cost": 1,
+      "used": 0,
+      "reserved": 0
+    },
+    {
+      "id": "97a8e239-280f-4f96-a2c1-0af8bf93dcc5",
+      "resource_key": "storage:4889d5b3-8bb3-4cb3-a5d8-589a1bc22412",
+      "state": "refunded",
+      "cap": 15,
+      "vendor_cost": 5,
+      "used": 0,
+      "reserved": 0
+    },
+    {
+      "id": "5c894317-ccea-474b-9dbc-4d5ea7bef9ae",
+      "resource_key": "storage:f124b607-5c30-45cd-ab1f-41cd368fcf8b",
+      "state": "refunded",
+      "cap": 3,
+      "vendor_cost": 1,
+      "used": 0,
+      "reserved": 0
+    },
+    {
+      "id": "05915345-3703-5a5f-9df9-fe693079ddc5",
+      "resource_key": "acceptance:ng040-zero:9b671375-af2c-4491-8191-7f7cbd75b445",
+      "state": "refunded",
+      "cap": 998187,
+      "vendor_cost": 0,
+      "used": 0,
+      "reserved": 0
+    },
+    {
+      "id": "f8c3d0f0-de54-4e46-9c90-38641e73d961",
+      "resource_key": "storage:4b571c33-6a00-4a70-818b-61979394d1e1",
+      "state": "refunded",
+      "cap": 3,
+      "vendor_cost": 1,
+      "used": 0,
+      "reserved": 0
+    }
+  ],
+  "cost_events": [
+    {
+      "id": "9f0d1976-f832-5b27-b43a-19dc324fa7b4",
+      "identity": "chat-model:d7ec0a9f-6df7-44fc-be6c-481660346075",
+      "category": "model",
+      "model": "gpt-6-luna",
+      "amount": 399,
+      "reserved": 13595,
+      "state": "estimated",
+      "quantity": {
+        "input_tokens": 3916,
+        "total_tokens": 3929,
+        "output_tokens": 13,
+        "input_token_details": {
+          "cache_read": 0,
+          "cache_creation": 3913
+        },
+        "output_token_details": {
+          "reasoning": 0
+        }
+      },
+      "invoice_confirmed": false
+    },
+    {
+      "id": "fece2761-88de-51fa-af45-9a96bc1c5c21",
+      "identity": "task-model:d3d83363-9ff0-4903-b98b-b7808b764dff",
+      "category": "model",
+      "model": "gpt-6-luna",
+      "amount": 76,
+      "reserved": 4281,
+      "state": "estimated",
+      "quantity": {
+        "response_id": "resp_0a8198e850fe44b3006ad5fb9dbaf087d08f4a270246c40596",
+        "input_tokens": 420,
+        "total_tokens": 487,
+        "output_tokens": 67,
+        "response_status": "completed",
+        "input_token_details": {
+          "cache_read": 0,
+          "cache_creation": 0
+        },
+        "output_token_details": {
+          "reasoning": 0
+        }
+      },
+      "invoice_confirmed": false
+    },
+    {
+      "id": "8a2ad430-5e62-56e9-bf59-957690145caf",
+      "identity": "sandbox:fce054b2-eb93-4459-9b13-e458776a355f",
+      "category": "sandbox",
+      "model": null,
+      "amount": 1140,
+      "reserved": 36000,
+      "state": "estimated",
+      "quantity": {
+        "invoice_confirmed": false,
+        "observed_wall_seconds": 24.647
+      },
+      "invoice_confirmed": false
+    },
+    {
+      "id": "8d7106ba-5613-5265-bfb9-e97a7c62f37b",
+      "identity": "task-model:22545035-db57-487f-80ed-9ad28152fa2c",
+      "category": "model",
+      "model": "gpt-6-luna",
+      "amount": 198,
+      "reserved": 5059,
+      "state": "estimated",
+      "quantity": {
+        "input_tokens": 875,
+        "total_tokens": 1095,
+        "output_tokens": 220,
+        "input_token_details": {
+          "cache_read": 0,
+          "cache_creation": 0
+        },
+        "output_token_details": {
+          "reasoning": 58
+        }
+      },
+      "invoice_confirmed": false
+    },
+    {
+      "id": "d10dafa8-33ae-4cbf-9833-c4c158464809",
+      "identity": "storage:d10dafa8-33ae-4cbf-9833-c4c158464809",
+      "category": "storage",
+      "model": null,
+      "amount": 5,
+      "reserved": 15,
+      "state": "estimated",
+      "quantity": {
+        "bytes": 135,
+        "attempts": 1,
+        "capacity": "30-day upper estimate on put",
+        "operation": "put",
+        "sponsored": true,
+        "quantity_state": "confirmed",
+        "egress_cost_state": "unknown"
+      },
+      "invoice_confirmed": false
+    },
+    {
+      "id": "713d5737-ec35-4cb2-8011-19a26d8228b5",
+      "identity": "storage:713d5737-ec35-4cb2-8011-19a26d8228b5",
+      "category": "storage",
+      "model": null,
+      "amount": 1,
+      "reserved": 3,
+      "state": "estimated",
+      "quantity": {
+        "bytes": 135,
+        "attempts": 1,
+        "capacity": "30-day upper estimate on put",
+        "operation": "get",
+        "sponsored": true,
+        "quantity_state": "confirmed",
+        "egress_cost_state": "unknown"
+      },
+      "invoice_confirmed": false
+    },
+    {
+      "id": "ec06fbe5-6c75-409a-a5bb-cb41eacf1e26",
+      "identity": "storage:ec06fbe5-6c75-409a-a5bb-cb41eacf1e26",
+      "category": "storage",
+      "model": null,
+      "amount": 1,
+      "reserved": 3,
+      "state": "estimated",
+      "quantity": {
+        "bytes": 135,
+        "attempts": 1,
+        "capacity": "30-day upper estimate on put",
+        "operation": "get",
+        "sponsored": true,
+        "quantity_state": "confirmed",
+        "egress_cost_state": "unknown"
+      },
+      "invoice_confirmed": false
+    },
+    {
+      "id": "4889d5b3-8bb3-4cb3-a5d8-589a1bc22412",
+      "identity": "storage:4889d5b3-8bb3-4cb3-a5d8-589a1bc22412",
+      "category": "storage",
+      "model": null,
+      "amount": 5,
+      "reserved": 15,
+      "state": "estimated",
+      "quantity": {
+        "bytes": 135,
+        "attempts": 1,
+        "capacity": "30-day upper estimate on put",
+        "operation": "put",
+        "sponsored": true,
+        "quantity_state": "confirmed",
+        "egress_cost_state": "unknown"
+      },
+      "invoice_confirmed": false
+    },
+    {
+      "id": "f124b607-5c30-45cd-ab1f-41cd368fcf8b",
+      "identity": "storage:f124b607-5c30-45cd-ab1f-41cd368fcf8b",
+      "category": "storage",
+      "model": null,
+      "amount": 1,
+      "reserved": 3,
+      "state": "estimated",
+      "quantity": {
+        "bytes": 135,
+        "attempts": 1,
+        "capacity": "30-day upper estimate on put",
+        "operation": "get",
+        "sponsored": true,
+        "quantity_state": "confirmed",
+        "egress_cost_state": "unknown"
+      },
+      "invoice_confirmed": false
+    },
+    {
+      "id": "4b571c33-6a00-4a70-818b-61979394d1e1",
+      "identity": "storage:4b571c33-6a00-4a70-818b-61979394d1e1",
+      "category": "storage",
+      "model": null,
+      "amount": 1,
+      "reserved": 3,
+      "state": "estimated",
+      "quantity": {
+        "bytes": 135,
+        "attempts": 1,
+        "capacity": "30-day upper estimate on put",
+        "operation": "get",
+        "sponsored": true,
+        "quantity_state": "confirmed",
+        "egress_cost_state": "unknown"
+      },
+      "invoice_confirmed": false
+    }
+  ],
+  "native_task_cost_events": [
+    {
+      "id": "d3d83363-9ff0-4903-b98b-b7808b764dff",
+      "task_id": "a42392ef-f53d-430a-9117-e0462acde758",
+      "state": "confirmed",
+      "usage": {
+        "response_id": "resp_0a8198e850fe44b3006ad5fb9dbaf087d08f4a270246c40596",
+        "input_tokens": 420,
+        "total_tokens": 487,
+        "output_tokens": 67,
+        "response_status": "completed",
+        "input_token_details": {
+          "cache_read": 0,
+          "cache_creation": 0
+        },
+        "output_token_details": {
+          "reasoning": 0
+        }
+      }
+    },
+    {
+      "id": "22545035-db57-487f-80ed-9ad28152fa2c",
+      "task_id": "bc6a797f-946c-413a-851a-854877945c3b",
+      "state": "confirmed",
+      "usage": {
+        "input_tokens": 875,
+        "total_tokens": 1095,
+        "output_tokens": 220,
+        "input_token_details": {
+          "cache_read": 0,
+          "cache_creation": 0
+        },
+        "output_token_details": {
+          "reasoning": 58
+        }
+      }
+    }
+  ],
+  "resource_sessions": [
+    {
+      "id": "fce054b2-eb93-4459-9b13-e458776a355f",
+      "state": "deleted",
+      "charged_microusd": 1140,
+      "cost_state": "estimated",
+      "usage": {
+        "gc_checked_at": "2026-10-19T11:25:00.703798+00:00",
+        "invoice_confirmed": false,
+        "observed_wall_seconds": 24.647
+      }
+    }
+  ],
+  "invoice_verified": false,
+  "zero_hold_released": true
+}

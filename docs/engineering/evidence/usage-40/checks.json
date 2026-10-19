@@ -1,0 +1,66 @@
+{
+  "environment": "local development",
+  "migration": "0013_compute_usage",
+  "check": true,
+  "frontend_build": true,
+  "docs_check": true,
+  "diff_check": true,
+  "contracts": {
+    "usage": 48,
+    "live_probe_total": 46,
+    "live_probe_additional": 3,
+    "task": 55,
+    "chat_quota": 46,
+    "file": 47,
+    "sandbox": 45,
+    "browser": 47,
+    "scheduler": 82,
+    "memory": 62,
+    "proactivity": 105
+  },
+  "fixtures": {
+    "browser_and_proactivity": "enlarged compute allowance for pre-existing domain corpus; default allowance enforced by NG-040 inspector",
+    "zero_balance": "temporary real ledger hold; released",
+    "offline": "browser fetch rejection; restored"
+  },
+  "viewports": [
+    [
+      1440,
+      1700
+    ],
+    [
+      390,
+      844
+    ],
+    [
+      320,
+      640
+    ]
+  ],
+  "horizontal_overflow": false,
+  "chat_used_before_after_approval": [
+    20,
+    20
+  ],
+  "chat_used_before_after_rejected_admission": [
+    21,
+    21
+  ],
+  "zero_balance_download": {
+    "status": 200,
+    "bytes": 135,
+    "sha256": "6c652a268a5ce70710531de3e7c6e8a4a17e6e4c564a7339c0e4ec84278022f3"
+  },
+  "all_audit_holds_released": true,
+  "invoice_verified": false,
+  "checkout_enabled": false,
+  "notion_status": "Done",
+  "notion_readback_at": "2026-10-19T11:32:55.813Z",
+  "notion_view_counts": [
+    41,
+    25,
+    0,
+    16
+  ],
+  "mirror_final_readback_at": "2026-10-19T11:35:00Z"
+}

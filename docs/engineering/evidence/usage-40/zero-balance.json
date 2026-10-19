@@ -1,0 +1,14 @@
+{
+  "chatAfter": 21,
+  "chatBefore": 21,
+  "download": {
+    "bytes": 135,
+    "sha256": "6c652a268a5ce70710531de3e7c6e8a4a17e6e4c564a7339c0e4ec84278022f3",
+    "status": 200,
+    "total5050": true
+  },
+  "error": {
+    "detail": "Sisa komputasi tidak cukup untuk batas pekerjaan ini. Lihat Penggunaan untuk cadangan aktif dan waktu reset."
+  },
+  "rejectedStatus": 429
+}

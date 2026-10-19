@@ -1,0 +1,409 @@
+{
+  "kind": "initial_observed_usage_repricing",
+  "generated_at": "2026-10-19T11:24:05.650946+00:00",
+  "owner_id": "2ed0eb3f-1e58-42bf-bfb8-2a409c2c28c8",
+  "price_version": "provider-list-2026-10-19",
+  "invoice_verified": false,
+  "historical_ledger_mutated": false,
+  "historical_chat_model_assumption": "gpt-6-luna",
+  "limits": [
+    "Development sample; not population benchmark NG-041",
+    "Historical model quantities repriced with the explicitly named current price table",
+    "Browser retained disk is a conservative per-use window, not actual disk invoice",
+    "S3 I/O uses configured R2-equivalent estimates; retained capacity beyond first 30 days and direct signed-download byte counts need provider reconciliation"
+  ],
+  "categories": {
+    "chat": {
+      "observations": 18,
+      "estimated_microusd": 3125,
+      "unknown_ceiling_microusd": 0,
+      "reported_tokens": 39920
+    },
+    "task_browser": {
+      "observations": 14,
+      "estimated_microusd": 3797,
+      "unknown_ceiling_microusd": 0,
+      "reported_tokens": 31758
+    },
+    "task_code": {
+      "observations": 4,
+      "estimated_microusd": 1373,
+      "unknown_ceiling_microusd": 0,
+      "reported_tokens": 5957
+    },
+    "task_text": {
+      "observations": 2,
+      "estimated_microusd": 179,
+      "unknown_ceiling_microusd": 0,
+      "reported_tokens": 1238
+    },
+    "proactive": {
+      "observations": 4,
+      "estimated_microusd": 861,
+      "unknown_ceiling_microusd": 0,
+      "reported_tokens": 3955
+    },
+    "python_resource": {
+      "observations": 5,
+      "estimated_microusd": 6852,
+      "unknown_ceiling_microusd": 0,
+      "reported_tokens": 0
+    },
+    "browser_resource_and_retention": {
+      "observations": 5,
+      "estimated_microusd": 760149,
+      "unknown_ceiling_microusd": 0,
+      "reported_tokens": 0
+    },
+    "object_storage_io": {
+      "observations": 5,
+      "estimated_microusd": 13,
+      "unknown_ceiling_microusd": 0,
+      "reported_tokens": 0
+    }
+  },
+  "observations": [
+    {
+      "category": "chat",
+      "id": "d0674ade-00cb-439c-a0d2-4b6550fe3cc2:resp_0471464e7f2b3609006ad58ef1594c87d0b8af1ec7bcda3594",
+      "amount_microusd": 162,
+      "state": "estimated"
+    },
+    {
+      "category": "chat",
+      "id": "d0674ade-00cb-439c-a0d2-4b6550fe3cc2:resp_0471464e7f2b3609006ad58ef326e887d082e2c1bda203a535",
+      "amount_microusd": 88,
+      "state": "estimated"
+    },
+    {
+      "category": "chat",
+      "id": "d0674ade-00cb-439c-a0d2-4b6550fe3cc2:resp_0471464e7f2b3609006ad58ef5cca087d0bb01694c45704072",
+      "amount_microusd": 55,
+      "state": "estimated"
+    },
+    {
+      "category": "chat",
+      "id": "e2fce0af-3f6e-4e64-aa4b-a23840388b09:resp_06f1623a3e3e21a0006ad5fb17719487d0a60a1d2158c276d4",
+      "amount_microusd": 399,
+      "state": "estimated"
+    },
+    {
+      "category": "chat",
+      "id": "add415e0-939b-400c-ab40-3eeb8547f326:resp_0bb118d54f33b377006ad58f25b6a887d0a83c7e5e7413af7e",
+      "amount_microusd": 32,
+      "state": "estimated"
+    },
+    {
+      "category": "chat",
+      "id": "add415e0-939b-400c-ab40-3eeb8547f326:resp_0bb118d54f33b377006ad58f27595087d087e700dd5d6ed6d2",
+      "amount_microusd": 90,
+      "state": "estimated"
+    },
+    {
+      "category": "chat",
+      "id": "add415e0-939b-400c-ab40-3eeb8547f326:resp_0bb118d54f33b377006ad58f29d74087d0bd6c2692aa4dfebb",
+      "amount_microusd": 58,
+      "state": "estimated"
+    },
+    {
+      "category": "chat",
+      "id": "04f13773-7954-40e7-9487-9e2df59f4bd5:resp_09bf8368db767e06006ad45e11217487d1b95064ebdd42c381",
+      "amount_microusd": 1196,
+      "state": "estimated"
+    },
+    {
+      "category": "chat",
+      "id": "d5042aff-a60c-4a09-9939-fb1b185d0773:resp_0112a563c2aa6c5f006ad4e460d24c87d0919a44619a1c48ae",
+      "amount_microusd": 106,
+      "state": "estimated"
+    },
+    {
+      "category": "chat",
+      "id": "5dfeae7b-ae75-4cdc-af03-68160778d87d:resp_065e62fb23ef7ac1006ad45d9eb44087d18faa4baebd4cbf12",
+      "amount_microusd": 34,
+      "state": "estimated"
+    },
+    {
+      "category": "chat",
+      "id": "a3f2d674-69b4-419a-9d7a-b0a150cecf74:resp_057eb9dab3515f94006ad46025377887d18e1b537d78ba2b0d",
+      "amount_microusd": 24,
+      "state": "estimated"
+    },
+    {
+      "category": "chat",
+      "id": "6732bd44-8dde-415f-bb75-72d11ee8bc35:resp_0887aa628d8d4bac006ad58f8bcc1487d0a693dea0f8140513",
+      "amount_microusd": 163,
+      "state": "estimated"
+    },
+    {
+      "category": "chat",
+      "id": "e6103178-2472-413d-a994-8ff641456537:resp_08fa5042802c88f4006ad5dacb6a7887d0af965424cd380a3a",
+      "amount_microusd": 294,
+      "state": "estimated"
+    },
+    {
+      "category": "chat",
+      "id": "e6103178-2472-413d-a994-8ff641456537:resp_08fa5042802c88f4006ad5dacd62e487d08fd21b0bb0672275",
+      "amount_microusd": 109,
+      "state": "estimated"
+    },
+    {
+      "category": "chat",
+      "id": "e6103178-2472-413d-a994-8ff641456537:resp_08fa5042802c88f4006ad5dacf5d4487d0b9ce7fa45d381e69",
+      "amount_microusd": 88,
+      "state": "estimated"
+    },
+    {
+      "category": "chat",
+      "id": "4b3a4494-c3b2-4548-b9f3-301deedaf22f:resp_0ecacc4f30b41f1d006ad5db0c822c87d0b734371a17b2f519",
+      "amount_microusd": 46,
+      "state": "estimated"
+    },
+    {
+      "category": "chat",
+      "id": "4b3a4494-c3b2-4548-b9f3-301deedaf22f:resp_0ecacc4f30b41f1d006ad5db0df6fc87d092c6de9d97b868c4",
+      "amount_microusd": 121,
+      "state": "estimated"
+    },
+    {
+      "category": "chat",
+      "id": "4b3a4494-c3b2-4548-b9f3-301deedaf22f:resp_0ecacc4f30b41f1d006ad5db10753487d0ae4b984225f0e113",
+      "amount_microusd": 60,
+      "state": "estimated"
+    },
+    {
+      "category": "task_browser",
+      "id": "a8abca49-a007-48e8-bde0-92c9da29d566",
+      "amount_microusd": 246,
+      "state": "estimated"
+    },
+    {
+      "category": "task_code",
+      "id": "6167242a-aef3-4876-b142-e5b1be55fc0a",
+      "amount_microusd": 564,
+      "state": "estimated"
+    },
+    {
+      "category": "task_code",
+      "id": "55658012-4340-45c1-81dc-c779bb7782f9",
+      "amount_microusd": 243,
+      "state": "estimated"
+    },
+    {
+      "category": "task_code",
+      "id": "e1e7ea58-5adc-476d-9312-8a5f7f203187",
+      "amount_microusd": 368,
+      "state": "estimated"
+    },
+    {
+      "category": "task_browser",
+      "id": "ce6b55d8-1df6-4671-a5f7-ebbfc08a9147",
+      "amount_microusd": 210,
+      "state": "estimated"
+    },
+    {
+      "category": "task_browser",
+      "id": "6d72661c-e7e7-4949-89ce-67fb9cfd742b",
+      "amount_microusd": 270,
+      "state": "estimated"
+    },
+    {
+      "category": "task_browser",
+      "id": "5118d1d9-d308-4a9c-a601-79a2e60dc94c",
+      "amount_microusd": 285,
+      "state": "estimated"
+    },
+    {
+      "category": "task_browser",
+      "id": "e6db76ad-9559-401a-bbf5-588c126b7474",
+      "amount_microusd": 282,
+      "state": "estimated"
+    },
+    {
+      "category": "task_browser",
+      "id": "4ac0dffa-fca6-44b0-aa81-7632280ded8a",
+      "amount_microusd": 305,
+      "state": "estimated"
+    },
+    {
+      "category": "task_browser",
+      "id": "6d7dcfc5-427e-4b4b-ad2b-2b12e7e8ba3e",
+      "amount_microusd": 302,
+      "state": "estimated"
+    },
+    {
+      "category": "task_browser",
+      "id": "5c93ef5e-6ab0-4a0a-b5f8-6642c6231650",
+      "amount_microusd": 247,
+      "state": "estimated"
+    },
+    {
+      "category": "task_browser",
+      "id": "f1b26727-f68c-4c44-9646-b99e167fef79",
+      "amount_microusd": 258,
+      "state": "estimated"
+    },
+    {
+      "category": "task_browser",
+      "id": "cfa3a0ea-f86a-4062-bca5-d340503ee955",
+      "amount_microusd": 271,
+      "state": "estimated"
+    },
+    {
+      "category": "task_browser",
+      "id": "b401fb64-c10a-40d9-9459-94cf78cf5838",
+      "amount_microusd": 285,
+      "state": "estimated"
+    },
+    {
+      "category": "task_browser",
+      "id": "25a78992-9c54-4366-a2bf-e98d7bf295f8",
+      "amount_microusd": 311,
+      "state": "estimated"
+    },
+    {
+      "category": "task_browser",
+      "id": "5b936508-60c4-4357-9428-8250339f230d",
+      "amount_microusd": 253,
+      "state": "estimated"
+    },
+    {
+      "category": "task_browser",
+      "id": "9af5f69b-a7a7-4a05-94d0-1e5997a04953",
+      "amount_microusd": 272,
+      "state": "estimated"
+    },
+    {
+      "category": "task_text",
+      "id": "756f008d-5ea8-485f-a3c3-5f0638f06d66",
+      "amount_microusd": 103,
+      "state": "estimated"
+    },
+    {
+      "category": "task_text",
+      "id": "d3d83363-9ff0-4903-b98b-b7808b764dff",
+      "amount_microusd": 76,
+      "state": "estimated"
+    },
+    {
+      "category": "task_code",
+      "id": "22545035-db57-487f-80ed-9ad28152fa2c",
+      "amount_microusd": 198,
+      "state": "estimated"
+    },
+    {
+      "category": "proactive",
+      "id": "6d11bc33-f5da-4f8b-a82a-ba267c321e9f",
+      "amount_microusd": 359,
+      "state": "estimated"
+    },
+    {
+      "category": "proactive",
+      "id": "31693627-f1e6-443e-9cf9-da292f99cc76",
+      "amount_microusd": 87,
+      "state": "estimated"
+    },
+    {
+      "category": "proactive",
+      "id": "184dce95-da0f-40bd-bb4e-1ba5e6e59886",
+      "amount_microusd": 328,
+      "state": "estimated"
+    },
+    {
+      "category": "proactive",
+      "id": "67354395-5926-492e-a7c2-49c6f0439b21",
+      "amount_microusd": 87,
+      "state": "estimated"
+    },
+    {
+      "category": "python_resource",
+      "id": "ce019af5-8b74-4a14-9078-519fa2cebc5e",
+      "amount_microusd": 1433,
+      "state": "estimated"
+    },
+    {
+      "category": "python_resource",
+      "id": "1f3b2e0a-23d1-4778-b582-4e6335211db2",
+      "amount_microusd": 1132,
+      "state": "estimated"
+    },
+    {
+      "category": "python_resource",
+      "id": "47d31eb1-1b0a-4d71-a58e-a5d412da0164",
+      "amount_microusd": 2189,
+      "state": "estimated"
+    },
+    {
+      "category": "python_resource",
+      "id": "fce054b2-eb93-4459-9b13-e458776a355f",
+      "amount_microusd": 1140,
+      "state": "estimated"
+    },
+    {
+      "category": "python_resource",
+      "id": "2a217408-7383-4c33-b282-83eb5fa99caa",
+      "amount_microusd": 958,
+      "state": "estimated"
+    },
+    {
+      "category": "browser_resource_and_retention",
+      "id": "0c9e86b8-a9a1-4287-be96-bedef80537c8",
+      "amount_microusd": 152400,
+      "state": "estimated"
+    },
+    {
+      "category": "browser_resource_and_retention",
+      "id": "2c9df378-075a-4ab5-ad6c-05a5cba4d220",
+      "amount_microusd": 146351,
+      "state": "estimated"
+    },
+    {
+      "category": "browser_resource_and_retention",
+      "id": "dda137b7-907d-4ac8-964c-c5945e27e28e",
+      "amount_microusd": 160927,
+      "state": "estimated"
+    },
+    {
+      "category": "browser_resource_and_retention",
+      "id": "83576c1b-1e40-4ad0-b3ca-1c65d6f9f217",
+      "amount_microusd": 146626,
+      "state": "estimated"
+    },
+    {
+      "category": "browser_resource_and_retention",
+      "id": "3be63f18-e96b-4c33-b383-2525d65ef713",
+      "amount_microusd": 153845,
+      "state": "estimated"
+    },
+    {
+      "category": "object_storage_io",
+      "id": "4889d5b3-8bb3-4cb3-a5d8-589a1bc22412",
+      "amount_microusd": 5,
+      "state": "estimated"
+    },
+    {
+      "category": "object_storage_io",
+      "id": "713d5737-ec35-4cb2-8011-19a26d8228b5",
+      "amount_microusd": 1,
+      "state": "estimated"
+    },
+    {
+      "category": "object_storage_io",
+      "id": "d10dafa8-33ae-4cbf-9833-c4c158464809",
+      "amount_microusd": 5,
+      "state": "estimated"
+    },
+    {
+      "category": "object_storage_io",
+      "id": "ec06fbe5-6c75-409a-a5bb-cb41eacf1e26",
+      "amount_microusd": 1,
+      "state": "estimated"
+    },
+    {
+      "category": "object_storage_io",
+      "id": "f124b607-5c30-45cd-ab1f-41cd368fcf8b",
+      "amount_microusd": 1,
+      "state": "estimated"
+    }
+  ]
+}

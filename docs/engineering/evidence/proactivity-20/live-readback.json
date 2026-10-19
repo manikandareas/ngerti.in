@@ -1,0 +1,295 @@
+{
+  "environment": "development local",
+  "browser_during_delivery": "about:blank",
+  "fixtures": [
+    {
+      "identity": {
+        "account": "2ed0eb3f-1e58-42bf-bfb8-2a409c2c28c8",
+        "thread": "ae025eba-46fc-55f2-9cd0-60b1e146880b",
+        "goal": "c69b0602-21e9-5096-9a73-06d5155033f3",
+        "evaluation": "f33835a4-eb95-4784-a508-60110a45333e"
+      },
+      "evaluation": {
+        "id": "f33835a4-eb95-4784-a508-60110a45333e",
+        "status": "invalidated",
+        "reason": "goal_changed",
+        "generated": null,
+        "judgments": null,
+        "created_at": "2026-10-19 08:50:54.196722+00:00",
+        "finished_at": "2026-10-19 08:51:01.458236+00:00"
+      },
+      "cost_events": [
+        {
+          "stage": "generate",
+          "model": "gpt-6-luna",
+          "charged_units": 1983,
+          "state": "confirmed",
+          "usage": {
+            "total_tokens": 1983,
+            "prompt_tokens": 1583,
+            "completion_tokens": 400
+          }
+        },
+        {
+          "stage": "judge",
+          "model": "jev-1.13.0",
+          "charged_units": 2164,
+          "state": "confirmed",
+          "usage": {
+            "input_tokens": 2050,
+            "output_tokens": 114
+          }
+        }
+      ],
+      "deliveries": []
+    },
+    {
+      "identity": {
+        "account": "2ed0eb3f-1e58-42bf-bfb8-2a409c2c28c8",
+        "thread": "8f645db4-d423-5cf8-b1ef-09a38054bed4",
+        "goal": "ebe8522a-cf30-5b9e-9217-d4c11cf11b00",
+        "evaluation": "7ae6a97a-ee14-463d-978c-054f6070c7e8"
+      },
+      "evaluation": {
+        "id": "7ae6a97a-ee14-463d-978c-054f6070c7e8",
+        "status": "invalidated",
+        "reason": "delivery_disabled",
+        "generated": null,
+        "judgments": null,
+        "created_at": "2026-10-19 08:52:09.287632+00:00",
+        "finished_at": "2026-10-19 08:52:14.429434+00:00"
+      },
+      "cost_events": [
+        {
+          "stage": "generate",
+          "model": "gpt-6-luna",
+          "charged_units": 1972,
+          "state": "confirmed",
+          "usage": {
+            "total_tokens": 1972,
+            "prompt_tokens": 1645,
+            "completion_tokens": 327
+          }
+        },
+        {
+          "stage": "judge",
+          "model": "jev-1.13.0",
+          "charged_units": 2179,
+          "state": "confirmed",
+          "usage": {
+            "input_tokens": 2065,
+            "output_tokens": 114
+          }
+        }
+      ],
+      "deliveries": []
+    },
+    {
+      "identity": {
+        "controlled_positive": true,
+        "account": "2ed0eb3f-1e58-42bf-bfb8-2a409c2c28c8",
+        "thread": "023c534d-805b-55a9-9a58-fb02d9780478",
+        "goal": "3dba75e9-1956-545e-907b-dfd337504607",
+        "evaluation": "4edc4420-f58f-47df-8b25-103d1c7bc1bf",
+        "candidate": "285ed424-bd5d-404f-bff1-7332366e16cc",
+        "due": "2026-10-19T08:57:51.983152+00:00"
+      },
+      "evaluation": {
+        "id": "4edc4420-f58f-47df-8b25-103d1c7bc1bf",
+        "status": "selected",
+        "reason": null,
+        "generated": null,
+        "judgments": null,
+        "created_at": "2026-10-19 08:56:36.983414+00:00",
+        "finished_at": "2026-10-19 08:56:36.983414+00:00"
+      },
+      "cost_events": [],
+      "deliveries": [
+        {
+          "candidate_id": "285ed424-bd5d-404f-bff1-7332366e16cc",
+          "owner_id": "2ed0eb3f-1e58-42bf-bfb8-2a409c2c28c8",
+          "message_id": "3cba3e01-2635-5cb6-a44a-456a062fe3db",
+          "thread_id": "023c534d-805b-55a9-9a58-fb02d9780478",
+          "dedup_key": "a11c62305bfaf9cf72dc58fbc42fa60e9cddd2c035c8468b8c4d89aa10ce7b1f",
+          "preference_revision": 4,
+          "created_at": "2026-10-19 08:58:00.711802+00:00",
+          "parts": [
+            {
+              "id": "text",
+              "text": "Rincian kemasan dapat dibuat sebagai kategori tersendiri di tabel anggaran, dengan kolom jumlah dan harga per unit tetap kosong sampai datanya tersedia.",
+              "type": "text"
+            },
+            {
+              "id": "proactive",
+              "kind": "meaningful_update",
+              "type": "proactive",
+              "created_at": "2026-10-19T08:58:00.724772+00:00",
+              "candidate_id": "285ed424-bd5d-404f-bff1-7332366e16cc",
+              "why_relevant": "Struktur ini mengikuti kebutuhan memisahkan bahan baku dan kemasan yang kamu ceritakan.",
+              "policy_version": "proactive-delivery-20-v1"
+            }
+          ],
+          "position": 3
+        }
+      ]
+    }
+  ],
+  "preference_commands": [
+    {
+      "source_run_id": "e6103178-2472-413d-a994-8ff641456537",
+      "response": {
+        "scope": "thread",
+        "message": "Preferensi proaktif sudah diperbarui. Hasil Task/Jadwal tetap tersedia.",
+        "revision": 2,
+        "scope_id": "ae025eba-46fc-55f2-9cd0-60b1e146880b",
+        "intensity": "quiet",
+        "snoozed_until": null
+      },
+      "created_at": "2026-10-19 08:54:39.135813+00:00"
+    },
+    {
+      "source_run_id": "4b3a4494-c3b2-4548-b9f3-301deedaf22f",
+      "response": {
+        "scope": "account",
+        "message": "Preferensi proaktif sudah diperbarui. Hasil Task/Jadwal tetap tersedia.",
+        "revision": 3,
+        "scope_id": null,
+        "intensity": "off",
+        "snoozed_until": null
+      },
+      "created_at": "2026-10-19 08:55:44.066006+00:00"
+    }
+  ],
+  "unread_before_open": {
+    "proactive_read_position": 0,
+    "position": 3
+  },
+  "provider_observations_before_disable": [
+    {
+      "evaluation": "f33835a4-eb95-4784-a508-60110a45333e",
+      "observed_status": "no_op",
+      "observed_reason": "no_eligible_candidate",
+      "finding": "Timing confidence 0.27 was below the required 0.5."
+    },
+    {
+      "evaluation": "7ae6a97a-ee14-463d-978c-054f6070c7e8",
+      "observed_status": "no_op",
+      "observed_reason": "no_eligible_candidate",
+      "finding": "Benefit confidence 0.0, novelty 0.43 and grounding 0.89 failed minimums."
+    }
+  ],
+  "revocation_note": "The observed no-op evaluations were later invalidated by the explicit off command; snapshot/generated/judgment payloads were purged as designed. Cost receipts remain canonical.",
+  "cleanup_preferences": {
+    "intensity": "off",
+    "quiet_enabled": true,
+    "timezone": "Asia/Makassar",
+    "onboarded_at": "2026-10-19 08:50:38.397743+00:00"
+  },
+  "cleanup_evaluation_enabled": {
+    "enabled": false
+  },
+  "read_after_open": {
+    "proactive_read_position": 3,
+    "position": 3
+  },
+  "chat_usage": [
+    {
+      "id": "e6103178-2472-413d-a994-8ff641456537",
+      "status": "complete",
+      "usage": {
+        "resp_08fa5042802c88f4006ad5dacb6a7887d0af965424cd380a3a": {
+          "input_tokens": 2851,
+          "total_tokens": 2867,
+          "output_tokens": 16,
+          "input_token_details": {
+            "cache_read": 0,
+            "cache_creation": 2848
+          },
+          "output_token_details": {
+            "reasoning": 0
+          }
+        },
+        "resp_08fa5042802c88f4006ad5dacd62e487d08fd21b0bb0672275": {
+          "input_tokens": 3207,
+          "total_tokens": 3295,
+          "output_tokens": 88,
+          "input_token_details": {
+            "cache_read": 2848,
+            "cache_creation": 356
+          },
+          "output_token_details": {
+            "reasoning": 0
+          }
+        },
+        "resp_08fa5042802c88f4006ad5dacf5d4487d0b9ce7fa45d381e69": {
+          "input_tokens": 3388,
+          "total_tokens": 3462,
+          "output_tokens": 74,
+          "input_token_details": {
+            "cache_read": 3204,
+            "cache_creation": 181
+          },
+          "output_token_details": {
+            "reasoning": 0
+          }
+        }
+      }
+    },
+    {
+      "id": "4b3a4494-c3b2-4548-b9f3-301deedaf22f",
+      "status": "complete",
+      "usage": {
+        "resp_0ecacc4f30b41f1d006ad5db0c822c87d0b734371a17b2f519": {
+          "input_tokens": 2942,
+          "total_tokens": 2958,
+          "output_tokens": 16,
+          "input_token_details": {
+            "cache_read": 2848,
+            "cache_creation": 91
+          },
+          "output_token_details": {
+            "reasoning": 0
+          }
+        },
+        "resp_0ecacc4f30b41f1d006ad5db0df6fc87d092c6de9d97b868c4": {
+          "input_tokens": 3411,
+          "total_tokens": 3498,
+          "output_tokens": 87,
+          "input_token_details": {
+            "cache_read": 2939,
+            "cache_creation": 469
+          },
+          "output_token_details": {
+            "reasoning": 0
+          }
+        },
+        "resp_0ecacc4f30b41f1d006ad5db10753487d0ae4b984225f0e113": {
+          "input_tokens": 3568,
+          "total_tokens": 3586,
+          "output_tokens": 18,
+          "input_token_details": {
+            "cache_read": 3408,
+            "cache_creation": 157
+          },
+          "output_token_details": {
+            "reasoning": 0
+          }
+        }
+      }
+    }
+  ],
+  "cleanup_goals": [
+    {
+      "id": "c69b0602-21e9-5096-9a73-06d5155033f3",
+      "state": "archived"
+    },
+    {
+      "id": "ebe8522a-cf30-5b9e-9217-d4c11cf11b00",
+      "state": "archived"
+    },
+    {
+      "id": "3dba75e9-1956-545e-907b-dfd337504607",
+      "state": "archived"
+    }
+  ]
+}

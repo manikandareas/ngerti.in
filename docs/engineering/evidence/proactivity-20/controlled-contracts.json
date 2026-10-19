@@ -1,0 +1,426 @@
+{
+  "passed": 105,
+  "scenarios": [
+    {
+      "scenario": "preview_is_opt_in",
+      "passed": true
+    },
+    {
+      "scenario": "disabled_evaluation_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "enable_does_not_enable_delivery",
+      "passed": true
+    },
+    {
+      "scenario": "enable_retry_same_receipt",
+      "passed": true
+    },
+    {
+      "scenario": "stale_controls_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "no_evidence_is_durable_no_op",
+      "passed": true
+    },
+    {
+      "scenario": "no_evidence_reuses_receipt",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_thread_cannot_be_evaluated",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_receipt_cannot_be_read",
+      "passed": true
+    },
+    {
+      "scenario": "five_workers_claim_one_evaluation",
+      "passed": true
+    },
+    {
+      "scenario": "llm_then_jev_then_code_selects",
+      "passed": true
+    },
+    {
+      "scenario": "at_most_one_eligible_candidate",
+      "passed": true
+    },
+    {
+      "scenario": "candidate_has_thread_expiry_and_references",
+      "passed": true
+    },
+    {
+      "scenario": "raw_questions_and_judgments_are_auditable",
+      "passed": true
+    },
+    {
+      "scenario": "each_stage_has_confirmed_usage",
+      "passed": true
+    },
+    {
+      "scenario": "generation_and_judgment_models_separate",
+      "passed": true
+    },
+    {
+      "scenario": "unchanged_evidence_reuses_selected_receipt",
+      "passed": true
+    },
+    {
+      "scenario": "evaluation_never_sends_a_chat_message",
+      "passed": true
+    },
+    {
+      "scenario": "expired_candidate_is_not_eligible",
+      "passed": true
+    },
+    {
+      "scenario": "disable_retry_same_receipt",
+      "passed": true
+    },
+    {
+      "scenario": "disable_fences_and_purges_context",
+      "passed": true
+    },
+    {
+      "scenario": "reenable_allows_fresh_evaluation_after_revocation",
+      "passed": true
+    },
+    {
+      "scenario": "empty_decision",
+      "passed": true
+    },
+    {
+      "scenario": "empty_avoids_unnecessary_jev_call",
+      "passed": true
+    },
+    {
+      "scenario": "two_decision",
+      "passed": true
+    },
+    {
+      "scenario": "ranking_prefers_helpful_over_merely_related",
+      "passed": true
+    },
+    {
+      "scenario": "repeat_decision",
+      "passed": true
+    },
+    {
+      "scenario": "novelty_cannot_be_compensated_by_other_scores",
+      "passed": true
+    },
+    {
+      "scenario": "uncertain_decision",
+      "passed": true
+    },
+    {
+      "scenario": "ungrounded_decision",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_decision",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_avoids_unnecessary_jev_call",
+      "passed": true
+    },
+    {
+      "scenario": "missing_evidence_decision",
+      "passed": true
+    },
+    {
+      "scenario": "missing_evidence_avoids_unnecessary_jev_call",
+      "passed": true
+    },
+    {
+      "scenario": "provider_failure_is_not_no_op",
+      "passed": true
+    },
+    {
+      "scenario": "unknown_outcome_retains_reservation",
+      "passed": true
+    },
+    {
+      "scenario": "failed_stage_never_replayed_automatically",
+      "passed": true
+    },
+    {
+      "scenario": "retry_reuses_failure_receipt",
+      "passed": true
+    },
+    {
+      "scenario": "invalid_judgment_never_selected",
+      "passed": true
+    },
+    {
+      "scenario": "account_budget_blocks_before_network",
+      "passed": true
+    },
+    {
+      "scenario": "stage_reservation_cannot_be_repeated",
+      "passed": true
+    },
+    {
+      "scenario": "worker_crash_becomes_interrupted",
+      "passed": true
+    },
+    {
+      "scenario": "orphan_reservation_becomes_unknown",
+      "passed": true
+    },
+    {
+      "scenario": "goal_pause_during_inference_fences_publication",
+      "passed": true
+    },
+    {
+      "scenario": "goal_pause_purges_all_model_context",
+      "passed": true
+    },
+    {
+      "scenario": "memory_canonical_revision_in_context",
+      "passed": true
+    },
+    {
+      "scenario": "forget_during_generation_blocks_jev_and_publication",
+      "passed": true
+    },
+    {
+      "scenario": "forget_purges_unselected_drafts_and_snapshot",
+      "passed": true
+    },
+    {
+      "scenario": "forgotten_turn_does_not_reappear_as_chat_evidence",
+      "passed": true
+    },
+    {
+      "scenario": "canonical_readback_detects_missed_event",
+      "passed": true
+    },
+    {
+      "scenario": "credential_text_not_sent_to_models",
+      "passed": true
+    },
+    {
+      "scenario": "context_is_bounded",
+      "passed": true
+    },
+    {
+      "scenario": "ambiguous_horizon_has_no_deadline",
+      "passed": true
+    },
+    {
+      "scenario": "timezone_missing_is_not_a_deadline",
+      "passed": true
+    },
+    {
+      "scenario": "exact_horizon_enables_time_window",
+      "passed": true
+    },
+    {
+      "scenario": "questions_name_the_candidate_in_instructions",
+      "passed": true
+    },
+    {
+      "scenario": "authenticated_inspection_api",
+      "passed": true
+    },
+    {
+      "scenario": "unknown_evaluation_404",
+      "passed": true
+    },
+    {
+      "scenario": "client_cannot_override_owner",
+      "passed": true
+    },
+    {
+      "scenario": "inspection_is_hidden_outside_diagnostics",
+      "passed": true
+    },
+    {
+      "scenario": "succeeded_task_is_exact_evidence",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_task_source_unavailable",
+      "passed": true
+    },
+    {
+      "scenario": "exact_task_reference_is_current",
+      "passed": true
+    },
+    {
+      "scenario": "task_result_mutation_invalidates_reference",
+      "passed": true
+    },
+    {
+      "scenario": "internal_goal_budget_not_sent_as_money",
+      "passed": true
+    },
+    {
+      "scenario": "evaluation_budget_survives_utc_midnight",
+      "passed": true
+    },
+    {
+      "scenario": "confirmed_usage_over_reservation_is_not_underreported",
+      "passed": true
+    },
+    {
+      "scenario": "global_budget_two_account_race_is_atomic",
+      "passed": true
+    },
+    {
+      "scenario": "delivery_race_same_candidate_returns_one_receipt",
+      "passed": true
+    },
+    {
+      "scenario": "proactive_message_is_standalone_without_chat_run",
+      "passed": true
+    },
+    {
+      "scenario": "proactive_message_has_cause_and_time",
+      "passed": true
+    },
+    {
+      "scenario": "proactive_navigation_unread",
+      "passed": true
+    },
+    {
+      "scenario": "new_chat_can_use_valid_proactive_context",
+      "passed": true
+    },
+    {
+      "scenario": "delivered_content_dedup_ignores_thread_identity",
+      "passed": true
+    },
+    {
+      "scenario": "spacing_holds_second_interruption",
+      "passed": true
+    },
+    {
+      "scenario": "off_revokes_pending_delivery",
+      "passed": true
+    },
+    {
+      "scenario": "delivered_receipt_survives_revocation",
+      "passed": true
+    },
+    {
+      "scenario": "revoked_proactive_context_not_rehydrated",
+      "passed": true
+    },
+    {
+      "scenario": "stored_history_is_not_silently_deleted",
+      "passed": true
+    },
+    {
+      "scenario": "preference_receipt_replay_is_idempotent",
+      "passed": true
+    },
+    {
+      "scenario": "stale_preference_revision_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "request_key_payload_conflict_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "late_snooze_applies_before_delivery",
+      "passed": true
+    },
+    {
+      "scenario": "late_thread_mute_applies_before_delivery",
+      "passed": true
+    },
+    {
+      "scenario": "goal_mute_applies_to_cited_goal",
+      "passed": true
+    },
+    {
+      "scenario": "expired_candidate_is_not_released_after_snooze",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_thread_scope_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_goal_scope_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "quiet_hours_dst_or_midnight_2026-11-01T05:30:00+00:00",
+      "passed": true
+    },
+    {
+      "scenario": "quiet_hours_dst_or_midnight_2026-11-01T06:30:00+00:00",
+      "passed": true
+    },
+    {
+      "scenario": "quiet_hours_dst_or_midnight_2026-10-19T16:30:00+00:00",
+      "passed": true
+    },
+    {
+      "scenario": "daytime_is_not_quiet",
+      "passed": true
+    },
+    {
+      "scenario": "last_daily_slot_two_workers_is_atomic",
+      "passed": true
+    },
+    {
+      "scenario": "timezone_change_cannot_reset_message_cap",
+      "passed": true
+    },
+    {
+      "scenario": "publication_failure_rolls_back_cap_and_receipt",
+      "passed": true
+    },
+    {
+      "scenario": "retry_after_publication_failure_sends_once",
+      "passed": true
+    },
+    {
+      "scenario": "source_pause_rechecked_even_without_event",
+      "passed": true
+    },
+    {
+      "scenario": "new_context_discards_queued_candidate",
+      "passed": true
+    },
+    {
+      "scenario": "scheduled_result_survives_quiet_hours_and_proactive_cap",
+      "passed": true
+    },
+    {
+      "scenario": "scheduled_delivery_is_separate_and_not_charged_to_proactive_cap",
+      "passed": true
+    },
+    {
+      "scenario": "direct_chat_control_accepted",
+      "passed": true
+    },
+    {
+      "scenario": "quoted_source_is_not_control",
+      "passed": true
+    },
+    {
+      "scenario": "source_quote_must_be_current_user_input",
+      "passed": true
+    },
+    {
+      "scenario": "informative_update_does_not_require_question",
+      "passed": true
+    },
+    {
+      "scenario": "needs_input_requires_specific_question",
+      "passed": true
+    }
+  ],
+  "live": null
+}

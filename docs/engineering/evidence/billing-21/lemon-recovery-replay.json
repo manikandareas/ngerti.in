@@ -1,0 +1,15 @@
+{
+  "order_id": "22a1fabb-c562-4e6f-945f-2aef0205103b",
+  "provider": "lemonsqueezy",
+  "mode": "test",
+  "status": "cancelled",
+  "subscription_bound": true,
+  "paid_through": "2026-11-18 12:14:47+00:00",
+  "receipts": 1,
+  "grants": 1,
+  "pending_events": 0,
+  "exhausted_events": 0,
+  "requires_signed_replay": false,
+  "reconciliation_pending": false,
+  "next_action": "Retry the verified inbox or reconcile the bound subscription."
+}

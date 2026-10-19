@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-19",
+  "commands": {
+    "make check": "passed after final scope changes",
+    "make build": "passed",
+    "make billing-inspect": "69 passed",
+    "quota inspector": "46 passed",
+    "usage inspector": "48 passed",
+    "make docs-check": "Docs: 65 page hashes, 41 tickets, 4 views, 1221 local links OK"
+  },
+  "browser": {
+    "configuration": "actual sandbox config, authenticated local account, dummy billing fields only",
+    "consent_required": true,
+    "gateway_change_clears_consent": true,
+    "mobile_width": 390,
+    "mobile_document_width": 390,
+    "viewport_restored": true,
+    "lemon_only": true,
+    "duitku_offer_present": false,
+    "radio_choices": 0
+  },
+  "provider_acceptance": {
+    "lemonsqueezy": "test payment, signed inbox, one grant, cancellation, original initial signed resend HTTP200 and operator recovery confirmed",
+    "duitku": "paused by user; credentials retained; not advertised; new checkout rejected before provider effect; sandbox activation deferred"
+  },
+  "production_release": false,
+  "recovery": {
+    "controlled_missing_initial_resend": true,
+    "controlled_exhausted_inbox": true,
+    "binding_and_environment_enforced": true,
+    "duplicate_foreign_subscription_reviewed": true,
+    "real_lemon_replay_receipts": 1,
+    "real_lemon_replay_grants": 1
+  },
+  "scope": "Lemon Squeezy only; Duitku paused by user",
+  "accepted_for_development": true
+}

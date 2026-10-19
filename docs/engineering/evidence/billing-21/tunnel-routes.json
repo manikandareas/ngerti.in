@@ -1,0 +1,14 @@
+[
+  {
+    "path": "/",
+    "status": 200
+  },
+  {
+    "path": "/billing",
+    "status": 404
+  },
+  {
+    "path": "/billing/webhooks/lemonsqueezy",
+    "status": 403
+  }
+]

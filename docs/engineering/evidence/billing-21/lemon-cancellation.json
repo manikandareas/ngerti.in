@@ -1,0 +1,35 @@
+{
+  "id": "22a1fabb-c562-4e6f-945f-2aef0205103b",
+  "provider": "lemonsqueezy",
+  "mode": "test",
+  "status": "cancelled",
+  "contract": {
+    "amount": 27075000,
+    "product": "plus",
+    "version": "plus-subscription-v1-idr-2026-10-19",
+    "currency": "IDR",
+    "store_id": "492836",
+    "variant_id": "2267301",
+    "chat_policy": "chat-v1-2026-10-19",
+    "period_days": 30,
+    "fx_reference": {
+      "date": "2026-10-19",
+      "source": "BI JISDOR",
+      "idr_per_usd": 18050
+    },
+    "unit_divisor": 100,
+    "chat_messages": 300,
+    "merchant_code": null,
+    "tax_exclusive": true,
+    "usd_reference": 15,
+    "compute_policy": "compute-allowance-v1",
+    "compute_credits": 5000
+  },
+  "paid_through": "2026-11-18 12:14:47+00:00",
+  "cancel_requested": true,
+  "expires_at": "2026-10-19 13:12:29.328531+00:00",
+  "created_at": "2026-10-19 12:12:29.328531+00:00",
+  "updated_at": "2026-10-19 12:18:40.897156+00:00",
+  "payment_url": null,
+  "needs_review": false
+}

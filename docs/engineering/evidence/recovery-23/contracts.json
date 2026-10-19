@@ -1,0 +1,170 @@
+{
+  "passed": 41,
+  "scenarios": [
+    {
+      "scenario": "sigkill_before_checkpoint",
+      "passed": true
+    },
+    {
+      "scenario": "before_checkpoint_durable_draft",
+      "passed": true
+    },
+    {
+      "scenario": "before_checkpoint_resumes_once",
+      "passed": true
+    },
+    {
+      "scenario": "before_checkpoint_one_manifest_and_delivery",
+      "passed": true
+    },
+    {
+      "scenario": "before_checkpoint_usage_terminal",
+      "passed": true
+    },
+    {
+      "scenario": "before_checkpoint_settlement_not_repeated",
+      "passed": true
+    },
+    {
+      "scenario": "sigkill_before_delivery",
+      "passed": true
+    },
+    {
+      "scenario": "before_delivery_durable_draft",
+      "passed": true
+    },
+    {
+      "scenario": "publication_unknown_blocks_blind_retry",
+      "passed": true
+    },
+    {
+      "scenario": "unknown_retry_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "before_delivery_resumes_once",
+      "passed": true
+    },
+    {
+      "scenario": "before_delivery_one_manifest_and_delivery",
+      "passed": true
+    },
+    {
+      "scenario": "before_delivery_usage_terminal",
+      "passed": true
+    },
+    {
+      "scenario": "before_delivery_settlement_not_repeated",
+      "passed": true
+    },
+    {
+      "scenario": "orphan_task_requeued",
+      "passed": true
+    },
+    {
+      "scenario": "unknown_model_cost_retained",
+      "passed": true
+    },
+    {
+      "scenario": "stale_worker_write_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "late_usage_settles_once",
+      "passed": true
+    },
+    {
+      "scenario": "all_recovery_components_complete",
+      "passed": true
+    },
+    {
+      "scenario": "orphan_chat_requeued",
+      "passed": true
+    },
+    {
+      "scenario": "stalled_maintenance_requeued",
+      "passed": true
+    },
+    {
+      "scenario": "result_and_delivery_rollback_together",
+      "passed": true
+    },
+    {
+      "scenario": "publication_after_rollback_succeeds",
+      "passed": true
+    },
+    {
+      "scenario": "one_failed_domain_does_not_starve_recovery",
+      "passed": true
+    },
+    {
+      "scenario": "old_approval_unknown_version_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "unsupported_waiting_work_is_visible",
+      "passed": true
+    },
+    {
+      "scenario": "unsupported_retry_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "restart_dispatch_has_one_occurrence",
+      "passed": true
+    },
+    {
+      "scenario": "unsupported_schedule_pauses_visibly",
+      "passed": true
+    },
+    {
+      "scenario": "offline_backup_complete",
+      "passed": true
+    },
+    {
+      "scenario": "restored_api_worker_held",
+      "passed": true
+    },
+    {
+      "scenario": "restore_rejects_source_storage_bucket",
+      "passed": true
+    },
+    {
+      "scenario": "existing_vendor_keeps_restore_quarantined",
+      "passed": true
+    },
+    {
+      "scenario": "absent_vendor_reconciled_without_effect",
+      "passed": true
+    },
+    {
+      "scenario": "restored_result_sha256_identical",
+      "passed": true
+    },
+    {
+      "scenario": "missing_vendor_has_visible_task_outcome",
+      "passed": true
+    },
+    {
+      "scenario": "restore_does_not_replay_task",
+      "passed": true
+    },
+    {
+      "scenario": "missing_browser_profile_requires_new_task",
+      "passed": true
+    },
+    {
+      "scenario": "restore_pauses_schedule",
+      "passed": true
+    },
+    {
+      "scenario": "restore_cannot_replay_queued_effects",
+      "passed": true
+    },
+    {
+      "scenario": "corrupt_object_backup_rejected",
+      "passed": true
+    }
+  ],
+  "temporary_resources_removed": true
+}

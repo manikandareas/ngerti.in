@@ -1,0 +1,65 @@
+{
+  "lemon_order": {
+    "id": "22a1fabb-c562-4e6f-945f-2aef0205103b",
+    "provider": "lemonsqueezy",
+    "mode": "test",
+    "status": "cancelled",
+    "paid_through": "2026-11-18 12:14:47+00:00",
+    "cancel_requested": true
+  },
+  "lemon_events": [
+    {
+      "provider": "lemonsqueezy",
+      "mode": "test",
+      "attempts": 2,
+      "processed": true
+    },
+    {
+      "provider": "lemonsqueezy",
+      "mode": "test",
+      "attempts": 2,
+      "processed": true
+    },
+    {
+      "provider": "lemonsqueezy",
+      "mode": "test",
+      "attempts": 2,
+      "processed": true
+    },
+    {
+      "provider": "lemonsqueezy",
+      "mode": "test",
+      "attempts": 6,
+      "processed": true
+    },
+    {
+      "provider": "lemonsqueezy",
+      "mode": "test",
+      "attempts": 6,
+      "processed": true
+    },
+    {
+      "provider": "lemonsqueezy",
+      "mode": "test",
+      "attempts": 7,
+      "processed": true
+    }
+  ],
+  "lemon_counts": {
+    "receipts": 1,
+    "grants": 1
+  },
+  "duitku_order": {
+    "id": "2b54cabb-3027-4c02-b031-1e27ece282f9",
+    "provider": "duitku",
+    "mode": "test",
+    "status": "unknown",
+    "paid_through": null
+  },
+  "duitku_response": {
+    "http": 404,
+    "message": "Subscription is not available"
+  },
+  "duitku_checkout_enabled": false,
+  "checked_at": "2026-10-19"
+}

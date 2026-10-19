@@ -1,0 +1,282 @@
+{
+  "passed": 69,
+  "scenarios": [
+    {
+      "scenario": "lemon_server_sets_price_and_quantity",
+      "passed": true
+    },
+    {
+      "scenario": "public_order_hides_contact_binding_and_secrets",
+      "passed": true
+    },
+    {
+      "scenario": "checkout_replay_no_provider_effect",
+      "passed": true
+    },
+    {
+      "scenario": "parallel_gateway_checkout_blocked",
+      "passed": true
+    },
+    {
+      "scenario": "other_owner_order_hidden",
+      "passed": true
+    },
+    {
+      "scenario": "client_price_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "forged_webhook_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "live_event_rejected_by_test_server",
+      "passed": true
+    },
+    {
+      "scenario": "duplicate_webhook_one_inbox_entry",
+      "passed": true
+    },
+    {
+      "scenario": "durable_inbox_survives_closed_browser",
+      "passed": true
+    },
+    {
+      "scenario": "verified_payment_activates_plus_chat",
+      "passed": true
+    },
+    {
+      "scenario": "verified_payment_activates_plus_compute",
+      "passed": true
+    },
+    {
+      "scenario": "usage_contract_does_not_advertise_legacy_checkout_price",
+      "passed": true
+    },
+    {
+      "scenario": "accepted_work_keeps_original_period",
+      "passed": true
+    },
+    {
+      "scenario": "chat_compute_share_paid_period",
+      "passed": true
+    },
+    {
+      "scenario": "webhook_and_reconciliation_grant_once",
+      "passed": true
+    },
+    {
+      "scenario": "cancel_timeout_is_pending_not_success",
+      "passed": true
+    },
+    {
+      "scenario": "worker_recovers_pending_cancellation",
+      "passed": true
+    },
+    {
+      "scenario": "cancellation_keeps_paid_access",
+      "passed": true
+    },
+    {
+      "scenario": "signed_event_wrong_binding_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "lemon_server_sets_price_and_quantity",
+      "passed": true
+    },
+    {
+      "scenario": "wrong_amount_cannot_activate",
+      "passed": true
+    },
+    {
+      "scenario": "wrong_amount_has_no_grant",
+      "passed": true
+    },
+    {
+      "scenario": "failed_renewal_never_refills_allowance",
+      "passed": true
+    },
+    {
+      "scenario": "duitku_recurring_thirty_days",
+      "passed": true
+    },
+    {
+      "scenario": "duitku_callback_reconciled",
+      "passed": true
+    },
+    {
+      "scenario": "duitku_cycle_grants_plus",
+      "passed": true
+    },
+    {
+      "scenario": "duitku_cycle_deduplicated",
+      "passed": true
+    },
+    {
+      "scenario": "duitku_cancel_confirmed",
+      "passed": true
+    },
+    {
+      "scenario": "duitku_recurring_thirty_days",
+      "passed": true
+    },
+    {
+      "scenario": "cross_gateway_race_one_checkout",
+      "passed": true
+    },
+    {
+      "scenario": "creation_timeout_unknown",
+      "passed": true
+    },
+    {
+      "scenario": "unknown_creation_not_redispatched",
+      "passed": true
+    },
+    {
+      "scenario": "lemon_server_sets_price_and_quantity",
+      "passed": true
+    },
+    {
+      "scenario": "crash_rolls_back_payment_and_grant",
+      "passed": true
+    },
+    {
+      "scenario": "recovery_creates_single_grant",
+      "passed": true
+    },
+    {
+      "scenario": "lemon_server_sets_price_and_quantity",
+      "passed": true
+    },
+    {
+      "scenario": "renewal_new_period_once",
+      "passed": true
+    },
+    {
+      "scenario": "renewal_allowance_current_cycle",
+      "passed": true
+    },
+    {
+      "scenario": "http_billing_owner_only",
+      "passed": true
+    },
+    {
+      "scenario": "paused_duitku_hidden_from_checkout_catalog",
+      "passed": true
+    },
+    {
+      "scenario": "paused_duitku_rejected_before_provider_effect",
+      "passed": true
+    },
+    {
+      "scenario": "paused_checkout_keeps_existing_order_and_receipt_history",
+      "passed": true
+    },
+    {
+      "scenario": "http_foreign_order_404",
+      "passed": true
+    },
+    {
+      "scenario": "http_forged_webhook_403",
+      "passed": true
+    },
+    {
+      "scenario": "http_webhook_size_bound",
+      "passed": true
+    },
+    {
+      "scenario": "lemon_server_sets_price_and_quantity",
+      "passed": true
+    },
+    {
+      "scenario": "operator_inspection_is_read_only_and_hides_secrets",
+      "passed": true
+    },
+    {
+      "scenario": "missing_initial_callback_stays_unconfirmed_without_guessing_owner",
+      "passed": true
+    },
+    {
+      "scenario": "signed_initial_resend_recovers_missing_binding",
+      "passed": true
+    },
+    {
+      "scenario": "operator_replay_cannot_double_grant",
+      "passed": true
+    },
+    {
+      "scenario": "lemon_server_sets_price_and_quantity",
+      "passed": true
+    },
+    {
+      "scenario": "exhausted_inbox_visible_to_operator",
+      "passed": true
+    },
+    {
+      "scenario": "operator_recovers_exhausted_verified_inbox",
+      "passed": true
+    },
+    {
+      "scenario": "lemon_server_sets_price_and_quantity",
+      "passed": true
+    },
+    {
+      "scenario": "operator_recovery_does_not_override_binding_validation",
+      "passed": true
+    },
+    {
+      "scenario": "invalid_inbox_has_safe_operator_diagnostic",
+      "passed": true
+    },
+    {
+      "scenario": "operator_recovery_rejects_wrong_environment",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_subscription_binding_is_reviewed",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_subscription_conflict_never_grants_or_stops_worker",
+      "passed": true
+    },
+    {
+      "scenario": "lemon_server_sets_price_and_quantity",
+      "passed": true
+    },
+    {
+      "scenario": "idr_store_fixed_usd_equivalent_verified",
+      "passed": true
+    },
+    {
+      "scenario": "idr_price_keeps_same_plus_allowance",
+      "passed": true
+    },
+    {
+      "scenario": "idr_usd_cent_rounding_explained",
+      "passed": true
+    },
+    {
+      "scenario": "fx_rounding_rejects_underpayment",
+      "passed": true
+    },
+    {
+      "scenario": "fx_rounding_rejects_wrong_usd_total",
+      "passed": true
+    },
+    {
+      "scenario": "fx_rounding_rejects_no_conversion_evidence",
+      "passed": true
+    },
+    {
+      "scenario": "old_worker_fenced_after_lease_replacement",
+      "passed": true
+    },
+    {
+      "scenario": "disabled_checkout_still_allows_existing_reconciliation",
+      "passed": true
+    }
+  ],
+  "temporary_resources_removed": true
+}

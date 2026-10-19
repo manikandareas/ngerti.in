@@ -1,0 +1,13 @@
+{
+  "mode": "test",
+  "synthetic_account_only": true,
+  "invoice": "8764883",
+  "refund_state": "full",
+  "refunded_amount": 27069432,
+  "chat_plan": "free",
+  "compute_plan": "free",
+  "chat_limit": 100,
+  "compute_limit": 1000.0,
+  "grant_count_after_replay": 1,
+  "real_money_used": false
+}

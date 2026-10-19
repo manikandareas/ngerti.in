@@ -1,0 +1,48 @@
+{
+  "observed_at": "2026-10-19T13:54:11.090869+00:00",
+  "environment": "macOS development; disposable PostgreSQL and MinIO restore targets",
+  "python": "3.13.12",
+  "libraries": {
+    "procrastinate": "3.10.0",
+    "langgraph": "1.2.15",
+    "daytona": "0.225.0",
+    "psycopg": "3.3.6"
+  },
+  "checks": {
+    "task": 55,
+    "files": 47,
+    "computer": 47,
+    "sandbox": 45,
+    "schedule": 82,
+    "usage": 48,
+    "goals": 74,
+    "proactivity": 105,
+    "billing": 69,
+    "entitlements": 49
+  },
+  "browser": {
+    "tool": "CUA Brave, existing authenticated development account",
+    "fixtures": "two synthetic terminal Task states, created through domain services",
+    "thread_id": "e8170b83-0414-5b93-8248-1f02ca6fc52d",
+    "desktop": true,
+    "mobile_viewport": [
+      390,
+      844
+    ],
+    "reload_preserved_states": true,
+    "no_mobile_horizontal_overflow": true,
+    "controls_in_each_blocked_card": [
+      "Lihat detail"
+    ],
+    "viewport_restored": true,
+    "full_provider_crash_in_browser": false,
+    "prior_result_preview_after_migration": "laporan-penjualan-ng039.md; synthetic January-March table visible"
+  },
+  "limitations": [
+    "Model/tool response faults controlled; two SIGKILL processes real",
+    "Database pg_dump/pg_restore and object copying real local services",
+    "Vendor absence lookup real read-only; restore provider lifecycle controlled",
+    "Production R2, production deploy and provider invoices not verified"
+  ],
+  "worker_reloaded": true
+}

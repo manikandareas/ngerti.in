@@ -1,0 +1,202 @@
+{
+  "passed": 49,
+  "scenarios": [
+    {
+      "scenario": "lemon_server_sets_price_and_quantity",
+      "passed": true
+    },
+    {
+      "scenario": "verified_cycle_101",
+      "passed": true
+    },
+    {
+      "scenario": "partial_refund_review",
+      "passed": true
+    },
+    {
+      "scenario": "partial_refund_retains_existing_rights",
+      "passed": true
+    },
+    {
+      "scenario": "policy_is_snapshotted",
+      "passed": true
+    },
+    {
+      "scenario": "full_refund_downgrades_chat_and_compute",
+      "passed": true
+    },
+    {
+      "scenario": "free_allowances_after_revocation",
+      "passed": true
+    },
+    {
+      "scenario": "chat_compute_refund_window_agrees",
+      "passed": true
+    },
+    {
+      "scenario": "accepted_work_snapshot_unchanged",
+      "passed": true
+    },
+    {
+      "scenario": "payment_refund_keeps_vendor_and_customer_history",
+      "passed": true
+    },
+    {
+      "scenario": "accepted_work_continues_with_original_budget",
+      "passed": true
+    },
+    {
+      "scenario": "refunded_cycle_not_advertised_paid_through",
+      "passed": true
+    },
+    {
+      "scenario": "revocation_does_not_rewrite_original_cycle",
+      "passed": true
+    },
+    {
+      "scenario": "stale_paid_and_concurrent_refunds_never_regrant",
+      "passed": true
+    },
+    {
+      "scenario": "refund_audit_deduplicated",
+      "passed": true
+    },
+    {
+      "scenario": "schedule_checks_downgraded_allowance",
+      "passed": true
+    },
+    {
+      "scenario": "approval_at_zero_after_refund",
+      "passed": true
+    },
+    {
+      "scenario": "stop_at_zero_after_refund",
+      "passed": true
+    },
+    {
+      "scenario": "pause_schedule_at_zero",
+      "passed": true
+    },
+    {
+      "scenario": "download_at_zero_after_refund",
+      "passed": true
+    },
+    {
+      "scenario": "memory_controls_at_zero",
+      "passed": true
+    },
+    {
+      "scenario": "public_lifecycle_and_refund_history",
+      "passed": true
+    },
+    {
+      "scenario": "history_has_no_signed_url_or_binding",
+      "passed": true
+    },
+    {
+      "scenario": "refunded_active_subscription_still_cancellable",
+      "passed": true
+    },
+    {
+      "scenario": "payment_method_fetched_for_owner",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_payment_host_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_payment_method_hidden",
+      "passed": true
+    },
+    {
+      "scenario": "lemon_server_sets_price_and_quantity",
+      "passed": true
+    },
+    {
+      "scenario": "verified_cycle_102",
+      "passed": true
+    },
+    {
+      "scenario": "failed_renewal_no_grace_chat_compute",
+      "passed": true
+    },
+    {
+      "scenario": "exact_paid_through_boundary_free",
+      "passed": true
+    },
+    {
+      "scenario": "before_boundary_still_plus",
+      "passed": true
+    },
+    {
+      "scenario": "recovered_renewal_restores_plus",
+      "passed": true
+    },
+    {
+      "scenario": "renewal_once_despite_replay",
+      "passed": true
+    },
+    {
+      "scenario": "historical_refund_keeps_unrelated_paid_renewal",
+      "passed": true
+    },
+    {
+      "scenario": "lemon_server_sets_price_and_quantity",
+      "passed": true
+    },
+    {
+      "scenario": "verified_cycle_106",
+      "passed": true
+    },
+    {
+      "scenario": "partial_refund_review_does_not_hide_cancellation",
+      "passed": true
+    },
+    {
+      "scenario": "lemon_server_sets_price_and_quantity",
+      "passed": true
+    },
+    {
+      "scenario": "refund_before_initial_no_grant_103",
+      "passed": true
+    },
+    {
+      "scenario": "refund_receipt_retained_103",
+      "passed": true
+    },
+    {
+      "scenario": "lemon_server_sets_price_and_quantity",
+      "passed": true
+    },
+    {
+      "scenario": "refund_before_initial_no_grant_104",
+      "passed": true
+    },
+    {
+      "scenario": "refund_receipt_retained_104",
+      "passed": true
+    },
+    {
+      "scenario": "lemon_server_sets_price_and_quantity",
+      "passed": true
+    },
+    {
+      "scenario": "verified_cycle_105",
+      "passed": true
+    },
+    {
+      "scenario": "refund_crash_rolls_back_entitlement",
+      "passed": true
+    },
+    {
+      "scenario": "refund_crash_rolls_back_receipt_state",
+      "passed": true
+    },
+    {
+      "scenario": "receipt_financial_identity_immutable",
+      "passed": true
+    }
+  ],
+  "temporary_resources_removed": true
+}

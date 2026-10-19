@@ -1,0 +1,8 @@
+{
+  "provider": "daytona",
+  "operation": "read-only missing-resource lookup",
+  "sandbox_state": "absent",
+  "browser_state": "absent",
+  "resource_created": false,
+  "invoice_verified": false
+}

@@ -1,0 +1,15 @@
+{
+  "order_id": "2b54cabb-3027-4c02-b031-1e27ece282f9",
+  "provider": "duitku",
+  "mode": "test",
+  "status": "unknown",
+  "subscription_bound": false,
+  "paid_through": null,
+  "receipts": 0,
+  "grants": 0,
+  "pending_events": 0,
+  "exhausted_events": 0,
+  "requires_signed_replay": true,
+  "reconciliation_pending": true,
+  "next_action": "Resend the original signed webhook from the provider dashboard."
+}

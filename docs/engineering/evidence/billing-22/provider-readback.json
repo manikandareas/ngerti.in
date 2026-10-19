@@ -1,0 +1,8 @@
+{
+  "mode": "test",
+  "subscription_status": "cancelled",
+  "signed_payment_method_url_verified": true,
+  "signed_url_not_retained": true,
+  "order_status": "cancelled",
+  "grants": 1
+}

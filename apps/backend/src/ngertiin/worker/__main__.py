@@ -16,6 +16,9 @@ from ngertiin.worker.tasks import recover_stalled_jobs
 
 async def main() -> None:
     logging.basicConfig(level=logging.INFO)
+    from ngertiin.recovery.restore import ensure_released
+
+    await ensure_released()
     async with queue_app.open_async():
         await recover_stalled_jobs()
         await queue_app.run_worker_async(

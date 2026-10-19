@@ -8,11 +8,11 @@ async def reconcile_deliveries():
     async with store.transaction() as conn:
         rows = await (
             await conn.execute(
-                "SELECT t.id,t.owner_id FROM background_tasks t JOIN "
+                "SELECT t.id,t.owner_id FROM background_tasks t LEFT JOIN "
                 "procrastinate_jobs j ON j.id=t.job_id "
                 "WHERE t.status IN ('queued','running') AND "
-                "t.stage<>'preparing_inputs' AND j.status::text "
-                "IN ('failed','aborted','succeeded') LIMIT 50"
+                "t.stage<>'preparing_inputs' AND (j.id IS NULL OR j.status::text "
+                "IN ('failed','aborted','succeeded')) ORDER BY t.updated_at LIMIT 50"
             )
         ).fetchall()
     for row in rows:
@@ -20,11 +20,19 @@ async def reconcile_deliveries():
             job = await one(
                 conn, "SELECT status::text FROM procrastinate_jobs WHERE id=%s", (task["job_id"],)
             )
-            if task["status"] not in ("queued", "running") or job["status"] not in (
-                "failed",
-                "aborted",
-                "succeeded",
+            if task["status"] not in ("queued", "running") or (
+                job
+                and job["status"]
+                not in (
+                    "failed",
+                    "aborted",
+                    "succeeded",
+                )
             ):
+                continue
+            from ngertiin.tasks.compatibility import block_unsupported
+
+            if await block_unsupported(conn, task):
                 continue
             await budget.abandon_calls(conn, task)
             await store.finish_execution(conn, task, "interrupted")
@@ -68,7 +76,10 @@ async def reconcile_deliveries():
                     lease_token=None,
                     error="Publikasi belum terkonfirmasi. Periksa outcome sebelum mencoba lagi.",
                 )
-            elif task["attempt"] >= 12 or task["usage_units"] >= task["budget_cap"]:
+            elif (
+                task["attempt"] >= (40 if task.get("runtime_kind") == "browser" else 12)
+                or task["usage_units"] >= task["budget_cap"]
+            ):
                 await store.change(
                     conn,
                     task,
@@ -82,6 +93,25 @@ async def reconcile_deliveries():
                 await store.enqueue(conn, task)
             await store.emit(conn, task)
     await expire_proposals()
+    await reconcile_versions()
+
+
+async def reconcile_versions():
+    """Waiting approvals need a visible outcome even when no job will claim them."""
+    from ngertiin.tasks.compatibility import WORKFLOW_VERSION, block_unsupported
+
+    async with store.transaction() as conn:
+        rows = await (
+            await conn.execute(
+                "SELECT id,owner_id FROM background_tasks WHERE workflow_version<>%s "
+                "AND status IN ('queued','running','waiting_user') LIMIT 50",
+                (WORKFLOW_VERSION,),
+            )
+        ).fetchall()
+    for row in rows:
+        async with store.locked(row["owner_id"], row["id"]) as (conn, task):
+            if task["status"] in ("queued", "running", "waiting_user"):
+                await block_unsupported(conn, task)
 
 
 async def expire_proposals():

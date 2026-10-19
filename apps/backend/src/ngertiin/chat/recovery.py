@@ -9,9 +9,10 @@ async def reconcile_deliveries():
     async with transaction() as conn:
         candidates = await (
             await conn.execute(
-                "SELECT r.id FROM chat_runs r JOIN procrastinate_jobs j ON j.id=r.job_id "
+                "SELECT r.id FROM chat_runs r LEFT JOIN procrastinate_jobs j ON j.id=r.job_id "
                 "WHERE r.status IN ('queued','running') "
-                "AND j.status::text IN ('failed','aborted','succeeded') LIMIT 50"
+                "AND (j.id IS NULL OR j.status::text IN ('failed','aborted','succeeded')) "
+                "ORDER BY r.created_at LIMIT 50"
             )
         ).fetchall()
     for item in candidates:
@@ -23,10 +24,14 @@ async def reconcile_deliveries():
             job = await one(
                 conn, "SELECT status::text FROM procrastinate_jobs WHERE id=%s", (run["job_id"],)
             )
-            if run["status"] not in ("queued", "running") or job["status"] not in (
-                "failed",
-                "aborted",
-                "succeeded",
+            if run["status"] not in ("queued", "running") or (
+                job
+                and job["status"]
+                not in (
+                    "failed",
+                    "aborted",
+                    "succeeded",
+                )
             ):
                 continue
             if run["attempt"] < 3:

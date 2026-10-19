@@ -35,6 +35,7 @@ PUBLIC_COLUMNS = (
     "schedule_occurrence_id",
     "goal_id",
     "goal_revision",
+    "workflow_version",
 )
 MUTABLE = {
     "status",
@@ -84,6 +85,7 @@ def fence(task: dict, execution: dict):
         task["status"] != "running"
         or task["lease_token"] != execution["lease_token"]
         or task["revision"] != execution["revision"]
+        or task.get("workflow_version", 1) != execution.get("workflow_version", 1)
     ):
         raise StaleExecution()
 
@@ -229,6 +231,10 @@ async def claim(task_id: UUID):
         return None
     async with locked(row["owner_id"], task_id) as (conn, task):
         if task["status"] != "queued":
+            return None
+        from ngertiin.tasks.compatibility import block_unsupported
+
+        if await block_unsupported(conn, task):
             return None
         if task["attempt"] >= (40 if task.get("runtime_kind") == "browser" else 12):
             await change(

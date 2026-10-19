@@ -109,6 +109,14 @@ async def dispatch_one(owner, schedule_id, *, now=None):
         now = now or (await one(conn, "SELECT now() AS n"))["n"]
         if schedule["state"] != "active" or not schedule["next_due"] or schedule["next_due"] > now:
             return None
+        from ngertiin.tasks.compatibility import MESSAGE, WORKFLOW_VERSION
+
+        if schedule["workflow_version"] != WORKFLOW_VERSION:
+            await conn.execute(
+                "UPDATE user_schedules SET state='paused',error=%s,updated_at=now() WHERE id=%s",
+                (MESSAGE, schedule_id),
+            )
+            return None
         spec = ScheduleSpec.model_validate(schedule["spec"])
         intended = timing.latest_due(spec, schedule["next_due"], now)
         occurrence = await admit(conn, schedule, intended)

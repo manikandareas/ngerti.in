@@ -90,6 +90,9 @@ async def decide(owner: UUID, action_id: UUID, revision: int, approve: bool, req
     if not row:
         raise HTTPException(404, "Proposal tidak ditemukan.")
     async with store.locked(owner, row["id"]) as (conn, task):
+        from ngertiin.tasks.compatibility import require_supported
+
+        require_supported(task)
         action = await one(conn, "SELECT * FROM task_actions WHERE id=%s FOR UPDATE", (action_id,))
         if (
             revision != task["revision"]

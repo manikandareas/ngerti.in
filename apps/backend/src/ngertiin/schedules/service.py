@@ -14,6 +14,13 @@ from ngertiin.schedules.contracts import ProposalInput, ScheduleSpec
 from ngertiin.tasks.creation import input_snapshot
 
 
+def require_supported(schedule, operation):
+    from ngertiin.tasks.compatibility import MESSAGE, WORKFLOW_VERSION
+
+    if schedule["workflow_version"] != WORKFLOW_VERSION and operation not in ("pause", "delete"):
+        raise HTTPException(409, MESSAGE)
+
+
 async def validate_inputs(conn, owner, spec: ScheduleSpec, *, required=True):
     files = []
     for item in spec.inputs:
@@ -92,6 +99,7 @@ async def propose(owner, body: ProposalInput, *, source_run=None):
                 raise HTTPException(422, "Jadwal baru memerlukan spesifikasi lengkap.")
         else:
             schedule = await store.owned(conn, owner, body.schedule_id, lock=True)
+            require_supported(schedule, body.operation)
             if schedule["state"] == "deleted" or schedule["revision"] != body.expected_revision:
                 raise HTTPException(
                     409, "Jadwal sudah berubah/dihapus. Muat ulang dan tinjau lagi."
@@ -215,6 +223,7 @@ async def decide(owner, proposal_id, approved: bool):
         schedule: dict = {}
         if op != "create":
             schedule = await store.owned(conn, owner, proposal["schedule_id"], lock=True)
+            require_supported(schedule, op)
             if (
                 schedule["revision"] != proposal["expected_revision"]
                 or schedule["state"] == "deleted"
@@ -252,7 +261,7 @@ async def decide(owner, proposal_id, approved: bool):
             schedule = await one(
                 conn,
                 "UPDATE user_schedules SET revision=revision+1,state=%s,"
-                "spec=%s,next_due=%s,updated_at=now() WHERE id=%s RETURNING *",
+                "spec=%s,next_due=%s,error=NULL,updated_at=now() WHERE id=%s RETURNING *",
                 (
                     state,
                     json_value(spec.model_dump(mode="json")),

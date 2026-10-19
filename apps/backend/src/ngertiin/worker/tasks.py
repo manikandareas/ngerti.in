@@ -29,40 +29,25 @@ async def diagnostic_job(run_id: str) -> None:
     name="foundation.recover_stalled", queue="maintenance", queueing_lock="recover_stalled"
 )
 async def recover_stalled_jobs(timestamp: int | None = None) -> None:
-    for name in (
-        "foundation.diagnostic",
-        "chat.turn",
-        "task.execute",
-        "file.extract",
-        "memory.capture",
-        "memory.index",
-        "memory.discover",
-        "proactive.evaluate",
-    ):
-        jobs = await queue_app.job_manager.get_stalled_jobs(task_name=name)
-        for job in jobs:
-            if job.attempts < 3:
-                await queue_app.job_manager.retry_job(job)
-                logger.warning("job.recovered", job_id=job.id)
-            else:
+    # Heartbeats, not job age: a healthy long-running job must never be stolen.
+    # Include maintenance jobs so a dead cleanup/dispatch cannot keep its lock forever.
+    jobs = await queue_app.job_manager.get_stalled_jobs()
+    for job in jobs:
+        try:
+            if (
+                job.task_name in ("task.execute", "chat.turn")
+                or job.task_name not in queue_app.tasks
+                or job.attempts >= 3
+            ):
+                # The domain reconciler revokes the old lease before creating a
+                # replacement. Retrying the raw job would find status=running.
                 await queue_app.job_manager.finish_job(job, status=Status.FAILED, delete_job=False)
-                logger.error("job.recovery_exhausted", job_id=job.id)
-    from ngertiin.chat.recovery import reconcile_deliveries
-
-    await reconcile_deliveries()
-    from ngertiin.tasks.recovery import reconcile_deliveries as reconcile_tasks
-
-    await reconcile_tasks()
-    from ngertiin.files.cleanup import reconcile as reconcile_files
-
-    await reconcile_files()
-    from ngertiin.memory.jobs import recover as recover_memory
-
-    await recover_memory()
-    from ngertiin.proactivity.jobs import recover as recover_proactivity
-
-    await recover_proactivity()
-    from ngertiin.usage.recovery import reconcile
+            else:
+                await queue_app.job_manager.retry_job(job)
+            logger.warning("job.recovered", job_id=job.id, task_name=job.task_name)
+        except Exception:
+            logger.exception("job.recovery_failed", job_id=job.id)
+    from ngertiin.recovery.service import reconcile
 
     await reconcile()
 

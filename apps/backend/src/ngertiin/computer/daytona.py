@@ -199,3 +199,13 @@ class DaytonaComputer:
         async with client() as api:
             sandbox = await api.get(workspace["resource_name"], request_timeout=10)
             await sandbox.refresh_activity(request_timeout=10)
+
+    async def inspect(self, workspace):
+        async with client() as api:
+            try:
+                sandbox = await api.get(workspace["resource_name"], request_timeout=15)
+                return str(sandbox.state)
+            except Exception as error:
+                if missing(error):
+                    return "absent"
+                raise

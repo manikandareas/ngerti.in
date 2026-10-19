@@ -42,6 +42,9 @@ logger = structlog.get_logger()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    from ngertiin.recovery.restore import ensure_released
+
+    await ensure_released()
     yield
     await close_pool()
 

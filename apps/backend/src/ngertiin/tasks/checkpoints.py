@@ -17,8 +17,13 @@ class TaskSaver(AsyncPostgresSaver):
     async def check_owner(self):
         cursor = await self.connection.execute(
             "SELECT id FROM background_tasks WHERE id=%s AND lease_token=%s AND revision=%s "
-            "AND status='running' FOR SHARE",
-            (self.execution["id"], self.execution["lease_token"], self.execution["revision"]),
+            "AND workflow_version=%s AND status='running' FOR SHARE",
+            (
+                self.execution["id"],
+                self.execution["lease_token"],
+                self.execution["revision"],
+                self.execution.get("workflow_version", 1),
+            ),
         )
         if not await cursor.fetchone():
             raise StaleExecution()

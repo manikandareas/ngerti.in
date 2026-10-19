@@ -49,6 +49,9 @@ async def cancel(owner: UUID, task_id: UUID):
 
 async def retry(owner: UUID, task_id: UUID, request_key: UUID):
     async with store.locked(owner, task_id) as (conn, task):
+        from ngertiin.tasks.compatibility import require_supported
+
+        require_supported(task)
         previous = await one(
             conn,
             "SELECT command FROM task_commands WHERE task_id=%s AND request_key=%s",
@@ -146,6 +149,9 @@ async def revise(owner: UUID, task_id: UUID, revision: int, draft: str, request_
     if not draft or len(draft) > 24000:
         raise HTTPException(422, "Draft harus berisi 1–24000 karakter.")
     async with store.locked(owner, task_id) as (conn, task):
+        from ngertiin.tasks.compatibility import require_supported
+
+        require_supported(task)
         if task.get("output_spec"):
             from ngertiin.files.validation import outputs
 

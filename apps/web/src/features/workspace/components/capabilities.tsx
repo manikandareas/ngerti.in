@@ -16,12 +16,6 @@ const capabilities = [
     icon: Brain,
     description: "Tinjau dan koreksi preferensi yang digunakan Gwen lintas percakapan.",
   },
-  {
-    name: "Komputer",
-    icon: Monitor,
-    description:
-      "Lihat komputer pada pekerjaan yang berjalan, ambil alih, lalu kembalikan kendali ke Gwen.",
-  },
 ];
 
 export function Capabilities() {
@@ -32,6 +26,16 @@ export function Capabilities() {
         <p className="mt-2 text-sm text-muted-foreground">
           Minta bantuan menulis, membandingkan pilihan, atau menyusun rencana. Main chat dan side
           chat bisa kamu buka kembali kapan saja.
+        </p>
+      </section>
+      <section className="rounded-2xl border p-5">
+        <h2 className="flex items-center gap-3">
+          <Monitor className="size-5" /> Browser pribadi sudah tersedia
+        </h2>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Pilih Gunakan browser pribadi saat membuat Task. Buka Lihat komputer untuk melihat
+          pekerjaan, ambil alih untuk login, lalu kembalikan kendali ke Gwen. Login dapat digunakan
+          kembali oleh Task berikutnya; aksi klik dan ketik tetap meminta persetujuanmu.
         </p>
       </section>
       <section className="rounded-2xl border p-5">

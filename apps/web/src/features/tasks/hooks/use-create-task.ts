@@ -20,7 +20,7 @@ export function useCreateTask(threadId: string | null) {
     setSending(true);
     setError("");
     try {
-      const inputs = attachmentInputs(attachments.items);
+      const inputs = form.browser ? [] : attachmentInputs(attachments.items);
       const identity = JSON.stringify({ key: form.requestKey, inputs, outputs: form.outputs });
       const hash = new Uint8Array(
         await crypto.subtle.digest("SHA-256", new TextEncoder().encode(identity)),
@@ -37,7 +37,7 @@ export function useCreateTask(threadId: string | null) {
           request_key: requestKey,
           inputs,
           outputs: form.outputs,
-          runtime_kind: form.computation ? "code" : "text",
+          runtime_kind: form.browser ? "browser" : form.computation ? "code" : "text",
         }),
       });
       form.clear();

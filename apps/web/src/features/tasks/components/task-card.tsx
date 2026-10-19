@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Streamdown } from "streamdown";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ComputerPanel } from "@/features/computer/components/computer-panel";
 import { FileDraft } from "@/features/files/components/file-draft";
 import { ResultCard } from "@/features/files/components/result-card";
 import { TaskInputs } from "@/features/files/components/task-inputs";
@@ -24,10 +25,17 @@ export function TaskCard({ task, showResult = true }: TaskCardProps) {
   const { command, pending, error } = useTaskCommands(task);
   const active = task.status === "queued" || task.status === "running";
   const waiting = task.status === "waiting_user";
-  const unknown = task.stage === "unknown" || task.stage === "sandbox_unknown";
+  const unknown =
+    task.stage === "unknown" ||
+    task.stage === "sandbox_unknown" ||
+    task.stage === "computer_unknown" ||
+    task.stage === "computer_unknown_resolved";
   const canReview = waiting && task.action?.status === "proposed" && !unknown;
   const expired = task.action ? Date.parse(task.action.expires_at) <= Date.now() : false;
-  const canEdit = ["waiting_user", "failed", "cancelled"].includes(task.status) && !unknown;
+  const canEdit =
+    ["waiting_user", "failed", "cancelled"].includes(task.status) &&
+    !unknown &&
+    (task.runtime_kind !== "browser" || task.stage === "review" || task.stage === "draft_ready");
   const percent = Math.min(100, Math.round((task.usage_units / task.budget_cap) * 100));
 
   return (
@@ -59,6 +67,7 @@ export function TaskCard({ task, showResult = true }: TaskCardProps) {
         </div>
       ) : null}
       <div className="mt-4 flex flex-wrap gap-2">
+        {task.runtime_kind === "browser" ? <ComputerPanel task={task} /> : null}
         <Button
           type="button"
           variant="outline"

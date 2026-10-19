@@ -1,4 +1,11 @@
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { AttachmentPicker } from "@/features/files/components/attachment-picker";
 import { OutputFields } from "@/features/files/components/output-fields";
@@ -34,17 +41,36 @@ export function TaskCreateForm({ threadId }: TaskCreateFormProps) {
           form.update(value, review);
         }}
       />
-      <AttachmentPicker state={attachments} disabled={sending} />
-      <label className="flex items-start gap-3 text-sm">
-        <input
-          type="checkbox"
-          checked={form.computation}
+      <div className="space-y-2">
+        <label htmlFor="task-runtime" className="text-sm">
+          Cara mengerjakan
+        </label>
+        <Select
+          value={form.browser ? "browser" : form.computation ? "code" : "text"}
           disabled={sending}
-          onChange={(event) => form.update(instruction, review, form.outputs, event.target.checked)}
-          className="mt-1 size-4 accent-primary"
-        />
-        Hitung dan olah data dengan Python
-      </label>
+          onValueChange={(value) =>
+            form.update(instruction, review, form.outputs, value === "code", value === "browser")
+          }
+        >
+          <SelectTrigger id="task-runtime" className="w-full">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="text">Teks dan file</SelectItem>
+            <SelectItem value="code">Hitung dan olah data dengan Python</SelectItem>
+            <SelectItem value="browser">Gunakan browser pribadi</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      {!form.browser ? <AttachmentPicker state={attachments} disabled={sending} /> : null}
+      {form.browser ? (
+        <p className="text-xs text-muted-foreground">
+          Login tersimpan dapat dipakai lintas Task. Kamu bisa melihat layar dan mengambil alih.
+          Maksimal 20 menit, 24 langkah; profil disimpan hingga 7 hari sejak penggunaan terakhir.
+          Gunakan Task terpisah untuk mengolah lampiran dengan Python. Aksi klik/ketik/tombol
+          ditinjau sebelum dilakukan.
+        </p>
+      ) : null}
       {form.computation ? (
         <p className="text-xs text-muted-foreground">
           Mengolah file yang dipilih tanpa akses internet. Maksimal 5 menit per task dan 3 percobaan

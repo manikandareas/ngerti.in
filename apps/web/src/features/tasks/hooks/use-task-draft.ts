@@ -7,6 +7,7 @@ interface TaskDraft {
   requestKey: string;
   outputs: OutputSpec[];
   computation: boolean;
+  browser: boolean;
 }
 
 function empty(): TaskDraft {
@@ -16,6 +17,7 @@ function empty(): TaskDraft {
     requestKey: crypto.randomUUID(),
     outputs: [],
     computation: false,
+    browser: false,
   };
 }
 
@@ -33,6 +35,7 @@ export function useTaskDraft(storageKey: string) {
           ...saved,
           outputs: Array.isArray(saved.outputs) ? saved.outputs : [],
           computation: saved.computation === true,
+          browser: saved.browser === true,
         });
     } catch {
       /* A missing or invalid browser draft starts empty. */
@@ -44,8 +47,16 @@ export function useTaskDraft(storageKey: string) {
     review: boolean,
     outputs = draft.outputs,
     computation = draft.computation,
+    browser = draft.browser,
   ) {
-    const next = { instruction, review, outputs, computation, requestKey: crypto.randomUUID() };
+    const next = {
+      instruction,
+      review,
+      outputs,
+      computation: computation && !browser,
+      browser,
+      requestKey: crypto.randomUUID(),
+    };
     setDraft(next);
     try {
       sessionStorage.setItem(storageKey, JSON.stringify(next));

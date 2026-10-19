@@ -32,7 +32,7 @@ export interface BackgroundTask {
   action: TaskAction | null;
   output_spec: Array<{ filename: string; format: string }>;
   result_id: string | null;
-  runtime_kind: "text" | "code";
+  runtime_kind: "text" | "code" | "browser";
   sandbox_sessions?: Array<{
     id: string;
     state: string;

@@ -74,8 +74,8 @@ export function TaskPanel({ threadId }: TaskPanelProps) {
       )}
       <p className="text-xs text-muted-foreground">
         Menampilkan hingga 50 task, dengan pekerjaan aktif didahulukan. Kamu dapat memakai file dan
-        menyimpan berkas hasil serta mengolah data dengan Python offline. Browser dan jadwal
-        mengikuti kemampuan berikutnya.
+        menyimpan berkas hasil, mengolah data dengan Python offline, atau menggunakan browser
+        pribadi. Jadwal mengikuti kemampuan berikutnya.
       </p>
     </div>
   );

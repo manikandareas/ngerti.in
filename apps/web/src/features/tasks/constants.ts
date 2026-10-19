@@ -10,6 +10,16 @@ export const taskStatus: Record<BackgroundTask["status"], string> = {
 };
 
 export const taskStage: Record<string, string> = {
+  computer_starting: "Menyiapkan browser pribadi dan profil tersimpan.",
+  computer_observing: "Gwen sedang membaca keadaan layar terbaru.",
+  computer_working: "Gwen sedang mengerjakan langkah browser.",
+  computer_queue: "Menunggu giliran memakai komputer pribadi.",
+  computer_handoff: "Menunggu aksi dan koneksi lama selesai sebelum menyerahkan kendali.",
+  computer_human: "Gwen menunggu bantuanmu. Buka komputer untuk mengambil alih atau melanjutkan.",
+  computer_resuming: "Gwen membaca perubahanmu sebelum melanjutkan.",
+  computer_approval: "Periksa aksi yang diusulkan pada panel komputer.",
+  computer_unknown: "Outcome atau penghentian komputer belum pasti. Periksa sebelum melanjutkan.",
+  computer_unknown_resolved: "Diperiksa pengguna; aksi yang belum pasti tidak diulang otomatis.",
   planning_code: "Gwen sedang menyiapkan langkah pengolahan data.",
   provisioning: "Menyiapkan ruang komputasi terisolasi.",
   executing_code: "Menghitung dan mengolah data yang dipilih.",

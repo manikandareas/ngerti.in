@@ -2,11 +2,13 @@ import { UserButton } from "@clerk/tanstack-react-start";
 import { ChevronRight } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
+import { BrowserSettings } from "@/features/computer/components/browser-settings";
 import type { WorkspaceView } from "@/features/workspace/types";
 
 export function SettingsPanel({ onNavigate }: { onNavigate: (view: WorkspaceView) => void }) {
   return (
     <div className="divide-y border-y">
+      <BrowserSettings />
       <section className="flex items-center justify-between gap-5 py-6">
         <div>
           <h2>Akun</h2>

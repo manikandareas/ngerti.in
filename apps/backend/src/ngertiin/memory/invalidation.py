@@ -175,6 +175,21 @@ async def filter_history(owner, rows):
                 if excluded:
                     continue
             run_id = row.get("run_id")
+            if row.get("role") == "assistant" and row.get("id"):
+                proactive = await one(
+                    conn,
+                    "SELECT c.evidence_refs,c.state FROM proactive_deliveries d "
+                    "JOIN proactive_candidates c ON c.id=d.candidate_id "
+                    "WHERE d.owner_id=%s AND d.message_id=%s",
+                    (owner, row["id"]),
+                )
+                if proactive:
+                    from ngertiin.proactivity.evidence import valid as proactive_valid
+
+                    if proactive["state"] != "delivered" or not await proactive_valid(
+                        conn, owner, proactive["evidence_refs"]
+                    ):
+                        continue
             if row.get("role") == "assistant" and not run_id and row.get("id"):
                 message = await one(
                     conn,

@@ -265,7 +265,9 @@ async def collect(conn, owner, thread=None):
     previous = await (
         await conn.execute(
             "SELECT payload,evidence_refs FROM proactive_candidates WHERE owner_id=%s "
-            "AND state='eligible' AND expires_at>now() ORDER BY created_at DESC LIMIT 10",
+            "AND ((state='eligible' AND expires_at>now()) OR "
+            "(state='delivered' AND created_at>now()-interval '7 days')) "
+            "ORDER BY created_at DESC LIMIT 10",
             (owner,),
         )
     ).fetchall()

@@ -26,6 +26,7 @@ from ngertiin.health import system_status
 from ngertiin.memory.api import router as memory_router
 from ngertiin.models import Account
 from ngertiin.persona.api import router as persona_router
+from ngertiin.proactivity.api import product_router as proactive_product_router
 from ngertiin.proactivity.api import router as proactive_router
 from ngertiin.quotas.api import ERROR_TYPES, quota_error
 from ngertiin.quotas.api import router as quota_router
@@ -50,6 +51,7 @@ app = FastAPI(
 app.include_router(chat_router)
 app.include_router(persona_router)
 app.include_router(proactive_router)
+app.include_router(proactive_product_router)
 app.include_router(memory_router)
 app.include_router(quota_router)
 app.include_router(task_router)

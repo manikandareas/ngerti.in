@@ -66,7 +66,11 @@ async def publish(job, candidates, judgments):
             if candidate.kind == "needs_input" and judgment["needs_input"]["noul"] < 0.8:
                 score, reason = 0, "input_not_needed"
             key = fingerprint(
-                [candidate.kind, str(candidate.thread_id), candidate.action.strip().lower()]
+                [
+                    candidate.kind,
+                    str(candidate.thread_id),
+                    (candidate.action or candidate.what_is_new).strip().lower(),
+                ]
             )
             duplicate = await one(
                 conn,
@@ -107,7 +111,9 @@ async def publish(job, candidates, judgments):
                     json_value(
                         {
                             **candidate.model_dump(mode="json"),
-                            "preview": candidate.what_is_new + " " + candidate.action,
+                            "preview": " ".join(
+                                p for p in [candidate.what_is_new, candidate.action] if p
+                            ),
                         }
                     ),
                     json_value(job["snapshot"]["refs"]),
@@ -147,7 +153,12 @@ async def process(identity):
         candidates = []
         seen = set()
         for candidate in generated.candidates:
-            key = fingerprint([str(candidate.thread_id), candidate.action.strip().lower()])
+            key = fingerprint(
+                [
+                    str(candidate.thread_id),
+                    (candidate.action or candidate.what_is_new).strip().lower(),
+                ]
+            )
             if (
                 policy.route(
                     candidate, job["snapshot"]["evidence"], job["snapshot"].get("target_thread_id")

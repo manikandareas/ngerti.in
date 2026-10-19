@@ -146,7 +146,8 @@ async def request(owner, thread=None):
         row = await one(
             conn,
             "INSERT INTO proactive_evaluations(id,owner_id,input_hash,"
-            "pipeline_version,snapshot,status,reason) VALUES (%s,%s,%s,%s,%s,%s,%s) "
+            "pipeline_version,snapshot,status,reason,signal_version) "
+            "VALUES (%s,%s,%s,%s,%s,%s,%s,%s) "
             "RETURNING *",
             (
                 uuid4(),
@@ -156,6 +157,7 @@ async def request(owner, thread=None):
                 json_value(snapshot),
                 "queued" if snapshot["evidence"] else "no_op",
                 None if snapshot["evidence"] else "no_evidence",
+                controls["signal_version"],
             ),
         )
         if row["status"] == "queued":
@@ -194,11 +196,21 @@ async def listing(owner):
                 (owner,),
             )
         ).fetchall()
+        product = await one(
+            conn,
+            "SELECT intensity,onboarded_at FROM proactive_preferences WHERE owner_id=%s",
+            (owner,),
+        )
         return {
             "controls": controls,
             "evaluations": rows,
             "candidates": candidates,
-            "delivery_enabled": False,
+            "delivery_enabled": bool(
+                product
+                and product["onboarded_at"]
+                and product["intensity"] != "off"
+                and controls["enabled"]
+            ),
             "pipeline_version": policy.VERSION,
             "provider_ready": bool(
                 get_settings().openai_api_key.get_secret_value()
@@ -226,7 +238,18 @@ async def detail(owner, identity):
                 (identity,),
             )
         ).fetchall()
-        return {**row, "cost_events": costs, "delivery_enabled": False}
+        product = await one(
+            conn,
+            "SELECT intensity,onboarded_at FROM proactive_preferences WHERE owner_id=%s",
+            (owner,),
+        )
+        return {
+            **row,
+            "cost_events": costs,
+            "delivery_enabled": bool(
+                product and product["onboarded_at"] and product["intensity"] != "off"
+            ),
+        }
 
 
 async def fence(conn, job):

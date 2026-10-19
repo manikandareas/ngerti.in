@@ -51,6 +51,9 @@ async def dispatch(timestamp: int | None = None):
     await recover()
     if not get_settings().proactive_enabled:
         return
+    from ngertiin.proactivity.delivery import dispatch as dispatch_delivery
+
+    await dispatch_delivery()
     async with transaction() as conn:
         rows = await (
             await conn.execute(

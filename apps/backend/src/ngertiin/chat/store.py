@@ -57,7 +57,11 @@ async def bootstrap(owner: UUID):
         )
         threads = await (
             await conn.execute(
-                "SELECT id,kind,title,updated_at FROM chat_threads WHERE owner_id=%s "
+                "SELECT t.id,t.kind,t.title,t.updated_at,(SELECT count(*) "
+                "FROM proactive_deliveries d "
+                "JOIN chat_messages m ON m.id=d.message_id WHERE d.thread_id=t.id "
+                "AND m.position>t.proactive_read_position) AS proactive_unread "
+                "FROM chat_threads t WHERE owner_id=%s "
                 "ORDER BY kind,updated_at DESC",
                 (owner,),
             )

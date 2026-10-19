@@ -3,6 +3,7 @@ import { ChevronRight } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { BrowserSettings } from "@/features/computer/components/browser-settings";
+import { ProactivitySettings } from "@/features/proactivity/components/proactivity-settings";
 import type { WorkspaceView } from "@/features/workspace/types";
 
 export function SettingsPanel({
@@ -15,6 +16,7 @@ export function SettingsPanel({
   return (
     <div className="divide-y border-y">
       <BrowserSettings />
+      <ProactivitySettings />
       <section className="flex items-center justify-between gap-5 py-6">
         <div>
           <h2>Akun</h2>

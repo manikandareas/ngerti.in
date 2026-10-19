@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { useProactivityPreferences } from "@/features/proactivity/hooks/use-proactivity-preferences";
 import { useSchedules } from "@/features/schedules/hooks/use-schedules";
 import { recurrenceLabel, timeLabel } from "@/features/schedules/utils/presentation";
 import { useTasks } from "@/features/tasks/hooks/use-tasks";
@@ -6,6 +7,7 @@ import type { WorkspaceView } from "@/features/workspace/types";
 
 export function AssistantActivity({ onNavigate }: { onNavigate: (view: WorkspaceView) => void }) {
   const tasks = useTasks();
+  const proactive = useProactivityPreferences();
   const labels = {
     queued: "Mengantre",
     running: "Sedang dikerjakan",
@@ -48,6 +50,19 @@ export function AssistantActivity({ onNavigate }: { onNavigate: (view: Workspace
       <Button variant="outline" onClick={() => onNavigate("tasks")}>
         Buka semua Task
       </Button>
+      {proactive.data?.deliveries.length ? (
+        <section className="space-y-3">
+          <h3 className="font-bold">Saran proaktif terbaru</h3>
+          {proactive.data.deliveries.slice(0, 5).map((d) => (
+            <p key={d.candidate_id} className="text-sm wrap-anywhere">
+              {d.title ?? "Saran tersimpan"}
+              <span className="mt-1 block text-xs text-muted-foreground">
+                {d.thread_title} · {new Date(d.created_at).toLocaleString()}
+              </span>
+            </p>
+          ))}
+        </section>
+      ) : null}
     </section>
   );
 }

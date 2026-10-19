@@ -75,8 +75,9 @@ export function ProactivityInspector() {
           Pratinjau kandidat proaktif
         </h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          LLM menyiapkan usulan, Jev menilai, backend memilih. Pratinjau ini tidak mengirim pesan
-          atau menjalankan pekerjaan.
+          LLM menyiapkan usulan, Jev menilai, backend memilih. Kandidat dapat menjadi pesan bila
+          preferensi proaktif produk aktif dan pemeriksaan delivery lulus. Evaluasi tidak
+          menjalankan pekerjaan.
         </p>
       </div>
       {query.isPending ? (
@@ -93,6 +94,8 @@ export function ProactivityInspector() {
           <p className="text-sm">
             Evaluasi background: {data.controls.enabled ? "aktif" : "nonaktif"} · Provider:{" "}
             {data.provider_ready ? "siap" : "belum dikonfigurasi"}
+            {" · Delivery produk: "}
+            {data.delivery_enabled ? "aktif" : "nonaktif"}
           </p>
           <div className="flex flex-wrap gap-2">
             <Button

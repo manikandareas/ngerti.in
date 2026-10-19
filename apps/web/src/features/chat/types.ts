@@ -2,7 +2,10 @@ import type { BackgroundTask } from "@/features/tasks/types";
 
 export interface ChatPart {
   id: string;
-  type: "text" | "reasoning" | "tool" | "file" | "result";
+  type: "text" | "reasoning" | "tool" | "file" | "result" | "proactive";
+  candidate_id?: string;
+  why_relevant?: string;
+  created_at?: string;
   revision_id?: string;
   filename?: string;
   revision?: number;
@@ -18,13 +21,14 @@ export interface ChatMessage {
   role: "user" | "assistant";
   parts: ChatPart[];
   status: string;
-  run_id: string;
+  run_id: string | null;
   position?: number;
 }
 export interface ChatThread {
   id: string;
   kind: "main" | "side";
   title: string;
+  proactive_unread?: number;
 }
 export interface ChatRun {
   id: string;

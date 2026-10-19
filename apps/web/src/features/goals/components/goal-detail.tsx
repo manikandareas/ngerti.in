@@ -9,6 +9,7 @@ import {
   goalOperationLabels,
   goalStateLabels,
 } from "@/features/goals/types";
+import { ProactivityScopeControl } from "@/features/proactivity/components/proactivity-scope";
 import { taskStatus } from "@/features/tasks/constants";
 import { GoalEvidenceForm } from "./goal-evidence-form";
 import { GoalEvidenceSource } from "./goal-evidence-source";
@@ -39,6 +40,7 @@ export function GoalDetailPanel({ id }: { id: string }) {
   ];
   return (
     <section className="space-y-6" aria-label="Detail tujuan">
+      <ProactivityScopeControl scope="goal" id={id} />
       {data.isError ? (
         <p role="alert">
           Sinkronisasi terganggu. Data terakhir ditampilkan; coba muat ulang sebelum mengubah.

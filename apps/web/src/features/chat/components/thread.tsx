@@ -8,6 +8,8 @@ import { useOnline } from "@/features/chat/hooks/use-online";
 import { useThread } from "@/features/chat/hooks/use-thread";
 import { useThreadActions } from "@/features/chat/hooks/use-thread-actions";
 import { useThreadComposer } from "@/features/chat/hooks/use-thread-composer";
+import { ProactivityScopeControl } from "@/features/proactivity/components/proactivity-scope";
+import { ProactivityOnboarding } from "@/features/proactivity/components/proactivity-settings";
 import { QuotaSummary } from "@/features/quotas/components/quota-summary";
 import { useQuota } from "@/features/quotas/hooks/use-quota";
 import { ChatComposer } from "./chat-composer";
@@ -57,6 +59,10 @@ export function Thread({ threadId, draftRequest, onDraftRequestConsumed }: Threa
   return (
     <MessageScroller.Provider autoScroll defaultScrollPosition={empty ? "start" : "end"}>
       <div className="flex min-h-0 flex-1 flex-col">
+        <div className="mx-auto w-full max-w-[800px] shrink-0 px-4 min-[701px]:px-6">
+          {snapshot.thread.kind === "main" ? <ProactivityOnboarding /> : null}
+          <ProactivityScopeControl key={threadId} scope="thread" id={threadId} />
+        </div>
         <ThreadTranscript
           snapshot={snapshot}
           active={active}

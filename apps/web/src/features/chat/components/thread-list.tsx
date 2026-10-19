@@ -162,6 +162,14 @@ function ThreadButton({ thread, selectedId, onSelect }: ThreadButtonProps) {
       onClick={() => onSelect(thread.id)}
     >
       <span className="min-w-0 truncate">{thread.title}</span>
+      {thread.proactive_unread ? (
+        <span
+          className="ml-auto shrink-0 rounded-full bg-primary px-2 py-0.5 text-xs text-primary-foreground"
+          title={`${thread.proactive_unread} saran belum dibaca`}
+        >
+          {thread.proactive_unread}
+        </span>
+      ) : null}
     </Button>
   );
 }

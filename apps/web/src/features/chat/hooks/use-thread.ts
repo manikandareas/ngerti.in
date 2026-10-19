@@ -74,6 +74,8 @@ export function useThread(threadId: string | null) {
             if (event.type === "run.status") {
               void queryClient.invalidateQueries({ queryKey: ["chat-threads", userId] });
               void queryClient.invalidateQueries({ queryKey: ["quotas", userId] });
+              void queryClient.invalidateQueries({ queryKey: ["proactivity-preferences", userId] });
+              void queryClient.invalidateQueries({ queryKey: ["proactivity-scope", userId] });
             }
             if (event.type === "task.upsert" && event.task?.status !== "running") {
               void queryClient.invalidateQueries({ queryKey: ["tasks", userId] });
@@ -94,6 +96,29 @@ export function useThread(threadId: string | null) {
       stream?.close();
     };
   }, [threadId, userId, getToken, queryClient, snapshotPath]);
+
+  const latestPosition = snapshot?.messages.at(-1)?.position;
+  useEffect(() => {
+    if (!threadId || !userId || !latestPosition) return;
+    let disposed = false;
+    async function read() {
+      if (document.visibilityState !== "visible") return;
+      try {
+        await api(`/proactivity/read/${threadId}/${latestPosition}`, await getToken(), {
+          method: "POST",
+        });
+        if (!disposed) void queryClient.invalidateQueries({ queryKey: ["chat-threads", userId] });
+      } catch {
+        /* Preserve unread state until a later successful read. */
+      }
+    }
+    void read();
+    document.addEventListener("visibilitychange", read);
+    return () => {
+      disposed = true;
+      document.removeEventListener("visibilitychange", read);
+    };
+  }, [threadId, userId, latestPosition, getToken, queryClient]);
 
   async function loadEarlier() {
     const before = state.current?.messages[0]?.position;

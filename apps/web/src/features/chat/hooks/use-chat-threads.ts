@@ -20,6 +20,7 @@ export function useChatThreads(onCreated: (id: string) => void) {
     queryKey,
     queryFn: async () => api<ThreadListResponse>("/chat/threads", await getToken()),
     staleTime: 10_000,
+    refetchInterval: 15_000,
   });
   const create = useMutation({
     mutationFn: async () =>

@@ -1,6 +1,7 @@
 import asyncio
 import logging
 
+import ngertiin.billing.jobs  # noqa: F401
 import ngertiin.chat.tasks  # noqa: F401
 import ngertiin.computer.jobs  # noqa: F401
 import ngertiin.files.jobs  # noqa: F401

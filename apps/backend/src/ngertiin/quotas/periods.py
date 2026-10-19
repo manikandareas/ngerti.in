@@ -31,8 +31,9 @@ async def current_period(conn, owner: UUID, *, at: datetime | None = None):
     now = await clock(conn, at)
     grant = await one(
         conn,
-        "SELECT * FROM quota_grants WHERE owner_id=%s AND starts_at<=%s AND ends_at>%s",
-        (owner, now, now),
+        "SELECT * FROM quota_grants WHERE owner_id=%s AND starts_at<=%s AND ends_at>%s "
+        "AND (revoked_at IS NULL OR revoked_at>%s)",
+        (owner, now, now, now),
     )
     plan: Plan
     if grant:
@@ -40,13 +41,15 @@ async def current_period(conn, owner: UUID, *, at: datetime | None = None):
     else:
         last = await one(
             conn,
-            "SELECT max(ends_at) AS t FROM quota_grants WHERE owner_id=%s AND ends_at<=%s",
+            "SELECT max(LEAST(ends_at,revoked_at)) AS t FROM quota_grants "
+            "WHERE owner_id=%s AND LEAST(ends_at,revoked_at)<=%s",
             (owner, now),
         )
         start, end = free_window(last["t"] or account["created_at"], now)
         upcoming = await one(
             conn,
-            "SELECT min(starts_at) AS t FROM quota_grants WHERE owner_id=%s AND starts_at>%s",
+            "SELECT min(starts_at) AS t FROM quota_grants WHERE owner_id=%s AND starts_at>%s "
+            "AND revoked_at IS NULL",
             (owner, now),
         )
         end = min(end, upcoming["t"]) if upcoming["t"] else end
@@ -63,8 +66,14 @@ async def current_period(conn, owner: UUID, *, at: datetime | None = None):
             plan,
             start,
             end,
-            POLICY_VERSION,
-            Jsonb(LIMITS[plan]),
+            (grant.get("policy_snapshot") or {}).get("chat_policy", POLICY_VERSION)
+            if grant
+            else POLICY_VERSION,
+            Jsonb(
+                {"chat": grant["policy_snapshot"]["chat_messages"]}
+                if grant and grant.get("policy_snapshot")
+                else LIMITS[plan]
+            ),
             grant["id"] if grant else None,
         ),
     )
@@ -89,7 +98,9 @@ async def grant_plus(
         return previous
     now = await clock(conn, at)
     latest = await one(
-        conn, "SELECT max(ends_at) AS t FROM quota_grants WHERE owner_id=%s", (owner,)
+        conn,
+        "SELECT max(LEAST(ends_at,revoked_at)) AS t FROM quota_grants WHERE owner_id=%s",
+        (owner,),
     )
     if now < utc(account["created_at"]):
         raise ValueError("Activation precedes account creation")

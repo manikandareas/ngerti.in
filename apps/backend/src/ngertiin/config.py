@@ -75,10 +75,26 @@ class Settings(BaseSettings):
     computer_task_seconds: int = Field(default=1200, ge=120, le=1200)
     computer_retention_days: int = Field(default=7, ge=1, le=7)
     computer_storage_microusd_per_hour: int = Field(default=864, ge=1, le=1200)
+    billing_mode: Literal["test", "live"] = "test"
+    billing_public_api_url: str = ""
+    duitku_enabled: bool = False
+    duitku_merchant_code: str = ""
+    duitku_api_key: SecretStr = SecretStr("")
+    duitku_card_method: Literal["MG", "VC"] = "MG"
+    duitku_signature_algorithm: Literal["md5", "hmac_sha256"] = "md5"
+    lemonsqueezy_enabled: bool = False
+    lemonsqueezy_api_key: SecretStr = SecretStr("")
+    lemonsqueezy_webhook_secret: SecretStr = SecretStr("")
+    lemonsqueezy_store_id: str = ""
+    lemonsqueezy_variant_id: str = ""
+    lemonsqueezy_currency: Literal["IDR", "USD"] = "IDR"
+    lemonsqueezy_price_minor: int = Field(default=27075000, ge=1)
 
     @model_validator(mode="after")
     def validate_production(self) -> "Settings":
         if self.app_env == "production":
+            if (self.duitku_enabled or self.lemonsqueezy_enabled) and self.billing_mode != "live":
+                raise ValueError("Enabled production billing requires BILLING_MODE=live")
             if self.enable_dev_diagnostics:
                 raise ValueError("ENABLE_DEV_DIAGNOSTICS must be false in production")
             if not self.clerk_secret_key.get_secret_value():

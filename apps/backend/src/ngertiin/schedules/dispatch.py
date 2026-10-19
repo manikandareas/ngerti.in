@@ -91,7 +91,8 @@ async def admit(conn, schedule: dict, intended_at: datetime, *, manual_id=None):
             status = "blocked_budget" if error.reason == "budget" else "skipped"
             reason = str(error.detail)
         except HTTPException as error:
-            status, reason = "failed", str(error.detail)
+            status = "blocked_budget" if error.status_code == 429 else "failed"
+            reason = str(error.detail)
     await conn.execute(
         "UPDATE schedule_occurrences SET status=%s,reason=%s,task_id=%s WHERE id=%s",
         (status, reason, task_id, oid),

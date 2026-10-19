@@ -16,6 +16,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from ngertiin.accounts.auth import current_account
 from ngertiin.api.diagnostics import router as diagnostic_router
 from ngertiin.async_db import close_pool
+from ngertiin.billing.api import router as billing_router
 from ngertiin.chat.api import router as chat_router
 from ngertiin.computer.api import router as computer_router
 from ngertiin.config import get_settings
@@ -58,6 +59,7 @@ app.include_router(memory_router)
 app.include_router(quota_router)
 app.include_router(task_router)
 app.include_router(usage_router)
+app.include_router(billing_router)
 app.include_router(schedule_router)
 app.include_router(goal_router)
 app.include_router(file_router)

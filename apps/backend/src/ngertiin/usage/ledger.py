@@ -14,19 +14,21 @@ WITH clock AS (SELECT clock_timestamp() AS t), a AS (
  SELECT * FROM accounts WHERE id=%s
 ), g AS (
  SELECT * FROM quota_grants WHERE owner_id=%s
- AND starts_at<=(SELECT t FROM clock) AND ends_at>(SELECT t FROM clock)
+ AND starts_at<=(SELECT t FROM clock) AND LEAST(ends_at,revoked_at)>(SELECT t FROM clock)
 ), anchor AS (
- SELECT COALESCE((SELECT max(ends_at) FROM quota_grants
- WHERE owner_id=a.id AND ends_at<=(SELECT t FROM clock)), a.created_at) AS t FROM a
+ SELECT COALESCE((SELECT max(LEAST(ends_at,revoked_at)) FROM quota_grants
+ WHERE owner_id=a.id AND LEAST(ends_at,revoked_at)<=(SELECT t FROM clock)),
+ a.created_at) AS t FROM a
 ), win AS (
  SELECT t + floor(extract(epoch FROM ((SELECT t FROM clock)-t))/2592000)
  *interval '30 days' AS t FROM anchor
 )
 SELECT CASE WHEN g.id IS NULL THEN 'free' ELSE 'plus' END AS plan,
+ g.policy_snapshot AS grant_policy,
  COALESCE(g.starts_at,win.t) AS starts_at,
  COALESCE(g.ends_at,LEAST(win.t+interval '30 days',
  (SELECT min(starts_at) FROM quota_grants
- WHERE owner_id=%s AND starts_at>(SELECT t FROM clock)))) AS ends_at
+ WHERE owner_id=%s AND starts_at>(SELECT t FROM clock) AND revoked_at IS NULL))) AS ends_at
 FROM win LEFT JOIN g ON true
 """
 PERIOD_INSERT = """INSERT INTO compute_periods(id,owner_id,starts_at,ends_at,plan,policy)
@@ -42,13 +44,17 @@ COALESCE(sum(GREATEST(vendor_cost,CASE WHEN state='active' THEN cap ELSE 0 END))
 
 def period_values(owner, window):
     pid = uuid5(owner, f"compute:{window['plan']}:{window['starts_at'].isoformat()}")
+    snapshot = policy.snapshot()
+    if window.get("grant_policy"):
+        snapshot["plus"] = window["grant_policy"]["compute_credits"] * policy.CREDIT
+        snapshot["version"] = window["grant_policy"]["compute_policy"]
     return (
         pid,
         owner,
         window["starts_at"],
         window["ends_at"],
         window["plan"],
-        Jsonb(policy.snapshot()),
+        Jsonb(snapshot),
     )
 
 

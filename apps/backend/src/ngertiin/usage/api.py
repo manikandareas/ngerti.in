@@ -10,6 +10,7 @@ from ngertiin.accounts.auth import current_account
 from ngertiin.async_db import transaction
 from ngertiin.chat.store import one
 from ngertiin.models import Account
+from ngertiin.quotas.periods import current_period
 from ngertiin.usage import events, ledger, policy
 from ngertiin.usage.estimates import estimate
 
@@ -62,8 +63,11 @@ async def summary(conn, owner, offset=0):
 
     return {
         "plan": p["plan"],
-        "plan_contract": policy.PLANS[p["plan"]]
-        | {"compute_credits": credits(p["policy"][p["plan"]]), "checkout_available": False},
+        "plan_contract": {
+            "chat_messages": (await current_period(conn, owner))["limits"]["chat"],
+            "compute_credits": credits(limit),
+            "period_days": policy.PLANS[p["plan"]]["period_days"],
+        },
         "policy_version": p["policy"]["version"],
         "period": {"starts_at": p["starts_at"], "ends_at": p["ends_at"]},
         "compute": {

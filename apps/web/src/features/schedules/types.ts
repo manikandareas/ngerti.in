@@ -19,6 +19,8 @@ export interface ScheduleSpec {
 }
 export type ScheduleOperation = "create" | "update" | "pause" | "resume" | "delete" | "run";
 export interface Schedule {
+  workflow_version?: number;
+  error?: string | null;
   goal_state?: string | null;
   goal_plan_revision?: number | null;
   goal_title?: string | null;

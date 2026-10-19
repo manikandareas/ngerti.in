@@ -25,16 +25,18 @@ export function TaskCard({ task, showResult = true }: TaskCardProps) {
   const { command, pending, error } = useTaskCommands(task);
   const active = task.status === "queued" || task.status === "running";
   const waiting = task.status === "waiting_user";
+  const recoveryBlocked = ["upgrade_required", "restore_required"].includes(task.stage);
   const unknown =
     task.stage === "unknown" ||
     task.stage === "sandbox_unknown" ||
     task.stage === "computer_unknown" ||
     task.stage === "computer_unknown_resolved";
-  const canReview = waiting && task.action?.status === "proposed" && !unknown;
+  const canReview = waiting && task.action?.status === "proposed" && !unknown && !recoveryBlocked;
   const expired = task.action ? Date.parse(task.action.expires_at) <= Date.now() : false;
   const canEdit =
     ["waiting_user", "failed", "cancelled"].includes(task.status) &&
     !unknown &&
+    !recoveryBlocked &&
     (task.runtime_kind !== "browser" || task.stage === "review" || task.stage === "draft_ready");
   const percent = Math.min(100, Math.round((task.usage_units / task.budget_cap) * 100));
 
@@ -96,6 +98,7 @@ export function TaskCard({ task, showResult = true }: TaskCardProps) {
         ) : null}
         {(task.status === "failed" || task.status === "cancelled") &&
         !unknown &&
+        !recoveryBlocked &&
         !["rejected", "expired"].includes(task.stage) ? (
           <Button
             type="button"

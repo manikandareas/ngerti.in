@@ -10,6 +10,9 @@ export const taskStatus: Record<BackgroundTask["status"], string> = {
 };
 
 export const taskStage: Record<string, string> = {
+  upgrade_required: "Pekerjaan perlu diperiksa setelah pembaruan aplikasi. Draft tetap tersedia.",
+  restore_required:
+    "Pekerjaan dihentikan setelah pemulihan backup. Hasil terdahulu tetap tersedia.",
   computer_starting: "Menyiapkan browser pribadi dan profil tersimpan.",
   computer_observing: "Gwen sedang membaca keadaan layar terbaru.",
   computer_working: "Gwen sedang mengerjakan langkah browser.",

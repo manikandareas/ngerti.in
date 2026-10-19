@@ -97,6 +97,11 @@ export function ScheduleCard({ schedule, onEdit }: { schedule: Schedule; onEdit:
         · versi {schedule.revision}
       </p>
       <p>{recurrenceLabel(schedule.spec)}</p>
+      {schedule.error ? (
+        <p className="text-danger" role="status">
+          {schedule.error}
+        </p>
+      ) : null}
       {schedule.next_due ? (
         <p>Berikutnya: {timeLabel(schedule.next_due, schedule.spec.timezone)}</p>
       ) : null}
@@ -129,7 +134,10 @@ export function ScheduleCard({ schedule, onEdit }: { schedule: Schedule; onEdit:
             <Button
               key={operation}
               variant="outline"
-              disabled={command.pending}
+              disabled={
+                command.pending ||
+                ((schedule.workflow_version ?? 1) !== 1 && operation !== "delete")
+              }
               onClick={() =>
                 void command.propose(
                   schedule.thread_id,

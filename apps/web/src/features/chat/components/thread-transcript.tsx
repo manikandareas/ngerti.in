@@ -2,6 +2,7 @@ import { MessageScroller } from "@shadcn/react/message-scroller";
 import { ArrowDown, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Approval, Snapshot } from "@/features/chat/types";
+import { ThreadScheduleProposals } from "@/features/schedules/components/schedule-proposal";
 import { TaskCard } from "@/features/tasks/components/task-card";
 import { cn } from "@/lib/utils";
 import { ApprovalCard } from "./approval-card";
@@ -99,6 +100,7 @@ export function ThreadTranscript({
                 ))}
             </section>
           ) : null}
+          <ThreadScheduleProposals threadId={snapshot.thread.id} />
         </MessageScroller.Content>
       </MessageScroller.Viewport>
       <div

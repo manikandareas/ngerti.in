@@ -2,11 +2,6 @@ import { Brain, CalendarClock, ListTodo, Monitor, Target } from "lucide-react";
 
 const capabilities = [
   {
-    name: "Jadwal",
-    icon: CalendarClock,
-    description: "Atur pekerjaan sekali atau berulang, termasuk saat kamu sedang offline.",
-  },
-  {
     name: "Goals",
     icon: Target,
     description: "Simpan tujuan dan lihat perkembangannya dari hasil pekerjaan yang nyata.",
@@ -50,6 +45,16 @@ export function Capabilities() {
         </p>
       </section>
       <section aria-labelledby="upcoming-heading">
+        <div className="mb-8 rounded-2xl border p-5">
+          <h2 className="flex items-center gap-3">
+            <CalendarClock className="size-5" /> Jadwal sudah tersedia
+          </h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Minta Gwen membuat atau mengubah jadwal melalui chat, atau buka menu Jadwal. Tinjau
+            waktu, instruksi dan batas kerja sebelum mengaktifkan. Hasil tetap tersimpan saat
+            browser ditutup.
+          </p>
+        </div>
         <h2 id="upcoming-heading">Berikutnya untuk Gwen</h2>
         <p className="mt-2 text-sm text-muted-foreground">
           Kemampuan di bawah sedang disiapkan dan belum bisa digunakan.

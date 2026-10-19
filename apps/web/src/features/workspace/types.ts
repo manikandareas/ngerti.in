@@ -1,1 +1,8 @@
-export type WorkspaceView = "chat" | "tasks" | "files" | "capabilities" | "usage" | "settings";
+export type WorkspaceView =
+  | "chat"
+  | "tasks"
+  | "files"
+  | "schedules"
+  | "capabilities"
+  | "usage"
+  | "settings";

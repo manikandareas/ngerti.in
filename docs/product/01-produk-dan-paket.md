@@ -1,6 +1,6 @@
 # 01 · Produk & Scope V1
 
-Sumber: [Notion](https://app.notion.com/p/3f8abdd618738122878dde3cb0661765) · Readback: 2026-10-18T06:04:56.780944+00:00
+Sumber: [Notion](https://app.notion.com/p/3f8abdd618738122878dde3cb0661765) · Readback: 2026-10-19T10:22:42.085Z
 
 <!-- notion-content:start -->
 Keputusan aktif per 18 Oktober 2026: **Ngertiin V1 adalah asisten personal umum** untuk orang yang ingin meminta bantuan berpikir, menulis, mengolah file, menjalankan kode/browser dan pekerjaan terjadwal melalui web. Satu agent personal mengikuti pengguna lintas percakapan, pekerjaan dan tujuan.
@@ -28,4 +28,7 @@ Release memerlukan walkthrough desktop/mobile, static/build, ledger/concurrency/
 Spesifikasi: [02 · UX & User Flow](02-user-flow.md) · [03 · Perilaku Agent](03-agent.md) · [04 · Arsitektur, Runtime & Kontrak](04-arsitektur-dan-delivery.md) · [05 · Usage, Paket & Pembayaran](05-usage-paket-pembayaran.md) · [06 · Development, Operasi & Acceptance](../engineering/development.md)
 Bukti: [REA-1 · Chat & Session](../research/muse-ai-v1/evidence/chat.md) · [REA-2 · Task & Scheduler](../research/muse-ai-v1/evidence/task.md) · [REA-3 · File & Artifact](../research/muse-ai-v1/evidence/file.md) · [REA-4 · Memory & Goals](../research/muse-ai-v1/evidence/memory.md) · [REA-5 · Permissions](../research/muse-ai-v1/evidence/permissions.md) · [REA-6 · Browser & Computer](../research/muse-ai-v1/evidence/computer.md)
 Tiket gerbang: [NG-026 · Bersihkan domain dan runtime pembelajaran](../backlog/tasks/26-bersihkan-domain-dan-runtime-pembelajaran.md) · [NG-027 · Bersihkan UI dan persona awal](../backlog/tasks/27-bersihkan-ui-dan-persona-awal.md) · [NG-028 · Sederhanakan kuota menjadi fondasi umum](../backlog/tasks/28-sederhanakan-kuota-menjadi-fondasi-umum.md) · [NG-029 · Buat baseline skema dan reset development](../backlog/tasks/29-buat-baseline-skema-dan-reset-development.md) · [NG-030 · Terima baseline V1 yang bersih](../backlog/tasks/30-terima-baseline-v1-yang-bersih.md). Release: [NG-025 · Peluncuran asisten umum V1 production](../backlog/tasks/25-peluncuran-free-dan-plus-production.md).
+
+## Keputusan interaksi V1 — NG-039
+Disetujui pengguna pada 19 Oktober 2026: chat menjadi pintu utama untuk meminta, menemukan dan melanjutkan pekerjaan. Artifact hadir sebagai laporan/dokumen/tabel/hasil persisten dengan revision dan preview; Library membantu penemuan ulang. **Konektor native, katalog konektor, OAuth dan sinkronisasi layanan eksternal tidak masuk V1.** Upload dan browser pribadi tetap mengikuti izin serta scope yang tersedia. Editor kompleks, publikasi/sharing publik dan generator media tidak ditambahkan melalui NG-039.
 <!-- notion-content:end -->

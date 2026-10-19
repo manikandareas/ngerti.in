@@ -16,7 +16,7 @@
       },
       "notion_content_sha256": "8683032b40bb75fb3a66096aaca609cabbcce80266d1cb8aa515f3c2ac78181e",
       "local_content_sha256": "801f9d06d6e4c7567923e16080a6ca96988fb7ea31076858396132428073981b",
-      "local_file_sha256": "d5c97719bd8cb94c8f9ba354ed5f453683d85a7a6900f7ed78ad09d21d465faa",
+      "local_file_sha256": "0dfc4308fbf11d9dd4aba276b04f265c5ec1c9d281604a379442bfd4a0b15044",
       "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
@@ -25,14 +25,14 @@
       "url": "https://app.notion.com/p/3f8abdd618738122878dde3cb0661765",
       "file": "product/01-produk-dan-paket.md",
       "kind": "page",
-      "page_last_edited_at": "2026-10-18T05:49:45.158Z",
+      "page_last_edited_at": "2026-10-19T10:21:56.702Z",
       "properties": {
         "title": "01 · Produk & Scope V1"
       },
-      "notion_content_sha256": "ad8b073abf55c786ae913d3cc1a9530d2b8ff64d1aa43b201c72ae2c503256ca",
-      "local_content_sha256": "f1705764f6ba3b2cf3a24f284dcd3b23b21fb20d28b9b4f61789805c6ea07d60",
-      "local_file_sha256": "d9a7bc5f6fc3148e281f1620dd59e43cbedf351c39569338b546d3f771c79fc0",
-      "readback_at": "2026-10-18T06:04:56.780944+00:00"
+      "notion_content_sha256": "ec0f9d5860f7c078e11a97386a34cfeb05a5854748a55a258eed994a1e1def0c",
+      "local_content_sha256": "f9c85f1b74e946a5f73ebd1fafb7a9f6abbb8808078a62d19803901e7b560890",
+      "local_file_sha256": "ba9e04bad9e7a163cbf422ee435f7935ea594a4877c83c8f603ae49c0b695a86",
+      "readback_at": "2026-10-19T10:22:42.085Z"
     },
     {
       "id": "3f8abdd6-1873-81fd-a2db-ea043a840c5a",
@@ -40,14 +40,14 @@
       "url": "https://app.notion.com/p/3f8abdd6187381fda2dbea043a840c5a",
       "file": "product/02-user-flow.md",
       "kind": "page",
-      "page_last_edited_at": "2026-10-19T06:27:50.979Z",
+      "page_last_edited_at": "2026-10-19T10:21:59.474Z",
       "properties": {
         "title": "02 · UX & User Flow"
       },
-      "notion_content_sha256": "400d31f02e876617a1d7b760b22b0e48af8e18c721a482d492ed4ff366da25a7",
-      "local_content_sha256": "6258aa2d17eb2513abce580c3af7c594e25fab445ea9a8ec99d3d00b8ca28522",
-      "local_file_sha256": "f65c46119408a84301e6e943947d18eb20a4f0d7d0f29f76dd74fb5dbc784178",
-      "readback_at": "2026-10-19T06:29:38.106391+00:00"
+      "notion_content_sha256": "c4d24791dbec649c845ac99e8b7627d9b2aae822c2b18c369efb2b15e6e3dc2e",
+      "local_content_sha256": "f2bbbbfa205a6f36848dc5b2a3bc867be6060ac0f90489687e47469847c7690a",
+      "local_file_sha256": "252a1e06c5abeffccf44b5d731a7b39b013641bb473d75020682c4bd6e4acedf",
+      "readback_at": "2026-10-19T10:22:42.085Z"
     },
     {
       "id": "3f8abdd6-1873-8165-8b61-f4283ee83428",
@@ -55,14 +55,14 @@
       "url": "https://app.notion.com/p/3f8abdd6187381658b61f4283ee83428",
       "file": "product/03-agent.md",
       "kind": "page",
-      "page_last_edited_at": "2026-10-19T09:00:59.336Z",
+      "page_last_edited_at": "2026-10-19T10:21:58.319Z",
       "properties": {
         "title": "03 · Perilaku Agent"
       },
-      "notion_content_sha256": "95e9185cbbd26be9bea7a681b86f0dc5ddc876ed3843ad93517a20a2d4a4ee68",
-      "local_content_sha256": "0b759208f457fc391795e592d4be92b67021a8c46f18c5fd6e198ed521f8ae9f",
-      "local_file_sha256": "f9b0e6d94ab66cc35e6e53ad461cc55ebb59ed5d33022780e5b8eebeab6e61bb",
-      "readback_at": "2026-10-19T09:02:27.281Z"
+      "notion_content_sha256": "9c6fd259e0008b481fd4d15f18489a92748cc4b6f19803f8d2631d3d76d1afda",
+      "local_content_sha256": "9ec661ade355ef17f6962039309e745808b0553181bcdd7867a11764af5b97be",
+      "local_file_sha256": "09ac14132e18c39da34f339bf85ac3a5e99513c52a7bea1463f4a3889f52f404",
+      "readback_at": "2026-10-19T10:22:42.085Z"
     },
     {
       "id": "3f8abdd6-1873-8119-8256-f4ee69db1e78",
@@ -886,7 +886,7 @@
       },
       "notion_content_sha256": "ff427a85b252da3841a5489b0f59aaa7c56a3e481cccccceb80e4755158e4018",
       "local_content_sha256": "6f8f141d26c06db4c4c1e0a38dc57315e043b485143d5fe24d3446116daec5b9",
-      "local_file_sha256": "9040e7fcd11b09ecb21db8bd8070e9ad61579ed89379a914e7e925ac0ee74a50",
+      "local_file_sha256": "7fa06effe111cbfc0b32a510beb32db131c8829e043bd668d59150eff739b447",
       "readback_at": "2026-10-18T06:04:56.780944+00:00",
       "page_last_edited_at": "2026-10-18T05:49:58.871Z"
     },
@@ -1335,17 +1335,17 @@
         ],
         "Lingkup": "Aktif V1",
         "Prioritas": "P0",
-        "Status": "Backlog",
+        "Status": "Done",
         "Ticket": 39,
         "Tugas": "NG-039 · Library pencarian dan penemuan kemampuan",
         "Urutan": 19,
         "url": "https://app.notion.com/p/3fdabdd618738192b8f8f919dedbb367"
       },
-      "notion_content_sha256": "0454591c00849ea6dfa257738adc22b93c741e26c3486c4b30300b2c99a4a1df",
-      "local_content_sha256": "a46e658264ca320231ffab75b02953cfd116332f9bd141dda1b746a3b7a4e977",
-      "local_file_sha256": "ee842a1dd387d62fdbf9cd452f2ee656c61a472b0476b2025da8f80218a6d51c",
-      "readback_at": "2026-10-18T06:04:56.780944+00:00",
-      "page_last_edited_at": "2026-10-18T05:51:22.950Z"
+      "notion_content_sha256": "0e320d163a1221c04a26dda955632866c76ae657471454c33f0d942471edcac5",
+      "local_content_sha256": "d5c3b224b3407fd4d0747c609e2b8745656846ecdddc952c3a30e354d19caf2f",
+      "local_file_sha256": "a9aa217ffbe6e442630b90b7e47502f26b1d89f1d7d7fae4dc80830724681653",
+      "readback_at": "2026-10-19T10:22:42.085Z",
+      "page_last_edited_at": "2026-10-19T10:22:42.085Z"
     },
     {
       "id": "3fdabdd6-1873-8163-9bd6-f377668ee2f3",
@@ -1640,8 +1640,8 @@
           "3f8abdd6-1873-81bf-9174-f9126e48a4f3",
           "3f8abdd6-1873-81fd-a17d-d1af24cec8fb"
         ],
-        "local_file_sha256": "cd4e05f2488bbea38022813690809af4e047cbce98ac7fa6976c560162e7f347",
-        "readback_at": "2026-10-19T09:02:27.281Z",
+        "local_file_sha256": "4342bae785197ed48f2e595edb92f5f96d4f89babaf1cbd4c5a2f0e9798983da",
+        "readback_at": "2026-10-19T10:22:42.085Z",
         "queried_row_count": 41
       },
       {
@@ -1723,8 +1723,8 @@
           "3fdabdd6-1873-81f8-ade2-c7db2c75396e",
           "3f8abdd6-1873-81ac-90b6-df75b7e1a157"
         ],
-        "local_file_sha256": "313665efed2b7639c23874625dd9127f0a61686dc2bcec61f6daebe5fdcf20f6",
-        "readback_at": "2026-10-19T09:02:27.281Z",
+        "local_file_sha256": "f140e76ae7e5507948fd857a74fb9c455308911c401a4d4bf5146d254b0f0eb7",
+        "readback_at": "2026-10-19T10:22:42.085Z",
         "queried_row_count": 25
       },
       {
@@ -1781,7 +1781,7 @@
         },
         "page_ids": [],
         "local_file_sha256": "016eb1dfbdd5cecc2010814b887d49d646ef6becabd937446d76ae449b3e1f2b",
-        "readback_at": "2026-10-19T09:02:27.281Z",
+        "readback_at": "2026-10-19T10:22:42.085Z",
         "queried_row_count": 0
       },
       {
@@ -1855,7 +1855,7 @@
           "3f8abdd6-1873-81fd-a17d-d1af24cec8fb"
         ],
         "local_file_sha256": "316d2ebdbfe8834688ba676a60f5ae2284e3ead97cfc66de0213d0a4065e923d",
-        "readback_at": "2026-10-19T09:02:27.281Z",
+        "readback_at": "2026-10-19T10:22:42.085Z",
         "queried_row_count": 16
       }
     ],
@@ -2487,13 +2487,49 @@
       "source": "User-authorized NG-020 implementation; exact Notion readback and four views verified",
       "summary": "Accept preference controls, atomic delivery, cap, quiet hours, dedup, source revocation and offline delivery evidence",
       "notion_content_sha256": "95e9185cbbd26be9bea7a681b86f0dc5ddc876ed3843ad93517a20a2d4a4ee68"
+    },
+    {
+      "at": "2026-10-19T09:53:09.491Z",
+      "page_id": "3fdabdd6-1873-8192-b8f8-f919dedbb367",
+      "source": "User-authorized NG-039 implementation; exact status readback and all four views verified",
+      "summary": "Begin chat-first discovery and Library; connectors excluded from V1"
+    },
+    {
+      "at": "2026-10-19T10:22:42.085Z",
+      "page_id": "3fdabdd6-1873-8192-b8f8-f919dedbb367",
+      "source": "User-authorized NG-039 delivery; exact Notion readback and all four views verified",
+      "summary": "Accept chat-first resource discovery, exact revisions, Library and active capabilities; connectors outside V1",
+      "notion_content_sha256": "0e320d163a1221c04a26dda955632866c76ae657471454c33f0d942471edcac5"
+    },
+    {
+      "at": "2026-10-19T10:22:42.085Z",
+      "page_id": "3f8abdd6-1873-8122-878d-de3cb0661765",
+      "source": "User-authorized NG-039 delivery; exact Notion readback and all four views verified",
+      "summary": "Accept chat-first resource discovery, exact revisions, Library and active capabilities; connectors outside V1",
+      "notion_content_sha256": "ec0f9d5860f7c078e11a97386a34cfeb05a5854748a55a258eed994a1e1def0c"
+    },
+    {
+      "at": "2026-10-19T10:22:42.085Z",
+      "page_id": "3f8abdd6-1873-81fd-a2db-ea043a840c5a",
+      "source": "User-authorized NG-039 delivery; exact Notion readback and all four views verified",
+      "summary": "Accept chat-first resource discovery, exact revisions, Library and active capabilities; connectors outside V1",
+      "notion_content_sha256": "c4d24791dbec649c845ac99e8b7627d9b2aae822c2b18c369efb2b15e6e3dc2e"
+    },
+    {
+      "at": "2026-10-19T10:22:42.085Z",
+      "page_id": "3f8abdd6-1873-8165-8b61-f4283ee83428",
+      "source": "User-authorized NG-039 delivery; exact Notion readback and all four views verified",
+      "summary": "Accept chat-first resource discovery, exact revisions, Library and active capabilities; connectors outside V1",
+      "notion_content_sha256": "9c6fd259e0008b481fd4d15f18489a92748cc4b6f19803f8d2631d3d76d1afda"
     }
   ],
   "last_partial_sync": {
-    "at": "2026-10-19T09:02:27.281Z",
-    "scope": "NG-020 accepted implementation and agent contract; four exact views; unrelated ticket properties preserved",
+    "at": "2026-10-19T10:22:42.085Z",
+    "scope": "NG-039 accepted chat-first discovery, exact revisions and active capabilities; connectors excluded from V1; four views verified; unrelated ticket properties preserved",
     "page_ids": [
-      "https://app.notion.com/p/3f8abdd618738137a8c9c719f5b64bc4",
+      "https://app.notion.com/p/3fdabdd618738192b8f8f919dedbb367",
+      "https://app.notion.com/p/3f8abdd618738122878dde3cb0661765",
+      "https://app.notion.com/p/3f8abdd6187381fda2dbea043a840c5a",
       "https://app.notion.com/p/3f8abdd6187381658b61f4283ee83428"
     ]
   }

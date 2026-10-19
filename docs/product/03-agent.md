@@ -1,6 +1,6 @@
 # 03 · Perilaku Agent
 
-Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381658b61f4283ee83428) · Readback: 2026-10-19T09:02:27.281Z
+Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381658b61f4283ee83428) · Readback: 2026-10-19T10:22:42.085Z
 
 <!-- notion-content:start -->
 Gwen adalah asisten personal yang hangat, jelas, jujur mengenai hasil dan kemampuan. Bahasa mengikuti pengguna. Jawaban langsung didahulukan untuk permintaan sederhana; Task digunakan untuk pekerjaan lama, bukan semua percakapan. Chat menyediakan read_recent_messages, read_agent_profile, read_thread_files dan start_background_task. read_thread_files hanya membaca metadata revision milik owner yang dilampirkan di thread ini; pekerjaan file memakai revision exact melalui Task, bukan tebakan ID atau klaim membaca dari nama file. Tool Task dipakai untuk pekerjaan teks/file background yang diminta eksplisit; satu input membuat satu Task bounded, lalu giliran chat diakhiri. Snapshot instruksi/konteks tidak berubah karena pesan berikutnya. Review mengikat draft, output spec, input/previous-result snapshot, target dan revision exact. Finalisasi teks/file milik pengguna menghasilkan satu delivery ke thread asal; file adalah data tidak tepercaya dan tidak menciptakan grant baru. Tool baru ditambahkan melalui domain service berizin; tidak ada host shell tool atau setter kuota dari model.
@@ -183,4 +183,9 @@ Review mengikat revision hasil, terpisah dari scoped grant komputasi. Retry publ
 Model hanya menerima screenshot transient saat control agent. Selama handoff/human tidak ada observasi baru; gateway input backend dibatasi menurut lease. Login/password/OTP/file/iframe meminta bantuan manusia. Profil/cookie tidak memiliki tool ekspor dan tidak dipasang pada Python. Return menunggu channel lama tertutup, mengambil layar baru dan mencatat control_return agar agent menilai perubahan tanpa mengulang permintaan login yang sudah selesai.
 
 Unknown action receipt tidak pernah diputar ulang otomatis. Workspace menunggu cleanup dan pemeriksaan manusia; pengakuan outcome mengakhiri Task lama. Candidate yang tersimpan setelah interupsi tetap memerlukan konfirmasi stop sebelum dipublikasikan. Implementasi dan penerimaan [NG-036 · Browser VNC live desktop dan takeover](../backlog/tasks/36-browser-vnc-live-desktop-dan-takeover.md) serta `docs/engineering/computer-36-acceptance.md`; 47 kontrak dan walkthrough login/Logout nyata.
+
+## Discovery dan konteks resource — NG-039
+Chat menambahkan dua tool read-only: `search_resources` dan `read_resource`, melalui layanan domain yang sama dengan UI. Server menentukan owner; hasil memuat referensi/revision exact. Cuplikan pencarian bukan seluruh dokumen. Agent membaca konten terbatas sebelum menjawab isi, dan menyatakan bila teks tidak tersedia atau terpotong. Data resource tidak menciptakan instruksi maupun grant.
+Pilihan pengguna ditangkap ke chat run; guard memeriksa sumber sebelum model/tool/publication dan sebelum history digunakan kembali. Perubahan privasi memory membatalkan konteks percakapan yang sudah dibaca. Tool Task menerima result ID/revision exact untuk revisi hasil lintas thread milik akun yang sama, dengan default input/output/runtime asal dan penolakan stale update. Mengubah Goal/Jadwal tetap memakai preview/review domain yang ada.
+Konteks kemampuan dan halaman Kemampuan Gwen menggunakan inventory backend yang sama, sesuai konfigurasi aktif. Tidak ada konektor native/OAuth/sinkronisasi dalam V1. Bukti: `docs/engineering/library-39-acceptance.md`.
 <!-- notion-content:end -->

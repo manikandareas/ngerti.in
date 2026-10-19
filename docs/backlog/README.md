@@ -25,6 +25,10 @@ Indeks bukti: [08 · Bukti Riset & REA](../research/muse-ai-v1/README.md).
 
 ## Status kerja terbaru
 
+Readback status 2026-10-19T10:22:42.085Z: [NG-039 · Library pencarian dan penemuan kemampuan](tasks/39-library-pencarian-dan-penemuan-kemampuan.md) berstatus **Done**. Tools pencarian/read, pilihan exact dalam chat, revisi lintas thread, Library dan discovery aktif diterima development; konektor di luar V1. [Penerimaan NG-039](../engineering/library-39-acceptance.md) mencatat 65 kontrak, model nyata, desktop/mobile dan batas bukti. NG-040 menjadi urutan berikutnya; status tiket lain dipertahankan.
+
+Readback status 2026-10-19T09:53:09.491Z: [NG-039 · Library pencarian dan penemuan kemampuan](tasks/39-library-pencarian-dan-penemuan-kemampuan.md) berstatus **In Progress**. Implementasi mengikuti final plan yang disetujui: pencarian/read tools agent, pilihan exact dalam chat, Library, dan discovery kemampuan aktif; konektor di luar V1.
+
 Readback status 2026-10-19T09:02:27.281Z: [NG-020 · Delivery proaktif per thread dan batas global](tasks/20-delivery-proaktif-per-thread-dan-batas-global.md) berstatus **Done**. Preferensi lewat chat/UI, pesan informatif dan delivery atomik diterima development; 105 kontrak, regresi terkait dan browser desktop/mobile lulus. Delivery offline memakai fixture positif terkontrol; dua evaluasi provider nyata memilih no-op. Rincian dan batas bukti pada [penerimaan NG-020](../engineering/proactivity-20-acceptance.md).
 
 Readback status 2026-10-19T08:21:59Z: [NG-019 · Kandidat proaktif dinamis dan reranking](tasks/19-kandidat-proaktif-dinamis-dan-reranking.md) berstatus **Done**. LLM membentuk kandidat, Jev menilai dan code memilih; 68 kontrak, provider/worker nyata serta desktop/mobile diterima. Rincian dan batas bukti pada [penerimaan NG-019](../engineering/proactivity-19-acceptance.md); delivery otomatis tetap NG-020.

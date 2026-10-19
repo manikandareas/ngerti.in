@@ -20,6 +20,8 @@ Cleanup NG-026–030 menjadi gerbang pertama sebelum trial Daytona. Workspace/ha
 
 ## Design
 
+NG-039 menjadikan chat pintu utama untuk mencari, membuka dan melanjutkan pekerjaan; Library mendampingi penemuan ulang file/hasil. Konektor native, OAuth, katalog konektor dan sinkronisasi layanan eksternal tidak masuk V1. Artifact hadir sebagai hasil persisten dan revision, dengan preview serta kelanjutan lewat chat.
+
 Reuse Soft Matcha semantic tokens dan komponen yang ada. Pen walkthrough lama menyimpan riwayat pembelajaran; shell/onboarding/walkthrough asisten umum mengikuti NG-032. Pertahankan draft, history, replay serta kontrol stop/retry saat koneksi pulih. Panel komputer memakai session yang sama bagi agent/user; backend mengatur exclusive control dan agent membaca keadaan baru sebelum lanjut.
 
 ## Accessibility

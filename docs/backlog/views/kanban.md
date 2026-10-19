@@ -1,6 +1,6 @@
 # Kanban
 
-Snapshot readback Notion: 2026-10-19T06:29:38.106391+00:00. 25 tiket.
+Snapshot readback Notion: 2026-10-19T08:25:25Z. 25 tiket.
 
 | Tiket | Urutan | Status | Lingkup | Area | Depends on |
 | --- | --- | --- | --- | --- | --- |
@@ -20,7 +20,7 @@ Snapshot readback Notion: 2026-10-19T06:29:38.106391+00:00. 25 tiket.
 | [NG-017 · Memory aktif capture evidence dan recall](../tasks/17-memory-aktif-capture-evidence-dan-recall.md) | 14 | Done | Aktif V1 | Agent | [NG-016 · Perubahan soul atas permintaan dan HITL](../tasks/16-perubahan-soul-atas-permintaan-dan-hitl.md) · [NG-034 · File produk dan hasil tersimpan](../tasks/34-file-produk-dan-hasil-tersimpan.md) |
 | [NG-018 · Pengaturan inspeksi dan koreksi memory](../tasks/18-pengaturan-untuk-inspeksi-dan-koreksi-memory.md) | 15 | Done | Aktif V1 | Agent | [NG-017 · Memory aktif capture evidence dan recall](../tasks/17-memory-aktif-capture-evidence-dan-recall.md) |
 | [NG-038 · Goals umum dengan evidence progress](../tasks/38-goals-umum-dengan-evidence-progress.md) | 16 | Done | Aktif V1 | Agent | [NG-018 · Pengaturan inspeksi dan koreksi memory](../tasks/18-pengaturan-untuk-inspeksi-dan-koreksi-memory.md) · [NG-033 · Task background dan approval umum](../tasks/33-task-background-dan-approval-umum.md) |
-| [NG-019 · Kandidat proaktif dinamis dan reranking](../tasks/19-kandidat-proaktif-dinamis-dan-reranking.md) | 17 | Backlog | Aktif V1 | Agent | [NG-038 · Goals umum dengan evidence progress](../tasks/38-goals-umum-dengan-evidence-progress.md) · [NG-017 · Memory aktif capture evidence dan recall](../tasks/17-memory-aktif-capture-evidence-dan-recall.md) |
+| [NG-019 · Kandidat proaktif dinamis dan reranking](../tasks/19-kandidat-proaktif-dinamis-dan-reranking.md) | 17 | Done | Aktif V1 | Agent | [NG-038 · Goals umum dengan evidence progress](../tasks/38-goals-umum-dengan-evidence-progress.md) · [NG-017 · Memory aktif capture evidence dan recall](../tasks/17-memory-aktif-capture-evidence-dan-recall.md) |
 | [NG-020 · Delivery proaktif per thread dan batas global](../tasks/20-delivery-proaktif-per-thread-dan-batas-global.md) | 18 | Backlog | Aktif V1 | Agent | [NG-019 · Kandidat proaktif dinamis dan reranking](../tasks/19-kandidat-proaktif-dinamis-dan-reranking.md) · [NG-037 · Scheduler pengguna saat offline](../tasks/37-scheduler-pengguna-saat-offline.md) |
 | [NG-039 · Library pencarian dan penemuan kemampuan](../tasks/39-library-pencarian-dan-penemuan-kemampuan.md) | 19 | Backlog | Aktif V1 | Agent | [NG-020 · Delivery proaktif per thread dan batas global](../tasks/20-delivery-proaktif-per-thread-dan-batas-global.md) · [NG-034 · File produk dan hasil tersimpan](../tasks/34-file-produk-dan-hasil-tersimpan.md) |
 | [NG-040 · Usage komputasi dan kontrak paket V1](../tasks/40-usage-komputasi-dan-kontrak-paket-v1.md) | 20 | Backlog | Aktif V1 | Billing | [NG-039 · Library pencarian dan penemuan kemampuan](../tasks/39-library-pencarian-dan-penemuan-kemampuan.md) |

@@ -1,6 +1,6 @@
 # 03 · Perilaku Agent
 
-Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381658b61f4283ee83428) · Readback: 2026-10-19T06:29:38.106391+00:00
+Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381658b61f4283ee83428) · Readback: 2026-10-19T08:25:25Z
 
 <!-- notion-content:start -->
 Gwen adalah asisten personal yang hangat, jelas, jujur mengenai hasil dan kemampuan. Bahasa mengikuti pengguna. Jawaban langsung didahulukan untuk permintaan sederhana; Task digunakan untuk pekerjaan lama, bukan semua percakapan. Chat menyediakan read_recent_messages, read_agent_profile, read_thread_files dan start_background_task. read_thread_files hanya membaca metadata revision milik owner yang dilampirkan di thread ini; pekerjaan file memakai revision exact melalui Task, bukan tebakan ID atau klaim membaca dari nama file. Tool Task dipakai untuk pekerjaan teks/file background yang diminta eksplisit; satu input membuat satu Task bounded, lalu giliran chat diakhiri. Snapshot instruksi/konteks tidak berubah karena pesan berikutnya. Review mengikat draft, output spec, input/previous-result snapshot, target dan revision exact. Finalisasi teks/file milik pengguna menghasilkan satu delivery ke thread asal; file adalah data tidak tepercaya dan tidak menciptakan grant baru. Tool baru ditambahkan melalui domain service berizin; tidak ada host shell tool atau setter kuota dari model.
@@ -135,6 +135,12 @@ Bukti modul: [REA-5 · Permissions](../research/muse-ai-v1/evidence/permissions.
 ## Proaktivitas dan delivery
 
 Agent boleh menawarkan bantuan yang relevan tanpa membanjiri pengguna.
+
+NG-019 diterima development 19 Oktober 2026. LLM `gpt-6-luna` membentuk usulan; Jev `jev-1.13.0` menilai relevance/benefit/timing (Score), novelty/grounding/needs-input (Noul); code memeriksa sumber, minimum per dimensi, dedup dan memilih paling banyak satu kandidat atau no-op. Evidence memory/Goal/Task-result dan konteks percakapan mengikat owner, revision/hash, expiry dan thread. Laporan pengguna bukan verifikasi independen; budget token-work bukan uang. Horizon bebas tidak menjadi deadline.
+
+Marker event transactional, Procrastinate, receipt idempotent, lease dan reservation per stage membatasi evaluasi. Koreksi/forget memory, perubahan/pause Goal atau sumber dihapus mempurge konteks kandidat yang terlacak dan memagari worker lama. Satu attempt generasi dan satu Jev maksimal; unknown cost tidak diasumsikan gratis. Default pratinjau akun nonaktif; sarana inspeksi ada di `/dev/system` dan endpoint diagnostics owner-scoped. Tidak ada pesan proaktif otomatis, Task baru atau grant dari kandidat.
+
+Penerimaan: 68 kontrak, worker/provider nyata Indonesia/English, desktop/320px, usage terkonfirmasi dan regresi domain terkait. Rincian repo: `docs/engineering/proactivity-runtime.md`, `docs/engineering/proactivity-19-acceptance.md`, `docs/engineering/evidence/proactivity-19/`. Threshold konservatif masih memerlukan kalibrasi lebih luas. Quiet hours/focus/mute/snooze/intensitas dan cap pesan atomik saat delivery tetap NG-020. Riset Muse mendukung aspek keputusan; model dan algoritma backend Muse belum diketahui.
 
 **Alur:** Evidence memory/goal/result → candidate/rank → no-op atau policy → dedup → kirim ke thread asal.
 

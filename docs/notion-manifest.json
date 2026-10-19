@@ -16,7 +16,7 @@
       },
       "notion_content_sha256": "8683032b40bb75fb3a66096aaca609cabbcce80266d1cb8aa515f3c2ac78181e",
       "local_content_sha256": "801f9d06d6e4c7567923e16080a6ca96988fb7ea31076858396132428073981b",
-      "local_file_sha256": "9ce4efccbbfc5d087d308987b64b42c656155fcc591d501d9cbe02b317af8896",
+      "local_file_sha256": "62e2d97c39b054ee22c0fb1b6b54a815beaff21a7ac58d92b0913dc12c3fb0ad",
       "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
@@ -55,14 +55,14 @@
       "url": "https://app.notion.com/p/3f8abdd6187381658b61f4283ee83428",
       "file": "product/03-agent.md",
       "kind": "page",
-      "page_last_edited_at": "2026-10-19T06:27:50.130Z",
+      "page_last_edited_at": "2026-10-19T08:24:19.214Z",
       "properties": {
         "title": "03 · Perilaku Agent"
       },
-      "notion_content_sha256": "77482541b020dda19e361748928ac2e35851e45bb6a75c91b7eb1e45e80b8116",
-      "local_content_sha256": "d146625dce22ec00a9659e4844d0d1c62b2917e7550fe6fd95158ba7afe3eac4",
-      "local_file_sha256": "3b422c150be821b9f72fac21ae38a4ca9edb7d5ce039a31f67fa6ed56a8750ab",
-      "readback_at": "2026-10-19T06:29:38.106391+00:00"
+      "notion_content_sha256": "fcd947ca47573245b5747136a4ce2f723eb06c8fac6e1466d3157e2755b9bbef",
+      "local_content_sha256": "6867ac6ca94d8ce68cf914dc81966f45a041dd79fc9da782134da1f4ba2b6435",
+      "local_file_sha256": "30ad3c483b8ae7ed820fa891c4f9f444d691020eb1b109598b54b55e077455bd",
+      "readback_at": "2026-10-19T08:25:25Z"
     },
     {
       "id": "3f8abdd6-1873-8119-8256-f4ee69db1e78",
@@ -546,7 +546,7 @@
       "url": "https://app.notion.com/p/3f8abdd6187381a88a5cd665f17d979f",
       "file": "backlog/tasks/19-kandidat-proaktif-dinamis-dan-reranking.md",
       "kind": "task",
-      "page_last_edited_at": "2026-10-18T05:51:19.794Z",
+      "page_last_edited_at": "2026-10-19T08:24:18.368Z",
       "properties": {
         "Area": "Agent",
         "Depends on": [
@@ -555,16 +555,16 @@
         ],
         "Lingkup": "Aktif V1",
         "Prioritas": "P0",
-        "Status": "Backlog",
+        "Status": "Done",
         "Ticket": 19,
         "Tugas": "NG-019 · Kandidat proaktif dinamis dan reranking",
         "Urutan": 17,
         "url": "https://app.notion.com/p/3f8abdd6187381a88a5cd665f17d979f"
       },
-      "notion_content_sha256": "5efa37c55018a04e24a0069119399c8b7a26170737c5d44f2ce636fd8d358d8e",
-      "local_content_sha256": "6c9b018d990bc9816a04b42f8b548c6910a913cbbb9d09ef2d19f3a88a6cd620",
-      "local_file_sha256": "e673f79ed1880e7e4d0416504ee3ac7ab0bcb2dbb763fe23b53b727361c09f35",
-      "readback_at": "2026-10-18T06:04:56.780944+00:00"
+      "notion_content_sha256": "fed39573f64af6074bafffd3aecb8a0c7d8bba0d4c82a193283cff18230c10cb",
+      "local_content_sha256": "2793b27b2fe8ab8f436675aa0ec6ba7e41cee463907ccfe5ba0316f98c3fdf5a",
+      "local_file_sha256": "e311d312b079ee615c725bb0cf9387c22a1f43e1562df9c51506c4032147211e",
+      "readback_at": "2026-10-19T08:25:25Z"
     },
     {
       "id": "3f8abdd6-1873-81aa-be5c-f4a3355618cd",
@@ -886,7 +886,7 @@
       },
       "notion_content_sha256": "ff427a85b252da3841a5489b0f59aaa7c56a3e481cccccceb80e4755158e4018",
       "local_content_sha256": "6f8f141d26c06db4c4c1e0a38dc57315e043b485143d5fe24d3446116daec5b9",
-      "local_file_sha256": "8bfb8878dbf4229112699b8bc4a0a84bddb8f401c6e5353a3dc8027a4198da3b",
+      "local_file_sha256": "9963cc590d4c6f671bb83592488920fd1899e2ca469a3fc970a5f7bbcab80751",
       "readback_at": "2026-10-18T06:04:56.780944+00:00",
       "page_last_edited_at": "2026-10-18T05:49:58.871Z"
     },
@@ -1640,8 +1640,8 @@
           "3f8abdd6-1873-81bf-9174-f9126e48a4f3",
           "3f8abdd6-1873-81fd-a17d-d1af24cec8fb"
         ],
-        "local_file_sha256": "dde4eda4adbee69372dbf2e633afe4303f8722cfc534ea6389864a38f126108d",
-        "readback_at": "2026-10-19T06:29:38.106391+00:00",
+        "local_file_sha256": "1a850bba616d53b8926570462d2e2baa4b143820fd537faac29838b8f5e4af92",
+        "readback_at": "2026-10-19T08:25:25Z",
         "queried_row_count": 41
       },
       {
@@ -1723,8 +1723,8 @@
           "3fdabdd6-1873-81f8-ade2-c7db2c75396e",
           "3f8abdd6-1873-81ac-90b6-df75b7e1a157"
         ],
-        "local_file_sha256": "451076f6a16679a6b3419319d06b37971653d9986e563c94a2c03e71a5b3ec9e",
-        "readback_at": "2026-10-19T06:29:38.106391+00:00",
+        "local_file_sha256": "804c5f25130c98d3fdf2804b5f71c81a7db8eb3c7d86352ba708034ebf921dcd",
+        "readback_at": "2026-10-19T08:25:25Z",
         "queried_row_count": 25
       },
       {
@@ -1780,8 +1780,8 @@
           "type": "table"
         },
         "page_ids": [],
-        "local_file_sha256": "c116b8b486581b1ff3934a4ca0b37270ec005c8ac39dbcd75e669da1c4e0d064",
-        "readback_at": "2026-10-19T06:29:38.106391+00:00",
+        "local_file_sha256": "7a7531144a26267f087260eb5fda19b8c736bcca807191c545d8a7f3910f6940",
+        "readback_at": "2026-10-19T08:25:25Z",
         "queried_row_count": 0
       },
       {
@@ -1854,8 +1854,8 @@
           "3f8abdd6-1873-81bf-9174-f9126e48a4f3",
           "3f8abdd6-1873-81fd-a17d-d1af24cec8fb"
         ],
-        "local_file_sha256": "0e91ac669a302d38bbc63c5bf6a8ec0cb37f5e84b1c897dd78ca8c7c5bd8d8e8",
-        "readback_at": "2026-10-19T06:29:38.106391+00:00",
+        "local_file_sha256": "971eec19c1672b8ba162623724f1dccfc0f64f59eae3d417c9eeca7a0efbe7a5",
+        "readback_at": "2026-10-19T08:25:25Z",
         "queried_row_count": 16
       }
     ],
@@ -2429,16 +2429,55 @@
       "source": "User-authorized NG-017/018 implementation; exact Notion readback verified",
       "summary": "Memory implementation, evidence, controls and current product behavior",
       "notion_content_sha256": "cafe3f94f6fbfb2b05b04f2622baf5082571ccf24b36d0e6121f5d7c25dc538f"
+    },
+    {
+      "at": "2026-10-19T07:47:26.467Z",
+      "page_id": "3f8abdd6-1873-81a8-8a5c-d665f17d979f",
+      "source": "User-authorized NG-019 implementation; exact Notion readback and four views verified",
+      "summary": "Start approved LLM generation, Jev judgment and deterministic candidate selection",
+      "notion_content_sha256": "5efa37c55018a04e24a0069119399c8b7a26170737c5d44f2ce636fd8d358d8e",
+      "properties": {
+        "Status": "In Progress"
+      }
+    },
+    {
+      "at": "2026-10-19T08:21:59Z",
+      "page_id": "3f8abdd6-1873-81a8-8a5c-d665f17d979f",
+      "source": "User-authorized NG-019 implementation; exact Notion readback and four views verified",
+      "summary": "Accept bounded LLM/Jev candidate evaluation, source revocation, receipts, no-op and inspection",
+      "notion_content_sha256": "d9fcee793f9f6d62eb608870c2f293fc8fc4cb71c6055c81295d3cf59212cf14",
+      "properties": {
+        "Status": "Done"
+      }
+    },
+    {
+      "at": "2026-10-19T08:21:59Z",
+      "page_id": "3f8abdd6-1873-8165-8b61-f4283ee83428",
+      "source": "User-authorized NG-019 implementation; exact Notion readback and four views verified",
+      "summary": "Accept bounded LLM/Jev candidate evaluation, source revocation, receipts, no-op and inspection",
+      "notion_content_sha256": "be36a84169259aa92e6ba0ac25e482e44c5f970eedc15284f00b1faf0f680517"
+    },
+    {
+      "at": "2026-10-19T08:25:25Z",
+      "page_id": "3f8abdd6-1873-81a8-8a5c-d665f17d979f",
+      "source": "User-authorized NG-019 acceptance; exact readback and four views verified",
+      "summary": "68 final contracts, model and worker evidence, internal previews; delivery remains NG-020",
+      "notion_content_sha256": "fed39573f64af6074bafffd3aecb8a0c7d8bba0d4c82a193283cff18230c10cb"
+    },
+    {
+      "at": "2026-10-19T08:25:25Z",
+      "page_id": "3f8abdd6-1873-8165-8b61-f4283ee83428",
+      "source": "User-authorized NG-019 acceptance; exact readback and four views verified",
+      "summary": "68 final contracts, model and worker evidence, internal previews; delivery remains NG-020",
+      "notion_content_sha256": "fcd947ca47573245b5747136a4ce2f723eb06c8fac6e1466d3157e2755b9bbef"
     }
   ],
   "last_partial_sync": {
-    "at": "2026-10-19T06:29:38.106391+00:00",
-    "scope": "NG-038 verified Done, product/runtime/acceptance contracts and four live views; preserve other tickets",
+    "at": "2026-10-19T08:25:25Z",
+    "scope": "NG-019 Done with 68 contracts, exact agent/ticket readback and all four views; unrelated properties preserved",
     "page_ids": [
-      "3fdabdd6-1873-814b-abd1-c1bcd089effb",
-      "3f8abdd6-1873-8165-8b61-f4283ee83428",
-      "3f8abdd6-1873-81fd-a2db-ea043a840c5a",
-      "3fdabdd6-1873-81d3-9f94-f7161d4ef570"
+      "3f8abdd6187381a88a5cd665f17d979f",
+      "3f8abdd6187381658b61f4283ee83428"
     ]
   }
 }

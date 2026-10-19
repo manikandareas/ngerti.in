@@ -25,6 +25,10 @@ Indeks bukti: [08 · Bukti Riset & REA](../research/muse-ai-v1/README.md).
 
 ## Status kerja terbaru
 
+Readback status 2026-10-19T08:21:59Z: [NG-019 · Kandidat proaktif dinamis dan reranking](tasks/19-kandidat-proaktif-dinamis-dan-reranking.md) berstatus **Done**. LLM membentuk kandidat, Jev menilai dan code memilih; 68 kontrak, provider/worker nyata serta desktop/mobile diterima. Rincian dan batas bukti pada [penerimaan NG-019](../engineering/proactivity-19-acceptance.md); delivery otomatis tetap NG-020.
+
+Readback status 2026-10-19T07:47:26.467Z: [NG-019 · Kandidat proaktif dinamis dan reranking](tasks/19-kandidat-proaktif-dinamis-dan-reranking.md) berstatus **In Progress**. Implementasi mengikuti scope yang disetujui: LLM membentuk kandidat, Jev menilai, code memilih; delivery otomatis mengikuti NG-020.
+
 Readback status 2026-10-19T06:29:38.106391+00:00: [NG-038 · Goals umum dengan evidence progress](tasks/38-goals-umum-dengan-evidence-progress.md) berstatus **Done**. [Penerimaan Goal](../engineering/goals-38-acceptance.md) mencatat 74 kontrak, integrasi Task/Jadwal, bukti per kriteria, model nyata serta desktop/mobile. NG-019 adalah urutan berikutnya; status tiket lain dipertahankan.
 
 Readback status 2026-10-19T05:53:03.400Z: [NG-038 · Goals umum dengan evidence progress](tasks/38-goals-umum-dengan-evidence-progress.md) berstatus **In Progress**. Implementasi dimulai sesuai scope yang disetujui; acceptance belum dinyatakan selesai.

@@ -51,6 +51,11 @@ export function TaskCard({ task, showResult = true }: TaskCardProps) {
             <span className="text-xs text-muted-foreground">Versi {task.revision}</span>
           </div>
           <h3 className="text-sm leading-relaxed wrap-anywhere">{task.title}</h3>
+          {task.goal_id ? (
+            <p className="mt-1 text-xs text-muted-foreground">
+              Pekerjaan tujuan · target v{task.goal_revision}
+            </p>
+          ) : null}
           <p className="mt-2 text-sm text-muted-foreground" role="status">
             {taskStage[task.stage] ?? task.error ?? "Draft dan progresmu tersimpan."}
           </p>

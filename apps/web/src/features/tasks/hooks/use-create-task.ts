@@ -38,6 +38,7 @@ export function useCreateTask(threadId: string | null) {
           inputs,
           outputs: form.outputs,
           runtime_kind: form.browser ? "browser" : form.computation ? "code" : "text",
+          goal: form.goal,
         }),
       });
       form.clear();

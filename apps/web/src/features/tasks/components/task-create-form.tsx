@@ -9,6 +9,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { AttachmentPicker } from "@/features/files/components/attachment-picker";
 import { OutputFields } from "@/features/files/components/output-fields";
+import { GoalSelector } from "@/features/goals/components/goal-selector";
 import { useCreateTask } from "@/features/tasks/hooks/use-create-task";
 
 interface TaskCreateFormProps {
@@ -97,6 +98,14 @@ export function TaskCreateForm({ threadId }: TaskCreateFormProps) {
         />
         Minta review sebelum hasil difinalisasi
       </label>
+      <GoalSelector
+        id="task-goal"
+        value={form.goal}
+        disabled={sending}
+        onChange={(goal) =>
+          form.update(instruction, review, form.outputs, form.computation, form.browser, goal)
+        }
+      />
       <p className="text-xs text-muted-foreground">
         Menggunakan konteks percakapan yang sedang dipilih. Membuat task memakai 1 pesan; review,
         stop dan mencoba ulang task tidak menambah pesan. Pekerjaan dibatasi budget dan tetap

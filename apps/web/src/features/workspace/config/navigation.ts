@@ -6,12 +6,14 @@ import {
   ListTodo,
   MessageCircle,
   Settings2,
+  Target,
 } from "lucide-react";
 import type { WorkspaceView } from "@/features/workspace/types";
 
 export const workspaceLinks = [
   { view: "chat", label: "Percakapan", icon: MessageCircle },
   { view: "tasks", label: "Task", icon: ListTodo },
+  { view: "goals", label: "Tujuan", icon: Target },
   { view: "schedules", label: "Jadwal", icon: CalendarClock },
   { view: "files", label: "File & hasil", icon: FolderOpen },
   { view: "capabilities", label: "Kemampuan Gwen", icon: Compass },
@@ -21,6 +23,7 @@ export const workspaceLinks = [
 
 export const workspaceDescriptions: Record<Exclude<WorkspaceView, "chat">, string> = {
   tasks: "Titipkan pekerjaan, ikuti progres, dan tinjau keputusanmu.",
+  goals: "Tentukan tujuan, tinjau bukti kemajuan, dan pilih langkah berikutnya.",
   schedules: "Atur pekerjaan sekali atau berulang, lalu temukan hasilnya saat kamu kembali.",
   files: "Buka file, periksa revision, unduh hasil, atau hapus yang tidak diperlukan.",
   capabilities: "Kenali bantuan yang bisa kamu gunakan dan yang sedang disiapkan.",

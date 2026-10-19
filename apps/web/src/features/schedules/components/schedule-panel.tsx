@@ -103,6 +103,16 @@ function ScheduleCard({ schedule, onEdit }: { schedule: Schedule; onEdit: () => 
       <p className="whitespace-pre-wrap wrap-anywhere text-muted-foreground">
         {schedule.spec.instruction}
       </p>
+      {schedule.spec.goal ? (
+        <p className="wrap-anywhere">
+          Tujuan: {schedule.goal_title ?? "Tidak tersedia"} · target v{schedule.spec.goal.revision}
+          {schedule.goal_state !== "active"
+            ? " · eksekusi ditahan oleh tujuan"
+            : schedule.goal_plan_revision !== schedule.spec.goal.revision
+              ? " · target berubah, tinjau ulang jadwal"
+              : ""}
+        </p>
+      ) : null}
       <Link
         to="/"
         search={{ thread: schedule.thread_id, view: "chat" }}

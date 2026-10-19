@@ -1,4 +1,5 @@
 import type { FileInput, OutputSpec } from "@/features/files/types";
+import type { GoalRef } from "@/features/goals/types";
 
 export interface ScheduleSpec {
   title: string;
@@ -14,9 +15,13 @@ export interface ScheduleSpec {
   per_run_cap: number;
   inputs: FileInput[];
   outputs: OutputSpec[];
+  goal?: GoalRef | null;
 }
 export type ScheduleOperation = "create" | "update" | "pause" | "resume" | "delete" | "run";
 export interface Schedule {
+  goal_state?: string | null;
+  goal_plan_revision?: number | null;
+  goal_title?: string | null;
   id: string;
   thread_id: string;
   thread_title: string;
@@ -30,6 +35,7 @@ export interface ScheduleProposal {
   thread_id: string;
   expires_at: string;
   preview: {
+    goal?: GoalRef & { title: string };
     operation: ScheduleOperation;
     spec: ScheduleSpec;
     target_thread_id: string;

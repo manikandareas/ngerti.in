@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { AttachmentPicker } from "@/features/files/components/attachment-picker";
 import { OutputFields } from "@/features/files/components/output-fields";
 import { useAttachments } from "@/features/files/hooks/use-attachments";
+import { GoalSelector } from "@/features/goals/components/goal-selector";
 import { useScheduleDraft } from "@/features/schedules/hooks/use-schedule-draft";
 import { useScheduleCommands } from "@/features/schedules/hooks/use-schedules";
 import type { Schedule } from "@/features/schedules/types";
@@ -56,6 +57,12 @@ export function ScheduleForm({
       }}
     >
       <h2 className="font-bold">{schedule ? "Ubah jadwal" : "Buat jadwal"}</h2>
+      <GoalSelector
+        id="schedule-goal"
+        value={value.goal}
+        disabled={command.pending}
+        onChange={(goal) => update({ goal })}
+      />
       <div className="space-y-2">
         <label htmlFor="schedule-title" className="text-sm">
           Nama jadwal

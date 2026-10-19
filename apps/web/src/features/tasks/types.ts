@@ -33,6 +33,8 @@ export interface BackgroundTask {
   output_spec: Array<{ filename: string; format: string }>;
   result_id: string | null;
   runtime_kind: "text" | "code" | "browser";
+  goal_id?: string | null;
+  goal_revision?: number | null;
   sandbox_sessions?: Array<{
     id: string;
     state: string;

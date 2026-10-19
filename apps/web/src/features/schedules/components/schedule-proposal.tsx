@@ -20,6 +20,12 @@ export function ScheduleProposalCard({ proposal }: { proposal: ScheduleProposal 
       <p className="whitespace-pre-wrap wrap-anywhere">{preview.spec.instruction}</p>
       <p>{recurrenceLabel(preview.spec)}</p>
       <p>Hasil ke: {preview.target_thread_title}</p>
+      {preview.goal ? (
+        <p className="wrap-anywhere">
+          Tujuan: {preview.goal.title} · target v{preview.goal.revision}. Eksekusi mengikuti status
+          dan sisa batas kerja tujuan.
+        </p>
+      ) : null}
       {preview.next_times.length ? (
         <div>
           <p className="font-medium">Waktu berikutnya</p>

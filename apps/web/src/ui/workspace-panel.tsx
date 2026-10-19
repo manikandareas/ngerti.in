@@ -2,6 +2,7 @@ import { ArrowLeft } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { FilesPanel } from "@/features/files/components/files-panel";
+import { GoalPanel } from "@/features/goals/components/goal-panel";
 import { UsagePanel } from "@/features/quotas/components/usage-panel";
 import { SchedulePanel } from "@/features/schedules/components/schedule-panel";
 import { TaskPanel } from "@/features/tasks/components/task-panel";
@@ -62,6 +63,8 @@ export function WorkspacePanel({
 
 function WorkspaceContent({ view, onNavigate, threadId, onOpenAssistant }: WorkspacePanelProps) {
   switch (view) {
+    case "goals":
+      return <GoalPanel threadId={threadId} />;
     case "schedules":
       return <SchedulePanel threadId={threadId} />;
     case "files":

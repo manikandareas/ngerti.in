@@ -2,11 +2,6 @@ import { Brain, CalendarClock, ListTodo, Monitor, Target } from "lucide-react";
 
 const capabilities = [
   {
-    name: "Goals",
-    icon: Target,
-    description: "Simpan tujuan dan lihat perkembangannya dari hasil pekerjaan yang nyata.",
-  },
-  {
     name: "Persona & memory",
     icon: Brain,
     description: "Tinjau dan koreksi preferensi yang digunakan Gwen lintas percakapan.",
@@ -21,6 +16,16 @@ export function Capabilities() {
         <p className="mt-2 text-sm text-muted-foreground">
           Minta bantuan menulis, membandingkan pilihan, atau menyusun rencana. Main chat dan side
           chat bisa kamu buka kembali kapan saja.
+        </p>
+      </section>
+      <section className="rounded-2xl border p-5">
+        <h2 className="flex items-center gap-3">
+          <Target className="size-5" />
+          Tujuan sudah tersedia
+        </h2>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Buka menu Tujuan atau minta Gwen menyiapkannya melalui chat. Tinjau kriteria keberhasilan,
+          catat bukti kemajuan, dan hubungkan Task atau Jadwal melalui keputusan tersendiri.
         </p>
       </section>
       <section className="rounded-2xl border p-5">

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { OutputSpec } from "@/features/files/types";
+import type { GoalRef } from "@/features/goals/types";
 
 interface TaskDraft {
   instruction: string;
@@ -8,6 +9,7 @@ interface TaskDraft {
   outputs: OutputSpec[];
   computation: boolean;
   browser: boolean;
+  goal?: GoalRef | null;
 }
 
 function empty(): TaskDraft {
@@ -48,6 +50,7 @@ export function useTaskDraft(storageKey: string) {
     outputs = draft.outputs,
     computation = draft.computation,
     browser = draft.browser,
+    goal = draft.goal,
   ) {
     const next = {
       instruction,
@@ -55,6 +58,7 @@ export function useTaskDraft(storageKey: string) {
       outputs,
       computation: computation && !browser,
       browser,
+      goal,
       requestKey: crypto.randomUUID(),
     };
     setDraft(next);

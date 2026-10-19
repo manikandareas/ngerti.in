@@ -230,6 +230,7 @@ async def interval_lifecycle():
     old = await service.propose(a, body)
     identity = body.model_dump(mode="json", exclude={"request_key"})
     identity["spec"].pop("interval_hours")
+    identity["spec"].pop("goal")  # This field also did not exist in the legacy payload.
     async with transaction() as conn:
         await conn.execute(
             "UPDATE schedule_proposals SET fingerprint=%s WHERE id=%s",

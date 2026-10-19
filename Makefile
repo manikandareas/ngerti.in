@@ -62,6 +62,10 @@ persona-inspect:
 memory-inspect:
 	uv run --project apps/backend python scripts/inspect_memory.py
 
+.PHONY: goal-inspect
+goal-inspect:
+	uv run --project apps/backend python scripts/inspect_goals.py
+
 reset-dev:
 	uv run --project apps/backend python scripts/reset_dev.py --execute
 

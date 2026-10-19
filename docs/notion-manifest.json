@@ -16,7 +16,7 @@
       },
       "notion_content_sha256": "8683032b40bb75fb3a66096aaca609cabbcce80266d1cb8aa515f3c2ac78181e",
       "local_content_sha256": "801f9d06d6e4c7567923e16080a6ca96988fb7ea31076858396132428073981b",
-      "local_file_sha256": "0dfc4308fbf11d9dd4aba276b04f265c5ec1c9d281604a379442bfd4a0b15044",
+      "local_file_sha256": "7025e21c97a7e1307778f4f60b7d0fd94fe962553df436c2b0c3559842629835",
       "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
@@ -25,14 +25,14 @@
       "url": "https://app.notion.com/p/3f8abdd618738122878dde3cb0661765",
       "file": "product/01-produk-dan-paket.md",
       "kind": "page",
-      "page_last_edited_at": "2026-10-19T10:21:56.702Z",
+      "page_last_edited_at": "2026-10-19T11:33:43.793Z",
       "properties": {
         "title": "01 · Produk & Scope V1"
       },
-      "notion_content_sha256": "ec0f9d5860f7c078e11a97386a34cfeb05a5854748a55a258eed994a1e1def0c",
-      "local_content_sha256": "f9c85f1b74e946a5f73ebd1fafb7a9f6abbb8808078a62d19803901e7b560890",
-      "local_file_sha256": "ba9e04bad9e7a163cbf422ee435f7935ea594a4877c83c8f603ae49c0b695a86",
-      "readback_at": "2026-10-19T10:22:42.085Z"
+      "notion_content_sha256": "d637b7558a1a3b9d9e0998f9a01109be5352bb071fd452ef04922534eec7b911",
+      "local_content_sha256": "d1c1d8d32cf95bf3ea6c6dd1fa97760bcd3e25c84ed895d4df4ecf40c377e39a",
+      "local_file_sha256": "0a1f63cc8cd389d4d7147c8edfe80dbe6fb4fc784dc284387ccaefe2174cad3f",
+      "readback_at": "2026-10-19T11:35:00Z"
     },
     {
       "id": "3f8abdd6-1873-81fd-a2db-ea043a840c5a",
@@ -854,11 +854,11 @@
       "properties": {
         "title": "05 · Usage, Paket & Pembayaran"
       },
-      "notion_content_sha256": "8b2e0419265d39215f1e99f3341b5da32675ab30cb91154d20ee2751d7102234",
-      "local_content_sha256": "74e20f073f9ddbda94a7b451c0318a840e8fc4f7a58b74c18066722f29d48558",
-      "local_file_sha256": "07d782fa6b8926c8b68610d7c9ba218cd99991dd4c88cf1e555343886da4e0a0",
-      "readback_at": "2026-10-18T17:56:53.897Z",
-      "page_last_edited_at": "2026-10-18T17:56:36.949Z"
+      "notion_content_sha256": "a6d5d19e6506bde878238d94fd35485f7ffd9071a0d814640fc0efcd013bab64",
+      "local_content_sha256": "e4421806b41f8213f6130877977a2c32e905a12b74b5107d8f5be051c252a524",
+      "local_file_sha256": "b2de9bd229abef64d755e864ab24e4363f200e7b5992321b660d3ff75f7e7429",
+      "readback_at": "2026-10-19T11:35:00Z",
+      "page_last_edited_at": "2026-10-19T11:31:43.681Z"
     },
     {
       "id": "3fdabdd6-1873-81d3-9f94-f7161d4ef570",
@@ -886,7 +886,7 @@
       },
       "notion_content_sha256": "ff427a85b252da3841a5489b0f59aaa7c56a3e481cccccceb80e4755158e4018",
       "local_content_sha256": "6f8f141d26c06db4c4c1e0a38dc57315e043b485143d5fe24d3446116daec5b9",
-      "local_file_sha256": "7fa06effe111cbfc0b32a510beb32db131c8829e043bd668d59150eff739b447",
+      "local_file_sha256": "1557dc5afdf2bff3bc84495b689049f2b84ac6b4a676f8216868757011593781",
       "readback_at": "2026-10-18T06:04:56.780944+00:00",
       "page_last_edited_at": "2026-10-18T05:49:58.871Z"
     },
@@ -1360,17 +1360,17 @@
         ],
         "Lingkup": "Aktif V1",
         "Prioritas": "P0",
-        "Status": "Backlog",
+        "Status": "Done",
         "Ticket": 40,
         "Tugas": "NG-040 · Usage komputasi dan kontrak paket V1",
         "Urutan": 20,
         "url": "https://app.notion.com/p/3fdabdd6187381639bd6f377668ee2f3"
       },
-      "notion_content_sha256": "9e9e2aef48819a8d94d4ecc4de2ec0a8ae49acadd50d55806a24860c4c798ba4",
-      "local_content_sha256": "83f5d8e81f6d36696451be6bad84724d5a8f7d94dcfd39f1f78f8c47925d3d17",
-      "local_file_sha256": "6332982f9713ea0d4980e30bc6aa7e9be163c487024bcd65fde9551c38ae9f57",
-      "readback_at": "2026-10-18T06:04:56.780944+00:00",
-      "page_last_edited_at": "2026-10-18T05:51:33.991Z"
+      "notion_content_sha256": "76d36528f478974506fc97e24d565a08d649e2aafbee1f5da41e3477aefdb933",
+      "local_content_sha256": "78a824d185ee5e79b871d698cc6853bfe1b351b7bc21237c8bff7a7d0ce6113a",
+      "local_file_sha256": "0358e1933a9baa15ed910c71add57c7ac0906ed158c0d2d13652e8317cf201a6",
+      "readback_at": "2026-10-19T11:35:00Z",
+      "page_last_edited_at": "2026-10-19T11:32:55.813Z"
     },
     {
       "id": "3fdabdd6-1873-81f8-ade2-c7db2c75396e",
@@ -1640,8 +1640,8 @@
           "3f8abdd6-1873-81bf-9174-f9126e48a4f3",
           "3f8abdd6-1873-81fd-a17d-d1af24cec8fb"
         ],
-        "local_file_sha256": "4342bae785197ed48f2e595edb92f5f96d4f89babaf1cbd4c5a2f0e9798983da",
-        "readback_at": "2026-10-19T10:22:42.085Z",
+        "local_file_sha256": "1fc106d3d3843f019f064df535ad3460b0807dd6bcc67bd5543ae67ec607ed37",
+        "readback_at": "2026-10-19T11:35:00Z",
         "queried_row_count": 41
       },
       {
@@ -1723,8 +1723,8 @@
           "3fdabdd6-1873-81f8-ade2-c7db2c75396e",
           "3f8abdd6-1873-81ac-90b6-df75b7e1a157"
         ],
-        "local_file_sha256": "f140e76ae7e5507948fd857a74fb9c455308911c401a4d4bf5146d254b0f0eb7",
-        "readback_at": "2026-10-19T10:22:42.085Z",
+        "local_file_sha256": "6c3be5ecf8d3a7d99f05fdee18a80e7c0fd758ea46411d04c9ed5b1513f33712",
+        "readback_at": "2026-10-19T11:35:00Z",
         "queried_row_count": 25
       },
       {
@@ -1780,8 +1780,8 @@
           "type": "table"
         },
         "page_ids": [],
-        "local_file_sha256": "016eb1dfbdd5cecc2010814b887d49d646ef6becabd937446d76ae449b3e1f2b",
-        "readback_at": "2026-10-19T10:22:42.085Z",
+        "local_file_sha256": "9482222089f48e831f6fe0654a84327d3917e17f7d7487c5570b4195b7c03a49",
+        "readback_at": "2026-10-19T11:35:00Z",
         "queried_row_count": 0
       },
       {
@@ -1854,8 +1854,8 @@
           "3f8abdd6-1873-81bf-9174-f9126e48a4f3",
           "3f8abdd6-1873-81fd-a17d-d1af24cec8fb"
         ],
-        "local_file_sha256": "316d2ebdbfe8834688ba676a60f5ae2284e3ead97cfc66de0213d0a4065e923d",
-        "readback_at": "2026-10-19T10:22:42.085Z",
+        "local_file_sha256": "5fe1c4004c6dbafc3b1eb48657daac9f39e5f7b6c875397b81c766987217ad52",
+        "readback_at": "2026-10-19T11:35:00Z",
         "queried_row_count": 16
       }
     ],
@@ -2521,16 +2521,47 @@
       "source": "User-authorized NG-039 delivery; exact Notion readback and all four views verified",
       "summary": "Accept chat-first resource discovery, exact revisions, Library and active capabilities; connectors outside V1",
       "notion_content_sha256": "9c6fd259e0008b481fd4d15f18489a92748cc4b6f19803f8d2631d3d76d1afda"
+    },
+    {
+      "at": "2026-10-19T10:53:47.949Z",
+      "page_id": "3fdabdd6-1873-8163-9bd6-f377668ee2f3",
+      "source": "Authorized NG-040 implementation; exact readback and all four views verified",
+      "properties": {
+        "Status": "In Progress"
+      },
+      "notion_content_sha256": "9e9e2aef48819a8d94d4ecc4de2ec0a8ae49acadd50d55806a24860c4c798ba4"
+    },
+    {
+      "at": "2026-10-19T11:35:00Z",
+      "page_id": "3fdabdd6-1873-8163-9bd6-f377668ee2f3",
+      "source": "Authorized NG-040 implementation; exact readback and all four views verified",
+      "properties": {
+        "Status": "Done"
+      },
+      "notion_content_sha256": "76d36528f478974506fc97e24d565a08d649e2aafbee1f5da41e3477aefdb933"
+    },
+    {
+      "at": "2026-10-19T11:35:00Z",
+      "page_id": "3fdabdd6-1873-819c-a2b5-cc4e521b3587",
+      "source": "Authorized NG-040 implementation; exact readback and all four views verified",
+      "properties": {},
+      "notion_content_sha256": "a6d5d19e6506bde878238d94fd35485f7ffd9071a0d814640fc0efcd013bab64"
+    },
+    {
+      "at": "2026-10-19T11:35:00Z",
+      "page_id": "3f8abdd6-1873-8122-878d-de3cb0661765",
+      "source": "Authorized NG-040 implementation; exact readback and all four views verified",
+      "properties": {},
+      "notion_content_sha256": "d637b7558a1a3b9d9e0998f9a01109be5352bb071fd452ef04922534eec7b911"
     }
   ],
   "last_partial_sync": {
-    "at": "2026-10-19T10:22:42.085Z",
-    "scope": "NG-039 accepted chat-first discovery, exact revisions and active capabilities; connectors excluded from V1; four views verified; unrelated ticket properties preserved",
+    "at": "2026-10-19T11:35:00Z",
+    "scope": "NG-040 Done; exact readback and four views; unrelated statuses preserved",
     "page_ids": [
-      "https://app.notion.com/p/3fdabdd618738192b8f8f919dedbb367",
-      "https://app.notion.com/p/3f8abdd618738122878dde3cb0661765",
-      "https://app.notion.com/p/3f8abdd6187381fda2dbea043a840c5a",
-      "https://app.notion.com/p/3f8abdd6187381658b61f4283ee83428"
+      "3fdabdd6187381639bd6f377668ee2f3",
+      "3fdabdd61873819ca2b5cc4e521b3587",
+      "3f8abdd618738122878dde3cb0661765"
     ]
   }
 }

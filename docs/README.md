@@ -43,6 +43,12 @@ Rantai: spesifikasi → bukti REA/riset → tiket → bukti penerimaan. Tiket Do
 
 ## Status kerja terbaru
 
+Readback status 2026-10-19T11:35:00Z: [NG-040 · Usage komputasi dan kontrak paket V1](backlog/tasks/40-usage-komputasi-dan-kontrak-paket-v1.md) berstatus **Done**. Ledger/allowance, estimasi, charge/refund serta Usage diterima development; 48 kontrak dan walkthrough model nyata/desktop/mobile lulus. [Penerimaan NG-040](engineering/usage-40-acceptance.md) mencatat kontrak paket, bukti biaya dan batas verifikasi. NG-021 menjadi urutan berikutnya; status tiket lain dipertahankan.
+
+
+
+Readback status 2026-10-19T10:53:47.949Z: [NG-040 · Usage komputasi dan kontrak paket V1](backlog/tasks/40-usage-komputasi-dan-kontrak-paket-v1.md) berstatus **In Progress**. Implementasi mengikuti scope yang disetujui: ledger lintas kemampuan, allowance komputasi, charge/refund, estimasi dan Usage. Status tiket lain dipertahankan.
+
 Readback status 2026-10-19T10:22:42.085Z: [NG-039 · Library pencarian dan penemuan kemampuan](backlog/tasks/39-library-pencarian-dan-penemuan-kemampuan.md) berstatus **Done**. Tools pencarian/read, pilihan exact dalam chat, revisi lintas thread, Library dan discovery aktif diterima development; konektor di luar V1. [Penerimaan NG-039](engineering/library-39-acceptance.md) mencatat 65 kontrak, model nyata, desktop/mobile dan batas bukti. NG-040 menjadi urutan berikutnya; status tiket lain dipertahankan.
 
 Readback status 2026-10-19T09:53:09.491Z: [NG-039 · Library pencarian dan penemuan kemampuan](backlog/tasks/39-library-pencarian-dan-penemuan-kemampuan.md) berstatus **In Progress**. Implementasi mengikuti final plan yang disetujui: pencarian/read tools agent, pilihan exact dalam chat, Library, dan discovery kemampuan aktif; konektor di luar V1.

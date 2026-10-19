@@ -1,9 +1,11 @@
 # 05 · Usage, Paket & Pembayaran
 
-Sumber: [Notion](https://app.notion.com/p/3fdabdd61873819ca2b5cc4e521b3587) · Readback: 2026-10-18T17:56:53.897Z
+Sumber: [Notion](https://app.notion.com/p/3fdabdd61873819ca2b5cc4e521b3587) · Readback: 2026-10-19T11:35:00Z
 
 <!-- notion-content:start -->
-Batas chat baseline adalah **Free 100 dan Plus 300 pesan pengguna per 30 × 24 jam**, policy chat-baseline-v1. Ini batas development sementara, bukan harga atau allowance komersial yang disetujui. Meter Course/halaman materi dan kontrak reservasinya telah dihapus. GET /quotas hanya memiliki `meters.chat` dengan limit/used/reserved/remaining serta period/plan.
+Kontrak V1 NG-040 menetapkan **Free 100 pesan/1.000 kredit komputasi** dan **Plus 300 pesan/5.000 kredit komputasi** per **30 × 24 jam**, dengan harga Plus **Rp149.000**. Keputusan ini mengikuti telemetry dan benchmark awal asisten umum; tidak mewarisi harga paket belajar. Checkout dan aktivasi entitlement belum diaktifkan, mengikuti NG-021/022. Periode lama mempertahankan snapshot; kontrak chat baru `chat-v1-2026-10-19` dan compute `compute-allowance-v1`.
+
+Satu kredit adalah allowance biaya konfigurasi 1.000 microUSD, bukan saldo tunai atau invoice. `GET /quotas` tetap hanya `meters.chat`; `GET /usage` menyajikan komputasi, cadangan, reset dan kapasitas file. Meter Course/halaman materi tetap dihapus. Catatan NG-033–036 di bawah adalah riwayat budget awal; implementasi aktif NG-040 dijelaskan pada bagian terakhir.
 
 ## Ledger dan enforcement chat
 
@@ -92,4 +94,18 @@ Policy private-browser-v1 memisahkan masa hidup compute dari retensi profil. Def
 Compute166.464microUSD/jam dan disk864microUSD/jam memakai snapshot harga. Sesi default mereservasi208.964microUSD: compute+margin63.812 dan storage tujuh hari145.152. Setiap use mencadangkan seluruh retention window kembali secara konservatif, bukan tagihan disk eksak. Unknown tetap dihitung penuh; stop terkonfirmasi menyelesaikan estimasi compute dari wall time teramati. Reset profil tidak menghapus hasil atau ledger. Cap akun1.000.000/global5.000.000 mengikuti bucket UTC asal Task; policy lama tidak dihitung ulang dengan rate baru.
 
 Walkthrough empat Task/lima sesi mencatat14model calls,31.758token confirmed dan estimasi resource/storage USD0,760149. Nol resource NG-036 setelah reset. Biaya model dalam uang, invoice dan paket pelanggan belum diklaim. Panel komputer menampilkan pemakaian/cadangan; detail `docs/engineering/computer-36-acceptance.md`. Benchmark/paket komersial tetap NG-040/NG-041.
+
+## Implementasi NG-040 dan keputusan kontrak V1
+
+Diterima development pada 19 Oktober 2026; [NG-040 · Usage komputasi dan kontrak paket V1](../backlog/tasks/40-usage-komputasi-dan-kontrak-paket-v1.md). Ledger `compute_periods/work/events/audit` mengikat owner, native attempt, parent Task, period serta snapshot price/policy. Admission account/global atomik mendahului network/provider call; replay dan settlement tidak menggandakan biaya. Sisa cadangan dilepas; unknown tidak dianggap biaya nol. Quantity terkonfirmasi berbeda dari estimasi uang dan invoice.
+
+No-output failure/stop pada chat/Task mengembalikan allowance pengguna tanpa menghapus biaya provider. Retry tetap dalam cap/period asal dan tidak membatalkan refund sebelumnya. Evaluasi memory/proaktif dapat memakai compute meski tidak menghasilkan pesan; approval/replay/stop/kontrol memory tidak menjadi pesan baru. Storage/control I/O disubsidi agar hasil tetap terbaca saat saldo nol.
+
+Batas operasional: account USD2/global USD10 per tanggal UTC; provider periode 120% allowance publik untuk membatasi biaya failure/refund. Batas native token/page/runtime dan parent Goal tetap berlaku. Model/browser tidak dapat menaikkan plan/cap. Public estimate Task/Jadwal dan UI Usage menjelaskan saldo, cadangan, blocking, refund serta reset.
+
+Dasar keputusan harga: telemetry development yang sudah tersedia ditambah chat, Task/Python, memory dan OCR sintetis nyata. Standard price snapshot `provider-list-2026-10-19`: GPT-6 Luna USD0,10/0,01 cached/0,50 per juta token, GPT-5 Mini USD0,25/0,025/2, embedding USD0,02, Jev USD0,042 input dengan output gratis; OCR USD4/1.000 halaman. Resource mengikuti snapshot NG-035/036. [OpenAI pricing](https://developers.openai.com/api/docs/pricing), [TypeSafe](https://docs.typesafe.ai/models), [Mistral](https://docs.mistral.ai/inference/pricing), [R2](https://developers.cloudflare.com/r2/pricing/).
+
+Satu contoh Python: hold 138 menjadi 1,338 kredit; chat dan Task teks lain 0,399/0,076 kredit. Browser/retensi mendominasi sampel awal. Plus USD5 allowance dan USD6 cap provider menyisakan Rp29.000 dari harga Rp149.000 pada asumsi stres Rp20.000/USD, sebelum biaya tetap/pajak/gateway; itu skenario, bukan kurs pasar atau jaminan margin. Harga/allowance berikutnya memakai versi kebijakan baru.
+
+Probe 48 kontrak dan walkthrough desktop/mobile diterima; real memory/OCR terpisah dari model Task fixture. Bukti repo `docs/engineering/usage-40-acceptance.md`, `docs/engineering/usage-runtime.md` dan `docs/engineering/evidence/usage-40/`. Semua angka uang development estimated, invoice belum dikonfirmasi. Local MinIO memakai estimasi ekuivalen R2; storage lebih dari 30 hari, signed-download bytes dan invoice provider memerlukan reconciliation. Benchmark representatif/kualitas/latency/biaya lifecycle tetap NG-041 sebelum release.
 <!-- notion-content:end -->

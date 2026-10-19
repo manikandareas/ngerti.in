@@ -16,7 +16,7 @@ Asisten personal umum bagi orang yang ingin menyampaikan ide, meminta bantuan be
 
 V1 wajib mencakup main/side chat, task background, approval umum, file/results persisten, Daytona sandbox, browser, VNC/live desktop/takeover pada sesi yang sama, scheduler offline, persona, memory, goals, proaktivitas terkontrol, Library/search, usage dan pembayaran. Baseline chat telah dipertahankan; fitur berikutnya adalah gap bertiket, bukan kemampuan yang dianggap tersedia. Course/Lesson/Practice hanya arah berikutnya, tanpa kode/fixture/tiket pembelajaran sebagai dependency aktif.
 
-Cleanup NG-026–030 menjadi gerbang pertama sebelum trial Daytona. Workspace/hasil persisten; proses/RAM hanya dijanjikan sesudah verifikasi provider. Harga/allowance komersial mengikuti telemetry dan benchmark, dengan batas chat development sementara.
+Cleanup NG-026–030 menjadi gerbang pertama sebelum trial Daytona. Workspace/hasil persisten; proses/RAM hanya dijanjikan sesudah verifikasi provider. NG-040 menetapkan kontrak pesan/komputasi dan harga V1 dari telemetry awal; [kontrak Usage](docs/product/05-usage-paket-pembayaran.md) menjadi acuan. Checkout mengikuti NG-021/022 dan benchmark menyeluruh NG-041 tetap gate sebelum release.
 
 ## Design
 

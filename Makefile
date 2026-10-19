@@ -82,3 +82,10 @@ daytona-preflight:
 
 daytona-inspect:
 	uv run --project apps/backend python scripts/inspect_daytona_trial.py
+
+.PHONY: library-inspect library-backfill
+library-inspect:
+	uv run --project apps/backend python scripts/inspect_library.py
+
+library-backfill:
+	uv run --project apps/backend python -m ngertiin.library.backfill

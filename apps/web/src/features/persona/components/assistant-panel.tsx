@@ -2,6 +2,7 @@ import { ArrowLeft, ArrowRight, History, X } from "lucide-react";
 import { Tabs } from "radix-ui";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { MemoryPanel } from "@/features/memory/components/memory-panel";
 import { usePersona } from "@/features/persona/hooks/use-persona";
 import type { AssistantTab } from "@/features/persona/types";
 import type { WorkspaceView } from "@/features/workspace/types";
@@ -23,7 +24,9 @@ export function AssistantPanel({
   initialTab?: AssistantTab;
 }) {
   const persona = usePersona();
-  const [section, setSection] = useState<"overview" | "profile" | "soul" | "history">("overview");
+  const [section, setSection] = useState<"overview" | "profile" | "soul" | "history" | "memory">(
+    "overview",
+  );
   const profile = persona.data?.profile;
   return (
     <div className="flex h-full min-h-0 flex-col">
@@ -119,13 +122,19 @@ export function AssistantPanel({
                   </span>
                   <ArrowRight className="size-4 shrink-0" />
                 </button>
-                <div className="py-5">
-                  <p className="font-bold">Ingatan tentangmu</p>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    Memory lintas percakapan sedang disiapkan. {profile.name} belum menyimpan
-                    ingatan baru tentangmu.
-                  </p>
-                </div>
+                <button
+                  type="button"
+                  className="flex w-full items-center justify-between gap-4 py-5 text-left outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  onClick={() => setSection("memory")}
+                >
+                  <span>
+                    <span className="block font-bold">Ingatan tentangmu</span>
+                    <span className="mt-1 block text-sm text-muted-foreground">
+                      Lihat sumber, koreksi, lupakan, dan atur capture.
+                    </span>
+                  </span>
+                  <ArrowRight className="size-4 shrink-0" />
+                </button>
               </div>
               <Button variant="ghost" onClick={() => setSection("history")}>
                 <History /> Riwayat perubahan
@@ -141,7 +150,9 @@ export function AssistantPanel({
               <Button variant="ghost" className="-ml-3" onClick={() => setSection("overview")}>
                 <ArrowLeft /> Identitas
               </Button>
-              {section === "history" ? (
+              {section === "memory" ? (
+                <MemoryPanel />
+              ) : section === "history" ? (
                 <PersonaHistory profile={profile} />
               ) : (
                 <PersonaEditor

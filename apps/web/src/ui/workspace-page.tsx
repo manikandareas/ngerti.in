@@ -254,7 +254,9 @@ export function WorkspacePage({ selectedThread, view, onNavigate, onSelect }: Wo
           >
             <SheetHeader className="sr-only">
               <SheetTitle>Asisten personalmu</SheetTitle>
-              <SheetDescription>Aktivitas, jadwal mendatang, profil dan karakter.</SheetDescription>
+              <SheetDescription>
+                Aktivitas, jadwal mendatang, profil, karakter dan ingatan.
+              </SheetDescription>
             </SheetHeader>
             <AssistantPanel
               onClose={closeAssistant}

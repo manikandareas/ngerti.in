@@ -1,6 +1,6 @@
 # 06 · Development, Operasi & Acceptance
 
-Sumber: [Notion](https://app.notion.com/p/3fdabdd6187381d39f94f7161d4ef570) · Readback: 2026-10-19T03:42:13.950127+00:00
+Sumber: [Notion](https://app.notion.com/p/3fdabdd6187381d39f94f7161d4ef570) · Readback: 2026-10-19T06:29:38.106391+00:00
 
 <!-- notion-content:start -->
 ## Setup development bersih
@@ -143,4 +143,8 @@ DST, misfire, overlap, races, owner, budget dan crash boundary memakai probes te
 
 ## Penerimaan persona NG-016
 NG-016 diterima development 19 Oktober 2026. Jalankan make migrate untuk incremental 0007_persona_revisions lalu restart worker. Avatar panel, Identity/Soul, editor dan preview chat, exact decisions, history/restore serta snapshot per chat/Task tersedia. make persona-inspect lulus 36 skenario; Task 55 dan scheduler 82 lulus regresi. Model nyata lintas thread, rejection/approval, konflik dua tab, reload draft, restore dan mobile 390/320px diperiksa. File TXT dengan instruksi palsu tidak mengubah persona/jadwal. make check/build dan git diff --check lulus. Bukti repo: docs/engineering/[persona-16-acceptance.md](http://persona-16-acceptance.md) serta docs/engineering/evidence/persona-16/. Avatar memakai gambar yang ada atau inisial; capture/recall dan full P16 memory extraction mengikuti NG-017/018. Tidak mengklaim mobile fisik atau production deployment.
+
+## Penerimaan Goals NG-038
+
+NG-038 diterima development 19 Oktober 2026. Migration incremental `0009_personal_goals` diterapkan tanpa reset. `make goal-inspect` lulus 74 kontrak; regresi Task 55, scheduler 82, file 47 dan quota 46 lulus. `make check`, `make build` dan `git diff --check` lulus. Walkthrough model nyata mencakup pembuatan Goal tanpa eksekusi otomatis, Task/bukti, preview chat dan retry ID salah, pause/resume, slot offline yang skipped, manual run tersendiri yang berhasil, complete/archive dan reload. Desktop/mobile 390/320 tanpa overflow. Bukti serta batas: `docs/engineering/goals-38-acceptance.md`, `docs/engineering/goals-runtime.md`, `docs/engineering/evidence/goals-38/`. Parent cap dan source/revision checks tersedia; proaktivitas NG-019/020 dan production deployment belum dicakup. Fixture Goal diarsipkan dan tidak ada future slot jadwal uji.
 <!-- notion-content:end -->

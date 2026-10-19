@@ -1,0 +1,301 @@
+{
+  "passed": 74,
+  "scenarios": [
+    {
+      "scenario": "preview_does_not_create_goal",
+      "passed": true
+    },
+    {
+      "scenario": "proposal_request_key_idempotent",
+      "passed": true
+    },
+    {
+      "scenario": "request_key_changed_payload_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_thread_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_decision_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "concurrent_decisions_create_once",
+      "passed": true
+    },
+    {
+      "scenario": "create_is_active_revision_one",
+      "passed": true
+    },
+    {
+      "scenario": "goal_alone_has_no_work_or_grants",
+      "passed": true
+    },
+    {
+      "scenario": "opposite_decision_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_goal_read_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_goal_mutation_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_goal_task_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "cannot_complete_without_evidence",
+      "passed": true
+    },
+    {
+      "scenario": "stale_concurrent_decision_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "pause_keeps_plan_revision",
+      "passed": true
+    },
+    {
+      "scenario": "pause_blocks_new_task",
+      "passed": true
+    },
+    {
+      "scenario": "resume_preserves_target",
+      "passed": true
+    },
+    {
+      "scenario": "user_report_explicitly_labeled",
+      "passed": true
+    },
+    {
+      "scenario": "next_action_edit_preserves_progress_and_target",
+      "passed": true
+    },
+    {
+      "scenario": "evidence_order_uses_revision_not_transaction_clock",
+      "passed": true
+    },
+    {
+      "scenario": "target_edit_resets_current_progress",
+      "passed": true
+    },
+    {
+      "scenario": "target_edit_keeps_evidence_history",
+      "passed": true
+    },
+    {
+      "scenario": "expired_approval_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "expired_proposal_can_be_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "completion_requires_explicit_decision",
+      "passed": true
+    },
+    {
+      "scenario": "completed_blocks_task",
+      "passed": true
+    },
+    {
+      "scenario": "archive_preserves_history",
+      "passed": true
+    },
+    {
+      "scenario": "explicit_reopen_preserves_evidence",
+      "passed": true
+    },
+    {
+      "scenario": "many_tasks_share_exact_target",
+      "passed": true
+    },
+    {
+      "scenario": "task_captures_immutable_goal_context",
+      "passed": true
+    },
+    {
+      "scenario": "pending_task_cannot_prove_met",
+      "passed": true
+    },
+    {
+      "scenario": "failed_task_preserves_active_goal",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_evidence_source_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "successful_task_not_goal_completion",
+      "passed": true
+    },
+    {
+      "scenario": "failed_task_not_met",
+      "passed": true
+    },
+    {
+      "scenario": "changed_evidence_rejected_at_decision",
+      "passed": true
+    },
+    {
+      "scenario": "changed_source_revokes_progress",
+      "passed": true
+    },
+    {
+      "scenario": "stale_target_new_task_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "stale_target_retry_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "old_task_not_current_evidence",
+      "passed": true
+    },
+    {
+      "scenario": "old_task_intent_unchanged",
+      "passed": true
+    },
+    {
+      "scenario": "result_evidence_pins_exact_revision",
+      "passed": true
+    },
+    {
+      "scenario": "deleted_result_revokes_support",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_listing_has_no_goal",
+      "passed": true
+    },
+    {
+      "scenario": "due_race_creates_one_task",
+      "passed": true
+    },
+    {
+      "scenario": "pause_does_not_cancel_existing_task",
+      "passed": true
+    },
+    {
+      "scenario": "paused_goal_skips_due_with_reason",
+      "passed": true
+    },
+    {
+      "scenario": "resume_coalesces_downtime_no_burst",
+      "passed": true
+    },
+    {
+      "scenario": "changed_goal_blocks_old_schedule",
+      "passed": true
+    },
+    {
+      "scenario": "reviewed_schedule_uses_new_target",
+      "passed": true
+    },
+    {
+      "scenario": "archived_goal_blocks_future_schedule",
+      "passed": true
+    },
+    {
+      "scenario": "concurrent_parent_budget_reserves_once",
+      "passed": true
+    },
+    {
+      "scenario": "parent_cap_blocks_second_task",
+      "passed": true
+    },
+    {
+      "scenario": "exact_task_replay_after_pause_is_receipt",
+      "passed": true
+    },
+    {
+      "scenario": "paused_retry_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "goals_http_requires_auth",
+      "passed": true
+    },
+    {
+      "scenario": "goals_http_list",
+      "passed": true
+    },
+    {
+      "scenario": "goals_http_detail",
+      "passed": true
+    },
+    {
+      "scenario": "http_rejects_selected_owner",
+      "passed": true
+    },
+    {
+      "scenario": "blank_criterion",
+      "passed": true
+    },
+    {
+      "scenario": "duplicate_criterion",
+      "passed": true
+    },
+    {
+      "scenario": "budget_cannot_be_unlimited",
+      "passed": true
+    },
+    {
+      "scenario": "reject_owner_in_spec",
+      "passed": true
+    },
+    {
+      "scenario": "result_update_inherits_parent_goal",
+      "passed": true
+    },
+    {
+      "scenario": "result_update_uses_remaining_parent_budget",
+      "passed": true
+    },
+    {
+      "scenario": "result_update_cannot_escape_parent_cap",
+      "passed": true
+    },
+    {
+      "scenario": "result_only_evidence_cannot_bypass_target",
+      "passed": true
+    },
+    {
+      "scenario": "result_update_does_not_retarget_implicitly",
+      "passed": true
+    },
+    {
+      "scenario": "queue_failure_exercised",
+      "passed": true
+    },
+    {
+      "scenario": "queue_failure_rolls_back_goal_work_and_budget",
+      "passed": true
+    },
+    {
+      "scenario": "chat_invalid_goal_id_is_recoverable_tool_feedback",
+      "passed": true
+    },
+    {
+      "scenario": "chat_reads_owner_goal_exact_id",
+      "passed": true
+    },
+    {
+      "scenario": "chat_invalid_mutation_id_is_recoverable",
+      "passed": true
+    },
+    {
+      "scenario": "chat_stale_run_cannot_prepare_goal_change",
+      "passed": true
+    }
+  ]
+}

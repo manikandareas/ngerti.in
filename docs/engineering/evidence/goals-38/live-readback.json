@@ -1,0 +1,282 @@
+{
+  "at": "2026-10-19T06:20:51.346444+00:00",
+  "goal": {
+    "id": "451d7acf-fece-5978-b76a-c23aa88f2946",
+    "thread_id": "d3ce4938-2f59-5dbd-b5c1-43da71c11199",
+    "revision": 4,
+    "plan_revision": 1,
+    "state": "paused",
+    "spec": {
+      "title": "Portofolio NG-038",
+      "target": "Siapkan portofolio contoh untuk penerimaan Goal.",
+      "horizon": "Akhir Oktober 2026",
+      "criteria": [
+        "CV ringkas selesai",
+        "Rencana studi kasus ditinjau"
+      ],
+      "budget_cap": 360000,
+      "next_action": "Meninjau rencana studi kasus bersama saya"
+    }
+  },
+  "tasks": [
+    {
+      "id": "551d7476-939c-42cc-a09b-948e1f232472",
+      "status": "succeeded",
+      "goal_revision": 1,
+      "usage_units": 634,
+      "budget_cap": 60000
+    }
+  ],
+  "chat_runs": [
+    {
+      "id": "29c52a22-042c-4d88-b46f-3ead88ff1a70",
+      "status": "complete",
+      "attempt": 1,
+      "usage": {
+        "resp_015962d1f5362381006ad5b4912ebc87d08494a0b7ec8c1281": {
+          "input_tokens": 2659,
+          "total_tokens": 2682,
+          "output_tokens": 23,
+          "input_token_details": {
+            "cache_read": 0,
+            "cache_creation": 2656
+          },
+          "output_token_details": {
+            "reasoning": 0
+          }
+        },
+        "resp_015962d1f5362381006ad5b549a4c887d0801806b5dfcc31cf": {
+          "input_tokens": 2772,
+          "total_tokens": 2793,
+          "output_tokens": 21,
+          "input_token_details": {
+            "cache_read": 0,
+            "cache_creation": 2769
+          },
+          "output_token_details": {
+            "reasoning": 0
+          }
+        },
+        "resp_015962d1f5362381006ad5b54c071087d091dfe1b528e54d04": {
+          "input_tokens": 2866,
+          "total_tokens": 2905,
+          "output_tokens": 39,
+          "input_token_details": {
+            "cache_read": 2769,
+            "cache_creation": 94
+          },
+          "output_token_details": {
+            "reasoning": 0
+          }
+        },
+        "resp_015962d1f5362381006ad5b54e4da887d09ef42eeb77765c4d": {
+          "input_tokens": 3534,
+          "total_tokens": 3650,
+          "output_tokens": 116,
+          "input_token_details": {
+            "cache_read": 2863,
+            "cache_creation": 668
+          },
+          "output_token_details": {
+            "reasoning": 0
+          }
+        },
+        "resp_015962d1f5362381006ad5b5510b6887d099673b0f54d3331f": {
+          "input_tokens": 3995,
+          "total_tokens": 4084,
+          "output_tokens": 89,
+          "input_token_details": {
+            "cache_read": 3531,
+            "cache_creation": 461
+          },
+          "output_token_details": {
+            "reasoning": 0
+          }
+        }
+      }
+    }
+  ],
+  "schedule": {
+    "id": "8830adac-f709-578f-aade-bfc96d1a2452",
+    "revision": 1,
+    "state": "active",
+    "spec": {
+      "goal": {
+        "id": "451d7acf-fece-5978-b76a-c23aa88f2946",
+        "revision": 1
+      },
+      "title": "Catatan portofolio NG-038",
+      "inputs": [],
+      "outputs": [],
+      "timezone": "Asia/Makassar",
+      "weekdays": [
+        0
+      ],
+      "frequency": "once",
+      "local_time": "14:22",
+      "start_date": "2026-10-19",
+      "instruction": "Tulis satu kalimat catatan berikutnya untuk studi kasus portofolio contoh.",
+      "per_run_cap": 30000,
+      "runtime_kind": "text",
+      "interval_hours": null,
+      "review_required": false
+    },
+    "next_due": "2026-10-19 06:22:00+00:00"
+  },
+  "viewports": [
+    {
+      "width": 390,
+      "height": 844,
+      "horizontal_overflow": false
+    },
+    {
+      "width": 320,
+      "height": 640,
+      "horizontal_overflow": false
+    }
+  ],
+  "offline_paused_occurrences": [
+    {
+      "id": "020fdfe8-215f-5eea-9b2a-e1b5e95e8bea",
+      "status": "skipped",
+      "reason": "Tujuan dijeda, selesai atau diarsipkan; tidak membuat Task baru.",
+      "task_id": null,
+      "intended_at": "2026-10-19 06:22:00+00:00"
+    }
+  ],
+  "final_at": "2026-10-19T06:26:00.961796+00:00",
+  "final_goal": {
+    "id": "451d7acf-fece-5978-b76a-c23aa88f2946",
+    "revision": 8,
+    "plan_revision": 1,
+    "state": "archived",
+    "spec": {
+      "title": "Portofolio NG-038",
+      "target": "Siapkan portofolio contoh untuk penerimaan Goal.",
+      "horizon": "Akhir Oktober 2026",
+      "criteria": [
+        "CV ringkas selesai",
+        "Rencana studi kasus ditinjau"
+      ],
+      "budget_cap": 360000,
+      "next_action": "Meninjau rencana studi kasus bersama saya"
+    }
+  },
+  "final_tasks": [
+    {
+      "id": "551d7476-939c-42cc-a09b-948e1f232472",
+      "status": "succeeded",
+      "goal_revision": 1,
+      "usage_units": 634,
+      "budget_cap": 60000,
+      "result": "# Raka Pratama\n**Frontend Developer**\n\nFrontend developer dengan pengalaman membangun antarmuka web menggunakan **React** dan **TypeScript**. Terampil mengembangkan komponen yang dapat digunakan kembali, menerapkan desain responsif, dan berkolaborasi dengan tim desain serta backend untuk menghadirkan pengalaman pengguna yang baik.\n\n**Keahlian**\n- React, TypeScript, JavaScript\n- HTML, CSS, desain responsif\n- Git dan kolaborasi tim\n\n**Pengalaman**\n**Frontend Developer — Studio Digital Contoh** | 2023–2025\n- Mengembangkan fitur dan komponen antarmuka dengan React dan TypeScript.\n- Meningkatkan konsistensi tampilan melalui komponen yang dapat digunakan kembali.\n- Berkolaborasi dalam peninjauan kode dan pengujian fitur sebelum rilis.\n\n**Pendidikan**\nD3 Manajemen Informatika — Politeknik Contoh | 2020–2023\n\n*Data dan pengalaman di atas bersifat fiktif.*"
+    },
+    {
+      "id": "1eaf9c50-7cdf-4e6b-8f4d-f372483a890c",
+      "status": "succeeded",
+      "goal_revision": 1,
+      "usage_units": 1598,
+      "budget_cap": 30000,
+      "result": "Catatan berikutnya: Tinjau rencana studi kasus bersama saya, termasuk tujuan, ruang lingkup, dan kriteria keberhasilannya."
+    }
+  ],
+  "occurrences": [
+    {
+      "id": "020fdfe8-215f-5eea-9b2a-e1b5e95e8bea",
+      "trigger": "scheduled",
+      "status": "skipped",
+      "reason": "Tujuan dijeda, selesai atau diarsipkan; tidak membuat Task baru.",
+      "task_id": null,
+      "intended_at": "2026-10-19 06:22:00+00:00",
+      "task_status": null,
+      "usage_units": null
+    },
+    {
+      "id": "ff852166-e079-5b47-91fe-9a65b398f388",
+      "trigger": "manual",
+      "status": "queued",
+      "reason": null,
+      "task_id": "1eaf9c50-7cdf-4e6b-8f4d-f372483a890c",
+      "intended_at": "2026-10-19 06:23:05.786120+00:00",
+      "task_status": "succeeded",
+      "usage_units": 1598
+    }
+  ],
+  "evidence": [
+    {
+      "criterion": 0,
+      "state": "met",
+      "note": "CV ringkas fiktif telah dihasilkan oleh Task dan dapat dibuka kembali.",
+      "source": {
+        "hash": "2df6a7dec99142d6c9042e7ac4674119ea706bd1f26d18b76a86f07f4d19f394",
+        "kind": "task",
+        "title": "Susun CV ringkas contoh untuk portofolio. Gunakan data fiktif: nama Raka, frontend developer,…",
+        "status": "succeeded",
+        "task_id": "551d7476-939c-42cc-a09b-948e1f232472",
+        "revision": 1,
+        "thread_id": "d3ce4938-2f59-5dbd-b5c1-43da71c11199"
+      },
+      "plan_revision": 1
+    },
+    {
+      "criterion": 1,
+      "state": "met",
+      "note": "Laporan pengguna uji: rencana studi kasus contoh sudah ditinjau pada walkthrough penerimaan. Ini fixture sintetis untuk menguji penyelesaian tujuan.",
+      "source": {
+        "kind": "user_report"
+      },
+      "plan_revision": 1
+    }
+  ],
+  "history": [
+    {
+      "revision": 1,
+      "plan_revision": 1,
+      "state": "active",
+      "operation": "create"
+    },
+    {
+      "revision": 2,
+      "plan_revision": 1,
+      "state": "active",
+      "operation": "evidence"
+    },
+    {
+      "revision": 3,
+      "plan_revision": 1,
+      "state": "active",
+      "operation": "update"
+    },
+    {
+      "revision": 4,
+      "plan_revision": 1,
+      "state": "paused",
+      "operation": "pause"
+    },
+    {
+      "revision": 5,
+      "plan_revision": 1,
+      "state": "active",
+      "operation": "resume"
+    },
+    {
+      "revision": 6,
+      "plan_revision": 1,
+      "state": "active",
+      "operation": "evidence"
+    },
+    {
+      "revision": 7,
+      "plan_revision": 1,
+      "state": "completed",
+      "operation": "complete"
+    },
+    {
+      "revision": 8,
+      "plan_revision": 1,
+      "state": "archived",
+      "operation": "archive"
+    }
+  ],
+  "remaining_future_slots": 0
+}

@@ -1,0 +1,11 @@
+{
+  "python": "3.13.12",
+  "model": "gpt-6-luna",
+  "packages": {
+    "fastapi": "0.143.1",
+    "psycopg": "3.3.6",
+    "langchain": "1.4.6",
+    "langgraph": "1.2.15",
+    "pydantic": "2.14.1"
+  }
+}

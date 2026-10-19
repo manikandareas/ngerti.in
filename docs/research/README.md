@@ -6,6 +6,9 @@ Keputusan aktif berada di [Produk & Scope V1](../product/01-produk-dan-paket.md)
 - [Mesin privat: Daytona, VNC dan takeover](agent-private-machine-options-2026-10-18.md): snapshot dokumen vendor sebelum trial NG-031.
 - [NG-031 · Research dan rancangan trial Daytona](daytona-trial-31-2026-10-18.md): snapshot riset sebelum trial. [Hasil penerimaan](../engineering/daytona-31-acceptance.md) mencatat implementasi dan bukti live berikut batasnya.
 - [Soul dan memory](agent-soul-memory.md), [framework agent](agent-framework-selection.md), [stack proaktif](proactive-agent-frameworks-2026-10-14.md).
+- [Algoritma memory agent: hybrid, temporal graph, dan evaluasi](agent-memory-algorithms-2026-10-19.md): perbandingan sumber primer dan usulan PoC untuk NG-017; belum menjadi keputusan implementasi atau hasil benchmark lokal.
+- [Evaluasi Mem0 untuk NG-017](mem0-evaluation-2026-10-19.md): audit SDK stabil, kecocokan pgvector, dan batas koreksi/forget sebelum keputusan integrasi; bukan hasil benchmark lokal.
+- [Rencana memory dengan Mem0 OSS](memory-mem0-plan-2026-10-19.md): keputusan memakai library, pembagian tanggung jawab dan urutan delivery NG-017/018; implementasi belum dimulai.
 - [Chat streaming/tools/recovery](chat-04-streaming-research-2026-10-16.md).
 - [Audit lingkungan REA](rea-environment-audit-2026-10-18.md) dan [penilaian awal Muse](muse-reverse-engineering-assessment-2026-10-18.md): catatan sesuai tanggalnya.
 

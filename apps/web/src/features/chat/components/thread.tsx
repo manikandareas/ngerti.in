@@ -1,6 +1,6 @@
 import { MessageScroller } from "@shadcn/react/message-scroller";
 import { RefreshCw, WifiOff } from "lucide-react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { WorkspaceState } from "@/components/workspace-state";
 import { activeStatuses } from "@/features/chat/constants";
@@ -15,9 +15,11 @@ import { ThreadTranscript } from "./thread-transcript";
 
 interface ThreadProps {
   threadId: string;
+  draftRequest?: { id: string; text: string };
+  onDraftRequestConsumed?: () => void;
 }
 
-export function Thread({ threadId }: ThreadProps) {
+export function Thread({ threadId, draftRequest, onDraftRequestConsumed }: ThreadProps) {
   const { snapshot, connection, error, refresh, loadEarlier } = useThread(threadId);
   const online = useOnline();
   const input = useRef<HTMLTextAreaElement>(null);
@@ -32,6 +34,14 @@ export function Thread({ threadId }: ThreadProps) {
     acceptedRequestKey: run?.request_key,
   });
   const actions = useThreadActions(run, composer.setSendError);
+  const appliedDraft = useRef<string | null>(null);
+  useEffect(() => {
+    if (!draftRequest || appliedDraft.current === draftRequest.id) return;
+    appliedDraft.current = draftRequest.id;
+    composer.updateDraft([composer.draft, draftRequest.text].filter(Boolean).join("\n\n"));
+    onDraftRequestConsumed?.();
+    input.current?.focus();
+  }, [draftRequest, composer.updateDraft, composer.draft, onDraftRequestConsumed]);
   const sendError = composer.sendError;
   if (error && !snapshot)
     return (

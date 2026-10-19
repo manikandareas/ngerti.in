@@ -5,7 +5,13 @@ import { Button } from "@/components/ui/button";
 import { BrowserSettings } from "@/features/computer/components/browser-settings";
 import type { WorkspaceView } from "@/features/workspace/types";
 
-export function SettingsPanel({ onNavigate }: { onNavigate: (view: WorkspaceView) => void }) {
+export function SettingsPanel({
+  onNavigate,
+  onOpenAssistant,
+}: {
+  onNavigate: (view: WorkspaceView) => void;
+  onOpenAssistant: () => void;
+}) {
   return (
     <div className="divide-y border-y">
       <BrowserSettings />
@@ -44,18 +50,13 @@ export function SettingsPanel({ onNavigate }: { onNavigate: (view: WorkspaceView
         </Button>
       </section>
       <section className="py-6">
-        <h2>Persona & memory</h2>
+        <h2>Identitas asisten</h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          Pengaturan preferensi dan memory lintas percakapan belum tersedia. Kamu tetap bisa memberi
-          arahan dalam chat yang sedang dibuka.
+          Ubah profil dan cara asistenmu membantu melalui panel Identitas. Memory lintas percakapan
+          sedang disiapkan.
         </p>
-        <Button
-          type="button"
-          variant="outline"
-          className="mt-4"
-          onClick={() => onNavigate("capabilities")}
-        >
-          Lihat kemampuan Gwen <ChevronRight />
+        <Button type="button" variant="outline" className="mt-4" onClick={onOpenAssistant}>
+          Buka identitas <ChevronRight />
         </Button>
       </section>
     </div>

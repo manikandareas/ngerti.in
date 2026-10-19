@@ -1,30 +1,30 @@
+import type { Ref } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverDescription,
-  PopoverHeader,
-  PopoverTitle,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { PersonaAvatar } from "@/features/persona/components/persona-avatar";
+import { usePersona } from "@/features/persona/hooks/use-persona";
 
-export function AgentProfile() {
+export function AgentProfile({
+  onClick,
+  open,
+  triggerRef,
+}: {
+  onClick: () => void;
+  open: boolean;
+  triggerRef: Ref<HTMLButtonElement>;
+}) {
+  const persona = usePersona();
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="ghost" className="h-10 gap-2 rounded-xl px-3" aria-label="Tentang Gwen">
-          <img src="/images/Dh2gf.png" width={32} height={32} className="size-8" alt="" />
-          <span className="text-sm font-bold">Gwen</span>
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="max-w-[calc(100vw-2rem)] border border-border p-4 shadow-sm">
-        <PopoverHeader>
-          <PopoverTitle>Gwen · Asisten personalmu</PopoverTitle>
-          <PopoverDescription>
-            Ceritakan ide, minta bantuan menulis, analisis, atau susun rencana bersama Gwen.
-          </PopoverDescription>
-        </PopoverHeader>
-      </PopoverContent>
-    </Popover>
+    <Button
+      ref={triggerRef}
+      variant="ghost"
+      className="h-11 max-w-[min(220px,48vw)] gap-2 rounded-xl px-3"
+      onClick={onClick}
+      aria-label="Buka panel asisten"
+      aria-expanded={open}
+      aria-controls="assistant-panel"
+    >
+      <PersonaAvatar profile={persona.data?.profile} />
+      <span className="truncate text-sm font-bold">{persona.data?.profile.name ?? "Gwen"}</span>
+    </Button>
   );
 }

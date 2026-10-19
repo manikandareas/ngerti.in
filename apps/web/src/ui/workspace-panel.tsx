@@ -14,9 +14,15 @@ interface WorkspacePanelProps {
   view: Exclude<WorkspaceView, "chat">;
   onNavigate: (view: WorkspaceView) => void;
   threadId: string | null;
+  onOpenAssistant: () => void;
 }
 
-export function WorkspacePanel({ view, onNavigate, threadId }: WorkspacePanelProps) {
+export function WorkspacePanel({
+  view,
+  onNavigate,
+  threadId,
+  onOpenAssistant,
+}: WorkspacePanelProps) {
   const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
     heading.current?.focus();
@@ -43,13 +49,18 @@ export function WorkspacePanel({ view, onNavigate, threadId }: WorkspacePanelPro
         <p className="mb-8 max-w-prose text-sm text-muted-foreground">
           {workspaceDescriptions[view]}
         </p>
-        <WorkspaceContent view={view} onNavigate={onNavigate} threadId={threadId} />
+        <WorkspaceContent
+          view={view}
+          onNavigate={onNavigate}
+          threadId={threadId}
+          onOpenAssistant={onOpenAssistant}
+        />
       </div>
     </div>
   );
 }
 
-function WorkspaceContent({ view, onNavigate, threadId }: WorkspacePanelProps) {
+function WorkspaceContent({ view, onNavigate, threadId, onOpenAssistant }: WorkspacePanelProps) {
   switch (view) {
     case "schedules":
       return <SchedulePanel threadId={threadId} />;
@@ -62,6 +73,6 @@ function WorkspaceContent({ view, onNavigate, threadId }: WorkspacePanelProps) {
     case "usage":
       return <UsagePanel />;
     case "settings":
-      return <SettingsPanel onNavigate={onNavigate} />;
+      return <SettingsPanel onNavigate={onNavigate} onOpenAssistant={onOpenAssistant} />;
   }
 }

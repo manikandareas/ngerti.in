@@ -55,7 +55,8 @@ async def file(owner, file_id):
         await revoke(conn, owner, "source_deleted")
         revisions = await (
             await conn.execute(
-                "UPDATE file_revisions SET status='deleted' WHERE file_id=%s RETURNING id",
+                "UPDATE file_revisions SET status='deleted',search_text='' "
+                "WHERE file_id=%s RETURNING id",
                 (file_id,),
             )
         ).fetchall()
@@ -92,7 +93,8 @@ async def result(owner, result_id):
         )
         revoked = await (
             await conn.execute(
-                "UPDATE file_revisions SET status='deleted' WHERE file_id=ANY(%s) RETURNING id",
+                "UPDATE file_revisions SET status='deleted',search_text='' "
+                "WHERE file_id=ANY(%s) RETURNING id",
                 (ids,),
             )
         ).fetchall()

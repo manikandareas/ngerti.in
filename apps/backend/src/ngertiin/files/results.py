@@ -20,11 +20,11 @@ async def bind(conn, task, target=None, expected_revision=None):
         root = await one(
             conn,
             "SELECT * FROM product_results WHERE id=%s AND owner_id=%s "
-            "AND thread_id=%s AND deleted_at IS NULL FOR UPDATE",
-            (target, task["owner_id"], task["thread_id"]),
+            "AND deleted_at IS NULL FOR UPDATE",
+            (target, task["owner_id"]),
         )
         if not root:
-            raise HTTPException(404, "Hasil tidak ditemukan pada percakapan ini.")
+            raise HTTPException(404, "Hasil tidak ditemukan.")
         if root["status"] in ("constructing", "updating"):
             raise HTTPException(409, "Hasil ini masih sedang dikerjakan.")
         if expected_revision != root["current_revision"]:
@@ -185,6 +185,10 @@ async def prepare(execution):
         await asyncio.to_thread(put_object, row["object_key"], data, row["content_type"])
         async with tasks.transaction() as conn:
             await files.written(conn, row["id"])
+            await conn.execute(
+                "UPDATE file_revisions SET search_text=%s WHERE id=%s AND status<>'deleted'",
+                (data.decode("utf-8", errors="replace")[:120000], row["id"]),
+            )
         saved = await asyncio.to_thread(get_object, row["object_key"])
         if hashlib.sha256(saved).hexdigest() != row["sha256"]:
             raise ValueError("Berkas hasil gagal diverifikasi. Task belum selesai.")

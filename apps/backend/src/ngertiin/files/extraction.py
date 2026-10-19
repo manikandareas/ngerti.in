@@ -177,6 +177,13 @@ async def run(extraction_id: UUID):
                     item["lease_token"],
                 ),
             )
+            await conn.execute(
+                "UPDATE file_revisions SET search_text=%s WHERE id=%s AND status='ready'",
+                (
+                    "\n".join(p.get("text", "") for p in parsed.get("pages", []))[:120000],
+                    item["revision_id"],
+                ),
+            )
     except (Exception, asyncio.CancelledError) as error:
         if item and not item.get("blocked"):
             unknown = isinstance(error, (asyncio.CancelledError, mistral.OcrFailure)) and (

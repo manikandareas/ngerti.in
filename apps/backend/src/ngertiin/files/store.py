@@ -135,7 +135,15 @@ async def upload(owner: UUID, key: UUID, name: str, data: bytes, file_id: UUID |
     async with transaction() as conn:
         await lock_account(conn, owner)
         await revision(conn, owner, row["id"], ready=False)
-        await conn.execute("UPDATE file_revisions SET status='ready' WHERE id=%s", (row["id"],))
+        await conn.execute(
+            "UPDATE file_revisions SET status='ready',search_text=%s WHERE id=%s",
+            (
+                data.decode("utf-8", errors="replace")[:120000]
+                if content_type.startswith("text/") or content_type == "application/json"
+                else "",
+                row["id"],
+            ),
+        )
         return {**await detail(conn, owner, row["file_id"]), "uploaded_revision_id": row["id"]}
 
 

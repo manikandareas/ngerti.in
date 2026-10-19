@@ -95,6 +95,21 @@ class Projection:
                 }
             )
 
+            if (
+                message.name == "search_resources"
+                and isinstance(result, dict)
+                and "items" in result
+            ):
+                self.upsert(
+                    {
+                        "id": message.tool_call_id + ":resources",
+                        "type": "resources",
+                        "refs": [item["ref"] for item in result["items"]],
+                        "query": result.get("query", ""),
+                        "has_more": result.get("next_offset") is not None,
+                    }
+                )
+
     def chunk(self, chunk: AIMessageChunk, *, source: str | None = None):
         key = self._response_key(chunk, source)
         combined = self.chunks[key] + chunk if key in self.chunks else chunk

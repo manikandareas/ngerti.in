@@ -55,7 +55,8 @@ async def cleanup():
             if not current:
                 continue
             await conn.execute(
-                "UPDATE file_revisions SET status='deleted' WHERE id=%s", (row["id"],)
+                "UPDATE file_revisions SET status='deleted',search_text='' WHERE id=%s",
+                (row["id"],),
             )
             await conn.execute(
                 "UPDATE product_files f SET deleted_at=COALESCE(deleted_at,now()) WHERE id=%s "

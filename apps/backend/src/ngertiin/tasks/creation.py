@@ -136,8 +136,8 @@ async def create(
                 conn,
                 "SELECT t.goal_id,t.goal_revision FROM product_results r "
                 "JOIN background_tasks t ON t.id=r.active_task_id "
-                "WHERE r.id=%s AND r.owner_id=%s AND r.thread_id=%s AND r.deleted_at IS NULL",
-                (result_id, owner, thread_id),
+                "WHERE r.id=%s AND r.owner_id=%s AND r.deleted_at IS NULL",
+                (result_id, owner),
             )
             if parent and parent["goal_id"]:
                 inherited = GoalRef(id=parent["goal_id"], revision=parent["goal_revision"])

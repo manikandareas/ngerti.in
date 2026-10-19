@@ -190,6 +190,13 @@ async def submit(owner: UUID, thread: UUID, request_key: UUID, text: str):
                 409, "Selesaikan respons atau keputusan sebelumnya terlebih dahulu."
             )
         await require_capacity(conn, owner)
+        from ngertiin.library.selection import current as selected_resource
+
+        selected = await selected_resource(conn, owner, thread)
+        if selected and selected.get("unavailable"):
+            raise HTTPException(
+                409, "Pilihan resource sudah berubah. Pilih ulang atau lepaskan pilihan."
+            )
         run, user, assistant = uuid4(), uuid4(), uuid4()
         allocation = await quota.admit(conn, owner, run, text)
         await conn.execute(
@@ -198,6 +205,11 @@ async def submit(owner: UUID, thread: UUID, request_key: UUID, text: str):
             "VALUES (%s,%s,%s,%s,%s,%s,%s)",
             (run, thread, owner, request_key, text, allocation.id, allocation.token),
         )
+        if selected:
+            await conn.execute(
+                "UPDATE chat_runs SET resource_context=%s,resource_refs=%s WHERE id=%s",
+                (json_value(selected["ref"]), json_value([selected["ref"]]), run),
+            )
         from ngertiin.persona.store import current as current_persona
 
         profile = await current_persona(conn, owner)
@@ -298,6 +310,21 @@ async def publish(
         ):
             await revoke_locked(conn, run["owner_id"])
             return
+        from ngertiin.library.guard import valid as resources_valid
+
+        tracked = await one(conn, "SELECT resource_refs FROM chat_runs WHERE id=%s", (run["id"],))
+        if not await resources_valid(conn, run["owner_id"], tracked["resource_refs"]):
+            parts = [
+                {
+                    "id": "resource-unavailable",
+                    "type": "text",
+                    "text": (
+                        "Sumber berubah atau tidak tersedia. "
+                        "Pilih kembali resource sebelum melanjutkan."
+                    ),
+                }
+            ]
+            status, error = "failed", "Sumber berubah. Cari atau pilih ulang resource."
         await quota.settle(conn, run, parts, status)
         await conn.execute(
             "UPDATE chat_messages SET parts=%s,status=%s WHERE id=%s",

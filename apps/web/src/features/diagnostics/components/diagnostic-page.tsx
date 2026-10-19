@@ -6,6 +6,7 @@ import { useState } from "react";
 import { AppShell } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { useSystemStatus } from "@/features/diagnostics/hooks/use-system-status";
+import { ProactivityInspector } from "@/features/proactivity/components/proactivity-inspector";
 import { AccountDiagnostics } from "./account-diagnostics";
 import { SystemStatus } from "./system-status";
 
@@ -63,7 +64,13 @@ function Diagnostics() {
 function DiagnosticAccount() {
   const { isLoaded, isSignedIn } = useAuth();
   if (!isLoaded) return <p>Memuat sesi…</p>;
-  if (isSignedIn) return <AccountDiagnostics />;
+  if (isSignedIn)
+    return (
+      <>
+        <AccountDiagnostics />
+        <ProactivityInspector />
+      </>
+    );
   return (
     <div className="my-6 flex flex-col items-start justify-between gap-4 rounded-xl bg-secondary px-5 py-4 text-sm min-[701px]:flex-row min-[701px]:items-center">
       <p>Masuk untuk memeriksa akun, menjalankan pekerjaan, dan mencoba storage.</p>

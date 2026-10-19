@@ -25,7 +25,11 @@ Indeks bukti: [08 · Bukti Riset & REA](../research/muse-ai-v1/README.md).
 
 ## Status kerja terbaru
 
-Readback status 2026-10-19T11:35:00Z: [NG-040 · Usage komputasi dan kontrak paket V1](tasks/40-usage-komputasi-dan-kontrak-paket-v1.md) berstatus **Done**. Ledger/allowance, estimasi, charge/refund serta Usage diterima development; 48 kontrak dan walkthrough model nyata/desktop/mobile lulus. [Penerimaan NG-040](../engineering/usage-40-acceptance.md) mencatat kontrak paket, bukti biaya dan batas verifikasi. NG-021 menjadi urutan berikutnya; status tiket lain dipertahankan.
+Readback status 2026-10-19T13:56:22.261Z: [NG-023 · Recovery end-to-end dan konsistensi state](tasks/23-recovery-end-to-end-dan-konsistensi-state.md) berstatus **Done**. [Penerimaan recovery](../engineering/recovery-23-acceptance.md) mencatat 41 kontrak, dua SIGKILL nyata, restore PostgreSQL/MinIO terisolasi, workflow compatibility, lookup Daytona read-only dan walkthrough desktop/mobile. Migrasi 0016/0017 tanpa reset; worker dimuat ulang. NG-041 menjadi urutan berikutnya; status tiket lain dipertahankan.
+
+Readback status 2026-10-19T13:28:12.210Z: [NG-022 · Paket pengguna usage expiry dan downgrade](tasks/22-paket-pengguna-usage-expiry-dan-downgrade.md) berstatus **Done**. Lifecycle renewal, expiry, downgrade dan refund diterima development. 49 kontrak lifecycle, regresi terkait, refund provider test nyata dan browser desktop/mobile diverifikasi. Bukti pada docs/engineering/billing-22-acceptance.md. NG-023 menjadi pekerjaan berikutnya. Status tiket lain dipertahankan.
+
+Readback status 2026-10-19T13:01:04.050Z: [NG-021 · Checkout dan aktivasi pembayaran V1](tasks/21-checkout-plus-dan-aktivasi-pembayaran.md) berstatus **Done**. Scope development yang diterima memakai subscription Lemon Squeezy saja, checkout, webhook, aktivasi, pembatalan dan recovery. Duitku dinonaktifkan sementara sesuai keputusan pengguna. Status tiket lain dipertahankan.
 
 
 

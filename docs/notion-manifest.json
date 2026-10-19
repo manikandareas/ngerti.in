@@ -16,7 +16,7 @@
       },
       "notion_content_sha256": "8683032b40bb75fb3a66096aaca609cabbcce80266d1cb8aa515f3c2ac78181e",
       "local_content_sha256": "801f9d06d6e4c7567923e16080a6ca96988fb7ea31076858396132428073981b",
-      "local_file_sha256": "7025e21c97a7e1307778f4f60b7d0fd94fe962553df436c2b0c3559842629835",
+      "local_file_sha256": "b96c54a52ecdbf2aee5c67391077d7606b32a151c6b72af99727e6df210452b9",
       "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
@@ -110,7 +110,7 @@
       "url": "https://app.notion.com/p/3f8abdd618738129b1d8faf62a637a7b",
       "file": "backlog/tasks/22-paket-pengguna-usage-expiry-dan-downgrade.md",
       "kind": "task",
-      "page_last_edited_at": "2026-10-18T05:51:37.492Z",
+      "page_last_edited_at": "2026-10-19T13:27:55.240Z",
       "properties": {
         "Area": "Billing",
         "Depends on": [
@@ -119,16 +119,16 @@
         ],
         "Lingkup": "Aktif V1",
         "Prioritas": "P0",
-        "Status": "Backlog",
+        "Status": "Done",
         "Ticket": 22,
         "Tugas": "NG-022 · Paket pengguna usage expiry dan downgrade",
         "Urutan": 22,
         "url": "https://app.notion.com/p/3f8abdd618738129b1d8faf62a637a7b"
       },
-      "notion_content_sha256": "fbfbcd02bc469a17f56c7850d662832e32d09e67934444a47237398a3f88afb1",
-      "local_content_sha256": "852e44540cdcea1f56aa361eb8f3625ef747fe78147fe9bc646f3b46a828c5b9",
-      "local_file_sha256": "8e96a121c64916e113a5bd3baf355342f0d1eaef635afdcd9a6b32f0a104aa97",
-      "readback_at": "2026-10-18T06:04:56.780944+00:00"
+      "notion_content_sha256": "5f59990ec5d12769b353f1205754a4cbcaf074cc44b811a19b0ad98337c8a3b6",
+      "local_content_sha256": "8b4a7764e094e21bcceabe110540d7ea6a8802fb4997d5fc35bfe61f879ea6c0",
+      "local_file_sha256": "ac99dcf43d2a3d591d30d997d7b364b7ec14cde7b21ab86385c6c714f7ad997a",
+      "readback_at": "2026-10-19T13:28:12.210Z"
     },
     {
       "id": "3f8abdd6-1873-8137-a8c9-c719f5b64bc4",
@@ -517,7 +517,7 @@
       "url": "https://app.notion.com/p/3f8abdd6187381a78cd0f770a7db65d2",
       "file": "backlog/tasks/23-recovery-end-to-end-dan-konsistensi-state.md",
       "kind": "task",
-      "page_last_edited_at": "2026-10-18T05:51:42.371Z",
+      "page_last_edited_at": "2026-10-19T13:56:22.261Z",
       "properties": {
         "Area": "Release",
         "Depends on": [
@@ -529,16 +529,16 @@
         ],
         "Lingkup": "Aktif V1",
         "Prioritas": "P0",
-        "Status": "Backlog",
+        "Status": "Done",
         "Ticket": 23,
         "Tugas": "NG-023 · Recovery end-to-end dan konsistensi state",
         "Urutan": 23,
         "url": "https://app.notion.com/p/3f8abdd6187381a78cd0f770a7db65d2"
       },
-      "notion_content_sha256": "95f5afd45921b79d36ccdd55d88070cce52b7a1b0a2a861484562ceee78165cc",
-      "local_content_sha256": "32e6b29601b4cc476e3ddabe9ce89f467cc1863ac6b31bd52cc1ca2063490434",
-      "local_file_sha256": "d4518b070a6e565d735041754549d71b71b466ec0ee6fe72d7fb767dbd27b199",
-      "readback_at": "2026-10-18T06:04:56.780944+00:00"
+      "notion_content_sha256": "a37a0a30d9fdb3dff52e361d44ba0cb619cff0fe0c2e9f8ab6004a5d5878c619",
+      "local_content_sha256": "d2298269c7cf30bcca226d53962c613c15213f34481a9321c2dbc4be424e76a2",
+      "local_file_sha256": "9d2fbab66eb3c64900b25f06db6037b47f5f40256f23ce571724768ab77c7e1e",
+      "readback_at": "2026-10-19T13:56:22.261Z"
     },
     {
       "id": "3f8abdd6-1873-81a8-8a5c-d665f17d979f",
@@ -651,7 +651,7 @@
       "url": "https://app.notion.com/p/3f8abdd6187381c18df8efee586427c7",
       "file": "backlog/tasks/21-checkout-plus-dan-aktivasi-pembayaran.md",
       "kind": "task",
-      "page_last_edited_at": "2026-10-18T05:51:35.638Z",
+      "page_last_edited_at": "2026-10-19T13:00:26.894Z",
       "properties": {
         "Area": "Billing",
         "Depends on": [
@@ -659,16 +659,16 @@
         ],
         "Lingkup": "Aktif V1",
         "Prioritas": "P0",
-        "Status": "Backlog",
+        "Status": "Done",
         "Ticket": 21,
         "Tugas": "NG-021 · Checkout dan aktivasi pembayaran V1",
         "Urutan": 21,
         "url": "https://app.notion.com/p/3f8abdd6187381c18df8efee586427c7"
       },
-      "notion_content_sha256": "17faeeaaac117bf89f173cd24afc0a7614497921f8fbec726a648a46894b5a81",
-      "local_content_sha256": "512b48aa69e0a5b10b9dd9feacde7dfc89975af15ceebd657ff36d914771f2af",
-      "local_file_sha256": "896e3f84763d69fc47eac686c96c31e27bfecc3f8258c541b49639fdd73d805c",
-      "readback_at": "2026-10-18T06:04:56.780944+00:00"
+      "notion_content_sha256": "7323669963f6d56e7a45e5ec29c4de2254356e9365bfbfdf79fe15eb3257eea5",
+      "local_content_sha256": "bd47f10f696ae40929a9858a5fbca53c3aeebc8332f40883fe8d0a1e057bb786",
+      "local_file_sha256": "b1853488f7cf271674ad6834ac8162329f724b7cf41d7035f07086c9b974fe8e",
+      "readback_at": "2026-10-19T13:01:04.050Z"
     },
     {
       "id": "3f8abdd6-1873-81ea-a5fc-cda9bf6f8fb0",
@@ -854,11 +854,11 @@
       "properties": {
         "title": "05 · Usage, Paket & Pembayaran"
       },
-      "notion_content_sha256": "a6d5d19e6506bde878238d94fd35485f7ffd9071a0d814640fc0efcd013bab64",
-      "local_content_sha256": "e4421806b41f8213f6130877977a2c32e905a12b74b5107d8f5be051c252a524",
-      "local_file_sha256": "b2de9bd229abef64d755e864ab24e4363f200e7b5992321b660d3ff75f7e7429",
-      "readback_at": "2026-10-19T11:35:00Z",
-      "page_last_edited_at": "2026-10-19T11:31:43.681Z"
+      "notion_content_sha256": "1ced66edb784c9c0471010d874a08713641f50a0cef6d7a019ff4dbb276ffc75",
+      "local_content_sha256": "b5574e7cf77e1bbc825248bee5133b134a1902b4aeb59a71f7273207264cd529",
+      "local_file_sha256": "b193d4f86207a0ee2226970e46042877b7246fe355b29748a31037500de6108d",
+      "readback_at": "2026-10-19T13:28:12.210Z",
+      "page_last_edited_at": "2026-10-19T13:27:54.406Z"
     },
     {
       "id": "3fdabdd6-1873-81d3-9f94-f7161d4ef570",
@@ -886,7 +886,7 @@
       },
       "notion_content_sha256": "ff427a85b252da3841a5489b0f59aaa7c56a3e481cccccceb80e4755158e4018",
       "local_content_sha256": "6f8f141d26c06db4c4c1e0a38dc57315e043b485143d5fe24d3446116daec5b9",
-      "local_file_sha256": "1557dc5afdf2bff3bc84495b689049f2b84ac6b4a676f8216868757011593781",
+      "local_file_sha256": "8dbe45749e1be6561c70a71bfbe5142386633bd8dea8087ad7b0f0e271e351b8",
       "readback_at": "2026-10-18T06:04:56.780944+00:00",
       "page_last_edited_at": "2026-10-18T05:49:58.871Z"
     },
@@ -1640,8 +1640,8 @@
           "3f8abdd6-1873-81bf-9174-f9126e48a4f3",
           "3f8abdd6-1873-81fd-a17d-d1af24cec8fb"
         ],
-        "local_file_sha256": "1fc106d3d3843f019f064df535ad3460b0807dd6bcc67bd5543ae67ec607ed37",
-        "readback_at": "2026-10-19T11:35:00Z",
+        "local_file_sha256": "557fcbfec456a958aa5f48bf1f25477017f0086a69ac0aaaa8dd2a9b8245b6ca",
+        "readback_at": "2026-10-19T13:56:22.261Z",
         "queried_row_count": 41
       },
       {
@@ -1723,8 +1723,8 @@
           "3fdabdd6-1873-81f8-ade2-c7db2c75396e",
           "3f8abdd6-1873-81ac-90b6-df75b7e1a157"
         ],
-        "local_file_sha256": "6c3be5ecf8d3a7d99f05fdee18a80e7c0fd758ea46411d04c9ed5b1513f33712",
-        "readback_at": "2026-10-19T11:35:00Z",
+        "local_file_sha256": "b49e20ab08b502ada608e018e8451144e511792f9a3874b99d5b4e546ffdc901",
+        "readback_at": "2026-10-19T13:56:22.261Z",
         "queried_row_count": 25
       },
       {
@@ -1780,8 +1780,8 @@
           "type": "table"
         },
         "page_ids": [],
-        "local_file_sha256": "9482222089f48e831f6fe0654a84327d3917e17f7d7487c5570b4195b7c03a49",
-        "readback_at": "2026-10-19T11:35:00Z",
+        "local_file_sha256": "11bcea6f1125bd7fe232ff1e858485f230ab449ed4b21fe7c69b0ff789e2288e",
+        "readback_at": "2026-10-19T13:56:22.261Z",
         "queried_row_count": 0
       },
       {
@@ -1854,8 +1854,8 @@
           "3f8abdd6-1873-81bf-9174-f9126e48a4f3",
           "3f8abdd6-1873-81fd-a17d-d1af24cec8fb"
         ],
-        "local_file_sha256": "5fe1c4004c6dbafc3b1eb48657daac9f39e5f7b6c875397b81c766987217ad52",
-        "readback_at": "2026-10-19T11:35:00Z",
+        "local_file_sha256": "6938100d43bd83ce881738a74a085badc3da464b8e6ff77bce07c1e9ab938b49",
+        "readback_at": "2026-10-19T13:56:22.261Z",
         "queried_row_count": 16
       }
     ],
@@ -2553,15 +2553,104 @@
       "source": "Authorized NG-040 implementation; exact readback and all four views verified",
       "properties": {},
       "notion_content_sha256": "d637b7558a1a3b9d9e0998f9a01109be5352bb071fd452ef04922534eec7b911"
+    },
+    {
+      "at": "2026-10-19T11:56:52.440Z",
+      "page_id": "3f8abdd6-1873-81c1-8df8-efee586427c7",
+      "source": "Authorized NG-021 implementation; exact readback and all four views verified",
+      "properties": {
+        "Status": "In Progress"
+      },
+      "notion_content_sha256": "17faeeaaac117bf89f173cd24afc0a7614497921f8fbec726a648a46894b5a81"
+    },
+    {
+      "at": "2026-10-19T12:28:44.337Z",
+      "page_id": "3f8abdd6-1873-81c1-8df8-efee586427c7",
+      "source": "Authorized NG-021 implementation; exact readback and all four views verified",
+      "properties": {
+        "Status": "In Progress"
+      },
+      "notion_content_sha256": "1adc8485b59ef38bb5a534ea310bab643c5f5c21fa9ebd908fda7cec5bca3ea0"
+    },
+    {
+      "at": "2026-10-19T12:28:44.337Z",
+      "page_id": "3fdabdd6-1873-819c-a2b5-cc4e521b3587",
+      "source": "Authorized NG-021 implementation; exact readback and all four views verified",
+      "properties": {},
+      "notion_content_sha256": "b7ca4c02c84177c56ddf22a25389960e0cb0c43a200e871f94a9408207f36aca"
+    },
+    {
+      "at": "2026-10-19T12:51:05.017Z",
+      "page_id": "3f8abdd6-1873-81c1-8df8-efee586427c7",
+      "source": "Authorized NG-021 implementation; exact readback and all four views verified",
+      "properties": {
+        "Status": "In Progress"
+      },
+      "notion_content_sha256": "5f4018c95b05fe1629115ee04c476e1c52b075fa91e9af96e99eb71013b90a02"
+    },
+    {
+      "at": "2026-10-19T12:51:05.017Z",
+      "page_id": "3fdabdd6-1873-819c-a2b5-cc4e521b3587",
+      "source": "Authorized NG-021 implementation; exact readback and all four views verified",
+      "properties": {},
+      "notion_content_sha256": "b8f7862a321511cd36dcffc3cc274a25b4ff6179374c0b6e28d2a15942fbbafb"
+    },
+    {
+      "at": "2026-10-19T13:01:04.050Z",
+      "page_id": "3f8abdd6-1873-81c1-8df8-efee586427c7",
+      "source": "Authorized NG-021 implementation; exact readback and all four views verified",
+      "properties": {
+        "Status": "Done"
+      },
+      "notion_content_sha256": "7323669963f6d56e7a45e5ec29c4de2254356e9365bfbfdf79fe15eb3257eea5"
+    },
+    {
+      "at": "2026-10-19T13:01:04.050Z",
+      "page_id": "3fdabdd6-1873-819c-a2b5-cc4e521b3587",
+      "source": "Authorized NG-021 implementation; exact readback and all four views verified",
+      "properties": {},
+      "notion_content_sha256": "0b9cd647b0a39915c34a2d606d6a5268c924bb8b4ea786e0a57d8c491ca5a39d"
+    },
+    {
+      "at": "2026-10-19T13:17:44.696Z",
+      "page_id": "3f8abdd6-1873-8129-b1d8-faf62a637a7b",
+      "source": "Authorized NG-022 implementation; exact readback and all four views verified",
+      "properties": {
+        "Status": "In Progress"
+      },
+      "notion_content_sha256": "fbfbcd02bc469a17f56c7850d662832e32d09e67934444a47237398a3f88afb1"
+    },
+    {
+      "at": "2026-10-19T13:28:12.210Z",
+      "page_id": "3f8abdd6-1873-8129-b1d8-faf62a637a7b",
+      "source": "Authorized NG-022 implementation; exact readback and all four views verified",
+      "properties": {
+        "Status": "Done"
+      },
+      "notion_content_sha256": "5f59990ec5d12769b353f1205754a4cbcaf074cc44b811a19b0ad98337c8a3b6"
+    },
+    {
+      "at": "2026-10-19T13:28:12.210Z",
+      "page_id": "3fdabdd6-1873-819c-a2b5-cc4e521b3587",
+      "source": "Authorized NG-022 implementation; exact readback and all four views verified",
+      "properties": {},
+      "notion_content_sha256": "1ced66edb784c9c0471010d874a08713641f50a0cef6d7a019ff4dbb276ffc75"
+    },
+    {
+      "at": "2026-10-19T13:56:22.261Z",
+      "page_id": "3f8abdd6-1873-81a7-8cd0-f770a7db65d2",
+      "source": "Authorized NG-023 implementation; exact readback and all four views verified",
+      "properties": {
+        "Status": "Done"
+      },
+      "notion_content_sha256": "a37a0a30d9fdb3dff52e361d44ba0cb619cff0fe0c2e9f8ab6004a5d5878c619"
     }
   ],
   "last_partial_sync": {
-    "at": "2026-10-19T11:35:00Z",
-    "scope": "NG-040 Done; exact readback and four views; unrelated statuses preserved",
+    "at": "2026-10-19T13:56:22.261Z",
+    "scope": "NG-023 Done; exact readback and four views; unrelated statuses preserved",
     "page_ids": [
-      "3fdabdd6187381639bd6f377668ee2f3",
-      "3fdabdd61873819ca2b5cc4e521b3587",
-      "3f8abdd618738122878dde3cb0661765"
+      "3f8abdd6187381a78cd0f770a7db65d2"
     ]
   }
 }

@@ -37,6 +37,7 @@ async def recover_stalled_jobs(timestamp: int | None = None) -> None:
         "memory.capture",
         "memory.index",
         "memory.discover",
+        "proactive.evaluate",
     ):
         jobs = await queue_app.job_manager.get_stalled_jobs(task_name=name)
         for job in jobs:
@@ -58,6 +59,9 @@ async def recover_stalled_jobs(timestamp: int | None = None) -> None:
     from ngertiin.memory.jobs import recover as recover_memory
 
     await recover_memory()
+    from ngertiin.proactivity.jobs import recover as recover_proactivity
+
+    await recover_proactivity()
 
 
 __all__ = ["diagnostic_job", "recover_stalled_jobs"]

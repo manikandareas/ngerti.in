@@ -41,6 +41,14 @@ class Settings(BaseSettings):
     memory_account_daily_units: int = Field(default=250000, ge=10000, le=2000000)
     memory_global_daily_units: int = Field(default=2500000, ge=100000, le=20000000)
     memory_job_units: int = Field(default=160000, ge=30000, le=300000)
+    proactive_enabled: bool = True
+    proactive_generation_model: str = "gpt-6-luna"
+    typesafe_api_key: SecretStr = SecretStr("")
+    typesafe_model: str = "jev-1.13.0"
+    proactive_daily_evaluations: int = Field(default=12, ge=1, le=100)
+    proactive_evaluation_units: int = Field(default=100000, ge=60000, le=300000)
+    proactive_account_daily_units: int = Field(default=300000, ge=100000, le=2000000)
+    proactive_global_daily_units: int = Field(default=3000000, ge=100000, le=20000000)
     task_budget_units: int = Field(default=60000, ge=30000, le=120000)
     task_account_daily_units: int = Field(default=240000, ge=60000, le=2000000)
     task_global_daily_units: int = Field(default=2400000, ge=60000, le=20000000)

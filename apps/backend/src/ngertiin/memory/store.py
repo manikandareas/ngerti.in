@@ -204,6 +204,9 @@ async def apply(conn, owner, candidate, source_ref, *, explicit=False):
     await attach_evidence(conn, revision_id, owner, source_ref, candidate.anchor)
     if status == "active":
         await outbox(conn, owner, revision_id, "upsert")
+        from ngertiin.proactivity.store import touch
+
+        await touch(conn, owner)
     return await owned(conn, owner, entry_id)
 
 

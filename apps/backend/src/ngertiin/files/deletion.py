@@ -50,6 +50,9 @@ async def file(owner, file_id):
         await conn.execute(
             "UPDATE product_files SET deleted_at=COALESCE(deleted_at,now()) WHERE id=%s", (file_id,)
         )
+        from ngertiin.proactivity.store import revoke
+
+        await revoke(conn, owner, "source_deleted")
         revisions = await (
             await conn.execute(
                 "UPDATE file_revisions SET status='deleted' WHERE file_id=%s RETURNING id",
@@ -71,6 +74,9 @@ async def result(owner, result_id):
             "UPDATE product_results SET deleted_at=COALESCE(deleted_at,now()) WHERE id=%s",
             (result_id,),
         )
+        from ngertiin.proactivity.store import revoke
+
+        await revoke(conn, owner, "source_deleted")
         versions = await (
             await conn.execute(
                 "SELECT manifest FROM result_revisions WHERE result_id=%s", (result_id,)

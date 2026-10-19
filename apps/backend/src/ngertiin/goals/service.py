@@ -232,6 +232,9 @@ async def decide(owner, proposal_id, approved):
                     proposal_id,
                 ),
             )
+        from ngertiin.proactivity.store import revoke
+
+        await revoke(conn, owner, "goal_changed")
         return await one(
             conn,
             "UPDATE goal_proposals SET status='applied',goal_id=%s WHERE id=%s RETURNING *",

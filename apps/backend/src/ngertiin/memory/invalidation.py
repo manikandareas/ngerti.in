@@ -30,7 +30,10 @@ async def valid(conn, owner, generation, refs):
 async def revoke_locked(conn, owner):
     """Caller holds the account lock; acquire thread/task locks in the established order."""
     from ngertiin.chat import quota
+    from ngertiin.proactivity.store import revoke
     from ngertiin.tasks import store as tasks
+
+    await revoke(conn, owner, "memory_changed")
 
     runs = await (
         await conn.execute(

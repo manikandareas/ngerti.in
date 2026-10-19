@@ -323,6 +323,9 @@ async def publish(
                 from ngertiin.memory.service import enqueue_run
 
                 await enqueue_run(conn, run)
+                from ngertiin.proactivity.store import touch
+
+                await touch(conn, run["owner_id"])
             await append_event(
                 conn,
                 run["thread_id"],

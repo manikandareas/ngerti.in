@@ -5,6 +5,7 @@ import ngertiin.chat.tasks  # noqa: F401
 import ngertiin.computer.jobs  # noqa: F401
 import ngertiin.files.jobs  # noqa: F401
 import ngertiin.memory.jobs  # noqa: F401
+import ngertiin.proactivity.jobs  # noqa: F401
 import ngertiin.sandbox.jobs  # noqa: F401
 import ngertiin.schedules.jobs  # noqa: F401
 import ngertiin.tasks.jobs  # noqa: F401

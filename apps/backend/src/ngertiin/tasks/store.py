@@ -164,8 +164,10 @@ async def view(conn, task: dict, *, detail: bool = False):
 
 async def emit(conn, task: dict):
     from ngertiin.files.results import sync_status
+    from ngertiin.proactivity.store import touch
 
     await sync_status(conn, task)
+    await touch(conn, task["owner_id"])
     await append_event(
         conn, task["thread_id"], {"type": "task.upsert", "task": await view(conn, task)}
     )

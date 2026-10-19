@@ -80,7 +80,10 @@ class Model:
     async def astream(self, messages):
         Model.calls += 1
         Model.seen = messages[1].content
-        specs = json.loads(messages[0].content.split("output_spec=")[1])
+        # Persona and personal context can follow the exact output specification.
+        specs, _ = json.JSONDecoder().raw_decode(
+            messages[0].content.split("output_spec=")[1]
+        )
         contents = {
             "md": "# Ringkasan\nKeputusan: kirim proposal Jumat.",
             "txt": "Ringkasan pekerjaan dari input yang dipilih.",

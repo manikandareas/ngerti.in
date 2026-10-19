@@ -58,6 +58,10 @@ schedule-inspect:
 persona-inspect:
 	uv run --project apps/backend python scripts/inspect_persona.py
 
+.PHONY: memory-inspect
+memory-inspect:
+	uv run --project apps/backend python scripts/inspect_memory.py
+
 reset-dev:
 	uv run --project apps/backend python scripts/reset_dev.py --execute
 

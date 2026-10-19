@@ -51,7 +51,9 @@ export function ComputeUsagePanel() {
             <dd className="mt-1 tabular-nums">{formatCredits(compute.limit)}</dd>
           </div>
           <div>
-            <dt className="text-muted-foreground">Reset berikutnya</dt>
+            <dt className="text-muted-foreground">
+              {query.data.plan === "plus" ? "Akhir periode berbayar" : "Reset berikutnya"}
+            </dt>
             <dd className="mt-1">
               <time dateTime={period.ends_at}>{usageDate.format(new Date(period.ends_at))}</time>
             </dd>
@@ -61,6 +63,9 @@ export function ComputeUsagePanel() {
           Chat, pengolahan file, Python, browser, memory dan evaluasi proaktif menggunakan
           komputasi. Cadangan membatasi pekerjaan sebelum berjalan; sisa dikembalikan setelah
           selesai. Angka mengikuti tarif yang berlaku saat pekerjaan diterima.
+          {query.data.plan === "plus"
+            ? " Allowance Plus berikutnya menunggu pembayaran terverifikasi."
+            : ""}
         </p>
         {compute.remaining === 0 && (
           <p role="status" className="rounded-xl bg-warning p-4 text-sm text-warning-foreground">

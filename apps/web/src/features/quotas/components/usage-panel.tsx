@@ -1,6 +1,7 @@
 import { RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WorkspaceState } from "@/components/workspace-state";
+import { BillingPanel } from "@/features/billing/components/billing-panel";
 import { useQuota } from "@/features/quotas/hooks/use-quota";
 import { ComputeUsagePanel } from "./compute-usage";
 
@@ -78,9 +79,10 @@ export function UsagePanel() {
           </div>
         </dl>
         <p className="mt-6 border-t pt-4 text-sm text-muted-foreground">
-          Tersedia kembali{" "}
+          {plan === "plus" ? "Periode berbayar berakhir " : "Tersedia kembali "}
           <time dateTime={period.ends_at}>{dates.format(new Date(period.ends_at))}</time> (waktu
           perangkatmu).
+          {plan === "plus" ? " Allowance Plus berikutnya menunggu pembayaran terverifikasi." : ""}
         </p>
       </section>
       {chat.remaining === 0 ? (
@@ -95,6 +97,7 @@ export function UsagePanel() {
         memakai allowance komputasi.
       </p>
       <ComputeUsagePanel />
+      <BillingPanel />
     </div>
   );
 }

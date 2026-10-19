@@ -25,6 +25,8 @@ Indeks bukti: [08 · Bukti Riset & REA](../research/muse-ai-v1/README.md).
 
 ## Status kerja terbaru
 
+Readback status 2026-10-19T09:02:27.281Z: [NG-020 · Delivery proaktif per thread dan batas global](tasks/20-delivery-proaktif-per-thread-dan-batas-global.md) berstatus **Done**. Preferensi lewat chat/UI, pesan informatif dan delivery atomik diterima development; 105 kontrak, regresi terkait dan browser desktop/mobile lulus. Delivery offline memakai fixture positif terkontrol; dua evaluasi provider nyata memilih no-op. Rincian dan batas bukti pada [penerimaan NG-020](../engineering/proactivity-20-acceptance.md).
+
 Readback status 2026-10-19T08:21:59Z: [NG-019 · Kandidat proaktif dinamis dan reranking](tasks/19-kandidat-proaktif-dinamis-dan-reranking.md) berstatus **Done**. LLM membentuk kandidat, Jev menilai dan code memilih; 68 kontrak, provider/worker nyata serta desktop/mobile diterima. Rincian dan batas bukti pada [penerimaan NG-019](../engineering/proactivity-19-acceptance.md); delivery otomatis tetap NG-020.
 
 Readback status 2026-10-19T07:47:26.467Z: [NG-019 · Kandidat proaktif dinamis dan reranking](tasks/19-kandidat-proaktif-dinamis-dan-reranking.md) berstatus **In Progress**. Implementasi mengikuti scope yang disetujui: LLM membentuk kandidat, Jev menilai, code memilih; delivery otomatis mengikuti NG-020.

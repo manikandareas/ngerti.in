@@ -93,6 +93,7 @@ def build_agent(run: dict, saver, projection: Projection):
         file_inputs: list[dict] | None = None,
         output_files: list[dict] | None = None,
         use_computation: bool = False,
+        use_browser: bool = False,
     ) -> dict:
         """Titipkan satu pekerjaan teks/file atas permintaan eksplisit pengguna.
 
@@ -101,11 +102,16 @@ def build_agent(run: dict, saver, projection: Projection):
         file_inputs: [{revision_id,start:1,end:null}] dari read_thread_files, tanpa menebak ID.
         output_files: [{filename:'hasil.md',format:'md'}]; format md/txt/csv/json/html statis.
         use_computation=True untuk menghitung/mengolah data dengan Python offline di sandbox.
-        Tidak menyediakan web, jadwal, atau aksi eksternal.
+        use_browser=True untuk pekerjaan situs/browser yang diminta eksplisit; login lewat takeover.
+        Browser pribadi dipakai lintas Task, klik/ketik/tombol memerlukan keputusan pengguna.
+        Jangan gabungkan use_browser dengan use_computation atau lampiran. Jadwal belum tersedia.
         """
         from uuid import uuid5
 
         from ngertiin.tasks.creation import create
+
+        if use_browser and use_computation:
+            raise ValueError("Pilih browser atau Python offline untuk satu Task.")
 
         task = await create(
             run["owner_id"],
@@ -116,7 +122,7 @@ def build_agent(run: dict, saver, projection: Projection):
             source_run=run,
             inputs=file_inputs,
             outputs=output_files,
-            runtime_kind="code" if use_computation else "text",
+            runtime_kind="browser" if use_browser else "code" if use_computation else "text",
         )
         return {
             "task_id": str(task["id"]),
@@ -172,7 +178,10 @@ def build_agent(run: dict, saver, projection: Projection):
             "Untuk mengolah file yang pernah dilampirkan, baca read_thread_files lalu buat satu "
             "Task dengan revision exact dan output_files. Jangan mengklaim isi sudah dibaca hanya "
             "dari metadata. Untuk hitungan/analisis data nyata gunakan use_computation=True. "
-            "Python offline tersedia; jangan menjanjikan web/browser/jadwal."
+            "Untuk permintaan eksplisit membuka/menggunakan situs, gunakan use_browser=True; "
+            "pengguna dapat login melalui takeover dan memakai login lagi lintas Task. "
+            "Jangan mengklaim telah membaca situs sebelum hasil Task tersedia. "
+            "Browser tidak mengubah tujuan/izin Task lain; jadwal belum tersedia."
         ),
         middleware=middleware,
         checkpointer=saver,

@@ -17,6 +17,7 @@ from ngertiin.accounts.auth import current_account
 from ngertiin.api.diagnostics import router as diagnostic_router
 from ngertiin.async_db import close_pool
 from ngertiin.chat.api import router as chat_router
+from ngertiin.computer.api import router as computer_router
 from ngertiin.config import get_settings
 from ngertiin.files.api import router as file_router
 from ngertiin.files.limits import UploadBodyLimitMiddleware
@@ -45,6 +46,7 @@ app.include_router(chat_router)
 app.include_router(quota_router)
 app.include_router(task_router)
 app.include_router(file_router)
+app.include_router(computer_router)
 for quota_error_type in ERROR_TYPES:
     app.add_exception_handler(quota_error_type, quota_error)
 app.add_middleware(UploadBodyLimitMiddleware, max_bytes=settings.file_max_bytes)

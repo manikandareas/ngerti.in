@@ -68,9 +68,11 @@ async def sync_status(conn, task):
 
 async def reserve(conn, task):
     value = outputs(
-        task["draft"], task["output_spec"], allow_staged=task.get("runtime_kind") == "code"
+        task["draft"],
+        task["output_spec"],
+        allow_staged=task.get("runtime_kind") in ("code", "browser"),
     )
-    if task.get("runtime_kind") == "code":
+    if task.get("runtime_kind") in ("code", "browser"):
         from ngertiin.sandbox.outputs import resolve
 
         value = await resolve(conn, task, value)

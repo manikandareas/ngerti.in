@@ -10,6 +10,7 @@ from langgraph.types import Command
 from psycopg.rows import dict_row
 
 from ngertiin.chat.store import one
+from ngertiin.computer.contracts import ComputerPaused
 from ngertiin.config import get_settings
 from ngertiin.sandbox.contracts import RuntimePending
 from ngertiin.tasks import budget, store, workflow
@@ -88,7 +89,7 @@ async def run_task(task_id: str):
     try:
         async with asyncio.timeout(execution["budget_policy"]["timeout_seconds"]):
             await running
-    except store.StaleExecution:
+    except (store.StaleExecution, ComputerPaused):
         pass
     except RuntimePending as error:
         from ngertiin.sandbox.lifecycle import pending

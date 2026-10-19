@@ -33,9 +33,11 @@ async def ensure(execution: dict):
             from ngertiin.files.validation import outputs
 
             value = outputs(
-                task["draft"], task["output_spec"], allow_staged=task.get("runtime_kind") == "code"
+                task["draft"],
+                task["output_spec"],
+                allow_staged=task.get("runtime_kind") in ("code", "browser"),
             )
-            if task.get("runtime_kind") == "code":
+            if task.get("runtime_kind") in ("code", "browser"):
                 from ngertiin.sandbox.outputs import resolve
 
                 await resolve(conn, task, value)

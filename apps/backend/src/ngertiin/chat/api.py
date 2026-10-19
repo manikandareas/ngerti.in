@@ -27,7 +27,7 @@ class MessageInput(ThreadInput):
     text: str = Field(min_length=1, max_length=12000)
     inputs: list[FileInput] = Field(default_factory=list, max_length=5)
     outputs: list[OutputSpec] = Field(default_factory=list, max_length=10)
-    runtime_kind: Literal["text", "code"] = "text"
+    runtime_kind: Literal["text", "code", "browser"] = "text"
 
 
 class DecisionInput(ThreadInput):
@@ -56,7 +56,7 @@ async def send(thread_id: UUID, body: MessageInput, account: AccountDep):
     text = body.text.strip()
     if not text:
         raise HTTPException(400, "Tulis pesanmu terlebih dahulu.")
-    if body.inputs or body.outputs or body.runtime_kind == "code":
+    if body.inputs or body.outputs or body.runtime_kind in ("code", "browser"):
         from ngertiin.tasks.creation import create
 
         task = await create(

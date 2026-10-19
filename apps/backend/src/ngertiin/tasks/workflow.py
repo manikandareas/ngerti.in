@@ -22,6 +22,11 @@ class TaskState(TypedDict, total=False):
 
 
 async def draft(execution: dict):
+    if execution.get("runtime_kind") == "browser":
+        from ngertiin.computer.workflow import draft as browse
+
+        await browse(execution)
+        return
     if execution.get("runtime_kind") == "code":
         from ngertiin.sandbox.compute import draft as compute
 

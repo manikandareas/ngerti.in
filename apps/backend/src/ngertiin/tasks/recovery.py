@@ -28,6 +28,29 @@ async def reconcile_deliveries():
                 continue
             await budget.abandon_calls(conn, task)
             await store.finish_execution(conn, task, "interrupted")
+            if task.get("runtime_kind") == "browser":
+                workspace = await one(
+                    conn,
+                    "SELECT id FROM browser_workspaces "
+                    "WHERE active_task_id=%s AND state<>'deleted'",
+                    (task["id"],),
+                )
+                if workspace:
+                    from ngertiin.computer.jobs import cleanup_task
+
+                    await store.change(
+                        conn,
+                        task,
+                        status="waiting_user",
+                        stage="computer_unknown",
+                        lease_token=None,
+                        error="Worker browser terputus; outcome diperiksa sebelum retry.",
+                    )
+                    await cleanup_task.configure(connection=conn).defer_async(
+                        task_id=str(task["id"]), owner_id=str(task["owner_id"])
+                    )
+                    await store.emit(conn, task)
+                    continue
             action = await one(
                 conn,
                 "SELECT * FROM task_actions WHERE task_id=%s AND revision=%s",

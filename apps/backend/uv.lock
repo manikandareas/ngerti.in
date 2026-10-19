@@ -1289,6 +1289,7 @@ dependencies = [
     { name = "sqlmodel" },
     { name = "structlog" },
     { name = "uvicorn", extra = ["standard"] },
+    { name = "websockets" },
 ]
 
 [package.dev-dependencies]
@@ -1297,7 +1298,6 @@ dev = [
     { name = "httpx" },
     { name = "mypy" },
     { name = "ruff" },
-    { name = "websockets" },
 ]
 
 [package.metadata]
@@ -1323,6 +1323,7 @@ requires-dist = [
     { name = "sqlmodel" },
     { name = "structlog" },
     { name = "uvicorn", extras = ["standard"] },
+    { name = "websockets", specifier = ">=15,<16" },
 ]
 
 [package.metadata.requires-dev]
@@ -1331,7 +1332,6 @@ dev = [
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "mypy" },
     { name = "ruff" },
-    { name = "websockets", specifier = ">=15,<16" },
 ]
 
 [[package]]

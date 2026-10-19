@@ -32,10 +32,13 @@ async def reserve(execution):
             conn,
             "SELECT COALESCE(sum(charged_microusd),0) AS total, "
             "COALESCE(sum(charged_microusd) FILTER(WHERE owner_id=%s),0) AS account, "
-            "count(*) FILTER(WHERE state<>'deleted') AS active, "
-            "count(*) FILTER(WHERE state<>'deleted' AND owner_id=%s) AS owner_active "
-            "FROM sandbox_sessions WHERE budget_day=%s OR state<>'deleted'",
-            (task["owner_id"], task["owner_id"], task["budget_day"]),
+            "count(*) FILTER(WHERE active) AS active, "
+            "count(*) FILTER(WHERE active AND owner_id=%s) AS owner_active FROM ("
+            "SELECT owner_id,charged_microusd,state<>'deleted' AS active FROM sandbox_sessions "
+            "WHERE budget_day=%s OR state<>'deleted' UNION ALL "
+            "SELECT owner_id,charged_microusd,state<>'stopped' FROM computer_sessions "
+            "WHERE budget_day=%s OR state<>'stopped') u",
+            (task["owner_id"], task["owner_id"], task["budget_day"], task["budget_day"]),
         )
         previous = await one(
             conn,
@@ -200,10 +203,10 @@ async def summary(conn, task):
 
 async def owned_output(conn, owner, task_id, output_id):
     task = await tasks.owned(conn, owner, task_id)
+    table = "computer_outputs" if task.get("runtime_kind") == "browser" else "sandbox_outputs"
     row = await one(
         conn,
-        "SELECT * FROM sandbox_outputs WHERE id=%s AND task_id=%s AND owner_id=%s "
-        "AND purged_at IS NULL",
+        f"SELECT * FROM {table} WHERE id=%s AND task_id=%s AND owner_id=%s AND purged_at IS NULL",
         (output_id, task_id, owner),
     )
     if not row:

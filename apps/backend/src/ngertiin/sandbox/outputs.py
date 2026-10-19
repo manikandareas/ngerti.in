@@ -65,10 +65,11 @@ async def persist(execution, session, files, summary):
     async with store.locked(execution["owner_id"], execution["id"]) as (conn, task):
         store.fence(task, execution)
         await validate_live(conn, task)
+        table = "computer_outputs" if task.get("runtime_kind") == "browser" else "sandbox_outputs"
         for file in candidates:
             await capacity(conn, task["owner_id"], file["size"])
             await conn.execute(
-                "INSERT INTO sandbox_outputs(id,session_id,task_id,owner_id,filename,content_type,"
+                f"INSERT INTO {table}(id,session_id,task_id,owner_id,filename,content_type,"
                 "size,sha256,object_key,preview) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
                 (
                     file["id"],

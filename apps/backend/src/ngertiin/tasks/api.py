@@ -28,7 +28,7 @@ class CreateInput(CommandInput):
     outputs: list[OutputSpec] = Field(default_factory=list, max_length=10)
     result_id: UUID | None = None
     expected_result_revision: int | None = Field(default=None, ge=1)
-    runtime_kind: Literal["text", "code"] = "text"
+    runtime_kind: Literal["text", "code", "browser"] = "text"
 
 
 class DecisionInput(CommandInput):
@@ -88,6 +88,10 @@ async def revise(task_id: UUID, body: RevisionInput, account: AccountDep):
 @router.post("/tasks/{task_id}/reconcile")
 async def reconcile(task_id: UUID, account: AccountDep):
     task = await store.detail(account.id, task_id)
+    if task["runtime_kind"] == "browser":
+        from ngertiin.computer.lifecycle import reconcile as reconcile_computer
+
+        return await reconcile_computer(account.id, task_id)
     if task["stage"] == "sandbox_unknown":
         from ngertiin.sandbox.lifecycle import reconcile as reconcile_sandbox
 

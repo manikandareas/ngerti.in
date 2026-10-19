@@ -24,12 +24,20 @@ async def cancel(owner: UUID, task_id: UUID):
             conn,
             task,
             status="cancelled",
-            stage=task["stage"] if task["stage"] in ("unknown", "sandbox_unknown") else "cancelled",
+            stage=task["stage"]
+            if task["stage"] in ("unknown", "sandbox_unknown", "computer_unknown")
+            else "cancelled",
             lease_token=None,
             resume=None,
             error=None,
         )
         await store.emit(conn, task)
+        if task.get("runtime_kind") == "browser":
+            from ngertiin.computer.jobs import cleanup_task as cleanup_computer
+
+            await cleanup_computer.configure(connection=conn).defer_async(
+                task_id=str(task_id), owner_id=str(owner)
+            )
         if task.get("runtime_kind") == "code":
             from ngertiin.sandbox.jobs import cleanup_task
 
@@ -58,7 +66,7 @@ async def retry(owner: UUID, task_id: UUID, request_key: UUID):
             raise HTTPException(
                 409, "Task ini tidak dapat dicoba ulang. Tinjau atau ubah draft terlebih dahulu."
             )
-        if task["attempt"] >= 12:
+        if task["attempt"] >= (40 if task.get("runtime_kind") == "browser" else 12):
             raise HTTPException(409, "Batas percobaan task tercapai.")
         if task["usage_units"] >= task["budget_cap"]:
             raise HTTPException(
@@ -72,6 +80,22 @@ async def retry(owner: UUID, task_id: UUID, request_key: UUID):
                 await require_reconciled(conn, task)
             except RuntimePending as error:
                 raise HTTPException(409, str(error)) from error
+        if task.get("runtime_kind") == "browser":
+            active = await one(
+                conn,
+                "SELECT id FROM browser_workspaces WHERE active_task_id=%s AND state<>'deleted'",
+                (task_id,),
+            )
+            unknown = await one(
+                conn,
+                "SELECT id FROM computer_steps WHERE task_id=%s "
+                "AND state='unknown' AND kind<>'observe' LIMIT 1",
+                (task_id,),
+            )
+            if active or unknown or task["stage"] == "computer_unknown_resolved":
+                raise HTTPException(
+                    409, "Periksa/hentikan sesi sebelumnya; aksi yang belum pasti tidak diulang."
+                )
         await budget.admit(
             conn,
             owner,
@@ -116,9 +140,11 @@ async def revise(owner: UUID, task_id: UUID, revision: int, draft: str, request_
 
             try:
                 value = outputs(
-                    draft, task["output_spec"], allow_staged=task.get("runtime_kind") == "code"
+                    draft,
+                    task["output_spec"],
+                    allow_staged=task.get("runtime_kind") in ("code", "browser"),
                 )
-                if task.get("runtime_kind") == "code":
+                if task.get("runtime_kind") in ("code", "browser"):
                     from ngertiin.sandbox.outputs import resolve
 
                     await resolve(conn, task, value)
@@ -133,10 +159,13 @@ async def revise(owner: UUID, task_id: UUID, revision: int, draft: str, request_
             if previous["fingerprint"] != fingerprint(draft):
                 raise HTTPException(409, "Kunci revisi sudah dipakai untuk isi berbeda.")
             return await store.view(conn, task)
+        if task.get("runtime_kind") == "browser" and task["stage"] not in ("review", "draft_ready"):
+            raise HTTPException(409, "Selesaikan/hentikan sesi browser sebelum mengedit hasil.")
         if (
             task["revision"] != revision
             or task["status"] not in ("waiting_user", "failed", "cancelled")
-            or task["stage"] in ("unknown", "sandbox_unknown")
+            or task["stage"]
+            in ("unknown", "sandbox_unknown", "computer_unknown", "computer_unknown_resolved")
         ):
             raise HTTPException(409, "Task sudah berubah. Muat ulang sebelum mengedit draft.")
         if revision >= 6:

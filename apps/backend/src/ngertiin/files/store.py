@@ -36,8 +36,9 @@ async def capacity(conn, owner, size):
         conn,
         "SELECT COALESCE(sum(size),0) AS size FROM ("
         "SELECT size FROM file_revisions WHERE owner_id=%s AND purged_at IS NULL UNION ALL "
-        "SELECT size FROM sandbox_outputs WHERE owner_id=%s AND purged_at IS NULL) owned_bytes",
-        (owner, owner),
+        "SELECT size FROM sandbox_outputs WHERE owner_id=%s AND purged_at IS NULL UNION ALL "
+        "SELECT size FROM computer_outputs WHERE owner_id=%s AND purged_at IS NULL) owned_bytes",
+        (owner, owner, owner),
     )
     if row["size"] + size > get_settings().file_account_bytes:
         raise HTTPException(429, "Penyimpanan file akun penuh. Hapus file yang tidak diperlukan.")

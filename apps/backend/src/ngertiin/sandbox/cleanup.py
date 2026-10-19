@@ -28,13 +28,23 @@ async def candidates():
     async with store.transaction() as conn:
         sessions = await (
             await conn.execute(
-                "SELECT s.*,r.deleted_at AS result_deleted,t.status AS task_status "
+                "SELECT * FROM (SELECT s.id,s.owner_id,s.task_id,s.created_at,s.usage,"
+                "'sandbox' AS source,"
+                "r.deleted_at AS result_deleted,t.status AS task_status "
                 "FROM sandbox_sessions s JOIN background_tasks t ON t.id=s.task_id "
                 "LEFT JOIN product_results r ON r.id=t.result_id WHERE s.state='deleted' "
-                "ORDER BY COALESCE((s.usage->>'gc_checked_at')::timestamptz,s.created_at) LIMIT 50"
+                "UNION ALL SELECT s.id,s.owner_id,s.task_id,s.created_at,s.usage,'computer',"
+                "r.deleted_at,t.status FROM computer_sessions s "
+                "JOIN background_tasks t ON t.id=s.task_id LEFT JOIN product_results r "
+                "ON r.id=t.result_id WHERE s.state='stopped') candidates "
+                "ORDER BY COALESCE((usage->>'gc_checked_at')::timestamptz,created_at) LIMIT 50"
             )
         ).fetchall()
     for session in sessions:
+        table = "computer_outputs" if session["source"] == "computer" else "sandbox_outputs"
+        session_table = (
+            "computer_sessions" if session["source"] == "computer" else "sandbox_sessions"
+        )
         async with store.locked(session["owner_id"], session["task_id"]) as (conn, task):
             expired = await one(
                 conn,
@@ -46,14 +56,12 @@ async def candidates():
             )
             if remove:
                 await conn.execute(
-                    "UPDATE sandbox_outputs SET purged_at=now() WHERE session_id=%s "
-                    "AND purged_at IS NULL",
+                    f"UPDATE {table} SET purged_at=now() WHERE session_id=%s AND purged_at IS NULL",
                     (session["id"],),
                 )
             rows = await (
                 await conn.execute(
-                    "SELECT object_key FROM sandbox_outputs WHERE session_id=%s "
-                    "AND purged_at IS NULL",
+                    f"SELECT object_key FROM {table} WHERE session_id=%s AND purged_at IS NULL",
                     (session["id"],),
                 )
             ).fetchall()
@@ -61,7 +69,7 @@ async def candidates():
         await asyncio.to_thread(purge, prefix, {row["object_key"] for row in rows})
         async with store.transaction() as conn:
             await conn.execute(
-                "UPDATE sandbox_sessions SET usage=usage || "
+                f"UPDATE {session_table} SET usage=usage || "
                 "jsonb_build_object('gc_checked_at',now()) WHERE id=%s",
                 (session["id"],),
             )

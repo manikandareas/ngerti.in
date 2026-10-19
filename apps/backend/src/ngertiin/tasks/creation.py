@@ -49,8 +49,20 @@ async def create(
     from ngertiin.files.contracts import output_specs
 
     inputs = inputs or []
-    if runtime_kind not in ("text", "code"):
+    if runtime_kind not in ("text", "code", "browser"):
         raise HTTPException(422, "Jenis pekerjaan tidak tersedia.")
+    if runtime_kind == "browser":
+        from ngertiin.computer.policy import get_runtime as computer_runtime
+
+        try:
+            computer_runtime()
+        except ValueError as error:
+            raise HTTPException(503, str(error)) from error
+        if inputs:
+            raise HTTPException(
+                422,
+                "Task browser memakai instruksi dan situs; olah lampiran melalui Task Python/teks.",
+            )
     if runtime_kind == "code":
         from ngertiin.sandbox.policy import get_runtime
 
@@ -63,7 +75,7 @@ async def create(
             outputs
             or (
                 [{"filename": "hasil.md", "format": "md"}]
-                if inputs or runtime_kind == "code"
+                if inputs or runtime_kind in ("code", "browser")
                 else []
             )
         )
@@ -79,7 +91,7 @@ async def create(
         "instruction": instruction,
         "review_required": review_required,
     }
-    if runtime_kind == "code":
+    if runtime_kind in ("code", "browser"):
         identity["runtime_kind"] = runtime_kind
     if inputs or specs or result_id:
         identity.update(
@@ -125,6 +137,32 @@ async def create(
                 "max_input_bytes": 48000,
                 "sandbox": sandbox_policy(),
             }
+        if runtime_kind == "browser":
+            from ngertiin.computer.permissions import requested_urls
+            from ngertiin.computer.policy import snapshot as computer_policy
+
+            requested = instruction
+            if source_run:
+                user_message = await one(
+                    conn,
+                    "SELECT parts FROM chat_messages WHERE run_id=%s AND role='user'",
+                    (source_run["id"],),
+                )
+                requested = "\n".join(
+                    p.get("text", "")
+                    for p in (user_message or {}).get("parts", [])
+                    if p.get("type") == "text"
+                )
+            computer_rules = {**computer_policy(), "allowed_urls": requested_urls(requested)}
+
+            policy = {
+                **policy,
+                "version": "browser-task-work-v1",
+                "timeout_seconds": 180,
+                "max_calls": 24,
+                "max_output_tokens": 4000,
+                "computer": computer_rules,
+            }
         await budget.admit(conn, owner, policy)
         captured = await input_snapshot(conn, thread_id, instruction)
         title = " ".join(instruction.split())
@@ -151,11 +189,11 @@ async def create(
                 json_value(policy),
             ),
         )
-        if runtime_kind == "code":
+        if runtime_kind in ("code", "browser"):
             await conn.execute(
-                "UPDATE background_tasks SET runtime_kind='code' WHERE id=%s", (task_id,)
+                "UPDATE background_tasks SET runtime_kind=%s WHERE id=%s", (runtime_kind, task_id)
             )
-            task["runtime_kind"] = "code"
+            task["runtime_kind"] = runtime_kind
         captured_files = await file_inputs.capture(conn, owner, task_id, inputs)
         if specs:
             rid = await results.bind(conn, task, result_id, expected_result_revision)

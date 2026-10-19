@@ -135,6 +135,10 @@ async def view(conn, task: dict, *, detail: bool = False):
         from ngertiin.sandbox.store import summary
 
         result["sandbox_sessions"] = await summary(conn, task)
+    if task.get("runtime_kind") == "browser":
+        from ngertiin.computer.store import summary as computer_summary
+
+        result["computer"] = await computer_summary(conn, task)
     if detail:
         result["input_snapshot"] = task["input_snapshot"]
         result["executions"] = await (
@@ -188,7 +192,7 @@ async def detail(owner: UUID, task_id: UUID):
 async def enqueue(conn, task: dict):
     from ngertiin.tasks.jobs import task_job
 
-    if task["attempt"] >= 12:
+    if task["attempt"] >= (40 if task.get("runtime_kind") == "browser" else 12):
         raise HTTPException(409, "Batas execution task tercapai. Draft tetap dapat dibuka.")
     job_id = await task_job.configure(connection=conn, lock=f"task:{task['id']}").defer_async(
         task_id=str(task["id"])
@@ -212,7 +216,7 @@ async def claim(task_id: UUID):
     async with locked(row["owner_id"], task_id) as (conn, task):
         if task["status"] != "queued":
             return None
-        if task["attempt"] >= 12:
+        if task["attempt"] >= (40 if task.get("runtime_kind") == "browser" else 12):
             await change(
                 conn,
                 task,

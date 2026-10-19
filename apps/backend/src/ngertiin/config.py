@@ -51,6 +51,9 @@ class Settings(BaseSettings):
     sandbox_resource_microusd_per_hour: int = Field(default=166464, ge=0, le=180000)
     sandbox_account_daily_microusd: int = Field(default=1000000, ge=36000, le=10000000)
     sandbox_global_daily_microusd: int = Field(default=5000000, ge=36000, le=50000000)
+    computer_task_seconds: int = Field(default=1200, ge=120, le=1200)
+    computer_retention_days: int = Field(default=7, ge=1, le=7)
+    computer_storage_microusd_per_hour: int = Field(default=864, ge=1, le=1200)
 
     @model_validator(mode="after")
     def validate_production(self) -> "Settings":

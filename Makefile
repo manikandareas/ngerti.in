@@ -89,3 +89,7 @@ library-inspect:
 
 library-backfill:
 	uv run --project apps/backend python -m ngertiin.library.backfill
+
+.PHONY: usage-inspect
+usage-inspect:
+	uv run --project apps/backend python scripts/inspect_usage.py --output .dev/usage-contracts.json

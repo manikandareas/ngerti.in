@@ -50,6 +50,10 @@ sandbox-inspect:
 computer-inspect:
 	uv run --project apps/backend python scripts/inspect_computer.py
 
+.PHONY: schedule-inspect
+schedule-inspect:
+	uv run --project apps/backend python scripts/inspect_schedules.py
+
 reset-dev:
 	uv run --project apps/backend python scripts/reset_dev.py --execute
 

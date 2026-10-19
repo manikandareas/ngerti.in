@@ -4,7 +4,6 @@ import argparse
 import asyncio
 import json
 import os
-from datetime import UTC, datetime
 from pathlib import Path
 from typing import ClassVar
 from uuid import UUID, uuid4
@@ -44,8 +43,8 @@ async def owner():
     account_id = uuid4()
     async with transaction() as conn:
         await conn.execute(
-            "INSERT INTO accounts(id,clerk_user_id,created_at) VALUES (%s,%s,%s)",
-            (account_id, f"task-probe:{account_id}", datetime.now(UTC)),
+            "INSERT INTO accounts(id,clerk_user_id,created_at) VALUES (%s,%s,now())",
+            (account_id, f"task-probe:{account_id}"),
         )
     threads = await chat.bootstrap(account_id)
     return account_id, threads["threads"][0]["id"]

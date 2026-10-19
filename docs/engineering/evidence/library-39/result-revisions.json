@@ -1,0 +1,32 @@
+[
+  {
+    "revision": 1,
+    "status": "ready",
+    "files": [
+      {
+        "size": 480,
+        "sha256": "6d4297e924f378ce10ab353da54065612aed538667fdcad51c8d85989c426b7f",
+        "file_id": "68045d76-9ffb-5126-a30f-d92e5fddc395",
+        "filename": "laporan-penjualan-ng039.md",
+        "revision_id": "68045d76-9ffb-5126-a30f-d92e5fddc395",
+        "content_type": "text/markdown",
+        "content": "# Laporan Penjualan \u2014 Audit NG-039\n\n## Data\n\nData berikut bersifat **sintetis**:\n\n| Bulan | Penjualan |\n|---|---:|\n| Januari | 100 unit |\n| Februari | 120 unit |\n\n## Perubahan penjualan\n\nPenjualan meningkat dari 100 unit pada Januari menjadi 120 unit pada Februari, atau naik 20 unit.\n\nPerhitungan persentase kenaikan:\n\n\\[\n\\frac{120-100}{100} \\times 100\\% = 20\\%\n\\]\n\n**Kesimpulan:** berdasarkan data sintetis yang diberikan, penjualan Februari naik **20%** dibandingkan Januari."
+      }
+    ]
+  },
+  {
+    "revision": 2,
+    "status": "ready",
+    "files": [
+      {
+        "size": 782,
+        "sha256": "77ef261e1e13e6e3257cd736c12cc4d78c2777954da2a14047282be467bb599a",
+        "file_id": "d5c3b44d-3860-5421-aa8a-3021451d46ac",
+        "filename": "laporan-penjualan-ng039.md",
+        "revision_id": "d5c3b44d-3860-5421-aa8a-3021451d46ac",
+        "content_type": "text/markdown",
+        "content": "# Laporan Penjualan \u2014 Audit NG-039\n\n## Data\n\nData berikut bersifat **sintetis**:\n\n| Bulan | Penjualan |\n|---|---:|\n| Januari | 100 unit |\n| Februari | 120 unit |\n| Maret | 150 unit |\n\n## Perubahan penjualan\n\nPenjualan meningkat dari 100 unit pada Januari menjadi 120 unit pada Februari, atau naik 20 unit.\n\nPerhitungan persentase kenaikan:\n\n\\[\n\\frac{120-100}{100} \\times 100\\% = 20\\%\n\\]\n\n**Kesimpulan:** berdasarkan data sintetis yang diberikan, penjualan Februari naik **20%** dibandingkan Januari.\n\nDari Januari hingga Maret, penjualan meningkat dari 100 unit menjadi 150 unit.\n\nPerhitungan persentase kenaikan:\n\n\\[\n(150-100)/100 \\times 100\\% = 50\\%\n\\]\n\n**Kesimpulan Januari\u2013Maret:** berdasarkan data sintetis yang diberikan, penjualan meningkat **50%** dari Januari ke Maret."
+      }
+    ]
+  }
+]

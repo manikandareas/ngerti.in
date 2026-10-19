@@ -1,0 +1,266 @@
+{
+  "passed": 65,
+  "scenarios": [
+    {
+      "scenario": "controlled_task_published",
+      "passed": true
+    },
+    {
+      "scenario": "all_six_resource_kinds",
+      "passed": true
+    },
+    {
+      "scenario": "cross_account_no_title_or_count",
+      "passed": true
+    },
+    {
+      "scenario": "cross_account_no_content",
+      "passed": true
+    },
+    {
+      "scenario": "filename_punctuation_is_searchable",
+      "passed": true
+    },
+    {
+      "scenario": "snippet_is_plain_text",
+      "passed": true
+    },
+    {
+      "scenario": "existing_file_text_searchable",
+      "passed": true
+    },
+    {
+      "scenario": "sql_input_is_literal",
+      "passed": true
+    },
+    {
+      "scenario": "filter_thread",
+      "passed": true
+    },
+    {
+      "scenario": "read_other_owner_thread",
+      "passed": true
+    },
+    {
+      "scenario": "filter_task",
+      "passed": true
+    },
+    {
+      "scenario": "read_other_owner_task",
+      "passed": true
+    },
+    {
+      "scenario": "filter_file",
+      "passed": true
+    },
+    {
+      "scenario": "read_other_owner_file",
+      "passed": true
+    },
+    {
+      "scenario": "filter_result",
+      "passed": true
+    },
+    {
+      "scenario": "read_other_owner_result",
+      "passed": true
+    },
+    {
+      "scenario": "filter_goal",
+      "passed": true
+    },
+    {
+      "scenario": "read_other_owner_goal",
+      "passed": true
+    },
+    {
+      "scenario": "filter_schedule",
+      "passed": true
+    },
+    {
+      "scenario": "read_other_owner_schedule",
+      "passed": true
+    },
+    {
+      "scenario": "pagination_has_more",
+      "passed": true
+    },
+    {
+      "scenario": "pagination_no_duplicate",
+      "passed": true
+    },
+    {
+      "scenario": "future_date_filter",
+      "passed": true
+    },
+    {
+      "scenario": "empty_state",
+      "passed": true
+    },
+    {
+      "scenario": "read_file_content_and_identity",
+      "passed": true
+    },
+    {
+      "scenario": "no_storage_paths",
+      "passed": true
+    },
+    {
+      "scenario": "wrong_file_revision_pair",
+      "passed": true
+    },
+    {
+      "scenario": "wrong_revision_number",
+      "passed": true
+    },
+    {
+      "scenario": "search_uses_ready_revision",
+      "passed": true
+    },
+    {
+      "scenario": "historical_revision_still_exact",
+      "passed": true
+    },
+    {
+      "scenario": "unfinished_upload_preserves_searchable_ready_revision",
+      "passed": true
+    },
+    {
+      "scenario": "default_read_uses_latest_ready_revision",
+      "passed": true
+    },
+    {
+      "scenario": "search_finds_messages_outside_recent_context",
+      "passed": true
+    },
+    {
+      "scenario": "forgotten_source_turn_excluded",
+      "passed": true
+    },
+    {
+      "scenario": "read_byte_limit",
+      "passed": true
+    },
+    {
+      "scenario": "select_foreign_thread",
+      "passed": true
+    },
+    {
+      "scenario": "selection_is_durable",
+      "passed": true
+    },
+    {
+      "scenario": "submission_captures_exact_ref",
+      "passed": true
+    },
+    {
+      "scenario": "submission_tracks_ref",
+      "passed": true
+    },
+    {
+      "scenario": "agent_read_tool_content",
+      "passed": true
+    },
+    {
+      "scenario": "agent_search_tool_shared_service",
+      "passed": true
+    },
+    {
+      "scenario": "cards_persist_only_refs",
+      "passed": true
+    },
+    {
+      "scenario": "thread_read_tracks_current_privacy_generation",
+      "passed": true
+    },
+    {
+      "scenario": "privacy_change_revokes_thread_context",
+      "passed": true
+    },
+    {
+      "scenario": "cross_thread_result_revision",
+      "passed": true
+    },
+    {
+      "scenario": "stale_result_update",
+      "passed": true
+    },
+    {
+      "scenario": "old_result_read_exact",
+      "passed": true
+    },
+    {
+      "scenario": "deleted_file_not_searchable",
+      "passed": true
+    },
+    {
+      "scenario": "deleted_file_ref_denied",
+      "passed": true
+    },
+    {
+      "scenario": "tracked_source_revocation",
+      "passed": true
+    },
+    {
+      "scenario": "stale_selection_visible",
+      "passed": true
+    },
+    {
+      "scenario": "stale_selection_blocks_submission",
+      "passed": true
+    },
+    {
+      "scenario": "selection_can_be_cleared",
+      "passed": true
+    },
+    {
+      "scenario": "deleted_schedule_not_searchable",
+      "passed": true
+    },
+    {
+      "scenario": "deleted_schedule_read_denied",
+      "passed": true
+    },
+    {
+      "scenario": "deleted_result_not_searchable",
+      "passed": true
+    },
+    {
+      "scenario": "deleted_result_read_denied",
+      "passed": true
+    },
+    {
+      "scenario": "capabilities_have_no_connectors",
+      "passed": true
+    },
+    {
+      "scenario": "disabled_runtime_not_offered",
+      "passed": true
+    },
+    {
+      "scenario": "unauthenticated_search_denied",
+      "passed": true
+    },
+    {
+      "scenario": "http_owner_is_server_bound",
+      "passed": true
+    },
+    {
+      "scenario": "invalid_kind_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "invalid_page_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "naive_date_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "hits_hide_invalid_refs",
+      "passed": true
+    }
+  ],
+  "temporary_resources_removed": true
+}

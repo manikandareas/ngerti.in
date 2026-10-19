@@ -25,6 +25,8 @@ Indeks bukti: [08 · Bukti Riset & REA](../research/muse-ai-v1/README.md).
 
 ## Status kerja terbaru
 
+Readback status 2026-10-19T05:41:03.122Z: [NG-017](tasks/17-memory-aktif-capture-evidence-dan-recall.md) dan [NG-018](tasks/18-pengaturan-untuk-inspeksi-dan-koreksi-memory.md) berstatus **Done**. [Penerimaan memory](../engineering/memory-17-acceptance.md) dan [cara kerja memory](../engineering/memory-runtime.md) mencatat Mem0 OSS, evidence, recall dan kontrol pengguna. NG-038 adalah urutan berikutnya; status tiket lain dipertahankan.
+
 Readback status 2026-10-19T03:42:13.950127+00:00: [NG-016 · Perubahan soul atas permintaan dan HITL](tasks/16-perubahan-soul-atas-permintaan-dan-hitl.md) berstatus **Done**. [Penerimaan persona](../engineering/persona-16-acceptance.md) mencatat editor, review, history/restore, snapshot dan desktop/mobile. NG-017 adalah urutan berikutnya.
 
 Readback status 2026-10-19T03:21:43.382056+00:00: [NG-016 · Perubahan soul atas permintaan dan HITL](tasks/16-perubahan-soul-atas-permintaan-dan-hitl.md) berstatus **In Progress**. Panel asisten, Identity/Soul, editor dan review persona mulai diimplementasikan sesuai final plan yang disetujui.

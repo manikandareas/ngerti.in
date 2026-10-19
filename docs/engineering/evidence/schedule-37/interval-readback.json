@@ -1,0 +1,129 @@
+{
+  "environment": "local development; real configured model; natural minute dispatcher",
+  "browser_state_at_due": "about:blank before due until successful Task readback",
+  "records": [
+    {
+      "schedule_id": "7f99807c-2a6a-5f4a-b36c-69c59ab088a5",
+      "revision": 1,
+      "state": "active",
+      "spec": {
+        "title": "NG-037 · Audit interval",
+        "inputs": [],
+        "outputs": [],
+        "timezone": "Asia/Makassar",
+        "weekdays": [
+          0
+        ],
+        "frequency": "interval",
+        "local_time": "07:47",
+        "start_date": "2026-10-19",
+        "instruction": "Tulis satu kalimat singkat bahwa audit interval per jam selesai. Jangan gunakan browser, file atau layanan eksternal.",
+        "per_run_cap": 30000,
+        "runtime_kind": "text",
+        "interval_hours": 3,
+        "review_required": false
+      },
+      "next_due": "2026-10-19 05:47:00+00:00",
+      "occurrence_id": "a90ed559-9ef1-5fd0-a206-4189c9aa2d40",
+      "intended_at": "2026-10-19 02:47:00+00:00",
+      "dispatched_at": "2026-10-19 02:47:00.662882+00:00",
+      "task_id": "1fc579b1-0dbe-435c-a4a7-ce2e55f4c1f3",
+      "status": "succeeded",
+      "result": "Audit interval per jam selesai.",
+      "model_calls": 1,
+      "usage_units": 903,
+      "budget_cap": 30000,
+      "delivered_at": "2026-10-19 02:47:04.268528+00:00"
+    }
+  ],
+  "cost_events": [
+    {
+      "provider": "openai-compatible",
+      "model": "gpt-6-luna",
+      "state": "confirmed",
+      "charged_units": 903,
+      "usage": {
+        "response_id": "resp_068629c5e667297e006ad584a6d4cc87d0b3a6c13724717c07",
+        "input_tokens": 893,
+        "total_tokens": 903,
+        "output_tokens": 10,
+        "response_status": "completed",
+        "input_token_details": {
+          "cache_read": 0,
+          "cache_creation": 0
+        },
+        "output_token_details": {
+          "reasoning": 0
+        }
+      }
+    }
+  ],
+  "final_schedule": {
+    "id": "7f99807c-2a6a-5f4a-b36c-69c59ab088a5",
+    "revision": 2,
+    "state": "paused",
+    "next_due": null,
+    "spec": {
+      "title": "NG-037 · Audit interval",
+      "inputs": [],
+      "outputs": [],
+      "timezone": "Asia/Makassar",
+      "weekdays": [
+        0
+      ],
+      "frequency": "interval",
+      "local_time": "07:47",
+      "start_date": "2026-10-19",
+      "instruction": "Tulis satu kalimat singkat bahwa audit interval per jam selesai. Jangan gunakan browser, file atau layanan eksternal.",
+      "per_run_cap": 30000,
+      "runtime_kind": "text",
+      "interval_hours": 3,
+      "review_required": false
+    }
+  },
+  "occurrence_count": 1,
+  "delivery_count": 1,
+  "chat_proposals": [
+    {
+      "id": "cc1d9315-ca7e-4c7e-a286-042f5bc5f7b2",
+      "status": "rejected",
+      "source_run_id": "53a4d479-7615-49a4-a916-0b239b2d42cc",
+      "preview": {
+        "spec": {
+          "title": "Audit interval chat",
+          "inputs": [],
+          "outputs": [],
+          "timezone": "Asia/Makassar",
+          "weekdays": [],
+          "frequency": "interval",
+          "local_time": "09:00",
+          "start_date": "2026-10-20",
+          "instruction": "Untuk audit NG-037, tulis satu kalimat motivasi singkat. Jangan gunakan web, file, atau layanan eksternal.",
+          "per_run_cap": 30000,
+          "runtime_kind": "text",
+          "interval_hours": 2,
+          "review_required": false
+        },
+        "inputs": [],
+        "operation": "create",
+        "next_times": [
+          "2026-10-20T01:00:00+00:00",
+          "2026-10-20T03:00:00+00:00",
+          "2026-10-20T05:00:00+00:00"
+        ],
+        "permissions": {
+          "scope": "Teks dan revision file yang dipilih; tanpa akses web atau aksi eksternal.",
+          "per_run_cap": 30000,
+          "resource_policy": "Batas runtime, akun dan global diperiksa ulang pada setiap eksekusi.",
+          "review_required": false,
+          "file_revision_ids": []
+        },
+        "timing_policy": "Interval dihitung dari tanggal dan pukul mulai, termasuk lintas malam. Jarak jam tetap; perubahan DST dapat menggeser jam lokal. Waktu mulai yang berulang memakai fold pertama.",
+        "execution_policy": "Overlap dilewati; downtime menjalankan satu waktu terbaru. Pause/edit/hapus tidak membatalkan Task yang telah dibuat.",
+        "target_thread_id": "f731a7e6-5d63-5eaa-be40-f2f5a9dabc6f",
+        "target_thread_title": "Untuk audit NG-037, buat jadwal bernama \"Audit chat mingguan\" se"
+      }
+    }
+  ],
+  "limits": "One naturally due interval slot with real model verified; repeated hours, DST, misfire and races use controlled PostgreSQL probes."
+}

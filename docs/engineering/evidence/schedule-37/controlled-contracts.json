@@ -1,0 +1,333 @@
+{
+  "passed": 82,
+  "scenarios": [
+    {
+      "scenario": "iana_wall_clock_to_utc",
+      "passed": true
+    },
+    {
+      "scenario": "weekly_next_selected_day",
+      "passed": true
+    },
+    {
+      "scenario": "dst_missing_time_skipped",
+      "passed": true
+    },
+    {
+      "scenario": "dst_fold_first_instant",
+      "passed": true
+    },
+    {
+      "scenario": "dst_fold_does_not_run_twice",
+      "passed": true
+    },
+    {
+      "scenario": "invalid_one_shot_dst_has_no_preview",
+      "passed": true
+    },
+    {
+      "scenario": "preview_three_times",
+      "passed": true
+    },
+    {
+      "scenario": "misfire_picks_latest",
+      "passed": true
+    },
+    {
+      "scenario": "invalid_timezone",
+      "passed": true
+    },
+    {
+      "scenario": "weekly_requires_days",
+      "passed": true
+    },
+    {
+      "scenario": "invalid_weekday",
+      "passed": true
+    },
+    {
+      "scenario": "reject_owner_in_spec",
+      "passed": true
+    },
+    {
+      "scenario": "interval_before_start",
+      "passed": true
+    },
+    {
+      "scenario": "interval_inclusive_boundary",
+      "passed": true
+    },
+    {
+      "scenario": "interval_exclusive_boundary",
+      "passed": true
+    },
+    {
+      "scenario": "interval_between_boundaries",
+      "passed": true
+    },
+    {
+      "scenario": "interval_preview_three_anchored_times",
+      "passed": true
+    },
+    {
+      "scenario": "interval_crosses_midnight",
+      "passed": true
+    },
+    {
+      "scenario": "interval_can_exceed_one_day",
+      "passed": true
+    },
+    {
+      "scenario": "interval_downtime_arithmetic",
+      "passed": true
+    },
+    {
+      "scenario": "interval_spring_dst_keeps_elapsed_hours",
+      "passed": true
+    },
+    {
+      "scenario": "interval_fall_dst_keeps_elapsed_hours",
+      "passed": true
+    },
+    {
+      "scenario": "interval_missing_dst_anchor_has_no_preview",
+      "passed": true
+    },
+    {
+      "scenario": "legacy_spec_has_no_interval",
+      "passed": true
+    },
+    {
+      "scenario": "calendar_ignores_interval",
+      "passed": true
+    },
+    {
+      "scenario": "interval_rejects_missing_hours",
+      "passed": true
+    },
+    {
+      "scenario": "interval_rejects_zero_hours",
+      "passed": true
+    },
+    {
+      "scenario": "interval_rejects_negative_hours",
+      "passed": true
+    },
+    {
+      "scenario": "interval_rejects_fraction_hours",
+      "passed": true
+    },
+    {
+      "scenario": "interval_rejects_boolean_hours",
+      "passed": true
+    },
+    {
+      "scenario": "interval_rejects_string_hours",
+      "passed": true
+    },
+    {
+      "scenario": "interval_rejects_too_large_hours",
+      "passed": true
+    },
+    {
+      "scenario": "parallel_preview_is_idempotent",
+      "passed": true
+    },
+    {
+      "scenario": "preview_has_no_active_schedule",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_proposal_decision",
+      "passed": true
+    },
+    {
+      "scenario": "parallel_decision_creates_one_schedule",
+      "passed": true
+    },
+    {
+      "scenario": "preview_permission_scope_visible",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_target_thread",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_schedule_update",
+      "passed": true
+    },
+    {
+      "scenario": "foreign_listing_is_empty",
+      "passed": true
+    },
+    {
+      "scenario": "duplicate_dispatch_one_occurrence",
+      "passed": true
+    },
+    {
+      "scenario": "dispatch_creates_task",
+      "passed": true
+    },
+    {
+      "scenario": "single_transaction_enqueues_once",
+      "passed": true
+    },
+    {
+      "scenario": "scheduled_run_does_not_charge_chat",
+      "passed": true
+    },
+    {
+      "scenario": "per_run_cap_preserved",
+      "passed": true
+    },
+    {
+      "scenario": "reviewed_context_frozen",
+      "passed": true
+    },
+    {
+      "scenario": "task_carries_schedule_causal_identity",
+      "passed": true
+    },
+    {
+      "scenario": "offline_runtime_persists_outcome",
+      "passed": true
+    },
+    {
+      "scenario": "duplicate_worker_has_single_delivery",
+      "passed": true
+    },
+    {
+      "scenario": "stale_revision_cannot_apply",
+      "passed": true
+    },
+    {
+      "scenario": "paused_schedule_not_dispatched",
+      "passed": true
+    },
+    {
+      "scenario": "run_now_idempotent",
+      "passed": true
+    },
+    {
+      "scenario": "delete_keeps_admitted_task",
+      "passed": true
+    },
+    {
+      "scenario": "deleted_schedule_preserves_history",
+      "passed": true
+    },
+    {
+      "scenario": "explicit_stop_cancels_task",
+      "passed": true
+    },
+    {
+      "scenario": "downtime_coalesces_one_latest_run",
+      "passed": true
+    },
+    {
+      "scenario": "overlap_skips_previous_queued",
+      "passed": true
+    },
+    {
+      "scenario": "overlap_includes_waiting_user",
+      "passed": true
+    },
+    {
+      "scenario": "budget_zero_has_explicit_outcome",
+      "passed": true
+    },
+    {
+      "scenario": "blocked_budget_no_paid_tick_retry",
+      "passed": true
+    },
+    {
+      "scenario": "rejected_preview_has_no_schedule",
+      "passed": true
+    },
+    {
+      "scenario": "expired_preview_cannot_apply",
+      "passed": true
+    },
+    {
+      "scenario": "crash_before_commit_has_no_partial_occurrence",
+      "passed": true
+    },
+    {
+      "scenario": "restart_after_rollback_admits_once",
+      "passed": true
+    },
+    {
+      "scenario": "stale_chat_cannot_propose",
+      "passed": true
+    },
+    {
+      "scenario": "missing_input_does_not_block_pause",
+      "passed": true
+    },
+    {
+      "scenario": "deleted_input_fails_without_substitution",
+      "passed": true
+    },
+    {
+      "scenario": "missing_input_does_not_block_delete",
+      "passed": true
+    },
+    {
+      "scenario": "http_requires_auth",
+      "passed": true
+    },
+    {
+      "scenario": "http_rejects_client_selected_owner",
+      "passed": true
+    },
+    {
+      "scenario": "http_returns_upcoming_history_proposals",
+      "passed": true
+    },
+    {
+      "scenario": "competing_schedules_share_atomic_account_budget",
+      "passed": true
+    },
+    {
+      "scenario": "legacy_proposal_key_replays_after_upgrade",
+      "passed": true
+    },
+    {
+      "scenario": "interval_preview_explains_anchor",
+      "passed": true
+    },
+    {
+      "scenario": "interval_duplicate_tick_admits_once",
+      "passed": true
+    },
+    {
+      "scenario": "interval_overlap_skipped",
+      "passed": true
+    },
+    {
+      "scenario": "interval_downtime_coalesces_latest",
+      "passed": true
+    },
+    {
+      "scenario": "interval_next_due_stays_on_anchor",
+      "passed": true
+    },
+    {
+      "scenario": "interval_budget_rechecked",
+      "passed": true
+    },
+    {
+      "scenario": "interval_pause_removes_due",
+      "passed": true
+    },
+    {
+      "scenario": "interval_resume_preserves_anchor",
+      "passed": true
+    },
+    {
+      "scenario": "interval_edit_recomputes_from_start",
+      "passed": true
+    }
+  ]
+}

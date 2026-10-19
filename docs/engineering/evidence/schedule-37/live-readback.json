@@ -1,0 +1,200 @@
+{
+  "environment": "local development macOS; PostgreSQL/Procrastinate/LangGraph; real configured model",
+  "model": "gpt-6-luna",
+  "browser_state_at_due": "about:blank; Ngertiin page navigated away before due and reopened after completion",
+  "records": [
+    {
+      "schedule_id": "4ea0412b-846e-581f-9319-1c745df0c97e",
+      "revision": 1,
+      "state": "active",
+      "next_due": null,
+      "spec": {
+        "title": "NG-037 · Audit offline",
+        "inputs": [],
+        "outputs": [],
+        "timezone": "Asia/Makassar",
+        "weekdays": [
+          0
+        ],
+        "frequency": "once",
+        "local_time": "10:14",
+        "start_date": "2026-10-19",
+        "instruction": "Tulis tepat dua kalimat pendek dalam bahasa Indonesia yang menyatakan audit scheduler offline selesai. Jangan memakai browser, file, atau layanan eksternal.",
+        "per_run_cap": 60000,
+        "runtime_kind": "text",
+        "review_required": false
+      },
+      "occurrence_id": "1fc9c246-73f8-5c08-a96a-3f2125495ae1",
+      "intended_at": "2026-10-19 02:14:00+00:00",
+      "dispatched_at": "2026-10-19 02:14:00.712937+00:00",
+      "task_id": "3542c668-6725-4379-b6ab-69fbb4de2ab6",
+      "status": "succeeded",
+      "result": "Audit scheduler offline selesai. Tidak ada layanan eksternal yang digunakan.",
+      "model_calls": 1,
+      "usage_units": 2806,
+      "budget_cap": 60000,
+      "created_at": "2026-10-19 02:14:00.712937+00:00",
+      "updated_at": "2026-10-19 02:14:04.429355+00:00",
+      "message_id": "3ca8fd93-c59c-5c45-b126-4bbc0be9938a",
+      "delivered_at": "2026-10-19 02:14:04.429355+00:00",
+      "cost_events": [
+        {
+          "provider": "openai-compatible",
+          "model": "gpt-6-luna",
+          "state": "confirmed",
+          "reserved_units": 16937,
+          "charged_units": 2806,
+          "usage": {
+            "response_id": "resp_073ef849f0fa3329006ad57ceb352087d0939af74e70acd3cc",
+            "input_tokens": 2789,
+            "total_tokens": 2806,
+            "output_tokens": 17,
+            "response_status": "completed",
+            "input_token_details": {
+              "cache_read": 0,
+              "cache_creation": 2786
+            },
+            "output_token_details": {
+              "reasoning": 0
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "chat_management": [
+    {
+      "id": "cfc93b5e-57e8-5e24-b09d-fd6c36db23f0",
+      "revision": 3,
+      "state": "paused",
+      "next_due": null,
+      "spec": {
+        "title": "Audit chat mingguan",
+        "inputs": [],
+        "outputs": [],
+        "timezone": "Asia/Makassar",
+        "weekdays": [
+          0,
+          2
+        ],
+        "frequency": "weekly",
+        "local_time": "09:30",
+        "start_date": "2026-10-21",
+        "instruction": "Tulis dua kalimat motivasi singkat dalam bahasa Indonesia. Untuk audit NG-037. Jangan gunakan web atau layanan lain.",
+        "per_run_cap": 30000,
+        "runtime_kind": "text",
+        "review_required": false
+      }
+    }
+  ],
+  "chat_revisions": [
+    {
+      "revision": 1,
+      "spec": {
+        "title": "Audit chat mingguan",
+        "inputs": [],
+        "outputs": [],
+        "timezone": "Asia/Makassar",
+        "weekdays": [
+          0,
+          2
+        ],
+        "frequency": "weekly",
+        "local_time": "09:00",
+        "start_date": "2026-10-21",
+        "instruction": "Tulis dua kalimat motivasi singkat dalam bahasa Indonesia. Untuk audit NG-037. Jangan gunakan web atau layanan lain.",
+        "per_run_cap": 30000,
+        "runtime_kind": "text",
+        "review_required": false
+      },
+      "created_at": "2026-10-19 02:16:22.971684+00:00"
+    },
+    {
+      "revision": 2,
+      "spec": {
+        "title": "Audit chat mingguan",
+        "inputs": [],
+        "outputs": [],
+        "timezone": "Asia/Makassar",
+        "weekdays": [
+          0,
+          2
+        ],
+        "frequency": "weekly",
+        "local_time": "09:30",
+        "start_date": "2026-10-21",
+        "instruction": "Tulis dua kalimat motivasi singkat dalam bahasa Indonesia. Untuk audit NG-037. Jangan gunakan web atau layanan lain.",
+        "per_run_cap": 30000,
+        "runtime_kind": "text",
+        "review_required": false
+      },
+      "created_at": "2026-10-19 02:17:21.841835+00:00"
+    },
+    {
+      "revision": 3,
+      "spec": {
+        "title": "Audit chat mingguan",
+        "inputs": [],
+        "outputs": [],
+        "timezone": "Asia/Makassar",
+        "weekdays": [
+          0,
+          2
+        ],
+        "frequency": "weekly",
+        "local_time": "09:30",
+        "start_date": "2026-10-21",
+        "instruction": "Tulis dua kalimat motivasi singkat dalam bahasa Indonesia. Untuk audit NG-037. Jangan gunakan web atau layanan lain.",
+        "per_run_cap": 30000,
+        "runtime_kind": "text",
+        "review_required": false
+      },
+      "created_at": "2026-10-19 02:18:11.668924+00:00"
+    }
+  ],
+  "chat_proposals": [
+    {
+      "id": "54fccf2c-20af-4e1e-adee-30353a09ce73",
+      "operation": "create",
+      "expected_revision": null,
+      "status": "applied",
+      "created_at": "2026-10-19 02:15:48.072735+00:00",
+      "source_run_id": "5bb5b7cb-9d9e-4580-8384-f995c578c9e1"
+    },
+    {
+      "id": "fcfd9dac-f13d-4452-b7b4-38700bfc13a2",
+      "operation": "update",
+      "expected_revision": 1,
+      "status": "applied",
+      "created_at": "2026-10-19 02:16:49.867387+00:00",
+      "source_run_id": "643ac32e-43a0-4b06-a997-92e89cf0008c"
+    },
+    {
+      "id": "9ba9a902-35a1-47f6-a650-23d4a550c3de",
+      "operation": "pause",
+      "expected_revision": 2,
+      "status": "applied",
+      "created_at": "2026-10-19 02:17:38.278187+00:00",
+      "source_run_id": "fe192e46-9691-45e6-aae5-17c4a23e136b"
+    }
+  ],
+  "ui_layout_checks": [
+    {
+      "width": 1280,
+      "height": 900,
+      "document_scroll_width": 1280
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "document_scroll_width": 390
+    },
+    {
+      "width": 320,
+      "height": 640,
+      "document_scroll_width": 320,
+      "date_input_width": 238
+    }
+  ],
+  "audit_future_runs": 0
+}

@@ -1,6 +1,6 @@
 # 06 · Development, Operasi & Acceptance
 
-Sumber: [Notion](https://app.notion.com/p/3fdabdd6187381d39f94f7161d4ef570) · Readback: 2026-10-18T15:44:00.527Z
+Sumber: [Notion](https://app.notion.com/p/3fdabdd6187381d39f94f7161d4ef570) · Readback: 2026-10-18T17:56:53.897Z
 
 <!-- notion-content:start -->
 ## Setup development bersih
@@ -125,4 +125,14 @@ Diterima lokal pada **2026-10-18**. Interface SandboxRuntime dan DaytonaAdapter,
 SDK0.225.0/provider v0.225.1, targeteu, 2vCPU/4GiB/8GiB. Mobile adalah emulasi viewport390x844/320x640; desktop1280x900. Usage token aktual dibedakan dari estimasi USD resource; invoice tidak diverifikasi. Akhir pengujian: nol resource NG-035 tersisa. Fault lost ack/crash boundary memakai adapter terkontrol; SIGKILL produk/production dan browser NG-036 bukan bukti penerimaan ini.
 
 Jalankan make install dan make migrate, lalu restart worker; autoreload API tidak mereload worker. SANDBOX_PROVIDER memilih adapter pertama; rate/price version dan cap internal terdapat pada .env.example. Probe berbayar harus eksplisit melalui `scripts/probe_sandbox_runtime.py --live --owner-file /path/to/private-owner.json`. Jangan menyimpan token, credential atau histori pribadi dalam evidence.
+
+## Penerimaan browser pribadi NG-036
+
+Diterima development pada **2026-10-19** WITA. Migrasi incremental 0005_browser_workspace tanpa reset menambah workspace account, sesi/receipts, candidates dan viewer grants. ComputerRuntime dengan DaytonaComputer, Task form/tool chat, VNC gateway, private takeover, exact action approval, queue/unknown recovery dan Settings reset tersedia. Laporan `docs/engineering/computer-36-acceptance.md`; evidence `docs/engineering/evidence/computer-36/`.
+
+Login demo nyata dipakai lintas Task setelah provider stop/start. Desktop1280x900/mobile emulasi390x844, reconnect human tetap privat, review hasil tanpa browser ulang, satu klik Logout setelah approval, preview/download setelah reset dan nol resource tersisa diverifikasi. Worker SIGKILL pada probe120detik menghasilkan provider STOPPED sebelum worker kembali; sweep merekonsiliasi sesi tanpa replay. 47 kontrak terkontrol dan regresi sandbox45/Task55/File47/quota46, make check/build lulus.
+
+Jalankan make install, make migrate lalu restart worker. Autoreload API tidak mereload worker. DAYTONA_API_KEY backend diperlukan; COMPUTER_TASK_SECONDS maksimal1200, COMPUTER_RETENTION_DAYS maksimal7 dan COMPUTER_STORAGE_MICROUSD_PER_HOUR pada .env.example. Konfigurasi cookie viewer memerlukan app/API same-site dan allowed origin. Maintenance computer.sweep tiap menit menghentikan deadline/stale compute serta menghapus profil lewat retensi; provider idle stop dan supervisor desktop tetap membatasi resource saat worker mati.
+
+SDK0.225.0/provider v0.225.1, targeteu, snapshot daytona-medium. Archive nonaktif; browser public-only tidak membuka akses jaringan/profil pada Python offline. Target fingerprint di-hash dalam Chromium, screenshot transient tidak masuk checkpoint. Jangan menaruh credential/profile/signed URL dalam evidence. Production, situs 2FA khusus, semua situs lain, invoice dan pemulihan menyeluruh tetap di luar walkthrough ini.
 <!-- notion-content:end -->

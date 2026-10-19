@@ -16,7 +16,7 @@
       },
       "notion_content_sha256": "8683032b40bb75fb3a66096aaca609cabbcce80266d1cb8aa515f3c2ac78181e",
       "local_content_sha256": "801f9d06d6e4c7567923e16080a6ca96988fb7ea31076858396132428073981b",
-      "local_file_sha256": "3c9a36bac8e534688ca8487e7a32e6f11f9fc49be01c334e2f4d7210e7eb7a20",
+      "local_file_sha256": "38976980cbe564d1f204dbb84629b59b28e1a3161809a82b9f0d430384492c4c",
       "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
@@ -40,14 +40,14 @@
       "url": "https://app.notion.com/p/3f8abdd6187381fda2dbea043a840c5a",
       "file": "product/02-user-flow.md",
       "kind": "page",
-      "page_last_edited_at": "2026-10-18T15:41:58.570Z",
+      "page_last_edited_at": "2026-10-18T17:56:07.210Z",
       "properties": {
         "title": "02 · UX & User Flow"
       },
-      "notion_content_sha256": "0eb45ad525cdc349a20a24284b13f621624bb35b548db4ccf28a5f2fbfe200a1",
-      "local_content_sha256": "fe58dd60e03179ca3b2e6d8a19a6a51b86ab53f95bb35af3a586fc7805765048",
-      "local_file_sha256": "f36061681d4f7991757e384bb016d0e392fd3588bcac65734e458acc0ae6ed39",
-      "readback_at": "2026-10-18T15:44:00.527Z"
+      "notion_content_sha256": "ff6fe2adfdb24fe417a94198385bc9f125d3efd3b0d18301cb3831d25810507d",
+      "local_content_sha256": "6db1cbb292586a6996d6e6c4f73285a0c0ea08741af35d0915043312e76a40dd",
+      "local_file_sha256": "89426be108cdec9a63611d2ef52e354aec2e2cb31f9748cf858cabfa70769550",
+      "readback_at": "2026-10-18T17:56:53.897Z"
     },
     {
       "id": "3f8abdd6-1873-8165-8b61-f4283ee83428",
@@ -55,14 +55,14 @@
       "url": "https://app.notion.com/p/3f8abdd6187381658b61f4283ee83428",
       "file": "product/03-agent.md",
       "kind": "page",
-      "page_last_edited_at": "2026-10-18T15:41:59.379Z",
+      "page_last_edited_at": "2026-10-18T17:56:36.244Z",
       "properties": {
         "title": "03 · Perilaku Agent"
       },
-      "notion_content_sha256": "77c02c69964aaa255dda7ec9d2210b067459972d542856f69364449b3443c3d2",
-      "local_content_sha256": "c629a121c1ac80de27acbe3d88fb694bb1b7316029ca3fc564be3a7a24bb1855",
-      "local_file_sha256": "4a24e27f83f36e2b9ea24b7f1e1f859f987f7abd2e10a1f9c20ac6d979c00a3b",
-      "readback_at": "2026-10-18T15:44:00.527Z"
+      "notion_content_sha256": "ee36f97df1b930a2b54eed7da9b73c3830b6a7e0b8a361d151a75ab817b1d8fa",
+      "local_content_sha256": "ea99c659780c98d808da2f177c8884431b216b63594fe32c9f16893ee50e8869",
+      "local_file_sha256": "1ea72e6f7a008fa418d1fce3893fccf38d8d5e64d836312cf365bee5857ace47",
+      "readback_at": "2026-10-18T17:56:53.897Z"
     },
     {
       "id": "3f8abdd6-1873-8119-8256-f4ee69db1e78",
@@ -70,14 +70,14 @@
       "url": "https://app.notion.com/p/3f8abdd6187381198256f4ee69db1e78",
       "file": "product/04-arsitektur-dan-delivery.md",
       "kind": "page",
-      "page_last_edited_at": "2026-10-18T15:41:57.783Z",
+      "page_last_edited_at": "2026-10-18T17:56:08.121Z",
       "properties": {
         "title": "04 · Arsitektur, Runtime & Kontrak"
       },
-      "notion_content_sha256": "371ea2ed4ceb13963de5789796381b32dc41eaa7a8df92fb7cc55b44a09e708e",
-      "local_content_sha256": "2b2dca01920f6f9a5783764d5c100d733db1c9e11b363ee57fc65692f3399656",
-      "local_file_sha256": "7fe436edc0418a14eb1735f927379788b3ae357f3b3f8a9ccd3bdbce413b7b77",
-      "readback_at": "2026-10-18T15:44:00.527Z"
+      "notion_content_sha256": "95ab896f6a1c971d86a189da1c845f2cfc238be494d0cf53c6a53efb8cc3fe9d",
+      "local_content_sha256": "77c6c9d6b1844cefc8ba6894011dbfecb270b240b69f8e5dd5536a591561e6b4",
+      "local_file_sha256": "c93848dc8c8a1e21599b18cb68c09acb5f90d566ebeee8dcde4214f335276464",
+      "readback_at": "2026-10-18T17:56:53.897Z"
     },
     {
       "id": "3f8abdd6-1873-8120-90d8-e31cd02f0ce9",
@@ -854,11 +854,11 @@
       "properties": {
         "title": "05 · Usage, Paket & Pembayaran"
       },
-      "notion_content_sha256": "0e471ab535e6ae90b7667a1146c528a2578410883dd3776bc52ec7e6261474ea",
-      "local_content_sha256": "005392e4fdc2115affb929bde24dc3fba637be5f463a4f20fb4d08227c3b17d4",
-      "local_file_sha256": "aa7d1ffff206f8c816023e3a11c93579df436ca36314d83cdbea6fb3e8d9fe62",
-      "readback_at": "2026-10-18T15:44:00.527Z",
-      "page_last_edited_at": "2026-10-18T15:42:00.211Z"
+      "notion_content_sha256": "8b2e0419265d39215f1e99f3341b5da32675ab30cb91154d20ee2751d7102234",
+      "local_content_sha256": "74e20f073f9ddbda94a7b451c0318a840e8fc4f7a58b74c18066722f29d48558",
+      "local_file_sha256": "07d782fa6b8926c8b68610d7c9ba218cd99991dd4c88cf1e555343886da4e0a0",
+      "readback_at": "2026-10-18T17:56:53.897Z",
+      "page_last_edited_at": "2026-10-18T17:56:36.949Z"
     },
     {
       "id": "3fdabdd6-1873-81d3-9f94-f7161d4ef570",
@@ -869,11 +869,11 @@
       "properties": {
         "title": "06 · Development, Operasi & Acceptance"
       },
-      "notion_content_sha256": "8c54a07c9bd89db4457bb28a9fb7870d532769a76176d44545afbfb11fe94085",
-      "local_content_sha256": "1be13ad89a604956fc2a137a67e7e59bb6cf0df4b64cfd5dd7a339c87ecd320f",
-      "local_file_sha256": "a41b6f7f5a45d8d6afb4e3a3f60a4ee7386ad903b9a64f6c2c2189dfb1cb3587",
-      "readback_at": "2026-10-18T15:44:00.527Z",
-      "page_last_edited_at": "2026-10-18T15:42:01.676Z"
+      "notion_content_sha256": "00930c94d7ddf7280f72de101a6b25e9134258336b49d2b291c74bae397bf29e",
+      "local_content_sha256": "3da7220dce57892444ca0896399c45745b00d434988b5866a835a0117b672951",
+      "local_file_sha256": "a991e7450751cb75cc79d8095a17241fa4c260bbb8777e20b73c0befe5c7ae5c",
+      "readback_at": "2026-10-18T17:56:53.897Z",
+      "page_last_edited_at": "2026-10-18T17:56:37.741Z"
     },
     {
       "id": "3fdabdd6-1873-812e-9ed6-c67417884b74",
@@ -886,7 +886,7 @@
       },
       "notion_content_sha256": "ff427a85b252da3841a5489b0f59aaa7c56a3e481cccccceb80e4755158e4018",
       "local_content_sha256": "6f8f141d26c06db4c4c1e0a38dc57315e043b485143d5fe24d3446116daec5b9",
-      "local_file_sha256": "aea3f206ae9c3ab0f7ec70742893845d055ce55411d0f8aa37de340f4b63a4ab",
+      "local_file_sha256": "fc19313cb496cfafd7619aa68e13cab24330ecd67c201c143248d2a90684166b",
       "readback_at": "2026-10-18T06:04:56.780944+00:00",
       "page_last_edited_at": "2026-10-18T05:49:58.871Z"
     },
@@ -1257,17 +1257,17 @@
         ],
         "Lingkup": "Aktif V1",
         "Prioritas": "P0",
-        "Status": "Backlog",
+        "Status": "Done",
         "Ticket": 36,
         "Tugas": "NG-036 · Browser VNC live desktop dan takeover",
         "Urutan": 11,
         "url": "https://app.notion.com/p/3fdabdd618738198b295ca667c34f1b1"
       },
-      "notion_content_sha256": "bac3881ed7f49424a649df2b28845311b88960a128a1aa14a50b2371c6e1e508",
-      "local_content_sha256": "fb777b91bd7e18dec4cfa3f54688c327d04639b854178eacb072f2cb8c9a09e0",
-      "local_file_sha256": "54b36a6cf89e2ff1fc95b6466f74e38f660695da160bb1df754cfcb8566c0d2c",
-      "readback_at": "2026-10-18T06:04:56.780944+00:00",
-      "page_last_edited_at": "2026-10-18T05:51:10.463Z"
+      "notion_content_sha256": "ba9a83baca1f9dbdc5014b85b0279632603deabb4b5a8897afab77ecd283a19a",
+      "local_content_sha256": "424d38a1fcff2def70bd46a41d189f79b86454354f5358bed9be121d00d880f9",
+      "local_file_sha256": "1de83acb109a7204d09449c65d88c8ed9f6db858bc872bed58bbeaab900d8fa1",
+      "readback_at": "2026-10-18T17:59:18.252Z",
+      "page_last_edited_at": "2026-10-18T17:58:49.918Z"
     },
     {
       "id": "3fdabdd6-1873-813a-9603-fb38d0df673f",
@@ -1640,8 +1640,8 @@
           "3f8abdd6-1873-81bf-9174-f9126e48a4f3",
           "3f8abdd6-1873-81fd-a17d-d1af24cec8fb"
         ],
-        "local_file_sha256": "03f7a52e77700278fcdb79244071f39bf45492687e3aafcb72b7900cb12dfebd",
-        "readback_at": "2026-10-18T15:44:00.527Z",
+        "local_file_sha256": "c7efd5a199f3ab7d4b3bced3b93a727bdba719f27f43a40a94c3bbaeac7512fd",
+        "readback_at": "2026-10-18T17:56:53.897Z",
         "queried_row_count": 41
       },
       {
@@ -1723,8 +1723,8 @@
           "3fdabdd6-1873-81f8-ade2-c7db2c75396e",
           "3f8abdd6-1873-81ac-90b6-df75b7e1a157"
         ],
-        "local_file_sha256": "b40997e9440c402c89a4ee813ade25450a3f7c342dd9a7cb0fade27ed21a1c42",
-        "readback_at": "2026-10-18T15:44:00.527Z",
+        "local_file_sha256": "bab1efc28bd5bf19e50924241c3b81ba1ae680fe7121d02972b4536fd6665f55",
+        "readback_at": "2026-10-18T17:56:53.897Z",
         "queried_row_count": 25
       },
       {
@@ -1780,8 +1780,8 @@
           "type": "table"
         },
         "page_ids": [],
-        "local_file_sha256": "932501de71d2f6377e9ccf7a63ae44f879bc3437d7489625772159f233360d3c",
-        "readback_at": "2026-10-18T15:44:00.527Z",
+        "local_file_sha256": "b40942e2cc9c94b5d305717a306d48c93ca1ae8d7c9f3a83c76b5e2f52dbce21",
+        "readback_at": "2026-10-18T17:56:53.897Z",
         "queried_row_count": 0
       },
       {
@@ -1854,8 +1854,8 @@
           "3f8abdd6-1873-81bf-9174-f9126e48a4f3",
           "3f8abdd6-1873-81fd-a17d-d1af24cec8fb"
         ],
-        "local_file_sha256": "a776133b2b729744debf4daf6735973b1faee28731eecaf511147dfd11f6ce3d",
-        "readback_at": "2026-10-18T15:44:00.527Z",
+        "local_file_sha256": "8f54dcba43c4172ba64f23601243076b65346ae442d023e94e83993b9aa0fbd5",
+        "readback_at": "2026-10-18T17:56:53.897Z",
         "queried_row_count": 16
       }
     ],
@@ -2192,15 +2192,90 @@
       "source": "User-authorized NG-035 implementation; exact Notion readback and four views verified",
       "summary": "Accept replaceable Python runtime, Daytona isolation, bounded compute, durable candidates, review, stop and costs",
       "notion_content_sha256": "8c54a07c9bd89db4457bb28a9fb7870d532769a76176d44545afbfb11fe94085"
+    },
+    {
+      "at": "2026-10-18T16:49:12.453334+00:00",
+      "page_id": "3fdabdd6-1873-8198-b295-ca667c34f1b1",
+      "source": "User-approved NG-036 scope; exact Notion content and four live views verified; no status transition",
+      "summary": "Record personal browser workspace, reusable login across Tasks, exclusive control, privacy, lifecycle and acceptance requirements; implementation pending",
+      "notion_content_sha256": "4d5c8ff50b6d347b3e2258244cf498ddd6c765d9abd90eaee6e72b21495071ba"
+    },
+    {
+      "at": "2026-10-18T16:49:12.453334+00:00",
+      "page_id": "3f8abdd6-1873-81fd-a2db-ea043a840c5a",
+      "source": "User-approved NG-036 scope; exact Notion content and four live views verified; no status transition",
+      "summary": "Record personal browser workspace, reusable login across Tasks, exclusive control, privacy, lifecycle and acceptance requirements; implementation pending",
+      "notion_content_sha256": "661ae0106748c131398c6c2e9725a1e2d122692d2d9606955aa00c6fd42b99bf"
+    },
+    {
+      "at": "2026-10-18T16:49:12.453334+00:00",
+      "page_id": "3f8abdd6-1873-8119-8256-f4ee69db1e78",
+      "source": "User-approved NG-036 scope; exact Notion content and four live views verified; no status transition",
+      "summary": "Record personal browser workspace, reusable login across Tasks, exclusive control, privacy, lifecycle and acceptance requirements; implementation pending",
+      "notion_content_sha256": "2fefd6d717f861591103f6addbe7b3bbb66dafee597b6833fedf9db85d827605"
+    },
+    {
+      "at": "2026-10-18T17:56:53.897Z",
+      "page_id": "3fdabdd6-1873-8198-b295-ca667c34f1b1",
+      "source": "User-authorized NG-036 implementation; exact Notion readback and four views verified",
+      "summary": "Accept reusable private browser, VNC takeover, exact action approval, shared caps, stop/reset and persistent results",
+      "notion_content_sha256": "241cc0d994ab32b5819909318087b448c47346a501566e5639b28f61f65fb804",
+      "properties": {
+        "Status": "Done"
+      },
+      "acceptance_file": "engineering/computer-36-acceptance.md",
+      "evidence_file": "engineering/evidence/computer-36/live-readback.json"
+    },
+    {
+      "at": "2026-10-18T17:56:53.897Z",
+      "page_id": "3f8abdd6-1873-81fd-a2db-ea043a840c5a",
+      "source": "User-authorized NG-036 implementation; exact Notion readback and four views verified",
+      "summary": "Accept reusable private browser, VNC takeover, exact action approval, shared caps, stop/reset and persistent results",
+      "notion_content_sha256": "ff6fe2adfdb24fe417a94198385bc9f125d3efd3b0d18301cb3831d25810507d"
+    },
+    {
+      "at": "2026-10-18T17:56:53.897Z",
+      "page_id": "3f8abdd6-1873-8119-8256-f4ee69db1e78",
+      "source": "User-authorized NG-036 implementation; exact Notion readback and four views verified",
+      "summary": "Accept reusable private browser, VNC takeover, exact action approval, shared caps, stop/reset and persistent results",
+      "notion_content_sha256": "95ab896f6a1c971d86a189da1c845f2cfc238be494d0cf53c6a53efb8cc3fe9d"
+    },
+    {
+      "at": "2026-10-18T17:56:53.897Z",
+      "page_id": "3f8abdd6-1873-8165-8b61-f4283ee83428",
+      "source": "User-authorized NG-036 implementation; exact Notion readback and four views verified",
+      "summary": "Accept reusable private browser, VNC takeover, exact action approval, shared caps, stop/reset and persistent results",
+      "notion_content_sha256": "ee36f97df1b930a2b54eed7da9b73c3830b6a7e0b8a361d151a75ab817b1d8fa"
+    },
+    {
+      "at": "2026-10-18T17:56:53.897Z",
+      "page_id": "3fdabdd6-1873-819c-a2b5-cc4e521b3587",
+      "source": "User-authorized NG-036 implementation; exact Notion readback and four views verified",
+      "summary": "Accept reusable private browser, VNC takeover, exact action approval, shared caps, stop/reset and persistent results",
+      "notion_content_sha256": "8b2e0419265d39215f1e99f3341b5da32675ab30cb91154d20ee2751d7102234"
+    },
+    {
+      "at": "2026-10-18T17:56:53.897Z",
+      "page_id": "3fdabdd6-1873-81d3-9f94-f7161d4ef570",
+      "source": "User-authorized NG-036 implementation; exact Notion readback and four views verified",
+      "summary": "Accept reusable private browser, VNC takeover, exact action approval, shared caps, stop/reset and persistent results",
+      "notion_content_sha256": "00930c94d7ddf7280f72de101a6b25e9134258336b49d2b291c74bae397bf29e"
+    },
+    {
+      "at": "2026-10-18T17:59:18.252Z",
+      "page_id": "3fdabdd6-1873-8198-b295-ca667c34f1b1",
+      "source": "Exact final NG-036 readback",
+      "summary": "Clarify public demo page screenshot contains public demo instructions; no private credentials",
+      "notion_content_sha256": "ba9a83baca1f9dbdc5014b85b0279632603deabb4b5a8897afab77ecd283a19a"
     }
   ],
   "last_partial_sync": {
-    "at": "2026-10-18T15:44:00.527Z",
-    "scope": "NG-035 runtime acceptance, UX/agent/runtime/usage/operations notes, four exact views; unrelated ticket properties preserved",
+    "at": "2026-10-18T17:56:53.897Z",
+    "scope": "NG-036 browser acceptance, UX/agent/runtime/usage/operations notes, four exact views; unrelated ticket properties preserved",
     "page_ids": [
-      "3fdabdd6-1873-8194-8c64-cf1f828a90c8",
-      "3f8abdd6-1873-8119-8256-f4ee69db1e78",
+      "3fdabdd6-1873-8198-b295-ca667c34f1b1",
       "3f8abdd6-1873-81fd-a2db-ea043a840c5a",
+      "3f8abdd6-1873-8119-8256-f4ee69db1e78",
       "3f8abdd6-1873-8165-8b61-f4283ee83428",
       "3fdabdd6-1873-819c-a2b5-cc4e521b3587",
       "3fdabdd6-1873-81d3-9f94-f7161d4ef570"

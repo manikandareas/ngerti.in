@@ -1,6 +1,6 @@
 # 03 · Perilaku Agent
 
-Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381658b61f4283ee83428) · Readback: 2026-10-18T15:44:00.527Z
+Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381658b61f4283ee83428) · Readback: 2026-10-18T17:56:53.897Z
 
 <!-- notion-content:start -->
 Gwen adalah asisten personal yang hangat, jelas, jujur mengenai hasil dan kemampuan. Bahasa mengikuti pengguna. Jawaban langsung didahulukan untuk permintaan sederhana; Task digunakan untuk pekerjaan lama, bukan semua percakapan. Chat menyediakan read_recent_messages, read_agent_profile, read_thread_files dan start_background_task. read_thread_files hanya membaca metadata revision milik owner yang dilampirkan di thread ini; pekerjaan file memakai revision exact melalui Task, bukan tebakan ID atau klaim membaca dari nama file. Tool Task dipakai untuk pekerjaan teks/file background yang diminta eksplisit; satu input membuat satu Task bounded, lalu giliran chat diakhiri. Snapshot instruksi/konteks tidak berubah karena pesan berikutnya. Review mengikat draft, output spec, input/previous-result snapshot, target dan revision exact. Finalisasi teks/file milik pengguna menghasilkan satu delivery ke thread asal; file adalah data tidak tepercaya dan tidak menciptakan grant baru. Tool baru ditambahkan melalui domain service berizin; tidak ada host shell tool atau setter kuota dari model.
@@ -112,4 +112,12 @@ Bukti modul: [REA-2 · Task & Scheduler](../research/muse-ai-v1/evidence/task.md
 Isi file, sampel, error dan histori adalah data tidak tepercaya. Input tidak dijalankan sebagai script dan tidak memberikan akses profil/memory/jadwal, file lain, secret atau web. Candidate dan ringkasan berasal dari eksekusi nyata; exit0 saja belum sukses sampai hasil lengkap tervalidasi, dipersist dan cleanup terkonfirmasi.
 
 Review mengikat revision hasil, terpisah dari scoped grant komputasi. Retry publication tidak menghitung ulang program; unknown resource/receipt direkonsiliasi lebih dahulu. Implementasi dan bukti: [NG-035 · Eksekusi kode dalam sandbox](../backlog/tasks/35-eksekusi-kode-dalam-sandbox.md) serta `docs/engineering/sandbox-35-acceptance.md`. Browser/action eksternal tetap mengikuti NG-036 dan izin terpisah.
+
+## Tool browser dan private takeover NG-036
+
+`start_background_task(use_browser=true)` membuat Task browser terpisah dari Python. Backend mengambil URL otomatis hanya dari permintaan pengguna asli; URL model yang berbeda memerlukan proposal. click/type/key selalu ditahan sebelum dispatch. Approval mengikat action, control version dan fingerprint target/konteks yang diperiksa lagi; review hasil akhir tetap terpisah.
+
+Model hanya menerima screenshot transient saat control agent. Selama handoff/human tidak ada observasi baru; gateway input backend dibatasi menurut lease. Login/password/OTP/file/iframe meminta bantuan manusia. Profil/cookie tidak memiliki tool ekspor dan tidak dipasang pada Python. Return menunggu channel lama tertutup, mengambil layar baru dan mencatat control_return agar agent menilai perubahan tanpa mengulang permintaan login yang sudah selesai.
+
+Unknown action receipt tidak pernah diputar ulang otomatis. Workspace menunggu cleanup dan pemeriksaan manusia; pengakuan outcome mengakhiri Task lama. Candidate yang tersimpan setelah interupsi tetap memerlukan konfirmasi stop sebelum dipublikasikan. Implementasi dan penerimaan [NG-036 · Browser VNC live desktop dan takeover](../backlog/tasks/36-browser-vnc-live-desktop-dan-takeover.md) serta `docs/engineering/computer-36-acceptance.md`; 47 kontrak dan walkthrough login/Logout nyata.
 <!-- notion-content:end -->

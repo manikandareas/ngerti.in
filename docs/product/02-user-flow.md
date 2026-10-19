@@ -1,11 +1,11 @@
 # 02 · UX & User Flow
 
-Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381fda2dbea043a840c5a) · Readback: 2026-10-18T15:44:00.527Z
+Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381fda2dbea043a840c5a) · Readback: 2026-10-18T17:56:53.897Z
 
 <!-- notion-content:start -->
 Chat menjadi pintu utama; panel membantu pengguna menemukan pekerjaan, hasil dan kontrol yang hidup lebih lama dari satu respons. Soft Matcha dan primitive UI yang ada dipertahankan. Onboarding menghasilkan satu bantuan umum yang kecil, tidak meminta pengguna membuat artefak pembelajaran.
 
-NG-032 diterima pada 18 Oktober 2026: shell desktop/mobile menyediakan Percakapan, Kemampuan Gwen, Penggunaan nyata dan Pengaturan akun/tema. Welcome mengisi draft tanpa mengirim; riwayat, draft, streaming, offline/reconnect, error/retry, focus dan reduced motion diverifikasi pada browser. NG-033 menambah Task teks, menu Task, progress/draft persisten, review exact, edit revision, stop/retry dan delivery ke thread asal; chat tetap dapat digunakan saat Task running/waiting_user. NG-034 menambah upload/reuse exact file revisions, pilihan halaman/baris, OCR Mistral, beberapa hasil file, review/edit per file, revision history, preview/download/delete serta menu File & hasil. Pembaruan mempertahankan revision siap terdahulu dan cache OCR; draft lampiran tetap sesudah reload/pengiriman gagal. Bukti: `docs/engineering/files-34-acceptance.md`. Goals, jadwal, memory, komputer dan pencarian Library penuh tetap mengikuti tiket integrasi berikutnya. Bukti: `docs/engineering/task-33-acceptance.md`. Kontrak state/pemulihan dan bukti: `docs/engineering/shell-onboarding-32-acceptance.md` serta `docs/engineering/evidence/shell-32/`. File Pen walkthrough lama adalah bukti historis pembelajaran, bukan acceptance UI asisten umum.
+NG-032 diterima pada 18 Oktober 2026: shell desktop/mobile menyediakan Percakapan, Kemampuan Gwen, Penggunaan nyata dan Pengaturan akun/tema. Welcome mengisi draft tanpa mengirim; riwayat, draft, streaming, offline/reconnect, error/retry, focus dan reduced motion diverifikasi pada browser. NG-033 menambah Task teks, menu Task, progress/draft persisten, review exact, edit revision, stop/retry dan delivery ke thread asal; chat tetap dapat digunakan saat Task running/waiting_user. NG-034 menambah upload/reuse exact file revisions, pilihan halaman/baris, OCR Mistral, beberapa hasil file, review/edit per file, revision history, preview/download/delete serta menu File & hasil. Pembaruan mempertahankan revision siap terdahulu dan cache OCR; draft lampiran tetap sesudah reload/pengiriman gagal. Bukti: `docs/engineering/files-34-acceptance.md`. NG-036 menambah browser pribadi, VNC, takeover privat dan login lintas Task; bukti pada `docs/engineering/computer-36-acceptance.md`. Goals, jadwal, memory dan pencarian Library penuh mengikuti tiket berikutnya. Bukti: `docs/engineering/task-33-acceptance.md`. Kontrak state/pemulihan dan bukti: `docs/engineering/shell-onboarding-32-acceptance.md` serta `docs/engineering/evidence/shell-32/`. File Pen walkthrough lama adalah bukti historis pembelajaran, bukan acceptance UI asisten umum.
 
 ## Chat dan sesi
 
@@ -69,21 +69,25 @@ Bukti modul: [REA-3 · File & Artifact](../research/muse-ai-v1/evidence/file.md)
 
 ## Panel komputer dan takeover
 
-Pengguna melihat serta mengendalikan lingkungan eksekusi yang sama dengan agent.
+Pengguna melihat serta mengendalikan lingkungan eksekusi yang sama dengan agent. NG-036 diterima development pada **2026-10-19**: satu workspace/profil browser pribadi per account, login digunakan kembali lintas Task setelah compute stop/start. Pilih Gunakan browser pribadi pada Task, lalu Lihat komputer; panel tersedia pada desktop/mobile. Laporan `docs/engineering/computer-36-acceptance.md`.
 
-**Alur:** Buka panel VNC/live desktop → ambil alih → backend handoff → input manusia → kembalikan → observasi baru → agent lanjut.
+**Alur:** Task membutuhkan browser → buka panel VNC/live desktop → ambil alih bila perlu → backend handoff → login/input manusia → kembalikan → observasi baru → agent lanjut → persist hasil → tutup browser dengan benar dan hentikan komputasi, pertahankan profil. Task berikutnya memakai workspace yang sama dan memeriksa login.
 
-**State:** starting/ready/stopped/failed; control agent/handoff/human/resuming; reconnecting.
+**State:** starting/ready/stopped/failed; control agent/handoff/human/resuming; reconnecting; menunggu workspace atau bantuan login. Satu Task atau pengendali manusia memegang workspace pada satu waktu; Task browser lain mengantre.
 
-**Input → output:** Session identity, control revision, pointer/keyboard → stream layar, acknowledgement dan state terkini.
+**Input → output:** Session identity, control revision, pointer/keyboard → stream layar, acknowledgement dan state terkini. Panel menampilkan pekerjaan, pemegang kendali dan langkah yang dibutuhkan pengguna; chat tetap dapat digunakan. Desktop memakai panel lebar dan mobile tampilan penuh.
 
-**Kegagalan & pemulihan:** Viewer expired/revoked, disconnect, aksi agent in-flight dan race dua tab tidak memberi dua pengendali; unknown external effect tidak diulang buta.
+**Kegagalan & pemulihan:** Viewer expired/revoked, disconnect, aksi agent in-flight dan race dua tab tidak memberi dua pengendali. Putusnya koneksi saat kendali manusia tidak otomatis mengaktifkan agent. Unknown external effect diperiksa sebelum retry dan menahan penggunaan workspace berikutnya. Saat kembali, agent membaca keadaan terbaru; perubahan halaman tidak diam-diam mengubah tujuan Task.
 
-**Izin:** Backend memeriksa owner/grant/lease setiap perubahan kendali dan aksi; viewOnly di browser tidak cukup.
+**Login dan privasi:** Pengguna login sendiri melalui takeover; observasi model dan rekaman dihentikan selama input privat. Password tidak diminta lewat chat atau dijadikan memory. Cookie/data autentikasi tidak diekspor ke prompt, log, hasil atau runtime Python. Login dapat kedaluwarsa atau meminta 2FA; Gwen meminta bantuan lagi. Konten halaman setelah resume tetap mengikuti scope Task.
 
-**Biaya:** Runtime/idle/storage/egress cap; tutup viewer tidak otomatis berarti task berhenti; lifecycle resource terlihat.
+**Kontrol:** Tutup panel menutup viewer; Task dapat melanjutkan dalam batasnya. Hentikan Task mencabut kendali dan menghentikan eksekusi, mempertahankan profil serta hasil tersimpan. Reset browser dan hapus login tersimpan memerlukan konfirmasi setelah seluruh akses aktif dicabut; File/Result tetap tersedia. Logout satu situs dapat dilakukan di browser.
 
-**Acceptance:** NG-031 PoC dan NG-036: agent berhenti saat manusia aktif, user mengubah halaman, agent membaca keadaan terbaru; dua owner terisolasi.
+**Izin:** Backend memeriksa owner/grant/lease setiap perubahan kendali dan aksi; viewOnly di browser tidak cukup. Login tersimpan dan takeover tidak memberi izin aksi global; approval aksi eksternal terikat target/isi/revision dan terpisah dari review hasil.
+
+**Biaya:** Runtime/idle/storage/egress cap dan lifecycle terlihat. Waktu komputasi aktif terpisah dari retensi/ukuran profil; habisnya waktu Task menghentikan komputasi tanpa menghapus login. Menunggu manusia tidak menahan worker; resource yang masih hidup tetap dibatasi dan dicatat biayanya.
+
+**Acceptance:** Login nyata Task A dipakai Task B setelah stop/start; VNC takeover/input privat mobile, fresh observation, reconnect tanpa auto-resume, approval Logout, SIGKILL/idle stop, reset profil dan hasil persisten diuji. Owner/two-tab/expiry/stale/unknown/queue memakai 47 kontrak terkontrol. Desktop 1280x900/mobile emulasi 390x844; archive tidak dipakai. Bukti dan batas situs/2FA/production pada `docs/engineering/computer-36-acceptance.md`.
 
 Bukti modul: [REA-6 · Browser & Computer](../research/muse-ai-v1/evidence/computer.md). Tiket: [NG-031 · Validasi Daytona dengan trial terbatas](../backlog/tasks/31-validasi-daytona-dengan-trial-terbatas.md) · [NG-035 · Eksekusi kode dalam sandbox](../backlog/tasks/35-eksekusi-kode-dalam-sandbox.md) · [NG-036 · Browser VNC live desktop dan takeover](../backlog/tasks/36-browser-vnc-live-desktop-dan-takeover.md).
 

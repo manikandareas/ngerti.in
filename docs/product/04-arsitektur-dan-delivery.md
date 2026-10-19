@@ -1,6 +1,6 @@
 # 04 · Arsitektur, Runtime & Kontrak
 
-Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381198256f4ee69db1e78) · Readback: 2026-10-18T15:44:00.527Z
+Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381198256f4ee69db1e78) · Readback: 2026-10-18T17:56:53.897Z
 
 <!-- notion-content:start -->
 Stack aktual: TanStack Start/React, FastAPI, Clerk, PostgreSQL/pgvector, LangChain create_agent + LangGraph checkpoints, Procrastinate dan S3/MinIO. API dan worker adalah proses host untuk development; PostgreSQL/MinIO berada pada Compose ngertiin-v1. Pertahankan fondasi; LiteLLM/LlamaIndex/LangSmith/R2 production bukan dependency yang dianggap aktif hanya karena pernah tercantum pada riset.
@@ -73,21 +73,23 @@ Bukti modul: [REA-3 · File & Artifact](../research/muse-ai-v1/evidence/file.md)
 
 ## Daytona code browser dan komputer
 
-Adapter terisolasi mengeksekusi kode serta satu sesi GUI yang bisa dilihat pengguna.
+NG-036 diterima development pada **2026-10-19**. ComputerRuntime/Action/Screen milik aplikasi membatasi observasi, typed actions, target fingerprint, download, stop/delete dan viewer. DaytonaComputer adalah adapter pertama. Satu workspace/profil persisten per account, sesi compute per Task, hasil File/Result terpisah. Profil tetap di disk Daytona yang sama saat stop/start; auto archive nonaktif.
 
-**Alur:** Resolve owned SandboxSession → start/reconnect → bounded shell/code/browser → persist outputs → idle stop/cleanup. Takeover memakai control lease backend.
+**Alur:** Resolve owned browser workspace → reservasi budget dan ambil lease eksklusif → start/reconnect dengan profil yang sama → bounded browser/computer actions → persist outputs → tutup browser dengan benar → cabut viewer/lease dan hentikan proses/komputasi → pertahankan profil sesuai retensi. Task berikutnya mendapat lease baru dan melakukan observasi ulang; takeover memakai control lease backend pada sesi yang sama.
 
-**State:** Session provisioning/ready/stopping/stopped/failed; control agent/handoff/human/resuming, control_version monoton.
+**State:** Session provisioning/ready/stopping/stopped/failed; control agent/handoff/human/resuming, control_version monoton. Hanya satu Task atau pengendali manusia yang memakai workspace; antrean menunggu release yang sudah direkonsiliasi, bukan sekadar timeout lock lokal.
 
-**Input → output:** Sandbox ID, owner, task, workspace manifest, action/control revision → execution result, live-view URL, observed screen dan cost events.
+**Input → output:** Owner/workspace/profile identity, Task/execution, output spec dan action/control version → fenced receipts, live view, screen transient, File/Result dan cost events. Migrasi incremental 0005_browser_workspace menyimpan browser_workspaces, computer_sessions/steps/outputs/viewers; screenshot tidak disimpan pada checkpoint. Target fingerprint di-hash dalam Chromium, tanpa mengekspor DOM/form value. SDK hanya dalam adapter/gateway boundary.
 
-**Kegagalan & pemulihan:** Provider timeout/expired URL/unknown effect di-reconcile; stop/restart memulihkan disk/workspace sejauh PoC, tidak menjanjikan RAM atau session web.
+**Kegagalan & pemulihan:** Provider timeout/expired URL/unknown effect direkonsiliasi sebelum dispatch berikutnya. Hasil model/command dengan lease usang ditolak. Resume dari manusia mencabut channel input, mengambil observasi baru lalu mengaktifkan agent; viewer disconnect tidak otomatis mengembalikan kendali. Stop/start atau archive/restore mempertahankan profil sejauh bukti baru; RAM/proses tidak dijanjikan. Login expired/2FA meminta bantuan manusia, bukan retry login buta. Unknown effect menahan workspace sampai aman dipakai execution berikutnya.
 
-**Izin:** App secrets tetap di control plane. Viewer proxy/token memeriksa owner/expiry. Agent dan manusia memakai session yang sama; setiap dispatch mengecek lease.
+**Izin:** App secrets tetap di control plane. Viewer proxy/token memeriksa owner/expiry dan setiap dispatch memeriksa lease. Profil login diperlakukan sebagai kredensial, owner-scoped, tidak diekspor ke prompt/log/File/Result atau dipasang ke runtime Python offline. Input privat menghentikan observasi model/rekaman. Halaman web tetap data tidak tepercaya; login tidak menciptakan grant baru. Approval aksi eksternal mengikat target/isi/revision dan diperiksa lagi sebelum dispatch.
 
-**Biaya:** CPU/RAM/disk/egress/runtime/concurrency/idle caps sejak awal, termasuk stopped disk; cleanup dikonfirmasi.
+**Cleanup dan penghapusan:** Akhir Task mencabut semua akses execution lama, mengonfirmasi penghentian komputasi, membersihkan proses/berkas sementara dan mempertahankan profil. Reset profil adalah command owner tersendiri dengan konfirmasi, fencing seluruh akses aktif dan penghapusan profil terkonfirmasi; File/Result tidak ikut dihapus. Desain ini tidak mengubah isolasi maupun kontrak delete runtime kode NG-035.
 
-**Acceptance:** NG-031 trial dahulu; NG-035 isolasi/timeout; NG-036 exclusive takeover + fresh observation; P07–P12/P24/P27.
+**Biaya:** Task maksimal 20 menit/24 langkah, fixed 2vCPU/4GiB/8GiB, idle stop 2 menit, margin 180 detik. Profil 7 hari/20 global, ambang 1GiB dipantau; download 25MiB dipantau dan collector 10MiB/file/25MiB total; proxy public-only 200MiB. Satu compute/account dan dua global berbagi admission/cap uang dengan Python. Sesi default mereservasi 208.964microUSD termasuk storage 145.152microUSD, seluruh retention window dicadangkan ulang per use. Ini estimasi, bukan invoice.
+
+**Acceptance:** Login pihak ketiga nyata A → stop/start → B, mobile VNC privat/reconnect, fresh return, exact Logout approval, SIGKILL/idle stop, reset dan checksum hasil diuji. 47 kontrak terkontrol mencakup owner/two-tab/RFB/stale/unknown/queue/caps/retention/cleanup/candidate recovery. Laporan `docs/engineering/computer-36-acceptance.md`. Archive dan situs 2FA khusus tidak dipakai; production/invoice tidak diklaim. Isolasi Python NG-035 tetap terpisah.
 
 Bukti modul: [REA-6 · Browser & Computer](../research/muse-ai-v1/evidence/computer.md). Tiket: [NG-031 · Validasi Daytona dengan trial terbatas](../backlog/tasks/31-validasi-daytona-dengan-trial-terbatas.md) · [NG-035 · Eksekusi kode dalam sandbox](../backlog/tasks/35-eksekusi-kode-dalam-sandbox.md) · [NG-036 · Browser VNC live desktop dan takeover](../backlog/tasks/36-browser-vnc-live-desktop-dan-takeover.md).
 

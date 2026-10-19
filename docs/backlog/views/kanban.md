@@ -1,6 +1,6 @@
 # Kanban
 
-Snapshot readback Notion: 2026-10-18T15:44:00.527Z. 25 tiket.
+Snapshot readback Notion: 2026-10-18T17:56:53.897Z. 25 tiket.
 
 | Tiket | Urutan | Status | Lingkup | Area | Depends on |
 | --- | --- | --- | --- | --- | --- |
@@ -14,7 +14,7 @@ Snapshot readback Notion: 2026-10-18T15:44:00.527Z. 25 tiket.
 | [NG-033 · Task background dan approval umum](../tasks/33-task-background-dan-approval-umum.md) | 8 | Done | Aktif V1 | Agent | [NG-032 · Shell onboarding dan walkthrough asisten umum](../tasks/32-shell-onboarding-dan-walkthrough-asisten-umum.md) |
 | [NG-034 · File produk dan hasil tersimpan](../tasks/34-file-produk-dan-hasil-tersimpan.md) | 9 | Done | Aktif V1 | Agent | [NG-033 · Task background dan approval umum](../tasks/33-task-background-dan-approval-umum.md) |
 | [NG-035 · Eksekusi kode dalam sandbox](../tasks/35-eksekusi-kode-dalam-sandbox.md) | 10 | Done | Aktif V1 | Agent | [NG-031 · Validasi Daytona dengan trial terbatas](../tasks/31-validasi-daytona-dengan-trial-terbatas.md) · [NG-033 · Task background dan approval umum](../tasks/33-task-background-dan-approval-umum.md) · [NG-034 · File produk dan hasil tersimpan](../tasks/34-file-produk-dan-hasil-tersimpan.md) |
-| [NG-036 · Browser VNC live desktop dan takeover](../tasks/36-browser-vnc-live-desktop-dan-takeover.md) | 11 | Backlog | Aktif V1 | Agent | [NG-035 · Eksekusi kode dalam sandbox](../tasks/35-eksekusi-kode-dalam-sandbox.md) |
+| [NG-036 · Browser VNC live desktop dan takeover](../tasks/36-browser-vnc-live-desktop-dan-takeover.md) | 11 | Done | Aktif V1 | Agent | [NG-035 · Eksekusi kode dalam sandbox](../tasks/35-eksekusi-kode-dalam-sandbox.md) |
 | [NG-037 · Scheduler pengguna saat offline](../tasks/37-scheduler-pengguna-saat-offline.md) | 12 | Backlog | Aktif V1 | Agent | [NG-036 · Browser VNC live desktop dan takeover](../tasks/36-browser-vnc-live-desktop-dan-takeover.md) · [NG-033 · Task background dan approval umum](../tasks/33-task-background-dan-approval-umum.md) |
 | [NG-016 · Perubahan soul atas permintaan dan HITL](../tasks/16-perubahan-soul-atas-permintaan-dan-hitl.md) | 13 | Backlog | Aktif V1 | Agent | [NG-037 · Scheduler pengguna saat offline](../tasks/37-scheduler-pengguna-saat-offline.md) · [NG-033 · Task background dan approval umum](../tasks/33-task-background-dan-approval-umum.md) |
 | [NG-017 · Memory aktif capture evidence dan recall](../tasks/17-memory-aktif-capture-evidence-dan-recall.md) | 14 | Backlog | Aktif V1 | Agent | [NG-016 · Perubahan soul atas permintaan dan HITL](../tasks/16-perubahan-soul-atas-permintaan-dan-hitl.md) · [NG-034 · File produk dan hasil tersimpan](../tasks/34-file-produk-dan-hasil-tersimpan.md) |

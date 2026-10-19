@@ -1,6 +1,6 @@
 # 05 · Usage, Paket & Pembayaran
 
-Sumber: [Notion](https://app.notion.com/p/3fdabdd61873819ca2b5cc4e521b3587) · Readback: 2026-10-18T15:44:00.527Z
+Sumber: [Notion](https://app.notion.com/p/3fdabdd61873819ca2b5cc4e521b3587) · Readback: 2026-10-18T17:56:53.897Z
 
 <!-- notion-content:start -->
 Batas chat baseline adalah **Free 100 dan Plus 300 pesan pengguna per 30 × 24 jam**, policy chat-baseline-v1. Ini batas development sementara, bukan harga atau allowance komersial yang disetujui. Meter Course/halaman materi dan kontrak reservasinya telah dihapus. GET /quotas hanya memiliki `meters.chat` dengan limit/used/reserved/remaining serta period/plan.
@@ -84,4 +84,12 @@ Policy code-sandbox-v1 memisahkan chat, token model dan biaya resource. Snapshot
 Rate awal166.464microUSD/jam adalah estimasi konfigurasi untuk2vCPU/4GiB/8GiB, versi daytona-linux-2026-10-18. TTL maksimal10menit plus margin120detik tercakup dalam reservasi. Unknown tetap terhitung penuh sampai konfirmasi cleanup; create timeout tidak diulang dengan resource baru. Penolakan pasti sebelum alokasi memiliki biaya resource nol. Konfirmasi delete menyelesaikan estimasi konservatif dari wall time teramati; invoice_confirmed=false. Sesi lama tidak dihitung ulang dengan konfigurasi baru.
 
 Walkthrough tiga Task model mencatat4.862token confirmed dan estimasi resource USD0.004279; probe runtime terkontrol USD0.001433. Ini bukan invoice atau harga pelanggan; biaya token model dalam uang belum ditetapkan. Percobaan terkontrol membuktikan retry/receipt/publication tidak menggandakan hasil dan cost events. Penerimaan `docs/engineering/sandbox-35-acceptance.md`; kontrak paket komersial dan benchmark tetap NG-040/NG-041.
+
+## Budget browser dan retained profile NG-036
+
+Policy private-browser-v1 memisahkan masa hidup compute dari retensi profil. Default Task20menit/24langkah, idle stop2menit, margin180detik; profil7hari tidak aktif dan20workspace global. Fixed2vCPU/4GiB/8GiB. Ambang profil1GiB/download25MiB dipantau setiap5detik; collector membatasi10MiB/file/25MiB total dan proxy membatasi200MiB transfer. Satu compute/account, dua global dan tiga sesi/Task; cap uang serta admission lock berbagi dengan Python.
+
+Compute166.464microUSD/jam dan disk864microUSD/jam memakai snapshot harga. Sesi default mereservasi208.964microUSD: compute+margin63.812 dan storage tujuh hari145.152. Setiap use mencadangkan seluruh retention window kembali secara konservatif, bukan tagihan disk eksak. Unknown tetap dihitung penuh; stop terkonfirmasi menyelesaikan estimasi compute dari wall time teramati. Reset profil tidak menghapus hasil atau ledger. Cap akun1.000.000/global5.000.000 mengikuti bucket UTC asal Task; policy lama tidak dihitung ulang dengan rate baru.
+
+Walkthrough empat Task/lima sesi mencatat14model calls,31.758token confirmed dan estimasi resource/storage USD0,760149. Nol resource NG-036 setelah reset. Biaya model dalam uang, invoice dan paket pelanggan belum diklaim. Panel komputer menampilkan pemakaian/cadangan; detail `docs/engineering/computer-36-acceptance.md`. Benchmark/paket komersial tetap NG-040/NG-041.
 <!-- notion-content:end -->

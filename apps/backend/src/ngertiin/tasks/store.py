@@ -32,6 +32,7 @@ PUBLIC_COLUMNS = (
     "output_spec",
     "result_id",
     "runtime_kind",
+    "schedule_occurrence_id",
 )
 MUTABLE = {
     "status",

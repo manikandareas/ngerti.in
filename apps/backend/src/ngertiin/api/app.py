@@ -25,6 +25,7 @@ from ngertiin.health import system_status
 from ngertiin.models import Account
 from ngertiin.quotas.api import ERROR_TYPES, quota_error
 from ngertiin.quotas.api import router as quota_router
+from ngertiin.schedules.api import router as schedule_router
 from ngertiin.tasks.api import router as task_router
 
 settings = get_settings()
@@ -45,6 +46,7 @@ app = FastAPI(
 app.include_router(chat_router)
 app.include_router(quota_router)
 app.include_router(task_router)
+app.include_router(schedule_router)
 app.include_router(file_router)
 app.include_router(computer_router)
 for quota_error_type in ERROR_TYPES:

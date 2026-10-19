@@ -1,5 +1,6 @@
 """Capture immutable user intent/context and atomically enqueue bounded text work."""
 
+from contextlib import nullcontext
 from uuid import UUID, uuid4
 
 from fastapi import HTTPException
@@ -43,6 +44,8 @@ async def create(
     result_id: UUID | None = None,
     expected_result_revision: int | None = None,
     runtime_kind: str = "text",
+    connection=None,
+    scheduled: dict | None = None,
 ):
     from ngertiin.files import inputs as file_inputs
     from ngertiin.files import results
@@ -101,7 +104,7 @@ async def create(
             expected_result_revision=expected_result_revision,
         )
     digest = fingerprint(identity)
-    async with store.transaction() as conn:
+    async with nullcontext(connection) if connection is not None else store.transaction() as conn:
         await lock_account(conn, owner)
         thread = await owned_thread(conn, owner, thread_id, lock=True)
         previous = await one(
@@ -163,8 +166,14 @@ async def create(
                 "max_output_tokens": 4000,
                 "computer": computer_rules,
             }
+        if scheduled:
+            policy["task_cap"] = min(policy["task_cap"], scheduled["per_run_cap"])
         await budget.admit(conn, owner, policy)
-        captured = await input_snapshot(conn, thread_id, instruction)
+        captured = (
+            {**scheduled["input_snapshot"], "schedule": scheduled["identity"]}
+            if scheduled
+            else await input_snapshot(conn, thread_id, instruction)
+        )
         title = " ".join(instruction.split())
         if len(title) > 100:
             title = title[:96].rsplit(" ", 1)[0] + "…"
@@ -194,6 +203,12 @@ async def create(
                 "UPDATE background_tasks SET runtime_kind=%s WHERE id=%s", (runtime_kind, task_id)
             )
             task["runtime_kind"] = runtime_kind
+        if scheduled:
+            await conn.execute(
+                "UPDATE background_tasks SET schedule_occurrence_id=%s WHERE id=%s",
+                (scheduled["occurrence_id"], task_id),
+            )
+            task["schedule_occurrence_id"] = scheduled["occurrence_id"]
         captured_files = await file_inputs.capture(conn, owner, task_id, inputs)
         if specs:
             rid = await results.bind(conn, task, result_id, expected_result_revision)
@@ -213,7 +228,7 @@ async def create(
                 (json_value(specs), rid, json_value(captured), task_id),
             )
             task.update(output_spec=specs, result_id=rid, input_snapshot=captured)
-        if not source_run:
+        if not source_run and not scheduled:
             allocation = await reserve(conn, owner, "chat", f"task-input:{task_id}", 1, digest)
             for index, (role, text) in enumerate(
                 (

@@ -9,6 +9,12 @@ from ngertiin.tasks import store
 from ngertiin.tasks.policy import snapshot
 
 
+class AdmissionDenied(HTTPException):
+    def __init__(self, reason: str, message: str):
+        super().__init__(429, message)
+        self.reason = reason
+
+
 async def admit(conn, owner, policy: dict, *, day=None):
     # All callers already hold owner -> thread -> task locks. Never acquire an
     # owner lock after this global admission lock.
@@ -27,7 +33,9 @@ async def admit(conn, owner, policy: dict, *, day=None):
         usage["account"] + policy["task_cap"] > policy["account_daily_cap"]
         or usage["total"] + policy["task_cap"] > policy["global_daily_cap"]
     ):
-        raise HTTPException(429, "Batas komputasi task hari ini tercapai. Coba lagi besok (UTC).")
+        raise AdmissionDenied(
+            "budget", "Batas komputasi task hari ini tercapai. Coba lagi besok (UTC)."
+        )
     active = await one(
         conn,
         "SELECT count(*) AS n FROM background_tasks WHERE owner_id=%s "
@@ -35,7 +43,9 @@ async def admit(conn, owner, policy: dict, *, day=None):
         (owner,),
     )
     if active["n"] >= 2:
-        raise HTTPException(429, "Dua task sedang berjalan. Tunggu atau hentikan salah satunya.")
+        raise AdmissionDenied(
+            "capacity", "Dua task sedang berjalan. Tunggu atau hentikan salah satunya."
+        )
 
 
 async def reserve_call(execution: dict, ceiling: int):

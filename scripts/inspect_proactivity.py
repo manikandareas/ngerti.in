@@ -711,6 +711,9 @@ async def scenarios(live):
         await revocation()
         await source_and_http()
         await budget_races_and_task_sources()
+        from probe_proactive_delivery import contracts as delivery_contracts
+
+        await delivery_contracts()
         return await live_probe() if live else None
     finally:
         await close_pool()
@@ -770,4 +773,6 @@ def main():
 
 
 if __name__ == "__main__":
+    # Delivery probes reuse this module's fixtures and the same result ledger.
+    sys.modules["inspect_proactivity"] = sys.modules[__name__]
     main()

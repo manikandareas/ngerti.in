@@ -7,7 +7,7 @@ from fastapi import APIRouter, Depends, HTTPException, Response, WebSocket
 from pydantic import BaseModel, ConfigDict, Field
 
 from ngertiin.accounts.auth import current_account
-from ngertiin.computer import control, lifecycle, store, viewer
+from ngertiin.computer import control, lifecycle, policy, store, viewer
 from ngertiin.models import Account
 from ngertiin.tasks import store as tasks
 
@@ -39,8 +39,9 @@ async def workspace(account: AccountDep):
     async with tasks.transaction() as conn:
         row = await one(
             conn,
-            "SELECT * FROM browser_workspaces WHERE owner_id=%s AND state<>'deleted'",
-            (account.id,),
+            "SELECT * FROM browser_workspaces WHERE owner_id=%s AND provider=%s "
+            "AND state<>'deleted'",
+            (account.id, policy.snapshot()["provider"]),
         )
         return {"workspace": store.public(row) if row else None}
 

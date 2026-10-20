@@ -423,16 +423,17 @@ async def scenarios():
 async def configuration_and_rejection():
     oid, thread = await owner()
     settings = get_settings()
-    original = settings.daytona_api_key
+    original = settings.daytona_api_key, settings.e2b_api_key
     settings.daytona_api_key = SecretStr("")
+    settings.e2b_api_key = SecretStr("")
     try:
         task = await harness.run(oid, await create(oid, thread))
         check(
-            "task_domain_does_not_require_daytona_credentials",
+            "task_domain_does_not_require_provider_credentials",
             task["status"] == "succeeded",
         )
     finally:
-        settings.daytona_api_key = original
+        settings.daytona_api_key, settings.e2b_api_key = original
     ADAPTER.mode = "reject"
     try:
         task = await harness.run(oid, await create(oid, thread))

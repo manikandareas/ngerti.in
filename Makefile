@@ -83,6 +83,13 @@ daytona-preflight:
 daytona-inspect:
 	uv run --project apps/backend python scripts/inspect_daytona_trial.py
 
+.PHONY: e2b-templates e2b-browser-probe
+e2b-templates:
+	uv run --project apps/backend python scripts/build_e2b_templates.py
+
+e2b-browser-probe:
+	uv run --project apps/backend python scripts/probe_e2b_browser.py --live
+
 .PHONY: library-inspect library-backfill
 library-inspect:
 	uv run --project apps/backend python scripts/inspect_library.py

@@ -10,8 +10,10 @@ def snapshot():
     seconds = s.computer_task_seconds
     storage = math.ceil(s.computer_storage_microusd_per_hour * 24 * s.computer_retention_days)
     return {
-        "version": "private-browser-v1",
-        "provider": "daytona",
+        "version": "private-browser-e2b-v1"
+        if s.computer_provider == "e2b"
+        else "private-browser-v1",
+        "provider": s.computer_provider,
         "seconds": seconds,
         "idle_minutes": 2,
         "cleanup_seconds": 180,
@@ -35,11 +37,17 @@ def snapshot():
     }
 
 
-def get_runtime(provider="daytona"):
+def get_runtime(provider=None):
     from ngertiin.computer.contracts import ComputerRuntime
     from ngertiin.computer.daytona import DaytonaComputer
+    from ngertiin.computer.e2b import E2BComputer
 
-    if provider != "daytona" or not get_settings().daytona_api_key.get_secret_value():
+    selected = provider or get_settings().computer_provider
+    runtime: ComputerRuntime
+    if selected == "e2b" and get_settings().e2b_api_key.get_secret_value():
+        runtime = E2BComputer()
+    elif selected == "daytona" and get_settings().daytona_api_key.get_secret_value():
+        runtime = DaytonaComputer()
+    else:
         raise ValueError("Komputer belum dikonfigurasi. Draft tetap tersimpan.")
-    runtime: ComputerRuntime = DaytonaComputer()
     return runtime

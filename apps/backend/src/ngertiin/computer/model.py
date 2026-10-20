@@ -31,6 +31,46 @@ Keluarkan JSON persis skema yang disediakan tanpa markdown. Tidak ada shell atau
 """
 
 
+def decision(value):
+    response = value["raw"]
+    if response.response_metadata.get("status") in ("incomplete", "failed"):
+        raise ValueError("Keputusan browser belum lengkap.")
+    blocks = response.content if isinstance(response.content, list) else []
+    if response.additional_kwargs.get("refusal") or any(
+        isinstance(block, dict) and block.get("type") == "refusal" for block in blocks
+    ):
+        raise ValueError("Model menolak keputusan browser. Tidak ada aksi yang dijalankan.")
+    phased = any(isinstance(block, dict) and block.get("phase") for block in blocks)
+    final_text = ""
+    if phased:
+        # The generic JSON parser concatenates commentary and final text. Only
+        # one explicit final answer can authorize an action; never extract JSON
+        # from commentary or repair an invalid final answer.
+        finals = [
+            block.get("text")
+            for block in blocks
+            if isinstance(block, dict)
+            and block.get("type") == "text"
+            and block.get("phase") == "final_answer"
+        ]
+        candidate = finals[0] if len(finals) == 1 else None
+        if not isinstance(candidate, str):
+            raise ValueError("Keputusan browser belum valid. Tidak ada aksi yang dijalankan.")
+        final_text = candidate
+    elif value.get("parsing_error") or not value.get("parsed"):
+        raise ValueError("Keputusan browser belum valid. Tidak ada aksi yang dijalankan.")
+    try:
+        return (
+            Action.model_validate_json(final_text)
+            if phased
+            else Action.model_validate(value["parsed"])
+        )
+    except ValueError:
+        raise ValueError(
+            "Argumen aksi browser tidak valid. Tidak ada aksi yang dijalankan."
+        ) from None
+
+
 async def propose(execution, screen, history):
     from ngertiin.tasks.workflow import persona_context
 
@@ -99,15 +139,6 @@ async def propose(execution, screen, history):
         )
         response = value["raw"]
         usage = dict(response.usage_metadata) if response.usage_metadata else None
-        if response.response_metadata.get("status") in ("incomplete", "failed"):
-            raise ValueError("Keputusan browser belum lengkap.")
-        if value.get("parsing_error") or not value.get("parsed"):
-            raise ValueError("Keputusan browser belum valid. Tidak ada aksi yang dijalankan.")
-        try:
-            return Action.model_validate(value["parsed"])
-        except ValueError:
-            raise ValueError(
-                "Argumen aksi browser tidak valid. Tidak ada aksi yang dijalankan."
-            ) from None
+        return decision(value)
     finally:
         await budget.settle_call(execution, call_id, usage)

@@ -14,7 +14,7 @@ from urllib.parse import urlsplit
 from urllib.request import ProxyHandler, build_opener
 
 ROOT = Path("/tmp/ng036")
-PROFILE = Path("/home/daytona/.ngertiin-browser")
+PROFILE = Path.home() / ".ngertiin-browser"
 DOWNLOADS = ROOT / "downloads"
 
 
@@ -33,7 +33,7 @@ def terminate(group):
     if not command.exists():
         return
     identity = command.read_bytes()
-    if b"chromium" not in identity and b"/tmp/ng036/egress.py" not in identity:
+    if not any(value in identity for value in (b"chromium", b"chrome", b"/tmp/ng036/egress.py")):
         return
     try:
         os.killpg(group, signal.SIGTERM)
@@ -117,7 +117,7 @@ def launch(seconds):
     )
     browser = subprocess.Popen(
         [
-            "chromium",
+            shutil.which("chromium") or shutil.which("google-chrome") or "chromium",
             "--no-sandbox",
             "--disable-dev-shm-usage",
             "--no-first-run",
@@ -135,7 +135,7 @@ def launch(seconds):
             "--start-maximized",
             "about:blank",
         ],
-        env={"PATH": "/usr/bin:/bin", "HOME": "/home/daytona", "DISPLAY": ":0"},
+        env={"PATH": "/usr/bin:/bin", "HOME": str(Path.home()), "DISPLAY": ":0"},
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
         start_new_session=True,

@@ -516,6 +516,8 @@ async def scenarios():
         viewer_input_contracts()
         await http_contracts()
         await interrupted_finalization()
+        await provider_switch()
+        await phased_model_response(original_model)
         async with transaction() as conn:
             count = await one(
                 conn,
@@ -525,6 +527,123 @@ async def scenarios():
     finally:
         policy.get_runtime, model.propose = original_runtime, original_model
         await harness.close_pool()
+
+
+async def provider_switch():
+    from ngertiin.config import get_settings
+
+    settings = get_settings()
+    original = settings.computer_provider
+    try:
+        owner, thread = await harness.owner()
+        settings.computer_provider = "daytona"
+        DECISIONS.append(Action(kind="ask_user", description="Periksa sesi lama."))
+        legacy = await run(owner, await create(owner, thread))
+        old = legacy["computer"]["workspace"]
+        settings.computer_provider = "e2b"
+        replacement = await run(owner, await create(owner, thread))
+        check(
+            "provider_switch_waits_for_active_legacy_profile",
+            replacement["stage"] == "computer_queue" and len(COMPUTER.running) == 1,
+        )
+        await control.change(owner, legacy["id"], old["control_version"], "agent")
+        legacy = await run(owner, legacy)
+        replacement = await tasks.detail(owner, replacement["id"])
+        check(
+            "legacy_stop_wakes_new_provider_waiter", replacement["status"] == "queued"
+        )
+        DECISIONS.append(Action(kind="ask_user", description="Periksa browser baru."))
+        replacement = await run(owner, replacement)
+        new = replacement["computer"]["workspace"]
+        check(
+            "new_provider_does_not_overwrite_legacy_profile",
+            new["id"] != old["id"] and old["id"] in COMPUTER.profiles,
+        )
+        async with transaction() as conn:
+            stored = await one(
+                conn,
+                "SELECT count(*) AS n FROM browser_workspaces WHERE owner_id=%s AND state<>'deleted'",
+                (owner,),
+            )
+        check("one_retained_profile_per_provider", stored["n"] == 2)
+        await control.change(owner, replacement["id"], new["control_version"], "agent")
+        replacement = await run(owner, replacement)
+        check("new_provider_task_completes", replacement["status"] == "succeeded")
+        await lifecycle.reset(owner, old["id"])
+        await lifecycle.reset(owner, new["id"])
+    finally:
+        settings.computer_provider = original
+
+
+async def phased_model_response(real_propose):
+    from langchain_core.messages import AIMessage
+
+    class PhasedModel:
+        mode = "final"
+
+        def __init__(self, **kwargs):
+            pass
+
+        def with_structured_output(self, *args, **kwargs):
+            return self
+
+        async def ainvoke(self, messages):
+            context = json.loads(messages[-1].content[0]["text"])
+            action = Action(
+                kind="finish",
+                description="Halaman berhasil diperiksa.",
+                files=[
+                    {"filename": s["filename"], "content": "# Hasil\nTerverifikasi."}
+                    for s in context["output_spec"]
+                ],
+            ).model_dump()
+            commentary = {
+                "type": "text",
+                "phase": "commentary",
+                "text": "Saya akan memeriksa halaman.",
+            }
+            final = {
+                "type": "text",
+                "phase": "final_answer",
+                "text": json.dumps(action),
+            }
+            content = [commentary, final]
+            if self.mode == "commentary_only":
+                content = [{**final, "phase": "commentary"}]
+            elif self.mode == "invalid_final":
+                final["text"] = json.dumps({**action, "x": 99999})
+            return {
+                "raw": AIMessage(
+                    content=content,
+                    additional_kwargs={"refusal": "declined"}
+                    if self.mode == "refusal"
+                    else {},
+                    response_metadata={"status": "completed"},
+                    usage_metadata={
+                        "input_tokens": 10,
+                        "output_tokens": 10,
+                        "total_tokens": 20,
+                    },
+                ),
+                "parsed": None,
+                "parsing_error": ValueError(
+                    "Commentary was concatenated with final JSON"
+                ),
+            }
+
+    original_factory, original_propose = model.ChatOpenAI, model.propose
+    model.ChatOpenAI, model.propose = PhasedModel, real_propose
+    try:
+        owner, thread = await harness.owner()
+        for mode in ("final", "commentary_only", "invalid_final", "refusal"):
+            PhasedModel.mode = mode
+            task = await run(owner, await create(owner, thread))
+            check(
+                "browser_model_phase_" + mode,
+                task["status"] == ("succeeded" if mode == "final" else "failed"),
+            )
+    finally:
+        model.ChatOpenAI, model.propose = original_factory, original_propose
 
 
 if __name__ == "__main__":

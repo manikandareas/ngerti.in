@@ -149,7 +149,7 @@ async def probe(owner, destination):
             execution,
             session,
             [StagedFile("probe.json", security_files[0].data)],
-            "P10/P11: isolasi dan resource caps teruji pada Daytona nyata.",
+            f"P10/P11: isolasi dan resource caps teruji pada {adapter.name} nyata.",
         )
         report["cleanup_confirmed"] = await lifecycle.cleanup(session, adapter)
         assert report["cleanup_confirmed"]

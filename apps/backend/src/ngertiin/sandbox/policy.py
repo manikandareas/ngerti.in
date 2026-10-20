@@ -10,7 +10,7 @@ def snapshot() -> dict:
         "provider": settings.sandbox_provider,
         "cpu": 2,
         "ram_gib": 4,
-        "disk_gib": 8,
+        "disk_gib": 22 if settings.sandbox_provider == "e2b" else 8,
         "command_seconds": 60,
         "task_seconds": 300,
         "ttl_minutes": 10,
@@ -35,8 +35,14 @@ def get_runtime(provider: str | None = None):
     # One explicit startup selection. Add another adapter here when it exists.
     from ngertiin.sandbox.contracts import SandboxRuntime
     from ngertiin.sandbox.daytona import DaytonaAdapter
+    from ngertiin.sandbox.e2b import E2BAdapter
 
-    if (provider or get_settings().sandbox_provider) != "daytona":
+    selected = provider or get_settings().sandbox_provider
+    runtime: SandboxRuntime
+    if selected == "e2b":
+        runtime = E2BAdapter()
+    elif selected == "daytona":
+        runtime = DaytonaAdapter()
+    else:
         raise ValueError("Runtime komputasi belum dikonfigurasi.")
-    runtime: SandboxRuntime = DaytonaAdapter()
     return runtime

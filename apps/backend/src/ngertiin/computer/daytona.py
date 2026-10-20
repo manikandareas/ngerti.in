@@ -6,10 +6,11 @@ import hashlib
 import json
 import shlex
 from pathlib import Path
+from urllib.parse import urlsplit, urlunsplit
 
 from daytona import AsyncDaytona, CreateSandboxFromSnapshotParams, DaytonaConfig
 
-from ngertiin.computer.contracts import Action, NeedsHuman, Screen, public_url
+from ngertiin.computer.contracts import Action, NeedsHuman, Screen, ViewerEndpoint, public_url
 from ngertiin.config import get_settings
 from ngertiin.sandbox.contracts import RuntimeFailure, StagedFile
 
@@ -193,7 +194,20 @@ class DaytonaComputer:
     async def preview(self, workspace):
         async with client() as api:
             sandbox = await api.get(workspace["resource_name"], request_timeout=15)
-            return (await sandbox.create_signed_preview_url(6080, expires_in_seconds=60)).url
+            parsed = urlsplit(
+                (await sandbox.create_signed_preview_url(6080, expires_in_seconds=60)).url
+            )
+            return ViewerEndpoint(
+                urlunsplit(
+                    (
+                        "wss",
+                        parsed.netloc,
+                        parsed.path.rstrip("/") + "/websockify",
+                        parsed.query,
+                        "",
+                    )
+                )
+            )
 
     async def heartbeat(self, workspace):
         async with client() as api:

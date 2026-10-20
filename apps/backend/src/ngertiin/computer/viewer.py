@@ -5,7 +5,6 @@ import hashlib
 import secrets
 from contextlib import suppress
 from datetime import UTC, datetime, timedelta
-from urllib.parse import urlsplit, urlunsplit
 from uuid import UUID, uuid4
 
 from fastapi import HTTPException, Response, WebSocket
@@ -124,12 +123,10 @@ async def gateway(websocket: WebSocket, ident: UUID):
         connected = True
         await websocket.accept(subprotocol="binary")
         runtime = policy.get_runtime(row["provider"])
-        parsed = urlsplit(await runtime.preview(row))
-        upstream = urlunsplit(
-            ("wss", parsed.netloc, parsed.path.rstrip("/") + "/websockify", parsed.query, "")
-        )
+        upstream = await runtime.preview(row)
         async with connect(
-            upstream,
+            upstream.url,
+            additional_headers=upstream.headers,
             subprotocols=[Subprotocol("binary")],
             proxy=None,
             max_size=8 * 1024 * 1024,

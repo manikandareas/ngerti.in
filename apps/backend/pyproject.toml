@@ -27,6 +27,7 @@ dependencies = [
   "daytona==0.225.0",
   "websockets>=15,<16",
   "mem0ai==2.2.1",
+  "e2b==2.56.0",
 ]
 
 [dependency-groups]

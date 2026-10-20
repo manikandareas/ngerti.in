@@ -3,7 +3,7 @@
 import hashlib
 import ipaddress
 import socket
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Literal, Protocol
 from urllib.parse import urlsplit
 
@@ -79,6 +79,12 @@ class Screen:
         return hashlib.sha256(self.png).hexdigest()
 
 
+@dataclass(frozen=True, repr=False)
+class ViewerEndpoint:
+    url: str
+    headers: dict[str, str] = field(default_factory=dict)
+
+
 class ComputerRuntime(Protocol):
     name: str
 
@@ -89,6 +95,6 @@ class ComputerRuntime(Protocol):
     async def collect(self, workspace: dict, filenames: list[str]) -> list[StagedFile]: ...
     async def stop(self, workspace: dict) -> dict: ...
     async def delete(self, workspace: dict) -> bool: ...
-    async def preview(self, workspace: dict) -> str: ...
+    async def preview(self, workspace: dict) -> ViewerEndpoint: ...
     async def heartbeat(self, workspace: dict) -> None: ...
     async def inspect(self, workspace: dict) -> str: ...

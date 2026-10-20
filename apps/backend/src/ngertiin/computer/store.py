@@ -50,8 +50,8 @@ async def summary(conn, task):
     ).fetchall()
     workspace = await one(
         conn,
-        "SELECT * FROM browser_workspaces WHERE owner_id=%s AND state<>'deleted'",
-        (task["owner_id"],),
+        "SELECT * FROM browser_workspaces WHERE owner_id=%s AND provider=%s AND state<>'deleted'",
+        (task["owner_id"], task["budget_policy"].get("computer", {}).get("provider", "daytona")),
     )
     action = await one(
         conn,
@@ -85,13 +85,25 @@ async def acquire(execution):
         await conn.execute("SELECT pg_advisory_xact_lock(330035)")
         workspace = await one(
             conn,
-            "SELECT * FROM browser_workspaces WHERE owner_id=%s AND state<>'deleted' FOR UPDATE",
-            (task["owner_id"],),
+            "SELECT * FROM browser_workspaces WHERE owner_id=%s AND provider=%s "
+            "AND state<>'deleted' FOR UPDATE",
+            (task["owner_id"], rules["provider"]),
         )
-        if workspace and (
-            workspace["state"] in ("unknown", "deleting", "stopping")
-            or workspace["retain_until"] <= datetime.now(UTC)
-            or workspace["active_task_id"] not in (None, task["id"])
+        other = await one(
+            conn,
+            "SELECT id FROM browser_workspaces WHERE owner_id=%s AND provider<>%s "
+            "AND state<>'deleted' AND (active_task_id IS NOT NULL OR "
+            "state IN ('unknown','deleting','stopping')) LIMIT 1",
+            (task["owner_id"], rules["provider"]),
+        )
+        if (
+            other
+            or workspace
+            and (
+                workspace["state"] in ("unknown", "deleting", "stopping")
+                or workspace["retain_until"] <= datetime.now(UTC)
+                or workspace["active_task_id"] not in (None, task["id"])
+            )
         ):
             await yield_task(
                 conn, task, "computer_queue", "Menunggu workspace siap dan aman digunakan."
@@ -176,7 +188,10 @@ async def wake(owner):
         workspace = await one(
             conn,
             "SELECT active_task_id,state,retain_until FROM browser_workspaces "
-            "WHERE owner_id=%s AND state<>'deleted'",
+            "WHERE owner_id=%s AND state<>'deleted' "
+            "ORDER BY (active_task_id IS NOT NULL OR "
+            "state IN ('unknown','deleting','stopping')) DESC "
+            "LIMIT 1",
             (owner,),
         )
         if workspace and (

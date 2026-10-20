@@ -67,14 +67,18 @@ class Settings(BaseSettings):
     daytona_api_key: SecretStr = SecretStr("")
     daytona_api_url: str = "https://app.daytona.io/api"
     daytona_target: str | None = None
-    sandbox_provider: str = "daytona"
-    sandbox_price_version: str = "daytona-linux-2026-10-18"
-    sandbox_resource_microusd_per_hour: int = Field(default=166464, ge=0, le=180000)
+    e2b_api_key: SecretStr = SecretStr("")
+    e2b_sandbox_template: str = "ngertiin-code-v1"
+    e2b_computer_template: str = "ngertiin-desktop-v1"
+    sandbox_provider: str = "e2b"
+    sandbox_price_version: str = "e2b-linux-2026-10-20"
+    sandbox_resource_microusd_per_hour: int = Field(default=165600, ge=0, le=180000)
     sandbox_account_daily_microusd: int = Field(default=1000000, ge=36000, le=10000000)
     sandbox_global_daily_microusd: int = Field(default=5000000, ge=36000, le=50000000)
     computer_task_seconds: int = Field(default=1200, ge=120, le=1200)
+    computer_provider: str = "e2b"
     computer_retention_days: int = Field(default=7, ge=1, le=7)
-    computer_storage_microusd_per_hour: int = Field(default=864, ge=1, le=1200)
+    computer_storage_microusd_per_hour: int = Field(default=0, ge=0, le=1200)
     billing_mode: Literal["test", "live"] = "test"
     billing_public_api_url: str = ""
     duitku_enabled: bool = False

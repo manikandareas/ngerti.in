@@ -2,7 +2,7 @@
 
 Asisten personal umum untuk percakapan, pekerjaan background, file/hasil, kode/browser, jadwal, memory dan goals. [Spesifikasi aktif](docs/README.md) dan [backlog](docs/backlog/README.md) membedakan target V1 dari kemampuan yang sudah diterima.
 
-Fondasi saat ini: Clerk/ownership, main/side chat, streaming SSE/replay, LangGraph checkpoints, Procrastinate, S3/MinIO dan ledger chat. [Task background](docs/engineering/task-33-acceptance.md), [file/hasil persisten](docs/engineering/files-34-acceptance.md), serta [komputasi Python](docs/engineering/sandbox-35-acceptance.md) menyediakan review/revisi, stop/retry dan delivery sambil chat tetap digunakan. [Interface runtime](docs/engineering/sandbox-runtime.md) memakai Daytona sebagai adapter pertama. Browser/VNC/takeover dan offline schedules mengikuti tiket berikutnya. Course/Lesson/Practice tidak menjadi dependency aktif V1.
+Fondasi saat ini: Clerk/ownership, main/side chat, streaming SSE/replay, LangGraph checkpoints, Procrastinate, S3/MinIO dan ledger chat. [Task background](docs/engineering/task-33-acceptance.md), [file/hasil persisten](docs/engineering/files-34-acceptance.md), serta [komputasi Python](docs/engineering/sandbox-35-acceptance.md) menyediakan review/revisi, stop/retry dan delivery sambil chat tetap digunakan. [Interface runtime](docs/engineering/sandbox-runtime.md) memakai E2B untuk browser/VNC/takeover dan Python offline; [migrasi E2B](docs/engineering/e2b-migration-2026-10-20.md) mencatat konfigurasi dan bukti penggantian Daytona. Course/Lesson/Practice tidak menjadi dependency aktif V1.
 
 ## Development
 

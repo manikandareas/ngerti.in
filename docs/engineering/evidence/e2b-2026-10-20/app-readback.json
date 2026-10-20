@@ -1,0 +1,128 @@
+{
+  "at": "2026-10-20T12:22:00.753646+00:00",
+  "tasks": [
+    {
+      "id": "df2c8f48-c7ec-4ad6-923a-9b80cd541548",
+      "status": "succeeded",
+      "stage": "complete",
+      "error": null,
+      "model_calls": 4,
+      "result_id": "e8f08943-acaf-5b54-a870-963371cce8dd",
+      "provider": "e2b"
+    },
+    {
+      "id": "2aad94be-297e-4df5-a7e1-b2f7a2566916",
+      "status": "failed",
+      "stage": "failed",
+      "error": "Keputusan browser belum valid. Tidak ada aksi yang dijalankan.",
+      "model_calls": 3,
+      "result_id": "9b0837d1-7b9c-56b3-8e8e-cdbd2708973a",
+      "provider": "e2b"
+    },
+    {
+      "id": "62bd4a0c-616c-4ea4-bc88-14a1ae359e88",
+      "status": "cancelled",
+      "stage": "cancelled",
+      "error": null,
+      "model_calls": 1,
+      "result_id": "5858a21b-d79f-5aa2-9886-d01d50770cf6",
+      "provider": "e2b"
+    },
+    {
+      "id": "bcf9df86-f6de-4c4e-8381-c4cd469bb170",
+      "status": "succeeded",
+      "stage": "complete",
+      "error": null,
+      "model_calls": 2,
+      "result_id": "f84f9a91-5572-52a6-a92a-e8b81a367d9e",
+      "provider": "e2b"
+    }
+  ],
+  "sessions": [
+    {
+      "task_id": "df2c8f48-c7ec-4ad6-923a-9b80cd541548",
+      "workspace_id": "9b1cf95c-877e-48c3-807d-3d6d3a6e5be7",
+      "state": "stopped",
+      "cost_state": "estimated",
+      "charged_microusd": 1186,
+      "stopped_at": "2026-10-20 12:00:22.781478+00:00"
+    },
+    {
+      "task_id": "df2c8f48-c7ec-4ad6-923a-9b80cd541548",
+      "workspace_id": "9b1cf95c-877e-48c3-807d-3d6d3a6e5be7",
+      "state": "stopped",
+      "cost_state": "estimated",
+      "charged_microusd": 13728,
+      "stopped_at": "2026-10-20 12:06:49.848007+00:00"
+    },
+    {
+      "task_id": "2aad94be-297e-4df5-a7e1-b2f7a2566916",
+      "workspace_id": "9b1cf95c-877e-48c3-807d-3d6d3a6e5be7",
+      "state": "stopped",
+      "cost_state": "estimated",
+      "charged_microusd": 1074,
+      "stopped_at": "2026-10-20 12:07:52.812429+00:00"
+    },
+    {
+      "task_id": "62bd4a0c-616c-4ea4-bc88-14a1ae359e88",
+      "workspace_id": "9b1cf95c-877e-48c3-807d-3d6d3a6e5be7",
+      "state": "stopped",
+      "cost_state": "estimated",
+      "charged_microusd": 3464,
+      "stopped_at": "2026-10-20 12:11:28.284133+00:00"
+    },
+    {
+      "task_id": "2aad94be-297e-4df5-a7e1-b2f7a2566916",
+      "workspace_id": "9b1cf95c-877e-48c3-807d-3d6d3a6e5be7",
+      "state": "stopped",
+      "cost_state": "estimated",
+      "charged_microusd": 904,
+      "stopped_at": "2026-10-20 12:11:55.705727+00:00"
+    },
+    {
+      "task_id": "2aad94be-297e-4df5-a7e1-b2f7a2566916",
+      "workspace_id": "9b1cf95c-877e-48c3-807d-3d6d3a6e5be7",
+      "state": "stopped",
+      "cost_state": "estimated",
+      "charged_microusd": 908,
+      "stopped_at": "2026-10-20 12:14:08.088958+00:00"
+    },
+    {
+      "task_id": "bcf9df86-f6de-4c4e-8381-c4cd469bb170",
+      "workspace_id": "9b1cf95c-877e-48c3-807d-3d6d3a6e5be7",
+      "state": "stopped",
+      "cost_state": "estimated",
+      "charged_microusd": 1182,
+      "stopped_at": "2026-10-20 12:20:26.972326+00:00"
+    }
+  ],
+  "workspace": {
+    "id": "9b1cf95c-877e-48c3-807d-3d6d3a6e5be7",
+    "provider": "e2b",
+    "resource_id": "ifb9cbeo91i5xnyzee4nd",
+    "state": "stopped",
+    "active_task_id": null,
+    "control": "agent"
+  },
+  "audit_jobs_pending": 0,
+  "running_test_tasks": 0,
+  "provider_state": "paused",
+  "results": [
+    {
+      "task_id": "df2c8f48-c7ec-4ad6-923a-9b80cd541548",
+      "filename": "hasil.md",
+      "bytes": 187,
+      "sha256": "93c1158464400523aeebf012c0f0c8e0fc73666ac9d5e8f7f1fb125a6fe3d571",
+      "checksum_matches": true,
+      "text": "# Hasil pemeriksaan\n\nHalaman **Secure Area** terbuka setelah pengguna melakukan login manual. Halaman menampilkan pesan \u201cYou logged into a secure area!\u201d. Saya tidak melakukan logout.\n"
+    },
+    {
+      "task_id": "bcf9df86-f6de-4c4e-8381-c4cd469bb170",
+      "filename": "hasil.md",
+      "bytes": 180,
+      "sha256": "78f5f4d097d4f4c4693381242e5757efc4e4d9f0a93972b5cf7a572b930c07a0",
+      "checksum_matches": true,
+      "text": "# Hasil pemeriksaan\n\nSesi login dari Task A masih aktif. Halaman menampilkan **Secure Area**, pesan selamat datang, dan tombol **Logout**. Tidak melakukan login ulang atau logout.\n"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "kind": "live_controlled_runtime_contract",
+  "started_at": 1792497354.186201,
+  "task_id": "e5f43873-670d-4165-a53e-43779e70f00d",
+  "session_id": "e45478d1-3b2d-4f6f-a183-4f117e2292d3",
+  "ceiling_microusd": 36000,
+  "info": {
+    "provider": "e2b",
+    "version": "2.56.0",
+    "cpu": 2,
+    "ram_gib": 4,
+    "disk_gib": 22,
+    "provider_version": ""
+  },
+  "security_receipt": {
+    "exit_code": 0,
+    "stdout": "{\"network_denied\": true, \"root_process_environment_denied\": true, \"uid_unprivileged\": true, \"secrets_absent\": true, \"sudo_denied\": true, \"child_network_denied\": true, \"hard_limit_cannot_be_raised\": true, \"io_uring_denied\": true, \"memory_hard_bytes\": 2147483648, \"file_hard_bytes\": 10485760, \"process_hard_count\": 64}\n",
+    "duration_ms": 670
+  },
+  "security": {
+    "network_denied": true,
+    "root_process_environment_denied": true,
+    "uid_unprivileged": true,
+    "secrets_absent": true,
+    "sudo_denied": true,
+    "child_network_denied": true,
+    "hard_limit_cannot_be_raised": true,
+    "io_uring_denied": true,
+    "memory_hard_bytes": 2147483648,
+    "file_hard_bytes": 10485760,
+    "process_hard_count": 64
+  },
+  "symlink_collection_rejected": true,
+  "stdout_bound": {
+    "bytes": 16000,
+    "exit_code": 0
+  },
+  "limits": {
+    "memory_stopped": true,
+    "oversize_file_stopped": true
+  },
+  "timeout": {
+    "exit_code": 124,
+    "stdout": "",
+    "duration_ms": 2252
+  },
+  "cleanup_confirmed": true,
+  "result_id": "4ed17089-68b8-53a6-a68d-8298d2da1f86",
+  "costs": [
+    {
+      "id": "e45478d1-3b2d-4f6f-a183-4f117e2292d3",
+      "state": "deleted",
+      "reserved_microusd": 36000,
+      "charged_microusd": 834,
+      "cost_state": "estimated",
+      "usage": {
+        "invoice_confirmed": false,
+        "observed_wall_seconds": 18.122
+      },
+      "error": null,
+      "created_at": "2026-10-20 11:55:54.412861+00:00",
+      "deleted_at": "2026-10-20 11:56:12.534262+00:00"
+    }
+  ],
+  "bytes_after_sandbox_deletion": true,
+  "passed": true,
+  "seconds": 18.774
+}

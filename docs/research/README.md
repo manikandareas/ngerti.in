@@ -4,6 +4,7 @@ Keputusan aktif berada di [Produk & Scope V1](../product/01-produk-dan-paket.md)
 
 - [Bukti Riset & REA per modul](muse-ai-v1/README.md): chat/session, task/scheduler, file/artifact, memory/goals, permissions dan browser/computer.
 - [Mesin privat: Daytona, VNC dan takeover](agent-private-machine-options-2026-10-18.md): snapshot dokumen vendor sebelum trial NG-031.
+- [Alternatif provider browser privat](browser-provider-alternatives-2026-10-20.md): perbandingan E2B Desktop, Hopx, Kernel dan Browserbase berdasarkan kredit/trial, internet, viewer dan profil lintas Task; rekomendasi PoC, belum acceptance runtime.
 - [NG-031 · Research dan rancangan trial Daytona](daytona-trial-31-2026-10-18.md): snapshot riset sebelum trial. [Hasil penerimaan](../engineering/daytona-31-acceptance.md) mencatat implementasi dan bukti live berikut batasnya.
 - [Soul dan memory](agent-soul-memory.md), [framework agent](agent-framework-selection.md), [stack proaktif](proactive-agent-frameworks-2026-10-14.md).
 - [Algoritma memory agent: hybrid, temporal graph, dan evaluasi](agent-memory-algorithms-2026-10-19.md): perbandingan sumber primer dan usulan PoC untuk NG-017; belum menjadi keputusan implementasi atau hasil benchmark lokal.

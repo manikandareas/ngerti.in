@@ -1,5 +1,6 @@
 """Server-owned bounds match Task admission, including uncached full-file OCR."""
 
+from ngertiin.accounts.access import unlimited_usage
 from ngertiin.chat.store import one
 from ngertiin.config import get_settings
 from ngertiin.files.store import revision
@@ -45,7 +46,8 @@ async def estimate(conn, owner, runtime="text", inputs=(), per_run_cap=None):
     return {
         "maximum": round(amount / policy.CREDIT, 3),
         "remaining": round(remaining / policy.CREDIT, 3),
-        "available": amount <= remaining,
+        "available": unlimited_usage(owner) or amount <= remaining,
+        "unlimited": unlimited_usage(owner),
         "reset_at": p["ends_at"],
         "policy_version": p["policy"]["version"],
         "binding": False,

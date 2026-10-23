@@ -7,6 +7,7 @@ from uuid import uuid4
 
 from fastapi import HTTPException
 
+from ngertiin.accounts.access import unlimited_usage
 from ngertiin.chat.store import json_value, one
 from ngertiin.sandbox.contracts import RuntimePending
 from ngertiin.tasks import store as tasks
@@ -48,8 +49,13 @@ async def reserve(execution):
         )
         cap = rules["session_microusd"]
         if (
-            usage["total"] + cap > rules["global_daily_microusd"]
-            or usage["account"] + cap > rules["account_daily_microusd"]
+            (
+                not unlimited_usage(task["owner_id"])
+                and (
+                    usage["total"] + cap > rules["global_daily_microusd"]
+                    or usage["account"] + cap > rules["account_daily_microusd"]
+                )
+            )
             or previous["charged"] + cap > rules["task_microusd"]
             or previous["sessions"] >= rules["max_sessions"]
         ):

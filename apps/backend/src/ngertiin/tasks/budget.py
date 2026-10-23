@@ -4,6 +4,7 @@ from uuid import uuid4
 
 from fastapi import HTTPException
 
+from ngertiin.accounts.access import unlimited_usage
 from ngertiin.chat.store import json_value, one
 from ngertiin.tasks import store
 from ngertiin.tasks.policy import snapshot
@@ -38,9 +39,13 @@ async def admit(conn, owner, policy: dict, *, day=None):
         "AND budget_policy->>'unit'<>'metered_browser_work'",
         (owner, day),
     )
-    if not metered_browser(policy) and (
-        usage["account"] + policy["task_cap"] > policy["account_daily_cap"]
-        or usage["total"] + policy["task_cap"] > policy["global_daily_cap"]
+    if (
+        not unlimited_usage(owner)
+        and not metered_browser(policy)
+        and (
+            usage["account"] + policy["task_cap"] > policy["account_daily_cap"]
+            or usage["total"] + policy["task_cap"] > policy["global_daily_cap"]
+        )
     ):
         raise AdmissionDenied(
             "budget", "Batas komputasi task hari ini tercapai. Coba lagi besok (UTC)."

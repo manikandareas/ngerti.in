@@ -4,6 +4,7 @@ from uuid import uuid5
 
 from psycopg.types.json import Jsonb
 
+from ngertiin.accounts.access import unlimited_usage
 from ngertiin.chat.store import lock_account, one
 from ngertiin.tasks.budget import AdmissionDenied
 from ngertiin.usage import policy
@@ -70,6 +71,8 @@ async def period(conn, owner):
 
 
 def ensure_capacity(totals, p, rules, amount):
+    if unlimited_usage(p.get("owner_id")):
+        return
     if totals["period"] + amount > p["policy"][p["plan"]]:
         raise AdmissionDenied(
             "budget",

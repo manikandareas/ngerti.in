@@ -2,6 +2,7 @@ export type QuotaMeter = "chat";
 
 export interface QuotaUsage {
   plan: "free" | "plus";
+  unlimited: boolean;
   period: { starts_at: string; ends_at: string; policy_version: string };
   meters: Record<QuotaMeter, { limit: number; used: number; reserved: number; remaining: number }>;
 }
@@ -24,6 +25,7 @@ export interface ComputeWork {
 
 export interface ComputeUsage {
   plan: "free" | "plus";
+  unlimited: boolean;
   policy_version: string;
   period: { starts_at: string; ends_at: string };
   compute: { limit: number; used: number; reserved: number; remaining: number };
@@ -36,6 +38,7 @@ export interface WorkEstimate {
   maximum: number;
   remaining: number;
   available: boolean;
+  unlimited: boolean;
   reset_at: string;
   policy_version: string;
   binding: false;

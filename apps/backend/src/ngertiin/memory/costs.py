@@ -8,6 +8,7 @@ import psycopg
 from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
 
+from ngertiin.accounts.access import unlimited_usage
 from ngertiin.config import get_settings
 
 
@@ -59,10 +60,12 @@ class ProviderBudget:
             ).fetchone()
             assert used is not None
             if (
-                used["account"] + ceiling > settings.memory_account_daily_units
-                or used["total"] + ceiling > settings.memory_global_daily_units
-                or (self.job and used["job"] + ceiling > settings.memory_job_units)
-            ):
+                not unlimited_usage(self.owner)
+                and (
+                    used["account"] + ceiling > settings.memory_account_daily_units
+                    or used["total"] + ceiling > settings.memory_global_daily_units
+                )
+            ) or (self.job and used["job"] + ceiling > settings.memory_job_units):
                 raise MemoryUnavailable("Batas komputasi memory hari ini tercapai.")
             call = uuid4()
             conn.execute(

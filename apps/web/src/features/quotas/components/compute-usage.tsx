@@ -15,7 +15,7 @@ export function ComputeUsagePanel() {
         onRetry={query.isError ? () => void query.refetch() : undefined}
       />
     );
-  const { compute, storage, items, period } = query.data;
+  const { compute, storage, items, period, unlimited } = query.data;
   return (
     <div className="space-y-7">
       {query.isError && (
@@ -26,71 +26,91 @@ export function ComputeUsagePanel() {
           </Button>
         </p>
       )}
-      <section aria-labelledby="compute-usage-heading" className="space-y-5 border-t pt-6">
-        <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <h2 id="compute-usage-heading">Komputasi</h2>
-          <span className="text-sm">{formatCredits(compute.remaining)} tersisa</span>
-        </div>
-        <progress
-          className="usage-progress h-2 w-full"
-          max={compute.limit}
-          value={compute.used + compute.reserved}
-          aria-label="Komputasi terpakai dan dicadangkan"
-        />
-        <dl className="grid grid-cols-2 gap-x-4 gap-y-5 text-sm">
-          <div>
-            <dt className="text-muted-foreground">Sudah dipakai</dt>
-            <dd className="mt-1 font-bold tabular-nums">{formatCredits(compute.used)}</dd>
-          </div>
-          <div>
-            <dt className="text-muted-foreground">Dicadangkan</dt>
-            <dd className="mt-1 font-bold tabular-nums">{formatCredits(compute.reserved)}</dd>
-          </div>
-          <div>
-            <dt className="text-muted-foreground">Kuota periode ini</dt>
-            <dd className="mt-1 tabular-nums">{formatCredits(compute.limit)}</dd>
-          </div>
-          <div>
-            <dt className="text-muted-foreground">
-              {query.data.plan === "plus" ? "Akhir periode berbayar" : "Reset berikutnya"}
-            </dt>
-            <dd className="mt-1">
-              <time dateTime={period.ends_at}>{usageDate.format(new Date(period.ends_at))}</time>
-            </dd>
-          </div>
-        </dl>
-        <p className="max-w-prose text-sm text-muted-foreground">
-          Chat, pengolahan file, Python, browser, memory dan evaluasi proaktif menggunakan
-          komputasi. Cadangan membatasi pekerjaan sebelum berjalan; sisa dikembalikan setelah
-          selesai. Angka mengikuti tarif yang berlaku saat pekerjaan diterima.
-          {query.data.plan === "plus"
-            ? " Kuota Plus berikutnya menunggu pembayaran terverifikasi."
-            : ""}
-        </p>
-        {compute.remaining === 0 && (
-          <p role="status" className="rounded-xl bg-warning p-4 text-sm text-warning-foreground">
-            Komputasi habis atau sedang dicadangkan. Kamu tetap bisa menghentikan pekerjaan,
-            meninjau approval, mengunduh hasil, mengelola memory dan menjeda jadwal.
+      {unlimited ? (
+        <section className="space-y-3 border-t pt-6" aria-label="Penggunaan tanpa batas">
+          <h2>Komputasi dan penyimpanan tanpa kuota</h2>
+          <p className="text-sm">
+            Terpakai {formatCredits(compute.used)} · Dicadangkan {formatCredits(compute.reserved)}
           </p>
-        )}
-      </section>
-      <section aria-labelledby="storage-usage-heading" className="space-y-3 border-t pt-6">
-        <h2 id="storage-usage-heading">Penyimpanan file</h2>
-        <p className="text-sm tabular-nums">
-          {(storage.bytes / 1048576).toLocaleString("id-ID", { maximumFractionDigits: 2 })} dari{" "}
-          {Math.round(storage.limit_bytes / 1048576)} MiB
-        </p>
-        <progress
-          className="usage-progress h-2 w-full"
-          value={storage.bytes}
-          max={storage.limit_bytes}
-          aria-label="Penyimpanan file terpakai"
-        />
-        <p className="text-sm text-muted-foreground">
-          Termasuk file yang masih menunggu penghapusan fisik. Penyimpanan profil browser tercakup
-          dalam cadangan pekerjaan browser.
-        </p>
-      </section>
+          <p className="text-sm">
+            Penyimpanan terpakai{" "}
+            {(storage.bytes / 1048576).toLocaleString("id-ID", { maximumFractionDigits: 2 })} MiB
+          </p>
+        </section>
+      ) : (
+        <>
+          <section aria-labelledby="compute-usage-heading" className="space-y-5 border-t pt-6">
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <h2 id="compute-usage-heading">Komputasi</h2>
+              <span className="text-sm">{formatCredits(compute.remaining)} tersisa</span>
+            </div>
+            <progress
+              className="usage-progress h-2 w-full"
+              max={compute.limit}
+              value={compute.used + compute.reserved}
+              aria-label="Komputasi terpakai dan dicadangkan"
+            />
+            <dl className="grid grid-cols-2 gap-x-4 gap-y-5 text-sm">
+              <div>
+                <dt className="text-muted-foreground">Sudah dipakai</dt>
+                <dd className="mt-1 font-bold tabular-nums">{formatCredits(compute.used)}</dd>
+              </div>
+              <div>
+                <dt className="text-muted-foreground">Dicadangkan</dt>
+                <dd className="mt-1 font-bold tabular-nums">{formatCredits(compute.reserved)}</dd>
+              </div>
+              <div>
+                <dt className="text-muted-foreground">Kuota periode ini</dt>
+                <dd className="mt-1 tabular-nums">{formatCredits(compute.limit)}</dd>
+              </div>
+              <div>
+                <dt className="text-muted-foreground">
+                  {query.data.plan === "plus" ? "Akhir periode berbayar" : "Reset berikutnya"}
+                </dt>
+                <dd className="mt-1">
+                  <time dateTime={period.ends_at}>
+                    {usageDate.format(new Date(period.ends_at))}
+                  </time>
+                </dd>
+              </div>
+            </dl>
+            <p className="max-w-prose text-sm text-muted-foreground">
+              Chat, pengolahan file, Python, browser, memory dan evaluasi proaktif menggunakan
+              komputasi. Cadangan membatasi pekerjaan sebelum berjalan; sisa dikembalikan setelah
+              selesai. Angka mengikuti tarif yang berlaku saat pekerjaan diterima.
+              {query.data.plan === "plus"
+                ? " Kuota Plus berikutnya menunggu pembayaran terverifikasi."
+                : ""}
+            </p>
+            {compute.remaining === 0 && (
+              <p
+                role="status"
+                className="rounded-xl bg-warning p-4 text-sm text-warning-foreground"
+              >
+                Komputasi habis atau sedang dicadangkan. Kamu tetap bisa menghentikan pekerjaan,
+                meninjau approval, mengunduh hasil, mengelola memory dan menjeda jadwal.
+              </p>
+            )}
+          </section>
+          <section aria-labelledby="storage-usage-heading" className="space-y-3 border-t pt-6">
+            <h2 id="storage-usage-heading">Penyimpanan file</h2>
+            <p className="text-sm tabular-nums">
+              {(storage.bytes / 1048576).toLocaleString("id-ID", { maximumFractionDigits: 2 })} dari{" "}
+              {Math.round(storage.limit_bytes / 1048576)} MiB
+            </p>
+            <progress
+              className="usage-progress h-2 w-full"
+              value={storage.bytes}
+              max={storage.limit_bytes}
+              aria-label="Penyimpanan file terpakai"
+            />
+            <p className="text-sm text-muted-foreground">
+              Termasuk file yang masih menunggu penghapusan fisik. Penyimpanan profil browser
+              tercakup dalam cadangan pekerjaan browser.
+            </p>
+          </section>
+        </>
+      )}
       <section aria-labelledby="compute-history-heading" className="space-y-4 border-t pt-6">
         <h2 id="compute-history-heading">Riwayat komputasi</h2>
         {!items.length && (

@@ -4,6 +4,7 @@ from uuid import uuid4
 
 from fastapi import HTTPException
 
+from ngertiin.accounts.access import unlimited_usage
 from ngertiin.async_db import transaction
 from ngertiin.chat.store import json_value, lock_account, one, owned_thread
 from ngertiin.config import get_settings
@@ -141,7 +142,7 @@ async def request(owner, thread=None):
             "AT TIME ZONE 'UTC'",
             (owner,),
         )
-        if count["n"] >= settings.proactive_daily_evaluations:
+        if not unlimited_usage(owner) and count["n"] >= settings.proactive_daily_evaluations:
             raise HTTPException(429, "Batas evaluasi proaktif hari ini tercapai.")
         row = await one(
             conn,

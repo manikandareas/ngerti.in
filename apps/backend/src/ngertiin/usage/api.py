@@ -6,6 +6,7 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, Query
 from pydantic import BaseModel, ConfigDict, Field
 
+from ngertiin.accounts.access import unlimited_usage
 from ngertiin.accounts.auth import current_account
 from ngertiin.async_db import transaction
 from ngertiin.chat.store import one
@@ -63,6 +64,7 @@ async def summary(conn, owner, offset=0):
 
     return {
         "plan": p["plan"],
+        "unlimited": unlimited_usage(owner),
         "plan_contract": {
             "chat_messages": (await current_period(conn, owner))["limits"]["chat"],
             "compute_credits": credits(limit),

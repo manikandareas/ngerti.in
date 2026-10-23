@@ -6,6 +6,7 @@ from uuid import UUID, uuid4
 
 from fastapi import HTTPException
 
+from ngertiin.accounts.access import unlimited_usage
 from ngertiin.async_db import transaction
 from ngertiin.chat.store import lock_account, one
 from ngertiin.config import get_settings
@@ -40,7 +41,7 @@ async def capacity(conn, owner, size):
         "SELECT size FROM computer_outputs WHERE owner_id=%s AND purged_at IS NULL) owned_bytes",
         (owner, owner, owner),
     )
-    if row["size"] + size > get_settings().file_account_bytes:
+    if not unlimited_usage(owner) and row["size"] + size > get_settings().file_account_bytes:
         raise HTTPException(429, "Penyimpanan file akun penuh. Hapus file yang tidak diperlukan.")
 
 

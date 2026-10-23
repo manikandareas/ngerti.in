@@ -34,6 +34,9 @@ export function QuotaSummary({ usage, failed, onRefresh }: QuotaSummaryProps) {
       </div>
     );
   }
+  if (usage.unlimited) {
+    return <p className="py-2 text-center text-xs text-muted-foreground">Penggunaan tanpa batas</p>;
+  }
   const reset = dateFormat.format(new Date(usage.period.ends_at));
   const chat = usage.meters.chat;
   return (

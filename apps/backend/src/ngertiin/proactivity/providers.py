@@ -5,6 +5,7 @@ from uuid import uuid4
 
 import httpx
 
+from ngertiin.accounts.access import unlimited_usage
 from ngertiin.async_db import transaction
 from ngertiin.chat.store import json_value, lock_account, one
 from ngertiin.config import get_settings
@@ -42,10 +43,12 @@ async def reserve(job, stage, model, body):
             (job["owner_id"], job["id"], job["id"]),
         )
         if (
-            totals["total"] + ceiling > settings.proactive_global_daily_units
-            or totals["account"] + ceiling > settings.proactive_account_daily_units
-            or totals["job"] + ceiling > settings.proactive_evaluation_units
-        ):
+            not unlimited_usage(job["owner_id"])
+            and (
+                totals["total"] + ceiling > settings.proactive_global_daily_units
+                or totals["account"] + ceiling > settings.proactive_account_daily_units
+            )
+        ) or totals["job"] + ceiling > settings.proactive_evaluation_units:
             raise EvaluationUnavailable("budget_exhausted")
         identity = uuid4()
         await conn.execute(

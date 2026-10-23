@@ -22,6 +22,22 @@ export function UsagePanel() {
       />
     );
   }
+  if (quota.data.unlimited) {
+    return (
+      <div className="space-y-7">
+        <section className="space-y-2 rounded-2xl border bg-card p-5">
+          <h2>Penggunaan tanpa batas</h2>
+          <p className="text-sm text-muted-foreground">
+            Chat, komputasi, dan penyimpanan akun tanpa kuota. Riwayat penggunaan tetap dicatat.
+          </p>
+          <p className="text-sm">
+            {quota.data.meters.chat.used} pesan sudah dipakai pada periode ini.
+          </p>
+        </section>
+        <ComputeUsagePanel />
+      </div>
+    );
+  }
   const {
     meters: { chat },
     period,

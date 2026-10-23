@@ -32,6 +32,7 @@ class UsagePeriod(BaseModel):
 
 
 class UsageResponse(BaseModel):
+    unlimited: bool = False
     plan: Plan
     period: UsagePeriod
     meters: dict[Meter, MeterUsage]

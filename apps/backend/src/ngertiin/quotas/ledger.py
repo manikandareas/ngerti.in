@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from uuid import UUID, uuid4, uuid5
 
+from ngertiin.accounts.access import unlimited_usage
 from ngertiin.quotas.errors import QuotaConflict, QuotaExceeded, QuotaNotFound
 from ngertiin.quotas.periods import current_period, lock_account, one
 from ngertiin.quotas.policy import METERS, Meter, positive_units
@@ -30,7 +31,7 @@ async def balance(conn, period: dict, meter: Meter) -> dict:
         (period["id"], meter),
     )
     limit = period["limits"][meter]
-    return {"limit": limit, **row, "remaining": limit - row["used"] - row["reserved"]}
+    return {"limit": limit, **row, "remaining": max(0, limit - row["used"] - row["reserved"])}
 
 
 async def record(conn, operation: dict, action: str, reason: str):
@@ -80,7 +81,7 @@ async def reserve(
             return reservation(operation)
     period = await current_period(conn, owner, at=at)
     usage = await balance(conn, period, meter)
-    if usage["remaining"] < amount:
+    if not unlimited_usage(owner) and usage["remaining"] < amount:
         raise QuotaExceeded(meter, amount, usage, period)
     if operation:
         operation = await one(
@@ -157,6 +158,7 @@ async def usage(conn, owner: UUID, *, at: datetime | None = None):
     meters = {meter: await balance(conn, period, meter) for meter in METERS}
     return {
         "plan": period["plan"],
+        "unlimited": unlimited_usage(owner),
         "period": {key: period[key] for key in ("starts_at", "ends_at", "policy_version")},
         "meters": meters,
     }

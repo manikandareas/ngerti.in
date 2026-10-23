@@ -26,7 +26,7 @@ export function Thread({ threadId, draftRequest, onDraftRequestConsumed }: Threa
   const online = useOnline();
   const input = useRef<HTMLTextAreaElement>(null);
   const quota = useQuota();
-  const blocked = quota.data?.meters.chat.remaining === 0;
+  const blocked = !quota.data?.unlimited && quota.data?.meters.chat.remaining === 0;
   const run = snapshot?.run;
   const active = run ? activeStatuses.has(run.status) : false;
   const composer = useThreadComposer({
@@ -139,7 +139,8 @@ export function Thread({ threadId, draftRequest, onDraftRequestConsumed }: Threa
             outputs={composer.outputs}
             onOutputs={composer.setOutputs}
           />
-          {quota.isError || (quota.data && quota.data.meters.chat.remaining <= 5) ? (
+          {quota.isError ||
+          (quota.data && !quota.data.unlimited && quota.data.meters.chat.remaining <= 5) ? (
             <QuotaSummary
               usage={quota.data}
               failed={quota.isError}

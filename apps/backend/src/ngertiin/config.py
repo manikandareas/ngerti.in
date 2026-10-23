@@ -3,6 +3,7 @@
 from functools import lru_cache
 from pathlib import Path
 from typing import Literal
+from uuid import UUID
 
 from pydantic import Field, SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -14,6 +15,8 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=ROOT / ".env", extra="ignore", hide_input_in_errors=True
     )
+
+    unlimited_account_ids: frozenset[UUID] = frozenset()
 
     app_env: Literal["development", "production"] = "development"
     enable_dev_diagnostics: bool = False

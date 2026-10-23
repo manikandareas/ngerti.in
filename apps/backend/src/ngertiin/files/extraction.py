@@ -7,6 +7,7 @@ from uuid import UUID, uuid4
 
 from fastapi import HTTPException
 
+from ngertiin.accounts.access import unlimited_usage
 from ngertiin.async_db import transaction
 from ngertiin.chat.store import json_value, lock_account, one
 from ngertiin.files import inputs, mistral, store
@@ -60,7 +61,7 @@ async def claim(extraction_id):
                 "WHERE budget_day=(now() AT TIME ZONE 'UTC')::date",
                 (row["owner_id"],),
             )
-            if (
+            if not unlimited_usage(row["owner_id"]) and (
                 used["account"] + pages > row["policy"]["ocr_account_daily_pages"]
                 or used["total"] + pages > row["policy"]["ocr_global_daily_pages"]
             ):

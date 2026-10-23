@@ -5,6 +5,16 @@ import { usageDate } from "@/features/quotas/utils/format";
 export function SettingsUsageSummary() {
   const quota = useQuota();
   const chat = quota.data?.meters.chat;
+  if (quota.data?.unlimited) {
+    return (
+      <section className="space-y-2 rounded-2xl bg-muted/60 p-4" aria-label="Ringkasan penggunaan">
+        <p className="text-sm font-bold">Penggunaan tanpa batas</p>
+        <p className="text-xs text-muted-foreground">
+          Chat, komputasi, dan penyimpanan akun tanpa kuota.
+        </p>
+      </section>
+    );
+  }
   return (
     <section className="space-y-3 rounded-2xl bg-muted/60 p-4" aria-label="Ringkasan penggunaan">
       {quota.data && chat ? (

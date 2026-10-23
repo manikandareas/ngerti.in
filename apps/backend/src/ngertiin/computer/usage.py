@@ -4,6 +4,7 @@ import math
 from datetime import UTC, datetime, timedelta
 from uuid import uuid4
 
+from ngertiin.accounts.access import unlimited_usage
 from ngertiin.chat.store import json_value, one
 
 
@@ -25,10 +26,12 @@ async def reserve(conn, task, workspace, rules):
     )
     cap = rules["compute_reservation"] + rules["storage_reservation"]
     if (
-        usage["total"] + cap > rules["global_daily_microusd"]
-        or usage["account"] + cap > rules["account_daily_microusd"]
-        or previous["n"] >= rules["max_sessions"]
-    ):
+        not unlimited_usage(task["owner_id"])
+        and (
+            usage["total"] + cap > rules["global_daily_microusd"]
+            or usage["account"] + cap > rules["account_daily_microusd"]
+        )
+    ) or previous["n"] >= rules["max_sessions"]:
         raise ValueError(
             "Batas biaya komputer tercapai. Profil dan hasil tersimpan tetap tersedia."
         )

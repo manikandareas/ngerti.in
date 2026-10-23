@@ -1,0 +1,4330 @@
+{
+  "date": "2026-10-23",
+  "baseline_commit": "0660ac5a4467ffb56481bdff5ea7a56c3c07c334",
+  "initial_worktree": "clean",
+  "method": "Python AST import inventory, including function-local imports; SQL text mentions are not a live schema or upgrade simulation. No database or provider access.",
+  "backend_files": [
+    {
+      "path": "apps/backend/src/ngertiin/__init__.py",
+      "sha256": "75b1c6ced378f5bcabb8b675f6f703748001639871aa93dec0e5203a5fc2789d",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/accounts/__init__.py",
+      "sha256": "77884562da3ccea590aeea3789f9c59d4a06e5840d963681bc61e4b25ed3eb3a",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/accounts/access.py",
+      "sha256": "400eb5f9ebebe9ac5d34e4b1efa3c3c299f4bb02b1cbaf7f47794cad33f0156c",
+      "imports": [
+        {
+          "line": 9,
+          "module": "ngertiin.config"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/accounts/auth.py",
+      "sha256": "8ba47e36222008ce7d85f8fcd719a6bbee78cc59df1f82dd9a8c33abadeb4b85",
+      "imports": [
+        {
+          "line": 12,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.db"
+        },
+        {
+          "line": 14,
+          "module": "ngertiin.models"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/api/__init__.py",
+      "sha256": "908fa97b74a498e99dae5b461a2f990b822f7206598017a40c27c2fde0154ca9",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/api/app.py",
+      "sha256": "a1e72e6244fc92491fa9152a0de5256907e8070d44ed2fd94a84b93bed92eb83",
+      "imports": [
+        {
+          "line": 16,
+          "module": "ngertiin.accounts.auth"
+        },
+        {
+          "line": 17,
+          "module": "ngertiin.api.diagnostics"
+        },
+        {
+          "line": 18,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 19,
+          "module": "ngertiin.billing.api"
+        },
+        {
+          "line": 20,
+          "module": "ngertiin.chat.api"
+        },
+        {
+          "line": 21,
+          "module": "ngertiin.computer.api"
+        },
+        {
+          "line": 22,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 23,
+          "module": "ngertiin.files.api"
+        },
+        {
+          "line": 24,
+          "module": "ngertiin.files.limits"
+        },
+        {
+          "line": 25,
+          "module": "ngertiin.goals.api"
+        },
+        {
+          "line": 26,
+          "module": "ngertiin.health"
+        },
+        {
+          "line": 27,
+          "module": "ngertiin.library.api"
+        },
+        {
+          "line": 28,
+          "module": "ngertiin.memory.api"
+        },
+        {
+          "line": 29,
+          "module": "ngertiin.models"
+        },
+        {
+          "line": 30,
+          "module": "ngertiin.persona.api"
+        },
+        {
+          "line": 31,
+          "module": "ngertiin.proactivity.api"
+        },
+        {
+          "line": 32,
+          "module": "ngertiin.proactivity.api"
+        },
+        {
+          "line": 33,
+          "module": "ngertiin.quotas.api"
+        },
+        {
+          "line": 34,
+          "module": "ngertiin.quotas.api"
+        },
+        {
+          "line": 35,
+          "module": "ngertiin.schedules.api"
+        },
+        {
+          "line": 36,
+          "module": "ngertiin.tasks.api"
+        },
+        {
+          "line": 37,
+          "module": "ngertiin.usage.api"
+        },
+        {
+          "line": 45,
+          "module": "ngertiin.recovery.restore"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/api/diagnostics.py",
+      "sha256": "dac6eed01be5b0b3be1ab760e88e7d39565ac2e4229f459f5e21ea1d21da9fad",
+      "imports": [
+        {
+          "line": 13,
+          "module": "ngertiin.accounts.auth"
+        },
+        {
+          "line": 14,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 15,
+          "module": "ngertiin.db"
+        },
+        {
+          "line": 16,
+          "module": "ngertiin.models"
+        },
+        {
+          "line": 17,
+          "module": "ngertiin.storage"
+        },
+        {
+          "line": 18,
+          "module": "ngertiin.worker.tasks"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/async_db.py",
+      "sha256": "2637f145b47235f23a1ef0b99656194cfaa1a64f8bda84f0963bf5c9d4d51d9f",
+      "imports": [
+        {
+          "line": 8,
+          "module": "ngertiin.config"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/billing/__init__.py",
+      "sha256": "181a64251f6bdb22f4eedc84927c196d96d03d15f433f2c90b40113ec38bcdc0",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/billing/api.py",
+      "sha256": "6d474e1ed8ff190940b4e0c56aafef3ff9444a972f51505dc5d0e906bfee8230",
+      "imports": [
+        {
+          "line": 9,
+          "module": "ngertiin.accounts.auth"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.billing"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.billing.contracts"
+        },
+        {
+          "line": 22,
+          "module": "ngertiin.models"
+        },
+        {
+          "line": 98,
+          "module": "ngertiin.config"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/billing/contracts.py",
+      "sha256": "9d0f4da1376e3ec8e868b8e1dc466299e7dab24ad2e12db4b3be10883c26bd7f",
+      "imports": [
+        {
+          "line": 12,
+          "module": "ngertiin.config"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/billing/duitku.py",
+      "sha256": "833a7c092591324982bc3e6988a58218f02aa0757dfcc1eb940f4f5daa2abe94",
+      "imports": [
+        {
+          "line": 10,
+          "module": "ngertiin.billing"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.billing.contracts"
+        },
+        {
+          "line": 20,
+          "module": "ngertiin.config"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/billing/http.py",
+      "sha256": "e1219176326bde0707e3435e9b7874fffbe320ea244ec0dcf133e6ba5d20b804",
+      "imports": [
+        {
+          "line": 5,
+          "module": "ngertiin.billing.contracts"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/billing/jobs.py",
+      "sha256": "dc66024642828d9bb1282c04e6f9c1996ba806057072f24fb9be0a48994d4f7d",
+      "imports": [
+        {
+          "line": 3,
+          "module": "ngertiin.worker.queue"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.billing.service"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/billing/lemon.py",
+      "sha256": "c1c363bb5c73cd7c68e3b8d6c359ab1df23986fc50e520a446b94d602e785aa9",
+      "imports": [
+        {
+          "line": 5,
+          "module": "ngertiin.billing"
+        },
+        {
+          "line": 6,
+          "module": "ngertiin.billing.contracts"
+        },
+        {
+          "line": 16,
+          "module": "ngertiin.config"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/billing/lifecycle.py",
+      "sha256": "3683352807f3d4232ae3b50781bf1524b47e244cd966ea01b3ed5262d650fbbc",
+      "imports": [
+        {
+          "line": 3,
+          "module": "ngertiin.billing"
+        },
+        {
+          "line": 4,
+          "module": "ngertiin.billing.contracts"
+        },
+        {
+          "line": 5,
+          "module": "ngertiin.quotas.periods"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/billing/recovery.py",
+      "sha256": "96ec4934ecb3511a2fc9b15649262afc9f79bf97ed58199fe7f49c342f0f0ba4",
+      "imports": [
+        {
+          "line": 10,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.billing"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.quotas.periods"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/billing/service.py",
+      "sha256": "5b9191cff975fb401ffc2e9840dd8d8360e019c3f8c25feedfeb6667b8a20fd5",
+      "imports": [
+        {
+          "line": 6,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 7,
+          "module": "ngertiin.billing"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.billing.contracts"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.quotas.periods"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/billing/store.py",
+      "sha256": "3047d4ed6f8257ee6a601e2650dc7c4f838d3496e6ea30746e6596904c6ba6e8",
+      "imports": [
+        {
+          "line": 10,
+          "module": "ngertiin.billing.contracts"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.quotas.periods"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/billing/webhooks.py",
+      "sha256": "c49c881be647cdc19e1ae04f5f69613eecd7e7b80257e4e7fbd6869edff6ba20",
+      "imports": [
+        {
+          "line": 12,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.billing"
+        },
+        {
+          "line": 14,
+          "module": "ngertiin.config"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/chat/__init__.py",
+      "sha256": "47100f3d40f7fe2b140b2d4b3750ba7d88d3bbcd653bd9562f9a090f2ed2a091",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/chat/api.py",
+      "sha256": "ec50908d6a2b39947ee35e20f47e0d600820b52fe12ff1b5c281f801cc7cc5f3",
+      "imports": [
+        {
+          "line": 11,
+          "module": "ngertiin.accounts.auth"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.chat"
+        },
+        {
+          "line": 14,
+          "module": "ngertiin.files.contracts"
+        },
+        {
+          "line": 15,
+          "module": "ngertiin.models"
+        },
+        {
+          "line": 60,
+          "module": "ngertiin.tasks.creation"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/chat/approvals.py",
+      "sha256": "a14dda4caf371b4e992be6868ef58102144c98d151b93c55c67e40b987d91951",
+      "imports": [
+        {
+          "line": 7,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.chat"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 21,
+          "module": "ngertiin.chat.store"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/chat/checkpoints.py",
+      "sha256": "9b32ceed4a12af0b708cddee031fa878cab8bd7b501859a29a1e14c310953b37",
+      "imports": [
+        {
+          "line": 7,
+          "module": "ngertiin.chat.store"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/chat/projection.py",
+      "sha256": "b391ad8898fbb8f51c6efa99a7580e4c90f3e6ed008a1089056d0e031950a440",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/chat/quota.py",
+      "sha256": "3cb168187836dccf0043b9a80fa45ffdeb5753631254b3fec27213eabc333ef1",
+      "imports": [
+        {
+          "line": 5,
+          "module": "ngertiin.quotas"
+        },
+        {
+          "line": 6,
+          "module": "ngertiin.quotas.ledger"
+        },
+        {
+          "line": 7,
+          "module": "ngertiin.quotas.policy"
+        },
+        {
+          "line": 36,
+          "module": "ngertiin.usage.ledger"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/chat/recovery.py",
+      "sha256": "f9415e1682ecec6981feb7df496bcc8c10ca48d572fbcf9d192994c13706a05d",
+      "imports": [
+        {
+          "line": 3,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 4,
+          "module": "ngertiin.chat"
+        },
+        {
+          "line": 5,
+          "module": "ngertiin.chat.store"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/chat/runtime.py",
+      "sha256": "4be8d6f1b3d6d4a399f752d0bf1885d6176db4049c6f7d619f06783f7aeddceb",
+      "imports": [
+        {
+          "line": 27,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 28,
+          "module": "ngertiin.chat.approvals"
+        },
+        {
+          "line": 29,
+          "module": "ngertiin.chat.checkpoints"
+        },
+        {
+          "line": 30,
+          "module": "ngertiin.chat.projection"
+        },
+        {
+          "line": 31,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 32,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 38,
+          "module": "ngertiin.goals.contracts"
+        },
+        {
+          "line": 39,
+          "module": "ngertiin.goals.tools"
+        },
+        {
+          "line": 40,
+          "module": "ngertiin.library.capabilities"
+        },
+        {
+          "line": 41,
+          "module": "ngertiin.library.guard"
+        },
+        {
+          "line": 42,
+          "module": "ngertiin.library.tools"
+        },
+        {
+          "line": 43,
+          "module": "ngertiin.memory.invalidation"
+        },
+        {
+          "line": 44,
+          "module": "ngertiin.memory.recall"
+        },
+        {
+          "line": 45,
+          "module": "ngertiin.memory.tools"
+        },
+        {
+          "line": 46,
+          "module": "ngertiin.persona.policy"
+        },
+        {
+          "line": 47,
+          "module": "ngertiin.persona.tools"
+        },
+        {
+          "line": 48,
+          "module": "ngertiin.proactivity.tools"
+        },
+        {
+          "line": 49,
+          "module": "ngertiin.schedules.tools"
+        },
+        {
+          "line": 348,
+          "module": "ngertiin.memory.invalidation"
+        },
+        {
+          "line": 351,
+          "module": "ngertiin.library.guard"
+        },
+        {
+          "line": 380,
+          "module": "ngertiin.memory.recall"
+        },
+        {
+          "line": 67,
+          "module": "ngertiin.library.guard"
+        },
+        {
+          "line": 146,
+          "module": "ngertiin.tasks.creation"
+        },
+        {
+          "line": 240,
+          "module": "ngertiin.usage.chat"
+        },
+        {
+          "line": 156,
+          "module": "ngertiin.files"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/chat/store.py",
+      "sha256": "34976ccb8e00c57581d1bae125f25002f7ebcdcf10c345b8b8d3bd4f8b1f5d6a",
+      "imports": [
+        {
+          "line": 9,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.chat"
+        },
+        {
+          "line": 49,
+          "module": "ngertiin.persona.store"
+        },
+        {
+          "line": 144,
+          "module": "ngertiin.chat.tasks"
+        },
+        {
+          "line": 167,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 108,
+          "module": "ngertiin.tasks.store"
+        },
+        {
+          "line": 193,
+          "module": "ngertiin.library.selection"
+        },
+        {
+          "line": 202,
+          "module": "ngertiin.usage.chat"
+        },
+        {
+          "line": 217,
+          "module": "ngertiin.persona.store"
+        },
+        {
+          "line": 309,
+          "module": "ngertiin.memory.invalidation"
+        },
+        {
+          "line": 310,
+          "module": "ngertiin.memory.invalidation"
+        },
+        {
+          "line": 317,
+          "module": "ngertiin.library.guard"
+        },
+        {
+          "line": 285,
+          "module": "ngertiin.persona.store"
+        },
+        {
+          "line": 358,
+          "module": "ngertiin.memory.service"
+        },
+        {
+          "line": 361,
+          "module": "ngertiin.proactivity.store"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/chat/tasks.py",
+      "sha256": "932754f65747b17ab8297a4c1ab599c03dab8e9324fc36e619200b15ae35ca63",
+      "imports": [
+        {
+          "line": 3,
+          "module": "ngertiin.worker.queue"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.chat.runtime"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/__init__.py",
+      "sha256": "aa33a5584c326139fd8b58795e76b6721cb8baeeeab405739de414379f43fe3c",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/actuator.py",
+      "sha256": "464834a75884c1d5508314b898674109787d43395cb06024ba7e9ddc9767b319",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/api.py",
+      "sha256": "0b559ccc00b67df9913495fb169339cea13a6a3f05b767a6f91a2e9753b173b3",
+      "imports": [
+        {
+          "line": 9,
+          "module": "ngertiin.accounts.auth"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.computer"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.models"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.tasks"
+        },
+        {
+          "line": 42,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 83,
+          "module": "ngertiin.computer.maintenance"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/candidates.py",
+      "sha256": "719c7655550ab9445197e69dd9c7cf222e1f21a3c121f071863d74cfd47eb057",
+      "imports": [
+        {
+          "line": 7,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.sandbox"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.tasks"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/capability.py",
+      "sha256": "62256d48de90814e057cc6b279bc531168406cce52a3e54f1de54d65d29199f1",
+      "imports": [
+        {
+          "line": 6,
+          "module": "ngertiin"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/cdp.py",
+      "sha256": "1691b7454aaee4fea38d0cc76b3df5b6f36e139d5480f1deb7b2c666c7424f8b",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/continuation.py",
+      "sha256": "2093895131aea32d38f7b4e46395e7e2e55ab23fc5aa25bd3eb02344156f2f54",
+      "imports": [
+        {
+          "line": 6,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 7,
+          "module": "ngertiin.computer.contracts"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.tasks"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/contracts.py",
+      "sha256": "fe22c81f6b4e6a6bec50c928ffdc76fe5dfab159f574144f696024fdf884eeb2",
+      "imports": [
+        {
+          "line": 12,
+          "module": "ngertiin.sandbox.contracts"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/control.py",
+      "sha256": "c66ed5b5268ae356bdc17a393831909379f6d05e24a6e9a1151f5e1b1ee87c78",
+      "imports": [
+        {
+          "line": 9,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.computer"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.tasks"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.tasks"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/desktop.py",
+      "sha256": "6b10fdafd727c1c813f0430640d4bcbc69d960540f8c7c6f0c504e1bd3e7f934",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/desktop_io.py",
+      "sha256": "10c158163792ed16830d75c6c5baf23d30aead3c323dbbb818e20cd00bf79492",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/e2b.py",
+      "sha256": "96d531326c4039069e6ca1390d9c64b64d2da6df4577ae062291c07267eb344f",
+      "imports": [
+        {
+          "line": 15,
+          "module": "ngertiin"
+        },
+        {
+          "line": 16,
+          "module": "ngertiin.computer.contracts"
+        },
+        {
+          "line": 25,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 26,
+          "module": "ngertiin.sandbox.contracts"
+        },
+        {
+          "line": 136,
+          "module": "ngertiin.computer.capability"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/egress.py",
+      "sha256": "bc681e6d8129fb48d0ddf06993a782675f1cd15bd85e9ac000e79efcee5b3ab4",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/evidence.py",
+      "sha256": "47ea6a634437c82419bfbd2c0360eca2357ec0a2ad2dc41ad766d14d00a11f45",
+      "imports": [
+        {
+          "line": 8,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.computer"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.computer.contracts"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.computer.permissions"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.tasks"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/jev.py",
+      "sha256": "1c6210a61f61bef522f23f42d6709f12ae4bae75e5c5680bf9709fc3c45ab86d",
+      "imports": [
+        {
+          "line": 19,
+          "module": "ngertiin.computer.contracts"
+        },
+        {
+          "line": 20,
+          "module": "ngertiin.computer.model"
+        },
+        {
+          "line": 21,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 22,
+          "module": "ngertiin.tasks"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/jev_runner.py",
+      "sha256": "26afe519cf32596d3fd4d75fbd3651ec06d4b7e1ba94d494f15f681f6cbc1cb9",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/jobs.py",
+      "sha256": "e8210847278d49257e5ae2e12da3498c3397d96b4d52d304e602cfdef7e5460c",
+      "imports": [
+        {
+          "line": 5,
+          "module": "ngertiin.worker.queue"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.computer.lifecycle"
+        },
+        {
+          "line": 18,
+          "module": "ngertiin.computer.lifecycle"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/legacy_workflow.py",
+      "sha256": "22ced89aa965c091f5f85071f187886f85e74a10ff37c09cb25ea7a86dddadc2",
+      "imports": [
+        {
+          "line": 12,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.computer"
+        },
+        {
+          "line": 14,
+          "module": "ngertiin.computer.contracts"
+        },
+        {
+          "line": 21,
+          "module": "ngertiin.sandbox"
+        },
+        {
+          "line": 22,
+          "module": "ngertiin.sandbox.contracts"
+        },
+        {
+          "line": 23,
+          "module": "ngertiin.tasks"
+        },
+        {
+          "line": 121,
+          "module": "ngertiin.computer"
+        },
+        {
+          "line": 186,
+          "module": "ngertiin.computer.verification"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/lifecycle.py",
+      "sha256": "69186c1554668df0402eb4e07ee5500159deffd14a839737b21a2b58eb74b6ff",
+      "imports": [
+        {
+          "line": 8,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.computer"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.tasks"
+        },
+        {
+          "line": 161,
+          "module": "ngertiin.tasks.commands"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/maintenance.py",
+      "sha256": "4d1b1afab3575dce63f08d6cce37825363644f2680fe762dc6549275f4ecb175",
+      "imports": [
+        {
+          "line": 15,
+          "module": "ngertiin"
+        },
+        {
+          "line": 16,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 17,
+          "module": "ngertiin.computer"
+        },
+        {
+          "line": 18,
+          "module": "ngertiin.computer.e2b"
+        },
+        {
+          "line": 19,
+          "module": "ngertiin.tasks"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/model.py",
+      "sha256": "1072629b3cb49d57c275878f5e21592ca53bbe125092c61fc83cc1c3429d15fa",
+      "imports": [
+        {
+          "line": 9,
+          "module": "ngertiin.computer.contracts"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.tasks"
+        },
+        {
+          "line": 82,
+          "module": "ngertiin.tasks.workflow"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/permissions.py",
+      "sha256": "1125a750242304774b86f7a3c65de3b0da27d03d12d7448d33efc6c8073153b3",
+      "imports": [
+        {
+          "line": 11,
+          "module": "ngertiin.computer.contracts"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/policy.py",
+      "sha256": "cd2bcfb2ce2bb8b8f4db8a8933f7fae8e7473839899eda756288713c18e33538",
+      "imports": [
+        {
+          "line": 9,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 7,
+          "module": "ngertiin.computer.contracts"
+        },
+        {
+          "line": 48,
+          "module": "ngertiin.computer.e2b"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/reporting.py",
+      "sha256": "ea0cc747dbcbaca52319854aa142f2c6e2ea40d6d9141247f6bf2009802fea38",
+      "imports": [
+        {
+          "line": 10,
+          "module": "ngertiin.computer"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.computer.contracts"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.computer.model"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 14,
+          "module": "ngertiin.tasks"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/resilience.py",
+      "sha256": "d7bbdbf0ed3d636109dc179a974e1457b8279cd36f259cfc52c16a8ae89ae64d",
+      "imports": [
+        {
+          "line": 7,
+          "module": "ngertiin.computer"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.computer.contracts"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.tasks"
+        },
+        {
+          "line": 55,
+          "module": "ngertiin.chat.store"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/rfb.py",
+      "sha256": "d74025ad17516583a50f24386ca9b34235a995457c880bf97c0878ff595f8bf2",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/steps.py",
+      "sha256": "dcc5fd90aa25a5103da49d28b8a728749af6ec08bceb6bb08ed6c950a0bdda24",
+      "imports": [
+        {
+          "line": 6,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 7,
+          "module": "ngertiin.computer"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.computer.contracts"
+        },
+        {
+          "line": 15,
+          "module": "ngertiin.sandbox.contracts"
+        },
+        {
+          "line": 16,
+          "module": "ngertiin.tasks"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/store.py",
+      "sha256": "93b3c1d140a8444c5887820fbb3adc27b577506cc42356c7e565c074c68bf574",
+      "imports": [
+        {
+          "line": 8,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.computer.contracts"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.tasks"
+        },
+        {
+          "line": 79,
+          "module": "ngertiin.computer.usage"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/supervisor.py",
+      "sha256": "7661294f36dc86f043d364302820c86b262413048bdcb4128e3e2ff30e267e44",
+      "imports": [
+        {
+          "line": 9,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.computer"
+        },
+        {
+          "line": 23,
+          "module": "ngertiin.computer.contracts"
+        },
+        {
+          "line": 30,
+          "module": "ngertiin.sandbox.contracts"
+        },
+        {
+          "line": 31,
+          "module": "ngertiin.tasks"
+        },
+        {
+          "line": 32,
+          "module": "ngertiin.tasks"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/targets.py",
+      "sha256": "f5e9971e0ec59d3b0d94bf02c16728ff186aa3419b58f2eac821cad50f20a551",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/usage.py",
+      "sha256": "b85dce48f32c6715ae5edffe5ab910823f3d6b701326588a9267a66e6c0aa407",
+      "imports": [
+        {
+          "line": 7,
+          "module": "ngertiin.accounts.access"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 60,
+          "module": "ngertiin.usage.events"
+        },
+        {
+          "line": 96,
+          "module": "ngertiin.usage.events"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/verification.py",
+      "sha256": "601d8cd616b6d10793bb6a979615801a98e4a8f8bfc9604006afcd8bdd00be83",
+      "imports": [
+        {
+          "line": 10,
+          "module": "ngertiin.computer.model"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.tasks"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/viewer.py",
+      "sha256": "3091e2c85d9890436c62a7b0895a7cb8a0c21181ddf0e26b5ab6a7c4a2638136",
+      "imports": [
+        {
+          "line": 14,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 15,
+          "module": "ngertiin.computer"
+        },
+        {
+          "line": 16,
+          "module": "ngertiin.computer.rfb"
+        },
+        {
+          "line": 17,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 18,
+          "module": "ngertiin.tasks"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/workflow.py",
+      "sha256": "5c607dfbb04229c419fdfa437ca77c94e677707ef73d4e360ee825c9ef339584",
+      "imports": [
+        {
+          "line": 7,
+          "module": "ngertiin.computer.supervisor"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.computer.legacy_workflow"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/config.py",
+      "sha256": "235dc16fed59280babcce7b1bffde948391ead0cdf436a80511bdbe1a1ddef8a",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/db.py",
+      "sha256": "c12b8cbf8c454dc6d7bf63fb0b6db018613ed6b0bf0ecaf3e765aa93d62c1b4e",
+      "imports": [
+        {
+          "line": 9,
+          "module": "ngertiin.config"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/e2b.py",
+      "sha256": "2dc2fe080f351f53e276736b376342b7842dc44596547ecb10648cdc55b1fbab",
+      "imports": [
+        {
+          "line": 8,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.sandbox.contracts"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/files/__init__.py",
+      "sha256": "428322abb85f7d2907847beb013d005f83686f2b8c5032ccc2525ddc9f7fcc69",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/files/api.py",
+      "sha256": "16cb0b81e328defab3d90d43a63e99b75dc4d56bcc7a2e0bba05fd8ca5411bc8",
+      "imports": [
+        {
+          "line": 10,
+          "module": "ngertiin.accounts.auth"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.files"
+        },
+        {
+          "line": 14,
+          "module": "ngertiin.files.contracts"
+        },
+        {
+          "line": 15,
+          "module": "ngertiin.models"
+        },
+        {
+          "line": 129,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 130,
+          "module": "ngertiin.files.jobs"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/files/cleanup.py",
+      "sha256": "159905f187317d4ab1101d93d0925b57d1ed9f0552b7617e4d39349c1b7a642d",
+      "imports": [
+        {
+          "line": 5,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 6,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 7,
+          "module": "ngertiin.files"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.storage"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/files/contracts.py",
+      "sha256": "c7c71bfd7742141c55a3f49c7995d1ba7066b82da65194aa8ef869fe07ba9c46",
+      "imports": [
+        {
+          "line": 9,
+          "module": "ngertiin.config"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/files/deletion.py",
+      "sha256": "000e8ee3a37b609c30e5087b6b3b47bfbecdfc8703cbebd802a48d2725bf0709",
+      "imports": [
+        {
+          "line": 5,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 6,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 7,
+          "module": "ngertiin.tasks"
+        },
+        {
+          "line": 102,
+          "module": "ngertiin.tasks.commands"
+        },
+        {
+          "line": 53,
+          "module": "ngertiin.proactivity.store"
+        },
+        {
+          "line": 78,
+          "module": "ngertiin.proactivity.store"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/files/extraction.py",
+      "sha256": "c81ca47326f9287b594045cc7b42a56716872d616420dc1730ff71b0c90aa236",
+      "imports": [
+        {
+          "line": 10,
+          "module": "ngertiin.accounts.access"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.files"
+        },
+        {
+          "line": 14,
+          "module": "ngertiin.storage"
+        },
+        {
+          "line": 15,
+          "module": "ngertiin.tasks.budget"
+        },
+        {
+          "line": 75,
+          "module": "ngertiin.usage"
+        },
+        {
+          "line": 258,
+          "module": "ngertiin.usage.events"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/files/inputs.py",
+      "sha256": "ce29b6e3ffb96de0b6bcda9025b473739feab6285d7f028ca69cb169eaf19692",
+      "imports": [
+        {
+          "line": 10,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.files"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.files.contracts"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.quotas.policy"
+        },
+        {
+          "line": 14,
+          "module": "ngertiin.storage"
+        },
+        {
+          "line": 15,
+          "module": "ngertiin.tasks"
+        },
+        {
+          "line": 56,
+          "module": "ngertiin.files.jobs"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/files/inspect.py",
+      "sha256": "13353ce5cb4e6d7b05226e71de4fffd1bacfc079bac80688d96bffe4590e595a",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/files/jobs.py",
+      "sha256": "cf2e97f214208aadf06acd35273a7c0bbb98899f1fb079fdadb330e33c786ee4",
+      "imports": [
+        {
+          "line": 5,
+          "module": "ngertiin.worker.queue"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.files.extraction"
+        },
+        {
+          "line": 18,
+          "module": "ngertiin.files.cleanup"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/files/limits.py",
+      "sha256": "f9db79d81aea0130b90b1545fe28104bc0186efdcbbe71831aaff3eab3a43e6d",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/files/mistral.py",
+      "sha256": "a0caee98e101a206fc55f59c147e337f5fc72014684335271d9120e19041f621",
+      "imports": [
+        {
+          "line": 8,
+          "module": "ngertiin.config"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/files/results.py",
+      "sha256": "41b6be9e838bd4d927e25563a90b131eed4cf0f9d4c5be9313e83aa3cece7c82",
+      "imports": [
+        {
+          "line": 9,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.files"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.files"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.files.validation"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.quotas.policy"
+        },
+        {
+          "line": 14,
+          "module": "ngertiin.storage"
+        },
+        {
+          "line": 15,
+          "module": "ngertiin.tasks"
+        },
+        {
+          "line": 76,
+          "module": "ngertiin.sandbox.outputs"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/files/store.py",
+      "sha256": "e4892dc77ee935a77c827be5e48fb2b49f816e17d2eb84b7c5d1f07180f82f5a",
+      "imports": [
+        {
+          "line": 9,
+          "module": "ngertiin.accounts.access"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.files.validation"
+        },
+        {
+          "line": 14,
+          "module": "ngertiin.quotas.policy"
+        },
+        {
+          "line": 15,
+          "module": "ngertiin.storage"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/files/validation.py",
+      "sha256": "8f4b1eeb35bcfe6712687404b73ab748f4686f4fcfafa01564a466746e59cccd",
+      "imports": [
+        {
+          "line": 11,
+          "module": "ngertiin.files.contracts"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/goals/__init__.py",
+      "sha256": "5deee705eb967585e3fcda681e886b4a4a3fb87870bc94d26c37fa3498450caa",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/goals/api.py",
+      "sha256": "aa46422019c4bb1268a71164cd850ed8e6027fdc46427ff4fbc3a63961a3e327",
+      "imports": [
+        {
+          "line": 8,
+          "module": "ngertiin.accounts.auth"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.goals"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.goals.contracts"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.models"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/goals/contracts.py",
+      "sha256": "5a2bb439719905abcfcf0106cd6a6ba8f660b190a063a514e8e7f2364ff11c0a",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/goals/evidence.py",
+      "sha256": "335550df0599dea92870c68915a5f215413a61575f117c07389d97cc97145cd6",
+      "imports": [
+        {
+          "line": 5,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 6,
+          "module": "ngertiin.goals.contracts"
+        },
+        {
+          "line": 7,
+          "module": "ngertiin.quotas.policy"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/goals/service.py",
+      "sha256": "1fab2cdd179bad284fc57f931cef6a324df7bc99c7f96f19319e3819035c1f59",
+      "imports": [
+        {
+          "line": 8,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.goals"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.goals.contracts"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.quotas.policy"
+        },
+        {
+          "line": 235,
+          "module": "ngertiin.proactivity.store"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/goals/store.py",
+      "sha256": "e4d8d48537bb66b0e32e4ddead3dad4892f29ee2606d04b7f143e13066465b9a",
+      "imports": [
+        {
+          "line": 5,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 6,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 7,
+          "module": "ngertiin.goals"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/goals/tools.py",
+      "sha256": "b50493337db4a720fc308bbb8f2711b81131bc535ee9da50c6aae7422c78f167",
+      "imports": [
+        {
+          "line": 9,
+          "module": "ngertiin.goals"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.goals.contracts"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/goals/work.py",
+      "sha256": "6e025134c788c43bb35f0ae82da3ae90493d8a796967f61de0a922ef0508ee78",
+      "imports": [
+        {
+          "line": 5,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 6,
+          "module": "ngertiin.goals"
+        },
+        {
+          "line": 7,
+          "module": "ngertiin.goals.contracts"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.tasks.budget"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/health.py",
+      "sha256": "66aafee476e1121a33ab0b864c92cee15f8034df277ef62a801885de48e972ac",
+      "imports": [
+        {
+          "line": 10,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.storage"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/library/__init__.py",
+      "sha256": "722b1bbf0a2b5af21071c89810f832b874ddbaffd5c39abb6a1f56c43302ba48",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/library/api.py",
+      "sha256": "52f4e5438d5bd58874920b45ea34e34d86f0bf4c8107b0e97356bc15af352891",
+      "imports": [
+        {
+          "line": 9,
+          "module": "ngertiin.accounts.auth"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.library"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.library.contracts"
+        },
+        {
+          "line": 14,
+          "module": "ngertiin.models"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/library/backfill.py",
+      "sha256": "71402d607ca71844706252d03ba35a02ad8e963981363a7e3d720d768f65b874",
+      "imports": [
+        {
+          "line": 7,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.storage"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/library/capabilities.py",
+      "sha256": "1ae031929d325da136788579cfde39428e31dd447002e100c3bcec625ac5d73d",
+      "imports": [
+        {
+          "line": 3,
+          "module": "ngertiin.config"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/library/catalogue.py",
+      "sha256": "e1927124bda1147f0ae7e42ac66b5fef9519758a93772722c5192d402373f551",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/library/contracts.py",
+      "sha256": "094b1abd7d69863e56b1e00f7c56c64a87b9c8931b0ce1935b23a11f641bc1e4",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/library/guard.py",
+      "sha256": "2b256f096fdaabb8525c0c162c7e6b64bd2dbe24acdf080d16c8bd63d0d45d84",
+      "imports": [
+        {
+          "line": 5,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 6,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 7,
+          "module": "ngertiin.library.contracts"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.library.reader"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/library/reader.py",
+      "sha256": "2a19dadf4b8d0532aca6bc10a51c5c6b0aff9e4b4a1e8a46075b96be0ae574b4",
+      "imports": [
+        {
+          "line": 7,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.files"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.files"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.library.contracts"
+        },
+        {
+          "line": 115,
+          "module": "ngertiin.memory.invalidation"
+        },
+        {
+          "line": 118,
+          "module": "ngertiin.library.guard"
+        },
+        {
+          "line": 103,
+          "module": "ngertiin.library.guard"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/library/search.py",
+      "sha256": "64f6de0a4bc018d919d04527e7b840adcc29a1981707fdfcf8badb8f3ac44c06",
+      "imports": [
+        {
+          "line": 6,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 7,
+          "module": "ngertiin.library.catalogue"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.library.contracts"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/library/selection.py",
+      "sha256": "edec2d0db158af45e878b67f1818b9efb305b6dbaa8fc0c7dfe1f3a32a548185",
+      "imports": [
+        {
+          "line": 5,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 6,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 7,
+          "module": "ngertiin.library.contracts"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.library.reader"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/library/tools.py",
+      "sha256": "e365940874dab0f9ad788bf35bec9c38008ef748fccbf02eaa5f32b71f2c549e",
+      "imports": [
+        {
+          "line": 9,
+          "module": "ngertiin.library"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.library.contracts"
+        },
+        {
+          "line": 29,
+          "module": "ngertiin.async_db"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/memory/__init__.py",
+      "sha256": "be58ba01ced8f627a2f2218f42b8cea06933d9d34f2186f6e245dacc5fc75766",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/memory/api.py",
+      "sha256": "eb6bf82f6453b061650282efd1832abe7df44773cd29c381dc5e1679029cab5b",
+      "imports": [
+        {
+          "line": 8,
+          "module": "ngertiin.accounts.auth"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.memory"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.memory.contracts"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.models"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/memory/contracts.py",
+      "sha256": "f7facad7c809c0b19f4ca1fccef29c46123f4c996066dd7cf6ff8e5681dc5444",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/memory/costs.py",
+      "sha256": "9c10778e5e24d62199ac24a9d0a1279b3e5da4bb03c54268014bb7a1c853f750",
+      "imports": [
+        {
+          "line": 11,
+          "module": "ngertiin.accounts.access"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 85,
+          "module": "ngertiin.usage.events"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/memory/engine.py",
+      "sha256": "f3e3fcda28726a60c83cc20cd96b2f150bbd7e0430a48095e2f611026d4e8ad3",
+      "imports": [
+        {
+          "line": 10,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.memory"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.memory.contracts"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.memory.costs"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/memory/invalidation.py",
+      "sha256": "35c7d284430e0cf2cf449b22d0e11e4cd18bb633bc9a16ff0b57d7517bf87bd0",
+      "imports": [
+        {
+          "line": 7,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.memory"
+        },
+        {
+          "line": 32,
+          "module": "ngertiin.chat"
+        },
+        {
+          "line": 33,
+          "module": "ngertiin.proactivity.store"
+        },
+        {
+          "line": 34,
+          "module": "ngertiin.tasks"
+        },
+        {
+          "line": 187,
+          "module": "ngertiin.proactivity.evidence"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/memory/jobs.py",
+      "sha256": "14120378fc5ae840b22b4b18dcfb071f92299f8cfcae431c4c599572b270def7",
+      "imports": [
+        {
+          "line": 12,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 14,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 15,
+          "module": "ngertiin.memory"
+        },
+        {
+          "line": 16,
+          "module": "ngertiin.memory.contracts"
+        },
+        {
+          "line": 17,
+          "module": "ngertiin.memory.engine"
+        },
+        {
+          "line": 18,
+          "module": "ngertiin.worker.queue"
+        },
+        {
+          "line": 44,
+          "module": "ngertiin.memory.service"
+        },
+        {
+          "line": 222,
+          "module": "ngertiin.memory.service"
+        },
+        {
+          "line": 213,
+          "module": "ngertiin.memory.invalidation"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/memory/policy.py",
+      "sha256": "a7fed07a899db59c908fa105cda8d4b19c9cd40c58002ae2c458401c14f2e747",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/memory/recall.py",
+      "sha256": "420abd7653dfba81da461ce2e5ca64a0b95e3999034e34eb5a0b630b3fdae8c5",
+      "imports": [
+        {
+          "line": 8,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.memory"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.memory.engine"
+        },
+        {
+          "line": 138,
+          "module": "ngertiin.tasks"
+        },
+        {
+          "line": 122,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 145,
+          "module": "ngertiin.chat.store"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/memory/service.py",
+      "sha256": "ca65170a42a3eac8b55acc0164022f0c77ace118eb2859726f45eedf7bd3921b",
+      "imports": [
+        {
+          "line": 9,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.memory"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.memory.contracts"
+        },
+        {
+          "line": 280,
+          "module": "ngertiin.memory.jobs"
+        },
+        {
+          "line": 288,
+          "module": "ngertiin.memory.jobs"
+        },
+        {
+          "line": 70,
+          "module": "ngertiin.memory.invalidation"
+        },
+        {
+          "line": 183,
+          "module": "ngertiin.memory.invalidation"
+        },
+        {
+          "line": 251,
+          "module": "ngertiin.memory.jobs"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/memory/sources.py",
+      "sha256": "4a3e2208dcdd0580f5f9334140bd3ef4ee8833d7441bd5f64d951976e847ff83",
+      "imports": [
+        {
+          "line": 10,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.memory"
+        },
+        {
+          "line": 81,
+          "module": "ngertiin.storage"
+        },
+        {
+          "line": 175,
+          "module": "ngertiin.persona.store"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/memory/store.py",
+      "sha256": "e45a3e766b328bf4e593e35044da8b718f494b2be64fd6abdb093f35306b4dd7",
+      "imports": [
+        {
+          "line": 8,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.memory"
+        },
+        {
+          "line": 207,
+          "module": "ngertiin.proactivity.store"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/memory/tools.py",
+      "sha256": "5b5459565c10465ea9213cacd7c046e85d1f4e5bb48a3299fe20229db30ea8b1",
+      "imports": [
+        {
+          "line": 7,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.memory"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.memory.invalidation"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.memory.recall"
+        },
+        {
+          "line": 21,
+          "module": "ngertiin.memory.invalidation"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/models.py",
+      "sha256": "0e5d0497cc2eaed236496214a9fd8046f36beeff64104f6db1da29e66c18788c",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/persona/__init__.py",
+      "sha256": "a78785e06d3c8333a9af65d45c407a301b705d48365c904b1f9416fe8f6d5cb9",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/persona/api.py",
+      "sha256": "ac85e91cd765749b9b9ffb5d87afbbda0047ac92e25b21420638143008fc7ac9",
+      "imports": [
+        {
+          "line": 8,
+          "module": "ngertiin.accounts.auth"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.models"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.persona"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.persona.contracts"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/persona/contracts.py",
+      "sha256": "8135a3ec5eca0b0b3b73657fed1141d043ce89c2593672d36e24040ffe57b3aa",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/persona/policy.py",
+      "sha256": "a96fbeea96bb2cf9a5d4043c0eacc4664f696ef44553ed2f477b12f5214b392d",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/persona/service.py",
+      "sha256": "f24291ef1ab1e07c6ac750eb167dad4a67b75af5ded44f3ab3c62ce9d63dcacf",
+      "imports": [
+        {
+          "line": 7,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.persona"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.persona.contracts"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.quotas.policy"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/persona/store.py",
+      "sha256": "97863e628b27b0871c9a535c02ba86b1403b8d93a4e8d47ffacf4bcd7e6f321e",
+      "imports": [
+        {
+          "line": 3,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 4,
+          "module": "ngertiin.persona.policy"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/persona/tools.py",
+      "sha256": "1b896d82f2809cd89aa9cc4d83f9ae90c0900812069c86ee8b3adfd17015e065",
+      "imports": [
+        {
+          "line": 7,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.persona"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/proactivity/__init__.py",
+      "sha256": "ed418619b73a5c574a7d6d1143970a7f7facee43b2a1919cc44497f4fdd5bc38",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/proactivity/api.py",
+      "sha256": "c06284a1d64ad76fc30fee78d858f3dbaf313665370b6eecc69ed369dc9dd7af",
+      "imports": [
+        {
+          "line": 8,
+          "module": "ngertiin.accounts.auth"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.models"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.proactivity"
+        },
+        {
+          "line": 14,
+          "module": "ngertiin.proactivity.contracts"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/proactivity/contracts.py",
+      "sha256": "63443af541f612763c57d99998569f5120eb8ac3c2fcc7e02b8a6bd09a7a83fd",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/proactivity/delivery.py",
+      "sha256": "25c202d4d4428dd619353bdb3378d98ec3fe7589b9049e5cf568fe4eeb26818e",
+      "imports": [
+        {
+          "line": 6,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 7,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.proactivity"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.proactivity"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.proactivity.contracts"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/proactivity/delivery_policy.py",
+      "sha256": "11247c704647d35bae969e7549255d52e1ce9b8576cdca747301f1aff9a026bd",
+      "imports": [
+        {
+          "line": 7,
+          "module": "ngertiin.memory.policy"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/proactivity/evidence.py",
+      "sha256": "2553c10bb5641c91eed35e58afbe0c7ae5d3a499abf1f19d8e875decfa909e7b",
+      "imports": [
+        {
+          "line": 7,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.goals"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.memory"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.memory"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.memory"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.memory.policy"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/proactivity/jobs.py",
+      "sha256": "92a9944f59451ca23240739cf8fa7b65219c3d9923555e50cb381ab311333f78",
+      "imports": [
+        {
+          "line": 7,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.proactivity"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.worker.queue"
+        },
+        {
+          "line": 54,
+          "module": "ngertiin.proactivity.delivery"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/proactivity/policy.py",
+      "sha256": "9b311957c45579d381c994b6f65e9c539be16b7ed3c8d0a7eee87c5f536d632a",
+      "imports": [
+        {
+          "line": 5,
+          "module": "ngertiin.proactivity.contracts"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/proactivity/preferences.py",
+      "sha256": "9133d38518f3605427fe63868a624441d319a952f2d8d391af13973bbd36c592",
+      "imports": [
+        {
+          "line": 7,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.memory.policy"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.proactivity"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.proactivity.contracts"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/proactivity/providers.py",
+      "sha256": "87b67f827d76be8e8c8169954d8ad38073c7cbc86fa6f1aad4dbb2566c2d51c5",
+      "imports": [
+        {
+          "line": 8,
+          "module": "ngertiin.accounts.access"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.proactivity"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.proactivity.contracts"
+        },
+        {
+          "line": 60,
+          "module": "ngertiin.usage.events"
+        },
+        {
+          "line": 93,
+          "module": "ngertiin.usage.events"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/proactivity/runtime.py",
+      "sha256": "7dfb0f3709e18f857125307a2b8aa2668946122f80e32fad54b5eb3c0fddc947",
+      "imports": [
+        {
+          "line": 8,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.memory.policy"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.proactivity"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/proactivity/store.py",
+      "sha256": "982fe8a61cc4374c61b6630ee71f1292d344fbcbd17f7daae60364ed9e942f13",
+      "imports": [
+        {
+          "line": 7,
+          "module": "ngertiin.accounts.access"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.memory.policy"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.proactivity"
+        },
+        {
+          "line": 165,
+          "module": "ngertiin.proactivity.jobs"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/proactivity/tools.py",
+      "sha256": "78a7b3e5372f300ca7b02e07d9cee75d5200864c8300616618a2d6a5c8e07ee9",
+      "imports": [
+        {
+          "line": 11,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.proactivity"
+        },
+        {
+          "line": 14,
+          "module": "ngertiin.proactivity.contracts"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/quotas/__init__.py",
+      "sha256": "da5449caff280cde1c13318aef8e363e5a361c0e9553049221ef36ee69387cc9",
+      "imports": [
+        {
+          "line": 3,
+          "module": "ngertiin.quotas.ledger"
+        },
+        {
+          "line": 4,
+          "module": "ngertiin.quotas.periods"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/quotas/api.py",
+      "sha256": "ad12f6ee11ec98ff0f07599f7eaa72a3d0715eea9d0c7496c990835e389c9db5",
+      "imports": [
+        {
+          "line": 11,
+          "module": "ngertiin.accounts.auth"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.models"
+        },
+        {
+          "line": 14,
+          "module": "ngertiin.quotas.errors"
+        },
+        {
+          "line": 15,
+          "module": "ngertiin.quotas.ledger"
+        },
+        {
+          "line": 16,
+          "module": "ngertiin.quotas.policy"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/quotas/errors.py",
+      "sha256": "4575c8029f7e17386808e884689883f9038776ac02a3703665e46174a8b2af2c",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/quotas/ledger.py",
+      "sha256": "0ab870c9b5214fbd3cc5965543a6d437a67743d4763d7c5e3446f8df77ab1f77",
+      "imports": [
+        {
+          "line": 7,
+          "module": "ngertiin.accounts.access"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.quotas.errors"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.quotas.periods"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.quotas.policy"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/quotas/periods.py",
+      "sha256": "83de3dc1cbb86f5927325ea74c552a967057a62070a1ca47926051f34273ea24",
+      "imports": [
+        {
+          "line": 8,
+          "module": "ngertiin.quotas.errors"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.quotas.policy"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/quotas/policy.py",
+      "sha256": "afbee6b3e7f5ab5b431422d2611da2b9798ba73ab781c788377be6fe31040e37",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/recovery/__init__.py",
+      "sha256": "e9fa9211a2b46808a53359305760c94204d85cb187300991ba60601bfb96e163",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/recovery/backup.py",
+      "sha256": "23065943c63d70c21d101cbd4367a200a065ad40744e31fe586e4db1f20dd53a",
+      "imports": [
+        {
+          "line": 18,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 19,
+          "module": "ngertiin.storage"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/recovery/restore.py",
+      "sha256": "c8c04e9e8e1d0364fff175ee38c998484dbcd888f1cd3ea73c5aae040ae164ba",
+      "imports": [
+        {
+          "line": 5,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 6,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 7,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 33,
+          "module": "ngertiin.chat"
+        },
+        {
+          "line": 34,
+          "module": "ngertiin.tasks"
+        },
+        {
+          "line": 134,
+          "module": "ngertiin.computer"
+        },
+        {
+          "line": 135,
+          "module": "ngertiin.sandbox"
+        },
+        {
+          "line": 136,
+          "module": "ngertiin.usage.recovery"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/recovery/service.py",
+      "sha256": "545e1dbadc3d6199330d034cbe5996b90f8d47cc8e2871bd1edca894ba3c3f71",
+      "imports": [
+        {
+          "line": 9,
+          "module": "ngertiin.chat.recovery"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.files.cleanup"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.memory.jobs"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.proactivity.jobs"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.tasks.recovery"
+        },
+        {
+          "line": 14,
+          "module": "ngertiin.usage.recovery"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/sandbox/__init__.py",
+      "sha256": "004fa7e411bf44c7e531cdde6931c9210e4536732f6e552961fd9cc1b09231b9",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/sandbox/cleanup.py",
+      "sha256": "e7b2f3ccecd0bb323d4a8d6da678778bef1093761ea4b81f85cfa3f450b162fb",
+      "imports": [
+        {
+          "line": 9,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.storage"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.tasks"
+        },
+        {
+          "line": 16,
+          "module": "ngertiin.config"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/sandbox/compute.py",
+      "sha256": "81fca333e8dfa74dbff077c4dafc38b421ab0af5128c4b087c6e354ffa42826a",
+      "imports": [
+        {
+          "line": 8,
+          "module": "ngertiin.sandbox"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.sandbox.contracts"
+        },
+        {
+          "line": 16,
+          "module": "ngertiin.tasks"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/sandbox/contracts.py",
+      "sha256": "5302439fca571218e98579fae7c9a6b9f138f1fc5692faeae06d0d409e1d7091",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/sandbox/e2b.py",
+      "sha256": "d44658f5cbeedea1796ead787d1f773718955be827b9ec2eecf45d5887d9c22b",
+      "imports": [
+        {
+          "line": 12,
+          "module": "ngertiin"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 14,
+          "module": "ngertiin.files.contracts"
+        },
+        {
+          "line": 15,
+          "module": "ngertiin.sandbox.contracts"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/sandbox/inputs.py",
+      "sha256": "29a985ea6099dc7193259fef2acaebc5af3fe5bd6ee491b29bec01eaa2233d5c",
+      "imports": [
+        {
+          "line": 8,
+          "module": "ngertiin.files"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.sandbox.contracts"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.storage"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.tasks"
+        },
+        {
+          "line": 63,
+          "module": "ngertiin.files.store"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/sandbox/jobs.py",
+      "sha256": "9d95e892afda9c1fca9229bbda0c2f775e54f1dfbb9233d2aa53f1d6f83be62a",
+      "imports": [
+        {
+          "line": 5,
+          "module": "ngertiin.worker.queue"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.sandbox.lifecycle"
+        },
+        {
+          "line": 18,
+          "module": "ngertiin.sandbox.lifecycle"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/sandbox/lifecycle.py",
+      "sha256": "4c913020c298211738745f292822918df62b611391a62b54ff6fe1f9b4990dec",
+      "imports": [
+        {
+          "line": 6,
+          "module": "ngertiin.sandbox"
+        },
+        {
+          "line": 7,
+          "module": "ngertiin.sandbox.contracts"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.tasks"
+        },
+        {
+          "line": 79,
+          "module": "ngertiin.sandbox.cleanup"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/sandbox/model.py",
+      "sha256": "83ef5f63c9c8f8623c1ad248ad4144c06336f7381f6ec188394e5bc0cf4f3df9",
+      "imports": [
+        {
+          "line": 8,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.tasks"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.tasks.policy"
+        },
+        {
+          "line": 30,
+          "module": "ngertiin.tasks.workflow"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/sandbox/outputs.py",
+      "sha256": "6d61c89d4ae4babdeb45ef79f7a27360c7832f80046dd92ff2cfcda7b5533f84",
+      "imports": [
+        {
+          "line": 8,
+          "module": "ngertiin.files.contracts"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.files.inputs"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.files.store"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.files.validation"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.sandbox"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.storage"
+        },
+        {
+          "line": 14,
+          "module": "ngertiin.tasks"
+        },
+        {
+          "line": 70,
+          "module": "ngertiin.chat.store"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/sandbox/policy.py",
+      "sha256": "b580e27da244e6d926dc8b0c02b3b3e11a30960ce2de1e29ee103a248b7efa62",
+      "imports": [
+        {
+          "line": 5,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.sandbox.contracts"
+        },
+        {
+          "line": 40,
+          "module": "ngertiin.sandbox.e2b"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/sandbox/runner.py",
+      "sha256": "d327f8f30022ecaad8165e24b0d2939a45e8d6768ef05bc3d09de1206fd42e74",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/sandbox/store.py",
+      "sha256": "589ea405d189e8838d899d3c4a19fe96ccab5a55b75eedb9b2675ef31675633c",
+      "imports": [
+        {
+          "line": 10,
+          "module": "ngertiin.accounts.access"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.sandbox.contracts"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.tasks"
+        },
+        {
+          "line": 90,
+          "module": "ngertiin.usage.events"
+        },
+        {
+          "line": 175,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 205,
+          "module": "ngertiin.usage.events"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/schedules/__init__.py",
+      "sha256": "2816f7270cf6c17b576a1159d2cc157f8cda150ce654d5d7d69b0a9c5515ebf6",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/schedules/api.py",
+      "sha256": "e26a3fa71382774df7ac7c7fa2e52438d5e08a09ea490d5aa22323531a5ba706",
+      "imports": [
+        {
+          "line": 8,
+          "module": "ngertiin.accounts.auth"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.models"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.schedules"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.schedules.contracts"
+        },
+        {
+          "line": 36,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 37,
+          "module": "ngertiin.chat.store"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/schedules/contracts.py",
+      "sha256": "74bf72275a69feebb6cec69fd1b0b479a34b0e108d0f889cd7059e5d1ea00a5d",
+      "imports": [
+        {
+          "line": 10,
+          "module": "ngertiin.files.contracts"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.goals.contracts"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/schedules/dispatch.py",
+      "sha256": "05b34d4e3c3ca912d0d38553d85c929e496e23d7178595aede2501179de9f764",
+      "imports": [
+        {
+          "line": 9,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.schedules"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.schedules.contracts"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.tasks"
+        },
+        {
+          "line": 14,
+          "module": "ngertiin.tasks.budget"
+        },
+        {
+          "line": 50,
+          "module": "ngertiin.goals.work"
+        },
+        {
+          "line": 112,
+          "module": "ngertiin.tasks.compatibility"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/schedules/jobs.py",
+      "sha256": "7b7543be7b8b03fdf292eda96f3f329ae08365c070cbe41008cfbae08566fd07",
+      "imports": [
+        {
+          "line": 3,
+          "module": "ngertiin.worker.queue"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.schedules.dispatch"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/schedules/service.py",
+      "sha256": "061cb10c1961fa3a1b20ac7212560749dc728a5019c0346594957cca3e9bb65e",
+      "imports": [
+        {
+          "line": 8,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.quotas.policy"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.schedules"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.schedules.contracts"
+        },
+        {
+          "line": 14,
+          "module": "ngertiin.tasks.creation"
+        },
+        {
+          "line": 18,
+          "module": "ngertiin.tasks.compatibility"
+        },
+        {
+          "line": 118,
+          "module": "ngertiin.goals.work"
+        },
+        {
+          "line": 219,
+          "module": "ngertiin.goals.work"
+        },
+        {
+          "line": 284,
+          "module": "ngertiin.schedules.dispatch"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/schedules/store.py",
+      "sha256": "f0093a22de84833525612e5b230a4669e7da52c67fdb8a3a40faedd1e4a0cc14",
+      "imports": [
+        {
+          "line": 5,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 6,
+          "module": "ngertiin.chat.store"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/schedules/timing.py",
+      "sha256": "3db4ebb7c1d924e17c75e7900f6818a22eb5438849952fadd897e7ab208532f8",
+      "imports": [
+        {
+          "line": 6,
+          "module": "ngertiin.schedules.contracts"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/schedules/tools.py",
+      "sha256": "7c8889f51563bfa152e5e9e9192a730d4134c928c214077955424d6343385753",
+      "imports": [
+        {
+          "line": 8,
+          "module": "ngertiin.schedules"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.schedules.contracts"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/setup.py",
+      "sha256": "ddcfe80dd7ebe83c142898fa16b06c1f980d252423f4eca21b4abc902ae81215",
+      "imports": [
+        {
+          "line": 12,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.storage"
+        },
+        {
+          "line": 19,
+          "module": "ngertiin.worker.queue"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/storage.py",
+      "sha256": "98dffda0b9c19a25c5d2645e9bebc10f206112cde206d1b3eb1d3cee981256d8",
+      "imports": [
+        {
+          "line": 13,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 38,
+          "module": "ngertiin.usage.storage"
+        },
+        {
+          "line": 51,
+          "module": "ngertiin.usage.storage"
+        },
+        {
+          "line": 65,
+          "module": "ngertiin.usage.storage"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/tasks/__init__.py",
+      "sha256": "c4d9368e7c7a27ecfc77b36f3be2af900d4d3c835da376706f704b5b151c3cf3",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/tasks/actions.py",
+      "sha256": "46a39efdb28d0059bb53803e2a16048d97405393850642fbc2a257ce238cf20c",
+      "imports": [
+        {
+          "line": 8,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.quotas.policy"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.tasks"
+        },
+        {
+          "line": 69,
+          "module": "ngertiin.computer.candidates"
+        },
+        {
+          "line": 30,
+          "module": "ngertiin.computer.candidates"
+        },
+        {
+          "line": 99,
+          "module": "ngertiin.tasks.compatibility"
+        },
+        {
+          "line": 36,
+          "module": "ngertiin.files.validation"
+        },
+        {
+          "line": 169,
+          "module": "ngertiin.files.results"
+        },
+        {
+          "line": 44,
+          "module": "ngertiin.sandbox.outputs"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/tasks/api.py",
+      "sha256": "7d55748e7e51a6e604c877f45f9bc5b122a08c6035c9ac21b6db14227eb8ca89",
+      "imports": [
+        {
+          "line": 9,
+          "module": "ngertiin.accounts.auth"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.files.contracts"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.goals.contracts"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.models"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.tasks"
+        },
+        {
+          "line": 111,
+          "module": "ngertiin.sandbox.outputs"
+        },
+        {
+          "line": 95,
+          "module": "ngertiin.computer.lifecycle"
+        },
+        {
+          "line": 99,
+          "module": "ngertiin.sandbox.lifecycle"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/tasks/budget.py",
+      "sha256": "d38eb3fee51828e7061fef0a5a33babf4557e09c9a22e620723ca476da171f52",
+      "imports": [
+        {
+          "line": 7,
+          "module": "ngertiin.accounts.access"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.tasks"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.tasks.policy"
+        },
+        {
+          "line": 98,
+          "module": "ngertiin.usage.events"
+        },
+        {
+          "line": 143,
+          "module": "ngertiin.usage.events"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/tasks/checkpoints.py",
+      "sha256": "67afd8e95429e0e45d44a16e825bb6faa68bf203b42f2c5f7cbb846ab2bf56b3",
+      "imports": [
+        {
+          "line": 7,
+          "module": "ngertiin.tasks.store"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/tasks/commands.py",
+      "sha256": "5427b2d168023af8d719b6827f2c449bbbe4842cd5e64447cd32da8f4a2c7fb7",
+      "imports": [
+        {
+          "line": 7,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.quotas.policy"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.tasks"
+        },
+        {
+          "line": 58,
+          "module": "ngertiin.computer.policy"
+        },
+        {
+          "line": 85,
+          "module": "ngertiin.tasks.compatibility"
+        },
+        {
+          "line": 188,
+          "module": "ngertiin.tasks.compatibility"
+        },
+        {
+          "line": 37,
+          "module": "ngertiin.computer.jobs"
+        },
+        {
+          "line": 51,
+          "module": "ngertiin.sandbox.jobs"
+        },
+        {
+          "line": 115,
+          "module": "ngertiin.sandbox.contracts"
+        },
+        {
+          "line": 116,
+          "module": "ngertiin.sandbox.store"
+        },
+        {
+          "line": 139,
+          "module": "ngertiin.goals.contracts"
+        },
+        {
+          "line": 140,
+          "module": "ngertiin.goals.work"
+        },
+        {
+          "line": 192,
+          "module": "ngertiin.files.validation"
+        },
+        {
+          "line": 201,
+          "module": "ngertiin.sandbox.outputs"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/tasks/compatibility.py",
+      "sha256": "b9d2bdae63ba840453eeede94581fecd8541078a7233c44b59c39649ff88f7e5",
+      "imports": [
+        {
+          "line": 20,
+          "module": "ngertiin.tasks"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/tasks/creation.py",
+      "sha256": "a396a6d97034857fc793c49ec4c8627db2121f6ad75a7a15549461b4ca4b317b",
+      "imports": [
+        {
+          "line": 8,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.goals.contracts"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.quotas"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.quotas.policy"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.tasks"
+        },
+        {
+          "line": 14,
+          "module": "ngertiin.tasks.policy"
+        },
+        {
+          "line": 52,
+          "module": "ngertiin.files"
+        },
+        {
+          "line": 53,
+          "module": "ngertiin.files"
+        },
+        {
+          "line": 54,
+          "module": "ngertiin.files.contracts"
+        },
+        {
+          "line": 60,
+          "module": "ngertiin.computer.policy"
+        },
+        {
+          "line": 72,
+          "module": "ngertiin.sandbox.policy"
+        },
+        {
+          "line": 188,
+          "module": "ngertiin.persona.store"
+        },
+        {
+          "line": 255,
+          "module": "ngertiin.usage"
+        },
+        {
+          "line": 256,
+          "module": "ngertiin.usage.policy"
+        },
+        {
+          "line": 266,
+          "module": "ngertiin.usage.prices"
+        },
+        {
+          "line": 151,
+          "module": "ngertiin.sandbox.policy"
+        },
+        {
+          "line": 161,
+          "module": "ngertiin.computer.policy"
+        },
+        {
+          "line": 179,
+          "module": "ngertiin.goals.work"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/tasks/jobs.py",
+      "sha256": "3fed6b9b8305deebf2a2f6a801a9cfa8e2b38d327f2176bb527c96a57960499e",
+      "imports": [
+        {
+          "line": 3,
+          "module": "ngertiin.worker.queue"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.tasks.runtime"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/tasks/policy.py",
+      "sha256": "cc81d9880cef0f531a8f7dd1bfee20d7ae23fc12bb5fee28bd2e1c4b1f3a3b8d",
+      "imports": [
+        {
+          "line": 3,
+          "module": "ngertiin.config"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/tasks/recovery.py",
+      "sha256": "c136b5cc5cc7e99cd1f3898f5ffc30c4ac12360249740f58877908d0971f22a9",
+      "imports": [
+        {
+          "line": 3,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 4,
+          "module": "ngertiin.tasks"
+        },
+        {
+          "line": 105,
+          "module": "ngertiin.tasks.compatibility"
+        },
+        {
+          "line": 33,
+          "module": "ngertiin.tasks.compatibility"
+        },
+        {
+          "line": 40,
+          "module": "ngertiin.computer.continuation"
+        },
+        {
+          "line": 51,
+          "module": "ngertiin.computer.jobs"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/tasks/runtime.py",
+      "sha256": "5c9b017958b6bba94c730223e0bf6b5c622a408581944c39dd7b02f16815742a",
+      "imports": [
+        {
+          "line": 13,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 14,
+          "module": "ngertiin.computer.contracts"
+        },
+        {
+          "line": 15,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 16,
+          "module": "ngertiin.sandbox.contracts"
+        },
+        {
+          "line": 17,
+          "module": "ngertiin.tasks"
+        },
+        {
+          "line": 18,
+          "module": "ngertiin.tasks.checkpoints"
+        },
+        {
+          "line": 24,
+          "module": "ngertiin.memory.recall"
+        },
+        {
+          "line": 28,
+          "module": "ngertiin.files.inputs"
+        },
+        {
+          "line": 115,
+          "module": "ngertiin.sandbox.lifecycle"
+        },
+        {
+          "line": 121,
+          "module": "ngertiin.computer.continuation"
+        },
+        {
+          "line": 126,
+          "module": "ngertiin.computer.store"
+        },
+        {
+          "line": 145,
+          "module": "ngertiin.computer.continuation"
+        },
+        {
+          "line": 148,
+          "module": "ngertiin.computer.store"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/tasks/store.py",
+      "sha256": "98f21185caf041e7b0cf810516b35002e37a31619f605d311ece34f9fc2de5fa",
+      "imports": [
+        {
+          "line": 9,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 107,
+          "module": "ngertiin.usage"
+        },
+        {
+          "line": 120,
+          "module": "ngertiin.files.inputs"
+        },
+        {
+          "line": 178,
+          "module": "ngertiin.files.results"
+        },
+        {
+          "line": 179,
+          "module": "ngertiin.proactivity.store"
+        },
+        {
+          "line": 210,
+          "module": "ngertiin.tasks.jobs"
+        },
+        {
+          "line": 272,
+          "module": "ngertiin.memory.invalidation"
+        },
+        {
+          "line": 300,
+          "module": "ngertiin.quotas.policy"
+        },
+        {
+          "line": 150,
+          "module": "ngertiin.sandbox.store"
+        },
+        {
+          "line": 154,
+          "module": "ngertiin.computer.store"
+        },
+        {
+          "line": 238,
+          "module": "ngertiin.tasks.compatibility"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/tasks/workflow.py",
+      "sha256": "fabd93acf6fb94b47ac7190bbc059034599812c567f04b9717be07a7ab005ebe",
+      "imports": [
+        {
+          "line": 13,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 14,
+          "module": "ngertiin.tasks"
+        },
+        {
+          "line": 15,
+          "module": "ngertiin.tasks.policy"
+        },
+        {
+          "line": 40,
+          "module": "ngertiin.files.inputs"
+        },
+        {
+          "line": 62,
+          "module": "ngertiin.memory.invalidation"
+        },
+        {
+          "line": 63,
+          "module": "ngertiin.memory.recall"
+        },
+        {
+          "line": 134,
+          "module": "ngertiin.persona.policy"
+        },
+        {
+          "line": 166,
+          "module": "ngertiin.memory.invalidation"
+        },
+        {
+          "line": 26,
+          "module": "ngertiin.computer.workflow"
+        },
+        {
+          "line": 31,
+          "module": "ngertiin.sandbox.compute"
+        },
+        {
+          "line": 174,
+          "module": "ngertiin.files.results"
+        },
+        {
+          "line": 123,
+          "module": "ngertiin.files.validation"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/usage/__init__.py",
+      "sha256": "69e2c32d8a7c44411c2cea6b868ac7d5497cd708762405fbae2f78d335389637",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/usage/api.py",
+      "sha256": "5e28b75c06a380044844a445fd61d24216e52331391ed47c5be02d4abd9fda78",
+      "imports": [
+        {
+          "line": 9,
+          "module": "ngertiin.accounts.access"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.accounts.auth"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.models"
+        },
+        {
+          "line": 14,
+          "module": "ngertiin.quotas.periods"
+        },
+        {
+          "line": 15,
+          "module": "ngertiin.usage"
+        },
+        {
+          "line": 16,
+          "module": "ngertiin.usage.estimates"
+        },
+        {
+          "line": 63,
+          "module": "ngertiin.config"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/usage/chat.py",
+      "sha256": "8d1b32716b566f781148f86d2d54fe268fe2260fa2c78611e9ddf1098a9d2474",
+      "imports": [
+        {
+          "line": 8,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.usage"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/usage/estimates.py",
+      "sha256": "16d3d5ac97ac4d1e337cdea07531b2b653f1b509c1459619a6649c3115089621",
+      "imports": [
+        {
+          "line": 3,
+          "module": "ngertiin.accounts.access"
+        },
+        {
+          "line": 4,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 5,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 6,
+          "module": "ngertiin.files.store"
+        },
+        {
+          "line": 7,
+          "module": "ngertiin.tasks.policy"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.usage"
+        },
+        {
+          "line": 16,
+          "module": "ngertiin.sandbox.policy"
+        },
+        {
+          "line": 20,
+          "module": "ngertiin.computer.policy"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/usage/events.py",
+      "sha256": "6512d16b25b713a9c1c35ea81b813e67373ce79e1f39dbbbbe2f2d8a90bd51ba",
+      "imports": [
+        {
+          "line": 7,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.usage"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/usage/ledger.py",
+      "sha256": "cddb4f780aad5b759da8255cf7a43a18a91d42c343c5e8d47bc471b7daa98afe",
+      "imports": [
+        {
+          "line": 7,
+          "module": "ngertiin.accounts.access"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.tasks.budget"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.usage"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/usage/policy.py",
+      "sha256": "f33b5fe6244b097de117469840b27995787610ae982faddcf1883b7b12b5a06b",
+      "imports": [
+        {
+          "line": 3,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 4,
+          "module": "ngertiin.usage"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/usage/prices.py",
+      "sha256": "8ae5975a609e4b7c8f31e0b83a60023ff8e14895095eb257fb0451105e0731b7",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/usage/recovery.py",
+      "sha256": "583c8be3b366139a5d15548cbd74ee3425ef0bea601161f95936f7c5ec6c43a5",
+      "imports": [
+        {
+          "line": 3,
+          "module": "ngertiin.async_db"
+        },
+        {
+          "line": 4,
+          "module": "ngertiin.chat.store"
+        },
+        {
+          "line": 5,
+          "module": "ngertiin.usage"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/usage/storage.py",
+      "sha256": "0a598ee859c3273315b404a1dbf748f95b8f9a66aeb4e8b48fd245c5dcf25f0f",
+      "imports": [
+        {
+          "line": 9,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.usage"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/worker/__init__.py",
+      "sha256": "4446cd4b282bdbfedd18fbbdfdb13918f055d40429674a087b725c002d4d9b9f",
+      "imports": []
+    },
+    {
+      "path": "apps/backend/src/ngertiin/worker/__main__.py",
+      "sha256": "d0a8d79aa0b1d6045ad868f984c9adc8ba252dd0a97978578ceb55d49018c8ab",
+      "imports": [
+        {
+          "line": 4,
+          "module": "ngertiin.billing.jobs"
+        },
+        {
+          "line": 5,
+          "module": "ngertiin.chat.tasks"
+        },
+        {
+          "line": 6,
+          "module": "ngertiin.computer.jobs"
+        },
+        {
+          "line": 7,
+          "module": "ngertiin.files.jobs"
+        },
+        {
+          "line": 8,
+          "module": "ngertiin.memory.jobs"
+        },
+        {
+          "line": 9,
+          "module": "ngertiin.proactivity.jobs"
+        },
+        {
+          "line": 10,
+          "module": "ngertiin.sandbox.jobs"
+        },
+        {
+          "line": 11,
+          "module": "ngertiin.schedules.jobs"
+        },
+        {
+          "line": 12,
+          "module": "ngertiin.tasks.jobs"
+        },
+        {
+          "line": 13,
+          "module": "ngertiin.worker.queue"
+        },
+        {
+          "line": 14,
+          "module": "ngertiin.worker.tasks"
+        },
+        {
+          "line": 19,
+          "module": "ngertiin.recovery.restore"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/worker/queue.py",
+      "sha256": "cd5062cc17aad19700c5f2ba6497486dd3af32c93ec49e65730ba7908127f1ac",
+      "imports": [
+        {
+          "line": 5,
+          "module": "ngertiin.config"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/worker/tasks.py",
+      "sha256": "05fed36b52e324ea595eb115f14169d8373063d25206f9b7cea6680bf223fd41",
+      "imports": [
+        {
+          "line": 9,
+          "module": "ngertiin.worker.queue"
+        },
+        {
+          "line": 20,
+          "module": "ngertiin.worker.workflow"
+        },
+        {
+          "line": 50,
+          "module": "ngertiin.recovery.service"
+        }
+      ]
+    },
+    {
+      "path": "apps/backend/src/ngertiin/worker/workflow.py",
+      "sha256": "64eeb813c1011a47b231120d66872da737a61b8d53e2794e1c6dd6b1a0fe6cec",
+      "imports": [
+        {
+          "line": 13,
+          "module": "ngertiin.config"
+        },
+        {
+          "line": 14,
+          "module": "ngertiin.db"
+        },
+        {
+          "line": 15,
+          "module": "ngertiin.models"
+        },
+        {
+          "line": 16,
+          "module": "ngertiin.storage"
+        }
+      ]
+    }
+  ],
+  "migrations": [
+    {
+      "path": "apps/backend/migrations/versions/0001_v1_baseline.py",
+      "sha256": "a4abf619f63eb7bc94ba1d67e44dffb7a456cb9bfed4543dfeadeb5c6f9435c0",
+      "create_table_mentions": [
+        "agent_profiles",
+        "chat_threads",
+        "chat_runs",
+        "chat_messages",
+        "chat_events",
+        "chat_approvals",
+        "quota_grants",
+        "quota_periods",
+        "quota_operations",
+        "quota_events"
+      ]
+    },
+    {
+      "path": "apps/backend/migrations/versions/0002_background_tasks.py",
+      "sha256": "02543e0f409f078ba609b0691d508df95eafd5897305553eb63a8b57ba21bf0e",
+      "create_table_mentions": [
+        "background_tasks",
+        "task_executions",
+        "task_revisions",
+        "task_actions",
+        "task_cost_events",
+        "task_deliveries",
+        "task_commands"
+      ]
+    },
+    {
+      "path": "apps/backend/migrations/versions/0003_product_files.py",
+      "sha256": "9079008e8f1d8d9c105630dd9d0025362eae42a007ca6342f2d70f21aeebb847",
+      "create_table_mentions": [
+        "product_files",
+        "file_revisions",
+        "file_extractions",
+        "task_file_inputs",
+        "product_results",
+        "result_revisions"
+      ]
+    },
+    {
+      "path": "apps/backend/migrations/versions/0004_sandbox_runtime.py",
+      "sha256": "81ae63e3017b2a491dd866b007f908497c28a5f9ee01ab9e4aa91e61acdb911f",
+      "create_table_mentions": [
+        "sandbox_sessions",
+        "sandbox_steps",
+        "sandbox_outputs"
+      ]
+    },
+    {
+      "path": "apps/backend/migrations/versions/0005_browser_workspace.py",
+      "sha256": "93dd76e8453ffcc54a9c32c5b7ffbca09215bfe7c13b861b455834a644746fb3",
+      "create_table_mentions": [
+        "browser_workspaces",
+        "computer_sessions",
+        "computer_steps",
+        "computer_outputs",
+        "computer_viewers"
+      ]
+    },
+    {
+      "path": "apps/backend/migrations/versions/0006_user_schedules.py",
+      "sha256": "3e6a1992697a309d4ccf725aadcacfa46735836abd0548067d6b169c5901ce79",
+      "create_table_mentions": [
+        "user_schedules",
+        "schedule_revisions",
+        "schedule_proposals",
+        "schedule_occurrences"
+      ]
+    },
+    {
+      "path": "apps/backend/migrations/versions/0007_persona_revisions.py",
+      "sha256": "35adf44209d11a6a0477c6ebfc28bd6bb134de4c5191881b7ab95a2bd3aded8c",
+      "create_table_mentions": [
+        "persona_revisions",
+        "persona_proposals"
+      ]
+    },
+    {
+      "path": "apps/backend/migrations/versions/0008_personal_memory.py",
+      "sha256": "ed7e716a1103099ce84ef8d7e5d57d591097ff6d500a59a15dd1626d1b275d16",
+      "create_table_mentions": [
+        "memory_settings",
+        "memory_entries",
+        "memory_revisions",
+        "memory_capture_jobs",
+        "memory_evidence",
+        "memory_suppressions",
+        "memory_excluded_sources",
+        "memory_index_operations",
+        "memory_commands",
+        "memory_cost_events"
+      ]
+    },
+    {
+      "path": "apps/backend/migrations/versions/0009_personal_goals.py",
+      "sha256": "42d5ba26bb579c97756b9b873d1730c6b1e0a73afe3fbac1bd79868569e7a0c1",
+      "create_table_mentions": [
+        "user_goals",
+        "goal_revisions",
+        "goal_proposals",
+        "goal_evidence"
+      ]
+    },
+    {
+      "path": "apps/backend/migrations/versions/0010_proactive_candidates.py",
+      "sha256": "3bbbc4717887066acfe2d55eadb9fcbc9cb74e790ffda7dda01693972ba83c49",
+      "create_table_mentions": [
+        "proactive_accounts",
+        "proactive_evaluations",
+        "proactive_candidates",
+        "proactive_cost_events"
+      ]
+    },
+    {
+      "path": "apps/backend/migrations/versions/0011_proactive_delivery.py",
+      "sha256": "bf1be03c06e6eced5b53aa9efc07bb4d67970113a5f1543a75e347d70f9616bf",
+      "create_table_mentions": [
+        "proactive_preferences",
+        "proactive_scope_controls",
+        "proactive_preference_commands",
+        "proactive_deliveries"
+      ]
+    },
+    {
+      "path": "apps/backend/migrations/versions/0012_resource_library.py",
+      "sha256": "2d56f11abf5f1170fb81f723c037e69fa9fd8717ee85f45ea3920ee5f8468c48",
+      "create_table_mentions": [
+        "thread_resource_selections"
+      ]
+    },
+    {
+      "path": "apps/backend/migrations/versions/0013_compute_usage.py",
+      "sha256": "f83f539eac680fca224f08602ee3ed56d7c43a633613bd9bcab1bd81583b115b",
+      "create_table_mentions": [
+        "compute_periods",
+        "compute_work",
+        "compute_events",
+        "compute_audit"
+      ]
+    },
+    {
+      "path": "apps/backend/migrations/versions/0014_subscription_billing.py",
+      "sha256": "75b336551b7d191b6b40a5c2f0855bd0fcb5e2fea72d0e76e30498a2562cf460",
+      "create_table_mentions": [
+        "billing_orders",
+        "billing_events",
+        "billing_payments",
+        "billing_audit"
+      ]
+    },
+    {
+      "path": "apps/backend/migrations/versions/0015_subscription_lifecycle.py",
+      "sha256": "43a6eba650e54b0fcd93f40c930a6106ef0b5983d95c3276a0fe8507e5f074a9",
+      "create_table_mentions": []
+    },
+    {
+      "path": "apps/backend/migrations/versions/0016_recovery_versions.py",
+      "sha256": "b30929a0324790faab9d7b65ab3eecf6a4486b3f30eb32fd6567dc3e44313236",
+      "create_table_mentions": [
+        "recovery_restores"
+      ]
+    },
+    {
+      "path": "apps/backend/migrations/versions/0017_restore_storage_binding.py",
+      "sha256": "fb3789a00b8a8ee92a321ad0a16b45f86966f05031cc4e2e0f78a07ccf72b58e",
+      "create_table_mentions": []
+    },
+    {
+      "path": "apps/backend/migrations/versions/0018_browser_provider_profiles.py",
+      "sha256": "19afea248e544f7c3f73b1fa11e55513efcd157633ce3ee2a4ba8874d1c0b148",
+      "create_table_mentions": []
+    },
+    {
+      "path": "apps/backend/migrations/versions/0019_browser_continuation.py",
+      "sha256": "09bd954226550e31f2d73c7710cb96ef6b2363b31d9f7bf488884d2c8aca09d3",
+      "create_table_mentions": []
+    },
+    {
+      "path": "apps/backend/migrations/versions/0020_computer_workflow.py",
+      "sha256": "5ebd23020eb0bf648930e32c780909e8eda94b03f723471214a1bc58e6a33600",
+      "create_table_mentions": [
+        "computer_evidence",
+        "computer_candidates"
+      ]
+    },
+    {
+      "path": "apps/backend/migrations/versions/0021_browser_metering.py",
+      "sha256": "245463d5fca1734d12242cc937364fe16322cce80ecf224cbc806674c2fb49ae",
+      "create_table_mentions": []
+    }
+  ]
+}

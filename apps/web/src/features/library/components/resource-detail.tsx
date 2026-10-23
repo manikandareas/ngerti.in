@@ -17,7 +17,7 @@ import { TaskCard } from "@/features/tasks/components/task-card";
 import type { BackgroundTask } from "@/features/tasks/types";
 import { ApiError, api } from "@/lib/api";
 import { libraryCommand, useResourceSelection } from "../hooks/use-library";
-import { kindLabels, type ResourceItem, type ResourceRef } from "../types";
+import type { ResourceItem, ResourceRef } from "../types";
 import { useResourceContext } from "./resource-context";
 
 interface ResourceDetail extends ResourceItem {
@@ -58,20 +58,18 @@ export function ResourceDetailPanel({ refValue }: { refValue: ResourceRef }) {
       />
     );
   return (
-    <section className="space-y-5 text-sm">
-      <p className="text-xs text-muted-foreground">
-        {kindLabels[refValue.kind]}
-        {data.ref.revision ? ` · v${data.ref.revision}` : ""}
-      </p>
-      <h2 className="text-xl wrap-anywhere">{data.title}</h2>
+    <section className="space-y-3 text-sm">
+      {!["file", "result"].includes(refValue.kind) ? (
+        <h2 className="text-xl wrap-anywhere">{data.title}</h2>
+      ) : null}
       <div className="flex flex-wrap gap-2">
         {context.threadId ? (
           <Button
+            size="sm"
             disabled={selected.select.isPending}
             onClick={() =>
               selected.select.mutate(data.ref, {
                 onSuccess: () => {
-                  context.open(null);
                   context.discuss();
                 },
               })
@@ -81,7 +79,7 @@ export function ResourceDetailPanel({ refValue }: { refValue: ResourceRef }) {
           </Button>
         ) : null}
         {data.thread_id ? (
-          <Button asChild variant="outline">
+          <Button asChild variant="ghost" size="sm">
             <Link to="/" search={{ thread: data.thread_id }} onClick={() => context.open(null)}>
               Buka percakapan asal
             </Link>
@@ -107,12 +105,13 @@ export function ResourceDetailPanel({ refValue }: { refValue: ResourceRef }) {
       ) : null}
       {refValue.kind === "file" && data.file ? (
         <>
-          <FilePreview file={data.file} />
+          <FilePreview file={data.file} inline />
           <DeleteResource path={`/files/${refValue.id}`} name={data.title} />
         </>
       ) : null}
       {refValue.kind === "result" ? (
         <ResultCard
+          inline
           resultId={refValue.id}
           initialRevision={data.ref.revision ?? undefined}
           onRevisionChange={(revision) => context.open({ ...data.ref, revision })}

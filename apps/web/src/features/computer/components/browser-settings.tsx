@@ -15,8 +15,9 @@ import {
 import { Button } from "@/components/ui/button";
 import type { ComputerState } from "@/features/computer/types";
 import { api } from "@/lib/api";
+import { cn } from "@/lib/utils";
 
-export function BrowserSettings() {
+export function BrowserSettings({ className }: { className?: string } = {}) {
   const { getToken, userId } = useAuth();
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
@@ -45,21 +46,32 @@ export function BrowserSettings() {
     }
   }
   return (
-    <section className="space-y-3 py-6">
+    <section className={cn("space-y-3 py-6", className)}>
       <h2>Browser pribadi</h2>
       <p className="text-sm text-muted-foreground">
         Login digunakan kembali lintas Task. Komputasi berhenti setelah pekerjaan; profil disimpan
         maksimal 7 hari sejak penggunaan terakhir.
       </p>
+      <p className="text-sm text-muted-foreground">
+        Gwen membuka situs dan mencari informasi secara otomatis. Pengiriman, perubahan data,
+        transaksi, dan tindakan keamanan meminta persetujuan. Password dan OTP diisi sendiri melalui
+        ambil alih privat.
+      </p>
       {workspace ? (
         <>
           <p className="text-xs text-muted-foreground">
-            Retensi profil sampai {new Date(workspace.retain_until).toLocaleString("id-ID")}. File
-            hasil dikelola terpisah.
+            Retensi profil sampai{" "}
+            {new Date(workspace.retain_until).toLocaleString("id-ID", { timeZoneName: "short" })}.
+            File hasil dikelola terpisah.
           </p>
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button type="button" variant="outline" disabled={pending}>
+              <Button
+                type="button"
+                variant="outline"
+                className="h-auto whitespace-normal text-left"
+                disabled={pending}
+              >
                 Reset browser dan hapus login tersimpan
               </Button>
             </AlertDialogTrigger>
@@ -78,6 +90,14 @@ export function BrowserSettings() {
             </AlertDialogContent>
           </AlertDialog>
         </>
+      ) : state.isPending ? (
+        <p role="status" className="text-sm text-muted-foreground">
+          Memuat profil browser…
+        </p>
+      ) : state.isError ? (
+        <Button variant="outline" onClick={() => void state.refetch()}>
+          Coba lagi
+        </Button>
       ) : (
         <p className="text-xs text-muted-foreground">
           Belum ada profil tersimpan. Profil dibuat saat Task browser pertama.

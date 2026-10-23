@@ -47,7 +47,7 @@ export function ComputeUsagePanel() {
             <dd className="mt-1 font-bold tabular-nums">{formatCredits(compute.reserved)}</dd>
           </div>
           <div>
-            <dt className="text-muted-foreground">Allowance periode ini</dt>
+            <dt className="text-muted-foreground">Kuota periode ini</dt>
             <dd className="mt-1 tabular-nums">{formatCredits(compute.limit)}</dd>
           </div>
           <div>
@@ -64,7 +64,7 @@ export function ComputeUsagePanel() {
           komputasi. Cadangan membatasi pekerjaan sebelum berjalan; sisa dikembalikan setelah
           selesai. Angka mengikuti tarif yang berlaku saat pekerjaan diterima.
           {query.data.plan === "plus"
-            ? " Allowance Plus berikutnya menunggu pembayaran terverifikasi."
+            ? " Kuota Plus berikutnya menunggu pembayaran terverifikasi."
             : ""}
         </p>
         {compute.remaining === 0 && (
@@ -95,7 +95,7 @@ export function ComputeUsagePanel() {
         <h2 id="compute-history-heading">Riwayat komputasi</h2>
         {!items.length && (
           <p className="text-sm text-muted-foreground">
-            Belum ada penggunaan pada ledger baru. Pekerjaan sebelumnya tidak dipotong ulang.
+            Belum ada penggunaan komputasi tercatat. Pekerjaan sebelumnya tidak dipotong ulang.
           </p>
         )}
         <ul className="divide-y">
@@ -113,7 +113,7 @@ export function ComputeUsagePanel() {
                 {item.sponsored
                   ? "Termasuk layanan"
                   : item.refunded
-                    ? "Allowance dikembalikan — tidak ada hasil"
+                    ? "Kuota dikembalikan — tidak ada hasil"
                     : item.state === "active"
                       ? "Sedang diproses"
                       : item.pending > 0
@@ -147,8 +147,8 @@ export function ComputeUsagePanel() {
       </section>
       <p className="max-w-prose text-sm text-muted-foreground">
         Approval, stop, replay dan kontrol memory tidak menambah kuota pesan. Retry dapat
-        menggunakan komputasi baru. Task atau chat yang gagal tanpa hasil mengembalikan allowance;
-        hasil parsial tetap menghitung penggunaan yang terpakai. Penggunaan yang belum pasti tetap
+        menggunakan komputasi baru. Task atau chat yang gagal tanpa hasil mengembalikan kuota; hasil
+        parsial tetap menghitung penggunaan yang terpakai. Penggunaan yang belum pasti tetap
         diperiksa.
       </p>
     </div>

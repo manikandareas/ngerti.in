@@ -5,11 +5,28 @@ import { Button } from "@/components/ui/button";
 import { libraryCommand, useResourceSelection } from "../hooks/use-library";
 import { kindLabels, type ResourceItem, type ResourceRef, resourceStatusLabels } from "../types";
 import { useResourceContext } from "./resource-context";
-export function ResourceCard({ item }: { item: ResourceItem }) {
+export function ResourceCard({ item, preview = false }: { item: ResourceItem; preview?: boolean }) {
   const context = useResourceContext();
   const selection = useResourceSelection(context.threadId);
   return (
-    <article className="min-w-0 space-y-2 border-b py-4 text-sm last:border-b-0">
+    <article
+      className={
+        preview
+          ? "min-w-0 space-y-2 rounded-xl border bg-card p-3 text-sm"
+          : "min-w-0 space-y-2 border-b py-4 text-sm last:border-b-0"
+      }
+    >
+      {preview ? (
+        <button
+          type="button"
+          aria-label={`Buka ${item.title}`}
+          className="flex h-28 w-full items-start gap-3 overflow-hidden rounded-lg bg-muted p-4 text-left text-xs text-muted-foreground"
+          onClick={() => context.open(item.ref)}
+        >
+          <FileSearch className="size-8 shrink-0" />
+          <span className="line-clamp-5 wrap-anywhere">{item.snippet || item.title}</span>
+        </button>
+      ) : null}
       <p className="text-xs text-muted-foreground">
         {kindLabels[item.ref.kind]}
         {resourceStatusLabels[item.status] ? ` · ${resourceStatusLabels[item.status]}` : ""}
@@ -23,7 +40,7 @@ export function ResourceCard({ item }: { item: ResourceItem }) {
       >
         {item.title}
       </button>
-      {item.snippet ? (
+      {item.snippet && !preview ? (
         <p className="line-clamp-3 text-muted-foreground wrap-anywhere">{item.snippet}</p>
       ) : null}
       <div className="flex flex-wrap gap-2">
@@ -41,7 +58,7 @@ export function ResourceCard({ item }: { item: ResourceItem }) {
             onClick={() =>
               selection.select.mutate(item.ref, {
                 onSuccess: () => {
-                  context.open(null);
+                  context.open(item.ref);
                   context.discuss();
                 },
               })

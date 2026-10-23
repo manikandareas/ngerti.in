@@ -22,7 +22,11 @@ export function useChatHistory() {
   useEffect(() => {
     if (mobile || !panelOpen) return;
     function dismissOnChatClick(event: PointerEvent) {
-      if (event.target instanceof Node && chatArea.current?.contains(event.target)) {
+      if (
+        event.target instanceof Node &&
+        chatArea.current?.contains(event.target) &&
+        !historyToggle.current?.contains(event.target)
+      ) {
         setPanelOpen(false);
       }
     }

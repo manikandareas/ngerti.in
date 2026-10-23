@@ -3,12 +3,8 @@ import { Button } from "@/components/ui/button";
 import { WorkspaceState } from "@/components/workspace-state";
 import { BillingPanel } from "@/features/billing/components/billing-panel";
 import { useQuota } from "@/features/quotas/hooks/use-quota";
+import { usageDate } from "../utils/format";
 import { ComputeUsagePanel } from "./compute-usage";
-
-const dates = new Intl.DateTimeFormat("id-ID", {
-  dateStyle: "medium",
-  timeStyle: "short",
-});
 
 export function UsagePanel() {
   const quota = useQuota();
@@ -80,9 +76,9 @@ export function UsagePanel() {
         </dl>
         <p className="mt-6 border-t pt-4 text-sm text-muted-foreground">
           {plan === "plus" ? "Periode berbayar berakhir " : "Tersedia kembali "}
-          <time dateTime={period.ends_at}>{dates.format(new Date(period.ends_at))}</time> (waktu
+          <time dateTime={period.ends_at}>{usageDate.format(new Date(period.ends_at))}</time> (waktu
           perangkatmu).
-          {plan === "plus" ? " Allowance Plus berikutnya menunggu pembayaran terverifikasi." : ""}
+          {plan === "plus" ? " Kuota Plus berikutnya menunggu pembayaran terverifikasi." : ""}
         </p>
       </section>
       {chat.remaining === 0 ? (
@@ -94,7 +90,7 @@ export function UsagePanel() {
       <p className="max-w-prose text-sm text-muted-foreground">
         Satu pesan yang kamu kirim memakai satu kuota chat. Membuka riwayat dan menyambungkan
         kembali percakapan tidak memakai pesan baru. Penggunaan model dan pekerjaan lain juga
-        memakai allowance komputasi.
+        memakai kuota komputasi.
       </p>
       <ComputeUsagePanel />
       <BillingPanel />

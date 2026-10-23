@@ -1,5 +1,5 @@
 import { useAuth } from "@clerk/tanstack-react-start";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Navigate, useNavigate } from "@tanstack/react-router";
 import { AuthPage } from "@/features/auth/components/auth-page";
 import { workspaceLinks } from "@/features/workspace/config/navigation";
 import type { WorkspaceView } from "@/features/workspace/types";
@@ -33,6 +33,9 @@ function Home() {
       </main>
     );
   if (!isSignedIn) return <AuthPage />;
+  if (view === "files")
+    return <Navigate to="/library/$section" params={{ section: "artifacts" }} replace />;
+  if (view === "goals") return <Navigate to="/goals" replace />;
   return (
     <WorkspacePage
       key={userId}
@@ -41,7 +44,9 @@ function Home() {
       onPromptConsumed={() => void navigate({ to: "/", search: { thread }, replace: true })}
       view={view}
       onNavigate={(next) => {
-        void navigate({ to: "/", search: { thread, view: next === "chat" ? undefined : next } });
+        if (next === "goals") void navigate({ to: "/goals" });
+        else
+          void navigate({ to: "/", search: { thread, view: next === "chat" ? undefined : next } });
       }}
       onSelect={(id) => {
         void navigate({ to: "/", search: { thread: id } });

@@ -34,10 +34,17 @@ const controls = {
 
 export function ComputerPanel({ task }: { task: BackgroundTask }) {
   const [open, setOpen] = useState(false);
-  const { state, viewer, pending, error, connect, command, closeViewer } = useComputer(
-    task.id,
-    open,
-  );
+  const {
+    state,
+    viewer,
+    pending,
+    error,
+    connect,
+    command,
+    closeViewer,
+    reconnect,
+    connectionStatus,
+  } = useComputer(task.id, open);
   const workspace = state.data?.workspace;
   const owns = workspace?.active_task_id === task.id;
   const ready = owns && workspace?.state === "ready";
@@ -83,7 +90,20 @@ export function ComputerPanel({ task }: { task: BackgroundTask }) {
               . Profil login tetap disimpan sesuai retensi.
             </p>
           ) : null}
+          <p className="text-sm text-muted-foreground">
+            Ambil alih menjeda aksi Gwen sampai kendali diserahkan. Mengembalikan kendali membuat
+            Gwen membaca layar terbaru; ini tidak menyetujui permintaan izin.
+          </p>
           <div className="flex flex-wrap gap-2">
+            {task.stage === "computer_upgrade_required" ? (
+              <Button
+                type="button"
+                disabled={pending}
+                onClick={() => void command(`/computer/tasks/${task.id}/upgrade`)}
+              >
+                Perbarui runtime dan lanjutkan
+              </Button>
+            ) : null}
             {ready && ["agent", "human"].includes(workspace.control) ? (
               <Button
                 type="button"
@@ -126,17 +146,29 @@ export function ComputerPanel({ task }: { task: BackgroundTask }) {
               </Button>
             ) : null}
           </div>
+          <p className="text-xs text-muted-foreground">
+            Hentikan task meminta pekerjaan berhenti; aksi yang sudah terjadi tidak dibatalkan.
+            Menutup layar atau panel tidak menghentikan task, menghapus sesi login, atau memberikan
+            izin.
+          </p>
+          {connectionStatus ? (
+            <p role="status" className="text-sm text-muted-foreground">
+              {connectionStatus}
+            </p>
+          ) : null}
           {viewer ? (
             <ComputerViewer
               key={viewer.url}
               url={viewer.url}
               human={workspace?.control === "human"}
+              onDisconnect={() => void reconnect()}
             />
           ) : null}
-          {proposal?.state === "proposed" ? (
+          {proposal ? (
             <ComputerAction
               proposal={proposal}
               pending={pending}
+              takeover={() => change("human")}
               decide={(approved) =>
                 void command(`/computer/tasks/${task.id}/actions/${proposal.id}`, {
                   approved,
@@ -184,6 +216,9 @@ export function ComputerPanel({ task }: { task: BackgroundTask }) {
           {workspace?.error || error || state.error ? (
             <p role="alert" className="text-sm text-danger">
               {error || workspace?.error || state.error?.message}
+              <Button variant="outline" className="mt-2" onClick={() => void state.refetch()}>
+                Muat ulang status
+              </Button>
             </p>
           ) : null}
           {state.isPending ? (
@@ -192,21 +227,26 @@ export function ComputerPanel({ task }: { task: BackgroundTask }) {
             </p>
           ) : null}
           <p className="text-xs text-muted-foreground">
-            Satu Task memakai komputer pada satu waktu. Aksi klik/ketik/tombol memerlukan
-            persetujuan. Saat sesi login berakhir atau situs meminta 2FA, Gwen akan meminta
-            bantuanmu.
+            Navigasi, membaca, dan pencarian berjalan otomatis. Pengiriman, perubahan data,
+            transaksi, serta tindakan keamanan memerlukan persetujuan. Login dan 2FA melalui ambil
+            alih privat. Satu Task memakai komputer pada satu waktu.
           </p>
           {state.data?.sessions.length ? (
-            <p className="text-xs text-muted-foreground">
-              Pemakaian dan cadangan komputer Task ini: USD{" "}
-              {(
-                state.data.sessions.reduce(
-                  (total, session) => total + session.charged_microusd,
-                  0,
-                ) / 1_000_000
-              ).toFixed(4)}
-              . Termasuk cadangan penyimpanan profil; ini estimasi, bukan tagihan provider.
-            </p>
+            <details>
+              <summary className="cursor-pointer py-2 text-xs text-muted-foreground">
+                Detail pemakaian komputer
+              </summary>
+              <p className="text-xs text-muted-foreground">
+                Pemakaian dan cadangan komputer Task ini: USD{" "}
+                {(
+                  state.data.sessions.reduce(
+                    (total, session) => total + session.charged_microusd,
+                    0,
+                  ) / 1_000_000
+                ).toFixed(4)}
+                . Termasuk cadangan penyimpanan profil; ini estimasi, bukan tagihan provider.
+              </p>
+            </details>
           ) : null}
         </div>
       </SheetContent>

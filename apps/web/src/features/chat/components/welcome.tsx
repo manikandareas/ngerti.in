@@ -1,4 +1,5 @@
 import { Lightbulb, Pencil, Sparkles } from "lucide-react";
+import { Mascot } from "@/components/mascot/mascot";
 import { Button } from "@/components/ui/button";
 
 const suggestions = [
@@ -30,13 +31,7 @@ export function Welcome({
 }) {
   return (
     <section className="mx-auto flex w-full flex-col items-center text-center min-[701px]:pb-12">
-      <img
-        src="/images/gY5qJ.png"
-        alt=""
-        width={88}
-        height={88}
-        className="mb-5 size-16 rounded-full min-[701px]:size-[88px]"
-      />
+      <Mascot className="mb-5 size-20 min-[701px]:size-28" face="happy" />
       <h1 className="text-2xl font-extrabold min-[701px]:text-[28px]">
         Mulai dari satu hal kecil.
       </h1>

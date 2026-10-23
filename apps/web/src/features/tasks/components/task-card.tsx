@@ -3,11 +3,12 @@ import { useState } from "react";
 import { Streamdown } from "streamdown";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useExpired } from "@/features/chat/hooks/use-expired";
 import { ComputerPanel } from "@/features/computer/components/computer-panel";
 import { FileDraft } from "@/features/files/components/file-draft";
 import { ResultCard } from "@/features/files/components/result-card";
 import { TaskInputs } from "@/features/files/components/task-inputs";
-import { taskStage, taskStatus } from "@/features/tasks/constants";
+import { taskStage, taskStatusLabel } from "@/features/tasks/constants";
 import { useTaskCommands } from "@/features/tasks/hooks/use-task-commands";
 import { useTaskEditor } from "@/features/tasks/hooks/use-task-editor";
 import type { BackgroundTask } from "@/features/tasks/types";
@@ -32,7 +33,7 @@ export function TaskCard({ task, showResult = true }: TaskCardProps) {
     task.stage === "computer_unknown" ||
     task.stage === "computer_unknown_resolved";
   const canReview = waiting && task.action?.status === "proposed" && !unknown && !recoveryBlocked;
-  const expired = task.action ? Date.parse(task.action.expires_at) <= Date.now() : false;
+  const expired = useExpired(task.action?.expires_at ?? "");
   const canEdit =
     ["waiting_user", "failed", "cancelled"].includes(task.status) &&
     !unknown &&
@@ -49,8 +50,7 @@ export function TaskCard({ task, showResult = true }: TaskCardProps) {
         <ListTodo className="mt-1 size-5 shrink-0 text-muted-foreground" aria-hidden="true" />
         <div className="min-w-0 flex-1">
           <div className="mb-2 flex flex-wrap items-center gap-2">
-            <Badge variant="secondary">{taskStatus[task.status]}</Badge>
-            <span className="text-xs text-muted-foreground">Versi {task.revision}</span>
+            <Badge variant="secondary">{taskStatusLabel(task)}</Badge>
           </div>
           <h3 className="text-sm leading-relaxed wrap-anywhere">{task.title}</h3>
           {task.goal_id ? (
@@ -59,15 +59,10 @@ export function TaskCard({ task, showResult = true }: TaskCardProps) {
             </p>
           ) : null}
           <p className="mt-2 text-sm text-muted-foreground" role="status">
-            {taskStage[task.stage] ?? task.error ?? "Draft dan progresmu tersimpan."}
+            {task.error ?? taskStage[task.stage] ?? "Draft dan progresmu tersimpan."}
           </p>
         </div>
       </div>
-      {task.error ? (
-        <p className="mt-3 text-sm text-danger" role="status">
-          {task.error}
-        </p>
-      ) : null}
       {showResult && task.result_id && task.status === "succeeded" ? (
         <div className="mt-4">
           <ResultCard resultId={task.result_id} />
@@ -138,11 +133,22 @@ export function TaskCard({ task, showResult = true }: TaskCardProps) {
                   : "Resource belum dibuat."}
             </p>
           ) : null}
-          <p className="text-xs text-muted-foreground">
-            Batas kerja task: {percent}% terpakai atau dicadangkan untuk panggilan yang belum
-            terkonfirmasi. Percobaan {task.attempt}. Penggunaan provider yang belum pasti tetap
-            diperhitungkan.
-          </p>
+          <details className="text-xs text-muted-foreground">
+            <summary className="cursor-pointer py-2">
+              Detail eksekusi · versi {task.revision}
+            </summary>
+            <p>
+              {task.budget_policy?.unit === "metered_browser_work" ? (
+                "Pemakaian browser dicatat terpisah dari batas langkah dan waktu."
+              ) : (
+                <>
+                  Batas kerja task: {percent}% terpakai atau dicadangkan untuk panggilan yang belum
+                  terkonfirmasi. Percobaan {task.attempt}. Penggunaan provider yang belum pasti
+                  tetap diperhitungkan.
+                </>
+              )}
+            </p>
+          </details>
           <p className="text-xs text-muted-foreground">
             {task.review_required
               ? "Review diperlukan sebelum finalisasi."

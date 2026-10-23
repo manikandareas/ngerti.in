@@ -15,6 +15,10 @@ export interface ComputerState {
     state: string;
     control_version: number;
     expires_at: string;
+    decision?: {
+      reason_code?: string;
+      target?: { label?: string; href?: string; preview?: Array<{ label: string; value: string }> };
+    };
     action: {
       kind: string;
       description: string;
@@ -23,6 +27,7 @@ export interface ComputerState {
       x: number;
       y: number;
       key: string;
+      dom?: { operation: string; value: string } | null;
     };
   } | null;
   sessions: Array<{

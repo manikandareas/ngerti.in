@@ -2,6 +2,7 @@ import { Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useGoalCommands, useGoals } from "@/features/goals/hooks/use-goals";
 import { evidenceLabels, type GoalProposal, goalOperationLabels } from "@/features/goals/types";
+import { usageDate } from "@/features/quotas/utils/format";
 
 export function GoalProposalCard({ proposal }: { proposal: GoalProposal }) {
   const command = useGoalCommands();
@@ -32,7 +33,17 @@ export function GoalProposalCard({ proposal }: { proposal: GoalProposal }) {
       {p.spec.next_action ? (
         <p className="wrap-anywhere">Langkah berikutnya: {p.spec.next_action}</p>
       ) : null}
-      <p>Batas seluruh Task: {p.spec.budget_cap.toLocaleString("id-ID")} unit kerja.</p>
+      <p className="text-muted-foreground">
+        Menyimpan tujuan tidak menjalankan pekerjaan. Setiap pekerjaan atau jadwal memerlukan
+        keputusan tersendiri dan menggunakan kuota komputasi saat dijalankan.
+      </p>
+      <details className="text-xs text-muted-foreground">
+        <summary className="cursor-pointer py-2">Detail batas kerja</summary>
+        <p>
+          Batas seluruh pekerjaan: {p.spec.budget_cap.toLocaleString("id-ID")} unit token internal,
+          bukan kredit atau harga uang. Batas akun tetap berlaku.
+        </p>
+      </details>
       {p.evidence ? (
         <div className="space-y-2 rounded-xl bg-muted p-3">
           <p>
@@ -59,9 +70,12 @@ export function GoalProposalCard({ proposal }: { proposal: GoalProposal }) {
           </p>
         </details>
       ) : null}
-      <p className="text-xs text-muted-foreground">{p.policy}</p>
+      <details className="text-xs text-muted-foreground">
+        <summary className="cursor-pointer py-2">Aturan tujuan dan izin</summary>
+        <p>{p.policy}</p>
+      </details>
       <p className="text-xs text-muted-foreground">
-        Berlaku sampai {new Date(proposal.expires_at).toLocaleString("id-ID")}.
+        Berlaku sampai {usageDate.format(new Date(proposal.expires_at))}.
       </p>
       <div className="flex flex-wrap gap-2">
         <Button disabled={command.pending} onClick={() => void command.decide(proposal.id, true)}>

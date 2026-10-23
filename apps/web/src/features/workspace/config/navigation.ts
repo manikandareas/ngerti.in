@@ -30,3 +30,8 @@ export const workspaceDescriptions: Record<Exclude<WorkspaceView, "chat">, strin
   usage: "Pantau penggunaanmu tanpa meninggalkan percakapan.",
   settings: "Atur pengalamanmu bersama Gwen.",
 };
+
+// Keep the complete registry above for existing deep links.
+export const primaryWorkspaceLinks = workspaceLinks.filter(({ view }) =>
+  ["chat", "goals", "files", "settings"].includes(view),
+);

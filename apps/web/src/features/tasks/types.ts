@@ -26,6 +26,7 @@ export interface BackgroundTask {
   attempt: number;
   model_calls: number;
   budget_cap: number;
+  budget_policy?: { unit?: string };
   usage_units: number;
   created_at: string;
   updated_at: string;

@@ -1,53 +1,86 @@
 import { UserButton } from "@clerk/tanstack-react-start";
-import { Menu, Sprout } from "lucide-react";
-import { useRef, useState } from "react";
-import { Brand } from "@/components/brand";
+import { useNavigate } from "@tanstack/react-router";
+import { Search } from "lucide-react";
+import type { ReactNode } from "react";
+import { Mascot } from "@/components/mascot/mascot";
 import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { workspaceLinks } from "@/features/workspace/config/navigation";
+import { primaryWorkspaceLinks } from "@/features/workspace/config/navigation";
 import type { WorkspaceView } from "@/features/workspace/types";
 import { cn } from "@/lib/utils";
 
 interface NavigationProps {
   view: WorkspaceView;
   onNavigate: (view: WorkspaceView) => void;
+  onSearch?: () => void;
 }
 
-export function DesktopNavigation({ view, onNavigate }: NavigationProps) {
+export function DesktopNavigation({
+  view,
+  onNavigate,
+  onSearch,
+  header,
+}: NavigationProps & { header?: ReactNode }) {
+  const navigate = useNavigate();
+  const showMascot = view !== "chat";
   return (
     <aside
-      className="hidden w-[72px] shrink-0 flex-col items-center border-r bg-card py-5 min-[701px]:flex"
+      className="relative hidden w-[72px] shrink-0 flex-col items-center bg-card px-1 py-3 min-[701px]:flex"
       aria-label="Navigasi utama"
     >
-      <span
-        className="mb-8 flex size-10 items-center justify-center rounded-xl bg-secondary text-foreground"
-        aria-label="Ngertiin"
-        role="img"
+      {(showMascot || header) && (
+        <div className="absolute inset-x-0 top-1 flex justify-center">
+          {showMascot
+            ? (header ?? (
+                <button
+                  type="button"
+                  aria-label="Buka percakapan dengan Gwen"
+                  onClick={() => {
+                    void navigate({ to: "/" });
+                  }}
+                  className="rounded-full focus-visible:outline-2 focus-visible:outline-ring"
+                >
+                  <Mascot className="size-16" />
+                </button>
+              ))
+            : header}
+        </div>
+      )}
+      <nav
+        className="flex flex-1 flex-col items-center justify-center gap-1"
+        aria-label="Menu utama"
       >
-        <Sprout className="size-6" aria-hidden="true" />
-      </span>
-      <nav className="flex flex-1 flex-col items-center gap-3" aria-label="Menu utama">
-        {workspaceLinks.map(({ view: destination, label, icon: Icon }) => (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="order-1 size-11"
+              aria-label="Cari pekerjaan dan hasil"
+              onClick={onSearch}
+            >
+              <Search className="size-6" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="right">Cari pekerjaan dan hasil</TooltipContent>
+        </Tooltip>
+        {primaryWorkspaceLinks.map(({ view: destination, label, icon: Icon }) => (
           <Tooltip key={destination}>
             <TooltipTrigger asChild>
               <Button
                 type="button"
                 variant="ghost"
                 size="icon"
-                className={cn("size-11 rounded-xl", view === destination && "bg-muted")}
+                className={cn(
+                  "size-11 rounded-xl",
+                  destination === "chat" ? "order-0" : "order-2",
+                  view === destination && "bg-muted",
+                )}
                 aria-label={label}
                 aria-current={view === destination ? "page" : undefined}
                 onClick={() => onNavigate(destination)}
               >
-                <Icon className="size-5" />
+                <Icon className="size-6" />
               </Button>
             </TooltipTrigger>
             <TooltipContent side="right" sideOffset={10}>
@@ -56,68 +89,50 @@ export function DesktopNavigation({ view, onNavigate }: NavigationProps) {
           </Tooltip>
         ))}
       </nav>
-      <UserButton />
+      <div className="flex w-full shrink-0 items-center justify-center">
+        <UserButton
+          appearance={{
+            elements: {
+              rootBox: "flex items-center justify-center",
+              userButtonTrigger: {
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "44px",
+                height: "44px",
+                padding: 0,
+              },
+              avatarBox: "size-7",
+            },
+          }}
+        />
+      </div>
     </aside>
   );
 }
 
 export function MobileNavigation({ view, onNavigate }: NavigationProps) {
-  const [open, setOpen] = useState(false);
-  const navigating = useRef(false);
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>
+    <nav
+      aria-label="Menu utama mobile"
+      className="fixed inset-x-0 bottom-0 z-10 flex h-[calc(56px+env(safe-area-inset-bottom))] items-start justify-around border-t bg-background px-2 pb-[env(safe-area-inset-bottom)] min-[701px]:hidden"
+    >
+      {primaryWorkspaceLinks.map(({ view: destination, label, icon: Icon }) => (
         <Button
-          type="button"
+          key={destination}
           variant="ghost"
-          size="icon"
-          className="size-11 min-[701px]:hidden"
-          aria-label="Buka menu utama"
+          className={cn(
+            "mt-1 h-12 min-w-14 flex-col gap-0.5 px-2 text-[10px] font-normal",
+            view === destination && "bg-muted",
+          )}
+          aria-label={label}
+          aria-current={view === destination ? "page" : undefined}
+          onClick={() => onNavigate(destination)}
         >
-          <Menu className="size-5" />
+          <Icon className="size-5" />
+          {label}
         </Button>
-      </SheetTrigger>
-      <SheetContent
-        side="left"
-        className="w-[min(320px,calc(100%-24px))] gap-0"
-        onCloseAutoFocus={(event) => {
-          if (!navigating.current) return;
-          event.preventDefault();
-          (
-            document.getElementById("workspace-heading") ?? document.getElementById("main")
-          )?.focus();
-          navigating.current = false;
-        }}
-      >
-        <SheetHeader className="px-5 pt-8 pb-6">
-          <SheetTitle>
-            <Brand />
-          </SheetTitle>
-          <SheetDescription>Mulai dari percakapan, lanjutkan idemu.</SheetDescription>
-        </SheetHeader>
-        <nav className="flex flex-col gap-2 px-3" aria-label="Menu utama">
-          {workspaceLinks.map(({ view: destination, label, icon: Icon }) => (
-            <Button
-              key={destination}
-              type="button"
-              variant="ghost"
-              className={cn("h-12 justify-start gap-3 px-3", view === destination && "bg-muted")}
-              aria-current={view === destination ? "page" : undefined}
-              onClick={() => {
-                navigating.current = true;
-                setOpen(false);
-                onNavigate(destination);
-              }}
-            >
-              <Icon className="size-5" />
-              {label}
-            </Button>
-          ))}
-        </nav>
-        <div className="mt-auto flex items-center gap-3 border-t p-5 text-sm">
-          <UserButton /> Akunmu
-        </div>
-      </SheetContent>
-    </Sheet>
+      ))}
+    </nav>
   );
 }

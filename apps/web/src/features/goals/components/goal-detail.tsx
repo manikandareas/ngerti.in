@@ -9,6 +9,8 @@ import {
   goalOperationLabels,
   goalStateLabels,
 } from "@/features/goals/types";
+import { useResourceContext } from "@/features/library/components/resource-context";
+import { useResourceSelection } from "@/features/library/hooks/use-library";
 import { ProactivityScopeControl } from "@/features/proactivity/components/proactivity-scope";
 import { taskStatus } from "@/features/tasks/constants";
 import { GoalEvidenceForm } from "./goal-evidence-form";
@@ -16,6 +18,8 @@ import { GoalEvidenceSource } from "./goal-evidence-source";
 import { GoalForm } from "./goal-form";
 
 export function GoalDetailPanel({ id }: { id: string }) {
+  const context = useResourceContext();
+  const selection = useResourceSelection(context.threadId);
   const data = useGoal(id);
   const command = useGoalCommands();
   const [editing, setEditing] = useState<Goal | null>(null);
@@ -40,7 +44,12 @@ export function GoalDetailPanel({ id }: { id: string }) {
   ];
   return (
     <section className="space-y-6" aria-label="Detail tujuan">
-      <ProactivityScopeControl scope="goal" id={id} />
+      <details>
+        <summary className="cursor-pointer py-2 text-sm text-muted-foreground">
+          Saran proaktif untuk tujuan ini
+        </summary>
+        <ProactivityScopeControl scope="goal" id={id} />
+      </details>
       {data.isError ? (
         <p role="alert">
           Sinkronisasi terganggu. Data terakhir ditampilkan; coba muat ulang sebelum mengubah.
@@ -154,10 +163,29 @@ export function GoalDetailPanel({ id }: { id: string }) {
           Pilih tujuan ini saat membuat Task atau Jadwal. Menyimpan langkah berikutnya tidak
           menjalankan pekerjaan.
         </p>
+        <Button
+          variant="outline"
+          disabled={selection.select.isPending}
+          onClick={() =>
+            selection.select.mutate(
+              { kind: "goal", id: goal.id, revision: goal.revision },
+              {
+                onSuccess: () => {
+                  context.open({ kind: "goal", id: goal.id, revision: goal.revision });
+                  context.discuss();
+                },
+              },
+            )
+          }
+        >
+          Bicarakan tujuan ini
+        </Button>
+        {selection.select.isError ? (
+          <p role="alert">Konteks tujuan belum tersimpan. Coba lagi.</p>
+        ) : null}
         <div className="flex flex-wrap gap-3">
           {(
             [
-              ["chat", "Bicarakan"],
               ["tasks", "Buat Task"],
               ["schedules", "Atur Jadwal"],
             ] as const
@@ -173,8 +201,8 @@ export function GoalDetailPanel({ id }: { id: string }) {
           ))}
         </div>
       </section>
-      <section className="space-y-2 text-sm">
-        <h3 className="font-bold">Batas kerja tujuan</h3>
+      <details className="space-y-2 text-sm">
+        <summary className="cursor-pointer py-2">Detail batas kerja tujuan</summary>
         <p>
           {goal.budget.used.toLocaleString("id-ID")} unit terpakai ·{" "}
           {(goal.budget.committed - goal.budget.used).toLocaleString("id-ID")} dicadangkan · batas{" "}
@@ -184,7 +212,7 @@ export function GoalDetailPanel({ id }: { id: string }) {
           Mencakup seluruh Task tujuan lintas revisi. Evaluasi bukti di panel tidak memakai model.
           Permintaan melalui chat mengikuti penggunaan percakapan.
         </p>
-      </section>
+      </details>
       <section className="space-y-3">
         <h3 className="font-bold">Pekerjaan terkait</h3>
         {!goal.tasks.length ? (

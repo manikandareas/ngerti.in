@@ -1,3 +1,42 @@
+import { code } from "@streamdown/code";
+import { createMathPlugin } from "@streamdown/math";
+import { Streamdown } from "streamdown";
+
+const plugins = { code, math: createMathPlugin({ singleDollarTextMath: true }) };
+const components = {
+  img: ({ alt }: { alt?: string }) => (
+    <span className="text-muted-foreground">
+      [Gambar: {alt || "gambar eksternal tidak dimuat"}]
+    </span>
+  ),
+};
+
+/** Accept display LaTeX delimiters emitted by results, without rewriting code fences. */
+function markdownMath(text: string) {
+  let fence: { char: string; length: number } | null = null;
+  return text
+    .split("\n")
+    .map((line) => {
+      const marker = line.match(/^ {0,3}(`{3,}|~{3,})/);
+      if (marker) {
+        const run = marker[1];
+        if (!fence) fence = { char: run[0], length: run.length };
+        else if (
+          run[0] === fence.char &&
+          run.length >= fence.length &&
+          line.slice(marker[0].length).trim() === ""
+        )
+          fence = null;
+        return line;
+      }
+      if (fence || /^( {4}|\t)/.test(line)) return line;
+      if (line.trim() === "\\[" || line.trim() === "\\]") return "$$";
+      const display = line.match(/^\s*\\\[(.*?)\\\]\s*$/);
+      return display ? `$$${display[1]}$$` : line;
+    })
+    .join("\n");
+}
+
 function csvRows(text: string) {
   const rows: Array<{ id: number; cells: Array<{ id: number; text: string }> }> = [];
   let cells: Array<{ id: number; text: string }> = [];
@@ -44,7 +83,19 @@ export function TextPreview({ body, type }: { body: string; type: string }) {
           Preview dibatasi 200.000 karakter. Unduh file untuk membaca seluruh isi.
         </p>
       ) : null}
-      {type === "text/csv" ? (
+      {type === "text/markdown" ? (
+        <div className="min-w-0 wrap-anywhere [&_pre]:max-w-full [&_pre]:overflow-auto [&_table]:text-sm [&_h1]:text-2xl [&_h2]:text-xl [&_h3]:text-lg">
+          <Streamdown
+            mode="static"
+            plugins={plugins}
+            components={components}
+            skipHtml
+            controls={{ code: true, table: false }}
+          >
+            {markdownMath(text)}
+          </Streamdown>
+        </div>
+      ) : type === "text/csv" ? (
         <div className="overflow-auto">
           <table className="w-full border-collapse text-left text-sm">
             <caption className="mb-2 text-left text-xs text-muted-foreground">

@@ -3,11 +3,21 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-export function ComputerViewer({ url, human }: { url: string; human: boolean }) {
+export function ComputerViewer({
+  url,
+  human,
+  onDisconnect,
+}: {
+  url: string;
+  human: boolean;
+  onDisconnect?: () => void;
+}) {
   const container = useRef<HTMLDivElement>(null);
   const connection = useRef<RFB | null>(null);
   const [status, setStatus] = useState("Menghubungkan layar…");
   const [text, setText] = useState("");
+  const disconnect = useRef(onDisconnect);
+  disconnect.current = onDisconnect;
   useEffect(() => {
     let disposed = false;
     import("@novnc/novnc/lib/rfb")
@@ -22,9 +32,11 @@ export function ComputerViewer({ url, human }: { url: string; human: boolean }) 
         rfb.resizeSession = false;
         rfb.viewOnly = !human;
         rfb.addEventListener("connect", () => setStatus("Layar tersambung."));
-        rfb.addEventListener("disconnect", () =>
-          setStatus("Koneksi berakhir. Tutup lalu sambungkan layar kembali."),
-        );
+        rfb.addEventListener("disconnect", () => {
+          if (disposed) return;
+          setStatus("Koneksi terputus. Memeriksa sesi komputer…");
+          disconnect.current?.();
+        });
         connection.current = rfb;
       })
       .catch(() => setStatus("Layar belum dapat dimuat. Coba sambungkan kembali."));

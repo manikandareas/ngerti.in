@@ -1,0 +1,334 @@
+- link "Langsung ke konten":
+  - /url: "#main"
+- complementary "Navigasi utama":
+  - img "Ngertiin":
+  - navigation "Menu utama":
+    - button "Cari pekerjaan dan hasil":
+    - button "Percakapan":
+    - button "Tujuan":
+    - button "Library":
+    - button "Pengaturan":
+  - button "Open user menu":
+    - img "Vito Andareas Manik's logo"
+- main:
+  - button "Buka riwayat chat":
+    - generic: Main chat
+  - button "Buka panel asisten":
+    - generic: Gwen
+  - button "Pengaturan percakapan":
+  - region "Pesan percakapan":
+    - log:
+      - generic: hi
+      - article "Jawaban Gwen":
+        - paragraph: Hai! Aku Gwen, asisten personal Ngertiin. Ada yang bisa kubantu?
+        - button "Salin jawaban":
+        - button "Balas jawaban":
+      - generic: Kamu bisa ngapain aja.
+      - article "Jawaban Gwen":
+        - paragraph: "Aku bisa bantu kamu untuk berbagai hal, misalnya:"
+        - list:
+          - listitem: Menulis dan merapikan teks — email, laporan, caption, proposal, atau CV.
+          - listitem: Menjelaskan sesuatu — dari konsep pelajaran sampai topik yang rumit, dengan bahasa sederhana.
+          - listitem: Menganalisis dan merangkum — dokumen, ide, argumen, atau catatan yang kamu kirim.
+          - listitem: Merencanakan pekerjaan — menyusun langkah, prioritas, agenda, atau daftar tugas.
+          - listitem: Mencari ide dan memecahkan masalah — brainstorming, menyusun pilihan, atau menimbang pro-kontra.
+          - listitem: Membantu urusan teknis — menjelaskan kode, menyusun rumus, atau mencari penyebab masalah berdasarkan informasi yang kamu berikan.
+        - paragraph: Kirim saja pertanyaan atau bahan yang ingin kamu kerjakan. Saya tidak bisa mengakses percakapan lain atau menjalankan tindakan di luar chat ini tanpa alat yang tersedia.
+        - button "Salin jawaban":
+        - button "Balas jawaban":
+      - generic: keren banget
+      - article "Jawaban Gwen":
+        - paragraph: Makasih! 😊 Senang bisa bantu. Ada yang lagi ingin kamu kerjakan?
+        - button "Salin jawaban":
+        - button "Balas jawaban":
+      - generic: kasih pantun dong
+      - article "Jawaban Gwen":
+        - paragraph:
+          - text: Jalan-jalan ke tepi kali,
+          - text: Singgah sebentar membeli jamu.
+          - text: Kalau harimu terasa ceria sekali,
+          - text: Semoga senyummu menular selalu! 😊
+        - button "Salin jawaban":
+        - button "Balas jawaban":
+      - generic: research dong terkait trend ai di 2026
+      - 'button "Buat riset ringkas berbahasa Indonesia tentang tren AI pada 2026. Karena 2026 sedang…: Selesai. Buka detail pekerjaan"':
+        - generic: Buat riset ringkas berbahasa Indonesia tentang tren AI pada 2026. Karena 2026 sedang…
+        - text: Selesai
+      - article "Jawaban Gwen":
+        - paragraph: Siap, aku mulai riset tentang tren AI 2026, mencakup perkembangan utama, dampak, risiko, dan implikasi praktis. Hasilnya akan muncul di chat saat sudah selesai.
+        - button "Salin jawaban":
+        - button "Balas jawaban":
+      - article "Jawaban Gwen":
+        - paragraph: "Hasil task: Buat riset ringkas berbahasa Indonesia tentang tren AI pada 2026. Karena 2026 sedang…"
+        - paragraph: Riset ringkas disiapkan dalam Bahasa Indonesia. Penelusuran web gagal dimuat, sehingga dokumen secara eksplisit membedakan pengamatan umum yang tidak diverifikasi untuk 2026 dari proyeksi, dan tidak mencantumkan sumber atau statistik yang tidak dapat diperiksa.
+        - region "Hasil tersimpan":
+          - generic: Hasil tersimpan
+          - generic: Siap
+          - paragraph: Riset ringkas disiapkan dalam Bahasa Indonesia. Penelusuran web gagal dimuat, sehingga dokumen secara eksplisit membedakan pengamatan umum yang tidak diverifikasi untuk 2026 dari proyeksi, dan tidak mencantumkan sumber atau statistik yang tidak dapat diperiksa.
+          - text: Revision
+          - combobox "Revision hasil":
+            - option "v1 · Siap" [selected]
+          - paragraph: hasil.md
+          - paragraph: 7 KiB · SHA-256 2fff5ea85086
+          - button "Preview":
+            - text: Preview
+          - button "Unduh":
+            - text: Unduh
+          - generic "Input yang digunakan (0)"
+          - button "Perbarui hasil":
+            - text: Perbarui hasil
+          - button "Hapus hasil":
+            - text: Hapus hasil
+        - button "Salin jawaban":
+        - button "Balas jawaban":
+      - generic: "Uji NG-043: susun panduan merapikan meja kerja sepanjang 1200 kata dalam bahasa Indonesia, 12 bagian dengan contoh praktis. Gunakan pengetahuan umum saja, tanpa internet, file, atau tindakan eksternal. Tunggu review sebelum finalisasi."
+      - article "Jawaban Gwen":
+        - paragraph: Task sudah dibuat. Kamu bisa melanjutkan percakapan sambil menunggu.
+        - button "Salin jawaban":
+        - button "Balas jawaban":
+      - generic: "Uji NG-043: sambil pekerjaan meja berjalan, jawab singkat berapa 7 ditambah 8. Jangan ubah instruksi pekerjaan."
+      - article "Jawaban Gwen":
+        - list:
+        - button "Salin jawaban":
+        - button "Balas jawaban":
+      - 'button "Uji NG-043: susun panduan merapikan meja kerja sepanjang 1200 kata dalam bahasa Indonesia, 12…: Sedang dikerjakan. Buka detail pekerjaan"':
+        - generic: "Uji NG-043: susun panduan merapikan meja kerja sepanjang 1200 kata dalam bahasa Indonesia, 12…"
+        - text: Sedang dikerjakan
+  - button "Lampiran":
+  - textbox "Pesan untuk Gwen":
+    - /placeholder: Balas Gwen atau tanya sesuatu…
+  - button "Kirim pesan" [disabled]:
+- complementary "Task":
+  - separator "Ubah lebar Task"
+  - heading "Task" [level=2]
+  - button "Ciutkan panel":
+  - button "Perbesar panel":
+  - button "Tutup Task":
+  - heading "Task" [level=1]
+  - paragraph: Titipkan pekerjaan, ikuti progres, dan tinjau keputusanmu.
+  - generic: Titipkan pekerjaan
+  - textbox "Titipkan pekerjaan":
+    - /placeholder: "Contoh: susun rencana peluncuran dari diskusi di percakapan ini…"
+  - text: Cara mengerjakan
+  - combobox "Cara mengerjakan":
+    - generic: Teks dan file
+  - combobox
+  - button "Lampirkan file":
+    - text: Lampirkan file
+  - button "File tersimpan"
+  - group "Berkas hasil":
+    - generic: Berkas hasil
+    - button "Tambah berkas hasil":
+      - text: Tambah berkas hasil
+  - checkbox "Minta review sebelum hasil difinalisasi" [checked]
+  - text: Minta review sebelum hasil difinalisasi
+  - text: Tujuan terkait (opsional)
+  - combobox "Tujuan terkait (opsional)":
+    - generic: Tanpa tujuan
+  - combobox
+  - paragraph: Menggunakan konteks percakapan yang sedang dipilih. Membuat task memakai 1 pesan; review, stop dan mencoba ulang task tidak menambah pesan. Pekerjaan dibatasi budget dan tetap berjalan saat browser ditutup.
+  - status:
+    - paragraph: "Batas pekerjaan: 30 kredit"
+    - paragraph: Dicadangkan saat dimulai; sisa yang tidak terpakai dikembalikan. Termasuk batas model dan OCR yang diperlukan.
+  - button "Mulai task" [disabled]
+  - paragraph: "Batas kerja hari ini: 71% tersedia. Sebagian dicadangkan untuk task yang belum selesai. Reset harian mengikuti UTC."
+  - button "Perlu keputusan saja"
+  - 'article "Task: Uji NG-043: susun panduan merapikan meja kerja sepanjang 1200 kata dalam bahasa Indonesia, 12…"':
+    - generic: Sedang dikerjakan
+    - 'heading "Uji NG-043: susun panduan merapikan meja kerja sepanjang 1200 kata dalam bahasa Indonesia, 12…" [level=3]'
+    - status: Gwen sedang menyusun draft.
+    - button "Lihat detail":
+      - text: Lihat detail
+    - button "Hentikan task":
+      - text: Hentikan task
+  - 'article "Task: Buat riset ringkas berbahasa Indonesia tentang tren AI pada 2026. Karena 2026 sedang…"':
+    - generic: Selesai
+    - heading "Buat riset ringkas berbahasa Indonesia tentang tren AI pada 2026. Karena 2026 sedang…" [level=3]
+    - status: Hasil tersimpan di task dan percakapan asal.
+    - region "Hasil tersimpan":
+      - generic: Hasil tersimpan
+      - generic: Siap
+      - paragraph: Riset ringkas disiapkan dalam Bahasa Indonesia. Penelusuran web gagal dimuat, sehingga dokumen secara eksplisit membedakan pengamatan umum yang tidak diverifikasi untuk 2026 dari proyeksi, dan tidak mencantumkan sumber atau statistik yang tidak dapat diperiksa.
+      - text: Revision
+      - combobox "Revision hasil":
+        - option "v1 · Siap" [selected]
+      - paragraph: hasil.md
+      - paragraph: 7 KiB · SHA-256 2fff5ea85086
+      - button "Preview":
+        - text: Preview
+      - button "Unduh":
+        - text: Unduh
+      - generic "Input yang digunakan (0)"
+      - button "Perbarui hasil":
+        - text: Perbarui hasil
+      - button "Hapus hasil":
+        - text: Hapus hasil
+    - button "Lihat komputer":
+      - text: Lihat komputer
+    - button "Lihat detail":
+      - text: Lihat detail
+  - 'article "Task: Tulis ringkasan singkat tepat tiga poin tentang cara merapikan meja kerja, menggunakan…"':
+    - generic: Selesai
+    - heading "Tulis ringkasan singkat tepat tiga poin tentang cara merapikan meja kerja, menggunakan…" [level=3]
+    - status: Hasil tersimpan di task dan percakapan asal.
+    - button "Lihat detail":
+      - text: Lihat detail
+  - 'article "Task: NG023 restore_required · contoh penerimaan UI"':
+    - generic: Terhenti
+    - heading "NG023 restore_required · contoh penerimaan UI" [level=3]
+    - status: Pekerjaan dihentikan setelah pemulihan backup. Hasil terdahulu tetap tersedia; buat Task baru bila perlu.
+    - button "Lihat detail":
+      - text: Lihat detail
+  - 'article "Task: NG023 upgrade_required · contoh penerimaan UI"':
+    - generic: Terhenti
+    - heading "NG023 upgrade_required · contoh penerimaan UI" [level=3]
+    - status: Versi pekerjaan ini memerlukan pemulihan setelah pembaruan aplikasi. Draft dan hasil terdahulu tetap tersimpan. Hubungi pengelola untuk melanjutkan.
+    - button "Lihat detail":
+      - text: Lihat detail
+  - 'article "Task: Revisi hasil laporan Markdown yang dipilih. Pertahankan seluruh isi dan versi sebelumnya, lalu…"':
+    - generic: Selesai
+    - heading "Revisi hasil laporan Markdown yang dipilih. Pertahankan seluruh isi dan versi sebelumnya, lalu…" [level=3]
+    - status: Hasil tersimpan di task dan percakapan asal.
+    - region "Hasil tersimpan":
+      - generic: Hasil tersimpan
+      - generic: Siap
+      - paragraph: Laporan NG-039 diperbarui dengan data Maret dan perhitungan kenaikan Januari–Maret; keterangan kenaikan Januari–Februari serta status data sintetis dipertahankan.
+      - text: Revision
+      - combobox "Revision hasil":
+        - option "v2 · Siap" [selected]
+        - option "v1 · Siap"
+      - paragraph: laporan-penjualan-ng039.md
+      - paragraph: 1 KiB · SHA-256 77ef261e1e13
+      - button "Preview":
+        - text: Preview
+      - button "Unduh":
+        - text: Unduh
+      - generic "Input yang digunakan (0)"
+      - button "Perbarui hasil":
+        - text: Perbarui hasil
+      - button "Hapus hasil":
+        - text: Hapus hasil
+    - button "Lihat detail":
+      - text: Lihat detail
+  - 'article "Task: Buat satu laporan Markdown berbahasa Indonesia untuk audit NG-039 menggunakan hanya data…"':
+    - generic: Selesai
+    - heading "Buat satu laporan Markdown berbahasa Indonesia untuk audit NG-039 menggunakan hanya data…" [level=3]
+    - status: Hasil tersimpan di task dan percakapan asal.
+    - region "Hasil tersimpan":
+      - generic: Hasil tersimpan
+      - generic: Siap
+      - paragraph: Laporan NG-039 diperbarui dengan data Maret dan perhitungan kenaikan Januari–Maret; keterangan kenaikan Januari–Februari serta status data sintetis dipertahankan.
+      - text: Revision
+      - combobox "Revision hasil":
+        - option "v2 · Siap" [selected]
+        - option "v1 · Siap"
+      - paragraph: laporan-penjualan-ng039.md
+      - paragraph: 1 KiB · SHA-256 77ef261e1e13
+      - button "Preview":
+        - text: Preview
+      - button "Unduh":
+        - text: Unduh
+      - generic "Input yang digunakan (0)"
+      - button "Perbarui hasil":
+        - text: Perbarui hasil
+      - button "Hapus hasil":
+        - text: Hapus hasil
+    - button "Lihat detail":
+      - text: Lihat detail
+  - 'article "Task: Tulis satu kalimat singkat bahwa audit interval per jam selesai. Jangan gunakan browser, file…"':
+    - generic: Selesai
+    - heading "Tulis satu kalimat singkat bahwa audit interval per jam selesai. Jangan gunakan browser, file…" [level=3]
+    - status: Hasil tersimpan di task dan percakapan asal.
+    - button "Lihat detail":
+      - text: Lihat detail
+  - 'article "Task: Tulis tepat dua kalimat pendek dalam bahasa Indonesia yang menyatakan audit scheduler offline…"':
+    - generic: Selesai
+    - heading "Tulis tepat dua kalimat pendek dalam bahasa Indonesia yang menyatakan audit scheduler offline…" [level=3]
+    - status: Hasil tersimpan di task dan percakapan asal.
+    - button "Lihat detail":
+      - text: Lihat detail
+  - 'article "Task: Demo Brave C: buka https://the-internet.herokuapp.com/secure lalu klik tombol Logout untuk…"':
+    - generic: Selesai
+    - 'heading "Demo Brave C: buka https://the-internet.herokuapp.com/secure lalu klik tombol Logout untuk…" [level=3]'
+    - status: Hasil tersimpan di task dan percakapan asal.
+    - region "Hasil tersimpan":
+      - generic: Hasil tersimpan
+      - generic: Siap
+      - paragraph: "Konfirmasi: sesi demo publik telah diakhiri. Halaman Login menampilkan pesan “You logged out of the secure area!”"
+      - text: Revision
+      - combobox "Revision hasil":
+        - option "v1 · Siap" [selected]
+      - paragraph: hasil.md
+      - paragraph: 1 KiB · SHA-256 48746e3f8bd5
+      - button "Preview":
+        - text: Preview
+      - button "Unduh":
+        - text: Unduh
+      - generic "Input yang digunakan (0)"
+      - button "Perbarui hasil":
+        - text: Perbarui hasil
+      - button "Hapus hasil":
+        - text: Hapus hasil
+    - button "Lihat komputer":
+      - text: Lihat komputer
+    - button "Lihat detail":
+      - text: Lihat detail
+  - 'article "Task: Demo Brave B: buka https://the-internet.herokuapp.com/secure dan periksa apakah login dari Task…"':
+    - generic: Selesai
+    - 'heading "Demo Brave B: buka https://the-internet.herokuapp.com/secure dan periksa apakah login dari Task…" [level=3]'
+    - status: Hasil tersimpan di task dan percakapan asal.
+    - region "Hasil tersimpan":
+      - generic: Hasil tersimpan
+      - generic: Siap
+      - paragraph: "Sesi login masih aktif: halaman menampilkan “Secure Area” dan “Welcome to the Secure Area.” Saya tidak login ulang atau logout."
+      - text: Revision
+      - combobox "Revision hasil":
+        - option "v1 · Siap" [selected]
+      - paragraph: hasil.md
+      - paragraph: 1 KiB · SHA-256 cd473de7807a
+      - button "Preview":
+        - text: Preview
+      - button "Unduh":
+        - text: Unduh
+      - generic "Input yang digunakan (0)"
+      - button "Perbarui hasil":
+        - text: Perbarui hasil
+      - button "Hapus hasil":
+        - text: Hapus hasil
+    - button "Lihat komputer":
+      - text: Lihat komputer
+    - button "Lihat detail":
+      - text: Lihat detail
+  - 'article "Task: Demo Brave A: buka https://the-internet.herokuapp.com/login lalu minta saya login melalui…"':
+    - generic: Selesai
+    - 'heading "Demo Brave A: buka https://the-internet.herokuapp.com/login lalu minta saya login melalui…" [level=3]'
+    - status: Hasil tersimpan di task dan percakapan asal.
+    - region "Hasil tersimpan":
+      - generic: Hasil tersimpan
+      - generic: Siap
+      - paragraph: Secure Area terlihat setelah kendali dikembalikan. Ringkasan disimpan ke hasil.md.
+      - text: Revision
+      - combobox "Revision hasil":
+        - option "v1 · Siap" [selected]
+      - paragraph: hasil.md
+      - paragraph: 1 KiB · SHA-256 83fce92de46b
+      - button "Preview":
+        - text: Preview
+      - button "Unduh":
+        - text: Unduh
+      - generic "Input yang digunakan (0)"
+      - button "Perbarui hasil":
+        - text: Perbarui hasil
+      - button "Hapus hasil":
+        - text: Hapus hasil
+    - button "Lihat komputer":
+      - text: Lihat komputer
+    - button "Lihat detail":
+      - text: Lihat detail
+  - 'article "Task: Susun rencana terkait melakukan research untuk membuat AI agent di 2026."':
+    - generic: Selesai
+    - heading "Susun rencana terkait melakukan research untuk membuat AI agent di 2026." [level=3]
+    - status: Hasil tersimpan di task dan percakapan asal.
+    - button "Lihat detail":
+      - text: Lihat detail
+  - paragraph: Menampilkan hingga 50 task, dengan pekerjaan aktif didahulukan. Kamu dapat memakai file dan menyimpan berkas hasil, mengolah data dengan Python offline, atau menggunakan browser pribadi. Pekerjaan sekali atau berulang dapat diatur melalui menu Jadwal.

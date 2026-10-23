@@ -1,11 +1,12 @@
 import { ArrowUp, LoaderCircle, Square } from "lucide-react";
-import type { Ref } from "react";
+import { type Ref, useLayoutEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { AttachmentPicker } from "@/features/files/components/attachment-picker";
 import { OutputFields } from "@/features/files/components/output-fields";
 import type { AttachmentsState } from "@/features/files/hooks/use-attachments";
 import type { OutputSpec } from "@/features/files/types";
+import { cn } from "@/lib/utils";
 
 type ComposerProps = {
   draft: string;
@@ -38,10 +39,36 @@ export function ChatComposer({
   outputs,
   onOutputs,
 }: ComposerProps) {
+  const formRef = useRef<HTMLFormElement>(null);
+  const measureRef = useRef<HTMLSpanElement>(null);
+  const [expanded, setExpanded] = useState(false);
+  const canSend =
+    Boolean(draft.trim()) &&
+    !active &&
+    !sending &&
+    !blocked &&
+    !offline &&
+    attachments.progress === null;
+
+  useLayoutEffect(() => {
+    const form = formRef.current;
+    const measure = measureRef.current;
+    if (!form || !measure) return;
+    const update = () => {
+      // Reserve both 44px controls, padding, and a little breathing room.
+      setExpanded(draft.includes("\n") || measure.scrollWidth + 8 > form.clientWidth - 112);
+    };
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(form);
+    observer.observe(measure);
+    return () => observer.disconnect();
+  }, [draft]);
+
   return (
-    <div className="space-y-2 rounded-3xl bg-background p-1">
-      <div className="max-h-[30svh] space-y-2 overflow-y-auto">
-        <AttachmentPicker state={attachments} disabled={sending || active || offline} />
+    <div className="relative">
+      <div className="max-h-[30svh] space-y-2 overflow-y-auto [&:has(>div>div:nth-child(n+2))]:mb-3">
+        <AttachmentPicker compact state={attachments} disabled={sending || active || offline} />
         {attachments.items.length ? (
           <OutputFields value={outputs} onChange={onOutputs} disabled={sending || active} />
         ) : null}
@@ -49,17 +76,30 @@ export function ChatComposer({
           ["text/csv", "application/json"].includes(file.content_type),
         ) ? (
           <p className="px-3 text-xs text-muted-foreground">
-            CSV/JSON diolah dengan Python tanpa akses internet. Hasil tersimpan sebagai Task.
+            Hasil pengolahan file akan tersimpan dan bisa dibuka kembali.
           </p>
         ) : null}
       </div>
       <form
-        className="flex items-end gap-2 rounded-[32px] border border-transparent bg-muted px-3 py-2.5 min-[701px]:px-[18px] focus-within:border-ring"
+        ref={formRef}
+        className={cn(
+          "relative min-h-[62px] border border-border/60 bg-card shadow-[0_4px_20px_-6px_color-mix(in_oklab,var(--foreground)_12%,transparent)] transition-[border-color,box-shadow,border-radius] duration-200 focus-within:border-ring/70 focus-within:ring-2 focus-within:ring-ring/15 motion-reduce:transition-none",
+          expanded ? "rounded-3xl px-4 pt-2 pb-16" : "rounded-[31px] py-2 pr-14 pl-14",
+        )}
         onSubmit={(event) => {
           event.preventDefault();
-          onSend();
+          if (canSend) {
+            onSend();
+          }
         }}
       >
+        <span
+          ref={measureRef}
+          aria-hidden="true"
+          className="pointer-events-none invisible absolute left-0 top-0 max-w-full overflow-hidden whitespace-pre text-base leading-6"
+        >
+          {draft}
+        </span>
         <Textarea
           ref={inputRef}
           value={draft}
@@ -67,7 +107,8 @@ export function ChatComposer({
           aria-label="Pesan untuk Gwen"
           placeholder={empty ? "Apa yang ingin kamu kerjakan?" : "Balas Gwen atau tanya sesuatu…"}
           maxLength={12000}
-          className="max-h-[180px] min-w-0 flex-1 resize-none leading-relaxed min-h-10 rounded-none border-0 bg-transparent px-1 py-2 text-base min-[701px]:text-[18px] shadow-none focus-visible:ring-0 dark:bg-transparent"
+          rows={1}
+          className="max-h-[180px] min-h-11 min-w-0 flex-1 resize-none rounded-none border-0 bg-transparent px-0 py-2.5 text-base leading-6 shadow-none focus-visible:ring-0 min-[701px]:text-base dark:bg-transparent"
           onKeyDown={(event) => {
             if (
               event.key === "Enter" &&
@@ -76,16 +117,19 @@ export function ChatComposer({
               window.matchMedia("(min-width: 701px)").matches
             ) {
               event.preventDefault();
-              onSend();
+              if (canSend) {
+                onSend();
+              }
             }
           }}
         />
-        <div className="flex items-center justify-between gap-3">
+        <div className="absolute right-2 bottom-2 flex items-center">
           {active ? (
             <Button
               type="button"
               size="icon"
               variant="secondary"
+              className="size-11 rounded-full"
               onClick={() => onStop()}
               aria-label="Hentikan respons"
             >
@@ -95,13 +139,16 @@ export function ChatComposer({
             <Button
               type="submit"
               size="icon"
-              className="rounded-full"
-              disabled={
-                !draft.trim() || sending || blocked || offline || attachments.progress !== null
-              }
+              variant="ghost"
+              className="size-11 rounded-full border-0 bg-primary text-primary-foreground shadow-none hover:bg-primary/90 hover:text-primary-foreground active:not-aria-[haspopup]:translate-y-0 transition-[color,background-color,transform] duration-150 active:scale-95 disabled:bg-muted disabled:text-muted-foreground disabled:opacity-100 motion-reduce:transition-none"
+              disabled={!canSend}
               aria-label="Kirim pesan"
             >
-              {sending ? <LoaderCircle className="animate-spin" /> : <ArrowUp />}
+              {sending ? (
+                <LoaderCircle className="animate-spin motion-reduce:animate-none" />
+              ) : (
+                <ArrowUp />
+              )}
             </Button>
           )}
         </div>

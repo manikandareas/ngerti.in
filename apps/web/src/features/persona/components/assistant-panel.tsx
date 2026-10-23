@@ -1,12 +1,25 @@
-import { ArrowLeft, ArrowRight, History, X } from "lucide-react";
+import {
+  ArrowLeft,
+  Clock3,
+  Fingerprint,
+  Heart,
+  History,
+  List,
+  Pencil,
+  ShieldCheck,
+  X,
+  Zap,
+} from "lucide-react";
 import { Tabs } from "radix-ui";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useOnline } from "@/features/chat/hooks/use-online";
 import { MemoryPanel } from "@/features/memory/components/memory-panel";
 import { usePersona } from "@/features/persona/hooks/use-persona";
 import type { AssistantTab } from "@/features/persona/types";
 import type { WorkspaceView } from "@/features/workspace/types";
 import { AssistantActivity, AssistantUpcoming } from "./assistant-activity";
+import { AssistantApprovals } from "./assistant-approvals";
 import { PersonaAvatar } from "./persona-avatar";
 import { PersonaEditor } from "./persona-editor";
 import { PersonaHistory } from "./persona-history";
@@ -14,69 +27,105 @@ import { PersonaProposalCard } from "./persona-proposal";
 
 export function AssistantPanel({
   onClose,
+  threadId,
   onNavigate,
   onDiscuss,
-  initialTab = "identity",
+  initialTab = "activity",
 }: {
+  threadId: string | null;
   onClose: () => void;
   onNavigate: (view: WorkspaceView) => void;
   onDiscuss: (section: string, revision: number) => void;
   initialTab?: AssistantTab;
 }) {
   const persona = usePersona();
+  const online = useOnline();
+  const [tab, setTab] = useState(initialTab);
   const [section, setSection] = useState<"overview" | "profile" | "soul" | "history" | "memory">(
     "overview",
   );
   const profile = persona.data?.profile;
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <div className="flex shrink-0 items-center justify-between border-b px-5 py-4">
-        <div className="flex min-w-0 items-center gap-3">
-          <PersonaAvatar profile={profile} />
-          <div className="min-w-0">
-            <h2 className="truncate font-bold">{profile?.name ?? "Asisten personalmu"}</h2>
-            <p className="truncate text-xs text-muted-foreground">
-              {profile?.tagline ?? "Profil dan aktivitas"}
-            </p>
-          </div>
-        </div>
-        <Button
-          size="icon"
-          className="size-11"
-          variant="ghost"
+      <div className="relative shrink-0 px-4 pb-7 pt-10 max-[700px]:pb-4 max-[700px]:pt-3">
+        <button
+          type="button"
+          className="absolute right-4 top-3 flex size-8 items-center justify-center rounded-full text-muted-foreground hover:text-foreground"
           aria-label="Tutup panel asisten"
           onClick={onClose}
         >
-          <X />
-        </Button>
+          <X className="size-5" />
+        </button>
+        <div className="flex flex-col items-center">
+          <div className="relative [&>span[aria-hidden]]:size-36 max-[700px]:[&>span[aria-hidden]]:size-28">
+            <PersonaAvatar profile={profile} />
+            <button
+              type="button"
+              aria-label="Edit profil asisten"
+              onClick={() => {
+                setTab("identity");
+                setSection("profile");
+              }}
+              className="absolute bottom-2 right-1 flex size-9 items-center justify-center rounded-full bg-muted ring-4 ring-background hover:bg-accent"
+            >
+              <Pencil className="size-4" />
+            </button>
+          </div>
+          <h2 className="text-2xl font-semibold">{profile?.name ?? "Gwen"}</h2>
+          <p className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground">
+            <Zap
+              className={`size-4 ${online && !persona.isError ? "text-success-foreground" : "text-muted-foreground"}`}
+            />
+            {!online
+              ? "Offline"
+              : persona.isError
+                ? "Belum tersambung"
+                : persona.isPending
+                  ? "Menyambungkan…"
+                  : "Connected"}
+          </p>
+        </div>
       </div>
-      <Tabs.Root defaultValue={initialTab} className="flex min-h-0 flex-1 flex-col">
-        <Tabs.List aria-label="Panel asisten" className="flex shrink-0 gap-1 border-b px-3">
+      <Tabs.Root
+        value={tab}
+        onValueChange={(value) => setTab(value as AssistantTab)}
+        className="flex min-h-0 flex-1 flex-col"
+      >
+        <Tabs.List
+          aria-label="Panel asisten"
+          className="mx-4 flex h-10 shrink-0 rounded-full bg-muted/60 p-1"
+        >
           {(
             [
-              ["activity", "Aktivitas"],
-              ["upcoming", "Mendatang"],
-              ["identity", "Identitas"],
+              ["activity", "Aktivitas", List],
+              ["approvals", "Persetujuan", ShieldCheck],
+              ["upcoming", "Jadwal", Clock3],
+              ["identity", "Identitas", Fingerprint],
             ] as const
-          ).map(([value, label]) => (
+          ).map(([value, label, Icon]) => (
             <Tabs.Trigger
               key={value}
               value={value}
-              className="min-h-12 flex-1 border-b-2 border-transparent px-2 text-sm text-muted-foreground outline-none transition-colors data-[state=active]:border-primary data-[state=active]:font-bold data-[state=active]:text-foreground focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"
+              aria-label={label}
+              title={label}
+              className="flex min-w-0 flex-1 items-center justify-center rounded-full text-muted-foreground outline-none data-[state=active]:bg-foreground/10 data-[state=active]:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
             >
-              {label}
+              <Icon className="size-[18px]" strokeWidth={1.7} />
             </Tabs.Trigger>
           ))}
         </Tabs.List>
         <Tabs.Content value="activity" className="min-h-0 flex-1 overflow-y-auto p-5 outline-none">
           <AssistantActivity onNavigate={onNavigate} />
         </Tabs.Content>
+        <Tabs.Content value="approvals" className="min-h-0 flex-1 overflow-y-auto p-5 outline-none">
+          <AssistantApprovals threadId={threadId} />
+        </Tabs.Content>
         <Tabs.Content value="upcoming" className="min-h-0 flex-1 overflow-y-auto p-5 outline-none">
           <AssistantUpcoming onNavigate={onNavigate} />
         </Tabs.Content>
         <Tabs.Content
           value="identity"
-          className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-5 outline-none"
+          className="min-h-0 flex-1 space-y-2 overflow-y-auto overscroll-contain p-5 outline-none"
         >
           {persona.isPending ? (
             <p role="status">Membuka identitas…</p>
@@ -89,52 +138,37 @@ export function AssistantPanel({
             </div>
           ) : section === "overview" ? (
             <div className="space-y-6">
-              <div>
-                <h3 className="text-xl font-bold">Identitas</h3>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  Kenali asistenmu dan atur cara ia membantu. Berlaku di semua percakapanmu.
-                </p>
-              </div>
-              <div className="divide-y border-y">
+              <div className="rounded-3xl bg-muted/60 p-4">
+                <h4 className="mb-2 text-sm font-medium">{profile.name}</h4>
                 <button
                   type="button"
-                  className="flex w-full items-center justify-between gap-4 py-5 text-left outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   onClick={() => setSection("profile")}
+                  className="flex min-h-10 w-full items-center justify-center gap-2 rounded-full bg-foreground/10 text-sm hover:bg-foreground/15"
                 >
-                  <span>
-                    <span className="block font-bold">Profil {profile.name}</span>
-                    <span className="mt-1 block text-sm text-muted-foreground">
-                      Nama, avatar, dan deskripsi singkat.
-                    </span>
-                  </span>
-                  <ArrowRight className="size-4 shrink-0" />
+                  <Pencil className="size-4" />
+                  Edit
                 </button>
-                <button
-                  type="button"
-                  className="flex w-full items-center justify-between gap-4 py-5 text-left outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  onClick={() => setSection("soul")}
-                >
-                  <span>
-                    <span className="block font-bold">Karakter {profile.name}</span>
-                    <span className="mt-1 block text-sm text-muted-foreground">
-                      Soul · cara berbicara dan membantu.
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                {(
+                  [
+                    ["soul", "SOUL"],
+                    ["memory", "MEMORY"],
+                  ] as const
+                ).map(([value, label]) => (
+                  <button
+                    key={value}
+                    type="button"
+                    onClick={() => setSection(value)}
+                    className={`flex aspect-[1.1] flex-col rounded-3xl p-4 text-left ${value === "soul" ? "bg-danger-subtle bg-[radial-gradient(ellipse_at_bottom_left,var(--color-danger-subtle),transparent_75%)] text-danger" : "bg-secondary bg-[radial-gradient(ellipse_at_bottom_left,var(--color-primary),transparent_90%)] text-foreground"}`}
+                  >
+                    <span className="text-sm font-medium">{label}</span>
+                    <span className="mt-1 text-[10px] tracking-wide opacity-75">
+                      ACCESS WITH CARE
                     </span>
-                  </span>
-                  <ArrowRight className="size-4 shrink-0" />
-                </button>
-                <button
-                  type="button"
-                  className="flex w-full items-center justify-between gap-4 py-5 text-left outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  onClick={() => setSection("memory")}
-                >
-                  <span>
-                    <span className="block font-bold">Ingatan tentangmu</span>
-                    <span className="mt-1 block text-sm text-muted-foreground">
-                      Lihat sumber, koreksi, lupakan, dan atur capture.
-                    </span>
-                  </span>
-                  <ArrowRight className="size-4 shrink-0" />
-                </button>
+                    <Heart className="mt-auto size-5 self-end" fill="currentColor" />
+                  </button>
+                ))}
               </div>
               <Button variant="ghost" onClick={() => setSection("history")}>
                 <History /> Riwayat perubahan

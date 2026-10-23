@@ -3,18 +3,33 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import type { ScheduleOccurrence } from "@/features/schedules/types";
+import type { Schedule, ScheduleOccurrence } from "@/features/schedules/types";
 import { outcomeLabels, timeLabel } from "@/features/schedules/utils/presentation";
 import { TaskCard } from "@/features/tasks/components/task-card";
 import type { BackgroundTask } from "@/features/tasks/types";
 import { api } from "@/lib/api";
 
-export function ScheduleHistory({ occurrences }: { occurrences: ScheduleOccurrence[] }) {
+export function ScheduleHistory({
+  occurrences,
+  schedules = [],
+}: {
+  occurrences: ScheduleOccurrence[];
+  schedules?: Schedule[];
+}) {
   return (
     <section className="space-y-3">
       <h2 className="font-bold">Riwayat eksekusi</h2>
       {occurrences.length ? (
-        occurrences.map((item) => <Occurrence key={item.id} item={item} />)
+        occurrences.map((item) => (
+          <Occurrence
+            key={item.id}
+            item={item}
+            timezone={
+              schedules.find((schedule) => schedule.id === item.schedule_id)?.spec.timezone ??
+              Intl.DateTimeFormat().resolvedOptions().timeZone
+            }
+          />
+        ))
       ) : (
         <p className="text-sm text-muted-foreground">
           Belum ada eksekusi. Jadwal aktif akan muncul di sini saat waktunya tiba.
@@ -28,7 +43,7 @@ export function ScheduleHistory({ occurrences }: { occurrences: ScheduleOccurren
   );
 }
 
-function Occurrence({ item }: { item: ScheduleOccurrence }) {
+function Occurrence({ item, timezone }: { item: ScheduleOccurrence; timezone: string }) {
   const [open, setOpen] = useState(false);
   const { userId, getToken } = useAuth();
   const task = useQuery({
@@ -45,7 +60,7 @@ function Occurrence({ item }: { item: ScheduleOccurrence }) {
         {item.trigger === "manual" ? "Jalankan sekarang" : "Terjadwal"}
       </p>
       <p className="text-xs text-muted-foreground">
-        {timeLabel(item.intended_at, "UTC")} UTC · versi jadwal {item.revision}
+        {timeLabel(item.intended_at, timezone)} · versi jadwal {item.revision}
       </p>
       {item.reason || item.error ? (
         <p className="wrap-anywhere text-muted-foreground">{item.reason || item.error}</p>

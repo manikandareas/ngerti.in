@@ -1,3 +1,4 @@
+import { Mascot } from "@/components/mascot/mascot";
 import type { PersonaContent } from "@/features/persona/types";
 
 export function PersonaAvatar({ profile }: { profile?: Pick<PersonaContent, "name" | "avatar"> }) {
@@ -9,6 +10,6 @@ export function PersonaAvatar({ profile }: { profile?: Pick<PersonaContent, "nam
       {Array.from(profile.name)[0]?.toLocaleUpperCase()}
     </span>
   ) : (
-    <img src="/images/Dh2gf.png" width={36} height={36} className="size-9 shrink-0" alt="" />
+    <Mascot className="size-9" />
   );
 }

@@ -10,11 +10,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useExpired } from "@/features/chat/hooks/use-expired";
 import type { Approval } from "@/features/chat/types";
 
 const statusLabels: Record<string, string> = {
   approved: "Disetujui",
-  rejected: "Dilewati",
+  rejected: "Ditolak",
+  expired: "Kedaluwarsa",
+  cancelled: "Dibatalkan",
 };
 
 interface ApprovalCardProps {
@@ -25,9 +28,10 @@ interface ApprovalCardProps {
 export function ApprovalCard({ approval, decide }: ApprovalCardProps) {
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
-  const expired = Date.parse(approval.expires_at) < Date.now();
+  const expired = useExpired(approval.expires_at);
   const pending = approval.status === "pending" && !expired;
   async function respond(approved: boolean) {
+    if (sending || !pending) return;
     setSending(true);
     setError("");
     try {
@@ -38,22 +42,51 @@ export function ApprovalCard({ approval, decide }: ApprovalCardProps) {
       setSending(false);
     }
   }
-  return (
+  const label = pending
+    ? "Perlu keputusanmu"
+    : approval.status === "pending" && expired
+      ? "Kedaluwarsa"
+      : (statusLabels[approval.status] ?? approval.status);
+  const content = (
     <Card className="my-5 border border-border shadow-none ring-0">
       <CardHeader>
         <div className="mb-2">
-          <Badge variant="secondary">
-            {pending ? "Perlu keputusanmu" : (statusLabels[approval.status] ?? "Tidak aktif")}
-          </Badge>
+          <Badge variant="secondary">{label}</Badge>
         </div>
-        <CardTitle className="text-lg font-extrabold">Izinkan tindakan ini?</CardTitle>
-        <CardDescription>Periksa tindakan dan detailnya sebelum memberi izin.</CardDescription>
+        <CardTitle className="text-lg font-extrabold">
+          {pending ? "Izinkan tindakan ini?" : "Riwayat keputusan"}
+        </CardTitle>
+        <CardDescription>
+          {pending
+            ? "Gwen menunggu keputusan ini sebelum melanjutkan respons. Draft pesanmu tetap tersimpan."
+            : "Permintaan ini sudah tidak dapat diputuskan. Lihat status respons untuk melanjutkan percakapan."}
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-3">
         <p className="font-bold">{approval.action.name}</p>
-        <pre className="overflow-auto whitespace-pre-wrap break-words text-sm">
-          {JSON.stringify(approval.action.args, null, 2)}
-        </pre>
+        <p className="text-sm text-muted-foreground">
+          Izin berlaku hanya untuk tindakan dan parameter di bawah, bukan izin untuk tindakan
+          berikutnya.
+        </p>
+        <dl className="space-y-2 text-sm">
+          {Object.entries(approval.action.args).map(([key, value]) => (
+            <div key={key}>
+              <dt className="text-xs text-muted-foreground">{key}</dt>
+              <dd className="max-h-40 overflow-auto whitespace-pre-wrap wrap-anywhere">
+                {typeof value === "string" ? value : JSON.stringify(value, null, 2)}
+              </dd>
+            </div>
+          ))}
+        </dl>
+        <p className="text-xs text-muted-foreground">
+          Batas keputusan: {new Date(approval.expires_at).toLocaleString("id-ID")}
+        </p>
+        <details className="text-xs text-muted-foreground">
+          <summary className="cursor-pointer py-2">Detail teknis</summary>
+          <p>
+            Permintaan {approval.id} · versi {approval.revision}
+          </p>
+        </details>
         {error ? (
           <p role="alert" className="text-sm text-destructive">
             {error}
@@ -71,5 +104,15 @@ export function ApprovalCard({ approval, decide }: ApprovalCardProps) {
         </CardFooter>
       ) : null}
     </Card>
+  );
+  return pending ? (
+    content
+  ) : (
+    <details className="my-3 rounded-xl border px-4">
+      <summary className="cursor-pointer py-3 text-sm">
+        {approval.action.name} · {label}
+      </summary>
+      {content}
+    </details>
   );
 }

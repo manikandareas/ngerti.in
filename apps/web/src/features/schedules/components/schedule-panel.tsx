@@ -2,6 +2,8 @@ import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { WorkspaceState } from "@/components/workspace-state";
+import { useResourceContext } from "@/features/library/components/resource-context";
+import { useResourceSelection } from "@/features/library/hooks/use-library";
 import { useScheduleCommands, useSchedules } from "@/features/schedules/hooks/use-schedules";
 import type { Schedule } from "@/features/schedules/types";
 import { recurrenceLabel, timeLabel } from "@/features/schedules/utils/presentation";
@@ -10,11 +12,22 @@ import { ScheduleHistory } from "./schedule-history";
 import { ScheduleProposalCard } from "./schedule-proposal";
 
 export function SchedulePanel({ threadId }: { threadId: string | null }) {
+  const context = useResourceContext();
   const data = useSchedules();
   const [editing, setEditing] = useState<Schedule | null>(null);
   const [creating, setCreating] = useState(false);
   return (
     <div className="space-y-7">
+      <Button
+        onClick={() =>
+          context.prepare(
+            "Bantu aku menjadwalkan pekerjaan berikut. Tanyakan waktu dan pengulangan yang belum jelas, lalu tampilkan proposal beserta biaya dan izin sebelum aktivasi.\n\nPekerjaannya: ",
+          )
+        }
+      >
+        {" "}
+        Rencanakan lewat chat
+      </Button>
       <p className="text-sm text-muted-foreground">
         Buat melalui chat atau form. Tinjau instruksi, waktu, izin dan batas kerja sebelum
         mengaktifkan.
@@ -25,7 +38,7 @@ export function SchedulePanel({ threadId }: { threadId: string | null }) {
           setEditing(null);
         }}
       >
-        {creating ? "Tutup form" : "Buat jadwal"}
+        {creating ? "Tutup form" : "Isi jadwal sendiri"}
       </Button>
       {creating || editing ? (
         <ScheduleForm
@@ -78,12 +91,17 @@ export function SchedulePanel({ threadId }: { threadId: string | null }) {
           />
         )}
       </section>
-      <ScheduleHistory occurrences={data.data?.occurrences ?? []} />
+      <ScheduleHistory
+        occurrences={data.data?.occurrences ?? []}
+        schedules={data.data?.schedules ?? []}
+      />
     </div>
   );
 }
 
 export function ScheduleCard({ schedule, onEdit }: { schedule: Schedule; onEdit: () => void }) {
+  const context = useResourceContext();
+  const selection = useResourceSelection(context.threadId);
   const command = useScheduleCommands();
   return (
     <article className="space-y-3 rounded-2xl border bg-card p-5 text-sm">
@@ -126,6 +144,23 @@ export function ScheduleCard({ schedule, onEdit }: { schedule: Schedule; onEdit:
         Hasil ke: {schedule.thread_title}
       </Link>
       <div className="flex flex-wrap gap-2">
+        <Button
+          variant="outline"
+          disabled={selection.select.isPending}
+          onClick={() =>
+            selection.select.mutate(
+              { kind: "schedule", id: schedule.id, revision: schedule.revision },
+              {
+                onSuccess: () => {
+                  context.open({ kind: "schedule", id: schedule.id, revision: schedule.revision });
+                  context.discuss();
+                },
+              },
+            )
+          }
+        >
+          Bicarakan jadwal ini
+        </Button>
         <Button variant="outline" onClick={onEdit}>
           Edit
         </Button>
@@ -157,6 +192,9 @@ export function ScheduleCard({ schedule, onEdit }: { schedule: Schedule; onEdit:
           ),
         )}
       </div>
+      {selection.select.isError ? (
+        <p role="alert">Konteks jadwal belum tersimpan. Coba lagi.</p>
+      ) : null}
       {command.error ? (
         <p role="alert" className="text-danger">
           {command.error}

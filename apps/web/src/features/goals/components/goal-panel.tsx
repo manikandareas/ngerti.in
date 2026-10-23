@@ -1,24 +1,36 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { WorkspaceState } from "@/components/workspace-state";
-import { useGoals } from "@/features/goals/hooks/use-goals";
+import { useGoal, useGoals } from "@/features/goals/hooks/use-goals";
 import { goalStateLabels } from "@/features/goals/types";
+import { useResourceContext } from "@/features/library/components/resource-context";
 import { GoalDetailPanel } from "./goal-detail";
 import { GoalForm } from "./goal-form";
 import { GoalProposalCard } from "./goal-proposal";
 
 export function GoalPanel({ threadId }: { threadId: string | null }) {
+  const context = useResourceContext();
   const data = useGoals();
   const [creating, setCreating] = useState(false);
   const [selected, setSelected] = useState<string | null>(null);
   return (
     <div className="space-y-7">
+      <Button
+        onClick={() =>
+          context.prepare(
+            "Bantu aku merencanakan tujuan berikut. Tanyakan target, kriteria keberhasilan dan waktu yang belum jelas, lalu ajukan proposal untuk kutinjau. Jangan jalankan pekerjaan dulu.\n\nTujuanku: ",
+          )
+        }
+      >
+        {" "}
+        Rencanakan lewat chat
+      </Button>
       <p className="text-sm text-muted-foreground">
         Simpan target, tentukan keberhasilannya, lalu tinjau kemajuan dari bukti yang nyata. Kamu
         juga bisa membicarakannya melalui chat.
       </p>
-      <Button onClick={() => setCreating(!creating)}>
-        {creating ? "Tutup form" : "Buat tujuan"}
+      <Button variant="outline" onClick={() => setCreating(!creating)}>
+        {creating ? "Tutup form" : "Isi tujuan sendiri"}
       </Button>
       {creating ? <GoalForm threadId={threadId} onClose={() => setCreating(false)} /> : null}
       {data.data?.proposals.map((p) => (
@@ -38,14 +50,15 @@ export function GoalPanel({ threadId }: { threadId: string | null }) {
         <>
           <fieldset className="flex flex-wrap gap-2" aria-label="Pilih tujuan">
             {data.data.goals.map((g) => (
-              <Button
+              <GoalSummary
                 key={g.id}
-                variant={selected === g.id ? "secondary" : "outline"}
-                className="h-auto min-h-11 max-w-full whitespace-normal wrap-anywhere text-left"
-                onClick={() => setSelected(g.id)}
-              >
-                {g.spec.title} · {goalStateLabels[g.state]}
-              </Button>
+                id={g.id}
+                title={g.spec.title}
+                target={g.spec.target}
+                state={g.state}
+                selected={selected === g.id}
+                onSelect={() => setSelected(g.id)}
+              />
             ))}
           </fieldset>
           {selected ? (
@@ -64,5 +77,50 @@ export function GoalPanel({ threadId }: { threadId: string | null }) {
         />
       )}
     </div>
+  );
+}
+
+function GoalSummary({
+  id,
+  title,
+  target,
+  state,
+  selected,
+  onSelect,
+}: {
+  id: string;
+  title: string;
+  target: string;
+  state: keyof typeof goalStateLabels;
+  selected: boolean;
+  onSelect: () => void;
+}) {
+  const detail = useGoal(id);
+  return (
+    <button
+      type="button"
+      aria-pressed={selected}
+      onClick={onSelect}
+      className={`w-full space-y-2 rounded-xl border p-4 text-left text-sm ${selected ? "bg-secondary" : "bg-card hover:bg-muted"}`}
+    >
+      <span className="block font-semibold wrap-anywhere">{title}</span>
+      <span className="block line-clamp-2 text-muted-foreground wrap-anywhere">{target}</span>
+      <span className="block text-xs text-muted-foreground">
+        {goalStateLabels[state]} ·{" "}
+        {detail.data
+          ? `${detail.data.met} dari ${detail.data.spec.criteria.length} kriteria terpenuhi${detail.data.needs_review ? " · bukti perlu ditinjau" : ""}`
+          : detail.isError
+            ? "Kemajuan belum tersinkron"
+            : "Memuat kemajuan…"}
+      </span>
+      {detail.data ? (
+        <progress
+          aria-label={`Kemajuan ${title}`}
+          className="usage-progress h-1 w-full"
+          max={detail.data.spec.criteria.length || 1}
+          value={detail.data.met}
+        />
+      ) : null}
+    </button>
   );
 }

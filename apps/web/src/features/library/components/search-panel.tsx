@@ -6,9 +6,10 @@ import { useResourceSearch } from "../hooks/use-library";
 import { kindLabels, type ResourceKind, type SearchSpec } from "../types";
 import { ResourceCard } from "./resource-card";
 export function SearchPanel({ library = false }: { library?: boolean }) {
+  const [layout, setLayout] = useState<"grid" | "list">("grid");
   const [query, setQuery] = useState("");
   const [kind, setKind] = useState<ResourceKind | "">("");
-  const [sort, setSort] = useState<SearchSpec["sort"]>("relevance");
+  const [sort, setSort] = useState<SearchSpec["sort"]>("recent");
   const [days, setDays] = useState("");
   const [spec, setSpec] = useState<SearchSpec>({
     query: "",
@@ -26,6 +27,57 @@ export function SearchPanel({ library = false }: { library?: boolean }) {
     : (Object.keys(kindLabels) as ResourceKind[]);
   return (
     <div className="space-y-5">
+      {library ? (
+        <fieldset className="flex flex-wrap items-center gap-2" aria-label="Kategori Library">
+          {(
+            [
+              ["", "Semua"],
+              ["result", "Hasil"],
+              ["file", "File"],
+            ] as const
+          ).map(([value, label]) => (
+            <Button
+              key={value}
+              variant={kind === value ? "secondary" : "ghost"}
+              size="sm"
+              aria-pressed={kind === value}
+              onClick={() => {
+                setKind(value);
+                setSpec({ ...spec, kinds: value ? [value] : ["file", "result"] });
+              }}
+            >
+              {label}
+            </Button>
+          ))}
+          <Button
+            size="sm"
+            variant={days === "7" ? "secondary" : "ghost"}
+            aria-pressed={days === "7"}
+            onClick={() => {
+              const next = days === "7" ? "" : "7";
+              setDays(next);
+              setSpec({
+                ...spec,
+                since: next ? new Date(Date.now() - 7 * 86400000).toISOString() : undefined,
+              });
+            }}
+          >
+            Terakhir 7 hari
+          </Button>
+          <label className="text-sm">
+            Tampilan{" "}
+            <select
+              aria-label="Tampilan Library"
+              className="rounded-md border bg-background p-2"
+              value={layout}
+              onChange={(e) => setLayout(e.target.value as "grid" | "list")}
+            >
+              <option value="grid">Grid</option>
+              <option value="list">Daftar</option>
+            </select>
+          </label>
+        </fieldset>
+      ) : null}
       <form
         className="space-y-3"
         onSubmit={(event) => {
@@ -92,7 +144,11 @@ export function SearchPanel({ library = false }: { library?: boolean }) {
                 aria-label="Urutan hasil"
                 className="block rounded-md border bg-background p-2"
                 value={sort}
-                onChange={(e) => setSort(e.target.value as SearchSpec["sort"])}
+                onChange={(e) => {
+                  const next = e.target.value as SearchSpec["sort"];
+                  setSort(next);
+                  setSpec({ ...spec, sort: next });
+                }}
               >
                 <option value="relevance">Paling relevan</option>
                 <option value="recent">Terbaru diubah</option>
@@ -112,9 +168,20 @@ export function SearchPanel({ library = false }: { library?: boolean }) {
           onRetry={() => void data.refetch()}
         />
       ) : unique.length ? (
-        <section aria-label={library ? "File dan hasil di Library" : "Hasil pencarian"}>
+        <section
+          className={
+            library && layout === "grid"
+              ? "grid grid-cols-1 gap-3 min-[1100px]:grid-cols-2"
+              : "divide-y"
+          }
+          aria-label={library ? "File dan hasil di Library" : "Hasil pencarian"}
+        >
           {unique.map((item) => (
-            <ResourceCard key={`${item.ref.kind}:${item.ref.id}`} item={item} />
+            <ResourceCard
+              key={`${item.ref.kind}:${item.ref.id}`}
+              item={item}
+              preview={library && layout === "grid"}
+            />
           ))}
         </section>
       ) : (

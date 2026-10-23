@@ -58,12 +58,6 @@ export function ScheduleForm({
       }}
     >
       <h2 className="font-bold">{schedule ? "Ubah jadwal" : "Buat jadwal"}</h2>
-      <GoalSelector
-        id="schedule-goal"
-        value={value.goal}
-        disabled={command.pending}
-        onChange={(goal) => update({ goal })}
-      />
       <div className="space-y-2">
         <label htmlFor="schedule-title" className="text-sm">
           Nama jadwal
@@ -204,68 +198,79 @@ export function ScheduleForm({
           Zona melekat pada jadwal, termasuk saat kamu berpindah lokasi.
         </p>
       </div>
-      <div className="space-y-2">
-        <label htmlFor="schedule-runtime" className="text-sm">
-          Cara mengerjakan
-        </label>
-        <Select
-          value={value.runtime_kind}
-          onValueChange={(runtime_kind) =>
-            update({ runtime_kind: runtime_kind as typeof value.runtime_kind })
-          }
-        >
-          <SelectTrigger id="schedule-runtime" className="w-full">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="text">Teks dan file</SelectItem>
-            <SelectItem value="code">Python offline</SelectItem>
-            <SelectItem value="browser">Browser pribadi</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-      {value.runtime_kind === "browser" ? (
-        <p className="text-xs text-muted-foreground">
-          Tulis URL yang dimaksud dalam instruksi. Jika perlu login atau keputusan, pekerjaan
-          menunggu bantuanmu.
-        </p>
-      ) : (
-        <>
-          <AttachmentPicker state={attachments} disabled={command.pending} />
-          {value.inputs.length ? (
-            <p className="text-xs">
-              {value.inputs.length} revision file dari jadwal lama dipertahankan.{" "}
-              <button type="button" className="underline" onClick={() => update({ inputs: [] })}>
-                Lepaskan lampiran lama
-              </button>
-            </p>
-          ) : null}
-        </>
-      )}
-      <OutputFields
-        value={value.outputs}
-        onChange={(outputs) => update({ outputs })}
-        disabled={command.pending}
-      />
-      <div className="space-y-2">
-        <label htmlFor="schedule-cap" className="text-sm">
-          Batas kerja per eksekusi
-        </label>
-        <Input
-          id="schedule-cap"
-          type="number"
-          min={30000}
-          max={120000}
-          step={1000}
-          value={value.per_run_cap}
-          required
-          onChange={(e) => update({ per_run_cap: Number(e.target.value) })}
+      <details className="space-y-4">
+        <summary className="cursor-pointer py-2 text-sm">
+          Pengaturan lanjutan · cara kerja, file dan batas
+        </summary>
+        <GoalSelector
+          id="schedule-goal"
+          value={value.goal}
+          disabled={command.pending}
+          onChange={(goal) => update({ goal })}
         />
-        <p className="text-xs text-muted-foreground">
-          Unit kerja internal; penggunaan aktual dan cadangan terlihat pada Task. Batas akun/global
-          tetap berlaku.
-        </p>
-      </div>
+        <div className="space-y-2">
+          <label htmlFor="schedule-runtime" className="text-sm">
+            Cara mengerjakan
+          </label>
+          <Select
+            value={value.runtime_kind}
+            onValueChange={(runtime_kind) =>
+              update({ runtime_kind: runtime_kind as typeof value.runtime_kind })
+            }
+          >
+            <SelectTrigger id="schedule-runtime" className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="text">Teks dan file</SelectItem>
+              <SelectItem value="code">Python offline</SelectItem>
+              <SelectItem value="browser">Browser pribadi</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        {value.runtime_kind === "browser" ? (
+          <p className="text-xs text-muted-foreground">
+            Tulis URL yang dimaksud dalam instruksi. Jika perlu login atau keputusan, pekerjaan
+            menunggu bantuanmu.
+          </p>
+        ) : (
+          <>
+            <AttachmentPicker state={attachments} disabled={command.pending} />
+            {value.inputs.length ? (
+              <p className="text-xs">
+                {value.inputs.length} revision file dari jadwal lama dipertahankan.{" "}
+                <button type="button" className="underline" onClick={() => update({ inputs: [] })}>
+                  Lepaskan lampiran lama
+                </button>
+              </p>
+            ) : null}
+          </>
+        )}
+        <OutputFields
+          value={value.outputs}
+          onChange={(outputs) => update({ outputs })}
+          disabled={command.pending}
+        />
+        <div className="space-y-2">
+          <label htmlFor="schedule-cap" className="text-sm">
+            Batas kerja per eksekusi
+          </label>
+          <Input
+            id="schedule-cap"
+            type="number"
+            min={30000}
+            max={120000}
+            step={1000}
+            value={value.per_run_cap}
+            required
+            onChange={(e) => update({ per_run_cap: Number(e.target.value) })}
+          />
+          <p className="text-xs text-muted-foreground">
+            Unit kerja internal; penggunaan aktual dan cadangan terlihat pada Task. Batas
+            akun/global tetap berlaku.
+          </p>
+        </div>
+      </details>
       <label className="flex min-h-11 items-center gap-3 text-sm">
         <input
           type="checkbox"

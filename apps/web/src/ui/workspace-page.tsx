@@ -17,15 +17,19 @@ import { useChatHistory } from "@/features/chat/hooks/use-chat-history";
 import { useChatThreads } from "@/features/chat/hooks/use-chat-threads";
 import { ResourceProvider } from "@/features/library/components/resource-context";
 import { ResourceSurface } from "@/features/library/components/resource-surface";
-import { SearchPanel } from "@/features/library/components/search-panel";
-import type { ResourceRef } from "@/features/library/types";
+import { SearchDialog } from "@/features/library/components/search-dialog";
+import { useResourceView } from "@/features/library/hooks/use-resource-view";
 import { AssistantPanel } from "@/features/persona/components/assistant-panel";
+import { AssistantSurface } from "@/features/persona/components/assistant-surface";
+import type { AssistantTab } from "@/features/persona/types";
+import { ContextPanel } from "@/features/workspace/components/context-panel";
+import { SettingsDialog } from "@/features/workspace/components/settings-dialog";
 import {
   DesktopNavigation,
   MobileNavigation,
 } from "@/features/workspace/components/workspace-navigation";
+import { workspaceLinks } from "@/features/workspace/config/navigation";
 import type { WorkspaceView } from "@/features/workspace/types";
-import { cn } from "@/lib/utils";
 import { WorkspacePanel } from "./workspace-panel";
 
 interface WorkspacePageProps {
@@ -39,32 +43,45 @@ interface WorkspacePageProps {
 
 export function WorkspacePage({
   selectedThread,
-  view,
-  onNavigate,
+  view: routeView,
+  onNavigate: navigateRoute,
   onSelect,
   prompt,
   onPromptConsumed,
 }: WorkspacePageProps) {
   const { userId } = useAuth();
   const history = useChatHistory();
-  const [openedResource, setOpenedResource] = useState<ResourceRef | null>(null);
+  const backgroundView = useRef<WorkspaceView>("chat");
+  const settingsTrigger = useRef<HTMLElement | null>(null);
+  const settingsOpen = routeView === "settings" || routeView === "usage";
+  const view = settingsOpen ? backgroundView.current : routeView;
+  useEffect(() => {
+    if (!settingsOpen) backgroundView.current = routeView;
+  }, [routeView, settingsOpen]);
+  function onNavigate(next: WorkspaceView) {
+    if (next === "settings" || next === "usage") {
+      settingsTrigger.current = document.activeElement as HTMLElement;
+    }
+    navigateRoute(next);
+  }
+  const [assistantTab, setAssistantTab] = useState<AssistantTab>("activity");
   const [searchOpen, setSearchOpen] = useState(false);
   const [assistantOpen, setAssistantOpen] = useState(false);
   const [draftRequest, setDraftRequest] = useState<{ id: string; text: string }>();
   const assistantTrigger = useRef<HTMLButtonElement>(null);
-  const assistantRegion = useRef<HTMLElement>(null);
   const focusComposerAfterClose = useRef(false);
-  useEffect(() => {
-    if (assistantOpen && !history.mobile)
-      assistantRegion.current
-        ?.querySelector<HTMLButtonElement>('[role="tab"][data-state="active"]')
-        ?.focus();
-  }, [assistantOpen, history.mobile]);
   function closeAssistant() {
     setAssistantOpen(false);
-    assistantTrigger.current?.focus();
+    if (!assistantOpen) return;
+    requestAnimationFrame(() => {
+      if (focusComposerAfterClose.current) {
+        focusComposerAfterClose.current = false;
+        history.chatArea.current?.querySelector<HTMLTextAreaElement>("textarea")?.focus();
+      } else assistantTrigger.current?.focus();
+    });
   }
-  function openAssistant() {
+  function openAssistant(tab: AssistantTab = "activity") {
+    setAssistantTab(tab);
     setOpenedResource(null);
     history.closePanel();
     history.closeDrawer();
@@ -75,7 +92,7 @@ export function WorkspacePage({
     history.toggleHistory();
   }
   function navigateFromAssistant(next: WorkspaceView) {
-    closeAssistant();
+    if (next !== "settings" && next !== "usage") closeAssistant();
     onNavigate(next);
   }
   function discuss(section: string, revision: number) {
@@ -90,7 +107,7 @@ export function WorkspacePage({
   const previousView = useRef(view);
   useEffect(() => {
     if (view === "chat" && previousView.current !== "chat" && !prompt)
-      history.chatArea.current?.focus();
+      history.chatArea.current?.querySelector<HTMLTextAreaElement>("textarea")?.focus();
     previousView.current = view;
   }, [view, history.chatArea, prompt]);
   function selectThread(id: string): void {
@@ -100,6 +117,10 @@ export function WorkspacePage({
   const { threads, search, setSearch, create } = useChatThreads(selectThread);
   const threadId =
     selectedThread ?? threads.data?.threads.find((item) => item.kind === "main")?.id ?? null;
+  const resourceView = useResourceView(userId, threadId);
+  const openedResource = resourceView.opened;
+  const resourceDiscussing = resourceView.discussing;
+  const setOpenedResource = resourceView.open;
   const title = threads.data?.threads.find((item) => item.id === threadId)?.title ?? "Percakapanmu";
   const list = (
     <ThreadList
@@ -120,14 +141,22 @@ export function WorkspacePage({
   return (
     <ResourceProvider
       opened={openedResource}
-      setOpened={setOpenedResource}
+      setOpened={(ref) => {
+        if (ref) setAssistantOpen(false);
+        setOpenedResource(ref);
+      }}
       onOpen={() => {
         setSearchOpen(false);
-        if (assistantOpen) closeAssistant();
+        setAssistantOpen(false);
         history.closePanel();
       }}
       threadId={threadId}
+      prepare={(text) => {
+        setDraftRequest({ id: crypto.randomUUID(), text });
+        onNavigate("chat");
+      }}
       discuss={() => {
+        resourceView.discuss();
         setSearchOpen(false);
         onNavigate("chat");
         requestAnimationFrame(() =>
@@ -135,8 +164,18 @@ export function WorkspacePage({
         );
       }}
     >
-      <div className="flex h-dvh overflow-hidden">
-        <DesktopNavigation view={view} onNavigate={onNavigate} />
+      <div className="relative flex h-dvh overflow-hidden">
+        <DesktopNavigation
+          view={view}
+          onSearch={() => setSearchOpen(true)}
+          onNavigate={(next) => {
+            if (next !== "settings" && next !== "usage") {
+              setOpenedResource(null);
+              closeAssistant();
+            }
+            onNavigate(next);
+          }}
+        />
         {!history.mobile && history.panelOpen && view === "chat" ? (
           <aside
             id="chat-history-panel"
@@ -153,77 +192,76 @@ export function WorkspacePage({
           </aside>
         ) : null}
         <main
+          style={
+            history.mobile && openedResource && resourceDiscussing
+              ? { paddingTop: "45dvh" }
+              : undefined
+          }
           ref={history.chatArea}
           id="main"
           tabIndex={-1}
-          className="relative flex min-h-0 min-w-0 flex-1 flex-col outline-none"
+          className="relative flex min-h-0 min-w-0 flex-1 flex-col pb-[calc(56px+env(safe-area-inset-bottom))] outline-none min-[701px]:pb-0"
         >
-          <header className="flex h-[76px] shrink-0 items-center justify-between gap-2 border-b px-3 min-[701px]:px-6">
-            <div className="flex min-w-11 items-center gap-1">
-              <MobileNavigation view={view} onNavigate={onNavigate} />
+          <header className="chat-floating-header absolute inset-x-0 top-0 z-20 flex h-[104px] items-start justify-between gap-2 px-3 pt-3 min-[701px]:px-4 [&>div]:pointer-events-auto [&>button]:pointer-events-auto">
+            <div className="flex min-w-0 max-w-[calc(50%-56px)] flex-1 items-center gap-1">
+              <MobileNavigation
+                view={view}
+                onNavigate={(next) => {
+                  if (next !== "settings" && next !== "usage") {
+                    setOpenedResource(null);
+                    closeAssistant();
+                  }
+                  onNavigate(next);
+                }}
+              />
               <Button
                 type="button"
                 variant="ghost"
                 size="icon"
-                className="size-11"
+                className="size-11 min-[701px]:hidden"
                 aria-label="Cari pekerjaan dan hasil"
                 onClick={() => setSearchOpen(true)}
               >
                 <Search className="size-5" />
               </Button>
-              {view === "chat" ? (
-                <Button
-                  ref={!history.mobile ? history.historyToggle : undefined}
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  className="hidden size-11 min-[701px]:inline-flex"
-                  onClick={toggleHistory}
-                  aria-label={history.panelOpen ? "Tutup riwayat chat" : "Buka riwayat chat"}
-                  aria-controls="chat-history-panel"
-                  aria-expanded={history.panelOpen}
-                >
-                  <MessageCircle className="size-5" />
-                </Button>
-              ) : null}
+              <Button
+                ref={!history.mobile ? history.historyToggle : undefined}
+                type="button"
+                variant="ghost"
+                className="hidden h-9 max-w-[240px] gap-2 rounded-full bg-muted px-3 min-[701px]:inline-flex"
+                onClick={toggleHistory}
+                aria-label={history.panelOpen ? "Tutup riwayat chat" : "Buka riwayat chat"}
+                aria-controls="chat-history-panel"
+                aria-expanded={history.panelOpen}
+              >
+                <MessageCircle className="size-4 shrink-0" />
+                <span className="truncate text-sm font-normal">{title}</span>
+              </Button>
             </div>
-            {view === "chat" ? (
-              <div className="min-w-0 text-center">
-                <AgentProfile
-                  triggerRef={assistantTrigger}
-                  open={assistantOpen}
-                  onClick={() => (assistantOpen ? closeAssistant() : openAssistant())}
-                />
-                <p className="max-w-[160px] truncate text-xs text-muted-foreground min-[701px]:max-w-xs">
-                  {title}
-                </p>
-              </div>
-            ) : (
+            <div
+              className={`absolute left-1/2 -translate-x-1/2 ${assistantOpen ? "invisible pointer-events-none" : ""}`}
+            >
               <AgentProfile
                 triggerRef={assistantTrigger}
                 open={assistantOpen}
                 onClick={() => (assistantOpen ? closeAssistant() : openAssistant())}
               />
-            )}
-            {view === "chat" ? (
-              <Button
-                ref={history.mobile ? history.historyToggle : undefined}
-                type="button"
-                variant="ghost"
-                size="icon"
-                className="size-11 min-[701px]:invisible"
-                onClick={toggleHistory}
-                aria-label="Buka riwayat chat"
-                aria-controls="chat-history-drawer"
-                aria-expanded={history.drawerOpen}
-              >
-                <MessageCircle className="size-5" />
-              </Button>
-            ) : (
-              <span className="w-11" />
-            )}
+            </div>
+            <Button
+              ref={history.mobile ? history.historyToggle : undefined}
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="mr-10 size-11 min-[701px]:invisible"
+              onClick={toggleHistory}
+              aria-label="Buka riwayat chat"
+              aria-controls="chat-history-drawer"
+              aria-expanded={history.drawerOpen}
+            >
+              <MessageCircle className="size-5" />
+            </Button>
           </header>
-          <div className={cn("flex min-h-0 flex-1 flex-col", view !== "chat" && "hidden")}>
+          <div className="flex min-h-0 flex-1 flex-col">
             {create.error ? (
               <p
                 role="alert"
@@ -253,7 +291,13 @@ export function WorkspacePage({
               <WorkspaceState kind="loading" title="Menyiapkan percakapanmu…" />
             )}
           </div>
-          {view !== "chat" ? (
+        </main>
+        {view !== "chat" ? (
+          <ContextPanel
+            title={workspaceLinks.find((item) => item.view === view)?.label ?? "Panel"}
+            mobile={history.mobile}
+            onClose={() => onNavigate("chat")}
+          >
             <WorkspacePanel
               key={view}
               view={view}
@@ -261,71 +305,46 @@ export function WorkspacePage({
               threadId={threadId}
               onOpenAssistant={openAssistant}
             />
-          ) : null}
-        </main>
-        <ResourceSurface mobile={history.mobile} />
-        <Sheet open={searchOpen} onOpenChange={setSearchOpen}>
-          <SheetContent className="gap-0 data-[side=right]:w-full data-[side=right]:sm:max-w-xl">
-            <SheetHeader className="border-b pr-12">
-              <SheetTitle>Cari pekerjaan dan hasil</SheetTitle>
-              <SheetDescription>
-                Temukan percakapan, pekerjaan, file, hasil, tujuan, atau jadwal.
-              </SheetDescription>
-            </SheetHeader>
-            <div className="min-h-0 flex-1 overflow-y-auto p-5">
-              <SearchPanel />
-            </div>
-          </SheetContent>
-        </Sheet>
-        {assistantOpen && !history.mobile ? (
-          <aside
-            ref={assistantRegion}
-            id="assistant-panel"
-            aria-label="Panel asisten"
-            className="min-h-0 w-[min(440px,46vw)] shrink-0 border-l bg-background"
-            onKeyDown={(event) => {
-              if (event.key === "Escape") {
-                event.stopPropagation();
-                closeAssistant();
-              }
-            }}
+          </ContextPanel>
+        ) : null}
+        <SettingsDialog
+          open={settingsOpen}
+          initialCategory={routeView === "usage" ? "usage" : "general"}
+          onClose={() => navigateRoute(backgroundView.current)}
+          onRestoreFocus={() => {
+            const target = settingsTrigger.current;
+            if (target?.isConnected) target.focus();
+            else assistantTrigger.current?.focus();
+          }}
+        />
+        <ResourceSurface
+          mobile={history.mobile}
+          discussing={resourceDiscussing}
+          discussionRequest={resourceView.discussionRequest}
+          overlay={view !== "chat"}
+        />
+        <SearchDialog
+          open={searchOpen}
+          onOpenChange={setSearchOpen}
+          onSelectThread={(id) => {
+            selectThread(id);
+          }}
+        />
+        {assistantOpen ? (
+          <AssistantSurface
+            mobile={history.mobile}
+            overlay={view !== "chat"}
+            onClose={closeAssistant}
           >
             <AssistantPanel
+              key={assistantTab}
+              initialTab={assistantTab}
+              threadId={threadId}
               onClose={closeAssistant}
               onNavigate={navigateFromAssistant}
               onDiscuss={discuss}
             />
-          </aside>
-        ) : null}
-        {history.mobile ? (
-          <Sheet open={assistantOpen} onOpenChange={setAssistantOpen}>
-            <SheetContent
-              id="assistant-panel"
-              showCloseButton={false}
-              className="gap-0 data-[side=right]:w-full data-[side=right]:sm:max-w-none"
-              onCloseAutoFocus={(event) => {
-                event.preventDefault();
-                if (focusComposerAfterClose.current) {
-                  focusComposerAfterClose.current = false;
-                  history.chatArea.current
-                    ?.querySelector<HTMLTextAreaElement>('textarea[aria-label="Pesan untuk Gwen"]')
-                    ?.focus();
-                } else assistantTrigger.current?.focus();
-              }}
-            >
-              <SheetHeader className="sr-only">
-                <SheetTitle>Asisten personalmu</SheetTitle>
-                <SheetDescription>
-                  Aktivitas, jadwal mendatang, profil, karakter dan ingatan.
-                </SheetDescription>
-              </SheetHeader>
-              <AssistantPanel
-                onClose={closeAssistant}
-                onNavigate={navigateFromAssistant}
-                onDiscuss={discuss}
-              />
-            </SheetContent>
-          </Sheet>
+          </AssistantSurface>
         ) : null}
         {history.mobile ? (
           <Sheet open={history.drawerOpen} onOpenChange={history.setDrawerOpen}>

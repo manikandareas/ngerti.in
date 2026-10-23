@@ -8,6 +8,7 @@ export interface ChatPart {
   query?: string;
   has_more?: boolean;
   candidate_id?: string;
+  task_id?: string;
   why_relevant?: string;
   created_at?: string;
   revision_id?: string;

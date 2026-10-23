@@ -21,8 +21,12 @@ export const outcomeLabels: Record<string, string> = {
 };
 export function timeLabel(value: string, timezone: string) {
   return new Intl.DateTimeFormat("id-ID", {
-    dateStyle: "medium",
-    timeStyle: "short",
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZoneName: "short",
     timeZone: timezone,
   }).format(new Date(value));
 }
@@ -30,5 +34,5 @@ export function recurrenceLabel(spec: ScheduleSpec) {
   if (spec.frequency === "interval")
     return `Setiap ${spec.interval_hours} jam · mulai ${spec.start_date} ${spec.local_time} · ${spec.timezone}`;
   const days = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"];
-  return `${spec.frequency === "once" ? "Sekali" : spec.frequency === "daily" ? "Setiap hari" : spec.weekdays.map((day) => days[day]).join(", ")} · ${spec.local_time} · ${spec.timezone}`;
+  return `${spec.frequency === "once" ? `Sekali · ${spec.start_date}` : spec.frequency === "daily" ? "Setiap hari" : spec.weekdays.map((day) => days[day]).join(", ")} · ${spec.local_time} · ${spec.timezone}`;
 }

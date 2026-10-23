@@ -48,6 +48,7 @@ export interface EvidenceSource {
 }
 export interface GoalEvidence extends EvidenceInput {
   id: string;
+  created_at: string;
   plan_revision: number;
   source: EvidenceSource;
   available: boolean;

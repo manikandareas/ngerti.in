@@ -1,7 +1,8 @@
-import { Paperclip, RefreshCw, X } from "lucide-react";
+import { Paperclip, Plus, RefreshCw, X } from "lucide-react";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import type { AttachmentsState } from "../hooks/use-attachments";
 import { useFiles } from "../hooks/use-files";
 import { fileSize } from "../types";
@@ -9,20 +10,25 @@ import { fileSize } from "../types";
 export function AttachmentPicker({
   state,
   disabled = false,
+  compact = false,
 }: {
   state: AttachmentsState;
   disabled?: boolean;
+  compact?: boolean;
 }) {
   const upload = useRef<HTMLInputElement>(null);
   const [showFiles, setShowFiles] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const files = useFiles(showFiles);
   return (
-    <div className="space-y-2 text-sm">
-      <div className="flex flex-wrap items-center gap-2">
+    <div className={compact ? "text-sm" : "space-y-2 text-sm"}>
+      <div
+        className={compact ? "absolute bottom-2 left-2 z-10" : "flex flex-wrap items-center gap-2"}
+      >
         <input
           ref={upload}
           type="file"
-          className="sr-only"
+          className="hidden"
           aria-label="Unggah lampiran"
           accept=".pdf,.png,.jpg,.jpeg,.txt,.md,.csv,.json"
           disabled={disabled || state.progress !== null}
@@ -32,25 +38,67 @@ export function AttachmentPicker({
             event.target.value = "";
           }}
         />
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          disabled={disabled || state.progress !== null}
-          onClick={() => upload.current?.click()}
-        >
-          <Paperclip /> Lampirkan file
-        </Button>
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          disabled={disabled}
-          aria-expanded={showFiles}
-          onClick={() => setShowFiles(!showFiles)}
-        >
-          File tersimpan
-        </Button>
+        {compact ? (
+          <Popover open={menuOpen} onOpenChange={setMenuOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="size-11 rounded-full text-muted-foreground hover:text-foreground"
+                aria-label="Lampiran"
+                disabled={disabled}
+              >
+                <Plus className="size-5" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent side="top" align="start" className="w-56 p-2">
+              <Button
+                type="button"
+                variant="ghost"
+                className="w-full justify-start"
+                disabled={disabled || state.progress !== null}
+                onClick={() => upload.current?.click()}
+              >
+                Unggah file
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                className="w-full justify-start"
+                disabled={disabled}
+                onClick={() => {
+                  setShowFiles(!showFiles);
+                  setMenuOpen(false);
+                }}
+              >
+                File tersimpan
+              </Button>
+            </PopoverContent>
+          </Popover>
+        ) : (
+          <>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              disabled={disabled || state.progress !== null}
+              onClick={() => upload.current?.click()}
+            >
+              <Paperclip /> Lampirkan file
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              disabled={disabled}
+              aria-expanded={showFiles}
+              onClick={() => setShowFiles(!showFiles)}
+            >
+              File tersimpan
+            </Button>
+          </>
+        )}
       </div>
       {state.progress !== null ? (
         <div className="flex items-center gap-3" role="status">

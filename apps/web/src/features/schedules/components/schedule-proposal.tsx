@@ -1,5 +1,6 @@
 import { CalendarClock } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { WorkEstimate } from "@/features/quotas/components/work-estimate";
 import { useScheduleCommands, useSchedules } from "@/features/schedules/hooks/use-schedules";
 import type { ScheduleProposal } from "@/features/schedules/types";
 import {
@@ -52,10 +53,19 @@ export function ScheduleProposalCard({ proposal }: { proposal: ScheduleProposal 
           Berkas hasil: {preview.spec.outputs.map((file) => file.filename).join(", ")}
         </p>
       ) : null}
-      <p className="text-muted-foreground">
-        Batas kerja per eksekusi: {preview.permissions.per_run_cap.toLocaleString("id-ID")} unit.{" "}
-        {preview.permissions.resource_policy}
-      </p>
+      {["pause", "delete"].includes(preview.operation) ? (
+        <p className="text-muted-foreground">
+          Keputusan ini tidak menjalankan pekerjaan baru atau memakai kredit komputasi.
+        </p>
+      ) : (
+        <WorkEstimate
+          scheduled
+          runtimeKind={preview.spec.runtime_kind}
+          perRunCap={preview.permissions.per_run_cap}
+          inputs={preview.spec.inputs.map((item) => item.revision_id)}
+        />
+      )}
+      <p className="text-xs text-muted-foreground">{preview.permissions.resource_policy}</p>
       <details className="text-xs text-muted-foreground">
         <summary className="cursor-pointer">Aturan waktu dan eksekusi</summary>
         <p className="mt-2">{preview.execution_policy}</p>

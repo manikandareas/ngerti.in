@@ -10,14 +10,20 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as GoalsRouteImport } from './routes/goals'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as SignUpRouteImport } from './routes/sign-up'
-import { Route as DevDaytonaRouteImport } from './routes/dev.daytona'
 import { Route as DevSystemRouteImport } from './routes/dev.system'
+import { Route as LibrarySectionRouteImport } from './routes/library.$section'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GoalsRoute = GoalsRouteImport.update({
+  id: '/goals',
+  path: '/goals',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SignInRoute = SignInRouteImport.update({
@@ -30,54 +36,76 @@ const SignUpRoute = SignUpRouteImport.update({
   path: '/sign-up',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DevDaytonaRoute = DevDaytonaRouteImport.update({
-  id: '/dev/daytona',
-  path: '/dev/daytona',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const DevSystemRoute = DevSystemRouteImport.update({
   id: '/dev/system',
   path: '/dev/system',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LibrarySectionRoute = LibrarySectionRouteImport.update({
+  id: '/library/$section',
+  path: '/library/$section',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/goals': typeof GoalsRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
-  '/dev/daytona': typeof DevDaytonaRoute
   '/dev/system': typeof DevSystemRoute
+  '/library/$section': typeof LibrarySectionRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/goals': typeof GoalsRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
-  '/dev/daytona': typeof DevDaytonaRoute
   '/dev/system': typeof DevSystemRoute
+  '/library/$section': typeof LibrarySectionRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/goals': typeof GoalsRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
-  '/dev/daytona': typeof DevDaytonaRoute
   '/dev/system': typeof DevSystemRoute
+  '/library/$section': typeof LibrarySectionRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/sign-in' | '/sign-up' | '/dev/daytona' | '/dev/system'
+  fullPaths:
+    | '/'
+    | '/goals'
+    | '/sign-in'
+    | '/sign-up'
+    | '/dev/system'
+    | '/library/$section'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/sign-in' | '/sign-up' | '/dev/daytona' | '/dev/system'
+  to:
+    | '/'
+    | '/goals'
+    | '/sign-in'
+    | '/sign-up'
+    | '/dev/system'
+    | '/library/$section'
   id:
-    '__root__' | '/' | '/sign-in' | '/sign-up' | '/dev/daytona' | '/dev/system'
+    | '__root__'
+    | '/'
+    | '/goals'
+    | '/sign-in'
+    | '/sign-up'
+    | '/dev/system'
+    | '/library/$section'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  GoalsRoute: typeof GoalsRoute
   SignInRoute: typeof SignInRoute
   SignUpRoute: typeof SignUpRoute
-  DevDaytonaRoute: typeof DevDaytonaRoute
   DevSystemRoute: typeof DevSystemRoute
+  LibrarySectionRoute: typeof LibrarySectionRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -87,6 +115,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/goals': {
+      id: '/goals'
+      path: '/goals'
+      fullPath: '/goals'
+      preLoaderRoute: typeof GoalsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sign-in': {
@@ -103,13 +138,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignUpRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dev/daytona': {
-      id: '/dev/daytona'
-      path: '/dev/daytona'
-      fullPath: '/dev/daytona'
-      preLoaderRoute: typeof DevDaytonaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/dev/system': {
       id: '/dev/system'
       path: '/dev/system'
@@ -117,15 +145,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DevSystemRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/library/$section': {
+      id: '/library/$section'
+      path: '/library/$section'
+      fullPath: '/library/$section'
+      preLoaderRoute: typeof LibrarySectionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  GoalsRoute: GoalsRoute,
   SignInRoute: SignInRoute,
   SignUpRoute: SignUpRoute,
-  DevDaytonaRoute: DevDaytonaRoute,
   DevSystemRoute: DevSystemRoute,
+  LibrarySectionRoute: LibrarySectionRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,13 +1,10 @@
-import { ArrowLeft } from "lucide-react";
 import { useEffect, useRef } from "react";
-import { Button } from "@/components/ui/button";
 import { GoalPanel } from "@/features/goals/components/goal-panel";
 import { LibraryPanel } from "@/features/library/components/library-panel";
 import { UsagePanel } from "@/features/quotas/components/usage-panel";
 import { SchedulePanel } from "@/features/schedules/components/schedule-panel";
 import { TaskPanel } from "@/features/tasks/components/task-panel";
 import { Capabilities } from "@/features/workspace/components/capabilities";
-import { SettingsPanel } from "@/features/workspace/components/settings-panel";
 import { workspaceDescriptions, workspaceLinks } from "@/features/workspace/config/navigation";
 import type { WorkspaceView } from "@/features/workspace/types";
 
@@ -30,15 +27,7 @@ export function WorkspacePanel({
   }, []);
   return (
     <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
-      <div className="mx-auto w-full max-w-[760px] px-5 py-6 min-[701px]:px-10 min-[701px]:py-10">
-        <Button
-          type="button"
-          variant="ghost"
-          className="mb-6 -ml-3"
-          onClick={() => onNavigate("chat")}
-        >
-          <ArrowLeft /> Kembali ke chat
-        </Button>
+      <div className="mx-auto w-full max-w-[760px] px-5 py-6 min-[701px]:px-6 min-[701px]:py-6">
         <h1
           id="workspace-heading"
           ref={heading}
@@ -61,7 +50,7 @@ export function WorkspacePanel({
   );
 }
 
-function WorkspaceContent({ view, onNavigate, threadId, onOpenAssistant }: WorkspacePanelProps) {
+function WorkspaceContent({ view, threadId }: WorkspacePanelProps) {
   switch (view) {
     case "goals":
       return <GoalPanel threadId={threadId} />;
@@ -76,6 +65,6 @@ function WorkspaceContent({ view, onNavigate, threadId, onOpenAssistant }: Works
     case "usage":
       return <UsagePanel />;
     case "settings":
-      return <SettingsPanel onNavigate={onNavigate} onOpenAssistant={onOpenAssistant} />;
+      return null;
   }
 }

@@ -34,4 +34,4 @@ export interface PersonaHistory {
   revisions: PersonaRevision[];
   has_more: boolean;
 }
-export type AssistantTab = "activity" | "upcoming" | "identity";
+export type AssistantTab = "activity" | "approvals" | "upcoming" | "identity";

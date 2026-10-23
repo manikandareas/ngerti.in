@@ -8,9 +8,8 @@ import { useOnline } from "@/features/chat/hooks/use-online";
 import { useThread } from "@/features/chat/hooks/use-thread";
 import { useThreadActions } from "@/features/chat/hooks/use-thread-actions";
 import { useThreadComposer } from "@/features/chat/hooks/use-thread-composer";
+import { ComputerBanner } from "@/features/computer/components/computer-banner";
 import { SelectedResource } from "@/features/library/components/selected-resource";
-import { ProactivityScopeControl } from "@/features/proactivity/components/proactivity-scope";
-import { ProactivityOnboarding } from "@/features/proactivity/components/proactivity-settings";
 import { QuotaSummary } from "@/features/quotas/components/quota-summary";
 import { useQuota } from "@/features/quotas/hooks/use-quota";
 import { ChatComposer } from "./chat-composer";
@@ -64,15 +63,16 @@ export function Thread({ threadId, draftRequest, onDraftRequestConsumed }: Threa
   return (
     <MessageScroller.Provider autoScroll defaultScrollPosition={empty ? "start" : "end"}>
       <div className="flex min-h-0 flex-1 flex-col">
-        <div className="mx-auto w-full max-w-[800px] shrink-0 px-4 min-[701px]:px-6">
-          {snapshot.thread.kind === "main" ? <ProactivityOnboarding /> : null}
-          <ProactivityScopeControl key={threadId} scope="thread" id={threadId} />
-        </div>
+        <ComputerBanner tasks={snapshot.tasks ?? []} />
         <ThreadTranscript
           snapshot={snapshot}
           active={active}
           loadEarlier={loadEarlier}
           onHistoryError={composer.setSendError}
+          onReply={(text) => {
+            composer.appendDraft(`> ${text.slice(0, 1500).replaceAll("\n", "\n> ")}\n\n`);
+            input.current?.focus();
+          }}
           hasDraft={composer.draft.length > 0}
           onDraftChange={(value) => {
             if (composer.draft.length > 0) return;
@@ -82,7 +82,7 @@ export function Thread({ threadId, draftRequest, onDraftRequestConsumed }: Threa
           onRetry={actions.retry}
           decide={actions.decide}
         />
-        <div className="relative z-10 mx-auto w-full max-w-[800px] shrink-0 px-3 pb-[max(8px,env(safe-area-inset-bottom))] min-[701px]:px-6 min-[701px]:pb-3">
+        <div className="relative z-10 mx-auto w-full max-w-[816px] shrink-0 px-3 pb-[max(8px,env(safe-area-inset-bottom))] min-[701px]:px-6 min-[701px]:pb-3">
           {!online || connection === "reconnecting" ? (
             <p
               role="status"
@@ -139,11 +139,13 @@ export function Thread({ threadId, draftRequest, onDraftRequestConsumed }: Threa
             outputs={composer.outputs}
             onOutputs={composer.setOutputs}
           />
-          <QuotaSummary
-            usage={quota.data}
-            failed={quota.isError}
-            onRefresh={() => void quota.refetch()}
-          />
+          {quota.isError || (quota.data && quota.data.meters.chat.remaining <= 5) ? (
+            <QuotaSummary
+              usage={quota.data}
+              failed={quota.isError}
+              onRefresh={() => void quota.refetch()}
+            />
+          ) : null}
         </div>
       </div>
     </MessageScroller.Provider>

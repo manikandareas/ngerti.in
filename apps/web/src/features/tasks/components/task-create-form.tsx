@@ -69,8 +69,8 @@ export function TaskCreateForm({ threadId }: TaskCreateFormProps) {
         <p className="text-xs text-muted-foreground">
           Login tersimpan dapat dipakai lintas Task. Kamu bisa melihat layar dan mengambil alih.
           Maksimal 20 menit, 24 langkah; profil disimpan hingga 7 hari sejak penggunaan terakhir.
-          Gunakan Task terpisah untuk mengolah lampiran dengan Python. Aksi klik/ketik/tombol
-          ditinjau sebelum dilakukan.
+          Gunakan Task terpisah untuk mengolah lampiran dengan Python. Navigasi dan pencarian
+          berjalan otomatis; pengiriman, perubahan data, dan tindakan keamanan meminta persetujuan.
         </p>
       ) : null}
       {form.computation ? (

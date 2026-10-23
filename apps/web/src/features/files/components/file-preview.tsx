@@ -1,23 +1,21 @@
 import { useAuth } from "@clerk/tanstack-react-start";
 import { Download, Eye } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+import { useResourceContext } from "@/features/library/components/resource-context";
 import { downloadFile, fileContent } from "../api";
 import { staticHtml } from "../static-html";
 import type { ResultFile } from "../types";
 import { fileSize } from "../types";
 import { TextPreview } from "./text-preview";
 
-export function FilePreview({ file }: { file: ResultFile }) {
-  const { getToken } = useAuth();
-  const [open, setOpen] = useState(false);
+export function FilePreview({ file, inline = false }: { file: ResultFile; inline?: boolean }) {
+  const context = useResourceContext();
+  const scroll = useRef<HTMLElement>(null);
+  const [attempt, setAttempt] = useState(0);
+  const [source, setSource] = useState(false);
+  const { getToken, userId } = useAuth();
+  const positionKey = `file-position:${userId}:${file.revision_id}:${source}`;
   const [body, setBody] = useState("");
   const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -27,8 +25,9 @@ export function FilePreview({ file }: { file: ResultFile }) {
     () => (file.content_type === "text/html" ? staticHtml(body) : ""),
     [body, file.content_type],
   );
+  // biome-ignore lint/correctness/useExhaustiveDependencies: attempt explicitly retries the same revision after a failed fetch.
   useEffect(() => {
-    if (!open) return;
+    if (!inline) return;
     const controller = new AbortController();
     let objectUrl = "";
     setBody("");
@@ -57,7 +56,7 @@ export function FilePreview({ file }: { file: ResultFile }) {
       controller.abort();
       if (objectUrl) URL.revokeObjectURL(objectUrl);
     };
-  }, [open, file.revision_id, file.content_type, getToken]);
+  }, [inline, file.revision_id, file.content_type, getToken, attempt]);
 
   async function download() {
     setDownloading(true);
@@ -70,18 +69,43 @@ export function FilePreview({ file }: { file: ResultFile }) {
       setDownloading(false);
     }
   }
+  useEffect(() => {
+    if (loading) return;
+    try {
+      if (scroll.current)
+        scroll.current.scrollTop = Number(sessionStorage.getItem(positionKey) ?? 0);
+    } catch {
+      /* Optional reading position. */
+    }
+  }, [loading, positionKey]);
+  const textual = file.content_type.startsWith("text/") || file.content_type === "application/json";
   return (
-    <div className="space-y-2">
-      <div className="flex min-w-0 flex-wrap items-center gap-2 rounded-xl border p-3">
-        <div className="min-w-0 flex-1 basis-full wrap-anywhere min-[701px]:basis-0">
-          <p className="text-sm font-medium">{file.filename}</p>
-          <p className="text-xs text-muted-foreground">
-            {fileSize(file.size)} · SHA-256 {file.sha256.slice(0, 12)}
-          </p>
-        </div>
-        <Button type="button" variant="outline" size="sm" onClick={() => setOpen(true)}>
-          <Eye /> Preview
-        </Button>
+    <section className="min-w-0 space-y-3" aria-label={`File ${file.filename}`}>
+      <div className="flex min-w-0 flex-wrap items-center gap-2">
+        <h3 className="min-w-0 flex-1 text-sm font-semibold wrap-anywhere">{file.filename}</h3>
+        {!inline ? (
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() =>
+              context.open({ kind: "file", id: file.file_id, revision_id: file.revision_id })
+            }
+          >
+            <Eye /> Buka file
+          </Button>
+        ) : null}
+        {inline && textual ? (
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            aria-pressed={source}
+            onClick={() => setSource(!source)}
+          >
+            {source ? "Lihat konten" : "Lihat sumber"}
+          </Button>
+        ) : null}
         <Button
           type="button"
           variant="ghost"
@@ -92,50 +116,71 @@ export function FilePreview({ file }: { file: ResultFile }) {
           <Download /> Unduh
         </Button>
       </div>
-      {error && !open ? (
-        <p role="alert" className="text-sm text-danger">
-          {error}
-        </p>
-      ) : null}
-      <Sheet open={open} onOpenChange={setOpen}>
-        <SheetContent className="gap-0 data-[side=right]:w-full data-[side=right]:sm:max-w-3xl">
-          <SheetHeader className="shrink-0 border-b pr-12">
-            <SheetTitle className="wrap-anywhere">{file.filename}</SheetTitle>
-            <SheetDescription>
-              Preview file tersimpan. HTML ditampilkan terisolasi tanpa script atau jaringan
-              eksternal.
-            </SheetDescription>
-          </SheetHeader>
-          <div className="min-h-0 flex-1 overflow-auto p-4">
+      {inline ? (
+        <>
+          <section
+            ref={scroll}
+            // biome-ignore lint/a11y/noNoninteractiveTabindex: keyboard users must scroll the document independently.
+            tabIndex={0}
+            aria-label={`Isi ${file.filename}`}
+            className="max-h-[65svh] min-h-32 overflow-auto rounded-xl border bg-card p-4 outline-offset-2"
+            onScroll={(event) => {
+              try {
+                sessionStorage.setItem(positionKey, String(event.currentTarget.scrollTop));
+              } catch {
+                /* Optional reading position. */
+              }
+            }}
+          >
             {loading ? (
               <p role="status">Membuka file…</p>
             ) : error ? (
-              <p role="alert" className="text-danger">
-                {error}
-              </p>
+              <div role="alert" className="space-y-2">
+                <p className="text-danger">{error}</p>
+                <Button variant="outline" onClick={() => setAttempt(attempt + 1)}>
+                  Coba lagi
+                </Button>
+              </div>
             ) : image ? (
               <img src={image} alt={`Isi ${file.filename}`} className="h-auto max-w-full" />
+            ) : source ? (
+              <TextPreview body={body} type="text/plain" />
             ) : file.content_type === "text/html" ? (
               <iframe
                 title={`Preview ${file.filename}`}
                 sandbox=""
                 referrerPolicy="no-referrer"
-                className="h-[70svh] w-full rounded-lg border bg-white"
+                className="h-[60svh] w-full rounded-lg bg-white"
                 srcDoc={html}
               />
-            ) : file.content_type === "application/pdf" ? (
-              <p>Unduh PDF untuk membuka dokumen asli di pembaca PDF pilihanmu.</p>
-            ) : (
+            ) : textual ? (
               <TextPreview body={body} type={file.content_type} />
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                {file.content_type === "application/pdf"
+                  ? "Unduh PDF untuk membuka dokumen asli di pembaca PDF pilihanmu."
+                  : "Format ini belum mendukung preview. Unduh file untuk membukanya dengan aplikasi yang sesuai."}
+              </p>
             )}
-          </div>
-          <div className="shrink-0 border-t p-4">
-            <Button type="button" disabled={downloading} onClick={() => void download()}>
-              <Download /> Unduh file
-            </Button>
-          </div>
-        </SheetContent>
-      </Sheet>
-    </div>
+          </section>
+          {file.content_type === "text/html" ? (
+            <p className="text-xs text-muted-foreground">
+              HTML terisolasi; script dan jaringan eksternal dinonaktifkan.
+            </p>
+          ) : null}
+        </>
+      ) : null}
+      {error && !inline ? (
+        <p role="alert" className="text-sm text-danger">
+          {error}
+        </p>
+      ) : null}
+      <details className="text-xs text-muted-foreground">
+        <summary className="cursor-pointer py-2">Detail file</summary>
+        <p className="wrap-anywhere">
+          {fileSize(file.size)} · {file.content_type} · SHA-256 {file.sha256}
+        </p>
+      </details>
+    </section>
   );
 }

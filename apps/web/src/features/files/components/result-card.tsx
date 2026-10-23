@@ -5,10 +5,12 @@ import { useRef, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { useResourceContext } from "@/features/library/components/resource-context";
 import { ApiError, api } from "@/lib/api";
 import type { OutputSpec, ProductResult } from "../types";
 import { DeleteResource } from "./delete-resource";
 import { FilePreview } from "./file-preview";
+import { ResultThumbnail } from "./result-thumbnail";
 
 const labels = {
   constructing: "Sedang dibuat",
@@ -20,13 +22,16 @@ const labels = {
 
 export function ResultCard({
   resultId,
+  inline = false,
   initialRevision,
   onRevisionChange,
 }: {
   resultId: string;
+  inline?: boolean;
   initialRevision?: number;
   onRevisionChange?: (revision: number) => void;
 }) {
+  const context = useResourceContext();
   const { getToken, userId } = useAuth();
   const client = useQueryClient();
   const [revision, setRevision] = useState<number | undefined>(initialRevision);
@@ -55,9 +60,16 @@ export function ResultCard({
     );
   if (!result || (query.error instanceof ApiError && [404, 410].includes(query.error.status)))
     return (
-      <p role="status" className="text-sm text-muted-foreground">
-        Hasil tidak tersedia atau telah dihapus.
-      </p>
+      <div role="status" className="space-y-2 text-sm text-muted-foreground">
+        <p>
+          {query.error instanceof ApiError && [404, 410].includes(query.error.status)
+            ? "Hasil tidak tersedia atau telah dihapus."
+            : "Hasil belum dapat dimuat. Periksa koneksi dan coba lagi."}
+        </p>
+        <Button variant="outline" onClick={() => void query.refetch()}>
+          Coba lagi
+        </Button>
+      </div>
     );
   const selected = result.selected;
   const active = result.status === "constructing" || result.status === "updating";
@@ -105,26 +117,47 @@ export function ResultCard({
       setPending(false);
     }
   }
+  if (!inline)
+    return (
+      <button
+        type="button"
+        className="group/artifact block w-full min-w-0 overflow-hidden rounded-[22px] bg-muted p-1.5 text-left transition-colors hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring motion-reduce:transition-none"
+        onClick={() => context.open({ kind: "result", id: resultId, revision: selected?.revision })}
+      >
+        <ResultThumbnail
+          file={selected?.status === "ready" ? selected.manifest.files[0] : undefined}
+        />
+        <span className="flex min-w-0 items-center gap-2.5 px-2.5 py-3">
+          <FileCheck className="size-7 shrink-0 text-primary" />
+          <span className="min-w-0 flex-1">
+            <span
+              className="block truncate text-sm font-bold"
+              title={selected?.manifest.files[0]?.filename}
+            >
+              {selected?.manifest.files[0]?.filename ?? "Hasil percakapan"}
+            </span>
+            <span className="mt-0.5 block text-xs text-muted-foreground">
+              Artifact{result.status !== "ready" ? ` · ${labels[result.status]}` : ""}
+            </span>
+          </span>
+        </span>
+      </button>
+    );
   return (
-    <section className="space-y-3 rounded-2xl border bg-card p-4" aria-label="Hasil tersimpan">
+    <section className="min-w-0 space-y-3" aria-label="Hasil tersimpan">
       {query.isError ? (
         <p role="status" className="text-xs text-danger">
           Sinkronisasi terganggu. Hasil terakhir ditampilkan; coba lagi saat koneksi pulih.
         </p>
       ) : null}
-      <div className="flex flex-wrap items-center gap-2">
-        <FileCheck className="size-4" />
-        <span className="text-sm font-bold">Hasil tersimpan</span>
-        <Badge variant="secondary">{labels[result.status]}</Badge>
-      </div>
       {selected ? (
         <>
-          <p className="text-sm whitespace-pre-wrap wrap-anywhere">{selected.manifest.summary}</p>
           <label className="flex items-center gap-2 text-xs text-muted-foreground">
-            Revision
+            <Badge variant="secondary">{labels[result.status]}</Badge>
+            Versi
             <select
               className="rounded-md border bg-card p-2 text-foreground"
-              aria-label="Revision hasil"
+              aria-label="Versi hasil"
               value={selected.revision}
               onChange={(event) => {
                 const next = Number(event.target.value);
@@ -141,11 +174,11 @@ export function ResultCard({
           </label>
           {selected.status === "ready" ? (
             selected.manifest.files.map((file) => (
-              <FilePreview key={file.revision_id} file={file} />
+              <FilePreview key={file.revision_id} file={file} inline />
             ))
           ) : (
             <p className="text-sm text-muted-foreground">
-              Revision ini belum dipublikasikan sepenuhnya.
+              Versi ini belum dipublikasikan sepenuhnya.
             </p>
           )}
           {result.status !== "ready" ? (
@@ -155,8 +188,9 @@ export function ResultCard({
           ) : null}
           <details className="text-xs text-muted-foreground">
             <summary className="cursor-pointer py-2">
-              Input yang digunakan ({selected.manifest.inputs.length})
+              Detail hasil dan sumber ({selected.manifest.inputs.length})
             </summary>
+            <p className="whitespace-pre-wrap wrap-anywhere">{selected.manifest.summary}</p>
             {selected.manifest.previous_result ? (
               <p className="py-1">
                 Memperbarui hasil v{selected.manifest.previous_result.revision}.
@@ -180,6 +214,15 @@ export function ResultCard({
           Berkas belum siap. Ikuti progres dan draft pada Task.
         </p>
       )}
+      {result.status !== "ready" ? (
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => context.open({ kind: "task", id: result.active_task_id })}
+        >
+          {active ? "Lihat progres pekerjaan" : "Tinjau pekerjaan dan pemulihan"}
+        </Button>
+      ) : null}
       <div className="flex flex-wrap gap-2">
         {selected?.status === "ready" ? (
           <Button

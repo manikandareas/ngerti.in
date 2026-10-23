@@ -119,31 +119,35 @@ export function GoalForm({
           placeholder="Contoh: akhir bulan ini"
         />
       </label>
-      <label htmlFor={`${formId}-next`} className="block space-y-2 text-sm">
-        <span>Langkah berikutnya (opsional)</span>
-        <Textarea
-          id={`${formId}-next`}
-          maxLength={1000}
-          value={value.next_action}
-          onChange={(e) => update({ next_action: e.target.value })}
-        />
-      </label>
-      <label htmlFor={`${formId}-budget`} className="block space-y-2 text-sm">
-        <span>Batas kerja seluruh Task tujuan · unit internal</span>
-        <Input
-          id={`${formId}-budget`}
-          type="number"
-          required
-          min={30000}
-          max={3000000}
-          step={1}
-          value={value.budget_cap}
-          onChange={(e) => update({ budget_cap: Number(e.target.value) })}
-        />
-      </label>
+      <details className="space-y-4">
+        <summary className="cursor-pointer py-2 text-sm">Pengaturan lanjutan</summary>
+        <label htmlFor={`${formId}-next`} className="block space-y-2 text-sm">
+          <span>Langkah berikutnya (opsional)</span>
+          <Textarea
+            id={`${formId}-next`}
+            maxLength={1000}
+            value={value.next_action}
+            onChange={(e) => update({ next_action: e.target.value })}
+          />
+        </label>
+        <label htmlFor={`${formId}-budget`} className="block space-y-2 text-sm">
+          <span>Batas kerja seluruh Task tujuan · unit internal</span>
+          <Input
+            id={`${formId}-budget`}
+            type="number"
+            required
+            min={30000}
+            max={3000000}
+            step={1}
+            value={value.budget_cap}
+            onChange={(e) => update({ budget_cap: Number(e.target.value) })}
+          />
+        </label>
+      </details>
       <p className="text-xs text-muted-foreground">
-        Tujuan disimpan setelah preview ditinjau. Task dan Jadwal dijalankan melalui keputusan
-        tersendiri. Batas kerja memakai unit token internal; bukan harga uang.
+        Menyimpan tujuan tidak menjalankan pekerjaan atau mengaktifkan jadwal. Tujuan disimpan
+        setelah preview ditinjau. Task dan Jadwal dijalankan melalui keputusan tersendiri. Batas
+        kerja memakai unit token internal; bukan harga uang.
       </p>
       {goal ? (
         <p className="text-sm">

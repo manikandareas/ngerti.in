@@ -15,6 +15,7 @@ export interface ResourceItem {
 }
 export interface SearchSpec {
   query: string;
+  category?: "artifacts" | "documents" | "web" | "images" | "videos" | "audio" | "files";
   kinds?: ResourceKind[];
   since?: string;
   until?: string;

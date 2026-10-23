@@ -1,0 +1,398 @@
+- link "Langsung ke konten":
+  - /url: "#main"
+- complementary "Navigasi utama":
+  - img "Ngertiin":
+  - navigation "Menu utama":
+    - button "Cari pekerjaan dan hasil":
+    - button "Percakapan":
+    - button "Tujuan":
+    - button "Library":
+    - button "Pengaturan":
+  - button "Open user menu":
+    - img "Vito Andareas Manik's logo"
+- main:
+  - button "Buka riwayat chat":
+    - generic: Main chat
+  - button "Buka panel asisten":
+    - generic: Gwen
+  - button "Pengaturan percakapan":
+  - region "Pesan percakapan":
+    - log:
+      - generic: hi
+      - article "Jawaban Gwen":
+        - paragraph: Hai! Aku Gwen, asisten personal Ngertiin. Ada yang bisa kubantu?
+        - button "Salin jawaban":
+        - button "Balas jawaban":
+      - generic: Kamu bisa ngapain aja.
+      - article "Jawaban Gwen":
+        - paragraph: "Aku bisa bantu kamu untuk berbagai hal, misalnya:"
+        - list:
+          - listitem: Menulis dan merapikan teks — email, laporan, caption, proposal, atau CV.
+          - listitem: Menjelaskan sesuatu — dari konsep pelajaran sampai topik yang rumit, dengan bahasa sederhana.
+          - listitem: Menganalisis dan merangkum — dokumen, ide, argumen, atau catatan yang kamu kirim.
+          - listitem: Merencanakan pekerjaan — menyusun langkah, prioritas, agenda, atau daftar tugas.
+          - listitem: Mencari ide dan memecahkan masalah — brainstorming, menyusun pilihan, atau menimbang pro-kontra.
+          - listitem: Membantu urusan teknis — menjelaskan kode, menyusun rumus, atau mencari penyebab masalah berdasarkan informasi yang kamu berikan.
+        - paragraph: Kirim saja pertanyaan atau bahan yang ingin kamu kerjakan. Saya tidak bisa mengakses percakapan lain atau menjalankan tindakan di luar chat ini tanpa alat yang tersedia.
+        - button "Salin jawaban":
+        - button "Balas jawaban":
+      - generic: keren banget
+      - article "Jawaban Gwen":
+        - paragraph: Makasih! 😊 Senang bisa bantu. Ada yang lagi ingin kamu kerjakan?
+        - button "Salin jawaban":
+        - button "Balas jawaban":
+      - generic: kasih pantun dong
+      - article "Jawaban Gwen":
+        - paragraph:
+          - text: Jalan-jalan ke tepi kali,
+          - text: Singgah sebentar membeli jamu.
+          - text: Kalau harimu terasa ceria sekali,
+          - text: Semoga senyummu menular selalu! 😊
+        - button "Salin jawaban":
+        - button "Balas jawaban":
+      - generic: research dong terkait trend ai di 2026
+      - 'button "Buat riset ringkas berbahasa Indonesia tentang tren AI pada 2026. Karena 2026 sedang…: Selesai. Buka detail pekerjaan"':
+        - generic: Buat riset ringkas berbahasa Indonesia tentang tren AI pada 2026. Karena 2026 sedang…
+        - text: Selesai
+      - article "Jawaban Gwen":
+        - paragraph: Siap, aku mulai riset tentang tren AI 2026, mencakup perkembangan utama, dampak, risiko, dan implikasi praktis. Hasilnya akan muncul di chat saat sudah selesai.
+        - button "Salin jawaban":
+        - button "Balas jawaban":
+      - article "Jawaban Gwen":
+        - paragraph: "Hasil task: Buat riset ringkas berbahasa Indonesia tentang tren AI pada 2026. Karena 2026 sedang…"
+        - paragraph: Riset ringkas disiapkan dalam Bahasa Indonesia. Penelusuran web gagal dimuat, sehingga dokumen secara eksplisit membedakan pengamatan umum yang tidak diverifikasi untuk 2026 dari proyeksi, dan tidak mencantumkan sumber atau statistik yang tidak dapat diperiksa.
+        - region "Hasil tersimpan":
+          - generic: Hasil tersimpan
+          - generic: Siap
+          - paragraph: Riset ringkas disiapkan dalam Bahasa Indonesia. Penelusuran web gagal dimuat, sehingga dokumen secara eksplisit membedakan pengamatan umum yang tidak diverifikasi untuk 2026 dari proyeksi, dan tidak mencantumkan sumber atau statistik yang tidak dapat diperiksa.
+          - text: Revision
+          - combobox "Revision hasil":
+            - option "v1 · Siap" [selected]
+          - paragraph: hasil.md
+          - paragraph: 7 KiB · SHA-256 2fff5ea85086
+          - button "Preview":
+            - text: Preview
+          - button "Unduh":
+            - text: Unduh
+          - generic "Input yang digunakan (0)"
+          - button "Perbarui hasil":
+            - text: Perbarui hasil
+          - button "Hapus hasil":
+            - text: Hapus hasil
+        - button "Salin jawaban":
+        - button "Balas jawaban":
+      - generic: "Uji NG-043: susun panduan merapikan meja kerja sepanjang 1200 kata dalam bahasa Indonesia, 12 bagian dengan contoh praktis. Gunakan pengetahuan umum saja, tanpa internet, file, atau tindakan eksternal. Tunggu review sebelum finalisasi."
+      - article "Jawaban Gwen":
+        - paragraph: Task sudah dibuat. Kamu bisa melanjutkan percakapan sambil menunggu.
+        - button "Salin jawaban":
+        - button "Balas jawaban":
+      - generic: "Uji NG-043: sambil pekerjaan meja berjalan, jawab singkat berapa 7 ditambah 8. Jangan ubah instruksi pekerjaan."
+      - article "Jawaban Gwen":
+        - list:
+        - button "Salin jawaban":
+        - button "Balas jawaban":
+      - article "Jawaban Gwen":
+        - paragraph: "Hasil task: Uji NG-043: susun panduan merapikan meja kerja sepanjang 1200 kata dalam bahasa Indonesia, 12…"
+        - 'heading "Draf untuk ditinjau: Panduan Merapikan Meja Kerja" [level=2]'
+        - heading "1. Tentukan tujuan meja kerja" [level=3]
+        - paragraph: Sebelum mulai merapikan, pikirkan dulu fungsi utama meja. Apakah kamu menggunakannya untuk bekerja di laptop, menulis, belajar, menggambar, atau melakukan beberapa kegiatan sekaligus? Tujuan ini menentukan barang apa yang perlu berada di atas meja dan apa yang sebaiknya disimpan di tempat lain. Meja yang rapi bukan berarti kosong sama sekali, melainkan mudah digunakan untuk pekerjaan yang paling sering kamu lakukan.
+        - paragraph: "Contoh praktis: Jika meja dipakai terutama untuk bekerja dengan laptop, area tengah bisa disediakan untuk laptop dan buku catatan. Peralatan menggambar yang hanya dipakai sesekali dapat disimpan di laci, bukan ditumpuk di samping laptop."
+        - heading "2. Sisihkan waktu dan siapkan tempat sementara" [level=3]
+        - paragraph: Pilih waktu saat kamu tidak sedang terburu-buru. Merapikan meja sambil mengerjakan tugas lain sering membuat barang hanya berpindah tempat tanpa benar-benar tertata. Siapkan permukaan kosong, seperti lantai atau meja lain, untuk menampung barang sementara. Kamu juga bisa menyiapkan tempat sampah dan wadah untuk barang yang perlu dipindahkan.
+        - paragraph: "Contoh praktis: Sisihkan sekitar 30–45 menit pada akhir pekan. Letakkan keranjang kosong di dekat meja untuk menampung barang yang memang harus disimpan di ruangan lain. Dengan begitu, kamu tidak perlu bolak-balik saat mulai memilah."
+        - heading "3. Kosongkan meja secara menyeluruh" [level=3]
+        - paragraph: Keluarkan barang dari permukaan meja, termasuk benda kecil yang biasanya tersembunyi di bawah kertas atau di sudut. Mengosongkan meja membantu kamu melihat luas area yang tersedia serta menyadari barang apa saja yang sebenarnya menumpuk. Jangan langsung mengembalikan semuanya setelah dikeluarkan; gunakan kesempatan ini untuk menilai setiap benda.
+        - paragraph: "Contoh praktis: Angkat laptop, buku, alat tulis, gelas, kabel, dan tumpukan kertas. Letakkan kelompok barang yang serupa berdekatan. Setelah meja kosong, lap permukaannya agar debu dan noda tidak ikut terbawa ke dalam susunan baru."
+        - heading "4. Pilah barang berdasarkan kegunaan" [level=3]
+        - paragraph: "Ambil setiap barang dan tanyakan: Apakah saya memakainya secara rutin? Apakah benda ini mendukung pekerjaan di meja? Apakah masih berfungsi? Berdasarkan jawaban, kelompokkan barang menjadi beberapa kategori: tetap di meja, disimpan di tempat lain, diperbaiki, didaur ulang atau dibuang, serta belum yakin. Hindari menyimpan sesuatu hanya karena benda itu pernah berguna."
+        - paragraph: "Contoh praktis: Pulpen yang masih berfungsi bisa masuk kategori alat tulis. Pulpen yang tintanya habis dapat dibuang jika tidak bisa diisi ulang. Buku yang sedang dibaca bisa tetap dekat meja, sedangkan buku lama dapat dikembalikan ke rak."
+        - heading "5. Singkirkan barang yang tidak seharusnya berada di sana" [level=3]
+        - paragraph: Barang yang tidak berkaitan dengan pekerjaan sering memenuhi meja tanpa disadari. Piring, bungkus makanan, pakaian, atau benda yang seharusnya berada di ruangan lain bisa menambah kesan berantakan. Pindahkan barang tersebut ke lokasi yang tepat sebelum menyusun kembali perlengkapan kerja.
+        - paragraph: "Contoh praktis: Bawa cangkir kotor ke dapur, masukkan nota belanja ke tempat dokumen pribadi jika memang perlu disimpan, dan letakkan kunci di wadah dekat pintu. Kalau ada barang yang perlu dikembalikan ke anggota keluarga, taruh dalam keranjang khusus agar tidak terlupakan."
+        - heading "6. Tentukan barang yang perlu dijangkau" [level=3]
+        - paragraph: Barang yang digunakan hampir setiap hari layak diletakkan di area yang mudah dijangkau. Sebaliknya, benda yang hanya digunakan sesekali sebaiknya disimpan di laci, rak, atau kotak. Pembedaan ini membuat meja lebih lapang tanpa mempersulit aktivitas. Susun barang mengikuti kebiasaan tangan dan posisi dudukmu, bukan hanya berdasarkan tampilannya.
+        - paragraph: "Contoh praktis: Jika kamu sering menulis catatan, letakkan satu buku catatan dan dua atau tiga pulpen di dekat tangan dominan. Jika penggaris hanya dipakai seminggu sekali, simpan di laci alat tulis. Pengisi daya utama bisa berada di dekat meja, sementara kabel cadangan disimpan terpisah."
+        - heading "7. Atur posisi perangkat dan aksesori" [level=3]
+        - paragraph: Tempatkan perangkat utama, seperti laptop atau monitor, pada posisi yang nyaman dan tidak menghalangi ruang untuk bekerja. Pastikan ada ruang yang cukup untuk tangan, buku, atau dokumen yang sedang dipakai. Aksesori seperti tetikus, papan ketik, penyangga laptop, dan lampu meja sebaiknya memiliki posisi tetap. Perhatikan juga kabel agar tidak berserakan atau tertarik saat perangkat digunakan.
+        - paragraph: "Contoh praktis: Letakkan laptop di tengah jika itulah perangkat utama. Posisikan tetikus di sisi tangan yang biasa digunakan dan lampu di tempat yang menerangi area kerja tanpa menyilaukan layar. Kabel yang menjuntai dapat dirapikan dengan pengikat sederhana atau diarahkan ke satu sisi meja."
+        - heading "8. Buat sistem sederhana untuk kertas" [level=3]
+        - paragraph: Kertas mudah menumpuk karena sering dianggap akan dibaca atau dibereskan nanti. Pisahkan dokumen yang perlu segera ditangani, dokumen yang masih aktif, dan dokumen yang hanya perlu disimpan. Gunakan folder, map, atau baki berlabel agar setiap lembar memiliki tempat. Jangan biarkan dokumen penting tertutup oleh kertas yang tidak berkaitan.
+        - paragraph: "Contoh praktis: Sediakan satu baki bertuliskan “Perlu ditindaklanjuti” untuk formulir atau catatan penting. Dokumen proyek yang sedang berjalan dapat masuk ke map khusus. Kertas kosong yang masih layak dipakai bisa diletakkan dalam satu tumpukan kecil, sementara kertas yang tidak dibutuhkan didaur ulang jika tersedia fasilitasnya."
+        - heading "9. Manfaatkan laci dan wadah dengan bijak" [level=3]
+        - paragraph: Laci membantu menyimpan barang, tetapi bukan alasan untuk memasukkan semuanya tanpa aturan. Kelompokkan isinya berdasarkan fungsi, misalnya alat tulis, aksesori komputer, atau perlengkapan lain. Wadah kecil dapat mencegah benda-benda mungil bercampur. Namun, hindari membeli banyak tempat penyimpanan sebelum tahu barang apa yang akan disimpan.
+        - paragraph: "Contoh praktis: Gunakan satu kotak kecil untuk penjepit kertas, klip, dan penghapus; satu kantong untuk kabel cadangan; serta satu bagian laci untuk buku catatan kecil. Jika barang dalam laci sulit ditemukan, keluarkan sebagian dan beri wadah atau label yang lebih jelas."
+        - heading "10. Sisakan ruang kosong untuk bekerja" [level=3]
+        - paragraph: Ruang kosong di meja bukan ruang yang harus segera diisi. Area ini berguna untuk menulis, membaca dokumen, atau meletakkan barang yang sedang digunakan. Terlalu banyak dekorasi dan perlengkapan di permukaan meja dapat menyempitkan ruang gerak. Pilih beberapa benda yang benar-benar kamu sukai atau perlukan, lalu biarkan bagian lain tetap lapang.
+        - paragraph: "Contoh praktis: Sisakan setidaknya satu bidang di samping laptop yang cukup untuk buku catatan atau dokumen berukuran umum. Jika ingin menaruh tanaman kecil atau foto, letakkan satu atau dua saja di sudut yang tidak mengganggu aktivitas."
+        - heading "11. Periksa kenyamanan dan kebersihan" [level=3]
+        - paragraph: Setelah barang tersusun, duduklah dan coba bekerja selama beberapa menit. Perhatikan apakah posisi layar nyaman dilihat, alat yang sering digunakan mudah dijangkau, dan area kerja cukup terang. Bersihkan permukaan secara berkala dan periksa apakah ada debu, remah, atau kabel yang mulai kembali berantakan. Penataan yang nyaman mendukung kebiasaan menjaga meja tetap rapi.
+        - paragraph: "Contoh praktis: Coba mengetik, menulis satu halaman, atau membuka dokumen. Jika harus memindahkan banyak barang sebelum mulai, ubah susunannya. Jika lampu memantul pada layar, geser posisinya. Singkirkan remah dan rapikan kabel setelah perangkat selesai digunakan."
+        - heading "12. Buat kebiasaan merapikan yang mudah dipertahankan" [level=3]
+        - paragraph: Meja tidak perlu dirapikan besar-besaran setiap hari jika ada kebiasaan kecil yang konsisten. Luangkan beberapa menit di akhir sesi kerja untuk mengembalikan barang ke tempatnya, memindahkan gelas, dan menata dokumen. Sesekali tinjau ulang isi meja; kebutuhan kerja dapat berubah, sehingga susunannya mungkin perlu disesuaikan. Pilih aturan sederhana yang realistis untuk dijalankan.
+        - paragraph: "Contoh praktis: Sebelum menutup laptop, kembalikan pulpen ke wadah, masukkan kertas yang sudah selesai ke map, dan sisakan hanya barang yang akan dipakai pada sesi berikutnya. Pada akhir pekan, cek laci dan buang atau pindahkan barang yang tidak lagi diperlukan. Dengan rutinitas ringan, meja lebih mudah tetap tertata daripada harus dibereskan dari awal setiap kali."
+        - paragraph: "Catatan untuk review: Ini draf awal 12 bagian dengan contoh praktis. Silakan beri masukan tentang panjang, gaya, atau bagian yang ingin diubah sebelum saya finalisasi."
+        - button "Salin jawaban":
+        - button "Balas jawaban":
+      - generic: "Uji NG-043 penolakan: tulis tepat satu kalimat tentang meja rapi, tanpa internet atau file."
+      - 'button "Uji NG-043 penolakan: tulis tepat satu kalimat tentang meja rapi, tanpa internet atau file.: Dibatalkan. Buka detail pekerjaan"':
+        - generic: "Uji NG-043 penolakan: tulis tepat satu kalimat tentang meja rapi, tanpa internet atau file."
+        - text: Dibatalkan
+      - article "Jawaban Gwen":
+        - paragraph: Task sudah dibuat. Kamu bisa melanjutkan percakapan sambil menunggu.
+        - button "Salin jawaban":
+        - button "Balas jawaban":
+      - 'button "Uji NG-043: susun panduan merapikan meja kerja sepanjang 1200 kata dalam bahasa Indonesia, 12…: Selesai. Buka detail pekerjaan"':
+        - generic: "Uji NG-043: susun panduan merapikan meja kerja sepanjang 1200 kata dalam bahasa Indonesia, 12…"
+        - text: Selesai
+  - button "Ke pesan terbaru":
+  - button "Lampiran":
+  - textbox "Pesan untuk Gwen":
+    - /placeholder: Balas Gwen atau tanya sesuatu…
+  - button "Kirim pesan" [disabled]:
+- complementary "Task":
+  - separator "Ubah lebar Task"
+  - heading "Task" [level=2]
+  - button "Ciutkan panel":
+  - button "Perbesar panel":
+  - button "Tutup Task":
+  - heading "Task" [level=1]
+  - paragraph: Titipkan pekerjaan, ikuti progres, dan tinjau keputusanmu.
+  - generic: Titipkan pekerjaan
+  - textbox "Titipkan pekerjaan":
+    - /placeholder: "Contoh: susun rencana peluncuran dari diskusi di percakapan ini…"
+  - text: Cara mengerjakan
+  - combobox "Cara mengerjakan":
+    - generic: Teks dan file
+  - combobox
+  - button "Lampirkan file":
+    - text: Lampirkan file
+  - button "File tersimpan"
+  - group "Berkas hasil":
+    - generic: Berkas hasil
+    - button "Tambah berkas hasil":
+      - text: Tambah berkas hasil
+  - checkbox "Minta review sebelum hasil difinalisasi" [checked]
+  - text: Minta review sebelum hasil difinalisasi
+  - text: Tujuan terkait (opsional)
+  - combobox "Tujuan terkait (opsional)":
+    - generic: Tanpa tujuan
+  - combobox
+  - paragraph: Menggunakan konteks percakapan yang sedang dipilih. Membuat task memakai 1 pesan; review, stop dan mencoba ulang task tidak menambah pesan. Pekerjaan dibatasi budget dan tetap berjalan saat browser ditutup.
+  - status:
+    - paragraph: "Batas pekerjaan: 30 kredit"
+    - paragraph: Dicadangkan saat dimulai; sisa yang tidak terpakai dikembalikan. Termasuk batas model dan OCR yang diperlukan.
+  - button "Mulai task" [disabled]
+  - paragraph: "Batas kerja hari ini: 94% tersedia. Sebagian dicadangkan untuk task yang belum selesai. Reset harian mengikuti UTC."
+  - button "Perlu keputusan saja"
+  - 'article "Task: Uji NG-043 penolakan: tulis tepat satu kalimat tentang meja rapi, tanpa internet atau file."':
+    - generic: Dibatalkan
+    - 'heading "Uji NG-043 penolakan: tulis tepat satu kalimat tentang meja rapi, tanpa internet atau file." [level=3]'
+    - status: Draft ditolak. Isinya tetap tersimpan.
+    - button "Tutup detail" [expanded]:
+      - text: Tutup detail
+    - paragraph:
+      - strong: "Instruksi saat dibuat:"
+      - text: "Uji NG-043 penolakan: tulis tepat satu kalimat tentang meja rapi, tanpa internet atau file."
+    - generic "Detail eksekusi · versi 1"
+    - paragraph: Review diperlukan sebelum finalisasi. Pesan chat baru tidak mengubah instruksi task ini.
+    - heading "Draft · belum difinalisasi" [level=4]
+    - paragraph: Meja yang rapi memudahkanmu menemukan perlengkapan dan bekerja dengan nyaman.
+    - button "Ubah draft":
+      - text: Ubah draft
+  - 'article "Task: Uji NG-043: susun panduan merapikan meja kerja sepanjang 1200 kata dalam bahasa Indonesia, 12…"':
+    - generic: Selesai
+    - 'heading "Uji NG-043: susun panduan merapikan meja kerja sepanjang 1200 kata dalam bahasa Indonesia, 12…" [level=3]'
+    - status: Hasil tersimpan di task dan percakapan asal.
+    - button "Lihat detail":
+      - text: Lihat detail
+  - 'article "Task: Buat riset ringkas berbahasa Indonesia tentang tren AI pada 2026. Karena 2026 sedang…"':
+    - generic: Selesai
+    - heading "Buat riset ringkas berbahasa Indonesia tentang tren AI pada 2026. Karena 2026 sedang…" [level=3]
+    - status: Hasil tersimpan di task dan percakapan asal.
+    - region "Hasil tersimpan":
+      - generic: Hasil tersimpan
+      - generic: Siap
+      - paragraph: Riset ringkas disiapkan dalam Bahasa Indonesia. Penelusuran web gagal dimuat, sehingga dokumen secara eksplisit membedakan pengamatan umum yang tidak diverifikasi untuk 2026 dari proyeksi, dan tidak mencantumkan sumber atau statistik yang tidak dapat diperiksa.
+      - text: Revision
+      - combobox "Revision hasil":
+        - option "v1 · Siap" [selected]
+      - paragraph: hasil.md
+      - paragraph: 7 KiB · SHA-256 2fff5ea85086
+      - button "Preview":
+        - text: Preview
+      - button "Unduh":
+        - text: Unduh
+      - generic "Input yang digunakan (0)"
+      - button "Perbarui hasil":
+        - text: Perbarui hasil
+      - button "Hapus hasil":
+        - text: Hapus hasil
+    - button "Lihat komputer":
+      - text: Lihat komputer
+    - button "Lihat detail":
+      - text: Lihat detail
+  - 'article "Task: Tulis ringkasan singkat tepat tiga poin tentang cara merapikan meja kerja, menggunakan…"':
+    - generic: Selesai
+    - heading "Tulis ringkasan singkat tepat tiga poin tentang cara merapikan meja kerja, menggunakan…" [level=3]
+    - status: Hasil tersimpan di task dan percakapan asal.
+    - button "Lihat detail":
+      - text: Lihat detail
+  - 'article "Task: NG023 restore_required · contoh penerimaan UI"':
+    - generic: Terhenti
+    - heading "NG023 restore_required · contoh penerimaan UI" [level=3]
+    - status: Pekerjaan dihentikan setelah pemulihan backup. Hasil terdahulu tetap tersedia; buat Task baru bila perlu.
+    - button "Lihat detail":
+      - text: Lihat detail
+  - 'article "Task: NG023 upgrade_required · contoh penerimaan UI"':
+    - generic: Terhenti
+    - heading "NG023 upgrade_required · contoh penerimaan UI" [level=3]
+    - status: Versi pekerjaan ini memerlukan pemulihan setelah pembaruan aplikasi. Draft dan hasil terdahulu tetap tersimpan. Hubungi pengelola untuk melanjutkan.
+    - button "Lihat detail":
+      - text: Lihat detail
+  - 'article "Task: Revisi hasil laporan Markdown yang dipilih. Pertahankan seluruh isi dan versi sebelumnya, lalu…"':
+    - generic: Selesai
+    - heading "Revisi hasil laporan Markdown yang dipilih. Pertahankan seluruh isi dan versi sebelumnya, lalu…" [level=3]
+    - status: Hasil tersimpan di task dan percakapan asal.
+    - region "Hasil tersimpan":
+      - generic: Hasil tersimpan
+      - generic: Siap
+      - paragraph: Laporan NG-039 diperbarui dengan data Maret dan perhitungan kenaikan Januari–Maret; keterangan kenaikan Januari–Februari serta status data sintetis dipertahankan.
+      - text: Revision
+      - combobox "Revision hasil":
+        - option "v2 · Siap" [selected]
+        - option "v1 · Siap"
+      - paragraph: laporan-penjualan-ng039.md
+      - paragraph: 1 KiB · SHA-256 77ef261e1e13
+      - button "Preview":
+        - text: Preview
+      - button "Unduh":
+        - text: Unduh
+      - generic "Input yang digunakan (0)"
+      - button "Perbarui hasil":
+        - text: Perbarui hasil
+      - button "Hapus hasil":
+        - text: Hapus hasil
+    - button "Lihat detail":
+      - text: Lihat detail
+  - 'article "Task: Buat satu laporan Markdown berbahasa Indonesia untuk audit NG-039 menggunakan hanya data…"':
+    - generic: Selesai
+    - heading "Buat satu laporan Markdown berbahasa Indonesia untuk audit NG-039 menggunakan hanya data…" [level=3]
+    - status: Hasil tersimpan di task dan percakapan asal.
+    - region "Hasil tersimpan":
+      - generic: Hasil tersimpan
+      - generic: Siap
+      - paragraph: Laporan NG-039 diperbarui dengan data Maret dan perhitungan kenaikan Januari–Maret; keterangan kenaikan Januari–Februari serta status data sintetis dipertahankan.
+      - text: Revision
+      - combobox "Revision hasil":
+        - option "v2 · Siap" [selected]
+        - option "v1 · Siap"
+      - paragraph: laporan-penjualan-ng039.md
+      - paragraph: 1 KiB · SHA-256 77ef261e1e13
+      - button "Preview":
+        - text: Preview
+      - button "Unduh":
+        - text: Unduh
+      - generic "Input yang digunakan (0)"
+      - button "Perbarui hasil":
+        - text: Perbarui hasil
+      - button "Hapus hasil":
+        - text: Hapus hasil
+    - button "Lihat detail":
+      - text: Lihat detail
+  - 'article "Task: Tulis satu kalimat singkat bahwa audit interval per jam selesai. Jangan gunakan browser, file…"':
+    - generic: Selesai
+    - heading "Tulis satu kalimat singkat bahwa audit interval per jam selesai. Jangan gunakan browser, file…" [level=3]
+    - status: Hasil tersimpan di task dan percakapan asal.
+    - button "Lihat detail":
+      - text: Lihat detail
+  - 'article "Task: Tulis tepat dua kalimat pendek dalam bahasa Indonesia yang menyatakan audit scheduler offline…"':
+    - generic: Selesai
+    - heading "Tulis tepat dua kalimat pendek dalam bahasa Indonesia yang menyatakan audit scheduler offline…" [level=3]
+    - status: Hasil tersimpan di task dan percakapan asal.
+    - button "Lihat detail":
+      - text: Lihat detail
+  - 'article "Task: Demo Brave C: buka https://the-internet.herokuapp.com/secure lalu klik tombol Logout untuk…"':
+    - generic: Selesai
+    - 'heading "Demo Brave C: buka https://the-internet.herokuapp.com/secure lalu klik tombol Logout untuk…" [level=3]'
+    - status: Hasil tersimpan di task dan percakapan asal.
+    - region "Hasil tersimpan":
+      - generic: Hasil tersimpan
+      - generic: Siap
+      - paragraph: "Konfirmasi: sesi demo publik telah diakhiri. Halaman Login menampilkan pesan “You logged out of the secure area!”"
+      - text: Revision
+      - combobox "Revision hasil":
+        - option "v1 · Siap" [selected]
+      - paragraph: hasil.md
+      - paragraph: 1 KiB · SHA-256 48746e3f8bd5
+      - button "Preview":
+        - text: Preview
+      - button "Unduh":
+        - text: Unduh
+      - generic "Input yang digunakan (0)"
+      - button "Perbarui hasil":
+        - text: Perbarui hasil
+      - button "Hapus hasil":
+        - text: Hapus hasil
+    - button "Lihat komputer":
+      - text: Lihat komputer
+    - button "Lihat detail":
+      - text: Lihat detail
+  - 'article "Task: Demo Brave B: buka https://the-internet.herokuapp.com/secure dan periksa apakah login dari Task…"':
+    - generic: Selesai
+    - 'heading "Demo Brave B: buka https://the-internet.herokuapp.com/secure dan periksa apakah login dari Task…" [level=3]'
+    - status: Hasil tersimpan di task dan percakapan asal.
+    - region "Hasil tersimpan":
+      - generic: Hasil tersimpan
+      - generic: Siap
+      - paragraph: "Sesi login masih aktif: halaman menampilkan “Secure Area” dan “Welcome to the Secure Area.” Saya tidak login ulang atau logout."
+      - text: Revision
+      - combobox "Revision hasil":
+        - option "v1 · Siap" [selected]
+      - paragraph: hasil.md
+      - paragraph: 1 KiB · SHA-256 cd473de7807a
+      - button "Preview":
+        - text: Preview
+      - button "Unduh":
+        - text: Unduh
+      - generic "Input yang digunakan (0)"
+      - button "Perbarui hasil":
+        - text: Perbarui hasil
+      - button "Hapus hasil":
+        - text: Hapus hasil
+    - button "Lihat komputer":
+      - text: Lihat komputer
+    - button "Lihat detail":
+      - text: Lihat detail
+  - 'article "Task: Demo Brave A: buka https://the-internet.herokuapp.com/login lalu minta saya login melalui…"':
+    - generic: Selesai
+    - 'heading "Demo Brave A: buka https://the-internet.herokuapp.com/login lalu minta saya login melalui…" [level=3]'
+    - status: Hasil tersimpan di task dan percakapan asal.
+    - region "Hasil tersimpan":
+      - generic: Hasil tersimpan
+      - generic: Siap
+      - paragraph: Secure Area terlihat setelah kendali dikembalikan. Ringkasan disimpan ke hasil.md.
+      - text: Revision
+      - combobox "Revision hasil":
+        - option "v1 · Siap" [selected]
+      - paragraph: hasil.md
+      - paragraph: 1 KiB · SHA-256 83fce92de46b
+      - button "Preview":
+        - text: Preview
+      - button "Unduh":
+        - text: Unduh
+      - generic "Input yang digunakan (0)"
+      - button "Perbarui hasil":
+        - text: Perbarui hasil
+      - button "Hapus hasil":
+        - text: Hapus hasil
+    - button "Lihat komputer":
+      - text: Lihat komputer
+    - button "Lihat detail":
+      - text: Lihat detail
+  - 'article "Task: Susun rencana terkait melakukan research untuk membuat AI agent di 2026."':
+    - generic: Selesai
+    - heading "Susun rencana terkait melakukan research untuk membuat AI agent di 2026." [level=3]
+    - status: Hasil tersimpan di task dan percakapan asal.
+    - button "Lihat detail":
+      - text: Lihat detail
+  - paragraph: Menampilkan hingga 50 task, dengan pekerjaan aktif didahulukan. Kamu dapat memakai file dan menyimpan berkas hasil, mengolah data dengan Python offline, atau menggunakan browser pribadi. Pekerjaan sekali atau berulang dapat diatur melalui menu Jadwal.

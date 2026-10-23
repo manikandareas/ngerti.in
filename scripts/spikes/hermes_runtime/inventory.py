@@ -7,10 +7,9 @@ import ast
 import hashlib
 import json
 import platform
+import tomllib
 from importlib import metadata
 from pathlib import Path
-
-import tomllib
 
 REVISION = "7489b22af47ce91b366dde81d5831ea422577498"
 MODULES = {

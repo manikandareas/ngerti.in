@@ -1,5 +1,8 @@
 # 01 · Produk & Scope V1
 
+> Pembaruan 22 Oktober 2026: runtime aktif hanya E2B. Kode, resource dan data Daytona telah dihapus. Keterangan provider lama di bawah adalah konteks historis, bukan instruksi operasi saat ini. Lihat [pembersihan provider](../engineering/e2b-only-cleanup.md).
+
+
 Sumber: [Notion](https://app.notion.com/p/3f8abdd618738122878dde3cb0661765) · Readback: 2026-10-19T11:35:00Z
 
 <!-- notion-content:start -->

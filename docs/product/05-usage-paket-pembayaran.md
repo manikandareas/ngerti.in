@@ -1,5 +1,8 @@
 # 05 · Usage, Paket & Pembayaran
 
+> Pembaruan 22 Oktober 2026: runtime aktif hanya E2B. Kode, resource dan data Daytona telah dihapus. Keterangan provider lama di bawah adalah konteks historis, bukan instruksi operasi saat ini. Lihat [pembersihan provider](../engineering/e2b-only-cleanup.md).
+
+
 Sumber: [Notion](https://app.notion.com/p/3fdabdd61873819ca2b5cc4e521b3587) · Readback: 2026-10-19T13:28:12.210Z
 
 <!-- notion-content:start -->

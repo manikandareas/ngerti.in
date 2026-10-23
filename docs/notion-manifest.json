@@ -16,7 +16,7 @@
       },
       "notion_content_sha256": "8683032b40bb75fb3a66096aaca609cabbcce80266d1cb8aa515f3c2ac78181e",
       "local_content_sha256": "801f9d06d6e4c7567923e16080a6ca96988fb7ea31076858396132428073981b",
-      "local_file_sha256": "b96c54a52ecdbf2aee5c67391077d7606b32a151c6b72af99727e6df210452b9",
+      "local_file_sha256": "704925051373226edbddaa04e12aacc85d61a3c63a9bb4601a9411e2b63989be",
       "readback_at": "2026-10-18T06:04:56.780944+00:00"
     },
     {
@@ -31,7 +31,7 @@
       },
       "notion_content_sha256": "d637b7558a1a3b9d9e0998f9a01109be5352bb071fd452ef04922534eec7b911",
       "local_content_sha256": "d1c1d8d32cf95bf3ea6c6dd1fa97760bcd3e25c84ed895d4df4ecf40c377e39a",
-      "local_file_sha256": "0a1f63cc8cd389d4d7147c8edfe80dbe6fb4fc784dc284387ccaefe2174cad3f",
+      "local_file_sha256": "c047bb2c16eee3a0d8331068a8f5b608f7663b442325277a5c84ce3e4f53ab28",
       "readback_at": "2026-10-19T11:35:00Z"
     },
     {
@@ -46,7 +46,7 @@
       },
       "notion_content_sha256": "c4d24791dbec649c845ac99e8b7627d9b2aae822c2b18c369efb2b15e6e3dc2e",
       "local_content_sha256": "f2bbbbfa205a6f36848dc5b2a3bc867be6060ac0f90489687e47469847c7690a",
-      "local_file_sha256": "252a1e06c5abeffccf44b5d731a7b39b013641bb473d75020682c4bd6e4acedf",
+      "local_file_sha256": "632bfc7bb56c43dae8a479e65468de146558a33eca5a6dec8088db8e4e82926b",
       "readback_at": "2026-10-19T10:22:42.085Z"
     },
     {
@@ -76,7 +76,7 @@
       },
       "notion_content_sha256": "0f2fc170181e064c10edc452dd18f16f36a15d32bddc80cb37d40269e90a1309",
       "local_content_sha256": "fb176f5f528ab7672b8407228d9a4fc9164f8b958196b28704adb5feaa17808a",
-      "local_file_sha256": "2723b213fff1b2e2629af295eccdd014332975791af0d1d1d430af127908d1be",
+      "local_file_sha256": "e5aaf720301c09da91c28b8db9612d24f86919a108901a470372b879dced98b4",
       "readback_at": "2026-10-19T02:50:23.615600+00:00"
     },
     {
@@ -856,7 +856,7 @@
       },
       "notion_content_sha256": "1ced66edb784c9c0471010d874a08713641f50a0cef6d7a019ff4dbb276ffc75",
       "local_content_sha256": "b5574e7cf77e1bbc825248bee5133b134a1902b4aeb59a71f7273207264cd529",
-      "local_file_sha256": "b193d4f86207a0ee2226970e46042877b7246fe355b29748a31037500de6108d",
+      "local_file_sha256": "8da2b7f452e9c97553f1a8097e28eb2a0125f80d7bb0ee0acbdd378538beaf0c",
       "readback_at": "2026-10-19T13:28:12.210Z",
       "page_last_edited_at": "2026-10-19T13:27:54.406Z"
     },
@@ -871,7 +871,7 @@
       },
       "notion_content_sha256": "c200151f663f21d42f451be738a3e71df61f8cc9a6f7495977aa6980f189a712",
       "local_content_sha256": "5cfcc3ee4e90cd2259568bb4c579e2a76a57a266c182a8ff74a1e6a92600538d",
-      "local_file_sha256": "d463eca8a9afe575b1dc99672b79bde8f12aa7f0eb2a3478bea8d2b8727f636e",
+      "local_file_sha256": "eb3dc8c5cca62cfd3541b9b58b12f0145590fdfb7bb352372c61ae3b58efa385",
       "readback_at": "2026-10-19T06:29:38.106391+00:00",
       "page_last_edited_at": "2026-10-19T06:27:51.778Z"
     },
@@ -886,7 +886,7 @@
       },
       "notion_content_sha256": "ff427a85b252da3841a5489b0f59aaa7c56a3e481cccccceb80e4755158e4018",
       "local_content_sha256": "6f8f141d26c06db4c4c1e0a38dc57315e043b485143d5fe24d3446116daec5b9",
-      "local_file_sha256": "8dbe45749e1be6561c70a71bfbe5142386633bd8dea8087ad7b0f0e271e351b8",
+      "local_file_sha256": "d6f0215eb2a33e04ffe478b5b7075f13d673bb10ea1f7581886eb17ce1819506",
       "readback_at": "2026-10-18T06:04:56.780944+00:00",
       "page_last_edited_at": "2026-10-18T05:49:58.871Z"
     },
@@ -1411,6 +1411,172 @@
       "local_file_sha256": "b5deb26549448c101ea377412eb7b6ca88a9e3b02385928f968adc861b29aaf4",
       "readback_at": "2026-10-18T06:04:56.780944+00:00",
       "page_last_edited_at": "2026-10-18T06:03:23.831Z"
+    },
+    {
+      "id": "3feabdd6-1873-81de-83d7-e3f1f49a2f36",
+      "title": "NG-042 · Redesign shell dan percakapan mengikuti Muse",
+      "url": "https://app.notion.com/p/3feabdd6187381de83d7e3f1f49a2f36",
+      "file": "backlog/tasks/42-redesign-shell-dan-percakapan-mengikuti-muse.md",
+      "kind": "task",
+      "properties": {
+        "Area": "Fondasi",
+        "Depends on": [
+          "https://app.notion.com/p/3fdabdd61873810b8159f4798fc39046"
+        ],
+        "Lingkup": "Aktif V1",
+        "Prioritas": "P1",
+        "Status": "Done",
+        "Ticket": 42,
+        "Tugas": "NG-042 · Redesign shell dan percakapan mengikuti Muse",
+        "Urutan": 23.1,
+        "url": "https://app.notion.com/p/3feabdd6187381de83d7e3f1f49a2f36"
+      },
+      "notion_content_sha256": "7ea285f266e0840f5579aae505294331466d1ed3f5b396fbfea399e8cfca565e",
+      "local_content_sha256": "243586a740c522a01529f60fda290c249dea42271b11da636174bf10ed1a00b3",
+      "local_file_sha256": "c4e6a08f4f96837055ec68c571d85e74ac665706a4f629040e0f9a6da563d818",
+      "readback_at": "2026-10-19T15:31:57.122490+00:00",
+      "page_last_edited_at": "2026-10-19T15:31:43.444Z",
+      "properties_readback_at": "2026-10-23T08:26:11.852Z"
+    },
+    {
+      "id": "3feabdd6-1873-81de-93e2-c5f70f0bd05e",
+      "title": "NG-043 · Redesign aktivitas agent approval dan komputer",
+      "url": "https://app.notion.com/p/3feabdd6187381de93e2c5f70f0bd05e",
+      "file": "backlog/tasks/43-redesign-aktivitas-agent-approval-dan-komputer.md",
+      "kind": "task",
+      "properties": {
+        "Area": "Agent",
+        "Depends on": [
+          "https://app.notion.com/p/3feabdd6187381de83d7e3f1f49a2f36",
+          "https://app.notion.com/p/3fdabdd6187381ba979ac9f219c55a5a",
+          "https://app.notion.com/p/3fdabdd618738198b295ca667c34f1b1"
+        ],
+        "Lingkup": "Aktif V1",
+        "Prioritas": "P1",
+        "Status": "Done",
+        "Ticket": 43,
+        "Tugas": "NG-043 · Redesign aktivitas agent approval dan komputer",
+        "Urutan": 23.2,
+        "url": "https://app.notion.com/p/3feabdd6187381de93e2c5f70f0bd05e"
+      },
+      "notion_content_sha256": "bee977e8971612b45f7fb9a091760d72f919b5c101c0cf329d4a24cd3b57a945",
+      "local_content_sha256": "ffd35c7bb707609dbe81040d12769c6804d20a1395974af3e3f9e0044191e36e",
+      "local_file_sha256": "67517db93d393381b19183626f0940dce6f5a3914c20be18d10db20685b9c806",
+      "readback_at": "2026-10-20T07:54:34.975Z",
+      "page_last_edited_at": "2026-10-20T07:54:34.975Z",
+      "properties_readback_at": "2026-10-23T08:26:11.852Z"
+    },
+    {
+      "id": "3feabdd6-1873-816f-b622-c8293d1e1a36",
+      "title": "NG-044 · Redesign settings terpusat dan identitas",
+      "url": "https://app.notion.com/p/3feabdd61873816fb622c8293d1e1a36",
+      "file": "backlog/tasks/44-redesign-settings-terpusat-dan-identitas.md",
+      "kind": "task",
+      "properties": {
+        "Area": "Fondasi",
+        "Depends on": [
+          "https://app.notion.com/p/3feabdd6187381de83d7e3f1f49a2f36",
+          "https://app.notion.com/p/3f8abdd6187381aabe5cf4a3355618cd"
+        ],
+        "Lingkup": "Aktif V1",
+        "Prioritas": "P1",
+        "Status": "Done",
+        "Ticket": 44,
+        "Tugas": "NG-044 · Redesign settings terpusat dan identitas",
+        "Urutan": 23.3,
+        "url": "https://app.notion.com/p/3feabdd61873816fb622c8293d1e1a36"
+      },
+      "notion_content_sha256": "fcbbb24c9ced37ed1cd3ec23fbdbd2d9399cfac530e5bb9afeecf0a85aecda52",
+      "local_content_sha256": "90472ecbc0769ff1394f7ede6de307cd5c2bb65a8e94a3213b02e06b22cac097",
+      "local_file_sha256": "dd5d8dabe969af10de962ab44d5babca7c2c6437ca97aab6b6cf5fb64614ad16",
+      "readback_at": "2026-10-20T08:11:42.656Z",
+      "page_last_edited_at": "2026-10-20T08:11:42.656Z",
+      "properties_readback_at": "2026-10-23T08:26:11.852Z"
+    },
+    {
+      "id": "3feabdd6-1873-81b1-b2ee-fcbae0e4cbc9",
+      "title": "NG-045 · Redesign artifact viewer Library dan hasil percakapan",
+      "url": "https://app.notion.com/p/3feabdd6187381b1b2eefcbae0e4cbc9",
+      "file": "backlog/tasks/45-redesign-artifact-viewer-library-dan-hasil-percakapan.md",
+      "kind": "task",
+      "properties": {
+        "Area": "Fondasi",
+        "Depends on": [
+          "https://app.notion.com/p/3feabdd6187381de83d7e3f1f49a2f36",
+          "https://app.notion.com/p/3fdabdd618738108a7d9ed086cd2c1ea",
+          "https://app.notion.com/p/3fdabdd618738192b8f8f919dedbb367"
+        ],
+        "Lingkup": "Aktif V1",
+        "Prioritas": "P1",
+        "Status": "Done",
+        "Ticket": 45,
+        "Tugas": "NG-045 · Redesign artifact viewer Library dan hasil percakapan",
+        "Urutan": 23.4,
+        "url": "https://app.notion.com/p/3feabdd6187381b1b2eefcbae0e4cbc9"
+      },
+      "notion_content_sha256": "f7b939b8e50a24951a1b0072ffd3154ddf162c99ea9b3a6f09be8d84a6baadcd",
+      "local_content_sha256": "bd4e75be752a9d96a912331919c75eb91f91ed730ac1215809edf521b4bcf6a0",
+      "local_file_sha256": "ea2732887956ce3a333953c275d97ede3d75c7841897b470f8a224cc08aba34d",
+      "readback_at": "2026-10-20T08:39:44.741Z",
+      "page_last_edited_at": "2026-10-20T08:39:44.741Z",
+      "properties_readback_at": "2026-10-23T08:26:11.852Z"
+    },
+    {
+      "id": "3feabdd6-1873-8189-878d-ea88adaf97fc",
+      "title": "NG-046 · Redesign goals jadwal dan acceptance UX terpadu",
+      "url": "https://app.notion.com/p/3feabdd618738189878dea88adaf97fc",
+      "file": "backlog/tasks/46-redesign-goals-jadwal-dan-acceptance-ux-terpadu.md",
+      "kind": "task",
+      "properties": {
+        "Area": "Agent",
+        "Depends on": [
+          "https://app.notion.com/p/3feabdd6187381de83d7e3f1f49a2f36",
+          "https://app.notion.com/p/3feabdd6187381de93e2c5f70f0bd05e",
+          "https://app.notion.com/p/3feabdd61873816fb622c8293d1e1a36",
+          "https://app.notion.com/p/3feabdd6187381b1b2eefcbae0e4cbc9",
+          "https://app.notion.com/p/3fdabdd61873814babd1c1bcd089effb",
+          "https://app.notion.com/p/3fdabdd61873813a9603fb38d0df673f"
+        ],
+        "Lingkup": "Aktif V1",
+        "Prioritas": "P1",
+        "Status": "Done",
+        "Ticket": 46,
+        "Tugas": "NG-046 · Redesign goals jadwal dan acceptance UX terpadu",
+        "Urutan": 23.5,
+        "url": "https://app.notion.com/p/3feabdd618738189878dea88adaf97fc"
+      },
+      "notion_content_sha256": "1d71787b05a1dedfbd75e545ac206b97c35c664d3ab563d5810fbf6e06f9a022",
+      "local_content_sha256": "a05fb704e5652526a8fb946a7969ef7cb1830326f573b24170fd3eddf235caec",
+      "local_file_sha256": "629389520750bce75586ed008498c1ad9fb8ae297d7560583bfc44c842cfbd2c",
+      "readback_at": "2026-10-20T08:39:44.741Z",
+      "page_last_edited_at": "2026-10-20T08:38:41.936Z",
+      "properties_readback_at": "2026-10-23T08:26:11.852Z"
+    },
+    {
+      "id": "402abdd6187381faa59dc9440e9f5b84",
+      "title": "NG-047 · Perbaiki keandalan computer use E2B Jev dan VNC",
+      "url": "https://app.notion.com/p/402abdd6187381faa59dc9440e9f5b84",
+      "file": "backlog/tasks/47-perbaiki-keandalan-computer-use-e2b-jev-dan-vnc.md",
+      "kind": "task",
+      "properties": {
+        "Area": "Agent",
+        "Depends on": [
+          "https://app.notion.com/p/3fdabdd618738198b295ca667c34f1b1",
+          "https://app.notion.com/p/3feabdd6187381de93e2c5f70f0bd05e"
+        ],
+        "Lingkup": "Aktif V1",
+        "Prioritas": "P1",
+        "Status": "Backlog",
+        "Ticket": 47,
+        "Tugas": "NG-047 · Perbaiki keandalan computer use E2B Jev dan VNC",
+        "Urutan": 23.6,
+        "url": "https://app.notion.com/p/402abdd6187381faa59dc9440e9f5b84"
+      },
+      "notion_content_sha256": "59623648b86f6cef79177ddcf8ef42eaa561996e4878ffbd6bdda790c8fac59d",
+      "local_content_sha256": "9aa80b56d19a130995fc9765969645b470bf2f96eb334938c1260421bebb4b7b",
+      "local_file_sha256": "528b33147e0bc37ac1816f0ae8fe6bdc4c1d08337556607d4a638e1bb0798536",
+      "readback_at": "2026-10-23T08:26:11.852Z",
+      "page_last_edited_at": "2026-10-23T08:25:48.629Z"
     }
   ],
   "database": {
@@ -1621,6 +1787,12 @@
           "3f8abdd6-1873-81c1-8df8-efee586427c7",
           "3f8abdd6-1873-8129-b1d8-faf62a637a7b",
           "3f8abdd6-1873-81a7-8cd0-f770a7db65d2",
+          "3feabdd6-1873-81de-83d7-e3f1f49a2f36",
+          "3feabdd6-1873-81de-93e2-c5f70f0bd05e",
+          "3feabdd6-1873-816f-b622-c8293d1e1a36",
+          "3feabdd6-1873-81b1-b2ee-fcbae0e4cbc9",
+          "3feabdd6-1873-8189-878d-ea88adaf97fc",
+          "402abdd6187381faa59dc9440e9f5b84",
           "3fdabdd6-1873-81f8-ade2-c7db2c75396e",
           "3f8abdd6-1873-81ac-90b6-df75b7e1a157",
           "3f8abdd6-1873-818a-951c-cddcb203f907",
@@ -1640,9 +1812,9 @@
           "3f8abdd6-1873-81bf-9174-f9126e48a4f3",
           "3f8abdd6-1873-81fd-a17d-d1af24cec8fb"
         ],
-        "local_file_sha256": "557fcbfec456a958aa5f48bf1f25477017f0086a69ac0aaaa8dd2a9b8245b6ca",
-        "readback_at": "2026-10-19T13:56:22.261Z",
-        "queried_row_count": 41
+        "local_file_sha256": "90106c7556674bf76ccad0f0c7e911aedc33f22c385561333efd3a7b56a81859",
+        "readback_at": "2026-10-23T08:26:11.852Z",
+        "queried_row_count": 47
       },
       {
         "id": "view://3f8abdd6-1873-81f4-ad67-000cd142e454",
@@ -1720,12 +1892,18 @@
           "3f8abdd6-1873-81c1-8df8-efee586427c7",
           "3f8abdd6-1873-8129-b1d8-faf62a637a7b",
           "3f8abdd6-1873-81a7-8cd0-f770a7db65d2",
+          "3feabdd6-1873-81de-83d7-e3f1f49a2f36",
+          "3feabdd6-1873-81de-93e2-c5f70f0bd05e",
+          "3feabdd6-1873-816f-b622-c8293d1e1a36",
+          "3feabdd6-1873-81b1-b2ee-fcbae0e4cbc9",
+          "3feabdd6-1873-8189-878d-ea88adaf97fc",
+          "402abdd6187381faa59dc9440e9f5b84",
           "3fdabdd6-1873-81f8-ade2-c7db2c75396e",
           "3f8abdd6-1873-81ac-90b6-df75b7e1a157"
         ],
-        "local_file_sha256": "b49e20ab08b502ada608e018e8451144e511792f9a3874b99d5b4e546ffdc901",
-        "readback_at": "2026-10-19T13:56:22.261Z",
-        "queried_row_count": 25
+        "local_file_sha256": "b1b584a4bec63e6ca8c3136e38c047b7767a038d2b6a9b0df401a2024c6851d2",
+        "readback_at": "2026-10-23T08:26:11.852Z",
+        "queried_row_count": 31
       },
       {
         "id": "view://3f8abdd6-1873-81dd-9154-000c928cf26c",
@@ -1780,8 +1958,8 @@
           "type": "table"
         },
         "page_ids": [],
-        "local_file_sha256": "11bcea6f1125bd7fe232ff1e858485f230ab449ed4b21fe7c69b0ff789e2288e",
-        "readback_at": "2026-10-19T13:56:22.261Z",
+        "local_file_sha256": "2429257f240906e789fc0af54758ff07e9ad29befa79e7ffed4e9f556ea3a085",
+        "readback_at": "2026-10-23T08:26:11.852Z",
         "queried_row_count": 0
       },
       {
@@ -1854,8 +2032,8 @@
           "3f8abdd6-1873-81bf-9174-f9126e48a4f3",
           "3f8abdd6-1873-81fd-a17d-d1af24cec8fb"
         ],
-        "local_file_sha256": "6938100d43bd83ce881738a74a085badc3da464b8e6ff77bce07c1e9ab938b49",
-        "readback_at": "2026-10-19T13:56:22.261Z",
+        "local_file_sha256": "6c426eaf9889191879583a2ca6c364423f29bd5844577d81608bfc40f1b06480",
+        "readback_at": "2026-10-23T08:26:11.852Z",
         "queried_row_count": 16
       }
     ],
@@ -2013,8 +2191,7 @@
       "source": "User-authorized implementation; exact Notion content/status readback and four live views verified",
       "summary": "Accept NG-031 live Daytona trial: shared desktop, takeover, two owners, expiry/revoke, persistence, idle-stop, TTL after SIGKILL, bounded resource budget and confirmed cleanup",
       "notion_content_sha256": "affac8e9a3427dcd32a78ae8096609a47b2e646d23d4cbff1f5f0dca7a3e9d22",
-      "acceptance_file": "engineering/daytona-31-acceptance.md",
-      "evidence_file": "engineering/evidence/daytona-31/summary.json"
+      "acceptance_file": "engineering/daytona-31-acceptance.md"
     },
     {
       "at": "2026-10-18T07:40:29.161083+00:00",
@@ -2155,8 +2332,7 @@
       "properties": {
         "Status": "Done"
       },
-      "acceptance_file": "engineering/sandbox-35-acceptance.md",
-      "evidence_file": "engineering/evidence/sandbox-35/live-readback.json"
+      "acceptance_file": "engineering/sandbox-35-acceptance.md"
     },
     {
       "at": "2026-10-18T15:44:00.527Z",
@@ -2223,8 +2399,7 @@
       "properties": {
         "Status": "Done"
       },
-      "acceptance_file": "engineering/computer-36-acceptance.md",
-      "evidence_file": "engineering/evidence/computer-36/live-readback.json"
+      "acceptance_file": "engineering/computer-36-acceptance.md"
     },
     {
       "at": "2026-10-18T17:56:53.897Z",
@@ -2644,13 +2819,50 @@
         "Status": "Done"
       },
       "notion_content_sha256": "a37a0a30d9fdb3dff52e361d44ba0cb619cff0fe0c2e9f8ab6004a5d5878c619"
+    },
+    {
+      "at": "2026-10-19T15:31:57.122490+00:00",
+      "page_id": "3feabdd6-1873-81de-83d7-e3f1f49a2f36",
+      "source": "NG-042 implementation evidence; exact Review readback and four views verified",
+      "properties": {
+        "Status": "Review"
+      },
+      "notion_content_sha256": "7ea285f266e0840f5579aae505294331466d1ed3f5b396fbfea399e8cfca565e"
+    },
+    {
+      "at": "2026-10-20T07:54:34.975Z",
+      "page_id": "3feabdd6-1873-81de-93e2-c5f70f0bd05e",
+      "source": "NG-043 implementation evidence; exact Review readback and four views verified",
+      "properties": {
+        "Status": "Review"
+      },
+      "notion_content_sha256": "bee977e8971612b45f7fb9a091760d72f919b5c101c0cf329d4a24cd3b57a945"
+    },
+    {
+      "at": "2026-10-20T08:39:44.741Z",
+      "page_id": "3feabdd6-1873-81b1-b2ee-fcbae0e4cbc9",
+      "source": "NG-045/046 implementation evidence; exact Review readback and four views verified",
+      "properties": {
+        "Status": "Review"
+      },
+      "notion_content_sha256": "f7b939b8e50a24951a1b0072ffd3154ddf162c99ea9b3a6f09be8d84a6baadcd"
+    },
+    {
+      "at": "2026-10-20T08:39:44.741Z",
+      "page_id": "3feabdd6-1873-8189-878d-ea88adaf97fc",
+      "source": "NG-045/046 implementation evidence; exact Review readback and four views verified",
+      "properties": {
+        "Status": "Review"
+      },
+      "notion_content_sha256": "1d71787b05a1dedfbd75e545ac206b97c35c664d3ab563d5810fbf6e06f9a022"
     }
   ],
   "last_partial_sync": {
-    "at": "2026-10-19T13:56:22.261Z",
-    "scope": "NG-023 Done; exact readback and four views; unrelated statuses preserved",
+    "at": "2026-10-20T08:39:44.741Z",
+    "scope": "NG-045 and NG-046 Review, implementation evidence, all four views verified",
     "page_ids": [
-      "3f8abdd6187381a78cd0f770a7db65d2"
+      "3feabdd6-1873-81b1-b2ee-fcbae0e4cbc9",
+      "3feabdd6-1873-8189-878d-ea88adaf97fc"
     ]
   }
 }

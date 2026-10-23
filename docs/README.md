@@ -1,5 +1,8 @@
 # Ngertiin
 
+> Pembaruan 22 Oktober 2026: runtime aktif hanya E2B. Kode, resource dan data Daytona telah dihapus. Keterangan provider lama di bawah adalah konteks historis, bukan instruksi operasi saat ini. Lihat [pembersihan provider](engineering/e2b-only-cleanup.md).
+
+
 Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381e39753f0d54ee2556b) · Readback: 2026-10-18T06:04:56.780944+00:00
 
 <!-- notion-content:start -->
@@ -42,6 +45,8 @@ Rantai: spesifikasi → bukti REA/riset → tiket → bukti penerimaan. Tiket Do
 <!-- notion-content:end -->
 
 ## Status kerja terbaru
+
+Readback status 2026-10-19T15:31:57.122490+00:00: [NG-042 · Redesign shell dan percakapan](backlog/tasks/42-redesign-shell-dan-percakapan-mengikuti-muse.md) berstatus **Review**. Shell, composer, panel bersama, navigasi mobile dan kontinuitas chat diimplementasikan. Check/build, 46 kontrak quota dan 47 kontrak files lulus. [Bukti dan sisa acceptance](engineering/shell-42-acceptance.md) mencatat batas upload browser dan parity visual. NG-043–046 hanya dimirror sebagai Backlog.
 
 Readback status 2026-10-19T13:56:22.261Z: [NG-023 · Recovery end-to-end dan konsistensi state](backlog/tasks/23-recovery-end-to-end-dan-konsistensi-state.md) berstatus **Done**. [Penerimaan recovery](engineering/recovery-23-acceptance.md) mencatat 41 kontrak, dua SIGKILL nyata, restore PostgreSQL/MinIO terisolasi, workflow compatibility, lookup Daytona read-only dan walkthrough desktop/mobile. Migrasi 0016/0017 tanpa reset; worker dimuat ulang. NG-041 menjadi urutan berikutnya; status tiket lain dipertahankan.
 
@@ -90,3 +95,9 @@ Readback status 2026-10-18T08:14:37.582446+00:00: [NG-032 · Shell onboarding da
 Readback status 2026-10-18T07:40:29.161083+00:00: [NG-032 · Shell onboarding dan walkthrough asisten umum](backlog/tasks/32-shell-onboarding-dan-walkthrough-asisten-umum.md) berstatus **In Progress** untuk brainstorming dan persiapan implementasi berikutnya, sesuai Urutan 7. NG-031 telah Done; acceptance NG-032 belum dijalankan.
 
 Readback status 2026-10-18T07:13:08.912354+00:00: [NG-031 · Validasi Daytona dengan trial terbatas](backlog/tasks/31-validasi-daytona-dengan-trial-terbatas.md) berstatus **Done**. Empat acceptance criteria memiliki bukti live; [laporan penerimaan](engineering/daytona-31-acceptance.md) mencatat hasil dan batasnya. Dua sandbox trial sudah dihapus; readback provider mengonfirmasi tidak ada resource tersisa.
+
+Readback NG-043 2026-10-20T07:54:34.975Z: **Review**. Aktivitas, Persetujuan, task inline dan komputer telah diimplementasikan; check/build, 10 assertions UI, 56 kontrak task dan 47 kontrak komputer (allowance fixture khusus) lulus. [Bukti dan sisa acceptance NG-043](engineering/activity-43-acceptance.md) mencatat walkthrough desktop/mobile dan state Muse yang belum teramati.
+
+Readback NG-044 2026-10-20T08:11:42.656Z: **Review**. Settings berkategori, usage terpusat, perlindungan draft dan entry identitas telah diimplementasikan. [Bukti dan sisa acceptance NG-044](engineering/settings-44-acceptance.md) mencatat gate lulus serta batas verifikasi browser.
+
+Readback NG-045 dan NG-046 2026-10-20T08:39:44.741Z: **Review**. Viewer konten, Library, diskusi, perencanaan goals/jadwal dan matriks acceptance telah diimplementasikan. [Bukti dan sisa acceptance](engineering/redesign-45-46-acceptance.md) membedakan walkthrough yang lulus dari parity dan skenario terpadu yang belum terbukti.

@@ -32,9 +32,11 @@ def main():
         range(1, max(by_number) + 1)
     ), "Missing or reused ticket identity"
     active = [p for p in tasks if p["properties"]["Lingkup"] == "Aktif V1"]
-    assert sorted(p["properties"]["Urutan"] for p in active) == list(
-        range(1, len(active) + 1)
-    )
+    # Delivery order permits fractional insertions (NG-042–046: 23.1–23.5).
+    # Identity remains contiguous; order must be positive and unique.
+    orders = [p["properties"]["Urutan"] for p in active]
+    assert all(isinstance(order, (int, float)) and order > 0 for order in orders)
+    assert len(set(orders)) == len(orders), "Duplicate delivery order"
     for n in range(1, 6):
         assert by_number[n]["properties"]["Status"] == "Done", "Historical Done changed"
         assert by_number[n]["properties"]["Lingkup"] == "Histori"

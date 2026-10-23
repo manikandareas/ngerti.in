@@ -5,8 +5,10 @@ import json
 from uuid import NAMESPACE_URL, uuid5
 
 from ngertiin_engine.agents import Agents, compose
+from ngertiin_engine.capabilities import FIELDS, authorize, resolve
 from ngertiin_engine.contracts import EngineError, canonical, counter, digest, uuid
 from ngertiin_engine.store import Store
+from ngertiin_engine.threads import Threads
 
 ERRORS = {
     "not_found": "NOT_FOUND",
@@ -18,6 +20,9 @@ ERRORS = {
     "runtime_draining": "ENGINE_UNAVAILABLE",
     "unknown_execution": "INDETERMINATE",
     "storage_unavailable": "ENGINE_UNAVAILABLE",
+    "acp_mcp_discovery_failed": "CONNECTOR_UNAVAILABLE",
+    "acp_mcp_schema_changed": "CONNECTOR_UNAVAILABLE",
+    "launch_credentials_unavailable": "ACCESS_REVOKED",
 }
 EVENTS = {
     "message.delta": "message.delta",
@@ -43,6 +48,7 @@ class Adapter:
         self.authority, self.owner = authority, uuid(owner)
         self.store = Store(authority, owner)
         self.agents = Agents(self.store, models or {})
+        self.threads = Threads(self.store, self.agents)
         self.actor = Principal(
             "nma:" + owner,
             authority.profile_id,
@@ -109,6 +115,7 @@ class Adapter:
         fields = ("agent_id", "thread_id", "config_revision", "context_generation")
         uuid(payload.get("agent_id"))
         uuid(payload.get("thread_id"))
+        self.store.write(lambda conn: self.threads.check_binding(conn, payload))
         counter(payload.get("config_revision"))
         counter(payload.get("context_generation"))
         key = digest([payload[k] for k in fields])
@@ -126,7 +133,11 @@ class Adapter:
                     (self.owner, agent["agent_id"], int(agent["config_revision"])),
                 ).fetchone()[0]
             )
-            model = json.loads(raw)["runtime_model"]
+            raw = json.loads(raw)
+            model = raw["runtime_model"]
+            capabilities, _ = resolve(raw)
+            if capabilities != raw.get("runtime_capabilities", capabilities):
+                raise EngineError("ACCESS_REVOKED")
             if not model:
                 raise EngineError("MODEL_UNAVAILABLE")
             config = {
@@ -135,10 +146,18 @@ class Adapter:
                     field: model[field]
                     for field in ("model", "provider", "base_url", "cwd")
                 },
-                "toolsets": [],
+                "toolsets": capabilities["toolsets"],
+                "nma_capabilities": {
+                    "agent_id": agent["agent_id"],
+                    "access_generation": agent["access_generation"],
+                    "grants": {field: raw.get(field, []) for field in FIELDS},
+                    **capabilities,
+                },
                 "persona": compose(
                     agent["display_name"], agent["handle"], agent["config"]
-                ),
+                )
+                + "\n\n"
+                + "\n\n".join(capabilities["skills"]),
                 "access_generation": agent["access_generation"],
             }
             self.store.write(
@@ -203,17 +222,36 @@ class Adapter:
         }
         if "persona" in config:
             frozen["nma_persona"] = True
+        if "nma_capabilities" in config:
+            frozen["nma_capabilities"] = config["nma_capabilities"]
         policy = build_policy(
             params, frozen, private_secrets={}, profile_terminal=False
         )
+        private = {}
+        if "nma_capabilities" in config:
+            import os
+            from pathlib import Path
+
+            from gateway.session_local_mcp import PRIVATE_KEY
+
+            private[PRIVATE_KEY] = authorize(
+                config["nma_capabilities"],
+                Path(os.environ["HERMES_HOME"]) / "state.db",
+                self.owner,
+            )
         staged = stage_local_session(
             self.authority,
             self.actor,
             params,
             trusted_policy=policy,
+            trusted_secrets=private,
             skills_prompt=config.get("persona"),
         )
         if isinstance(staged, dict):
+            if private:
+                manifest = json.loads(staged["policy"].get("editor_mcp_json") or "{}")
+                if len(manifest.get("names", {})) != len(private[PRIVATE_KEY]):
+                    raise EngineError("CONNECTOR_UNAVAILABLE")
             await asyncio.to_thread(
                 commit_local_session,
                 self.authority.db,
@@ -244,6 +282,12 @@ class Adapter:
 
     async def _dispatch(self, body):
         kind, payload = body["type"], body["payload"]
+        if kind == "thread.create":
+            return self.threads.create(body)
+        if kind == "thread.list":
+            return self.threads.listing(payload)
+        if kind == "thread.read":
+            return self.threads.read(payload)
         if kind == "agent.list":
             return self.agents.listing(payload)
         if kind in {
@@ -254,7 +298,7 @@ class Adapter:
             "agent.restore",
         }:
             result = self.agents.mutate(body)
-            if kind in {"agent.disable", "agent.archive"}:
+            if kind in {"agent.disable", "agent.archive", "agent.configure"}:
                 await self.cancel_agent(result["agent"]["agent_id"])
             return result
         if body["expected_revision"] is not None:
@@ -372,7 +416,7 @@ class Adapter:
             }.get(receipt.outcome, "failed")
         config = self.bindings[row[0]]
         value = result["result"] if result else {}
-        if self.fenced(payload["run_id"]):
+        if self.fenced(payload["run_id"]) or value.get("error") == "ACCESS_REVOKED":
             status = "cancelled"
         # Raw native errors/metadata can include paths and credentials. Publish stable codes only.
         return {

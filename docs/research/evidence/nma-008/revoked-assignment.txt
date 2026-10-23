@@ -1,0 +1,49 @@
+- generic
+  - dialog "Edit Researcher capabilities"
+    - heading "Edit Researcher capabilities" [level=2, ref=e1]
+    - paragraph
+      - StaticText "Identitas ini digunakan di DM dan grup. Perubahan karakter dan model berlaku pada run baru."
+    - generic
+      - group
+        - LabelText
+          - StaticText "Nama"
+          - textbox "Nama" [required, ref=e6]: Researcher capabilities
+            - StaticText "Researcher capabilities"
+        - LabelText
+          - StaticText "Handle"
+          - textbox "Handle Huruf kecil, angka, garis bawah, atau tanda hubung. Awali dengan huruf." [required, ref=e7]: researcher-capabilities
+            - StaticText "researcher-capabilities"
+          - StaticText "Huruf kecil, angka, garis bawah, atau tanda hubung. Awali dengan huruf."
+        - LabelText
+          - StaticText "Karakter (soul)"
+          - textbox "Karakter (soul)" [ref=e8]
+        - LabelText
+          - StaticText "Instruksi"
+          - textbox "Instruksi" [ref=e9]
+        - LabelText
+          - StaticText "Model"
+          - combobox "Model" [expanded=false, ref=e10]: Verification model
+            - MenuListPopup
+              - option "Verification model" [selected, ref=e14]
+        - group
+          - DisclosureTriangle "Kemampuan agent" [expanded=true]
+            - StaticText "Kemampuan agent"
+          - paragraph
+            - StaticText "Pilih tools, koneksi, dan skills untuk agent ini. Mencabut kemampuan menghentikan pekerjaan yang masih memakai akses tersebut."
+          - group "Tools"
+            - Legend
+              - StaticText "Tools"
+            - checkbox "Daftar tugas" [checked=true, ref=e11]
+          - group "Koneksi MCP"
+            - Legend
+              - StaticText "Koneksi MCP"
+            - checkbox "Koneksi verifikasi" [checked=false, ref=e12]
+          - group "Skills"
+            - Legend
+              - StaticText "Skills"
+            - checkbox "Riset sumber" [checked=false, ref=e13]
+      - button "Arsipkan" [ref=e3]
+      - button "Batal" [ref=e4]
+      - button "Simpan agent" [ref=e5]
+    - button "Tutup" [ref=e2]
+      - StaticText "Tutup"

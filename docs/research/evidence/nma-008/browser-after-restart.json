@@ -1,0 +1,52 @@
+{
+  "agents": [
+    {
+      "access_generation": "1",
+      "config": {
+        "instructions": "",
+        "model": "test",
+        "soul": ""
+      },
+      "id": "a7bfb879-a3e7-4bf4-a68b-5a1ff7331fb5",
+      "name": "Writer capabilities",
+      "revision": "1"
+    },
+    {
+      "access_generation": "2",
+      "config": {
+        "instructions": "",
+        "mcp_grants": [],
+        "model": "test",
+        "skill_refs": [],
+        "soul": "",
+        "tool_grants": [
+          "tasks"
+        ]
+      },
+      "id": "e76cfb7f-b636-4cc0-9ea9-f8fdb620845a",
+      "name": "Researcher capabilities",
+      "revision": "2"
+    }
+  ],
+  "catalog": {
+    "mcp_grants": [
+      {
+        "id": "verification",
+        "label": "Koneksi verifikasi"
+      }
+    ],
+    "skill_refs": [
+      {
+        "id": "research",
+        "label": "Riset sumber"
+      }
+    ],
+    "tool_grants": [
+      {
+        "id": "tasks",
+        "label": "Daftar tugas"
+      }
+    ]
+  },
+  "status": 200
+}

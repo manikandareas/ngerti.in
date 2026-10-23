@@ -106,6 +106,9 @@ class AgentEngineHTTP(unittest.IsolatedAsyncioTestCase):
         for code, status in (
             ("REVISION_CONFLICT", 409),
             ("NOT_FOUND", 404),
+            ("CAPABILITY_UNAVAILABLE", 422),
+            ("CAPABILITY_DENIED", 403),
+            ("ACCESS_REVOKED", 409),
             ("UNSUPPORTED_VERSION", 426),
         ):
             self.reply = {"error": {"code": code}}
@@ -155,6 +158,28 @@ class AgentEngineHTTP(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(response.json()["detail"]["code"], "REQUEST_TOO_LARGE")
         self.assertFalse(response.json()["detail"]["retryable"])
         self.assertEqual(self.envelopes, [])
+
+    async def test_thread_consumers_sign_owner_and_keep_runtime_private(self):
+        thread_id = str(uuid4())
+        response = await self.client.get(f"/api/agent-engine/v1/threads/{thread_id}")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.envelopes[-1]["body"]["type"], "thread.read")
+        self.assertEqual(self.envelopes[-1]["body"]["payload"], {"thread_id": thread_id})
+        self.assertEqual(self.envelopes[-1]["owner_id"], str(self.owner))
+        response = await self.client.post(
+            "/api/agent-engine/v1/commands",
+            json={
+                "schema_version": "nma.v1",
+                "command_id": str(uuid4()),
+                "type": "thread.create",
+                "expected_revision": None,
+                "payload": {"kind": "dm", "title": "Owner thread", "agent_ids": [str(uuid4())]},
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.envelopes[-1]["body"]["type"], "thread.create")
+        response = await self.client.get("/api/agent-engine/v1/threads?after=invalid")
+        self.assertEqual(response.status_code, 422)
 
 
 if __name__ == "__main__":

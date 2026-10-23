@@ -1,0 +1,90 @@
+{
+  "date": "2026-10-23",
+  "tasks": [
+    "NMA-007",
+    "NMA-008"
+  ],
+  "base_commit": "5fee5b95cfb390e3669dd982c7bcc93e6e77f23e",
+  "upstream_revision": "7489b22af47ce91b366dde81d5831ea422577498",
+  "runtime_profile": "foundation",
+  "runtime": {
+    "python": "3.14.9",
+    "sqlite": "3.53.1",
+    "journal": "wal",
+    "macos_arm64": "25 passed in 59.34s",
+    "linux_aarch64": "25 passed in 124.88s; UID10001; one pytest-cache warning",
+    "model": "deterministic loopback provider",
+    "connector": "real local HTTP MCP with synthetic credential"
+  },
+  "checks": {
+    "http": "7 passed",
+    "make_check": "passed",
+    "make_build": "passed",
+    "browser": "real Clerk authentication, two agents, typed DM/group, shared profile update, capability assignment/revoke, reload, restart equality, desktop/mobile and offline detail recovery",
+    "review": "Standards P2 dialog error state corrected; no hard violations, one optional duplication heuristic. Spec: no remaining blocker within ticket scopes."
+  },
+  "commands": [
+    "HERMES_SOURCE=$PWD/.dev/nma-001/source PYTHONPATH=$PWD/apps/engine/src NMA_TEST_RUNTIME_PYTHON=$PWD/.dev/nma-006-closure/production/bin/python .dev/nma-006-closure/runtime/bin/python -m pytest apps/engine/tests -q -s",
+    "uv run --project apps/backend python -m unittest discover -s apps/backend/tests -p test_agent_engine.py -v",
+    "docker build --target evidence --output type=local,dest=.dev/nma-007-008/linux apps/engine",
+    "make check",
+    "make build",
+    "uv run --project apps/backend ruff check apps/engine",
+    "python3 scripts/check_docs.py",
+    "git diff --check"
+  ],
+  "boundaries": [
+    "NMA-007 completes identity/config consumers, not downstream DM streaming or group transcript/membership changes",
+    "NMA-008 supports native todo, HTTP MCP, instruction-text skills",
+    "Known-value credential protection; no malicious transformed-secret claim",
+    "No paid live-model run, production migration, push or deployment"
+  ],
+  "source_sha256": {
+    "apps/engine/src/ngertiin_engine/adapter.py": "1b3d7dc17ac7f003896c214971956932967f6346ec6ae7f9cebf26d46d9f8202",
+    "apps/engine/src/ngertiin_engine/agents.py": "9164b8057694a3fc9ca0aab5f0aeb3164351e99639241a2e9cf75cacfd8a6355",
+    "apps/engine/src/ngertiin_engine/capabilities.py": "f21827930b7d86028324f06e07b46ee17f1ac2a99cbd103e3f70eb9f3190dc47",
+    "apps/engine/src/ngertiin_engine/redaction.py": "a6cab4afc0cc6389ad20f1ca77428681a816ea06c59938dfb12bd412782abc6e",
+    "apps/engine/src/ngertiin_engine/service.py": "bd90a4054c6adc29e536a8428ee43836c5c155e8e82d8c0c323640d80955f025",
+    "apps/engine/src/ngertiin_engine/store.py": "41485f1fa269b887201459c4d6d177359e8845f93ffd332a2a5c85da2a396d3e",
+    "apps/engine/src/ngertiin_engine/threads.py": "eb4343071be01bcd501d265f19fd9ea65fc7ee1698974d8030e85ab75926869a",
+    "apps/engine/src/ngertiin_engine/runtime-pin.json": "0366a3cf37a0ec874b84ae17e286ea87956470acf1f00a45289489abee84ddd2",
+    "apps/engine/tests/test_runtime.py": "67b890243856cf2505e0e5e838f830ad4ae10fa3d9c04af63d9fe096e007eb9a",
+    "apps/engine/tests/test_capabilities.py": "631fc57fcdbc947a46bcfc4bea5e9918463141163be71fb30f8dbae59e2ed71b",
+    "apps/engine/tests/test_threads.py": "6a47101d31e3ac11b7fe508b17ed045d9feaab0e00eb1eeeb69656ca0fa9a5e2",
+    "apps/engine/tests/mcp_fixture.py": "183234d70e9f02bbf2ecef163ba6bc499ebb90efc638974840c2651a7a8b1b2d",
+    "apps/backend/src/ngertiin/agent_engine/api.py": "fad5579e3aa9fa9fdab8e7d2a7afb1cb094d4d5bcf23933c3079e0c60808f354",
+    "apps/backend/tests/test_agent_engine.py": "ffab49cab8051d9561abaae258749b527aa630bad6f27b7a807f57258807acca",
+    "apps/web/src/features/agents/agents-page.tsx": "e674c05d9babe689e7e1fb20b3cc38983a249db94d9ce87f524b2a2efd7596d7",
+    "apps/web/src/features/agents/agent-threads.tsx": "446a5bc905618f3fa503a1ffc0deac7f47b2fb8727e83fe53f2838140fc86df2"
+  },
+  "evidence_sha256": {
+    "dm-identity.png": "c88c518cb8a6c6016acc9dd32ac0f59cc574bd46809524378fc079e7a258414d",
+    "docs-check.log": "cd38495bbf839cd18c79dffd1bd20e66c9d53f747276944c810c4336a69fdb7d",
+    "linux-test-inventory.json": "d2961dfa92446985473d31728f603873ce834eaf1ddc61241a43d065d2f71a59",
+    "thread-read-error.txt": "a6a4641258716d9930c8391cbda65dd475e94ffb539c005a75cc423e6ad4631b",
+    "mobile-group.png": "bae9cddab0992072b1050287f3cb801195d347888359083d655ef60af6c3670d",
+    "dm-updated.txt": "2e4da68121fa3d20ef37e52104017072e479f79dfcc9355c5e38fc4a1376429a",
+    "browser-after-restart.json": "884c80a57361e73b72120950cb9bad9513361e6e3195fb62477187fb67c7b1bd",
+    "capabilities-selected.png": "f7b07ae8d9efe6990902a0138b0a50712996a0696525b799bcdbbc78863a478a",
+    "thread-read-error.png": "38259067226ce846a3c8bb275ac1c8f26a46288b219b5848e7360b5b04b81b95",
+    "engine-check.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "linux-runtime-inventory.json": "e1c165b5cf829b2529dc87619f7fea49a00a764153b20c81b53fb97d48f24de3",
+    "linux-runtime-tests.log": "2bb165594d9bfd156b6541324aa90acd365c488f697d7ef85400590000af334c",
+    "group-updated.txt": "0fa723b2dcbfeb16c2885d54a11fc5196c7c6a73019e6f0ca8021e037e581159",
+    "capabilities-revoked.png": "310eaee000373bd86ea8404d17b37614798745500a27e2c63768f166168643e1",
+    "make-check.log": "a307a3f2d39e3d098f88e39febdd8e77795551573528b5a27410c04eefe0462a",
+    "linux-foundation-profile.json": "6687c56dc015208e26f551fbdd1028119a9c5b77883ebecfb3a09e0d044e7145",
+    "macos-tests.log": "776a36e20467793aaa856fdb0badb14e92b486dcb79b11c2510de9d14fefd293",
+    "browser-before-revoke.json": "7027946ca71760d686028f11398b02c9278770c011c15435050992c5720b6cfa",
+    "browser-before-restart.json": "884c80a57361e73b72120950cb9bad9513361e6e3195fb62477187fb67c7b1bd",
+    "http-tests.log": "fa0736d9199dc90155dc4f87d2db724741348fd091890536827b3b93eecb82ea",
+    "group-identity.png": "3b1b2f094a7d4de21fb0dbb22ee9201b741d5bffe2b2327b902ce45a474aa3e2",
+    "build.log": "ff752b857d3b652920397d944059d888aa0d3e5166b496cebb8a2255ed09168d"
+  },
+  "log_normalization": {
+    "operation": "ANSI escapes removed and trailing whitespace trimmed; test results unchanged",
+    "original_sha256": {
+      "build.log": "fbd3d2d6e8f955c5da7f0b004c69b7c2d59b5ac47f39077d05dd0f984e0a28da"
+    }
+  }
+}

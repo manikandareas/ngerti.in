@@ -1,0 +1,11 @@
+- generic
+  - dialog "Percakapan belum dapat dimuat"
+    - heading "Percakapan belum dapat dimuat" [level=2, ref=e1]
+    - paragraph
+      - StaticText "Profil agent diperbarui bersama di DM dan grup. Riwayat tiap percakapan tetap terpisah."
+    - alert
+      - StaticText "Engine unavailable Tutup dan coba buka kembali."
+    - paragraph
+      - StaticText "Susunan agent tersimpan. Pengiriman pesan belum tersedia di sini."
+    - button "Tutup" [ref=e2]
+      - StaticText "Tutup"

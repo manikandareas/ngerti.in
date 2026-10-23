@@ -1,0 +1,82 @@
+{
+  "date": "2026-10-23",
+  "ticket": "NMA-008",
+  "status": "Review",
+  "base_commit": "e69843ef21710d53871eea0cc0814fc3f951f383",
+  "implementation_commit": null,
+  "review": "Author self-review; no independent review claimed",
+  "runtime": {
+    "hermes_revision": "7489b22af47ce91b366dde81d5831ea422577498",
+    "python": "3.14.9",
+    "sqlite": "3.53.1",
+    "journal_mode": "wal",
+    "provider": "deterministic loopback OpenAI-compatible fixture",
+    "connector": "real local MCP HTTP server with disposable credentials and invocation receipts",
+    "macos": "21 passed",
+    "linux_aarch64": "21 passed; UID 10001; one non-failing pytest-cache permission warning"
+  },
+  "checks": {
+    "http": "6 unittest tests passed, including capability error mapping",
+    "make_check": "passed",
+    "make_build": "passed",
+    "browser": "Real development Clerk, disposable partition; two agents, three assignment categories, save/reload, revoke, mobile 390px, restart equality",
+    "docs_check": "passed: 71 page hashes, 47 tickets, 4 views, 1290 local links",
+    "diff_check": "passed"
+  },
+  "commands": [
+    "HERMES_SOURCE=$PWD/.dev/nma-001/source PYTHONPATH=$PWD/apps/engine/src .dev/nma-008/runtime/bin/python -m pytest apps/engine/tests -q -s",
+    "docker build --target evidence --output type=local,dest=.dev/nma-008/linux apps/engine",
+    "uv run --project apps/backend python -m unittest discover -s apps/backend/tests -p test_agent_engine.py -v",
+    "make check",
+    "make build",
+    "python3 scripts/check_docs.py",
+    "git diff --check"
+  ],
+  "boundaries": [
+    "NMA-007 remains Review; NMA-006 distribution clearance remains open",
+    "Supported: native todo, HTTP MCP, instruction-text skills",
+    "No production deployment, live-provider or full DM/group E2E claim",
+    "Full executor isolation, credential administration and descendant recovery remain downstream",
+    "Private credential deletion is fail-closed resolution; durable revocation requires removing agent grant before removing/rotating credential",
+    "Native HEAD/GET preflight compatibility limit documented"
+  ],
+  "inventories": {
+    "macos-inventory.json": {
+      "distribution_count": 90,
+      "missing_packaged_notices": [
+        "fetch-use",
+        "firecrawl-anydoc"
+      ]
+    },
+    "linux-inventory.json": {
+      "distribution_count": 91,
+      "missing_packaged_notices": [
+        "fetch-use",
+        "firecrawl-anydoc"
+      ]
+    }
+  },
+  "evidence_sha256": {
+    "linux-inventory.json": "a0e159b0106e83235c740cb04b4716bb1cb1175cbb54e519b2222754cb82a091",
+    "editor-before.png": "b8a80bb584cf143e77aa8cd5abbfcc9836912fb07fcab9f281724a4abb10484e",
+    "browser-api.json": "faa6060d6488afec98b40ed043748e7e5f5e214b45ee0c54d6b8bc82f99f8725",
+    "docs-check.log": "f868380e94efe3eb2d4fa5c4d8f13bd8919eb84932348f449b0977137900d413",
+    "revoked-assignment.txt": "4c1654d64d0dd1b458817fb50b234c5c3bd5ed74a5f0857d8d4edb7a66ce7191",
+    "browser-after-restart.json": "faa6060d6488afec98b40ed043748e7e5f5e214b45ee0c54d6b8bc82f99f8725",
+    "mobile-assignment.png": "01029076e30207e1df461a4204c8d7d792dfa2cfefc36ebb25adf9b3a56c4619",
+    "desktop-assignment.png": "8f633403259fec5e336612ea7878e186eaf04a909658710f1ee15fdddc727159",
+    "linux-tests.log": "6ced9c197512174ca92965b501f67a83934a8706e902be5ea66f15875e2a377e",
+    "make-check.log": "446a1ba24a3c7338c1d68ba1ba0b151930a5d0d76231ff0a39dd6c979a22f556",
+    "runtime-tests.log": "53c1b65b2644de7e8d82d7e6793f4db90464c7df8fed92e5e000fabaed36c67b",
+    "macos-inventory.json": "85a0895b4f172f0bbefa8162b6ad962cf24427eebfeebfdcbc93927111704c7d",
+    "reloaded-assignment.txt": "5e74e9ec569430b36428375acd328afd2581e40dcbfbc6b990484099dcde83e8",
+    "http-tests.log": "46b86c021f8dce23f755e2db1a13f1709aec1d796879424cb504de8a0d91318f",
+    "build.log": "d0c2d40bd6d94389f5eb86a39eb72efb39ef166a40e7054e83e17698d7c84466"
+  },
+  "log_normalization": {
+    "operation": "ANSI escapes removed and trailing whitespace trimmed; test results unchanged",
+    "original_sha256": {
+      "build.log": "03a04ac6c91c9ecfeb3ac3b9ccd8b6ff8d7044b1ad59285a6dc0841e3e9d85b2"
+    }
+  }
+}

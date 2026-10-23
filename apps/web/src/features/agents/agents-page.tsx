@@ -12,9 +12,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { api } from "@/lib/api";
+import { AgentThreads } from "./agent-threads";
 
-type Config = { soul: string; instructions: string; model: string };
-type Agent = {
+type CapabilityField = "tool_grants" | "mcp_grants" | "skill_refs";
+type Config = { soul: string; instructions: string; model: string } & Partial<
+  Record<CapabilityField, string[]>
+>;
+const capabilityLabels: Record<CapabilityField, string> = {
+  tool_grants: "Tools",
+  mcp_grants: "Koneksi MCP",
+  skill_refs: "Skills",
+};
+export type Agent = {
   agent_id: string;
   display_name: string;
   handle: string;
@@ -27,6 +36,7 @@ type Listing = {
   items: Agent[];
   models: { id: string; label: string }[];
   next_cursor: string | null;
+  capabilities?: Record<CapabilityField, { id: string; label: string }[]>;
 };
 type Draft = { display_name: string; handle: string; config: Config };
 const empty: Draft = {
@@ -220,6 +230,7 @@ export function AgentsPage() {
             </div>
           )
         )}
+        {data && <AgentThreads agents={data.items} edit={edit} />}
       </div>
       <Dialog
         open={open}
@@ -318,6 +329,51 @@ export function AgentsPage() {
                   ))}
                 </select>
               </label>
+              <details className="rounded-lg border p-4">
+                <summary className="cursor-pointer text-sm font-medium">Kemampuan agent</summary>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Pilih tools, koneksi, dan skills untuk agent ini. Mencabut kemampuan menghentikan
+                  pekerjaan yang masih memakai akses tersebut.
+                </p>
+                {(Object.keys(capabilityLabels) as CapabilityField[]).map((field) => {
+                  const assigned = draft.config[field] ?? [];
+                  const available = data?.capabilities?.[field] ?? [];
+                  const options = [
+                    ...available,
+                    ...assigned
+                      .filter((id) => !available.some((item) => item.id === id))
+                      .map((id) => ({ id, label: `${id} (tidak tersedia)` })),
+                  ];
+                  return (
+                    <fieldset key={field} className="mt-4 space-y-2">
+                      <legend className="text-sm font-medium">{capabilityLabels[field]}</legend>
+                      {options.length === 0 && (
+                        <p className="text-sm text-muted-foreground">Belum ada yang tersedia.</p>
+                      )}
+                      {options.map((item) => (
+                        <label key={item.id} className="flex items-center gap-2 text-sm">
+                          <input
+                            type="checkbox"
+                            checked={assigned.includes(item.id)}
+                            onChange={(event) =>
+                              setDraft({
+                                ...draft,
+                                config: {
+                                  ...draft.config,
+                                  [field]: event.target.checked
+                                    ? [...assigned, item.id]
+                                    : assigned.filter((id) => id !== item.id),
+                                },
+                              })
+                            }
+                          />
+                          {item.label}
+                        </label>
+                      ))}
+                    </fieldset>
+                  );
+                })}
+              </details>
             </fieldset>
             {error && (
               <div role="alert" className="space-y-2 text-sm text-destructive">

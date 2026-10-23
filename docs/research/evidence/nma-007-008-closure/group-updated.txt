@@ -1,0 +1,25 @@
+- generic
+  - dialog "Grup · Riset bersama"
+    - heading "Grup · Riset bersama" [level=2, ref=e1]
+    - paragraph
+      - StaticText "Profil agent diperbarui bersama di DM dan grup. Riwayat tiap percakapan tetap terpisah."
+    - article
+      - heading "Writer" [level=3, ref=e3]
+      - paragraph
+        - StaticText "@writer · Aktif"
+      - paragraph
+        - StaticText "Ringkas dan jelas."
+      - button "Edit Writer" [ref=e4]
+        - StaticText "Edit Writer"
+    - article
+      - heading "Researcher utama" [level=3, ref=e5]
+      - paragraph
+        - StaticText "@researcher · Aktif"
+      - paragraph
+        - StaticText "Identitas bersama yang diperbarui."
+      - button "Edit Researcher utama" [ref=e6]
+        - StaticText "Edit Researcher utama"
+    - paragraph
+      - StaticText "Susunan agent tersimpan. Pengiriman pesan belum tersedia di sini."
+    - button "Tutup" [ref=e2]
+      - StaticText "Tutup"

@@ -30,7 +30,12 @@ class Command(BaseModel):
     schema_version: str
     command_id: UUID
     type: Literal[
-        "agent.create", "agent.configure", "agent.disable", "agent.archive", "agent.restore"
+        "agent.create",
+        "agent.configure",
+        "agent.disable",
+        "agent.archive",
+        "agent.restore",
+        "thread.create",
     ]
     expected_revision: str | None = Field(pattern=r"^[1-9][0-9]{0,18}$")
     payload: dict
@@ -43,11 +48,16 @@ def canonical(value):
 def failure(code, command_id, details=None):
     status = {
         "NOT_FOUND": 404,
+        "AGENT_UNAVAILABLE": 409,
+        "CONNECTOR_UNAVAILABLE": 422,
         "UNAUTHENTICATED": 401,
         "INVALID_REQUEST": 422,
         "REQUEST_TOO_LARGE": 413,
         "RESPONSE_TOO_LARGE": 502,
         "MODEL_UNAVAILABLE": 422,
+        "CAPABILITY_UNAVAILABLE": 422,
+        "CAPABILITY_DENIED": 403,
+        "ACCESS_REVOKED": 409,
         "INVALID_TRANSITION": 409,
         "REVISION_CONFLICT": 409,
         "HANDLE_CONFLICT": 409,
@@ -130,5 +140,33 @@ async def agents(
             "type": "agent.list",
             "expected_revision": None,
             "payload": {"after": str(after) if after else None, "limit": limit},
+        },
+    )
+
+
+@router.get("/threads/{thread_id}")
+async def thread(thread_id: UUID, account: AccountDep):
+    return await forward(
+        str(account.id),
+        {
+            "schema_version": "nma.v1",
+            "command_id": str(uuid4()),
+            "type": "thread.read",
+            "expected_revision": None,
+            "payload": {"thread_id": str(thread_id)},
+        },
+    )
+
+
+@router.get("/threads")
+async def threads(account: AccountDep, after: UUID | None = None):
+    return await forward(
+        str(account.id),
+        {
+            "schema_version": "nma.v1",
+            "command_id": str(uuid4()),
+            "type": "thread.list",
+            "expected_revision": None,
+            "payload": {"after": str(after) if after else None},
         },
     )

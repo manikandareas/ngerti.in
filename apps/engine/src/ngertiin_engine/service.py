@@ -20,7 +20,7 @@ from ngertiin_engine.contracts import (
     canonical,
     uuid,
 )
-from ngertiin_engine.store import AGENT_CHECKSUM, CHECKSUM
+from ngertiin_engine.store import AGENT_CHECKSUM, CHECKSUM, THREAD_CHECKSUM
 
 logger = logging.getLogger(__name__)
 
@@ -47,14 +47,21 @@ def main():
                     "SELECT checksum FROM nma_schema_migrations WHERE owner_id=? AND version=1",
                     (owner,),
                 ).fetchone()
-                if version not in (1, 2) or not checksum or checksum[0] != CHECKSUM:
+                if version not in (1, 2, 3) or not checksum or checksum[0] != CHECKSUM:
                     raise EngineError("UNSUPPORTED_SCHEMA")
-                if version == 2:
+                if version >= 2:
                     agent_checksum = db.execute(
                         "SELECT checksum FROM nma_schema_migrations WHERE owner_id=? AND version=2",
                         (owner,),
                     ).fetchone()
                     if not agent_checksum or agent_checksum[0] != AGENT_CHECKSUM:
+                        raise EngineError("UNSUPPORTED_SCHEMA")
+                if version >= 3:
+                    saved = db.execute(
+                        "SELECT checksum FROM nma_schema_migrations WHERE owner_id=? AND version=3",
+                        (owner,),
+                    ).fetchone()
+                    if not saved or saved[0] != THREAD_CHECKSUM:
                         raise EngineError("UNSUPPORTED_SCHEMA")
     key = Path(os.environ["NMA_SERVICE_KEY_FILE"]).read_bytes()
     if len(key) < 32:
@@ -69,6 +76,16 @@ def main():
         if os.environ.get("NMA_MODELS_FILE")
         else {}
     )
+    from ngertiin_engine.capabilities import (
+        authorize,
+        install_discovery_guard,
+        install_dispatch_guard,
+    )
+    from ngertiin_engine.redaction import install
+
+    install()
+    install_dispatch_guard(database, owner)
+    install_discovery_guard()
     from gateway import run
     from gateway.session_authorities import active_authority
 
@@ -82,6 +99,43 @@ def main():
             if policy and policy.config().get("nma_persona"):
                 return None
             return super()._get_system_prompt_for_channel(*args, **kwargs)
+
+        async def _run_agent(
+            self, message, context_prompt, history, source, session_id, **kwargs
+        ):
+            from gateway.session_policy import policy_for_source
+
+            policy = policy_for_source(self, source)
+            marker = (
+                policy.config(secrets=False).get("nma_capabilities") if policy else None
+            )
+            if marker:
+                try:
+                    servers = authorize(marker, database, owner)
+                    if servers:
+                        from gateway.session_local_mcp import attach_editor_mcp
+
+                        attach_editor_mcp(active_authority(self), policy, servers)
+                except EngineError:
+                    from ngertiin_engine.agents import Agents
+                    from ngertiin_engine.store import Store
+
+                    store = Store(active_authority(self), owner)
+                    store.write(
+                        lambda conn: Agents(store, {}).fence(conn, marker["agent_id"])
+                    )
+                    return {
+                        "final_response": "",
+                        "messages": [],
+                        "api_calls": 0,
+                        "tools": [],
+                        "failed": True,
+                        "completed": False,
+                        "error": "ACCESS_REVOKED",
+                    }
+            return await super()._run_agent(
+                message, context_prompt, history, source, session_id, **kwargs
+            )
 
         async def start(self):
             started = await super().start()

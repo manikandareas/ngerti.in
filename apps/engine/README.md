@@ -92,7 +92,7 @@ Body fields are `schema_version: nma.v1`, UUID `command_id`, `type`, `expected_r
 
 Mutations store canonical command digest and pending outbox identity before native dispatch, then mark applied and append a domain receipt event in one extension transaction. Native admission uses the same operation ID on retry. Identical retries return the stored receipt; changed bodies conflict. An acknowledgement timeout is unknown, so retry the **same** command ID. Pending outbox rows are retained; no background semantic retry loop is introduced. NMA-010 implements complete crash reconciliation and domain run/descendant fencing.
 
-The gateway's writer owns all `nma_*` mutations and checks the native epoch and partition. Migration 1 is additive, checksum-versioned and transactionally applied. Foreign keys are required. `nma_adapter_bindings/runs` are temporary integration mappings, not replacements for the full domain tables assigned to later slices. Thread APIs and PostgreSQL projections remain downstream; the agent API is documented below.
+The gateway's writer owns all `nma_*` mutations and checks the native epoch and partition. Migration 1 is additive, checksum-versioned and transactionally applied. Foreign keys are required. `nma_adapter_bindings/runs` are temporary integration mappings, not replacements for the full domain tables assigned to later slices. Foundation thread identity APIs are documented below; message delivery and PostgreSQL projections remain downstream.
 
 ## Operations, provenance and upgrade
 
@@ -187,3 +187,143 @@ Wire budgets apply to encoded canonical JSON: 2 MiB per signed request and 16 Mi
 Canonical encoding and command hashes remain stable. The API rejects oversized requests with
 HTTP 413 (`REQUEST_TOO_LARGE`, `retryable=false`) before opening the engine socket. Agent listing
 also caps each page at 4 MiB; a page may contain fewer rows than requested, so follow `next_cursor`.
+
+## Per-agent capabilities (NMA-008)
+
+Agent `config` accepts optional `tool_grants`, `mcp_grants`, and `skill_refs` arrays
+of server catalog IDs (at most 16 unique IDs per category). Omitted arrays mean no
+grants. `agent.configure` replaces the complete config; retain the arrays on an
+unrelated edit. `/agents` exposes these selections under **Kemampuan agent**. The
+agent listing exposes catalog IDs/labels only. Clients cannot supply server paths,
+headers, connector URLs, toolset names, or secret values as capability definitions.
+
+Set `NMA_CAPABILITIES_FILE` to an owner-partition-specific private catalog, for example:
+
+```json
+{
+  "tool_grants": {
+    "tasks": {"enabled": true, "label": "Task list", "toolset": "todo"}
+  },
+  "mcp_grants": {
+    "research": {"enabled": true, "label": "Research connector", "server_file": "/secrets/research.json"}
+  },
+  "skill_refs": {
+    "citations": {"enabled": true, "label": "Citations", "content": "Cite original sources for factual claims."}
+  }
+}
+```
+
+The separate private connector file uses the pinned native HTTP specification:
+
+```json
+{
+  "type": "http",
+  "name": "research",
+  "url": "https://connector.example/mcp",
+  "headers": [{"name": "Authorization", "value": "Bearer SERVER_MANAGED_SECRET"}]
+}
+```
+
+Provision actual credentials outside Git and outside public request bodies. Keep
+catalog and credential files owner-readable only and replace them atomically.
+Server names must be unique within an assigned set. URLs with embedded userinfo,
+query strings, or fragments are refused. The current supported native toolset is
+`todo`; MCP uses HTTP; assigned skills are bounded instruction text, composed after
+identity/soul/instructions. Host terminal/files/browser, MCP stdio/SSE, executable
+skill assets and a public credential-management UI are not implemented here. These
+are explicit transport/executor coverage boundaries, not a new initiative policy.
+NMA-022/023 must review additional capabilities against their executor/isolation
+contracts before extending this support matrix.
+
+The foundation builder selects upstream-locked ACP/MCP extras. Native
+session-scoped MCP registration depends on ACP schema types even though the
+product does not expose an ACP client. Test dependencies belong to the separate
+verification environment. See the foundation packaging profile above and its
+platform inventories for the exact shipped set.
+
+Assignment revisions snapshot catalog fingerprints, toolsets and skill text in the
+existing immutable config JSON; secrets stay in memory and private credential
+files. This needs no new table or modification to migration 1/2 checksums. Each
+agent/thread/config/context binding gets its own native MCP scope and generated
+tool names. The native session manifest is stored, but transport credentials are
+not. On restart the runner reattaches only the matching live private specification.
+Discovery failure returns `CONNECTOR_UNAVAILABLE` instead of silently omitting an
+assigned server. The pinned native preflight can time out against a HEAD-405/GET-SSE
+endpoint; expose a bounded HEAD response or treat that connector as unavailable.
+
+Adding grants affects new config revisions only. Removing any grant atomically
+increments `access_generation`, records unfinished-run fences and then requests
+native cancellation. Old snapshots cannot override those fences. The runner checks
+live generation and catalog/credential fingerprints before model execution; the
+final native tool dispatch checks them again before calling a handler. A credential
+file missing/changed or a disabled/changed catalog entry denies new resolution.
+Observed queued revocation records a durable cancellation fence before returning.
+An external effect already dispatched before revocation cannot be undone. Do not
+restore an identical removed credential as a revocation workflow: remove the agent
+grant first so its durable generation advances, then remove/rotate credentials;
+regrant explicitly in a new config revision when intended. Full external credential
+lifecycle, group membership and effect reconciliation remain NMA-023/010.
+
+Exact known connector header values are redacted from native logs and tool results
+before they enter model context. This is not a claim to detect arbitrary transformed
+secrets from malicious remote services. Only provision trusted connectors. The
+private service and owner-partition boundary remain mandatory; no host sandbox or
+multi-tenant process isolation is claimed by a native profile or session scope.
+
+Upgrades must re-review `session_local_mcp`, `model_tools._execute_tool`,
+`GatewayRunner._run_agent`, and the registry/transport paths in addition to earlier
+seams. Source hashes are pinned. Run the real runtime capability tests, HTTP tests,
+and browser walkthrough before rollout. Back up the full owner volume plus catalog
+and credential references consistently. Rollback preserves configs and fences;
+older code must not interpret capability-bearing configs as unrestricted sessions.
+
+
+## DM/group identity consumers and migration 3
+
+Migration 3 adds owner-bound `nma_threads` and `nma_memberships` without modifying
+migration 1/2 or native session history. `thread.create` accepts only `kind`,
+`title` and ordered `agent_ids`: one active agent for DM, 2–6 distinct active agents
+for a group. The owner is implicit in the signed request; other humans and foreign
+agent identities cannot be supplied. Accepted and rejected create receipts are
+idempotent; changing a body under the same command ID conflicts.
+
+The authenticated API exposes `POST /api/agent-engine/v1/commands` for
+`thread.create`, `GET /api/agent-engine/v1/threads?after=<uuid>` for summaries,
+and `GET /api/agent-engine/v1/threads/<uuid>` for current identities. Lists use
+50-item cursor pages. Reads resolve the same authoritative agent records used by
+configuration CRUD; no channel-specific profile copy is stored. Archive preserves
+identity on existing rosters and blocks new work. Registered runtime bindings
+validate membership and context generation before admission. Public callers still
+cannot submit private runtime commands or provision the foundation test bindings.
+
+The `/agents` DM/group setup and detail dialogs consume these APIs and display
+shared profile changes after reload/restart. They explicitly do not offer message
+sending yet. DM streaming/replay remains NMA-011; membership edits, durable
+multi-author transcript and queued membership revocation remain NMA-017. These
+identity consumers do not implement or claim those downstream contracts.
+
+Before upgrading a schema-2 partition, stop ingress and its native owner and take
+an offline consistent backup of the complete state/secret references/workspaces.
+Startup applies migration 3 through the existing epoch-fenced writer. Unknown or
+changed checksums refuse startup before ownership is advanced. Earlier binaries
+refuse schema 3; rollback means restoring a complete pre-upgrade backup into an
+isolated partition after fencing the current owner, never dropping the new tables
+or mixing old code with the newer database. No production migration was run.
+
+## MCP discovery credential boundary
+
+The integration also wraps the pinned native `session_local_mcp._borrowed` seam.
+Exact known connector header values in discovered names/descriptions/schemas are
+rejected with the native discovery-failure code before staging, refreeze or
+execution can consume them. The guard covers initial discovery and post-restart
+rediscovery, while preserving native schema fingerprints and dispatch ownership.
+A connector must correct secret-bearing metadata before it is usable; metadata
+is not silently rewritten into a different callable schema. Result/log redaction
+continues to protect exact known values in returned data and errors.
+
+This does not promise detection of transformed/encoded secrets from a malicious
+connector. Only trusted server-provisioned connectors are supported. Earlier
+verification databases containing synthetic leaked fixture values are historical
+reproduction artifacts, not production partitions. No real credential was used
+in the regression. See the closure report for the current support matrix and
+initial-discovery/restart checks covering SQLite/WAL, logs and provider requests.

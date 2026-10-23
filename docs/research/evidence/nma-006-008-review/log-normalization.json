@@ -1,0 +1,6 @@
+{
+  "operation": "ANSI escapes removed and trailing whitespace trimmed; original failure preserved",
+  "original_sha256": {
+    "schema-leak.log": "d16cce3f483267f01ad8872e91d36e0c55e920db8747f6b66f0cd50208f3e31b"
+  }
+}

@@ -6,6 +6,7 @@ import sqlite3
 from datetime import UTC, datetime
 from uuid import uuid4
 
+from ngertiin_engine.capabilities import FIELDS, public_catalog, resolve
 from ngertiin_engine.contracts import (
     AGENT_PAGE_BYTES,
     EngineError,
@@ -65,6 +66,7 @@ class Agents:
             result[key] = str(result[key])
         result["config"] = json.loads(result["config"])
         result["config"].pop("runtime_model", None)
+        result["config"].pop("runtime_capabilities", None)
         return result
 
     def listing(self, payload):
@@ -84,6 +86,7 @@ class Agents:
             page = {
                 "items": [],
                 "next_cursor": None,
+                "capabilities": public_catalog(),
                 "models": [
                     {"id": key, "label": value.get("label", key)}
                     for key, value in self.models.items()
@@ -120,11 +123,11 @@ class Agents:
             r"[a-z][a-z0-9_-]{0,39}", handle
         ):
             raise EngineError("INVALID_REQUEST")
-        if not isinstance(config, dict) or set(config) != {
-            "soul",
-            "instructions",
-            "model",
-        }:
+        if (
+            not isinstance(config, dict)
+            or not {"soul", "instructions", "model"} <= set(config)
+            or set(config) - {"soul", "instructions", "model", *FIELDS}
+        ):
             raise EngineError("INVALID_REQUEST")
         if any(
             not isinstance(config[k], str) or len(config[k]) > 16000
@@ -133,10 +136,15 @@ class Agents:
             raise EngineError("INVALID_REQUEST")
         if not isinstance(config["model"], str) or config["model"] not in self.models:
             raise EngineError("MODEL_UNAVAILABLE")
+        capabilities, _ = resolve(config)
         return (
             name.strip(),
             handle,
-            {**config, "runtime_model": self.models[config["model"]]},
+            {
+                **config,
+                "runtime_model": self.models[config["model"]],
+                "runtime_capabilities": capabilities,
+            },
         )
 
     def mutate(self, body):
@@ -234,6 +242,16 @@ class Agents:
                 ):
                     raise EngineError("INVALID_REQUEST")
                 name, handle, config = self.validate_config(p)
+                removed = any(
+                    set(agent["config"].get(field, [])) - set(config.get(field, []))
+                    for field in FIELDS
+                )
+                if removed:
+                    conn.execute(
+                        "UPDATE nma_agents SET access_generation=access_generation+1 WHERE owner_id=? AND agent_id=?",
+                        (owner, agent_id),
+                    )
+                    self.fence(conn, agent_id)
                 config_revision = int(agent["config_revision"]) + 1
                 conn.execute(
                     "INSERT INTO nma_agent_configs VALUES (?,?,?,?,?)",
@@ -263,10 +281,7 @@ class Agents:
                 else:
                     raise EngineError("INVALID_TRANSITION")
                 if status != "active":
-                    conn.execute(
-                        "INSERT OR IGNORE INTO nma_agent_run_fences SELECT r.owner_id,r.run_id,? FROM nma_adapter_runs r JOIN nma_adapter_bindings b ON b.owner_id=r.owner_id AND b.binding_id=r.binding_id LEFT JOIN session_admissions n ON n.admission_id=r.native_admission_id WHERE r.owner_id=? AND json_extract(b.config,'$.agent_id')=? AND (n.status IS NULL OR n.status!='terminal')",
-                        (agent_id, owner, agent_id),
-                    )
+                    self.fence(conn, agent_id)
                 if kind == "agent.restore":
                     conn.execute(
                         "INSERT INTO nma_agent_configs SELECT owner_id,agent_id,config_revision+1,config,? FROM nma_agent_configs WHERE owner_id=? AND agent_id=? AND config_revision=?",
@@ -281,3 +296,9 @@ class Agents:
                     (status, revision, now, owner, agent_id),
                 )
         return self.get(conn, agent_id)
+
+    def fence(self, conn, agent_id):
+        conn.execute(
+            "INSERT OR IGNORE INTO nma_agent_run_fences SELECT r.owner_id,r.run_id,? FROM nma_adapter_runs r JOIN nma_adapter_bindings b ON b.owner_id=r.owner_id AND b.binding_id=r.binding_id LEFT JOIN session_admissions n ON n.admission_id=r.native_admission_id WHERE r.owner_id=? AND json_extract(b.config,'$.agent_id')=? AND (n.status IS NULL OR n.status!='terminal')",
+            (agent_id, self.store.owner, agent_id),
+        )

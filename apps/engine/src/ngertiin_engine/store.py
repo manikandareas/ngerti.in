@@ -9,6 +9,7 @@ import json
 
 from ngertiin_engine.agents import DDL as AGENT_DDL
 from ngertiin_engine.contracts import EngineError, canonical, digest
+from ngertiin_engine.threads import DDL as THREAD_DDL
 
 DDL = (
     "CREATE TABLE nma_partition (owner_id TEXT PRIMARY KEY, authority_epoch INTEGER NOT NULL, schema_version INTEGER NOT NULL, singleton INTEGER NOT NULL DEFAULT 1 UNIQUE CHECK(singleton=1))",
@@ -21,6 +22,7 @@ DDL = (
 )
 AGENT_CHECKSUM = hashlib.sha256("\n".join(AGENT_DDL).encode()).hexdigest()
 CHECKSUM = hashlib.sha256("\n".join(DDL).encode()).hexdigest()
+THREAD_CHECKSUM = hashlib.sha256("\n".join(THREAD_DDL).encode()).hexdigest()
 
 
 class Store:
@@ -70,7 +72,7 @@ class Store:
                 "SELECT checksum FROM nma_schema_migrations WHERE owner_id=? AND version=1",
                 (self.owner,),
             ).fetchone()
-            if rows[0][2] not in (1, 2) or not saved or saved[0] != CHECKSUM:
+            if rows[0][2] not in (1, 2, 3) or not saved or saved[0] != CHECKSUM:
                 raise EngineError("UNSUPPORTED_SCHEMA")
             if rows[0][1] > self.authority.epoch:
                 raise EngineError("AUTHORITY_LOST")
@@ -94,6 +96,23 @@ class Store:
                 (self.owner,),
             ).fetchone()
             if not saved or saved[0] != AGENT_CHECKSUM:
+                raise EngineError("UNSUPPORTED_SCHEMA")
+
+        version = conn.execute("SELECT schema_version FROM nma_partition").fetchone()[0]
+        if version == 2:
+            for statement in THREAD_DDL:
+                conn.execute(statement)
+            conn.execute(
+                "INSERT INTO nma_schema_migrations(owner_id,version,checksum) VALUES (?,3,?)",
+                (self.owner, THREAD_CHECKSUM),
+            )
+            conn.execute("UPDATE nma_partition SET schema_version=3")
+        else:
+            saved = conn.execute(
+                "SELECT checksum FROM nma_schema_migrations WHERE owner_id=? AND version=3",
+                (self.owner,),
+            ).fetchone()
+            if not saved or saved[0] != THREAD_CHECKSUM:
                 raise EngineError("UNSUPPORTED_SCHEMA")
 
     def receipt(self, body):

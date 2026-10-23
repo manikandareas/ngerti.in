@@ -41,7 +41,7 @@ class Model(BaseHTTPRequestHandler):
             (m.get("content", "") for m in reversed(messages) if m["role"] == "user"),
             "",
         )
-        if text == "BLOCK_STARTED":
+        if text in {"BLOCK_STARTED", "BLOCK_TOOL"}:
             self.server.blocked.set()
             self.server.release.wait(60)
         if text == "FAIL_PROVIDER":
@@ -51,7 +51,9 @@ class Model(BaseHTTPRequestHandler):
                 b'{"error":{"message":"Synthetic denied provider","type":"authentication_error"}}'
             )
             return
-        tool = text == "USE_TOOL" and messages[-1]["role"] != "tool"
+        tool = (
+            text in {"USE_TOOL", "BLOCK_TOOL"} or text.startswith("CALL_TOOL:")
+        ) and messages[-1]["role"] != "tool"
         message = {"role": "assistant", "content": "RECOVERY_ACK_" + str(text)}
         if tool:
             message = {
@@ -67,8 +69,12 @@ class Model(BaseHTTPRequestHandler):
                                 {
                                     "calls": [
                                         {
-                                            "name": "todo_list",
-                                            "arguments": {
+                                            "name": text.split(":", 1)[1]
+                                            if text.startswith("CALL_TOOL:")
+                                            else "todo_list",
+                                            "arguments": {}
+                                            if text.startswith("CALL_TOOL:")
+                                            else {
                                                 "todos": [
                                                     {
                                                         "id": "proof",
@@ -198,9 +204,11 @@ def runtime(tmp_path_factory):
         "OPENAI_BASE_URL": url,
         "NMA_OWNER_ID": OWNER,
         "NMA_MODELS_FILE": str(root / "models.json"),
+        "NMA_CAPABILITIES_FILE": str(root / "capabilities.json"),
         "NMA_SERVICE_KEY_FILE": str(root / "key"),
         "NMA_BINDINGS_FILE": str(root / "bindings.json"),
     }
+    (root / "capabilities.json").write_text("{}")
     processes = []
 
     def start():
@@ -554,9 +562,15 @@ def test_agent_additive_migration_from_foundation(runtime):
     # Reconstruct the exact empty agent slice predecessor in this disposable fixture.
     with sqlite3.connect(root / "state/state.db") as db:
         before = db.execute("SELECT count(*) FROM nma_commands").fetchone()[0]
-        for table in ("nma_agent_run_fences", "nma_agent_configs", "nma_agents"):
+        for table in (
+            "nma_memberships",
+            "nma_threads",
+            "nma_agent_run_fences",
+            "nma_agent_configs",
+            "nma_agents",
+        ):
             db.execute(f"DROP TABLE {table}")
-        db.execute("DELETE FROM nma_schema_migrations WHERE version=2")
+        db.execute("DELETE FROM nma_schema_migrations WHERE version>=2")
         db.execute("UPDATE nma_partition SET schema_version=1")
     start()
     assert (
@@ -564,7 +578,7 @@ def test_agent_additive_migration_from_foundation(runtime):
         == []
     )
     with sqlite3.connect(root / "state/state.db") as db:
-        assert db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 2
+        assert db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 3
         assert db.execute("SELECT count(*) FROM nma_commands").fetchone()[0] == before
         assert db.execute("PRAGMA foreign_key_check").fetchall() == []
 

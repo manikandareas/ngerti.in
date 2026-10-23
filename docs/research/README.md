@@ -3,6 +3,10 @@
 Keputusan pivot aktif berada di [Ngertiin Multi Agent di Notion](https://app.notion.com/p/402abdd6187381e3a720f4b01d824e1a) dan [backlog NMA](https://app.notion.com/p/116e1edcee864b5da91887466d728aac). [Produk & Scope V1](../product/01-produk-dan-paket.md), [spesifikasi runtime V1](../product/04-arsitektur-dan-delivery.md) dan [backlog V1](../backlog/README.md) tetap menjadi konteks historis. Riset di sini mendukung keputusan dan menyimpan batas verifikasi; bukan sumber roadmap paralel.
 
 - [NMA-001 · Audit runtime Hermes dan provenance](nma-001-hermes-runtime-audit.md): setup terulang, dua profile dan hosted room dengan model nyata, restart/dedup, hasil test upstream, inventaris dependency/lisensi, dan gap runtime untuk ADR.
+- [NMA-003 · Repository reuse and engine boundary audit](nma-003-repository-reuse-audit.md): source-backed reuse/replace/retire matrix, data preservation, coupling evidence and proposed engine location; no runtime or data changes.
+- [NMA-004 · Engine integration and proactivity ADRs](nma-004-engine-integration-adrs.md): single Hermes service authority, conversational capture, canonical routing, durable triggers, design traces and explicit production gates.
+- [NMA-005 · Domain, persistence and API contract](nma-005-domain-contract.md): ADR-03, owner-scoped entities, privacy, generations, storage boundaries, command/event examples and additive migration plan.
+- [NMA-006 · Isolated runtime adapter](nma-006-runtime-adapter.md): separately packaged Hermes authority adapter, real-runtime contracts, partition bootstrap, provenance and explicit production gates.
 
 - [Bukti Riset & REA per modul](muse-ai-v1/README.md): chat/session, task/scheduler, file/artifact, memory/goals, permissions dan browser/computer.
 - [Mesin privat: Daytona, VNC dan takeover](agent-private-machine-options-2026-10-18.md): snapshot dokumen vendor sebelum trial NG-031.

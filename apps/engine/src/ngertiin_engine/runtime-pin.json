@@ -1,0 +1,24 @@
+{
+  "revision": "7489b22af47ce91b366dde81d5831ea422577498",
+  "archive_sha256": "8bb5bc691b509caa847b4e388258be2adec297f06b1ee01f56c9a742eb043d95",
+  "python": "3.14.9",
+  "source_hashes": {
+    "uv.lock": "f1609519f30dac8886b03e60693e36fa75e033fa3e7259c8c8befe8fb6e34460",
+    "pm/lock.json": "40b06778980ff8c50dcd97c0d9b39ba3eb4a7a242ea62eaeaaa9a90d68ea1a85",
+    "pyproject.toml": "68325d6717bd4ebc3a7b015c5150bea4d5600c612259b9b7393e964caa828761",
+    "gateway/run.py": "045d930e78d4dea03b958fbbe21ce6b0a247d713021dbd537adbce5b9d44f983",
+    "gateway/run_bootstrap.py": "e2a822312dcb04176522d4419756c048d02d6e4df07c2ee74e157ece6bdffc3f",
+    "gateway/session_authority.py": "f6eba4d4e17f35e9bcaaf664d1dece93bca8ceccddba3d6d2ad99aa7983bb15f",
+    "gateway/session_local.py": "8597e45697177c3caa206103bdc5c7fda0f55050707e27ca01fed5bfd586fd90",
+    "gateway/session_policy.py": "f8daa799f7b2c16fb936863cfdac04b2b01959184121cec70dd220d8678a7b74",
+    "gateway/session_managed_worker.py": "0d2bed13ce549ac192b9f49653a77a68851de544a3416050a5d80cdea08920fa",
+    "gateway/session_events.py": "a7d6493001bfd161175f7dda8485f35535ff0c5fdf1a3bc96209ff82a4496804",
+    "hermes_state.py": "e507ebd78b870364fd2fced94212592380cd26d0d39eec67547ed9bc233ebb98",
+    "hermes_state_runtime.py": "1553a9e5091413092dd30d7613b9aaa7338919bfc5a5d3ac3f4cf8c57de4411b"
+  },
+  "source_patches": [],
+  "integration_seams": [
+    "GatewayRunner subclass installed before native bootstrap; overrides start/stop only"
+  ],
+  "optional_extras": []
+}

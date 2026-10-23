@@ -1,0 +1,91 @@
+{
+  "date": "2026-10-23",
+  "scope": "NMA-006 isolated runtime adapter",
+  "baseline_commit": "0660ac5a4467ffb56481bdff5ea7a56c3c07c334",
+  "hermes_revision": "7489b22af47ce91b366dde81d5831ea422577498",
+  "macos": {
+    "passed": 10,
+    "failed": 0,
+    "python": "3.14.9",
+    "sqlite": "3.53.1",
+    "journal_mode": "wal",
+    "command": "HERMES_SOURCE=\"$PWD/.dev/nma-001/source\" PYTHONPATH=\"$PWD/apps/engine/src\" .dev/nma-001/runtime/bin/python -m pytest apps/engine/tests -q -s"
+  },
+  "linux": {
+    "status": "passed",
+    "passed": 10,
+    "failed": 0,
+    "warnings": [
+      "Pytest cache directory is not writable under the non-root image user; tests and runtime state were unaffected"
+    ],
+    "python": "3.14.9",
+    "sqlite": "3.53.1",
+    "journal_mode": "wal",
+    "architecture": "aarch64",
+    "non_root_uid": 10001,
+    "command": "docker build --target evidence --output type=local,dest=.dev/nma-006-linux apps/engine",
+    "base_manifest": "sha256:f21c0d5a44c56805654c15abccc1b2fd576c8d93aca0a3f74b4aba2dc92510e2",
+    "artifact": "BuildKit evidence target; no runtime image export or deployment claimed for the final source"
+  },
+  "review": "author self-review; no independent review",
+  "live_provider": false,
+  "production_enabled": false,
+  "legacy_backend_changes": false,
+  "source_patches": [],
+  "initial_failures": [
+    "Unix socket path exceeded macOS limit; test fixtures now use short /tmp roots and service emits explicit path error",
+    "Fixture initially called deferred todo_list directly; corrected to pinned tool_call dispatcher after inspecting actual native receipt",
+    "Initial verification image selected test group without dev group, so pytest was absent; corrected upstream group selection",
+    "GitHub returned HTTP 429 on repeated source download; build now consumes cached hash-verified archive",
+    "Docker image export ran out of storage; verification target avoids duplicate image unpacking and removes build-only caches"
+  ],
+  "remaining_gates": [
+    "Dependency distribution clearance (pillow-heif bundled codec notices; missing fetch-use/firecrawl-anydoc packaged notices)",
+    "Full domain configuration/capability/memory integration NMA-007 through NMA-009",
+    "Durable partition replay and complete command/outbox crash reconciliation NMA-010",
+    "Cross-owner executor isolation and revocation NMA-023; release/cutover gates"
+  ],
+  "artifact_hashes": {
+    "apps/engine/Dockerfile": "6f7d6d21bfd31f46c81f69bf3932730a6f7929c7ff55116ef26e9abe5cacff5c",
+    "apps/engine/README.md": "0dde0227f8ea42e8f03f98b9f2c772e43828cc71af0caec23abc2a59d9a2f872",
+    "apps/engine/collect_inventory.py": "73a245b1a861347c8c1ace93286d44d3d38f6cf450b2704057dd169a85575406",
+    "apps/engine/fetch_runtime.py": "32ab83f951487ab377e6eb67e036c375d2577c64707b43f779cee49fba500664",
+    "apps/engine/pyproject.toml": "cca0c5f77d1857ce86b8a7defd9ebf6f1d3c6c788598e8018025643dd01b506f",
+    "apps/engine/src/ngertiin_engine/__init__.py": "4064e84d1acb1ffa1e8097c5af6566b57929ce94cb0c67c80b64945dec02770f",
+    "apps/engine/src/ngertiin_engine/adapter.py": "5b488639a644e0e6d1ee089aff4137a5a4bbe7babfa420591a0189475b8717e5",
+    "apps/engine/src/ngertiin_engine/contracts.py": "8e22a9f32d7f6ed10f4d92927a88d357304b2c637ad9546e1abaaa0a18f6bc0d",
+    "apps/engine/src/ngertiin_engine/runtime-pin.json": "4d6e32cacc6fb3cb5fb14ba50c05038f42912620cff9da1c51fd53d18fa88e9c",
+    "apps/engine/src/ngertiin_engine/runtime.py": "fa3cca5ac70ea64a65706bd63bfe6f9e4cff2b7947598bc2c152d0f535cdacab",
+    "apps/engine/src/ngertiin_engine/service.py": "a8c408c9df6200e30f5c963e476560c06e2ea2ab791dba15b90f4f4733a1cf98",
+    "apps/engine/src/ngertiin_engine/store.py": "ce10ec4c71f5c50c34fa4e6e2e12ed81ccf3d341813fd1c681775685a3ecd088",
+    "apps/engine/tests/test_runtime.py": "bb6762b9c8e7eb292d297f316596aa72494beb93e347b6090a25f885fb160e23",
+    "apps/engine/uv.lock": "e91df0c70a0cbdc0f884e104769b93da2145c914d611ad384d3ad56bd2b65843"
+  },
+  "status": "Review: adapter contracts passed; production distribution clearance remains open",
+  "checks": {
+    "ruff_check": "passed",
+    "ruff_format": "passed",
+    "uv_lock_check": "passed",
+    "wheel_and_sdist": "passed",
+    "wheel_contains_runtime_pin": true,
+    "docs_check": "71 page hashes, 47 tickets, 4 views, 1265 local links OK",
+    "git_diff_check": "passed"
+  },
+  "evidence_hashes": {
+    "docs-check.log": "2be1f92809d1761b244074b08f499ff7c4a1dfaed908ecacbd1fe5cb59fd2f26",
+    "failed-image-export.log": "16613c7c111fa2162c3197ae90afac78d5769917986c08f5320d3031d7925f93",
+    "linux-build.log": "d399ac785a9283c702b5f4a8b909a00bbab313e2be11a3c39369538bf4092b6b",
+    "linux-runtime-inventory.json": "7fa5182cbf79c4dff20b424fe864a279110c9ce7a0d1b75f5610e0625d5f99bd",
+    "linux-tests.log": "b784b9b1c376a041646639eda9dc4e10b84cd12855e7bc8097a04ccd631de6c2",
+    "macos-runtime-inventory.json": "70621a4096b12aa5e63b771477c9b8ce31808a5fcb080ce60710825ee987b13d",
+    "macos-tests.log": "df7b99ca5211b2f2c334ef00592235879c3a08d881bfdfe6fccef25bbcffd248",
+    "package-build.log": "098f4a43a2b44e13a434dd3cc29168a6323313d99e3229dc1fc11a29deafca59"
+  },
+  "notion_readback": {
+    "url": "https://app.notion.com/p/402abdd6187381d899d0c98b4bf081d7",
+    "status": "Review",
+    "checked_acceptance_items": 4,
+    "full_report_verified": true,
+    "packaging_gate_visible": true
+  }
+}

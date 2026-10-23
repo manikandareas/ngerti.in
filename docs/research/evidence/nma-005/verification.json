@@ -1,0 +1,94 @@
+{
+  "date": "2026-10-23",
+  "kind": "Documentation and illustrative contract consistency validation; not runtime tests",
+  "baseline_commit": "0660ac5a4467ffb56481bdff5ea7a56c3c07c334",
+  "cases_reviewed": [
+    "dm_admission",
+    "automatic_capture",
+    "revision_conflict",
+    "goal_stop",
+    "late_wake_after_restart",
+    "duplicate_after_commit_before_ack",
+    "idempotency_digest_conflict",
+    "group_handoff",
+    "member_revoked_before_claim",
+    "unknown_external_effect",
+    "cancel_after_effect_dispatch",
+    "cross_scope_artifact",
+    "sse_replay",
+    "expired_cursor",
+    "native_ack_lost",
+    "explicit_reopen",
+    "projection_crash",
+    "invalid_group_mention"
+  ],
+  "checks": [
+    "18 unique cases with expectations and author review",
+    "Public command envelopes and documented command types",
+    "Public bodies do not select owner, actor, lease or native profile",
+    "Stop/reopen monotonic generations",
+    "Duplicate and conflicting command identity examples",
+    "SSE sequence beyond JavaScript safe integer range",
+    "All 198 backend files and 21 migrations unchanged against NMA-003 inventory"
+  ],
+  "commands": [
+    {
+      "command": "python3 scripts/check_docs.py",
+      "exit_code": 0,
+      "stdout": "Docs: 71 page hashes, 47 tickets, 4 views, 1257 local links OK\n",
+      "stderr": ""
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "sources": [
+    {
+      "path": "gateway/hosted_rooms.py",
+      "commit": "7489b22af47ce91b366dde81d5831ea422577498",
+      "sha256": "fdc68cf3d656864436a79345ec3940b688dfd8bf91ede2f4c6fae0e0aa4bc01e"
+    },
+    {
+      "path": "gateway/hosted_rooms_common.py",
+      "commit": "7489b22af47ce91b366dde81d5831ea422577498",
+      "sha256": "6d4b880834e68e8eb9a9b58f75a0abda22da4181028397639413036919ccfbaf"
+    },
+    {
+      "path": "gateway/hosted_room_driver.py",
+      "commit": "7489b22af47ce91b366dde81d5831ea422577498",
+      "sha256": "e1a2c1dc06ebb27fe379e3c5dc6c9364d9848f926af17c6ddf629df49cb39fa9"
+    },
+    {
+      "path": "apps/server/src/services/agent-group-store.ts",
+      "commit": "ac0643f8196fdf9133e66f5a13eef86103c45d0c",
+      "sha256": "43bea68f006be9c3000b982ded73d442615b03d8a066e32ad97ad5afd1a663f2"
+    }
+  ],
+  "review": "Author self-review; no independent review",
+  "limitations": [
+    "No migration applied",
+    "No production API/runtime implemented",
+    "No model, integration, crash, isolation or browser tests run",
+    "Native NMA-001/002/004 tests are prior evidence only"
+  ],
+  "initial_attempts": [
+    "Referenced documented .dev/hermes-audit example path; actual pinned checkout is .dev/nma-001",
+    "Example generation initially failed before writing due to UUID unpack count; corrected to ten UUIDs",
+    "First docs check found the not-yet-written verification artifact; initialized it before checking links and reran"
+  ],
+  "notion_readback": {
+    "task_id": "402abdd61873818abd30d42ac276b671",
+    "status": "Done",
+    "checked_acceptance_criteria": 4,
+    "contract_markers_verified": 12,
+    "unknown_blocks": 0,
+    "related_pages": [
+      "402abdd6187381beacd6c48fa521b99f",
+      "402abdd6187381ceaa4fe40ebf41001c"
+    ],
+    "result": "Full contract, 18 examples and completion review read back; related ADR updates read back."
+  }
+}

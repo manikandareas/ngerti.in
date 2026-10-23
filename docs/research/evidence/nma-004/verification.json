@@ -1,0 +1,162 @@
+{
+  "date": "2026-10-23",
+  "kind": "architecture decision review, not integrated runtime acceptance",
+  "baseline_commit": "0660ac5a4467ffb56481bdff5ea7a56c3c07c334",
+  "hermes_commit": "7489b22af47ce91b366dde81d5831ea422577498",
+  "runtime": "Python 3.14.9",
+  "host": "macOS-26.3-arm64-arm-64bit",
+  "upstream_tests": {
+    "command": "cd .dev/nma-001/source && HERMES_PYTHON=\"$PWD/../runtime/bin/python\" scripts/run_tests.sh -j 2 tests/gateway/test_hosted_room_discussion.py tests/gateway/test_hosted_room_driver.py",
+    "passed": 90,
+    "failed": 0,
+    "files": 2,
+    "discussion_passed": 46,
+    "driver_passed": 44,
+    "log_sha256": "6a984a6c2df8fc93f0a11fd4dee166187957490e8dadaeb30b908cfb67424502",
+    "initial_attempt": "Wrong runner-relative paths: no tests discovered; retained initial-runner-path-error.log"
+  },
+  "source_inventory_comparison": [
+    {
+      "path": "run_agent.py",
+      "sha256": "8c215df03f32493f72992db0c0ccaddb811436f9025451e3f1e8f535dc9cda5d",
+      "matches_prior_pin_inventory": true
+    },
+    {
+      "path": "agent/turn_facade.py",
+      "sha256": "e9176a8ae1d7822fa45c75b680d5ae4be7c949e49c877673aea867cc146856a0",
+      "matches_prior_pin_inventory": true
+    },
+    {
+      "path": "agent/prompt_builder.py",
+      "sha256": "1baa8a654a13da62d422d4cfa32b645d6757b0e92042f62cff92b12c03cd17c7",
+      "matches_prior_pin_inventory": true
+    },
+    {
+      "path": "hermes_cli/profiles.py",
+      "sha256": "ed9be0ff625906e8b0aecdd208dcda0a484a0e3fb4ab736a91b20bae39727add",
+      "matches_prior_pin_inventory": true
+    },
+    {
+      "path": "hermes_state.py",
+      "sha256": "e507ebd78b870364fd2fced94212592380cd26d0d39eec67547ed9bc233ebb98",
+      "matches_prior_pin_inventory": true
+    },
+    {
+      "path": "hermes_state_runtime.py",
+      "sha256": "1553a9e5091413092dd30d7613b9aaa7338919bfc5a5d3ac3f4cf8c57de4411b",
+      "matches_prior_pin_inventory": true
+    },
+    {
+      "path": "gateway/run.py",
+      "sha256": "045d930e78d4dea03b958fbbe21ce6b0a247d713021dbd537adbce5b9d44f983",
+      "matches_prior_pin_inventory": true
+    },
+    {
+      "path": "gateway/session_authority.py",
+      "sha256": "f6eba4d4e17f35e9bcaaf664d1dece93bca8ceccddba3d6d2ad99aa7983bb15f",
+      "matches_prior_pin_inventory": true
+    },
+    {
+      "path": "gateway/session_hosted_service.py",
+      "sha256": "369a0230b7b5f65e9664433ad49966308a2cd4f65b33e6508f7cf8aab50aef89",
+      "matches_prior_pin_inventory": true
+    },
+    {
+      "path": "gateway/session_hosted_members.py",
+      "sha256": "8f4a88e37424e025e85e8ba87e2280d8ee018d2fd7efed2e8c3b101e972d6618",
+      "matches_prior_pin_inventory": true
+    },
+    {
+      "path": "gateway/session_hosted_rpc.py",
+      "sha256": "0e7c52dae7df353851c51d33cd35a3bc156615154856df1027c3710ec6b7c080",
+      "matches_prior_pin_inventory": true
+    },
+    {
+      "path": "gateway/session_hosted_transport.py",
+      "sha256": "eb955f21c1216f2e0449a68281859826c88ede6640e2c95683f53fe6bcd0cf28",
+      "matches_prior_pin_inventory": true
+    },
+    {
+      "path": "gateway/hosted_rooms.py",
+      "sha256": "fdc68cf3d656864436a79345ec3940b688dfd8bf91ede2f4c6fae0e0aa4bc01e",
+      "matches_prior_pin_inventory": true
+    },
+    {
+      "path": "gateway/hosted_room_driver.py",
+      "sha256": "e1a2c1dc06ebb27fe379e3c5dc6c9364d9848f926af17c6ddf629df49cb39fa9",
+      "matches_prior_pin_inventory": true
+    },
+    {
+      "path": "gateway/hosted_room_discussion.py",
+      "sha256": "7f9b9c3378dd17e806880224f6ea8c93d12e3a74d879969182922efeefc5e45b",
+      "matches_prior_pin_inventory": true
+    },
+    {
+      "path": "tui_gateway/hosted_room_service.py",
+      "sha256": "1ab54f30cb1646867fa0d7cee8eaceda71ad7a152835b04edbab18cb09263a70",
+      "matches_prior_pin_inventory": true
+    },
+    {
+      "path": "tui_gateway/hosted_room_driver.py",
+      "sha256": "5c20be686e3e2deb3777007d2325007ef44542c6551a0125c47ee7388caf9ebe",
+      "matches_prior_pin_inventory": true
+    },
+    {
+      "path": "tui_gateway/hosted_room_server_rpc.py",
+      "sha256": "21fe982d025c3331d106e0693b5d02ea38ccb59ae1359fb2de91f3ae834ec430",
+      "matches_prior_pin_inventory": true
+    },
+    {
+      "path": "tools/skills_tool.py",
+      "sha256": "f75e1047efba2640daefa2f03b897db12ac74890792621151ed9fbfd974176b8",
+      "matches_prior_pin_inventory": true
+    },
+    {
+      "path": "tools/mcp_tool_registration.py",
+      "sha256": "ee1ca1f86cef125e1da1c970c8d52008e86c939ee06a48007798533e5adaf04e",
+      "matches_prior_pin_inventory": true
+    },
+    {
+      "path": "hermes_cli/goals.py",
+      "sha256": "f87f4115d790c0b17183cf3fb72f455b04b4dda6cbafe57efb081dd3d42a0023",
+      "matches_prior_pin_inventory": true
+    },
+    {
+      "path": "gateway/run_goals.py",
+      "sha256": "d442e7652b07357bd6332715ad81b4ee70826d9fb1b3ee2e5609c8bc9ef9b825",
+      "matches_prior_pin_inventory": true
+    },
+    {
+      "path": "cron/scheduler.py",
+      "sha256": "ec5823fffdeb18f4417eb97cbd37a03739c2fc20bb4e44c333d2dd5e07d86dd4",
+      "matches_prior_pin_inventory": true
+    },
+    {
+      "path": "tests/gateway/fixtures/local_recovery_probe.py",
+      "sha256": "d008bfd4c5d1ef8e9619db14a1583256a772a3eb3aaec90151d1c0f6827ef6f1",
+      "matches_prior_pin_inventory": true
+    },
+    {
+      "path": "tests/gateway/test_normal_runtime_boot.py",
+      "sha256": "f76e72a54deb3d883a0cd8358206a3cdcbf7b98e2d080d5efb4c637ca90ff9e3",
+      "matches_prior_pin_inventory": true
+    },
+    {
+      "path": "tests/gateway/test_session_hosted_daemon.py",
+      "sha256": "b308accb41e98b2c598f0b66c462fd3977a82012d0b5888ff60fb0d35a78ec0b",
+      "matches_prior_pin_inventory": true
+    }
+  ],
+  "unchanged_backend_and_migrations": 219,
+  "review": {
+    "method": "author self-review of four ADRs, three design traces, ownership and downstream blockers",
+    "independent_review": false
+  },
+  "limits": [
+    "No live model or integrated product E2E rerun",
+    "NMA-002 prior suite retains one macOS/systemd failure",
+    "Packaging, tenant isolation, goal stop and durable trigger integration remain downstream gates"
+  ],
+  "docs_check": "passed: 71 page hashes, 47 V1 tickets, 4 views, 1254 local links; not NMA runtime acceptance",
+  "whitespace_check": "git diff --check passed"
+}

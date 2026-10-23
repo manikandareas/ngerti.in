@@ -1,0 +1,408 @@
+{
+  "contract_version": "nma.v1",
+  "kind": "Illustrative contract review fixtures; not executed runtime behavior",
+  "owner_id": "00000000-0000-0000-0000-000000000001",
+  "cases": [
+    {
+      "id": "dm_admission",
+      "command": {
+        "schema_version": "nma.v1",
+        "command_id": "00000000-0000-0000-0000-000000000065",
+        "type": "message.send",
+        "expected_revision": null,
+        "payload": {
+          "thread_id": "00000000-0000-0000-0000-000000000004",
+          "text": "Prepare the weekly research report.",
+          "attachment_ids": [],
+          "request_key": "00000000-0000-0000-0000-0000000000c9",
+          "expected_membership_revision": "1"
+        }
+      },
+      "expected": {
+        "http_status": 202,
+        "receipt": {
+          "command_id": "00000000-0000-0000-0000-000000000065",
+          "status": "accepted",
+          "result": {
+            "message_id": "00000000-0000-0000-0000-000000000009",
+            "run_id": "00000000-0000-0000-0000-000000000006",
+            "trigger_id": "00000000-0000-0000-0000-000000000008"
+          },
+          "committed_seq": "9007199254740992"
+        }
+      },
+      "review": "Authenticated owner/author; message, admission, receipt, event and outbox commit together."
+    },
+    {
+      "id": "automatic_capture",
+      "command": {
+        "schema_version": "nma.v1",
+        "command_id": "00000000-0000-0000-0000-000000000066",
+        "type": "goal.create",
+        "expected_revision": null,
+        "payload": {
+          "thread_id": "00000000-0000-0000-0000-000000000004",
+          "responsible_agent_id": "00000000-0000-0000-0000-000000000002",
+          "title": "Weekly report",
+          "objective": "Deliver a sourced report.",
+          "source_message_id": "00000000-0000-0000-0000-000000000009",
+          "source_run_id": "00000000-0000-0000-0000-000000000006"
+        }
+      },
+      "event": {
+        "schema_version": "nma.v1",
+        "event_id": "00000000-0000-0000-0000-00000000012d",
+        "seq": "9007199254740993",
+        "occurred_at": "2026-10-23T12:00:00Z",
+        "type": "goal.changed",
+        "thread_id": "00000000-0000-0000-0000-000000000004",
+        "run_id": "00000000-0000-0000-0000-000000000006",
+        "goal_id": "00000000-0000-0000-0000-000000000007",
+        "agent_id": "00000000-0000-0000-0000-000000000002",
+        "payload": {
+          "status": "active",
+          "revision": "1",
+          "generation": "1",
+          "source_message_id": "00000000-0000-0000-0000-000000000009"
+        }
+      },
+      "expected": {
+        "status": "active",
+        "goal_id": "00000000-0000-0000-0000-000000000007",
+        "revision": "1",
+        "generation": "1",
+        "approval_required": false
+      },
+      "review": "Bound agent tool creates responsibility with source message/run during an ordinary turn."
+    },
+    {
+      "id": "revision_conflict",
+      "command": {
+        "schema_version": "nma.v1",
+        "command_id": "00000000-0000-0000-0000-000000000068",
+        "type": "goal.update",
+        "expected_revision": "1",
+        "payload": {
+          "goal_id": "00000000-0000-0000-0000-000000000007",
+          "objective": "Correct the report scope.",
+          "source_message_id": "00000000-0000-0000-0000-000000000009",
+          "source_run_id": "00000000-0000-0000-0000-000000000006"
+        }
+      },
+      "current_revision": "2",
+      "expected": {
+        "http_status": 409,
+        "error": {
+          "code": "REVISION_CONFLICT",
+          "message": "The goal has changed.",
+          "retryable": false,
+          "command_id": "00000000-0000-0000-0000-000000000068",
+          "details": {
+            "current_revision": "2"
+          }
+        }
+      },
+      "review": "Reload current state and issue a new semantic operation; no overwrite."
+    },
+    {
+      "id": "goal_stop",
+      "command": {
+        "schema_version": "nma.v1",
+        "command_id": "00000000-0000-0000-0000-000000000067",
+        "type": "goal.stop",
+        "expected_revision": null,
+        "payload": {
+          "goal_id": "00000000-0000-0000-0000-000000000007",
+          "reason": "The user stopped this responsibility."
+        }
+      },
+      "before": {
+        "status": "waiting",
+        "revision": "2",
+        "generation": "1"
+      },
+      "expected": {
+        "status": "stopped",
+        "revision": "3",
+        "generation": "2",
+        "cancel_old_descendants": true
+      },
+      "review": "Fence and cancellation outbox commit before ack; native cancellation may follow."
+    },
+    {
+      "id": "late_wake_after_restart",
+      "trigger": {
+        "kind": "continuation",
+        "source_key": [
+          "00000000-0000-0000-0000-00000000012e",
+          "00000000-0000-0000-0000-000000000007",
+          "1"
+        ],
+        "goal_id": "00000000-0000-0000-0000-000000000007",
+        "goal_generation": "1"
+      },
+      "current_goal": {
+        "status": "stopped",
+        "generation": "2"
+      },
+      "expected": {
+        "status": "rejected",
+        "code": "STALE_GENERATION",
+        "new_run_count": 0
+      },
+      "review": "Retain terminal generation across archive and receipt payload compaction."
+    },
+    {
+      "id": "duplicate_after_commit_before_ack",
+      "command": {
+        "schema_version": "nma.v1",
+        "command_id": "00000000-0000-0000-0000-000000000065",
+        "type": "message.send",
+        "expected_revision": null,
+        "payload": {
+          "thread_id": "00000000-0000-0000-0000-000000000004",
+          "text": "Prepare the weekly research report.",
+          "attachment_ids": [],
+          "request_key": "00000000-0000-0000-0000-0000000000c9",
+          "expected_membership_revision": "1"
+        }
+      },
+      "expected": {
+        "same_command_receipt": true,
+        "new_message_count": 0,
+        "new_run_count": 0
+      },
+      "review": "Authenticate then retrieve stored command/digest; no new interpretation."
+    },
+    {
+      "id": "idempotency_digest_conflict",
+      "command": {
+        "schema_version": "nma.v1",
+        "command_id": "00000000-0000-0000-0000-000000000065",
+        "type": "message.send",
+        "expected_revision": null,
+        "payload": {
+          "thread_id": "00000000-0000-0000-0000-000000000004",
+          "text": "A different request.",
+          "attachment_ids": [],
+          "request_key": "00000000-0000-0000-0000-0000000000c9",
+          "expected_membership_revision": "1"
+        }
+      },
+      "expected": {
+        "http_status": 409,
+        "code": "IDEMPOTENCY_CONFLICT"
+      },
+      "review": "Same command ID cannot carry new semantics, even after archive."
+    },
+    {
+      "id": "group_handoff",
+      "handoff": {
+        "source_run_id": "00000000-0000-0000-0000-000000000191",
+        "source_message_id": "00000000-0000-0000-0000-000000000192",
+        "target_agent_id": "00000000-0000-0000-0000-000000000003",
+        "thread_id": "00000000-0000-0000-0000-000000000005",
+        "discussion_id": "00000000-0000-0000-0000-000000000193",
+        "native_task_id": "discussion-403.writer.round-1",
+        "goal_id": "00000000-0000-0000-0000-000000000194",
+        "goal_generation": "1"
+      },
+      "expected": {
+        "target_run_id": "00000000-0000-0000-0000-000000000195",
+        "private_dm_context_included": false
+      },
+      "review": "Validate attributed source/current target; product handoff/admission/outbox atomic, native ack reconciled."
+    },
+    {
+      "id": "member_revoked_before_claim",
+      "queued_run": {
+        "agent_id": "00000000-0000-0000-0000-000000000003",
+        "thread_id": "00000000-0000-0000-0000-000000000005",
+        "membership_revision": "2",
+        "access_generation": "1"
+      },
+      "current_membership": {
+        "status": "removed",
+        "access_generation": "2"
+      },
+      "expected": {
+        "run_status": "cancelled",
+        "code": "ACCESS_REVOKED",
+        "tool_calls": 0
+      },
+      "review": "Snapshot roster never overrides live revocation; no silent reassignment."
+    },
+    {
+      "id": "unknown_external_effect",
+      "effect": {
+        "run_id": "00000000-0000-0000-0000-000000000006",
+        "operation_id": "00000000-0000-0000-0000-0000000001f5",
+        "provider_idempotency_key": "00000000-0000-0000-0000-0000000001f5",
+        "status": "dispatching",
+        "receipt": null
+      },
+      "expected": {
+        "run_status": "indeterminate",
+        "blind_retry": false
+      },
+      "review": "Query provider by persisted key when supported; timeout is not failure evidence."
+    },
+    {
+      "id": "cancel_after_effect_dispatch",
+      "effect": {
+        "run_id": "00000000-0000-0000-0000-000000000006",
+        "status": "confirmed",
+        "receipt_ref": "provider-receipt-501"
+      },
+      "current_run": {
+        "status": "cancelled",
+        "cancel_generation": "2"
+      },
+      "expected": {
+        "receipt_retained": true,
+        "message_published": false,
+        "continuation_created": false
+      },
+      "review": "Retain late effect receipt without reviving cancelled output/descendants."
+    },
+    {
+      "id": "cross_scope_artifact",
+      "artifact": {
+        "id": "00000000-0000-0000-0000-00000000000a",
+        "thread_id": "00000000-0000-0000-0000-000000000004",
+        "producing_run_id": "00000000-0000-0000-0000-000000000006",
+        "producing_agent_id": "00000000-0000-0000-0000-000000000002",
+        "status": "ready"
+      },
+      "requesting_context": {
+        "thread_id": "00000000-0000-0000-0000-000000000005",
+        "agent_id": "00000000-0000-0000-0000-000000000003"
+      },
+      "scope_grant": null,
+      "expected": {
+        "http_status": 404,
+        "signed_url": null
+      },
+      "review": "Same human owner does not grant a group agent private DM access."
+    },
+    {
+      "id": "sse_replay",
+      "snapshot": {
+        "through_seq": "9007199254740992",
+        "stream_incarnation": "00000000-0000-0000-0000-000000000259"
+      },
+      "events": [
+        {
+          "schema_version": "nma.v1",
+          "event_id": "00000000-0000-0000-0000-00000000012d",
+          "seq": "9007199254740993",
+          "occurred_at": "2026-10-23T12:00:00Z",
+          "type": "goal.changed",
+          "thread_id": "00000000-0000-0000-0000-000000000004",
+          "run_id": "00000000-0000-0000-0000-000000000006",
+          "goal_id": "00000000-0000-0000-0000-000000000007",
+          "agent_id": "00000000-0000-0000-0000-000000000002",
+          "payload": {
+            "status": "active",
+            "revision": "1",
+            "generation": "1",
+            "source_message_id": "00000000-0000-0000-0000-000000000009"
+          }
+        }
+      ],
+      "expected": {
+        "new_model_calls": 0,
+        "goal_revision": "1",
+        "decimal_precision_preserved": true
+      },
+      "review": "Replay after consistent snapshot cursor, ignore duplicate IDs, preserve integer precision."
+    },
+    {
+      "id": "expired_cursor",
+      "request": {
+        "cursor_seq": "10",
+        "stream_incarnation": "00000000-0000-0000-0000-000000000259"
+      },
+      "retained_from_seq": "100",
+      "expected": {
+        "http_status": 410,
+        "code": "CURSOR_EXPIRED",
+        "snapshot_url": "/api/agent-engine/v1/threads/00000000-0000-0000-0000-000000000004/snapshot"
+      },
+      "review": "Resnapshot without restarting any run."
+    },
+    {
+      "id": "native_ack_lost",
+      "outbox": {
+        "operation_id": "00000000-0000-0000-0000-0000000002bd",
+        "native_task_id": "task-701",
+        "status": "pending"
+      },
+      "native_receipt": {
+        "task_id": "task-701",
+        "status": "completed"
+      },
+      "expected": {
+        "replayed_model_calls": 0,
+        "inbox_receipts": 1
+      },
+      "review": "Reconcile stable receipt and recheck fences; unqueryable outcome stays indeterminate."
+    },
+    {
+      "id": "explicit_reopen",
+      "command": {
+        "schema_version": "nma.v1",
+        "command_id": "00000000-0000-0000-0000-000000000069",
+        "type": "goal.reopen",
+        "expected_revision": "3",
+        "payload": {
+          "goal_id": "00000000-0000-0000-0000-000000000007",
+          "source_message_id": "00000000-0000-0000-0000-000000000321"
+        }
+      },
+      "before": {
+        "status": "stopped",
+        "generation": "2"
+      },
+      "expected": {
+        "status": "active",
+        "revision": "4",
+        "generation": "3",
+        "old_triggers_reactivated": false
+      },
+      "review": "User intent creates a new generation and triggers; never revives old receipts."
+    },
+    {
+      "id": "projection_crash",
+      "source_seq": "9007199254740993",
+      "expected": {
+        "entity_update_and_checkpoint_one_transaction": true,
+        "replay_idempotent": true
+      },
+      "review": "Event apply and contiguous checkpoint use one PostgreSQL transaction."
+    },
+    {
+      "id": "invalid_group_mention",
+      "command": {
+        "schema_version": "nma.v1",
+        "command_id": "00000000-0000-0000-0000-00000000006a",
+        "type": "message.send",
+        "expected_revision": null,
+        "payload": {
+          "thread_id": "00000000-0000-0000-0000-000000000005",
+          "text": "@missing-agent Please review.",
+          "attachment_ids": [],
+          "request_key": "00000000-0000-0000-0000-0000000000ca",
+          "expected_membership_revision": "2"
+        }
+      },
+      "expected": {
+        "http_status": 422,
+        "code": "INVALID_MENTION",
+        "new_message_count": 0,
+        "new_run_count": 0
+      },
+      "review": "Reject invalid explicit handle before admission, never silently broadcast."
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+▶ not activated — using HERMES_PYTHON: /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/source/../runtime/bin/python
+▶ running per-file parallel test suite via run_tests_parallel.py
+  (TZ=UTC LANG=C.UTF-8 PYTHONHASHSEED=0; clean env)
+▶ pre-compiling bytecode cache
+▶ launching test runner
+Discovered 2 test files (~62 tests) under ['tests/gateway/test_hosted_room_discussion.py', 'tests/gateway/test_hosted_room_driver.py']; running with -j 2
+[ 43.5% |    27/~62 | ✓46 | ✗ 0] ✓ tests/gateway/test_hosted_room_discussion.py (46✓, 6.0s)
+[100.0% |    62/~62 | ✓90 | ✗ 0] ✓ tests/gateway/test_hosted_room_driver.py (44✓, 6.9s)
+
+=== Summary: 2 files, 90 tests passed, 0 failed (100% complete) in 7.0s (2 workers) ===
+  Durations cached to test_durations.json (2 files)
+
+=== Per-file subprocess time distribution ===
+  Files:   2
+  Total subprocess CPU-wall: 12.9s  (runner wall: 7.0s, parallelism: 2x)
+  P50: 6.91s  P90: 6.91s  P95: 6.91s  P99: 6.91s  Max: 6.91s
+  <1s: 0 files (0%)  <2s: 0 files (0%)
+  Top 10 slowest:
+      6.91s  tests/gateway/test_hosted_room_driver.py
+      5.98s  tests/gateway/test_hosted_room_discussion.py

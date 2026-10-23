@@ -51,7 +51,7 @@ async def resource_reserve(conn, task, row, kind):
             work,
             f"{kind}:{row['id']}",
             kind,
-            "daytona",
+            row["policy"]["provider"],
             {key: value for key, value in row["policy"].items() if key not in ("allowed_urls",)},
             row["reserved_microusd"],
         )

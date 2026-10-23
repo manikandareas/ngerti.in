@@ -34,13 +34,21 @@ def port(number):
         return False
 
 
+def display_ready():
+    try:
+        return subprocess.run(["xdpyinfo"], capture_output=True, timeout=1).returncode == 0
+    except subprocess.TimeoutExpired:
+        return False
+
+
 def setup():
-    if subprocess.run(["xdpyinfo"], capture_output=True, timeout=3).returncode:
+    if not display_ready():
         background(
             ["Xvfb", ":0", "-ac", "-screen", "0", "1280x720x24", "-dpi", "96", "-nolisten", "tcp"]
         )
-    for _ in range(40):
-        if subprocess.run(["xdpyinfo"], capture_output=True, timeout=3).returncode == 0:
+    ready_until = time.monotonic() + 18
+    while time.monotonic() < ready_until:
+        if display_ready():
             break
         time.sleep(0.25)
     else:
@@ -77,8 +85,9 @@ def setup():
 
 
 def health(network=False):
-    if not all(port(p) for p in (5900, 6080, 8899, 9222)):
-        raise RuntimeError("Browser/proxy/viewer unavailable")
+    missing = [p for p in (5900, 6080, 8899, 9222) if not port(p)]
+    if missing:
+        raise RuntimeError("Desktop services not ready: " + ",".join(map(str, missing)))
     direct = build_opener(ProxyHandler({}))
     with direct.open("http://127.0.0.1:9222/json/version", timeout=2) as reply:
         if "webSocketDebuggerUrl" not in json.load(reply):

@@ -86,7 +86,22 @@ async def request_logging(request: Request, call_next):
     request_id, started = str(uuid4()), time.monotonic()
     structlog.contextvars.bind_contextvars(request_id=request_id)
     try:
-        response = await call_next(request)
+        try:
+            response = await call_next(request)
+        except Exception as error:
+            logger.error("http.unexpected_error", error_type=type(error).__name__)
+            response = JSONResponse(
+                status_code=500,
+                content={
+                    "detail": "Permintaan gagal. Muat ulang status sebelum mencoba lagi.",
+                    "request_id": request_id,
+                },
+            )
+            origin = request.headers.get("origin")
+            if origin in settings.allowed_origins:
+                response.headers["Access-Control-Allow-Origin"] = origin
+                response.headers["Access-Control-Allow-Credentials"] = "true"
+                response.headers["Vary"] = "Origin"
         response.headers["X-Request-ID"] = request_id
         logger.info(
             "http.request",
@@ -136,21 +151,6 @@ def me(account: Annotated[Account, Depends(current_account)]):
 
 if settings.diagnostics_enabled:
     app.include_router(diagnostic_router)
-    from daytona import DaytonaError
-
-    from ngertiin.daytona_trial.api import router as daytona_router
-    from ngertiin.daytona_trial.store import TrialError
-
-    app.include_router(daytona_router)
-
-    @app.exception_handler(DaytonaError)
-    async def trial_provider_failure(request: Request, error: DaytonaError):
-        logger.warning("daytona.unavailable", error_type=type(error).__name__)
-        return JSONResponse(status_code=503, content={"detail": "Provider trial belum tersedia."})
-
-    @app.exception_handler(TrialError)
-    async def trial_precondition(request: Request, error: TrialError):
-        return JSONResponse(status_code=409, content={"detail": str(error)})
 
     @app.get("/dev/status")
     def development_status():

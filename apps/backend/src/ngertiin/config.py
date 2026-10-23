@@ -64,19 +64,20 @@ class Settings(BaseSettings):
     file_account_bytes: int = Field(default=262144000, ge=10485760, le=1073741824)
     ocr_account_daily_pages: int = Field(default=100, ge=1, le=10000)
     ocr_global_daily_pages: int = Field(default=1000, ge=1, le=100000)
-    daytona_api_key: SecretStr = SecretStr("")
-    daytona_api_url: str = "https://app.daytona.io/api"
-    daytona_target: str | None = None
     e2b_api_key: SecretStr = SecretStr("")
     e2b_sandbox_template: str = "ngertiin-code-v1"
-    e2b_computer_template: str = "ngertiin-desktop-v1"
-    sandbox_provider: str = "e2b"
+    e2b_computer_template: str = "ngertiin-desktop-v2"
+    sandbox_provider: Literal["e2b"] = "e2b"
     sandbox_price_version: str = "e2b-linux-2026-10-20"
     sandbox_resource_microusd_per_hour: int = Field(default=165600, ge=0, le=180000)
     sandbox_account_daily_microusd: int = Field(default=1000000, ge=36000, le=10000000)
     sandbox_global_daily_microusd: int = Field(default=5000000, ge=36000, le=50000000)
-    computer_task_seconds: int = Field(default=1200, ge=120, le=1200)
-    computer_provider: str = "e2b"
+    computer_task_seconds: int = Field(default=1200, ge=120, le=3600)
+    computer_engine: Literal["screenshot", "jev"] = "jev"
+    computer_workflow_version: int = Field(default=2, ge=1, le=2)
+    computer_max_steps: int = Field(default=60, ge=4, le=120)
+    computer_model_calls: int = Field(default=64, ge=4, le=180)
+    computer_provider: Literal["e2b"] = "e2b"
     computer_retention_days: int = Field(default=7, ge=1, le=7)
     computer_storage_microusd_per_hour: int = Field(default=0, ge=0, le=1200)
     billing_mode: Literal["test", "live"] = "test"

@@ -132,7 +132,10 @@ def build_agent(run: dict, saver, projection: Projection):
         output_files: [{filename:'hasil.md',format:'md'}]; format md/txt/csv/json/html statis.
         use_computation=True untuk menghitung/mengolah data dengan Python offline di sandbox.
         use_browser=True untuk pekerjaan situs/browser yang diminta eksplisit; login lewat takeover.
-        Browser pribadi dipakai lintas Task, klik/ketik/tombol memerlukan keputusan pengguna.
+        Browser pribadi dipakai lintas Task. Navigasi, membaca, dan pencarian berjalan otomatis;
+        jangan meminta konfirmasi tambahan hanya untuk membuka situs yang dibutuhkan Task.
+        Backend meminta keputusan untuk pengiriman, perubahan data, transaksi, keamanan,
+        dan target yang belum jelas. Kredensial/OTP melalui takeover privat.
         Jangan gabungkan use_browser dengan use_computation atau lampiran.
         Permintaan terjadwal memakai preview_schedule, bukan tool ini.
         Untuk Task tujuan yang diminta eksplisit, baca read_user_goals lalu isi goal_id

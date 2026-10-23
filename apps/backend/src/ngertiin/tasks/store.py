@@ -50,6 +50,7 @@ MUTABLE = {
     "model_calls",
     "usage_units",
     "job_id",
+    "runtime_state",
 }
 
 
@@ -205,14 +206,16 @@ async def detail(owner: UUID, task_id: UUID):
         return await view(conn, await owned(conn, owner, task_id), detail=True)
 
 
-async def enqueue(conn, task: dict):
+async def enqueue(conn, task: dict, *, delay_seconds: int = 0):
     from ngertiin.tasks.jobs import task_job
 
-    if task["attempt"] >= (40 if task.get("runtime_kind") == "browser" else 12):
+    if exhausted(task):
         raise HTTPException(409, "Batas execution task tercapai. Draft tetap dapat dibuka.")
-    job_id = await task_job.configure(connection=conn, lock=f"task:{task['id']}").defer_async(
-        task_id=str(task["id"])
-    )
+    job_id = await task_job.configure(
+        connection=conn,
+        lock=f"task:{task['id']}",
+        schedule_in={"seconds": delay_seconds},
+    ).defer_async(task_id=str(task["id"]))
     await change(conn, task, job_id=job_id)
 
 
@@ -236,7 +239,7 @@ async def claim(task_id: UUID):
 
         if await block_unsupported(conn, task):
             return None
-        if task["attempt"] >= (40 if task.get("runtime_kind") == "browser" else 12):
+        if exhausted(task):
             await change(
                 conn,
                 task,
@@ -256,6 +259,13 @@ async def claim(task_id: UUID):
         )
         await emit(conn, task)
         return {**task, "execution_id": execution_id}
+
+
+def exhausted(task):
+    scheduled = task.get("runtime_state", {}).get("yields", 0)
+    return task["attempt"] - min(scheduled, 200) >= (
+        40 if task.get("runtime_kind") == "browser" else 12
+    )
 
 
 async def progress(execution: dict, stage: str, *, draft: str | None = None):

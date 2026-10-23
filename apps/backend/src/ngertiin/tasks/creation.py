@@ -158,31 +158,20 @@ async def create(
                 "sandbox": sandbox_policy(),
             }
         if runtime_kind == "browser":
-            from ngertiin.computer.permissions import requested_urls
             from ngertiin.computer.policy import snapshot as computer_policy
 
-            requested = instruction
-            if source_run:
-                user_message = await one(
-                    conn,
-                    "SELECT parts FROM chat_messages WHERE run_id=%s AND role='user'",
-                    (source_run["id"],),
-                )
-                requested = "\n".join(
-                    p.get("text", "")
-                    for p in (user_message or {}).get("parts", [])
-                    if p.get("type") == "text"
-                )
-            computer_rules = {**computer_policy(), "allowed_urls": requested_urls(requested)}
+            computer_rules = computer_policy()
 
             policy = {
                 **policy,
                 "version": "browser-task-work-v1",
                 "timeout_seconds": 180,
-                "max_calls": 24,
+                "max_calls": get_settings().computer_model_calls,
                 "max_output_tokens": 4000,
                 "computer": computer_rules,
             }
+        if runtime_kind == "browser" and not scheduled and not goal:
+            policy["unit"] = "metered_browser_work"
         if scheduled:
             policy["task_cap"] = min(policy["task_cap"], scheduled["per_run_cap"])
         goal_context = None
@@ -311,7 +300,7 @@ async def create(
                         thread_id,
                         role,
                         json_value(
-                            [{"id": "text", "type": "text", "text": text}]
+                            [{"id": "text", "type": "text", "text": text, "task_id": str(task_id)}]
                             + (
                                 [
                                     {"id": f"file:{f['revision_id']}", "type": "file", **f}

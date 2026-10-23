@@ -251,8 +251,8 @@ async def scenarios():
                 "/usage/estimate", json={"runtime_kind": "browser"}
             )
             check(
-                "browser_estimate_includes_retained_disk",
-                quote.status_code == 200 and quote.json()["maximum"] > 600,
+                "e2b_browser_estimate_uses_zero_retained_disk_rate",
+                quote.status_code == 200 and quote.json()["maximum"] == 220.44,
             )
             app.dependency_overrides[current_account] = lambda: Account(
                 id=b, clerk_user_id="fixture-b"
@@ -407,6 +407,32 @@ async def scenarios():
             "interrupted_storage_attempt_stays_unknown_not_free",
             orphan["state"] == "unknown" and orphan["amount"] == abandoned["cap"],
         )
+
+    # Resource receipts must identify the actual provider, independent of older adapters.
+    from ngertiin.usage import events
+
+    receipt_owner, _ = await fixture.owner()
+    task_id, session_id = uuid4(), uuid4()
+    async with transaction() as conn:
+        await ledger.open_work(
+            conn, receipt_owner, f"task:{task_id}", "task", "E2B receipt fixture", 10000
+        )
+        await events.resource_reserve(
+            conn,
+            {"id": task_id, "owner_id": receipt_owner},
+            {
+                "id": session_id,
+                "policy": {"provider": "e2b"},
+                "reserved_microusd": 1000,
+            },
+            "computer",
+        )
+        receipt = await one(
+            conn,
+            "SELECT provider FROM compute_events WHERE identity=%s",
+            (f"computer:{session_id}",),
+        )
+        check("resource_receipt_uses_actual_provider", receipt["provider"] == "e2b")
 
 
 async def live_scenarios():

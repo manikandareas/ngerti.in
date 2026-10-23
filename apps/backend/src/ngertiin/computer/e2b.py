@@ -5,13 +5,23 @@ import base64
 import hashlib
 import json
 import shlex
+import time
 from datetime import UTC, datetime
 from pathlib import Path
+from uuid import uuid4
 
 from e2b import AsyncSandbox
 
 from ngertiin import e2b
-from ngertiin.computer.contracts import NeedsHuman, Screen, ViewerEndpoint, public_url
+from ngertiin.computer.contracts import (
+    DomUnavailable,
+    InspectedTarget,
+    NeedsHuman,
+    Screen,
+    StaleTarget,
+    ViewerEndpoint,
+    public_url,
+)
 from ngertiin.config import get_settings
 from ngertiin.sandbox.contracts import RuntimeFailure, StagedFile
 
@@ -38,6 +48,7 @@ async def running(workspace):
 
 class E2BComputer:
     name = "e2b"
+    supports_dispatch_receipts = True
 
     async def start(self, workspace, seconds):
         value = await resource(workspace)
@@ -73,10 +84,24 @@ class E2BComputer:
         result = await e2b.run(sandbox, "mkdir -p /tmp/ng036; chmod 700 /tmp/ng036")
         if result.exit_code:
             raise RuntimeFailure("Direktori browser E2B gagal disiapkan.", unknown=True)
-        for filename in ("desktop.py", "desktop_io.py", "egress.py", "cdp.py"):
+        for filename in (
+            "desktop.py",
+            "desktop_io.py",
+            "egress.py",
+            "cdp.py",
+            "actuator.py",
+            "jev_runner.py",
+            "targets.py",
+        ):
             await sandbox.files.write(
                 "/tmp/ng036/" + filename,
                 (Path(__file__).parent / filename).read_bytes(),
+                request_timeout=20,
+            )
+        for filename in ("snapshot.js", "target_context.js", "privacy.js"):
+            await sandbox.files.write(
+                "/tmp/ng036/" + filename,
+                (Path(__file__).parent / "jev_assets" / filename).read_bytes(),
                 request_timeout=20,
             )
         result = await e2b.run(sandbox, "python3 /tmp/ng036/desktop_io.py setup", seconds=25)
@@ -90,7 +115,8 @@ class E2BComputer:
         )
         if result.exit_code:
             raise RuntimeFailure("Browser E2B gagal disiapkan.", unknown=True)
-        for _ in range(20):
+        ready_until = time.monotonic() + 45
+        while time.monotonic() < ready_until:
             result = await e2b.run(sandbox, "python3 /tmp/ng036/desktop_io.py health", seconds=5)
             if result.exit_code == 0:
                 break
@@ -106,13 +132,79 @@ class E2BComputer:
         if remaining < 1:
             raise RuntimeFailure("Deadline komputer berakhir saat persiapan.", unknown=True)
         await sandbox.set_timeout(remaining, request_timeout=15)
+        await self.control({**workspace, "resource_id": sandbox.sandbox_id})
+        from ngertiin.computer.capability import inspect
+
+        workspace["capability"] = await inspect(sandbox)
         return sandbox.sandbox_id
+
+    async def command(
+        self,
+        workspace,
+        operation,
+        action=None,
+        *,
+        expected_target="",
+        dispatch_id=None,
+        strict_target=True,
+    ):
+        sandbox = await running(workspace)
+        request = {
+            "operation": operation,
+            "strict_target": strict_target,
+            "epoch": workspace.get("control_version", 1),
+            "task": str(workspace.get("active_task_id") or workspace["id"]),
+        }
+        if action is not None:
+            request["action"] = action.model_dump()
+        if expected_target:
+            request["expected_target"] = expected_target
+        if operation in ("act", "dom_act", "receipt"):
+            request["dispatch_id"] = str(dispatch_id or uuid4())
+        if operation == "control":
+            request.update(
+                control=workspace.get("control", "agent"),
+                deadline=workspace["deadline"].timestamp(),
+            )
+        # The optional DOM venv is baked into v2; legacy screenshot templates
+        # continue using system Python without installing anything at runtime.
+        python = "/opt/ngertiin-jev/bin/python" if operation.startswith("dom") else "python3"
+        result = await e2b.run(
+            sandbox,
+            python + " /tmp/ng036/actuator.py " + shlex.quote(json.dumps(request)),
+            seconds=25,
+        )
+        if result.exit_code:
+            if operation == "dom" and result.exit_code == 127:
+                raise DomUnavailable(
+                    "Profil lama memakai jalur screenshot sampai runtime diperbarui."
+                )
+            raise RuntimeFailure(
+                "Komputer belum mengonfirmasi langkah.", unknown=operation in ("act", "dom_act")
+            )
+        value = json.loads(result.stdout)
+        if value.get("private"):
+            if operation in ("act", "dom_act"):
+                raise StaleTarget("Target menjadi privat sebelum input; amati ulang.")
+            raise NeedsHuman("Halaman/kolom privat memerlukan takeover.")
+        if value.get("stale"):
+            raise StaleTarget("Halaman berubah; Gwen mengamati target kembali.")
+        if value.get("unknown"):
+            raise RuntimeFailure("Outcome aksi perlu diperiksa; input tidak diulang.", unknown=True)
+        return value
+
+    async def control(self, workspace):
+        return await self.command(workspace, "control")
+
+    async def dispatch_receipt(self, workspace, ident):
+        return await self.command(workspace, "receipt", dispatch_id=ident)
+
+    async def observe_dom(self, workspace):
+        return await self.command(workspace, "dom")
 
     async def observe(self, workspace):
         sandbox = await running(workspace)
-        result = await e2b.run(sandbox, "DISPLAY=:0 scrot -o /tmp/ng036/screen.png", seconds=10)
-        if result.exit_code:
-            raise RuntimeFailure("Layar E2B belum dapat dibaca.")
+        await self.command(workspace, "screen")
         try:
             data = bytes(
                 await sandbox.files.read(
@@ -125,16 +217,19 @@ class E2BComputer:
             raise RuntimeFailure("Layar melebihi batas ukuran.")
         return Screen(data)
 
-    async def act(self, workspace, action):
+    async def act(
+        self, workspace, action, *, expected_target="", dispatch_id=None, strict_target=True
+    ):
         if action.kind == "navigate":
             await public_url(action.url)
-        sandbox = await running(workspace)
-        result = await e2b.run(
-            sandbox, "python3 /tmp/ng036/desktop_io.py act " + shlex.quote(action.model_dump_json())
+        await self.command(
+            workspace,
+            "dom_act" if action.dom else "act",
+            action,
+            expected_target=expected_target,
+            dispatch_id=dispatch_id,
+            strict_target=strict_target,
         )
-        if result.exit_code:
-            raise RuntimeFailure("Aksi browser E2B belum terkonfirmasi.", unknown=True)
-        await asyncio.sleep(0.75)
 
     async def collect(self, workspace, filenames):
         sandbox = await running(workspace)
@@ -151,20 +246,17 @@ class E2BComputer:
         ]
 
     async def target(self, workspace, action):
-        if action.kind in ("navigate", "scroll"):
-            return hashlib.sha256(
-                json.dumps(action.model_dump(), sort_keys=True).encode()
-            ).hexdigest()
-        sandbox = await running(workspace)
-        result = await e2b.run(
-            sandbox, "python3 /tmp/ng036/desktop.py target " + shlex.quote(action.model_dump_json())
-        )
-        if result.exit_code:
-            raise NeedsHuman("Target belum dapat diperiksa. Ambil alih untuk melanjutkan.")
-        value = json.loads(result.stdout)
+        if action.dom:
+            value = await self.command(workspace, "dom_target", action)
+            return InspectedTarget(value["fingerprint"], value.get("context", {}))
+        if action.kind in ("navigate", "scroll", "wait"):
+            return InspectedTarget(
+                hashlib.sha256(json.dumps(action.model_dump(), sort_keys=True).encode()).hexdigest()
+            )
+        value = await self.command(workspace, "target", action)
         if value.get("private"):
             raise NeedsHuman("Kolom privat/iframe memerlukan takeover. Gwen tidak akan mengisinya.")
-        return value["fingerprint"]
+        return InspectedTarget(value["fingerprint"], value.get("context", {}))
 
     async def stop(self, workspace):
         value = await resource(workspace)

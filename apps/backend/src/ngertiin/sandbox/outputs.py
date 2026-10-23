@@ -14,7 +14,7 @@ from ngertiin.storage import get_object, put_object
 from ngertiin.tasks import store
 
 
-async def persist(execution, session, files, summary):
+async def persist(execution, session, files, summary, *, promote=True):
     specs, rules, candidates, total = execution["output_spec"], policy(), [], 0
     if [f.filename for f in files] != [s["filename"] for s in specs]:
         raise ValueError("Nama/urutan hasil komputasi tidak sesuai permintaan.")
@@ -67,6 +67,11 @@ async def persist(execution, session, files, summary):
         await validate_live(conn, task)
         table = "computer_outputs" if task.get("runtime_kind") == "browser" else "sandbox_outputs"
         for file in candidates:
+            from ngertiin.chat.store import one
+
+            existing = await one(conn, f"SELECT id FROM {table} WHERE id=%s", (file["id"],))
+            if existing:
+                continue
             await capacity(conn, task["owner_id"], file["size"])
             await conn.execute(
                 f"INSERT INTO {table}(id,session_id,task_id,owner_id,filename,content_type,"
@@ -84,9 +89,11 @@ async def persist(execution, session, files, summary):
                     file["preview"],
                 ),
             )
-        await store.change(conn, task, stage="draft_ready", draft=draft)
-        await store.persist_revision(conn, task, uuid5(task["id"], f"draft:{task['revision']}"))
-        await store.emit(conn, task)
+        if promote:
+            await store.change(conn, task, stage="draft_ready", draft=draft)
+            await store.persist_revision(conn, task, uuid5(task["id"], f"draft:{task['revision']}"))
+            await store.emit(conn, task)
+    return json.loads(draft)
 
 
 async def resolve(conn, task, value):

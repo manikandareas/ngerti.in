@@ -88,6 +88,7 @@ def stop():
 
 def launch(seconds):
     stop()
+    (ROOT / "target.json").unlink(missing_ok=True)
     PROFILE.mkdir(mode=0o700, parents=True, exist_ok=True)
     os.chmod(PROFILE, 0o700)
     profile_size()
@@ -137,7 +138,9 @@ def launch(seconds):
         ],
         env={"PATH": "/usr/bin:/bin", "HOME": str(Path.home()), "DISPLAY": ":0"},
         stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
+        stderr=(ROOT / "probe-browser.log").open("ab")
+        if os.environ.get("NGERTIIN_STARTUP_DIAGNOSTICS") == "1"
+        else subprocess.DEVNULL,
         start_new_session=True,
     )
     (ROOT / "processes.json").write_text(json.dumps({"browser": browser.pid, "proxy": proxy.pid}))

@@ -5,7 +5,7 @@ from datetime import UTC, datetime, timedelta
 
 from fastapi import HTTPException
 
-from ngertiin.chat.store import one
+from ngertiin.chat.store import json_value, one
 from ngertiin.computer import policy, store, usage
 from ngertiin.tasks import store as tasks
 
@@ -25,9 +25,9 @@ async def start(execution, workspace, session, runtime):
             raise tasks.StaleExecution()
         row = await one(
             conn,
-            "UPDATE browser_workspaces SET state='ready',resource_id=%s,"
+            "UPDATE browser_workspaces SET state='ready',resource_id=%s,capability=%s,"
             "updated_at=now() WHERE id=%s RETURNING *",
-            (resource_id, workspace["id"]),
+            (resource_id, json_value(workspace.get("capability", {})), workspace["id"]),
         )
         await conn.execute(
             "UPDATE computer_sessions SET state='active' WHERE id=%s", (session["id"],)
@@ -247,7 +247,7 @@ async def sweep():
                 "(w.active_task_id IS NOT NULL AND NOT w.unknown_effect AND "
                 "(w.deadline<=now() OR t.status IN ('failed','cancelled','succeeded') OR "
                 "(w.control='agent' AND t.status='running' AND "
-                "w.updated_at<now()-interval '2 minutes')))) "
+                "COALESCE(w.heartbeat_at,w.updated_at)<now()-interval '2 minutes')))) "
                 "ORDER BY w.updated_at LIMIT 20"
             )
         ).fetchall()

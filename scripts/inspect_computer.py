@@ -13,7 +13,7 @@ from fastapi import Response
 from ngertiin.async_db import transaction
 from ngertiin.chat.store import one
 from ngertiin.computer import control, lifecycle, model, policy, viewer
-from ngertiin.computer.contracts import Action, NeedsHuman, Screen
+from ngertiin.computer.contracts import Action, InspectedTarget, NeedsHuman, Screen
 from ngertiin.computer.egress import public_connection
 from ngertiin.computer.rfb import ClientMessages
 from ngertiin.models import Account
@@ -53,9 +53,11 @@ class ControlledComputer:
     async def target(self, workspace, action):
         if self.private:
             raise NeedsHuman("Kolom privat memerlukan takeover.")
-        return Screen(json.dumps(self.profiles[workspace["id"]]).encode()).fingerprint
+        return InspectedTarget(
+            Screen(json.dumps(self.profiles[workspace["id"]]).encode()).fingerprint
+        )
 
-    async def act(self, workspace, action):
+    async def act(self, workspace, action, *, expected_target=""):
         self.dispatched.append(action.kind)
         if self.unknown:
             raise RuntimeFailure("Lost acknowledgement", unknown=True)
@@ -488,6 +490,10 @@ async def interrupted_finalization():
 
 
 async def scenarios():
+    # Legacy actor fixtures retain their explicit workflow contract.
+    from ngertiin.config import get_settings
+
+    get_settings().computer_workflow_version = 1
     original_runtime, original_model = policy.get_runtime, model.propose
     policy.get_runtime, model.propose = lambda *args: COMPUTER, propose
     try:
@@ -516,7 +522,6 @@ async def scenarios():
         viewer_input_contracts()
         await http_contracts()
         await interrupted_finalization()
-        await provider_switch()
         await phased_model_response(original_model)
         async with transaction() as conn:
             count = await one(
@@ -527,52 +532,6 @@ async def scenarios():
     finally:
         policy.get_runtime, model.propose = original_runtime, original_model
         await harness.close_pool()
-
-
-async def provider_switch():
-    from ngertiin.config import get_settings
-
-    settings = get_settings()
-    original = settings.computer_provider
-    try:
-        owner, thread = await harness.owner()
-        settings.computer_provider = "daytona"
-        DECISIONS.append(Action(kind="ask_user", description="Periksa sesi lama."))
-        legacy = await run(owner, await create(owner, thread))
-        old = legacy["computer"]["workspace"]
-        settings.computer_provider = "e2b"
-        replacement = await run(owner, await create(owner, thread))
-        check(
-            "provider_switch_waits_for_active_legacy_profile",
-            replacement["stage"] == "computer_queue" and len(COMPUTER.running) == 1,
-        )
-        await control.change(owner, legacy["id"], old["control_version"], "agent")
-        legacy = await run(owner, legacy)
-        replacement = await tasks.detail(owner, replacement["id"])
-        check(
-            "legacy_stop_wakes_new_provider_waiter", replacement["status"] == "queued"
-        )
-        DECISIONS.append(Action(kind="ask_user", description="Periksa browser baru."))
-        replacement = await run(owner, replacement)
-        new = replacement["computer"]["workspace"]
-        check(
-            "new_provider_does_not_overwrite_legacy_profile",
-            new["id"] != old["id"] and old["id"] in COMPUTER.profiles,
-        )
-        async with transaction() as conn:
-            stored = await one(
-                conn,
-                "SELECT count(*) AS n FROM browser_workspaces WHERE owner_id=%s AND state<>'deleted'",
-                (owner,),
-            )
-        check("one_retained_profile_per_provider", stored["n"] == 2)
-        await control.change(owner, replacement["id"], new["control_version"], "agent")
-        replacement = await run(owner, replacement)
-        check("new_provider_task_completes", replacement["status"] == "succeeded")
-        await lifecycle.reset(owner, old["id"])
-        await lifecycle.reset(owner, new["id"])
-    finally:
-        settings.computer_provider = original
 
 
 async def phased_model_response(real_propose):

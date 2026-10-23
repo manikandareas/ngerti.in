@@ -338,9 +338,13 @@ async def failures_and_budgets():
     d, _, _ = await setup_goal()
     row = await store.request(d)
     job = await runtime.claim(row["id"])
-    await providers.reserve(job, "generate", "probe", {})
+    await providers.reserve(
+        job, "generate", get_settings().proactive_generation_model, {}
+    )
     try:
-        await providers.reserve(job, "generate", "probe", {})
+        await providers.reserve(
+            job, "generate", get_settings().proactive_generation_model, {}
+        )
     except providers.EvaluationUnavailable:
         check("stage_reservation_cannot_be_repeated", True)
     else:
@@ -465,7 +469,9 @@ async def budget_races_and_task_sources():
         )
     row = await store.request(a)
     job = await runtime.claim(row["id"])
-    identity = await providers.reserve(job, "generate", "probe", {})
+    identity = await providers.reserve(
+        job, "generate", get_settings().proactive_generation_model, {}
+    )
     async with transaction() as conn:
         await conn.execute(
             "UPDATE proactive_cost_events SET created_at=now()-interval '1 day' "
@@ -477,7 +483,7 @@ async def budget_races_and_task_sources():
     try:
         settings.proactive_evaluation_units = 15000
         try:
-            await providers.reserve(job, "judge", "probe", {})
+            await providers.reserve(job, "judge", get_settings().typesafe_model, {})
         except providers.EvaluationUnavailable as error:
             check(
                 "evaluation_budget_survives_utc_midnight",
@@ -506,7 +512,12 @@ async def budget_races_and_task_sources():
     try:
         settings.proactive_global_daily_units = used["n"] + 10002
         results = await asyncio.gather(
-            *[providers.reserve(j, "generate", "probe", {}) for j in claimed],
+            *[
+                providers.reserve(
+                    j, "generate", get_settings().proactive_generation_model, {}
+                )
+                for j in claimed
+            ],
             return_exceptions=True,
         )
         check(

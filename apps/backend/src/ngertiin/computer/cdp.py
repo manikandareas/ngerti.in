@@ -4,17 +4,37 @@ import base64
 import json
 import os
 import socket
+from pathlib import Path
 from urllib.parse import urlsplit
 from urllib.request import ProxyHandler, build_opener
 
 
-def call(method, params=None, *, page=True):
+def list_pages():
+    opener = build_opener(ProxyHandler({}))
+    with opener.open("http://127.0.0.1:9222/json/list", timeout=3) as reply:
+        return [v for v in json.load(reply) if v.get("type") == "page"]
+
+
+def page_target():
+    pages = list_pages()
+    path = Path("/tmp/ng036/target.json")
+    ident = json.loads(path.read_text()).get("id") if path.exists() else None
+    target = next((v for v in pages if v["id"] == ident), None)
+    if ident and not target:
+        raise ValueError("Owned browser tab closed; explicit resume required")
+    if not target:
+        target = pages[0]
+        path.write_text(json.dumps({"id": target["id"]}))
+    return target
+
+
+def call(method, params=None, *, page=True, target=None):
     opener = build_opener(ProxyHandler({}))
     path = "/json/list" if page else "/json/version"
     with opener.open("http://127.0.0.1:9222" + path, timeout=3) as reply:
         values = json.load(reply)
     if page:
-        values = next(v for v in values if v.get("type") == "page")
+        values = target or page_target()
     target = urlsplit(values["webSocketDebuggerUrl"])
     with socket.create_connection(("127.0.0.1", 9222), timeout=3) as connection:
         key = base64.b64encode(os.urandom(16)).decode()
@@ -85,25 +105,26 @@ def target_fingerprint(action):
                               : document.activeElement;
       while (e?.shadowRoot) { const child=e.shadowRoot.elementFromPoint(a.x,a.y-top);
         if (!child || child===e) break; e=child; }
+      const inspect = INSPECT;
+      const evidence = inspect(e);
       const form=e?.form || e?.closest('form');
-      const privateInput = e?.tagName === 'IFRAME' ||
-        ['password','file'].includes(e?.type) ||
-        /password|one-time-code|cc-number|cc-csc/.test(e?.autocomplete || '') ||
-        !!form?.querySelector('input[type=password]');
+      const privateInput = evidence.private;
       const fields=form ? Array.from(form.elements).map(x=>[x.name,x.type,x.value,x.checked]) : [];
       const context = {url:location.href,kind:a.kind,x:a.x,y:a.y,
         scroll:[scrollX,scrollY],window:[screenX,screenY,outerWidth,outerHeight,innerWidth,innerHeight],
         focused:document.hasFocus(),target:e ? [e.tagName,e.id,e.name,e.type,e.getAttribute('role'),
           e.getAttribute('aria-label'),e.getAttribute('href'),
           e.textContent?.slice(0,300),e.disabled] : null,
-        form:form ? [form.action,form.method,fields] : null};
+        form:form ? [form.action,form.method,fields] : null,
+        documentText:document.body.innerText.slice(0,60000), evidence};
       const bytes=new TextEncoder().encode(JSON.stringify(context));
       const digest=await crypto.subtle.digest('SHA-256',bytes);
       const hex=x=>x.toString(16).padStart(2,'0');
       const fingerprint=Array.from(new Uint8Array(digest),hex).join('');
-      return {fingerprint,
+      return {fingerprint,context:evidence,
         private: !e || privateInput || !document.hasFocus()};
     })()""".replace("ACTION", json.dumps({k: action[k] for k in ("kind", "x", "y")}))
+    expression = expression.replace("INSPECT", Path("/tmp/ng036/target_context.js").read_text())
     result = call(
         "Runtime.evaluate", {"expression": expression, "awaitPromise": True, "returnByValue": True}
     )

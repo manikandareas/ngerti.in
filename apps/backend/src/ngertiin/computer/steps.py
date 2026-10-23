@@ -4,12 +4,21 @@ from datetime import UTC, datetime
 from uuid import uuid4
 
 from ngertiin.chat.store import json_value, one
-from ngertiin.computer import store
-from ngertiin.computer.contracts import Action, ComputerPaused
+from ngertiin.computer import permissions, store
+from ngertiin.computer.contracts import (
+    Action,
+    ComputerPaused,
+    InspectedTarget,
+    NeedsHuman,
+    StaleTarget,
+)
+from ngertiin.sandbox.contracts import RuntimeFailure
 from ngertiin.tasks import store as tasks
 
 
-async def begin(execution, workspace, session, action=None, screen_hash="", *, approved_id=None):
+async def begin(
+    execution, workspace, session, action=None, screen_hash="", *, approved_id=None, target=None
+):
     async with tasks.locked(execution["owner_id"], execution["id"]) as (conn, task):
         tasks.fence(task, execution)
         row = await store.owned(conn, task["owner_id"], workspace["id"], lock=True)
@@ -43,6 +52,11 @@ async def begin(execution, workspace, session, action=None, screen_hash="", *, a
                 or step["control_version"] != row["control_version"]
                 or step["expires_at"] <= datetime.now(UTC)
                 or step["screen_hash"] != screen_hash
+                or step["action"] != action.model_dump()
+                or step.get("decision", {}).get("task_revision", task["revision"])
+                != task["revision"]
+                or step.get("decision", {}).get("generation")
+                != row.get("capability", {}).get("generation")
             ):
                 if step and step["state"] == "approved":
                     await conn.execute(
@@ -63,16 +77,41 @@ async def begin(execution, workspace, session, action=None, screen_hash="", *, a
                 )
                 paused = False
         else:
-            proposed = action is not None and (
-                action.requires_approval
-                or action.kind == "navigate"
-                and action.url not in session["policy"].get("allowed_urls", [])
+            decision = (
+                permissions.decide(action, target or InspectedTarget(screen_hash))
+                if action
+                else None
             )
+            if decision and decision.decision == "takeover":
+                raise NeedsHuman("Target privat memerlukan takeover.")
+            proposed = decision is not None and decision.decision == "approval"
+            record = decision.record() if decision else {}
+            if target:
+                record["target"] = target.context
+            if action:
+                import hashlib
+                import json
+
+                payload = action.model_dump(exclude={"description", "dom", "x", "y"})
+                payload["target"] = target.context if target else {}
+                record["payload_hash"] = hashlib.sha256(
+                    json.dumps(payload, sort_keys=True).encode()
+                ).hexdigest()
+                record["task_revision"] = task["revision"]
+                record["generation"] = row.get("capability", {}).get("generation")
+                rejected = await one(
+                    conn,
+                    "SELECT id FROM computer_steps WHERE task_id=%s "
+                    "AND state='rejected' AND decision->>'payload_hash'=%s LIMIT 1",
+                    (task["id"], record["payload_hash"]),
+                )
+                if rejected:
+                    raise NeedsHuman("Aksi ini sudah ditolak. Pilih alternatif atau ambil alih.")
             step = await one(
                 conn,
                 "INSERT INTO computer_steps(id,session_id,task_id,control_version,"
-                "kind,action,screen_hash,state,expires_at) VALUES "
-                "(%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING *",
+                "kind,action,screen_hash,state,expires_at,decision) VALUES "
+                "(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING *",
                 (
                     uuid4(),
                     session["id"],
@@ -83,6 +122,7 @@ async def begin(execution, workspace, session, action=None, screen_hash="", *, a
                     screen_hash,
                     "proposed" if proposed else ("dispatched" if action else "observing"),
                     row["deadline"],
+                    json_value(record),
                 ),
             )
             paused = proposed
@@ -97,13 +137,23 @@ async def begin(execution, workspace, session, action=None, screen_hash="", *, a
     raise ComputerPaused()
 
 
-async def receipt(workspace_id, step_id, *, confirmed):
+async def receipt(workspace_id, step_id, *, confirmed, stale=False):
     async with tasks.transaction() as conn:
         step = await one(
             conn,
-            "UPDATE computer_steps SET state=%s,finished_at=now() "
+            "UPDATE computer_steps SET state=%s,finished_at=now(),outcome=%s "
             "WHERE id=%s AND state IN ('observing','dispatched') RETURNING kind",
-            ("complete" if confirmed else "unknown", step_id),
+            (
+                "stale" if stale else "complete" if confirmed else "unknown",
+                json_value(
+                    {
+                        "input_acknowledged": confirmed and not stale,
+                        "postcondition_satisfied": None,
+                        "rejected_stale": stale,
+                    }
+                ),
+                step_id,
+            ),
         )
         await conn.execute(
             "UPDATE browser_workspaces SET busy=NULL,unknown_effect=unknown_effect OR %s "
@@ -117,8 +167,21 @@ async def observe(execution, workspace, session, runtime):
     confirmed = False
     try:
         screen = await runtime.observe(workspace)
+        await store.current(execution, workspace["id"])
         confirmed = True
         return screen
+    finally:
+        await receipt(workspace["id"], step["id"], confirmed=confirmed)
+
+
+async def observe_dom(execution, workspace, session, runtime):
+    step = await begin(execution, workspace, session)
+    confirmed = False
+    try:
+        page = await runtime.observe_dom(workspace)
+        await store.current(execution, workspace["id"])
+        confirmed = True
+        return page
     finally:
         await receipt(workspace["id"], step["id"], confirmed=confirmed)
 
@@ -126,15 +189,52 @@ async def observe(execution, workspace, session, runtime):
 async def execute(execution, workspace, session, runtime, action: Action, approved_id=None):
     inspection = await begin(execution, workspace, session)
     confirmed = False
+    stale = False
     try:
-        target_hash = await runtime.target(workspace, action)
+        target = await runtime.target(workspace, action)
         confirmed = True
+    except StaleTarget:
+        confirmed, stale = True, True
+        raise
     finally:
-        await receipt(workspace["id"], inspection["id"], confirmed=confirmed)
-    step = await begin(execution, workspace, session, action, target_hash, approved_id=approved_id)
+        await receipt(workspace["id"], inspection["id"], confirmed=confirmed, stale=stale)
+    # Private targets remain private even when replaying an old approved proposal.
+    permissions.requires_approval(action, target)
+    step = await begin(
+        execution,
+        workspace,
+        session,
+        action,
+        target.fingerprint,
+        approved_id=approved_id,
+        target=target,
+    )
     confirmed = False
+    stale = False
     try:
-        await runtime.act(workspace, action)
+        if getattr(runtime, "supports_dispatch_receipts", False):
+            await runtime.act(
+                workspace,
+                action,
+                expected_target=target.fingerprint,
+                dispatch_id=step["id"],
+                strict_target=bool(approved_id) or permissions.requires_approval(action, target),
+            )
+        else:
+            await runtime.act(workspace, action, expected_target=target.fingerprint)
         confirmed = True
+    except StaleTarget:
+        confirmed, stale = True, True
+        raise
+    except RuntimeFailure:
+        # Read the local journal; never resend a device operation to learn its outcome.
+        if hasattr(runtime, "dispatch_receipt"):
+            try:
+                result = await runtime.dispatch_receipt(workspace, step["id"])
+                confirmed = result.get("executed") is True
+            except Exception:
+                pass
+        if not confirmed:
+            raise
     finally:
-        await receipt(workspace["id"], step["id"], confirmed=confirmed)
+        await receipt(workspace["id"], step["id"], confirmed=confirmed, stale=stale)

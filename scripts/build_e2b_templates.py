@@ -2,8 +2,10 @@
 
 import asyncio
 import json
+import shlex
 
 from e2b import AsyncTemplate
+from ngertiin.computer.maintenance import INSTALL
 from ngertiin.config import get_settings
 
 
@@ -13,10 +15,16 @@ async def main():
         raise ValueError("E2B_API_KEY belum dikonfigurasi.")
     for source, name in (
         ("base", "ngertiin-code-v1"),
-        ("desktop", "ngertiin-desktop-v1"),
+        ("desktop", "ngertiin-desktop-v2"),
     ):
+        template = AsyncTemplate().from_template(source)
+        if source == "desktop":
+            template = template.run_cmd(
+                "bash -c " + shlex.quote(INSTALL),
+                user="root",
+            )
         built = await AsyncTemplate.build(
-            AsyncTemplate().from_template(source),
+            template,
             name,
             cpu_count=2,
             memory_mb=4096,

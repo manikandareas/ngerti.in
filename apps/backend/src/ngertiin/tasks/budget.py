@@ -15,6 +15,14 @@ class AdmissionDenied(HTTPException):
         self.reason = reason
 
 
+class BudgetExhausted(ValueError):
+    """No provider request was admitted; the caller can finalize existing evidence."""
+
+
+def metered_browser(policy):
+    return policy.get("unit") == "metered_browser_work"
+
+
 async def admit(conn, owner, policy: dict, *, day=None):
     # All callers already hold owner -> thread -> task locks. Never acquire an
     # owner lock after this global admission lock.
@@ -26,10 +34,11 @@ async def admit(conn, owner, policy: dict, *, day=None):
         "COALESCE(sum(CASE WHEN owner_id=%s THEN CASE "
         "WHEN status IN ('succeeded','failed','cancelled') THEN usage_units ELSE budget_cap END "
         "ELSE 0 END),0) AS account FROM background_tasks "
-        "WHERE budget_day=COALESCE(%s::date,(now() AT TIME ZONE 'UTC')::date)",
+        "WHERE budget_day=COALESCE(%s::date,(now() AT TIME ZONE 'UTC')::date) "
+        "AND budget_policy->>'unit'<>'metered_browser_work'",
         (owner, day),
     )
-    if (
+    if not metered_browser(policy) and (
         usage["account"] + policy["task_cap"] > policy["account_daily_cap"]
         or usage["total"] + policy["task_cap"] > policy["global_daily_cap"]
     ):
@@ -48,28 +57,37 @@ async def admit(conn, owner, policy: dict, *, day=None):
         )
 
 
-async def reserve_call(execution: dict, ceiling: int):
+async def reserve_call(
+    execution: dict, ceiling: int, *, model: str | None = None, role: str = "task"
+):
     async with store.locked(execution["owner_id"], execution["id"]) as (conn, task):
         store.fence(task, execution)
         policy = task["budget_policy"]
-        if (
-            task["model_calls"] >= policy["max_calls"]
-            or task["usage_units"] + ceiling > task["budget_cap"]
+        model = model or policy["model"]
+        # Browser work is metered, not stopped by a second byte-based token cap.
+        # Two calls remain available for synthesis/verification after exploration.
+        exploration = role in ("browser_decision", "browser_text", "browser_vision")
+        reserve_calls = exploration and policy.get("computer", {}).get("workflow_version", 1) >= 2
+        limit = policy["max_calls"] - (2 if reserve_calls else 0)
+        if task["model_calls"] >= limit or (
+            not metered_browser(policy) and task["usage_units"] + ceiling > task["budget_cap"]
         ):
-            raise ValueError("Batas komputasi task tercapai. Draft yang sudah ada tetap tersimpan.")
+            raise BudgetExhausted("Batas panggilan tercapai; selesaikan bukti yang tersedia.")
         call_id = uuid4()
         await conn.execute(
             "INSERT INTO task_cost_events(id,task_id,execution_id,provider,model,policy_version,"
-            "reserved_units,charged_units,state) VALUES "
-            "(%s,%s,%s,'openai-compatible',%s,%s,%s,%s,'reserved')",
+            "reserved_units,charged_units,state,role) VALUES "
+            "(%s,%s,%s,%s,%s,%s,%s,%s,'reserved',%s)",
             (
                 call_id,
                 task["id"],
                 execution["execution_id"],
-                policy["model"],
+                "typesafe" if model.startswith("jev-") else "openai-compatible",
+                model,
                 policy["version"],
                 ceiling,
                 ceiling,
+                role,
             ),
         )
         from ngertiin.usage.events import model_reserve, work_for_task
@@ -80,7 +98,7 @@ async def reserve_call(execution: dict, ceiling: int):
                 conn,
                 task["owner_id"],
                 f"task-model:{call_id}",
-                policy["model"],
+                model,
                 ceiling,
                 work=work,
                 kind="model",
@@ -136,7 +154,8 @@ async def summary(owner):
         rows = await (
             await conn.execute(
                 "SELECT status,budget_cap,usage_units FROM background_tasks WHERE owner_id=%s "
-                "AND budget_day=(now() AT TIME ZONE 'UTC')::date",
+                "AND budget_day=(now() AT TIME ZONE 'UTC')::date "
+                "AND budget_policy->>'unit'<>'metered_browser_work'",
                 (owner,),
             )
         ).fetchall()

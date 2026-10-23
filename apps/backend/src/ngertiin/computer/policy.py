@@ -1,6 +1,10 @@
 """Browser compute and profile retention have separate finite budgets."""
 
 import math
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ngertiin.computer.contracts import ComputerRuntime
 
 from ngertiin.config import get_settings
 
@@ -10,14 +14,17 @@ def snapshot():
     seconds = s.computer_task_seconds
     storage = math.ceil(s.computer_storage_microusd_per_hour * 24 * s.computer_retention_days)
     return {
-        "version": "private-browser-e2b-v1"
-        if s.computer_provider == "e2b"
-        else "private-browser-v1",
+        "version": "private-browser-e2b-v2",
+        "permissions": "routine-auto-sensitive-approval-v1",
         "provider": s.computer_provider,
+        "engine": s.computer_engine,
+        "workflow_version": s.computer_workflow_version,
+        "jev_model": s.typesafe_model,
+        "verify_results": True,
         "seconds": seconds,
         "idle_minutes": 2,
         "cleanup_seconds": 180,
-        "max_steps": 24,
+        "max_steps": s.computer_max_steps,
         "retention_days": s.computer_retention_days,
         "profile_bytes": 1024 * 1024 * 1024,
         "download_bytes": 25 * 1024 * 1024,
@@ -37,17 +44,9 @@ def snapshot():
     }
 
 
-def get_runtime(provider=None):
-    from ngertiin.computer.contracts import ComputerRuntime
-    from ngertiin.computer.daytona import DaytonaComputer
+def get_runtime(provider: str | None = None) -> "ComputerRuntime":
     from ngertiin.computer.e2b import E2BComputer
 
-    selected = provider or get_settings().computer_provider
-    runtime: ComputerRuntime
-    if selected == "e2b" and get_settings().e2b_api_key.get_secret_value():
-        runtime = E2BComputer()
-    elif selected == "daytona" and get_settings().daytona_api_key.get_secret_value():
-        runtime = DaytonaComputer()
-    else:
-        raise ValueError("Komputer belum dikonfigurasi. Draft tetap tersimpan.")
-    return runtime
+    if (provider or get_settings().computer_provider) != "e2b":
+        raise ValueError("Provider runtime tidak didukung. Gunakan E2B.")
+    return E2BComputer()

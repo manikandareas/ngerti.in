@@ -10,11 +10,13 @@ import time
 from pathlib import Path
 from uuid import UUID, uuid4
 
+from e2b import AsyncSandbox
+from ngertiin import e2b
 from ngertiin.chat.store import bootstrap
 from ngertiin.config import get_settings
-from ngertiin.daytona_trial import provider
 from ngertiin.files import results
 from ngertiin.files import store as files
+from ngertiin.sandbox.e2b import E2BAdapter
 from ngertiin.tasks import actions, creation, store
 from ngertiin.tasks.jobs import task_job
 from ngertiin.worker.queue import queue_app
@@ -23,19 +25,23 @@ from ngertiin.worker.queue import queue_app
 async def probe(owner: UUID, output: Path):
     if get_settings().app_env != "development":
         raise RuntimeError("Requires development")
-    report = {"kind": "live_daytona_output_persistence", "started_at": time.time()}
-    row = None
+    report = {"kind": "live_e2b_output_persistence", "started_at": time.time()}
+    sandbox = None
     job_id = None
     output.parent.mkdir(parents=True, exist_ok=True)
     try:
-        report["preflight"] = await provider.preflight()
-        row = await provider.create(str(owner), ttl=3)
-        report.update(
-            session_id=row["id"],
-            sandbox_id=row["sandbox_id"],
-            reserved_usd=row["reserved_usd"],
-            ttl_minutes=3,
+        info = await E2BAdapter().preflight()
+        report["preflight"] = {"provider": info.provider}
+        sandbox = await AsyncSandbox.create(
+            template=get_settings().e2b_sandbox_template,
+            timeout=180,
+            metadata={"ngertiin": "file-persistence-probe"},
+            allow_internet_access=False,
+            network={"allow_public_traffic": False},
+            lifecycle={"on_timeout": "kill", "auto_resume": False},
+            **e2b.options(),
         )
+        report.update(sandbox_id=sandbox.sandbox_id, ttl_minutes=3)
         payloads = {
             "sandbox-note.md": "# Hasil dari sandbox\nBerkas ini harus tetap ada sesudah sandbox dihapus.\n",
             "sandbox-data.csv": "item,jumlah\nBuku,12\nPensil,24\n",
@@ -50,25 +56,20 @@ async def probe(owner: UUID, output: Path):
         encoded = base64.b64encode(json.dumps(payloads).encode()).decode()
         command = "python3 -c " + shlex.quote(
             "import base64,json,pathlib; "
-            "p=pathlib.Path('/home/daytona/ng034');p.mkdir(exist_ok=True); "
+            "p=pathlib.Path('/tmp/ng034');p.mkdir(exist_ok=True); "
             f"data=json.loads(base64.b64decode('{encoded}')); "
             "[(p/n).write_text(v) for n,v in data.items()];print('ng034-fixtures-written')"
         )
-        execution = await provider.execute(
-            row["id"], str(owner), row["version"], command
-        )
-        if execution["exit_code"] != 0:
+        execution = await e2b.run(sandbox, command)
+        if execution.exit_code != 0:
             raise RuntimeError("Sandbox fixture producer failed")
-        report["producer"] = execution
+        report["producer"] = {"exit_code": execution.exit_code}
         bodies = {}
-        async with provider.client() as api:
-            sandbox = await api.get(row["sandbox_id"])
-            for name in payloads:
-                bodies[name] = await sandbox.fs.download_file(
-                    "/home/daytona/ng034/" + name
-                )
-                if len(bodies[name]) > provider.MAX_FILE_BYTES:
-                    raise RuntimeError("Producer output exceeded bound")
+        for name in payloads:
+            data = await sandbox.files.read("/tmp/ng034/" + name, format="bytes")
+            bodies[name] = bytes(data)
+            if len(bodies[name]) > 10 * 1024 * 1024:
+                raise RuntimeError("Producer output exceeded bound")
         thread = (await bootstrap(owner))["threads"][0]["id"]
         original_enqueue = store.enqueue
 
@@ -115,7 +116,10 @@ async def probe(owner: UUID, output: Path):
             manifest_id=str(manifest_id),
             source="bounded_static_fixture_adapter",
         )
-        report["cleanup"] = await provider.cleanup(row["id"], str(owner))
+        await sandbox.kill(request_timeout=20)
+        report["cleanup"] = {"deleted": await e2b.info(sandbox.sandbox_id) is None}
+        if not report["cleanup"]["deleted"]:
+            raise AssertionError("Sandbox deletion was not confirmed")
         async with store.transaction() as conn:
             result = await results.detail(conn, owner, task["result_id"])
         verified = []
@@ -137,8 +141,9 @@ async def probe(owner: UUID, output: Path):
             seconds=time.time() - report["started_at"],
         )
     finally:
-        if row and not report.get("cleanup"):
-            report["cleanup"] = await provider.cleanup(row["id"], str(owner))
+        if sandbox and not report.get("cleanup", {}).get("deleted"):
+            await sandbox.kill(request_timeout=20)
+            report["cleanup"] = {"deleted": await e2b.info(sandbox.sandbox_id) is None}
         if job_id:
             async with queue_app.open_async():
                 await queue_app.job_manager.cancel_job_by_id_async(job_id, abort=True)

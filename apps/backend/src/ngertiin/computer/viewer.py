@@ -18,6 +18,17 @@ from ngertiin.config import get_settings
 from ngertiin.tasks import store as tasks
 
 
+async def revoke(owner, task_id, ident):
+    async with tasks.locked(owner, task_id) as (conn, task):
+        row = await control.active(conn, task)
+        await conn.execute(
+            "UPDATE computer_viewers SET closed=true WHERE workspace_id=%s AND id=%s "
+            "AND owner_id=%s",
+            (row["id"], ident, owner),
+        )
+    return {"closed": True}
+
+
 async def mint(owner, task_id, response: Response):
     async with tasks.locked(owner, task_id) as (conn, task):
         row = await control.active(conn, task)

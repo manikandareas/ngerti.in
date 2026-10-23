@@ -27,6 +27,9 @@ def review_hash(task):
 async def ensure(execution: dict):
     async with store.locked(execution["owner_id"], execution["id"]) as (conn, task):
         store.fence(task, execution)
+        from ngertiin.computer.candidates import require_publishable
+
+        await require_publishable(conn, task)
         if not task["draft"].strip():
             raise ValueError("Belum ada draft yang dapat difinalisasi.")
         if task.get("output_spec"):
@@ -63,6 +66,9 @@ async def ensure(execution: dict):
 
 
 async def approved(conn, task: dict, action_id: UUID):
+    from ngertiin.computer.candidates import require_publishable
+
+    await require_publishable(conn, task)
     action = await one(
         conn,
         "SELECT * FROM task_actions WHERE id=%s AND task_id=%s FOR UPDATE",
@@ -207,16 +213,17 @@ async def publish(execution: dict, action_id: UUID, *, version_id=None):
             "UPDATE task_actions SET status='succeeded',outcome=%s WHERE id=%s",
             (json_value({"delivery": str(task["id"]), "effect": "confirmed"}), action_id),
         )
+        partial = task.get("runtime_state", {}).get("outcome") == "partial"
         await store.finish_execution(conn, task, "succeeded")
         await store.change(
             conn,
             task,
             result=delivered_text,
-            status="succeeded",
-            stage="complete",
+            status="failed" if partial else "succeeded",
+            stage="computer_partial" if partial else "complete",
             lease_token=None,
             resume=None,
-            error=None,
+            error="Hasil parsial tersedia; tujuan belum selesai seluruhnya." if partial else None,
         )
         await store.emit(conn, task)
 
@@ -259,10 +266,16 @@ async def reconcile(owner: UUID, task_id: UUID):
             await store.change(
                 conn,
                 task,
-                status="succeeded",
-                stage="complete",
+                status="failed"
+                if task.get("runtime_state", {}).get("outcome") == "partial"
+                else "succeeded",
+                stage="computer_partial"
+                if task.get("runtime_state", {}).get("outcome") == "partial"
+                else "complete",
                 result=action["content"],
-                error=None,
+                error="Hasil parsial tersedia; tujuan belum selesai seluruhnya."
+                if task.get("runtime_state", {}).get("outcome") == "partial"
+                else None,
             )
         elif task["status"] == "cancelled":
             await conn.execute(

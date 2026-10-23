@@ -51,11 +51,11 @@ async def summary(conn, task):
     workspace = await one(
         conn,
         "SELECT * FROM browser_workspaces WHERE owner_id=%s AND provider=%s AND state<>'deleted'",
-        (task["owner_id"], task["budget_policy"].get("computer", {}).get("provider", "daytona")),
+        (task["owner_id"], task["budget_policy"].get("computer", {}).get("provider", "e2b")),
     )
     action = await one(
         conn,
-        "SELECT id,kind,action,state,control_version,expires_at "
+        "SELECT id,kind,action,state,control_version,expires_at,decision "
         "FROM computer_steps WHERE task_id=%s AND state IN ('proposed','approved') "
         "ORDER BY created_at DESC LIMIT 1",
         (task["id"],),

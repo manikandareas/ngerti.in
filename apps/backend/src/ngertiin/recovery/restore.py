@@ -156,8 +156,8 @@ async def release():
             )
         observations.append({"kind": "sandbox", "id": str(row["id"]), "state": "absent"})
     for row in workspaces:
-        observed = await computer.get_runtime(row["provider"]).inspect(row)
-        if observed != "absent":
+        browser_observed = await computer.get_runtime(row["provider"]).inspect(row)
+        if browser_observed != "absent":
             raise ValueError(
                 "Browser profile still exists; keep restore offline and review source."
             )

@@ -107,6 +107,15 @@ async def lifecycle():
             conn,
             "SELECT count(*) AS n FROM procrastinate_jobs WHERE task_name='task.execute'",
         )
+        origin = await chat.one(
+            conn,
+            "SELECT parts FROM chat_messages WHERE thread_id=%s AND role='user'",
+            (thread,),
+        )
+    check(
+        "manual_task_has_stable_transcript_anchor",
+        origin["parts"][0]["task_id"] == str(task_id),
+    )
     check("atomic_create_has_one_job", queued["n"] == 1)
     await rejected(
         "create_fingerprint_conflict",

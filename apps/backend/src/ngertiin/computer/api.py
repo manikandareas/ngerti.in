@@ -32,6 +32,11 @@ class Confirmation(BaseModel):
     confirmed: bool
 
 
+class ViewerClose(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    ident: UUID
+
+
 @router.get("/workspace")
 async def workspace(account: AccountDep):
     from ngertiin.chat.store import one
@@ -66,6 +71,18 @@ async def decision(task_id: UUID, step_id: UUID, body: DecisionInput, account: A
 @router.post("/tasks/{task_id}/viewer")
 async def mint(task_id: UUID, response: Response, account: AccountDep):
     return await viewer.mint(account.id, task_id, response)
+
+
+@router.post("/tasks/{task_id}/viewer/close")
+async def close_viewer(task_id: UUID, body: ViewerClose, account: AccountDep):
+    return await viewer.revoke(account.id, task_id, body.ident)
+
+
+@router.post("/tasks/{task_id}/upgrade")
+async def upgrade_runtime(task_id: UUID, account: AccountDep):
+    from ngertiin.computer.maintenance import upgrade
+
+    return await upgrade(account.id, task_id)
 
 
 @router.post("/tasks/{task_id}/acknowledge")

@@ -53,6 +53,11 @@ async def change(owner, task_id, version, destination):
             await store.yield_task(
                 conn, task, "computer_handoff" if destination == "human" else "computer_resuming"
             )
+    # The local barrier drains commands already accepted by CDP and rejects
+    # old epochs. Only its acknowledgement may precede human input.
+    runtime = policy.get_runtime(row["provider"])
+    if hasattr(runtime, "control"):
+        await runtime.control(row)
     # Closing a grant and acknowledging the actual channel close are different.
     for _ in range(40):
         async with tasks.transaction() as conn:
@@ -83,11 +88,13 @@ async def change(owner, task_id, version, destination):
         # Human input already revoked and the old upstream is closed. This image
         # is deliberately not retained; the resumed worker observes again.
         try:
-            observed = await policy.get_runtime(row["provider"]).observe(row)
+            observed = await runtime.observe(row)
         except Exception:
             raise HTTPException(
                 503, "Layar terbaru belum dapat dibaca. Gwen belum dilanjutkan."
             ) from None
+    if hasattr(runtime, "control"):
+        await runtime.control({**row, "control": destination})
     async with tasks.locked(owner, task_id) as (conn, task):
         current = await active(conn, task)
         if (

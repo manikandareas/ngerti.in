@@ -50,6 +50,16 @@ sandbox-inspect:
 computer-inspect:
 	uv run --project apps/backend python scripts/inspect_computer.py
 
+.PHONY: browser-runtime-inspect computer-permissions-inspect jev-browser-probe
+computer-permissions-inspect:
+	uv run --project apps/backend python scripts/inspect_computer_permissions.py
+
+browser-runtime-inspect:
+	uv run --project apps/backend python scripts/inspect_browser_runtime.py
+
+jev-browser-probe:
+	uv run --project apps/backend python scripts/probe_jev_browser.py --live
+
 .PHONY: schedule-inspect
 schedule-inspect:
 	uv run --project apps/backend python scripts/inspect_schedules.py
@@ -75,13 +85,6 @@ reset-dev:
 
 docs-check:
 	python3 scripts/check_docs.py
-
-.PHONY: daytona-preflight daytona-inspect
-daytona-preflight:
-	uv run --project apps/backend python -m ngertiin.daytona_trial preflight
-
-daytona-inspect:
-	uv run --project apps/backend python scripts/inspect_daytona_trial.py
 
 .PHONY: e2b-templates e2b-browser-probe
 e2b-templates:
@@ -112,3 +115,10 @@ entitlement-inspect:
 .PHONY: recovery-inspect
 recovery-inspect:
 	uv run --project apps/backend python scripts/inspect_recovery.py --output .dev/recovery-contracts.json
+
+.PHONY: computer-v2-inspect computer-v2-probe
+computer-v2-inspect:
+	uv run --project apps/backend python scripts/inspect_computer_v2.py
+
+computer-v2-probe:
+	uv run --project apps/backend python scripts/probe_computer_v2.py --live

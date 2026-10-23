@@ -6,7 +6,7 @@ from ngertiin.config import get_settings
 def inventory():
     settings = get_settings()
     model = bool(settings.openai_api_key.get_secret_value())
-    computer = bool(settings.daytona_api_key.get_secret_value())
+    computer = bool(settings.e2b_api_key.get_secret_value())
     return {
         "capabilities": [
             {
@@ -33,7 +33,7 @@ def inventory():
             {
                 "id": "code",
                 "title": "Hitung dan olah data",
-                "available": model and computer and settings.sandbox_provider == "daytona",
+                "available": model and computer and settings.sandbox_provider == "e2b",
                 "description": "Pengolahan Python berjalan di sandbox dengan batas kerja.",
                 "example": "Analisis CSV ini dan buat ringkasan beserta tabel hasilnya.",
             },

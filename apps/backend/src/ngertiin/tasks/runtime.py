@@ -1,6 +1,7 @@
 """Queue attempts drive checkpoints without holding a worker during human review."""
 
 import asyncio
+import time
 from contextlib import suppress
 from uuid import UUID
 
@@ -87,12 +88,22 @@ async def watch(execution: dict, running: asyncio.Task):
         if not row:
             running.cancel()
             return
+        if execution.get("runtime_kind") == "browser":
+            async with store.transaction() as conn:
+                await conn.execute(
+                    "UPDATE browser_workspaces SET heartbeat_at=now() "
+                    "WHERE active_task_id=%s AND control='agent' AND EXISTS "
+                    "(SELECT 1 FROM background_tasks WHERE id=%s AND lease_token=%s "
+                    "AND status='running')",
+                    (execution["id"], execution["id"], execution["lease_token"]),
+                )
 
 
 async def run_task(task_id: str):
     execution = await store.claim(UUID(task_id))
     if not execution:
         return
+    execution["attempt_deadline"] = time.monotonic() + execution["budget_policy"]["timeout_seconds"]
     running = asyncio.create_task(execute(execution))
     watcher = asyncio.create_task(watch(execution, running))
     try:
@@ -105,16 +116,52 @@ async def run_task(task_id: str):
 
         with suppress(store.StaleExecution):
             await pending(execution, str(error))
+    except TimeoutError:
+        if execution.get("runtime_kind") == "browser":
+            from ngertiin.computer.continuation import recover
+
+            async with store.locked(execution["owner_id"], execution["id"]) as (conn, task):
+                store.fence(task, execution)
+                if not await recover(conn, task, "attempt_timeout"):
+                    from ngertiin.computer.store import yield_task
+
+                    await yield_task(
+                        conn,
+                        task,
+                        "computer_unknown",
+                        "Waktu attempt berakhir; outcome diperiksa sebelum dilanjutkan.",
+                    )
+        else:
+            with suppress(store.StaleExecution):
+                await store.fail(execution, "Batas waktu komputasi tercapai. Progress tersimpan.")
     except asyncio.CancelledError:
         # A graceful worker shutdown fences this attempt and leaves recovery to
         # the durable job/domain reconciler. A user stop already revoked it.
+        interrupted = False
         async with store.locked(execution["owner_id"], execution["id"]) as (conn, task):
             if task["lease_token"] == execution["lease_token"] and task["status"] == "running":
-                await budget.abandon_calls(conn, task)
-                await store.finish_execution(conn, task, "interrupted")
-                await store.change(conn, task, status="queued", lease_token=None)
-                await store.emit(conn, task)
-                raise
+                interrupted = True
+                if task.get("runtime_kind") == "browser":
+                    from ngertiin.computer.continuation import recover
+
+                    if not await recover(conn, task, "worker_shutdown"):
+                        from ngertiin.computer.store import yield_task
+
+                        await yield_task(
+                            conn,
+                            task,
+                            "computer_unknown",
+                            "Worker terputus; outcome diperiksa sebelum dilanjutkan.",
+                        )
+                else:
+                    await budget.abandon_calls(conn, task)
+                    await store.finish_execution(conn, task, "interrupted")
+                    await store.change(conn, task, status="queued", lease_token=None)
+                    await store.emit(conn, task)
+        # Re-raise only after COMMIT; raising inside locked() rolls back the
+        # continuation and leaves a dead execution holding its old lease.
+        if interrupted:
+            raise
     except Exception as error:
         logger.warning("task.failed", task_id=task_id, error_type=type(error).__name__)
         message = (

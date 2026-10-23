@@ -37,6 +37,10 @@ async def reconcile_deliveries():
             await budget.abandon_calls(conn, task)
             await store.finish_execution(conn, task, "interrupted")
             if task.get("runtime_kind") == "browser":
+                from ngertiin.computer.continuation import recover
+
+                if await recover(conn, task, "worker_recovered"):
+                    continue
                 workspace = await one(
                     conn,
                     "SELECT id FROM browser_workspaces "
@@ -76,9 +80,9 @@ async def reconcile_deliveries():
                     lease_token=None,
                     error="Publikasi belum terkonfirmasi. Periksa outcome sebelum mencoba lagi.",
                 )
-            elif (
-                task["attempt"] >= (40 if task.get("runtime_kind") == "browser" else 12)
-                or task["usage_units"] >= task["budget_cap"]
+            elif store.exhausted(task) or (
+                not budget.metered_browser(task["budget_policy"])
+                and task["usage_units"] >= task["budget_cap"]
             ):
                 await store.change(
                     conn,

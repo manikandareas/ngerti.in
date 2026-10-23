@@ -1,0 +1,170 @@
+{
+  "passed": 7,
+  "scenarios": [
+    {
+      "scenario": "live_human_control_blocks_stale_dom_worker",
+      "passed": true
+    },
+    {
+      "scenario": "live_coordinate_search_target_auto",
+      "passed": true
+    },
+    {
+      "scenario": "live_jev_form_verified",
+      "passed": true
+    },
+    {
+      "scenario": "live_search_auto_and_only_mutation_approved",
+      "passed": true
+    },
+    {
+      "scenario": "live_jev_metered",
+      "passed": true
+    },
+    {
+      "scenario": "live_latency_and_cost_metrics",
+      "passed": true,
+      "metrics": {
+        "wall_seconds": 84.88,
+        "attempts": 3,
+        "model_calls": 6,
+        "token_work": 11970,
+        "vendor_microusd_estimate": 4749,
+        "invoice_confirmed": false,
+        "model_attempts": [
+          {
+            "model": "jev-1.13.0",
+            "state": "confirmed",
+            "charged_units": 2276,
+            "latency_ms": 784
+          },
+          {
+            "model": "gpt-6-luna",
+            "state": "confirmed",
+            "charged_units": 526,
+            "latency_ms": 2487
+          },
+          {
+            "model": "jev-1.13.0",
+            "state": "confirmed",
+            "charged_units": 2608,
+            "latency_ms": 411
+          },
+          {
+            "model": "jev-1.13.0",
+            "state": "confirmed",
+            "charged_units": 2253,
+            "latency_ms": 468
+          },
+          {
+            "model": "gpt-6-luna",
+            "state": "confirmed",
+            "charged_units": 2887,
+            "latency_ms": null
+          },
+          {
+            "model": "gpt-6-luna",
+            "state": "confirmed",
+            "charged_units": 1420,
+            "latency_ms": null
+          }
+        ],
+        "actuator_calls": [
+          {
+            "operation": "control",
+            "elapsed_ms": 671
+          },
+          {
+            "operation": "dom",
+            "elapsed_ms": 2491
+          },
+          {
+            "operation": "control",
+            "elapsed_ms": 790
+          },
+          {
+            "operation": "control",
+            "elapsed_ms": 750
+          },
+          {
+            "operation": "dom",
+            "elapsed_ms": 863
+          },
+          {
+            "operation": "control",
+            "elapsed_ms": 1210
+          },
+          {
+            "operation": "screen",
+            "elapsed_ms": 1046
+          },
+          {
+            "operation": "control",
+            "elapsed_ms": 770
+          },
+          {
+            "operation": "dom",
+            "elapsed_ms": 2381
+          },
+          {
+            "operation": "target",
+            "elapsed_ms": 944
+          },
+          {
+            "operation": "dom_target",
+            "elapsed_ms": 1174
+          },
+          {
+            "operation": "dom_target",
+            "elapsed_ms": 1298
+          },
+          {
+            "operation": "dom_act",
+            "elapsed_ms": 1319
+          },
+          {
+            "operation": "dom",
+            "elapsed_ms": 2014
+          },
+          {
+            "operation": "dom_target",
+            "elapsed_ms": 1270
+          },
+          {
+            "operation": "dom_act",
+            "elapsed_ms": 1161
+          },
+          {
+            "operation": "dom",
+            "elapsed_ms": 2742
+          },
+          {
+            "operation": "dom_target",
+            "elapsed_ms": 1205
+          },
+          {
+            "operation": "dom_act",
+            "elapsed_ms": 1342
+          },
+          {
+            "operation": "dom",
+            "elapsed_ms": 2023
+          },
+          {
+            "operation": "screen",
+            "elapsed_ms": 791
+          },
+          {
+            "operation": "screen",
+            "elapsed_ms": 927
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "live_resource_deleted",
+      "passed": true
+    }
+  ],
+  "temporary_resources_removed": true
+}

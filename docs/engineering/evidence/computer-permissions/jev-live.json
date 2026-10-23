@@ -1,0 +1,170 @@
+{
+  "passed": 7,
+  "scenarios": [
+    {
+      "scenario": "live_human_control_blocks_stale_dom_worker",
+      "passed": true
+    },
+    {
+      "scenario": "live_coordinate_search_target_auto",
+      "passed": true
+    },
+    {
+      "scenario": "live_jev_form_verified",
+      "passed": true
+    },
+    {
+      "scenario": "live_search_auto_and_only_mutation_approved",
+      "passed": true
+    },
+    {
+      "scenario": "live_jev_metered",
+      "passed": true
+    },
+    {
+      "scenario": "live_latency_and_cost_metrics",
+      "passed": true,
+      "metrics": {
+        "wall_seconds": 97.479,
+        "attempts": 3,
+        "model_calls": 6,
+        "token_work": 10381,
+        "vendor_microusd_estimate": 5226,
+        "invoice_confirmed": false,
+        "model_attempts": [
+          {
+            "model": "jev-1.13.0",
+            "state": "confirmed",
+            "charged_units": 1853,
+            "latency_ms": 475
+          },
+          {
+            "model": "gpt-6-luna",
+            "state": "confirmed",
+            "charged_units": 180,
+            "latency_ms": 2653
+          },
+          {
+            "model": "jev-1.13.0",
+            "state": "confirmed",
+            "charged_units": 2180,
+            "latency_ms": 421
+          },
+          {
+            "model": "jev-1.13.0",
+            "state": "confirmed",
+            "charged_units": 1924,
+            "latency_ms": 407
+          },
+          {
+            "model": "gpt-6-luna",
+            "state": "confirmed",
+            "charged_units": 2901,
+            "latency_ms": null
+          },
+          {
+            "model": "gpt-6-luna",
+            "state": "confirmed",
+            "charged_units": 1343,
+            "latency_ms": null
+          }
+        ],
+        "actuator_calls": [
+          {
+            "operation": "control",
+            "elapsed_ms": 1070
+          },
+          {
+            "operation": "dom",
+            "elapsed_ms": 5051
+          },
+          {
+            "operation": "control",
+            "elapsed_ms": 754
+          },
+          {
+            "operation": "control",
+            "elapsed_ms": 739
+          },
+          {
+            "operation": "dom",
+            "elapsed_ms": 842
+          },
+          {
+            "operation": "control",
+            "elapsed_ms": 728
+          },
+          {
+            "operation": "screen",
+            "elapsed_ms": 845
+          },
+          {
+            "operation": "control",
+            "elapsed_ms": 832
+          },
+          {
+            "operation": "dom",
+            "elapsed_ms": 1285
+          },
+          {
+            "operation": "target",
+            "elapsed_ms": 856
+          },
+          {
+            "operation": "dom_target",
+            "elapsed_ms": 1678
+          },
+          {
+            "operation": "dom_target",
+            "elapsed_ms": 1300
+          },
+          {
+            "operation": "dom_act",
+            "elapsed_ms": 1289
+          },
+          {
+            "operation": "dom",
+            "elapsed_ms": 1287
+          },
+          {
+            "operation": "dom_target",
+            "elapsed_ms": 1269
+          },
+          {
+            "operation": "dom_act",
+            "elapsed_ms": 1261
+          },
+          {
+            "operation": "dom",
+            "elapsed_ms": 1427
+          },
+          {
+            "operation": "dom_target",
+            "elapsed_ms": 1299
+          },
+          {
+            "operation": "dom_act",
+            "elapsed_ms": 1293
+          },
+          {
+            "operation": "dom",
+            "elapsed_ms": 1284
+          },
+          {
+            "operation": "screen",
+            "elapsed_ms": 1026
+          },
+          {
+            "operation": "screen",
+            "elapsed_ms": 909
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "live_resource_deleted",
+      "passed": true
+    }
+  ],
+  "temporary_resources_removed": true
+}

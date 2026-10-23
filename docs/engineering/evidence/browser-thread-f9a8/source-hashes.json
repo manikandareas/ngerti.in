@@ -1,0 +1,10 @@
+{
+  "computer/cdp.py": "8deed2b68126831043c6dd1317fa04dbb5113f43adc9c8273508fa4a1faa59af",
+  "computer/actuator.py": "5c20e91fefe0d4ec0d4ffbc8f8358520a78469607ddaba86d8662ca703c553d0",
+  "computer/e2b.py": "894d7035c0502a5e0a804672ab82ebf54006e2578ea7204c65856decf98e296d",
+  "computer/workflow.py": "22ced89aa965c091f5f85071f187886f85e74a10ff37c09cb25ea7a86dddadc2",
+  "computer/model.py": "8095986cf04bbc7573f8093622760481ded27bc66ecfd5ed4d80521d21ac7c05",
+  "computer/verification.py": "601d8cd616b6d10793bb6a979615801a98e4a8f8bfc9604006afcd8bdd00be83",
+  "computer/continuation.py": "7843d152a316dfd2e7e2d7d4390ba9237b44cc74a0a617509698cfb18036bec7",
+  "tasks/budget.py": "fbe7dd25b20ed58a472eb2c5fe44a75813042b20fc53d09b14d64a5ef61742d6"
+}

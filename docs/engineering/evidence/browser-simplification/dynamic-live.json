@@ -1,0 +1,77 @@
+{
+  "passed": 6,
+  "scenarios": [
+    {
+      "scenario": "live_trace",
+      "passed": true,
+      "evidence_urls": [
+        "https://example.com/?ngfixture=1",
+        "https://example.org/?ngfixture=2",
+        "https://example.net/?ngfixture=3"
+      ],
+      "calls": [
+        {
+          "role": "browser_decision",
+          "model": "jev-1.13.0",
+          "state": "confirmed",
+          "charged_units": 1491
+        },
+        {
+          "role": "browser_decision",
+          "model": "jev-1.13.0",
+          "state": "confirmed",
+          "charged_units": 1996
+        },
+        {
+          "role": "browser_decision",
+          "model": "jev-1.13.0",
+          "state": "confirmed",
+          "charged_units": 2205
+        },
+        {
+          "role": "browser_synthesis",
+          "model": "gpt-6-luna",
+          "state": "confirmed",
+          "charged_units": 1323
+        },
+        {
+          "role": "browser_verifier",
+          "model": "gpt-6-luna",
+          "state": "confirmed",
+          "charged_units": 1368
+        }
+      ],
+      "candidates": [
+        {
+          "state": "passed",
+          "verdict": {
+            "reason": "The report lists the supported 2026 deployment counts for Studies A, B, and C, cites each source URL, and clearly labels the studies as synthetic. The supplied source excerpts contain the corresponding counts and next-source links, and all three sources are represented.",
+            "status": "passed"
+          }
+        }
+      ],
+      "result": "Se revisaron los tres extractos suministrados; el informe incluye los conteos y sus URLs."
+    },
+    {
+      "scenario": "live_three_dynamic_causal_tabs_read",
+      "passed": true
+    },
+    {
+      "scenario": "live_jev_decision_ledger",
+      "passed": true
+    },
+    {
+      "scenario": "live_report_verified",
+      "passed": true
+    },
+    {
+      "scenario": "live_retained_upgrade_cold_resume",
+      "passed": true
+    },
+    {
+      "scenario": "live_resource_deleted",
+      "passed": true
+    }
+  ],
+  "temporary_resources_removed": true
+}

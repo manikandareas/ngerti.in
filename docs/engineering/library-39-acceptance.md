@@ -35,7 +35,7 @@ IDs:
 - Result: `c532d027-2bc7-5c04-a88b-8e9dc09ad0f0`.
 - File: `laporan-penjualan-ng039.md`; v1 SHA-256 prefix `6d4297e924f3`, v2 `77ef261e1e13`.
 
-Bukti: [trace model dan Task](evidence/library-39/live-readback.json), [bytes/revision hasil](evidence/library-39/result-revisions.json), [environment/package](evidence/library-39/environment.json), [screenshot desktop](evidence/library-39/desktop-chat.jpg), dan [screenshot mobile](evidence/library-39/mobile-result.jpg). Uji awal menemukan masalah pencocokan tanda baca nama file; query yang sama berhasil setelah normalisasi. Trace awal tersebut dipertahankan, bukan dihapus dari bukti.
+Bukti: [trace model dan Task](evidence/library-39/live-readback.json), [bytes/revision hasil](evidence/library-39/result-revisions.json), [bukti provider lama telah dihapus](e2b-only-cleanup.md), [screenshot desktop](evidence/library-39/desktop-chat.jpg), dan [screenshot mobile](evidence/library-39/mobile-result.jpg). Uji awal menemukan masalah pencocokan tanda baca nama file; query yang sama berhasil setelah normalisasi. Trace awal tersebut dipertahankan, bukan dihapus dari bukti.
 
 ## Pemeriksaan kontrak dan regresi
 
@@ -59,3 +59,5 @@ Pencarian adalah teks PostgreSQL, bukan semantic search atau OCR otomatis saat m
 Empat chat run audit mencatat **38.274 token**; dua Task memakai **2.391 usage units**. Unit Task dan token chat adalah telemetry terpisah dan tidak dijumlahkan sebagai tagihan. Pencarian langsung tidak memanggil model; pencarian lewat chat mengikuti ledger chat yang ada. Invoice/tarif uang tidak diverifikasi. Audit ini menggunakan Task teks, tanpa provisioning sandbox/browser tambahan.
 
 Acceptance ini membuktikan development pada data audit, termasuk kontrol akses dan fault probes terkontrol. Kapasitas korpus besar, kualitas semantic search, produksi, perangkat mobile fisik, konektor, editor kompleks, sharing publik dan generator media tidak diklaim oleh NG-039.
+
+> Bukti yang bergantung pada provider lama telah dihapus saat [pembersihan E2B saja](e2b-only-cleanup.md). Ini tidak mengubah hasil pemeriksaan terkontrol yang masih tersedia.

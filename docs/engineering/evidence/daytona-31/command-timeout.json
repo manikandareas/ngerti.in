@@ -1,9 +1,0 @@
-{
-  "result": {
-    "exit_code": 124,
-    "output": "",
-    "duration_ms": 21240
-  },
-  "expected_exit": 124,
-  "expected_upper_seconds": 25
-}

@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-23",
+  "migration": "0019_browser_continuation",
+  "checks": {
+    "continuation": 14,
+    "computer": 51,
+    "tasks": 56,
+    "sandbox": 45,
+    "usage": 49,
+    "live_jev": 6,
+    "e2b_provider": 12
+  },
+  "gates": {
+    "make_check": true,
+    "make_build": true,
+    "make_docs_check": true,
+    "diff_check": true,
+    "snapshot_syntax": true
+  },
+  "probe_resources_remaining": 0,
+  "existing_resources_preserved": 1,
+  "source_sha256": {
+    "apps/backend/src/ngertiin/computer/actuator.py": "dc66c0ac799d322bd0a5de1188133f95ac3d62ecdd3a9a01ff29557f24cf9010",
+    "apps/backend/src/ngertiin/computer/continuation.py": "7843d152a316dfd2e7e2d7d4390ba9237b44cc74a0a617509698cfb18036bec7",
+    "apps/backend/src/ngertiin/computer/jev.py": "9c483d1521dcc5572560d7a8be25adf0d4f64b20546b8ddbc63105e1581d56b4",
+    "apps/backend/src/ngertiin/computer/jev_runner.py": "f7565d64c428006772ce3467e34e673d0b2bcd4843a76e9eabc17e5c8a915424",
+    "apps/backend/src/ngertiin/computer/verification.py": "601d8cd616b6d10793bb6a979615801a98e4a8f8bfc9604006afcd8bdd00be83",
+    "apps/backend/src/ngertiin/computer/workflow.py": "22ced89aa965c091f5f85071f187886f85e74a10ff37c09cb25ea7a86dddadc2",
+    "apps/backend/src/ngertiin/tasks/runtime.py": "5c9b017958b6bba94c730223e0bf6b5c622a408581944c39dd7b02f16815742a",
+    "apps/backend/src/ngertiin/computer/jev_assets/snapshot.js": "823447cc21fdb48eab776732468b84aa12d9cd09d35fa76b647aa8eb3b06b185",
+    "apps/backend/src/ngertiin/computer/contracts.py": "9369b0e9300fd270464ad3693600eb0da9802aed7ded9ba4560761785d3cb406",
+    "apps/backend/src/ngertiin/computer/steps.py": "8673666ad1d23bddd11bc07709e433f32c5ca54f5152e7b885f275dd06e4f39a",
+    "apps/backend/src/ngertiin/computer/control.py": "c66ed5b5268ae356bdc17a393831909379f6d05e24a6e9a1151f5e1b1ee87c78",
+    "apps/backend/src/ngertiin/computer/e2b.py": "b681cdaa2462c4cc6e353f682e6b75c4ebf71cac3c052e7b1dc06904aa42b27c",
+    "apps/backend/src/ngertiin/computer/cdp.py": "6912e4ca97e8d52e85df239facb2394a75cda3c4284d7cb9711354547e140f60",
+    "apps/backend/src/ngertiin/tasks/commands.py": "422091936527389b89ceaeb68f1b15cbe7ff4828479b85b63bdf62e7d355c0d9",
+    "apps/backend/src/ngertiin/tasks/budget.py": "fbe7dd25b20ed58a472eb2c5fe44a75813042b20fc53d09b14d64a5ef61742d6",
+    "scripts/build_e2b_templates.py": "cd82908ff8e8ab3902cccf10bf118436d28f653fad361c51ff0ac5f63c12b4c3"
+  },
+  "limitations": [
+    "Single synthetic live fixture, not broad-site benchmark",
+    "30-60 minute real runs not qualified",
+    "Retained legacy templates use screenshot fallback",
+    "Default resource deadline remains 20 minutes; extended bounds require admitted budget"
+  ]
+}

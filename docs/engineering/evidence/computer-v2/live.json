@@ -1,0 +1,77 @@
+{
+  "passed": 6,
+  "scenarios": [
+    {
+      "scenario": "live_trace",
+      "passed": true,
+      "evidence_urls": [
+        "https://example.com/?ngfixture=1",
+        "https://example.org/?ngfixture=2",
+        "https://example.net/?ngfixture=3"
+      ],
+      "calls": [
+        {
+          "role": "browser_decision",
+          "model": "jev-1.13.0",
+          "state": "confirmed",
+          "charged_units": 1382
+        },
+        {
+          "role": "browser_decision",
+          "model": "jev-1.13.0",
+          "state": "confirmed",
+          "charged_units": 1872
+        },
+        {
+          "role": "browser_decision",
+          "model": "jev-1.13.0",
+          "state": "confirmed",
+          "charged_units": 2104
+        },
+        {
+          "role": "browser_synthesis",
+          "model": "gpt-6-luna",
+          "state": "confirmed",
+          "charged_units": 1312
+        },
+        {
+          "role": "browser_verifier",
+          "model": "gpt-6-luna",
+          "state": "confirmed",
+          "charged_units": 1238
+        }
+      ],
+      "candidates": [
+        {
+          "state": "passed",
+          "verdict": {
+            "reason": "The report covers all three sources, correctly lists the 2026 deployment counts (A: 12, B: 18, C: 24), labels each study synthetic, and cites each source\u2019s URL. The supplied excerpts show the sequence through all three sources.",
+            "status": "passed"
+          }
+        }
+      ],
+      "result": "Report completed using all three supplied synthetic research sources."
+    },
+    {
+      "scenario": "live_three_causal_tabs_read",
+      "passed": true
+    },
+    {
+      "scenario": "live_jev_decision_ledger",
+      "passed": true
+    },
+    {
+      "scenario": "live_report_verified",
+      "passed": true
+    },
+    {
+      "scenario": "live_retained_upgrade_cold_resume",
+      "passed": true
+    },
+    {
+      "scenario": "live_resource_deleted",
+      "passed": true
+    }
+  ],
+  "temporary_resources_removed": true
+}

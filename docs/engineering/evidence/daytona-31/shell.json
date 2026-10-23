@@ -1,9 +1,0 @@
-{
-  "session_id": "5a3da86f-a1f0-4163-956f-39a00f2afd7c",
-  "method": "CLI exec; recorded observed stdout",
-  "result": {
-    "exit_code": 0,
-    "output": "shell-ok37d7bcb75135c80d5f9513e0ac7f9f731f8013cadbb6d2fbcbe1d11086fb4027  /home/daytona/trial/persistent.txt\n",
-    "duration_ms": 948
-  }
-}

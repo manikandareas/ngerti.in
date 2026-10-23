@@ -1,0 +1,39 @@
+{
+  "at": "2026-10-23T05:32:08.961915+00:00",
+  "checks": {
+    "permissions_contracts": 34,
+    "computer_regression": 51,
+    "continuation_regression": 14,
+    "task_regression": 56,
+    "live_fixture": 7,
+    "consecutive_final_live_passes": 2,
+    "make_check": "passed",
+    "make_build": "passed",
+    "make_docs_check": "passed",
+    "git_diff_check": "passed",
+    "javascript_syntax": "passed",
+    "result_screenshot_visually_checked": true
+  },
+  "development": {
+    "restarted": true,
+    "api_readiness_http": 200,
+    "web_http": 200
+  },
+  "sources": {
+    "apps/backend/src/ngertiin/computer/permissions.py": "62290faee475816a0b2a548b20b3a085184213934e0c88de02cb813e02d0e7af",
+    "apps/backend/src/ngertiin/computer/contracts.py": "fe22c81f6b4e6a6bec50c928ffdc76fe5dfab159f574144f696024fdf884eeb2",
+    "apps/backend/src/ngertiin/computer/steps.py": "dd31901d4d481d434905a74ce8b94021aafb71d5e5446a7a4ad9ee8acea09c4f",
+    "apps/backend/src/ngertiin/computer/actuator.py": "5c20e91fefe0d4ec0d4ffbc8f8358520a78469607ddaba86d8662ca703c553d0",
+    "apps/backend/src/ngertiin/computer/cdp.py": "8deed2b68126831043c6dd1317fa04dbb5113f43adc9c8273508fa4a1faa59af",
+    "apps/backend/src/ngertiin/computer/e2b.py": "894d7035c0502a5e0a804672ab82ebf54006e2578ea7204c65856decf98e296d",
+    "apps/backend/src/ngertiin/computer/jev_runner.py": "342a45a4b26169630e0791527c9d8c399c2cb5aa50fc15331ffcecb5c09e5a0f",
+    "apps/backend/src/ngertiin/computer/jev_assets/snapshot.js": "848df3d9d32d82d13f378c46b0c915e16341a8f751fd87846e21fa552b594400",
+    "apps/backend/src/ngertiin/computer/jev_assets/target_context.js": "064f6e1e5fce40e3060006ffa209fefec30e0288bcaa5daf9b98365f69bda53a",
+    "scripts/inspect_computer_permissions.py": "c5af0e45e926d960bcdf29bfc1284583825b0e15fb7fc3eaf795af78ebe337aa",
+    "scripts/probe_jev_browser.py": "8a3449d756c13c83939ec4d448c60d38cd0ca2e59a73a55851833aed3da64257"
+  },
+  "limits": [
+    "Synthetic fixture only; no external email sent.",
+    "Unknown effects still require approval; this is not an all-site benchmark."
+  ]
+}

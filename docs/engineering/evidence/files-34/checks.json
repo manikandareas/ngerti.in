@@ -53,5 +53,5 @@
   "ocr_cost_estimate_usd": 0.012,
   "invoice_verified": false,
   "task_confirmed_tokens": 3782,
-  "daytona_trial_cleanup_confirmed": true
+  "retired_provider_evidence_removed": true
 }

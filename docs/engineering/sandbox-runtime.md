@@ -1,13 +1,12 @@
 # Runtime komputasi yang dapat diganti
 
-NG-035 memakai interface Python `SandboxRuntime` di `apps/backend/src/ngertiin/sandbox/contracts.py`. **E2B adalah provider default sejak 20 Oktober 2026**, sesudah [migrasi runtime](e2b-migration-2026-10-20.md). Adapter Daytona tetap tersedia untuk rekonsiliasi sesi lama. Kontrak Task, review, ownership, File/Result dan ledger tetap milik Ngertiin.
+NG-035 memakai interface Python `SandboxRuntime` di `apps/backend/src/ngertiin/sandbox/contracts.py`. **E2B adalah satu-satunya provider aktif**. Adapter dan data provider lama telah dipensiunkan; lihat [pembersihan provider](e2b-only-cleanup.md). Kontrak Task, review, ownership, File/Result dan ledger tetap milik Ngertiin.
 
 ```mermaid
 flowchart TD
   Task["Task / LangGraph workflow"] --> Compute["Orkestrasi komputasi Ngertiin"]
   Compute --> Contract["SandboxRuntime Protocol"]
-  Contract --> E2B["E2BAdapter: default"]
-  Contract --> Daytona["DaytonaAdapter: sesi lama"]
+  Contract --> E2B["E2BAdapter"]
   Contract -. "adapter berikutnya" .-> Other["Provider lain / self-hosted"]
   Compute --> Domain["Ownership, budget, receipt, candidate dan publikasi"]
 ```
@@ -24,9 +23,9 @@ flowchart TD
 | `collect` | Mengambil keluaran biasa dengan batas jumlah/ukuran; menolak symlink, FIFO, device dan hasil tidak lengkap. |
 | `delete` | Mengonfirmasi resource sudah tidak ada; menerima request delete saja belum memenuhi kontrak. |
 
-Seluruh dataclass, status dan exception pada interface adalah tipe aplikasi. Tidak ada objek SDK provider yang dikembalikan ke Task atau agent. Adapter Python berada di `sandbox/e2b.py` dan `sandbox/daytona.py`; operasi SDK E2B bersama adapter browser berada di `ngertiin/e2b.py`. `daytona_trial/` tetap diagnostik historis NG-031 yang terpisah.
+Seluruh dataclass, status dan exception pada interface adalah tipe aplikasi. Tidak ada objek SDK provider yang dikembalikan ke Task atau agent. Adapter Python berada di `sandbox/e2b.py`; operasi SDK E2B bersama adapter browser berada di `ngertiin/e2b.py`.
 
-`policy.get_runtime(provider)` merupakan satu tempat pemilihan adapter. Orkestrasi menerima dependency `SandboxRuntime`, sehingga kontrak diuji dengan `ControlledRuntime` tanpa membuat resource remote atau mengeksekusi kode pada host. E2B dipilih untuk Task baru; snapshot sesi lama tetap dapat memilih Daytona.
+`policy.get_runtime(provider)` merupakan satu tempat pemilihan adapter. Orkestrasi menerima dependency `SandboxRuntime`, sehingga kontrak diuji dengan `ControlledRuntime` tanpa membuat resource remote atau mengeksekusi kode pada host. Konfigurasi dan pemilihan runtime hanya menerima E2B; identitas provider lain ditolak.
 
 ## Domain yang tetap berada di aplikasi
 
@@ -41,11 +40,11 @@ Transaksi database singkat tidak memegang koneksi selama panggilan SDK/model/sto
 
 ## Isolasi adapter
 
-E2B memakai template aplikasi `ngertiin-code-v1`, dibangun dari `base` pada **2 vCPU/4 GiB**. Generated code tetap memakai UID 65534, environment allowlist, hard limits dan seccomp launcher yang sama. Provider diminta memblokir outbound dan public ingress. Template E2B menggunakan filesystem backing yang lebih besar daripada disk Daytona lama; batas program/file/output tetap ditegakkan launcher, bukan klaim bahwa seluruh disk E2B mempunyai kuota 8 GiB. Profil browser berada pada sandbox E2B desktop terpisah.
+E2B memakai template aplikasi `ngertiin-code-v1`, dibangun dari `base` pada **2 vCPU/4 GiB**. Generated code tetap memakai UID 65534, environment allowlist, hard limits dan seccomp launcher yang sama. Provider diminta memblokir outbound dan public ingress. Template E2B memiliki backing filesystem sekitar 22 GiB; batas program/file/output tetap ditegakkan launcher. Profil browser berada pada sandbox E2B desktop terpisah.
 
-Pada adapter historis Daytona, snapshot `daytona-medium` diverifikasi sebagai 2 vCPU, 4 GiB RAM dan 8 GiB disk; alokasi hasil provisioning juga diperiksa. Supervisor tepercaya memakai root melalui sudo, tetapi **program pengguna dijalankan sebagai UID 65534**, dengan `no-new-privs`, environment allowlist dan hard limits yang tidak dapat dinaikkan.
+Supervisor tepercaya memakai root, tetapi **program pengguna dijalankan sebagai UID 65534**, dengan `no-new-privs`, environment allowlist dan hard limits yang tidak dapat dinaikkan.
 
-Flag firewall provider tetap diminta. Pada probe Daytona sebelumnya, socket masih dapat terhubung walaupun flag `network_block_all` bernilai true. Karena itu launcher tepercaya memasang filter seccomp kernel sebelum memuat program: socket/network, io_uring, ptrace dan operasi namespace berbahaya ditolak; filter diwariskan ke child process. Runtime gagal sebelum menjalankan program bila filter tidak dapat dipasang. Ini bukan filter sintaks Python.
+Launcher memasang filter seccomp kernel sebelum memuat program: socket/network, io_uring, ptrace dan operasi namespace berbahaya ditolak; filter diwariskan ke child process. Runtime gagal sebelum menjalankan program bila filter tidak dapat dipasang. Ini bukan filter sintaks Python.
 
 Input hanya berisi revision/rentang yang dipilih. PDF/gambar memakai ekstraksi halaman yang diizinkan; CSV/JSON/teks memakai bytes/rentang exact. Model menerima metadata dan sampel terbatas, sedangkan program mengolah seluruh data yang dipentaskan. File input tidak dijalankan sebagai script dan tidak memberikan grant baru.
 

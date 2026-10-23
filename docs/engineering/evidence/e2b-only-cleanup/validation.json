@@ -1,0 +1,63 @@
+{
+  "date": "2026-10-22",
+  "provider": "e2b",
+  "checks": {
+    "make_check": true,
+    "make_build": true,
+    "make_docs_check": true,
+    "diff_whitespace": true,
+    "sandbox_contracts": 45,
+    "computer_contracts": 51,
+    "library_contracts": 73,
+    "usage_contracts": 49,
+    "recovery_contracts": 41,
+    "e2b_only_configuration": true,
+    "legacy_api_routes_absent": true,
+    "legacy_sdk_absent": true,
+    "legacy_provider_rows_absent": true
+  },
+  "live_browser": {
+    "allocation_2cpu_4gib": true,
+    "public_ingress_disabled": true,
+    "viewer_without_token_rejected": true,
+    "authenticated_rfb_38": true,
+    "example_loaded": true,
+    "google_loaded": true,
+    "download_bytes_exact": true,
+    "pause_confirmed": true,
+    "same_sandbox_after_resume": true,
+    "profile_survives_worker_restart": true,
+    "screen_after_resume": true,
+    "passed": true,
+    "deleted_confirmed": true
+  },
+  "file_persistence": {
+    "passed": true,
+    "files": 3,
+    "sandbox_deleted": true,
+    "disposable_database_and_bucket_removed": true
+  },
+  "readiness_observation": "Initial browser probe failed during resume desktop readiness; a reduced create/pause/resume probe and a full rerun passed. No speculative runtime fix was made. Intermittent readiness remains an observation.",
+  "purge": {
+    "cloud_sandboxes_deleted": 2,
+    "cloud_sandboxes_remaining": 0,
+    "custom_snapshots": 0,
+    "volumes": 0,
+    "tasks": 15,
+    "result_roots": 15,
+    "result_revisions": 12,
+    "result_files": 15,
+    "object_keys": 27,
+    "local_artifacts": 93,
+    "e2b_receipts_reconciled": 9
+  },
+  "retained": {
+    "e2b_browser_workspaces": 1,
+    "e2b_computer_sessions": 8,
+    "e2b_sandbox_sessions": 1
+  },
+  "limits": [
+    "Remote API key revocation not verified; local credentials removed.",
+    "Other environments, external backups, vendor logs and Git history were not rewritten."
+  ]
+}

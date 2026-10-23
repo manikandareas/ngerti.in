@@ -1,0 +1,34 @@
+[
+  {
+    "name": "ordinary_search",
+    "passed": true
+  },
+  {
+    "name": "password",
+    "passed": true
+  },
+  {
+    "name": "otp",
+    "passed": true
+  },
+  {
+    "name": "callback_link",
+    "passed": true
+  },
+  {
+    "name": "file",
+    "passed": true
+  },
+  {
+    "name": "loading_frame",
+    "passed": true
+  },
+  {
+    "name": "shadow",
+    "passed": true
+  },
+  {
+    "name": "gated_snapshot",
+    "passed": true
+  }
+]

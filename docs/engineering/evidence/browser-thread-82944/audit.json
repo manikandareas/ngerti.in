@@ -1,0 +1,653 @@
+{
+  "task": [
+    {
+      "id": "3d8f0416-17e6-4929-bcab-d9722dc4659c",
+      "status": "failed",
+      "stage": "computer_partial",
+      "error": "Hasil parsial tersedia; tujuan belum selesai seluruhnya.",
+      "usage_units": 17151,
+      "model_calls": 3,
+      "budget_cap": 60000,
+      "runtime_state": {
+        "phase": "synthesize",
+        "engine": "jev",
+        "reason": "working",
+        "outcome": "partial",
+        "subgoal": "Cari sumber relevan, buka, baca, dan simpan bukti sebelum sintesis.",
+        "feedback": "Target berubah; pilih ulang.",
+        "progress": [
+          "Mencari sumber sesuai tujuan.",
+          "Scroll down"
+        ],
+        "last_action": "837a255c5172de28f87add043200a76da87b15c2a01367d5ef4b7902040e350a",
+        "no_progress": 0,
+        "candidate_id": "405b6d49-7264-5187-8449-a43ea8df5dc1",
+        "observations": [
+          "4fa72d735a519ee13d4174f6b71c7ea92a1faa30cb445faf2dcacdf1ac343354",
+          "af8b49101bcd29eab0b8997fd60635cc1844104145c6a2a27162001a2c65d442",
+          "2d21584b84d6d61aa9503cf956fb779d172abf853732cdfe2727948014a30340",
+          "265d6c304486b9516673c192f6a756884c28c185cbf8c2984b740c4522d109e5"
+        ],
+        "action_repeats": 1,
+        "evidence_count": 2,
+        "finish_reserve": 28150,
+        "schema_version": 2,
+        "completed_steps": 2
+      },
+      "created_at": "2026-10-23 07:34:51.300218+00:00",
+      "updated_at": "2026-10-23 07:36:29.438142+00:00"
+    }
+  ],
+  "sessions": [
+    {
+      "id": "8cbe315e-bbe8-41e9-ae1a-2a6701312c5e",
+      "state": "stopped",
+      "created_at": "2026-10-23 07:34:51.465405+00:00",
+      "deadline": "2026-10-23 07:54:51.469414+00:00",
+      "stopped_at": "2026-10-23 07:35:08.301604+00:00",
+      "charged_microusd": 776
+    },
+    {
+      "id": "d48b6afd-1b2a-4782-9ba0-6c29d6af05d8",
+      "state": "stopped",
+      "created_at": "2026-10-23 07:35:16.640012+00:00",
+      "deadline": "2026-10-23 07:38:16.651552+00:00",
+      "stopped_at": "2026-10-23 07:35:55.343133+00:00",
+      "charged_microusd": 1781
+    },
+    {
+      "id": "ffb76195-faff-471e-8ad7-b1b5cea9edcc",
+      "state": "stopped",
+      "created_at": "2026-10-23 07:35:55.741866+00:00",
+      "deadline": "2026-10-23 07:55:55.752617+00:00",
+      "stopped_at": "2026-10-23 07:36:29.053921+00:00",
+      "charged_microusd": 1533
+    }
+  ],
+  "steps": [
+    {
+      "kind": "observe",
+      "state": "complete",
+      "description": null,
+      "decision": null,
+      "outcome": {
+        "rejected_stale": false,
+        "input_acknowledged": true,
+        "postcondition_satisfied": null
+      },
+      "created_at": "2026-10-23 07:36:09.008057+00:00",
+      "finished_at": "2026-10-23 07:36:11.475339+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "description": null,
+      "decision": null,
+      "outcome": {
+        "rejected_stale": false,
+        "input_acknowledged": true,
+        "postcondition_satisfied": null
+      },
+      "created_at": "2026-10-23 07:36:11.566627+00:00",
+      "finished_at": "2026-10-23 07:36:11.583464+00:00"
+    },
+    {
+      "kind": "navigate",
+      "state": "complete",
+      "description": "Mencari sumber sesuai tujuan.",
+      "decision": "auto",
+      "outcome": {
+        "rejected_stale": false,
+        "input_acknowledged": true,
+        "postcondition_satisfied": null
+      },
+      "created_at": "2026-10-23 07:36:11.591735+00:00",
+      "finished_at": "2026-10-23 07:36:12.597188+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "description": null,
+      "decision": null,
+      "outcome": {
+        "rejected_stale": false,
+        "input_acknowledged": true,
+        "postcondition_satisfied": null
+      },
+      "created_at": "2026-10-23 07:36:12.681447+00:00",
+      "finished_at": "2026-10-23 07:36:15.258021+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "description": null,
+      "decision": null,
+      "outcome": {
+        "rejected_stale": false,
+        "input_acknowledged": true,
+        "postcondition_satisfied": null
+      },
+      "created_at": "2026-10-23 07:36:15.917458+00:00",
+      "finished_at": "2026-10-23 07:36:15.932645+00:00"
+    },
+    {
+      "kind": "scroll",
+      "state": "complete",
+      "description": "Scroll down",
+      "decision": "auto",
+      "outcome": {
+        "rejected_stale": false,
+        "input_acknowledged": true,
+        "postcondition_satisfied": null
+      },
+      "created_at": "2026-10-23 07:36:15.941222+00:00",
+      "finished_at": "2026-10-23 07:36:17.034416+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "description": null,
+      "decision": null,
+      "outcome": {
+        "rejected_stale": false,
+        "input_acknowledged": true,
+        "postcondition_satisfied": null
+      },
+      "created_at": "2026-10-23 07:36:17.112990+00:00",
+      "finished_at": "2026-10-23 07:36:19.096056+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "unknown",
+      "description": null,
+      "decision": null,
+      "outcome": {
+        "rejected_stale": false,
+        "input_acknowledged": false,
+        "postcondition_satisfied": null
+      },
+      "created_at": "2026-10-23 07:36:19.699193+00:00",
+      "finished_at": "2026-10-23 07:36:21.202210+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "description": null,
+      "decision": null,
+      "outcome": {
+        "rejected_stale": false,
+        "input_acknowledged": true,
+        "postcondition_satisfied": null
+      },
+      "created_at": "2026-10-23 07:36:21.277554+00:00",
+      "finished_at": "2026-10-23 07:36:22.273698+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "unknown",
+      "description": null,
+      "decision": null,
+      "outcome": {
+        "rejected_stale": false,
+        "input_acknowledged": false,
+        "postcondition_satisfied": null
+      },
+      "created_at": "2026-10-23 07:36:22.976032+00:00",
+      "finished_at": "2026-10-23 07:36:23.993444+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "description": null,
+      "decision": null,
+      "outcome": {
+        "rejected_stale": false,
+        "input_acknowledged": true,
+        "postcondition_satisfied": null
+      },
+      "created_at": "2026-10-23 07:36:24.054560+00:00",
+      "finished_at": "2026-10-23 07:36:25.071833+00:00"
+    }
+  ],
+  "calls": [
+    {
+      "role": "browser_decision",
+      "model": "jev-1.13.0",
+      "state": "confirmed",
+      "reserved_units": 17214,
+      "charged_units": 4308,
+      "usage": {
+        "latency_ms": 489,
+        "input_tokens": 3957,
+        "total_tokens": 4308,
+        "output_tokens": 351
+      },
+      "created_at": "2026-10-23 07:36:15.287959+00:00",
+      "settled_at": "2026-10-23 07:36:15.807351+00:00"
+    },
+    {
+      "role": "browser_decision",
+      "model": "jev-1.13.0",
+      "state": "confirmed",
+      "reserved_units": 20771,
+      "charged_units": 5670,
+      "usage": {
+        "latency_ms": 465,
+        "input_tokens": 5229,
+        "total_tokens": 5670,
+        "output_tokens": 441
+      },
+      "created_at": "2026-10-23 07:36:19.119719+00:00",
+      "settled_at": "2026-10-23 07:36:19.611760+00:00"
+    },
+    {
+      "role": "browser_decision",
+      "model": "jev-1.13.0",
+      "state": "confirmed",
+      "reserved_units": 24720,
+      "charged_units": 7173,
+      "usage": {
+        "latency_ms": 563,
+        "input_tokens": 6669,
+        "total_tokens": 7173,
+        "output_tokens": 504
+      },
+      "created_at": "2026-10-23 07:36:22.296694+00:00",
+      "settled_at": "2026-10-23 07:36:22.881124+00:00"
+    }
+  ],
+  "evidence": [
+    {
+      "url": "https://www.google.com/search?q=Riset+web+tentang+tren+AI+agent+yang+diperkirakan+relevan+pada+2027.+Cari+sumber+terkini+dan+tepercaya+%28laporan+industri%2C+riset+akademik%2C+perusahaan+teknologi+bereputasi%2C+regulator+bila+relevan%29.+Bedakan+bukti+tren+saat+ini+dari+proyeksi%3B+sajikan+6%E2%80%9310+tren%2C+penjelasan%2C+pendorong%2C+risiko%2Fketidakpastian%2C+dan+tingkat+keyakinan+tiap+proyeksi.+Cantumkan+sitasi+berupa+nama+sumber%2C+tanggal%2C+dan+URL+yang+tersedia.+Jawab+dalam+bahasa+Indonesia%2C+awali+ringkasan+eksekutif%2C+akhiri+implikasi+praktis+untuk+or",
+      "title": "Riset web tentang tren AI agent yang diperkirakan relevan pada 2027. Cari sumber terkini dan tepercaya (laporan industri, riset akademik, perusahaan teknologi bereputasi, regulator bila relevan). Beda",
+      "excerpt_characters": 2013,
+      "content_hash": "1d147ceb053dc53d9dd350734f492b71d411ee58b8190ff0752427ad7154e255",
+      "metadata": {
+        "scope": "visible_viewport",
+        "scroll": {
+          "y": 360,
+          "height": 2874
+        },
+        "accessed_at": "2026-10-23T07:36:19.665406+00:00"
+      },
+      "created_at": "2026-10-23 07:36:19.661755+00:00"
+    },
+    {
+      "url": "https://www.google.com/search?q=Riset+web+tentang+tren+AI+agent+yang+diperkirakan+relevan+pada+2027.+Cari+sumber+terkini+dan+tepercaya+%28laporan+industri%2C+riset+akademik%2C+perusahaan+teknologi+bereputasi%2C+regulator+bila+relevan%29.+Bedakan+bukti+tren+saat+ini+dari+proyeksi%3B+sajikan+6%E2%80%9310+tren%2C+penjelasan%2C+pendorong%2C+risiko%2Fketidakpastian%2C+dan+tingkat+keyakinan+tiap+proyeksi.+Cantumkan+sitasi+berupa+nama+sumber%2C+tanggal%2C+dan+URL+yang+tersedia.+Jawab+dalam+bahasa+Indonesia%2C+awali+ringkasan+eksekutif%2C+akhiri+implikasi+praktis+untuk+or",
+      "title": "Riset web tentang tren AI agent yang diperkirakan relevan pada 2027. Cari sumber terkini dan tepercaya (laporan industri, riset akademik, perusahaan teknologi bereputasi, regulator bila relevan). Beda",
+      "excerpt_characters": 2587,
+      "content_hash": "b3ed61f73685945ac59965803b1afc37b899f5a20f08ee6f7e408b5a150a6868",
+      "metadata": {
+        "scope": "visible_viewport",
+        "scroll": {
+          "y": 360,
+          "height": 2874
+        },
+        "accessed_at": "2026-10-23T07:36:22.926419+00:00"
+      },
+      "created_at": "2026-10-23 07:36:22.922943+00:00"
+    }
+  ],
+  "candidates": [
+    {
+      "state": "partial",
+      "verdict": {
+        "reason": "Budget eksplorasi tidak cukup untuk panggilan berikutnya.",
+        "renderer": "original_excerpts"
+      },
+      "created_at": "2026-10-23 07:36:25.352231+00:00"
+    }
+  ],
+  "viewer": [
+    {
+      "control_version": 32,
+      "expires_at": "2026-10-23 07:41:11.644713+00:00",
+      "connected": false,
+      "closed": true,
+      "channel_deadline": "2026-10-23 07:36:40.342064+00:00"
+    }
+  ],
+  "timeline": [
+    {
+      "seq": 24,
+      "created_at": "2026-10-23 07:34:51.300218+00:00",
+      "status": "queued",
+      "stage": "queued",
+      "error": null
+    },
+    {
+      "seq": 26,
+      "created_at": "2026-10-23 07:34:51.370295+00:00",
+      "status": "running",
+      "stage": "queued",
+      "error": null
+    },
+    {
+      "seq": 27,
+      "created_at": "2026-10-23 07:34:51.478544+00:00",
+      "status": "running",
+      "stage": "computer_starting",
+      "error": null
+    },
+    {
+      "seq": 37,
+      "created_at": "2026-10-23 07:35:04.632119+00:00",
+      "status": "running",
+      "stage": "computer_starting",
+      "error": null
+    },
+    {
+      "seq": 38,
+      "created_at": "2026-10-23 07:35:08.301604+00:00",
+      "status": "running",
+      "stage": "computer_starting",
+      "error": null
+    },
+    {
+      "seq": 39,
+      "created_at": "2026-10-23 07:35:08.374462+00:00",
+      "status": "waiting_user",
+      "stage": "computer_upgrade_required",
+      "error": "Runtime Jev belum siap. Profil dipertahankan; maintenance diperlukan sebelum Task dilanjutkan."
+    },
+    {
+      "seq": 40,
+      "created_at": "2026-10-23 07:35:55.343133+00:00",
+      "status": "waiting_user",
+      "stage": "computer_upgrade_required",
+      "error": "Runtime Jev belum siap. Profil dipertahankan; maintenance diperlukan sebelum Task dilanjutkan."
+    },
+    {
+      "seq": 41,
+      "created_at": "2026-10-23 07:35:55.445260+00:00",
+      "status": "queued",
+      "stage": "computer_continuing",
+      "error": null
+    },
+    {
+      "seq": 42,
+      "created_at": "2026-10-23 07:35:55.595180+00:00",
+      "status": "running",
+      "stage": "computer_continuing",
+      "error": null
+    },
+    {
+      "seq": 43,
+      "created_at": "2026-10-23 07:35:55.765835+00:00",
+      "status": "running",
+      "stage": "computer_starting",
+      "error": null
+    },
+    {
+      "seq": 44,
+      "created_at": "2026-10-23 07:36:08.901272+00:00",
+      "status": "running",
+      "stage": "computer_starting",
+      "error": null
+    },
+    {
+      "seq": 45,
+      "created_at": "2026-10-23 07:36:08.929997+00:00",
+      "status": "running",
+      "stage": "computer_starting",
+      "error": null
+    },
+    {
+      "seq": 46,
+      "created_at": "2026-10-23 07:36:08.982239+00:00",
+      "status": "running",
+      "stage": "computer_starting",
+      "error": null
+    },
+    {
+      "seq": 47,
+      "created_at": "2026-10-23 07:36:11.482952+00:00",
+      "status": "running",
+      "stage": "computer_starting",
+      "error": null
+    },
+    {
+      "seq": 48,
+      "created_at": "2026-10-23 07:36:11.507083+00:00",
+      "status": "running",
+      "stage": "computer_starting",
+      "error": null
+    },
+    {
+      "seq": 49,
+      "created_at": "2026-10-23 07:36:11.547971+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 50,
+      "created_at": "2026-10-23 07:36:12.605847+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 51,
+      "created_at": "2026-10-23 07:36:12.631542+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 52,
+      "created_at": "2026-10-23 07:36:12.664332+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 53,
+      "created_at": "2026-10-23 07:36:15.265666+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 54,
+      "created_at": "2026-10-23 07:36:15.287959+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 55,
+      "created_at": "2026-10-23 07:36:15.807351+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 56,
+      "created_at": "2026-10-23 07:36:15.862140+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 57,
+      "created_at": "2026-10-23 07:36:15.900355+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 58,
+      "created_at": "2026-10-23 07:36:17.042589+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 59,
+      "created_at": "2026-10-23 07:36:17.063718+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 60,
+      "created_at": "2026-10-23 07:36:17.095362+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 61,
+      "created_at": "2026-10-23 07:36:19.103873+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 62,
+      "created_at": "2026-10-23 07:36:19.119719+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 63,
+      "created_at": "2026-10-23 07:36:19.611760+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 64,
+      "created_at": "2026-10-23 07:36:19.674282+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 65,
+      "created_at": "2026-10-23 07:36:19.689230+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 66,
+      "created_at": "2026-10-23 07:36:21.211960+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 67,
+      "created_at": "2026-10-23 07:36:21.258973+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 68,
+      "created_at": "2026-10-23 07:36:22.281944+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 69,
+      "created_at": "2026-10-23 07:36:22.296694+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 70,
+      "created_at": "2026-10-23 07:36:22.881124+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 71,
+      "created_at": "2026-10-23 07:36:22.931161+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 72,
+      "created_at": "2026-10-23 07:36:22.957741+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 73,
+      "created_at": "2026-10-23 07:36:24.000284+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 74,
+      "created_at": "2026-10-23 07:36:24.033678+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 75,
+      "created_at": "2026-10-23 07:36:25.077315+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 76,
+      "created_at": "2026-10-23 07:36:25.111604+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 77,
+      "created_at": "2026-10-23 07:36:25.360883+00:00",
+      "status": "running",
+      "stage": "draft_ready",
+      "error": null
+    },
+    {
+      "seq": 78,
+      "created_at": "2026-10-23 07:36:29.053921+00:00",
+      "status": "running",
+      "stage": "draft_ready",
+      "error": null
+    },
+    {
+      "seq": 79,
+      "created_at": "2026-10-23 07:36:29.144683+00:00",
+      "status": "running",
+      "stage": "draft_ready",
+      "error": null
+    },
+    {
+      "seq": 80,
+      "created_at": "2026-10-23 07:36:29.201311+00:00",
+      "status": "running",
+      "stage": "publishing",
+      "error": null
+    },
+    {
+      "seq": 82,
+      "created_at": "2026-10-23 07:36:29.438142+00:00",
+      "status": "failed",
+      "stage": "computer_partial",
+      "error": "Hasil parsial tersedia; tujuan belum selesai seluruhnya."
+    }
+  ],
+  "provider_readback": {
+    "state": "paused",
+    "exists": true,
+    "method": "info only; no resume"
+  }
+}

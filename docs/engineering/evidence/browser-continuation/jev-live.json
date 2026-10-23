@@ -1,0 +1,164 @@
+{
+  "passed": 6,
+  "scenarios": [
+    {
+      "scenario": "live_human_control_blocks_stale_dom_worker",
+      "passed": true
+    },
+    {
+      "scenario": "live_jev_form_verified",
+      "passed": true
+    },
+    {
+      "scenario": "live_jev_actions_need_approval",
+      "passed": true
+    },
+    {
+      "scenario": "live_jev_metered",
+      "passed": true
+    },
+    {
+      "scenario": "live_latency_and_cost_metrics",
+      "passed": true,
+      "metrics": {
+        "wall_seconds": 95.841,
+        "attempts": 4,
+        "model_calls": 7,
+        "token_work": 11461,
+        "vendor_microusd_estimate": 5305,
+        "invoice_confirmed": false,
+        "model_attempts": [
+          {
+            "model": "jev-1.13.0",
+            "state": "confirmed",
+            "charged_units": 1222,
+            "latency_ms": 622
+          },
+          {
+            "model": "gpt-6-luna",
+            "state": "confirmed",
+            "charged_units": 193,
+            "latency_ms": 2474
+          },
+          {
+            "model": "jev-1.13.0",
+            "state": "confirmed",
+            "charged_units": 1549,
+            "latency_ms": 449
+          },
+          {
+            "model": "jev-1.13.0",
+            "state": "confirmed",
+            "charged_units": 1881,
+            "latency_ms": 495
+          },
+          {
+            "model": "jev-1.13.0",
+            "state": "confirmed",
+            "charged_units": 1737,
+            "latency_ms": 375
+          },
+          {
+            "model": "gpt-6-luna",
+            "state": "confirmed",
+            "charged_units": 3394,
+            "latency_ms": null
+          },
+          {
+            "model": "gpt-6-luna",
+            "state": "confirmed",
+            "charged_units": 1485,
+            "latency_ms": null
+          }
+        ],
+        "actuator_calls": [
+          {
+            "operation": "control",
+            "elapsed_ms": 1393
+          },
+          {
+            "operation": "dom",
+            "elapsed_ms": 5025
+          },
+          {
+            "operation": "dom_target",
+            "elapsed_ms": 1972
+          },
+          {
+            "operation": "dom_target",
+            "elapsed_ms": 1977
+          },
+          {
+            "operation": "dom_act",
+            "elapsed_ms": 1347
+          },
+          {
+            "operation": "dom",
+            "elapsed_ms": 2517
+          },
+          {
+            "operation": "dom_target",
+            "elapsed_ms": 1277
+          },
+          {
+            "operation": "control",
+            "elapsed_ms": 817
+          },
+          {
+            "operation": "control",
+            "elapsed_ms": 864
+          },
+          {
+            "operation": "dom",
+            "elapsed_ms": 1069
+          },
+          {
+            "operation": "control",
+            "elapsed_ms": 919
+          },
+          {
+            "operation": "screen",
+            "elapsed_ms": 1555
+          },
+          {
+            "operation": "control",
+            "elapsed_ms": 953
+          },
+          {
+            "operation": "dom",
+            "elapsed_ms": 1469
+          },
+          {
+            "operation": "dom_target",
+            "elapsed_ms": 1430
+          },
+          {
+            "operation": "dom_target",
+            "elapsed_ms": 1397
+          },
+          {
+            "operation": "dom_act",
+            "elapsed_ms": 1403
+          },
+          {
+            "operation": "dom",
+            "elapsed_ms": 1291
+          },
+          {
+            "operation": "screen",
+            "elapsed_ms": 1196
+          },
+          {
+            "operation": "screen",
+            "elapsed_ms": 970
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "live_resource_deleted",
+      "passed": true
+    }
+  ],
+  "temporary_resources_removed": true
+}

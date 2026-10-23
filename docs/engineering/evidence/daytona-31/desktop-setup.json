@@ -1,7 +1,0 @@
-{
-  "result": {
-    "exit_code": 0,
-    "ports": "State  Recv-Q Send-Q Local Address:Port  Peer Address:Port\nLISTEN 0      5          127.0.0.1:8765       0.0.0.0:*   \nLISTEN 0      100          0.0.0.0:6080       0.0.0.0:*   \nLISTEN 0      32           0.0.0.0:5901       0.0.0.0:*   \nLISTEN 0      4096               *:33333            *:*   \nLISTEN 0      4096               *:2280             *:*   \nLISTEN 0      32              [::]:5901          [::]:*   \nLISTEN 0      32              [::]:5900          [::]:*   \nLISTEN 0      4096               *:22222            *:*   \nLISTEN 0      4096               *:22220            *:*   \n/usr/bin/chromium\n"
-  },
-  "duration_ms": 10613
-}

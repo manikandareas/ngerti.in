@@ -1,0 +1,29 @@
+{
+  "at": "2026-10-23T04:58:23.462663+00:00",
+  "checks": {
+    "allocation_2cpu_4gib": true,
+    "public_ingress_disabled": true,
+    "viewer_without_token_rejected": true,
+    "authenticated_rfb_38": true,
+    "example_loaded": true,
+    "google_loaded": true,
+    "download_bytes_exact": true,
+    "pause_confirmed": true,
+    "same_sandbox_after_resume": true,
+    "profile_survives_worker_restart": true,
+    "screen_after_resume": true,
+    "passed": true,
+    "deleted_confirmed": true
+  },
+  "sandbox_id": "i17c06fmvi4wt6pqiiunb",
+  "example": {
+    "title": "Example Domain",
+    "error": false,
+    "host": "example.com"
+  },
+  "google": {
+    "title": "Google",
+    "error": false,
+    "host": "www.google.com"
+  }
+}

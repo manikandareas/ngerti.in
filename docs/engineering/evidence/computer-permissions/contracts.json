@@ -1,0 +1,142 @@
+{
+  "passed": 34,
+  "scenarios": [
+    {
+      "scenario": "article_resource_url_auto",
+      "passed": true
+    },
+    {
+      "scenario": "pagination_button_auto",
+      "passed": true
+    },
+    {
+      "scenario": "post_form_search_field_not_automatic",
+      "passed": true
+    },
+    {
+      "scenario": "new_public_url_auto",
+      "passed": true
+    },
+    {
+      "scenario": "search_about_deletion_auto",
+      "passed": true
+    },
+    {
+      "scenario": "logout_url_requires_approval",
+      "passed": true
+    },
+    {
+      "scenario": "query_mutation_requires_approval",
+      "passed": true
+    },
+    {
+      "scenario": "ordinary_link_auto",
+      "passed": true
+    },
+    {
+      "scenario": "delete_link_requires_approval",
+      "passed": true
+    },
+    {
+      "scenario": "search_typing_auto",
+      "passed": true
+    },
+    {
+      "scenario": "search_enter_auto",
+      "passed": true
+    },
+    {
+      "scenario": "search_submit_auto",
+      "passed": true
+    },
+    {
+      "scenario": "send_in_search_form_requires_approval",
+      "passed": true
+    },
+    {
+      "scenario": "email_enter_requires_approval",
+      "passed": true
+    },
+    {
+      "scenario": "edit_field_requires_approval",
+      "passed": true
+    },
+    {
+      "scenario": "save_requires_approval",
+      "passed": true
+    },
+    {
+      "scenario": "pay_requires_approval",
+      "passed": true
+    },
+    {
+      "scenario": "security_requires_approval",
+      "passed": true
+    },
+    {
+      "scenario": "tab_auto",
+      "passed": true
+    },
+    {
+      "scenario": "disclosure_auto",
+      "passed": true
+    },
+    {
+      "scenario": "unknown_target_requires_approval",
+      "passed": true
+    },
+    {
+      "scenario": "enter_unknown_button_requires_approval",
+      "passed": true
+    },
+    {
+      "scenario": "credential_url_private",
+      "passed": true
+    },
+    {
+      "scenario": "private_input_takeover",
+      "passed": true
+    },
+    {
+      "scenario": "changed_target_rejected_before_input",
+      "passed": true
+    },
+    {
+      "scenario": "matching_target_dispatches_once",
+      "passed": true
+    },
+    {
+      "scenario": "public_navigation_without_exact_url_grant",
+      "passed": true
+    },
+    {
+      "scenario": "observed_link_runs_without_pause",
+      "passed": true
+    },
+    {
+      "scenario": "observed_search_runs_without_pause",
+      "passed": true
+    },
+    {
+      "scenario": "send_email_waits_before_dispatch",
+      "passed": true
+    },
+    {
+      "scenario": "send_email_waits_before_dispatch_exact_approval_once",
+      "passed": true
+    },
+    {
+      "scenario": "unknown_control_waits_before_dispatch",
+      "passed": true
+    },
+    {
+      "scenario": "unknown_control_waits_before_dispatch_exact_approval_once",
+      "passed": true
+    },
+    {
+      "scenario": "private_target_yields_to_takeover_without_input",
+      "passed": true
+    }
+  ],
+  "temporary_resources_removed": true
+}

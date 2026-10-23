@@ -1,0 +1,1360 @@
+{
+  "summary": {
+    "audited_at": "2026-10-23T05:51:12.288935+00:00",
+    "thread_id": "f9a8e50e-210b-5572-9815-db543d59f42e",
+    "task_id": "7d3ed451-c0e7-4770-a8ea-fcd5dd022f5e",
+    "status": "failed",
+    "error": "Batas komputasi task tercapai. Draft yang sudah ada tetap tersimpan.",
+    "instruction": "Teliti tren AI agent yang diperkirakan akan berkembang pada 2027. Gunakan sumber web terkini dan tepercaya, bedakan fakta saat ini dari proyeksi, sertakan tautan/sitasi sumber, serta rangkum tren utama, pendorong, risiko, dan implikasi praktis. Jawab dalam bahasa Indonesia.",
+    "created_at": "2026-10-23 05:34:57.234611+00:00",
+    "ended_at": "2026-10-23 05:37:36.876948+00:00",
+    "wall_seconds": 159.642,
+    "attempts": 3,
+    "max_seconds": 1200,
+    "effects": 11,
+    "effect_counts": {
+      "navigate": 4,
+      "wait": 2,
+      "click": 5
+    },
+    "observation_counts": {
+      "unknown": 1,
+      "complete": 26
+    },
+    "configured_engine": "jev",
+    "actual_engine": "screenshot",
+    "provider_readback": {
+      "resource_state": "paused",
+      "template_name": "ngertiin-desktop-v1",
+      "template_id": "68q3umevaxnshb5rwnrm",
+      "resumed_for_audit": false
+    },
+    "budget_cap": 60000,
+    "used_units": 36624,
+    "model_calls": 13,
+    "max_calls": 24,
+    "native_jev_calls": 0,
+    "observed_evidence_count": 0,
+    "draft_characters": 0,
+    "result_characters": 0,
+    "reservation_replay": {
+      "reproduced": true,
+      "message": "Batas komputasi task tercapai. Draft yang sudah ada tetap tersimpan.",
+      "remaining_units": 23376,
+      "next_required_units": 26630,
+      "shortfall_units": 3254,
+      "method": "real reserve_call guard, captured state in memory; no database writes"
+    },
+    "unrecorded": [
+      "historical tab inventory and opener ids",
+      "URL/title before and after click",
+      "per-action observation content",
+      "candidate rejected by verifier and verifier reason"
+    ],
+    "scope": "database read only; provider get_info only; separate local browser fixture; no application runtime changes"
+  },
+  "effects": [
+    {
+      "kind": "navigate",
+      "state": "complete",
+      "action": {
+        "x": 0,
+        "y": 0,
+        "dom": null,
+        "key": "Enter",
+        "url": "https://www.google.com/search?q=AI+agents+2027+trends+2025+report+Gartner+McKinsey+Stanford+AI+Index",
+        "kind": "navigate",
+        "text": "",
+        "files": [],
+        "amount": 1,
+        "direction": "down",
+        "description": "Mencari sumber terkini tentang tren AI agent menuju 2027"
+      },
+      "created_at": "2026-10-23 05:35:17.223252+00:00",
+      "finished_at": "2026-10-23 05:35:18.835234+00:00"
+    },
+    {
+      "kind": "wait",
+      "state": "complete",
+      "action": {
+        "x": 0,
+        "y": 0,
+        "dom": null,
+        "key": "Enter",
+        "url": "",
+        "kind": "wait",
+        "text": "",
+        "files": [],
+        "amount": 1,
+        "direction": "down",
+        "description": "Menunggu hasil pencarian web dimuat."
+      },
+      "created_at": "2026-10-23 05:35:26.365524+00:00",
+      "finished_at": "2026-10-23 05:35:28.157313+00:00"
+    },
+    {
+      "kind": "click",
+      "state": "complete",
+      "action": {
+        "x": 149,
+        "y": 335,
+        "dom": null,
+        "key": "Enter",
+        "url": "",
+        "kind": "click",
+        "text": "",
+        "files": [],
+        "amount": 1,
+        "direction": "down",
+        "description": "Membuka sumber Gartner tentang proyeksi AI agent menuju 2027."
+      },
+      "created_at": "2026-10-23 05:35:33.839172+00:00",
+      "finished_at": "2026-10-23 05:35:35.513739+00:00"
+    },
+    {
+      "kind": "navigate",
+      "state": "complete",
+      "action": {
+        "x": 0,
+        "y": 0,
+        "dom": null,
+        "key": "Enter",
+        "url": "https://www.google.com/search?q=AI+agents+2027+trends+report+2025+McKinsey+Stanford+AI+Index+Gartner",
+        "kind": "navigate",
+        "text": "",
+        "files": [],
+        "amount": 1,
+        "direction": "down",
+        "description": "Mencari sumber riset terkini yang tepercaya tentang tren AI agent dan proyeksi menuju 2027."
+      },
+      "created_at": "2026-10-23 05:35:41.659973+00:00",
+      "finished_at": "2026-10-23 05:35:43.357321+00:00"
+    },
+    {
+      "kind": "click",
+      "state": "complete",
+      "action": {
+        "x": 154,
+        "y": 335,
+        "dom": null,
+        "key": "Enter",
+        "url": "",
+        "kind": "click",
+        "text": "",
+        "files": [],
+        "amount": 1,
+        "direction": "down",
+        "description": "Membuka sumber Gartner yang terlihat pada hasil pencarian untuk memeriksa proyeksi tentang pembatalan proyek AI agentik."
+      },
+      "created_at": "2026-10-23 05:36:34.516938+00:00",
+      "finished_at": "2026-10-23 05:36:36.200151+00:00"
+    },
+    {
+      "kind": "click",
+      "state": "complete",
+      "action": {
+        "x": 1000,
+        "y": 386,
+        "dom": null,
+        "key": "Enter",
+        "url": "",
+        "kind": "click",
+        "text": "",
+        "files": [],
+        "amount": 1,
+        "direction": "down",
+        "description": "Membuka rilis resmi Gartner untuk memeriksa isi dan konteks proyeksi pembatalan proyek AI agentik."
+      },
+      "created_at": "2026-10-23 05:36:42.390544+00:00",
+      "finished_at": "2026-10-23 05:36:44.162441+00:00"
+    },
+    {
+      "kind": "click",
+      "state": "complete",
+      "action": {
+        "x": 1002,
+        "y": 384,
+        "dom": null,
+        "key": "Enter",
+        "url": "",
+        "kind": "click",
+        "text": "",
+        "files": [],
+        "amount": 1,
+        "direction": "down",
+        "description": "Membuka rilis resmi Gartner untuk memeriksa proyeksi dan konteksnya."
+      },
+      "created_at": "2026-10-23 05:36:49.605098+00:00",
+      "finished_at": "2026-10-23 05:36:51.507167+00:00"
+    },
+    {
+      "kind": "navigate",
+      "state": "complete",
+      "action": {
+        "x": 0,
+        "y": 0,
+        "dom": null,
+        "key": "Enter",
+        "url": "https://www.google.com/search?q=2025+AI+agents+enterprise+survey+McKinsey+Stanford+AI+Index+agentic+AI+report",
+        "kind": "navigate",
+        "text": "",
+        "files": [],
+        "amount": 1,
+        "direction": "down",
+        "description": "Mencari riset tepercaya terbaru tentang adopsi AI agent, kapabilitas, dan hambatan implementasi menuju 2027."
+      },
+      "created_at": "2026-10-23 05:37:00.946791+00:00",
+      "finished_at": "2026-10-23 05:37:02.651192+00:00"
+    },
+    {
+      "kind": "wait",
+      "state": "complete",
+      "action": {
+        "x": 0,
+        "y": 0,
+        "dom": null,
+        "key": "Enter",
+        "url": "",
+        "kind": "wait",
+        "text": "",
+        "files": [],
+        "amount": 1,
+        "direction": "down",
+        "description": "Menunggu hasil pencarian riset AI agent dimuat."
+      },
+      "created_at": "2026-10-23 05:37:07.898828+00:00",
+      "finished_at": "2026-10-23 05:37:09.704387+00:00"
+    },
+    {
+      "kind": "click",
+      "state": "complete",
+      "action": {
+        "x": 397,
+        "y": 386,
+        "dom": null,
+        "key": "Enter",
+        "url": "",
+        "kind": "click",
+        "text": "",
+        "files": [],
+        "amount": 1,
+        "direction": "down",
+        "description": "Membuka tautan McKinsey yang terlihat pada ringkasan pencarian untuk memeriksa data adopsi AI agent."
+      },
+      "created_at": "2026-10-23 05:37:15.200976+00:00",
+      "finished_at": "2026-10-23 05:37:24.019377+00:00"
+    },
+    {
+      "kind": "navigate",
+      "state": "complete",
+      "action": {
+        "x": 0,
+        "y": 0,
+        "dom": null,
+        "key": "Enter",
+        "url": "https://www.gartner.com/en/newsroom/press-releases/2025-06-25-gartner-predicts-over-40-percent-of-agentic-ai-projects-will-be-canceled-by-end-of-2027",
+        "kind": "navigate",
+        "text": "",
+        "files": [],
+        "amount": 1,
+        "direction": "down",
+        "description": "Memeriksa rilis resmi Gartner yang menjadi sumber proyeksi pembatalan proyek AI agentik pada 2027."
+      },
+      "created_at": "2026-10-23 05:37:29.710578+00:00",
+      "finished_at": "2026-10-23 05:37:31.542838+00:00"
+    }
+  ],
+  "observations": [
+    {
+      "kind": "observe",
+      "state": "unknown",
+      "action": {},
+      "created_at": "2026-10-23 05:35:10.497586+00:00",
+      "finished_at": "2026-10-23 05:35:11.248164+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "action": {},
+      "created_at": "2026-10-23 05:35:11.328105+00:00",
+      "finished_at": "2026-10-23 05:35:13.384034+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "action": {},
+      "created_at": "2026-10-23 05:35:17.213727+00:00",
+      "finished_at": "2026-10-23 05:35:17.219049+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "action": {},
+      "created_at": "2026-10-23 05:35:18.902046+00:00",
+      "finished_at": "2026-10-23 05:35:21.099908+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "action": {},
+      "created_at": "2026-10-23 05:35:26.342393+00:00",
+      "finished_at": "2026-10-23 05:35:26.359354+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "action": {},
+      "created_at": "2026-10-23 05:35:28.231963+00:00",
+      "finished_at": "2026-10-23 05:35:30.189297+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "action": {},
+      "created_at": "2026-10-23 05:35:33.019214+00:00",
+      "finished_at": "2026-10-23 05:35:33.831587+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "action": {},
+      "created_at": "2026-10-23 05:35:35.547944+00:00",
+      "finished_at": "2026-10-23 05:35:37.694715+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "action": {},
+      "created_at": "2026-10-23 05:35:41.645477+00:00",
+      "finished_at": "2026-10-23 05:35:41.654347+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "action": {},
+      "created_at": "2026-10-23 05:35:43.424436+00:00",
+      "finished_at": "2026-10-23 05:35:45.586746+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "action": {},
+      "created_at": "2026-10-23 05:36:17.814180+00:00",
+      "finished_at": "2026-10-23 05:36:20.353068+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "action": {},
+      "created_at": "2026-10-23 05:36:28.497583+00:00",
+      "finished_at": "2026-10-23 05:36:30.626771+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "action": {},
+      "created_at": "2026-10-23 05:36:33.612654+00:00",
+      "finished_at": "2026-10-23 05:36:34.501518+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "action": {},
+      "created_at": "2026-10-23 05:36:36.269893+00:00",
+      "finished_at": "2026-10-23 05:36:38.497265+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "action": {},
+      "created_at": "2026-10-23 05:36:41.606307+00:00",
+      "finished_at": "2026-10-23 05:36:42.385827+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "action": {},
+      "created_at": "2026-10-23 05:36:44.252103+00:00",
+      "finished_at": "2026-10-23 05:36:46.349643+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "action": {},
+      "created_at": "2026-10-23 05:36:48.808781+00:00",
+      "finished_at": "2026-10-23 05:36:49.597499+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "action": {},
+      "created_at": "2026-10-23 05:36:51.558888+00:00",
+      "finished_at": "2026-10-23 05:36:53.902675+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "action": {},
+      "created_at": "2026-10-23 05:37:00.925005+00:00",
+      "finished_at": "2026-10-23 05:37:00.937755+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "action": {},
+      "created_at": "2026-10-23 05:37:02.727564+00:00",
+      "finished_at": "2026-10-23 05:37:04.912559+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "action": {},
+      "created_at": "2026-10-23 05:37:07.891848+00:00",
+      "finished_at": "2026-10-23 05:37:07.895884+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "action": {},
+      "created_at": "2026-10-23 05:37:09.761587+00:00",
+      "finished_at": "2026-10-23 05:37:11.844634+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "action": {},
+      "created_at": "2026-10-23 05:37:14.325641+00:00",
+      "finished_at": "2026-10-23 05:37:15.193942+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "action": {},
+      "created_at": "2026-10-23 05:37:21.493507+00:00",
+      "finished_at": "2026-10-23 05:37:22.328914+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "action": {},
+      "created_at": "2026-10-23 05:37:24.080681+00:00",
+      "finished_at": "2026-10-23 05:37:26.252217+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "action": {},
+      "created_at": "2026-10-23 05:37:29.696759+00:00",
+      "finished_at": "2026-10-23 05:37:29.705357+00:00"
+    },
+    {
+      "kind": "observe",
+      "state": "complete",
+      "action": {},
+      "created_at": "2026-10-23 05:37:31.610765+00:00",
+      "finished_at": "2026-10-23 05:37:33.747983+00:00"
+    }
+  ],
+  "executions": [
+    {
+      "attempt": 1,
+      "status": "interrupted",
+      "started_at": "2026-10-23 05:34:57.299460+00:00",
+      "finished_at": "2026-10-23 05:36:23.254401+00:00",
+      "draft_length": 0
+    },
+    {
+      "attempt": 2,
+      "status": "waiting_user",
+      "started_at": "2026-10-23 05:36:28.329847+00:00",
+      "finished_at": "2026-10-23 05:37:15.200976+00:00",
+      "draft_length": 0
+    },
+    {
+      "attempt": 3,
+      "status": "failed",
+      "started_at": "2026-10-23 05:37:21.372623+00:00",
+      "finished_at": "2026-10-23 05:37:36.876948+00:00",
+      "draft_length": 0
+    }
+  ],
+  "model_calls": [
+    {
+      "provider": "openai-compatible",
+      "model": "gpt-6-luna",
+      "state": "confirmed",
+      "reserved_units": 23105,
+      "charged_units": 2143,
+      "usage": {
+        "input_tokens": 1993,
+        "total_tokens": 2143,
+        "output_tokens": 150,
+        "input_token_details": {
+          "cache_read": 0,
+          "cache_creation": 1990
+        },
+        "output_token_details": {
+          "reasoning": 15
+        }
+      },
+      "created_at": "2026-10-23 05:35:13.391205+00:00",
+      "settled_at": "2026-10-23 05:35:17.111696+00:00"
+    },
+    {
+      "provider": "openai-compatible",
+      "model": "gpt-6-luna",
+      "state": "confirmed",
+      "reserved_units": 23506,
+      "charged_units": 2340,
+      "usage": {
+        "input_tokens": 2126,
+        "total_tokens": 2340,
+        "output_tokens": 214,
+        "input_token_details": {
+          "cache_read": 0,
+          "cache_creation": 2123
+        },
+        "output_token_details": {
+          "reasoning": 87
+        }
+      },
+      "created_at": "2026-10-23 05:35:21.110902+00:00",
+      "settled_at": "2026-10-23 05:35:26.263707+00:00"
+    },
+    {
+      "provider": "openai-compatible",
+      "model": "gpt-6-luna",
+      "state": "confirmed",
+      "reserved_units": 23767,
+      "charged_units": 2312,
+      "usage": {
+        "input_tokens": 2213,
+        "total_tokens": 2312,
+        "output_tokens": 99,
+        "input_token_details": {
+          "cache_read": 0,
+          "cache_creation": 2210
+        },
+        "output_token_details": {
+          "reasoning": 38
+        }
+      },
+      "created_at": "2026-10-23 05:35:30.208155+00:00",
+      "settled_at": "2026-10-23 05:35:32.956600+00:00"
+    },
+    {
+      "provider": "openai-compatible",
+      "model": "gpt-6-luna",
+      "state": "confirmed",
+      "reserved_units": 24083,
+      "charged_units": 2493,
+      "usage": {
+        "input_tokens": 2313,
+        "total_tokens": 2493,
+        "output_tokens": 180,
+        "input_token_details": {
+          "cache_read": 0,
+          "cache_creation": 2310
+        },
+        "output_token_details": {
+          "reasoning": 76
+        }
+      },
+      "created_at": "2026-10-23 05:35:37.703643+00:00",
+      "settled_at": "2026-10-23 05:35:41.572233+00:00"
+    },
+    {
+      "provider": "openai-compatible",
+      "model": "gpt-6-luna",
+      "state": "confirmed",
+      "reserved_units": 24558,
+      "charged_units": 5502,
+      "usage": {
+        "input_tokens": 2466,
+        "total_tokens": 5502,
+        "output_tokens": 3036,
+        "input_token_details": {
+          "cache_read": 0,
+          "cache_creation": 2463
+        },
+        "output_token_details": {
+          "reasoning": 291
+        }
+      },
+      "created_at": "2026-10-23 05:35:45.616154+00:00",
+      "settled_at": "2026-10-23 05:36:17.748939+00:00"
+    },
+    {
+      "provider": "openai-compatible",
+      "model": "gpt-6-luna",
+      "state": "confirmed",
+      "reserved_units": 20557,
+      "charged_units": 1460,
+      "usage": {
+        "input_tokens": 1370,
+        "total_tokens": 1460,
+        "output_tokens": 90,
+        "input_token_details": {
+          "cache_read": 0,
+          "cache_creation": 1367
+        },
+        "output_token_details": {
+          "reasoning": 0
+        }
+      },
+      "created_at": "2026-10-23 05:36:20.362056+00:00",
+      "settled_at": "2026-10-23 05:36:23.169731+00:00"
+    },
+    {
+      "provider": "openai-compatible",
+      "model": "gpt-6-luna",
+      "state": "confirmed",
+      "reserved_units": 24895,
+      "charged_units": 2634,
+      "usage": {
+        "input_tokens": 2547,
+        "total_tokens": 2634,
+        "output_tokens": 87,
+        "input_token_details": {
+          "cache_read": 0,
+          "cache_creation": 2544
+        },
+        "output_token_details": {
+          "reasoning": 17
+        }
+      },
+      "created_at": "2026-10-23 05:36:30.635777+00:00",
+      "settled_at": "2026-10-23 05:36:33.572520+00:00"
+    },
+    {
+      "provider": "openai-compatible",
+      "model": "gpt-6-luna",
+      "state": "confirmed",
+      "reserved_units": 24992,
+      "charged_units": 2688,
+      "usage": {
+        "input_tokens": 2588,
+        "total_tokens": 2688,
+        "output_tokens": 100,
+        "input_token_details": {
+          "cache_read": 0,
+          "cache_creation": 2585
+        },
+        "output_token_details": {
+          "reasoning": 30
+        }
+      },
+      "created_at": "2026-10-23 05:36:38.509587+00:00",
+      "settled_at": "2026-10-23 05:36:41.528273+00:00"
+    },
+    {
+      "provider": "openai-compatible",
+      "model": "gpt-6-luna",
+      "state": "confirmed",
+      "reserved_units": 25383,
+      "charged_units": 2790,
+      "usage": {
+        "input_tokens": 2709,
+        "total_tokens": 2790,
+        "output_tokens": 81,
+        "input_token_details": {
+          "cache_read": 0,
+          "cache_creation": 2706
+        },
+        "output_token_details": {
+          "reasoning": 15
+        }
+      },
+      "created_at": "2026-10-23 05:36:46.357906+00:00",
+      "settled_at": "2026-10-23 05:36:48.741968+00:00"
+    },
+    {
+      "provider": "openai-compatible",
+      "model": "gpt-6-luna",
+      "state": "confirmed",
+      "reserved_units": 25714,
+      "charged_units": 2974,
+      "usage": {
+        "input_tokens": 2816,
+        "total_tokens": 2974,
+        "output_tokens": 158,
+        "input_token_details": {
+          "cache_read": 0,
+          "cache_creation": 2813
+        },
+        "output_token_details": {
+          "reasoning": 49
+        }
+      },
+      "created_at": "2026-10-23 05:36:53.908672+00:00",
+      "settled_at": "2026-10-23 05:37:00.884057+00:00"
+    },
+    {
+      "provider": "openai-compatible",
+      "model": "gpt-6-luna",
+      "state": "confirmed",
+      "reserved_units": 26232,
+      "charged_units": 3055,
+      "usage": {
+        "input_tokens": 2979,
+        "total_tokens": 3055,
+        "output_tokens": 76,
+        "input_token_details": {
+          "cache_read": 0,
+          "cache_creation": 2976
+        },
+        "output_token_details": {
+          "reasoning": 20
+        }
+      },
+      "created_at": "2026-10-23 05:37:04.923622+00:00",
+      "settled_at": "2026-10-23 05:37:07.854782+00:00"
+    },
+    {
+      "provider": "openai-compatible",
+      "model": "gpt-6-luna",
+      "state": "confirmed",
+      "reserved_units": 26170,
+      "charged_units": 3055,
+      "usage": {
+        "input_tokens": 2953,
+        "total_tokens": 3055,
+        "output_tokens": 102,
+        "input_token_details": {
+          "cache_read": 0,
+          "cache_creation": 2950
+        },
+        "output_token_details": {
+          "reasoning": 32
+        }
+      },
+      "created_at": "2026-10-23 05:37:11.850490+00:00",
+      "settled_at": "2026-10-23 05:37:14.260389+00:00"
+    },
+    {
+      "provider": "openai-compatible",
+      "model": "gpt-6-luna",
+      "state": "confirmed",
+      "reserved_units": 26343,
+      "charged_units": 3178,
+      "usage": {
+        "input_tokens": 2999,
+        "total_tokens": 3178,
+        "output_tokens": 179,
+        "input_token_details": {
+          "cache_read": 0,
+          "cache_creation": 2996
+        },
+        "output_token_details": {
+          "reasoning": 64
+        }
+      },
+      "created_at": "2026-10-23 05:37:26.269541+00:00",
+      "settled_at": "2026-10-23 05:37:29.620665+00:00"
+    }
+  ],
+  "session": {
+    "state": "stopped",
+    "created_at": "2026-10-23 05:34:57.382279+00:00",
+    "deadline": "2026-10-23 05:54:57.385926+00:00",
+    "stopped_at": "2026-10-23 05:37:36.798024+00:00",
+    "usage": {
+      "egress_bytes": 9243794,
+      "gc_checked_at": "2026-10-23T05:51:01.094676+00:00",
+      "profile_bytes": 197713612,
+      "invoice_confirmed": false,
+      "observed_wall_seconds": 159.424,
+      "storage_reservation_policy": "full_retention_window_each_use"
+    }
+  },
+  "task_events": [
+    {
+      "seq": 14,
+      "created_at": "2026-10-23 05:34:57.234611+00:00",
+      "status": "queued",
+      "stage": "queued",
+      "error": null
+    },
+    {
+      "seq": 16,
+      "created_at": "2026-10-23 05:34:57.299460+00:00",
+      "status": "running",
+      "stage": "queued",
+      "error": null
+    },
+    {
+      "seq": 17,
+      "created_at": "2026-10-23 05:34:57.395732+00:00",
+      "status": "running",
+      "stage": "computer_starting",
+      "error": null
+    },
+    {
+      "seq": 26,
+      "created_at": "2026-10-23 05:35:10.397270+00:00",
+      "status": "running",
+      "stage": "computer_starting",
+      "error": null
+    },
+    {
+      "seq": 27,
+      "created_at": "2026-10-23 05:35:10.440781+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 28,
+      "created_at": "2026-10-23 05:35:10.472952+00:00",
+      "status": "running",
+      "stage": "computer_dom",
+      "error": null
+    },
+    {
+      "seq": 29,
+      "created_at": "2026-10-23 05:35:11.256684+00:00",
+      "status": "running",
+      "stage": "computer_dom",
+      "error": null
+    },
+    {
+      "seq": 30,
+      "created_at": "2026-10-23 05:35:11.302680+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 31,
+      "created_at": "2026-10-23 05:35:13.391205+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 32,
+      "created_at": "2026-10-23 05:35:17.111696+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 33,
+      "created_at": "2026-10-23 05:35:17.193695+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 34,
+      "created_at": "2026-10-23 05:35:18.841940+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 35,
+      "created_at": "2026-10-23 05:35:18.879065+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 36,
+      "created_at": "2026-10-23 05:35:21.110902+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 37,
+      "created_at": "2026-10-23 05:35:26.263707+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 38,
+      "created_at": "2026-10-23 05:35:26.318326+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 39,
+      "created_at": "2026-10-23 05:35:28.172849+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 40,
+      "created_at": "2026-10-23 05:35:28.208099+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 41,
+      "created_at": "2026-10-23 05:35:30.208155+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 42,
+      "created_at": "2026-10-23 05:35:32.956600+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 43,
+      "created_at": "2026-10-23 05:35:33.007387+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 44,
+      "created_at": "2026-10-23 05:35:35.518509+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 45,
+      "created_at": "2026-10-23 05:35:35.537180+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 46,
+      "created_at": "2026-10-23 05:35:37.703643+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 47,
+      "created_at": "2026-10-23 05:35:41.572233+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 48,
+      "created_at": "2026-10-23 05:35:41.629414+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 49,
+      "created_at": "2026-10-23 05:35:43.364766+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 50,
+      "created_at": "2026-10-23 05:35:43.395090+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 51,
+      "created_at": "2026-10-23 05:35:45.616154+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 52,
+      "created_at": "2026-10-23 05:36:17.748939+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 53,
+      "created_at": "2026-10-23 05:36:17.803929+00:00",
+      "status": "running",
+      "stage": "computer_verifying",
+      "error": null
+    },
+    {
+      "seq": 54,
+      "created_at": "2026-10-23 05:36:20.362056+00:00",
+      "status": "running",
+      "stage": "computer_verifying",
+      "error": null
+    },
+    {
+      "seq": 55,
+      "created_at": "2026-10-23 05:36:23.169731+00:00",
+      "status": "running",
+      "stage": "computer_verifying",
+      "error": null
+    },
+    {
+      "seq": 56,
+      "created_at": "2026-10-23 05:36:23.208843+00:00",
+      "status": "running",
+      "stage": "computer_verifying",
+      "error": null
+    },
+    {
+      "seq": 57,
+      "created_at": "2026-10-23 05:36:23.223739+00:00",
+      "status": "running",
+      "stage": "computer_correcting",
+      "error": null
+    },
+    {
+      "seq": 58,
+      "created_at": "2026-10-23 05:36:23.241824+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 59,
+      "created_at": "2026-10-23 05:36:23.254401+00:00",
+      "status": "queued",
+      "stage": "computer_continuing",
+      "error": null
+    },
+    {
+      "seq": 60,
+      "created_at": "2026-10-23 05:36:28.329847+00:00",
+      "status": "running",
+      "stage": "computer_continuing",
+      "error": null
+    },
+    {
+      "seq": 61,
+      "created_at": "2026-10-23 05:36:28.485445+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 62,
+      "created_at": "2026-10-23 05:36:30.635777+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 63,
+      "created_at": "2026-10-23 05:36:33.572520+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 64,
+      "created_at": "2026-10-23 05:36:33.605171+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 65,
+      "created_at": "2026-10-23 05:36:36.210271+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 66,
+      "created_at": "2026-10-23 05:36:36.249501+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 67,
+      "created_at": "2026-10-23 05:36:38.509587+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 68,
+      "created_at": "2026-10-23 05:36:41.528273+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 69,
+      "created_at": "2026-10-23 05:36:41.594183+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 70,
+      "created_at": "2026-10-23 05:36:44.171090+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 71,
+      "created_at": "2026-10-23 05:36:44.217665+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 72,
+      "created_at": "2026-10-23 05:36:46.357906+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 73,
+      "created_at": "2026-10-23 05:36:48.741968+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 74,
+      "created_at": "2026-10-23 05:36:48.796044+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 75,
+      "created_at": "2026-10-23 05:36:51.513784+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 76,
+      "created_at": "2026-10-23 05:36:51.539423+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 77,
+      "created_at": "2026-10-23 05:36:53.908672+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 78,
+      "created_at": "2026-10-23 05:37:00.884057+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 79,
+      "created_at": "2026-10-23 05:37:00.912514+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 80,
+      "created_at": "2026-10-23 05:37:02.660055+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 81,
+      "created_at": "2026-10-23 05:37:02.713936+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 82,
+      "created_at": "2026-10-23 05:37:04.923622+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 83,
+      "created_at": "2026-10-23 05:37:07.854782+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 84,
+      "created_at": "2026-10-23 05:37:07.885968+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 85,
+      "created_at": "2026-10-23 05:37:09.710032+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 86,
+      "created_at": "2026-10-23 05:37:09.739830+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 87,
+      "created_at": "2026-10-23 05:37:11.850490+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 88,
+      "created_at": "2026-10-23 05:37:14.260389+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 89,
+      "created_at": "2026-10-23 05:37:14.313690+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 90,
+      "created_at": "2026-10-23 05:37:15.200976+00:00",
+      "status": "waiting_user",
+      "stage": "computer_approval",
+      "error": null
+    },
+    {
+      "seq": 91,
+      "created_at": "2026-10-23 05:37:21.277272+00:00",
+      "status": "queued",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 92,
+      "created_at": "2026-10-23 05:37:21.372623+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 93,
+      "created_at": "2026-10-23 05:37:21.467475+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 94,
+      "created_at": "2026-10-23 05:37:21.485091+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 95,
+      "created_at": "2026-10-23 05:37:24.025615+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 96,
+      "created_at": "2026-10-23 05:37:24.062649+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 97,
+      "created_at": "2026-10-23 05:37:26.269541+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 98,
+      "created_at": "2026-10-23 05:37:29.620665+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 99,
+      "created_at": "2026-10-23 05:37:29.681115+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 100,
+      "created_at": "2026-10-23 05:37:31.550610+00:00",
+      "status": "running",
+      "stage": "computer_working",
+      "error": null
+    },
+    {
+      "seq": 101,
+      "created_at": "2026-10-23 05:37:31.586064+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 102,
+      "created_at": "2026-10-23 05:37:36.798024+00:00",
+      "status": "running",
+      "stage": "computer_observing",
+      "error": null
+    },
+    {
+      "seq": 103,
+      "created_at": "2026-10-23 05:37:36.876948+00:00",
+      "status": "failed",
+      "stage": "failed",
+      "error": "Batas komputasi task tercapai. Draft yang sudah ada tetap tersimpan."
+    }
+  ],
+  "runtime_state": {
+    "engine": "screenshot",
+    "reason": "working",
+    "yields": 1,
+    "feedback": "",
+    "progress": [
+      "Mencari sumber terkini tentang tren AI agent menuju 2027",
+      "Menunggu hasil pencarian web dimuat.",
+      "Membuka sumber Gartner tentang proyeksi AI agent menuju 2027.",
+      "Mencari sumber riset terkini yang tepercaya tentang tren AI agent dan proyeksi menuju 2027.",
+      "Membuka sumber Gartner yang terlihat pada hasil pencarian untuk memeriksa proyeksi tentang pembatalan proyek AI agentik.",
+      "Membuka rilis resmi Gartner untuk memeriksa isi dan konteks proyeksi pembatalan proyek AI agentik.",
+      "Membuka rilis resmi Gartner untuk memeriksa proyeksi dan konteksnya.",
+      "Mencari riset tepercaya terbaru tentang adopsi AI agent, kapabilitas, dan hambatan implementasi menuju 2027.",
+      "Menunggu hasil pencarian riset AI agent dimuat.",
+      "Membuka tautan McKinsey yang terlihat pada ringkasan pencarian untuk memeriksa data adopsi AI agent.",
+      "Memeriksa rilis resmi Gartner yang menjadi sumber proyeksi pembatalan proyek AI agentik pada 2027."
+    ],
+    "corrections": 1,
+    "completed_steps": 11
+  }
+}

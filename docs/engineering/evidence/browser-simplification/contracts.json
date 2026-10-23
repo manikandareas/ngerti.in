@@ -1,0 +1,130 @@
+{
+  "passed": 31,
+  "scenarios": [
+    {
+      "scenario": "same_dispatch_replay_does_not_input_twice",
+      "passed": true
+    },
+    {
+      "scenario": "changed_dispatch_payload_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "accepted_without_receipt_is_unknown",
+      "passed": true
+    },
+    {
+      "scenario": "old_epoch_rejected_screen",
+      "passed": true
+    },
+    {
+      "scenario": "old_epoch_rejected_dom",
+      "passed": true
+    },
+    {
+      "scenario": "old_epoch_rejected_act",
+      "passed": true
+    },
+    {
+      "scenario": "unexpected_api_error_is_caught_and_redacted",
+      "passed": true
+    },
+    {
+      "scenario": "adopt_causal_new_tab",
+      "passed": true
+    },
+    {
+      "scenario": "unrelated_popup_not_adopted",
+      "passed": true
+    },
+    {
+      "scenario": "blank_popup_waits",
+      "passed": true
+    },
+    {
+      "scenario": "transient_error_checkpoints_for_retry",
+      "passed": true
+    },
+    {
+      "scenario": "three_source_evidence_before_synthesis",
+      "passed": true
+    },
+    {
+      "scenario": "v2_publishes_verified_result",
+      "passed": true
+    },
+    {
+      "scenario": "candidate_persisted_with_verdict",
+      "passed": true
+    },
+    {
+      "scenario": "publication_revalidates_candidate_digest",
+      "passed": true
+    },
+    {
+      "scenario": "browser_not_blocked_by_legacy_token_cap",
+      "passed": true
+    },
+    {
+      "scenario": "three_source_evidence_before_synthesis",
+      "passed": true
+    },
+    {
+      "scenario": "failed_verifier_delivers_labeled_partial_not_success",
+      "passed": true
+    },
+    {
+      "scenario": "rejected_candidate_retained_beside_partial",
+      "passed": true
+    },
+    {
+      "scenario": "three_source_evidence_before_synthesis",
+      "passed": true
+    },
+    {
+      "scenario": "exploration_limit_still_synthesizes_and_verifies",
+      "passed": true
+    },
+    {
+      "scenario": "finalizer_recovers_transient_error",
+      "passed": true
+    },
+    {
+      "scenario": "finalizer_retries_are_bounded",
+      "passed": true
+    },
+    {
+      "scenario": "search_results_are_not_article_evidence",
+      "passed": true
+    },
+    {
+      "scenario": "persistent_browser_error_has_bounded_recovery",
+      "passed": true
+    },
+    {
+      "scenario": "browser_error_reload_does_not_need_approval",
+      "passed": true
+    },
+    {
+      "scenario": "website_reload_label_is_not_a_permission_bypass",
+      "passed": true
+    },
+    {
+      "scenario": "fabricated_quote_fails_without_model",
+      "passed": true
+    },
+    {
+      "scenario": "tracking_removed_without_changing_search_query",
+      "passed": true
+    },
+    {
+      "scenario": "spa_fragment_preserved",
+      "passed": true
+    },
+    {
+      "scenario": "candidate_digest_stable",
+      "passed": true
+    }
+  ],
+  "temporary_resources_removed": true
+}

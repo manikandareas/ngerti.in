@@ -1,0 +1,62 @@
+{
+  "passed": 14,
+  "scenarios": [
+    {
+      "scenario": "invalid_decision_corrected",
+      "passed": true
+    },
+    {
+      "scenario": "invalid_output_corrected",
+      "passed": true
+    },
+    {
+      "scenario": "yield_requeues_without_stopping_browser",
+      "passed": true
+    },
+    {
+      "scenario": "progress_survives_new_execution",
+      "passed": true
+    },
+    {
+      "scenario": "scheduled_yield_not_failed_attempt",
+      "passed": true
+    },
+    {
+      "scenario": "healthy_heartbeat_prevents_idle_stop",
+      "passed": true
+    },
+    {
+      "scenario": "read_only_worker_loss_recovers",
+      "passed": true
+    },
+    {
+      "scenario": "inflight_action_is_not_replayed",
+      "passed": true
+    },
+    {
+      "scenario": "shutdown_commits_continuation_before_reraising",
+      "passed": true
+    },
+    {
+      "scenario": "legacy_template_fallback_preserves_resource",
+      "passed": true
+    },
+    {
+      "scenario": "human_control_blocks_observation",
+      "passed": true
+    },
+    {
+      "scenario": "old_control_epoch_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "display_timeout_is_retryable_readiness",
+      "passed": true
+    },
+    {
+      "scenario": "stale_approved_target_yields_instead_of_looping",
+      "passed": true
+    }
+  ],
+  "temporary_resources_removed": true
+}

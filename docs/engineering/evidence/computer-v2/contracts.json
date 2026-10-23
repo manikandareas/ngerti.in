@@ -1,0 +1,90 @@
+{
+  "passed": 21,
+  "scenarios": [
+    {
+      "scenario": "same_dispatch_replay_does_not_input_twice",
+      "passed": true
+    },
+    {
+      "scenario": "changed_dispatch_payload_rejected",
+      "passed": true
+    },
+    {
+      "scenario": "accepted_without_receipt_is_unknown",
+      "passed": true
+    },
+    {
+      "scenario": "old_epoch_rejected_screen",
+      "passed": true
+    },
+    {
+      "scenario": "old_epoch_rejected_dom",
+      "passed": true
+    },
+    {
+      "scenario": "old_epoch_rejected_act",
+      "passed": true
+    },
+    {
+      "scenario": "adopt_causal_new_tab",
+      "passed": true
+    },
+    {
+      "scenario": "unrelated_popup_not_adopted",
+      "passed": true
+    },
+    {
+      "scenario": "blank_popup_waits",
+      "passed": true
+    },
+    {
+      "scenario": "three_source_evidence_before_synthesis",
+      "passed": true
+    },
+    {
+      "scenario": "v2_publishes_verified_result",
+      "passed": true
+    },
+    {
+      "scenario": "candidate_persisted_with_verdict",
+      "passed": true
+    },
+    {
+      "scenario": "publication_revalidates_candidate_digest",
+      "passed": true
+    },
+    {
+      "scenario": "historical_budget_reservation_rejected_before_provider",
+      "passed": true
+    },
+    {
+      "scenario": "three_source_evidence_before_synthesis",
+      "passed": true
+    },
+    {
+      "scenario": "failed_verifier_delivers_labeled_partial_not_success",
+      "passed": true
+    },
+    {
+      "scenario": "rejected_candidate_retained_beside_partial",
+      "passed": true
+    },
+    {
+      "scenario": "fabricated_quote_fails_without_model",
+      "passed": true
+    },
+    {
+      "scenario": "tracking_removed_without_changing_search_query",
+      "passed": true
+    },
+    {
+      "scenario": "spa_fragment_preserved",
+      "passed": true
+    },
+    {
+      "scenario": "candidate_digest_stable",
+      "passed": true
+    }
+  ],
+  "temporary_resources_removed": true
+}

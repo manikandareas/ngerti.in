@@ -1,0 +1,46 @@
+{
+  "fixture": "isolated Brave Chromium; no network website or app server",
+  "uses_actual": [
+    "cdp.page_target",
+    "actuator.dispatch",
+    "CDP Target.activateTarget",
+    "CDP Page.bringToFront"
+  ],
+  "stubbed": [
+    "scrot only; checks actual tab visibility/focus"
+  ],
+  "before_observe": [
+    {
+      "id": "7D494EF9FAB5393D69D43E5CF1F1DF5D",
+      "url": "about:blank#article",
+      "title": "Article fixture",
+      "visibility": "visible",
+      "focus": true
+    },
+    {
+      "id": "8D0AA896683EE1B0A78AC520CFF3813C",
+      "url": "about:blank",
+      "title": "Search fixture",
+      "visibility": "hidden",
+      "focus": false
+    }
+  ],
+  "after_observe": [
+    {
+      "id": "8D0AA896683EE1B0A78AC520CFF3813C",
+      "url": "about:blank",
+      "title": "Search fixture",
+      "visibility": "visible",
+      "focus": true
+    },
+    {
+      "id": "7D494EF9FAB5393D69D43E5CF1F1DF5D",
+      "url": "about:blank#article",
+      "title": "Article fixture",
+      "visibility": "hidden",
+      "focus": false
+    }
+  ],
+  "selected_target_url": "about:blank",
+  "reproduced": true
+}

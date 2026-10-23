@@ -1,0 +1,61 @@
+{
+  "date": "2026-10-23",
+  "task": "NMA-006",
+  "base_commit": "e69843ef21710d53871eea0cc0814fc3f951f383",
+  "upstream_revision": "7489b22af47ce91b366dde81d5831ea422577498",
+  "profile": "foundation",
+  "runtime_distribution_count": {
+    "macos_arm64": 76,
+    "linux_aarch64": 76
+  },
+  "missing_notices": [],
+  "excluded": [
+    "pillow-heif",
+    "fetch-use",
+    "browser-harness"
+  ],
+  "verification": {
+    "staged_baseline_macos": "17 passed in 26.09s; exact staged source without NMA-008 working tree",
+    "combined_macos": "21 passed in 59.00s; service uses foundation interpreter",
+    "combined_linux": "21 passed in 89.09s; service uses foundation interpreter; UID10001; one pytest-cache warning",
+    "make_check": "passed",
+    "review": "Standards: no hard violation, one optional duplication heuristic; Spec: no blocker within foundation packaging scope"
+  },
+  "commands": [
+    "HERMES_RUNTIME_DIR=$PWD/.dev/nma-001/pm-runtime .dev/nma-008/runtime/bin/python apps/engine/build_runtime.py --source .dev/nma-001/source --out .dev/nma-006-closure/production",
+    "HERMES_SOURCE=$PWD/.dev/nma-001/source PYTHONPATH=$PWD/apps/engine/src NMA_TEST_RUNTIME_PYTHON=$PWD/.dev/nma-006-closure/production/bin/python .dev/nma-006-closure/runtime/bin/python -m pytest apps/engine/tests -q -s",
+    "docker build --target evidence --output type=local,dest=.dev/nma-006-closure/linux-final apps/engine",
+    "make check",
+    "python3 scripts/check_docs.py",
+    "git diff --check"
+  ],
+  "packaging_source_sha256": {
+    "apps/engine/Dockerfile": "b1af23ecd0d52a575b2831829f027744998bd9f3d065d0702cc63ecf26934e5f",
+    "apps/engine/build_runtime.py": "dd6c1687cb205ca48f493e6cdb7dc3837737363670cc1fa3f971c191bedeb6fa",
+    "apps/engine/collect_inventory.py": "4c12a60ba1e0e627044736164c22e75183c80a5950cf416e0e735bc81d51e6e4",
+    "apps/engine/notices/provenance.json": "11a578aff93b2c81ddc0e0f8d84c6854f72d2439b3683ac20638de10a10b1934",
+    "apps/engine/notices/firecrawl-anydoc-0.2.4-LICENSE": "03a9e7657aac6536fb6458bd220347c4e7f85bd0a51d8d9e8528530b7a682ade"
+  },
+  "boundaries": [
+    "No upstream source or lock modified",
+    "Foundation closure only; excluded capabilities require review before reintroduction",
+    "Combined regression includes uncommitted NMA-008 changes; exact staged baseline verified separately",
+    "NMA-008 metadata-secret defect remains open",
+    "No deployment, push or production data changes"
+  ],
+  "evidence_sha256": {
+    "macos-fixed-dependencies-tests.log": "34510ab78d37c847d21e0fa92d0dad0b7a0c99222b366e37df301c58694d9ea2",
+    "docs-check.log": "2c8df334f36feccb3db4820acd36b4974dfa10a2809c868c410d84ad40f54448",
+    "macos-production-inventory.json": "b6f1888da749aa35b8200bf6d870c3ffe7b36c7aacca849eef0ff69f8b6e7081",
+    "linux-test-inventory.json": "d2961dfa92446985473d31728f603873ce834eaf1ddc61241a43d065d2f71a59",
+    "staged-baseline-tests.log": "4341510d685883180f910ff5b24a08af63caf8b05af3ec063621f08004f06973",
+    "packaging-checks.json": "eec7b9aae9b9bfed577a8565fd356601049be3dc4e1c04cdb9db0a56dbf1055d",
+    "macos-production-tests.log": "21d8b3c5aa8b5593a61f7a6d5312e2d21e9164d60d98fa9cbd0db0c95fbda74a",
+    "linux-runtime-inventory.json": "e1c165b5cf829b2529dc87619f7fea49a00a764153b20c81b53fb97d48f24de3",
+    "linux-runtime-tests.log": "1a2eb4d87221a62edabe4a241b65d2579f5a1934347f928923a812537671123f",
+    "make-check.log": "5b146f9d59687e821141e038fefd27f74ef7d792de315294559144ddb5667418",
+    "linux-foundation-profile.json": "6687c56dc015208e26f551fbdd1028119a9c5b77883ebecfb3a09e0d044e7145",
+    "macos-inventory.json": "51f55c354ccc45ac94ffd16041dac86111553b29e00e21b7ef6d229079e79ea8",
+    "macos-tests.log": "9c21a6d5d513b52253a6934e103b9853ffafdf9a028d2cf019e7b225acf6d550"
+  }
+}

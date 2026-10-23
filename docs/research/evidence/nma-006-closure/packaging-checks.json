@@ -1,0 +1,10 @@
+{
+  "installed_versions_match_upstream_lock": true,
+  "full_app_profile_rejected": true,
+  "excluded_packages": [
+    "pillow-heif",
+    "fetch-use",
+    "browser-harness"
+  ],
+  "foundation_distribution_count": 76
+}

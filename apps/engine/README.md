@@ -33,13 +33,11 @@ Required server-controlled environment:
 
 Bindings are persisted immutably by their agent/thread/config/context identity. Changing the same revision's model/tool selection fails startup. A new revision or thread has a distinct native session. Paths, models and capabilities come only from this server-owned manifest. Identity/soul/MCP/scoped memory provisioning is not implemented by this temporary manifest; NMA-007–009 replace it with authoritative domain configuration.
 
-The Dockerfile is a **verification image** including upstream's dev/test groups. It is not a cleared distributable production image. Use an owner-specific container, mount only its volume and authorized workspace, do not publish native gateway ports, and keep the Unix socket accessible only to the trusted forwarding API. Full executor/credential isolation is still NMA-023; a profile directory is not a sandbox. Do not use shared network SQLite volumes or concurrent active replicas. Move a partition only after fencing and proving exclusive volume ownership.
+The Dockerfile separates the `foundation` runtime from the `verify` test environment. Use an owner-specific container, mount only its volume and authorized workspace, do not publish native gateway ports, and keep the Unix socket accessible only to the trusted forwarding API. Full executor/credential isolation is still NMA-023; a profile directory is not a sandbox. Do not use shared network SQLite volumes or concurrent active replicas. Move a partition only after fencing and proving exclusive volume ownership.
 
 ```sh
 python3 apps/engine/fetch_runtime.py apps/engine/.runtime/source.tar.gz
-docker build --target runtime -t ngertiin-engine:nma-006 apps/engine
-docker run --rm --entrypoint /opt/runtime/bin/python ngertiin-engine:nma-006 \
-  -m pytest /opt/ngertiin/tests -q
+docker build --target foundation -t ngertiin-engine:foundation apps/engine
 ```
 
 To verify Linux without exporting/unpacking an image twice on a constrained Docker disk:
@@ -48,7 +46,37 @@ To verify Linux without exporting/unpacking an image twice on a constrained Dock
 docker build --target evidence --output type=local,dest=.dev/nma-006-linux apps/engine
 ```
 
-The evidence target runs the same runtime filesystem as a non-root user and exports the test log and installed-distribution inventory. It does not deploy a service.
+The evidence target launches the foundation interpreter as a non-root user from a separate pytest environment, and exports the test log and both installed-distribution inventories. It does not deploy a service.
+
+### Foundation dependency profile
+
+`build_runtime.py` exports the pinned upstream lock through Hermes PM, then builds a
+fresh requirements environment with ACP/MCP extras. It neither patches upstream
+source nor rewrites its lock. The explicit packaging deviations are:
+
+- Exclude `pillow-heif`: its bundled GPL codec wheel is not part of this foundation
+  artifact. HEIC/HEIF image input is outside this profile; JPEG/PNG and the tested
+  text/tool/MCP paths do not require that wheel.
+- Exclude `fetch-use` and its dependent `browser-harness`: the pinned fetch-use
+  source/wheel lack a distributable notice and the declared repository is
+  unavailable. Native Browser Use is outside this profile; do not advertise it.
+- Keep `firecrawl-anydoc` and ship its exact 0.2.4 source-archive MIT notice under
+  `/opt/ngertiin/notices`, with source/archive/member hashes in `provenance.json`.
+- Import Hermes from its verified source tree rather than installing its full-app
+  distribution metadata, which would require the deliberately excluded packages.
+  The profile manifest records the upstream revision, lock hash and requirements.
+
+The build fails if an excluded package returns or an installed distribution has
+no packaged/supplemental notice. The source tree retains its upstream notices.
+`HERMES_DISABLE_LAZY_INSTALLS=1` keeps the deployed dependency set fixed; changes
+require rebuilding and rerunning the inventory gate. This is a packaging choice,
+not an agent initiative policy. Reintroducing excluded capabilities requires their
+own dependency/source-notice review and runtime acceptance.
+
+For a local foundation environment, run `build_runtime.py --source <verified-source>
+--out <new-environment>`. Add `--tests` only for a separate test runner. Set
+`NMA_TEST_RUNTIME_PYTHON=<foundation-environment>/bin/python` when running pytest
+from that runner to exercise the actual application interpreter.
 
 ## Internal command boundary
 
@@ -74,7 +102,10 @@ Upgrading requires reviewing all pin hashes and the subclass seam, regenerating 
 
 Before migration/upgrade: stop ingress, drain or quarantine runs, shut down the native owner, back up root SQLite **and** subordinate state/secret references/workspaces consistently, verify restore to a disposable partition, then start one owner. Unknown newer schema or changed migration checksum refuses startup. Rollback preserves the entire new partition; never delete extension tables or import its runs into the legacy engine. No existing application database migration or cutover occurs here.
 
-Distribution clearance remains separate from source MIT: the prior audit found copyleft codec notices in `pillow-heif` and missing shipped notices in other dependencies. The verification image must not be presented as cleared production packaging until its actual inventory and obligations are resolved. See the NMA-006 evidence report for exact tested platforms and remaining gates.
+The earlier full-app verification image retains its historical packaging blockers.
+The foundation profile addresses those specific blockers by exclusion and the
+versioned supplemental notice above. This does not clear the excluded packages,
+other platforms, optional extras or the product's remaining production gates.
 
 ## Agent lifecycle and configuration (NMA-007)
 
@@ -137,7 +168,8 @@ an old config revision fails. Archive/disable commits generation and unfinished-
 uses native cancellation. Completed history remains readable. Unfinished fenced output is suppressed
 and cancellation is redelivered on startup. Full restart-before-dispatch/tool authorization and
 causal descendant fencing remain the NMA-010/023 gates; no goals or wakes exist in this slice.
-Production remains disabled pending those gates and NMA-006 distribution clearance.
+Production remains disabled pending those downstream gates. Foundation packaging
+and its historical full-app exclusions are documented above.
 
 Before upgrade, stop ingress and native execution, back up the complete owner volume, then let
 one gateway apply the additive checksummed migration. The predecessor-version test preserves

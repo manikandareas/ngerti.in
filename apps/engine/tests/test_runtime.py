@@ -18,6 +18,7 @@ import pytest
 from ngertiin_engine.contracts import sign
 
 SOURCE = Path(os.environ["HERMES_SOURCE"]).resolve()
+RUNTIME_PYTHON = os.environ.get("NMA_TEST_RUNTIME_PYTHON", sys.executable)
 ENGINE = Path(__file__).resolve().parents[1] / "src"
 sys.path.insert(0, str(SOURCE))
 from tests.gateway.fixtures.local_recovery_probe import (
@@ -205,7 +206,7 @@ def runtime(tmp_path_factory):
     def start():
         log = (root / f"gateway-{len(processes)}.log").open("w+")
         process = subprocess.Popen(
-            [sys.executable, "-m", "ngertiin_engine.service"],
+            [RUNTIME_PYTHON, "-m", "ngertiin_engine.service"],
             cwd=SOURCE,
             env=env,
             stdout=log,
@@ -469,7 +470,7 @@ def test_second_gateway_cannot_take_partition(runtime):
         "NMA_BINDINGS_FILE": str(root / "bindings.json"),
     }
     result = subprocess.run(
-        [sys.executable, "-m", "ngertiin_engine.service"],
+        [RUNTIME_PYTHON, "-m", "ngertiin_engine.service"],
         env=env,
         cwd=SOURCE,
         capture_output=True,
@@ -480,7 +481,7 @@ def test_second_gateway_cannot_take_partition(runtime):
     assert call(command("runtime.describe"))["result"]["authority_epoch"] == before
     env["NMA_OWNER_ID"] = str(uuid4())
     wrong = subprocess.run(
-        [sys.executable, "-m", "ngertiin_engine.service"],
+        [RUNTIME_PYTHON, "-m", "ngertiin_engine.service"],
         env=env,
         cwd=SOURCE,
         capture_output=True,

@@ -1,5 +1,6 @@
 """Inventory the exact installed verification runtime and its packaged notices."""
 
+import argparse
 import hashlib
 import json
 import platform
@@ -7,6 +8,15 @@ import sqlite3
 from importlib import metadata
 from pathlib import Path
 
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument("--verify-foundation", action="store_true")
+args = parser.parse_args()
+supplements = Path(__file__).parent / "notices"
+provenance = (
+    json.loads((supplements / "provenance.json").read_text())
+    if supplements.exists()
+    else {}
+)
 packages = []
 for distribution in sorted(
     metadata.distributions(), key=lambda d: d.metadata["Name"].lower()
@@ -22,6 +32,20 @@ for distribution in sorted(
                         "sha256": hashlib.sha256(file.read_bytes()).hexdigest(),
                     }
                 )
+    supplement = provenance.get(distribution.metadata["Name"])
+    if supplement:
+        notice = supplements / supplement["notice"]
+        checksum = hashlib.sha256(notice.read_bytes()).hexdigest()
+        if (
+            distribution.version != supplement["version"]
+            or checksum != supplement["sha256"]
+        ):
+            raise ValueError(
+                "Supplemental notice does not match the installed distribution"
+            )
+        notices.append(
+            {"path": str(notice), "sha256": checksum, "source": supplement["source"]}
+        )
     packages.append(
         {
             "name": distribution.metadata["Name"],
@@ -31,6 +55,12 @@ for distribution in sorted(
             "notices": notices,
         }
     )
+if args.verify_foundation:
+    excluded = {"pillow-heif", "pillow_heif", "browser-harness", "fetch-use"}
+    if any(p["name"] in excluded or not p["notices"] for p in packages):
+        raise ValueError(
+            "Foundation packaging gate failed: excluded package or missing notice"
+        )
 print(
     json.dumps(
         {

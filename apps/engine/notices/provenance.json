@@ -1,0 +1,10 @@
+{
+  "firecrawl-anydoc": {
+    "version": "0.2.4",
+    "source": "https://files.pythonhosted.org/packages/35/54/ee43b1661a954e53eaed85878a7ccc37ed73e02e6577bb26437ec5f9de94/firecrawl_anydoc-0.2.4.tar.gz",
+    "source_sha256": "3e29460272fea81cde08fd5af11f6b0f1ff05919214ddc939867f72362c83032",
+    "member": "firecrawl_anydoc-0.2.4/LICENSE",
+    "notice": "firecrawl-anydoc-0.2.4-LICENSE",
+    "sha256": "03a9e7657aac6536fb6458bd220347c4e7f85bd0a51d8d9e8528530b7a682ade"
+  }
+}

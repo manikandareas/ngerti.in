@@ -1,0 +1,361 @@
+import { useAuth } from "@clerk/tanstack-react-start";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { AppShell } from "@/components/app-shell";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { api } from "@/lib/api";
+
+type Config = { soul: string; instructions: string; model: string };
+type Agent = {
+  agent_id: string;
+  display_name: string;
+  handle: string;
+  status: "active" | "disabled" | "archived";
+  revision: string;
+  config_revision: string;
+  config: Config;
+};
+type Listing = {
+  items: Agent[];
+  models: { id: string; label: string }[];
+  next_cursor: string | null;
+};
+type Draft = { display_name: string; handle: string; config: Config };
+const empty: Draft = {
+  display_name: "",
+  handle: "",
+  config: { soul: "", instructions: "", model: "" },
+};
+const statusLabels = { active: "Aktif", disabled: "Dinonaktifkan", archived: "Diarsipkan" };
+const base = "/api/agent-engine/v1";
+
+export function AgentsPage() {
+  const { getToken } = useAuth();
+  const [data, setData] = useState<Listing | null>(null);
+  const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState<Agent | null>(null);
+  const [draft, setDraft] = useState<Draft>(empty);
+  const [archived, setArchived] = useState(false);
+  const pending = useRef<{ signature: string; body: string } | null>(null);
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const token = await getToken();
+      let result = await api<Listing>(`${base}/agents`, token);
+      const items = [...result.items];
+      while (result.next_cursor) {
+        result = await api<Listing>(`${base}/agents?after=${result.next_cursor}`, token);
+        items.push(...result.items);
+      }
+      setData({ ...result, items });
+      setError("");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Agent belum dapat dimuat.");
+    } finally {
+      setLoading(false);
+    }
+  }, [getToken]);
+  useEffect(() => {
+    void load();
+  }, [load]);
+
+  function edit(agent: Agent | null) {
+    setSelected(agent);
+    setDraft(
+      agent
+        ? { display_name: agent.display_name, handle: agent.handle, config: { ...agent.config } }
+        : { ...empty, config: { ...empty.config, model: data?.models[0]?.id ?? "" } },
+    );
+    setError("");
+    setNotice("");
+    setOpen(true);
+  }
+  async function mutate(type: string, payload: object, revision: string | null) {
+    if (busy) return;
+    setBusy(true);
+    setError("");
+    setNotice("");
+    const signature = JSON.stringify({ type, payload, revision });
+    if (pending.current?.signature !== signature) {
+      pending.current = {
+        signature,
+        body: JSON.stringify({
+          schema_version: "nma.v1",
+          command_id: crypto.randomUUID(),
+          type,
+          expected_revision: revision,
+          payload,
+        }),
+      };
+    }
+    try {
+      await api(`${base}/commands`, await getToken(), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: pending.current.body,
+      });
+      pending.current = null;
+      setOpen(false);
+      setNotice(
+        type === "agent.archive"
+          ? "Agent diarsipkan. Identitas dan riwayatnya tetap tersimpan."
+          : "Perubahan agent tersimpan.",
+      );
+      await load();
+    } catch (e) {
+      setError(
+        e instanceof Error ? e.message : "Perubahan belum terkonfirmasi. Coba simpan kembali.",
+      );
+    } finally {
+      setBusy(false);
+    }
+  }
+  return (
+    <AppShell>
+      <div className="mx-auto max-w-3xl space-y-8">
+        <header className="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-semibold">Agent</h1>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Atur identitas, karakter, dan cara kerja setiap agent.
+            </p>
+          </div>
+          <Button disabled={loading || !data?.models.length} onClick={() => edit(null)}>
+            Buat agent
+          </Button>
+        </header>
+        {data && data.models.length === 0 && (
+          <p role="status" className="text-sm text-muted-foreground">
+            Belum ada model yang tersedia untuk membuat agent.
+          </p>
+        )}
+        {notice && (
+          <p role="status" className="rounded-xl border p-4 text-sm">
+            {notice}
+          </p>
+        )}
+        {error && !open && (
+          <div role="alert" className="space-y-3 rounded-xl border p-4 text-sm">
+            <p>{error}</p>
+            <Button variant="outline" onClick={() => void load()}>
+              Muat ulang
+            </Button>
+          </div>
+        )}
+        <div className="flex gap-2">
+          <Button variant={!archived ? "secondary" : "ghost"} onClick={() => setArchived(false)}>
+            Agent aktif
+          </Button>
+          <Button variant={archived ? "secondary" : "ghost"} onClick={() => setArchived(true)}>
+            Arsip
+          </Button>
+        </div>
+        {loading ? (
+          <p role="status">Memuat agent…</p>
+        ) : (
+          data && (
+            <div className="space-y-3">
+              {!data.items.some((a) => (a.status === "archived") === archived) && (
+                <div className="rounded-2xl border border-dashed px-6 py-12 text-center">
+                  <h2 className="font-medium">
+                    {archived ? "Belum ada agent di arsip" : "Mulai dengan satu agent"}
+                  </h2>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    {archived
+                      ? "Agent yang kamu arsipkan akan muncul di sini."
+                      : "Beri nama, tentukan karakter, lalu pilih modelnya."}
+                  </p>
+                </div>
+              )}
+              {data.items
+                .filter((a) => (a.status === "archived") === archived)
+                .map((agent) => (
+                  <article
+                    key={agent.agent_id}
+                    className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border bg-card p-5"
+                  >
+                    <div className="min-w-0">
+                      <h2 className="break-words font-semibold">{agent.display_name}</h2>
+                      <p className="text-sm text-muted-foreground">
+                        @{agent.handle} · {statusLabels[agent.status]}
+                      </p>
+                      <p className="mt-2 text-xs text-muted-foreground">
+                        {data.models.find((m) => m.id === agent.config.model)?.label ??
+                          agent.config.model}
+                      </p>
+                    </div>
+                    {agent.status === "archived" ? (
+                      <Button
+                        variant="outline"
+                        disabled={busy}
+                        onClick={() =>
+                          void mutate(
+                            "agent.restore",
+                            { agent_id: agent.agent_id, status: "active" },
+                            agent.revision,
+                          )
+                        }
+                      >
+                        Pulihkan {agent.display_name}
+                      </Button>
+                    ) : (
+                      <Button variant="outline" disabled={busy} onClick={() => edit(agent)}>
+                        Edit {agent.display_name}
+                      </Button>
+                    )}
+                  </article>
+                ))}
+            </div>
+          )
+        )}
+      </div>
+      <Dialog
+        open={open}
+        onOpenChange={(value) => {
+          if (!busy) setOpen(value);
+        }}
+      >
+        <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-xl">
+          <DialogHeader>
+            <DialogTitle>{selected ? `Edit ${selected.display_name}` : "Buat agent"}</DialogTitle>
+            <DialogDescription>
+              Identitas ini digunakan di DM dan grup. Perubahan karakter dan model berlaku pada run
+              baru.
+            </DialogDescription>
+          </DialogHeader>
+          <form
+            className="space-y-4"
+            onSubmit={(event) => {
+              event.preventDefault();
+              void mutate(
+                selected ? "agent.configure" : "agent.create",
+                { ...draft, ...(selected ? { agent_id: selected.agent_id } : {}) },
+                selected?.revision ?? null,
+              );
+            }}
+          >
+            <fieldset disabled={busy} className="space-y-4">
+              <label htmlFor="agent-name" className="block space-y-2 text-sm">
+                Nama
+                <Input
+                  id="agent-name"
+                  required
+                  maxLength={80}
+                  value={draft.display_name}
+                  onChange={(e) => setDraft({ ...draft, display_name: e.target.value })}
+                />
+              </label>
+              <label htmlFor="agent-handle" className="block space-y-2 text-sm">
+                Handle
+                <Input
+                  id="agent-handle"
+                  required
+                  pattern="[a-z][a-z0-9_-]{0,39}"
+                  maxLength={40}
+                  placeholder="researcher"
+                  value={draft.handle}
+                  onChange={(e) => setDraft({ ...draft, handle: e.target.value })}
+                />
+                <span className="block text-xs text-muted-foreground">
+                  Huruf kecil, angka, garis bawah, atau tanda hubung. Awali dengan huruf.
+                </span>
+              </label>
+              <label htmlFor="agent-soul" className="block space-y-2 text-sm">
+                Karakter (soul)
+                <Textarea
+                  id="agent-soul"
+                  rows={3}
+                  maxLength={16000}
+                  placeholder="Teliti, ingin tahu, dan menjelaskan sumber dengan jelas."
+                  value={draft.config.soul}
+                  onChange={(e) =>
+                    setDraft({ ...draft, config: { ...draft.config, soul: e.target.value } })
+                  }
+                />
+              </label>
+              <label htmlFor="agent-instructions" className="block space-y-2 text-sm">
+                Instruksi
+                <Textarea
+                  id="agent-instructions"
+                  rows={3}
+                  maxLength={16000}
+                  placeholder="Cara kerja dan hal yang perlu diperhatikan agent."
+                  value={draft.config.instructions}
+                  onChange={(e) =>
+                    setDraft({
+                      ...draft,
+                      config: { ...draft.config, instructions: e.target.value },
+                    })
+                  }
+                />
+              </label>
+              <label className="block space-y-2 text-sm">
+                Model
+                <select
+                  className="h-10 w-full rounded-md border bg-background px-3"
+                  required
+                  value={draft.config.model}
+                  onChange={(e) =>
+                    setDraft({ ...draft, config: { ...draft.config, model: e.target.value } })
+                  }
+                >
+                  {data?.models.map((model) => (
+                    <option key={model.id} value={model.id}>
+                      {model.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </fieldset>
+            {error && (
+              <div role="alert" className="space-y-2 text-sm text-destructive">
+                <p>{error}</p>
+                <p>
+                  Jika konfigurasi telah berubah, tutup editor dan muat ulang sebelum mengedit lagi.
+                </p>
+              </div>
+            )}
+            <div className="flex flex-wrap justify-end gap-2 border-t pt-4">
+              {selected && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  disabled={busy}
+                  className="mr-auto"
+                  onClick={() =>
+                    void mutate("agent.archive", { agent_id: selected.agent_id }, selected.revision)
+                  }
+                >
+                  Arsipkan
+                </Button>
+              )}
+              <Button
+                type="button"
+                variant="outline"
+                disabled={busy}
+                onClick={() => setOpen(false)}
+              >
+                Batal
+              </Button>
+              <Button type="submit" disabled={busy || !draft.config.model}>
+                {busy ? "Menyimpan…" : "Simpan agent"}
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </AppShell>
+  );
+}

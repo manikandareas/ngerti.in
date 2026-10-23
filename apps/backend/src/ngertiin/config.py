@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     app_env: Literal["development", "production"] = "development"
     enable_dev_diagnostics: bool = False
     web_origin: str = "http://localhost:3000"
+    nma_partitions_file: str = ""
     database_url: SecretStr
     clerk_secret_key: SecretStr = SecretStr("")
     s3_endpoint_url: str

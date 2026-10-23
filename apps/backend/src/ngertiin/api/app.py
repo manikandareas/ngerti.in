@@ -14,6 +14,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.exc import SQLAlchemyError
 
 from ngertiin.accounts.auth import current_account
+from ngertiin.agent_engine.api import router as agent_engine_router
 from ngertiin.api.diagnostics import router as diagnostic_router
 from ngertiin.async_db import close_pool
 from ngertiin.billing.api import router as billing_router
@@ -54,6 +55,7 @@ app = FastAPI(
     docs_url="/docs" if settings.diagnostics_enabled else None,
     lifespan=lifespan,
 )
+app.include_router(agent_engine_router)
 app.include_router(chat_router)
 app.include_router(persona_router)
 app.include_router(proactive_router)

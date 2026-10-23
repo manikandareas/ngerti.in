@@ -1,6 +1,6 @@
 import { UserButton } from "@clerk/tanstack-react-start";
-import { useNavigate } from "@tanstack/react-router";
-import { Search } from "lucide-react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { Bot, Search } from "lucide-react";
 import type { ReactNode } from "react";
 import { Mascot } from "@/components/mascot/mascot";
 import { Button } from "@/components/ui/button";
@@ -64,6 +64,22 @@ export function DesktopNavigation({
           </TooltipTrigger>
           <TooltipContent side="right">Cari pekerjaan dan hasil</TooltipContent>
         </Tooltip>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              asChild
+              variant="ghost"
+              size="icon"
+              className="order-2 size-11"
+              aria-label="Agent"
+            >
+              <Link to="/agents">
+                <Bot className="size-6" />
+              </Link>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="right">Agent</TooltipContent>
+        </Tooltip>
         {primaryWorkspaceLinks.map(({ view: destination, label, icon: Icon }) => (
           <Tooltip key={destination}>
             <TooltipTrigger asChild>
@@ -117,6 +133,16 @@ export function MobileNavigation({ view, onNavigate }: NavigationProps) {
       aria-label="Menu utama mobile"
       className="fixed inset-x-0 bottom-0 z-10 flex h-[calc(56px+env(safe-area-inset-bottom))] items-start justify-around border-t bg-background px-2 pb-[env(safe-area-inset-bottom)] min-[701px]:hidden"
     >
+      <Button
+        asChild
+        variant="ghost"
+        className="mt-1 h-12 min-w-14 flex-col gap-0.5 px-2 text-[10px] font-normal"
+      >
+        <Link to="/agents">
+          <Bot className="size-5" />
+          Agent
+        </Link>
+      </Button>
       {primaryWorkspaceLinks.map(({ view: destination, label, icon: Icon }) => (
         <Button
           key={destination}

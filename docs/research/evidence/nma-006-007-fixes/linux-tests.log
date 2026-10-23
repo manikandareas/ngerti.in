@@ -1,0 +1,9 @@
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Linux", "architecture": "aarch64", "journal_mode": "wal"}
+.................
+=============================== warnings summary ===============================
+../runtime/lib/python3.14/site-packages/_pytest/cacheprovider.py:469
+  /opt/runtime/lib/python3.14/site-packages/_pytest/cacheprovider.py:469: PytestCacheWarning: could not create cache path /opt/ngertiin/.pytest_cache/v/cache/nodeids: [Errno 13] Permission denied: '/opt/ngertiin/pytest-cache-files-qubygfvf'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+17 passed, 1 warning in 40.70s

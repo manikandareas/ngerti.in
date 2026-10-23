@@ -1,0 +1,38 @@
+{
+  "owner_spoof_status": 422,
+  "profile_isolation": true,
+  "researcher": {
+    "access_generation": "1",
+    "agent_id": "a43ef0f6-11ed-47cb-bbaf-d2f62d920d7e",
+    "config": {
+      "instructions": "Pisahkan fakta dari asumsi.",
+      "model": "test",
+      "soul": "Teliti, ringkas, dan selalu menyebutkan sumber."
+    },
+    "config_revision": "2",
+    "created_at": "2026-10-23T12:49:34.552526Z",
+    "display_name": "Researcher QA",
+    "handle": "researcher-qa",
+    "revision": "2",
+    "status": "active",
+    "updated_at": "2026-10-23T12:51:46.264022Z"
+  },
+  "stale_revision_status": 409,
+  "unknown_agent_status": 404,
+  "writer": {
+    "access_generation": "1",
+    "agent_id": "7d224748-ae2f-4e2b-8fe1-23743d40fe62",
+    "config": {
+      "instructions": "Gunakan paragraf pendek.",
+      "model": "writer",
+      "soul": "Menulis dengan hangat dan jelas."
+    },
+    "config_revision": "1",
+    "created_at": "2026-10-23T12:50:13.838071Z",
+    "display_name": "Writer QA",
+    "handle": "writer-qa",
+    "revision": "1",
+    "status": "active",
+    "updated_at": "2026-10-23T12:50:13.838071Z"
+  }
+}

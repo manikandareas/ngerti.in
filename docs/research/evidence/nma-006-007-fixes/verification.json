@@ -1,0 +1,12 @@
+{
+  "date": "2026-10-23",
+  "status": "Review",
+  "evidence_sha256": {
+    "http-tests.log": "ed7fde057f962ca6c1c35b98720e9e73d52ec8ee4eca75dbb7bf2e9ee8f5af15",
+    "linux-inventory.json": "7fa5182cbf79c4dff20b424fe864a279110c9ce7a0d1b75f5610e0625d5f99bd",
+    "linux-tests.log": "e47f5c00d19316df0013f9f21dc7ea52d93ba475dfa185b93e1a355920864eb1",
+    "macos-tests.log": "4ffb8bc131832f99783c8969ed00c783aa04546ba36ef50879a43fd579a71c1f",
+    "make-check.log": "8f9a5d998f916125080c4542825c630eb64faad6dc8cfa2a5ab482cceff119f3",
+    "unicode-http.json": "0b6e22c79186eb491fcc255059caab0c2c2806188caff5f9c494d8e05e83e3c9"
+  }
+}

@@ -1,0 +1,12 @@
+- heading "Edit Researcher QA" [level=2, ref=e1]
+- textbox "Nama" [required, ref=e6]: Researcher QA
+- textbox "Handle Huruf kecil, angka, garis bawah, atau tanda hubung. Awali dengan huruf." [required, ref=e7]: researcher-qa
+- textbox "Karakter (soul)" [ref=e8]: Teliti, ringkas, dan selalu menyebutkan sumber.
+- textbox "Instruksi" [ref=e9]: Pisahkan fakta dari asumsi.
+- combobox "Model" [expanded=false, ref=e10]: Model uji Researcher
+  - option "Model uji Researcher" [selected, ref=e11]
+  - option "Model uji Writer" [ref=e12]
+- button "Arsipkan" [ref=e3]
+- button "Batal" [ref=e4]
+- button "Simpan agent" [ref=e5]
+- button "Tutup" [ref=e2]

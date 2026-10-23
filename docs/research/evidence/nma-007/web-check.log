@@ -1,0 +1,4 @@
+$ biome check apps/web
+Checked 196 files in 111ms. No fixes applied.
+$ bun --filter @ngertiin/web typecheck
+@ngertiin/web typecheck: Exited with code 0

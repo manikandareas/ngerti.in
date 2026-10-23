@@ -1,0 +1,24 @@
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+{
+  "config_revision_after_edit": "2",
+  "retry": {
+    "error": {
+      "code": "REVISION_CONFLICT",
+      "details": {}
+    }
+  },
+  "existing_native_run": {
+    "result": {
+      "agent_id": "df160feb-43f2-40c0-9d5f-279258ccdaba",
+      "config_revision": "1",
+      "context_generation": "1",
+      "error_code": null,
+      "run_id": "34a122ff-8b3f-568e-a9f7-f977fb4ff00e",
+      "schema_version": "nma.v1",
+      "status": "running",
+      "text": "",
+      "thread_id": "18c1fb63-2900-40b4-b86d-29c7f88e7c2a"
+    }
+  },
+  "reproduced": true
+}

@@ -1,0 +1,17 @@
+{
+  "runtime_request": {
+    "bytes": 264590,
+    "limit": 262144,
+    "error": "Separator is found, but chunk is longer than limit"
+  },
+  "agent_request": {
+    "bytes": 384540,
+    "limit": 262144,
+    "error": "Separator is found, but chunk is longer than limit"
+  },
+  "agent_list_response_lower_bound": {
+    "bytes": 19210654,
+    "limit": 16777216,
+    "error": "Separator is found, but chunk is longer than limit"
+  }
+}

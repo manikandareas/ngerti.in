@@ -1,0 +1,47 @@
+bun run check
+$ python3 scripts/check.py
+$ biome check apps/web
+Checked 196 files in 190ms. No fixes applied.
+$ bun --filter @ngertiin/web typecheck
+@ngertiin/web typecheck: Exited with code 0
+I001 [*] Import block is un-sorted or un-formatted
+  --> scripts/spikes/hermes_runtime/inventory.py:3:1
+   |
+ 1 |   """Record source provenance and installed distribution license metadata for this spike."""
+ 2 |
+ 3 | / from __future__ import annotations
+ 4 | |
+ 5 | | import argparse
+ 6 | | import ast
+ 7 | | import hashlib
+ 8 | | import json
+ 9 | | import platform
+10 | | from importlib import metadata
+11 | | from pathlib import Path
+12 | |
+13 | | import tomllib
+   | |______________^
+14 |
+15 |   REVISION = "7489b22af47ce91b366dde81d5831ea422577498"
+   |
+help: Organize imports
+   |
+9  | import platform
+10 + import tomllib
+11 | from importlib import metadata
+12 | from pathlib import Path
+   -
+   - import tomllib
+13 |
+   |
+
+Found 1 error.
+[*] 1 fixable with `--fix`.
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/scripts/check.py", line 46, in <module>
+    subprocess.run(command, cwd=ROOT, check=True)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['uv', 'run', '--project', 'apps/backend', 'ruff', 'check', 'apps/backend/src', 'apps/backend/migrations', 'scripts']' returned non-zero exit status 1.
+error: script "check" exited with code 1
+make: *** [check] Error 1

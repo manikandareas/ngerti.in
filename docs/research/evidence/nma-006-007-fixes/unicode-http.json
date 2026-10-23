@@ -1,0 +1,10 @@
+{
+  "characters_per_field": 16000,
+  "create_status": 200,
+  "fixture_archive_status": 200,
+  "oversized_retryable": false,
+  "oversized_status": 413,
+  "replay_status": 200,
+  "same_agent_id": true,
+  "unicode_roundtrip": true
+}

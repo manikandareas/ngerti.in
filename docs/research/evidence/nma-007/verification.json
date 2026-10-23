@@ -1,0 +1,101 @@
+{
+  "date": "2026-10-23",
+  "task": "NMA-007",
+  "status": "Review",
+  "dependency": {
+    "NMA-006": "Review: distribution clearance open"
+  },
+  "baseline_commit": "623f4fb60788790b0718c34870215781955ce26b",
+  "implementation_commit": null,
+  "production_deployed": false,
+  "checks": {
+    "engine_runtime": {
+      "passed": 14,
+      "failed": 0,
+      "platform": "macOS arm64",
+      "python": "3.14.9",
+      "sqlite": "3.53.1",
+      "journal_mode": "WAL",
+      "provider": "deterministic loopback OpenAI-compatible provider",
+      "command": "HERMES_SOURCE=\"$PWD/.dev/nma-001/source\" PYTHONPATH=\"$PWD/apps/engine/src\" .dev/nma-001/runtime/bin/python -m pytest apps/engine/tests -q"
+    },
+    "http_boundary": {
+      "passed": 4,
+      "command": "uv run --project apps/backend python -m unittest discover -s apps/backend/tests -v"
+    },
+    "web_lint": "passed",
+    "web_typecheck": "passed",
+    "web_build": "passed; existing third-party directive warnings",
+    "changed_python_lint_format": "passed",
+    "backend_mypy": "passed (200 source files)",
+    "full_make_check": "blocked by pre-existing I001 in scripts/spikes/hermes_runtime/inventory.py",
+    "browser": {
+      "real_clerk_auth": true,
+      "real_engine": true,
+      "disposable_partition": true,
+      "desktop_viewport": [
+        1440,
+        1000
+      ],
+      "mobile_viewport": [
+        390,
+        844
+      ],
+      "create_edit_reload": true,
+      "distinct_profile_and_model": true,
+      "same_identity_and_config_after_engine_restart": true,
+      "archive_restore": true,
+      "stale_revision_http": 409,
+      "unknown_agent_http": 404,
+      "owner_spoof_http": 422
+    }
+  },
+  "review": "author self-review",
+  "limitations": [
+    "NMA-006 dependency not Done",
+    "Full DM/group and scoped memory acceptance remains downstream",
+    "Restart-before-claim/tool and descendant fencing remain NMA-010/023",
+    "No Linux rerun, paid model, or production deployment for this slice"
+  ],
+  "evidence_sha256": {
+    "browser-api.json": "032cf3a3cc52672b5ba1c02396d0bb0a528ca2897dded84437ebea4f1f055bb1",
+    "archived.png": "eb02a5bebdab9086295257075c4990bdfa8a5bbf9ac141d546f240ac071c11d9",
+    "browser-after-restart.json": "032cf3a3cc52672b5ba1c02396d0bb0a528ca2897dded84437ebea4f1f055bb1",
+    "restored.txt": "ec8e717163311d4cb1bfbf8b31ae90a1485fb9d8c53bbbe90423c5549dc33cd2",
+    "archived.txt": "74b51af258a5083ae75aaa4d0d637695f3c8e52316401254e1b3263839e3f223",
+    "full-check-baseline-failure.log": "4211df05263d3f1ab0a4e14626553b70a14f9e1e869e1693d64640b37cb69abf",
+    "web-check.log": "1b46a8e29a86d5a9180cc57767bd347f3b397797c33cf379a60757f13f21c3a5",
+    "desktop-editor.png": "a81f7aa0071c3428deaae94abe909aac4d9980606673e65e319fe53c8976c75a",
+    "mobile-editor.png": "2e0a102afd0a1eb955276184ead3423dbf24470f099a75df1ba3c5499f861bf5",
+    "mypy.log": "9eb7839fca713ce57122ddc97fcef4c7dfd9b2387720a0dd5092e67e66450689",
+    "ruff.log": "84cf8adcfacda66bbdcb0f35c0454df1a5c114f6b5e875330cbdf8dddf32664c",
+    "runtime-tests.log": "00afb756ea0bf8e7d10770d2b0b4856a972274438c5c57d2d742e2e992b77515",
+    "mobile-editor.txt": "e77b07136efa2a562a834cf463a5c56e3f9c6b5a1da1e4df16db983c92c8e21a",
+    "http-tests.log": "becf73adb11cb3b42d3cfad0621c15e4b4c7a30e1d21b7104b5569b63f266e3e",
+    "build.log": "9223121f8deb678ebb26431339934f18324f9fb217ba6969230f2fb5cc0592f8"
+  },
+  "notion_readback": {
+    "status": "Review",
+    "checked_acceptance_items": 4,
+    "full_report_verified": true
+  },
+  "subsequent_review": {
+    "report": "../../nma-006-007-review.md",
+    "status": "Review",
+    "p1": "Pending native admission retry fails after configuration revision changes",
+    "p2": "Unicode request and maximum-list response exceed transport byte limits",
+    "linux_runtime_tests": "14/14 passed during subsequent review",
+    "run_revision_acceptance": "reopened"
+  },
+  "fix_verification": {
+    "report": "../../nma-006-007-fixes.md",
+    "runtime_macos_passed": 17,
+    "runtime_linux_passed": 17,
+    "http_passed": 6,
+    "full_make_check": "passed",
+    "p1": "fixed",
+    "p2": "fixed",
+    "run_revision_acceptance": "restored",
+    "evidence": "../nma-006-007-fixes/"
+  }
+}

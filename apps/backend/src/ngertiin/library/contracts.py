@@ -29,6 +29,9 @@ class SearchInput(BaseModel):
     model_config = ConfigDict(extra="forbid")
     query: str = Field(default="", max_length=300)
     kinds: list[Kind] = Field(default_factory=list, max_length=6)
+    category: (
+        Literal["artifacts", "documents", "web", "images", "videos", "audio", "files"] | None
+    ) = None
     since: datetime | None = None
     until: datetime | None = None
     sort: Literal["relevance", "recent", "title"] = "relevance"

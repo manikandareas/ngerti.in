@@ -54,6 +54,33 @@ async def scenarios():
         task = await fixture.run(a, task)
         check("controlled_task_published", task["status"] == "succeeded")
         result_id = task["result_id"]
+        documents = await find(a, category="documents")
+        check(
+            "documents_include_uploaded_text",
+            any(item["ref"]["id"] == str(file_id) for item in documents["items"]),
+        )
+        artifacts = await find(a, category="artifacts")
+        check(
+            "artifacts_only_results",
+            bool(artifacts["items"])
+            and all(item["ref"]["kind"] == "result" for item in artifacts["items"]),
+        )
+        uploaded_files = await find(a, category="files")
+        check(
+            "files_only_uploads",
+            bool(uploaded_files["items"])
+            and all(item["ref"]["kind"] == "file" for item in uploaded_files["items"]),
+        )
+        for category in ("web", "images", "videos", "audio"):
+            check(
+                f"{category}_excludes_text",
+                not (await find(a, category=category))["items"],
+            )
+        check(
+            "category_owner_isolation",
+            not (await find(b, query="Kuncikonten039", category="documents"))["items"],
+        )
+
         result_ref = ResourceRef(kind="result", id=result_id, revision=1)
         gid, sid = uuid4(), uuid4()
         goal = GoalSpec(
@@ -378,8 +405,8 @@ async def scenarios():
         from pydantic import SecretStr
 
         settings = get_settings()
-        original_key = settings.daytona_api_key
-        settings.daytona_api_key = SecretStr("")
+        original_key = settings.e2b_api_key
+        settings.e2b_api_key = SecretStr("")
         try:
             check(
                 "disabled_runtime_not_offered",
@@ -390,7 +417,7 @@ async def scenarios():
                 ),
             )
         finally:
-            settings.daytona_api_key = original_key
+            settings.e2b_api_key = original_key
         # Exercise actual HTTP authentication and request validation.
         from ngertiin.accounts.auth import current_account
         from ngertiin.api.app import app

@@ -39,6 +39,27 @@ async def search(owner, spec: SearchInput):
       replace(title || ' ' || left(body,120000),'-','')) AS document,
       plainto_tsquery('simple',%(q)s) AS terms FROM resources WHERE owner_id=%(owner)s
       AND (cardinality(%(kinds)s::text[])=0 OR kind=ANY(%(kinds)s::text[]))
+      AND (%(category)s::text IS NULL
+        OR (%(category)s='files' AND kind='file')
+        OR (%(category)s='artifacts' AND kind='result')
+        OR EXISTS (
+          SELECT 1 FROM file_revisions fr JOIN product_files pf ON pf.id=fr.file_id
+          WHERE pf.owner_id=%(owner)s AND pf.deleted_at IS NULL AND fr.status='ready'
+          AND ((kind='file' AND fr.id=resources.revision_id)
+            OR (kind='result' AND EXISTS (
+              SELECT 1 FROM result_revisions rv,
+              jsonb_array_elements(rv.manifest->'files') entry
+              WHERE rv.result_id=resources.id AND rv.revision=resources.revision
+              AND entry->>'revision_id'=fr.id::text)))
+          AND CASE %(category)s
+            WHEN 'images' THEN fr.content_type LIKE 'image/%%'
+            WHEN 'videos' THEN fr.content_type LIKE 'video/%%'
+            WHEN 'audio' THEN fr.content_type LIKE 'audio/%%'
+            WHEN 'web' THEN fr.content_type IN ('text/html','application/xhtml+xml')
+            WHEN 'documents' THEN fr.content_type NOT LIKE 'image/%%'
+              AND fr.content_type NOT LIKE 'video/%%' AND fr.content_type NOT LIKE 'audio/%%'
+              AND fr.content_type NOT IN ('text/html','application/xhtml+xml')
+            ELSE false END))
       AND (%(since)s::timestamptz IS NULL OR updated_at>=%(since)s)
       AND (%(until)s::timestamptz IS NULL OR updated_at<%(until)s)
     ) SELECT kind,id,revision,revision_id,thread_id,title,status,updated_at,
@@ -64,6 +85,7 @@ async def search(owner, spec: SearchInput):
                         "q": spec.query,
                         "owner": owner,
                         "kinds": spec.kinds,
+                        "category": spec.category,
                         "since": spec.since,
                         "until": spec.until,
                         "limit": spec.limit + 1,

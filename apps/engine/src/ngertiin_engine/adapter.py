@@ -6,6 +6,7 @@ from uuid import NAMESPACE_URL, uuid5
 
 from ngertiin_engine.agents import Agents, compose
 from ngertiin_engine.capabilities import FIELDS, authorize, resolve
+from ngertiin_engine.context import Context
 from ngertiin_engine.contracts import EngineError, canonical, counter, digest, uuid
 from ngertiin_engine.store import Store
 from ngertiin_engine.threads import Threads
@@ -49,6 +50,7 @@ class Adapter:
         self.store = Store(authority, owner)
         self.agents = Agents(self.store, models or {})
         self.threads = Threads(self.store, self.agents)
+        self.context = Context(self.store, self.threads)
         self.actor = Principal(
             "nma:" + owner,
             authority.profile_id,
@@ -224,6 +226,23 @@ class Adapter:
             frozen["nma_persona"] = True
         if "nma_capabilities" in config:
             frozen["nma_capabilities"] = config["nma_capabilities"]
+        registered = self.store.write(
+            lambda conn: conn.execute(
+                "SELECT 1 FROM nma_threads WHERE owner_id=? AND thread_id=?",
+                (self.owner, config["thread_id"]),
+            ).fetchone()
+        )
+        if registered:
+            params["ignore_rules"] = True
+            frozen["nma_persona"] = True
+            frozen["nma_context"] = {
+                field: config[field]
+                for field in (
+                    "agent_id",
+                    "thread_id",
+                    "context_generation",
+                )
+            }
         policy = build_policy(
             params, frozen, private_secrets={}, profile_terminal=False
         )
@@ -282,6 +301,15 @@ class Adapter:
 
     async def _dispatch(self, body):
         kind, payload = body["type"], body["payload"]
+        if kind in {"memory.create", "memory.delete", "scope.grant", "scope.revoke"}:
+            result = self.context.mutate(body)
+            if kind in {"memory.delete", "scope.revoke"}:
+                await self.cancel_stale_contexts()
+            return result
+        if kind == "context.read":
+            if body["expected_revision"] is not None:
+                raise EngineError("INVALID_REQUEST")
+            return self.context.read(payload)
         if kind == "thread.create":
             return self.threads.create(body)
         if kind == "thread.list":
@@ -455,11 +483,37 @@ class Adapter:
         return bool(
             self.store.write(
                 lambda conn: conn.execute(
-                    "SELECT 1 FROM nma_agent_run_fences WHERE owner_id=? AND run_id=?",
-                    (self.owner, run_id),
+                    "SELECT 1 FROM nma_agent_run_fences WHERE owner_id=? AND run_id=? UNION ALL SELECT 1 FROM nma_context_run_fences WHERE owner_id=? AND run_id=?",
+                    (self.owner, run_id, self.owner, run_id),
                 ).fetchone()
             )
         )
+
+    async def cancel_stale_contexts(self):
+        rows = self.store.write(
+            lambda conn: conn.execute(
+                "SELECT r.run_id,r.native_admission_id,b.native_session_id FROM nma_adapter_runs r JOIN nma_adapter_bindings b ON b.owner_id=r.owner_id AND b.binding_id=r.binding_id WHERE r.owner_id=? AND r.native_admission_id IS NOT NULL",
+                (self.owner,),
+            ).fetchall()
+        )
+        for run_id, admission_id, session_id in rows:
+            if self.fenced(run_id):
+                await self.cancel_admission(session_id, admission_id)
+
+    async def cancel_admission(self, session_id, admission_id):
+        from gateway.session_contract import SessionRef
+
+        ref = SessionRef(self.authority.profile_id, session_id)
+        await self.authority.resolve(self.actor, ref)
+        receipt = await self.authority.receipt(self.actor, ref, admission_id)
+        if receipt.status == "queued":
+            claimed = await self.authority.cancel_or_claimed(
+                self.actor, ref, admission_id
+            )
+            if claimed:
+                await self.interrupt(ref, claimed["generation"])
+        elif receipt.status == "started":
+            await self.interrupt(ref, receipt.execution_generation)
 
     async def recover_agent_cancellations(self):
         rows = self.store.write(
@@ -473,8 +527,6 @@ class Adapter:
 
     async def cancel_agent(self, agent_id):
         """Cancel native admissions after the durable lifecycle fence commits."""
-        from gateway.session_contract import SessionRef
-
         rows = self.store.write(
             lambda conn: conn.execute(
                 "SELECT r.native_admission_id,b.native_session_id,b.config FROM nma_adapter_runs r JOIN nma_adapter_bindings b ON b.owner_id=r.owner_id AND b.binding_id=r.binding_id WHERE r.owner_id=? AND r.run_id IN (SELECT run_id FROM nma_agent_run_fences WHERE owner_id=r.owner_id)",
@@ -484,17 +536,7 @@ class Adapter:
         for admission_id, session_id, raw in rows:
             if json.loads(raw)["agent_id"] != agent_id or not admission_id:
                 continue
-            ref = SessionRef(self.authority.profile_id, session_id)
-            await self.authority.resolve(self.actor, ref)
-            receipt = await self.authority.receipt(self.actor, ref, admission_id)
-            if receipt.status == "queued":
-                claimed = await self.authority.cancel_or_claimed(
-                    self.actor, ref, admission_id
-                )
-                if claimed:
-                    await self.interrupt(ref, claimed["generation"])
-            elif receipt.status == "started":
-                await self.interrupt(ref, receipt.execution_generation)
+            await self.cancel_admission(session_id, admission_id)
 
     async def interrupt(self, ref, generation):
         from gateway.session_managed_worker import interrupt_managed

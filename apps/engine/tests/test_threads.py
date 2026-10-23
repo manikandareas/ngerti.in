@@ -164,9 +164,17 @@ def test_thread_additive_migration_from_agent_schema(runtime):
     start.current.kill()
     start.current.wait(timeout=10)
     with sqlite3.connect(root / "state/state.db") as db:
+        for table in (
+            "nma_context_run_fences",
+            "nma_context_receipts",
+            "nma_scope_grants",
+            "nma_memory_entries",
+            "nma_messages",
+        ):
+            db.execute(f"DROP TABLE {table}")
         db.execute("DROP TABLE nma_memberships")
         db.execute("DROP TABLE nma_threads")
-        db.execute("DELETE FROM nma_schema_migrations WHERE version=3")
+        db.execute("DELETE FROM nma_schema_migrations WHERE version>=3")
         db.execute("UPDATE nma_partition SET schema_version=2")
     start()
     assert (

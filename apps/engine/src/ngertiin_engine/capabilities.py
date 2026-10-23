@@ -162,7 +162,10 @@ def install_dispatch_guard(database, owner):
         )
         if marker:
             try:
+                from ngertiin_engine.context import authorize_context
+
                 authorize(marker, database, owner)
+                authorize_context(policy, database, owner)
                 allowed = {
                     name
                     for toolset in marker["toolsets"]

@@ -8,6 +8,8 @@ import hashlib
 import json
 
 from ngertiin_engine.agents import DDL as AGENT_DDL
+from ngertiin_engine.context import DDL as CONTEXT_DDL
+from ngertiin_engine.context import fence_context_runs
 from ngertiin_engine.contracts import EngineError, canonical, digest
 from ngertiin_engine.threads import DDL as THREAD_DDL
 
@@ -22,6 +24,7 @@ DDL = (
 )
 AGENT_CHECKSUM = hashlib.sha256("\n".join(AGENT_DDL).encode()).hexdigest()
 CHECKSUM = hashlib.sha256("\n".join(DDL).encode()).hexdigest()
+CONTEXT_CHECKSUM = hashlib.sha256("\n".join(CONTEXT_DDL).encode()).hexdigest()
 THREAD_CHECKSUM = hashlib.sha256("\n".join(THREAD_DDL).encode()).hexdigest()
 
 
@@ -72,7 +75,7 @@ class Store:
                 "SELECT checksum FROM nma_schema_migrations WHERE owner_id=? AND version=1",
                 (self.owner,),
             ).fetchone()
-            if rows[0][2] not in (1, 2, 3) or not saved or saved[0] != CHECKSUM:
+            if rows[0][2] not in (1, 2, 3, 4) or not saved or saved[0] != CHECKSUM:
                 raise EngineError("UNSUPPORTED_SCHEMA")
             if rows[0][1] > self.authority.epoch:
                 raise EngineError("AUTHORITY_LOST")
@@ -113,6 +116,31 @@ class Store:
                 (self.owner,),
             ).fetchone()
             if not saved or saved[0] != THREAD_CHECKSUM:
+                raise EngineError("UNSUPPORTED_SCHEMA")
+
+        version = conn.execute("SELECT schema_version FROM nma_partition").fetchone()[0]
+        if version == 3:
+            for statement in CONTEXT_DDL:
+                conn.execute(statement)
+            conn.execute(
+                "INSERT INTO nma_schema_migrations(owner_id,version,checksum) VALUES (?,4,?)",
+                (self.owner, CONTEXT_CHECKSUM),
+            )
+            for row in conn.execute(
+                "SELECT thread_id FROM nma_threads WHERE owner_id=?", (self.owner,)
+            ).fetchall():
+                fence_context_runs(conn, self.owner, row[0])
+            # Existing sessions lack the context marker; require fresh scoped bindings.
+            conn.execute(
+                "UPDATE nma_threads SET context_generation=context_generation+1,revision=revision+1"
+            )
+            conn.execute("UPDATE nma_partition SET schema_version=4")
+        else:
+            saved = conn.execute(
+                "SELECT checksum FROM nma_schema_migrations WHERE owner_id=? AND version=4",
+                (self.owner,),
+            ).fetchone()
+            if not saved or saved[0] != CONTEXT_CHECKSUM:
                 raise EngineError("UNSUPPORTED_SCHEMA")
 
     def receipt(self, body):

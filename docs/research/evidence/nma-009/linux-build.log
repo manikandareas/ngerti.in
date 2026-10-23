@@ -1,0 +1,96 @@
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 2.32kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.14.3-slim-bookworm@sha256:f21c0d5a44c56805654c15abccc1b2fd576c8d93aca0a3f74b4aba2dc92510e2
+#2 DONE 0.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 91B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 DONE 0.0s
+
+#5 [runtime  1/14] FROM docker.io/library/python:3.14.3-slim-bookworm@sha256:f21c0d5a44c56805654c15abccc1b2fd576c8d93aca0a3f74b4aba2dc92510e2
+#5 resolve docker.io/library/python:3.14.3-slim-bookworm@sha256:f21c0d5a44c56805654c15abccc1b2fd576c8d93aca0a3f74b4aba2dc92510e2 0.0s done
+#5 DONE 0.0s
+
+#4 [internal] load build context
+#4 transferring context: 60.17kB 0.0s done
+#4 DONE 0.0s
+
+#6 [runtime  5/14] RUN --mount=type=bind,source=.runtime/source.tar.gz,target=/tmp/hermes.tar.gz python /tmp/fetch_runtime.py /tmp/hermes.tar.gz --extract /opt/hermes
+#6 CACHED
+
+#7 [runtime  2/14] RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates git libatomic1 && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [runtime  3/14] WORKDIR /opt/hermes
+#8 CACHED
+
+#9 [runtime  7/14] COPY src/ngertiin_engine/runtime-pin.json /opt/ngertiin/src/ngertiin_engine/runtime-pin.json
+#9 CACHED
+
+#10 [runtime  4/14] COPY fetch_runtime.py /tmp/fetch_runtime.py
+#10 CACHED
+
+#11 [runtime  6/14] COPY build_runtime.py /opt/ngertiin/build_runtime.py
+#11 CACHED
+
+#12 [runtime  8/14] RUN python /opt/ngertiin/build_runtime.py --source /opt/hermes --out /opt/runtime && rm -rf /tmp/build-home /root/.cache
+#12 CACHED
+
+#13 [runtime  9/14] COPY src /opt/ngertiin/src
+#13 DONE 0.1s
+
+#14 [runtime 10/14] COPY pyproject.toml /opt/ngertiin/pyproject.toml
+#14 DONE 0.1s
+
+#15 [runtime 11/14] COPY collect_inventory.py /opt/ngertiin/collect_inventory.py
+#15 DONE 0.1s
+
+#16 [runtime 12/14] COPY notices /opt/ngertiin/notices
+#16 DONE 0.1s
+
+#17 [runtime 13/14] RUN /opt/runtime/bin/python /opt/ngertiin/collect_inventory.py --verify-foundation > /opt/ngertiin/runtime-inventory.json
+#17 DONE 0.9s
+
+#18 [runtime 14/14] RUN useradd --uid 10001 --create-home engine && mkdir /state && chown engine:engine /state
+#18 DONE 0.3s
+
+#19 [verify 1/4] RUN HERMES_HOME=/tmp/build-home python /opt/ngertiin/build_runtime.py --source /opt/hermes --out /opt/test-runtime --tests && rm -rf /tmp/build-home /root/.cache
+#19 0.300 Preparing the isolated Hermes runtime…
+#19 0.686   → Installing Python dependencies…
+#19 1.204   ✓ Installing Python dependencies
+#19 4.145   → Installing Python packages…
+#19 31.51   ✓ Installing Python packages
+#19 31.61 /opt/test-runtime/bin/python
+#19 DONE 32.4s
+
+#20 [verify 2/4] COPY tests /opt/ngertiin/tests
+#20 DONE 0.3s
+
+#21 [verify 3/4] RUN NMA_TEST_RUNTIME_PYTHON=/opt/runtime/bin/python /opt/test-runtime/bin/python -m pytest /opt/ngertiin/tests -q -s > /tmp/runtime-tests.log || (cat /tmp/runtime-tests.log && exit 1)
+#21 DONE 161.0s
+
+#22 [verify 4/4] RUN /opt/test-runtime/bin/python /opt/ngertiin/collect_inventory.py --verify-foundation > /tmp/test-inventory.json
+#22 DONE 0.8s
+
+#23 [evidence 1/4] COPY --from=verify /tmp/runtime-tests.log /runtime-tests.log
+#23 DONE 0.1s
+
+#24 [evidence 2/4] COPY --from=verify /opt/ngertiin/runtime-inventory.json /runtime-inventory.json
+#24 DONE 0.1s
+
+#25 [evidence 3/4] COPY --from=verify /tmp/test-inventory.json /test-inventory.json
+#25 DONE 0.1s
+
+#26 [evidence 4/4] COPY --from=verify /opt/runtime/foundation-profile.json /foundation-profile.json
+#26 DONE 0.1s
+
+#27 exporting to client directory
+#27 copying files 66.69kB 0.0s done
+#27 DONE 0.0s

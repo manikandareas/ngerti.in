@@ -1,0 +1,69 @@
+{
+  "task": "NMA-009",
+  "source": "https://app.notion.com/p/402abdd61873812aa2d9fae23a3f6399",
+  "date": "2026-10-24",
+  "dependency": {
+    "NMA-007": "Done, read live"
+  },
+  "review": "Author self-review; no delegated reviewer",
+  "provider": "Deterministic loopback HTTP model; real pinned Hermes gateway and SQLite",
+  "commands": [
+    "HERMES_SOURCE=$PWD/.dev/nma-001/source PYTHONPATH=$PWD/apps/engine/src NMA_TEST_RUNTIME_PYTHON=$PWD/.dev/nma-006-closure/production/bin/python .dev/nma-006-closure/runtime/bin/python -m pytest apps/engine/tests -q -s",
+    "docker build --target evidence --output type=local,dest=.dev/nma-009-linux apps/engine",
+    "make check",
+    "uv run --project apps/backend ruff check apps/engine/src apps/engine/tests",
+    "uv run --project apps/backend ruff format --check apps/engine/src apps/engine/tests",
+    "make docs-check",
+    "git diff --check"
+  ],
+  "observed_results": {
+    "macos_initial": "29 passed, 75.15s",
+    "final_context_regressions": "5 passed, 18.18s",
+    "make_check": "passed",
+    "engine_ruff": "passed",
+    "macos_final": "30 passed, 86.56s",
+    "docs_check": "passed",
+    "linux_final": "30 passed, 1 non-failing pytest-cache permission warning, 159.31s; Linux aarch64 UID 10001",
+    "diff_check": "passed"
+  },
+  "source_sha256": {
+    "apps/engine/src/ngertiin_engine/redaction.py": "a6cab4afc0cc6389ad20f1ca77428681a816ea06c59938dfb12bd412782abc6e",
+    "apps/engine/src/ngertiin_engine/store.py": "71eb3a7659482b9662beff9cce05b35887aa952c012c6423e6532021954ada4b",
+    "apps/engine/src/ngertiin_engine/service.py": "c6a6fb839bc82b03e8602af69c2558dc848805353af3a3722a565f0e3a8a9d4b",
+    "apps/engine/src/ngertiin_engine/transcript.py": "80d547c2307ae3a7b46caae40203b5d5d22b523161f4aeb93b4c45e3de075de1",
+    "apps/engine/src/ngertiin_engine/adapter.py": "e236292031b195bbc69659086877257407052fd1d008a850cd1af970e4de74d0",
+    "apps/engine/src/ngertiin_engine/__init__.py": "4064e84d1acb1ffa1e8097c5af6566b57929ce94cb0c67c80b64945dec02770f",
+    "apps/engine/src/ngertiin_engine/runtime.py": "fa3cca5ac70ea64a65706bd63bfe6f9e4cff2b7947598bc2c152d0f535cdacab",
+    "apps/engine/src/ngertiin_engine/agents.py": "9164b8057694a3fc9ca0aab5f0aeb3164351e99639241a2e9cf75cacfd8a6355",
+    "apps/engine/src/ngertiin_engine/threads.py": "eb4343071be01bcd501d265f19fd9ea65fc7ee1698974d8030e85ab75926869a",
+    "apps/engine/src/ngertiin_engine/context.py": "b28b3518721aab0d93c7a3024c64fddec747431fcd20d0f0b1b7e237e15f9a74",
+    "apps/engine/src/ngertiin_engine/capabilities.py": "093c0264bf5de56ece9381f3f5268e2261ab6da03bcd40cfe335c71e271f5ed3",
+    "apps/engine/src/ngertiin_engine/contracts.py": "3843a4a96fd0f49192d5976bdd44d56bec80fadf58a870fab9143ada61ef548a",
+    "apps/engine/src/ngertiin_engine/runtime-pin.json": "d820672ab99f27c6f3896466ef10feecc804ec33e511030e1e899a233a1c17b4",
+    "apps/engine/tests/test_capabilities.py": "631fc57fcdbc947a46bcfc4bea5e9918463141163be71fb30f8dbae59e2ed71b",
+    "apps/engine/tests/test_runtime.py": "6913b41374fcdf7bc0f86de5fdc0c6578391991a23b57f01680cdead801ed8c2",
+    "apps/engine/tests/test_threads.py": "4aefc7011a49a3ec007b2c66fc3913ae9afd5eaeb6a8db48aa825065555620d5",
+    "apps/engine/tests/test_context.py": "b7224f8b4c4a3d326f227786fbe1c185c4c96337eb632bb84f65d595ae52564a"
+  },
+  "reference_sha256": {
+    "nakama-compose.ts@ac0643f8196fdf9133e66f5a13eef86103c45d0c": "d103c0fb232ab5bf6307a440391a6b9e99aaa17d1716b40b1c9c06337eeb6a38"
+  },
+  "limitations": [
+    "No public memory UI or model-callable scope mutations",
+    "Finalized text context, not complete DM/group streaming delivery",
+    "No production migration, deployment, paid provider or OS tenant-sandbox claim",
+    "Complete scoped-set retrieval; large-history scaling is not proven"
+  ],
+  "evidence_sha256": {
+    "docs/research/evidence/nma-009/docs-check.log": "7809ca6260677f488ca2eeecc2330d55c80bb8b56e6f50595d627dd6f06f651b",
+    "docs/research/evidence/nma-009/foundation-profile.json": "6687c56dc015208e26f551fbdd1028119a9c5b77883ebecfb3a09e0d044e7145",
+    "docs/research/evidence/nma-009/engine-ruff.log": "a1810519e3303d83feed4a24a60e2d6622251eaa15778ae20bce4cd312511362",
+    "docs/research/evidence/nma-009/macos-initial.log": "6eb0be4c3f073a4b2f54e53daa699296bf26b3304ab2020acf59a0aed4717251",
+    "docs/research/evidence/nma-009/linux-initial.log": "6375b341ea0bd147f7767bb6aaaeddc7c41b234e9a8c343934fdc0a374058249",
+    "docs/research/evidence/nma-009/macos-final.log": "7fc24b89b98cae4d9c9ef70e0b84c54127101a92113598ee598cb7e9dcb258c7",
+    "docs/research/evidence/nma-009/check.log": "3e6d73dca3bb9425fe6717785a14ad2972732dd8d13270040ec26ea5c03c4f6c",
+    "docs/research/evidence/nma-009/linux-build.log": "02f0bfc98339c186ee578e431e8f7e20b6bcf6ed60ac62b4fd9e83b46966a07b",
+    "docs/research/evidence/nma-009/context-final.log": "4f73960fb5e1d099979e988fe4b89a4da8845c7ea8d8f9311a01108292b91784",
+    "docs/research/evidence/nma-009/linux-final.log": "82420219a6a7e59f12ca6945af47cf6b02dde292f4d3892f8040e0e0101b3d36"
+  }
+}

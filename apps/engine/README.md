@@ -327,3 +327,79 @@ verification databases containing synthetic leaked fixture values are historical
 reproduction artifacts, not production partitions. No real credential was used
 in the regression. See the closure report for the current support matrix and
 initial-discovery/restart checks covering SQLite/WAL, logs and provider requests.
+
+## Scoped memory and transcript context (NMA-009)
+
+Migration 4 adds `nma_memory_entries`, `nma_scope_grants`, finalized text
+`nma_messages`, native-result reconciliation receipts and context run fences.
+Migration 1–3 checksums and all existing/native records remain unchanged.
+`agent_private` memory is available only in that agent's DMs. `thread_shared`
+memory and transcript are available only to active members of their exact thread.
+Another DM of the same agent shares its private memory, not its transcript or
+thread memory. Groups never implicitly read agent-private memory or profile files.
+
+The private signed owner service adds these commands (not browser commands or
+model-callable tools):
+
+- `context.read`: `agent_id`, `thread_id`; returns authorized memories, selected
+  grants and finalized transcript with author/run/source identity. The requesting
+  owner can inspect their own scopes; execution always uses the server-bound scope.
+- `memory.create`: `scope_kind`, nullable `agent_id`, nullable `thread_id`,
+  `content`, `source_message_ids`; requires 1–32 existing source messages. Private
+  memory requires only `agent_id` and sources in that agent's DMs. Shared memory
+  requires only `thread_id` and sources from that exact thread. Text is 1–16,000
+  characters. It does not silently promote facts into reusable persona config.
+- `memory.delete`: `memory_id` and the envelope's `expected_revision`; retains a
+  tombstone and advances revision/generation.
+- `scope.grant`: `source_kind` (`memory` or `message`), `source_id`, decimal-string
+  `source_revision`, `target_thread_id`, `source_message_id`, and `reason`.
+  This is an explicit authenticated owner instruction selecting one source, not
+  an agent authorization. The instruction source must be an existing user message;
+  an assistant message cannot authorize transfer. The command is the trusted
+  owner's authorization; no model interprets intent or self-grants access here.
+  Only selected content and provenance identifiers enter the target, not the
+  source conversation. Artifact grants remain the artifact integration slice.
+- `scope.revoke`: `grant_id` and `expected_revision`; retains provenance and a
+  revocation tombstone. Creates/grants require a null expected revision.
+
+Mutation receipts, errors and same-command payload conflicts survive restart.
+General events contain command identity, not private memory text. Native settled
+results reconcile once into owner/thread-bound immutable text messages; their
+source IDs are stable across retries/restart. Native execution is never replayed
+by this reconciliation. This is finalized-text context, not the full durable
+streaming/multi-author delivery protocol owned by NMA-010/011/017.
+
+The execution hook rechecks membership and context generation, then hydrates only
+that thread's current-generation finalized text plus authorized memory/grants.
+Config changes retain authorized thread history. Native profile-wide rules and
+memory loading remain disabled through the pinned `ignore_rules` path. Memory is
+resolved at execution, not copied into immutable agent config. The final tool
+dispatch also checks context generation. No new scheduler or initiative policy
+is introduced.
+
+Deleting memory or revoking a grant advances affected thread context generations,
+atomically fences unfinished runs and requests native cancellation. Startup
+redelivers those cancellations. Old-context output/events are suppressed for
+fenced work; already completed results retain their original status. A new binding
+starts from current-generation text, so stale context cannot return through a
+cached session. Earlier transcript remains owner-readable as historical evidence;
+revocation is not deletion of content already shared or delivered. Previously
+executed external effects cannot be undone. Native historical messages remain in
+the owner volume, which is not an agent-accessible file capability.
+
+Before upgrade, stop ingress and the owner process, then back up the complete
+state volume, private catalog/credential references and workspaces consistently.
+Migration 4 invalidates existing product-thread sessions by advancing their
+context generations and fencing unfinished work; old bindings and native history
+are retained. Clients must obtain the current thread generation for fresh work.
+Do not resume an older-generation pending run under a new command ID. The engine
+rejects unknown or altered migration checksums before native startup. Rollback
+requires fencing the new owner and restoring the complete schema-3 backup into an
+isolated partition; older binaries reject schema 4. No production migration was
+performed for this implementation.
+
+Foundation retrieval returns the complete authorized finalized-text set; semantic
+ranking, large-history pagination/compaction, automatic memory extraction, public
+memory UI, model responsibility tools and artifact sharing are not claimed by
+this scope slice. No live provider or OS/tenant sandbox proof is implied by the
+loopback model tests. See [verification and provenance](../../docs/research/nma-009-scoped-context.md).

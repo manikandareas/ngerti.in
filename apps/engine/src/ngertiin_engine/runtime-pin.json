@@ -23,7 +23,11 @@
     "gateway/run_turn_runner.py": "e77b854e15380aed581dc932ebd33cf8b308c0aa54a98c8c8110437a63ef1db1",
     "model_tools.py": "139e562d832636d25537610d44b800dd0714d803efa7398c701857c1e541d65b",
     "tools/registry.py": "0dd8939f3e102679a8236ab688653a906f3914ce9921000df13ef7a9b240d36c",
-    "tools/mcp_tool_registration.py": "ee1ca1f86cef125e1da1c970c8d52008e86c939ee06a48007798533e5adaf04e"
+    "tools/mcp_tool_registration.py": "ee1ca1f86cef125e1da1c970c8d52008e86c939ee06a48007798533e5adaf04e",
+    "gateway/session_results.py": "89657e85da43998c3b298eb071eb2486621d458bf0c8b348eb3484cffb368346",
+    "hermes_state_terminal.py": "8aa9e944badb01960d2c754821acd0734088f08a263ed1baac00cacc33c8e7d2",
+    "hermes_state_keys.py": "46a44bcc9a82552c606fc0eaec275aac76bfe3c5523d7793218377d15cccc676",
+    "gateway/session_local_recovery.py": "28b238a9c23df0b4f0c66f32dab74ab8a9427627004ba5926424e888b8ae1b05"
   },
   "source_patches": [],
   "integration_seams": [

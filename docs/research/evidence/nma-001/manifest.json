@@ -1,0 +1,115 @@
+{
+  "ticket": "NMA-001",
+  "notion_url": "https://app.notion.com/p/402abdd61873811295d3fddfc040d720",
+  "upstream_revision": "7489b22af47ce91b366dde81d5831ea422577498",
+  "ngertiin_base_commit": "9300d56",
+  "evidence_date": "2026-10-23",
+  "review": "Author self-review of acceptance, source hashes, logs, runtime gaps and credential scan; no independent review claimed",
+  "files": [
+    {
+      "path": "docs/research/nma-001-hermes-runtime-audit.md",
+      "sha256": "68d176d9da4166c89a6a041d55a78dd1cb3e5a8aac72b13a954afad351d3be2c",
+      "bytes": 16503
+    },
+    {
+      "path": "scripts/spikes/hermes_runtime/README.md",
+      "sha256": "caebc490439a6105b8bbd9725b3b223f050374bc341b3cea1dcf15d2d68d28f4",
+      "bytes": 4258
+    },
+    {
+      "path": "scripts/spikes/hermes_runtime/inventory.py",
+      "sha256": "501ce44bd98c986af91f61f95fac2e0cad623715a72459a467b4d2a72e598d32",
+      "bytes": 6210
+    },
+    {
+      "path": "scripts/spikes/hermes_runtime/probe.py",
+      "sha256": "11c1047b99ea3d625a480d6447fb4bd7fe0153cee18f961cdfaddf66b9870a6f",
+      "bytes": 10243
+    },
+    {
+      "path": "scripts/spikes/hermes_runtime/run_tests.sh",
+      "sha256": "b4f1f30ea367568e07a9aedf81d3e0ff42d5e460ec48a2040ef74b0134426192",
+      "bytes": 774
+    },
+    {
+      "path": "scripts/spikes/hermes_runtime/setup.sh",
+      "sha256": "a63c0e7014a07981c0f05b3e678c290bbcb493d22ebe4da14aae89a7684983c2",
+      "bytes": 1533
+    },
+    {
+      "path": "docs/research/evidence/nma-001/HERMES-LICENSE.txt",
+      "sha256": "821556e6336796450ab852d375117b48a4887e71d255794fd6318d99982a5ab6",
+      "bytes": 1070
+    },
+    {
+      "path": "docs/research/evidence/nma-001/first-researcher.log",
+      "sha256": "bd3b465ee583e882044b4f8550c50b80d6b759add946c3d8644a84cddb78821b",
+      "bytes": 7303
+    },
+    {
+      "path": "docs/research/evidence/nma-001/first-transcript.json",
+      "sha256": "2766c69e7f3e5841ee4ec47dd44873e4c93ec7c6701ec88014735ab471278f7d",
+      "bytes": 5484
+    },
+    {
+      "path": "docs/research/evidence/nma-001/first-writer.log",
+      "sha256": "67addea8047cb1729a228e0ade9f0b0f9ebd58e453d18cb5a354531340cf85d0",
+      "bytes": 2039
+    },
+    {
+      "path": "docs/research/evidence/nma-001/fleet-report.md",
+      "sha256": "1c7a5805c3588ae49a5bcfdb1ae65e34bc81afd9d743e3a862c338861a95c681",
+      "bytes": 306
+    },
+    {
+      "path": "docs/research/evidence/nma-001/inventory.json",
+      "sha256": "f42f7af78ba03950b0dd3c0c5d117ef23a5e88ba569e0708eb7957d37dcb8484",
+      "bytes": 135425
+    },
+    {
+      "path": "docs/research/evidence/nma-001/live-result.json",
+      "sha256": "27de8f6c72da4daf79aaffbf92df55afbc2b7b0f11273783fdd1f103d7a3acfd",
+      "bytes": 1544
+    },
+    {
+      "path": "docs/research/evidence/nma-001/pillow-heif-bundled-licenses.txt",
+      "sha256": "ba7219bc6f39e9e370b7e3a4fc9a586e2b959e45ee21710545b7e2ac6c1f2b70",
+      "bytes": 1153
+    },
+    {
+      "path": "docs/research/evidence/nma-001/restart-researcher.log",
+      "sha256": "db9cd98007f128fc7b3cfa04074f1cbda08b994cc775c9ae8250eedbbd965f00",
+      "bytes": 38146
+    },
+    {
+      "path": "docs/research/evidence/nma-001/restart-transcript.json",
+      "sha256": "efc514444e699915d356d3c7464b8f6027523f3a3641a11bf592912b2b08bb44",
+      "bytes": 8470
+    },
+    {
+      "path": "docs/research/evidence/nma-001/restart-writer.log",
+      "sha256": "81168be89763d0b0876fa6a17a8f2d31b50458ea1a9a0f775e3b199557f7405f",
+      "bytes": 2458
+    },
+    {
+      "path": "docs/research/evidence/nma-001/setup-pm.log",
+      "sha256": "ac4a2977ed5c1b5fcf4b9127aeb22f21994303250aa1829409591d7399b0c7f8",
+      "bytes": 252
+    },
+    {
+      "path": "docs/research/evidence/nma-001/setup-reproduction.log",
+      "sha256": "d54825373e78e1a3e2b0dcc577bd98fd8c882c0deb197d8cba33ca1f0c23b0e9",
+      "bytes": 557
+    },
+    {
+      "path": "docs/research/evidence/nma-001/upstream-tests.log",
+      "sha256": "a91d2e33911ffcccb04f7c1d40060bcb26642d798b74f0d402acf314c11f83db",
+      "bytes": 2999
+    },
+    {
+      "path": "docs/research/evidence/nma-001/verification.json",
+      "sha256": "227049e076c8c6338de4c80a2c59116292af2def0ea4404a953b0cc6f5dadf3a",
+      "bytes": 1021
+    }
+  ]
+}

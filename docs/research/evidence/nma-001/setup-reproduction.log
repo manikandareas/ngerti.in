@@ -1,0 +1,12 @@
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+
+Python 3.14.3 is already installed
+Preparing the isolated Hermes runtime…
+  → Installing Python dependencies…
+  ✓ Installing Python dependencies
+  → Installing Python dependencies…
+  ✓ Installing Python dependencies
+$NGERTIIN_ROOT/.dev/nma-001-repro/runtime/bin/python
+Source: $NGERTIIN_ROOT/.dev/nma-001-repro/source
+Interpreter: $NGERTIIN_ROOT/.dev/nma-001-repro/runtime/bin/python

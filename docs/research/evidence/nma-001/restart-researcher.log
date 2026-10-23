@@ -1,0 +1,479 @@
+2026-10-23 19:05:28,978 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:29,215 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:29,323 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:29,601 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:29,881 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:30,169 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:30,451 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:30,736 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:31,021 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:31,303 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:31,583 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:31,856 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:32,136 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:32,420 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:32,702 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:32,991 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:33,275 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:33,548 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:33,822 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:34,098 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:34,373 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:34,667 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:34,945 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:35,219 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:35,498 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:35,783 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:36,063 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:36,336 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:36,615 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:36,884 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:37,158 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:37,427 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:37,703 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:37,977 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:38,247 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:38,516 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:38,785 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:39,055 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:39,334 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:39,602 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:39,869 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:40,150 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:40,423 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:40,703 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:40,986 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:41,268 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:41,540 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:41,821 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:42,105 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:42,388 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:42,668 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:42,951 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:43,232 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:43,517 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:43,789 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:44,066 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:44,395 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:44,663 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:44,925 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:45,189 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:45,456 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:45,745 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:46,034 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:46,310 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:46,591 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:46,868 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:47,137 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 2 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+2026-10-23 19:05:47,407 ERROR tui_gateway.contracts.registry: result of 'groups.log' violates its wire contract: 3 validation errors for GroupsLogResult
+events.1.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='default', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.3.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden
+events.7.actor.profile
+  Extra inputs are not permitted [type=extra_forbidden, input_value='writer', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden

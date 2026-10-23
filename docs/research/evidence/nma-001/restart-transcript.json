@@ -1,0 +1,230 @@
+{
+  "events": [
+    {
+      "room_id": "fleet-report",
+      "seq": 1,
+      "event_id": "user:8fc73dc4d0eb2726978d800903de027311774159a741cc24e3fee625ba8727a7",
+      "kind": "message.user",
+      "actor": {
+        "id": "desktop",
+        "kind": "user"
+      },
+      "authority_epoch": 1,
+      "payload": {
+        "text": "@researcher Prepare a fleet efficiency report with Writer. Verified facts: vehicle Alpha travelled 1500 km and used 120 litres of fuel. Calculate litres per 100 km, then hand the result to @writer for a final report. No external research.",
+        "thread_id": "fleet-thread"
+      },
+      "created_at": 1792753512.155993,
+      "idempotent": false
+    },
+    {
+      "room_id": "fleet-report",
+      "seq": 2,
+      "event_id": "dmessage:0e782c0d80f63ed407e23f43698617e05c56dac57c8dbfa0",
+      "kind": "message.member",
+      "actor": {
+        "id": "researcher",
+        "kind": "member",
+        "profile": "default"
+      },
+      "authority_epoch": 1,
+      "payload": {
+        "discussion_event_id": "user:8fc73dc4d0eb2726978d800903de027311774159a741cc24e3fee625ba8727a7",
+        "member_id": "researcher",
+        "member_index": 0,
+        "round_index": 0,
+        "task_id": "dtask:0e782c0d80f63ed407e23f43698617e05c56dac57c8dbfa0",
+        "text": "RESEARCHER_PROOF\n\nAlpha’s fuel consumption: (120 litres ÷ 1,500 km) × 100 = **8 litres per 100 km**.\n\n@writer Please produce the final fleet efficiency report using these verified figures: Alpha travelled 1,500 km, consumed 120 litres, and achieved fuel consumption of 8 L/100 km.",
+        "thread_id": "fleet-thread",
+        "turn_id": "d1.r0.p0.s1.m13218c0c0ed34e455e2e6e03"
+      },
+      "created_at": 1792753519.664265,
+      "idempotent": false
+    },
+    {
+      "room_id": "fleet-report",
+      "seq": 3,
+      "event_id": "dterminal:0e782c0d80f63ed407e23f43698617e05c56dac57c8dbfa0",
+      "kind": "turn.settled",
+      "actor": {
+        "id": "install:65b9c4febf4b4a679af095e0172166fc",
+        "kind": "gateway"
+      },
+      "authority_epoch": 1,
+      "payload": {
+        "discussion_event_id": "user:8fc73dc4d0eb2726978d800903de027311774159a741cc24e3fee625ba8727a7",
+        "member_id": "researcher",
+        "member_index": 0,
+        "message_event_id": "dmessage:0e782c0d80f63ed407e23f43698617e05c56dac57c8dbfa0",
+        "passed": false,
+        "round_index": 0,
+        "seen_through_seq": 1,
+        "task_id": "dtask:0e782c0d80f63ed407e23f43698617e05c56dac57c8dbfa0",
+        "thread_id": "fleet-thread",
+        "turn_id": "d1.r0.p0.s1.m13218c0c0ed34e455e2e6e03"
+      },
+      "created_at": 1792753519.666111,
+      "idempotent": false
+    },
+    {
+      "room_id": "fleet-report",
+      "seq": 4,
+      "event_id": "dmessage:993fdaa42cdd9f831a6ca97bd7185b190df989d8505a630b",
+      "kind": "message.member",
+      "actor": {
+        "id": "writer",
+        "kind": "member",
+        "profile": "writer"
+      },
+      "authority_epoch": 1,
+      "payload": {
+        "discussion_event_id": "user:8fc73dc4d0eb2726978d800903de027311774159a741cc24e3fee625ba8727a7",
+        "member_id": "writer",
+        "member_index": 1,
+        "round_index": 0,
+        "task_id": "dtask:993fdaa42cdd9f831a6ca97bd7185b190df989d8505a630b",
+        "text": "WRITER_PROOF\n\n### Fleet Efficiency Report — Alpha\n\n- **Distance travelled:** 1,500 km\n- **Fuel consumed:** 120 litres\n- **Fuel consumption:** **8 L/100 km**\n\nAlpha used an average of 8 litres of fuel for every 100 km travelled. No efficiency benchmark was supplied, so no comparative rating is assigned.",
+        "thread_id": "fleet-thread",
+        "turn_id": "d1.r0.p1.s2.m3874f9d7f35426e6017cf0f4"
+      },
+      "created_at": 1792753524.9248059,
+      "idempotent": false
+    },
+    {
+      "room_id": "fleet-report",
+      "seq": 5,
+      "event_id": "dterminal:993fdaa42cdd9f831a6ca97bd7185b190df989d8505a630b",
+      "kind": "turn.settled",
+      "actor": {
+        "id": "install:65b9c4febf4b4a679af095e0172166fc",
+        "kind": "gateway"
+      },
+      "authority_epoch": 1,
+      "payload": {
+        "discussion_event_id": "user:8fc73dc4d0eb2726978d800903de027311774159a741cc24e3fee625ba8727a7",
+        "member_id": "writer",
+        "member_index": 1,
+        "message_event_id": "dmessage:993fdaa42cdd9f831a6ca97bd7185b190df989d8505a630b",
+        "passed": false,
+        "round_index": 0,
+        "seen_through_seq": 2,
+        "task_id": "dtask:993fdaa42cdd9f831a6ca97bd7185b190df989d8505a630b",
+        "thread_id": "fleet-thread",
+        "turn_id": "d1.r0.p1.s2.m3874f9d7f35426e6017cf0f4"
+      },
+      "created_at": 1792753524.926784,
+      "idempotent": false
+    },
+    {
+      "room_id": "fleet-report",
+      "seq": 6,
+      "event_id": "dactivity:user:8fc73dc4d0eb2726978d800903de027311774159a741cc24e3fee625ba8727a7:silent_round",
+      "kind": "room.activity",
+      "actor": {
+        "id": "install:65b9c4febf4b4a679af095e0172166fc",
+        "kind": "gateway"
+      },
+      "authority_epoch": 1,
+      "payload": {
+        "discussion_event_id": "user:8fc73dc4d0eb2726978d800903de027311774159a741cc24e3fee625ba8727a7",
+        "reason_code": "silent_round",
+        "status": "settled",
+        "thread_id": "fleet-thread"
+      },
+      "created_at": 1792753524.947444,
+      "idempotent": false
+    },
+    {
+      "room_id": "fleet-report",
+      "seq": 7,
+      "event_id": "user:31bdd5d38949a24c606004b3a2e0c03faecd3203284be79238840b7213959303",
+      "kind": "message.user",
+      "actor": {
+        "id": "desktop",
+        "kind": "user"
+      },
+      "authority_epoch": 1,
+      "payload": {
+        "text": "@writer Restate the verified fuel efficiency in one sentence. Use the existing facts; do not ask another agent.",
+        "thread_id": "fleet-thread"
+      },
+      "created_at": 1792753529.2222989,
+      "idempotent": false
+    },
+    {
+      "room_id": "fleet-report",
+      "seq": 8,
+      "event_id": "dmessage:45d41e51c489b8c8bf53b3f7d624eb1a676c450ae1f089e1",
+      "kind": "message.member",
+      "actor": {
+        "id": "writer",
+        "kind": "member",
+        "profile": "writer"
+      },
+      "authority_epoch": 1,
+      "payload": {
+        "discussion_event_id": "user:31bdd5d38949a24c606004b3a2e0c03faecd3203284be79238840b7213959303",
+        "member_id": "writer",
+        "member_index": 0,
+        "round_index": 0,
+        "task_id": "dtask:45d41e51c489b8c8bf53b3f7d624eb1a676c450ae1f089e1",
+        "text": "WRITER_PROOF Alpha’s verified fuel consumption was 8 L/100 km, based on 120 litres used over 1,500 km.",
+        "thread_id": "fleet-thread",
+        "turn_id": "d7.r0.p0.s7.m3874f9d7f35426e6017cf0f4"
+      },
+      "created_at": 1792753547.226614,
+      "idempotent": false
+    },
+    {
+      "room_id": "fleet-report",
+      "seq": 9,
+      "event_id": "dterminal:45d41e51c489b8c8bf53b3f7d624eb1a676c450ae1f089e1",
+      "kind": "turn.settled",
+      "actor": {
+        "id": "install:65b9c4febf4b4a679af095e0172166fc",
+        "kind": "gateway"
+      },
+      "authority_epoch": 1,
+      "payload": {
+        "discussion_event_id": "user:31bdd5d38949a24c606004b3a2e0c03faecd3203284be79238840b7213959303",
+        "member_id": "writer",
+        "member_index": 0,
+        "message_event_id": "dmessage:45d41e51c489b8c8bf53b3f7d624eb1a676c450ae1f089e1",
+        "passed": false,
+        "round_index": 0,
+        "seen_through_seq": 7,
+        "task_id": "dtask:45d41e51c489b8c8bf53b3f7d624eb1a676c450ae1f089e1",
+        "thread_id": "fleet-thread",
+        "turn_id": "d7.r0.p0.s7.m3874f9d7f35426e6017cf0f4"
+      },
+      "created_at": 1792753547.228676,
+      "idempotent": false
+    },
+    {
+      "room_id": "fleet-report",
+      "seq": 10,
+      "event_id": "dactivity:user:31bdd5d38949a24c606004b3a2e0c03faecd3203284be79238840b7213959303:silent_round",
+      "kind": "room.activity",
+      "actor": {
+        "id": "install:65b9c4febf4b4a679af095e0172166fc",
+        "kind": "gateway"
+      },
+      "authority_epoch": 1,
+      "payload": {
+        "discussion_event_id": "user:31bdd5d38949a24c606004b3a2e0c03faecd3203284be79238840b7213959303",
+        "reason_code": "silent_round",
+        "status": "settled",
+        "thread_id": "fleet-thread"
+      },
+      "created_at": 1792753547.24975,
+      "idempotent": false
+    }
+  ],
+  "cursor": 10,
+  "latest_seq": 10,
+  "has_more": false,
+  "authority": {
+    "gateway_id": "install:65b9c4febf4b4a679af095e0172166fc",
+    "epoch": 1
+  }
+}

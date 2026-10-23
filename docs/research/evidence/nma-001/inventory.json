@@ -1,0 +1,3805 @@
+{
+  "revision": "7489b22af47ce91b366dde81d5831ea422577498",
+  "python": "3.14.9",
+  "platform": "macOS-26.3-arm64-arm-64bit-Mach-O",
+  "pyproject_sha256": "68325d6717bd4ebc3a7b015c5150bea4d5600c612259b9b7393e964caa828761",
+  "lock_sha256": "f1609519f30dac8886b03e60693e36fa75e033fa3e7259c8c8befe8fb6e34460",
+  "modules": [
+    {
+      "path": "run_agent.py",
+      "responsibility": "Agent facade; execution remains upstream",
+      "sha256": "8c215df03f32493f72992db0c0ccaddb811436f9025451e3f1e8f535dc9cda5d",
+      "imports": [
+        "agent.activity_tracking",
+        "agent.agent_init",
+        "agent.api_error_summary",
+        "agent.api_request_hooks",
+        "agent.background_review",
+        "agent.chat_completion_helpers",
+        "agent.client_lifecycle",
+        "agent.codex_responses_adapter",
+        "agent.compression_facade",
+        "agent.gemini_long_decode",
+        "agent.interrupt_control",
+        "agent.iteration_budget",
+        "agent.lazy_forward",
+        "agent.legacy_cli",
+        "agent.memory_provider",
+        "agent.message_sanitization",
+        "agent.model_metadata",
+        "agent.model_metadata_token_memo",
+        "agent.native_compaction",
+        "agent.rate_limit_credits",
+        "agent.reasoning_params",
+        "agent.reasoning_timeouts",
+        "agent.review_idle_queue",
+        "agent.session_activity",
+        "agent.session_persistence",
+        "agent.session_source",
+        "agent.ssl_verify",
+        "agent.status_output",
+        "agent.stream_delivery",
+        "agent.tool_dispatch_helpers",
+        "agent.tool_executor",
+        "agent.tool_guardrails",
+        "agent.turn_explainers",
+        "agent.turn_facade",
+        "agent.turn_finalizer",
+        "agent.vision_message_prep",
+        "datetime",
+        "hermes_bootstrap",
+        "hermes_cli",
+        "hermes_cli.env_loader",
+        "hermes_cli.mem_trim",
+        "hermes_cli.models",
+        "hermes_cli.models_local",
+        "hermes_cli.observability.shared_metrics_harness",
+        "hermes_cli.profiles",
+        "hermes_cli.providers",
+        "hermes_cli.runtime_provider_backends",
+        "hermes_cli.timeouts",
+        "hermes_constants",
+        "hermes_state_registry",
+        "json",
+        "logging",
+        "model_tools",
+        "os",
+        "pathlib",
+        "re",
+        "shutil",
+        "sys",
+        "textwrap",
+        "threading",
+        "time",
+        "tools.approval_yolo",
+        "tools.browser_session_lifecycle",
+        "tools.connectors.turn",
+        "tools.delegate_tool",
+        "tools.interrupt",
+        "tools.terminal_tool_lifecycle",
+        "tools.thread_context",
+        "tools.todo_tool",
+        "toolsets",
+        "typing",
+        "utils",
+        "uuid",
+        "warnings"
+      ],
+      "url": "https://github.com/NousResearch/hermes-agent/blob/7489b22af47ce91b366dde81d5831ea422577498/run_agent.py"
+    },
+    {
+      "path": "agent/turn_facade.py",
+      "responsibility": "Conversation entry point and turn loop delegation",
+      "sha256": "e9176a8ae1d7822fa45c75b680d5ae4be7c949e49c877673aea867cc146856a0",
+      "imports": [
+        "agent",
+        "agent.aux_accounting",
+        "agent.auxiliary_client",
+        "agent.background_review",
+        "agent.conversation_loop",
+        "agent.interrupt_scope",
+        "agent.lazy_forward",
+        "agent.portal_tags",
+        "agent.prompt_cache_scope",
+        "agent.relay_cwd",
+        "agent.review_idle_queue",
+        "agent.subagent_lifecycle",
+        "agent.turn_facade_lease",
+        "contextlib",
+        "hermes_cli.observability.relay_shared_metrics",
+        "logging",
+        "typing",
+        "uuid"
+      ],
+      "url": "https://github.com/NousResearch/hermes-agent/blob/7489b22af47ce91b366dde81d5831ea422577498/agent/turn_facade.py"
+    },
+    {
+      "path": "agent/prompt_builder.py",
+      "responsibility": "Profile SOUL, skills and context composition",
+      "sha256": "1baa8a654a13da62d422d4cfa32b645d6757b0e92042f62cff92b12c03cd17c7",
+      "imports": [
+        "agent.model_metadata",
+        "agent.oneshot_footprint",
+        "agent.runtime_cwd",
+        "agent.safe_worker_policy",
+        "agent.skill_utils",
+        "agent.terminal_env_registry",
+        "collections",
+        "contextvars",
+        "hermes_cli.config",
+        "hermes_cli.plugins",
+        "hermes_cli.profile_distribution",
+        "hermes_constants",
+        "json",
+        "logging",
+        "os",
+        "pathlib",
+        "platform",
+        "queue",
+        "re",
+        "sys",
+        "threading",
+        "tools",
+        "tools.bot_desktop",
+        "tools.bot_mode_probe",
+        "tools.terminal_scope",
+        "tools.terminal_tool_backends",
+        "tools.terminal_tool_lifecycle",
+        "tools.threat_patterns",
+        "typing",
+        "utils"
+      ],
+      "url": "https://github.com/NousResearch/hermes-agent/blob/7489b22af47ce91b366dde81d5831ea422577498/agent/prompt_builder.py"
+    },
+    {
+      "path": "hermes_cli/profiles.py",
+      "responsibility": "Profile creation and persistent home resolution",
+      "sha256": "ed9be0ff625906e8b0aecdd208dcda0a484a0e3fb4ab736a91b20bae39727add",
+      "imports": [
+        "_winapi",
+        "agent.file_safety",
+        "agent.redact",
+        "agent.skill_utils",
+        "contextlib",
+        "dataclasses",
+        "gateway.config",
+        "gateway.status",
+        "hermes_cli.archive_safe",
+        "hermes_cli.auth",
+        "hermes_cli.config",
+        "hermes_cli.gateway",
+        "hermes_cli.gateway_multiplex_served",
+        "hermes_cli.home_data_layout",
+        "hermes_cli.profile_channels",
+        "hermes_cli.profile_identity",
+        "hermes_cli.profile_memory_config",
+        "hermes_cli.profile_model_seed",
+        "hermes_cli.profiles_honcho",
+        "hermes_cli.profiles_initialization",
+        "hermes_cli.profiles_remove",
+        "hermes_cli.profiles_service_cleanup",
+        "hermes_cli.service_manager",
+        "hermes_constants",
+        "hermes_logging",
+        "hermes_state_registry",
+        "hermes_yaml",
+        "json",
+        "logging",
+        "os",
+        "pathlib",
+        "platform",
+        "plugins.memory",
+        "psutil",
+        "re",
+        "shlex",
+        "shutil",
+        "stat",
+        "subprocess",
+        "sys",
+        "tempfile",
+        "threading",
+        "time",
+        "tools.bot_desktop",
+        "tools.mcp_tool_lifecycle",
+        "typing",
+        "utils"
+      ],
+      "url": "https://github.com/NousResearch/hermes-agent/blob/7489b22af47ce91b366dde81d5831ea422577498/hermes_cli/profiles.py"
+    },
+    {
+      "path": "hermes_state.py",
+      "responsibility": "SQLite session storage facade",
+      "sha256": "e507ebd78b870364fd2fced94212592380cd26d0d39eec67547ed9bc233ebb98",
+      "imports": [
+        "asyncio",
+        "atexit",
+        "collections",
+        "contextlib",
+        "hashlib",
+        "hermes_cli.config",
+        "hermes_constants",
+        "hermes_dir_acl",
+        "hermes_state_api_content",
+        "hermes_state_common",
+        "hermes_state_compression",
+        "hermes_state_coverage",
+        "hermes_state_dbfile",
+        "hermes_state_errors",
+        "hermes_state_fts",
+        "hermes_state_gateway",
+        "hermes_state_guard",
+        "hermes_state_health",
+        "hermes_state_holders",
+        "hermes_state_lockguard",
+        "hermes_state_lockowners",
+        "hermes_state_maintenance",
+        "hermes_state_messages",
+        "hermes_state_pidns",
+        "hermes_state_portability",
+        "hermes_state_profile_repair",
+        "hermes_state_prune_rewrite",
+        "hermes_state_readpool",
+        "hermes_state_registry",
+        "hermes_state_repair",
+        "hermes_state_rewind",
+        "hermes_state_schema",
+        "hermes_state_search",
+        "hermes_state_sessions",
+        "hermes_state_telegram",
+        "hermes_state_titles",
+        "hermes_state_usage",
+        "hermes_state_user_copy",
+        "hermes_state_wal",
+        "json",
+        "logging",
+        "os",
+        "pathlib",
+        "psutil",
+        "queue",
+        "random",
+        "re",
+        "sqlite3",
+        "stat",
+        "sys",
+        "threading",
+        "time",
+        "typing",
+        "uuid"
+      ],
+      "url": "https://github.com/NousResearch/hermes-agent/blob/7489b22af47ce91b366dde81d5831ea422577498/hermes_state.py"
+    },
+    {
+      "path": "hermes_state_runtime.py",
+      "responsibility": "Runtime epochs and durable admission",
+      "sha256": "1553a9e5091413092dd30d7613b9aaa7338919bfc5a5d3ac3f4cf8c57de4411b",
+      "imports": [
+        "agent.conversation_compression_archive",
+        "agent.message_metadata",
+        "contextlib",
+        "gateway.session_policy",
+        "hashlib",
+        "hermes_cli.sqlite_safe_read",
+        "hermes_state",
+        "hermes_state_common",
+        "hermes_state_compression",
+        "hermes_state_keys",
+        "hermes_state_mutation_guards",
+        "hermes_state_mutation_prepared",
+        "hermes_state_mutations",
+        "hermes_state_runtime_workers",
+        "hermes_state_terminal",
+        "hermes_state_usage",
+        "hermes_state_worker_compression",
+        "hermes_state_worker_context",
+        "hermes_state_worker_lifecycle",
+        "hmac",
+        "json",
+        "pathlib",
+        "sqlite3",
+        "time",
+        "typing",
+        "uuid"
+      ],
+      "url": "https://github.com/NousResearch/hermes-agent/blob/7489b22af47ce91b366dde81d5831ea422577498/hermes_state_runtime.py"
+    },
+    {
+      "path": "gateway/run.py",
+      "responsibility": "Ordinary gateway process and lifecycle",
+      "sha256": "045d930e78d4dea03b958fbbe21ce6b0a247d713021dbd537adbce5b9d44f983",
+      "imports": [
+        "agent.async_utils",
+        "agent.conversation_compression",
+        "agent.conversation_compression_archive",
+        "agent.conversation_loop",
+        "agent.curator",
+        "agent.i18n",
+        "agent.interrupt_compat",
+        "agent.message_metadata",
+        "agent.message_sanitization",
+        "agent.model_metadata",
+        "agent.redact",
+        "agent.replay_cleanup",
+        "agent.retry_utils",
+        "agent.safe_worker_policy",
+        "agent.secret_scope",
+        "agent.session_activity",
+        "agent.session_persistence",
+        "agent.skill_utils",
+        "agent.turn_context",
+        "agent.turn_failure_copy",
+        "argparse",
+        "asyncio",
+        "collections",
+        "concurrent.futures",
+        "contextlib",
+        "contextvars",
+        "cron",
+        "cron.scheduler_delivery",
+        "cron.scheduler_provider",
+        "dataclasses",
+        "datetime",
+        "gateway",
+        "gateway.authz_mixin",
+        "gateway.channel_directory",
+        "gateway.config",
+        "gateway.cwd_placeholder",
+        "gateway.delivery",
+        "gateway.display_config",
+        "gateway.host_attach",
+        "gateway.kanban_watchers",
+        "gateway.lifecycle_ledger",
+        "gateway.media_policy",
+        "gateway.media_repair",
+        "gateway.message_timestamps",
+        "gateway.platforms._shared",
+        "gateway.platforms.base",
+        "gateway.platforms.base_exec_approval",
+        "gateway.platforms.event",
+        "gateway.profile_routing",
+        "gateway.relay.egress",
+        "gateway.restart",
+        "gateway.run_adapters",
+        "gateway.run_agent_cache",
+        "gateway.run_bootstrap",
+        "gateway.run_busy",
+        "gateway.run_config_loaders",
+        "gateway.run_delivery_queue_watch",
+        "gateway.run_goals",
+        "gateway.run_housekeeping_disk",
+        "gateway.run_inbound",
+        "gateway.run_notifications",
+        "gateway.run_plugin_rewire",
+        "gateway.run_profile_reconcile",
+        "gateway.run_runtime_init",
+        "gateway.run_shutdown",
+        "gateway.run_startup",
+        "gateway.run_topics",
+        "gateway.run_turn",
+        "gateway.run_voice",
+        "gateway.run_watchers",
+        "gateway.session",
+        "gateway.session_api_turn",
+        "gateway.session_context",
+        "gateway.session_db_recovery",
+        "gateway.session_identity",
+        "gateway.session_lifecycle",
+        "gateway.session_state",
+        "gateway.session_worker_construct",
+        "gateway.slash_commands",
+        "gateway.status",
+        "gateway.turn_executor",
+        "gateway.turn_lease",
+        "hermes_bootstrap",
+        "hermes_cli.anon_auth",
+        "hermes_cli.boot_bootstrap",
+        "hermes_cli.commands_platforms",
+        "hermes_cli.config",
+        "hermes_cli.config_defaults",
+        "hermes_cli.config_effective",
+        "hermes_cli.debug",
+        "hermes_cli.env_loader",
+        "hermes_cli.fallback_config",
+        "hermes_cli.gateway_migrate",
+        "hermes_cli.gateway_multiplex_mode",
+        "hermes_cli.mem_trim",
+        "hermes_cli.observability.shared_metrics_process",
+        "hermes_cli.plugins",
+        "hermes_cli.plugins_cadence",
+        "hermes_cli.process_identity",
+        "hermes_cli.profiles",
+        "hermes_cli.route_identity",
+        "hermes_cli.runtime_provider",
+        "hermes_cli.stdio",
+        "hermes_cli.tools_config",
+        "hermes_cli.venv_sync",
+        "hermes_constants",
+        "hermes_logging",
+        "hermes_startup_watchdog",
+        "hermes_state",
+        "hermes_state_registry",
+        "hermes_time",
+        "hermes_yaml",
+        "importlib",
+        "importlib.util",
+        "json",
+        "logging",
+        "model_tools",
+        "mutagen.oggopus",
+        "os",
+        "pathlib",
+        "plugins.teams_pipeline.runtime",
+        "pm.environments",
+        "pm.paths",
+        "re",
+        "run_agent",
+        "shlex",
+        "shutil",
+        "signal",
+        "site",
+        "sys",
+        "threading",
+        "time",
+        "tools.checkpoint_maintenance",
+        "tools.env_probe",
+        "tools.mcp_oauth",
+        "tools.mcp_tool_common",
+        "tools.mcp_tool_discovery",
+        "tools.mcp_tool_lifecycle",
+        "tools.process_registry",
+        "tools.process_registry_notifications",
+        "tools.skills_tool",
+        "tools.terminal_scope",
+        "traceback",
+        "tui_gateway.launch_profile_policy",
+        "typing",
+        "wave",
+        "weakref"
+      ],
+      "url": "https://github.com/NousResearch/hermes-agent/blob/7489b22af47ce91b366dde81d5831ea422577498/gateway/run.py"
+    },
+    {
+      "path": "gateway/session_authority.py",
+      "responsibility": "Canonical session execution authority",
+      "sha256": "f6eba4d4e17f35e9bcaaf664d1dece93bca8ceccddba3d6d2ad99aa7983bb15f",
+      "imports": [
+        "__future__",
+        "agent.background_review",
+        "agent.interrupt_compat",
+        "asyncio",
+        "collections",
+        "contextlib",
+        "contextvars",
+        "dataclasses",
+        "functools",
+        "gateway",
+        "gateway.config",
+        "gateway.drain_control",
+        "gateway.run",
+        "gateway.session_acp_lifecycle",
+        "gateway.session_api",
+        "gateway.session_api_turn",
+        "gateway.session_authorities",
+        "gateway.session_automation",
+        "gateway.session_bot_mailbox",
+        "gateway.session_busy_controls",
+        "gateway.session_cli_turn",
+        "gateway.session_completion_notes",
+        "gateway.session_contract",
+        "gateway.session_cron",
+        "gateway.session_deferred_pick",
+        "gateway.session_display",
+        "gateway.session_envelope",
+        "gateway.session_events",
+        "gateway.session_finite",
+        "gateway.session_hosted_transport",
+        "gateway.session_ingress",
+        "gateway.session_ingress_media",
+        "gateway.session_local_adoption",
+        "gateway.session_local_mcp",
+        "gateway.session_local_recovery",
+        "gateway.session_managed_worker",
+        "gateway.session_onboarding",
+        "gateway.session_operator",
+        "gateway.session_pending_controls",
+        "gateway.session_queued_controls",
+        "gateway.session_results",
+        "gateway.session_route_recovery",
+        "gateway.session_runtime_workers",
+        "gateway.session_setting_commands",
+        "gateway.session_settlement_recovery",
+        "gateway.session_surface",
+        "gateway.session_unattended_unknown",
+        "gateway.session_viewer_close",
+        "hermes_state_local",
+        "hermes_state_local_migration",
+        "hermes_state_media",
+        "hermes_state_runtime",
+        "json",
+        "logging",
+        "pathlib",
+        "sqlite3",
+        "time",
+        "tools.async_delegation",
+        "types",
+        "uuid"
+      ],
+      "url": "https://github.com/NousResearch/hermes-agent/blob/7489b22af47ce91b366dde81d5831ea422577498/gateway/session_authority.py"
+    },
+    {
+      "path": "gateway/session_hosted_service.py",
+      "responsibility": "Canonical room ownership and member authorization",
+      "sha256": "369a0230b7b5f65e9664433ad49966308a2cd4f65b33e6508f7cf8aab50aef89",
+      "imports": [
+        "asyncio",
+        "contextlib",
+        "dataclasses",
+        "gateway.hosted_room_driver",
+        "gateway.hosted_rooms",
+        "gateway.hosted_rooms_common",
+        "gateway.session_authorities",
+        "gateway.session_contract",
+        "gateway.session_hosted_attachments",
+        "gateway.session_hosted_controls",
+        "gateway.session_hosted_members",
+        "gateway.session_hosted_rpc",
+        "gateway.session_hosted_transport",
+        "hashlib",
+        "hermes_state_runtime",
+        "json",
+        "pathlib",
+        "tui_gateway.hosted_room_driver",
+        "tui_gateway.hosted_room_service"
+      ],
+      "url": "https://github.com/NousResearch/hermes-agent/blob/7489b22af47ce91b366dde81d5831ea422577498/gateway/session_hosted_service.py"
+    },
+    {
+      "path": "gateway/session_hosted_members.py",
+      "responsibility": "Served/configured member roster",
+      "sha256": "8f4a88e37424e025e85e8ba87e2280d8ee018d2fd7efed2e8c3b101e972d6618",
+      "imports": [
+        "gateway.hosted_rooms_common",
+        "gateway.run",
+        "gateway.session_authorities",
+        "hermes_constants",
+        "hermes_state_runtime",
+        "logging",
+        "pathlib"
+      ],
+      "url": "https://github.com/NousResearch/hermes-agent/blob/7489b22af47ce91b366dde81d5831ea422577498/gateway/session_hosted_members.py"
+    },
+    {
+      "path": "gateway/session_hosted_rpc.py",
+      "responsibility": "Canonical member admission and receipts",
+      "sha256": "0e7c52dae7df353851c51d33cd35a3bc156615154856df1027c3710ec6b7c080",
+      "imports": [
+        "__future__",
+        "agent.skill_utils",
+        "asyncio",
+        "dataclasses",
+        "functools",
+        "gateway.hosted_room_driver",
+        "gateway.run",
+        "gateway.session_authorities",
+        "gateway.session_contract",
+        "gateway.session_hosted_attachments",
+        "gateway.session_ingress_media",
+        "gateway.session_local",
+        "gateway.session_local_recovery",
+        "gateway.session_policy",
+        "gateway.session_results",
+        "gateway.session_runtime_workers",
+        "hashlib",
+        "hermes_state_local",
+        "hermes_state_runtime",
+        "json",
+        "tui_gateway.hosted_room_driver"
+      ],
+      "url": "https://github.com/NousResearch/hermes-agent/blob/7489b22af47ce91b366dde81d5831ea422577498/gateway/session_hosted_rpc.py"
+    },
+    {
+      "path": "gateway/session_hosted_transport.py",
+      "responsibility": "Cross-profile owner transport",
+      "sha256": "eb955f21c1216f2e0449a68281859826c88ede6640e2c95683f53fe6bcd0cf28",
+      "imports": [
+        "__future__",
+        "asyncio",
+        "base64",
+        "dataclasses",
+        "gateway.control_socket",
+        "gateway.hosted_room_attachments",
+        "gateway.hosted_room_driver",
+        "gateway.runtime_bootstrap_windows",
+        "gateway.session_authorities",
+        "gateway.session_contract",
+        "gateway.session_hosted_attachments",
+        "gateway.session_hosted_rpc",
+        "hashlib",
+        "hermes_cli.gateway_runtime",
+        "hermes_cli.gateway_runtime_discovery",
+        "hermes_constants",
+        "hermes_state_runtime",
+        "json",
+        "os",
+        "pathlib",
+        "threading",
+        "time"
+      ],
+      "url": "https://github.com/NousResearch/hermes-agent/blob/7489b22af47ce91b366dde81d5831ea422577498/gateway/session_hosted_transport.py"
+    },
+    {
+      "path": "gateway/hosted_rooms.py",
+      "responsibility": "Durable room identity and event log",
+      "sha256": "fdc68cf3d656864436a79345ec3940b688dfd8bf91ede2f4c6fae0e0aa4bc01e",
+      "imports": [
+        "__future__",
+        "contextlib",
+        "functools",
+        "gateway.hosted_room_attachments",
+        "gateway.hosted_room_work_records",
+        "gateway.hosted_rooms_common",
+        "gateway.hosted_rooms_legacy_import",
+        "hashlib",
+        "hermes_cli.install_identity",
+        "hermes_constants",
+        "json",
+        "pathlib",
+        "re",
+        "sqlite3",
+        "typing"
+      ],
+      "url": "https://github.com/NousResearch/hermes-agent/blob/7489b22af47ce91b366dde81d5831ea422577498/gateway/hosted_rooms.py"
+    },
+    {
+      "path": "gateway/hosted_room_driver.py",
+      "responsibility": "Task leases, generations, stop and recovery",
+      "sha256": "e1a2c1dc06ebb27fe379e3c5dc6c9364d9848f926af17c6ddf629df49cb39fa9",
+      "imports": [
+        "__future__",
+        "collections.abc",
+        "contextlib",
+        "dataclasses",
+        "functools",
+        "gateway.hosted_room_attachments",
+        "gateway.hosted_room_task_input",
+        "gateway.hosted_room_work_records",
+        "gateway.hosted_rooms_common",
+        "hashlib",
+        "json",
+        "math",
+        "sqlite3",
+        "typing"
+      ],
+      "url": "https://github.com/NousResearch/hermes-agent/blob/7489b22af47ce91b366dde81d5831ea422577498/gateway/hosted_room_driver.py"
+    },
+    {
+      "path": "gateway/hosted_room_discussion.py",
+      "responsibility": "Deterministic mentions and next-turn policy",
+      "sha256": "7f9b9c3378dd17e806880224f6ea8c93d12e3a74d879969182922efeefc5e45b",
+      "imports": [
+        "__future__",
+        "agent.prompt_builder",
+        "collections.abc",
+        "dataclasses",
+        "functools",
+        "gateway",
+        "gateway.hosted_room_attachments",
+        "gateway.hosted_room_task_input",
+        "gateway.hosted_rooms_common",
+        "hashlib",
+        "re",
+        "tools.bot_failure_reasons",
+        "typing"
+      ],
+      "url": "https://github.com/NousResearch/hermes-agent/blob/7489b22af47ce91b366dde81d5831ea422577498/gateway/hosted_room_discussion.py"
+    },
+    {
+      "path": "tui_gateway/hosted_room_service.py",
+      "responsibility": "Shared room coordinator base",
+      "sha256": "1ab54f30cb1646867fa0d7cee8eaceda71ad7a152835b04edbab18cb09263a70",
+      "imports": [
+        "__future__",
+        "collections",
+        "collections.abc",
+        "contextlib",
+        "dataclasses",
+        "gateway",
+        "gateway.hosted_room_peer",
+        "gateway.hosted_room_policy_checkpoint",
+        "gateway.session_hosted_attachments",
+        "hermes_constants",
+        "os",
+        "pathlib",
+        "threading",
+        "time",
+        "tools.bot_relay",
+        "tui_gateway.hosted_room_driver",
+        "tui_gateway.hosted_room_peer_http",
+        "tui_gateway.hosted_room_peer_transport",
+        "tui_gateway.hosted_room_server_rpc",
+        "types",
+        "typing"
+      ],
+      "url": "https://github.com/NousResearch/hermes-agent/blob/7489b22af47ce91b366dde81d5831ea422577498/tui_gateway/hosted_room_service.py"
+    },
+    {
+      "path": "tui_gateway/hosted_room_driver.py",
+      "responsibility": "Transport-independent room worker",
+      "sha256": "5c20be686e3e2deb3777007d2325007ef44542c6551a0125c47ee7388caf9ebe",
+      "imports": [
+        "__future__",
+        "collections.abc",
+        "contextlib",
+        "dataclasses",
+        "gateway",
+        "logging",
+        "pathlib",
+        "threading",
+        "time",
+        "typing",
+        "uuid"
+      ],
+      "url": "https://github.com/NousResearch/hermes-agent/blob/7489b22af47ce91b366dde81d5831ea422577498/tui_gateway/hosted_room_driver.py"
+    },
+    {
+      "path": "tui_gateway/hosted_room_server_rpc.py",
+      "responsibility": "Legacy in-process adapter; not native authority",
+      "sha256": "21fe982d025c3331d106e0693b5d02ea38ccb59ae1359fb2de91f3ae834ec430",
+      "imports": [
+        "__future__",
+        "collections.abc",
+        "gateway",
+        "itertools",
+        "threading",
+        "types",
+        "typing"
+      ],
+      "url": "https://github.com/NousResearch/hermes-agent/blob/7489b22af47ce91b366dde81d5831ea422577498/tui_gateway/hosted_room_server_rpc.py"
+    },
+    {
+      "path": "tools/skills_tool.py",
+      "responsibility": "Skill discovery and content access; not exercised live",
+      "sha256": "f75e1047efba2640daefa2f03b897db12ac74890792621151ed9fbfd974176b8",
+      "imports": [
+        "agent",
+        "agent.safe_worker_policy",
+        "agent.secret_scope",
+        "agent.skill_utils",
+        "contextlib",
+        "contextvars",
+        "gateway.session_context",
+        "hermes_cli.config",
+        "hermes_cli.plugins",
+        "hermes_constants",
+        "json",
+        "logging",
+        "os",
+        "pathlib",
+        "plugins.memory",
+        "pm",
+        "time",
+        "tools.credential_files",
+        "tools.env_passthrough",
+        "tools.path_security",
+        "tools.registry",
+        "tools.skill_provenance",
+        "tools.skill_usage",
+        "tools.skills_tool_dedup",
+        "tools.skills_tool_plugin",
+        "tools.skills_tool_setup",
+        "tools.terminal_scope",
+        "typing"
+      ],
+      "url": "https://github.com/NousResearch/hermes-agent/blob/7489b22af47ce91b366dde81d5831ea422577498/tools/skills_tool.py"
+    },
+    {
+      "path": "tools/mcp_tool_registration.py",
+      "responsibility": "MCP discovery and registration; not exercised live",
+      "sha256": "ee1ca1f86cef125e1da1c970c8d52008e86c939ee06a48007798533e5adaf04e",
+      "imports": [
+        "dataclasses",
+        "hashlib",
+        "hermes_state_runtime",
+        "json",
+        "logging",
+        "threading",
+        "tools",
+        "tools.mcp_schema_cache",
+        "tools.mcp_tool",
+        "tools.mcp_tool_common",
+        "tools.mcp_tool_costs",
+        "tools.mcp_tool_discovery",
+        "tools.mcp_tool_handlers",
+        "tools.mcp_tool_schema",
+        "tools.mcp_tool_scope",
+        "tools.mcp_tool_transport",
+        "tools.registry",
+        "types",
+        "typing"
+      ],
+      "url": "https://github.com/NousResearch/hermes-agent/blob/7489b22af47ce91b366dde81d5831ea422577498/tools/mcp_tool_registration.py"
+    },
+    {
+      "path": "hermes_cli/goals.py",
+      "responsibility": "Explicit session goal behavior; not automatic capture proof",
+      "sha256": "f87f4115d790c0b17183cf3fb72f455b04b4dda6cbafe57efb081dd3d42a0023",
+      "imports": [
+        "__future__",
+        "agent.auxiliary_client",
+        "agent.auxiliary_unavailable",
+        "agent.portal_tags",
+        "agent.runtime_cwd",
+        "asyncio",
+        "dataclasses",
+        "datetime",
+        "gateway.status",
+        "hermes_cli._subprocess_compat",
+        "hermes_cli.config",
+        "hermes_constants",
+        "hermes_state_registry",
+        "hermes_time",
+        "json",
+        "logging",
+        "os",
+        "pathlib",
+        "psutil",
+        "re",
+        "subprocess",
+        "threading",
+        "time",
+        "tools.async_delegation",
+        "tools.process_registry",
+        "typing"
+      ],
+      "url": "https://github.com/NousResearch/hermes-agent/blob/7489b22af47ce91b366dde81d5831ea422577498/hermes_cli/goals.py"
+    },
+    {
+      "path": "gateway/run_goals.py",
+      "responsibility": "Goal continuation; not exercised live",
+      "sha256": "d442e7652b07357bd6332715ad81b4ee70826d9fb1b3ee2e5609c8bc9ef9b825",
+      "imports": [
+        "__future__",
+        "agent.estop",
+        "asyncio",
+        "contextlib",
+        "dataclasses",
+        "gateway.config",
+        "gateway.platforms.event",
+        "gateway.run",
+        "gateway.run_heartbeat_acceptance",
+        "gateway.run_heartbeat_restore",
+        "gateway.run_idle_gates",
+        "gateway.run_turn_runner",
+        "gateway.session_authorities",
+        "gateway.session_automation",
+        "gateway.session_control_actions",
+        "gateway.session_identity",
+        "gateway.session_results",
+        "gateway.session_viewer_automation",
+        "hermes_cli.config",
+        "hermes_cli.goals",
+        "hermes_cli.heartbeat",
+        "hermes_cli.loops",
+        "logging",
+        "time",
+        "tui_gateway.launch_profile_policy",
+        "typing"
+      ],
+      "url": "https://github.com/NousResearch/hermes-agent/blob/7489b22af47ce91b366dde81d5831ea422577498/gateway/run_goals.py"
+    },
+    {
+      "path": "cron/scheduler.py",
+      "responsibility": "Schedule runner; not exercised live",
+      "sha256": "ec5823fffdeb18f4417eb97cbd37a03739c2fc20bb4e44c333d2dd5e07d86dd4",
+      "imports": [
+        "agent.auxiliary_client",
+        "agent.credential_pool",
+        "agent.delegation_context",
+        "agent.interrupt_compat",
+        "agent.memory_provider",
+        "agent.runtime_session_store",
+        "agent.secret_scope",
+        "agent.session_activity",
+        "agent.skill_utils",
+        "agent.turn_failure_copy",
+        "argparse",
+        "atexit",
+        "concurrent.futures",
+        "contextlib",
+        "contextvars",
+        "cron",
+        "cron.delivery_queue",
+        "cron.env_settings",
+        "cron.execution_identity",
+        "cron.executions",
+        "cron.incidents",
+        "cron.jobs",
+        "cron.jobs_invariants",
+        "cron.monitor",
+        "cron.quota_hold",
+        "cron.scheduler_authority",
+        "cron.scheduler_bookkeeping",
+        "cron.scheduler_delivery",
+        "cron.scheduler_detached_worker",
+        "cron.scheduler_diagnostics",
+        "cron.scheduler_failure_copy",
+        "cron.scheduler_liveness",
+        "cron.scheduler_ownership",
+        "cron.scheduler_preflight",
+        "cron.scheduler_prompt",
+        "cron.scheduler_provider",
+        "cron.scheduler_script",
+        "cron.scheduler_tick",
+        "cron.scheduler_worker_env",
+        "cron.scheduler_worker_failure",
+        "cron.unreachable_retry",
+        "cron.worker_bootstrap",
+        "dataclasses",
+        "datetime",
+        "errno",
+        "fcntl",
+        "gateway.code_skew",
+        "gateway.media_repair",
+        "gateway.response_filters",
+        "gateway.run_startup",
+        "gateway.session_context",
+        "gateway.session_cron",
+        "gc",
+        "hermes_cli._subprocess_compat",
+        "hermes_cli.anon_auth",
+        "hermes_cli.auth",
+        "hermes_cli.backend_retirement",
+        "hermes_cli.config",
+        "hermes_cli.config_effective",
+        "hermes_cli.env_loader",
+        "hermes_cli.fallback_config",
+        "hermes_cli.observability.shared_metrics_gateway",
+        "hermes_cli.plugins",
+        "hermes_cli.resource_limits",
+        "hermes_cli.runtime_provider",
+        "hermes_cli.tools_config",
+        "hermes_cli.worktree_ops",
+        "hermes_cli.worktree_registry",
+        "hermes_constants",
+        "hermes_logging",
+        "hermes_state_errors",
+        "hermes_state_registry",
+        "hermes_time",
+        "json",
+        "logging",
+        "msvcrt",
+        "os",
+        "pathlib",
+        "re",
+        "run_agent",
+        "subprocess",
+        "sys",
+        "threading",
+        "time",
+        "tools.environments.local",
+        "tools.interpreter_shutdown",
+        "tools.mcp_tool_costs",
+        "tools.mcp_tool_discovery",
+        "tools.mcp_tool_lifecycle",
+        "tools.process_registry",
+        "tools.terminal_scope",
+        "tools.terminal_tool",
+        "tui_gateway.launch_profile_policy",
+        "typing",
+        "uuid"
+      ],
+      "url": "https://github.com/NousResearch/hermes-agent/blob/7489b22af47ce91b366dde81d5831ea422577498/cron/scheduler.py"
+    },
+    {
+      "path": "tests/gateway/fixtures/local_recovery_probe.py",
+      "responsibility": "Imported native daemon/socket probe helpers",
+      "sha256": "d008bfd4c5d1ef8e9619db14a1583256a772a3eb3aaec90151d1c0f6827ef6f1",
+      "imports": [
+        "asyncio",
+        "contextlib",
+        "http.server",
+        "json",
+        "os",
+        "pathlib",
+        "signal",
+        "sqlite3",
+        "subprocess",
+        "sys",
+        "tests.gateway.test_normal_runtime_boot",
+        "tests.waiting",
+        "threading",
+        "time",
+        "websockets.asyncio.client"
+      ],
+      "url": "https://github.com/NousResearch/hermes-agent/blob/7489b22af47ce91b366dde81d5831ea422577498/tests/gateway/fixtures/local_recovery_probe.py"
+    },
+    {
+      "path": "tests/gateway/test_normal_runtime_boot.py",
+      "responsibility": "Imported bootstrap control-socket helper",
+      "sha256": "f76e72a54deb3d883a0cd8358206a3cdcbf7b98e2d080d5efb4c637ca90ff9e3",
+      "imports": [
+        "asyncio",
+        "functools",
+        "gateway",
+        "gateway.config",
+        "gateway.run",
+        "gateway.runtime_bootstrap_windows",
+        "gateway.runtime_ownership",
+        "hermes_cli",
+        "hermes_constants",
+        "json",
+        "os",
+        "pathlib",
+        "pytest",
+        "signal",
+        "socket",
+        "sqlite3",
+        "subprocess",
+        "sys",
+        "time",
+        "websockets.asyncio.client",
+        "websockets.exceptions"
+      ],
+      "url": "https://github.com/NousResearch/hermes-agent/blob/7489b22af47ce91b366dde81d5831ea422577498/tests/gateway/test_normal_runtime_boot.py"
+    },
+    {
+      "path": "tests/gateway/test_session_hosted_daemon.py",
+      "responsibility": "Executed native daemon restart/crash contracts",
+      "sha256": "b308accb41e98b2c598f0b66c462fd3977a82012d0b5888ff60fb0d35a78ec0b",
+      "imports": [
+        "asyncio",
+        "base64",
+        "http.server",
+        "json",
+        "pathlib",
+        "sqlite3",
+        "tests.gateway.fixtures.local_recovery_probe",
+        "threading",
+        "time"
+      ],
+      "url": "https://github.com/NousResearch/hermes-agent/blob/7489b22af47ce91b366dde81d5831ea422577498/tests/gateway/test_session_hosted_daemon.py"
+    }
+  ],
+  "source_notices": [
+    {
+      "path": "LICENSE",
+      "sha256": "821556e6336796450ab852d375117b48a4887e71d255794fd6318d99982a5ab6",
+      "opening": [
+        "MIT License",
+        "",
+        "Copyright (c) 2025 Nous Research",
+        "",
+        "Permission is hereby granted, free of charge, to any person obtaining a copy",
+        "of this software and associated documentation files (the \"Software\"), to deal",
+        "in the Software without restriction, including without limitation the rights",
+        "to use, copy, modify, merge, publish, distribute, sublicense, and/or sell"
+      ]
+    },
+    {
+      "path": "apps/desktop/src/plugins/hermes-bots/LICENSE",
+      "sha256": "5f79d321c17de8ef6e5f34967dc5b484afebeeefd87180890d9741941f6b815f",
+      "opening": [
+        "MIT License",
+        "",
+        "Copyright (c) 2026 Nous Research",
+        "",
+        "Permission is hereby granted, free of charge, to any person obtaining a copy",
+        "of this software and associated documentation files (the \"Software\"), to deal",
+        "in the Software without restriction, including without limitation the rights",
+        "to use, copy, modify, merge, publish, distribute, sublicense, and/or sell"
+      ]
+    },
+    {
+      "path": "optional-skills/creative/ai-presenter-video/LICENSE",
+      "sha256": "5ee4e300085ba144aae1ec5b72774ef5408bd933c1f02f429359313a4251bfad",
+      "opening": [
+        "MIT License",
+        "",
+        "Copyright (c) 2026 lanshu",
+        "",
+        "Permission is hereby granted, free of charge, to any person obtaining a copy",
+        "of this software and associated documentation files (the \"Software\"), to deal",
+        "in the Software without restriction, including without limitation the rights",
+        "to use, copy, modify, merge, publish, distribute, sublicense, and/or sell"
+      ]
+    },
+    {
+      "path": "optional-skills/creative/anatomy/LICENSE.txt",
+      "sha256": "87c078ab9d90a3044f359e6b563d4e6afea7aa060897cf4f21618687b3856796",
+      "opening": [
+        "MIT License",
+        "",
+        "Copyright (c) 2026 Ryan",
+        "",
+        "Permission is hereby granted, free of charge, to any person obtaining a copy",
+        "of this software and associated documentation files (the \"Software\"), to deal",
+        "in the Software without restriction, including without limitation the rights",
+        "to use, copy, modify, merge, publish, distribute, sublicense, and/or sell"
+      ]
+    },
+    {
+      "path": "optional-skills/creative/auteur/LICENSE",
+      "sha256": "bf05f978d8f8023c8eca67afdcac26fdbaf793fbe3b742a06a74d04c793d9cf2",
+      "opening": [
+        "auteur \u2014 ported from https://github.com/agiwhitelist/auteur",
+        "Upstream snapshot: commit 9bca227df9877e60dc45d49783c8cbd885eccd9b (2026-08-06)",
+        "Upstream author / copyright holder: agiwhitelist (https://github.com/agiwhitelist)",
+        "The MIT license text below is reproduced verbatim from the upstream LICENSE.",
+        "",
+        "MIT License",
+        "",
+        "Copyright (c) 2026 agiwhitelist"
+      ]
+    },
+    {
+      "path": "optional-skills/creative/dream-loop/LICENSE.txt",
+      "sha256": "1607e9149a254c619d0ceb4119ed9346e13048c28c1d437d80ff2837e40159da",
+      "opening": [
+        "MIT License",
+        "",
+        "Copyright (c) 2026 Anshu Chimala",
+        "",
+        "Permission is hereby granted, free of charge, to any person obtaining a copy",
+        "of this software and associated documentation files (the \"Software\"), to deal",
+        "in the Software without restriction, including without limitation the rights",
+        "to use, copy, modify, merge, publish, distribute, sublicense, and/or sell"
+      ]
+    },
+    {
+      "path": "optional-skills/creative/ip-as-logo/LICENSE",
+      "sha256": "ff717ba18c263ade5fdaf25a9e7545a34796af984fadcb8f01e91672abe4229e",
+      "opening": [
+        "ip-as-logo \u2014 ported from https://github.com/s1dashu/ip-as-logo-skill",
+        "Upstream snapshot: commit b1bf517c54a407452cfaca98a54668cd052f8e63 (2026-08-20)",
+        "Upstream author / copyright holder: s1dashu (https://github.com/s1dashu)",
+        "The MIT license text below is reproduced verbatim from the upstream LICENSE.",
+        "",
+        "MIT License",
+        "",
+        "Copyright (c) 2026 s1dashu"
+      ]
+    },
+    {
+      "path": "optional-skills/creative/mono-color/LICENSE.txt",
+      "sha256": "2025880f6441e121c76c01bc5996e84a7498d9d5aa7222a10400d303bdd043cb",
+      "opening": [
+        "MIT License",
+        "",
+        "Copyright (c) 2026 Yan Liu",
+        "",
+        "Permission is hereby granted, free of charge, to any person obtaining a copy",
+        "of this software and associated documentation files (the \"Software\"), to deal",
+        "in the Software without restriction, including without limitation the rights",
+        "to use, copy, modify, merge, publish, distribute, sublicense, and/or sell"
+      ]
+    },
+    {
+      "path": "optional-skills/creative/system-atlas/LICENSE.txt",
+      "sha256": "28d538f4ce6d517ea6f04a67fc4a2bf60f69254f696ba21fa1946cc668c21767",
+      "opening": [
+        "MIT License",
+        "",
+        "Copyright (c) 2026 Harshyt Goel",
+        "",
+        "Permission is hereby granted, free of charge, to any person obtaining a copy",
+        "of this software and associated documentation files (the \"Software\"), to deal",
+        "in the Software without restriction, including without limitation the rights",
+        "to use, copy, modify, merge, publish, distribute, sublicense, and/or sell"
+      ]
+    },
+    {
+      "path": "optional-skills/software-development/ast-grep/LICENSE",
+      "sha256": "b083425948376611de9b92b0aeb7377e604505756ea427e541a34d9b030d4dc1",
+      "opening": [
+        "MIT License",
+        "",
+        "Copyright (c) 2026 Yeongyu Kim",
+        "",
+        "Permission is hereby granted, free of charge, to any person obtaining a copy",
+        "of this software and associated documentation files (the \"Software\"), to deal",
+        "in the Software without restriction, including without limitation the rights",
+        "to use, copy, modify, merge, publish, distribute, sublicense, and/or sell"
+      ]
+    },
+    {
+      "path": "optional-skills/software-development/pr-lens/LICENSE.txt",
+      "sha256": "f95e90af396c71c9a94648bd58e4f5bb2dcab4f6ac3ab7d3d2ca3f4e4f4a1ae7",
+      "opening": [
+        "MIT License",
+        "",
+        "Copyright (c) 2026 Coldtea AI",
+        "",
+        "Permission is hereby granted, free of charge, to any person obtaining a copy",
+        "of this software and associated documentation files (the \"Software\"), to deal",
+        "in the Software without restriction, including without limitation the rights",
+        "to use, copy, modify, merge, publish, distribute, sublicense, and/or sell"
+      ]
+    },
+    {
+      "path": "optional-skills/web-development/scrollcraft/LICENSE.txt",
+      "sha256": "dd471a27eca72488a53e6ea6fbe9392d81aa3f01e950e63fe328affb2ddfa6e3",
+      "opening": [
+        "MIT License",
+        "",
+        "Copyright (c) 2026 Nate Herk",
+        "",
+        "Permission is hereby granted, free of charge, to any person obtaining a copy",
+        "of this software and associated documentation files (the \"Software\"), to deal",
+        "in the Software without restriction, including without limitation the rights",
+        "to use, copy, modify, merge, publish, distribute, sublicense, and/or sell"
+      ]
+    },
+    {
+      "path": "plugins/hermes-achievements/LICENSE",
+      "sha256": "5c6bbd852eeff017e73830408977d26e4379c5f9bb6edb03fce171f81db5fe43",
+      "opening": [
+        "MIT License",
+        "",
+        "Copyright (c) 2026 Hermes Achievements contributors",
+        "",
+        "Permission is hereby granted, free of charge, to any person obtaining a copy",
+        "of this software and associated documentation files (the \"Software\"), to deal",
+        "in the Software without restriction, including without limitation the rights",
+        "to use, copy, modify, merge, publish, distribute, sublicense, and/or sell"
+      ]
+    },
+    {
+      "path": "plugins/security-guidance/LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "opening": [
+        "",
+        "                                 Apache License",
+        "                           Version 2.0, January 2004",
+        "                        http://www.apache.org/licenses/",
+        "",
+        "   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION",
+        "",
+        "   1. Definitions."
+      ]
+    },
+    {
+      "path": "plugins/security-guidance/NOTICE",
+      "sha256": "adc3dd09b90dd9240f56d5b9c782986028a312ab150c84a208de1a5d2b948227",
+      "opening": [
+        "Hermes Agent security-guidance plugin",
+        "=====================================",
+        "",
+        "This plugin (plugins/security-guidance/) includes work originally",
+        "published in the claude-plugins-official repository by Anthropic, PBC.,",
+        "licensed under the Apache License, Version 2.0.",
+        "",
+        "    Source:    https://github.com/anthropics/claude-plugins-official"
+      ]
+    },
+    {
+      "path": "skills/creative/humanizer/LICENSE",
+      "sha256": "4ac4810254ab36d45419141aeb8e69bf50652cfafe5b2dab947d06d44e5cbf96",
+      "opening": [
+        "MIT License",
+        "",
+        "Copyright (c) 2025 Siqi Chen",
+        "",
+        "Permission is hereby granted, free of charge, to any person obtaining a copy",
+        "of this software and associated documentation files (the \"Software\"), to deal",
+        "in the Software without restriction, including without limitation the rights",
+        "to use, copy, modify, merge, publish, distribute, sublicense, and/or sell"
+      ]
+    },
+    {
+      "path": "skills/productivity/docx/LICENSE",
+      "sha256": "8aa3c7717d57a68490c31eef4b57b6887e892f0566ff866078ebd76113d357e2",
+      "opening": [
+        "MIT License",
+        "",
+        "Copyright (c) 2026 Nous Research",
+        "",
+        "Permission is hereby granted, free of charge, to any person obtaining a copy",
+        "of this software and associated documentation files (the \"Software\"), to deal",
+        "in the Software without restriction, including without limitation the rights",
+        "to use, copy, modify, merge, publish, distribute, sublicense, and/or sell"
+      ]
+    },
+    {
+      "path": "skills/productivity/pdf/LICENSE",
+      "sha256": "8aa3c7717d57a68490c31eef4b57b6887e892f0566ff866078ebd76113d357e2",
+      "opening": [
+        "MIT License",
+        "",
+        "Copyright (c) 2026 Nous Research",
+        "",
+        "Permission is hereby granted, free of charge, to any person obtaining a copy",
+        "of this software and associated documentation files (the \"Software\"), to deal",
+        "in the Software without restriction, including without limitation the rights",
+        "to use, copy, modify, merge, publish, distribute, sublicense, and/or sell"
+      ]
+    },
+    {
+      "path": "skills/productivity/powerpoint/LICENSE",
+      "sha256": "8aa3c7717d57a68490c31eef4b57b6887e892f0566ff866078ebd76113d357e2",
+      "opening": [
+        "MIT License",
+        "",
+        "Copyright (c) 2026 Nous Research",
+        "",
+        "Permission is hereby granted, free of charge, to any person obtaining a copy",
+        "of this software and associated documentation files (the \"Software\"), to deal",
+        "in the Software without restriction, including without limitation the rights",
+        "to use, copy, modify, merge, publish, distribute, sublicense, and/or sell"
+      ]
+    },
+    {
+      "path": "skills/productivity/xlsx/LICENSE",
+      "sha256": "8aa3c7717d57a68490c31eef4b57b6887e892f0566ff866078ebd76113d357e2",
+      "opening": [
+        "MIT License",
+        "",
+        "Copyright (c) 2026 Nous Research",
+        "",
+        "Permission is hereby granted, free of charge, to any person obtaining a copy",
+        "of this software and associated documentation files (the \"Software\"), to deal",
+        "in the Software without restriction, including without limitation the rights",
+        "to use, copy, modify, merge, publish, distribute, sublicense, and/or sell"
+      ]
+    }
+  ],
+  "declared_core": [
+    "openai==2.24.0; python_version >= '3.14'",
+    "certifi==2026.10.19; python_version >= '3.14'",
+    "truststore==0.10.4; python_version >= '3.14'",
+    "python-dotenv==1.2.2; python_version >= '3.14'",
+    "fire==0.7.1; python_version >= '3.14'",
+    "httpx[socks]==0.28.1; python_version >= '3.14'",
+    "rich==14.3.3; python_version >= '3.14'",
+    "tenacity==9.1.4; python_version >= '3.14'",
+    "tomli-w==1.2.0; python_version >= '3.14'",
+    "ruamel.yaml==0.18.16; python_version >= '3.14'",
+    "ruamel.yaml.clib==0.2.15; python_version >= '3.14' and platform_python_implementation == 'CPython' and (sys_platform == 'darwin' or (sys_platform == 'linux' and platform_machine in 'x86_64 aarch64 i686') or (sys_platform == 'win32' and platform_machine in 'AMD64 x86'))",
+    "requests==2.33.0; python_version >= '3.14'",
+    "jinja2==3.1.6; python_version >= '3.14'",
+    "firecrawl-anydoc==0.2.4; python_version >= '3.14'",
+    "pydantic==2.13.4; python_version >= '3.14'",
+    "prompt_toolkit==3.0.52; python_version >= '3.14'",
+    "croniter==6.0.0; python_version >= '3.14'",
+    "snowballstemmer==3.1.1; python_version >= '3.14'",
+    "packaging==26.0; python_version >= '3.14'",
+    "Markdown==3.10.2; python_version >= '3.14'",
+    "PyJWT[crypto]==2.15.1; python_version >= '3.14'",
+    "urllib3>=2.8.0,<3; python_version >= '3.14'",
+    "cryptography==50.0.1; python_version >= '3.14'",
+    "tzdata==2025.3; sys_platform == 'win32' and python_version >= '3.14'",
+    "psutil==7.2.2; sys_platform != 'android' and python_version >= '3.14'",
+    "psutil @ git+https://github.com/giampaolo/psutil.git@380bd2b59c67b0e1b04bbf3a90b11744f4f96644 ; sys_platform == 'android' and python_version >= '3.14'",
+    "websockets==15.0.1; python_version >= '3.14'",
+    "browser-harness==0.1.13; python_version >= '3.14'",
+    "pathspec==1.1.1; python_version >= '3.14'",
+    "fastapi>=0.104.0,<1; python_version >= '3.14'",
+    "uvicorn>=0.31.0,<1; python_version >= '3.14'",
+    "httptools>=0.6.3,<0.9; python_version >= '3.14'",
+    "watchfiles>=0.20,<2; python_version >= '3.14'",
+    "python-multipart>=0.0.9,<1; python_version >= '3.14'",
+    "ptyprocess>=0.7.0,<1; sys_platform != 'win32' and python_version >= '3.14'",
+    "pywinpty>=3.0.5,<4; sys_platform == 'win32' and python_version >= '3.14'",
+    "pywin32>=306,<312; sys_platform == 'win32' and python_version >= '3.14'",
+    "winrt-windows-applicationmodel>=3.2.1,<4; sys_platform == 'win32' and python_version >= '3.14'",
+    "winrt-windows-foundation>=3.2.1,<4; sys_platform == 'win32' and python_version >= '3.14'",
+    "winrt-windows-foundation-collections>=3.2.1,<4; sys_platform == 'win32' and python_version >= '3.14'",
+    "winrt-windows-services-store>=3.2.1,<4; sys_platform == 'win32' and python_version >= '3.14'",
+    "Pillow==13.0.0; python_version >= '3.14'",
+    "pillow-heif>=1.4.0,<2; python_version >= '3.14'",
+    "resvg-py==0.4.0; python_version >= '3.14'",
+    "concurrent-log-handler==0.9.29; sys_platform == 'win32' and python_version >= '3.14'",
+    "nemo-relay>=0.10,<0.11; ((sys_platform == 'darwin' and platform_machine == 'arm64') or (sys_platform == 'linux' and platform_machine == 'x86_64' and 'android' not in platform_release) or (sys_platform == 'linux' and platform_machine == 'aarch64' and 'android' not in platform_release) or (sys_platform == 'win32' and platform_machine == 'AMD64') or (sys_platform == 'win32' and platform_machine == 'ARM64')) and python_version >= '3.14'"
+  ],
+  "declared_optional": {
+    "uvloop": [
+      "uvloop>=0.15.1,<0.24; sys_platform != 'win32' and sys_platform != 'cygwin' and sys_platform != 'android' and platform_python_implementation != 'PyPy'"
+    ],
+    "anthropic": [
+      "anthropic==0.87.0"
+    ],
+    "exa": [
+      "exa-py==2.10.2"
+    ],
+    "firecrawl": [
+      "firecrawl-py==4.17.0"
+    ],
+    "parallel-web": [
+      "parallel-web==0.4.2"
+    ],
+    "ddgs": [
+      "ddgs==9.16.0"
+    ],
+    "fal": [
+      "fal-client==0.13.1"
+    ],
+    "edge-tts": [
+      "edge-tts==7.3.1"
+    ],
+    "neutts": [
+      "neutts[all]==1.4.1; python_version < '3.14'"
+    ],
+    "kittentts": [
+      "kittentts @ https://github.com/KittenML/KittenTTS/releases/download/0.8.1/kittentts-0.8.1-py3-none-any.whl ; (platform_machine != 'ARM64' or sys_platform != 'win32') and (platform_machine != 'x86_64' or sys_platform != 'darwin') and sys_platform != 'android'",
+      "misaki[en] @ git+https://github.com/NousResearch/misaki.git@f03fd2be7346952a83d3d4845c217fc7667f322d ; (platform_machine != 'ARM64' or sys_platform != 'win32') and (platform_machine != 'x86_64' or sys_platform != 'darwin') and sys_platform != 'android'",
+      "soundfile==0.14.0; (platform_machine != 'ARM64' or sys_platform != 'win32') and (platform_machine != 'x86_64' or sys_platform != 'darwin') and sys_platform != 'android'"
+    ],
+    "piper": [
+      "piper-tts==1.8.0; (platform_machine != 'ARM64' or sys_platform != 'win32') and (platform_machine != 'x86_64' or sys_platform != 'darwin') and sys_platform != 'android'"
+    ],
+    "modal": [
+      "modal==1.5.5"
+    ],
+    "daytona": [
+      "daytona==0.155.0"
+    ],
+    "vercel": [
+      "vercel==0.7.2"
+    ],
+    "google-meet": [
+      "playwright==1.62.0; sys_platform != 'android'",
+      "websockets==15.0.1; sys_platform != 'android'"
+    ],
+    "messaging": [
+      "python-telegram-bot[webhooks]==22.8",
+      "discord.py[voice]==2.7.1",
+      "aiohttp==3.14.5",
+      "brotlicffi==1.2.0.2",
+      "slack-bolt==1.30.0",
+      "slack-sdk==3.44.1",
+      "qrcode==7.4.2"
+    ],
+    "cron": [],
+    "slack": [
+      "slack-bolt==1.30.0",
+      "slack-sdk==3.44.1",
+      "aiohttp==3.14.5"
+    ],
+    "matrix": [
+      "mautrix[encryption]==0.21.1; sys_platform == 'linux'",
+      "aiosqlite==0.22.1; sys_platform == 'linux'",
+      "asyncpg==0.31.0; sys_platform == 'linux'",
+      "aiohttp-socks==0.11.0; sys_platform == 'linux'",
+      "aiohttp==3.14.5; sys_platform == 'linux'"
+    ],
+    "wecom": [
+      "defusedxml==0.7.1"
+    ],
+    "tts-premium": [
+      "elevenlabs==1.59.0"
+    ],
+    "voice": [
+      "faster-whisper==1.2.1; (platform_machine != 'ARM64' or sys_platform != 'win32') and (platform_machine != 'x86_64' or platform_system != 'Darwin') and sys_platform != 'android'",
+      "sounddevice==0.5.5",
+      "numpy==2.4.3"
+    ],
+    "wake": [
+      "pyopen-wakeword==1.1.0; (platform_machine != 'ARM64' or sys_platform != 'win32') and (platform_machine != 'x86_64' or sys_platform != 'darwin')",
+      "sherpa-onnx==1.13.8",
+      "sherpa-onnx-core==1.13.8",
+      "sentencepiece==0.2.2",
+      "pypinyin==0.55.0",
+      "pvporcupine==4.0.3",
+      "sounddevice==0.5.5",
+      "numpy==2.4.3"
+    ],
+    "telegram": [
+      "python-telegram-bot[webhooks]==22.8"
+    ],
+    "discord": [
+      "discord.py[voice]==2.7.1"
+    ],
+    "stt-whisper": [
+      "faster-whisper==1.2.1; (platform_machine != 'ARM64' or sys_platform != 'win32') and (platform_machine != 'x86_64' or platform_system != 'Darwin') and sys_platform != 'android'"
+    ],
+    "audio-io": [
+      "sounddevice==0.5.5",
+      "numpy==2.4.3"
+    ],
+    "silk": [
+      "pilk==0.2.4"
+    ],
+    "wake-openwakeword": [
+      "pyopen-wakeword==1.1.0; (platform_machine != 'ARM64' or sys_platform != 'win32') and (platform_machine != 'x86_64' or sys_platform != 'darwin')"
+    ],
+    "wake-sherpa": [
+      "sherpa-onnx==1.13.8",
+      "sherpa-onnx-core==1.13.8",
+      "sentencepiece==0.2.2",
+      "pypinyin==0.55.0"
+    ],
+    "wake-porcupine": [
+      "pvporcupine==4.0.3"
+    ],
+    "google-chat": [
+      "google-cloud-pubsub==2.39.2; platform_machine != 'ARM64' or sys_platform != 'win32'"
+    ],
+    "doc-extract": [
+      "firecrawl-anydoc==0.2.4"
+    ],
+    "trace-upload": [
+      "huggingface-hub==1.24.0"
+    ],
+    "vision": [],
+    "pty": [],
+    "mcp": [
+      "mcp==2.3.0",
+      "httpx2==2.12.0",
+      "starlette==1.3.1"
+    ],
+    "nemo-relay": [],
+    "sms": [
+      "aiohttp==3.14.5"
+    ],
+    "teams": [
+      "microsoft-teams-apps==2.0.13.4",
+      "aiohttp==3.14.5"
+    ],
+    "computer-use": [
+      "mcp==2.3.0",
+      "httpx2==2.12.0",
+      "starlette==1.3.1"
+    ],
+    "acp": [
+      "agent-client-protocol==0.9.0"
+    ],
+    "mistral": [
+      "mistralai==2.10.1"
+    ],
+    "otlp": [
+      "opentelemetry-sdk==1.45.1",
+      "opentelemetry-exporter-otlp-proto-http==1.45.1"
+    ],
+    "bedrock": [
+      "boto3==1.42.89"
+    ],
+    "vertex": [
+      "google-auth==2.55.1"
+    ],
+    "azure-identity": [
+      "azure-identity==1.25.3"
+    ],
+    "termux": [
+      "python-telegram-bot[webhooks]==22.8",
+      "hermes-agent[cron]",
+      "hermes-agent[mcp]",
+      "hermes-agent[acp]"
+    ],
+    "termux-all": [
+      "hermes-agent[termux]",
+      "hermes-agent[google]",
+      "hermes-agent[sms]",
+      "hermes-agent[web]",
+      "hermes-agent[pty]"
+    ],
+    "dingtalk": [
+      "dingtalk-stream==0.24.3",
+      "alibabacloud-dingtalk==2.2.42",
+      "qrcode==7.4.2"
+    ],
+    "feishu": [
+      "lark-oapi==1.6.8",
+      "qrcode==7.4.2"
+    ],
+    "google": [
+      "google-api-python-client==2.194.0",
+      "google-auth==2.55.1",
+      "google-auth-oauthlib==1.3.1",
+      "google-auth-httplib2==0.3.1",
+      "httplib2==0.32.0",
+      "pyasn1==0.6.4"
+    ],
+    "youtube": [
+      "youtube-transcript-api==1.2.4"
+    ],
+    "web": [
+      "fastapi==0.133.1",
+      "uvicorn==0.41.0",
+      "starlette==1.3.1",
+      "python-multipart==0.0.32"
+    ],
+    "all": [
+      "hermes-agent[cron]",
+      "hermes-agent[pty]",
+      "hermes-agent[mcp]",
+      "hermes-agent[uvloop]",
+      "hermes-agent[sms]",
+      "hermes-agent[acp]",
+      "hermes-agent[google]",
+      "hermes-agent[web]",
+      "hermes-agent[youtube]"
+    ]
+  },
+  "declared_development": {
+    "dev": [
+      "debugpy==1.8.20",
+      "pytest==9.1.1",
+      "pytest-asyncio==1.3.0",
+      "mcp==2.3.0",
+      "httpx2==2.12.0",
+      "starlette==1.3.1",
+      "ty==0.0.82",
+      "ruff==0.15.10",
+      "setuptools==83.0.0"
+    ],
+    "test": [
+      "distlib==0.4.3; sys_platform == 'win32'",
+      "anthropic==0.87.0"
+    ]
+  },
+  "installed_distributions": [
+    {
+      "name": "annotated-doc",
+      "version": "0.0.5",
+      "license_expression": "MIT",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "annotated_doc-0.0.5.dist-info/licenses/LICENSE",
+          "sha256": "fff170779a6acbf65abdb405c087f1cee1786691e4a96a4034517e4a504a0cdf"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "annotated-types",
+      "version": "0.8.0",
+      "license_expression": "MIT",
+      "license": null,
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_files": [
+        {
+          "path": "annotated_types-0.8.0.dist-info/licenses/LICENSE",
+          "sha256": "fe1049884b1a0d9342901e88e07f32925d24b3121d9972b6a6805fb9824b095d"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "anthropic",
+      "version": "0.87.0",
+      "license_expression": null,
+      "license": "MIT",
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_files": [
+        {
+          "path": "anthropic-0.87.0.dist-info/licenses/LICENSE",
+          "sha256": "8bf96984ff8bcfae7e48cae76a529e8a25317ba9e02abf7fd3cc64fdf95657a6"
+        }
+      ],
+      "requires": [
+        "anyio<5,>=3.5.0",
+        "distro<2,>=1.7.0",
+        "docstring-parser<1,>=0.15",
+        "httpx<1,>=0.25.0",
+        "jiter<1,>=0.4.0",
+        "pydantic<3,>=1.9.0",
+        "sniffio",
+        "typing-extensions<5,>=4.14",
+        "aiohttp; extra == 'aiohttp'",
+        "httpx-aiohttp>=0.1.9; extra == 'aiohttp'",
+        "boto3>=1.28.57; extra == 'bedrock'",
+        "botocore>=1.31.57; extra == 'bedrock'",
+        "mcp>=1.0; (python_version >= '3.10') and extra == 'mcp'",
+        "google-auth[requests]<3,>=2; extra == 'vertex'"
+      ]
+    },
+    {
+      "name": "anyio",
+      "version": "4.14.2",
+      "license_expression": "MIT",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "anyio-4.14.2.dist-info/licenses/LICENSE",
+          "sha256": "5361ac9dc58f2ef5fd2e9b09c68297c17f04950909bbc8023bdb82eacf22c2b0"
+        }
+      ],
+      "requires": [
+        "exceptiongroup>=1.0.2; python_version < \"3.11\"",
+        "idna>=2.8",
+        "typing_extensions>=4.5; python_version < \"3.13\"",
+        "trio>=0.32.0; extra == \"trio\""
+      ]
+    },
+    {
+      "name": "attrs",
+      "version": "26.1.0",
+      "license_expression": "MIT",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "attrs-26.1.0.dist-info/licenses/LICENSE",
+          "sha256": "882115c95dfc2af1eeb6714f8ec6d5cbcabf667caff8729f42420da63f714e9f"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "browser-harness",
+      "version": "0.1.13",
+      "license_expression": "MIT",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "browser_harness-0.1.13.dist-info/licenses/LICENSE",
+          "sha256": "5afa3d97bf1e6f998d587fa101e3fe0d0c416840b7fe77bcd6ae97690a334631"
+        }
+      ],
+      "requires": [
+        "cdp-use==1.4.5",
+        "fetch-use==0.4.0",
+        "pillow==12.3.0",
+        "websockets==15.0.1",
+        "mcp==2.1.1; extra == \"mcp\""
+      ]
+    },
+    {
+      "name": "cdp-use",
+      "version": "1.4.5",
+      "license_expression": null,
+      "license": "MIT",
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_files": [
+        {
+          "path": "cdp_use-1.4.5.dist-info/licenses/LICENSE",
+          "sha256": "a26a13d8211735355b8ab3e1fab081eb91ea2d2b5a64e6b9b0e3c18382d55f67"
+        }
+      ],
+      "requires": [
+        "httpx>=0.28.1",
+        "typing-extensions>=4.12.2",
+        "websockets>=15.0.1"
+      ]
+    },
+    {
+      "name": "certifi",
+      "version": "2026.10.19",
+      "license_expression": null,
+      "license": "MPL-2.0",
+      "license_classifiers": [
+        "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)"
+      ],
+      "license_files": [
+        {
+          "path": "certifi-2026.10.19.dist-info/licenses/LICENSE",
+          "sha256": "e93716da6b9c0d5a4a1df60fe695b370f0695603d21f6f83f053e42cfc10caf7"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "cffi",
+      "version": "2.1.1",
+      "license_expression": "MIT-0",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "cffi-2.1.1.dist-info/licenses/LICENSE",
+          "sha256": "5ba24ddc57067f9249add644c3afc41a5d6dc37e23433ef759d95df370b0af63"
+        }
+      ],
+      "requires": [
+        "pycparser; implementation_name != \"PyPy\""
+      ]
+    },
+    {
+      "name": "charset-normalizer",
+      "version": "3.5.1",
+      "license_expression": null,
+      "license": "MIT",
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "charset_normalizer-3.5.1.dist-info/licenses/LICENSE",
+          "sha256": "6d0d41bfe170ac6c7dc248c9a63e254d0fb45a60d50a8257d0af92c6e249b887"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "click",
+      "version": "8.4.2",
+      "license_expression": "BSD-3-Clause",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "click-8.4.2.dist-info/licenses/LICENSE.txt",
+          "sha256": "9a8ad106a394e853bfe21f42f4e72d592819a22805d991b5f3275029292b658d"
+        }
+      ],
+      "requires": [
+        "colorama; platform_system == 'Windows'"
+      ]
+    },
+    {
+      "name": "croniter",
+      "version": "6.0.0",
+      "license_expression": null,
+      "license": "MIT License",
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_files": [
+        {
+          "path": "croniter-6.0.0.dist-info/LICENSE",
+          "sha256": "a8f952e6c6bb30b0cfcf71c304e3931160d2a9b578d6eddfa5cc18c832e17ed3"
+        }
+      ],
+      "requires": [
+        "python-dateutil",
+        "pytz>2021.1"
+      ]
+    },
+    {
+      "name": "cryptography",
+      "version": "50.0.1",
+      "license_expression": "Apache-2.0 OR BSD-3-Clause",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "cryptography-50.0.1.dist-info/licenses/LICENSE",
+          "sha256": "3e0c7c091a948b82533ba98fd7cbb40432d6f1a9acbf85f5922d2f99a93ae6bb"
+        },
+        {
+          "path": "cryptography-50.0.1.dist-info/licenses/LICENSE.APACHE",
+          "sha256": "aac73b3148f6d1d7111dbca32099f68d26c644c6813ae1e4f05f6579aa2663fe"
+        },
+        {
+          "path": "cryptography-50.0.1.dist-info/licenses/LICENSE.BSD",
+          "sha256": "602c4c7482de6479dd2e9793cda275e5e63d773dacd1eca689232ab7008fb4fb"
+        }
+      ],
+      "requires": [
+        "cffi>=2.0.0 ; platform_python_implementation != 'PyPy'",
+        "typing-extensions>=4.13.2 ; python_full_version < '3.11'",
+        "bcrypt>=3.1.5 ; extra == 'ssh'"
+      ]
+    },
+    {
+      "name": "debugpy",
+      "version": "1.8.20",
+      "license_expression": null,
+      "license": "MIT",
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_files": [
+        {
+          "path": "debugpy-1.8.20.dist-info/licenses/LICENSE",
+          "sha256": "83c3ed394e600067c17b7d1c09bd3ea20f0703b8c0716e6a9f414b99fcbdf810"
+        },
+        {
+          "path": "debugpy/ThirdPartyNotices.txt",
+          "sha256": "5b3993f39dc19473ad904895ff1b64f7a89acd87950ca581dada8a32d726fe3a"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "distro",
+      "version": "1.9.0",
+      "license_expression": null,
+      "license": "Apache License, Version 2.0",
+      "license_classifiers": [
+        "License :: OSI Approved :: Apache Software License"
+      ],
+      "license_files": [
+        {
+          "path": "distro-1.9.0.dist-info/LICENSE",
+          "sha256": "cb5e8e7e5f4a3988e1063c142c60dc2df75605f4c46515e776e3aca6df976e14"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "docstring_parser",
+      "version": "0.18.0",
+      "license_expression": null,
+      "license": "MIT",
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_files": [
+        {
+          "path": "docstring_parser-0.18.0.dist-info/licenses/LICENSE.md",
+          "sha256": "dfe514a337ae8417abd31a8af707bbd6172b03e5430bb083e145899ea97a3eea"
+        }
+      ],
+      "requires": [
+        "pre-commit>=2.16.0; (python_version >= '3.9') and extra == 'dev'",
+        "pydoctor>=25.4.0; extra == 'dev'",
+        "pytest; extra == 'dev'",
+        "pydoctor>=25.4.0; extra == 'docs'",
+        "pytest; extra == 'test'"
+      ]
+    },
+    {
+      "name": "fastapi",
+      "version": "0.133.1",
+      "license_expression": "MIT",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "fastapi-0.133.1.dist-info/licenses/LICENSE",
+          "sha256": "4ec89ffc81485b97fec584b2d4a961032eeffe834453894fd9c1274906cc744e"
+        }
+      ],
+      "requires": [
+        "starlette>=0.40.0",
+        "pydantic>=2.7.0",
+        "typing-extensions>=4.8.0",
+        "typing-inspection>=0.4.2",
+        "annotated-doc>=0.0.2",
+        "fastapi-cli[standard]>=0.0.8; extra == \"standard\"",
+        "httpx<1.0.0,>=0.23.0; extra == \"standard\"",
+        "jinja2>=3.1.5; extra == \"standard\"",
+        "python-multipart>=0.0.18; extra == \"standard\"",
+        "email-validator>=2.0.0; extra == \"standard\"",
+        "uvicorn[standard]>=0.12.0; extra == \"standard\"",
+        "pydantic-settings>=2.0.0; extra == \"standard\"",
+        "pydantic-extra-types>=2.0.0; extra == \"standard\"",
+        "fastapi-cli[standard-no-fastapi-cloud-cli]>=0.0.8; extra == \"standard-no-fastapi-cloud-cli\"",
+        "httpx<1.0.0,>=0.23.0; extra == \"standard-no-fastapi-cloud-cli\"",
+        "jinja2>=3.1.5; extra == \"standard-no-fastapi-cloud-cli\"",
+        "python-multipart>=0.0.18; extra == \"standard-no-fastapi-cloud-cli\"",
+        "email-validator>=2.0.0; extra == \"standard-no-fastapi-cloud-cli\"",
+        "uvicorn[standard]>=0.12.0; extra == \"standard-no-fastapi-cloud-cli\"",
+        "pydantic-settings>=2.0.0; extra == \"standard-no-fastapi-cloud-cli\"",
+        "pydantic-extra-types>=2.0.0; extra == \"standard-no-fastapi-cloud-cli\"",
+        "fastapi-cli[standard]>=0.0.8; extra == \"all\"",
+        "httpx<1.0.0,>=0.23.0; extra == \"all\"",
+        "jinja2>=3.1.5; extra == \"all\"",
+        "python-multipart>=0.0.18; extra == \"all\"",
+        "itsdangerous>=1.1.0; extra == \"all\"",
+        "pyyaml>=5.3.1; extra == \"all\"",
+        "email-validator>=2.0.0; extra == \"all\"",
+        "uvicorn[standard]>=0.12.0; extra == \"all\"",
+        "pydantic-settings>=2.0.0; extra == \"all\"",
+        "pydantic-extra-types>=2.0.0; extra == \"all\""
+      ]
+    },
+    {
+      "name": "fetch-use",
+      "version": "0.4.0",
+      "license_expression": null,
+      "license": "MIT",
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_files": [],
+      "requires": [
+        "pytest-asyncio>=0.23.0; extra == 'dev'",
+        "pytest>=8.0.0; extra == 'dev'",
+        "ruff>=0.4.0; extra == 'dev'"
+      ]
+    },
+    {
+      "name": "fire",
+      "version": "0.7.1",
+      "license_expression": null,
+      "license": "Apache-2.0",
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "fire-0.7.1.dist-info/licenses/LICENSE",
+          "sha256": "a5de77b62266bca0bb97bf058992f0b0f308a83a8ca55ee10fbf6bd8ed8f7ed0"
+        }
+      ],
+      "requires": [
+        "termcolor",
+        "setuptools<=80.9.0; extra == \"test\"",
+        "pip; extra == \"test\"",
+        "pylint<3.3.8; extra == \"test\"",
+        "pytest<=8.4.1; extra == \"test\"",
+        "pytest-pylint<=1.1.2; extra == \"test\"",
+        "pytest-runner<7.0.0; extra == \"test\"",
+        "termcolor<3.2.0; extra == \"test\"",
+        "hypothesis<6.136.0; extra == \"test\"",
+        "levenshtein<=0.27.1; extra == \"test\""
+      ]
+    },
+    {
+      "name": "firecrawl-anydoc",
+      "version": "0.2.4",
+      "license_expression": "MIT",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [],
+      "requires": []
+    },
+    {
+      "name": "h11",
+      "version": "0.16.0",
+      "license_expression": null,
+      "license": "MIT",
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_files": [
+        {
+          "path": "h11-0.16.0.dist-info/licenses/LICENSE.txt",
+          "sha256": "37db5bb85926db28a427a25867f10b1232003aea1be69ccb851138adb8e6f361"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "hermes-agent",
+      "version": "0.0.0",
+      "license_expression": "MIT",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "hermes_agent-0.0.0.dist-info/licenses/LICENSE",
+          "sha256": "821556e6336796450ab852d375117b48a4887e71d255794fd6318d99982a5ab6"
+        }
+      ],
+      "requires": [
+        "openai==2.24.0; python_version >= \"3.14\"",
+        "certifi==2026.10.19; python_version >= \"3.14\"",
+        "truststore==0.10.4; python_version >= \"3.14\"",
+        "python-dotenv==1.2.2; python_version >= \"3.14\"",
+        "fire==0.7.1; python_version >= \"3.14\"",
+        "httpx[socks]==0.28.1; python_version >= \"3.14\"",
+        "rich==14.3.3; python_version >= \"3.14\"",
+        "tenacity==9.1.4; python_version >= \"3.14\"",
+        "tomli-w==1.2.0; python_version >= \"3.14\"",
+        "ruamel.yaml==0.18.16; python_version >= \"3.14\"",
+        "ruamel.yaml.clib==0.2.15; python_version >= \"3.14\" and platform_python_implementation == \"CPython\" and (sys_platform == \"darwin\" or (sys_platform == \"linux\" and platform_machine in \"x86_64 aarch64 i686\") or (sys_platform == \"win32\" and platform_machine in \"AMD64 x86\"))",
+        "requests==2.33.0; python_version >= \"3.14\"",
+        "jinja2==3.1.6; python_version >= \"3.14\"",
+        "firecrawl-anydoc==0.2.4; python_version >= \"3.14\"",
+        "pydantic==2.13.4; python_version >= \"3.14\"",
+        "prompt_toolkit==3.0.52; python_version >= \"3.14\"",
+        "croniter==6.0.0; python_version >= \"3.14\"",
+        "snowballstemmer==3.1.1; python_version >= \"3.14\"",
+        "packaging==26.0; python_version >= \"3.14\"",
+        "Markdown==3.10.2; python_version >= \"3.14\"",
+        "PyJWT[crypto]==2.15.1; python_version >= \"3.14\"",
+        "urllib3<3,>=2.8.0; python_version >= \"3.14\"",
+        "cryptography==50.0.1; python_version >= \"3.14\"",
+        "tzdata==2025.3; sys_platform == \"win32\" and python_version >= \"3.14\"",
+        "psutil==7.2.2; sys_platform != \"android\" and python_version >= \"3.14\"",
+        "psutil @ git+https://github.com/giampaolo/psutil.git@380bd2b59c67b0e1b04bbf3a90b11744f4f96644 ; sys_platform == \"android\" and python_version >= \"3.14\"",
+        "websockets==15.0.1; python_version >= \"3.14\"",
+        "browser-harness==0.1.13; python_version >= \"3.14\"",
+        "pathspec==1.1.1; python_version >= \"3.14\"",
+        "fastapi<1,>=0.104.0; python_version >= \"3.14\"",
+        "uvicorn<1,>=0.31.0; python_version >= \"3.14\"",
+        "httptools<0.9,>=0.6.3; python_version >= \"3.14\"",
+        "watchfiles<2,>=0.20; python_version >= \"3.14\"",
+        "python-multipart<1,>=0.0.9; python_version >= \"3.14\"",
+        "ptyprocess<1,>=0.7.0; sys_platform != \"win32\" and python_version >= \"3.14\"",
+        "pywinpty<4,>=3.0.5; sys_platform == \"win32\" and python_version >= \"3.14\"",
+        "pywin32<312,>=306; sys_platform == \"win32\" and python_version >= \"3.14\"",
+        "winrt-windows-applicationmodel<4,>=3.2.1; sys_platform == \"win32\" and python_version >= \"3.14\"",
+        "winrt-windows-foundation<4,>=3.2.1; sys_platform == \"win32\" and python_version >= \"3.14\"",
+        "winrt-windows-foundation-collections<4,>=3.2.1; sys_platform == \"win32\" and python_version >= \"3.14\"",
+        "winrt-windows-services-store<4,>=3.2.1; sys_platform == \"win32\" and python_version >= \"3.14\"",
+        "Pillow==13.0.0; python_version >= \"3.14\"",
+        "pillow-heif<2,>=1.4.0; python_version >= \"3.14\"",
+        "resvg-py==0.4.0; python_version >= \"3.14\"",
+        "concurrent-log-handler==0.9.29; sys_platform == \"win32\" and python_version >= \"3.14\"",
+        "nemo-relay<0.11,>=0.10; ((sys_platform == \"darwin\" and platform_machine == \"arm64\") or (sys_platform == \"linux\" and platform_machine == \"x86_64\" and \"android\" not in platform_release) or (sys_platform == \"linux\" and platform_machine == \"aarch64\" and \"android\" not in platform_release) or (sys_platform == \"win32\" and platform_machine == \"AMD64\") or (sys_platform == \"win32\" and platform_machine == \"ARM64\")) and python_version >= \"3.14\"",
+        "uvloop<0.24,>=0.15.1; (sys_platform != \"win32\" and sys_platform != \"cygwin\" and sys_platform != \"android\" and platform_python_implementation != \"PyPy\") and extra == \"uvloop\"",
+        "anthropic==0.87.0; extra == \"anthropic\"",
+        "exa-py==2.10.2; extra == \"exa\"",
+        "firecrawl-py==4.17.0; extra == \"firecrawl\"",
+        "parallel-web==0.4.2; extra == \"parallel-web\"",
+        "ddgs==9.16.0; extra == \"ddgs\"",
+        "fal-client==0.13.1; extra == \"fal\"",
+        "edge-tts==7.3.1; extra == \"edge-tts\"",
+        "neutts[all]==1.4.1; python_version < \"3.14\" and extra == \"neutts\"",
+        "kittentts @ https://github.com/KittenML/KittenTTS/releases/download/0.8.1/kittentts-0.8.1-py3-none-any.whl ; ((platform_machine != \"ARM64\" or sys_platform != \"win32\") and (platform_machine != \"x86_64\" or sys_platform != \"darwin\") and sys_platform != \"android\") and extra == \"kittentts\"",
+        "misaki[en] @ git+https://github.com/NousResearch/misaki.git@f03fd2be7346952a83d3d4845c217fc7667f322d ; ((platform_machine != \"ARM64\" or sys_platform != \"win32\") and (platform_machine != \"x86_64\" or sys_platform != \"darwin\") and sys_platform != \"android\") and extra == \"kittentts\"",
+        "soundfile==0.14.0; ((platform_machine != \"ARM64\" or sys_platform != \"win32\") and (platform_machine != \"x86_64\" or sys_platform != \"darwin\") and sys_platform != \"android\") and extra == \"kittentts\"",
+        "piper-tts==1.8.0; ((platform_machine != \"ARM64\" or sys_platform != \"win32\") and (platform_machine != \"x86_64\" or sys_platform != \"darwin\") and sys_platform != \"android\") and extra == \"piper\"",
+        "modal==1.5.5; extra == \"modal\"",
+        "daytona==0.155.0; extra == \"daytona\"",
+        "vercel==0.7.2; extra == \"vercel\"",
+        "playwright==1.62.0; sys_platform != \"android\" and extra == \"google-meet\"",
+        "websockets==15.0.1; sys_platform != \"android\" and extra == \"google-meet\"",
+        "python-telegram-bot[webhooks]==22.8; extra == \"messaging\"",
+        "discord.py[voice]==2.7.1; extra == \"messaging\"",
+        "aiohttp==3.14.5; extra == \"messaging\"",
+        "brotlicffi==1.2.0.2; extra == \"messaging\"",
+        "slack-bolt==1.30.0; extra == \"messaging\"",
+        "slack-sdk==3.44.1; extra == \"messaging\"",
+        "qrcode==7.4.2; extra == \"messaging\"",
+        "slack-bolt==1.30.0; extra == \"slack\"",
+        "slack-sdk==3.44.1; extra == \"slack\"",
+        "aiohttp==3.14.5; extra == \"slack\"",
+        "mautrix[encryption]==0.21.1; sys_platform == \"linux\" and extra == \"matrix\"",
+        "aiosqlite==0.22.1; sys_platform == \"linux\" and extra == \"matrix\"",
+        "asyncpg==0.31.0; sys_platform == \"linux\" and extra == \"matrix\"",
+        "aiohttp-socks==0.11.0; sys_platform == \"linux\" and extra == \"matrix\"",
+        "aiohttp==3.14.5; sys_platform == \"linux\" and extra == \"matrix\"",
+        "defusedxml==0.7.1; extra == \"wecom\"",
+        "elevenlabs==1.59.0; extra == \"tts-premium\"",
+        "faster-whisper==1.2.1; ((platform_machine != \"ARM64\" or sys_platform != \"win32\") and (platform_machine != \"x86_64\" or platform_system != \"Darwin\") and sys_platform != \"android\") and extra == \"voice\"",
+        "sounddevice==0.5.5; extra == \"voice\"",
+        "numpy==2.4.3; extra == \"voice\"",
+        "pyopen-wakeword==1.1.0; ((platform_machine != \"ARM64\" or sys_platform != \"win32\") and (platform_machine != \"x86_64\" or sys_platform != \"darwin\")) and extra == \"wake\"",
+        "sherpa-onnx==1.13.8; extra == \"wake\"",
+        "sherpa-onnx-core==1.13.8; extra == \"wake\"",
+        "sentencepiece==0.2.2; extra == \"wake\"",
+        "pypinyin==0.55.0; extra == \"wake\"",
+        "pvporcupine==4.0.3; extra == \"wake\"",
+        "sounddevice==0.5.5; extra == \"wake\"",
+        "numpy==2.4.3; extra == \"wake\"",
+        "python-telegram-bot[webhooks]==22.8; extra == \"telegram\"",
+        "discord.py[voice]==2.7.1; extra == \"discord\"",
+        "faster-whisper==1.2.1; ((platform_machine != \"ARM64\" or sys_platform != \"win32\") and (platform_machine != \"x86_64\" or platform_system != \"Darwin\") and sys_platform != \"android\") and extra == \"stt-whisper\"",
+        "sounddevice==0.5.5; extra == \"audio-io\"",
+        "numpy==2.4.3; extra == \"audio-io\"",
+        "pilk==0.2.4; extra == \"silk\"",
+        "pyopen-wakeword==1.1.0; ((platform_machine != \"ARM64\" or sys_platform != \"win32\") and (platform_machine != \"x86_64\" or sys_platform != \"darwin\")) and extra == \"wake-openwakeword\"",
+        "sherpa-onnx==1.13.8; extra == \"wake-sherpa\"",
+        "sherpa-onnx-core==1.13.8; extra == \"wake-sherpa\"",
+        "sentencepiece==0.2.2; extra == \"wake-sherpa\"",
+        "pypinyin==0.55.0; extra == \"wake-sherpa\"",
+        "pvporcupine==4.0.3; extra == \"wake-porcupine\"",
+        "google-cloud-pubsub==2.39.2; (platform_machine != \"ARM64\" or sys_platform != \"win32\") and extra == \"google-chat\"",
+        "firecrawl-anydoc==0.2.4; extra == \"doc-extract\"",
+        "huggingface-hub==1.24.0; extra == \"trace-upload\"",
+        "mcp==2.3.0; extra == \"mcp\"",
+        "httpx2==2.12.0; extra == \"mcp\"",
+        "starlette==1.3.1; extra == \"mcp\"",
+        "aiohttp==3.14.5; extra == \"sms\"",
+        "microsoft-teams-apps==2.0.13.4; extra == \"teams\"",
+        "aiohttp==3.14.5; extra == \"teams\"",
+        "mcp==2.3.0; extra == \"computer-use\"",
+        "httpx2==2.12.0; extra == \"computer-use\"",
+        "starlette==1.3.1; extra == \"computer-use\"",
+        "agent-client-protocol==0.9.0; extra == \"acp\"",
+        "mistralai==2.10.1; extra == \"mistral\"",
+        "opentelemetry-sdk==1.45.1; extra == \"otlp\"",
+        "opentelemetry-exporter-otlp-proto-http==1.45.1; extra == \"otlp\"",
+        "boto3==1.42.89; extra == \"bedrock\"",
+        "google-auth==2.55.1; extra == \"vertex\"",
+        "azure-identity==1.25.3; extra == \"azure-identity\"",
+        "python-telegram-bot[webhooks]==22.8; extra == \"termux\"",
+        "hermes-agent[cron]; extra == \"termux\"",
+        "hermes-agent[mcp]; extra == \"termux\"",
+        "hermes-agent[acp]; extra == \"termux\"",
+        "hermes-agent[termux]; extra == \"termux-all\"",
+        "hermes-agent[google]; extra == \"termux-all\"",
+        "hermes-agent[sms]; extra == \"termux-all\"",
+        "hermes-agent[web]; extra == \"termux-all\"",
+        "hermes-agent[pty]; extra == \"termux-all\"",
+        "dingtalk-stream==0.24.3; extra == \"dingtalk\"",
+        "alibabacloud-dingtalk==2.2.42; extra == \"dingtalk\"",
+        "qrcode==7.4.2; extra == \"dingtalk\"",
+        "lark-oapi==1.6.8; extra == \"feishu\"",
+        "qrcode==7.4.2; extra == \"feishu\"",
+        "google-api-python-client==2.194.0; extra == \"google\"",
+        "google-auth==2.55.1; extra == \"google\"",
+        "google-auth-oauthlib==1.3.1; extra == \"google\"",
+        "google-auth-httplib2==0.3.1; extra == \"google\"",
+        "httplib2==0.32.0; extra == \"google\"",
+        "pyasn1==0.6.4; extra == \"google\"",
+        "youtube-transcript-api==1.2.4; extra == \"youtube\"",
+        "fastapi==0.133.1; extra == \"web\"",
+        "uvicorn==0.41.0; extra == \"web\"",
+        "starlette==1.3.1; extra == \"web\"",
+        "python-multipart==0.0.32; extra == \"web\"",
+        "hermes-agent[cron]; extra == \"all\"",
+        "hermes-agent[pty]; extra == \"all\"",
+        "hermes-agent[mcp]; extra == \"all\"",
+        "hermes-agent[uvloop]; extra == \"all\"",
+        "hermes-agent[sms]; extra == \"all\"",
+        "hermes-agent[acp]; extra == \"all\"",
+        "hermes-agent[google]; extra == \"all\"",
+        "hermes-agent[web]; extra == \"all\"",
+        "hermes-agent[youtube]; extra == \"all\""
+      ]
+    },
+    {
+      "name": "httpcore",
+      "version": "1.0.9",
+      "license_expression": "BSD-3-Clause",
+      "license": null,
+      "license_classifiers": [
+        "License :: OSI Approved :: BSD License"
+      ],
+      "license_files": [
+        {
+          "path": "httpcore-1.0.9.dist-info/licenses/LICENSE.md",
+          "sha256": "fdcb59154c74cbaba16a11242f7740bea9f23d6feb5547917d8c5f94a80392a5"
+        }
+      ],
+      "requires": [
+        "certifi",
+        "h11>=0.16",
+        "anyio<5.0,>=4.0; extra == 'asyncio'",
+        "h2<5,>=3; extra == 'http2'",
+        "socksio==1.*; extra == 'socks'",
+        "trio<1.0,>=0.22.0; extra == 'trio'"
+      ]
+    },
+    {
+      "name": "httpcore2",
+      "version": "2.12.0",
+      "license_expression": "BSD-3-Clause",
+      "license": null,
+      "license_classifiers": [
+        "License :: OSI Approved :: BSD License"
+      ],
+      "license_files": [
+        {
+          "path": "httpcore2-2.12.0.dist-info/licenses/LICENSE.md",
+          "sha256": "c4df125c807b0613501e943a5c92496dd11d2c16604ce396097a8dde396304d9"
+        }
+      ],
+      "requires": [
+        "h11>=0.16",
+        "truststore>=0.10",
+        "anyio<5.0,>=4.5.0; extra == 'asyncio'",
+        "h2<5,>=3; extra == 'http2'",
+        "socksio==1.*; extra == 'socks'",
+        "trio<1.0,>=0.33.0; extra == 'trio'"
+      ]
+    },
+    {
+      "name": "httptools",
+      "version": "0.8.0",
+      "license_expression": "MIT",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "httptools-0.8.0.dist-info/licenses/LICENSE",
+          "sha256": "f4573e7cb7676745fb5b8d36fa548aa93e391cfb6872ddacd65130c45ea6a92d"
+        },
+        {
+          "path": "httptools-0.8.0.dist-info/licenses/vendor/http-parser/LICENSE-MIT",
+          "sha256": "79e6ba8b687cb54786207342b9b6fcee0ac10218453ed9009b84d949b2233cc0"
+        },
+        {
+          "path": "httptools-0.8.0.dist-info/licenses/vendor/llhttp/LICENSE",
+          "sha256": "628168d68bb5a8a17e0bbefb3bd74e326e1edc20583d76f52f457c82c921867d"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "httpx",
+      "version": "0.28.1",
+      "license_expression": null,
+      "license": "BSD-3-Clause",
+      "license_classifiers": [
+        "License :: OSI Approved :: BSD License"
+      ],
+      "license_files": [
+        {
+          "path": "httpx-0.28.1.dist-info/licenses/LICENSE.md",
+          "sha256": "4ec59d544f12b5f539a3a716fd321ac58ccd8030b465221f2c880200cdf28d8d"
+        }
+      ],
+      "requires": [
+        "anyio",
+        "certifi",
+        "httpcore==1.*",
+        "idna",
+        "brotli; (platform_python_implementation == 'CPython') and extra == 'brotli'",
+        "brotlicffi; (platform_python_implementation != 'CPython') and extra == 'brotli'",
+        "click==8.*; extra == 'cli'",
+        "pygments==2.*; extra == 'cli'",
+        "rich<14,>=10; extra == 'cli'",
+        "h2<5,>=3; extra == 'http2'",
+        "socksio==1.*; extra == 'socks'",
+        "zstandard>=0.18.0; extra == 'zstd'"
+      ]
+    },
+    {
+      "name": "httpx2",
+      "version": "2.12.0",
+      "license_expression": "BSD-3-Clause",
+      "license": null,
+      "license_classifiers": [
+        "License :: OSI Approved :: BSD License"
+      ],
+      "license_files": [
+        {
+          "path": "httpx2-2.12.0.dist-info/licenses/LICENSE.md",
+          "sha256": "7e7d6dbaf7fe160d39fd6e84fd02c33cab96bcbea34d36998d545bceb4a19c30"
+        }
+      ],
+      "requires": [
+        "anyio>=4.10; sys_platform != 'emscripten'",
+        "httpcore2==2.12.0; sys_platform != 'emscripten'",
+        "httpx2-jsfetch; sys_platform == 'emscripten' and python_version >= '3.12'",
+        "idna>=3.18",
+        "truststore>=0.10; sys_platform != 'emscripten'",
+        "typing-extensions>=4.5.0; python_version < '3.13'",
+        "brotli>=1.2.0; (platform_python_implementation == 'CPython') and extra == 'brotli'",
+        "brotlicffi>=1.2.0.0; (platform_python_implementation != 'CPython') and extra == 'brotli'",
+        "click>=8.4.2; extra == 'cli'",
+        "pygments==2.*; extra == 'cli'",
+        "rich<16,>=10; extra == 'cli'",
+        "h2<5,>=3; extra == 'http2'",
+        "socksio==1.*; extra == 'socks'",
+        "wsproto>=1.2; extra == 'ws'",
+        "backports-zstd>=1.0.0; (python_version <= '3.13') and extra == 'zstd'"
+      ]
+    },
+    {
+      "name": "idna",
+      "version": "3.19",
+      "license_expression": "BSD-3-Clause",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "idna-3.19.dist-info/licenses/LICENSE.md",
+          "sha256": "1a9a4f0e3d479a27240ddd59a9137a66ab4a0f9dfdc8ca6188cc0bfd85187f04"
+        }
+      ],
+      "requires": [
+        "ruff >= 0.16.0 ; extra == \"all\"",
+        "mypy >= 1.11.2 ; extra == \"all\"",
+        "ty >= 0.0.37 ; extra == \"all\"",
+        "pytest >= 8.3.2 ; extra == \"all\"",
+        "hypothesis >= 6.141.1 ; extra == \"all\"",
+        "coverage >= 7.10.0 ; extra == \"all\""
+      ]
+    },
+    {
+      "name": "iniconfig",
+      "version": "2.3.0",
+      "license_expression": "MIT",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "iniconfig-2.3.0.dist-info/licenses/LICENSE",
+          "sha256": "3409fa91f7ace557894632676656e32264fe5ef7581535725dc9a23774551bd4"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "Jinja2",
+      "version": "3.1.6",
+      "license_expression": null,
+      "license": null,
+      "license_classifiers": [
+        "License :: OSI Approved :: BSD License"
+      ],
+      "license_files": [
+        {
+          "path": "jinja2-3.1.6.dist-info/licenses/LICENSE.txt",
+          "sha256": "3b49dcee4105eb37bac10faf1be260408fe85d252b8e9df2e0979fc1e094437b"
+        }
+      ],
+      "requires": [
+        "MarkupSafe>=2.0",
+        "Babel>=2.7 ; extra == \"i18n\""
+      ]
+    },
+    {
+      "name": "jiter",
+      "version": "0.16.0",
+      "license_expression": "MIT",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "jiter-0.16.0.dist-info/licenses/LICENSE",
+          "sha256": "7c7134b9f7b978c03fca875517cf398db91f19bbb8109b6685e742aa3f57468e"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "jsonschema",
+      "version": "4.26.0",
+      "license_expression": "MIT",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "jsonschema-4.26.0.dist-info/licenses/COPYING",
+          "sha256": "4f92a015a13c4d1a040bef018aa13430b4f1bc73b41b16bb846c346766de7439"
+        }
+      ],
+      "requires": [
+        "attrs>=22.2.0",
+        "jsonschema-specifications>=2023.03.6",
+        "referencing>=0.28.4",
+        "rpds-py>=0.25.0",
+        "fqdn; extra == 'format'",
+        "idna; extra == 'format'",
+        "isoduration; extra == 'format'",
+        "jsonpointer>1.13; extra == 'format'",
+        "rfc3339-validator; extra == 'format'",
+        "rfc3987; extra == 'format'",
+        "uri-template; extra == 'format'",
+        "webcolors>=1.11; extra == 'format'",
+        "fqdn; extra == 'format-nongpl'",
+        "idna; extra == 'format-nongpl'",
+        "isoduration; extra == 'format-nongpl'",
+        "jsonpointer>1.13; extra == 'format-nongpl'",
+        "rfc3339-validator; extra == 'format-nongpl'",
+        "rfc3986-validator>0.1.0; extra == 'format-nongpl'",
+        "rfc3987-syntax>=1.1.0; extra == 'format-nongpl'",
+        "uri-template; extra == 'format-nongpl'",
+        "webcolors>=24.6.0; extra == 'format-nongpl'"
+      ]
+    },
+    {
+      "name": "jsonschema-specifications",
+      "version": "2025.9.1",
+      "license_expression": "MIT",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "jsonschema_specifications-2025.9.1.dist-info/licenses/COPYING",
+          "sha256": "42dcd63495f87b4eb7c7757afa379bb55a53f94afd7a5f657d9adf57236e515c"
+        }
+      ],
+      "requires": [
+        "referencing>=0.31.0"
+      ]
+    },
+    {
+      "name": "Markdown",
+      "version": "3.10.2",
+      "license_expression": "BSD-3-Clause",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "markdown-3.10.2.dist-info/licenses/LICENSE.md",
+          "sha256": "7ba4eb6d10b32b2d11dce13821340351cdbbb30ba8ccc67841db2ffd86e79aca"
+        }
+      ],
+      "requires": [
+        "coverage; extra == \"testing\"",
+        "pyyaml; extra == \"testing\"",
+        "mkdocs>=1.6; extra == \"docs\"",
+        "mkdocs-nature>=0.6; extra == \"docs\"",
+        "mdx_gh_links>=0.2; extra == \"docs\"",
+        "mkdocstrings[python]>=0.28.3; extra == \"docs\"",
+        "mkdocs-gen-files; extra == \"docs\"",
+        "mkdocs-section-index; extra == \"docs\"",
+        "mkdocs-literate-nav; extra == \"docs\""
+      ]
+    },
+    {
+      "name": "markdown-it-py",
+      "version": "4.2.0",
+      "license_expression": null,
+      "license": null,
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_files": [
+        {
+          "path": "markdown_it_py-4.2.0.dist-info/licenses/LICENSE",
+          "sha256": "4a2260d6e2cd0f5a151a1e86dbfe7d3ed552b1e2beabf9941c1ba5c49cbce484"
+        },
+        {
+          "path": "markdown_it_py-4.2.0.dist-info/licenses/LICENSE.markdown-it",
+          "sha256": "792c48c5a849a15fdf9e37e8bcf9e6d1dd13b32b46c642a748a0a46a9919d473"
+        }
+      ],
+      "requires": [
+        "mdurl~=0.1",
+        "psutil ; extra == \"benchmarking\"",
+        "pytest ; extra == \"benchmarking\"",
+        "pytest-benchmark ; extra == \"benchmarking\"",
+        "commonmark~=0.9 ; extra == \"compare\"",
+        "markdown~=3.4 ; extra == \"compare\"",
+        "mistletoe~=1.0 ; extra == \"compare\"",
+        "mistune~=3.0 ; extra == \"compare\"",
+        "panflute~=2.3 ; extra == \"compare\"",
+        "markdown-it-pyrs ; extra == \"compare\"",
+        "linkify-it-py>=1,<3 ; extra == \"linkify\"",
+        "mdit-py-plugins>=0.5.0 ; extra == \"plugins\"",
+        "gprof2dot ; extra == \"profiling\"",
+        "mdit-py-plugins>=0.5.0 ; extra == \"rtd\"",
+        "myst-parser ; extra == \"rtd\"",
+        "pyyaml ; extra == \"rtd\"",
+        "sphinx ; extra == \"rtd\"",
+        "sphinx-copybutton ; extra == \"rtd\"",
+        "sphinx-design ; extra == \"rtd\"",
+        "sphinx-book-theme~=1.0 ; extra == \"rtd\"",
+        "jupyter_sphinx ; extra == \"rtd\"",
+        "ipykernel ; extra == \"rtd\"",
+        "coverage ; extra == \"testing\"",
+        "pytest ; extra == \"testing\"",
+        "pytest-cov ; extra == \"testing\"",
+        "pytest-regressions ; extra == \"testing\"",
+        "pytest-timeout ; extra == \"testing\"",
+        "requests ; extra == \"testing\""
+      ]
+    },
+    {
+      "name": "MarkupSafe",
+      "version": "3.0.3",
+      "license_expression": "BSD-3-Clause",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "markupsafe-3.0.3.dist-info/licenses/LICENSE.txt",
+          "sha256": "489a8e1108509ed98a37bb983e11e0f7e1d31f0bd8f99a79c8448e7ff37d07ea"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "mcp",
+      "version": "2.3.0",
+      "license_expression": null,
+      "license": "MIT",
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_files": [
+        {
+          "path": "mcp-2.3.0.dist-info/licenses/LICENSE",
+          "sha256": "5e13dbbc1d120fc2a03cecde7c91424ae2d7de11b63d58ded2f4431e261ee50d"
+        }
+      ],
+      "requires": [
+        "anyio>=4.10; python_version >= '3.14'",
+        "anyio>=4.9; python_version < '3.14'",
+        "httpx2>=2.10.0",
+        "jsonschema>=4.20.0",
+        "mcp-types==2.3.0",
+        "opentelemetry-api>=1.28.0",
+        "pydantic>=2.12.0",
+        "pyjwt[crypto]>=2.10.1",
+        "python-multipart>=0.0.9",
+        "pywin32>=311; sys_platform == 'win32'",
+        "sse-starlette>=3.0.0",
+        "starlette>=0.27; python_version < '3.14'",
+        "starlette>=0.48.0; python_version >= '3.14'",
+        "typing-extensions>=4.13.0",
+        "typing-inspection>=0.4.1",
+        "uvicorn>=0.31.1; sys_platform != 'emscripten'",
+        "python-dotenv>=1.0.0; extra == 'cli'",
+        "typer>=0.16.0; extra == 'cli'",
+        "rich>=13.9.4; extra == 'rich'"
+      ]
+    },
+    {
+      "name": "mcp-types",
+      "version": "2.3.0",
+      "license_expression": null,
+      "license": "MIT",
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_files": [
+        {
+          "path": "mcp_types-2.3.0.dist-info/licenses/LICENSE",
+          "sha256": "5e13dbbc1d120fc2a03cecde7c91424ae2d7de11b63d58ded2f4431e261ee50d"
+        }
+      ],
+      "requires": [
+        "pydantic>=2.12.0",
+        "typing-extensions>=4.13.0"
+      ]
+    },
+    {
+      "name": "mdurl",
+      "version": "0.1.2",
+      "license_expression": null,
+      "license": null,
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_files": [
+        {
+          "path": "mdurl-0.1.2.dist-info/LICENSE",
+          "sha256": "7c605df6e28667a9603118e98274f64a49ce3eed0d26fccce9534a345e0ef955"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "nemo-relay",
+      "version": "0.10.0",
+      "license_expression": "Apache-2.0",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        },
+        {
+          "path": "nemo_relay-0.10.0.dist-info/licenses/LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ],
+      "requires": [
+        "nemo-relay-cli-bin==0.10.0 ; extra == 'cli'",
+        "nemo-relay[langgraph] ; extra == 'deepagents'",
+        "cryptography>=50.0.0 ; extra == 'deepagents'",
+        "deepagents>=0.7.4,<0.8.0 ; extra == 'deepagents'",
+        "pyasn1>=0.6.4 ; extra == 'deepagents'",
+        "langchain>=1.3.15,<2.0.0 ; extra == 'langchain'",
+        "langchain-anthropic>=1.4.8,<2.0.0 ; extra == 'langchain'",
+        "langchain-core ; extra == 'langchain'",
+        "langgraph>=1.2.9,<2.0.0 ; extra == 'langchain'",
+        "langgraph-checkpoint>=4.1.1 ; extra == 'langchain'",
+        "langgraph-sdk>=0.4.4 ; extra == 'langchain'",
+        "langsmith>=0.9.4 ; extra == 'langchain'",
+        "nemo-relay[langchain] ; extra == 'langchain-nvidia'",
+        "langchain-nvidia-ai-endpoints>=1.4.2,<2.0.0 ; extra == 'langchain-nvidia'",
+        "aiohttp>=3.14.3 ; extra == 'langchain-nvidia'",
+        "idna>=3.19 ; extra == 'langchain-nvidia'",
+        "multidict>=6.9.1 ; extra == 'langchain-nvidia'",
+        "nemo-relay[langchain] ; extra == 'langgraph'",
+        "langgraph>=1.2.9,<2.0.0 ; extra == 'langgraph'"
+      ]
+    },
+    {
+      "name": "openai",
+      "version": "2.24.0",
+      "license_expression": null,
+      "license": "Apache-2.0",
+      "license_classifiers": [
+        "License :: OSI Approved :: Apache Software License"
+      ],
+      "license_files": [
+        {
+          "path": "openai-2.24.0.dist-info/licenses/LICENSE",
+          "sha256": "636eb7d79da9bb6d515a4b3fd417aa26679eb3cf16396ddab4bc55fa74e616e4"
+        }
+      ],
+      "requires": [
+        "anyio<5,>=3.5.0",
+        "distro<2,>=1.7.0",
+        "httpx<1,>=0.23.0",
+        "jiter<1,>=0.10.0",
+        "pydantic<3,>=1.9.0",
+        "sniffio",
+        "tqdm>4",
+        "typing-extensions<5,>=4.11",
+        "aiohttp; extra == 'aiohttp'",
+        "httpx-aiohttp>=0.1.9; extra == 'aiohttp'",
+        "numpy>=1; extra == 'datalib'",
+        "pandas-stubs>=1.1.0.11; extra == 'datalib'",
+        "pandas>=1.2.3; extra == 'datalib'",
+        "websockets<16,>=13; extra == 'realtime'",
+        "numpy>=2.0.2; extra == 'voice-helpers'",
+        "sounddevice>=0.5.1; extra == 'voice-helpers'"
+      ]
+    },
+    {
+      "name": "opentelemetry-api",
+      "version": "1.45.1",
+      "license_expression": "Apache-2.0",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "opentelemetry_api-1.45.1.dist-info/licenses/LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ],
+      "requires": [
+        "typing-extensions>=4.5.0"
+      ]
+    },
+    {
+      "name": "packaging",
+      "version": "26.0",
+      "license_expression": "Apache-2.0 OR BSD-2-Clause",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "packaging-26.0.dist-info/licenses/LICENSE",
+          "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
+        },
+        {
+          "path": "packaging-26.0.dist-info/licenses/LICENSE.APACHE",
+          "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+        },
+        {
+          "path": "packaging-26.0.dist-info/licenses/LICENSE.BSD",
+          "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+        },
+        {
+          "path": "packaging/licenses/__init__.py",
+          "sha256": "4f05cb1d9097c1281d17044b3f15bad364fa99289eba74851cce9fa7ca605bbf"
+        },
+        {
+          "path": "packaging/licenses/_spdx.py",
+          "sha256": "596ec35e2ca0ebcba9fd8343ff0a51625af548786257815f24b41f7e08613314"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "pathspec",
+      "version": "1.1.1",
+      "license_expression": null,
+      "license": null,
+      "license_classifiers": [
+        "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)"
+      ],
+      "license_files": [
+        {
+          "path": "pathspec-1.1.1.dist-info/licenses/LICENSE",
+          "sha256": "fab3dd6bdab226f1c08630b1dd917e11fcb4ec5e1e020e2c16f83a0a13863e85"
+        }
+      ],
+      "requires": [
+        "hyperscan >=0.7 ; extra == \"hyperscan\"",
+        "typing-extensions >=4 ; extra == \"optional\"",
+        "google-re2 >=1.1 ; extra == \"re2\""
+      ]
+    },
+    {
+      "name": "pillow",
+      "version": "13.0.0",
+      "license_expression": "MIT-CMU",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "pillow-13.0.0.dist-info/licenses/LICENSE",
+          "sha256": "dda12a98c1979cf3d94df1cff45d27a4cb3f04a60c76f76902ac54cac03ec0ce"
+        }
+      ],
+      "requires": [
+        "furo; extra == \"docs\"",
+        "olefile; extra == \"docs\"",
+        "sphinx>=8.2; extra == \"docs\"",
+        "sphinx-autobuild; extra == \"docs\"",
+        "sphinx-copybutton; extra == \"docs\"",
+        "sphinx-inline-tabs; extra == \"docs\"",
+        "sphinxext-opengraph; extra == \"docs\"",
+        "olefile; extra == \"fpx\"",
+        "olefile; extra == \"mic\"",
+        "arro3-compute; extra == \"test-arrow\"",
+        "arro3-core; extra == \"test-arrow\"",
+        "nanoarrow; extra == \"test-arrow\"",
+        "pyarrow; extra == \"test-arrow\"",
+        "coverage>=7.4.2; extra == \"tests\"",
+        "defusedxml; extra == \"tests\"",
+        "markdown2; extra == \"tests\"",
+        "olefile; extra == \"tests\"",
+        "packaging; extra == \"tests\"",
+        "psutil; (sys_platform == \"linux\" or sys_platform == \"darwin\") and extra == \"tests\"",
+        "pytest; extra == \"tests\"",
+        "pytest-cov; extra == \"tests\"",
+        "pytest-timeout; extra == \"tests\"",
+        "pytest-xdist; extra == \"tests\"",
+        "setuptools; extra == \"tests\"",
+        "trove-classifiers>=2024.10.12; extra == \"tests\"",
+        "defusedxml; extra == \"xmp\""
+      ]
+    },
+    {
+      "name": "pillow_heif",
+      "version": "1.6.0",
+      "license_expression": null,
+      "license": "BSD-3-Clause",
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "pillow_heif-1.6.0.dist-info/licenses/LICENSE.txt",
+          "sha256": "9e2635f155b00af5a46cb2f2c9b052072ec546d59837ee74efc9cba2cbb83f3d"
+        },
+        {
+          "path": "pillow_heif-1.6.0.dist-info/licenses/LICENSES_bundled.txt",
+          "sha256": "ba7219bc6f39e9e370b7e3a4fc9a586e2b959e45ee21710545b7e2ac6c1f2b70"
+        }
+      ],
+      "requires": [
+        "pillow>=11.1.0",
+        "sphinx>=4.4; extra == \"docs\"",
+        "sphinx-issues>=3.0.1; extra == \"docs\"",
+        "sphinx-rtd-theme>=1.0; extra == \"docs\"",
+        "pytest; extra == \"tests-min\"",
+        "defusedxml; extra == \"tests-min\"",
+        "packaging; extra == \"tests-min\"",
+        "pytest; extra == \"tests\"",
+        "defusedxml; extra == \"tests\"",
+        "packaging; extra == \"tests\"",
+        "numpy; extra == \"tests\"",
+        "pympler; extra == \"tests\"",
+        "pytest; extra == \"dev\"",
+        "defusedxml; extra == \"dev\"",
+        "packaging; extra == \"dev\"",
+        "numpy; extra == \"dev\"",
+        "pympler; extra == \"dev\"",
+        "opencv-python==5.0.0.93; extra == \"dev\"",
+        "pre-commit; extra == \"dev\"",
+        "pylint; extra == \"dev\"",
+        "coverage; extra == \"dev\"",
+        "setuptools; extra == \"dev\""
+      ]
+    },
+    {
+      "name": "pluggy",
+      "version": "1.6.0",
+      "license_expression": null,
+      "license": "MIT",
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_files": [
+        {
+          "path": "pluggy-1.6.0.dist-info/licenses/LICENSE",
+          "sha256": "d6b65e6c213a5d0b577911d34d6e5949b9f59d76c238c5071a2f3fc16cfb2606"
+        }
+      ],
+      "requires": [
+        "pre-commit; extra == \"dev\"",
+        "tox; extra == \"dev\"",
+        "pytest; extra == \"testing\"",
+        "pytest-benchmark; extra == \"testing\"",
+        "coverage; extra == \"testing\""
+      ]
+    },
+    {
+      "name": "prompt_toolkit",
+      "version": "3.0.52",
+      "license_expression": null,
+      "license": null,
+      "license_classifiers": [
+        "License :: OSI Approved :: BSD License"
+      ],
+      "license_files": [
+        {
+          "path": "prompt_toolkit-3.0.52.dist-info/licenses/AUTHORS.rst",
+          "sha256": "d3dc62c6bc8436658495ab89aea37511e7fa9391d282657239c9cfb80dbd42e5"
+        },
+        {
+          "path": "prompt_toolkit-3.0.52.dist-info/licenses/LICENSE",
+          "sha256": "303574d9bdd85c757d6025017942bf17baeedf2778f62bd7f425d07d880f4c4a"
+        }
+      ],
+      "requires": [
+        "wcwidth"
+      ]
+    },
+    {
+      "name": "psutil",
+      "version": "7.2.2",
+      "license_expression": null,
+      "license": "BSD-3-Clause",
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "psutil-7.2.2.dist-info/LICENSE",
+          "sha256": "b89c063b3786e28e0c0a38f1931db61fed35e69dd2a2966fbecffee0f46c8d10"
+        }
+      ],
+      "requires": [
+        "psleak ; extra == 'dev'",
+        "pytest ; extra == 'dev'",
+        "pytest-instafail ; extra == 'dev'",
+        "pytest-xdist ; extra == 'dev'",
+        "setuptools ; extra == 'dev'",
+        "abi3audit ; extra == 'dev'",
+        "black ; extra == 'dev'",
+        "check-manifest ; extra == 'dev'",
+        "coverage ; extra == 'dev'",
+        "packaging ; extra == 'dev'",
+        "pylint ; extra == 'dev'",
+        "pyperf ; extra == 'dev'",
+        "pypinfo ; extra == 'dev'",
+        "pytest-cov ; extra == 'dev'",
+        "requests ; extra == 'dev'",
+        "rstcheck ; extra == 'dev'",
+        "ruff ; extra == 'dev'",
+        "sphinx ; extra == 'dev'",
+        "sphinx-rtd-theme ; extra == 'dev'",
+        "toml-sort ; extra == 'dev'",
+        "twine ; extra == 'dev'",
+        "validate-pyproject[all] ; extra == 'dev'",
+        "virtualenv ; extra == 'dev'",
+        "vulture ; extra == 'dev'",
+        "wheel ; extra == 'dev'",
+        "colorama ; (os_name == \"nt\") and extra == 'dev'",
+        "pyreadline3 ; (os_name == \"nt\") and extra == 'dev'",
+        "pywin32 ; (os_name == \"nt\" and implementation_name != \"pypy\") and extra == 'dev'",
+        "wheel ; (os_name == \"nt\" and implementation_name != \"pypy\") and extra == 'dev'",
+        "wmi ; (os_name == \"nt\" and implementation_name != \"pypy\") and extra == 'dev'",
+        "psleak ; extra == 'test'",
+        "pytest ; extra == 'test'",
+        "pytest-instafail ; extra == 'test'",
+        "pytest-xdist ; extra == 'test'",
+        "setuptools ; extra == 'test'",
+        "pywin32 ; (os_name == \"nt\" and implementation_name != \"pypy\") and extra == 'test'",
+        "wheel ; (os_name == \"nt\" and implementation_name != \"pypy\") and extra == 'test'",
+        "wmi ; (os_name == \"nt\" and implementation_name != \"pypy\") and extra == 'test'"
+      ]
+    },
+    {
+      "name": "ptyprocess",
+      "version": "0.7.0",
+      "license_expression": null,
+      "license": "UNKNOWN",
+      "license_classifiers": [
+        "License :: OSI Approved :: ISC License (ISCL)"
+      ],
+      "license_files": [
+        {
+          "path": "ptyprocess-0.7.0.dist-info/LICENSE",
+          "sha256": "c822d385b1a73329846241799becf18690b5d44764c1bed69300b536a405030a"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "pycparser",
+      "version": "3.0",
+      "license_expression": "BSD-3-Clause",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "pycparser-3.0.dist-info/licenses/LICENSE",
+          "sha256": "0c846399369ea76ddd7b5c44fe6d16497415fcf015f5cbb508c24bf98b81c5b1"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "pydantic",
+      "version": "2.13.4",
+      "license_expression": "MIT",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "pydantic-2.13.4.dist-info/licenses/LICENSE",
+          "sha256": "a9e186f3ca16b5eef84318e7a701721351a00cb7b8ae3a4394b67b49e3529ef3"
+        }
+      ],
+      "requires": [
+        "annotated-types>=0.6.0",
+        "pydantic-core==2.46.4",
+        "typing-extensions>=4.14.1",
+        "typing-inspection>=0.4.2",
+        "email-validator>=2.0.0; extra == 'email'",
+        "tzdata; (python_version >= '3.9' and platform_system == 'Windows') and extra == 'timezone'"
+      ]
+    },
+    {
+      "name": "pydantic_core",
+      "version": "2.46.4",
+      "license_expression": "MIT",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "pydantic_core-2.46.4.dist-info/licenses/LICENSE",
+          "sha256": "2afdd30d54b4d62b6f488a6bcc1546e84ec5061f13f4209c03d012348783795a"
+        }
+      ],
+      "requires": [
+        "typing-extensions>=4.14.1"
+      ]
+    },
+    {
+      "name": "Pygments",
+      "version": "2.21.0",
+      "license_expression": "BSD-2-Clause",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "pygments-2.21.0.dist-info/licenses/AUTHORS",
+          "sha256": "71a83872ad82f57be692cf827e048e2cd51d45169cfa1ea3f28706d97a872c0f"
+        },
+        {
+          "path": "pygments-2.21.0.dist-info/licenses/LICENSE",
+          "sha256": "a9d66f1d526df02e29dce73436d34e56e8632f46c275bbdffc70569e882f9f17"
+        }
+      ],
+      "requires": [
+        "colorama>=0.4.6; extra == 'windows-terminal'"
+      ]
+    },
+    {
+      "name": "PyJWT",
+      "version": "2.15.1",
+      "license_expression": "MIT",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "pyjwt-2.15.1.dist-info/licenses/AUTHORS.rst",
+          "sha256": "925ce43461029eedbf558ec0b7cf7fc4b045def5120ebb97937c70814071cf07"
+        },
+        {
+          "path": "pyjwt-2.15.1.dist-info/licenses/LICENSE",
+          "sha256": "797a7a20231d4c433e9f1911db1731d06b5828b98f499819a034f7c0f56f5ce5"
+        }
+      ],
+      "requires": [
+        "typing_extensions>=4.0; python_version < \"3.11\"",
+        "cryptography>=3.4.0; extra == \"crypto\""
+      ]
+    },
+    {
+      "name": "pytest",
+      "version": "9.1.1",
+      "license_expression": "MIT",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "pytest-9.1.1.dist-info/licenses/LICENSE",
+          "sha256": "ca836a5f9ecca3b2f350230faa20a48fb8b145653b5568d784862df864706b9b"
+        }
+      ],
+      "requires": [
+        "colorama>=0.4; sys_platform == \"win32\"",
+        "exceptiongroup>=1; python_version < \"3.11\"",
+        "iniconfig>=1.0.1",
+        "packaging>=22",
+        "pluggy<2,>=1.5",
+        "pygments>=2.7.2",
+        "tomli>=1; python_version < \"3.11\"",
+        "argcomplete; extra == \"dev\"",
+        "attrs>=19.2; extra == \"dev\"",
+        "hypothesis>=3.56; extra == \"dev\"",
+        "mock; extra == \"dev\"",
+        "requests; extra == \"dev\"",
+        "setuptools; extra == \"dev\"",
+        "xmlschema; extra == \"dev\""
+      ]
+    },
+    {
+      "name": "pytest-asyncio",
+      "version": "1.3.0",
+      "license_expression": "Apache-2.0",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "pytest_asyncio-1.3.0.dist-info/licenses/LICENSE",
+          "sha256": "a8ad31b1c3f40dca5a84119351b8fa8ddc868edd77fad8a8ebf6d8f2d16fa4ae"
+        }
+      ],
+      "requires": [
+        "backports-asyncio-runner<2,>=1.1; python_version < \"3.11\"",
+        "pytest<10,>=8.2",
+        "typing-extensions>=4.12; python_version < \"3.13\"",
+        "sphinx>=5.3; extra == \"docs\"",
+        "sphinx-rtd-theme>=1; extra == \"docs\"",
+        "coverage>=6.2; extra == \"testing\"",
+        "hypothesis>=5.7.1; extra == \"testing\""
+      ]
+    },
+    {
+      "name": "python-dateutil",
+      "version": "2.9.0.post0",
+      "license_expression": null,
+      "license": "Dual License",
+      "license_classifiers": [
+        "License :: OSI Approved :: BSD License",
+        "License :: OSI Approved :: Apache Software License"
+      ],
+      "license_files": [
+        {
+          "path": "python_dateutil-2.9.0.post0.dist-info/LICENSE",
+          "sha256": "ba00f51a0d92823b5a1cde27d8b5b9d2321e67ed8da9bc163eff96d5e17e577e"
+        }
+      ],
+      "requires": [
+        "six >=1.5"
+      ]
+    },
+    {
+      "name": "python-dotenv",
+      "version": "1.2.2",
+      "license_expression": null,
+      "license": "BSD-3-Clause",
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "python_dotenv-1.2.2.dist-info/licenses/LICENSE",
+          "sha256": "80619b7049f08c81683ad0e01f08f257a840652dd71ee83146d36658c7d2c2b9"
+        }
+      ],
+      "requires": [
+        "click>=5.0; extra == \"cli\""
+      ]
+    },
+    {
+      "name": "python-multipart",
+      "version": "0.0.32",
+      "license_expression": "Apache-2.0",
+      "license": null,
+      "license_classifiers": [
+        "License :: OSI Approved :: Apache Software License"
+      ],
+      "license_files": [
+        {
+          "path": "python_multipart-0.0.32.dist-info/licenses/LICENSE.txt",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "pytz",
+      "version": "2026.3.post1",
+      "license_expression": null,
+      "license": "MIT",
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_files": [
+        {
+          "path": "pytz-2026.3.post1.dist-info/LICENSE.txt",
+          "sha256": "be8b1a37ebe26c592a90f6c0eb33103a7f383ce2f4d7498c0af9a526990a07b8"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "referencing",
+      "version": "0.37.0",
+      "license_expression": "MIT",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "referencing-0.37.0.dist-info/licenses/COPYING",
+          "sha256": "42dcd63495f87b4eb7c7757afa379bb55a53f94afd7a5f657d9adf57236e515c"
+        }
+      ],
+      "requires": [
+        "attrs>=22.2.0",
+        "rpds-py>=0.7.0",
+        "typing-extensions>=4.4.0; python_version < '3.13'"
+      ]
+    },
+    {
+      "name": "requests",
+      "version": "2.33.0",
+      "license_expression": null,
+      "license": "Apache-2.0",
+      "license_classifiers": [
+        "License :: OSI Approved :: Apache Software License"
+      ],
+      "license_files": [
+        {
+          "path": "requests-2.33.0.dist-info/licenses/LICENSE",
+          "sha256": "09e8a9bcec8067104652c168685ab0931e7868f9c8284b66f5ae6edae5f1130b"
+        },
+        {
+          "path": "requests-2.33.0.dist-info/licenses/NOTICE",
+          "sha256": "f5110972dedad2b4e9d314518daf3b7d72d6e02e499acd802181de6f74571dcc"
+        }
+      ],
+      "requires": [
+        "charset_normalizer<4,>=2",
+        "idna<4,>=2.5",
+        "urllib3<3,>=1.26",
+        "certifi>=2023.5.7",
+        "PySocks!=1.5.7,>=1.5.6; extra == \"socks\"",
+        "chardet<8,>=3.0.2; extra == \"use-chardet-on-py3\"",
+        "pytest-httpbin==2.1.0; extra == \"test\"",
+        "pytest-cov; extra == \"test\"",
+        "pytest-mock; extra == \"test\"",
+        "pytest-xdist; extra == \"test\"",
+        "PySocks!=1.5.7,>=1.5.6; extra == \"test\"",
+        "pytest>=3; extra == \"test\""
+      ]
+    },
+    {
+      "name": "resvg_py",
+      "version": "0.4.0",
+      "license_expression": null,
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "resvg_py-0.4.0.dist-info/licenses/LICENSE",
+          "sha256": "753a9e3c09cece8584467a0f605e065005c2a5e5c6da4f0cbb0493d2d52b96f6"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "rich",
+      "version": "14.3.3",
+      "license_expression": null,
+      "license": "MIT",
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_files": [
+        {
+          "path": "rich-14.3.3.dist-info/licenses/LICENSE",
+          "sha256": "deed7c17a4318158190a3ea239cc879a5a50271cebb98ae7025f48fbe58dca15"
+        }
+      ],
+      "requires": [
+        "ipywidgets (>=7.5.1,<9) ; extra == \"jupyter\"",
+        "markdown-it-py (>=2.2.0)",
+        "pygments (>=2.13.0,<3.0.0)"
+      ]
+    },
+    {
+      "name": "rpds-py",
+      "version": "2026.6.3",
+      "license_expression": "MIT",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "rpds_py-2026.6.3.dist-info/licenses/LICENSE",
+          "sha256": "314e4e91be3baa93c0fb4bccc9e4e97cd643eb839b065af921782c2175fe9909"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "ruamel.yaml",
+      "version": "0.18.16",
+      "license_expression": "MIT license",
+      "license": null,
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_files": [
+        {
+          "path": "ruamel.yaml-0.18.16.dist-info/licenses/LICENSE",
+          "sha256": "0ce9ad6a9d4f0829296a72c77d07795dd67f42751e2922be56c051d39ae1c011"
+        }
+      ],
+      "requires": [
+        "ruamel.yaml.clib>=0.2.7; platform_python_implementation == \"CPython\" and python_version < \"3.14\"",
+        "ruamel.yaml.jinja2>=0.2; extra == \"jinja2\"",
+        "ryd; extra == \"docs\"",
+        "mercurial>5.7; extra == \"docs\""
+      ]
+    },
+    {
+      "name": "ruamel.yaml.clib",
+      "version": "0.2.15",
+      "license_expression": null,
+      "license": "MIT",
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_files": [
+        {
+          "path": "ruamel_yaml_clib-0.2.15.dist-info/licenses/LICENSE",
+          "sha256": "f8ad7efe71dde909f2d694f7dc69470d3dbe07c001c0b30c6bd9951e472077fa"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "ruff",
+      "version": "0.15.10",
+      "license_expression": "MIT",
+      "license": null,
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_files": [
+        {
+          "path": "ruff-0.15.10.dist-info/licenses/LICENSE",
+          "sha256": "2597d854122b77ddc71971564ca2350a37608575ce324adc5650a2b2051c8f18"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "setuptools",
+      "version": "83.0.0",
+      "license_expression": "MIT",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "setuptools-83.0.0.dist-info/licenses/LICENSE",
+          "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+        },
+        {
+          "path": "setuptools/_vendor/autocommand-2.2.2.dist-info/LICENSE",
+          "sha256": "ade78d04982d69972d444a8e14a94f87a2334dd3855cc80348ea8e240aa0df2d"
+        },
+        {
+          "path": "setuptools/_vendor/backports.tarfile-1.2.0.dist-info/LICENSE",
+          "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+        },
+        {
+          "path": "setuptools/_vendor/importlib_metadata-8.7.1.dist-info/licenses/LICENSE",
+          "sha256": "458502e12d97bbf64438606a20044aa85eb05fb0a8a807bb35dbec253fd1fc04"
+        },
+        {
+          "path": "setuptools/_vendor/jaraco.text-4.0.0.dist-info/LICENSE",
+          "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+        },
+        {
+          "path": "setuptools/_vendor/jaraco_context-6.1.0.dist-info/licenses/LICENSE",
+          "sha256": "9755a18519666e5f0f4cae3daad3d7012bcae48a600b31237d75e9fe134e6683"
+        },
+        {
+          "path": "setuptools/_vendor/jaraco_functools-4.4.0.dist-info/licenses/LICENSE",
+          "sha256": "5a57cb4db85e2a2dd88c290628908add57e3451449e0a9a71fdfb38776fd759d"
+        },
+        {
+          "path": "setuptools/_vendor/more_itertools-10.8.0.dist-info/licenses/LICENSE",
+          "sha256": "09f1c8c9e941af3e584d59641ea9b87d83c0cb0fd007eb5ef391a7e2643c1a46"
+        },
+        {
+          "path": "setuptools/_vendor/packaging-26.0.dist-info/licenses/LICENSE",
+          "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
+        },
+        {
+          "path": "setuptools/_vendor/packaging-26.0.dist-info/licenses/LICENSE.APACHE",
+          "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+        },
+        {
+          "path": "setuptools/_vendor/packaging-26.0.dist-info/licenses/LICENSE.BSD",
+          "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+        },
+        {
+          "path": "setuptools/_vendor/packaging/licenses/__init__.py",
+          "sha256": "4f05cb1d9097c1281d17044b3f15bad364fa99289eba74851cce9fa7ca605bbf"
+        },
+        {
+          "path": "setuptools/_vendor/packaging/licenses/_spdx.py",
+          "sha256": "596ec35e2ca0ebcba9fd8343ff0a51625af548786257815f24b41f7e08613314"
+        },
+        {
+          "path": "setuptools/_vendor/platformdirs-4.4.0.dist-info/licenses/LICENSE",
+          "sha256": "29e0fd62e929850e86eb28c3fdccf0cefdf4fa94879011cffb3d0d4bed6d4db6"
+        },
+        {
+          "path": "setuptools/_vendor/tomli-2.4.0.dist-info/licenses/LICENSE",
+          "sha256": "b80816b0d530b8accb4c2211783790984a6e3b61922c2b5ee92f3372ab2742fe"
+        },
+        {
+          "path": "setuptools/_vendor/wheel-0.46.3.dist-info/licenses/LICENSE.txt",
+          "sha256": "30c23618679108f3e8ea1d2a658c7ca417bdfc891c98ef1a89fa4ff0c9828654"
+        },
+        {
+          "path": "setuptools/_vendor/zipp-3.23.0.dist-info/licenses/LICENSE",
+          "sha256": "5a57cb4db85e2a2dd88c290628908add57e3451449e0a9a71fdfb38776fd759d"
+        },
+        {
+          "path": "setuptools/config/NOTICE",
+          "sha256": "2dddf08818297a3b89d43d95ff659d8da85741108c9136dfa3a4d856c0623bd8"
+        },
+        {
+          "path": "setuptools/config/_validate_pyproject/NOTICE",
+          "sha256": "09c9bcea95ca086f8bc5bed174e40bc835b297d40fb5f86bbbb570fe0a5581a7"
+        }
+      ],
+      "requires": [
+        "pytest!=8.1.*,>=6; extra == \"test\"",
+        "virtualenv>=13.0.0; extra == \"test\"",
+        "wheel>=0.44.0; extra == \"test\"",
+        "pip>=19.1; extra == \"test\"",
+        "packaging>=24.2; extra == \"test\"",
+        "jaraco.envs>=2.2; extra == \"test\"",
+        "pytest-xdist>=3; extra == \"test\"",
+        "jaraco.path>=3.7.2; extra == \"test\"",
+        "build[virtualenv]>=1.0.3; extra == \"test\"",
+        "filelock>=3.4.0; extra == \"test\"",
+        "ini2toml[lite]>=0.14; extra == \"test\"",
+        "tomli-w>=1.0.0; extra == \"test\"",
+        "pytest-timeout; extra == \"test\"",
+        "pytest-perf; sys_platform != \"cygwin\" and extra == \"test\"",
+        "jaraco.develop>=7.21; (python_version >= \"3.9\" and sys_platform != \"cygwin\") and extra == \"test\"",
+        "pytest-home>=0.5; extra == \"test\"",
+        "pytest-subprocess; extra == \"test\"",
+        "pyproject-hooks!=1.1; extra == \"test\"",
+        "jaraco.test>=5.5; extra == \"test\"",
+        "sphinx>=3.5; extra == \"doc\"",
+        "jaraco.packaging>=9.3; extra == \"doc\"",
+        "rst.linker>=1.9; extra == \"doc\"",
+        "furo; extra == \"doc\"",
+        "sphinx-lint; extra == \"doc\"",
+        "jaraco.tidelift>=1.4; extra == \"doc\"",
+        "pygments-github-lexers==0.0.5; extra == \"doc\"",
+        "sphinx-favicon; extra == \"doc\"",
+        "sphinx-inline-tabs; extra == \"doc\"",
+        "sphinx-reredirects; extra == \"doc\"",
+        "sphinxcontrib-towncrier; extra == \"doc\"",
+        "sphinx-notfound-page<2,>=1; extra == \"doc\"",
+        "pyproject-hooks!=1.1; extra == \"doc\"",
+        "towncrier<24.7; extra == \"doc\"",
+        "packaging>=24.2; extra == \"core\"",
+        "more_itertools>=8.8; extra == \"core\"",
+        "jaraco.text>=3.7; extra == \"core\"",
+        "importlib_metadata>=6; python_version < \"3.10\" and extra == \"core\"",
+        "tomli>=2.0.1; python_version < \"3.11\" and extra == \"core\"",
+        "wheel>=0.43.0; extra == \"core\"",
+        "jaraco.functools>=4; extra == \"core\"",
+        "more_itertools; extra == \"core\"",
+        "pytest-checkdocs>=2.14; extra == \"check\"",
+        "pytest-ruff>=0.2.1; sys_platform != \"cygwin\" and extra == \"check\"",
+        "ruff>=0.13.0; sys_platform != \"cygwin\" and extra == \"check\"",
+        "pytest-cov; extra == \"cover\"",
+        "pytest-enabler>=3.4; extra == \"enabler\"",
+        "pytest-mypy>=1.0.1; platform_python_implementation != \"PyPy\" and extra == \"type\"",
+        "mypy==1.18.*; extra == \"type\"",
+        "importlib_metadata>=7.0.2; python_version < \"3.10\" and extra == \"type\"",
+        "jaraco.develop>=7.21; sys_platform != \"cygwin\" and extra == \"type\""
+      ]
+    },
+    {
+      "name": "six",
+      "version": "1.17.0",
+      "license_expression": null,
+      "license": "MIT",
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_files": [
+        {
+          "path": "six-1.17.0.dist-info/LICENSE",
+          "sha256": "4375ba20e2b9c6c4e7cad2940a628fd90e95cc3d50ee92aae755715d8ba1fbd0"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "sniffio",
+      "version": "1.3.1",
+      "license_expression": null,
+      "license": "MIT OR Apache-2.0",
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License",
+        "License :: OSI Approved :: Apache Software License"
+      ],
+      "license_files": [
+        {
+          "path": "sniffio-1.3.1.dist-info/LICENSE",
+          "sha256": "652c878488d1456361e08c3f8607fd7ba59892a14103d15cce4ff93c85b5cc8b"
+        },
+        {
+          "path": "sniffio-1.3.1.dist-info/LICENSE.APACHE2",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        },
+        {
+          "path": "sniffio-1.3.1.dist-info/LICENSE.MIT",
+          "sha256": "3e6dae555eb92787fc82d1d48355677f454c7f65aeb38d3f9e72bf9a3daf034b"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "snowballstemmer",
+      "version": "3.1.1",
+      "license_expression": null,
+      "license": "BSD-3-Clause",
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "snowballstemmer-3.1.1.dist-info/licenses/COPYING",
+          "sha256": "880802872ce34f313df826e96131b1b147dcfa09c76fc82129f25503a922a678"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "socksio",
+      "version": "1.0.0",
+      "license_expression": null,
+      "license": "UNKNOWN",
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_files": [
+        {
+          "path": "socksio-1.0.0.dist-info/LICENSE",
+          "sha256": "7087f0f5f7c2993f3c4ed117baa3622c1063626e7c692e9ea116475b5fc1396c"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "sse-starlette",
+      "version": "3.4.8",
+      "license_expression": "BSD-3-Clause",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "sse_starlette-3.4.8.dist-info/licenses/AUTHORS",
+          "sha256": "c2ff63d2ecf128bbda8ab1b2016830a5da124202fbb97168685bb9946aed3f1a"
+        },
+        {
+          "path": "sse_starlette-3.4.8.dist-info/licenses/LICENSE",
+          "sha256": "80af6bfccbebd2c14d4aab96695cab9950e177190cc80f5ef819e99996883e8e"
+        }
+      ],
+      "requires": [
+        "starlette>=0.49.1",
+        "anyio>=4.7.0",
+        "uvicorn>=0.34.0; extra == \"examples\"",
+        "fastapi>=0.115.12; extra == \"examples\"",
+        "pydantic>=2; extra == \"examples\"",
+        "sqlalchemy[asyncio]>=2.0.41; extra == \"examples-db\"",
+        "aiosqlite>=0.21.0; extra == \"examples-db\"",
+        "uvicorn>=0.34.0; extra == \"uvicorn\"",
+        "granian>=2.3.1; extra == \"granian\"",
+        "daphne>=4.2.0; extra == \"daphne\""
+      ]
+    },
+    {
+      "name": "starlette",
+      "version": "1.3.1",
+      "license_expression": "BSD-3-Clause",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "starlette-1.3.1.dist-info/licenses/LICENSE.md",
+          "sha256": "dcb95677a02240243187e964f941847d19b17821cf99e5afae684fab328c19bf"
+        }
+      ],
+      "requires": [
+        "anyio<5,>=3.6.2",
+        "typing-extensions>=4.10.0; python_version < '3.13'",
+        "httpx2>=2.0.0; extra == 'full'",
+        "httpx<0.29.0,>=0.27.0; extra == 'full'",
+        "itsdangerous; extra == 'full'",
+        "jinja2; extra == 'full'",
+        "python-multipart>=0.0.18; extra == 'full'",
+        "pyyaml; extra == 'full'"
+      ]
+    },
+    {
+      "name": "tenacity",
+      "version": "9.1.4",
+      "license_expression": null,
+      "license": "Apache 2.0",
+      "license_classifiers": [
+        "License :: OSI Approved :: Apache Software License"
+      ],
+      "license_files": [
+        {
+          "path": "tenacity-9.1.4.dist-info/licenses/LICENSE",
+          "sha256": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd"
+        }
+      ],
+      "requires": [
+        "reno; extra == \"doc\"",
+        "sphinx; extra == \"doc\"",
+        "pytest; extra == \"test\"",
+        "tornado>=4.5; extra == \"test\"",
+        "typeguard; extra == \"test\""
+      ]
+    },
+    {
+      "name": "termcolor",
+      "version": "3.3.0",
+      "license_expression": "MIT",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "termcolor-3.3.0.dist-info/licenses/COPYING.txt",
+          "sha256": "e79b6bd82962c1330caaa7c42278567b08667777673f8e2371a624d5715d4c0e"
+        }
+      ],
+      "requires": [
+        "pytest; extra == 'tests'",
+        "pytest-cov; extra == 'tests'"
+      ]
+    },
+    {
+      "name": "tomli_w",
+      "version": "1.2.0",
+      "license_expression": null,
+      "license": null,
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_files": [
+        {
+          "path": "tomli_w-1.2.0.dist-info/LICENSE",
+          "sha256": "b80816b0d530b8accb4c2211783790984a6e3b61922c2b5ee92f3372ab2742fe"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "tqdm",
+      "version": "4.70.0",
+      "license_expression": null,
+      "license": "MPL-2.0 AND MIT",
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "tqdm-4.70.0.dist-info/licenses/LICENCE",
+          "sha256": "fcff87c3a47ce8028a8512aa182d4fcf0ad1c90544ee75cf9b343684cac194de"
+        }
+      ],
+      "requires": [
+        "colorama; platform_system == \"Windows\"",
+        "requests; extra == \"discord\"",
+        "envwrap; extra == \"discord\"",
+        "slack-sdk; extra == \"slack\"",
+        "envwrap; extra == \"slack\"",
+        "requests; extra == \"telegram\"",
+        "envwrap; extra == \"telegram\"",
+        "ipywidgets>=6; extra == \"notebook\""
+      ]
+    },
+    {
+      "name": "truststore",
+      "version": "0.10.4",
+      "license_expression": "MIT",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "truststore-0.10.4.dist-info/licenses/LICENSE",
+          "sha256": "33be7b7e8fa4fd19b1760e1a8ed8a668bdab852c91b692dd41424bcb725a9fca"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "ty",
+      "version": "0.0.82",
+      "license_expression": null,
+      "license": null,
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_files": [
+        {
+          "path": "ty-0.0.82.dist-info/licenses/LICENSE",
+          "sha256": "860e3d7a86b84e6a7012c7a635fc64df475cebc6cce34dfeb73a5982ec58176c"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "typing-inspection",
+      "version": "0.4.4",
+      "license_expression": "MIT",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "typing_inspection-0.4.4.dist-info/licenses/LICENSE",
+          "sha256": "804b59b25f2c31bd278f9202a19ae49a3945aa2664387e2d0a128c7cacc61ec3"
+        }
+      ],
+      "requires": [
+        "typing-extensions>=4.15.0"
+      ]
+    },
+    {
+      "name": "typing_extensions",
+      "version": "4.16.0",
+      "license_expression": "PSF-2.0",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "typing_extensions-4.16.0.dist-info/licenses/LICENSE",
+          "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "urllib3",
+      "version": "2.8.0",
+      "license_expression": "MIT",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "urllib3-2.8.0.dist-info/licenses/LICENSE.txt",
+          "sha256": "130e3a64d5fdd5d096a752694634a7d9df284469de86e5732100268041e3d686"
+        }
+      ],
+      "requires": [
+        "brotli>=1.2.0; (platform_python_implementation == 'CPython') and extra == 'brotli'",
+        "brotlicffi>=1.2.0.0; (platform_python_implementation != 'CPython') and extra == 'brotli'",
+        "h2<5,>=4; extra == 'h2'",
+        "pysocks!=1.5.7,<2.0,>=1.5.6; extra == 'socks'",
+        "backports-zstd>=1.0.0; (python_version < '3.14') and extra == 'zstd'"
+      ]
+    },
+    {
+      "name": "uvicorn",
+      "version": "0.41.0",
+      "license_expression": "BSD-3-Clause",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "uvicorn-0.41.0.dist-info/licenses/LICENSE.md",
+          "sha256": "efe1acf3e62fb99c288b0ec73e5a773b7268ef4320fe757ea994214e4b63c371"
+        }
+      ],
+      "requires": [
+        "click>=7.0",
+        "h11>=0.8",
+        "typing-extensions>=4.0; python_version < '3.11'",
+        "colorama>=0.4; (sys_platform == 'win32') and extra == 'standard'",
+        "httptools>=0.6.3; extra == 'standard'",
+        "python-dotenv>=0.13; extra == 'standard'",
+        "pyyaml>=5.1; extra == 'standard'",
+        "uvloop>=0.15.1; (sys_platform != 'win32' and (sys_platform != 'cygwin' and platform_python_implementation != 'PyPy')) and extra == 'standard'",
+        "watchfiles>=0.20; extra == 'standard'",
+        "websockets>=10.4; extra == 'standard'"
+      ]
+    },
+    {
+      "name": "watchfiles",
+      "version": "1.2.0",
+      "license_expression": null,
+      "license": "MIT",
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_files": [
+        {
+          "path": "watchfiles-1.2.0.dist-info/licenses/LICENSE",
+          "sha256": "4fd78355b67ce2677ede9fb6f63a250f377bb7e22088136a5f4699adb4bc069f"
+        }
+      ],
+      "requires": [
+        "anyio>=3.0.0"
+      ]
+    },
+    {
+      "name": "wcwidth",
+      "version": "0.8.2",
+      "license_expression": "MIT",
+      "license": null,
+      "license_classifiers": [],
+      "license_files": [
+        {
+          "path": "wcwidth-0.8.2.dist-info/licenses/LICENSE",
+          "sha256": "70b98a95a2144eb70af8017fa8c6d95ce247e40867436e8bc649e137fe13d21a"
+        }
+      ],
+      "requires": []
+    },
+    {
+      "name": "websockets",
+      "version": "15.0.1",
+      "license_expression": null,
+      "license": "BSD-3-Clause",
+      "license_classifiers": [
+        "License :: OSI Approved :: BSD License"
+      ],
+      "license_files": [
+        {
+          "path": "websockets-15.0.1.dist-info/LICENSE",
+          "sha256": "3d6a0c050d8bec52fabad502e45fb25bd02bcadbd70dea34d447b6a0ff4e6da8"
+        }
+      ],
+      "requires": []
+    }
+  ],
+  "scope": "Metadata inventory, not redistribution clearance. Not all extras were installed."
+}

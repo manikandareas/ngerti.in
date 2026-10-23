@@ -1,0 +1,49 @@
+{
+  "wire_contract_errors": [
+    {
+      "type": "extra_forbidden",
+      "loc": [
+        "events",
+        1,
+        "actor",
+        "profile"
+      ],
+      "msg": "Extra inputs are not permitted"
+    },
+    {
+      "type": "extra_forbidden",
+      "loc": [
+        "events",
+        3,
+        "actor",
+        "profile"
+      ],
+      "msg": "Extra inputs are not permitted"
+    },
+    {
+      "type": "extra_forbidden",
+      "loc": [
+        "events",
+        7,
+        "actor",
+        "profile"
+      ],
+      "msg": "Extra inputs are not permitted"
+    }
+  ],
+  "state/state.db": {
+    "journal_mode": "wal",
+    "quick_check": "ok"
+  },
+  "state/profiles/writer/state.db": {
+    "journal_mode": "wal",
+    "quick_check": "ok"
+  },
+  "pinned_files_verified_against_git": 29,
+  "full_tracked_source_comparison": {
+    "revision": "7489b22af47ce91b366dde81d5831ea422577498",
+    "compared_files": 20787,
+    "mismatches": [],
+    "scope": "All tracked regular files; Git submodule directories excluded"
+  }
+}

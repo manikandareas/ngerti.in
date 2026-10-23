@@ -1,0 +1,39 @@
+▶ not activated — using HERMES_PYTHON: $NGERTIIN_ROOT/.dev/nma-001/runtime/bin/python
+▶ running per-file parallel test suite via run_tests_parallel.py
+  (TZ=UTC LANG=C.UTF-8 PYTHONHASHSEED=0; clean env)
+▶ pre-compiling bytecode cache
+▶ launching test runner
+Discovered 10 test files (~246 tests) under ['tests/hermes_cli/test_profiles.py', 'tests/gateway/test_hosted_rooms.py', 'tests/gateway/test_hosted_room_driver.py', 'tests/gateway/test_hosted_room_discussion.py', 'tests/gateway/test_session_hosted_service.py', 'tests/gateway/test_session_hosted_daemon.py', 'tests/gateway/test_session_hosted_controls.py', 'tests/gateway/test_session_hosted_transport.py', 'tests/gateway/test_session_hosted_rpc.py', 'tests/tui_gateway/test_hosted_room_service.py']; running with -j 4
+[  0.4% |     1/~246 | ✓1 | ✗0] ✓ tests/gateway/test_session_hosted_controls.py (1✓, 1.9s)
+[ 11.4% |    28/~246 | ✓47 | ✗ 0] ✓ tests/gateway/test_hosted_room_discussion.py (46✓, 8.1s)
+[ 25.6% |    63/~246 | ✓91 | ✗ 0] ✓ tests/gateway/test_hosted_room_driver.py (44✓, 9.5s)
+[ 42.7% |   105/~246 | ✓139 | ✗  0] ✓ tests/gateway/test_hosted_rooms.py (48✓, 9.7s)
+[ 44.7% |   110/~246 | ✓145 | ✗  0] ✓ tests/gateway/test_session_hosted_service.py (6✓, 2.6s)
+[ 48.0% |   118/~246 | ✓154 | ✗  0] ✓ tests/gateway/test_session_hosted_transport.py (9✓, 7.0s)
+[ 51.6% |   127/~246 | ✓178 | ✗  0] ✓ tests/gateway/test_session_hosted_rpc.py (24✓, 10.2s)
+[ 86.2% |   212/~246 | ✓283 | ✗  0] ✓ tests/hermes_cli/test_profiles.py (105✓ 6s, 13.1s)
+[ 99.2% |   244/~246 | ✓322 | ✗  0] ✓ tests/tui_gateway/test_hosted_room_service.py (39✓, 13.8s)
+[100.0% |   246/~246 | ✓324 | ✗  0] ✓ tests/gateway/test_session_hosted_daemon.py (2✓, 58.5s)
+
+=== Summary: 10 files, 324 tests passed, 0 failed, 6 skipped (100% complete) in 60.8s (4 workers) ===
+
+  note: platforms('linux') tests (in 1 file) were SKIPPED on this host (darwin); they run on the main Linux CI lane.
+  note: platforms('windows') tests (in 1 file) were SKIPPED on this host (darwin); they run on the Windows Python-tests lane.
+  Durations cached to test_durations.json (10 files)
+
+=== Per-file subprocess time distribution ===
+  Files:   10
+  Total subprocess CPU-wall: 134.5s  (runner wall: 60.8s, parallelism: 4x)
+  P50: 9.69s  P90: 58.49s  P95: 58.49s  P99: 58.49s  Max: 58.49s
+  <1s: 0 files (0%)  <2s: 1 files (10%)
+  Top 10 slowest:
+     58.49s  tests/gateway/test_session_hosted_daemon.py
+     13.80s  tests/tui_gateway/test_hosted_room_service.py
+     13.13s  tests/hermes_cli/test_profiles.py
+     10.25s  tests/gateway/test_session_hosted_rpc.py
+      9.69s  tests/gateway/test_hosted_rooms.py
+      9.53s  tests/gateway/test_hosted_room_driver.py
+      8.12s  tests/gateway/test_hosted_room_discussion.py
+      7.00s  tests/gateway/test_session_hosted_transport.py
+      2.63s  tests/gateway/test_session_hosted_service.py
+      1.87s  tests/gateway/test_session_hosted_controls.py

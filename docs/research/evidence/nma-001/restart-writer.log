@@ -1,0 +1,15 @@
+┌───────────────────────────────────────────────────────────────────────────────────┐
+│ ⚠ This gateway is STANDALONE: it serves only its own profile.                     │
+│ Profiles NOT served (their bots stay silent): default                             │
+│ Why: this profile is standalone (gateway.standalone: true); it serves only itself │
+│ Fix: hermes gateway migrate --multiplex                                           │
+└───────────────────────────────────────────────────────────────────────────────────┘
+2026-10-23 19:05:25,907 WARNING hermes_cli.gateway_multiplex_mode: This gateway stays standalone: this profile is standalone (gateway.standalone: true); it serves only itself. It serves only the launching profile.
+┌───────────────────────────────────────────────────────────────────────────────────┐
+│ ⚠ This gateway is STANDALONE: it serves only its own profile.                     │
+│ Profiles NOT served (their bots stay silent): default                             │
+│ Why: this profile is standalone (gateway.standalone: true); it serves only itself │
+│ Fix: hermes gateway migrate --multiplex                                           │
+└───────────────────────────────────────────────────────────────────────────────────┘
+2026-10-23 19:05:26,116 WARNING gateway.lifecycle_ledger: Previous gateway life (pid=25347, started_at=2026-10-23T11:05:07.739759+00:00) exited UNCLEANLY (no exit path ran — SIGKILL / OOM / VM death, or a process kill issued by the agent or one of its descendants, e.g. a pkill/taskkill of the host interpreter image; see #113667). last_heartbeat_at=2026-10-23T11:05:08.477367+00:00 last_mem=None suspected_oom=False
+2026-10-23 19:05:26,235 WARNING gateway.run: No messaging platforms enabled.

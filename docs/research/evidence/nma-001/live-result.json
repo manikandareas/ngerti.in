@@ -1,0 +1,58 @@
+{
+  "model": "gpt-6.1-sol",
+  "provider_base_url": "https://api.openai.com/v1",
+  "profiles": [
+    "default",
+    "writer"
+  ],
+  "soul_sha256": {
+    "state": "cc473e281e1987897f2d38cf3e02ef0e5b4e09d810a4f0d7dd5deca323fa7c9b",
+    "writer": "7270e89b7c215fc052a2432d287e56f8cb9f115ae6bf0dfd830ab0f01be7923a"
+  },
+  "runs": [
+    {
+      "phase": "first",
+      "pid": 25389,
+      "epoch": 1
+    },
+    {
+      "phase": "restart",
+      "pid": 25437,
+      "epoch": 2
+    }
+  ],
+  "first_counts": {
+    "settled": 2
+  },
+  "restart": {
+    "counts": {
+      "settled": 3
+    },
+    "duplicate_receipt": {
+      "event": {
+        "room_id": "fleet-report",
+        "seq": 1,
+        "event_id": "user:8fc73dc4d0eb2726978d800903de027311774159a741cc24e3fee625ba8727a7",
+        "kind": "message.user",
+        "actor": {
+          "id": "desktop",
+          "kind": "user"
+        },
+        "authority_epoch": 1,
+        "payload": {
+          "text": "@researcher Prepare a fleet efficiency report with Writer. Verified facts: vehicle Alpha travelled 1500 km and used 120 litres of fuel. Calculate litres per 100 km, then hand the result to @writer for a final report. No external research.",
+          "thread_id": "fleet-thread"
+        },
+        "created_at": 1792753512.155993,
+        "idempotent": true
+      },
+      "client_event_id": "fleet-input-1",
+      "accepted": true,
+      "driver_started": true
+    },
+    "transcript_preserved": true,
+    "duplicate_suppressed": true,
+    "followup_settled": true
+  },
+  "passed": true
+}

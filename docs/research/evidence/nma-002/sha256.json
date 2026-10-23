@@ -1,0 +1,19 @@
+{
+  "docs/research/evidence/nma-002/HERMES-LICENSE.txt": "821556e6336796450ab852d375117b48a4887e71d255794fd6318d99982a5ab6",
+  "docs/research/evidence/nma-002/boundary-read.json": "efcecb010217c8bbf6d42eedae41387ec3054bd624ff909ca3d0a5a2f48ddea2",
+  "docs/research/evidence/nma-002/boundary-write.json": "b808607731446b17f481bfa4e51f6ece3a7f10b31339fbd3d69cd516c1bf5c37",
+  "docs/research/evidence/nma-002/initial-harness-failure.log": "70003d75ca81ed1a8496beabefe9d5b5f4f81f4faebcc9879854797b2458797e",
+  "docs/research/evidence/nma-002/provenance.json": "3864a37c2330e0578b57c71c46894f764a4b91fc99f4ad5401a8b06bd73d698c",
+  "docs/research/evidence/nma-002/results.json": "58a6a7a4efda3e2be3c3f456cf3794a52aee4f2533b76025baa1029ec275f014",
+  "docs/research/evidence/nma-002/summary.json": "62a52c0e91f6c60a2def913566ace798d7ae33e2123ebacc10224bad02653d82",
+  "docs/research/evidence/nma-002/upstream-tests.log": "75e0ed52967eea0e3944329980d182758a21602d8af23426f10359741c80e91a",
+  "docs/research/evidence/nma-002/verification.txt": "aff9b1beb583194dd7a1395449848408c48ce6b90ba7194a1b503662ef2cfdd9",
+  "docs/research/nma-002-goal-capture-spike.md": "1e3d66020423715b9dfce665de9fe8bbf0001b5dfe6a4894e7a850f5fd77f31f",
+  "scripts/spikes/goal_capture/README.md": "1c8379109812880fc1dd47de3d1bbb3f01019b9f47f4729bca78bd8f9dd2f0a6",
+  "scripts/spikes/goal_capture/boundaries.py": "0a89bd76f0167f3b520d6df4110325eefef71362de79cbe650618b8ad8ba5fc9",
+  "scripts/spikes/goal_capture/dataset.json": "8eff3798103880b3be42d4c2ea4fb3422fff6a3e953ccd41bb86b095d30f5498",
+  "scripts/spikes/goal_capture/probe.py": "8b18e34c3cad862a34c67c00a1d183e873324a5ea6e873f855421aebeb43fd22",
+  "scripts/spikes/goal_capture/prompt.md": "b72ecb554b9f8c137d6c9836a52479d150e8a7696f3f185c4e93a64a3b66a27b",
+  "scripts/spikes/goal_capture/run_tests.sh": "12fb5efc12d0f668716b9ffdfd5a7124983b9e351d1e144c40e2b958c0ac2ac7",
+  "scripts/spikes/goal_capture/verify.py": "31c2309d4076f68783f4a92f11876938743d53d1c49083d3fb9ae235d5a60a8c"
+}

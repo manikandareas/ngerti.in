@@ -1,0 +1,4 @@
+PASS: 16 cases; persisted stops, unchanged peers, stable origin, ready creations, distinct processes
+PASS: ruff check and format; Bash syntax; docs-check (1245 local links); pinned archive comparison (20787 files); credential scan.
+Upstream suite: 223 passed, 1 skipped, 1 failed (macOS/systemd branch); see audit.
+Published test log has trailing whitespace trimmed; no result lines removed.

@@ -1,0 +1,29 @@
+hypothetical PASS
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/scripts/spikes/goal_capture/probe.py", line 140, in <module>
+    main()
+    ~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/scripts/spikes/goal_capture/probe.py", line 96, in main
+    turn(args)
+    ~~~~^^^^^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/scripts/spikes/goal_capture/probe.py", line 63, in turn
+    task_id = kb.create_task(conn, title=action["title"], body=action["body"],
+        assignee="researcher", created_by="capture-spike", goal_mode=True,
+        initial_status="ready", session_id=data["case"]["session"],
+        idempotency_key=f'{data["case"]["id"]}:{index}')
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001-repro/source/hermes_cli/kanban_db.py", line 1196, in create_task
+    raise ValueError(f"initial_status must be one of {sorted(VALID_INITIAL_STATUSES)}")
+ValueError: initial_status must be one of ['blocked', 'running']
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/scripts/spikes/goal_capture/probe.py", line 140, in <module>
+    main()
+    ~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/scripts/spikes/goal_capture/probe.py", line 106, in main
+    subprocess.run([sys.executable, __file__, "--source", str(args.source),
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        "--output", str(args.output), "--env-file", str(args.env_file), "--turn"], check=True)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001-repro/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/subprocess.py", line 578, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001-repro/runtime/bin/python', '/Users/vitoandareasmanik/Development/project/ngertiin/scripts/spikes/goal_capture/probe.py', '--source', '.dev/nma-001-repro/source', '--output', '.dev/nma-002/live-01', '--env-file', '.env', '--turn']' returned non-zero exit status 1.

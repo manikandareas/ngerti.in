@@ -1,0 +1,19 @@
+{
+  "commit": "7489b22af47ce91b366dde81d5831ea422577498",
+  "archive_sha256": "8bb5bc691b509caa847b4e388258be2adec297f06b1ee01f56c9a742eb043d95",
+  "matched_regular_files": 20787,
+  "host": "macOS-26.3-arm64-arm-64bit",
+  "files": {
+    "hermes_cli/goals.py": "f87f4115d790c0b17183cf3fb72f455b04b4dda6cbafe57efb081dd3d42a0023",
+    "hermes_cli/goal_command.py": "0c85c445e51e4ac866c573cedd147c31f26e968d15c40f18fa4767273d6b2cf8",
+    "gateway/run_goals.py": "d442e7652b07357bd6332715ad81b4ee70826d9fb1b3ee2e5609c8bc9ef9b825",
+    "hermes_cli/kanban_db.py": "fab46dc6b1df90c77275a21c467ce003ce1d9436f68dcb8ddcdb89c1d3c4a31b",
+    "hermes_cli/kanban_db_graph.py": "b3aada2c8ec77fa0b4bcdcd6be084e2e91b9c9d57c68f7200b872232b94360ed",
+    "hermes_cli/kanban_db_dispatch.py": "849f7c62efa225cc3b22ef39c2f905d3d207b4ccfbd5b5e32671fca67f64cad4",
+    "tools/kanban_tools.py": "e5f48cb0b471c8624322d6d452be959a1f9505ef11398f67a6f079aeaab0d02f",
+    "tools/kanban_tools_schemas.py": "71e447950368d33f1a8c768634d3cecd82509b2720698d4fb92f9ae4112aabd3",
+    "tools/process_registry.py": "491b6fe7110eeb480d07a501e5a4a3865debd411aefef3ab2ffa93967e2235f2",
+    "website/docs/user-guide/features/goals.md": "5565a11c5bd758d500c0df90005c01ab7d7e91992e1b52b90a1e18b7a4c8d0d2",
+    "website/docs/user-guide/features/kanban.md": "9a5aa06e7cf5e7f08c12d36454b5594cb3f1aa5518f2e0b7cf8dee816584dffe"
+  }
+}

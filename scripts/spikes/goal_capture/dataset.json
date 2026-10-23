@@ -1,0 +1,18 @@
+[
+ {"id":"hypothetical","session":"dm-1","text":"Kalau suatu saat kita membuat laporan konsumsi BBM mingguan, isinya sebaiknya apa? Ini baru diskusi, belum perlu dikerjakan.","ops":[],"count":0},
+ {"id":"commit","session":"dm-1","text":"Tolong siapkan laporan konsumsi BBM armada untuk Jumat. Gunakan data yang nanti saya kirim dan lanjutkan sampai laporannya siap.","ops":["create"],"count":1,"label":"fuel"},
+ {"id":"correction","session":"dm-1","text":"Koreksi laporan BBM tadi: tenggatnya Senin, bukan Jumat. Sertakan liter per 100 km.","ops":["update"],"count":1,"target":"fuel","contains":["monday","100"]},
+ {"id":"repeat","session":"dm-1","text":"Ya, laporan BBM yang sama untuk Senin itu. Tidak perlu membuat pekerjaan baru.","ops":[],"count":1},
+ {"id":"second-goal","session":"dm-1","text":"Selain laporan BBM, buat juga panduan onboarding pengemudi baru. Itu pekerjaan terpisah; lanjutkan keduanya.","ops":["create"],"count":2,"label":"onboarding"},
+ {"id":"fresh-session-correction","session":"dm-2","text":"Untuk laporan BBM yang sudah kamu simpan, batasi ke kendaraan Alpha saja; tenggat Senin dan ukuran liter per 100 km tetap.","ops":["update"],"count":2,"target":"fuel","contains":["alpha","monday","100"]},
+ {"id":"fresh-session-repeat","session":"dm-2","text":"Ingat, tetap kerjakan laporan konsumsi bahan bakar kendaraan Alpha untuk Senin yang sudah ada.","ops":[],"count":2},
+ {"id":"run-stop-only","session":"dm-2","text":"Hentikan jawaban yang sedang kamu tulis saja. Kedua pekerjaan yang tersimpan tetap lanjut.","ops":[],"count":2},
+ {"id":"goal-stop","session":"dm-2","text":"Batalkan laporan BBM Alpha. Jangan lanjutkan laporan itu lagi, tetapi panduan onboarding tetap dikerjakan.","ops":["stop"],"count":2,"target":"fuel"},
+ {"id":"stopped-after-restart","session":"dm-3","text":"Bagaimana status laporan BBM Alpha yang saya batalkan? Saya hanya bertanya status, jangan mulai lagi.","ops":[],"count":2},
+ {"id":"quoted-request","session":"dm-3","text":"Contoh kalimat untuk panduan adalah: 'Buatkan laporan servis bulanan'. Itu kutipan contoh saja, bukan tugas baru.","ops":[],"count":2},
+ {"id":"negation","session":"dm-3","text":"Jangan buat jadwal pemeriksaan ban. Saya belum memutuskan akan memakainya.","ops":[],"count":2},
+ {"id":"ambiguous-stop","session":"dm-3","text":"Hentikan yang itu.","ops":[],"count":2},
+ {"id":"stop-remaining","session":"dm-3","text":"Maksud saya hentikan panduan onboarding pengemudi baru juga.","ops":["stop"],"count":2,"target":"onboarding"},
+ {"id":"two-commitments","session":"dm-4","text":"Please prepare a tyre inspection checklist and, separately, a monthly maintenance cost report. Keep both as independent responsibilities until delivered.","ops":["create","create"],"count":4},
+ {"id":"hypothetical-correction","session":"dm-4","text":"If we changed the maintenance report to weekly, what would be the tradeoff? Do not change the current monthly requirement yet.","ops":[],"count":4}
+]

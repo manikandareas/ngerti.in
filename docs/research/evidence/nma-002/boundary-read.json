@@ -1,0 +1,12 @@
+{
+  "phase": "read",
+  "pid": 27644,
+  "checks": {
+    "paused_survives_process_restart": true,
+    "paused_has_no_continuation": true,
+    "fresh_session_still_empty": true,
+    "archived_survives_restart": true,
+    "released_child_still_ready": true,
+    "sqlite_integrity": true
+  }
+}

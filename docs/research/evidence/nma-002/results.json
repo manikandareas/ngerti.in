@@ -1,0 +1,1144 @@
+[
+  {
+    "case": "hypothetical",
+    "session": "dm-1",
+    "pid": 27612,
+    "model": "gpt-6.1-sol",
+    "response_id": "chatcmpl-Ec7XFcvOudkfKAQChzNw2hceLYpJM",
+    "usage": {
+      "completion_tokens": 114,
+      "prompt_tokens": 330,
+      "total_tokens": 444,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 12,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0
+      }
+    },
+    "before": [],
+    "decision": {
+      "actions": [],
+      "reply": "Untuk bahan diskusi, laporan konsumsi BBM mingguan sebaiknya mencakup total liter dan biaya BBM, rincian per kendaraan, jarak tempuh atau jam operasi, efisiensi (km/liter atau liter/jam), perbandingan dengan minggu sebelumnya dan anggaran, serta anomali dan rekomendasi penghematan. Ini belum saya catat sebagai pekerjaan yang perlu dilakukan."
+    },
+    "applied": [],
+    "after": [],
+    "integrity": "ok",
+    "checks": {
+      "operations": true,
+      "count": true,
+      "integrity": true
+    },
+    "passed": true
+  },
+  {
+    "case": "commit",
+    "session": "dm-1",
+    "pid": 27620,
+    "model": "gpt-6.1-sol",
+    "response_id": "chatcmpl-Ec7XM71Ozf49H426F2KOekbwnMtUC",
+    "usage": {
+      "completion_tokens": 96,
+      "prompt_tokens": 465,
+      "total_tokens": 561,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0
+      }
+    },
+    "before": [],
+    "decision": {
+      "actions": [
+        {
+          "op": "create",
+          "id": "",
+          "title": "Prepare the fleet fuel consumption report for Friday",
+          "body": "Prepare a fleet fuel consumption report for Friday using the data the user will send. Continue the work until the report is ready."
+        }
+      ],
+      "reply": "Baik, saya catat laporan konsumsi BBM armada untuk Jumat sebagai pekerjaan yang perlu dituntaskan. Silakan kirim datanya agar penyusunan bisa dimulai."
+    },
+    "applied": [
+      {
+        "op": "create",
+        "id": "t_8bdf1b8c"
+      }
+    ],
+    "after": [
+      {
+        "id": "t_8bdf1b8c",
+        "title": "Prepare the fleet fuel consumption report for Friday",
+        "body": "Prepare a fleet fuel consumption report for Friday using the data the user will send. Continue the work until the report is ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      }
+    ],
+    "integrity": "ok",
+    "checks": {
+      "operations": true,
+      "count": true,
+      "integrity": true,
+      "restart_readback": true
+    },
+    "passed": true
+  },
+  {
+    "case": "correction",
+    "session": "dm-1",
+    "pid": 27624,
+    "model": "gpt-6.1-sol",
+    "response_id": "chatcmpl-Ec7XSC0p0GcegkXNBJbCl9opxPx83",
+    "usage": {
+      "completion_tokens": 114,
+      "prompt_tokens": 620,
+      "total_tokens": 734,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0
+      }
+    },
+    "before": [
+      {
+        "id": "t_8bdf1b8c",
+        "title": "Prepare the fleet fuel consumption report for Friday",
+        "body": "Prepare a fleet fuel consumption report for Friday using the data the user will send. Continue the work until the report is ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      }
+    ],
+    "decision": {
+      "actions": [
+        {
+          "op": "update",
+          "id": "t_8bdf1b8c",
+          "title": "Prepare the fleet fuel consumption report for Monday",
+          "body": "Prepare a fleet fuel consumption report for Monday, not Friday, using the data the user will send. Include fuel consumption in liters per 100 km. Continue the work until the report is ready."
+        }
+      ],
+      "reply": "Baik, tenggat laporan BBM armada diubah menjadi Senin, dan laporan akan mencakup konsumsi dalam liter per 100 km."
+    },
+    "applied": [
+      {
+        "op": "update",
+        "id": "t_8bdf1b8c"
+      }
+    ],
+    "after": [
+      {
+        "id": "t_8bdf1b8c",
+        "title": "Prepare the fleet fuel consumption report for Monday",
+        "body": "Prepare a fleet fuel consumption report for Monday, not Friday, using the data the user will send. Include fuel consumption in liters per 100 km. Continue the work until the report is ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      }
+    ],
+    "integrity": "ok",
+    "checks": {
+      "operations": true,
+      "count": true,
+      "integrity": true,
+      "identity": true,
+      "requirements": true,
+      "restart_readback": true
+    },
+    "passed": true
+  },
+  {
+    "case": "repeat",
+    "session": "dm-1",
+    "pid": 27633,
+    "model": "gpt-6.1-sol",
+    "response_id": "chatcmpl-Ec7XZROT4cTied0Ub42Chz3XomHW0",
+    "usage": {
+      "completion_tokens": 33,
+      "prompt_tokens": 705,
+      "total_tokens": 738,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0
+      }
+    },
+    "before": [
+      {
+        "id": "t_8bdf1b8c",
+        "title": "Prepare the fleet fuel consumption report for Monday",
+        "body": "Prepare a fleet fuel consumption report for Monday, not Friday, using the data the user will send. Include fuel consumption in liters per 100 km. Continue the work until the report is ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      }
+    ],
+    "decision": {
+      "actions": [],
+      "reply": "Baik, tetap menggunakan pekerjaan laporan BBM yang sama untuk Senin, tanpa membuat pekerjaan baru."
+    },
+    "applied": [],
+    "after": [
+      {
+        "id": "t_8bdf1b8c",
+        "title": "Prepare the fleet fuel consumption report for Monday",
+        "body": "Prepare a fleet fuel consumption report for Monday, not Friday, using the data the user will send. Include fuel consumption in liters per 100 km. Continue the work until the report is ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      }
+    ],
+    "integrity": "ok",
+    "checks": {
+      "operations": true,
+      "count": true,
+      "integrity": true,
+      "restart_readback": true
+    },
+    "passed": true
+  },
+  {
+    "case": "second-goal",
+    "session": "dm-1",
+    "pid": 27637,
+    "model": "gpt-6.1-sol",
+    "response_id": "chatcmpl-Ec7XdVMiqXexWv0k13vVCJHHe51nh",
+    "usage": {
+      "completion_tokens": 103,
+      "prompt_tokens": 773,
+      "total_tokens": 876,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0
+      }
+    },
+    "before": [
+      {
+        "id": "t_8bdf1b8c",
+        "title": "Prepare the fleet fuel consumption report for Monday",
+        "body": "Prepare a fleet fuel consumption report for Monday, not Friday, using the data the user will send. Include fuel consumption in liters per 100 km. Continue the work until the report is ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      }
+    ],
+    "decision": {
+      "actions": [
+        {
+          "op": "create",
+          "id": "",
+          "title": "Prepare an onboarding guide for new drivers",
+          "body": "Prepare an onboarding guide for new drivers as a separate responsibility from the fleet fuel consumption report. Continue both responsibilities until their deliverables are ready."
+        }
+      ],
+      "reply": "Baik, saya catat panduan onboarding pengemudi baru sebagai pekerjaan terpisah. Laporan BBM tetap dilanjutkan dengan tenggat Senin dan mencakup liter per 100 km."
+    },
+    "applied": [
+      {
+        "op": "create",
+        "id": "t_abc4d322"
+      }
+    ],
+    "after": [
+      {
+        "id": "t_8bdf1b8c",
+        "title": "Prepare the fleet fuel consumption report for Monday",
+        "body": "Prepare a fleet fuel consumption report for Monday, not Friday, using the data the user will send. Include fuel consumption in liters per 100 km. Continue the work until the report is ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      },
+      {
+        "id": "t_abc4d322",
+        "title": "Prepare an onboarding guide for new drivers",
+        "body": "Prepare an onboarding guide for new drivers as a separate responsibility from the fleet fuel consumption report. Continue both responsibilities until their deliverables are ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      }
+    ],
+    "integrity": "ok",
+    "checks": {
+      "operations": true,
+      "count": true,
+      "integrity": true,
+      "restart_readback": true
+    },
+    "passed": true
+  },
+  {
+    "case": "fresh-session-correction",
+    "session": "dm-2",
+    "pid": 27651,
+    "model": "gpt-6.1-sol",
+    "response_id": "chatcmpl-Ec7XimQD9LjUPINQ07fLlKTmDpuNV",
+    "usage": {
+      "completion_tokens": 115,
+      "prompt_tokens": 483,
+      "total_tokens": 598,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0
+      }
+    },
+    "before": [
+      {
+        "id": "t_8bdf1b8c",
+        "title": "Prepare the fleet fuel consumption report for Monday",
+        "body": "Prepare a fleet fuel consumption report for Monday, not Friday, using the data the user will send. Include fuel consumption in liters per 100 km. Continue the work until the report is ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      },
+      {
+        "id": "t_abc4d322",
+        "title": "Prepare an onboarding guide for new drivers",
+        "body": "Prepare an onboarding guide for new drivers as a separate responsibility from the fleet fuel consumption report. Continue both responsibilities until their deliverables are ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      }
+    ],
+    "decision": {
+      "actions": [
+        {
+          "op": "update",
+          "id": "t_8bdf1b8c",
+          "title": "Prepare the Alpha fleet fuel consumption report for Monday",
+          "body": "Prepare a fleet fuel consumption report for Monday using the data the user will send. Limit the report to Alpha vehicles only. Include fuel consumption in liters per 100 km. Continue the work until the report is ready."
+        }
+      ],
+      "reply": "Cakupan laporan BBM dibatasi hanya untuk kendaraan Alpha. Tenggat tetap Senin dan ukuran tetap liter per 100 km."
+    },
+    "applied": [
+      {
+        "op": "update",
+        "id": "t_8bdf1b8c"
+      }
+    ],
+    "after": [
+      {
+        "id": "t_8bdf1b8c",
+        "title": "Prepare the Alpha fleet fuel consumption report for Monday",
+        "body": "Prepare a fleet fuel consumption report for Monday using the data the user will send. Limit the report to Alpha vehicles only. Include fuel consumption in liters per 100 km. Continue the work until the report is ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      },
+      {
+        "id": "t_abc4d322",
+        "title": "Prepare an onboarding guide for new drivers",
+        "body": "Prepare an onboarding guide for new drivers as a separate responsibility from the fleet fuel consumption report. Continue both responsibilities until their deliverables are ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      }
+    ],
+    "integrity": "ok",
+    "checks": {
+      "operations": true,
+      "count": true,
+      "integrity": true,
+      "identity": true,
+      "requirements": true,
+      "restart_readback": true
+    },
+    "passed": true
+  },
+  {
+    "case": "fresh-session-repeat",
+    "session": "dm-2",
+    "pid": 27663,
+    "model": "gpt-6.1-sol",
+    "response_id": "chatcmpl-Ec7Xn5oIK9bKMRyt7CRG4e943qyt3",
+    "usage": {
+      "completion_tokens": 69,
+      "prompt_tokens": 557,
+      "total_tokens": 626,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 21,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0
+      }
+    },
+    "before": [
+      {
+        "id": "t_8bdf1b8c",
+        "title": "Prepare the Alpha fleet fuel consumption report for Monday",
+        "body": "Prepare a fleet fuel consumption report for Monday using the data the user will send. Limit the report to Alpha vehicles only. Include fuel consumption in liters per 100 km. Continue the work until the report is ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      },
+      {
+        "id": "t_abc4d322",
+        "title": "Prepare an onboarding guide for new drivers",
+        "body": "Prepare an onboarding guide for new drivers as a separate responsibility from the fleet fuel consumption report. Continue both responsibilities until their deliverables are ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      }
+    ],
+    "decision": {
+      "actions": [],
+      "reply": "Tanggung jawab yang sudah ada tetap berlaku: laporan konsumsi BBM kendaraan Alpha untuk Senin, dengan satuan liter per 100 km."
+    },
+    "applied": [],
+    "after": [
+      {
+        "id": "t_8bdf1b8c",
+        "title": "Prepare the Alpha fleet fuel consumption report for Monday",
+        "body": "Prepare a fleet fuel consumption report for Monday using the data the user will send. Limit the report to Alpha vehicles only. Include fuel consumption in liters per 100 km. Continue the work until the report is ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      },
+      {
+        "id": "t_abc4d322",
+        "title": "Prepare an onboarding guide for new drivers",
+        "body": "Prepare an onboarding guide for new drivers as a separate responsibility from the fleet fuel consumption report. Continue both responsibilities until their deliverables are ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      }
+    ],
+    "integrity": "ok",
+    "checks": {
+      "operations": true,
+      "count": true,
+      "integrity": true,
+      "restart_readback": true
+    },
+    "passed": true
+  },
+  {
+    "case": "run-stop-only",
+    "session": "dm-2",
+    "pid": 27669,
+    "model": "gpt-6.1-sol",
+    "response_id": "chatcmpl-Ec7Xr6ND6ciKTJdIv5uiKrteUlrco",
+    "usage": {
+      "completion_tokens": 37,
+      "prompt_tokens": 629,
+      "total_tokens": 666,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0
+      }
+    },
+    "before": [
+      {
+        "id": "t_8bdf1b8c",
+        "title": "Prepare the Alpha fleet fuel consumption report for Monday",
+        "body": "Prepare a fleet fuel consumption report for Monday using the data the user will send. Limit the report to Alpha vehicles only. Include fuel consumption in liters per 100 km. Continue the work until the report is ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      },
+      {
+        "id": "t_abc4d322",
+        "title": "Prepare an onboarding guide for new drivers",
+        "body": "Prepare an onboarding guide for new drivers as a separate responsibility from the fleet fuel consumption report. Continue both responsibilities until their deliverables are ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      }
+    ],
+    "decision": {
+      "actions": [],
+      "reply": "Baik, jawaban saat ini dihentikan. Kedua tanggung jawab yang tersimpan tetap berlanjut."
+    },
+    "applied": [],
+    "after": [
+      {
+        "id": "t_8bdf1b8c",
+        "title": "Prepare the Alpha fleet fuel consumption report for Monday",
+        "body": "Prepare a fleet fuel consumption report for Monday using the data the user will send. Limit the report to Alpha vehicles only. Include fuel consumption in liters per 100 km. Continue the work until the report is ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      },
+      {
+        "id": "t_abc4d322",
+        "title": "Prepare an onboarding guide for new drivers",
+        "body": "Prepare an onboarding guide for new drivers as a separate responsibility from the fleet fuel consumption report. Continue both responsibilities until their deliverables are ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      }
+    ],
+    "integrity": "ok",
+    "checks": {
+      "operations": true,
+      "count": true,
+      "integrity": true,
+      "restart_readback": true
+    },
+    "passed": true
+  },
+  {
+    "case": "goal-stop",
+    "session": "dm-2",
+    "pid": 27677,
+    "model": "gpt-6.1-sol",
+    "response_id": "chatcmpl-Ec7XwlGK3cRrpFuccQAFMnohf05hs",
+    "usage": {
+      "completion_tokens": 87,
+      "prompt_tokens": 698,
+      "total_tokens": 785,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0
+      }
+    },
+    "before": [
+      {
+        "id": "t_8bdf1b8c",
+        "title": "Prepare the Alpha fleet fuel consumption report for Monday",
+        "body": "Prepare a fleet fuel consumption report for Monday using the data the user will send. Limit the report to Alpha vehicles only. Include fuel consumption in liters per 100 km. Continue the work until the report is ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      },
+      {
+        "id": "t_abc4d322",
+        "title": "Prepare an onboarding guide for new drivers",
+        "body": "Prepare an onboarding guide for new drivers as a separate responsibility from the fleet fuel consumption report. Continue both responsibilities until their deliverables are ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      }
+    ],
+    "decision": {
+      "actions": [
+        {
+          "op": "stop",
+          "id": "t_8bdf1b8c",
+          "title": "Prepare the Alpha fleet fuel consumption report for Monday",
+          "body": "Stop work on the Alpha fleet fuel consumption report for Monday. Do not continue preparing this report."
+        }
+      ],
+      "reply": "Laporan BBM Alpha dibatalkan dan tidak akan dilanjutkan. Panduan onboarding tetap dikerjakan."
+    },
+    "applied": [
+      {
+        "op": "stop",
+        "id": "t_8bdf1b8c"
+      }
+    ],
+    "after": [
+      {
+        "id": "t_8bdf1b8c",
+        "title": "Prepare the Alpha fleet fuel consumption report for Monday",
+        "body": "Prepare a fleet fuel consumption report for Monday using the data the user will send. Limit the report to Alpha vehicles only. Include fuel consumption in liters per 100 km. Continue the work until the report is ready.",
+        "status": "archived",
+        "session_id": "dm-1"
+      },
+      {
+        "id": "t_abc4d322",
+        "title": "Prepare an onboarding guide for new drivers",
+        "body": "Prepare an onboarding guide for new drivers as a separate responsibility from the fleet fuel consumption report. Continue both responsibilities until their deliverables are ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      }
+    ],
+    "integrity": "ok",
+    "checks": {
+      "operations": true,
+      "count": true,
+      "integrity": true,
+      "identity": true,
+      "restart_readback": true
+    },
+    "passed": true
+  },
+  {
+    "case": "stopped-after-restart",
+    "session": "dm-3",
+    "pid": 27682,
+    "model": "gpt-6.1-sol",
+    "response_id": "chatcmpl-Ec7Y0YDF414aS603OkCwr4qPV1dyq",
+    "usage": {
+      "completion_tokens": 43,
+      "prompt_tokens": 481,
+      "total_tokens": 524,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0
+      }
+    },
+    "before": [
+      {
+        "id": "t_8bdf1b8c",
+        "title": "Prepare the Alpha fleet fuel consumption report for Monday",
+        "body": "Prepare a fleet fuel consumption report for Monday using the data the user will send. Limit the report to Alpha vehicles only. Include fuel consumption in liters per 100 km. Continue the work until the report is ready.",
+        "status": "archived",
+        "session_id": "dm-1"
+      },
+      {
+        "id": "t_abc4d322",
+        "title": "Prepare an onboarding guide for new drivers",
+        "body": "Prepare an onboarding guide for new drivers as a separate responsibility from the fleet fuel consumption report. Continue both responsibilities until their deliverables are ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      }
+    ],
+    "decision": {
+      "actions": [],
+      "reply": "Laporan BBM Alpha berstatus dibatalkan (diarsipkan). Pengerjaannya tetap dihentikan dan tidak saya mulai kembali."
+    },
+    "applied": [],
+    "after": [
+      {
+        "id": "t_8bdf1b8c",
+        "title": "Prepare the Alpha fleet fuel consumption report for Monday",
+        "body": "Prepare a fleet fuel consumption report for Monday using the data the user will send. Limit the report to Alpha vehicles only. Include fuel consumption in liters per 100 km. Continue the work until the report is ready.",
+        "status": "archived",
+        "session_id": "dm-1"
+      },
+      {
+        "id": "t_abc4d322",
+        "title": "Prepare an onboarding guide for new drivers",
+        "body": "Prepare an onboarding guide for new drivers as a separate responsibility from the fleet fuel consumption report. Continue both responsibilities until their deliverables are ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      }
+    ],
+    "integrity": "ok",
+    "checks": {
+      "operations": true,
+      "count": true,
+      "integrity": true,
+      "restart_readback": true
+    },
+    "passed": true
+  },
+  {
+    "case": "quoted-request",
+    "session": "dm-3",
+    "pid": 27688,
+    "model": "gpt-6.1-sol",
+    "response_id": "chatcmpl-Ec7Y4KqSmGDzbHL0aOjzNz3eQGbnp",
+    "usage": {
+      "completion_tokens": 37,
+      "prompt_tokens": 560,
+      "total_tokens": 597,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0
+      }
+    },
+    "before": [
+      {
+        "id": "t_8bdf1b8c",
+        "title": "Prepare the Alpha fleet fuel consumption report for Monday",
+        "body": "Prepare a fleet fuel consumption report for Monday using the data the user will send. Limit the report to Alpha vehicles only. Include fuel consumption in liters per 100 km. Continue the work until the report is ready.",
+        "status": "archived",
+        "session_id": "dm-1"
+      },
+      {
+        "id": "t_abc4d322",
+        "title": "Prepare an onboarding guide for new drivers",
+        "body": "Prepare an onboarding guide for new drivers as a separate responsibility from the fleet fuel consumption report. Continue both responsibilities until their deliverables are ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      }
+    ],
+    "decision": {
+      "actions": [],
+      "reply": "Dipahami. Kalimat 'Buatkan laporan servis bulanan' hanya contoh untuk panduan, bukan tugas baru."
+    },
+    "applied": [],
+    "after": [
+      {
+        "id": "t_8bdf1b8c",
+        "title": "Prepare the Alpha fleet fuel consumption report for Monday",
+        "body": "Prepare a fleet fuel consumption report for Monday using the data the user will send. Limit the report to Alpha vehicles only. Include fuel consumption in liters per 100 km. Continue the work until the report is ready.",
+        "status": "archived",
+        "session_id": "dm-1"
+      },
+      {
+        "id": "t_abc4d322",
+        "title": "Prepare an onboarding guide for new drivers",
+        "body": "Prepare an onboarding guide for new drivers as a separate responsibility from the fleet fuel consumption report. Continue both responsibilities until their deliverables are ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      }
+    ],
+    "integrity": "ok",
+    "checks": {
+      "operations": true,
+      "count": true,
+      "integrity": true,
+      "restart_readback": true
+    },
+    "passed": true
+  },
+  {
+    "case": "negation",
+    "session": "dm-3",
+    "pid": 27692,
+    "model": "gpt-6.1-sol",
+    "response_id": "chatcmpl-Ec7Y852m5EaMF2DG02vmdQj7nsUPK",
+    "usage": {
+      "completion_tokens": 33,
+      "prompt_tokens": 625,
+      "total_tokens": 658,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0
+      }
+    },
+    "before": [
+      {
+        "id": "t_8bdf1b8c",
+        "title": "Prepare the Alpha fleet fuel consumption report for Monday",
+        "body": "Prepare a fleet fuel consumption report for Monday using the data the user will send. Limit the report to Alpha vehicles only. Include fuel consumption in liters per 100 km. Continue the work until the report is ready.",
+        "status": "archived",
+        "session_id": "dm-1"
+      },
+      {
+        "id": "t_abc4d322",
+        "title": "Prepare an onboarding guide for new drivers",
+        "body": "Prepare an onboarding guide for new drivers as a separate responsibility from the fleet fuel consumption report. Continue both responsibilities until their deliverables are ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      }
+    ],
+    "decision": {
+      "actions": [],
+      "reply": "Baik, saya tidak akan membuat jadwal pemeriksaan ban atau mencatatnya sebagai tugas baru."
+    },
+    "applied": [],
+    "after": [
+      {
+        "id": "t_8bdf1b8c",
+        "title": "Prepare the Alpha fleet fuel consumption report for Monday",
+        "body": "Prepare a fleet fuel consumption report for Monday using the data the user will send. Limit the report to Alpha vehicles only. Include fuel consumption in liters per 100 km. Continue the work until the report is ready.",
+        "status": "archived",
+        "session_id": "dm-1"
+      },
+      {
+        "id": "t_abc4d322",
+        "title": "Prepare an onboarding guide for new drivers",
+        "body": "Prepare an onboarding guide for new drivers as a separate responsibility from the fleet fuel consumption report. Continue both responsibilities until their deliverables are ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      }
+    ],
+    "integrity": "ok",
+    "checks": {
+      "operations": true,
+      "count": true,
+      "integrity": true,
+      "restart_readback": true
+    },
+    "passed": true
+  },
+  {
+    "case": "ambiguous-stop",
+    "session": "dm-3",
+    "pid": 27696,
+    "model": "gpt-6.1-sol",
+    "response_id": "chatcmpl-Ec7YB5NlvaFFZjqdbz2kEWxiec7u8",
+    "usage": {
+      "completion_tokens": 232,
+      "prompt_tokens": 673,
+      "total_tokens": 905,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 175,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0
+      }
+    },
+    "before": [
+      {
+        "id": "t_8bdf1b8c",
+        "title": "Prepare the Alpha fleet fuel consumption report for Monday",
+        "body": "Prepare a fleet fuel consumption report for Monday using the data the user will send. Limit the report to Alpha vehicles only. Include fuel consumption in liters per 100 km. Continue the work until the report is ready.",
+        "status": "archived",
+        "session_id": "dm-1"
+      },
+      {
+        "id": "t_abc4d322",
+        "title": "Prepare an onboarding guide for new drivers",
+        "body": "Prepare an onboarding guide for new drivers as a separate responsibility from the fleet fuel consumption report. Continue both responsibilities until their deliverables are ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      }
+    ],
+    "decision": {
+      "actions": [],
+      "reply": "Yang ingin Anda hentikan: panduan untuk pengemudi baru atau hal lain? Jadwal pemeriksaan ban tidak tercatat sebagai tugas, dan laporan BBM Alpha sudah dihentikan."
+    },
+    "applied": [],
+    "after": [
+      {
+        "id": "t_8bdf1b8c",
+        "title": "Prepare the Alpha fleet fuel consumption report for Monday",
+        "body": "Prepare a fleet fuel consumption report for Monday using the data the user will send. Limit the report to Alpha vehicles only. Include fuel consumption in liters per 100 km. Continue the work until the report is ready.",
+        "status": "archived",
+        "session_id": "dm-1"
+      },
+      {
+        "id": "t_abc4d322",
+        "title": "Prepare an onboarding guide for new drivers",
+        "body": "Prepare an onboarding guide for new drivers as a separate responsibility from the fleet fuel consumption report. Continue both responsibilities until their deliverables are ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      }
+    ],
+    "integrity": "ok",
+    "checks": {
+      "operations": true,
+      "count": true,
+      "integrity": true,
+      "restart_readback": true
+    },
+    "passed": true
+  },
+  {
+    "case": "stop-remaining",
+    "session": "dm-3",
+    "pid": 27708,
+    "model": "gpt-6.1-sol",
+    "response_id": "chatcmpl-Ec7YKGxOKOOYbMIn3c2Nba1jLRoOm",
+    "usage": {
+      "completion_tokens": 95,
+      "prompt_tokens": 747,
+      "total_tokens": 842,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0
+      }
+    },
+    "before": [
+      {
+        "id": "t_8bdf1b8c",
+        "title": "Prepare the Alpha fleet fuel consumption report for Monday",
+        "body": "Prepare a fleet fuel consumption report for Monday using the data the user will send. Limit the report to Alpha vehicles only. Include fuel consumption in liters per 100 km. Continue the work until the report is ready.",
+        "status": "archived",
+        "session_id": "dm-1"
+      },
+      {
+        "id": "t_abc4d322",
+        "title": "Prepare an onboarding guide for new drivers",
+        "body": "Prepare an onboarding guide for new drivers as a separate responsibility from the fleet fuel consumption report. Continue both responsibilities until their deliverables are ready.",
+        "status": "ready",
+        "session_id": "dm-1"
+      }
+    ],
+    "decision": {
+      "actions": [
+        {
+          "op": "stop",
+          "id": "t_abc4d322",
+          "title": "Prepare an onboarding guide for new drivers",
+          "body": "Prepare an onboarding guide for new drivers as a separate responsibility from the fleet fuel consumption report. Work on the onboarding guide is stopped at the user's request."
+        }
+      ],
+      "reply": "Baik, panduan onboarding pengemudi baru juga dihentikan. Laporan BBM Alpha tetap dihentikan."
+    },
+    "applied": [
+      {
+        "op": "stop",
+        "id": "t_abc4d322"
+      }
+    ],
+    "after": [
+      {
+        "id": "t_8bdf1b8c",
+        "title": "Prepare the Alpha fleet fuel consumption report for Monday",
+        "body": "Prepare a fleet fuel consumption report for Monday using the data the user will send. Limit the report to Alpha vehicles only. Include fuel consumption in liters per 100 km. Continue the work until the report is ready.",
+        "status": "archived",
+        "session_id": "dm-1"
+      },
+      {
+        "id": "t_abc4d322",
+        "title": "Prepare an onboarding guide for new drivers",
+        "body": "Prepare an onboarding guide for new drivers as a separate responsibility from the fleet fuel consumption report. Continue both responsibilities until their deliverables are ready.",
+        "status": "archived",
+        "session_id": "dm-1"
+      }
+    ],
+    "integrity": "ok",
+    "checks": {
+      "operations": true,
+      "count": true,
+      "integrity": true,
+      "identity": true,
+      "restart_readback": true
+    },
+    "passed": true
+  },
+  {
+    "case": "two-commitments",
+    "session": "dm-4",
+    "pid": 27715,
+    "model": "gpt-6.1-sol",
+    "response_id": "chatcmpl-Ec7YQe3b81NcGhXbtckysB9TuxUm0",
+    "usage": {
+      "completion_tokens": 117,
+      "prompt_tokens": 484,
+      "total_tokens": 601,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0
+      }
+    },
+    "before": [
+      {
+        "id": "t_8bdf1b8c",
+        "title": "Prepare the Alpha fleet fuel consumption report for Monday",
+        "body": "Prepare a fleet fuel consumption report for Monday using the data the user will send. Limit the report to Alpha vehicles only. Include fuel consumption in liters per 100 km. Continue the work until the report is ready.",
+        "status": "archived",
+        "session_id": "dm-1"
+      },
+      {
+        "id": "t_abc4d322",
+        "title": "Prepare an onboarding guide for new drivers",
+        "body": "Prepare an onboarding guide for new drivers as a separate responsibility from the fleet fuel consumption report. Continue both responsibilities until their deliverables are ready.",
+        "status": "archived",
+        "session_id": "dm-1"
+      }
+    ],
+    "decision": {
+      "actions": [
+        {
+          "op": "create",
+          "id": "",
+          "title": "Prepare a tyre inspection checklist",
+          "body": "Prepare a tyre inspection checklist. Keep this responsibility independent from the monthly maintenance cost report and continue until the checklist is delivered."
+        },
+        {
+          "op": "create",
+          "id": "",
+          "title": "Prepare a monthly maintenance cost report",
+          "body": "Prepare a monthly maintenance cost report. Keep this responsibility independent from the tyre inspection checklist and continue until the report is delivered."
+        }
+      ],
+      "reply": "I’ll track the tyre inspection checklist and monthly maintenance cost report as separate responsibilities until each is delivered."
+    },
+    "applied": [
+      {
+        "op": "create",
+        "id": "t_965b5c2b"
+      },
+      {
+        "op": "create",
+        "id": "t_10e37a4c"
+      }
+    ],
+    "after": [
+      {
+        "id": "t_8bdf1b8c",
+        "title": "Prepare the Alpha fleet fuel consumption report for Monday",
+        "body": "Prepare a fleet fuel consumption report for Monday using the data the user will send. Limit the report to Alpha vehicles only. Include fuel consumption in liters per 100 km. Continue the work until the report is ready.",
+        "status": "archived",
+        "session_id": "dm-1"
+      },
+      {
+        "id": "t_abc4d322",
+        "title": "Prepare an onboarding guide for new drivers",
+        "body": "Prepare an onboarding guide for new drivers as a separate responsibility from the fleet fuel consumption report. Continue both responsibilities until their deliverables are ready.",
+        "status": "archived",
+        "session_id": "dm-1"
+      },
+      {
+        "id": "t_965b5c2b",
+        "title": "Prepare a tyre inspection checklist",
+        "body": "Prepare a tyre inspection checklist. Keep this responsibility independent from the monthly maintenance cost report and continue until the checklist is delivered.",
+        "status": "ready",
+        "session_id": "dm-4"
+      },
+      {
+        "id": "t_10e37a4c",
+        "title": "Prepare a monthly maintenance cost report",
+        "body": "Prepare a monthly maintenance cost report. Keep this responsibility independent from the tyre inspection checklist and continue until the report is delivered.",
+        "status": "ready",
+        "session_id": "dm-4"
+      }
+    ],
+    "integrity": "ok",
+    "checks": {
+      "operations": true,
+      "count": true,
+      "integrity": true,
+      "restart_readback": true
+    },
+    "passed": true
+  },
+  {
+    "case": "hypothetical-correction",
+    "session": "dm-4",
+    "pid": 27719,
+    "model": "gpt-6.1-sol",
+    "response_id": "chatcmpl-Ec7YWyaj4633oxQ2WrQz05gYGjyH7",
+    "usage": {
+      "completion_tokens": 63,
+      "prompt_tokens": 683,
+      "total_tokens": 746,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0
+      }
+    },
+    "before": [
+      {
+        "id": "t_8bdf1b8c",
+        "title": "Prepare the Alpha fleet fuel consumption report for Monday",
+        "body": "Prepare a fleet fuel consumption report for Monday using the data the user will send. Limit the report to Alpha vehicles only. Include fuel consumption in liters per 100 km. Continue the work until the report is ready.",
+        "status": "archived",
+        "session_id": "dm-1"
+      },
+      {
+        "id": "t_abc4d322",
+        "title": "Prepare an onboarding guide for new drivers",
+        "body": "Prepare an onboarding guide for new drivers as a separate responsibility from the fleet fuel consumption report. Continue both responsibilities until their deliverables are ready.",
+        "status": "archived",
+        "session_id": "dm-1"
+      },
+      {
+        "id": "t_965b5c2b",
+        "title": "Prepare a tyre inspection checklist",
+        "body": "Prepare a tyre inspection checklist. Keep this responsibility independent from the monthly maintenance cost report and continue until the checklist is delivered.",
+        "status": "ready",
+        "session_id": "dm-4"
+      },
+      {
+        "id": "t_10e37a4c",
+        "title": "Prepare a monthly maintenance cost report",
+        "body": "Prepare a monthly maintenance cost report. Keep this responsibility independent from the tyre inspection checklist and continue until the report is delivered.",
+        "status": "ready",
+        "session_id": "dm-4"
+      }
+    ],
+    "decision": {
+      "actions": [],
+      "reply": "A weekly report would reveal cost spikes and maintenance issues sooner, but require more frequent data collection and review. Weekly figures may also fluctuate more because of one-off repairs; monthly reporting provides a steadier view of overall costs. The monthly requirement remains unchanged."
+    },
+    "applied": [],
+    "after": [
+      {
+        "id": "t_8bdf1b8c",
+        "title": "Prepare the Alpha fleet fuel consumption report for Monday",
+        "body": "Prepare a fleet fuel consumption report for Monday using the data the user will send. Limit the report to Alpha vehicles only. Include fuel consumption in liters per 100 km. Continue the work until the report is ready.",
+        "status": "archived",
+        "session_id": "dm-1"
+      },
+      {
+        "id": "t_abc4d322",
+        "title": "Prepare an onboarding guide for new drivers",
+        "body": "Prepare an onboarding guide for new drivers as a separate responsibility from the fleet fuel consumption report. Continue both responsibilities until their deliverables are ready.",
+        "status": "archived",
+        "session_id": "dm-1"
+      },
+      {
+        "id": "t_965b5c2b",
+        "title": "Prepare a tyre inspection checklist",
+        "body": "Prepare a tyre inspection checklist. Keep this responsibility independent from the monthly maintenance cost report and continue until the checklist is delivered.",
+        "status": "ready",
+        "session_id": "dm-4"
+      },
+      {
+        "id": "t_10e37a4c",
+        "title": "Prepare a monthly maintenance cost report",
+        "body": "Prepare a monthly maintenance cost report. Keep this responsibility independent from the tyre inspection checklist and continue until the report is delivered.",
+        "status": "ready",
+        "session_id": "dm-4"
+      }
+    ],
+    "integrity": "ok",
+    "checks": {
+      "operations": true,
+      "count": true,
+      "integrity": true,
+      "restart_readback": true
+    },
+    "passed": true
+  }
+]

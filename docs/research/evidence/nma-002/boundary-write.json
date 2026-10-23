@@ -1,0 +1,20 @@
+{
+  "phase": "write",
+  "pid": 27643,
+  "checks": {
+    "second_goal_replaces_first": true,
+    "new_session_does_not_inherit": true,
+    "explicit_migration": true,
+    "old_session_cleared": true,
+    "delivery_dedup_before_archive": true,
+    "child_initially_waits": true,
+    "archive_releases_child": true,
+    "delivery_replay_after_archive_creates_new_task": true,
+    "sqlite_integrity": true
+  },
+  "task_ids": {
+    "parent": "t_9eb51434",
+    "child": "t_bf2f9ec1",
+    "replay": "t_351730e0"
+  }
+}

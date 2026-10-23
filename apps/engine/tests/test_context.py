@@ -203,7 +203,7 @@ def test_scoped_memory_transcript_transfer_revocation_restart(runtime):
     assert read(call, a, other_dm)["memory"] == []
     with sqlite3.connect(root / "state/state.db") as db:
         assert db.execute("PRAGMA foreign_key_check").fetchall() == []
-        assert db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 4
+        assert db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 5
         events = " ".join(r[0] for r in db.execute("SELECT payload FROM nma_events"))
         assert "AGENT_PRIVATE_MARKER" not in events
 
@@ -324,6 +324,11 @@ def test_additive_schema_three_upgrade_preserves_native_history(runtime):
         native_count = db.execute("SELECT COUNT(*) FROM messages").fetchone()[0]
         # Reconstruct the exact predecessor only in a disposable verification partition.
         for table in (
+            "nma_run_terminals",
+            "nma_effects",
+            "nma_run_events",
+            "nma_stream",
+            "nma_run_stops",
             "nma_context_run_fences",
             "nma_context_receipts",
             "nma_scope_grants",
@@ -331,7 +336,7 @@ def test_additive_schema_three_upgrade_preserves_native_history(runtime):
             "nma_messages",
         ):
             db.execute(f"DROP TABLE {table}")
-        db.execute("DELETE FROM nma_schema_migrations WHERE version=4")
+        db.execute("DELETE FROM nma_schema_migrations WHERE version>=4")
         db.execute("UPDATE nma_partition SET schema_version=3")
     start()
     context = read(call, a, dm)

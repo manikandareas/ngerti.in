@@ -1,0 +1,79 @@
+{
+  "date": "2026-10-24",
+  "ticket": "https://app.notion.com/p/402abdd618738198bf32d60df304ab97",
+  "dependency_status": "NMA-006 verified Done in live Notion",
+  "base_commit": "6665d9f68ce6211e61ece0c7f426c641c3fb21d8",
+  "delivery": "Uncommitted working tree; no push, deployment or production migration",
+  "results": {
+    "macos_full_suite": "42 passed in 130.96s; before the final snapshot test was added",
+    "macos_final_reliability_suite": "13 passed in 52.21s",
+    "native_lease_suite": "52 passed in 8.57s",
+    "linux_full_suite": "43 passed, 1 warning in 254.98s (0:04:14)",
+    "ruff": "passed",
+    "connector_recovery_regression": "1 passed, 4 deselected in 9.06s",
+    "package_build": "wheel/sdist passed; test-only fault launcher excluded",
+    "docs": "71 page hashes, 47 tickets, 4 views, 1301 local links OK",
+    "diff_check": "passed"
+  },
+  "commands": [
+    "HERMES_SOURCE=$PWD/.dev/nma-001/source PYTHONPATH=$PWD/apps/engine/src NMA_TEST_RUNTIME_PYTHON=$PWD/.dev/nma-006-closure/production/bin/python .dev/nma-006-closure/runtime/bin/python -m pytest apps/engine/tests -x -q -s",
+    "Same environment: pytest apps/engine/tests/test_reliability.py -q -s",
+    "HERMES_SOURCE=$PWD/.dev/nma-001/source PYTHONPATH=$PWD/apps/engine/src:$PWD/.dev/nma-001/source .dev/nma-006-closure/runtime/bin/python -m pytest .dev/nma-001/source/tests/gateway/test_turn_lease.py .dev/nma-001/source/tests/hermes_state/test_session_turn_lease.py .dev/nma-001/source/tests/agent/test_cross_process_turn_lease.py -q",
+    "docker build --target evidence --output type=local,dest=.dev/nma-010-linux apps/engine",
+    "uv run --project apps/backend ruff check apps/engine/src apps/engine/tests",
+    "uv run --project apps/backend ruff format --check apps/engine/src apps/engine/tests",
+    "python3 scripts/check_docs.py",
+    "git diff --check"
+  ],
+  "source_sha256": {
+    "apps/engine/src/ngertiin_engine/redaction.py": "a6cab4afc0cc6389ad20f1ca77428681a816ea06c59938dfb12bd412782abc6e",
+    "apps/engine/src/ngertiin_engine/store.py": "36b4e42511f0a8f8b1510cc2d0242799c6e3240ef2e488f0276e6834536ff006",
+    "apps/engine/src/ngertiin_engine/service.py": "a515ff8621b50e05287ef66df06e89dc72b625c1a0b9be6d3c61723e5eccbf61",
+    "apps/engine/src/ngertiin_engine/reliability.py": "a04aac045b86ac77c1775a16950c4b164a0fdf7b3d99d24821d3c81ab6dc8e40",
+    "apps/engine/src/ngertiin_engine/transcript.py": "563c49589033b49e1bbc7d42d0fd3de186a2af46003f6a303b075b18dae83203",
+    "apps/engine/src/ngertiin_engine/adapter.py": "5a25c71b808216c4772a609e4444f53a17af5ece76c4de25c63760209c6edb14",
+    "apps/engine/src/ngertiin_engine/__init__.py": "4064e84d1acb1ffa1e8097c5af6566b57929ce94cb0c67c80b64945dec02770f",
+    "apps/engine/src/ngertiin_engine/runtime.py": "fa3cca5ac70ea64a65706bd63bfe6f9e4cff2b7947598bc2c152d0f535cdacab",
+    "apps/engine/src/ngertiin_engine/agents.py": "9164b8057694a3fc9ca0aab5f0aeb3164351e99639241a2e9cf75cacfd8a6355",
+    "apps/engine/src/ngertiin_engine/threads.py": "eb4343071be01bcd501d265f19fd9ea65fc7ee1698974d8030e85ab75926869a",
+    "apps/engine/src/ngertiin_engine/context.py": "b28b3518721aab0d93c7a3024c64fddec747431fcd20d0f0b1b7e237e15f9a74",
+    "apps/engine/src/ngertiin_engine/capabilities.py": "093c0264bf5de56ece9381f3f5268e2261ab6da03bcd40cfe335c71e271f5ed3",
+    "apps/engine/src/ngertiin_engine/contracts.py": "3843a4a96fd0f49192d5976bdd44d56bec80fadf58a870fab9143ada61ef548a",
+    "apps/engine/tests/mcp_fixture.py": "183234d70e9f02bbf2ecef163ba6bc499ebb90efc638974840c2651a7a8b1b2d",
+    "apps/engine/tests/test_capabilities.py": "3f69b7d0f9a277e8151b999a323fa6cc862e9321801cdab77e56518dd9dd2f0f",
+    "apps/engine/tests/test_runtime.py": "fdccee34896545012477115d3afcc5ee6d37530b3ff7f6458bcff2e51a65d5b4",
+    "apps/engine/tests/test_reliability.py": "259d2176bd23593c5cedc83eaf50547fe073f5e0725272e105e705786f13538b",
+    "apps/engine/tests/test_threads.py": "ae95f0dee16b2abe1757f4efa4a40d66e04d21f539b846e6d92f32ee5deef8bd",
+    "apps/engine/tests/test_context.py": "7164ec878598f1a50ae777065aa148d235b3dc63f2a52c8914c8ed0e9d10bcca",
+    "apps/engine/tests/fault_launcher.py": "56c17e0f340155ad9c4dbf4ef810fa9f33f61e686e3a863fa9e438e7ad306948"
+  },
+  "rakazo_comparator": {
+    "revision": "f6a1ef2229a81319a91758aa65fac97575215691",
+    "file": "packages/adapters/src/job-reconciler.ts",
+    "sha256": "bdaf391da6ac68f68b5ee10c77afda7e7c762bf1adde407cbc040c2b40968052",
+    "adoption": "Read comparator only; no code copied"
+  },
+  "review": "Author self-review; no independent review",
+  "limitations": [
+    "Deterministic loopback model and real local MCP, not live external provider",
+    "Private engine protocol; public HTTP/SSE and projections belong to NMA-011",
+    "No goals, causal handoff descendants, production failover, OS isolation or release readiness claim",
+    "No event retention pruning or automatic indeterminate resolution",
+    "No exactly-once guarantee for external providers"
+  ],
+  "initial_linux_failure": "1 failed, 42 passed; refused MCP discovery intent blocked startup. Fixed durable rejection at preparation and pending recovery; final Linux suite passed.",
+  "evidence_sha256": {
+    "docs/research/evidence/nma-010/docs-check.log": "f6b803719ce745e05d5b8d71464ab9c2ad7ac2256bf74faa594930ad5539391b",
+    "docs/research/evidence/nma-010/connector-recovery-regression.log": "bd9dbbbd7ee00a6c2262c83db380c1a0ac669c7efb1996185d2a3d57fab2f370",
+    "docs/research/evidence/nma-010/native-lease-tests.log": "80d5cd27e5799e708d1bfb5442424aeb717dff1e104ed67508fd0e3474c7693f",
+    "docs/research/evidence/nma-010/package-build.log": "d8ed9e0b98a8955249385f2c82369d7fcedf754621ee08f2c77e570ec36fe387",
+    "docs/research/evidence/nma-010/linux-runtime-inventory.json": "e1c165b5cf829b2529dc87619f7fea49a00a764153b20c81b53fb97d48f24de3",
+    "docs/research/evidence/nma-010/linux-runtime-tests.log": "760c25165c1fa2ce49b86110d37f36becf95cbf4f1a19a4d7a354623aca8c128",
+    "docs/research/evidence/nma-010/linux-build-initial-failure.log": "593f0566ad44c6900b2651d71948a8094101a66b213eab8054453b0dc97a94c7",
+    "docs/research/evidence/nma-010/ruff.log": "18574f3cdcb6f41ca7c41bee5d17496dc46c80fe90f246b849331293b664f63a",
+    "docs/research/evidence/nma-010/runtime-tests.log": "e458998d68fdfb5491b1b185eb5de25f166de1904f32f33ec7c30ff719266941",
+    "docs/research/evidence/nma-010/linux-foundation-profile.json": "6687c56dc015208e26f551fbdd1028119a9c5b77883ebecfb3a09e0d044e7145",
+    "docs/research/evidence/nma-010/reliability-tests.log": "109e80dfc384137822de1f4cd397ceeb8d03c5d4a6b4ffd5b5118917f13b2bc0",
+    "docs/research/evidence/nma-010/linux-build.log": "71ed7040e39439670c2b288864559291602a27d8fe64aab456360e5d6ab50bf4"
+  }
+}

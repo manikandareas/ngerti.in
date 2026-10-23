@@ -1,6 +1,6 @@
 # Isolated Hermes adapter
 
-This package implements the runtime boundary specified by [NMA-006](https://app.notion.com/p/402abdd6187381d899d0c98b4bf081d7), following ADR-01 and ADR-03. Native execution remains private and **not enabled for production**; the configuration-only product API is documented below. Agent configuration CRUD is documented below. Complete domain run fencing, durable event replay, goals and group routing remain their ordered downstream slices.
+This package implements the runtime boundary specified by [NMA-006](https://app.notion.com/p/402abdd6187381d899d0c98b4bf081d7), following ADR-01 and ADR-03. Native execution remains private and **not enabled for production**; the configuration-only product API is documented below. Agent configuration CRUD is documented below. Durable run cancellation, replay and recovery are implemented below. Goals, causal handoffs and group routing remain their ordered downstream slices.
 
 ## Ownership and deployment
 
@@ -87,10 +87,11 @@ Body fields are `schema_version: nma.v1`, UUID `command_id`, `type`, `expected_r
 - `runtime.describe`: empty payload; reports authority epoch and `production_ready: false`.
 - `runtime.submit`: agent/thread UUIDs, decimal-string config/context revisions and text. Only provisioned bindings are accepted. Returns product run identity and a durable admission receipt, not model success.
 - `runtime.read`: run ID; maps native queued/started/unknown/terminal receipts to queued/running/indeterminate/succeeded/failed/cancelled.
-- `run.cancel`: run ID; native queued cancellation or generation-specific interrupt, including queued-to-claimed races. It does not stop unrelated goals.
-- `runtime.events`: run ID, nullable replay epoch and decimal-string last sequence. Filters native frames by admission identity, maps message/tool/error events, and emits decimal-string sequence values. The native ring is bounded and volatile: an epoch change or gap requires a snapshot. This is **not** the durable partition SSE implementation of NMA-010.
+- `run.cancel`: run ID; commits a durable run fence before native queued cancellation or generation-specific interrupt, including queued-to-claimed races. Pending delivery resumes after restart. It does not stop unrelated goals.
+- `runtime.events`: run ID, nullable replay epoch and decimal-string last sequence. Reads committed owner-partition events filtered by run, in pages of at most 256 events. The stream incarnation survives process restart; a different incarnation requires a snapshot and a future sequence returns `CURSOR_AHEAD`. Partition gaps from filtering are legal. Events are retained without pruning in this slice.
+- `runtime.snapshot`: run ID; returns authoritative status, current text/draft, identities and `through_sequence`/`replay_epoch` from one SQLite transaction. Replay strictly after that cursor. A final `message.completed` replaces the draft for that run, rather than appending another response. Public HTTP/SSE routing belongs to NMA-011.
 
-Mutations store canonical command digest and pending outbox identity before native dispatch, then mark applied and append a domain receipt event in one extension transaction. Native admission uses the same operation ID on retry. Identical retries return the stored receipt; changed bodies conflict. An acknowledgement timeout is unknown, so retry the **same** command ID. Pending outbox rows are retained; no background semantic retry loop is introduced. NMA-010 implements complete crash reconciliation and domain run/descendant fencing.
+Mutations store canonical command digest and pending outbox identity before native dispatch, then mark applied and append a domain receipt event in one extension transaction. Native admission uses the same operation ID on retry. Identical retries return the stored receipt; changed bodies conflict. An acknowledgement timeout is unknown, so retry the **same** command ID. Pending outbox rows are retained; no background semantic retry loop is introduced. NMA-010 adds run crash reconciliation and durable stop fences; causal descendant propagation belongs to the goal/handoff slices.
 
 The gateway's writer owns all `nma_*` mutations and checks the native epoch and partition. Migration 1 is additive, checksum-versioned and transactionally applied. Foreign keys are required. `nma_adapter_bindings/runs` are temporary integration mappings, not replacements for the full domain tables assigned to later slices. Foundation thread identity APIs are documented below; message delivery and PostgreSQL projections remain downstream.
 
@@ -166,8 +167,8 @@ failed native adoption and was removed. No native source is patched.
 Configure affects future admissions; existing runs retain their snapshot. A fresh admission naming
 an old config revision fails. Archive/disable commits generation and unfinished-run fences, then
 uses native cancellation. Completed history remains readable. Unfinished fenced output is suppressed
-and cancellation is redelivered on startup. Full restart-before-dispatch/tool authorization and
-causal descendant fencing remain the NMA-010/023 gates; no goals or wakes exist in this slice.
+and cancellation is redelivered on startup. Restart-before-dispatch/tool fencing is covered by NMA-010 below. Causal descendants and
+full tenant isolation remain downstream gates; no goals or wakes exist in this slice.
 Production remains disabled pending those downstream gates. Foundation packaging
 and its historical full-app exclusions are documented above.
 
@@ -403,3 +404,52 @@ ranking, large-history pagination/compaction, automatic memory extraction, publi
 memory UI, model responsibility tools and artifact sharing are not claimed by
 this scope slice. No live provider or OS/tenant sandbox proof is implied by the
 loopback model tests. See [verification and provenance](../../docs/research/nma-009-scoped-context.md).
+
+
+## Durable execution boundaries (NMA-010)
+
+Migration 5 adds run stop tombstones, a durable stream incarnation, indexed run/event
+mapping, terminal reconciliation receipts and external tool dispatch receipts. It does
+not change migration 1–4 checksums or native tables. Existing final native results are
+reconciled without execution; pre-upgrade volatile deltas cannot be reconstructed.
+
+The gateway remains the only execution owner. Native reservation, authority epochs,
+claim generations and turn leases remain authoritative. The adapter checks the native
+claim/epoch and product fences before tool dispatch and event publication. Durable event
+writes occur under the native stream lock before native delivery; extension writes use
+Hermes's fenced transaction writer. No additional scheduler, lease timer or retry worker
+is introduced. Store errors cannot produce an acknowledged product event.
+
+Pending submit intents resume at startup under the original command identity. A native
+receipt is consumed before mutable admission checks; new work still passes current
+checks. Semantic revocation failures are stored as rejected receipts, while storage or
+unclassified failures preserve pending state and fail startup. Claimed work whose outcome
+is unknown stays indeterminate; startup never reruns that model turn. Terminal native
+results reconcile once to final product events even when the process died before publish.
+
+`run.cancel` commits its fence and delivery intent atomically. Restart redelivers an
+unfinished native interrupt; the fence already prevents tool dispatch, response events
+and transcript publication. Completed native history is not retroactively cancelled.
+No causal child/goal/trigger tables exist yet; their propagation is NMA-014/018, and those
+slices must inherit this fence before admitting children.
+
+The final native `_execute_tool` boundary records a stable operation identity and intent
+digest before calling a tool, then retains its redacted return receipt. A dispatch without
+a receipt remains indeterminate, even if the process died before the request left. Exact
+operation reentry returns the confirmed receipt or refuses an uncertain dispatch. A late
+receipt may be retained after stop but cannot revive conversation output. Native internal
+agent-loop primitives such as `todo_list` do not use this external dispatch boundary.
+Provider-specific idempotency keys and reconciliation APIs are not fabricated: this is
+not an exactly-once external-effect guarantee. An indeterminate run is inspectable but
+has no automatic retry/resolution command in this slice.
+
+Before upgrading, stop ingress and the owner, then back up the complete local state
+volume, native stores, workspace and credential references consistently. Upgrade with
+one owner and verify integrity/foreign keys. Older binaries refuse schema 5. Rollback
+requires fencing the new owner, preserving newer work for reconciliation, and restoring
+an isolated complete schema-4 backup; never drop tables or replay old accepted operations.
+Events, compact identities and stop tombstones must not be manually pruned. No production
+volume or PostgreSQL projection was migrated. Browser DM transport/projection remains
+NMA-011; this package exposes the authenticated private replay/snapshot source.
+
+See [fault-injection evidence](../../docs/research/nma-010-durable-execution.md).

@@ -1,0 +1,326 @@
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 2.32kB done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/python:3.14.3-slim-bookworm@sha256:f21c0d5a44c56805654c15abccc1b2fd576c8d93aca0a3f74b4aba2dc92510e2
+#2 DONE 3.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 91B done
+#3 DONE 0.0s
+
+#4 [runtime  1/14] FROM docker.io/library/python:3.14.3-slim-bookworm@sha256:f21c0d5a44c56805654c15abccc1b2fd576c8d93aca0a3f74b4aba2dc92510e2
+#4 resolve docker.io/library/python:3.14.3-slim-bookworm@sha256:f21c0d5a44c56805654c15abccc1b2fd576c8d93aca0a3f74b4aba2dc92510e2 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 148.79kB 0.0s done
+#5 DONE 0.0s
+
+#6 [runtime  3/14] WORKDIR /opt/hermes
+#6 CACHED
+
+#7 [runtime  4/14] COPY fetch_runtime.py /tmp/fetch_runtime.py
+#7 CACHED
+
+#8 [runtime  6/14] COPY build_runtime.py /opt/ngertiin/build_runtime.py
+#8 CACHED
+
+#9 [runtime  2/14] RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates git libatomic1 && rm -rf /var/lib/apt/lists/*
+#9 CACHED
+
+#10 [runtime  5/14] RUN --mount=type=bind,source=.runtime/source.tar.gz,target=/tmp/hermes.tar.gz python /tmp/fetch_runtime.py /tmp/hermes.tar.gz --extract /opt/hermes
+#10 CACHED
+
+#11 [runtime  7/14] COPY src/ngertiin_engine/runtime-pin.json /opt/ngertiin/src/ngertiin_engine/runtime-pin.json
+#11 CACHED
+
+#12 [runtime  8/14] RUN python /opt/ngertiin/build_runtime.py --source /opt/hermes --out /opt/runtime && rm -rf /tmp/build-home /root/.cache
+#12 CACHED
+
+#13 [runtime  9/14] COPY src /opt/ngertiin/src
+#13 DONE 0.2s
+
+#14 [runtime 10/14] COPY pyproject.toml /opt/ngertiin/pyproject.toml
+#14 DONE 0.1s
+
+#15 [runtime 11/14] COPY collect_inventory.py /opt/ngertiin/collect_inventory.py
+#15 DONE 0.1s
+
+#16 [runtime 12/14] COPY notices /opt/ngertiin/notices
+#16 DONE 0.1s
+
+#17 [runtime 13/14] RUN /opt/runtime/bin/python /opt/ngertiin/collect_inventory.py --verify-foundation > /opt/ngertiin/runtime-inventory.json
+#17 DONE 1.6s
+
+#18 [runtime 14/14] RUN useradd --uid 10001 --create-home engine && mkdir /state && chown engine:engine /state
+#18 DONE 0.3s
+
+#19 [verify 1/4] RUN HERMES_HOME=/tmp/build-home python /opt/ngertiin/build_runtime.py --source /opt/hermes --out /opt/test-runtime --tests && rm -rf /tmp/build-home /root/.cache
+#19 0.488 Preparing the isolated Hermes runtime…
+#19 0.818   → Installing Python dependencies…
+#19 1.438   ✓ Installing Python dependencies
+#19 4.296   → Installing Python packages…
+#19 28.39   ✓ Installing Python packages
+#19 28.46 /opt/test-runtime/bin/python
+#19 DONE 28.9s
+
+#20 [verify 2/4] COPY tests /opt/ngertiin/tests
+#20 DONE 0.1s
+
+#21 [verify 3/4] RUN NMA_TEST_RUNTIME_PYTHON=/opt/runtime/bin/python /opt/test-runtime/bin/python -m pytest /opt/ngertiin/tests -q -s > /tmp/runtime-tests.log || (cat /tmp/runtime-tests.log && exit 1)
+#21 266.7 RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Linux", "architecture": "aarch64", "journal_mode": "wal"}
+#21 266.7 ....FRUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Linux", "architecture": "aarch64", "journal_mode": "wal"}
+#21 266.7 .....RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Linux", "architecture": "aarch64", "journal_mode": "wal"}
+#21 266.7 .............RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Linux", "architecture": "aarch64", "journal_mode": "wal"}
+#21 266.7 .................RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Linux", "architecture": "aarch64", "journal_mode": "wal"}
+#21 266.7 ...
+#21 266.7 =================================== FAILURES ===================================
+#21 266.7 _____ test_mcp_discovery_secrets_rejected_before_storage_and_after_restart _____
+#21 266.7 
+#21 266.7 runtime = (PosixPath('/tmp/nma-qg5nug9b'), <http.server.ThreadingHTTPServer object at 0xffffba855d30>, <function runtime.<locals...cancel', 'runtime.read', 'runtime.events', 'runtime.snapshot'], 'production_ready': False, 'schema_version': 'nma.v1'})
+#21 266.7 
+#21 266.7     def test_mcp_discovery_secrets_rejected_before_storage_and_after_restart(runtime):
+#21 266.7         root, model, call, start, *_ = runtime
+#21 266.7         with socket.socket() as reservation:
+#21 266.7             reservation.bind(("127.0.0.1", 0))
+#21 266.7             port = reservation.getsockname()[1]
+#21 266.7         receipts = root / "schema-receipts.txt"
+#21 266.7         receipts.write_text("")
+#21 266.7         secret = "nma-disposable-connector-secret"
+#21 266.7         private = {
+#21 266.7             "type": "http",
+#21 266.7             "name": "schema",
+#21 266.7             "url": f"http://127.0.0.1:{port}/mcp",
+#21 266.7             "headers": [{"name": "Authorization", "value": "Bearer " + secret}],
+#21 266.7         }
+#21 266.7         (root / "schema-connector.json").write_text(json.dumps(private))
+#21 266.7         (root / "capabilities.json").write_text(
+#21 266.7             json.dumps(
+#21 266.7                 {
+#21 266.7                     "mcp_grants": {
+#21 266.7                         "schema": {
+#21 266.7                             "enabled": True,
+#21 266.7                             "server_file": str(root / "schema-connector.json"),
+#21 266.7                         }
+#21 266.7                     }
+#21 266.7                 }
+#21 266.7             )
+#21 266.7         )
+#21 266.7         agent = capability_agent(call, "schema-isolation", mcp_grants=["schema"])
+#21 266.7         connector = None
+#21 266.7     
+#21 266.7         def launch(leak):
+#21 266.7             process = subprocess.Popen(
+#21 266.7                 [
+#21 266.7                     sys.executable,
+#21 266.7                     str(Path(__file__).with_name("mcp_fixture.py")),
+#21 266.7                     str(port),
+#21 266.7                     str(receipts),
+#21 266.7                     "secret-schema" if leak else "clean",
+#21 266.7                 ],
+#21 266.7                 stdout=subprocess.DEVNULL,
+#21 266.7                 stderr=subprocess.DEVNULL,
+#21 266.7             )
+#21 266.7             deadline = time.monotonic() + 10
+#21 266.7             while time.monotonic() < deadline:
+#21 266.7                 try:
+#21 266.7                     with socket.create_connection(("127.0.0.1", port), timeout=0.1):
+#21 266.7                         return process
+#21 266.7                 except OSError:
+#21 266.7                     time.sleep(0.05)
+#21 266.7             process.terminate()
+#21 266.7             process.wait(timeout=10)
+#21 266.7             raise AssertionError("Connector did not start")
+#21 266.7     
+#21 266.7         def body(thread):
+#21 266.7             return command(
+#21 266.7                 "runtime.submit",
+#21 266.7                 {
+#21 266.7                     "agent_id": agent["agent_id"],
+#21 266.7                     "thread_id": thread,
+#21 266.7                     "config_revision": agent["config_revision"],
+#21 266.7                     "context_generation": "1",
+#21 266.7                     "text": "SCHEMA_BOUNDARY_PROOF",
+#21 266.7                 },
+#21 266.7             )
+#21 266.7     
+#21 266.7         def no_secret():
+#21 266.7             assert secret not in json.dumps(model.requests)
+#21 266.7             for path in (root / "state").glob("state.db*"):
+#21 266.7                 assert secret.encode() not in path.read_bytes(), path
+#21 266.7             for path in root.glob("gateway-*.log"):
+#21 266.7                 assert secret not in path.read_text(), path
+#21 266.7     
+#21 266.7         try:
+#21 266.7             connector = launch(True)
+#21 266.7             before = len(model.requests)
+#21 266.7             rejected = body(str(uuid4()))
+#21 266.7             assert call(rejected)["error"]["code"] == "CONNECTOR_UNAVAILABLE"
+#21 266.7             assert call(rejected)["error"]["code"] == "CONNECTOR_UNAVAILABLE"
+#21 266.7             assert len(model.requests) == before
+#21 266.7             no_secret()
+#21 266.7             connector.terminate()
+#21 266.7             connector.wait(timeout=10)
+#21 266.7             connector = launch(False)
+#21 266.7             thread = str(uuid4())
+#21 266.7             accepted = call(body(thread))["result"]
+#21 266.7             settle(call, accepted["run_id"])
+#21 266.7             no_secret()
+#21 266.7             start.current.kill()
+#21 266.7             start.current.wait(timeout=10)
+#21 266.7             connector.terminate()
+#21 266.7             connector.wait(timeout=10)
+#21 266.7             connector = launch(True)
+#21 266.7 >           start()
+#21 266.7 
+#21 266.7 ../ngertiin/tests/test_capabilities.py:435: 
+#21 266.7 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+#21 266.7 
+#21 266.7 fault = None
+#21 266.7 
+#21 266.7     def start(fault=None):
+#21 266.7         log = (root / f"gateway-{len(processes)}.log").open("w+")
+#21 266.7         process = subprocess.Popen(
+#21 266.7             [RUNTIME_PYTHON, str(Path(__file__).with_name("fault_launcher.py"))]
+#21 266.7             if fault
+#21 266.7             else [RUNTIME_PYTHON, "-m", "ngertiin_engine.service"],
+#21 266.7             cwd=SOURCE,
+#21 266.7             env=env
+#21 266.7             | (
+#21 266.7                 {"NMA_TEST_FAULT": fault, "NMA_TEST_MARKER": str(root / "fault-fired")}
+#21 266.7                 if fault
+#21 266.7                 else {}
+#21 266.7             ),
+#21 266.7             stdout=log,
+#21 266.7             stderr=subprocess.STDOUT,
+#21 266.7         )
+#21 266.7         processes.append(process)
+#21 266.7         start.current = process
+#21 266.7         deadline = time.monotonic() + 90
+#21 266.7         while process.poll() is None and time.monotonic() < deadline:
+#21 266.7             try:
+#21 266.7                 response = call(command("runtime.describe"))
+#21 266.7                 if "result" in response:
+#21 266.7                     return process, response["result"]
+#21 266.7             except (OSError, ValueError):
+#21 266.7                 pass
+#21 266.7             time.sleep(0.1)
+#21 266.7         log.flush()
+#21 266.7 >       pytest.fail(
+#21 266.7             log.read()
+#21 266.7             if log.seek(0) is None
+#21 266.7             else (root / f"gateway-{len(processes) - 1}.log").read_text()
+#21 266.7         )
+#21 266.7 E       Failed: 2026-10-23 17:09:18,735 WARNING gateway.lifecycle_ledger: Previous gateway life (pid=259, started_at=2026-10-23T17:08:55.621695+00:00) exited UNCLEANLY (no exit path ran — SIGKILL / OOM / VM death, or a process kill issued by the agent or one of its descendants, e.g. a pkill/taskkill of the host interpreter image; see #113667). last_heartbeat_at=2026-10-23T17:08:56.177010+00:00 last_mem={'rss_kib': 166032, 'mem_total_kib': 4082464, 'mem_available_kib': 3165752, 'swap_used_kib': 0} suspected_oom=False
+#21 266.7 E       2026-10-23 17:09:18,982 WARNING gateway.run: No messaging platforms enabled.
+#21 266.7 E       2026-10-23 17:09:19,395 WARNING agent.model_metadata: Could not determine context length for model 'adapter-model' (base_url=http://127.0.0.1:34203/v1) — falling back to 256,000 tokens. Set model.context_length in config.yaml to override.
+#21 266.7 E       Traceback (most recent call last):
+#21 266.7 E         File "/opt/ngertiin/src/ngertiin_engine/adapter.py", line 291, in dispatch
+#21 266.7 E           return await self._dispatch(body)
+#21 266.7 E                  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+#21 266.7 E         File "/opt/ngertiin/src/ngertiin_engine/adapter.py", line 367, in _dispatch
+#21 266.7 E           ref = await self.session(key, config)
+#21 266.7 E                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#21 266.7 E         File "/opt/ngertiin/src/ngertiin_engine/adapter.py", line 254, in session
+#21 266.7 E           staged = stage_local_session(
+#21 266.7 E               self.authority,
+#21 266.7 E           ...<4 lines>...
+#21 266.7 E               skills_prompt=config.get("persona"),
+#21 266.7 E           )
+#21 266.7 E         File "/opt/hermes/gateway/session_local.py", line 328, in stage_local_session
+#21 266.7 E           policy = bind_launch_key(authority, sid, policy, params.get("api_key"), config_secrets=private_secrets,
+#21 266.7 E                                    owner_key=client_key is None,  # an overlapping exact retry takes the held one
+#21 266.7 E                                    client_request=client_request)
+#21 266.7 E         File "/opt/hermes/gateway/session_policy.py", line 807, in bind_launch_key
+#21 266.7 E           policy = bind_editor_mcp(authority, session_id, policy, config_secrets.pop(PRIVATE_KEY, None))
+#21 266.7 E         File "/opt/hermes/gateway/session_local_mcp.py", line 266, in bind_editor_mcp
+#21 266.7 E           policy, _ = rebind_editor_mcp(authority, sid, policy, servers)
+#21 266.7 E                       ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#21 266.7 E         File "/opt/hermes/gateway/session_local_mcp.py", line 249, in rebind_editor_mcp
+#21 266.7 E           with _borrowed(authority, scope, servers, names, policy.cwd, partial=True) as (schemas, connected):
+#21 266.7 E                ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#21 266.7 E         File "/opt/hermes-pm/python-3.14.9+20261021-linux-arm64/lib/python3.14/contextlib.py", line 141, in __enter__
+#21 266.7 E           return next(self.gen)
+#21 266.7 E         File "/opt/ngertiin/src/ngertiin_engine/capabilities.py", line 33, in borrowed
+#21 266.7 E           raise RuntimeStoreError("acp_mcp_discovery_failed")
+#21 266.7 E       hermes_state_runtime.RuntimeStoreError: acp_mcp_discovery_failed
+#21 266.7 E       
+#21 266.7 E       The above exception was the direct cause of the following exception:
+#21 266.7 E       
+#21 266.7 E       Traceback (most recent call last):
+#21 266.7 E         File "<frozen runpy>", line 203, in _run_module_as_main
+#21 266.7 E         File "<frozen runpy>", line 88, in _run_code
+#21 266.7 E         File "/opt/ngertiin/src/ngertiin_engine/service.py", line 333, in <module>
+#21 266.7 E           main()
+#21 266.7 E           ~~~~^^
+#21 266.7 E         File "/opt/ngertiin/src/ngertiin_engine/service.py", line 329, in main
+#21 266.7 E           run.main()
+#21 266.7 E           ~~~~~~~~^^
+#21 266.7 E         File "/opt/hermes/gateway/run.py", line 5187, in main
+#21 266.7 E           success = asyncio.run(start_gateway(config))
+#21 266.7 E         File "/opt/hermes-pm/python-3.14.9+20261021-linux-arm64/lib/python3.14/asyncio/runners.py", line 205, in run
+#21 266.7 E           return runner.run(main)
+#21 266.7 E                  ~~~~~~~~~~^^^^^^
+#21 266.7 E         File "/opt/hermes-pm/python-3.14.9+20261021-linux-arm64/lib/python3.14/asyncio/runners.py", line 128, in run
+#21 266.7 E           return self._loop.run_until_complete(task)
+#21 266.7 E                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+#21 266.7 E         File "/opt/hermes-pm/python-3.14.9+20261021-linux-arm64/lib/python3.14/asyncio/base_events.py", line 720, in run_until_complete
+#21 266.7 E           return future.result()
+#21 266.7 E                  ~~~~~~~~~~~~~^^
+#21 266.7 E         File "/opt/hermes/gateway/run.py", line 5092, in start_gateway
+#21 266.7 E           return await bootstrap(config, replace, verbosity, force, idle_exit)
+#21 266.7 E                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#21 266.7 E         File "/opt/hermes/gateway/run_bootstrap.py", line 886, in start_gateway
+#21 266.7 E           _early_verdict = await _start_gateway_run_runner(runner, _signal_initiated_shutdown)
+#21 266.7 E                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#21 266.7 E         File "/opt/hermes/gateway/run_bootstrap.py", line 684, in _start_gateway_run_runner
+#21 266.7 E           success = await runner.start()
+#21 266.7 E                     ^^^^^^^^^^^^^^^^^^^^
+#21 266.7 E         File "/opt/ngertiin/src/ngertiin_engine/service.py", line 272, in start
+#21 266.7 E           await self.nma_adapter.recover_pending()
+#21 266.7 E         File "/opt/ngertiin/src/ngertiin_engine/adapter.py", line 529, in recover_pending
+#21 266.7 E           await self.dispatch(body)
+#21 266.7 E         File "/opt/ngertiin/src/ngertiin_engine/adapter.py", line 293, in dispatch
+#21 266.7 E           raise EngineError(ERRORS.get(exc.reason, "ENGINE_UNAVAILABLE")) from exc
+#21 266.7 E       ngertiin_engine.contracts.EngineError: CONNECTOR_UNAVAILABLE
+#21 266.7 
+#21 266.7 ../ngertiin/tests/test_runtime.py:242: Failed
+#21 266.7 =============================== warnings summary ===============================
+#21 266.7 ../test-runtime/lib/python3.14/site-packages/_pytest/cacheprovider.py:469
+#21 266.7   /opt/test-runtime/lib/python3.14/site-packages/_pytest/cacheprovider.py:469: PytestCacheWarning: could not create cache path /opt/ngertiin/.pytest_cache/v/cache/nodeids: [Errno 13] Permission denied: '/opt/ngertiin/pytest-cache-files-3pht3fgz'
+#21 266.7     config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+#21 266.7 
+#21 266.7 ../test-runtime/lib/python3.14/site-packages/_pytest/cacheprovider.py:423
+#21 266.7   /opt/test-runtime/lib/python3.14/site-packages/_pytest/cacheprovider.py:423: PytestCacheWarning: could not create cache path /opt/ngertiin/.pytest_cache/v/cache/lastfailed: [Errno 13] Permission denied: '/opt/ngertiin/pytest-cache-files-nim71pot'
+#21 266.7     config.cache.set("cache/lastfailed", self.lastfailed)
+#21 266.7 
+#21 266.7 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+#21 266.7 =========================== short test summary info ============================
+#21 266.7 FAILED ../ngertiin/tests/test_capabilities.py::test_mcp_discovery_secrets_rejected_before_storage_and_after_restart
+#21 266.7 1 failed, 42 passed, 2 warnings in 265.78s (0:04:25)
+#21 ERROR: process "/bin/sh -c NMA_TEST_RUNTIME_PYTHON=/opt/runtime/bin/python /opt/test-runtime/bin/python -m pytest /opt/ngertiin/tests -q -s > /tmp/runtime-tests.log || (cat /tmp/runtime-tests.log && exit 1)" did not complete successfully: exit code: 1
+------
+ > [verify 3/4] RUN NMA_TEST_RUNTIME_PYTHON=/opt/runtime/bin/python /opt/test-runtime/bin/python -m pytest /opt/ngertiin/tests -q -s > /tmp/runtime-tests.log || (cat /tmp/runtime-tests.log && exit 1):
+266.7     config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+266.7 
+266.7 ../test-runtime/lib/python3.14/site-packages/_pytest/cacheprovider.py:423
+266.7   /opt/test-runtime/lib/python3.14/site-packages/_pytest/cacheprovider.py:423: PytestCacheWarning: could not create cache path /opt/ngertiin/.pytest_cache/v/cache/lastfailed: [Errno 13] Permission denied: '/opt/ngertiin/pytest-cache-files-nim71pot'
+266.7     config.cache.set("cache/lastfailed", self.lastfailed)
+266.7 
+266.7 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+266.7 =========================== short test summary info ============================
+266.7 FAILED ../ngertiin/tests/test_capabilities.py::test_mcp_discovery_secrets_rejected_before_storage_and_after_restart
+266.7 1 failed, 42 passed, 2 warnings in 265.78s (0:04:25)
+------
+Dockerfile:26
+--------------------
+  24 |     COPY tests /opt/ngertiin/tests
+  25 |     USER engine
+  26 | >>> RUN NMA_TEST_RUNTIME_PYTHON=/opt/runtime/bin/python /opt/test-runtime/bin/python -m pytest /opt/ngertiin/tests -q -s > /tmp/runtime-tests.log || (cat /tmp/runtime-tests.log && exit 1)
+  27 |     RUN /opt/test-runtime/bin/python /opt/ngertiin/collect_inventory.py --verify-foundation > /tmp/test-inventory.json
+  28 |     
+--------------------
+ERROR: failed to build: failed to solve: process "/bin/sh -c NMA_TEST_RUNTIME_PYTHON=/opt/runtime/bin/python /opt/test-runtime/bin/python -m pytest /opt/ngertiin/tests -q -s > /tmp/runtime-tests.log || (cat /tmp/runtime-tests.log && exit 1)" did not complete successfully: exit code: 1

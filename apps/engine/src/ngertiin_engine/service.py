@@ -24,6 +24,7 @@ from ngertiin_engine.store import (
     AGENT_CHECKSUM,
     CHECKSUM,
     CONTEXT_CHECKSUM,
+    RELIABILITY_CHECKSUM,
     THREAD_CHECKSUM,
 )
 
@@ -53,7 +54,7 @@ def main():
                     (owner,),
                 ).fetchone()
                 if (
-                    version not in (1, 2, 3, 4)
+                    version not in (1, 2, 3, 4, 5)
                     or not checksum
                     or checksum[0] != CHECKSUM
                 ):
@@ -78,6 +79,13 @@ def main():
                         (owner,),
                     ).fetchone()
                     if not saved or saved[0] != CONTEXT_CHECKSUM:
+                        raise EngineError("UNSUPPORTED_SCHEMA")
+                if version >= 5:
+                    saved = db.execute(
+                        "SELECT checksum FROM nma_schema_migrations WHERE owner_id=? AND version=5",
+                        (owner,),
+                    ).fetchone()
+                    if not saved or saved[0] != RELIABILITY_CHECKSUM:
                         raise EngineError("UNSUPPORTED_SCHEMA")
     key = Path(os.environ["NMA_SERVICE_KEY_FILE"]).read_bytes()
     if len(key) < 32:
@@ -117,6 +125,36 @@ def main():
             return super()._get_system_prompt_for_channel(*args, **kwargs)
 
         async def _run_agent(
+            self, message, context_prompt, history, source, session_id, **kwargs
+        ):
+            from ngertiin_engine.reliability import Reliability, execution
+            from ngertiin_engine.store import Store
+
+            authority = active_authority(self)
+            live = authority.sessions.get(source.chat_id)
+            stamp = dict(live.event_stream.execution) if live else {}
+            reliability = Reliability(Store(authority, owner))
+            try:
+                row = reliability.store.write(
+                    lambda conn: reliability.check(conn, stamp)
+                )
+            except EngineError:
+                return {
+                    "final_response": "",
+                    "messages": [],
+                    "failed": True,
+                    "completed": False,
+                    "error": "ACCESS_REVOKED",
+                }
+            token = execution.set(stamp if row else None)
+            try:
+                return await self._run_scoped_agent(
+                    message, context_prompt, history, source, session_id, **kwargs
+                )
+            finally:
+                execution.reset(token)
+
+        async def _run_scoped_agent(
             self, message, context_prompt, history, source, session_id, **kwargs
         ):
             from gateway.session_policy import policy_for_source
@@ -218,6 +256,9 @@ def main():
             )
 
         async def start(self):
+            from ngertiin_engine.reliability import install
+
+            install(self, owner)
             started = await super().start()
             if not started:
                 return False
@@ -225,8 +266,10 @@ def main():
                 self.nma_adapter = Adapter(
                     active_authority(self), owner, configurations, models
                 )
+                await self.nma_adapter.recover_run_stops()
                 await self.nma_adapter.recover_agent_cancellations()
                 await self.nma_adapter.cancel_stale_contexts()
+                await self.nma_adapter.recover_pending()
                 socket = home / "nma.sock"
                 if len(os.fsencode(socket)) > 100:
                     raise EngineError("SOCKET_PATH_TOO_LONG")

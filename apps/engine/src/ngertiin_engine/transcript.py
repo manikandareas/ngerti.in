@@ -105,12 +105,16 @@ class Transcript:
                 )
                 value = result.get("result", {})
                 if (
-                    not value.get("failed")
+                    not conn.execute(
+                        "SELECT 1 FROM nma_effects WHERE owner_id=? AND run_id=? AND status='dispatching'",
+                        (self.store.owner, run_id),
+                    ).fetchone()
+                    and not value.get("failed")
                     and not value.get("error")
                     and not value.get("interrupted")
                     and not conn.execute(
-                        "SELECT 1 FROM nma_agent_run_fences WHERE owner_id=? AND run_id=? UNION ALL SELECT 1 FROM nma_context_run_fences WHERE owner_id=? AND run_id=?",
-                        (self.store.owner, run_id, self.store.owner, run_id),
+                        "SELECT 1 FROM nma_agent_run_fences WHERE owner_id=? AND run_id=? UNION ALL SELECT 1 FROM nma_context_run_fences WHERE owner_id=? AND run_id=? UNION ALL SELECT 1 FROM nma_run_stops WHERE owner_id=? AND run_id=?",
+                        (self.store.owner, run_id) * 3,
                     ).fetchone()
                 ):
                     content = value.get("final_response")

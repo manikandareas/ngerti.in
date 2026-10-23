@@ -423,6 +423,9 @@ def test_mcp_discovery_secrets_rejected_before_storage_and_after_restart(runtime
         connector.terminate()
         connector.wait(timeout=10)
         connector = launch(False)
+        # A refused command must not become new work when its connector is repaired.
+        assert call(rejected)["error"]["code"] == "CONNECTOR_UNAVAILABLE"
+        assert len(model.requests) == before
         thread = str(uuid4())
         accepted = call(body(thread))["result"]
         settle(call, accepted["run_id"])

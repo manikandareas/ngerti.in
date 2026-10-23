@@ -8,6 +8,7 @@ from ngertiin_engine.agents import Agents, compose
 from ngertiin_engine.capabilities import FIELDS, authorize, resolve
 from ngertiin_engine.context import Context
 from ngertiin_engine.contracts import EngineError, canonical, counter, digest, uuid
+from ngertiin_engine.reliability import Reliability
 from ngertiin_engine.store import Store
 from ngertiin_engine.threads import Threads
 
@@ -25,15 +26,6 @@ ERRORS = {
     "acp_mcp_schema_changed": "CONNECTOR_UNAVAILABLE",
     "launch_credentials_unavailable": "ACCESS_REVOKED",
 }
-EVENTS = {
-    "message.delta": "message.delta",
-    "message.complete": "message.completed",
-    "tool.start": "tool.started",
-    "tool.result": "tool.completed",
-    "tool.complete": "tool.completed",
-    "error": "run.error",
-    "message.start": "run.started",
-}
 
 
 class Adapter:
@@ -48,6 +40,7 @@ class Adapter:
 
         self.authority, self.owner = authority, uuid(owner)
         self.store = Store(authority, owner)
+        self.reliability = Reliability(self.store)
         self.agents = Agents(self.store, models or {})
         self.threads = Threads(self.store, self.agents)
         self.context = Context(self.store, self.threads)
@@ -342,6 +335,7 @@ class Adapter:
                     "run.cancel",
                     "runtime.read",
                     "runtime.events",
+                    "runtime.snapshot",
                 ],
                 "production_ready": False,
             }
@@ -370,7 +364,21 @@ class Adapter:
             prior = self.store.admit(body)
             if prior:
                 return prior
-            ref = await self.session(key, config)
+            from hermes_state_runtime import RuntimeStoreError
+
+            try:
+                ref = await self.session(key, config)
+            except (EngineError, RuntimeStoreError) as exc:
+                code = (
+                    exc.code
+                    if isinstance(exc, EngineError)
+                    else ERRORS.get(exc.reason, "ENGINE_UNAVAILABLE")
+                )
+                if code in {"CONNECTOR_UNAVAILABLE", "ACCESS_REVOKED"}:
+                    # Session preparation refused before native admission exists.
+                    self.store.finish(body, {"error_code": code})
+                    raise EngineError(code) from exc
+                raise
             run_id = str(uuid5(NAMESPACE_URL, self.owner + ":" + body["command_id"]))
             self.store.write(
                 lambda conn: conn.execute(
@@ -393,10 +401,19 @@ class Adapter:
                 )
             )
             return self.store.finish(body, self.admission_result(run_id, config))
+        if kind == "runtime.snapshot":
+            if set(payload) != {"run_id"}:
+                raise EngineError("INVALID_REQUEST")
+            uuid(payload["run_id"])
+            return self.reliability.snapshot(payload["run_id"])
         if kind == "runtime.events":
             return await self.events(payload)
         if kind not in {"run.cancel", "runtime.read"} or set(payload) != {"run_id"}:
             raise EngineError("INVALID_REQUEST")
+        if kind == "run.cancel":
+            previous = self.store.receipt(body)
+            if previous:
+                return previous
         row = self.row(payload["run_id"])
         from gateway.session_contract import SessionRef
 
@@ -406,19 +423,10 @@ class Adapter:
             raise EngineError("ENGINE_UNAVAILABLE")
         receipt = await self.authority.receipt(self.actor, ref, row[1])
         if kind == "run.cancel":
-            prior = self.store.admit(body)
+            prior = self.reliability.stop(body, payload["run_id"])
             if prior:
                 return prior
-            if receipt.status == "queued":
-                claimed = await self.authority.cancel_or_claimed(
-                    self.actor, ref, row[1]
-                )
-                if claimed:
-                    await self.interrupt(ref, claimed["generation"])
-            elif receipt.status == "started":
-                await self.interrupt(ref, receipt.execution_generation)
-            elif receipt.status == "unknown":
-                raise EngineError("INDETERMINATE")
+            await self.cancel_admission(row[2], row[1])
             return self.store.finish(
                 body,
                 {
@@ -442,6 +450,13 @@ class Adapter:
                 "cancelled": "cancelled",
                 "interrupted": "cancelled",
             }.get(receipt.outcome, "failed")
+        if status in {"succeeded", "failed"} and self.store.write(
+            lambda conn: conn.execute(
+                "SELECT 1 FROM nma_effects WHERE owner_id=? AND run_id=? AND status='dispatching'",
+                (self.owner, payload["run_id"]),
+            ).fetchone()
+        ):
+            status = "indeterminate"
         config = self.bindings[row[0]]
         value = result["result"] if result else {}
         if self.fenced(payload["run_id"]) or value.get("error") == "ACCESS_REVOKED":
@@ -483,8 +498,8 @@ class Adapter:
         return bool(
             self.store.write(
                 lambda conn: conn.execute(
-                    "SELECT 1 FROM nma_agent_run_fences WHERE owner_id=? AND run_id=? UNION ALL SELECT 1 FROM nma_context_run_fences WHERE owner_id=? AND run_id=?",
-                    (self.owner, run_id, self.owner, run_id),
+                    "SELECT 1 FROM nma_agent_run_fences WHERE owner_id=? AND run_id=? UNION ALL SELECT 1 FROM nma_context_run_fences WHERE owner_id=? AND run_id=? UNION ALL SELECT 1 FROM nma_run_stops WHERE owner_id=? AND run_id=?",
+                    (self.owner, run_id) * 3,
                 ).fetchone()
             )
         )
@@ -514,6 +529,42 @@ class Adapter:
                 await self.interrupt(ref, claimed["generation"])
         elif receipt.status == "started":
             await self.interrupt(ref, receipt.execution_generation)
+
+    async def recover_pending(self):
+        rows = self.store.write(
+            lambda conn: conn.execute(
+                "SELECT c.body FROM nma_commands c JOIN nma_runtime_outbox o ON o.owner_id=c.owner_id AND o.operation_id=c.command_id WHERE c.owner_id=? AND o.state='pending' AND json_extract(c.body,'$.type')='runtime.submit'",
+                (self.owner,),
+            ).fetchall()
+        )
+        for row in rows:
+            body = json.loads(row[0])
+            try:
+                await self.dispatch(body)
+            except EngineError as exc:
+                if exc.code not in {
+                    "AGENT_UNAVAILABLE",
+                    "REVISION_CONFLICT",
+                    "ACCESS_REVOKED",
+                    "NOT_FOUND",
+                    "CAPABILITY_DENIED",
+                    "INVALID_CONFIGURATION",
+                    "MODEL_UNAVAILABLE",
+                    "CONNECTOR_UNAVAILABLE",
+                }:
+                    raise
+                self.store.finish(body, {"error_code": exc.code})
+        self.reliability.reconcile()
+
+    async def recover_run_stops(self):
+        rows = self.store.write(
+            lambda conn: conn.execute(
+                "SELECT body FROM nma_commands c JOIN nma_runtime_outbox o ON o.owner_id=c.owner_id AND o.operation_id=c.command_id WHERE c.owner_id=? AND o.state='pending' AND json_extract(c.body,'$.type')='run.cancel'",
+                (self.owner,),
+            ).fetchall()
+        )
+        for row in rows:
+            await self.dispatch(json.loads(row[0]))
 
     async def recover_agent_cancellations(self):
         rows = self.store.write(
@@ -545,7 +596,6 @@ class Adapter:
             await self.authority.interrupt(self.actor, ref, generation)
 
     async def events(self, payload):
-        from gateway.session_contract import SessionRef
 
         if set(payload) != {"run_id", "replay_epoch", "last_sequence"}:
             raise EngineError("INVALID_REQUEST")
@@ -556,46 +606,7 @@ class Adapter:
             payload["replay_epoch"], str
         ):
             raise EngineError("INVALID_REQUEST")
-        row = self.row(payload["run_id"])
-        ref = SessionRef(self.authority.profile_id, row[2])
-        await self.authority.resolve(self.actor, ref)
-        stream = self.authority.sessions[ref.session_id].event_stream
-        replay = stream.since(payload["replay_epoch"], int(sequence))
-        events = []
-        config = self.bindings[row[0]]
-        if self.fenced(payload["run_id"]):
-            return {
-                "events": [],
-                "last_sequence": str(replay["last_sequence"]),
-                "replay_epoch": replay["replay_epoch"],
-                "snapshot_required": True,
-            }
-        for frame in replay["events"]:
-            if frame.get("admission_id") != row[1] or frame["type"] not in EVENTS:
-                continue
-            raw = frame.get("payload", {})
-            fields = {
-                k: raw[k]
-                for k in ("text", "tool_name", "tool_call_id", "is_error", "status")
-                if k in raw
-            }
-            if frame["type"] == "error":
-                fields = {"code": "RUNTIME_FAILED"}
-            events.append(
-                {
-                    "schema_version": "nma.v1",
-                    "run_id": payload["run_id"],
-                    "agent_id": config["agent_id"],
-                    "thread_id": config["thread_id"],
-                    "config_revision": config["config_revision"],
-                    "sequence": str(frame["seq"]),
-                    "type": EVENTS[frame["type"]],
-                    "payload": fields,
-                }
-            )
-        return {
-            "events": events,
-            "last_sequence": str(replay["last_sequence"]),
-            "replay_epoch": replay["replay_epoch"],
-            "snapshot_required": replay["snapshot_required"],
-        }
+        self.row(payload["run_id"])
+        return self.reliability.events(
+            payload["run_id"], payload["replay_epoch"], int(sequence)
+        )

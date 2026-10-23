@@ -211,12 +211,19 @@ def runtime(tmp_path_factory):
     (root / "capabilities.json").write_text("{}")
     processes = []
 
-    def start():
+    def start(fault=None):
         log = (root / f"gateway-{len(processes)}.log").open("w+")
         process = subprocess.Popen(
-            [RUNTIME_PYTHON, "-m", "ngertiin_engine.service"],
+            [RUNTIME_PYTHON, str(Path(__file__).with_name("fault_launcher.py"))]
+            if fault
+            else [RUNTIME_PYTHON, "-m", "ngertiin_engine.service"],
             cwd=SOURCE,
-            env=env,
+            env=env
+            | (
+                {"NMA_TEST_FAULT": fault, "NMA_TEST_MARKER": str(root / "fault-fired")}
+                if fault
+                else {}
+            ),
             stdout=log,
             stderr=subprocess.STDOUT,
         )
@@ -333,7 +340,7 @@ def test_identity_revision_duplicate_and_restart(runtime):
             },
         )
     )["result"]
-    assert replay["snapshot_required"] and replay["events"] == []
+    assert not replay["snapshot_required"] and replay["events"] == []
     assert settle(call, receipt["run_id"]) == result
     assert len(server.requests) == 1
 
@@ -563,6 +570,11 @@ def test_agent_additive_migration_from_foundation(runtime):
     with sqlite3.connect(root / "state/state.db") as db:
         before = db.execute("SELECT count(*) FROM nma_commands").fetchone()[0]
         for table in (
+            "nma_run_terminals",
+            "nma_effects",
+            "nma_run_events",
+            "nma_stream",
+            "nma_run_stops",
             "nma_context_run_fences",
             "nma_context_receipts",
             "nma_scope_grants",
@@ -583,7 +595,7 @@ def test_agent_additive_migration_from_foundation(runtime):
         == []
     )
     with sqlite3.connect(root / "state/state.db") as db:
-        assert db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 4
+        assert db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 5
         assert db.execute("SELECT count(*) FROM nma_commands").fetchone()[0] == before
         assert db.execute("PRAGMA foreign_key_check").fetchall() == []
 

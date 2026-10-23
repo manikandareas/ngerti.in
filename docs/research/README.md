@@ -12,6 +12,8 @@ Keputusan pivot aktif berada di [Ngertiin Multi Agent di Notion](https://app.not
 - [Agent identity and capability closure](nma-007-008-closure.md): persisted DM/group identity consumers, MCP metadata credential rejection, and current runtime/browser acceptance.
 - [NMA-008 · Per-agent capability assignment](nma-008-capability-assignment.md): native tools, session-scoped MCP, skill snapshots, credential redaction, queued revocation and browser evidence; dependency gates remain open.
 
+- [NMA-010 · Durable execution and recovery](nma-010-durable-execution.md): persistent replay/snapshot, run stop fences, native receipt reconciliation and real-process fault injection.
+
 - [Bukti Riset & REA per modul](muse-ai-v1/README.md): chat/session, task/scheduler, file/artifact, memory/goals, permissions dan browser/computer.
 - [Mesin privat: Daytona, VNC dan takeover](agent-private-machine-options-2026-10-18.md): snapshot dokumen vendor sebelum trial NG-031.
 - [Alternatif provider browser privat](browser-provider-alternatives-2026-10-20.md): perbandingan E2B Desktop, Hopx, Kernel dan Browserbase berdasarkan kredit/trial, internet, viewer dan profil lintas Task; rekomendasi PoC, belum acceptance runtime.

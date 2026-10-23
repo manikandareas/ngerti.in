@@ -14,11 +14,16 @@
     "gateway/session_managed_worker.py": "0d2bed13ce549ac192b9f49653a77a68851de544a3416050a5d80cdea08920fa",
     "gateway/session_events.py": "a7d6493001bfd161175f7dda8485f35535ff0c5fdf1a3bc96209ff82a4496804",
     "hermes_state.py": "e507ebd78b870364fd2fced94212592380cd26d0d39eec67547ed9bc233ebb98",
-    "hermes_state_runtime.py": "1553a9e5091413092dd30d7613b9aaa7338919bfc5a5d3ac3f4cf8c57de4411b"
+    "hermes_state_runtime.py": "1553a9e5091413092dd30d7613b9aaa7338919bfc5a5d3ac3f4cf8c57de4411b",
+    "gateway/session_worker_construct.py": "360680d541fb91b91d2f16d021f8ac6e2082f1751921bacf63371e0bb8db040d",
+    "gateway/session_execution.py": "7c1e294795003b329cc9639fe27e9b8b8fdfbd9b1e3106fcfbd6c8e06f670a60",
+    "hermes_state_common.py": "1e089e97c9440647a91e0c559d9a7691c61290cc72a0c337ccfcd1c39d97b1b7"
   },
   "source_patches": [],
   "integration_seams": [
-    "GatewayRunner subclass installed before native bootstrap; overrides start/stop only"
+    "GatewayRunner subclass installed before native bootstrap; start/stop and per-session persona prompt resolution",
+    "stage_local_session skills_prompt freezes the composed persona; ignore_rules disables profile-wide soul/memory/context files",
+    "Read pinned session_admissions status inside the domain lifecycle transaction to retain completed history and fence unfinished admissions"
   ],
   "optional_extras": []
 }

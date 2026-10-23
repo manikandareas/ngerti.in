@@ -8,10 +8,16 @@ from uuid import UUID
 
 from ngertiin_engine import SCHEMA_VERSION
 
+# Encoded frame budgets include the terminating newline. Keep canonical hashes stable.
+MAX_REQUEST_BYTES = 2 * 1024 * 1024
+MAX_RESPONSE_BYTES = 16 * 1024 * 1024
+AGENT_PAGE_BYTES = 4 * 1024 * 1024
+
 
 class EngineError(Exception):
-    def __init__(self, code: str):
+    def __init__(self, code: str, details: dict | None = None):
         self.code = code
+        self.details = details or {}
         super().__init__(code)
 
 
@@ -95,6 +101,8 @@ def authenticate(envelope: dict, owner: str, key: bytes) -> dict:
     if body["schema_version"] != SCHEMA_VERSION:
         raise EngineError("UNSUPPORTED_VERSION")
     uuid(body["command_id"])
-    if body["expected_revision"] is not None or not isinstance(body["payload"], dict):
+    if body["expected_revision"] is not None:
+        counter(body["expected_revision"])
+    if not isinstance(body["type"], str) or not isinstance(body["payload"], dict):
         raise EngineError("INVALID_REQUEST")
     return body

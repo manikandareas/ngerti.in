@@ -12,8 +12,15 @@ import sqlite3
 from pathlib import Path
 
 from ngertiin_engine.adapter import Adapter
-from ngertiin_engine.contracts import EngineError, authenticate, canonical, uuid
-from ngertiin_engine.store import CHECKSUM
+from ngertiin_engine.contracts import (
+    MAX_REQUEST_BYTES,
+    MAX_RESPONSE_BYTES,
+    EngineError,
+    authenticate,
+    canonical,
+    uuid,
+)
+from ngertiin_engine.store import AGENT_CHECKSUM, CHECKSUM
 
 logger = logging.getLogger(__name__)
 
@@ -40,17 +47,41 @@ def main():
                     "SELECT checksum FROM nma_schema_migrations WHERE owner_id=? AND version=1",
                     (owner,),
                 ).fetchone()
-                if version != 1 or not checksum or checksum[0] != CHECKSUM:
+                if version not in (1, 2) or not checksum or checksum[0] != CHECKSUM:
                     raise EngineError("UNSUPPORTED_SCHEMA")
+                if version == 2:
+                    agent_checksum = db.execute(
+                        "SELECT checksum FROM nma_schema_migrations WHERE owner_id=? AND version=2",
+                        (owner,),
+                    ).fetchone()
+                    if not agent_checksum or agent_checksum[0] != AGENT_CHECKSUM:
+                        raise EngineError("UNSUPPORTED_SCHEMA")
     key = Path(os.environ["NMA_SERVICE_KEY_FILE"]).read_bytes()
     if len(key) < 32:
         raise EngineError("INVALID_SERVICE_KEY")
-    configurations = json.loads(Path(os.environ["NMA_BINDINGS_FILE"]).read_text())
+    configurations = (
+        json.loads(Path(os.environ["NMA_BINDINGS_FILE"]).read_text())
+        if os.environ.get("NMA_BINDINGS_FILE")
+        else []
+    )
+    models = (
+        json.loads(Path(os.environ["NMA_MODELS_FILE"]).read_text())
+        if os.environ.get("NMA_MODELS_FILE")
+        else {}
+    )
     from gateway import run
     from gateway.session_authorities import active_authority
 
     class EngineRunner(run.GatewayRunner):
         nma_server = None
+
+        def _get_system_prompt_for_channel(self, *args, **kwargs):
+            from gateway.session_policy import active_policy
+
+            policy = active_policy()
+            if policy and policy.config().get("nma_persona"):
+                return None
+            return super()._get_system_prompt_for_channel(*args, **kwargs)
 
         async def start(self):
             started = await super().start()
@@ -58,14 +89,15 @@ def main():
                 return False
             try:
                 self.nma_adapter = Adapter(
-                    active_authority(self), owner, configurations
+                    active_authority(self), owner, configurations, models
                 )
+                await self.nma_adapter.recover_agent_cancellations()
                 socket = home / "nma.sock"
                 if len(os.fsencode(socket)) > 100:
                     raise EngineError("SOCKET_PATH_TOO_LONG")
                 socket.unlink(missing_ok=True)
                 self.nma_server = await asyncio.start_unix_server(
-                    self.nma_request, path=socket, limit=262144
+                    self.nma_request, path=socket, limit=MAX_REQUEST_BYTES
                 )
                 socket.chmod(0o600)
                 return True
@@ -76,7 +108,12 @@ def main():
         async def nma_request(self, reader, writer):
             try:
                 async with asyncio.timeout(30):
-                    line = await reader.readline()
+                    try:
+                        line = await reader.readline()
+                    except ValueError as exc:
+                        raise EngineError("REQUEST_TOO_LARGE") from exc
+                    if len(line) > MAX_REQUEST_BYTES:
+                        raise EngineError("REQUEST_TOO_LARGE")
                     envelope = json.loads(line)
                     if not isinstance(envelope, dict):
                         raise EngineError("INVALID_REQUEST")
@@ -85,14 +122,19 @@ def main():
                     result = await asyncio.shield(self.nma_adapter.dispatch(body))
                     reply = {"result": result}
             except EngineError as exc:
-                reply = {"error": {"code": exc.code}}
+                reply = {"error": {"code": exc.code, "details": exc.details}}
             except (ValueError, TypeError, KeyError):
                 reply = {"error": {"code": "INVALID_REQUEST"}}
             except Exception as exc:  # noqa: BLE001 - protocol boundary must not expose native secrets
                 logger.error("Engine request failed (%s)", type(exc).__name__)
                 reply = {"error": {"code": "ENGINE_UNAVAILABLE"}}
             try:
-                writer.write((canonical(reply) + "\n").encode())
+                frame = (canonical(reply) + "\n").encode()
+                if len(frame) > MAX_RESPONSE_BYTES:
+                    frame = (
+                        canonical({"error": {"code": "RESPONSE_TOO_LARGE"}}) + "\n"
+                    ).encode()
+                writer.write(frame)
                 await writer.drain()
             finally:
                 writer.close()

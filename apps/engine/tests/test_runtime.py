@@ -175,6 +175,19 @@ def runtime(tmp_path_factory):
     ]
     (root / "bindings.json").write_text(json.dumps(configs))
     (root / "key").write_bytes(KEY)
+    (root / "models.json").write_text(
+        json.dumps(
+            {
+                "test": {
+                    "label": "Test model",
+                    "model": "test-model",
+                    "provider": "custom",
+                    "base_url": url,
+                    "cwd": str(workspace),
+                }
+            }
+        )
+    )
     env = child_env() | {
         "HERMES_HOME": str(home),
         "PYTHONPATH": os.pathsep.join((str(ENGINE), str(SOURCE))),
@@ -183,6 +196,7 @@ def runtime(tmp_path_factory):
         "OPENAI_API_KEY": "loopback-only",
         "OPENAI_BASE_URL": url,
         "NMA_OWNER_ID": OWNER,
+        "NMA_MODELS_FILE": str(root / "models.json"),
         "NMA_SERVICE_KEY_FILE": str(root / "key"),
         "NMA_BINDINGS_FILE": str(root / "bindings.json"),
     }
@@ -198,6 +212,7 @@ def runtime(tmp_path_factory):
             stderr=subprocess.STDOUT,
         )
         processes.append(process)
+        start.current = process
         deadline = time.monotonic() + 90
         while process.poll() is None and time.monotonic() < deadline:
             try:
@@ -529,3 +544,403 @@ def test_runtime_pin_rejects_modified_source(tmp_path):
     (tmp_path / "gateway/session_authority.py").write_text("modified source")
     with pytest.raises(EngineError, match="RUNTIME_SOURCE_MISMATCH"):
         verify(tmp_path)
+
+
+def test_agent_additive_migration_from_foundation(runtime):
+    root, _, call, start, *_ = runtime
+    start.current.kill()
+    start.current.wait(timeout=10)
+    # Reconstruct the exact empty agent slice predecessor in this disposable fixture.
+    with sqlite3.connect(root / "state/state.db") as db:
+        before = db.execute("SELECT count(*) FROM nma_commands").fetchone()[0]
+        for table in ("nma_agent_run_fences", "nma_agent_configs", "nma_agents"):
+            db.execute(f"DROP TABLE {table}")
+        db.execute("DELETE FROM nma_schema_migrations WHERE version=2")
+        db.execute("UPDATE nma_partition SET schema_version=1")
+    start()
+    assert (
+        call(command("agent.list", {"after": None, "limit": 100}))["result"]["items"]
+        == []
+    )
+    with sqlite3.connect(root / "state/state.db") as db:
+        assert db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 2
+        assert db.execute("SELECT count(*) FROM nma_commands").fetchone()[0] == before
+        assert db.execute("PRAGMA foreign_key_check").fetchall() == []
+
+
+def test_agent_lifecycle_configuration_and_restart(runtime):
+    root, server, call, start, _process, _ = runtime
+    payload = {
+        "display_name": "Researcher",
+        "handle": "researcher",
+        "config": {
+            "soul": "PERSONA_ALPHA",
+            "instructions": "INSTRUCTION_ALPHA",
+            "model": "test",
+        },
+    }
+    create = command("agent.create", payload)
+    first = call(create)["result"]
+    agent = first["agent"]
+    assert agent["revision"] == agent["config_revision"] == "1"
+    assert call(create)["result"] == first
+    assert call(command("agent.create", payload))["error"]["code"] == "HANDLE_CONFLICT"
+    second = call(
+        command(
+            "agent.create",
+            {
+                **payload,
+                "display_name": "Writer",
+                "handle": "writer",
+                "config": {**payload["config"], "soul": "PERSONA_BETA"},
+            },
+        )
+    )["result"]["agent"]
+    send = command(
+        "runtime.submit",
+        {
+            "agent_id": agent["agent_id"],
+            "thread_id": str(uuid4()),
+            "config_revision": "1",
+            "context_generation": "1",
+            "text": "CHECK_PERSONA",
+        },
+    )
+    receipt = call(send)["result"]
+    deadline = time.monotonic() + 40
+    while time.monotonic() < deadline:
+        state = call(command("runtime.read", {"run_id": receipt["run_id"]}))["result"]
+        if state["status"] in {"succeeded", "failed"}:
+            break
+        time.sleep(0.1)
+    assert state["status"] == "succeeded", state
+    request = next(
+        r
+        for r in reversed(server.requests)
+        if any(m.get("content") == "CHECK_PERSONA" for m in r["messages"])
+    )
+    prompt = json.dumps(request["messages"])
+    assert "PERSONA_ALPHA" in prompt and "INSTRUCTION_ALPHA" in prompt
+    assert "PERSONA_BETA" not in prompt
+    assert "ROOT_PROMPT_NOT_AGENT" not in prompt
+    assert request["model"] == "test-model"
+    update = command(
+        "agent.configure",
+        {
+            **payload,
+            "agent_id": agent["agent_id"],
+            "config": {**payload["config"], "soul": "PERSONA_UPDATED"},
+        },
+    )
+    update["expected_revision"] = "1"
+    changed = call(update)["result"]["agent"]
+    assert (
+        changed["agent_id"] == agent["agent_id"] and changed["config_revision"] == "2"
+    )
+    assert (
+        call({**send, "command_id": str(uuid4())})["error"]["code"]
+        == "REVISION_CONFLICT"
+    )
+    assert call(send)["result"] == receipt
+    next_send = command(
+        "runtime.submit",
+        {
+            **send["payload"],
+            "thread_id": str(uuid4()),
+            "config_revision": "2",
+            "text": "CHECK_REVISED_PERSONA",
+        },
+    )
+    next_receipt = call(next_send)["result"]
+    deadline = time.monotonic() + 20
+    while time.monotonic() < deadline:
+        next_state = call(command("runtime.read", {"run_id": next_receipt["run_id"]}))[
+            "result"
+        ]
+        if next_state["status"] == "succeeded":
+            break
+        time.sleep(0.1)
+    assert next_state["status"] == "succeeded"
+    revised_prompt = json.dumps(server.requests[-1]["messages"])
+    assert "PERSONA_UPDATED" in revised_prompt and "PERSONA_ALPHA" not in revised_prompt
+    assert next_receipt["agent_id"] == receipt["agent_id"]
+    stale = {**update, "command_id": str(uuid4())}
+    assert call(stale)["error"]["code"] == "REVISION_CONFLICT"
+    assert call(update)["result"]["agent"] == changed
+    archive = command("agent.archive", {"agent_id": agent["agent_id"]})
+    archive["expected_revision"] = "2"
+    saved = call(archive)["result"]["agent"]
+    assert saved["status"] == "archived" and saved["access_generation"] == "2"
+    assert (
+        call({**send, "command_id": str(uuid4())})["error"]["code"]
+        == "AGENT_UNAVAILABLE"
+    )
+    assert (
+        call(command("runtime.read", {"run_id": receipt["run_id"]}))["result"]["status"]
+        == "succeeded"
+    )
+    start.current.kill()
+    start.current.wait(timeout=10)
+    start()
+    listing = call(command("agent.list", {"after": None, "limit": 100}))["result"]
+    rows = {item["agent_id"]: item for item in listing["items"]}
+    assert rows[agent["agent_id"]] == saved
+    assert rows[second["agent_id"]]["config"]["soul"] == "PERSONA_BETA"
+    assert call(create)["result"] == first
+    assert call(stale)["error"]["code"] == "REVISION_CONFLICT"
+    with sqlite3.connect(root / "state" / "state.db") as db:
+        assert (
+            db.execute(
+                "SELECT count(*) FROM nma_agent_configs WHERE agent_id=?",
+                (agent["agent_id"],),
+            ).fetchone()[0]
+            == 2
+        )
+        assert db.execute("PRAGMA foreign_key_check").fetchall() == []
+    restore = command(
+        "agent.restore", {"agent_id": agent["agent_id"], "status": "active"}
+    )
+    restore["expected_revision"] = "3"
+    assert call(restore)["result"]["agent"]["agent_id"] == agent["agent_id"]
+    wrong = sign(
+        command("agent.list", {"after": None, "limit": 100}), str(uuid4()), KEY
+    )
+    assert call(command("runtime.describe"), wrong)["error"]["code"] == "NOT_FOUND"
+
+
+def test_agent_archive_cancels_active_and_queued_admissions(runtime):
+    _, server, call, *_ = runtime
+    server.blocked.clear()
+    server.release.clear()
+    agent = call(
+        command(
+            "agent.create",
+            {
+                "display_name": "Cancellation",
+                "handle": "cancellation",
+                "config": {"soul": "Cancel test", "instructions": "", "model": "test"},
+            },
+        )
+    )["result"]["agent"]
+    payload = {
+        "agent_id": agent["agent_id"],
+        "thread_id": str(uuid4()),
+        "config_revision": "1",
+        "context_generation": "1",
+        "text": "BLOCK_STARTED",
+    }
+    active = command("runtime.submit", payload)
+    running = call(active)["result"]
+    assert server.blocked.wait(15)
+    queued = call(
+        command("runtime.submit", {**payload, "text": "NEVER_EXECUTE_ARCHIVED"})
+    )["result"]
+    archive = command("agent.archive", {"agent_id": agent["agent_id"]})
+    archive["expected_revision"] = "1"
+    assert call(archive)["result"]["agent"]["status"] == "archived"
+    server.release.set()
+    assert call(active)["result"] == running
+    for run in (running, queued):
+        state = call(command("runtime.read", {"run_id": run["run_id"]}))["result"]
+        assert state["status"] == "cancelled" and state["text"] == ""
+    assert not any(
+        any(m.get("content") == "NEVER_EXECUTE_ARCHIVED" for m in r["messages"])
+        for r in server.requests
+    )
+
+
+def test_agent_validation_and_pagination(runtime):
+    _, _, call, *_ = runtime
+    payload = {
+        "display_name": "Invalid",
+        "handle": "invalid",
+        "config": {"soul": "", "instructions": "", "model": "test"},
+    }
+    for invalid in (
+        {**payload, "owner_id": OWNER},
+        {**payload, "handle": "../bad"},
+        {**payload, "config": {**payload["config"], "base_url": "http://untrusted"}},
+        {**payload, "config": {**payload["config"], "model": "missing"}},
+    ):
+        assert "error" in call(command("agent.create", invalid))
+    first = call(command("agent.list", {"after": None, "limit": 1}))["result"]
+    assert len(first["items"]) == 1 and first["next_cursor"]
+    following = call(
+        command("agent.list", {"after": first["next_cursor"], "limit": 100})
+    )["result"]
+    assert all(
+        a["agent_id"] != first["items"][0]["agent_id"] for a in following["items"]
+    )
+    assert "runtime_model" not in json.dumps(first)
+
+
+@pytest.mark.parametrize("transition", ["configure", "archive"])
+def test_pending_native_receipt_reconciles_original_snapshot(runtime, transition):
+    from ngertiin_engine.contracts import canonical, digest
+
+    root, server, call, start, *_ = runtime
+    payload = {
+        "display_name": "Pending receipt",
+        "handle": f"pending-{transition}",
+        "config": {"soul": "Original snapshot", "instructions": "", "model": "test"},
+    }
+    agent = call(command("agent.create", payload))["result"]["agent"]
+    text = f"PENDING_RECEIPT_{transition}"
+    send = command(
+        "runtime.submit",
+        {
+            "agent_id": agent["agent_id"],
+            "thread_id": str(uuid4()),
+            "config_revision": "1",
+            "context_generation": "1",
+            "text": text,
+        },
+    )
+    receipt = call(send)["result"]
+    deadline = time.monotonic() + 30
+    while time.monotonic() < deadline:
+        if (
+            call(command("runtime.read", {"run_id": receipt["run_id"]}))["result"][
+                "status"
+            ]
+            == "succeeded"
+        ):
+            break
+        time.sleep(0.1)
+    else:
+        pytest.fail("Native admission did not complete")
+    count = sum(
+        any(m.get("content") == text for m in r["messages"]) for r in server.requests
+    )
+    assert count == 1
+    never_admitted = {**send, "command_id": str(uuid4())}
+    with sqlite3.connect(root / "state/state.db") as db:
+        binding_id = db.execute(
+            "SELECT binding_id FROM nma_adapter_runs WHERE run_id=?",
+            (receipt["run_id"],),
+        ).fetchone()[0]
+        # Reconstruct a native commit whose extension mapping/finish did not commit.
+        db.execute(
+            "UPDATE nma_commands SET result=NULL WHERE command_id=?",
+            (send["command_id"],),
+        )
+        db.execute(
+            "UPDATE nma_runtime_outbox SET state='pending',result=NULL WHERE operation_id=?",
+            (send["command_id"],),
+        )
+        db.execute(
+            "UPDATE nma_adapter_runs SET native_admission_id=NULL WHERE run_id=?",
+            (receipt["run_id"],),
+        )
+        db.execute("DELETE FROM nma_events WHERE event_id=?", (send["command_id"],))
+        # A distinct prepared command has no native receipt and must not gain stale access.
+        db.execute(
+            "INSERT INTO nma_commands VALUES (?,?,?,?,NULL)",
+            (
+                OWNER,
+                never_admitted["command_id"],
+                digest(never_admitted),
+                canonical(never_admitted),
+            ),
+        )
+        db.execute(
+            "INSERT INTO nma_runtime_outbox VALUES (?,?,?,'pending',NULL)",
+            (OWNER, never_admitted["command_id"], canonical(never_admitted)),
+        )
+        db.execute(
+            "INSERT INTO nma_adapter_runs VALUES (?,?,?,?,NULL)",
+            (OWNER, str(uuid4()), binding_id, never_admitted["command_id"]),
+        )
+    update = command(
+        "agent." + transition,
+        {
+            **payload,
+            "agent_id": agent["agent_id"],
+            "config": {**payload["config"], "soul": "Changed snapshot"},
+        }
+        if transition == "configure"
+        else {"agent_id": agent["agent_id"]},
+    )
+    update["expected_revision"] = "1"
+    assert "result" in call(update)
+    start.current.kill()
+    start.current.wait(timeout=10)
+    start()
+    recovered = call(send)["result"]
+    assert recovered["run_id"] == receipt["run_id"]
+    assert recovered["config_revision"] == "1"
+    assert call(send)["result"] == recovered
+    error = "REVISION_CONFLICT" if transition == "configure" else "AGENT_UNAVAILABLE"
+    assert call(never_admitted)["error"]["code"] == error
+    assert call({**send, "command_id": str(uuid4())})["error"]["code"] == error
+    assert (
+        sum(
+            any(m.get("content") == text for m in r["messages"])
+            for r in server.requests
+        )
+        == count
+    )
+    with sqlite3.connect(root / "state/state.db") as db:
+        assert (
+            db.execute(
+                "SELECT count(*) FROM session_admissions WHERE request_id=?",
+                ("nma:" + send["command_id"],),
+            ).fetchone()[0]
+            == 1
+        )
+        assert db.execute(
+            "SELECT native_admission_id FROM nma_adapter_runs WHERE run_id=?",
+            (receipt["run_id"],),
+        ).fetchone()[0]
+
+
+def test_unicode_request_and_byte_bounded_agent_pages(runtime):
+    from ngertiin_engine.contracts import AGENT_PAGE_BYTES, MAX_REQUEST_BYTES, canonical
+
+    _, _, call, *_ = runtime
+    text = "中" * 44000
+    submit = command(
+        "runtime.submit",
+        {
+            "agent_id": AGENT,
+            "thread_id": OTHER_THREAD,
+            "config_revision": "1",
+            "context_generation": "1",
+            "text": text,
+        },
+    )
+    assert len(canonical(sign(submit, OWNER, KEY)).encode()) > 262144
+    assert "result" in call(submit)
+    expected = set()
+    for index in range(100):
+        body = command(
+            "agent.create",
+            {
+                "display_name": "Unicode",
+                "handle": f"unicode-{index}",
+                "config": {
+                    "soul": "🙂" * 16000,
+                    "instructions": "中" * 16000,
+                    "model": "test",
+                },
+            },
+        )
+        wire_size = len(canonical(sign(body, OWNER, KEY)).encode())
+        assert 262144 < wire_size < MAX_REQUEST_BYTES
+        agent = call(body)["result"]["agent"]
+        expected.add(agent["agent_id"])
+    seen, cursor, pages = [], None, 0
+    while True:
+        response = call(command("agent.list", {"after": cursor, "limit": 100}))
+        assert len((canonical(response) + "\n").encode()) <= AGENT_PAGE_BYTES
+        page = response["result"]
+        seen.extend(a["agent_id"] for a in page["items"])
+        pages += 1
+        cursor = page["next_cursor"]
+        if cursor is None:
+            break
+        assert page["items"] and cursor == seen[-1]
+        assert pages < 20
+    assert expected.issubset(seen)
+    assert seen == sorted(set(seen))
+    assert pages > 1

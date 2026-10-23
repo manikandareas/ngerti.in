@@ -7,6 +7,7 @@ separate transactions; pending outbox rows retain their identities on failure.
 import hashlib
 import json
 
+from ngertiin_engine.agents import DDL as AGENT_DDL
 from ngertiin_engine.contracts import EngineError, canonical, digest
 
 DDL = (
@@ -18,6 +19,7 @@ DDL = (
     "CREATE TABLE nma_adapter_bindings (owner_id TEXT NOT NULL, binding_id TEXT NOT NULL, config_digest TEXT NOT NULL, config TEXT NOT NULL, native_session_id TEXT, PRIMARY KEY(owner_id,binding_id), FOREIGN KEY(owner_id) REFERENCES nma_partition(owner_id))",
     "CREATE TABLE nma_adapter_runs (owner_id TEXT NOT NULL, run_id TEXT NOT NULL, binding_id TEXT NOT NULL, operation_id TEXT NOT NULL, native_admission_id TEXT, PRIMARY KEY(owner_id,run_id), UNIQUE(owner_id,operation_id), FOREIGN KEY(owner_id,binding_id) REFERENCES nma_adapter_bindings(owner_id,binding_id), FOREIGN KEY(owner_id,operation_id) REFERENCES nma_commands(owner_id,command_id))",
 )
+AGENT_CHECKSUM = hashlib.sha256("\n".join(AGENT_DDL).encode()).hexdigest()
 CHECKSUM = hashlib.sha256("\n".join(DDL).encode()).hexdigest()
 
 
@@ -68,7 +70,7 @@ class Store:
                 "SELECT checksum FROM nma_schema_migrations WHERE owner_id=? AND version=1",
                 (self.owner,),
             ).fetchone()
-            if rows[0][2] != 1 or not saved or saved[0] != CHECKSUM:
+            if rows[0][2] not in (1, 2) or not saved or saved[0] != CHECKSUM:
                 raise EngineError("UNSUPPORTED_SCHEMA")
             if rows[0][1] > self.authority.epoch:
                 raise EngineError("AUTHORITY_LOST")
@@ -76,6 +78,60 @@ class Store:
                 "UPDATE nma_partition SET authority_epoch=? WHERE owner_id=?",
                 (self.authority.epoch, self.owner),
             )
+
+        version = conn.execute("SELECT schema_version FROM nma_partition").fetchone()[0]
+        if version == 1:
+            for statement in AGENT_DDL:
+                conn.execute(statement)
+            conn.execute(
+                "INSERT INTO nma_schema_migrations(owner_id,version,checksum) VALUES (?,2,?)",
+                (self.owner, AGENT_CHECKSUM),
+            )
+            conn.execute("UPDATE nma_partition SET schema_version=2")
+        else:
+            saved = conn.execute(
+                "SELECT checksum FROM nma_schema_migrations WHERE owner_id=? AND version=2",
+                (self.owner,),
+            ).fetchone()
+            if not saved or saved[0] != AGENT_CHECKSUM:
+                raise EngineError("UNSUPPORTED_SCHEMA")
+
+    def receipt(self, body):
+        def read(conn):
+            row = conn.execute(
+                "SELECT payload_digest,result FROM nma_commands WHERE owner_id=? AND command_id=?",
+                (self.owner, body["command_id"]),
+            ).fetchone()
+            if row:
+                if row[0] != digest(body):
+                    raise EngineError("COMMAND_CONFLICT")
+                return json.loads(row[1]) if row[1] else None
+
+        return self.write(read)
+
+    def native_submission(self, body, principal):
+        """Reconcile a pending operation from durable native identity, without resubmitting."""
+
+        def read(conn):
+            row = conn.execute(
+                "SELECT r.run_id,r.binding_id,b.config,b.native_session_id FROM nma_commands c JOIN nma_adapter_runs r ON r.owner_id=c.owner_id AND r.operation_id=c.command_id JOIN nma_adapter_bindings b ON b.owner_id=r.owner_id AND b.binding_id=r.binding_id WHERE c.owner_id=? AND c.command_id=? AND c.result IS NULL",
+                (self.owner, body["command_id"]),
+            ).fetchone()
+            if not row or not row[3]:
+                return None
+            native = conn.execute(
+                "SELECT admission_id FROM session_admissions WHERE principal_id=? AND target_session_id=? AND request_id=?",
+                (principal, row[3], "nma:" + body["command_id"]),
+            ).fetchone()
+            if not native:
+                return None
+            conn.execute(
+                "UPDATE nma_adapter_runs SET native_admission_id=? WHERE owner_id=? AND run_id=?",
+                (native[0], self.owner, row[0]),
+            )
+            return row[0], json.loads(row[2])
+
+        return self.write(read)
 
     def admit(self, body):
         def operation(conn):

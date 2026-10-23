@@ -1,8 +1,10 @@
 """Map trusted domain bindings to the existing Hermes authority, never execute models."""
 
 import asyncio
+import json
 from uuid import NAMESPACE_URL, uuid5
 
+from ngertiin_engine.agents import Agents, compose
 from ngertiin_engine.contracts import EngineError, canonical, counter, digest, uuid
 from ngertiin_engine.store import Store
 
@@ -29,11 +31,18 @@ EVENTS = {
 
 
 class Adapter:
-    def __init__(self, authority, owner: str, configurations: list[dict]):
+    def __init__(
+        self,
+        authority,
+        owner: str,
+        configurations: list[dict],
+        models: dict | None = None,
+    ):
         from gateway.session_contract import Principal
 
         self.authority, self.owner = authority, uuid(owner)
         self.store = Store(authority, owner)
+        self.agents = Agents(self.store, models or {})
         self.actor = Principal(
             "nma:" + owner,
             authority.profile_id,
@@ -44,6 +53,13 @@ class Adapter:
         )
         self.bindings = {}
         self.lock = asyncio.Lock()
+        saved = self.store.write(
+            lambda conn: conn.execute(
+                "SELECT binding_id,config FROM nma_adapter_bindings WHERE owner_id=?",
+                (owner,),
+            ).fetchall()
+        )
+        self.bindings.update({row[0]: json.loads(row[1]) for row in saved})
         for config in configurations:
             required = {
                 "agent_id",
@@ -97,7 +113,53 @@ class Adapter:
         counter(payload.get("context_generation"))
         key = digest([payload[k] for k in fields])
         if key not in self.bindings:
-            raise EngineError("NOT_FOUND")
+            agent = self.store.write(
+                lambda conn: self.agents.get(conn, payload["agent_id"])
+            )
+            if agent["status"] != "active":
+                raise EngineError("AGENT_UNAVAILABLE")
+            if agent["config_revision"] != payload["config_revision"]:
+                raise EngineError("REVISION_CONFLICT")
+            raw = self.store.write(
+                lambda conn: conn.execute(
+                    "SELECT config FROM nma_agent_configs WHERE owner_id=? AND agent_id=? AND config_revision=?",
+                    (self.owner, agent["agent_id"], int(agent["config_revision"])),
+                ).fetchone()[0]
+            )
+            model = json.loads(raw)["runtime_model"]
+            if not model:
+                raise EngineError("MODEL_UNAVAILABLE")
+            config = {
+                **{field: payload[field] for field in fields},
+                **{
+                    field: model[field]
+                    for field in ("model", "provider", "base_url", "cwd")
+                },
+                "toolsets": [],
+                "persona": compose(
+                    agent["display_name"], agent["handle"], agent["config"]
+                ),
+                "access_generation": agent["access_generation"],
+            }
+            self.store.write(
+                lambda conn: conn.execute(
+                    "INSERT INTO nma_adapter_bindings VALUES (?,?,?,?,NULL)",
+                    (self.owner, key, digest(config), canonical(config)),
+                )
+            )
+            self.bindings[key] = config
+        config = self.bindings[key]
+        if "access_generation" in config:
+            agent = self.store.write(
+                lambda conn: self.agents.get(conn, payload["agent_id"])
+            )
+            if (
+                agent["status"] != "active"
+                or agent["access_generation"] != config["access_generation"]
+            ):
+                raise EngineError("AGENT_UNAVAILABLE")
+            if agent["config_revision"] != config["config_revision"]:
+                raise EngineError("REVISION_CONFLICT")
         return key, self.bindings[key]
 
     def row(self, run_id):
@@ -127,6 +189,8 @@ class Adapter:
             "model": config["model"],
             "toolsets": config["toolsets"],
         }
+        if "persona" in config:
+            params.update(ignore_rules=True)
         frozen = {
             "model": {
                 "default": config["model"],
@@ -137,11 +201,17 @@ class Adapter:
             "auxiliary": {"title_generation": {"enabled": False}},
             "platform_toolsets": {"cli": config["toolsets"]},
         }
+        if "persona" in config:
+            frozen["nma_persona"] = True
         policy = build_policy(
             params, frozen, private_secrets={}, profile_terminal=False
         )
         staged = stage_local_session(
-            self.authority, self.actor, params, trusted_policy=policy
+            self.authority,
+            self.actor,
+            params,
+            trusted_policy=policy,
+            skills_prompt=config.get("persona"),
         )
         if isinstance(staged, dict):
             await asyncio.to_thread(
@@ -174,6 +244,21 @@ class Adapter:
 
     async def _dispatch(self, body):
         kind, payload = body["type"], body["payload"]
+        if kind == "agent.list":
+            return self.agents.listing(payload)
+        if kind in {
+            "agent.create",
+            "agent.configure",
+            "agent.disable",
+            "agent.archive",
+            "agent.restore",
+        }:
+            result = self.agents.mutate(body)
+            if kind in {"agent.disable", "agent.archive"}:
+                await self.cancel_agent(result["agent"]["agent_id"])
+            return result
+        if body["expected_revision"] is not None:
+            raise EngineError("INVALID_REQUEST")
         if kind == "runtime.describe":
             if payload:
                 raise EngineError("INVALID_REQUEST")
@@ -202,6 +287,13 @@ class Adapter:
                 or not 1 <= len(payload["text"]) <= 100000
             ):
                 raise EngineError("INVALID_REQUEST")
+            previous = self.store.receipt(body)
+            if previous:
+                return previous
+            native = self.store.native_submission(body, self.actor.subject)
+            if native:
+                run_id, config = native
+                return self.store.finish(body, self.admission_result(run_id, config))
             key, config = self.binding(payload)
             prior = self.store.admit(body)
             if prior:
@@ -228,21 +320,7 @@ class Adapter:
                     (receipt.admission_id, self.owner, run_id),
                 )
             )
-            return self.store.finish(
-                body,
-                {
-                    "run_id": run_id,
-                    **{
-                        k: config[k]
-                        for k in (
-                            "agent_id",
-                            "thread_id",
-                            "config_revision",
-                            "context_generation",
-                        )
-                    },
-                },
-            )
+            return self.store.finish(body, self.admission_result(run_id, config))
         if kind == "runtime.events":
             return await self.events(payload)
         if kind not in {"run.cancel", "runtime.read"} or set(payload) != {"run_id"}:
@@ -294,6 +372,8 @@ class Adapter:
             }.get(receipt.outcome, "failed")
         config = self.bindings[row[0]]
         value = result["result"] if result else {}
+        if self.fenced(payload["run_id"]):
+            status = "cancelled"
         # Raw native errors/metadata can include paths and credentials. Publish stable codes only.
         return {
             "schema_version": "nma.v1",
@@ -311,6 +391,66 @@ class Adapter:
             "text": value.get("final_response", "") if status == "succeeded" else "",
             "error_code": "RUNTIME_FAILED" if status == "failed" else None,
         }
+
+    @staticmethod
+    def admission_result(run_id, config):
+        return {
+            "run_id": run_id,
+            **{
+                key: config[key]
+                for key in (
+                    "agent_id",
+                    "thread_id",
+                    "config_revision",
+                    "context_generation",
+                )
+            },
+        }
+
+    def fenced(self, run_id):
+        return bool(
+            self.store.write(
+                lambda conn: conn.execute(
+                    "SELECT 1 FROM nma_agent_run_fences WHERE owner_id=? AND run_id=?",
+                    (self.owner, run_id),
+                ).fetchone()
+            )
+        )
+
+    async def recover_agent_cancellations(self):
+        rows = self.store.write(
+            lambda conn: conn.execute(
+                "SELECT DISTINCT agent_id FROM nma_agent_run_fences WHERE owner_id=?",
+                (self.owner,),
+            ).fetchall()
+        )
+        for row in rows:
+            await self.cancel_agent(row[0])
+
+    async def cancel_agent(self, agent_id):
+        """Cancel native admissions after the durable lifecycle fence commits."""
+        from gateway.session_contract import SessionRef
+
+        rows = self.store.write(
+            lambda conn: conn.execute(
+                "SELECT r.native_admission_id,b.native_session_id,b.config FROM nma_adapter_runs r JOIN nma_adapter_bindings b ON b.owner_id=r.owner_id AND b.binding_id=r.binding_id WHERE r.owner_id=? AND r.run_id IN (SELECT run_id FROM nma_agent_run_fences WHERE owner_id=r.owner_id)",
+                (self.owner,),
+            ).fetchall()
+        )
+        for admission_id, session_id, raw in rows:
+            if json.loads(raw)["agent_id"] != agent_id or not admission_id:
+                continue
+            ref = SessionRef(self.authority.profile_id, session_id)
+            await self.authority.resolve(self.actor, ref)
+            receipt = await self.authority.receipt(self.actor, ref, admission_id)
+            if receipt.status == "queued":
+                claimed = await self.authority.cancel_or_claimed(
+                    self.actor, ref, admission_id
+                )
+                if claimed:
+                    await self.interrupt(ref, claimed["generation"])
+            elif receipt.status == "started":
+                await self.interrupt(ref, receipt.execution_generation)
 
     async def interrupt(self, ref, generation):
         from gateway.session_managed_worker import interrupt_managed
@@ -337,6 +477,13 @@ class Adapter:
         replay = stream.since(payload["replay_epoch"], int(sequence))
         events = []
         config = self.bindings[row[0]]
+        if self.fenced(payload["run_id"]):
+            return {
+                "events": [],
+                "last_sequence": str(replay["last_sequence"]),
+                "replay_epoch": replay["replay_epoch"],
+                "snapshot_required": True,
+            }
         for frame in replay["events"]:
             if frame.get("admission_id") != row[1] or frame["type"] not in EVENTS:
                 continue

@@ -15,6 +15,7 @@ import { Route as GoalsRouteImport } from './routes/goals'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as SignUpRouteImport } from './routes/sign-up'
 import { Route as DevSystemRouteImport } from './routes/dev.system'
+import { Route as DmThreadIdRouteImport } from './routes/dm.$threadId'
 import { Route as LibrarySectionRouteImport } from './routes/library.$section'
 
 const IndexRoute = IndexRouteImport.update({
@@ -47,6 +48,11 @@ const DevSystemRoute = DevSystemRouteImport.update({
   path: '/dev/system',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DmThreadIdRoute = DmThreadIdRouteImport.update({
+  id: '/dm/$threadId',
+  path: '/dm/$threadId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LibrarySectionRoute = LibrarySectionRouteImport.update({
   id: '/library/$section',
   path: '/library/$section',
@@ -60,6 +66,7 @@ export interface FileRoutesByFullPath {
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/dev/system': typeof DevSystemRoute
+  '/dm/$threadId': typeof DmThreadIdRoute
   '/library/$section': typeof LibrarySectionRoute
 }
 export interface FileRoutesByTo {
@@ -69,6 +76,7 @@ export interface FileRoutesByTo {
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/dev/system': typeof DevSystemRoute
+  '/dm/$threadId': typeof DmThreadIdRoute
   '/library/$section': typeof LibrarySectionRoute
 }
 export interface FileRoutesById {
@@ -79,6 +87,7 @@ export interface FileRoutesById {
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/dev/system': typeof DevSystemRoute
+  '/dm/$threadId': typeof DmThreadIdRoute
   '/library/$section': typeof LibrarySectionRoute
 }
 export interface FileRouteTypes {
@@ -90,6 +99,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/dev/system'
+    | '/dm/$threadId'
     | '/library/$section'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -99,6 +109,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/dev/system'
+    | '/dm/$threadId'
     | '/library/$section'
   id:
     | '__root__'
@@ -108,6 +119,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/dev/system'
+    | '/dm/$threadId'
     | '/library/$section'
   fileRoutesById: FileRoutesById
 }
@@ -118,6 +130,7 @@ export interface RootRouteChildren {
   SignInRoute: typeof SignInRoute
   SignUpRoute: typeof SignUpRoute
   DevSystemRoute: typeof DevSystemRoute
+  DmThreadIdRoute: typeof DmThreadIdRoute
   LibrarySectionRoute: typeof LibrarySectionRoute
 }
 
@@ -165,6 +178,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DevSystemRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dm/$threadId': {
+      id: '/dm/$threadId'
+      path: '/dm/$threadId'
+      fullPath: '/dm/$threadId'
+      preLoaderRoute: typeof DmThreadIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/library/$section': {
       id: '/library/$section'
       path: '/library/$section'
@@ -182,6 +202,7 @@ const rootRouteChildren: RootRouteChildren = {
   SignInRoute: SignInRoute,
   SignUpRoute: SignUpRoute,
   DevSystemRoute: DevSystemRoute,
+  DmThreadIdRoute: DmThreadIdRoute,
   LibrarySectionRoute: LibrarySectionRoute,
 }
 export const routeTree = rootRouteImport

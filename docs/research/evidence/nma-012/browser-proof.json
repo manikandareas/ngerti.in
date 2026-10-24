@@ -1,0 +1,168 @@
+{
+  "agents": [
+    {
+      "configRevision": "1",
+      "id": "65c3867b-4d40-4455-8c12-771b1c7a781f",
+      "name": "Researcher"
+    },
+    {
+      "configRevision": "1",
+      "id": "d77cf6f3-e0ef-4e2f-a995-04d202d04c42",
+      "name": "Writer"
+    }
+  ],
+  "dmCount": 2,
+  "interruptedStatus": "cancelled",
+  "snapshots": [
+    {
+      "agent": "Researcher",
+      "authors": [
+        {
+          "agent": null,
+          "kind": "user"
+        },
+        {
+          "agent": "65c3867b-4d40-4455-8c12-771b1c7a781f",
+          "kind": "agent"
+        },
+        {
+          "agent": null,
+          "kind": "user"
+        },
+        {
+          "agent": null,
+          "kind": "user"
+        },
+        {
+          "agent": null,
+          "kind": "user"
+        },
+        {
+          "agent": null,
+          "kind": "user"
+        },
+        {
+          "agent": "65c3867b-4d40-4455-8c12-771b1c7a781f",
+          "kind": "agent"
+        },
+        {
+          "agent": null,
+          "kind": "user"
+        },
+        {
+          "agent": "65c3867b-4d40-4455-8c12-771b1c7a781f",
+          "kind": "agent"
+        }
+      ],
+      "messageIds": [
+        "cfa22bd7-74ff-53a2-a7be-696bff1035c4",
+        "33af2c7d-7a15-53b6-99fe-967313be6264",
+        "5cf43b94-88bf-5252-a40f-91fa282d5613",
+        "75e3ff92-eeeb-5e0b-a30c-98ba739652b6",
+        "1bef584a-6ee1-5002-894a-dbb6c159fe5c",
+        "54bc741b-2bc1-5c50-8a2c-440d4920ba9b",
+        "aa904a7f-8d1b-5596-ba07-3967b7a56507",
+        "9b699761-bdc2-57d0-84ba-96b3615a239a",
+        "6ba79b5b-1002-51ea-b892-607461057dc1"
+      ],
+      "statuses": [
+        {
+          "id": "a0dbac39-0fc2-59c8-91a6-a9f67877fab5",
+          "status": "succeeded"
+        },
+        {
+          "id": "f2a370ca-e367-5f06-82ff-7e1301f67434",
+          "status": "cancelled"
+        },
+        {
+          "id": "078cc76f-32ac-588a-b3d4-bd690c9d6031",
+          "status": "failed"
+        },
+        {
+          "id": "bcef3e60-8d14-56a0-923a-daf6207f10f3",
+          "status": "failed"
+        },
+        {
+          "id": "8b02f395-0e23-5cae-8caa-f45600ecf372",
+          "status": "succeeded"
+        },
+        {
+          "id": "ad0cf86d-79a1-59a2-afb6-7e444f79004b",
+          "status": "succeeded"
+        }
+      ],
+      "threadId": "07d5c739-e041-4bfb-9ec6-5459ed98e2b8"
+    },
+    {
+      "agent": "Writer",
+      "authors": [
+        {
+          "agent": null,
+          "kind": "user"
+        },
+        {
+          "agent": "d77cf6f3-e0ef-4e2f-a995-04d202d04c42",
+          "kind": "agent"
+        },
+        {
+          "agent": null,
+          "kind": "user"
+        },
+        {
+          "agent": "d77cf6f3-e0ef-4e2f-a995-04d202d04c42",
+          "kind": "agent"
+        },
+        {
+          "agent": null,
+          "kind": "user"
+        },
+        {
+          "agent": null,
+          "kind": "user"
+        },
+        {
+          "agent": "d77cf6f3-e0ef-4e2f-a995-04d202d04c42",
+          "kind": "agent"
+        }
+      ],
+      "messageIds": [
+        "543424a1-53d9-5d8d-a03e-430e29af5060",
+        "5e91c431-bd95-530f-b116-d3f993f62cdb",
+        "8ec085fa-76a8-5f7b-8f5c-a69cdcf42d19",
+        "12d9a7a4-2650-58a2-937e-70f20a7c6e16",
+        "086acc55-cfbe-5aac-8c03-4e27edba3adc",
+        "f265f1f7-f046-53d0-acf8-c3b6ac60cb49",
+        "4f349632-e417-5270-933d-8eee74c380ca"
+      ],
+      "statuses": [
+        {
+          "id": "7eff7496-447d-5e05-b9aa-4b82091a4d18",
+          "status": "succeeded"
+        },
+        {
+          "id": "f402ecbd-0532-504e-9095-570385086a7e",
+          "status": "succeeded"
+        },
+        {
+          "id": "6d88093c-732f-5264-950e-510a66aba9bc",
+          "status": "cancelled"
+        },
+        {
+          "id": "82d63af4-2844-54a0-8340-16efb19926a7",
+          "status": "succeeded"
+        }
+      ],
+      "threadId": "23e1a582-2677-419c-814b-48998402814c"
+    }
+  ],
+  "uncertainSend": {
+    "runs": 1,
+    "userMessages": 1
+  },
+  "viewport": {
+    "height": 1000,
+    "scrollWidth": 1440,
+    "width": 1440
+  },
+  "writerContainsResearcherPrompt": false
+}

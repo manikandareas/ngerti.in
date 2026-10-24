@@ -53,6 +53,15 @@ def test_dm_group_identity_config_restart_and_context(runtime):
     )["result"]["thread"]
     assert dm["agents"][0] == group["agents"][0] == researcher
     assert dm["dm_agent_id"] == researcher["agent_id"] and group["dm_agent_id"] is None
+    listing = call(command("thread.list", {"after": None}))["result"]["items"]
+    assert (
+        next(t for t in listing if t["thread_id"] == dm["thread_id"])["dm_agent_id"]
+        == researcher["agent_id"]
+    )
+    assert (
+        next(t for t in listing if t["thread_id"] == group["thread_id"])["dm_agent_id"]
+        is None
+    )
 
     def submit(thread, agent, text):
         return call(
@@ -155,7 +164,9 @@ def test_thread_validation_and_unknown_owner_identity(runtime):
         == "NOT_FOUND"
     )
     items = call(command("thread.list", {"after": None}))["result"]["items"]
-    assert all(set(item) == {"thread_id", "kind", "title"} for item in items)
+    assert all(
+        set(item) == {"thread_id", "kind", "title", "dm_agent_id"} for item in items
+    )
 
 
 def test_thread_additive_migration_from_agent_schema(runtime):

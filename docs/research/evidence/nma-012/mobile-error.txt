@@ -1,0 +1,42 @@
+- link "Langsung ke konten" [ref=e1]
+- main
+  - region "Percakapan langsung" [ref=e2]
+    - sectionheader
+      - link "Kembali ke agent dan percakapan" [ref=e3]
+      - heading "Researcher" [level=1, ref=e4]
+      - paragraph
+        - StaticText "@researcher · DM"
+    - status
+      - StaticText "Tersambung · Riwayat tersimpan"
+    - article "Pesan Kamu" [ref=e5]
+      - heading "Kamu" [level=2, ref=e11]
+      - paragraph
+        - StaticText "Bantu saya menyusun laporan riset."
+    - article "Pesan Researcher" [ref=e6]
+      - heading "Researcher" [level=2, ref=e12]
+      - paragraph
+        - StaticText "Saya sudah membaca pesanmu. Mari kita susun langkah berikutnya dengan jelas. Jawaban ini berasal dari model lokal untuk memverifikasi percakapan."
+    - article "Pesan Kamu" [ref=e7]
+      - heading "Kamu" [level=2, ref=e13]
+      - paragraph
+        - StaticText "LAMBAT: susun langkah penelitian."
+    - article "Aktivitas Researcher" [ref=e8]
+      - heading "Researcher" [level=2, ref=e14]
+      - StaticText "Dihentikan"
+    - article "Pesan Kamu" [ref=e9]
+      - heading "Kamu" [level=2, ref=e15]
+      - paragraph
+        - StaticText "FAIL_PROVIDER"
+    - article "Aktivitas Researcher" [ref=e10]
+      - heading "Researcher" [level=2, ref=e16]
+      - StaticText "Jawaban gagal diselesaikan"
+      - paragraph
+        - StaticText "Jawaban tidak selesai. Kamu dapat mengirim arahan baru untuk mencoba lagi."
+    - sectionfooter
+      - generic
+        - LabelText
+          - StaticText "Pesan untuk Researcher"
+        - textbox "Pesan untuk Researcher" [ref=e17]
+        - paragraph
+          - StaticText "Percakapan tersimpan. Kamu bisa kembali kapan saja."
+        - button "Kirim pesan" [disabled, ref=e18]

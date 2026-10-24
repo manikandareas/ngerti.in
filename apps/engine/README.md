@@ -532,3 +532,19 @@ and replay before reopening ingress. Earlier binaries reject schema 6. For rollb
 and stop the new owner, preserve its complete volume/new work, and restore a complete
 predecessor backup in an isolated partition; never drop receipts or reuse old cursors
 against a different live store. No automatic destructive downgrade is provided.
+
+## Direct-message web experience (NMA-012)
+
+The authenticated `/agents` page opens or creates a DM for a saved agent without
+requiring another configuration form. `/dm/{thread_id}` consumes the snapshot,
+SSE, message and cancellation endpoints above. Thread listing now includes the
+nullable `dm_agent_id`; deploy this additive engine response before the web client.
+No schema migration is required. Existing group setup and legacy chat routes
+remain available; group messaging and engine cutover are separate work.
+
+The UI preserves pending message command/request IDs across reload in per-tab,
+owner/thread-scoped session storage, retries uncertain sends with the same body,
+and resnapshots after cursor reset or browser online recovery. If browser storage
+is unavailable, pending intent is retained only in memory. Server transcript and
+native run recovery remain authoritative. Rollback changes UI/API code only;
+never delete persisted threads, messages or command receipts to roll back the UI.

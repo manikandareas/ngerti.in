@@ -1,0 +1,60 @@
+- link "Langsung ke konten" [ref=e1]
+- main
+  - region "Percakapan langsung" [ref=e2]
+    - sectionheader
+      - link "Kembali ke agent dan percakapan" [ref=e3]
+      - heading "Researcher" [level=1, ref=e4]
+      - paragraph
+        - StaticText "@researcher · DM"
+    - status
+      - StaticText "Menyambungkan kembali… Pekerjaan tetap berjalan di server."
+      - button "Sambungkan kembali" [ref=e5]
+    - article "Pesan Kamu" [ref=e6]
+      - heading "Kamu" [level=2, ref=e16]
+      - paragraph
+        - StaticText "Bantu saya menyusun laporan riset."
+    - article "Pesan Researcher" [ref=e7]
+      - heading "Researcher" [level=2, ref=e17]
+      - paragraph
+        - StaticText "Saya sudah membaca pesanmu. Mari kita susun langkah berikutnya dengan jelas. Jawaban ini berasal dari model lokal untuk memverifikasi percakapan."
+    - article "Pesan Kamu" [ref=e8]
+      - heading "Kamu" [level=2, ref=e18]
+      - paragraph
+        - StaticText "LAMBAT: susun langkah penelitian."
+    - article "Aktivitas Researcher" [ref=e9]
+      - heading "Researcher" [level=2, ref=e19]
+      - StaticText "Dihentikan"
+    - article "Pesan Kamu" [ref=e10]
+      - heading "Kamu" [level=2, ref=e20]
+      - paragraph
+        - StaticText "FAIL_PROVIDER"
+    - article "Aktivitas Researcher" [ref=e11]
+      - heading "Researcher" [level=2, ref=e21]
+      - StaticText "Jawaban gagal diselesaikan"
+      - paragraph
+        - StaticText "Jawaban tidak selesai. Kamu dapat mengirim arahan baru untuk mencoba lagi."
+    - article "Pesan Kamu" [ref=e12]
+      - heading "Kamu" [level=2, ref=e22]
+      - paragraph
+        - StaticText "LAMBAT: lanjutkan setelah koneksi pulih."
+    - article "Aktivitas Researcher" [ref=e13]
+      - heading "Researcher" [level=2, ref=e23]
+      - StaticText "Jawaban gagal diselesaikan"
+      - paragraph
+        - StaticText "Jawaban tidak selesai. Kamu dapat mengirim arahan baru untuk mencoba lagi."
+    - article "Pesan Kamu" [ref=e14]
+      - heading "Kamu" [level=2, ref=e24]
+      - paragraph
+        - StaticText "LAMBAT: periksa pemulihan koneksi."
+    - article "Aktivitas Researcher" [ref=e15]
+      - heading "Researcher" [level=2, ref=e25]
+      - StaticText "Sedang menulis"
+      - button "Hentikan jawaban" [ref=e26]
+    - sectionfooter
+      - generic
+        - LabelText
+          - StaticText "Pesan untuk Researcher"
+        - textbox "Pesan untuk Researcher" [ref=e27]
+        - paragraph
+          - StaticText "Pesan baru menghentikan jawaban yang berjalan dan menyampaikan arahanmu."
+        - button "Kirim pesan" [disabled, ref=e28]

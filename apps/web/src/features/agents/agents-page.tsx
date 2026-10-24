@@ -1,4 +1,5 @@
 import { useAuth } from "@clerk/tanstack-react-start";
+import { useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AppShell } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,8 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { command, listThreads, submit } from "@/features/direct-messages/client";
+import type { Thread } from "@/features/direct-messages/state";
 import { api } from "@/lib/api";
 import { AgentThreads } from "./agent-threads";
 
@@ -49,6 +52,41 @@ const base = "/api/agent-engine/v1";
 
 export function AgentsPage() {
   const { getToken } = useAuth();
+  const navigate = useNavigate();
+  const [opening, setOpening] = useState<string | null>(null);
+  const openingLock = useRef(false);
+  const dmCommands = useRef(new Map<string, ReturnType<typeof command>>());
+  async function openDm(agent: Agent) {
+    if (openingLock.current) return;
+    openingLock.current = true;
+    setOpening(agent.agent_id);
+    setError("");
+    try {
+      const token = await getToken();
+      const threads = await listThreads(token);
+      let id = threads.find(
+        (thread) => thread.kind === "dm" && thread.dm_agent_id === agent.agent_id,
+      )?.thread_id;
+      if (!id) {
+        const body =
+          dmCommands.current.get(agent.agent_id) ??
+          command("thread.create", {
+            kind: "dm",
+            title: agent.display_name,
+            agent_ids: [agent.agent_id],
+          });
+        dmCommands.current.set(agent.agent_id, body);
+        const result = await submit<{ thread: Thread }>(body, token);
+        id = result.thread.thread_id;
+      }
+      await navigate({ to: "/dm/$threadId", params: { threadId: id } });
+    } catch {
+      setError("DM belum dapat dibuka. Coba buka kembali.");
+    } finally {
+      openingLock.current = false;
+      setOpening(null);
+    }
+  }
   const [data, setData] = useState<Listing | null>(null);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
@@ -139,7 +177,7 @@ export function AgentsPage() {
           <div>
             <h1 className="text-3xl font-semibold">Agent</h1>
             <p className="mt-2 text-sm text-muted-foreground">
-              Atur identitas, karakter, dan cara kerja setiap agent.
+              Pilih agent untuk melanjutkan percakapan atau buat agent baru.
             </p>
           </div>
           <Button disabled={loading || !data?.models.length} onClick={() => edit(null)}>
@@ -221,9 +259,18 @@ export function AgentsPage() {
                         Pulihkan {agent.display_name}
                       </Button>
                     ) : (
-                      <Button variant="outline" disabled={busy} onClick={() => edit(agent)}>
-                        Edit {agent.display_name}
-                      </Button>
+                      <div className="flex flex-wrap gap-2">
+                        <Button
+                          disabled={opening !== null || agent.status !== "active"}
+                          onClick={() => void openDm(agent)}
+                          aria-label={`Buka DM ${agent.display_name}`}
+                        >
+                          {opening === agent.agent_id ? "Membuka…" : "Buka DM"}
+                        </Button>
+                        <Button variant="outline" disabled={busy} onClick={() => edit(agent)}>
+                          Edit {agent.display_name}
+                        </Button>
+                      </div>
                     )}
                   </article>
                 ))}

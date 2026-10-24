@@ -1,4 +1,5 @@
 import { useAuth } from "@clerk/tanstack-react-start";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,6 +19,7 @@ const base = "/api/agent-engine/v1";
 
 export function AgentThreads({ agents, edit }: { agents: Agent[]; edit: (agent: Agent) => void }) {
   const { getToken } = useAuth();
+  const navigate = useNavigate();
   const [threads, setThreads] = useState<Page["items"]>([]);
   const [selected, setSelected] = useState<string | null>(null);
   const [detail, setDetail] = useState<Thread | null>(null);
@@ -86,7 +88,9 @@ export function AgentThreads({ agents, edit }: { agents: Agent[]; edit: (agent: 
       pending.current = null;
       setCreating(false);
       await load();
-      setSelected(result.thread.thread_id);
+      if (result.thread.kind === "dm")
+        await navigate({ to: "/dm/$threadId", params: { threadId: result.thread.thread_id } });
+      else setSelected(result.thread.thread_id);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Belum dapat disimpan. Coba kembali.");
     } finally {
@@ -99,7 +103,7 @@ export function AgentThreads({ agents, edit }: { agents: Agent[]; edit: (agent: 
         <div>
           <h2 className="text-xl font-semibold">DM dan grup</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Siapkan agent untuk setiap percakapan.
+            Lanjutkan DM atau kelola susunan agent dalam grup.
           </p>
         </div>
         <Button
@@ -124,19 +128,32 @@ export function AgentThreads({ agents, edit }: { agents: Agent[]; edit: (agent: 
         <p className="text-sm text-muted-foreground">Belum ada DM atau grup.</p>
       )}
       <div className="grid gap-3 sm:grid-cols-2">
-        {threads.map((thread) => (
-          <Button
-            key={thread.thread_id}
-            variant="outline"
-            className="h-auto justify-start whitespace-normal p-4 text-left"
-            onClick={() => {
-              setError("");
-              setSelected(thread.thread_id);
-            }}
-          >
-            {thread.kind === "dm" ? "DM" : "Grup"} · {thread.title}
-          </Button>
-        ))}
+        {threads.map((thread) =>
+          thread.kind === "dm" ? (
+            <Button
+              key={thread.thread_id}
+              asChild
+              variant="outline"
+              className="h-auto min-h-12 justify-start whitespace-normal p-4 text-left"
+            >
+              <Link to="/dm/$threadId" params={{ threadId: thread.thread_id }}>
+                DM · {thread.title}
+              </Link>
+            </Button>
+          ) : (
+            <Button
+              key={thread.thread_id}
+              variant="outline"
+              className="h-auto justify-start whitespace-normal p-4 text-left"
+              onClick={() => {
+                setError("");
+                setSelected(thread.thread_id);
+              }}
+            >
+              Grup · {thread.title}
+            </Button>
+          ),
+        )}
       </div>
       <Dialog
         open={creating}
@@ -277,7 +294,7 @@ export function AgentThreads({ agents, edit }: { agents: Agent[]; edit: (agent: 
             </article>
           ))}
           <p className="text-sm text-muted-foreground">
-            Susunan agent tersimpan. Pengiriman pesan belum tersedia di sini.
+            Susunan agent tersimpan. Pengiriman pesan grup belum tersedia di sini.
           </p>
         </DialogContent>
       </Dialog>

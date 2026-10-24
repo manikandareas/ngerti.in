@@ -1,0 +1,42 @@
+- link "Langsung ke konten" [ref=e1]
+- main
+  - complementary "Daftar DM"
+    - link "Agent dan percakapan" [ref=e3]
+    - heading "Percakapan langsung" [level=2, ref=e4]
+    - navigation
+      - link "Researcher" [ref=e9]
+        - StaticText "Researcher"
+  - region "Percakapan langsung" [ref=e2]
+    - sectionheader
+      - heading "Researcher" [level=1, ref=e10]
+      - paragraph
+        - StaticText "@researcher · DM"
+      - link "Semua agent" [ref=e11]
+    - status
+      - StaticText "Researcher: Sedang menulis"
+    - article "Pesan Kamu" [ref=e5]
+      - heading "Kamu" [level=2, ref=e12]
+      - paragraph
+        - StaticText "Bantu saya menyusun laporan riset."
+    - article "Pesan Researcher" [ref=e6]
+      - heading "Researcher" [level=2, ref=e13]
+      - paragraph
+        - StaticText "Saya sudah membaca pesanmu. Mari kita susun langkah berikutnya dengan jelas. Jawaban ini berasal dari model lokal untuk memverifikasi percakapan."
+    - article "Pesan Kamu" [ref=e7]
+      - heading "Kamu" [level=2, ref=e14]
+      - paragraph
+        - StaticText "LAMBAT: susun langkah penelitian."
+    - article "Aktivitas Researcher" [ref=e8]
+      - heading "Researcher" [level=2, ref=e15]
+      - paragraph
+        - StaticText "Saya sudah membaca pesanmu. Mari kita su"
+      - StaticText "Sedang menulis"
+      - button "Hentikan jawaban" [ref=e16]
+    - sectionfooter
+      - generic
+        - LabelText
+          - StaticText "Pesan untuk Researcher"
+        - textbox "Pesan untuk Researcher" [ref=e17]
+        - paragraph
+          - StaticText "Pesan baru menghentikan jawaban yang berjalan dan menyampaikan arahanmu."
+        - button "Kirim pesan" [disabled, ref=e18]

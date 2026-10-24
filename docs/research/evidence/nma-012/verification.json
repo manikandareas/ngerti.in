@@ -1,0 +1,139 @@
+{
+  "date": "2026-10-24",
+  "base_commit": "2198958f32dbeba54a34e194526895003d6e8f27",
+  "task": "https://app.notion.com/p/402abdd618738171a512ed2f408422ce",
+  "review": "Author self-review; no independent review claimed",
+  "environment": {
+    "browser": "Chromium 148 via agent-browser",
+    "viewports": [
+      [
+        1440,
+        1000
+      ],
+      [
+        390,
+        844
+      ]
+    ],
+    "model": "Deterministic loopback fixture",
+    "engine": "Pinned native Hermes 7489b22af47ce91b366dde81d5831ea422577498",
+    "runtime": "macOS arm64, Python 3.14.9, isolated owner volume",
+    "auth": "Real Clerk development authentication"
+  },
+  "commands": [
+    {
+      "command": "bun test apps/web/tests/direct-messages.test.ts",
+      "result": "6 passed",
+      "log": "projection-tests.log"
+    },
+    {
+      "command": "HERMES_SOURCE=$PWD/.dev/nma-001/source NMA_TEST_RUNTIME_PYTHON=$PWD/.dev/nma-006-closure/production/bin/python PYTHONPATH=$PWD/apps/engine/src .dev/nma-006-closure/runtime/bin/python -m pytest apps/engine/tests/test_threads.py -q",
+      "result": "3 passed",
+      "log": "thread-tests.log"
+    },
+    {
+      "command": "uv run --project apps/backend python -m unittest discover -s apps/backend/tests -p test_agent_engine.py",
+      "result": "9 passed",
+      "log": "http-tests.log"
+    },
+    {
+      "command": "bun run check",
+      "result": "passed",
+      "log": "check.log"
+    },
+    {
+      "command": "bun run build",
+      "result": "passed; third-party bundler warnings",
+      "log": "build.log"
+    },
+    {
+      "command": "uv run --project apps/backend ruff check apps/engine/src/ngertiin_engine/threads.py apps/engine/tests/test_threads.py; ruff format --check same paths",
+      "result": "passed",
+      "log": "engine-lint.log"
+    },
+    {
+      "command": "make docs-check",
+      "result": "passed",
+      "log": "docs-check.log"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed",
+      "log": "diff-check.log"
+    }
+  ],
+  "browser_scenarios": [
+    "Create Researcher and open persistent DM",
+    "Stream, reload partial text and cancel",
+    "Synthetic provider failure",
+    "Offline/online resnapshot",
+    "Drop accepted command response, reload, retry same identity; one message and run",
+    "Create Writer; separate transcript",
+    "SIGKILL HTTP transport while streaming, automatic SSE reconnect and completion",
+    "User correction interrupts unfinished Writer run",
+    "Reopen Researcher via agent card without changing configuration"
+  ],
+  "source_sha256": {
+    "apps/engine/README.md": "e721ddffc5a9fcb9a52b9c98d6963419867fc0556de0168518323d8e183612ac",
+    "apps/engine/src/ngertiin_engine/threads.py": "f2e8db8451666b3b35a5c29ac7644f32e646c678011db4cbfe3779667651d06f",
+    "apps/engine/tests/test_threads.py": "73c0282257ecc45d19778c0eda409809552b27ef663b9a20d01783d4835a147d",
+    "apps/web/src/features/agents/agent-threads.tsx": "105545afa64da9e3d5fb356e6faf60f53f3d272c57626cc5996f6e7781a9b210",
+    "apps/web/src/features/agents/agents-page.tsx": "a18e7b1b8e45c080437c309a0677202a1ce72ad91c7bc9a5fdee7dadf3b56905",
+    "apps/web/src/features/direct-messages/client.ts": "bcfe0111d995a82fdaca8eb624259eb13466df2718a30da164e09dd0c4c52d60",
+    "apps/web/src/features/direct-messages/composer.tsx": "be3d5e6ff4d706d61e9025a3b8d68557e1719312626b4fb2aa9134bc60ad1cf1",
+    "apps/web/src/features/direct-messages/direct-message-page.tsx": "f5aa7945c76462b50d7ab2cd462fd1af24a2beffd8330b7e93b1970fc2587910",
+    "apps/web/src/features/direct-messages/state.ts": "e35657be9a50209c92d372e9402e1c0cc389c629c553cb2e5eee40996a12617a",
+    "apps/web/src/features/direct-messages/use-direct-message.ts": "2c7af29dc201e6d00e4ad6c74575d00938e55fdde8aca5d41febe3bddfa4ba0d",
+    "apps/web/src/routeTree.gen.ts": "01f5a2aa3dca62c13658698df772ae6e4b1c0dc6fec3fbb8b759bffca637a7a0",
+    "apps/web/src/routes/dm.$threadId.tsx": "b897da1c3d641d2d7136514a37cd76a15a8b7d0c31c672b4b65ba63b0f8102c9",
+    "apps/web/tests/direct-messages.test.ts": "fba990cb929b25c28c46f4ab80bb22ac1b8aefd1aa79fba63ff631d25c7ca2ef",
+    "docs/research/nma-012-agent-dm-experience.md": "32d4641bfd2a4cac10f47daeb09175fb4a4208447628304acade54ebfefd724d"
+  },
+  "evidence_sha256": {
+    "agents-desktop.png": "30bb2be3e4799a0291fe57487820d53f4974ba1b0d873c604ae200692615d514",
+    "browser-proof.js": "195efdc4d467e95defb1175e50689678957737e2bf50af1cc04526d1b97b7b74",
+    "browser-proof.json": "630ba5a26f518e35cc1a78193165248b6ef9059c5c51250ee152c88b8c2e29cf",
+    "build.log": "9d370dcab32e16b30ee3c00d7e755f88aa81f06f7ef7d4bc61adc3ce62d38823",
+    "cancelled.png": "c11fbc7c0e66bdbbe9ff34ceec1b3da10e3b3603fe44d01bf1a55a838d660e2c",
+    "check.log": "dcdfe18b3e4f9bf5ad0dfc10867600385e8d70a9c42981451093a851b443de34",
+    "desktop-completed.png": "9c4245169cb4eacb53f151cf5025d41710895d78cad247e460a954e59842e363",
+    "desktop-completed.txt": "f9ca41fb3769a4d6f7b7f5c668a9b824e3e65b8cf74db2a30ba6e38c829fc53e",
+    "desktop-empty.png": "9ed02ec2eb2e8b9c392baa982cb2842400b51456b0fe5aa15d3919e2cc6e8423",
+    "diff-check.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs-check.log": "727f383ce4c6c5b2e284f97133f26e55a7735f56186c536bb2471efbaa2e9509",
+    "engine-lint.log": "afa20b27dacc9bf0aba3c1d265964c21e04ab42f6e39e2dd4769718ceded003a",
+    "http-tests.log": "5699b5bf7b440fc02078946ca16430da270f0bff0517ce18178a56afbf040d03",
+    "interrupt.png": "0f67340bd951fc6c5915a938b702f3a2f4b4fac32a5b7bb810442e33fc43d167",
+    "interrupt.txt": "ea204e44ceb0a1a9d67bfe49b980c9b21e2bf8fd9ff5dea66432684259011841",
+    "loopback-model.py": "5d2d05f04b57351596fe0a6d205cf6fbfd7038ebca019fcb25b54dba9d0b0bed",
+    "mobile-create-agent.png": "99b648c0865a6ff9aa12b621536e771be775b33386d4541dc0fb86797e068938",
+    "mobile-error.png": "4968fb996e8e1b4e1d95bc1c971ac100a88b549589859e4c99de9612254987a8",
+    "mobile-error.txt": "4ad9fe6706d05f4befee55ab15d23cf555676d769581d3ab77a414608558bf0b",
+    "mobile-reconnecting.png": "748b2c10f23dff3390d598f6a062f4f4d4e391a7a51cd27ee0dc3b75cb966c6a",
+    "mobile-reconnecting.txt": "206ffddbb5fd7bb0eb45ad92f6f92e4ad5cd6a718be23181a71dbc3fe3989d9a",
+    "mobile-recovered.png": "2a242bf95e003433c7406172fea8caceb1c8eb4d5884f9142f91b52d7c799198",
+    "mobile-recovered.txt": "2414d34ac3147cd97a78f2a3fa553a59557426b4c15f2af01a3838ef8c541eca",
+    "projection-tests.log": "f67c338cbd55110b40b084e34f3ae260102087800608e2dd2408d0f479b7a59f",
+    "reload-streaming.png": "bc1ddf5613ddef4d5aca85d2c58cd40407f8d8711d829bb077e79173049b6f6d",
+    "reload-streaming.txt": "de8885d50504c4340fa68550001b7fafbecb2080804c32749de96a98714fbd93",
+    "thread-tests.log": "2720b9e327fd78446cc971bc3a94e07ae052b8b644767f7c30a9d745bf31cf3a",
+    "transport-disconnected.png": "43119ae38ee7abaf5725943c813f64a8e45d2b0a992de1cc01f824df3420f4b9",
+    "transport-disconnected.txt": "944c063f0f030679d30f4ddfe6c6be566e4bdf9461589b1001b887c011d19522",
+    "transport-recovered.png": "8c72af69994aa5149cc8bc4ce8fc6743a78c27af52337b96955a2445131d6847",
+    "transport-recovered.txt": "1a11b2ec3bafd4a6cd93094c86e09cec283d1d2db38fd44677a013be6e31be61",
+    "uncertain-send.png": "b336aab12b2361865a9b5f233ce393bc8806515bf76a83efbbac293bda7f0ba4"
+  },
+  "limits": [
+    "No production deployment, commit or push",
+    "No paid-provider or native mobile/Safari acceptance",
+    "No full engine suite rerun; modified listing verified by targeted native tests",
+    "Older-history UI uses snapshot pagination; merge covered by projection test, no 100-message browser fixture",
+    "Pending intent survives reload only where session storage is available"
+  ],
+  "upstream_reference": {
+    "url": "https://github.com/ahmadrosid/nakama/blob/ac0643f8196fdf9133e66f5a13eef86103c45d0c/apps/server/src/services/profile-service.ts",
+    "license": "MIT",
+    "sha256": "924240e1866bc0c1d517812e518dc524b2aab454712243eed40a5f04c071709d",
+    "copied_code": false
+  }
+}

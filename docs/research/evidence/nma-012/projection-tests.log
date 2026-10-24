@@ -1,0 +1,14 @@
+bun test v1.3.10 (30e609e0)
+
+apps/web/tests/direct-messages.test.ts:
+(pass) DM replay projection > committed identity replaces a draft; repeated publication does not duplicate it [35.27ms]
+(pass) DM replay projection > late delta cannot revive cancelled work [4.37ms]
+(pass) DM replay projection > late delta cannot revive failed work [0.04ms]
+(pass) DM replay projection > late delta cannot revive indeterminate work
+(pass) DM replay projection > history merges preserve bigint order and authoritative newer content [0.07ms]
+(pass) DM replay projection > events from another conversation are rejected [14.01ms]
+
+ 6 pass
+ 0 fail
+ 13 expect() calls
+Ran 6 tests across 1 file. [1280.00ms]

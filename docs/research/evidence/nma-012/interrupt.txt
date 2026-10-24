@@ -1,0 +1,58 @@
+- generic
+  - link "Langsung ke konten" [ref=e1]
+  - main
+    - complementary "Daftar DM"
+      - link "Agent dan percakapan" [ref=e3]
+      - heading "Percakapan langsung" [level=2, ref=e4]
+      - navigation
+        - link "Researcher" [ref=e5]
+          - StaticText "Researcher"
+        - link "Writer" [ref=e6]
+          - StaticText "Writer"
+    - region "Percakapan langsung" [ref=e2]
+      - sectionheader
+        - heading "Writer" [level=1, ref=e7]
+        - paragraph
+          - StaticText "@writer · DM"
+        - link "Semua agent" [ref=e8]
+      - status
+        - StaticText "Tersambung · Riwayat tersimpan"
+      - article "Pesan Kamu" [ref=e9]
+        - heading "Kamu" [level=2, ref=e17]
+        - paragraph
+          - StaticText "Tolong rapikan kerangka tulisan saya."
+      - article "Pesan Writer" [ref=e10]
+        - heading "Writer" [level=2, ref=e18]
+        - paragraph
+          - StaticText "Saya sudah membaca pesanmu. Mari kita susun langkah berikutnya dengan jelas. Jawaban ini berasal dari model lokal untuk memverifikasi percakapan."
+      - article "Pesan Kamu" [ref=e11]
+        - heading "Kamu" [level=2, ref=e19]
+        - paragraph
+          - StaticText "LAMBAT: lanjutkan sesudah server tersambung."
+      - article "Pesan Writer" [ref=e12]
+        - heading "Writer" [level=2, ref=e20]
+        - paragraph
+          - StaticText "Saya sudah membaca pesanmu. Mari kita susun langkah berikutnya dengan jelas. Jawaban ini berasal dari model lokal untuk memverifikasi percakapan."
+      - article "Pesan Kamu" [ref=e13]
+        - heading "Kamu" [level=2, ref=e21]
+        - paragraph
+          - StaticText "LAMBAT: buat draf awal."
+      - article "Aktivitas Writer" [ref=e14]
+        - heading "Writer" [level=2, ref=e22]
+        - StaticText "Dihentikan"
+      - article "Pesan Kamu" [ref=e15]
+        - heading "Kamu" [level=2, ref=e23]
+        - paragraph
+          - StaticText "Koreksi: fokus pada ringkasan singkat."
+      - article "Pesan Writer" [ref=e16]
+        - heading "Writer" [level=2, ref=e24]
+        - paragraph
+          - StaticText "Saya sudah membaca pesanmu. Mari kita susun langkah berikutnya dengan jelas. Jawaban ini berasal dari model lokal untuk memverifikasi percakapan."
+      - sectionfooter
+        - generic
+          - LabelText
+            - StaticText "Pesan untuk Writer"
+          - textbox "Pesan untuk Writer" [ref=e25]
+          - paragraph
+            - StaticText "Percakapan tersimpan. Kamu bisa kembali kapan saja."
+          - button "Kirim pesan" [disabled, ref=e26]

@@ -61,12 +61,13 @@ class Threads:
 
         def read(conn):
             rows = conn.execute(
-                "SELECT thread_id,kind,title FROM nma_threads WHERE owner_id=? AND thread_id>? ORDER BY thread_id LIMIT 51",
+                "SELECT thread_id,kind,title,dm_agent_id FROM nma_threads WHERE owner_id=? AND thread_id>? ORDER BY thread_id LIMIT 51",
                 (self.store.owner, after),
             ).fetchall()
             return {
                 "items": [
-                    dict(zip(("thread_id", "kind", "title"), row)) for row in rows[:50]
+                    dict(zip(("thread_id", "kind", "title", "dm_agent_id"), row))
+                    for row in rows[:50]
                 ],
                 "next_cursor": rows[49][0] if len(rows) > 50 else None,
             }

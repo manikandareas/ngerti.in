@@ -32,7 +32,24 @@ export type Run = {
   error_code: string | null;
   activity?: string;
 };
+export type Goal = {
+  goal_id: string;
+  title: string;
+  objective: string;
+  status: "active" | "waiting" | "blocked" | "paused" | "stopped" | "completed";
+  revision: string;
+  generation: string;
+  progress: string;
+  wake_condition: string | null;
+  evidence: {
+    evidence_id: string;
+    source_message_id: string;
+    criterion: string;
+    summary: string;
+  }[];
+};
 export type Snapshot = {
+  goals?: Goal[];
   thread: Thread;
   messages: Message[];
   runs: Run[];
@@ -72,6 +89,18 @@ export function mergeMessages(current: Message[], incoming: Message[]) {
 
 export function applyEvent(state: Snapshot, event: Event): Snapshot {
   if (event.thread_id !== state.thread.thread_id) throw new Error("Unexpected conversation event");
+  if (event.type === "goal.changed") {
+    const goal = event.payload.goal as Goal;
+    const goals = state.goals ?? [];
+    const prior = goals.find((item) => item.goal_id === goal.goal_id);
+    if (prior && BigInt(prior.revision) > BigInt(goal.revision)) return state;
+    return {
+      ...state,
+      goals: prior
+        ? goals.map((item) => (item.goal_id === goal.goal_id ? goal : item))
+        : [...goals, goal],
+    };
+  }
   if (event.type === "message.created") {
     const message = event.payload as unknown as Message;
     return {

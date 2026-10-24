@@ -6,6 +6,7 @@ import { Streamdown } from "streamdown";
 import { Button } from "@/components/ui/button";
 import { command, listThreads, submit, type ThreadItem } from "./client";
 import { Composer } from "./composer";
+import { GoalProgress } from "./goal-progress";
 import { activeRun, type Run, runLabels } from "./state";
 import { useDirectMessage } from "./use-direct-message";
 
@@ -163,6 +164,7 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
           }}
         >
           <div className="mx-auto max-w-3xl space-y-7 py-6">
+            {snapshot && <GoalProgress goals={snapshot.goals ?? []} messages={snapshot.messages} />}
             {!snapshot && !error && (
               <div role="status" className="space-y-5">
                 <p className="text-sm text-muted-foreground">Memuat riwayat…</p>
@@ -208,6 +210,7 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
               return (
                 <div key={message.message_id} className="space-y-6">
                   <article
+                    id={`message-${message.message_id}`}
                     aria-label={`Pesan ${author}`}
                     className={
                       message.author_kind === "user"

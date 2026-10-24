@@ -71,3 +71,28 @@ describe("DM replay projection", () => {
     expect(() => applyEvent(initial(), { ...event("run.delta"), thread_id: "other" })).toThrow();
   });
 });
+
+test("goal replay updates progress without creating a run or regressing a revision", () => {
+  const goal = {
+    goal_id: "goal",
+    title: "Fuel report",
+    objective: "Calculate efficiency",
+    status: "waiting",
+    revision: "9007199254740994",
+    generation: "2",
+    progress: "Calculated",
+    wake_condition: "Next readings",
+    evidence: [],
+  };
+  const state = applyEvent(initial(), event("goal.changed", { goal }));
+  expect(state.goals).toEqual([goal]);
+  expect(state.runs).toEqual([]);
+  expect(
+    applyEvent(
+      state,
+      event("goal.changed", { goal: { ...goal, revision: "9007199254740993", status: "active" } }),
+    ),
+  ).toEqual(state);
+  const completed = { ...goal, status: "completed", revision: "9007199254740995", generation: "3" };
+  expect(applyEvent(state, event("goal.changed", { goal: completed })).goals).toEqual([completed]);
+});

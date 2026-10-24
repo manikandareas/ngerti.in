@@ -613,7 +613,7 @@ Snapshot/SSE and `GET /api/agent-engine/v1/goals/{id}` expose progress and evide
 Optional `goal.pause`/`goal.stop` commands take `{goal_id}` and null revision.
 `goal.resume`/`goal.reopen` take `{goal_id,source_message_id}` and the current revision;
 the source must be a real owner message in the same thread. Chat remains the default
-control path. Timers/heartbeat/webhook wake delivery are separate downstream work.
+control path. Schema 9 below adds timers/heartbeat; webhook delivery remains downstream work.
 
 Before upgrade, stop ingress/owner and back up the entire partition, including the
 root database/WAL, `kanban/boards/nma-goal-units/`, registry and secret references.
@@ -628,3 +628,30 @@ Focused tests: `apps/engine/tests/test_goal_lifecycle.py` and `test_goals.py` wi
 pinned runtime. Real-model HTTP evaluation: `test_goal_lifecycle_live.py`, opt-in via
 `NMA_TEST_LIVE_ENV`, with output set by `NMA_TEST_LIFECYCLE_OUTPUT`. Full report:
 [`nma-014-goal-lifecycle.md`](../../docs/research/nma-014-goal-lifecycle.md).
+
+## Scheduled and idle heartbeat wakes (schema 9)
+
+The ordinary `responsibility` action `schedule` accepts `goal_id`,
+`expected_revision` and `wake`. The wake contains `kind` (`once`, `interval` or
+`heartbeat`), `timezone` (IANA), `missed_policy: "coalesce"`, and either `at`
+(future RFC3339 with offset) or `interval_seconds` (integer 60–31,536,000).
+One watch per goal is replaced transactionally; chat remains the control path.
+Intervals are elapsed durations, not calendar cron. Missed ticks yield one durable
+occurrence window, then re-anchor on admission. Heartbeats and schedules defer busy
+threads. Paused/stopped/obsolete watches cannot revive after restart or goal resume.
+
+The existing gateway continuation reconciler calls native Hermes due/interval
+primitives at the native heartbeat poll cadence and submits through the same outbox
+and admission owner. No second executor or overlapping native cron/heartbeat job
+is registered. Watch definitions and trigger receipts survive client disconnection
+and gateway restart. Webhook ingestion remains downstream work.
+
+For upgrade, stop ingress and owner, back up the complete partition including native
+session/Kanban state, then verify schema 9, migration 1–9 checksums, SQLite integrity,
+foreign keys and snapshot/replay. Migration 1–8 is unchanged. Older binaries reject
+schema 9; rollback uses an isolated complete backup while preserving new state.
+Do not delete live watch/receipt tables. See the [report and evidence](../../docs/research/nma-015-schedules-heartbeats.md)
+for exact policies and verification boundaries. Focused tests: `test_wakes.py`;
+Chromium acceptance: `NMA_TEST_BROWSER=1` and `test_wakes_browser.py`; ordinary-language
+provider acceptance: `NMA_TEST_LIVE_ENV` and `test_wakes_live.py` with optional
+`NMA_TEST_WAKE_OUTPUT` for the captured result.

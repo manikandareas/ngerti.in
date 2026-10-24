@@ -615,6 +615,8 @@ def test_agent_additive_migration_from_foundation(runtime):
     with sqlite3.connect(root / "state/state.db") as db:
         before = db.execute("SELECT count(*) FROM nma_commands").fetchone()[0]
         for table in (
+            "nma_triggers",
+            "nma_trigger_definitions",
             "nma_goal_evidence",
             "nma_goal_units",
             "nma_goal_lifecycle",
@@ -646,7 +648,7 @@ def test_agent_additive_migration_from_foundation(runtime):
         == []
     )
     with sqlite3.connect(root / "state/state.db") as db:
-        assert db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 8
+        assert db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 9
         assert db.execute("SELECT count(*) FROM nma_commands").fetchone()[0] == before
         assert db.execute("PRAGMA foreign_key_check").fetchall() == []
 

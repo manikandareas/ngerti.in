@@ -323,9 +323,15 @@ def test_goal_schema_upgrade_preserves_prior_data(runtime):
         checksums = db.execute(
             "SELECT version,checksum FROM nma_schema_migrations WHERE version<7 ORDER BY version"
         ).fetchall()
-        for table in ("nma_goal_evidence", "nma_goal_units", "nma_goal_lifecycle"):
+        for table in (
+            "nma_triggers",
+            "nma_trigger_definitions",
+            "nma_goal_evidence",
+            "nma_goal_units",
+            "nma_goal_lifecycle",
+        ):
             db.execute("DROP TABLE " + table)
-        db.execute("DELETE FROM nma_schema_migrations WHERE version=8")
+        db.execute("DELETE FROM nma_schema_migrations WHERE version>=8")
         db.execute("DROP TABLE nma_goal_operations")
         db.execute("DROP TABLE nma_goals")
         db.execute("DELETE FROM nma_schema_migrations WHERE version=7")

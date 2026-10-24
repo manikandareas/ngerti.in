@@ -33,7 +33,12 @@
     "hermes_cli/kanban_db.py": "fab46dc6b1df90c77275a21c467ce003ce1d9436f68dcb8ddcdb89c1d3c4a31b",
     "hermes_cli/kanban_db_connect.py": "5c60aa69a63357cde6991ad5b651179e835a7f2d6ad746c0e2450aeafb188559",
     "hermes_cli/kanban_db_boards.py": "162efa921ff2b4168cd3f0e71b86d530cfb3324fe991361c677b7d832ac0fe8a",
-    "hermes_cli/kanban_db_graph.py": "b3aada2c8ec77fa0b4bcdcd6be084e2e91b9c9d57c68f7200b872232b94360ed"
+    "hermes_cli/kanban_db_graph.py": "b3aada2c8ec77fa0b4bcdcd6be084e2e91b9c9d57c68f7200b872232b94360ed",
+    "hermes_cli/heartbeat.py": "2303f95735744d8e383bf944abe98412ed98a8f91010aa7a398be72bcc4ae8bf",
+    "cron/jobs.py": "81c8ee2fde2e351c3d5d9ac02cbc8f0eab2b2bb626ee7524f3754d9e9f5e3848",
+    "gateway/run_heartbeat_restore.py": "4e0bcf397433c8679791269a19b555196006ae56ceab510de4e12bac19806b18",
+    "gateway/run_heartbeat_acceptance.py": "19c45ebdcbd3f8c3fe58f17be02a2244b3d45c655906ccd8f4a9d9e3d1e36c5e",
+    "gateway/session_cron.py": "ac224bcf5bdc9316ded1af92c0e97a7c4d58cb2db2350891d46e07f368197540"
   },
   "source_patches": [],
   "integration_seams": [
@@ -42,7 +47,8 @@
     "Read pinned session_admissions status inside the domain lifecycle transaction to retain completed history and fence unfinished admissions",
     "GatewayRunner._run_agent checks live capability generation before model execution and reattaches exact native session MCP secrets on restart",
     "model_tools._execute_tool wrapper checks live grants at final dispatch; native editor_mcp scope isolates connector schemas/connections",
-    "Gateway-owned goal continuation outbox with generation fences, native parked Kanban card mapping and native session admission; no shared session /goal or Kanban dispatcher activation"
+    "Gateway-owned goal continuation outbox with generation fences, native parked Kanban card mapping and native session admission; no shared session /goal or Kanban dispatcher activation",
+    "Gateway-owned durable goal wake definitions and occurrence windows use native HeartbeatState due checks, heartbeat poll/minimum constants and cron compute_next_run interval arithmetic; shared continuation outbox/native admission only, without overlapping native cron jobs or session heartbeat registrations"
   ],
   "optional_extras": [
     "acp",

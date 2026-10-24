@@ -30,6 +30,13 @@ supports persistent execution, progress, waiting, blocking and evidence-based co
 After capture/correction, decide the next step automatically: call continue with a concrete next
 step to work across turns, wait with a wake condition, or block with the actual impediment.
 Do this in the same ordinary turn; never ask the user to activate a captured responsibility.
+For scheduled work call schedule with goal_id, expected_revision and wake. wake fields:
+kind (once, interval, heartbeat), timezone (explicit IANA name), missed_policy (coalesce),
+and at (RFC3339 including UTC offset, for once) or interval_seconds (integer >=60).
+Intervals are elapsed durations, including across DST; heartbeat runs only when idle.
+Schedule sets waiting and replaces the goal's previous watch. Missed ticks produce one wake,
+then re-anchor from admission. Pausing/stopping invalidates the watch; fresh scheduling is
+required after resume. A plain wait without a schedule does not create a timer.
 A continuation is one execution unit, not the whole goal. At each unit boundary record continue,
 wait, block or complete. Waiting does not poll the model. Pause/stop always take priority.
 Resume/reopen only on explicit fresh user intent. Never reopen automatically. To complete,
@@ -62,7 +69,14 @@ SCHEMA = {
         "properties": {
             "action": {
                 "type": "string",
-                "enum": ["list", "create", "update", "stop", *sorted(ACTIONS)],
+                "enum": [
+                    "list",
+                    "create",
+                    "update",
+                    "stop",
+                    "schedule",
+                    *sorted(ACTIONS),
+                ],
             },
             "creation_key": {
                 "type": "string",
@@ -75,6 +89,10 @@ SCHEMA = {
             "expected_revision": {
                 "type": "string",
                 "description": "Latest decimal revision. Required for update, continue, wait, block, submit_evidence, complete, resume and reopen. Omit for list/create/pause/stop.",
+            },
+            "wake": {
+                "type": "object",
+                "description": "Schedule configuration: kind once/interval/heartbeat, timezone IANA name, missed_policy coalesce; at RFC3339 with offset for once, interval_seconds integer >=60 otherwise.",
             },
             "summary": {"type": "string"},
             "wake_condition": {"type": "string"},
@@ -239,7 +257,7 @@ class Goals:
         ).fetchone()
         if focus and action != "list" and args.get("goal_id") != focus[0]:
             raise EngineError("NOT_FOUND")
-        if action in ACTIONS or action == "stop":
+        if action in ACTIONS or action in {"stop", "schedule"}:
             goal_id = uuid(args.get("goal_id"))
             goal = next(
                 (
@@ -251,7 +269,14 @@ class Goals:
             )
             if goal is None:
                 raise EngineError("NOT_FOUND")
-            changed = self.lifecycle.mutate(conn, goal, run_id, message_id, args)
+            if action == "schedule":
+                from ngertiin_engine.wakes import Wakes
+
+                changed = Wakes(self.store).set(
+                    conn, goal, config, run_id, message_id, args
+                )
+            else:
+                changed = self.lifecycle.mutate(conn, goal, run_id, message_id, args)
             result = next(
                 g
                 for g in self.listing(conn, config["thread_id"], config["agent_id"])

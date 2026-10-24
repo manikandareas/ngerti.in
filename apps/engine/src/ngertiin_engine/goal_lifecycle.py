@@ -78,6 +78,9 @@ class Lifecycle:
                 (self.store.owner, goal["goal_id"]),
             )
         ]
+        from ngertiin_engine.wakes import Wakes
+
+        goal["wake"] = Wakes(self.store).read(conn, goal["goal_id"])
         return goal
 
     def state(self, conn, goal_id, status, progress="", wake=None):
@@ -85,6 +88,9 @@ class Lifecycle:
             "INSERT INTO nma_goal_lifecycle VALUES (?,?,?,?,?) ON CONFLICT(owner_id,goal_id) DO UPDATE SET status=excluded.status,progress=excluded.progress,wake_condition=excluded.wake_condition",
             (self.store.owner, goal_id, status, progress, wake),
         )
+        from ngertiin_engine.wakes import Wakes
+
+        Wakes(self.store).invalidate(conn)
 
     def link(self, conn, goal, run_id, message_id, verdict=None, parent=None):
         conn.execute(

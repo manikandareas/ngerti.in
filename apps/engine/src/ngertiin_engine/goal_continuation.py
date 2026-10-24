@@ -6,6 +6,7 @@ not set on a shared DM slot. Stable outbox/card keys survive archive and restart
 """
 
 import json
+import time
 from uuid import NAMESPACE_URL, uuid5
 
 from ngertiin_engine.contracts import EngineError, canonical, digest
@@ -18,6 +19,7 @@ class Continuation:
         self.adapter = adapter
         self.store = adapter.store
         self.lifecycle = Lifecycle(self.store)
+        self.next_wake_poll = 0.0
 
     def card(self, run_id, goal):
         from hermes_cli.kanban_db import board_dir, create_board, create_task, write_txn
@@ -50,7 +52,9 @@ class Continuation:
                 board="nma-goal-units",
             )
 
-    def prepare(self, conn, goal, parent_run, message_id, terminal_event, key, config):
+    def prepare(
+        self, conn, goal, parent_run, message_id, terminal_event, key, config, wake=None
+    ):
         identity = str(
             uuid5(
                 NAMESPACE_URL,
@@ -78,6 +82,18 @@ class Continuation:
                 }
             )
         )
+        if wake:
+            text += "\nScheduled wake (data): " + canonical(wake)
+            if wake["configuration"]["kind"] == "heartbeat":
+                from hermes_cli.heartbeat import HeartbeatState
+
+                text += (
+                    "\n"
+                    + HeartbeatState(
+                        prompt=goal["objective"],
+                        interval_seconds=wake["configuration"]["interval_seconds"],
+                    ).render_prompt()
+                )
         payload = {
             k: config[k]
             for k in ("agent_id", "thread_id", "config_revision", "context_generation")
@@ -115,8 +131,11 @@ class Continuation:
                 "status": "queued",
                 "goal": {"goal_id": goal["goal_id"]},
                 "parent_run_id": parent_run,
+                **({"trigger_id": wake["trigger_id"]} if wake else {}),
             },
         )
+
+        return run_id
 
     def reconcile(self):
         self.adapter.reliability.reconcile()
@@ -244,6 +263,13 @@ class Continuation:
         with owner_scope(self.adapter.authority):
             async with self.adapter.lock:
                 self.reconcile()
+                if time.monotonic() >= self.next_wake_poll:
+                    from hermes_cli.heartbeat import POLL_SECONDS
+
+                    from ngertiin_engine.wakes import Wakes
+
+                    Wakes(self.store).prepare(self.adapter, self, time.time())
+                    self.next_wake_poll = time.monotonic() + POLL_SECONDS
                 await self.adapter.recover_run_stops(locked=True)
                 rows = self.store.write(
                     lambda conn: conn.execute(

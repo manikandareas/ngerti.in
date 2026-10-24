@@ -445,7 +445,13 @@ def test_schema_five_upgrade_preserves_messages_and_replay(runtime):
     start.current.wait(timeout=10)
     # Reconstruct the predecessor with existing native/domain rows intact.
     with sqlite3.connect(root / "state/state.db") as db:
-        for table in ("nma_goal_evidence", "nma_goal_units", "nma_goal_lifecycle"):
+        for table in (
+            "nma_triggers",
+            "nma_trigger_definitions",
+            "nma_goal_evidence",
+            "nma_goal_units",
+            "nma_goal_lifecycle",
+        ):
             db.execute(f"DROP TABLE {table}")
         db.execute("DROP TABLE nma_goal_operations")
         db.execute("DROP TABLE nma_goals")

@@ -77,6 +77,12 @@ class Transcript:
             (self.store.owner, config["thread_id"]),
         )
 
+        from ngertiin_engine.reliability import Reliability
+
+        Reliability(self.store).append(
+            conn, run_id, config, "message.created", self.message(conn, message_id)
+        )
+
     def reconcile(self):
         """Read already settled native results; never replay execution or side effects."""
         from gateway.session_results import admission_result

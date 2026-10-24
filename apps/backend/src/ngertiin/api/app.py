@@ -15,6 +15,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from ngertiin.accounts.auth import current_account
 from ngertiin.agent_engine.api import router as agent_engine_router
+from ngertiin.agent_engine.stream import router as agent_stream_router
 from ngertiin.api.diagnostics import router as diagnostic_router
 from ngertiin.async_db import close_pool
 from ngertiin.billing.api import router as billing_router
@@ -56,6 +57,7 @@ app = FastAPI(
     lifespan=lifespan,
 )
 app.include_router(agent_engine_router)
+app.include_router(agent_stream_router)
 app.include_router(chat_router)
 app.include_router(persona_router)
 app.include_router(proactive_router)

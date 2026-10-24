@@ -165,6 +165,7 @@ def test_thread_additive_migration_from_agent_schema(runtime):
     start.current.wait(timeout=10)
     with sqlite3.connect(root / "state/state.db") as db:
         for table in (
+            "nma_dm_requests",
             "nma_run_terminals",
             "nma_effects",
             "nma_run_events",

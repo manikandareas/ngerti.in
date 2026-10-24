@@ -1,0 +1,82 @@
+{
+  "date": "2026-10-24",
+  "task": "NMA-011",
+  "base_commit": "7fd7d78bbf0fb55f90f35b2fd7250f7508b37148",
+  "source_sha256": {
+    "apps/backend/src/ngertiin/agent_engine/api.py": "1be2456cd94078b0ad5eecc9c51e34d85c76ce5afbb3274c9cb26fd256b9a0d4",
+    "apps/backend/src/ngertiin/api/app.py": "43f1cd72a4a399441782904b8c0475bbcb58c5dc299861ae4afd96d6cb9cda2c",
+    "apps/backend/tests/test_agent_engine.py": "6a92d6f67958c1ca56033d062f243caeee87529625fee79e384709fcc709c864",
+    "apps/engine/README.md": "edfd500cd473a0089ef9254ae10456e279123c41cc00b9ab57a7e2f5a44b846a",
+    "apps/engine/src/ngertiin_engine/adapter.py": "4b07580a363f82cfbb0c02127858efa38be5eabe1ceffec3082ca2bfa25d0c2b",
+    "apps/engine/src/ngertiin_engine/reliability.py": "64cb26f86ea617c2af0dfa258aa896a4454eb428fd61785683d57540aec0561d",
+    "apps/engine/src/ngertiin_engine/service.py": "f0f024630663776e64d770607935454fbb9b33847380dcd3a45031e0c8427c12",
+    "apps/engine/src/ngertiin_engine/store.py": "7926fe86ae0b4ba46b7e78ba45e3fde0177bb993adbc1c3967d4e737acbdf76c",
+    "apps/engine/src/ngertiin_engine/transcript.py": "c83829ec62c2bf74d75e3ff3712b3899614e7caf74c9448adebbd2d1f408fc71",
+    "apps/engine/tests/fault_launcher.py": "bc740c7023282d5c4dd249994d418e3aafad9264255c8fe82b77866fab560d3d",
+    "apps/engine/tests/test_context.py": "ef1a1c1bec56e6c0eb3c1fcda008d6f66a70a1ad998810ae89e8662da463a740",
+    "apps/engine/tests/test_runtime.py": "5fd982c49d3f9b41c805f0414967299de02a0542c9fcac725985a6de77dc2a43",
+    "apps/engine/tests/test_threads.py": "c60252f368b43da0de5130ab50fce89d59e41644d40445918a21b91af92429c8",
+    "docs/research/README.md": "0ae19d4e439215a3dc9840af9bab13bc6f82d93a07444bf12111c53eb2c10698",
+    "apps/backend/src/ngertiin/agent_engine/stream.py": "e65be64f38b4cf39b2243f7349fbb826f16a6fda517cd818ccea85c2093db672",
+    "apps/engine/src/ngertiin_engine/direct_messages.py": "e662568904fbd6f7922d700b1eb2a69e546ca7e2278b11399db336b2d4e4edac",
+    "apps/engine/tests/test_direct_messages.py": "d5adaf18e2ab6eb1fd51192805fce0dad1d38da599dfaf4ce75a1796b94be660",
+    "docs/research/nma-011-dm-api-streaming.md": "4f22ff1b27c972e442509d336b6e37ad5b0d06e1f31b0530c6749ced49e0300c"
+  },
+  "hermes_commit": "7489b22af47ce91b366dde81d5831ea422577498",
+  "hermes_license": "MIT",
+  "reference_sha256": {
+    "website/docs/user-guide/bot-mode.md": "9444be0e8b6ccbf921adc7e051c4c469cd97be110f81e026ac063e05df875019"
+  },
+  "verification_status": "All NMA-011 acceptance criteria verified; author self-review complete",
+  "limitations": [
+    "Deterministic loopback provider; no paid-provider claim.",
+    "HTTP account authentication dependency injected in acceptance harness; production authentication is reused unchanged.",
+    "No UI changes or browser walkthrough; DM UI remains NMA-012.",
+    "No PostgreSQL projection consumer, production deployment, migration, commit or push.",
+    "Linux result is supplementary intermediate-source evidence; final-source Linux suite was not rerun."
+  ],
+  "results": {
+    "macos_runtime": "53 passed in 169.37s",
+    "dm_focused": "10 passed in 38.98s",
+    "public_http_sse_final": "3 passed, 7 deselected in 9.53s",
+    "http_boundary": "9 passed",
+    "make_check": "passed",
+    "engine_lint_format": "passed",
+    "wheel_sdist": "passed",
+    "docs_check": "passed",
+    "diff_check": "passed",
+    "linux_intermediate": "49 passed, 2 skipped, 1 cache permission warning; not final-source Linux acceptance"
+  },
+  "commands": [
+    "HERMES_SOURCE=$PWD/.dev/nma-001/source PYTHONPATH=$PWD/apps/engine/src NMA_TEST_RUNTIME_PYTHON=$PWD/.dev/nma-006-closure/production/bin/python .dev/nma-006-closure/runtime/bin/python -m pytest apps/engine/tests -q -s",
+    "HERMES_SOURCE=$PWD/.dev/nma-001/source PYTHONPATH=$PWD/apps/engine/src NMA_TEST_RUNTIME_PYTHON=$PWD/.dev/nma-006-closure/production/bin/python .dev/nma-006-closure/runtime/bin/python -m pytest apps/engine/tests/test_direct_messages.py -q -s -k public",
+    "uv run --project apps/backend python -m unittest discover -s apps/backend/tests -p test_agent_engine.py -v",
+    "make check",
+    "uv run --project apps/backend ruff check apps/engine/src apps/engine/tests",
+    "uv run --project apps/backend ruff format --check apps/engine/src apps/engine/tests",
+    "uv build --project apps/engine --out-dir .dev/nma-011-dist",
+    "python3 scripts/check_docs.py",
+    "git diff --check",
+    "docker build --target evidence --output type=local,dest=.dev/nma-011-linux apps/engine (intermediate source snapshot)"
+  ],
+  "evidence_sha256": {
+    "docs/research/evidence/nma-011/check.log": "5f1d2ac5bd4c8b428c04f0de393ba8cfb778135f8bc422fbe76529c4c4745568",
+    "docs/research/evidence/nma-011/dm-tests.log": "a8c1795992ce6cbf6cf540715df0c2cf5786d069089cfce199e330b1d5c53bcc",
+    "docs/research/evidence/nma-011/docs-check.log": "8bce621037b41df4aaa7c761b7d39628b492dce089620b27266c428a8d16409b",
+    "docs/research/evidence/nma-011/engine-lint.log": "163347d5c4af094ed2cab2921fb46538276aa020d2f1dcd72dd069bc0b947f07",
+    "docs/research/evidence/nma-011/http-boundary-tests.log": "9bd1ce5b57682655b8dfede3784f43a59d7922b12c44752dece472e36342663c",
+    "docs/research/evidence/nma-011/linux-build.log": "dca9463b1d1cf68897ca30c3809b5298d92166f9a26a3bcec37cda311b082f4f",
+    "docs/research/evidence/nma-011/linux-intermediate-tests.log": "bac1b64830ddf6f2712c69ad588e90c812cd003255513032192a5d3745b1d843",
+    "docs/research/evidence/nma-011/package-build.log": "47b9415674860b7dbcb88e2c9ffd2e90402761a53f372260b07b1b6318d58da4",
+    "docs/research/evidence/nma-011/public-final-tests.log": "e041f0aab8f8e06e4fa29f1fbc71eb5823eb583469d6b009ee3d9830f5ab8942",
+    "docs/research/evidence/nma-011/runtime-tests.log": "665e97d16b7de61b66e85bf8e3a479f480e4e364dddbbeecd76b63d9b25efa5c"
+  },
+  "review": [
+    "Single native authority retained; no model executor or semantic retry owner in HTTP.",
+    "Atomic source message, interrupted set, fences, outbox and request identity.",
+    "Native admission receipt reconciliation before mutable config checks.",
+    "Current-message context lookup uses native request identity before adapter acknowledgement.",
+    "Owner-scoped decimal replay cursors and bounded snapshot/event pages.",
+    "Earlier migration checksums/native data preserved."
+  ]
+}

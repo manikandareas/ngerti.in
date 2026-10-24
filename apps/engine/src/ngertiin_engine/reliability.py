@@ -3,7 +3,7 @@
 import json
 from contextvars import ContextVar
 from datetime import UTC, datetime
-from uuid import uuid4
+from uuid import NAMESPACE_URL, uuid4, uuid5
 
 from ngertiin_engine.contracts import EngineError, canonical, digest
 from ngertiin_engine.redaction import result as redact
@@ -91,6 +91,32 @@ class Reliability:
     def reconcile(self):
         from gateway.session_results import admission_result
 
+        def refusals(conn):
+            rows = conn.execute(
+                "SELECT r.run_id,b.config,c.result FROM nma_adapter_runs r JOIN nma_adapter_bindings b ON b.owner_id=r.owner_id AND b.binding_id=r.binding_id JOIN nma_commands c ON c.owner_id=r.owner_id AND c.command_id=r.operation_id WHERE r.owner_id=? AND r.native_admission_id IS NULL AND json_extract(c.result,'$.error_code') IS NOT NULL",
+                (self.store.owner,),
+            ).fetchall()
+            for run_id, config, result in rows:
+                if (
+                    not self.stopped(conn, run_id)
+                    and conn.execute(
+                        "INSERT OR IGNORE INTO nma_run_terminals VALUES (?,?,'failed')",
+                        (self.store.owner, run_id),
+                    ).rowcount
+                ):
+                    self.append(
+                        conn,
+                        run_id,
+                        json.loads(config),
+                        "run.failed",
+                        {
+                            "status": "failed",
+                            "error_code": json.loads(result)["error_code"],
+                            "text": "",
+                        },
+                    )
+
+        self.store.write(refusals)
         rows = self.store.write(
             lambda conn: conn.execute(
                 "SELECT r.run_id,a.admission_id,b.config,a.status,a.outcome FROM nma_adapter_runs r JOIN nma_adapter_bindings b ON b.owner_id=r.owner_id AND b.binding_id=r.binding_id JOIN session_admissions a ON a.request_id='nma:'||r.operation_id AND a.target_session_id=b.native_session_id AND a.principal_id=? WHERE r.owner_id=? AND a.status IN ('terminal','unknown')",
@@ -153,6 +179,19 @@ class Reliability:
                         "run." + status,
                         {
                             "status": status,
+                            "error_code": "RUNTIME_FAILED"
+                            if status == "failed"
+                            else (
+                                "INDETERMINATE" if status == "indeterminate" else None
+                            ),
+                            "message_id": str(
+                                uuid5(
+                                    NAMESPACE_URL,
+                                    self.store.owner + ":" + run_id + ":agent",
+                                )
+                            )
+                            if status == "succeeded"
+                            else None,
                             "text": value.get("final_response", "")
                             if status == "succeeded"
                             else "",
@@ -216,88 +255,120 @@ class Reliability:
             if not native:
                 raise EngineError("NOT_FOUND")
             if native[0] != "terminal":
-                conn.execute(
-                    "INSERT OR IGNORE INTO nma_run_stops VALUES (?,?)",
-                    (self.store.owner, run_id),
-                )
+                self.cancel_event(conn, run_id)
 
         return self.store.write(write)
 
-    def snapshot(self, run_id):
-        from hermes_state_terminal import RESULT_PREFIX, load_result
+    def cancel_event(self, conn, run_id):
+        conn.execute(
+            "INSERT OR IGNORE INTO nma_run_stops VALUES (?,?)",
+            (self.store.owner, run_id),
+        )
+        if conn.execute(
+            "INSERT OR IGNORE INTO nma_run_terminals VALUES (?,?,'cancelled')",
+            (self.store.owner, run_id),
+        ).rowcount:
+            config = json.loads(
+                conn.execute(
+                    "SELECT b.config FROM nma_adapter_runs r JOIN nma_adapter_bindings b ON b.owner_id=r.owner_id AND b.binding_id=r.binding_id WHERE r.owner_id=? AND r.run_id=?",
+                    (self.store.owner, run_id),
+                ).fetchone()[0]
+            )
+            self.append(
+                conn,
+                run_id,
+                config,
+                "run.cancelled",
+                {"status": "cancelled", "text": "", "error_code": "RUN_CANCELLED"},
+            )
 
+    def snapshot(self, run_id):
         self.reconcile()
 
-        def read(conn):
-            row = conn.execute(
-                "SELECT b.config,a.admission_id,a.status,a.outcome FROM nma_adapter_runs r JOIN nma_adapter_bindings b ON b.owner_id=r.owner_id AND b.binding_id=r.binding_id LEFT JOIN session_admissions a ON a.admission_id=r.native_admission_id WHERE r.owner_id=? AND r.run_id=?",
+        return self.store.write(lambda conn: self.snapshot_row(conn, run_id))
+
+    def snapshot_row(self, conn, run_id):
+        from hermes_state_terminal import RESULT_PREFIX, load_result
+
+        row = conn.execute(
+            "SELECT b.config,a.admission_id,a.status,a.outcome FROM nma_adapter_runs r JOIN nma_adapter_bindings b ON b.owner_id=r.owner_id AND b.binding_id=r.binding_id LEFT JOIN session_admissions a ON a.admission_id=r.native_admission_id WHERE r.owner_id=? AND r.run_id=?",
+            (self.store.owner, run_id),
+        ).fetchone()
+        if not row:
+            raise EngineError("NOT_FOUND")
+        config = json.loads(row[0])
+        status = {
+            "queued": "queued",
+            "started": "running",
+            "unknown": "indeterminate",
+        }.get(
+            row[2],
+            {
+                "completed": "succeeded",
+                "cancelled": "cancelled",
+                "interrupted": "cancelled",
+            }.get(row[3], "recovering"),
+        )
+        refusal = conn.execute(
+            "SELECT c.result FROM nma_adapter_runs r JOIN nma_commands c ON c.owner_id=r.owner_id AND c.command_id=r.operation_id WHERE r.owner_id=? AND r.run_id=?",
+            (self.store.owner, run_id),
+        ).fetchone()
+        refusal_code = (
+            json.loads(refusal[0]).get("error_code") if refusal and refusal[0] else None
+        )
+        if refusal_code:
+            status = "failed"
+        if row[2] == "terminal" and status == "recovering":
+            status = "failed"
+        value = conn.execute(
+            "SELECT value FROM state_meta WHERE key=?",
+            (RESULT_PREFIX + (row[1] or ""),),
+        ).fetchone()
+        value = load_result(value[0]).get("result", {}) if value else {}
+        text = value.get("final_response", "") if status == "succeeded" else ""
+        if status == "running":
+            deltas = conn.execute(
+                "SELECT e.payload FROM nma_events e JOIN nma_run_events r ON r.owner_id=e.owner_id AND r.sequence=e.sequence WHERE r.owner_id=? AND r.run_id=? ORDER BY r.sequence",
+                (self.store.owner, run_id),
+            ).fetchall()
+            text = "".join(
+                event.get("payload", {}).get("text", "")
+                for (raw,) in deltas
+                if (event := json.loads(raw))["type"] == "message.delta"
+            )
+        if (
+            status in {"succeeded", "failed"}
+            and conn.execute(
+                "SELECT 1 FROM nma_effects WHERE owner_id=? AND run_id=? AND status='dispatching'",
                 (self.store.owner, run_id),
             ).fetchone()
-            if not row:
-                raise EngineError("NOT_FOUND")
-            config = json.loads(row[0])
-            status = {
-                "queued": "queued",
-                "started": "running",
-                "unknown": "indeterminate",
-            }.get(
-                row[2],
-                {
-                    "completed": "succeeded",
-                    "cancelled": "cancelled",
-                    "interrupted": "cancelled",
-                }.get(row[3], "recovering"),
-            )
-            if row[2] == "terminal" and status == "recovering":
-                status = "failed"
-            value = conn.execute(
-                "SELECT value FROM state_meta WHERE key=?",
-                (RESULT_PREFIX + (row[1] or ""),),
-            ).fetchone()
-            value = load_result(value[0]).get("result", {}) if value else {}
-            text = value.get("final_response", "") if status == "succeeded" else ""
-            if status == "running":
-                deltas = conn.execute(
-                    "SELECT e.payload FROM nma_events e JOIN nma_run_events r ON r.owner_id=e.owner_id AND r.sequence=e.sequence WHERE r.owner_id=? AND r.run_id=? ORDER BY r.sequence",
-                    (self.store.owner, run_id),
-                ).fetchall()
-                text = "".join(
-                    event.get("payload", {}).get("text", "")
-                    for (raw,) in deltas
-                    if (event := json.loads(raw))["type"] == "message.delta"
-                )
-            if (
-                status in {"succeeded", "failed"}
-                and conn.execute(
-                    "SELECT 1 FROM nma_effects WHERE owner_id=? AND run_id=? AND status='dispatching'",
-                    (self.store.owner, run_id),
-                ).fetchone()
-            ):
-                status, text = "indeterminate", ""
-            if self.stopped(conn, run_id):
-                status, text = "cancelled", ""
-            seq = conn.execute(
-                "SELECT COALESCE(MAX(sequence),0) FROM nma_events WHERE owner_id=?",
-                (self.store.owner,),
-            ).fetchone()[0]
-            incarnation = conn.execute(
-                "SELECT incarnation FROM nma_stream WHERE owner_id=?",
-                (self.store.owner,),
-            ).fetchone()[0]
-            return {
-                "schema_version": "nma.v1",
-                "run_id": run_id,
-                "status": status,
-                "text": redact(text),
-                "thread_id": config["thread_id"],
-                "agent_id": config["agent_id"],
-                "config_revision": config["config_revision"],
-                "context_generation": config["context_generation"],
-                "through_sequence": str(seq),
-                "replay_epoch": incarnation,
-            }
-
-        return self.store.write(read)
+        ):
+            status, text = "indeterminate", ""
+        if self.stopped(conn, run_id):
+            status, text = "cancelled", ""
+        seq = conn.execute(
+            "SELECT COALESCE(MAX(sequence),0) FROM nma_events WHERE owner_id=?",
+            (self.store.owner,),
+        ).fetchone()[0]
+        incarnation = conn.execute(
+            "SELECT incarnation FROM nma_stream WHERE owner_id=?",
+            (self.store.owner,),
+        ).fetchone()[0]
+        return {
+            "schema_version": "nma.v1",
+            "run_id": run_id,
+            "status": status,
+            "error_code": "RUNTIME_FAILED"
+            if status == "failed"
+            else ("INDETERMINATE" if status == "indeterminate" else None),
+            "text": redact(text),
+            "thread_id": config["thread_id"],
+            "agent_id": config["agent_id"],
+            "config_revision": config["config_revision"],
+            "context_generation": config["context_generation"],
+            "through_sequence": str(seq),
+            "replay_epoch": incarnation,
+        }
 
     def events(self, run_id, epoch, sequence):
         self.reconcile()

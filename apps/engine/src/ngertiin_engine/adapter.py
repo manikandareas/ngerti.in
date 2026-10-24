@@ -8,6 +8,7 @@ from ngertiin_engine.agents import Agents, compose
 from ngertiin_engine.capabilities import FIELDS, authorize, resolve
 from ngertiin_engine.context import Context
 from ngertiin_engine.contracts import EngineError, canonical, counter, digest, uuid
+from ngertiin_engine.direct_messages import DirectMessages
 from ngertiin_engine.reliability import Reliability
 from ngertiin_engine.store import Store
 from ngertiin_engine.threads import Threads
@@ -44,6 +45,7 @@ class Adapter:
         self.agents = Agents(self.store, models or {})
         self.threads = Threads(self.store, self.agents)
         self.context = Context(self.store, self.threads)
+        self.dm = DirectMessages(self)
         self.actor = Principal(
             "nma:" + owner,
             authority.profile_id,
@@ -294,6 +296,28 @@ class Adapter:
 
     async def _dispatch(self, body):
         kind, payload = body["type"], body["payload"]
+        if kind == "message.send":
+            return await self.dm.send(body)
+        if kind == "thread.snapshot":
+            return self.dm.snapshot(payload)
+        if kind == "thread.events":
+            return self.dm.events(payload)
+        if kind == "command.read":
+            if set(payload) != {"command_id"}:
+                raise EngineError("INVALID_REQUEST")
+            row = self.store.write(
+                lambda conn: conn.execute(
+                    "SELECT result FROM nma_commands WHERE owner_id=? AND command_id=?",
+                    (self.owner, uuid(payload["command_id"])),
+                ).fetchone()
+            )
+            if not row:
+                raise EngineError("NOT_FOUND")
+            return (
+                json.loads(row[0])
+                if row[0]
+                else {"command_id": payload["command_id"], "status": "pending"}
+            )
         if kind in {"memory.create", "memory.delete", "scope.grant", "scope.revoke"}:
             result = self.context.mutate(body)
             if kind in {"memory.delete", "scope.revoke"}:
@@ -360,6 +384,13 @@ class Adapter:
             if native:
                 run_id, config = native
                 return self.store.finish(body, self.admission_result(run_id, config))
+            pending_run = str(
+                uuid5(NAMESPACE_URL, self.owner + ":" + body["command_id"])
+            )
+            if self.fenced(pending_run):
+                return self.store.finish(
+                    body, self.admission_result(pending_run, payload)
+                )
             key, config = self.binding(payload)
             prior = self.store.admit(body)
             if prior:
@@ -408,7 +439,16 @@ class Adapter:
             return self.reliability.snapshot(payload["run_id"])
         if kind == "runtime.events":
             return await self.events(payload)
-        if kind not in {"run.cancel", "runtime.read"} or set(payload) != {"run_id"}:
+        allowed = (
+            ({"run_id"}, {"run_id", "reason"})
+            if kind == "run.cancel"
+            else ({"run_id"},)
+        )
+        if kind not in {"run.cancel", "runtime.read"} or set(payload) not in allowed:
+            raise EngineError("INVALID_REQUEST")
+        if "reason" in payload and (
+            not isinstance(payload["reason"], str) or len(payload["reason"]) > 500
+        ):
             raise EngineError("INVALID_REQUEST")
         if kind == "run.cancel":
             previous = self.store.receipt(body)
@@ -417,6 +457,11 @@ class Adapter:
         row = self.row(payload["run_id"])
         from gateway.session_contract import SessionRef
 
+        if kind == "run.cancel" and not row[1]:
+            self.reliability.stop(body, payload["run_id"])
+            return self.store.finish(
+                body, {"run_id": payload["run_id"], "cancel_requested": True}
+            )
         ref = SessionRef(self.authority.profile_id, row[2])
         await self.authority.resolve(self.actor, ref)
         if not row[1]:
@@ -554,9 +599,22 @@ class Adapter:
                 }:
                     raise
                 self.store.finish(body, {"error_code": exc.code})
+        rows = self.store.write(
+            lambda conn: conn.execute(
+                "SELECT c.body FROM nma_commands c JOIN nma_runtime_outbox o ON o.owner_id=c.owner_id AND o.operation_id=c.command_id WHERE c.owner_id=? AND o.state='pending' AND json_extract(c.body,'$.type')='message.send'",
+                (self.owner,),
+            ).fetchall()
+        )
+        for row in rows:
+            try:
+                await self.dispatch(json.loads(row[0]))
+            except EngineError as exc:
+                if exc.code == "ENGINE_UNAVAILABLE":
+                    raise
+                self.store.finish(json.loads(row[0]), {"error_code": exc.code})
         self.reliability.reconcile()
 
-    async def recover_run_stops(self):
+    async def recover_run_stops(self, *, locked=False):
         rows = self.store.write(
             lambda conn: conn.execute(
                 "SELECT body FROM nma_commands c JOIN nma_runtime_outbox o ON o.owner_id=c.owner_id AND o.operation_id=c.command_id WHERE c.owner_id=? AND o.state='pending' AND json_extract(c.body,'$.type')='run.cancel'",
@@ -564,7 +622,10 @@ class Adapter:
             ).fetchall()
         )
         for row in rows:
-            await self.dispatch(json.loads(row[0]))
+            if locked:
+                await self._dispatch(json.loads(row[0]))
+            else:
+                await self.dispatch(json.loads(row[0]))
 
     async def recover_agent_cancellations(self):
         rows = self.store.write(

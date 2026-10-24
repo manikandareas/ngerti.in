@@ -453,3 +453,82 @@ volume or PostgreSQL projection was migrated. Browser DM transport/projection re
 NMA-011; this package exposes the authenticated private replay/snapshot source.
 
 See [fault-injection evidence](../../docs/research/nma-010-durable-execution.md).
+
+## Direct-message HTTP and SSE (NMA-011)
+
+The existing authenticated backend forwards DM commands to the provisioned owner gateway.
+It never starts a model, owns a run, or falls back to legacy execution. A new `message.send`
+uses the DM's server-resolved agent, current configuration and context generation:
+
+```json
+{
+  "schema_version": "nma.v1",
+  "command_id": "00000000-0000-4000-8000-000000000011",
+  "type": "message.send",
+  "expected_revision": null,
+  "payload": {
+    "thread_id": "00000000-0000-4000-8000-000000000012",
+    "text": "Continue the research.",
+    "attachment_ids": [],
+    "request_key": "00000000-0000-4000-8000-000000000013",
+    "expected_membership_revision": "1"
+  }
+}
+```
+
+Send to `POST /api/agent-engine/v1/commands`. First admission returns 202; exact command
+or request-key retries return 200 with the same message/run identities. Keep both IDs after
+an uncertain transport failure. Changed payload under an existing identity returns 409.
+Text is nonblank and at most 100,000 characters. Attachments are not wired in this slice;
+nonempty attachment IDs and caller-supplied agent/owner/config/path fields are rejected.
+Groups are not accepted by this DM ingress. Rejected commands remain rejected on retry.
+
+Every new DM message durably fences unfinished runs in that DM, retains their user messages,
+and requests native cancellation before delivering the new run. Other DMs are unaffected.
+The source message, request key, execution intent, interrupted set, cancellation outbox and
+initial events commit together. Native admission uses a stable derived identity in its own
+transaction; recovery reconciles that receipt. A new run uses prior scoped transcript only,
+excluding its already-persisted source message and later messages from its history.
+
+Use `run.cancel` with `{"run_id":"...","reason":"Optional explanation"}` and null
+expected revision to stop a run. The cancellation event/fence is durable before native
+interrupt. Completed results remain completed. User input does not erase previous external
+effects or resolve an indeterminate external operation.
+
+Read endpoints:
+
+- `GET /threads/{id}/snapshot`: authoritative DM messages, their runs, thread identity and
+  `through_cursor` in one engine database transaction. Newest messages are returned in
+  ascending order, at most 100 and a combined 4 MiB message/run budget. Fetch older pages
+  with `?before_message_seq={next_before_message_seq}`. Merge by message ID; use the initial
+  snapshot cursor for live catch-up while loading older history. Goals are currently empty.
+- `GET /runs/{id}`: current status, partial/final text and stable terminal error code.
+- `GET /commands/{id}`: durable accepted/rejected receipt or pending admission state.
+- `GET /events?thread_id={id}`: SSE; send `Last-Event-ID` from the snapshot or last consumed
+  frame. The opaque cursor binds owner, thread, stream incarnation and decimal sequence.
+  It never grants authorization. Wrong owner/thread or malformed cursors return 422;
+  future sequence and wrong incarnation return 409 (`CURSOR_AHEAD` / `CURSOR_RESET`).
+
+SSE frames carry stable event IDs and decimal `seq`. `run.delta` updates the run draft;
+`message.created` upserts the committed message by ID and replaces that run's draft.
+`run.completed`, `run.failed`, `run.cancelled` and `run.indeterminate` describe outcomes.
+Terminal failure uses safe codes, not raw provider errors. Additional native progress
+frames remain informational; `message.completed` is not a second committed message.
+A transport failure after headers emits `stream.error` and closes without changing the
+last durable cursor. Reconnect with that cursor, or resnapshot after `CURSOR_RESET`.
+Disconnecting SSE does not cancel execution. No event pruning is enabled.
+
+The HTTP stream polls retained events only (250 ms when caught up, pages bounded to 128
+frames / 4 MiB); this is transport delivery, not another execution scheduler. These reads
+use the authoritative engine directly, following the existing agent/thread API approach.
+No PostgreSQL read projection/checkpoint consumer is introduced or claimed here. If such
+a consumer is added later, ADR-03's atomic projection/checkpoint contract still applies.
+
+Migration 6 adds only `nma_dm_requests`; migration 1–5 checksums, native tables, messages,
+run receipts and fences are preserved. Stop ingress and the gateway, take a consistent
+backup of the complete owner volume and registry/secret references, then upgrade under
+one owner. Verify readiness, SQLite integrity/foreign keys, persisted identities, snapshot
+and replay before reopening ingress. Earlier binaries reject schema 6. For rollback, fence
+and stop the new owner, preserve its complete volume/new work, and restore a complete
+predecessor backup in an isolated partition; never drop receipts or reuse old cursors
+against a different live store. No automatic destructive downgrade is provided.

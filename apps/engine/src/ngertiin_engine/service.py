@@ -24,6 +24,7 @@ from ngertiin_engine.store import (
     AGENT_CHECKSUM,
     CHECKSUM,
     CONTEXT_CHECKSUM,
+    DM_CHECKSUM,
     RELIABILITY_CHECKSUM,
     THREAD_CHECKSUM,
 )
@@ -54,7 +55,7 @@ def main():
                     (owner,),
                 ).fetchone()
                 if (
-                    version not in (1, 2, 3, 4, 5)
+                    version not in (1, 2, 3, 4, 5, 6)
                     or not checksum
                     or checksum[0] != CHECKSUM
                 ):
@@ -86,6 +87,13 @@ def main():
                         (owner,),
                     ).fetchone()
                     if not saved or saved[0] != RELIABILITY_CHECKSUM:
+                        raise EngineError("UNSUPPORTED_SCHEMA")
+                if version >= 6:
+                    saved = db.execute(
+                        "SELECT checksum FROM nma_schema_migrations WHERE owner_id=? AND version=6",
+                        (owner,),
+                    ).fetchone()
+                    if not saved or saved[0] != DM_CHECKSUM:
                         raise EngineError("UNSUPPORTED_SCHEMA")
     key = Path(os.environ["NMA_SERVICE_KEY_FILE"]).read_bytes()
     if len(key) < 32:
@@ -240,6 +248,23 @@ def main():
                     for m in scoped.pop("messages")
                     if m["context_generation"] == scoped["context_generation"]
                 ]
+                current = None
+                from ngertiin_engine.reliability import execution
+
+                stamp = execution.get()
+                if stamp:
+                    row = store.write(
+                        lambda conn: conn.execute(
+                            "SELECT m.message_seq FROM nma_adapter_runs r JOIN nma_messages m ON m.owner_id=r.owner_id AND m.run_id=r.run_id AND m.author_kind='user' JOIN session_admissions a ON a.request_id='nma:'||r.operation_id WHERE r.owner_id=? AND a.admission_id=?",
+                            (owner, stamp.get("admission_id")),
+                        ).fetchone()
+                    )
+                    if row:
+                        current = row[0]
+                if current is not None:
+                    transcript = [
+                        m for m in transcript if int(m["message_seq"]) < current
+                    ]
                 history = [
                     {
                         "role": "assistant" if m["author_kind"] == "agent" else "user",

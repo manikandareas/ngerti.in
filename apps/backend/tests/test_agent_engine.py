@@ -16,6 +16,8 @@ from fastapi import FastAPI
 
 from ngertiin.accounts.auth import current_account
 from ngertiin.agent_engine.api import MAX_REQUEST_BYTES, canonical, router
+from ngertiin.agent_engine.stream import cursor
+from ngertiin.agent_engine.stream import router as stream_router
 from ngertiin.models import Account
 
 
@@ -54,6 +56,7 @@ class AgentEngineHTTP(unittest.IsolatedAsyncioTestCase):
         self.env.start()
         self.app = FastAPI()
         self.app.include_router(router)
+        self.app.include_router(stream_router)
         self.app.dependency_overrides[current_account] = lambda: Account(
             id=self.owner, clerk_user_id="test-owner"
         )
@@ -180,6 +183,30 @@ class AgentEngineHTTP(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(self.envelopes[-1]["body"]["type"], "thread.create")
         response = await self.client.get("/api/agent-engine/v1/threads?after=invalid")
         self.assertEqual(response.status_code, 422)
+
+    async def test_dm_stream_cursor_is_bound_to_authenticated_owner_and_thread(self):
+        thread = uuid4()
+        for owner, target in ((uuid4(), thread), (self.owner, uuid4())):
+            response = await self.client.get(
+                f"/api/agent-engine/v1/events?thread_id={thread}",
+                headers={"Last-Event-ID": cursor(str(owner), str(target), str(uuid4()), "0")},
+            )
+            self.assertEqual(response.status_code, 422)
+        self.assertEqual(self.envelopes, [])
+
+    async def test_dm_reads_use_only_current_account_partition(self):
+        self.app.dependency_overrides[current_account] = lambda: Account(
+            id=uuid4(), clerk_user_id="other"
+        )
+        for path in (
+            f"/threads/{uuid4()}/snapshot",
+            f"/runs/{uuid4()}",
+            f"/commands/{uuid4()}",
+            f"/events?thread_id={uuid4()}",
+        ):
+            response = await self.client.get("/api/agent-engine/v1" + path)
+            self.assertEqual(response.status_code, 503)
+        self.assertEqual(self.envelopes, [])
 
 
 if __name__ == "__main__":

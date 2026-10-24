@@ -17,7 +17,18 @@ def crash():
         os.kill(os.getpid(), signal.SIGKILL)
 
 
-if point in {"before_admit", "after_admit"}:
+if point == "after_dm_prepare":
+    from ngertiin_engine.direct_messages import DirectMessages
+
+    original = DirectMessages.prepare
+
+    def prepare(self, body):
+        value = original(self, body)
+        crash()
+        return value
+
+    DirectMessages.prepare = prepare
+elif point in {"before_admit", "after_admit"}:
     original = Store.admit
 
     def admit(self, body):

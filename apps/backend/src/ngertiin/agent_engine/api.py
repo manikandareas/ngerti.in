@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Annotated, Literal
 from uuid import UUID, uuid4
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Response
 from pydantic import BaseModel, ConfigDict, Field
 
 from ngertiin.accounts.auth import current_account
@@ -36,6 +36,8 @@ class Command(BaseModel):
         "agent.archive",
         "agent.restore",
         "thread.create",
+        "message.send",
+        "run.cancel",
     ]
     expected_revision: str | None = Field(pattern=r"^[1-9][0-9]{0,18}$")
     payload: dict
@@ -48,6 +50,10 @@ def canonical(value):
 def failure(code, command_id, details=None):
     status = {
         "NOT_FOUND": 404,
+        "INVALID_CURSOR": 422,
+        "CURSOR_AHEAD": 409,
+        "CURSOR_RESET": 409,
+        "STALE_GENERATION": 409,
         "AGENT_UNAVAILABLE": 409,
         "CONNECTOR_UNAVAILABLE": 422,
         "UNAUTHENTICATED": 401,
@@ -124,8 +130,11 @@ async def forward(owner: str, body: dict):
 
 
 @router.post("/commands")
-async def commands(body: Command, account: AccountDep):
-    return await forward(str(account.id), body.model_dump(mode="json"))
+async def commands(body: Command, account: AccountDep, response: Response):
+    result = await forward(str(account.id), body.model_dump(mode="json"))
+    if body.type == "message.send":
+        response.status_code = 200 if result.pop("duplicate", False) else 202
+    return result
 
 
 @router.get("/agents")

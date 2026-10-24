@@ -41,10 +41,10 @@ class Model(BaseHTTPRequestHandler):
             (m.get("content", "") for m in reversed(messages) if m["role"] == "user"),
             "",
         )
-        if text in {"BLOCK_STARTED", "BLOCK_TOOL"}:
+        if text.split("\n\n")[-1] in {"BLOCK_STARTED", "BLOCK_TOOL"}:
             self.server.blocked.set()
             self.server.release.wait(60)
-        if text == "FAIL_PROVIDER":
+        if text.split("\n\n")[-1] == "FAIL_PROVIDER":
             self.send_response(401)
             self.end_headers()
             self.wfile.write(
@@ -120,7 +120,14 @@ class Model(BaseHTTPRequestHandler):
             self.send_header("Content-Type", content_type)
             self.send_header("Content-Length", str(len(payload)))
             self.end_headers()
-            self.wfile.write(payload)
+            if text.split("\n\n")[-1] == "STREAM_PAUSE" and body.get("stream"):
+                self.wfile.write(payload[: -len(b"data: [DONE]\n\n")])
+                self.wfile.flush()
+                self.server.blocked.set()
+                self.server.release.wait(15)
+                self.wfile.write(b"data: [DONE]\n\n")
+            else:
+                self.wfile.write(payload)
         except (BrokenPipeError, ConnectionResetError):
             pass
 
@@ -570,6 +577,7 @@ def test_agent_additive_migration_from_foundation(runtime):
     with sqlite3.connect(root / "state/state.db") as db:
         before = db.execute("SELECT count(*) FROM nma_commands").fetchone()[0]
         for table in (
+            "nma_dm_requests",
             "nma_run_terminals",
             "nma_effects",
             "nma_run_events",
@@ -595,7 +603,7 @@ def test_agent_additive_migration_from_foundation(runtime):
         == []
     )
     with sqlite3.connect(root / "state/state.db") as db:
-        assert db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 5
+        assert db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 6
         assert db.execute("SELECT count(*) FROM nma_commands").fetchone()[0] == before
         assert db.execute("PRAGMA foreign_key_check").fetchall() == []
 

@@ -1,0 +1,66 @@
+.......................s..........F......................                [100%]
+=================================== FAILURES ===================================
+__ test_external_effect_receipt_or_indeterminate_without_retry[after_effect] ___
+
+runtime = (PosixPath('/tmp/nma-ttb9u6h3'), <http.server.ThreadingHTTPServer object at 0x10bd322c0>, <function runtime.<locals>.c...cancel', 'runtime.read', 'runtime.events', 'runtime.snapshot'], 'production_ready': False, 'schema_version': 'nma.v1'})
+connector = ({'access_generation': '1', 'agent_id': 'c77345f1-2a1a-4de1-89a8-3f46cfe2e0c7', 'config': {'instructions': '', 'mcp_gr...fect'], 'model': 'test', 'soul': ''}, 'config_revision': '1', ...}, PosixPath('/tmp/nma-ttb9u6h3/effect-receipts.txt'))
+point = 'after_effect'
+
+    @pytest.mark.parametrize("point", [None, "before_effect", "after_effect"])
+    def test_external_effect_receipt_or_indeterminate_without_retry(
+        runtime, connector, point
+    ):
+        root, provider, call, start, *_ = runtime
+        agent, receipts = connector
+        body = command(
+            "runtime.submit",
+            {
+                "agent_id": agent["agent_id"],
+                "thread_id": str(uuid4()),
+                "config_revision": "1",
+                "context_generation": "1",
+                "text": "CALL_TOOL:mcp_fixture_proof",
+            },
+        )
+        discovery = json.loads(json.dumps(body))
+        discovery["command_id"] = str(uuid4())
+        discovery["payload"]["text"] = "MCP_DISCOVERY"
+        settle(call, call(discovery)["result"]["run_id"])
+        with sqlite3.connect(root / "state/state.db") as db:
+            names = []
+            for (value,) in db.execute(
+                "SELECT value FROM state_meta WHERE key LIKE 'gateway.local_policy.v1:%'"
+            ):
+                manifest = json.loads(
+                    json.loads(value)["policy"].get("editor_mcp_json") or "{}"
+                )
+                names.extend(
+                    name for name in manifest.get("schemas", {}) if name.endswith("__proof")
+                )
+        body["payload"]["text"] = "CALL_TOOL:" + names[-1]
+        if point:
+            kill_at(root, start, point)
+        lost_call(call, body)
+        deadline = time.monotonic() + 30
+        if point:
+            while start.current.poll() is None and time.monotonic() < deadline:
+                time.sleep(0.05)
+            assert start.current.poll() == -9
+            start()
+        run_id = call(body)["result"]["run_id"]
+        settle(call, run_id, "indeterminate" if point else "succeeded")
+        with sqlite3.connect(root / "state/state.db") as db:
+            effects = db.execute(
+                "SELECT status,receipt FROM nma_effects WHERE run_id=?", (run_id,)
+            ).fetchall()
+            assert len(effects) == 1
+>           assert effects[0][0] == ("dispatching" if point else "confirmed")
+E           AssertionError: assert 'confirmed' == 'dispatching'
+E             
+E             - dispatching
+E             + confirmed
+
+apps/engine/tests/test_reliability.py:278: AssertionError
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_reliability.py::test_external_effect_receipt_or_indeterminate_without_retry[after_effect]
+1 failed, 55 passed, 1 skipped in 297.79s (0:04:57)

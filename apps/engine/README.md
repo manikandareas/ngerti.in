@@ -548,3 +548,53 @@ and resnapshots after cursor reset or browser online recovery. If browser storag
 is unavailable, pending intent is retained only in memory. Server transcript and
 native run recovery remain authoritative. Rollback changes UI/API code only;
 never delete persisted threads, messages or command receipts to roll back the UI.
+
+## Conversational responsibility capture (NMA-013)
+
+Ordinary product DM turns receive the `responsibility` tool automatically. The
+agent selects `create`, `update`, `stop` or `list` using the current conversation
+and stored goals; there is no activation form or separate classifier. This is
+Ngertiin-authored capture over the pinned Hermes tool loop. It does not enable a
+Kanban dispatcher, schedule, goal continuation or another execution owner.
+
+The server binds owner, responsible agent, home thread, source run and source
+user message. Tool arguments cannot choose these identities. Corrections require
+`expected_revision`; stale writes return `REVISION_CONFLICT` and the agent can
+refresh with `list`. `stop` acts on the current goal and increments its revision
+and generation. Stopped identities remain visible and cannot be updated or
+recreated using the same semantic `creation_key`. Semantic matching across
+*different* keys is model-dependent; transport/tool replay is transactionally
+idempotent. The original source message remains on the goal, and each operation
+retains its own message/run provenance and result.
+
+Migration 7 adds `nma_goals`, `nma_goal_operations` and the scope index. Mutation,
+receipt and `goal.changed` event commit in one gateway epoch-fenced transaction.
+There is no intermediate external effect for a local goal mutation. A crash before
+commit leaves none of them; after commit the stored result survives even if the
+native run becomes indeterminate. Recovery never reruns an unknown model turn.
+The existing thread snapshot includes goals at its consistent watermark; SSE
+publishes their IDs and complete state. No goal UI or browser-only mutation API
+is added in this slice.
+
+Upgrade: stop ingress and the owner, back up the **complete** partition volume,
+registry and secret references, then upgrade under exclusive ownership. Verify
+schema 7, all migration checksums, SQLite integrity/foreign keys, snapshot and
+replay before resuming ingress. Native state and migration 1–6 checksums remain
+unchanged. Existing sessions gain the domain tool dynamically; no conversation
+or configuration revision is rewritten by migration. Older binaries reject
+schema 7. Rollback must preserve new work and restore an isolated complete
+predecessor backup, never drop live goal tables or receipts.
+
+This capture slice supports active/stopped goals only. NMA-014 owns execution-unit
+mapping, active descendant/trigger cancellation, progress/evidence, wait, completion,
+resume/reopen and proactive continuation. A captured goal is not evidence that
+work has been scheduled or completed. Group capture and shared goal ownership
+remain downstream work. Current retrieval supplies the full scoped goal set;
+large-history goal pagination/compaction is not established.
+
+Focused acceptance: run `apps/engine/tests/test_goals.py` with the pinned runtime
+as documented above. Paid-provider dataset evaluation is explicitly opt-in with
+`NMA_TEST_LIVE_ENV` pointing at a file containing `OPENAI_API_KEY`, `OPENAI_MODEL`
+and optional `OPENAI_BASE_URL`; run `apps/engine/tests/test_goals_live.py` and set
+`NMA_TEST_LIVE_OUTPUT` to the desired JSON evidence path. Only the inputs in the
+spike dataset reach the model; expected labels are evaluated outside its context.

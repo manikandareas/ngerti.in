@@ -237,7 +237,9 @@ class DirectMessages:
                 "messages": list(reversed(messages)),
                 "runs": list(reversed(list(runs.values()))),
                 "next_before_message_seq": next_before,
-                "goals": [],
+                "goals": self.adapter.goals.listing(
+                    conn, thread["thread_id"], thread["dm_agent_id"]
+                ),
                 "replay_epoch": epoch,
                 "through_sequence": str(seq),
             }

@@ -1,0 +1,1815 @@
+[
+  {
+    "model": "gpt-6.1-sol",
+    "native_session_id": "local-7aa4fc8d24de73a630c4531840a8aea5714fe3664555757eb9b9eab8eb9ef2ea",
+    "tool_receipts": [],
+    "case": "hypothetical",
+    "session": "dm-1",
+    "checks": {
+      "run_succeeded": true,
+      "operations": true,
+      "count": true,
+      "target": true,
+      "requirements": true
+    },
+    "operations": [],
+    "before": [],
+    "after": [],
+    "receipt": {
+      "agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+      "command_id": "249a3f59-1465-4272-9378-b4c04a4c95a6",
+      "committed_seq": "6",
+      "config_revision": "1",
+      "context_generation": "1",
+      "message_id": "09939465-a945-51cf-b604-0813d6cc7029",
+      "run_id": "9779c770-08c9-55d7-8b75-47c75cf94283",
+      "schema_version": "nma.v1",
+      "status": "accepted",
+      "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354"
+    },
+    "reply": "Laporan konsumsi BBM mingguan sebaiknya memuat:\n\n1. Ringkasan minggu berjalan\n   Periode laporan, total liter BBM, total biaya, dan perbandingan dengan minggu sebelumnya.\n\n2. Rincian per kendaraan atau alat\n   Identitas unit, jenis BBM, jumlah pengisian, total liter, biaya, serta kilometer tempuh atau jam operasi.\n\n3. Efisiensi penggunaan\n   Untuk kendaraan: km/liter atau liter/100 km.\n   Untuk alat berat atau genset: liter/jam operasi.\n   Bandingkan dengan standar masing-masing unit, bukan antarunit yang berbeda jenis.\n\n4. Penyimpangan dan catatan\n   Konsumsi di atas standar, pengisian tidak wajar, data yang belum lengkap, serta kemungkinan penyebabnya.\n\n5. Tindak lanjut\n   Unit yang perlu diperiksa, data yang perlu dikonfirmasi, dan penanggung jawabnya.\n\nSebagai lampiran, sertakan data pengisian: tanggal, unit, liter, harga, odometer/hour meter, dan bukti transaksi. Penting membedakan BBM yang dibeli atau diisikan dari BBM yang benar-benar terpakai; kalau hanya ada data pengisian, sebut metriknya \u201cvolume pengisian\u201d, bukan konsumsi aktual."
+  },
+  {
+    "model": "gpt-6.1-sol",
+    "native_session_id": "local-7aa4fc8d24de73a630c4531840a8aea5714fe3664555757eb9b9eab8eb9ef2ea",
+    "tool_receipts": [
+      {
+        "operation_id": "8fff5d6ba234e31308b5e89e1fd303dba2725de09a6a2a01e2140e5442bd3777",
+        "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+        "result": {
+          "goal": {
+            "created_at": "2026-10-24T03:27:25.021Z",
+            "creation_key": "fleet-fuel-report",
+            "generation": "1",
+            "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+            "objective": "Prepare the fleet fuel consumption report for Friday using the data the user will send, and continue the work until the report is ready. The report is currently awaiting the user's data.",
+            "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+            "revision": "1",
+            "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+            "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+            "status": "active",
+            "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+            "title": "Prepare the fleet fuel consumption report for Friday",
+            "updated_at": "2026-10-24T03:27:25.021Z"
+          }
+        }
+      }
+    ],
+    "case": "commit",
+    "session": "dm-1",
+    "checks": {
+      "run_succeeded": true,
+      "operations": true,
+      "count": true,
+      "target": true,
+      "requirements": true
+    },
+    "operations": [
+      "create"
+    ],
+    "before": [],
+    "after": [
+      {
+        "created_at": "2026-10-24T03:27:25.021Z",
+        "creation_key": "fleet-fuel-report",
+        "generation": "1",
+        "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+        "objective": "Prepare the fleet fuel consumption report for Friday using the data the user will send, and continue the work until the report is ready. The report is currently awaiting the user's data.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "1",
+        "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+        "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare the fleet fuel consumption report for Friday",
+        "updated_at": "2026-10-24T03:27:25.021Z"
+      }
+    ],
+    "receipt": {
+      "agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+      "command_id": "438f11f8-dac8-415c-bc65-382d799c17df",
+      "committed_seq": "278",
+      "config_revision": "1",
+      "context_generation": "1",
+      "message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+      "run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+      "schema_version": "nma.v1",
+      "status": "accepted",
+      "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354"
+    },
+    "reply": "Tercatat sebagai tugas: laporan konsumsi BBM armada untuk Jumat, dilanjutkan sampai siap setelah data Anda tersedia.\n\nSilakan kirim data pengisian, identitas unit, biaya, serta odometer/jam operasi jika ada. Sertakan juga periode laporan dan tanggal Jumat yang dimaksud agar tenggatnya jelas."
+  },
+  {
+    "model": "gpt-6.1-sol",
+    "native_session_id": "local-7aa4fc8d24de73a630c4531840a8aea5714fe3664555757eb9b9eab8eb9ef2ea",
+    "tool_receipts": [
+      {
+        "operation_id": "1e59ef271d75d335a5dd8a1eec5b49f6e101b4aeac03512ab15724e353148134",
+        "source_message_id": "ef23622b-8887-5349-b9af-5ce43990c158",
+        "result": {
+          "goal": {
+            "created_at": "2026-10-24T03:27:25.021Z",
+            "creation_key": "fleet-fuel-report",
+            "generation": "2",
+            "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+            "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+            "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+            "revision": "2",
+            "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+            "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+            "status": "active",
+            "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+            "title": "Prepare the fleet fuel consumption report for Monday",
+            "updated_at": "2026-10-24T03:27:31.527Z"
+          }
+        }
+      },
+      {
+        "operation_id": "ea9705ed14e2a441a945dbf93db9a401138d51af61b149cf6ad520db81f3e500",
+        "source_message_id": "ef23622b-8887-5349-b9af-5ce43990c158",
+        "result": {
+          "goals": [
+            {
+              "created_at": "2026-10-24T03:27:25.021Z",
+              "creation_key": "fleet-fuel-report",
+              "generation": "2",
+              "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+              "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+              "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+              "revision": "2",
+              "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+              "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+              "status": "active",
+              "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+              "title": "Prepare the fleet fuel consumption report for Monday",
+              "updated_at": "2026-10-24T03:27:31.527Z"
+            }
+          ]
+        }
+      }
+    ],
+    "case": "correction",
+    "session": "dm-1",
+    "checks": {
+      "run_succeeded": true,
+      "operations": true,
+      "count": true,
+      "target": true,
+      "requirements": true
+    },
+    "operations": [
+      "update"
+    ],
+    "before": [
+      {
+        "created_at": "2026-10-24T03:27:25.021Z",
+        "creation_key": "fleet-fuel-report",
+        "generation": "1",
+        "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+        "objective": "Prepare the fleet fuel consumption report for Friday using the data the user will send, and continue the work until the report is ready. The report is currently awaiting the user's data.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "1",
+        "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+        "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare the fleet fuel consumption report for Friday",
+        "updated_at": "2026-10-24T03:27:25.021Z"
+      }
+    ],
+    "after": [
+      {
+        "created_at": "2026-10-24T03:27:25.021Z",
+        "creation_key": "fleet-fuel-report",
+        "generation": "2",
+        "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+        "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "2",
+        "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+        "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare the fleet fuel consumption report for Monday",
+        "updated_at": "2026-10-24T03:27:31.527Z"
+      }
+    ],
+    "receipt": {
+      "agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+      "command_id": "a3069614-6969-42c7-b7ef-9f18aae59e4b",
+      "committed_seq": "357",
+      "config_revision": "1",
+      "context_generation": "1",
+      "message_id": "ef23622b-8887-5349-b9af-5ce43990c158",
+      "run_id": "4211ae01-bd7d-50d0-a144-eaf4288cbcad",
+      "schema_version": "nma.v1",
+      "status": "accepted",
+      "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354"
+    },
+    "reply": "Tenggat sudah diperbarui menjadi Senin, bukan Jumat. Laporan akan menyertakan konsumsi dalam liter per 100 km. Masih menunggu data Anda."
+  },
+  {
+    "model": "gpt-6.1-sol",
+    "native_session_id": "local-7aa4fc8d24de73a630c4531840a8aea5714fe3664555757eb9b9eab8eb9ef2ea",
+    "tool_receipts": [],
+    "case": "repeat",
+    "session": "dm-1",
+    "checks": {
+      "run_succeeded": true,
+      "operations": true,
+      "count": true,
+      "target": true,
+      "requirements": true
+    },
+    "operations": [],
+    "before": [
+      {
+        "created_at": "2026-10-24T03:27:25.021Z",
+        "creation_key": "fleet-fuel-report",
+        "generation": "2",
+        "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+        "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "2",
+        "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+        "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare the fleet fuel consumption report for Monday",
+        "updated_at": "2026-10-24T03:27:31.527Z"
+      }
+    ],
+    "after": [
+      {
+        "created_at": "2026-10-24T03:27:25.021Z",
+        "creation_key": "fleet-fuel-report",
+        "generation": "2",
+        "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+        "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "2",
+        "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+        "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare the fleet fuel consumption report for Monday",
+        "updated_at": "2026-10-24T03:27:31.527Z"
+      }
+    ],
+    "receipt": {
+      "agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+      "command_id": "64a32b5b-0921-4c06-b336-2f39f863146e",
+      "committed_seq": "408",
+      "config_revision": "1",
+      "context_generation": "1",
+      "message_id": "8c25b980-cc56-5c32-8520-4dfe2b08cabf",
+      "run_id": "49fb498b-0d11-5a05-a68c-3e23badc2f2b",
+      "schema_version": "nma.v1",
+      "status": "accepted",
+      "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354"
+    },
+    "reply": "Tetap menggunakan tugas laporan BBM yang sama untuk Senin, termasuk liter per 100 km. Tidak ada tugas baru; masih menunggu data Anda."
+  },
+  {
+    "model": "gpt-6.1-sol",
+    "native_session_id": "local-7aa4fc8d24de73a630c4531840a8aea5714fe3664555757eb9b9eab8eb9ef2ea",
+    "tool_receipts": [
+      {
+        "operation_id": "b22d45e9b7498167621999e17f8c71e8b7093a576939bff6c90ad130133002a2",
+        "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+        "result": {
+          "goal": {
+            "created_at": "2026-10-24T03:27:40.259Z",
+            "creation_key": "new-driver-onboarding-guide",
+            "generation": "1",
+            "goal_id": "e0374ecf-cc86-45a6-879b-25d1a97f2c31",
+            "objective": "Prepare an onboarding guide for new fleet drivers as a separate deliverable from the fleet fuel consumption report. Continue this work alongside the existing fuel report responsibility.",
+            "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+            "revision": "1",
+            "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+            "source_run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+            "status": "active",
+            "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+            "title": "Prepare an onboarding guide for new drivers",
+            "updated_at": "2026-10-24T03:27:40.259Z"
+          }
+        }
+      }
+    ],
+    "case": "second-goal",
+    "session": "dm-1",
+    "checks": {
+      "run_succeeded": true,
+      "operations": true,
+      "count": true,
+      "target": true,
+      "requirements": true
+    },
+    "operations": [
+      "create"
+    ],
+    "before": [
+      {
+        "created_at": "2026-10-24T03:27:25.021Z",
+        "creation_key": "fleet-fuel-report",
+        "generation": "2",
+        "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+        "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "2",
+        "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+        "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare the fleet fuel consumption report for Monday",
+        "updated_at": "2026-10-24T03:27:31.527Z"
+      }
+    ],
+    "after": [
+      {
+        "created_at": "2026-10-24T03:27:25.021Z",
+        "creation_key": "fleet-fuel-report",
+        "generation": "2",
+        "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+        "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "2",
+        "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+        "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare the fleet fuel consumption report for Monday",
+        "updated_at": "2026-10-24T03:27:31.527Z"
+      },
+      {
+        "created_at": "2026-10-24T03:27:40.259Z",
+        "creation_key": "new-driver-onboarding-guide",
+        "generation": "1",
+        "goal_id": "e0374ecf-cc86-45a6-879b-25d1a97f2c31",
+        "objective": "Prepare an onboarding guide for new fleet drivers as a separate deliverable from the fleet fuel consumption report. Continue this work alongside the existing fuel report responsibility.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "1",
+        "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+        "source_run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare an onboarding guide for new drivers",
+        "updated_at": "2026-10-24T03:27:40.259Z"
+      }
+    ],
+    "receipt": {
+      "agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+      "command_id": "85be84f9-f384-48d1-8b07-78de3da77313",
+      "committed_seq": "447",
+      "config_revision": "1",
+      "context_generation": "1",
+      "message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+      "run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+      "schema_version": "nma.v1",
+      "status": "accepted",
+      "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354"
+    },
+    "reply": "Panduan onboarding pengemudi baru sudah dicatat sebagai pekerjaan terpisah. Keduanya tetap aktif:\n\n1. Laporan BBM: tenggat Senin, mencakup liter/100 km, menunggu data Anda.\n2. Panduan onboarding: mencakup pemeriksaan kendaraan, keselamatan, prosedur perjalanan, pencatatan BBM, dan pelaporan insiden.\n\nUntuk menyesuaikan panduan, armadanya menggunakan jenis kendaraan apa?"
+  },
+  {
+    "model": "gpt-6.1-sol",
+    "native_session_id": "local-7b4758d31b4115347fb6aae319cb40f35b0cac60b69bcc62b4b947502a31f429",
+    "tool_receipts": [
+      {
+        "operation_id": "8b9ec1ffc2aefa7cc0bb266423469649b02e74fd32d63c817dc9be4901f22943",
+        "source_message_id": "44c47789-2f20-5b47-80c9-a7b9bf8a0b50",
+        "result": {
+          "goal": {
+            "created_at": "2026-10-24T03:27:25.021Z",
+            "creation_key": "fleet-fuel-report",
+            "generation": "3",
+            "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+            "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, limited to vehicle Alpha only, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+            "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+            "revision": "3",
+            "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+            "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+            "status": "active",
+            "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+            "title": "Prepare the Alpha vehicle fuel consumption report for Monday",
+            "updated_at": "2026-10-24T03:27:49.958Z"
+          }
+        }
+      },
+      {
+        "operation_id": "c2a39bb2dcfd8d3141d14b27edacc639e59ecd4971c6ced27b71cfcc906d62ad",
+        "source_message_id": "44c47789-2f20-5b47-80c9-a7b9bf8a0b50",
+        "result": {
+          "goals": [
+            {
+              "created_at": "2026-10-24T03:27:25.021Z",
+              "creation_key": "fleet-fuel-report",
+              "generation": "3",
+              "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+              "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, limited to vehicle Alpha only, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+              "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+              "revision": "3",
+              "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+              "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+              "status": "active",
+              "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+              "title": "Prepare the Alpha vehicle fuel consumption report for Monday",
+              "updated_at": "2026-10-24T03:27:49.958Z"
+            },
+            {
+              "created_at": "2026-10-24T03:27:40.259Z",
+              "creation_key": "new-driver-onboarding-guide",
+              "generation": "1",
+              "goal_id": "e0374ecf-cc86-45a6-879b-25d1a97f2c31",
+              "objective": "Prepare an onboarding guide for new fleet drivers as a separate deliverable from the fleet fuel consumption report. Continue this work alongside the existing fuel report responsibility.",
+              "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+              "revision": "1",
+              "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+              "source_run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+              "status": "active",
+              "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+              "title": "Prepare an onboarding guide for new drivers",
+              "updated_at": "2026-10-24T03:27:40.259Z"
+            }
+          ]
+        }
+      }
+    ],
+    "case": "fresh-session-correction",
+    "session": "dm-2",
+    "checks": {
+      "run_succeeded": true,
+      "operations": true,
+      "count": true,
+      "target": true,
+      "requirements": true
+    },
+    "operations": [
+      "update"
+    ],
+    "before": [
+      {
+        "created_at": "2026-10-24T03:27:25.021Z",
+        "creation_key": "fleet-fuel-report",
+        "generation": "2",
+        "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+        "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "2",
+        "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+        "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare the fleet fuel consumption report for Monday",
+        "updated_at": "2026-10-24T03:27:31.527Z"
+      },
+      {
+        "created_at": "2026-10-24T03:27:40.259Z",
+        "creation_key": "new-driver-onboarding-guide",
+        "generation": "1",
+        "goal_id": "e0374ecf-cc86-45a6-879b-25d1a97f2c31",
+        "objective": "Prepare an onboarding guide for new fleet drivers as a separate deliverable from the fleet fuel consumption report. Continue this work alongside the existing fuel report responsibility.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "1",
+        "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+        "source_run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare an onboarding guide for new drivers",
+        "updated_at": "2026-10-24T03:27:40.259Z"
+      }
+    ],
+    "after": [
+      {
+        "created_at": "2026-10-24T03:27:25.021Z",
+        "creation_key": "fleet-fuel-report",
+        "generation": "3",
+        "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+        "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, limited to vehicle Alpha only, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "3",
+        "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+        "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare the Alpha vehicle fuel consumption report for Monday",
+        "updated_at": "2026-10-24T03:27:49.958Z"
+      },
+      {
+        "created_at": "2026-10-24T03:27:40.259Z",
+        "creation_key": "new-driver-onboarding-guide",
+        "generation": "1",
+        "goal_id": "e0374ecf-cc86-45a6-879b-25d1a97f2c31",
+        "objective": "Prepare an onboarding guide for new fleet drivers as a separate deliverable from the fleet fuel consumption report. Continue this work alongside the existing fuel report responsibility.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "1",
+        "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+        "source_run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare an onboarding guide for new drivers",
+        "updated_at": "2026-10-24T03:27:40.259Z"
+      }
+    ],
+    "receipt": {
+      "agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+      "command_id": "63e58bc9-f0f7-4385-a46a-ab2bfe5806c5",
+      "committed_seq": "555",
+      "config_revision": "2",
+      "context_generation": "1",
+      "message_id": "44c47789-2f20-5b47-80c9-a7b9bf8a0b50",
+      "run_id": "d21535cf-f4ce-52b4-8d5e-9c24e137fe11",
+      "schema_version": "nma.v1",
+      "status": "accepted",
+      "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354"
+    },
+    "reply": "Tugas laporan BBM yang sama sudah diperbarui: hanya kendaraan Alpha, tenggat Senin, dengan ukuran liter per 100 km. Masih menunggu data Anda. Panduan onboarding tetap menjadi pekerjaan terpisah dan tidak berubah."
+  },
+  {
+    "model": "gpt-6.1-sol",
+    "native_session_id": "local-7b4758d31b4115347fb6aae319cb40f35b0cac60b69bcc62b4b947502a31f429",
+    "tool_receipts": [
+      {
+        "operation_id": "d6ba4f4c4aa31b5c337c1b65dce116647471f281c97288f3b44bd5cc74b21826",
+        "source_message_id": "77434452-813a-58ab-93d6-62c0b393f3a7",
+        "result": {
+          "goals": [
+            {
+              "created_at": "2026-10-24T03:27:25.021Z",
+              "creation_key": "fleet-fuel-report",
+              "generation": "3",
+              "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+              "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, limited to vehicle Alpha only, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+              "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+              "revision": "3",
+              "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+              "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+              "status": "active",
+              "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+              "title": "Prepare the Alpha vehicle fuel consumption report for Monday",
+              "updated_at": "2026-10-24T03:27:49.958Z"
+            },
+            {
+              "created_at": "2026-10-24T03:27:40.259Z",
+              "creation_key": "new-driver-onboarding-guide",
+              "generation": "1",
+              "goal_id": "e0374ecf-cc86-45a6-879b-25d1a97f2c31",
+              "objective": "Prepare an onboarding guide for new fleet drivers as a separate deliverable from the fleet fuel consumption report. Continue this work alongside the existing fuel report responsibility.",
+              "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+              "revision": "1",
+              "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+              "source_run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+              "status": "active",
+              "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+              "title": "Prepare an onboarding guide for new drivers",
+              "updated_at": "2026-10-24T03:27:40.259Z"
+            }
+          ]
+        }
+      }
+    ],
+    "case": "fresh-session-repeat",
+    "session": "dm-2",
+    "checks": {
+      "run_succeeded": true,
+      "operations": true,
+      "count": true,
+      "target": true,
+      "requirements": true
+    },
+    "operations": [],
+    "before": [
+      {
+        "created_at": "2026-10-24T03:27:25.021Z",
+        "creation_key": "fleet-fuel-report",
+        "generation": "3",
+        "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+        "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, limited to vehicle Alpha only, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "3",
+        "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+        "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare the Alpha vehicle fuel consumption report for Monday",
+        "updated_at": "2026-10-24T03:27:49.958Z"
+      },
+      {
+        "created_at": "2026-10-24T03:27:40.259Z",
+        "creation_key": "new-driver-onboarding-guide",
+        "generation": "1",
+        "goal_id": "e0374ecf-cc86-45a6-879b-25d1a97f2c31",
+        "objective": "Prepare an onboarding guide for new fleet drivers as a separate deliverable from the fleet fuel consumption report. Continue this work alongside the existing fuel report responsibility.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "1",
+        "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+        "source_run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare an onboarding guide for new drivers",
+        "updated_at": "2026-10-24T03:27:40.259Z"
+      }
+    ],
+    "after": [
+      {
+        "created_at": "2026-10-24T03:27:25.021Z",
+        "creation_key": "fleet-fuel-report",
+        "generation": "3",
+        "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+        "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, limited to vehicle Alpha only, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "3",
+        "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+        "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare the Alpha vehicle fuel consumption report for Monday",
+        "updated_at": "2026-10-24T03:27:49.958Z"
+      },
+      {
+        "created_at": "2026-10-24T03:27:40.259Z",
+        "creation_key": "new-driver-onboarding-guide",
+        "generation": "1",
+        "goal_id": "e0374ecf-cc86-45a6-879b-25d1a97f2c31",
+        "objective": "Prepare an onboarding guide for new fleet drivers as a separate deliverable from the fleet fuel consumption report. Continue this work alongside the existing fuel report responsibility.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "1",
+        "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+        "source_run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare an onboarding guide for new drivers",
+        "updated_at": "2026-10-24T03:27:40.259Z"
+      }
+    ],
+    "receipt": {
+      "agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+      "command_id": "f4c2d362-000d-4f8c-9d64-cda1ec16dae4",
+      "committed_seq": "619",
+      "config_revision": "2",
+      "context_generation": "1",
+      "message_id": "77434452-813a-58ab-93d6-62c0b393f3a7",
+      "run_id": "e386ac75-a39a-598a-9d39-ed96783f55b1",
+      "schema_version": "nma.v1",
+      "status": "accepted",
+      "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354"
+    },
+    "reply": "Tugas yang sama tetap aktif: laporan BBM kendaraan Alpha untuk Senin, dengan ukuran liter per 100 km. Tidak dibuat tugas baru; pengerjaan masih menunggu data Anda."
+  },
+  {
+    "model": "gpt-6.1-sol",
+    "native_session_id": "local-7b4758d31b4115347fb6aae319cb40f35b0cac60b69bcc62b4b947502a31f429",
+    "tool_receipts": [],
+    "case": "run-stop-only",
+    "session": "dm-2",
+    "checks": {
+      "run_succeeded": true,
+      "operations": true,
+      "count": true,
+      "target": true,
+      "requirements": true
+    },
+    "operations": [],
+    "before": [
+      {
+        "created_at": "2026-10-24T03:27:25.021Z",
+        "creation_key": "fleet-fuel-report",
+        "generation": "3",
+        "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+        "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, limited to vehicle Alpha only, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "3",
+        "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+        "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare the Alpha vehicle fuel consumption report for Monday",
+        "updated_at": "2026-10-24T03:27:49.958Z"
+      },
+      {
+        "created_at": "2026-10-24T03:27:40.259Z",
+        "creation_key": "new-driver-onboarding-guide",
+        "generation": "1",
+        "goal_id": "e0374ecf-cc86-45a6-879b-25d1a97f2c31",
+        "objective": "Prepare an onboarding guide for new fleet drivers as a separate deliverable from the fleet fuel consumption report. Continue this work alongside the existing fuel report responsibility.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "1",
+        "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+        "source_run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare an onboarding guide for new drivers",
+        "updated_at": "2026-10-24T03:27:40.259Z"
+      }
+    ],
+    "after": [
+      {
+        "created_at": "2026-10-24T03:27:25.021Z",
+        "creation_key": "fleet-fuel-report",
+        "generation": "3",
+        "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+        "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, limited to vehicle Alpha only, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "3",
+        "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+        "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare the Alpha vehicle fuel consumption report for Monday",
+        "updated_at": "2026-10-24T03:27:49.958Z"
+      },
+      {
+        "created_at": "2026-10-24T03:27:40.259Z",
+        "creation_key": "new-driver-onboarding-guide",
+        "generation": "1",
+        "goal_id": "e0374ecf-cc86-45a6-879b-25d1a97f2c31",
+        "objective": "Prepare an onboarding guide for new fleet drivers as a separate deliverable from the fleet fuel consumption report. Continue this work alongside the existing fuel report responsibility.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "1",
+        "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+        "source_run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare an onboarding guide for new drivers",
+        "updated_at": "2026-10-24T03:27:40.259Z"
+      }
+    ],
+    "receipt": {
+      "agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+      "command_id": "5bced28a-29cc-46e3-b11d-f358f86ac7fe",
+      "committed_seq": "667",
+      "config_revision": "2",
+      "context_generation": "1",
+      "message_id": "1c83b458-94fa-5197-95c6-0f42e75fe418",
+      "run_id": "626feff7-f6b7-597d-9e06-28b3fa1344ba",
+      "schema_version": "nma.v1",
+      "status": "accepted",
+      "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354"
+    },
+    "reply": "Baik, jawaban ini dihentikan. Kedua pekerjaan tersimpan tetap aktif."
+  },
+  {
+    "model": "gpt-6.1-sol",
+    "native_session_id": "local-7b4758d31b4115347fb6aae319cb40f35b0cac60b69bcc62b4b947502a31f429",
+    "tool_receipts": [
+      {
+        "operation_id": "f636d0cc5f87c0cab99676456ff3c7f18706c725cfabac977f6c1f02fc14c7f7",
+        "source_message_id": "b7cd9171-3a94-54da-beb8-eaa6882e8cfe",
+        "result": {
+          "goal": {
+            "created_at": "2026-10-24T03:27:25.021Z",
+            "creation_key": "fleet-fuel-report",
+            "generation": "4",
+            "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+            "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, limited to vehicle Alpha only, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+            "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+            "revision": "4",
+            "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+            "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+            "status": "stopped",
+            "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+            "title": "Prepare the Alpha vehicle fuel consumption report for Monday",
+            "updated_at": "2026-10-24T03:28:03.179Z"
+          }
+        }
+      },
+      {
+        "operation_id": "a6e2495a3496f252bc5fa9b1aded9a3836a6980f32598a6232d82506153bd7d6",
+        "source_message_id": "b7cd9171-3a94-54da-beb8-eaa6882e8cfe",
+        "result": {
+          "goals": [
+            {
+              "created_at": "2026-10-24T03:27:25.021Z",
+              "creation_key": "fleet-fuel-report",
+              "generation": "4",
+              "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+              "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, limited to vehicle Alpha only, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+              "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+              "revision": "4",
+              "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+              "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+              "status": "stopped",
+              "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+              "title": "Prepare the Alpha vehicle fuel consumption report for Monday",
+              "updated_at": "2026-10-24T03:28:03.179Z"
+            },
+            {
+              "created_at": "2026-10-24T03:27:40.259Z",
+              "creation_key": "new-driver-onboarding-guide",
+              "generation": "1",
+              "goal_id": "e0374ecf-cc86-45a6-879b-25d1a97f2c31",
+              "objective": "Prepare an onboarding guide for new fleet drivers as a separate deliverable from the fleet fuel consumption report. Continue this work alongside the existing fuel report responsibility.",
+              "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+              "revision": "1",
+              "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+              "source_run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+              "status": "active",
+              "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+              "title": "Prepare an onboarding guide for new drivers",
+              "updated_at": "2026-10-24T03:27:40.259Z"
+            }
+          ]
+        }
+      }
+    ],
+    "case": "goal-stop",
+    "session": "dm-2",
+    "checks": {
+      "run_succeeded": true,
+      "operations": true,
+      "count": true,
+      "target": true,
+      "requirements": true
+    },
+    "operations": [
+      "stop"
+    ],
+    "before": [
+      {
+        "created_at": "2026-10-24T03:27:25.021Z",
+        "creation_key": "fleet-fuel-report",
+        "generation": "3",
+        "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+        "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, limited to vehicle Alpha only, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "3",
+        "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+        "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare the Alpha vehicle fuel consumption report for Monday",
+        "updated_at": "2026-10-24T03:27:49.958Z"
+      },
+      {
+        "created_at": "2026-10-24T03:27:40.259Z",
+        "creation_key": "new-driver-onboarding-guide",
+        "generation": "1",
+        "goal_id": "e0374ecf-cc86-45a6-879b-25d1a97f2c31",
+        "objective": "Prepare an onboarding guide for new fleet drivers as a separate deliverable from the fleet fuel consumption report. Continue this work alongside the existing fuel report responsibility.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "1",
+        "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+        "source_run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare an onboarding guide for new drivers",
+        "updated_at": "2026-10-24T03:27:40.259Z"
+      }
+    ],
+    "after": [
+      {
+        "created_at": "2026-10-24T03:27:25.021Z",
+        "creation_key": "fleet-fuel-report",
+        "generation": "4",
+        "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+        "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, limited to vehicle Alpha only, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "4",
+        "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+        "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+        "status": "stopped",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare the Alpha vehicle fuel consumption report for Monday",
+        "updated_at": "2026-10-24T03:28:03.179Z"
+      },
+      {
+        "created_at": "2026-10-24T03:27:40.259Z",
+        "creation_key": "new-driver-onboarding-guide",
+        "generation": "1",
+        "goal_id": "e0374ecf-cc86-45a6-879b-25d1a97f2c31",
+        "objective": "Prepare an onboarding guide for new fleet drivers as a separate deliverable from the fleet fuel consumption report. Continue this work alongside the existing fuel report responsibility.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "1",
+        "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+        "source_run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare an onboarding guide for new drivers",
+        "updated_at": "2026-10-24T03:27:40.259Z"
+      }
+    ],
+    "receipt": {
+      "agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+      "command_id": "8bde11be-a138-466c-84f6-a51881124067",
+      "committed_seq": "693",
+      "config_revision": "2",
+      "context_generation": "1",
+      "message_id": "b7cd9171-3a94-54da-beb8-eaa6882e8cfe",
+      "run_id": "f504684d-a242-5ced-920d-e62b14b03596",
+      "schema_version": "nma.v1",
+      "status": "accepted",
+      "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354"
+    },
+    "reply": "Laporan BBM Alpha sudah dibatalkan dan tidak akan dilanjutkan. Tugas panduan onboarding pengemudi baru tetap aktif."
+  },
+  {
+    "model": "gpt-6.1-sol",
+    "native_session_id": "local-0d0cca4d1ffbe31e02453ac17cdbadcf86429ec3288006794799c83693df55c0",
+    "tool_receipts": [],
+    "case": "stopped-after-restart",
+    "session": "dm-3",
+    "checks": {
+      "run_succeeded": true,
+      "operations": true,
+      "count": true,
+      "target": true,
+      "requirements": true
+    },
+    "operations": [],
+    "before": [
+      {
+        "created_at": "2026-10-24T03:27:25.021Z",
+        "creation_key": "fleet-fuel-report",
+        "generation": "4",
+        "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+        "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, limited to vehicle Alpha only, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "4",
+        "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+        "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+        "status": "stopped",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare the Alpha vehicle fuel consumption report for Monday",
+        "updated_at": "2026-10-24T03:28:03.179Z"
+      },
+      {
+        "created_at": "2026-10-24T03:27:40.259Z",
+        "creation_key": "new-driver-onboarding-guide",
+        "generation": "1",
+        "goal_id": "e0374ecf-cc86-45a6-879b-25d1a97f2c31",
+        "objective": "Prepare an onboarding guide for new fleet drivers as a separate deliverable from the fleet fuel consumption report. Continue this work alongside the existing fuel report responsibility.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "1",
+        "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+        "source_run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare an onboarding guide for new drivers",
+        "updated_at": "2026-10-24T03:27:40.259Z"
+      }
+    ],
+    "after": [
+      {
+        "created_at": "2026-10-24T03:27:25.021Z",
+        "creation_key": "fleet-fuel-report",
+        "generation": "4",
+        "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+        "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, limited to vehicle Alpha only, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "4",
+        "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+        "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+        "status": "stopped",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare the Alpha vehicle fuel consumption report for Monday",
+        "updated_at": "2026-10-24T03:28:03.179Z"
+      },
+      {
+        "created_at": "2026-10-24T03:27:40.259Z",
+        "creation_key": "new-driver-onboarding-guide",
+        "generation": "1",
+        "goal_id": "e0374ecf-cc86-45a6-879b-25d1a97f2c31",
+        "objective": "Prepare an onboarding guide for new fleet drivers as a separate deliverable from the fleet fuel consumption report. Continue this work alongside the existing fuel report responsibility.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "1",
+        "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+        "source_run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare an onboarding guide for new drivers",
+        "updated_at": "2026-10-24T03:27:40.259Z"
+      }
+    ],
+    "receipt": {
+      "agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+      "command_id": "93b20ce5-a98c-46a5-83a3-d30ec80264fd",
+      "committed_seq": "737",
+      "config_revision": "3",
+      "context_generation": "1",
+      "message_id": "ead2610c-2417-51e7-a48a-56fe683e6100",
+      "run_id": "4ecf3ab1-3923-5418-a2fe-252fa2236362",
+      "schema_version": "nma.v1",
+      "status": "accepted",
+      "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354"
+    },
+    "reply": "Laporan BBM Alpha berstatus dibatalkan (dihentikan) dan tidak dilanjutkan kembali. Panduan onboarding pengemudi baru tetap aktif."
+  },
+  {
+    "model": "gpt-6.1-sol",
+    "native_session_id": "local-0d0cca4d1ffbe31e02453ac17cdbadcf86429ec3288006794799c83693df55c0",
+    "tool_receipts": [],
+    "case": "quoted-request",
+    "session": "dm-3",
+    "checks": {
+      "run_succeeded": true,
+      "operations": true,
+      "count": true,
+      "target": true,
+      "requirements": true
+    },
+    "operations": [],
+    "before": [
+      {
+        "created_at": "2026-10-24T03:27:25.021Z",
+        "creation_key": "fleet-fuel-report",
+        "generation": "4",
+        "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+        "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, limited to vehicle Alpha only, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "4",
+        "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+        "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+        "status": "stopped",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare the Alpha vehicle fuel consumption report for Monday",
+        "updated_at": "2026-10-24T03:28:03.179Z"
+      },
+      {
+        "created_at": "2026-10-24T03:27:40.259Z",
+        "creation_key": "new-driver-onboarding-guide",
+        "generation": "1",
+        "goal_id": "e0374ecf-cc86-45a6-879b-25d1a97f2c31",
+        "objective": "Prepare an onboarding guide for new fleet drivers as a separate deliverable from the fleet fuel consumption report. Continue this work alongside the existing fuel report responsibility.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "1",
+        "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+        "source_run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare an onboarding guide for new drivers",
+        "updated_at": "2026-10-24T03:27:40.259Z"
+      }
+    ],
+    "after": [
+      {
+        "created_at": "2026-10-24T03:27:25.021Z",
+        "creation_key": "fleet-fuel-report",
+        "generation": "4",
+        "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+        "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, limited to vehicle Alpha only, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "4",
+        "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+        "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+        "status": "stopped",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare the Alpha vehicle fuel consumption report for Monday",
+        "updated_at": "2026-10-24T03:28:03.179Z"
+      },
+      {
+        "created_at": "2026-10-24T03:27:40.259Z",
+        "creation_key": "new-driver-onboarding-guide",
+        "generation": "1",
+        "goal_id": "e0374ecf-cc86-45a6-879b-25d1a97f2c31",
+        "objective": "Prepare an onboarding guide for new fleet drivers as a separate deliverable from the fleet fuel consumption report. Continue this work alongside the existing fuel report responsibility.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "1",
+        "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+        "source_run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare an onboarding guide for new drivers",
+        "updated_at": "2026-10-24T03:27:40.259Z"
+      }
+    ],
+    "receipt": {
+      "agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+      "command_id": "94f5dd97-686d-4604-b753-c2deebb9ab02",
+      "committed_seq": "778",
+      "config_revision": "3",
+      "context_generation": "1",
+      "message_id": "b427e855-b070-5cd6-b3de-fcd37f474bd3",
+      "run_id": "e16dde7a-61ea-529e-a7ab-8d194a12df71",
+      "schema_version": "nma.v1",
+      "status": "accepted",
+      "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354"
+    },
+    "reply": "Dipahami. \u201cBuatkan laporan servis bulanan\u201d hanya kutipan contoh untuk panduan, bukan tugas baru."
+  },
+  {
+    "model": "gpt-6.1-sol",
+    "native_session_id": "local-0d0cca4d1ffbe31e02453ac17cdbadcf86429ec3288006794799c83693df55c0",
+    "tool_receipts": [],
+    "case": "negation",
+    "session": "dm-3",
+    "checks": {
+      "run_succeeded": true,
+      "operations": true,
+      "count": true,
+      "target": true,
+      "requirements": true
+    },
+    "operations": [],
+    "before": [
+      {
+        "created_at": "2026-10-24T03:27:25.021Z",
+        "creation_key": "fleet-fuel-report",
+        "generation": "4",
+        "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+        "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, limited to vehicle Alpha only, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "4",
+        "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+        "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+        "status": "stopped",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare the Alpha vehicle fuel consumption report for Monday",
+        "updated_at": "2026-10-24T03:28:03.179Z"
+      },
+      {
+        "created_at": "2026-10-24T03:27:40.259Z",
+        "creation_key": "new-driver-onboarding-guide",
+        "generation": "1",
+        "goal_id": "e0374ecf-cc86-45a6-879b-25d1a97f2c31",
+        "objective": "Prepare an onboarding guide for new fleet drivers as a separate deliverable from the fleet fuel consumption report. Continue this work alongside the existing fuel report responsibility.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "1",
+        "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+        "source_run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare an onboarding guide for new drivers",
+        "updated_at": "2026-10-24T03:27:40.259Z"
+      }
+    ],
+    "after": [
+      {
+        "created_at": "2026-10-24T03:27:25.021Z",
+        "creation_key": "fleet-fuel-report",
+        "generation": "4",
+        "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+        "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, limited to vehicle Alpha only, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "4",
+        "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+        "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+        "status": "stopped",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare the Alpha vehicle fuel consumption report for Monday",
+        "updated_at": "2026-10-24T03:28:03.179Z"
+      },
+      {
+        "created_at": "2026-10-24T03:27:40.259Z",
+        "creation_key": "new-driver-onboarding-guide",
+        "generation": "1",
+        "goal_id": "e0374ecf-cc86-45a6-879b-25d1a97f2c31",
+        "objective": "Prepare an onboarding guide for new fleet drivers as a separate deliverable from the fleet fuel consumption report. Continue this work alongside the existing fuel report responsibility.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "1",
+        "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+        "source_run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare an onboarding guide for new drivers",
+        "updated_at": "2026-10-24T03:27:40.259Z"
+      }
+    ],
+    "receipt": {
+      "agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+      "command_id": "ed7d0391-93e8-4b62-b3d7-9d5b4e0c18c7",
+      "committed_seq": "810",
+      "config_revision": "3",
+      "context_generation": "1",
+      "message_id": "a9f0d4a0-aba1-5452-8f76-7e1a206aa15d",
+      "run_id": "c96741c2-7ca3-5b69-aa93-c9b5dda74943",
+      "schema_version": "nma.v1",
+      "status": "accepted",
+      "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354"
+    },
+    "reply": "Tidak akan dibuat jadwal pemeriksaan ban; itu belum menjadi tugas."
+  },
+  {
+    "model": "gpt-6.1-sol",
+    "native_session_id": "local-0d0cca4d1ffbe31e02453ac17cdbadcf86429ec3288006794799c83693df55c0",
+    "tool_receipts": [],
+    "case": "ambiguous-stop",
+    "session": "dm-3",
+    "checks": {
+      "run_succeeded": true,
+      "operations": true,
+      "count": true,
+      "target": true,
+      "requirements": true
+    },
+    "operations": [],
+    "before": [
+      {
+        "created_at": "2026-10-24T03:27:25.021Z",
+        "creation_key": "fleet-fuel-report",
+        "generation": "4",
+        "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+        "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, limited to vehicle Alpha only, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "4",
+        "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+        "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+        "status": "stopped",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare the Alpha vehicle fuel consumption report for Monday",
+        "updated_at": "2026-10-24T03:28:03.179Z"
+      },
+      {
+        "created_at": "2026-10-24T03:27:40.259Z",
+        "creation_key": "new-driver-onboarding-guide",
+        "generation": "1",
+        "goal_id": "e0374ecf-cc86-45a6-879b-25d1a97f2c31",
+        "objective": "Prepare an onboarding guide for new fleet drivers as a separate deliverable from the fleet fuel consumption report. Continue this work alongside the existing fuel report responsibility.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "1",
+        "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+        "source_run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare an onboarding guide for new drivers",
+        "updated_at": "2026-10-24T03:27:40.259Z"
+      }
+    ],
+    "after": [
+      {
+        "created_at": "2026-10-24T03:27:25.021Z",
+        "creation_key": "fleet-fuel-report",
+        "generation": "4",
+        "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+        "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, limited to vehicle Alpha only, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "4",
+        "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+        "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+        "status": "stopped",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare the Alpha vehicle fuel consumption report for Monday",
+        "updated_at": "2026-10-24T03:28:03.179Z"
+      },
+      {
+        "created_at": "2026-10-24T03:27:40.259Z",
+        "creation_key": "new-driver-onboarding-guide",
+        "generation": "1",
+        "goal_id": "e0374ecf-cc86-45a6-879b-25d1a97f2c31",
+        "objective": "Prepare an onboarding guide for new fleet drivers as a separate deliverable from the fleet fuel consumption report. Continue this work alongside the existing fuel report responsibility.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "1",
+        "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+        "source_run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare an onboarding guide for new drivers",
+        "updated_at": "2026-10-24T03:27:40.259Z"
+      }
+    ],
+    "receipt": {
+      "agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+      "command_id": "6d4924ba-c4b9-4eab-b5d8-61c226659c9d",
+      "committed_seq": "832",
+      "config_revision": "3",
+      "context_generation": "1",
+      "message_id": "c1020117-5bcf-5914-9f10-e396a2ad8c38",
+      "run_id": "9b461329-aaaf-58b3-854d-57edbaae79a8",
+      "schema_version": "nma.v1",
+      "status": "accepted",
+      "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354"
+    },
+    "reply": "Yang ingin dihentikan: panduan onboarding pengemudi baru, atau hal lain? Jadwal pemeriksaan ban tidak pernah dibuat."
+  },
+  {
+    "model": "gpt-6.1-sol",
+    "native_session_id": "local-0d0cca4d1ffbe31e02453ac17cdbadcf86429ec3288006794799c83693df55c0",
+    "tool_receipts": [
+      {
+        "operation_id": "0b2de16023c84ce4fd5b3a0788a8019d5c8b9ec8580b45dbe46dfc2ed3d4adf8",
+        "source_message_id": "f40170d9-7e77-55bf-a293-4e15690464e7",
+        "result": {
+          "goal": {
+            "created_at": "2026-10-24T03:27:40.259Z",
+            "creation_key": "new-driver-onboarding-guide",
+            "generation": "2",
+            "goal_id": "e0374ecf-cc86-45a6-879b-25d1a97f2c31",
+            "objective": "Prepare an onboarding guide for new fleet drivers as a separate deliverable from the fleet fuel consumption report. Continue this work alongside the existing fuel report responsibility.",
+            "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+            "revision": "2",
+            "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+            "source_run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+            "status": "stopped",
+            "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+            "title": "Prepare an onboarding guide for new drivers",
+            "updated_at": "2026-10-24T03:28:26.208Z"
+          }
+        }
+      },
+      {
+        "operation_id": "9fa30e44a761b869c89e5e70fe9539fe17be2c52b7633f4de0df7a13d234fa6b",
+        "source_message_id": "f40170d9-7e77-55bf-a293-4e15690464e7",
+        "result": {
+          "goals": [
+            {
+              "created_at": "2026-10-24T03:27:25.021Z",
+              "creation_key": "fleet-fuel-report",
+              "generation": "4",
+              "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+              "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, limited to vehicle Alpha only, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+              "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+              "revision": "4",
+              "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+              "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+              "status": "stopped",
+              "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+              "title": "Prepare the Alpha vehicle fuel consumption report for Monday",
+              "updated_at": "2026-10-24T03:28:03.179Z"
+            },
+            {
+              "created_at": "2026-10-24T03:27:40.259Z",
+              "creation_key": "new-driver-onboarding-guide",
+              "generation": "2",
+              "goal_id": "e0374ecf-cc86-45a6-879b-25d1a97f2c31",
+              "objective": "Prepare an onboarding guide for new fleet drivers as a separate deliverable from the fleet fuel consumption report. Continue this work alongside the existing fuel report responsibility.",
+              "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+              "revision": "2",
+              "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+              "source_run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+              "status": "stopped",
+              "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+              "title": "Prepare an onboarding guide for new drivers",
+              "updated_at": "2026-10-24T03:28:26.208Z"
+            }
+          ]
+        }
+      }
+    ],
+    "case": "stop-remaining",
+    "session": "dm-3",
+    "checks": {
+      "run_succeeded": true,
+      "operations": true,
+      "count": true,
+      "target": true,
+      "requirements": true
+    },
+    "operations": [
+      "stop"
+    ],
+    "before": [
+      {
+        "created_at": "2026-10-24T03:27:25.021Z",
+        "creation_key": "fleet-fuel-report",
+        "generation": "4",
+        "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+        "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, limited to vehicle Alpha only, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "4",
+        "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+        "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+        "status": "stopped",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare the Alpha vehicle fuel consumption report for Monday",
+        "updated_at": "2026-10-24T03:28:03.179Z"
+      },
+      {
+        "created_at": "2026-10-24T03:27:40.259Z",
+        "creation_key": "new-driver-onboarding-guide",
+        "generation": "1",
+        "goal_id": "e0374ecf-cc86-45a6-879b-25d1a97f2c31",
+        "objective": "Prepare an onboarding guide for new fleet drivers as a separate deliverable from the fleet fuel consumption report. Continue this work alongside the existing fuel report responsibility.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "1",
+        "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+        "source_run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare an onboarding guide for new drivers",
+        "updated_at": "2026-10-24T03:27:40.259Z"
+      }
+    ],
+    "after": [
+      {
+        "created_at": "2026-10-24T03:27:25.021Z",
+        "creation_key": "fleet-fuel-report",
+        "generation": "4",
+        "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+        "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, limited to vehicle Alpha only, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "4",
+        "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+        "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+        "status": "stopped",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare the Alpha vehicle fuel consumption report for Monday",
+        "updated_at": "2026-10-24T03:28:03.179Z"
+      },
+      {
+        "created_at": "2026-10-24T03:27:40.259Z",
+        "creation_key": "new-driver-onboarding-guide",
+        "generation": "2",
+        "goal_id": "e0374ecf-cc86-45a6-879b-25d1a97f2c31",
+        "objective": "Prepare an onboarding guide for new fleet drivers as a separate deliverable from the fleet fuel consumption report. Continue this work alongside the existing fuel report responsibility.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "2",
+        "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+        "source_run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+        "status": "stopped",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare an onboarding guide for new drivers",
+        "updated_at": "2026-10-24T03:28:26.208Z"
+      }
+    ],
+    "receipt": {
+      "agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+      "command_id": "f68c7c32-b98a-4209-8fef-045dd92cb670",
+      "committed_seq": "867",
+      "config_revision": "3",
+      "context_generation": "1",
+      "message_id": "f40170d9-7e77-55bf-a293-4e15690464e7",
+      "run_id": "98eaf2a7-9bcd-5c8f-8fcc-9c484794d8d7",
+      "schema_version": "nma.v1",
+      "status": "accepted",
+      "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354"
+    },
+    "reply": "Panduan onboarding pengemudi baru sudah dihentikan. Laporan BBM Alpha juga tetap dihentikan; tidak ada pekerjaan tersimpan yang masih aktif."
+  },
+  {
+    "model": "gpt-6.1-sol",
+    "native_session_id": "local-7a3d9adb40489b4eb5610870997f9935369c4535ef8008538fe0584c1c778053",
+    "tool_receipts": [
+      {
+        "operation_id": "e5a8b090a5a472807c3ccee3382796a7ca8298a2bdf69493693210ec77d06103",
+        "source_message_id": "9b83b7f9-db4f-5b3a-904f-bcedc4e817c9",
+        "result": {
+          "goal": {
+            "created_at": "2026-10-24T03:28:37.216Z",
+            "creation_key": "tyre-inspection-checklist",
+            "generation": "1",
+            "goal_id": "82ab8a51-08fb-4950-95ae-92f80ad4517b",
+            "objective": "Prepare and deliver a tyre inspection checklist. Keep this as an independent responsibility from the monthly maintenance cost report until delivered.",
+            "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+            "revision": "1",
+            "source_message_id": "9b83b7f9-db4f-5b3a-904f-bcedc4e817c9",
+            "source_run_id": "ff18f139-0076-5502-af32-688ae1922926",
+            "status": "active",
+            "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+            "title": "Prepare a tyre inspection checklist",
+            "updated_at": "2026-10-24T03:28:37.216Z"
+          }
+        }
+      },
+      {
+        "operation_id": "5d6a4095e6d4e6301c05a4c51a08556cf4254dcf957b35455f769d03c6d6b6e3",
+        "source_message_id": "9b83b7f9-db4f-5b3a-904f-bcedc4e817c9",
+        "result": {
+          "goal": {
+            "created_at": "2026-10-24T03:28:37.221Z",
+            "creation_key": "monthly-maintenance-cost-report",
+            "generation": "1",
+            "goal_id": "45d80aa5-18b3-4255-a842-34a638f90090",
+            "objective": "Prepare and deliver a monthly maintenance cost report using the user's maintenance cost data. Keep this as an independent responsibility from the tyre inspection checklist until delivered.",
+            "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+            "revision": "1",
+            "source_message_id": "9b83b7f9-db4f-5b3a-904f-bcedc4e817c9",
+            "source_run_id": "ff18f139-0076-5502-af32-688ae1922926",
+            "status": "active",
+            "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+            "title": "Prepare a monthly maintenance cost report",
+            "updated_at": "2026-10-24T03:28:37.221Z"
+          }
+        }
+      },
+      {
+        "operation_id": "5869c03b5c7baf4b2a7274f4a864e6eb50f53c2a3dadce1b89fddb280a903a5f",
+        "source_message_id": "9b83b7f9-db4f-5b3a-904f-bcedc4e817c9",
+        "result": {
+          "goals": [
+            {
+              "created_at": "2026-10-24T03:27:25.021Z",
+              "creation_key": "fleet-fuel-report",
+              "generation": "4",
+              "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+              "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, limited to vehicle Alpha only, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+              "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+              "revision": "4",
+              "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+              "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+              "status": "stopped",
+              "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+              "title": "Prepare the Alpha vehicle fuel consumption report for Monday",
+              "updated_at": "2026-10-24T03:28:03.179Z"
+            },
+            {
+              "created_at": "2026-10-24T03:27:40.259Z",
+              "creation_key": "new-driver-onboarding-guide",
+              "generation": "2",
+              "goal_id": "e0374ecf-cc86-45a6-879b-25d1a97f2c31",
+              "objective": "Prepare an onboarding guide for new fleet drivers as a separate deliverable from the fleet fuel consumption report. Continue this work alongside the existing fuel report responsibility.",
+              "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+              "revision": "2",
+              "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+              "source_run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+              "status": "stopped",
+              "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+              "title": "Prepare an onboarding guide for new drivers",
+              "updated_at": "2026-10-24T03:28:26.208Z"
+            },
+            {
+              "created_at": "2026-10-24T03:28:37.216Z",
+              "creation_key": "tyre-inspection-checklist",
+              "generation": "1",
+              "goal_id": "82ab8a51-08fb-4950-95ae-92f80ad4517b",
+              "objective": "Prepare and deliver a tyre inspection checklist. Keep this as an independent responsibility from the monthly maintenance cost report until delivered.",
+              "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+              "revision": "1",
+              "source_message_id": "9b83b7f9-db4f-5b3a-904f-bcedc4e817c9",
+              "source_run_id": "ff18f139-0076-5502-af32-688ae1922926",
+              "status": "active",
+              "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+              "title": "Prepare a tyre inspection checklist",
+              "updated_at": "2026-10-24T03:28:37.216Z"
+            },
+            {
+              "created_at": "2026-10-24T03:28:37.221Z",
+              "creation_key": "monthly-maintenance-cost-report",
+              "generation": "1",
+              "goal_id": "45d80aa5-18b3-4255-a842-34a638f90090",
+              "objective": "Prepare and deliver a monthly maintenance cost report using the user's maintenance cost data. Keep this as an independent responsibility from the tyre inspection checklist until delivered.",
+              "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+              "revision": "1",
+              "source_message_id": "9b83b7f9-db4f-5b3a-904f-bcedc4e817c9",
+              "source_run_id": "ff18f139-0076-5502-af32-688ae1922926",
+              "status": "active",
+              "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+              "title": "Prepare a monthly maintenance cost report",
+              "updated_at": "2026-10-24T03:28:37.221Z"
+            }
+          ]
+        }
+      }
+    ],
+    "case": "two-commitments",
+    "session": "dm-4",
+    "checks": {
+      "run_succeeded": true,
+      "operations": true,
+      "count": true,
+      "target": true,
+      "requirements": true
+    },
+    "operations": [
+      "create",
+      "create"
+    ],
+    "before": [
+      {
+        "created_at": "2026-10-24T03:27:25.021Z",
+        "creation_key": "fleet-fuel-report",
+        "generation": "4",
+        "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+        "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, limited to vehicle Alpha only, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "4",
+        "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+        "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+        "status": "stopped",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare the Alpha vehicle fuel consumption report for Monday",
+        "updated_at": "2026-10-24T03:28:03.179Z"
+      },
+      {
+        "created_at": "2026-10-24T03:27:40.259Z",
+        "creation_key": "new-driver-onboarding-guide",
+        "generation": "2",
+        "goal_id": "e0374ecf-cc86-45a6-879b-25d1a97f2c31",
+        "objective": "Prepare an onboarding guide for new fleet drivers as a separate deliverable from the fleet fuel consumption report. Continue this work alongside the existing fuel report responsibility.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "2",
+        "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+        "source_run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+        "status": "stopped",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare an onboarding guide for new drivers",
+        "updated_at": "2026-10-24T03:28:26.208Z"
+      }
+    ],
+    "after": [
+      {
+        "created_at": "2026-10-24T03:27:25.021Z",
+        "creation_key": "fleet-fuel-report",
+        "generation": "4",
+        "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+        "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, limited to vehicle Alpha only, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "4",
+        "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+        "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+        "status": "stopped",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare the Alpha vehicle fuel consumption report for Monday",
+        "updated_at": "2026-10-24T03:28:03.179Z"
+      },
+      {
+        "created_at": "2026-10-24T03:27:40.259Z",
+        "creation_key": "new-driver-onboarding-guide",
+        "generation": "2",
+        "goal_id": "e0374ecf-cc86-45a6-879b-25d1a97f2c31",
+        "objective": "Prepare an onboarding guide for new fleet drivers as a separate deliverable from the fleet fuel consumption report. Continue this work alongside the existing fuel report responsibility.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "2",
+        "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+        "source_run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+        "status": "stopped",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare an onboarding guide for new drivers",
+        "updated_at": "2026-10-24T03:28:26.208Z"
+      },
+      {
+        "created_at": "2026-10-24T03:28:37.216Z",
+        "creation_key": "tyre-inspection-checklist",
+        "generation": "1",
+        "goal_id": "82ab8a51-08fb-4950-95ae-92f80ad4517b",
+        "objective": "Prepare and deliver a tyre inspection checklist. Keep this as an independent responsibility from the monthly maintenance cost report until delivered.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "1",
+        "source_message_id": "9b83b7f9-db4f-5b3a-904f-bcedc4e817c9",
+        "source_run_id": "ff18f139-0076-5502-af32-688ae1922926",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare a tyre inspection checklist",
+        "updated_at": "2026-10-24T03:28:37.216Z"
+      },
+      {
+        "created_at": "2026-10-24T03:28:37.221Z",
+        "creation_key": "monthly-maintenance-cost-report",
+        "generation": "1",
+        "goal_id": "45d80aa5-18b3-4255-a842-34a638f90090",
+        "objective": "Prepare and deliver a monthly maintenance cost report using the user's maintenance cost data. Keep this as an independent responsibility from the tyre inspection checklist until delivered.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "1",
+        "source_message_id": "9b83b7f9-db4f-5b3a-904f-bcedc4e817c9",
+        "source_run_id": "ff18f139-0076-5502-af32-688ae1922926",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare a monthly maintenance cost report",
+        "updated_at": "2026-10-24T03:28:37.221Z"
+      }
+    ],
+    "receipt": {
+      "agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+      "command_id": "666f9cc5-ab8a-49a5-87e8-cefb4246956a",
+      "committed_seq": "915",
+      "config_revision": "4",
+      "context_generation": "1",
+      "message_id": "9b83b7f9-db4f-5b3a-904f-bcedc4e817c9",
+      "run_id": "ff18f139-0076-5502-af32-688ae1922926",
+      "schema_version": "nma.v1",
+      "status": "accepted",
+      "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354"
+    },
+    "reply": "Saved and verified as two independent responsibilities.\n\nTyre inspection checklist\n  Vehicle ID: ______  Date: ______  Inspector: ______\n  Record Pass / Fail / Not checked for each item:\n  [ ] Cold pressure matches vehicle manufacturer specifications.\n  [ ] Tread depth measured and recorded for each tyre; meets applicable limits.\n  [ ] No cuts, cracks, bulges, exposed cords, or embedded objects.\n  [ ] No uneven wear or signs of rubbing.\n  [ ] Valves intact, caps fitted, and no apparent air leaks.\n  [ ] Wheels show no visible damage or missing/loose fasteners.\n  [ ] Spare tyre, where fitted, checked for condition and pressure.\n  [ ] Defects recorded with tyre position and corrective action.\n  [ ] Unsafe defects referred for repair before vehicle use.\n\nMonthly maintenance cost report\n  Awaiting the reporting month, currency, vehicle scope, and maintenance records. Please send dates, vehicle IDs, work descriptions, parts costs, labour costs, and other charges.\n\nThe report will show total costs, costs by vehicle and maintenance category, and any missing data. No inspection schedule has been created."
+  },
+  {
+    "model": "gpt-6.1-sol",
+    "native_session_id": "local-7a3d9adb40489b4eb5610870997f9935369c4535ef8008538fe0584c1c778053",
+    "tool_receipts": [],
+    "case": "hypothetical-correction",
+    "session": "dm-4",
+    "checks": {
+      "run_succeeded": true,
+      "operations": true,
+      "count": true,
+      "target": true,
+      "requirements": true
+    },
+    "operations": [],
+    "before": [
+      {
+        "created_at": "2026-10-24T03:27:25.021Z",
+        "creation_key": "fleet-fuel-report",
+        "generation": "4",
+        "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+        "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, limited to vehicle Alpha only, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "4",
+        "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+        "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+        "status": "stopped",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare the Alpha vehicle fuel consumption report for Monday",
+        "updated_at": "2026-10-24T03:28:03.179Z"
+      },
+      {
+        "created_at": "2026-10-24T03:27:40.259Z",
+        "creation_key": "new-driver-onboarding-guide",
+        "generation": "2",
+        "goal_id": "e0374ecf-cc86-45a6-879b-25d1a97f2c31",
+        "objective": "Prepare an onboarding guide for new fleet drivers as a separate deliverable from the fleet fuel consumption report. Continue this work alongside the existing fuel report responsibility.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "2",
+        "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+        "source_run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+        "status": "stopped",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare an onboarding guide for new drivers",
+        "updated_at": "2026-10-24T03:28:26.208Z"
+      },
+      {
+        "created_at": "2026-10-24T03:28:37.216Z",
+        "creation_key": "tyre-inspection-checklist",
+        "generation": "1",
+        "goal_id": "82ab8a51-08fb-4950-95ae-92f80ad4517b",
+        "objective": "Prepare and deliver a tyre inspection checklist. Keep this as an independent responsibility from the monthly maintenance cost report until delivered.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "1",
+        "source_message_id": "9b83b7f9-db4f-5b3a-904f-bcedc4e817c9",
+        "source_run_id": "ff18f139-0076-5502-af32-688ae1922926",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare a tyre inspection checklist",
+        "updated_at": "2026-10-24T03:28:37.216Z"
+      },
+      {
+        "created_at": "2026-10-24T03:28:37.221Z",
+        "creation_key": "monthly-maintenance-cost-report",
+        "generation": "1",
+        "goal_id": "45d80aa5-18b3-4255-a842-34a638f90090",
+        "objective": "Prepare and deliver a monthly maintenance cost report using the user's maintenance cost data. Keep this as an independent responsibility from the tyre inspection checklist until delivered.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "1",
+        "source_message_id": "9b83b7f9-db4f-5b3a-904f-bcedc4e817c9",
+        "source_run_id": "ff18f139-0076-5502-af32-688ae1922926",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare a monthly maintenance cost report",
+        "updated_at": "2026-10-24T03:28:37.221Z"
+      }
+    ],
+    "after": [
+      {
+        "created_at": "2026-10-24T03:27:25.021Z",
+        "creation_key": "fleet-fuel-report",
+        "generation": "4",
+        "goal_id": "2ddab719-69d1-4c9d-9a04-27d94b4462f8",
+        "objective": "Prepare the fleet fuel consumption report by Monday, not Friday, limited to vehicle Alpha only, using the data the user will send, and continue the work until the report is ready. Include fuel consumption in liters per 100 km. The report is currently awaiting the user's data.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "4",
+        "source_message_id": "d0a3263d-a689-571b-9703-1505ba20e72e",
+        "source_run_id": "e86285ff-8d05-554f-ab96-4e3817d097fb",
+        "status": "stopped",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare the Alpha vehicle fuel consumption report for Monday",
+        "updated_at": "2026-10-24T03:28:03.179Z"
+      },
+      {
+        "created_at": "2026-10-24T03:27:40.259Z",
+        "creation_key": "new-driver-onboarding-guide",
+        "generation": "2",
+        "goal_id": "e0374ecf-cc86-45a6-879b-25d1a97f2c31",
+        "objective": "Prepare an onboarding guide for new fleet drivers as a separate deliverable from the fleet fuel consumption report. Continue this work alongside the existing fuel report responsibility.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "2",
+        "source_message_id": "4421b78a-3495-5c20-9748-3d6024354275",
+        "source_run_id": "8cde802e-d980-564b-ac8b-928927ab153d",
+        "status": "stopped",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare an onboarding guide for new drivers",
+        "updated_at": "2026-10-24T03:28:26.208Z"
+      },
+      {
+        "created_at": "2026-10-24T03:28:37.216Z",
+        "creation_key": "tyre-inspection-checklist",
+        "generation": "1",
+        "goal_id": "82ab8a51-08fb-4950-95ae-92f80ad4517b",
+        "objective": "Prepare and deliver a tyre inspection checklist. Keep this as an independent responsibility from the monthly maintenance cost report until delivered.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "1",
+        "source_message_id": "9b83b7f9-db4f-5b3a-904f-bcedc4e817c9",
+        "source_run_id": "ff18f139-0076-5502-af32-688ae1922926",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare a tyre inspection checklist",
+        "updated_at": "2026-10-24T03:28:37.216Z"
+      },
+      {
+        "created_at": "2026-10-24T03:28:37.221Z",
+        "creation_key": "monthly-maintenance-cost-report",
+        "generation": "1",
+        "goal_id": "45d80aa5-18b3-4255-a842-34a638f90090",
+        "objective": "Prepare and deliver a monthly maintenance cost report using the user's maintenance cost data. Keep this as an independent responsibility from the tyre inspection checklist until delivered.",
+        "responsible_agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+        "revision": "1",
+        "source_message_id": "9b83b7f9-db4f-5b3a-904f-bcedc4e817c9",
+        "source_run_id": "ff18f139-0076-5502-af32-688ae1922926",
+        "status": "active",
+        "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354",
+        "title": "Prepare a monthly maintenance cost report",
+        "updated_at": "2026-10-24T03:28:37.221Z"
+      }
+    ],
+    "receipt": {
+      "agent_id": "afebe70b-8bab-476c-b301-f18eeebff050",
+      "command_id": "b75966fe-2c1e-453a-955e-3427716ccc82",
+      "committed_seq": "1164",
+      "config_revision": "4",
+      "context_generation": "1",
+      "message_id": "da9f9293-9a61-593f-87e8-d8e5118215dd",
+      "run_id": "a1da87cd-940f-5b55-aa35-af6623c778c8",
+      "schema_version": "nma.v1",
+      "status": "accepted",
+      "thread_id": "43164f2b-3a66-4c1c-8ba9-492c7a34b354"
+    },
+    "reply": "A weekly report would give faster visibility into repair spending and recurring problems, but require more frequent data collection and review.\n\nKey tradeoffs:\n  Timeliness: Issues surface sooner, making weekly reporting useful for operational decisions.\n  Workload: More reporting cycles and follow-up on missing invoices.\n  Volatility: One major repair can dominate a week, making trends harder to interpret.\n  Completeness: Late invoices can leave weekly totals provisional and require corrections.\n  Comparability: Monthly totals generally align better with budgets and accounting periods.\n\nA practical compromise is a short weekly exception summary alongside the full monthly cost report.\n\nThe current monthly requirement remains unchanged."
+  }
+]

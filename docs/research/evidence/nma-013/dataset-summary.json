@@ -1,0 +1,15 @@
+{
+  "cases": 16,
+  "passed": 16,
+  "model": "gpt-6.1-sol",
+  "native_sessions": 4,
+  "process_restarts": 3,
+  "false_capture_turns": 0,
+  "non_mutating_turns": 9,
+  "duplicate_goals": 0,
+  "created_goals": 4,
+  "corrections": 2,
+  "targeted_stops": 2,
+  "tool_receipts": 14,
+  "provenance_receipts_verified": true
+}

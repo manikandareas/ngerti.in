@@ -1,0 +1,206 @@
+....FFE                                                                  [100%]
+==================================== ERRORS ====================================
+______________ ERROR at setup of test_goal_http_snapshot_and_sse _______________
+
+fixturedef = <FixtureDef argname='public_api' scope='function' baseid='tests/test_goals.py'>
+request = <SubRequest 'public_api' for <Function test_goal_http_snapshot_and_sse>>
+
+    @pytest.hookimpl(wrapper=True)
+    def pytest_fixture_setup(fixturedef: FixtureDef, request) -> object | None:
+        asyncio_mode = _get_asyncio_mode(request.config)
+        if not _is_asyncio_fixture_function(fixturedef.func):
+            if asyncio_mode == Mode.STRICT:
+                # Ignore async fixtures without explicit asyncio mark in strict mode
+                # This applies to pytest_trio fixtures, for example
+>               return (yield)
+                        ^^^^^
+
+.dev/nma-006-closure/runtime/lib/python3.14/site-packages/pytest_asyncio/plugin.py:728: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+runtime = (PosixPath('/tmp/nma-whnupopt'), <http.server.ThreadingHTTPServer object at 0x10b52da90>, <function runtime.<locals>.c...cancel', 'runtime.read', 'runtime.events', 'runtime.snapshot'], 'production_ready': False, 'schema_version': 'nma.v1'})
+
+    @pytest.fixture
+    def public_api(runtime):
+        root, *_ = runtime
+        backend = Path(__file__).resolve().parents[2] / "backend"
+        python = backend / ".venv/bin/python"
+        if not python.exists():
+            pytest.skip("Public HTTP acceptance requires the backend environment")
+        registry = root / "partitions.json"
+        registry.write_text(
+            json.dumps(
+                {
+                    OWNER: {
+                        "key_file": str(root / "key"),
+                        "socket": str(root / "state/nma.sock"),
+                    }
+                }
+            )
+        )
+        with socket.socket() as sock:
+            sock.bind(("127.0.0.1", 0))
+            port = sock.getsockname()[1]
+        script = root / "http_app.py"
+        script.write_text("""import os
+    from fastapi import FastAPI
+    from ngertiin.agent_engine.api import router
+    from ngertiin.agent_engine.stream import router as streams
+    from ngertiin.accounts.auth import current_account
+    from ngertiin.models import Account
+    from uuid import UUID
+    import uvicorn
+    app = FastAPI()
+    app.include_router(router)
+    app.include_router(streams)
+    app.dependency_overrides[current_account] = lambda: Account(id=UUID(os.environ["TEST_OWNER"]), clerk_user_id="fixture")
+    uvicorn.run(app, host="127.0.0.1", port=int(os.environ["TEST_PORT"]), log_level="error")
+    """)
+        log = (root / "http.log").open("w")
+        process = subprocess.Popen(
+            [str(python), str(script)],
+            env={
+                **os.environ,
+                "PYTHONPATH": str(backend / "src"),
+                "NMA_PARTITIONS_FILE": str(registry),
+                "TEST_OWNER": OWNER,
+                "TEST_PORT": str(port),
+            },
+            stdout=log,
+            stderr=log,
+        )
+        base = f"http://127.0.0.1:{port}/api/agent-engine/v1"
+    
+        def request(path, body=None, headers=None):
+            data = json.dumps(body).encode() if body is not None else None
+            return urlopen(
+                Request(
+                    base + path,
+                    data=data,
+                    headers={"Content-Type": "application/json", **(headers or {})},
+                ),
+                timeout=15,
+            )
+    
+        try:
+            for _ in range(100):
+                try:
+                    request("/agents").close()
+                    break
+                except OSError:
+                    time.sleep(0.1)
+            else:
+>               pytest.fail((root / "http.log").read_text())
+E               Failed
+
+apps/engine/tests/test_direct_messages.py:217: Failed
+=================================== FAILURES ===================================
+______________ test_goal_hard_crash_boundary[after_goal_commit-1] ______________
+
+runtime = (PosixPath('/tmp/nma-whnupopt'), <http.server.ThreadingHTTPServer object at 0x10b52da90>, <function runtime.<locals>.c...cancel', 'runtime.read', 'runtime.events', 'runtime.snapshot'], 'production_ready': False, 'schema_version': 'nma.v1'})
+point = 'after_goal_commit', count = 1
+
+    @pytest.mark.parametrize(
+        "point,count", [("before_goal_commit", 0), ("after_goal_commit", 1)]
+    )
+    def test_goal_hard_crash_boundary(runtime, point, count):
+        root, provider, call, start, *_ = runtime
+        thread = dm(call, "crash-" + point.replace("_", "-"))
+        start.current.kill()
+        start.current.wait(timeout=10)
+        (root / "fault-fired").unlink(missing_ok=True)
+        start(point)
+        args = {
+            "action": "create",
+            "creation_key": "crash-proof",
+            "title": "Crash proof",
+            "objective": "Preserve capture across restart",
+        }
+        request = send(thread, "RESPONSIBILITY:" + json.dumps(args))
+        receipt = call(request)["result"]
+        start.current.wait(timeout=15)
+        assert (root / "fault-fired").read_text() == point
+        before = len(provider.requests)
+>       start()
+
+apps/engine/tests/test_goals.py:223: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+fault = None
+
+    def start(fault=None):
+        log = (root / f"gateway-{len(processes)}.log").open("w+")
+        process = subprocess.Popen(
+            [RUNTIME_PYTHON, str(Path(__file__).with_name("fault_launcher.py"))]
+            if fault
+            else [RUNTIME_PYTHON, "-m", "ngertiin_engine.service"],
+            cwd=SOURCE,
+            env=env
+            | (
+                {"NMA_TEST_FAULT": fault, "NMA_TEST_MARKER": str(root / "fault-fired")}
+                if fault
+                else {}
+            ),
+            stdout=log,
+            stderr=subprocess.STDOUT,
+        )
+        processes.append(process)
+        start.current = process
+        deadline = time.monotonic() + 90
+        while process.poll() is None and time.monotonic() < deadline:
+            try:
+                response = call(command("runtime.describe"))
+                if "result" in response:
+                    return process, response["result"]
+            except (OSError, ValueError):
+                pass
+            time.sleep(0.1)
+        log.flush()
+>       pytest.fail(
+            log.read()
+            if log.seek(0) is None
+            else (root / f"gateway-{len(processes) - 1}.log").read_text()
+        )
+E       Failed: ❌ Another gateway already owns this host: PID 98210 (no bound port; profiles: default)
+E          Exactly one gateway per host serves every profile, so this process will not start a
+E          second one (it would double-bind this profile's platforms).
+E          Fold every profile onto the owner:  hermes gateway migrate --multiplex
+E          Or stop the other gateway first, then start this one.
+E          Or start one anyway (skips the host-lock check):  hermes gateway run --force
+E          (--replace does not skip this check; it only replaces an owner that serves this profile.)
+
+apps/engine/tests/test_runtime.py:278: Failed
+________________ test_goal_schema_upgrade_preserves_prior_data _________________
+
+runtime = (PosixPath('/tmp/nma-whnupopt'), <http.server.ThreadingHTTPServer object at 0x10b52da90>, <function runtime.<locals>.c...cancel', 'runtime.read', 'runtime.events', 'runtime.snapshot'], 'production_ready': False, 'schema_version': 'nma.v1'})
+
+    def test_goal_schema_upgrade_preserves_prior_data(runtime):
+        root, _, call, start, *_ = runtime
+>       thread = dm(call, "goal-upgrade")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps/engine/tests/test_goals.py:248: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+apps/engine/tests/test_direct_messages.py:21: in dm
+    agent = create_agent(call, handle)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps/engine/tests/test_threads.py:12: in create_agent
+    return call(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+body = {'schema_version': 'nma.v1', 'command_id': '3a949685-a17b-4071-8a85-6f122d23db0b', 'type': 'agent.create', 'expected_revision': None, ...}
+envelope = {'audience': 'ngertiin-engine', 'owner_id': '6b16bc9b-94f5-408e-b365-926ff22af3d9', 'actor': 'owner', 'expires_at': 1792811852, ...}
+
+    def call(body, envelope=None):
+        envelope = sign(body, OWNER, KEY) if envelope is None else envelope
+        with socket.socket(socket.AF_UNIX) as client:
+            client.settimeout(35)
+>           client.connect(str(home / "nma.sock"))
+E           ConnectionRefusedError: [Errno 61] Connection refused
+
+apps/engine/tests/test_runtime.py:288: ConnectionRefusedError
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_goals.py::test_goal_hard_crash_boundary[after_goal_commit-1]
+FAILED apps/engine/tests/test_goals.py::test_goal_schema_upgrade_preserves_prior_data
+ERROR apps/engine/tests/test_goals.py::test_goal_http_snapshot_and_sse - Failed
+2 failed, 4 passed, 1 error in 52.46s

@@ -1,0 +1,19 @@
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+hypothetical {'run_succeeded': True, 'operations': True, 'count': True, 'target': True, 'requirements': True}
+commit {'run_succeeded': True, 'operations': True, 'count': True, 'target': True, 'requirements': True}
+correction {'run_succeeded': True, 'operations': True, 'count': True, 'target': True, 'requirements': True}
+repeat {'run_succeeded': True, 'operations': True, 'count': True, 'target': True, 'requirements': True}
+second-goal {'run_succeeded': True, 'operations': True, 'count': True, 'target': True, 'requirements': True}
+fresh-session-correction {'run_succeeded': True, 'operations': True, 'count': True, 'target': True, 'requirements': True}
+fresh-session-repeat {'run_succeeded': True, 'operations': True, 'count': True, 'target': True, 'requirements': True}
+run-stop-only {'run_succeeded': True, 'operations': True, 'count': True, 'target': True, 'requirements': True}
+goal-stop {'run_succeeded': True, 'operations': True, 'count': True, 'target': True, 'requirements': True}
+stopped-after-restart {'run_succeeded': True, 'operations': True, 'count': True, 'target': True, 'requirements': True}
+quoted-request {'run_succeeded': True, 'operations': True, 'count': True, 'target': True, 'requirements': True}
+negation {'run_succeeded': True, 'operations': True, 'count': True, 'target': True, 'requirements': True}
+ambiguous-stop {'run_succeeded': True, 'operations': True, 'count': True, 'target': True, 'requirements': True}
+stop-remaining {'run_succeeded': True, 'operations': True, 'count': True, 'target': True, 'requirements': True}
+two-commitments {'run_succeeded': True, 'operations': True, 'count': True, 'target': True, 'requirements': True}
+hypothetical-correction {'run_succeeded': True, 'operations': True, 'count': True, 'target': True, 'requirements': True}
+.
+1 passed in 100.41s (0:01:40)

@@ -445,8 +445,10 @@ def test_schema_five_upgrade_preserves_messages_and_replay(runtime):
     start.current.wait(timeout=10)
     # Reconstruct the predecessor with existing native/domain rows intact.
     with sqlite3.connect(root / "state/state.db") as db:
+        db.execute("DROP TABLE nma_goal_operations")
+        db.execute("DROP TABLE nma_goals")
         db.execute("DROP TABLE nma_dm_requests")
-        db.execute("DELETE FROM nma_schema_migrations WHERE version=6")
+        db.execute("DELETE FROM nma_schema_migrations WHERE version>=6")
         db.execute("UPDATE nma_partition SET schema_version=5")
     start()
     assert snapshot(call, thread) == before

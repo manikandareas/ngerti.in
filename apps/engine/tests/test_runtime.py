@@ -91,6 +91,23 @@ class Model(BaseHTTPRequestHandler):
                     }
                 ],
             }
+        text = text.split("\n\n")[-1]
+        if text.startswith("RESPONSIBILITY:") and messages[-1]["role"] != "tool":
+            tool = True
+            message = {
+                "role": "assistant",
+                "content": None,
+                "tool_calls": [
+                    {
+                        "id": "call-goal",
+                        "type": "function",
+                        "function": {
+                            "name": "responsibility",
+                            "arguments": text.split(":", 1)[1],
+                        },
+                    }
+                ],
+            }
         reason = "tool_calls" if tool else "stop"
         response = {
             "id": "local",
@@ -215,6 +232,18 @@ def runtime(tmp_path_factory):
         "NMA_SERVICE_KEY_FILE": str(root / "key"),
         "NMA_BINDINGS_FILE": str(root / "bindings.json"),
     }
+    if os.environ.get("NMA_TEST_LIVE_ENV"):
+        from dotenv import dotenv_values
+
+        credentials = dotenv_values(os.environ["NMA_TEST_LIVE_ENV"])
+        model = credentials["OPENAI_MODEL"]
+        endpoint = credentials.get("OPENAI_BASE_URL") or "https://api.openai.com/v1"
+        models = json.loads((root / "models.json").read_text())
+        models["test"].update(model=model, base_url=endpoint)
+        (root / "models.json").write_text(json.dumps(models))
+        env.update(
+            OPENAI_API_KEY=credentials["OPENAI_API_KEY"], OPENAI_BASE_URL=endpoint
+        )
     (root / "capabilities.json").write_text("{}")
     processes = []
 
@@ -577,6 +606,8 @@ def test_agent_additive_migration_from_foundation(runtime):
     with sqlite3.connect(root / "state/state.db") as db:
         before = db.execute("SELECT count(*) FROM nma_commands").fetchone()[0]
         for table in (
+            "nma_goal_operations",
+            "nma_goals",
             "nma_dm_requests",
             "nma_run_terminals",
             "nma_effects",
@@ -603,7 +634,7 @@ def test_agent_additive_migration_from_foundation(runtime):
         == []
     )
     with sqlite3.connect(root / "state/state.db") as db:
-        assert db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 6
+        assert db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 7
         assert db.execute("SELECT count(*) FROM nma_commands").fetchone()[0] == before
         assert db.execute("PRAGMA foreign_key_check").fetchall() == []
 

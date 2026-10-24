@@ -12,6 +12,7 @@ from ngertiin_engine.context import DDL as CONTEXT_DDL
 from ngertiin_engine.context import fence_context_runs
 from ngertiin_engine.contracts import EngineError, canonical, digest
 from ngertiin_engine.direct_messages import DDL as DM_DDL
+from ngertiin_engine.goals import DDL as GOAL_DDL
 from ngertiin_engine.reliability import DDL as RELIABILITY_DDL
 from ngertiin_engine.threads import DDL as THREAD_DDL
 
@@ -24,6 +25,7 @@ DDL = (
     "CREATE TABLE nma_adapter_bindings (owner_id TEXT NOT NULL, binding_id TEXT NOT NULL, config_digest TEXT NOT NULL, config TEXT NOT NULL, native_session_id TEXT, PRIMARY KEY(owner_id,binding_id), FOREIGN KEY(owner_id) REFERENCES nma_partition(owner_id))",
     "CREATE TABLE nma_adapter_runs (owner_id TEXT NOT NULL, run_id TEXT NOT NULL, binding_id TEXT NOT NULL, operation_id TEXT NOT NULL, native_admission_id TEXT, PRIMARY KEY(owner_id,run_id), UNIQUE(owner_id,operation_id), FOREIGN KEY(owner_id,binding_id) REFERENCES nma_adapter_bindings(owner_id,binding_id), FOREIGN KEY(owner_id,operation_id) REFERENCES nma_commands(owner_id,command_id))",
 )
+GOAL_CHECKSUM = hashlib.sha256("\n".join(GOAL_DDL).encode()).hexdigest()
 DM_CHECKSUM = hashlib.sha256("\n".join(DM_DDL).encode()).hexdigest()
 RELIABILITY_CHECKSUM = hashlib.sha256("\n".join(RELIABILITY_DDL).encode()).hexdigest()
 AGENT_CHECKSUM = hashlib.sha256("\n".join(AGENT_DDL).encode()).hexdigest()
@@ -80,7 +82,7 @@ class Store:
                 (self.owner,),
             ).fetchone()
             if (
-                rows[0][2] not in (1, 2, 3, 4, 5, 6)
+                rows[0][2] not in (1, 2, 3, 4, 5, 6, 7)
                 or not saved
                 or saved[0] != CHECKSUM
             ):
@@ -188,6 +190,23 @@ class Store:
                 (self.owner,),
             ).fetchone()
             if not saved or saved[0] != DM_CHECKSUM:
+                raise EngineError("UNSUPPORTED_SCHEMA")
+
+        version = conn.execute("SELECT schema_version FROM nma_partition").fetchone()[0]
+        if version == 6:
+            for statement in GOAL_DDL:
+                conn.execute(statement)
+            conn.execute(
+                "INSERT INTO nma_schema_migrations(owner_id,version,checksum) VALUES (?,7,?)",
+                (self.owner, GOAL_CHECKSUM),
+            )
+            conn.execute("UPDATE nma_partition SET schema_version=7")
+        else:
+            saved = conn.execute(
+                "SELECT checksum FROM nma_schema_migrations WHERE owner_id=? AND version=7",
+                (self.owner,),
+            ).fetchone()
+            if not saved or saved[0] != GOAL_CHECKSUM:
                 raise EngineError("UNSUPPORTED_SCHEMA")
 
     def receipt(self, body):

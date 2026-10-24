@@ -9,6 +9,7 @@ from ngertiin_engine.capabilities import FIELDS, authorize, resolve
 from ngertiin_engine.context import Context
 from ngertiin_engine.contracts import EngineError, canonical, counter, digest, uuid
 from ngertiin_engine.direct_messages import DirectMessages
+from ngertiin_engine.goals import Goals
 from ngertiin_engine.reliability import Reliability
 from ngertiin_engine.store import Store
 from ngertiin_engine.threads import Threads
@@ -46,6 +47,7 @@ class Adapter:
         self.threads = Threads(self.store, self.agents)
         self.context = Context(self.store, self.threads)
         self.dm = DirectMessages(self)
+        self.goals = Goals(self.store)
         self.actor = Principal(
             "nma:" + owner,
             authority.profile_id,

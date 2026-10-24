@@ -2,6 +2,7 @@
 
 import os
 import signal
+import threading
 from pathlib import Path
 
 from ngertiin_engine.reliability import Reliability
@@ -15,9 +16,32 @@ def crash():
     if not marker.exists():
         marker.write_text(point)
         os.kill(os.getpid(), signal.SIGKILL)
+        # Never return to the transaction if host signal delivery is deferred.
+        threading.Event().wait()
 
 
-if point == "after_dm_prepare":
+if point == "after_goal_commit":
+    from ngertiin_engine.goals import Goals
+
+    original = Goals.tool
+
+    def goal_tool(self, stamp, args, ids):
+        value = original(self, stamp, args, ids)
+        crash()
+        return value
+
+    Goals.tool = goal_tool
+elif point == "before_goal_commit":
+    original = Reliability.append
+
+    def append(self, conn, run_id, config, kind, payload):
+        value = original(self, conn, run_id, config, kind, payload)
+        if kind == "goal.changed":
+            crash()
+        return value
+
+    Reliability.append = append
+elif point == "after_dm_prepare":
     from ngertiin_engine.direct_messages import DirectMessages
 
     original = DirectMessages.prepare

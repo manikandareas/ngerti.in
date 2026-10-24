@@ -1,0 +1,270 @@
+[
+  {
+    "case": "hypothetical",
+    "session": "dm-1",
+    "checks": {
+      "run_succeeded": true,
+      "operations": true,
+      "count": true,
+      "target": true,
+      "requirements": true
+    },
+    "operations": [],
+    "before": [],
+    "after": [],
+    "receipt": {
+      "agent_id": "55f95436-1481-4d21-83a8-53c9f226ef8b",
+      "command_id": "179d2bc0-d1b5-4ada-992f-8fc46e10607d",
+      "committed_seq": "6",
+      "config_revision": "1",
+      "context_generation": "1",
+      "message_id": "71d0f1eb-21f0-5767-9fb9-0670ec1c9308",
+      "run_id": "8088500e-5ccd-52c9-a9b4-2ce22bd90a5c",
+      "schema_version": "nma.v1",
+      "status": "accepted",
+      "thread_id": "12548469-5574-40fc-8a6b-294766fdce49"
+    },
+    "reply": "Sebaiknya laporan konsumsi BBM mingguan memuat:\n\n1. Ringkasan minggu berjalan\n   Periode laporan, total liter BBM, total biaya, dan perubahan dibanding minggu sebelumnya.\n\n2. Rincian per kendaraan atau alat\n   Identitas unit, jenis BBM, jumlah pengisian, total liter, biaya, serta kilometer tempuh atau jam operasi.\n\n3. Efisiensi pemakaian\n   Untuk kendaraan: km/liter atau liter/100 km.\n   Untuk alat: liter/jam operasi.\n   Bandingkan dengan target atau rata-rata historis unit yang sama.\n\n4. Penyimpangan dan penjelasan\n   Konsumsi melonjak, pengisian tidak wajar, atau data yang belum lengkap. Catat kemungkinan penyebabnya, tanpa langsung menyimpulkan ada penyalahgunaan.\n\n5. Tindak lanjut\n   Misalnya pemeriksaan unit boros, perbaikan pencatatan odometer, atau pengecekan bukti pengisian.\n\nData dasarnya idealnya mencakup tanggal, unit, pengemudi/operator, liter, harga per liter, odometer/jam operasi, dan bukti transaksi. Perlu dibedakan antara BBM yang dibeli dan yang benar-benar dikonsumsi\u2014keduanya belum tentu sama dalam satu minggu.\n\nUntuk awal, satu halaman ringkasan dengan tabel rincian sebagai lampiran biasanya cukup. Ini tetap sebatas diskusi, belum menjadi pekerjaan yang perlu dijalankan."
+  },
+  {
+    "case": "commit",
+    "session": "dm-1",
+    "checks": {
+      "run_succeeded": true,
+      "operations": true,
+      "count": true,
+      "target": true,
+      "requirements": true
+    },
+    "operations": [
+      "create"
+    ],
+    "before": [],
+    "after": [
+      {
+        "created_at": "2026-10-24 03:13:59",
+        "creation_key": "fleet-fuel-report",
+        "generation": "1",
+        "goal_id": "9625b270-f163-4436-b8c6-639754115c62",
+        "objective": "Prepare the fleet fuel consumption report for Friday using the data the user will send, and continue the work until the report is ready. The source data is pending from the user.",
+        "responsible_agent_id": "55f95436-1481-4d21-83a8-53c9f226ef8b",
+        "revision": "1",
+        "source_message_id": "45806e94-f790-52a9-8e3f-42ad3b41af32",
+        "source_run_id": "9e035ae7-fa13-5fbf-9bcc-82840e791d7c",
+        "status": "active",
+        "thread_id": "12548469-5574-40fc-8a6b-294766fdce49",
+        "title": "Prepare the fleet fuel consumption report for Friday",
+        "updated_at": "2026-10-24 03:13:59"
+      }
+    ],
+    "receipt": {
+      "agent_id": "55f95436-1481-4d21-83a8-53c9f226ef8b",
+      "command_id": "57f16a0f-3439-40e3-99dd-aab80ac8690e",
+      "committed_seq": "310",
+      "config_revision": "1",
+      "context_generation": "1",
+      "message_id": "45806e94-f790-52a9-8e3f-42ad3b41af32",
+      "run_id": "9e035ae7-fa13-5fbf-9bcc-82840e791d7c",
+      "schema_version": "nma.v1",
+      "status": "accepted",
+      "thread_id": "12548469-5574-40fc-8a6b-294766fdce49"
+    },
+    "reply": "Tercatat sebagai tugas: menyiapkan laporan konsumsi BBM armada untuk Jumat sampai siap. Saat ini menunggu data dari Anda.\n\nKirimkan data pengisian, identitas unit, kilometer/jam operasi, dan periode laporan. Jumat yang dimaksud tanggal berapa?"
+  },
+  {
+    "case": "correction",
+    "session": "dm-1",
+    "checks": {
+      "run_succeeded": true,
+      "operations": true,
+      "count": true,
+      "target": true,
+      "requirements": true
+    },
+    "operations": [
+      "update"
+    ],
+    "before": [
+      {
+        "created_at": "2026-10-24 03:13:59",
+        "creation_key": "fleet-fuel-report",
+        "generation": "1",
+        "goal_id": "9625b270-f163-4436-b8c6-639754115c62",
+        "objective": "Prepare the fleet fuel consumption report for Friday using the data the user will send, and continue the work until the report is ready. The source data is pending from the user.",
+        "responsible_agent_id": "55f95436-1481-4d21-83a8-53c9f226ef8b",
+        "revision": "1",
+        "source_message_id": "45806e94-f790-52a9-8e3f-42ad3b41af32",
+        "source_run_id": "9e035ae7-fa13-5fbf-9bcc-82840e791d7c",
+        "status": "active",
+        "thread_id": "12548469-5574-40fc-8a6b-294766fdce49",
+        "title": "Prepare the fleet fuel consumption report for Friday",
+        "updated_at": "2026-10-24 03:13:59"
+      }
+    ],
+    "after": [
+      {
+        "created_at": "2026-10-24 03:13:59",
+        "creation_key": "fleet-fuel-report",
+        "generation": "2",
+        "goal_id": "9625b270-f163-4436-b8c6-639754115c62",
+        "objective": "Prepare the fleet fuel consumption report for Monday using the data the user will send, include fuel consumption in liters per 100 km, and continue the work until the report is ready. The source data is pending from the user.",
+        "responsible_agent_id": "55f95436-1481-4d21-83a8-53c9f226ef8b",
+        "revision": "2",
+        "source_message_id": "45806e94-f790-52a9-8e3f-42ad3b41af32",
+        "source_run_id": "9e035ae7-fa13-5fbf-9bcc-82840e791d7c",
+        "status": "active",
+        "thread_id": "12548469-5574-40fc-8a6b-294766fdce49",
+        "title": "Prepare the fleet fuel consumption report for Monday",
+        "updated_at": "2026-10-24 03:14:07"
+      }
+    ],
+    "receipt": {
+      "agent_id": "55f95436-1481-4d21-83a8-53c9f226ef8b",
+      "command_id": "4ea3396e-7dd6-4368-89d7-f7a1f0d40a41",
+      "committed_seq": "383",
+      "config_revision": "1",
+      "context_generation": "1",
+      "message_id": "f0bc31c3-6869-5ec3-bcb2-42b7d48ffecd",
+      "run_id": "9a9df392-6bda-5d93-8b8f-0c6e7bc86243",
+      "schema_version": "nma.v1",
+      "status": "accepted",
+      "thread_id": "12548469-5574-40fc-8a6b-294766fdce49"
+    },
+    "reply": "Sudah diperbarui: tenggat Senin, bukan Jumat, dan laporan akan mencakup konsumsi dalam liter per 100 km. Data masih menunggu kiriman Anda."
+  },
+  {
+    "case": "repeat",
+    "session": "dm-1",
+    "checks": {
+      "run_succeeded": true,
+      "operations": true,
+      "count": true,
+      "target": true,
+      "requirements": true
+    },
+    "operations": [],
+    "before": [
+      {
+        "created_at": "2026-10-24 03:13:59",
+        "creation_key": "fleet-fuel-report",
+        "generation": "2",
+        "goal_id": "9625b270-f163-4436-b8c6-639754115c62",
+        "objective": "Prepare the fleet fuel consumption report for Monday using the data the user will send, include fuel consumption in liters per 100 km, and continue the work until the report is ready. The source data is pending from the user.",
+        "responsible_agent_id": "55f95436-1481-4d21-83a8-53c9f226ef8b",
+        "revision": "2",
+        "source_message_id": "45806e94-f790-52a9-8e3f-42ad3b41af32",
+        "source_run_id": "9e035ae7-fa13-5fbf-9bcc-82840e791d7c",
+        "status": "active",
+        "thread_id": "12548469-5574-40fc-8a6b-294766fdce49",
+        "title": "Prepare the fleet fuel consumption report for Monday",
+        "updated_at": "2026-10-24 03:14:07"
+      }
+    ],
+    "after": [
+      {
+        "created_at": "2026-10-24 03:13:59",
+        "creation_key": "fleet-fuel-report",
+        "generation": "2",
+        "goal_id": "9625b270-f163-4436-b8c6-639754115c62",
+        "objective": "Prepare the fleet fuel consumption report for Monday using the data the user will send, include fuel consumption in liters per 100 km, and continue the work until the report is ready. The source data is pending from the user.",
+        "responsible_agent_id": "55f95436-1481-4d21-83a8-53c9f226ef8b",
+        "revision": "2",
+        "source_message_id": "45806e94-f790-52a9-8e3f-42ad3b41af32",
+        "source_run_id": "9e035ae7-fa13-5fbf-9bcc-82840e791d7c",
+        "status": "active",
+        "thread_id": "12548469-5574-40fc-8a6b-294766fdce49",
+        "title": "Prepare the fleet fuel consumption report for Monday",
+        "updated_at": "2026-10-24 03:14:07"
+      }
+    ],
+    "receipt": {
+      "agent_id": "55f95436-1481-4d21-83a8-53c9f226ef8b",
+      "command_id": "b762727c-495c-4557-a207-e21acca8c320",
+      "committed_seq": "435",
+      "config_revision": "1",
+      "context_generation": "1",
+      "message_id": "6cae3a9a-41b1-59b5-a2fe-8fe29a97ff40",
+      "run_id": "b0e697fe-3af3-50a8-930f-1527b26de2de",
+      "schema_version": "nma.v1",
+      "status": "accepted",
+      "thread_id": "12548469-5574-40fc-8a6b-294766fdce49"
+    },
+    "reply": "Tetap memakai pekerjaan laporan BBM yang sama: tenggat Senin, mencakup liter per 100 km, dan menunggu data Anda. Tidak ada pekerjaan baru yang dibuat."
+  },
+  {
+    "case": "second-goal",
+    "session": "dm-1",
+    "checks": {
+      "run_succeeded": true,
+      "operations": true,
+      "count": true,
+      "target": true,
+      "requirements": true
+    },
+    "operations": [
+      "create"
+    ],
+    "before": [
+      {
+        "created_at": "2026-10-24 03:13:59",
+        "creation_key": "fleet-fuel-report",
+        "generation": "2",
+        "goal_id": "9625b270-f163-4436-b8c6-639754115c62",
+        "objective": "Prepare the fleet fuel consumption report for Monday using the data the user will send, include fuel consumption in liters per 100 km, and continue the work until the report is ready. The source data is pending from the user.",
+        "responsible_agent_id": "55f95436-1481-4d21-83a8-53c9f226ef8b",
+        "revision": "2",
+        "source_message_id": "45806e94-f790-52a9-8e3f-42ad3b41af32",
+        "source_run_id": "9e035ae7-fa13-5fbf-9bcc-82840e791d7c",
+        "status": "active",
+        "thread_id": "12548469-5574-40fc-8a6b-294766fdce49",
+        "title": "Prepare the fleet fuel consumption report for Monday",
+        "updated_at": "2026-10-24 03:14:07"
+      }
+    ],
+    "after": [
+      {
+        "created_at": "2026-10-24 03:13:59",
+        "creation_key": "fleet-fuel-report",
+        "generation": "2",
+        "goal_id": "9625b270-f163-4436-b8c6-639754115c62",
+        "objective": "Prepare the fleet fuel consumption report for Monday using the data the user will send, include fuel consumption in liters per 100 km, and continue the work until the report is ready. The source data is pending from the user.",
+        "responsible_agent_id": "55f95436-1481-4d21-83a8-53c9f226ef8b",
+        "revision": "2",
+        "source_message_id": "45806e94-f790-52a9-8e3f-42ad3b41af32",
+        "source_run_id": "9e035ae7-fa13-5fbf-9bcc-82840e791d7c",
+        "status": "active",
+        "thread_id": "12548469-5574-40fc-8a6b-294766fdce49",
+        "title": "Prepare the fleet fuel consumption report for Monday",
+        "updated_at": "2026-10-24 03:14:07"
+      },
+      {
+        "created_at": "2026-10-24 03:14:17",
+        "creation_key": "new-driver-onboarding-guide",
+        "generation": "1",
+        "goal_id": "67aa57d8-9f87-4f28-8f48-356f4a72d983",
+        "objective": "Prepare an onboarding guide for new drivers and continue the work until the guide is ready. Track this as a separate responsibility from the existing fleet fuel consumption report; continue both responsibilities.",
+        "responsible_agent_id": "55f95436-1481-4d21-83a8-53c9f226ef8b",
+        "revision": "1",
+        "source_message_id": "247005a0-72ec-5f8d-9a60-ba04cb274112",
+        "source_run_id": "29aa798c-557f-55ca-bf5f-75ea56a81eb5",
+        "status": "active",
+        "thread_id": "12548469-5574-40fc-8a6b-294766fdce49",
+        "title": "Prepare an onboarding guide for new drivers",
+        "updated_at": "2026-10-24 03:14:17"
+      }
+    ],
+    "receipt": {
+      "agent_id": "55f95436-1481-4d21-83a8-53c9f226ef8b",
+      "command_id": "e208666f-a68f-44eb-97d4-459194d7ab8a",
+      "committed_seq": "480",
+      "config_revision": "1",
+      "context_generation": "1",
+      "message_id": "247005a0-72ec-5f8d-9a60-ba04cb274112",
+      "run_id": "29aa798c-557f-55ca-bf5f-75ea56a81eb5",
+      "schema_version": "nma.v1",
+      "status": "accepted",
+      "thread_id": "12548469-5574-40fc-8a6b-294766fdce49"
+    },
+    "reply": "Panduan onboarding pengemudi baru sudah dicatat sebagai pekerjaan terpisah. Keduanya tetap aktif:\n\n1. Laporan BBM untuk Senin, termasuk liter per 100 km\u2014menunggu data Anda.\n2. Panduan onboarding pengemudi baru.\n\nUntuk menyesuaikan panduan, armadanya jenis apa dan apakah sudah ada SOP internal?"
+  }
+]

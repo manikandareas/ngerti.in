@@ -58,7 +58,12 @@ def public_event(event):
     kind = {"run.succeeded": "run.completed", "message.delta": "run.delta"}.get(
         event["type"], event["type"]
     )
-    return {**event, "type": kind, "seq": event.get("sequence", event.get("seq")), "goal_id": None}
+    return {
+        **event,
+        "type": kind,
+        "seq": event.get("sequence", event.get("seq")),
+        "goal_id": event.get("goal_id"),
+    }
 
 
 @router.get("/threads/{thread_id}/snapshot")

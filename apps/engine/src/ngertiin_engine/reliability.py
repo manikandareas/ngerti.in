@@ -74,6 +74,7 @@ class Reliability:
             "occurred_at": datetime.now(UTC).isoformat(),
             "sequence": str(seq),
             "run_id": run_id,
+            "goal_id": payload.get("goal", {}).get("goal_id"),
             "agent_id": config["agent_id"],
             "thread_id": config["thread_id"],
             "config_revision": config["config_revision"],
@@ -406,6 +407,10 @@ class Reliability:
         return self.store.write(read)
 
     def tool(self, stamp, name, args, ids, invoke):
+        from ngertiin_engine.goals import TOOL, Goals
+
+        if name == TOOL:
+            return Goals(self.store).tool(stamp, args, ids)
         operation_id = digest([ids.turn_id, ids.tool_call_id, name])
         intent = digest([name, args])
 

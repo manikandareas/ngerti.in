@@ -15756,47 +15756,10 @@
           "width": 320,
           "height": "fill_container",
           "fill": "$gumloop/brand-muted",
-          "stroke": "$gumloop/divider",
-          "strokeWidth": {
-            "right": 1
-          },
           "layout": "vertical",
           "gap": 22,
           "padding": 20,
           "children": [
-            {
-              "type": "frame",
-              "id": "VkVWg",
-              "name": "Workspace header",
-              "width": "fill_container",
-              "gap": 12,
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "text",
-                  "id": "IQ2sO",
-                  "name": "ngertiin",
-                  "fill": "$gumloop/text",
-                  "textGrowth": "fixed-width",
-                  "width": "fill_container",
-                  "content": "ngertiin",
-                  "lineHeight": 1.5,
-                  "fontFamily": "$gumloop/font-ui",
-                  "fontSize": 24,
-                  "fontWeight": "500"
-                },
-                {
-                  "type": "icon",
-                  "id": "ytemo",
-                  "name": "square-pen",
-                  "width": 20,
-                  "height": 20,
-                  "icon": "square-pen",
-                  "library": "lucide",
-                  "fill": "$gumloop/text-muted"
-                }
-              ]
-            },
             {
               "type": "frame",
               "id": "DFb2h",
@@ -16559,10 +16522,6 @@
               "name": "Conversation header",
               "width": "fill_container",
               "height": 80,
-              "stroke": "$gumloop/divider",
-              "strokeWidth": {
-                "bottom": 1
-              },
               "gap": 12,
               "padding": [
                 0,
@@ -17271,47 +17230,10 @@
           "width": 320,
           "height": "fill_container",
           "fill": "$gumloop/brand-black",
-          "stroke": "$gumloop/divider",
-          "strokeWidth": {
-            "right": 1
-          },
           "layout": "vertical",
           "gap": 22,
           "padding": 20,
           "children": [
-            {
-              "type": "frame",
-              "id": "w1ObAR",
-              "name": "Workspace header",
-              "width": "fill_container",
-              "gap": 12,
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "text",
-                  "id": "BR2ge",
-                  "name": "ngertiin",
-                  "fill": "$gumloop/text",
-                  "textGrowth": "fixed-width",
-                  "width": "fill_container",
-                  "content": "ngertiin",
-                  "lineHeight": 1.5,
-                  "fontFamily": "$gumloop/font-ui",
-                  "fontSize": 24,
-                  "fontWeight": "500"
-                },
-                {
-                  "type": "icon",
-                  "id": "V1eQT",
-                  "name": "square-pen",
-                  "width": 20,
-                  "height": 20,
-                  "icon": "square-pen",
-                  "library": "lucide",
-                  "fill": "$gumloop/text-muted"
-                }
-              ]
-            },
             {
               "type": "frame",
               "id": "e2yqd",
@@ -18074,10 +17996,6 @@
               "name": "Conversation header",
               "width": "fill_container",
               "height": 80,
-              "stroke": "$gumloop/divider",
-              "strokeWidth": {
-                "bottom": 1
-              },
               "gap": 12,
               "padding": [
                 0,
@@ -18786,10 +18704,6 @@
           "width": 88,
           "height": "fill_container",
           "fill": "$gumloop/brand-muted",
-          "stroke": "$gumloop/divider",
-          "strokeWidth": {
-            "right": 1
-          },
           "layout": "vertical",
           "gap": 24,
           "padding": [
@@ -19080,10 +18994,6 @@
               "name": "Conversation header",
               "width": "fill_container",
               "height": 80,
-              "stroke": "$gumloop/divider",
-              "strokeWidth": {
-                "bottom": 1
-              },
               "gap": 12,
               "padding": [
                 0,
@@ -19773,10 +19683,6 @@
           "width": 360,
           "height": "fill_container",
           "fill": "$gumloop/brand-muted",
-          "stroke": "$gumloop/divider",
-          "strokeWidth": {
-            "left": 1
-          },
           "layout": "vertical",
           "gap": 24,
           "padding": 24,
@@ -20235,10 +20141,6 @@
           "width": 88,
           "height": "fill_container",
           "fill": "$gumloop/brand-black",
-          "stroke": "$gumloop/divider",
-          "strokeWidth": {
-            "right": 1
-          },
           "layout": "vertical",
           "gap": 24,
           "padding": [
@@ -20529,10 +20431,6 @@
               "name": "Conversation header",
               "width": "fill_container",
               "height": 80,
-              "stroke": "$gumloop/divider",
-              "strokeWidth": {
-                "bottom": 1
-              },
               "gap": 12,
               "padding": [
                 0,
@@ -21222,10 +21120,6 @@
           "width": 360,
           "height": "fill_container",
           "fill": "$gumloop/brand-black",
-          "stroke": "$gumloop/divider",
-          "strokeWidth": {
-            "left": 1
-          },
           "layout": "vertical",
           "gap": 24,
           "padding": 24,
@@ -21653,6 +21547,5057 @@
                   "icon": "chevron-right",
                   "library": "lucide",
                   "fill": "$gumloop/text-muted"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "cbYZ8",
+      "x": 7040,
+      "y": 233,
+      "name": "Ngertiin / Sales Outbound / Agent info / light",
+      "theme": {
+        "gumloop-mode": "light"
+      },
+      "clip": true,
+      "width": 1440,
+      "height": 1000,
+      "fill": "$gumloop/surface",
+      "cornerRadius": 12,
+      "stroke": "$gumloop/divider",
+      "strokeWidth": 1,
+      "children": [
+        {
+          "type": "frame",
+          "id": "ZHzFK",
+          "name": "Conversation sidebar",
+          "width": 88,
+          "height": "fill_container",
+          "fill": "$gumloop/brand-muted",
+          "layout": "vertical",
+          "gap": 24,
+          "padding": [
+            24,
+            12
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "Ad8oA",
+              "name": "Agent and group conversations",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "tbHaL",
+                  "name": "Chief conversation",
+                  "width": "fill_container",
+                  "cornerRadius": 8,
+                  "padding": [
+                    10,
+                    0
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "b2BqqU",
+                      "name": "Chief / DiceBear avatar",
+                      "width": 40,
+                      "height": 40,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/chief.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "DnInp",
+                  "name": "Sales Outbound conversation",
+                  "width": "fill_container",
+                  "fill": "$gumloop/brand-wash-inset",
+                  "cornerRadius": 8,
+                  "padding": [
+                    10,
+                    0
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "IMc7S",
+                      "name": "Sales Outbound / DiceBear avatar",
+                      "width": 40,
+                      "height": 40,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/sales-outbound.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "mLCLy",
+                  "name": "Inbox Manager conversation",
+                  "width": "fill_container",
+                  "cornerRadius": 8,
+                  "padding": [
+                    10,
+                    0
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "lGr8Q",
+                      "name": "Inbox Manager / DiceBear avatar",
+                      "width": 40,
+                      "height": 40,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/inbox-manager.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "y0K45u",
+                  "name": "Account Manager conversation",
+                  "width": "fill_container",
+                  "cornerRadius": 8,
+                  "padding": [
+                    10,
+                    0
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "WHZki",
+                      "name": "Account Manager / DiceBear avatar",
+                      "width": 40,
+                      "height": 40,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/account-manager.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Y93XDc",
+                  "name": "Talent Scout conversation",
+                  "width": "fill_container",
+                  "cornerRadius": 8,
+                  "padding": [
+                    10,
+                    0
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "BSRMG",
+                      "name": "Talent Scout / DiceBear avatar",
+                      "width": 40,
+                      "height": 40,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/talent-scout.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "R2RAM",
+                  "name": "Expense Manager conversation",
+                  "width": "fill_container",
+                  "cornerRadius": 8,
+                  "padding": [
+                    10,
+                    0
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "szYj7",
+                      "name": "Expense Manager / DiceBear avatar",
+                      "width": 40,
+                      "height": 40,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/expense-manager.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Y5ayo",
+                  "name": "Offsite crew conversation",
+                  "width": "fill_container",
+                  "cornerRadius": 8,
+                  "padding": [
+                    10,
+                    0
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "IUPTO",
+                      "name": "Offsite crew / DiceBear avatar",
+                      "width": 40,
+                      "height": 40,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/offsite-crew.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "nuQyw",
+              "name": "Sidebar breathing room",
+              "width": 1,
+              "height": "fill_container"
+            },
+            {
+              "type": "icon",
+              "id": "X1YLJG",
+              "name": "Add agent",
+              "width": 20,
+              "height": 20,
+              "icon": "plus",
+              "library": "lucide",
+              "fill": "$gumloop/text-muted"
+            },
+            {
+              "type": "frame",
+              "id": "nMBLo",
+              "name": "User profile",
+              "width": "fill_container",
+              "stroke": "$gumloop/divider",
+              "strokeWidth": {
+                "top": 1
+              },
+              "gap": 10,
+              "padding": [
+                16,
+                0,
+                0,
+                0
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "ptbqy",
+                  "name": "Armand Segall / DiceBear avatar",
+                  "width": 32,
+                  "height": 32,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "assets/critters/armand-segall.png",
+                    "mode": "contain"
+                  },
+                  "cornerRadius": 12
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "d5IS5",
+          "name": "Sales Outbound workspace",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "children": [
+            {
+              "type": "frame",
+              "id": "TuNvF",
+              "name": "Conversation header",
+              "width": "fill_container",
+              "height": 80,
+              "gap": 12,
+              "padding": [
+                0,
+                32
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "GUOVh",
+                  "name": "Sales Outbound / DiceBear avatar",
+                  "width": 36,
+                  "height": 36,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "assets/critters/sales-outbound.png",
+                    "mode": "contain"
+                  },
+                  "cornerRadius": 12
+                },
+                {
+                  "type": "frame",
+                  "id": "a0AJXb",
+                  "name": "Agent identity",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 1,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "Zj9Sy",
+                      "name": "Sales Outbound",
+                      "fill": "$gumloop/text",
+                      "content": "Sales Outbound",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 16,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "wpcWd",
+                      "name": "Your pipeline, moving forward.",
+                      "fill": "$gumloop/text-muted",
+                      "content": "Your pipeline, moving forward.",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "icon",
+                  "id": "nZqnV",
+                  "name": "monitor",
+                  "width": 18,
+                  "height": 18,
+                  "icon": "monitor",
+                  "library": "lucide",
+                  "fill": "$gumloop/text-muted"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "D4VWJi",
+              "name": "Conversation timeline",
+              "width": "fill_container",
+              "height": "fill_container",
+              "layout": "vertical",
+              "gap": 10,
+              "padding": [
+                16,
+                32
+              ],
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "gipCQ",
+                  "name": "Date separator",
+                  "width": "fill_container",
+                  "justifyContent": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "Y4fiZj",
+                      "name": "TODAY · 11:03 PM",
+                      "fill": "$gumloop/text-muted",
+                      "content": "TODAY · 11:03 PM",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-mono",
+                      "fontSize": 10,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "tJTTO",
+                  "name": "User / Initial request alignment",
+                  "width": "fill_container",
+                  "justifyContent": "end",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "pSk1L",
+                      "name": "User / Initial request bubble",
+                      "fill": "$gumloop/text",
+                      "cornerRadius": 12,
+                      "layout": "vertical",
+                      "padding": [
+                        10,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "J2F0Ie",
+                          "name": "User / Initial request text",
+                          "fill": "$gumloop/surface",
+                          "content": "Prepare tonight’s outreach. Focus on Acme and Globex.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 15,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "iySzh",
+                  "name": "Outbound queue artifact",
+                  "width": 780,
+                  "fill": "$gumloop/brand-wash",
+                  "cornerRadius": 12,
+                  "layout": "vertical",
+                  "padding": [
+                    10,
+                    16
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "gzggI",
+                      "name": "Outbound queue artifact / Message",
+                      "fill": "$gumloop/text",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "I’ve prepared 36 LinkedIn outreach drafts, including Daniel Alvarez at Acme and Vicky Chen at Globex. None have been sent.",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 15,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "DxqpV",
+                  "name": "Completed tool activity",
+                  "width": 780,
+                  "fill": "$gumloop/brand-wash",
+                  "cornerRadius": 12,
+                  "layout": "vertical",
+                  "padding": [
+                    10,
+                    16
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "SZLWg",
+                      "name": "Completed tool activity / Message",
+                      "fill": "$gumloop/text",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "I pulled 52 accounts from Salesforce and 3 lookalike segments from Hex, skipped 4 recently contacted LinkedIn profiles, and queued 36 drafts in Sequencer. Nothing has been sent.",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 15,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "bhXhB",
+                  "name": "User / Personalization request alignment",
+                  "width": "fill_container",
+                  "justifyContent": "end",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "USv5u",
+                      "name": "User / Personalization request bubble",
+                      "fill": "$gumloop/text",
+                      "cornerRadius": 12,
+                      "layout": "vertical",
+                      "padding": [
+                        10,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "ybUCw",
+                          "name": "User / Personalization request text",
+                          "fill": "$gumloop/surface",
+                          "content": "Use the latest account context. Keep the openers personal.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 15,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "YsdIe",
+                  "name": "Agent handoff event",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "padding": [
+                    6,
+                    0
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "EI1Tc",
+                      "name": "git-merge",
+                      "width": 14,
+                      "height": 14,
+                      "icon": "git-merge",
+                      "library": "lucide",
+                      "fill": "$gumloop/text-muted"
+                    },
+                    {
+                      "type": "text",
+                      "id": "fPoEz",
+                      "name": "Messages from",
+                      "fill": "$gumloop/text-muted",
+                      "content": "Messages from",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "gb4Ma",
+                      "name": "Account Manager / DiceBear avatar",
+                      "width": 22,
+                      "height": 22,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/account-manager.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    },
+                    {
+                      "type": "text",
+                      "id": "Xt1Q6",
+                      "name": "Account Manager",
+                      "fill": "$gumloop/text",
+                      "content": "Account Manager",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "bm5rJ",
+                      "name": "and",
+                      "fill": "$gumloop/text-muted",
+                      "content": "and",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Ngker",
+                      "name": "Chief / DiceBear avatar",
+                      "width": 22,
+                      "height": 22,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/chief.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    },
+                    {
+                      "type": "text",
+                      "id": "qrA9h",
+                      "name": "Chief",
+                      "fill": "$gumloop/text",
+                      "content": "Chief",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "I8Nff4",
+                  "name": "Collaborative context",
+                  "width": 780,
+                  "fill": "$gumloop/brand-wash",
+                  "cornerRadius": 12,
+                  "layout": "vertical",
+                  "padding": [
+                    10,
+                    16
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "vWqaC",
+                      "name": "Collaborative context / Message",
+                      "fill": "$gumloop/text",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Account Manager sent over the Acme + Globex threads and Chief flagged the priority accounts. Both are folded into tonight’s list.",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 15,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "r52e3",
+                  "name": "Draft review message",
+                  "width": 780,
+                  "fill": "$gumloop/brand-wash",
+                  "cornerRadius": 12,
+                  "layout": "vertical",
+                  "padding": [
+                    10,
+                    16
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "tdQ82",
+                      "name": "Draft review message / Message",
+                      "fill": "$gumloop/text",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "The 36 drafts are sitting in the LinkedIn queue on my screen: recipient, opener, and a Draft badge on each. Nothing goes out until you’ve had a look.",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 15,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "iH7G8",
+                  "name": "User message alignment",
+                  "width": "fill_container",
+                  "height": 72,
+                  "padding": [
+                    0,
+                    0,
+                    18,
+                    0
+                  ],
+                  "justifyContent": "end",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "UkQ0J",
+                      "name": "User instruction",
+                      "fill": "$gumloop/text",
+                      "cornerRadius": 10,
+                      "padding": [
+                        14,
+                        18
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "o7yrt8",
+                          "name": "The top 10 look good. Send it. Run this every week.",
+                          "fill": "$gumloop/surface",
+                          "content": "The top 10 look good. Send it. Run this every week.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 15,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "hsEb3",
+                      "layoutPosition": "absolute",
+                      "x": 884,
+                      "y": 39,
+                      "name": "Message reaction / Thumbs up",
+                      "width": 34,
+                      "height": 30,
+                      "fill": "$gumloop/surface",
+                      "cornerRadius": 999,
+                      "stroke": "$gumloop/divider",
+                      "strokeWidth": 1,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "hN1UI",
+                          "name": "Thumbs up emoji / Twemoji",
+                          "width": 18,
+                          "height": 18,
+                          "fill": {
+                            "type": "image",
+                            "enabled": true,
+                            "url": "assets/critters/reaction-thumb.png",
+                            "mode": "contain"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "lg3VJ",
+                  "name": "Routine created event",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "padding": [
+                    5,
+                    0
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "lbrp8",
+                      "name": "clock-3",
+                      "width": 15,
+                      "height": 15,
+                      "icon": "clock-3",
+                      "library": "lucide",
+                      "fill": "$gumloop/text-muted"
+                    },
+                    {
+                      "type": "text",
+                      "id": "hxTmH",
+                      "name": "Created routine",
+                      "fill": "$gumloop/text-muted",
+                      "content": "Created routine",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "o7CqRe",
+                      "name": "Overnight outbound",
+                      "fill": "$gumloop/text",
+                      "content": "Overnight outbound",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 12,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "icon",
+                      "id": "V6DlW",
+                      "name": "arrow-up-right",
+                      "width": 14,
+                      "height": 14,
+                      "icon": "arrow-up-right",
+                      "library": "lucide",
+                      "fill": "$gumloop/text-muted"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "cGMUI",
+                  "name": "Completion reply",
+                  "fill": "$gumloop/brand-wash",
+                  "cornerRadius": 12,
+                  "layout": "vertical",
+                  "padding": [
+                    10,
+                    16
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "n7SnkS",
+                      "name": "Done.",
+                      "fill": "$gumloop/text",
+                      "content": "Done.",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 15,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "BwWcB",
+                  "name": "User / Weekly report request alignment",
+                  "width": "fill_container",
+                  "justifyContent": "end",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "MmGSR",
+                      "name": "User / Weekly report request bubble",
+                      "fill": "$gumloop/text",
+                      "cornerRadius": 12,
+                      "layout": "vertical",
+                      "padding": [
+                        10,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "lJ4yP",
+                          "name": "User / Weekly report request text",
+                          "fill": "$gumloop/surface",
+                          "content": "Send me a short recap every Monday morning, too.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 15,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "L0CVuT",
+                  "name": "Assistant / Recap confirmation alignment",
+                  "width": "fill_container",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "ribkj",
+                      "name": "Assistant / Recap confirmation bubble",
+                      "fill": "$gumloop/brand-wash",
+                      "cornerRadius": 12,
+                      "layout": "vertical",
+                      "padding": [
+                        10,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "uHyP6",
+                          "name": "Assistant / Recap confirmation text",
+                          "fill": "$gumloop/text",
+                          "content": "Absolutely. I’ll include sends, replies, and accounts worth following up.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 15,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "hVe4j",
+                  "name": "Timeline breathing room",
+                  "width": 1,
+                  "height": "fill_container"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "S6Mugb",
+              "name": "Composer area",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 10,
+              "padding": [
+                0,
+                32,
+                24,
+                32
+              ],
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "TgxV8",
+                  "name": "Message composer",
+                  "width": "fill_container",
+                  "cornerRadius": 999,
+                  "stroke": "$gumloop/divider",
+                  "strokeWidth": 1,
+                  "gap": 14,
+                  "padding": 16,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "rpNql",
+                      "name": "plus",
+                      "width": 20,
+                      "height": 20,
+                      "icon": "plus",
+                      "library": "lucide",
+                      "fill": "$gumloop/text-muted"
+                    },
+                    {
+                      "type": "text",
+                      "id": "ss93c",
+                      "name": "Message Sales Outbound",
+                      "fill": "$gumloop/text-muted",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Message Sales Outbound",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 15,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "nfM3k",
+                      "name": "Voice message",
+                      "width": 36,
+                      "height": 36,
+                      "fill": "$gumloop/text",
+                      "cornerRadius": 8,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "RXMkQ",
+                          "name": "mic",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "mic",
+                          "library": "lucide",
+                          "fill": "$gumloop/surface"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "KAGC1",
+          "name": "Agent info panel",
+          "width": 360,
+          "height": "fill_container",
+          "fill": "$gumloop/brand-muted",
+          "layout": "vertical",
+          "gap": 24,
+          "padding": 24,
+          "children": [
+            {
+              "type": "frame",
+              "id": "UPmnf",
+              "name": "Agent info controls",
+              "width": "fill_container",
+              "height": 32,
+              "gap": 16,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "rguLw",
+                  "name": "Close agent info",
+                  "width": 20,
+                  "height": 20,
+                  "icon": "x",
+                  "library": "lucide",
+                  "fill": "$gumloop/text-muted"
+                },
+                {
+                  "type": "text",
+                  "id": "f82vLb",
+                  "name": "Panel title",
+                  "fill": "$gumloop/text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Agent info",
+                  "fontFamily": "$gumloop/font-ui",
+                  "fontSize": 16,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "icon",
+                  "id": "vD9Du",
+                  "name": "Edit agent",
+                  "width": 20,
+                  "height": 20,
+                  "icon": "pencil",
+                  "library": "lucide",
+                  "fill": "$gumloop/text-muted"
+                },
+                {
+                  "type": "icon",
+                  "id": "bs1pV",
+                  "name": "More actions",
+                  "width": 20,
+                  "height": 20,
+                  "icon": "ellipsis-vertical",
+                  "library": "lucide",
+                  "fill": "$gumloop/text-muted"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "FRSRT",
+              "name": "Agent profile",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 10,
+              "padding": [
+                16,
+                0,
+                12,
+                0
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "m2lxa",
+                  "name": "Sales Outbound profile avatar",
+                  "width": 104,
+                  "height": 104,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "assets/critters/sales-outbound.png",
+                    "mode": "contain"
+                  },
+                  "cornerRadius": 52
+                },
+                {
+                  "type": "text",
+                  "id": "ENnVY",
+                  "name": "Agent display name",
+                  "fill": "$gumloop/text",
+                  "content": "Sales Outbound",
+                  "fontFamily": "$gumloop/font-ui",
+                  "fontSize": 24,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "n0tALJ",
+                  "name": "Agent type",
+                  "fill": "$gumloop/text-muted",
+                  "content": "agent",
+                  "fontFamily": "$gumloop/font-ui",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "G2UqE",
+              "name": "Agent details and actions",
+              "width": "fill_container",
+              "fill": "$ng-app/muted",
+              "cornerRadius": 12,
+              "layout": "vertical",
+              "padding": 8,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "bUzlM",
+                  "name": "Username row",
+                  "width": "fill_container",
+                  "height": 64,
+                  "gap": 12,
+                  "padding": [
+                    8,
+                    10
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "g0clVu",
+                      "name": "Username icon background",
+                      "width": 32,
+                      "height": 32,
+                      "fill": "$ng-app/candy-icon/blueberry",
+                      "cornerRadius": 8,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "NQXl1",
+                          "name": "Username icon",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "at-sign",
+                          "library": "lucide",
+                          "fill": "$gumloop/brand-surface"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "QHY8L",
+                      "name": "Username details",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 3,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "XSorw",
+                          "name": "Agent username",
+                          "fill": "$gumloop/text",
+                          "content": "sales_outbound",
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "wVgYH",
+                          "name": "Username label",
+                          "fill": "$gumloop/text-muted",
+                          "content": "Username",
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "icon",
+                      "id": "F1Kl81",
+                      "name": "Username QR code",
+                      "width": 20,
+                      "height": 20,
+                      "icon": "qr-code",
+                      "library": "lucide",
+                      "fill": "$gumloop/text-muted"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Y3dJH",
+                  "name": "Notifications row",
+                  "width": "fill_container",
+                  "height": 64,
+                  "gap": 12,
+                  "padding": [
+                    8,
+                    10
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "gsv9C",
+                      "name": "Notifications icon background",
+                      "width": 32,
+                      "height": 32,
+                      "fill": "$ng-app/candy-icon/grape",
+                      "cornerRadius": 8,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "xubwe",
+                          "name": "Notifications icon",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "bell",
+                          "library": "lucide",
+                          "fill": "$gumloop/brand-surface"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "i9Wclt",
+                      "name": "Notifications label",
+                      "fill": "$gumloop/text",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Notifications",
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "id": "NVFKo",
+                      "type": "ref",
+                      "ref": "Q86Cwj",
+                      "name": "Notifications enabled",
+                      "fill": "$gumloop/brand-grape",
+                      "stroke": "$gumloop/brand-grape",
+                      "descendants": {
+                        "iJgH2": {
+                          "fill": "$gumloop/brand-ink"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "xtYRl",
+                  "name": "Add to Group row",
+                  "width": "fill_container",
+                  "height": 64,
+                  "gap": 12,
+                  "padding": [
+                    8,
+                    10
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "weD4W",
+                      "name": "Add to Group icon background",
+                      "width": 32,
+                      "height": 32,
+                      "fill": "$ng-app/candy-icon/lemon-drop",
+                      "cornerRadius": 8,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "OjL1Q",
+                          "name": "Add to Group icon",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "user-round-plus",
+                          "library": "lucide",
+                          "fill": "$gumloop/brand-surface"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "z4AfS",
+                      "name": "Add to Group label",
+                      "fill": "$gumloop/text",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Add to Group",
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "ANbl2",
+                  "name": "Agent Privacy Policy row",
+                  "width": "fill_container",
+                  "height": 64,
+                  "gap": 12,
+                  "padding": [
+                    8,
+                    10
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "H2pzpp",
+                      "name": "Agent Privacy Policy icon background",
+                      "width": 32,
+                      "height": 32,
+                      "fill": "$ng-app/candy-icon/bubblegum",
+                      "cornerRadius": 8,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "yyeFB",
+                          "name": "Agent Privacy Policy icon",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "shield-check",
+                          "library": "lucide",
+                          "fill": "$gumloop/brand-surface"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "ubwyF",
+                      "name": "Agent Privacy Policy label",
+                      "fill": "$gumloop/text",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Agent Privacy Policy",
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "u35Rr",
+                  "name": "Report row",
+                  "width": "fill_container",
+                  "height": 64,
+                  "gap": 12,
+                  "padding": [
+                    8,
+                    10
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "P8BvV9",
+                      "name": "Report icon background",
+                      "width": 32,
+                      "height": 32,
+                      "fill": "$ng-app/candy-icon/tangerine",
+                      "cornerRadius": 8,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "b57G4I",
+                          "name": "Report icon",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "flag",
+                          "library": "lucide",
+                          "fill": "$gumloop/brand-surface"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "yePUo",
+                      "name": "Report label",
+                      "fill": "$gumloop/text",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Report",
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "ZdIw6",
+              "name": "Shared media",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {
+                  "id": "n1RZDb",
+                  "type": "ref",
+                  "ref": "fO2Zc",
+                  "name": "Media Links Music tabs",
+                  "width": "fill_container",
+                  "fill": "$ng-app/muted",
+                  "descendants": {
+                    "gnNZM": {
+                      "width": "fill_container",
+                      "padding": 8,
+                      "justifyContent": "center",
+                      "fill": "$ng-app/accent"
+                    },
+                    "VJFDR": {
+                      "content": "Media",
+                      "fill": "$ng-app/accent-foreground"
+                    },
+                    "LuYpm": {
+                      "width": "fill_container",
+                      "padding": 8,
+                      "justifyContent": "center"
+                    },
+                    "R498l": {
+                      "content": "Links",
+                      "fill": "$gumloop/text-muted"
+                    },
+                    "AlYaC": {
+                      "width": "fill_container",
+                      "padding": 8,
+                      "justifyContent": "center"
+                    },
+                    "ptI5B": {
+                      "content": "Files",
+                      "fill": "$gumloop/text-muted"
+                    }
+                  }
+                },
+                {
+                  "type": "frame",
+                  "id": "psX5r",
+                  "name": "Shared media thumbnails",
+                  "clip": true,
+                  "width": "fill_container",
+                  "height": 100,
+                  "cornerRadius": 10,
+                  "gap": 4,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "WpWNH",
+                      "name": "Pipeline preview",
+                      "width": "fill_container",
+                      "height": "fill_container",
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/sales-outbound.png",
+                        "mode": "cover"
+                      }
+                    },
+                    {
+                      "type": "frame",
+                      "id": "s41WW4",
+                      "name": "Research preview",
+                      "width": "fill_container",
+                      "height": "fill_container",
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/sales-outbound.png",
+                        "mode": "cover"
+                      }
+                    },
+                    {
+                      "type": "frame",
+                      "id": "eU5xh",
+                      "name": "Outreach preview",
+                      "width": "fill_container",
+                      "height": "fill_container",
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/sales-outbound.png",
+                        "mode": "cover"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "MKgaP",
+      "x": 8560,
+      "y": 233,
+      "name": "Ngertiin / Sales Outbound / Agent info / dark",
+      "theme": {
+        "gumloop-mode": "dark"
+      },
+      "clip": true,
+      "width": 1440,
+      "height": 1000,
+      "fill": "$gumloop/surface",
+      "cornerRadius": 12,
+      "stroke": "$gumloop/divider",
+      "strokeWidth": 1,
+      "children": [
+        {
+          "type": "frame",
+          "id": "VxL3p",
+          "name": "Conversation sidebar",
+          "width": 88,
+          "height": "fill_container",
+          "fill": "$gumloop/brand-black",
+          "layout": "vertical",
+          "gap": 24,
+          "padding": [
+            24,
+            12
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "FnPbN",
+              "name": "Agent and group conversations",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "Q1BpqB",
+                  "name": "Chief conversation",
+                  "width": "fill_container",
+                  "cornerRadius": 8,
+                  "padding": [
+                    10,
+                    0
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "KIZb6",
+                      "name": "Chief / DiceBear avatar",
+                      "width": 40,
+                      "height": 40,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/chief.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "dMpWm",
+                  "name": "Sales Outbound conversation",
+                  "width": "fill_container",
+                  "fill": "$gumloop/brand-black-light",
+                  "cornerRadius": 8,
+                  "padding": [
+                    10,
+                    0
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "E7egpV",
+                      "name": "Sales Outbound / DiceBear avatar",
+                      "width": 40,
+                      "height": 40,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/sales-outbound.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "W63FyS",
+                  "name": "Inbox Manager conversation",
+                  "width": "fill_container",
+                  "cornerRadius": 8,
+                  "padding": [
+                    10,
+                    0
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "u72W02",
+                      "name": "Inbox Manager / DiceBear avatar",
+                      "width": 40,
+                      "height": 40,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/inbox-manager.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "rdb6s",
+                  "name": "Account Manager conversation",
+                  "width": "fill_container",
+                  "cornerRadius": 8,
+                  "padding": [
+                    10,
+                    0
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "unVyw",
+                      "name": "Account Manager / DiceBear avatar",
+                      "width": 40,
+                      "height": 40,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/account-manager.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "CC2qn",
+                  "name": "Talent Scout conversation",
+                  "width": "fill_container",
+                  "cornerRadius": 8,
+                  "padding": [
+                    10,
+                    0
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "lA38Y",
+                      "name": "Talent Scout / DiceBear avatar",
+                      "width": 40,
+                      "height": 40,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/talent-scout.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "GFosf",
+                  "name": "Expense Manager conversation",
+                  "width": "fill_container",
+                  "cornerRadius": 8,
+                  "padding": [
+                    10,
+                    0
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "VoDel",
+                      "name": "Expense Manager / DiceBear avatar",
+                      "width": 40,
+                      "height": 40,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/expense-manager.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "n1vZ6",
+                  "name": "Offsite crew conversation",
+                  "width": "fill_container",
+                  "cornerRadius": 8,
+                  "padding": [
+                    10,
+                    0
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "mNtgq",
+                      "name": "Offsite crew / DiceBear avatar",
+                      "width": 40,
+                      "height": 40,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/offsite-crew.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "tj1Kj",
+              "name": "Sidebar breathing room",
+              "width": 1,
+              "height": "fill_container"
+            },
+            {
+              "type": "icon",
+              "id": "SlTqu",
+              "name": "Add agent",
+              "width": 20,
+              "height": 20,
+              "icon": "plus",
+              "library": "lucide",
+              "fill": "$gumloop/text-muted"
+            },
+            {
+              "type": "frame",
+              "id": "B0puA",
+              "name": "User profile",
+              "width": "fill_container",
+              "stroke": "$gumloop/divider",
+              "strokeWidth": {
+                "top": 1
+              },
+              "gap": 10,
+              "padding": [
+                16,
+                0,
+                0,
+                0
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "cJvpl",
+                  "name": "Armand Segall / DiceBear avatar",
+                  "width": 32,
+                  "height": 32,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "assets/critters/armand-segall.png",
+                    "mode": "contain"
+                  },
+                  "cornerRadius": 12
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "WsVCE",
+          "name": "Sales Outbound workspace",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "children": [
+            {
+              "type": "frame",
+              "id": "eK61l",
+              "name": "Conversation header",
+              "width": "fill_container",
+              "height": 80,
+              "gap": 12,
+              "padding": [
+                0,
+                32
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "tQbxU",
+                  "name": "Sales Outbound / DiceBear avatar",
+                  "width": 36,
+                  "height": 36,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "assets/critters/sales-outbound.png",
+                    "mode": "contain"
+                  },
+                  "cornerRadius": 12
+                },
+                {
+                  "type": "frame",
+                  "id": "rUkNZ",
+                  "name": "Agent identity",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 1,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "NZVw4",
+                      "name": "Sales Outbound",
+                      "fill": "$gumloop/text",
+                      "content": "Sales Outbound",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 16,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "E1t1vK",
+                      "name": "Your pipeline, moving forward.",
+                      "fill": "$gumloop/text-muted",
+                      "content": "Your pipeline, moving forward.",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "icon",
+                  "id": "tB6Na",
+                  "name": "monitor",
+                  "width": 18,
+                  "height": 18,
+                  "icon": "monitor",
+                  "library": "lucide",
+                  "fill": "$gumloop/text-muted"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "hNd2E",
+              "name": "Conversation timeline",
+              "width": "fill_container",
+              "height": "fill_container",
+              "layout": "vertical",
+              "gap": 10,
+              "padding": [
+                16,
+                32
+              ],
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "SNp8l",
+                  "name": "Date separator",
+                  "width": "fill_container",
+                  "justifyContent": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "iuzXN",
+                      "name": "TODAY · 11:03 PM",
+                      "fill": "$gumloop/text-muted",
+                      "content": "TODAY · 11:03 PM",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-mono",
+                      "fontSize": 10,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "vT2Ly",
+                  "name": "User / Initial request alignment",
+                  "width": "fill_container",
+                  "justifyContent": "end",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "W4oKzr",
+                      "name": "User / Initial request bubble",
+                      "fill": "$gumloop/text",
+                      "cornerRadius": 12,
+                      "layout": "vertical",
+                      "padding": [
+                        10,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "ymuFU",
+                          "name": "User / Initial request text",
+                          "fill": "$gumloop/surface",
+                          "content": "Prepare tonight’s outreach. Focus on Acme and Globex.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 15,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "A3W4V4",
+                  "name": "Outbound queue artifact",
+                  "width": 780,
+                  "fill": "$gumloop/brand-black",
+                  "cornerRadius": 12,
+                  "layout": "vertical",
+                  "padding": [
+                    10,
+                    16
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "ZkzVv",
+                      "name": "Outbound queue artifact / Message",
+                      "fill": "$gumloop/text",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "I’ve prepared 36 LinkedIn outreach drafts, including Daniel Alvarez at Acme and Vicky Chen at Globex. None have been sent.",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 15,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "rps0b",
+                  "name": "Completed tool activity",
+                  "width": 780,
+                  "fill": "$gumloop/brand-black",
+                  "cornerRadius": 12,
+                  "layout": "vertical",
+                  "padding": [
+                    10,
+                    16
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "S3YuO",
+                      "name": "Completed tool activity / Message",
+                      "fill": "$gumloop/text",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "I pulled 52 accounts from Salesforce and 3 lookalike segments from Hex, skipped 4 recently contacted LinkedIn profiles, and queued 36 drafts in Sequencer. Nothing has been sent.",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 15,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "bnb44",
+                  "name": "User / Personalization request alignment",
+                  "width": "fill_container",
+                  "justifyContent": "end",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "cZfAw",
+                      "name": "User / Personalization request bubble",
+                      "fill": "$gumloop/text",
+                      "cornerRadius": 12,
+                      "layout": "vertical",
+                      "padding": [
+                        10,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "BTzAk",
+                          "name": "User / Personalization request text",
+                          "fill": "$gumloop/surface",
+                          "content": "Use the latest account context. Keep the openers personal.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 15,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "iV1LJ",
+                  "name": "Agent handoff event",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "padding": [
+                    6,
+                    0
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "U5HlYG",
+                      "name": "git-merge",
+                      "width": 14,
+                      "height": 14,
+                      "icon": "git-merge",
+                      "library": "lucide",
+                      "fill": "$gumloop/text-muted"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Bit4H",
+                      "name": "Messages from",
+                      "fill": "$gumloop/text-muted",
+                      "content": "Messages from",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "CfAWz",
+                      "name": "Account Manager / DiceBear avatar",
+                      "width": 22,
+                      "height": 22,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/account-manager.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    },
+                    {
+                      "type": "text",
+                      "id": "H86TL",
+                      "name": "Account Manager",
+                      "fill": "$gumloop/text",
+                      "content": "Account Manager",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "UG345",
+                      "name": "and",
+                      "fill": "$gumloop/text-muted",
+                      "content": "and",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "cBe03",
+                      "name": "Chief / DiceBear avatar",
+                      "width": 22,
+                      "height": 22,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/chief.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    },
+                    {
+                      "type": "text",
+                      "id": "pg70K",
+                      "name": "Chief",
+                      "fill": "$gumloop/text",
+                      "content": "Chief",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "xuiVF",
+                  "name": "Collaborative context",
+                  "width": 780,
+                  "fill": "$gumloop/brand-black",
+                  "cornerRadius": 12,
+                  "layout": "vertical",
+                  "padding": [
+                    10,
+                    16
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "TxvXK",
+                      "name": "Collaborative context / Message",
+                      "fill": "$gumloop/text",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Account Manager sent over the Acme + Globex threads and Chief flagged the priority accounts. Both are folded into tonight’s list.",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 15,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "k6ZHxg",
+                  "name": "Draft review message",
+                  "width": 780,
+                  "fill": "$gumloop/brand-black",
+                  "cornerRadius": 12,
+                  "layout": "vertical",
+                  "padding": [
+                    10,
+                    16
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "C6Ipt",
+                      "name": "Draft review message / Message",
+                      "fill": "$gumloop/text",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "The 36 drafts are sitting in the LinkedIn queue on my screen: recipient, opener, and a Draft badge on each. Nothing goes out until you’ve had a look.",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 15,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "SOjot",
+                  "name": "User message alignment",
+                  "width": "fill_container",
+                  "height": 72,
+                  "padding": [
+                    0,
+                    0,
+                    18,
+                    0
+                  ],
+                  "justifyContent": "end",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "Bwvvt",
+                      "name": "User instruction",
+                      "fill": "$gumloop/text",
+                      "cornerRadius": 10,
+                      "padding": [
+                        14,
+                        18
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "q113lj",
+                          "name": "The top 10 look good. Send it. Run this every week.",
+                          "fill": "$gumloop/surface",
+                          "content": "The top 10 look good. Send it. Run this every week.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 15,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "k0mgR3",
+                      "layoutPosition": "absolute",
+                      "x": 884,
+                      "y": 39,
+                      "name": "Message reaction / Thumbs up",
+                      "width": 34,
+                      "height": 30,
+                      "fill": "$gumloop/surface",
+                      "cornerRadius": 999,
+                      "stroke": "$gumloop/divider",
+                      "strokeWidth": 1,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "w4FGho",
+                          "name": "Thumbs up emoji / Twemoji",
+                          "width": 18,
+                          "height": 18,
+                          "fill": {
+                            "type": "image",
+                            "enabled": true,
+                            "url": "assets/critters/reaction-thumb.png",
+                            "mode": "contain"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "r6dXF5",
+                  "name": "Routine created event",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "padding": [
+                    5,
+                    0
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "Fbq99",
+                      "name": "clock-3",
+                      "width": 15,
+                      "height": 15,
+                      "icon": "clock-3",
+                      "library": "lucide",
+                      "fill": "$gumloop/text-muted"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Gik3s",
+                      "name": "Created routine",
+                      "fill": "$gumloop/text-muted",
+                      "content": "Created routine",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "m3VGCm",
+                      "name": "Overnight outbound",
+                      "fill": "$gumloop/text",
+                      "content": "Overnight outbound",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 12,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "icon",
+                      "id": "rZOKb",
+                      "name": "arrow-up-right",
+                      "width": 14,
+                      "height": 14,
+                      "icon": "arrow-up-right",
+                      "library": "lucide",
+                      "fill": "$gumloop/text-muted"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "rk8QQ",
+                  "name": "Completion reply",
+                  "fill": "$gumloop/brand-black",
+                  "cornerRadius": 12,
+                  "layout": "vertical",
+                  "padding": [
+                    10,
+                    16
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "XGtSh",
+                      "name": "Done.",
+                      "fill": "$gumloop/text",
+                      "content": "Done.",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 15,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "U8M3hw",
+                  "name": "User / Weekly report request alignment",
+                  "width": "fill_container",
+                  "justifyContent": "end",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "qnZri",
+                      "name": "User / Weekly report request bubble",
+                      "fill": "$gumloop/text",
+                      "cornerRadius": 12,
+                      "layout": "vertical",
+                      "padding": [
+                        10,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "z2kVRJ",
+                          "name": "User / Weekly report request text",
+                          "fill": "$gumloop/surface",
+                          "content": "Send me a short recap every Monday morning, too.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 15,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "VEugB",
+                  "name": "Assistant / Recap confirmation alignment",
+                  "width": "fill_container",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "SirEi",
+                      "name": "Assistant / Recap confirmation bubble",
+                      "fill": "$gumloop/brand-black",
+                      "cornerRadius": 12,
+                      "layout": "vertical",
+                      "padding": [
+                        10,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "fhDmR",
+                          "name": "Assistant / Recap confirmation text",
+                          "fill": "$gumloop/text",
+                          "content": "Absolutely. I’ll include sends, replies, and accounts worth following up.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 15,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Q9sG9",
+                  "name": "Timeline breathing room",
+                  "width": 1,
+                  "height": "fill_container"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "SH5wY",
+              "name": "Composer area",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 10,
+              "padding": [
+                0,
+                32,
+                24,
+                32
+              ],
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "yk4dN",
+                  "name": "Message composer",
+                  "width": "fill_container",
+                  "cornerRadius": 999,
+                  "stroke": "$gumloop/divider",
+                  "strokeWidth": 1,
+                  "gap": 14,
+                  "padding": 16,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "xUh8C",
+                      "name": "plus",
+                      "width": 20,
+                      "height": 20,
+                      "icon": "plus",
+                      "library": "lucide",
+                      "fill": "$gumloop/text-muted"
+                    },
+                    {
+                      "type": "text",
+                      "id": "vY0Jz",
+                      "name": "Message Sales Outbound",
+                      "fill": "$gumloop/text-muted",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Message Sales Outbound",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 15,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "m3ZCK",
+                      "name": "Voice message",
+                      "width": 36,
+                      "height": 36,
+                      "fill": "$gumloop/text",
+                      "cornerRadius": 8,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "B3yl3",
+                          "name": "mic",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "mic",
+                          "library": "lucide",
+                          "fill": "$gumloop/surface"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "mecad",
+          "name": "Agent info panel",
+          "width": 360,
+          "height": "fill_container",
+          "fill": "$gumloop/brand-black",
+          "layout": "vertical",
+          "gap": 24,
+          "padding": 24,
+          "children": [
+            {
+              "type": "frame",
+              "id": "itYDI",
+              "name": "Agent info controls",
+              "width": "fill_container",
+              "height": 32,
+              "gap": 16,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "vL0rw",
+                  "name": "Close agent info",
+                  "width": 20,
+                  "height": 20,
+                  "icon": "x",
+                  "library": "lucide",
+                  "fill": "$gumloop/text-muted"
+                },
+                {
+                  "type": "text",
+                  "id": "Me2il",
+                  "name": "Panel title",
+                  "fill": "$gumloop/text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Agent info",
+                  "fontFamily": "$gumloop/font-ui",
+                  "fontSize": 16,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "icon",
+                  "id": "tVHG6",
+                  "name": "Edit agent",
+                  "width": 20,
+                  "height": 20,
+                  "icon": "pencil",
+                  "library": "lucide",
+                  "fill": "$gumloop/text-muted"
+                },
+                {
+                  "type": "icon",
+                  "id": "FbjNI",
+                  "name": "More actions",
+                  "width": 20,
+                  "height": 20,
+                  "icon": "ellipsis-vertical",
+                  "library": "lucide",
+                  "fill": "$gumloop/text-muted"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "ejnbK",
+              "name": "Agent profile",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 10,
+              "padding": [
+                16,
+                0,
+                12,
+                0
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "fZecs",
+                  "name": "Sales Outbound profile avatar",
+                  "width": 104,
+                  "height": 104,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "assets/critters/sales-outbound.png",
+                    "mode": "contain"
+                  },
+                  "cornerRadius": 52
+                },
+                {
+                  "type": "text",
+                  "id": "MPoPJ",
+                  "name": "Agent display name",
+                  "fill": "$gumloop/text",
+                  "content": "Sales Outbound",
+                  "fontFamily": "$gumloop/font-ui",
+                  "fontSize": 24,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "b1zNCa",
+                  "name": "Agent type",
+                  "fill": "$gumloop/text-muted",
+                  "content": "agent",
+                  "fontFamily": "$gumloop/font-ui",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "WA8GA",
+              "name": "Agent details and actions",
+              "width": "fill_container",
+              "fill": "$ng-app/muted",
+              "cornerRadius": 12,
+              "layout": "vertical",
+              "padding": 8,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "u7Drb2",
+                  "name": "Username row",
+                  "width": "fill_container",
+                  "height": 64,
+                  "gap": 12,
+                  "padding": [
+                    8,
+                    10
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "an0nG",
+                      "name": "Username icon background",
+                      "width": 32,
+                      "height": 32,
+                      "fill": "$ng-app/candy-icon/blueberry",
+                      "cornerRadius": 8,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "m27eW",
+                          "name": "Username icon",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "at-sign",
+                          "library": "lucide",
+                          "fill": "$gumloop/brand-surface"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "MH3l6",
+                      "name": "Username details",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 3,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "ZyBW2",
+                          "name": "Agent username",
+                          "fill": "$gumloop/text",
+                          "content": "sales_outbound",
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "g9EZk",
+                          "name": "Username label",
+                          "fill": "$gumloop/text-muted",
+                          "content": "Username",
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "icon",
+                      "id": "UvoMh",
+                      "name": "Username QR code",
+                      "width": 20,
+                      "height": 20,
+                      "icon": "qr-code",
+                      "library": "lucide",
+                      "fill": "$gumloop/text-muted"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Rcjch",
+                  "name": "Notifications row",
+                  "width": "fill_container",
+                  "height": 64,
+                  "gap": 12,
+                  "padding": [
+                    8,
+                    10
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "yPTAg",
+                      "name": "Notifications icon background",
+                      "width": 32,
+                      "height": 32,
+                      "fill": "$ng-app/candy-icon/grape",
+                      "cornerRadius": 8,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "QfmwD",
+                          "name": "Notifications icon",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "bell",
+                          "library": "lucide",
+                          "fill": "$gumloop/brand-surface"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "wpNjI",
+                      "name": "Notifications label",
+                      "fill": "$gumloop/text",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Notifications",
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "id": "r0W4rV",
+                      "type": "ref",
+                      "ref": "Q86Cwj",
+                      "name": "Notifications enabled",
+                      "fill": "$gumloop/brand-grape",
+                      "stroke": "$gumloop/brand-grape",
+                      "descendants": {
+                        "iJgH2": {
+                          "fill": "$gumloop/brand-ink"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "gVk77",
+                  "name": "Add to Group row",
+                  "width": "fill_container",
+                  "height": 64,
+                  "gap": 12,
+                  "padding": [
+                    8,
+                    10
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "r2BtEI",
+                      "name": "Add to Group icon background",
+                      "width": 32,
+                      "height": 32,
+                      "fill": "$ng-app/candy-icon/lemon-drop",
+                      "cornerRadius": 8,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "zTkoE",
+                          "name": "Add to Group icon",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "user-round-plus",
+                          "library": "lucide",
+                          "fill": "$gumloop/brand-surface"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "MM0ZV",
+                      "name": "Add to Group label",
+                      "fill": "$gumloop/text",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Add to Group",
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "BADvj",
+                  "name": "Agent Privacy Policy row",
+                  "width": "fill_container",
+                  "height": 64,
+                  "gap": 12,
+                  "padding": [
+                    8,
+                    10
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "JIju5",
+                      "name": "Agent Privacy Policy icon background",
+                      "width": 32,
+                      "height": 32,
+                      "fill": "$ng-app/candy-icon/bubblegum",
+                      "cornerRadius": 8,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "XuRpF",
+                          "name": "Agent Privacy Policy icon",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "shield-check",
+                          "library": "lucide",
+                          "fill": "$gumloop/brand-surface"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "SmoJD",
+                      "name": "Agent Privacy Policy label",
+                      "fill": "$gumloop/text",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Agent Privacy Policy",
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "L7MQ2",
+                  "name": "Report row",
+                  "width": "fill_container",
+                  "height": 64,
+                  "gap": 12,
+                  "padding": [
+                    8,
+                    10
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "p9uQwW",
+                      "name": "Report icon background",
+                      "width": 32,
+                      "height": 32,
+                      "fill": "$ng-app/candy-icon/tangerine",
+                      "cornerRadius": 8,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "FiZ7O",
+                          "name": "Report icon",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "flag",
+                          "library": "lucide",
+                          "fill": "$gumloop/brand-surface"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "EfD2L",
+                      "name": "Report label",
+                      "fill": "$gumloop/text",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Report",
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "hdJUx",
+              "name": "Shared media",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {
+                  "id": "FqpMM",
+                  "type": "ref",
+                  "ref": "fO2Zc",
+                  "name": "Media Links Music tabs",
+                  "width": "fill_container",
+                  "fill": "$ng-app/muted",
+                  "descendants": {
+                    "gnNZM": {
+                      "width": "fill_container",
+                      "padding": 8,
+                      "justifyContent": "center",
+                      "fill": "$ng-app/accent"
+                    },
+                    "VJFDR": {
+                      "content": "Media",
+                      "fill": "$ng-app/accent-foreground"
+                    },
+                    "LuYpm": {
+                      "width": "fill_container",
+                      "padding": 8,
+                      "justifyContent": "center"
+                    },
+                    "R498l": {
+                      "content": "Links",
+                      "fill": "$gumloop/text-muted"
+                    },
+                    "AlYaC": {
+                      "width": "fill_container",
+                      "padding": 8,
+                      "justifyContent": "center"
+                    },
+                    "ptI5B": {
+                      "content": "Files",
+                      "fill": "$gumloop/text-muted"
+                    }
+                  }
+                },
+                {
+                  "type": "frame",
+                  "id": "X1jtLK",
+                  "name": "Shared media thumbnails",
+                  "clip": true,
+                  "width": "fill_container",
+                  "height": 100,
+                  "cornerRadius": 10,
+                  "gap": 4,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "Gdwt8",
+                      "name": "Pipeline preview",
+                      "width": "fill_container",
+                      "height": "fill_container",
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/sales-outbound.png",
+                        "mode": "cover"
+                      }
+                    },
+                    {
+                      "type": "frame",
+                      "id": "GkJmM",
+                      "name": "Research preview",
+                      "width": "fill_container",
+                      "height": "fill_container",
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/sales-outbound.png",
+                        "mode": "cover"
+                      }
+                    },
+                    {
+                      "type": "frame",
+                      "id": "kNU4i",
+                      "name": "Outreach preview",
+                      "width": "fill_container",
+                      "height": "fill_container",
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/sales-outbound.png",
+                        "mode": "cover"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "UX2gj",
+      "x": 7040,
+      "y": 1313,
+      "name": "Ngertiin / New Bot / light",
+      "theme": {
+        "gumloop-mode": "light"
+      },
+      "clip": true,
+      "width": 1440,
+      "height": 1000,
+      "fill": "$gumloop/surface",
+      "cornerRadius": 12,
+      "stroke": "$gumloop/divider",
+      "strokeWidth": 1,
+      "children": [
+        {
+          "type": "frame",
+          "id": "X3HPS",
+          "name": "Conversation sidebar",
+          "width": 320,
+          "height": "fill_container",
+          "fill": "$gumloop/brand-muted",
+          "layout": "vertical",
+          "gap": 22,
+          "padding": 20,
+          "children": [
+            {
+              "type": "frame",
+              "id": "ffAfX",
+              "name": "Search conversations",
+              "width": "fill_container",
+              "cornerRadius": 8,
+              "stroke": "$gumloop/divider",
+              "strokeWidth": 1,
+              "gap": 10,
+              "padding": [
+                11,
+                12
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "vxirb",
+                  "name": "search",
+                  "width": 16,
+                  "height": 16,
+                  "icon": "search",
+                  "library": "lucide",
+                  "fill": "$gumloop/text-muted"
+                },
+                {
+                  "type": "text",
+                  "id": "TCchQ",
+                  "name": "Search",
+                  "fill": "$gumloop/text-muted",
+                  "content": "Search",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$gumloop/font-ui",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "UwkYM",
+              "name": "Conversation section",
+              "width": "fill_container",
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "NeRYv",
+                  "name": "Conversations",
+                  "fill": "$gumloop/text-muted",
+                  "content": "Conversations",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$gumloop/font-ui",
+                  "fontSize": 12,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "icon",
+                  "id": "vP43N",
+                  "name": "plus",
+                  "width": 16,
+                  "height": 16,
+                  "icon": "plus",
+                  "library": "lucide",
+                  "fill": "$gumloop/text-muted"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Rl4hE",
+              "name": "Agent and group conversations",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 6,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "Lw9E8",
+                  "name": "Chief conversation",
+                  "width": "fill_container",
+                  "cornerRadius": 8,
+                  "gap": 12,
+                  "padding": [
+                    12,
+                    10
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "oleQq",
+                      "name": "Chief / DiceBear avatar",
+                      "width": 40,
+                      "height": 40,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/chief.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    },
+                    {
+                      "type": "frame",
+                      "id": "VoOyi",
+                      "name": "Chief details",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 3,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "QHHvu",
+                          "name": "Chief title",
+                          "width": "fill_container",
+                          "gap": 6,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "TVbPv",
+                              "name": "Chief",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Chief",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "Mm00c",
+                              "name": "3:02 AM",
+                              "fill": "$gumloop/text-muted",
+                              "content": "3:02 AM",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 10,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "fuXpx",
+                          "name": "Booked the venue and sent the…",
+                          "fill": "$gumloop/text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Booked the venue and sent the…",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "pjvR0",
+                  "name": "Sales Outbound conversation",
+                  "width": "fill_container",
+                  "fill": "$gumloop/brand-wash-inset",
+                  "cornerRadius": 8,
+                  "gap": 12,
+                  "padding": [
+                    12,
+                    10
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "fcGlr",
+                      "name": "Sales Outbound / DiceBear avatar",
+                      "width": 40,
+                      "height": 40,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/sales-outbound.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    },
+                    {
+                      "type": "frame",
+                      "id": "yhLr5",
+                      "name": "Sales Outbound details",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 3,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "lHTdn",
+                          "name": "Sales Outbound title",
+                          "width": "fill_container",
+                          "gap": 6,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "BCPI5",
+                              "name": "Sales Outbound",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Sales Outbound",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 14,
+                              "fontWeight": "500"
+                            },
+                            {
+                              "type": "text",
+                              "id": "k30Jlv",
+                              "name": "11:03 PM",
+                              "fill": "$gumloop/text-muted",
+                              "content": "11:03 PM",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 10,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "Ja5pU",
+                          "name": "Done.",
+                          "fill": "$gumloop/text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Done.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "qXzRI",
+                  "name": "Inbox Manager conversation",
+                  "width": "fill_container",
+                  "cornerRadius": 8,
+                  "gap": 12,
+                  "padding": [
+                    12,
+                    10
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "sZSix",
+                      "name": "Inbox Manager / DiceBear avatar",
+                      "width": 40,
+                      "height": 40,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/inbox-manager.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    },
+                    {
+                      "type": "frame",
+                      "id": "xHjlH",
+                      "name": "Inbox Manager details",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 3,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "zXsTC",
+                          "name": "Inbox Manager title",
+                          "width": "fill_container",
+                          "gap": 6,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "lUfHW",
+                              "name": "Inbox Manager",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Inbox Manager",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "QrNQ7",
+                              "name": "8:02 PM",
+                              "fill": "$gumloop/text-muted",
+                              "content": "8:02 PM",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 10,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "YKVIs",
+                          "name": "Inbox at zero. 5 drafts parked.",
+                          "fill": "$gumloop/text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Inbox at zero. 5 drafts parked.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "GtJWN",
+                  "name": "Account Manager conversation",
+                  "width": "fill_container",
+                  "cornerRadius": 8,
+                  "gap": 12,
+                  "padding": [
+                    12,
+                    10
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "XueFm",
+                      "name": "Account Manager / DiceBear avatar",
+                      "width": 40,
+                      "height": 40,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/account-manager.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    },
+                    {
+                      "type": "frame",
+                      "id": "ZqLDv",
+                      "name": "Account Manager details",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 3,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "J80Adl",
+                          "name": "Account Manager title",
+                          "width": "fill_container",
+                          "gap": 6,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "rfSM5",
+                              "name": "Account Manager",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Account Manager",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "fdhKd",
+                              "name": "6:02 PM",
+                              "fill": "$gumloop/text-muted",
+                              "content": "6:02 PM",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 10,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "YGSkQ",
+                          "name": "Invite’s out to Vicky. Globex…",
+                          "fill": "$gumloop/text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Invite’s out to Vicky. Globex…",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "pvV3L",
+                  "name": "Talent Scout conversation",
+                  "width": "fill_container",
+                  "cornerRadius": 8,
+                  "gap": 12,
+                  "padding": [
+                    12,
+                    10
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "KTOh7",
+                      "name": "Talent Scout / DiceBear avatar",
+                      "width": 40,
+                      "height": 40,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/talent-scout.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    },
+                    {
+                      "type": "frame",
+                      "id": "oIfTc",
+                      "name": "Talent Scout details",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 3,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "Nq2aY",
+                          "name": "Talent Scout title",
+                          "width": "fill_container",
+                          "gap": 6,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "UDH7W",
+                              "name": "Talent Scout",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Talent Scout",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "T3lmR",
+                              "name": "3:02 PM",
+                              "fill": "$gumloop/text-muted",
+                              "content": "3:02 PM",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 10,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "EMd4U",
+                          "name": "3 intros drafted in your voice.",
+                          "fill": "$gumloop/text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "3 intros drafted in your voice.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "l9HOBr",
+                  "name": "Expense Manager conversation",
+                  "width": "fill_container",
+                  "cornerRadius": 8,
+                  "gap": 12,
+                  "padding": [
+                    12,
+                    10
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "Kd2Pq",
+                      "name": "Expense Manager / DiceBear avatar",
+                      "width": 40,
+                      "height": 40,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/expense-manager.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    },
+                    {
+                      "type": "frame",
+                      "id": "US6Vo",
+                      "name": "Expense Manager details",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 3,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "mxnj1",
+                          "name": "Expense Manager title",
+                          "width": "fill_container",
+                          "gap": 6,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "qPaWb",
+                              "name": "Expense Manager",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Expense Manager",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "n2Ufvp",
+                              "name": "7:02 PM",
+                              "fill": "$gumloop/text-muted",
+                              "content": "7:02 PM",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 10,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "IYvtt",
+                          "name": "Report filed. 9 receipts.",
+                          "fill": "$gumloop/text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Report filed. 9 receipts.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "U7gMDW",
+                  "name": "Offsite crew conversation",
+                  "width": "fill_container",
+                  "cornerRadius": 8,
+                  "gap": 12,
+                  "padding": [
+                    12,
+                    10
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "s9YMq4",
+                      "name": "Offsite crew / DiceBear avatar",
+                      "width": 40,
+                      "height": 40,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/offsite-crew.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    },
+                    {
+                      "type": "frame",
+                      "id": "m6CTm",
+                      "name": "Offsite crew details",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 3,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "vLPFE",
+                          "name": "Offsite crew title",
+                          "width": "fill_container",
+                          "gap": 6,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "m90EAT",
+                              "name": "Offsite crew",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Offsite crew",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "ZJYNL",
+                              "name": "5:02 PM",
+                              "fill": "$gumloop/text-muted",
+                              "content": "5:02 PM",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 10,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "s8xn0I",
+                          "name": "That leaves the pipeline. I’d…",
+                          "fill": "$gumloop/text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "That leaves the pipeline. I’d…",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "rLmaq",
+              "name": "Sidebar breathing room",
+              "width": 1,
+              "height": "fill_container"
+            },
+            {
+              "type": "frame",
+              "id": "UZqXB",
+              "name": "User profile",
+              "width": "fill_container",
+              "stroke": "$gumloop/divider",
+              "strokeWidth": {
+                "top": 1
+              },
+              "gap": 10,
+              "padding": [
+                16,
+                0,
+                0,
+                0
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "vZpRZ",
+                  "name": "Armand Segall / DiceBear avatar",
+                  "width": 32,
+                  "height": 32,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "assets/critters/armand-segall.png",
+                    "mode": "contain"
+                  },
+                  "cornerRadius": 12
+                },
+                {
+                  "type": "text",
+                  "id": "QzVGU",
+                  "name": "Armand Segall",
+                  "fill": "$gumloop/text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Armand Segall",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$gumloop/font-ui",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "icon",
+                  "id": "ZDqc7",
+                  "name": "chevrons-up-down",
+                  "width": 16,
+                  "height": 16,
+                  "icon": "chevrons-up-down",
+                  "library": "lucide",
+                  "fill": "$gumloop/text-muted"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "gjxkF",
+          "name": "New Bot workspace",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "children": [
+            {
+              "type": "frame",
+              "id": "WfnaI",
+              "name": "New Bot header",
+              "width": "fill_container",
+              "height": 80,
+              "gap": 12,
+              "padding": [
+                0,
+                32
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "id": "eJn6t",
+                  "type": "ref",
+                  "ref": "KwilM",
+                  "name": "Back to conversations",
+                  "fill": "$ng-app/background",
+                  "stroke": "$ng-app/border",
+                  "descendants": {
+                    "sAD3i": {
+                      "fill": "$ng-app/foreground"
+                    }
+                  }
+                },
+                {
+                  "type": "text",
+                  "id": "BSgfT",
+                  "name": "New Bot title",
+                  "fill": "$gumloop/text",
+                  "content": "New Bot",
+                  "fontFamily": "$gumloop/font-ui",
+                  "fontSize": 18,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "doBmN",
+              "name": "Centered form area",
+              "width": "fill_container",
+              "height": "fill_container",
+              "layout": "vertical",
+              "padding": [
+                112,
+                32,
+                48,
+                32
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "mOeC9",
+                  "name": "New Bot form",
+                  "width": 448,
+                  "layout": "vertical",
+                  "gap": 28,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "i30NM",
+                      "name": "Bot avatar area",
+                      "width": "fill_container",
+                      "padding": [
+                        0,
+                        0,
+                        12,
+                        0
+                      ],
+                      "justifyContent": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "S2f7w",
+                          "name": "New bot avatar",
+                          "width": 88,
+                          "height": 88,
+                          "fill": {
+                            "type": "image",
+                            "enabled": true,
+                            "url": "assets/critters/sales-outbound.png",
+                            "mode": "contain"
+                          },
+                          "cornerRadius": 44
+                        }
+                      ]
+                    },
+                    {
+                      "id": "I0omyx",
+                      "type": "ref",
+                      "ref": "HaTDY",
+                      "name": "Name field",
+                      "width": "fill_container",
+                      "flipX": false,
+                      "flipY": false,
+                      "height": "fit_content",
+                      "x": 0,
+                      "y": 128,
+                      "layout": "vertical",
+                      "descendants": {
+                        "wTXCe": {
+                          "content": "Name",
+                          "fill": "$gumloop/text-muted"
+                        },
+                        "b3ggF": {
+                          "type": "frame",
+                          "id": "TVoCW",
+                          "name": "Name input with readonly handle",
+                          "width": "fill_container",
+                          "height": 48,
+                          "fill": "$ng-app/background",
+                          "cornerRadius": 10,
+                          "stroke": "$ng-app/border",
+                          "strokeWidth": 1,
+                          "gap": 16,
+                          "padding": [
+                            0,
+                            16
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "NL5Wa",
+                              "name": "Bot name value",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "New bot",
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 15,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "HIgwl",
+                              "name": "Readonly generated handle",
+                              "context": "Read-only handle derived from Name: lowercase with words separated by underscores. Update when Name changes.",
+                              "fill": "$ng-app/muted-foreground",
+                              "content": "@new_bot",
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "id": "EjA28",
+                      "type": "ref",
+                      "ref": "HaTDY",
+                      "name": "Instruction field",
+                      "width": "fill_container",
+                      "descendants": {
+                        "wTXCe": {
+                          "content": "Instruction",
+                          "fill": "$gumloop/text-muted"
+                        },
+                        "b3ggF": {
+                          "height": 120,
+                          "fill": "$ng-app/background",
+                          "stroke": "$ng-app/border",
+                          "padding": 16,
+                          "cornerRadius": 10,
+                          "name": "Instruction textarea",
+                          "alignItems": "start"
+                        },
+                        "lwLOG": {
+                          "content": "Describe what this agent should do and how it should work.",
+                          "fontSize": 15,
+                          "fill": "$ng-app/muted-foreground"
+                        }
+                      }
+                    },
+                    {
+                      "id": "ng6io",
+                      "type": "ref",
+                      "ref": "cS5rX",
+                      "name": "Soul field",
+                      "width": "fill_container",
+                      "descendants": {
+                        "e8yJZe": {
+                          "content": "Soul",
+                          "fill": "$gumloop/text-muted"
+                        },
+                        "ugHUO": {
+                          "height": 152,
+                          "fill": "$ng-app/background",
+                          "stroke": "$ng-app/border",
+                          "padding": 16,
+                          "cornerRadius": 10
+                        },
+                        "xZ2H6": {
+                          "content": "Describe this agent’s personality, values, and tone.",
+                          "fontSize": 15,
+                          "fill": "$ng-app/muted-foreground"
+                        }
+                      }
+                    },
+                    {
+                      "id": "dhDph",
+                      "type": "ref",
+                      "ref": "Epwrr",
+                      "name": "Continue",
+                      "width": "fill_container",
+                      "height": 48,
+                      "fill": "$ng-app/primary",
+                      "cornerRadius": 10,
+                      "descendants": {
+                        "hVXWN": {
+                          "content": "Continue",
+                          "fill": "$ng-app/primary-foreground"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "za55u",
+      "x": 8560,
+      "y": 1313,
+      "name": "Ngertiin / New Bot / dark",
+      "theme": {
+        "gumloop-mode": "dark"
+      },
+      "clip": true,
+      "width": 1440,
+      "height": 1000,
+      "fill": "$gumloop/surface",
+      "cornerRadius": 12,
+      "stroke": "$gumloop/divider",
+      "strokeWidth": 1,
+      "children": [
+        {
+          "type": "frame",
+          "id": "Z9qIm",
+          "name": "Conversation sidebar",
+          "width": 320,
+          "height": "fill_container",
+          "fill": "$gumloop/brand-black",
+          "layout": "vertical",
+          "gap": 22,
+          "padding": 20,
+          "children": [
+            {
+              "type": "frame",
+              "id": "HetRz",
+              "name": "Search conversations",
+              "width": "fill_container",
+              "cornerRadius": 8,
+              "stroke": "$gumloop/divider",
+              "strokeWidth": 1,
+              "gap": 10,
+              "padding": [
+                11,
+                12
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "F2jstY",
+                  "name": "search",
+                  "width": 16,
+                  "height": 16,
+                  "icon": "search",
+                  "library": "lucide",
+                  "fill": "$gumloop/text-muted"
+                },
+                {
+                  "type": "text",
+                  "id": "Xi6io",
+                  "name": "Search",
+                  "fill": "$gumloop/text-muted",
+                  "content": "Search",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$gumloop/font-ui",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Z10kbw",
+              "name": "Conversation section",
+              "width": "fill_container",
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "BuOhj",
+                  "name": "Conversations",
+                  "fill": "$gumloop/text-muted",
+                  "content": "Conversations",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$gumloop/font-ui",
+                  "fontSize": 12,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "icon",
+                  "id": "KshAs",
+                  "name": "plus",
+                  "width": 16,
+                  "height": 16,
+                  "icon": "plus",
+                  "library": "lucide",
+                  "fill": "$gumloop/text-muted"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "qH2V4",
+              "name": "Agent and group conversations",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 6,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "dRWY6",
+                  "name": "Chief conversation",
+                  "width": "fill_container",
+                  "cornerRadius": 8,
+                  "gap": 12,
+                  "padding": [
+                    12,
+                    10
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "GE4C4",
+                      "name": "Chief / DiceBear avatar",
+                      "width": 40,
+                      "height": 40,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/chief.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    },
+                    {
+                      "type": "frame",
+                      "id": "auvlt",
+                      "name": "Chief details",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 3,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "aG9mN",
+                          "name": "Chief title",
+                          "width": "fill_container",
+                          "gap": 6,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "V4QwQ",
+                              "name": "Chief",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Chief",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "J5uIGk",
+                              "name": "3:02 AM",
+                              "fill": "$gumloop/text-muted",
+                              "content": "3:02 AM",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 10,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "Z2iMJ",
+                          "name": "Booked the venue and sent the…",
+                          "fill": "$gumloop/text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Booked the venue and sent the…",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "V8TVAx",
+                  "name": "Sales Outbound conversation",
+                  "width": "fill_container",
+                  "fill": "$gumloop/brand-black-light",
+                  "cornerRadius": 8,
+                  "gap": 12,
+                  "padding": [
+                    12,
+                    10
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "JoZn2",
+                      "name": "Sales Outbound / DiceBear avatar",
+                      "width": 40,
+                      "height": 40,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/sales-outbound.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    },
+                    {
+                      "type": "frame",
+                      "id": "TSfoC",
+                      "name": "Sales Outbound details",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 3,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "XvNFw",
+                          "name": "Sales Outbound title",
+                          "width": "fill_container",
+                          "gap": 6,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "FSZPl",
+                              "name": "Sales Outbound",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Sales Outbound",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 14,
+                              "fontWeight": "500"
+                            },
+                            {
+                              "type": "text",
+                              "id": "mqwFk",
+                              "name": "11:03 PM",
+                              "fill": "$gumloop/text-muted",
+                              "content": "11:03 PM",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 10,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "MUidw",
+                          "name": "Done.",
+                          "fill": "$gumloop/text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Done.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "hGnyf",
+                  "name": "Inbox Manager conversation",
+                  "width": "fill_container",
+                  "cornerRadius": 8,
+                  "gap": 12,
+                  "padding": [
+                    12,
+                    10
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "WVRt8",
+                      "name": "Inbox Manager / DiceBear avatar",
+                      "width": 40,
+                      "height": 40,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/inbox-manager.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    },
+                    {
+                      "type": "frame",
+                      "id": "q25ooh",
+                      "name": "Inbox Manager details",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 3,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "p4sMJK",
+                          "name": "Inbox Manager title",
+                          "width": "fill_container",
+                          "gap": 6,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "b98S32",
+                              "name": "Inbox Manager",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Inbox Manager",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "zIe6x",
+                              "name": "8:02 PM",
+                              "fill": "$gumloop/text-muted",
+                              "content": "8:02 PM",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 10,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "T8rI5",
+                          "name": "Inbox at zero. 5 drafts parked.",
+                          "fill": "$gumloop/text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Inbox at zero. 5 drafts parked.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "udlaH",
+                  "name": "Account Manager conversation",
+                  "width": "fill_container",
+                  "cornerRadius": 8,
+                  "gap": 12,
+                  "padding": [
+                    12,
+                    10
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "Wagw4",
+                      "name": "Account Manager / DiceBear avatar",
+                      "width": 40,
+                      "height": 40,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/account-manager.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    },
+                    {
+                      "type": "frame",
+                      "id": "SmI0f",
+                      "name": "Account Manager details",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 3,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "Rd6j7",
+                          "name": "Account Manager title",
+                          "width": "fill_container",
+                          "gap": 6,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "E8pGp",
+                              "name": "Account Manager",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Account Manager",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "g59O6",
+                              "name": "6:02 PM",
+                              "fill": "$gumloop/text-muted",
+                              "content": "6:02 PM",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 10,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "pUrEA",
+                          "name": "Invite’s out to Vicky. Globex…",
+                          "fill": "$gumloop/text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Invite’s out to Vicky. Globex…",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Cojkv",
+                  "name": "Talent Scout conversation",
+                  "width": "fill_container",
+                  "cornerRadius": 8,
+                  "gap": 12,
+                  "padding": [
+                    12,
+                    10
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "B5kpA",
+                      "name": "Talent Scout / DiceBear avatar",
+                      "width": 40,
+                      "height": 40,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/talent-scout.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    },
+                    {
+                      "type": "frame",
+                      "id": "y3bQe",
+                      "name": "Talent Scout details",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 3,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "k3jAAy",
+                          "name": "Talent Scout title",
+                          "width": "fill_container",
+                          "gap": 6,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "Knm9O",
+                              "name": "Talent Scout",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Talent Scout",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "DiOCG",
+                              "name": "3:02 PM",
+                              "fill": "$gumloop/text-muted",
+                              "content": "3:02 PM",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 10,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "GZHr9",
+                          "name": "3 intros drafted in your voice.",
+                          "fill": "$gumloop/text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "3 intros drafted in your voice.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "ZeJnG",
+                  "name": "Expense Manager conversation",
+                  "width": "fill_container",
+                  "cornerRadius": 8,
+                  "gap": 12,
+                  "padding": [
+                    12,
+                    10
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "t0hk4",
+                      "name": "Expense Manager / DiceBear avatar",
+                      "width": 40,
+                      "height": 40,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/expense-manager.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    },
+                    {
+                      "type": "frame",
+                      "id": "tMZZv",
+                      "name": "Expense Manager details",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 3,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "oZhEi",
+                          "name": "Expense Manager title",
+                          "width": "fill_container",
+                          "gap": 6,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "B1evI",
+                              "name": "Expense Manager",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Expense Manager",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "b2wSK",
+                              "name": "7:02 PM",
+                              "fill": "$gumloop/text-muted",
+                              "content": "7:02 PM",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 10,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "xamzy",
+                          "name": "Report filed. 9 receipts.",
+                          "fill": "$gumloop/text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Report filed. 9 receipts.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "nRaBt",
+                  "name": "Offsite crew conversation",
+                  "width": "fill_container",
+                  "cornerRadius": 8,
+                  "gap": 12,
+                  "padding": [
+                    12,
+                    10
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "a5B8Dl",
+                      "name": "Offsite crew / DiceBear avatar",
+                      "width": 40,
+                      "height": 40,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "assets/critters/offsite-crew.png",
+                        "mode": "contain"
+                      },
+                      "cornerRadius": 12
+                    },
+                    {
+                      "type": "frame",
+                      "id": "W11RZh",
+                      "name": "Offsite crew details",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 3,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "e9IEe",
+                          "name": "Offsite crew title",
+                          "width": "fill_container",
+                          "gap": 6,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "A1EFM3",
+                              "name": "Offsite crew",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Offsite crew",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "y1k4r",
+                              "name": "5:02 PM",
+                              "fill": "$gumloop/text-muted",
+                              "content": "5:02 PM",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 10,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "ZbxCY",
+                          "name": "That leaves the pipeline. I’d…",
+                          "fill": "$gumloop/text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "That leaves the pipeline. I’d…",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "fdyRr",
+              "name": "Sidebar breathing room",
+              "width": 1,
+              "height": "fill_container"
+            },
+            {
+              "type": "frame",
+              "id": "di50V",
+              "name": "User profile",
+              "width": "fill_container",
+              "stroke": "$gumloop/divider",
+              "strokeWidth": {
+                "top": 1
+              },
+              "gap": 10,
+              "padding": [
+                16,
+                0,
+                0,
+                0
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "k8s9m0",
+                  "name": "Armand Segall / DiceBear avatar",
+                  "width": 32,
+                  "height": 32,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "assets/critters/armand-segall.png",
+                    "mode": "contain"
+                  },
+                  "cornerRadius": 12
+                },
+                {
+                  "type": "text",
+                  "id": "upimH",
+                  "name": "Armand Segall",
+                  "fill": "$gumloop/text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Armand Segall",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$gumloop/font-ui",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "icon",
+                  "id": "AfDtA",
+                  "name": "chevrons-up-down",
+                  "width": 16,
+                  "height": 16,
+                  "icon": "chevrons-up-down",
+                  "library": "lucide",
+                  "fill": "$gumloop/text-muted"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "q0KOb",
+          "name": "New Bot workspace",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "children": [
+            {
+              "type": "frame",
+              "id": "L3Ok4Q",
+              "name": "New Bot header",
+              "width": "fill_container",
+              "height": 80,
+              "gap": 12,
+              "padding": [
+                0,
+                32
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "id": "upuyu",
+                  "type": "ref",
+                  "ref": "KwilM",
+                  "name": "Back to conversations",
+                  "fill": "$ng-app/background",
+                  "stroke": "$ng-app/border",
+                  "descendants": {
+                    "sAD3i": {
+                      "fill": "$ng-app/foreground"
+                    }
+                  }
+                },
+                {
+                  "type": "text",
+                  "id": "qxocl",
+                  "name": "New Bot title",
+                  "fill": "$gumloop/text",
+                  "content": "New Bot",
+                  "fontFamily": "$gumloop/font-ui",
+                  "fontSize": 18,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "eJekM",
+              "name": "Centered form area",
+              "width": "fill_container",
+              "height": "fill_container",
+              "layout": "vertical",
+              "padding": [
+                112,
+                32,
+                48,
+                32
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "VxHVt",
+                  "name": "New Bot form",
+                  "width": 448,
+                  "layout": "vertical",
+                  "gap": 28,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "hu5pb",
+                      "name": "Bot avatar area",
+                      "width": "fill_container",
+                      "padding": [
+                        0,
+                        0,
+                        12,
+                        0
+                      ],
+                      "justifyContent": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "Ku2Hu",
+                          "name": "New bot avatar",
+                          "width": 88,
+                          "height": 88,
+                          "fill": {
+                            "type": "image",
+                            "enabled": true,
+                            "url": "assets/critters/sales-outbound.png",
+                            "mode": "contain"
+                          },
+                          "cornerRadius": 44
+                        }
+                      ]
+                    },
+                    {
+                      "id": "EYSQ0",
+                      "type": "ref",
+                      "ref": "HaTDY",
+                      "name": "Name field",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "descendants": {
+                        "wTXCe": {
+                          "content": "Name",
+                          "fill": "$gumloop/text-muted"
+                        },
+                        "b3ggF": {
+                          "type": "frame",
+                          "id": "wjltp",
+                          "name": "Name input with readonly handle",
+                          "width": "fill_container",
+                          "height": 48,
+                          "fill": "$ng-app/background",
+                          "cornerRadius": 10,
+                          "stroke": "$ng-app/border",
+                          "strokeWidth": 1,
+                          "gap": 16,
+                          "padding": [
+                            0,
+                            16
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "He9EW",
+                              "name": "Bot name value",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "New bot",
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 15,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "pSNAm",
+                              "name": "Readonly generated handle",
+                              "context": "Read-only handle derived from Name: lowercase with words separated by underscores. Update when Name changes.",
+                              "fill": "$ng-app/muted-foreground",
+                              "content": "@new_bot",
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "id": "FEFlS",
+                      "type": "ref",
+                      "ref": "HaTDY",
+                      "name": "Instruction field",
+                      "width": "fill_container",
+                      "descendants": {
+                        "wTXCe": {
+                          "content": "Instruction",
+                          "fill": "$gumloop/text-muted"
+                        },
+                        "b3ggF": {
+                          "height": 120,
+                          "fill": "$ng-app/background",
+                          "stroke": "$ng-app/border",
+                          "padding": 16,
+                          "cornerRadius": 10,
+                          "name": "Instruction textarea",
+                          "alignItems": "start"
+                        },
+                        "lwLOG": {
+                          "content": "Describe what this agent should do and how it should work.",
+                          "fontSize": 15,
+                          "fill": "$ng-app/muted-foreground"
+                        }
+                      }
+                    },
+                    {
+                      "id": "r5nOk7",
+                      "type": "ref",
+                      "ref": "cS5rX",
+                      "name": "Soul field",
+                      "width": "fill_container",
+                      "descendants": {
+                        "e8yJZe": {
+                          "content": "Soul",
+                          "fill": "$gumloop/text-muted"
+                        },
+                        "ugHUO": {
+                          "height": 152,
+                          "fill": "$ng-app/background",
+                          "stroke": "$ng-app/border",
+                          "padding": 16,
+                          "cornerRadius": 10
+                        },
+                        "xZ2H6": {
+                          "content": "Describe this agent’s personality, values, and tone.",
+                          "fontSize": 15,
+                          "fill": "$ng-app/muted-foreground"
+                        }
+                      }
+                    },
+                    {
+                      "id": "NdYom",
+                      "type": "ref",
+                      "ref": "Epwrr",
+                      "name": "Continue",
+                      "width": "fill_container",
+                      "height": 48,
+                      "fill": "$ng-app/primary",
+                      "cornerRadius": 10,
+                      "descendants": {
+                        "hVXWN": {
+                          "content": "Continue",
+                          "fill": "$ng-app/primary-foreground"
+                        }
+                      }
+                    }
+                  ]
                 }
               ]
             }
@@ -25750,6 +30695,26 @@
           }
         }
       ]
+    },
+    "ng-app/candy-icon/blueberry": {
+      "type": "color",
+      "value": "#6b66e1"
+    },
+    "ng-app/candy-icon/grape": {
+      "type": "color",
+      "value": "#9161be"
+    },
+    "ng-app/candy-icon/lemon-drop": {
+      "type": "color",
+      "value": "#8c7500"
+    },
+    "ng-app/candy-icon/bubblegum": {
+      "type": "color",
+      "value": "#c74588"
+    },
+    "ng-app/candy-icon/tangerine": {
+      "type": "color",
+      "value": "#b16200"
     }
   },
   "fileToken": "47d6237b-d91d-4e08-94de-4826aee15a80",

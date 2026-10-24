@@ -106,10 +106,16 @@ class Transcript:
                 ).fetchone()
                 if not thread:
                     return
-                if not conn.execute(
-                    "SELECT 1 FROM nma_goal_units WHERE owner_id=? AND run_id=? AND parent_run_id IS NOT NULL",
-                    (self.store.owner, run_id),
-                ).fetchone():
+                if (
+                    not conn.execute(
+                        "SELECT 1 FROM nma_discussion_turns WHERE owner_id=? AND run_id=?",
+                        (self.store.owner, run_id),
+                    ).fetchone()
+                    and not conn.execute(
+                        "SELECT 1 FROM nma_goal_units WHERE owner_id=? AND run_id=? AND parent_run_id IS NOT NULL",
+                        (self.store.owner, run_id),
+                    ).fetchone()
+                ):
                     self.append(
                         conn,
                         run_id,

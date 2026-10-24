@@ -23,6 +23,9 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
   const follow = useRef(true);
   const [away, setAway] = useState(false);
   const agent = snapshot?.thread.agents[0];
+  const group = snapshot?.thread.kind === "group";
+  const nameOf = (id?: string) =>
+    snapshot?.thread.agents.find((a) => a.agent_id === id)?.display_name ?? "Agent";
   const working = snapshot?.runs.some(activeRun) ?? false;
   const activity = snapshot?.runs.slice().reverse().find(activeRun);
   useEffect(() => {
@@ -30,7 +33,7 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
     void getToken()
       .then(listThreads)
       .then((items) => {
-        if (alive) setThreads(items.filter((thread) => thread.kind === "dm"));
+        if (alive) setThreads(items);
       })
       .catch(() => {
         if (alive) setListError(true);
@@ -69,12 +72,12 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
     <main id="main" className="flex h-dvh min-h-0 bg-background">
       <aside
         className="hidden w-64 shrink-0 flex-col border-r bg-card p-5 md:flex"
-        aria-label="Daftar DM"
+        aria-label="DM dan grup"
       >
         <Link to="/agents" className="flex min-h-11 items-center gap-2 text-sm font-semibold">
           <ArrowLeft className="size-4" /> Agent dan percakapan
         </Link>
-        <h2 className="mt-8 mb-3 text-sm">Percakapan langsung</h2>
+        <h2 className="mt-8 mb-3 text-sm">DM dan grup</h2>
         <nav className="min-h-0 flex-1 space-y-1 overflow-y-auto">
           {threads.map((thread) => (
             <Link
@@ -85,7 +88,10 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
               className={`flex min-h-12 items-center gap-3 rounded-lg px-3 py-3 text-sm hover:bg-muted ${thread.thread_id === threadId ? "bg-secondary font-semibold" : ""}`}
             >
               <MessageCircle className="size-4 shrink-0" />
-              <span className="break-words [overflow-wrap:anywhere]">{thread.title}</span>
+              <span className="break-words [overflow-wrap:anywhere]">
+                {thread.kind === "group" ? "Grup · " : "DM · "}
+                {thread.title}
+              </span>
             </Link>
           ))}
           {listError && (
@@ -99,7 +105,10 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
           )}
         </nav>
       </aside>
-      <section className="flex min-w-0 flex-1 flex-col" aria-label="Percakapan langsung">
+      <section
+        className="flex min-w-0 flex-1 flex-col"
+        aria-label={group ? "Percakapan grup" : "Percakapan langsung"}
+      >
         <header className="flex shrink-0 items-center gap-3 border-b bg-card px-4 py-3 sm:px-6">
           <Button asChild variant="ghost" size="icon" className="size-11 md:hidden">
             <Link to="/agents" aria-label="Kembali ke agent dan percakapan">
@@ -110,14 +119,18 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
             className="flex size-10 shrink-0 items-center justify-center rounded-full bg-secondary font-bold"
             aria-hidden="true"
           >
-            {agent?.display_name.slice(0, 1) ?? "·"}
+            {group ? "G" : (agent?.display_name.slice(0, 1) ?? "·")}
           </div>
           <div className="min-w-0 flex-1">
             <h1 className="break-words text-lg font-bold [overflow-wrap:anywhere]">
-              {agent?.display_name ?? "Percakapan langsung"}
+              {group ? snapshot?.thread.title : (agent?.display_name ?? "Percakapan langsung")}
             </h1>
             <p className="text-xs text-muted-foreground">
-              {agent ? `@${agent.handle} · DM` : "Memuat agent…"}
+              {group
+                ? snapshot?.thread.agents.map((a) => `@${a.handle}`).join(" · ")
+                : agent
+                  ? `@${agent.handle} · DM`
+                  : "Memuat agent…"}
             </p>
           </div>
           <Link to="/agents" className="hidden text-sm underline sm:block">
@@ -132,8 +145,12 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
             {connection !== "connected"
               ? connectionText
               : activity
-                ? `${agent?.display_name}: ${activity.activity ?? runLabels[activity.status]}`
-                : "Tersambung · Riwayat tersimpan"}
+                ? `${nameOf(activity.agent_id)}: ${activity.activity ?? runLabels[activity.status]}`
+                : snapshot?.discussion?.status === "bounded"
+                  ? "Batas diskusi tercapai · Kirim arahan untuk melanjutkan"
+                  : snapshot?.discussion?.status === "cancelled"
+                    ? "Diskusi dihentikan · Riwayat tersimpan"
+                    : "Tersambung · Riwayat tersimpan"}
           </span>
           {(connection === "reconnecting" || connection === "error") && (
             <Button variant="ghost" size="sm" onClick={refresh}>
@@ -164,7 +181,13 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
           }}
         >
           <div className="mx-auto max-w-3xl space-y-7 py-6">
-            {snapshot && <GoalProgress goals={snapshot.goals ?? []} messages={snapshot.messages} />}
+            {snapshot && (
+              <GoalProgress
+                goals={snapshot.goals ?? []}
+                messages={snapshot.messages}
+                agents={snapshot.thread.agents}
+              />
+            )}
             {!snapshot && !error && (
               <div role="status" className="space-y-5">
                 <p className="text-sm text-muted-foreground">Memuat riwayat…</p>
@@ -187,7 +210,10 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
             )}
             {snapshot?.messages.length === 0 && (
               <div className="py-10 text-center">
-                <h2 className="text-xl">Mulai percakapan dengan {agent?.display_name}</h2>
+                <h2 className="text-xl">
+                  Mulai percakapan{" "}
+                  {group ? `di ${snapshot?.thread.title}` : `dengan ${agent?.display_name}`}
+                </h2>
                 <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground">
                   Ceritakan apa yang ingin kamu kerjakan. {agent?.display_name} memakai karakter dan
                   kemampuan yang sudah kamu simpan.
@@ -221,7 +247,7 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
                     <h2 className="mb-2 text-xs font-bold">{author}</h2>
                     <MessageText text={message.content} />
                   </article>
-                  {message.author_kind === "user" && run && !hasReply && (
+                  {!group && message.author_kind === "user" && run && !hasReply && (
                     <article
                       aria-label={`Aktivitas ${agent?.display_name}`}
                       className="min-w-0 space-y-3"
@@ -257,6 +283,43 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
                 </div>
               );
             })}
+            {group &&
+              snapshot?.runs
+                .filter(
+                  (run) =>
+                    !snapshot.messages.some(
+                      (m) => m.run_id === run.run_id && m.author_kind === "agent",
+                    ),
+                )
+                .map((run) => (
+                  <article
+                    key={run.run_id}
+                    aria-label={`Aktivitas ${nameOf(run.agent_id)}`}
+                    className="space-y-3"
+                  >
+                    <h2 className="text-xs font-bold">{nameOf(run.agent_id)}</h2>
+                    {run.text && activeRun(run) && <MessageText text={run.text} streaming />}
+                    <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+                      <span>{run.activity ?? runLabels[run.status]}</span>
+                      {activeRun(run) && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          disabled={stopping !== null}
+                          onClick={() => void cancel(run)}
+                        >
+                          {stopping ? "Menghentikan…" : "Hentikan diskusi"}
+                        </Button>
+                      )}
+                    </div>
+                    {run.error_code && (
+                      <details className="text-xs text-muted-foreground">
+                        <summary className="cursor-pointer">Detail kendala</summary>
+                        <p className="mt-2">{run.error_code}</p>
+                      </details>
+                    )}
+                  </article>
+                ))}
           </div>
         </div>
         <footer className="shrink-0 border-t bg-card px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-6">
@@ -281,6 +344,7 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
             )}
             {snapshot && (
               <Composer
+                key={threadId}
                 thread={snapshot.thread}
                 working={working}
                 connected={connection === "connected"}

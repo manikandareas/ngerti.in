@@ -257,6 +257,20 @@ class Reliability:
             ).fetchone()
             if not native:
                 raise EngineError("NOT_FOUND")
+            discussion = conn.execute(
+                "SELECT discussion_id FROM nma_discussion_turns WHERE owner_id=? AND run_id=?",
+                (self.store.owner, run_id),
+            ).fetchone()
+            if discussion:
+                conn.execute(
+                    "UPDATE nma_discussions SET status='cancelled',reason='user_stopped' WHERE owner_id=? AND discussion_id=?",
+                    (self.store.owner, discussion[0]),
+                )
+                for (peer,) in conn.execute(
+                    "SELECT run_id FROM nma_discussion_turns WHERE owner_id=? AND discussion_id=? AND published=0",
+                    (self.store.owner, discussion[0]),
+                ).fetchall():
+                    self.cancel_event(conn, peer)
             self.cancel_descendants(conn, run_id)
             if native[0] != "terminal":
                 self.cancel_event(conn, run_id)

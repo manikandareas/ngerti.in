@@ -128,8 +128,29 @@ export function Composer({
         </p>
       )}
       <label htmlFor="dm-message" className="sr-only">
-        Pesan untuk {thread.agents[0]?.display_name}
+        Pesan untuk {thread.kind === "group" ? thread.title : thread.agents[0]?.display_name}
       </label>
+      {thread.kind === "group" && (
+        <fieldset className="flex flex-wrap gap-1" aria-label="Mention anggota">
+          {thread.agents.map((agent) => (
+            <Button
+              key={agent.agent_id}
+              type="button"
+              variant="ghost"
+              size="sm"
+              disabled={busy || !!pending}
+              onClick={() => {
+                const value = `${text}${text && !text.endsWith(" ") ? " " : ""}@${agent.handle} `;
+                setText(value);
+                save(value, null);
+                input.current?.focus();
+              }}
+            >
+              @{agent.handle}
+            </Button>
+          ))}
+        </fieldset>
+      )}
       <Textarea
         ref={input}
         id="dm-message"
@@ -137,7 +158,7 @@ export function Composer({
         maxLength={100000}
         value={text}
         disabled={!ready || unavailable || !!pending}
-        placeholder={`Pesan untuk ${thread.agents[0]?.display_name ?? "agent"}…`}
+        placeholder={`Pesan untuk ${(thread.kind === "group" ? thread.title : thread.agents[0]?.display_name) ?? "agent"}…`}
         className="max-h-48 min-h-24 resize-y bg-background text-base"
         onChange={(event) => {
           setText(event.target.value);

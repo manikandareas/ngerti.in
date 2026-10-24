@@ -1,0 +1,294 @@
+{
+  "thread": {
+    "goals": [],
+    "messages": [
+      {
+        "author_agent_id": null,
+        "author_kind": "user",
+        "content": "@researcher calculate fuel efficiency from 360 km and 45 litres, then ask writer and reviewer to prepare the report.",
+        "context_generation": "1",
+        "message_id": "8a0775db-43a4-544e-af24-90f2fd42c630",
+        "message_seq": "1",
+        "parts": [
+          {
+            "text": "@researcher calculate fuel efficiency from 360 km and 45 litres, then ask writer and reviewer to prepare the report.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "470bc945-9ed9-5fb7-b5be-2ac818737745",
+        "thread_id": "8ffd1f2d-6cb6-4238-85fd-d31882e88aef"
+      },
+      {
+        "author_agent_id": "c6c75455-fd8a-4b4c-bf0b-f3818f37aa51",
+        "author_kind": "agent",
+        "content": "Research: 45 litres / 360 km \u00d7 100 = **12.5 L/100 km**. @writer turn this into a short report.",
+        "context_generation": "1",
+        "message_id": "c5a17ca7-66b5-573b-b817-d3cea30ecfed",
+        "message_seq": "2",
+        "parts": [
+          {
+            "text": "Research: 45 litres / 360 km \u00d7 100 = **12.5 L/100 km**. @writer turn this into a short report.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "470bc945-9ed9-5fb7-b5be-2ac818737745",
+        "thread_id": "8ffd1f2d-6cb6-4238-85fd-d31882e88aef"
+      },
+      {
+        "author_agent_id": "d075bfa0-ff6c-4d6a-b6d8-4689aa8b299d",
+        "author_kind": "agent",
+        "content": "## Fuel report\nThe vehicle consumed **12.5 L/100 km** over 360 km. @reviewer verify the calculation.",
+        "context_generation": "1",
+        "message_id": "a9881d71-0d1b-573e-be8d-0b29c98e212a",
+        "message_seq": "3",
+        "parts": [
+          {
+            "text": "## Fuel report\nThe vehicle consumed **12.5 L/100 km** over 360 km. @reviewer verify the calculation.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "dd3c5e28-da4b-592d-9ddf-91ead6669518",
+        "thread_id": "8ffd1f2d-6cb6-4238-85fd-d31882e88aef"
+      },
+      {
+        "author_agent_id": "ae57e46e-8e8b-4ca0-9fb1-669bac6defe8",
+        "author_kind": "agent",
+        "content": "Review complete: **12.5 L/100 km** is correct. The report is ready.",
+        "context_generation": "1",
+        "message_id": "b3827f2f-57e0-52dc-b340-ce97153fff1a",
+        "message_seq": "4",
+        "parts": [
+          {
+            "text": "Review complete: **12.5 L/100 km** is correct. The report is ready.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "e71373de-3be3-5b40-aee3-e5f5e155b032",
+        "thread_id": "8ffd1f2d-6cb6-4238-85fd-d31882e88aef"
+      },
+      {
+        "author_agent_id": null,
+        "author_kind": "user",
+        "content": "@researcher slow-check",
+        "context_generation": "1",
+        "message_id": "075c1543-4ad4-5c9b-9557-89aa656e9f06",
+        "message_seq": "5",
+        "parts": [
+          {
+            "text": "@researcher slow-check",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "18818496-25df-51b7-af72-8ef628d4028c",
+        "thread_id": "8ffd1f2d-6cb6-4238-85fd-d31882e88aef"
+      }
+    ],
+    "next_before_message_seq": null,
+    "runs": [
+      {
+        "agent_id": "c6c75455-fd8a-4b4c-bf0b-f3818f37aa51",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "a9f4f642-da75-4323-abf0-dabd671f4ef8",
+        "run_id": "470bc945-9ed9-5fb7-b5be-2ac818737745",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Research: 45 litres / 360 km \u00d7 100 = **12.5 L/100 km**. @writer turn this into a short report.",
+        "thread_id": "8ffd1f2d-6cb6-4238-85fd-d31882e88aef",
+        "through_sequence": "44"
+      },
+      {
+        "agent_id": "d075bfa0-ff6c-4d6a-b6d8-4689aa8b299d",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "a9f4f642-da75-4323-abf0-dabd671f4ef8",
+        "run_id": "dd3c5e28-da4b-592d-9ddf-91ead6669518",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "## Fuel report\nThe vehicle consumed **12.5 L/100 km** over 360 km. @reviewer verify the calculation.",
+        "thread_id": "8ffd1f2d-6cb6-4238-85fd-d31882e88aef",
+        "through_sequence": "44"
+      },
+      {
+        "agent_id": "ae57e46e-8e8b-4ca0-9fb1-669bac6defe8",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "a9f4f642-da75-4323-abf0-dabd671f4ef8",
+        "run_id": "e71373de-3be3-5b40-aee3-e5f5e155b032",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Review complete: **12.5 L/100 km** is correct. The report is ready.",
+        "thread_id": "8ffd1f2d-6cb6-4238-85fd-d31882e88aef",
+        "through_sequence": "44"
+      },
+      {
+        "agent_id": "c6c75455-fd8a-4b4c-bf0b-f3818f37aa51",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "a9f4f642-da75-4323-abf0-dabd671f4ef8",
+        "run_id": "18818496-25df-51b7-af72-8ef628d4028c",
+        "schema_version": "nma.v1",
+        "status": "cancelled",
+        "text": "",
+        "thread_id": "8ffd1f2d-6cb6-4238-85fd-d31882e88aef",
+        "through_sequence": "44"
+      }
+    ],
+    "schema_version": "nma.v1",
+    "thread": {
+      "agents": [
+        {
+          "access_generation": "1",
+          "agent_id": "c6c75455-fd8a-4b4c-bf0b-f3818f37aa51",
+          "config": {
+            "instructions": "",
+            "model": "test",
+            "soul": "SOUL_researcher"
+          },
+          "config_revision": "1",
+          "created_at": "2026-10-24T05:08:26.615778Z",
+          "display_name": "researcher",
+          "handle": "researcher",
+          "revision": "1",
+          "status": "active",
+          "updated_at": "2026-10-24T05:08:26.615778Z"
+        },
+        {
+          "access_generation": "1",
+          "agent_id": "d075bfa0-ff6c-4d6a-b6d8-4689aa8b299d",
+          "config": {
+            "instructions": "",
+            "model": "test",
+            "soul": "SOUL_writer"
+          },
+          "config_revision": "1",
+          "created_at": "2026-10-24T05:08:26.622314Z",
+          "display_name": "writer",
+          "handle": "writer",
+          "revision": "1",
+          "status": "active",
+          "updated_at": "2026-10-24T05:08:26.622314Z"
+        },
+        {
+          "access_generation": "1",
+          "agent_id": "ae57e46e-8e8b-4ca0-9fb1-669bac6defe8",
+          "config": {
+            "instructions": "",
+            "model": "test",
+            "soul": "SOUL_reviewer"
+          },
+          "config_revision": "1",
+          "created_at": "2026-10-24T05:08:26.623214Z",
+          "display_name": "reviewer",
+          "handle": "reviewer",
+          "revision": "1",
+          "status": "active",
+          "updated_at": "2026-10-24T05:08:26.623214Z"
+        }
+      ],
+      "context_generation": "1",
+      "dm_agent_id": null,
+      "kind": "group",
+      "membership_revision": "1",
+      "revision": "1",
+      "status": "open",
+      "thread_id": "8ffd1f2d-6cb6-4238-85fd-d31882e88aef",
+      "title": "Editorial"
+    },
+    "through_cursor": "WyI2MzlkYWIzMy02ZTIyLTQzZjQtYjNlZC05YjU3OGUzMWYzMzEiLCI4ZmZkMWYyZC02Y2I2LTQyMzgtODVmZC1kMzE4ODJlODhhZWYiLCJhOWY0ZjY0Mi1kYTc1LTQzMjMtYWJmMC1kYWJkNjcxZjRlZjgiLCI0NCJd"
+  },
+  "dm": {
+    "goals": [],
+    "messages": [
+      {
+        "author_agent_id": null,
+        "author_kind": "user",
+        "content": "PRIVATE_DM_CANARY",
+        "context_generation": "1",
+        "message_id": "29e6b9f2-d7be-5ef9-bdea-002b04e01d8f",
+        "message_seq": "1",
+        "parts": [
+          {
+            "text": "PRIVATE_DM_CANARY",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "a3beb6d2-2788-5d49-8824-efa6d330bda4",
+        "thread_id": "c1d30d7d-32f1-48b3-965a-e2fa982650d9"
+      },
+      {
+        "author_agent_id": "c6c75455-fd8a-4b4c-bf0b-f3818f37aa51",
+        "author_kind": "agent",
+        "content": "Private DM response.",
+        "context_generation": "1",
+        "message_id": "9267ec77-45b0-5841-b9c1-8f280a60ea0a",
+        "message_seq": "2",
+        "parts": [
+          {
+            "text": "Private DM response.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "a3beb6d2-2788-5d49-8824-efa6d330bda4",
+        "thread_id": "c1d30d7d-32f1-48b3-965a-e2fa982650d9"
+      }
+    ],
+    "next_before_message_seq": null,
+    "runs": [
+      {
+        "agent_id": "c6c75455-fd8a-4b4c-bf0b-f3818f37aa51",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "a9f4f642-da75-4323-abf0-dabd671f4ef8",
+        "run_id": "a3beb6d2-2788-5d49-8824-efa6d330bda4",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Private DM response.",
+        "thread_id": "c1d30d7d-32f1-48b3-965a-e2fa982650d9",
+        "through_sequence": "44"
+      }
+    ],
+    "schema_version": "nma.v1",
+    "thread": {
+      "agents": [
+        {
+          "access_generation": "1",
+          "agent_id": "c6c75455-fd8a-4b4c-bf0b-f3818f37aa51",
+          "config": {
+            "instructions": "",
+            "model": "test",
+            "soul": "SOUL_researcher"
+          },
+          "config_revision": "1",
+          "created_at": "2026-10-24T05:08:26.615778Z",
+          "display_name": "researcher",
+          "handle": "researcher",
+          "revision": "1",
+          "status": "active",
+          "updated_at": "2026-10-24T05:08:26.615778Z"
+        }
+      ],
+      "context_generation": "1",
+      "dm_agent_id": "c6c75455-fd8a-4b4c-bf0b-f3818f37aa51",
+      "kind": "dm",
+      "membership_revision": "1",
+      "revision": "1",
+      "status": "open",
+      "thread_id": "c1d30d7d-32f1-48b3-965a-e2fa982650d9",
+      "title": "Private Researcher"
+    },
+    "through_cursor": "WyI2MzlkYWIzMy02ZTIyLTQzZjQtYjNlZC05YjU3OGUzMWYzMzEiLCJjMWQzMGQ3ZC0zMmYxLTQ4YjMtOTY1YS1lMmZhOTgyNjUwZDkiLCJhOWY0ZjY0Mi1kYTc1LTQzMjMtYWJmMC1kYWJkNjcxZjRlZjgiLCI0NCJd"
+  }
+}

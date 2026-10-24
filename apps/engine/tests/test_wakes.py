@@ -297,6 +297,10 @@ def test_definition_replacement_and_additive_upgrade(runtime):
         checksums = db.execute(
             "SELECT version,checksum FROM nma_schema_migrations WHERE version<=8 ORDER BY version"
         ).fetchall()
+        db.execute("DROP TABLE nma_discussion_goals")
+        db.execute("DROP TABLE nma_discussion_turns")
+        db.execute("DROP TABLE nma_discussions")
+        db.execute("DELETE FROM nma_schema_migrations WHERE version=11")
         db.execute("DROP TABLE nma_webhook_events")
         db.execute("DROP TABLE nma_webhook_batches")
         db.execute("DROP TABLE nma_triggers")
@@ -316,7 +320,7 @@ def test_definition_replacement_and_additive_upgrade(runtime):
             == checksums
         )
         assert (
-            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 10
+            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 11
         )
         assert db.execute("PRAGMA integrity_check").fetchone()[0] == "ok"
         assert db.execute("PRAGMA foreign_key_check").fetchall() == []

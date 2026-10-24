@@ -57,7 +57,7 @@ def main():
                     (owner,),
                 ).fetchone()
                 if (
-                    version not in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+                    version not in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)
                     or not checksum
                     or checksum[0] != CHECKSUM
                 ):
@@ -294,7 +294,13 @@ def main():
                         (owner, stamp.get("admission_id")),
                     ).fetchone()
                 )
-                if current is not None or continuation:
+                discussion = stamp and store.write(
+                    lambda conn: conn.execute(
+                        "SELECT 1 FROM nma_discussion_turns t JOIN nma_adapter_runs r ON r.owner_id=t.owner_id AND r.run_id=t.run_id JOIN session_admissions a ON a.request_id='nma:'||r.operation_id WHERE t.owner_id=? AND a.admission_id=?",
+                        (owner, stamp.get("admission_id")),
+                    ).fetchone()
+                )
+                if current is not None or continuation or discussion:
                     from ngertiin_engine.goals import PROMPT, Goals
 
                     context_prompt += (

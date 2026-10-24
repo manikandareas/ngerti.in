@@ -173,6 +173,14 @@ class Continuation:
             ).fetchone()
             return goal, terminal
 
+        active_discussion = self.store.write(
+            lambda conn: conn.execute(
+                "SELECT 1 FROM nma_discussion_turns t JOIN nma_discussions d USING(owner_id,discussion_id) WHERE t.owner_id=? AND t.run_id=? AND d.status='active'",
+                (self.store.owner, run_id),
+            ).fetchone()
+        )
+        if active_discussion:
+            return
         goal, terminal = self.store.write(read)
         if not terminal:
             return
@@ -262,6 +270,7 @@ class Continuation:
 
         with owner_scope(self.adapter.authority):
             async with self.adapter.lock:
+                await self.adapter.discussions.tick()
                 self.reconcile()
                 if time.monotonic() >= self.next_wake_poll:
                     from hermes_cli.heartbeat import POLL_SECONDS

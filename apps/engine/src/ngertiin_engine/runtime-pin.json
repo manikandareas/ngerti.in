@@ -41,7 +41,11 @@
     "gateway/session_cron.py": "ac224bcf5bdc9316ded1af92c0e97a7c4d58cb2db2350891d46e07f368197540",
     "gateway/platforms/webhook_filters.py": "936ec8a1ec056521e889bd763ebb1cb7e5e5252c2a5c9fa4c27fbd808aa4d4f9",
     "gateway/platforms/webhook_coalesce.py": "aae4a9e18d7a6f712528b717ec504a8087fcac68136845b22adafe27a48121f2",
-    "website/docs/user-guide/messaging/webhooks.md": "943f2024ec9ee81add765a1b20c192c3543c7317ff2a5792727877b852177a80"
+    "website/docs/user-guide/messaging/webhooks.md": "943f2024ec9ee81add765a1b20c192c3543c7317ff2a5792727877b852177a80",
+    "gateway/hosted_room_discussion.py": "7f9b9c3378dd17e806880224f6ea8c93d12e3a74d879969182922efeefc5e45b",
+    "gateway/hosted_room_driver.py": "e1a2c1dc06ebb27fe379e3c5dc6c9364d9848f926af17c6ddf629df49cb39fa9",
+    "gateway/hosted_room_task_input.py": "0b474b70e29043850acc4428ef280c4f28e5fd98a231102c7e34828341a37ca6",
+    "gateway/hosted_rooms_common.py": "6d4b880834e68e8eb9a9b58f75a0abda22da4181028397639413036919ccfbaf"
   },
   "source_patches": [],
   "integration_seams": [

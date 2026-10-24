@@ -20,7 +20,46 @@ def crash():
         threading.Event().wait()
 
 
-if point == "defer_transcript":
+if point in {
+    "before_group_turn_commit",
+    "after_group_turn_commit",
+    "after_group_publication",
+}:
+    original = Store.write
+
+    def write(self, operation, **kwargs):
+        def wrapped(conn):
+            value = operation(conn)
+            if (
+                point == "before_group_turn_commit"
+                and operation.__name__ == "prepare"
+                and conn.execute(
+                    "SELECT 1 FROM nma_discussion_turns LIMIT 1"
+                ).fetchone()
+            ):
+                crash()
+            return value
+
+        value = original(self, wrapped, **kwargs)
+        if point == "after_group_turn_commit" and operation.__name__ == "prepare":
+            crash()
+        if (
+            point == "after_group_publication"
+            and "Discussions.tick.<locals>.publish" in operation.__qualname__
+        ):
+            # Only crash after a peer result is durably in the native-policy log.
+            found = original(
+                self,
+                lambda conn: conn.execute(
+                    "SELECT 1 FROM nma_discussion_turns WHERE published=1 LIMIT 1"
+                ).fetchone(),
+            )
+            if found:
+                crash()
+        return value
+
+    Store.write = write
+elif point == "defer_transcript":
     from ngertiin_engine.transcript import Transcript
 
     original = Transcript.reconcile

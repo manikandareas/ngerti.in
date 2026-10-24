@@ -1,4 +1,4 @@
-import type { Goal, Message } from "./state";
+import type { Goal, Message, Thread } from "./state";
 
 const labels: Record<Goal["status"], string> = {
   active: "Aktif",
@@ -9,7 +9,15 @@ const labels: Record<Goal["status"], string> = {
   completed: "Selesai",
 };
 
-export function GoalProgress({ goals, messages }: { goals: Goal[]; messages: Message[] }) {
+export function GoalProgress({
+  goals,
+  messages,
+  agents = [],
+}: {
+  goals: Goal[];
+  messages: Message[];
+  agents?: Thread["agents"];
+}) {
   if (!goals.length) return null;
   return (
     <section aria-label="Progress goals" className="space-y-3 border-b pb-5">
@@ -27,7 +35,38 @@ export function GoalProgress({ goals, messages }: { goals: Goal[]; messages: Mes
             <span className="ml-2 text-xs text-muted-foreground">{labels[goal.status]}</span>
           </summary>
           <div className="mt-3 space-y-3 text-sm wrap-anywhere">
+            {goal.responsible_agent_id && agents.length > 1 && (
+              <p className="text-xs text-muted-foreground">
+                Penanggung jawab:{" "}
+                {agents.find((a) => a.agent_id === goal.responsible_agent_id)?.display_name ??
+                  "Agent"}
+              </p>
+            )}
             <p className="whitespace-pre-wrap">{goal.objective}</p>
+            {agents.length > 1 && goal.units && (
+              <details>
+                <summary className="cursor-pointer text-xs">Kontribusi agent</summary>
+                <ul className="mt-2 space-y-2">
+                  {messages
+                    .filter(
+                      (m) =>
+                        m.author_kind === "agent" && goal.units?.some((u) => u.run_id === m.run_id),
+                    )
+                    .map((m) => (
+                      <li key={m.message_id}>
+                        <a
+                          className="inline-flex min-h-11 items-center text-xs underline"
+                          href={`#message-${m.message_id}`}
+                        >
+                          {agents.find((a) => a.agent_id === m.author_agent_id)?.display_name ??
+                            "Agent"}
+                          : lihat hasil
+                        </a>
+                      </li>
+                    ))}
+                </ul>
+              </details>
+            )}
             {goal.progress && <p className="whitespace-pre-wrap">{goal.progress}</p>}
             {goal.wake_condition && (
               <p className="text-muted-foreground">Menunggu: {goal.wake_condition}</p>

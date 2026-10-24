@@ -655,3 +655,21 @@ for exact policies and verification boundaries. Focused tests: `test_wakes.py`;
 Chromium acceptance: `NMA_TEST_BROWSER=1` and `test_wakes_browser.py`; ordinary-language
 provider acceptance: `NMA_TEST_LIVE_ENV` and `test_wakes_live.py` with optional
 `NMA_TEST_WAKE_OUTPUT` for the captured result.
+
+
+## Group discussions and shared goals
+
+Public `message.send` accepts group threads with their current membership revision.
+The pinned Hermes discussion planner selects sequential peer turns; durable task IDs
+map to this gateway's existing native session executor. Unknown explicit handles are
+rejected. Snapshot/SSE expose actual agent authors and `discussion.changed` outcomes;
+a bounded discussion is not a completed goal. `run.cancel` stops outstanding peer turns.
+Shared goals retain one responsible agent, linked peer units and accepted evidence;
+goal pause/stop fences the associated discussion across restart.
+
+Schema 11 adds the three `nma_discussion*` tables. Stop ingress and the sole owner,
+back up the complete partition, upgrade exclusively, and verify checksums, integrity,
+foreign keys and replay before reopening. Earlier binaries refuse schema 11. Preserve
+new receipts on rollback and restore a complete isolated predecessor backup; do not
+drop live tables. See the [collaboration report](../../docs/research/nma-018-020-group-collaboration.md)
+for routing provenance, validation and the scoped browser acceptance boundary.

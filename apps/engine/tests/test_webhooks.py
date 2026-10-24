@@ -228,6 +228,10 @@ def test_additive_upgrade_preserves_schema_nine(runtime):
             t: db.execute("SELECT count(*) FROM " + t).fetchone()[0]
             for t in ("nma_messages", "nma_goals", "nma_commands")
         }
+        db.execute("DROP TABLE nma_discussion_goals")
+        db.execute("DROP TABLE nma_discussion_turns")
+        db.execute("DROP TABLE nma_discussions")
+        db.execute("DELETE FROM nma_schema_migrations WHERE version=11")
         db.execute("DROP TABLE nma_webhook_events")
         db.execute("DROP TABLE nma_webhook_batches")
         db.execute("DELETE FROM nma_schema_migrations WHERE version=10")
@@ -235,7 +239,7 @@ def test_additive_upgrade_preserves_schema_nine(runtime):
     start()
     with sqlite3.connect(root / "state/state.db") as db:
         assert (
-            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 10
+            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 11
         )
         assert (
             db.execute(

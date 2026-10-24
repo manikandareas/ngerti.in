@@ -1,0 +1,282 @@
+{
+  "model": "gpt-6.1-sol",
+  "receipt": {
+    "command_id": "9d035abe-06f4-4c92-bfac-7aa9143f2e04",
+    "committed_seq": "7",
+    "discussion_id": "2d783d5f-c7b2-5db0-90a8-29460d668b59",
+    "message_id": "bb89413c-359d-5e69-97de-eaa0e66b8b3d",
+    "run_id": "9693dd1c-3b8d-5590-ba5e-1d2abfc01610",
+    "schema_version": "nma.v1",
+    "status": "accepted",
+    "thread_id": "0ec31891-57fd-434d-aa5f-83a4d6067939"
+  },
+  "snapshot": {
+    "goals": [
+      {
+        "created_at": "2026-10-24T05:08:33.800Z",
+        "creation_key": "fuel-efficiency-report",
+        "evidence": [
+          {
+            "accepted_by_agent_id": "392ea783-b6ee-493e-8469-43ec7c0881b0",
+            "criterion": "Writer contributes its own short report on the existing shared goal and explicitly mentions @reviewer.",
+            "evidence_id": "a442d83a-fcd6-55a2-babd-bacd9f4df1cf",
+            "generation": "1",
+            "producing_run_id": "fd14cd26-50b6-57d0-80ab-33668a41bb85",
+            "source_message_id": "4bf90f9a-69e0-5a70-aedd-ff632c68139a",
+            "summary": "Verified the persisted writer contribution uses the supplied 360 km and 45 litres, reports 12.5 litres per 100 km with the correct formula and units, identifies the existing shared goal, and explicitly delegates independent checking to @reviewer."
+          },
+          {
+            "accepted_by_agent_id": "392ea783-b6ee-493e-8469-43ec7c0881b0",
+            "criterion": "Reviewer contributes an independent calculation check and final review; researcher verifies the peer result.",
+            "evidence_id": "f2fbc3eb-0765-5a5a-9fba-166564182305",
+            "generation": "1",
+            "producing_run_id": "2d246b6e-28b4-51ba-8e9d-c1710e3b03d4",
+            "source_message_id": "0562c660-8a73-529b-b745-892beb3460e7",
+            "summary": "Verified the reviewer's distinct persisted contribution checks the calculation by dividing 45 litres by 3.6 hundred-kilometre units, obtains the same 12.5 litres per 100 km, and explicitly approves the draft's figures, formula and units with no changes needed."
+          },
+          {
+            "accepted_by_agent_id": "392ea783-b6ee-493e-8469-43ec7c0881b0",
+            "criterion": "Researcher calculates litres per 100 km and explicitly mentions @writer to draft using the existing shared goal.",
+            "evidence_id": "527b1980-7b14-55d5-ac87-35bd9564c1fb",
+            "generation": "1",
+            "producing_run_id": "9693dd1c-3b8d-5590-ba5e-1d2abfc01610",
+            "source_message_id": "71b9aa38-8f0d-5105-aac6-187ff559c0ef",
+            "summary": "The persisted researcher result gives (45 \u00f7 360) \u00d7 100 = 12.5 litres per 100 km and explicitly mentions @writer with the existing shared goal ID and instructions to seek @reviewer verification."
+          }
+        ],
+        "generation": "2",
+        "goal_id": "9fab9f79-04b7-438f-b5f3-f3451e5ccb24",
+        "objective": "Calculate fuel consumption for 360 km travelled using 45 litres; have @writer draft a short report using this shared goal and mention @reviewer; have @reviewer independently verify the calculation and provide a final review. Researcher remains responsible, verifies both peers' own results, and completes only after persisted evidence supports all requirements.",
+        "progress": "Verified the persisted writer contribution uses the supplied 360 km and 45 litres, reports 12.5 litres per 100 km with the correct formula and units, identifies the existing shared goal, and explicitly delegates independent checking to @reviewer.\nVerified the reviewer's distinct persisted contribution checks the calculation by dividing 45 litres by 3.6 hundred-kilometre units, obtains the same 12.5 litres per 100 km, and explicitly approves the draft's figures, formula and units with no changes needed.\nThe persisted researcher result gives (45 \u00f7 360) \u00d7 100 = 12.5 litres per 100 km and explicitly mentions @writer with the existing shared goal ID and instructions to seek @reviewer verification.",
+        "responsible_agent_id": "392ea783-b6ee-493e-8469-43ec7c0881b0",
+        "revision": "6",
+        "source_message_id": "bb89413c-359d-5e69-97de-eaa0e66b8b3d",
+        "source_run_id": "9693dd1c-3b8d-5590-ba5e-1d2abfc01610",
+        "status": "completed",
+        "thread_id": "0ec31891-57fd-434d-aa5f-83a4d6067939",
+        "title": "Prepare and review a short fuel-efficiency report",
+        "units": [
+          {
+            "generation": "1",
+            "parent_run_id": null,
+            "run_id": "9693dd1c-3b8d-5590-ba5e-1d2abfc01610",
+            "settled": true,
+            "verdict": "wait"
+          },
+          {
+            "generation": "1",
+            "parent_run_id": null,
+            "run_id": "fd14cd26-50b6-57d0-80ab-33668a41bb85",
+            "settled": true,
+            "verdict": null
+          },
+          {
+            "generation": "1",
+            "parent_run_id": null,
+            "run_id": "2d246b6e-28b4-51ba-8e9d-c1710e3b03d4",
+            "settled": true,
+            "verdict": null
+          },
+          {
+            "generation": "1",
+            "parent_run_id": null,
+            "run_id": "cb956b6b-9485-54af-bcf4-1744e02b9bbc",
+            "settled": false,
+            "verdict": "done"
+          }
+        ],
+        "updated_at": "2026-10-24T05:09:01.355Z",
+        "wake": null,
+        "wake_condition": null
+      }
+    ],
+    "messages": [
+      {
+        "author_agent_id": null,
+        "author_kind": "user",
+        "content": "@researcher take responsibility for a short fuel-efficiency report: 360 km and 45 litres. Calculate litres per 100 km, then explicitly mention @writer to draft the report. Writer: use the existing shared goal and mention @reviewer to check your report. Reviewer: verify the calculation and give the final review. Each peer must contribute its own result. Researcher remains responsible for the goal lifecycle and should verify peer results before completing. Keep working without another user message.",
+        "context_generation": "1",
+        "message_id": "bb89413c-359d-5e69-97de-eaa0e66b8b3d",
+        "message_seq": "1",
+        "parts": [
+          {
+            "text": "@researcher take responsibility for a short fuel-efficiency report: 360 km and 45 litres. Calculate litres per 100 km, then explicitly mention @writer to draft the report. Writer: use the existing shared goal and mention @reviewer to check your report. Reviewer: verify the calculation and give the final review. Each peer must contribute its own result. Researcher remains responsible for the goal lifecycle and should verify peer results before completing. Keep working without another user message.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "9693dd1c-3b8d-5590-ba5e-1d2abfc01610",
+        "thread_id": "0ec31891-57fd-434d-aa5f-83a4d6067939"
+      },
+      {
+        "author_agent_id": "392ea783-b6ee-493e-8469-43ec7c0881b0",
+        "author_kind": "agent",
+        "content": "Fuel consumption = (45 litres \u00f7 360 km) \u00d7 100 = 12.5 litres per 100 km.\n\n@writer, draft the short report using shared goal 9fab9f79-04b7-438f-b5f3-f3451e5ccb24, then mention @reviewer for an independent calculation check and final review. I remain responsible and will verify both peer results before completing the goal.",
+        "context_generation": "1",
+        "message_id": "71b9aa38-8f0d-5105-aac6-187ff559c0ef",
+        "message_seq": "2",
+        "parts": [
+          {
+            "text": "Fuel consumption = (45 litres \u00f7 360 km) \u00d7 100 = 12.5 litres per 100 km.\n\n@writer, draft the short report using shared goal 9fab9f79-04b7-438f-b5f3-f3451e5ccb24, then mention @reviewer for an independent calculation check and final review. I remain responsible and will verify both peer results before completing the goal.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "9693dd1c-3b8d-5590-ba5e-1d2abfc01610",
+        "thread_id": "0ec31891-57fd-434d-aa5f-83a4d6067939"
+      },
+      {
+        "author_agent_id": "9e94164a-841b-4405-b692-9f511e991e38",
+        "author_kind": "agent",
+        "content": "Draft report for shared goal 9fab9f79-04b7-438f-b5f3-f3451e5ccb24:\n\nThe vehicle travelled 360 km using 45 litres of fuel, giving an average fuel consumption of 12.5 litres per 100 km, calculated as (45 \u00f7 360) \u00d7 100.\n\n@reviewer, independently verify the calculation and provide your final review. @researcher retains responsibility for checking both contributions and completing the shared goal.",
+        "context_generation": "1",
+        "message_id": "4bf90f9a-69e0-5a70-aedd-ff632c68139a",
+        "message_seq": "3",
+        "parts": [
+          {
+            "text": "Draft report for shared goal 9fab9f79-04b7-438f-b5f3-f3451e5ccb24:\n\nThe vehicle travelled 360 km using 45 litres of fuel, giving an average fuel consumption of 12.5 litres per 100 km, calculated as (45 \u00f7 360) \u00d7 100.\n\n@reviewer, independently verify the calculation and provide your final review. @researcher retains responsibility for checking both contributions and completing the shared goal.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "fd14cd26-50b6-57d0-80ab-33668a41bb85",
+        "thread_id": "0ec31891-57fd-434d-aa5f-83a4d6067939"
+      },
+      {
+        "author_agent_id": "7e165497-4532-4f38-b85c-b6be044a792a",
+        "author_kind": "agent",
+        "content": "Final review: approved. Independently checking the result, 360 km is 3.6 \u00d7 100 km, and 45 \u00f7 3.6 = 12.5 litres per 100 km. The draft uses the correct figures, formula and units; no changes needed.\n\n@researcher, my review is complete. Please verify both peer contributions before completing the shared goal.",
+        "context_generation": "1",
+        "message_id": "0562c660-8a73-529b-b745-892beb3460e7",
+        "message_seq": "4",
+        "parts": [
+          {
+            "text": "Final review: approved. Independently checking the result, 360 km is 3.6 \u00d7 100 km, and 45 \u00f7 3.6 = 12.5 litres per 100 km. The draft uses the correct figures, formula and units; no changes needed.\n\n@researcher, my review is complete. Please verify both peer contributions before completing the shared goal.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "2d246b6e-28b4-51ba-8e9d-c1710e3b03d4",
+        "thread_id": "0ec31891-57fd-434d-aa5f-83a4d6067939"
+      }
+    ],
+    "next_before_message_seq": null,
+    "replay_epoch": "d85de2bd-8fb0-4220-8d5d-1b4b03aad6ba",
+    "runs": [
+      {
+        "agent_id": "392ea783-b6ee-493e-8469-43ec7c0881b0",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "d85de2bd-8fb0-4220-8d5d-1b4b03aad6ba",
+        "run_id": "cb956b6b-9485-54af-bcf4-1744e02b9bbc",
+        "schema_version": "nma.v1",
+        "status": "running",
+        "text": "",
+        "thread_id": "0ec31891-57fd-434d-aa5f-83a4d6067939",
+        "through_sequence": "315"
+      },
+      {
+        "agent_id": "392ea783-b6ee-493e-8469-43ec7c0881b0",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "d85de2bd-8fb0-4220-8d5d-1b4b03aad6ba",
+        "run_id": "9693dd1c-3b8d-5590-ba5e-1d2abfc01610",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Fuel consumption = (45 litres \u00f7 360 km) \u00d7 100 = 12.5 litres per 100 km.\n\n@writer, draft the short report using shared goal 9fab9f79-04b7-438f-b5f3-f3451e5ccb24, then mention @reviewer for an independent calculation check and final review. I remain responsible and will verify both peer results before completing the goal.",
+        "thread_id": "0ec31891-57fd-434d-aa5f-83a4d6067939",
+        "through_sequence": "315"
+      },
+      {
+        "agent_id": "9e94164a-841b-4405-b692-9f511e991e38",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "d85de2bd-8fb0-4220-8d5d-1b4b03aad6ba",
+        "run_id": "fd14cd26-50b6-57d0-80ab-33668a41bb85",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Draft report for shared goal 9fab9f79-04b7-438f-b5f3-f3451e5ccb24:\n\nThe vehicle travelled 360 km using 45 litres of fuel, giving an average fuel consumption of 12.5 litres per 100 km, calculated as (45 \u00f7 360) \u00d7 100.\n\n@reviewer, independently verify the calculation and provide your final review. @researcher retains responsibility for checking both contributions and completing the shared goal.",
+        "thread_id": "0ec31891-57fd-434d-aa5f-83a4d6067939",
+        "through_sequence": "315"
+      },
+      {
+        "agent_id": "7e165497-4532-4f38-b85c-b6be044a792a",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "d85de2bd-8fb0-4220-8d5d-1b4b03aad6ba",
+        "run_id": "2d246b6e-28b4-51ba-8e9d-c1710e3b03d4",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Final review: approved. Independently checking the result, 360 km is 3.6 \u00d7 100 km, and 45 \u00f7 3.6 = 12.5 litres per 100 km. The draft uses the correct figures, formula and units; no changes needed.\n\n@researcher, my review is complete. Please verify both peer contributions before completing the shared goal.",
+        "thread_id": "0ec31891-57fd-434d-aa5f-83a4d6067939",
+        "through_sequence": "315"
+      }
+    ],
+    "schema_version": "nma.v1",
+    "thread": {
+      "agents": [
+        {
+          "access_generation": "1",
+          "agent_id": "392ea783-b6ee-493e-8469-43ec7c0881b0",
+          "config": {
+            "instructions": "",
+            "model": "test",
+            "soul": "SOUL_researcher"
+          },
+          "config_revision": "1",
+          "created_at": "2026-10-24T05:08:26.986620Z",
+          "display_name": "researcher",
+          "handle": "researcher",
+          "revision": "1",
+          "status": "active",
+          "updated_at": "2026-10-24T05:08:26.986620Z"
+        },
+        {
+          "access_generation": "1",
+          "agent_id": "9e94164a-841b-4405-b692-9f511e991e38",
+          "config": {
+            "instructions": "",
+            "model": "test",
+            "soul": "SOUL_writer"
+          },
+          "config_revision": "1",
+          "created_at": "2026-10-24T05:08:26.987473Z",
+          "display_name": "writer",
+          "handle": "writer",
+          "revision": "1",
+          "status": "active",
+          "updated_at": "2026-10-24T05:08:26.987473Z"
+        },
+        {
+          "access_generation": "1",
+          "agent_id": "7e165497-4532-4f38-b85c-b6be044a792a",
+          "config": {
+            "instructions": "",
+            "model": "test",
+            "soul": "SOUL_reviewer"
+          },
+          "config_revision": "1",
+          "created_at": "2026-10-24T05:08:26.999743Z",
+          "display_name": "reviewer",
+          "handle": "reviewer",
+          "revision": "1",
+          "status": "active",
+          "updated_at": "2026-10-24T05:08:26.999743Z"
+        }
+      ],
+      "context_generation": "1",
+      "dm_agent_id": null,
+      "kind": "group",
+      "membership_revision": "1",
+      "revision": "1",
+      "status": "open",
+      "thread_id": "0ec31891-57fd-434d-aa5f-83a4d6067939",
+      "title": "Editorial"
+    },
+    "through_sequence": "315"
+  }
+}

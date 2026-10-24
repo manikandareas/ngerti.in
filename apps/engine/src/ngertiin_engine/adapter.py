@@ -9,6 +9,7 @@ from ngertiin_engine.capabilities import FIELDS, authorize, resolve
 from ngertiin_engine.context import Context
 from ngertiin_engine.contracts import EngineError, canonical, counter, digest, uuid
 from ngertiin_engine.direct_messages import DirectMessages
+from ngertiin_engine.discussions import Discussions
 from ngertiin_engine.goals import Goals
 from ngertiin_engine.reliability import Reliability
 from ngertiin_engine.store import Store
@@ -47,6 +48,7 @@ class Adapter:
         self.threads = Threads(self.store, self.agents)
         self.context = Context(self.store, self.threads)
         self.dm = DirectMessages(self)
+        self.discussions = Discussions(self)
         self.goals = Goals(self.store)
         self.actor = Principal(
             "nma:" + owner,
@@ -312,6 +314,9 @@ class Adapter:
             await self.recover_run_stops(locked=True)
             return result
         if kind == "message.send":
+            thread = self.threads.read({"thread_id": payload.get("thread_id")})
+            if thread["kind"] == "group":
+                return await self.discussions.send(body)
             return await self.dm.send(body)
         if kind == "thread.snapshot":
             return self.dm.snapshot(payload)

@@ -72,9 +72,11 @@ class Lifecycle:
                 "parent_run_id": r[2],
                 "verdict": r[3],
                 "settled": bool(r[4]),
+                "agent_id": r[5],
+                "status": r[6] or "pending",
             }
             for r in conn.execute(
-                "SELECT run_id,generation,parent_run_id,verdict,settled FROM nma_goal_units WHERE owner_id=? AND goal_id=? ORDER BY rowid",
+                "SELECT u.run_id,u.generation,u.parent_run_id,u.verdict,u.settled,json_extract(b.config,'$.agent_id'),t.status FROM nma_goal_units u JOIN nma_adapter_runs r ON r.owner_id=u.owner_id AND r.run_id=u.run_id JOIN nma_adapter_bindings b ON b.owner_id=r.owner_id AND b.binding_id=r.binding_id LEFT JOIN nma_run_terminals t ON t.rowid=(SELECT MAX(x.rowid) FROM nma_run_terminals x WHERE x.owner_id=u.owner_id AND x.run_id=u.run_id) WHERE u.owner_id=? AND u.goal_id=? ORDER BY u.rowid",
                 (self.store.owner, goal["goal_id"]),
             )
         ]
@@ -107,6 +109,10 @@ class Lifecycle:
         )
 
     def fence(self, conn, goal_id, *, except_run=None):
+        conn.execute(
+            "UPDATE nma_discussions SET status='cancelled',reason='goal_fenced' WHERE owner_id=? AND discussion_id IN (SELECT discussion_id FROM nma_discussion_goals WHERE owner_id=? AND goal_id=?)",
+            (self.store.owner, self.store.owner, goal_id),
+        )
         rows = conn.execute(
             "SELECT DISTINCT run_id FROM nma_goal_units WHERE owner_id=? AND goal_id=?",
             (self.store.owner, goal_id),
@@ -326,7 +332,6 @@ class Lifecycle:
         if (
             message["thread_id"] != goal["thread_id"]
             or message["author_kind"] != "agent"
-            or message["author_agent_id"] != goal["responsible_agent_id"]
             or not message["content"].strip()
         ):
             raise EngineError("NOT_FOUND")

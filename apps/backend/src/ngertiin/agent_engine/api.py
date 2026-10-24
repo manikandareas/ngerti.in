@@ -64,6 +64,7 @@ def failure(code, command_id, details=None):
         "GOAL_STOPPED": 409,
         "AGENT_UNAVAILABLE": 409,
         "GROUP_UNAVAILABLE": 409,
+        "INVALID_MENTION": 422,
         "CONNECTOR_UNAVAILABLE": 422,
         "UNAUTHENTICATED": 401,
         "INVALID_REQUEST": 422,

@@ -44,9 +44,16 @@ class Model(BaseHTTPRequestHandler):
         if text.split("\n\n")[-1] in {"BLOCK_STARTED", "BLOCK_TOOL"}:
             self.server.blocked.set()
             self.server.release.wait(60)
-        if text.split("\n\n")[-1] == "FAIL_PROVIDER" or (
-            getattr(self.server, "fail_continuation", False)
-            and "This is an internal continuation" in text
+        if (
+            (
+                getattr(self.server, "fail_group_member", False)
+                and "You are @writer" in text
+            )
+            or text.split("\n\n")[-1] == "FAIL_PROVIDER"
+            or (
+                getattr(self.server, "fail_continuation", False)
+                and "This is an internal continuation" in text
+            )
         ):
             self.send_response(401)
             self.end_headers()
@@ -617,6 +624,9 @@ def test_agent_additive_migration_from_foundation(runtime):
     with sqlite3.connect(root / "state/state.db") as db:
         before = db.execute("SELECT count(*) FROM nma_commands").fetchone()[0]
         for table in (
+            "nma_discussion_goals",
+            "nma_discussion_turns",
+            "nma_discussions",
             "nma_webhook_events",
             "nma_webhook_batches",
             "nma_triggers",
@@ -653,7 +663,7 @@ def test_agent_additive_migration_from_foundation(runtime):
     )
     with sqlite3.connect(root / "state/state.db") as db:
         assert (
-            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 10
+            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 11
         )
         assert db.execute("SELECT count(*) FROM nma_commands").fetchone()[0] == before
         assert db.execute("PRAGMA foreign_key_check").fetchall() == []

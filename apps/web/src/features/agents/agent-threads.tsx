@@ -88,9 +88,7 @@ export function AgentThreads({ agents, edit }: { agents: Agent[]; edit: (agent: 
       pending.current = null;
       setCreating(false);
       await load();
-      if (result.thread.kind === "dm")
-        await navigate({ to: "/dm/$threadId", params: { threadId: result.thread.thread_id } });
-      else setSelected(result.thread.thread_id);
+      await navigate({ to: "/dm/$threadId", params: { threadId: result.thread.thread_id } });
     } catch (e) {
       setError(e instanceof Error ? e.message : "Belum dapat disimpan. Coba kembali.");
     } finally {
@@ -147,7 +145,7 @@ export function AgentThreads({ agents, edit }: { agents: Agent[]; edit: (agent: 
               className="h-auto justify-start whitespace-normal p-4 text-left"
               onClick={() => {
                 setError("");
-                setSelected(thread.thread_id);
+                void navigate({ to: "/dm/$threadId", params: { threadId: thread.thread_id } });
               }}
             >
               Grup · {thread.title}
@@ -293,9 +291,7 @@ export function AgentThreads({ agents, edit }: { agents: Agent[]; edit: (agent: 
               </Button>
             </article>
           ))}
-          <p className="text-sm text-muted-foreground">
-            Susunan agent tersimpan. Pengiriman pesan grup belum tersedia di sini.
-          </p>
+          <p className="text-sm text-muted-foreground">Profil agent tetap sama di DM dan grup.</p>
         </DialogContent>
       </Dialog>
     </section>

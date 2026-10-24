@@ -447,6 +447,9 @@ def test_schema_five_upgrade_preserves_messages_and_replay(runtime):
     # Reconstruct the predecessor with existing native/domain rows intact.
     with sqlite3.connect(root / "state/state.db") as db:
         for table in (
+            "nma_discussion_goals",
+            "nma_discussion_turns",
+            "nma_discussions",
             "nma_webhook_events",
             "nma_webhook_batches",
             "nma_triggers",

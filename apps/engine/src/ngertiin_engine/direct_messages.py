@@ -240,6 +240,10 @@ class DirectMessages:
                 "SELECT DISTINCT u.run_id FROM nma_goal_units u JOIN nma_goals g ON g.owner_id=u.owner_id AND g.goal_id=u.goal_id WHERE u.owner_id=? AND g.thread_id=? AND u.settled=0 AND NOT EXISTS (SELECT 1 FROM nma_run_terminals t WHERE t.owner_id=u.owner_id AND t.run_id=u.run_id)",
                 (self.store.owner, thread["thread_id"]),
             ).fetchall()
+            pending += conn.execute(
+                "SELECT t.run_id FROM nma_discussion_turns t JOIN nma_discussions d USING(owner_id,discussion_id) WHERE t.owner_id=? AND d.thread_id=? AND d.rowid=(SELECT MAX(latest.rowid) FROM nma_discussions latest WHERE latest.owner_id=d.owner_id AND latest.thread_id=d.thread_id)",
+                (self.store.owner, thread["thread_id"]),
+            ).fetchall()
             for (run_id,) in pending:
                 if run_id in runs:
                     continue
@@ -248,10 +252,19 @@ class DirectMessages:
                 if size > 4 * 1024 * 1024:
                     raise EngineError("RESPONSE_TOO_LARGE")
                 runs[run_id] = run
+            discussion = conn.execute(
+                "SELECT discussion_id,status,reason FROM nma_discussions WHERE owner_id=? AND thread_id=? ORDER BY rowid DESC LIMIT 1",
+                (self.store.owner, thread["thread_id"]),
+            ).fetchone()
             # The helper uses this same connection; state and watermark are atomic.
             epoch, seq = self.watermark(conn)
             return {
                 "schema_version": "nma.v1",
+                "discussion": dict(
+                    zip(("discussion_id", "status", "reason"), discussion)
+                )
+                if discussion
+                else None,
                 "thread": thread,
                 "messages": list(reversed(messages)),
                 "runs": list(reversed(list(runs.values()))),

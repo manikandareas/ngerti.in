@@ -33,6 +33,8 @@ export type Run = {
   activity?: string;
 };
 export type Goal = {
+  responsible_agent_id?: string;
+  units?: { run_id: string; settled: boolean }[];
   goal_id: string;
   title: string;
   objective: string;
@@ -49,6 +51,7 @@ export type Goal = {
   }[];
 };
 export type Snapshot = {
+  discussion?: { discussion_id: string; status: string; reason: string } | null;
   goals?: Goal[];
   thread: Thread;
   messages: Message[];
@@ -89,6 +92,8 @@ export function mergeMessages(current: Message[], incoming: Message[]) {
 
 export function applyEvent(state: Snapshot, event: Event): Snapshot {
   if (event.thread_id !== state.thread.thread_id) throw new Error("Unexpected conversation event");
+  if (event.type === "discussion.changed")
+    return { ...state, discussion: event.payload.discussion as Snapshot["discussion"] };
   if (event.type === "goal.changed") {
     const goal = event.payload.goal as Goal;
     const goals = state.goals ?? [];

@@ -1,0 +1,141 @@
+{
+  "status": "verified",
+  "date": "2026-10-24",
+  "base_commit": "9c03a097e2ed8ff51de922918f1f10d76466266c",
+  "results": {
+    "full_engine": {
+      "passed": 101,
+      "skipped": 5,
+      "seconds": 418.3
+    },
+    "final_focused": {
+      "passed": 16,
+      "seconds": 59.82,
+      "overlaps_full_suite": true
+    },
+    "real_provider": {
+      "passed": 1,
+      "seconds": 40.32,
+      "model": "gpt-6.1-sol"
+    },
+    "backend": {
+      "passed": 9
+    },
+    "checks": [
+      "bun run check",
+      "engine Ruff and format",
+      "web production build",
+      "engine wheel/sdist and source equality",
+      "docs-check",
+      "git diff --check",
+      "predecessor migration preservation"
+    ]
+  },
+  "commands": [
+    "HERMES_SOURCE=$PWD/.dev/nma-001/source PYTHONPATH=$PWD/apps/engine/src NMA_TEST_RUNTIME_PYTHON=$PWD/.dev/nma-006-closure/production/bin/python .dev/nma-006-closure/runtime/bin/python -m pytest apps/engine/tests -q",
+    "Same runtime environment: pytest apps/engine/tests/test_discussions.py apps/engine/tests/test_direct_messages.py -q",
+    "Same runtime environment plus NMA_TEST_LIVE_ENV=$PWD/.env and NMA_GROUP_OUTPUT: pytest apps/engine/tests/test_discussions_live.py -q -x",
+    "uv run --project apps/backend python -m unittest discover -s apps/backend/tests -p test_agent_engine.py",
+    "bun run check",
+    "bun run build",
+    "uv build --project apps/engine --out-dir .dev/nma-018/final-dist",
+    "python3 scripts/check_docs.py",
+    "git diff --check"
+  ],
+  "browser": {
+    "desktop": [
+      1440,
+      1000
+    ],
+    "mobile": [
+      390,
+      844
+    ],
+    "auth": "test account dependency",
+    "runtime": "real HTTP/SSE and pinned gateway on disposable data",
+    "goal_disclosure": "production component with final real-model snapshot",
+    "initial_harness_unstyled": "initial-harness-unstyled.png"
+  },
+  "limitations": [
+    "Full suite collected before final supplemental ownership test and small validation/snapshot tightening; final focused suite covers final source.",
+    "No production authentication walkthrough, deployment, migration, commit or push.",
+    "No high-volume benchmark, OS isolation or exactly-once external side-effect guarantee."
+  ],
+  "source_hashes": {
+    "apps/backend/src/ngertiin/agent_engine/api.py": "1dde67b58672692556e89764f6be1b668b7f60b711b6dfd89a76af4fb645719e",
+    "apps/engine/README.md": "7f09b9dd345e7320c8fb56b62cc0d9e2a5fc45853c0caa18541e478cdd091d01",
+    "apps/engine/src/ngertiin_engine/adapter.py": "d69a78b68bf70554d83b3fff135a7b0721eff14958f0c1c8e671b44582dd6ac1",
+    "apps/engine/src/ngertiin_engine/direct_messages.py": "4de60eca5ab9d707babe7b7050c51ad68a63f9a2b51887bcb024149c6726bc06",
+    "apps/engine/src/ngertiin_engine/discussions.py": "a5a9530fcaac4e357b1a315d74bf510319460e47de4a711076137a22cfae37ba",
+    "apps/engine/src/ngertiin_engine/goal_continuation.py": "8d5630a20ee24779143f7e2438610e812a32221c5eb5ae7483cf931c254eab7d",
+    "apps/engine/src/ngertiin_engine/goal_lifecycle.py": "ba29ffef8724b835f074758c86afe987845ec45e00dafb04b552f1d3f295476f",
+    "apps/engine/src/ngertiin_engine/goals.py": "8368da48fe3d9a444ab3f12ac13166ee6fb309a127b48233b2d2e1ac10ff115f",
+    "apps/engine/src/ngertiin_engine/reliability.py": "35fd1e7351398955205db9e0c3f7956b6e30f5bc345853321357d841858abdb0",
+    "apps/engine/src/ngertiin_engine/runtime-pin.json": "d7804edb00b09b88497ee076e3db232b9bff738999f1a043e57049cf79c51a31",
+    "apps/engine/src/ngertiin_engine/service.py": "b042a3454cb9db24ec5fc4118ba845fa9dfd26f73c6f72865d44264f9bd028ae",
+    "apps/engine/src/ngertiin_engine/store.py": "e67fb5a55a7322504d799fa0fc3674678b24b698fa80af10cbc83c7a4a0b2fb2",
+    "apps/engine/src/ngertiin_engine/transcript.py": "a42daa91d7f579351766b7de97a65766d8c3382a065fa221cf41a277c50bf53b",
+    "apps/engine/tests/fault_launcher.py": "7b3a98f0869eed584593b4baed9356c225add5768f75f88b1175789543b892cc",
+    "apps/engine/tests/test_context.py": "67926cd5d9cc2ecb05fe25f1bcfd7a58eb1d44f58be95af7c459cfc2b9fdd8ed",
+    "apps/engine/tests/test_direct_messages.py": "a9d2402e47c7fb13ff1651137ab1811f12bdce54ec010d3f68bf92b7ea72e7c1",
+    "apps/engine/tests/test_discussions.py": "c63fbd2489a350a8c873f1d7ac0314016ee627d6fed77ceea6f50a70b5771af9",
+    "apps/engine/tests/test_discussions_live.py": "9d91855f5c3841416fd11a66c509d385c501cb4a03b60cecdff14f495a2e71e8",
+    "apps/engine/tests/test_goals.py": "ff379924919a68fab651a9a81afbca5f60e088ff982ef7e96124ae5c3081a5c2",
+    "apps/engine/tests/test_runtime.py": "a9489353b9160caba6cf4ba73f315bb4774d67679169a6db5675e6ea7e4e5356",
+    "apps/engine/tests/test_threads.py": "70b90a44c02fd945d2d9f34b4f4fe90d36926e81d48cdf0e81304efa90dd48b1",
+    "apps/engine/tests/test_wakes.py": "9628c3e5325e20892362de477fade2c05d9447e7d5a5aa0d4a2979526ecf03ea",
+    "apps/engine/tests/test_webhooks.py": "335bac71d8461db4e13e55247fc09a04538250764094f77a48cf4aa809dc3a40",
+    "apps/web/src/features/agents/agent-threads.tsx": "dad8f4d4dcdfeeb95652ed4c4ffeea398f4abea98a59bbff0a074eecb1cf4dec",
+    "apps/web/src/features/direct-messages/composer.tsx": "85de0886cce75ba3e657200762dbf384c415c744410abb7a29417b142c3a1212",
+    "apps/web/src/features/direct-messages/direct-message-page.tsx": "098b024fb1101e835eae51cbcde03bb7b0cc2a990436cca7e441d40c7e29d709",
+    "apps/web/src/features/direct-messages/goal-progress.tsx": "6cbe14ca0ff67a019aaacfae43c881415b4aab125214cd6afd6dbaa83932a7d3",
+    "apps/web/src/features/direct-messages/state.ts": "0d0e660952b06de2a281cd63ce1948533b90eda4db1690afbdd9617d6ea432f3",
+    "docs/research/nma-018-020-group-collaboration.md": "3239ca810ed2cc84736776cdbc43e562c7eff85ec21bf5a3d18f6b1e2f78cff2"
+  },
+  "reference_hashes": {
+    "rakazo-group-handoff.ts": "a59bbc32163e7c307f6b80741318e31dda47a2edb0022223f8b1647dba376eef",
+    "nakama-agent-groups.ts": "1e72e00b96ebbf680cdbe1e20ad89c912cf0b771d61267c34394b6c1d90ec1b6"
+  },
+  "evidence_hashes": {
+    "backend-tests.log": "4c257fba4a5c754c58ffee916f09a003943bad91ea27be116a76746d2ae03c14",
+    "browser-auth.ts": "91846d3a00dc017f6e03c3953c7f747c99b94163bf1c10c3259cd48ce0452697",
+    "browser-fixture.py": "2ea56e8586691b5bef025bff17ab1e6a9443de86e0cf1513eeb1fbc12491f34f",
+    "browser-main.tsx": "07bd6c58f3feaa5c86be5898c3d663d4cab3d873aa2a2d59fd9a36b386c6a2c9",
+    "browser-router.tsx": "e6dfed300e1548fff48dcbf91316ecc609fb2db2f213faa56668a1146c96d8c2",
+    "browser-snapshots.json": "0f6c540b3edb06bce61ad4fa752db10ebcde725caefe80315bc2c5b51507b129",
+    "browser-style.css": "1619382debdfb477cf81f4164b1200f78c212b867b406cf821e3e8acf0256624",
+    "browser-vite.config.ts": "4f5e8c8797ba80c0b947ffbd4746c34332395c2b1a436bb52b99c933a455f049",
+    "check-final.log": "43c84f786af4c1513f86a529654fd8909b7df8cb9ab0573dcf9831ce3a52a1d5",
+    "check.log": "b25ea44944732463b94ea7cef78737e71ceaaf0a87b17f334e3686ec6eb82b6e",
+    "desktop-goal-evidence.png": "f3838e494f210e9398a18dc8d220f028297865e9446823a84f138d7c5716ffaf",
+    "desktop-handoff.png": "a5441c3db638485918844f6e6364ff6f8511bd8352f582641888c8726b62fd69",
+    "discussions-final.log": "8e5172cc53246d89d17d65325d2c1e89c5703294c6f7d6c384e37cfadcc408cd",
+    "discussions-initial.log": "15a0006ce1c81ddea1a7a1406f46520c6751f701ae4977247720a14318d36ecc",
+    "discussions-reviewed.log": "e3504631aaf91c8ccfed39a73e2f2bcb26d9f78c8d4cd4f61d89bb24b9f0ecc3",
+    "discussions.log": "9a16df14bf4d5de39ae9ee8bf48a959707b38764c5caa5211e83a199d979fae4",
+    "docs-check.log": "90559d38ad17ebfbefdd019265eb5e38459f77482301c79d2374c9168203373b",
+    "engine-build-final.log": "d3de1a5a57b7b594887fe99131c316e15db089f862ed0e7b411570e88883d81b",
+    "engine-build.log": "5a011edcab14372394d7fe9a96842c2e56f15746e31d0e274134bc6b5ed21114",
+    "engine-lint.log": "0f7e5e50821f894ae9da5bfdd9126d08dc719330d4c25159f8d05943a1cf5dab",
+    "evidence-link-state.json": "123960d43bcc833ced128f4d1110e6c656f4c13024f3f5565d86c29c4f23b845",
+    "focused.log": "c6bd6160db11e10a974ae281ab95738d9505d8492c055743b164d42808ac9c61",
+    "goal-browser-state.txt": "db160632a0b697b8d314582f6c201882f495e89a47c7bfa61015b4d1ea693070",
+    "initial-harness-unstyled.png": "5d2076c05df59239f119aa4e98eeca000cbe80c750a903a5ce7a8f8bd2adf9c7",
+    "live-group-final.json": "5bb76e6c7b080196c7e2b542d687ce98ddb8be6997d85eabd6cbc0d252350bb0",
+    "live-group-final.log": "c3de2b49efc01b7c787870ecb2b6a577ce84820436309140402691d7a7de3fc1",
+    "live-group.json": "6e4fff31d1600167c77a0d9dcae465050e96b0c193c9cf35ef0db7e4d3277674",
+    "live-group.log": "909a17695d8cf13c88ddd44f2cf601769ae5b78e117ce759a3be06555521d587",
+    "mobile-error.png": "04e2fba5bcdaac9dfadc617d56e1261fe9f0d3afc36554d640093250e6fb705e",
+    "mobile-goal-evidence.png": "a0d35536e28d77508d0e8af02ac4ef6f230689c0363f044694c2fbba62801a16",
+    "mobile-handoff.png": "d7aae2f97d90690c6e7c83ab5bf17462f7b1ea74b460d2779beece5d1be66c5b",
+    "mobile-state.txt": "cf2d86cf1ebc46c22faa80ced115f428f26e7a906ce986a75bb106abf4c7f9b6",
+    "mobile-stopped.png": "9026589e8069c18f5a65db53264b549cc13b652b11d6e77cf1795a03a9d7248c",
+    "mobile-working.png": "d09d49deff7af51d93f31632da59f7d9f45011d513ac00313038a7ab759134fe",
+    "notion-readback.json": "9db090503feaa947ce5776b41f82adfc690edc38cfae8f30f731596abb63b270",
+    "preservation-package.log": "38742ccc13fe12366861153d3930e10fd6abcaac5a7743513f089187b4c49067",
+    "regression-final.log": "67a99d94ceb4d7168031ce9804a56ef3bb666721b8481e54d40ce274198720df",
+    "regression.log": "268c33912722ef67802606ed4b0bef361505e472e528350a94c906c0cd72d182",
+    "transport-reviewed.log": "04ba97efa4791e352a97be05e59c006d80e326330a3d6df2cbcfa88be4485f82",
+    "web-build.log": "c8b30ee02e99e619d927708cdb1a2139ea6d8b7d7975d14800a1a96e2e9aa6e2"
+  }
+}

@@ -1,0 +1,93 @@
+F
+=================================== FAILURES ===================================
+__________________________ test_handoff_dedup_restart __________________________
+
+runtime = (PosixPath('/tmp/nma-b_whjoj8'), <http.server.ThreadingHTTPServer object at 0x109e217f0>, <function runtime.<locals>.c...cancel', 'runtime.read', 'runtime.events', 'runtime.snapshot'], 'production_ready': False, 'schema_version': 'nma.v1'})
+
+    def test_handoff_dedup_restart(runtime):
+        root, provider, call, start, *_ = runtime
+        thread = group(call)
+    
+        def script(body, text):
+            if not body.get("messages"):
+                return None
+            text = next(
+                m["content"] for m in reversed(body["messages"]) if m["role"] == "user"
+            )
+            if "You are @researcher" in text:
+                result = "Research complete. @writer prepare the report"
+            elif "You are @writer" in text:
+                result = "Report ready. @reviewer review it"
+            else:
+                result = "Review complete."
+            return {"role": "assistant", "content": result}
+    
+        provider.goal_script = script
+        request = send(thread, "@researcher investigate")
+        receipt = call(request)
+        assert "result" in receipt, receipt
+        snap, status = wait_group(root, call, thread)
+        assert status == "settled"
+        assert [m["author_kind"] for m in snap["messages"]].count("user") == 1
+        assert len([m for m in snap["messages"] if m["author_kind"] == "agent"]) == 3, snap
+        before = len(provider.requests)
+        assert call(request)["result"] == receipt["result"]
+        start.current.kill()
+        start.current.wait(timeout=10)
+>       start()
+
+apps/engine/tests/test_discussions.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+fault = None
+
+    def start(fault=None):
+        log = (root / f"gateway-{len(processes)}.log").open("w+")
+        process = subprocess.Popen(
+            [RUNTIME_PYTHON, str(Path(__file__).with_name("fault_launcher.py"))]
+            if fault
+            else [RUNTIME_PYTHON, "-m", "ngertiin_engine.service"],
+            cwd=SOURCE,
+            env=env
+            | (
+                {"NMA_TEST_FAULT": fault, "NMA_TEST_MARKER": str(root / "fault-fired")}
+                if fault
+                else {}
+            ),
+            stdout=log,
+            stderr=subprocess.STDOUT,
+        )
+        processes.append(process)
+        start.current = process
+        deadline = time.monotonic() + 90
+        while process.poll() is None and time.monotonic() < deadline:
+            try:
+                response = call(command("runtime.describe"))
+                if "result" in response:
+                    return process, response["result"]
+            except (OSError, ValueError):
+                pass
+            time.sleep(0.1)
+        log.flush()
+>       pytest.fail(
+            log.read()
+            if log.seek(0) is None
+            else (root / f"gateway-{len(processes) - 1}.log").read_text()
+        )
+E       Failed: Traceback (most recent call last):
+E         File "<frozen runpy>", line 203, in _run_module_as_main
+E         File "<frozen runpy>", line 88, in _run_code
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/service.py", line 425, in <module>
+E           main()
+E           ~~~~^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/service.py", line 64, in main
+E           raise EngineError("UNSUPPORTED_SCHEMA")
+E       ngertiin_engine.contracts.EngineError: UNSUPPORTED_SCHEMA
+
+apps/engine/tests/test_runtime.py:288: Failed
+---------------------------- Captured stdout setup -----------------------------
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_discussions.py::test_handoff_dedup_restart - Fa...
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed in 4.84s

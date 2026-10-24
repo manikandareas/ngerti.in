@@ -47,6 +47,10 @@ If this turn produces the final result, continue once to verify its persisted re
 Do not invent message IDs; use the authorized transcript and stored goal state. Use complete English
 titles/objectives while preserving quoted user content. creation_key is a short stable semantic
 key (e.g. fleet-fuel-report), not a deadline or turn ID. Use list to refresh after conflicts.
+In groups, reuse existing shared goals. Only the responsible_agent_id may change lifecycle,
+progress or accept evidence; peers contribute results to the same goal through recorded turns.
+Delegate with an explicit @handle in your final message. Do not create a new goal for a peer task.
+The responsible agent reviews peer results and records the next lifecycle decision.
 Tool identity, owner, agent, thread and source-message provenance are bound by the server.
 Use exactly these fields for each action (omit every other field):
 list: action.
@@ -119,8 +123,8 @@ class Goals:
 
     def listing(self, conn, thread_id, agent_id):
         rows = conn.execute(
-            "SELECT goal_id,title,objective,status,revision,generation,source_message_id,source_run_id,creation_key,created_at,updated_at FROM nma_goals WHERE owner_id=? AND thread_id=? AND responsible_agent_id=? ORDER BY created_at,goal_id",
-            (self.store.owner, thread_id, agent_id),
+            "SELECT goal_id,title,objective,status,revision,generation,source_message_id,source_run_id,creation_key,created_at,updated_at,responsible_agent_id FROM nma_goals WHERE owner_id=? AND thread_id=? AND (? IS NULL OR responsible_agent_id=?) ORDER BY created_at,goal_id",
+            (self.store.owner, thread_id, agent_id, agent_id),
         ).fetchall()
         names = (
             "goal_id",
@@ -143,7 +147,7 @@ class Goals:
                     "revision": str(row[4]),
                     "generation": str(row[5]),
                     "thread_id": thread_id,
-                    "responsible_agent_id": agent_id,
+                    "responsible_agent_id": row[11],
                 },
             )
             for row in rows
@@ -174,13 +178,18 @@ class Goals:
                 (self.store.owner, row[0]),
             ).fetchone()
         if not message:
+            message = conn.execute(
+                "SELECT d.source_message_id FROM nma_discussion_turns t JOIN nma_discussions d USING(owner_id,discussion_id) WHERE t.owner_id=? AND t.run_id=?",
+                (self.store.owner, row[0]),
+            ).fetchone()
+        if not message:
             raise EngineError("NOT_FOUND")
         return row[0], config, message[0]
 
     def context(self, stamp):
         def read(conn):
             _, config, _ = self.scope(conn, stamp)
-            return self.listing(conn, config["thread_id"], config["agent_id"])
+            return self.listing(conn, config["thread_id"], None)
 
         return self.store.write(read)
 
@@ -213,6 +222,16 @@ class Goals:
                     False,
                 )
             goal = value.get("goal", {})
+            if goal and goal["responsible_agent_id"] == config["agent_id"]:
+                conn.execute(
+                    "INSERT INTO nma_discussion_goals(owner_id,discussion_id,goal_id,generation) SELECT owner_id,discussion_id,?,? FROM nma_discussion_turns WHERE owner_id=? AND run_id=? ON CONFLICT(owner_id,discussion_id,goal_id) DO UPDATE SET generation=excluded.generation",
+                    (
+                        goal["goal_id"],
+                        int(goal["generation"]),
+                        self.store.owner,
+                        run_id,
+                    ),
+                )
             result = canonical(value)
             conn.execute(
                 "INSERT INTO nma_goal_operations VALUES (?,?,?,?,?,'agent',?,?,?,?)",
@@ -251,6 +270,20 @@ class Goals:
 
     def mutate(self, conn, config, run_id, message_id, args):
         action = args.get("action")
+        group = (
+            conn.execute(
+                "SELECT kind FROM nma_threads WHERE owner_id=? AND thread_id=?",
+                (self.store.owner, config["thread_id"]),
+            ).fetchone()[0]
+            == "group"
+        )
+        if group:
+            shared = self.listing(conn, config["thread_id"], None)
+            target = next(
+                (g for g in shared if g["goal_id"] == args.get("goal_id")), None
+            )
+            if target and target["responsible_agent_id"] != config["agent_id"]:
+                raise EngineError("GOAL_OWNER_REQUIRED")
         focus = conn.execute(
             "SELECT goal_id FROM nma_goal_units WHERE owner_id=? AND run_id=? AND parent_run_id IS NOT NULL LIMIT 1",
             (self.store.owner, run_id),
@@ -290,7 +323,9 @@ class Goals:
         }
         if action not in required or set(args) != required[action]:
             raise EngineError("INVALID_REQUEST")
-        goals = self.listing(conn, config["thread_id"], config["agent_id"])
+        goals = self.listing(
+            conn, config["thread_id"], None if group else config["agent_id"]
+        )
         if action == "list":
             return {"goals": goals}, False
         if action in {"create", "update"}:

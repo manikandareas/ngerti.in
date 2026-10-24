@@ -8,6 +8,19 @@ Use Python 3.14.9 and the pinned [Hermes source](https://github.com/NousResearch
 
 `fetch_runtime.py` verifies the source archive. `build_runtime.py` builds the foundation profile from upstream locks. The Docker `foundation` target is the application environment; `verify`/`evidence` are separate test environments. The foundation excludes pillow-heif and fetch-use/browser-harness for the recorded packaging/license reasons; it includes the supplemental firecrawl-anydoc notice. The trusted E2B actuator has a separately provisioned environment. See [packaging evidence](../../docs/research/nma-006-packaging-closure.md) and `notices/provenance.json`. Never imply excluded native capabilities are shipped.
 
+## Local development
+
+`make dev` supervises the native gateway alongside API/web via `scripts/dev_engine.py`. Set `NMA_DEV_OWNER_IDS` to the existing account UUIDs to provision, plus `NMA_PARTITIONS_FILE`, `HERMES_SOURCE` and `NMA_RUNTIME_PYTHON` from `.env.example`. The launcher validates accounts, preserves keys/state, refreshes model/capability catalogs from current environment, and refuses to replace an externally registered partition. Owner lock directories are separate; each native profile still enforces exclusive ownership. This is process provisioning, not a second run scheduler.
+
+For a fresh machine, install the pinned source and runtime:
+
+```sh
+python3 apps/engine/fetch_runtime.py .dev/hermes.tar.gz --extract .dev/nma-001/source
+uv run --python 3.14.9 python apps/engine/build_runtime.py --source .dev/nma-001/source --out .dev/nma-006-closure/production
+```
+
+Restart `make dev` after `.env` changes. Production uses explicit isolated partition provisioning below.
+
 ## Provision one account partition
 
 Server-controlled environment:

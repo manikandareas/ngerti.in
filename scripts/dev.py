@@ -1,4 +1,4 @@
-"""Run the product API and web together; Ctrl+C shuts down their process groups."""
+"""Run the local account engines, product API and web together; Ctrl+C shuts down their process groups."""
 
 import os
 import signal
@@ -9,6 +9,14 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 COMMANDS = {
+    "engine": [
+        "uv",
+        "run",
+        "--project",
+        "apps/backend",
+        "python",
+        "scripts/dev_engine.py",
+    ],
     "api": ["bun", "run", "dev:api"],
     "web": ["bun", "run", "dev:web"],
 }

@@ -10,8 +10,8 @@ Product decisions and acceptance are maintained in [Ngertiin Multi Agent](https:
 
 1. Copy `.env.example` to `.env` and configure Clerk and PostgreSQL.
 2. Run `make install`, `make infra-up`, and `make setup`.
-3. Provision one pinned Hermes gateway and private socket/key registry per account using [the engine guide](apps/engine/README.md). Keep engine credentials server-side.
-4. Run `make dev` for the product API and web. Open `http://localhost:3000`; the home route opens agents. The gateway runs separately with its own Python/runtime environment. There is no product worker process.
+3. Install the pinned runtime using [the engine guide](apps/engine/README.md). Set `HERMES_SOURCE`, `NMA_RUNTIME_PYTHON`, `OPENAI_API_KEY`, `OPENAI_MODEL` and `NMA_DEV_OWNER_IDS` (a JSON array of PostgreSQL account UUIDs) in `.env`. Set `NMA_PARTITIONS_FILE=.dev/engine/partitions.json`. For a new account, run `make api` and `make web`, sign in once, then read its UUID from `accounts` before starting the full stack.
+4. Run `make dev`. It starts the native account gateways, API and web together; Ctrl+C stops all three. Open `http://localhost:3000`. Local configuration/model catalogs are refreshed from `.env` at startup; signing keys and durable account state are preserved under `~/.ngertiin/<checkout-id>/<account-id>`. Restart `make dev` after changing `.env`. Production provisioning remains separate and the local launcher refuses production mode.
 
 `make check` runs static checks; `make build` builds the web application. Runtime acceptance, backup/restore and retirement evidence are recorded in [the acceptance and transition report](docs/research/nma-025-026-acceptance-cutover.md).
 

@@ -176,6 +176,8 @@ def test_thread_additive_migration_from_agent_schema(runtime):
     start.current.wait(timeout=10)
     with sqlite3.connect(root / "state/state.db") as db:
         for table in (
+            "nma_webhook_events",
+            "nma_webhook_batches",
             "nma_triggers",
             "nma_trigger_definitions",
             "nma_goal_evidence",

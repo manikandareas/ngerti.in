@@ -4,7 +4,7 @@ import json
 from datetime import UTC, datetime
 from uuid import uuid4
 
-from ngertiin_engine.contracts import EngineError, canonical, digest, uuid
+from ngertiin_engine.contracts import EngineError, canonical, counter, digest, uuid
 
 DDL = (
     "CREATE TABLE nma_threads (owner_id TEXT NOT NULL, thread_id TEXT NOT NULL, kind TEXT NOT NULL CHECK(kind IN ('dm','group')), title TEXT NOT NULL, dm_agent_id TEXT, status TEXT NOT NULL DEFAULT 'open' CHECK(status IN ('open','archived')), revision INTEGER NOT NULL DEFAULT 1, membership_revision INTEGER NOT NULL DEFAULT 1, context_generation INTEGER NOT NULL DEFAULT 1, cancel_generation INTEGER NOT NULL DEFAULT 1, next_message_seq INTEGER NOT NULL DEFAULT 1, created_at TEXT NOT NULL, updated_at TEXT NOT NULL, PRIMARY KEY(owner_id,thread_id), FOREIGN KEY(owner_id) REFERENCES nma_partition(owner_id), FOREIGN KEY(owner_id,dm_agent_id) REFERENCES nma_agents(owner_id,agent_id), CHECK((kind='dm' AND dm_agent_id IS NOT NULL) OR (kind='group' AND dm_agent_id IS NULL)))",
@@ -171,6 +171,124 @@ class Threads:
             raise EngineError(result["error"]["code"], result["error"]["details"])
         return result
 
+    def membership(self, body):
+        """Revision-checked roster changes; durable fences precede native cancellation."""
+
+        def operation(conn):
+            prior = conn.execute(
+                "SELECT payload_digest,result FROM nma_commands WHERE owner_id=? AND command_id=?",
+                (self.store.owner, body["command_id"]),
+            ).fetchone()
+            if prior:
+                if prior[0] != digest(body):
+                    raise EngineError("COMMAND_CONFLICT")
+                return json.loads(prior[1])
+            p = body["payload"]
+            if set(p) != {"thread_id", "agent_id"}:
+                raise EngineError("INVALID_REQUEST")
+            thread = self.get(conn, p["thread_id"])
+            if thread["kind"] != "group" or thread["status"] != "open":
+                raise EngineError("NOT_FOUND")
+            if counter(body["expected_revision"]) != thread["membership_revision"]:
+                raise EngineError("REVISION_CONFLICT")
+            agent = self.agents.get(conn, uuid(p["agent_id"]))
+            ids = [a["agent_id"] for a in thread["agents"]]
+            adding = body["type"] == "member.add"
+            if adding:
+                if agent["status"] != "active":
+                    raise EngineError("AGENT_UNAVAILABLE")
+                if agent["agent_id"] in ids or len(ids) >= 6:
+                    raise EngineError("INVALID_TRANSITION")
+            elif agent["agent_id"] not in ids:
+                raise EngineError("NOT_FOUND")
+            revision = int(thread["membership_revision"]) + 1
+            if adding:
+                position = conn.execute(
+                    "SELECT COALESCE(MAX(position),-1)+1 FROM nma_memberships WHERE owner_id=? AND thread_id=?",
+                    (self.store.owner, thread["thread_id"]),
+                ).fetchone()[0]
+                conn.execute(
+                    "INSERT INTO nma_memberships(owner_id,thread_id,agent_id,position,joined_revision) VALUES (?,?,?,?,?) ON CONFLICT(owner_id,thread_id,agent_id) DO UPDATE SET status='active',position=excluded.position,joined_revision=excluded.joined_revision,removed_revision=NULL,access_generation=nma_memberships.access_generation+1",
+                    (
+                        self.store.owner,
+                        thread["thread_id"],
+                        agent["agent_id"],
+                        position,
+                        revision,
+                    ),
+                )
+            else:
+                conn.execute(
+                    "UPDATE nma_memberships SET status='removed',removed_revision=?,access_generation=access_generation+1 WHERE owner_id=? AND thread_id=? AND agent_id=?",
+                    (
+                        revision,
+                        self.store.owner,
+                        thread["thread_id"],
+                        agent["agent_id"],
+                    ),
+                )
+            # A roster snapshot never authorizes old queued work, including remove/re-add.
+            # Keep transcript generation intact: membership edits do not erase history.
+            from ngertiin_engine.context import fence_context_runs
+
+            fence_context_runs(conn, self.store.owner, thread["thread_id"])
+            # Terminal native output can still be awaiting transcript publication.
+            conn.execute(
+                "INSERT OR IGNORE INTO nma_context_run_fences SELECT r.owner_id,r.run_id,? FROM nma_adapter_runs r JOIN nma_adapter_bindings b ON b.owner_id=r.owner_id AND b.binding_id=r.binding_id WHERE r.owner_id=? AND json_extract(b.config,'$.thread_id')=? AND NOT EXISTS (SELECT 1 FROM nma_context_receipts x WHERE x.owner_id=r.owner_id AND x.run_id=r.run_id)",
+                (thread["thread_id"], self.store.owner, thread["thread_id"]),
+            )
+            conn.execute(
+                "UPDATE nma_threads SET membership_revision=?,revision=revision+1,updated_at=? WHERE owner_id=? AND thread_id=?",
+                (
+                    revision,
+                    datetime.now(UTC).isoformat(),
+                    self.store.owner,
+                    thread["thread_id"],
+                ),
+            )
+            seq = conn.execute(
+                "SELECT COALESCE(MAX(sequence),0)+1 FROM nma_events WHERE owner_id=?",
+                (self.store.owner,),
+            ).fetchone()[0]
+            result = {
+                "schema_version": "nma.v1",
+                "command_id": body["command_id"],
+                "status": "accepted",
+                "thread": self.get(conn, thread["thread_id"]),
+                "committed_seq": str(seq),
+            }
+            event = {
+                "schema_version": "nma.v1",
+                "event_id": body["command_id"],
+                "type": "membership.changed",
+                "occurred_at": datetime.now(UTC).isoformat().replace("+00:00", "Z"),
+                "seq": str(seq),
+                "thread_id": thread["thread_id"],
+                "payload": {
+                    "agent_id": agent["agent_id"],
+                    "action": "added" if adding else "removed",
+                    "author_kind": "system",
+                    "membership_revision": str(revision),
+                },
+            }
+            conn.execute(
+                "INSERT INTO nma_events VALUES (?,?,?,?)",
+                (self.store.owner, seq, body["command_id"], canonical(event)),
+            )
+            conn.execute(
+                "INSERT INTO nma_commands VALUES (?,?,?,?,?)",
+                (
+                    self.store.owner,
+                    body["command_id"],
+                    digest(body),
+                    canonical(body),
+                    canonical(result),
+                ),
+            )
+            return result
+
+        return self.store.write(operation)
+
     def check_binding(self, conn, payload):
         # Private foundation probes may use server-provisioned unregistered bindings.
         # Public callers cannot submit runtime commands or provision those bindings.
@@ -184,5 +302,7 @@ class Threads:
             a["agent_id"] for a in thread["agents"]
         }:
             raise EngineError("NOT_FOUND")
+        if thread["kind"] == "group" and len(thread["agents"]) < 2:
+            raise EngineError("GROUP_UNAVAILABLE")
         if thread["context_generation"] != payload["context_generation"]:
             raise EngineError("STALE_GENERATION")

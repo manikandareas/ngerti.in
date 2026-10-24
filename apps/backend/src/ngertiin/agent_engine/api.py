@@ -1,6 +1,7 @@
 """Agent configuration HTTP boundary; the gateway remains the only domain writer."""
 
 import asyncio
+import base64
 import hashlib
 import hmac
 import json
@@ -10,7 +11,7 @@ from pathlib import Path
 from typing import Annotated, Literal
 from uuid import UUID, uuid4
 
-from fastapi import APIRouter, Depends, HTTPException, Query, Response
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response
 from pydantic import BaseModel, ConfigDict, Field
 
 from ngertiin.accounts.auth import current_account
@@ -36,6 +37,8 @@ class Command(BaseModel):
         "agent.archive",
         "agent.restore",
         "thread.create",
+        "member.add",
+        "member.remove",
         "message.send",
         "run.cancel",
         "goal.pause",
@@ -58,7 +61,9 @@ def failure(code, command_id, details=None):
         "CURSOR_AHEAD": 409,
         "CURSOR_RESET": 409,
         "STALE_GENERATION": 409,
+        "GOAL_STOPPED": 409,
         "AGENT_UNAVAILABLE": 409,
+        "GROUP_UNAVAILABLE": 409,
         "CONNECTOR_UNAVAILABLE": 422,
         "UNAUTHENTICATED": 401,
         "INVALID_REQUEST": 422,
@@ -197,3 +202,40 @@ async def goal(goal_id: UUID, account: AccountDep):
             "payload": {"goal_id": str(goal_id)},
         },
     )
+
+
+@router.post("/webhooks/{route_id}")
+async def webhook(route_id: str, request: Request, response: Response):
+    """Forward raw signed bytes; the engine authenticates and commits acceptance."""
+    try:
+        routes = json.loads(Path(os.environ["NMA_WEBHOOK_ROUTES_FILE"]).read_text())
+        owner = str(UUID(routes[route_id]["owner_id"]))
+    except (KeyError, OSError, ValueError) as exc:
+        raise failure("NOT_FOUND", None) from exc
+    raw = bytearray()
+    async for chunk in request.stream():
+        raw.extend(chunk)
+        if len(raw) > 512 * 1024:
+            raise failure("REQUEST_TOO_LARGE", None)
+    result = await forward(
+        owner,
+        {
+            "schema_version": "nma.v1",
+            "command_id": str(uuid4()),
+            "type": "webhook.receive",
+            "expected_revision": None,
+            "payload": {
+                "route_id": route_id,
+                "delivery_id": request.headers.get(
+                    "x-github-delivery", request.headers.get("x-webhook-id", "")
+                ),
+                "event_type": request.headers.get(
+                    "x-github-event", request.headers.get("x-webhook-event", "")
+                ),
+                "signature": request.headers.get("x-hub-signature-256", ""),
+                "body_base64": base64.b64encode(raw).decode(),
+            },
+        },
+    )
+    response.status_code = 202 if result["status"] == "accepted" else 200
+    return result

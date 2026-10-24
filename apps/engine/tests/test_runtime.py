@@ -240,6 +240,7 @@ def runtime(tmp_path_factory):
         "NMA_CAPABILITIES_FILE": str(root / "capabilities.json"),
         "NMA_SERVICE_KEY_FILE": str(root / "key"),
         "NMA_BINDINGS_FILE": str(root / "bindings.json"),
+        "NMA_WEBHOOK_ROUTES_FILE": str(root / "webhooks.json"),
     }
     if os.environ.get("NMA_TEST_LIVE_ENV"):
         from dotenv import dotenv_values
@@ -528,6 +529,7 @@ def test_second_gateway_cannot_take_partition(runtime):
         "NMA_OWNER_ID": OWNER,
         "NMA_SERVICE_KEY_FILE": str(root / "key"),
         "NMA_BINDINGS_FILE": str(root / "bindings.json"),
+        "NMA_WEBHOOK_ROUTES_FILE": str(root / "webhooks.json"),
     }
     result = subprocess.run(
         [RUNTIME_PYTHON, "-m", "ngertiin_engine.service"],
@@ -615,6 +617,8 @@ def test_agent_additive_migration_from_foundation(runtime):
     with sqlite3.connect(root / "state/state.db") as db:
         before = db.execute("SELECT count(*) FROM nma_commands").fetchone()[0]
         for table in (
+            "nma_webhook_events",
+            "nma_webhook_batches",
             "nma_triggers",
             "nma_trigger_definitions",
             "nma_goal_evidence",
@@ -648,7 +652,9 @@ def test_agent_additive_migration_from_foundation(runtime):
         == []
     )
     with sqlite3.connect(root / "state/state.db") as db:
-        assert db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 9
+        assert (
+            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 10
+        )
         assert db.execute("SELECT count(*) FROM nma_commands").fetchone()[0] == before
         assert db.execute("PRAGMA foreign_key_check").fetchall() == []
 

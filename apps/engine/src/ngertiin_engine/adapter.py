@@ -298,6 +298,10 @@ class Adapter:
 
     async def _dispatch(self, body):
         kind, payload = body["type"], body["payload"]
+        if kind == "webhook.receive":
+            from ngertiin_engine.webhooks import Webhooks
+
+            return Webhooks(self).receive(body)
         if kind.startswith("goal."):
             from ngertiin_engine.goal_commands import GoalCommands
 
@@ -338,6 +342,10 @@ class Adapter:
             if body["expected_revision"] is not None:
                 raise EngineError("INVALID_REQUEST")
             return self.context.read(payload)
+        if kind in {"member.add", "member.remove"}:
+            result = self.threads.membership(body)
+            await self.cancel_stale_contexts()
+            return result
         if kind == "thread.create":
             return self.threads.create(body)
         if kind == "thread.list":
@@ -613,6 +621,7 @@ class Adapter:
             except EngineError as exc:
                 if exc.code not in {
                     "AGENT_UNAVAILABLE",
+                    "GROUP_UNAVAILABLE",
                     "REVISION_CONFLICT",
                     "ACCESS_REVOKED",
                     "NOT_FOUND",

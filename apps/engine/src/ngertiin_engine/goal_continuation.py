@@ -270,6 +270,9 @@ class Continuation:
 
                     Wakes(self.store).prepare(self.adapter, self, time.time())
                     self.next_wake_poll = time.monotonic() + POLL_SECONDS
+                from ngertiin_engine.webhooks import Webhooks
+
+                Webhooks(self.adapter).prepare(self, time.time())
                 await self.adapter.recover_run_stops(locked=True)
                 rows = self.store.write(
                     lambda conn: conn.execute(

@@ -57,7 +57,7 @@ def main():
                     (owner,),
                 ).fetchone()
                 if (
-                    version not in (1, 2, 3, 4, 5, 6, 7, 8, 9)
+                    version not in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
                     or not checksum
                     or checksum[0] != CHECKSUM
                 ):

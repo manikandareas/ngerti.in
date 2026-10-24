@@ -187,6 +187,7 @@ uvicorn.run(app, host="127.0.0.1", port=int(os.environ["TEST_PORT"]), log_level=
             **os.environ,
             "PYTHONPATH": str(backend / "src"),
             "NMA_PARTITIONS_FILE": str(registry),
+            "NMA_WEBHOOK_ROUTES_FILE": str(root / "webhooks.json"),
             "TEST_OWNER": OWNER,
             "TEST_PORT": str(port),
         },
@@ -446,6 +447,8 @@ def test_schema_five_upgrade_preserves_messages_and_replay(runtime):
     # Reconstruct the predecessor with existing native/domain rows intact.
     with sqlite3.connect(root / "state/state.db") as db:
         for table in (
+            "nma_webhook_events",
+            "nma_webhook_batches",
             "nma_triggers",
             "nma_trigger_definitions",
             "nma_goal_evidence",

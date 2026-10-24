@@ -20,7 +20,41 @@ def crash():
         threading.Event().wait()
 
 
-if point == "before_continuation_commit":
+if point == "defer_transcript":
+    from ngertiin_engine.transcript import Transcript
+
+    original = Transcript.reconcile
+
+    def reconcile(self):
+        if marker.exists():
+            return original(self)
+
+    Transcript.reconcile = reconcile
+elif point == "after_webhook_commit":
+    from ngertiin_engine.webhooks import Webhooks
+
+    original = Webhooks.receive
+
+    def receive(self, body):
+        value = original(self, body)
+        crash()
+        return value
+
+    Webhooks.receive = receive
+elif point == "before_webhook_commit":
+    original = Store.write
+
+    def write(self, operation, **kwargs):
+        def wrapped(conn):
+            value = operation(conn)
+            if isinstance(value, dict) and value.get("batch_id"):
+                crash()
+            return value
+
+        return original(self, wrapped, **kwargs)
+
+    Store.write = write
+elif point == "before_continuation_commit":
     from ngertiin_engine.goal_continuation import Continuation
 
     original = Continuation.prepare

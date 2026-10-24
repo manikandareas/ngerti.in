@@ -324,6 +324,8 @@ def test_goal_schema_upgrade_preserves_prior_data(runtime):
             "SELECT version,checksum FROM nma_schema_migrations WHERE version<7 ORDER BY version"
         ).fetchall()
         for table in (
+            "nma_webhook_events",
+            "nma_webhook_batches",
             "nma_triggers",
             "nma_trigger_definitions",
             "nma_goal_evidence",

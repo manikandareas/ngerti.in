@@ -202,7 +202,7 @@ class DirectMessages:
         self.adapter.context.transcript.reconcile()
 
         def read(conn):
-            thread = self.thread(conn, payload["thread_id"])
+            thread = self.adapter.threads.get(conn, payload["thread_id"])
             ids = conn.execute(
                 "SELECT message_id FROM nma_messages WHERE owner_id=? AND thread_id=? AND (? IS NULL OR message_seq<?) ORDER BY message_seq DESC LIMIT 101",
                 (
@@ -285,7 +285,7 @@ class DirectMessages:
         self.adapter.context.transcript.reconcile()
 
         def read(conn):
-            self.thread(conn, payload["thread_id"])
+            self.adapter.threads.get(conn, payload["thread_id"])
             epoch, latest = self.watermark(conn)
             if payload["replay_epoch"] not in (None, epoch):
                 raise EngineError("CURSOR_RESET")

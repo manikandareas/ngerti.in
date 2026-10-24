@@ -1,0 +1,5 @@
+..........................
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! KeyboardInterrupt !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py:285: KeyboardInterrupt
+(to show a full traceback on KeyboardInterrupt use --full-trace)
+26 passed in 95.03s (0:01:35)

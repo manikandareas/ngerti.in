@@ -1,0 +1,77 @@
+...F
+=================================== FAILURES ===================================
+___ test_wake_crash_boundaries_keep_one_identity[before_continuation_commit] ___
+
+runtime = (PosixPath('/tmp/nma-fd8pb6dq'), <http.server.ThreadingHTTPServer object at 0x10c068ad0>, <function runtime.<locals>.c...cancel', 'runtime.read', 'runtime.events', 'runtime.snapshot'], 'production_ready': False, 'schema_version': 'nma.v1'})
+fault = 'before_continuation_commit'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "before_continuation_commit",
+            "after_continuation_commit",
+            "after_goal_card",
+            "after_goal_admission",
+        ],
+    )
+    def test_wake_crash_boundaries_keep_one_identity(runtime, fault):
+        root, provider, call, start, *_ = runtime
+        provider.goal_script = None
+        thread = dm(call, "wake-" + fault)
+        goal = begin(call, thread)
+        continuation_script(provider, goal["goal_id"])
+        schedule(call, thread, goal, seconds=120)
+        start.current.kill()
+        start.current.wait(timeout=10)
+        (root / "fault-fired").unlink(missing_ok=True)
+        start(fault)
+>       force_due(root, goal["goal_id"])
+        ^^^^^^^^^^^^
+
+apps/engine/tests/test_wakes.py:194: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+fault = 'before_continuation_commit'
+
+    def start(fault=None):
+        log = (root / f"gateway-{len(processes)}.log").open("w+")
+        process = subprocess.Popen(
+            [RUNTIME_PYTHON, str(Path(__file__).with_name("fault_launcher.py"))]
+            if fault
+            else [RUNTIME_PYTHON, "-m", "ngertiin_engine.service"],
+            cwd=SOURCE,
+            env=env
+            | (
+                {"NMA_TEST_FAULT": fault, "NMA_TEST_MARKER": str(root / "fault-fired")}
+                if fault
+                else {}
+            ),
+            stdout=log,
+            stderr=subprocess.STDOUT,
+        )
+        processes.append(process)
+        start.current = process
+        deadline = time.monotonic() + 90
+        while process.poll() is None and time.monotonic() < deadline:
+            try:
+                response = call(command("runtime.describe"))
+                if "result" in response:
+                    return process, response["result"]
+            except (OSError, ValueError):
+                pass
+            time.sleep(0.1)
+        log.flush()
+>       pytest.fail(
+            log.read()
+            if log.seek(0) is None
+            else (root / f"gateway-{len(processes) - 1}.log").read_text()
+        )
+E       Failed: 2026-10-24 12:16:09,556 WARNING gateway.lifecycle_ledger: Previous gateway life (pid=18230, started_at=2026-10-24T04:16:06.665375+00:00) exited UNCLEANLY (no exit path ran — SIGKILL / OOM / VM death, or a process kill issued by the agent or one of its descendants, e.g. a pkill/taskkill of the host interpreter image; see #113667). last_heartbeat_at=2026-10-24T04:16:06.771018+00:00 last_mem=None suspected_oom=False
+E       2026-10-24 12:16:09,633 WARNING gateway.run: No messaging platforms enabled.
+E       2026-10-24 12:16:09,759 WARNING agent.model_metadata: Could not determine context length for model 'adapter-model' (base_url=http://127.0.0.1:62358/v1) — falling back to 256,000 tokens. Set model.context_length in config.yaml to override.
+
+apps/engine/tests/test_runtime.py:287: Failed
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_wakes.py::test_wake_crash_boundaries_keep_one_identity[before_continuation_commit]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 3 passed in 29.26s

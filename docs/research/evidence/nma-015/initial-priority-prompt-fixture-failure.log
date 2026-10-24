@@ -1,0 +1,58 @@
+F
+=================================== FAILURES ===================================
+_____________ test_user_input_defers_heartbeat_and_interrupts_wake _____________
+
+runtime = (PosixPath('/tmp/nma-s1ihy3zb'), <http.server.ThreadingHTTPServer object at 0x1096c2a50>, <function runtime.<locals>.c...cancel', 'runtime.read', 'runtime.events', 'runtime.snapshot'], 'production_ready': False, 'schema_version': 'nma.v1'})
+
+    def test_user_input_defers_heartbeat_and_interrupts_wake(runtime):
+        from test_direct_messages import send
+        from test_runtime import settle
+    
+        root, provider, call, _start, *_ = runtime
+        provider.goal_script = None
+        provider.blocked.clear()
+        provider.release.clear()
+        thread = dm(call, "wake-priority")
+        goal = begin(call, thread)
+        schedule(call, thread, goal, "heartbeat")
+        human = call(send(thread, "BLOCK_STARTED"))["result"]
+        assert provider.blocked.wait(10)
+        force_due(root, goal["goal_id"])
+        count = len(provider.requests)
+        time.sleep(6)
+        assert len(provider.requests) == count
+        with sqlite3.connect(root / "state/state.db") as db:
+            assert (
+                db.execute(
+                    "SELECT count(*) FROM nma_triggers WHERE definition_id=(SELECT definition_id FROM nma_trigger_definitions WHERE goal_id=?) AND status='pending'",
+                    (goal["goal_id"],),
+                ).fetchone()[0]
+                == 1
+            )
+        wake_started, wake_release = threading.Event(), threading.Event()
+        continuation_script(provider, goal["goal_id"])
+        respond = provider.goal_script
+    
+        def hold_wake(body, text):
+            if "This is an internal continuation" in text:
+                wake_started.set()
+                wake_release.wait(30)
+            return respond(body, text)
+    
+        # Install the next-turn behavior before releasing the user turn. Separate
+        # gates prevent a fast gateway from consuming the wake with a default reply.
+        provider.goal_script = hold_wake
+        provider.release.set()
+        settle(call, human["run_id"])
+>       assert wake_started.wait(15)
+E       assert False
+E        +  where False = wait(15)
+E        +    where wait = <threading.Event at 0x109790770: unset>.wait
+
+apps/engine/tests/test_wakes.py:261: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_wakes.py::test_user_input_defers_heartbeat_and_interrupts_wake
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed in 25.17s

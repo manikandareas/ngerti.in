@@ -217,6 +217,8 @@ class Reliability:
                 for key in ("text", "tool_name", "tool_call_id", "is_error", "status")
                 if key in payload
             }
+            if kind == "message.delta" and not isinstance(fields.get("text"), str):
+                return
             if kind == "error":
                 fields = {"code": "RUNTIME_FAILED"}
             self.append(conn, row[0], json.loads(row[1]), EVENTS[kind], fields)
@@ -255,10 +257,48 @@ class Reliability:
             ).fetchone()
             if not native:
                 raise EngineError("NOT_FOUND")
+            self.cancel_descendants(conn, run_id)
             if native[0] != "terminal":
                 self.cancel_event(conn, run_id)
 
         return self.store.write(write)
+
+    def cancel_descendants(self, conn, run_id):
+        from ngertiin_engine.direct_messages import command
+
+        rows = conn.execute(
+            "WITH RECURSIVE descendants(run_id) AS (SELECT ? UNION SELECT u.run_id FROM nma_goal_units u JOIN descendants d ON u.parent_run_id=d.run_id WHERE u.owner_id=?) SELECT run_id FROM descendants",
+            (run_id, self.store.owner),
+        ).fetchall()
+        for (child,) in rows:
+            conn.execute(
+                "UPDATE nma_goal_units SET settled=1 WHERE owner_id=? AND run_id=?",
+                (self.store.owner, child),
+            )
+            if (
+                child == run_id
+                or conn.execute(
+                    "SELECT 1 FROM nma_run_terminals WHERE owner_id=? AND run_id=?",
+                    (self.store.owner, child),
+                ).fetchone()
+            ):
+                continue
+            body = command(
+                "run.cancel",
+                {"run_id": child},
+                str(
+                    uuid5(NAMESPACE_URL, self.store.owner + ":descendant-stop:" + child)
+                ),
+            )
+            conn.execute(
+                "INSERT OR IGNORE INTO nma_commands VALUES (?,?,?,?,NULL)",
+                (self.store.owner, body["command_id"], digest(body), canonical(body)),
+            )
+            conn.execute(
+                "INSERT OR IGNORE INTO nma_runtime_outbox VALUES (?,?,?,'pending',NULL)",
+                (self.store.owner, body["command_id"], canonical(body)),
+            )
+            self.cancel_event(conn, child)
 
     def cancel_event(self, conn, run_id):
         conn.execute(
@@ -336,6 +376,7 @@ class Reliability:
                 event.get("payload", {}).get("text", "")
                 for (raw,) in deltas
                 if (event := json.loads(raw))["type"] == "message.delta"
+                and isinstance(event.get("payload", {}).get("text"), str)
             )
         if (
             status in {"succeeded", "failed"}

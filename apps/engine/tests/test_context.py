@@ -203,7 +203,7 @@ def test_scoped_memory_transcript_transfer_revocation_restart(runtime):
     assert read(call, a, other_dm)["memory"] == []
     with sqlite3.connect(root / "state/state.db") as db:
         assert db.execute("PRAGMA foreign_key_check").fetchall() == []
-        assert db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 7
+        assert db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 8
         events = " ".join(r[0] for r in db.execute("SELECT payload FROM nma_events"))
         assert "AGENT_PRIVATE_MARKER" not in events
 
@@ -324,6 +324,9 @@ def test_additive_schema_three_upgrade_preserves_native_history(runtime):
         native_count = db.execute("SELECT COUNT(*) FROM messages").fetchone()[0]
         # Reconstruct the exact predecessor only in a disposable verification partition.
         for table in (
+            "nma_goal_evidence",
+            "nma_goal_units",
+            "nma_goal_lifecycle",
             "nma_goal_operations",
             "nma_goals",
             "nma_dm_requests",

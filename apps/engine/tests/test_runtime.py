@@ -44,7 +44,10 @@ class Model(BaseHTTPRequestHandler):
         if text.split("\n\n")[-1] in {"BLOCK_STARTED", "BLOCK_TOOL"}:
             self.server.blocked.set()
             self.server.release.wait(60)
-        if text.split("\n\n")[-1] == "FAIL_PROVIDER":
+        if text.split("\n\n")[-1] == "FAIL_PROVIDER" or (
+            getattr(self.server, "fail_continuation", False)
+            and "This is an internal continuation" in text
+        ):
             self.send_response(401)
             self.end_headers()
             self.wfile.write(
@@ -108,6 +111,12 @@ class Model(BaseHTTPRequestHandler):
                     }
                 ],
             }
+        script = getattr(self.server, "goal_script", None)
+        if script:
+            scripted = script(body, text)
+            if scripted:
+                message = scripted
+                tool = bool(message.get("tool_calls"))
         reason = "tool_calls" if tool else "stop"
         response = {
             "id": "local",
@@ -606,6 +615,9 @@ def test_agent_additive_migration_from_foundation(runtime):
     with sqlite3.connect(root / "state/state.db") as db:
         before = db.execute("SELECT count(*) FROM nma_commands").fetchone()[0]
         for table in (
+            "nma_goal_evidence",
+            "nma_goal_units",
+            "nma_goal_lifecycle",
             "nma_goal_operations",
             "nma_goals",
             "nma_dm_requests",
@@ -634,7 +646,7 @@ def test_agent_additive_migration_from_foundation(runtime):
         == []
     )
     with sqlite3.connect(root / "state/state.db") as db:
-        assert db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 7
+        assert db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 8
         assert db.execute("SELECT count(*) FROM nma_commands").fetchone()[0] == before
         assert db.execute("PRAGMA foreign_key_check").fetchall() == []
 

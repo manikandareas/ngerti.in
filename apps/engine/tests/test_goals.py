@@ -3,6 +3,7 @@
 # ruff: noqa: F811
 import json
 import sqlite3
+import time
 from types import SimpleNamespace
 
 import pytest
@@ -14,6 +15,17 @@ def act(call, thread, **args):
     request = send(thread, "RESPONSIBILITY:" + json.dumps(args))
     result = call(request)["result"]
     settle(call, result["run_id"])
+    deadline = time.monotonic() + 10
+    while time.monotonic() < deadline:
+        units = [
+            u
+            for g in snapshot(call, thread)["goals"]
+            for u in g.get("units", [])
+            if u["run_id"] == result["run_id"]
+        ]
+        if all(u["settled"] for u in units):
+            break
+        time.sleep(0.05)
     return result, request
 
 
@@ -104,7 +116,16 @@ def test_capture_correction_repetition_stop_restart_and_provenance(runtime):
             },
         )
     )["result"]["events"]
-    assert len([e for e in events if e["type"] == "goal.changed"]) == 3
+    assert (
+        len(
+            [
+                e
+                for e in events
+                if e["type"] == "goal.changed" and e["payload"].get("operation_id")
+            ]
+        )
+        == 3
+    )
 
 
 def test_goal_scope_cannot_be_selected_by_model(runtime):
@@ -191,6 +212,21 @@ def test_goal_transaction_replay_and_rollback(runtime, monkeypatch):
         "execution_generation": native[1],
         "authority_epoch": epoch,
     }
+    reliability = Reliability(store)
+
+    def null_delta(conn):
+        row = reliability.native(conn, native[0])
+        reliability.append(
+            conn, run["run_id"], json.loads(row[1]), "message.delta", {"text": None}
+        )
+
+    store.write(null_delta)
+    assert (
+        next(r for r in snapshot(call, thread)["runs"] if r["run_id"] == run["run_id"])[
+            "text"
+        ]
+        == ""
+    )
     goals = Goals(store)
     ids = SimpleNamespace(turn_id="stable-turn", tool_call_id="stable-call")
     args = {
@@ -267,7 +303,7 @@ def test_goal_hard_crash_boundary(runtime, point, count):
         )
         assert (
             db.execute(
-                "SELECT count(*) FROM nma_events WHERE json_extract(payload,'$.run_id')=? AND json_extract(payload,'$.type')='goal.changed'",
+                "SELECT count(*) FROM nma_events WHERE json_extract(payload,'$.run_id')=? AND json_extract(payload,'$.type')='goal.changed' AND json_extract(payload,'$.payload.operation_id') IS NOT NULL",
                 (receipt["run_id"],),
             ).fetchone()[0]
             == count
@@ -287,6 +323,9 @@ def test_goal_schema_upgrade_preserves_prior_data(runtime):
         checksums = db.execute(
             "SELECT version,checksum FROM nma_schema_migrations WHERE version<7 ORDER BY version"
         ).fetchall()
+        for table in ("nma_goal_evidence", "nma_goal_units", "nma_goal_lifecycle"):
+            db.execute("DROP TABLE " + table)
+        db.execute("DELETE FROM nma_schema_migrations WHERE version=8")
         db.execute("DROP TABLE nma_goal_operations")
         db.execute("DROP TABLE nma_goals")
         db.execute("DELETE FROM nma_schema_migrations WHERE version=7")
@@ -323,5 +362,11 @@ def test_goal_http_snapshot_and_sse(runtime, public_api):
                 event = json.loads(line[6:])
                 if event["type"] == "goal.changed":
                     assert event["goal_id"] == after["goals"][0]["goal_id"]
-                    assert event["payload"]["goal"] == after["goals"][0]
+                    emitted = event["payload"]["goal"]
+                    assert emitted["goal_id"] == after["goals"][0]["goal_id"]
+                    assert emitted["revision"] == after["goals"][0]["revision"]
+                    assert (
+                        emitted["source_message_id"]
+                        == after["goals"][0]["source_message_id"]
+                    )
                     break

@@ -20,7 +20,69 @@ def crash():
         threading.Event().wait()
 
 
-if point == "after_goal_commit":
+if point == "before_continuation_commit":
+    from ngertiin_engine.goal_continuation import Continuation
+
+    original = Continuation.prepare
+
+    def prepare(self, *args):
+        result = original(self, *args)
+        crash()
+        return result
+
+    Continuation.prepare = prepare
+elif point == "after_continuation_commit":
+    from ngertiin_engine.goal_continuation import Continuation
+
+    original = Continuation.deliver_unit
+
+    async def deliver(self, row):
+        crash()
+        return await original(self, row)
+
+    Continuation.deliver_unit = deliver
+elif point == "after_goal_card":
+    from ngertiin_engine.goal_continuation import Continuation
+
+    original = Continuation.card
+
+    def card(self, *args):
+        result = original(self, *args)
+        crash()
+        return result
+
+    Continuation.card = card
+elif point == "after_goal_pause":
+    from ngertiin_engine.goal_commands import GoalCommands
+
+    original = GoalCommands.mutate
+
+    def control(self, body):
+        result = original(self, body)
+        if body["type"] == "goal.pause":
+            crash()
+        return result
+
+    GoalCommands.mutate = control
+elif point == "after_goal_admission":
+    from gateway.session_authority import SessionAuthority
+
+    original = SessionAuthority.submit
+
+    async def submit(self, actor, submission, *args, **kwargs):
+        result = await original(self, actor, submission, *args, **kwargs)
+        linked = self.db._execute_write(
+            lambda conn: conn.execute(
+                "SELECT 1 FROM nma_goal_units u JOIN nma_adapter_runs r ON r.owner_id=u.owner_id AND r.run_id=u.run_id JOIN session_admissions a ON a.request_id='nma:'||r.operation_id WHERE a.admission_id=? AND u.parent_run_id IS NOT NULL",
+                (result.admission_id,),
+            ).fetchone()
+        )
+        if linked:
+            crash()
+        return result
+
+    SessionAuthority.submit = submit
+elif point == "after_goal_commit":
     from ngertiin_engine.goals import Goals
 
     original = Goals.tool

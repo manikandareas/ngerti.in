@@ -38,6 +38,10 @@ class Command(BaseModel):
         "thread.create",
         "message.send",
         "run.cancel",
+        "goal.pause",
+        "goal.stop",
+        "goal.resume",
+        "goal.reopen",
     ]
     expected_revision: str | None = Field(pattern=r"^[1-9][0-9]{0,18}$")
     payload: dict
@@ -177,5 +181,19 @@ async def threads(account: AccountDep, after: UUID | None = None):
             "type": "thread.list",
             "expected_revision": None,
             "payload": {"after": str(after) if after else None},
+        },
+    )
+
+
+@router.get("/goals/{goal_id}")
+async def goal(goal_id: UUID, account: AccountDep):
+    return await forward(
+        str(account.id),
+        {
+            "schema_version": "nma.v1",
+            "command_id": str(uuid4()),
+            "type": "goal.read",
+            "expected_revision": None,
+            "payload": {"goal_id": str(goal_id)},
         },
     )

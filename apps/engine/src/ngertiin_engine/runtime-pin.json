@@ -27,7 +27,13 @@
     "gateway/session_results.py": "89657e85da43998c3b298eb071eb2486621d458bf0c8b348eb3484cffb368346",
     "hermes_state_terminal.py": "8aa9e944badb01960d2c754821acd0734088f08a263ed1baac00cacc33c8e7d2",
     "hermes_state_keys.py": "46a44bcc9a82552c606fc0eaec275aac76bfe3c5523d7793218377d15cccc676",
-    "gateway/session_local_recovery.py": "28b238a9c23df0b4f0c66f32dab74ab8a9427627004ba5926424e888b8ae1b05"
+    "gateway/session_local_recovery.py": "28b238a9c23df0b4f0c66f32dab74ab8a9427627004ba5926424e888b8ae1b05",
+    "gateway/run_goals.py": "d442e7652b07357bd6332715ad81b4ee70826d9fb1b3ee2e5609c8bc9ef9b825",
+    "hermes_cli/goals.py": "f87f4115d790c0b17183cf3fb72f455b04b4dda6cbafe57efb081dd3d42a0023",
+    "hermes_cli/kanban_db.py": "fab46dc6b1df90c77275a21c467ce003ce1d9436f68dcb8ddcdb89c1d3c4a31b",
+    "hermes_cli/kanban_db_connect.py": "5c60aa69a63357cde6991ad5b651179e835a7f2d6ad746c0e2450aeafb188559",
+    "hermes_cli/kanban_db_boards.py": "162efa921ff2b4168cd3f0e71b86d530cfb3324fe991361c677b7d832ac0fe8a",
+    "hermes_cli/kanban_db_graph.py": "b3aada2c8ec77fa0b4bcdcd6be084e2e91b9c9d57c68f7200b872232b94360ed"
   },
   "source_patches": [],
   "integration_seams": [
@@ -35,7 +41,8 @@
     "stage_local_session skills_prompt freezes the composed persona; ignore_rules disables profile-wide soul/memory/context files",
     "Read pinned session_admissions status inside the domain lifecycle transaction to retain completed history and fence unfinished admissions",
     "GatewayRunner._run_agent checks live capability generation before model execution and reattaches exact native session MCP secrets on restart",
-    "model_tools._execute_tool wrapper checks live grants at final dispatch; native editor_mcp scope isolates connector schemas/connections"
+    "model_tools._execute_tool wrapper checks live grants at final dispatch; native editor_mcp scope isolates connector schemas/connections",
+    "Gateway-owned goal continuation outbox with generation fences, native parked Kanban card mapping and native session admission; no shared session /goal or Kanban dispatcher activation"
   ],
   "optional_extras": [
     "acp",

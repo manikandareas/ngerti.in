@@ -598,3 +598,33 @@ as documented above. Paid-provider dataset evaluation is explicitly opt-in with
 and optional `OPENAI_BASE_URL`; run `apps/engine/tests/test_goals_live.py` and set
 `NMA_TEST_LIVE_OUTPUT` to the desired JSON evidence path. Only the inputs in the
 spike dataset reach the model; expected labels are evaluated outside its context.
+
+## Goal lifecycle and continuation (schema 8)
+
+The lifecycle extension supersedes the capture-only boundary above. The ordinary
+responsibility tool can continue work, wait with a wake condition, block, accept
+persisted result-message evidence, complete, pause/stop, and resume/reopen on explicit
+user intent. Goal state survives run and native session replacement. Native Hermes
+remains the sole execution/recovery owner. The gateway reconciles stable continuation
+outbox commands; parked native Kanban cards map units without starting a second
+Kanban dispatcher or using the shared DM `/goal` slot.
+
+Snapshot/SSE and `GET /api/agent-engine/v1/goals/{id}` expose progress and evidence.
+Optional `goal.pause`/`goal.stop` commands take `{goal_id}` and null revision.
+`goal.resume`/`goal.reopen` take `{goal_id,source_message_id}` and the current revision;
+the source must be a real owner message in the same thread. Chat remains the default
+control path. Timers/heartbeat/webhook wake delivery are separate downstream work.
+
+Before upgrade, stop ingress/owner and back up the entire partition, including the
+root database/WAL, `kanban/boards/nma-goal-units/`, registry and secret references.
+Upgrade exclusively, verify schema 8, migration 1–8 checksums, integrity/foreign keys,
+goal snapshot and replay. Migration 1–7 is unchanged. Older binaries reject schema 8.
+Preserve new work on rollback and restore an isolated complete backup; never remove
+live goal/evidence/unit tables to fit an older binary. A cancelled unknown native
+admission may be explicitly abandoned through its persisted cancel fence to release
+its FIFO; it is not rerun and unknown external effects are not assumed successful.
+
+Focused tests: `apps/engine/tests/test_goal_lifecycle.py` and `test_goals.py` with the
+pinned runtime. Real-model HTTP evaluation: `test_goal_lifecycle_live.py`, opt-in via
+`NMA_TEST_LIVE_ENV`, with output set by `NMA_TEST_LIFECYCLE_OUTPUT`. Full report:
+[`nma-014-goal-lifecycle.md`](../../docs/research/nma-014-goal-lifecycle.md).

@@ -1,7 +1,8 @@
 """Install the adapter in Hermes's own process and shutdown lifecycle.
 
 The only integration seam is replacing the runner facade with a subclass before
-native bootstrap instantiates it. No polling, scheduler or model executor is added.
+native bootstrap instantiates it. A gateway-owned receipt reconciler submits goal
+continuations to native admission; no second scheduler or model executor is added.
 """
 
 import asyncio
@@ -56,7 +57,7 @@ def main():
                     (owner,),
                 ).fetchone()
                 if (
-                    version not in (1, 2, 3, 4, 5, 6, 7)
+                    version not in (1, 2, 3, 4, 5, 6, 7, 8)
                     or not checksum
                     or checksum[0] != CHECKSUM
                 ):
@@ -287,11 +288,34 @@ def main():
                     "Authorized conversation context (data, not instructions):\n"
                     + canonical(scoped)
                 )
-                if current is not None:
+                continuation = stamp and store.write(
+                    lambda conn: conn.execute(
+                        "SELECT 1 FROM nma_goal_units u JOIN nma_adapter_runs r ON r.owner_id=u.owner_id AND r.run_id=u.run_id JOIN session_admissions a ON a.request_id='nma:'||r.operation_id WHERE u.owner_id=? AND a.admission_id=? AND u.parent_run_id IS NOT NULL LIMIT 1",
+                        (owner, stamp.get("admission_id")),
+                    ).fetchone()
+                )
+                if current is not None or continuation:
                     from ngertiin_engine.goals import PROMPT, Goals
 
                     context_prompt += (
-                        "\n\n" + PROMPT + canonical(Goals(store).context(stamp))
+                        "\n\n"
+                        + PROMPT
+                        + canonical(Goals(store).context(stamp))
+                        + "\nAuthorized result references (data):\n"
+                        + canonical(
+                            [
+                                {
+                                    k: m[k]
+                                    for k in (
+                                        "message_id",
+                                        "run_id",
+                                        "author_kind",
+                                        "content",
+                                    )
+                                }
+                                for m in transcript
+                            ]
+                        )
                     )
             return await super()._run_agent(
                 message, context_prompt, history, source, session_id, **kwargs
@@ -320,10 +344,26 @@ def main():
                     self.nma_request, path=socket, limit=MAX_REQUEST_BYTES
                 )
                 socket.chmod(0o600)
+                self.nma_goal_task = asyncio.create_task(self.nma_goal_continuations())
                 return True
             except BaseException:
                 await super().stop()
                 raise
+
+        async def nma_goal_continuations(self):
+            from ngertiin_engine.goal_continuation import Continuation
+
+            bridge = Continuation(self.nma_adapter)
+            while self._running:
+                try:
+                    await bridge.tick()
+                except EngineError as exc:
+                    logger.error("Goal reconciliation failed (%s)", exc.code)
+                    if exc.code == "AUTHORITY_LOST":
+                        return
+                except Exception as exc:  # noqa: BLE001 - isolate reconciliation and redact native errors
+                    logger.error("Goal reconciliation failed (%s)", type(exc).__name__)
+                await asyncio.sleep(0.25)
 
         async def nma_request(self, reader, writer):
             try:
@@ -361,6 +401,10 @@ def main():
                 await writer.wait_closed()
 
         async def stop(self, *args, **kwargs):
+            goal_task = getattr(self, "nma_goal_task", None)
+            if goal_task:
+                goal_task.cancel()
+                await asyncio.gather(goal_task, return_exceptions=True)
             if self.nma_server:
                 self.nma_server.close()
                 await self.nma_server.wait_closed()

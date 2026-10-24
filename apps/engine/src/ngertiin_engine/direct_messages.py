@@ -106,6 +106,11 @@ class DirectMessages:
                     "INSERT INTO nma_runtime_outbox VALUES (?,?,?,'pending',NULL)",
                     (self.store.owner, item["command_id"], canonical(item)),
                 )
+            # User ingress suppresses even a terminal parent's not-yet-delivered continuation.
+            conn.execute(
+                "UPDATE nma_goal_units SET settled=1 WHERE owner_id=? AND settled=0 AND goal_id IN (SELECT goal_id FROM nma_goals WHERE owner_id=? AND thread_id=?)",
+                (self.store.owner, self.store.owner, p["thread_id"]),
+            )
             # Freeze the interrupted set with ingress, including work not yet delivered.
             rows = conn.execute(
                 "SELECT r.run_id FROM nma_adapter_runs r JOIN nma_adapter_bindings b ON b.owner_id=r.owner_id AND b.binding_id=r.binding_id LEFT JOIN session_admissions a ON a.admission_id=r.native_admission_id WHERE r.owner_id=? AND json_extract(b.config,'$.thread_id')=? AND (a.status IS NULL OR a.status!='terminal')",
@@ -229,6 +234,20 @@ class DirectMessages:
                 if messages and len(ids) > len(messages)
                 else None
             )
+            # Continuations have no synthetic user message. Include their live runs
+            # so reload restores partial output and interruption controls as well.
+            pending = conn.execute(
+                "SELECT DISTINCT u.run_id FROM nma_goal_units u JOIN nma_goals g ON g.owner_id=u.owner_id AND g.goal_id=u.goal_id WHERE u.owner_id=? AND g.thread_id=? AND u.settled=0 AND NOT EXISTS (SELECT 1 FROM nma_run_terminals t WHERE t.owner_id=u.owner_id AND t.run_id=u.run_id)",
+                (self.store.owner, thread["thread_id"]),
+            ).fetchall()
+            for (run_id,) in pending:
+                if run_id in runs:
+                    continue
+                run = self.adapter.reliability.snapshot_row(conn, run_id)
+                size += len(canonical(run).encode())
+                if size > 4 * 1024 * 1024:
+                    raise EngineError("RESPONSE_TOO_LARGE")
+                runs[run_id] = run
             # The helper uses this same connection; state and watermark are atomic.
             epoch, seq = self.watermark(conn)
             return {

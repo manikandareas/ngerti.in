@@ -298,6 +298,15 @@ class Adapter:
 
     async def _dispatch(self, body):
         kind, payload = body["type"], body["payload"]
+        if kind.startswith("goal."):
+            from ngertiin_engine.goal_commands import GoalCommands
+
+            goals = GoalCommands(self)
+            if kind == "goal.read":
+                return goals.read(payload)
+            result = goals.mutate(body)
+            await self.recover_run_stops(locked=True)
+            return result
         if kind == "message.send":
             return await self.dm.send(body)
         if kind == "thread.snapshot":
@@ -576,11 +585,24 @@ class Adapter:
                 await self.interrupt(ref, claimed["generation"])
         elif receipt.status == "started":
             await self.interrupt(ref, receipt.execution_generation)
+        elif receipt.status == "unknown":
+            stopped = self.store.write(
+                lambda conn: conn.execute(
+                    "SELECT r.run_id FROM nma_adapter_runs r WHERE r.owner_id=? AND r.native_admission_id=?",
+                    (self.owner, admission_id),
+                ).fetchone()
+            )
+            if stopped and self.fenced(stopped[0]):
+                # A committed cancel is explicit abandonment, never permission to replay.
+                # Native settlement closes the old transcript and releases its paused FIFO.
+                await self.authority.resolve_unknown(
+                    self.actor, ref, admission_id, receipt.execution_generation
+                )
 
     async def recover_pending(self):
         rows = self.store.write(
             lambda conn: conn.execute(
-                "SELECT c.body FROM nma_commands c JOIN nma_runtime_outbox o ON o.owner_id=c.owner_id AND o.operation_id=c.command_id WHERE c.owner_id=? AND o.state='pending' AND json_extract(c.body,'$.type')='runtime.submit'",
+                "SELECT c.body FROM nma_commands c JOIN nma_runtime_outbox o ON o.owner_id=c.owner_id AND o.operation_id=c.command_id WHERE c.owner_id=? AND o.state='pending' AND json_extract(c.body,'$.type')='runtime.submit' AND NOT EXISTS (SELECT 1 FROM nma_adapter_runs r JOIN nma_goal_units u ON u.owner_id=r.owner_id AND u.run_id=r.run_id WHERE r.owner_id=c.owner_id AND r.operation_id=c.command_id AND u.parent_run_id IS NOT NULL)",
                 (self.owner,),
             ).fetchall()
         )
@@ -636,11 +658,30 @@ class Adapter:
                 (self.owner,),
             ).fetchall()
         )
+        disabled = self.store.write(
+            lambda conn: conn.execute(
+                "SELECT agent_id FROM nma_agents WHERE owner_id=? AND status!='active'",
+                (self.owner,),
+            ).fetchall()
+        )
+        for (agent_id,) in disabled:
+            self.store.write(
+                lambda conn, agent_id=agent_id: self.goals.lifecycle.agent_unavailable(
+                    conn, agent_id
+                )
+            )
         for row in rows:
             await self.cancel_agent(row[0])
 
     async def cancel_agent(self, agent_id):
         """Cancel native admissions after the durable lifecycle fence commits."""
+
+        def goals(conn):
+            agent = self.agents.get(conn, agent_id)
+            if agent["status"] != "active":
+                self.goals.lifecycle.agent_unavailable(conn, agent_id)
+
+        self.store.write(goals)
         rows = self.store.write(
             lambda conn: conn.execute(
                 "SELECT r.native_admission_id,b.native_session_id,b.config FROM nma_adapter_runs r JOIN nma_adapter_bindings b ON b.owner_id=r.owner_id AND b.binding_id=r.binding_id WHERE r.owner_id=? AND r.run_id IN (SELECT run_id FROM nma_agent_run_fences WHERE owner_id=r.owner_id)",

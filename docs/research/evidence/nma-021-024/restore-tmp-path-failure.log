@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-021/restore_probe.py", line 31, in <module>
+    asyncio.run(main())
+    ~~~~~~~~~~~^^^^^^^^
+  File "/Users/vitoandareasmanik/.local/share/uv/python/cpython-3.13.12-macos-aarch64-none/lib/python3.13/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "/Users/vitoandareasmanik/.local/share/uv/python/cpython-3.13.12-macos-aarch64-none/lib/python3.13/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Users/vitoandareasmanik/.local/share/uv/python/cpython-3.13.12-macos-aarch64-none/lib/python3.13/asyncio/base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-021/restore_probe.py", line 22, in main
+    proof['filesystem_restored']=await sandbox.files.read('/tmp/nma-restore-proof.txt')=='durable-file-proof'
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/backend/.venv/lib/python3.13/site-packages/e2b/sandbox_async/filesystem/filesystem.py", line 284, in read
+    raise err
+e2b.exceptions.FileNotFoundException: path '/tmp/nma-restore-proof.txt' does not exist

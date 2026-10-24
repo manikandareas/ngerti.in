@@ -5,6 +5,8 @@ from datetime import UTC, datetime
 from uuid import NAMESPACE_URL, uuid5
 
 from ngertiin_engine.contracts import EngineError, canonical, uuid
+from ngertiin_engine.delivery import quiet
+from ngertiin_engine.redaction import text as redact
 
 
 def now():
@@ -45,6 +47,7 @@ class Transcript:
         return item
 
     def append(self, conn, run_id, config, author, content):
+        content = redact(content)
         message_id = str(
             uuid5(NAMESPACE_URL, self.store.owner + ":" + run_id + ":" + author)
         )
@@ -100,6 +103,11 @@ class Transcript:
                 continue
 
             def record(conn, run_id=run_id, config=config, body=body, result=result):
+                if conn.execute(
+                    "SELECT 1 FROM nma_context_receipts WHERE owner_id=? AND run_id=?",
+                    (self.store.owner, run_id),
+                ).fetchone():
+                    return
                 thread = conn.execute(
                     "SELECT context_generation FROM nma_threads WHERE owner_id=? AND thread_id=?",
                     (self.store.owner, config["thread_id"]),
@@ -139,7 +147,18 @@ class Transcript:
                 ):
                     content = value.get("final_response")
                     if isinstance(content, str) and content:
-                        self.append(conn, run_id, config, "agent", content)
+                        silent = quiet(conn, self.store.owner, run_id, content)
+                        if not silent:
+                            self.append(conn, run_id, config, "agent", content)
+                        from ngertiin_engine.reliability import Reliability
+
+                        Reliability(self.store).append(
+                            conn,
+                            run_id,
+                            config,
+                            "delivery.settled",
+                            {"status": "quiet" if silent else "delivered"},
+                        )
 
                 conn.execute(
                     "INSERT OR IGNORE INTO nma_context_receipts VALUES (?,?)",

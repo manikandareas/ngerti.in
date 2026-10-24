@@ -51,6 +51,7 @@ export type Goal = {
   }[];
 };
 export type Snapshot = {
+  artifacts?: Artifact[];
   discussion?: { discussion_id: string; status: string; reason: string } | null;
   goals?: Goal[];
   thread: Thread;
@@ -58,6 +59,13 @@ export type Snapshot = {
   runs: Run[];
   through_cursor: string;
   next_before_message_seq: string | null;
+};
+export type Artifact = {
+  artifact_id: string;
+  revision_id: string;
+  producing_run_id: string;
+  producing_agent_id: string;
+  filename: string;
 };
 export type Event = {
   type: string;
@@ -92,6 +100,16 @@ export function mergeMessages(current: Message[], incoming: Message[]) {
 
 export function applyEvent(state: Snapshot, event: Event): Snapshot {
   if (event.thread_id !== state.thread.thread_id) throw new Error("Unexpected conversation event");
+  if (event.type === "artifact.ready") {
+    const artifact = event.payload as unknown as Artifact;
+    return {
+      ...state,
+      artifacts: [
+        ...(state.artifacts ?? []).filter((item) => item.artifact_id !== artifact.artifact_id),
+        artifact,
+      ],
+    };
+  }
   if (event.type === "discussion.changed")
     return { ...state, discussion: event.payload.discussion as Snapshot["discussion"] };
   if (event.type === "goal.changed") {

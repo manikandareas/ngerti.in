@@ -45,6 +45,8 @@ class Command(BaseModel):
         "goal.stop",
         "goal.resume",
         "goal.reopen",
+        "artifact.share",
+        "artifact.revoke",
     ]
     expected_revision: str | None = Field(pattern=r"^[1-9][0-9]{0,18}$")
     payload: dict
@@ -201,6 +203,61 @@ async def goal(goal_id: UUID, account: AccountDep):
             "type": "goal.read",
             "expected_revision": None,
             "payload": {"goal_id": str(goal_id)},
+        },
+    )
+
+
+@router.get("/runs/{run_id}/diagnostics")
+async def run_diagnostics(run_id: UUID, account: AccountDep):
+    return await forward(
+        str(account.id),
+        {
+            "schema_version": "nma.v1",
+            "command_id": str(uuid4()),
+            "type": "run.diagnostics",
+            "expected_revision": None,
+            "payload": {"run_id": str(run_id)},
+        },
+    )
+
+
+@router.get("/artifacts/{artifact_id}")
+async def artifact(artifact_id: UUID, account: AccountDep):
+    value = await forward(
+        str(account.id),
+        {
+            "schema_version": "nma.v1",
+            "command_id": str(uuid4()),
+            "type": "artifact.read",
+            "expected_revision": None,
+            "payload": {"artifact_id": str(artifact_id)},
+        },
+    )
+    value.pop("content", None)
+    return value
+
+
+@router.get("/artifacts/{artifact_id}/revisions/{revision_id}/download")
+async def artifact_download(artifact_id: UUID, revision_id: UUID, account: AccountDep):
+    value = await forward(
+        str(account.id),
+        {
+            "schema_version": "nma.v1",
+            "command_id": str(uuid4()),
+            "type": "artifact.read",
+            "expected_revision": None,
+            "payload": {"artifact_id": str(artifact_id)},
+        },
+    )
+    if value["revision_id"] != str(revision_id):
+        raise failure("NOT_FOUND", None)
+    return Response(
+        value["content"].encode("utf-8"),
+        media_type="application/octet-stream",
+        headers={
+            "Content-Disposition": 'attachment; filename="' + value["filename"] + '"',
+            "X-Content-Type-Options": "nosniff",
+            "Cache-Control": "private, no-store",
         },
     )
 

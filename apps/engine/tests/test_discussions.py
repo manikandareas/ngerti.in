@@ -300,6 +300,17 @@ def test_peer_failure_stays_on_shared_goal_without_private_context(runtime):
             provider.requests[before:]
         )
         assert len(snap["goals"]) == 1
+        for unit in snap["goals"][0]["units"]:
+            diagnosis = call(command("run.diagnostics", {"run_id": unit["run_id"]}))[
+                "result"
+            ]
+            assert snap["goals"][0]["goal_id"] in diagnosis["goal_ids"]
+            assert diagnosis["discussion_ids"] and diagnosis["handoff_ids"]
+            if unit["status"] == "failed":
+                assert diagnosis["run"]["error_code"] == "RUNTIME_FAILED"
+                assert any(
+                    e["type"] == "run.failed" for e in diagnosis["recent_events"]
+                )
     finally:
         provider.fail_group_member = False
 

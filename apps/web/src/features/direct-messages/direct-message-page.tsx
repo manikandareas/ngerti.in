@@ -4,6 +4,7 @@ import { ArrowDown, ArrowLeft, MessageCircle } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Streamdown } from "streamdown";
 import { Button } from "@/components/ui/button";
+import { ArtifactResults } from "./artifact-results";
 import { command, listThreads, submit, type ThreadItem } from "./client";
 import { Composer } from "./composer";
 import { GoalProgress } from "./goal-progress";
@@ -181,6 +182,7 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
           }}
         >
           <div className="mx-auto max-w-3xl space-y-7 py-6">
+            <ArtifactResults artifacts={snapshot?.artifacts ?? []} />
             {snapshot && (
               <GoalProgress
                 goals={snapshot.goals ?? []}

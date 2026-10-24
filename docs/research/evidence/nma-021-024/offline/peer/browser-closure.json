@@ -1,0 +1,246 @@
+{
+  "scope": "Snapshot harness over real gateway; controlled provider; not production authenticated UI",
+  "requests_while_closed": 0,
+  "model_requests_while_closed": 3,
+  "goal": {
+    "artifacts": [],
+    "discussion": {
+      "discussion_id": "9b289cba-38ba-5700-ae4a-fadcfdce624b",
+      "reason": "silent_round",
+      "status": "settled"
+    },
+    "goals": [],
+    "messages": [
+      {
+        "author_agent_id": null,
+        "author_kind": "user",
+        "content": "@researcher start the report",
+        "context_generation": "1",
+        "message_id": "8a9e2ce9-12b8-5330-b572-952bb8ee81a9",
+        "message_seq": "1",
+        "parts": [
+          {
+            "text": "@researcher start the report",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "d044e67d-e90a-5c0e-8a5c-db0b41c950d6",
+        "thread_id": "cefac99f-c148-4f48-93a1-4a866b14120d"
+      },
+      {
+        "author_agent_id": "bf832f36-3b0f-46ea-b6b8-ce9e90f0aab5",
+        "author_kind": "agent",
+        "content": "Research ready. @writer draft it",
+        "context_generation": "1",
+        "message_id": "503c257c-f1cf-5544-b7a3-1d0b3c4c8f18",
+        "message_seq": "2",
+        "parts": [
+          {
+            "text": "Research ready. @writer draft it",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "d044e67d-e90a-5c0e-8a5c-db0b41c950d6",
+        "thread_id": "cefac99f-c148-4f48-93a1-4a866b14120d"
+      },
+      {
+        "author_agent_id": "b125513b-728d-4b67-b6b9-810ff429a481",
+        "author_kind": "agent",
+        "content": "Draft ready. @reviewer check it",
+        "context_generation": "1",
+        "message_id": "7bf46e85-cb12-5e6f-873b-ec5c83ce268d",
+        "message_seq": "3",
+        "parts": [
+          {
+            "text": "Draft ready. @reviewer check it",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "ad78b71d-ea02-55b0-881c-27c4b0f60848",
+        "thread_id": "cefac99f-c148-4f48-93a1-4a866b14120d"
+      },
+      {
+        "author_agent_id": "caffddcf-232d-4bfc-ab88-37e9aed2204d",
+        "author_kind": "agent",
+        "content": "Review complete.",
+        "context_generation": "1",
+        "message_id": "fe86ce95-8460-5539-a124-dfe1999251ff",
+        "message_seq": "4",
+        "parts": [
+          {
+            "text": "Review complete.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "8a73e0e2-83b3-5323-82dc-930b05af8617",
+        "thread_id": "cefac99f-c148-4f48-93a1-4a866b14120d"
+      }
+    ],
+    "next_before_message_seq": null,
+    "replay_epoch": "bc7ef5c3-63e8-427e-b377-21b20b08a12d",
+    "runs": [
+      {
+        "agent_id": "bf832f36-3b0f-46ea-b6b8-ce9e90f0aab5",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "bc7ef5c3-63e8-427e-b377-21b20b08a12d",
+        "run_id": "d044e67d-e90a-5c0e-8a5c-db0b41c950d6",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Research ready. @writer draft it",
+        "thread_id": "cefac99f-c148-4f48-93a1-4a866b14120d",
+        "through_sequence": "98"
+      },
+      {
+        "agent_id": "b125513b-728d-4b67-b6b9-810ff429a481",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "bc7ef5c3-63e8-427e-b377-21b20b08a12d",
+        "run_id": "ad78b71d-ea02-55b0-881c-27c4b0f60848",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Draft ready. @reviewer check it",
+        "thread_id": "cefac99f-c148-4f48-93a1-4a866b14120d",
+        "through_sequence": "98"
+      },
+      {
+        "agent_id": "caffddcf-232d-4bfc-ab88-37e9aed2204d",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "bc7ef5c3-63e8-427e-b377-21b20b08a12d",
+        "run_id": "8a73e0e2-83b3-5323-82dc-930b05af8617",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Review complete.",
+        "thread_id": "cefac99f-c148-4f48-93a1-4a866b14120d",
+        "through_sequence": "98"
+      }
+    ],
+    "schema_version": "nma.v1",
+    "thread": {
+      "agents": [
+        {
+          "access_generation": "1",
+          "agent_id": "bf832f36-3b0f-46ea-b6b8-ce9e90f0aab5",
+          "config": {
+            "instructions": "",
+            "model": "test",
+            "soul": "SOUL_researcher"
+          },
+          "config_revision": "1",
+          "created_at": "2026-10-24T06:01:11.793864Z",
+          "display_name": "researcher",
+          "handle": "researcher",
+          "revision": "1",
+          "status": "active",
+          "updated_at": "2026-10-24T06:01:11.793864Z"
+        },
+        {
+          "access_generation": "1",
+          "agent_id": "b125513b-728d-4b67-b6b9-810ff429a481",
+          "config": {
+            "instructions": "",
+            "model": "test",
+            "soul": "SOUL_writer"
+          },
+          "config_revision": "1",
+          "created_at": "2026-10-24T06:01:11.802349Z",
+          "display_name": "writer",
+          "handle": "writer",
+          "revision": "1",
+          "status": "active",
+          "updated_at": "2026-10-24T06:01:11.802349Z"
+        },
+        {
+          "access_generation": "1",
+          "agent_id": "caffddcf-232d-4bfc-ab88-37e9aed2204d",
+          "config": {
+            "instructions": "",
+            "model": "test",
+            "soul": "SOUL_reviewer"
+          },
+          "config_revision": "1",
+          "created_at": "2026-10-24T06:01:11.803874Z",
+          "display_name": "reviewer",
+          "handle": "reviewer",
+          "revision": "1",
+          "status": "active",
+          "updated_at": "2026-10-24T06:01:11.803874Z"
+        }
+      ],
+      "context_generation": "1",
+      "dm_agent_id": null,
+      "kind": "group",
+      "membership_revision": "1",
+      "revision": "1",
+      "status": "open",
+      "thread_id": "cefac99f-c148-4f48-93a1-4a866b14120d",
+      "title": "Editorial"
+    },
+    "through_sequence": "98"
+  },
+  "browser": [
+    {
+      "command": [
+        "open",
+        "http://127.0.0.1:60583"
+      ],
+      "stdout": "\u2713 Offline wake acceptance\n  http://127.0.0.1:60583/\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "snapshot"
+      ],
+      "stdout": "- main\n  - heading \"Gateway snapshot harness\" [level=1, ref=e1]\n  - paragraph\n    - StaticText \"Goal: Peer work \u00b7 active\"\n  - paragraph\n    - StaticText \"Execution units: 0\"\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "screenshot",
+        "/Users/vitoandareasmanik/Development/project/ngertiin/docs/research/evidence/nma-021-024/offline/peer/browser-before.png"
+      ],
+      "stdout": "\u2713 Screenshot saved to /Users/vitoandareasmanik/Development/project/ngertiin/docs/research/evidence/nma-021-024/offline/peer/browser-before.png\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "close"
+      ],
+      "stdout": "\u2713 Browser closed\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "open",
+        "http://127.0.0.1:60583"
+      ],
+      "stdout": "\u2713 Offline wake acceptance\n  http://127.0.0.1:60583/\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "get",
+        "text",
+        "body"
+      ],
+      "stdout": "Gateway snapshot harness\n\nGoal: Peer work \u00b7 active\n\nExecution units: 0\n\n@researcher start the report\n\nResearch ready. @writer draft it\n\nDraft ready. @reviewer check it\n\nReview complete.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "screenshot",
+        "/Users/vitoandareasmanik/Development/project/ngertiin/docs/research/evidence/nma-021-024/offline/peer/browser-after.png"
+      ],
+      "stdout": "\u2713 Screenshot saved to /Users/vitoandareasmanik/Development/project/ngertiin/docs/research/evidence/nma-021-024/offline/peer/browser-after.png\n",
+      "stderr": ""
+    }
+  ]
+}

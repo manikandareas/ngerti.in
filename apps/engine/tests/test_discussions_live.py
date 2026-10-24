@@ -9,7 +9,7 @@ from pathlib import Path
 import pytest
 from test_direct_messages import public_api, send, snapshot  # noqa: F401
 from test_discussions import group
-from test_runtime import runtime  # noqa: F401
+from test_runtime import command, runtime  # noqa: F401
 
 pytestmark = pytest.mark.skipif(
     not os.environ.get("NMA_TEST_LIVE_ENV"), reason="Real model acceptance is opt-in"
@@ -17,7 +17,7 @@ pytestmark = pytest.mark.skipif(
 
 
 def test_real_group_goal_handoff(runtime, public_api):
-    root, _, call, *_ = runtime
+    root, _, call, start, *_ = runtime
     thread = group(call)
     text = (
         "@researcher take responsibility for a short fuel-efficiency report: 360 km and 45 litres. "
@@ -50,6 +50,12 @@ def test_real_group_goal_handoff(runtime, public_api):
         "model": json.loads((root / "models.json").read_text())["test"]["model"],
         "receipt": receipt,
         "snapshot": snap,
+        "diagnoses": [
+            call(command("run.diagnostics", {"run_id": u["run_id"]}))["result"]
+            for u in snap["goals"][0]["units"]
+        ]
+        if snap["goals"]
+        else [],
     }
     Path(os.environ.get("NMA_GROUP_OUTPUT", "/tmp/nma-group-live.json")).write_text(
         json.dumps(report, indent=2) + "\n"
@@ -61,3 +67,16 @@ def test_real_group_goal_handoff(runtime, public_api):
     assert any(
         "12.5" in m["content"] for m in snap["messages"] if m["author_kind"] == "agent"
     )
+    goal_id = snap["goals"][0]["goal_id"]
+    assert all(goal_id in d["goal_ids"] for d in report["diagnoses"])
+    assert len({d["run"]["agent_id"] for d in report["diagnoses"]}) == 3
+    start.current.kill()
+    start.current.wait(timeout=10)
+    start()
+    for before in report["diagnoses"]:
+        assert (
+            call(command("run.diagnostics", {"run_id": before["run"]["run_id"]}))[
+                "result"
+            ]
+            == before
+        )

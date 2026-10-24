@@ -257,6 +257,8 @@ class DirectMessages:
                 (self.store.owner, thread["thread_id"]),
             ).fetchone()
             # The helper uses this same connection; state and watermark are atomic.
+            from ngertiin_engine.artifacts import Artifacts
+
             epoch, seq = self.watermark(conn)
             return {
                 "schema_version": "nma.v1",
@@ -266,6 +268,7 @@ class DirectMessages:
                 if discussion
                 else None,
                 "thread": thread,
+                "artifacts": Artifacts(self.store).listing(conn, thread["thread_id"]),
                 "messages": list(reversed(messages)),
                 "runs": list(reversed(list(runs.values()))),
                 "next_before_message_seq": next_before,

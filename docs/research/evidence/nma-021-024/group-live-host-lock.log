@@ -1,0 +1,114 @@
+F
+=================================== FAILURES ===================================
+_________________________ test_real_group_goal_handoff _________________________
+
+runtime = (PosixPath('/tmp/nma-7u9031qo'), <http.server.ThreadingHTTPServer object at 0x107b0d6a0>, <function runtime.<locals>.c...cancel', 'runtime.read', 'runtime.events', 'runtime.snapshot'], 'production_ready': False, 'schema_version': 'nma.v1'})
+public_api = <function public_api.<locals>.request at 0x107bc5b10>
+
+    def test_real_group_goal_handoff(runtime, public_api):
+        root, _, call, start, *_ = runtime
+        thread = group(call)
+        text = (
+            "@researcher take responsibility for a short fuel-efficiency report: 360 km and 45 litres. "
+            "Calculate litres per 100 km, then explicitly mention @writer to draft the report. "
+            "Writer: use the existing shared goal and mention @reviewer to check your report. "
+            "Reviewer: verify the calculation and give the final review. Each peer must contribute its own result. "
+            "Researcher remains responsible for the goal lifecycle and should verify peer results before completing. "
+            "Keep working without another user message."
+        )
+        receipt = json.load(public_api("/commands", send(thread, text)))
+        deadline = time.monotonic() + 240
+        while time.monotonic() < deadline:
+            snap = snapshot(call, thread)
+            authors = {
+                m["author_agent_id"]
+                for m in snap["messages"]
+                if m["author_kind"] == "agent"
+            }
+            if (
+                len(authors) == 3
+                and snap["goals"]
+                and any(
+                    g["status"] == "completed" and all(u["settled"] for u in g["units"])
+                    for g in snap["goals"]
+                )
+            ):
+                break
+            time.sleep(0.5)
+        report = {
+            "model": json.loads((root / "models.json").read_text())["test"]["model"],
+            "receipt": receipt,
+            "snapshot": snap,
+            "diagnoses": [
+                call(command("run.diagnostics", {"run_id": u["run_id"]}))["result"]
+                for u in snap["goals"][0]["units"]
+            ]
+            if snap["goals"]
+            else [],
+        }
+        Path(os.environ.get("NMA_GROUP_OUTPUT", "/tmp/nma-group-live.json")).write_text(
+            json.dumps(report, indent=2) + "\n"
+        )
+        assert len(authors) == 3, snap
+        assert len(snap["goals"]) == 1, snap
+        assert snap["goals"][0]["status"] == "completed", snap
+        assert len([m for m in snap["messages"] if m["author_kind"] == "user"]) == 1
+        assert any(
+            "12.5" in m["content"] for m in snap["messages"] if m["author_kind"] == "agent"
+        )
+>       goal_id = snap["goals"][0]["goal_id"]
+        ^^^^^^^
+
+apps/engine/tests/test_discussions_live.py:70: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+fault = None
+
+    def start(fault=None):
+        log = (root / f"gateway-{len(processes)}.log").open("w+")
+        process = subprocess.Popen(
+            [RUNTIME_PYTHON, str(Path(__file__).with_name("fault_launcher.py"))]
+            if fault
+            else [RUNTIME_PYTHON, "-m", "ngertiin_engine.service"],
+            cwd=SOURCE,
+            env=env
+            | (
+                {"NMA_TEST_FAULT": fault, "NMA_TEST_MARKER": str(root / "fault-fired")}
+                if fault
+                else {}
+            ),
+            stdout=log,
+            stderr=subprocess.STDOUT,
+        )
+        processes.append(process)
+        start.current = process
+        deadline = time.monotonic() + 90
+        while process.poll() is None and time.monotonic() < deadline:
+            try:
+                response = call(command("runtime.describe"))
+                if "result" in response:
+                    return process, response["result"]
+            except (OSError, ValueError):
+                pass
+            time.sleep(0.1)
+        log.flush()
+>       pytest.fail(
+            log.read()
+            if log.seek(0) is None
+            else (root / f"gateway-{len(processes) - 1}.log").read_text()
+        )
+E       Failed: ❌ Another gateway already owns this host: PID 41519 (no bound port; profiles: default)
+E          Exactly one gateway per host serves every profile, so this process will not start a
+E          second one (it would double-bind this profile's platforms).
+E          Fold every profile onto the owner:  hermes gateway migrate --multiplex
+E          Or stop the other gateway first, then start this one.
+E          Or start one anyway (skips the host-lock check):  hermes gateway run --force
+E          (--replace does not skip this check; it only replaces an owner that serves this profile.)
+
+apps/engine/tests/test_runtime.py:298: Failed
+---------------------------- Captured stdout setup -----------------------------
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_discussions_live.py::test_real_group_goal_handoff
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed in 48.41s

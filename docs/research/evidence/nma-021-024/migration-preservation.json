@@ -1,0 +1,46 @@
+{
+  "store": {
+    "unchanged": true,
+    "sha256": "0df57c8675497afef95399e9ba4b43d97fb9ae25cb7d21c0da488183b9a9a7e8"
+  },
+  "agents": {
+    "unchanged": true,
+    "sha256": "0113bde48c072c1763990b1e267396f4f22d77df6aa304cc4016e748802c0c09"
+  },
+  "threads": {
+    "unchanged": true,
+    "sha256": "b8a03d54415b5b1a49cb771dbe4e227a4cf7ea0dd476f073b4e301a4b58511b7"
+  },
+  "context": {
+    "unchanged": true,
+    "sha256": "94cdb83ea586f35f491e0ce2f573d88966cc4d2a219fc8fc2bd871e71c54c031"
+  },
+  "reliability": {
+    "unchanged": true,
+    "sha256": "c6ae2a8a83327183a1339a189fb94ddddf20590c6b68420816f9f0789fb8637c"
+  },
+  "direct_messages": {
+    "unchanged": true,
+    "sha256": "d705ca7b7daacbd1e7e4f90c315aef4adc09633eff7f46ffa31d3ddb25409816"
+  },
+  "goals": {
+    "unchanged": true,
+    "sha256": "abb0c84152d1efe524821a449923b49d5d42241965adf94c8bf4da8ea412d1c8"
+  },
+  "goal_lifecycle": {
+    "unchanged": true,
+    "sha256": "4cc31904faa6fe9b7a6f41de8f044529ac422146b57ba516b578ce990bb850dc"
+  },
+  "wakes": {
+    "unchanged": true,
+    "sha256": "95d49a9bb07ef8fbc7c26eac13f770e6e8666c55b228cabd8955e84434c0da18"
+  },
+  "webhooks": {
+    "unchanged": true,
+    "sha256": "34121b8628be00888c0b716d7f34a562c0d272c291379af07f8eae1acb57cc73"
+  },
+  "discussions": {
+    "unchanged": true,
+    "sha256": "b3a6aa82e5879a04cc17e51555b3a7f313f67fa8d2409d6cd6aa0e56973dc9f3"
+  }
+}

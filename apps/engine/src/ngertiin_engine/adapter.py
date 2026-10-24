@@ -300,6 +300,28 @@ class Adapter:
 
     async def _dispatch(self, body):
         kind, payload = body["type"], body["payload"]
+        if kind.startswith("artifact."):
+            from ngertiin_engine.artifacts import Artifacts
+
+            artifacts = Artifacts(self.store)
+            if kind == "artifact.read":
+                if set(payload) != {"artifact_id"}:
+                    raise EngineError("INVALID_REQUEST")
+                return self.store.write(
+                    lambda conn: artifacts.get(
+                        conn, payload["artifact_id"], content=True
+                    )
+                )
+            if kind in {"artifact.share", "artifact.revoke"}:
+                result = artifacts.share(body, self.threads)
+                if kind == "artifact.revoke":
+                    await self.cancel_stale_contexts()
+                return result
+            raise EngineError("INVALID_REQUEST")
+        if kind == "run.diagnostics":
+            from ngertiin_engine.diagnostics import Diagnostics
+
+            return Diagnostics(self).read(payload)
         if kind == "webhook.receive":
             from ngertiin_engine.webhooks import Webhooks
 
@@ -384,6 +406,10 @@ class Adapter:
                     "runtime.read",
                     "runtime.events",
                     "runtime.snapshot",
+                    "run.diagnostics",
+                    "artifact.read",
+                    "artifact.share",
+                    "artifact.revoke",
                 ],
                 "production_ready": False,
             }

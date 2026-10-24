@@ -673,3 +673,31 @@ foreign keys and replay before reopening. Earlier binaries refuse schema 11. Pre
 new receipts on rollback and restore a complete isolated predecessor backup; do not
 drop live tables. See the [collaboration report](../../docs/research/nma-018-020-group-collaboration.md)
 for routing provenance, validation and the scoped browser acceptance boundary.
+
+## Proactive delivery, files, computer and diagnosis (schema 12)
+
+Background delivery has a separate durable `delivery.settled` outcome. Pinned native
+`[SILENT]` recognition suppresses only the background notification, never execution.
+`run.diagnostics` provides owner-scoped correlation, recent events, effect states,
+transcript IDs and available native turn usage/cost estimates.
+
+Operator tool grants may explicitly select `nma_workspace` (immutable UTF-8 artifacts,
+1 MiB each) or `nma_computer` (thread-private guarded E2B browser). Computer deployments
+must provision the backend actuator and set `NMA_COMPUTER_COMMAND` to its JSON argv,
+e.g. `["/absolute/backend/.venv/bin/python","-m","ngertiin.agent_engine.computer_bridge"]`.
+The foundation image alone does not contain that interpreter. Never use a model-supplied
+command. E2B credentials stay in trusted configuration. Pause preserves disk only;
+observe again after restore. Explicit delete is terminal for the thread workspace.
+Unknown effects require receipt reconciliation before another browser operation.
+
+`artifact.share`/`artifact.revoke` require explicit destination thread, source user
+message and reason. Private DM files are not shared by default. Authenticated artifact
+metadata and revision download routes validate owner, hash and size. New files have
+immutable producing-run provenance; no arbitrary host paths are exposed.
+
+Schema 12 adds four tables without changing migration 1–11. Stop ingress/owner and
+back up the complete partition before upgrade. Verify checksums, integrity, foreign
+keys and replay. Older binaries reject schema 12; retain new receipts and provider
+cleanup evidence when restoring an isolated predecessor backup. See the
+[integration report](../../docs/research/nma-021-024-integration.md) for acceptance,
+OS boundary assumptions, text-file scope and exact resource cleanup limitations.

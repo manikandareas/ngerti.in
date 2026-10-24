@@ -6,6 +6,7 @@ from datetime import UTC, datetime
 from uuid import NAMESPACE_URL, uuid4, uuid5
 
 from ngertiin_engine.contracts import EngineError, canonical, digest
+from ngertiin_engine.delivery import background, quiet
 from ngertiin_engine.redaction import result as redact
 
 execution = ContextVar("nma_execution", default=None)
@@ -63,6 +64,9 @@ class Reliability:
         return row
 
     def append(self, conn, run_id, config, kind, payload):
+        from ngertiin_engine.diagnostics import correlation
+
+        links = correlation(conn, self.store.owner, run_id)
         seq = conn.execute(
             "SELECT COALESCE(MAX(sequence),0)+1 FROM nma_events WHERE owner_id=?",
             (self.store.owner,),
@@ -74,7 +78,9 @@ class Reliability:
             "occurred_at": datetime.now(UTC).isoformat(),
             "sequence": str(seq),
             "run_id": run_id,
-            "goal_id": payload.get("goal", {}).get("goal_id"),
+            "goal_id": payload.get("goal", {}).get("goal_id")
+            or (links["goal_ids"][0] if len(links["goal_ids"]) == 1 else None),
+            **links,
             "agent_id": config["agent_id"],
             "thread_id": config["thread_id"],
             "config_revision": config["config_revision"],
@@ -165,7 +171,10 @@ class Reliability:
                     (self.store.owner, run_id, status),
                 ).rowcount:
                     value = result.get("result", {}) if result else {}
-                    if status == "succeeded":
+                    silent = quiet(
+                        conn, self.store.owner, run_id, value.get("final_response", "")
+                    )
+                    if status == "succeeded" and not silent:
                         self.append(
                             conn,
                             run_id,
@@ -191,10 +200,10 @@ class Reliability:
                                     self.store.owner + ":" + run_id + ":agent",
                                 )
                             )
-                            if status == "succeeded"
+                            if status == "succeeded" and not silent
                             else None,
                             "text": value.get("final_response", "")
-                            if status == "succeeded"
+                            if status == "succeeded" and not silent
                             else "",
                         },
                     )
@@ -211,6 +220,10 @@ class Reliability:
         def write(conn):
             row = self.check(conn, stamp)
             if row is None:
+                return
+            # Background deltas are not notification commits. Publish their final
+            # response only after the native terminal receipt decides quiet/delivery.
+            if kind == "message.delta" and background(conn, self.store.owner, row[0]):
                 return
             fields = {
                 key: payload[key]
@@ -381,6 +394,8 @@ class Reliability:
         ).fetchone()
         value = load_result(value[0]).get("result", {}) if value else {}
         text = value.get("final_response", "") if status == "succeeded" else ""
+        if quiet(conn, self.store.owner, run_id, text):
+            text = ""
         if status == "running":
             deltas = conn.execute(
                 "SELECT e.payload FROM nma_events e JOIN nma_run_events r ON r.owner_id=e.owner_id AND r.sequence=e.sequence WHERE r.owner_id=? AND r.run_id=? ORDER BY r.sequence",
@@ -462,10 +477,33 @@ class Reliability:
         return self.store.write(read)
 
     def tool(self, stamp, name, args, ids, invoke):
+        if name == "computer":
+            from ngertiin_engine.computer import dispatch_lock
+
+            with dispatch_lock:
+                return self._tool(stamp, name, args, ids, invoke)
+        return self._tool(stamp, name, args, ids, invoke)
+
+    def _tool(self, stamp, name, args, ids, invoke):
         from ngertiin_engine.goals import TOOL, Goals
 
+        if name == "workspace":
+            from ngertiin_engine.artifacts import Artifacts
+
+            return Artifacts(self.store).tool(stamp, args, ids)
         if name == TOOL:
             return Goals(self.store).tool(stamp, args, ids)
+        if name == "computer":
+            from ngertiin_engine.computer import Computer
+
+            def invoke():
+                try:
+                    return Computer(self.store).invoke(stamp, args, ids)
+                except EngineError as exc:
+                    if exc.code in {"INDETERMINATE", "AUTHORITY_LOST"}:
+                        raise
+                    return canonical({"error": exc.code})
+
         operation_id = digest([ids.turn_id, ids.tool_call_id, name])
         intent = digest([name, args])
 

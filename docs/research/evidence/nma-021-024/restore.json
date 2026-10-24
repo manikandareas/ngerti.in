@@ -1,0 +1,11 @@
+{
+  "scope": "Disposable E2B filesystem restore and private ingress, not RAM/CDP persistence",
+  "private_ingress": true,
+  "paused_state": "paused",
+  "filesystem_restored": true,
+  "same_resource": true,
+  "cleanup": {
+    "deleted": true
+  },
+  "resource_absent": true
+}

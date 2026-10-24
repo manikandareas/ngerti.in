@@ -45,7 +45,8 @@
     "gateway/hosted_room_discussion.py": "7f9b9c3378dd17e806880224f6ea8c93d12e3a74d879969182922efeefc5e45b",
     "gateway/hosted_room_driver.py": "e1a2c1dc06ebb27fe379e3c5dc6c9364d9848f926af17c6ddf629df49cb39fa9",
     "gateway/hosted_room_task_input.py": "0b474b70e29043850acc4428ef280c4f28e5fd98a231102c7e34828341a37ca6",
-    "gateway/hosted_rooms_common.py": "6d4b880834e68e8eb9a9b58f75a0abda22da4181028397639413036919ccfbaf"
+    "gateway/hosted_rooms_common.py": "6d4b880834e68e8eb9a9b58f75a0abda22da4181028397639413036919ccfbaf",
+    "gateway/response_filters.py": "c229a2aae6f57be1e75e40df9a2274f46fa7f3c77e1edbaea95b6cba9d280aef"
   },
   "source_patches": [],
   "integration_seams": [

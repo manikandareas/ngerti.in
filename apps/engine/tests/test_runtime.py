@@ -145,6 +145,8 @@ class Model(BaseHTTPRequestHandler):
                         ],
                     }
                 )
+                + "\n\ndata: "
+                + json.dumps({"id": "local", "choices": [], "usage": response["usage"]})
                 + "\n\ndata: [DONE]\n\n"
             ).encode()
             content_type = "text/event-stream"
@@ -248,6 +250,7 @@ def runtime(tmp_path_factory):
         "NMA_SERVICE_KEY_FILE": str(root / "key"),
         "NMA_BINDINGS_FILE": str(root / "bindings.json"),
         "NMA_WEBHOOK_ROUTES_FILE": str(root / "webhooks.json"),
+        "NMA_COMPUTER_COMMAND": os.environ.get("NMA_TEST_COMPUTER_COMMAND", "[]"),
     }
     if os.environ.get("NMA_TEST_LIVE_ENV"):
         from dotenv import dotenv_values
@@ -624,6 +627,10 @@ def test_agent_additive_migration_from_foundation(runtime):
     with sqlite3.connect(root / "state/state.db") as db:
         before = db.execute("SELECT count(*) FROM nma_commands").fetchone()[0]
         for table in (
+            "nma_computers",
+            "nma_artifact_grants",
+            "nma_artifacts",
+            "nma_workspace_operations",
             "nma_discussion_goals",
             "nma_discussion_turns",
             "nma_discussions",
@@ -663,7 +670,7 @@ def test_agent_additive_migration_from_foundation(runtime):
     )
     with sqlite3.connect(root / "state/state.db") as db:
         assert (
-            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 11
+            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 12
         )
         assert db.execute("SELECT count(*) FROM nma_commands").fetchone()[0] == before
         assert db.execute("PRAGMA foreign_key_check").fetchall() == []

@@ -73,7 +73,9 @@ def resolve(config):
                     from toolsets import validate_toolset
 
                     name = entry["toolset"]
-                    if not validate_toolset(name) or name not in {"todo"}:
+                    if name not in {"nma_workspace", "nma_computer"} and (
+                        not validate_toolset(name) or name not in {"todo"}
+                    ):
                         raise ValueError
                     toolsets.append(name)
                     identity = {"toolset": name}

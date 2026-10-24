@@ -57,7 +57,7 @@ def main():
                     (owner,),
                 ).fetchone()
                 if (
-                    version not in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)
+                    version not in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
                     or not checksum
                     or checksum[0] != CHECKSUM
                 ):
@@ -130,6 +130,15 @@ def main():
     from ngertiin_engine.goals import install as install_goals
 
     install_goals()
+    from ngertiin_engine.artifacts import install as install_artifacts
+
+    install_artifacts()
+    from ngertiin_engine.computer import install as install_computer
+
+    install_computer()
+    from ngertiin_engine.diagnostics import install_usage
+
+    install_usage()
     from gateway import run
     from gateway.session_authorities import active_authority
 
@@ -323,6 +332,10 @@ def main():
                             ]
                         )
                     )
+                if continuation or discussion:
+                    from ngertiin_engine.delivery import PROMPT as DELIVERY_PROMPT
+
+                    context_prompt += "\n" + DELIVERY_PROMPT
             return await super()._run_agent(
                 message, context_prompt, history, source, session_id, **kwargs
             )

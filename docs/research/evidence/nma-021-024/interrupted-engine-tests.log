@@ -1,0 +1,148 @@
+F.......s
+=================================== FAILURES ===================================
+__________ test_artifact_publish_download_scope_share_revoke_restart ___________
+
+runtime = (PosixPath('/tmp/nma-wv_skh4m'), <http.server.ThreadingHTTPServer object at 0x10b72bb60>, <function runtime.<locals>.c... 'runtime.events', 'runtime.snapshot', 'run.diagnostics', ...], 'production_ready': False, 'schema_version': 'nma.v1'})
+public_api = <function public_api.<locals>.request at 0x10b954a90>
+
+    def test_artifact_publish_download_scope_share_revoke_restart(runtime, public_api):
+        root, provider, call, start, *_ = runtime
+        (root / "capabilities.json").write_text(
+            json.dumps(
+                {"tool_grants": {"files": {"enabled": True, "toolset": "nma_workspace"}}}
+            )
+        )
+        writer = capability_agent(call, "file-writer", tool_grants=["files"])
+        reviewer = capability_agent(call, "file-reviewer", tool_grants=["files"])
+        private = call(
+            command(
+                "thread.create",
+                {"kind": "dm", "title": "Private", "agent_ids": [writer["agent_id"]]},
+            )
+        )["result"]["thread"]
+        group = call(
+            command(
+                "thread.create",
+                {
+                    "kind": "group",
+                    "title": "Shared",
+                    "agent_ids": [writer["agent_id"], reviewer["agent_id"]],
+                },
+            )
+        )["result"]["thread"]
+    
+        def scripted(body, text):
+            if body["messages"][-1]["role"] == "tool":
+                return {"role": "assistant", "content": body["messages"][-1]["content"]}
+            if text.startswith("FILE:"):
+                return {
+                    "role": "assistant",
+                    "content": None,
+                    "tool_calls": [
+                        {
+                            "id": "file-operation",
+                            "type": "function",
+                            "function": {
+                                "name": "workspace",
+                                "arguments": text.split(":", 1)[1],
+                            },
+                        }
+                    ],
+                }
+            return None
+    
+        provider.goal_script = scripted
+        try:
+            body = send(
+                private,
+                "FILE:"
+                + json.dumps(
+                    {
+                        "action": "publish",
+                        "filename": "report.md",
+                        "content": "PRIVATE_FILE_CANARY\nA verified report.",
+                    }
+                ),
+            )
+            receipt = call(body)["result"]
+            settle(call, receipt["run_id"])
+            snap = snapshot(call, private)
+            assert len(snap["artifacts"]) == 1, snap
+            artifact = snap["artifacts"][0]
+            assert artifact["producing_run_id"] == receipt["run_id"]
+            assert artifact["producing_agent_id"] == writer["agent_id"]
+            path = f"/artifacts/{artifact['artifact_id']}/revisions/{artifact['revision_id']}/download"
+            response = public_api(path)
+            assert response.read() == b"PRIVATE_FILE_CANARY\nA verified report."
+            assert response.headers["X-Content-Type-Options"] == "nosniff"
+            assert snapshot(call, group)["artifacts"] == []
+            outsider = command("artifact.read", {"artifact_id": artifact["artifact_id"]})
+>           assert (
+                call(outsider, envelope=sign(outsider, str(uuid4()), KEY))["error"]["code"]
+                == "UNAUTHENTICATED"
+            )
+E           AssertionError: assert 'NOT_FOUND' == 'UNAUTHENTICATED'
+E             
+E             - UNAUTHENTICATED
+E             + NOT_FOUND
+
+apps/engine/tests/test_artifacts.py:85: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+----------------------------- Captured stderr call -----------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 56680)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_artifacts.py", line 40, in scripted
+    if body["messages"][-1]["role"] == "tool":
+       ~~~~^^^^^^^^^^^^
+KeyError: 'messages'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 56682)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_artifacts.py", line 40, in scripted
+    if body["messages"][-1]["role"] == "tool":
+       ~~~~^^^^^^^^^^^^
+KeyError: 'messages'
+----------------------------------------
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_artifacts.py::test_artifact_publish_download_scope_share_revoke_restart
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! KeyboardInterrupt !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py:296: KeyboardInterrupt
+(to show a full traceback on KeyboardInterrupt use --full-trace)
+1 failed, 7 passed, 1 skipped in 40.93s

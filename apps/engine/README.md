@@ -21,6 +21,10 @@ uv run --python 3.14.9 python apps/engine/build_runtime.py --source .dev/nma-001
 
 Restart `make dev` after `.env` changes. Production uses explicit isolated partition provisioning below.
 
+The local capability catalog includes Task list (`todo`), Files, and Browser when E2B is configured.
+Assign these capabilities in the agent editor; catalog availability does not silently change an
+existing agent's grants. MCP connections and instruction skills require an operator-provided catalog.
+
 ## Provision one account partition
 
 Server-controlled environment:

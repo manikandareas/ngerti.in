@@ -119,6 +119,11 @@ def prepare():
                 home / "capabilities.json",
                 {
                     "tool_grants": {
+                        "tasks": {
+                            "enabled": True,
+                            "label": "Task list",
+                            "toolset": "todo",
+                        },
                         "files": {
                             "enabled": True,
                             "label": "Files",

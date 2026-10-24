@@ -1,0 +1,117 @@
+{
+  "date": "2026-10-24",
+  "baseline_commit": "6987d17e2fa7c2d46d42f242310effe67b4086c6",
+  "status": "verified",
+  "commands": [
+    "HERMES_SOURCE=$PWD/.dev/nma-001/source PYTHONPATH=$PWD/apps/engine/src NMA_TEST_RUNTIME_PYTHON=$PWD/.dev/nma-006-closure/production/bin/python .dev/nma-006-closure/runtime/bin/python -m pytest apps/engine/tests -q -x",
+    "uv run --project apps/backend python -m unittest discover -s apps/backend/tests -p test_agent_engine.py",
+    "make check",
+    "uv build apps/engine --out-dir /tmp/nma-016-017-dist",
+    "uv run --project apps/backend ruff check apps/engine apps/backend/src/ngertiin/agent_engine/api.py",
+    "make docs-check",
+    "git diff --check",
+    "HERMES_SOURCE=$PWD/.dev/nma-001/source PYTHONPATH=$PWD/apps/engine/src NMA_TEST_RUNTIME_PYTHON=$PWD/.dev/nma-006-closure/production/bin/python .dev/nma-006-closure/runtime/bin/python -m pytest apps/engine/tests/test_membership.py -q -x",
+    "HERMES_SOURCE=$PWD/.dev/nma-001/source PYTHONPATH=$PWD/apps/engine/src NMA_TEST_RUNTIME_PYTHON=$PWD/.dev/nma-006-closure/production/bin/python .dev/nma-006-closure/runtime/bin/python -m pytest apps/engine/tests/test_membership.py -k terminal_result -q -x"
+  ],
+  "nakama_reference": {
+    "revision": "ac0643f8196fdf9133e66f5a13eef86103c45d0c",
+    "file": "apps/server/src/services/agent-group-store.ts",
+    "sha256": "43bea68f006be9c3000b982ded73d442615b03d8a066e32ad97ad5afd1a663f2",
+    "adopted_code": false
+  },
+  "source_sha256": {
+    "apps/engine/src/ngertiin_engine/redaction.py": "a6cab4afc0cc6389ad20f1ca77428681a816ea06c59938dfb12bd412782abc6e",
+    "apps/engine/src/ngertiin_engine/store.py": "eddccbe17143655574436e2be26f319d1beb099361886db57a2875b0455b56ba",
+    "apps/engine/src/ngertiin_engine/goal_lifecycle.py": "683b97a3f01b9eb329652adb750409868257d9207ba025b793c091afec6a3c70",
+    "apps/engine/src/ngertiin_engine/service.py": "7f74ae1df6a79b5bb19a7c4e058388b25c0a13d366866d8bf0e3481c7534bde5",
+    "apps/engine/src/ngertiin_engine/reliability.py": "31a933923c0dd39b6e2d67aa8fe7c1a958ab16d1b845345f3417b46fcc2ac6bf",
+    "apps/engine/src/ngertiin_engine/transcript.py": "99b405b2f09678522119cf49c676e65fb0785f17df080d44a460772119555085",
+    "apps/engine/src/ngertiin_engine/goals.py": "567a19e9afcc7cc0bfea46e3485ddaaf0e53a529ef52b4d9629de03a1eedcb3b",
+    "apps/engine/src/ngertiin_engine/wakes.py": "81090cb9d8f25ef9f29762b8cb4196984b2c33c26828ba484b5426b6d2495ebb",
+    "apps/engine/src/ngertiin_engine/adapter.py": "de2c55cbe32e2dbf178239e9e6b8b389268a67db9dc26e92314873d1704102eb",
+    "apps/engine/src/ngertiin_engine/__init__.py": "4064e84d1acb1ffa1e8097c5af6566b57929ce94cb0c67c80b64945dec02770f",
+    "apps/engine/src/ngertiin_engine/runtime.py": "fa3cca5ac70ea64a65706bd63bfe6f9e4cff2b7947598bc2c152d0f535cdacab",
+    "apps/engine/src/ngertiin_engine/agents.py": "9164b8057694a3fc9ca0aab5f0aeb3164351e99639241a2e9cf75cacfd8a6355",
+    "apps/engine/src/ngertiin_engine/threads.py": "2962fe1cfc608a667d8e7b0f70f8ae7103aea25bd16fa07ad4b91a601d146b2c",
+    "apps/engine/src/ngertiin_engine/context.py": "b28b3518721aab0d93c7a3024c64fddec747431fcd20d0f0b1b7e237e15f9a74",
+    "apps/engine/src/ngertiin_engine/capabilities.py": "093c0264bf5de56ece9381f3f5268e2261ab6da03bcd40cfe335c71e271f5ed3",
+    "apps/engine/src/ngertiin_engine/goal_commands.py": "d4120eac47b8ee5f9c61e23d1e20d460dedc358a0a4498214a69c53d3ee50ea8",
+    "apps/engine/src/ngertiin_engine/direct_messages.py": "a82678790dc322a2307ff02d8a0acde2e93fcccfb19d0b3191cdb5b26fb2b632",
+    "apps/engine/src/ngertiin_engine/runtime-pin.json": "a0361f154e370b618ee1afedd020b6c2e99463122db4ad16caa33871074e37e9",
+    "apps/engine/src/ngertiin_engine/contracts.py": "3843a4a96fd0f49192d5976bdd44d56bec80fadf58a870fab9143ada61ef548a",
+    "apps/engine/src/ngertiin_engine/webhooks.py": "8f56ff77799192dbbc5adf3ddef94668f96999b513afca977a697c842caec81d",
+    "apps/engine/src/ngertiin_engine/goal_continuation.py": "3a9d635eb638cfb10e517b8c798c96bf1da1738e4b2409f2f28822651b87e79e",
+    "apps/backend/src/ngertiin/agent_engine/api.py": "7c3c5d47fc52ae0c049636a30d06c68bba36a84be3f50bdf63059032b59ba174",
+    "apps/engine/tests/mcp_fixture.py": "183234d70e9f02bbf2ecef163ba6bc499ebb90efc638974840c2651a7a8b1b2d",
+    "apps/engine/tests/test_direct_messages.py": "10ebb5665b3ccc78fc5ec50428fd16e6e5bee0768bf97346f1d29edf7e020d67",
+    "apps/engine/tests/test_wakes_live.py": "5d37fbd975534aff524636ee2cbc1dd33f4525c82230760d87ecbb6c80368d57",
+    "apps/engine/tests/test_membership.py": "232e8c8d943982d3086c41971dbb2d1350a4868f12f974bab2e7cd20be1dad78",
+    "apps/engine/tests/test_capabilities.py": "3f69b7d0f9a277e8151b999a323fa6cc862e9321801cdab77e56518dd9dd2f0f",
+    "apps/engine/tests/test_runtime.py": "9d9a2613bd32c9cd15e10be287f4c6637848c19e094c9e75205ca4fc3b2b9bdb",
+    "apps/engine/tests/test_goal_lifecycle_live.py": "39de62e9d7c8b702a8adddcb78056f21a747f89cf2dbd624e510c3b975ceaae1",
+    "apps/engine/tests/test_reliability.py": "259d2176bd23593c5cedc83eaf50547fe073f5e0725272e105e705786f13538b",
+    "apps/engine/tests/test_goals_live.py": "01eead6feb7767478d330e0f894bda27b78bdac3c9e2240f77ba529a126a5701",
+    "apps/engine/tests/test_webhooks.py": "dd93180bd10c324d3170ce70ae72d53c1612c8782b6694c6435e03b5383403f6",
+    "apps/engine/tests/test_threads.py": "71512fd644b2cb46a97d013c4a38d8c1ce11f9c1140c2287dd1cae6903dd1c53",
+    "apps/engine/tests/test_context.py": "97d29058e0d0d63fc2d1afa430023c7802a0b526244f87190f15a32a29cad7dc",
+    "apps/engine/tests/test_wakes_browser.py": "64b83ce9a0f71c5d15b72eb0a43216c69adb63d4fb9464e483386a14b06eafcf",
+    "apps/engine/tests/test_goals.py": "60276938f4a9b94fd194768d875890006ea2965cabf3bca720ccf03596906998",
+    "apps/engine/tests/test_wakes.py": "90e93e164fd3870f75b4bbabc75a61ee7661981bb579b884dc4225d34b21d5c8",
+    "apps/engine/tests/test_goal_lifecycle.py": "67064f88815fc13836e740d2746e3ca0b30fea7f76473c1bfc66658c7209eee6",
+    "apps/engine/tests/fault_launcher.py": "3ee42e06cea66cc1d9d9fe096a0682554885f74281adaeb435e62f5e7967d4b6"
+  },
+  "evidence_sha256": {
+    "backend-tests.log": "32adb1cd28c4970ad72cade5be3889162ee436e7ce3b28749759542b4e269c7b",
+    "build.log": "6c83dcbcea08d5368faa4aa4b8f978ad7267be0abcc1f083dceab05f5bf13029",
+    "check.log": "76f04c18bb207ed78d62270deb79dab862e9c6a7aa79cc6489216a1e53f61289",
+    "diff-check.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs-check.log": "78acb3db4bdd53a25bb98668620164d97deb7ab860b927897064b773f86c850c",
+    "engine-lint.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "engine-regression.log": "7667687aacce5e5182024aed229d6b80af56c487a515604519c062133276f89e",
+    "fault-harness-initial-failure.log": "8cdf27b4208ec46b25e77642a3ebaff10ef5459b12c5c5083a0fb2e69cccf8a6",
+    "focused-tests.log": "98c0fb79c08dfc863ed72e854227a5c6685693c1c7240e8d66c1618ffb4d5313",
+    "format.log": "85d14254773cfdca3a1e4ad74b622614440354ff0acddef68ae9285b86d73891",
+    "initial-focused-tests.log": "4cbab1478cf7f22a3c23b2660e516c93c1230dc5cdae80ddb8d7473134cc7fa8",
+    "interrupted-regression.log": "ab7ec0cf3392016c945f43b7088be9734d3b0f2e7a13b9f2eda8858755f0f940",
+    "late-publication.log": "f1c2c7686378007a5ce7f0fa447f7bd68b69e05e2fac7465f4ac3bb2e982f4e3",
+    "membership-final.log": "2c4009273cc2b925321b17753ff132e8232b9dc1098852cce75840b649c56378",
+    "migration-preservation.json": "8d16ea15c15f0333f83fa0eab9198c3cfce78106f17a7b92c3cecca9ca8c74fe",
+    "package-equality.json": "cd38ca301dd1cff66e04d1869f657e60727555f2020fdd754d2cec83161820e1",
+    "schema-assertion-initial-failure.log": "8db7ec68237aa98caaa6df998861157a3b02634bedc3ed151b41d2de588ade19"
+  },
+  "results": {
+    "engine_regression": {
+      "passed": 94,
+      "skipped": 4,
+      "seconds": 383.38
+    },
+    "membership_final": {
+      "passed": 3,
+      "seconds": 6.59
+    },
+    "late_publication": {
+      "passed": 1,
+      "seconds": 7.11
+    },
+    "focused": {
+      "passed": 10,
+      "seconds": 60.07
+    },
+    "backend_http": {
+      "passed": 9
+    },
+    "checks": [
+      "make check",
+      "engine Ruff and format",
+      "wheel and sdist build",
+      "package source equality",
+      "docs-check",
+      "diff-check"
+    ],
+    "review": "author self-review; no independent review"
+  },
+  "notion": {
+    "NMA-016": "Done; checked acceptance and verification read back",
+    "NMA-017": "Done; checked acceptance and verification read back"
+  }
+}

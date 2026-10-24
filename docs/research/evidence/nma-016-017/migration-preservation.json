@@ -1,0 +1,56 @@
+[
+  {
+    "migration": 1,
+    "file": "apps/engine/src/ngertiin_engine/store.py",
+    "unchanged": true,
+    "sha256": "0df57c8675497afef95399e9ba4b43d97fb9ae25cb7d21c0da488183b9a9a7e8"
+  },
+  {
+    "migration": 2,
+    "file": "apps/engine/src/ngertiin_engine/agents.py",
+    "unchanged": true,
+    "sha256": "0113bde48c072c1763990b1e267396f4f22d77df6aa304cc4016e748802c0c09"
+  },
+  {
+    "migration": 3,
+    "file": "apps/engine/src/ngertiin_engine/threads.py",
+    "unchanged": true,
+    "sha256": "b8a03d54415b5b1a49cb771dbe4e227a4cf7ea0dd476f073b4e301a4b58511b7"
+  },
+  {
+    "migration": 4,
+    "file": "apps/engine/src/ngertiin_engine/context.py",
+    "unchanged": true,
+    "sha256": "94cdb83ea586f35f491e0ce2f573d88966cc4d2a219fc8fc2bd871e71c54c031"
+  },
+  {
+    "migration": 5,
+    "file": "apps/engine/src/ngertiin_engine/reliability.py",
+    "unchanged": true,
+    "sha256": "c6ae2a8a83327183a1339a189fb94ddddf20590c6b68420816f9f0789fb8637c"
+  },
+  {
+    "migration": 6,
+    "file": "apps/engine/src/ngertiin_engine/direct_messages.py",
+    "unchanged": true,
+    "sha256": "d705ca7b7daacbd1e7e4f90c315aef4adc09633eff7f46ffa31d3ddb25409816"
+  },
+  {
+    "migration": 7,
+    "file": "apps/engine/src/ngertiin_engine/goals.py",
+    "unchanged": true,
+    "sha256": "abb0c84152d1efe524821a449923b49d5d42241965adf94c8bf4da8ea412d1c8"
+  },
+  {
+    "migration": 8,
+    "file": "apps/engine/src/ngertiin_engine/goal_lifecycle.py",
+    "unchanged": true,
+    "sha256": "4cc31904faa6fe9b7a6f41de8f044529ac422146b57ba516b578ce990bb850dc"
+  },
+  {
+    "migration": 9,
+    "file": "apps/engine/src/ngertiin_engine/wakes.py",
+    "unchanged": true,
+    "sha256": "95d49a9bb07ef8fbc7c26eac13f770e6e8666c55b228cabd8955e84434c0da18"
+  }
+]

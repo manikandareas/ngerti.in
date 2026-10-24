@@ -1,0 +1,34 @@
+...F
+=================================== FAILURES ===================================
+_____________ test_webhook_crash_boundaries[after_webhook_commit] ______________
+
+runtime = (PosixPath('/tmp/nma-oa3uiy8k'), <http.server.ThreadingHTTPServer object at 0x10b135be0>, <function runtime.<locals>.c...cancel', 'runtime.read', 'runtime.events', 'runtime.snapshot'], 'production_ready': False, 'schema_version': 'nma.v1'})
+fault = 'after_webhook_commit'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "before_webhook_commit",
+            "after_webhook_commit",
+            "before_continuation_commit",
+            "after_continuation_commit",
+            "after_goal_admission",
+        ],
+    )
+    def test_webhook_crash_boundaries(runtime, fault):
+        root, provider, call, start, *_ = runtime
+        thread, goal = setup(root, call, provider, "hook-" + fault.replace("_", "-")[:40])
+        first = event()
+        start.current.kill()
+        start.current.wait(timeout=10)
+        start(fault)
+        if fault in {"before_webhook_commit", "after_webhook_commit"}:
+>           with pytest.raises((ValueError, OSError)):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE any of (ValueError, OSError)
+
+apps/engine/tests/test_webhooks.py:132: Failed
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_webhooks.py::test_webhook_crash_boundaries[after_webhook_commit]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 3 passed in 25.90s

@@ -13,7 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AgentsRouteImport } from './routes/agents'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as SignUpRouteImport } from './routes/sign-up'
-import { Route as DmThreadIdRouteImport } from './routes/dm.$threadId'
+import { Route as ConversationsThreadIdRouteImport } from './routes/conversations.$threadId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -35,9 +35,9 @@ const SignUpRoute = SignUpRouteImport.update({
   path: '/sign-up',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DmThreadIdRoute = DmThreadIdRouteImport.update({
-  id: '/dm/$threadId',
-  path: '/dm/$threadId',
+const ConversationsThreadIdRoute = ConversationsThreadIdRouteImport.update({
+  id: '/conversations/$threadId',
+  path: '/conversations/$threadId',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -46,14 +46,14 @@ export interface FileRoutesByFullPath {
   '/agents': typeof AgentsRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
-  '/dm/$threadId': typeof DmThreadIdRoute
+  '/conversations/$threadId': typeof ConversationsThreadIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/agents': typeof AgentsRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
-  '/dm/$threadId': typeof DmThreadIdRoute
+  '/conversations/$threadId': typeof ConversationsThreadIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -61,14 +61,21 @@ export interface FileRoutesById {
   '/agents': typeof AgentsRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
-  '/dm/$threadId': typeof DmThreadIdRoute
+  '/conversations/$threadId': typeof ConversationsThreadIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/agents' | '/sign-in' | '/sign-up' | '/dm/$threadId'
+  fullPaths:
+    '/' | '/agents' | '/sign-in' | '/sign-up' | '/conversations/$threadId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/agents' | '/sign-in' | '/sign-up' | '/dm/$threadId'
-  id: '__root__' | '/' | '/agents' | '/sign-in' | '/sign-up' | '/dm/$threadId'
+  to: '/' | '/agents' | '/sign-in' | '/sign-up' | '/conversations/$threadId'
+  id:
+    | '__root__'
+    | '/'
+    | '/agents'
+    | '/sign-in'
+    | '/sign-up'
+    | '/conversations/$threadId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -76,7 +83,7 @@ export interface RootRouteChildren {
   AgentsRoute: typeof AgentsRoute
   SignInRoute: typeof SignInRoute
   SignUpRoute: typeof SignUpRoute
-  DmThreadIdRoute: typeof DmThreadIdRoute
+  ConversationsThreadIdRoute: typeof ConversationsThreadIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -109,11 +116,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignUpRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dm/$threadId': {
-      id: '/dm/$threadId'
-      path: '/dm/$threadId'
-      fullPath: '/dm/$threadId'
-      preLoaderRoute: typeof DmThreadIdRouteImport
+    '/conversations/$threadId': {
+      id: '/conversations/$threadId'
+      path: '/conversations/$threadId'
+      fullPath: '/conversations/$threadId'
+      preLoaderRoute: typeof ConversationsThreadIdRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -124,7 +131,7 @@ const rootRouteChildren: RootRouteChildren = {
   AgentsRoute: AgentsRoute,
   SignInRoute: SignInRoute,
   SignUpRoute: SignUpRoute,
-  DmThreadIdRoute: DmThreadIdRoute,
+  ConversationsThreadIdRoute: ConversationsThreadIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -79,7 +79,7 @@ export function AgentsPage() {
         const result = await submit<{ thread: Thread }>(body, token);
         id = result.thread.thread_id;
       }
-      await navigate({ to: "/dm/$threadId", params: { threadId: id } });
+      await navigate({ to: "/conversations/$threadId", params: { threadId: id } });
     } catch {
       setError("DM belum dapat dibuka. Coba buka kembali.");
     } finally {

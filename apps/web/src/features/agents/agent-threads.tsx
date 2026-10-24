@@ -88,7 +88,10 @@ export function AgentThreads({ agents, edit }: { agents: Agent[]; edit: (agent: 
       pending.current = null;
       setCreating(false);
       await load();
-      await navigate({ to: "/dm/$threadId", params: { threadId: result.thread.thread_id } });
+      await navigate({
+        to: "/conversations/$threadId",
+        params: { threadId: result.thread.thread_id },
+      });
     } catch (e) {
       setError(e instanceof Error ? e.message : "Belum dapat disimpan. Coba kembali.");
     } finally {
@@ -134,7 +137,7 @@ export function AgentThreads({ agents, edit }: { agents: Agent[]; edit: (agent: 
               variant="outline"
               className="h-auto min-h-12 justify-start whitespace-normal p-4 text-left"
             >
-              <Link to="/dm/$threadId" params={{ threadId: thread.thread_id }}>
+              <Link to="/conversations/$threadId" params={{ threadId: thread.thread_id }}>
                 DM · {thread.title}
               </Link>
             </Button>
@@ -145,7 +148,10 @@ export function AgentThreads({ agents, edit }: { agents: Agent[]; edit: (agent: 
               className="h-auto justify-start whitespace-normal p-4 text-left"
               onClick={() => {
                 setError("");
-                void navigate({ to: "/dm/$threadId", params: { threadId: thread.thread_id } });
+                void navigate({
+                  to: "/conversations/$threadId",
+                  params: { threadId: thread.thread_id },
+                });
               }}
             >
               Grup · {thread.title}

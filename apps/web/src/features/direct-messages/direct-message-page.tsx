@@ -83,7 +83,7 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
           {threads.map((thread) => (
             <Link
               key={thread.thread_id}
-              to="/dm/$threadId"
+              to="/conversations/$threadId"
               params={{ threadId: thread.thread_id }}
               aria-current={thread.thread_id === threadId ? "page" : undefined}
               className={`flex min-h-12 items-center gap-3 rounded-lg px-3 py-3 text-sm hover:bg-muted ${thread.thread_id === threadId ? "bg-secondary font-semibold" : ""}`}

@@ -6,6 +6,9 @@ The multi-agent engine is the only execution path. Hermes owns admission, sessio
 
 Product decisions and acceptance are maintained in [Ngertiin Multi Agent](https://app.notion.com/p/402abdd6187381e3a720f4b01d824e1a) and its [backlog](https://app.notion.com/p/116e1edcee864b5da91887466d728aac).
 
+The product opens on `/agents`. Both private and group conversations use
+`/conversations/<threadId>`; see the [active web routes](apps/web/README.md#route-aplikasi).
+
 ## Development
 
 1. Copy `.env.example` to `.env` and configure Clerk and PostgreSQL.

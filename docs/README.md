@@ -1,3 +1,5 @@
+> Historical V1 mirror. Current product and implementation: [Ngertiin Multi Agent](https://app.notion.com/p/402abdd6187381e3a720f4b01d824e1a) and [repository guide](../README.md). The retired runtime is not available as a mode. Content below is preserved evidence.
+
 # Ngertiin
 
 > Pembaruan 22 Oktober 2026: runtime aktif hanya E2B. Kode, resource dan data Daytona telah dihapus. Keterangan provider lama di bawah adalah konteks historis, bukan instruksi operasi saat ini. Lihat [pembersihan provider](engineering/e2b-only-cleanup.md).

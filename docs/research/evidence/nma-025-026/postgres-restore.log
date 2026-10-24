@@ -1,0 +1,19 @@
+{
+  "disposable": true,
+  "counts": {
+    "accounts": 2,
+    "agent_profiles": 1,
+    "chat_threads": 1,
+    "chat_messages": 1,
+    "user_goals": 1,
+    "product_files": 1,
+    "file_revisions": 1
+  },
+  "exact_row_equality": true,
+  "api_restore_quarantine_and_release": true,
+  "other_owner_history_count": 0,
+  "paused_goal_preserved": true,
+  "dump_sha256": "85675f88b05abb73ef700905e913c1ff7b812b9d5427eb6e8d84f04a573c8688",
+  "default_agent_command_id": "9b94d795-f3ed-51fc-9c0d-1b7c87d9b4ca",
+  "object_bytes": "External object backup remains an operator obligation; only preserved metadata is exercised here."
+}

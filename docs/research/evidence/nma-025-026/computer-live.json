@@ -1,0 +1,1207 @@
+{
+  "observation": {
+    "actions": [
+      {
+        "delta": 560,
+        "id": "scroll_down",
+        "kind": "scroll",
+        "label": "Scroll down"
+      },
+      {
+        "id": "wait",
+        "kind": "wait",
+        "label": "Wait for the page to update"
+      }
+    ],
+    "document": "92f30efe3796cdd7a3ac5444fa65095b4106136e28b20b31cd9e3dd8fc697ea4",
+    "omitted_actions": 0,
+    "scroll": {
+      "height": 752,
+      "y": 0
+    },
+    "target_id": "0212CE71A5C31E4CE9D3C3E5F2865D52",
+    "text": "This domain is for use in documentation examples without needing permission. This is not a service; avoid relying on it for testing and monitoring purposes.\n\u0647\u0630\u0627 \u0627\u0644\u0646\u0637\u0627\u0642 \u0645\u064f\u062e\u0635\u0635 \u0644\u0644\u0627\u0633\u062a\u062e\u062f\u0627\u0645 \u0641\u064a \u0623\u0645\u062b\u0644\u0629 \u0627\u0644\u062a\u0648\u062b\u064a\u0642 \u062f\u0648\u0646 \u0627\u0644\u062d\u0627\u062c\u0629 \u0625\u0644\u0649 \u0625\u0630\u0646. \u0647\u0630\u0647 \u0644\u064a\u0633\u062a \u062e\u062f\u0645\u0629\u060c \u064a\u064f\u0631\u062c\u0649 \u062a\u062c\u0646\u0628 \u0627\u0644\u0627\u0639\u062a\u0645\u0627\u062f \u0639\u0644\u064a\u0647\u0627 \u0644\u0623\u063a\u0631\u0627\u0636 \u0627\u0644\u0627\u062e\u062a\u0628\u0627\u0631 \u0648\u0627\u0644\u0645\u0631\u0627\u0642\u0628\u0629.\n\u8be5\u57df\u540d\u4ec5\u7528\u4e8e\u6587\u6863\u793a\u4f8b\uff0c\u65e0\u9700\u83b7\u5f97\u8bb8\u53ef\u3002\u8fd9\u5e76\u975e\u4e00\u9879\u670d\u52a1\uff0c\u8bf7\u52ff\u5c06\u5176\u7528\u4e8e\u6d4b\u8bd5\u548c\u76d1\u63a7\u76ee\u7684\u3002\nL\u2019usage de ce domaine est r\u00e9serv\u00e9 \u00e0 des exemples de documentation, sans autorisation pr\u00e9alable.  Il ne s\u2019agit pas d\u2019un service ; son utilisation \u00e0 des fins de test ou de surveillance est \u00e0 \u00e9viter.\n\u0414\u0430\u043d\u043d\u044b\u0439 \u0434\u043e\u043c\u0435\u043d \u043f\u0440\u0435\u0434\u043d\u0430\u0437\u043d\u0430\u0447\u0435\u043d \u0434\u043b\u044f \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043d\u0438\u044f \u0432 \u043f\u0440\u0438\u043c\u0435\u0440\u0430\u0445 \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u0446\u0438\u0438 \u0431\u0435\u0437 \u043d\u0435\u043e\u0431\u0445\u043e\u0434\u0438\u043c\u043e\u0441\u0442\u0438 \u043f\u043e\u043b\u0443\u0447\u0435\u043d\u0438\u044f \u043f\u0440\u0435\u0434\u0432\u0430\u0440\u0438\u0442\u0435\u043b\u044c\u043d\u043e\u0433\u043e \u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043d\u0438\u044f. \u042d\u0442\u043e \u043d\u0435 \u0441\u0435\u0440\u0432\u0438\u0441; \u043d\u0435 \u0440\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u0443\u0435\u0442\u0441\u044f \u0435\u0433\u043e \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043d\u0438\u0435 \u0434\u043b\u044f \u0442\u0435\u0441\u0442\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u044f \u0438 \u043c\u043e\u043d\u0438\u0442\u043e\u0440\u0438\u043d\u0433\u0430.",
+    "title": "Example Domain",
+    "url": "https://example.com/"
+  },
+  "artifact": {
+    "artifact_id": "a693f8a9-b387-5c0f-af4d-d596e1b371b4",
+    "byte_count": 52,
+    "filename": "browser-report.md",
+    "media_type": "text/plain; charset=utf-8",
+    "producing_agent_id": "26230bed-aa29-4bfc-9d37-a4eba0c59d4a",
+    "producing_run_id": "18ee9a3e-916c-5876-860c-9abbde4f6b68",
+    "revision_id": "908c67b6-fbcc-560c-b488-a1673f74ab86",
+    "sha256": "92c39370913743860e38a93302886246d517133babfada666bb2c090c1a7971b",
+    "status": "ready",
+    "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b"
+  },
+  "review": {
+    "artifact_id": "a693f8a9-b387-5c0f-af4d-d596e1b371b4",
+    "byte_count": 52,
+    "content": "# Browser report\nExample Domain\nhttps://example.com/",
+    "filename": "browser-report.md",
+    "media_type": "text/plain; charset=utf-8",
+    "producing_agent_id": "26230bed-aa29-4bfc-9d37-a4eba0c59d4a",
+    "producing_run_id": "18ee9a3e-916c-5876-860c-9abbde4f6b68",
+    "revision_id": "908c67b6-fbcc-560c-b488-a1673f74ab86",
+    "sha256": "92c39370913743860e38a93302886246d517133babfada666bb2c090c1a7971b",
+    "status": "ready",
+    "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b"
+  },
+  "snapshot": {
+    "artifacts": [
+      {
+        "artifact_id": "a693f8a9-b387-5c0f-af4d-d596e1b371b4",
+        "byte_count": 52,
+        "filename": "browser-report.md",
+        "media_type": "text/plain; charset=utf-8",
+        "producing_agent_id": "26230bed-aa29-4bfc-9d37-a4eba0c59d4a",
+        "producing_run_id": "18ee9a3e-916c-5876-860c-9abbde4f6b68",
+        "revision_id": "908c67b6-fbcc-560c-b488-a1673f74ab86",
+        "sha256": "92c39370913743860e38a93302886246d517133babfada666bb2c090c1a7971b",
+        "status": "ready",
+        "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b"
+      }
+    ],
+    "discussion": {
+      "discussion_id": "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2",
+      "reason": "silent_round",
+      "status": "settled"
+    },
+    "goals": [],
+    "messages": [
+      {
+        "author_agent_id": null,
+        "author_kind": "user",
+        "content": "@researcher browse and prepare a file for peer review",
+        "context_generation": "1",
+        "message_id": "61063655-8914-52f9-8b3b-9b711eafef97",
+        "message_seq": "1",
+        "parts": [
+          {
+            "text": "@researcher browse and prepare a file for peer review",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "e6181d5e-481e-5485-bc94-966ff6f41995",
+        "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b"
+      },
+      {
+        "author_agent_id": "cc3bd9e5-c79c-4f37-9c5a-b6f31f863322",
+        "author_kind": "agent",
+        "content": "Browsed Example Domain. @writer publish a report about the observed page.",
+        "context_generation": "1",
+        "message_id": "94a900bd-0090-563c-8a7f-72ec37869bf3",
+        "message_seq": "2",
+        "parts": [
+          {
+            "text": "Browsed Example Domain. @writer publish a report about the observed page.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "e6181d5e-481e-5485-bc94-966ff6f41995",
+        "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b"
+      },
+      {
+        "author_agent_id": "26230bed-aa29-4bfc-9d37-a4eba0c59d4a",
+        "author_kind": "agent",
+        "content": "Published artifact a693f8a9-b387-5c0f-af4d-d596e1b371b4. @reviewer read and verify it.",
+        "context_generation": "1",
+        "message_id": "a026ac9e-437d-5932-869f-f97ad65dd1ab",
+        "message_seq": "3",
+        "parts": [
+          {
+            "text": "Published artifact a693f8a9-b387-5c0f-af4d-d596e1b371b4. @reviewer read and verify it.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "18ee9a3e-916c-5876-860c-9abbde4f6b68",
+        "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b"
+      },
+      {
+        "author_agent_id": "7a62c340-5446-4957-b586-fabaab001842",
+        "author_kind": "agent",
+        "content": "Reviewed the file: Example Domain and source URL are present.",
+        "context_generation": "1",
+        "message_id": "aae8deba-ad7b-53f5-8361-4ac120b2165a",
+        "message_seq": "4",
+        "parts": [
+          {
+            "text": "Reviewed the file: Example Domain and source URL are present.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "15534048-7bdf-5319-8906-8432bd0c9bec",
+        "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b"
+      }
+    ],
+    "next_before_message_seq": null,
+    "replay_epoch": "bc5fa50a-74fd-41d5-8cb3-035a56fcef97",
+    "runs": [
+      {
+        "agent_id": "cc3bd9e5-c79c-4f37-9c5a-b6f31f863322",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "bc5fa50a-74fd-41d5-8cb3-035a56fcef97",
+        "run_id": "e6181d5e-481e-5485-bc94-966ff6f41995",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Browsed Example Domain. @writer publish a report about the observed page.",
+        "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+        "through_sequence": "38"
+      },
+      {
+        "agent_id": "26230bed-aa29-4bfc-9d37-a4eba0c59d4a",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "bc5fa50a-74fd-41d5-8cb3-035a56fcef97",
+        "run_id": "18ee9a3e-916c-5876-860c-9abbde4f6b68",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Published artifact a693f8a9-b387-5c0f-af4d-d596e1b371b4. @reviewer read and verify it.",
+        "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+        "through_sequence": "38"
+      },
+      {
+        "agent_id": "7a62c340-5446-4957-b586-fabaab001842",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "bc5fa50a-74fd-41d5-8cb3-035a56fcef97",
+        "run_id": "15534048-7bdf-5319-8906-8432bd0c9bec",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Reviewed the file: Example Domain and source URL are present.",
+        "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+        "through_sequence": "38"
+      }
+    ],
+    "schema_version": "nma.v1",
+    "thread": {
+      "agents": [
+        {
+          "access_generation": "1",
+          "agent_id": "cc3bd9e5-c79c-4f37-9c5a-b6f31f863322",
+          "config": {
+            "instructions": "",
+            "model": "test",
+            "soul": "",
+            "tool_grants": [
+              "browser"
+            ]
+          },
+          "config_revision": "1",
+          "created_at": "2026-10-24T06:42:36.851018Z",
+          "display_name": "researcher",
+          "handle": "researcher",
+          "revision": "1",
+          "status": "active",
+          "updated_at": "2026-10-24T06:42:36.851018Z"
+        },
+        {
+          "access_generation": "1",
+          "agent_id": "26230bed-aa29-4bfc-9d37-a4eba0c59d4a",
+          "config": {
+            "instructions": "",
+            "model": "test",
+            "soul": "",
+            "tool_grants": [
+              "files"
+            ]
+          },
+          "config_revision": "1",
+          "created_at": "2026-10-24T06:42:36.902415Z",
+          "display_name": "writer",
+          "handle": "writer",
+          "revision": "1",
+          "status": "active",
+          "updated_at": "2026-10-24T06:42:36.902415Z"
+        },
+        {
+          "access_generation": "1",
+          "agent_id": "7a62c340-5446-4957-b586-fabaab001842",
+          "config": {
+            "instructions": "",
+            "model": "test",
+            "soul": "",
+            "tool_grants": [
+              "files"
+            ]
+          },
+          "config_revision": "1",
+          "created_at": "2026-10-24T06:42:36.944739Z",
+          "display_name": "reviewer",
+          "handle": "reviewer",
+          "revision": "1",
+          "status": "active",
+          "updated_at": "2026-10-24T06:42:36.944739Z"
+        }
+      ],
+      "context_generation": "1",
+      "dm_agent_id": null,
+      "kind": "group",
+      "membership_revision": "1",
+      "revision": "1",
+      "status": "open",
+      "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+      "title": "Browser report"
+    },
+    "through_sequence": "38"
+  },
+  "diagnoses": [
+    {
+      "admission_state": "applied",
+      "command_id": "e941ae6a-561e-5b84-8250-26e1edea2ea8",
+      "discussion_ids": [
+        "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+      ],
+      "effects": [
+        {
+          "operation_id": "7cb108b467b2796bd2a2c0a0bdb5099f03f19a83464cc02324ea125307f7388b",
+          "status": "confirmed"
+        },
+        {
+          "operation_id": "b363efba800b80d43a2ad03cb87594f7efe7770e98e600dfbeac326857239c8e",
+          "status": "confirmed"
+        }
+      ],
+      "event_limit": 256,
+      "goal_ids": [],
+      "handoff_ids": [
+        "dtask:21b40d3dee96aeb60ab407c4f370e005c7f912a8ec90ce06"
+      ],
+      "message_ids": [
+        "61063655-8914-52f9-8b3b-9b711eafef97",
+        "94a900bd-0090-563c-8a7f-72ec37869bf3"
+      ],
+      "parent_run_ids": [],
+      "recent_events": [
+        {
+          "agent_id": "cc3bd9e5-c79c-4f37-9c5a-b6f31f863322",
+          "config_revision": "1",
+          "discussion_ids": [
+            "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+          ],
+          "event_id": "8a571965-6dd6-48e3-abf5-7d3485ba6d0d",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:21b40d3dee96aeb60ab407c4f370e005c7f912a8ec90ce06"
+          ],
+          "occurred_at": "2026-10-24T06:42:36.967089+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "discussion_id": "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2",
+            "round": 1,
+            "status": "queued"
+          },
+          "run_id": "e6181d5e-481e-5485-bc94-966ff6f41995",
+          "schema_version": "nma.v1",
+          "sequence": "5",
+          "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+          "trigger_ids": [],
+          "type": "run.accepted"
+        },
+        {
+          "agent_id": "cc3bd9e5-c79c-4f37-9c5a-b6f31f863322",
+          "config_revision": "1",
+          "discussion_ids": [
+            "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+          ],
+          "event_id": "56d748f1-0d83-4afd-b9a8-47af9803a0a8",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:21b40d3dee96aeb60ab407c4f370e005c7f912a8ec90ce06"
+          ],
+          "occurred_at": "2026-10-24T06:42:36.967781+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "author_agent_id": null,
+            "author_kind": "user",
+            "content": "@researcher browse and prepare a file for peer review",
+            "context_generation": "1",
+            "message_id": "61063655-8914-52f9-8b3b-9b711eafef97",
+            "message_seq": "1",
+            "parts": [
+              {
+                "text": "@researcher browse and prepare a file for peer review",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "e6181d5e-481e-5485-bc94-966ff6f41995",
+            "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b"
+          },
+          "run_id": "e6181d5e-481e-5485-bc94-966ff6f41995",
+          "schema_version": "nma.v1",
+          "sequence": "6",
+          "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+          "trigger_ids": [],
+          "type": "message.created"
+        },
+        {
+          "agent_id": "cc3bd9e5-c79c-4f37-9c5a-b6f31f863322",
+          "config_revision": "1",
+          "discussion_ids": [
+            "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+          ],
+          "event_id": "925d35d1-3d0c-4be0-9a92-5ecb0f50be6a",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:21b40d3dee96aeb60ab407c4f370e005c7f912a8ec90ce06"
+          ],
+          "occurred_at": "2026-10-24T06:42:37.074340+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "discussion": {
+              "discussion_id": "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2",
+              "reason": "member_turn",
+              "status": "active"
+            }
+          },
+          "run_id": "e6181d5e-481e-5485-bc94-966ff6f41995",
+          "schema_version": "nma.v1",
+          "sequence": "9",
+          "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+          "trigger_ids": [],
+          "type": "discussion.changed"
+        },
+        {
+          "agent_id": "cc3bd9e5-c79c-4f37-9c5a-b6f31f863322",
+          "config_revision": "1",
+          "discussion_ids": [
+            "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+          ],
+          "event_id": "dd5e8e0d-4386-4782-a09e-51e7e83ff14b",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:21b40d3dee96aeb60ab407c4f370e005c7f912a8ec90ce06"
+          ],
+          "occurred_at": "2026-10-24T06:42:37.082730+00:00",
+          "parent_run_ids": [],
+          "payload": {},
+          "run_id": "e6181d5e-481e-5485-bc94-966ff6f41995",
+          "schema_version": "nma.v1",
+          "sequence": "10",
+          "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+          "trigger_ids": [],
+          "type": "run.started"
+        },
+        {
+          "agent_id": "cc3bd9e5-c79c-4f37-9c5a-b6f31f863322",
+          "config_revision": "1",
+          "discussion_ids": [
+            "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+          ],
+          "event_id": "cbd6fb19-4a28-463b-a17e-f36cb3b47e68",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:21b40d3dee96aeb60ab407c4f370e005c7f912a8ec90ce06"
+          ],
+          "occurred_at": "2026-10-24T06:42:37.929523+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "tool_call_id": "navigate",
+            "tool_name": "computer"
+          },
+          "run_id": "e6181d5e-481e-5485-bc94-966ff6f41995",
+          "schema_version": "nma.v1",
+          "sequence": "11",
+          "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+          "trigger_ids": [],
+          "type": "tool.started"
+        },
+        {
+          "agent_id": "cc3bd9e5-c79c-4f37-9c5a-b6f31f863322",
+          "config_revision": "1",
+          "discussion_ids": [
+            "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+          ],
+          "event_id": "4cd05c2c-314b-4916-a8f1-8cc08bf3a616",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:21b40d3dee96aeb60ab407c4f370e005c7f912a8ec90ce06"
+          ],
+          "occurred_at": "2026-10-24T06:42:59.451236+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "is_error": false,
+            "tool_call_id": "navigate",
+            "tool_name": "computer"
+          },
+          "run_id": "e6181d5e-481e-5485-bc94-966ff6f41995",
+          "schema_version": "nma.v1",
+          "sequence": "12",
+          "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+          "trigger_ids": [],
+          "type": "tool.completed"
+        },
+        {
+          "agent_id": "cc3bd9e5-c79c-4f37-9c5a-b6f31f863322",
+          "config_revision": "1",
+          "discussion_ids": [
+            "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+          ],
+          "event_id": "56b34f37-81c6-44fe-8a57-b6c6b662d6d6",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:21b40d3dee96aeb60ab407c4f370e005c7f912a8ec90ce06"
+          ],
+          "occurred_at": "2026-10-24T06:42:59.471798+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "tool_call_id": "pause",
+            "tool_name": "computer"
+          },
+          "run_id": "e6181d5e-481e-5485-bc94-966ff6f41995",
+          "schema_version": "nma.v1",
+          "sequence": "13",
+          "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+          "trigger_ids": [],
+          "type": "tool.started"
+        },
+        {
+          "agent_id": "cc3bd9e5-c79c-4f37-9c5a-b6f31f863322",
+          "config_revision": "1",
+          "discussion_ids": [
+            "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+          ],
+          "event_id": "30e39063-1dfd-4a7d-a312-63888514ea24",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:21b40d3dee96aeb60ab407c4f370e005c7f912a8ec90ce06"
+          ],
+          "occurred_at": "2026-10-24T06:43:03.911093+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "is_error": false,
+            "tool_call_id": "pause",
+            "tool_name": "computer"
+          },
+          "run_id": "e6181d5e-481e-5485-bc94-966ff6f41995",
+          "schema_version": "nma.v1",
+          "sequence": "14",
+          "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+          "trigger_ids": [],
+          "type": "tool.completed"
+        },
+        {
+          "agent_id": "cc3bd9e5-c79c-4f37-9c5a-b6f31f863322",
+          "config_revision": "1",
+          "discussion_ids": [
+            "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+          ],
+          "event_id": "18c1d965-f4cc-47da-b569-207c6d2050d2",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:21b40d3dee96aeb60ab407c4f370e005c7f912a8ec90ce06"
+          ],
+          "occurred_at": "2026-10-24T06:43:03.956962+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "Browsed Example Domain. @writer publish a report about the observed page."
+          },
+          "run_id": "e6181d5e-481e-5485-bc94-966ff6f41995",
+          "schema_version": "nma.v1",
+          "sequence": "15",
+          "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+          "trigger_ids": [],
+          "type": "message.completed"
+        },
+        {
+          "agent_id": "cc3bd9e5-c79c-4f37-9c5a-b6f31f863322",
+          "config_revision": "1",
+          "discussion_ids": [
+            "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+          ],
+          "event_id": "5b0dd6b3-c921-475b-a47e-f11f48875c22",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:21b40d3dee96aeb60ab407c4f370e005c7f912a8ec90ce06"
+          ],
+          "occurred_at": "2026-10-24T06:43:03.957039+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "error_code": null,
+            "message_id": "94a900bd-0090-563c-8a7f-72ec37869bf3",
+            "status": "succeeded",
+            "text": "Browsed Example Domain. @writer publish a report about the observed page."
+          },
+          "run_id": "e6181d5e-481e-5485-bc94-966ff6f41995",
+          "schema_version": "nma.v1",
+          "sequence": "16",
+          "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+          "trigger_ids": [],
+          "type": "run.succeeded"
+        },
+        {
+          "agent_id": "cc3bd9e5-c79c-4f37-9c5a-b6f31f863322",
+          "config_revision": "1",
+          "discussion_ids": [
+            "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+          ],
+          "event_id": "2a345f33-4634-4fbd-b392-f70f1f4db337",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:21b40d3dee96aeb60ab407c4f370e005c7f912a8ec90ce06"
+          ],
+          "occurred_at": "2026-10-24T06:43:04.081586+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "author_agent_id": "cc3bd9e5-c79c-4f37-9c5a-b6f31f863322",
+            "author_kind": "agent",
+            "content": "Browsed Example Domain. @writer publish a report about the observed page.",
+            "context_generation": "1",
+            "message_id": "94a900bd-0090-563c-8a7f-72ec37869bf3",
+            "message_seq": "2",
+            "parts": [
+              {
+                "text": "Browsed Example Domain. @writer publish a report about the observed page.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "e6181d5e-481e-5485-bc94-966ff6f41995",
+            "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b"
+          },
+          "run_id": "e6181d5e-481e-5485-bc94-966ff6f41995",
+          "schema_version": "nma.v1",
+          "sequence": "17",
+          "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+          "trigger_ids": [],
+          "type": "message.created"
+        },
+        {
+          "agent_id": "cc3bd9e5-c79c-4f37-9c5a-b6f31f863322",
+          "config_revision": "1",
+          "discussion_ids": [
+            "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+          ],
+          "event_id": "890f3054-d8cb-4f7b-abb9-57edf77a3641",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:21b40d3dee96aeb60ab407c4f370e005c7f912a8ec90ce06"
+          ],
+          "occurred_at": "2026-10-24T06:43:04.081671+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "status": "delivered"
+          },
+          "run_id": "e6181d5e-481e-5485-bc94-966ff6f41995",
+          "schema_version": "nma.v1",
+          "sequence": "18",
+          "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+          "trigger_ids": [],
+          "type": "delivery.settled"
+        }
+      ],
+      "run": {
+        "agent_id": "cc3bd9e5-c79c-4f37-9c5a-b6f31f863322",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "bc5fa50a-74fd-41d5-8cb3-035a56fcef97",
+        "run_id": "e6181d5e-481e-5485-bc94-966ff6f41995",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Browsed Example Domain. @writer publish a report about the observed page.",
+        "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+        "through_sequence": "38"
+      },
+      "trigger_ids": [],
+      "usage": {
+        "available": true,
+        "input_tokens": 30,
+        "output_tokens": 15,
+        "source": "native_terminal_receipt",
+        "total_tokens": 45
+      }
+    },
+    {
+      "admission_state": "applied",
+      "command_id": "f2456a5c-9693-5f63-804e-2f9655b35d24",
+      "discussion_ids": [
+        "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+      ],
+      "effects": [],
+      "event_limit": 256,
+      "goal_ids": [],
+      "handoff_ids": [
+        "dtask:7c8fe4cb0e87af4fb6f8b75a2425618c1967b59732f28ea6"
+      ],
+      "message_ids": [
+        "a026ac9e-437d-5932-869f-f97ad65dd1ab"
+      ],
+      "parent_run_ids": [],
+      "recent_events": [
+        {
+          "agent_id": "26230bed-aa29-4bfc-9d37-a4eba0c59d4a",
+          "config_revision": "1",
+          "discussion_ids": [
+            "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+          ],
+          "event_id": "c8a6dba3-e6e7-4a41-8147-6b140839923f",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:7c8fe4cb0e87af4fb6f8b75a2425618c1967b59732f28ea6"
+          ],
+          "occurred_at": "2026-10-24T06:43:04.086286+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "discussion_id": "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2",
+            "round": 2,
+            "status": "queued"
+          },
+          "run_id": "18ee9a3e-916c-5876-860c-9abbde4f6b68",
+          "schema_version": "nma.v1",
+          "sequence": "19",
+          "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+          "trigger_ids": [],
+          "type": "run.accepted"
+        },
+        {
+          "agent_id": "26230bed-aa29-4bfc-9d37-a4eba0c59d4a",
+          "config_revision": "1",
+          "discussion_ids": [
+            "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+          ],
+          "event_id": "09db74ee-591f-4a90-97b9-0a74f3c73714",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:7c8fe4cb0e87af4fb6f8b75a2425618c1967b59732f28ea6"
+          ],
+          "occurred_at": "2026-10-24T06:43:04.375739+00:00",
+          "parent_run_ids": [],
+          "payload": {},
+          "run_id": "18ee9a3e-916c-5876-860c-9abbde4f6b68",
+          "schema_version": "nma.v1",
+          "sequence": "21",
+          "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+          "trigger_ids": [],
+          "type": "run.started"
+        },
+        {
+          "agent_id": "26230bed-aa29-4bfc-9d37-a4eba0c59d4a",
+          "config_revision": "1",
+          "discussion_ids": [
+            "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+          ],
+          "event_id": "93b7646b-5186-4125-89c8-b33dde95db50",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:7c8fe4cb0e87af4fb6f8b75a2425618c1967b59732f28ea6"
+          ],
+          "occurred_at": "2026-10-24T06:43:04.472927+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "tool_call_id": "publish",
+            "tool_name": "workspace"
+          },
+          "run_id": "18ee9a3e-916c-5876-860c-9abbde4f6b68",
+          "schema_version": "nma.v1",
+          "sequence": "22",
+          "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+          "trigger_ids": [],
+          "type": "tool.started"
+        },
+        {
+          "agent_id": "26230bed-aa29-4bfc-9d37-a4eba0c59d4a",
+          "config_revision": "1",
+          "discussion_ids": [
+            "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+          ],
+          "event_id": "db6f71f7-cc67-4e41-924c-ffc9977534b6",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:7c8fe4cb0e87af4fb6f8b75a2425618c1967b59732f28ea6"
+          ],
+          "occurred_at": "2026-10-24T06:43:04.473801+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "artifact_id": "a693f8a9-b387-5c0f-af4d-d596e1b371b4",
+            "byte_count": 52,
+            "filename": "browser-report.md",
+            "media_type": "text/plain; charset=utf-8",
+            "producing_agent_id": "26230bed-aa29-4bfc-9d37-a4eba0c59d4a",
+            "producing_run_id": "18ee9a3e-916c-5876-860c-9abbde4f6b68",
+            "revision_id": "908c67b6-fbcc-560c-b488-a1673f74ab86",
+            "sha256": "92c39370913743860e38a93302886246d517133babfada666bb2c090c1a7971b",
+            "status": "ready",
+            "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b"
+          },
+          "run_id": "18ee9a3e-916c-5876-860c-9abbde4f6b68",
+          "schema_version": "nma.v1",
+          "sequence": "23",
+          "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+          "trigger_ids": [],
+          "type": "artifact.ready"
+        },
+        {
+          "agent_id": "26230bed-aa29-4bfc-9d37-a4eba0c59d4a",
+          "config_revision": "1",
+          "discussion_ids": [
+            "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+          ],
+          "event_id": "7b4ca61f-e6b1-473c-86f0-3669abfa5bae",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:7c8fe4cb0e87af4fb6f8b75a2425618c1967b59732f28ea6"
+          ],
+          "occurred_at": "2026-10-24T06:43:04.474999+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "is_error": false,
+            "tool_call_id": "publish",
+            "tool_name": "workspace"
+          },
+          "run_id": "18ee9a3e-916c-5876-860c-9abbde4f6b68",
+          "schema_version": "nma.v1",
+          "sequence": "24",
+          "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+          "trigger_ids": [],
+          "type": "tool.completed"
+        },
+        {
+          "agent_id": "26230bed-aa29-4bfc-9d37-a4eba0c59d4a",
+          "config_revision": "1",
+          "discussion_ids": [
+            "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+          ],
+          "event_id": "a71ae94a-b967-4947-b9ce-9baa530a7c58",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:7c8fe4cb0e87af4fb6f8b75a2425618c1967b59732f28ea6"
+          ],
+          "occurred_at": "2026-10-24T06:43:04.527548+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "Published artifact a693f8a9-b387-5c0f-af4d-d596e1b371b4. @reviewer read and verify it."
+          },
+          "run_id": "18ee9a3e-916c-5876-860c-9abbde4f6b68",
+          "schema_version": "nma.v1",
+          "sequence": "25",
+          "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+          "trigger_ids": [],
+          "type": "message.completed"
+        },
+        {
+          "agent_id": "26230bed-aa29-4bfc-9d37-a4eba0c59d4a",
+          "config_revision": "1",
+          "discussion_ids": [
+            "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+          ],
+          "event_id": "ce9befb9-a0ab-4579-81d4-907165451ce5",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:7c8fe4cb0e87af4fb6f8b75a2425618c1967b59732f28ea6"
+          ],
+          "occurred_at": "2026-10-24T06:43:04.527618+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "error_code": null,
+            "message_id": "a026ac9e-437d-5932-869f-f97ad65dd1ab",
+            "status": "succeeded",
+            "text": "Published artifact a693f8a9-b387-5c0f-af4d-d596e1b371b4. @reviewer read and verify it."
+          },
+          "run_id": "18ee9a3e-916c-5876-860c-9abbde4f6b68",
+          "schema_version": "nma.v1",
+          "sequence": "26",
+          "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+          "trigger_ids": [],
+          "type": "run.succeeded"
+        },
+        {
+          "agent_id": "26230bed-aa29-4bfc-9d37-a4eba0c59d4a",
+          "config_revision": "1",
+          "discussion_ids": [
+            "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+          ],
+          "event_id": "95d01946-2fb7-4737-ae2e-60c4348d9eb9",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:7c8fe4cb0e87af4fb6f8b75a2425618c1967b59732f28ea6"
+          ],
+          "occurred_at": "2026-10-24T06:43:04.624026+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "author_agent_id": "26230bed-aa29-4bfc-9d37-a4eba0c59d4a",
+            "author_kind": "agent",
+            "content": "Published artifact a693f8a9-b387-5c0f-af4d-d596e1b371b4. @reviewer read and verify it.",
+            "context_generation": "1",
+            "message_id": "a026ac9e-437d-5932-869f-f97ad65dd1ab",
+            "message_seq": "3",
+            "parts": [
+              {
+                "text": "Published artifact a693f8a9-b387-5c0f-af4d-d596e1b371b4. @reviewer read and verify it.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "18ee9a3e-916c-5876-860c-9abbde4f6b68",
+            "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b"
+          },
+          "run_id": "18ee9a3e-916c-5876-860c-9abbde4f6b68",
+          "schema_version": "nma.v1",
+          "sequence": "27",
+          "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+          "trigger_ids": [],
+          "type": "message.created"
+        },
+        {
+          "agent_id": "26230bed-aa29-4bfc-9d37-a4eba0c59d4a",
+          "config_revision": "1",
+          "discussion_ids": [
+            "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+          ],
+          "event_id": "1502010b-0ca4-4171-b53e-bf272bb3a7dc",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:7c8fe4cb0e87af4fb6f8b75a2425618c1967b59732f28ea6"
+          ],
+          "occurred_at": "2026-10-24T06:43:04.624105+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "status": "delivered"
+          },
+          "run_id": "18ee9a3e-916c-5876-860c-9abbde4f6b68",
+          "schema_version": "nma.v1",
+          "sequence": "28",
+          "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+          "trigger_ids": [],
+          "type": "delivery.settled"
+        }
+      ],
+      "run": {
+        "agent_id": "26230bed-aa29-4bfc-9d37-a4eba0c59d4a",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "bc5fa50a-74fd-41d5-8cb3-035a56fcef97",
+        "run_id": "18ee9a3e-916c-5876-860c-9abbde4f6b68",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Published artifact a693f8a9-b387-5c0f-af4d-d596e1b371b4. @reviewer read and verify it.",
+        "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+        "through_sequence": "38"
+      },
+      "trigger_ids": [],
+      "usage": {
+        "available": true,
+        "input_tokens": 20,
+        "output_tokens": 10,
+        "source": "native_terminal_receipt",
+        "total_tokens": 30
+      }
+    },
+    {
+      "admission_state": "applied",
+      "command_id": "7166f7de-608a-5913-802b-0bb1b96cf56a",
+      "discussion_ids": [
+        "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+      ],
+      "effects": [],
+      "event_limit": 256,
+      "goal_ids": [],
+      "handoff_ids": [
+        "dtask:f9b6d75d9d3a91728368a8be6ac07ed34bb3c42ac4e219d2"
+      ],
+      "message_ids": [
+        "aae8deba-ad7b-53f5-8361-4ac120b2165a"
+      ],
+      "parent_run_ids": [],
+      "recent_events": [
+        {
+          "agent_id": "7a62c340-5446-4957-b586-fabaab001842",
+          "config_revision": "1",
+          "discussion_ids": [
+            "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+          ],
+          "event_id": "d951f53d-3e85-458b-950e-2d68f8ce7f12",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:f9b6d75d9d3a91728368a8be6ac07ed34bb3c42ac4e219d2"
+          ],
+          "occurred_at": "2026-10-24T06:43:04.628190+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "discussion_id": "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2",
+            "round": 2,
+            "status": "queued"
+          },
+          "run_id": "15534048-7bdf-5319-8906-8432bd0c9bec",
+          "schema_version": "nma.v1",
+          "sequence": "29",
+          "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+          "trigger_ids": [],
+          "type": "run.accepted"
+        },
+        {
+          "agent_id": "7a62c340-5446-4957-b586-fabaab001842",
+          "config_revision": "1",
+          "discussion_ids": [
+            "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+          ],
+          "event_id": "491f1df3-4d4d-4ef8-8984-00874b59f08e",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:f9b6d75d9d3a91728368a8be6ac07ed34bb3c42ac4e219d2"
+          ],
+          "occurred_at": "2026-10-24T06:43:04.906452+00:00",
+          "parent_run_ids": [],
+          "payload": {},
+          "run_id": "15534048-7bdf-5319-8906-8432bd0c9bec",
+          "schema_version": "nma.v1",
+          "sequence": "31",
+          "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+          "trigger_ids": [],
+          "type": "run.started"
+        },
+        {
+          "agent_id": "7a62c340-5446-4957-b586-fabaab001842",
+          "config_revision": "1",
+          "discussion_ids": [
+            "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+          ],
+          "event_id": "dac94149-0d7d-4752-af80-cf3dc5c34fa0",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:f9b6d75d9d3a91728368a8be6ac07ed34bb3c42ac4e219d2"
+          ],
+          "occurred_at": "2026-10-24T06:43:04.990152+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "tool_call_id": "read",
+            "tool_name": "workspace"
+          },
+          "run_id": "15534048-7bdf-5319-8906-8432bd0c9bec",
+          "schema_version": "nma.v1",
+          "sequence": "32",
+          "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+          "trigger_ids": [],
+          "type": "tool.started"
+        },
+        {
+          "agent_id": "7a62c340-5446-4957-b586-fabaab001842",
+          "config_revision": "1",
+          "discussion_ids": [
+            "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+          ],
+          "event_id": "2af38fbf-949b-4baf-82d3-25c71143f2e5",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:f9b6d75d9d3a91728368a8be6ac07ed34bb3c42ac4e219d2"
+          ],
+          "occurred_at": "2026-10-24T06:43:04.992312+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "is_error": false,
+            "tool_call_id": "read",
+            "tool_name": "workspace"
+          },
+          "run_id": "15534048-7bdf-5319-8906-8432bd0c9bec",
+          "schema_version": "nma.v1",
+          "sequence": "33",
+          "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+          "trigger_ids": [],
+          "type": "tool.completed"
+        },
+        {
+          "agent_id": "7a62c340-5446-4957-b586-fabaab001842",
+          "config_revision": "1",
+          "discussion_ids": [
+            "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+          ],
+          "event_id": "0e890e35-a95d-4ef3-92d0-b68b32cbcea7",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:f9b6d75d9d3a91728368a8be6ac07ed34bb3c42ac4e219d2"
+          ],
+          "occurred_at": "2026-10-24T06:43:05.041497+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "Reviewed the file: Example Domain and source URL are present."
+          },
+          "run_id": "15534048-7bdf-5319-8906-8432bd0c9bec",
+          "schema_version": "nma.v1",
+          "sequence": "34",
+          "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+          "trigger_ids": [],
+          "type": "message.completed"
+        },
+        {
+          "agent_id": "7a62c340-5446-4957-b586-fabaab001842",
+          "config_revision": "1",
+          "discussion_ids": [
+            "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+          ],
+          "event_id": "221d2131-a630-477f-be73-9bd7ed181714",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:f9b6d75d9d3a91728368a8be6ac07ed34bb3c42ac4e219d2"
+          ],
+          "occurred_at": "2026-10-24T06:43:05.041566+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "error_code": null,
+            "message_id": "aae8deba-ad7b-53f5-8361-4ac120b2165a",
+            "status": "succeeded",
+            "text": "Reviewed the file: Example Domain and source URL are present."
+          },
+          "run_id": "15534048-7bdf-5319-8906-8432bd0c9bec",
+          "schema_version": "nma.v1",
+          "sequence": "35",
+          "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+          "trigger_ids": [],
+          "type": "run.succeeded"
+        },
+        {
+          "agent_id": "7a62c340-5446-4957-b586-fabaab001842",
+          "config_revision": "1",
+          "discussion_ids": [
+            "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+          ],
+          "event_id": "fda501dc-0c0a-4d05-bb10-3f0eee1e4f4f",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:f9b6d75d9d3a91728368a8be6ac07ed34bb3c42ac4e219d2"
+          ],
+          "occurred_at": "2026-10-24T06:43:05.173042+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "author_agent_id": "7a62c340-5446-4957-b586-fabaab001842",
+            "author_kind": "agent",
+            "content": "Reviewed the file: Example Domain and source URL are present.",
+            "context_generation": "1",
+            "message_id": "aae8deba-ad7b-53f5-8361-4ac120b2165a",
+            "message_seq": "4",
+            "parts": [
+              {
+                "text": "Reviewed the file: Example Domain and source URL are present.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "15534048-7bdf-5319-8906-8432bd0c9bec",
+            "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b"
+          },
+          "run_id": "15534048-7bdf-5319-8906-8432bd0c9bec",
+          "schema_version": "nma.v1",
+          "sequence": "36",
+          "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+          "trigger_ids": [],
+          "type": "message.created"
+        },
+        {
+          "agent_id": "7a62c340-5446-4957-b586-fabaab001842",
+          "config_revision": "1",
+          "discussion_ids": [
+            "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+          ],
+          "event_id": "d52eef83-3bd5-4ec1-878e-793dbf57a4dd",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:f9b6d75d9d3a91728368a8be6ac07ed34bb3c42ac4e219d2"
+          ],
+          "occurred_at": "2026-10-24T06:43:05.173127+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "status": "delivered"
+          },
+          "run_id": "15534048-7bdf-5319-8906-8432bd0c9bec",
+          "schema_version": "nma.v1",
+          "sequence": "37",
+          "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+          "trigger_ids": [],
+          "type": "delivery.settled"
+        },
+        {
+          "agent_id": "7a62c340-5446-4957-b586-fabaab001842",
+          "config_revision": "1",
+          "discussion_ids": [
+            "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2"
+          ],
+          "event_id": "42c51344-d46d-4ef2-a7d0-e4cf6af82a1e",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:f9b6d75d9d3a91728368a8be6ac07ed34bb3c42ac4e219d2"
+          ],
+          "occurred_at": "2026-10-24T06:43:05.176953+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "discussion": {
+              "discussion_id": "ae32cad6-e5bb-540c-9b1c-e77234e4a6d2",
+              "reason": "silent_round",
+              "status": "settled"
+            }
+          },
+          "run_id": "15534048-7bdf-5319-8906-8432bd0c9bec",
+          "schema_version": "nma.v1",
+          "sequence": "38",
+          "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+          "trigger_ids": [],
+          "type": "discussion.changed"
+        }
+      ],
+      "run": {
+        "agent_id": "7a62c340-5446-4957-b586-fabaab001842",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "bc5fa50a-74fd-41d5-8cb3-035a56fcef97",
+        "run_id": "15534048-7bdf-5319-8906-8432bd0c9bec",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Reviewed the file: Example Domain and source URL are present.",
+        "thread_id": "2240a9ca-adcb-491f-a095-fda38cd3746b",
+        "through_sequence": "38"
+      },
+      "trigger_ids": [],
+      "usage": {
+        "available": true,
+        "input_tokens": 20,
+        "output_tokens": 10,
+        "source": "native_terminal_receipt",
+        "total_tokens": 30
+      }
+    }
+  ],
+  "cleanup": {
+    "deleted": true
+  }
+}

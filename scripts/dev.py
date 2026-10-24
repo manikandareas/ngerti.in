@@ -1,4 +1,4 @@
-"""Run the three host processes together; Ctrl+C shuts down their process groups."""
+"""Run the product API and web together; Ctrl+C shuts down their process groups."""
 
 import os
 import signal
@@ -10,7 +10,6 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 COMMANDS = {
     "api": ["bun", "run", "dev:api"],
-    "worker": ["bun", "run", "dev:worker"],
     "web": ["bun", "run", "dev:web"],
 }
 

@@ -211,3 +211,47 @@ class AgentEngineHTTP(unittest.IsolatedAsyncioTestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class SingleEngineComposition(unittest.TestCase):
+    def test_retired_routes_and_runtime_are_absent(self):
+        from importlib.util import find_spec
+        from ngertiin.api.app import app
+
+        paths = set(app.openapi()["paths"])
+        self.assertIn("/api/agent-engine/v1/commands", paths)
+        for prefix in (
+            "/chat",
+            "/tasks",
+            "/goals",
+            "/schedules",
+            "/memory",
+            "/persona",
+            "/computer",
+        ):
+            self.assertFalse(any(path.startswith(prefix) for path in paths), prefix)
+        for module in ("ngertiin.chat.runtime", "ngertiin.tasks.runtime", "ngertiin.worker.queue"):
+            try:
+                found = find_spec(module)
+            except ModuleNotFoundError:
+                found = None
+            self.assertIsNone(found, module)
+
+
+class AccountMigrationPlan(unittest.TestCase):
+    def test_identity_and_private_profile_are_stable_without_replaying_history(self):
+        from ngertiin.agent_engine.migration import plan
+
+        owner = str(uuid4())
+        profile = {"name": "Nama pengguna", "soul": "Instruksi asli pengguna", "revision": 7}
+        first = plan(owner, profile, "configured-model")
+        self.assertEqual(first, plan(owner, profile, "configured-model"))
+        self.assertEqual(first["command"]["payload"]["config"]["soul"], profile["soul"])
+        self.assertEqual(first["command"]["type"], "agent.create")
+        self.assertNotEqual(
+            first["command"]["command_id"],
+            plan(str(uuid4()), profile, "configured-model")["command"]["command_id"],
+        )
+        changed = plan(owner, profile | {"soul": "Changed"}, "configured-model")
+        self.assertEqual(first["command"]["command_id"], changed["command"]["command_id"])
+        self.assertNotEqual(first["command"]["payload"], changed["command"]["payload"])

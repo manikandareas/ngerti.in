@@ -1,6 +1,6 @@
 # Status repository
 
-Ngertiin sedang pivot ke multi-agent persisten dan proaktif. Lanjutkan repository ini; bangun engine baru secara terpisah, lalu ganti engine lama setelah perilaku penggantinya terverifikasi. Kode yang tersedia belum berarti arah baru sudah diimplementasikan.
+Ngertiin sedang pivot ke multi-agent persisten dan proaktif. Lanjutkan repository ini. Implementasi multi-agent terbaru adalah satu-satunya jalur produk/runtime; jangan menambahkan mode pivot/legacy atau fallback engine lama. Rollback memakai versi Git dan backup terverifikasi, bukan dua engine aktif. Pertahankan data pengguna, migrasi historis, dan bukti verifikasi.
 
 - Arsitektur single-agent dan batas V1 lama adalah konteks historis, bukan kewajiban kompatibilitas. Gunakan kembali bagian yang cocok; perubahan ini bukan izin menghapus data atau pekerjaan pengguna.
 - Produk mendukung DM pengguna dengan satu agent dan grup berisi pengguna yang sama bersama beberapa agent. Agent memiliki identitas persisten yang sama di DM/grup; riwayat percakapannya terpisah. Kolaborasi dengan manusia lain di luar cakupan saat ini.

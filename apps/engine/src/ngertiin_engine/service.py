@@ -40,6 +40,10 @@ def main():
     verify(Path(os.environ["HERMES_SOURCE"]).resolve())
     owner = uuid(os.environ["NMA_OWNER_ID"])
     home = Path(os.environ["HERMES_HOME"]).resolve()
+    from ngertiin_engine.backup import QUARANTINE
+
+    if (home / QUARANTINE).exists():
+        raise EngineError("RESTORE_QUARANTINED")
     database = home / "state.db"
     if database.exists():
         with sqlite3.connect(f"file:{database}?mode=ro", uri=True) as db:

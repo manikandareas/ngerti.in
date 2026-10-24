@@ -24,66 +24,8 @@ class Settings(BaseSettings):
     nma_partitions_file: str = ""
     database_url: SecretStr
     clerk_secret_key: SecretStr = SecretStr("")
-    s3_endpoint_url: str
-    s3_region: str = "us-east-1"
-    s3_bucket: str
-    s3_access_key_id: SecretStr
-    s3_secret_access_key: SecretStr
-    s3_addressing_style: Literal["path", "virtual", "auto"] = "path"
-    openai_api_key: SecretStr = SecretStr("")
-    openai_model: str = "gpt-6-luna"
-    openai_base_url: str = "https://api.openai.com/v1"
-    chat_max_output_tokens: int = Field(default=3000, ge=256, le=16000)
-    chat_run_timeout_seconds: int = Field(default=180, ge=15, le=600)
-    chat_max_model_calls: int = Field(default=6, ge=1, le=12)
-    compute_free_credits: int = Field(default=1000, ge=100, le=100000)
-    compute_plus_credits: int = Field(default=5000, ge=1000, le=1000000)
-    compute_account_daily_microusd: int = Field(default=2000000, ge=100000, le=100000000)
-    compute_global_daily_microusd: int = Field(default=10000000, ge=100000, le=1000000000)
-    memory_enabled: bool = True
-    memory_extraction_model: str = "gpt-5-mini"
-    memory_embedding_model: str = "text-embedding-3-small"
-    memory_embedding_dims: int = Field(default=1536, ge=256, le=2000)
-    memory_context_bytes: int = Field(default=4000, ge=512, le=8000)
-    memory_input_bytes: int = Field(default=6000, ge=1000, le=12000)
-    memory_account_daily_units: int = Field(default=250000, ge=10000, le=2000000)
-    memory_global_daily_units: int = Field(default=2500000, ge=100000, le=20000000)
-    memory_job_units: int = Field(default=160000, ge=30000, le=300000)
-    proactive_enabled: bool = True
-    proactive_generation_model: str = "gpt-6-luna"
-    typesafe_api_key: SecretStr = SecretStr("")
-    typesafe_model: str = "jev-1.13.0"
-    proactive_daily_evaluations: int = Field(default=12, ge=1, le=100)
-    proactive_evaluation_units: int = Field(default=100000, ge=60000, le=300000)
-    proactive_account_daily_units: int = Field(default=300000, ge=100000, le=2000000)
-    proactive_global_daily_units: int = Field(default=3000000, ge=100000, le=20000000)
-    task_budget_units: int = Field(default=60000, ge=30000, le=120000)
-    task_account_daily_units: int = Field(default=240000, ge=60000, le=2000000)
-    task_global_daily_units: int = Field(default=2400000, ge=60000, le=20000000)
-    mistral_api_key: SecretStr = SecretStr("")
-    mistral_ocr_model: str = "mistral-ocr-4-1"
-    mistral_ocr_usd_per_1000_pages: float = Field(default=4, ge=0, le=100)
-    file_max_bytes: int = Field(default=10485760, ge=1024, le=10485760)
-    file_batch_bytes: int = Field(default=26214400, ge=1024, le=26214400)
-    file_account_bytes: int = Field(default=262144000, ge=10485760, le=1073741824)
-    ocr_account_daily_pages: int = Field(default=100, ge=1, le=10000)
-    ocr_global_daily_pages: int = Field(default=1000, ge=1, le=100000)
     e2b_api_key: SecretStr = SecretStr("")
-    e2b_sandbox_template: str = "ngertiin-code-v1"
     e2b_computer_template: str = "ngertiin-desktop-v2"
-    sandbox_provider: Literal["e2b"] = "e2b"
-    sandbox_price_version: str = "e2b-linux-2026-10-20"
-    sandbox_resource_microusd_per_hour: int = Field(default=165600, ge=0, le=180000)
-    sandbox_account_daily_microusd: int = Field(default=1000000, ge=36000, le=10000000)
-    sandbox_global_daily_microusd: int = Field(default=5000000, ge=36000, le=50000000)
-    computer_task_seconds: int = Field(default=1200, ge=120, le=3600)
-    computer_engine: Literal["screenshot", "jev"] = "jev"
-    computer_workflow_version: int = Field(default=2, ge=1, le=2)
-    computer_max_steps: int = Field(default=60, ge=4, le=120)
-    computer_model_calls: int = Field(default=64, ge=4, le=180)
-    computer_provider: Literal["e2b"] = "e2b"
-    computer_retention_days: int = Field(default=7, ge=1, le=7)
-    computer_storage_microusd_per_hour: int = Field(default=0, ge=0, le=1200)
     billing_mode: Literal["test", "live"] = "test"
     billing_public_api_url: str = ""
     duitku_enabled: bool = False
@@ -110,8 +52,6 @@ class Settings(BaseSettings):
                 raise ValueError("CLERK_SECRET_KEY is required in production")
             if not self.web_origin.startswith("https://"):
                 raise ValueError("WEB_ORIGIN must use HTTPS in production")
-            if not self.s3_endpoint_url.startswith("https://"):
-                raise ValueError("S3_ENDPOINT_URL must use HTTPS in production")
         return self
 
     @property

@@ -2,7 +2,6 @@ import { UserButton, useUser } from "@clerk/tanstack-react-start";
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
-import { diagnosticsEnabled } from "../lib/api";
 import { Brand } from "./brand";
 
 export function AppShell({ children }: { children: ReactNode }) {
@@ -14,9 +13,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           <Brand />
         </Link>
         <nav aria-label="Navigasi utama">
-          <Link to="/">Percakapan</Link>
           <Link to="/agents">Agent</Link>
-          {diagnosticsEnabled ? <Link to="/dev/system">Diagnostik</Link> : null}
           {isSignedIn ? (
             <UserButton />
           ) : (

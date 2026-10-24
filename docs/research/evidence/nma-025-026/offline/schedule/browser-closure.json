@@ -1,0 +1,123 @@
+{
+  "scope": "Snapshot harness over real gateway; controlled provider; not production authenticated UI",
+  "requests_while_closed": 0,
+  "model_requests_while_closed": 2,
+  "goal": {
+    "created_at": "2026-10-24T06:40:25.932Z",
+    "creation_key": "fuel",
+    "evidence": [],
+    "generation": "2",
+    "goal_id": "b18a9570-3814-424d-80e9-8b9ada0c55c7",
+    "objective": "Prepare fuel report for Friday",
+    "progress": "Calculated 12 litres per 100 km",
+    "responsible_agent_id": "339b1c2d-4cef-4b55-a4d6-f1b4b6b03e0a",
+    "revision": "4",
+    "source_message_id": "a7db0edb-a7c2-5a46-8785-a46a023df146",
+    "source_run_id": "2f29e0ed-6e55-5882-9f94-4f18842d3b8e",
+    "status": "waiting",
+    "thread_id": "d078d216-8777-44b6-a669-4513f538b5e0",
+    "title": "Fuel report",
+    "units": [
+      {
+        "agent_id": "339b1c2d-4cef-4b55-a4d6-f1b4b6b03e0a",
+        "generation": "1",
+        "parent_run_id": null,
+        "run_id": "2f29e0ed-6e55-5882-9f94-4f18842d3b8e",
+        "settled": true,
+        "status": "succeeded",
+        "verdict": null
+      },
+      {
+        "agent_id": "339b1c2d-4cef-4b55-a4d6-f1b4b6b03e0a",
+        "generation": "2",
+        "parent_run_id": null,
+        "run_id": "bf454e48-60eb-5302-af85-ac030204ad31",
+        "settled": true,
+        "status": "succeeded",
+        "verdict": "wait"
+      },
+      {
+        "agent_id": "339b1c2d-4cef-4b55-a4d6-f1b4b6b03e0a",
+        "generation": "2",
+        "parent_run_id": "2f29e0ed-6e55-5882-9f94-4f18842d3b8e",
+        "run_id": "edd6b08b-768b-5249-a51c-6718e50ea737",
+        "settled": true,
+        "status": "succeeded",
+        "verdict": "wait"
+      }
+    ],
+    "updated_at": "2026-10-24T06:40:32.018Z",
+    "wake": {
+      "configuration": {
+        "at": "2026-10-24T06:42:26.218398Z",
+        "kind": "once",
+        "missed_policy": "coalesce",
+        "timezone": "Asia/Makassar"
+      },
+      "definition_id": "69f4af3a-f1ad-5388-b6fb-c7d86c8d15f1",
+      "goal_generation": "2",
+      "kind": "schedule",
+      "next_at": null,
+      "revision": "1",
+      "state": "enabled"
+    },
+    "wake_condition": "The user supplies next week's readings"
+  },
+  "browser": [
+    {
+      "command": [
+        "open",
+        "http://127.0.0.1:52284"
+      ],
+      "stdout": "\u2713 Offline wake acceptance\n  http://127.0.0.1:52284/\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "snapshot"
+      ],
+      "stdout": "- main\n  - heading \"Gateway snapshot harness\" [level=1, ref=e1]\n  - paragraph\n    - StaticText \"Goal: Fuel report \u00b7 waiting\"\n  - paragraph\n    - StaticText \"Execution units: 2\"\n  - paragraph\n    - StaticText \"RESPONSIBILITY:{\\\"action\\\": \\\"create\\\", \\\"creation_key\\\": \\\"fuel\\\", \\\"title\\\": \\\"Fuel report\\\", \\\"objective\\\": \\\"Prepare fuel report for Friday\\\"}\"\n  - paragraph\n    - StaticText \"RECOVERY_ACK_RESPONSIBILITY:{\\\"action\\\": \\\"create\\\", \\\"creation_key\\\": \\\"fuel\\\", \\\"title\\\": \\\"Fuel report\\\", \\\"objective\\\": \\\"Prepare fuel report for Friday\\\"}\"\n  - paragraph\n    - StaticText \"RESPONSIBILITY:{\\\"action\\\": \\\"schedule\\\", \\\"goal_id\\\": \\\"b18a9570-3814-424d-80e9-8b9ada0c55c7\\\", \\\"expected_revision\\\": \\\"1\\\", \\\"wake\\\": {\\\"kind\\\": \\\"once\\\", \\\"timezone\\\": \\\"Asia/Makassar\\\", \\\"missed_policy\\\": \\\"coalesce\\\", \\\"at\\\": \\\"2026-10-24T06:42:26.218398Z\\\"}}\"\n  - paragraph\n    - StaticText \"RECOVERY_ACK_RESPONSIBILITY:{\\\"action\\\": \\\"schedule\\\", \\\"goal_id\\\": \\\"b18a9570-3814-424d-80e9-8b9ada0c55c7\\\", \\\"expected_revision\\\": \\\"1\\\", \\\"wake\\\": {\\\"kind\\\": \\\"once\\\", \\\"timezone\\\": \\\"Asia/Makassar\\\", \\\"missed_policy\\\": \\\"coalesce\\\", \\\"at\\\": \\\"2026-10-24T06:42:26.218398Z\\\"}}\"\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "screenshot",
+        "/Users/vitoandareasmanik/Development/project/ngertiin/docs/research/evidence/nma-025-026/offline/schedule/browser-before.png"
+      ],
+      "stdout": "\u2713 Screenshot saved to /Users/vitoandareasmanik/Development/project/ngertiin/docs/research/evidence/nma-025-026/offline/schedule/browser-before.png\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "close"
+      ],
+      "stdout": "\u2713 Browser closed\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "open",
+        "http://127.0.0.1:52284"
+      ],
+      "stdout": "\u2713 Offline wake acceptance\n  http://127.0.0.1:52284/\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "get",
+        "text",
+        "body"
+      ],
+      "stdout": "Gateway snapshot harness\n\nGoal: Fuel report \u00b7 waiting\n\nExecution units: 3\n\nRESPONSIBILITY:{\"action\": \"create\", \"creation_key\": \"fuel\", \"title\": \"Fuel report\", \"objective\": \"Prepare fuel report for Friday\"}\n\nRECOVERY_ACK_RESPONSIBILITY:{\"action\": \"create\", \"creation_key\": \"fuel\", \"title\": \"Fuel report\", \"objective\": \"Prepare fuel report for Friday\"}\n\nRESPONSIBILITY:{\"action\": \"schedule\", \"goal_id\": \"b18a9570-3814-424d-80e9-8b9ada0c55c7\", \"expected_revision\": \"1\", \"wake\": {\"kind\": \"once\", \"timezone\": \"Asia/Makassar\", \"missed_policy\": \"coalesce\", \"at\": \"2026-10-24T06:42:26.218398Z\"}}\n\nRECOVERY_ACK_RESPONSIBILITY:{\"action\": \"schedule\", \"goal_id\": \"b18a9570-3814-424d-80e9-8b9ada0c55c7\", \"expected_revision\": \"1\", \"wake\": {\"kind\": \"once\", \"timezone\": \"Asia/Makassar\", \"missed_policy\": \"coalesce\", \"at\": \"2026-10-24T06:42:26.218398Z\"}}\n\nRESULT: fuel calculation is 12 litres per 100 km.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "screenshot",
+        "/Users/vitoandareasmanik/Development/project/ngertiin/docs/research/evidence/nma-025-026/offline/schedule/browser-after.png"
+      ],
+      "stdout": "\u2713 Screenshot saved to /Users/vitoandareasmanik/Development/project/ngertiin/docs/research/evidence/nma-025-026/offline/schedule/browser-after.png\n",
+      "stderr": ""
+    }
+  ]
+}

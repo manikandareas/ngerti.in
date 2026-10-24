@@ -1,7 +1,7 @@
 [project]
 name = "ngertiin-backend"
 version = "0.1.0"
-description = "Ngertiin API and durable workers"
+description = "Ngertiin product API and trusted computer actuator"
 requires-python = ">=3.12,<3.14"
 dependencies = [
   "fastapi",
@@ -9,23 +9,13 @@ dependencies = [
   "sqlmodel",
   "alembic",
   "psycopg[binary,pool]",
-  "pgvector",
-  "procrastinate",
-  "langchain",
-  "langgraph",
-  "langgraph-checkpoint-postgres",
   "clerk-backend-api",
   "pydantic",
   "pydantic-settings",
   "boto3",
   "structlog",
-  "python-multipart",
-  "langchain-openai>=1,<2",
   "httpx>=0.28.1",
-  "pypdf>=6.21.1",
-  "pillow>=13.0.0",
   "websockets>=15,<16",
-  "mem0ai==2.2.1",
   "e2b==2.56.0",
 ]
 

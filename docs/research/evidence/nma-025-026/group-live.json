@@ -1,0 +1,2424 @@
+{
+  "model": "gpt-6.1-sol",
+  "receipt": {
+    "command_id": "3dc90743-bfb8-444f-980a-216d45f129d4",
+    "committed_seq": "7",
+    "discussion_id": "a3d27fa6-a522-5f79-b8ca-97ba44ea367a",
+    "message_id": "0954ca67-98bc-5b53-9c1c-3d01f1e00236",
+    "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+    "schema_version": "nma.v1",
+    "status": "accepted",
+    "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8"
+  },
+  "snapshot": {
+    "artifacts": [],
+    "discussion": {
+      "discussion_id": "a3d27fa6-a522-5f79-b8ca-97ba44ea367a",
+      "reason": "goal_fenced",
+      "status": "cancelled"
+    },
+    "goals": [
+      {
+        "created_at": "2026-10-24T06:22:09.668Z",
+        "creation_key": "fuel-efficiency-report",
+        "evidence": [
+          {
+            "accepted_by_agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+            "criterion": "Writer contributes a short fuel-efficiency report using the existing shared goal and explicitly mentions @reviewer.",
+            "evidence_id": "6348a772-8f1a-58bf-a30f-3a0b27991db9",
+            "generation": "1",
+            "producing_run_id": "4be8b841-cc77-5536-9a27-904fb1d4f18f",
+            "source_message_id": "d1d28959-e162-55d6-afa0-83facdb17eec",
+            "summary": "Verified the writer's persisted report states 360 km, 45 litres, and 12.5 litres per 100 km, correctly explains lower consumption, references the shared goal, and requests @reviewer verification."
+          },
+          {
+            "accepted_by_agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+            "criterion": "Reviewer independently verifies the calculation and provides final review; responsible researcher verifies both peer contributions.",
+            "evidence_id": "4d633cca-45ec-5300-98e3-826cae675dfa",
+            "generation": "1",
+            "producing_run_id": "111d42ec-9f5a-5507-8a7c-5a53e10e313d",
+            "source_message_id": "1bfd0f0c-67cb-5c81-b94d-64fae0ca45a9",
+            "summary": "Verified reviewer's independent scaling: 360 km equals 3.6 hundred-kilometre units, and 45 / 3.6 = 12.5 litres per 100 km. Reviewer approved calculation, units and interpretation. Both persisted peer contributions agree with the original calculation and satisfy the requested report and review."
+          }
+        ],
+        "generation": "2",
+        "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+        "objective": "Calculate fuel consumption for 360 km travelled using 45 litres, expressed in litres per 100 km. Have @writer contribute a short report using this shared goal and explicitly mention @reviewer for an independent calculation check and final review. As responsible agent, verify both peer contributions and complete the goal only with persisted evidence.",
+        "progress": "Verified the writer's persisted report states 360 km, 45 litres, and 12.5 litres per 100 km, correctly explains lower consumption, references the shared goal, and requests @reviewer verification.\nVerified reviewer's independent scaling: 360 km equals 3.6 hundred-kilometre units, and 45 / 3.6 = 12.5 litres per 100 km. Reviewer approved calculation, units and interpretation. Both persisted peer contributions agree with the original calculation and satisfy the requested report and review.",
+        "responsible_agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+        "revision": "5",
+        "source_message_id": "0954ca67-98bc-5b53-9c1c-3d01f1e00236",
+        "source_run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+        "status": "completed",
+        "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+        "title": "Prepare and review a short fuel-efficiency report",
+        "units": [
+          {
+            "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+            "generation": "1",
+            "parent_run_id": null,
+            "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+            "settled": true,
+            "status": "succeeded",
+            "verdict": "wait"
+          },
+          {
+            "agent_id": "a0c32fe8-617b-45be-a33a-db2f06e3779d",
+            "generation": "1",
+            "parent_run_id": null,
+            "run_id": "4be8b841-cc77-5536-9a27-904fb1d4f18f",
+            "settled": true,
+            "status": "succeeded",
+            "verdict": null
+          },
+          {
+            "agent_id": "6e415ea8-a441-4056-a415-62d614868af4",
+            "generation": "1",
+            "parent_run_id": null,
+            "run_id": "111d42ec-9f5a-5507-8a7c-5a53e10e313d",
+            "settled": true,
+            "status": "succeeded",
+            "verdict": null
+          },
+          {
+            "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+            "generation": "1",
+            "parent_run_id": null,
+            "run_id": "bd4dc571-9db7-5b6e-8253-e77e03de025a",
+            "settled": true,
+            "status": "succeeded",
+            "verdict": "done"
+          }
+        ],
+        "updated_at": "2026-10-24T06:22:34.800Z",
+        "wake": null,
+        "wake_condition": null
+      }
+    ],
+    "messages": [
+      {
+        "author_agent_id": null,
+        "author_kind": "user",
+        "content": "@researcher take responsibility for a short fuel-efficiency report: 360 km and 45 litres. Calculate litres per 100 km, then explicitly mention @writer to draft the report. Writer: use the existing shared goal and mention @reviewer to check your report. Reviewer: verify the calculation and give the final review. Each peer must contribute its own result. Researcher remains responsible for the goal lifecycle and should verify peer results before completing. Keep working without another user message.",
+        "context_generation": "1",
+        "message_id": "0954ca67-98bc-5b53-9c1c-3d01f1e00236",
+        "message_seq": "1",
+        "parts": [
+          {
+            "text": "@researcher take responsibility for a short fuel-efficiency report: 360 km and 45 litres. Calculate litres per 100 km, then explicitly mention @writer to draft the report. Writer: use the existing shared goal and mention @reviewer to check your report. Reviewer: verify the calculation and give the final review. Each peer must contribute its own result. Researcher remains responsible for the goal lifecycle and should verify peer results before completing. Keep working without another user message.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+        "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8"
+      },
+      {
+        "author_agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+        "author_kind": "agent",
+        "content": "Fuel consumption = (45 \u00f7 360) \u00d7 100 = 12.5 litres per 100 km.\n\n@writer, draft the short report using shared goal 8f92b03b-7b9a-4824-b500-78ad488b53bc, then mention @reviewer for an independent calculation check and final review. I remain responsible for verifying both contributions before completing the goal.",
+        "context_generation": "1",
+        "message_id": "3cef88ec-1c74-53d3-b835-ced834c3fce7",
+        "message_seq": "2",
+        "parts": [
+          {
+            "text": "Fuel consumption = (45 \u00f7 360) \u00d7 100 = 12.5 litres per 100 km.\n\n@writer, draft the short report using shared goal 8f92b03b-7b9a-4824-b500-78ad488b53bc, then mention @reviewer for an independent calculation check and final review. I remain responsible for verifying both contributions before completing the goal.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+        "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8"
+      },
+      {
+        "author_agent_id": "a0c32fe8-617b-45be-a33a-db2f06e3779d",
+        "author_kind": "agent",
+        "content": "Draft report for shared goal 8f92b03b-7b9a-4824-b500-78ad488b53bc:\n\nThe vehicle travelled 360 km using 45 litres of fuel, averaging 12.5 litres per 100 km. This measures fuel consumption; a lower figure indicates better fuel efficiency.\n\n@reviewer, independently verify the calculation and give your final review.",
+        "context_generation": "1",
+        "message_id": "d1d28959-e162-55d6-afa0-83facdb17eec",
+        "message_seq": "3",
+        "parts": [
+          {
+            "text": "Draft report for shared goal 8f92b03b-7b9a-4824-b500-78ad488b53bc:\n\nThe vehicle travelled 360 km using 45 litres of fuel, averaging 12.5 litres per 100 km. This measures fuel consumption; a lower figure indicates better fuel efficiency.\n\n@reviewer, independently verify the calculation and give your final review.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "4be8b841-cc77-5536-9a27-904fb1d4f18f",
+        "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8"
+      },
+      {
+        "author_agent_id": "6e415ea8-a441-4056-a415-62d614868af4",
+        "author_kind": "agent",
+        "content": "Independent check: 360 km is 3.6 \u00d7 100 km, and 45 \u00f7 3.6 = 12.5 litres per 100 km. The draft\u2019s calculation, units and interpretation are correct. Final review: approved.\n\n@researcher, both peer contributions are ready for your verification and goal completion.",
+        "context_generation": "1",
+        "message_id": "1bfd0f0c-67cb-5c81-b94d-64fae0ca45a9",
+        "message_seq": "4",
+        "parts": [
+          {
+            "text": "Independent check: 360 km is 3.6 \u00d7 100 km, and 45 \u00f7 3.6 = 12.5 litres per 100 km. The draft\u2019s calculation, units and interpretation are correct. Final review: approved.\n\n@researcher, both peer contributions are ready for your verification and goal completion.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "111d42ec-9f5a-5507-8a7c-5a53e10e313d",
+        "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8"
+      },
+      {
+        "author_agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+        "author_kind": "agent",
+        "content": "I verified both peer contributions and recorded their evidence. The shared goal is now complete; the approved report needs no changes.",
+        "context_generation": "1",
+        "message_id": "1940bee5-afa5-5d81-8a09-3b7145647393",
+        "message_seq": "5",
+        "parts": [
+          {
+            "text": "I verified both peer contributions and recorded their evidence. The shared goal is now complete; the approved report needs no changes.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "bd4dc571-9db7-5b6e-8253-e77e03de025a",
+        "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8"
+      }
+    ],
+    "next_before_message_seq": null,
+    "replay_epoch": "13ba6302-165e-4868-ab0d-97ed0548be55",
+    "runs": [
+      {
+        "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "13ba6302-165e-4868-ab0d-97ed0548be55",
+        "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Fuel consumption = (45 \u00f7 360) \u00d7 100 = 12.5 litres per 100 km.\n\n@writer, draft the short report using shared goal 8f92b03b-7b9a-4824-b500-78ad488b53bc, then mention @reviewer for an independent calculation check and final review. I remain responsible for verifying both contributions before completing the goal.",
+        "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+        "through_sequence": "58"
+      },
+      {
+        "agent_id": "a0c32fe8-617b-45be-a33a-db2f06e3779d",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "13ba6302-165e-4868-ab0d-97ed0548be55",
+        "run_id": "4be8b841-cc77-5536-9a27-904fb1d4f18f",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Draft report for shared goal 8f92b03b-7b9a-4824-b500-78ad488b53bc:\n\nThe vehicle travelled 360 km using 45 litres of fuel, averaging 12.5 litres per 100 km. This measures fuel consumption; a lower figure indicates better fuel efficiency.\n\n@reviewer, independently verify the calculation and give your final review.",
+        "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+        "through_sequence": "58"
+      },
+      {
+        "agent_id": "6e415ea8-a441-4056-a415-62d614868af4",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "13ba6302-165e-4868-ab0d-97ed0548be55",
+        "run_id": "111d42ec-9f5a-5507-8a7c-5a53e10e313d",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Independent check: 360 km is 3.6 \u00d7 100 km, and 45 \u00f7 3.6 = 12.5 litres per 100 km. The draft\u2019s calculation, units and interpretation are correct. Final review: approved.\n\n@researcher, both peer contributions are ready for your verification and goal completion.",
+        "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+        "through_sequence": "58"
+      },
+      {
+        "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "13ba6302-165e-4868-ab0d-97ed0548be55",
+        "run_id": "bd4dc571-9db7-5b6e-8253-e77e03de025a",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "I verified both peer contributions and recorded their evidence. The shared goal is now complete; the approved report needs no changes.",
+        "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+        "through_sequence": "58"
+      }
+    ],
+    "schema_version": "nma.v1",
+    "thread": {
+      "agents": [
+        {
+          "access_generation": "1",
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config": {
+            "instructions": "",
+            "model": "test",
+            "soul": "SOUL_researcher"
+          },
+          "config_revision": "1",
+          "created_at": "2026-10-24T06:22:03.568662Z",
+          "display_name": "researcher",
+          "handle": "researcher",
+          "revision": "1",
+          "status": "active",
+          "updated_at": "2026-10-24T06:22:03.568662Z"
+        },
+        {
+          "access_generation": "1",
+          "agent_id": "a0c32fe8-617b-45be-a33a-db2f06e3779d",
+          "config": {
+            "instructions": "",
+            "model": "test",
+            "soul": "SOUL_writer"
+          },
+          "config_revision": "1",
+          "created_at": "2026-10-24T06:22:03.573595Z",
+          "display_name": "writer",
+          "handle": "writer",
+          "revision": "1",
+          "status": "active",
+          "updated_at": "2026-10-24T06:22:03.573595Z"
+        },
+        {
+          "access_generation": "1",
+          "agent_id": "6e415ea8-a441-4056-a415-62d614868af4",
+          "config": {
+            "instructions": "",
+            "model": "test",
+            "soul": "SOUL_reviewer"
+          },
+          "config_revision": "1",
+          "created_at": "2026-10-24T06:22:03.574289Z",
+          "display_name": "reviewer",
+          "handle": "reviewer",
+          "revision": "1",
+          "status": "active",
+          "updated_at": "2026-10-24T06:22:03.574289Z"
+        }
+      ],
+      "context_generation": "1",
+      "dm_agent_id": null,
+      "kind": "group",
+      "membership_revision": "1",
+      "revision": "1",
+      "status": "open",
+      "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+      "title": "Editorial"
+    },
+    "through_sequence": "58"
+  },
+  "diagnoses": [
+    {
+      "admission_state": "applied",
+      "command_id": "5fc66a0a-6e0b-56fd-ab86-01a076d855a1",
+      "discussion_ids": [
+        "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+      ],
+      "effects": [],
+      "event_limit": 256,
+      "goal_ids": [
+        "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+      ],
+      "handoff_ids": [
+        "dtask:25b35cf99d008bb4988be9b2ae09e6b5517e6786a8bd0a96"
+      ],
+      "message_ids": [
+        "0954ca67-98bc-5b53-9c1c-3d01f1e00236",
+        "3cef88ec-1c74-53d3-b835-ced834c3fce7"
+      ],
+      "parent_run_ids": [],
+      "recent_events": [
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "7e2283fd-e1a7-4896-ba22-500ab66f6892",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:25b35cf99d008bb4988be9b2ae09e6b5517e6786a8bd0a96"
+          ],
+          "occurred_at": "2026-10-24T06:22:03.581647+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "discussion_id": "a3d27fa6-a522-5f79-b8ca-97ba44ea367a",
+            "round": 1,
+            "status": "queued"
+          },
+          "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+          "schema_version": "nma.v1",
+          "sequence": "5",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "run.accepted"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "59b6bd17-ea54-4718-a102-4899dc3627c8",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:25b35cf99d008bb4988be9b2ae09e6b5517e6786a8bd0a96"
+          ],
+          "occurred_at": "2026-10-24T06:22:03.581808+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "author_agent_id": null,
+            "author_kind": "user",
+            "content": "@researcher take responsibility for a short fuel-efficiency report: 360 km and 45 litres. Calculate litres per 100 km, then explicitly mention @writer to draft the report. Writer: use the existing shared goal and mention @reviewer to check your report. Reviewer: verify the calculation and give the final review. Each peer must contribute its own result. Researcher remains responsible for the goal lifecycle and should verify peer results before completing. Keep working without another user message.",
+            "context_generation": "1",
+            "message_id": "0954ca67-98bc-5b53-9c1c-3d01f1e00236",
+            "message_seq": "1",
+            "parts": [
+              {
+                "text": "@researcher take responsibility for a short fuel-efficiency report: 360 km and 45 litres. Calculate litres per 100 km, then explicitly mention @writer to draft the report. Writer: use the existing shared goal and mention @reviewer to check your report. Reviewer: verify the calculation and give the final review. Each peer must contribute its own result. Researcher remains responsible for the goal lifecycle and should verify peer results before completing. Keep working without another user message.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+            "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8"
+          },
+          "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+          "schema_version": "nma.v1",
+          "sequence": "6",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "message.created"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "ffcc2c5c-a7e0-4a23-8669-34e06408ab4f",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:25b35cf99d008bb4988be9b2ae09e6b5517e6786a8bd0a96"
+          ],
+          "occurred_at": "2026-10-24T06:22:03.605236+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "discussion": {
+              "discussion_id": "a3d27fa6-a522-5f79-b8ca-97ba44ea367a",
+              "reason": "member_turn",
+              "status": "active"
+            }
+          },
+          "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+          "schema_version": "nma.v1",
+          "sequence": "9",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "discussion.changed"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "87ff2cb0-e301-475a-8c1c-28ec610f2cdd",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:25b35cf99d008bb4988be9b2ae09e6b5517e6786a8bd0a96"
+          ],
+          "occurred_at": "2026-10-24T06:22:03.613269+00:00",
+          "parent_run_ids": [],
+          "payload": {},
+          "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+          "schema_version": "nma.v1",
+          "sequence": "10",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "run.started"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "05e6ab41-1c5b-4c5b-9c12-7d2b2ff92a90",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [
+            "dtask:25b35cf99d008bb4988be9b2ae09e6b5517e6786a8bd0a96"
+          ],
+          "occurred_at": "2026-10-24T06:22:09.663699+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "tool_call_id": "call_N9o2nBC6ldTkjyhWv2Eu9Vq3",
+            "tool_name": "responsibility"
+          },
+          "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+          "schema_version": "nma.v1",
+          "sequence": "11",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "tool.started"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "b6d91e6d-0844-4c24-95c2-8479acbb80b1",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:25b35cf99d008bb4988be9b2ae09e6b5517e6786a8bd0a96"
+          ],
+          "occurred_at": "2026-10-24T06:22:09.668499+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "goal": {
+              "created_at": "2026-10-24T06:22:09.668Z",
+              "creation_key": "fuel-efficiency-report",
+              "evidence": [],
+              "generation": "1",
+              "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+              "objective": "Calculate fuel consumption for 360 km travelled using 45 litres, expressed in litres per 100 km. Have @writer contribute a short report using this shared goal and explicitly mention @reviewer for an independent calculation check and final review. As responsible agent, verify both peer contributions and complete the goal only with persisted evidence.",
+              "progress": "",
+              "responsible_agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+              "revision": "1",
+              "source_message_id": "0954ca67-98bc-5b53-9c1c-3d01f1e00236",
+              "source_run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+              "status": "active",
+              "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+              "title": "Prepare and review a short fuel-efficiency report",
+              "units": [
+                {
+                  "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+                  "settled": false,
+                  "status": "pending",
+                  "verdict": null
+                }
+              ],
+              "updated_at": "2026-10-24T06:22:09.668Z",
+              "wake": null,
+              "wake_condition": null
+            },
+            "operation_id": "c87ada5b40931a198ddc2a618aa421c50aee875630408fb9dbbe3cd27a78bad6",
+            "source_message_id": "0954ca67-98bc-5b53-9c1c-3d01f1e00236"
+          },
+          "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+          "schema_version": "nma.v1",
+          "sequence": "12",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "goal.changed"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "dc9bd1dd-45bd-4907-be09-170560eebd23",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:25b35cf99d008bb4988be9b2ae09e6b5517e6786a8bd0a96"
+          ],
+          "occurred_at": "2026-10-24T06:22:09.671347+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "is_error": false,
+            "tool_call_id": "call_N9o2nBC6ldTkjyhWv2Eu9Vq3",
+            "tool_name": "responsibility"
+          },
+          "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+          "schema_version": "nma.v1",
+          "sequence": "13",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "tool.completed"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "1ffea1bc-e565-433f-ab2b-e0014b204c6d",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:25b35cf99d008bb4988be9b2ae09e6b5517e6786a8bd0a96"
+          ],
+          "occurred_at": "2026-10-24T06:22:13.158943+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "tool_call_id": "call_ONNYz6BNBsfm8utn3IfJxvuV",
+            "tool_name": "responsibility"
+          },
+          "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+          "schema_version": "nma.v1",
+          "sequence": "14",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "tool.started"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "06783b09-b81d-4515-9fd9-cde5bac1f40b",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:25b35cf99d008bb4988be9b2ae09e6b5517e6786a8bd0a96"
+          ],
+          "occurred_at": "2026-10-24T06:22:13.161523+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "goal": {
+              "created_at": "2026-10-24T06:22:09.668Z",
+              "creation_key": "fuel-efficiency-report",
+              "evidence": [],
+              "generation": "1",
+              "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+              "objective": "Calculate fuel consumption for 360 km travelled using 45 litres, expressed in litres per 100 km. Have @writer contribute a short report using this shared goal and explicitly mention @reviewer for an independent calculation check and final review. As responsible agent, verify both peer contributions and complete the goal only with persisted evidence.",
+              "progress": "Calculated consumption as (45 litres / 360 km) \u00d7 100 = 12.5 litres per 100 km. Delegating the short report to @writer, followed by @reviewer's independent check; responsible researcher will verify both peer results before completion.",
+              "responsible_agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+              "revision": "2",
+              "source_message_id": "0954ca67-98bc-5b53-9c1c-3d01f1e00236",
+              "source_run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+              "status": "waiting",
+              "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+              "title": "Prepare and review a short fuel-efficiency report",
+              "units": [
+                {
+                  "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+                  "settled": false,
+                  "status": "pending",
+                  "verdict": "wait"
+                }
+              ],
+              "updated_at": "2026-10-24T06:22:13.161Z",
+              "wake": null,
+              "wake_condition": "@writer contributes the short report and @reviewer contributes an independent calculation check and final review in this shared discussion."
+            },
+            "operation_id": "57adbfed7d683ba439c8e189a1f6f598c94bfbf1193028665c1d6cec684fba17",
+            "source_message_id": "0954ca67-98bc-5b53-9c1c-3d01f1e00236"
+          },
+          "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+          "schema_version": "nma.v1",
+          "sequence": "15",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "goal.changed"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "55407524-aadb-4305-854c-649ae37e13e4",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:25b35cf99d008bb4988be9b2ae09e6b5517e6786a8bd0a96"
+          ],
+          "occurred_at": "2026-10-24T06:22:13.164965+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "is_error": false,
+            "tool_call_id": "call_ONNYz6BNBsfm8utn3IfJxvuV",
+            "tool_name": "responsibility"
+          },
+          "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+          "schema_version": "nma.v1",
+          "sequence": "16",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "tool.completed"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "984c5fbf-1b53-456f-8c64-127278d6397e",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:25b35cf99d008bb4988be9b2ae09e6b5517e6786a8bd0a96"
+          ],
+          "occurred_at": "2026-10-24T06:22:15.900640+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "Fuel consumption = (45 \u00f7 360) \u00d7 100 = 12.5 litres per 100 km.\n\n@writer, draft the short report using shared goal 8f92b03b-7b9a-4824-b500-78ad488b53bc, then mention @reviewer for an independent calculation check and final review. I remain responsible for verifying both contributions before completing the goal."
+          },
+          "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+          "schema_version": "nma.v1",
+          "sequence": "17",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "message.completed"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "76dc8c68-2d04-4fcc-9ac0-d58f2f4a99a6",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:25b35cf99d008bb4988be9b2ae09e6b5517e6786a8bd0a96"
+          ],
+          "occurred_at": "2026-10-24T06:22:15.900744+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "error_code": null,
+            "message_id": "3cef88ec-1c74-53d3-b835-ced834c3fce7",
+            "status": "succeeded",
+            "text": "Fuel consumption = (45 \u00f7 360) \u00d7 100 = 12.5 litres per 100 km.\n\n@writer, draft the short report using shared goal 8f92b03b-7b9a-4824-b500-78ad488b53bc, then mention @reviewer for an independent calculation check and final review. I remain responsible for verifying both contributions before completing the goal."
+          },
+          "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+          "schema_version": "nma.v1",
+          "sequence": "18",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "run.succeeded"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "66a52061-062e-485a-9d59-bb8377dc61cf",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:25b35cf99d008bb4988be9b2ae09e6b5517e6786a8bd0a96"
+          ],
+          "occurred_at": "2026-10-24T06:22:15.925405+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "author_agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+            "author_kind": "agent",
+            "content": "Fuel consumption = (45 \u00f7 360) \u00d7 100 = 12.5 litres per 100 km.\n\n@writer, draft the short report using shared goal 8f92b03b-7b9a-4824-b500-78ad488b53bc, then mention @reviewer for an independent calculation check and final review. I remain responsible for verifying both contributions before completing the goal.",
+            "context_generation": "1",
+            "message_id": "3cef88ec-1c74-53d3-b835-ced834c3fce7",
+            "message_seq": "2",
+            "parts": [
+              {
+                "text": "Fuel consumption = (45 \u00f7 360) \u00d7 100 = 12.5 litres per 100 km.\n\n@writer, draft the short report using shared goal 8f92b03b-7b9a-4824-b500-78ad488b53bc, then mention @reviewer for an independent calculation check and final review. I remain responsible for verifying both contributions before completing the goal.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+            "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8"
+          },
+          "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+          "schema_version": "nma.v1",
+          "sequence": "19",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "message.created"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "9aea7500-6307-482e-b4b3-e442cdf6673e",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:25b35cf99d008bb4988be9b2ae09e6b5517e6786a8bd0a96"
+          ],
+          "occurred_at": "2026-10-24T06:22:15.925490+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "status": "delivered"
+          },
+          "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+          "schema_version": "nma.v1",
+          "sequence": "20",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "delivery.settled"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "1a68be16-387f-40b7-aff2-3c3795ecfb74",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:25b35cf99d008bb4988be9b2ae09e6b5517e6786a8bd0a96"
+          ],
+          "occurred_at": "2026-10-24T06:22:34.859209+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "discussion": {
+              "discussion_id": "a3d27fa6-a522-5f79-b8ca-97ba44ea367a",
+              "reason": "goal_fenced",
+              "status": "cancelled"
+            }
+          },
+          "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+          "schema_version": "nma.v1",
+          "sequence": "50",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "discussion.changed"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "29d851a1-c5dd-4bc0-a8c6-04078d50ec27",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:25b35cf99d008bb4988be9b2ae09e6b5517e6786a8bd0a96"
+          ],
+          "occurred_at": "2026-10-24T06:22:34.867424+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "goal": {
+              "created_at": "2026-10-24T06:22:09.668Z",
+              "creation_key": "fuel-efficiency-report",
+              "evidence": [
+                {
+                  "accepted_by_agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+                  "criterion": "Writer contributes a short fuel-efficiency report using the existing shared goal and explicitly mentions @reviewer.",
+                  "evidence_id": "6348a772-8f1a-58bf-a30f-3a0b27991db9",
+                  "generation": "1",
+                  "producing_run_id": "4be8b841-cc77-5536-9a27-904fb1d4f18f",
+                  "source_message_id": "d1d28959-e162-55d6-afa0-83facdb17eec",
+                  "summary": "Verified the writer's persisted report states 360 km, 45 litres, and 12.5 litres per 100 km, correctly explains lower consumption, references the shared goal, and requests @reviewer verification."
+                },
+                {
+                  "accepted_by_agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+                  "criterion": "Reviewer independently verifies the calculation and provides final review; responsible researcher verifies both peer contributions.",
+                  "evidence_id": "4d633cca-45ec-5300-98e3-826cae675dfa",
+                  "generation": "1",
+                  "producing_run_id": "111d42ec-9f5a-5507-8a7c-5a53e10e313d",
+                  "source_message_id": "1bfd0f0c-67cb-5c81-b94d-64fae0ca45a9",
+                  "summary": "Verified reviewer's independent scaling: 360 km equals 3.6 hundred-kilometre units, and 45 / 3.6 = 12.5 litres per 100 km. Reviewer approved calculation, units and interpretation. Both persisted peer contributions agree with the original calculation and satisfy the requested report and review."
+                }
+              ],
+              "generation": "2",
+              "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+              "objective": "Calculate fuel consumption for 360 km travelled using 45 litres, expressed in litres per 100 km. Have @writer contribute a short report using this shared goal and explicitly mention @reviewer for an independent calculation check and final review. As responsible agent, verify both peer contributions and complete the goal only with persisted evidence.",
+              "progress": "Verified the writer's persisted report states 360 km, 45 litres, and 12.5 litres per 100 km, correctly explains lower consumption, references the shared goal, and requests @reviewer verification.\nVerified reviewer's independent scaling: 360 km equals 3.6 hundred-kilometre units, and 45 / 3.6 = 12.5 litres per 100 km. Reviewer approved calculation, units and interpretation. Both persisted peer contributions agree with the original calculation and satisfy the requested report and review.",
+              "responsible_agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+              "revision": "5",
+              "source_message_id": "0954ca67-98bc-5b53-9c1c-3d01f1e00236",
+              "source_run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+              "status": "completed",
+              "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+              "title": "Prepare and review a short fuel-efficiency report",
+              "units": [
+                {
+                  "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": "wait"
+                },
+                {
+                  "agent_id": "a0c32fe8-617b-45be-a33a-db2f06e3779d",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "4be8b841-cc77-5536-9a27-904fb1d4f18f",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": null
+                },
+                {
+                  "agent_id": "6e415ea8-a441-4056-a415-62d614868af4",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "111d42ec-9f5a-5507-8a7c-5a53e10e313d",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": null
+                },
+                {
+                  "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "bd4dc571-9db7-5b6e-8253-e77e03de025a",
+                  "settled": false,
+                  "status": "pending",
+                  "verdict": "done"
+                }
+              ],
+              "updated_at": "2026-10-24T06:22:34.800Z",
+              "wake": null,
+              "wake_condition": null
+            },
+            "source_message_id": "0954ca67-98bc-5b53-9c1c-3d01f1e00236"
+          },
+          "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+          "schema_version": "nma.v1",
+          "sequence": "51",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "goal.changed"
+        }
+      ],
+      "run": {
+        "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "13ba6302-165e-4868-ab0d-97ed0548be55",
+        "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Fuel consumption = (45 \u00f7 360) \u00d7 100 = 12.5 litres per 100 km.\n\n@writer, draft the short report using shared goal 8f92b03b-7b9a-4824-b500-78ad488b53bc, then mention @reviewer for an independent calculation check and final review. I remain responsible for verifying both contributions before completing the goal.",
+        "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+        "through_sequence": "58"
+      },
+      "trigger_ids": [],
+      "usage": {
+        "available": true,
+        "input_tokens": 11784,
+        "output_tokens": 327,
+        "source": "native_terminal_receipt",
+        "total_tokens": 12111
+      }
+    },
+    {
+      "admission_state": "applied",
+      "command_id": "96f2fc18-e205-5f04-b7e9-41a2b7b0aa7d",
+      "discussion_ids": [
+        "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+      ],
+      "effects": [],
+      "event_limit": 256,
+      "goal_ids": [
+        "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+      ],
+      "handoff_ids": [
+        "dtask:3444d9b0a7ccebc37b22ada90bcc3d76b921707daa71360e"
+      ],
+      "message_ids": [
+        "d1d28959-e162-55d6-afa0-83facdb17eec"
+      ],
+      "parent_run_ids": [],
+      "recent_events": [
+        {
+          "agent_id": "a0c32fe8-617b-45be-a33a-db2f06e3779d",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "76fc3251-d006-4b40-ad3d-d926f07c9136",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:3444d9b0a7ccebc37b22ada90bcc3d76b921707daa71360e"
+          ],
+          "occurred_at": "2026-10-24T06:22:16.141471+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "goal": {
+              "created_at": "2026-10-24T06:22:09.668Z",
+              "creation_key": "fuel-efficiency-report",
+              "evidence": [],
+              "generation": "1",
+              "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+              "objective": "Calculate fuel consumption for 360 km travelled using 45 litres, expressed in litres per 100 km. Have @writer contribute a short report using this shared goal and explicitly mention @reviewer for an independent calculation check and final review. As responsible agent, verify both peer contributions and complete the goal only with persisted evidence.",
+              "progress": "Calculated consumption as (45 litres / 360 km) \u00d7 100 = 12.5 litres per 100 km. Delegating the short report to @writer, followed by @reviewer's independent check; responsible researcher will verify both peer results before completion.",
+              "responsible_agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+              "revision": "2",
+              "source_message_id": "0954ca67-98bc-5b53-9c1c-3d01f1e00236",
+              "source_run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+              "status": "waiting",
+              "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+              "title": "Prepare and review a short fuel-efficiency report",
+              "units": [
+                {
+                  "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+                  "settled": false,
+                  "status": "succeeded",
+                  "verdict": "wait"
+                },
+                {
+                  "agent_id": "a0c32fe8-617b-45be-a33a-db2f06e3779d",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "4be8b841-cc77-5536-9a27-904fb1d4f18f",
+                  "settled": true,
+                  "status": "pending",
+                  "verdict": null
+                }
+              ],
+              "updated_at": "2026-10-24T06:22:13.161Z",
+              "wake": null,
+              "wake_condition": "@writer contributes the short report and @reviewer contributes an independent calculation check and final review in this shared discussion."
+            }
+          },
+          "run_id": "4be8b841-cc77-5536-9a27-904fb1d4f18f",
+          "schema_version": "nma.v1",
+          "sequence": "21",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "goal.changed"
+        },
+        {
+          "agent_id": "a0c32fe8-617b-45be-a33a-db2f06e3779d",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "ce7c3bee-4fd8-4259-8537-dcb36141d214",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:3444d9b0a7ccebc37b22ada90bcc3d76b921707daa71360e"
+          ],
+          "occurred_at": "2026-10-24T06:22:16.141590+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "discussion_id": "a3d27fa6-a522-5f79-b8ca-97ba44ea367a",
+            "round": 1,
+            "status": "queued"
+          },
+          "run_id": "4be8b841-cc77-5536-9a27-904fb1d4f18f",
+          "schema_version": "nma.v1",
+          "sequence": "22",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "run.accepted"
+        },
+        {
+          "agent_id": "a0c32fe8-617b-45be-a33a-db2f06e3779d",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "68457640-412d-450f-97b9-102817af0d50",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:3444d9b0a7ccebc37b22ada90bcc3d76b921707daa71360e"
+          ],
+          "occurred_at": "2026-10-24T06:22:16.440796+00:00",
+          "parent_run_ids": [],
+          "payload": {},
+          "run_id": "4be8b841-cc77-5536-9a27-904fb1d4f18f",
+          "schema_version": "nma.v1",
+          "sequence": "24",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "run.started"
+        },
+        {
+          "agent_id": "a0c32fe8-617b-45be-a33a-db2f06e3779d",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "40d1fa6a-508b-4d4e-963f-626a0158e52e",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:3444d9b0a7ccebc37b22ada90bcc3d76b921707daa71360e"
+          ],
+          "occurred_at": "2026-10-24T06:22:19.839136+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "Draft report for shared goal 8f92b03b-7b9a-4824-b500-78ad488b53bc:\n\nThe vehicle travelled 360 km using 45 litres of fuel, averaging 12.5 litres per 100 km. This measures fuel consumption; a lower figure indicates better fuel efficiency.\n\n@reviewer, independently verify the calculation and give your final review."
+          },
+          "run_id": "4be8b841-cc77-5536-9a27-904fb1d4f18f",
+          "schema_version": "nma.v1",
+          "sequence": "25",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "message.completed"
+        },
+        {
+          "agent_id": "a0c32fe8-617b-45be-a33a-db2f06e3779d",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "01380088-c3e1-4c59-a2f1-17271e5b1bfa",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:3444d9b0a7ccebc37b22ada90bcc3d76b921707daa71360e"
+          ],
+          "occurred_at": "2026-10-24T06:22:19.839259+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "error_code": null,
+            "message_id": "d1d28959-e162-55d6-afa0-83facdb17eec",
+            "status": "succeeded",
+            "text": "Draft report for shared goal 8f92b03b-7b9a-4824-b500-78ad488b53bc:\n\nThe vehicle travelled 360 km using 45 litres of fuel, averaging 12.5 litres per 100 km. This measures fuel consumption; a lower figure indicates better fuel efficiency.\n\n@reviewer, independently verify the calculation and give your final review."
+          },
+          "run_id": "4be8b841-cc77-5536-9a27-904fb1d4f18f",
+          "schema_version": "nma.v1",
+          "sequence": "26",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "run.succeeded"
+        },
+        {
+          "agent_id": "a0c32fe8-617b-45be-a33a-db2f06e3779d",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "3c8f533f-a53c-46b1-971f-c74fa69abb62",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:3444d9b0a7ccebc37b22ada90bcc3d76b921707daa71360e"
+          ],
+          "occurred_at": "2026-10-24T06:22:20.027781+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "author_agent_id": "a0c32fe8-617b-45be-a33a-db2f06e3779d",
+            "author_kind": "agent",
+            "content": "Draft report for shared goal 8f92b03b-7b9a-4824-b500-78ad488b53bc:\n\nThe vehicle travelled 360 km using 45 litres of fuel, averaging 12.5 litres per 100 km. This measures fuel consumption; a lower figure indicates better fuel efficiency.\n\n@reviewer, independently verify the calculation and give your final review.",
+            "context_generation": "1",
+            "message_id": "d1d28959-e162-55d6-afa0-83facdb17eec",
+            "message_seq": "3",
+            "parts": [
+              {
+                "text": "Draft report for shared goal 8f92b03b-7b9a-4824-b500-78ad488b53bc:\n\nThe vehicle travelled 360 km using 45 litres of fuel, averaging 12.5 litres per 100 km. This measures fuel consumption; a lower figure indicates better fuel efficiency.\n\n@reviewer, independently verify the calculation and give your final review.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "4be8b841-cc77-5536-9a27-904fb1d4f18f",
+            "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8"
+          },
+          "run_id": "4be8b841-cc77-5536-9a27-904fb1d4f18f",
+          "schema_version": "nma.v1",
+          "sequence": "27",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "message.created"
+        },
+        {
+          "agent_id": "a0c32fe8-617b-45be-a33a-db2f06e3779d",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "31bf745f-8c2d-4a15-b08f-33a7474364df",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:3444d9b0a7ccebc37b22ada90bcc3d76b921707daa71360e"
+          ],
+          "occurred_at": "2026-10-24T06:22:20.027970+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "status": "delivered"
+          },
+          "run_id": "4be8b841-cc77-5536-9a27-904fb1d4f18f",
+          "schema_version": "nma.v1",
+          "sequence": "28",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "delivery.settled"
+        }
+      ],
+      "run": {
+        "agent_id": "a0c32fe8-617b-45be-a33a-db2f06e3779d",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "13ba6302-165e-4868-ab0d-97ed0548be55",
+        "run_id": "4be8b841-cc77-5536-9a27-904fb1d4f18f",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Draft report for shared goal 8f92b03b-7b9a-4824-b500-78ad488b53bc:\n\nThe vehicle travelled 360 km using 45 litres of fuel, averaging 12.5 litres per 100 km. This measures fuel consumption; a lower figure indicates better fuel efficiency.\n\n@reviewer, independently verify the calculation and give your final review.",
+        "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+        "through_sequence": "58"
+      },
+      "trigger_ids": [],
+      "usage": {
+        "available": true,
+        "input_tokens": 4532,
+        "output_tokens": 85,
+        "source": "native_terminal_receipt",
+        "total_tokens": 4617
+      }
+    },
+    {
+      "admission_state": "applied",
+      "command_id": "64d641bb-6c5e-52bb-8ea2-8a7c7af79e58",
+      "discussion_ids": [
+        "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+      ],
+      "effects": [],
+      "event_limit": 256,
+      "goal_ids": [
+        "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+      ],
+      "handoff_ids": [
+        "dtask:276cc8b710d29245425d6e3620ed6f5ac3066a2514976cfc"
+      ],
+      "message_ids": [
+        "1bfd0f0c-67cb-5c81-b94d-64fae0ca45a9"
+      ],
+      "parent_run_ids": [],
+      "recent_events": [
+        {
+          "agent_id": "6e415ea8-a441-4056-a415-62d614868af4",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "1696199c-2639-4122-b962-b1d4ceee3c9b",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:276cc8b710d29245425d6e3620ed6f5ac3066a2514976cfc"
+          ],
+          "occurred_at": "2026-10-24T06:22:20.102508+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "goal": {
+              "created_at": "2026-10-24T06:22:09.668Z",
+              "creation_key": "fuel-efficiency-report",
+              "evidence": [],
+              "generation": "1",
+              "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+              "objective": "Calculate fuel consumption for 360 km travelled using 45 litres, expressed in litres per 100 km. Have @writer contribute a short report using this shared goal and explicitly mention @reviewer for an independent calculation check and final review. As responsible agent, verify both peer contributions and complete the goal only with persisted evidence.",
+              "progress": "Calculated consumption as (45 litres / 360 km) \u00d7 100 = 12.5 litres per 100 km. Delegating the short report to @writer, followed by @reviewer's independent check; responsible researcher will verify both peer results before completion.",
+              "responsible_agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+              "revision": "2",
+              "source_message_id": "0954ca67-98bc-5b53-9c1c-3d01f1e00236",
+              "source_run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+              "status": "waiting",
+              "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+              "title": "Prepare and review a short fuel-efficiency report",
+              "units": [
+                {
+                  "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+                  "settled": false,
+                  "status": "succeeded",
+                  "verdict": "wait"
+                },
+                {
+                  "agent_id": "a0c32fe8-617b-45be-a33a-db2f06e3779d",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "4be8b841-cc77-5536-9a27-904fb1d4f18f",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": null
+                },
+                {
+                  "agent_id": "6e415ea8-a441-4056-a415-62d614868af4",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "111d42ec-9f5a-5507-8a7c-5a53e10e313d",
+                  "settled": true,
+                  "status": "pending",
+                  "verdict": null
+                }
+              ],
+              "updated_at": "2026-10-24T06:22:13.161Z",
+              "wake": null,
+              "wake_condition": "@writer contributes the short report and @reviewer contributes an independent calculation check and final review in this shared discussion."
+            }
+          },
+          "run_id": "111d42ec-9f5a-5507-8a7c-5a53e10e313d",
+          "schema_version": "nma.v1",
+          "sequence": "29",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "goal.changed"
+        },
+        {
+          "agent_id": "6e415ea8-a441-4056-a415-62d614868af4",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "88c61022-a307-43fd-b423-91c1969b267e",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:276cc8b710d29245425d6e3620ed6f5ac3066a2514976cfc"
+          ],
+          "occurred_at": "2026-10-24T06:22:20.102711+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "discussion_id": "a3d27fa6-a522-5f79-b8ca-97ba44ea367a",
+            "round": 1,
+            "status": "queued"
+          },
+          "run_id": "111d42ec-9f5a-5507-8a7c-5a53e10e313d",
+          "schema_version": "nma.v1",
+          "sequence": "30",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "run.accepted"
+        },
+        {
+          "agent_id": "6e415ea8-a441-4056-a415-62d614868af4",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "7cf5e4d9-ce4e-4c46-9ddb-cfcd73f56146",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:276cc8b710d29245425d6e3620ed6f5ac3066a2514976cfc"
+          ],
+          "occurred_at": "2026-10-24T06:22:20.398311+00:00",
+          "parent_run_ids": [],
+          "payload": {},
+          "run_id": "111d42ec-9f5a-5507-8a7c-5a53e10e313d",
+          "schema_version": "nma.v1",
+          "sequence": "32",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "run.started"
+        },
+        {
+          "agent_id": "6e415ea8-a441-4056-a415-62d614868af4",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "2d30951b-9c2f-4fad-81fb-91d6475f52af",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:276cc8b710d29245425d6e3620ed6f5ac3066a2514976cfc"
+          ],
+          "occurred_at": "2026-10-24T06:22:23.377765+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "Independent check: 360 km is 3.6 \u00d7 100 km, and 45 \u00f7 3.6 = 12.5 litres per 100 km. The draft\u2019s calculation, units and interpretation are correct. Final review: approved.\n\n@researcher, both peer contributions are ready for your verification and goal completion."
+          },
+          "run_id": "111d42ec-9f5a-5507-8a7c-5a53e10e313d",
+          "schema_version": "nma.v1",
+          "sequence": "33",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "message.completed"
+        },
+        {
+          "agent_id": "6e415ea8-a441-4056-a415-62d614868af4",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "1a383707-4c32-4b56-bc2c-0510d5ea2b67",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:276cc8b710d29245425d6e3620ed6f5ac3066a2514976cfc"
+          ],
+          "occurred_at": "2026-10-24T06:22:23.377903+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "error_code": null,
+            "message_id": "1bfd0f0c-67cb-5c81-b94d-64fae0ca45a9",
+            "status": "succeeded",
+            "text": "Independent check: 360 km is 3.6 \u00d7 100 km, and 45 \u00f7 3.6 = 12.5 litres per 100 km. The draft\u2019s calculation, units and interpretation are correct. Final review: approved.\n\n@researcher, both peer contributions are ready for your verification and goal completion."
+          },
+          "run_id": "111d42ec-9f5a-5507-8a7c-5a53e10e313d",
+          "schema_version": "nma.v1",
+          "sequence": "34",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "run.succeeded"
+        },
+        {
+          "agent_id": "6e415ea8-a441-4056-a415-62d614868af4",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "566a85bc-73e1-4534-9a4e-0d0c42ea5f11",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:276cc8b710d29245425d6e3620ed6f5ac3066a2514976cfc"
+          ],
+          "occurred_at": "2026-10-24T06:22:23.513219+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "author_agent_id": "6e415ea8-a441-4056-a415-62d614868af4",
+            "author_kind": "agent",
+            "content": "Independent check: 360 km is 3.6 \u00d7 100 km, and 45 \u00f7 3.6 = 12.5 litres per 100 km. The draft\u2019s calculation, units and interpretation are correct. Final review: approved.\n\n@researcher, both peer contributions are ready for your verification and goal completion.",
+            "context_generation": "1",
+            "message_id": "1bfd0f0c-67cb-5c81-b94d-64fae0ca45a9",
+            "message_seq": "4",
+            "parts": [
+              {
+                "text": "Independent check: 360 km is 3.6 \u00d7 100 km, and 45 \u00f7 3.6 = 12.5 litres per 100 km. The draft\u2019s calculation, units and interpretation are correct. Final review: approved.\n\n@researcher, both peer contributions are ready for your verification and goal completion.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "111d42ec-9f5a-5507-8a7c-5a53e10e313d",
+            "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8"
+          },
+          "run_id": "111d42ec-9f5a-5507-8a7c-5a53e10e313d",
+          "schema_version": "nma.v1",
+          "sequence": "35",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "message.created"
+        },
+        {
+          "agent_id": "6e415ea8-a441-4056-a415-62d614868af4",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "6b92486c-ba1e-43f7-9b3f-fea21c4c1b15",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:276cc8b710d29245425d6e3620ed6f5ac3066a2514976cfc"
+          ],
+          "occurred_at": "2026-10-24T06:22:23.513370+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "status": "delivered"
+          },
+          "run_id": "111d42ec-9f5a-5507-8a7c-5a53e10e313d",
+          "schema_version": "nma.v1",
+          "sequence": "36",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "delivery.settled"
+        }
+      ],
+      "run": {
+        "agent_id": "6e415ea8-a441-4056-a415-62d614868af4",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "13ba6302-165e-4868-ab0d-97ed0548be55",
+        "run_id": "111d42ec-9f5a-5507-8a7c-5a53e10e313d",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Independent check: 360 km is 3.6 \u00d7 100 km, and 45 \u00f7 3.6 = 12.5 litres per 100 km. The draft\u2019s calculation, units and interpretation are correct. Final review: approved.\n\n@researcher, both peer contributions are ready for your verification and goal completion.",
+        "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+        "through_sequence": "58"
+      },
+      "trigger_ids": [],
+      "usage": {
+        "available": true,
+        "input_tokens": 4919,
+        "output_tokens": 72,
+        "source": "native_terminal_receipt",
+        "total_tokens": 4991
+      }
+    },
+    {
+      "admission_state": "applied",
+      "command_id": "d8db8eee-626a-55ba-aa5a-91b4a408359d",
+      "discussion_ids": [
+        "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+      ],
+      "effects": [],
+      "event_limit": 256,
+      "goal_ids": [
+        "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+      ],
+      "handoff_ids": [
+        "dtask:de3f9969425474b3c4969e1b7b1a6145d02d61b88340477f"
+      ],
+      "message_ids": [
+        "1940bee5-afa5-5d81-8a09-3b7145647393"
+      ],
+      "parent_run_ids": [],
+      "recent_events": [
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "3b14f71b-cf21-4a58-a851-292ce53915e7",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:de3f9969425474b3c4969e1b7b1a6145d02d61b88340477f"
+          ],
+          "occurred_at": "2026-10-24T06:22:23.520425+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "goal": {
+              "created_at": "2026-10-24T06:22:09.668Z",
+              "creation_key": "fuel-efficiency-report",
+              "evidence": [],
+              "generation": "1",
+              "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+              "objective": "Calculate fuel consumption for 360 km travelled using 45 litres, expressed in litres per 100 km. Have @writer contribute a short report using this shared goal and explicitly mention @reviewer for an independent calculation check and final review. As responsible agent, verify both peer contributions and complete the goal only with persisted evidence.",
+              "progress": "Calculated consumption as (45 litres / 360 km) \u00d7 100 = 12.5 litres per 100 km. Delegating the short report to @writer, followed by @reviewer's independent check; responsible researcher will verify both peer results before completion.",
+              "responsible_agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+              "revision": "2",
+              "source_message_id": "0954ca67-98bc-5b53-9c1c-3d01f1e00236",
+              "source_run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+              "status": "waiting",
+              "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+              "title": "Prepare and review a short fuel-efficiency report",
+              "units": [
+                {
+                  "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+                  "settled": false,
+                  "status": "succeeded",
+                  "verdict": "wait"
+                },
+                {
+                  "agent_id": "a0c32fe8-617b-45be-a33a-db2f06e3779d",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "4be8b841-cc77-5536-9a27-904fb1d4f18f",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": null
+                },
+                {
+                  "agent_id": "6e415ea8-a441-4056-a415-62d614868af4",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "111d42ec-9f5a-5507-8a7c-5a53e10e313d",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": null
+                },
+                {
+                  "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "bd4dc571-9db7-5b6e-8253-e77e03de025a",
+                  "settled": true,
+                  "status": "pending",
+                  "verdict": null
+                }
+              ],
+              "updated_at": "2026-10-24T06:22:13.161Z",
+              "wake": null,
+              "wake_condition": "@writer contributes the short report and @reviewer contributes an independent calculation check and final review in this shared discussion."
+            }
+          },
+          "run_id": "bd4dc571-9db7-5b6e-8253-e77e03de025a",
+          "schema_version": "nma.v1",
+          "sequence": "37",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "goal.changed"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "f0de227d-e8e2-4dd5-b379-71fdf07f9f38",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:de3f9969425474b3c4969e1b7b1a6145d02d61b88340477f"
+          ],
+          "occurred_at": "2026-10-24T06:22:23.520615+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "discussion_id": "a3d27fa6-a522-5f79-b8ca-97ba44ea367a",
+            "round": 2,
+            "status": "queued"
+          },
+          "run_id": "bd4dc571-9db7-5b6e-8253-e77e03de025a",
+          "schema_version": "nma.v1",
+          "sequence": "38",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "run.accepted"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "3b2bf511-09a7-4960-af82-d8703e60b707",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:de3f9969425474b3c4969e1b7b1a6145d02d61b88340477f"
+          ],
+          "occurred_at": "2026-10-24T06:22:23.833877+00:00",
+          "parent_run_ids": [],
+          "payload": {},
+          "run_id": "bd4dc571-9db7-5b6e-8253-e77e03de025a",
+          "schema_version": "nma.v1",
+          "sequence": "40",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "run.started"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "6defebdb-9aa4-40e4-814e-b92ad4e37c6a",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:de3f9969425474b3c4969e1b7b1a6145d02d61b88340477f"
+          ],
+          "occurred_at": "2026-10-24T06:22:27.718152+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "tool_call_id": "call_aCAzYohkwfi0NwL8FmsMGjme",
+            "tool_name": "responsibility"
+          },
+          "run_id": "bd4dc571-9db7-5b6e-8253-e77e03de025a",
+          "schema_version": "nma.v1",
+          "sequence": "41",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "tool.started"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "efdf2e8f-9764-4c2c-8b8f-e278f82e4001",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:de3f9969425474b3c4969e1b7b1a6145d02d61b88340477f"
+          ],
+          "occurred_at": "2026-10-24T06:22:27.720992+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "goal": {
+              "created_at": "2026-10-24T06:22:09.668Z",
+              "creation_key": "fuel-efficiency-report",
+              "evidence": [
+                {
+                  "accepted_by_agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+                  "criterion": "Writer contributes a short fuel-efficiency report using the existing shared goal and explicitly mentions @reviewer.",
+                  "evidence_id": "6348a772-8f1a-58bf-a30f-3a0b27991db9",
+                  "generation": "1",
+                  "producing_run_id": "4be8b841-cc77-5536-9a27-904fb1d4f18f",
+                  "source_message_id": "d1d28959-e162-55d6-afa0-83facdb17eec",
+                  "summary": "Verified the writer's persisted report states 360 km, 45 litres, and 12.5 litres per 100 km, correctly explains lower consumption, references the shared goal, and requests @reviewer verification."
+                }
+              ],
+              "generation": "1",
+              "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+              "objective": "Calculate fuel consumption for 360 km travelled using 45 litres, expressed in litres per 100 km. Have @writer contribute a short report using this shared goal and explicitly mention @reviewer for an independent calculation check and final review. As responsible agent, verify both peer contributions and complete the goal only with persisted evidence.",
+              "progress": "Calculated consumption as (45 litres / 360 km) \u00d7 100 = 12.5 litres per 100 km. Delegating the short report to @writer, followed by @reviewer's independent check; responsible researcher will verify both peer results before completion.",
+              "responsible_agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+              "revision": "3",
+              "source_message_id": "0954ca67-98bc-5b53-9c1c-3d01f1e00236",
+              "source_run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+              "status": "waiting",
+              "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+              "title": "Prepare and review a short fuel-efficiency report",
+              "units": [
+                {
+                  "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+                  "settled": false,
+                  "status": "succeeded",
+                  "verdict": "wait"
+                },
+                {
+                  "agent_id": "a0c32fe8-617b-45be-a33a-db2f06e3779d",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "4be8b841-cc77-5536-9a27-904fb1d4f18f",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": null
+                },
+                {
+                  "agent_id": "6e415ea8-a441-4056-a415-62d614868af4",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "111d42ec-9f5a-5507-8a7c-5a53e10e313d",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": null
+                },
+                {
+                  "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "bd4dc571-9db7-5b6e-8253-e77e03de025a",
+                  "settled": true,
+                  "status": "pending",
+                  "verdict": null
+                }
+              ],
+              "updated_at": "2026-10-24T06:22:27.720Z",
+              "wake": null,
+              "wake_condition": "@writer contributes the short report and @reviewer contributes an independent calculation check and final review in this shared discussion."
+            },
+            "operation_id": "28f54d69f3da4459dd03788fc57af51d296419ed335f6d3d7a5d0456fe7adb94",
+            "source_message_id": "0954ca67-98bc-5b53-9c1c-3d01f1e00236"
+          },
+          "run_id": "bd4dc571-9db7-5b6e-8253-e77e03de025a",
+          "schema_version": "nma.v1",
+          "sequence": "42",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "goal.changed"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "be5af728-7b81-4d07-961f-586eee997f93",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:de3f9969425474b3c4969e1b7b1a6145d02d61b88340477f"
+          ],
+          "occurred_at": "2026-10-24T06:22:27.724830+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "is_error": false,
+            "tool_call_id": "call_aCAzYohkwfi0NwL8FmsMGjme",
+            "tool_name": "responsibility"
+          },
+          "run_id": "bd4dc571-9db7-5b6e-8253-e77e03de025a",
+          "schema_version": "nma.v1",
+          "sequence": "43",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "tool.completed"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "413bca95-ab0f-463d-9f15-704804dff3ee",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:de3f9969425474b3c4969e1b7b1a6145d02d61b88340477f"
+          ],
+          "occurred_at": "2026-10-24T06:22:32.377309+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "tool_call_id": "call_BEHY5NtgxPaHZdSa5m2JqgC3",
+            "tool_name": "responsibility"
+          },
+          "run_id": "bd4dc571-9db7-5b6e-8253-e77e03de025a",
+          "schema_version": "nma.v1",
+          "sequence": "44",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "tool.started"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "fc716db3-5a4a-4802-8876-c11b38536811",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:de3f9969425474b3c4969e1b7b1a6145d02d61b88340477f"
+          ],
+          "occurred_at": "2026-10-24T06:22:32.379827+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "goal": {
+              "created_at": "2026-10-24T06:22:09.668Z",
+              "creation_key": "fuel-efficiency-report",
+              "evidence": [
+                {
+                  "accepted_by_agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+                  "criterion": "Writer contributes a short fuel-efficiency report using the existing shared goal and explicitly mentions @reviewer.",
+                  "evidence_id": "6348a772-8f1a-58bf-a30f-3a0b27991db9",
+                  "generation": "1",
+                  "producing_run_id": "4be8b841-cc77-5536-9a27-904fb1d4f18f",
+                  "source_message_id": "d1d28959-e162-55d6-afa0-83facdb17eec",
+                  "summary": "Verified the writer's persisted report states 360 km, 45 litres, and 12.5 litres per 100 km, correctly explains lower consumption, references the shared goal, and requests @reviewer verification."
+                },
+                {
+                  "accepted_by_agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+                  "criterion": "Reviewer independently verifies the calculation and provides final review; responsible researcher verifies both peer contributions.",
+                  "evidence_id": "4d633cca-45ec-5300-98e3-826cae675dfa",
+                  "generation": "1",
+                  "producing_run_id": "111d42ec-9f5a-5507-8a7c-5a53e10e313d",
+                  "source_message_id": "1bfd0f0c-67cb-5c81-b94d-64fae0ca45a9",
+                  "summary": "Verified reviewer's independent scaling: 360 km equals 3.6 hundred-kilometre units, and 45 / 3.6 = 12.5 litres per 100 km. Reviewer approved calculation, units and interpretation. Both persisted peer contributions agree with the original calculation and satisfy the requested report and review."
+                }
+              ],
+              "generation": "1",
+              "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+              "objective": "Calculate fuel consumption for 360 km travelled using 45 litres, expressed in litres per 100 km. Have @writer contribute a short report using this shared goal and explicitly mention @reviewer for an independent calculation check and final review. As responsible agent, verify both peer contributions and complete the goal only with persisted evidence.",
+              "progress": "Calculated consumption as (45 litres / 360 km) \u00d7 100 = 12.5 litres per 100 km. Delegating the short report to @writer, followed by @reviewer's independent check; responsible researcher will verify both peer results before completion.",
+              "responsible_agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+              "revision": "4",
+              "source_message_id": "0954ca67-98bc-5b53-9c1c-3d01f1e00236",
+              "source_run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+              "status": "waiting",
+              "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+              "title": "Prepare and review a short fuel-efficiency report",
+              "units": [
+                {
+                  "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+                  "settled": false,
+                  "status": "succeeded",
+                  "verdict": "wait"
+                },
+                {
+                  "agent_id": "a0c32fe8-617b-45be-a33a-db2f06e3779d",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "4be8b841-cc77-5536-9a27-904fb1d4f18f",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": null
+                },
+                {
+                  "agent_id": "6e415ea8-a441-4056-a415-62d614868af4",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "111d42ec-9f5a-5507-8a7c-5a53e10e313d",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": null
+                },
+                {
+                  "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "bd4dc571-9db7-5b6e-8253-e77e03de025a",
+                  "settled": true,
+                  "status": "pending",
+                  "verdict": null
+                }
+              ],
+              "updated_at": "2026-10-24T06:22:32.379Z",
+              "wake": null,
+              "wake_condition": "@writer contributes the short report and @reviewer contributes an independent calculation check and final review in this shared discussion."
+            },
+            "operation_id": "6e27ac7caf7291893683aeba47c25526e1a146e3f3b5dc6ad2a4401c42a5619a",
+            "source_message_id": "0954ca67-98bc-5b53-9c1c-3d01f1e00236"
+          },
+          "run_id": "bd4dc571-9db7-5b6e-8253-e77e03de025a",
+          "schema_version": "nma.v1",
+          "sequence": "45",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "goal.changed"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "556c4093-8010-4430-aa67-d562b3bcb4ac",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:de3f9969425474b3c4969e1b7b1a6145d02d61b88340477f"
+          ],
+          "occurred_at": "2026-10-24T06:22:32.383568+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "is_error": false,
+            "tool_call_id": "call_BEHY5NtgxPaHZdSa5m2JqgC3",
+            "tool_name": "responsibility"
+          },
+          "run_id": "bd4dc571-9db7-5b6e-8253-e77e03de025a",
+          "schema_version": "nma.v1",
+          "sequence": "46",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "tool.completed"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "a3fe3c07-3456-4ce0-b767-c08ea0cecdd0",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:de3f9969425474b3c4969e1b7b1a6145d02d61b88340477f"
+          ],
+          "occurred_at": "2026-10-24T06:22:34.797997+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "tool_call_id": "call_aNJhvNgU2ZgP04it3jPMxvNh",
+            "tool_name": "responsibility"
+          },
+          "run_id": "bd4dc571-9db7-5b6e-8253-e77e03de025a",
+          "schema_version": "nma.v1",
+          "sequence": "47",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "tool.started"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "0fd8a97e-106c-4acd-8ccb-85aca4f2216c",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:de3f9969425474b3c4969e1b7b1a6145d02d61b88340477f"
+          ],
+          "occurred_at": "2026-10-24T06:22:34.801109+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "goal": {
+              "created_at": "2026-10-24T06:22:09.668Z",
+              "creation_key": "fuel-efficiency-report",
+              "evidence": [
+                {
+                  "accepted_by_agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+                  "criterion": "Writer contributes a short fuel-efficiency report using the existing shared goal and explicitly mentions @reviewer.",
+                  "evidence_id": "6348a772-8f1a-58bf-a30f-3a0b27991db9",
+                  "generation": "1",
+                  "producing_run_id": "4be8b841-cc77-5536-9a27-904fb1d4f18f",
+                  "source_message_id": "d1d28959-e162-55d6-afa0-83facdb17eec",
+                  "summary": "Verified the writer's persisted report states 360 km, 45 litres, and 12.5 litres per 100 km, correctly explains lower consumption, references the shared goal, and requests @reviewer verification."
+                },
+                {
+                  "accepted_by_agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+                  "criterion": "Reviewer independently verifies the calculation and provides final review; responsible researcher verifies both peer contributions.",
+                  "evidence_id": "4d633cca-45ec-5300-98e3-826cae675dfa",
+                  "generation": "1",
+                  "producing_run_id": "111d42ec-9f5a-5507-8a7c-5a53e10e313d",
+                  "source_message_id": "1bfd0f0c-67cb-5c81-b94d-64fae0ca45a9",
+                  "summary": "Verified reviewer's independent scaling: 360 km equals 3.6 hundred-kilometre units, and 45 / 3.6 = 12.5 litres per 100 km. Reviewer approved calculation, units and interpretation. Both persisted peer contributions agree with the original calculation and satisfy the requested report and review."
+                }
+              ],
+              "generation": "2",
+              "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+              "objective": "Calculate fuel consumption for 360 km travelled using 45 litres, expressed in litres per 100 km. Have @writer contribute a short report using this shared goal and explicitly mention @reviewer for an independent calculation check and final review. As responsible agent, verify both peer contributions and complete the goal only with persisted evidence.",
+              "progress": "Verified the writer's persisted report states 360 km, 45 litres, and 12.5 litres per 100 km, correctly explains lower consumption, references the shared goal, and requests @reviewer verification.\nVerified reviewer's independent scaling: 360 km equals 3.6 hundred-kilometre units, and 45 / 3.6 = 12.5 litres per 100 km. Reviewer approved calculation, units and interpretation. Both persisted peer contributions agree with the original calculation and satisfy the requested report and review.",
+              "responsible_agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+              "revision": "5",
+              "source_message_id": "0954ca67-98bc-5b53-9c1c-3d01f1e00236",
+              "source_run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+              "status": "completed",
+              "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+              "title": "Prepare and review a short fuel-efficiency report",
+              "units": [
+                {
+                  "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+                  "settled": false,
+                  "status": "succeeded",
+                  "verdict": "wait"
+                },
+                {
+                  "agent_id": "a0c32fe8-617b-45be-a33a-db2f06e3779d",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "4be8b841-cc77-5536-9a27-904fb1d4f18f",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": null
+                },
+                {
+                  "agent_id": "6e415ea8-a441-4056-a415-62d614868af4",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "111d42ec-9f5a-5507-8a7c-5a53e10e313d",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": null
+                },
+                {
+                  "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "bd4dc571-9db7-5b6e-8253-e77e03de025a",
+                  "settled": false,
+                  "status": "pending",
+                  "verdict": "done"
+                }
+              ],
+              "updated_at": "2026-10-24T06:22:34.800Z",
+              "wake": null,
+              "wake_condition": null
+            },
+            "operation_id": "82f865d4cca4e1b18374233dba1820c697a4924f44ecf0fe78485968b6788c43",
+            "source_message_id": "0954ca67-98bc-5b53-9c1c-3d01f1e00236"
+          },
+          "run_id": "bd4dc571-9db7-5b6e-8253-e77e03de025a",
+          "schema_version": "nma.v1",
+          "sequence": "48",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "goal.changed"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "ab552eac-2371-425d-a894-c6a0cc35785a",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:de3f9969425474b3c4969e1b7b1a6145d02d61b88340477f"
+          ],
+          "occurred_at": "2026-10-24T06:22:34.805356+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "is_error": false,
+            "tool_call_id": "call_aNJhvNgU2ZgP04it3jPMxvNh",
+            "tool_name": "responsibility"
+          },
+          "run_id": "bd4dc571-9db7-5b6e-8253-e77e03de025a",
+          "schema_version": "nma.v1",
+          "sequence": "49",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "tool.completed"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "ec52e2a9-e93d-4a6c-a63a-f667c3b62bed",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:de3f9969425474b3c4969e1b7b1a6145d02d61b88340477f"
+          ],
+          "occurred_at": "2026-10-24T06:22:36.607511+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "tool_call_id": "call_lCRgN9DtN81esQfTtvObgwUF",
+            "tool_name": "responsibility"
+          },
+          "run_id": "bd4dc571-9db7-5b6e-8253-e77e03de025a",
+          "schema_version": "nma.v1",
+          "sequence": "52",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "tool.started"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "e5bb91f7-5a66-4e9a-b484-f53dd5073d01",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:de3f9969425474b3c4969e1b7b1a6145d02d61b88340477f"
+          ],
+          "occurred_at": "2026-10-24T06:22:36.612671+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "is_error": false,
+            "tool_call_id": "call_lCRgN9DtN81esQfTtvObgwUF",
+            "tool_name": "responsibility"
+          },
+          "run_id": "bd4dc571-9db7-5b6e-8253-e77e03de025a",
+          "schema_version": "nma.v1",
+          "sequence": "53",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "tool.completed"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "52bec322-99bb-49b1-8232-d82f791b5986",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:de3f9969425474b3c4969e1b7b1a6145d02d61b88340477f"
+          ],
+          "occurred_at": "2026-10-24T06:22:38.469311+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "I verified both peer contributions and recorded their evidence. The shared goal is now complete; the approved report needs no changes."
+          },
+          "run_id": "bd4dc571-9db7-5b6e-8253-e77e03de025a",
+          "schema_version": "nma.v1",
+          "sequence": "54",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "message.completed"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "eab926c4-193d-474e-9bbc-1f2f23573722",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:de3f9969425474b3c4969e1b7b1a6145d02d61b88340477f"
+          ],
+          "occurred_at": "2026-10-24T06:22:38.469444+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "error_code": null,
+            "message_id": "1940bee5-afa5-5d81-8a09-3b7145647393",
+            "status": "succeeded",
+            "text": "I verified both peer contributions and recorded their evidence. The shared goal is now complete; the approved report needs no changes."
+          },
+          "run_id": "bd4dc571-9db7-5b6e-8253-e77e03de025a",
+          "schema_version": "nma.v1",
+          "sequence": "55",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "run.succeeded"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "2c00f414-5669-4e0d-b60b-5e5107c7b07b",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:de3f9969425474b3c4969e1b7b1a6145d02d61b88340477f"
+          ],
+          "occurred_at": "2026-10-24T06:22:38.495163+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "author_agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+            "author_kind": "agent",
+            "content": "I verified both peer contributions and recorded their evidence. The shared goal is now complete; the approved report needs no changes.",
+            "context_generation": "1",
+            "message_id": "1940bee5-afa5-5d81-8a09-3b7145647393",
+            "message_seq": "5",
+            "parts": [
+              {
+                "text": "I verified both peer contributions and recorded their evidence. The shared goal is now complete; the approved report needs no changes.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "bd4dc571-9db7-5b6e-8253-e77e03de025a",
+            "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8"
+          },
+          "run_id": "bd4dc571-9db7-5b6e-8253-e77e03de025a",
+          "schema_version": "nma.v1",
+          "sequence": "56",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "message.created"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "1f8919e0-a80d-4ce1-b76c-889a0959fa59",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:de3f9969425474b3c4969e1b7b1a6145d02d61b88340477f"
+          ],
+          "occurred_at": "2026-10-24T06:22:38.495252+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "status": "delivered"
+          },
+          "run_id": "bd4dc571-9db7-5b6e-8253-e77e03de025a",
+          "schema_version": "nma.v1",
+          "sequence": "57",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "delivery.settled"
+        },
+        {
+          "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+          "config_revision": "1",
+          "discussion_ids": [
+            "a3d27fa6-a522-5f79-b8ca-97ba44ea367a"
+          ],
+          "event_id": "f6adbbf6-3fd5-4f93-92f7-e953ef4ecb8c",
+          "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+          "goal_ids": [
+            "8f92b03b-7b9a-4824-b500-78ad488b53bc"
+          ],
+          "handoff_ids": [
+            "dtask:de3f9969425474b3c4969e1b7b1a6145d02d61b88340477f"
+          ],
+          "occurred_at": "2026-10-24T06:22:38.497680+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "goal": {
+              "created_at": "2026-10-24T06:22:09.668Z",
+              "creation_key": "fuel-efficiency-report",
+              "evidence": [
+                {
+                  "accepted_by_agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+                  "criterion": "Writer contributes a short fuel-efficiency report using the existing shared goal and explicitly mentions @reviewer.",
+                  "evidence_id": "6348a772-8f1a-58bf-a30f-3a0b27991db9",
+                  "generation": "1",
+                  "producing_run_id": "4be8b841-cc77-5536-9a27-904fb1d4f18f",
+                  "source_message_id": "d1d28959-e162-55d6-afa0-83facdb17eec",
+                  "summary": "Verified the writer's persisted report states 360 km, 45 litres, and 12.5 litres per 100 km, correctly explains lower consumption, references the shared goal, and requests @reviewer verification."
+                },
+                {
+                  "accepted_by_agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+                  "criterion": "Reviewer independently verifies the calculation and provides final review; responsible researcher verifies both peer contributions.",
+                  "evidence_id": "4d633cca-45ec-5300-98e3-826cae675dfa",
+                  "generation": "1",
+                  "producing_run_id": "111d42ec-9f5a-5507-8a7c-5a53e10e313d",
+                  "source_message_id": "1bfd0f0c-67cb-5c81-b94d-64fae0ca45a9",
+                  "summary": "Verified reviewer's independent scaling: 360 km equals 3.6 hundred-kilometre units, and 45 / 3.6 = 12.5 litres per 100 km. Reviewer approved calculation, units and interpretation. Both persisted peer contributions agree with the original calculation and satisfy the requested report and review."
+                }
+              ],
+              "generation": "2",
+              "goal_id": "8f92b03b-7b9a-4824-b500-78ad488b53bc",
+              "objective": "Calculate fuel consumption for 360 km travelled using 45 litres, expressed in litres per 100 km. Have @writer contribute a short report using this shared goal and explicitly mention @reviewer for an independent calculation check and final review. As responsible agent, verify both peer contributions and complete the goal only with persisted evidence.",
+              "progress": "Verified the writer's persisted report states 360 km, 45 litres, and 12.5 litres per 100 km, correctly explains lower consumption, references the shared goal, and requests @reviewer verification.\nVerified reviewer's independent scaling: 360 km equals 3.6 hundred-kilometre units, and 45 / 3.6 = 12.5 litres per 100 km. Reviewer approved calculation, units and interpretation. Both persisted peer contributions agree with the original calculation and satisfy the requested report and review.",
+              "responsible_agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+              "revision": "5",
+              "source_message_id": "0954ca67-98bc-5b53-9c1c-3d01f1e00236",
+              "source_run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+              "status": "completed",
+              "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+              "title": "Prepare and review a short fuel-efficiency report",
+              "units": [
+                {
+                  "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "f518b385-48ed-5e9c-8b8c-56c00516211f",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": "wait"
+                },
+                {
+                  "agent_id": "a0c32fe8-617b-45be-a33a-db2f06e3779d",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "4be8b841-cc77-5536-9a27-904fb1d4f18f",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": null
+                },
+                {
+                  "agent_id": "6e415ea8-a441-4056-a415-62d614868af4",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "111d42ec-9f5a-5507-8a7c-5a53e10e313d",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": null
+                },
+                {
+                  "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "bd4dc571-9db7-5b6e-8253-e77e03de025a",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": "done"
+                }
+              ],
+              "updated_at": "2026-10-24T06:22:34.800Z",
+              "wake": null,
+              "wake_condition": null
+            },
+            "source_message_id": "0954ca67-98bc-5b53-9c1c-3d01f1e00236"
+          },
+          "run_id": "bd4dc571-9db7-5b6e-8253-e77e03de025a",
+          "schema_version": "nma.v1",
+          "sequence": "58",
+          "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+          "trigger_ids": [],
+          "type": "goal.changed"
+        }
+      ],
+      "run": {
+        "agent_id": "90ef220a-ba35-4272-9f12-3cc9061549da",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "13ba6302-165e-4868-ab0d-97ed0548be55",
+        "run_id": "bd4dc571-9db7-5b6e-8253-e77e03de025a",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "I verified both peer contributions and recorded their evidence. The shared goal is now complete; the approved report needs no changes.",
+        "thread_id": "85135b00-9541-490d-95aa-53d33d902dc8",
+        "through_sequence": "58"
+      },
+      "trigger_ids": [],
+      "usage": {
+        "available": true,
+        "input_tokens": 36891,
+        "output_tokens": 466,
+        "source": "native_terminal_receipt",
+        "total_tokens": 37357
+      }
+    }
+  ]
+}

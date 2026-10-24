@@ -11,7 +11,7 @@
     "resolveJsonModule": true,
     "paths": { "@/*": ["./src/*"] },
     "noEmit": true,
-    "types": ["vite/client", "node", "novnc__novnc"]
+    "types": ["vite/client", "node"]
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "vite.config.ts"]
 }

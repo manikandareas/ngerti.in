@@ -166,8 +166,8 @@ class E2BComputer:
                 control=workspace.get("control", "agent"),
                 deadline=workspace["deadline"].timestamp(),
             )
-        # The optional DOM venv is baked into v2; legacy screenshot templates
-        # continue using system Python without installing anything at runtime.
+        # DOM actions use the pinned environment baked into the browser template.
+        # Resource/control operations use system Python without runtime installation.
         python = "/opt/ngertiin-jev/bin/python" if operation.startswith("dom") else "python3"
         result = await e2b.run(
             sandbox,
@@ -177,7 +177,7 @@ class E2BComputer:
         if result.exit_code:
             if operation == "dom" and result.exit_code == 127:
                 raise DomUnavailable(
-                    "Profil lama memakai jalur screenshot sampai runtime diperbarui."
+                    "The DOM runtime is unavailable; provision the supported browser template."
                 )
             raise RuntimeFailure(
                 "Komputer belum mengonfirmasi langkah.", unknown=operation in ("act", "dom_act")

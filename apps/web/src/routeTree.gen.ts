@@ -11,12 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AgentsRouteImport } from './routes/agents'
-import { Route as GoalsRouteImport } from './routes/goals'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as SignUpRouteImport } from './routes/sign-up'
-import { Route as DevSystemRouteImport } from './routes/dev.system'
 import { Route as DmThreadIdRouteImport } from './routes/dm.$threadId'
-import { Route as LibrarySectionRouteImport } from './routes/library.$section'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -26,11 +23,6 @@ const IndexRoute = IndexRouteImport.update({
 const AgentsRoute = AgentsRouteImport.update({
   id: '/agents',
   path: '/agents',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GoalsRoute = GoalsRouteImport.update({
-  id: '/goals',
-  path: '/goals',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SignInRoute = SignInRouteImport.update({
@@ -43,95 +35,48 @@ const SignUpRoute = SignUpRouteImport.update({
   path: '/sign-up',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DevSystemRoute = DevSystemRouteImport.update({
-  id: '/dev/system',
-  path: '/dev/system',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const DmThreadIdRoute = DmThreadIdRouteImport.update({
   id: '/dm/$threadId',
   path: '/dm/$threadId',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LibrarySectionRoute = LibrarySectionRouteImport.update({
-  id: '/library/$section',
-  path: '/library/$section',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/agents': typeof AgentsRoute
-  '/goals': typeof GoalsRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
-  '/dev/system': typeof DevSystemRoute
   '/dm/$threadId': typeof DmThreadIdRoute
-  '/library/$section': typeof LibrarySectionRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/agents': typeof AgentsRoute
-  '/goals': typeof GoalsRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
-  '/dev/system': typeof DevSystemRoute
   '/dm/$threadId': typeof DmThreadIdRoute
-  '/library/$section': typeof LibrarySectionRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/agents': typeof AgentsRoute
-  '/goals': typeof GoalsRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
-  '/dev/system': typeof DevSystemRoute
   '/dm/$threadId': typeof DmThreadIdRoute
-  '/library/$section': typeof LibrarySectionRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/agents'
-    | '/goals'
-    | '/sign-in'
-    | '/sign-up'
-    | '/dev/system'
-    | '/dm/$threadId'
-    | '/library/$section'
+  fullPaths: '/' | '/agents' | '/sign-in' | '/sign-up' | '/dm/$threadId'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/agents'
-    | '/goals'
-    | '/sign-in'
-    | '/sign-up'
-    | '/dev/system'
-    | '/dm/$threadId'
-    | '/library/$section'
-  id:
-    | '__root__'
-    | '/'
-    | '/agents'
-    | '/goals'
-    | '/sign-in'
-    | '/sign-up'
-    | '/dev/system'
-    | '/dm/$threadId'
-    | '/library/$section'
+  to: '/' | '/agents' | '/sign-in' | '/sign-up' | '/dm/$threadId'
+  id: '__root__' | '/' | '/agents' | '/sign-in' | '/sign-up' | '/dm/$threadId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AgentsRoute: typeof AgentsRoute
-  GoalsRoute: typeof GoalsRoute
   SignInRoute: typeof SignInRoute
   SignUpRoute: typeof SignUpRoute
-  DevSystemRoute: typeof DevSystemRoute
   DmThreadIdRoute: typeof DmThreadIdRoute
-  LibrarySectionRoute: typeof LibrarySectionRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -150,13 +95,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AgentsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/goals': {
-      id: '/goals'
-      path: '/goals'
-      fullPath: '/goals'
-      preLoaderRoute: typeof GoalsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/sign-in': {
       id: '/sign-in'
       path: '/sign-in'
@@ -171,25 +109,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignUpRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dev/system': {
-      id: '/dev/system'
-      path: '/dev/system'
-      fullPath: '/dev/system'
-      preLoaderRoute: typeof DevSystemRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/dm/$threadId': {
       id: '/dm/$threadId'
       path: '/dm/$threadId'
       fullPath: '/dm/$threadId'
       preLoaderRoute: typeof DmThreadIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/library/$section': {
-      id: '/library/$section'
-      path: '/library/$section'
-      fullPath: '/library/$section'
-      preLoaderRoute: typeof LibrarySectionRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -198,12 +122,9 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AgentsRoute: AgentsRoute,
-  GoalsRoute: GoalsRoute,
   SignInRoute: SignInRoute,
   SignUpRoute: SignUpRoute,
-  DevSystemRoute: DevSystemRoute,
   DmThreadIdRoute: DmThreadIdRoute,
-  LibrarySectionRoute: LibrarySectionRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

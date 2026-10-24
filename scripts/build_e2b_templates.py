@@ -1,22 +1,19 @@
-"""Build the two explicit E2B templates; never called by a Task or worker."""
+"""Build the explicit E2B browser template; never called during agent execution."""
 
 import asyncio
 import json
 import shlex
 
 from e2b import AsyncTemplate
-from ngertiin.computer.maintenance import INSTALL
+from ngertiin.computer.template import INSTALL
 from ngertiin.config import get_settings
 
 
 async def main():
     key = get_settings().e2b_api_key.get_secret_value()
     if not key:
-        raise ValueError("E2B_API_KEY belum dikonfigurasi.")
-    for source, name in (
-        ("base", "ngertiin-code-v1"),
-        ("desktop", "ngertiin-desktop-v2"),
-    ):
+        raise ValueError("E2B_API_KEY is not configured.")
+    for source, name in (("desktop", "ngertiin-desktop-v2"),):
         template = AsyncTemplate().from_template(source)
         if source == "desktop":
             template = template.run_cmd(

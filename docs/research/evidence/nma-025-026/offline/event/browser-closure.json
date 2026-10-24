@@ -1,0 +1,101 @@
+{
+  "scope": "Snapshot harness over real gateway; controlled provider; not production authenticated UI",
+  "requests_while_closed": 0,
+  "model_requests_while_closed": 2,
+  "goal": {
+    "created_at": "2026-10-24T06:40:36.136Z",
+    "creation_key": "fuel",
+    "evidence": [],
+    "generation": "1",
+    "goal_id": "dc2b506e-f199-43f2-9170-9724e1665bdf",
+    "objective": "Prepare fuel report for Friday",
+    "progress": "Calculated 12 litres per 100 km",
+    "responsible_agent_id": "b2a58faf-be9f-43ae-9a52-2e9ed10b6e84",
+    "revision": "3",
+    "source_message_id": "da83e09c-1a67-5ee8-a455-eba84fac0452",
+    "source_run_id": "dcb75b59-0992-5a0d-82de-e838dc897015",
+    "status": "waiting",
+    "thread_id": "10d7b417-3ecb-4035-b509-b0e0a2a32582",
+    "title": "Fuel report",
+    "units": [
+      {
+        "agent_id": "b2a58faf-be9f-43ae-9a52-2e9ed10b6e84",
+        "generation": "1",
+        "parent_run_id": null,
+        "run_id": "dcb75b59-0992-5a0d-82de-e838dc897015",
+        "settled": true,
+        "status": "succeeded",
+        "verdict": null
+      },
+      {
+        "agent_id": "b2a58faf-be9f-43ae-9a52-2e9ed10b6e84",
+        "generation": "1",
+        "parent_run_id": "dcb75b59-0992-5a0d-82de-e838dc897015",
+        "run_id": "aa564056-6732-5692-8a93-f478f1303728",
+        "settled": true,
+        "status": "succeeded",
+        "verdict": "wait"
+      }
+    ],
+    "updated_at": "2026-10-24T06:40:44.480Z",
+    "wake": null,
+    "wake_condition": "The user supplies next week's readings"
+  },
+  "browser": [
+    {
+      "command": [
+        "open",
+        "http://127.0.0.1:52348"
+      ],
+      "stdout": "\u2713 Offline wake acceptance\n  http://127.0.0.1:52348/\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "snapshot"
+      ],
+      "stdout": "- main\n  - heading \"Gateway snapshot harness\" [level=1, ref=e1]\n  - paragraph\n    - StaticText \"Goal: Fuel report \u00b7 active\"\n  - paragraph\n    - StaticText \"Execution units: 1\"\n  - paragraph\n    - StaticText \"RESPONSIBILITY:{\\\"action\\\": \\\"create\\\", \\\"creation_key\\\": \\\"fuel\\\", \\\"title\\\": \\\"Fuel report\\\", \\\"objective\\\": \\\"Prepare fuel report for Friday\\\"}\"\n  - paragraph\n    - StaticText \"RECOVERY_ACK_RESPONSIBILITY:{\\\"action\\\": \\\"create\\\", \\\"creation_key\\\": \\\"fuel\\\", \\\"title\\\": \\\"Fuel report\\\", \\\"objective\\\": \\\"Prepare fuel report for Friday\\\"}\"\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "screenshot",
+        "/Users/vitoandareasmanik/Development/project/ngertiin/docs/research/evidence/nma-025-026/offline/event/browser-before.png"
+      ],
+      "stdout": "\u2713 Screenshot saved to /Users/vitoandareasmanik/Development/project/ngertiin/docs/research/evidence/nma-025-026/offline/event/browser-before.png\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "close"
+      ],
+      "stdout": "\u2713 Browser closed\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "open",
+        "http://127.0.0.1:52348"
+      ],
+      "stdout": "\u2713 Offline wake acceptance\n  http://127.0.0.1:52348/\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "get",
+        "text",
+        "body"
+      ],
+      "stdout": "Gateway snapshot harness\n\nGoal: Fuel report \u00b7 waiting\n\nExecution units: 2\n\nRESPONSIBILITY:{\"action\": \"create\", \"creation_key\": \"fuel\", \"title\": \"Fuel report\", \"objective\": \"Prepare fuel report for Friday\"}\n\nRECOVERY_ACK_RESPONSIBILITY:{\"action\": \"create\", \"creation_key\": \"fuel\", \"title\": \"Fuel report\", \"objective\": \"Prepare fuel report for Friday\"}\n\nRESULT: fuel calculation is 12 litres per 100 km.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "screenshot",
+        "/Users/vitoandareasmanik/Development/project/ngertiin/docs/research/evidence/nma-025-026/offline/event/browser-after.png"
+      ],
+      "stdout": "\u2713 Screenshot saved to /Users/vitoandareasmanik/Development/project/ngertiin/docs/research/evidence/nma-025-026/offline/event/browser-after.png\n",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+[
+  {
+    "id": "402abdd618738149a019d35901a29e4b",
+    "url": "https://app.notion.com/p/402abdd618738149a019d35901a29e4b?pvs=204",
+    "title": "NMA-025 · Acceptance E2E dan fault-injection pivot",
+    "edited": "2026-10-24T06:49:06.918Z",
+    "done": true,
+    "unchecked": false,
+    "closure": true
+  },
+  {
+    "id": "402abdd61873815186afe9c8bf2299bf",
+    "url": "https://app.notion.com/p/402abdd61873815186afe9c8bf2299bf?pvs=204",
+    "title": "NMA-026 · Migrasi bertahap, cutover dan rollback",
+    "edited": "2026-10-24T06:49:09.840Z",
+    "done": true,
+    "unchecked": false,
+    "closure": true
+  },
+  {
+    "id": "402abdd6187381e3a720f4b01d824e1a",
+    "url": "https://app.notion.com/p/402abdd6187381e3a720f4b01d824e1a?pvs=204",
+    "title": "🤝 Ngertiin Multi Agent",
+    "edited": "2026-10-24T06:49:32.371Z",
+    "done": false,
+    "unchecked": false,
+    "closure": true
+  },
+  {
+    "id": "402abdd6187381beacd6c48fa521b99f",
+    "url": "https://app.notion.com/p/402abdd6187381beacd6c48fa521b99f?pvs=204",
+    "title": "04 · Rancangan engine dan kontrak integrasi",
+    "edited": "2026-10-24T06:49:29.834Z",
+    "done": false,
+    "unchecked": false,
+    "closure": true
+  },
+  {
+    "id": "402abdd6187381ceaa4fe40ebf41001c",
+    "url": "https://app.notion.com/p/402abdd6187381ceaa4fe40ebf41001c?pvs=204",
+    "title": "06 · Tahapan implementasi dan keputusan terbuka",
+    "edited": "2026-10-24T06:49:30.513Z",
+    "done": false,
+    "unchecked": false,
+    "closure": true
+  }
+]

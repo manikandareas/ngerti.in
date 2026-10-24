@@ -66,11 +66,15 @@ def test_spike_dataset_through_live_dm(runtime, public_api):
             time.sleep(0.2)
         after = snapshot(call, thread)["goals"]
         prior = {g["goal_id"]: g for g in before}
+        # Progress/wait/evidence revisions are lifecycle work, not new capture or correction.
+        # This dataset scores responsibility identity/content/stop semantics.
         changed = [
             g
             for g in after
             if g["goal_id"] not in prior
-            or g["revision"] != prior[g["goal_id"]]["revision"]
+            or (g["title"], g["objective"])
+            != (prior[g["goal_id"]]["title"], prior[g["goal_id"]]["objective"])
+            or (g["status"] == "stopped" and prior[g["goal_id"]]["status"] != "stopped")
         ]
         ops = [
             "create"

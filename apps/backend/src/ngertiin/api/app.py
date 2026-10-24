@@ -1,4 +1,4 @@
-"""HTTP startup is independent from migrations and worker lifecycle."""
+"""HTTP startup is independent from schema migrations and gateway lifecycle."""
 
 import time
 from contextlib import asynccontextmanager
@@ -7,7 +7,6 @@ from uuid import uuid4
 
 import psycopg
 import structlog
-from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import Depends, FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -15,28 +14,13 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from ngertiin.accounts.auth import current_account
 from ngertiin.agent_engine.api import router as agent_engine_router
+from ngertiin.agent_engine.recovery import ensure_database_released
 from ngertiin.agent_engine.stream import router as agent_stream_router
-from ngertiin.api.diagnostics import router as diagnostic_router
 from ngertiin.async_db import close_pool
 from ngertiin.billing.api import router as billing_router
-from ngertiin.chat.api import router as chat_router
-from ngertiin.computer.api import router as computer_router
 from ngertiin.config import get_settings
-from ngertiin.files.api import router as file_router
-from ngertiin.files.limits import UploadBodyLimitMiddleware
-from ngertiin.goals.api import router as goal_router
 from ngertiin.health import system_status
-from ngertiin.library.api import router as library_router
-from ngertiin.memory.api import router as memory_router
 from ngertiin.models import Account
-from ngertiin.persona.api import router as persona_router
-from ngertiin.proactivity.api import product_router as proactive_product_router
-from ngertiin.proactivity.api import router as proactive_router
-from ngertiin.quotas.api import ERROR_TYPES, quota_error
-from ngertiin.quotas.api import router as quota_router
-from ngertiin.schedules.api import router as schedule_router
-from ngertiin.tasks.api import router as task_router
-from ngertiin.usage.api import router as usage_router
 
 settings = get_settings()
 logger = structlog.get_logger()
@@ -44,9 +28,7 @@ logger = structlog.get_logger()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    from ngertiin.recovery.restore import ensure_released
-
-    await ensure_released()
+    await ensure_database_released()
     yield
     await close_pool()
 
@@ -56,25 +38,10 @@ app = FastAPI(
     docs_url="/docs" if settings.diagnostics_enabled else None,
     lifespan=lifespan,
 )
+
 app.include_router(agent_engine_router)
 app.include_router(agent_stream_router)
-app.include_router(chat_router)
-app.include_router(persona_router)
-app.include_router(proactive_router)
-app.include_router(proactive_product_router)
-app.include_router(memory_router)
-app.include_router(quota_router)
-app.include_router(task_router)
-app.include_router(usage_router)
 app.include_router(billing_router)
-app.include_router(schedule_router)
-app.include_router(goal_router)
-app.include_router(file_router)
-app.include_router(library_router)
-app.include_router(computer_router)
-for quota_error_type in ERROR_TYPES:
-    app.add_exception_handler(quota_error_type, quota_error)
-app.add_middleware(UploadBodyLimitMiddleware, max_bytes=settings.file_max_bytes)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.allowed_origins,
@@ -97,7 +64,7 @@ async def request_logging(request: Request, call_next):
             response = JSONResponse(
                 status_code=500,
                 content={
-                    "detail": "Permintaan gagal. Muat ulang status sebelum mencoba lagi.",
+                    "detail": "Request failed. Reload the current state before retrying.",
                     "request_id": request_id,
                 },
             )
@@ -122,11 +89,11 @@ async def request_logging(request: Request, call_next):
 async def dependency_failure(request: Request, error: Exception):
     logger.error("dependency.unavailable", dependency_error=type(error).__name__)
     return JSONResponse(
-        status_code=503, content={"detail": "Layanan belum siap. Periksa status sistem."}
+        status_code=503, content={"detail": "Service is unavailable. Check system status."}
     )
 
 
-for error_type in (SQLAlchemyError, psycopg.Error, BotoCoreError, ClientError):
+for error_type in (SQLAlchemyError, psycopg.Error):
     app.add_exception_handler(error_type, dependency_failure)
 
 
@@ -151,14 +118,6 @@ def me(account: Annotated[Account, Depends(current_account)]):
         "clerk_user_id": account.clerk_user_id,
         "created_at": account.created_at,
     }
-
-
-if settings.diagnostics_enabled:
-    app.include_router(diagnostic_router)
-
-    @app.get("/dev/status")
-    def development_status():
-        return system_status()
 
 
 __all__ = ["app"]

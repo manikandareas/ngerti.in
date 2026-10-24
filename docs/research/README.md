@@ -1,3 +1,7 @@
+# Current acceptance and transition
+
+- [Multi-agent acceptance, single-path cutover and retirement](nma-025-026-acceptance-cutover.md)
+
 # Riset dan bukti
 
 Keputusan pivot aktif berada di [Ngertiin Multi Agent di Notion](https://app.notion.com/p/402abdd6187381e3a720f4b01d824e1a) dan [backlog NMA](https://app.notion.com/p/116e1edcee864b5da91887466d728aac). [Produk & Scope V1](../product/01-produk-dan-paket.md), [spesifikasi runtime V1](../product/04-arsitektur-dan-delivery.md) dan [backlog V1](../backlog/README.md) tetap menjadi konteks historis. Riset di sini mendukung keputusan dan menyimpan batas verifikasi; bukan sumber roadmap paralel.

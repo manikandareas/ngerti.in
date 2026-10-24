@@ -1,35 +1,24 @@
-# Ngertiin V1
+# Ngertiin
 
-Asisten personal umum untuk percakapan, pekerjaan background, file/hasil, kode/browser, jadwal, memory dan goals. [Spesifikasi aktif](docs/README.md) dan [backlog](docs/backlog/README.md) membedakan target V1 dari kemampuan yang sudah diterima.
+Persistent agents collaborate with one user through private DMs and groups, capture goals from conversation, and continue work through durable schedules, events and handoffs.
 
-Fondasi saat ini: Clerk/ownership, main/side chat, streaming SSE/replay, LangGraph checkpoints, Procrastinate, S3/MinIO dan ledger chat. [Task background](docs/engineering/task-33-acceptance.md), [file/hasil persisten](docs/engineering/files-34-acceptance.md), serta [komputasi Python](docs/engineering/sandbox-35-acceptance.md) menyediakan review/revisi, stop/retry dan delivery sambil chat tetap digunakan. [Interface runtime](docs/engineering/sandbox-runtime.md) memakai E2B untuk browser/VNC/takeover dan Python offline; [migrasi E2B](docs/engineering/e2b-migration-2026-10-20.md) mencatat konfigurasi dan bukti penggantian Daytona. Course/Lesson/Practice tidak menjadi dependency aktif V1.
+The multi-agent engine is the only execution path. Hermes owns admission, sessions, scheduling, cancellation and recovery. The product API authenticates accounts and forwards commands to their isolated engine partitions. There is no legacy/pivot mode or fallback executor.
+
+Product decisions and acceptance are maintained in [Ngertiin Multi Agent](https://app.notion.com/p/402abdd6187381e3a720f4b01d824e1a) and its [backlog](https://app.notion.com/p/116e1edcee864b5da91887466d728aac).
 
 ## Development
 
-Prasyarat: Bun, uv, Docker/OrbStack. Isi `.env` dari `.env.example`, lalu:
+1. Copy `.env.example` to `.env` and configure Clerk and PostgreSQL.
+2. Run `make install`, `make infra-up`, and `make setup`.
+3. Provision one pinned Hermes gateway and private socket/key registry per account using [the engine guide](apps/engine/README.md). Keep engine credentials server-side.
+4. Run `make dev` for the product API and web. Open `http://localhost:3000`; the home route opens agents. The gateway runs separately with its own Python/runtime environment. There is no product worker process.
 
-```sh
-make install
-make infra-up
-make setup
-make dev
-```
+`make check` runs static checks; `make build` builds the web application. Runtime acceptance, backup/restore and retirement evidence are recorded in [the acceptance and transition report](docs/research/nma-025-026-acceptance-cutover.md).
 
-UI: http://localhost:3000 · API: http://127.0.0.1:8000. PostgreSQL/MinIO berada pada Compose `ngertiin-v1`; web/API/worker berjalan pada host. [Panduan operasi](docs/engineering/development.md) menjelaskan setup, readiness, diagnosis dan acceptance.
+## State and rollback
 
-```sh
-make check
-make build
-make quota-inspect
-make task-inspect
-make files-inspect
-make sandbox-inspect
-make memory-inspect
-make docs-check
-```
+PostgreSQL accounts, billing history, historical application tables and historical objects are preserved. Historical schema migrations remain immutable; their presence does not enable a retired engine. Do not drop volumes or apply migration downgrades as cleanup.
 
-`make setup` / `make migrate` menjalankan migration head saat ini, termasuk `0008_personal_memory`, tanpa reset data yang sudah ada. Restart worker setelah perubahan Python atau konfigurasi runtime. [Memory runtime](docs/engineering/memory-runtime.md) memakai Mem0 OSS di backend dan PostgreSQL/pgvector yang ada; [penerimaan memory](docs/engineering/memory-17-acceptance.md) mencatat recall, sumber dan kontrol pengguna.
+The current engine owns complete owner-scoped SQLite partitions. Backups must cover native/product stores, external workspace state and secret references. Restores are quarantined until reconciliation. Rollback uses an isolated previous Git revision and a verified backup, preserving all data written after cutover; it is not a runtime mode switch.
 
-`make reset-dev` **menghapus seluruh data development lokal proyek**, lalu menjalankan baseline `0001_v1_baseline`, setup resmi queue/checkpoints dan bucket. Hentikan API/worker terlebih dahulu. Script memverifikasi environment, endpoint, project serta volume labels. Clerk, kredensial dan resource remote dipertahankan. Reset ini mengganti migrasi development lama; bukan jalur upgrade production.
-
-[Bukti penerimaan baseline](docs/engineering/baseline-v1-acceptance.md) mencatat verifikasi baru. Bukti #01–05 serta Pen lama adalah riwayat, bukan bukti seluruh V1 sudah selesai. Keputusan/status Notion disalin melalui readback ke [manifest](docs/notion-manifest.json).
+The original Compose project name is retained solely to keep existing named volumes attached. MinIO holds historical objects; current text artifacts live in the owner partition. Old documentation under `docs/product`, `docs/backlog` and older engineering/research reports is historical evidence, not the current product contract.

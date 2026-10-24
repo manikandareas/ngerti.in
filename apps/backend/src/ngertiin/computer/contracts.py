@@ -25,7 +25,7 @@ class StaleTarget(ValueError):
 
 
 class DomUnavailable(ValueError):
-    """A retained legacy template has no DOM runner; use the existing vision engine."""
+    """The required DOM runner is unavailable; reject actions until it is provisioned."""
 
 
 class DomTarget(BaseModel):

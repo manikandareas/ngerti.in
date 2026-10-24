@@ -1,0 +1,16 @@
+test_identity_and_private_profile_are_stable_without_replaying_history (test_agent_engine.AccountMigrationPlan.test_identity_and_private_profile_are_stable_without_replaying_history) ... ok
+test_dm_reads_use_only_current_account_partition (test_agent_engine.AgentEngineHTTP.test_dm_reads_use_only_current_account_partition) ... ok
+test_dm_stream_cursor_is_bound_to_authenticated_owner_and_thread (test_agent_engine.AgentEngineHTTP.test_dm_stream_cursor_is_bound_to_authenticated_owner_and_thread) ... ok
+test_error_mapping_preserves_command_identity (test_agent_engine.AgentEngineHTTP.test_error_mapping_preserves_command_identity) ... ok
+test_oversized_request_is_not_sent_or_reported_retryable (test_agent_engine.AgentEngineHTTP.test_oversized_request_is_not_sent_or_reported_retryable) ... ok
+test_public_owner_actor_and_runtime_commands_are_rejected (test_agent_engine.AgentEngineHTTP.test_public_owner_actor_and_runtime_commands_are_rejected) ... ok
+test_read_signs_verified_owner_and_canonical_body (test_agent_engine.AgentEngineHTTP.test_read_signs_verified_owner_and_canonical_body) ... ok
+test_thread_consumers_sign_owner_and_keep_runtime_private (test_agent_engine.AgentEngineHTTP.test_thread_consumers_sign_owner_and_keep_runtime_private) ... ok
+test_unicode_request_uses_supported_frame_and_unchanged_digest (test_agent_engine.AgentEngineHTTP.test_unicode_request_uses_supported_frame_and_unchanged_digest) ... ok
+test_unprovisioned_owner_does_not_use_another_partition (test_agent_engine.AgentEngineHTTP.test_unprovisioned_owner_does_not_use_another_partition) ... ok
+test_retired_routes_and_runtime_are_absent (test_agent_engine.SingleEngineComposition.test_retired_routes_and_runtime_are_absent) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.422s
+
+OK

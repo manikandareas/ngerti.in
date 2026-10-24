@@ -3,6 +3,7 @@
 import hashlib
 import json
 import re
+import subprocess
 from pathlib import Path
 from urllib.parse import unquote
 
@@ -100,6 +101,21 @@ def main():
         for page in expected:
             assert page["title"] in text, f"Missing view card: {page['title']}"
 
+    # Retired source references in historical reports resolve against their pinned Git revision.
+    retirement = json.loads(
+        (DOCS / "research/evidence/nma-025-026/retired-files.json").read_text()
+    )
+    historical_paths = set(
+        subprocess.check_output(
+            ["git", "ls-tree", "-r", "--name-only", retirement["source_commit"]],
+            cwd=ROOT,
+            text=True,
+        ).splitlines()
+    )
+    assert set(retirement["files"]) <= historical_paths, (
+        "Retired source is missing from its Git revision"
+    )
+    retired = {(ROOT / name).resolve() for name in retirement["files"]}
     broken = []
     count = 0
     for path in [*DOCS.rglob("*.md"), ROOT / "README.md", ROOT / "PRODUCT.md"]:
@@ -108,7 +124,10 @@ def main():
             if not target or re.match(r"[a-zA-Z][\w+.-]*:", target):
                 continue
             count += 1
-            if not (path.parent / unquote(target)).exists():
+            if (
+                not (path.parent / unquote(target)).exists()
+                and (path.parent / unquote(target)).resolve() not in retired
+            ):
                 broken.append(f"{path.relative_to(ROOT)} -> {target}")
     assert not broken, "Broken local links:\n" + "\n".join(broken)
     print(

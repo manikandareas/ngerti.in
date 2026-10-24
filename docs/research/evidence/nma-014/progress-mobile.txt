@@ -1,0 +1,30 @@
+- generic [ref=e1] clickable [onclick]
+  - main
+    - region "Progress goals" [ref=e2]
+      - heading "Goals percakapan" [level=2, ref=e3]
+      - StaticText "1"
+      - StaticText " tanggung jawab"
+      - paragraph
+        - StaticText "Agent mengelola progress di sini. Ubah, jeda, atau hentikan lewat percakapan."
+      - group
+        - DisclosureTriangle "Prepare and verify a short fuel-efficiency reportSelesai" [expanded=true]
+          - StaticText "Prepare and verify a short fuel-efficiency reportSelesai"
+        - paragraph
+          - StaticText "Use the supplied readings of 360 km travelled and 45 litres consumed to produce fuel consumption in litres per 100 km and a short interpretation. Independently check the arithmetic and finish the work without waiting for another user message."
+        - paragraph
+          - StaticText "Verified the persisted report calculates (45 ÷ 360) × 100 = 12.5 L/100 km, interprets this as 12.5 litres per 100 km, and independently confirms it through 360 ÷ 45 = 8 km/L and 100 ÷ 8 = 12.5 L/100 km."
+        - heading "Bukti hasil" [level=3, ref=e7]
+        - paragraph
+          - StaticText "Report includes fuel consumption in litres per 100 km, a short interpretation, and an independent arithmetic check."
+        - paragraph
+          - StaticText "Verified the persisted report calculates (45 ÷ 360) × 100 = 12.5 L/100 km, interprets this as 12.5 litres per 100 km, and independently confirms it through 360 ÷ 45 = 8 km/L and 100 ÷ 8 = 12.5 L/100 km."
+        - link "Lihat pesan hasil" [ref=e8]
+    - article
+      - heading "Kamu" [level=2, ref=e4]
+      - StaticText "Please take responsibility for preparing a short fuel-efficiency report from these readings: 360 km travelled and 45 litres consumed. Produce the calculation in litres per 100 km and a short interpretation, then independently check the arithmetic and finish the work. Keep working through the result and its verification without waiting for another message from me."
+    - article
+      - heading "Agent" [level=2, ref=e5]
+      - StaticText "Fuel consumption: (45 litres ÷ 360 km) × 100 = 12.5 L/100 km.\n\nInterpretation: The vehicle used an average of 12.5 litres for every 100 km travelled. Lower L/100 km means better fuel efficiency.\n\nIndependent check: 360 ÷ 45 = 8 km per litre; 100 ÷ 8 = 12.5 L/100 km, confirming the result."
+    - article
+      - heading "Agent" [level=2, ref=e6]
+      - StaticText "The report and independent arithmetic check are verified. Evidence is recorded, and the responsibility is marked completed."

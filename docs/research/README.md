@@ -12,6 +12,7 @@ Keputusan pivot aktif berada di [Ngertiin Multi Agent di Notion](https://app.not
 - [Agent identity and capability closure](nma-007-008-closure.md): persisted DM/group identity consumers, MCP metadata credential rejection, and current runtime/browser acceptance.
 - [NMA-008 · Per-agent capability assignment](nma-008-capability-assignment.md): native tools, session-scoped MCP, skill snapshots, credential redaction, queued revocation and browser evidence; dependency gates remain open.
 
+- [NMA-014 · Goal lifecycle and continuation](nma-014-goal-lifecycle.md): multi-run work, persisted progress and evidence, wait/resume, generation fences, native admission/card reconciliation and visible DM goals.
 - [NMA-013 · Conversational goal capture](nma-013-conversational-goals.md): ordinary Hermes responsibility tools, atomic provenance and receipts, scoped goals, live DM dataset and restart/stop evidence.
 - [NMA-011 · DM API and streaming](nma-011-dm-api-streaming.md): durable DM ingress, scoped HTTP/SSE, interrupt and reconnect/crash acceptance.
 - [NMA-010 · Durable execution and recovery](nma-010-durable-execution.md): persistent replay/snapshot, run stop fences, native receipt reconciliation and real-process fault injection.

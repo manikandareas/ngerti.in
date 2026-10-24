@@ -1,0 +1,340 @@
+.....FFFFF.........F........
+=================================== FAILURES ===================================
+__________ test_scoped_memory_transcript_transfer_revocation_restart ___________
+
+runtime = (PosixPath('/tmp/nma-2f4oh8ji'), <http.server.ThreadingHTTPServer object at 0x10bbd7890>, <function runtime.<locals>.c...cancel', 'runtime.read', 'runtime.events', 'runtime.snapshot'], 'production_ready': False, 'schema_version': 'nma.v1'})
+
+    def test_scoped_memory_transcript_transfer_revocation_restart(runtime):
+        root, provider, call, start, *_ = runtime
+        a, b = create_agent(call, "context-a"), create_agent(call, "context-b")
+        dm, other_dm, b_dm = (
+            thread(call, "dm", [a]),
+            thread(call, "dm", [a]),
+            thread(call, "dm", [b]),
+        )
+        group, other_group = thread(call, "group", [a, b]), thread(call, "group", [a, b])
+        # Native profile-wide memory must not enter any product conversation.
+        memory_dir = root / "state/memories"
+        memory_dir.mkdir(exist_ok=True)
+        (memory_dir / "MEMORY.md").write_text("PROFILE_PRIVATE_MARKER")
+        (memory_dir / "USER.md").write_text("PROFILE_USER_MARKER")
+>       run(call, a, dm, "DM_TRANSCRIPT_SECRET")
+
+apps/engine/tests/test_context.py:83: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+apps/engine/tests/test_context.py:46: in run
+    result = settle(call, receipt["result"]["run_id"])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x10bebb690>
+run_id = '0bf862b8-36ec-54fc-b271-42f6253b1d4a', expected = 'succeeded'
+
+    def settle(call, run_id, expected="succeeded"):
+        deadline = time.monotonic() + 45
+        while time.monotonic() < deadline:
+            reply = call(command("runtime.read", {"run_id": run_id}))
+            assert "result" in reply, reply
+            if reply["result"]["status"] not in {"queued", "running"}:
+>               assert reply["result"]["status"] == expected, reply
+E               AssertionError: {'result': {'agent_id': '2623cbef-0178-4d95-ad70-6adfe67696ff', 'config_revision': '1', 'context_generation': '1', 'error_code': 'RUNTIME_FAILED', ...}}
+E               assert 'failed' == 'succeeded'
+E                 
+E                 - succeeded
+E                 + failed
+
+apps/engine/tests/test_runtime.py:347: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+___________ test_provenance_cannot_self_grant_or_cross_source_scope ____________
+
+runtime = (PosixPath('/tmp/nma-2f4oh8ji'), <http.server.ThreadingHTTPServer object at 0x10bbd7890>, <function runtime.<locals>.c...cancel', 'runtime.read', 'runtime.events', 'runtime.snapshot'], 'production_ready': False, 'schema_version': 'nma.v1'})
+
+    def test_provenance_cannot_self_grant_or_cross_source_scope(runtime):
+        _, _, call, *_ = runtime
+        a, b = create_agent(call, "source-a"), create_agent(call, "source-b")
+        dm, group = thread(call, "dm", [a]), thread(call, "group", [a, b])
+>       run(call, a, dm, "SOURCE_PRIVATE")
+
+apps/engine/tests/test_context.py:215: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+apps/engine/tests/test_context.py:46: in run
+    result = settle(call, receipt["result"]["run_id"])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x10bebb690>
+run_id = 'b441e71a-3843-5187-8322-a030d516a364', expected = 'succeeded'
+
+    def settle(call, run_id, expected="succeeded"):
+        deadline = time.monotonic() + 45
+        while time.monotonic() < deadline:
+            reply = call(command("runtime.read", {"run_id": run_id}))
+            assert "result" in reply, reply
+            if reply["result"]["status"] not in {"queued", "running"}:
+>               assert reply["result"]["status"] == expected, reply
+E               AssertionError: {'result': {'agent_id': '31cb0594-fd8b-4944-a457-be6a1fac8959', 'config_revision': '1', 'context_generation': '1', 'error_code': 'RUNTIME_FAILED', ...}}
+E               assert 'failed' == 'succeeded'
+E                 
+E                 - succeeded
+E                 + failed
+
+apps/engine/tests/test_runtime.py:347: AssertionError
+______________ test_context_revoke_fences_active_and_queued_work _______________
+
+runtime = (PosixPath('/tmp/nma-2f4oh8ji'), <http.server.ThreadingHTTPServer object at 0x10bbd7890>, <function runtime.<locals>.c...cancel', 'runtime.read', 'runtime.events', 'runtime.snapshot'], 'production_ready': False, 'schema_version': 'nma.v1'})
+
+    def test_context_revoke_fences_active_and_queued_work(runtime):
+        _, provider, call, start, *_ = runtime
+        a, b = create_agent(call, "queued-a"), create_agent(call, "queued-b")
+        dm, group = thread(call, "dm", [a]), thread(call, "group", [a, b])
+>       run(call, a, dm, "Please share this selected fact.")
+
+apps/engine/tests/test_context.py:253: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+apps/engine/tests/test_context.py:46: in run
+    result = settle(call, receipt["result"]["run_id"])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x10bebb690>
+run_id = '399d3902-f9d4-59bd-964b-7b8ee42a4433', expected = 'succeeded'
+
+    def settle(call, run_id, expected="succeeded"):
+        deadline = time.monotonic() + 45
+        while time.monotonic() < deadline:
+            reply = call(command("runtime.read", {"run_id": run_id}))
+            assert "result" in reply, reply
+            if reply["result"]["status"] not in {"queued", "running"}:
+>               assert reply["result"]["status"] == expected, reply
+E               AssertionError: {'result': {'agent_id': '498e41de-27df-4d3b-88d0-48daee1b0ec6', 'config_revision': '1', 'context_generation': '1', 'error_code': 'RUNTIME_FAILED', ...}}
+E               assert 'failed' == 'succeeded'
+E                 
+E                 - succeeded
+E                 + failed
+
+apps/engine/tests/test_runtime.py:347: AssertionError
+_________ test_additive_schema_three_upgrade_preserves_native_history __________
+
+runtime = (PosixPath('/tmp/nma-2f4oh8ji'), <http.server.ThreadingHTTPServer object at 0x10bbd7890>, <function runtime.<locals>.c...cancel', 'runtime.read', 'runtime.events', 'runtime.snapshot'], 'production_ready': False, 'schema_version': 'nma.v1'})
+
+    def test_additive_schema_three_upgrade_preserves_native_history(runtime):
+        root, _, call, start, *_ = runtime
+        a = create_agent(call, "upgrade-context")
+        dm = thread(call, "dm", [a])
+>       prior = run(call, a, dm, "PRESERVED_NATIVE_TRANSCRIPT")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps/engine/tests/test_context.py:317: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+apps/engine/tests/test_context.py:46: in run
+    result = settle(call, receipt["result"]["run_id"])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x10bebb690>
+run_id = 'b1329581-21f3-593b-ac88-c7e3738d130d', expected = 'succeeded'
+
+    def settle(call, run_id, expected="succeeded"):
+        deadline = time.monotonic() + 45
+        while time.monotonic() < deadline:
+            reply = call(command("runtime.read", {"run_id": run_id}))
+            assert "result" in reply, reply
+            if reply["result"]["status"] not in {"queued", "running"}:
+>               assert reply["result"]["status"] == expected, reply
+E               AssertionError: {'result': {'agent_id': '8e079a92-06e6-439d-8484-8dd75773b5c5', 'config_revision': '1', 'context_generation': '1', 'error_code': 'RUNTIME_FAILED', ...}}
+E               assert 'failed' == 'succeeded'
+E                 
+E                 - succeeded
+E                 + failed
+
+apps/engine/tests/test_runtime.py:347: AssertionError
+_________ test_registered_manifest_binding_cannot_load_profile_memory __________
+
+runtime = (PosixPath('/tmp/nma-2f4oh8ji'), <http.server.ThreadingHTTPServer object at 0x10bbd7890>, <function runtime.<locals>.c...cancel', 'runtime.read', 'runtime.events', 'runtime.snapshot'], 'production_ready': False, 'schema_version': 'nma.v1'})
+
+    def test_registered_manifest_binding_cannot_load_profile_memory(runtime):
+        root, provider, call, start, *_ = runtime
+        a, b = create_agent(call, "manifest-a"), create_agent(call, "manifest-b")
+        group = thread(call, "group", [a, b])
+        bindings_path = root / "bindings.json"
+        bindings = json.loads(bindings_path.read_text())
+        bindings.append(
+            {
+                **bindings[0],
+                "agent_id": a["agent_id"],
+                "thread_id": group["thread_id"],
+                "toolsets": [],
+            }
+        )
+        bindings_path.write_text(json.dumps(bindings))
+        start.current.kill()
+        start.current.wait(timeout=10)
+        start()
+        before = len(provider.requests)
+>       run(call, a, group, "MANIFEST_SCOPE_CHECK")
+
+apps/engine/tests/test_context.py:392: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+apps/engine/tests/test_context.py:46: in run
+    result = settle(call, receipt["result"]["run_id"])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x10bebb690>
+run_id = 'acdf0065-5ee6-5169-b28f-3247cc442b43', expected = 'succeeded'
+
+    def settle(call, run_id, expected="succeeded"):
+        deadline = time.monotonic() + 45
+        while time.monotonic() < deadline:
+            reply = call(command("runtime.read", {"run_id": run_id}))
+            assert "result" in reply, reply
+            if reply["result"]["status"] not in {"queued", "running"}:
+>               assert reply["result"]["status"] == expected, reply
+E               AssertionError: {'result': {'agent_id': '00e1a877-4c21-48d3-ab01-ce4870aca60a', 'config_revision': '1', 'context_generation': '1', 'error_code': 'RUNTIME_FAILED', ...}}
+E               assert 'failed' == 'succeeded'
+E                 
+E                 - succeeded
+E                 + failed
+
+apps/engine/tests/test_runtime.py:347: AssertionError
+____________ test_schema_five_upgrade_preserves_messages_and_replay ____________
+
+runtime = (PosixPath('/tmp/nma-op9jxl2k'), <http.server.ThreadingHTTPServer object at 0x10bbd7c50>, <function runtime.<locals>.c...cancel', 'runtime.read', 'runtime.events', 'runtime.snapshot'], 'production_ready': False, 'schema_version': 'nma.v1'})
+
+    def test_schema_five_upgrade_preserves_messages_and_replay(runtime):
+        import sqlite3
+    
+        root, _, call, start, *_ = runtime
+        thread = dm(call, "dm-upgrade")
+        receipt = call(send(thread, "PRESERVED_UPGRADE"))["result"]
+        settle(call, receipt["run_id"])
+        before = snapshot(call, thread)
+        page = call(
+            command(
+                "thread.snapshot",
+                {
+                    "thread_id": thread["thread_id"],
+                    "before_message_seq": before["messages"][1]["message_seq"],
+                },
+            )
+        )["result"]
+        assert page["messages"] == before["messages"][:1]
+        start.current.kill()
+        start.current.wait(timeout=10)
+        # Reconstruct the predecessor with existing native/domain rows intact.
+        with sqlite3.connect(root / "state/state.db") as db:
+            db.execute("DROP TABLE nma_goal_operations")
+            db.execute("DROP TABLE nma_goals")
+            db.execute("DROP TABLE nma_dm_requests")
+            db.execute("DELETE FROM nma_schema_migrations WHERE version>=6")
+            db.execute("UPDATE nma_partition SET schema_version=5")
+>       start()
+
+apps/engine/tests/test_direct_messages.py:453: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+fault = None
+
+    def start(fault=None):
+        log = (root / f"gateway-{len(processes)}.log").open("w+")
+        process = subprocess.Popen(
+            [RUNTIME_PYTHON, str(Path(__file__).with_name("fault_launcher.py"))]
+            if fault
+            else [RUNTIME_PYTHON, "-m", "ngertiin_engine.service"],
+            cwd=SOURCE,
+            env=env
+            | (
+                {"NMA_TEST_FAULT": fault, "NMA_TEST_MARKER": str(root / "fault-fired")}
+                if fault
+                else {}
+            ),
+            stdout=log,
+            stderr=subprocess.STDOUT,
+        )
+        processes.append(process)
+        start.current = process
+        deadline = time.monotonic() + 90
+        while process.poll() is None and time.monotonic() < deadline:
+            try:
+                response = call(command("runtime.describe"))
+                if "result" in response:
+                    return process, response["result"]
+            except (OSError, ValueError):
+                pass
+            time.sleep(0.1)
+        log.flush()
+>       pytest.fail(
+            log.read()
+            if log.seek(0) is None
+            else (root / f"gateway-{len(processes) - 1}.log").read_text()
+        )
+E       Failed: 2026-10-24 11:54:55,382 WARNING gateway.lifecycle_ledger: Previous gateway life (pid=8775, started_at=2026-10-24T03:54:47.445494+00:00) exited UNCLEANLY (no exit path ran — SIGKILL / OOM / VM death, or a process kill issued by the agent or one of its descendants, e.g. a pkill/taskkill of the host interpreter image; see #113667). last_heartbeat_at=2026-10-24T03:54:47.596905+00:00 last_mem=None suspected_oom=False
+E       2026-10-24 11:54:55,519 WARNING gateway.run: No messaging platforms enabled.
+E       2026-10-24 11:54:55,976 WARNING agent.model_metadata: Could not determine context length for model 'adapter-model' (base_url=http://127.0.0.1:56525/v1) — falling back to 256,000 tokens. Set model.context_length in config.yaml to override.
+E       Traceback (most recent call last):
+E         File "<frozen runpy>", line 203, in _run_module_as_main
+E         File "<frozen runpy>", line 88, in _run_code
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/service.py", line 412, in <module>
+E           main()
+E           ~~~~^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/service.py", line 408, in main
+E           run.main()
+E           ~~~~~~~~^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/source/gateway/run.py", line 5187, in main
+E           success = asyncio.run(start_gateway(config))
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/asyncio/runners.py", line 205, in run
+E           return runner.run(main)
+E                  ~~~~~~~~~~^^^^^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/asyncio/runners.py", line 128, in run
+E           return self._loop.run_until_complete(task)
+E                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/asyncio/base_events.py", line 720, in run_until_complete
+E           return future.result()
+E                  ~~~~~~~~~~~~~^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/source/gateway/run.py", line 5092, in start_gateway
+E           return await bootstrap(config, replace, verbosity, force, idle_exit)
+E                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/source/gateway/run_bootstrap.py", line 886, in start_gateway
+E           _early_verdict = await _start_gateway_run_runner(runner, _signal_initiated_shutdown)
+E                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/source/gateway/run_bootstrap.py", line 684, in _start_gateway_run_runner
+E           success = await runner.start()
+E                     ^^^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/service.py", line 325, in start
+E           self.nma_adapter = Adapter(
+E                              ~~~~~~~^
+E               active_authority(self), owner, configurations, models
+E               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           )
+E           ^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/adapter.py", line 44, in __init__
+E           self.store = Store(authority, owner)
+E                        ~~~~~^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/store.py", line 42, in __init__
+E           self.write(self._bootstrap, bootstrap=True)
+E           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/store.py", line 59, in write
+E           return self.authority.db._execute_write(fenced)
+E                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/source/hermes_state.py", line 1048, in _execute_write
+E           result = fn(self._conn)
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/store.py", line 57, in fenced
+E           return operation(conn)
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/store.py", line 217, in _bootstrap
+E           conn.execute(statement)
+E           ~~~~~~~~~~~~^^^^^^^^^^^
+E       sqlite3.OperationalError: table nma_goal_lifecycle already exists
+
+apps/engine/tests/test_runtime.py:287: Failed
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_context.py::test_scoped_memory_transcript_transfer_revocation_restart
+FAILED apps/engine/tests/test_context.py::test_provenance_cannot_self_grant_or_cross_source_scope
+FAILED apps/engine/tests/test_context.py::test_context_revoke_fences_active_and_queued_work
+FAILED apps/engine/tests/test_context.py::test_additive_schema_three_upgrade_preserves_native_history
+FAILED apps/engine/tests/test_context.py::test_registered_manifest_binding_cannot_load_profile_memory
+FAILED apps/engine/tests/test_direct_messages.py::test_schema_five_upgrade_preserves_messages_and_replay
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! KeyboardInterrupt !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_goals.py:28: KeyboardInterrupt
+(to show a full traceback on KeyboardInterrupt use --full-trace)
+6 failed, 22 passed in 159.09s (0:02:39)

@@ -1,0 +1,49 @@
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+F
+=================================== FAILURES ===================================
+______________ test_ordinary_conversation_to_verified_completion _______________
+
+runtime = (PosixPath('/tmp/nma-e4cj241l'), <http.server.ThreadingHTTPServer object at 0x1073596a0>, <function runtime.<locals>.c...cancel', 'runtime.read', 'runtime.events', 'runtime.snapshot'], 'production_ready': False, 'schema_version': 'nma.v1'})
+public_api = <function public_api.<locals>.request at 0x1073f52d0>
+
+    def test_ordinary_conversation_to_verified_completion(runtime, public_api):
+        root, _, call, start, *_ = runtime
+        thread = dm(call, "goal-lifecycle-live")
+        body = send(
+            thread,
+            "Please take responsibility for preparing a short fuel-efficiency report from these readings: 360 km travelled and 45 litres consumed. Produce the calculation in litres per 100 km and a short interpretation, then independently check the arithmetic and finish the work. Keep working through the result and its verification without waiting for another message from me.",
+        )
+        with public_api("/commands", body) as response:
+            receipt = json.load(response)
+        deadline = time.monotonic() + 180
+        while time.monotonic() < deadline:
+            snap = snapshot(call, thread)
+            if snap["goals"] and all(
+                g["status"] in {"completed", "blocked", "waiting"}
+                and all(u["settled"] for u in g["units"])
+                for g in snap["goals"]
+            ):
+                break
+            time.sleep(0.3)
+        report = {
+            "model": json.loads((root / "models.json").read_text())["test"]["model"],
+            "receipt": receipt,
+            "snapshot": snap,
+        }
+        output = os.environ.get("NMA_TEST_LIFECYCLE_OUTPUT")
+        if output:
+            Path(output).write_text(json.dumps(report, indent=2) + "\n")
+        assert len(snap["goals"]) == 1, snap
+        goal = snap["goals"][0]
+>       assert goal["status"] == "completed", goal
+E       AssertionError: {'created_at': '2026-10-24T03:49:30.571Z', 'creation_key': 'fuel-efficiency-report', 'evidence': [{'accepted_by_agent_...ser message.', 'evidence_id': '9aeb233d-2565-5c57-bcd5-3e9c2096393c', 'generation': '1', ...}], 'generation': '1', ...}
+E       assert 'blocked' == 'completed'
+E         
+E         - completed
+E         + blocked
+
+apps/engine/tests/test_goal_lifecycle_live.py:47: AssertionError
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_goal_lifecycle_live.py::test_ordinary_conversation_to_verified_completion
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed in 74.13s (0:01:14)

@@ -1,0 +1,58 @@
+.......F
+=================================== FAILURES ===================================
+_ test_continuation_crash_identity_and_native_card_reconciliation[after_goal_card] _
+
+runtime = (PosixPath('/tmp/nma-6sa0qdw_'), <http.server.ThreadingHTTPServer object at 0x10b4b1e80>, <function runtime.<locals>.c...cancel', 'runtime.read', 'runtime.events', 'runtime.snapshot'], 'production_ready': False, 'schema_version': 'nma.v1'})
+point = 'after_goal_card'
+
+    @pytest.mark.parametrize(
+        "point",
+        [
+            "before_continuation_commit",
+            "after_continuation_commit",
+            "after_goal_card",
+            "after_goal_admission",
+        ],
+    )
+    def test_continuation_crash_identity_and_native_card_reconciliation(runtime, point):
+        root, provider, call, start, *_ = runtime
+        thread = dm(call, "lifecycle-" + point.replace("_", "-"))
+        goal = begin(call, thread)
+        continuation_script(provider, goal["goal_id"])
+        start.current.kill()
+        start.current.wait(timeout=10)
+        (root / "fault-fired").unlink(missing_ok=True)
+        start(point)
+        body = send(
+            thread,
+            "RESPONSIBILITY:"
+            + json.dumps(
+                {
+                    "action": "continue",
+                    "goal_id": goal["goal_id"],
+                    "expected_revision": goal["revision"],
+                    "summary": "Recover this execution unit",
+                }
+            ),
+        )
+        parent = call(body)["result"]
+        start.current.wait(timeout=20)
+        assert (root / "fault-fired").read_text() == point
+        start()
+        final = eventually(
+            lambda: snapshot(call, thread)["goals"][0],
+            lambda g: (
+                g["status"] in {"waiting", "blocked"}
+                and all(u["settled"] for u in g["units"])
+            ),
+        )
+        assert call(body)["result"]["run_id"] == parent["run_id"]
+>       assert len(final["units"]) == 3
+E       AssertionError: assert 3 == 2
+E        +  where 3 = len([{'generation': '1', 'parent_run_id': None, 'run_id': '20fe1286-59d9-5da9-9616-c0627ec2d14f', 'settled': True, ...}, {...n_id': 'cddc4b48-6293-5c9c-a4dc-24c2e37fc32e', 'run_id': 'a2e85155-79b1-5da6-9abd-a1ef4e3e3ace', 'settled': True, ...}])
+
+apps/engine/tests/test_goal_lifecycle.py:376: AssertionError
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_goal_lifecycle.py::test_continuation_crash_identity_and_native_card_reconciliation[after_goal_card]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 7 passed in 52.40s

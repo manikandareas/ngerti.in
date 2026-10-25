@@ -882,6 +882,57 @@ def test_agent_validation_and_pagination(runtime):
     assert "runtime_model" not in json.dumps(first)
 
 
+def test_agent_avatar_follows_handle(runtime):
+    root, _, call, *_ = runtime
+    payload = {
+        "display_name": "Avatar",
+        "handle": "avatar",
+        "config": {"soul": "", "instructions": "", "model": "test"},
+    }
+    agent = call(command("agent.create", payload))["result"]["agent"]
+    url = "https://api.dicebear.com/10.x/critters/svg?seed=avatar"
+    assert agent["config"]["avatar_url"] == url
+    # Echoing a stored or foreign avatar is accepted but never changes the derivation.
+    forged = command(
+        "agent.configure",
+        {
+            **payload,
+            "agent_id": agent["agent_id"],
+            "config": {
+                **payload["config"],
+                "avatar_url": "https://attacker.example/a.svg",
+            },
+        },
+    )
+    forged["expected_revision"] = agent["revision"]
+    updated = call(forged)["result"]["agent"]
+    assert updated["config"]["avatar_url"] == url
+    assert updated["config_revision"] == "2"
+    renamed = command(
+        "agent.configure",
+        {**payload, "agent_id": agent["agent_id"], "handle": "avatar-renamed"},
+    )
+    renamed["expected_revision"] = updated["revision"]
+    final = call(renamed)["result"]["agent"]
+    assert final["config"]["avatar_url"] == (
+        "https://api.dicebear.com/10.x/critters/svg?seed=avatar-renamed"
+    )
+    # Legacy configs written before derivation still expose an avatar on read.
+    with sqlite3.connect(root / "state/state.db") as db:
+        revision, config = db.execute(
+            "SELECT config_revision,config FROM nma_agent_configs WHERE owner_id=? AND agent_id=? ORDER BY config_revision DESC LIMIT 1",
+            (OWNER, agent["agent_id"]),
+        ).fetchone()
+        legacy = {k: v for k, v in json.loads(config).items() if k != "avatar_url"}
+        db.execute(
+            "UPDATE nma_agent_configs SET config=? WHERE owner_id=? AND agent_id=? AND config_revision=?",
+            (json.dumps(legacy), OWNER, agent["agent_id"], revision),
+        )
+    listed = call(command("agent.list", {"after": None, "limit": 100}))["result"]
+    item = next(a for a in listed["items"] if a["agent_id"] == agent["agent_id"])
+    assert item["config"]["avatar_url"] == final["config"]["avatar_url"]
+
+
 @pytest.mark.parametrize("transition", ["configure", "archive"])
 def test_pending_native_receipt_reconciles_original_snapshot(runtime, transition):
     from ngertiin_engine.contracts import canonical, digest

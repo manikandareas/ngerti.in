@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { api } from "@/lib/api";
+import { AgentAvatar } from "./agent-avatar";
 import type { Agent } from "./agents-page";
 
 type Thread = { thread_id: string; kind: "dm" | "group"; title: string; agents: Agent[] };
@@ -225,6 +226,11 @@ export function AgentThreads({ agents, edit }: { agents: Agent[]; edit: (agent: 
                           )
                         }
                       />
+                      <AgentAvatar
+                        name={agent.display_name}
+                        url={agent.config.avatar_url}
+                        className="size-6 text-xs"
+                      />
                       {agent.display_name}{" "}
                       <span className="text-muted-foreground">@{agent.handle}</span>
                     </label>
@@ -275,7 +281,14 @@ export function AgentThreads({ agents, edit }: { agents: Agent[]; edit: (agent: 
           )}
           {detail?.agents.map((agent) => (
             <article key={agent.agent_id} className="space-y-2 rounded-xl border p-4">
-              <h3 className="font-medium">{agent.display_name}</h3>
+              <div className="flex items-center gap-3">
+                <AgentAvatar
+                  name={agent.display_name}
+                  url={agent.config.avatar_url}
+                  className="size-8 text-sm"
+                />
+                <h3 className="font-medium">{agent.display_name}</h3>
+              </div>
               <p className="text-sm text-muted-foreground">
                 @{agent.handle} ·{" "}
                 {agent.status === "active"

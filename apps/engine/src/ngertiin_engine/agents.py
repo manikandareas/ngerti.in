@@ -23,6 +23,14 @@ DDL = (
 )
 
 
+AVATAR_URL_TEMPLATE = "https://api.dicebear.com/10.x/critters/svg?seed={seed}"
+
+
+def avatar_url(handle):
+    """Deterministic presentation avatar; validated handles are already URL-safe."""
+    return AVATAR_URL_TEMPLATE.format(seed=handle)
+
+
 def compose(name, handle, config):
     """Compose reusable persona only; conversation memory never enters this snapshot."""
     return "\n\n".join(
@@ -67,6 +75,8 @@ class Agents:
         result["config"] = json.loads(result["config"])
         result["config"].pop("runtime_model", None)
         result["config"].pop("runtime_capabilities", None)
+        # Configs written before server-side avatar derivation lack the field.
+        result["config"].setdefault("avatar_url", avatar_url(result["handle"]))
         return result
 
     def listing(self, payload):
@@ -126,7 +136,7 @@ class Agents:
         if (
             not isinstance(config, dict)
             or not {"soul", "instructions", "model"} <= set(config)
-            or set(config) - {"soul", "instructions", "model", *FIELDS}
+            or set(config) - {"soul", "instructions", "model", "avatar_url", *FIELDS}
         ):
             raise EngineError("INVALID_REQUEST")
         if any(
@@ -142,6 +152,8 @@ class Agents:
             handle,
             {
                 **config,
+                # The stored avatar always follows the handle; client-sent values are ignored.
+                "avatar_url": avatar_url(handle),
                 "runtime_model": self.models[config["model"]],
                 "runtime_capabilities": capabilities,
             },

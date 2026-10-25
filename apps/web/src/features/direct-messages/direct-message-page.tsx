@@ -4,6 +4,7 @@ import { ArrowDown, ArrowLeft, MessageCircle } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Streamdown } from "streamdown";
 import { Button } from "@/components/ui/button";
+import { AgentAvatar } from "@/features/agents/agent-avatar";
 import { ArtifactResults } from "./artifact-results";
 import { command, listThreads, submit, type ThreadItem } from "./client";
 import { Composer } from "./composer";
@@ -116,12 +117,16 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
               <ArrowLeft className="size-5" />
             </Link>
           </Button>
-          <div
-            className="flex size-10 shrink-0 items-center justify-center rounded-full bg-secondary font-bold"
-            aria-hidden="true"
-          >
-            {group ? "G" : (agent?.display_name.slice(0, 1) ?? "·")}
-          </div>
+          {group ? (
+            <div
+              className="flex size-10 shrink-0 items-center justify-center rounded-full bg-secondary font-bold"
+              aria-hidden="true"
+            >
+              G
+            </div>
+          ) : (
+            <AgentAvatar name={agent?.display_name ?? ""} url={agent?.config.avatar_url} />
+          )}
           <div className="min-w-0 flex-1">
             <h1 className="break-words text-lg font-bold [overflow-wrap:anywhere]">
               {group ? snapshot?.thread.title : (agent?.display_name ?? "Percakapan langsung")}

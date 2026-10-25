@@ -15,12 +15,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { command, listThreads, submit } from "@/features/direct-messages/client";
 import type { Thread } from "@/features/direct-messages/state";
 import { api } from "@/lib/api";
+import { AgentAvatar } from "./agent-avatar";
 import { AgentThreads } from "./agent-threads";
 
 type CapabilityField = "tool_grants" | "mcp_grants" | "skill_refs";
-type Config = { soul: string; instructions: string; model: string } & Partial<
-  Record<CapabilityField, string[]>
->;
+type Config = {
+  soul: string;
+  instructions: string;
+  model: string;
+  avatar_url?: string;
+} & Partial<Record<CapabilityField, string[]>>;
 const capabilityLabels: Record<CapabilityField, string> = {
   tool_grants: "Tools",
   mcp_grants: "Koneksi MCP",
@@ -234,15 +238,18 @@ export function AgentsPage() {
                     key={agent.agent_id}
                     className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border bg-card p-5"
                   >
-                    <div className="min-w-0">
-                      <h2 className="break-words font-semibold">{agent.display_name}</h2>
-                      <p className="text-sm text-muted-foreground">
-                        @{agent.handle} · {statusLabels[agent.status]}
-                      </p>
-                      <p className="mt-2 text-xs text-muted-foreground">
-                        {data.models.find((m) => m.id === agent.config.model)?.label ??
-                          agent.config.model}
-                      </p>
+                    <div className="flex min-w-0 items-center gap-4">
+                      <AgentAvatar name={agent.display_name} url={agent.config.avatar_url} />
+                      <div className="min-w-0">
+                        <h2 className="break-words font-semibold">{agent.display_name}</h2>
+                        <p className="text-sm text-muted-foreground">
+                          @{agent.handle} · {statusLabels[agent.status]}
+                        </p>
+                        <p className="mt-2 text-xs text-muted-foreground">
+                          {data.models.find((m) => m.id === agent.config.model)?.label ??
+                            agent.config.model}
+                        </p>
+                      </div>
                     </div>
                     {agent.status === "archived" ? (
                       <Button

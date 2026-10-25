@@ -45,6 +45,10 @@ def send(thread, text):
 def snapshot(call, thread):
     value = call(command("thread.snapshot", {"thread_id": thread["thread_id"]}))
     assert "result" in value, value
+    # Run-produced assertions must not count the template welcome (run_id null).
+    value["result"]["messages"] = [
+        m for m in value["result"]["messages"] if m["run_id"] is not None
+    ]
     return value["result"]
 
 
@@ -77,7 +81,13 @@ def test_parallel_dm_history_replay_restart_and_dedup(runtime):
     )
     replay = call(replay_command)
     assert (
-        len([e for e in replay["result"]["events"] if e["type"] == "message.created"])
+        len(
+            [
+                e
+                for e in replay["result"]["events"]
+                if e["type"] == "message.created" and e.get("run_id")
+            ]
+        )
         == 2
     )
     start.current.kill()
@@ -321,7 +331,8 @@ def test_public_http_sse_reconnect_cancel_and_cursor_validation(runtime, public_
                 break
     assert request("/commands", body).status == 200
     snap = json.load(request(path))
-    assert len(snap["messages"]) == 2
+    assert len(snap["messages"]) == 3
+    assert snap["messages"][0]["origin"] == "welcome_template"
     assert json.load(request("/runs/" + receipt["run_id"]))["status"] == "succeeded"
     assert (
         json.load(request("/commands/" + body["command_id"]))["run_id"]
@@ -348,7 +359,7 @@ def test_dm_crash_boundaries_preserve_identity_and_user_message(runtime, fault):
     before = len(provider.requests)
     try:
         call(body)
-    except (OSError, ValueError):
+    except OSError, ValueError:
         pass
     deadline = time.monotonic() + 15
     while start.current.poll() is None and time.monotonic() < deadline:
@@ -493,11 +504,16 @@ def test_schema_five_upgrade_preserves_messages_and_replay(runtime):
             },
         )
     )["result"]
-    assert page["messages"] == before["messages"][:1]
+    assert [m for m in page["messages"] if m["run_id"] is not None] == before[
+        "messages"
+    ][:1]
     start.current.kill()
     start.current.wait(timeout=10)
     # Reconstruct the predecessor with existing native/domain rows intact.
     with sqlite3.connect(root / "state/state.db") as db:
+        from conversation_fixtures import drop_conversation_schema
+
+        drop_conversation_schema(db)
         for table in (
             "nma_computers",
             "nma_artifact_grants",

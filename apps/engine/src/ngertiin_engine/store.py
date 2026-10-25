@@ -12,7 +12,9 @@ from ngertiin_engine.artifacts import DDL as ARTIFACT_DDL
 from ngertiin_engine.computer import DDL as COMPUTER_DDL
 from ngertiin_engine.context import DDL as CONTEXT_DDL
 from ngertiin_engine.context import fence_context_runs
-from ngertiin_engine.contracts import EngineError, canonical, digest
+from ngertiin_engine.contracts import EngineError, canonical, digest, next_sequence
+from ngertiin_engine.conversations import DDL as CONVERSATION_DDL
+from ngertiin_engine.conversations import backfill
 from ngertiin_engine.direct_messages import DDL as DM_DDL
 from ngertiin_engine.discussions import DDL as DISCUSSION_DDL
 from ngertiin_engine.goal_lifecycle import DDL as LIFECYCLE_DDL
@@ -31,6 +33,7 @@ DDL = (
     "CREATE TABLE nma_adapter_bindings (owner_id TEXT NOT NULL, binding_id TEXT NOT NULL, config_digest TEXT NOT NULL, config TEXT NOT NULL, native_session_id TEXT, PRIMARY KEY(owner_id,binding_id), FOREIGN KEY(owner_id) REFERENCES nma_partition(owner_id))",
     "CREATE TABLE nma_adapter_runs (owner_id TEXT NOT NULL, run_id TEXT NOT NULL, binding_id TEXT NOT NULL, operation_id TEXT NOT NULL, native_admission_id TEXT, PRIMARY KEY(owner_id,run_id), UNIQUE(owner_id,operation_id), FOREIGN KEY(owner_id,binding_id) REFERENCES nma_adapter_bindings(owner_id,binding_id), FOREIGN KEY(owner_id,operation_id) REFERENCES nma_commands(owner_id,command_id))",
 )
+CONVERSATION_CHECKSUM = hashlib.sha256("\n".join(CONVERSATION_DDL).encode()).hexdigest()
 DISCUSSION_CHECKSUM = hashlib.sha256("\n".join(DISCUSSION_DDL).encode()).hexdigest()
 INTEGRATION_DDL = (*ARTIFACT_DDL, *COMPUTER_DDL)
 ARTIFACT_CHECKSUM = hashlib.sha256("\n".join(INTEGRATION_DDL).encode()).hexdigest()
@@ -94,7 +97,7 @@ class Store:
                 (self.owner,),
             ).fetchone()
             if (
-                rows[0][2] not in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
+                rows[0][2] not in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)
                 or not saved
                 or saved[0] != CHECKSUM
             ):
@@ -306,6 +309,24 @@ class Store:
             if not saved or saved[0] != ARTIFACT_CHECKSUM:
                 raise EngineError("UNSUPPORTED_SCHEMA")
 
+        version = conn.execute("SELECT schema_version FROM nma_partition").fetchone()[0]
+        if version == 12:
+            for statement in CONVERSATION_DDL:
+                conn.execute(statement)
+            backfill(conn, self.owner)
+            conn.execute(
+                "INSERT INTO nma_schema_migrations(owner_id,version,checksum) VALUES (?,13,?)",
+                (self.owner, CONVERSATION_CHECKSUM),
+            )
+            conn.execute("UPDATE nma_partition SET schema_version=13")
+        else:
+            saved = conn.execute(
+                "SELECT checksum FROM nma_schema_migrations WHERE owner_id=? AND version=13",
+                (self.owner,),
+            ).fetchone()
+            if not saved or saved[0] != CONVERSATION_CHECKSUM:
+                raise EngineError("UNSUPPORTED_SCHEMA")
+
     def receipt(self, body):
         def read(conn):
             row = conn.execute(
@@ -376,10 +397,7 @@ class Store:
             ).fetchone()
             if existing[0]:
                 return json.loads(existing[0])
-            sequence = conn.execute(
-                "SELECT COALESCE(MAX(sequence),0)+1 FROM nma_events WHERE owner_id=?",
-                (self.owner,),
-            ).fetchone()[0]
+            sequence = next_sequence(conn, self.owner)
             receipt = {
                 "schema_version": "nma.v1",
                 "command_id": event_id,

@@ -13,7 +13,9 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.exc import SQLAlchemyError
 
 from ngertiin.accounts.auth import current_account
+from ngertiin.accounts.webhooks import router as account_webhook_router
 from ngertiin.agent_engine.api import router as agent_engine_router
+from ngertiin.agent_engine.conversations import router as conversation_router
 from ngertiin.agent_engine.recovery import ensure_database_released
 from ngertiin.agent_engine.stream import router as agent_stream_router
 from ngertiin.async_db import close_pool
@@ -39,6 +41,9 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+
+app.include_router(account_webhook_router)
+app.include_router(conversation_router)
 app.include_router(agent_engine_router)
 app.include_router(agent_stream_router)
 app.include_router(billing_router)

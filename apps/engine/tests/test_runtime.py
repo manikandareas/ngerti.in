@@ -245,6 +245,8 @@ def runtime(tmp_path_factory):
         "OPENAI_API_KEY": "loopback-only",
         "OPENAI_BASE_URL": url,
         "NMA_OWNER_ID": OWNER,
+        # Explicit default model; account setup must not depend on catalog order.
+        "NMA_DEFAULT_MODEL": "test",
         "NMA_MODELS_FILE": str(root / "models.json"),
         "NMA_CAPABILITIES_FILE": str(root / "capabilities.json"),
         "NMA_SERVICE_KEY_FILE": str(root / "key"),
@@ -537,6 +539,7 @@ def test_second_gateway_cannot_take_partition(runtime):
         "HERMES_SOURCE": str(SOURCE),
         "PYTHONPATH": os.pathsep.join((str(ENGINE), str(SOURCE))),
         "NMA_OWNER_ID": OWNER,
+        "NMA_DEFAULT_MODEL": "test",
         "NMA_SERVICE_KEY_FILE": str(root / "key"),
         "NMA_BINDINGS_FILE": str(root / "bindings.json"),
         "NMA_WEBHOOK_ROUTES_FILE": str(root / "webhooks.json"),
@@ -625,6 +628,9 @@ def test_agent_additive_migration_from_foundation(runtime):
     start.current.wait(timeout=10)
     # Reconstruct the exact empty agent slice predecessor in this disposable fixture.
     with sqlite3.connect(root / "state/state.db") as db:
+        from conversation_fixtures import drop_conversation_schema
+
+        drop_conversation_schema(db)
         before = db.execute("SELECT count(*) FROM nma_commands").fetchone()[0]
         for table in (
             "nma_computers",
@@ -670,7 +676,7 @@ def test_agent_additive_migration_from_foundation(runtime):
     )
     with sqlite3.connect(root / "state/state.db") as db:
         assert (
-            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 12
+            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 13
         )
         assert db.execute("SELECT count(*) FROM nma_commands").fetchone()[0] == before
         assert db.execute("PRAGMA foreign_key_check").fetchall() == []

@@ -37,6 +37,9 @@ class Command(BaseModel):
         "agent.archive",
         "agent.restore",
         "thread.create",
+        "thread.ensure_dm",
+        "thread.mark_read",
+        "thread.open",
         "member.add",
         "member.remove",
         "message.send",
@@ -59,6 +62,7 @@ def canonical(value):
 def failure(code, command_id, details=None):
     status = {
         "NOT_FOUND": 404,
+        "DM_RECONCILIATION_REQUIRED": 409,
         "INVALID_CURSOR": 422,
         "CURSOR_AHEAD": 409,
         "CURSOR_RESET": 409,
@@ -105,6 +109,15 @@ async def forward(owner: str, body: dict):
         partition = partitions.get(owner)
         if not partition:
             raise failure("ENGINE_UNAVAILABLE", command_id)
+        return await forward_partition(owner, body, partition)
+    except (OSError, ValueError, KeyError) as exc:
+        raise failure("ENGINE_UNAVAILABLE", command_id) from exc
+
+
+async def forward_partition(owner: str, body: dict, partition: dict):
+    """Private transport for a trusted provisioner before registry publication."""
+    command_id = body["command_id"]
+    try:
         key = Path(partition["key_file"]).read_bytes()
         if len(key) < 32:
             raise ValueError("Invalid signing key")

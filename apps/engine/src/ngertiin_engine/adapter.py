@@ -377,6 +377,33 @@ class Adapter:
             result = self.threads.membership(body)
             await self.cancel_stale_contexts()
             return result
+        if kind in {
+            "account.ensure",
+            "account.inventory",
+            "account.reconcile",
+            "thread.ensure_dm",
+            "thread.mark_read",
+            "thread.open",
+            "account.read",
+            "conversation.list",
+            "conversation.events",
+        }:
+            from ngertiin_engine.conversations import Conversations
+
+            conversations = Conversations(self)
+            if kind == "account.inventory":
+                if payload:
+                    raise EngineError("INVALID_REQUEST")
+                return self.store.write(conversations.inventory)
+            if kind == "account.read":
+                if payload:
+                    raise EngineError("INVALID_REQUEST")
+                return self.store.write(conversations.state)
+            if kind == "conversation.list":
+                return conversations.inbox.listing(payload)
+            if kind == "conversation.events":
+                return conversations.inbox.events(payload)
+            return conversations.mutate(body)
         if kind == "thread.create":
             return self.threads.create(body)
         if kind == "thread.list":

@@ -13,6 +13,7 @@ from ngertiin_engine.contracts import (
     canonical,
     counter,
     digest,
+    next_sequence,
     uuid,
 )
 
@@ -21,7 +22,6 @@ DDL = (
     "CREATE TABLE nma_agents (owner_id TEXT NOT NULL, agent_id TEXT NOT NULL, handle TEXT NOT NULL, display_name TEXT NOT NULL, status TEXT NOT NULL CHECK(status IN ('active','disabled','archived')), revision INTEGER NOT NULL CHECK(revision>0), config_revision INTEGER NOT NULL CHECK(config_revision>0), access_generation INTEGER NOT NULL CHECK(access_generation>0), created_at TEXT NOT NULL, updated_at TEXT NOT NULL, PRIMARY KEY(owner_id,agent_id), UNIQUE(owner_id,handle), FOREIGN KEY(owner_id) REFERENCES nma_partition(owner_id))",
     "CREATE TABLE nma_agent_configs (owner_id TEXT NOT NULL, agent_id TEXT NOT NULL, config_revision INTEGER NOT NULL CHECK(config_revision>0), config TEXT NOT NULL CHECK(json_valid(config)), created_at TEXT NOT NULL, PRIMARY KEY(owner_id,agent_id,config_revision), FOREIGN KEY(owner_id,agent_id) REFERENCES nma_agents(owner_id,agent_id))",
 )
-
 
 AVATAR_URL_TEMPLATE = "https://api.dicebear.com/10.x/critters/svg?seed={seed}"
 
@@ -77,6 +77,11 @@ class Agents:
         result["config"].pop("runtime_capabilities", None)
         # Configs written before server-side avatar derivation lack the field.
         result["config"].setdefault("avatar_url", avatar_url(result["handle"]))
+        primary = conn.execute(
+            "SELECT thread_id FROM nma_primary_dms WHERE owner_id=? AND agent_id=?",
+            (self.store.owner, agent_id),
+        ).fetchone()
+        result["primary_dm_thread_id"] = primary[0] if primary else None
         return result
 
     def listing(self, payload):
@@ -173,10 +178,7 @@ class Agents:
             conn.execute("SAVEPOINT agent_mutation")
             try:
                 agent = self.apply(conn, body)
-                seq = conn.execute(
-                    "SELECT COALESCE(MAX(sequence),0)+1 FROM nma_events WHERE owner_id=?",
-                    (owner,),
-                ).fetchone()[0]
+                seq = next_sequence(conn, owner)
                 result = {
                     "schema_version": "nma.v1",
                     "command_id": command_id,
@@ -307,6 +309,17 @@ class Agents:
                     "UPDATE nma_agents SET status=?,revision=?,access_generation=access_generation+1,updated_at=? WHERE owner_id=? AND agent_id=?",
                     (status, revision, now, owner, agent_id),
                 )
+        from ngertiin_engine.conversations import ensure_dm, record_change
+
+        agent = self.get(conn, agent_id)
+        if kind == "agent.create":
+            ensure_dm(conn, owner, agent, welcome=True)
+        else:
+            for (thread_id,) in conn.execute(
+                "SELECT thread_id FROM nma_memberships WHERE owner_id=? AND agent_id=?",
+                (owner, agent_id),
+            ).fetchall():
+                record_change(conn, owner, thread_id)
         return self.get(conn, agent_id)
 
     def fence(self, conn, agent_id):

@@ -2,7 +2,14 @@
 
 import json
 
-from ngertiin_engine.contracts import EngineError, canonical, counter, digest, uuid
+from ngertiin_engine.contracts import (
+    EngineError,
+    canonical,
+    counter,
+    digest,
+    next_sequence,
+    uuid,
+)
 from ngertiin_engine.goal_lifecycle import Lifecycle
 
 
@@ -110,10 +117,7 @@ class GoalCommands:
                 result = {"goal": updated}
             except EngineError as exc:
                 result = {"error_code": exc.code}
-            seq = conn.execute(
-                "SELECT COALESCE(MAX(sequence),0)+1 FROM nma_events WHERE owner_id=?",
-                (self.store.owner,),
-            ).fetchone()[0]
+            seq = next_sequence(conn, self.store.owner)
             receipt = {
                 "schema_version": "nma.v1",
                 "command_id": body["command_id"],

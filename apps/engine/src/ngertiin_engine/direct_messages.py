@@ -217,7 +217,7 @@ class DirectMessages:
                 message = self.adapter.context.transcript.message(conn, message_id)
                 run = (
                     None
-                    if message["run_id"] in runs
+                    if message["run_id"] is None or message["run_id"] in runs
                     else self.adapter.reliability.snapshot_row(conn, message["run_id"])
                 )
                 cost = len(canonical([message, run]).encode())
@@ -308,7 +308,7 @@ class DirectMessages:
             if int(sequence) > latest:
                 raise EngineError("CURSOR_AHEAD")
             rows = conn.execute(
-                "SELECT payload,sequence FROM nma_events WHERE owner_id=? AND sequence>? AND json_extract(payload,'$.thread_id')=? AND json_extract(payload,'$.type') IS NOT NULL ORDER BY sequence LIMIT 128",
+                "SELECT payload,sequence FROM nma_events WHERE owner_id=? AND sequence>? AND json_extract(payload,'$.thread_id')=? AND json_extract(payload,'$.type') IS NOT NULL AND json_extract(payload,'$.type')!='conversation.changed' ORDER BY sequence LIMIT 128",
                 (self.store.owner, int(sequence), payload["thread_id"]),
             ).fetchall()
             events, size = [], 0

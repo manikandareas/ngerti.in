@@ -175,6 +175,9 @@ def test_thread_additive_migration_from_agent_schema(runtime):
     start.current.kill()
     start.current.wait(timeout=10)
     with sqlite3.connect(root / "state/state.db") as db:
+        from conversation_fixtures import drop_conversation_schema
+
+        drop_conversation_schema(db)
         for table in (
             "nma_computers",
             "nma_artifact_grants",
@@ -210,8 +213,7 @@ def test_thread_additive_migration_from_agent_schema(runtime):
         db.execute("DELETE FROM nma_schema_migrations WHERE version>=3")
         db.execute("UPDATE nma_partition SET schema_version=2")
     start()
-    assert (
-        agent
-        in call(command("agent.list", {"after": None, "limit": 100}))["result"]["items"]
-    )
+    assert {**agent, "primary_dm_thread_id": None} in call(
+        command("agent.list", {"after": None, "limit": 100})
+    )["result"]["items"]
     assert call(command("thread.list", {"after": None}))["result"]["items"] == []

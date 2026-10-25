@@ -294,6 +294,9 @@ def test_definition_replacement_and_additive_upgrade(runtime):
     start.current.kill()
     start.current.wait(timeout=10)
     with sqlite3.connect(root / "state/state.db") as db:
+        from conversation_fixtures import drop_conversation_schema
+
+        drop_conversation_schema(db)
         checksums = db.execute(
             "SELECT version,checksum FROM nma_schema_migrations WHERE version<=8 ORDER BY version"
         ).fetchall()
@@ -325,7 +328,7 @@ def test_definition_replacement_and_additive_upgrade(runtime):
             == checksums
         )
         assert (
-            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 12
+            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 13
         )
         assert db.execute("PRAGMA integrity_check").fetchone()[0] == "ok"
         assert db.execute("PRAGMA foreign_key_check").fetchall() == []

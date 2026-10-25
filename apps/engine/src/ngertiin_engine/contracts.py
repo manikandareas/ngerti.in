@@ -48,6 +48,12 @@ def counter(value: object) -> str:
     return value
 
 
+def next_sequence(conn, owner: str) -> int:
+    return conn.execute(
+        "SELECT COALESCE(MAX(sequence),0)+1 FROM nma_events WHERE owner_id=?", (owner,)
+    ).fetchone()[0]
+
+
 def sign(body: dict, owner: str, key: bytes, *, now: int | None = None) -> dict:
     now = int(time.time()) if now is None else now
     claims = {

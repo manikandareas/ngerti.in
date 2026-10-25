@@ -4,7 +4,14 @@ import json
 from datetime import UTC, datetime
 from uuid import uuid4
 
-from ngertiin_engine.contracts import EngineError, canonical, counter, digest, uuid
+from ngertiin_engine.contracts import (
+    EngineError,
+    canonical,
+    counter,
+    digest,
+    next_sequence,
+    uuid,
+)
 
 DDL = (
     "CREATE TABLE nma_threads (owner_id TEXT NOT NULL, thread_id TEXT NOT NULL, kind TEXT NOT NULL CHECK(kind IN ('dm','group')), title TEXT NOT NULL, dm_agent_id TEXT, status TEXT NOT NULL DEFAULT 'open' CHECK(status IN ('open','archived')), revision INTEGER NOT NULL DEFAULT 1, membership_revision INTEGER NOT NULL DEFAULT 1, context_generation INTEGER NOT NULL DEFAULT 1, cancel_generation INTEGER NOT NULL DEFAULT 1, next_message_seq INTEGER NOT NULL DEFAULT 1, created_at TEXT NOT NULL, updated_at TEXT NOT NULL, PRIMARY KEY(owner_id,thread_id), FOREIGN KEY(owner_id) REFERENCES nma_partition(owner_id), FOREIGN KEY(owner_id,dm_agent_id) REFERENCES nma_agents(owner_id,agent_id), CHECK((kind='dm' AND dm_agent_id IS NOT NULL) OR (kind='group' AND dm_agent_id IS NULL)))",
@@ -113,29 +120,32 @@ class Threads:
                     str(uuid4()),
                     datetime.now(UTC).isoformat().replace("+00:00", "Z"),
                 )
-                conn.execute(
-                    "INSERT INTO nma_threads(owner_id,thread_id,kind,title,dm_agent_id,created_at,updated_at) VALUES (?,?,?,?,?,?,?)",
-                    (
-                        owner,
-                        thread_id,
-                        p["kind"],
-                        p["title"].strip(),
-                        ids[0] if p["kind"] == "dm" else None,
-                        now,
-                        now,
-                    ),
-                )
-                conn.executemany(
-                    "INSERT INTO nma_memberships(owner_id,thread_id,agent_id,position) VALUES (?,?,?,?)",
-                    [
-                        (owner, thread_id, agent_id, position)
-                        for position, agent_id in enumerate(ids)
-                    ],
-                )
-                seq = conn.execute(
-                    "SELECT COALESCE(MAX(sequence),0)+1 FROM nma_events WHERE owner_id=?",
-                    (owner,),
-                ).fetchone()[0]
+                from ngertiin_engine.conversations import ensure_dm, record_change
+
+                if p["kind"] == "dm":
+                    thread_id = ensure_dm(conn, owner, self.agents.get(conn, ids[0]))
+                else:
+                    conn.execute(
+                        "INSERT INTO nma_threads(owner_id,thread_id,kind,title,dm_agent_id,created_at,updated_at) VALUES (?,?,?,?,?,?,?)",
+                        (
+                            owner,
+                            thread_id,
+                            p["kind"],
+                            p["title"].strip(),
+                            ids[0] if p["kind"] == "dm" else None,
+                            now,
+                            now,
+                        ),
+                    )
+                    conn.executemany(
+                        "INSERT INTO nma_memberships(owner_id,thread_id,agent_id,position) VALUES (?,?,?,?)",
+                        [
+                            (owner, thread_id, agent_id, position)
+                            for position, agent_id in enumerate(ids)
+                        ],
+                    )
+                    record_change(conn, owner, thread_id, activity=True)
+                seq = next_sequence(conn, owner)
                 result = {
                     "schema_version": "nma.v1",
                     "command_id": command_id,
@@ -246,10 +256,7 @@ class Threads:
                     thread["thread_id"],
                 ),
             )
-            seq = conn.execute(
-                "SELECT COALESCE(MAX(sequence),0)+1 FROM nma_events WHERE owner_id=?",
-                (self.store.owner,),
-            ).fetchone()[0]
+            seq = next_sequence(conn, self.store.owner)
             result = {
                 "schema_version": "nma.v1",
                 "command_id": body["command_id"],

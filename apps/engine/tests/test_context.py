@@ -20,12 +20,15 @@ def thread(call, kind, agents):
 
 
 def read(call, agent, channel):
-    return call(
+    value = call(
         command(
             "context.read",
             {"agent_id": agent["agent_id"], "thread_id": channel["thread_id"]},
         )
     )["result"]
+
+    value["messages"] = [m for m in value["messages"] if m["run_id"] is not None]
+    return value
 
 
 def run(call, agent, channel, text):
@@ -69,9 +72,11 @@ def remember(call, agent, channel, content, private=False):
 def test_scoped_memory_transcript_transfer_revocation_restart(runtime):
     root, provider, call, start, *_ = runtime
     a, b = create_agent(call, "context-a"), create_agent(call, "context-b")
+    from conversation_fixtures import legacy_dm
+
     dm, other_dm, b_dm = (
         thread(call, "dm", [a]),
-        thread(call, "dm", [a]),
+        legacy_dm(root, call, a),
         thread(call, "dm", [b]),
     )
     group, other_group = thread(call, "group", [a, b]), thread(call, "group", [a, b])
@@ -204,7 +209,7 @@ def test_scoped_memory_transcript_transfer_revocation_restart(runtime):
     with sqlite3.connect(root / "state/state.db") as db:
         assert db.execute("PRAGMA foreign_key_check").fetchall() == []
         assert (
-            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 12
+            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 13
         )
         events = " ".join(r[0] for r in db.execute("SELECT payload FROM nma_events"))
         assert "AGENT_PRIVATE_MARKER" not in events
@@ -320,6 +325,9 @@ def test_additive_schema_three_upgrade_preserves_native_history(runtime):
     start.current.kill()
     start.current.wait(timeout=10)
     with sqlite3.connect(root / "state/state.db") as db:
+        from conversation_fixtures import drop_conversation_schema
+
+        drop_conversation_schema(db)
         checksums = db.execute(
             "SELECT version,checksum FROM nma_schema_migrations WHERE version<4 ORDER BY version"
         ).fetchall()

@@ -10,7 +10,7 @@ Use Python 3.14.9 and the pinned [Hermes source](https://github.com/NousResearch
 
 ## Local development
 
-`make dev` supervises the native gateway alongside API/web via `scripts/dev_engine.py`. Set `NMA_DEV_OWNER_IDS` to the existing account UUIDs to provision, plus `NMA_PARTITIONS_FILE`, `HERMES_SOURCE` and `NMA_RUNTIME_PYTHON` from `.env.example`. The launcher validates accounts, preserves keys/state, refreshes model/capability catalogs from current environment, and refuses to replace an externally registered partition. Owner lock directories are separate; each native profile still enforces exclusive ownership. This is process provisioning, not a second run scheduler.
+Apply `make migrate` before starting the updated API. `make dev` starts the durable backend account provisioner through `scripts/dev_engine.py`, alongside API/web. First authenticated access upserts the account and enqueues setup transactionally. No `NMA_DEV_OWNER_IDS` list is needed. Configure `NMA_PARTITIONS_FILE`, `HERMES_SOURCE` and `NMA_RUNTIME_PYTHON` from `.env.example`. The provisioner prepares an owner partition, starts the pinned gateway, verifies its signed transport and commits Tobi plus a primary DM and authored welcome. Keys/state survive retries and restarts; missing previously registered state is an operator error, never permission to recreate an empty partition. Hermes remains the only run/session/goal scheduler.
 
 For a fresh machine, install the pinned source and runtime:
 
@@ -19,10 +19,10 @@ python3 apps/engine/fetch_runtime.py .dev/hermes.tar.gz --extract .dev/nma-001/s
 uv run --python 3.14.9 python apps/engine/build_runtime.py --source .dev/nma-001/source --out .dev/nma-006-closure/production
 ```
 
-Restart `make dev` after `.env` changes. Production uses explicit isolated partition provisioning below.
+Restart `make dev` after `.env` changes. Production uses the isolated partition-driver contract below.
 
 The local capability catalog includes Task list (`todo`), Files, and Browser when E2B is configured.
-Assign these capabilities in the agent editor; catalog availability does not silently change an
+New Tobi instances receive Task list and Files, plus Browser when configured. Catalog availability does not silently change an
 existing agent's grants. MCP connections and instruction skills require an operator-provided catalog.
 
 ## Provision one account partition
@@ -71,7 +71,7 @@ Goals are captured and revised by the ordinary agent responsibility tools. Durab
 
 External effects distinguish known receipts from indeterminate outcomes. Unknown effects are never blindly retried. Capability/member/context revocation rechecks queued and in-flight boundaries. Run diagnostics correlate trigger, goal, handoff, transcript, effects and provider token/cost receipts; unknown cost is not invented.
 
-Artifacts are immutable UTF-8 files up to 1 MiB in the owner SQLite partition, with producing run/agent/thread, hash and explicit scope. Downloads are authenticated. Computer workspaces are owner/thread scoped; E2B pause persists filesystem state, not RAM/CDP/tabs. `/tmp` is scratch; re-observe after restore. Explicit resource delete is terminal for that workspace. Reconcile indeterminate effects before dispatch or resource cleanup.
+Artifacts are immutable UTF-8 files up to 1 MiB in the owner SQLite partition, with producing run/agent/thread, hash and explicit scope. Downloads are authenticated. Computer workspaces are owner/thread scoped; E2B pause persists filesystem state, not RAM/CDP/tabs. `/tmp` is scratch; re-observe after restore. Explicit resource delete is terminal for that workspace. Tool effects settle once their outcome is known: refused dispatches record error receipts and their runs answer normally, while unknown actuator outcomes keep their dispatching evidence and are never replayed. `computer.reconcile` explicitly settles effects of runs that already reached a terminal decision and re-enables dispatch for the thread; observe the workspace before further actions.
 
 ## Backup, migration and rollback
 
@@ -91,3 +91,21 @@ The API package provides an explicit account-persona migration plan and idempote
 Run `pytest apps/engine/tests` in the test environment with `HERMES_SOURCE`, `PYTHONPATH` and `NMA_TEST_RUNTIME_PYTHON` pointing to the pinned source and foundation interpreter. Live model, E2B and Chromium cases are explicit opt-ins. Do not run multiple native gateway suites concurrently on the same host lock namespace.
 
 The [acceptance report](../../docs/research/nma-025-026-acceptance-cutover.md) distinguishes deterministic gateway tests, real provider tests, browser harness evidence and deployment limits. Runtime `production_ready: false` is a release-readiness declaration pending operational release gates, not an alternate execution mode.
+
+## Automatic account setup and conversation APIs
+
+See [the Tobi delivery report](../../docs/research/tobi-account-conversations.md) for contracts, migration, validation and limitations. Run the production backend process with:
+
+```sh
+uv run --project apps/backend python -m ngertiin.agent_engine.provisioner
+```
+
+The production `NMA_PARTITION_DRIVER` is a trusted absolute JSON argv. The provisioner appends only the verified account UUID. The driver must idempotently start or locate an isolated gateway under a supervisor, preserve existing volumes/keys and restore quarantine, and output one JSON object with absolute `socket` and `key_file` paths. It must not leave the gateway dependent on the short-lived driver's stdout pipe, replace existing state, or start a second lifecycle owner. Shared-UID development processes are not a production tenant sandbox. Deployment-specific driver/isolation/capacity verification remains a release gate; the application deliberately refuses local process spawning in production.
+
+Gateway template settings: `NMA_DEFAULT_MODEL` is an explicit public catalog ID (default `default`); `NMA_DEFAULT_GRANTS` is a JSON object containing `tool_grants`, `mcp_grants` and/or `skill_refs`. Existing agents are never retemplated during login. Missing model/capability configuration is retryable after correction. `Tobi` is the initial display name; conflicting owner-local handles get a suffix. The welcome is an English authored template with `origin=welcome_template`, not a model-generated result, and does not create a run or goal.
+
+Optionally configure Clerk `user.created` events at `/api/accounts/webhooks/clerk` with `CLERK_WEBHOOK_SIGNING_SECRET`. The signature and timestamp are verified by Svix; duplicate deliveries and concurrent first login share one account/setup intent. Webhooks are asynchronous, so first authenticated access remains the repair path. See [Clerk webhook semantics](https://clerk.com/docs/guides/development/webhooks/overview).
+
+Use `GET/POST /api/agent-engine/v1/bootstrap` to read/request setup; POST returns 202 with Retry-After while pending. Engine reads do not create agents. `GET /conversations` supplies compact summaries and an owner-bound `through_cursor`; finish pagination while retaining that watermark, then replay `/conversations/events` and deduplicate by thread ID. A secondary historical DM has `is_primary=false`; retain history access through existing `/threads` APIs. Snapshot/SSE reads do not mark messages read. `thread.mark_read` advances a decimal message watermark; `thread.open` requires the navigation revision (initial `1`). `POST /agents/{agent_id}/dm` accepts a versioned `thread.ensure_dm` command. Existing `thread.create` for DM resolves to the primary thread. UI consumption is deferred.
+
+For an ambiguous existing primary/default, save an inventory using `ngertiin.agent_engine.conversation_migration inventory --owner UUID --output inventory.json`. Create a frozen `account.reconcile` command with `inventory_digest`, `default_agent_id` (or null) and `primary_dms` mapping; apply with `conversation_migration apply --owner UUID --plan plan.json --output receipt.json`. Inspect the stored receipt before retrying. The operation changes only mappings, never transcripts, sessions, goals or active runs. After resolving an operator error, use `ngertiin.agent_engine.provisioner --retry UUID`. Restore quarantine still requires the existing backup reconciliation procedure.

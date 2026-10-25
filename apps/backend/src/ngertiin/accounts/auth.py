@@ -6,9 +6,9 @@ from typing import Annotated
 from clerk_backend_api import Clerk
 from clerk_backend_api.security.types import AuthenticateRequestOptions
 from fastapi import Depends, HTTPException, Request
-from sqlalchemy.dialects.postgresql import insert
-from sqlmodel import Session, select
+from sqlmodel import Session
 
+from ngertiin.accounts.provisioning import ensure_account
 from ngertiin.config import get_settings
 from ngertiin.db import get_session
 from ngertiin.models import Account
@@ -24,9 +24,9 @@ def current_account(
 ) -> Account:
     settings = get_settings()
     if not settings.clerk_secret_key.get_secret_value():
-        raise HTTPException(503, "Clerk belum dikonfigurasi pada server.")
+        raise HTTPException(503, "Clerk is not configured on the server.")
     if not request.headers.get("authorization", "").startswith("Bearer "):
-        raise HTTPException(401, "Silakan masuk kembali.")
+        raise HTTPException(401, "Please sign in again.")
     state = clerk_client().authenticate_request(
         request,
         AuthenticateRequestOptions(
@@ -35,20 +35,12 @@ def current_account(
         ),
     )
     if not state.is_signed_in or not state.payload or not state.payload.get("sub"):
-        raise HTTPException(401, "Silakan masuk kembali.")
+        raise HTTPException(401, "Please sign in again.")
     subject = state.payload["sub"]
-    account = Account(clerk_user_id=subject)
-    session.exec(
-        insert(Account)
-        .values(
-            id=account.id,
-            clerk_user_id=subject,
-            created_at=account.created_at,
-        )
-        .on_conflict_do_nothing(index_elements=["clerk_user_id"])
-    )
+    account = ensure_account(session, subject)
     session.commit()
-    return session.exec(select(Account).where(Account.clerk_user_id == subject)).one()
+    session.refresh(account)
+    return account
 
 
 __all__ = ["current_account"]

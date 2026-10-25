@@ -22,6 +22,8 @@ class Settings(BaseSettings):
     enable_dev_diagnostics: bool = False
     web_origin: str = "http://localhost:3000"
     nma_partitions_file: str = ""
+    nma_partition_driver: list[str] = Field(default_factory=list)
+    clerk_webhook_signing_secret: SecretStr = SecretStr("")
     database_url: SecretStr
     clerk_secret_key: SecretStr = SecretStr("")
     e2b_api_key: SecretStr = SecretStr("")

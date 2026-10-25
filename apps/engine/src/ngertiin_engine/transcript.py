@@ -44,6 +44,13 @@ class Transcript:
         item["parts"] = json.loads(item["content"])
         item["content"] = item["parts"][0]["text"]
         item["revision"] = "1"
+        welcome = conn.execute(
+            "SELECT template_version FROM nma_welcomes WHERE owner_id=? AND message_id=?",
+            (self.store.owner, message_id),
+        ).fetchone()
+        if welcome:
+            item["origin"] = "welcome_template"
+            item["template_version"] = welcome[0]
         return item
 
     def append(self, conn, run_id, config, author, content):

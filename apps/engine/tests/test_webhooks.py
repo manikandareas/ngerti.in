@@ -221,6 +221,9 @@ def test_additive_upgrade_preserves_schema_nine(runtime):
     start.current.kill()
     start.current.wait(timeout=10)
     with sqlite3.connect(root / "state/state.db") as db:
+        from conversation_fixtures import drop_conversation_schema
+
+        drop_conversation_schema(db)
         checksums = db.execute(
             "SELECT version,checksum FROM nma_schema_migrations WHERE version<=9 ORDER BY version"
         ).fetchall()
@@ -244,7 +247,7 @@ def test_additive_upgrade_preserves_schema_nine(runtime):
     start()
     with sqlite3.connect(root / "state/state.db") as db:
         assert (
-            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 12
+            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 13
         )
         assert (
             db.execute(

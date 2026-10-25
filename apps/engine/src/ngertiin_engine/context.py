@@ -9,7 +9,14 @@ import json
 from datetime import UTC, datetime
 from uuid import NAMESPACE_URL, uuid5
 
-from ngertiin_engine.contracts import EngineError, canonical, counter, digest, uuid
+from ngertiin_engine.contracts import (
+    EngineError,
+    canonical,
+    counter,
+    digest,
+    next_sequence,
+    uuid,
+)
 from ngertiin_engine.transcript import Transcript
 
 DDL = (
@@ -166,10 +173,7 @@ class Context:
             conn.execute("SAVEPOINT context_mutation")
             try:
                 result = self.apply(conn, body)
-                seq = conn.execute(
-                    "SELECT COALESCE(MAX(sequence),0)+1 FROM nma_events WHERE owner_id=?",
-                    (self.store.owner,),
-                ).fetchone()[0]
+                seq = next_sequence(conn, self.store.owner)
                 result = {
                     "schema_version": "nma.v1",
                     "command_id": body["command_id"],

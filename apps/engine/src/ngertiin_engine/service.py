@@ -61,7 +61,7 @@ def main():
                     (owner,),
                 ).fetchone()
                 if (
-                    version not in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
+                    version not in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)
                     or not checksum
                     or checksum[0] != CHECKSUM
                 ):
@@ -107,6 +107,15 @@ def main():
                         (owner,),
                     ).fetchone()
                     if not saved or saved[0] != GOAL_CHECKSUM:
+                        raise EngineError("UNSUPPORTED_SCHEMA")
+                if version >= 13:
+                    from ngertiin_engine.store import CONVERSATION_CHECKSUM
+
+                    saved = db.execute(
+                        "SELECT checksum FROM nma_schema_migrations WHERE owner_id=? AND version=13",
+                        (owner,),
+                    ).fetchone()
+                    if not saved or saved[0] != CONVERSATION_CHECKSUM:
                         raise EngineError("UNSUPPORTED_SCHEMA")
     key = Path(os.environ["NMA_SERVICE_KEY_FILE"]).read_bytes()
     if len(key) < 32:

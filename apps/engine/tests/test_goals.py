@@ -129,23 +129,16 @@ def test_capture_correction_repetition_stop_restart_and_provenance(runtime):
 
 
 def test_goal_scope_cannot_be_selected_by_model(runtime):
-    _, provider, call, *_ = runtime
+    root, provider, call, *_ = runtime
     a, b = dm(call, "goal-private-a"), dm(call, "goal-private-b")
     create(call, a, "private-sentinel")
     goal = snapshot(call, a)["goals"][0]
     act(call, b, action="stop", goal_id=goal["goal_id"])
     assert snapshot(call, a)["goals"][0]["status"] == "active"
     assert not snapshot(call, b)["goals"]
-    sibling = call(
-        command(
-            "thread.create",
-            {
-                "kind": "dm",
-                "title": "Same agent private thread",
-                "agent_ids": [a["dm_agent_id"]],
-            },
-        )
-    )["result"]["thread"]
+    from conversation_fixtures import legacy_dm
+
+    sibling = legacy_dm(root, call, a["agents"][0])
     act(call, sibling, action="stop", goal_id=goal["goal_id"])
     assert not snapshot(call, sibling)["goals"]
     assert snapshot(call, a)["goals"][0]["status"] == "active"
@@ -320,6 +313,9 @@ def test_goal_schema_upgrade_preserves_prior_data(runtime):
     start.current.kill()
     start.current.wait(timeout=10)
     with sqlite3.connect(root / "state/state.db") as db:
+        from conversation_fixtures import drop_conversation_schema
+
+        drop_conversation_schema(db)
         checksums = db.execute(
             "SELECT version,checksum FROM nma_schema_migrations WHERE version<7 ORDER BY version"
         ).fetchall()

@@ -5,7 +5,7 @@ from contextvars import ContextVar
 from datetime import UTC, datetime
 from uuid import NAMESPACE_URL, uuid4, uuid5
 
-from ngertiin_engine.contracts import EngineError, canonical, digest
+from ngertiin_engine.contracts import EngineError, canonical, digest, next_sequence
 from ngertiin_engine.delivery import background, quiet
 from ngertiin_engine.redaction import result as redact
 
@@ -67,10 +67,7 @@ class Reliability:
         from ngertiin_engine.diagnostics import correlation
 
         links = correlation(conn, self.store.owner, run_id)
-        seq = conn.execute(
-            "SELECT COALESCE(MAX(sequence),0)+1 FROM nma_events WHERE owner_id=?",
-            (self.store.owner,),
-        ).fetchone()[0]
+        seq = next_sequence(conn, self.store.owner)
         event_id = str(uuid4())
         event = {
             "schema_version": "nma.v1",

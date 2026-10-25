@@ -97,20 +97,34 @@ async def receipt(command_id: UUID, account: AccountDep):
     )
 
 
+@router.get("/conversations/events")
+async def conversation_events(
+    request: Request, account: AccountDep, last_event_id: str | None = Header(None)
+):
+    return await event_stream(
+        request, str(account.id), "conversations", last_event_id, "conversation.events"
+    )
+
+
 @router.get("/events")
 async def events(
     request: Request, thread_id: UUID, account: AccountDep, last_event_id: str | None = Header(None)
 ):
-    owner, thread = str(account.id), str(thread_id)
+    return await event_stream(
+        request, str(account.id), str(thread_id), last_event_id, "thread.events"
+    )
+
+
+async def event_stream(request, owner, thread, last_event_id, kind):
     epoch, sequence = decode(last_event_id, owner, thread) if last_event_id else (None, "0")
 
     async def page(epoch, sequence):
         return await forward(
             owner,
             read_command(
-                "thread.events",
+                kind,
                 {
-                    "thread_id": thread,
+                    **({"thread_id": thread} if kind == "thread.events" else {}),
                     "replay_epoch": epoch,
                     "last_sequence": sequence,
                 },

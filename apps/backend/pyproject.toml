@@ -17,6 +17,7 @@ dependencies = [
   "httpx>=0.28.1",
   "websockets>=15,<16",
   "e2b==2.56.0",
+  "svix>=2.9.0",
 ]
 
 [dependency-groups]

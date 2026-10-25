@@ -86,8 +86,19 @@ class Transcript:
             conn, run_id, config, "message.created", self.message(conn, message_id)
         )
 
+        from ngertiin_engine.conversations import record_change
+
+        record_change(conn, self.store.owner, config["thread_id"], activity=True)
+
     def reconcile(self):
-        """Read already settled native results; never replay execution or side effects."""
+        """Read already settled native results; never replay execution or side effects.
+
+        Conversation output is recorded independently of side-effect resolution:
+        a completed turn's final response is committed even when one of its tool
+        effects stays unresolved. The run terminal status still reports
+        indeterminate until the effect is settled, so uncertainty stays visible
+        without discarding the model's work from the conversation record.
+        """
         from gateway.session_results import admission_result
 
         rows = self.store.write(
@@ -133,11 +144,7 @@ class Transcript:
                     )
                 value = result.get("result", {})
                 if (
-                    not conn.execute(
-                        "SELECT 1 FROM nma_effects WHERE owner_id=? AND run_id=? AND status='dispatching'",
-                        (self.store.owner, run_id),
-                    ).fetchone()
-                    and not value.get("failed")
+                    not value.get("failed")
                     and not value.get("error")
                     and not value.get("interrupted")
                     and not conn.execute(

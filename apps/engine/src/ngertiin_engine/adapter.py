@@ -322,6 +322,10 @@ class Adapter:
             from ngertiin_engine.diagnostics import Diagnostics
 
             return Diagnostics(self).read(payload)
+        if kind == "computer.reconcile":
+            from ngertiin_engine.computer import Computer
+
+            return Computer(self.store).reconcile(payload)
         if kind == "webhook.receive":
             from ngertiin_engine.webhooks import Webhooks
 

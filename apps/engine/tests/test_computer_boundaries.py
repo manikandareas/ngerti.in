@@ -2,6 +2,7 @@
 
 import json
 import os
+import sqlite3
 import tempfile
 from pathlib import Path
 
@@ -112,22 +113,87 @@ def test_active_revoke_fences_browser_result(runtime):
     provider.goal_script = None
 
 
-def test_unknown_effect_not_retried_after_restart_or_new_run(runtime):
-    _, provider, call, start, *_, actuator = runtime
-    _, thread = setup(runtime, "unknown-browser-effect")
+def test_observed_actuator_failure_recovers_without_reconcile(runtime):
+    root, provider, call, _start, *_, actuator = runtime
+    _, thread = setup(runtime, "observed-browser-failure")
     before = len((actuator / "calls").read_text().splitlines())
     request = call(send(thread, "BROWSER:unknown"))["result"]
-    settle(call, request["run_id"], "indeterminate")
-    assert len((actuator / "calls").read_text().splitlines()) == before + 1
+    # The model observed the actuator failure as an error receipt, so the turn
+    # completes and delivers its answer instead of dying as indeterminate.
+    result = settle(call, request["run_id"], "succeeded")
+    assert "INDETERMINATE" in result["text"]
+    with sqlite3.connect(root / "state/state.db") as db:
+        effects = db.execute(
+            "SELECT status,receipt FROM nma_effects WHERE run_id=?",
+            (request["run_id"],),
+        ).fetchall()
+        assert len(effects) == 1
+        assert effects[0][0] == "confirmed"
+        assert "INDETERMINATE" in effects[0][1]
+        assert (
+            db.execute(
+                "SELECT COUNT(*) FROM nma_effects WHERE status='dispatching'"
+            ).fetchone()[0]
+            == 0
+        )
+    # The thread is not blocked: the next attempt reaches the actuator once,
+    # without any operator reconciliation.
+    recovered = call(send(thread, "BROWSER:observe"))["result"]
+    settle(call, recovered["run_id"], "succeeded")
+    assert len((actuator / "calls").read_text().splitlines()) == before + 2
+    provider.goal_script = None
+
+
+def test_lost_outcome_blocks_until_reconciled(runtime):
+    root, provider, call, start, *_, actuator = runtime
+    _, thread = setup(runtime, "lost-browser-effect")
+    before = len((actuator / "calls").read_text().splitlines())
+    (actuator / "started").unlink(missing_ok=True)
+    (actuator / "release").unlink(missing_ok=True)
+    request = call(send(thread, "BROWSER:block"))["result"]
+
+    def pending():
+        with sqlite3.connect(root / "state/state.db") as db:
+            return (
+                db.execute(
+                    "SELECT COUNT(*) FROM nma_effects WHERE run_id=? AND status='dispatching'",
+                    (request["run_id"],),
+                ).fetchone()[0]
+                > 0
+            )
+
+    eventually(pending, bool)
+    # The engine dies mid-dispatch, so nobody observes the attempt's outcome.
     start.current.kill()
     start.current.wait(timeout=10)
+    (actuator / "release").touch()
     start()
-    diagnosis = call(command("run.diagnostics", {"run_id": request["run_id"]}))[
+    settle(call, request["run_id"], "indeterminate")
+    with sqlite3.connect(root / "state/state.db") as db:
+        pending = db.execute(
+            "SELECT COUNT(*) FROM nma_effects WHERE run_id=? AND status='dispatching'",
+            (request["run_id"],),
+        ).fetchone()[0]
+    assert pending == 1
+    # A refused attempt is a known outcome: it settles as an error receipt and
+    # the run answers normally instead of dying as indeterminate. The unknown
+    # attempt is still not re-dispatched and no new unknown rows accumulate.
+    for _ in range(2):
+        fresh = call(send(thread, "BROWSER:observe"))["result"]
+        settle(call, fresh["run_id"], "succeeded")
+    assert len((actuator / "calls").read_text().splitlines()) == before + 1
+    with sqlite3.connect(root / "state/state.db") as db:
+        pending = db.execute(
+            "SELECT COUNT(*) FROM nma_effects WHERE status='dispatching'"
+        ).fetchone()[0]
+    assert pending == 1
+    # Explicit reconciliation settles the terminal-run evidence and re-enables
+    # dispatch for the thread; the next attempt reaches the actuator once.
+    resolved = call(command("computer.reconcile", {"thread_id": thread["thread_id"]}))[
         "result"
     ]
-    assert diagnosis["run"]["status"] == "indeterminate"
-    assert diagnosis["effects"][0]["status"] == "dispatching"
-    fresh = call(send(thread, "BROWSER:observe"))["result"]
-    settle(call, fresh["run_id"], "indeterminate")
-    assert len((actuator / "calls").read_text().splitlines()) == before + 1
+    assert resolved["reconciled"] == 1
+    recovered = call(send(thread, "BROWSER:observe"))["result"]
+    settle(call, recovered["run_id"], "succeeded")
+    assert len((actuator / "calls").read_text().splitlines()) == before + 2
     provider.goal_script = None

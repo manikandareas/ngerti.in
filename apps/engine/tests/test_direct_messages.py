@@ -4,6 +4,7 @@
 import json
 import os
 import socket
+import sqlite3
 import subprocess
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -103,6 +104,57 @@ def test_parallel_dm_history_replay_restart_and_dedup(runtime):
         sum(m.get("content") == "FOLLOW_UP" for m in provider.requests[-1]["messages"])
         == 1
     )
+
+
+def test_final_response_recorded_despite_unresolved_effect(runtime):
+    root, _provider, call, _start, *_ = runtime
+    thread = dm(call, "dm-unresolved-effect")
+    result = settle(
+        call, call(send(thread, "RECORD_DELIVERY_PROOF"))["result"]["run_id"]
+    )
+    # Snapshot traffic is what drives the transcript recording pass.
+    baseline = snapshot(call, thread)
+    assert any(
+        m["author_kind"] == "agent" and "RECORD_DELIVERY_PROOF" in m["content"]
+        for m in baseline["messages"]
+    )
+    with sqlite3.connect(root / "state/state.db") as db:
+        agent_message = db.execute(
+            "SELECT message_id FROM nma_messages WHERE owner_id=? AND run_id=? AND author_kind='agent'",
+            (OWNER, result["run_id"]),
+        ).fetchone()
+        assert agent_message
+        # Rebuild the incident shape: the turn completed but one of its tool
+        # effects stayed dispatching (as after a lost actuator outcome) and an
+        # earlier recording pass withheld the committed response.
+        db.execute(
+            "DELETE FROM nma_messages WHERE owner_id=? AND message_id=?",
+            (OWNER, agent_message[0]),
+        )
+        db.execute(
+            "DELETE FROM nma_context_receipts WHERE owner_id=? AND run_id=?",
+            (OWNER, result["run_id"]),
+        )
+        db.execute(
+            "INSERT INTO nma_effects VALUES (?,?,?,?,'dispatching',NULL)",
+            (OWNER, result["run_id"], "simulated-lost-operation", "simulated-intent"),
+        )
+    snap = snapshot(call, thread)
+    # The completed turn's answer is part of the conversation record even while
+    # the effect is unresolved, and the run still reports the uncertainty.
+    assert any(
+        m["author_kind"] == "agent" and "RECORD_DELIVERY_PROOF" in m["content"]
+        for m in snap["messages"]
+    )
+    assert any(
+        run["run_id"] == result["run_id"] and run["status"] == "indeterminate"
+        for run in snap["runs"]
+    )
+    with sqlite3.connect(root / "state/state.db") as db:
+        assert db.execute(
+            "SELECT 1 FROM nma_context_receipts WHERE owner_id=? AND run_id=?",
+            (OWNER, result["run_id"]),
+        ).fetchone()
 
 
 def test_interrupt_cancel_error_and_rejected_retry(runtime):

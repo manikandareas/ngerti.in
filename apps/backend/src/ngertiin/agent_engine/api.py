@@ -221,6 +221,20 @@ async def run_diagnostics(run_id: UUID, account: AccountDep):
     )
 
 
+@router.post("/threads/{thread_id}/computer/reconcile")
+async def reconcile_computer(thread_id: UUID, account: AccountDep):
+    return await forward(
+        str(account.id),
+        {
+            "schema_version": "nma.v1",
+            "command_id": str(uuid4()),
+            "type": "computer.reconcile",
+            "expected_revision": None,
+            "payload": {"thread_id": str(thread_id)},
+        },
+    )
+
+
 @router.get("/artifacts/{artifact_id}")
 async def artifact(artifact_id: UUID, account: AccountDep):
     value = await forward(

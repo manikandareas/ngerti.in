@@ -1,10 +1,14 @@
 """Thread-private E2B resources invoked through an operator-provisioned actuator.
 
-The gateway persists resource identity before provisioning. Tool effects retain
-unknown outcomes; neither provisioning nor browser inputs are blindly replayed.
+The gateway persists resource identity before provisioning. Neither provisioning
+nor browser inputs are blindly replayed. An actuator attempt the model observed
+as failed settles as an error receipt, so the conversation decides how to adapt;
+only an outcome nobody observed (process death, authority loss) stays dispatching
+until an explicit reconciliation settles it.
 """
 
 import json
+import logging
 import os
 import subprocess
 import threading
@@ -12,6 +16,8 @@ from uuid import NAMESPACE_URL, uuid5
 
 from ngertiin_engine.contracts import EngineError, canonical, digest
 from ngertiin_engine.redaction import result as redact
+
+logger = logging.getLogger(__name__)
 
 TOOL = "computer"
 dispatch_lock = threading.Lock()
@@ -66,7 +72,7 @@ class Computer:
                 or any(not isinstance(x, str) for x in command)
             ):
                 raise ValueError
-        except (KeyError, ValueError):
+        except KeyError, ValueError:
             raise EngineError("CAPABILITY_UNAVAILABLE") from None
 
         def prepare(conn):
@@ -76,7 +82,10 @@ class Computer:
                 "SELECT 1 FROM nma_effects e JOIN nma_adapter_runs r ON r.owner_id=e.owner_id AND r.run_id=e.run_id JOIN nma_adapter_bindings b ON b.owner_id=r.owner_id AND b.binding_id=r.binding_id WHERE e.owner_id=? AND e.status='dispatching' AND json_extract(b.config,'$.thread_id')=? AND NOT (e.run_id=? AND e.operation_id=?)",
                 (self.store.owner, config["thread_id"], _run_id, current_operation),
             ).fetchone():
-                raise EngineError("INDETERMINATE")
+                # Nothing was dispatched for this operation, so its outcome is a
+                # known refusal, not an unknown actuator outcome. The pending row
+                # keeps its evidence until an explicit reconciliation settles it.
+                raise EngineError("COMPUTER_UNRESOLVED")
             marker = config.get("nma_capabilities", {})
             resolved, _ = resolve(marker.get("grants", {}))
             if (
@@ -112,6 +121,7 @@ class Computer:
             uuid5(NAMESPACE_URL, digest([stamp, ids.turn_id, ids.tool_call_id, TOOL]))
         )
         request = {**args, "workspace": workspace, "operation_id": operation}
+        result = None
         try:
             result = subprocess.run(
                 command,
@@ -126,8 +136,25 @@ class Computer:
             value = json.loads(result.stdout)
             if not isinstance(value, dict) or value.get("outcome") == "indeterminate":
                 raise ValueError
-        except (OSError, ValueError, subprocess.SubprocessError):
-            raise EngineError("INDETERMINATE") from None
+        except (OSError, ValueError, subprocess.SubprocessError) as exc:
+            stderr = ""
+            if result is not None and result.stderr:
+                stderr = (
+                    result.stderr
+                    if isinstance(result.stderr, str)
+                    else result.stderr.decode(errors="replace")
+                )
+            logger.warning(
+                "Computer actuator attempt failed (%s) for thread %s: %s",
+                type(exc).__name__,
+                config["thread_id"],
+                redact(stderr.strip()[:2000] or str(exc)),
+            )
+            # The model observed this failure, so it is a known error receipt
+            # rather than an unresolved outcome: the reliability wrapper settles
+            # the effect and the conversation adapts instead of the thread
+            # staying blocked until an operator reconciles.
+            return canonical({"error": "INDETERMINATE"})
         # Persist the confirmed provider identity, even if access was revoked while
         # the effect was in flight. This is cleanup evidence, not publication rights.
         self.store.write(
@@ -144,6 +171,39 @@ class Computer:
         value.pop("resource_id", None)
         self.store.write(lambda conn: Goals(self.store).scope(conn, stamp))
         return canonical(redact(value))
+
+    def reconcile(self, payload):
+        """Explicitly settle computer effects whose run already reached a terminal decision.
+
+        An actuator attempt with an unknown outcome keeps its dispatching row as
+        evidence and blocks later effects for the thread until an operator or the
+        recovery flow decides otherwise. Reconciliation never re-executes the
+        attempt: the settled receipt reports the unresolved outcome, and the
+        browser is re-observed before further actions.
+        """
+        if set(payload) != {"thread_id"} or not isinstance(payload["thread_id"], str):
+            raise EngineError("INVALID_REQUEST")
+        receipt = canonical({"value": {"error": "INDETERMINATE", "reconciled": True}})
+
+        def write(conn):
+            if not conn.execute(
+                "SELECT 1 FROM nma_threads WHERE owner_id=? AND thread_id=?",
+                (self.store.owner, payload["thread_id"]),
+            ).fetchone():
+                raise EngineError("NOT_FOUND")
+            rows = conn.execute(
+                "SELECT e.run_id,e.operation_id FROM nma_effects e JOIN nma_adapter_runs r ON r.owner_id=e.owner_id AND r.run_id=e.run_id JOIN nma_adapter_bindings b ON b.owner_id=r.owner_id AND b.binding_id=r.binding_id JOIN nma_run_terminals t ON t.owner_id=r.owner_id AND t.run_id=r.run_id WHERE e.owner_id=? AND e.status='dispatching' AND json_extract(b.config,'$.thread_id')=?",
+                (self.store.owner, payload["thread_id"]),
+            ).fetchall()
+            resolved = 0
+            for run_id, operation_id in rows:
+                resolved += conn.execute(
+                    "UPDATE nma_effects SET status='confirmed',receipt=? WHERE owner_id=? AND run_id=? AND operation_id=? AND status='dispatching'",
+                    (receipt, self.store.owner, run_id, operation_id),
+                ).rowcount
+            return {"thread_id": payload["thread_id"], "reconciled": resolved}
+
+        return self.store.write(write)
 
 
 def install():

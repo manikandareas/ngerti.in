@@ -1,0 +1,14 @@
+$ uv run --project apps/backend ruff check apps/backend/src apps/backend/tests/test_account_provisioning.py apps/backend/migrations/versions/0022_account_provisioning.py scripts/dev_engine.py apps/engine/src apps/engine/tests --output-format concise
+All checks passed!
+Exit code: 0
+
+$ uv run --project apps/backend mypy --config-file apps/backend/pyproject.toml apps/backend/src
+Success: no issues found in 55 source files
+Exit code: 0
+
+$ uv run --project apps/backend python scripts/check_docs.py
+Docs: 71 page hashes, 47 tickets, 4 views, 1352 local links OK
+Exit code: 0
+
+$ git diff --check
+Exit code: 0

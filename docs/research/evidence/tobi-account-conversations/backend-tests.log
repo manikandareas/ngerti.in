@@ -1,0 +1,9 @@
+/Users/vitoandareasmanik/Development/project/ngertiin/apps/backend/.venv/lib/python3.13/site-packages/alembic/config.py:604: DeprecationWarning: No path_separator found in configuration; falling back to legacy splitting on spaces, commas, and colons for prepend_sys_path.  Consider adding path_separator=os to Alembic config.
+  util.warn_deprecated(
+..Executing <Task pending name='Task-12' coro=<AccountProvisioning.test_real_partition_setup_restart_and_missing_state() running at /Users/vitoandareasmanik/Development/project/ngertiin/apps/backend/tests/test_account_provisioning.py:135> wait_for=<Future pending cb=[Task.task_wakeup()] created at /Users/vitoandareasmanik/.local/share/uv/python/cpython-3.13.12-macos-aarch64-none/lib/python3.13/asyncio/base_events.py:459> cb=[_run_until_complete_cb() at /Users/vitoandareasmanik/.local/share/uv/python/cpython-3.13.12-macos-aarch64-none/lib/python3.13/asyncio/base_events.py:181] created at /Users/vitoandareasmanik/.local/share/uv/python/cpython-3.13.12-macos-aarch64-none/lib/python3.13/asyncio/runners.py:100> took 0.900 seconds
+Executing <Task finished name='Task-12' coro=<AccountProvisioning.test_real_partition_setup_restart_and_missing_state() done, defined at /Users/vitoandareasmanik/Development/project/ngertiin/apps/backend/tests/test_account_provisioning.py:112> result=None created at /Users/vitoandareasmanik/.local/share/uv/python/cpython-3.13.12-macos-aarch64-none/lib/python3.13/asyncio/runners.py:100> took 0.456 seconds
+............
+----------------------------------------------------------------------
+Ran 14 tests in 7.865s
+
+OK

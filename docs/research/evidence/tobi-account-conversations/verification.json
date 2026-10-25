@@ -1,0 +1,34 @@
+{
+  "date": "2026-10-24",
+  "scope": "Backend and engine only; no UI edits, user database migration, or deployment.",
+  "engine": {
+    "passed": 117,
+    "skipped": 8,
+    "seconds": 465.77,
+    "command": "HERMES_SOURCE=\"$PWD/.dev/nma-001/source\" NMA_TEST_RUNTIME_PYTHON=\"$PWD/.dev/nma-006-closure/production/bin/python\" PYTHONPATH=\"$PWD/apps/engine/src\" .dev/nma-006-closure/runtime/bin/pytest apps/engine/tests -q",
+    "skip_reason": "Opt-in live provider, computer, and Chromium acceptance are not enabled."
+  },
+  "backend": {
+    "passed": 14,
+    "command": "uv run --project apps/backend python -m unittest discover -s apps/backend/tests",
+    "database": "New disposable PostgreSQL database, upgraded through 0022 and dropped after the test."
+  },
+  "checks": [
+    "Ruff lint passed",
+    "Ruff format: 76 files already formatted",
+    "Mypy: 55 source files passed",
+    "Documentation: 71 hashes, 47 tickets, 4 views, 1352 local links passed",
+    "git diff --check passed"
+  ],
+  "limits": [
+    "No production partition driver or tenant isolation deployment was exercised.",
+    "No real-account migration or live-provider/browser acceptance was performed for this slice.",
+    "The tests demonstrate covered scenarios, not exhaustive proof of every crash interleaving."
+  ],
+  "sha256": {
+    "engine-tests.log": "d2fdb47932ab0d2f06ef74fd6a02b32d9cf2a770da50c2606f6bccb098335e2c",
+    "backend-tests.log": "8fff12ab2a55bbc7333b2895e2baf414a9420f3d6469526e8269fa009b86da55",
+    "default-recovery-tests.log": "441252a2d933d6ece2d3ac4f594212121df065a7a7b9d965ef4c19a146c91969",
+    "static-checks.log": "e4a527fcd44025ec06dedf982f2453b6f23ddc051907cdb5d75db67c235320ba"
+  }
+}

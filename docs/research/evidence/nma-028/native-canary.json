@@ -1,0 +1,235 @@
+{
+  "research_only": true,
+  "model": null,
+  "attempts": [
+    {
+      "repeat": 1,
+      "phase": "navigation",
+      "duration_s": 3.3745526610000525,
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"{'url': 'http://127.0.0.1:40879/form', 'title': '\ud83d\udc34 NMA028 fixture', 'w': 780, 'h': 493, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 493}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/nma028-1\", \"session\": \"nma028-1\"}"
+    },
+    {
+      "repeat": 1,
+      "phase": "form_action",
+      "duration_s": 3.216680236000684,
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"{'url': 'http://127.0.0.1:40879/submit', 'title': '\ud83d\udc34 Saved', 'w': 780, 'h': 493, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 493}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/nma028-1\", \"session\": \"nma028-1\"}"
+    },
+    {
+      "repeat": 1,
+      "phase": "form_observation",
+      "duration_s": 0.7397166110022226,
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"NMA028_SAVED\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/nma028-1\", \"session\": \"nma028-1\"}"
+    },
+    {
+      "repeat": 1,
+      "phase": "download",
+      "duration_s": 0.5056805990025168,
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"24\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/nma028-1\", \"session\": \"nma028-1\"}"
+    },
+    {
+      "repeat": 1,
+      "phase": "execution_boundary",
+      "duration_s": 0.4908748989982996,
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"{'uid': 10001, 'pid': 177, 'cwd': '/work', 'docker_socket': False, 'other_account': False, 'runtime_secret': None, 'same_uid_control_canary_readable': 'f7cacc31b431a8facf96123d430515cd2f33e5fb49066dc6a1b67c3ed4e01d7d'}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/nma028-1\", \"session\": \"nma028-1\"}"
+    },
+    {
+      "repeat": 1,
+      "phase": "terminal_verify",
+      "result": "{\"output\": \"b611b0fafb38f99c14d214548fe8f89e1a7839670c66bb72e2824c9eb181dfb4  /work/report.csv\\nuid=10001(probe) gid=10001(probe) groups=10001(probe)\", \"exit_code\": 0, \"error\": null}"
+    },
+    {
+      "repeat": 2,
+      "phase": "navigation",
+      "duration_s": 1.7230959640000947,
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"{'url': 'http://127.0.0.1:40879/form', 'title': '\ud83d\udc34 NMA028 fixture', 'w': 780, 'h': 493, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 493}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/nma028-2\", \"session\": \"nma028-2\"}"
+    },
+    {
+      "repeat": 2,
+      "phase": "form_action",
+      "duration_s": 0.4316803080000682,
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"{'url': 'http://127.0.0.1:40879/form', 'title': '\ud83d\udc34 NMA028 fixture', 'w': 780, 'h': 493, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 493}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/nma028-2\", \"session\": \"nma028-2\"}"
+    },
+    {
+      "repeat": 2,
+      "phase": "form_observation",
+      "duration_s": 0.3672955660003936,
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"NMA028_SAVED\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/nma028-2\", \"session\": \"nma028-2\"}"
+    },
+    {
+      "repeat": 2,
+      "phase": "download",
+      "duration_s": 0.3333763950067805,
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"24\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/nma028-2\", \"session\": \"nma028-2\"}"
+    },
+    {
+      "repeat": 2,
+      "phase": "execution_boundary",
+      "duration_s": 0.318071317000431,
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"{'uid': 10001, 'pid': 269, 'cwd': '/work', 'docker_socket': False, 'other_account': False, 'runtime_secret': None, 'same_uid_control_canary_readable': 'f7cacc31b431a8facf96123d430515cd2f33e5fb49066dc6a1b67c3ed4e01d7d'}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/nma028-2\", \"session\": \"nma028-2\"}"
+    },
+    {
+      "repeat": 2,
+      "phase": "terminal_verify",
+      "result": "{\"output\": \"b611b0fafb38f99c14d214548fe8f89e1a7839670c66bb72e2824c9eb181dfb4  /work/report.csv\\nuid=10001(probe) gid=10001(probe) groups=10001(probe)\", \"exit_code\": 0, \"error\": null}"
+    },
+    {
+      "repeat": 3,
+      "phase": "navigation",
+      "duration_s": 2.002395251998678,
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"{'url': 'http://127.0.0.1:40879/form', 'title': '\ud83d\udc34 NMA028 fixture', 'w': 780, 'h': 493, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 493}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/nma028-3\", \"session\": \"nma028-3\"}"
+    },
+    {
+      "repeat": 3,
+      "phase": "form_action",
+      "duration_s": 0.5652392339979997,
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"{'url': 'http://127.0.0.1:40879/form', 'title': '\ud83d\udc34 NMA028 fixture', 'w': 780, 'h': 493, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 493}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/nma028-3\", \"session\": \"nma028-3\"}"
+    },
+    {
+      "repeat": 3,
+      "phase": "form_observation",
+      "duration_s": 0.5736544840037823,
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"NMA028_SAVED\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/nma028-3\", \"session\": \"nma028-3\"}"
+    },
+    {
+      "repeat": 3,
+      "phase": "download",
+      "duration_s": 0.4674864480039105,
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"24\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/nma028-3\", \"session\": \"nma028-3\"}"
+    },
+    {
+      "repeat": 3,
+      "phase": "execution_boundary",
+      "duration_s": 0.361376785003813,
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"{'uid': 10001, 'pid': 317, 'cwd': '/work', 'docker_socket': False, 'other_account': False, 'runtime_secret': None, 'same_uid_control_canary_readable': 'f7cacc31b431a8facf96123d430515cd2f33e5fb49066dc6a1b67c3ed4e01d7d'}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/nma028-3\", \"session\": \"nma028-3\"}"
+    },
+    {
+      "repeat": 3,
+      "phase": "terminal_verify",
+      "result": "{\"output\": \"b611b0fafb38f99c14d214548fe8f89e1a7839670c66bb72e2824c9eb181dfb4  /work/report.csv\\nuid=10001(probe) gid=10001(probe) groups=10001(probe)\", \"exit_code\": 0, \"error\": null}"
+    }
+  ],
+  "pid": 1,
+  "uid": 10001,
+  "chromium": "Chrome/156.0.8078.47",
+  "ledger": [
+    {
+      "method": "GET",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "path": "/favicon.ico"
+    },
+    {
+      "method": "GET",
+      "path": "/form"
+    },
+    {
+      "method": "GET",
+      "path": "/favicon.ico"
+    },
+    {
+      "method": "POST",
+      "path": "/submit",
+      "fields": {
+        "name": [
+          "Synthetic"
+        ],
+        "note": [
+          "NMA028"
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/favicon.ico"
+    },
+    {
+      "method": "GET",
+      "path": "/download.csv"
+    },
+    {
+      "method": "GET",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "path": "/favicon.ico"
+    },
+    {
+      "method": "GET",
+      "path": "/form"
+    },
+    {
+      "method": "GET",
+      "path": "/favicon.ico"
+    },
+    {
+      "method": "POST",
+      "path": "/submit",
+      "fields": {
+        "name": [
+          "Synthetic"
+        ],
+        "note": [
+          "NMA028"
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/favicon.ico"
+    },
+    {
+      "method": "GET",
+      "path": "/download.csv"
+    },
+    {
+      "method": "GET",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "path": "/favicon.ico"
+    },
+    {
+      "method": "GET",
+      "path": "/form"
+    },
+    {
+      "method": "GET",
+      "path": "/favicon.ico"
+    },
+    {
+      "method": "POST",
+      "path": "/submit",
+      "fields": {
+        "name": [
+          "Synthetic"
+        ],
+        "note": [
+          "NMA028"
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/favicon.ico"
+    },
+    {
+      "method": "GET",
+      "path": "/download.csv"
+    }
+  ],
+  "expected_csv_sha256": "b611b0fafb38f99c14d214548fe8f89e1a7839670c66bb72e2824c9eb181dfb4",
+  "observed_csv_sha256": "b611b0fafb38f99c14d214548fe8f89e1a7839670c66bb72e2824c9eb181dfb4",
+  "form_oracle": true,
+  "browser_harness": "0.1.13",
+  "fetch_use": "0.4.0",
+  "limitations": [
+    "Fixed Python drives real native tools; this is not a real-model or authenticated Ngertiin task.",
+    "Chromium --no-sandbox uses outer disposable container; no host mount/socket or model credentials.",
+    "urllib download runs in browser_exec Python; browser-managed download semantics remain unverified.",
+    "No claim of within-runtime secret isolation: same-container model Python can read files available to its UID."
+  ]
+}

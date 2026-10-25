@@ -1,0 +1,180 @@
+{
+  "reviewed_at": "2026-10-25T07:57:42.905423+00:00",
+  "packages": [
+    {
+      "name": "browser-harness",
+      "version": "0.1.13",
+      "metadata_url": "https://pypi.org/pypi/browser-harness/0.1.13/json",
+      "license": null,
+      "license_expression": "MIT",
+      "project_urls": {
+        "Homepage": "https://github.com/browser-use/browser-harness",
+        "Issues": "https://github.com/browser-use/browser-harness/issues",
+        "Repository": "https://github.com/browser-use/browser-harness"
+      },
+      "requires_dist": [
+        "cdp-use==1.4.5",
+        "fetch-use==0.4.0",
+        "pillow==12.3.0",
+        "websockets==15.0.1",
+        "mcp==2.1.1; extra == \"mcp\""
+      ],
+      "archives": [
+        {
+          "filename": "browser_harness-0.1.13-py3-none-any.whl",
+          "url": "https://files.pythonhosted.org/packages/4a/bd/f166cf9a465eff436048d25851ab28b0d798af02b56998127a4165227fc4/browser_harness-0.1.13-py3-none-any.whl",
+          "sha256": "2491459e4bfc0ee8aea22dc6c4680fc0f791b7ba553446323c50d2883449d769",
+          "license_members": [
+            {
+              "path": "browser_harness-0.1.13.dist-info/licenses/LICENSE",
+              "sha256": "5afa3d97bf1e6f998d587fa101e3fe0d0c416840b7fe77bcd6ae97690a334631",
+              "bytes": 1068
+            }
+          ],
+          "pyproject": []
+        },
+        {
+          "filename": "browser_harness-0.1.13.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/7f/fe/59ab493e7cf76731a7f5aabae3821eea6ea82a628c14c30e7aed48adc362/browser_harness-0.1.13.tar.gz",
+          "sha256": "284dc547a042c309feafd9a9f4a74b2a8651b7963ea3ac6cb2f2d64889f6a8f3",
+          "license_members": [
+            {
+              "path": "browser_harness-0.1.13/LICENSE",
+              "sha256": "5afa3d97bf1e6f998d587fa101e3fe0d0c416840b7fe77bcd6ae97690a334631",
+              "bytes": 1068
+            }
+          ],
+          "pyproject": [
+            {
+              "path": "browser_harness-0.1.13/pyproject.toml",
+              "text": "[build-system]\nrequires = [\"setuptools==84.0.0\"]\nbuild-backend = \"setuptools.build_meta\"\n\n[project]\nname = \"browser-harness\"\nversion = \"0.1.13\"\ndescription = \"The simplest, thinnest, and most powerful harness to control your real browser with your agent.\"\nreadme = \"README.md\"\nrequires-python = \">=3.11\"\nlicense = \"MIT\"\nlicense-files = [\"LICENSE\"]\nkeywords = [\"agent\", \"automation\", \"browser\", \"cdp\", \"chrome\", \"scraping\"]\nclassifiers = [\n    \"Development Status :: 3 - Alpha\",\n    \"Environment :: Console\",\n    \"Intended Audience :: Developers\",\n    \"Programming Language :: Python :: 3\",\n    \"Programming Language :: Python :: 3.11\",\n    \"Programming Language :: Python :: 3.12\",\n    \"Topic :: Internet :: WWW/HTTP :: Browsers\",\n    \"Topic :: Software Development :: Testing\",\n]\ndependencies = [\n    \"cdp-use==1.4.5\",\n    \"fetch-use==0.4.0\",\n    \"pillow==12.3.0\",\n    \"websockets==15.0.1\",\n]\n\n[project.optional-dependencies]\nmcp = [\"mcp==2.1.1\"]\n\n[project.scripts]\nbrowser-harness = \"browser_harness.run:main\"\nbrowser-harness-mcp = \"browser_harness.mcp_cli:main\"\n\n[project.urls]\nHomepage = \"https://github.com/browser-use/browser-harness\"\nRepository = \"https://github.com/browser-use/browser-harness\"\nIssues = \"https://github.com/browser-use/browser-harness/issues\"\n\n[tool.setuptools]\npackage-dir = {\"\" = \"src\"}\npy-modules = [\"mcp_server\"]\n\n[tool.setuptools.packages.find]\nwhere = [\"src\"]\n\n[tool.setuptools.package-data]\nbrowser_harness = [\"SKILL.md\", \"video-template.html\"]\n\n[tool.pytest.ini_options]\npythonpath = [\"src\"]\n"
+            }
+          ]
+        }
+      ],
+      "current_pypi_version": "0.1.13"
+    },
+    {
+      "name": "fetch-use",
+      "version": "0.4.0",
+      "metadata_url": "https://pypi.org/pypi/fetch-use/0.4.0/json",
+      "license": "MIT",
+      "license_expression": null,
+      "project_urls": {
+        "Documentation": "https://docs.browser-use.com",
+        "Homepage": "https://browser-use.com",
+        "Repository": "https://github.com/browser-use/fetch-use"
+      },
+      "requires_dist": [
+        "pytest-asyncio>=0.23.0; extra == \"dev\"",
+        "pytest>=8.0.0; extra == \"dev\"",
+        "ruff>=0.4.0; extra == \"dev\""
+      ],
+      "archives": [
+        {
+          "filename": "fetch_use-0.4.0-py3-none-any.whl",
+          "url": "https://files.pythonhosted.org/packages/57/97/d4104692aa5c99a30fea22b5adffd2ce35b1ad86ae5236766cfc1ae468f1/fetch_use-0.4.0-py3-none-any.whl",
+          "sha256": "b7885f2907e7920373fa75dcdb00afd6e603a25a9ee2151aa2881f5465e1a2c0",
+          "license_members": [],
+          "pyproject": []
+        },
+        {
+          "filename": "fetch_use-0.4.0.tar.gz",
+          "url": "https://files.pythonhosted.org/packages/5d/2d/66784fa8b66a04f170ad8f6598688b30b3a194dad4185b36d53da4ae1505/fetch_use-0.4.0.tar.gz",
+          "sha256": "9511987d4907ec6dac501e21d66946d10098f66b5d21bc2aba4189cd81ba189a",
+          "license_members": [],
+          "pyproject": [
+            {
+              "path": "fetch_use-0.4.0/pyproject.toml",
+              "text": "[build-system]\nrequires = [\"hatchling\"]\nbuild-backend = \"hatchling.build\"\n\n[project]\nname = \"fetch-use\"\nversion = \"0.4.0\"\ndescription = \"Python client for Browser-Use Fetch HTTP service\"\nreadme = \"README.md\"\nlicense = {text = \"MIT\"}\nrequires-python = \">=3.9\"\nauthors = [\n    { name = \"Browser-Use\", email = \"support@browser-use.com\" }\n]\nkeywords = [\"http\", \"fetch\", \"proxy\", \"requests\", \"api\"]\nclassifiers = [\n    \"Development Status :: 4 - Beta\",\n    \"Intended Audience :: Developers\",\n    \"License :: OSI Approved :: MIT License\",\n    \"Operating System :: OS Independent\",\n    \"Programming Language :: Python :: 3\",\n    \"Programming Language :: Python :: 3.9\",\n    \"Programming Language :: Python :: 3.10\",\n    \"Programming Language :: Python :: 3.11\",\n    \"Programming Language :: Python :: 3.12\",\n    \"Topic :: Internet :: WWW/HTTP\",\n    \"Topic :: Software Development :: Libraries :: Python Modules\",\n]\n\n[project.urls]\nHomepage = \"https://browser-use.com\"\nDocumentation = \"https://docs.browser-use.com\"\nRepository = \"https://github.com/browser-use/fetch-use\"\n\n[project.optional-dependencies]\ndev = [\n    \"ruff>=0.4.0\",\n    \"pytest>=8.0.0\",\n    \"pytest-asyncio>=0.23.0\",\n]\n\n[tool.hatch.build.targets.wheel]\npackages = [\"src/fetch_use\"]\n\n[tool.ruff]\ntarget-version = \"py39\"\nline-length = 100\nsrc = [\"src\"]\n\n[tool.ruff.lint]\nselect = [\n    \"E\",      # pycodestyle errors\n    \"W\",      # pycodestyle warnings\n    \"F\",      # Pyflakes\n    \"I\",      # isort\n    \"B\",      # flake8-bugbear\n    \"C4\",     # flake8-comprehensions\n    \"UP\",     # pyupgrade\n    \"SIM\",    # flake8-simplify\n]\nignore = [\n    \"E501\",   # line too long (handled by formatter)\n    \"B008\",   # do not perform function calls in argument defaults\n]\n\n[tool.ruff.format]\nquote-style = \"double\"\nindent-style = \"space\"\nskip-magic-trailing-comma = false\nline-ending = \"auto\"\n\n[tool.ruff.lint.isort]\nknown-first-party = [\"fetch_use\"]\n"
+            }
+          ]
+        }
+      ],
+      "current_pypi_version": "0.4.0"
+    }
+  ],
+  "conclusion": "fetch-use 0.4.0 declares MIT but the exact published wheel and sdist carry no license/notice member. No notice was invented. No newer PyPI version was selected or substituted.",
+  "repository_checks": [
+    {
+      "url": "https://api.github.com/repos/browser-use/fetch-use",
+      "status": 404
+    },
+    {
+      "url": "https://raw.githubusercontent.com/browser-use/fetch-use/main/LICENSE",
+      "status": 404
+    },
+    {
+      "url": "https://raw.githubusercontent.com/browser-use/fetch-use/master/LICENSE",
+      "status": 404
+    },
+    {
+      "url": "https://api.github.com/repos/NousResearch/hermes-agent/commits/7489b22af47ce91b366dde81d5831ea422577498",
+      "status": 200,
+      "sha": "7489b22af47ce91b366dde81d5831ea422577498",
+      "commit_date": "2026-10-23T09:22:46Z"
+    }
+  ],
+  "audited_source": {
+    "revision": "7489b22af47ce91b366dde81d5831ea422577498",
+    "archive_sha256": "8bb5bc691b509caa847b4e388258be2adec297f06b1ee01f56c9a742eb043d95",
+    "files_verified_byte_equal": [
+      {
+        "path": "tools/browser_use_cli.py",
+        "sha256": "e9d558d2ac13a0bf1cf88abc449c2446f4ac7d0b2036a20bb9a2cd75428b260f"
+      },
+      {
+        "path": "tools/browser_harness_dirs.py",
+        "sha256": "3903176ba5b8edd878b82d55f99ad84925a0d159ad266d861fffde96bd1b393a"
+      },
+      {
+        "path": "tools/bot_desktop/placement.py",
+        "sha256": "98914fce79a6b4ac8738fd372c50caeaf421573d44a06e873f443e016803ad60"
+      },
+      {
+        "path": "tools/computer_use/cua_backend.py",
+        "sha256": "6c0287de53eb3fbfd3307d961898554343271e406c4e6bd31ba4a43194ab5821"
+      },
+      {
+        "path": "tools/computer_use/cua_backend_session.py",
+        "sha256": "cee46b2396b9050dff420d6e8d0e46d6363e14dfc702f8c0a609797aceacbfa1"
+      },
+      {
+        "path": "tools/environments/docker.py",
+        "sha256": "0a843f6f960af1bd0e5c677581b76ba388f7075865daf4923f68545356044b14"
+      },
+      {
+        "path": "tools/environments/ssh.py",
+        "sha256": "0f6380cb90a23a1f04fe9a41558d78ff84f3b160270230fc3f459893a4373138"
+      },
+      {
+        "path": "gateway/session_controls.py",
+        "sha256": "0def0802a475405223ac88f864ac29d5d8049dc870aa4d247787bf9f5cd680af"
+      },
+      {
+        "path": "gateway/session_local.py",
+        "sha256": "8597e45697177c3caa206103bdc5c7fda0f55050707e27ca01fed5bfd586fd90"
+      },
+      {
+        "path": "gateway/session_managed_worker.py",
+        "sha256": "0d2bed13ce549ac192b9f49653a77a68851de544a3416050a5d80cdea08920fa"
+      },
+      {
+        "path": "hermes_cli/plugins.py",
+        "sha256": "32c2a0a3acd985be4453981e36e26776d6a1c815498f8d0af5f898ad98c8861e"
+      },
+      {
+        "path": "hermes_cli/middleware.py",
+        "sha256": "3745ad211f365554a3c070083dc39d3ff9b6cdc93965f13d8796918433ec2328"
+      },
+      {
+        "path": "agent/terminal_env_provider.py",
+        "sha256": "865fb0cd9c3c64c081276281f7501cd54c6e8927386a9099ae213e5511857e5c"
+      },
+      {
+        "path": "pm/lock.json",
+        "sha256": "40b06778980ff8c50dcd97c0d9b39ba3eb4a7a242ea62eaeaaa9a90d68ea1a85"
+      }
+    ]
+  }
+}

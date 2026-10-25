@@ -1,0 +1,81 @@
+{
+  "backend": "Linux Docker scoped native tool dispatcher",
+  "image": "sha256:b81f1bf356adb3f4cff012b2b95d95c6458b5ba876c1e886a59a24a82e574ebd",
+  "supervisor_sha256": "a60d9e279f9135512075223b6bed5e41d4fa63f9a62c3090c98b98485b8efa18",
+  "model_calls": 0,
+  "network": "none; synthetic container-local fixture",
+  "attempts": [
+    {
+      "repeat": 1,
+      "scope_key": "bf3f467e3e520cbfeb6fb1eeeca9f522eb936b46d0872edf6fb657645d481261",
+      "timings_s": {
+        "cold_scope_ready": 3.014828000217676,
+        "first_terminal": 2.7461345000192523,
+        "warm_terminal": 0.4860350829549134,
+        "first_browser_navigation": 1.7460725409910083,
+        "idle_pause": 3.1671634579543024,
+        "scope_resume": 0.8794824169017375
+      },
+      "passed": true
+    },
+    {
+      "repeat": 2,
+      "scope_key": "0da3c92b556de7fd302ffd1676e0b7ae7890a403e9a071565d70a12ed3b0effb",
+      "timings_s": {
+        "cold_scope_ready": 1.2926812919322401,
+        "first_terminal": 2.135321500012651,
+        "warm_terminal": 0.444581083022058,
+        "first_browser_navigation": 1.6248757080174983,
+        "idle_pause": 3.1778495830949396,
+        "scope_resume": 0.859734958037734
+      },
+      "passed": true
+    },
+    {
+      "repeat": 3,
+      "scope_key": "63755facd847471ea4e5995a1dd49e1c430894c8111fd66c71f10e40a433d026",
+      "timings_s": {
+        "cold_scope_ready": 1.409941292135045,
+        "first_terminal": 2.2187679999042302,
+        "warm_terminal": 0.4630146250128746,
+        "first_browser_navigation": 1.6474579588975757,
+        "idle_pause": 3.174963332945481,
+        "scope_resume": 0.8791892088484019
+      },
+      "passed": true
+    }
+  ],
+  "phase_summary_s": {
+    "cold_scope_ready": {
+      "n": 3,
+      "p50": 1.409941292135045,
+      "p95": 3.014828000217676
+    },
+    "first_terminal": {
+      "n": 3,
+      "p50": 2.2187679999042302,
+      "p95": 2.7461345000192523
+    },
+    "warm_terminal": {
+      "n": 3,
+      "p50": 0.4630146250128746,
+      "p95": 0.4860350829549134
+    },
+    "first_browser_navigation": {
+      "n": 3,
+      "p50": 1.6474579588975757,
+      "p95": 1.7460725409910083
+    },
+    "idle_pause": {
+      "n": 3,
+      "p50": 3.174963332945481,
+      "p95": 3.1778495830949396
+    },
+    "scope_resume": {
+      "n": 3,
+      "p50": 0.8791892088484019,
+      "p95": 0.8794824169017375
+    }
+  },
+  "limits": "3 cold scopes on this development Docker host; no image-pull time, production load, remote network or dollar-cost claim"
+}

@@ -1,0 +1,667 @@
+{
+  "recorded_at": "2026-10-25T08:17:06.492234+00:00",
+  "ticket": "NMA-028",
+  "status": "In Progress",
+  "runtime_revision": "7489b22af47ce91b366dde81d5831ea422577498",
+  "protocol": {
+    "id": "nma028-baseline-v1",
+    "frozen_at": "2026-10-25T07:50:09.402Z",
+    "sha256": "e61058b0eec9b56857e5849b5adc03558684376f66abad89a9d66df957f87e5c"
+  },
+  "git_revision": "60b439191f5d26a9a83995ec9bee8aa286729577",
+  "input_working_tree_sha256": "ca26682417b2b65164aad578dc7ad5ed86de25ae90bdd84f923540741e6a9149",
+  "final_working_tree_sha256": "2a5ab0b20c8f4e12dfe8d31965a7875803d8bafa42c6a75b7c8938190543469f",
+  "pre_existing_paths_byte_identical": true,
+  "production_runtime_or_schema_changes": false,
+  "real_account_migration": false,
+  "deployment": false,
+  "paired_summary": {
+    "protocol_id": "nma028-baseline-v1",
+    "protocol_sha256": "e61058b0eec9b56857e5849b5adc03558684376f66abad89a9d66df957f87e5c",
+    "surfaces": {
+      "direct": {
+        "planned": 33,
+        "executed": 15,
+        "passed": 15,
+        "outcomes": {
+          "passed": 15,
+          "blocked": 18
+        },
+        "categories": {
+          "none": 15,
+          "prerequisite": 18
+        },
+        "success_per_planned": 0.45454545454545453,
+        "success_per_executed": 1.0,
+        "wilson95_executed": [
+          0.7961166989641515,
+          1
+        ],
+        "timings_s": {
+          "admission": {
+            "n": 15,
+            "p50": 0.003684000112116337,
+            "p95": 0.02224479103460908
+          },
+          "first_progress": {
+            "n": 15,
+            "p50": 1.9682997919153422,
+            "p95": 2.698717375053093
+          },
+          "settlement": {
+            "n": 15,
+            "p50": 2.659884166903794,
+            "p95": 9.845915250014514
+          },
+          "recovery": {
+            "n": 3,
+            "p50": 1.4776048751082271,
+            "p95": 1.9735994590446353
+          }
+        },
+        "effect_metrics": "unavailable unless independently instrumented; never inferred as zero from missing events"
+      },
+      "adapter": {
+        "planned": 33,
+        "executed": 15,
+        "passed": 12,
+        "outcomes": {
+          "passed": 12,
+          "failed": 3,
+          "blocked": 18
+        },
+        "categories": {
+          "none": 12,
+          "integration": 3,
+          "prerequisite": 18
+        },
+        "success_per_planned": 0.36363636363636365,
+        "success_per_executed": 0.8,
+        "wilson95_executed": [
+          0.5481455128483065,
+          0.9295245065301844
+        ],
+        "timings_s": {
+          "admission": {
+            "n": 12,
+            "p50": 0.0242402080912143,
+            "p95": 0.2878701249137521
+          },
+          "first_progress": {
+            "n": 12,
+            "p50": 1.7380675000604242,
+            "p95": 4.6909516248852015
+          },
+          "settlement": {
+            "n": 12,
+            "p50": 4.2620569579303265,
+            "p95": 7.350794415920973
+          },
+          "recovery": {
+            "n": 3,
+            "p50": 3.7442322080023587,
+            "p95": 4.653096958063543
+          }
+        },
+        "effect_metrics": "unavailable unless independently instrumented; never inferred as zero from missing events"
+      },
+      "application": {
+        "planned": 33,
+        "executed": 15,
+        "passed": 12,
+        "outcomes": {
+          "passed": 12,
+          "failed": 3,
+          "blocked": 18
+        },
+        "categories": {
+          "none": 12,
+          "integration": 3,
+          "prerequisite": 18
+        },
+        "success_per_planned": 0.36363636363636365,
+        "success_per_executed": 0.8,
+        "wilson95_executed": [
+          0.5481455128483065,
+          0.9295245065301844
+        ],
+        "timings_s": {
+          "admission": {
+            "n": 12,
+            "p50": 0.025431291898712516,
+            "p95": 0.1998171249870211
+          },
+          "first_progress": {
+            "n": 12,
+            "p50": 1.689798542065546,
+            "p95": 5.22480612504296
+          },
+          "settlement": {
+            "n": 12,
+            "p50": 3.3474891670048237,
+            "p95": 7.49792579212226
+          },
+          "recovery": {
+            "n": 3,
+            "p50": 3.8375148749910295,
+            "p95": 4.954011207912117
+          }
+        },
+        "effect_metrics": "unavailable unless independently instrumented; never inferred as zero from missing events"
+      }
+    },
+    "release_gate": "Not established by smoke baseline; required blocked cells remain open. See pre-registered release thresholds."
+  },
+  "all_raw_batches": [
+    {
+      "path": "docs/research/evidence/nma-028/direct-initial.jsonl",
+      "planned": 33,
+      "executed": 15,
+      "raw_outcomes": {
+        "passed": 0,
+        "failed": 15,
+        "blocked": 18
+      },
+      "note": "Raw instrumentation score retained. Do not pool retries or infer product failures from scorer/binding errors."
+    },
+    {
+      "path": "docs/research/evidence/nma-028/adapter-initial.jsonl",
+      "planned": 33,
+      "executed": 15,
+      "raw_outcomes": {
+        "passed": 9,
+        "failed": 6,
+        "blocked": 18
+      },
+      "note": "Raw instrumentation score retained. Do not pool retries or infer product failures from scorer/binding errors."
+    },
+    {
+      "path": "docs/research/evidence/nma-028/application-initial.jsonl",
+      "planned": 33,
+      "executed": 15,
+      "raw_outcomes": {
+        "passed": 9,
+        "failed": 6,
+        "blocked": 18
+      },
+      "note": "Raw instrumentation score retained. Do not pool retries or infer product failures from scorer/binding errors."
+    },
+    {
+      "path": "docs/research/evidence/nma-028/direct-corrected.jsonl",
+      "planned": 33,
+      "executed": 15,
+      "raw_outcomes": {
+        "passed": 15,
+        "failed": 0,
+        "blocked": 18
+      },
+      "note": "Raw instrumentation score retained. Do not pool retries or infer product failures from scorer/binding errors."
+    },
+    {
+      "path": "docs/research/evidence/nma-028/adapter-corrected.jsonl",
+      "planned": 33,
+      "executed": 15,
+      "raw_outcomes": {
+        "passed": 9,
+        "failed": 6,
+        "blocked": 18
+      },
+      "note": "Raw instrumentation score retained. Do not pool retries or infer product failures from scorer/binding errors."
+    },
+    {
+      "path": "docs/research/evidence/nma-028/application-corrected.jsonl",
+      "planned": 33,
+      "executed": 15,
+      "raw_outcomes": {
+        "passed": 9,
+        "failed": 6,
+        "blocked": 18
+      },
+      "note": "Raw instrumentation score retained. Do not pool retries or infer product failures from scorer/binding errors."
+    },
+    {
+      "path": "docs/research/evidence/nma-028/direct-final.jsonl",
+      "planned": 33,
+      "executed": 15,
+      "raw_outcomes": {
+        "passed": 15,
+        "failed": 0,
+        "blocked": 18
+      },
+      "note": "Raw instrumentation score retained. Do not pool retries or infer product failures from scorer/binding errors."
+    },
+    {
+      "path": "docs/research/evidence/nma-028/direct-progress-corrected.jsonl",
+      "planned": 33,
+      "executed": 15,
+      "raw_outcomes": {
+        "passed": 15,
+        "failed": 0,
+        "blocked": 18
+      },
+      "note": "Raw instrumentation score retained. Do not pool retries or infer product failures from scorer/binding errors."
+    }
+  ],
+  "supplemental": {
+    "fault_scope_tests": {
+      "passed": 25,
+      "skipped": 0,
+      "live_model": false
+    },
+    "live_lifecycle_tests": {
+      "passed": 2,
+      "skipped": 0,
+      "live_model": true,
+      "auth": "fixed disposable current_account dependency"
+    },
+    "harness_tests": {
+      "passed": 7,
+      "skipped": 0
+    },
+    "native_canary": {
+      "repeats": 3,
+      "forms_passed": 3,
+      "csv_hash_passed": 3,
+      "same_uid_control_file_readable": 3,
+      "secret_isolation_gate": "failed negative control",
+      "live_model": false,
+      "image": "sha256:4d785a4a9f9532fa336e78f91f0d2589e3814c460986ad8931d4709d2987353d"
+    },
+    "ui_browser": {
+      "tasks": 1,
+      "passed": 0,
+      "failed": 1,
+      "fill_attempts": 2,
+      "unknown_outcome_returns": 2,
+      "effect_rows": 7,
+      "confirmed_rows": 7,
+      "run_status": "succeeded",
+      "task_status": "failed",
+      "resource_cleanup": {
+        "deleted": true
+      },
+      "production_clerk": "unverified"
+    }
+  },
+  "architecture": {
+    "research_backend": "Linux Docker with native local browser Python/terminal/Chromium-CDP in disposable container",
+    "production_decision": "unresolved",
+    "blockers": [
+      "fetch-use 0.4.0 exact release notice unavailable",
+      "Same-UID browser Python reads runtime control canary; prove scoped native worker and credential broker",
+      "Required complete paired live browser/computer/cancellation/offline/group artifact and production-auth acceptance remain open"
+    ],
+    "downstream_owners": [
+      "NMA-029",
+      "NMA-030",
+      "NMA-031",
+      "NMA-032",
+      "NMA-039"
+    ]
+  },
+  "validation": {
+    "ruff": "passed",
+    "python_format": "passed",
+    "ui_fixture_config_biome": "passed with root rules and include scope removed",
+    "owned_source_whitespace": "passed",
+    "read_only_replay_byte_identical": "passed",
+    "credential_value_scan": {
+      "passed": true,
+      "secret_values_checked": 10,
+      "files_checked": 63
+    },
+    "documentation_integrity": "passed: Docs: 71 page hashes, 47 tickets, 4 views, 1365 local links OK",
+    "tracked_whitespace": "passed"
+  },
+  "commands": [
+    ".dev/nma-006-closure/runtime/bin/python scripts/spikes/nma028/audit.py capture --source .dev/nma-001/source --output docs/research/evidence/nma-028/before.json",
+    ".dev/nma-006-closure/runtime/bin/python scripts/spikes/nma028/audit.py coverage --source .dev/nma-001/source --output docs/research/evidence/nma-028/capability-manifest.json",
+    ".dev/nma-006-closure/runtime/bin/python scripts/spikes/nma028/baseline.py --source .dev/nma-001/source --surface <direct|adapter|application> --env-file .env --output NEW_OUTPUT.jsonl",
+    "HERMES_SOURCE=$PWD/.dev/nma-001/source PYTHONPATH=$PWD/apps/engine/src:$PWD/.dev/nma-001/source NMA_TEST_LIVE_ENV=$PWD/.env .dev/nma-006-closure/runtime/bin/python -m pytest apps/engine/tests/test_discussions_live.py apps/engine/tests/test_wakes_live.py -q -s",
+    "HERMES_SOURCE=$PWD/.dev/nma-001/source PYTHONPATH=$PWD/apps/engine/src:$PWD/.dev/nma-001/source .dev/nma-006-closure/runtime/bin/python -m pytest apps/engine/tests/test_reliability.py apps/engine/tests/test_computer_boundaries.py apps/engine/tests/test_context.py apps/engine/tests/test_membership.py -q -s",
+    "docker build -f scripts/spikes/nma028/Dockerfile -t ngertiin-nma028-research:local .",
+    "docker run --rm --network none --read-only --cap-drop ALL --security-opt no-new-privileges --pids-limit 512 --memory 2g --cpus 2 --shm-size 512m --tmpfs /work:uid=10001,gid=10001,mode=700 --tmpfs /tmp:mode=1777 --tmpfs /home/probe:uid=10001,gid=10001,mode=700 ngertiin-nma028-research:local",
+    ".dev/nma-006-closure/runtime/bin/python scripts/spikes/nma028/results.py .dev/nma-028/paired-scored.jsonl",
+    ".dev/nma-006-closure/runtime/bin/python -m pytest scripts/spikes/nma028/test_baseline.py -q",
+    "uv run --project apps/backend ruff check scripts/spikes/nma028",
+    "uv run --project apps/backend ruff format --check scripts/spikes/nma028",
+    "bunx --no-install @biomejs/biome check --config-path=.dev/nma-028/biome.json apps/engine/tests/browser/nma028.config.ts",
+    "python3 scripts/check_docs.py",
+    "git diff --check"
+  ],
+  "artifacts": [
+    {
+      "path": "scripts/spikes/nma028/audit.py",
+      "sha256": "bfb15f5ba922a2099b1a294309bb665576fd328fd96ef127ff732e6fa6a23b6a",
+      "bytes": 13917
+    },
+    {
+      "path": "scripts/spikes/nma028/baseline.py",
+      "sha256": "3093c8aea3fb5a07e841d9e267ea5b644c1bc13627e9ea6c012e369a763726a8",
+      "bytes": 21859
+    },
+    {
+      "path": "scripts/spikes/nma028/build_native.py",
+      "sha256": "388ef5d48e0648e9b8357abec6f03aa5f9bbda7af043b194ab315138c46357ec",
+      "bytes": 1397
+    },
+    {
+      "path": "scripts/spikes/nma028/native_probe.py",
+      "sha256": "faaa9352d47100f222f303eebf465ff3529c30e37a4357958d5dc4b6ad241a69",
+      "bytes": 7951
+    },
+    {
+      "path": "scripts/spikes/nma028/results.py",
+      "sha256": "84835868ddfb1f354df5740e11bb45776d30331391a0d9003d4b066a4ff91032",
+      "bytes": 7031
+    },
+    {
+      "path": "scripts/spikes/nma028/sandbox_inventory.py",
+      "sha256": "1a54223ba8d6355c6156b44ac1a8d32b173372b85aecd7f1b922f5fd2632a1fe",
+      "bytes": 1725
+    },
+    {
+      "path": "scripts/spikes/nma028/test_baseline.py",
+      "sha256": "b4d3b3bc3e459004718946a5fb07e89ee369e58a86be395d90fe4256e7c7d635",
+      "bytes": 5203
+    },
+    {
+      "path": "scripts/spikes/nma028/ui.py",
+      "sha256": "4cda16891e54a028f05c1becce24152dc03a843a373a025063fd2f3195f924a0",
+      "bytes": 4309
+    },
+    {
+      "path": "scripts/spikes/nma028/README.md",
+      "sha256": "2e63964d59bf50b759b2047cd1ac8f4478112f05901bed1506f4dede2524b351",
+      "bytes": 6653
+    },
+    {
+      "path": "scripts/spikes/nma028/Dockerfile",
+      "sha256": "25b8a549d86cdad5b5e116dc777383fa31b755d9cfe41bd31b7cd725b6ee7f44",
+      "bytes": 1093
+    },
+    {
+      "path": "scripts/spikes/nma028/protocol.json",
+      "sha256": "e61058b0eec9b56857e5849b5adc03558684376f66abad89a9d66df957f87e5c",
+      "bytes": 5008
+    },
+    {
+      "path": "apps/engine/tests/browser/nma028.config.ts",
+      "sha256": "0192103c6a2d2de6c82e5d126bcf339ec9749fced2c1883ee7119db635dfdc6a",
+      "bytes": 944
+    },
+    {
+      "path": "docs/research/nma-028-baseline-and-native-contract.md",
+      "sha256": "cd8d12ebc76bb5c022fae13af80df481cb2fad19c5df9e5ad821843e4e449890",
+      "bytes": 13566
+    },
+    {
+      "path": "docs/research/nma-028-native-seams.md",
+      "sha256": "b26db23744055a1e9a5f6f6865e4449075047102fcec20c720ef4bfce202900b",
+      "bytes": 23982
+    },
+    {
+      "path": "docs/research/evidence/nma-028/adapter-corrected.jsonl",
+      "sha256": "f1439e32a47b26aa8a3716d5affc3003fcc69334fd24f85d9249a806b080a469",
+      "bytes": 159846
+    },
+    {
+      "path": "docs/research/evidence/nma-028/adapter-initial.jsonl",
+      "sha256": "2262227c53d7723b4df48021dbdbaacf4225a357b770a6252b8a824d207cdf7a",
+      "bytes": 142870
+    },
+    {
+      "path": "docs/research/evidence/nma-028/adapter-scored.jsonl",
+      "sha256": "17a86b17f1bd1ae4dc65913678fc99d21d846a6a5edef272db92aa3848eb465b",
+      "bytes": 160404
+    },
+    {
+      "path": "docs/research/evidence/nma-028/after.json",
+      "sha256": "3e1f5f0844b0b0a45f908a4a245392c80bd16f21597fee6cd4e47144d549d118",
+      "bytes": 211180
+    },
+    {
+      "path": "docs/research/evidence/nma-028/application-corrected.jsonl",
+      "sha256": "37b644907262bc4559ec42a5bf1aee7155d8851c1e9999ff9fdcae126b7442b8",
+      "bytes": 165249
+    },
+    {
+      "path": "docs/research/evidence/nma-028/application-initial.jsonl",
+      "sha256": "6ef505473c6a18727f253d77b7efd31bb82fdb37f4488a1c1b57950e8728779b",
+      "bytes": 147993
+    },
+    {
+      "path": "docs/research/evidence/nma-028/application-scored.jsonl",
+      "sha256": "909db90ec92eee3d5a10ec8846aa60f38413c6c82521c9f8208ca88a87eb19b4",
+      "bytes": 165807
+    },
+    {
+      "path": "docs/research/evidence/nma-028/before.json",
+      "sha256": "5bc13ed54d951229141d292ac9195cd7cf25b8db280858d4ced2b0f8f2d089b0",
+      "bytes": 209448
+    },
+    {
+      "path": "docs/research/evidence/nma-028/biome.json",
+      "sha256": "ab341d3cad6b510b6679d369b00db187de44c16fd99410bc565fc84d611086d9",
+      "bytes": 494
+    },
+    {
+      "path": "docs/research/evidence/nma-028/capability-manifest.json",
+      "sha256": "0f2411a240c7a79553a9ce65134268c35aa65cb38e3da687b7ced5576abb8a02",
+      "bytes": 345108
+    },
+    {
+      "path": "docs/research/evidence/nma-028/chromium-diagnostic.log",
+      "sha256": "04e6e61a8465b877347c782d60d78c8b908f86d4fb073c18e791f624f46a2f0d",
+      "bytes": 320
+    },
+    {
+      "path": "docs/research/evidence/nma-028/direct-corrected.jsonl",
+      "sha256": "38a70ceda40c2ac8a0422c63e2528d939d2d559ea241d1a0357cee8405fccde9",
+      "bytes": 1652748
+    },
+    {
+      "path": "docs/research/evidence/nma-028/direct-final.jsonl",
+      "sha256": "a2c0b50a7c4c3b05e25fd2d7f65fd79439a31fa0e6b2c37ac17a50aeca2e218c",
+      "bytes": 1668540
+    },
+    {
+      "path": "docs/research/evidence/nma-028/direct-initial.jsonl",
+      "sha256": "3f1d00f4141e14a64bc38fb22d92255d8d5671f11468306aaf32750ece6e9719",
+      "bytes": 21999
+    },
+    {
+      "path": "docs/research/evidence/nma-028/direct-progress-corrected.jsonl",
+      "sha256": "ee1d7793760d62335100dde1446a60c3bc9eb38da1dd90486e31b336a7ccae92",
+      "bytes": 1668528
+    },
+    {
+      "path": "docs/research/evidence/nma-028/docker-build.log",
+      "sha256": "131972094ed97e184f2a3d266d86a7ca25485143243920dfce958605ffd5d865",
+      "bytes": 90622
+    },
+    {
+      "path": "docs/research/evidence/nma-028/docker-final.log",
+      "sha256": "96db3ca69838c3a2f5e87eb78ad6b04edace8e258d20864bf37db62950877b93",
+      "bytes": 2915
+    },
+    {
+      "path": "docs/research/evidence/nma-028/docker-rebuild.log",
+      "sha256": "a0e08ff388cc604f67ea79962f92551c427899ae3fe5be9eb494d7b7107bb19e",
+      "bytes": 2641
+    },
+    {
+      "path": "docs/research/evidence/nma-028/fault-scope.log",
+      "sha256": "cca8ada911e9d6334953a001dc6904a46120dd1807bc878cfc6f96cd2387a6bd",
+      "bytes": 568
+    },
+    {
+      "path": "docs/research/evidence/nma-028/format-final.log",
+      "sha256": "d7188cbf91f08a3caf1ec4a3214f2dc8415fb52f90a1fb6cea7ab6b7a0881d63",
+      "bytes": 43
+    },
+    {
+      "path": "docs/research/evidence/nma-028/harness-tests-final.log",
+      "sha256": "ee09f6debd9f81709cd5af75a47e8b1c6ed9a94b8e82a9b34c00f597199e9c17",
+      "bytes": 98
+    },
+    {
+      "path": "docs/research/evidence/nma-028/live-group.json",
+      "sha256": "9e8c9e65ac9ffea22b75c47bac4d4eb61bda30f618ff3d5e5c6c1bacb8111fc9",
+      "bytes": 126268
+    },
+    {
+      "path": "docs/research/evidence/nma-028/live-lifecycle.log",
+      "sha256": "1a7219a4b68e7b4d099130a31f341e5a51a08a8ad5ebe33cd672dd8adbe678ea",
+      "bytes": 289
+    },
+    {
+      "path": "docs/research/evidence/nma-028/live-wake.json",
+      "sha256": "f33df3d386111109acc5fc1905daf9a4c8752b8b4b946de120930cb2ee9f472d",
+      "bytes": 13994
+    },
+    {
+      "path": "docs/research/evidence/nma-028/native-canary.json",
+      "sha256": "d09bf64d51bead0a656041f63ae58ca05ede2053ea69d89708c4743165486f7e",
+      "bytes": 9034
+    },
+    {
+      "path": "docs/research/evidence/nma-028/native-canary.log",
+      "sha256": "d0ce697e597c599307d2b8cec27beac71d238c001dd4709a1c520563c67ab592",
+      "bytes": 214
+    },
+    {
+      "path": "docs/research/evidence/nma-028/native-final.json",
+      "sha256": "cf987a3d9373994267c9aa712178fe3a921ef32cac78820eb5764626b0d05bfc",
+      "bytes": 8717
+    },
+    {
+      "path": "docs/research/evidence/nma-028/native-final.log",
+      "sha256": "c276162bd08867d4778ae862a96e1cc7a6fd9971e35175a22506ca03badfd0be",
+      "bytes": 321
+    },
+    {
+      "path": "docs/research/evidence/nma-028/native-initial.log",
+      "sha256": "96bc453e1a40bd41a04e2b5763eec59cf488c6471136b6216aa1e141940f5ac9",
+      "bytes": 249
+    },
+    {
+      "path": "docs/research/evidence/nma-028/native-second.log",
+      "sha256": "efd0db633056a420b338d96e54d62bb704fe409b19653e27fd929e6585bf2f39",
+      "bytes": 670
+    },
+    {
+      "path": "docs/research/evidence/nma-028/native-third.json",
+      "sha256": "7905e2eb1a1e7ce2ca1a29496eb79099af6e021973415de5e267d2fffa38bed2",
+      "bytes": 8711
+    },
+    {
+      "path": "docs/research/evidence/nma-028/native-third.log",
+      "sha256": "c276162bd08867d4778ae862a96e1cc7a6fd9971e35175a22506ca03badfd0be",
+      "bytes": 321
+    },
+    {
+      "path": "docs/research/evidence/nma-028/notion-plan-snapshot.md",
+      "sha256": "f71495653683421b300ea8e51016a7266a13731cf9a064a202333d23fd7a7013",
+      "bytes": 40202
+    },
+    {
+      "path": "docs/research/evidence/nma-028/packaging-review.json",
+      "sha256": "8126e8964955610631ce59a5146e397988f65370d1a320dd1c63dbf1cbe7a567",
+      "bytes": 10489
+    },
+    {
+      "path": "docs/research/evidence/nma-028/paired-scored.jsonl",
+      "sha256": "7aef600ce1f6430ec236be5d10b6ac13daccf3d4f5735f1f2cacb082704b46b9",
+      "bytes": 1994739
+    },
+    {
+      "path": "docs/research/evidence/nma-028/paired-summary.json",
+      "sha256": "4d75cdd115471af09f7ca9bc957152bdeca6b9632e5f2827c40271bc2399752e",
+      "bytes": 3563
+    },
+    {
+      "path": "docs/research/evidence/nma-028/process-cleanup.json",
+      "sha256": "44ea2df14b4334b9eb76a986a5f0905fb1dcffd127dd6be4300360f0bab9b1dc",
+      "bytes": 607
+    },
+    {
+      "path": "docs/research/evidence/nma-028/protocol.json",
+      "sha256": "e61058b0eec9b56857e5849b5adc03558684376f66abad89a9d66df957f87e5c",
+      "bytes": 5008
+    },
+    {
+      "path": "docs/research/evidence/nma-028/ruff-final.log",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "bytes": 19
+    },
+    {
+      "path": "docs/research/evidence/nma-028/sandbox-inventory.json",
+      "sha256": "e9b3e130e5448c054a492fd7d977c786f894c8a1227da4710c009d9fed0336c7",
+      "bytes": 39502
+    },
+    {
+      "path": "docs/research/evidence/nma-028/ui-api.log",
+      "sha256": "d0f572100a40ce2bf17a78e518f3c85a2919fc52f0f39a31b8e0aa2aa7d9402c",
+      "bytes": 1580
+    },
+    {
+      "path": "docs/research/evidence/nma-028/ui-browser-failed.png",
+      "sha256": "8cafdaf8bfbd2fe1fb949faaae3c76b0c097da9e3c29596bc68e3a35cb4531c6",
+      "bytes": 74560
+    },
+    {
+      "path": "docs/research/evidence/nma-028/ui-browser-final.txt",
+      "sha256": "ce3cb9f6ecedb646c4d916efdac341b353c09e1b36b2f85ba11333ce929e249c",
+      "bytes": 970
+    },
+    {
+      "path": "docs/research/evidence/nma-028/ui-browser-progress.png",
+      "sha256": "ef23e7caae932cc4a9b7c2d42f9417673ecce5b689ecca0e57dfb32b0fa2a2ec",
+      "bytes": 67967
+    },
+    {
+      "path": "docs/research/evidence/nma-028/ui-browser-start.png",
+      "sha256": "fa770880036290408120a69ac7df78fb958c7485342f422a9e3b139723076179",
+      "bytes": 40917
+    },
+    {
+      "path": "docs/research/evidence/nma-028/ui-config-check-final.log",
+      "sha256": "3ba6cf5930a317256a81703bdc0a86b28c185084043fa95c5919711e6f01e6cc",
+      "bytes": 42
+    },
+    {
+      "path": "docs/research/evidence/nma-028/ui-effects.json",
+      "sha256": "3188bcae46325eb78fcf7f9b57d43d4200de9b748f0786a42f0cb7285590ba5c",
+      "bytes": 48303
+    },
+    {
+      "path": "docs/research/evidence/nma-028/ui-native-tools.json",
+      "sha256": "3d0ccd6a68686237bfa601a4021020d2e1db9ee7759fbacd7145d9c96ef0157b",
+      "bytes": 42754
+    },
+    {
+      "path": "docs/research/evidence/nma-028/ui-result.json",
+      "sha256": "507bcb655d11d286112e7941cb69725b7bb42a6cbbe683cc5b110182f6a628c6",
+      "bytes": 68108
+    },
+    {
+      "path": "docs/research/evidence/nma-028/docs-check-final.log",
+      "sha256": "36b78c6d14b9ce23d04cbcaa65d1f86eab1aa0dc0f2367efe0ac983b6e94b3b9",
+      "bytes": 63
+    },
+    {
+      "path": "docs/research/evidence/nma-028/whitespace-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  ],
+  "limitations": [
+    "Required blocked cells are not passes; this ticket is not Done.",
+    "All previous raw batches and launch/scoring/shutdown failures are retained separately.",
+    "No browser-managed download, native cua-driver desktop, production Clerk or complete isolated model-worker behavior is accepted.",
+    "Early manual fixture teardown left four disposable processes; verified paths were cleaned; final helper exhausts yield teardown.",
+    "The public HTTP fixture hit its SSE shutdown timeout; resource deletion succeeded and no disposable gateway remains.",
+    "No independent product acceptance; author and source self-review only."
+  ]
+}

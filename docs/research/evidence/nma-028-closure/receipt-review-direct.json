@@ -1,0 +1,223 @@
+{
+  "method": "Read-only exact native terminal receipts; no gateway, model or tool invocation",
+  "original_database_wal_unchanged": true,
+  "original_hashes": {},
+  "records": [
+    {
+      "attempt_id": "d3f5836a-c959-4fe0-8eff-47658d690bab",
+      "surface": "direct",
+      "scenario": "short_dm",
+      "repeat": 1,
+      "native_receipts": [],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "c5807446-e418-480c-a970-c2031c4e9483",
+      "surface": "direct",
+      "scenario": "short_dm",
+      "repeat": 2,
+      "native_receipts": [],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "e5304e18-5ba1-474f-9e87-fe39207df89b",
+      "surface": "direct",
+      "scenario": "short_dm",
+      "repeat": 3,
+      "native_receipts": [],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "499f748e-9741-4b87-9a01-540eadbdb4f5",
+      "surface": "direct",
+      "scenario": "long_dm",
+      "repeat": 1,
+      "native_receipts": [],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "e9c75d6c-84b3-4c75-8824-25a6ec30130d",
+      "surface": "direct",
+      "scenario": "long_dm",
+      "repeat": 2,
+      "native_receipts": [],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "1b19fb7a-e800-4cc7-b1c2-15627b5a026d",
+      "surface": "direct",
+      "scenario": "long_dm",
+      "repeat": 3,
+      "native_receipts": [],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "3fcc16b2-c6b2-42ff-ada5-c52ddf4a072d",
+      "surface": "direct",
+      "scenario": "multi_step_tools",
+      "repeat": 1,
+      "native_receipts": [],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "cf4ece94-4974-4af2-a74b-4fdea879f17a",
+      "surface": "direct",
+      "scenario": "multi_step_tools",
+      "repeat": 2,
+      "native_receipts": [],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "e21a4a0a-b3c3-42c9-9a26-a6f1f1d4ba1e",
+      "surface": "direct",
+      "scenario": "multi_step_tools",
+      "repeat": 3,
+      "native_receipts": [],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "47e972b6-ac4f-4606-92dd-bc66ae72ad98",
+      "surface": "direct",
+      "scenario": "browser_navigation",
+      "repeat": 1,
+      "native_receipts": [],
+      "provider_credit_failure": true
+    },
+    {
+      "attempt_id": "f38e8022-4a40-4d24-92d1-4b7ca701920a",
+      "surface": "direct",
+      "scenario": "browser_navigation",
+      "repeat": 2,
+      "native_receipts": [],
+      "provider_credit_failure": true
+    },
+    {
+      "attempt_id": "2416abc1-8e9d-4a1b-8dbe-fa005ff72e5d",
+      "surface": "direct",
+      "scenario": "browser_navigation",
+      "repeat": 3,
+      "native_receipts": [],
+      "provider_credit_failure": true
+    },
+    {
+      "attempt_id": "19732e04-c33b-4b4f-9df6-9a4e536f8da3",
+      "surface": "direct",
+      "scenario": "browser_form",
+      "repeat": 1,
+      "native_receipts": [],
+      "provider_credit_failure": true
+    },
+    {
+      "attempt_id": "a7bf8330-2b64-4305-9244-56eef36298c0",
+      "surface": "direct",
+      "scenario": "browser_form",
+      "repeat": 2,
+      "native_receipts": [],
+      "provider_credit_failure": true
+    },
+    {
+      "attempt_id": "397b0ef9-a75c-4da5-ae03-b14d398c4b42",
+      "surface": "direct",
+      "scenario": "browser_form",
+      "repeat": 3,
+      "native_receipts": [],
+      "provider_credit_failure": true
+    },
+    {
+      "attempt_id": "746855c2-b827-4799-8758-65fd3e467c09",
+      "surface": "direct",
+      "scenario": "browser_download",
+      "repeat": 1,
+      "native_receipts": [],
+      "provider_credit_failure": true
+    },
+    {
+      "attempt_id": "012ef932-a882-4aab-ac55-809a616f6cec",
+      "surface": "direct",
+      "scenario": "browser_download",
+      "repeat": 2,
+      "native_receipts": [],
+      "provider_credit_failure": true
+    },
+    {
+      "attempt_id": "7d3c06bb-f415-4e91-949a-a262c5f4ec14",
+      "surface": "direct",
+      "scenario": "browser_download",
+      "repeat": 3,
+      "native_receipts": [],
+      "provider_credit_failure": true
+    },
+    {
+      "attempt_id": "f7d10ff8-e8c5-40b8-851d-56eb27d7dc15",
+      "surface": "direct",
+      "scenario": "restart",
+      "repeat": 1,
+      "native_receipts": [],
+      "provider_credit_failure": true
+    },
+    {
+      "attempt_id": "d2790414-3b1c-4040-ab83-43c28864ba13",
+      "surface": "direct",
+      "scenario": "restart",
+      "repeat": 2,
+      "native_receipts": [],
+      "provider_credit_failure": true
+    },
+    {
+      "attempt_id": "f3146f84-6ce8-4482-900b-e6708f4dc6a8",
+      "surface": "direct",
+      "scenario": "restart",
+      "repeat": 3,
+      "native_receipts": [],
+      "provider_credit_failure": true
+    },
+    {
+      "attempt_id": "a79cfc07-5ac4-423c-8e81-9852ffd019e1",
+      "surface": "direct",
+      "scenario": "cancellation",
+      "repeat": 1,
+      "native_receipts": [],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "184d9437-7762-4c9b-b888-bbb5c912ed5b",
+      "surface": "direct",
+      "scenario": "cancellation",
+      "repeat": 2,
+      "native_receipts": [],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "cfb227eb-19a7-4462-a57e-29d31ebfda20",
+      "surface": "direct",
+      "scenario": "cancellation",
+      "repeat": 3,
+      "native_receipts": [],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "04a25351-e25f-40d3-9d28-b071294c5b72",
+      "surface": "direct",
+      "scenario": "reconnect",
+      "repeat": 1,
+      "native_receipts": [],
+      "provider_credit_failure": true
+    },
+    {
+      "attempt_id": "f44d89c2-f156-473e-9597-88bd672b7a16",
+      "surface": "direct",
+      "scenario": "reconnect",
+      "repeat": 2,
+      "native_receipts": [],
+      "provider_credit_failure": true
+    },
+    {
+      "attempt_id": "030dad7f-95eb-4bf3-a258-6fdb145f0b82",
+      "surface": "direct",
+      "scenario": "reconnect",
+      "repeat": 3,
+      "native_receipts": [],
+      "provider_credit_failure": true
+    }
+  ]
+}

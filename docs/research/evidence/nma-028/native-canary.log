@@ -1,0 +1,2 @@
+CDP supervisor nma028-2: connect failed (attempt 1/5): [Errno 111] Connect call failed ('127.0.0.1', 9222)
+CDP supervisor nma028-3: connect failed (attempt 1/5): [Errno 111] Connect call failed ('127.0.0.1', 9222)

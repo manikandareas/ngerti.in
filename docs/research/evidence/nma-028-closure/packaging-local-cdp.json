@@ -1,0 +1,183 @@
+{
+  "profile": "local-cdp-v1",
+  "upstream_version": "0.1.13",
+  "version": "0.1.13+ngertiin.localcdp.1",
+  "upstream_url": "https://files.pythonhosted.org/packages/4a/bd/f166cf9a465eff436048d25851ab28b0d798af02b56998127a4165227fc4/browser_harness-0.1.13-py3-none-any.whl",
+  "upstream_sha256": "2491459e4bfc0ee8aea22dc6c4680fc0f791b7ba553446323c50d2883449d769",
+  "metadata_only": true,
+  "module_changes": [],
+  "notice_sha256": "5afa3d97bf1e6f998d587fa101e3fe0d0c416840b7fe77bcd6ae97690a334631",
+  "selected_backend": "local Chromium or explicit CDP endpoint",
+  "supported_operations": [
+    "native browser_exec Python",
+    "navigate",
+    "form",
+    "CDP",
+    "browser download",
+    "upload",
+    "screenshot",
+    "local urllib http_get"
+  ],
+  "unselected_provider_variant": {
+    "extra": "fetch-proxy",
+    "dependency": "fetch-use==0.4.0",
+    "operation": "Browser Use hosted Fetch proxy through http_get",
+    "status": "not installed, not selected and not accepted",
+    "reason": "Requires service credentials and an unresolved exact release notice. Upstream already lazy-imports it and falls back to urllib. No browser/CDP helper depends on it."
+  },
+  "unmodified_source_hashes": {
+    "mcp_server.py": "8b11bc6058098329b6badc14982ffa9fb0fea5d2be24e8819fb9e73e3512fa32",
+    "browser_harness/SKILL.md": "2155ce650490e214734b2ea2f3b23f9dd12addedd0382e048a8e9d805ab507a7",
+    "browser_harness/__init__.py": "b159e84a2701448a4905041f48b27bf6d26cc420b597b82e4fdeabbd7fe26c2f",
+    "browser_harness/_ipc.py": "b46ec6e55ddae9919ada069053dfa12a2555d33a832de57ef5eb3a457cec80b3",
+    "browser_harness/admin.py": "d2d21c753f06e9275ce32291ca7e2c20acb83fab50486fffdbbfbb0fb1a7da94",
+    "browser_harness/auth.py": "e71acf31c28524f4b26f87770333d154c2182b70a9412be5276d982fa6c2cf9d",
+    "browser_harness/daemon.py": "7f05f904e62af8c07153c34a1fd3d334acf5c5aded8d0ddab974596bb50a8c97",
+    "browser_harness/helpers.py": "5ea8560a01b74281833923720ffd23ca8e4f6b873c2419c821f7695a04091cf3",
+    "browser_harness/macos.py": "e7fb08ba92af6976a58c6abc91e36eb625b978102ba03fee8f9f5911c88f5a74",
+    "browser_harness/mcp_cli.py": "11d66e3168436bf9bf49c2ddd301c19ac7bed9e717fc907fbb5ff61c7c160ece",
+    "browser_harness/paths.py": "ba3c6e4c91a8e5f8add837eedd51a1aa391f47a7d11c79db47ac8b8146267ad7",
+    "browser_harness/recorder.py": "ccf987870ab88cff7dbefe586165eaac122bba53dc73813e8202d65c840814e8",
+    "browser_harness/run.py": "cf2f5e52596c45686f0b4d606b89bce10a153293d2205523bfb246d161dc07b7",
+    "browser_harness/telemetry.py": "8d48b95afe4b149c2be115e0df18dd9f62496148a194277702d74829455cfa94",
+    "browser_harness/video-template.html": "e237f67c2636e6946fd853c286fba0df0e7b10cfa2c95d4a9bb08fdd9d24e933",
+    "browser_harness/video.py": "6112a7582cfc71f7a8db9d8c0f703cbbf6ec47b5c5464564725154ffc3e41142",
+    "browser_harness/video_render.py": "96a2a69d3653d47f8a2de1b4b51d1b7deca4a12d163e03d7f4afcc262b2e4e04"
+  },
+  "wheel_filename": "browser_harness-0.1.13+ngertiin.localcdp.1-py3-none-any.whl",
+  "wheel_sha256": "49c26eb458f31b2e58af3334821d721b1bddf892be109a74b29ea191c0f0a0ea",
+  "reproducible_build": true,
+  "verified_at": "2026-10-25T08:27:27.541493+00:00",
+  "clean_install": {
+    "python": "3.14.9",
+    "resolver": "uv pip install, ordinary dependency resolution",
+    "pip_check": "all 11 packages compatible",
+    "fetch_use_installed": false,
+    "native_http_get": "NMA028_LOCAL_HTTP",
+    "packages": [
+      {
+        "name": "certifi",
+        "version": "2026.10.23",
+        "notice_files": [
+          {
+            "path": "certifi-2026.10.23.dist-info/licenses/LICENSE",
+            "sha256": "e93716da6b9c0d5a4a1df60fe695b370f0695603d21f6f83f053e42cfc10caf7"
+          }
+        ]
+      },
+      {
+        "name": "browser-harness",
+        "version": "0.1.13+ngertiin.localcdp.1",
+        "notice_files": [
+          {
+            "path": "browser_harness-0.1.13+ngertiin.localcdp.1.dist-info/licenses/LICENSE",
+            "sha256": "5afa3d97bf1e6f998d587fa101e3fe0d0c416840b7fe77bcd6ae97690a334631"
+          }
+        ]
+      },
+      {
+        "name": "httpcore",
+        "version": "1.0.9",
+        "notice_files": [
+          {
+            "path": "httpcore-1.0.9.dist-info/licenses/LICENSE.md",
+            "sha256": "fdcb59154c74cbaba16a11242f7740bea9f23d6feb5547917d8c5f94a80392a5"
+          }
+        ]
+      },
+      {
+        "name": "h11",
+        "version": "0.16.0",
+        "notice_files": [
+          {
+            "path": "h11-0.16.0.dist-info/licenses/LICENSE.txt",
+            "sha256": "37db5bb85926db28a427a25867f10b1232003aea1be69ccb851138adb8e6f361"
+          }
+        ]
+      },
+      {
+        "name": "websockets",
+        "version": "15.0.1",
+        "notice_files": [
+          {
+            "path": "websockets-15.0.1.dist-info/LICENSE",
+            "sha256": "3d6a0c050d8bec52fabad502e45fb25bd02bcadbd70dea34d447b6a0ff4e6da8"
+          }
+        ]
+      },
+      {
+        "name": "httpx",
+        "version": "0.28.1",
+        "notice_files": [
+          {
+            "path": "httpx-0.28.1.dist-info/licenses/LICENSE.md",
+            "sha256": "4ec59d544f12b5f539a3a716fd321ac58ccd8030b465221f2c880200cdf28d8d"
+          }
+        ]
+      },
+      {
+        "name": "typing_extensions",
+        "version": "4.16.0",
+        "notice_files": [
+          {
+            "path": "typing_extensions-4.16.0.dist-info/licenses/LICENSE",
+            "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
+          }
+        ]
+      },
+      {
+        "name": "cdp-use",
+        "version": "1.4.5",
+        "notice_files": [
+          {
+            "path": "cdp_use-1.4.5.dist-info/licenses/LICENSE",
+            "sha256": "a26a13d8211735355b8ab3e1fab081eb91ea2d2b5a64e6b9b0e3c18382d55f67"
+          }
+        ]
+      },
+      {
+        "name": "pillow",
+        "version": "12.3.0",
+        "notice_files": [
+          {
+            "path": "pillow-12.3.0.dist-info/licenses/LICENSE",
+            "sha256": "dda12a98c1979cf3d94df1cff45d27a4cb3f04a60c76f76902ac54cac03ec0ce"
+          }
+        ]
+      },
+      {
+        "name": "anyio",
+        "version": "4.15.1",
+        "notice_files": [
+          {
+            "path": "anyio-4.15.1.dist-info/licenses/LICENSE",
+            "sha256": "5361ac9dc58f2ef5fd2e9b09c68297c17f04950909bbc8023bdb82eacf22c2b0"
+          }
+        ]
+      },
+      {
+        "name": "idna",
+        "version": "3.20",
+        "notice_files": [
+          {
+            "path": "idna-3.20.dist-info/licenses/LICENSE.md",
+            "sha256": "1a9a4f0e3d479a27240ddd59a9137a66ab4a0f9dfdc8ca6188cc0bfd85187f04"
+          }
+        ]
+      }
+    ],
+    "limitation": "Standalone compatibility environment; transitive packages were resolved from PyPI. The final Hermes environment must retain exact upstream lock pins."
+  },
+  "builder_sha256": "8cf68e41ba25aa7aaabb816251d426659bc5a238472adc5f19b32fee52395092",
+  "metadata_delta": {
+    "version": {
+      "from": "0.1.13",
+      "to": "0.1.13+ngertiin.localcdp.1"
+    },
+    "requires_dist": {
+      "from": "fetch-use==0.4.0",
+      "to": "fetch-use==0.4.0; extra == \"fetch-proxy\""
+    },
+    "source_module_or_resource_changes": []
+  }
+}

@@ -1,0 +1,28 @@
+Agent dan percakapan
+DM dan grup
+DM · baseline-browser
+baseline-browser
+
+@baseline-browser · DM
+
+Semua agent
+Tersambung · Riwayat tersimpan
+baseline-browser
+
+Hi, I'm baseline-browser! I'm here to help you think things through and get things done. What would you like to work on?
+
+Kamu
+
+Use your browser capability to open https://httpbin.org/forms/post. Fill Customer name with NMA028 Synthetic and submit the form using its button. Verify the submitted name from the resulting page. This is a disposable test form. Report the observed result and any tool error accurately.
+
+baseline-browser
+
+The form opened, but both attempts to enter “NMA028 Synthetic” returned the tool error “INDETERMINATE”. After each error, the browser showed about:blank.
+
+I could not submit using the button or verify the name on a resulting page. No successful submission was observed.
+
+Pesan untuk baseline-browser
+
+Percakapan tersimpan. Kamu bisa kembali kapan saja.
+
+Kirim pesan

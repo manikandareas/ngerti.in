@@ -1,0 +1,9 @@
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+.
+=============================== warnings summary ===============================
+scripts/spikes/nma028/test_gateway_isolation.py::test_authenticated_gateway_cancels_native_tool_and_deduplicates
+  /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/source/tests/gateway/test_normal_runtime_boot.py:128: PytestUnknownMarkWarning: Unknown pytest.mark.platforms - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.platforms("linux")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+1 passed, 1 warning in 17.01s

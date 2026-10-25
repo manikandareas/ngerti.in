@@ -1,0 +1,29 @@
+{
+  "image": "sha256:b81f1bf356adb3f4cff012b2b95d95c6458b5ba876c1e886a59a24a82e574ebd",
+  "returncode": 0,
+  "stdout": "{\"uid\": 10001, \"display\": null, \"host_display_socket_mounted\": false, \"docker_socket\": false, \"placement\": {\"where\": \"gateway\", \"backend\": \"local\", \"reason\": \"terminal.backend is local, so the terminal IS the gateway host\"}, \"sandbox_invocation\": null, \"native_response\": \"{\\\"error\\\": \\\"computer_use backend unavailable: cua-driver: not installed and lazy installs are disabled: cua-driver \\\\u2014 enable security.allow_lazy_installs or run `hermes pm install`\\\", \\\"hint\\\": \\\"If the cua-driver binary is missing, run `hermes computer-use install`. If a Python dependency is missing, the error above shows the exact install command.\\\"}\", \"lazy_install_disabled\": \"1\", \"classification\": \"unavailable selected headless variant; no desktop capability pass\", \"source_hashes\": {\"tools/computer_use/cua_backend.py\": \"6c0287de53eb3fbfd3307d961898554343271e406c4e6bd31ba4a43194ab5821\", \"tools/bot_desktop/placement.py\": \"98914fce79a6b4ac8738fd372c50caeaf421573d44a06e873f443e016803ad60\", \"tools/computer_use/tool.py\": \"02bcba1dd8fd0a1c6e3aa7a53c05d4d0d4c743eb3410fe9d8f7386c45ce8a62e\"}}\n",
+  "stderr": "",
+  "no_host_mounts_or_display": true,
+  "no_package_install_requested": true,
+  "command_shape": "Isolated no-network read-only-root headless Docker invocation of native computer_use list_apps",
+  "observation": {
+    "uid": 10001,
+    "display": null,
+    "host_display_socket_mounted": false,
+    "docker_socket": false,
+    "placement": {
+      "where": "gateway",
+      "backend": "local",
+      "reason": "terminal.backend is local, so the terminal IS the gateway host"
+    },
+    "sandbox_invocation": null,
+    "native_response": "{\"error\": \"computer_use backend unavailable: cua-driver: not installed and lazy installs are disabled: cua-driver \\u2014 enable security.allow_lazy_installs or run `hermes pm install`\", \"hint\": \"If the cua-driver binary is missing, run `hermes computer-use install`. If a Python dependency is missing, the error above shows the exact install command.\"}",
+    "lazy_install_disabled": "1",
+    "classification": "unavailable selected headless variant; no desktop capability pass",
+    "source_hashes": {
+      "tools/computer_use/cua_backend.py": "6c0287de53eb3fbfd3307d961898554343271e406c4e6bd31ba4a43194ab5821",
+      "tools/bot_desktop/placement.py": "98914fce79a6b4ac8738fd372c50caeaf421573d44a06e873f443e016803ad60",
+      "tools/computer_use/tool.py": "02bcba1dd8fd0a1c6e3aa7a53c05d4d0d4c743eb3410fe9d8f7386c45ce8a62e"
+    }
+  }
+}

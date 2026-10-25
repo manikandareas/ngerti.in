@@ -1,0 +1,6 @@
+{"scenario": "offline_goal", "repeat": 1, "status": "failed", "category": "unknown"}
+{"scenario": "offline_goal", "repeat": 2, "status": "failed", "category": "unknown"}
+{"scenario": "offline_goal", "repeat": 3, "status": "failed", "category": "unknown"}
+{"scenario": "group_handoff", "repeat": 1, "status": "failed", "category": "unknown"}
+{"scenario": "group_handoff", "repeat": 2, "status": "failed", "category": "unknown"}
+{"scenario": "group_handoff", "repeat": 3, "status": "failed", "category": "unknown"}

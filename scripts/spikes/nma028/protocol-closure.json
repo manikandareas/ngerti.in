@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "protocol_id": "nma028-closure-v2",
+  "frozen_at": "2026-10-25T08:37:39.747Z",
+  "upstream_revision": "7489b22af47ce91b366dde81d5831ea422577498",
+  "policy": "Freeze before runs and runtime fixes. Changes require a new protocol ID. Never treat fixtures, blocked prerequisites, unexecuted cases or user stops as task successes.",
+  "repeats": 3,
+  "surfaces": [
+    "direct",
+    "adapter",
+    "application"
+  ],
+  "settings": {
+    "provider": "custom",
+    "model_env": "OPENAI_MODEL",
+    "endpoint_env": "OPENAI_BASE_URL",
+    "tools": [
+      "todo",
+      "native browser_exec/terminal/files in scoped Docker executor",
+      "existing product responsibility/workspace where applicable"
+    ],
+    "max_turns": 8,
+    "temperature": null,
+    "reasoning_effort": null,
+    "deadline_s": 180,
+    "disposable_only": true,
+    "authentication": "Direct native ticket; adapter signed envelope; application real ClerkJS session JWT verified by production current_account against disposable PostgreSQL. No authentication override."
+  },
+  "scenarios": [
+    {
+      "id": "short_dm",
+      "prompt": "Reply with exactly NMA028_SHORT_42. Do not use tools.",
+      "oracle": "Final assistant response equals NMA028_SHORT_42."
+    },
+    {
+      "id": "long_dm",
+      "prompt": "Remember NMA028_LONG_7319 from this initial synthetic ledger. Answer ACK until asked for the marker.",
+      "oracle": "Three-turn conversation: retain NMA028_LONG_7319 across two 64000-character synthetic ledger messages, each below the product input limit; final message asks for the original marker without repeating it. This is long history, not a compression-mode release claim."
+    },
+    {
+      "id": "multi_step_tools",
+      "prompt": "Use todo_list to create two tasks: inspect ledger and verify total. Then in a separate tool call mark both completed. Finally reply NMA028_TOOLS_DONE.",
+      "oracle": "At least two successful todo_list operations, both final tasks completed, and final response contains NMA028_TOOLS_DONE."
+    },
+    {
+      "id": "browser_navigation",
+      "oracle": "Navigate the disposable fixture, follow its link, and verify the resulting DOM and server request ledger."
+    },
+    {
+      "id": "browser_form",
+      "oracle": "Fill synthetic name and note, submit once, verify durable fixture server receipt equals entered values; action outcome and later observation recorded separately."
+    },
+    {
+      "id": "browser_download",
+      "oracle": "Download fixture CSV and verify exact SHA-256 through terminal/files; final text alone is insufficient."
+    },
+    {
+      "id": "restart",
+      "prompt": "Reply with exactly NMA028_RESTART_42. Do not use tools.",
+      "oracle": "After settled turn, kill/restart gateway; same submission returns original admission/run and transcript unchanged; no extra model or tool execution."
+    },
+    {
+      "id": "cancellation",
+      "oracle": "Stop an active admission before a blocked tool dispatch, release it, restart, and verify no subsequent effect. A normal user stop is not provider/adapter failure."
+    },
+    {
+      "id": "reconnect",
+      "prompt": "Reply with exactly NMA028_RECONNECT_42. Do not use tools.",
+      "oracle": "Close ingress after admission; new authenticated client replays completed result once with original lineage."
+    },
+    {
+      "id": "offline_goal",
+      "oracle": "With browser closed, schedule synthetic goal, restart gateway, observe one goal continuation and one durable published result; stopped generation cannot revive."
+    },
+    {
+      "id": "group_handoff",
+      "oracle": "Persistent Researcher hands verified arithmetic to Writer and Reviewer; final scoped artifact is readable, authors and handoff lineage preserved."
+    }
+  ],
+  "metrics": {
+    "task_success": "successful / planned, plus successful / executed; never omit failures",
+    "integration_failure": "integration-attributable failures / executed, unknown attribution kept separate",
+    "provider_failure": "provider failures / executed",
+    "recoverable_tool_failure": "tool errors recovered within successful task / executed",
+    "unknown_effects": "unresolved effects / dispatched effects; missing denominator is unavailable",
+    "duplicate_effects": "duplicate external effects / dispatched effects; missing instrumentation is unavailable",
+    "latency": "monotonic admission, first progress and settlement p50/p95 nearest-rank; report n; no zero for absent samples",
+    "recovery": "restart readiness and restoration duration p50/p95, with n",
+    "uncertainty": "Wilson 95% interval for task success; n=3 is smoke evidence only",
+    "candidate": "Record native/direct/product prompt and tool differences per attempt; do not pool previous batches, and do not attribute unequal settings to integration.",
+    "effect_metrics": "Use supervisor journal operation IDs plus fixture POST/file ledgers; unknown receipts remain unknown and prevent replay."
+  },
+  "release_thresholds": {
+    "applicable_cases": "All required live cells executed; no blocked cell is a pass.",
+    "task_success_rate_min": 0.95,
+    "integration_failure_rate_max": 0.02,
+    "first_progress_p95_s_max": 10,
+    "settlement_p95_s_max": 180,
+    "recovery_p95_s_max": 60,
+    "observed_duplicate_effects_max": 0,
+    "observed_cross_scope_leaks_max": 0,
+    "observed_stop_violations_max": 0,
+    "unresolved_effects_for_release_max": 0,
+    "confidence": "Release requires at least 100 representative tasks per supported configuration in NMA-039; three repeats do not establish the SLO."
+  },
+  "replay": "Read-only JSONL aggregation. Replay never imports workers or invokes tools. Re-running external actions requires a new explicit run and fresh fixture.",
+  "previous_protocol_sha256": "e61058b0eec9b56857e5849b5adc03558684376f66abad89a9d66df957f87e5c",
+  "purpose": "Complete decision-spike corpus. Retain original v1 raw baseline. Candidate native placement is explicit, with no production runtime replacement. Failed tasks are baseline findings, never omitted or reclassified as passes."
+}

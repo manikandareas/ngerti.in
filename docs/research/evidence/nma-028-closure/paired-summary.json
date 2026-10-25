@@ -1,0 +1,203 @@
+{
+  "protocol_id": "nma028-closure-v2",
+  "protocol_sha256": "189f073d366760cc95f53fed3a806ada1ec9f34a242d24c5e26a9d74a787e3cb",
+  "surfaces": {
+    "direct": {
+      "planned": 33,
+      "executed": 33,
+      "passed": 12,
+      "outcomes": {
+        "passed": 12,
+        "failed": 21
+      },
+      "categories": {
+        "none": 12,
+        "provider": 18,
+        "unknown": 3
+      },
+      "success_per_planned": 0.36363636363636365,
+      "success_per_executed": 0.36363636363636365,
+      "wilson95_executed": [
+        0.2218717823524236,
+        0.5338382169773361
+      ],
+      "timings_s": {
+        "admission": {
+          "n": 30,
+          "p50": 0.11135091702453792,
+          "p95": 0.4132584158796817
+        },
+        "first_progress": {
+          "n": 13,
+          "p50": 2.47340741683729,
+          "p95": 5.699711082968861
+        },
+        "settlement": {
+          "n": 30,
+          "p50": 2.3628145831171423,
+          "p95": 46.06567562487908
+        },
+        "recovery": {
+          "n": 4,
+          "p50": 1.9149975830223411,
+          "p95": 4.536354291951284
+        }
+      },
+      "effect_metrics": "unavailable unless independently instrumented; never inferred as zero from missing events"
+    },
+    "adapter": {
+      "planned": 33,
+      "executed": 28,
+      "passed": 7,
+      "outcomes": {
+        "passed": 7,
+        "failed": 21,
+        "blocked": 5
+      },
+      "categories": {
+        "none": 7,
+        "provider": 21,
+        "prerequisite": 5
+      },
+      "success_per_planned": 0.21212121212121213,
+      "success_per_executed": 0.25,
+      "wilson95_executed": [
+        0.12676494919293316,
+        0.4335567031899896
+      ],
+      "timings_s": {
+        "admission": {
+          "n": 24,
+          "p50": 0.033679667161777616,
+          "p95": 0.14492187509313226
+        },
+        "first_progress": {
+          "n": 9,
+          "p50": 2.2750817090272903,
+          "p95": 7.087570125004277
+        },
+        "settlement": {
+          "n": 24,
+          "p50": 1.6979368331376463,
+          "p95": 9.216282084118575
+        },
+        "recovery": {
+          "n": 3,
+          "p50": 2.1151984590105712,
+          "p95": 2.250906666042283
+        }
+      },
+      "effect_metrics": "unavailable unless independently instrumented; never inferred as zero from missing events"
+    },
+    "application": {
+      "planned": 33,
+      "executed": 28,
+      "passed": 9,
+      "outcomes": {
+        "passed": 9,
+        "failed": 19,
+        "blocked": 5
+      },
+      "categories": {
+        "none": 9,
+        "provider": 19,
+        "prerequisite": 5
+      },
+      "success_per_planned": 0.2727272727272727,
+      "success_per_executed": 0.32142857142857145,
+      "wilson95_executed": [
+        0.1793324692249496,
+        0.5066115681914238
+      ],
+      "timings_s": {
+        "admission": {
+          "n": 24,
+          "p50": 0.03355412511155009,
+          "p95": 0.1617761659435928
+        },
+        "first_progress": {
+          "n": 10,
+          "p50": 2.464944333070889,
+          "p95": 3.3903972499538213
+        },
+        "settlement": {
+          "n": 24,
+          "p50": 1.7743459579069167,
+          "p95": 9.053167416946962
+        },
+        "recovery": {
+          "n": 3,
+          "p50": 2.1598837920464575,
+          "p95": 2.276404249947518
+        }
+      },
+      "effect_metrics": "unavailable unless independently instrumented; never inferred as zero from missing events"
+    }
+  },
+  "release_gate": "Not established by smoke baseline; required blocked cells remain open. See pre-registered release thresholds.",
+  "inputs": [
+    {
+      "path": "docs/research/evidence/nma-028-closure/final-direct.jsonl",
+      "sha256": "d6274aa235baee3783a10df9ec734b3cfebae1e1547a7d0ec924c57b06728c7a",
+      "rows": 27,
+      "raw_outcomes": {
+        "passed": 10,
+        "failed": 17
+      }
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/final-adapter.jsonl",
+      "sha256": "854a57b6b2f1f2712a0d93c437cc24c5dd2a7d06874bf86cd24d3e0a7605ca6c",
+      "rows": 28,
+      "raw_outcomes": {
+        "passed": 7,
+        "failed": 21
+      }
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/final-application.jsonl",
+      "sha256": "5a1742120fe29fa1a296fe43f387d84660cb8da0126163531d9ebc10072c257d",
+      "rows": 28,
+      "raw_outcomes": {
+        "passed": 9,
+        "failed": 19
+      }
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/native-lifecycle-groups-recovered-final.jsonl",
+      "sha256": "a4c4152955624d54a5676908885d40364e44346cf61b09cd21bcd121cfe391c1",
+      "rows": 3,
+      "raw_outcomes": {
+        "passed": 3
+      }
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/native-lifecycle-offline-provider.jsonl",
+      "sha256": "df33d95b546c4297fca20bc2b4e12ecddb0f104aa692b34e8d2c8ecc996034bf",
+      "rows": 3,
+      "raw_outcomes": {
+        "failed": 3
+      }
+    }
+  ],
+  "receipt_review_inputs": [
+    {
+      "path": "docs/research/evidence/nma-028-closure/receipt-review-direct.json",
+      "sha256": "7d15318dec6e88b7107afe298373656e5a7603839567d552f729bf46fe9718cc"
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/receipt-review-adapter.json",
+      "sha256": "07fbed12f03f4d842aca640e0db9d688d082f444f4ae89de2c95f2c19969ca05"
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/receipt-review-application.json",
+      "sha256": "c34a2d147b19ee2b8996a4706d0f7afa28455c45c24df894689ec3ec76e1ddd0"
+    }
+  ],
+  "limitations": [
+    "Selected complete attempted batches are fixed explicitly; pilot batches and prior lifecycle scores remain separate, never cherry-picked into this matrix.",
+    "Native group recovery is derived from original native receipts and bytes, not another model/action attempt. Its prior scores remain archived.",
+    "Provider attribution never creates a pass or changes a denominator. A partial browser-navigation ledger was initially scored passed despite interrupted completion; its saved prior score is retained and conservatively downgraded.",
+    "Blocked cells were not executed. Failed provider attempts do not prove required live tool behavior."
+  ]
+}

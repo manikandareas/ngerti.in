@@ -1,0 +1,8 @@
+{
+  "owned_source_document_whitespace": "passed",
+  "secret_scan": {
+    "known_private_values_checked": 10,
+    "result": "passed; no secret values or JWT-shaped values in published text/code"
+  },
+  "immutable_raw_evidence_whitespace": "Raw evidence is preserved byte-for-byte and checked by hashes, not reformatted"
+}

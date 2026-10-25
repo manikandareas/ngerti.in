@@ -1,0 +1,74 @@
+{
+  "protocol_sha256": "189f073d366760cc95f53fed3a806ada1ec9f34a242d24c5e26a9d74a787e3cb",
+  "group_core": {
+    "planned": 3,
+    "passed": 3,
+    "recovery_external_reexecution": false,
+    "source": "native-lifecycle-groups-recovered-final.jsonl",
+    "extra_artifact_review_passed": 2,
+    "extra_artifact_review_required_by_frozen_core_oracle": false
+  },
+  "offline_goal": {
+    "planned": 3,
+    "scheduled": 3,
+    "fired_after_restart": 3,
+    "native_admissions": 3,
+    "outputs": 3,
+    "provider_rejected": 3,
+    "passed": 0,
+    "source": "native-lifecycle-offline-provider.jsonl"
+  },
+  "all_attempts": [
+    {
+      "path": "docs/research/evidence/nma-028-closure/native-lifecycle-initial.jsonl",
+      "sha256": "0359981fef6c4181e0357a9dfb54319ba82ed9ae6d97444d561a580b5166962a"
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/native-lifecycle-initial.log",
+      "sha256": "6d80a792e5d28a1a04fd7491fc0369e723e7995f39217b7a8cdb498ffdf28fc3"
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/native-lifecycle-corrected.jsonl",
+      "sha256": "3f4eb8a97508e6d1e921e3f0389edfa2c4cac736a29f41e3007a534043183669"
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/native-lifecycle-corrected.log",
+      "sha256": "72ab04a3f4340f0ba3693b4f1065b06aad45d10e7919cd41174b1c6b3ab465b6"
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/native-lifecycle-groups-final.jsonl",
+      "sha256": "35d69f566006792fc6ad47d511d3aeeebb69aed1cab3e4c961a1f6bb7cdeebfd"
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/native-lifecycle-groups-final.log",
+      "sha256": "35330b3b4fa6ff59c10522ef0edd76ea3bf946eeff3b4d247fde40d6b32640c5"
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/native-lifecycle-groups-recovered.jsonl",
+      "sha256": "26193e351bcf0cd3c38391df8f660d4fcecdb9c7b07a83e0fc6681befb8383f4"
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/native-lifecycle-groups-recovered.log",
+      "sha256": "71e2ee17b44baf9ce3ae9d288a7dbe31652ffaa7aba7f95b2a2b7530a81d16ff"
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/native-lifecycle-groups-recovered-final.jsonl",
+      "sha256": "a4c4152955624d54a5676908885d40364e44346cf61b09cd21bcd121cfe391c1"
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/native-lifecycle-groups-recovered-final.log",
+      "sha256": "51aceafbda69bdefce2f001a88493bf1e04ee7e22a8ff1d3a796ac9bdfc22dfc"
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/native-lifecycle-offline-provider.jsonl",
+      "sha256": "df33d95b546c4297fca20bc2b4e12ecddb0f104aa692b34e8d2c8ecc996034bf"
+    }
+  ],
+  "limitations": [
+    "Initial fresh-WebSocket session mutation omitted required attachment; fixed before the corrected scheduled jobs.",
+    "Initial canonical attachment download used client event key rather than user_event_id(key). Original failure scores retained.",
+    "Native group core recovered using exact source HostedRoomAttachmentStore.read_viewer on private SQLite/bytes backup, with all original DB/WAL file hashes unchanged. No scheduler, gateway, model or tool dispatcher started during recovery.",
+    "Same native three-peer group source data contains two explicit final artifact review acknowledgments; the third extra review collided with provider exhaustion and its pending/failed work was preserved.",
+    "Three native scheduled arithmetic completions cannot pass until real provider credits recover. No mock/skipped result substitutes for them."
+  ]
+}

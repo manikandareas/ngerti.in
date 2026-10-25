@@ -1,0 +1,137 @@
+{
+  "protocol_id": "nma028-baseline-v1",
+  "protocol_sha256": "e61058b0eec9b56857e5849b5adc03558684376f66abad89a9d66df957f87e5c",
+  "surfaces": {
+    "direct": {
+      "planned": 33,
+      "executed": 15,
+      "passed": 15,
+      "outcomes": {
+        "passed": 15,
+        "blocked": 18
+      },
+      "categories": {
+        "none": 15,
+        "prerequisite": 18
+      },
+      "success_per_planned": 0.45454545454545453,
+      "success_per_executed": 1.0,
+      "wilson95_executed": [
+        0.7961166989641515,
+        1
+      ],
+      "timings_s": {
+        "admission": {
+          "n": 15,
+          "p50": 0.003684000112116337,
+          "p95": 0.02224479103460908
+        },
+        "first_progress": {
+          "n": 15,
+          "p50": 1.9682997919153422,
+          "p95": 2.698717375053093
+        },
+        "settlement": {
+          "n": 15,
+          "p50": 2.659884166903794,
+          "p95": 9.845915250014514
+        },
+        "recovery": {
+          "n": 3,
+          "p50": 1.4776048751082271,
+          "p95": 1.9735994590446353
+        }
+      },
+      "effect_metrics": "unavailable unless independently instrumented; never inferred as zero from missing events"
+    },
+    "adapter": {
+      "planned": 33,
+      "executed": 15,
+      "passed": 12,
+      "outcomes": {
+        "passed": 12,
+        "failed": 3,
+        "blocked": 18
+      },
+      "categories": {
+        "none": 12,
+        "integration": 3,
+        "prerequisite": 18
+      },
+      "success_per_planned": 0.36363636363636365,
+      "success_per_executed": 0.8,
+      "wilson95_executed": [
+        0.5481455128483065,
+        0.9295245065301844
+      ],
+      "timings_s": {
+        "admission": {
+          "n": 12,
+          "p50": 0.0242402080912143,
+          "p95": 0.2878701249137521
+        },
+        "first_progress": {
+          "n": 12,
+          "p50": 1.7380675000604242,
+          "p95": 4.6909516248852015
+        },
+        "settlement": {
+          "n": 12,
+          "p50": 4.2620569579303265,
+          "p95": 7.350794415920973
+        },
+        "recovery": {
+          "n": 3,
+          "p50": 3.7442322080023587,
+          "p95": 4.653096958063543
+        }
+      },
+      "effect_metrics": "unavailable unless independently instrumented; never inferred as zero from missing events"
+    },
+    "application": {
+      "planned": 33,
+      "executed": 15,
+      "passed": 12,
+      "outcomes": {
+        "passed": 12,
+        "failed": 3,
+        "blocked": 18
+      },
+      "categories": {
+        "none": 12,
+        "integration": 3,
+        "prerequisite": 18
+      },
+      "success_per_planned": 0.36363636363636365,
+      "success_per_executed": 0.8,
+      "wilson95_executed": [
+        0.5481455128483065,
+        0.9295245065301844
+      ],
+      "timings_s": {
+        "admission": {
+          "n": 12,
+          "p50": 0.025431291898712516,
+          "p95": 0.1998171249870211
+        },
+        "first_progress": {
+          "n": 12,
+          "p50": 1.689798542065546,
+          "p95": 5.22480612504296
+        },
+        "settlement": {
+          "n": 12,
+          "p50": 3.3474891670048237,
+          "p95": 7.49792579212226
+        },
+        "recovery": {
+          "n": 3,
+          "p50": 3.8375148749910295,
+          "p95": 4.954011207912117
+        }
+      },
+      "effect_metrics": "unavailable unless independently instrumented; never inferred as zero from missing events"
+    }
+  },
+  "release_gate": "Not established by smoke baseline; required blocked cells remain open. See pre-registered release thresholds."
+}

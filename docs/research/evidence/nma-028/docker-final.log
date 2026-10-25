@@ -1,0 +1,69 @@
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.13kB 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/python:3.14.3-slim-bookworm@sha256:f21c0d5a44c56805654c15abccc1b2fd576c8d93aca0a3f74b4aba2dc92510e2
+#2 DONE 0.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [ 1/11] FROM docker.io/library/python:3.14.3-slim-bookworm@sha256:f21c0d5a44c56805654c15abccc1b2fd576c8d93aca0a3f74b4aba2dc92510e2
+#4 resolve docker.io/library/python:3.14.3-slim-bookworm@sha256:f21c0d5a44c56805654c15abccc1b2fd576c8d93aca0a3f74b4aba2dc92510e2 0.0s done
+#4 DONE 0.1s
+
+#5 [internal] load build context
+#5 transferring context: 9.94kB 0.0s done
+#5 DONE 0.0s
+
+#6 [ 2/11] RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates git libatomic1 chromium && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [ 3/11] COPY apps/engine/fetch_runtime.py /probe/fetch_runtime.py
+#7 CACHED
+
+#8 [ 4/11] COPY apps/engine/.runtime/source.tar.gz /probe/source.tar.gz
+#8 CACHED
+
+#9 [ 5/11] RUN python /probe/fetch_runtime.py /probe/source.tar.gz --extract /opt/hermes && rm /probe/source.tar.gz
+#9 CACHED
+
+#10 [ 6/11] COPY apps/engine/src/ngertiin_engine/runtime-pin.json /probe/runtime-pin.json
+#10 CACHED
+
+#11 [ 7/11] COPY scripts/spikes/nma028/build_native.py /probe/build_native.py
+#11 DONE 0.1s
+
+#12 [ 8/11] RUN python /probe/build_native.py && rm -rf /tmp/build-home /root/.cache && chmod -R a+rX /opt
+#12 15.68 Preparing the isolated Hermes runtime…
+#12 15.86   → Installing Python dependencies…
+#12 16.93   ✓ Installing Python dependencies
+#12 18.55   → Installing Python packages…
+#12 26.30   ✓ Installing Python packages
+#12 26.42 /opt/native/bin/python
+#12 DONE 27.6s
+
+#13 [ 9/11] COPY scripts/spikes/nma028/native_probe.py /probe/native_probe.py
+#13 DONE 0.2s
+
+#14 [10/11] RUN useradd --uid 10001 --create-home probe && mkdir /work && chown probe:probe /work
+#14 DONE 0.3s
+
+#15 [11/11] WORKDIR /work
+#15 DONE 0.1s
+
+#16 exporting to image
+#16 exporting layers
+#16 exporting layers 14.7s done
+#16 exporting manifest sha256:6c00e5a59a9c29317c66031724e5f932a711874ac2ab6c5039a94377882e17fd 0.0s done
+#16 exporting config sha256:3291f3ab119cdbb1737c15dbd66db6e3c3296ea52febf17cfbbd526bbbe8d131 0.1s done
+#16 exporting attestation manifest sha256:7a025a5eec7cec7f6dc2d53510bf5ad0988937f39903ebbbcdfbe120bbf5993e
+#16 exporting attestation manifest sha256:7a025a5eec7cec7f6dc2d53510bf5ad0988937f39903ebbbcdfbe120bbf5993e 0.0s done
+#16 exporting manifest list sha256:4d785a4a9f9532fa336e78f91f0d2589e3814c460986ad8931d4709d2987353d 0.1s done
+#16 naming to docker.io/library/ngertiin-nma028-research:local done
+#16 unpacking to docker.io/library/ngertiin-nma028-research:local
+#16 unpacking to docker.io/library/ngertiin-nma028-research:local 3.4s done
+#16 DONE 18.4s

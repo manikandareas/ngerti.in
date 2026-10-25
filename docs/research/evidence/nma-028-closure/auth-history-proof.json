@@ -1,0 +1,85 @@
+{
+  "authentication": "Unmodified production current_account; real frontend Clerk session JWTs",
+  "partitions": [
+    {
+      "owner_id": "f7a15538-3c07-44a2-ad61-01a1eda06c66",
+      "root": "/tmp/nma-45nh5ljg",
+      "receipt_sha256": "164d8b01b65247c81693191573908d69f0a1162f539a9590ed8bcadd86bd4020",
+      "message_sha256": "f70a586432b02bd598b0754b139b21e7e7cc5461ed8812c285cf6b9385c0db47",
+      "pid": 18784,
+      "history_preserved": true
+    },
+    {
+      "owner_id": "c8b93803-5db0-4c9d-bcd2-b3dda037317e",
+      "root": "/tmp/nma-45pt5v56",
+      "receipt_sha256": "5fdf4725a3be860cde0b6ae37b400b5b1bdde23c28a82165ea9c0d1ca50ce549",
+      "message_sha256": "b1b4606dd66da94639796f3d4fe6f44fb6afc4eca80603a3512450117590fa97",
+      "pid": 18793,
+      "history_preserved": true
+    }
+  ],
+  "thread_id": "fa8d1bb4-1a19-4c6d-886c-3b97a4d8b654",
+  "model_invocation": "disabled; only settled history is read",
+  "owner_lists": [
+    {
+      "identity": 0,
+      "status": 200,
+      "agent_ids": [
+        "36cd8a04-b8c3-4003-9791-57be5b420aee",
+        "52d2b78e-7020-4d63-b43a-b5c86aa95f8b",
+        "8c4e7a7a-3248-4329-afc1-2f26c2394a3b",
+        "97030219-c3a6-478f-bdea-3846d3e28a3c",
+        "c5c508f0-12e4-4349-8015-b7488158b5c2",
+        "ce859994-c868-4fee-9e38-6be1cf424084"
+      ]
+    },
+    {
+      "identity": 1,
+      "status": 200,
+      "agent_ids": [
+        "1e89a67b-3316-41d8-a1ed-8bfa6fdf2da6",
+        "23481d2b-00b1-4c61-a8f9-9c2e8265dbe5",
+        "2937c7f6-9b0d-413d-919d-c659aecee7e0",
+        "2ef39801-0faa-41a8-8a86-945e5901c5af",
+        "3d04a434-1548-4398-b7da-eddc3d6b6ef1",
+        "3d8f69bc-1966-431f-954f-0d9efea59333",
+        "4692652b-e71d-41bf-85d4-df5e762a88c2",
+        "4a2ebf94-a213-4040-b7d2-55915a04f6e0",
+        "4a3dc68d-43d3-4361-b8b4-d48eb07cc955",
+        "4de7ef8c-c72b-46dc-abfc-c7e8b7e5c985",
+        "5b57a946-d935-49eb-8f36-75f0d5920d01",
+        "5c1ac9b7-9067-4e55-b8dc-22a47cd6836e",
+        "5fcbc1fc-7df3-4c03-af8d-20cd2e61f9c1",
+        "6222fec6-577a-466b-98fb-47941ed3b9db",
+        "6475597e-22f1-4096-ba16-ea100751839d",
+        "70c17f85-c745-4add-9c11-d867a8d8bea4",
+        "7786f456-0347-48b9-bde1-dc9ba86e3070",
+        "88a95f1f-f588-45ef-bfda-da1759d6f94f",
+        "8ce2ccad-5947-4fdc-be87-1f2eafd5cdc9",
+        "a293349c-4b77-47d6-bd0c-c9813fd20822",
+        "b9c4f89c-a09c-4755-a5c8-75a883dce332",
+        "ba20ed83-bc93-4684-b62a-96c827ce0d93",
+        "d5ebd733-0843-4216-ae4d-575933f249a8",
+        "ed5505a7-de56-4a7f-b80d-912c76e0ef2f",
+        "ede9206f-dd32-4f0c-9e9b-1a6ada5e0d65",
+        "eea5ca57-e170-45d1-8b87-b30fc0d014ed",
+        "f8970f77-b7bf-45bc-9503-db85527cb8c5",
+        "f8f46f69-e476-4e81-ba2c-dc61078d5cf8",
+        "ff752909-1998-4e33-b746-fac274ae44dc"
+      ]
+    }
+  ],
+  "visible_thread": {
+    "status": 200,
+    "message_ids": [
+      "848226a3-eb94-55dc-9d49-6154798c675d",
+      "58ca9258-d80e-5d0a-a359-b5beefa56f79",
+      "1a100ca0-acca-5ade-98ee-a70d17b4c342"
+    ]
+  },
+  "foreign_thread_denied": {
+    "status": 404,
+    "forged_owner_header_ignored": true
+  },
+  "cleanup": "Only the recorded settled disposable gateways stopped"
+}

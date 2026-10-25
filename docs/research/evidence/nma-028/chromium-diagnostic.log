@@ -1,0 +1,5 @@
+Chromium 156.0.8078.47 built on Debian GNU/Linux 12 (bookworm)
+chrome_crashpad_handler: --database is required
+Try 'chrome_crashpad_handler --help' for more information.
+[43:43:1025/075731.204440:ERROR:third_party/crashpad/crashpad/util/linux/socket.cc:120] recvmsg: Connection reset by peer (104)
+Trace/breakpoint trap

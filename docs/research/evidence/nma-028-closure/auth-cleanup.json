@@ -1,0 +1,70 @@
+{
+  "recorded_at": "2026-10-25T09:13:12.167482+00:00",
+  "identities": [
+    {
+      "user_id": "user_3LBA4R7igK2mD3XICX0A6v9lR8s",
+      "cleanup_delete_receipt": true,
+      "user_get_status": 404,
+      "session_get_status": 404
+    },
+    {
+      "user_id": "user_3LBA4YScIhiSQBP9ZJH98VSnrqx",
+      "cleanup_delete_receipt": true,
+      "user_get_status": 404,
+      "session_get_status": 404
+    }
+  ],
+  "database": "nma028_95cec4b9ca5b",
+  "database_absent": true,
+  "private_state_mode": "0600",
+  "private_jwt_fields_removed": true,
+  "process_checks": [
+    {
+      "role": "auth_fixture",
+      "pid": 18100,
+      "recorded_process_absent": true
+    },
+    {
+      "role": "ui_proxy",
+      "pid": 18154,
+      "recorded_process_absent": true
+    },
+    {
+      "role": "api",
+      "pid": 11664,
+      "recorded_process_absent": true
+    }
+  ],
+  "browser_sessions_closed": [
+    "nma028-clerk-0",
+    "nma028-clerk-1"
+  ],
+  "existing_development_services_targeted": false,
+  "artifacts": [
+    {
+      "path": "scripts/spikes/nma028/clerk_browser_auth.py",
+      "sha256": "be595e3796bbb9351916289ce7264fb11f43a299dd9ae621419fe90aa0cb3b91",
+      "bytes": 11032
+    },
+    {
+      "path": "docs/research/nma-028-clerk-auth.md",
+      "sha256": "c86c8a4d8834afe797aa144eeb46fe479391d80487538516cc7203c59f6d66cc",
+      "bytes": 6925
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/auth-proof.json",
+      "sha256": "d9618afd6a4d61aef3f9d8cdff7b44f9fedd51c257a06d0b7268353964f2b495",
+      "bytes": 1176
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/auth-history-proof.json",
+      "sha256": "2e392f445a2459aa8d294fc2fd420a13f619a4a5350cd1f653834e3a6ddb2ee7",
+      "bytes": 3165
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/authenticated-ui-history.png",
+      "sha256": "cd3afa7bc0f1c89b6b2c045eb98cbedcbfad93d4625f93c615c40e7e5c67fe44",
+      "bytes": 78722
+    }
+  ]
+}

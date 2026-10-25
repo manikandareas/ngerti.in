@@ -1,0 +1,26 @@
+[
+  {
+    "pid": 97875,
+    "verified_disposable_database": "/private/tmp/nma-ku615mdp/state/state.db",
+    "signal": "SIGTERM",
+    "exited": true
+  },
+  {
+    "pid": 97877,
+    "verified_disposable_database": "/private/tmp/nma-8rih4n_e/state/state.db",
+    "signal": "SIGTERM",
+    "exited": true
+  },
+  {
+    "pid": 99439,
+    "verified_disposable_database": "/private/tmp/nma-fu5sdy_v/state/state.db",
+    "signal": "SIGTERM",
+    "exited": true
+  },
+  {
+    "pid": 99440,
+    "verified_disposable_database": "/private/tmp/nma-d2frd70i/state/state.db",
+    "signal": "SIGTERM",
+    "exited": true
+  }
+]

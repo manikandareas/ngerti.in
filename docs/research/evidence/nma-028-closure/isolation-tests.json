@@ -1,0 +1,368 @@
+{
+  "reports": [
+    {
+      "case": "secret_and_cross_scope",
+      "passed": true,
+      "observation": {
+        "control_file": false,
+        "control_env": null,
+        "provider_env": null,
+        "model_key": null,
+        "docker_socket": false,
+        "uid": 10001,
+        "private_dm_file": false
+      },
+      "separate_workspace_keys": [
+        "81b9400f30bda5c3229ab600100192b451d0c4e7e75aa3a65f22f5749f77fde8",
+        "04889c6b421c5fed1a50066ae8e7ac4ca1d409248493e2189a78ccfced4c3f31"
+      ],
+      "image": "sha256:b81f1bf356adb3f4cff012b2b95d95c6458b5ba876c1e886a59a24a82e574ebd"
+    },
+    {
+      "case": "native_form_download",
+      "repeat": 1,
+      "passed": true,
+      "ledger": [
+        {
+          "method": "GET",
+          "path": "/"
+        },
+        {
+          "method": "GET",
+          "path": "/favicon.ico"
+        },
+        {
+          "method": "GET",
+          "path": "/form"
+        },
+        {
+          "method": "GET",
+          "path": "/favicon.ico"
+        },
+        {
+          "method": "POST",
+          "path": "/submit",
+          "fields": {
+            "name": [
+              "Synthetic"
+            ],
+            "note": [
+              "NMA028"
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/favicon.ico"
+        },
+        {
+          "method": "GET",
+          "path": "/download.csv"
+        }
+      ],
+      "files": [
+        {
+          "path": "chromium.log",
+          "bytes": 5058,
+          "sha256": "a9af5137015bf963952dc12df717e4c775035e5041659856172725d10c7b5b23"
+        },
+        {
+          "path": "downloads/report.csv",
+          "bytes": 24,
+          "sha256": "b611b0fafb38f99c14d214548fe8f89e1a7839670c66bb72e2824c9eb181dfb4"
+        },
+        {
+          "path": "fixture-ledger.jsonl",
+          "bytes": 328,
+          "sha256": "ff13b97c7a45374e4cec89d5307159e40ce248d1e299d1070dac969d700a3377"
+        },
+        {
+          "path": "ready",
+          "bytes": 5,
+          "sha256": "b24d6d33736ecd5604a4b17bc9c6481039fac362bb7df044ef1c10a2bfd21db6"
+        }
+      ],
+      "image": "sha256:b81f1bf356adb3f4cff012b2b95d95c6458b5ba876c1e886a59a24a82e574ebd"
+    },
+    {
+      "case": "native_form_download",
+      "repeat": 2,
+      "passed": true,
+      "ledger": [
+        {
+          "method": "GET",
+          "path": "/"
+        },
+        {
+          "method": "GET",
+          "path": "/favicon.ico"
+        },
+        {
+          "method": "GET",
+          "path": "/form"
+        },
+        {
+          "method": "GET",
+          "path": "/favicon.ico"
+        },
+        {
+          "method": "POST",
+          "path": "/submit",
+          "fields": {
+            "name": [
+              "Synthetic"
+            ],
+            "note": [
+              "NMA028"
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/favicon.ico"
+        },
+        {
+          "method": "GET",
+          "path": "/download.csv"
+        }
+      ],
+      "files": [
+        {
+          "path": "chromium.log",
+          "bytes": 5058,
+          "sha256": "9ae0b1c2cb701302a890648cd9a811f482281a5a92f158d0e38208df0009dfb2"
+        },
+        {
+          "path": "downloads/report.csv",
+          "bytes": 24,
+          "sha256": "b611b0fafb38f99c14d214548fe8f89e1a7839670c66bb72e2824c9eb181dfb4"
+        },
+        {
+          "path": "fixture-ledger.jsonl",
+          "bytes": 328,
+          "sha256": "ff13b97c7a45374e4cec89d5307159e40ce248d1e299d1070dac969d700a3377"
+        },
+        {
+          "path": "ready",
+          "bytes": 5,
+          "sha256": "b24d6d33736ecd5604a4b17bc9c6481039fac362bb7df044ef1c10a2bfd21db6"
+        }
+      ],
+      "image": "sha256:b81f1bf356adb3f4cff012b2b95d95c6458b5ba876c1e886a59a24a82e574ebd"
+    },
+    {
+      "case": "native_form_download",
+      "repeat": 3,
+      "passed": true,
+      "ledger": [
+        {
+          "method": "GET",
+          "path": "/"
+        },
+        {
+          "method": "GET",
+          "path": "/favicon.ico"
+        },
+        {
+          "method": "GET",
+          "path": "/form"
+        },
+        {
+          "method": "GET",
+          "path": "/favicon.ico"
+        },
+        {
+          "method": "POST",
+          "path": "/submit",
+          "fields": {
+            "name": [
+              "Synthetic"
+            ],
+            "note": [
+              "NMA028"
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/favicon.ico"
+        },
+        {
+          "method": "GET",
+          "path": "/download.csv"
+        }
+      ],
+      "files": [
+        {
+          "path": "chromium.log",
+          "bytes": 5058,
+          "sha256": "f36c048bdf1ca41d706d17fa70a3b212ce4c8bb6a687c4c0f5f2ac477b6ab230"
+        },
+        {
+          "path": "downloads/report.csv",
+          "bytes": 24,
+          "sha256": "b611b0fafb38f99c14d214548fe8f89e1a7839670c66bb72e2824c9eb181dfb4"
+        },
+        {
+          "path": "fixture-ledger.jsonl",
+          "bytes": 328,
+          "sha256": "ff13b97c7a45374e4cec89d5307159e40ce248d1e299d1070dac969d700a3377"
+        },
+        {
+          "path": "ready",
+          "bytes": 5,
+          "sha256": "b24d6d33736ecd5604a4b17bc9c6481039fac362bb7df044ef1c10a2bfd21db6"
+        }
+      ],
+      "image": "sha256:b81f1bf356adb3f4cff012b2b95d95c6458b5ba876c1e886a59a24a82e574ebd"
+    },
+    {
+      "case": "receipt_replay_restart",
+      "passed": true,
+      "effect_count_bytes": 1,
+      "receipt": {
+        "scope_key": "46e0f0a384a60f877a949a3694bce5577dc13d507ce9c1d9bb4b842efc6986c8",
+        "operation_id": "one-effect",
+        "tool": "terminal",
+        "args_hash": "58ad3970cee7398058ad943df03a5ade9a1067f3b5a8360469af9c966ad6768b",
+        "state": "returned",
+        "result": "{\"output\": \"x\", \"exit_code\": 0, \"error\": null}",
+        "started": 1792917944.957393,
+        "finished": 1792917948.2332742
+      },
+      "image": "sha256:b81f1bf356adb3f4cff012b2b95d95c6458b5ba876c1e886a59a24a82e574ebd"
+    },
+    {
+      "case": "pause_and_missing_volume",
+      "passed": true,
+      "retained_before_fault": true,
+      "recovery_state": "recovery_required",
+      "empty_replacement_created": false,
+      "image": "sha256:b81f1bf356adb3f4cff012b2b95d95c6458b5ba876c1e886a59a24a82e574ebd"
+    },
+    {
+      "case": "cancel",
+      "passed": true,
+      "receipt": {
+        "scope_key": "995b80e2e79e03336c2ce5ebea5077c729876f478e581bbdb64baf3e9e6b705a",
+        "operation_id": "stop-case",
+        "tool": "terminal",
+        "args_hash": "f870a611fa2dbfa738e9984e0b1cee4800585ab34e5a915b49ec8c2a37676025",
+        "state": "indeterminate",
+        "result": null,
+        "started": 1792917967.99975,
+        "finished": 1792917972.2615411
+      },
+      "files": [
+        {
+          "path": "chromium.log",
+          "bytes": 5058,
+          "sha256": "93327f673dc7a5c483c5d9f97475eb09de9ba0b10d7469c8e200bea3264fa588"
+        },
+        {
+          "path": "ready",
+          "bytes": 5,
+          "sha256": "b24d6d33736ecd5604a4b17bc9c6481039fac362bb7df044ef1c10a2bfd21db6"
+        },
+        {
+          "path": "started",
+          "bytes": 7,
+          "sha256": "03494afd4248c42f5fa1237bf2eeebe751ab8d9c977d55405fcb17469dbd91f8"
+        }
+      ],
+      "image": "sha256:b81f1bf356adb3f4cff012b2b95d95c6458b5ba876c1e886a59a24a82e574ebd"
+    },
+    {
+      "case": "lost_ack",
+      "passed": true,
+      "posts": [
+        {
+          "method": "POST",
+          "path": "/submit",
+          "fields": {
+            "name": [
+              "Synthetic"
+            ],
+            "note": [
+              "NMA028"
+            ]
+          }
+        }
+      ],
+      "receipt": {
+        "scope_key": "c24b82823ffa414d9dac21422e3be1295e381dc6d9b257a9b3190388d3f16691",
+        "operation_id": "lost-ack",
+        "tool": "browser_exec",
+        "args_hash": "6b744ec04d987c4f2aa91798d95d750875a25b91f33f4ee10979f26b0125527f",
+        "state": "indeterminate",
+        "result": null,
+        "started": 1792917985.611966,
+        "finished": 1792917989.629045
+      },
+      "image": "sha256:b81f1bf356adb3f4cff012b2b95d95c6458b5ba876c1e886a59a24a82e574ebd"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "failed": 0,
+    "skipped": 0,
+    "duration_s": 100.61,
+    "image": "sha256:b81f1bf356adb3f4cff012b2b95d95c6458b5ba876c1e886a59a24a82e574ebd",
+    "corpus": "Native fixed-Python boundary proof; separate from paired real-model corpus."
+  },
+  "strengthening_probe": {
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "duration_s": 10.41,
+    "extra_assertions": [
+      "Explicit synthetic OPENAI_API_KEY in trusted supervisor remains absent in native browser Python",
+      "Scoped file export refuses symlink to /etc/passwd"
+    ],
+    "retained_output": ".\n1 passed in 10.41s\n",
+    "report": {
+      "reports": [
+        {
+          "case": "secret_and_cross_scope",
+          "passed": true,
+          "observation": {
+            "control_file": false,
+            "control_env": null,
+            "provider_env": null,
+            "model_key": null,
+            "docker_socket": false,
+            "uid": 10001,
+            "private_dm_file": false
+          },
+          "separate_workspace_keys": [
+            "8acab5271d5c9664e14ce4cea3393223d2a8337186fa6b0bd4233329e4da8f89",
+            "1f66473f77bf0817297c127ad40a019f8d1951c808fa37f7818269fa78abba53"
+          ],
+          "image": "sha256:b81f1bf356adb3f4cff012b2b95d95c6458b5ba876c1e886a59a24a82e574ebd"
+        }
+      ]
+    }
+  },
+  "validation": {
+    "ruff": "All checks passed!",
+    "source_files": [
+      {
+        "path": "scripts/spikes/nma028/isolated_tools.py",
+        "sha256": "a60d9e279f9135512075223b6bed5e41d4fa63f9a62c3090c98b98485b8efa18"
+      },
+      {
+        "path": "scripts/spikes/nma028/test_isolated_tools.py",
+        "sha256": "401b12d63ae46ef1e692f4d4e8d68d7cf20e4cdfb254a19a65c0c05f2861818f"
+      },
+      {
+        "path": "scripts/spikes/nma028/build_isolated.py",
+        "sha256": "0500d5291bf694ab8ca7ab504b7183fd4bdd58d4cd5283b027e267e8ba0b58f2"
+      },
+      {
+        "path": "scripts/spikes/nma028/isolation.Dockerfile",
+        "sha256": "328f15fb0496d44fd68a50560006a9d5e4fe17b46e338138577ef4729893867d"
+      }
+    ],
+    "final_test_output": "........\n8 passed in 100.61s (0:01:40)\n"
+  }
+}

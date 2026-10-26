@@ -130,6 +130,8 @@ class Model(BaseHTTPRequestHandler):
             "choices": [{"index": 0, "message": message, "finish_reason": reason}],
             "usage": {"prompt_tokens": 10, "completion_tokens": 5, "total_tokens": 15},
         }
+        if usage := getattr(self.server, "usage_script", None):
+            response["usage"] = usage(body)
         payload = json.dumps(response).encode()
         content_type = "application/json"
         if body.get("stream"):
@@ -426,7 +428,11 @@ def test_scope_and_config_sessions(runtime):
         assert "result" in reply, reply
         result = settle(call, reply["result"]["run_id"])
         assert result["thread_id"] == thread and result["config_revision"] == revision
-        assert "ADAPTER_PROOF" not in json.dumps(server.requests[-1])
+        # Configuration changes preserve the same conversation's native history.
+        # A different thread remains private even for the same persistent agent.
+        assert ("ADAPTER_PROOF" in json.dumps(server.requests[-1])) == (
+            thread == THREAD
+        )
     with sqlite3.connect(root / "state/state.db") as db:
         assert (
             db.execute(
@@ -692,7 +698,7 @@ def test_agent_additive_migration_from_foundation(runtime):
     )
     with sqlite3.connect(root / "state/state.db") as db:
         assert (
-            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 14
+            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 15
         )
         assert db.execute("SELECT count(*) FROM nma_commands").fetchone()[0] == before
         assert db.execute("PRAGMA foreign_key_check").fetchall() == []

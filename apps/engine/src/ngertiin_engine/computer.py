@@ -1,10 +1,8 @@
 """Thread-private E2B resources invoked through an operator-provisioned actuator.
 
 The gateway persists resource identity before provisioning. Neither provisioning
-nor browser inputs are blindly replayed. An actuator attempt the model observed
-as failed settles as an error receipt, so the conversation decides how to adapt;
-only an outcome nobody observed (process death, authority loss) stays dispatching
-until an explicit reconciliation settles it.
+nor browser inputs are blindly replayed. Action and observation receipts are
+independent; delivering an error to the model cannot settle an unknown action.
 """
 
 import json
@@ -77,15 +75,6 @@ class Computer:
 
         def prepare(conn):
             _run_id, config, _ = Goals(self.store).scope(conn, stamp)
-            current_operation = digest([ids.turn_id, ids.tool_call_id, TOOL])
-            if conn.execute(
-                "SELECT 1 FROM nma_effects e JOIN nma_adapter_runs r ON r.owner_id=e.owner_id AND r.run_id=e.run_id JOIN nma_adapter_bindings b ON b.owner_id=r.owner_id AND b.binding_id=r.binding_id WHERE e.owner_id=? AND e.status='dispatching' AND json_extract(b.config,'$.thread_id')=? AND NOT (e.run_id=? AND e.operation_id=?)",
-                (self.store.owner, config["thread_id"], _run_id, current_operation),
-            ).fetchone():
-                # Nothing was dispatched for this operation, so its outcome is a
-                # known refusal, not an unknown actuator outcome. The pending row
-                # keeps its evidence until an explicit reconciliation settles it.
-                raise EngineError("COMPUTER_UNRESOLVED")
             marker = config.get("nma_capabilities", {})
             resolved, _ = resolve(marker.get("grants", {}))
             if (
@@ -108,17 +97,32 @@ class Computer:
             ).fetchone()
             if row[1] == "deleted":
                 raise EngineError("WORKSPACE_DELETED")
-            return config, {
-                "id": identity,
-                "resource_name": "nma-" + identity,
-                "resource_id": row[0],
-                "control_version": int(config["context_generation"]),
-                "control": "agent",
-            }
+            return (
+                _run_id,
+                config,
+                {
+                    "id": identity,
+                    "resource_name": "nma-" + identity,
+                    "resource_id": row[0],
+                    "control_version": int(config["context_generation"]),
+                    "control": "agent",
+                },
+            )
 
-        config, workspace = self.store.write(prepare)
+        run_id, config, workspace = self.store.write(prepare)
         operation = str(
             uuid5(NAMESPACE_URL, digest([stamp, ids.turn_id, ids.tool_call_id, TOOL]))
+        )
+        self.store.write(
+            lambda conn: conn.execute(
+                "UPDATE nma_effect_outcomes SET provider_operation_id=? WHERE owner_id=? AND run_id=? AND operation_id=?",
+                (
+                    operation,
+                    self.store.owner,
+                    run_id,
+                    digest([ids.turn_id, ids.tool_call_id, TOOL]),
+                ),
+            )
         )
         request = {**args, "workspace": workspace, "operation_id": operation}
         result = None
@@ -134,9 +138,9 @@ class Computer:
             if len(result.stdout) > 4 * 1024 * 1024:
                 raise ValueError
             value = json.loads(result.stdout)
-            if not isinstance(value, dict) or value.get("outcome") == "indeterminate":
-                raise ValueError
-        except (OSError, ValueError, subprocess.SubprocessError) as exc:
+            if not isinstance(value, dict):
+                raise TypeError
+        except (OSError, TypeError, ValueError, subprocess.SubprocessError) as exc:
             stderr = ""
             if result is not None and result.stderr:
                 stderr = (
@@ -150,11 +154,14 @@ class Computer:
                 config["thread_id"],
                 redact(stderr.strip()[:2000] or str(exc)),
             )
-            # The model observed this failure, so it is a known error receipt
-            # rather than an unresolved outcome: the reliability wrapper settles
-            # the effect and the conversation adapts instead of the thread
-            # staying blocked until an operator reconciles.
-            return canonical({"error": "INDETERMINATE"})
+            return canonical(
+                {
+                    "error": "INDETERMINATE",
+                    "outcome": "indeterminate",
+                    "receipt_ref": operation,
+                    "next_step": "Observe safely or query the dispatch receipt; do not repeat the action.",
+                }
+            )
         # Persist the confirmed provider identity, even if access was revoked while
         # the effect was in flight. This is cleanup evidence, not publication rights.
         self.store.write(
@@ -169,41 +176,107 @@ class Computer:
             )
         )
         value.pop("resource_id", None)
+        from ngertiin_engine.outcomes import record
+
+        # Preserve late execution evidence even when the caller lost publication
+        # rights while the actuator was running. Scope revocation cannot turn an
+        # already completed external action into a pre-dispatch rejection.
+        self.store.write(
+            lambda conn: record(
+                conn,
+                self.store.owner,
+                run_id,
+                digest([ids.turn_id, ids.tool_call_id, TOOL]),
+                canonical(redact(value)),
+            )
+        )
         self.store.write(lambda conn: Goals(self.store).scope(conn, stamp))
         return canonical(redact(value))
 
     def reconcile(self, payload):
-        """Explicitly settle computer effects whose run already reached a terminal decision.
+        """Query durable provider receipts without repeating dispatched actions.
 
-        An actuator attempt with an unknown outcome keeps its dispatching row as
-        evidence and blocks later effects for the thread until an operator or the
-        recovery flow decides otherwise. Reconciliation never re-executes the
-        attempt: the settled receipt reports the unresolved outcome, and the
-        browser is re-observed before further actions.
+        Completed execution or a confirmed no-input rejection resolves an unknown
+        mutation. Missing receipts keep it unresolved; safe observations remain usable.
         """
         if set(payload) != {"thread_id"} or not isinstance(payload["thread_id"], str):
             raise EngineError("INVALID_REQUEST")
-        receipt = canonical({"value": {"error": "INDETERMINATE", "reconciled": True}})
 
-        def write(conn):
+        def read(conn):
             if not conn.execute(
                 "SELECT 1 FROM nma_threads WHERE owner_id=? AND thread_id=?",
                 (self.store.owner, payload["thread_id"]),
             ).fetchone():
                 raise EngineError("NOT_FOUND")
             rows = conn.execute(
-                "SELECT e.run_id,e.operation_id FROM nma_effects e JOIN nma_adapter_runs r ON r.owner_id=e.owner_id AND r.run_id=e.run_id JOIN nma_adapter_bindings b ON b.owner_id=r.owner_id AND b.binding_id=r.binding_id JOIN nma_run_terminals t ON t.owner_id=r.owner_id AND t.run_id=r.run_id WHERE e.owner_id=? AND e.status='dispatching' AND json_extract(b.config,'$.thread_id')=?",
+                "SELECT e.run_id,e.operation_id,o.provider_operation_id,json_extract(b.config,'$.context_generation') FROM nma_effects e JOIN nma_adapter_runs r ON r.owner_id=e.owner_id AND r.run_id=e.run_id JOIN nma_adapter_bindings b ON b.owner_id=r.owner_id AND b.binding_id=r.binding_id LEFT JOIN nma_effect_outcomes o USING(owner_id,run_id,operation_id) WHERE e.owner_id=? AND e.status='dispatching' AND json_extract(b.config,'$.thread_id')=?",
                 (self.store.owner, payload["thread_id"]),
             ).fetchall()
-            resolved = 0
-            for run_id, operation_id in rows:
-                resolved += conn.execute(
-                    "UPDATE nma_effects SET status='confirmed',receipt=? WHERE owner_id=? AND run_id=? AND operation_id=? AND status='dispatching'",
-                    (receipt, self.store.owner, run_id, operation_id),
-                ).rowcount
-            return {"thread_id": payload["thread_id"], "reconciled": resolved}
+            workspace = conn.execute(
+                "SELECT workspace_id,resource_id FROM nma_computers WHERE owner_id=? AND thread_id=?",
+                (self.store.owner, payload["thread_id"]),
+            ).fetchone()
+            return rows, workspace
 
-        return self.store.write(write)
+        rows, workspace = self.store.write(read)
+        resolved = 0
+        for run_id, operation_id, provider_id, generation in rows:
+            if not provider_id or not workspace:
+                continue
+            command = json.loads(os.environ.get("NMA_COMPUTER_COMMAND", "[]"))
+            if not command:
+                continue
+            try:
+                response = subprocess.run(
+                    command,
+                    input=canonical(
+                        {
+                            "operation": "receipt",
+                            "receipt_operation_id": provider_id,
+                            "workspace": {
+                                "id": workspace[0],
+                                "resource_name": "nma-" + workspace[0],
+                                "resource_id": workspace[1],
+                                "control_version": int(generation),
+                                "control": "agent",
+                            },
+                        }
+                    ),
+                    capture_output=True,
+                    text=True,
+                    check=True,
+                    timeout=30,
+                )
+                value = json.loads(response.stdout)
+                execution = value.get("execution")
+                if value.get("receipt_ref") != provider_id or not isinstance(
+                    execution, dict
+                ):
+                    continue
+                completed = value.get("outcome") == "completed" and bool(execution)
+                rejected = (
+                    value.get("outcome") == "rejected"
+                    and execution.get("outcome") == "not_dispatched"
+                )
+                if not (completed or rejected):
+                    continue
+            except (OSError, ValueError, subprocess.SubprocessError):
+                continue
+            from ngertiin_engine.outcomes import record
+
+            self.store.write(
+                lambda conn, run_id=run_id, operation_id=operation_id, value=value: (
+                    record(
+                        conn, self.store.owner, run_id, operation_id, canonical(value)
+                    )
+                )
+            )
+            resolved += 1
+        return {
+            "thread_id": payload["thread_id"],
+            "reconciled": resolved,
+            "unresolved": len(rows) - resolved,
+        }
 
 
 def install():

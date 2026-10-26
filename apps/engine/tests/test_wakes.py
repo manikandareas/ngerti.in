@@ -328,7 +328,7 @@ def test_definition_replacement_and_additive_upgrade(runtime):
             == checksums
         )
         assert (
-            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 14
+            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 15
         )
         assert db.execute("PRAGMA integrity_check").fetchone()[0] == "ok"
         assert db.execute("PRAGMA foreign_key_check").fetchall() == []
@@ -350,7 +350,15 @@ def test_rejected_binding_blocks_watch_without_replay(runtime):
     start.current.wait(timeout=10)
     force_due(root, goal["goal_id"])
     with sqlite3.connect(root / "state/state.db") as db:
-        store = SimpleNamespace(owner=OWNER, write=lambda operation: operation(db))
+        store = SimpleNamespace(
+            owner=OWNER,
+            authority=SimpleNamespace(
+                epoch=db.execute(
+                    "SELECT authority_epoch FROM nma_partition"
+                ).fetchone()[0]
+            ),
+            write=lambda operation: operation(db),
+        )
         agents = Agents(store, {})
 
         def refused(_payload):

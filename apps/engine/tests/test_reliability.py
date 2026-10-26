@@ -227,7 +227,9 @@ def connector(runtime):
             process.wait(timeout=10)
 
 
-@pytest.mark.parametrize("point", [None, "before_effect", "after_effect"])
+@pytest.mark.parametrize(
+    "point", [None, "before_effect", "after_effect", "after_receipt"]
+)
 def test_external_effect_receipt_or_indeterminate_without_retry(
     runtime, connector, point
 ):
@@ -275,7 +277,9 @@ def test_external_effect_receipt_or_indeterminate_without_retry(
             "SELECT status,receipt FROM nma_effects WHERE run_id=?", (run_id,)
         ).fetchall()
         assert len(effects) == 1
-        assert effects[0][0] == ("dispatching" if point else "confirmed")
+        assert effects[0][0] == (
+            "dispatching" if point in {"before_effect", "after_effect"} else "confirmed"
+        )
         if not point:
             assert "MCP_PROOF" in effects[0][1]
             assert "nma-disposable-connector-secret" not in effects[0][1]

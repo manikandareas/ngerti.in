@@ -22,6 +22,9 @@ ERRORS = {
     "profile_mismatch": "NOT_FOUND",
     "admission_conflict": "COMMAND_CONFLICT",
     "invalid_params": "INVALID_REQUEST",
+    "revision_conflict": "REVISION_CONFLICT",
+    "session_busy": "SESSION_BUSY",
+    "compression_failed": "COMPRESSION_FAILED",
     "stale_generation": "STALE_GENERATION",
     "runtime_draining": "ENGINE_UNAVAILABLE",
     "unknown_execution": "INDETERMINATE",
@@ -161,7 +164,9 @@ class Adapter:
         selected_model = self.agents.models.get(selected["config"]["model"])
         if not selected_model:
             raise EngineError("MODEL_UNAVAILABLE")
-        key = digest([[payload[k] for k in fields], selected_model])
+        key = digest(
+            ["native-context-v2", [payload[k] for k in fields], selected_model]
+        )
         if key not in self.bindings:
             agent = self.store.write(
                 lambda conn: self.agents.get(conn, payload["agent_id"])
@@ -203,6 +208,7 @@ class Adapter:
                 + "\n\n"
                 + "\n\n".join(capabilities["skills"]),
                 "access_generation": agent["access_generation"],
+                "session": raw.get("session", {}),
             }
             self.store.write(
                 lambda conn: conn.execute(
@@ -260,10 +266,12 @@ class Adapter:
                 "provider": config["provider"],
                 "base_url": config["base_url"],
             },
-            "agent": {"max_turns": 8},
             "auxiliary": {"title_generation": {"enabled": False}},
             "platform_toolsets": {"cli": config["toolsets"]},
         }
+        from ngertiin_engine.session_settings import frozen as session_settings
+
+        frozen.update(session_settings(config.get("session", {})))
         snapshot = config.get("nma_provider")
         if not snapshot:
             saved = self.store.write(
@@ -340,6 +348,9 @@ class Adapter:
                 (ref.session_id, self.owner, key),
             )
         )
+        from ngertiin_engine.session_context import SessionContext
+
+        await asyncio.to_thread(SessionContext(self.store).bind, key, config, ref)
         return ref
 
     async def dispatch(self, body):
@@ -348,6 +359,11 @@ class Adapter:
 
         try:
             with owner_scope(self.authority):
+                if body["type"] in {"session.compress", "session.reset"}:
+                    # Native claim/mutation gates serialize context controls. A
+                    # summary LLM must not hold the product-wide command lock:
+                    # stop and access revocation must remain available.
+                    return await self._dispatch(body)
                 async with self.lock:
                     return await self._dispatch(body)
         except RuntimeStoreError as exc:
@@ -390,6 +406,13 @@ class Adapter:
 
     async def _dispatch(self, body):
         kind, payload = body["type"], body["payload"]
+        if kind in {"session.inspect", "session.compress", "session.reset"}:
+            from ngertiin_engine.session_controls import SessionControls
+
+            controls = SessionControls(self)
+            if kind == "session.inspect":
+                return await controls.inspect(payload)
+            return await controls.mutate(body)
         if kind.startswith(("connection.", "provider_auth.")):
             # Secret-bearing commands never enter the generic command/event journal.
             return await self.provider_command(kind, payload)
@@ -526,6 +549,8 @@ class Adapter:
             return {
                 "schema_version": "nma.v1",
                 "authority_epoch": str(self.authority.epoch),
+                "extension_schema": "15",
+                "lifecycle": "ready",
                 "capabilities": [
                     "connection.list",
                     "connection.add_key",
@@ -541,6 +566,9 @@ class Adapter:
                     "runtime.events",
                     "runtime.snapshot",
                     "run.diagnostics",
+                    "session.inspect",
+                    "session.compress",
+                    "session.reset",
                     "artifact.read",
                     "artifact.share",
                     "artifact.revoke",
@@ -711,6 +739,10 @@ class Adapter:
                 )
             },
             "text": value.get("final_response", "") if status == "succeeded" else "",
+            "turn_exit_reason": value.get("turn_exit_reason", ""),
+            "continuation_required": str(value.get("turn_exit_reason", "")).startswith(
+                ("max_iterations_reached", "context_compression_")
+            ),
             "error_code": (
                 provider_failure[0] if provider_failure else "RUNTIME_FAILED"
             )
@@ -821,6 +853,30 @@ class Adapter:
                     raise
                 self.store.finish(json.loads(row[0]), {"error_code": exc.code})
         self.reliability.reconcile()
+
+    async def recover_session_controls(self):
+        rows = self.store.write(
+            lambda conn: conn.execute(
+                "SELECT c.body FROM nma_commands c JOIN nma_runtime_outbox o ON o.owner_id=c.owner_id AND o.operation_id=c.command_id WHERE c.owner_id=? AND o.state='pending' AND json_extract(c.body,'$.type') IN ('session.compress','session.reset')",
+                (self.owner,),
+            ).fetchall()
+        )
+        for (body,) in rows:
+            command = json.loads(body)
+            try:
+                await self.dispatch(command)
+            except EngineError as error:
+                if error.code not in {
+                    "SESSION_BUSY",
+                    "REVISION_CONFLICT",
+                    "STALE_GENERATION",
+                    "NOT_FOUND",
+                    "ACCESS_REVOKED",
+                    "SESSION_UNAVAILABLE",
+                    "COMPRESSION_FAILED",
+                }:
+                    raise
+                self.store.finish(command, {"error_code": error.code})
 
     async def recover_run_stops(self, *, locked=False):
         rows = self.store.write(

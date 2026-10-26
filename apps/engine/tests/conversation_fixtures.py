@@ -5,6 +5,12 @@ from uuid import uuid4
 
 
 def drop_conversation_schema(db):
+    for table in (
+        "nma_goal_unit_outcomes",
+        "nma_session_lineage",
+        "nma_effect_outcomes",
+    ):
+        db.execute(f"DROP TABLE IF EXISTS {table}")
     db.execute("DROP TABLE IF EXISTS nma_provider_legacy_routes")
     db.execute("DROP TABLE IF EXISTS nma_provider_failures")
     db.execute("DROP TABLE IF EXISTS nma_provider_connections")

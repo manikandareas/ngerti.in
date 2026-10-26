@@ -44,6 +44,8 @@ class Command(BaseModel):
         "member.remove",
         "message.send",
         "run.cancel",
+        "session.compress",
+        "session.reset",
         "goal.pause",
         "goal.stop",
         "goal.resume",
@@ -96,6 +98,11 @@ def failure(code, command_id, details=None):
         "REVISION_CONFLICT": 409,
         "HANDLE_CONFLICT": 409,
         "COMMAND_CONFLICT": 409,
+        "SESSION_UNAVAILABLE": 409,
+        "SESSION_BUSY": 409,
+        "COMPRESSION_FAILED": 422,
+        "CONTEXT_ENGINE_UNAVAILABLE": 422,
+        "INVALID_CONFIGURATION": 422,
         "UNSUPPORTED_VERSION": 426,
     }.get(code, 503)
     return HTTPException(
@@ -374,6 +381,20 @@ async def run_diagnostics(run_id: UUID, account: AccountDep):
             "type": "run.diagnostics",
             "expected_revision": None,
             "payload": {"run_id": str(run_id)},
+        },
+    )
+
+
+@router.get("/threads/{thread_id}/session")
+async def session_context(thread_id: UUID, agent_id: UUID, account: AccountDep):
+    return await forward(
+        str(account.id),
+        {
+            "schema_version": "nma.v1",
+            "command_id": str(uuid4()),
+            "type": "session.inspect",
+            "expected_revision": None,
+            "payload": {"thread_id": str(thread_id), "agent_id": str(agent_id)},
         },
     )
 

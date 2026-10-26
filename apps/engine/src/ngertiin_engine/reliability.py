@@ -63,18 +63,40 @@ class Reliability:
             raise EngineError("STALE_GENERATION")
         return row
 
-    def append(self, conn, run_id, config, kind, payload):
+    def append(self, conn, run_id, config, kind, payload, *, event_id=None):
         from ngertiin_engine.diagnostics import correlation
 
         links = correlation(conn, self.store.owner, run_id)
         seq = next_sequence(conn, self.store.owner)
-        event_id = str(uuid4())
+        event_id = event_id or str(uuid4())
+        binding = conn.execute(
+            "SELECT r.operation_id,r.native_admission_id,b.native_session_id,l.logical_session_id FROM nma_adapter_runs r JOIN nma_adapter_bindings b USING(owner_id,binding_id) LEFT JOIN nma_session_lineage l USING(owner_id,binding_id) WHERE r.owner_id=? AND r.run_id=?",
+            (self.store.owner, run_id),
+        ).fetchone()
         event = {
             "schema_version": "nma.v1",
             "event_id": event_id,
             "occurred_at": datetime.now(UTC).isoformat(),
             "sequence": str(seq),
             "run_id": run_id,
+            "operation_id": binding[0],
+            "native_admission_id": binding[1],
+            "native_session_id": binding[2],
+            "logical_session_id": binding[3]
+            or str(
+                uuid5(
+                    NAMESPACE_URL,
+                    canonical(
+                        [
+                            self.store.owner,
+                            config["agent_id"],
+                            config["thread_id"],
+                            "logical-session",
+                        ]
+                    ),
+                )
+            ),
+            "authority_epoch": str(self.store.authority.epoch),
             "goal_id": payload.get("goal", {}).get("goal_id")
             or (links["goal_ids"][0] if len(links["goal_ids"]) == 1 else None),
             **links,
@@ -190,6 +212,17 @@ class Reliability:
                         "run." + status,
                         {
                             "status": status,
+                            "failure_phase": "tool_outcome"
+                            if status == "indeterminate"
+                            else ("model_execution" if status == "failed" else None),
+                            "turn_exit_reason": redact(
+                                str(value.get("turn_exit_reason", ""))
+                            ),
+                            "continuation_required": str(
+                                value.get("turn_exit_reason", "")
+                            ).startswith(
+                                ("max_iterations_reached", "context_compression_")
+                            ),
                             "error_code": (
                                 provider_failure[0]
                                 if provider_failure
@@ -337,6 +370,10 @@ class Reliability:
             "INSERT OR IGNORE INTO nma_run_stops VALUES (?,?)",
             (self.store.owner, run_id),
         )
+        conn.execute(
+            "INSERT OR IGNORE INTO nma_goal_unit_outcomes SELECT owner_id,run_id,goal_id,'cancelled',verdict,NULL,'[]' FROM nma_goal_units WHERE owner_id=? AND run_id=?",
+            (self.store.owner, run_id),
+        )
         if conn.execute(
             "INSERT OR IGNORE INTO nma_run_terminals VALUES (?,?,'cancelled')",
             (self.store.owner, run_id),
@@ -444,6 +481,10 @@ class Reliability:
             if status == "failed"
             else ("INDETERMINATE" if status == "indeterminate" else None),
             "text": redact(text),
+            "turn_exit_reason": redact(str(value.get("turn_exit_reason", ""))),
+            "continuation_required": str(value.get("turn_exit_reason", "")).startswith(
+                ("max_iterations_reached", "context_compression_")
+            ),
             "thread_id": config["thread_id"],
             "agent_id": config["agent_id"],
             "config_revision": config["config_revision"],
@@ -497,6 +538,7 @@ class Reliability:
 
     def _tool(self, stamp, name, args, ids, invoke):
         from ngertiin_engine.goals import TOOL, Goals
+        from ngertiin_engine.outcomes import preflight, record, semantics
 
         if name == "workspace":
             from ngertiin_engine.artifacts import Artifacts
@@ -513,7 +555,7 @@ class Reliability:
                 except EngineError as exc:
                     if exc.code in {"INDETERMINATE", "AUTHORITY_LOST"}:
                         raise
-                    return canonical({"error": exc.code})
+                    return canonical({"error": exc.code, "outcome": "rejected"})
 
         operation_id = digest([ids.turn_id, ids.tool_call_id, name])
         intent = digest([name, args])
@@ -530,29 +572,74 @@ class Reliability:
                 if previous[0] != intent:
                     raise EngineError("EFFECT_CONFLICT")
                 if previous[1] != "confirmed":
-                    raise EngineError("INDETERMINATE")
+                    # Delivery of a prior unknown result is safe; it never redispatches.
+                    return row[0], json.loads(previous[2]) if previous[2] else {
+                        "value": canonical(
+                            {
+                                "error": "INDETERMINATE",
+                                "outcome": "indeterminate",
+                                "next_step": "Reconcile the original operation before another mutation.",
+                            }
+                        )
+                    }
                 return row[0], json.loads(previous[2])
             conn.execute(
                 "INSERT INTO nma_effects VALUES (?,?,?,?,'dispatching',NULL)",
                 (self.store.owner, row[0], operation_id, intent),
             )
+            conn.execute(
+                "INSERT INTO nma_effect_outcomes VALUES (?,?,?,?,?,'intent',NULL,NULL,NULL)",
+                (self.store.owner, row[0], operation_id, name, semantics(name, args)),
+            )
+            if (
+                semantics(name, args) == "mutation"
+                and conn.execute(
+                    "SELECT 1 FROM nma_effects e JOIN nma_effect_outcomes o USING(owner_id,run_id,operation_id) JOIN nma_adapter_runs r USING(owner_id,run_id) JOIN nma_adapter_bindings b USING(owner_id,binding_id) WHERE e.owner_id=? AND e.status='dispatching' AND o.semantics='mutation' AND json_extract(b.config,'$.thread_id')=? AND NOT (e.run_id=? AND e.operation_id=?) LIMIT 1",
+                    (
+                        self.store.owner,
+                        json.loads(row[1])["thread_id"],
+                        row[0],
+                        operation_id,
+                    ),
+                ).fetchone()
+            ):
+                blocked = canonical(
+                    {
+                        "error": "UNRESOLVED_EFFECT",
+                        "outcome": "rejected",
+                        "next_step": "Use safe observation and reconcile the original dispatch receipt.",
+                    }
+                )
+                record(conn, self.store.owner, row[0], operation_id, blocked)
+                return row[0], {"value": blocked}
             return row[0], None
 
         run_id, receipt = self.store.write(prepare)
         if receipt is not None:
             return receipt["value"]
-        value = invoke()
-        # A late receipt is evidence, not permission to publish or execute again.
+        rejected = preflight(name, args)
+        if rejected is not None:
+            self.store.write(
+                lambda conn: record(
+                    conn, self.store.owner, run_id, operation_id, rejected
+                )
+            )
+            return rejected
         self.store.write(
             lambda conn: conn.execute(
-                "UPDATE nma_effects SET status='confirmed',receipt=? WHERE owner_id=? AND run_id=? AND operation_id=?",
-                (
-                    canonical({"value": redact(value)}),
-                    self.store.owner,
-                    run_id,
-                    operation_id,
-                ),
+                "UPDATE nma_effect_outcomes SET phase='dispatched' WHERE owner_id=? AND run_id=? AND operation_id=?",
+                (self.store.owner, run_id, operation_id),
             )
+        )
+        try:
+            value = invoke()
+        except EngineError as error:
+            if error.code != "INDETERMINATE":
+                raise
+            value = canonical({"error": error.code, "outcome": "indeterminate"})
+        # A late receipt is evidence, not permission to publish or execute again.
+        self.store.write(
+            lambda conn: record(conn, self.store.owner, run_id, operation_id, value)
         )
         return value
 

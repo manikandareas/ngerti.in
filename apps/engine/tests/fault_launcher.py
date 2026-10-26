@@ -176,6 +176,15 @@ elif point == "before_goal_commit":
         return value
 
     Reliability.append = append
+elif point == "after_context_mutation":
+    original = Store.write
+
+    def write(self, operation, **kwargs):
+        if operation.__qualname__ == "SessionControls.mutate.<locals>.record":
+            crash()
+        return original(self, operation, **kwargs)
+
+    Store.write = write
 elif point == "after_dm_prepare":
     from ngertiin_engine.direct_messages import DirectMessages
 
@@ -228,7 +237,7 @@ elif point in {"after_claim", "before_publish", "after_publish"}:
         return value
 
     Reliability.publish = publish
-elif point in {"before_effect", "after_effect"}:
+elif point in {"before_effect", "after_effect", "after_receipt"}:
     original = Reliability.tool
 
     def tool(self, stamp, name, args, ids, invoke):
@@ -236,10 +245,14 @@ elif point in {"before_effect", "after_effect"}:
             if point == "before_effect":
                 crash()
             result = invoke()
-            crash()
+            if point == "after_effect":
+                crash()
             return result
 
-        return original(self, stamp, name, args, ids, effect)
+        result = original(self, stamp, name, args, ids, effect)
+        if point == "after_receipt":
+            crash()
+        return result
 
     Reliability.tool = tool
 elif point == "after_native":
@@ -253,6 +266,50 @@ elif point == "after_native":
         return result
 
     SessionAuthority.submit = submit
+
+if point == "browser_grammar":
+    import json
+    from urllib.request import Request, urlopen
+
+    def browser(arguments, **metadata):
+        with urlopen(
+            Request(os.environ["NMA_TEST_COUNTER_URL"], data=b"external-effect"),
+            timeout=5,
+        ) as response:
+            response.read()
+        if "raise SyntaxError" in arguments["code"]:
+            return json.dumps({"error": "AFTER_EFFECT", "outcome": "indeterminate"})
+        return json.dumps({"outcome": "completed"})
+
+    from ngertiin_engine import computer
+
+    def install_browser_fixture():
+        from tools.registry import registry
+
+        registry.register(
+            name="browser_exec",
+            toolset="nma_computer",
+            schema={
+                "name": "browser_exec",
+                "description": "Controlled external effect fixture",
+                "parameters": {
+                    "type": "object",
+                    "properties": {"code": {"type": "string"}},
+                    "required": ["code"],
+                },
+            },
+            handler=browser,
+            check_fn=lambda: True,
+            override=True,
+        )
+        import model_tools
+
+        # This controlled dispatch fixture needs no optional browser SDK/schema.
+        # Production discovery and final capability guards remain installed.
+        model_tools._DYNAMIC_SCHEMA_REWRITERS.pop("browser_exec", None)
+
+    computer.install = install_browser_fixture
+
 
 from ngertiin_engine.service import main
 

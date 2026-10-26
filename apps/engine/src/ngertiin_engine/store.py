@@ -20,6 +20,7 @@ from ngertiin_engine.direct_messages import DDL as DM_DDL
 from ngertiin_engine.discussions import DDL as DISCUSSION_DDL
 from ngertiin_engine.goal_lifecycle import DDL as LIFECYCLE_DDL
 from ngertiin_engine.goals import DDL as GOAL_DDL
+from ngertiin_engine.outcomes import DDL as OUTCOME_DDL
 from ngertiin_engine.reliability import DDL as RELIABILITY_DDL
 from ngertiin_engine.threads import DDL as THREAD_DDL
 from ngertiin_engine.wakes import DDL as WAKE_DDL
@@ -34,6 +35,7 @@ DDL = (
     "CREATE TABLE nma_adapter_bindings (owner_id TEXT NOT NULL, binding_id TEXT NOT NULL, config_digest TEXT NOT NULL, config TEXT NOT NULL, native_session_id TEXT, PRIMARY KEY(owner_id,binding_id), FOREIGN KEY(owner_id) REFERENCES nma_partition(owner_id))",
     "CREATE TABLE nma_adapter_runs (owner_id TEXT NOT NULL, run_id TEXT NOT NULL, binding_id TEXT NOT NULL, operation_id TEXT NOT NULL, native_admission_id TEXT, PRIMARY KEY(owner_id,run_id), UNIQUE(owner_id,operation_id), FOREIGN KEY(owner_id,binding_id) REFERENCES nma_adapter_bindings(owner_id,binding_id), FOREIGN KEY(owner_id,operation_id) REFERENCES nma_commands(owner_id,command_id))",
 )
+OUTCOME_CHECKSUM = hashlib.sha256("\n".join(OUTCOME_DDL).encode()).hexdigest()
 CONNECTION_CHECKSUM = hashlib.sha256("\n".join(CONNECTION_DDL).encode()).hexdigest()
 CONVERSATION_CHECKSUM = hashlib.sha256("\n".join(CONVERSATION_DDL).encode()).hexdigest()
 DISCUSSION_CHECKSUM = hashlib.sha256("\n".join(DISCUSSION_DDL).encode()).hexdigest()
@@ -98,11 +100,7 @@ class Store:
                 "SELECT checksum FROM nma_schema_migrations WHERE owner_id=? AND version=1",
                 (self.owner,),
             ).fetchone()
-            if (
-                rows[0][2] not in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14)
-                or not saved
-                or saved[0] != CHECKSUM
-            ):
+            if rows[0][2] not in range(1, 16) or not saved or saved[0] != CHECKSUM:
                 raise EngineError("UNSUPPORTED_SCHEMA")
             if rows[0][1] > self.authority.epoch:
                 raise EngineError("AUTHORITY_LOST")
@@ -344,6 +342,68 @@ class Store:
                 (self.owner,),
             ).fetchone()
             if not saved or saved[0] != CONNECTION_CHECKSUM:
+                raise EngineError("UNSUPPORTED_SCHEMA")
+
+        version = conn.execute("SELECT schema_version FROM nma_partition").fetchone()[0]
+        if version == 14:
+            from ngertiin_engine.outcomes import decode, evidence
+
+            for statement in OUTCOME_DDL:
+                conn.execute(statement)
+            from uuid import NAMESPACE_URL, uuid5
+
+            for key, raw, sid in conn.execute(
+                "SELECT binding_id,config,native_session_id FROM nma_adapter_bindings WHERE owner_id=?",
+                (self.owner,),
+            ).fetchall():
+                config = json.loads(raw)
+                logical = str(
+                    uuid5(
+                        NAMESPACE_URL,
+                        canonical(
+                            [
+                                self.owner,
+                                config["agent_id"],
+                                config["thread_id"],
+                                "logical-session",
+                            ]
+                        ),
+                    )
+                )
+                conn.execute(
+                    "INSERT INTO nma_session_lineage VALUES (?,?,?,NULL,?,0)",
+                    (self.owner, key, logical, sid),
+                )
+            for run_id, operation_id, status, receipt in conn.execute(
+                "SELECT run_id,operation_id,status,receipt FROM nma_effects WHERE owner_id=?",
+                (self.owner,),
+            ).fetchall():
+                phase = (
+                    "unknown"
+                    if status == "dispatching"
+                    else evidence(decode(receipt).get("value"))
+                )
+                conn.execute(
+                    "INSERT INTO nma_effect_outcomes VALUES (?,?,?,NULL,'mutation',?,NULL,?,NULL)",
+                    (self.owner, run_id, operation_id, phase, receipt),
+                )
+                if phase == "unknown":
+                    # Correct historical error-to-success mapping, retaining exact receipt bytes.
+                    conn.execute(
+                        "UPDATE nma_effects SET status='dispatching' WHERE owner_id=? AND run_id=? AND operation_id=?",
+                        (self.owner, run_id, operation_id),
+                    )
+            conn.execute(
+                "INSERT INTO nma_schema_migrations(owner_id,version,checksum) VALUES (?,15,?)",
+                (self.owner, OUTCOME_CHECKSUM),
+            )
+            conn.execute("UPDATE nma_partition SET schema_version=15")
+        else:
+            saved = conn.execute(
+                "SELECT checksum FROM nma_schema_migrations WHERE owner_id=? AND version=15",
+                (self.owner,),
+            ).fetchone()
+            if not saved or saved[0] != OUTCOME_CHECKSUM:
                 raise EngineError("UNSUPPORTED_SCHEMA")
 
     def receipt(self, body):

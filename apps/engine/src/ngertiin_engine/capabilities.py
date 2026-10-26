@@ -181,7 +181,7 @@ def install_dispatch_guard(database, owner):
                 ):
                     raise EngineError("CAPABILITY_DENIED")
             except EngineError as exc:
-                return json.dumps({"error": exc.code})
+                return json.dumps({"error": exc.code, "outcome": "rejected"})
         value = original(function_name, function_args, original_args, ids, **kwargs)
         return redaction.result(value) if marker else value
 

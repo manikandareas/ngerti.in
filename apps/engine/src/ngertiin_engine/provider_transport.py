@@ -138,7 +138,13 @@ class ProviderTransport:
         self.thread.join(timeout=5)
 
     def runtime(
-        self, snapshot, thread_id, run_id=None, session_id=None, execution=None
+        self,
+        snapshot,
+        thread_id,
+        run_id=None,
+        session_id=None,
+        execution=None,
+        control=None,
     ):
         route = {
             "snapshot": snapshot,
@@ -146,6 +152,7 @@ class ProviderTransport:
             "run_id": run_id,
             "session_id": session_id,
             "execution": dict(execution or {}),
+            "control": control,
         }
         identity = digest(route)
         token = hmac.new(self.key, identity.encode(), "sha256").hexdigest()
@@ -170,17 +177,24 @@ class ProviderTransport:
         if not hmac.compare_digest(expected, supplied) or identity not in self.routes:
             raise EngineError("PROVIDER_RECONNECT_REQUIRED")
         route = dict(self.routes[identity])
-        if not route["run_id"] or not route["session_id"] or not route["execution"]:
-            raise EngineError("ACCESS_REVOKED")
-        from ngertiin_engine.reliability import Reliability
+        if route.get("control"):
+            from ngertiin_engine.session_controls import authorize_control
 
-        row = self.connections.store.write(
-            lambda conn: Reliability(self.connections.store).check(
-                conn, route["execution"]
+            authorize_control(
+                self.connections.store, route["control"], route["session_id"]
             )
-        )
-        if not row or row[0] != route["run_id"]:
-            raise EngineError("ACCESS_REVOKED")
+        else:
+            if not route["run_id"] or not route["session_id"] or not route["execution"]:
+                raise EngineError("ACCESS_REVOKED")
+            from ngertiin_engine.reliability import Reliability
+
+            row = self.connections.store.write(
+                lambda conn: Reliability(self.connections.store).check(
+                    conn, route["execution"]
+                )
+            )
+            if not row or row[0] != route["run_id"]:
+                raise EngineError("ACCESS_REVOKED")
         snapshot = route["snapshot"]
         suffix = "/" + "/".join(parts[3:])
         allowed = {

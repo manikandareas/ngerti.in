@@ -43,6 +43,8 @@ def usage(receipt):
         value["native_estimated_cost_usd"] = cost
         value["cost_source"] = redact(str(raw.get("cost_source", "unknown")))
         value["cost_status"] = redact(str(raw.get("cost_status", "unknown")))
+    if isinstance(raw.get("context"), dict):
+        value["context"] = raw["context"]
     return {"source": "native_terminal_receipt", "available": bool(value), **value}
 
 
@@ -59,6 +61,18 @@ def install_usage():
             return original(turn, agent, *args, **kwargs)
         finally:
             captured = execution_result.get()
+            compressor = getattr(agent, "context_compressor", None)
+            if captured is not None and compressor is not None:
+                captured.setdefault("usage", {})["context"] = {
+                    "model": agent.model,
+                    "context_limit": compressor.context_length,
+                    "compression_threshold": compressor.threshold_tokens,
+                    "compression_enabled": agent.compression_enabled,
+                    "micro_compaction_enabled": getattr(
+                        compressor, "_micro_compact_enabled", False
+                    ),
+                    "max_turns": agent.max_iterations,
+                }
             after = getattr(agent, "session_estimated_cost_usd", None)
             status = getattr(agent, "session_cost_status", "unknown")
             source = getattr(agent, "session_cost_source", "none")
@@ -112,9 +126,15 @@ class Diagnostics:
                 (self.store.owner, run_id),
             ).fetchall()
             effects = conn.execute(
-                "SELECT operation_id,status FROM nma_effects WHERE owner_id=? AND run_id=? ORDER BY operation_id",
+                "SELECT e.operation_id,e.status,o.tool_name,o.semantics,o.phase,o.provider_operation_id,o.execution_receipt,o.observation_receipt FROM nma_effects e LEFT JOIN nma_effect_outcomes o USING(owner_id,run_id,operation_id) WHERE e.owner_id=? AND e.run_id=? ORDER BY e.operation_id",
                 (self.store.owner, run_id),
             ).fetchall()
+            from ngertiin_engine.session_context import SessionContext
+
+            binding_id = conn.execute(
+                "SELECT binding_id FROM nma_adapter_runs WHERE owner_id=? AND run_id=?",
+                (self.store.owner, run_id),
+            ).fetchone()[0]
             return {
                 "run": snapshot,
                 **correlation(conn, self.store.owner, run_id),
@@ -122,7 +142,33 @@ class Diagnostics:
                 "admission_state": row[2],
                 "usage": usage(load_result(saved[0]) if saved else {}),
                 "message_ids": [r[0] for r in messages],
-                "effects": [{"operation_id": r[0], "status": r[1]} for r in effects],
+                "session": SessionContext(self.store)._metadata(conn, binding_id),
+                "work_outcomes": [
+                    {
+                        "goal_id": row[0],
+                        "outcome": row[1],
+                        "verdict": row[2],
+                        "continuation_run_id": row[3],
+                        "receipt_refs": json.loads(row[4]),
+                    }
+                    for row in conn.execute(
+                        "SELECT goal_id,outcome,verdict,continuation_run_id,receipt_refs FROM nma_goal_unit_outcomes WHERE owner_id=? AND run_id=? ORDER BY goal_id",
+                        (self.store.owner, run_id),
+                    )
+                ],
+                "effects": [
+                    {
+                        "operation_id": r[0],
+                        "status": r[1],
+                        "tool_name": r[2],
+                        "semantics": r[3],
+                        "phase": r[4],
+                        "provider_operation_id": r[5],
+                        "execution": json.loads(r[6]) if r[6] else None,
+                        "observation": json.loads(r[7]) if r[7] else None,
+                    }
+                    for r in effects
+                ],
                 "recent_events": [json.loads(r[0]) for r in reversed(events)],
                 "event_limit": 256,
             }

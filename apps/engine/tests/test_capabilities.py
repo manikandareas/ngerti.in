@@ -216,6 +216,7 @@ def test_session_scoped_mcp_credentials_restart_and_connector_error(runtime):
             capability_submit(
                 call, agent, "CALL_TOOL:" + name.replace("__proof", "__failure"), thread
             ),
+            "indeterminate",
         )
         assert secret not in json.dumps(server.requests[before:])
         assert receipts.read_text().splitlines() == ["proof", "proof", "failure"]

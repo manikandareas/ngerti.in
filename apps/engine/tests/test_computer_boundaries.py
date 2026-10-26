@@ -24,6 +24,10 @@ from pathlib import Path
 root=Path(__file__).parent
 request=json.load(sys.stdin)
 with (root/'calls').open('a') as f: f.write(json.dumps(request)+'\\n')
+if request['operation']=='receipt':
+ receipt=root/('receipt-'+request['receipt_operation_id'])
+ print(receipt.read_text() if receipt.exists() else json.dumps({'outcome':'indeterminate'}))
+ sys.exit(0)
 mode=request.get('action',{}).get('description','')
 if mode=='block':
  (root/'started').touch()
@@ -79,7 +83,9 @@ def setup(runtime, handle):
                         "function": {
                             "name": "computer",
                             "arguments": json.dumps(
-                                {
+                                {"operation": "observe"}
+                                if text == "BROWSER:observe"
+                                else {
                                     "operation": "act",
                                     "action": {
                                         "kind": "navigate",
@@ -113,34 +119,45 @@ def test_active_revoke_fences_browser_result(runtime):
     provider.goal_script = None
 
 
-def test_observed_actuator_failure_recovers_without_reconcile(runtime):
+def test_unknown_action_keeps_evidence_while_safe_observation_continues(runtime):
     root, provider, call, _start, *_, actuator = runtime
     _, thread = setup(runtime, "observed-browser-failure")
     before = len((actuator / "calls").read_text().splitlines())
     request = call(send(thread, "BROWSER:unknown"))["result"]
-    # The model observed the actuator failure as an error receipt, so the turn
-    # completes and delivers its answer instead of dying as indeterminate.
-    result = settle(call, request["run_id"], "succeeded")
-    assert "INDETERMINATE" in result["text"]
+    settle(call, request["run_id"], "indeterminate")
+    # The answer remains in completed conversation history; action uncertainty
+    # is independently visible and is not converted to proof of rejection.
+    assert "INDETERMINATE" in json.dumps(snapshot(call, thread)["messages"])
     with sqlite3.connect(root / "state/state.db") as db:
         effects = db.execute(
             "SELECT status,receipt FROM nma_effects WHERE run_id=?",
             (request["run_id"],),
         ).fetchall()
         assert len(effects) == 1
-        assert effects[0][0] == "confirmed"
+        assert effects[0][0] == "dispatching"
         assert "INDETERMINATE" in effects[0][1]
         assert (
             db.execute(
-                "SELECT COUNT(*) FROM nma_effects WHERE status='dispatching'"
+                "SELECT COUNT(*) FROM nma_effects WHERE run_id=? AND status='dispatching'",
+                (request["run_id"],),
             ).fetchone()[0]
-            == 0
+            == 1
         )
-    # The thread is not blocked: the next attempt reaches the actuator once,
-    # without any operator reconciliation.
+    # Safe observation is available even while the original mutation is unknown.
     recovered = call(send(thread, "BROWSER:observe"))["result"]
     settle(call, recovered["run_id"], "succeeded")
     assert len((actuator / "calls").read_text().splitlines()) == before + 2
+    blocked = call(send(thread, "BROWSER:another-mutation"))["result"]
+    settle(call, blocked["run_id"], "succeeded")
+    assert len((actuator / "calls").read_text().splitlines()) == before + 2
+    unresolved = call(
+        command("computer.reconcile", {"thread_id": thread["thread_id"]})
+    )["result"]
+    assert unresolved == {
+        "thread_id": thread["thread_id"],
+        "reconciled": 0,
+        "unresolved": 1,
+    }
     provider.goal_script = None
 
 
@@ -175,25 +192,88 @@ def test_lost_outcome_blocks_until_reconciled(runtime):
             (request["run_id"],),
         ).fetchone()[0]
     assert pending == 1
-    # A refused attempt is a known outcome: it settles as an error receipt and
-    # the run answers normally instead of dying as indeterminate. The unknown
-    # attempt is still not re-dispatched and no new unknown rows accumulate.
+    # A new mutation is refused without dispatch; safe observation remains usable.
     for _ in range(2):
-        fresh = call(send(thread, "BROWSER:observe"))["result"]
+        fresh = call(send(thread, "BROWSER:new-mutation"))["result"]
         settle(call, fresh["run_id"], "succeeded")
     assert len((actuator / "calls").read_text().splitlines()) == before + 1
     with sqlite3.connect(root / "state/state.db") as db:
         pending = db.execute(
-            "SELECT COUNT(*) FROM nma_effects WHERE status='dispatching'"
+            "SELECT COUNT(*) FROM nma_effects WHERE run_id=? AND status='dispatching'",
+            (request["run_id"],),
         ).fetchone()[0]
     assert pending == 1
-    # Explicit reconciliation settles the terminal-run evidence and re-enables
-    # dispatch for the thread; the next attempt reaches the actuator once.
+    # A late durable provider receipt settles the original operation without replay.
+    with sqlite3.connect(root / "state/state.db") as db:
+        operation = db.execute(
+            "SELECT provider_operation_id FROM nma_effect_outcomes WHERE run_id=?",
+            (request["run_id"],),
+        ).fetchone()[0]
+    (actuator / ("receipt-" + operation)).write_text(
+        json.dumps(
+            {
+                "outcome": "completed",
+                "execution": {"clicked": True},
+                "receipt_ref": operation,
+            }
+        )
+    )
     resolved = call(command("computer.reconcile", {"thread_id": thread["thread_id"]}))[
         "result"
     ]
     assert resolved["reconciled"] == 1
     recovered = call(send(thread, "BROWSER:observe"))["result"]
     settle(call, recovered["run_id"], "succeeded")
-    assert len((actuator / "calls").read_text().splitlines()) == before + 2
+    # Receipt observation and a fresh safe observation each invoke the actuator once.
+    assert len((actuator / "calls").read_text().splitlines()) == before + 3
+    provider.goal_script = None
+
+
+def test_confirmed_guard_rejection_reconciles_only_matching_receipt(runtime):
+    root, provider, call, _start, *_, actuator = runtime
+    _, thread = setup(runtime, "guard-receipt-recovery")
+    before = len((actuator / "calls").read_text().splitlines())
+    request = call(send(thread, "BROWSER:unknown"))["result"]
+    settle(call, request["run_id"], "indeterminate")
+    with sqlite3.connect(root / "state/state.db") as db:
+        operation = db.execute(
+            "SELECT provider_operation_id FROM nma_effect_outcomes WHERE run_id=?",
+            (request["run_id"],),
+        ).fetchone()[0]
+    receipt = {
+        "outcome": "rejected",
+        "execution": {"outcome": "not_dispatched"},
+        "receipt_ref": "unrelated-operation",
+    }
+    path = actuator / ("receipt-" + operation)
+    path.write_text(json.dumps(receipt))
+
+    def query():
+        return call(command("computer.reconcile", {"thread_id": thread["thread_id"]}))[
+            "result"
+        ]
+
+    assert query()["unresolved"] == 1
+    receipt["receipt_ref"] = operation
+    path.write_text(json.dumps(receipt))
+    assert query() == {
+        "thread_id": thread["thread_id"],
+        "reconciled": 1,
+        "unresolved": 0,
+    }
+    with sqlite3.connect(root / "state/state.db") as db:
+        assert (
+            db.execute(
+                "SELECT status FROM nma_effects WHERE run_id=?", (request["run_id"],)
+            ).fetchone()[0]
+            == "confirmed"
+        )
+    fresh = call(send(thread, "BROWSER:repaired-action"))["result"]
+    settle(call, fresh["run_id"], "succeeded")
+    calls = [
+        json.loads(line)
+        for line in (actuator / "calls").read_text().splitlines()[before:]
+    ]
+    assert [item["operation"] for item in calls] == ["act", "receipt", "receipt", "act"]
+    assert calls[-1]["action"]["description"] == "repaired-action"
     provider.goal_script = None

@@ -141,7 +141,8 @@ class Agents:
         if (
             not isinstance(config, dict)
             or not {"soul", "instructions", "model"} <= set(config)
-            or set(config) - {"soul", "instructions", "model", "avatar_url", *FIELDS}
+            or set(config)
+            - {"soul", "instructions", "model", "avatar_url", "session", *FIELDS}
         ):
             raise EngineError("INVALID_REQUEST")
         if any(
@@ -154,11 +155,15 @@ class Agents:
         ):
             raise EngineError("MODEL_UNAVAILABLE")
         capabilities, _ = resolve(config)
+        from ngertiin_engine.session_settings import validate
+
+        session = validate(config.get("session", {}))
         return (
             name.strip(),
             handle,
             {
                 **config,
+                "session": session,
                 # The stored avatar always follows the handle; client-sent values are ignored.
                 "avatar_url": avatar_url(handle),
                 "runtime_model": self.models.get(config["model"]),

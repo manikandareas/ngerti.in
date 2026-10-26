@@ -114,7 +114,7 @@ def test_native_anthropic_tool_round_trip(runtime):
     threading.Thread(target=provider.serve_forever, daemon=True).start()
     try:
         identity = str(uuid4())
-        call(
+        added = call(
             command(
                 "connection.add_key",
                 {
@@ -127,6 +127,7 @@ def test_native_anthropic_tool_round_trip(runtime):
                 },
             )
         )
+        assert "result" in added, added
         catalog = call(command("connection.models", {"connection_id": identity}))
         assert "result" in catalog, catalog
         current = agent(call, identity + ":anthropic-model", "anthropic-agent")

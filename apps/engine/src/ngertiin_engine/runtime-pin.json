@@ -54,7 +54,16 @@
     "gateway/run_turn_prepare.py": "d78059989e24fc3c15f282c41bccd3e07913dde3f0ad457b0d7117e6b084e9d6",
     "gateway/run_agent_cache.py": "c9a58d54a2efd7ff8fb674ecc041472f0401b33831e3eb8a41c92f0b6aad4aa5",
     "hermes_cli/models.py": "c3546748426161eae3d2b47b1dfe95495e2e99442df4ff2cbf5d77c5efb7c0cd",
-    "agent/codex_runtime.py": "31799bc1eafb00933cdf6e770b79f95ba8e59837c1cab230734811bdd03db4e8"
+    "agent/codex_runtime.py": "31799bc1eafb00933cdf6e770b79f95ba8e59837c1cab230734811bdd03db4e8",
+    "hermes_state_messages.py": "b3c5ad76a6d1a63c2800a0eca0c36240ad3098999a248568e46a7c3649cf9136",
+    "gateway/session_mutations.py": "37bbb0fcde3b7824ad23490863536a48b124d297f557341baa90b46bd579e51f",
+    "gateway/session_mutation_compress.py": "2c462394d16ddb9cda5a4d7ec9c021187c3faf2d478ea8f7a0263e21d13372d7",
+    "gateway/session_context_refs.py": "f1a811f2e4bdbcd48ef091d0c31092eb2fd9d65b3bc62251652f992e33a4d0f4",
+    "agent/context_references.py": "2c74e38d07aeb6565a9fb0cfb93648416f527877d7a12e02b301ac45fc2133c3",
+    "agent/context_compressor.py": "065dc9babbcb811a514c32319ed13a6ddaeefbc3964a109f7bb8e4c9260779d1",
+    "agent/conversation_compression_manual.py": "1974ab1e18081d29d6d79924de613acfc3db879dec6a96006fdee542c669cbb5",
+    "hermes_cli/config.py": "9ca94a1e1096046103fd62352fb418c90fc9cc0d0efafefc7267ae48de6d37e2",
+    "gateway/session_runtime_workers.py": "dd10aadcce77376a04ddb03ff1587b61c9cc0910ccb04cd0e25bbaa89f32e1b4"
   },
   "source_patches": [],
   "integration_seams": [
@@ -65,7 +74,13 @@
     "model_tools._execute_tool wrapper checks live grants at final dispatch; native editor_mcp scope isolates connector schemas/connections",
     "Gateway-owned goal continuation outbox with generation fences, native parked Kanban card mapping and native session admission; no shared session /goal or Kanban dispatcher activation",
     "Gateway-owned durable goal wake definitions and occurrence windows use native HeartbeatState due checks, heartbeat poll/minimum constants and cron compute_next_run interval arithmetic; shared continuation outbox/native admission only, without overlapping native cron jobs or session heartbeat registrations",
-    "Owner-scoped provider journal uses native auth-store locks/atomic storage, native PKCE and narrowly adapted OpenRouter exchange; frozen nma_provider selection resolves through a credential-only loopback relay into native chat/Responses/Anthropic transports, without an alternate executor or provider fallback"
+    "Owner-scoped provider journal uses native auth-store locks/atomic storage, native PKCE and narrowly adapted OpenRouter exchange; frozen nma_provider selection resolves through a credential-only loopback relay into native chat/Responses/Anthropic transports, without an alternate executor or provider fallback",
+    "integration.py owns exact-pin signature checks and installation order for grant, registry, usage, context-reference and reliability adaptations; native middleware remains fail-open and cannot replace authorization",
+    "Native typed history remains canonical; config-bound session lineage is seeded once through the pinned native transcript transaction helper, while context generations exclude revoked material",
+    "Native compression/reset mutations use durable operation IDs plus revision/generation fencing; scoped auxiliary credential routes exist only while their authenticated command is pending",
+    "Durable tool intent/execution/observation evidence distinguishes unknown writes from rejected dispatch and safe observation; native receipt queries reconcile effects without replay",
+    "Task-local native config snapshot binds frozen compression/context settings in in-process turns; native tracked mutations cover accepted command and product receipt projection through shutdown",
+    "Synchronous browser_exec syntax is compiled with the pinned Python 3.14 grammar before executor dispatch, without executing code; runtime exceptions and partially executed batches remain unknown"
   ],
   "optional_extras": [
     "acp",

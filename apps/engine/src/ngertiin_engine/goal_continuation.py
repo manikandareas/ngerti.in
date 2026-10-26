@@ -211,6 +211,7 @@ class Continuation:
                 binding_error = exc.code
 
         def settle(conn):
+            continuation_run = None
             current = next(
                 g
                 for g in self.adapter.goals.listing(conn, thread_id, agent_id)
@@ -239,9 +240,28 @@ class Continuation:
                     self.lifecycle.changed(conn, goal_id)
                     self.lifecycle.state(conn, goal_id, "blocked", reason)
                 elif unit[1] == "continue" and current["status"] == "active" and config:
-                    self.prepare(
+                    continuation_run = self.prepare(
                         conn, current, run_id, message_id, terminal[0], key, config
                     )
+            receipts = [
+                row[0]
+                for row in conn.execute(
+                    "SELECT COALESCE(provider_operation_id,operation_id) FROM nma_effect_outcomes WHERE owner_id=? AND run_id=? ORDER BY operation_id",
+                    (self.store.owner, run_id),
+                )
+            ]
+            conn.execute(
+                "INSERT OR IGNORE INTO nma_goal_unit_outcomes VALUES (?,?,?,?,?,?,?)",
+                (
+                    self.store.owner,
+                    run_id,
+                    goal_id,
+                    status,
+                    unit[1],
+                    continuation_run,
+                    canonical(receipts),
+                ),
+            )
             conn.execute(
                 "UPDATE nma_goal_units SET settled=1 WHERE owner_id=? AND goal_id=? AND generation=? AND run_id=?",
                 (self.store.owner, goal_id, generation, run_id),

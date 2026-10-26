@@ -17,18 +17,43 @@ import type { Thread } from "@/features/direct-messages/state";
 import { api } from "@/lib/api";
 import { AgentAvatar } from "./agent-avatar";
 import { AgentThreads } from "./agent-threads";
+import {
+  type InferenceSettings,
+  InferenceSettingsEditor,
+  type ModelOption,
+} from "./inference-settings";
 
 type CapabilityField = "tool_grants" | "mcp_grants" | "skill_refs";
+type CapabilityOption = {
+  id: string;
+  label: string;
+  runtime_ready?: boolean;
+  reason?: string | null;
+  requires?: string[];
+};
 type Config = {
   soul: string;
   instructions: string;
   model: string;
   avatar_url?: string;
+  inference?: InferenceSettings;
 } & Partial<Record<CapabilityField, string[]>>;
 const capabilityLabels: Record<CapabilityField, string> = {
   tool_grants: "Tools",
   mcp_grants: "Koneksi MCP",
   skill_refs: "Skills",
+};
+const capabilityReasons: Record<string, string> = {
+  not_installed: "tools belum terpasang",
+  execution_surface_required: "lingkungan eksekusi belum disiapkan operator",
+  dependency_unconfigured: "kemampuan pendukung belum dikonfigurasi",
+  configuration_required: "konfigurasi layanan belum lengkap",
+  native_prerequisite_failed: "prasyarat tools belum tersedia",
+  immutable_native_image_required: "image eksekusi perlu dikunci versinya",
+  native_image_not_installed: "image eksekusi belum terpasang",
+  native_image_mismatch: "image eksekusi tidak sesuai konfigurasi",
+  native_image_contract_mismatch: "image eksekusi tidak sesuai versi runtime",
+  private_schema: "konfigurasi tools perlu diperiksa operator",
 };
 export type Agent = {
   agent_id: string;
@@ -41,9 +66,18 @@ export type Agent = {
 };
 type Listing = {
   items: Agent[];
-  models: { id: string; label: string }[];
+  models: ModelOption[];
   next_cursor: string | null;
-  capabilities?: Record<CapabilityField, { id: string; label: string }[]>;
+  capabilities?: Record<
+    CapabilityField,
+    {
+      id: string;
+      label: string;
+      runtime_ready?: boolean;
+      reason?: string | null;
+      requires?: string[];
+    }[]
+  >;
 };
 type Draft = { display_name: string; handle: string; config: Config };
 const empty: Draft = {
@@ -394,6 +428,14 @@ export function AgentsPage() {
                   ))}
                 </select>
               </label>
+              <InferenceSettingsEditor
+                value={draft.config.inference}
+                primary={draft.config.model}
+                models={data?.models ?? []}
+                onChange={(inference) =>
+                  setDraft({ ...draft, config: { ...draft.config, inference } })
+                }
+              />
               <details className="rounded-lg border p-4">
                 <summary className="cursor-pointer text-sm font-medium">Kemampuan agent</summary>
                 <p className="mt-2 text-sm text-muted-foreground">
@@ -403,7 +445,7 @@ export function AgentsPage() {
                 {(Object.keys(capabilityLabels) as CapabilityField[]).map((field) => {
                   const assigned = draft.config[field] ?? [];
                   const available = data?.capabilities?.[field] ?? [];
-                  const options = [
+                  const options: CapabilityOption[] = [
                     ...available,
                     ...assigned
                       .filter((id) => !available.some((item) => item.id === id))
@@ -420,6 +462,11 @@ export function AgentsPage() {
                           <input
                             type="checkbox"
                             checked={assigned.includes(item.id)}
+                            disabled={
+                              "runtime_ready" in item &&
+                              item.runtime_ready === false &&
+                              !assigned.includes(item.id)
+                            }
                             onChange={(event) =>
                               setDraft({
                                 ...draft,
@@ -432,7 +479,21 @@ export function AgentsPage() {
                               })
                             }
                           />
-                          {item.label}
+                          <span>
+                            {item.label}
+                            {"runtime_ready" in item && item.runtime_ready === false && (
+                              <span className="block text-xs text-muted-foreground">
+                                Belum siap:{" "}
+                                {capabilityReasons[item.reason ?? ""] ??
+                                  "konfigurasi perlu diperiksa operator"}
+                              </span>
+                            )}
+                            {"requires" in item && item.requires && item.requires.length > 0 && (
+                              <span className="block text-xs text-muted-foreground">
+                                Memerlukan: {item.requires.join(", ")}
+                              </span>
+                            )}
+                          </span>
                         </label>
                       ))}
                     </fieldset>

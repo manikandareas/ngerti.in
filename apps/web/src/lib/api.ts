@@ -21,11 +21,13 @@ export async function api<T>(
   const response = await fetch(`${apiUrl}${path}`, { ...init, headers });
   if (!response.ok) {
     const body = await response.json().catch(() => null);
+    const reason = body?.detail?.details?.reason;
+    const field = body?.detail?.details?.field;
     throw new ApiError(
       typeof body?.detail === "string"
         ? body.detail
         : typeof body?.detail?.message === "string"
-          ? body.detail.message
+          ? `${body.detail.message}${typeof reason === "string" ? `: ${typeof field === "string" ? `${field}: ` : ""}${reason}` : ""}`
           : `Request gagal (${response.status}).`,
       response.status,
       typeof body?.detail?.code === "string" ? body.detail.code : undefined,

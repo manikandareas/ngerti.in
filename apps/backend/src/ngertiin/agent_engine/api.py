@@ -9,9 +9,11 @@ import os
 import time
 from pathlib import Path
 from typing import Annotated, Literal
+from urllib.parse import quote
 from uuid import UUID, uuid4
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, ConfigDict, Field
 
 from ngertiin.accounts.auth import current_account
@@ -52,6 +54,10 @@ class Command(BaseModel):
         "goal.reopen",
         "artifact.share",
         "artifact.revoke",
+        "file.begin",
+        "file.part",
+        "file.finalize",
+        "workspace.action",
     ]
     expected_revision: str | None = Field(pattern=r"^[1-9][0-9]{0,18}$")
     payload: dict
@@ -64,6 +70,11 @@ def canonical(value):
 def failure(code, command_id, details=None):
     status = {
         "NOT_FOUND": 404,
+        "UPLOAD_INCOMPLETE": 409,
+        "FILE_HASH_MISMATCH": 422,
+        "WORKSPACE_BUSY": 409,
+        "WORKSPACE_UNAVAILABLE": 422,
+        "RESTORE_CONFLICT": 409,
         "INVALID_ENDPOINT": 422,
         "UNSUPPORTED_PROTOCOL": 422,
         "PROTOCOL_UNAVAILABLE": 422,
@@ -422,7 +433,7 @@ async def reconcile_computer(thread_id: UUID, account: AccountDep):
 
 
 @router.get("/artifacts/{artifact_id}")
-async def artifact(artifact_id: UUID, account: AccountDep):
+async def artifact(artifact_id: UUID, account: AccountDep, thread_id: UUID | None = None):
     value = await forward(
         str(account.id),
         {
@@ -430,7 +441,10 @@ async def artifact(artifact_id: UUID, account: AccountDep):
             "command_id": str(uuid4()),
             "type": "artifact.read",
             "expected_revision": None,
-            "payload": {"artifact_id": str(artifact_id)},
+            "payload": {
+                "artifact_id": str(artifact_id),
+                **({"thread_id": str(thread_id)} if thread_id else {}),
+            },
         },
     )
     value.pop("content", None)
@@ -438,7 +452,9 @@ async def artifact(artifact_id: UUID, account: AccountDep):
 
 
 @router.get("/artifacts/{artifact_id}/revisions/{revision_id}/download")
-async def artifact_download(artifact_id: UUID, revision_id: UUID, account: AccountDep):
+async def artifact_download(
+    artifact_id: UUID, revision_id: UUID, account: AccountDep, thread_id: UUID | None = None
+):
     value = await forward(
         str(account.id),
         {
@@ -446,19 +462,42 @@ async def artifact_download(artifact_id: UUID, revision_id: UUID, account: Accou
             "command_id": str(uuid4()),
             "type": "artifact.read",
             "expected_revision": None,
-            "payload": {"artifact_id": str(artifact_id)},
+            "payload": {
+                "artifact_id": str(artifact_id),
+                **({"thread_id": str(thread_id)} if thread_id else {}),
+            },
         },
     )
     if value["revision_id"] != str(revision_id):
         raise failure("NOT_FOUND", None)
+    headers = {
+        "Content-Disposition": "attachment; filename*=UTF-8''" + quote(value["filename"], safe=""),
+        "X-Content-Type-Options": "nosniff",
+        "Cache-Control": "private, no-store",
+        "X-Content-SHA256": value["sha256"],
+    }
+    if value.get("storage") == "file.v1":
+
+        async def chunks():
+            for offset in range(0, value["byte_count"], 512 * 1024):
+                part = await forward(
+                    str(account.id),
+                    provider_command(
+                        "file.read",
+                        {
+                            "artifact_id": str(artifact_id),
+                            "offset": offset,
+                            **({"thread_id": str(thread_id)} if thread_id else {}),
+                        },
+                    ),
+                )
+                yield base64.b64decode(part["data_base64"], validate=True)
+
+        return StreamingResponse(chunks(), media_type="application/octet-stream", headers=headers)
     return Response(
         value["content"].encode("utf-8"),
         media_type="application/octet-stream",
-        headers={
-            "Content-Disposition": 'attachment; filename="' + value["filename"] + '"',
-            "X-Content-Type-Options": "nosniff",
-            "Cache-Control": "private, no-store",
-        },
+        headers=headers,
     )
 
 

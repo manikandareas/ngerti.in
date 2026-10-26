@@ -209,7 +209,7 @@ def test_scoped_memory_transcript_transfer_revocation_restart(runtime):
     with sqlite3.connect(root / "state/state.db") as db:
         assert db.execute("PRAGMA foreign_key_check").fetchall() == []
         assert (
-            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 15
+            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 16
         )
         events = " ".join(r[0] for r in db.execute("SELECT payload FROM nma_events"))
         assert "AGENT_PRIVATE_MARKER" not in events

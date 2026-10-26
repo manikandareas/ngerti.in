@@ -51,6 +51,7 @@ def install(database, owner):
     from ngertiin_engine import (
         artifacts,
         capabilities,
+        coding,
         computer,
         context_references,
         diagnostics,
@@ -65,9 +66,10 @@ def install(database, owner):
     capabilities.install_discovery_guard()
     goals.install()
     artifacts.install()
+    coding.install()
     computer.install()
     diagnostics.install_usage()
-    context_references.install()
+    context_references.install(database, owner)
     session_settings.install()
     native_surface.install()
     _installed = True

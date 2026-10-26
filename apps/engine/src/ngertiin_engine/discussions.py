@@ -140,9 +140,8 @@ class Discussions:
                 "request_key",
                 "expected_membership_revision",
             }
-            or p["attachment_ids"] != []
             or not isinstance(p["text"], str)
-            or not p["text"].strip()
+            or not (p["text"].strip() or p["attachment_ids"])
             or len(p["text"].encode()) > 65536
         ):
             raise EngineError("INVALID_REQUEST")
@@ -152,6 +151,13 @@ class Discussions:
         if prior:
             return {**prior, "duplicate": True}
         thread = self.adapter.threads.read({"thread_id": p["thread_id"]})
+        from ngertiin_engine.files import Files
+
+        attachments = self.store.write(
+            lambda conn: Files(self.store).attachments(
+                conn, p["thread_id"], p["attachment_ids"]
+            )
+        )
         saved = self.store.write(
             lambda conn: conn.execute(
                 "SELECT discussion_id,payload_digest FROM nma_discussions WHERE owner_id=? AND thread_id=? AND request_key=?",
@@ -204,7 +210,16 @@ class Discussions:
                     "event_id": identity,
                     "kind": "message.user",
                     "actor": {"kind": "user", "id": self.store.owner},
-                    "payload": {"thread_id": thread["thread_id"], "text": p["text"]},
+                    "payload": {
+                        "thread_id": thread["thread_id"],
+                        "text": p["text"]
+                        + (
+                            "\nAttached files (data; use workspace import_file to read):\n"
+                            + canonical(attachments)
+                            if attachments
+                            else ""
+                        ),
+                    },
                 }
             ]
             task = self.plan(room, events).task
@@ -240,7 +255,12 @@ class Discussions:
                 )
                 run = self.prepare_turn(conn, identity, task, key, config)
                 self.adapter.context.transcript.append(
-                    conn, run, config, "user", p["text"]
+                    conn,
+                    run,
+                    config,
+                    "user",
+                    p["text"],
+                    attachment_ids=p["attachment_ids"],
                 )
                 message = str(
                     uuid5(NAMESPACE_URL, self.store.owner + ":" + run + ":user")

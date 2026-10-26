@@ -389,7 +389,11 @@ class Adapter:
 
         try:
             with owner_scope(self.authority):
-                if body["type"] in {"session.compress", "session.reset"}:
+                if body["type"] in {"session.compress", "session.reset"} or (
+                    body["type"] == "workspace.action"
+                    and body["payload"].get("arguments", {}).get("action")
+                    in {"inspect", "diff", "diagnostics"}
+                ):
                     # Native claim/mutation gates serialize context controls. A
                     # summary LLM must not hold the product-wide command lock:
                     # stop and access revocation must remain available.
@@ -436,6 +440,21 @@ class Adapter:
 
     async def _dispatch(self, body):
         kind, payload = body["type"], body["payload"]
+        if kind == "workspace.action":
+            from ngertiin_engine.workspaces import Workspaces
+
+            return await asyncio.to_thread(Workspaces(self).action, body)
+        if kind.startswith("file."):
+            if body["expected_revision"] is not None:
+                raise EngineError("INVALID_REQUEST")
+            from ngertiin_engine.files import Files
+
+            files = Files(self.store)
+            if kind == "file.read":
+                return await asyncio.to_thread(files.read, payload)
+            if kind == "file.inventory" and not payload:
+                return files.inventory()
+            return await asyncio.to_thread(files.upload, kind, payload, self.threads)
         if kind in {"session.inspect", "session.compress", "session.reset"}:
             from ngertiin_engine.session_controls import SessionControls
 
@@ -453,11 +472,14 @@ class Adapter:
 
             artifacts = Artifacts(self.store)
             if kind == "artifact.read":
-                if set(payload) != {"artifact_id"}:
+                if set(payload) not in ({"artifact_id"}, {"artifact_id", "thread_id"}):
                     raise EngineError("INVALID_REQUEST")
                 return self.store.write(
                     lambda conn: artifacts.get(
-                        conn, payload["artifact_id"], content=True
+                        conn,
+                        payload["artifact_id"],
+                        thread_id=payload.get("thread_id"),
+                        content=True,
                     )
                 )
             if kind in {"artifact.share", "artifact.revoke"}:
@@ -579,7 +601,7 @@ class Adapter:
             return {
                 "schema_version": "nma.v1",
                 "authority_epoch": str(self.authority.epoch),
-                "extension_schema": "15",
+                "extension_schema": "16",
                 "lifecycle": "ready",
                 "capabilities": [
                     "connection.list",

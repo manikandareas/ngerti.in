@@ -401,8 +401,9 @@ def test_dm_rejects_target_spoofing_and_scope_cursor(runtime):
             "command_id": str(uuid4()),
             "payload": {**body["payload"], **extra},
         }
-        assert call(invalid)["error"]["code"] == "INVALID_REQUEST"
-        assert call(invalid)["error"]["code"] == "INVALID_REQUEST"
+        expected = "NOT_FOUND" if "attachment_ids" in extra else "INVALID_REQUEST"
+        assert call(invalid)["error"]["code"] == expected
+        assert call(invalid)["error"]["code"] == expected
     snap = snapshot(call, thread)
     for epoch, seq, expected in [
         (str(uuid4()), "0", "CURSOR_RESET"),

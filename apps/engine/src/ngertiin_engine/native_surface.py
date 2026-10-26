@@ -48,13 +48,46 @@ def verify_image(image):
         )
 
 
+def binding(marker, context, database, owner):
+    from ngertiin_engine.capabilities import catalog
+    from ngertiin_engine.native_executor import IsolatedTools, Scope
+
+    data = catalog()
+    selected = [
+        data.get("execution_surfaces", {}).get(
+            data.get("tool_grants", {}).get(key, {}).get("execution_surface"), {}
+        )
+        for key in marker["grants"].get("tool_grants", [])
+    ]
+    images = {s.get("image") for s in selected if s.get("kind") == "scoped_linux"}
+    if len(images) != 1:
+        raise EngineError("WORKSPACE_UNAVAILABLE")
+    image = images.pop()
+    verify_image(image)
+    generation = (
+        int(
+            digest([marker["access_generation"], context["context_generation"]])[:15],
+            16,
+        )
+        + 1
+    )
+    scope = Scope(owner, marker["agent_id"], context["thread_id"], generation)
+    key = digest([owner, image])
+    with _lock:
+        if key not in _brokers:
+            _brokers[key] = IsolatedTools(
+                Path(database).parent / "native-execution" / key, owner, image=image
+            )
+    return key, _brokers[key], _brokers[key].current_scope(scope)
+
+
 def invoke(name, arguments, marker, database, owner):
     from gateway.session_policy import active_policy
     from tools.registry import registry
     from toolsets import resolve_toolset
 
-    from ngertiin_engine.capabilities import catalog
-    from ngertiin_engine.native_executor import IsolatedTools, Scope, UnknownOutcome
+    from ngertiin_engine.capabilities import authorize, catalog
+    from ngertiin_engine.native_executor import UnknownOutcome
     from ngertiin_engine.reliability import execution
 
     data = catalog()
@@ -82,26 +115,36 @@ def invoke(name, arguments, marker, database, owner):
     context = config.get("nma_context")
     if not context:
         raise EngineError("ACCESS_REVOKED")
-    generation = (
-        int(
-            digest([marker["access_generation"], context["context_generation"], stamp])[
-                :15
-            ],
-            16,
-        )
-        + 1
-    )
-    scope = Scope(owner, marker["agent_id"], context["thread_id"], generation)
-    key = digest([owner, image])
+    key, broker, scope = binding(marker, context, database, owner)
     with _lock:
-        if key not in _brokers:
-            _brokers[key] = IsolatedTools(
-                Path(database).parent / "native-execution" / key, owner, image=image
-            )
-        broker = _brokers[key]
         _active.setdefault(ids.session_id, set()).add((key, scope))
     operation = digest([ids.turn_id, ids.tool_call_id, name])
+
+    def reauthorize():
+        import sqlite3
+        from types import SimpleNamespace
+
+        from ngertiin_engine.context import authorize_context
+        from ngertiin_engine.reliability import Reliability
+
+        authorize(marker, database, owner)
+        authorize_context(active_policy(), database, owner)
+        with sqlite3.connect(f"file:{database}?mode=ro", uri=True) as conn:
+            epoch = conn.execute(
+                "SELECT authority_epoch FROM nma_partition WHERE owner_id=?", (owner,)
+            ).fetchone()
+            if not epoch:
+                raise EngineError("ACCESS_REVOKED")
+            store = SimpleNamespace(
+                owner=owner, authority=SimpleNamespace(epoch=epoch[0])
+            )
+            if Reliability(store).check(conn, stamp) is None:
+                raise EngineError("ACCESS_REVOKED")
+
     try:
+        from ngertiin_engine.skill_assets import stage
+
+        stage(marker, broker, scope, reauthorize)
         value = broker.invoke(
             scope,
             operation,
@@ -111,6 +154,8 @@ def invoke(name, arguments, marker, database, owner):
             allowed_tools={
                 n for toolset in marker["toolsets"] for n in resolve_toolset(toolset)
             },
+            authorize=reauthorize,
+            admission_id=stamp["admission_id"],
         )
         receipt = broker.receipt(scope, operation)
         if receipt and receipt["state"] in {"indeterminate", "dispatching", "unknown"}:
@@ -122,13 +167,10 @@ def invoke(name, arguments, marker, database, owner):
 
 def settle_session(session_id):
     with _lock:
-        scopes = _active.pop(session_id, set())
-    for key, scope in scopes:
-        try:
-            _brokers[key].pause(scope)
-        except ValueError:
-            # Unknown/cancelled scopes stay fenced and their volumes stay intact.
-            pass
+        _active.pop(session_id, set())
+    # Native background jobs and code kernels belong to the scoped worker. Model
+    # completion does not destroy them. Explicit stop/revoke or resource retirement
+    # ends RAM; volume files and job receipts have their own durable contract.
 
 
 def install():

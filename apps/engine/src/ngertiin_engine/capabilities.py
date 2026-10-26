@@ -91,6 +91,33 @@ def resolve(config, *, expected_snapshots=None):
                         raise ValueError
                     skills.append(f"# Assigned skill: {key}\n{content}")
                     identity = {"content": content}
+                    from ngertiin_engine.skill_assets import directory, manifest
+
+                    assets = manifest(entry)
+                    if assets:
+                        if not any(
+                            data.get("execution_surfaces", {})
+                            .get(
+                                data.get("tool_grants", {})
+                                .get(grant, {})
+                                .get("execution_surface"),
+                                {},
+                            )
+                            .get("kind")
+                            == "scoped_linux"
+                            for grant in config.get("tool_grants", [])
+                        ):
+                            raise EngineError(
+                                "CAPABILITY_DEPENDENCY_REQUIRED",
+                                {"skill": key, "reason": "native_workspace_required"},
+                            )
+                        identity["native_assets"] = assets
+                        skills.append(
+                            "Native skill assets: /work/"
+                            + directory(entry)
+                            + "/\n"
+                            + "\n".join(assets)
+                        )
                 else:
                     # Native session-scoped MCP supports these private transport specifications.
                     # A separate private file keeps values out of catalog responses and SQLite.

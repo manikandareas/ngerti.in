@@ -248,7 +248,7 @@ def test_schema_twelve_backfill_preserves_welcome_bytes_and_customization(runtim
             == configs
         )
         assert (
-            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 15
+            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 16
         )
 
 

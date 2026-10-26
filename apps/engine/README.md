@@ -102,7 +102,7 @@ For real native isolation verification, set `NMA_TEST_NATIVE_IMAGE` to the built
 
 ## Backup, migration and rollback
 
-Current extension schema is 15. Migrations are additive and checksum-versioned; incompatible versions fail closed. Stop ingress and the gateway before backup. The backup tool holds native profile locks, copies the complete partition, normalizes copied WAL stores, checks integrity/foreign keys and records file hashes and table counts:
+Current extension schema is 16. Migrations are additive and checksum-versioned; incompatible versions fail closed. Stop ingress and the gateway before backup. The backup tool holds native profile locks, copies the complete partition, normalizes copied WAL stores, checks integrity/foreign keys and records file hashes and table counts:
 
 ```sh
 python -m ngertiin_engine.backup backup /state/account /backup/account-snapshot
@@ -110,6 +110,20 @@ python -m ngertiin_engine.backup restore /backup/account-snapshot /state/restore
 ```
 
 Restore requires a new directory, verifies the owner/inventory/hash, and writes `nma-restore-quarantine.json`. The service refuses to start while this marker exists. An operator must reconcile active work, pending triggers, effect receipts, external resources and exclusive ownership before removing the marker. Backup external files/objects and secrets separately. Keep backup directories private.
+
+## Native workspaces, attachments and coding
+
+See [the workspace/file/coding delivery report](../../docs/research/nma-031-native-workspaces.md) for acceptance evidence, source attribution and limits. The selected boundary remains scoped Linux Docker; no old engine is reintroduced. Configure an immutable image ID and explicit `terminal`, `file`, `code_execution` and `nma_coding` bundles on that surface. `nma_workspace` remains the durable deliverable tool. Existing grants are not expanded by installing an image.
+
+Native workspaces belong to owner/agent/thread independently of run identity. Named projects and their relative folders live inside the private volume; `coding` selects the project and manages native LSP/checkpoints/worktrees. Files persist; processes, Chromium and code-kernel RAM persist only while the scoped container runs. Stops retire RAM, retain files/receipts, and report lost background jobs. New admissions do not replay old operations. Unknown effects remain fenced. No host directory, socket or credential directory is implicitly mounted. The selected image intentionally has no external network route; external browser/network deployment remains NMA-032.
+
+The reviewed image packages pyright 1.1.408 (MIT), with tarball SHA-512 and notice recorded in `native-dependencies.json` and `notices/provenance.json`. Python semantic diagnostics are verified; other native language-server definitions report their installed readiness and need separately provisioned binaries. Failed or timed-out diagnostics are never a clean verdict. Native shadow Git preserves repository history. Selected restore compares inspected hashes; whole-project safe restore follows the native agent-write ledger. Active, dirty or unmerged task worktrees cannot be removed by cleanup.
+
+`file.begin`, `file.part` and `file.finalize` implement immutable uploads up to 32 MiB, in 512 KiB parts. Originals and produced binaries live in the partition's `files/objects` directory under SHA-256 identities. Ready metadata is committed after durable bytes. `message.send.attachment_ids` is authorized atomically with message creation and preserves existing request deduplication. Downloads optionally bind `thread_id`; group clients supply it so revoked sharing blocks subsequent downloads. Native `workspace import_file` returns an isolated path for the unchanged native `read_file` extractors; `workspace publish_file` finalizes bytes before publishing an artifact event. Old SQLite UTF-8 artifacts remain readable.
+
+For executable skills, an assigned catalog entry may add `native_assets`, mapping relative names to `{path, sha256, executable}`. Paths are operator-owned absolute regular files, hashed before staging; the gateway copies only these explicit bytes into `/work/imports/skills/<bundle hash>`. The persona receives that native path. Changing assets changes the grant snapshot and requires a new authorized configuration. Assets require a scoped native capability; content-only historical skills keep their old identity. This foundation does not install the complete skills marketplace (NMA-034).
+
+Back up the entire stopped partition, including `files`, upload staging and the native receipt journals, plus every retained Docker workspace volume. `file.inventory` reports retained metadata, staged uploads and unreferenced objects for reconciliation; it never silently deletes retained objects. Finalized upload staging is cleaned idempotently. External volume restores must be hash-checked offline and reconciled with the retained controller/resource identities before activation. `scripts/verification/nma031_preservation.py` demonstrates a quarantined partition and separate volume restore on disposable data.
 
 The API package provides an explicit account-persona migration plan and idempotent default-agent creation. Historical transcripts/goals/files/checkpoints remain in their original archive; no old proposal or queued effect is activated. Full procedure, data mapping and rollback are in [ADR-06 and acceptance](../../docs/research/nma-025-026-acceptance-cutover.md). Rollback uses a separate prior Git revision and verified backup while preserving all post-cutover state. Never drop extension tables or share one partition between versions.
 

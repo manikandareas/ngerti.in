@@ -15,6 +15,10 @@ DDL = (
 def semantics(name, args):
     if name in {"read_file", "search_files"}:
         return "read"
+    if name == "coding" and args.get("action") in {"inspect", "diagnostics", "diff"}:
+        return "read"
+    if name == "process_manage" and args.get("action") in {"list", "poll", "log", "wait"}:
+        return "read"
     if name == "computer" and args.get("operation") in {"observe", "receipt"}:
         return "read"
     # Arbitrary Python, shell and nested/batched calls can contain many writes.

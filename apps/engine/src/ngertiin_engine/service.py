@@ -61,7 +61,7 @@ def main():
                     (owner,),
                 ).fetchone()
                 if (
-                    version not in range(1, 16)
+                    version not in range(1, 17)
                     or not checksum
                     or checksum[0] != CHECKSUM
                 ):
@@ -461,6 +461,9 @@ def main():
                 )
                 socket.chmod(0o600)
                 self.nma_goal_task = asyncio.create_task(self.nma_goal_continuations())
+                self.nma_workspace_task = asyncio.create_task(
+                    self.nma_workspace_receipts()
+                )
                 return True
             except BaseException:
                 await super().stop()
@@ -480,6 +483,25 @@ def main():
                 except Exception as exc:  # noqa: BLE001 - isolate reconciliation and redact native errors
                     logger.error("Goal reconciliation failed (%s)", type(exc).__name__)
                 await asyncio.sleep(0.25)
+
+        async def nma_workspace_receipts(self):
+            from ngertiin_engine.native_jobs import reconcile
+
+            while self._running:
+                try:
+                    await asyncio.to_thread(reconcile, self.nma_adapter)
+                except EngineError as exc:
+                    logger.error(
+                        "Workspace receipt reconciliation failed (%s)", exc.code
+                    )
+                    if exc.code == "AUTHORITY_LOST":
+                        return
+                except (OSError, ValueError, RuntimeError) as exc:
+                    logger.error(
+                        "Workspace receipt reconciliation failed (%s)",
+                        type(exc).__name__,
+                    )
+                await asyncio.sleep(5)
 
         async def nma_request(self, reader, writer):
             try:
@@ -537,6 +559,10 @@ def main():
             if goal_task:
                 goal_task.cancel()
                 await asyncio.gather(goal_task, return_exceptions=True)
+            workspace_task = getattr(self, "nma_workspace_task", None)
+            if workspace_task:
+                workspace_task.cancel()
+                await asyncio.gather(workspace_task, return_exceptions=True)
             try:
                 # Native shutdown quiesces admissions and drains/cancels tracked
                 # mutations, including an auxiliary compression request. Waiting

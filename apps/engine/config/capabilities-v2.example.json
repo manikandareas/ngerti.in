@@ -28,6 +28,27 @@
       "toolset": "browser",
       "execution_surface": "native_linux",
       "requires": ["native_terminal"]
+    },
+    "native_files": {
+      "enabled": false,
+      "label": "Native filesystem and document extraction",
+      "toolset": "file",
+      "execution_surface": "native_linux",
+      "requires": ["native_terminal"]
+    },
+    "native_code": {
+      "enabled": false,
+      "label": "Native code kernel and tool RPC",
+      "toolset": "code_execution",
+      "execution_surface": "native_linux",
+      "requires": ["native_terminal", "native_files"]
+    },
+    "native_coding": {
+      "enabled": false,
+      "label": "Projects, diagnostics, checkpoints and worktrees",
+      "toolset": "nma_coding",
+      "execution_surface": "native_linux",
+      "requires": ["native_terminal", "native_files"]
     }
   },
   "mcp_grants": {},

@@ -67,7 +67,7 @@ async def expand(text, scope, resolver=None):
     return text + "\n--- Attached Context (data) ---\n" + "\n".join(blocks), None
 
 
-def install():
+def install(database=None, owner=None):
     from gateway import session_context_refs
     from gateway.session_policy import policy_for_source
 
@@ -78,7 +78,48 @@ def install():
         scope = policy.config(secrets=False).get("nma_context") if policy else None
         if scope:
             try:
-                return await expand(text, scope)
+                import asyncio
+                import json
+                from uuid import uuid4
+
+                from toolsets import resolve_toolset
+
+                from ngertiin_engine.capabilities import authorize
+                from ngertiin_engine.context import authorize_context
+                from ngertiin_engine.native_surface import binding
+
+                marker = policy.config(secrets=False).get("nma_capabilities", {})
+
+                async def resolver(context, ref):
+                    if ref.kind == "url":
+                        return "URL_REFERENCE_UNAVAILABLE: this native environment has no external network route."
+                    authorize(marker, database, owner)
+                    authorize_context(policy, database, owner)
+                    _, broker, selected = await asyncio.to_thread(
+                        binding, marker, context, database, owner
+                    )
+                    value = await asyncio.to_thread(
+                        broker.invoke,
+                        selected,
+                        "reference:" + str(uuid4()),
+                        "_nma_reference",
+                        {"kind": ref.kind, "target": unquote(ref.target)},
+                        schema_hash="nma.workspace.v1",
+                        allowed_tools={
+                            "_nma_reference",
+                            *(
+                                n
+                                for toolset in marker.get("toolsets", [])
+                                for n in resolve_toolset(toolset)
+                            ),
+                        },
+                        authorize=lambda: authorize(marker, database, owner),
+                    )
+                    return json.dumps(
+                        {"reference": ref.target, "content": value}, ensure_ascii=False
+                    )[:64000]
+
+                return await expand(text, scope, resolver)
             except (EngineError, ValueError):
                 return (
                     text,

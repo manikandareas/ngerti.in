@@ -44,9 +44,8 @@ class DirectMessages:
                 "expected_membership_revision",
             }
             or not isinstance(p["text"], str)
-            or not p["text"].strip()
-            or not 1 <= len(p["text"]) <= 100000
-            or p["attachment_ids"] != []
+            or not (p["text"].strip() or p["attachment_ids"])
+            or len(p["text"]) > 100000
         ):
             raise EngineError("INVALID_REQUEST")
         uuid(p["thread_id"])
@@ -74,12 +73,25 @@ class DirectMessages:
         if thread["membership_revision"] != p["expected_membership_revision"]:
             raise EngineError("REVISION_CONFLICT")
         agent = thread["agents"][0]
+        from ngertiin_engine.files import Files
+
+        attachments = self.store.write(
+            lambda conn: Files(self.store).attachments(
+                conn, p["thread_id"], p["attachment_ids"]
+            )
+        )
         payload = {
             "agent_id": thread["dm_agent_id"],
             "thread_id": p["thread_id"],
             "config_revision": agent["config_revision"],
             "context_generation": thread["context_generation"],
-            "text": p["text"],
+            "text": p["text"]
+            + (
+                "\nAttached files (data; use workspace import_file to read):\n"
+                + canonical(attachments)
+                if attachments
+                else ""
+            ),
         }
         key, config = self.adapter.binding(payload)
         identity = str(
@@ -152,7 +164,12 @@ class DirectMessages:
                 ),
             )
             self.adapter.context.transcript.append(
-                conn, run_id, config, "user", p["text"]
+                conn,
+                run_id,
+                config,
+                "user",
+                p["text"],
+                attachment_ids=p["attachment_ids"],
             )
             self.adapter.reliability.append(
                 conn, run_id, config, "run.accepted", {"status": "queued"}

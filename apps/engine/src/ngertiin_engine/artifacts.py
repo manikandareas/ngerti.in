@@ -20,14 +20,18 @@ DDL = (
 TOOL = "workspace"
 SCHEMA = {
     "name": TOOL,
-    "description": "Publish an immutable UTF-8 file in this conversation, list its files, or read an authorized artifact. For publish, send action, filename and content; for list, send only action; for read, send action and artifact_id. Omit unused fields. Use explicit artifact IDs for handoff; private DM files are not shared automatically. No host paths are accepted.",
+    "description": "Publish immutable UTF-8 text (publish: filename, content), list authorized files, read a text artifact, import an uploaded binary into native tools (import_file: artifact_id), or publish a native produced file (publish_file: relative path under /work, filename). Omit unused fields. Private DM files require explicit sharing before group use. Imports return a native path for read_file/document extraction. No gateway host paths are accepted.",
     "parameters": {
         "type": "object",
         "properties": {
-            "action": {"type": "string", "enum": ["publish", "list", "read"]},
+            "action": {
+                "type": "string",
+                "enum": ["publish", "list", "read", "import_file", "publish_file"],
+            },
             "filename": {"type": "string"},
             "content": {"type": "string"},
             "artifact_id": {"type": "string"},
+            "path": {"type": "string"},
         },
         "required": ["action"],
         "additionalProperties": False,
@@ -45,7 +49,9 @@ class Artifacts:
             (self.store.owner, uuid(identity)),
         ).fetchone()
         if not row:
-            raise EngineError("NOT_FOUND")
+            from ngertiin_engine.files import Files
+
+            return Files(self.store).get(conn, identity, thread_id=thread_id)
         if (
             thread_id is not None
             and row[1] != thread_id
@@ -80,12 +86,33 @@ class Artifacts:
             "SELECT artifact_id FROM nma_artifacts a WHERE owner_id=? AND (thread_id=? OR EXISTS (SELECT 1 FROM nma_artifact_grants g WHERE g.owner_id=a.owner_id AND g.artifact_id=a.artifact_id AND g.target_thread_id=? AND g.active=1)) ORDER BY rowid DESC LIMIT 100",
             (self.store.owner, thread_id, thread_id),
         ).fetchall()
-        return [self.get(conn, r[0], thread_id=thread_id) for r in rows]
+        from ngertiin_engine.files import Files
+
+        return [self.get(conn, r[0], thread_id=thread_id) for r in rows] + Files(
+            self.store
+        ).listing(conn, thread_id)
 
     def tool(self, stamp, args, ids):
         from ngertiin_engine.capabilities import resolve
         from ngertiin_engine.goals import Goals
         from ngertiin_engine.reliability import Reliability
+
+        if isinstance(args, dict) and args.get("action") in {
+            "import_file",
+            "publish_file",
+        }:
+            from ngertiin_engine.workspaces import file_tool
+
+            try:
+                return file_tool(self.store, stamp, args, ids)
+            except (EngineError, ValueError, RuntimeError) as exc:
+                return canonical(
+                    {
+                        "error": exc.code
+                        if isinstance(exc, EngineError)
+                        else "WORKSPACE_UNAVAILABLE"
+                    }
+                )
 
         def apply(conn):
             run_id, config, _ = Goals(self.store).scope(conn, stamp)
@@ -211,17 +238,24 @@ class Artifacts:
             ):
                 raise EngineError("NOT_FOUND")
             active = body["type"] == "artifact.share"
-            conn.execute(
-                "INSERT INTO nma_artifact_grants VALUES (?,?,?,?,?,?) ON CONFLICT(owner_id,artifact_id,target_thread_id) DO UPDATE SET active=excluded.active,source_message_id=excluded.source_message_id,reason=excluded.reason",
-                (
-                    self.store.owner,
-                    p["artifact_id"],
-                    p["target_thread_id"],
-                    p["source_message_id"],
-                    p["reason"],
-                    int(active),
-                ),
-            )
+            if artifact.get("storage") == "file.v1":
+                from ngertiin_engine.files import Files
+
+                Files(self.store).share(
+                    conn, p["artifact_id"], p["target_thread_id"], active
+                )
+            else:
+                conn.execute(
+                    "INSERT INTO nma_artifact_grants VALUES (?,?,?,?,?,?) ON CONFLICT(owner_id,artifact_id,target_thread_id) DO UPDATE SET active=excluded.active,source_message_id=excluded.source_message_id,reason=excluded.reason",
+                    (
+                        self.store.owner,
+                        p["artifact_id"],
+                        p["target_thread_id"],
+                        p["source_message_id"],
+                        p["reason"],
+                        int(active),
+                    ),
+                )
             if not active:
                 from ngertiin_engine.context import fence_context_runs
 

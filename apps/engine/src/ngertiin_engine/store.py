@@ -18,6 +18,7 @@ from ngertiin_engine.conversations import DDL as CONVERSATION_DDL
 from ngertiin_engine.conversations import backfill
 from ngertiin_engine.direct_messages import DDL as DM_DDL
 from ngertiin_engine.discussions import DDL as DISCUSSION_DDL
+from ngertiin_engine.files import DDL as FILE_DDL
 from ngertiin_engine.goal_lifecycle import DDL as LIFECYCLE_DDL
 from ngertiin_engine.goals import DDL as GOAL_DDL
 from ngertiin_engine.outcomes import DDL as OUTCOME_DDL
@@ -36,6 +37,7 @@ DDL = (
     "CREATE TABLE nma_adapter_runs (owner_id TEXT NOT NULL, run_id TEXT NOT NULL, binding_id TEXT NOT NULL, operation_id TEXT NOT NULL, native_admission_id TEXT, PRIMARY KEY(owner_id,run_id), UNIQUE(owner_id,operation_id), FOREIGN KEY(owner_id,binding_id) REFERENCES nma_adapter_bindings(owner_id,binding_id), FOREIGN KEY(owner_id,operation_id) REFERENCES nma_commands(owner_id,command_id))",
 )
 OUTCOME_CHECKSUM = hashlib.sha256("\n".join(OUTCOME_DDL).encode()).hexdigest()
+FILE_CHECKSUM = hashlib.sha256("\n".join(FILE_DDL).encode()).hexdigest()
 CONNECTION_CHECKSUM = hashlib.sha256("\n".join(CONNECTION_DDL).encode()).hexdigest()
 CONVERSATION_CHECKSUM = hashlib.sha256("\n".join(CONVERSATION_DDL).encode()).hexdigest()
 DISCUSSION_CHECKSUM = hashlib.sha256("\n".join(DISCUSSION_DDL).encode()).hexdigest()
@@ -100,7 +102,7 @@ class Store:
                 "SELECT checksum FROM nma_schema_migrations WHERE owner_id=? AND version=1",
                 (self.owner,),
             ).fetchone()
-            if rows[0][2] not in range(1, 16) or not saved or saved[0] != CHECKSUM:
+            if rows[0][2] not in range(1, 17) or not saved or saved[0] != CHECKSUM:
                 raise EngineError("UNSUPPORTED_SCHEMA")
             if rows[0][1] > self.authority.epoch:
                 raise EngineError("AUTHORITY_LOST")
@@ -405,6 +407,21 @@ class Store:
             ).fetchone()
             if not saved or saved[0] != OUTCOME_CHECKSUM:
                 raise EngineError("UNSUPPORTED_SCHEMA")
+
+        saved = conn.execute(
+            "SELECT checksum FROM nma_schema_migrations WHERE owner_id=? AND version=16",
+            (self.owner,),
+        ).fetchone()
+        if not saved:
+            for statement in FILE_DDL:
+                conn.execute(statement)
+            conn.execute(
+                "INSERT INTO nma_schema_migrations(owner_id,version,checksum) VALUES (?,16,?)",
+                (self.owner, FILE_CHECKSUM),
+            )
+            conn.execute("UPDATE nma_partition SET schema_version=16")
+        elif saved[0] != FILE_CHECKSUM:
+            raise EngineError("UNSUPPORTED_SCHEMA")
 
     def receipt(self, body):
         def read(conn):

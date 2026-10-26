@@ -54,6 +54,13 @@ class Scope:
             json.dumps(self.__dict__, sort_keys=True).encode()
         ).hexdigest()
 
+    @property
+    def workspace_key(self):
+        """Files belong to a conversation/agent, independently of execution RAM."""
+        return hashlib.sha256(
+            json.dumps([self.owner_id, self.agent_id, self.thread_id]).encode()
+        ).hexdigest()
+
 
 class IsolatedTools:
     def __init__(self, control_dir, owner_id, *, image=DEFAULT_IMAGE):
@@ -93,6 +100,8 @@ class IsolatedTools:
 CREATE TABLE IF NOT EXISTS metadata (key TEXT PRIMARY KEY,value TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS scopes (scope_key TEXT PRIMARY KEY,scope_json TEXT NOT NULL,container TEXT NOT NULL,volume TEXT NOT NULL,state TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS operations (scope_key TEXT NOT NULL,operation_id TEXT NOT NULL,tool TEXT NOT NULL,args_hash TEXT NOT NULL,state TEXT NOT NULL,result TEXT,started REAL NOT NULL,finished REAL,PRIMARY KEY(scope_key,operation_id));
+CREATE TABLE IF NOT EXISTS jobs (scope_key TEXT NOT NULL,handle TEXT NOT NULL,state TEXT NOT NULL,receipt TEXT NOT NULL,PRIMARY KEY(scope_key,handle));
+CREATE TABLE IF NOT EXISTS incarnations (base_key TEXT PRIMARY KEY,generation INTEGER NOT NULL);
 """)
             existing = db.execute(
                 "SELECT value FROM metadata WHERE key='owner'"
@@ -101,6 +110,9 @@ CREATE TABLE IF NOT EXISTS operations (scope_key TEXT NOT NULL,operation_id TEXT
                 raise ScopeRefused("Supervisor directory belongs to a different owner")
             db.execute(
                 "INSERT OR IGNORE INTO metadata VALUES ('owner',?)", (self.owner,)
+            )
+            db.execute(
+                "INSERT OR IGNORE INTO metadata VALUES ('image',?)", (self.image,)
             )
             db.execute(
                 "INSERT OR IGNORE INTO metadata VALUES ('controller',?)",
@@ -140,6 +152,43 @@ CREATE TABLE IF NOT EXISTS operations (scope_key TEXT NOT NULL,operation_id TEXT
             raise ScopeRefused("Foreign owner scope refused")
         return scope.key
 
+    @staticmethod
+    def _lose_jobs(db, key, reason):
+        for handle, encoded in db.execute(
+            "SELECT handle,receipt FROM jobs WHERE scope_key=? AND state='running'",
+            (key,),
+        ).fetchall():
+            job = {**json.loads(encoded), "state": "lost", "reason": reason}
+            db.execute(
+                "UPDATE jobs SET state='lost',receipt=? WHERE scope_key=? AND handle=?",
+                (json.dumps(job), key, handle),
+            )
+
+    def current_scope(self, base):
+        """A fresh explicit admission can follow a stopped container, never replay it."""
+        with self.lock, self._db() as db:
+            db.execute(
+                "INSERT OR IGNORE INTO incarnations VALUES (?,?)",
+                (base.key, base.generation),
+            )
+            generation = db.execute(
+                "SELECT generation FROM incarnations WHERE base_key=?", (base.key,)
+            ).fetchone()[0]
+            current = Scope(base.owner_id, base.agent_id, base.thread_id, generation)
+            row = db.execute(
+                "SELECT state FROM scopes WHERE scope_key=?", (current.key,)
+            ).fetchone()
+            if row and row[0] == "cancelled":
+                generation += 1
+                db.execute(
+                    "UPDATE incarnations SET generation=? WHERE base_key=?",
+                    (generation, base.key),
+                )
+                current = Scope(
+                    base.owner_id, base.agent_id, base.thread_id, generation
+                )
+            return current
+
     def ensure(self, scope):
         key = self._scope(scope)
         with self.lock:
@@ -151,8 +200,35 @@ CREATE TABLE IF NOT EXISTS operations (scope_key TEXT NOT NULL,operation_id TEXT
                 if row and row[2] not in {"allocating", "ready", "paused"}:
                     raise ScopeRefused("Scope is cancelled or has an unknown effect")
                 container = "nma-native-" + self.controller[:8] + "-" + key[:16]
-                volume = container + "-work"
+                volume = (
+                    "nma-work-" + self.controller[:8] + "-" + scope.workspace_key[:24]
+                )
+                if row:
+                    # Historical generation volumes retain their original identities.
+                    volume = row[1]
                 if not row:
+                    previous = db.execute(
+                        "SELECT scope_key,container,state FROM scopes WHERE volume=?",
+                        (volume,),
+                    ).fetchall()
+                    for old_key, old_container, old_state in previous:
+                        if old_state in {"uncertain", "recovery_required"}:
+                            raise ScopeRefused(
+                                "Workspace has unresolved execution; inspect before reusing"
+                            )
+                        if db.execute(
+                            "SELECT 1 FROM operations WHERE scope_key=? AND state='dispatching'",
+                            (old_key,),
+                        ).fetchone():
+                            raise ScopeRefused(
+                                "Workspace is executing another generation"
+                            )
+                        self._docker("rm", "--force", old_container, check=False)
+                        self._lose_jobs(db, old_key, "generation_retired")
+                        db.execute(
+                            "UPDATE scopes SET state='retired' WHERE scope_key=?",
+                            (old_key,),
+                        )
                     db.execute(
                         "INSERT INTO scopes VALUES (?,?,?,?,?)",
                         (
@@ -184,7 +260,7 @@ CREATE TABLE IF NOT EXISTS operations (scope_key TEXT NOT NULL,operation_id TEXT
                     "--label",
                     self.label,
                     "--label",
-                    "nma-native.scope=" + key,
+                    "nma-native.workspace=" + scope.workspace_key,
                     volume,
                 )
                 self._docker(
@@ -213,9 +289,9 @@ CREATE TABLE IF NOT EXISTS operations (scope_key TEXT NOT NULL,operation_id TEXT
                 )
             else:
                 labels = json.loads(volume_info.stdout)[0].get("Labels") or {}
-                if (
-                    labels.get("nma-native.controller") != self.controller
-                    or labels.get("nma-native.scope") != key
+                if labels.get("nma-native.controller") != self.controller or (
+                    labels.get("nma-native.workspace") != scope.workspace_key
+                    and labels.get("nma-native.scope") != key
                 ):
                     raise ScopeRefused("Unowned workspace volume refused")
             inspect = self._docker("inspect", container, check=False)
@@ -309,9 +385,13 @@ CREATE TABLE IF NOT EXISTS operations (scope_key TEXT NOT NULL,operation_id TEXT
         schema_hash,
         allowed_tools,
         timeout=90,
+        authorize=None,
+        admission_id=None,
     ):
-        key = self._scope(scope)
-        with self._execution_lock(key):
+        self._scope(scope)
+        with self._execution_lock(scope.workspace_key):
+            if authorize:
+                authorize()
             return self._invoke(
                 scope,
                 operation_id,
@@ -320,6 +400,7 @@ CREATE TABLE IF NOT EXISTS operations (scope_key TEXT NOT NULL,operation_id TEXT
                 schema_hash=schema_hash,
                 allowed_tools=allowed_tools,
                 timeout=timeout,
+                admission_id=admission_id,
             )
 
     def _invoke(
@@ -332,6 +413,7 @@ CREATE TABLE IF NOT EXISTS operations (scope_key TEXT NOT NULL,operation_id TEXT
         schema_hash,
         allowed_tools,
         timeout=90,
+        admission_id=None,
     ):
         key = self._scope(scope)
         if not isinstance(native_name, str) or not isinstance(arguments, dict):
@@ -340,7 +422,9 @@ CREATE TABLE IF NOT EXISTS operations (scope_key TEXT NOT NULL,operation_id TEXT
             r"[A-Za-z0-9_.:-]{1,200}", operation_id
         ):
             raise ScopeRefused("Invalid operation identity")
-        if "task_id" in arguments or "session_id" in arguments:
+        if "task_id" in arguments or (
+            "session_id" in arguments and native_name != "process_manage"
+        ):
             raise ScopeRefused("Native scope cannot be supplied by the model")
         args_hash = hashlib.sha256(
             json.dumps(
@@ -407,6 +491,7 @@ CREATE TABLE IF NOT EXISTS operations (scope_key TEXT NOT NULL,operation_id TEXT
             if not isinstance(value, (str, dict)):
                 raise TypeError("Invalid native result")
             outcome = envelope["outcome"]
+            jobs = envelope.get("jobs", [])
         except (
             subprocess.TimeoutExpired,
             UnknownOutcome,
@@ -423,6 +508,7 @@ CREATE TABLE IF NOT EXISTS operations (scope_key TEXT NOT NULL,operation_id TEXT
                     "UPDATE scopes SET state='uncertain' WHERE scope_key=? AND state='ready'",
                     (key,),
                 )
+                self._lose_jobs(db, key, "native_process_lost")
             self._docker("rm", "--force", target["container"], check=False)
             raise UnknownOutcome(
                 "Unknown native outcome; no automatic replay"
@@ -443,6 +529,20 @@ CREATE TABLE IF NOT EXISTS operations (scope_key TEXT NOT NULL,operation_id TEXT
                 )
                 fenced = True
             else:
+                for job in jobs:
+                    old_job = db.execute(
+                        "SELECT receipt FROM jobs WHERE scope_key=? AND handle=?",
+                        (key, job["handle"]),
+                    ).fetchone()
+                    job["native_admission_id"] = (
+                        json.loads(old_job[0]).get("native_admission_id")
+                        if old_job
+                        else admission_id
+                    )
+                    db.execute(
+                        "INSERT INTO jobs VALUES (?,?,?,?) ON CONFLICT(scope_key,handle) DO UPDATE SET state=excluded.state,receipt=excluded.receipt",
+                        (key, job["handle"], job["state"], json.dumps(job)),
+                    )
                 db.execute(
                     "UPDATE operations SET state=?,result=?,finished=? WHERE scope_key=? AND operation_id=?",
                     (
@@ -457,6 +557,7 @@ CREATE TABLE IF NOT EXISTS operations (scope_key TEXT NOT NULL,operation_id TEXT
                     db.execute(
                         "UPDATE scopes SET state='uncertain' WHERE scope_key=?", (key,)
                     )
+                    self._lose_jobs(db, key, "native_process_lost")
         if fenced:
             self._docker("rm", "--force", target["container"], check=False)
             raise UnknownOutcome("Scope cancelled during native dispatch")
@@ -473,6 +574,24 @@ CREATE TABLE IF NOT EXISTS operations (scope_key TEXT NOT NULL,operation_id TEXT
                 (key, operation_id),
             ).fetchone()
             return dict(row) if row else None
+
+    def status(self, scope):
+        self.invoke(
+            scope,
+            "status:" + str(uuid4()),
+            "_nma_status",
+            {},
+            schema_hash="nma.workspace.v1",
+            allowed_tools={"_nma_status"},
+            timeout=20,
+        )
+        with self._db() as db:
+            return [
+                json.loads(r[0])
+                for r in db.execute(
+                    "SELECT receipt FROM jobs WHERE scope_key=?", (scope.key,)
+                )
+            ]
 
     def _read_volume(self, scope, code, *arguments):
         key = self._scope(scope)
@@ -493,9 +612,9 @@ CREATE TABLE IF NOT EXISTS operations (scope_key TEXT NOT NULL,operation_id TEXT
                 "Existing workspace missing; readonly observation cannot recreate it"
             )
         labels = json.loads(volume_info.stdout)[0].get("Labels") or {}
-        if (
-            labels.get("nma-native.controller") != self.controller
-            or labels.get("nma-native.scope") != key
+        if labels.get("nma-native.controller") != self.controller or (
+            labels.get("nma-native.workspace") != scope.workspace_key
+            and labels.get("nma-native.scope") != key
         ):
             raise ScopeRefused("Unowned workspace observation refused")
         return self._docker(
@@ -521,7 +640,7 @@ CREATE TABLE IF NOT EXISTS operations (scope_key TEXT NOT NULL,operation_id TEXT
         )
 
     def file_bytes(self, scope, relative_path):
-        """Export one scoped file for a trusted artifact publisher, bounded to 1 MiB."""
+        """Export a regular workspace file; never follow symlinks or special files."""
         import base64
 
         if (
@@ -535,7 +654,7 @@ CREATE TABLE IF NOT EXISTS operations (scope_key TEXT NOT NULL,operation_id TEXT
 from pathlib import Path
 root=Path('/work')
 path=(root/sys.argv[1]).resolve()
-if not path.is_relative_to(root) or not path.is_file() or path.stat().st_size>1048576:raise ValueError('Invalid scoped artifact')
+if not path.is_relative_to(root) or not path.is_file() or path.stat().st_size>33554432:raise ValueError('Invalid scoped artifact')
 print(base64.b64encode(path.read_bytes()).decode())"""
         return base64.b64decode(
             self._read_volume(scope, code, relative_path).strip(), validate=True
@@ -550,6 +669,7 @@ print(base64.b64encode(path.read_bytes()).decode())"""
             if not row:
                 return {"cancelled": False}
             db.execute("UPDATE scopes SET state='cancelled' WHERE scope_key=?", (key,))
+            self._lose_jobs(db, key, "scope_cancelled")
             db.execute(
                 "UPDATE operations SET state='indeterminate',finished=? WHERE scope_key=? AND state='dispatching'",
                 (time.time(), key),
@@ -559,8 +679,8 @@ print(base64.b64encode(path.read_bytes()).decode())"""
 
     def pause(self, scope):
         """Retire an idle tool process while preserving its volume and receipts."""
-        key = self._scope(scope)
-        with self._execution_lock(key):
+        self._scope(scope)
+        with self._execution_lock(scope.workspace_key):
             return self._pause(scope)
 
     def _pause(self, scope):
@@ -580,6 +700,7 @@ print(base64.b64encode(path.read_bytes()).decode())"""
             if pending:
                 raise ScopeRefused("Use cancellation for an active scope")
             db.execute("UPDATE scopes SET state='paused' WHERE scope_key=?", (key,))
+            self._lose_jobs(db, key, "scope_paused")
         self._docker("stop", "--timeout", "3", row[0], check=False)
         return {"paused": True, "scope_key": key}
 

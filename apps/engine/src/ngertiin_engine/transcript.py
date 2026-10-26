@@ -44,6 +44,20 @@ class Transcript:
         item["parts"] = json.loads(item["content"])
         item["content"] = item["parts"][0]["text"]
         item["revision"] = "1"
+        from ngertiin_engine.files import Files
+
+        ids = [
+            row[0]
+            for row in conn.execute(
+                "SELECT artifact_id FROM nma_message_files WHERE owner_id=? AND message_id=?",
+                (self.store.owner, message_id),
+            )
+        ]
+        # A revoked grant fences future reads/downloads while historical metadata
+        # stays inspectable in the already-delivered conversation.
+        item["attachments"] = [
+            Files(self.store).get(conn, identity) for identity in ids
+        ]
         welcome = conn.execute(
             "SELECT template_version FROM nma_welcomes WHERE owner_id=? AND message_id=?",
             (self.store.owner, message_id),
@@ -53,7 +67,7 @@ class Transcript:
             item["template_version"] = welcome[0]
         return item
 
-    def append(self, conn, run_id, config, author, content):
+    def append(self, conn, run_id, config, author, content, *, attachment_ids=()):
         content = redact(content)
         message_id = str(
             uuid5(NAMESPACE_URL, self.store.owner + ":" + run_id + ":" + author)
@@ -86,6 +100,12 @@ class Transcript:
             "UPDATE nma_threads SET next_message_seq=next_message_seq+1 WHERE owner_id=? AND thread_id=?",
             (self.store.owner, config["thread_id"]),
         )
+        if attachment_ids:
+            from ngertiin_engine.files import Files
+
+            Files(self.store).attachments(
+                conn, config["thread_id"], list(attachment_ids), message_id
+            )
 
         from ngertiin_engine.reliability import Reliability
 

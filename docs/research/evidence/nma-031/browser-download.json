@@ -1,0 +1,8 @@
+{
+  "download_sha256": "20776502491fb3c476b40b4721969ed1bb23bda8e42c0686c0816c25f4518437",
+  "expected_sha256": "20776502491fb3c476b40b4721969ed1bb23bda8e42c0686c0816c25f4518437",
+  "matches": true,
+  "zip_files": [
+    "inventory.txt"
+  ]
+}

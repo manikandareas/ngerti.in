@@ -1,0 +1,5 @@
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+{"case": "document_binary", "passed": true, "seconds": 45.6865962499287}
+{"case": "coding_diagnostics", "passed": true, "seconds": 77.86040720809251}
+{"case": "background_completion", "passed": true, "seconds": 56.52414454193786}
+Live native workspace fixture ready for authenticated browser walkthrough.

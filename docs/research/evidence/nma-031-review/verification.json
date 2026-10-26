@@ -1,0 +1,53 @@
+{
+  "task": "NMA-031",
+  "reviewed_at": "2026-10-26T14:16:07.565291+00:00",
+  "verdict": "No blocking gap found for the declared configured local scope; Done remains supported.",
+  "implementation_modified": false,
+  "dependencies": {
+    "NMA-028": "Done",
+    "NMA-029": "Done",
+    "NMA-030": "Done",
+    "NMA-022": "Done"
+  },
+  "integrity": {
+    "source": {
+      "checked": 47,
+      "mismatches": []
+    },
+    "dependency_inputs": {
+      "checked": 4,
+      "mismatches": []
+    },
+    "retained_evidence": {
+      "checked": 55,
+      "mismatches": []
+    }
+  },
+  "new_execution": {
+    "native_gateway": {
+      "passed": 8,
+      "skipped": 0,
+      "seconds": 100.54,
+      "image": "sha256:69b9e9b7ca9eb47b76bef9aaa69b55e533c45077a9ce5321d5b2fee11886c7f8"
+    },
+    "backend_http": {
+      "passed": 14
+    },
+    "repository_static": "passed",
+    "engine_ruff": "passed"
+  },
+  "not_repeated": [
+    "Actual external model calls",
+    "Authenticated browser interaction",
+    "Backup/restore rehearsal",
+    "Full 190-test engine regression"
+  ],
+  "retained_evidence_policy": "Existing model, browser, preservation and full-suite evidence was reviewed and hash-verified, not relabelled as new execution.",
+  "setup_attempt": "Production runtime has no pytest; tests ran with the existing pinned test interpreter and the production gateway interpreter. No dependency installation or production mutation.",
+  "evidence_sha256": {
+    "engine-static.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "regression.log": "0b978ea1512041a9cfbbaeabbd549233d6530986a5ed50252dc04ecba3a85cfe",
+    "backend.log": "2407969a10e9b7e55fd3dd64bc5c35022ea35b46bf9215838971e3a41ca485dc",
+    "static.log": "24d30458423acf467016a20afd2572529f5c21e1f365dcfcebc45f1481b27485"
+  }
+}

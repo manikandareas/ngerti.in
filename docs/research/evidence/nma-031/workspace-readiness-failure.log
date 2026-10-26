@@ -1,0 +1,308 @@
+.F
+=================================== FAILURES ===================================
+________ test_native_projects_document_extraction_and_scope_boundaries _________
+
+tmp_path = PosixPath('/private/var/folders/j1/p1582yhj20z58phnf_zrzy7w0000gn/T/pytest-of-vitoandareasmanik/pytest-136/test_native_projects_document_0')
+
+    def test_native_projects_document_extraction_and_scope_boundaries(tmp_path):
+        import model_tools  # noqa: F401
+        from ngertiin_engine.coding import install
+        from tools.registry import registry
+    
+        install()
+        owner, agent, thread = (str(uuid4()) for _ in range(3))
+        scope = Scope(owner, agent, thread)
+        broker = IsolatedTools(tmp_path, owner, image=os.environ["NMA_TEST_NATIVE_IMAGE"])
+        allowed = {
+            "terminal",
+            "read_file",
+            "write_file",
+            "patch",
+            "search_files",
+            "execute_code",
+            "coding",
+            "_nma_reference",
+        }
+    
+        def invoke(name, args, selected=scope):
+            value = broker.invoke(
+                selected,
+                str(uuid4()),
+                name,
+                args,
+                schema_hash=digest(registry.get_entry(name).schema),
+                allowed_tools=allowed,
+            )
+            result = json.loads(value) if isinstance(value, str) else value
+            assert not result.get("error"), result
+            return result
+    
+        try:
+            project = invoke(
+                "coding",
+                {"action": "project", "project": "Alpha", "folders": ["src", "docs"]},
+            )
+            root = project["root"].removeprefix("/work/")
+            code = """import io,json,sqlite3,zipfile
+    from pathlib import Path
+    Path('src/value.txt').write_text('ALPHA_PRIVATE_CANARY')
+    Path('AGENTS.md').write_text('Use native file tools and preserve the test data.')
+    Path('sample.ipynb').write_text(json.dumps({'nbformat':4,'nbformat_minor':5,'metadata':{},'cells':[{'cell_type':'markdown','metadata':{},'source':['NOTEBOOK_CANARY']}]}))
+    with zipfile.ZipFile('sample.docx','w') as z:
+     z.writestr('word/document.xml','<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body><w:p><w:r><w:t>WORD_CANARY</w:t></w:r></w:p></w:body></w:document>')
+    with zipfile.ZipFile('sample.xlsx','w') as z:
+     z.writestr('xl/workbook.xml','<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="Sheet1" sheetId="1" r:id="rId1"/></sheets></workbook>')
+     z.writestr('xl/_rels/workbook.xml.rels','<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Target="worksheets/sheet1.xml" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet"/></Relationships>')
+     z.writestr('xl/worksheets/sheet1.xml','<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetData><row r="1"><c r="A1" t="inlineStr"><is><t>EXCEL_CANARY</t></is></c></row></sheetData></worksheet>')
+    with sqlite3.connect('sample.sqlite') as db:
+     db.execute('CREATE TABLE sample(value TEXT)');db.execute("INSERT INTO sample VALUES ('SQLITE_CANARY')")
+    stream=b'BT /F1 12 Tf 50 700 Td (PDF_CANARY) Tj ET'
+    objects=[b'<< /Type /Catalog /Pages 2 0 R >>',b'<< /Type /Pages /Kids [3 0 R] /Count 1 >>',b'<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>',b'<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>',b'<< /Length '+str(len(stream)).encode()+b' >>\\nstream\\n'+stream+b'\\nendstream']
+    pdf=b'%PDF-1.4\\n';offsets=[]
+    for i,obj in enumerate(objects,1):
+     offsets.append(len(pdf));pdf+=str(i).encode()+b' 0 obj\\n'+obj+b'\\nendobj\\n'
+    xref=len(pdf);pdf+=b'xref\\n0 6\\n0000000000 65535 f \\n'+b''.join(f'{o:010d} 00000 n \\n'.encode() for o in offsets)+b'trailer\\n<< /Size 6 /Root 1 0 R >>\\nstartxref\\n'+str(xref).encode()+b'\\n%%EOF\\n'
+    Path('sample.pdf').write_bytes(pdf)
+    Path('broken.pdf').write_bytes(b'not a pdf')
+    print('DOCUMENT_FIXTURES_READY')"""
+            invoke("execute_code", {"code": code})
+            for extension, marker in (
+                ("ipynb", "NOTEBOOK_CANARY"),
+                ("docx", "WORD_CANARY"),
+                ("xlsx", "EXCEL_CANARY"),
+                ("sqlite", "SQLITE_CANARY"),
+                ("pdf", "PDF_CANARY"),
+            ):
+                result = invoke("read_file", {"path": "sample." + extension})
+                assert marker in result.get("content", ""), result
+            malformed = broker.invoke(
+                scope,
+                str(uuid4()),
+                "read_file",
+                {"path": "broken.pdf"},
+                schema_hash=digest(registry.get_entry("read_file").schema),
+                allowed_tools=allowed,
+            )
+            assert (
+                "error" in malformed.lower()
+                or "cannot" in malformed.lower()
+                or "failed" in malformed.lower()
+            ), malformed
+            inspection = invoke("coding", {"action": "inspect"})
+            assert inspection["instructions"] and inspection["folders"] == ["src", "docs"]
+            ref = broker.invoke(
+                scope,
+                str(uuid4()),
+                "_nma_reference",
+                {"kind": "file", "target": "src/value.txt"},
+                schema_hash="nma.workspace.v1",
+                allowed_tools=allowed,
+            )
+            assert "ALPHA_PRIVATE_CANARY" in ref, ref
+            invoke("coding", {"action": "project", "project": "Beta"})
+            invoke("terminal", {"command": "printf BETA > value.txt"})
+            assert (
+                broker.file_bytes(scope, root + "/src/value.txt") == b"ALPHA_PRIVATE_CANARY"
+            )
+            other = Scope(owner, str(uuid4()), str(uuid4()))
+            invoke("terminal", {"command": "printf OTHER > value.txt"}, other)
+            assert broker.file_bytes(other, "project/value.txt") == b"OTHER"
+            with pytest.raises(ScopeRefused):
+                broker.file_bytes(
+                    Scope(str(uuid4()), agent, thread), root + "/src/value.txt"
+                )
+            broker.cancel(scope)
+            new_scope = broker.current_scope(scope)
+            assert new_scope.key != scope.key
+>           broker.ensure(new_scope)
+
+apps/engine/tests/test_native_workspaces.py:295: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <ngertiin_engine.native_executor.IsolatedTools object at 0x10ab216d0>
+scope = Scope(owner_id='c4d7a5ee-0469-414f-b995-3eef4b251fd1', agent_id='aad90130-7560-4759-9ff0-7101c1fd8a0c', thread_id='13f85094-fb21-42dd-b23e-2a1f202c111b', generation=2)
+
+    def ensure(self, scope):
+        key = self._scope(scope)
+        with self.lock:
+            with self._db() as db:
+                row = db.execute(
+                    "SELECT container,volume,state FROM scopes WHERE scope_key=?",
+                    (key,),
+                ).fetchone()
+                if row and row[2] not in {"allocating", "ready", "paused"}:
+                    raise ScopeRefused("Scope is cancelled or has an unknown effect")
+                container = "nma-native-" + self.controller[:8] + "-" + key[:16]
+                volume = (
+                    "nma-work-" + self.controller[:8] + "-" + scope.workspace_key[:24]
+                )
+                if row:
+                    # Historical generation volumes retain their original identities.
+                    volume = row[1]
+                if not row:
+                    previous = db.execute(
+                        "SELECT scope_key,container,state FROM scopes WHERE volume=?",
+                        (volume,),
+                    ).fetchall()
+                    for old_key, old_container, old_state in previous:
+                        if old_state in {"uncertain", "recovery_required"}:
+                            raise ScopeRefused(
+                                "Workspace has unresolved execution; inspect before reusing"
+                            )
+                        if db.execute(
+                            "SELECT 1 FROM operations WHERE scope_key=? AND state='dispatching'",
+                            (old_key,),
+                        ).fetchone():
+                            raise ScopeRefused(
+                                "Workspace is executing another generation"
+                            )
+                        self._docker("rm", "--force", old_container, check=False)
+                        db.execute(
+                            "UPDATE jobs SET state='lost' WHERE scope_key=? AND state='running'",
+                            (old_key,),
+                        )
+                        db.execute(
+                            "UPDATE scopes SET state='retired' WHERE scope_key=?",
+                            (old_key,),
+                        )
+                    db.execute(
+                        "INSERT INTO scopes VALUES (?,?,?,?,?)",
+                        (
+                            key,
+                            json.dumps(scope.__dict__, sort_keys=True),
+                            container,
+                            volume,
+                            "allocating",
+                        ),
+                    )
+            volume_info = self._docker("volume", "inspect", volume, check=False)
+            if volume_info.returncode:
+                with self._db() as db:
+                    current_state = db.execute(
+                        "SELECT state FROM scopes WHERE scope_key=?", (key,)
+                    ).fetchone()[0]
+                    if current_state != "allocating":
+                        db.execute(
+                            "UPDATE scopes SET state='recovery_required' WHERE scope_key=?",
+                            (key,),
+                        )
+                if current_state != "allocating":
+                    raise ScopeRefused(
+                        "Existing workspace missing; empty replacement refused"
+                    )
+                self._docker(
+                    "volume",
+                    "create",
+                    "--label",
+                    self.label,
+                    "--label",
+                    "nma-native.workspace=" + scope.workspace_key,
+                    volume,
+                )
+                self._docker(
+                    "run",
+                    "--rm",
+                    "--network",
+                    "none",
+                    "--read-only",
+                    "--cap-drop",
+                    "ALL",
+                    "--cap-add",
+                    "CHOWN",
+                    "--cap-add",
+                    "FOWNER",
+                    "--security-opt",
+                    "no-new-privileges",
+                    "--user",
+                    "0",
+                    "--mount",
+                    "type=volume,src=" + volume + ",dst=/work",
+                    "--entrypoint",
+                    "/opt/native/bin/python",
+                    self.image,
+                    "-c",
+                    "import os;os.chmod('/work',0o700);os.chown('/work',10001,10001)",
+                )
+            else:
+                labels = json.loads(volume_info.stdout)[0].get("Labels") or {}
+                if labels.get("nma-native.controller") != self.controller or (
+                    labels.get("nma-native.workspace") != scope.workspace_key
+                    and labels.get("nma-native.scope") != key
+                ):
+                    raise ScopeRefused("Unowned workspace volume refused")
+            inspect = self._docker("inspect", container, check=False)
+            if inspect.returncode:
+                self._docker(
+                    "create",
+                    "--name",
+                    container,
+                    "--label",
+                    self.label,
+                    "--label",
+                    "nma-native.scope=" + key,
+                    "--network",
+                    "none",
+                    "--env",
+                    "NMA_NATIVE_VERIFY_KEY=" + self.public_key,
+                    "--env",
+                    "NMA_NATIVE_SCOPE_KEY=" + key,
+                    "--read-only",
+                    "--cap-drop",
+                    "ALL",
+                    "--security-opt",
+                    "no-new-privileges",
+                    "--pids-limit",
+                    "512",
+                    "--memory",
+                    "2g",
+                    "--cpus",
+                    "2",
+                    "--shm-size",
+                    "512m",
+                    "--mount",
+                    "type=volume,src=" + volume + ",dst=/work",
+                    "--tmpfs",
+                    "/tmp:mode=1777",
+                    "--tmpfs",
+                    "/home/probe:uid=10001,gid=10001,mode=700",
+                    self.image,
+                )
+            else:
+                item = json.loads(inspect.stdout)[0]
+                labels = item["Config"].get("Labels") or {}
+                if (
+                    item["Image"] != self.image
+                    or labels.get("nma-native.controller") != self.controller
+                    or labels.get("nma-native.scope") != key
+                ):
+                    raise ScopeRefused("Unowned or unreviewed container refused")
+            self._docker("start", container)
+            deadline = time.monotonic() + 30
+            while time.monotonic() < deadline:
+                ready = self._docker(
+                    "exec",
+                    container,
+                    "/opt/native/bin/python",
+                    "-c",
+                    "from urllib.request import urlopen; from pathlib import Path;import json;json.load(urlopen('http://127.0.0.1:9222/json/version',timeout=1));assert Path('/work/native.sock').is_socket()",
+                    check=False,
+                )
+                if ready.returncode == 0:
+                    with self._db() as db:
+                        db.execute(
+                            "UPDATE scopes SET state='ready' WHERE scope_key=?", (key,)
+                        )
+                    return {
+                        "container": container,
+                        "volume": volume,
+                        "scope_key": key,
+                    }
+                time.sleep(0.1)
+>           raise RuntimeError("Isolated native environment failed readiness")
+E           RuntimeError: Isolated native environment failed readiness
+
+apps/engine/src/ngertiin_engine/native_executor.py:356: RuntimeError
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_native_workspaces.py::test_native_projects_document_extraction_and_scope_boundaries
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 1 passed in 70.42s (0:01:10)

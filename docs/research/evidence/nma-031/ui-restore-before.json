@@ -1,0 +1,7 @@
+{
+  "path": "projects/2ae56c525a4f643137d98a8c/main.py",
+  "main_sha256": "9a66b783d1f0231c4938c265368f4f34398fd927e7d5fa42cf537ebf718d2382",
+  "other_sha256": "3391c2fe08fe43f559d9d1f2a9f7aecd7e0e48bb274ec66fedc6b49480b4edf4",
+  "main_content": "value: int = 0\n",
+  "effect_receipts_sha256": "86cbe0e06e90efd8d57b67f8a151c4784b94988c7592f4424a0fa6bb3f9cb652"
+}

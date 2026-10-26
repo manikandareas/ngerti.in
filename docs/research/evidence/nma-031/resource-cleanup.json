@@ -1,0 +1,16 @@
+{
+  "fixture_servers": [
+    {
+      "port": 3028,
+      "stopped": true
+    },
+    {
+      "port": 3038,
+      "stopped": true
+    }
+  ],
+  "temporary_dependency_link_removed": true,
+  "delivered_image_containers": [],
+  "live_controller_volumes": [],
+  "restore_rehearsal_volumes": []
+}

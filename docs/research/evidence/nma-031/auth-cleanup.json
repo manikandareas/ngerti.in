@@ -1,0 +1,15 @@
+{
+  "identities": [
+    {
+      "user_id": "user_3LEU4i0O77bd5I589ivhOlJxhAo",
+      "readback_status": 404
+    },
+    {
+      "user_id": "user_3LEU4vhRQ0V7bzHRfwfxJkRY6GI",
+      "readback_status": 404
+    }
+  ],
+  "database_dropped": true,
+  "fixture_api_stopped": true,
+  "provider_relay_stopped": true
+}

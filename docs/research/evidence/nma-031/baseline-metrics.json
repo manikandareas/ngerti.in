@@ -1,0 +1,34 @@
+{
+  "baseline_protocol": "nma028-chatgpt-luna-v1",
+  "baseline_sha256": "c1a7b3b29a21e6704599db693c7f5be689e9dc87f7e94314abb8e5d12fb6a810",
+  "thresholds": {
+    "applicable_cases": "All required live cells executed; no blocked cell is a pass.",
+    "task_success_rate_min": 0.95,
+    "integration_failure_rate_max": 0.02,
+    "first_progress_p95_s_max": 10,
+    "settlement_p95_s_max": 180,
+    "recovery_p95_s_max": 60,
+    "observed_duplicate_effects_max": 0,
+    "observed_cross_scope_leaks_max": 0,
+    "observed_stop_violations_max": 0,
+    "unresolved_effects_for_release_max": 0,
+    "confidence": "Release requires at least 100 representative tasks per supported configuration in NMA-039; three repeats do not establish the SLO."
+  },
+  "planned": 3,
+  "attempted": 3,
+  "successful": 3,
+  "failed": 0,
+  "success_wilson_95": [
+    0.43849391955098227,
+    1.0
+  ],
+  "settlement_seconds": {
+    "n": 3,
+    "p50": 56.52414454193786,
+    "p95": 77.86040720809251
+  },
+  "first_progress": "Not instrumented in this task-specific cohort; not zero.",
+  "recovery": "Separate contract/rehearsal evidence; no new latency estimate.",
+  "release_acceptance": false,
+  "limitations": "Three smoke tasks and one separate authenticated composer follow-up do not satisfy the release corpus/sample-size requirements. No direct/adapter causal latency comparison."
+}

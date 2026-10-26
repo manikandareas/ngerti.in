@@ -1,0 +1,20 @@
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from native-tools.Dockerfile
+#1 transferring dockerfile: 1.41kB 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/sha256:b81f1bf356adb3f4cff012b2b95d95c6458b5ba876c1e886a59a24a82e574ebd
+#2 ERROR: pull access denied, repository does not exist or may require authorization: server message: insufficient_scope: authorization failed
+------
+ > [internal] load metadata for docker.io/library/sha256:b81f1bf356adb3f4cff012b2b95d95c6458b5ba876c1e886a59a24a82e574ebd:
+------
+native-tools.Dockerfile:4
+--------------------
+   2 |     # Supply its recorded immutable image ID as BASE_IMAGE; no floating upstream base.
+   3 |     ARG BASE_IMAGE=ngertiin-native-base:b81f1bf356adb3f4c
+   4 | >>> FROM ${BASE_IMAGE}
+   5 |     LABEL org.ngertiin.native.protocol="nma.native-tools.v1" \
+   6 |           org.ngertiin.hermes.revision="7489b22af47ce91b366dde81d5831ea422577498"
+--------------------
+ERROR: failed to build: failed to solve: sha256:b81f1bf356adb3f4cff012b2b95d95c6458b5ba876c1e886a59a24a82e574ebd: failed to resolve source metadata for docker.io/library/sha256:b81f1bf356adb3f4cff012b2b95d95c6458b5ba876c1e886a59a24a82e574ebd: pull access denied, repository does not exist or may require authorization: server message: insufficient_scope: authorization failed

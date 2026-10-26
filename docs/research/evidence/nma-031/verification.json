@@ -1,0 +1,130 @@
+{
+  "task": "NMA-031",
+  "status": "implemented and verified for configured scoped Linux environment",
+  "verified_at": "2026-10-26T14:07:06.681557+00:00",
+  "schema": 16,
+  "cohorts": {
+    "engine_full": {
+      "passed": 190,
+      "skipped": 9,
+      "seconds": 776.82,
+      "log": "engine-full.log",
+      "attribution": "Before final job projections, live authority recheck, file-ID collision refusal and per-message attachment rendering."
+    },
+    "final_native_gateway": {
+      "passed": 6,
+      "skipped": 0,
+      "seconds": 142.88,
+      "log": "final-regression.log"
+    },
+    "supplemental_parallel_scopes": {
+      "passed": 1,
+      "log": "parallel-scopes.log"
+    },
+    "supplemental_file_identity": {
+      "passed": 1,
+      "log": "file-identities.log"
+    },
+    "supplemental_chromium_download": {
+      "passed": 1,
+      "log": "chromium-download.log"
+    },
+    "backend": {
+      "passed": 14,
+      "log": "backend.log"
+    },
+    "actual_model": {
+      "model": "gpt-6-luna",
+      "protocol": "codex_responses",
+      "planned": 3,
+      "attempted": 3,
+      "passed": 3,
+      "evidence": "live-results.json"
+    },
+    "actual_authenticated_composer": {
+      "separate_from_model_denominator": true,
+      "passed": 1,
+      "evidence": "ui-verification.json"
+    },
+    "final_component_rendering": {
+      "uses_recorded_actual_authenticated_snapshot": true,
+      "claims_new_authentication_or_backend_save": false,
+      "evidence": "component-supplement.json"
+    }
+  },
+  "baseline": "baseline-metrics.json",
+  "source": "source.json",
+  "auth_isolation": "authenticated-isolation.json",
+  "preservation": "preservation.json",
+  "original_identity_readback": "original-inventory.json",
+  "cleanup": [
+    "auth-cleanup.json",
+    "fixture-cleanup.json",
+    "resource-cleanup.json"
+  ],
+  "limitations": [
+    "Local configured Docker delivery; no original-account migration or deployment.",
+    "External URL expansion requires network configuration; this image has no external route. File/folder/Git context references are verified.",
+    "Python/Pyright is verified; unavailable or stale diagnostics remain unknown.",
+    "Three real-model smoke tasks do not establish release sample size or reliability. NMA-039/NMA-027 own release and rollout gates.",
+    "Historical live evidence retains its actual candidate image; final targeted checks have separate attribution.",
+    "First-progress and recovery distributions were unavailable for this smoke cohort, never zero."
+  ],
+  "evidence_sha256": {
+    "auth-cleanup.json": "f3c245cec16cc168089c90fdfa5310bc75152f3795f4587dbb26bc1a038f40c5",
+    "authenticated-isolation.json": "0bd26eab29d15b13df9254c7d13233fc1b916c87f085094fc0b4ffc1bf5afa90",
+    "authentication.json": "a54df959baf488a9effd83a760da1b17df90e2a4590d4a3313bed2e0bb53b641",
+    "backend.log": "08e04af7d7fb5c95dfe445da01ac283470ffa3e7ad56b71ce3dd57177d133db5",
+    "baseline-metrics.json": "6765a27ab8a6a7b3194b558de9ae1c8b5bb7310fc64c17609409d4e7f8eb32bb",
+    "browser-download.json": "d3d4fc3fb802d10955be67f96ad964a337419f019b05019cd245a38cb5cb6749",
+    "chromium-download.log": "42a25e0af1e6691c65cb62ba3cc66a7399ef29c892f9802ce8c122db1ab2706a",
+    "coding-failure-lsp.log": "9f6b11a4faaf0b2415885c2cdc60b06edf9b9b39a2359c1b4e54081a0fcd9863",
+    "coding-pass-lsp.log": "ec89024586dcdeb9c8810cfcca411abedc666e7a12fbc532fbdcab851adb68d7",
+    "component-supplement.json": "4fbde0b3e6c4476b9a62e2e55410309cfe0ebe6602641177b75a0b85d75a7f42",
+    "documentation.log": "12d6b08b455bac24d043330327416c992f3ebde828c022916abca2be19ba71c3",
+    "engine-format.log": "04eb0d6e6734823dcd2b2b704729e976f683df7a8f334da7216520ef1cb319bf",
+    "engine-full.log": "f2daf312e5f54745236959cd3554d93512b64190f9c1719b138af0d9022eae1a",
+    "engine-initial-interrupted.log": "19ffaafdcdaf9cb5ec8bd4ffefa7042d3e9c0a9104e9983417eebb9e5b0200bf",
+    "engine-ruff.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "file-identities.log": "44f4cee7d0f1d5e30d46aec90a46c337e1fa4df4984d1d21f0f69cc8db8ea4ab",
+    "files-initial.log": "56b84a1f94843ac429fcb0802f4c25d992e069772d90f5df3ce1cfa5a3a515fb",
+    "final-regression.log": "24738a3630cb38d2176988ae32c4b7f6bb05b55676221e6acdd2f1cda0f3324e",
+    "fixture-cleanup.json": "a7016873d6726996772ac0da234c040dadea2f08d4e76c3d33bdf76a3b7ba955",
+    "gateway-fixture-assertion-failure.log": "41e707db860b565a3623791690b19e04229924326f50e124d62a933071749d6f",
+    "image-build-initial.log": "be464867313f107256d5b7c2cf96463ba93dc3de976a57bc4215b28afe28d549",
+    "image-delivered.log": "21c5bcd89ed114842abfd33c25dab9848ad4ffd6e4f017f9c1d361039d4fa9ec",
+    "live-results.json": "2a406cbae517b9ccb656439596d80a72bddeba95af7b2aa613507eaf739cf489",
+    "live-snapshot.json": "1d495e685223811b0d5af751d6039012e161d02dcb1089c9bf6a53514d23f928",
+    "live-tool-receipts.json": "9d7cc8daef31bb57140810b30d839e21711575531c6bd331cfc17a6441c533d4",
+    "live.log": "0445c7462474436ad268d29ece44d6e07990d7d3b599ec8b11cc796205e6eea1",
+    "native-environment.json": "85b590f369dd852665c8eccb3097c50dc4e426975086309af7eee63a0a5b7cbb",
+    "native-isolation-initial.log": "5a625e2151326d77ed235684dd4f8193cdd056168b4520cb99725813b2b50c54",
+    "original-inventory.json": "2c23ba1ac3649e3372e899386118f963756243ecb7961f535210655bdcb28b90",
+    "parallel-scopes.log": "b92797d79e9d778006fb8c0fa3dc868263d20bd6c55499bd742f8aeafced1163",
+    "preservation.json": "875bf31a1d75c2cd6c1b6cad788385446f19e2868fef8624c2d28e16d82526fb",
+    "provider-route.json": "4c56d78c4fa5482c00c93846c8e32e11cf36f7ac55aa35e7a23b23af87178b29",
+    "resource-cleanup.json": "1d41ea6aaf42484ef7cdab7529b7870b5568b19b226b2a468e0eb1fd7b7e39af",
+    "secret-scan.json": "235da1909b2703ea8fc66f5421d3082ad54f70d171b974ff3fdf434c7b33655c",
+    "source.json": "a6cddb4391197ea6ecb383dc6be0100a470242eac964e4e15e4bd9b282754fee",
+    "static.log": "f0421c3ace0c22d545d97a8bd75df4d50e6ffa0d9b6d59ce5fc452dd083d0bb5",
+    "ui-checkpoint-diff.png": "66bb7fd85f7f8a04a9cf917c233e77d8f88d11b16f059f9546325ffe06c94ab1",
+    "ui-diagnostics-desktop.png": "2031027302c40bbe86d5b60e760ead8d1b91f489c7c94508254421c464f8698f",
+    "ui-file-preview.png": "6ce79ba2c556a8086e707c6e69dd9d5d86161f9927af56e3d864cf7299703dbf",
+    "ui-final-desktop.png": "cd798e2c7cd926d2dbf07bf267659e95a7c1f4967e92e552c39fb7ff2bb975b1",
+    "ui-message-attachment-expanded.png": "73de7e565b827856c52973c1b9659b1211f76990423b0107bc4d94cadecf80de",
+    "ui-message-attachments-mobile.png": "0c54d0756407e350b062217b1afec0ac1e694ad711e6639d5e99e19f5bf9b121",
+    "ui-message-attachments.png": "4413c0a42a6ef770959fd836c53ab9c83ddee8134d3c9bac9aea35f92f39b344",
+    "ui-mobile.png": "cfac87097ce22f2fe992e9aa655ed62207d4769912fe4a9d458ed1220c515a92",
+    "ui-restore-after.json": "62c4bbd743bb9d096dec0a2e53c7baebba3a8f5b5c8b69c477b3417e38443ab8",
+    "ui-restore-before.json": "7c86172f826086e8b9a69eff1bc269415c500ddb1232005fd283107b54d09742",
+    "ui-restored-desktop.png": "e00eba6f983efad75b195d485a246ff60ab81f140dbe6b587d7188c0fe2a02df",
+    "ui-restored-selected-file.png": "989294597fcd2f832a00d68bf4774e453c13a87dd621cf07afd5d064457be2be",
+    "ui-snapshot.json": "a6216b44425fec6bc5ce70adeeb7b39ca29b62536a4203a267940b5df2d802e9",
+    "ui-upload-sent.png": "d2c780bda37e9854d1d4855343e2c26fdb639ec262a5ef08fddcb07e8e9a8144",
+    "ui-verification.json": "c6fcde9e7c83133fa53a69ca39307d968509090d4d75f458f3fe379a77cc3600",
+    "web-build.log": "dc201500c4220289511d361f7178b08fd902bfac895285775e6cf913a55f8631",
+    "whitespace.log": "f6a7d2113895ff7c42d5ce1b8ed901898e65102abf499b98eebd4c7ba5a0c7a2",
+    "workspace-readiness-failure.log": "dd18b0f32fec29e5ce64885d42da272d6f0702b874f036ef3484914a031ed55c",
+    "workspace-recovery-pass.log": "a8618b3c8bd20de498459f29cd17d7e1e1beb6bce06b7f23fa09654e3f9e9243"
+  }
+}

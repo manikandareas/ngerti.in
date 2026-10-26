@@ -1,0 +1,146 @@
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+terminal {"output": "", "exit_code": 0, "error": null}
+read_file {"content": "1|PERSISTENT_WORKSPACE", "total_lines": 1, "file_size": 20, "truncated": false, "is_binary": false, "is_image": false, "not_found": false}
+workspace {"artifact_id": "a3b54fe5-3dd0-4f4d-8a59-2c8d7e5e0bc9", "byte_count": 299, "filename": "\u8a66\u9a13 document.docx", "media_type": "application/octet-stream", "next_step": "Use native read_file on workspace_path to extract supported documents.", "producing_agent_id": null, "producing_run_id": null, "revision_id": "d1dd4816-6de7-5acd-8520-5217fd8aebbc", "sha256": "a3a78450286321ff81633f7f1097b5d30bef9b16b9a5f883e75906148964caf0", "status": "ready", "storage": "file.v1", "thread_id": "4f950a17-a1ed-4759-9f8a-39259e747c40", "workspace_path": "/work/imports/a3b54fe5-3dd0-4f4d-8a59-2c8d7e5e0bc9/\u8a66\u9a13 document.docx"}
+read_file {"content": "1|DOCUMENT_INPUT_CANARY", "total_lines": 1, "file_size": 299, "truncated": false, "extracted_document": true}
+execute_code {"status": "success", "output": "BINARY_READY\n", "exit_code": 0, "tool_calls_made": 0, "duration_seconds": 0.05, "kernel": {"mode": "session", "reused": false, "execution_count": 1, "state_reset": false}, "stdout_truncated": false, "stdout_bytes_captured": 13, "stdout_bytes_total": 13, "stdout_bytes_omitted": 0}
+workspace {"artifact_id": "73042d3b-5959-59d5-ad2b-ffb16806ce3e", "byte_count": 2097152, "filename": "\u7d50\u679c output.bin", "media_type": "application/octet-stream", "producing_agent_id": "4aa10f74-82e2-4b0a-8789-ef84ab31d08a", "producing_run_id": "0976a59a-16a0-59b5-913c-7032b907e58b", "revision_id": "ce172c09-63fe-5874-8d69-afdcaae0a855", "sha256": "91d3beb88a9b2f778a6c44a1c53b63d3c79931845a9aef84b3fb414610bd1938", "status": "ready", "storage": "file.v1", "thread_id": "4f950a17-a1ed-4759-9f8a-39259e747c40"}
+terminal {"output": "Background process started", "session_id": "proc_004da49121e2", "pid": 351, "exit_code": 0, "error": null, "notify_on_complete": true}
+read_file {"status": "unchanged", "message": "File unchanged since last read. The content from the earlier read_file result in this conversation is still current \u2014 refer to that instead of re-reading.", "path": "retained.txt", "dedup": true, "content_returned": false}
+F
+=================================== FAILURES ===================================
+________________ test_gateway_files_workspace_and_job_recovery _________________
+
+runtime = (PosixPath('/tmp/nma-zshrfhfy'), <http.server.ThreadingHTTPServer object at 0x1074723c0>, <function runtime.<locals>.c...disconnect', 'provider_auth.start', 'provider_auth.status', ...], 'extension_schema': '16', 'lifecycle': 'ready', ...})
+public_api = <function public_api.<locals>.request at 0x107501850>
+
+    def test_gateway_files_workspace_and_job_recovery(runtime, public_api):
+        root, provider, call, start, *_ = runtime
+        image = os.environ["NMA_TEST_NATIVE_IMAGE"]
+        (root / "capabilities.json").write_text(json.dumps(catalog(image)))
+        agent = capability_agent(
+            call, "native-file-delivery", tool_grants=list(catalog(image)["tool_grants"])
+        )
+        thread = call(command("thread.read", {"thread_id": agent["primary_dm_thread_id"]}))[
+            "result"
+        ]
+        target = {
+            "name": "terminal",
+            "arguments": {"command": "printf 'PERSISTENT_WORKSPACE' > retained.txt"},
+        }
+    
+        def scripted(body, text):
+            if not body.get("messages"):
+                return None
+            if body["messages"][-1]["role"] == "tool":
+                return {"role": "assistant", "content": body["messages"][-1]["content"]}
+            return {
+                "role": "assistant",
+                "content": None,
+                "tool_calls": [
+                    {
+                        "id": "native-" + uuid4().hex,
+                        "type": "function",
+                        "function": {
+                            "name": target["name"],
+                            "arguments": json.dumps(target["arguments"]),
+                        },
+                    }
+                ],
+            }
+    
+        provider.goal_script = scripted
+    
+        def run(name, arguments, attachments=()):
+            target.update(name=name, arguments=arguments)
+            message = send(thread, "Execute the selected native workflow")
+            message["payload"]["attachment_ids"] = list(attachments)
+            receipt = call(message)
+            assert "result" in receipt, receipt
+            settle(call, receipt["result"]["run_id"])
+            tool = next(
+                m
+                for m in reversed(provider.requests[-1]["messages"])
+                if m["role"] == "tool"
+            )
+            result = json.loads(tool["content"])
+            print(name, json.dumps(result)[:3000], flush=True)
+            assert not result.get("error"), result
+            return result
+    
+        try:
+            run("terminal", target["arguments"])
+            assert (
+                "PERSISTENT_WORKSPACE"
+                in run("read_file", {"path": "retained.txt"})["content"]
+            )
+            buffer = io.BytesIO()
+            with zipfile.ZipFile(buffer, "w") as archive:
+                archive.writestr(
+                    "word/document.xml",
+                    '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body><w:p><w:r><w:t>DOCUMENT_INPUT_CANARY</w:t></w:r></w:p></w:body></w:document>',
+                )
+            original = upload(
+                call, thread["thread_id"], buffer.getvalue(), "試験 document.docx"
+            )
+            imported = run(
+                "workspace",
+                {"action": "import_file", "artifact_id": original["artifact_id"]},
+                [original["artifact_id"]],
+            )
+            assert (
+                "DOCUMENT_INPUT_CANARY"
+                in run("read_file", {"path": imported["workspace_path"]})["content"]
+            )
+            run(
+                "execute_code",
+                {
+                    "code": "from pathlib import Path\nPath('/work/project/output.bin').write_bytes(bytes(range(256))*8192)\nprint('BINARY_READY')"
+                },
+            )
+            produced = run(
+                "workspace",
+                {
+                    "action": "publish_file",
+                    "path": "project/output.bin",
+                    "filename": "結果 output.bin",
+                },
+            )
+            path = f"/artifacts/{produced['artifact_id']}/revisions/{produced['revision_id']}/download?thread_id={thread['thread_id']}"
+            assert public_api(path).read() == bytes(range(256)) * 8192
+            inspection = call(
+                command(
+                    "workspace.action",
+                    {
+                        "thread_id": thread["thread_id"],
+                        "agent_id": agent["agent_id"],
+                        "arguments": {"action": "inspect"},
+                    },
+                )
+            )
+            assert "retained.txt" in inspection["result"]["hashes"], inspection
+            process = run(
+                "terminal",
+                {
+                    "command": "sleep 3; printf 'JOB_DONE' > /work/project/completed.txt",
+                    "background": True,
+                    "notify_on_complete": True,
+                },
+            )
+            assert process["session_id"]
+            start.current.kill()
+            start.current.wait(timeout=10)
+            start()
+            assert public_api(path).read() == bytes(range(256)) * 8192
+            assert (
+                "PERSISTENT_WORKSPACE"
+>               in run("read_file", {"path": "retained.txt"})["content"]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            )
+E           KeyError: 'content'
+
+apps/engine/tests/test_workspace_delivery.py:168: KeyError
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_workspace_delivery.py::test_gateway_files_workspace_and_job_recovery
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed in 21.26s

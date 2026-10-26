@@ -1,0 +1,114 @@
+[
+  {
+    "run_id": "ad6d6857-cd74-53d2-9b2b-43e1db9c90c0",
+    "tool": "read_file",
+    "receipt": {
+      "value": "{\"content\": \"1|The expedition inventory contains 17 blue crates and 26 green crates.\", \"total_lines\": 1, \"file_size\": 347, \"truncated\": false, \"extracted_document\": true}"
+    }
+  },
+  {
+    "run_id": "ad6d6857-cd74-53d2-9b2b-43e1db9c90c0",
+    "tool": "terminal",
+    "receipt": {
+      "value": "{\"output\": \"Inventory summary\\nBlue crates: 17\\nGreen crates: 26\\nTotal crates: 43\\n\\n['inventory.txt']\", \"exit_code\": 0, \"error\": null}"
+    }
+  },
+  {
+    "run_id": "3a299eea-a9d7-5d33-9a55-88c399df2d64",
+    "tool": "coding",
+    "receipt": {
+      "value": "{\"error\": \"WORKSPACE_OPERATION_FAILED\", \"detail\": \"Project name must contain 1-120 characters\", \"outcome\": \"rejected\"}"
+    }
+  },
+  {
+    "run_id": "3a299eea-a9d7-5d33-9a55-88c399df2d64",
+    "tool": "coding",
+    "receipt": {
+      "value": "{\"project\": \"type-error-demo\", \"root\": \"/work/projects/2ae56c525a4f643137d98a8c\", \"folders\": [\".\"], \"worktrees\": {}, \"hashes\": {}, \"checkpoints\": [], \"instructions\": [], \"files_persist\": true, \"ram_persists\": \"only while the scoped container remains running\", \"execution_user\": 10001}"
+    }
+  },
+  {
+    "run_id": "3a299eea-a9d7-5d33-9a55-88c399df2d64",
+    "tool": "terminal",
+    "receipt": {
+      "value": "{\"output\": \"Initialized empty Git repository in /work/projects/2ae56c525a4f643137d98a8c/.git/\\n[main (root-commit) fc3cc0a] Add type-error demonstration\\n 1 file changed, 1 insertion(+)\\n create mode 100644 main.py\", \"exit_code\": 0, \"error\": null}"
+    }
+  },
+  {
+    "run_id": "3a299eea-a9d7-5d33-9a55-88c399df2d64",
+    "tool": "coding",
+    "receipt": {
+      "value": "{\"path\": \"/work/projects/2ae56c525a4f643137d98a8c/main.py\", \"diagnostics\": [{\"range\": {\"start\": {\"line\": 0, \"character\": 13}, \"end\": {\"line\": 0, \"character\": 21}}, \"message\": \"Type \\\"Literal['broken']\\\" is not assignable to declared type \\\"int\\\"\\n\\u00a0\\u00a0\\\"Literal['broken']\\\" is not assignable to \\\"int\\\"\", \"severity\": 1, \"code\": \"reportAssignmentType\", \"source\": \"Pyright\", \"codeDescription\": {\"href\": \"https://github.com/microsoft/pyright/blob/main/docs/configuration.md#reportAssignmentType\"}}], \"language_server\": {\"enabled\": true, \"wait_mode\": \"document\", \"wait_timeout\": 5.0, \"install_strategy\": \"manual\", \"clients\": [{\"server_id\": \"pyright\", \"workspace_root\": \"/work/projects/2ae56c525a4f643137d98a8c\", \"workspace_folders\": [\"/work/projects/2ae56c525a4f643137d98a8c\"], \"state\": \"running\", \"running\": true}], \"broken\": [], \"disabled_servers\": [], \"broken_retry_seconds\": 0.0, \"warmup_timeout\": 15.0, \"exclude_roots\": [], \"trusted_workspaces\": [], \"untrusted_skipped\": []}, \"verified\": true}"
+    }
+  },
+  {
+    "run_id": "3a299eea-a9d7-5d33-9a55-88c399df2d64",
+    "tool": "read_file",
+    "receipt": {
+      "value": "{\"content\": \"1|value: int = 'broken'\", \"total_lines\": 1, \"file_size\": 22, \"truncated\": false, \"is_binary\": false, \"is_image\": false, \"not_found\": false}"
+    }
+  },
+  {
+    "run_id": "3a299eea-a9d7-5d33-9a55-88c399df2d64",
+    "tool": "patch",
+    "receipt": {
+      "value": "{\"success\": true, \"diff\": \"--- a//work/projects/2ae56c525a4f643137d98a8c/main.py\\n+++ b//work/projects/2ae56c525a4f643137d98a8c/main.py\\n@@ -1 +1 @@\\n-value: int = 'broken'\\n+value: int = 0\\n\", \"files_modified\": [\"/work/projects/2ae56c525a4f643137d98a8c/main.py\"], \"lint\": {\"status\": \"ok\", \"output\": \"\"}, \"resolved_path\": \"/work/projects/2ae56c525a4f643137d98a8c/main.py\"}"
+    }
+  },
+  {
+    "run_id": "3a299eea-a9d7-5d33-9a55-88c399df2d64",
+    "tool": "coding",
+    "receipt": {
+      "value": "{\"path\": \"/work/projects/2ae56c525a4f643137d98a8c/main.py\", \"diagnostics\": [], \"language_server\": {\"enabled\": true, \"wait_mode\": \"document\", \"wait_timeout\": 5.0, \"install_strategy\": \"manual\", \"clients\": [{\"server_id\": \"pyright\", \"workspace_root\": \"/work/projects/2ae56c525a4f643137d98a8c\", \"workspace_folders\": [\"/work/projects/2ae56c525a4f643137d98a8c\"], \"state\": \"running\", \"running\": true}], \"broken\": [], \"disabled_servers\": [], \"broken_retry_seconds\": 0.0, \"warmup_timeout\": 15.0, \"exclude_roots\": [], \"trusted_workspaces\": [], \"untrusted_skipped\": []}, \"verified\": true}"
+    }
+  },
+  {
+    "run_id": "3a299eea-a9d7-5d33-9a55-88c399df2d64",
+    "tool": "terminal",
+    "receipt": {
+      "value": "{\"output\": \"[main c38272e] Fix annotated integer value\\n 1 file changed, 1 insertion(+), 1 deletion(-)\\n## main\\nc38272e Fix annotated integer value\", \"exit_code\": 0, \"error\": null}"
+    }
+  },
+  {
+    "run_id": "e6191fe0-3b6c-5b3a-8923-62f6cd79785f",
+    "tool": "terminal",
+    "receipt": {
+      "value": "{\"output\": \"Background process started\", \"session_id\": \"proc_d54f1660ad36\", \"pid\": 455, \"exit_code\": 0, \"error\": null, \"hint\": \"background=true without notify_on_complete=true means this process runs SILENTLY \u2014 you will not be told when it exits. If this is a bounded task (test suite, build, CI poller, deploy, anything with a defined end), you almost certainly wanted notify_on_complete=true so the system pings you on exit. Re-launch with notify_on_complete=true, or call process(action='poll') / process(action='wait') yourself to learn the outcome. Only ignore this hint for genuine long-lived processes that never exit (servers, watchers, daemons).\"}"
+    }
+  },
+  {
+    "run_id": "e6191fe0-3b6c-5b3a-8923-62f6cd79785f",
+    "tool": "process_manage",
+    "receipt": {
+      "value": "{\"status\": \"ok\", \"bytes_written\": 22}"
+    }
+  },
+  {
+    "run_id": "e6191fe0-3b6c-5b3a-8923-62f6cd79785f",
+    "tool": "process_manage",
+    "receipt": {
+      "value": "{\"status\": \"exited\", \"command\": \"python -c 'from pathlib import Path; p=Path(\\\"/work/project\\\"); p.mkdir(parents=True, exist_ok=True); import sys; line=sys.stdin.readline(); (p/\\\"process-result.txt\\\").write_text(line, encoding=\\\"utf-8\\\"); print(\\\"wrote\\\", repr(line))'\", \"exit_code\": 0, \"completion_reason\": \"exited\", \"termination_source\": \"\", \"output\": \"NATIVE_STDIN_VERIFIED\\r\\nwrote 'NATIVE_STDIN_VERIFIED\\\\n'\\r\\n\"}"
+    }
+  },
+  {
+    "run_id": "e6191fe0-3b6c-5b3a-8923-62f6cd79785f",
+    "tool": "process_manage",
+    "receipt": {
+      "value": "{\"session_id\": \"proc_d54f1660ad36\", \"command\": \"python -c 'from pathlib import Path; p=Path(\\\"/work/project\\\"); p.mkdir(parents=True, exist_ok=True); import sys; line=sys.stdin.readline(); (p/\\\"process-result.txt\\\").write_text(line, encoding=\\\"utf-8\\\"); print(\\\"wrote\\\", repr(line))'\", \"status\": \"exited\", \"output\": \"NATIVE_STDIN_VERIFIED\\nwrote 'NATIVE_STDIN_VERIFIED\\\\n'\", \"total_lines\": 2, \"showing\": \"2 lines\"}"
+    }
+  },
+  {
+    "run_id": "e6191fe0-3b6c-5b3a-8923-62f6cd79785f",
+    "tool": "read_file",
+    "receipt": {
+      "value": "{\"content\": \"1|NATIVE_STDIN_VERIFIED\", \"total_lines\": 1, \"file_size\": 22, \"truncated\": false, \"is_binary\": false, \"is_image\": false, \"not_found\": false}"
+    }
+  },
+  {
+    "run_id": "9fea8b87-c71d-56b8-8607-f79e61604748",
+    "tool": "read_file",
+    "receipt": {
+      "value": "{\"content\": \"1|UI_UPLOAD_VERIFIED\\n2|A file attached through the production composer.\", \"total_lines\": 2, \"file_size\": 68, \"truncated\": false, \"is_binary\": false, \"is_image\": false, \"not_found\": false}"
+    }
+  }
+]

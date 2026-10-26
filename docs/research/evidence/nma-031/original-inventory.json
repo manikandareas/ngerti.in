@@ -1,0 +1,16 @@
+{
+  "original_partition_count": 1,
+  "schema_versions": [
+    14
+  ],
+  "artifact_counts": [
+    1
+  ],
+  "resource_counts": [
+    3
+  ],
+  "inventory_sha256": "e2d8bf2f73a2f0160cb40e2637e44a3d9958b7d5d317f1f7c761a8e6171e734f",
+  "migration": "No original partition or external resource was migrated or replaced.",
+  "final_readback_matches": true,
+  "artifact_content_hashes_verified": true
+}

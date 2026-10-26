@@ -1,0 +1,73 @@
+terminal {"output": "", "exit_code": 0, "error": null}
+coding {"created": true, "checkpoints": [{"hash": "48e108a534caa6901775534260fe7c61b857b2e9", "short_hash": "48e108a", "timestamp": "2026-10-26T12:38:42+00:00", "reason": "Ngertiin explicit checkpoint", "files_changed": 0, "insertions": 0, "deletions": 0}]}
+read_file {"content": "1|value: int = 1", "total_lines": 1, "file_size": 15, "truncated": false, "is_binary": false, "is_image": false, "not_found": false}
+patch {"success": true, "diff": "--- a//work/project/main.py\n+++ b//work/project/main.py\n@@ -1 +1 @@\n-value: int = 1\n+value: int = 'broken'\n", "files_modified": ["/work/project/main.py"], "lint": {"status": "ok", "output": ""}, "resolved_path": "/work/project/main.py"}
+coding {"path": "/work/project/main.py", "diagnostics": null, "language_server": {"enabled": true, "wait_mode": "document", "wait_timeout": 5.0, "install_strategy": "manual", "clients": [{"server_id": "pyright", "workspace_root": "/work/project", "workspace_folders": ["/work/project"], "state": "running", "running": true}], "broken": [], "disabled_servers": [], "broken_retry_seconds": 0.0, "warmup_timeout": 15.0, "exclude_roots": [], "trusted_workspaces": [], "untrusted_skipped": []}, "verified": false}
+F
+=================================== FAILURES ===================================
+______________ test_native_coding_processes_and_persistent_files _______________
+
+tmp_path = PosixPath('/private/var/folders/j1/p1582yhj20z58phnf_zrzy7w0000gn/T/pytest-of-vitoandareasmanik/pytest-133/test_native_coding_processes_a0')
+
+    def test_native_coding_processes_and_persistent_files(tmp_path):
+        import model_tools  # noqa: F401
+        from ngertiin_engine.coding import install
+        from tools.registry import registry
+    
+        install()
+        owner, agent, thread = (str(uuid4()) for _ in range(3))
+        scope = Scope(owner, agent, thread)
+        broker = IsolatedTools(tmp_path, owner, image=os.environ["NMA_TEST_NATIVE_IMAGE"])
+        allowed = {
+            "terminal",
+            "read_file",
+            "write_file",
+            "patch",
+            "search_files",
+            "process_manage",
+            "execute_code",
+            "coding",
+        }
+    
+        def invoke(name, args):
+            result = broker.invoke(
+                scope,
+                str(uuid4()),
+                name,
+                args,
+                schema_hash=digest(registry.get_entry(name).schema),
+                allowed_tools=allowed,
+            )
+            value = json.loads(result) if isinstance(result, str) else result
+            print(name, json.dumps(value)[:12000], flush=True)
+            assert not value.get("error"), value
+            return value
+    
+        try:
+            setup = invoke(
+                "terminal",
+                {
+                    "command": "git init -q && git config user.email fixture@example.invalid && git config user.name Fixture && printf 'value: int = 1\n' > main.py && printf 'Keep this file\n' > other.txt && git add main.py other.txt && git commit -qm initial"
+                },
+            )
+            assert setup.get("exit_code", 0) == 0, setup
+            baseline = invoke("coding", {"action": "checkpoint"})["checkpoints"][0]["hash"]
+            invoke("read_file", {"path": "main.py"})
+            invoke(
+                "patch",
+                {
+                    "path": "main.py",
+                    "old_string": "value: int = 1",
+                    "new_string": "value: int = 'broken'",
+                },
+            )
+            diags = invoke("coding", {"action": "diagnostics", "path": "main.py"})
+>           assert diags["verified"] and diags["diagnostics"], diags
+E           AssertionError: {'path': '/work/project/main.py', 'diagnostics': None, 'language_server': {'enabled': True, 'wait_mode': 'document', 'wait_timeout': 5.0, 'install_strategy': 'manual', ...}, 'verified': False}
+E           assert (False)
+
+apps/engine/tests/test_native_workspaces.py:70: AssertionError
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_native_workspaces.py::test_native_coding_processes_and_persistent_files
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed in 24.29s

@@ -1,0 +1,154 @@
+{
+  "model": "gpt-6-luna",
+  "protocol": "codex_responses",
+  "image": "sha256:ead660850698c36dc7fdb47731fe1eb76f96f641ea8ce962cb0b1bec0b42d451",
+  "cases": [
+    {
+      "name": "document_binary",
+      "admission": {
+        "result": {
+          "agent_id": "1548415d-505b-4bf0-b3e9-ba4b67255499",
+          "command_id": "538f790a-846c-4534-85fe-385e2503653f",
+          "committed_seq": "9",
+          "config_revision": "1",
+          "context_generation": "1",
+          "message_id": "48a8b540-060b-5876-8243-21cd73f81b38",
+          "run_id": "ad6d6857-cd74-53d2-9b2b-43e1db9c90c0",
+          "schema_version": "nma.v1",
+          "status": "accepted",
+          "thread_id": "66cb8092-9a11-410d-b0f6-325ce1acd8f8"
+        }
+      },
+      "run": {
+        "agent_id": "1548415d-505b-4bf0-b3e9-ba4b67255499",
+        "config_revision": "1",
+        "context_generation": "1",
+        "continuation_required": false,
+        "error_code": null,
+        "run_id": "ad6d6857-cd74-53d2-9b2b-43e1db9c90c0",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Created and published the ZIP containing `inventory.txt` (17 blue crates, 26 green crates, 43 total).\n\nDurable artifact reference: `eb85afeb-fc3a-5526-bb24-946ad4521eb9`",
+        "thread_id": "66cb8092-9a11-410d-b0f6-325ce1acd8f8",
+        "turn_exit_reason": "text_response(finish_reason=stop)"
+      },
+      "duplicate_run_id": "ad6d6857-cd74-53d2-9b2b-43e1db9c90c0",
+      "artifacts": [
+        {
+          "artifact_id": "eb85afeb-fc3a-5526-bb24-946ad4521eb9",
+          "byte_count": 179,
+          "filename": "inventory.zip",
+          "media_type": "application/zip",
+          "producing_agent_id": "1548415d-505b-4bf0-b3e9-ba4b67255499",
+          "producing_run_id": "ad6d6857-cd74-53d2-9b2b-43e1db9c90c0",
+          "revision_id": "a4c6374a-ebae-5300-9e55-ba5ffa4137ea",
+          "sha256": "20776502491fb3c476b40b4721969ed1bb23bda8e42c0686c0816c25f4518437",
+          "status": "ready",
+          "storage": "file.v1",
+          "thread_id": "66cb8092-9a11-410d-b0f6-325ce1acd8f8"
+        }
+      ],
+      "passed": true,
+      "content_oracle": true,
+      "elapsed_seconds": 45.6865962499287
+    },
+    {
+      "name": "coding_diagnostics",
+      "admission": {
+        "result": {
+          "agent_id": "1548415d-505b-4bf0-b3e9-ba4b67255499",
+          "command_id": "0b4da828-5162-4f47-87cd-ee57b4f31558",
+          "committed_seq": "92",
+          "config_revision": "1",
+          "context_generation": "1",
+          "message_id": "59853113-de19-5d5e-bffb-31ea77cdc54b",
+          "run_id": "3a299eea-a9d7-5d33-9a55-88c399df2d64",
+          "schema_version": "nma.v1",
+          "status": "accepted",
+          "thread_id": "66cb8092-9a11-410d-b0f6-325ce1acd8f8"
+        }
+      },
+      "run": {
+        "agent_id": "1548415d-505b-4bf0-b3e9-ba4b67255499",
+        "config_revision": "1",
+        "context_generation": "1",
+        "continuation_required": false,
+        "error_code": null,
+        "run_id": "3a299eea-a9d7-5d33-9a55-88c399df2d64",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Created the committed Git repository on `main`. Pyright reported the initial assignment type error; after changing the value to `0`, diagnostics were clean. The corrected file is committed, and the working tree is clean.\n\nDurable `main.py` artifact reference: `802dcd5f-8572-5c33-8da3-c3a951d9b359`",
+        "thread_id": "66cb8092-9a11-410d-b0f6-325ce1acd8f8",
+        "turn_exit_reason": "text_response(finish_reason=stop)"
+      },
+      "duplicate_run_id": "3a299eea-a9d7-5d33-9a55-88c399df2d64",
+      "artifacts": [
+        {
+          "artifact_id": "802dcd5f-8572-5c33-8da3-c3a951d9b359",
+          "byte_count": 15,
+          "filename": "main.py",
+          "media_type": "text/x-python",
+          "producing_agent_id": "1548415d-505b-4bf0-b3e9-ba4b67255499",
+          "producing_run_id": "3a299eea-a9d7-5d33-9a55-88c399df2d64",
+          "revision_id": "dd807aee-9912-550a-ae58-8d27991c69ee",
+          "sha256": "9a66b783d1f0231c4938c265368f4f34398fd927e7d5fa42cf537ebf718d2382",
+          "status": "ready",
+          "storage": "file.v1",
+          "thread_id": "66cb8092-9a11-410d-b0f6-325ce1acd8f8"
+        }
+      ],
+      "passed": true,
+      "elapsed_seconds": 77.86040720809251
+    },
+    {
+      "name": "background_completion",
+      "admission": {
+        "result": {
+          "agent_id": "1548415d-505b-4bf0-b3e9-ba4b67255499",
+          "command_id": "4f176e2a-a137-4c74-8197-10abf735e93f",
+          "committed_seq": "222",
+          "config_revision": "1",
+          "context_generation": "1",
+          "message_id": "b2450105-2cc6-551b-928a-d3fe6bec933c",
+          "run_id": "e6191fe0-3b6c-5b3a-8923-62f6cd79785f",
+          "schema_version": "nma.v1",
+          "status": "accepted",
+          "thread_id": "66cb8092-9a11-410d-b0f6-325ce1acd8f8"
+        }
+      },
+      "run": {
+        "agent_id": "1548415d-505b-4bf0-b3e9-ba4b67255499",
+        "config_revision": "1",
+        "context_generation": "1",
+        "continuation_required": false,
+        "error_code": null,
+        "run_id": "e6191fe0-3b6c-5b3a-8923-62f6cd79785f",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "The PTY process read `NATIVE_STDIN_VERIFIED`, wrote it to `/work/project/process-result.txt`, and exited with code 0. Verified the file contents.\n\nDurable artifact reference: `d4ed7f30-8a79-5622-b7b1-db3d72cc9436`",
+        "thread_id": "66cb8092-9a11-410d-b0f6-325ce1acd8f8",
+        "turn_exit_reason": "text_response(finish_reason=stop)"
+      },
+      "duplicate_run_id": "e6191fe0-3b6c-5b3a-8923-62f6cd79785f",
+      "artifacts": [
+        {
+          "artifact_id": "d4ed7f30-8a79-5622-b7b1-db3d72cc9436",
+          "byte_count": 22,
+          "filename": "process-result.txt",
+          "media_type": "text/plain",
+          "producing_agent_id": "1548415d-505b-4bf0-b3e9-ba4b67255499",
+          "producing_run_id": "e6191fe0-3b6c-5b3a-8923-62f6cd79785f",
+          "revision_id": "7e4710b5-cdf1-5935-8273-a702313a8feb",
+          "sha256": "3391c2fe08fe43f559d9d1f2a9f7aecd7e0e48bb274ec66fedc6b49480b4edf4",
+          "status": "ready",
+          "storage": "file.v1",
+          "thread_id": "66cb8092-9a11-410d-b0f6-325ce1acd8f8"
+        }
+      ],
+      "passed": true,
+      "elapsed_seconds": 56.52414454193786
+    }
+  ],
+  "denominator": 3,
+  "fixture": "actual Clerk API, real model, production native workers; synthetic user files"
+}

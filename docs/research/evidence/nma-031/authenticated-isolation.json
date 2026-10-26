@@ -1,0 +1,9 @@
+{
+  "own_thread": 200,
+  "foreign_thread": 404,
+  "foreign_download": 404,
+  "missing_auth": 401,
+  "invalid_auth": 401,
+  "own_download": 200,
+  "download_hash_matches": true
+}

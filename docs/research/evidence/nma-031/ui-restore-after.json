@@ -1,0 +1,6 @@
+{
+  "main_content": "value: int = 'broken'\n",
+  "main_changed": true,
+  "unrelated_preserved": true,
+  "external_receipts_preserved": true
+}

@@ -18228,7 +18228,7 @@
           "theme": {
             "mode": "light"
           },
-          "width": 112,
+          "width": 80,
           "height": "fill_container",
           "fill": "#FFFFFF00",
           "effect": {
@@ -18236,7 +18236,10 @@
             "radius": 24
           },
           "layout": "vertical",
-          "padding": 12,
+          "padding": [
+            12,
+            8
+          ],
           "children": [
             {
               "type": "frame",
@@ -18252,7 +18255,7 @@
               "gap": 24,
               "padding": [
                 24,
-                12
+                4
               ],
               "alignItems": "center",
               "children": [
@@ -19918,7 +19921,7 @@
           "theme": {
             "mode": "dark"
           },
-          "width": 112,
+          "width": 80,
           "height": "fill_container",
           "fill": "#FFFFFF00",
           "effect": {
@@ -19926,7 +19929,10 @@
             "radius": 24
           },
           "layout": "vertical",
-          "padding": 12,
+          "padding": [
+            12,
+            8
+          ],
           "children": [
             {
               "type": "frame",
@@ -19964,7 +19970,7 @@
               "gap": 24,
               "padding": [
                 24,
-                12
+                4
               ],
               "alignItems": "center",
               "children": [
@@ -21637,7 +21643,7 @@
           "theme": {
             "mode": "light"
           },
-          "width": 112,
+          "width": 80,
           "height": "fill_container",
           "fill": "#FFFFFF00",
           "effect": {
@@ -21645,7 +21651,10 @@
             "radius": 24
           },
           "layout": "vertical",
-          "padding": 12,
+          "padding": [
+            12,
+            8
+          ],
           "children": [
             {
               "type": "frame",
@@ -21661,7 +21670,7 @@
               "gap": 24,
               "padding": [
                 24,
-                12
+                4
               ],
               "alignItems": "center",
               "children": [
@@ -23292,7 +23301,7 @@
           "theme": {
             "mode": "dark"
           },
-          "width": 112,
+          "width": 80,
           "height": "fill_container",
           "fill": "#FFFFFF00",
           "effect": {
@@ -23300,7 +23309,10 @@
             "radius": 24
           },
           "layout": "vertical",
-          "padding": 12,
+          "padding": [
+            12,
+            8
+          ],
           "children": [
             {
               "type": "frame",
@@ -23338,7 +23350,7 @@
               "gap": 24,
               "padding": [
                 24,
-                12
+                4
               ],
               "alignItems": "center",
               "children": [
@@ -27863,7 +27875,7 @@
           "theme": {
             "mode": "light"
           },
-          "width": 112,
+          "width": 80,
           "height": "fill_container",
           "fill": "#FFFFFF00",
           "effect": {
@@ -27871,7 +27883,10 @@
             "radius": 24
           },
           "layout": "vertical",
-          "padding": 12,
+          "padding": [
+            12,
+            8
+          ],
           "children": [
             {
               "type": "frame",
@@ -27887,7 +27902,7 @@
               "gap": 24,
               "padding": [
                 24,
-                12
+                4
               ],
               "alignItems": "center",
               "children": [
@@ -29482,7 +29497,7 @@
           "name": "Computer modal backdrop",
           "width": 1440,
           "height": 1000,
-          "fill": "#000000CC",
+          "fill": "#15171A80",
           "justifyContent": "center",
           "alignItems": "center",
           "children": [
@@ -29490,32 +29505,40 @@
               "type": "frame",
               "id": "EDe4M",
               "name": "Computer viewer dialog",
+              "clip": true,
               "width": 1120,
-              "fill": "#FFFFFF00",
+              "fill": "$ng-app/card",
+              "cornerRadius": 20,
               "stroke": "$ng-app/border",
+              "strokeWidth": 1,
               "layout": "vertical",
-              "gap": 20,
+              "padding": [
+                0,
+                10,
+                10,
+                10
+              ],
               "children": [
                 {
                   "type": "frame",
                   "id": "Tli5Z",
-                  "x": 0,
-                  "y": 0,
                   "name": "Computer viewer title bar",
-                  "enabled": false,
-                  "width": 1120,
-                  "height": 60,
-                  "gap": 12,
+                  "width": "fill_container",
+                  "height": 52,
+                  "gap": 10,
                   "padding": [
                     0,
-                    24
+                    8
                   ],
                   "alignItems": "center",
                   "children": [
                     {
                       "type": "icon",
                       "id": "QGZXt",
+                      "x": 8,
+                      "y": 16,
                       "name": "Computer icon",
+                      "enabled": false,
                       "width": 20,
                       "height": 20,
                       "icon": "monitor",
@@ -29532,15 +29555,80 @@
                       "content": "Sales’s computer",
                       "fontFamily": "$gumloop/font-ui",
                       "fontSize": 16,
-                      "fontWeight": "500"
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "VOMae",
+                      "name": "Take control button",
+                      "height": 34,
+                      "fill": "#FFFFFF00",
+                      "cornerRadius": 999,
+                      "stroke": "$ng-app/border",
+                      "strokeWidth": 1,
+                      "gap": 8,
+                      "padding": [
+                        0,
+                        12
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "FWrMQ",
+                          "name": "Take control cursor",
+                          "width": 16,
+                          "height": 16,
+                          "icon": "mouse-pointer-2",
+                          "library": "lucide",
+                          "fill": "$ng-app/foreground"
+                        },
+                        {
+                          "type": "text",
+                          "id": "jbTGE",
+                          "name": "Take control label",
+                          "fill": "$ng-app/foreground",
+                          "content": "Take control",
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "sAUjR",
+                      "name": "Expand computer viewer button",
+                      "width": 32,
+                      "height": 32,
+                      "cornerRadius": 999,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "sp0Lp",
+                          "name": "Expand computer viewer icon",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "maximize-2",
+                          "library": "lucide",
+                          "fill": "$ng-app/muted-foreground"
+                        }
+                      ]
                     }
                   ]
                 },
                 {
                   "type": "frame",
                   "id": "FAF39",
+                  "x": 10,
+                  "y": 52,
                   "name": "Computer control actions",
-                  "width": "fill_container",
+                  "enabled": false,
+                  "width": 1100,
+                  "height": "fit_content(48)",
                   "gap": 16,
                   "justifyContent": "end",
                   "alignItems": "center",
@@ -29577,43 +29665,6 @@
                           "fontWeight": "normal"
                         }
                       ]
-                    },
-                    {
-                      "type": "frame",
-                      "id": "VOMae",
-                      "name": "Take control button",
-                      "height": 48,
-                      "fill": "$ng-app/primary",
-                      "cornerRadius": 10,
-                      "gap": 10,
-                      "padding": [
-                        0,
-                        24
-                      ],
-                      "justifyContent": "center",
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "icon",
-                          "id": "FWrMQ",
-                          "name": "Take control cursor",
-                          "width": 20,
-                          "height": 20,
-                          "icon": "mouse-pointer-2",
-                          "library": "lucide",
-                          "fill": "$ng-app/primary-foreground"
-                        },
-                        {
-                          "type": "text",
-                          "id": "jbTGE",
-                          "name": "Take control label",
-                          "fill": "$ng-app/primary-foreground",
-                          "content": "Take control",
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 15,
-                          "fontWeight": "600"
-                        }
-                      ]
                     }
                   ]
                 },
@@ -29623,7 +29674,7 @@
                   "name": "Live computer desktop",
                   "clip": true,
                   "width": "fill_container",
-                  "height": 600,
+                  "height": 688,
                   "fill": {
                     "type": "gradient",
                     "gradientType": "linear",
@@ -29647,7 +29698,7 @@
                       }
                     ]
                   },
-                  "cornerRadius": 16,
+                  "cornerRadius": 10,
                   "layout": "vertical",
                   "justifyContent": "center",
                   "alignItems": "center",
@@ -29936,19 +29987,6 @@
                           ]
                         }
                       ]
-                    },
-                    {
-                      "type": "icon",
-                      "id": "CKexl",
-                      "layoutPosition": "absolute",
-                      "x": 1076,
-                      "y": 20,
-                      "name": "Close computer viewer",
-                      "width": 20,
-                      "height": 20,
-                      "icon": "x",
-                      "library": "lucide",
-                      "fill": "#FFFFFF"
                     }
                   ]
                 }
@@ -30014,7 +30052,7 @@
           "theme": {
             "mode": "dark"
           },
-          "width": 112,
+          "width": 80,
           "height": "fill_container",
           "fill": "#FFFFFF00",
           "effect": {
@@ -30022,7 +30060,10 @@
             "radius": 24
           },
           "layout": "vertical",
-          "padding": 12,
+          "padding": [
+            12,
+            8
+          ],
           "children": [
             {
               "type": "frame",
@@ -30060,7 +30101,7 @@
               "gap": 24,
               "padding": [
                 24,
-                12
+                4
               ],
               "alignItems": "center",
               "children": [
@@ -31662,7 +31703,7 @@
           "name": "Computer modal backdrop",
           "width": 1440,
           "height": 1000,
-          "fill": "#000000CC",
+          "fill": "#00000080",
           "justifyContent": "center",
           "alignItems": "center",
           "children": [
@@ -31670,32 +31711,40 @@
               "type": "frame",
               "id": "W6odo",
               "name": "Computer viewer dialog",
+              "clip": true,
               "width": 1120,
-              "fill": "#FFFFFF00",
+              "fill": "$ng-app/card",
+              "cornerRadius": 20,
               "stroke": "$ng-app/border",
+              "strokeWidth": 1,
               "layout": "vertical",
-              "gap": 20,
+              "padding": [
+                0,
+                10,
+                10,
+                10
+              ],
               "children": [
                 {
                   "type": "frame",
                   "id": "oqwsR",
-                  "x": 0,
-                  "y": 0,
                   "name": "Computer viewer title bar",
-                  "enabled": false,
-                  "width": 1120,
-                  "height": 60,
-                  "gap": 12,
+                  "width": "fill_container",
+                  "height": 52,
+                  "gap": 10,
                   "padding": [
                     0,
-                    24
+                    8
                   ],
                   "alignItems": "center",
                   "children": [
                     {
                       "type": "icon",
                       "id": "S3sSc7",
+                      "x": 8,
+                      "y": 16,
                       "name": "Computer icon",
+                      "enabled": false,
                       "width": 20,
                       "height": 20,
                       "icon": "monitor",
@@ -31712,15 +31761,80 @@
                       "content": "Sales’s computer",
                       "fontFamily": "$gumloop/font-ui",
                       "fontSize": 16,
-                      "fontWeight": "500"
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "qCKnK",
+                      "name": "Take control button",
+                      "height": 34,
+                      "fill": "#FFFFFF00",
+                      "cornerRadius": 999,
+                      "stroke": "$ng-app/border",
+                      "strokeWidth": 1,
+                      "gap": 8,
+                      "padding": [
+                        0,
+                        12
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "QSj7h",
+                          "name": "Take control cursor",
+                          "width": 16,
+                          "height": 16,
+                          "icon": "mouse-pointer-2",
+                          "library": "lucide",
+                          "fill": "$ng-app/foreground"
+                        },
+                        {
+                          "type": "text",
+                          "id": "sdyAV",
+                          "name": "Take control label",
+                          "fill": "$ng-app/foreground",
+                          "content": "Take control",
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "wXRT3",
+                      "name": "Expand computer viewer button",
+                      "width": 32,
+                      "height": 32,
+                      "cornerRadius": 999,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "J6nUFa",
+                          "name": "Expand computer viewer icon",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "maximize-2",
+                          "library": "lucide",
+                          "fill": "$ng-app/muted-foreground"
+                        }
+                      ]
                     }
                   ]
                 },
                 {
                   "type": "frame",
                   "id": "U2MwDk",
+                  "x": 10,
+                  "y": 52,
                   "name": "Computer control actions",
-                  "width": "fill_container",
+                  "enabled": false,
+                  "width": 1100,
+                  "height": "fit_content(48)",
                   "gap": 16,
                   "justifyContent": "end",
                   "alignItems": "center",
@@ -31757,43 +31871,6 @@
                           "fontWeight": "normal"
                         }
                       ]
-                    },
-                    {
-                      "type": "frame",
-                      "id": "qCKnK",
-                      "name": "Take control button",
-                      "height": 48,
-                      "fill": "$ng-app/primary",
-                      "cornerRadius": 10,
-                      "gap": 10,
-                      "padding": [
-                        0,
-                        24
-                      ],
-                      "justifyContent": "center",
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "icon",
-                          "id": "QSj7h",
-                          "name": "Take control cursor",
-                          "width": 20,
-                          "height": 20,
-                          "icon": "mouse-pointer-2",
-                          "library": "lucide",
-                          "fill": "$ng-app/primary-foreground"
-                        },
-                        {
-                          "type": "text",
-                          "id": "sdyAV",
-                          "name": "Take control label",
-                          "fill": "$ng-app/primary-foreground",
-                          "content": "Take control",
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 15,
-                          "fontWeight": "600"
-                        }
-                      ]
                     }
                   ]
                 },
@@ -31803,7 +31880,7 @@
                   "name": "Live computer desktop",
                   "clip": true,
                   "width": "fill_container",
-                  "height": 600,
+                  "height": 688,
                   "fill": {
                     "type": "gradient",
                     "gradientType": "linear",
@@ -31827,7 +31904,7 @@
                       }
                     ]
                   },
-                  "cornerRadius": 16,
+                  "cornerRadius": 10,
                   "layout": "vertical",
                   "justifyContent": "center",
                   "alignItems": "center",
@@ -32116,19 +32193,6 @@
                           ]
                         }
                       ]
-                    },
-                    {
-                      "type": "icon",
-                      "id": "D3pgg",
-                      "layoutPosition": "absolute",
-                      "x": 1076,
-                      "y": 20,
-                      "name": "Close computer viewer",
-                      "width": 20,
-                      "height": 20,
-                      "icon": "x",
-                      "library": "lucide",
-                      "fill": "#FFFFFF"
                     }
                   ]
                 }
@@ -46838,7 +46902,9 @@
                   "reusable": true,
                   "width": "fill_container",
                   "fill": "$ng-app/muted",
-                  "cornerRadius": 18,
+                  "cornerRadius": 16,
+                  "stroke": "#DDD9E9",
+                  "strokeWidth": 1,
                   "layout": "vertical",
                   "gap": 12,
                   "padding": 16,
@@ -46855,7 +46921,7 @@
                           "type": "text",
                           "id": "KBYY7",
                           "name": "Main question",
-                          "fill": "$ng-app/foreground",
+                          "fill": "#292536",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
                           "content": "What do you mainly want me helping with?",
@@ -46868,7 +46934,7 @@
                           "type": "text",
                           "id": "ElVCE",
                           "name": "Answer guidance",
-                          "fill": "$ng-app/muted-foreground",
+                          "fill": "#625C70",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
                           "content": "Pick whatever’s closest, or type your own.",
@@ -46885,8 +46951,9 @@
                       "name": "Suggested answers",
                       "clip": true,
                       "width": "fill_container",
+                      "fill": "#FFFFFF",
                       "cornerRadius": 10,
-                      "stroke": "$ng-app/border",
+                      "stroke": "#C9C3D7",
                       "strokeWidth": 1,
                       "layout": "vertical",
                       "children": [
@@ -46896,8 +46963,8 @@
                           "name": "Option A / Inbox & email",
                           "width": "fill_container",
                           "height": 44,
-                          "fill": "$ng-app/muted",
-                          "stroke": "$ng-app/border",
+                          "fill": "#FFFFFF",
+                          "stroke": "#DED9E8",
                           "gap": 12,
                           "padding": [
                             0,
@@ -46911,8 +46978,8 @@
                               "name": "Keyboard shortcut",
                               "width": 24,
                               "height": 24,
-                              "fill": "$ng-app/muted",
-                              "cornerRadius": 6,
+                              "fill": "#EDE7FA",
+                              "cornerRadius": 7,
                               "justifyContent": "center",
                               "alignItems": "center",
                               "children": [
@@ -46920,12 +46987,12 @@
                                   "type": "text",
                                   "id": "W0VX83",
                                   "name": "Shortcut A",
-                                  "fill": "$ng-app/muted-foreground",
+                                  "fill": "#655083",
                                   "content": "A",
                                   "lineHeight": 1.4,
                                   "fontFamily": "$gumloop/font-ui",
                                   "fontSize": 12,
-                                  "fontWeight": "normal"
+                                  "fontWeight": "600"
                                 }
                               ]
                             },
@@ -46933,12 +47000,12 @@
                               "type": "text",
                               "id": "j0wqZ",
                               "name": "Inbox & email",
-                              "fill": "$ng-app/foreground",
+                              "fill": "#34303E",
                               "content": "Inbox & email",
                               "lineHeight": 1.4,
                               "fontFamily": "$gumloop/font-ui",
                               "fontSize": 14,
-                              "fontWeight": "normal"
+                              "fontWeight": "500"
                             }
                           ]
                         },
@@ -46948,8 +47015,8 @@
                           "name": "Option B / Slack & messages",
                           "width": "fill_container",
                           "height": 44,
-                          "fill": "$ng-app/muted",
-                          "stroke": "$ng-app/border",
+                          "fill": "#FFFFFF",
+                          "stroke": "#DED9E8",
                           "strokeWidth": {
                             "top": 1
                           },
@@ -46966,8 +47033,8 @@
                               "name": "Keyboard shortcut",
                               "width": 24,
                               "height": 24,
-                              "fill": "$ng-app/muted",
-                              "cornerRadius": 6,
+                              "fill": "#E5F1EC",
+                              "cornerRadius": 7,
                               "justifyContent": "center",
                               "alignItems": "center",
                               "children": [
@@ -46975,12 +47042,12 @@
                                   "type": "text",
                                   "id": "SpWUJ",
                                   "name": "Shortcut B",
-                                  "fill": "$ng-app/muted-foreground",
+                                  "fill": "#366953",
                                   "content": "B",
                                   "lineHeight": 1.4,
                                   "fontFamily": "$gumloop/font-ui",
                                   "fontSize": 12,
-                                  "fontWeight": "normal"
+                                  "fontWeight": "600"
                                 }
                               ]
                             },
@@ -46988,12 +47055,12 @@
                               "type": "text",
                               "id": "j6pI0Q",
                               "name": "Slack & messages",
-                              "fill": "$ng-app/foreground",
+                              "fill": "#34303E",
                               "content": "Slack & messages",
                               "lineHeight": 1.4,
                               "fontFamily": "$gumloop/font-ui",
                               "fontSize": 14,
-                              "fontWeight": "normal"
+                              "fontWeight": "500"
                             }
                           ]
                         },
@@ -47003,8 +47070,8 @@
                           "name": "Option C / Coding & repos",
                           "width": "fill_container",
                           "height": 44,
-                          "fill": "$ng-app/muted",
-                          "stroke": "$ng-app/border",
+                          "fill": "#FFFFFF",
+                          "stroke": "#DED9E8",
                           "strokeWidth": {
                             "top": 1
                           },
@@ -47021,8 +47088,8 @@
                               "name": "Keyboard shortcut",
                               "width": 24,
                               "height": 24,
-                              "fill": "$ng-app/muted",
-                              "cornerRadius": 6,
+                              "fill": "#E8EFFA",
+                              "cornerRadius": 7,
                               "justifyContent": "center",
                               "alignItems": "center",
                               "children": [
@@ -47030,12 +47097,12 @@
                                   "type": "text",
                                   "id": "pCrH1",
                                   "name": "Shortcut C",
-                                  "fill": "$ng-app/muted-foreground",
+                                  "fill": "#405E87",
                                   "content": "C",
                                   "lineHeight": 1.4,
                                   "fontFamily": "$gumloop/font-ui",
                                   "fontSize": 12,
-                                  "fontWeight": "normal"
+                                  "fontWeight": "600"
                                 }
                               ]
                             },
@@ -47043,12 +47110,12 @@
                               "type": "text",
                               "id": "Nj9q3",
                               "name": "Coding & repos",
-                              "fill": "$ng-app/foreground",
+                              "fill": "#34303E",
                               "content": "Coding & repos",
                               "lineHeight": 1.4,
                               "fontFamily": "$gumloop/font-ui",
                               "fontSize": 14,
-                              "fontWeight": "normal"
+                              "fontWeight": "500"
                             }
                           ]
                         },
@@ -47058,8 +47125,8 @@
                           "name": "Option D / Research & writing",
                           "width": "fill_container",
                           "height": 44,
-                          "fill": "$ng-app/muted",
-                          "stroke": "$ng-app/border",
+                          "fill": "#FFFFFF",
+                          "stroke": "#DED9E8",
                           "strokeWidth": {
                             "top": 1
                           },
@@ -47076,8 +47143,8 @@
                               "name": "Keyboard shortcut",
                               "width": 24,
                               "height": 24,
-                              "fill": "$ng-app/muted",
-                              "cornerRadius": 6,
+                              "fill": "#F9EBDD",
+                              "cornerRadius": 7,
                               "justifyContent": "center",
                               "alignItems": "center",
                               "children": [
@@ -47085,12 +47152,12 @@
                                   "type": "text",
                                   "id": "eqCRe",
                                   "name": "Shortcut D",
-                                  "fill": "$ng-app/muted-foreground",
+                                  "fill": "#835C35",
                                   "content": "D",
                                   "lineHeight": 1.4,
                                   "fontFamily": "$gumloop/font-ui",
                                   "fontSize": 12,
-                                  "fontWeight": "normal"
+                                  "fontWeight": "600"
                                 }
                               ]
                             },
@@ -47098,12 +47165,12 @@
                               "type": "text",
                               "id": "Yf86P",
                               "name": "Research & writing",
-                              "fill": "$ng-app/foreground",
+                              "fill": "#34303E",
                               "content": "Research & writing",
                               "lineHeight": 1.4,
                               "fontFamily": "$gumloop/font-ui",
                               "fontSize": 14,
-                              "fontWeight": "normal"
+                              "fontWeight": "500"
                             }
                           ]
                         },
@@ -47113,8 +47180,8 @@
                           "name": "Option E / A bit of everything",
                           "width": "fill_container",
                           "height": 44,
-                          "fill": "$ng-app/muted",
-                          "stroke": "$ng-app/border",
+                          "fill": "#FFFFFF",
+                          "stroke": "#DED9E8",
                           "strokeWidth": {
                             "top": 1
                           },
@@ -47131,8 +47198,8 @@
                               "name": "Keyboard shortcut",
                               "width": 24,
                               "height": 24,
-                              "fill": "$ng-app/muted",
-                              "cornerRadius": 6,
+                              "fill": "#F8E6ED",
+                              "cornerRadius": 7,
                               "justifyContent": "center",
                               "alignItems": "center",
                               "children": [
@@ -47140,12 +47207,12 @@
                                   "type": "text",
                                   "id": "EBJnH",
                                   "name": "Shortcut E",
-                                  "fill": "$ng-app/muted-foreground",
+                                  "fill": "#87506A",
                                   "content": "E",
                                   "lineHeight": 1.4,
                                   "fontFamily": "$gumloop/font-ui",
                                   "fontSize": 12,
-                                  "fontWeight": "normal"
+                                  "fontWeight": "600"
                                 }
                               ]
                             },
@@ -47153,12 +47220,12 @@
                               "type": "text",
                               "id": "WqqKU",
                               "name": "A bit of everything",
-                              "fill": "$ng-app/foreground",
+                              "fill": "#34303E",
                               "content": "A bit of everything",
                               "lineHeight": 1.4,
                               "fontFamily": "$gumloop/font-ui",
                               "fontSize": 14,
-                              "fontWeight": "normal"
+                              "fontWeight": "500"
                             }
                           ]
                         }
@@ -47169,9 +47236,9 @@
                       "id": "m3kVUz",
                       "name": "Custom answer field",
                       "width": "fill_container",
-                      "fill": "$ng-app/card",
+                      "fill": "#FFFFFF",
                       "cornerRadius": 10,
-                      "stroke": "$ng-app/border",
+                      "stroke": "#B8B0C9",
                       "strokeWidth": 1,
                       "padding": [
                         12,
@@ -47182,7 +47249,7 @@
                           "type": "text",
                           "id": "VJO7x",
                           "name": "Custom answer placeholder",
-                          "fill": "$ng-app/muted-foreground",
+                          "fill": "#686173",
                           "content": "Type your own answer",
                           "lineHeight": 1.4,
                           "fontFamily": "$gumloop/font-ui",
@@ -47210,7 +47277,9 @@
                   "reusable": true,
                   "width": "fill_container",
                   "fill": "$ng-app/muted",
-                  "cornerRadius": 18,
+                  "cornerRadius": 16,
+                  "stroke": "#DDD9E9",
+                  "strokeWidth": 1,
                   "layout": "vertical",
                   "gap": 16,
                   "padding": 16,
@@ -47219,7 +47288,7 @@
                       "type": "text",
                       "id": "Cyr2N",
                       "name": "Answered question",
-                      "fill": "$ng-app/muted-foreground",
+                      "fill": "#292536",
                       "textGrowth": "fixed-width",
                       "width": "fill_container",
                       "content": "What do you mainly want me helping with?",
@@ -47234,9 +47303,9 @@
                       "name": "Selected answer / Inbox & email",
                       "width": "fill_container",
                       "height": 48,
-                      "fill": "#FFFFFF00",
-                      "cornerRadius": 12,
-                      "stroke": "$ng-app/border",
+                      "fill": "#EEE8FA",
+                      "cornerRadius": 10,
+                      "stroke": "#9D8ABF",
                       "strokeWidth": 1,
                       "gap": 12,
                       "padding": [
@@ -47251,8 +47320,8 @@
                           "name": "Keyboard shortcut",
                           "width": 24,
                           "height": 24,
-                          "fill": "$ng-app/secondary",
-                          "cornerRadius": 6,
+                          "fill": "#DDD1F1",
+                          "cornerRadius": 7,
                           "justifyContent": "center",
                           "alignItems": "center",
                           "children": [
@@ -47260,12 +47329,12 @@
                               "type": "text",
                               "id": "SPSSi",
                               "name": "Shortcut A",
-                              "fill": "$ng-app/muted-foreground",
+                              "fill": "#594274",
                               "content": "A",
                               "lineHeight": 1.4,
                               "fontFamily": "$gumloop/font-ui",
                               "fontSize": 12,
-                              "fontWeight": "normal"
+                              "fontWeight": "600"
                             }
                           ]
                         },
@@ -47273,14 +47342,14 @@
                           "type": "text",
                           "id": "qmLq7",
                           "name": "Inbox & email",
-                          "fill": "$ng-app/muted-foreground",
+                          "fill": "#49325F",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
                           "content": "Inbox & email",
                           "lineHeight": 1.4,
                           "fontFamily": "$gumloop/font-ui",
                           "fontSize": 14,
-                          "fontWeight": "normal"
+                          "fontWeight": "600"
                         },
                         {
                           "type": "icon",
@@ -47290,7 +47359,429 @@
                           "height": 18,
                           "icon": "check",
                           "library": "lucide",
-                          "fill": "$ng-app/foreground"
+                          "fill": "#654787"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "hQV0i",
+                  "name": "10 / CODE DIFF",
+                  "fill": "$ng-app/muted-foreground",
+                  "content": "10 / CODE DIFF",
+                  "fontFamily": "$gumloop/font-ui",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "ltpjd",
+                  "name": "Card / Code diff",
+                  "reusable": true,
+                  "clip": true,
+                  "width": "fill_container",
+                  "fill": "$ng-app/muted",
+                  "cornerRadius": 18,
+                  "stroke": "$ng-app/border",
+                  "layout": "vertical",
+                  "gap": 14,
+                  "padding": 18,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "LuZrw",
+                      "name": "File header",
+                      "width": "fill_container",
+                      "gap": 10,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "FNiOP",
+                          "name": "Code file icon",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "file-code",
+                          "library": "lucide",
+                          "fill": "$ng-app/muted-foreground"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "zcPgF",
+                          "name": "File identity",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "gap": 3,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "W1Fuhm",
+                              "name": "Filename",
+                              "fill": "$ng-app/foreground",
+                              "content": "message-input.tsx",
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 14,
+                              "fontWeight": "500"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "WmHlk",
+                          "name": "Added lines",
+                          "fill": "$ng-app/success-foreground",
+                          "content": "+2",
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "Z7fyi",
+                          "name": "Removed lines",
+                          "fill": "$ng-app/destructive-foreground",
+                          "content": "−1",
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "hYAws",
+                      "name": "Diff preview",
+                      "clip": true,
+                      "width": "fill_container",
+                      "fill": "$ng-app/card",
+                      "cornerRadius": 12,
+                      "stroke": "$ng-app/border",
+                      "layout": "vertical",
+                      "padding": [
+                        12,
+                        0
+                      ],
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "uAMFq",
+                          "name": "Diff line 18  ",
+                          "width": "fill_container",
+                          "gap": 10,
+                          "padding": [
+                            5,
+                            14
+                          ],
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "PQaqL",
+                              "name": "Line number",
+                              "fill": "$ng-app/muted-foreground",
+                              "content": "18",
+                              "fontFamily": "$gumloop/font-mono",
+                              "fontSize": 11,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "p7UIl4",
+                              "name": "Change marker",
+                              "fill": "$ng-app/muted-foreground",
+                              "content": " ",
+                              "fontFamily": "$gumloop/font-mono",
+                              "fontSize": 11,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "k0MhY9",
+                              "name": "Code",
+                              "fill": "$ng-app/foreground",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "function sendMessage() {",
+                              "lineHeight": 1.6,
+                              "fontFamily": "$gumloop/font-mono",
+                              "fontSize": 11,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "eG6QM",
+                          "name": "Diff line 19 −",
+                          "width": "fill_container",
+                          "fill": "$ng-app/destructive",
+                          "gap": 10,
+                          "padding": [
+                            5,
+                            14
+                          ],
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "M6ygk",
+                              "name": "Line number",
+                              "fill": "$ng-app/muted-foreground",
+                              "content": "19",
+                              "fontFamily": "$gumloop/font-mono",
+                              "fontSize": 11,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "E84I34",
+                              "name": "Change marker",
+                              "fill": "$ng-app/destructive-foreground",
+                              "content": "−",
+                              "fontFamily": "$gumloop/font-mono",
+                              "fontSize": 11,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "r8tOI3",
+                              "name": "Code",
+                              "fill": "$ng-app/destructive-foreground",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "  submit(message);",
+                              "lineHeight": 1.6,
+                              "fontFamily": "$gumloop/font-mono",
+                              "fontSize": 11,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "MLx24",
+                          "name": "Diff line 19 +",
+                          "width": "fill_container",
+                          "fill": "$ng-app/success",
+                          "gap": 10,
+                          "padding": [
+                            5,
+                            14
+                          ],
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "v0s0v",
+                              "name": "Line number",
+                              "fill": "$ng-app/muted-foreground",
+                              "content": "19",
+                              "fontFamily": "$gumloop/font-mono",
+                              "fontSize": 11,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "VnGTX",
+                              "name": "Change marker",
+                              "fill": "$ng-app/success-foreground",
+                              "content": "+",
+                              "fontFamily": "$gumloop/font-mono",
+                              "fontSize": 11,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "a8MvX",
+                              "name": "Code",
+                              "fill": "$ng-app/success-foreground",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "  if (!message.trim()) return;",
+                              "lineHeight": 1.6,
+                              "fontFamily": "$gumloop/font-mono",
+                              "fontSize": 11,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "bbg9s",
+                          "name": "Diff line 20 +",
+                          "width": "fill_container",
+                          "fill": "$ng-app/success",
+                          "gap": 10,
+                          "padding": [
+                            5,
+                            14
+                          ],
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "jiZi6",
+                              "name": "Line number",
+                              "fill": "$ng-app/muted-foreground",
+                              "content": "20",
+                              "fontFamily": "$gumloop/font-mono",
+                              "fontSize": 11,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "ja5DH",
+                              "name": "Change marker",
+                              "fill": "$ng-app/success-foreground",
+                              "content": "+",
+                              "fontFamily": "$gumloop/font-mono",
+                              "fontSize": 11,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "A43WK",
+                              "name": "Code",
+                              "fill": "$ng-app/success-foreground",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "  submit(message.trim());",
+                              "lineHeight": 1.6,
+                              "fontFamily": "$gumloop/font-mono",
+                              "fontSize": 11,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "qqmuj",
+                          "name": "Diff line 21  ",
+                          "width": "fill_container",
+                          "gap": 10,
+                          "padding": [
+                            5,
+                            14
+                          ],
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "iTsKk",
+                              "name": "Line number",
+                              "fill": "$ng-app/muted-foreground",
+                              "content": "21",
+                              "fontFamily": "$gumloop/font-mono",
+                              "fontSize": 11,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "onHib",
+                              "name": "Change marker",
+                              "fill": "$ng-app/muted-foreground",
+                              "content": " ",
+                              "fontFamily": "$gumloop/font-mono",
+                              "fontSize": 11,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "CKkMv",
+                              "name": "Code",
+                              "fill": "$ng-app/foreground",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "}",
+                              "lineHeight": 1.6,
+                              "fontFamily": "$gumloop/font-mono",
+                              "fontSize": 11,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "fhkLJ",
+                      "name": "File actions",
+                      "width": "fill_container",
+                      "gap": 8,
+                      "justifyContent": "end",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "s60Vm",
+                          "name": "Undo action",
+                          "height": 36,
+                          "fill": "$ng-app/card",
+                          "cornerRadius": 999,
+                          "gap": 6,
+                          "padding": [
+                            0,
+                            14
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon",
+                              "id": "sCM5X",
+                              "name": "Undo icon",
+                              "width": 14,
+                              "height": 14,
+                              "icon": "undo-2",
+                              "library": "lucide",
+                              "fill": "$ng-app/foreground"
+                            },
+                            {
+                              "type": "text",
+                              "id": "vVU2v",
+                              "name": "Undo label",
+                              "fill": "$ng-app/foreground",
+                              "content": "Undo",
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 13,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "QNnYA",
+                          "name": "Lihat file action",
+                          "height": 36,
+                          "fill": "$ng-app/card",
+                          "cornerRadius": 999,
+                          "stroke": "$ng-app/border",
+                          "gap": 6,
+                          "padding": [
+                            0,
+                            14
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon",
+                              "id": "QXhOE",
+                              "name": "Lihat file icon",
+                              "width": 14,
+                              "height": 14,
+                              "icon": "arrow-up-right",
+                              "library": "lucide",
+                              "fill": "$ng-app/foreground"
+                            },
+                            {
+                              "type": "text",
+                              "id": "ixTDU",
+                              "name": "Lihat file label",
+                              "fill": "$ng-app/foreground",
+                              "content": "Lihat file",
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 13,
+                              "fontWeight": "normal"
+                            }
+                          ]
                         }
                       ]
                     }
@@ -48536,6 +49027,358 @@
                   "theme": {
                     "gumloop-mode": "light"
                   }
+                },
+                {
+                  "type": "text",
+                  "id": "SaBNA",
+                  "name": "11 / FILE BADGE & POPOVER",
+                  "fill": "$ng-app/muted-foreground",
+                  "content": "11 / FILE DIFF BADGE & POPOVER",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$gumloop/font-ui",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "sD3eE",
+                  "name": "File diff / Popover open",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "GSftK",
+                      "name": "Badge / Changed file",
+                      "reusable": true,
+                      "fill": "$ng-app/muted",
+                      "cornerRadius": 10,
+                      "stroke": "$ng-app/border",
+                      "strokeWidth": 1,
+                      "gap": 10,
+                      "padding": [
+                        8,
+                        12
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "GhwEH",
+                          "name": "Filename",
+                          "fill": "$ng-app/foreground",
+                          "content": "ChurnSchedule.tsx",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-mono",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "ecRcp",
+                          "name": "Additions",
+                          "fill": "$ng-app/success-foreground",
+                          "content": "+74",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-mono",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "Gr0EA",
+                          "name": "Deletions",
+                          "fill": "$ng-app/destructive-foreground",
+                          "content": "-41",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-mono",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "xPcj0",
+                      "name": "Popover / File diff",
+                      "reusable": true,
+                      "clip": true,
+                      "width": "fill_container",
+                      "fill": "$ng-app/card",
+                      "cornerRadius": 14,
+                      "stroke": "$ng-app/border",
+                      "strokeWidth": 1,
+                      "effect": {
+                        "type": "shadow",
+                        "shadowType": "outer",
+                        "color": "#00000012",
+                        "offset": {
+                          "x": 0,
+                          "y": 6
+                        },
+                        "blur": 20
+                      },
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "cg8mL",
+                          "name": "Popover file header",
+                          "width": "fill_container",
+                          "stroke": "$ng-app/border",
+                          "strokeWidth": {
+                            "bottom": 1
+                          },
+                          "gap": 10,
+                          "padding": [
+                            10,
+                            16
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "stIUd",
+                              "name": "Popover filename",
+                              "fill": "$ng-app/muted-foreground",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "ChurnSchedule.tsx",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-mono",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "zyqcl",
+                              "name": "Popover additions",
+                              "fill": "$ng-app/success-foreground",
+                              "content": "+74",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-mono",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "BLyGt",
+                              "name": "Popover deletions",
+                              "fill": "$ng-app/destructive-foreground",
+                              "content": "-41",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-mono",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "D3Uvv",
+                          "name": "Diff code lines",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "padding": [
+                            6,
+                            0
+                          ],
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "SUOIp",
+                              "name": "Code row const slots = coldSlots(week);",
+                              "width": "fill_container",
+                              "gap": 12,
+                              "padding": [
+                                4,
+                                16
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "CP0na",
+                                  "name": "Diff marker",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "content": " ",
+                                  "lineHeight": 1.5,
+                                  "fontFamily": "$gumloop/font-mono",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "JwhHI",
+                                  "name": "Code text",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "const slots = coldSlots(week);",
+                                  "lineHeight": 1.5,
+                                  "fontFamily": "$gumloop/font-mono",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "tdKeU",
+                              "name": "Code row const windows = slots;",
+                              "width": "fill_container",
+                              "fill": "$ng-app/destructive",
+                              "gap": 12,
+                              "padding": [
+                                4,
+                                16
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "A2mtyI",
+                                  "name": "Diff marker",
+                                  "fill": "$ng-app/destructive-foreground",
+                                  "content": "-",
+                                  "lineHeight": 1.5,
+                                  "fontFamily": "$gumloop/font-mono",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "pacfi",
+                                  "name": "Code text",
+                                  "fill": "$ng-app/destructive-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "const windows = slots;",
+                                  "lineHeight": 1.5,
+                                  "fontFamily": "$gumloop/font-mono",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "byiR3",
+                              "name": "Code row const windows = slots.filter(",
+                              "width": "fill_container",
+                              "fill": "$ng-app/success",
+                              "gap": 12,
+                              "padding": [
+                                4,
+                                16
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "p0ly1c",
+                                  "name": "Diff marker",
+                                  "fill": "$ng-app/success-foreground",
+                                  "content": "+",
+                                  "lineHeight": 1.5,
+                                  "fontFamily": "$gumloop/font-mono",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "k2fNn",
+                                  "name": "Code text",
+                                  "fill": "$ng-app/success-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "const windows = slots.filter(",
+                                  "lineHeight": 1.5,
+                                  "fontFamily": "$gumloop/font-mono",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "YX9S0",
+                              "name": "Code row   (s) => s.temp <= -12,",
+                              "width": "fill_container",
+                              "fill": "$ng-app/success",
+                              "gap": 12,
+                              "padding": [
+                                4,
+                                16
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "zKfIv",
+                                  "name": "Diff marker",
+                                  "fill": "$ng-app/success-foreground",
+                                  "content": "+",
+                                  "lineHeight": 1.5,
+                                  "fontFamily": "$gumloop/font-mono",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "iXmn9",
+                                  "name": "Code text",
+                                  "fill": "$ng-app/success-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "  (s) => s.temp <= -12,",
+                                  "lineHeight": 1.5,
+                                  "fontFamily": "$gumloop/font-mono",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "FlUQG",
+                              "name": "Code row );",
+                              "width": "fill_container",
+                              "fill": "$ng-app/success",
+                              "gap": 12,
+                              "padding": [
+                                4,
+                                16
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "nhHA9",
+                                  "name": "Diff marker",
+                                  "fill": "$ng-app/success-foreground",
+                                  "content": "+",
+                                  "lineHeight": 1.5,
+                                  "fontFamily": "$gumloop/font-mono",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "iZHJ1",
+                                  "name": "Code text",
+                                  "fill": "$ng-app/success-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": ");",
+                                  "lineHeight": 1.5,
+                                  "fontFamily": "$gumloop/font-mono",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
                 }
               ]
             }
@@ -48553,7 +49396,7 @@
         "gumloop-mode": "dark"
       },
       "width": 1448,
-      "fill": "$ng-app/background",
+      "fill": "#000000",
       "layout": "vertical",
       "gap": 30,
       "padding": 40,
@@ -48841,7 +49684,9 @@
                   "reusable": true,
                   "width": "fill_container",
                   "fill": "$ng-app/muted",
-                  "cornerRadius": 18,
+                  "cornerRadius": 16,
+                  "stroke": "#45404F",
+                  "strokeWidth": 1,
                   "layout": "vertical",
                   "gap": 12,
                   "padding": 16,
@@ -48858,7 +49703,7 @@
                           "type": "text",
                           "id": "I2nCJN",
                           "name": "Main question",
-                          "fill": "$ng-app/foreground",
+                          "fill": "#F3EFFA",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
                           "content": "What do you mainly want me helping with?",
@@ -48871,7 +49716,7 @@
                           "type": "text",
                           "id": "PHcdY",
                           "name": "Answer guidance",
-                          "fill": "$ng-app/muted-foreground",
+                          "fill": "#C3BCCE",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
                           "content": "Pick whatever’s closest, or type your own.",
@@ -48888,8 +49733,9 @@
                       "name": "Suggested answers",
                       "clip": true,
                       "width": "fill_container",
+                      "fill": "#1D1C23",
                       "cornerRadius": 10,
-                      "stroke": "$ng-app/border",
+                      "stroke": "#61586F",
                       "strokeWidth": 1,
                       "layout": "vertical",
                       "children": [
@@ -48899,8 +49745,8 @@
                           "name": "Option A / Inbox & email",
                           "width": "fill_container",
                           "height": 44,
-                          "fill": "$ng-app/muted",
-                          "stroke": "$ng-app/border",
+                          "fill": "#1D1C23",
+                          "stroke": "#45404F",
                           "gap": 12,
                           "padding": [
                             0,
@@ -48914,8 +49760,8 @@
                               "name": "Keyboard shortcut",
                               "width": 24,
                               "height": 24,
-                              "fill": "$ng-app/muted",
-                              "cornerRadius": 6,
+                              "fill": "#393047",
+                              "cornerRadius": 7,
                               "justifyContent": "center",
                               "alignItems": "center",
                               "children": [
@@ -48923,12 +49769,12 @@
                                   "type": "text",
                                   "id": "SZYfo",
                                   "name": "Shortcut A",
-                                  "fill": "$ng-app/muted-foreground",
+                                  "fill": "#D5BDF4",
                                   "content": "A",
                                   "lineHeight": 1.4,
                                   "fontFamily": "$gumloop/font-ui",
                                   "fontSize": 12,
-                                  "fontWeight": "normal"
+                                  "fontWeight": "600"
                                 }
                               ]
                             },
@@ -48936,12 +49782,12 @@
                               "type": "text",
                               "id": "Dy1J7",
                               "name": "Inbox & email",
-                              "fill": "$ng-app/foreground",
+                              "fill": "#E8E2EF",
                               "content": "Inbox & email",
                               "lineHeight": 1.4,
                               "fontFamily": "$gumloop/font-ui",
                               "fontSize": 14,
-                              "fontWeight": "normal"
+                              "fontWeight": "500"
                             }
                           ]
                         },
@@ -48951,8 +49797,8 @@
                           "name": "Option B / Slack & messages",
                           "width": "fill_container",
                           "height": 44,
-                          "fill": "$ng-app/muted",
-                          "stroke": "$ng-app/border",
+                          "fill": "#1D1C23",
+                          "stroke": "#45404F",
                           "strokeWidth": {
                             "top": 1
                           },
@@ -48969,8 +49815,8 @@
                               "name": "Keyboard shortcut",
                               "width": 24,
                               "height": 24,
-                              "fill": "$ng-app/muted",
-                              "cornerRadius": 6,
+                              "fill": "#263E35",
+                              "cornerRadius": 7,
                               "justifyContent": "center",
                               "alignItems": "center",
                               "children": [
@@ -48978,12 +49824,12 @@
                                   "type": "text",
                                   "id": "i2AVG",
                                   "name": "Shortcut B",
-                                  "fill": "$ng-app/muted-foreground",
+                                  "fill": "#A9DCC2",
                                   "content": "B",
                                   "lineHeight": 1.4,
                                   "fontFamily": "$gumloop/font-ui",
                                   "fontSize": 12,
-                                  "fontWeight": "normal"
+                                  "fontWeight": "600"
                                 }
                               ]
                             },
@@ -48991,12 +49837,12 @@
                               "type": "text",
                               "id": "m7M0H",
                               "name": "Slack & messages",
-                              "fill": "$ng-app/foreground",
+                              "fill": "#E8E2EF",
                               "content": "Slack & messages",
                               "lineHeight": 1.4,
                               "fontFamily": "$gumloop/font-ui",
                               "fontSize": 14,
-                              "fontWeight": "normal"
+                              "fontWeight": "500"
                             }
                           ]
                         },
@@ -49006,8 +49852,8 @@
                           "name": "Option C / Coding & repos",
                           "width": "fill_container",
                           "height": 44,
-                          "fill": "$ng-app/muted",
-                          "stroke": "$ng-app/border",
+                          "fill": "#1D1C23",
+                          "stroke": "#45404F",
                           "strokeWidth": {
                             "top": 1
                           },
@@ -49024,8 +49870,8 @@
                               "name": "Keyboard shortcut",
                               "width": 24,
                               "height": 24,
-                              "fill": "$ng-app/muted",
-                              "cornerRadius": 6,
+                              "fill": "#2B364B",
+                              "cornerRadius": 7,
                               "justifyContent": "center",
                               "alignItems": "center",
                               "children": [
@@ -49033,12 +49879,12 @@
                                   "type": "text",
                                   "id": "v9OfA4",
                                   "name": "Shortcut C",
-                                  "fill": "$ng-app/muted-foreground",
+                                  "fill": "#B6CDF3",
                                   "content": "C",
                                   "lineHeight": 1.4,
                                   "fontFamily": "$gumloop/font-ui",
                                   "fontSize": 12,
-                                  "fontWeight": "normal"
+                                  "fontWeight": "600"
                                 }
                               ]
                             },
@@ -49046,12 +49892,12 @@
                               "type": "text",
                               "id": "Zbv24",
                               "name": "Coding & repos",
-                              "fill": "$ng-app/foreground",
+                              "fill": "#E8E2EF",
                               "content": "Coding & repos",
                               "lineHeight": 1.4,
                               "fontFamily": "$gumloop/font-ui",
                               "fontSize": 14,
-                              "fontWeight": "normal"
+                              "fontWeight": "500"
                             }
                           ]
                         },
@@ -49061,8 +49907,8 @@
                           "name": "Option D / Research & writing",
                           "width": "fill_container",
                           "height": 44,
-                          "fill": "$ng-app/muted",
-                          "stroke": "$ng-app/border",
+                          "fill": "#1D1C23",
+                          "stroke": "#45404F",
                           "strokeWidth": {
                             "top": 1
                           },
@@ -49079,8 +49925,8 @@
                               "name": "Keyboard shortcut",
                               "width": 24,
                               "height": 24,
-                              "fill": "$ng-app/muted",
-                              "cornerRadius": 6,
+                              "fill": "#463628",
+                              "cornerRadius": 7,
                               "justifyContent": "center",
                               "alignItems": "center",
                               "children": [
@@ -49088,12 +49934,12 @@
                                   "type": "text",
                                   "id": "ZutKQ",
                                   "name": "Shortcut D",
-                                  "fill": "$ng-app/muted-foreground",
+                                  "fill": "#EBC69E",
                                   "content": "D",
                                   "lineHeight": 1.4,
                                   "fontFamily": "$gumloop/font-ui",
                                   "fontSize": 12,
-                                  "fontWeight": "normal"
+                                  "fontWeight": "600"
                                 }
                               ]
                             },
@@ -49101,12 +49947,12 @@
                               "type": "text",
                               "id": "bmbRJ",
                               "name": "Research & writing",
-                              "fill": "$ng-app/foreground",
+                              "fill": "#E8E2EF",
                               "content": "Research & writing",
                               "lineHeight": 1.4,
                               "fontFamily": "$gumloop/font-ui",
                               "fontSize": 14,
-                              "fontWeight": "normal"
+                              "fontWeight": "500"
                             }
                           ]
                         },
@@ -49116,8 +49962,8 @@
                           "name": "Option E / A bit of everything",
                           "width": "fill_container",
                           "height": 44,
-                          "fill": "$ng-app/muted",
-                          "stroke": "$ng-app/border",
+                          "fill": "#1D1C23",
+                          "stroke": "#45404F",
                           "strokeWidth": {
                             "top": 1
                           },
@@ -49134,8 +49980,8 @@
                               "name": "Keyboard shortcut",
                               "width": 24,
                               "height": 24,
-                              "fill": "$ng-app/muted",
-                              "cornerRadius": 6,
+                              "fill": "#432D3A",
+                              "cornerRadius": 7,
                               "justifyContent": "center",
                               "alignItems": "center",
                               "children": [
@@ -49143,12 +49989,12 @@
                                   "type": "text",
                                   "id": "m4QhHF",
                                   "name": "Shortcut E",
-                                  "fill": "$ng-app/muted-foreground",
+                                  "fill": "#E9B6D0",
                                   "content": "E",
                                   "lineHeight": 1.4,
                                   "fontFamily": "$gumloop/font-ui",
                                   "fontSize": 12,
-                                  "fontWeight": "normal"
+                                  "fontWeight": "600"
                                 }
                               ]
                             },
@@ -49156,12 +50002,12 @@
                               "type": "text",
                               "id": "pDAeS",
                               "name": "A bit of everything",
-                              "fill": "$ng-app/foreground",
+                              "fill": "#E8E2EF",
                               "content": "A bit of everything",
                               "lineHeight": 1.4,
                               "fontFamily": "$gumloop/font-ui",
                               "fontSize": 14,
-                              "fontWeight": "normal"
+                              "fontWeight": "500"
                             }
                           ]
                         }
@@ -49172,9 +50018,9 @@
                       "id": "IkTyC",
                       "name": "Custom answer field",
                       "width": "fill_container",
-                      "fill": "$ng-app/card",
+                      "fill": "#1D1C23",
                       "cornerRadius": 10,
-                      "stroke": "$ng-app/border",
+                      "stroke": "#796D89",
                       "strokeWidth": 1,
                       "padding": [
                         12,
@@ -49185,7 +50031,7 @@
                           "type": "text",
                           "id": "o6ka67",
                           "name": "Custom answer placeholder",
-                          "fill": "$ng-app/muted-foreground",
+                          "fill": "#C3BCCE",
                           "content": "Type your own answer",
                           "lineHeight": 1.4,
                           "fontFamily": "$gumloop/font-ui",
@@ -49213,7 +50059,9 @@
                   "reusable": true,
                   "width": "fill_container",
                   "fill": "$ng-app/muted",
-                  "cornerRadius": 18,
+                  "cornerRadius": 16,
+                  "stroke": "#45404F",
+                  "strokeWidth": 1,
                   "layout": "vertical",
                   "gap": 16,
                   "padding": 16,
@@ -49222,7 +50070,7 @@
                       "type": "text",
                       "id": "MlBSt",
                       "name": "Answered question",
-                      "fill": "$ng-app/muted-foreground",
+                      "fill": "#F3EFFA",
                       "textGrowth": "fixed-width",
                       "width": "fill_container",
                       "content": "What do you mainly want me helping with?",
@@ -49237,9 +50085,9 @@
                       "name": "Selected answer / Inbox & email",
                       "width": "fill_container",
                       "height": 48,
-                      "fill": "#FFFFFF00",
-                      "cornerRadius": 12,
-                      "stroke": "$ng-app/border",
+                      "fill": "#393047",
+                      "cornerRadius": 10,
+                      "stroke": "#A58AC4",
                       "strokeWidth": 1,
                       "gap": 12,
                       "padding": [
@@ -49254,8 +50102,8 @@
                           "name": "Keyboard shortcut",
                           "width": 24,
                           "height": 24,
-                          "fill": "$ng-app/secondary",
-                          "cornerRadius": 6,
+                          "fill": "#514064",
+                          "cornerRadius": 7,
                           "justifyContent": "center",
                           "alignItems": "center",
                           "children": [
@@ -49263,12 +50111,12 @@
                               "type": "text",
                               "id": "ZA8PH",
                               "name": "Shortcut A",
-                              "fill": "$ng-app/muted-foreground",
+                              "fill": "#E6CFFD",
                               "content": "A",
                               "lineHeight": 1.4,
                               "fontFamily": "$gumloop/font-ui",
                               "fontSize": 12,
-                              "fontWeight": "normal"
+                              "fontWeight": "600"
                             }
                           ]
                         },
@@ -49276,14 +50124,14 @@
                           "type": "text",
                           "id": "OumMI",
                           "name": "Inbox & email",
-                          "fill": "$ng-app/muted-foreground",
+                          "fill": "#E9D9FA",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
                           "content": "Inbox & email",
                           "lineHeight": 1.4,
                           "fontFamily": "$gumloop/font-ui",
                           "fontSize": 14,
-                          "fontWeight": "normal"
+                          "fontWeight": "600"
                         },
                         {
                           "type": "icon",
@@ -49293,11 +50141,28 @@
                           "height": 18,
                           "icon": "check",
                           "library": "lucide",
-                          "fill": "$ng-app/foreground"
+                          "fill": "#D5B3F4"
                         }
                       ]
                     }
                   ]
+                },
+                {
+                  "type": "text",
+                  "id": "V46gxB",
+                  "name": "10 / CODE DIFF",
+                  "fill": "$ng-app/muted-foreground",
+                  "content": "10 / CODE DIFF",
+                  "fontFamily": "$gumloop/font-ui",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "id": "bI9ir",
+                  "type": "ref",
+                  "ref": "ltpjd",
+                  "name": "Card / Code diff / Dark",
+                  "width": "fill_container"
                 }
               ]
             },
@@ -50586,6 +51451,40 @@
                       "icon": "arrow-up-right",
                       "library": "lucide",
                       "fill": "$gumloop/text-muted"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "NsUJc",
+                  "name": "11 / FILE BADGE & POPOVER",
+                  "fill": "$ng-app/muted-foreground",
+                  "content": "11 / FILE DIFF BADGE & POPOVER",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$gumloop/font-ui",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "ppUSl",
+                  "name": "File diff / Popover open / Dark",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "id": "xRHOn",
+                      "type": "ref",
+                      "ref": "GSftK",
+                      "name": "Badge / Changed file / Dark"
+                    },
+                    {
+                      "id": "NzXjO",
+                      "type": "ref",
+                      "ref": "xPcj0",
+                      "name": "Popover / File diff / Dark",
+                      "width": "fill_container"
                     }
                   ]
                 }

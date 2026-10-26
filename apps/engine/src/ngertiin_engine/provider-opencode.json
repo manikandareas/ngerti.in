@@ -1,0 +1,383 @@
+{
+  "inspected_at": "2026-10-25",
+  "providers": {
+    "opencode-zen": {
+      "gpt-6-astra": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "gpt-6-sol": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "gpt-6.1-sol": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "gpt-6-luna": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "gpt-5.6-sol": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "gpt-5.6-terra": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "gpt-5.6-luna": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "gpt-5.5": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "gpt-5.5-pro": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "gpt-5.4": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "gpt-5.4-pro": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "gpt-5.4-mini": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "gpt-5.4-nano": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "gpt-5.3-codex": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "gpt-5.3-codex-spark": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "gpt-5.2": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "gpt-5.2-codex": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "gpt-5.1": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "gpt-5.1-codex": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "gpt-5.1-codex-max": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "gpt-5.1-codex-mini": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "gpt-5": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "gpt-5-codex": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "gpt-5-nano": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "claude-fable-5-1": {
+        "base_url": "https://opencode.ai/inference/anthropic",
+        "protocol": "anthropic_messages"
+      },
+      "claude-fable-5": {
+        "base_url": "https://opencode.ai/inference/anthropic",
+        "protocol": "anthropic_messages"
+      },
+      "claude-opus-5-5": {
+        "base_url": "https://opencode.ai/inference/anthropic",
+        "protocol": "anthropic_messages"
+      },
+      "claude-opus-5": {
+        "base_url": "https://opencode.ai/inference/anthropic",
+        "protocol": "anthropic_messages"
+      },
+      "claude-opus-4-8": {
+        "base_url": "https://opencode.ai/inference/anthropic",
+        "protocol": "anthropic_messages"
+      },
+      "claude-opus-4-7": {
+        "base_url": "https://opencode.ai/inference/anthropic",
+        "protocol": "anthropic_messages"
+      },
+      "claude-opus-4-6": {
+        "base_url": "https://opencode.ai/inference/anthropic",
+        "protocol": "anthropic_messages"
+      },
+      "claude-opus-4-5": {
+        "base_url": "https://opencode.ai/inference/anthropic",
+        "protocol": "anthropic_messages"
+      },
+      "claude-sonnet-5-5": {
+        "base_url": "https://opencode.ai/inference/anthropic",
+        "protocol": "anthropic_messages"
+      },
+      "claude-sonnet-5": {
+        "base_url": "https://opencode.ai/inference/anthropic",
+        "protocol": "anthropic_messages"
+      },
+      "claude-sonnet-4-6": {
+        "base_url": "https://opencode.ai/inference/anthropic",
+        "protocol": "anthropic_messages"
+      },
+      "claude-sonnet-4-5": {
+        "base_url": "https://opencode.ai/inference/anthropic",
+        "protocol": "anthropic_messages"
+      },
+      "claude-haiku-5-5": {
+        "base_url": "https://opencode.ai/inference/anthropic",
+        "protocol": "anthropic_messages"
+      },
+      "claude-haiku-4-5": {
+        "base_url": "https://opencode.ai/inference/anthropic",
+        "protocol": "anthropic_messages"
+      },
+      "grok-4.7": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "grok-4.6": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "grok-4.5": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "grok-build-0.1": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "muse-wonder-1.0": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "muse-spark-1.3": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "muse-spark-1.2": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "qwen3.8-max": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "qwen3.8-flash": {
+        "base_url": "https://opencode.ai/inference/anthropic",
+        "protocol": "anthropic_messages"
+      },
+      "qwen3.6-plus": {
+        "base_url": "https://opencode.ai/inference/anthropic",
+        "protocol": "anthropic_messages"
+      },
+      "qwen3.5-plus": {
+        "base_url": "https://opencode.ai/inference/anthropic",
+        "protocol": "anthropic_messages"
+      },
+      "deepseek-v4.1-flash": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "deepseek-v4-pro": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "minimax-m3": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "minimax-m2.7": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "minimax-m2.5": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "glm-5.3-flash": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "glm-5.3": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "glm-5.2": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "glm-5.1": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "glm-5": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "kimi-k2.5": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "kimi-k2.6": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "kimi-k2.7-code": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "kimi-k3": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "mistral-large-4": {
+        "base_url": "https://opencode.ai/inference/openai/v1",
+        "protocol": "chat_completions"
+      }
+    },
+    "opencode-go": {
+      "grok-4.7": {
+        "base_url": "https://opencode.ai/inference/go/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "gpt-6-luna": {
+        "base_url": "https://opencode.ai/inference/go/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "gpt-5.6-luna": {
+        "base_url": "https://opencode.ai/inference/go/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "claude-haiku-5-5": {
+        "base_url": "https://opencode.ai/inference/go/anthropic",
+        "protocol": "anthropic_messages"
+      },
+      "glm-5.3-flash": {
+        "base_url": "https://opencode.ai/inference/go/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "glm-5.3": {
+        "base_url": "https://opencode.ai/inference/go/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "glm-5.2": {
+        "base_url": "https://opencode.ai/inference/go/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "kimi-k3.1-pro": {
+        "base_url": "https://opencode.ai/inference/go/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "kimi-k3": {
+        "base_url": "https://opencode.ai/inference/go/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "kimi-k2.7-code": {
+        "base_url": "https://opencode.ai/inference/go/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "longcat-2.0": {
+        "base_url": "https://opencode.ai/inference/go/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "deepseek-v4.1-flash": {
+        "base_url": "https://opencode.ai/inference/go/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "deepseek-v4-pro": {
+        "base_url": "https://opencode.ai/inference/go/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "mimo-v2.6-flash": {
+        "base_url": "https://opencode.ai/inference/go/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "mimo-v2.6-pro": {
+        "base_url": "https://opencode.ai/inference/go/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "mimo-v2.5": {
+        "base_url": "https://opencode.ai/inference/go/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "mimo-v2.5-pro": {
+        "base_url": "https://opencode.ai/inference/go/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "minimax-m3.1-flash": {
+        "base_url": "https://opencode.ai/inference/go/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "minimax-m3": {
+        "base_url": "https://opencode.ai/inference/go/anthropic",
+        "protocol": "anthropic_messages"
+      },
+      "muse-spark-1.3-contributor": {
+        "base_url": "https://opencode.ai/inference/go/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "muse-spark-1.2-contributor": {
+        "base_url": "https://opencode.ai/inference/go/openai/v1",
+        "protocol": "codex_responses"
+      },
+      "qwen3.8-max": {
+        "base_url": "https://opencode.ai/inference/go/anthropic",
+        "protocol": "anthropic_messages"
+      },
+      "qwen3.8-flash": {
+        "base_url": "https://opencode.ai/inference/go/anthropic",
+        "protocol": "anthropic_messages"
+      },
+      "qwen3.7-plus": {
+        "base_url": "https://opencode.ai/inference/go/anthropic",
+        "protocol": "anthropic_messages"
+      },
+      "hy4-preview": {
+        "base_url": "https://opencode.ai/inference/go/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "hy3": {
+        "base_url": "https://opencode.ai/inference/go/openai/v1",
+        "protocol": "chat_completions"
+      },
+      "step-5-preview": {
+        "base_url": "https://opencode.ai/inference/go/openai/v1",
+        "protocol": "chat_completions"
+      }
+    }
+  },
+  "sources": {
+    "opencode-zen": {
+      "url": "https://opencode.ai/v2/docs/console/models/",
+      "sha256": "3e976c37ac2287742b4c4ae6a49547a97960f8b8e4e0af6fe031ee62987e0c52"
+    },
+    "opencode-go": {
+      "url": "https://opencode.ai/v2/docs/console/go/",
+      "sha256": "1d7134c19959a2e897cfb9270675991db0285e2548ce1bfa6a4f4cfa90d70fb2"
+    }
+  }
+}

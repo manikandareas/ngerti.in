@@ -79,6 +79,16 @@ def test_complete_partition_restore_and_preserve_new_writes(runtime, tmp_path):
     restored = tmp_path / "restored"
     assert restore(tmp_path / "snapshot", restored, OWNER) == original
     assert (restored / QUARANTINE).exists()
+    private = [
+        name
+        for name in saved["files"]
+        if name.startswith("provider-secrets/") and name.endswith(".json")
+    ]
+    assert private
+    for name in private:
+        assert (restored / name).read_bytes() == (home / name).read_bytes()
+        assert (restored / name).stat().st_mode & 0o777 == 0o600
+    assert "provider-relay.json" in saved["files"]
     refused = subprocess.run(
         [RUNTIME_PYTHON, "-m", "ngertiin_engine.service"],
         env=os.environ | {"HERMES_HOME": str(restored), "NMA_OWNER_ID": OWNER},

@@ -167,6 +167,10 @@ class Reliability:
                     "INSERT OR IGNORE INTO nma_run_terminals VALUES (?,?,?)",
                     (self.store.owner, run_id, status),
                 ).rowcount:
+                    provider_failure = conn.execute(
+                        "SELECT code FROM nma_provider_failures WHERE owner_id=? AND run_id=?",
+                        (self.store.owner, run_id),
+                    ).fetchone()
                     value = result.get("result", {}) if result else {}
                     silent = quiet(
                         conn, self.store.owner, run_id, value.get("final_response", "")
@@ -186,7 +190,11 @@ class Reliability:
                         "run." + status,
                         {
                             "status": status,
-                            "error_code": "RUNTIME_FAILED"
+                            "error_code": (
+                                provider_failure[0]
+                                if provider_failure
+                                else "RUNTIME_FAILED"
+                            )
                             if status == "failed"
                             else (
                                 "INDETERMINATE" if status == "indeterminate" else None
@@ -422,11 +430,17 @@ class Reliability:
             "SELECT incarnation FROM nma_stream WHERE owner_id=?",
             (self.store.owner,),
         ).fetchone()[0]
+        provider_failure = conn.execute(
+            "SELECT code FROM nma_provider_failures WHERE owner_id=? AND run_id=?",
+            (self.store.owner, run_id),
+        ).fetchone()
         return {
             "schema_version": "nma.v1",
             "run_id": run_id,
             "status": status,
-            "error_code": "RUNTIME_FAILED"
+            "error_code": (
+                provider_failure[0] if provider_failure else "RUNTIME_FAILED"
+            )
             if status == "failed"
             else ("INDETERMINATE" if status == "indeterminate" else None),
             "text": redact(text),

@@ -316,7 +316,10 @@ class Conversations:
                             config = {
                                 "soul": SOUL,
                                 "instructions": "Help the user with the capabilities actually assigned to you.",
-                                "model": os.environ.get("NMA_DEFAULT_MODEL", "default"),
+                                "model": os.environ.get("NMA_DEFAULT_MODEL", "default")
+                                if os.environ.get("NMA_DEFAULT_MODEL", "default")
+                                in self.adapter.agents.models
+                                else "",
                             }
                             try:
                                 grants = json.loads(

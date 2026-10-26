@@ -28,7 +28,12 @@ from ngertiin.accounts.provisioning import ensure_account, status
 from ngertiin.accounts.webhooks import router as webhook_router
 from ngertiin.agent_engine.api import forward_partition
 from ngertiin.agent_engine.conversations import router as conversation_router
-from ngertiin.agent_engine.partitions import Partitions, ProvisioningError, registry_path
+from ngertiin.agent_engine.partitions import (
+    Partitions,
+    ProvisioningError,
+    local_configuration,
+    registry_path,
+)
 from ngertiin.agent_engine.provisioner import claim, finish, reconcile
 from ngertiin.agent_engine.stream import read_command
 from ngertiin.config import ROOT, get_settings
@@ -138,6 +143,43 @@ class AccountProvisioning(unittest.IsolatedAsyncioTestCase):
                 1,
             )
 
+    async def test_local_partition_without_openai_key_keeps_tobi(self):
+        owner = str(uuid4())
+        partitions = Partitions()
+        try:
+            with patch.dict(os.environ, {"OPENAI_API_KEY": "", "OPENAI_MODEL": ""}):
+                entry = await partitions.ensure(owner)
+                setup = await forward_partition(owner, read_command("account.ensure", {}), entry)
+                self.assertEqual(setup["status"], "ready")
+                listing = await forward_partition(owner, read_command("connection.list", {}), entry)
+                self.assertEqual(listing["items"], [])
+                partitions.close()
+                partitions = Partitions()
+                await partitions.ensure(owner)
+                same = await forward_partition(owner, read_command("account.read", {}), entry)
+                self.assertEqual(same["default_agent_id"], setup["default_agent_id"])
+        finally:
+            partitions.close()
+
+    def test_environment_bootstrap_requires_explicit_owner_assignment(self):
+        assigned, other = str(uuid4()), str(uuid4())
+        env = {
+            "OPENAI_API_KEY": "disposable-owner-assigned-key",
+            "OPENAI_MODEL": "test-model",
+            "NMA_BOOTSTRAP_OWNER_ID": assigned,
+        }
+        with tempfile.TemporaryDirectory(prefix="bc-", dir="/tmp") as directory:
+            for owner in (assigned, other):
+                home = Path(directory) / owner
+                home.mkdir()
+                local_configuration(owner, home, env)
+                catalog = json.loads((home / "models.json").read_text())
+                self.assertEqual(bool(catalog), owner == assigned)
+                if owner == assigned:
+                    # A later global configuration cannot overwrite the saved owner catalog.
+                    local_configuration(owner, home, {**env, "OPENAI_MODEL": "changed-model"})
+                    self.assertEqual(json.loads((home / "models.json").read_text()), catalog)
+
     async def test_real_partition_setup_restart_and_missing_state(self):
         account = self.account("user_" + uuid4().hex)
         owner = str(account.id)
@@ -231,9 +273,7 @@ class AccountProvisioning(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(finish(self.engine, job, "ready", {"primary_dm_thread_id": "thr_1"}))
         with self.engine.begin() as conn:
             conn.execute(
-                text(
-                    "UPDATE account_provisioning SET next_attempt_at=now() WHERE owner_id=:owner"
-                ),
+                text("UPDATE account_provisioning SET next_attempt_at=now() WHERE owner_id=:owner"),
                 {"owner": owner},
             )
         recheck = claim(self.engine)

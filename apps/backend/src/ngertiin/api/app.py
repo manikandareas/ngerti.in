@@ -8,6 +8,8 @@ from uuid import uuid4
 import psycopg
 import structlog
 from fastapi import Depends, FastAPI, Request
+from fastapi.exception_handlers import request_validation_exception_handler
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from sqlalchemy.exc import SQLAlchemyError
@@ -55,6 +57,21 @@ app.add_middleware(
     allow_headers=["Authorization", "Content-Type", "Last-Event-ID"],
     expose_headers=["X-Request-ID"],
 )
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_failure(request: Request, error: RequestValidationError):
+    if request.url.path.startswith(
+        ("/api/agent-engine/v1/connections", "/api/agent-engine/v1/provider-auth")
+    ):
+        # Validation errors must not echo secret-bearing input or callback bodies.
+        return JSONResponse(
+            status_code=422,
+            content={
+                "detail": {"code": "INVALID_REQUEST", "message": "Connection request is invalid."}
+            },
+        )
+    return await request_validation_exception_handler(request, error)
 
 
 @app.middleware("http")

@@ -17,15 +17,16 @@ def test_default_configuration_retry_handle_collision_and_archive(runtime):
     models.write_text("{}")
     start()
     setup = command("account.ensure")
-    assert call(setup)["error"]["code"] == "MODEL_UNAVAILABLE"
+    result = call(setup)["result"]
+    # An empty startup file cannot overwrite the durable, owner-assigned catalog.
     with sqlite3.connect(root / "state/state.db") as db:
-        assert db.execute("SELECT count(*) FROM nma_account_setup").fetchone()[0] == 0
-        assert db.execute("SELECT count(*) FROM nma_agents").fetchone()[0] == 1
+        assert db.execute("SELECT count(*) FROM nma_account_setup").fetchone()[0] == 1
+        assert db.execute("SELECT count(*) FROM nma_agents").fetchone()[0] == 2
     start.current.terminate()
     start.current.wait(timeout=25)
     models.write_bytes(original)
     start()
-    result = call(setup)["result"]
+    assert call(setup)["result"] == result
     assert result["default_agent_id"] != existing["agent_id"]
     agents = call(command("agent.list", {"after": None, "limit": 100}))["result"][
         "items"

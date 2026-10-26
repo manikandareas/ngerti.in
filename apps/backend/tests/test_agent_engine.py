@@ -71,6 +71,71 @@ class AgentEngineHTTP(unittest.IsolatedAsyncioTestCase):
         self.env.stop()
         self.tmp.cleanup()
 
+    async def test_provider_connection_owner_and_secret_validation(self):
+        response = await self.client.get("/api/agent-engine/v1/connections")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.headers["cache-control"], "no-store")
+        self.assertEqual(self.envelopes[-1]["owner_id"], str(self.owner))
+        before = len(self.envelopes)
+        response = await self.client.post(
+            "/api/agent-engine/v1/connections",
+            json={
+                "connection_id": str(uuid4()),
+                "provider": "custom",
+                "label": "Personal",
+                "api_key": "synthetic-private-key",
+                "base_url": "https://example.com/v1",
+                "owner_id": str(uuid4()),
+            },
+        )
+        self.assertEqual(response.status_code, 422)
+        self.assertEqual(len(self.envelopes), before)
+
+    async def test_provider_login_uses_verified_product_session(self):
+        from fastapi import Request
+
+        response = await self.client.post(
+            "/api/agent-engine/v1/provider-auth",
+            json={"provider": "openrouter", "label": "Personal"},
+        )
+        self.assertEqual(response.status_code, 401)
+
+        def account(request: Request):
+            request.state.auth_session_id = "verified-session"
+            return Account(id=self.owner, clerk_user_id="test-owner")
+
+        self.app.dependency_overrides[current_account] = account
+        response = await self.client.post(
+            "/api/agent-engine/v1/provider-auth",
+            json={"provider": "openrouter", "label": "Personal"},
+        )
+        self.assertEqual(response.status_code, 200)
+        payload = self.envelopes[-1]["body"]["payload"]
+        self.assertEqual(
+            payload["session_binding"], hashlib.sha256(b"verified-session").hexdigest()
+        )
+        self.assertNotIn("owner_id", payload)
+        self.assertEqual(response.headers["cache-control"], "no-store")
+
+    async def test_connection_validation_never_echoes_secret_input(self):
+        from fastapi.exceptions import RequestValidationError
+
+        from ngertiin.api.app import validation_failure
+
+        self.app.add_exception_handler(RequestValidationError, validation_failure)
+        canary = "secret-input-canary-" * 1000
+        response = await self.client.post(
+            "/api/agent-engine/v1/connections",
+            json={
+                "connection_id": str(uuid4()),
+                "provider": "custom",
+                "label": "Personal",
+                "api_key": canary,
+            },
+        )
+        self.assertEqual(response.status_code, 422)
+        self.assertNotIn(canary, response.text)
+
     async def test_read_signs_verified_owner_and_canonical_body(self):
         response = await self.client.get("/api/agent-engine/v1/agents")
         self.assertEqual(response.status_code, 200)
@@ -216,6 +281,7 @@ if __name__ == "__main__":
 class SingleEngineComposition(unittest.TestCase):
     def test_retired_routes_and_runtime_are_absent(self):
         from importlib.util import find_spec
+
         from ngertiin.api.app import app
 
         paths = set(app.openapi()["paths"])

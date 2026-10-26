@@ -1,7 +1,8 @@
 import React from 'react';
 import {createRoot} from 'react-dom/client';
+import {ConnectionsPage} from '../../../web/src/features/connections/connections-page';
 import {AgentsPage} from '../../../web/src/features/agents/agents-page';
 import {DirectMessagePage} from '../../../web/src/features/direct-messages/direct-message-page';
 import {TooltipProvider} from '../../../web/src/components/ui/tooltip';
 import './style.css';
-createRoot(document.getElementById('root')).render(<TooltipProvider>{location.pathname.startsWith('/conversations/') ? <DirectMessagePage threadId={location.pathname.split('/').pop()}/> : <AgentsPage/>}</TooltipProvider>);
+createRoot(document.getElementById('root')).render(<TooltipProvider>{location.pathname === '/connections' ? <ConnectionsPage/> : location.pathname.startsWith('/conversations/') ? <DirectMessagePage threadId={location.pathname.split('/').pop()}/> : <AgentsPage/>}</TooltipProvider>);

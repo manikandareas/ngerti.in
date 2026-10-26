@@ -68,6 +68,7 @@ def test_artifact_publish_download_scope_share_revoke_restart(runtime, public_ap
                     "action": "publish",
                     "filename": "report.md",
                     "content": "PRIVATE_FILE_CANARY\nA verified report.",
+                    "artifact_id": "",
                 }
             ),
         )
@@ -103,7 +104,12 @@ def test_artifact_publish_download_scope_share_revoke_restart(runtime, public_ap
                 other,
                 "FILE:"
                 + json.dumps(
-                    {"action": "read", "artifact_id": artifact["artifact_id"]}
+                    {
+                        "action": "read",
+                        "artifact_id": artifact["artifact_id"],
+                        "filename": "",
+                        "content": None,
+                    }
                 ),
             )
         )["result"]

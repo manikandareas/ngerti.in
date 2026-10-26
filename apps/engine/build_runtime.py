@@ -33,7 +33,9 @@ def main():
             raise ValueError(f"Unreviewed upstream input: {name}")
     with tempfile.TemporaryDirectory() as directory:
         export = Path(directory) / "requirements.txt"
-        pm.export_requirements(source, export, extras=["acp", "mcp"], explicit=True)
+        pm.export_requirements(
+            source, export, extras=pin["optional_extras"], explicit=True
+        )
         lines = export.read_text().splitlines()
     requirements = [
         line for line in lines if re.split(r"[=\[; ]", line)[0] not in EXCLUDED
@@ -46,8 +48,6 @@ def main():
             "iniconfig",
             "pluggy",
             "pytest-asyncio",
-            "anthropic",
-            "docstring-parser",
         ):
             versions = {p["version"] for p in lock["package"] if p["name"] == name}
             if len(versions) != 1:

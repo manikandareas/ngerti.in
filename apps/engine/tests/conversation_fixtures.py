@@ -5,6 +5,10 @@ from uuid import uuid4
 
 
 def drop_conversation_schema(db):
+    db.execute("DROP TABLE IF EXISTS nma_provider_legacy_routes")
+    db.execute("DROP TABLE IF EXISTS nma_provider_failures")
+    db.execute("DROP TABLE IF EXISTS nma_provider_connections")
+    db.execute("DELETE FROM nma_schema_migrations WHERE version>=14")
     db.execute("DROP TRIGGER IF EXISTS nma_primary_dm_identity")
     for table in (
         "nma_welcomes",

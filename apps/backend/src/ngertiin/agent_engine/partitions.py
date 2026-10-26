@@ -221,12 +221,10 @@ class Partitions:
 def local_configuration(owner, home, env):
     source = Path(env.get("HERMES_SOURCE", ROOT / ".dev/nma-001/source")).resolve()
     python = Path(
-        env.get("NMA_RUNTIME_PYTHON", ROOT / ".dev/nma-006-closure/production/bin/python")
+        env.get("NMA_RUNTIME_PYTHON", ROOT / ".dev/nma-040/production/bin/python")
     ).absolute()
     if not python.is_file() or not (source / "gateway/run.py").is_file():
         raise ProvisioningError("PINNED_RUNTIME_REQUIRED")
-    if not env.get("OPENAI_API_KEY") or not env.get("OPENAI_MODEL"):
-        raise ProvisioningError("MODEL_CONFIGURATION_REQUIRED")
     if len(str(home / "nma.sock").encode()) > 100:
         raise ProvisioningError("PARTITION_PATH_TOO_LONG")
     key = home / "service.key"
@@ -240,21 +238,30 @@ def local_configuration(owner, home, env):
     workspace.mkdir(exist_ok=True, mode=0o700)
     model = {
         "provider": "custom",
-        "default": env["OPENAI_MODEL"],
+        "default": env.get("OPENAI_MODEL", ""),
         "base_url": env.get("OPENAI_BASE_URL", "https://api.openai.com/v1"),
     }
-    write_private(
-        home / "models.json",
-        {
-            "default": {
-                "label": env["OPENAI_MODEL"],
-                "model": model["default"],
-                "provider": model["provider"],
-                "base_url": model["base_url"],
-                "cwd": str(workspace),
-            }
-        },
-    )
+    # Bootstrap only a new owner catalog. Durable saved connections survive restarts.
+    if not (home / "models.json").exists():
+        if (
+            env.get("NMA_BOOTSTRAP_OWNER_ID") == owner
+            and env.get("OPENAI_API_KEY")
+            and env.get("OPENAI_MODEL")
+        ):
+            write_private(
+                home / "models.json",
+                {
+                    "default": {
+                        "label": env.get("OPENAI_MODEL", ""),
+                        "model": model["default"],
+                        "provider": model["provider"],
+                        "base_url": model["base_url"],
+                        "cwd": str(workspace),
+                    }
+                },
+            )
+        else:
+            write_private(home / "models.json", {})
     write_private(
         home / "config.yaml",
         {
@@ -313,4 +320,6 @@ def local_configuration(owner, home, env):
     child["NMA_DEFAULT_GRANTS"] = json.dumps(
         {"tool_grants": ["tasks", "files"] + (["browser"] if env.get("E2B_API_KEY") else [])}
     )
+    # The local OSS ChatGPT flow is opt-in; hosted product availability is separate.
+    child["NMA_CHATGPT_LOCAL_OSS"] = env.get("NMA_CHATGPT_LOCAL_OSS", "0")
     return [str(python), "-m", "ngertiin_engine.service"], child

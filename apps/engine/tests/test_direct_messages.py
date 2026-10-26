@@ -229,7 +229,7 @@ def public_api(runtime):
         port = sock.getsockname()[1]
     script = root / "http_app.py"
     script.write_text("""import os
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from ngertiin.agent_engine.api import router
 from ngertiin.agent_engine.stream import router as streams
 from ngertiin.accounts.auth import current_account
@@ -239,7 +239,10 @@ import uvicorn
 app = FastAPI()
 app.include_router(router)
 app.include_router(streams)
-app.dependency_overrides[current_account] = lambda: Account(id=UUID(os.environ["TEST_OWNER"]), clerk_user_id="fixture")
+def fixture_account(request: Request):
+    request.state.auth_session_id = "fixture-session"
+    return Account(id=UUID(os.environ["TEST_OWNER"]), clerk_user_id="fixture")
+app.dependency_overrides[current_account] = fixture_account
 uvicorn.run(app, host="127.0.0.1", port=int(os.environ["TEST_PORT"]), log_level="error")
 """)
     log = (root / "http.log").open("w")
@@ -483,7 +486,9 @@ def test_public_cancel_and_failed_terminal_events(runtime, public_api):
             if line.startswith("data: "):
                 event = json.loads(line[6:])
                 if event["type"] == "run.failed":
-                    assert event["payload"]["error_code"] == "RUNTIME_FAILED"
+                    assert (
+                        event["payload"]["error_code"] == "PROVIDER_RECONNECT_REQUIRED"
+                    )
                     break
 
 

@@ -61,7 +61,7 @@ def main():
                     (owner,),
                 ).fetchone()
                 if (
-                    version not in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)
+                    version not in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14)
                     or not checksum
                     or checksum[0] != CHECKSUM
                 ):
@@ -117,6 +117,15 @@ def main():
                     ).fetchone()
                     if not saved or saved[0] != CONVERSATION_CHECKSUM:
                         raise EngineError("UNSUPPORTED_SCHEMA")
+                if version >= 14:
+                    from ngertiin_engine.store import CONNECTION_CHECKSUM
+
+                    saved = db.execute(
+                        "SELECT checksum FROM nma_schema_migrations WHERE owner_id=? AND version=14",
+                        (owner,),
+                    ).fetchone()
+                    if not saved or saved[0] != CONNECTION_CHECKSUM:
+                        raise EngineError("UNSUPPORTED_SCHEMA")
     key = Path(os.environ["NMA_SERVICE_KEY_FILE"]).read_bytes()
     if len(key) < 32:
         raise EngineError("INVALID_SERVICE_KEY")
@@ -165,6 +174,47 @@ def main():
             if policy and policy.config().get("nma_persona"):
                 return None
             return super()._get_system_prompt_for_channel(*args, **kwargs)
+
+        def _resolve_session_agent_runtime(
+            self, *, source=None, session_key=None, user_config=None, fallback=True
+        ):
+            from gateway.session_policy import policy_for_source
+
+            policy = policy_for_source(self, source) if source else None
+            config = policy.config(secrets=False) if policy else {}
+            snapshot = config.get("nma_provider")
+            thread_id = config.get("nma_provider_thread")
+            if not snapshot and source and getattr(self, "nma_adapter", None):
+                saved = self.nma_adapter.store.write(
+                    lambda conn: conn.execute(
+                        "SELECT l.snapshot,b.config FROM nma_provider_legacy_routes l JOIN nma_adapter_bindings b USING(owner_id,binding_id) WHERE l.owner_id=? AND b.native_session_id=?",
+                        (owner, source.chat_id),
+                    ).fetchone()
+                )
+                if saved:
+                    snapshot, thread_id = (
+                        json.loads(saved[0]),
+                        json.loads(saved[1])["thread_id"],
+                    )
+            if snapshot:
+                live = active_authority(self).sessions.get(source.chat_id)
+                stamp = dict(live.event_stream.execution) if live else {}
+                row = self.nma_adapter.store.write(
+                    lambda conn: self.nma_adapter.reliability.check(conn, stamp)
+                )
+                return self.nma_adapter.provider_transport.runtime(
+                    snapshot,
+                    thread_id,
+                    row[0] if row else None,
+                    source.chat_id,
+                    stamp,
+                )
+            return super()._resolve_session_agent_runtime(
+                source=source,
+                session_key=session_key,
+                user_config=user_config,
+                fallback=fallback,
+            )
 
         async def _run_agent(
             self, message, context_prompt, history, source, session_id, **kwargs
@@ -441,6 +491,8 @@ def main():
                 self.nma_server.close()
                 await self.nma_server.wait_closed()
                 self.nma_server = None
+            if getattr(self, "nma_adapter", None):
+                await asyncio.to_thread(self.nma_adapter.provider_transport.close)
             return await super().stop(*args, **kwargs)
 
     run.GatewayRunner = EngineRunner

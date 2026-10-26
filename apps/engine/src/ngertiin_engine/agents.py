@@ -149,7 +149,9 @@ class Agents:
             for k in ("soul", "instructions")
         ):
             raise EngineError("INVALID_REQUEST")
-        if not isinstance(config["model"], str) or config["model"] not in self.models:
+        if not isinstance(config["model"], str) or (
+            config["model"] and config["model"] not in self.models
+        ):
             raise EngineError("MODEL_UNAVAILABLE")
         capabilities, _ = resolve(config)
         return (
@@ -159,7 +161,7 @@ class Agents:
                 **config,
                 # The stored avatar always follows the handle; client-sent values are ignored.
                 "avatar_url": avatar_url(handle),
-                "runtime_model": self.models[config["model"]],
+                "runtime_model": self.models.get(config["model"]),
                 "runtime_capabilities": capabilities,
             },
         )

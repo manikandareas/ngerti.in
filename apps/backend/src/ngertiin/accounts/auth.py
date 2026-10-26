@@ -36,6 +36,7 @@ def current_account(
     )
     if not state.is_signed_in or not state.payload or not state.payload.get("sub"):
         raise HTTPException(401, "Please sign in again.")
+    request.state.auth_session_id = state.payload.get("sid")
     subject = state.payload["sub"]
     account = ensure_account(session, subject)
     session.commit()

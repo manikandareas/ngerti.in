@@ -4,6 +4,7 @@ export class ApiError extends Error {
   constructor(
     message: string,
     public status: number,
+    public code?: string,
   ) {
     super(message);
     this.name = "ApiError";
@@ -27,6 +28,7 @@ export async function api<T>(
           ? body.detail.message
           : `Request gagal (${response.status}).`,
       response.status,
+      typeof body?.detail?.code === "string" ? body.detail.code : undefined,
     );
   }
   if (response.status === 204) return undefined as T;

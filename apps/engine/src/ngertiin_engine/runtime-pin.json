@@ -46,7 +46,15 @@
     "gateway/hosted_room_driver.py": "e1a2c1dc06ebb27fe379e3c5dc6c9364d9848f926af17c6ddf629df49cb39fa9",
     "gateway/hosted_room_task_input.py": "0b474b70e29043850acc4428ef280c4f28e5fd98a231102c7e34828341a37ca6",
     "gateway/hosted_rooms_common.py": "6d4b880834e68e8eb9a9b58f75a0abda22da4181028397639413036919ccfbaf",
-    "gateway/response_filters.py": "c229a2aae6f57be1e75e40df9a2274f46fa7f3c77e1edbaea95b6cba9d280aef"
+    "gateway/response_filters.py": "c229a2aae6f57be1e75e40df9a2274f46fa7f3c77e1edbaea95b6cba9d280aef",
+    "hermes_cli/auth.py": "6b693d21fed52070f2afaf6c14e95311fe9844f70be329e5052ae4b55df4754d",
+    "hermes_cli/auth_device_flow.py": "d78552afb1a9b14159323a02bd3c4433acf355cd40deb7a9a9e04ef888453a29",
+    "hermes_cli/auth_openrouter.py": "d40afdb6d8139241d30890261dc3843dbe45a9d158f43585752b7e7bdf102567",
+    "hermes_cli/auth_oauth_pkce_plugin.py": "46734e31b222573ff25a35da6179e4a430d555cd7bead6017bf4ec8fa9a2d65b",
+    "gateway/run_turn_prepare.py": "d78059989e24fc3c15f282c41bccd3e07913dde3f0ad457b0d7117e6b084e9d6",
+    "gateway/run_agent_cache.py": "c9a58d54a2efd7ff8fb674ecc041472f0401b33831e3eb8a41c92f0b6aad4aa5",
+    "hermes_cli/models.py": "c3546748426161eae3d2b47b1dfe95495e2e99442df4ff2cbf5d77c5efb7c0cd",
+    "agent/codex_runtime.py": "31799bc1eafb00933cdf6e770b79f95ba8e59837c1cab230734811bdd03db4e8"
   },
   "source_patches": [],
   "integration_seams": [
@@ -56,10 +64,23 @@
     "GatewayRunner._run_agent checks live capability generation before model execution and reattaches exact native session MCP secrets on restart",
     "model_tools._execute_tool wrapper checks live grants at final dispatch; native editor_mcp scope isolates connector schemas/connections",
     "Gateway-owned goal continuation outbox with generation fences, native parked Kanban card mapping and native session admission; no shared session /goal or Kanban dispatcher activation",
-    "Gateway-owned durable goal wake definitions and occurrence windows use native HeartbeatState due checks, heartbeat poll/minimum constants and cron compute_next_run interval arithmetic; shared continuation outbox/native admission only, without overlapping native cron jobs or session heartbeat registrations"
+    "Gateway-owned durable goal wake definitions and occurrence windows use native HeartbeatState due checks, heartbeat poll/minimum constants and cron compute_next_run interval arithmetic; shared continuation outbox/native admission only, without overlapping native cron jobs or session heartbeat registrations",
+    "Owner-scoped provider journal uses native auth-store locks/atomic storage, native PKCE and narrowly adapted OpenRouter exchange; frozen nma_provider selection resolves through a credential-only loopback relay into native chat/Responses/Anthropic transports, without an alternate executor or provider fallback"
   ],
   "optional_extras": [
     "acp",
-    "mcp"
-  ]
+    "mcp",
+    "anthropic"
+  ],
+  "provider_runtime_distributions": {
+    "httpx": "0.28.1",
+    "PyJWT": "2.15.1",
+    "cryptography": "50.0.1",
+    "openai": "2.24.0"
+  },
+  "protocol_runtime_distributions": {
+    "anthropic_messages": {
+      "anthropic": "0.87.0"
+    }
+  }
 }

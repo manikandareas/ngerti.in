@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { Streamdown } from "streamdown";
 import { Button } from "@/components/ui/button";
 import { AgentAvatar } from "@/features/agents/agent-avatar";
+import { providerFailureMessage } from "@/features/connections/client";
 import { ArtifactResults } from "./artifact-results";
 import { command, listThreads, submit, type ThreadItem } from "./client";
 import { Composer } from "./composer";
@@ -275,9 +276,18 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
                         )}
                       </div>
                       {run.status === "failed" && (
-                        <p className="text-sm text-danger">
-                          Jawaban tidak selesai. Kamu dapat mengirim arahan baru untuk mencoba lagi.
-                        </p>
+                        <div className="space-y-2 text-sm text-danger">
+                          <p>
+                            {run.error_code?.startsWith("PROVIDER_")
+                              ? providerFailureMessage(run.error_code)
+                              : "Jawaban tidak selesai. Kamu dapat mengirim arahan baru untuk mencoba lagi."}
+                          </p>
+                          {run.error_code?.startsWith("PROVIDER_") && (
+                            <Link to="/connections" className="underline underline-offset-4">
+                              Kelola koneksi model
+                            </Link>
+                          )}
+                        </div>
                       )}
                       {run.status === "indeterminate" && (
                         <p className="text-sm text-muted-foreground">
@@ -319,12 +329,19 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
                         </Button>
                       )}
                     </div>
-                    {run.error_code && (
+                    {run.error_code?.startsWith("PROVIDER_") ? (
+                      <div className="space-y-2 text-sm text-muted-foreground">
+                        <p>{providerFailureMessage(run.error_code)}</p>
+                        <Link to="/connections" className="underline underline-offset-4">
+                          Kelola koneksi model
+                        </Link>
+                      </div>
+                    ) : run.error_code ? (
                       <details className="text-xs text-muted-foreground">
                         <summary className="cursor-pointer">Detail kendala</summary>
                         <p className="mt-2">{run.error_code}</p>
                       </details>
-                    )}
+                    ) : null}
                   </article>
                 ))}
           </div>

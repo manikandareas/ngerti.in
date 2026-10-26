@@ -1,5 +1,5 @@
 import { useAuth } from "@clerk/tanstack-react-start";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AppShell } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
@@ -190,7 +190,10 @@ export function AgentsPage() {
         </header>
         {data && data.models.length === 0 && (
           <p role="status" className="text-sm text-muted-foreground">
-            Belum ada model yang tersedia untuk membuat agent.
+            Hubungkan provider dan pilih model untuk menggunakan agent.{" "}
+            <Link to="/connections" className="underline underline-offset-4">
+              Tambahkan koneksi model
+            </Link>
           </p>
         )}
         {notice && (
@@ -366,6 +369,9 @@ export function AgentsPage() {
                   }
                 />
               </label>
+              <Link to="/connections" className="text-sm underline underline-offset-4">
+                Hubungkan atau perbaiki akun model
+              </Link>
               <label className="block space-y-2 text-sm">
                 Model
                 <select
@@ -376,6 +382,11 @@ export function AgentsPage() {
                     setDraft({ ...draft, config: { ...draft.config, model: e.target.value } })
                   }
                 >
+                  {!data?.models.some((model) => model.id === draft.config.model) && (
+                    <option value={draft.config.model}>
+                      Model belum tersedia — hubungkan akun
+                    </option>
+                  )}
                   {data?.models.map((model) => (
                     <option key={model.id} value={model.id}>
                       {model.label}

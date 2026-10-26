@@ -2,6 +2,7 @@
 
 import asyncio
 import json
+import os
 from uuid import NAMESPACE_URL, uuid5
 
 from ngertiin_engine.agents import Agents, compose
@@ -44,7 +45,13 @@ class Adapter:
         self.authority, self.owner = authority, uuid(owner)
         self.store = Store(authority, owner)
         self.reliability = Reliability(self.store)
-        self.agents = Agents(self.store, models or {})
+        from ngertiin_engine.connections import Connections
+        from ngertiin_engine.provider_transport import ProviderTransport
+
+        self.connections = Connections(self.store)
+        self.connections.import_bootstrap(models or {})
+        self.agents = Agents(self.store, self.connections.catalog())
+        self.provider_transport = ProviderTransport(self.connections)
         self.threads = Threads(self.store, self.agents)
         self.context = Context(self.store, self.threads)
         self.dm = DirectMessages(self)
@@ -112,6 +119,28 @@ class Adapter:
 
             self.store.write(install)
 
+        # Freeze the one-time owner assignment separately; historical binding bytes stay intact.
+        for binding_id, config in self.bindings.items():
+            if "nma_provider" not in config:
+                snapshot = self.connections.legacy_snapshot(config)
+                if snapshot:
+                    self.store.write(
+                        lambda conn, binding_id=binding_id, snapshot=snapshot: (
+                            conn.execute(
+                                "INSERT OR IGNORE INTO nma_provider_legacy_routes VALUES (?,?,?)",
+                                (self.owner, binding_id, canonical(snapshot)),
+                            )
+                        )
+                    )
+        # Future model/tool subprocesses never inherit the bootstrap provider credential.
+        for name in (
+            "OPENAI_API_KEY",
+            "OPENROUTER_API_KEY",
+            "OPENCODE_ZEN_API_KEY",
+            "OPENCODE_GO_API_KEY",
+        ):
+            os.environ.pop(name, None)
+
     def binding(self, payload):
         fields = ("agent_id", "thread_id", "config_revision", "context_generation")
         uuid(payload.get("agent_id"))
@@ -119,7 +148,20 @@ class Adapter:
         self.store.write(lambda conn: self.threads.check_binding(conn, payload))
         counter(payload.get("config_revision"))
         counter(payload.get("context_generation"))
-        key = digest([payload[k] for k in fields])
+        legacy_key = digest([payload[k] for k in fields])
+        if (
+            legacy_key in self.bindings
+            and "access_generation" not in self.bindings[legacy_key]
+        ):
+            return legacy_key, self.bindings[legacy_key]
+        self.agents.models = self.connections.catalog()
+        selected = self.store.write(
+            lambda conn: self.agents.get(conn, payload["agent_id"])
+        )
+        selected_model = self.agents.models.get(selected["config"]["model"])
+        if not selected_model:
+            raise EngineError("MODEL_UNAVAILABLE")
+        key = digest([[payload[k] for k in fields], selected_model])
         if key not in self.bindings:
             agent = self.store.write(
                 lambda conn: self.agents.get(conn, payload["agent_id"])
@@ -135,7 +177,7 @@ class Adapter:
                 ).fetchone()[0]
             )
             raw = json.loads(raw)
-            model = raw["runtime_model"]
+            model = selected_model
             capabilities, _ = resolve(raw)
             if capabilities != raw.get("runtime_capabilities", capabilities):
                 raise EngineError("ACCESS_REVOKED")
@@ -147,6 +189,7 @@ class Adapter:
                     field: model[field]
                     for field in ("model", "provider", "base_url", "cwd")
                 },
+                "nma_provider": model,
                 "toolsets": capabilities["toolsets"],
                 "nma_capabilities": {
                     "agent_id": agent["agent_id"],
@@ -221,6 +264,18 @@ class Adapter:
             "auxiliary": {"title_generation": {"enabled": False}},
             "platform_toolsets": {"cli": config["toolsets"]},
         }
+        snapshot = config.get("nma_provider")
+        if not snapshot:
+            saved = self.store.write(
+                lambda conn: conn.execute(
+                    "SELECT snapshot FROM nma_provider_legacy_routes WHERE owner_id=? AND binding_id=?",
+                    (self.owner, key),
+                ).fetchone()
+            )
+            snapshot = json.loads(saved[0]) if saved else None
+        if snapshot:
+            frozen["nma_provider"] = snapshot
+            frozen["nma_provider_thread"] = config["thread_id"]
         if "persona" in config:
             frozen["nma_persona"] = True
         if "nma_capabilities" in config:
@@ -298,8 +353,48 @@ class Adapter:
         except RuntimeStoreError as exc:
             raise EngineError(ERRORS.get(exc.reason, "ENGINE_UNAVAILABLE")) from exc
 
+    async def provider_command(self, kind, payload):
+        methods = {
+            "connection.list": lambda p: (
+                self.connections.listing()
+                if not p
+                else self._invalid_provider_request()
+            ),
+            "connection.add_key": self.connections.add_key,
+            "connection.models": lambda p: self.connections.refresh_models(
+                self._connection_identity(p)
+            ),
+            "connection.disconnect": lambda p: self.connections.disconnect(
+                self._connection_identity(p)
+            ),
+            "provider_auth.start": self.provider_transport.auth.start,
+            "provider_auth.status": self.provider_transport.auth.status,
+            "provider_auth.retry": self.provider_transport.auth.retry,
+            "provider_auth.cancel": lambda p: self.provider_transport.auth.status(
+                p, cancel=True
+            ),
+        }
+        if kind not in methods:
+            raise EngineError("INVALID_REQUEST")
+        return await asyncio.to_thread(methods[kind], payload)
+
+    @staticmethod
+    def _invalid_provider_request():
+        raise EngineError("INVALID_REQUEST")
+
+    @staticmethod
+    def _connection_identity(payload):
+        if set(payload) != {"connection_id"}:
+            raise EngineError("INVALID_REQUEST")
+        return uuid(payload["connection_id"])
+
     async def _dispatch(self, body):
         kind, payload = body["type"], body["payload"]
+        if kind.startswith(("connection.", "provider_auth.")):
+            # Secret-bearing commands never enter the generic command/event journal.
+            return await self.provider_command(kind, payload)
+        if kind.startswith("agent."):
+            self.agents.models = self.connections.catalog()
         if kind.startswith("artifact."):
             from ngertiin_engine.artifacts import Artifacts
 
@@ -432,6 +527,14 @@ class Adapter:
                 "schema_version": "nma.v1",
                 "authority_epoch": str(self.authority.epoch),
                 "capabilities": [
+                    "connection.list",
+                    "connection.add_key",
+                    "connection.models",
+                    "connection.disconnect",
+                    "provider_auth.start",
+                    "provider_auth.status",
+                    "provider_auth.cancel",
+                    "provider_auth.retry",
                     "runtime.submit",
                     "run.cancel",
                     "runtime.read",
@@ -588,6 +691,12 @@ class Adapter:
         if self.fenced(payload["run_id"]) or value.get("error") == "ACCESS_REVOKED":
             status = "cancelled"
         # Raw native errors/metadata can include paths and credentials. Publish stable codes only.
+        provider_failure = self.store.write(
+            lambda conn: conn.execute(
+                "SELECT code FROM nma_provider_failures WHERE owner_id=? AND run_id=?",
+                (self.owner, payload["run_id"]),
+            ).fetchone()
+        )
         return {
             "schema_version": "nma.v1",
             "run_id": payload["run_id"],
@@ -602,7 +711,11 @@ class Adapter:
                 )
             },
             "text": value.get("final_response", "") if status == "succeeded" else "",
-            "error_code": "RUNTIME_FAILED" if status == "failed" else None,
+            "error_code": (
+                provider_failure[0] if provider_failure else "RUNTIME_FAILED"
+            )
+            if status == "failed"
+            else None,
         }
 
     @staticmethod

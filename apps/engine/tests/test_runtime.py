@@ -261,7 +261,11 @@ def runtime(tmp_path_factory):
         model = credentials["OPENAI_MODEL"]
         endpoint = credentials.get("OPENAI_BASE_URL") or "https://api.openai.com/v1"
         models = json.loads((root / "models.json").read_text())
-        models["test"].update(model=model, base_url=endpoint)
+        models["test"].update(
+            model=model,
+            base_url=endpoint,
+            protocol=os.environ.get("NMA_TEST_LIVE_PROTOCOL", "chat_completions"),
+        )
         (root / "models.json").write_text(json.dumps(models))
         env.update(
             OPENAI_API_KEY=credentials["OPENAI_API_KEY"], OPENAI_BASE_URL=endpoint
@@ -269,7 +273,8 @@ def runtime(tmp_path_factory):
     (root / "capabilities.json").write_text("{}")
     processes = []
 
-    def start(fault=None):
+    def start(fault=None, overrides=None):
+        start.current_owner = (overrides or {}).get("NMA_OWNER_ID", OWNER)
         log = (root / f"gateway-{len(processes)}.log").open("w+")
         process = subprocess.Popen(
             [RUNTIME_PYTHON, str(Path(__file__).with_name("fault_launcher.py"))]
@@ -277,6 +282,7 @@ def runtime(tmp_path_factory):
             else [RUNTIME_PYTHON, "-m", "ngertiin_engine.service"],
             cwd=SOURCE,
             env=env
+            | (overrides or {})
             | (
                 {"NMA_TEST_FAULT": fault, "NMA_TEST_MARKER": str(root / "fault-fired")}
                 if fault
@@ -304,7 +310,9 @@ def runtime(tmp_path_factory):
         )
 
     def call(body, envelope=None):
-        envelope = sign(body, OWNER, KEY) if envelope is None else envelope
+        envelope = (
+            sign(body, start.current_owner, KEY) if envelope is None else envelope
+        )
         with socket.socket(socket.AF_UNIX) as client:
             client.settimeout(35)
             client.connect(str(home / "nma.sock"))
@@ -325,17 +333,25 @@ def runtime(tmp_path_factory):
                 }
             )
         )
-    yield root, server, call, start, process, description
-    server.release.set()
-    for process in processes:
-        if process.poll() is None:
-            process.send_signal(signal.SIGINT)
-            try:
-                process.wait(timeout=25)
-            except subprocess.TimeoutExpired:
-                process.kill()
-                process.wait()
-    server.shutdown()
+    try:
+        yield root, server, call, start, process, description
+    finally:
+        server.release.set()
+        for process in processes:
+            if process.poll() is None:
+                process.send_signal(signal.SIGINT)
+                try:
+                    process.wait(timeout=25)
+                except subprocess.TimeoutExpired:
+                    process.kill()
+                    process.wait()
+        server.shutdown()
+        server.server_close()
+        if os.environ.get("NMA_TEST_LIVE_ENV"):
+            # Retain redacted evidence, not duplicate real provider credentials in disposable fixtures.
+            import shutil
+
+            shutil.rmtree(home / "provider-secrets", ignore_errors=True)
 
 
 def submit(text="ADAPTER_PROOF", thread=THREAD, revision="1"):
@@ -493,7 +509,7 @@ def test_provider_failure(runtime):
     _, _, call, *_ = runtime
     receipt = call(submit("FAIL_PROVIDER"))["result"]
     result = settle(call, receipt["run_id"], "failed")
-    assert result["error_code"] == "RUNTIME_FAILED"
+    assert result["error_code"] == "PROVIDER_RECONNECT_REQUIRED"
     assert result["text"] == ""
 
 
@@ -676,7 +692,7 @@ def test_agent_additive_migration_from_foundation(runtime):
     )
     with sqlite3.connect(root / "state/state.db") as db:
         assert (
-            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 13
+            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 14
         )
         assert db.execute("SELECT count(*) FROM nma_commands").fetchone()[0] == before
         assert db.execute("PRAGMA foreign_key_check").fetchall() == []

@@ -307,7 +307,7 @@ def test_peer_failure_stays_on_shared_goal_without_private_context(runtime):
             assert snap["goals"][0]["goal_id"] in diagnosis["goal_ids"]
             assert diagnosis["discussion_ids"] and diagnosis["handoff_ids"]
             if unit["status"] == "failed":
-                assert diagnosis["run"]["error_code"] == "RUNTIME_FAILED"
+                assert diagnosis["run"]["error_code"] == "PROVIDER_RECONNECT_REQUIRED"
                 assert any(
                     e["type"] == "run.failed" for e in diagnosis["recent_events"]
                 )

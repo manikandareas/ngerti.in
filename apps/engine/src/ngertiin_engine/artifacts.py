@@ -20,7 +20,7 @@ DDL = (
 TOOL = "workspace"
 SCHEMA = {
     "name": TOOL,
-    "description": "Publish an immutable UTF-8 file in this conversation, list its files, or read an authorized artifact. Use explicit artifact IDs for handoff; private DM files are not shared automatically. No host paths are accepted.",
+    "description": "Publish an immutable UTF-8 file in this conversation, list its files, or read an authorized artifact. For publish, send action, filename and content; for list, send only action; for read, send action and artifact_id. Omit unused fields. Use explicit artifact IDs for handoff; private DM files are not shared automatically. No host paths are accepted.",
     "parameters": {
         "type": "object",
         "properties": {
@@ -108,16 +108,28 @@ class Artifacts:
             if not isinstance(args, dict):
                 raise EngineError("INVALID_REQUEST")
             action = args.get("action")
-            if action == "list" and set(args) == {"action"}:
+            if not isinstance(action, str):
+                raise EngineError("INVALID_REQUEST")
+            unused = {
+                "publish": {"artifact_id"},
+                "list": {"filename", "content", "artifact_id"},
+                "read": {"filename", "content"},
+            }.get(action, set())
+            # Compatible providers may fill unused optional fields with empty placeholders.
+            # Keep the original payload digest so existing effect receipts remain authoritative.
+            fields = {
+                k for k, v in args.items() if k not in unused or v not in (None, "")
+            }
+            if action == "list" and fields == {"action"}:
                 result = {"artifacts": self.listing(conn, config["thread_id"])}
-            elif action == "read" and set(args) == {"action", "artifact_id"}:
+            elif action == "read" and fields == {"action", "artifact_id"}:
                 result = self.get(
                     conn,
                     args["artifact_id"],
                     thread_id=config["thread_id"],
                     content=True,
                 )
-            elif action == "publish" and set(args) == {"action", "filename", "content"}:
+            elif action == "publish" and fields == {"action", "filename", "content"}:
                 name, content = args["filename"], args["content"]
                 if (
                     not isinstance(name, str)

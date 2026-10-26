@@ -62,6 +62,18 @@ def canonical(value):
 def failure(code, command_id, details=None):
     status = {
         "NOT_FOUND": 404,
+        "INVALID_ENDPOINT": 422,
+        "UNSUPPORTED_PROTOCOL": 422,
+        "PROTOCOL_UNAVAILABLE": 422,
+        "CREDENTIAL_METADATA_REJECTED": 422,
+        "PROVIDER_RECONNECT_REQUIRED": 409,
+        "PROVIDER_ENTITLEMENT_REQUIRED": 422,
+        "PROVIDER_QUOTA_EXHAUSTED": 422,
+        "PROVIDER_WORKLOAD_REQUIRED": 422,
+        "PROVIDER_DEPLOYMENT_UNVERIFIED": 422,
+        "OAUTH_STATE_INVALID": 422,
+        "OAUTH_IDENTITY_MISMATCH": 422,
+        "CONNECTION_IDENTITY_CONFLICT": 409,
         "DM_RECONCILIATION_REQUIRED": 409,
         "INVALID_CURSOR": 422,
         "CURSOR_AHEAD": 409,
@@ -152,6 +164,138 @@ async def forward_partition(owner: str, body: dict, partition: dict):
         return reply["result"]
     except (OSError, TimeoutError, ValueError, KeyError) as exc:
         raise failure("ENGINE_UNAVAILABLE", command_id) from exc
+
+
+class ConnectionKey(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    connection_id: UUID
+    provider: Literal["custom", "openrouter", "opencode-zen", "opencode-go"]
+    label: str = Field(min_length=1, max_length=100)
+    api_key: str = Field(min_length=1, max_length=16384, repr=False)
+    base_url: str = ""
+    protocol: Literal["chat_completions", "codex_responses", "anthropic_messages"] = (
+        "chat_completions"
+    )
+    workload: Literal["general", "coding"] = "general"
+
+
+class ProviderLogin(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    provider: Literal["chatgpt", "openrouter"]
+    label: str = Field(min_length=1, max_length=100)
+    connection_id: UUID | None = None
+
+
+def provider_command(kind, payload):
+    return {
+        "schema_version": "nma.v1",
+        "command_id": str(uuid4()),
+        "type": kind,
+        "expected_revision": None,
+        "payload": payload,
+    }
+
+
+def session_binding(request):
+    session_id = getattr(request.state, "auth_session_id", None)
+    if not isinstance(session_id, str) or not session_id:
+        raise HTTPException(401, "Please sign in again.")
+    return hashlib.sha256(session_id.encode()).hexdigest()
+
+
+@router.get("/connections")
+async def connections(account: AccountDep, response: Response):
+    response.headers["Cache-Control"] = "no-store"
+    return await forward(str(account.id), provider_command("connection.list", {}))
+
+
+@router.post("/connections")
+async def add_connection(body: ConnectionKey, account: AccountDep, response: Response):
+    response.headers["Cache-Control"] = "no-store"
+    return await forward(
+        str(account.id), provider_command("connection.add_key", body.model_dump(mode="json"))
+    )
+
+
+@router.post("/connections/{connection_id}/models")
+async def refresh_connection_models(connection_id: UUID, account: AccountDep):
+    return await forward(
+        str(account.id),
+        provider_command("connection.models", {"connection_id": str(connection_id)}),
+    )
+
+
+@router.delete("/connections/{connection_id}")
+async def disconnect_connection(connection_id: UUID, account: AccountDep):
+    return await forward(
+        str(account.id),
+        provider_command("connection.disconnect", {"connection_id": str(connection_id)}),
+    )
+
+
+@router.post("/provider-auth")
+async def start_provider_auth(
+    body: ProviderLogin, account: AccountDep, request: Request, response: Response
+):
+    response.headers["Cache-Control"] = "no-store"
+    return await forward(
+        str(account.id),
+        provider_command(
+            "provider_auth.start",
+            {
+                **body.model_dump(mode="json"),
+                "session_binding": session_binding(request),
+            },
+        ),
+    )
+
+
+@router.get("/provider-auth/{attempt_id}")
+async def provider_auth_status(
+    attempt_id: UUID, account: AccountDep, request: Request, response: Response
+):
+    response.headers["Cache-Control"] = "no-store"
+    return await forward(
+        str(account.id),
+        provider_command(
+            "provider_auth.status",
+            {
+                "attempt_id": str(attempt_id),
+                "session_binding": session_binding(request),
+            },
+        ),
+    )
+
+
+@router.post("/provider-auth/{attempt_id}/retry")
+async def retry_provider_auth(
+    attempt_id: UUID, account: AccountDep, request: Request, response: Response
+):
+    response.headers["Cache-Control"] = "no-store"
+    return await forward(
+        str(account.id),
+        provider_command(
+            "provider_auth.retry",
+            {
+                "attempt_id": str(attempt_id),
+                "session_binding": session_binding(request),
+            },
+        ),
+    )
+
+
+@router.delete("/provider-auth/{attempt_id}")
+async def cancel_provider_auth(attempt_id: UUID, account: AccountDep, request: Request):
+    return await forward(
+        str(account.id),
+        provider_command(
+            "provider_auth.cancel",
+            {
+                "attempt_id": str(attempt_id),
+                "session_binding": session_binding(request),
+            },
+        ),
+    )
 
 
 @router.post("/commands")

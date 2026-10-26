@@ -1,7 +1,9 @@
 import { useAuth } from "@clerk/tanstack-react-start";
+import { Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { providerFailureMessage } from "@/features/connections/client";
 import { ApiError } from "@/lib/api";
 import { command, submit } from "./client";
 import type { Thread } from "./state";
@@ -30,6 +32,7 @@ export function Composer({
   const [pending, setPending] = useState<Pending | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [repairNeeded, setRepairNeeded] = useState(false);
   const [ready, setReady] = useState(false);
   const lock = useRef(false);
   const input = useRef<HTMLTextAreaElement>(null);
@@ -62,6 +65,7 @@ export function Composer({
     lock.current = true;
     setBusy(true);
     setError("");
+    setRepairNeeded(false);
     const payload = {
       thread_id: thread.thread_id,
       text,
@@ -82,6 +86,12 @@ export function Composer({
       }
     } catch (reason) {
       if (!alive.current) return;
+      const connectionCode =
+        reason instanceof ApiError &&
+        (reason.code === "MODEL_UNAVAILABLE" || reason.code?.startsWith("PROVIDER_"))
+          ? reason.code
+          : null;
+      setRepairNeeded(!!connectionCode);
       if (
         reason instanceof ApiError &&
         reason.status >= 400 &&
@@ -91,7 +101,9 @@ export function Composer({
         setPending(null);
         save(text, null);
         setError(
-          "Pesan ditolak. Periksa status agent atau muat ulang percakapan sebelum mengirim lagi.",
+          connectionCode
+            ? providerFailureMessage(connectionCode)
+            : "Pesan ditolak. Periksa status agent atau muat ulang percakapan sebelum mengirim lagi.",
         );
       } else
         setError(
@@ -103,6 +115,7 @@ export function Composer({
     }
   }
   const unavailable = thread.status !== "open" || thread.agents[0]?.status !== "active";
+  const needsModel = thread.kind === "dm" && !thread.agents[0]?.config.model;
   return (
     <form
       className="space-y-3"
@@ -115,6 +128,19 @@ export function Composer({
         <p role="status" className="text-sm text-muted-foreground">
           Agent atau percakapan tidak aktif. Riwayat tetap dapat dibaca.
         </p>
+      )}
+      {(needsModel || repairNeeded) && (
+        <div role="status" className="space-y-2 text-sm">
+          {needsModel && <p>Hubungkan akun model, lalu pilih model untuk agent ini.</p>}
+          <div className="flex flex-wrap gap-4">
+            <Link to="/connections" className="underline underline-offset-4">
+              Kelola koneksi model
+            </Link>
+            <Link to="/agents" className="underline underline-offset-4">
+              Pilih model agent
+            </Link>
+          </div>
+        </div>
       )}
       {error && (
         <p role="alert" className="text-sm text-danger">

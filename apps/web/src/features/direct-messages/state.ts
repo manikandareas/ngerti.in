@@ -16,6 +16,7 @@ export type Message = {
   author_kind: "user" | "agent" | "system";
   author_agent_id: string | null;
   content: string;
+  attachments?: Artifact[];
 };
 export type Run = {
   run_id: string;
@@ -64,9 +65,12 @@ export type Snapshot = {
 export type Artifact = {
   artifact_id: string;
   revision_id: string;
-  producing_run_id: string;
-  producing_agent_id: string;
+  producing_run_id: string | null;
+  producing_agent_id: string | null;
   filename: string;
+  sha256?: string;
+  byte_count?: number;
+  media_type?: string;
 };
 export type Event = {
   type: string;

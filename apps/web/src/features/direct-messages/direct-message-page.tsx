@@ -13,6 +13,7 @@ import { GoalProgress } from "./goal-progress";
 import { SessionControls } from "./session-controls";
 import { activeRun, type Run, runLabels } from "./state";
 import { useDirectMessage } from "./use-direct-message";
+import { WorkspaceControls } from "./workspace-controls";
 
 export function DirectMessagePage({ threadId }: { threadId: string }) {
   const { getToken } = useAuth();
@@ -192,7 +193,10 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
             {snapshot && (
               <SessionControls key={threadId} thread={snapshot.thread} working={working} />
             )}
-            <ArtifactResults artifacts={snapshot?.artifacts ?? []} />
+            <ArtifactResults artifacts={snapshot?.artifacts ?? []} threadId={threadId} />
+            {snapshot && (
+              <WorkspaceControls key={threadId} thread={snapshot.thread} working={working} />
+            )}
             {snapshot && (
               <GoalProgress
                 goals={snapshot.goals ?? []}
@@ -258,6 +262,15 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
                   >
                     <h2 className="mb-2 text-xs font-bold">{author}</h2>
                     <MessageText text={message.content} />
+                    {!!message.attachments?.length && (
+                      <div className="mt-3">
+                        <ArtifactResults
+                          artifacts={message.attachments}
+                          threadId={threadId}
+                          label="Lampiran"
+                        />
+                      </div>
+                    )}
                     {message.author_kind === "agent" && run?.status === "indeterminate" && (
                       <p className="mt-3 text-sm text-muted-foreground">
                         Jawaban tersimpan. Hasil salah satu tindakan belum diketahui; periksa

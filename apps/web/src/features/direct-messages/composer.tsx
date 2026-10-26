@@ -6,13 +6,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { providerFailureMessage } from "@/features/connections/client";
 import { ApiError } from "@/lib/api";
 import { command, submit } from "./client";
-import type { Thread } from "./state";
+import { FileUpload } from "./file-upload";
+import type { Artifact, Thread } from "./state";
 
 type Pending = ReturnType<typeof command> & {
   payload: {
     thread_id: string;
     text: string;
-    attachment_ids: never[];
+    attachment_ids: string[];
     request_key: string;
     expected_membership_revision: string;
   };
@@ -29,6 +30,7 @@ export function Composer({
   const { getToken, userId } = useAuth();
   const key = `nma-dm:${userId}:${thread.thread_id}`;
   const [text, setText] = useState("");
+  const [attachments, setAttachments] = useState<Artifact[]>([]);
   const [pending, setPending] = useState<Pending | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -44,6 +46,7 @@ export function Composer({
       if (saved) {
         setText(saved.text ?? "");
         setPending(saved.pending ?? null);
+        setAttachments(saved.attachments ?? []);
       }
     } catch {
       /* Storage is optional; command identity remains in memory. */
@@ -53,15 +56,18 @@ export function Composer({
       alive.current = false;
     };
   }, [key]);
-  function save(value: string, intent: Pending | null) {
+  function save(value: string, intent: Pending | null, files = attachments) {
     try {
-      sessionStorage.setItem(key, JSON.stringify({ text: value, pending: intent }));
+      sessionStorage.setItem(
+        key,
+        JSON.stringify({ text: value, pending: intent, attachments: files }),
+      );
     } catch {
       /* Private browsing may disable storage. */
     }
   }
   async function send() {
-    if (lock.current || !ready || (!text.trim() && !pending)) return;
+    if (lock.current || !ready || (!text.trim() && !attachments.length && !pending)) return;
     lock.current = true;
     setBusy(true);
     setError("");
@@ -69,7 +75,7 @@ export function Composer({
     const payload = {
       thread_id: thread.thread_id,
       text,
-      attachment_ids: [] as never[],
+      attachment_ids: attachments.map((file) => file.artifact_id),
       request_key: crypto.randomUUID(),
       expected_membership_revision: thread.membership_revision,
     };
@@ -78,10 +84,11 @@ export function Composer({
     save(text, intent);
     try {
       await submit(intent, await getToken());
-      save("", null);
+      save("", null, []);
       if (alive.current) {
         setText("");
         setPending(null);
+        setAttachments([]);
         input.current?.focus();
       }
     } catch (reason) {
@@ -202,6 +209,33 @@ export function Composer({
           }
         }}
       />
+      <div className="flex flex-wrap items-center gap-2">
+        <FileUpload
+          threadId={thread.thread_id}
+          disabled={busy || !!pending || !ready || unavailable || attachments.length >= 10}
+          onReady={(file) => {
+            const next = [...attachments.filter((a) => a.artifact_id !== file.artifact_id), file];
+            setAttachments(next);
+            save(text, pending, next);
+          }}
+        />
+        {attachments.map((file) => (
+          <Button
+            key={file.artifact_id}
+            type="button"
+            variant="ghost"
+            size="sm"
+            disabled={busy || !!pending}
+            onClick={() => {
+              const next = attachments.filter((a) => a.artifact_id !== file.artifact_id);
+              setAttachments(next);
+              save(text, pending, next);
+            }}
+          >
+            {file.filename} ×
+          </Button>
+        ))}
+      </div>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="max-w-sm text-xs text-muted-foreground">
           {working
@@ -211,7 +245,11 @@ export function Composer({
         <Button
           type="submit"
           disabled={
-            !ready || busy || (unavailable && !pending) || !connected || (!text.trim() && !pending)
+            !ready ||
+            busy ||
+            (unavailable && !pending) ||
+            !connected ||
+            (!text.trim() && !attachments.length && !pending)
           }
         >
           {busy ? "Mengirim…" : pending ? "Periksa / kirim kembali" : "Kirim pesan"}

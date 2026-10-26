@@ -1,0 +1,262 @@
+{
+  "refresh_writer": "Existing product gateway only",
+  "routes": [
+    {
+      "provider": "chatgpt",
+      "model": "gpt-6-luna",
+      "protocol": "codex_responses",
+      "connection_id": "a2add009-6d14-4e89-aff4-c06d9d8a99dc",
+      "auth_method": "oauth",
+      "requests": [
+        {
+          "started": 1324500.785078791,
+          "parameters": {
+            "reasoning": {
+              "effort": "low"
+            },
+            "max_output_tokens": 2048
+          },
+          "http_status": 200,
+          "completed": true,
+          "duration_s": 4.677783583989367
+        },
+        {
+          "started": 1324505.543276875,
+          "parameters": {
+            "reasoning": {
+              "effort": "low"
+            },
+            "max_output_tokens": 2048
+          },
+          "http_status": 200,
+          "completed": true,
+          "duration_s": 3.0374198749195784
+        },
+        {
+          "started": 1324508.645515583,
+          "parameters": {
+            "reasoning": {
+              "effort": "low"
+            },
+            "max_output_tokens": 2048
+          },
+          "http_status": 200,
+          "completed": true,
+          "duration_s": 4.084852500120178
+        },
+        {
+          "started": 1324512.842446125,
+          "parameters": {
+            "reasoning": {
+              "effort": "low"
+            },
+            "max_output_tokens": 2048
+          },
+          "http_status": 200,
+          "completed": true,
+          "duration_s": 3.167528374819085
+        },
+        {
+          "started": 1324516.413953458,
+          "parameters": {
+            "reasoning": {
+              "effort": "low"
+            },
+            "max_output_tokens": 2048
+          },
+          "http_status": 200,
+          "completed": true,
+          "duration_s": 3.9268170420546085
+        },
+        {
+          "started": 1324520.423798833,
+          "parameters": {
+            "reasoning": {
+              "effort": "low"
+            },
+            "max_output_tokens": 2048
+          },
+          "http_status": 200,
+          "completed": true,
+          "duration_s": 3.2181665420066565
+        },
+        {
+          "started": 1324523.962826791,
+          "parameters": {
+            "reasoning": {
+              "effort": "low"
+            },
+            "max_output_tokens": 2048
+          },
+          "http_status": 200,
+          "completed": true,
+          "duration_s": 4.628003624966368
+        },
+        {
+          "started": 1324528.637812833,
+          "parameters": {
+            "reasoning": {
+              "effort": "low"
+            },
+            "max_output_tokens": 2048
+          },
+          "http_status": 200,
+          "completed": true,
+          "duration_s": 3.141853916924447
+        },
+        {
+          "started": 1324553.489119291,
+          "parameters": {},
+          "http_status": 200,
+          "completed": true,
+          "duration_s": 5.705474499845877
+        },
+        {
+          "started": 1324559.620892333,
+          "parameters": {
+            "reasoning": {
+              "effort": "low"
+            },
+            "max_output_tokens": 2048
+          },
+          "http_status": 200,
+          "completed": true,
+          "duration_s": 3.586279582930729
+        },
+        {
+          "started": 1324563.293747375,
+          "parameters": {
+            "reasoning": {
+              "effort": "low"
+            },
+            "max_output_tokens": 2048
+          },
+          "http_status": 200,
+          "completed": true,
+          "duration_s": 2.688488540938124
+        },
+        {
+          "started": 1324566.042832541,
+          "parameters": {
+            "reasoning": {
+              "effort": "low"
+            },
+            "max_output_tokens": 2048
+          },
+          "http_status": 200,
+          "completed": true,
+          "duration_s": 2.9007903749588877
+        },
+        {
+          "started": 1324572.976071583,
+          "parameters": {
+            "reasoning": {
+              "effort": "low"
+            },
+            "max_output_tokens": 2048
+          },
+          "http_status": 200,
+          "completed": true,
+          "duration_s": 2.4601206248626113
+        }
+      ],
+      "failures": []
+    },
+    {
+      "provider": "openrouter",
+      "model": "openai/gpt-6-luna",
+      "protocol": "chat_completions",
+      "connection_id": "aa04e69a-6978-4bd6-89de-e2ec64f165ec",
+      "auth_method": "oauth",
+      "requests": [
+        {
+          "started": 1324532.117850833,
+          "parameters": {
+            "reasoning_effort": "medium"
+          },
+          "http_status": 200,
+          "completed": true,
+          "duration_s": 2.3786536247935146
+        },
+        {
+          "started": 1324534.565203791,
+          "parameters": {
+            "reasoning_effort": "medium"
+          },
+          "http_status": 200,
+          "completed": true,
+          "duration_s": 1.6610549169126898
+        },
+        {
+          "started": 1324536.2766905,
+          "parameters": {
+            "reasoning_effort": "medium"
+          },
+          "http_status": 200,
+          "completed": true,
+          "duration_s": 1.790020207874477
+        },
+        {
+          "started": 1324538.141560125,
+          "parameters": {
+            "reasoning_effort": "medium"
+          },
+          "http_status": 200,
+          "completed": true,
+          "duration_s": 2.033050750149414
+        },
+        {
+          "started": 1324540.467520416,
+          "parameters": {
+            "reasoning_effort": "medium"
+          },
+          "http_status": 200,
+          "completed": true,
+          "duration_s": 2.274102417053655
+        },
+        {
+          "started": 1324542.828870625,
+          "parameters": {
+            "reasoning_effort": "medium"
+          },
+          "http_status": 200,
+          "completed": true,
+          "duration_s": 2.2510484158992767
+        },
+        {
+          "started": 1324545.556137125,
+          "parameters": {
+            "reasoning_effort": "medium"
+          },
+          "http_status": 200,
+          "completed": true,
+          "duration_s": 1.7282528330106288
+        },
+        {
+          "started": 1324547.345402166,
+          "parameters": {
+            "reasoning_effort": "medium"
+          },
+          "http_status": 200,
+          "completed": true,
+          "duration_s": 2.0601797089911997
+        },
+        {
+          "started": 1324549.696336416,
+          "parameters": {},
+          "http_status": 200,
+          "completed": true,
+          "duration_s": 3.7395995839033276
+        },
+        {
+          "started": 1324569.042910833,
+          "parameters": {},
+          "http_status": 200,
+          "completed": true,
+          "duration_s": 3.814721333095804
+        }
+      ],
+      "failures": []
+    }
+  ]
+}

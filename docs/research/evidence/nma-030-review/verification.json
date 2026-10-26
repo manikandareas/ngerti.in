@@ -1,0 +1,62 @@
+{
+  "task": "NMA-030",
+  "status": "passed_for_configured_foundation_scope",
+  "review_date": "2026-10-26",
+  "initial_delivery_hashes_matched": 63,
+  "original_evidence_files_preserved": 49,
+  "source": "source.json",
+  "fresh_checks": {
+    "initial_focused": {
+      "passed": 12,
+      "log": "focused.log"
+    },
+    "related_gateway_regression": {
+      "passed": 29,
+      "skipped": 0,
+      "elapsed_s": 111.02,
+      "log": "regression.log"
+    },
+    "backend": {
+      "passed": 14,
+      "log": "backend.log"
+    },
+    "check": "passed",
+    "build": "passed",
+    "browser": {
+      "fixture": "production editor component with disposable state; no authentication or backend save",
+      "preservation_assertions": 3,
+      "missing_model_visible": true,
+      "missing_model_removed": true,
+      "mobile_width_px": 390,
+      "state": "ui-state.json",
+      "removed_state": "ui-removed-model.json"
+    }
+  },
+  "retained_not_rerun": {
+    "full_gateway": {
+      "passed": 180,
+      "skipped": 9
+    },
+    "real_provider_batch_2": {
+      "passed": 8,
+      "attempted": 8
+    },
+    "real_clerk_owner_isolation": true,
+    "authenticated_ui": true,
+    "backup_restore": true
+  },
+  "cleanup": {
+    "browser_closed": true,
+    "fixture_server_stopped": true,
+    "temporary_dependency_symlink_removed": true
+  },
+  "limits": [
+    "Configured foundation surfaces only",
+    "No release SLO or operational readiness claim",
+    "OpenCode Zen/Go live exception unchanged",
+    "No deployment, migration, commit or push"
+  ],
+  "harness_errors": [
+    "Unsupported agent-browser find label select syntax; retried with observed select element reference and verified state."
+  ]
+}

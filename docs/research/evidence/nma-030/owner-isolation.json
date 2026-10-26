@@ -1,0 +1,64 @@
+{
+  "authentication": "Two actual ClerkJS sessions, production current_account",
+  "cases": [
+    {
+      "owner": 0,
+      "path": "/connections",
+      "command": null,
+      "expected": 200,
+      "observed": 200
+    },
+    {
+      "owner": 1,
+      "path": "/connections",
+      "command": null,
+      "expected": 200,
+      "observed": 200
+    },
+    {
+      "owner": 1,
+      "path": "/threads/9b566afa-6875-4080-b7d3-982f8cb79b04",
+      "command": null,
+      "expected": 404,
+      "observed": 404
+    },
+    {
+      "owner": 0,
+      "path": "/threads/d5746db3-4307-4c22-b2b5-1799905d1786",
+      "command": null,
+      "expected": 404,
+      "observed": 404
+    },
+    {
+      "owner": 1,
+      "path": "/connections/af3e53a1-5e37-4d66-9691-9cba89c5750d/models",
+      "command": null,
+      "expected": 404,
+      "observed": 404
+    },
+    {
+      "owner": 1,
+      "path": "/commands",
+      "command": "agent.create",
+      "expected": 422,
+      "observed": 422
+    },
+    {
+      "owner": 1,
+      "path": "/commands",
+      "command": "agent.create",
+      "expected": 422,
+      "observed": 422
+    },
+    {
+      "owner": 1,
+      "path": "/threads/9b566afa-6875-4080-b7d3-982f8cb79b04",
+      "command": null,
+      "expected": 404,
+      "observed": 404
+    }
+  ],
+  "status": "passed",
+  "catalog_persisted_after_restart": true,
+  "disjoint_connection_ids": true
+}

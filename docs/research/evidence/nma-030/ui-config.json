@@ -1,0 +1,43 @@
+{
+  "agent_id": "4c01a05b-17f0-48f0-872a-54a67daf2acc",
+  "capabilities": [
+    {
+      "configured": true,
+      "id": "tasks",
+      "installed": true,
+      "reason": null,
+      "runtime_ready": true
+    },
+    {
+      "configured": true,
+      "id": "review",
+      "installed": true,
+      "reason": null,
+      "runtime_ready": true
+    },
+    {
+      "configured": false,
+      "id": "native_terminal",
+      "installed": true,
+      "reason": "execution_surface_required",
+      "runtime_ready": false
+    }
+  ],
+  "http_status": 200,
+  "inference": {
+    "auxiliary": {
+      "review": {
+        "model": "fe9d2a94-a7d4-48c3-98b7-379cc620bd20:openai/gpt-6-luna"
+      }
+    },
+    "fallback_models": [],
+    "parameters": {
+      "max_output_tokens": 3072,
+      "reasoning": {
+        "effort": "low"
+      }
+    },
+    "version": 1
+  },
+  "revision": "2"
+}

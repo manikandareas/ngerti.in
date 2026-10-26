@@ -1,0 +1,32 @@
+- generic "Pengaturan model lanjutanBerlaku untuk pekerjaan berikutnya. Setiap model menggunakan akun dan biaya" [ref=e1] clickable [onclick]
+  - spinbutton "Temperature" [ref=e2]
+  - spinbutton "Batas token jawaban" [ref=e3]
+  - combobox "Penalaran" [expanded=false, ref=e4]: Default provider
+    - option "Default provider" [selected, ref=e12]
+    - option "none" [ref=e13]
+    - option "minimal" [ref=e14]
+    - option "low" [ref=e15]
+    - option "medium" [ref=e16]
+    - option "high" [ref=e17]
+    - option "xhigh" [ref=e18]
+  - checkbox "Backup" [checked=false, ref=e6]
+  - combobox "Ringkasan konteks" [expanded=false, ref=e7]: Ikuti model utama
+    - option "Ikuti model utama" [selected, ref=e23]
+    - option "Primary" [ref=e24]
+    - option "Backup" [ref=e25]
+  - combobox "Pemahaman gambar" [expanded=false, ref=e8]: Ikuti model utama
+    - option "Ikuti model utama" [selected, ref=e26]
+    - option "Primary" [ref=e27]
+    - option "Backup" [ref=e28]
+  - combobox "Review" [expanded=false, ref=e9]: missing:model (tidak tersedia)
+    - option "Ikuti model utama" [ref=e29]
+    - option "missing:model (tidak tersedia)" [selected, ref=e30]
+    - option "Primary" [ref=e31]
+    - option "Backup" [ref=e32]
+  - combobox "Prioritas provider OpenRouter" [expanded=false, ref=e5]: Biaya
+    - option "Default OpenRouter" [ref=e19]
+    - option "Biaya" [selected, ref=e20]
+    - option "Latensi" [ref=e21]
+    - option "Kecepatan token" [ref=e22]
+  - checkbox "1. Primary" [checked=true, ref=e10]
+  - checkbox "Backup" [checked=false, ref=e11]

@@ -1,0 +1,47 @@
+- heading "Edit routing-luna" [level=2, ref=e1]
+- textbox "Nama" [required, ref=e7]: routing-luna
+- textbox "Handle Huruf kecil, angka, garis bawah, atau tanda hubung. Awali dengan huruf." [required, ref=e8]: routing-luna
+- textbox "Karakter (soul)" [ref=e9]: Work carefully and report verified results.
+- textbox "Instruksi" [ref=e10]: Do not create a goal for these disposable acceptance checks. Use only the explicitly requested tools.
+- link "Hubungkan atau perbaiki akun model" [ref=e6]
+- combobox "Model" [expanded=false, ref=e11]: chatgpt acceptance relay · gpt-6-luna · Selected endpoint account
+  - option "chatgpt acceptance relay · gpt-6-luna · Selected endpoint account" [selected, ref=e15]
+  - option "Existing connection · Test model · Selected endpoint account" [ref=e16]
+  - option "openrouter acceptance relay · openai/gpt-6-luna · Selected endpoint account" [ref=e17]
+- spinbutton "Temperature" [ref=e12]
+- spinbutton "Batas token jawaban" [ref=e13]: 3072
+- combobox "Penalaran" [expanded=false, ref=e14]: low
+  - option "Default provider" [ref=e29]
+  - option "none" [ref=e30]
+  - option "minimal" [ref=e31]
+  - option "low" [selected, ref=e32]
+  - option "medium" [ref=e33]
+  - option "high" [ref=e34]
+  - option "xhigh" [ref=e35]
+- checkbox "Existing connection · Test model · Selected endpoint account" [checked=false, ref=e18]
+- checkbox "openrouter acceptance relay · openai/gpt-6-luna · Selected endpoint account" [checked=false, ref=e19]
+- combobox "Ringkasan konteks" [expanded=false, ref=e20]: Ikuti model utama
+  - option "Ikuti model utama" [selected, ref=e36]
+  - option "chatgpt acceptance relay · gpt-6-luna · Selected endpoint account" [ref=e37]
+  - option "Existing connection · Test model · Selected endpoint account" [ref=e38]
+  - option "openrouter acceptance relay · openai/gpt-6-luna · Selected endpoint account" [ref=e39]
+- combobox "Pemahaman gambar" [expanded=false, ref=e21]: Ikuti model utama
+  - option "Ikuti model utama" [selected, ref=e40]
+  - option "chatgpt acceptance relay · gpt-6-luna · Selected endpoint account" [ref=e41]
+  - option "Existing connection · Test model · Selected endpoint account" [ref=e42]
+  - option "openrouter acceptance relay · openai/gpt-6-luna · Selected endpoint account" [ref=e43]
+- combobox "Review" [expanded=false, ref=e22]: openrouter acceptance relay · openai/gpt-6-luna · Selected endpoint account
+  - option "Ikuti model utama" [ref=e44]
+  - option "chatgpt acceptance relay · gpt-6-luna · Selected endpoint account" [ref=e45]
+  - option "Existing connection · Test model · Selected endpoint account" [ref=e46]
+  - option "openrouter acceptance relay · openai/gpt-6-luna · Selected endpoint account" [selected, ref=e47]
+- checkbox "chatgpt acceptance relay · gpt-6-luna · Selected endpoint account" [checked=false, ref=e23]
+- checkbox "Existing connection · Test model · Selected endpoint account" [checked=false, ref=e24]
+- checkbox "openrouter acceptance relay · openai/gpt-6-luna · Selected endpoint account" [checked=false, ref=e25]
+- checkbox "Task list" [checked=true, ref=e26]
+- checkbox "Native review plugin" [checked=true, ref=e27]
+- checkbox "Native terminal (operator setup required) Belum siap: execution_surface_required" [checked=false, disabled, ref=e28]
+- button "Arsipkan" [ref=e3]
+- button "Batal" [ref=e4]
+- button "Simpan agent" [ref=e5]
+- button "Tutup" [ref=e2]

@@ -1,0 +1,121 @@
+{
+  "status": "passed_for_configured_foundation_scope",
+  "task": "NMA-030",
+  "upstream_revision": "7489b22af47ce91b366dde81d5831ea422577498",
+  "notion_task": "https://app.notion.com/p/404abdd6187381509cbfd08486cde81f",
+  "predecessors_verified_done": [
+    "NMA-029",
+    "NMA-008",
+    "NMA-040"
+  ],
+  "source": "delivered-source.json",
+  "initial_full_suite": {
+    "passed": 179,
+    "skipped": 9,
+    "elapsed_s": 730.56,
+    "log": "engine-full.log"
+  },
+  "final_full_suite": {
+    "status": "passed",
+    "log": "engine-final.log",
+    "native_image_opt_in": true,
+    "passed": 180,
+    "skipped": 9,
+    "elapsed_s": 697.56
+  },
+  "focused_native": {
+    "passed": 10,
+    "log": "native-tests.log"
+  },
+  "native_isolation": {
+    "passed": 1,
+    "log": "native-isolation.log",
+    "real_docker": true
+  },
+  "catalog_upgrade": {
+    "red_reproduced": "ACCESS_REVOKED",
+    "green_passed": 6,
+    "log": "catalog-upgrade-green.log"
+  },
+  "backend": {
+    "passed": 14,
+    "log": "backend.log"
+  },
+  "real_live_batches": [
+    {
+      "name": "attempt-1",
+      "attempted": 8,
+      "raw_passed": 4,
+      "reviewed_passed": 3,
+      "reviewed_failed": 5,
+      "pooled_with_later_batch": false,
+      "oracle_review": "attempt-1/oracle-review.json"
+    },
+    {
+      "name": "attempt-2",
+      "attempted": 8,
+      "passed": 8,
+      "failed": 0,
+      "provider_fixture": false,
+      "real_clerk": true,
+      "log": "attempt-2/live-results.json",
+      "cases": {
+        "primary_responses": 3,
+        "secondary_chat": 3,
+        "moa": 1,
+        "auxiliary_review": 1
+      }
+    }
+  ],
+  "owner_isolation": {
+    "assertions": 8,
+    "passed": 8,
+    "real_clerk": true,
+    "log": "owner-isolation.json"
+  },
+  "ui": {
+    "desktop": true,
+    "mobile_width_px": 390,
+    "real_clerk": true,
+    "config_revision": "2",
+    "persisted_max_output_tokens": 3072,
+    "log": "ui-config.json",
+    "final_readiness": "ui-mobile-readiness-final.png"
+  },
+  "backup_restore": {
+    "status": "passed",
+    "verified_files": 379,
+    "domain_tables": 50,
+    "agents": 3,
+    "config_revisions": 4,
+    "threads": 3,
+    "messages": 19,
+    "goals": 0,
+    "schema_version": 15,
+    "quarantine_retained": true,
+    "log": "backup-restore.json"
+  },
+  "gates": {
+    "check": "passed",
+    "build": "passed",
+    "engine_ruff": "passed (existing baseline E731 excluded)",
+    "scripts_ruff": "passed",
+    "docs": "passed",
+    "whitespace": "passed (tracked diff and new authored files)"
+  },
+  "release_slo_claimed": false,
+  "release_thresholds": "protocol.json",
+  "deployment_performed": false,
+  "limitations": [
+    "Small live smoke samples do not satisfy NMA-039 release sample/SLO requirements.",
+    "NMA-040 OpenCode Zen/Go real-provider exception remains unchanged.",
+    "Only configured supported native surfaces are accepted; trusted plugins require operator review and powerful tools run in isolated capsules.",
+    "Nine existing live opt-in cases remain separately skipped in the full suite; real-provider, Clerk and native Linux evidence is counted independently.",
+    "Production tenant isolation/capacity and NMA-027 operational release remain external release gates."
+  ],
+  "original_product_entities_changed": false,
+  "original_credential_refresh": "Existing gateway normal refresh lifecycle only",
+  "cleanup": "cleanup.json",
+  "secret_scan": "secret-scan.json",
+  "report": "../../nma-030-native-capabilities-routing.md"
+}

@@ -1,0 +1,27 @@
+{
+  "protocol_id": "nma030-native-capabilities-routing-v1",
+  "upstream_revision": "7489b22af47ce91b366dde81d5831ea422577498",
+  "baseline": "scripts/spikes/nma028/protocol-closure.json",
+  "candidate_source": "candidate-source.json",
+  "repeats": 3,
+  "release_thresholds_unchanged": {
+    "task_success_rate_min": 0.95,
+    "integration_failure_rate_max": 0.02,
+    "first_progress_p95_s_max": 10,
+    "settlement_p95_s_max": 180,
+    "recovery_p95_s_max": 60,
+    "observed_duplicate_effects_max": 0,
+    "observed_cross_scope_leaks_max": 0,
+    "observed_stop_violations_max": 0,
+    "unresolved_effects_for_release_max": 0,
+    "release_sample_minimum": 100
+  },
+  "live_cases": [
+    {"id": "primary_responses", "repeats": 3, "oracle": "A real ChatGPT plan stream and native todo_list tool result complete through the candidate Ngertiin gateway; configured reasoning parameters reach the provider relay unchanged."},
+    {"id": "secondary_chat", "repeats": 3, "oracle": "A real OpenRouter stream and native todo_list tool result complete through the candidate gateway and declared custom endpoint."},
+    {"id": "moa", "repeats": 1, "oracle": "Native MoA calls both configured real providers and returns one acting agent response; participating routes are attributed."},
+    {"id": "auxiliary_review", "repeats": 1, "oracle": "A native installed plugin calls the configured real auxiliary review route and the originating agent completes without duplicate tool execution."}
+  ],
+  "controlled_cases": ["Native registry/plugin/deferred MCP compatibility", "Missing dependencies and image readiness", "Direct/nested dispatch denial and live revoke", "Plugin updates require drained admissions", "Configuration revision race", "Native primary outage fallback", "Native auxiliary HTTP 5xx fallback", "Native rate-limited credential pool rotation and restart", "Provider token and cache metadata", "Real Linux native handler isolation, signed RPC denial, cancel and no replay", "Authenticated desktop/mobile UI and reload persistence", "Backup/quarantined restore with unchanged historical identities"],
+  "reporting": "Retain failed attempts and their categories. Fixtures do not count as real-provider passes. Each small live case is smoke evidence; the NMA-039 release sample and SLOs remain unchanged. Record unavailable timings instead of zero. No test changes an original account's model, agent, history or credential registration."
+}

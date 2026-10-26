@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "auxiliary": {},
+  "provider_routing": {
+    "only": [
+      "Provider A"
+    ],
+    "data_collection": "deny",
+    "sort": "price"
+  },
+  "moa": {
+    "references": [
+      "primary"
+    ],
+    "fanout": "per_iteration",
+    "reference_timeout": 45
+  }
+}

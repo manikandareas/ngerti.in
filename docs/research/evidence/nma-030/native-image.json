@@ -1,0 +1,10 @@
+{
+  "image_id": "sha256:96a8fde8c42932642c20745d946e41b2d18cb88fd357b01fef36103fe305aca1",
+  "labels": {
+    "org.ngertiin.hermes.revision": "7489b22af47ce91b366dde81d5831ea422577498",
+    "org.ngertiin.native.protocol": "nma.native-tools.v1"
+  },
+  "base_image_id": "sha256:b81f1bf356adb3f4cff012b2b95d95c6458b5ba876c1e886a59a24a82e574ebd",
+  "base_recipe": "scripts/spikes/nma028/isolation.Dockerfile",
+  "worker_sha256": "c724033beacc1f794a3afe05c2f51a70cbf6a232f867c11add2a052b8716bd4f"
+}

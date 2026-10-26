@@ -1,0 +1,13 @@
+{
+  "disposable_clerk_users_deleted": 2,
+  "all_deleted": true,
+  "test_database_dropped": true,
+  "owned_helpers_stopped": 4,
+  "owned_browser_sessions_closed": 2,
+  "original_gateway_stopped": false,
+  "original_accounts_deleted": false,
+  "private_backup_retained": true,
+  "fixture_symlink_removed": true,
+  "original_partitions_checked": 1,
+  "original_gateways_still_responsive": true
+}

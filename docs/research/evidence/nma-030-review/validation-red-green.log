@@ -1,0 +1,2 @@
+Prior source reproduced: TypeError '>=' not supported between instances of 'int' and 'str'
+Current source: INVALID_INFERENCE_CONFIGURATION {'field': 'thinking', 'reason': 'Thinking requires a budget below max_tokens'}

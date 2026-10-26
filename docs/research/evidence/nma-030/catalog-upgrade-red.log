@@ -1,0 +1,29 @@
+F
+=================================== FAILURES ===================================
+_ test_version_two_catalog_preserves_old_grant_bytes_and_requires_new_access_for_surface_changes _
+
+runtime = (PosixPath('/tmp/nma-swgb50xy'), <http.server.ThreadingHTTPServer object at 0x10bf223c0>, <function runtime.<locals>.c...disconnect', 'provider_auth.start', 'provider_auth.status', ...], 'extension_schema': '15', 'lifecycle': 'ready', ...})
+
+    def test_version_two_catalog_preserves_old_grant_bytes_and_requires_new_access_for_surface_changes(runtime):
+        root, provider, call, start, *_ = runtime
+        path = root / "capabilities.json"
+        catalog = {"tool_grants": {"tasks": {"enabled": True, "toolset": "todo"}}}
+        path.write_text(json.dumps(catalog))
+        agent = capability_agent(call, "preserved-catalog-grant", tool_grants=["tasks"])
+        thread = call(command("thread.read", {"thread_id": agent["primary_dm_thread_id"]}))["result"]
+        with sqlite3.connect(root / "state/state.db") as conn:
+            before = conn.execute("SELECT config FROM nma_agent_configs WHERE agent_id=?", (agent["agent_id"],)).fetchone()[0]
+        catalog.update(version=2)
+        path.write_text(json.dumps(catalog))
+        response = call(send(thread, "USE_TOOL"))
+>       assert "result" in response, response
+E       AssertionError: {'error': {'code': 'ACCESS_REVOKED', 'details': {}}}
+E       assert 'result' in {'error': {'code': 'ACCESS_REVOKED', 'details': {}}}
+
+apps/engine/tests/test_catalog_upgrade.py:25: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_catalog_upgrade.py::test_version_two_catalog_preserves_old_grant_bytes_and_requires_new_access_for_surface_changes
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed in 5.43s

@@ -1,0 +1,710 @@
+[
+  {
+    "case": "primary_responses",
+    "repeat": 1,
+    "status": "passed",
+    "provider_fixture": false,
+    "authentication": "Real Clerk",
+    "agent_id": "4c01a05b-17f0-48f0-872a-54a67daf2acc",
+    "run_id": "6c651404-3791-5edd-9c8c-c4d0c46dbee8",
+    "terminal_status": "succeeded",
+    "first_progress_s": 6.007494541816413,
+    "tool_completions": [
+      {
+        "is_error": false,
+        "tool_call_id": "call_4wYuRgBWcqp5vZZ8S3p1pvwM",
+        "tool_name": "tool_search"
+      },
+      {
+        "is_error": false,
+        "tool_call_id": "call_34RESA76Xik8Jngk5Iq7U8FE",
+        "tool_name": "tool_describe"
+      },
+      {
+        "is_error": false,
+        "tool_call_id": "call_EgRwshc1iZf5zZqFf5dJU7F6",
+        "tool_name": "todo_list"
+      }
+    ],
+    "providers": [
+      {
+        "billing": "Selected endpoint account",
+        "connection_id": "af3e53a1-5e37-4d66-9691-9cba89c5750d",
+        "error_code": null,
+        "http_status": 200,
+        "model": "gpt-6-luna",
+        "provider": "custom",
+        "usage": {
+          "cached_tokens": 0,
+          "input_tokens": 3610,
+          "output_tokens": 20,
+          "total_tokens": 3630
+        }
+      },
+      {
+        "billing": "Selected endpoint account",
+        "connection_id": "af3e53a1-5e37-4d66-9691-9cba89c5750d",
+        "error_code": null,
+        "http_status": 200,
+        "model": "gpt-6-luna",
+        "provider": "custom",
+        "usage": {
+          "cached_tokens": 0,
+          "input_tokens": 3813,
+          "output_tokens": 21,
+          "total_tokens": 3834
+        }
+      },
+      {
+        "billing": "Selected endpoint account",
+        "connection_id": "af3e53a1-5e37-4d66-9691-9cba89c5750d",
+        "error_code": null,
+        "http_status": 200,
+        "model": "gpt-6-luna",
+        "provider": "custom",
+        "usage": {
+          "cached_tokens": 0,
+          "input_tokens": 4168,
+          "output_tokens": 52,
+          "total_tokens": 4220
+        }
+      },
+      {
+        "billing": "Selected endpoint account",
+        "connection_id": "af3e53a1-5e37-4d66-9691-9cba89c5750d",
+        "error_code": null,
+        "http_status": 200,
+        "model": "gpt-6-luna",
+        "provider": "custom",
+        "usage": {
+          "cached_tokens": 0,
+          "input_tokens": 4302,
+          "output_tokens": 9,
+          "total_tokens": 4311
+        }
+      }
+    ],
+    "diagnostics": {
+      "available": true,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "context": {
+        "compression_enabled": true,
+        "compression_threshold": 525000,
+        "context_limit": 1050000,
+        "max_turns": 9223372036854775807,
+        "micro_compaction_enabled": false,
+        "model": "gpt-6-luna"
+      },
+      "input_tokens": 15893,
+      "output_tokens": 102,
+      "routing": {
+        "credential_pool": false,
+        "fallback_active": false,
+        "model": "gpt-6-luna",
+        "provider": "custom"
+      },
+      "source": "native_terminal_receipt",
+      "total_tokens": 15995
+    },
+    "settlement_s": 16.67215016693808
+  },
+  {
+    "case": "primary_responses",
+    "repeat": 2,
+    "status": "passed",
+    "provider_fixture": false,
+    "authentication": "Real Clerk",
+    "agent_id": "4c01a05b-17f0-48f0-872a-54a67daf2acc",
+    "run_id": "78d018b1-671f-5f27-ab83-f30cdfb39ae4",
+    "terminal_status": "succeeded",
+    "first_progress_s": 4.183432582998648,
+    "tool_completions": [
+      {
+        "is_error": false,
+        "tool_call_id": "call_GcDWWO8UQY0qr7UMdcwjTW0U",
+        "tool_name": "todo_list"
+      }
+    ],
+    "providers": [
+      {
+        "billing": "Selected endpoint account",
+        "connection_id": "af3e53a1-5e37-4d66-9691-9cba89c5750d",
+        "error_code": null,
+        "http_status": 200,
+        "model": "gpt-6-luna",
+        "provider": "custom",
+        "usage": {
+          "cached_tokens": 0,
+          "input_tokens": 4478,
+          "output_tokens": 55,
+          "total_tokens": 4533
+        }
+      },
+      {
+        "billing": "Selected endpoint account",
+        "connection_id": "af3e53a1-5e37-4d66-9691-9cba89c5750d",
+        "error_code": null,
+        "http_status": 200,
+        "model": "gpt-6-luna",
+        "provider": "custom",
+        "usage": {
+          "cached_tokens": 0,
+          "input_tokens": 4641,
+          "output_tokens": 9,
+          "total_tokens": 4650
+        }
+      }
+    ],
+    "diagnostics": {
+      "available": true,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "context": {
+        "compression_enabled": true,
+        "compression_threshold": 525000,
+        "context_limit": 1050000,
+        "max_turns": 9223372036854775807,
+        "micro_compaction_enabled": false,
+        "model": "gpt-6-luna"
+      },
+      "input_tokens": 9119,
+      "output_tokens": 64,
+      "routing": {
+        "credential_pool": false,
+        "fallback_active": false,
+        "model": "gpt-6-luna",
+        "provider": "custom"
+      },
+      "source": "native_terminal_receipt",
+      "total_tokens": 9183
+    },
+    "settlement_s": 7.5864596250467
+  },
+  {
+    "case": "primary_responses",
+    "repeat": 3,
+    "status": "passed",
+    "provider_fixture": false,
+    "authentication": "Real Clerk",
+    "agent_id": "4c01a05b-17f0-48f0-872a-54a67daf2acc",
+    "run_id": "7c1333b8-ea0e-5260-b68b-4f1fd4e0c9d9",
+    "terminal_status": "succeeded",
+    "first_progress_s": 4.947863709181547,
+    "tool_completions": [
+      {
+        "is_error": false,
+        "tool_call_id": "call_Ed7S1kJAtmDxWRiSM5DefH9k",
+        "tool_name": "todo_list"
+      }
+    ],
+    "providers": [
+      {
+        "billing": "Selected endpoint account",
+        "connection_id": "af3e53a1-5e37-4d66-9691-9cba89c5750d",
+        "error_code": null,
+        "http_status": 200,
+        "model": "gpt-6-luna",
+        "provider": "custom",
+        "usage": {
+          "cached_tokens": 0,
+          "input_tokens": 4810,
+          "output_tokens": 55,
+          "total_tokens": 4865
+        }
+      },
+      {
+        "billing": "Selected endpoint account",
+        "connection_id": "af3e53a1-5e37-4d66-9691-9cba89c5750d",
+        "error_code": null,
+        "http_status": 200,
+        "model": "gpt-6-luna",
+        "provider": "custom",
+        "usage": {
+          "cached_tokens": 0,
+          "input_tokens": 5000,
+          "output_tokens": 9,
+          "total_tokens": 5009
+        }
+      }
+    ],
+    "diagnostics": {
+      "available": true,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "context": {
+        "compression_enabled": true,
+        "compression_threshold": 525000,
+        "context_limit": 1050000,
+        "max_turns": 9223372036854775807,
+        "micro_compaction_enabled": false,
+        "model": "gpt-6-luna"
+      },
+      "input_tokens": 9810,
+      "output_tokens": 64,
+      "routing": {
+        "credential_pool": false,
+        "fallback_active": false,
+        "model": "gpt-6-luna",
+        "provider": "custom"
+      },
+      "source": "native_terminal_receipt",
+      "total_tokens": 9874
+    },
+    "settlement_s": 8.13531720917672
+  },
+  {
+    "case": "secondary_chat",
+    "repeat": 1,
+    "status": "passed",
+    "provider_fixture": false,
+    "authentication": "Real Clerk",
+    "agent_id": "0ef620c1-a847-4998-affe-77c8cf91f33d",
+    "run_id": "9f370648-717c-56bf-80fc-9551652968b1",
+    "terminal_status": "succeeded",
+    "first_progress_s": 2.6220385420601815,
+    "tool_completions": [
+      {
+        "is_error": false,
+        "tool_call_id": "call_WpM5LyxcBXwnQIDtCaf6Tu0b",
+        "tool_name": "tool_search"
+      },
+      {
+        "is_error": false,
+        "tool_call_id": "call_BC6wVdy7PvhvSGmmFs7xxxGT",
+        "tool_name": "tool_describe"
+      },
+      {
+        "is_error": false,
+        "tool_call_id": "call_u7QZNYe5fkFOnLWlYZyAunEx",
+        "tool_name": "todo_list"
+      }
+    ],
+    "providers": [
+      {
+        "billing": "Selected endpoint account",
+        "connection_id": "fe9d2a94-a7d4-48c3-98b7-379cc620bd20",
+        "error_code": null,
+        "http_status": 200,
+        "model": "openai/gpt-6-luna",
+        "provider": "custom",
+        "usage": {
+          "cached_tokens": 0,
+          "completion_tokens": 24,
+          "cost": 0.0004628,
+          "prompt_tokens": 3607,
+          "total_tokens": 3631
+        }
+      },
+      {
+        "billing": "Selected endpoint account",
+        "connection_id": "fe9d2a94-a7d4-48c3-98b7-379cc620bd20",
+        "error_code": null,
+        "http_status": 200,
+        "model": "openai/gpt-6-luna",
+        "provider": "custom",
+        "usage": {
+          "cached_tokens": 3604,
+          "completion_tokens": 21,
+          "cost": 7.2715e-05,
+          "prompt_tokens": 3814,
+          "total_tokens": 3835
+        }
+      },
+      {
+        "billing": "Selected endpoint account",
+        "connection_id": "fe9d2a94-a7d4-48c3-98b7-379cc620bd20",
+        "error_code": null,
+        "http_status": 200,
+        "model": "openai/gpt-6-luna",
+        "provider": "custom",
+        "usage": {
+          "cached_tokens": 3811,
+          "completion_tokens": 56,
+          "cost": 0.000110785,
+          "prompt_tokens": 4169,
+          "total_tokens": 4225
+        }
+      },
+      {
+        "billing": "Selected endpoint account",
+        "connection_id": "fe9d2a94-a7d4-48c3-98b7-379cc620bd20",
+        "error_code": null,
+        "http_status": 200,
+        "model": "openai/gpt-6-luna",
+        "provider": "custom",
+        "usage": {
+          "cached_tokens": 4166,
+          "completion_tokens": 9,
+          "cost": 6.421e-05,
+          "prompt_tokens": 4311,
+          "total_tokens": 4320
+        }
+      }
+    ],
+    "diagnostics": {
+      "available": true,
+      "cache_read_tokens": 11581,
+      "cache_write_tokens": 4308,
+      "context": {
+        "compression_enabled": true,
+        "compression_threshold": 525000,
+        "context_limit": 1050000,
+        "max_turns": 9223372036854775807,
+        "micro_compaction_enabled": false,
+        "model": "openai/gpt-6-luna"
+      },
+      "input_tokens": 15901,
+      "output_tokens": 110,
+      "routing": {
+        "credential_pool": false,
+        "fallback_active": false,
+        "model": "openai/gpt-6-luna",
+        "provider": "custom"
+      },
+      "source": "native_terminal_receipt",
+      "total_tokens": 16011
+    },
+    "settlement_s": 8.361076249973848
+  },
+  {
+    "case": "secondary_chat",
+    "repeat": 2,
+    "status": "passed",
+    "provider_fixture": false,
+    "authentication": "Real Clerk",
+    "agent_id": "0ef620c1-a847-4998-affe-77c8cf91f33d",
+    "run_id": "08641ffb-1759-58fe-bbc0-b71dc86f9280",
+    "terminal_status": "succeeded",
+    "first_progress_s": 2.641128082992509,
+    "tool_completions": [
+      {
+        "is_error": false,
+        "tool_call_id": "call_jfOZm2Z52lDYnrSvwzvxCDFj",
+        "tool_name": "todo_list"
+      }
+    ],
+    "providers": [
+      {
+        "billing": "Selected endpoint account",
+        "connection_id": "fe9d2a94-a7d4-48c3-98b7-379cc620bd20",
+        "error_code": null,
+        "http_status": 200,
+        "model": "openai/gpt-6-luna",
+        "provider": "custom",
+        "usage": {
+          "cached_tokens": 0,
+          "completion_tokens": 57,
+          "cost": 0.00058755,
+          "prompt_tokens": 4473,
+          "total_tokens": 4530
+        }
+      },
+      {
+        "billing": "Selected endpoint account",
+        "connection_id": "fe9d2a94-a7d4-48c3-98b7-379cc620bd20",
+        "error_code": null,
+        "http_status": 200,
+        "model": "openai/gpt-6-luna",
+        "provider": "custom",
+        "usage": {
+          "cached_tokens": 4470,
+          "completion_tokens": 9,
+          "cost": 7.0875e-05,
+          "prompt_tokens": 4644,
+          "total_tokens": 4653
+        }
+      }
+    ],
+    "diagnostics": {
+      "available": true,
+      "cache_read_tokens": 4470,
+      "cache_write_tokens": 4641,
+      "context": {
+        "compression_enabled": true,
+        "compression_threshold": 525000,
+        "context_limit": 1050000,
+        "max_turns": 9223372036854775807,
+        "micro_compaction_enabled": false,
+        "model": "openai/gpt-6-luna"
+      },
+      "input_tokens": 9117,
+      "output_tokens": 66,
+      "routing": {
+        "credential_pool": false,
+        "fallback_active": false,
+        "model": "openai/gpt-6-luna",
+        "provider": "custom"
+      },
+      "source": "native_terminal_receipt",
+      "total_tokens": 9183
+    },
+    "settlement_s": 5.040287040872499
+  },
+  {
+    "case": "secondary_chat",
+    "repeat": 3,
+    "status": "passed",
+    "provider_fixture": false,
+    "authentication": "Real Clerk",
+    "agent_id": "0ef620c1-a847-4998-affe-77c8cf91f33d",
+    "run_id": "5958532e-15f8-5499-ab3d-f200327c848f",
+    "terminal_status": "succeeded",
+    "first_progress_s": 2.0171016671229154,
+    "tool_completions": [
+      {
+        "is_error": false,
+        "tool_call_id": "call_zyGRxiUguTHuMBr5FbRZguDN",
+        "tool_name": "todo_list"
+      }
+    ],
+    "providers": [
+      {
+        "billing": "Selected endpoint account",
+        "connection_id": "fe9d2a94-a7d4-48c3-98b7-379cc620bd20",
+        "error_code": null,
+        "http_status": 200,
+        "model": "openai/gpt-6-luna",
+        "provider": "custom",
+        "usage": {
+          "cached_tokens": 0,
+          "completion_tokens": 57,
+          "cost": 0.0006293,
+          "prompt_tokens": 4807,
+          "total_tokens": 4864
+        }
+      },
+      {
+        "billing": "Selected endpoint account",
+        "connection_id": "fe9d2a94-a7d4-48c3-98b7-379cc620bd20",
+        "error_code": null,
+        "http_status": 200,
+        "model": "openai/gpt-6-luna",
+        "provider": "custom",
+        "usage": {
+          "cached_tokens": 4804,
+          "completion_tokens": 9,
+          "cost": 7.784e-05,
+          "prompt_tokens": 5007,
+          "total_tokens": 5016
+        }
+      }
+    ],
+    "diagnostics": {
+      "available": true,
+      "cache_read_tokens": 4804,
+      "cache_write_tokens": 5004,
+      "context": {
+        "compression_enabled": true,
+        "compression_threshold": 525000,
+        "context_limit": 1050000,
+        "max_turns": 9223372036854775807,
+        "micro_compaction_enabled": false,
+        "model": "openai/gpt-6-luna"
+      },
+      "input_tokens": 9814,
+      "output_tokens": 66,
+      "routing": {
+        "credential_pool": false,
+        "fallback_active": false,
+        "model": "openai/gpt-6-luna",
+        "provider": "custom"
+      },
+      "source": "native_terminal_receipt",
+      "total_tokens": 9880
+    },
+    "settlement_s": 4.161272292025387
+  },
+  {
+    "case": "moa",
+    "repeat": 1,
+    "status": "passed",
+    "provider_fixture": false,
+    "authentication": "Real Clerk",
+    "agent_id": "ec00bcfd-8b8e-439e-ad83-63ef61bf4edb",
+    "run_id": "e82eeaf3-b2a0-5766-b03e-051e23ff2d60",
+    "terminal_status": "succeeded",
+    "first_progress_s": 9.774970417143777,
+    "tool_completions": [],
+    "providers": [
+      {
+        "billing": "Selected endpoint account",
+        "connection_id": "fe9d2a94-a7d4-48c3-98b7-379cc620bd20",
+        "error_code": null,
+        "http_status": 200,
+        "model": "openai/gpt-6-luna",
+        "provider": "custom",
+        "usage": {
+          "cached_tokens": 0,
+          "completion_tokens": 116,
+          "cost": 9.91e-05,
+          "prompt_tokens": 411,
+          "total_tokens": 527
+        }
+      },
+      {
+        "billing": "Selected endpoint account",
+        "connection_id": "af3e53a1-5e37-4d66-9691-9cba89c5750d",
+        "error_code": null,
+        "http_status": 200,
+        "model": "gpt-6-luna",
+        "provider": "custom",
+        "usage": {
+          "cached_tokens": 0,
+          "input_tokens": 3763,
+          "output_tokens": 169,
+          "total_tokens": 3932
+        }
+      }
+    ],
+    "diagnostics": {
+      "available": true,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "context": {
+        "compression_enabled": true,
+        "compression_threshold": 525000,
+        "context_limit": 1050000,
+        "max_turns": 9223372036854775807,
+        "micro_compaction_enabled": false,
+        "model": "gpt-6-luna"
+      },
+      "input_tokens": 4174,
+      "output_tokens": 285,
+      "routing": {
+        "credential_pool": false,
+        "fallback_active": false,
+        "model": "gpt-6-luna",
+        "provider": "moa"
+      },
+      "source": "native_terminal_receipt",
+      "total_tokens": 4459
+    },
+    "settlement_s": 9.783963875146583
+  },
+  {
+    "case": "auxiliary_review",
+    "repeat": 1,
+    "status": "passed",
+    "provider_fixture": false,
+    "authentication": "Real Clerk",
+    "agent_id": "4c01a05b-17f0-48f0-872a-54a67daf2acc",
+    "run_id": "86ea9aae-92d6-5daf-ac70-87cf1d921e74",
+    "terminal_status": "succeeded",
+    "first_progress_s": 3.983998999930918,
+    "tool_completions": [
+      {
+        "is_error": false,
+        "tool_call_id": "call_jXDPH32rmIw58C3MoQyelgfT",
+        "tool_name": "tool_search"
+      },
+      {
+        "is_error": false,
+        "tool_call_id": "call_eiFi1625KeiIPM5sxDOC105O",
+        "tool_name": "tool_describe"
+      },
+      {
+        "is_error": false,
+        "tool_call_id": "call_gFXKkrLH190pI0SQ2WwBy3WV",
+        "tool_name": "native_review"
+      }
+    ],
+    "providers": [
+      {
+        "billing": "Selected endpoint account",
+        "connection_id": "af3e53a1-5e37-4d66-9691-9cba89c5750d",
+        "error_code": null,
+        "http_status": 200,
+        "model": "gpt-6-luna",
+        "provider": "custom",
+        "usage": {
+          "cached_tokens": 0,
+          "input_tokens": 5173,
+          "output_tokens": 20,
+          "total_tokens": 5193
+        }
+      },
+      {
+        "billing": "Selected endpoint account",
+        "connection_id": "af3e53a1-5e37-4d66-9691-9cba89c5750d",
+        "error_code": null,
+        "http_status": 200,
+        "model": "gpt-6-luna",
+        "provider": "custom",
+        "usage": {
+          "cached_tokens": 0,
+          "input_tokens": 5279,
+          "output_tokens": 21,
+          "total_tokens": 5300
+        }
+      },
+      {
+        "billing": "Selected endpoint account",
+        "connection_id": "af3e53a1-5e37-4d66-9691-9cba89c5750d",
+        "error_code": null,
+        "http_status": 200,
+        "model": "gpt-6-luna",
+        "provider": "custom",
+        "usage": {
+          "cached_tokens": 0,
+          "input_tokens": 5354,
+          "output_tokens": 27,
+          "total_tokens": 5381
+        }
+      },
+      {
+        "billing": "Selected endpoint account",
+        "connection_id": "fe9d2a94-a7d4-48c3-98b7-379cc620bd20",
+        "error_code": null,
+        "http_status": 200,
+        "model": "openai/gpt-6-luna",
+        "provider": "custom",
+        "usage": {
+          "cached_tokens": 0,
+          "completion_tokens": 50,
+          "cost": 2.7e-05,
+          "prompt_tokens": 20,
+          "total_tokens": 70
+        }
+      },
+      {
+        "billing": "Selected endpoint account",
+        "connection_id": "af3e53a1-5e37-4d66-9691-9cba89c5750d",
+        "error_code": null,
+        "http_status": 200,
+        "model": "gpt-6-luna",
+        "provider": "custom",
+        "usage": {
+          "cached_tokens": 0,
+          "input_tokens": 5411,
+          "output_tokens": 12,
+          "total_tokens": 5423
+        }
+      }
+    ],
+    "diagnostics": {
+      "available": true,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "context": {
+        "compression_enabled": true,
+        "compression_threshold": 525000,
+        "context_limit": 1050000,
+        "max_turns": 9223372036854775807,
+        "micro_compaction_enabled": false,
+        "model": "gpt-6-luna"
+      },
+      "input_tokens": 21217,
+      "output_tokens": 80,
+      "routing": {
+        "credential_pool": false,
+        "fallback_active": false,
+        "model": "gpt-6-luna",
+        "provider": "custom"
+      },
+      "source": "native_terminal_receipt",
+      "total_tokens": 21297
+    },
+    "settlement_s": 16.439177333842963
+  }
+]

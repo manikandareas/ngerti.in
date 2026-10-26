@@ -90,6 +90,16 @@ Schema 15 adds logical lineage, effect outcome receipts and goal work-unit outco
 
 See [runtime/session/recovery acceptance](../../docs/research/nma-029-runtime-session-recovery.md) for verification, failed attempts, scope boundaries and disposable migration/rollback evidence.
 
+## Native capabilities and inference routing
+
+See [native capability/routing acceptance and operator procedures](../../docs/research/nma-030-native-capabilities-routing.md) for the exact pin, deployment boundaries, real-provider results and failed attempts. The [version-2 catalog template](config/capabilities-v2.example.json) publishes conservative new-agent grants; apply them through `NMA_DEFAULT_GRANTS`. Existing agents are never retemplated. Native registry bundles expose dependency/schema/readiness diagnostics. Agent grants remain explicit; installed images and plugins confer no access by themselves.
+
+Native shell/browser handlers require a verified immutable `scoped_linux` image. Build `native-tools.Dockerfile` over the recorded NMA-028 base and notices, configure its exact image ID, then enable only reviewed bundles. These secret-free capsules are isolated native tool actuators; Hermes still owns all execution and recovery. Reviewed gateway plugins use the separate `trusted_plugin` surface and the offline `python -m ngertiin_engine.plugins inspect/install/enable/disable` workflow. Updates require a stopped, drained gateway. Live catalog revocation fences new effects first.
+
+Optional `config.inference.version: 1` adds validated generation parameters, ordered `fallback_models`, `auxiliary` compression/vision/review selections, OpenRouter `provider_routing`, compatible `credential_pool` selections and native `moa` references. All selections are NMA-040 owner-local connection/model IDs. Admission freezes configuration and connection generations; credentials stay in the vault. Native fallback/pool/MoA behavior uses the same scoped transport and attributes each participating connection/model. Unsupported parameters return `INVALID_INFERENCE_CONFIGURATION` with a field/reason rather than being dropped. The Agents editor exposes the supported progressive controls.
+
+For real native isolation verification, set `NMA_TEST_NATIVE_IMAGE` to the built immutable image ID when running `pytest apps/engine/tests/test_native_isolation.py`. The regular full suite explicitly skips that test without the opt-in. Provider-live and Clerk walkthrough evidence are separate from fixture counts and release SLOs.
+
 ## Backup, migration and rollback
 
 Current extension schema is 15. Migrations are additive and checksum-versioned; incompatible versions fail closed. Stop ingress and the gateway before backup. The backup tool holds native profile locks, copies the complete partition, normalizes copied WAL stores, checks integrity/foreign keys and records file hashes and table counts:

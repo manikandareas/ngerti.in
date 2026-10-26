@@ -1,0 +1,40 @@
+{
+  "authentication": "Two actual ClerkJS sessions, production current_account",
+  "cases": [
+    {
+      "owner": 0,
+      "path": "/connections",
+      "command": null,
+      "expected": 200,
+      "observed": 200
+    },
+    {
+      "owner": 1,
+      "path": "/connections",
+      "command": null,
+      "expected": 200,
+      "observed": 200
+    },
+    {
+      "owner": 1,
+      "path": "/threads/9b566afa-6875-4080-b7d3-982f8cb79b04",
+      "command": null,
+      "expected": 404,
+      "observed": 404
+    },
+    {
+      "owner": 0,
+      "path": "/threads/adfdbcb3-98ce-4dbf-943f-01a3d6f44555",
+      "command": null,
+      "expected": 404,
+      "observed": 404
+    },
+    {
+      "owner": 1,
+      "path": "/commands",
+      "command": "connection.models",
+      "expected": 404,
+      "observed": 422
+    }
+  ]
+}

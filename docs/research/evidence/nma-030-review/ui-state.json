@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "auxiliary": {
+    "review": {
+      "model": "backup",
+      "fallback_models": [
+        "backup"
+      ]
+    }
+  },
+  "provider_routing": {
+    "only": [
+      "Provider A"
+    ],
+    "data_collection": "deny",
+    "sort": "latency"
+  },
+  "moa": {
+    "references": [
+      "primary",
+      "backup"
+    ],
+    "fanout": "per_iteration",
+    "reference_timeout": 45
+  }
+}

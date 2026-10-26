@@ -1,0 +1,323 @@
+{
+  "status": "passed",
+  "scope": "Stopped disposable real-provider acceptance partition; no original user partition",
+  "schema_version": 15,
+  "quarantined": true,
+  "activation_attempted": false,
+  "all_domain_rows_unchanged": true,
+  "all_sqlite_counts_unchanged": true,
+  "verified_files": 379,
+  "databases": {
+    "cron/executions.db": {
+      "executions": 0
+    },
+    "kanban.db": {
+      "tasks": 0,
+      "task_links": 0,
+      "task_comments": 0,
+      "sqlite_sequence": 0,
+      "task_events": 0,
+      "task_runs": 0,
+      "task_attachments": 0,
+      "kanban_notify_subs": 0
+    },
+    "state.db": {
+      "schema_version": 1,
+      "system_prompts": 4,
+      "sessions": 3,
+      "messages": 42,
+      "sqlite_sequence": 2,
+      "session_model_usage": 9,
+      "runtime_epoch": 1,
+      "session_admissions": 8,
+      "worker_executions": 0,
+      "worker_receipts": 0,
+      "state_meta": 16,
+      "gateway_routing": 6,
+      "gateway_hygiene_state": 0,
+      "conversation_generations": 0,
+      "gateway_heartbeats": 0,
+      "compression_locks": 0,
+      "session_turn_leases": 0,
+      "async_delegations": 0,
+      "messages_fts": 42,
+      "messages_fts_data": 5,
+      "messages_fts_idx": 3,
+      "messages_fts_docsize": 42,
+      "messages_fts_config": 2,
+      "messages_fts_trigram": 29,
+      "messages_fts_trigram_data": 5,
+      "messages_fts_trigram_idx": 3,
+      "messages_fts_trigram_docsize": 29,
+      "messages_fts_trigram_config": 2,
+      "hosted_rooms": 0,
+      "hosted_room_events": 0,
+      "hosted_room_retired_ids": 0,
+      "hosted_room_links": 0,
+      "hosted_room_remote_runs": 0,
+      "hosted_room_revoked_grants": 0,
+      "hosted_room_peer_reservations": 0,
+      "hosted_room_policy_cursors": 0,
+      "hosted_room_policy_threads": 0,
+      "hosted_room_policy_events": 0,
+      "hosted_room_policy_watermarks": 0,
+      "hosted_room_policy_publications": 0,
+      "hosted_room_policy_transcript": 0,
+      "hosted_room_policy_transcript_state": 0,
+      "delivery_obligations": 0,
+      "nma_partition": 1,
+      "nma_schema_migrations": 15,
+      "nma_commands": 21,
+      "nma_runtime_outbox": 16,
+      "nma_events": 190,
+      "nma_adapter_bindings": 6,
+      "nma_adapter_runs": 8,
+      "nma_agent_run_fences": 0,
+      "nma_agents": 3,
+      "nma_agent_configs": 4,
+      "nma_threads": 3,
+      "nma_memberships": 3,
+      "nma_context_run_fences": 0,
+      "nma_context_receipts": 8,
+      "nma_messages": 19,
+      "nma_memory_entries": 0,
+      "nma_scope_grants": 0,
+      "nma_run_terminals": 8,
+      "nma_run_stops": 0,
+      "nma_stream": 1,
+      "nma_run_events": 144,
+      "nma_effects": 1,
+      "nma_dm_requests": 8,
+      "nma_goals": 0,
+      "nma_goal_operations": 0,
+      "nma_goal_lifecycle": 0,
+      "nma_goal_units": 0,
+      "nma_goal_evidence": 0,
+      "nma_trigger_definitions": 0,
+      "nma_triggers": 0,
+      "nma_webhook_batches": 0,
+      "nma_webhook_events": 0,
+      "nma_discussion_goals": 0,
+      "nma_discussions": 0,
+      "nma_discussion_turns": 0,
+      "nma_artifacts": 0,
+      "nma_artifact_grants": 0,
+      "nma_workspace_operations": 0,
+      "nma_computers": 0,
+      "nma_primary_dms": 3,
+      "nma_account_setup": 0,
+      "nma_conversation_state": 3,
+      "nma_navigation": 0,
+      "nma_welcomes": 3,
+      "nma_provider_connections": 3,
+      "nma_provider_failures": 0,
+      "nma_provider_legacy_routes": 0,
+      "nma_effect_outcomes": 1,
+      "nma_session_lineage": 3,
+      "nma_goal_unit_outcomes": 0
+    }
+  },
+  "domain_tables": {
+    "nma_account_setup": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nma_adapter_bindings": {
+      "rows": 6,
+      "sha256": "fbcdba0e04d111ba32317ac6fed9690539c22179ae245181a40211d3462e0616"
+    },
+    "nma_adapter_runs": {
+      "rows": 8,
+      "sha256": "32fa5020fd3e4fd396eb6527a155af2ca3c9f3481d5e1fe26ea7a39e6d8b6a7e"
+    },
+    "nma_agent_configs": {
+      "rows": 4,
+      "sha256": "cc3881472c06114c34a83f99481b9297bb6ba04cd3969abf95f98c903288b7c0"
+    },
+    "nma_agent_run_fences": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nma_agents": {
+      "rows": 3,
+      "sha256": "6abbb020b79be65f9218f642b870209f0384e84fb9154db84f295e2def8fcf66"
+    },
+    "nma_artifact_grants": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nma_artifacts": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nma_commands": {
+      "rows": 21,
+      "sha256": "a7be923bee2709e53900726b430ad9eccac7f6442a72e6707338cc1da6850893"
+    },
+    "nma_computers": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nma_context_receipts": {
+      "rows": 8,
+      "sha256": "22cc59637e53fcc6d7eca9f385ae5a196a47d015ce25e857d3d89f7d6e5cb5e0"
+    },
+    "nma_context_run_fences": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nma_conversation_state": {
+      "rows": 3,
+      "sha256": "19dc2c2079a24f6936678c2b0d72b9a4fe1b69914e08d6c4412fc28b28b5b595"
+    },
+    "nma_discussion_goals": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nma_discussion_turns": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nma_discussions": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nma_dm_requests": {
+      "rows": 8,
+      "sha256": "3526033f9c943541d28978389bbbab9343a1e3ab230b68e06f8789ead1da50ec"
+    },
+    "nma_effect_outcomes": {
+      "rows": 1,
+      "sha256": "9b96e793937d9265adfe9965134c86af3af07eb2e667ca43addf46ed18f3b994"
+    },
+    "nma_effects": {
+      "rows": 1,
+      "sha256": "0d784c0a38729910534a6da90d201463ccdc42d104580117328355fed2109170"
+    },
+    "nma_events": {
+      "rows": 190,
+      "sha256": "89eb42b1fc1a6b447b5313703dc3c4e67e9c473a4fcdd8918647c7cc6e087b5d"
+    },
+    "nma_goal_evidence": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nma_goal_lifecycle": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nma_goal_operations": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nma_goal_unit_outcomes": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nma_goal_units": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nma_goals": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nma_memberships": {
+      "rows": 3,
+      "sha256": "ee8419cdf3284205545e0bcc06993af3ae6029a70330f35205bcf8e65ac3071c"
+    },
+    "nma_memory_entries": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nma_messages": {
+      "rows": 19,
+      "sha256": "880118d6a52e2565fdc8d368b135f337738cb807308f4fdc103da0f058518408"
+    },
+    "nma_navigation": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nma_partition": {
+      "rows": 1,
+      "sha256": "d70f7526b5229b9be370542a2746bb10f9aca2a332c3a05e5f18a04e3d93a38c"
+    },
+    "nma_primary_dms": {
+      "rows": 3,
+      "sha256": "8a783b44dd402729f6937d730c22da7dd11ccc5d80908a02cbc9df577f74dcd7"
+    },
+    "nma_provider_connections": {
+      "rows": 3,
+      "sha256": "848f094069bebeeb316b97c7b88082bf1bc4aff81ef7b46d3f9b22ecf176dccd"
+    },
+    "nma_provider_failures": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nma_provider_legacy_routes": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nma_run_events": {
+      "rows": 144,
+      "sha256": "a94b1fd51a3226420233c7d18b562cec295b55131b25baeb88fc188c21ed752d"
+    },
+    "nma_run_stops": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nma_run_terminals": {
+      "rows": 8,
+      "sha256": "0eb41dfaacfc09de04842729530f01fe85b2ddf486ba07cc71bb8d6f9a116df3"
+    },
+    "nma_runtime_outbox": {
+      "rows": 16,
+      "sha256": "6b9c1fbc0a5dac64ae0f931fa8a95d03466ab25e314f5795d1e15b314a5df6f1"
+    },
+    "nma_schema_migrations": {
+      "rows": 15,
+      "sha256": "f2f4b09cae416ac99944a0de3a29da9944af0822e1f88eab9df2ca145fee45c7"
+    },
+    "nma_scope_grants": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nma_session_lineage": {
+      "rows": 3,
+      "sha256": "4e6856975dc09d6da19dd4f766362d3edf6bf4de0a9e768c11f5bf548ded7378"
+    },
+    "nma_stream": {
+      "rows": 1,
+      "sha256": "4a48df6d97cd7da71bbc3fcd589c7bcbf98e03cb16645e9f13cb13fdbbd196fb"
+    },
+    "nma_threads": {
+      "rows": 3,
+      "sha256": "979a8b5f343ba88535c7ecf15050f19c8558a5b81c2b09a19d175029cbc51a19"
+    },
+    "nma_trigger_definitions": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nma_triggers": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nma_webhook_batches": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nma_webhook_events": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nma_welcomes": {
+      "rows": 3,
+      "sha256": "6cda21ace4d819020459f715d092788d5dfe370bbd471745ec35d185ae9cea79"
+    },
+    "nma_workspace_operations": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "external_resources": "No scoped Linux capsule in this partition. Provider relay credentials are disposable and removed by the live harness on shutdown; production secrets and external volumes require separate private backup."
+}

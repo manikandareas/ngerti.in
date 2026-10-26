@@ -1,0 +1,12 @@
+{
+  "reason": "The first relay selected a stored API-key connection whose inference returned 401. MoA returned a native degraded-reference answer, which is valid recovery behavior but does not verify successful inference from both required models. Its stricter two-successful-provider oracle is therefore failed. Raw evidence is unchanged.",
+  "raw": {
+    "passed": 4,
+    "failed": 4
+  },
+  "reviewed": {
+    "passed": 3,
+    "failed": 5,
+    "attempted": 8
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "task": "NMA-030",
+  "url": "https://app.notion.com/p/404abdd6187381509cbfd08486cde81f",
+  "status": "Done",
+  "checked_acceptance": 13,
+  "unchecked_acceptance": 0,
+  "read_back": true,
+  "page_last_edited_at": "2026-10-26T11:57:00.006Z",
+  "truncated": false,
+  "unknown_blocks": 0,
+  "report_file_upload_id": "405abdd6-1873-81c7-949c-00b245239e84",
+  "zip_file_upload_id": "405abdd6-1873-812b-b7ce-00b2324c471a",
+  "zip_sha256": "39852dc934dcfbe3d4caff7fce362f57ff7e5645180538a3a4dd45f8be727f0a",
+  "archive_note": "Attached archive fixes the completed verification evidence before this Notion readback receipt was written."
+}

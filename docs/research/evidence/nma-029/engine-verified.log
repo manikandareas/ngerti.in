@@ -1,0 +1,333 @@
+...........s.......s.............F.............s.......FFFFFs.......s... [ 41%]
+F
+=================================== FAILURES ===================================
+_________ test_public_http_sse_reconnect_cancel_and_cursor_validation __________
+
+runtime = (PosixPath('/tmp/nma-bdct3gfv'), <http.server.ThreadingHTTPServer object at 0x107292a90>, <function runtime.<locals>.c...disconnect', 'provider_auth.start', 'provider_auth.status', ...], 'extension_schema': '15', 'lifecycle': 'ready', ...})
+public_api = <function public_api.<locals>.request at 0x108078d50>
+
+    def test_public_http_sse_reconnect_cancel_and_cursor_validation(runtime, public_api):
+        _, _, call, start, *_ = runtime
+        request = public_api
+        thread = dm(call, "dm-http")
+        path = "/threads/" + thread["thread_id"] + "/snapshot"
+        initial = json.load(request(path))
+        body = send(thread, "HTTP_STREAM_PROOF")
+        response = request("/commands", body)
+        assert response.status == 202
+        receipt = json.load(response)
+>       settle(call, receipt["run_id"])
+
+apps/engine/tests/test_direct_messages.py:301: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x108078040>
+run_id = 'efc68a80-b9f4-5064-98c7-225ff5ddb954', expected = 'succeeded'
+
+    def settle(call, run_id, expected="succeeded"):
+        deadline = time.monotonic() + 45
+        while time.monotonic() < deadline:
+            reply = call(command("runtime.read", {"run_id": run_id}))
+            assert "result" in reply, reply
+            if reply["result"]["status"] not in {"queued", "running"}:
+>               assert reply["result"]["status"] == expected, reply
+E               AssertionError: {'result': {'agent_id': '512e84ed-8e52-4098-9d99-ffcdf86b0191', 'config_revision': '1', 'context_generation': '1', 'continuation_required': False, ...}}
+E               assert 'failed' == 'succeeded'
+E                 
+E                 - succeeded
+E                 + failed
+
+apps/engine/tests/test_runtime.py:378: AssertionError
+_ test_continuation_crash_identity_and_native_card_reconciliation[after_goal_card] _
+
+runtime = (PosixPath('/tmp/nma-1x4hjn76'), <http.server.ThreadingHTTPServer object at 0x10802a1a0>, <function runtime.<locals>.c...disconnect', 'provider_auth.start', 'provider_auth.status', ...], 'extension_schema': '15', 'lifecycle': 'ready', ...})
+point = 'after_goal_card'
+
+    @pytest.mark.parametrize(
+        "point",
+        [
+            "before_continuation_commit",
+            "after_continuation_commit",
+            "after_goal_card",
+            "after_goal_admission",
+        ],
+    )
+    def test_continuation_crash_identity_and_native_card_reconciliation(runtime, point):
+        root, provider, call, start, *_ = runtime
+        thread = dm(call, "lifecycle-" + point.replace("_", "-"))
+        goal = begin(call, thread)
+        continuation_script(provider, goal["goal_id"])
+        start.current.kill()
+        start.current.wait(timeout=10)
+        (root / "fault-fired").unlink(missing_ok=True)
+        start(point)
+        body = send(
+            thread,
+            "RESPONSIBILITY:"
+            + json.dumps(
+                {
+                    "action": "continue",
+                    "goal_id": goal["goal_id"],
+                    "expected_revision": goal["revision"],
+                    "summary": "Recover this execution unit",
+                }
+            ),
+        )
+        parent = call(body)["result"]
+>       start.current.wait(timeout=20)
+
+apps/engine/tests/test_goal_lifecycle.py:366: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/subprocess.py:1279: in wait
+    return self._wait(timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <Popen: returncode: None args: ['/Users/vitoandareasmanik/Development/projec...>
+timeout = 20
+
+    def _wait(self, timeout):
+        """Internal implementation of wait() on POSIX."""
+        if self.returncode is not None:
+            return self.returncode
+    
+        if timeout is not None:
+            endtime = _time() + timeout
+            # Enter a busy loop if we have a timeout.  This busy loop was
+            # cribbed from Lib/threading.py in Thread.wait() at r71065.
+            delay = 0.0005 # 500 us -> initial delay of 1 ms
+            while True:
+                if self._waitpid_lock.acquire(False):
+                    try:
+                        if self.returncode is not None:
+                            break  # Another thread waited.
+                        (pid, sts) = self._try_wait(os.WNOHANG)
+                        assert pid == self.pid or pid == 0
+                        if pid == self.pid:
+                            self._handle_exitstatus(sts)
+                            break
+                    finally:
+                        self._waitpid_lock.release()
+                remaining = self._remaining_time(endtime)
+                if remaining <= 0:
+>                   raise TimeoutExpired(self.args, timeout)
+E                   subprocess.TimeoutExpired: Command '['/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-040/production/bin/python', '/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/fault_launcher.py']' timed out after 20 seconds
+
+.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/subprocess.py:2076: TimeoutExpired
+_ test_continuation_crash_identity_and_native_card_reconciliation[after_goal_admission] _
+
+runtime = (PosixPath('/tmp/nma-1x4hjn76'), <http.server.ThreadingHTTPServer object at 0x10802a1a0>, <function runtime.<locals>.c...disconnect', 'provider_auth.start', 'provider_auth.status', ...], 'extension_schema': '15', 'lifecycle': 'ready', ...})
+point = 'after_goal_admission'
+
+    @pytest.mark.parametrize(
+        "point",
+        [
+            "before_continuation_commit",
+            "after_continuation_commit",
+            "after_goal_card",
+            "after_goal_admission",
+        ],
+    )
+    def test_continuation_crash_identity_and_native_card_reconciliation(runtime, point):
+        root, provider, call, start, *_ = runtime
+        thread = dm(call, "lifecycle-" + point.replace("_", "-"))
+>       goal = begin(call, thread)
+               ^^^^^^^^^^^^^^^^^^^
+
+apps/engine/tests/test_goal_lifecycle.py:347: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+apps/engine/tests/test_goal_lifecycle.py:86: in begin
+    create(call, thread)
+apps/engine/tests/test_goals.py:33: in create
+    return act(
+apps/engine/tests/test_goals.py:17: in act
+    settle(call, result["run_id"])
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x1080cb7f0>
+run_id = '9b996e85-ab3a-5173-9eb0-538074ab2e52', expected = 'succeeded'
+
+    def settle(call, run_id, expected="succeeded"):
+        deadline = time.monotonic() + 45
+        while time.monotonic() < deadline:
+            reply = call(command("runtime.read", {"run_id": run_id}))
+            assert "result" in reply, reply
+            if reply["result"]["status"] not in {"queued", "running"}:
+>               assert reply["result"]["status"] == expected, reply
+E               AssertionError: {'result': {'agent_id': '44dc4b1a-500a-4c60-8d04-88dfa37565da', 'config_revision': '1', 'context_generation': '1', 'continuation_required': False, ...}}
+E               assert 'failed' == 'succeeded'
+E                 
+E                 - succeeded
+E                 + failed
+
+apps/engine/tests/test_runtime.py:378: AssertionError
+__________ test_pause_commit_before_native_delivery_survives_sigkill ___________
+
+runtime = (PosixPath('/tmp/nma-1x4hjn76'), <http.server.ThreadingHTTPServer object at 0x10802a1a0>, <function runtime.<locals>.c...disconnect', 'provider_auth.start', 'provider_auth.status', ...], 'extension_schema': '15', 'lifecycle': 'ready', ...})
+
+    def test_pause_commit_before_native_delivery_survives_sigkill(runtime):
+        root, provider, call, start, *_ = runtime
+        thread = dm(call, "lifecycle-pause-crash")
+>       goal = begin(call, thread)
+               ^^^^^^^^^^^^^^^^^^^
+
+apps/engine/tests/test_goal_lifecycle.py:408: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+apps/engine/tests/test_goal_lifecycle.py:86: in begin
+    create(call, thread)
+apps/engine/tests/test_goals.py:33: in create
+    return act(
+apps/engine/tests/test_goals.py:17: in act
+    settle(call, result["run_id"])
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x1080cb7f0>
+run_id = '4384775e-d0f9-593e-ad5f-d776a58e99fe', expected = 'succeeded'
+
+    def settle(call, run_id, expected="succeeded"):
+        deadline = time.monotonic() + 45
+        while time.monotonic() < deadline:
+            reply = call(command("runtime.read", {"run_id": run_id}))
+            assert "result" in reply, reply
+            if reply["result"]["status"] not in {"queued", "running"}:
+>               assert reply["result"]["status"] == expected, reply
+E               AssertionError: {'result': {'agent_id': '9a46086b-f8bc-4980-8941-3ef5979523a2', 'config_revision': '1', 'context_generation': '1', 'continuation_required': False, ...}}
+E               assert 'failed' == 'succeeded'
+E                 
+E                 - succeeded
+E                 + failed
+
+apps/engine/tests/test_runtime.py:378: AssertionError
+_______ test_agent_archive_blocks_waiting_goal_without_automatic_restore _______
+
+runtime = (PosixPath('/tmp/nma-1x4hjn76'), <http.server.ThreadingHTTPServer object at 0x10802a1a0>, <function runtime.<locals>.c...disconnect', 'provider_auth.start', 'provider_auth.status', ...], 'extension_schema': '15', 'lifecycle': 'ready', ...})
+
+    def test_agent_archive_blocks_waiting_goal_without_automatic_restore(runtime):
+        _, provider, call, start, *_ = runtime
+        thread = dm(call, "lifecycle-agent-archive")
+>       goal = begin(call, thread)
+               ^^^^^^^^^^^^^^^^^^^
+
+apps/engine/tests/test_goal_lifecycle.py:437: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+apps/engine/tests/test_goal_lifecycle.py:86: in begin
+    create(call, thread)
+apps/engine/tests/test_goals.py:33: in create
+    return act(
+apps/engine/tests/test_goals.py:17: in act
+    settle(call, result["run_id"])
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x1080cb7f0>
+run_id = 'c4f6d93f-20d9-5add-b604-5a2ee2a56f20', expected = 'succeeded'
+
+    def settle(call, run_id, expected="succeeded"):
+        deadline = time.monotonic() + 45
+        while time.monotonic() < deadline:
+            reply = call(command("runtime.read", {"run_id": run_id}))
+            assert "result" in reply, reply
+            if reply["result"]["status"] not in {"queued", "running"}:
+>               assert reply["result"]["status"] == expected, reply
+E               AssertionError: {'result': {'agent_id': '506619cd-a9d4-4d66-b07d-469a92f783d2', 'config_revision': '1', 'context_generation': '1', 'continuation_required': False, ...}}
+E               assert 'failed' == 'succeeded'
+E                 
+E                 - succeeded
+E                 + failed
+
+apps/engine/tests/test_runtime.py:378: AssertionError
+______________ test_stop_active_goal_restores_without_late_result ______________
+
+runtime = (PosixPath('/tmp/nma-1x4hjn76'), <http.server.ThreadingHTTPServer object at 0x10802a1a0>, <function runtime.<locals>.c...disconnect', 'provider_auth.start', 'provider_auth.status', ...], 'extension_schema': '15', 'lifecycle': 'ready', ...})
+
+    def test_stop_active_goal_restores_without_late_result(runtime):
+        _, provider, call, start, *_ = runtime
+        thread = dm(call, "lifecycle-stop-active")
+>       goal = begin(call, thread)
+               ^^^^^^^^^^^^^^^^^^^
+
+apps/engine/tests/test_goal_lifecycle.py:469: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+apps/engine/tests/test_goal_lifecycle.py:86: in begin
+    create(call, thread)
+apps/engine/tests/test_goals.py:33: in create
+    return act(
+apps/engine/tests/test_goals.py:17: in act
+    settle(call, result["run_id"])
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x1080cb7f0>
+run_id = '27346380-3bdd-5095-80f2-0feb39343c1a', expected = 'succeeded'
+
+    def settle(call, run_id, expected="succeeded"):
+        deadline = time.monotonic() + 45
+        while time.monotonic() < deadline:
+            reply = call(command("runtime.read", {"run_id": run_id}))
+            assert "result" in reply, reply
+            if reply["result"]["status"] not in {"queued", "running"}:
+>               assert reply["result"]["status"] == expected, reply
+E               AssertionError: {'result': {'agent_id': '8e225cfe-91d3-4e95-b69d-2a748cc7fb6e', 'config_revision': '1', 'context_generation': '1', 'continuation_required': False, ...}}
+E               assert 'failed' == 'succeeded'
+E                 
+E                 - succeeded
+E                 + failed
+
+apps/engine/tests/test_runtime.py:378: AssertionError
+_________ test_cost_receipt_is_turn_delta_and_preserves_native_source __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x108067a80>
+
+    def test_cost_receipt_is_turn_delta_and_preserves_native_source(monkeypatch):
+        from types import SimpleNamespace
+    
+        from gateway.run_turn_runner import TurnRunner
+        from gateway.session_results import execution_result
+        from ngertiin_engine.diagnostics import install_usage
+    
+        def native(_turn, agent):
+            agent.session_estimated_cost_usd += 0.25
+            execution_result.get()["usage"] = {"input_tokens": 10, "output_tokens": 5}
+            return {"final_response": "done"}
+    
+        monkeypatch.setattr(TurnRunner, "_run_conversation_with_approval", native)
+        install_usage()
+        agent = SimpleNamespace(
+            session_estimated_cost_usd=1.0,
+            session_cost_status="estimated",
+            session_cost_source="provider",
+        )
+        captured = {}
+        token = execution_result.set(captured)
+        try:
+>           TurnRunner._run_conversation_with_approval(None, agent)
+
+apps/engine/tests/test_integration_delivery.py:128: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+turn = None
+agent = namespace(session_estimated_cost_usd=1.25, session_cost_status='estimated', session_cost_source='provider')
+args = (), kwargs = {}
+
+    def run(turn, agent, *args, **kwargs):
+        before = getattr(agent, "session_estimated_cost_usd", 0.0)
+        try:
+            return original(turn, agent, *args, **kwargs)
+        finally:
+            captured = execution_result.get()
+            if captured is not None:
+>               compressor = agent.context_compressor
+                             ^^^^^^^^^^^^^^^^^^^^^^^^
+E               AttributeError: 'types.SimpleNamespace' object has no attribute 'context_compressor'
+
+apps/engine/src/ngertiin_engine/diagnostics.py:65: AttributeError
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_direct_messages.py::test_public_http_sse_reconnect_cancel_and_cursor_validation
+FAILED apps/engine/tests/test_goal_lifecycle.py::test_continuation_crash_identity_and_native_card_reconciliation[after_goal_card]
+FAILED apps/engine/tests/test_goal_lifecycle.py::test_continuation_crash_identity_and_native_card_reconciliation[after_goal_admission]
+FAILED apps/engine/tests/test_goal_lifecycle.py::test_pause_commit_before_native_delivery_survives_sigkill
+FAILED apps/engine/tests/test_goal_lifecycle.py::test_agent_archive_blocks_waiting_goal_without_automatic_restore
+FAILED apps/engine/tests/test_goal_lifecycle.py::test_stop_active_goal_restores_without_late_result
+FAILED apps/engine/tests/test_integration_delivery.py::test_cost_receipt_is_turn_delta_and_preserves_native_source
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! KeyboardInterrupt !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py:306: KeyboardInterrupt
+(to show a full traceback on KeyboardInterrupt use --full-trace)
+7 failed, 61 passed, 5 skipped in 260.51s (0:04:20)

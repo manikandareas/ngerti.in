@@ -1,0 +1,13 @@
+{
+  "registered_at": "2026-10-26T06:49:48.615033+00:00",
+  "planned_tests": 4,
+  "files": {
+    "test_connections_live.py": "0483a05b12afbf83c64cf46fe42fda3bc7e4a1f55d9bf03cf08f6a0ebdcac79e",
+    "test_goal_lifecycle_live.py": "39de62e9d7c8b702a8adddcb78056f21a747f89cf2dbd624e510c3b975ceaae1",
+    "test_discussions_live.py": "6834a5ef6fcd14b6f56669f2fafcdfa738a75fc80807f8e0a38abbd2077810ad",
+    "test_wakes_live.py": "5d37fbd975534aff524636ee2cbc1dd33f4525c82230760d87ecbb6c80368d57"
+  },
+  "provider": "Existing ChatGPT gpt-6-luna Responses route",
+  "authentication": "These regression fixtures use their documented HTTP authentication override; actual Clerk authorization is verified separately by the application corpus and Brave UI.",
+  "scope": "Supplemental regression, separate from 81-cell paired corpus; retain all failures and original test oracles."
+}

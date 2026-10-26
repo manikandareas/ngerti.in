@@ -1,0 +1,35 @@
+$ python3 scripts/check.py
+$ biome check apps/web
+apps/web/src/features/direct-messages/session-controls.tsx format ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Formatter would have printed the following content:
+  
+     67  67 │             : cause instanceof ApiError && cause.code === "COMPRESSION_FAILED"
+     68  68 │               ? "Konteks belum berhasil dirangkum. Coba kembali setelah pekerjaan selesai."
+     69     │ - ··········:·cause·instanceof·ApiError·&&
+     70     │ - ··············["SESSION_BUSY",·"REVISION_CONFLICT",·"STALE_GENERATION"].includes(cause.code·??·"")
+     71     │ - ············?·"Konteks·sedang·berubah.·Tunggu·pekerjaan·selesai,·lalu·coba·kembali."
+     72     │ - ············:·"Perubahan·konteks·belum·terkonfirmasi.·Coba·kembali·untuk·memeriksa·permintaan·yang·sama.",
+         69 │ + ············:·cause·instanceof·ApiError·&&
+         70 │ + ················["SESSION_BUSY",·"REVISION_CONFLICT",·"STALE_GENERATION"].includes(cause.code·??·"")
+         71 │ + ··············?·"Konteks·sedang·berubah.·Tunggu·pekerjaan·selesai,·lalu·coba·kembali."
+         72 │ + ··············:·"Perubahan·konteks·belum·terkonfirmasi.·Coba·kembali·untuk·memeriksa·permintaan·yang·sama.",
+     73  73 │         );
+     74  74 │       } finally {
+  
+
+Checked 39 files in 50ms. No fixes applied.
+Found 1 error.
+check ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Some errors were emitted while running checks.
+  
+
+error: script "lint" exited with code 1
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/scripts/check.py", line 46, in <module>
+    subprocess.run(command, cwd=ROOT, check=True)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['bun', 'run', 'lint']' returned non-zero exit status 1.
+error: script "check" exited with code 1

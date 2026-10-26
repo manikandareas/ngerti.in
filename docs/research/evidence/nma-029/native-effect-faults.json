@@ -1,0 +1,49 @@
+{
+  "reports": [
+    {
+      "case": "receipt_replay_restart",
+      "passed": true,
+      "effect_count_bytes": 1,
+      "receipt": {
+        "scope_key": "3030eb6a8a2903cda1d5a4619e3e326aaeb19b4fcb79774ff7eb2a453129d569",
+        "operation_id": "one-effect",
+        "tool": "terminal",
+        "args_hash": "58ad3970cee7398058ad943df03a5ade9a1067f3b5a8360469af9c966ad6768b",
+        "state": "returned",
+        "result": "{\"output\": \"x\", \"exit_code\": 0, \"error\": null}",
+        "started": 1792997309.4970691,
+        "finished": 1792997312.286452
+      },
+      "image": "sha256:b81f1bf356adb3f4cff012b2b95d95c6458b5ba876c1e886a59a24a82e574ebd"
+    },
+    {
+      "case": "lost_ack",
+      "passed": true,
+      "posts": [
+        {
+          "method": "POST",
+          "path": "/submit",
+          "fields": {
+            "name": [
+              "Synthetic"
+            ],
+            "note": [
+              "NMA028"
+            ]
+          }
+        }
+      ],
+      "receipt": {
+        "scope_key": "c6fcd63d91442b11cfed6c1a3eab660e05b914bb6c226b55841ed1eb5d0c3aee",
+        "operation_id": "lost-ack",
+        "tool": "browser_exec",
+        "args_hash": "6b744ec04d987c4f2aa91798d95d750875a25b91f33f4ee10979f26b0125527f",
+        "state": "indeterminate",
+        "result": null,
+        "started": 1792997318.164021,
+        "finished": 1792997322.174706
+      },
+      "image": "sha256:b81f1bf356adb3f4cff012b2b95d95c6458b5ba876c1e886a59a24a82e574ebd"
+    }
+  ]
+}

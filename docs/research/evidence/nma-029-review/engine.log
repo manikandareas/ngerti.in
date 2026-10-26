@@ -1,0 +1,42 @@
+.............s.......s...........................s............s.......s. [ 40%]
+........F............................................................... [ 81%]
+..................ssss..........                                         [100%]
+=================================== FAILURES ===================================
+____________________ test_native_anthropic_tool_round_trip _____________________
+
+runtime = (PosixPath('/tmp/nma-psokd3_t'), <http.server.ThreadingHTTPServer object at 0x10e633ba0>, <function runtime.<locals>.c...disconnect', 'provider_auth.start', 'provider_auth.status', ...], 'extension_schema': '15', 'lifecycle': 'ready', ...})
+
+    def test_native_anthropic_tool_round_trip(runtime):
+        root, _, call, *_ = runtime
+        (root / "capabilities.json").write_text(
+            json.dumps({"tool_grants": {"tasks": {"enabled": True, "toolset": "todo"}}})
+        )
+        provider = ThreadingHTTPServer(("127.0.0.1", 0), Anthropic)
+        provider.requests = []
+        threading.Thread(target=provider.serve_forever, daemon=True).start()
+        try:
+            identity = str(uuid4())
+            call(
+                command(
+                    "connection.add_key",
+                    {
+                        "connection_id": identity,
+                        "provider": "custom",
+                        "label": "Anthropic wire",
+                        "api_key": "anthropic-synthetic-key",
+                        "protocol": "anthropic_messages",
+                        "base_url": f"http://127.0.0.1:{provider.server_port}",
+                    },
+                )
+            )
+            catalog = call(command("connection.models", {"connection_id": identity}))
+>           assert "result" in catalog, catalog
+E           AssertionError: {'error': {'code': 'NOT_FOUND', 'details': {}}}
+E           assert 'result' in {'error': {'code': 'NOT_FOUND', 'details': {}}}
+
+apps/engine/tests/test_provider_anthropic.py:131: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_provider_anthropic.py::test_native_anthropic_tool_round_trip
+1 failed, 166 passed, 9 skipped in 655.84s (0:10:55)

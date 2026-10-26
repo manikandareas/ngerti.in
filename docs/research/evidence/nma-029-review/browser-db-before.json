@@ -1,0 +1,14 @@
+{
+  "thread": "3dad24b4-2b8c-431d-afab-69534b5f442c",
+  "message_count": 3,
+  "message_sha256": "df1e5133fe23c5b73c414b1467ee116836ad8c265cb85dcb6c20a1e16bb27602",
+  "controls": [],
+  "lineage": [
+    [
+      "a08968c6-6ed9-5d8b-9fa8-edc07d796b3c",
+      "local-ee6be0b620574ce41aba802d0c885cd1bc4cb4049ebf59003e72095fea748f30",
+      0
+    ]
+  ],
+  "native_receipts": []
+}

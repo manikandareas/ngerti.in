@@ -1,0 +1,25 @@
+...F................                                                     [100%]
+=================================== FAILURES ===================================
+_____ test_guarded_input_rejection_can_be_repaired_without_unknown_effect ______
+
+actuator = (<test_engine_computer_outcomes.actuator.<locals>.Provider object at 0x1076846e0>, <class 'test_engine_computer_outcomes.actuator.<locals>.Counter'>)
+
+    def test_guarded_input_rejection_can_be_repaired_without_unknown_effect(actuator):
+        provider, counter = actuator
+        provider.reject_input = True
+        result = asyncio.run(computer_bridge.execute(request()))
+        assert result["outcome"] == "rejected" and counter.count == 0
+        assert result["execution"]["outcome"] == "not_dispatched"
+        assert result["next_step"]
+        provider.reject_input = False
+        repaired = asyncio.run(computer_bridge.execute({**request(), "operation_id": "repaired-input"}))
+>       assert repaired["outcome"] == "completed" and counter.count == 1
+E       AssertionError: assert ('indeterminate' == 'completed'
+E         
+E         - completed
+E         + indeterminate)
+
+apps/backend/tests/test_engine_computer_outcomes.py:143: AssertionError
+=========================== short test summary info ============================
+FAILED apps/backend/tests/test_engine_computer_outcomes.py::test_guarded_input_rejection_can_be_repaired_without_unknown_effect
+1 failed, 19 passed in 4.46s

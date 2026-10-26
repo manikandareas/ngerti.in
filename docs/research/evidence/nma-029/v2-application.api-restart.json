@@ -1,0 +1,20 @@
+{
+  "scenario": "api_restart_during_native_work",
+  "status": "passed",
+  "before": [
+    "beaa96852c414a0fb936f4b128cf1955",
+    "local-bde362eda1986672005e7d5233a7200d7327b9b29920c6ed4a3669cc4899ea7e"
+  ],
+  "after": [
+    "beaa96852c414a0fb936f4b128cf1955",
+    "local-bde362eda1986672005e7d5233a7200d7327b9b29920c6ed4a3669cc4899ea7e"
+  ],
+  "application_owner": "adb62aaa-3091-4242-b591-718ee3719e05",
+  "authentication": "Actual ClerkJS JWT with production current_account",
+  "api_pid_changed": true,
+  "restart_and_settlement_s": 19.96247020899318,
+  "run_id": "178cadd7-be01-552c-b649-84af2fd0162d",
+  "terminal_state": "succeeded",
+  "response_marker_present": true,
+  "restart_command_completed": true
+}

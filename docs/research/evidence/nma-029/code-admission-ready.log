@@ -1,0 +1,157 @@
+.F
+=================================== FAILURES ===================================
+_____ test_repaired_syntax_dispatches_once_but_runtime_error_stays_unknown _____
+
+runtime = (PosixPath('/tmp/nma-ml1ayfer'), <http.server.ThreadingHTTPServer object at 0x109902510>, <function runtime.<locals>.c...disconnect', 'provider_auth.start', 'provider_auth.status', ...], 'extension_schema': '15', 'lifecycle': 'ready', ...})
+
+    def test_repaired_syntax_dispatches_once_but_runtime_error_stays_unknown(runtime):
+        root, model, call, start, *_ = runtime
+    
+        class Counter(BaseHTTPRequestHandler):
+            count = 0
+    
+            def log_message(self, *args):
+                pass
+    
+            def do_POST(self):
+                Counter.count += 1
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(b"counted")
+    
+        server = ThreadingHTTPServer(("127.0.0.1", 0), Counter)
+        worker = Thread(target=server.serve_forever, daemon=True)
+        worker.start()
+        overrides = {"NMA_TEST_COUNTER_URL": f"http://127.0.0.1:{server.server_port}"}
+        start.current.kill()
+        start.current.wait(timeout=10)
+        start("browser_grammar", overrides)
+        (root / "capabilities.json").write_text(
+            json.dumps(
+                {"tool_grants": {"browser": {"enabled": True, "toolset": "nma_computer"}}}
+            )
+        )
+        agent = capability_agent(call, "grammar-admission", tool_grants=["browser"])
+        thread = call(
+            command(
+                "thread.create",
+                {
+                    "kind": "dm",
+                    "title": "Grammar admission",
+                    "agent_ids": [agent["agent_id"]],
+                },
+            )
+        )["result"]["thread"]
+    
+        def script(body, text):
+            last = body["messages"][-1]
+            if last["role"] == "tool":
+                code = (
+                    "print('repaired')" if "INVALID_TOOL_CODE" in last["content"] else None
+                )
+                if code is None:
+                    return {"role": "assistant", "content": "TOOL_OUTCOME_RECORDED"}
+            else:
+                code = (
+                    "await page.click()"
+                    if text == "REPAIR_SYNTAX"
+                    else "raise SyntaxError('runtime')"
+                )
+            return {
+                "role": "assistant",
+                "content": None,
+                "tool_calls": [
+                    {
+                        "id": "syntax-" + str(len(body["messages"])),
+                        "type": "function",
+                        "function": {
+                            "name": "browser_exec",
+                            "arguments": json.dumps({"code": code}),
+                        },
+                    }
+                ],
+            }
+    
+        model.goal_script = script
+        try:
+            first = call(send(thread, "REPAIR_SYNTAX"))["result"]
+            settle(call, first["run_id"])
+            assert Counter.count == 1
+            with sqlite3.connect(root / "state/state.db") as db:
+                rows = db.execute(
+                    "SELECT phase FROM nma_effect_outcomes WHERE run_id=? ORDER BY rowid",
+                    (first["run_id"],),
+                ).fetchall()
+                assert rows == [("rejected",), ("completed",)]
+            body = send(thread, "RUNTIME_FAILURE")
+            second = call(body)
+            settle(call, second["result"]["run_id"], "indeterminate")
+            assert Counter.count == 2
+            start.current.kill()
+            start.current.wait(timeout=10)
+            start("browser_grammar", overrides)
+>           assert call(body) == second
+E           AssertionError: assert {'result': {'...n': '1', ...}} == {'result': {'...n': '1', ...}}
+E             
+E             Differing items:
+E             {'result': {'agent_id': '6c71c200-d574-4874-80c2-781235e99b01', 'command_id': 'f85a3528-8160-45a1-be83-593238f662d0', 'committed_seq': '23', 'config_revision': '1', ...}} != {'result': {'agent_id': '6c71c200-d574-4874-80c2-781235e99b01', 'command_id': 'f85a3528-8160-45a1-be83-593238f662d0', 'committed_seq': '23', 'config_revision': '1', ...}}
+E             Use -v to get more diff
+
+apps/engine/tests/test_code_admission.py:113: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+----------------------------- Captured stderr call -----------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52434)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_code_admission.py", line 67, in script
+    last = body["messages"][-1]
+           ~~~~^^^^^^^^^^^^
+KeyError: 'messages'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52437)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_code_admission.py", line 67, in script
+    last = body["messages"][-1]
+           ~~~~^^^^^^^^^^^^
+KeyError: 'messages'
+----------------------------------------
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_code_admission.py::test_repaired_syntax_dispatches_once_but_runtime_error_stays_unknown
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 1 passed in 9.06s

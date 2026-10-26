@@ -1,0 +1,32 @@
+{
+  "protocol_sha256": "b4cd5951720d93b3e2ce2e551ea5d2bf88fa976103e18d3d80c77bf35532e777",
+  "planned": 81,
+  "attempted": 54,
+  "not_executed": 27,
+  "not_executed_surface": "application",
+  "reason": "The first candidate exposed repairable pre-dispatch grammar errors being hidden behind conservative executor unknowns. All attempted failures are retained; a new complete corpus will use a separately frozen candidate/protocol.",
+  "raw": {
+    "passed": 42,
+    "failed": 6,
+    "user_stop": 6
+  },
+  "reviewed": {
+    "passed": 46,
+    "user_stop": 6,
+    "failed": 2
+  },
+  "actual_failures": [
+    {
+      "surface": "adapter",
+      "scenario": "browser_navigation",
+      "repeat": 2,
+      "attempt_id": "d4b16389-e75b-4d91-9818-1435786dcd4e"
+    },
+    {
+      "surface": "adapter",
+      "scenario": "browser_download",
+      "repeat": 1,
+      "attempt_id": "c4a9637d-3aef-4a4a-831b-7fdb68246257"
+    }
+  ]
+}

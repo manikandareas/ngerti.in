@@ -1,0 +1,22 @@
+{
+  "result": "passed",
+  "auth": "Fixed disposable test account; injected 401 tests client handling, not actual Clerk renewal",
+  "runtime": "Real pinned Hermes and production API/components; controlled provider",
+  "reset_attempts": 3,
+  "unique_reset_command_ids": 1,
+  "native_reset_receipts": 1,
+  "compression_attempts": 2,
+  "unique_compression_command_ids": 1,
+  "compression_noop": true,
+  "extra_native_mutation_receipts_after_compression": 0,
+  "pending_survived_reload_and_401": true,
+  "pending_cleared_on_ack": true,
+  "product_messages_unchanged": 3,
+  "message_sha256": "df1e5133fe23c5b73c414b1467ee116836ad8c265cb85dcb6c20a1e16bb27602",
+  "native_receipt_unchanged_on_retries": true,
+  "logical_identity_preserved": true,
+  "controls": {
+    "reset": "9ae80abe-9de1-4dd4-a641-d8b2f36a3f9c",
+    "compress": "998f81a3-58d4-4bb2-aea4-a9dbb556e9b0"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "authentication": "Actual ClerkJS JWT verified by production current_account; no override",
+  "checks": [
+    {
+      "case": "own_thread",
+      "status": 200
+    },
+    {
+      "case": "foreign_owner_thread",
+      "status": 404
+    },
+    {
+      "case": "foreign_agent_in_own_thread",
+      "status": 404
+    },
+    {
+      "case": "missing_auth",
+      "status": 401
+    },
+    {
+      "case": "invalid_auth",
+      "status": 401
+    }
+  ]
+}

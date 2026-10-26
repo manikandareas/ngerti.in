@@ -1,0 +1,64 @@
+...........s.......s...........................s............s.......s... [ 42%]
+..........................................................F
+=================================== FAILURES ===================================
+_____ test_schema_fourteen_preserves_receipts_and_inventories_old_unknowns _____
+
+runtime = (PosixPath('/tmp/nma-68ll__72'), <http.server.ThreadingHTTPServer object at 0x10a633d40>, <function runtime.<locals>.c...disconnect', 'provider_auth.start', 'provider_auth.status', ...], 'extension_schema': '15', 'lifecycle': 'ready', ...})
+
+    def test_schema_fourteen_preserves_receipts_and_inventories_old_unknowns(runtime):
+        root, _, call, start, *_ = runtime
+        agent, thread = setup(runtime, "migration-fidelity")
+        run = call(send(thread, "MIGRATION_PRESERVED_MESSAGE"))["result"]
+        settle(call, run["run_id"])
+        before = inspect(call, agent, thread)
+        start.current.kill()
+        start.current.wait(timeout=10)
+        raw = json.dumps({"value": json.dumps({"error": "INDETERMINATE"})})
+        with sqlite3.connect(root / "state/state.db") as db:
+            bindings = db.execute(
+                "SELECT * FROM nma_adapter_bindings ORDER BY binding_id"
+            ).fetchall()
+            messages = db.execute(
+                "SELECT * FROM nma_messages ORDER BY message_id"
+            ).fetchall()
+            migrations = db.execute(
+                "SELECT version,checksum FROM nma_schema_migrations WHERE version<15 ORDER BY version"
+            ).fetchall()
+            db.execute(
+                "INSERT INTO nma_effects VALUES (?,?,?,'historical-intent','confirmed',?)",
+                (OWNER, run["run_id"], "old-unknown", raw),
+            )
+            for table in (
+                "nma_goal_unit_outcomes",
+                "nma_effect_outcomes",
+                "nma_session_lineage",
+            ):
+                db.execute(f"DROP TABLE {table}")
+            db.execute("DELETE FROM nma_schema_migrations WHERE version=15")
+            db.execute("UPDATE nma_partition SET schema_version=14")
+        start()
+        after = inspect(call, agent, thread)
+        assert after["logical_session_id"] == before["logical_session_id"]
+        assert after["native_session_id"] == before["native_session_id"]
+        with sqlite3.connect(root / "state/state.db") as db:
+            assert (
+                db.execute(
+                    "SELECT * FROM nma_adapter_bindings ORDER BY binding_id"
+                ).fetchall()
+                == bindings
+            )
+>           assert (
+                db.execute("SELECT * FROM nma_messages ORDER BY message_id").fetchall()
+                == messages
+            )
+E           assert [('988a5fc0-8...5', ...), ...] == [('988a5fc0-8...5', ...), ...]
+E             
+E             At index 19 diff: ('988a5fc0-8b12-46cc-ae78-0b5530d9d3fe', '43c36155-7ca3-5f53-a7ef-0aa890b6e7c4', '1256596e-1297-4378-82f5-8462841d3f40', 3, 'agent', '04cafc70-631b-4f9c-943b-9b3cc6bf4e91', '5dfc2ab6-ebbb-54fb-9026-c314fb4f6943', '[{"text":"RECOVERY_ACK_MIGRATION_PRESERVED_MESSAGE","type":"text"}]', None, 1, 1, '2026-10-26T05:40:01.103292Z') != ('988a5fc0-8b12-46cc-ae78-0b5530d9d3fe', '4610ba2c-3fb3-5b3a-a814-b66a798a1fb9', 'c2cfde37-1b76-476f-93cc-3e8c7f4b2a6c', 13, 'user', None, 'f8c0476f-a128-51ca-a513-a0571c41ac5c', '[{"text":"COMPRESSION_FACT_6: scoped conversatio...
+E             
+E             ...Full output truncated (3 lines hidden), use '-vv' to show
+
+apps/engine/tests/test_session_fidelity.py:297: AssertionError
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_session_fidelity.py::test_schema_fourteen_preserves_receipts_and_inventories_old_unknowns
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 125 passed, 5 skipped in 400.17s (0:06:40)

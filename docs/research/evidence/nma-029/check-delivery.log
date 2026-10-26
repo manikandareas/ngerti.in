@@ -1,0 +1,32 @@
+$ python3 scripts/check.py
+$ biome check apps/web
+Checked 39 files in 26ms. No fixes applied.
+$ bun --filter @ngertiin/web typecheck
+@ngertiin/web typecheck: Exited with code 0
+F601 Dictionary key literal `"STALE_GENERATION"` repeated
+   --> apps/backend/src/ngertiin/agent_engine/api.py:103:9
+    |
+101 |         "SESSION_UNAVAILABLE": 409,
+102 |         "SESSION_BUSY": 409,
+103 |         "STALE_GENERATION": 409,
+    |         ^^^^^^^^^^^^^^^^^^
+104 |         "COMPRESSION_FAILED": 422,
+105 |         "CONTEXT_ENGINE_UNAVAILABLE": 422,
+    |
+help: Remove repeated key literal `"STALE_GENERATION"`
+    |
+102 |         "SESSION_BUSY": 409,
+    -         "STALE_GENERATION": 409,
+103 |         "COMPRESSION_FAILED": 422,
+    |
+note: This is an unsafe fix and may change runtime behavior
+
+Found 1 error.
+1 unsafe fix available with `--fix --unsafe-fixes`.
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/scripts/check.py", line 46, in <module>
+    subprocess.run(command, cwd=ROOT, check=True)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['uv', 'run', '--project', 'apps/backend', 'ruff', 'check', 'apps/backend/src', 'apps/backend/migrations', 'scripts']' returned non-zero exit status 1.
+error: script "check" exited with code 1

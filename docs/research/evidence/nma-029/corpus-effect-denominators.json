@@ -1,0 +1,40 @@
+{
+  "direct": {
+    "corpus_dispatch_batches": 25,
+    "corpus_batch_outcomes": {
+      "indeterminate": 6,
+      "returned": 19
+    },
+    "planned_stop_batch_outcomes": {
+      "indeterminate": 3
+    },
+    "companion_batch_outcomes": {},
+    "note": "Counts dispatch batches, not individual external effects. Unknown batches remain unknown; planned stops are separately identified."
+  },
+  "adapter": {
+    "corpus_dispatch_batches": 29,
+    "corpus_batch_outcomes": {
+      "indeterminate": 4,
+      "returned": 25
+    },
+    "planned_stop_batch_outcomes": {
+      "indeterminate": 3
+    },
+    "companion_batch_outcomes": {},
+    "note": "Counts dispatch batches, not individual external effects. Unknown batches remain unknown; planned stops are separately identified."
+  },
+  "application": {
+    "corpus_dispatch_batches": 31,
+    "corpus_batch_outcomes": {
+      "indeterminate": 4,
+      "returned": 27
+    },
+    "planned_stop_batch_outcomes": {
+      "indeterminate": 3
+    },
+    "companion_batch_outcomes": {
+      "returned": 1
+    },
+    "note": "Counts dispatch batches, not individual external effects. Unknown batches remain unknown; planned stops are separately identified."
+  }
+}

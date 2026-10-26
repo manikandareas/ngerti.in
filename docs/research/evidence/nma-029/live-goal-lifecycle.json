@@ -1,0 +1,194 @@
+{
+  "model": "gpt-6-luna",
+  "receipt": {
+    "agent_id": "5f169547-f634-477a-acc5-cdb0e0c70721",
+    "command_id": "c8ac7c4f-d598-480e-8bb3-c71517809058",
+    "committed_seq": "10",
+    "config_revision": "1",
+    "context_generation": "1",
+    "message_id": "da2b4ad9-14ae-5f5b-99e9-260f6d3478f1",
+    "run_id": "4dd084e6-fe88-5408-8e57-7f225d32778e",
+    "schema_version": "nma.v1",
+    "status": "accepted",
+    "thread_id": "525382d8-1894-4d5a-823c-cb5735ce354c"
+  },
+  "snapshot": {
+    "artifacts": [],
+    "discussion": null,
+    "goals": [
+      {
+        "created_at": "2026-10-26T08:09:15.981Z",
+        "creation_key": "fuel-efficiency-report-360km-45l",
+        "evidence": [
+          {
+            "accepted_by_agent_id": "5f169547-f634-477a-acc5-cdb0e0c70721",
+            "criterion": "Correct calculation in L/100 km, short interpretation, and independent arithmetic check.",
+            "evidence_id": "a57264bd-864a-56c6-bb88-4f53e070db65",
+            "generation": "1",
+            "producing_run_id": "4dd084e6-fe88-5408-8e57-7f225d32778e",
+            "source_message_id": "345c739d-329c-59f2-944c-dd16ea16a111",
+            "summary": "Fuel efficiency is 12.5 L/100 km: 45 \u00f7 360 \u00d7 100 = 12.5. Interpretation: 12.5 litres are consumed for each 100 km travelled. Independent check: 360 \u00f7 45 = 8 km/L; 100 \u00f7 8 = 12.5 L/100 km."
+          }
+        ],
+        "generation": "2",
+        "goal_id": "f3e38dfd-61eb-443f-aea7-c2629c1bf2a4",
+        "objective": "Calculate fuel efficiency from 360 km travelled and 45 litres consumed in litres per 100 km, provide a short interpretation, independently check the arithmetic, and finish the report.",
+        "progress": "Fuel efficiency is 12.5 L/100 km: 45 \u00f7 360 \u00d7 100 = 12.5. Interpretation: 12.5 litres are consumed for each 100 km travelled. Independent check: 360 \u00f7 45 = 8 km/L; 100 \u00f7 8 = 12.5 L/100 km.",
+        "responsible_agent_id": "5f169547-f634-477a-acc5-cdb0e0c70721",
+        "revision": "5",
+        "source_message_id": "da2b4ad9-14ae-5f5b-99e9-260f6d3478f1",
+        "source_run_id": "4dd084e6-fe88-5408-8e57-7f225d32778e",
+        "status": "completed",
+        "thread_id": "525382d8-1894-4d5a-823c-cb5735ce354c",
+        "title": "Prepare and verify a fuel-efficiency report",
+        "units": [
+          {
+            "agent_id": "5f169547-f634-477a-acc5-cdb0e0c70721",
+            "generation": "1",
+            "parent_run_id": null,
+            "run_id": "4dd084e6-fe88-5408-8e57-7f225d32778e",
+            "settled": true,
+            "status": "succeeded",
+            "verdict": "continue"
+          },
+          {
+            "agent_id": "5f169547-f634-477a-acc5-cdb0e0c70721",
+            "generation": "1",
+            "parent_run_id": "4dd084e6-fe88-5408-8e57-7f225d32778e",
+            "run_id": "8e549a14-402a-5a01-ab6c-697ac2fe0705",
+            "settled": true,
+            "status": "succeeded",
+            "verdict": "done"
+          }
+        ],
+        "updated_at": "2026-10-26T08:10:09.494Z",
+        "wake": null,
+        "wake_condition": null
+      }
+    ],
+    "messages": [
+      {
+        "author_agent_id": null,
+        "author_kind": "user",
+        "content": "Please take responsibility for preparing a short fuel-efficiency report from these readings: 360 km travelled and 45 litres consumed. Produce the calculation in litres per 100 km and a short interpretation, then independently check the arithmetic and finish the work. Keep working through the result and its verification without waiting for another message from me.",
+        "context_generation": "1",
+        "message_id": "da2b4ad9-14ae-5f5b-99e9-260f6d3478f1",
+        "message_seq": "2",
+        "parts": [
+          {
+            "text": "Please take responsibility for preparing a short fuel-efficiency report from these readings: 360 km travelled and 45 litres consumed. Produce the calculation in litres per 100 km and a short interpretation, then independently check the arithmetic and finish the work. Keep working through the result and its verification without waiting for another message from me.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "4dd084e6-fe88-5408-8e57-7f225d32778e",
+        "thread_id": "525382d8-1894-4d5a-823c-cb5735ce354c"
+      },
+      {
+        "author_agent_id": "5f169547-f634-477a-acc5-cdb0e0c70721",
+        "author_kind": "agent",
+        "content": "Fuel-efficiency report\n\n45 L \u00f7 360 km \u00d7 100 = 12.5 L/100 km.\n\nInterpretation: The vehicle used 12.5 litres of fuel per 100 km travelled.\n\nIndependent check: 360 km \u00f7 45 L = 8 km/L; 100 km \u00f7 8 km/L = 12.5 L/100 km. The arithmetic checks out.",
+        "context_generation": "1",
+        "message_id": "345c739d-329c-59f2-944c-dd16ea16a111",
+        "message_seq": "3",
+        "parts": [
+          {
+            "text": "Fuel-efficiency report\n\n45 L \u00f7 360 km \u00d7 100 = 12.5 L/100 km.\n\nInterpretation: The vehicle used 12.5 litres of fuel per 100 km travelled.\n\nIndependent check: 360 km \u00f7 45 L = 8 km/L; 100 km \u00f7 8 km/L = 12.5 L/100 km. The arithmetic checks out.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "4dd084e6-fe88-5408-8e57-7f225d32778e",
+        "thread_id": "525382d8-1894-4d5a-823c-cb5735ce354c"
+      },
+      {
+        "author_agent_id": "5f169547-f634-477a-acc5-cdb0e0c70721",
+        "author_kind": "agent",
+        "content": "The responsibility is complete. The independently checked result is 12.5 L/100 km.",
+        "context_generation": "1",
+        "message_id": "30b5dccc-e982-5377-8574-cf790a170a8b",
+        "message_seq": "4",
+        "parts": [
+          {
+            "text": "The responsibility is complete. The independently checked result is 12.5 L/100 km.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "8e549a14-402a-5a01-ab6c-697ac2fe0705",
+        "thread_id": "525382d8-1894-4d5a-823c-cb5735ce354c"
+      }
+    ],
+    "next_before_message_seq": null,
+    "replay_epoch": "348ca981-0756-47e0-96c6-8c0abb7ed21c",
+    "runs": [
+      {
+        "agent_id": "5f169547-f634-477a-acc5-cdb0e0c70721",
+        "config_revision": "1",
+        "context_generation": "1",
+        "continuation_required": false,
+        "error_code": null,
+        "replay_epoch": "348ca981-0756-47e0-96c6-8c0abb7ed21c",
+        "run_id": "4dd084e6-fe88-5408-8e57-7f225d32778e",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Fuel-efficiency report\n\n45 L \u00f7 360 km \u00d7 100 = 12.5 L/100 km.\n\nInterpretation: The vehicle used 12.5 litres of fuel per 100 km travelled.\n\nIndependent check: 360 km \u00f7 45 L = 8 km/L; 100 km \u00f7 8 km/L = 12.5 L/100 km. The arithmetic checks out.",
+        "thread_id": "525382d8-1894-4d5a-823c-cb5735ce354c",
+        "through_sequence": "128",
+        "turn_exit_reason": "text_response(finish_reason=stop)"
+      },
+      {
+        "agent_id": "5f169547-f634-477a-acc5-cdb0e0c70721",
+        "config_revision": "1",
+        "context_generation": "1",
+        "continuation_required": false,
+        "error_code": null,
+        "replay_epoch": "348ca981-0756-47e0-96c6-8c0abb7ed21c",
+        "run_id": "8e549a14-402a-5a01-ab6c-697ac2fe0705",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "The responsibility is complete. The independently checked result is 12.5 L/100 km.",
+        "thread_id": "525382d8-1894-4d5a-823c-cb5735ce354c",
+        "through_sequence": "128",
+        "turn_exit_reason": "text_response(finish_reason=stop)"
+      }
+    ],
+    "schema_version": "nma.v1",
+    "thread": {
+      "agents": [
+        {
+          "access_generation": "1",
+          "agent_id": "5f169547-f634-477a-acc5-cdb0e0c70721",
+          "config": {
+            "avatar_url": "https://api.dicebear.com/10.x/critters/svg?seed=goal-lifecycle-live",
+            "instructions": "",
+            "model": "test",
+            "session": {
+              "compression": {},
+              "context_engine": "compressor",
+              "max_turns": null
+            },
+            "soul": "SOUL_goal-lifecycle-live"
+          },
+          "config_revision": "1",
+          "created_at": "2026-10-26T08:09:07.243339Z",
+          "display_name": "goal-lifecycle-live",
+          "handle": "goal-lifecycle-live",
+          "primary_dm_thread_id": "525382d8-1894-4d5a-823c-cb5735ce354c",
+          "revision": "1",
+          "status": "active",
+          "updated_at": "2026-10-26T08:09:07.243339Z"
+        }
+      ],
+      "context_generation": "1",
+      "dm_agent_id": "5f169547-f634-477a-acc5-cdb0e0c70721",
+      "kind": "dm",
+      "membership_revision": "1",
+      "revision": "1",
+      "status": "open",
+      "thread_id": "525382d8-1894-4d5a-823c-cb5735ce354c",
+      "title": "goal-lifecycle-live"
+    },
+    "through_sequence": "128"
+  }
+}

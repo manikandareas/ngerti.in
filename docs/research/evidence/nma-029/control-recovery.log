@@ -1,0 +1,35 @@
+F
+=================================== FAILURES ===================================
+______ test_busy_control_is_a_durable_refusal_not_pending_startup_poison _______
+
+runtime = (PosixPath('/tmp/nma-22swufkp'), <http.server.ThreadingHTTPServer object at 0x10b22e270>, <function runtime.<locals>.c...disconnect', 'provider_auth.start', 'provider_auth.status', ...], 'extension_schema': '15', 'lifecycle': 'ready', ...})
+
+    def test_busy_control_is_a_durable_refusal_not_pending_startup_poison(runtime):
+        root, provider, call, start, *_ = runtime
+        agent, thread = setup(runtime, "busy-context")
+        settle(call, call(send(thread, "BEFORE_BUSY"))["result"]["run_id"])
+        provider.release.clear()
+        provider.blocked.clear()
+        run = call(send(thread, "BLOCK_STARTED"))["result"]
+        assert provider.blocked.wait(10)
+        body = context_command("session.reset", inspect(call, agent, thread), agent, thread)
+        try:
+            assert call(body)["error"]["code"] == "SESSION_BUSY"
+            assert call(body)["error"]["code"] == "SESSION_BUSY"
+            with sqlite3.connect(root / "state/state.db") as db:
+>               assert db.execute(
+                    "SELECT state FROM nma_runtime_outbox WHERE operation_id=?",
+                    (body["command_id"],),
+                ).fetchone() == ("completed",)
+E               AssertionError: assert ('applied',) == ('completed',)
+E                 
+E                 At index 0 diff: 'applied' != 'completed'
+E                 Use -v to get more diff
+
+apps/engine/tests/test_session_fidelity.py:351: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_session_fidelity.py::test_busy_control_is_a_durable_refusal_not_pending_startup_poison
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 18 deselected in 4.40s

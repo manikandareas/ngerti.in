@@ -1,0 +1,74 @@
+.F
+=================================== FAILURES ===================================
+_____ test_repaired_syntax_dispatches_once_but_runtime_error_stays_unknown _____
+
+runtime = (PosixPath('/tmp/nma-3rv5p0sk'), <http.server.ThreadingHTTPServer object at 0x10b376660>, <function runtime.<locals>.c...disconnect', 'provider_auth.start', 'provider_auth.status', ...], 'extension_schema': '15', 'lifecycle': 'ready', ...})
+
+    def test_repaired_syntax_dispatches_once_but_runtime_error_stays_unknown(runtime):
+        root, model, call, start, *_ = runtime
+    
+        class Counter(BaseHTTPRequestHandler):
+            count = 0
+    
+            def log_message(self, *args):
+                pass
+    
+            def do_POST(self):
+                Counter.count += 1
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(b"counted")
+    
+        server = ThreadingHTTPServer(("127.0.0.1", 0), Counter)
+        worker = Thread(target=server.serve_forever, daemon=True)
+        worker.start()
+        overrides = {"NMA_TEST_COUNTER_URL": f"http://127.0.0.1:{server.server_port}"}
+        start.current.kill()
+        start.current.wait(timeout=10)
+        start("browser_grammar", overrides)
+        _agent, thread = setup(runtime, "grammar-admission")
+    
+        def script(body, text):
+            last = body["messages"][-1]
+            if last["role"] == "tool":
+                code = (
+                    "print('repaired')" if "INVALID_TOOL_CODE" in last["content"] else None
+                )
+                if code is None:
+                    return {"role": "assistant", "content": "TOOL_OUTCOME_RECORDED"}
+            else:
+                code = (
+                    "await page.click()"
+                    if text == "REPAIR_SYNTAX"
+                    else "raise SyntaxError('runtime')"
+                )
+            return {
+                "role": "assistant",
+                "content": None,
+                "tool_calls": [
+                    {
+                        "id": "syntax-" + str(len(body["messages"])),
+                        "type": "function",
+                        "function": {
+                            "name": "browser_exec",
+                            "arguments": json.dumps({"code": code}),
+                        },
+                    }
+                ],
+            }
+    
+        model.goal_script = script
+        try:
+            first = call(send(thread, "REPAIR_SYNTAX"))["result"]
+            settle(call, first["run_id"])
+>           assert Counter.count == 1
+E           AssertionError: assert 0 == 1
+E            +  where 0 = <class 'test_code_admission.test_repaired_syntax_dispatches_once_but_runtime_error_stays_unknown.<locals>.Counter'>.count
+
+apps/engine/tests/test_code_admission.py:84: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_code_admission.py::test_repaired_syntax_dispatches_once_but_runtime_error_stays_unknown
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 1 passed in 6.77s

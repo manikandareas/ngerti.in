@@ -1,0 +1,2 @@
+#!/bin/sh
+exec env NMA028_OWNER_ID=755ca7ee-f2f6-420f-9003-2552449f594a NMA028_CONTROL_DIR=/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-029/v2-adapter-control NMA028_SURFACE=adapter /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-008/runtime/bin/python /Users/vitoandareasmanik/Development/project/ngertiin/scripts/spikes/nma028/spike_gateway.py

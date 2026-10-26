@@ -1,0 +1,35 @@
+{
+  "disposable_identities_deleted": true,
+  "disposable_database_dropped": true,
+  "scoped_tool_resources": [
+    {
+      "control": ".dev/nma-029/direct-control",
+      "remaining_containers": 0,
+      "remaining_volumes": 0
+    },
+    {
+      "control": ".dev/nma-029/adapter-control",
+      "remaining_containers": 0,
+      "remaining_volumes": 0
+    },
+    {
+      "control": ".dev/nma-029/v2-adapter-control",
+      "remaining_containers": 0,
+      "remaining_volumes": 0
+    },
+    {
+      "control": ".dev/nma-029/v2-application-control",
+      "remaining_containers": 0,
+      "remaining_volumes": 0
+    },
+    {
+      "control": ".dev/nma-029/v2-direct-control",
+      "remaining_containers": 0,
+      "remaining_volumes": 0
+    }
+  ],
+  "original_user_partition_migrated": false,
+  "private_credentials_removed": true,
+  "original_partition_schema_after": 14,
+  "original_gateway_still_running": true
+}

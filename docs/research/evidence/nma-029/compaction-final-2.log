@@ -1,0 +1,53 @@
+F
+=================================== FAILURES ===================================
+____ test_native_automatic_and_micro_compaction_are_connected[compression0] ____
+
+runtime = (PosixPath('/tmp/nma-e57y_xlj'), <http.server.ThreadingHTTPServer object at 0x10b7ca3c0>, <function runtime.<locals>.c...disconnect', 'provider_auth.start', 'provider_auth.status', ...], 'extension_schema': '15', 'lifecycle': 'ready', ...})
+compression = {'threshold_tokens': 24000}
+
+    @pytest.mark.parametrize(
+        "compression",
+        [{"threshold_tokens": 24000}, {"micro_compact": True, "threshold_tokens": 24000}],
+    )
+    def test_native_automatic_and_micro_compaction_are_connected(runtime, compression):
+        root, provider, call, start, *_ = runtime
+        agent, thread = setup(
+            runtime,
+            "compaction-" + ("micro" if compression.get("micro_compact") else "automatic"),
+            {"compression": compression},
+        )
+        with sqlite3.connect(root / "state/state.db") as db:
+            before = db.execute(
+                "SELECT count(*) FROM messages WHERE _compressed_summary=1"
+            ).fetchone()[0]
+        provider.goal_script = lambda body, text: {
+            "role": "assistant",
+            "content": "## Goal\nCOMPACTION_FIDELITY\n## Completed Actions\nRead scoped data.\n## Active State\nReady for followup.\n## Critical Context\nKeep COMPACTION_INPUT_0.",
+        }
+        provider.usage_script = lambda body: {
+            "prompt_tokens": len(json.dumps(body.get("messages", []))) // 4,
+            "completion_tokens": 40,
+            "total_tokens": len(json.dumps(body.get("messages", []))) // 4 + 40,
+        }
+        try:
+            for index in range(16 if compression.get("micro_compact") else 30):
+                run = call(
+                    send(thread, (f"COMPACTION_INPUT_{index}: " + "synthetic context " * 240).rstrip())
+                )["result"]
+                settle(call, run["run_id"])
+            with sqlite3.connect(root / "state/state.db") as db:
+>               assert (
+                    db.execute(
+                        "SELECT count(*) FROM messages WHERE _compressed_summary=1"
+                    ).fetchone()[0]
+                    > before
+                )
+E               assert 0 > 0
+
+apps/engine/tests/test_session_fidelity.py:355: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_session_fidelity.py::test_native_automatic_and_micro_compaction_are_connected[compression0]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 16 deselected in 11.38s

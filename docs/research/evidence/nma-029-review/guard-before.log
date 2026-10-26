@@ -1,0 +1,112 @@
+...FFF                                                                   [100%]
+=================================== FAILURES ===================================
+_____ test_guarded_input_rejection_can_be_repaired_without_unknown_effect ______
+
+actuator = (<test_engine_computer_outcomes.actuator.<locals>.Provider object at 0x10b9586e0>, <class 'test_engine_computer_outcomes.actuator.<locals>.Counter'>)
+
+    def test_guarded_input_rejection_can_be_repaired_without_unknown_effect(actuator):
+        provider, counter = actuator
+        provider.reject_input = True
+        result = asyncio.run(computer_bridge.execute(request()))
+>       assert result["outcome"] == "rejected" and counter.count == 0
+E       AssertionError: assert ('indeterminate' == 'rejected'
+E         
+E         - rejected
+E         + indeterminate)
+
+apps/backend/tests/test_engine_computer_outcomes.py:138: AssertionError
+_ test_saved_guard_rejection_is_a_receipt_without_repeating_input[StaleTarget] _
+
+actuator = (<test_engine_computer_outcomes.actuator.<locals>.Provider object at 0x10d043620>, <class 'test_engine_computer_outcomes.actuator.<locals>.Counter'>)
+rejection = <class 'ngertiin.computer.contracts.StaleTarget'>
+
+    @pytest.mark.parametrize("rejection", [StaleTarget, NeedsHuman])
+    def test_saved_guard_rejection_is_a_receipt_without_repeating_input(actuator, rejection):
+        provider, counter = actuator
+        provider.receipt_rejection = rejection
+>       result = asyncio.run(
+            computer_bridge.execute(
+                {
+                    "operation": "receipt",
+                    "receipt_operation_id": "original-input",
+                    "workspace": {"id": "fixture"},
+                }
+            )
+        )
+
+apps/backend/tests/test_engine_computer_outcomes.py:150: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../../../.local/share/uv/python/cpython-3.13.12-macos-aarch64-none/lib/python3.13/asyncio/runners.py:195: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+../../../.local/share/uv/python/cpython-3.13.12-macos-aarch64-none/lib/python3.13/asyncio/runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../.local/share/uv/python/cpython-3.13.12-macos-aarch64-none/lib/python3.13/asyncio/base_events.py:725: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+apps/backend/src/ngertiin/agent_engine/computer_bridge.py:26: in execute
+    receipt = await provider.dispatch_receipt(workspace, request["receipt_operation_id"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <test_engine_computer_outcomes.actuator.<locals>.Provider object at 0x10d043620>
+workspace = {'id': 'fixture', 'deadline': datetime.datetime(2026, 10, 26, 9, 44, 38, 813946, tzinfo=datetime.timezone.utc), 'resource_id': 'fixture'}
+operation = 'original-input'
+
+    async def dispatch_receipt(self, workspace, operation):
+        if self.receipt_rejection:
+>           raise self.receipt_rejection("Saved receipt proves input was rejected")
+E           ngertiin.computer.contracts.StaleTarget: Saved receipt proves input was rejected
+
+apps/backend/tests/test_engine_computer_outcomes.py:70: StaleTarget
+_ test_saved_guard_rejection_is_a_receipt_without_repeating_input[NeedsHuman] __
+
+actuator = (<test_engine_computer_outcomes.actuator.<locals>.Provider object at 0x10d043e00>, <class 'test_engine_computer_outcomes.actuator.<locals>.Counter'>)
+rejection = <class 'ngertiin.computer.contracts.NeedsHuman'>
+
+    @pytest.mark.parametrize("rejection", [StaleTarget, NeedsHuman])
+    def test_saved_guard_rejection_is_a_receipt_without_repeating_input(actuator, rejection):
+        provider, counter = actuator
+        provider.receipt_rejection = rejection
+>       result = asyncio.run(
+            computer_bridge.execute(
+                {
+                    "operation": "receipt",
+                    "receipt_operation_id": "original-input",
+                    "workspace": {"id": "fixture"},
+                }
+            )
+        )
+
+apps/backend/tests/test_engine_computer_outcomes.py:150: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../../../.local/share/uv/python/cpython-3.13.12-macos-aarch64-none/lib/python3.13/asyncio/runners.py:195: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+../../../.local/share/uv/python/cpython-3.13.12-macos-aarch64-none/lib/python3.13/asyncio/runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../.local/share/uv/python/cpython-3.13.12-macos-aarch64-none/lib/python3.13/asyncio/base_events.py:725: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+apps/backend/src/ngertiin/agent_engine/computer_bridge.py:26: in execute
+    receipt = await provider.dispatch_receipt(workspace, request["receipt_operation_id"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <test_engine_computer_outcomes.actuator.<locals>.Provider object at 0x10d043e00>
+workspace = {'id': 'fixture', 'deadline': datetime.datetime(2026, 10, 26, 9, 44, 39, 317482, tzinfo=datetime.timezone.utc), 'resource_id': 'fixture'}
+operation = 'original-input'
+
+    async def dispatch_receipt(self, workspace, operation):
+        if self.receipt_rejection:
+>           raise self.receipt_rejection("Saved receipt proves input was rejected")
+E           ngertiin.computer.contracts.NeedsHuman: Saved receipt proves input was rejected
+
+apps/backend/tests/test_engine_computer_outcomes.py:70: NeedsHuman
+=========================== short test summary info ============================
+FAILED apps/backend/tests/test_engine_computer_outcomes.py::test_guarded_input_rejection_can_be_repaired_without_unknown_effect
+FAILED apps/backend/tests/test_engine_computer_outcomes.py::test_saved_guard_rejection_is_a_receipt_without_repeating_input[StaleTarget]
+FAILED apps/backend/tests/test_engine_computer_outcomes.py::test_saved_guard_rejection_is_a_receipt_without_repeating_input[NeedsHuman]
+3 failed, 3 passed in 3.79s

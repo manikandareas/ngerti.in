@@ -1,0 +1,158 @@
+....F......s.......s...........................s............s.......s... [ 42%]
+.....................................F
+=================================== FAILURES ===================================
+_______ test_session_scoped_mcp_credentials_restart_and_connector_error ________
+
+runtime = (PosixPath('/tmp/nma-gqb0vi3_'), <http.server.ThreadingHTTPServer object at 0x10c947100>, <function runtime.<locals>.c...disconnect', 'provider_auth.start', 'provider_auth.status', ...], 'extension_schema': '15', 'lifecycle': 'ready', ...})
+
+    def test_session_scoped_mcp_credentials_restart_and_connector_error(runtime):
+        root, server, call, start, *_ = runtime
+        with socket.socket() as reservation:
+            reservation.bind(("127.0.0.1", 0))
+            port = reservation.getsockname()[1]
+        connector_log = (root / "connector.log").open("w")
+        receipts = root / "connector-receipts.txt"
+        receipts.write_text("")
+        connector = subprocess.Popen(
+            [
+                sys.executable,
+                str(Path(__file__).with_name("mcp_fixture.py")),
+                str(port),
+                str(receipts),
+            ],
+            stdout=connector_log,
+            stderr=subprocess.STDOUT,
+        )
+        try:
+            deadline = time.monotonic() + 10
+            while time.monotonic() < deadline:
+                try:
+                    with socket.create_connection(("127.0.0.1", port), timeout=0.1):
+                        break
+                except OSError:
+                    time.sleep(0.05)
+            secret = "nma-disposable-connector-secret"
+            (root / "connector.json").write_text(
+                json.dumps(
+                    {
+                        "type": "http",
+                        "name": "fixture",
+                        "url": f"http://127.0.0.1:{port}/mcp",
+                        "headers": [{"name": "Authorization", "value": "Bearer " + secret}],
+                    }
+                )
+            )
+            (root / "capabilities.json").write_text(
+                json.dumps(
+                    {
+                        "mcp_grants": {
+                            "connector": {
+                                "enabled": True,
+                                "server_file": str(root / "connector.json"),
+                            }
+                        }
+                    }
+                )
+            )
+            agent = capability_agent(call, "mcp-agent", mcp_grants=["connector"])
+            other = capability_agent(call, "no-mcp-agent")
+            thread = str(uuid4())
+            run = capability_submit(call, agent, "MCP_DISCOVERY", thread)
+            assert settle(call, run)["status"] == "succeeded"
+            with sqlite3.connect(root / "state/state.db") as db:
+                # Native generated names are session-specific, never guessed from a public alias.
+                raw = db.execute(
+                    "SELECT config FROM nma_adapter_bindings WHERE json_extract(config,'$.agent_id')=?",
+                    (agent["agent_id"],),
+                ).fetchone()[0]
+                assert secret not in raw
+            with sqlite3.connect(root / "state/state.db") as db:
+                names = []
+                for (value,) in db.execute(
+                    "SELECT value FROM state_meta WHERE key LIKE 'gateway.local_policy.v1:%'"
+                ):
+                    manifest = json.loads(
+                        json.loads(value)["policy"].get("editor_mcp_json") or "{}"
+                    )
+                    names.extend(
+                        name
+                        for name in manifest.get("schemas", {})
+                        if name.endswith("__proof")
+                    )
+            assert names
+            name = names[-1]
+            before = len(server.requests)
+            assert (
+                settle(call, capability_submit(call, agent, "CALL_TOOL:" + name, thread))[
+                    "status"
+                ]
+                == "succeeded"
+            )
+            observed = json.dumps(server.requests[before:])
+            assert "MCP_PROOF" in observed and secret not in observed
+            assert receipts.read_text().splitlines() == ["proof"]
+            before = len(server.requests)
+            settle(call, capability_submit(call, other, "CALL_TOOL:" + name))
+            assert "MCP_PROOF" not in json.dumps(server.requests[before:])
+            assert receipts.read_text().splitlines() == ["proof"]
+            start.current.kill()
+            start.current.wait(timeout=10)
+            start()
+            before = len(server.requests)
+            settle(call, capability_submit(call, agent, "CALL_TOOL:" + name, thread))
+            assert "MCP_PROOF" in json.dumps(server.requests[before:])
+            assert receipts.read_text().splitlines() == ["proof", "proof"]
+            before = len(server.requests)
+>           settle(
+                call,
+                capability_submit(
+                    call, agent, "CALL_TOOL:" + name.replace("__proof", "__failure"), thread
+                ),
+            )
+
+apps/engine/tests/test_capabilities.py:214: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x10ca637f0>
+run_id = 'f2b1332c-b81a-5607-b290-54d66631194a', expected = 'succeeded'
+
+    def settle(call, run_id, expected="succeeded"):
+        deadline = time.monotonic() + 45
+        while time.monotonic() < deadline:
+            reply = call(command("runtime.read", {"run_id": run_id}))
+            assert "result" in reply, reply
+            if reply["result"]["status"] not in {"queued", "running"}:
+>               assert reply["result"]["status"] == expected, reply
+E               AssertionError: {'result': {'agent_id': '22ccf10d-4c17-46e3-9ef3-951624a9a400', 'config_revision': '1', 'context_generation': '1', 'continuation_required': False, ...}}
+E               assert 'indeterminate' == 'succeeded'
+E                 
+E                 - succeeded
+E                 + indeterminate
+
+apps/engine/tests/test_runtime.py:376: AssertionError
+________________________ test_scope_and_config_sessions ________________________
+
+runtime = (PosixPath('/tmp/nma-yk9fc27y'), <http.server.ThreadingHTTPServer object at 0x10caac050>, <function runtime.<locals>.c...disconnect', 'provider_auth.start', 'provider_auth.status', ...], 'extension_schema': '15', 'lifecycle': 'ready', ...})
+
+    def test_scope_and_config_sessions(runtime):
+        root, server, call, *_ = runtime
+        for thread, revision in ((OTHER_THREAD, "1"), (THREAD, "2")):
+            reply = call(submit("FRESH_CONTEXT", thread, revision))
+            assert "result" in reply, reply
+            result = settle(call, reply["result"]["run_id"])
+            assert result["thread_id"] == thread and result["config_revision"] == revision
+>           assert "ADAPTER_PROOF" not in json.dumps(server.requests[-1])
+E           assert 'ADAPTER_PROOF' not in '{"messages"...calls"]}}}]}'
+E             
+E             'ADAPTER_PROOF' is contained here:
+E             ?           ^^^
+E               ontent": "ADAPTER_PROOF"}, {"role": "assistant", "content": "RECOVERY_ACK_ADAPTER_PROOF"}, {"role": "user", "content": "FRESH_CONTEXT"}], "model": "adapter-model", "reasoning_effort": "medium", "stream": true, "stream_options": {"include_usage": true}, "tools": [{"type": "function", "function": {"name": "tool_search", "description": "Search 1 additional tools that are loaded on demand. Send one keyword query per capability you need; returns matching tool names and descriptions. Then `tool_describe` loads schemas and `tool_call` invo...
+E             
+E             ...Full output truncated (2 lines hidden), use '-vv' to show
+
+apps/engine/tests/test_runtime.py:429: AssertionError
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_capabilities.py::test_session_scoped_mcp_credentials_restart_and_connector_error
+FAILED apps/engine/tests/test_runtime.py::test_scope_and_config_sessions - as...
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 2 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+2 failed, 103 passed, 5 skipped in 377.11s (0:06:17)

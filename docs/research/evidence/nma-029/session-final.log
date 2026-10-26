@@ -1,0 +1,45 @@
+.....F
+=================================== FAILURES ===================================
+____ test_native_automatic_and_micro_compaction_are_connected[compression0] ____
+
+runtime = (PosixPath('/tmp/nma-q52q1b2j'), <http.server.ThreadingHTTPServer object at 0x1095d23c0>, <function runtime.<locals>.c...disconnect', 'provider_auth.start', 'provider_auth.status', ...], 'extension_schema': '15', 'lifecycle': 'ready', ...})
+compression = {'threshold_tokens': 6000}
+
+    @pytest.mark.parametrize(
+        "compression", [{"threshold_tokens": 6000}, {"micro_compact": True}]
+    )
+    def test_native_automatic_and_micro_compaction_are_connected(runtime, compression):
+        root, provider, call, start, *_ = runtime
+        agent, thread = setup(
+            runtime,
+            "compaction-" + ("micro" if compression.get("micro_compact") else "automatic"),
+            {"compression": compression},
+        )
+        with sqlite3.connect(root / "state/state.db") as db:
+            before = db.execute(
+                "SELECT count(*) FROM messages WHERE _compressed_summary=1"
+            ).fetchone()[0]
+        provider.goal_script = lambda body, text: {
+            "role": "assistant",
+            "content": "## Goal\nCOMPACTION_FIDELITY\n## Completed Actions\nRead scoped data.\n## Active State\nReady for followup.\n## Critical Context\nKeep COMPACTION_INPUT_0.",
+        }
+        try:
+            for index in range(30):
+                run = call(
+                    send(thread, f"COMPACTION_INPUT_{index}: " + "synthetic context " * 90)
+                )["result"]
+                settle(call, run["run_id"])
+            with sqlite3.connect(root / "state/state.db") as db:
+>               assert (
+                    db.execute(
+                        "SELECT count(*) FROM messages WHERE _compressed_summary=1"
+                    ).fetchone()[0]
+                    > before
+                )
+E               assert 1 > 1
+
+apps/engine/tests/test_session_fidelity.py:349: AssertionError
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_session_fidelity.py::test_native_automatic_and_micro_compaction_are_connected[compression0]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 5 passed in 30.02s

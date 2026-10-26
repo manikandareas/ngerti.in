@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "protocol_id": "nma029-session-recovery-v1",
+  "frozen_at": "2026-10-26T05:42:57.456638+00:00",
+  "upstream_revision": "7489b22af47ce91b366dde81d5831ea422577498",
+  "policy": "Frozen after deterministic implementation and before the first NMA-029 live attempt; retain all attempts. NMA-028 release thresholds are unchanged and this smoke does not establish the release SLO.",
+  "repeats": 3,
+  "surfaces": [
+    "direct",
+    "adapter",
+    "application"
+  ],
+  "settings": {
+    "provider": "chatgpt",
+    "model_env": "OPENAI_MODEL",
+    "endpoint_env": "OPENAI_BASE_URL",
+    "tools": [
+      "todo",
+      "native browser_exec/terminal/files in scoped Docker executor",
+      "existing product responsibility/workspace where applicable"
+    ],
+    "max_turns": null,
+    "temperature": null,
+    "reasoning_effort": null,
+    "deadline_s": 180,
+    "disposable_only": true,
+    "authentication": "Direct native ticket; adapter signed envelope; application real ClerkJS session JWT verified by production current_account against disposable PostgreSQL. No authentication override.",
+    "model": "gpt-6-luna",
+    "protocol": "codex_responses",
+    "credential_transport": "Same fixed Luna-only loopback relay on every surface; renewable credential stays with existing product gateway",
+    "endpoint": "https://api.openai.com/v1"
+  },
+  "scenarios": [
+    {
+      "id": "short_dm",
+      "prompt": "Reply with exactly NMA028_SHORT_42. Do not use tools.",
+      "oracle": "Final assistant response equals NMA028_SHORT_42."
+    },
+    {
+      "id": "long_dm",
+      "prompt": "Remember NMA028_LONG_7319 from this initial synthetic ledger. Answer ACK until asked for the marker.",
+      "oracle": "Three-turn conversation: retain NMA028_LONG_7319 across two 64000-character synthetic ledger messages, each below the product input limit; final message asks for the original marker without repeating it. This is long history, not a compression-mode release claim."
+    },
+    {
+      "id": "multi_step_tools",
+      "prompt": "Use todo_list to create two tasks: inspect ledger and verify total. Then in a separate tool call mark both completed. Finally reply NMA028_TOOLS_DONE.",
+      "oracle": "At least two successful todo_list operations, both final tasks completed, and final response contains NMA028_TOOLS_DONE."
+    },
+    {
+      "id": "restart",
+      "prompt": "Reply with exactly NMA028_RESTART_42. Do not use tools.",
+      "oracle": "After settled turn, kill/restart gateway; same submission returns original admission/run and transcript unchanged; no extra model or tool execution."
+    },
+    {
+      "id": "cancellation",
+      "oracle": "Stop an active admission before a blocked tool dispatch, release it, restart, and verify no subsequent effect. A normal user stop is not provider/adapter failure."
+    },
+    {
+      "id": "reconnect",
+      "prompt": "Reply with exactly NMA028_RECONNECT_42. Do not use tools.",
+      "oracle": "Close ingress after admission; new authenticated client replays completed result once with original lineage."
+    },
+    {
+      "id": "browser_navigation",
+      "oracle": "Navigate the disposable fixture, follow its link, and verify the resulting DOM and server request ledger."
+    },
+    {
+      "id": "browser_form",
+      "oracle": "Fill synthetic name and note, submit once, verify durable fixture server receipt equals entered values; action outcome and later observation recorded separately."
+    },
+    {
+      "id": "browser_download",
+      "oracle": "Download fixture CSV and verify exact SHA-256 through terminal/files; final text alone is insufficient."
+    }
+  ],
+  "metrics": {
+    "task_success": "successful / planned, plus successful / executed; never omit failures",
+    "integration_failure": "integration-attributable failures / executed, unknown attribution kept separate",
+    "provider_failure": "provider failures / executed",
+    "recoverable_tool_failure": "tool errors recovered within successful task / executed",
+    "unknown_effects": "unresolved effects / dispatched effects; missing denominator is unavailable",
+    "duplicate_effects": "duplicate external effects / dispatched effects; missing instrumentation is unavailable",
+    "latency": "monotonic admission, first progress and settlement p50/p95 nearest-rank; report n; no zero for absent samples",
+    "recovery": "restart readiness and restoration duration p50/p95, with n",
+    "uncertainty": "Wilson 95% interval for task success; n=3 is smoke evidence only",
+    "candidate": "Record native/direct/product prompt and tool differences per attempt; do not pool previous batches, and do not attribute unequal settings to integration.",
+    "effect_metrics": "Use supervisor journal operation IDs plus fixture POST/file ledgers; unknown receipts remain unknown and prevent replay."
+  },
+  "release_thresholds": {
+    "applicable_cases": "All required live cells executed; no blocked cell is a pass.",
+    "task_success_rate_min": 0.95,
+    "integration_failure_rate_max": 0.02,
+    "first_progress_p95_s_max": 10,
+    "settlement_p95_s_max": 180,
+    "recovery_p95_s_max": 60,
+    "observed_duplicate_effects_max": 0,
+    "observed_cross_scope_leaks_max": 0,
+    "observed_stop_violations_max": 0,
+    "unresolved_effects_for_release_max": 0,
+    "confidence": "Release requires at least 100 representative tasks per supported configuration in NMA-039; three repeats do not establish the SLO."
+  },
+  "replay": "Read-only JSONL aggregation. Replay never imports workers or invokes tools. Re-running external actions requires a new explicit run and fresh fixture.",
+  "previous_protocol_sha256": "189f073d366760cc95f53fed3a806ada1ec9f34a242d24c5e26a9d74a787e3cb",
+  "purpose": "Fresh complete paired decision-spike corpus on explicitly selected ChatGPT plan gpt-6-luna. All old protocols and failed batches remain separate. No Sol or Astra inference is permitted.",
+  "scope_note": "NMA-029 native/adapter/application smoke; capability-specific browser migration remains NMA-032. Native and adapter both use unlimited native iteration budget. Thresholds retained from NMA-028; this does not establish release SLO. Fresh browser navigation, form count and download cells are included on all three surfaces; production browser adoption remains NMA-032.",
+  "settings_delta": {
+    "native_max_turns": 0,
+    "product_max_turns": null,
+    "model": "gpt-6-luna",
+    "wire": "codex_responses"
+  },
+  "parent_protocol_sha256": "c1a7b3b29a21e6704599db693c7f5be689e9dc87f7e94314abb8e5d12fb6a810",
+  "scoring_note": "Task labels are case-insensitive as established by NMA-028 review_labels. Keep raw scores and traces unchanged; any derived correction must be recorded separately. Literal response markers and distinct update call identities stay strict.",
+  "companions": [
+    {
+      "id": "api_restart_during_native_work",
+      "surface": "application",
+      "planned": 1,
+      "oracle": "Wait until a real scoped terminal sleep call is dispatching. Restart only the disposable production API with the same database/registry and actual Clerk session. The original run/admission/native session settles once and contains API_RESTART_CONTINUITY. Report separately from the 81-cell paired corpus."
+    },
+    {
+      "id": "authenticated_context_ui_seed",
+      "surface": "application",
+      "planned_turns": 26,
+      "purpose": "Create real short provider turns with removable history for actual manual-compression UI verification. Keep separate from paired corpus. Seed group agents with one authenticated broadcast for group session-selection verification."
+    }
+  ]
+}

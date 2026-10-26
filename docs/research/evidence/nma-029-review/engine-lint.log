@@ -1,0 +1,26 @@
+All checks passed!
+unformatted: File would be reformatted
+  --> apps/engine/tests/conversation_fixtures.py:8:19
+   |
+7  | def drop_conversation_schema(db):
+   -     for table in ("nma_goal_unit_outcomes", "nma_session_lineage", "nma_effect_outcomes"):
+8  +     for table in (
+9  +         "nma_goal_unit_outcomes",
+10 +         "nma_session_lineage",
+11 +         "nma_effect_outcomes",
+12 +     ):
+13 |         db.execute(f"DROP TABLE IF EXISTS {table}")
+   |
+
+unformatted: File would be reformatted
+   --> apps/engine/tests/test_runtime.py:433:73
+    |
+432 |         # A different thread remains private even for the same persistent agent.
+    -         assert ("ADAPTER_PROOF" in json.dumps(server.requests[-1])) == (thread == THREAD)
+433 +         assert ("ADAPTER_PROOF" in json.dumps(server.requests[-1])) == (
+434 +             thread == THREAD
+435 +         )
+436 |     with sqlite3.connect(root / "state/state.db") as db:
+    |
+
+2 files would be reformatted, 77 files already formatted

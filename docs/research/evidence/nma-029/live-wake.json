@@ -1,0 +1,356 @@
+{
+  "model": "gpt-6-luna",
+  "receipt": {
+    "agent_id": "92c1eb9c-6d73-4a9c-91c3-a76f3c2dda7d",
+    "command_id": "98ec9fd2-7b46-4911-90b6-79cd1fe4526e",
+    "committed_seq": "10",
+    "config_revision": "1",
+    "context_generation": "1",
+    "message_id": "2eaf9b6c-4a8b-55a1-b3af-41220b9aef12",
+    "run_id": "1f8bc305-afbb-5971-bcf3-a66f1bc349bf",
+    "schema_version": "nma.v1",
+    "status": "accepted",
+    "thread_id": "215ce51e-bb3a-452f-824f-747072a2b533"
+  },
+  "scheduled": {
+    "artifacts": [],
+    "discussion": null,
+    "goals": [
+      {
+        "created_at": "2026-10-26T08:12:12.149Z",
+        "creation_key": "calculate-14x17-at-specified-time",
+        "evidence": [],
+        "generation": "2",
+        "goal_id": "164a3a55-1c8f-4a71-914f-cf37ce7c1cc8",
+        "objective": "At 2026-10-26T08:13:31.008230Z, calculate 14 multiplied by 17 and report the result in this conversation. Do not calculate before that time.",
+        "progress": "",
+        "responsible_agent_id": "92c1eb9c-6d73-4a9c-91c3-a76f3c2dda7d",
+        "revision": "2",
+        "source_message_id": "2eaf9b6c-4a8b-55a1-b3af-41220b9aef12",
+        "source_run_id": "1f8bc305-afbb-5971-bcf3-a66f1bc349bf",
+        "status": "waiting",
+        "thread_id": "215ce51e-bb3a-452f-824f-747072a2b533",
+        "title": "Calculate 14 multiplied by 17 at the specified time",
+        "units": [
+          {
+            "agent_id": "92c1eb9c-6d73-4a9c-91c3-a76f3c2dda7d",
+            "generation": "1",
+            "parent_run_id": null,
+            "run_id": "1f8bc305-afbb-5971-bcf3-a66f1bc349bf",
+            "settled": true,
+            "status": "succeeded",
+            "verdict": null
+          },
+          {
+            "agent_id": "92c1eb9c-6d73-4a9c-91c3-a76f3c2dda7d",
+            "generation": "2",
+            "parent_run_id": null,
+            "run_id": "1f8bc305-afbb-5971-bcf3-a66f1bc349bf",
+            "settled": true,
+            "status": "succeeded",
+            "verdict": "wait"
+          }
+        ],
+        "updated_at": "2026-10-26T08:12:19.362Z",
+        "wake": {
+          "configuration": {
+            "at": "2026-10-26T08:13:31.008230Z",
+            "kind": "once",
+            "missed_policy": "coalesce",
+            "timezone": "Etc/UTC"
+          },
+          "definition_id": "c5011525-68fa-5212-96fe-a9bde5e09179",
+          "goal_generation": "2",
+          "kind": "schedule",
+          "next_at": "2026-10-26T08:13:31.008230Z",
+          "revision": "1",
+          "state": "enabled"
+        },
+        "wake_condition": "Scheduled wake"
+      }
+    ],
+    "messages": [
+      {
+        "author_agent_id": null,
+        "author_kind": "user",
+        "content": "Please take responsibility for a one-time calculation report. At 2026-10-26T08:13:31.008230Z (UTC), calculate 14 multiplied by 17 and report the result here. Schedule that work and wait until then; I will be offline. This is a real instruction, not a hypothetical. Do not calculate it early or ask me to activate anything.",
+        "context_generation": "1",
+        "message_id": "2eaf9b6c-4a8b-55a1-b3af-41220b9aef12",
+        "message_seq": "2",
+        "parts": [
+          {
+            "text": "Please take responsibility for a one-time calculation report. At 2026-10-26T08:13:31.008230Z (UTC), calculate 14 multiplied by 17 and report the result here. Schedule that work and wait until then; I will be offline. This is a real instruction, not a hypothetical. Do not calculate it early or ask me to activate anything.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "1f8bc305-afbb-5971-bcf3-a66f1bc349bf",
+        "thread_id": "215ce51e-bb3a-452f-824f-747072a2b533"
+      },
+      {
+        "author_agent_id": "92c1eb9c-6d73-4a9c-91c3-a76f3c2dda7d",
+        "author_kind": "agent",
+        "content": "The one-time calculation is scheduled for 2026-10-26 08:13:31.008230 UTC. I\u2019ll wait until then and report the result here.",
+        "context_generation": "1",
+        "message_id": "b3c0d24e-73e4-525a-8f5d-0481eac6906e",
+        "message_seq": "3",
+        "parts": [
+          {
+            "text": "The one-time calculation is scheduled for 2026-10-26 08:13:31.008230 UTC. I\u2019ll wait until then and report the result here.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "1f8bc305-afbb-5971-bcf3-a66f1bc349bf",
+        "thread_id": "215ce51e-bb3a-452f-824f-747072a2b533"
+      }
+    ],
+    "next_before_message_seq": null,
+    "replay_epoch": "39a2bcf2-a695-42de-90be-29c2aa49ae0f",
+    "runs": [
+      {
+        "agent_id": "92c1eb9c-6d73-4a9c-91c3-a76f3c2dda7d",
+        "config_revision": "1",
+        "context_generation": "1",
+        "continuation_required": false,
+        "error_code": null,
+        "replay_epoch": "39a2bcf2-a695-42de-90be-29c2aa49ae0f",
+        "run_id": "1f8bc305-afbb-5971-bcf3-a66f1bc349bf",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "The one-time calculation is scheduled for 2026-10-26 08:13:31.008230 UTC. I\u2019ll wait until then and report the result here.",
+        "thread_id": "215ce51e-bb3a-452f-824f-747072a2b533",
+        "through_sequence": "62",
+        "turn_exit_reason": "text_response(finish_reason=stop)"
+      }
+    ],
+    "schema_version": "nma.v1",
+    "thread": {
+      "agents": [
+        {
+          "access_generation": "1",
+          "agent_id": "92c1eb9c-6d73-4a9c-91c3-a76f3c2dda7d",
+          "config": {
+            "avatar_url": "https://api.dicebear.com/10.x/critters/svg?seed=live-scheduled-work",
+            "instructions": "",
+            "model": "test",
+            "session": {
+              "compression": {},
+              "context_engine": "compressor",
+              "max_turns": null
+            },
+            "soul": "SOUL_live-scheduled-work"
+          },
+          "config_revision": "1",
+          "created_at": "2026-10-26T08:12:00.999782Z",
+          "display_name": "live-scheduled-work",
+          "handle": "live-scheduled-work",
+          "primary_dm_thread_id": "215ce51e-bb3a-452f-824f-747072a2b533",
+          "revision": "1",
+          "status": "active",
+          "updated_at": "2026-10-26T08:12:00.999782Z"
+        }
+      ],
+      "context_generation": "1",
+      "dm_agent_id": "92c1eb9c-6d73-4a9c-91c3-a76f3c2dda7d",
+      "kind": "dm",
+      "membership_revision": "1",
+      "revision": "1",
+      "status": "open",
+      "thread_id": "215ce51e-bb3a-452f-824f-747072a2b533",
+      "title": "live-scheduled-work"
+    },
+    "through_sequence": "62"
+  },
+  "result": {
+    "artifacts": [],
+    "discussion": null,
+    "goals": [
+      {
+        "created_at": "2026-10-26T08:12:12.149Z",
+        "creation_key": "calculate-14x17-at-specified-time",
+        "evidence": [],
+        "generation": "2",
+        "goal_id": "164a3a55-1c8f-4a71-914f-cf37ce7c1cc8",
+        "objective": "At 2026-10-26T08:13:31.008230Z, calculate 14 multiplied by 17 and report the result in this conversation. Do not calculate before that time.",
+        "progress": "Reported the scheduled calculation result: 14 \u00d7 17 = 238. The result has been delivered in this conversation.",
+        "responsible_agent_id": "92c1eb9c-6d73-4a9c-91c3-a76f3c2dda7d",
+        "revision": "5",
+        "source_message_id": "2eaf9b6c-4a8b-55a1-b3af-41220b9aef12",
+        "source_run_id": "1f8bc305-afbb-5971-bcf3-a66f1bc349bf",
+        "status": "waiting",
+        "thread_id": "215ce51e-bb3a-452f-824f-747072a2b533",
+        "title": "Calculate 14 multiplied by 17 at the specified time",
+        "units": [
+          {
+            "agent_id": "92c1eb9c-6d73-4a9c-91c3-a76f3c2dda7d",
+            "generation": "1",
+            "parent_run_id": null,
+            "run_id": "1f8bc305-afbb-5971-bcf3-a66f1bc349bf",
+            "settled": true,
+            "status": "succeeded",
+            "verdict": null
+          },
+          {
+            "agent_id": "92c1eb9c-6d73-4a9c-91c3-a76f3c2dda7d",
+            "generation": "2",
+            "parent_run_id": null,
+            "run_id": "1f8bc305-afbb-5971-bcf3-a66f1bc349bf",
+            "settled": true,
+            "status": "succeeded",
+            "verdict": "wait"
+          },
+          {
+            "agent_id": "92c1eb9c-6d73-4a9c-91c3-a76f3c2dda7d",
+            "generation": "2",
+            "parent_run_id": "1f8bc305-afbb-5971-bcf3-a66f1bc349bf",
+            "run_id": "7dc22a94-70ed-5f07-ba54-8112b2623de8",
+            "settled": true,
+            "status": "succeeded",
+            "verdict": "wait"
+          }
+        ],
+        "updated_at": "2026-10-26T08:13:43.660Z",
+        "wake": {
+          "configuration": {
+            "at": "2026-10-26T08:13:31.008230Z",
+            "kind": "once",
+            "missed_policy": "coalesce",
+            "timezone": "Etc/UTC"
+          },
+          "definition_id": "c5011525-68fa-5212-96fe-a9bde5e09179",
+          "goal_generation": "2",
+          "kind": "schedule",
+          "next_at": null,
+          "revision": "1",
+          "state": "enabled"
+        },
+        "wake_condition": "Next continuation should verify the persisted report message and submit it as evidence, then complete the responsibility."
+      }
+    ],
+    "messages": [
+      {
+        "author_agent_id": null,
+        "author_kind": "user",
+        "content": "Please take responsibility for a one-time calculation report. At 2026-10-26T08:13:31.008230Z (UTC), calculate 14 multiplied by 17 and report the result here. Schedule that work and wait until then; I will be offline. This is a real instruction, not a hypothetical. Do not calculate it early or ask me to activate anything.",
+        "context_generation": "1",
+        "message_id": "2eaf9b6c-4a8b-55a1-b3af-41220b9aef12",
+        "message_seq": "2",
+        "parts": [
+          {
+            "text": "Please take responsibility for a one-time calculation report. At 2026-10-26T08:13:31.008230Z (UTC), calculate 14 multiplied by 17 and report the result here. Schedule that work and wait until then; I will be offline. This is a real instruction, not a hypothetical. Do not calculate it early or ask me to activate anything.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "1f8bc305-afbb-5971-bcf3-a66f1bc349bf",
+        "thread_id": "215ce51e-bb3a-452f-824f-747072a2b533"
+      },
+      {
+        "author_agent_id": "92c1eb9c-6d73-4a9c-91c3-a76f3c2dda7d",
+        "author_kind": "agent",
+        "content": "The one-time calculation is scheduled for 2026-10-26 08:13:31.008230 UTC. I\u2019ll wait until then and report the result here.",
+        "context_generation": "1",
+        "message_id": "b3c0d24e-73e4-525a-8f5d-0481eac6906e",
+        "message_seq": "3",
+        "parts": [
+          {
+            "text": "The one-time calculation is scheduled for 2026-10-26 08:13:31.008230 UTC. I\u2019ll wait until then and report the result here.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "1f8bc305-afbb-5971-bcf3-a66f1bc349bf",
+        "thread_id": "215ce51e-bb3a-452f-824f-747072a2b533"
+      },
+      {
+        "author_agent_id": "92c1eb9c-6d73-4a9c-91c3-a76f3c2dda7d",
+        "author_kind": "agent",
+        "content": "14 \u00d7 17 = 238.",
+        "context_generation": "1",
+        "message_id": "eb1be2ac-0f19-5421-bf4e-e8b1846fd1f2",
+        "message_seq": "4",
+        "parts": [
+          {
+            "text": "14 \u00d7 17 = 238.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "7dc22a94-70ed-5f07-ba54-8112b2623de8",
+        "thread_id": "215ce51e-bb3a-452f-824f-747072a2b533"
+      }
+    ],
+    "next_before_message_seq": null,
+    "replay_epoch": "39a2bcf2-a695-42de-90be-29c2aa49ae0f",
+    "runs": [
+      {
+        "agent_id": "92c1eb9c-6d73-4a9c-91c3-a76f3c2dda7d",
+        "config_revision": "1",
+        "context_generation": "1",
+        "continuation_required": false,
+        "error_code": null,
+        "replay_epoch": "39a2bcf2-a695-42de-90be-29c2aa49ae0f",
+        "run_id": "1f8bc305-afbb-5971-bcf3-a66f1bc349bf",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "The one-time calculation is scheduled for 2026-10-26 08:13:31.008230 UTC. I\u2019ll wait until then and report the result here.",
+        "thread_id": "215ce51e-bb3a-452f-824f-747072a2b533",
+        "through_sequence": "78",
+        "turn_exit_reason": "text_response(finish_reason=stop)"
+      },
+      {
+        "agent_id": "92c1eb9c-6d73-4a9c-91c3-a76f3c2dda7d",
+        "config_revision": "1",
+        "context_generation": "1",
+        "continuation_required": false,
+        "error_code": null,
+        "replay_epoch": "39a2bcf2-a695-42de-90be-29c2aa49ae0f",
+        "run_id": "7dc22a94-70ed-5f07-ba54-8112b2623de8",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "14 \u00d7 17 = 238.",
+        "thread_id": "215ce51e-bb3a-452f-824f-747072a2b533",
+        "through_sequence": "78",
+        "turn_exit_reason": "text_response(finish_reason=stop)"
+      }
+    ],
+    "schema_version": "nma.v1",
+    "thread": {
+      "agents": [
+        {
+          "access_generation": "1",
+          "agent_id": "92c1eb9c-6d73-4a9c-91c3-a76f3c2dda7d",
+          "config": {
+            "avatar_url": "https://api.dicebear.com/10.x/critters/svg?seed=live-scheduled-work",
+            "instructions": "",
+            "model": "test",
+            "session": {
+              "compression": {},
+              "context_engine": "compressor",
+              "max_turns": null
+            },
+            "soul": "SOUL_live-scheduled-work"
+          },
+          "config_revision": "1",
+          "created_at": "2026-10-26T08:12:00.999782Z",
+          "display_name": "live-scheduled-work",
+          "handle": "live-scheduled-work",
+          "primary_dm_thread_id": "215ce51e-bb3a-452f-824f-747072a2b533",
+          "revision": "1",
+          "status": "active",
+          "updated_at": "2026-10-26T08:12:00.999782Z"
+        }
+      ],
+      "context_generation": "1",
+      "dm_agent_id": "92c1eb9c-6d73-4a9c-91c3-a76f3c2dda7d",
+      "kind": "dm",
+      "membership_revision": "1",
+      "revision": "1",
+      "status": "open",
+      "thread_id": "215ce51e-bb3a-452f-824f-747072a2b533",
+      "title": "live-scheduled-work"
+    },
+    "through_sequence": "78"
+  }
+}

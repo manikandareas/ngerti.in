@@ -1,0 +1,8 @@
+{
+  "protocol_sha256": "b4cd5951720d93b3e2ce2e551ea5d2bf88fa976103e18d3d80c77bf35532e777",
+  "effective_freeze": "2026-10-26T06:27:00.810408+00:00",
+  "harness_sha256": "1af29aa59d4ccbcdb923b1ddb6429b0f967a93626fa1bbb4ee4f28495431478c",
+  "candidate_source_manifest_sha256": "2171a391a15007ecf3424762d400a7a7ba3e7e1305bac251978cf784a02a0a97",
+  "executor_image": "sha256:b81f1bf356adb3f4cff012b2b95d95c6458b5ba876c1e886a59a24a82e574ebd",
+  "metadata_note": "The protocol frozen_at field records the initial draft. Effective freeze is the final protocol modification time before the first live process; all attempts must match the unchanged protocol SHA256."
+}

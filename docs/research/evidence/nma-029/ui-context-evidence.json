@@ -1,0 +1,716 @@
+{
+  "before": {
+    "dm": {
+      "thread_id": "b08c21ce-b9b9-4f65-9b1d-d16ac8bd3de9",
+      "message_count": 53,
+      "messages_sha256": "f43f9a432738b11f6bcfd84f9c833588609efc1189908694fae6ba6cad6ff705",
+      "goal_count": 0,
+      "sessions": [
+        {
+          "agent_id": "6a78ee87-00fa-4b65-842e-1145516a7f5f",
+          "execution_generation": "26",
+          "execution_state": "idle",
+          "lineage": [],
+          "logical_session_id": "692141e2-7b8b-5e76-a477-d0383dbc9c9c",
+          "native_session_id": "local-e670d817d7631c398f090c82bba14f727c483a35bf8f8f297a5277d36d627de1",
+          "native_tip": "local-e670d817d7631c398f090c82bba14f727c483a35bf8f8f297a5277d36d627de1",
+          "parent_binding_id": null,
+          "session_revision": "26",
+          "settings": {
+            "compression": {},
+            "context_engine": "compressor",
+            "max_turns": null
+          },
+          "native_message_count": 52,
+          "native_summary_count": 0
+        }
+      ]
+    },
+    "group": {
+      "thread_id": "952a12a6-267a-48d2-9c27-16b98984cc4f",
+      "message_count": 4,
+      "messages_sha256": "7989e327cf28a27f1914d8a5615a8115fbeca3b309b03b08f84f736514998907",
+      "goal_count": 0,
+      "sessions": [
+        {
+          "agent_id": "ec4b0c9a-419b-478f-8cfe-6bfab571b909",
+          "execution_generation": "1",
+          "execution_state": "idle",
+          "lineage": [],
+          "logical_session_id": "1c1cf5ea-0f90-5da8-8a1a-e14dbb5c6fb8",
+          "native_session_id": "local-c1c9e82e009b00692332692a2e2a44bae72da8d0d9d9f7d11ddbc4b43e8b65a3",
+          "native_tip": "local-c1c9e82e009b00692332692a2e2a44bae72da8d0d9d9f7d11ddbc4b43e8b65a3",
+          "parent_binding_id": null,
+          "session_revision": "1",
+          "settings": {
+            "compression": {},
+            "context_engine": "compressor",
+            "max_turns": null
+          },
+          "native_message_count": 2,
+          "native_summary_count": 0
+        },
+        {
+          "agent_id": "2eef7b5b-9759-428e-8792-65d9b0a18fc0",
+          "execution_generation": "1",
+          "execution_state": "idle",
+          "lineage": [],
+          "logical_session_id": "d6943b27-78e7-58bc-9fd0-a66c4704a00f",
+          "native_session_id": "local-ff5b30ba1edff7ef676da4122b3c9495957bbfe108c6d7d23ac044a1f679f41e",
+          "native_tip": "local-ff5b30ba1edff7ef676da4122b3c9495957bbfe108c6d7d23ac044a1f679f41e",
+          "parent_binding_id": null,
+          "session_revision": "1",
+          "settings": {
+            "compression": {},
+            "context_engine": "compressor",
+            "max_turns": null
+          },
+          "native_message_count": 2,
+          "native_summary_count": 0
+        },
+        {
+          "agent_id": "3f92bb42-d7b4-4168-b329-7957493cf09a",
+          "execution_generation": "1",
+          "execution_state": "idle",
+          "lineage": [],
+          "logical_session_id": "93559fb9-8552-53aa-b917-f2153bed4ef9",
+          "native_session_id": "local-9048856407ef5f97ed692d6a4c4c6f03c9e04a448d8744f3e4eb240f2075b0b8",
+          "native_tip": "local-9048856407ef5f97ed692d6a4c4c6f03c9e04a448d8744f3e4eb240f2075b0b8",
+          "parent_binding_id": null,
+          "session_revision": "1",
+          "settings": {
+            "compression": {},
+            "context_engine": "compressor",
+            "max_turns": null
+          },
+          "native_message_count": 2,
+          "native_summary_count": 0
+        }
+      ]
+    },
+    "context_receipts": []
+  },
+  "dm_compacted": {
+    "dm": {
+      "thread_id": "b08c21ce-b9b9-4f65-9b1d-d16ac8bd3de9",
+      "message_count": 53,
+      "messages_sha256": "f43f9a432738b11f6bcfd84f9c833588609efc1189908694fae6ba6cad6ff705",
+      "goal_count": 0,
+      "sessions": [
+        {
+          "agent_id": "6a78ee87-00fa-4b65-842e-1145516a7f5f",
+          "execution_generation": "27",
+          "execution_state": "idle",
+          "lineage": [],
+          "logical_session_id": "692141e2-7b8b-5e76-a477-d0383dbc9c9c",
+          "native_session_id": "local-e670d817d7631c398f090c82bba14f727c483a35bf8f8f297a5277d36d627de1",
+          "native_tip": "local-e670d817d7631c398f090c82bba14f727c483a35bf8f8f297a5277d36d627de1",
+          "parent_binding_id": null,
+          "session_revision": "27",
+          "settings": {
+            "compression": {},
+            "context_engine": "compressor",
+            "max_turns": null
+          },
+          "native_message_count": 64,
+          "native_summary_count": 1
+        }
+      ]
+    },
+    "group": {
+      "thread_id": "952a12a6-267a-48d2-9c27-16b98984cc4f",
+      "message_count": 4,
+      "messages_sha256": "7989e327cf28a27f1914d8a5615a8115fbeca3b309b03b08f84f736514998907",
+      "goal_count": 0,
+      "sessions": [
+        {
+          "agent_id": "ec4b0c9a-419b-478f-8cfe-6bfab571b909",
+          "execution_generation": "1",
+          "execution_state": "idle",
+          "lineage": [],
+          "logical_session_id": "1c1cf5ea-0f90-5da8-8a1a-e14dbb5c6fb8",
+          "native_session_id": "local-c1c9e82e009b00692332692a2e2a44bae72da8d0d9d9f7d11ddbc4b43e8b65a3",
+          "native_tip": "local-c1c9e82e009b00692332692a2e2a44bae72da8d0d9d9f7d11ddbc4b43e8b65a3",
+          "parent_binding_id": null,
+          "session_revision": "1",
+          "settings": {
+            "compression": {},
+            "context_engine": "compressor",
+            "max_turns": null
+          },
+          "native_message_count": 2,
+          "native_summary_count": 0
+        },
+        {
+          "agent_id": "2eef7b5b-9759-428e-8792-65d9b0a18fc0",
+          "execution_generation": "1",
+          "execution_state": "idle",
+          "lineage": [],
+          "logical_session_id": "d6943b27-78e7-58bc-9fd0-a66c4704a00f",
+          "native_session_id": "local-ff5b30ba1edff7ef676da4122b3c9495957bbfe108c6d7d23ac044a1f679f41e",
+          "native_tip": "local-ff5b30ba1edff7ef676da4122b3c9495957bbfe108c6d7d23ac044a1f679f41e",
+          "parent_binding_id": null,
+          "session_revision": "1",
+          "settings": {
+            "compression": {},
+            "context_engine": "compressor",
+            "max_turns": null
+          },
+          "native_message_count": 2,
+          "native_summary_count": 0
+        },
+        {
+          "agent_id": "3f92bb42-d7b4-4168-b329-7957493cf09a",
+          "execution_generation": "1",
+          "execution_state": "idle",
+          "lineage": [],
+          "logical_session_id": "93559fb9-8552-53aa-b917-f2153bed4ef9",
+          "native_session_id": "local-9048856407ef5f97ed692d6a4c4c6f03c9e04a448d8744f3e4eb240f2075b0b8",
+          "native_tip": "local-9048856407ef5f97ed692d6a4c4c6f03c9e04a448d8744f3e4eb240f2075b0b8",
+          "parent_binding_id": null,
+          "session_revision": "1",
+          "settings": {
+            "compression": {},
+            "context_engine": "compressor",
+            "max_turns": null
+          },
+          "native_message_count": 2,
+          "native_summary_count": 0
+        }
+      ]
+    },
+    "context_receipts": [
+      {
+        "command_id": "9aae703c-baee-48ee-bc80-bc48b0cb3aa6",
+        "type": "session.compress",
+        "agent_id": "6a78ee87-00fa-4b65-842e-1145516a7f5f",
+        "thread_id": "b08c21ce-b9b9-4f65-9b1d-d16ac8bd3de9",
+        "native_mutation": {
+          "execution_generation": 27,
+          "message_count": 12,
+          "operation": "compress",
+          "previous_target_session_id": "local-e670d817d7631c398f090c82bba14f727c483a35bf8f8f297a5277d36d627de1",
+          "revision": 27,
+          "session_id": "local-e670d817d7631c398f090c82bba14f727c483a35bf8f8f297a5277d36d627de1",
+          "summary": {
+            "aborted": false,
+            "fallback_used": false,
+            "headline": "Compressed: 52 \u2192 12 messages",
+            "noop": false,
+            "note": null,
+            "refused_would_grow": false,
+            "token_line": "Approx request size: ~8,584 \u2192 ~4,210 tokens"
+          },
+          "target_session_id": "local-e670d817d7631c398f090c82bba14f727c483a35bf8f8f297a5277d36d627de1"
+        },
+        "error_code": null,
+        "committed": true
+      }
+    ]
+  },
+  "dm_followup": {
+    "dm": {
+      "thread_id": "b08c21ce-b9b9-4f65-9b1d-d16ac8bd3de9",
+      "message_count": 55,
+      "messages_sha256": "98c04261343725565261fc93a5c14305f02f28da1b7bad898ac10df26c5785db",
+      "goal_count": 0,
+      "sessions": [
+        {
+          "agent_id": "6a78ee87-00fa-4b65-842e-1145516a7f5f",
+          "execution_generation": "29",
+          "execution_state": "idle",
+          "lineage": [
+            "local-e670d817d7631c398f090c82bba14f727c483a35bf8f8f297a5277d36d627de1",
+            "aa747c57175b483a8b8bceb294b71d23"
+          ],
+          "logical_session_id": "692141e2-7b8b-5e76-a477-d0383dbc9c9c",
+          "native_session_id": "local-e670d817d7631c398f090c82bba14f727c483a35bf8f8f297a5277d36d627de1",
+          "native_tip": "aa747c57175b483a8b8bceb294b71d23",
+          "parent_binding_id": null,
+          "session_revision": "29",
+          "settings": {
+            "compression": {},
+            "context_engine": "compressor",
+            "max_turns": null
+          },
+          "native_message_count": 2,
+          "native_summary_count": 0
+        }
+      ]
+    },
+    "group": {
+      "thread_id": "952a12a6-267a-48d2-9c27-16b98984cc4f",
+      "message_count": 4,
+      "messages_sha256": "7989e327cf28a27f1914d8a5615a8115fbeca3b309b03b08f84f736514998907",
+      "goal_count": 0,
+      "sessions": [
+        {
+          "agent_id": "ec4b0c9a-419b-478f-8cfe-6bfab571b909",
+          "execution_generation": "1",
+          "execution_state": "idle",
+          "lineage": [],
+          "logical_session_id": "1c1cf5ea-0f90-5da8-8a1a-e14dbb5c6fb8",
+          "native_session_id": "local-c1c9e82e009b00692332692a2e2a44bae72da8d0d9d9f7d11ddbc4b43e8b65a3",
+          "native_tip": "local-c1c9e82e009b00692332692a2e2a44bae72da8d0d9d9f7d11ddbc4b43e8b65a3",
+          "parent_binding_id": null,
+          "session_revision": "1",
+          "settings": {
+            "compression": {},
+            "context_engine": "compressor",
+            "max_turns": null
+          },
+          "native_message_count": 2,
+          "native_summary_count": 0
+        },
+        {
+          "agent_id": "2eef7b5b-9759-428e-8792-65d9b0a18fc0",
+          "execution_generation": "1",
+          "execution_state": "idle",
+          "lineage": [],
+          "logical_session_id": "d6943b27-78e7-58bc-9fd0-a66c4704a00f",
+          "native_session_id": "local-ff5b30ba1edff7ef676da4122b3c9495957bbfe108c6d7d23ac044a1f679f41e",
+          "native_tip": "local-ff5b30ba1edff7ef676da4122b3c9495957bbfe108c6d7d23ac044a1f679f41e",
+          "parent_binding_id": null,
+          "session_revision": "1",
+          "settings": {
+            "compression": {},
+            "context_engine": "compressor",
+            "max_turns": null
+          },
+          "native_message_count": 2,
+          "native_summary_count": 0
+        },
+        {
+          "agent_id": "3f92bb42-d7b4-4168-b329-7957493cf09a",
+          "execution_generation": "1",
+          "execution_state": "idle",
+          "lineage": [],
+          "logical_session_id": "93559fb9-8552-53aa-b917-f2153bed4ef9",
+          "native_session_id": "local-9048856407ef5f97ed692d6a4c4c6f03c9e04a448d8744f3e4eb240f2075b0b8",
+          "native_tip": "local-9048856407ef5f97ed692d6a4c4c6f03c9e04a448d8744f3e4eb240f2075b0b8",
+          "parent_binding_id": null,
+          "session_revision": "1",
+          "settings": {
+            "compression": {},
+            "context_engine": "compressor",
+            "max_turns": null
+          },
+          "native_message_count": 2,
+          "native_summary_count": 0
+        }
+      ]
+    },
+    "context_receipts": [
+      {
+        "command_id": "9aae703c-baee-48ee-bc80-bc48b0cb3aa6",
+        "type": "session.compress",
+        "agent_id": "6a78ee87-00fa-4b65-842e-1145516a7f5f",
+        "thread_id": "b08c21ce-b9b9-4f65-9b1d-d16ac8bd3de9",
+        "native_mutation": {
+          "execution_generation": 27,
+          "message_count": 12,
+          "operation": "compress",
+          "previous_target_session_id": "local-e670d817d7631c398f090c82bba14f727c483a35bf8f8f297a5277d36d627de1",
+          "revision": 27,
+          "session_id": "local-e670d817d7631c398f090c82bba14f727c483a35bf8f8f297a5277d36d627de1",
+          "summary": {
+            "aborted": false,
+            "fallback_used": false,
+            "headline": "Compressed: 52 \u2192 12 messages",
+            "noop": false,
+            "note": null,
+            "refused_would_grow": false,
+            "token_line": "Approx request size: ~8,584 \u2192 ~4,210 tokens"
+          },
+          "target_session_id": "local-e670d817d7631c398f090c82bba14f727c483a35bf8f8f297a5277d36d627de1"
+        },
+        "error_code": null,
+        "committed": true
+      },
+      {
+        "command_id": "171309aa-0e86-45e0-b285-b7ff45004e78",
+        "type": "session.reset",
+        "agent_id": "6a78ee87-00fa-4b65-842e-1145516a7f5f",
+        "thread_id": "b08c21ce-b9b9-4f65-9b1d-d16ac8bd3de9",
+        "native_mutation": {
+          "execution_generation": 28,
+          "operation": "reset",
+          "previous_target_session_id": "local-e670d817d7631c398f090c82bba14f727c483a35bf8f8f297a5277d36d627de1",
+          "revision": 28,
+          "session_id": "local-e670d817d7631c398f090c82bba14f727c483a35bf8f8f297a5277d36d627de1",
+          "target_session_id": "aa747c57175b483a8b8bceb294b71d23"
+        },
+        "error_code": null,
+        "committed": true
+      }
+    ],
+    "original_53_messages_byte_equivalent": true,
+    "followup_confirmed_no_old_context": true
+  },
+  "group_reset": {
+    "dm": {
+      "thread_id": "b08c21ce-b9b9-4f65-9b1d-d16ac8bd3de9",
+      "message_count": 55,
+      "messages_sha256": "98c04261343725565261fc93a5c14305f02f28da1b7bad898ac10df26c5785db",
+      "goal_count": 0,
+      "sessions": [
+        {
+          "agent_id": "6a78ee87-00fa-4b65-842e-1145516a7f5f",
+          "execution_generation": "29",
+          "execution_state": "idle",
+          "lineage": [
+            "local-e670d817d7631c398f090c82bba14f727c483a35bf8f8f297a5277d36d627de1",
+            "aa747c57175b483a8b8bceb294b71d23"
+          ],
+          "logical_session_id": "692141e2-7b8b-5e76-a477-d0383dbc9c9c",
+          "native_session_id": "local-e670d817d7631c398f090c82bba14f727c483a35bf8f8f297a5277d36d627de1",
+          "native_tip": "aa747c57175b483a8b8bceb294b71d23",
+          "parent_binding_id": null,
+          "session_revision": "29",
+          "settings": {
+            "compression": {},
+            "context_engine": "compressor",
+            "max_turns": null
+          },
+          "native_message_count": 2,
+          "native_summary_count": 0
+        }
+      ]
+    },
+    "group": {
+      "thread_id": "952a12a6-267a-48d2-9c27-16b98984cc4f",
+      "message_count": 4,
+      "messages_sha256": "7989e327cf28a27f1914d8a5615a8115fbeca3b309b03b08f84f736514998907",
+      "goal_count": 0,
+      "sessions": [
+        {
+          "agent_id": "ec4b0c9a-419b-478f-8cfe-6bfab571b909",
+          "execution_generation": "1",
+          "execution_state": "idle",
+          "lineage": [],
+          "logical_session_id": "1c1cf5ea-0f90-5da8-8a1a-e14dbb5c6fb8",
+          "native_session_id": "local-c1c9e82e009b00692332692a2e2a44bae72da8d0d9d9f7d11ddbc4b43e8b65a3",
+          "native_tip": "local-c1c9e82e009b00692332692a2e2a44bae72da8d0d9d9f7d11ddbc4b43e8b65a3",
+          "parent_binding_id": null,
+          "session_revision": "1",
+          "settings": {
+            "compression": {},
+            "context_engine": "compressor",
+            "max_turns": null
+          },
+          "native_message_count": 2,
+          "native_summary_count": 0
+        },
+        {
+          "agent_id": "2eef7b5b-9759-428e-8792-65d9b0a18fc0",
+          "execution_generation": "2",
+          "execution_state": "idle",
+          "lineage": [
+            "local-ff5b30ba1edff7ef676da4122b3c9495957bbfe108c6d7d23ac044a1f679f41e",
+            "6b446e759eab4cafadda3a315967e47b"
+          ],
+          "logical_session_id": "d6943b27-78e7-58bc-9fd0-a66c4704a00f",
+          "native_session_id": "local-ff5b30ba1edff7ef676da4122b3c9495957bbfe108c6d7d23ac044a1f679f41e",
+          "native_tip": "6b446e759eab4cafadda3a315967e47b",
+          "parent_binding_id": null,
+          "session_revision": "2",
+          "settings": {
+            "compression": {},
+            "context_engine": "compressor",
+            "max_turns": null
+          },
+          "native_message_count": 0,
+          "native_summary_count": 0
+        },
+        {
+          "agent_id": "3f92bb42-d7b4-4168-b329-7957493cf09a",
+          "execution_generation": "1",
+          "execution_state": "idle",
+          "lineage": [],
+          "logical_session_id": "93559fb9-8552-53aa-b917-f2153bed4ef9",
+          "native_session_id": "local-9048856407ef5f97ed692d6a4c4c6f03c9e04a448d8744f3e4eb240f2075b0b8",
+          "native_tip": "local-9048856407ef5f97ed692d6a4c4c6f03c9e04a448d8744f3e4eb240f2075b0b8",
+          "parent_binding_id": null,
+          "session_revision": "1",
+          "settings": {
+            "compression": {},
+            "context_engine": "compressor",
+            "max_turns": null
+          },
+          "native_message_count": 2,
+          "native_summary_count": 0
+        }
+      ]
+    },
+    "context_receipts": [
+      {
+        "command_id": "9aae703c-baee-48ee-bc80-bc48b0cb3aa6",
+        "type": "session.compress",
+        "agent_id": "6a78ee87-00fa-4b65-842e-1145516a7f5f",
+        "thread_id": "b08c21ce-b9b9-4f65-9b1d-d16ac8bd3de9",
+        "native_mutation": {
+          "execution_generation": 27,
+          "message_count": 12,
+          "operation": "compress",
+          "previous_target_session_id": "local-e670d817d7631c398f090c82bba14f727c483a35bf8f8f297a5277d36d627de1",
+          "revision": 27,
+          "session_id": "local-e670d817d7631c398f090c82bba14f727c483a35bf8f8f297a5277d36d627de1",
+          "summary": {
+            "aborted": false,
+            "fallback_used": false,
+            "headline": "Compressed: 52 \u2192 12 messages",
+            "noop": false,
+            "note": null,
+            "refused_would_grow": false,
+            "token_line": "Approx request size: ~8,584 \u2192 ~4,210 tokens"
+          },
+          "target_session_id": "local-e670d817d7631c398f090c82bba14f727c483a35bf8f8f297a5277d36d627de1"
+        },
+        "error_code": null,
+        "committed": true
+      },
+      {
+        "command_id": "171309aa-0e86-45e0-b285-b7ff45004e78",
+        "type": "session.reset",
+        "agent_id": "6a78ee87-00fa-4b65-842e-1145516a7f5f",
+        "thread_id": "b08c21ce-b9b9-4f65-9b1d-d16ac8bd3de9",
+        "native_mutation": {
+          "execution_generation": 28,
+          "operation": "reset",
+          "previous_target_session_id": "local-e670d817d7631c398f090c82bba14f727c483a35bf8f8f297a5277d36d627de1",
+          "revision": 28,
+          "session_id": "local-e670d817d7631c398f090c82bba14f727c483a35bf8f8f297a5277d36d627de1",
+          "target_session_id": "aa747c57175b483a8b8bceb294b71d23"
+        },
+        "error_code": null,
+        "committed": true
+      },
+      {
+        "command_id": "bdc01942-9a0a-4c67-9729-502feaff2242",
+        "type": "session.reset",
+        "agent_id": "2eef7b5b-9759-428e-8792-65d9b0a18fc0",
+        "thread_id": "952a12a6-267a-48d2-9c27-16b98984cc4f",
+        "native_mutation": {
+          "execution_generation": 2,
+          "operation": "reset",
+          "previous_target_session_id": "local-ff5b30ba1edff7ef676da4122b3c9495957bbfe108c6d7d23ac044a1f679f41e",
+          "revision": 2,
+          "session_id": "local-ff5b30ba1edff7ef676da4122b3c9495957bbfe108c6d7d23ac044a1f679f41e",
+          "target_session_id": "6b446e759eab4cafadda3a315967e47b"
+        },
+        "error_code": null,
+        "committed": true
+      }
+    ],
+    "only_selected_writer_context_changed": {
+      "ec4b0c9a-419b-478f-8cfe-6bfab571b909": false,
+      "2eef7b5b-9759-428e-8792-65d9b0a18fc0": true,
+      "3f92bb42-d7b4-4168-b329-7957493cf09a": false
+    },
+    "all_group_messages_preserved": true
+  },
+  "group_noop_recovered": {
+    "dm": {
+      "thread_id": "b08c21ce-b9b9-4f65-9b1d-d16ac8bd3de9",
+      "message_count": 55,
+      "messages_sha256": "98c04261343725565261fc93a5c14305f02f28da1b7bad898ac10df26c5785db",
+      "goal_count": 0,
+      "sessions": [
+        {
+          "agent_id": "6a78ee87-00fa-4b65-842e-1145516a7f5f",
+          "execution_generation": "29",
+          "execution_state": "idle",
+          "lineage": [
+            "local-e670d817d7631c398f090c82bba14f727c483a35bf8f8f297a5277d36d627de1",
+            "aa747c57175b483a8b8bceb294b71d23"
+          ],
+          "logical_session_id": "692141e2-7b8b-5e76-a477-d0383dbc9c9c",
+          "native_session_id": "local-e670d817d7631c398f090c82bba14f727c483a35bf8f8f297a5277d36d627de1",
+          "native_tip": "aa747c57175b483a8b8bceb294b71d23",
+          "parent_binding_id": null,
+          "session_revision": "29",
+          "settings": {
+            "compression": {},
+            "context_engine": "compressor",
+            "max_turns": null
+          },
+          "native_message_count": 2,
+          "native_summary_count": 0
+        }
+      ]
+    },
+    "group": {
+      "thread_id": "952a12a6-267a-48d2-9c27-16b98984cc4f",
+      "message_count": 4,
+      "messages_sha256": "7989e327cf28a27f1914d8a5615a8115fbeca3b309b03b08f84f736514998907",
+      "goal_count": 0,
+      "sessions": [
+        {
+          "agent_id": "ec4b0c9a-419b-478f-8cfe-6bfab571b909",
+          "execution_generation": "1",
+          "execution_state": "idle",
+          "lineage": [],
+          "logical_session_id": "1c1cf5ea-0f90-5da8-8a1a-e14dbb5c6fb8",
+          "native_session_id": "local-c1c9e82e009b00692332692a2e2a44bae72da8d0d9d9f7d11ddbc4b43e8b65a3",
+          "native_tip": "local-c1c9e82e009b00692332692a2e2a44bae72da8d0d9d9f7d11ddbc4b43e8b65a3",
+          "parent_binding_id": null,
+          "session_revision": "1",
+          "settings": {
+            "compression": {},
+            "context_engine": "compressor",
+            "max_turns": null
+          },
+          "native_message_count": 2,
+          "native_summary_count": 0
+        },
+        {
+          "agent_id": "2eef7b5b-9759-428e-8792-65d9b0a18fc0",
+          "execution_generation": "2",
+          "execution_state": "idle",
+          "lineage": [
+            "local-ff5b30ba1edff7ef676da4122b3c9495957bbfe108c6d7d23ac044a1f679f41e",
+            "6b446e759eab4cafadda3a315967e47b"
+          ],
+          "logical_session_id": "d6943b27-78e7-58bc-9fd0-a66c4704a00f",
+          "native_session_id": "local-ff5b30ba1edff7ef676da4122b3c9495957bbfe108c6d7d23ac044a1f679f41e",
+          "native_tip": "6b446e759eab4cafadda3a315967e47b",
+          "parent_binding_id": null,
+          "session_revision": "2",
+          "settings": {
+            "compression": {},
+            "context_engine": "compressor",
+            "max_turns": null
+          },
+          "native_message_count": 0,
+          "native_summary_count": 0
+        },
+        {
+          "agent_id": "3f92bb42-d7b4-4168-b329-7957493cf09a",
+          "execution_generation": "1",
+          "execution_state": "idle",
+          "lineage": [],
+          "logical_session_id": "93559fb9-8552-53aa-b917-f2153bed4ef9",
+          "native_session_id": "local-9048856407ef5f97ed692d6a4c4c6f03c9e04a448d8744f3e4eb240f2075b0b8",
+          "native_tip": "local-9048856407ef5f97ed692d6a4c4c6f03c9e04a448d8744f3e4eb240f2075b0b8",
+          "parent_binding_id": null,
+          "session_revision": "1",
+          "settings": {
+            "compression": {},
+            "context_engine": "compressor",
+            "max_turns": null
+          },
+          "native_message_count": 2,
+          "native_summary_count": 0
+        }
+      ]
+    },
+    "context_receipts": [
+      {
+        "command_id": "9aae703c-baee-48ee-bc80-bc48b0cb3aa6",
+        "type": "session.compress",
+        "agent_id": "6a78ee87-00fa-4b65-842e-1145516a7f5f",
+        "thread_id": "b08c21ce-b9b9-4f65-9b1d-d16ac8bd3de9",
+        "native_mutation": {
+          "execution_generation": 27,
+          "message_count": 12,
+          "operation": "compress",
+          "previous_target_session_id": "local-e670d817d7631c398f090c82bba14f727c483a35bf8f8f297a5277d36d627de1",
+          "revision": 27,
+          "session_id": "local-e670d817d7631c398f090c82bba14f727c483a35bf8f8f297a5277d36d627de1",
+          "summary": {
+            "aborted": false,
+            "fallback_used": false,
+            "headline": "Compressed: 52 \u2192 12 messages",
+            "noop": false,
+            "note": null,
+            "refused_would_grow": false,
+            "token_line": "Approx request size: ~8,584 \u2192 ~4,210 tokens"
+          },
+          "target_session_id": "local-e670d817d7631c398f090c82bba14f727c483a35bf8f8f297a5277d36d627de1"
+        },
+        "error_code": null,
+        "committed": true
+      },
+      {
+        "command_id": "171309aa-0e86-45e0-b285-b7ff45004e78",
+        "type": "session.reset",
+        "agent_id": "6a78ee87-00fa-4b65-842e-1145516a7f5f",
+        "thread_id": "b08c21ce-b9b9-4f65-9b1d-d16ac8bd3de9",
+        "native_mutation": {
+          "execution_generation": 28,
+          "operation": "reset",
+          "previous_target_session_id": "local-e670d817d7631c398f090c82bba14f727c483a35bf8f8f297a5277d36d627de1",
+          "revision": 28,
+          "session_id": "local-e670d817d7631c398f090c82bba14f727c483a35bf8f8f297a5277d36d627de1",
+          "target_session_id": "aa747c57175b483a8b8bceb294b71d23"
+        },
+        "error_code": null,
+        "committed": true
+      },
+      {
+        "command_id": "bdc01942-9a0a-4c67-9729-502feaff2242",
+        "type": "session.reset",
+        "agent_id": "2eef7b5b-9759-428e-8792-65d9b0a18fc0",
+        "thread_id": "952a12a6-267a-48d2-9c27-16b98984cc4f",
+        "native_mutation": {
+          "execution_generation": 2,
+          "operation": "reset",
+          "previous_target_session_id": "local-ff5b30ba1edff7ef676da4122b3c9495957bbfe108c6d7d23ac044a1f679f41e",
+          "revision": 2,
+          "session_id": "local-ff5b30ba1edff7ef676da4122b3c9495957bbfe108c6d7d23ac044a1f679f41e",
+          "target_session_id": "6b446e759eab4cafadda3a315967e47b"
+        },
+        "error_code": null,
+        "committed": true
+      },
+      {
+        "command_id": "5da22591-75c9-4d8b-b57b-b3bd494c323f",
+        "type": "session.compress",
+        "agent_id": "ec4b0c9a-419b-478f-8cfe-6bfab571b909",
+        "thread_id": "952a12a6-267a-48d2-9c27-16b98984cc4f",
+        "native_mutation": {
+          "execution_generation": 1,
+          "operation": "compress",
+          "revision": 1,
+          "session_id": "local-c1c9e82e009b00692332692a2e2a44bae72da8d0d9d9f7d11ddbc4b43e8b65a3",
+          "status": "noop",
+          "summary": {
+            "aborted": false,
+            "fallback_used": false,
+            "headline": "No changes from compression: 2 messages",
+            "noop": true,
+            "note": null,
+            "refused_would_grow": false,
+            "token_line": "Approx request size: ~6,398 tokens (unchanged)"
+          }
+        },
+        "error_code": null,
+        "committed": true
+      },
+      {
+        "command_id": "269b6327-1975-4c38-911e-e93aa6042181",
+        "type": "session.compress",
+        "agent_id": "ec4b0c9a-419b-478f-8cfe-6bfab571b909",
+        "thread_id": "952a12a6-267a-48d2-9c27-16b98984cc4f",
+        "native_mutation": {
+          "execution_generation": 1,
+          "operation": "compress",
+          "revision": 1,
+          "session_id": "local-c1c9e82e009b00692332692a2e2a44bae72da8d0d9d9f7d11ddbc4b43e8b65a3",
+          "status": "noop",
+          "summary": {
+            "aborted": false,
+            "fallback_used": false,
+            "headline": "No changes from compression: 2 messages",
+            "noop": true,
+            "note": null,
+            "refused_would_grow": false,
+            "token_line": "Approx request size: ~6,398 tokens (unchanged)"
+          }
+        },
+        "error_code": null,
+        "committed": true
+      }
+    ]
+  }
+}

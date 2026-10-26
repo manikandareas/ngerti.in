@@ -35,7 +35,14 @@ def usage(receipt):
     raw = receipt.get("usage", {})
     value = {
         key: raw[key]
-        for key in ("input_tokens", "output_tokens", "total_tokens")
+        for key in (
+            "input_tokens",
+            "output_tokens",
+            "total_tokens",
+            "cache_read_tokens",
+            "cache_write_tokens",
+            "reasoning_tokens",
+        )
         if type(raw.get(key)) is int and raw[key] >= 0
     }
     cost = raw.get("estimated_cost_usd")
@@ -45,6 +52,8 @@ def usage(receipt):
         value["cost_status"] = redact(str(raw.get("cost_status", "unknown")))
     if isinstance(raw.get("context"), dict):
         value["context"] = raw["context"]
+    if isinstance(raw.get("routing"), dict):
+        value["routing"] = raw["routing"]
     return {"source": "native_terminal_receipt", "available": bool(value), **value}
 
 
@@ -57,10 +66,23 @@ def install_usage():
 
     def run(turn, agent, *args, **kwargs):
         before = getattr(agent, "session_estimated_cost_usd", 0.0)
+        cache_before = {
+            key: getattr(agent, "session_" + key, None)
+            for key in ("cache_read_tokens", "cache_write_tokens")
+        }
         try:
             return original(turn, agent, *args, **kwargs)
         finally:
             captured = execution_result.get()
+            if captured is not None:
+                for key, previous in cache_before.items():
+                    current = getattr(agent, "session_" + key, None)
+                    if (
+                        type(previous) is int
+                        and type(current) is int
+                        and current >= previous
+                    ):
+                        captured.setdefault("usage", {})[key] = current - previous
             compressor = getattr(agent, "context_compressor", None)
             if captured is not None and compressor is not None:
                 captured.setdefault("usage", {})["context"] = {
@@ -72,6 +94,15 @@ def install_usage():
                         compressor, "_micro_compact_enabled", False
                     ),
                     "max_turns": agent.max_iterations,
+                }
+                captured["usage"]["routing"] = {
+                    "model": agent.model,
+                    "provider": agent.provider,
+                    "fallback_active": bool(
+                        getattr(agent, "_fallback_activated", False)
+                    ),
+                    "credential_pool": getattr(agent, "_credential_pool", None)
+                    is not None,
                 }
             after = getattr(agent, "session_estimated_cost_usd", None)
             status = getattr(agent, "session_cost_status", "unknown")

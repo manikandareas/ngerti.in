@@ -63,7 +63,23 @@
     "agent/context_compressor.py": "065dc9babbcb811a514c32319ed13a6ddaeefbc3964a109f7bb8e4c9260779d1",
     "agent/conversation_compression_manual.py": "1974ab1e18081d29d6d79924de613acfc3db879dec6a96006fdee542c669cbb5",
     "hermes_cli/config.py": "9ca94a1e1096046103fd62352fb418c90fc9cc0d0efafefc7267ae48de6d37e2",
-    "gateway/session_runtime_workers.py": "dd10aadcce77376a04ddb03ff1587b61c9cc0910ccb04cd0e25bbaa89f32e1b4"
+    "gateway/session_runtime_workers.py": "dd10aadcce77376a04ddb03ff1587b61c9cc0910ccb04cd0e25bbaa89f32e1b4",
+    "toolsets.py": "56b865a03701bc749990472245efa22d8ce8d68face8a3941551485f8c826f73",
+    "hermes_cli/plugins.py": "32c2a0a3acd985be4453981e36e26776d6a1c815498f8d0af5f898ad98c8861e",
+    "hermes_cli/plugins_manifest.py": "f5e685686d9983ac72072999b3c3cf0f246b3967af0dd3f9269fe199694e462e",
+    "hermes_cli/plugins_discovery.py": "8267c86ea941ebb1fc67702f76c4c8c371cb24c41704b442c102931d9f7be3e1",
+    "hermes_cli/plugins_dispatch.py": "a3960ec7a3c4ebfa4053f3019dcb67b73de5df384bfa4c0a8484a7815972833c",
+    "hermes_cli/runtime_provider.py": "d60a99f56c55f1d0b41f7d9f0b812625eb0339fe96b6ac19861831ca1c4aaa43",
+    "hermes_cli/fallback_config.py": "313df39afdb0eab013700bd33b32858473a03dd32e95cb5a481fd18cc605c031",
+    "agent/auxiliary_client.py": "053078416f2b2d94256584a5c1ed6176bfbd3f3de88a8ca858e8257274a04bb5",
+    "agent/auxiliary_task_config.py": "a1a566b8c55bd183808b2dee5443f42999b2a23db5c509ad29adf334f9a62e28",
+    "agent/moa_loop.py": "d6e603b259c1e9afd1edf086d730b0f90ad4bb02a0e45770446e97494fd0407b",
+    "hermes_cli/moa_config.py": "e75d7d6f1c4f56c5add9c0b9055596e0d95c769fa58364e5f2e364d67780c0df",
+    "agent/credential_pool.py": "f7f8501b68485b1437b3365f6451b10cc35bffa815d303c9db3c81ca9a89f943",
+    "agent/agent_init.py": "c64d86a42c5cffc2bcc5f40dcefa6004bd7c5a00b2cb56109d8ee669fa40f439",
+    "agent/agent_runtime_helpers.py": "7725dfa3b5c12e2ec289e86a2f83eb99dc75052687aa9cb4d2e71bc3f770b5d4",
+    "agent/chat_completion_helpers.py": "7c822d0213d9471ec3b9a04ffb0604badbe3761520e1948cb9fc9b7f67466e1c",
+    "run_agent.py": "8c215df03f32493f72992db0c0ccaddb811436f9025451e3f1e8f535dc9cda5d"
   },
   "source_patches": [],
   "integration_seams": [
@@ -80,7 +96,13 @@
     "Native compression/reset mutations use durable operation IDs plus revision/generation fencing; scoped auxiliary credential routes exist only while their authenticated command is pending",
     "Durable tool intent/execution/observation evidence distinguishes unknown writes from rejected dispatch and safe observation; native receipt queries reconcile effects without replay",
     "Task-local native config snapshot binds frozen compression/context settings in in-process turns; native tracked mutations cover accepted command and product receipt projection through shutdown",
-    "Synchronous browser_exec syntax is compiled with the pinned Python 3.14 grammar before executor dispatch, without executing code; runtime exceptions and partially executed batches remain unknown"
+    "Synchronous browser_exec syntax is compiled with the pinned Python 3.14 grammar before executor dispatch, without executing code; runtime exceptions and partially executed batches remain unknown",
+    "Native registry-backed capability bundles retain original schemas and explicit dependency/execution-surface fingerprints; final model and registry dispatch share live authorization, including deferred and programmatic calls",
+    "Pinned native PluginContext hooks, middleware and events are wrapped at registration with live agent grants; excluded external platform registrations fail closed; offline pinned install/update requires stopped and drained native admissions",
+    "Versioned owner-local inference configuration freezes connection references and native fallback, auxiliary, ranking and MoA settings at admission; request parameters cross the credential-only relay unchanged",
+    "Native CredentialPool selects scoped per-run relay references sharing one endpoint; only cooldown metadata persists, while the NMA-040 vault remains the sole provider credential and refresh writer",
+    "Native auxiliary recovery gains a scoped HTTP 5xx classification predicate; native recovery selection and retry remain authoritative",
+    "Native Linux handler placement adopts the NMA-028 tool supervisor, with image/schema checks, signed scope-bound RPC, a public-only verifier in the capsule, replay rejection and preserved unknown-effect receipts; native interrupt retires the capsule"
   ],
   "optional_extras": [
     "acp",

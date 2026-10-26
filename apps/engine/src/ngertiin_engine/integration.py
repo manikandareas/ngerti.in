@@ -21,6 +21,9 @@ def install(database, owner):
     global _installed
     if _installed:
         raise EngineError("RUNTIME_ALREADY_INSTALLED")
+    from ngertiin_engine.plugins import install_scope_guard
+
+    install_scope_guard(database, owner)
     import model_tools
     from gateway import run
     from gateway.session_events import SessionEvents
@@ -52,6 +55,7 @@ def install(database, owner):
         context_references,
         diagnostics,
         goals,
+        native_surface,
         redaction,
         session_settings,
     )
@@ -65,6 +69,7 @@ def install(database, owner):
     diagnostics.install_usage()
     context_references.install()
     session_settings.install()
+    native_surface.install()
     _installed = True
 
 

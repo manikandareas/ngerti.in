@@ -47,9 +47,11 @@ def catalog():
         raise EngineError("CAPABILITY_UNAVAILABLE") from None
 
 
-def resolve(config):
+def resolve(config, *, expected_snapshots=None):
     """Resolve only assigned IDs; secrets never enter returned durable metadata."""
     data = catalog()
+    if expected_snapshots is None:
+        expected_snapshots = config.get("runtime_capabilities", {}).get("snapshots", {})
     snapshots, toolsets, skills, servers = {}, [], [], []
     for field in FIELDS:
         ids = config.get(field, [])
@@ -70,15 +72,19 @@ def resolve(config):
                 raise EngineError("CAPABILITY_UNAVAILABLE")
             try:
                 if field == "tool_grants":
-                    from toolsets import validate_toolset
+                    from ngertiin_engine.native_catalog import (
+                        inspect_bundle,
+                        unchanged_historical_bundle,
+                    )
 
-                    name = entry["toolset"]
-                    if name not in {"nma_workspace", "nma_computer"} and (
-                        not validate_toolset(name) or name not in {"todo"}
-                    ):
-                        raise ValueError
-                    toolsets.append(name)
-                    identity = {"toolset": name}
+                    identity = inspect_bundle(key, entry, data)
+                    missing = set(identity["requires"]) - set(ids)
+                    if missing:
+                        raise EngineError(
+                            "CAPABILITY_DEPENDENCY_REQUIRED",
+                            {"capability": key, "dependencies": sorted(missing)},
+                        )
+                    toolsets.append(identity["toolset"])
                 elif field == "skill_refs":
                     content = entry["content"]
                     if not isinstance(content, str) or len(content) > 16000:
@@ -106,7 +112,21 @@ def resolve(config):
                     redaction.remember(server)
                     servers.append(server)
                     identity = {"server": server}
-                snapshots[field][key] = digest(identity)
+                # Preserve existing immutable grants without increasing permissions.
+                legacy = (
+                    field == "tool_grants"
+                    and unchanged_historical_bundle(identity)
+                    and (
+                        data.get("version", 1) == 1
+                        or expected_snapshots.get(field, {}).get(key)
+                        == digest({"toolset": identity["toolset"]})
+                    )
+                )
+                snapshots[field][key] = digest(
+                    {"toolset": identity["toolset"]} if legacy else identity
+                )
+            except EngineError:
+                raise
             except Exception:  # noqa: BLE001 - invalid catalog/connector details stay private
                 raise EngineError("CAPABILITY_UNAVAILABLE") from None
     if len({server["name"] for server in servers}) != len(servers):
@@ -119,11 +139,17 @@ def resolve(config):
 
 
 def public_catalog():
+    from ngertiin_engine.native_catalog import public_bundle
+
+    data = catalog()
     return {
         field: [
-            {"id": key, "label": entry.get("label", key)}
-            for key, entry in catalog().get(field, {}).items()
-            if entry.get("enabled") is True
+            public_bundle(key, entry, data)
+            if field == "tool_grants"
+            else {"id": key, "label": entry.get("label", key)}
+            for key, entry in data.get(field, {}).items()
+            if isinstance(entry, dict)
+            and (field == "tool_grants" or entry.get("enabled") is True)
         ]
         for field in FIELDS
     }
@@ -139,7 +165,9 @@ def authorize(marker, database, owner):
             ).fetchone()
         if row != ("active", int(marker["access_generation"])):
             raise EngineError("ACCESS_REVOKED")
-        resolved, servers = resolve(marker["grants"])
+        resolved, servers = resolve(
+            marker["grants"], expected_snapshots=marker["snapshots"]
+        )
         if resolved["snapshots"] != marker["snapshots"]:
             raise EngineError("ACCESS_REVOKED")
         return servers
@@ -157,6 +185,84 @@ def install_dispatch_guard(database, owner):
 
     original = model_tools._execute_tool
 
+    original_registry = registry.dispatch
+    original_definitions = registry.get_definitions
+
+    def definitions(tool_names, quiet=False):
+        values = original_definitions(tool_names, quiet=quiet)
+        policy = active_policy()
+        marker = (
+            policy.config(secrets=False).get("nma_capabilities") if policy else None
+        )
+        if not marker:
+            return values
+        data = catalog()
+        isolated = {
+            name
+            for key in marker["grants"].get("tool_grants", [])
+            if (entry := data.get("tool_grants", {}).get(key, {}))
+            and data.get("execution_surfaces", {})
+            .get(entry.get("execution_surface"), {})
+            .get("kind")
+            == "scoped_linux"
+            for name in resolve_toolset(entry["toolset"])
+        }
+        present = {value["function"]["name"] for value in values}
+        for name in sorted(set(tool_names) & isolated - present):
+            entry = registry.get_entry(name)
+            if entry is not None:
+                definition = {
+                    "type": "function",
+                    "function": {**entry.schema, "name": name},
+                }
+                if redaction.result(definition) != definition:
+                    raise EngineError("CAPABILITY_UNAVAILABLE")
+                values.append(definition)
+        return values
+
+    def check(function_name):
+        policy = active_policy()
+        marker = (
+            policy.config(secrets=False).get("nma_capabilities") if policy else None
+        )
+        if not marker:
+            return False
+        from ngertiin_engine.context import authorize_context
+
+        authorize(marker, database, owner)
+        authorize_context(policy, database, owner)
+        allowed = {
+            name for toolset in marker["toolsets"] for name in resolve_toolset(toolset)
+        }
+        if policy.editor_mcp_json:
+            allowed.update(json.loads(policy.editor_mcp_json)["schemas"])
+        if function_name not in allowed or registry.get_entry(function_name) is None:
+            raise EngineError("CAPABILITY_DENIED")
+        return True
+
+    def registry_dispatch(name, args, **kwargs):
+        # Native execute_code RPC and plugin-to-plugin dispatch can call the
+        # registry directly, bypassing the model_tools wrapper.
+        try:
+            scoped = check(name)
+        except EngineError as exc:
+            return json.dumps({"error": exc.code, "outcome": "rejected"})
+        if scoped:
+            from ngertiin_engine.native_surface import invoke
+
+            policy = active_policy()
+            placed, value = invoke(
+                name,
+                args,
+                policy.config(secrets=False)["nma_capabilities"],
+                database,
+                owner,
+            )
+            if placed:
+                return redaction.result(value)
+        value = original_registry(name, args, **kwargs)
+        return redaction.result(value) if scoped else value
+
     def dispatch(function_name, function_args, original_args, ids, **kwargs):
         policy = active_policy()
         marker = (
@@ -164,25 +270,18 @@ def install_dispatch_guard(database, owner):
         )
         if marker:
             try:
-                from ngertiin_engine.context import authorize_context
-
-                authorize(marker, database, owner)
-                authorize_context(policy, database, owner)
-                allowed = {
-                    name
-                    for toolset in marker["toolsets"]
-                    for name in resolve_toolset(toolset)
-                }
-                if policy.editor_mcp_json:
-                    allowed.update(json.loads(policy.editor_mcp_json)["schemas"])
-                if (
-                    function_name not in allowed
-                    or registry.get_entry(function_name) is None
-                ):
-                    raise EngineError("CAPABILITY_DENIED")
+                check(function_name)
             except EngineError as exc:
                 return json.dumps({"error": exc.code, "outcome": "rejected"})
-        value = original(function_name, function_args, original_args, ids, **kwargs)
-        return redaction.result(value) if marker else value
+        from ngertiin_engine.native_surface import call_identity
+
+        token = call_identity.set(ids)
+        try:
+            value = original(function_name, function_args, original_args, ids, **kwargs)
+            return redaction.result(value) if marker else value
+        finally:
+            call_identity.reset(token)
 
     model_tools._execute_tool = dispatch
+    registry.dispatch = registry_dispatch
+    registry.get_definitions = definitions

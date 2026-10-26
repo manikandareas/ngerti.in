@@ -23,6 +23,7 @@ class ProviderTransport:
         from hermes_cli.auth import _save_private_json
 
         self.connections, self.routes = connections, {}
+        self.pool_routes = {}
         self.key = Path(os.environ["NMA_SERVICE_KEY_FILE"]).read_bytes()
         path = connections.home / "provider-relay.json"
         saved = json.loads(path.read_text()) if path.exists() else {}
@@ -145,6 +146,7 @@ class ProviderTransport:
         session_id=None,
         execution=None,
         control=None,
+        route_group=None,
     ):
         route = {
             "snapshot": snapshot,
@@ -157,14 +159,74 @@ class ProviderTransport:
         identity = digest(route)
         token = hmac.new(self.key, identity.encode(), "sha256").hexdigest()
         self.routes[identity] = route
+        address = identity
+        if route_group:
+            address = digest(
+                [route_group, thread_id, run_id, session_id, execution, control]
+            )
+            self.pool_routes.setdefault(address, {})[token] = identity
         return snapshot["model"], {
             "provider": "custom",
             "requested_provider": snapshot["provider_id"],
             "api_mode": snapshot["protocol"],
-            "base_url": self.base + "/inference/" + identity,
+            "base_url": self.base + "/inference/" + address,
             "api_key": token,
             "credential_pool": None,
         }
+
+    def note(self, route, status, usage=None, error=None):
+        """Persist per-route attribution without request text, headers or credentials."""
+        if not route.get("run_id"):
+            return
+        from ngertiin_engine.reliability import Reliability
+
+        def record(conn):
+            reliability = Reliability(self.connections.store)
+            row = reliability.check(conn, route["execution"])
+            if row is None:
+                return
+            snapshot = route["snapshot"]
+            payload = {
+                "provider": snapshot["provider_id"],
+                "connection_id": snapshot["connection_id"],
+                "model": snapshot["model"],
+                "billing": snapshot.get("billing"),
+                "http_status": status,
+                "error_code": error,
+            }
+            if isinstance(usage, dict):
+                payload["usage"] = {
+                    key: value
+                    for key, value in usage.items()
+                    if key
+                    in {
+                        "prompt_tokens",
+                        "completion_tokens",
+                        "input_tokens",
+                        "output_tokens",
+                        "total_tokens",
+                        "cache_read_input_tokens",
+                        "cache_creation_input_tokens",
+                        "cost",
+                    }
+                    and type(value) in (int, float)
+                    and value >= 0
+                }
+                for key in ("prompt_tokens_details", "input_tokens_details"):
+                    if (
+                        isinstance(usage.get(key), dict)
+                        and type(usage[key].get("cached_tokens")) is int
+                    ):
+                        payload["usage"]["cached_tokens"] = usage[key]["cached_tokens"]
+            reliability.append(
+                conn, route["run_id"], json.loads(row[1]), "provider.attempt", payload
+            )
+
+        try:
+            self.connections.store.write(record)
+        except EngineError as exc:
+            if exc.code not in {"RUN_CANCELLED", "STALE_GENERATION"}:
+                raise
 
     def forward(self, handler):
         parts = urlsplit(handler.path).path.split("/")
@@ -174,6 +236,9 @@ class ProviderTransport:
         expected = hmac.new(self.key, identity.encode(), "sha256").hexdigest()
         supplied = handler.headers.get("Authorization", "").removeprefix("Bearer ")
         supplied = handler.headers.get("x-api-key", supplied)
+        if identity in getattr(self, "pool_routes", {}):
+            identity = self.pool_routes[identity].get(supplied, "")
+            expected = hmac.new(self.key, identity.encode(), "sha256").hexdigest()
         if not hmac.compare_digest(expected, supplied) or identity not in self.routes:
             raise EngineError("PROVIDER_RECONNECT_REQUIRED")
         route = dict(self.routes[identity])
@@ -210,6 +275,17 @@ class ProviderTransport:
         body = json.loads(handler.rfile.read(length))
         if body.get("model") != snapshot["model"]:
             raise EngineError("MODEL_UNAVAILABLE")
+        if snapshot.get("parameters"):
+            from ngertiin_engine.inference_config import parameters
+
+            body.update(parameters(snapshot["parameters"], snapshot))
+        if snapshot.get("provider_routing") and snapshot["provider_id"] == "openrouter":
+            # Native OpenRouter preferences use the real upstream identity. The
+            # credential relay's loopback URL must not suppress their wire object.
+            body["provider"] = {
+                **body.get("provider", {}),
+                **snapshot["provider_routing"],
+            }
         if snapshot["provider_id"] == "chatgpt":
             body.update(store=False, stream=True)
         # The lock orders disconnect/replacement against actual dispatch, then releases for streaming.
@@ -258,6 +334,7 @@ class ProviderTransport:
                     code, error_type = "", ""
                 error = provider_error(response.status_code, code, error_type)
                 self.connections.record_failure(route["run_id"], error)
+                self.note(route, response.status_code, error=error)
                 handler.reply(
                     response.status_code,
                     canonical({"error": {"code": error, "message": error}}).encode(),
@@ -271,11 +348,19 @@ class ProviderTransport:
             handler.send_header("Connection", "close")
             handler.end_headers()
             handler.close_connection = True
-            if snapshot["protocol"] == "codex_responses":
+            usage = None
+            if snapshot["protocol"] == "codex_responses" or response.headers.get(
+                "Content-Type", ""
+            ).startswith("text/event-stream"):
                 for line in response.iter_lines():
                     if line.startswith("data:"):
                         try:
                             event = json.loads(line[5:])
+                            usage = (
+                                event.get("usage")
+                                or event.get("response", {}).get("usage")
+                                or usage
+                            )
                             if event.get("type") == "response.failed":
                                 error = event.get("response", {}).get("error") or {}
                                 code = provider_error(
@@ -299,6 +384,14 @@ class ProviderTransport:
                     handler.wfile.write((line + "\n").encode())
                     handler.wfile.flush()
             else:
+                captured = bytearray()
                 for chunk in response.iter_bytes():
+                    if len(captured) + len(chunk) <= 1024 * 1024:
+                        captured.extend(chunk)
                     handler.wfile.write(chunk)
                     handler.wfile.flush()
+                try:
+                    usage = json.loads(captured).get("usage")
+                except (ValueError, AttributeError):
+                    pass
+            self.note(route, response.status_code, usage=usage)

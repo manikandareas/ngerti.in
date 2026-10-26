@@ -55,6 +55,10 @@ class Adapter:
         self.connections.import_bootstrap(models or {})
         self.agents = Agents(self.store, self.connections.catalog())
         self.provider_transport = ProviderTransport(self.connections)
+        from ngertiin_engine.inference import InferenceRoutes
+
+        self.inference = InferenceRoutes(self)
+        self.inference.install()
         self.threads = Threads(self.store, self.agents)
         self.context = Context(self.store, self.threads)
         self.dm = DirectMessages(self)
@@ -164,8 +168,24 @@ class Adapter:
         selected_model = self.agents.models.get(selected["config"]["model"])
         if not selected_model:
             raise EngineError("MODEL_UNAVAILABLE")
+        inference_snapshot = None
+        if "inference" in selected["config"]:
+            from ngertiin_engine.inference_config import validate as validate_inference
+
+            inference_snapshot = validate_inference(
+                selected["config"]["inference"],
+                self.agents.models,
+                selected["config"]["model"],
+            )
         key = digest(
-            ["native-context-v2", [payload[k] for k in fields], selected_model]
+            [
+                "native-context-v2",
+                [payload[k] for k in fields],
+                selected_model,
+                inference_snapshot,
+            ]
+            if inference_snapshot is not None
+            else ["native-context-v2", [payload[k] for k in fields], selected_model]
         )
         if key not in self.bindings:
             agent = self.store.write(
@@ -209,6 +229,11 @@ class Adapter:
                 + "\n\n".join(capabilities["skills"]),
                 "access_generation": agent["access_generation"],
                 "session": raw.get("session", {}),
+                **(
+                    {"inference": inference_snapshot}
+                    if inference_snapshot is not None
+                    else {}
+                ),
             }
             self.store.write(
                 lambda conn: conn.execute(
@@ -272,6 +297,11 @@ class Adapter:
         from ngertiin_engine.session_settings import frozen as session_settings
 
         frozen.update(session_settings(config.get("session", {})))
+        if "inference" in config:
+            from ngertiin_engine.inference_config import frozen as inference_settings
+
+            frozen.update(inference_settings(config["inference"]))
+            frozen["auxiliary"].update(config["inference"]["auxiliary"])
         snapshot = config.get("nma_provider")
         if not snapshot:
             saved = self.store.write(

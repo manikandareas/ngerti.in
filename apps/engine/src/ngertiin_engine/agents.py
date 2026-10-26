@@ -75,6 +75,7 @@ class Agents:
         result["config"] = json.loads(result["config"])
         result["config"].pop("runtime_model", None)
         result["config"].pop("runtime_capabilities", None)
+        result["config"].pop("runtime_inference", None)
         # Configs written before server-side avatar derivation lack the field.
         result["config"].setdefault("avatar_url", avatar_url(result["handle"]))
         primary = conn.execute(
@@ -103,7 +104,12 @@ class Agents:
                 "next_cursor": None,
                 "capabilities": public_catalog(),
                 "models": [
-                    {"id": key, "label": value.get("label", key)}
+                    {
+                        "id": key,
+                        "label": value.get("label", key),
+                        "protocol": value.get("protocol", "chat_completions"),
+                        "provider_id": value.get("provider_id", "custom"),
+                    }
                     for key, value in self.models.items()
                 ],
             }
@@ -142,7 +148,15 @@ class Agents:
             not isinstance(config, dict)
             or not {"soul", "instructions", "model"} <= set(config)
             or set(config)
-            - {"soul", "instructions", "model", "avatar_url", "session", *FIELDS}
+            - {
+                "soul",
+                "instructions",
+                "model",
+                "avatar_url",
+                "session",
+                "inference",
+                *FIELDS,
+            }
         ):
             raise EngineError("INVALID_REQUEST")
         if any(
@@ -158,6 +172,13 @@ class Agents:
         from ngertiin_engine.session_settings import validate
 
         session = validate(config.get("session", {}))
+        inference = {}
+        if "inference" in config:
+            from ngertiin_engine.inference_config import validate as validate_inference
+
+            inference["runtime_inference"] = validate_inference(
+                config["inference"], self.models, config["model"]
+            )
         return (
             name.strip(),
             handle,
@@ -168,6 +189,7 @@ class Agents:
                 "avatar_url": avatar_url(handle),
                 "runtime_model": self.models.get(config["model"]),
                 "runtime_capabilities": capabilities,
+                **inference,
             },
         )
 

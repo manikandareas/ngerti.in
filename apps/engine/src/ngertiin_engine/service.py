@@ -158,6 +158,15 @@ def main():
     class EngineRunner(run.GatewayRunner):
         nma_server = None
 
+        def _refresh_fallback_model(self):
+            from gateway.session_policy import active_policy
+
+            policy = active_policy()
+            config = policy.config(secrets=False) if policy else {}
+            if "nma_provider" in config:
+                return config.get("fallback_providers") or None
+            return super()._refresh_fallback_model()
+
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
             self.nma_ready = asyncio.Event()
@@ -206,6 +215,21 @@ def main():
                         lambda conn: self.nma_adapter.reliability.check(conn, stamp)
                     )
                 )
+                if "nma_inference" in config:
+                    selected = config["nma_inference"]
+                    if selected["moa"]:
+                        return "ngertiin", {
+                            "provider": "moa",
+                            "requested_provider": "moa",
+                            "api_mode": "chat_completions",
+                            "base_url": "moa://local",
+                            "api_key": "moa-virtual-provider",
+                            "credential_pool": None,
+                        }
+                    route = selected["primary"]
+                    return route["model"], self.nma_adapter.inference.resolve(
+                        route["provider"], route["model"], config=config
+                    )
                 return self.nma_adapter.provider_transport.runtime(
                     snapshot,
                     thread_id,
@@ -251,6 +275,9 @@ def main():
                 )
             finally:
                 execution.reset(token)
+                from ngertiin_engine.native_surface import settle_session
+
+                await asyncio.to_thread(settle_session, source.chat_id)
 
         async def _run_scoped_agent(
             self, message, context_prompt, history, source, session_id, **kwargs

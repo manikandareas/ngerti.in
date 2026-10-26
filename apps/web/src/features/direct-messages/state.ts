@@ -31,6 +31,7 @@ export type Run = {
   text: string;
   error_code: string | null;
   activity?: string;
+  continuation_required?: boolean;
 };
 export type Goal = {
   responsible_agent_id?: string;
@@ -159,6 +160,7 @@ export function applyEvent(state: Snapshot, event: Event): Snapshot {
       text: "",
       error_code: typeof event.payload.error_code === "string" ? event.payload.error_code : null,
       activity: undefined,
+      continuation_required: event.payload.continuation_required === true,
     };
   else if (activeRun(run)) {
     if (event.type === "run.delta")

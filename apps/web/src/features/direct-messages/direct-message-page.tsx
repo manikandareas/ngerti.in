@@ -10,6 +10,7 @@ import { ArtifactResults } from "./artifact-results";
 import { command, listThreads, submit, type ThreadItem } from "./client";
 import { Composer } from "./composer";
 import { GoalProgress } from "./goal-progress";
+import { SessionControls } from "./session-controls";
 import { activeRun, type Run, runLabels } from "./state";
 import { useDirectMessage } from "./use-direct-message";
 
@@ -188,6 +189,9 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
           }}
         >
           <div className="mx-auto max-w-3xl space-y-7 py-6">
+            {snapshot && (
+              <SessionControls key={threadId} thread={snapshot.thread} working={working} />
+            )}
             <ArtifactResults artifacts={snapshot?.artifacts ?? []} />
             {snapshot && (
               <GoalProgress
@@ -254,6 +258,18 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
                   >
                     <h2 className="mb-2 text-xs font-bold">{author}</h2>
                     <MessageText text={message.content} />
+                    {message.author_kind === "agent" && run?.status === "indeterminate" && (
+                      <p className="mt-3 text-sm text-muted-foreground">
+                        Jawaban tersimpan. Hasil salah satu tindakan belum diketahui; periksa
+                        hasilnya sebelum mengulang tindakan tersebut.
+                      </p>
+                    )}
+                    {message.author_kind === "agent" && run?.continuation_required && (
+                      <p className="mt-3 text-sm text-muted-foreground">
+                        Batas eksekusi tercapai. Hasil sementara tersimpan; kirim arahan untuk
+                        melanjutkan.
+                      </p>
+                    )}
                   </article>
                   {!group && message.author_kind === "user" && run && !hasReply && (
                     <article

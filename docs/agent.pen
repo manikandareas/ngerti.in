@@ -46126,6 +46126,109 @@
                       ]
                     }
                   ]
+                },
+                {
+                  "type": "text",
+                  "id": "O4QpVt",
+                  "name": "02B / ANSWER SELECTED",
+                  "fill": "$ng-app/muted-foreground",
+                  "content": "02B / ANSWER SELECTED",
+                  "fontFamily": "$gumloop/font-ui",
+                  "fontSize": 12,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "frame",
+                  "id": "OuX0z",
+                  "name": "Card / Onboarding answer selected",
+                  "reusable": true,
+                  "width": "fill_container",
+                  "fill": "$ng-app/muted",
+                  "cornerRadius": 18,
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": 16,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "Cyr2N",
+                      "name": "Answered question",
+                      "fill": "$ng-app/muted-foreground",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "What do you mainly want me helping with?",
+                      "lineHeight": 1.4,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 18,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "QMEDS",
+                      "name": "Selected answer / Inbox & email",
+                      "width": "fill_container",
+                      "height": 48,
+                      "fill": "#FFFFFF00",
+                      "cornerRadius": 12,
+                      "stroke": "$ng-app/border",
+                      "strokeWidth": 1,
+                      "gap": 12,
+                      "padding": [
+                        0,
+                        12
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "IlRKh",
+                          "name": "Keyboard shortcut",
+                          "width": 24,
+                          "height": 24,
+                          "fill": "$ng-app/secondary",
+                          "cornerRadius": 6,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "SPSSi",
+                              "name": "Shortcut A",
+                              "fill": "$ng-app/muted-foreground",
+                              "content": "A",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "qmLq7",
+                          "name": "Inbox & email",
+                          "fill": "$ng-app/muted-foreground",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Inbox & email",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "icon",
+                          "id": "Vxm4M",
+                          "name": "Answer confirmed",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "check",
+                          "library": "lucide",
+                          "fill": "$ng-app/foreground"
+                        }
+                      ]
+                    }
+                  ]
                 }
               ]
             },
@@ -48022,6 +48125,109 @@
                           "fontFamily": "$gumloop/font-ui",
                           "fontSize": 14,
                           "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "RN6He",
+                  "name": "02B / ANSWER SELECTED",
+                  "fill": "$ng-app/muted-foreground",
+                  "content": "02B / ANSWER SELECTED",
+                  "fontFamily": "$gumloop/font-ui",
+                  "fontSize": 12,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "frame",
+                  "id": "cSYct",
+                  "name": "Card / Onboarding answer selected",
+                  "reusable": true,
+                  "width": "fill_container",
+                  "fill": "$ng-app/muted",
+                  "cornerRadius": 18,
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": 16,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "MlBSt",
+                      "name": "Answered question",
+                      "fill": "$ng-app/muted-foreground",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "What do you mainly want me helping with?",
+                      "lineHeight": 1.4,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 18,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "vCN9Q",
+                      "name": "Selected answer / Inbox & email",
+                      "width": "fill_container",
+                      "height": 48,
+                      "fill": "#FFFFFF00",
+                      "cornerRadius": 12,
+                      "stroke": "$ng-app/border",
+                      "strokeWidth": 1,
+                      "gap": 12,
+                      "padding": [
+                        0,
+                        12
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "VgJrg",
+                          "name": "Keyboard shortcut",
+                          "width": 24,
+                          "height": 24,
+                          "fill": "$ng-app/secondary",
+                          "cornerRadius": 6,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "ZA8PH",
+                              "name": "Shortcut A",
+                              "fill": "$ng-app/muted-foreground",
+                              "content": "A",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "OumMI",
+                          "name": "Inbox & email",
+                          "fill": "$ng-app/muted-foreground",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Inbox & email",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "icon",
+                          "id": "FOsrD",
+                          "name": "Answer confirmed",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "check",
+                          "library": "lucide",
+                          "fill": "$ng-app/foreground"
                         }
                       ]
                     }

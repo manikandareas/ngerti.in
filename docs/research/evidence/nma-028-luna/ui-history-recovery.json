@@ -1,0 +1,10 @@
+{
+  "checked_at": "2026-10-26T03:55:43.577323+00:00",
+  "original_proof_sha256": "70b8b39ef8a09a690a3d1533a145658a4f4f43d369ef1a7eed80c9f74ff86d42",
+  "initial_close_read": "HTTP 503 during deliberate gateway restart; original proof has no fabricated successful after-read",
+  "message_sha256_before": "0767058816a8c8877c6b9b0adcb92656e2dabeae80a7827c44d4ef5ca11e5450",
+  "message_sha256_after": "0767058816a8c8877c6b9b0adcb92656e2dabeae80a7827c44d4ef5ca11e5450",
+  "target_history_unchanged": true,
+  "browser_recovery": "Fresh page load displayed stored NMA028_SAVED after gateway readiness",
+  "conversation_browser_closed": true
+}

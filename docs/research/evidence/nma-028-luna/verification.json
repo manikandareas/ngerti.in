@@ -1,0 +1,463 @@
+{
+  "recorded_at": "2026-10-26T04:39:35.073828+00:00",
+  "ticket": "NMA-028",
+  "status": "Done",
+  "completion_scope": "Discovery baseline, native architecture and capability adoption contract; measured failures retain downstream owners. Production release gates are not closed.",
+  "notion_url": "https://app.notion.com/p/404abdd6187381baa12cdeca39c310b1",
+  "git_revision": "09e06ec0e97255b332cbad06cb17871a410c871b",
+  "upstream_revision": "7489b22af47ce91b366dde81d5831ea422577498",
+  "selected_image": "sha256:b81f1bf356adb3f4cff012b2b95d95c6458b5ba876c1e886a59a24a82e574ebd",
+  "provider": "chatgpt",
+  "model": "gpt-6-luna",
+  "sol_or_astra_inference": false,
+  "model_account_fallback": false,
+  "final_relay": {
+    "requests": 447,
+    "models": {
+      "gpt-6-luna": 447
+    },
+    "http_statuses": {
+      "200": 447
+    },
+    "failures": [],
+    "response.completed": 447
+  },
+  "protocols": [
+    {
+      "path": "scripts/spikes/nma028/protocol-plan-role-groups.json",
+      "id": "nma028-chatgpt-luna-role-bound-groups-v1",
+      "sha256": "c7a4c541abd94205683735f347fe5dc88d26bd668032e34fa0d539d45cbe1745"
+    },
+    {
+      "path": "scripts/spikes/nma028/protocol-plan-groups.json",
+      "id": "nma028-chatgpt-luna-valid-mention-supplement-v1",
+      "sha256": "d49066e1d7fdc97363d008e76c2e358dfbce245419ca69b7377512ae67ed34a7"
+    },
+    {
+      "path": "scripts/spikes/nma028/protocol-plan.json",
+      "id": "nma028-chatgpt-luna-v1",
+      "sha256": "c1a7b3b29a21e6704599db693c7f5be689e9dc87f7e94314abb8e5d12fb6a810"
+    }
+  ],
+  "main_corpus": {
+    "planned": 99,
+    "attempted": 99,
+    "task_successes": 70,
+    "verified_user_stops": 9,
+    "outcomes": {
+      "passed": 70,
+      "failed": 20,
+      "user_stop": 9
+    },
+    "categories": {
+      "none": 70,
+      "oracle": 11,
+      "user_stop": 9,
+      "unknown": 9
+    }
+  },
+  "raw_main_outcomes": {
+    "passed": 62,
+    "failed": 28,
+    "user_stop": 9
+  },
+  "read_only_corrections": 8,
+  "role_bound_group_corpus": {
+    "planned": 6,
+    "attempted": 6,
+    "task_successes": 6,
+    "verified_user_stops": 0,
+    "outcomes": {
+      "passed": 6
+    },
+    "categories": {
+      "none": 6
+    }
+  },
+  "generic_role_cohort": "Separate six attempted cells; five inherited-helper passes and one failure. Producer role limitations retained, never substituted into the main corpus.",
+  "production_runtime_schema_or_data_migration": false,
+  "release_gate": {
+    "closed": false,
+    "owner": "NMA-039, then NMA-027",
+    "unchanged_task_success_target": 0.95,
+    "target_met": false,
+    "representative_tasks_per_configuration_required": 100
+  },
+  "downstream_findings": {
+    "NMA-029": "Native result/history/recovery semantics and task success distinct from delivered answers",
+    "NMA-030/036": "Per-action goal argument schemas/errors and schedule recovery",
+    "NMA-031/032": "Compile-time known failures versus indeterminate browser effects; scoped native adoption",
+    "NMA-035": "Mention punctuation, explicit persistent roles and group artifact fidelity"
+  },
+  "verification_commands": [
+    ".dev/nma-006-closure/runtime/bin/python -m pytest scripts/spikes/nma028/test_plan_results.py scripts/spikes/nma028/test_baseline.py scripts/spikes/nma028/test_closure_results.py -q",
+    "uv run --project apps/backend ruff check scripts/spikes/nma028/plan_*.py scripts/spikes/nma028/test_plan_results.py",
+    "uv run --project apps/backend ruff format --check scripts/spikes/nma028/plan_*.py scripts/spikes/nma028/test_plan_results.py",
+    "make docs-check"
+  ],
+  "tests": {
+    "harness_scoring_replay_passed": 12,
+    "static_checks": "passed",
+    "actual_authenticated_desktop_mobile_ui": "passed, with initial 503 and recovered exact history retained",
+    "readonly_replay_bytes_identical": true,
+    "private_literal_scan": "zero hits for nine private values; zero JWT shapes/unredacted credential fields"
+  },
+  "review": "Author source/evidence self-review; no independent review claim",
+  "preservation": "Task edits leave prior tracked engine/backend/web implementation files unchanged. Unrelated docs/agent.pen drift during the long run is recorded and its current bytes are preserved. The 143-artifact historical audit reconciles the earlier provider-foundation runtime-pin change to original Git bytes; no prior evidence is rewritten.",
+  "artifacts": [
+    {
+      "path": "docs/research/evidence/nma-028-luna/auth-proof-ui.json",
+      "sha256": "4b91de53dfdb7be011cc12d2fe8e92c1622e647ba70f90059e834d3edd535d6b",
+      "bytes": 1175
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/auth-proof.json",
+      "sha256": "2c14183f955f31f4a67744c889667c2ada8211de371b91010fff9dd133817da9",
+      "bytes": 1175
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/authenticated-form-desktop.png",
+      "sha256": "45e4f83fd7e51790907c3458b797bc88cb57b1c0dfcd74ffcbaac6e379222d8f",
+      "bytes": 129008
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/authenticated-form-mobile.png",
+      "sha256": "6702cbf25f2e4b7e2b7d74e5596ede16c7999b1c0538fb9e2312a447dc4488d9",
+      "bytes": 60368
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/authenticated-form-recovered.png",
+      "sha256": "5dc3763a2a3bf14fecdb28583db1d97dd8119554c0d06ef51c1d0664a0ec7cf0",
+      "bytes": 133789
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/before.json",
+      "sha256": "0b20f8b3a0e91f598033c53d38e71c2b213e340ae3109c0f7186149b6a95487b",
+      "bytes": 243041
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/clerk-auth0.png",
+      "sha256": "81b0297afd4280d7114802cb69b89cf64af06f9fe1137272ad508205a8a4d43a",
+      "bytes": 15865
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/clerk-auth1.png",
+      "sha256": "81b0297afd4280d7114802cb69b89cf64af06f9fe1137272ad508205a8a4d43a",
+      "bytes": 15865
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/direct-syntax-review.json",
+      "sha256": "9a01fffa122785822f46f5352805d6c25640492e1d7c66685793d9f44f868ff4",
+      "bytes": 3251
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/download-source-review.json",
+      "sha256": "9e4abed5416ff3bb57d57890fb5eb99872a5a4e276458a23b411f3bfc48a4c61",
+      "bytes": 8284
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/failure-review.json",
+      "sha256": "e13f71e4ddbd8dbaab8f2ebda687c9e4f28c376822d29552fc08113fdfec7f2c",
+      "bytes": 14197
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/final-adapter-journal.json",
+      "sha256": "2b420265f932979545967d859ef53daeb9373357cf5d9160c06b3c1caaabaf5c",
+      "bytes": 26599
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/final-adapter.jsonl",
+      "sha256": "2419cc6ca47eff9d4931f4b39d74b83c43182f8d49d99598209ac8b9e547287b",
+      "bytes": 1379434
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/final-application-journal.json",
+      "sha256": "4e0d6183fa35dd3ae72cef08cd12eb8218a06965e1e6d0b5171165f4923dc816",
+      "bytes": 30363
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/final-application.jsonl",
+      "sha256": "53ead3b1d5bcb6020efedca2a8a3cc70dd3ad780fbedfcb3cd1ba6f6a9a81256",
+      "bytes": 1412293
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/final-direct-journal.json",
+      "sha256": "22a590a69f521e39c13aa9c23e4cdc5446bdcec85d1983ed76ff40d276d0ca94",
+      "bytes": 25341
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/final-direct.jsonl",
+      "sha256": "977781bc797696ab688b5c68eb4f8ff283cdf3e35438231c01c07b3d0e6f3223",
+      "bytes": 1638984
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/final-native-lifecycle-journal.json",
+      "sha256": "e4fdc581ad382a5efb0c46520874b55344dedae9718acb0c36e090ed35e6ce08",
+      "bytes": 10330
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/final-native-lifecycle.jsonl",
+      "sha256": "aef5c4a398240079881a33b4fb40b89b1cf4408ec8722bd291d9874a313ff706",
+      "bytes": 295469
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/final-native-lifecycle.timeline.json",
+      "sha256": "b56621dfeb1445b02e631d2e9724f6e73e8c86a9094e063ad43827f400830d82",
+      "bytes": 3269
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/generic-group-role-review.json",
+      "sha256": "e1fc48f20f213c0c923bdcf81120e52e84cde04a80060bc06334a34d5b4f5e73",
+      "bytes": 3105
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/group-acceptance-proof.json",
+      "sha256": "9080e681515aa7763800d5d9ccfe5693787f41e0f07cc21ebe9e4f2811d9c634",
+      "bytes": 269
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/groups-adapter-journal.json",
+      "sha256": "2c0052f45183c70ae3d219e196ecf2f490f630b47153e3df6bebad6cd2be8565",
+      "bytes": 39
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/groups-adapter.jsonl",
+      "sha256": "50425751b5cfb7a6cf3ca27e2655837dfcbfae1937a8571379c8284bf8251ff7",
+      "bytes": 29353
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/groups-application-journal.json",
+      "sha256": "41d2c262fcaed497701035f7f0fc52614fead572c48ad822e0d58976c69ed996",
+      "bytes": 969
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/groups-application.jsonl",
+      "sha256": "e8943491b53da7815d142b34a7f3285fa5a314571b46705db07f0351f656b8ec",
+      "bytes": 29672
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/groups-summary.json",
+      "sha256": "e7119690cf3b43b3934003ba766f8b80891bfab20aa08689fa6141a92c6f3925",
+      "bytes": 4815
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/historical-audit.json",
+      "sha256": "330a96c08e871dcf69addec0a479a00cc984bf3f7cd0253d3ee82b3977ed055d",
+      "bytes": 43083
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/native-offline-timeline-proof.json",
+      "sha256": "692c1a8b4469fdb8bd449a0caaf6ada8321d3ac731d02390a6d4ea71ab8e522c",
+      "bytes": 1941
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/notion-task-readback.md",
+      "sha256": "dae1eb30bc6204a54496016c40b7a98dd90369e1cf92e8da5ca8ee10bfa3d4d6",
+      "bytes": 32417
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/original-connection-status.json",
+      "sha256": "e362365969a5be225737ca177ebb8c2f3ffc54b3265e402fb7a0b99550756f52",
+      "bytes": 151
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/paired-summary.json",
+      "sha256": "c660e4656b5a82088bb8d6fec09114f3a4ede75e111ba44481f4611ec9ca2d73",
+      "bytes": 26348
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/pilot-direct.jsonl",
+      "sha256": "00f1b413c9b64b75cecc83c998475e29bf746ec0844e61e3d4a1954b7064b99c",
+      "bytes": 215630
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/pilot2-direct.jsonl",
+      "sha256": "7c3d82ffab5edc2d8f081605a690dfac266dbe421e1e0f4c334d820937c7c254",
+      "bytes": 335744
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/plan-route-final.json",
+      "sha256": "ad168a68374e4fbbc3f433716d2733544714cda43bd64a056b57228158030f94",
+      "bytes": 841
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/plan-route.json",
+      "sha256": "7075a156367f4797553454a24d58402b55b1b356100b07a1a517c1d3145f1c03",
+      "bytes": 837
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/profile-locations.json",
+      "sha256": "84ac2e09df7804493353a553bc369907711f6586f6966c6f914070ff4601897e",
+      "bytes": 184
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/receipt-review-adapter.json",
+      "sha256": "7fb47d32edc3163ab33924bd803f53531ac38ea0ab41969d0ed3a42e8782457d",
+      "bytes": 22759
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/receipt-review-application.json",
+      "sha256": "cb7528c49269f3d569f8695c4b75967cd88911337ebb7abdc8b5109ce9df676e",
+      "bytes": 23693
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/receipt-review-direct.json",
+      "sha256": "c724ec507f6c776b331033972ac25e79f1bed785f000856a468972d8ba06ccd3",
+      "bytes": 6142
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/replay-proof.json",
+      "sha256": "f5fae68e4d5bfccb428359acc124d3033f0644909cc208b9cda6f20252343853",
+      "bytes": 204
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/resource-cleanup.json",
+      "sha256": "21ca6332137425c731179050fc0a8c42189bc0a60c988cdcf9f85011cd90251a",
+      "bytes": 747
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/role-fixture-initial-failure.json",
+      "sha256": "adc5a14e138dbbdf3f40f9f975db2a0d4a2e3558ea696ccb0aed08e50f63e2a9",
+      "bytes": 232
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/role-fixture-preflight.json",
+      "sha256": "140e78355eb87905c5d53602eeb8ebfd076d2287ea7656798466ecc451df29ac",
+      "bytes": 169
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/role-groups-adapter-journal.json",
+      "sha256": "a4faad95c02d170bfe0590d623764307a46f0c354575975967b93e13322d0615",
+      "bytes": 2827
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/role-groups-adapter.jsonl",
+      "sha256": "2795fb4255892271d61932f8cafa551fe6c70af77b45ecfe3b20c7ee6ba0b6db",
+      "bytes": 34694
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/role-groups-application-journal.json",
+      "sha256": "d3166bc335dbd3301d266de416c9cad18d3d0cea671c59100b261786b3a2adf8",
+      "bytes": 2824
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/role-groups-application.jsonl",
+      "sha256": "d6af627c3cd03c0db5084c3ba5d3a317b860f88f3a1d990e474c95310206bb55",
+      "bytes": 35634
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/role-groups-summary.json",
+      "sha256": "bbacf63dbe92ceea0704f82e9ea08a5c12ed3a260dccdcb4450023aa58a139ac",
+      "bytes": 4770
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/runtime-provenance.json",
+      "sha256": "a96d793db08fd65f7c8f0df445f4bbd26dd862226160919f925ba56e7e8a6a5b",
+      "bytes": 1641
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/secret-scan.json",
+      "sha256": "7e64eacc9ee43b90d651980ba7a8e32d398040a83aa61c1b0865286eea30309b",
+      "bytes": 395
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/source-ui-proof-initial.py",
+      "sha256": "446aea4b4c8685bc1f20fdbfbaf9cd17b0b59b6bd039813c383157163d0fdfbc",
+      "bytes": 5582
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/ui-history-proof.json",
+      "sha256": "70b8b39ef8a09a690a3d1533a145658a4f4f43d369ef1a7eed80c9f74ff86d42",
+      "bytes": 1445
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/ui-history-recovery.json",
+      "sha256": "8790eed7cce809074a678ec994348b5b859ab4b91c05f82d930e524244f1e2c7",
+      "bytes": 635
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/ui-peer-no-inference.json",
+      "sha256": "bdfc1886751967594822561071da8b6db4a0e41b3f44eebe8d2d12f767e4ac1d",
+      "bytes": 125
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/ui-visual-proof.json",
+      "sha256": "ca55c27e324b3b9e5781b6b816d478c5f745dab2f2fb384238aec02c30bc2216",
+      "bytes": 1103
+    },
+    {
+      "path": "docs/research/evidence/nma-028-luna/unrelated-worktree-drift.json",
+      "sha256": "c7a837ba19231a320fc2cdf60a043c795a69033480a7989983f6a496c4b30d21",
+      "bytes": 493
+    },
+    {
+      "path": "docs/research/nma-028-chatgpt-luna-continuation.md",
+      "sha256": "5e7a7df999a65867a0490a6d895af6ce18d383e510dab9b2b8e327ea605357a8",
+      "bytes": 16304
+    },
+    {
+      "path": "scripts/spikes/nma028/plan_baseline.py",
+      "sha256": "059993c91eea8b7929939683f4cd989c0aebc0c5e0a6645dc5930877e8329dfb",
+      "bytes": 10088
+    },
+    {
+      "path": "scripts/spikes/nma028/plan_group_supplement.py",
+      "sha256": "f5c6b9b7c0fef5cde74c15ddaac0feeb04fe7ea17eaf7c58676527fefe065f3a",
+      "bytes": 908
+    },
+    {
+      "path": "scripts/spikes/nma028/plan_lifecycle_timeline.py",
+      "sha256": "c547601eb013273e220566d8a8e1b028e507a4025937545bd601f57b99227f83",
+      "bytes": 1214
+    },
+    {
+      "path": "scripts/spikes/nma028/plan_results.py",
+      "sha256": "50251fbce9fcf33f8c8f3c55305f9d3626fa7932158753d82856ae1afc9e0d62",
+      "bytes": 7737
+    },
+    {
+      "path": "scripts/spikes/nma028/plan_role_groups.py",
+      "sha256": "37bd057490e17a8f7772dc41d3e04f785471a280d51003b06067d1cb2eadbec5",
+      "bytes": 4673
+    },
+    {
+      "path": "scripts/spikes/nma028/plan_route.py",
+      "sha256": "12dc09a1adc2b317b8966aebe74e210c0afd27497ebc74e5c7e86c8290fecbc4",
+      "bytes": 8263
+    },
+    {
+      "path": "scripts/spikes/nma028/plan_ui_proof.py",
+      "sha256": "e8f121264971ca936c9df158d765da0fd7978905013d17a87aaf86be2690aae2",
+      "bytes": 6033
+    },
+    {
+      "path": "scripts/spikes/nma028/protocol-plan-groups.json",
+      "sha256": "d49066e1d7fdc97363d008e76c2e358dfbce245419ca69b7377512ae67ed34a7",
+      "bytes": 4067
+    },
+    {
+      "path": "scripts/spikes/nma028/protocol-plan-role-groups.json",
+      "sha256": "c7a4c541abd94205683735f347fe5dc88d26bd668032e34fa0d539d45cbe1745",
+      "bytes": 4753
+    },
+    {
+      "path": "scripts/spikes/nma028/protocol-plan.json",
+      "sha256": "c1a7b3b29a21e6704599db693c7f5be689e9dc87f7e94314abb8e5d12fb6a810",
+      "bytes": 6397
+    },
+    {
+      "path": "scripts/spikes/nma028/test_plan_results.py",
+      "sha256": "66b22103e8984bf055ed300b46e14c563b2139cafa43360dcd00b28239ffa351",
+      "bytes": 2731
+    }
+  ],
+  "notion_delivery": {
+    "status_read_back": "Done",
+    "checked_acceptance_items": 13,
+    "unchecked_acceptance_items": 0,
+    "truncated": false
+  },
+  "tracked_diff_at_finish": [
+    "docs/agent.pen"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "provider": "chatgpt",
+  "status": "connected",
+  "credential_generation": 2,
+  "luna_in_catalog": true,
+  "original_connection_preserved": true
+}

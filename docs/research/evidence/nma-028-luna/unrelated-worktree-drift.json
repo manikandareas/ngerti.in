@@ -1,0 +1,8 @@
+{
+  "detected_at": "2026-10-26T04:38:07.932030+00:00",
+  "path": "docs/agent.pen",
+  "before_sha256": "01a9d8d43f2598ebfa5c0868c87dfc53ff4ceb6e9df7f4e2bcc5e31e9fb7c70d",
+  "current_sha256": "65803692e4d7df3cc9e334ce303f1c5d27b7296c7bbfad749af2ffbf1240b56c",
+  "current_bytes": 1988093,
+  "disposition": "Unrelated design artifact drift observed during this run. No task edit targeted this file; its current bytes are preserved. Engine/backend/web implementation files have no tracked diff."
+}

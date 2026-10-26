@@ -1,0 +1,361 @@
+{
+  "operations": [
+    {
+      "scope_key": "556ae56a04f595f9df5e7d020ff580cc8dd0ee156b0c40b8eada5a403ba15aad",
+      "operation_id": "b2317b694b3eac61087005514432882529b05a28fbdf0b03883d6dd5ab62ed04",
+      "tool": "browser_exec",
+      "args_hash": "31f020ad8501ee9af28552e43c55348c9267007df52d60b1a406fde0d5b0fdf3",
+      "state": "indeterminate",
+      "result": "{\"success\": false, \"exit_code\": 1, \"output\": \"\", \"workspace\": \"/work/state/cache/browser-use/workspace/556ae56a04f595f9df5e7d020ff580cc8dd0ee156b0c40b8eada5a403ba15aad\", \"stderr\": \"Traceback (most recent call last):\\n  File \\\"<frozen runpy>\\\", line 203, in _run_module_as_main\\n  File \\\"<frozen runpy>\\\", line 88, in _run_code\\n  File \\\"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\\\", line 410, in <module>\\n    main()\\n    ~~~~^^\\n  File \\\"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\\\", line 255, in main\\n    _run(args)\\n    ~~~~^^^^^^\\n  File \\\"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\\\", line 406, in _run\\n    exec(code, globals())\\n    ~~~~^^^^^^^^^^^^^^^^^\\n  File \\\"<string>\\\", line 2\\n    tab = new_tab('http://127.0.0.1:8765/')\\nIndentationError: unexpected indent\"}",
+      "started": 1792985568.9490461,
+      "finished": 1792985571.809917
+    },
+    {
+      "scope_key": "59c70b1cc7bf02a71be3f8f0b15cb8ee815dd96dd269696bbf2c54622557ac66",
+      "operation_id": "668765244a9fac73d9675547cf7a03acffb5819890dd525f82778577012d60e0",
+      "tool": "browser_exec",
+      "args_hash": "4f56b983a8895fd4732aa179227b918500bf9efab282c4091b4f43574cd49ac9",
+      "state": "indeterminate",
+      "result": "{\"success\": false, \"exit_code\": 1, \"output\": \"\", \"workspace\": \"/work/state/cache/browser-use/workspace/59c70b1cc7bf02a71be3f8f0b15cb8ee815dd96dd269696bbf2c54622557ac66\", \"stderr\": \"Traceback (most recent call last):\\n  File \\\"<frozen runpy>\\\", line 203, in _run_module_as_main\\n  File \\\"<frozen runpy>\\\", line 88, in _run_code\\n  File \\\"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\\\", line 410, in <module>\\n    main()\\n    ~~~~^^\\n  File \\\"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\\\", line 255, in main\\n    _run(args)\\n    ~~~~^^^^^^\\n  File \\\"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\\\", line 406, in _run\\n    exec(code, globals())\\n    ~~~~^^^^^^^^^^^^^^^^^\\n  File \\\"<string>\\\", line 2\\n    tab = new_tab('http://127.0.0.1:8765/')\\nIndentationError: unexpected indent\"}",
+      "started": 1792985595.438647,
+      "finished": 1792985597.910604
+    },
+    {
+      "scope_key": "c8e6637f79c334c528facf97fc5a13b62321f2ba158b241663218be143ec325f",
+      "operation_id": "489cbf8bfcf973b9d01dd4a586addd3bb112e6f4e8314fa771df86bfa66e0a77",
+      "tool": "browser_exec",
+      "args_hash": "2102431f392994c3f0286c0106634915db676b017744269b3b71929df043e71b",
+      "state": "indeterminate",
+      "result": "{\"success\": false, \"exit_code\": 1, \"output\": \"\", \"workspace\": \"/work/state/cache/browser-use/workspace/c8e6637f79c334c528facf97fc5a13b62321f2ba158b241663218be143ec325f\", \"stderr\": \"Traceback (most recent call last):\\n  File \\\"<frozen runpy>\\\", line 203, in _run_module_as_main\\n  File \\\"<frozen runpy>\\\", line 88, in _run_code\\n  File \\\"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\\\", line 410, in <module>\\n    main()\\n    ~~~~^^\\n  File \\\"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\\\", line 255, in main\\n    _run(args)\\n    ~~~~^^^^^^\\n  File \\\"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\\\", line 406, in _run\\n    exec(code, globals())\\n    ~~~~^^^^^^^^^^^^^^^^^\\n  File \\\"<string>\\\", line 2\\n    tab = new_tab('http://127.0.0.1:8765/')\\nIndentationError: unexpected indent\"}",
+      "started": 1792985615.1516669,
+      "finished": 1792985617.5351338
+    },
+    {
+      "scope_key": "b5eb39ef7c45d30e3e3f2b633020b2d0904cc4136b2550f548a9624cb2780a9b",
+      "operation_id": "0c53c7c8551cd9047f7669f6cce1971fc2143b7e131af7cde4c7ade4a05a9987",
+      "tool": "browser_exec",
+      "args_hash": "d9f34d07dde0fb5a41d96329ec194701889d97833bb5cfa366912dc130aefe39",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"{'url': 'http://127.0.0.1:8765/form', 'title': '\ud83d\udc34 NMA028 isolated form', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/b5eb39ef7c45d30e3e3f2b633020b2d0904cc4136b2550f548a9624cb2780a9b\"}",
+      "started": 1792985636.255191,
+      "finished": 1792985639.342675
+    },
+    {
+      "scope_key": "b5eb39ef7c45d30e3e3f2b633020b2d0904cc4136b2550f548a9624cb2780a9b",
+      "operation_id": "6928a26449e383549b7ab8c224e1a851cd612fd5e5849fea4345403145c6bc26",
+      "tool": "browser_exec",
+      "args_hash": "2b21cb05ecdbf6ffde2c348c648916becf8176d173529f4dfb43af3fec610f87",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"{'name': 'Synthetic', 'note': 'NMA028', 'forms': 1}\\n{'url': 'http://127.0.0.1:8765/form', 'title': '\ud83d\udc34 NMA028 isolated form', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/b5eb39ef7c45d30e3e3f2b633020b2d0904cc4136b2550f548a9624cb2780a9b\"}",
+      "started": 1792985644.891281,
+      "finished": 1792985645.5026681
+    },
+    {
+      "scope_key": "b5eb39ef7c45d30e3e3f2b633020b2d0904cc4136b2550f548a9624cb2780a9b",
+      "operation_id": "313a984de06f81838274bab3eb759e423ebf71287ed015e31263558db4c70922",
+      "tool": "browser_exec",
+      "args_hash": "66755a84bcbc72cccf4d230aefb639fcbe773ad90a5d0ffcb7d1066e3b41166a",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"{'url': 'http://127.0.0.1:8765/submit', 'title': '\ud83d\udc34 Saved', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\nNMA028_SAVED\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/b5eb39ef7c45d30e3e3f2b633020b2d0904cc4136b2550f548a9624cb2780a9b\"}",
+      "started": 1792985654.8621812,
+      "finished": 1792985655.419351
+    },
+    {
+      "scope_key": "6e988f2ff0f30f4d56398526b7775682376e35e8deef9b662519b1c93569e02c",
+      "operation_id": "f7d21fc46f75b8fb89f452436188c8a0c5e999262db2ea694109aa842b6f33e4",
+      "tool": "browser_exec",
+      "args_hash": "4dc78ce8b221f62152d545b37f05c90c1d23289f69c86b8e6cf0e68275ab33b8",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"{'url': 'http://127.0.0.1:8765/form', 'title': '\ud83d\udc34 NMA028 isolated form', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\nbefore submit: {'url': 'http://127.0.0.1:8765/form', 'title': '\ud83d\udc34 NMA028 isolated form', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\nafter submit: {'url': 'http://127.0.0.1:8765/form', 'title': '\ud83d\udc34 NMA028 isolated form', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/6e988f2ff0f30f4d56398526b7775682376e35e8deef9b662519b1c93569e02c\"}",
+      "started": 1792985672.2254112,
+      "finished": 1792985674.775546
+    },
+    {
+      "scope_key": "6e988f2ff0f30f4d56398526b7775682376e35e8deef9b662519b1c93569e02c",
+      "operation_id": "3511184bf4e25d404b4a2e86c090fbae0566126eafea5cc307dadee5289ee721",
+      "tool": "browser_exec",
+      "args_hash": "81981251defd62f1db57faf7009e31f0ba4ecb549e840f073bd60cd222c76810",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"url: http://127.0.0.1:8765/submit\\nreceipt: NMA028_SAVED\\npage: {'url': 'http://127.0.0.1:8765/submit', 'title': '\ud83d\udc34 Saved', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/6e988f2ff0f30f4d56398526b7775682376e35e8deef9b662519b1c93569e02c\"}",
+      "started": 1792985680.705306,
+      "finished": 1792985681.263564
+    },
+    {
+      "scope_key": "4786e7c2fef5615195a8da4241ff1baf2ce6b11b5c5787737fc358338ee9cdf8",
+      "operation_id": "b0128f176005fd68e1d9a6d03852e21ec337892a6c6ab104547946fc86a11b2a",
+      "tool": "browser_exec",
+      "args_hash": "dd44fa3eed1a2a283b7d3865a27e7936f6e8823f54dc3ed19eaafd4edd88de7f",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"{'url': 'http://127.0.0.1:8765/form', 'title': '\ud83d\udc34 NMA028 isolated form', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\ninputs [{'name': 'name', 'type': 'text', 'value': ''}, {'name': 'note', 'type': 'text', 'value': ''}]\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/4786e7c2fef5615195a8da4241ff1baf2ce6b11b5c5787737fc358338ee9cdf8\"}",
+      "started": 1792985694.651485,
+      "finished": 1792985697.084286
+    },
+    {
+      "scope_key": "4786e7c2fef5615195a8da4241ff1baf2ce6b11b5c5787737fc358338ee9cdf8",
+      "operation_id": "02be573e0c800449208d67f769fe8c00101a648192f09f313044987850226ecd",
+      "tool": "browser_exec",
+      "args_hash": "0441152127f1506404cfebc498e7914e172994815c7d8b603ac397cae7d9f6e6",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"before {'name': 'Synthetic', 'note': 'NMA028'}\\n{'url': 'http://127.0.0.1:8765/form', 'title': '\ud83d\udc34 NMA028 isolated form', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/4786e7c2fef5615195a8da4241ff1baf2ce6b11b5c5787737fc358338ee9cdf8\"}",
+      "started": 1792985702.86048,
+      "finished": 1792985703.467537
+    },
+    {
+      "scope_key": "4786e7c2fef5615195a8da4241ff1baf2ce6b11b5c5787737fc358338ee9cdf8",
+      "operation_id": "4c22e00249e9d803800e028ebcc210cb91ef5ae72a380ca223d21ffc5b92ae4e",
+      "tool": "browser_exec",
+      "args_hash": "473762b42b199130084d9a9328e1f9a74be7fa0ae642f4c81a64acb7848ff119",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"url http://127.0.0.1:8765/submit\\nreceipt NMA028_SAVED\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/4786e7c2fef5615195a8da4241ff1baf2ce6b11b5c5787737fc358338ee9cdf8\"}",
+      "started": 1792985707.354816,
+      "finished": 1792985707.907663
+    },
+    {
+      "scope_key": "ec9a15a2513d1cae559311a287865683c4e59eb0fff3dadce9c23dd8aa928e60",
+      "operation_id": "59b505f8020f4d79a619825b74d3a34ad134284121f120aa64eb6f39966cf323",
+      "tool": "browser_exec",
+      "args_hash": "9402fb6f69f2b90417f16f32f7fe6ed1d632c739622f73ca2f595aa813089c50",
+      "state": "indeterminate",
+      "result": "{\"success\": false, \"exit_code\": 1, \"output\": \"\", \"workspace\": \"/work/state/cache/browser-use/workspace/ec9a15a2513d1cae559311a287865683c4e59eb0fff3dadce9c23dd8aa928e60\", \"stderr\": \"Traceback (most recent call last):\\n  File \\\"<frozen runpy>\\\", line 203, in _run_module_as_main\\n  File \\\"<frozen runpy>\\\", line 88, in _run_code\\n  File \\\"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\\\", line 410, in <module>\\n    main()\\n    ~~~~^^\\n  File \\\"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\\\", line 255, in main\\n    _run(args)\\n    ~~~~^^^^^^\\n  File \\\"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\\\", line 406, in _run\\n    exec(code, globals())\\n    ~~~~^^^^^^^^^^^^^^^^^\\n  File \\\"<string>\\\", line 2\\n    tab = new_tab('http://127.0.0.1:8765/form')\\nIndentationError: unexpected indent\"}",
+      "started": 1792985720.497178,
+      "finished": 1792985722.950571
+    },
+    {
+      "scope_key": "db1d7901ccc2fdd92b6e9fb4040805247433e067bfdb77e48cb06efd078f97a8",
+      "operation_id": "b01bb2ef660d3b37424fe18517f075d79cf41d2ed6478331dce93473ddfb2844",
+      "tool": "browser_exec",
+      "args_hash": "9402fb6f69f2b90417f16f32f7fe6ed1d632c739622f73ca2f595aa813089c50",
+      "state": "indeterminate",
+      "result": "{\"success\": false, \"exit_code\": 1, \"output\": \"\", \"workspace\": \"/work/state/cache/browser-use/workspace/db1d7901ccc2fdd92b6e9fb4040805247433e067bfdb77e48cb06efd078f97a8\", \"stderr\": \"Traceback (most recent call last):\\n  File \\\"<frozen runpy>\\\", line 203, in _run_module_as_main\\n  File \\\"<frozen runpy>\\\", line 88, in _run_code\\n  File \\\"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\\\", line 410, in <module>\\n    main()\\n    ~~~~^^\\n  File \\\"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\\\", line 255, in main\\n    _run(args)\\n    ~~~~^^^^^^\\n  File \\\"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\\\", line 406, in _run\\n    exec(code, globals())\\n    ~~~~^^^^^^^^^^^^^^^^^\\n  File \\\"<string>\\\", line 2\\n    tab = new_tab('http://127.0.0.1:8765/form')\\nIndentationError: unexpected indent\"}",
+      "started": 1792985760.840472,
+      "finished": 1792985763.829792
+    },
+    {
+      "scope_key": "29ac2976eb65e5a1458d59bf91a90ae7a358f6a5ed23d6f96c0f24859da21ebf",
+      "operation_id": "912706862ed25a841fee7456072705817f44e1d78621ba100d83a0a4aa6f5c35",
+      "tool": "browser_exec",
+      "args_hash": "e33c5eb190d31ceb402e908fb2db043ef300fa6e7e10384161bda80afacfd1bd",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"{'url': 'http://127.0.0.1:8765/form', 'title': '\ud83d\udc34 NMA028 isolated form', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/29ac2976eb65e5a1458d59bf91a90ae7a358f6a5ed23d6f96c0f24859da21ebf\"}",
+      "started": 1792985791.1135519,
+      "finished": 1792985793.911068
+    },
+    {
+      "scope_key": "29ac2976eb65e5a1458d59bf91a90ae7a358f6a5ed23d6f96c0f24859da21ebf",
+      "operation_id": "b1c4b423957c8a8b58da73b7e367962ada01c1796bcd8cf4142dc44151f043c9",
+      "tool": "browser_exec",
+      "args_hash": "be421c00e4695dcb9c418c4c285d74eba6030c244e142d03852b32f123d65312",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"{}\\nContinue\\nNameNoteSubmit\\nDownload CSV\\n[{'text': 'Continue', 'href': 'http://127.0.0.1:8765/form'}, {'text': 'Download CSV', 'href': 'http://127.0.0.1:8765/download.csv'}]\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/29ac2976eb65e5a1458d59bf91a90ae7a358f6a5ed23d6f96c0f24859da21ebf\"}",
+      "started": 1792985798.8331451,
+      "finished": 1792985799.392085
+    },
+    {
+      "scope_key": "29ac2976eb65e5a1458d59bf91a90ae7a358f6a5ed23d6f96c0f24859da21ebf",
+      "operation_id": "7fae84130ff7de406f5a959f0c391ed779d5fefa94ece45d13f3b7a9a684510f",
+      "tool": "browser_exec",
+      "args_hash": "23491018f3417ea043196cfbeae2deab07addfd6f2212a380a759ac3be86d198",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"http://127.0.0.1:8765/download.csv\\n{'url': 'http://127.0.0.1:8765/form', 'title': '\ud83d\udc34 NMA028 isolated form', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/29ac2976eb65e5a1458d59bf91a90ae7a358f6a5ed23d6f96c0f24859da21ebf\"}",
+      "started": 1792985803.729831,
+      "finished": 1792985806.402556
+    },
+    {
+      "scope_key": "29ac2976eb65e5a1458d59bf91a90ae7a358f6a5ed23d6f96c0f24859da21ebf",
+      "operation_id": "dd1acce01e83809b6ce07a793085fe8b0c766373714281da9b83533215d09dac",
+      "tool": "terminal",
+      "args_hash": "790b378e0a708542c6864ff8ba82873ac9d8c2ff63040a411e3f83f6300199bf",
+      "state": "returned",
+      "result": "{\"output\": \"b611b0fafb38f99c14d214548fe8f89e1a7839670c66bb72e2824c9eb181dfb4  /work/downloads/report.csv\", \"exit_code\": 0, \"error\": null}",
+      "started": 1792985811.6686919,
+      "finished": 1792985812.862475
+    },
+    {
+      "scope_key": "c00541ab36a2fe801dbb204da0af609690acc9774b086854bf7e5887193929ae",
+      "operation_id": "0eabe7de0b6b55cefe0cc95862d47c329ce3ac3e744c60fe7d38ff4ba90be2b7",
+      "tool": "terminal",
+      "args_hash": "36cda82db01c67d1621d9f6c00e6b234cd290fead3d4a0518a6b4c33cfa232f6",
+      "state": "indeterminate",
+      "result": null,
+      "started": 1792985847.456962,
+      "finished": 1792985847.73347
+    },
+    {
+      "scope_key": "ff685630a8182a8194c4a85a0776ce5c9f185c8d6aa24157908013ff2331a802",
+      "operation_id": "cece88670399f3f95882f098c0053bd194c95df7401ddc1079b76a2cb1ff44c8",
+      "tool": "terminal",
+      "args_hash": "36cda82db01c67d1621d9f6c00e6b234cd290fead3d4a0518a6b4c33cfa232f6",
+      "state": "indeterminate",
+      "result": null,
+      "started": 1792985876.261516,
+      "finished": 1792985876.5454311
+    },
+    {
+      "scope_key": "861355a3c3b454386b268cfb95cb167b53f40e442786ba7b8f974c9c59770138",
+      "operation_id": "5e4d1ecc8499209313f6a389731166c8a595ff1bc015ac755a26a9260a4c2c4a",
+      "tool": "terminal",
+      "args_hash": "36cda82db01c67d1621d9f6c00e6b234cd290fead3d4a0518a6b4c33cfa232f6",
+      "state": "indeterminate",
+      "result": null,
+      "started": 1792985905.39464,
+      "finished": 1792985905.6264179
+    },
+    {
+      "scope_key": "a75639d6d133527c3aa43df0163f44ba4eec00a5ef842ac7e65af0ed223abbda",
+      "operation_id": "42940162199f82d82e1678f8b6af41e5f7233ac3e1544274962100360ad9b9aa",
+      "tool": "terminal",
+      "args_hash": "d4c766733babd0033bf1dbb81e7f71f3498ddb8054b34c9ccbfd2fc864db37d6",
+      "state": "returned",
+      "result": "{\"output\": \"238\\n2026-10-26T03:39:27Z\", \"exit_code\": 0, \"error\": null}",
+      "started": 1792985966.180867,
+      "finished": 1792985968.815659
+    },
+    {
+      "scope_key": "a75639d6d133527c3aa43df0163f44ba4eec00a5ef842ac7e65af0ed223abbda",
+      "operation_id": "74e65202781bbb2ec152e89fd0b198c2871f56ad4a3986eabe367c4fe411b54b",
+      "tool": "terminal",
+      "args_hash": "49d8c752e7da917c40bd35ca9bdf3c5599ea4680e33b121028f26aa21de49ada",
+      "state": "returned",
+      "result": "{\"output\": \"238\", \"exit_code\": 0, \"error\": null}",
+      "started": 1792986021.649778,
+      "finished": 1792986021.924992
+    },
+    {
+      "scope_key": "a8dc1dab73c03d0dda094db0e3fe4610718cbcfabfa8453ac82540107bc4238f",
+      "operation_id": "23abcb09a4d1229fb5f3e95a6a27d2336bfd578512e882b30768110191f05fe8",
+      "tool": "terminal",
+      "args_hash": "69727bd340dc62aba8e166296ef48bbab010057d7acbab0790ad218f68640e6e",
+      "state": "returned",
+      "result": "{\"output\": \"2026-10-26T03:41:00.871919925Z\", \"exit_code\": 0, \"error\": null}",
+      "started": 1792986059.280112,
+      "finished": 1792986061.7572742
+    },
+    {
+      "scope_key": "a8dc1dab73c03d0dda094db0e3fe4610718cbcfabfa8453ac82540107bc4238f",
+      "operation_id": "4d8844b61526ec4d81060a140dfe2afbdf181bad87b5a84812d5dfe98f5b0fcc",
+      "tool": "terminal",
+      "args_hash": "69727bd340dc62aba8e166296ef48bbab010057d7acbab0790ad218f68640e6e",
+      "state": "returned",
+      "result": "{\"output\": \"2026-10-26T03:41:30.552853356Z\", \"exit_code\": 0, \"error\": null}",
+      "started": 1792986090.3086379,
+      "finished": 1792986090.593843
+    },
+    {
+      "scope_key": "e0dac53e5177aaaa28e612e61e173cbe9fce981843a6f50d3c02c990fb84849a",
+      "operation_id": "e3a92802778ee11eb5b35d9339b28d3a22b9e2c6294e15383be446db8df58198",
+      "tool": "terminal",
+      "args_hash": "2a9f661ca677a47812e340ec6982143799b27e1837d0fadb9682fed7649f25ba",
+      "state": "returned",
+      "result": "{\"output\": \"2026-10-26T03:42:06Z\", \"exit_code\": 0, \"error\": null}",
+      "started": 1792986124.350131,
+      "finished": 1792986127.079285
+    }
+  ],
+  "scopes": [
+    {
+      "scope_key": "29ac2976eb65e5a1458d59bf91a90ae7a358f6a5ed23d6f96c0f24859da21ebf",
+      "scope_json": "{\"agent_id\": \"ca0f914f-7873-4dfa-bcf5-e0f53720e218\", \"generation\": 1, \"owner_id\": \"18bf9e53-870c-444b-b152-c0c51ab70967\", \"thread_id\": \"d646fa7a-1be1-4470-9ef3-724e1ef42cf9\"}",
+      "container": "nma028-5110a8d1-29ac2976eb65e5a1",
+      "volume": "nma028-5110a8d1-29ac2976eb65e5a1-work",
+      "state": "paused"
+    },
+    {
+      "scope_key": "4786e7c2fef5615195a8da4241ff1baf2ce6b11b5c5787737fc358338ee9cdf8",
+      "scope_json": "{\"agent_id\": \"59815de8-c190-4059-973d-7cdb2255dc73\", \"generation\": 1, \"owner_id\": \"18bf9e53-870c-444b-b152-c0c51ab70967\", \"thread_id\": \"b6826c74-9ed6-4eef-b628-d3c51762e97e\"}",
+      "container": "nma028-5110a8d1-4786e7c2fef56151",
+      "volume": "nma028-5110a8d1-4786e7c2fef56151-work",
+      "state": "paused"
+    },
+    {
+      "scope_key": "556ae56a04f595f9df5e7d020ff580cc8dd0ee156b0c40b8eada5a403ba15aad",
+      "scope_json": "{\"agent_id\": \"0fd0b9fa-03af-4ab7-8398-fac0bac11d45\", \"generation\": 1, \"owner_id\": \"18bf9e53-870c-444b-b152-c0c51ab70967\", \"thread_id\": \"45d394f2-16e4-4f24-92e6-fa5854c4f265\"}",
+      "container": "nma028-5110a8d1-556ae56a04f595f9",
+      "volume": "nma028-5110a8d1-556ae56a04f595f9-work",
+      "state": "uncertain"
+    },
+    {
+      "scope_key": "59c70b1cc7bf02a71be3f8f0b15cb8ee815dd96dd269696bbf2c54622557ac66",
+      "scope_json": "{\"agent_id\": \"3cc33888-6aa8-4589-91fd-7bf69beb4ba2\", \"generation\": 1, \"owner_id\": \"18bf9e53-870c-444b-b152-c0c51ab70967\", \"thread_id\": \"30215a35-d5b4-432d-9119-2e12fddc121d\"}",
+      "container": "nma028-5110a8d1-59c70b1cc7bf02a7",
+      "volume": "nma028-5110a8d1-59c70b1cc7bf02a7-work",
+      "state": "uncertain"
+    },
+    {
+      "scope_key": "6e988f2ff0f30f4d56398526b7775682376e35e8deef9b662519b1c93569e02c",
+      "scope_json": "{\"agent_id\": \"df2a8e15-e5e1-439f-bd5a-f085272c189e\", \"generation\": 1, \"owner_id\": \"18bf9e53-870c-444b-b152-c0c51ab70967\", \"thread_id\": \"1ba18c95-3797-486c-b94e-9fd7fd0dc271\"}",
+      "container": "nma028-5110a8d1-6e988f2ff0f30f4d",
+      "volume": "nma028-5110a8d1-6e988f2ff0f30f4d-work",
+      "state": "paused"
+    },
+    {
+      "scope_key": "861355a3c3b454386b268cfb95cb167b53f40e442786ba7b8f974c9c59770138",
+      "scope_json": "{\"agent_id\": \"1d6a1739-e94b-4b84-ab31-b7f9ffc19197\", \"generation\": 1, \"owner_id\": \"18bf9e53-870c-444b-b152-c0c51ab70967\", \"thread_id\": \"e420ce08-7eba-4eb6-bae2-88a0a941509e\"}",
+      "container": "nma028-5110a8d1-861355a3c3b45438",
+      "volume": "nma028-5110a8d1-861355a3c3b45438-work",
+      "state": "cancelled"
+    },
+    {
+      "scope_key": "a75639d6d133527c3aa43df0163f44ba4eec00a5ef842ac7e65af0ed223abbda",
+      "scope_json": "{\"agent_id\": \"02135a6a-f611-4ee3-9933-cb9788df5b68\", \"generation\": 1, \"owner_id\": \"18bf9e53-870c-444b-b152-c0c51ab70967\", \"thread_id\": \"53408a44-fc03-4b3f-9c69-5e5a888b4eb4\"}",
+      "container": "nma028-5110a8d1-a75639d6d133527c",
+      "volume": "nma028-5110a8d1-a75639d6d133527c-work",
+      "state": "paused"
+    },
+    {
+      "scope_key": "a8dc1dab73c03d0dda094db0e3fe4610718cbcfabfa8453ac82540107bc4238f",
+      "scope_json": "{\"agent_id\": \"e2cabc49-7af8-4ea9-849b-187a1df4a5fb\", \"generation\": 1, \"owner_id\": \"18bf9e53-870c-444b-b152-c0c51ab70967\", \"thread_id\": \"2d744def-b9de-4356-9efe-75b0338c1d1d\"}",
+      "container": "nma028-5110a8d1-a8dc1dab73c03d0d",
+      "volume": "nma028-5110a8d1-a8dc1dab73c03d0d-work",
+      "state": "paused"
+    },
+    {
+      "scope_key": "b5eb39ef7c45d30e3e3f2b633020b2d0904cc4136b2550f548a9624cb2780a9b",
+      "scope_json": "{\"agent_id\": \"01a826a3-5acf-4482-90bd-1092feb46b5e\", \"generation\": 1, \"owner_id\": \"18bf9e53-870c-444b-b152-c0c51ab70967\", \"thread_id\": \"601b9d10-0d1b-4511-8be3-3e44ec732f08\"}",
+      "container": "nma028-5110a8d1-b5eb39ef7c45d30e",
+      "volume": "nma028-5110a8d1-b5eb39ef7c45d30e-work",
+      "state": "paused"
+    },
+    {
+      "scope_key": "c00541ab36a2fe801dbb204da0af609690acc9774b086854bf7e5887193929ae",
+      "scope_json": "{\"agent_id\": \"9608e338-bd92-4881-80b9-d41054cd4c86\", \"generation\": 1, \"owner_id\": \"18bf9e53-870c-444b-b152-c0c51ab70967\", \"thread_id\": \"b37b8ae2-8eee-4e25-ac5b-4bedbf805a04\"}",
+      "container": "nma028-5110a8d1-c00541ab36a2fe80",
+      "volume": "nma028-5110a8d1-c00541ab36a2fe80-work",
+      "state": "cancelled"
+    },
+    {
+      "scope_key": "c8e6637f79c334c528facf97fc5a13b62321f2ba158b241663218be143ec325f",
+      "scope_json": "{\"agent_id\": \"ad1ddbbe-7902-4cce-955e-8511194631a6\", \"generation\": 1, \"owner_id\": \"18bf9e53-870c-444b-b152-c0c51ab70967\", \"thread_id\": \"c9a98079-fe8d-4aff-af8c-68242e70e79b\"}",
+      "container": "nma028-5110a8d1-c8e6637f79c334c5",
+      "volume": "nma028-5110a8d1-c8e6637f79c334c5-work",
+      "state": "uncertain"
+    },
+    {
+      "scope_key": "db1d7901ccc2fdd92b6e9fb4040805247433e067bfdb77e48cb06efd078f97a8",
+      "scope_json": "{\"agent_id\": \"8800685e-d0bb-43df-8828-b3372ac40726\", \"generation\": 1, \"owner_id\": \"18bf9e53-870c-444b-b152-c0c51ab70967\", \"thread_id\": \"bcd5bf83-8d6c-4633-8783-def205a6b377\"}",
+      "container": "nma028-5110a8d1-db1d7901ccc2fdd9",
+      "volume": "nma028-5110a8d1-db1d7901ccc2fdd9-work",
+      "state": "uncertain"
+    },
+    {
+      "scope_key": "e0dac53e5177aaaa28e612e61e173cbe9fce981843a6f50d3c02c990fb84849a",
+      "scope_json": "{\"agent_id\": \"afb59524-bd95-4ce6-a53e-2e76f40f7824\", \"generation\": 1, \"owner_id\": \"18bf9e53-870c-444b-b152-c0c51ab70967\", \"thread_id\": \"734be1d8-a502-4093-b9a2-4851b64710b1\"}",
+      "container": "nma028-5110a8d1-e0dac53e5177aaaa",
+      "volume": "nma028-5110a8d1-e0dac53e5177aaaa-work",
+      "state": "paused"
+    },
+    {
+      "scope_key": "ec9a15a2513d1cae559311a287865683c4e59eb0fff3dadce9c23dd8aa928e60",
+      "scope_json": "{\"agent_id\": \"66df1aa5-26fb-447d-836b-763091421f67\", \"generation\": 1, \"owner_id\": \"18bf9e53-870c-444b-b152-c0c51ab70967\", \"thread_id\": \"d9e496f3-5549-49ca-8d60-df5a06dc5914\"}",
+      "container": "nma028-5110a8d1-ec9a15a2513d1cae",
+      "volume": "nma028-5110a8d1-ec9a15a2513d1cae-work",
+      "state": "uncertain"
+    },
+    {
+      "scope_key": "ff685630a8182a8194c4a85a0776ce5c9f185c8d6aa24157908013ff2331a802",
+      "scope_json": "{\"agent_id\": \"57eb9a35-1a06-49b0-b775-1ba4fe7acdaa\", \"generation\": 1, \"owner_id\": \"18bf9e53-870c-444b-b152-c0c51ab70967\", \"thread_id\": \"0153fb39-96b9-4569-9102-b08ea028cc6d\"}",
+      "container": "nma028-5110a8d1-ff685630a8182a81",
+      "volume": "nma028-5110a8d1-ff685630a8182a81-work",
+      "state": "cancelled"
+    }
+  ]
+}

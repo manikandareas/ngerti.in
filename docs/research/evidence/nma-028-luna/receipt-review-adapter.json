@@ -1,0 +1,563 @@
+{
+  "method": "Read-only exact native terminal receipts; no gateway, model or tool invocation",
+  "original_database_wal_unchanged": true,
+  "original_hashes": {
+    "/private/tmp/nma-oqkj9dz7/state/state.db": "4bd177e7102fd852ee6d9a98b8f3e2b96006707037b14949d43bf57f13855d7c",
+    "/private/tmp/nma-oqkj9dz7/state/state.db-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "records": [
+    {
+      "attempt_id": "09e80912-51df-438b-9aad-ab090b88f0ab",
+      "surface": "adapter",
+      "scenario": "short_dm",
+      "repeat": 1,
+      "native_receipts": [
+        {
+          "run_id": "809f0d88-c7a4-56a3-b6a0-f44bf81a6c88",
+          "native_admission_id": "e696e279aec441ff8aa27a1b1ba48101",
+          "native_session_id": "local-6ca3598e751f1b90164c0e9f722879eded61d9861c546739f0d5299e7df3bc36",
+          "stored_receipt_sha256": "ad16d52710b3c21e23929c15880e5a503a887815504c731802d186b4e952466f",
+          "provider_credit_failure": false
+        }
+      ],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "14b4006a-ba51-4e31-aaff-84311ebd7176",
+      "surface": "adapter",
+      "scenario": "short_dm",
+      "repeat": 2,
+      "native_receipts": [
+        {
+          "run_id": "fe7882ab-8ce4-5e2d-aa84-4c175b9b2a50",
+          "native_admission_id": "db3b459613a64ce9bb016b28a1c78d6a",
+          "native_session_id": "local-4494794794355345436e17ed4ccbb883465efeb0001f22a29d9093382ca27dee",
+          "stored_receipt_sha256": "f7eb7c09bcebc7ecb72f08925454430e5e88b694ba9af502c5609673999edf0c",
+          "provider_credit_failure": false
+        }
+      ],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "68cde99f-bba8-4f37-8fbb-83a78739b6e5",
+      "surface": "adapter",
+      "scenario": "short_dm",
+      "repeat": 3,
+      "native_receipts": [
+        {
+          "run_id": "2aa84e2e-af1e-5eab-babb-61b05d580604",
+          "native_admission_id": "5e084f7d7a0e4b78a060f4bef3920f06",
+          "native_session_id": "local-233d86f41385814478dcd5a1026a2f5e6141850f81afcbeeb34875889d4f7647",
+          "stored_receipt_sha256": "2fca3cdace42668fa3dd40d79154ed17a037d5214262398d2be0c59b799d5b72",
+          "provider_credit_failure": false
+        }
+      ],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "59997c9d-95fe-4668-9478-6a4d7bc9a60f",
+      "surface": "adapter",
+      "scenario": "long_dm",
+      "repeat": 1,
+      "native_receipts": [
+        {
+          "run_id": "0c1f0a89-ff95-5d6a-b679-3715bb75c277",
+          "native_admission_id": "48db18365dd94fe191241d7cdea198ef",
+          "native_session_id": "local-4630d1fb2362d2e9be5e490dbdc233ff6846040c16da227dc3092fc5582cf879",
+          "stored_receipt_sha256": "d620b1a6773ffd147498e9dc556c77140fa3502fae77dc5de192de9132c69301",
+          "provider_credit_failure": false
+        },
+        {
+          "run_id": "4fae8708-0dce-5be6-8478-36a3f896221c",
+          "native_admission_id": "c0ea8470dd264fa99ee88bcbfdff9496",
+          "native_session_id": "local-4630d1fb2362d2e9be5e490dbdc233ff6846040c16da227dc3092fc5582cf879",
+          "stored_receipt_sha256": "8d57bdf32af6cf1f4b928635b8db03d7415a7d565d43dcd2591ac901b7c8c491",
+          "provider_credit_failure": false
+        },
+        {
+          "run_id": "d0d8d9eb-96bd-5903-95ef-72eb8a7510a7",
+          "native_admission_id": "2d32d20f625e448d95f102d5ab6707cb",
+          "native_session_id": "local-4630d1fb2362d2e9be5e490dbdc233ff6846040c16da227dc3092fc5582cf879",
+          "stored_receipt_sha256": "c1a41af9655501d2fdd35eeffd8683106e5e6e94ff2fdae69af4d88066c1f025",
+          "provider_credit_failure": false
+        }
+      ],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "54852a20-8ad3-4024-8fa7-061fdf83edb7",
+      "surface": "adapter",
+      "scenario": "long_dm",
+      "repeat": 2,
+      "native_receipts": [
+        {
+          "run_id": "800f87de-913a-598c-873e-28b90f737f63",
+          "native_admission_id": "c38c45fd942c4af0bd88a058480ff691",
+          "native_session_id": "local-99f3cf53e8669b2609eddd9c322a5ea296876a69b4c8db23dfb64f431abda782",
+          "stored_receipt_sha256": "46f871ce25fb69b1a232a10090b83c57467e1ee31eee5b1a8e526f0a7eecb5c9",
+          "provider_credit_failure": false
+        },
+        {
+          "run_id": "d96f4eeb-2ca0-5b6a-b99a-7ad957a6b68b",
+          "native_admission_id": "09626849f50649f6a0ccabb53bfcd385",
+          "native_session_id": "local-99f3cf53e8669b2609eddd9c322a5ea296876a69b4c8db23dfb64f431abda782",
+          "stored_receipt_sha256": "341f2d34ea555918a52e10d6d3251294c9b25d33128208abcc34375abfbac5ec",
+          "provider_credit_failure": false
+        },
+        {
+          "run_id": "d9a074e9-91cd-5a0d-a83f-90d69ce58c73",
+          "native_admission_id": "40bf3f2b00514fa9aac825fa0689748d",
+          "native_session_id": "local-99f3cf53e8669b2609eddd9c322a5ea296876a69b4c8db23dfb64f431abda782",
+          "stored_receipt_sha256": "2cc97e0ddf6ab7534a96e3bee03ee0b845c258ddddf71d9a14d4941082c17664",
+          "provider_credit_failure": false
+        }
+      ],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "523f3df4-2e28-4790-88e1-145f50d64792",
+      "surface": "adapter",
+      "scenario": "long_dm",
+      "repeat": 3,
+      "native_receipts": [
+        {
+          "run_id": "56c6e161-b3f9-5ca2-b307-a98e765d6abe",
+          "native_admission_id": "d1069051c97b4984a5e7559645cffd6c",
+          "native_session_id": "local-87d7640e27bcb6032d85c2202dde63b4886ed50eac8cb6036629465de24e42e4",
+          "stored_receipt_sha256": "a9819112ff271b18ee97dfb5fba7eb8930d3e9d49562c04aa82ccf3cd0d125bc",
+          "provider_credit_failure": false
+        },
+        {
+          "run_id": "b9622e13-9bfd-58f2-b247-beb70017b320",
+          "native_admission_id": "a7d5bb7a90ab44fa9201e5a348629262",
+          "native_session_id": "local-87d7640e27bcb6032d85c2202dde63b4886ed50eac8cb6036629465de24e42e4",
+          "stored_receipt_sha256": "103d19987a035d3df067ae1b6958d4e64d5b0e6d2e21cf8e1465ca78f9a0c0d8",
+          "provider_credit_failure": false
+        },
+        {
+          "run_id": "7231c43f-60a7-53c7-9e5a-95c2525a19d1",
+          "native_admission_id": "405da2ca8f364774894ddc6960c8712a",
+          "native_session_id": "local-87d7640e27bcb6032d85c2202dde63b4886ed50eac8cb6036629465de24e42e4",
+          "stored_receipt_sha256": "085d22f8587eb288070296fde863a249d192d13be40600dc4047c672978384fc",
+          "provider_credit_failure": false
+        }
+      ],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "9eaf9712-61bd-4448-8217-80eaef52b6d3",
+      "surface": "adapter",
+      "scenario": "multi_step_tools",
+      "repeat": 1,
+      "native_receipts": [
+        {
+          "run_id": "0144ec42-5a7f-5b0f-9cee-a46c4f02ac48",
+          "native_admission_id": "8005c7e4ff79452aa36482f292efffe1",
+          "native_session_id": "local-6d42dfc41b8363face28b803fca7c050276343bc2d6ae930eee33125994bce5c",
+          "stored_receipt_sha256": "847717e157e1eb7e99224e8df009eb954f40801ac92e4e964efa5dc6f12f47fd",
+          "provider_credit_failure": false
+        }
+      ],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "2019f712-210e-460e-ab5b-3ac7c1e292b7",
+      "surface": "adapter",
+      "scenario": "multi_step_tools",
+      "repeat": 2,
+      "native_receipts": [
+        {
+          "run_id": "3287fb8a-425d-5bd4-a54d-e4a3c448db66",
+          "native_admission_id": "3679c118413f4a23a8173e4e7019a6df",
+          "native_session_id": "local-e795a080ec7d8c9ecd281244849fb2f8b887f522329ddc8ffbe71b1550d40ee3",
+          "stored_receipt_sha256": "60620bbe9b15a7eb42037791b87a0590759abcea336bd87ebae9bd7b06368466",
+          "provider_credit_failure": false
+        }
+      ],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "67622641-5be2-45d4-9836-160d372fe7e7",
+      "surface": "adapter",
+      "scenario": "multi_step_tools",
+      "repeat": 3,
+      "native_receipts": [
+        {
+          "run_id": "57355d2e-2454-58b8-99f8-79e809999c8e",
+          "native_admission_id": "36bb6847f5c54ecb9c4036cefee67308",
+          "native_session_id": "local-b14b993a979e46466cd65b87f1a2430b18ae9f4bc07cd2a95d02842eb09584ae",
+          "stored_receipt_sha256": "64c9efaba16d8a5588aa26265fb745c89101a3140be538d252f185e7f000ff31",
+          "provider_credit_failure": false
+        }
+      ],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "e0aee197-2f13-4567-bcc3-f9ad098c9c84",
+      "surface": "adapter",
+      "scenario": "browser_navigation",
+      "repeat": 1,
+      "native_receipts": [
+        {
+          "run_id": "e3b0ee85-a1fd-5e66-8207-8f4ceb14d02e",
+          "native_admission_id": "ad410f96df87405aa148e0235870b5bc",
+          "native_session_id": "local-bf73205e3c3919846b5b84fcc05c3900d5ac13891888a0632702eae152179b3a",
+          "stored_receipt_sha256": "e9466ceb42c6ccb56532aa0d65aa7b51078210cd2c0768606ed67320c8f9f14c",
+          "provider_credit_failure": false
+        }
+      ],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "fff081dd-9a70-4958-9fe6-1237784659ed",
+      "surface": "adapter",
+      "scenario": "browser_navigation",
+      "repeat": 2,
+      "native_receipts": [
+        {
+          "run_id": "afcd7904-2adb-58af-b89a-38bed99a6ded",
+          "native_admission_id": "627aff24e5444c028dce8595f6caa74c",
+          "native_session_id": "local-49e1f8cae95314f128d4f9d1065344d6a3b57b855be0610b1fdda725d63074bd",
+          "stored_receipt_sha256": "dfe13e7082f83adcdd48c0f5cd0b78ecec6299fc73bc9620e8e91e6746773ab6",
+          "provider_credit_failure": false
+        }
+      ],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "8e33588b-c732-41c5-9eb4-38f7632c213b",
+      "surface": "adapter",
+      "scenario": "browser_navigation",
+      "repeat": 3,
+      "native_receipts": [
+        {
+          "run_id": "f6cdcbcd-2385-5f6e-97b4-00e0402aae4f",
+          "native_admission_id": "65333a807f534a20b3e15cd4cfe4c3ab",
+          "native_session_id": "local-df92df5dad4b90064976379f2872eebfaaedf1beda4efa6469ae530abca7b901",
+          "stored_receipt_sha256": "19a88b7b98e327bddcf2eb7484eac60c6c8fcb206e47c7ad1c752f8a07fcd70c",
+          "provider_credit_failure": false
+        }
+      ],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "431ed0af-71d8-4a80-84f3-9fe48c073adf",
+      "surface": "adapter",
+      "scenario": "browser_form",
+      "repeat": 1,
+      "native_receipts": [
+        {
+          "run_id": "de81aadf-e54a-5cc7-85bc-da398959b185",
+          "native_admission_id": "5da47b2ce3b4443ebc6e7abd54d04fa4",
+          "native_session_id": "local-4f17a71df5cccd5a854aa77e918d29564af9f2c671c880c8ef95af25accab49c",
+          "stored_receipt_sha256": "774a0424f35a348adceea3413459801928ba27450f268841c21680da66887da1",
+          "provider_credit_failure": false
+        }
+      ],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "8b801966-8462-42ff-a371-062982b451a3",
+      "surface": "adapter",
+      "scenario": "browser_form",
+      "repeat": 2,
+      "native_receipts": [
+        {
+          "run_id": "1a70bb3b-22c8-5ede-9b50-22421bd7df0d",
+          "native_admission_id": "6c11a3dc24f64feaa968cc8d7abc3423",
+          "native_session_id": "local-8617549efd3505ff37c2e7370e04dfbe1576c42101f1d143179e39f59b3fa551",
+          "stored_receipt_sha256": "c057d4727c776a9faeafb8b0e4e2fb483c2570cca34e330f6314ad7c78f5ed41",
+          "provider_credit_failure": false
+        }
+      ],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "41d2ae04-c67a-46b7-a6f2-4e033f5420db",
+      "surface": "adapter",
+      "scenario": "browser_form",
+      "repeat": 3,
+      "native_receipts": [
+        {
+          "run_id": "e65c648f-91c8-5f69-a884-a8c46c968cc9",
+          "native_admission_id": "10bb50d9e629463aa7023d91e77ebdad",
+          "native_session_id": "local-23cc73e22115ef6c9ada40229b030a2dbe771e929f5a8ab46d9fe40c92b44d3b",
+          "stored_receipt_sha256": "db9cb9f0084b73ba0c1e0ba6cf186f57197bfa5d071ab44800442f6cc8063639",
+          "provider_credit_failure": false
+        }
+      ],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "b8c7f774-b532-49cc-b858-a40824d973ec",
+      "surface": "adapter",
+      "scenario": "browser_download",
+      "repeat": 1,
+      "native_receipts": [
+        {
+          "run_id": "ddbcfa84-31e6-50ba-92c6-0237372c2444",
+          "native_admission_id": "e53e4236d50a45c4b6ae626e40724fab",
+          "native_session_id": "local-efb23423b41f9c5d3db5553832c3e85df9d325d42144dc40d601c1e43c1a1b5b",
+          "stored_receipt_sha256": "7dc1a61c55717face078f84d96c89b17309aa4733aaef483f4c120282121edbf",
+          "provider_credit_failure": false
+        }
+      ],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "4ae91eca-ec6a-42cb-a9ae-60450fd1935e",
+      "surface": "adapter",
+      "scenario": "browser_download",
+      "repeat": 2,
+      "native_receipts": [
+        {
+          "run_id": "650065bb-7692-5b9d-b90e-b51f520920b3",
+          "native_admission_id": "675696c3127e4f50a05f931840e2563a",
+          "native_session_id": "local-c2efa4011d7a439521cc56979b75eb701180260281d7d3d17cbdc0ea560c7dc9",
+          "stored_receipt_sha256": "850d2e5895b5a421fedcd2ed3d89a25338b3f6460f185813fb048c251f5d27ce",
+          "provider_credit_failure": false
+        }
+      ],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "ff4c7481-3574-4dc4-ba21-8606e7b26e15",
+      "surface": "adapter",
+      "scenario": "browser_download",
+      "repeat": 3,
+      "native_receipts": [
+        {
+          "run_id": "9df8ba15-542d-59ad-8915-23641645857a",
+          "native_admission_id": "9cd8f0bb3aff439f9d3a4526431611e5",
+          "native_session_id": "local-a2b72835180ee5a88c3d31a5364ff2a5e4c6dca301573bffc705809dff18215d",
+          "stored_receipt_sha256": "8b8fa46390503dfa380b718bfdd967075102401d248565cd29f86e6fef8e00eb",
+          "provider_credit_failure": false
+        }
+      ],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "bcc5035e-2361-4cf4-b90c-bb01560f2a42",
+      "surface": "adapter",
+      "scenario": "restart",
+      "repeat": 1,
+      "native_receipts": [
+        {
+          "run_id": "954b66d8-286b-55e9-8e76-0750236ea6de",
+          "native_admission_id": "9a3639f9ba34452a9647338a45926b22",
+          "native_session_id": "local-7cdb16ec75c35f9b241c12ba6dd886a7c7081498d3298c171aa49612ec7b8694",
+          "stored_receipt_sha256": "2bd47d7051523a83c3fa19cfba9bcb63f88abbe4e1e382be4d70cfbe75bacea8",
+          "provider_credit_failure": false
+        }
+      ],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "f5455516-c8ed-4c21-aab4-d5f762e190cc",
+      "surface": "adapter",
+      "scenario": "restart",
+      "repeat": 2,
+      "native_receipts": [
+        {
+          "run_id": "7565115c-0fdb-556a-968f-6d82135302c5",
+          "native_admission_id": "2c499b054bb7416fa4d8ac15f7e87c17",
+          "native_session_id": "local-c63cd8a7a8d7f9bb54ed6b3d7d4ded69477ce073562add65ce47fd4e5269e84d",
+          "stored_receipt_sha256": "3c8ae04355914f14c3b60e44a0076450c91a314b0edb6b0dbc09849c04942b12",
+          "provider_credit_failure": false
+        }
+      ],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "a0a83d54-4978-4537-bb83-b82435c86ad0",
+      "surface": "adapter",
+      "scenario": "restart",
+      "repeat": 3,
+      "native_receipts": [
+        {
+          "run_id": "4b4f6f6f-bfa8-56f8-9563-9080eec77d5e",
+          "native_admission_id": "ed77c60bee5c4f9c9ee1797f2f4d2b4e",
+          "native_session_id": "local-cce2388c453966ab1904b7f261a4fe0042943e9e924cd397760f8deb5b729895",
+          "stored_receipt_sha256": "9de22024b9b4a0ddf97536f2f95ec58c91d2395da9e59d8c72ecdaea14bc1073",
+          "provider_credit_failure": false
+        }
+      ],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "c8d96cb9-01fa-49f2-872e-b156d420b472",
+      "surface": "adapter",
+      "scenario": "cancellation",
+      "repeat": 1,
+      "native_receipts": [
+        {
+          "run_id": "0ff3abc1-c9d6-5442-8f76-88f14363e441",
+          "native_admission_id": "5789aebce83a41729e646806f68d5498",
+          "native_session_id": "local-129a5709889c54c163edf3b52baa93c4d213ac9c8b91c73aa27d4a98353b2667",
+          "stored_receipt_sha256": "84cd1c4a9f2e80fccba211be773b3c9d63069b7f43b861547f7a73ceae433f95",
+          "provider_credit_failure": false
+        }
+      ],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "94a38dbf-ffe1-4563-8a5c-2cf507a36e5a",
+      "surface": "adapter",
+      "scenario": "cancellation",
+      "repeat": 2,
+      "native_receipts": [
+        {
+          "run_id": "f2728f3b-c7e4-55a2-b393-8573b2bb23b5",
+          "native_admission_id": "bd540315298841118834a0be5ad9f383",
+          "native_session_id": "local-ed740fd7e0565291e2d9f0e7d051c4d80a55ccde7d305039517b7ff36a3b9c98",
+          "stored_receipt_sha256": "c045ca2b9a202fbab35f57f28dbaa7a496e7537dec6e56d84106ed66e3761901",
+          "provider_credit_failure": false
+        }
+      ],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "6f664322-541b-4e88-a863-582693d8d5ad",
+      "surface": "adapter",
+      "scenario": "cancellation",
+      "repeat": 3,
+      "native_receipts": [
+        {
+          "run_id": "5e083a38-1d40-5a5c-bd78-2425ec9ba36b",
+          "native_admission_id": "0aa406dd5c594645a7ba79521715673c",
+          "native_session_id": "local-ffdc3949dfc91360802f0aa30f685583cfc877d3339dd4ab4457f0adcfd646f5",
+          "stored_receipt_sha256": "57f54aa5f942e010e818080307e429c64e095867b403b429ed7afc0ef99867e4",
+          "provider_credit_failure": false
+        }
+      ],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "ec184317-5a17-4dac-8786-14a35a4511da",
+      "surface": "adapter",
+      "scenario": "reconnect",
+      "repeat": 1,
+      "native_receipts": [
+        {
+          "run_id": "6b79ef6f-88af-5699-a328-c2a98c3e9b28",
+          "native_admission_id": "b09c21586973410da74cb805fbf46047",
+          "native_session_id": "local-8bc7b2527e198edbb9b6f7a09033f31cd02b2b0ad04129c0cd34177bc412b36f",
+          "stored_receipt_sha256": "fa11512bcacc556e46301bcc5f0c266c3aaaf1998efb2c83d0ad85e017bf2b25",
+          "provider_credit_failure": false
+        }
+      ],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "7d817882-9238-4eae-8e55-35c5fcbd38bc",
+      "surface": "adapter",
+      "scenario": "reconnect",
+      "repeat": 2,
+      "native_receipts": [
+        {
+          "run_id": "de9acf1c-254a-5f30-980d-de0c22cdbcb5",
+          "native_admission_id": "a411ecd6e511479ea8e2a209b46a3b52",
+          "native_session_id": "local-7cadbeb8a9cd6c0aba3fa44e791b1f93ad7d88d782d3487fc25220f810d7f5e5",
+          "stored_receipt_sha256": "419b9d044e8ef0720fa35be1d9757b61943239345d6573485308a4750e4e3de2",
+          "provider_credit_failure": false
+        }
+      ],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "1ae8678b-de4c-4390-867e-4315817b7ce5",
+      "surface": "adapter",
+      "scenario": "reconnect",
+      "repeat": 3,
+      "native_receipts": [
+        {
+          "run_id": "8899b919-53f4-58cf-9d84-d2e8192b5624",
+          "native_admission_id": "e1fc17151bb245858777cc1eba1b48b8",
+          "native_session_id": "local-d0edb5bed1a35130887f8fec42d99c7678a6ebc4b0f089c9855f3028183099db",
+          "stored_receipt_sha256": "90d2ef32909a13db3daf3f1283639a5b3f649fb3a8d29235104cf8147719eca4",
+          "provider_credit_failure": false
+        }
+      ],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "251d60e3-6bd4-4f80-a4d2-96287eb34f03",
+      "surface": "adapter",
+      "scenario": "offline_goal",
+      "repeat": 1,
+      "native_receipts": [
+        {
+          "run_id": "0b80f02a-6784-5fa7-b602-f1d14d543711",
+          "native_admission_id": "a7f61d2deca24c7982199bb157b918a0",
+          "native_session_id": "local-75d0b680f834b373f33b7fb1f300493dadece19e5babca75b198f72e862a068b",
+          "stored_receipt_sha256": "3ebd8b524babf99d40f5f542e29ea9e6693000703e6bce76e368f20dddf2b4e2",
+          "provider_credit_failure": false
+        },
+        {
+          "run_id": "1dc3588b-f914-5b49-83f0-7a7d27d730d8",
+          "native_admission_id": "1e428243f4ad456780be0647832f9d03",
+          "native_session_id": "local-75d0b680f834b373f33b7fb1f300493dadece19e5babca75b198f72e862a068b",
+          "stored_receipt_sha256": "d37169f1ce6e02a389edfe3cbe39ba02cfe9b6d7e17d50863dbe52e380f90cb3",
+          "provider_credit_failure": false
+        }
+      ],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "129cb03d-d935-4af0-b6cd-2e6b63ee79e7",
+      "surface": "adapter",
+      "scenario": "offline_goal",
+      "repeat": 2,
+      "native_receipts": [
+        {
+          "run_id": "4655b3cf-9765-5d16-a7df-d801ee5b5283",
+          "native_admission_id": "f27ad5747e634469925e96deb3f2041a",
+          "native_session_id": "local-6412fae4f5ae97335dfa72ec696dfe4a82f522b65f01ba6530549cd2f08630e5",
+          "stored_receipt_sha256": "c318f178a8a058d64cd20c1c27e0dc20711beb337d8cfde86431abfe7c7bae84",
+          "provider_credit_failure": false
+        }
+      ],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "f789dd3b-63f4-4371-8b52-1a6fd702506b",
+      "surface": "adapter",
+      "scenario": "offline_goal",
+      "repeat": 3,
+      "native_receipts": [
+        {
+          "run_id": "a047817b-e9e9-5bfa-ac04-ef64edde002d",
+          "native_admission_id": "279bebe3aba147ec98c4540bf84faa92",
+          "native_session_id": "local-7b8af2777303199bc651ede56d1af3ba22693a0c83b3528956b2d29d3f5422fb",
+          "stored_receipt_sha256": "910f4e98a1a16c62606bb6c9590c2e6ca7054287194fbc3e99c9a024ef02503a",
+          "provider_credit_failure": false
+        }
+      ],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "64c508fb-337e-41fd-be30-de5c409aeb23",
+      "surface": "adapter",
+      "scenario": "group_handoff",
+      "repeat": 1,
+      "native_receipts": [],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "64159751-cae0-4e6b-8c66-23f37eb72a69",
+      "surface": "adapter",
+      "scenario": "group_handoff",
+      "repeat": 2,
+      "native_receipts": [],
+      "provider_credit_failure": false
+    },
+    {
+      "attempt_id": "a115aa68-dc4d-4376-a471-80c9b2e4096f",
+      "surface": "adapter",
+      "scenario": "group_handoff",
+      "repeat": 3,
+      "native_receipts": [],
+      "provider_credit_failure": false
+    }
+  ]
+}

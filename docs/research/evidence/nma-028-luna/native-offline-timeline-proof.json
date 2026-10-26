@@ -1,0 +1,51 @@
+{
+  "restart_ready": {
+    "profile": "/private/tmp/n28-plan-lifecycle-0wpdjof8/state",
+    "phase": "ready",
+    "at": "2026-10-26T04:01:36.085896+00:00",
+    "instance_id": "7efc15936dca4f3f8d53bc6ec2a20c20"
+  },
+  "cases": [
+    {
+      "repeat": 1,
+      "job_id": "12276f7eeada",
+      "due_at": "2026-10-26T04:02:15.019096+00:00",
+      "run_at": "2026-10-26T12:02:47.465596+08:00",
+      "run_after_restart": true,
+      "one_canonical_completion": true,
+      "one_output": true,
+      "repeat_completed": 1,
+      "scheduler_status": "ok",
+      "output_sha256": "9e68c6e1b78dd04bf28743511a1d334bb96d067afc3f90e67f6155d695014683",
+      "actual_response": "RESEARCHER_PROOF\n14 \u00d7 17 = 238.\nHanding off to @writer.\n"
+    },
+    {
+      "repeat": 2,
+      "job_id": "d8929c0ce56f",
+      "due_at": "2026-10-26T04:02:15.019096+00:00",
+      "run_at": "2026-10-26T12:02:47.470696+08:00",
+      "run_after_restart": true,
+      "one_canonical_completion": true,
+      "one_output": true,
+      "repeat_completed": 1,
+      "scheduler_status": "ok",
+      "output_sha256": "2a5db78a07653c48c5d7c81d59978595d97353c17c11a9291719148dc68456fd",
+      "actual_response": "RESEARCHER_PROOF: 14 \u00d7 17 = 238. Handing off to @writer.\n"
+    },
+    {
+      "repeat": 3,
+      "job_id": "e5be1c7bed09",
+      "due_at": "2026-10-26T04:02:15.019096+00:00",
+      "run_at": "2026-10-26T12:02:45.495709+08:00",
+      "run_after_restart": true,
+      "one_canonical_completion": true,
+      "one_output": true,
+      "repeat_completed": 1,
+      "scheduler_status": "ok",
+      "output_sha256": "059018f5c9dada58d493c62d959f08309a54cef83632166a6c45d1ea46d5d18b",
+      "actual_response": "RESEARCHER_PROOF: 14 \u00d7 17 = 238. @writer: NMA028_OFFLINE_3_238\n"
+    }
+  ],
+  "method": "Canonical scheduler/admission/output records plus UTC gateway restart timeline; no model or action replay",
+  "all_native_jobs_ran_once_after_restart": true
+}

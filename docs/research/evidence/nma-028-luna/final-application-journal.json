@@ -1,0 +1,441 @@
+{
+  "operations": [
+    {
+      "scope_key": "e69ae609571a7a37f36f18f2ae25053af37774bce7fb92f04cdee297a411523d",
+      "operation_id": "a4691904b7e1b96986804922f7969d43dc0de92307c3c7636149157eb5c62d46",
+      "tool": "browser_exec",
+      "args_hash": "56e71a9e498f1dd8f883ce0e4f2029ff9c5fe08b1e67e499e25d4ca368980202",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"INITIAL {'url': 'http://127.0.0.1:8765/', 'title': '\ud83d\udc34 NMA028 isolated form', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\nLINKS [{'text': 'Continue', 'href': 'http://127.0.0.1:8765/form'}, {'text': 'Download CSV', 'href': 'http://127.0.0.1:8765/download.csv'}]\\nRESULT_URL http://127.0.0.1:8765/form\\nRESULT_DOM Continue\\nNameNoteSubmit\\nDownload CSV\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/e69ae609571a7a37f36f18f2ae25053af37774bce7fb92f04cdee297a411523d\"}",
+      "started": 1792986549.392257,
+      "finished": 1792986557.370046
+    },
+    {
+      "scope_key": "8d328c173655e7cd606f3cc59f209433d64832b9319337d114b6eb5ef4aa696b",
+      "operation_id": "f5e812e9b3bfefec0ae0d975e2c9d671db133bc3ef932b3d89710df77a192ab4",
+      "tool": "browser_exec",
+      "args_hash": "69b3ea37280f8ea061a54ada2e70c546915bbf340b5660b7900169d91df41f9b",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"INITIAL {'url': 'http://127.0.0.1:8765/', 'title': '\ud83d\udc34 NMA028 isolated form', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\nLINKS [{'text': 'Continue', 'href': 'http://127.0.0.1:8765/form'}, {'text': 'Download CSV', 'href': 'http://127.0.0.1:8765/download.csv'}]\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/8d328c173655e7cd606f3cc59f209433d64832b9319337d114b6eb5ef4aa696b\"}",
+      "started": 1792986578.094604,
+      "finished": 1792986583.4276018
+    },
+    {
+      "scope_key": "8d328c173655e7cd606f3cc59f209433d64832b9319337d114b6eb5ef4aa696b",
+      "operation_id": "32564b14348f66db49354ecad37c6d75ceec3aa76aa3aa93b2b0708aeda9c1bb",
+      "tool": "browser_exec",
+      "args_hash": "3369addf960fe836659ca9f9b281c3b66ab0bb92d2c1f56e5ed083fb7587bb84",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"RESULT {'url': 'http://127.0.0.1:8765/form', 'title': '\ud83d\udc34 NMA028 isolated form', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\nDOM Continue\\nNameNoteSubmit\\nDownload CSV\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/8d328c173655e7cd606f3cc59f209433d64832b9319337d114b6eb5ef4aa696b\"}",
+      "started": 1792986588.177973,
+      "finished": 1792986588.865834
+    },
+    {
+      "scope_key": "f283b87e985fe9208fce3510a84d4096d6373a78244c9eeae86e30e0a88151d7",
+      "operation_id": "a92a0f76462bb89d4fef1b3256a5ee1fdb488bc3bd379199411e3e153077fc2c",
+      "tool": "browser_exec",
+      "args_hash": "dc30dfcea3e05b19b320e3416e5cc7485942fcfebc6e2eda362a8a86a51ca82f",
+      "state": "indeterminate",
+      "result": "{\"success\": false, \"exit_code\": 1, \"output\": \"\", \"workspace\": \"/work/state/cache/browser-use/workspace/f283b87e985fe9208fce3510a84d4096d6373a78244c9eeae86e30e0a88151d7\", \"stderr\": \"Traceback (most recent call last):\\n  File \\\"<frozen runpy>\\\", line 203, in _run_module_as_main\\n  File \\\"<frozen runpy>\\\", line 88, in _run_code\\n  File \\\"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\\\", line 410, in <module>\\n    main()\\n    ~~~~^^\\n  File \\\"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\\\", line 255, in main\\n    _run(args)\\n    ~~~~^^^^^^\\n  File \\\"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\\\", line 406, in _run\\n    exec(code, globals())\\n    ~~~~^^^^^^^^^^^^^^^^^\\n  File \\\"<string>\\\", line 2\\n    tab = new_tab('http://127.0.0.1:8765/')\\nIndentationError: unexpected indent\"}",
+      "started": 1792986605.511034,
+      "finished": 1792986608.1380339
+    },
+    {
+      "scope_key": "8953970eeee80ec31b6e8470989c117685134686de40f4245e591cf8f1097576",
+      "operation_id": "be497670071feb76344fc93cbe281cd2448c47e2e02b3cc0fad06a600c7b89dc",
+      "tool": "browser_exec",
+      "args_hash": "b6cca87344c5fe23b623cdac6b2faa08ec035b9c77ae34a352e7b9e76b2e47e8",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"{'url': 'http://127.0.0.1:8765/form', 'title': '\ud83d\udc34 NMA028 isolated form', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/8953970eeee80ec31b6e8470989c117685134686de40f4245e591cf8f1097576\"}",
+      "started": 1792986626.6344151,
+      "finished": 1792986629.643887
+    },
+    {
+      "scope_key": "8953970eeee80ec31b6e8470989c117685134686de40f4245e591cf8f1097576",
+      "operation_id": "d723a2692fd4390529d64c1129529e19d9c80d84e23b5ed94bde80a119178c5f",
+      "tool": "browser_exec",
+      "args_hash": "3cbdeeb9550f1a9034ef377105eaa195fae6260a51d9bcb1ff374f4db077c72b",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"[{'name': 'name', 'value': 'Synthetic'}, {'name': 'note', 'value': 'NMA028'}]\\n<form method=\\\"POST\\\" action=\\\"/submit\\\"><label>Name<input name=\\\"name\\\"></label><label>Note<input name=\\\"note\\\"></label><button>Submit</button></form>\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/8953970eeee80ec31b6e8470989c117685134686de40f4245e591cf8f1097576\"}",
+      "started": 1792986634.393887,
+      "finished": 1792986634.9961941
+    },
+    {
+      "scope_key": "8953970eeee80ec31b6e8470989c117685134686de40f4245e591cf8f1097576",
+      "operation_id": "c36e1669d2d58dea7280f6a36d649db97aef8bd64a0311910a9deb63c3497729",
+      "tool": "browser_exec",
+      "args_hash": "0cc7169049ed87d205eee970dda53f2b6087caa7b5e3442b302d09af208c74b6",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"submitted\\n{'url': 'http://127.0.0.1:8765/submit', 'title': '\ud83d\udc34 Saved', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/8953970eeee80ec31b6e8470989c117685134686de40f4245e591cf8f1097576\"}",
+      "started": 1792986639.2820501,
+      "finished": 1792986639.9133298
+    },
+    {
+      "scope_key": "8953970eeee80ec31b6e8470989c117685134686de40f4245e591cf8f1097576",
+      "operation_id": "a303f6d14b433117cb23d13a30d41b1b61465c640345f77c2f14f32636bc6cbb",
+      "tool": "browser_exec",
+      "args_hash": "3d391e3425386b1fe4c30f11ee1755f898f129d3090a5bfa027edebc1f5c39a4",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"NMA028_SAVED\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/8953970eeee80ec31b6e8470989c117685134686de40f4245e591cf8f1097576\"}",
+      "started": 1792986643.6448379,
+      "finished": 1792986644.219937
+    },
+    {
+      "scope_key": "567189717bb314960b8a5b647125e0e063b07a22c59a9b6d8df9377d07b9e7a4",
+      "operation_id": "8baaf485b9d89d8c583b0d157ab65ed9415df9789922b26c91be99126e2a938b",
+      "tool": "browser_exec",
+      "args_hash": "e8f77472275370cf12d6299f138d3780abdb082061f5ab78369e6fb99ff4b09a",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"{'url': 'http://127.0.0.1:8765/form', 'title': '\ud83d\udc34 NMA028 isolated form', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/567189717bb314960b8a5b647125e0e063b07a22c59a9b6d8df9377d07b9e7a4\"}",
+      "started": 1792986656.6882281,
+      "finished": 1792986659.314817
+    },
+    {
+      "scope_key": "567189717bb314960b8a5b647125e0e063b07a22c59a9b6d8df9377d07b9e7a4",
+      "operation_id": "17112b440ed54791394f2117f449388e85d6e56893e0de99b4dacff0fdd80e7e",
+      "tool": "browser_exec",
+      "args_hash": "03a6d61cec986842dc1bad04177b15cca61c98f36a408c8f4009231c1756bab3",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"<form method=\\\"POST\\\" action=\\\"/submit\\\"><label>Name<input name=\\\"name\\\"></label><label>Note<input name=\\\"note\\\"></label><button>Submit</button></form>\\n{'url': 'http://127.0.0.1:8765/form', 'title': '\ud83d\udc34 NMA028 isolated form', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/567189717bb314960b8a5b647125e0e063b07a22c59a9b6d8df9377d07b9e7a4\"}",
+      "started": 1792986663.580037,
+      "finished": 1792986664.261316
+    },
+    {
+      "scope_key": "567189717bb314960b8a5b647125e0e063b07a22c59a9b6d8df9377d07b9e7a4",
+      "operation_id": "98927a008dacc008ad420adf706d06d268c2cf524a7461e6295835c0c6712f3a",
+      "tool": "browser_exec",
+      "args_hash": "8ea93c8279a94af886bb401acb390497a4cb787a2828078762ff6328297ba209",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"{'url': 'http://127.0.0.1:8765/submit', 'title': '\ud83d\udc34 Saved', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\nNMA028_SAVED\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/567189717bb314960b8a5b647125e0e063b07a22c59a9b6d8df9377d07b9e7a4\"}",
+      "started": 1792986668.127323,
+      "finished": 1792986668.682289
+    },
+    {
+      "scope_key": "5bfab0bff45d5177c8837ae49c92944896947e02aba50705b1879c766a5b334e",
+      "operation_id": "bccfc538c443234730141ec8e3896b1529878d2220f13b4cbddc757257bb6b66",
+      "tool": "browser_exec",
+      "args_hash": "1d91edf9b569cb1a3d85db872d58c47d108880ae2914e745fe155488ce4c025e",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"{'url': 'http://127.0.0.1:8765/form', 'title': '\ud83d\udc34 NMA028 isolated form', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/5bfab0bff45d5177c8837ae49c92944896947e02aba50705b1879c766a5b334e\"}",
+      "started": 1792986684.11697,
+      "finished": 1792986686.89973
+    },
+    {
+      "scope_key": "5bfab0bff45d5177c8837ae49c92944896947e02aba50705b1879c766a5b334e",
+      "operation_id": "a616a507c88ab7f7c26e8d893b2ec4608d64fc1d52123d269fd6533792eb1add",
+      "tool": "browser_exec",
+      "args_hash": "dc8122a5b85c51ab5ebc3f4698c2b4ba8aea8703a20798dfad7be90a693e3d0f",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"{'name': 'Synthetic', 'note': 'NMA028', 'forms': 1}\\n{'url': 'http://127.0.0.1:8765/submit', 'title': '\ud83d\udc34 Saved', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/5bfab0bff45d5177c8837ae49c92944896947e02aba50705b1879c766a5b334e\"}",
+      "started": 1792986691.964067,
+      "finished": 1792986692.6538932
+    },
+    {
+      "scope_key": "5bfab0bff45d5177c8837ae49c92944896947e02aba50705b1879c766a5b334e",
+      "operation_id": "05cb0bcba576b24d08d4a6bb085c01f491cab19ba1e7297975455ede9d1e0aa2",
+      "tool": "browser_exec",
+      "args_hash": "7cf012505c43ebeeba167481c94a945e910b0968cae50866f9fcbae19963b70e",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"NMA028_SAVED\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/5bfab0bff45d5177c8837ae49c92944896947e02aba50705b1879c766a5b334e\"}",
+      "started": 1792986696.639274,
+      "finished": 1792986697.1880362
+    },
+    {
+      "scope_key": "d39f4ec0fa56f8f7576b86d3c29179c75424da7561935f2bfde1dc5970437d22",
+      "operation_id": "dcdf2f1b50a1770d637c5d7f4ea013e02eb4a41c69891d5b1b2139b9031422d9",
+      "tool": "browser_exec",
+      "args_hash": "708e4913328caf145c6c0f1c4a014ac46b21a5766fd1e250e0661e0eaac9d7ae",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"{'url': 'http://127.0.0.1:8765/form', 'title': '\ud83d\udc34 NMA028 isolated form', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\n{}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/d39f4ec0fa56f8f7576b86d3c29179c75424da7561935f2bfde1dc5970437d22\"}",
+      "started": 1792986711.6419652,
+      "finished": 1792986714.438978
+    },
+    {
+      "scope_key": "d39f4ec0fa56f8f7576b86d3c29179c75424da7561935f2bfde1dc5970437d22",
+      "operation_id": "b2aa0c216a66a07494a4a6ed37544070b31a2dc1d866446ba95d9e13d48cf08b",
+      "tool": "browser_exec",
+      "args_hash": "a39eaccb34cdaf193cef267c9a3fdafaca37d3350f36928298e20d62307e24c7",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"Continue\\nNameNoteSubmit\\nDownload CSV\\n[{'text': 'Continue', 'href': 'http://127.0.0.1:8765/form'}, {'text': 'Download CSV', 'href': 'http://127.0.0.1:8765/download.csv'}]\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/d39f4ec0fa56f8f7576b86d3c29179c75424da7561935f2bfde1dc5970437d22\"}",
+      "started": 1792986718.169937,
+      "finished": 1792986718.732974
+    },
+    {
+      "scope_key": "d39f4ec0fa56f8f7576b86d3c29179c75424da7561935f2bfde1dc5970437d22",
+      "operation_id": "df90d195f29da26221d7f97b1a0426da502405624d656fad4decc29915cfb8dd",
+      "tool": "browser_exec",
+      "args_hash": "6f0eead4af85d9bbf38608e235390236f4d1dcb975b0646f475364aa319b4d74",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"\ud83d\udc34 NMA028 isolated form\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/d39f4ec0fa56f8f7576b86d3c29179c75424da7561935f2bfde1dc5970437d22\"}",
+      "started": 1792986724.206912,
+      "finished": 1792986725.2882729
+    },
+    {
+      "scope_key": "d39f4ec0fa56f8f7576b86d3c29179c75424da7561935f2bfde1dc5970437d22",
+      "operation_id": "63e506ec480e6da3d36071b15e5aa6fa86d8bd0332a5e5d948f1c27f3f2f3174",
+      "tool": "terminal",
+      "args_hash": "790b378e0a708542c6864ff8ba82873ac9d8c2ff63040a411e3f83f6300199bf",
+      "state": "returned",
+      "result": "{\"output\": \"b611b0fafb38f99c14d214548fe8f89e1a7839670c66bb72e2824c9eb181dfb4  /work/downloads/report.csv\", \"exit_code\": 0, \"error\": null}",
+      "started": 1792986729.290724,
+      "finished": 1792986730.363612
+    },
+    {
+      "scope_key": "e4c91bd31d95f6368fa0b79d430c5da36dae40de102eb18f2255bc9aacc7e39b",
+      "operation_id": "d1993a8bd466e7dcd0f5d443212d8b64bb3dd4aef2c9bedb4585bcbb4dbe991c",
+      "tool": "browser_exec",
+      "args_hash": "ea38d76d88d9ba384c087f0e9540d445f40f15df09837cddf634d59472fad35b",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"{'url': 'http://127.0.0.1:8765/form', 'title': '\ud83d\udc34 NMA028 isolated form', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/e4c91bd31d95f6368fa0b79d430c5da36dae40de102eb18f2255bc9aacc7e39b\"}",
+      "started": 1792986745.2484522,
+      "finished": 1792986748.498687
+    },
+    {
+      "scope_key": "e4c91bd31d95f6368fa0b79d430c5da36dae40de102eb18f2255bc9aacc7e39b",
+      "operation_id": "04a8101681cf33189cb4619b18302a8360fc879751234c5c3b6be5ef77e109d9",
+      "tool": "browser_exec",
+      "args_hash": "99c4fccdd56b85426947d56d3408a86861969e9492e39e9ac857d3088c9688ae",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"{}\\nContinue\\nNameNoteSubmit\\nDownload CSV\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/e4c91bd31d95f6368fa0b79d430c5da36dae40de102eb18f2255bc9aacc7e39b\"}",
+      "started": 1792986752.689157,
+      "finished": 1792986753.290234
+    },
+    {
+      "scope_key": "e4c91bd31d95f6368fa0b79d430c5da36dae40de102eb18f2255bc9aacc7e39b",
+      "operation_id": "24e7c94b6184539d1047050a21bc80f3137d546de4ea052edf24fa6b4ba5919c",
+      "tool": "browser_exec",
+      "args_hash": "7a3a7683dfa70426503aa2441279df95d26e15784e81dba64d8f6af7b59eb0c9",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"[{'text': 'Continue', 'href': 'http://127.0.0.1:8765/form'}, {'text': 'Download CSV', 'href': 'http://127.0.0.1:8765/download.csv'}]\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/e4c91bd31d95f6368fa0b79d430c5da36dae40de102eb18f2255bc9aacc7e39b\"}",
+      "started": 1792986758.3560152,
+      "finished": 1792986758.9748359
+    },
+    {
+      "scope_key": "e4c91bd31d95f6368fa0b79d430c5da36dae40de102eb18f2255bc9aacc7e39b",
+      "operation_id": "c13265b778667a7ff86ef46e300ff6667acbbdb8e01365dcb4e6c2eefb58a56b",
+      "tool": "browser_exec",
+      "args_hash": "7f0b320e86df37a9548f3ca6ffa99076f6537b3eb450cafdf3093ae1ab09be63",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"None\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/e4c91bd31d95f6368fa0b79d430c5da36dae40de102eb18f2255bc9aacc7e39b\"}",
+      "started": 1792986763.2041018,
+      "finished": 1792986763.7825751
+    },
+    {
+      "scope_key": "e4c91bd31d95f6368fa0b79d430c5da36dae40de102eb18f2255bc9aacc7e39b",
+      "operation_id": "92f9f4588ac91cea6af2ac05d3fc03b104dacb2438fa054201b5cec072076de0",
+      "tool": "terminal",
+      "args_hash": "a906fbacac72ae015f4013e1c8fcfae7d5932e3546bf6a59f33a391e41d174ef",
+      "state": "returned",
+      "result": "{\"output\": \"b611b0fafb38f99c14d214548fe8f89e1a7839670c66bb72e2824c9eb181dfb4  /work/downloads/report.csv\", \"exit_code\": 0, \"error\": null}",
+      "started": 1792986766.688401,
+      "finished": 1792986767.671696
+    },
+    {
+      "scope_key": "d29652290adc1f60f2513e3abc8824dd2092b0a8ee4c669bc8c01840c49e0a97",
+      "operation_id": "4548f13f81b352576190f493e0d65fc48d0e1670defd8a3d2e224b7e369d918b",
+      "tool": "browser_exec",
+      "args_hash": "959aa18bbc38753955bfbe244e2d85b6dabab96b99a666d105cd3baa9ad3c5d3",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"{'url': 'http://127.0.0.1:8765/form', 'title': '\ud83d\udc34 NMA028 isolated form', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/d29652290adc1f60f2513e3abc8824dd2092b0a8ee4c669bc8c01840c49e0a97\"}",
+      "started": 1792986783.120088,
+      "finished": 1792986785.6770759
+    },
+    {
+      "scope_key": "d29652290adc1f60f2513e3abc8824dd2092b0a8ee4c669bc8c01840c49e0a97",
+      "operation_id": "e389655fb1c8253544abf6dc64f2948c3850055c874fd489fa8a4a1f89f5ee77",
+      "tool": "browser_exec",
+      "args_hash": "67f46d3b194ce85b67768427d34e9eea4702fb6687de561460a5fa6131de01d6",
+      "state": "indeterminate",
+      "result": "{\"success\": false, \"exit_code\": 1, \"output\": \"\", \"workspace\": \"/work/state/cache/browser-use/workspace/d29652290adc1f60f2513e3abc8824dd2092b0a8ee4c669bc8c01840c49e0a97\", \"stderr\": \"Traceback (most recent call last):\\n  File \\\"<frozen runpy>\\\", line 203, in _run_module_as_main\\n  File \\\"<frozen runpy>\\\", line 88, in _run_code\\n  File \\\"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\\\", line 410, in <module>\\n    main()\\n    ~~~~^^\\n  File \\\"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\\\", line 255, in main\\n    _run(args)\\n    ~~~~^^^^^^\\n  File \\\"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\\\", line 406, in _run\\n    exec(code, globals())\\n    ~~~~^^^^^^^^^^^^^^^^^\\n  File \\\"<string>\\\", line 4\\n    print(js('[...document.querySelectorAll(\\\"a\\\")].map(a=>({text:a.innerText,href:a.href})))')\\n         ^\\nSyntaxError: '(' was never closed\"}",
+      "started": 1792986790.6575239,
+      "finished": 1792986791.25213
+    },
+    {
+      "scope_key": "964f80a931c96a887741a147149ce9ef75203b1eccb19eaeb11daa9ad7d9713e",
+      "operation_id": "49f7abc87faeb125ee65a3f99ce394850d96d370ac9454825f460fa571021d94",
+      "tool": "terminal",
+      "args_hash": "36cda82db01c67d1621d9f6c00e6b234cd290fead3d4a0518a6b4c33cfa232f6",
+      "state": "indeterminate",
+      "result": null,
+      "started": 1792986849.369511,
+      "finished": 1792986849.687841
+    },
+    {
+      "scope_key": "880c7be4ca369151fd82fe67d37d792baea60115ea146fd2a424814245d92572",
+      "operation_id": "70811f6c35da538616f8db5abba281c7b72aef9e3d8f016f577a2d6201dddaa1",
+      "tool": "terminal",
+      "args_hash": "36cda82db01c67d1621d9f6c00e6b234cd290fead3d4a0518a6b4c33cfa232f6",
+      "state": "indeterminate",
+      "result": null,
+      "started": 1792986877.764852,
+      "finished": 1792986877.875008
+    },
+    {
+      "scope_key": "c73d7a822e75e294e1c179af78ae5d12bb6f0c8432f1f6e453950c9602d23552",
+      "operation_id": "f173c85b0f670d7ed5328174bc47c0ab26bed1fc4316fb3a977555b065104295",
+      "tool": "terminal",
+      "args_hash": "e3049a09b1a960544c9c8ba7fc7f4e35b47c41d8732be36beb07ae57378970c0",
+      "state": "indeterminate",
+      "result": null,
+      "started": 1792986906.944674,
+      "finished": 1792986907.157855
+    },
+    {
+      "scope_key": "76af9d6f82524bd4add058cf98629bdee46f61bc05b0690459ba70076f70e7f9",
+      "operation_id": "3e233398d986cfcadf133620d0a535deeadd1d447080bee62399c421dfceae93",
+      "tool": "terminal",
+      "args_hash": "363126ace56b31a0fd30e707dbd518126b77834679722afe480991786b93c24d",
+      "state": "returned",
+      "result": "{\"output\": \"2026-10-26T03:56:00Z\", \"exit_code\": 0, \"error\": null}",
+      "started": 1792986958.7555299,
+      "finished": 1792986960.9668171
+    },
+    {
+      "scope_key": "76af9d6f82524bd4add058cf98629bdee46f61bc05b0690459ba70076f70e7f9",
+      "operation_id": "d5b561cffd273d3f1a122d06cb7053bac5947479704c084fa4cc4fe763c5d057",
+      "tool": "terminal",
+      "args_hash": "5c4093c8fb3a46223efd7d28b3512a101ea2989d7d8662b7f3fd1f40bf86536c",
+      "state": "returned",
+      "result": "{\"output\": \"2026-10-26T03:56:32Z\", \"exit_code\": 0, \"error\": null}",
+      "started": 1792986992.4307861,
+      "finished": 1792986992.727842
+    },
+    {
+      "scope_key": "feb215440bc2340a4a35c825042d59b7f0180c50c7c11d6a95d0ce269e436628",
+      "operation_id": "dbb9c8e2471ee422849e9f44149489254213dc1c91c449fb2a2303ab3fcea6d1",
+      "tool": "terminal",
+      "args_hash": "363126ace56b31a0fd30e707dbd518126b77834679722afe480991786b93c24d",
+      "state": "returned",
+      "result": "{\"output\": \"2026-10-26T03:57:09Z\", \"exit_code\": 0, \"error\": null}",
+      "started": 1792987026.7831092,
+      "finished": 1792987030.068165
+    },
+    {
+      "scope_key": "feb215440bc2340a4a35c825042d59b7f0180c50c7c11d6a95d0ce269e436628",
+      "operation_id": "a547382d87a8543cf1031a7830be5570083098181b4beffa0b4057eab268e779",
+      "tool": "terminal",
+      "args_hash": "856755d38ba43c2acff80764265797034214ac80cb6f87aaf81a642d04e7c647",
+      "state": "returned",
+      "result": "{\"output\": \"2026-10-26T03:58:08Z\\n238\", \"exit_code\": 0, \"error\": null}",
+      "started": 1792987088.729934,
+      "finished": 1792987089.0656981
+    },
+    {
+      "scope_key": "a96788dd8fa500cabf2d9a466b25f6e8e266dfb77d9e7a15cddfb17b581c72f4",
+      "operation_id": "fba449a9986f8725ba81d8b0cd45cb6d8447f316d9c1379a0120e23fb3f0c5e4",
+      "tool": "terminal",
+      "args_hash": "c3f02ac85d8a8fa7a84d981e32cf1c3d11ef3a319d29a74db2d324f78f3f649b",
+      "state": "returned",
+      "result": "{\"output\": \"238\", \"exit_code\": 0, \"error\": null}",
+      "started": 1792987191.672236,
+      "finished": 1792987194.559041
+    }
+  ],
+  "scopes": [
+    {
+      "scope_key": "567189717bb314960b8a5b647125e0e063b07a22c59a9b6d8df9377d07b9e7a4",
+      "scope_json": "{\"agent_id\": \"82ec4b6d-75b7-43ff-b5e2-5ac6091443f6\", \"generation\": 1, \"owner_id\": \"31c32848-c6ad-4b72-b03f-5ea1be677978\", \"thread_id\": \"e78b576f-9d36-4697-b5cf-a9e8db3e72b3\"}",
+      "container": "nma028-9b877e7a-567189717bb31496",
+      "volume": "nma028-9b877e7a-567189717bb31496-work",
+      "state": "paused"
+    },
+    {
+      "scope_key": "5bfab0bff45d5177c8837ae49c92944896947e02aba50705b1879c766a5b334e",
+      "scope_json": "{\"agent_id\": \"4ad8f692-26d7-42d8-9788-83499226adfc\", \"generation\": 1, \"owner_id\": \"31c32848-c6ad-4b72-b03f-5ea1be677978\", \"thread_id\": \"695bc45d-8e85-43e0-a949-9ef9e9c97dd7\"}",
+      "container": "nma028-9b877e7a-5bfab0bff45d5177",
+      "volume": "nma028-9b877e7a-5bfab0bff45d5177-work",
+      "state": "paused"
+    },
+    {
+      "scope_key": "76af9d6f82524bd4add058cf98629bdee46f61bc05b0690459ba70076f70e7f9",
+      "scope_json": "{\"agent_id\": \"825f17c4-94a5-41f7-af71-5aa9b948b698\", \"generation\": 1, \"owner_id\": \"31c32848-c6ad-4b72-b03f-5ea1be677978\", \"thread_id\": \"66a1757f-cb9c-4bed-94b0-b031390b02ff\"}",
+      "container": "nma028-9b877e7a-76af9d6f82524bd4",
+      "volume": "nma028-9b877e7a-76af9d6f82524bd4-work",
+      "state": "paused"
+    },
+    {
+      "scope_key": "880c7be4ca369151fd82fe67d37d792baea60115ea146fd2a424814245d92572",
+      "scope_json": "{\"agent_id\": \"7d8df6f6-d0ba-4717-8e52-9b605656d339\", \"generation\": 1, \"owner_id\": \"31c32848-c6ad-4b72-b03f-5ea1be677978\", \"thread_id\": \"7a4d40c3-57ed-4ea3-b839-80c94117dc5d\"}",
+      "container": "nma028-9b877e7a-880c7be4ca369151",
+      "volume": "nma028-9b877e7a-880c7be4ca369151-work",
+      "state": "cancelled"
+    },
+    {
+      "scope_key": "8953970eeee80ec31b6e8470989c117685134686de40f4245e591cf8f1097576",
+      "scope_json": "{\"agent_id\": \"796024f6-a954-43c6-9638-1f5da529b937\", \"generation\": 1, \"owner_id\": \"31c32848-c6ad-4b72-b03f-5ea1be677978\", \"thread_id\": \"d0b7c0d5-6ddc-4267-9498-78a93fcf0a4f\"}",
+      "container": "nma028-9b877e7a-8953970eeee80ec3",
+      "volume": "nma028-9b877e7a-8953970eeee80ec3-work",
+      "state": "paused"
+    },
+    {
+      "scope_key": "8d328c173655e7cd606f3cc59f209433d64832b9319337d114b6eb5ef4aa696b",
+      "scope_json": "{\"agent_id\": \"3dd21a2c-296b-49ef-afc6-4817a310cb29\", \"generation\": 1, \"owner_id\": \"31c32848-c6ad-4b72-b03f-5ea1be677978\", \"thread_id\": \"ee68f21e-c464-4c41-8313-2a3bef6a5fd5\"}",
+      "container": "nma028-9b877e7a-8d328c173655e7cd",
+      "volume": "nma028-9b877e7a-8d328c173655e7cd-work",
+      "state": "paused"
+    },
+    {
+      "scope_key": "964f80a931c96a887741a147149ce9ef75203b1eccb19eaeb11daa9ad7d9713e",
+      "scope_json": "{\"agent_id\": \"e1294e49-c384-4a46-ae6a-0bcc83d1e2b8\", \"generation\": 1, \"owner_id\": \"31c32848-c6ad-4b72-b03f-5ea1be677978\", \"thread_id\": \"37b165f5-3c4b-4f10-bb07-aaee5981850e\"}",
+      "container": "nma028-9b877e7a-964f80a931c96a88",
+      "volume": "nma028-9b877e7a-964f80a931c96a88-work",
+      "state": "cancelled"
+    },
+    {
+      "scope_key": "a96788dd8fa500cabf2d9a466b25f6e8e266dfb77d9e7a15cddfb17b581c72f4",
+      "scope_json": "{\"agent_id\": \"11434147-77c2-4c31-b3b6-404f72dd2cc8\", \"generation\": 1, \"owner_id\": \"31c32848-c6ad-4b72-b03f-5ea1be677978\", \"thread_id\": \"97f844a8-5a8f-4e56-b33b-4d39f6bdcf42\"}",
+      "container": "nma028-9b877e7a-a96788dd8fa500ca",
+      "volume": "nma028-9b877e7a-a96788dd8fa500ca-work",
+      "state": "paused"
+    },
+    {
+      "scope_key": "c73d7a822e75e294e1c179af78ae5d12bb6f0c8432f1f6e453950c9602d23552",
+      "scope_json": "{\"agent_id\": \"025761a4-2565-4d74-940a-e18bfe61f087\", \"generation\": 1, \"owner_id\": \"31c32848-c6ad-4b72-b03f-5ea1be677978\", \"thread_id\": \"7c4993af-e185-432b-9b0a-65a4dc8a8166\"}",
+      "container": "nma028-9b877e7a-c73d7a822e75e294",
+      "volume": "nma028-9b877e7a-c73d7a822e75e294-work",
+      "state": "cancelled"
+    },
+    {
+      "scope_key": "d29652290adc1f60f2513e3abc8824dd2092b0a8ee4c669bc8c01840c49e0a97",
+      "scope_json": "{\"agent_id\": \"760107da-e0fc-40f9-b96c-41152f3a4b80\", \"generation\": 1, \"owner_id\": \"31c32848-c6ad-4b72-b03f-5ea1be677978\", \"thread_id\": \"ab950304-cf18-4d93-9425-8f1000c67aa9\"}",
+      "container": "nma028-9b877e7a-d29652290adc1f60",
+      "volume": "nma028-9b877e7a-d29652290adc1f60-work",
+      "state": "uncertain"
+    },
+    {
+      "scope_key": "d39f4ec0fa56f8f7576b86d3c29179c75424da7561935f2bfde1dc5970437d22",
+      "scope_json": "{\"agent_id\": \"425257cf-42ca-403c-9297-8801a02247a0\", \"generation\": 1, \"owner_id\": \"31c32848-c6ad-4b72-b03f-5ea1be677978\", \"thread_id\": \"d7c1b0cf-7ca2-4d89-b0e1-8d8ab3407ec2\"}",
+      "container": "nma028-9b877e7a-d39f4ec0fa56f8f7",
+      "volume": "nma028-9b877e7a-d39f4ec0fa56f8f7-work",
+      "state": "paused"
+    },
+    {
+      "scope_key": "e4c91bd31d95f6368fa0b79d430c5da36dae40de102eb18f2255bc9aacc7e39b",
+      "scope_json": "{\"agent_id\": \"22cec8fd-e3ef-4e49-bc63-21e367e3e8e2\", \"generation\": 1, \"owner_id\": \"31c32848-c6ad-4b72-b03f-5ea1be677978\", \"thread_id\": \"afcedd8f-5166-455c-af3c-588a6792eac2\"}",
+      "container": "nma028-9b877e7a-e4c91bd31d95f636",
+      "volume": "nma028-9b877e7a-e4c91bd31d95f636-work",
+      "state": "paused"
+    },
+    {
+      "scope_key": "e69ae609571a7a37f36f18f2ae25053af37774bce7fb92f04cdee297a411523d",
+      "scope_json": "{\"agent_id\": \"5808f783-383c-4750-a9fb-f5afa45608cc\", \"generation\": 1, \"owner_id\": \"31c32848-c6ad-4b72-b03f-5ea1be677978\", \"thread_id\": \"7a46319b-b5b0-4bb4-96a1-7a4f883a5d17\"}",
+      "container": "nma028-9b877e7a-e69ae609571a7a37",
+      "volume": "nma028-9b877e7a-e69ae609571a7a37-work",
+      "state": "paused"
+    },
+    {
+      "scope_key": "f283b87e985fe9208fce3510a84d4096d6373a78244c9eeae86e30e0a88151d7",
+      "scope_json": "{\"agent_id\": \"2dbda951-12ba-430a-9732-505d84429886\", \"generation\": 1, \"owner_id\": \"31c32848-c6ad-4b72-b03f-5ea1be677978\", \"thread_id\": \"14514180-6117-47d1-8063-56ba024e17e2\"}",
+      "container": "nma028-9b877e7a-f283b87e985fe920",
+      "volume": "nma028-9b877e7a-f283b87e985fe920-work",
+      "state": "uncertain"
+    },
+    {
+      "scope_key": "feb215440bc2340a4a35c825042d59b7f0180c50c7c11d6a95d0ce269e436628",
+      "scope_json": "{\"agent_id\": \"ce99ccdc-1430-47e2-96e2-5bbc0fb5d944\", \"generation\": 1, \"owner_id\": \"31c32848-c6ad-4b72-b03f-5ea1be677978\", \"thread_id\": \"dbc29cc2-606e-450c-a61d-7e64f0cb774f\"}",
+      "container": "nma028-9b877e7a-feb215440bc2340a",
+      "volume": "nma028-9b877e7a-feb215440bc2340a-work",
+      "state": "cancelled"
+    }
+  ]
+}

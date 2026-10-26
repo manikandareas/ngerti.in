@@ -1,0 +1,25 @@
+{
+  "checked_at": "2026-10-26T04:29:16.492688+00:00",
+  "identities": [
+    {
+      "user_id": "user_3LDN5sqApiSYRLwDT6C90q7uKR5",
+      "owner_id": "31c32848-c6ad-4b72-b03f-5ea1be677978",
+      "deleted": true,
+      "readback_status": 404
+    },
+    {
+      "user_id": "user_3LDN5s7b8LeRzxx6VVVYUxRls5s",
+      "owner_id": "18bf9e53-870c-444b-b152-c0c51ab70967",
+      "deleted": true,
+      "readback_status": 404
+    }
+  ],
+  "database": "nma028_adf8bed7ecc1",
+  "database_absent": true,
+  "owned_containers_absent": 58,
+  "owned_volumes_absent": 58,
+  "unrelated_docker_resources_untouched": true,
+  "native_profile_credential_files_removed": true,
+  "private_relay_environment_removed": true,
+  "temporary_node_modules_link_removed": true
+}

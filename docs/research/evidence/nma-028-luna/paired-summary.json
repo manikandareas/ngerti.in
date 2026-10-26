@@ -1,0 +1,1071 @@
+{
+  "protocol_id": "nma028-chatgpt-luna-v1",
+  "protocol_sha256": "c1a7b3b29a21e6704599db693c7f5be689e9dc87f7e94314abb8e5d12fb6a810",
+  "surfaces": {
+    "direct": {
+      "planned": 33,
+      "executed": 33,
+      "passed": 26,
+      "outcomes": {
+        "passed": 26,
+        "failed": 4,
+        "user_stop": 3
+      },
+      "categories": {
+        "none": 26,
+        "oracle": 4,
+        "user_stop": 3
+      },
+      "success_per_planned": 0.7878787878787878,
+      "success_per_executed": 0.7878787878787878,
+      "wilson95_executed": [
+        0.6224835500784931,
+        0.8932397846697919
+      ],
+      "timings_s": {
+        "admission": {
+          "n": 30,
+          "p50": 0.07732783304527402,
+          "p95": 0.14644074998795986
+        },
+        "first_progress": {
+          "n": 27,
+          "p50": 4.12118999985978,
+          "p95": 5.6880610841326416
+        },
+        "settlement": {
+          "n": 33,
+          "p50": 20.865345374913886,
+          "p95": 46.00957995792851
+        },
+        "recovery": {
+          "n": 7,
+          "p50": 1.8802129169926047,
+          "p95": 2.3718727498780936
+        }
+      },
+      "effect_metrics": "unavailable unless independently instrumented; never inferred as zero from missing events"
+    },
+    "adapter": {
+      "planned": 33,
+      "executed": 33,
+      "passed": 20,
+      "outcomes": {
+        "passed": 20,
+        "failed": 10,
+        "user_stop": 3
+      },
+      "categories": {
+        "none": 20,
+        "oracle": 5,
+        "user_stop": 3,
+        "unknown": 5
+      },
+      "success_per_planned": 0.6060606060606061,
+      "success_per_executed": 0.6060606060606061,
+      "wilson95_executed": [
+        0.43683440819940234,
+        0.7531689256552291
+      ],
+      "timings_s": {
+        "admission": {
+          "n": 25,
+          "p50": 0.025139583041891456,
+          "p95": 0.0687075830064714
+        },
+        "first_progress": {
+          "n": 24,
+          "p50": 3.9609141249675304,
+          "p95": 7.497849375009537
+        },
+        "settlement": {
+          "n": 28,
+          "p50": 20.206466167001054,
+          "p95": 38.58831658400595
+        },
+        "recovery": {
+          "n": 7,
+          "p50": 2.085936874849722,
+          "p95": 2.459501791978255
+        }
+      },
+      "effect_metrics": "unavailable unless independently instrumented; never inferred as zero from missing events"
+    },
+    "application": {
+      "planned": 33,
+      "executed": 33,
+      "passed": 24,
+      "outcomes": {
+        "passed": 24,
+        "failed": 6,
+        "user_stop": 3
+      },
+      "categories": {
+        "none": 24,
+        "oracle": 2,
+        "user_stop": 3,
+        "unknown": 4
+      },
+      "success_per_planned": 0.7272727272727273,
+      "success_per_executed": 0.7272727272727273,
+      "wilson95_executed": [
+        0.5578244099712737,
+        0.8493255911457935
+      ],
+      "timings_s": {
+        "admission": {
+          "n": 26,
+          "p50": 0.03319129184819758,
+          "p95": 0.07528341608121991
+        },
+        "first_progress": {
+          "n": 24,
+          "p50": 3.9915980831719935,
+          "p95": 6.043346874881536
+        },
+        "settlement": {
+          "n": 29,
+          "p50": 23.58381791599095,
+          "p95": 96.02303695795126
+        },
+        "recovery": {
+          "n": 8,
+          "p50": 2.192157957935706,
+          "p95": 3.458820916013792
+        }
+      },
+      "effect_metrics": "unavailable unless independently instrumented; never inferred as zero from missing events"
+    }
+  },
+  "release_gate": "This is a decision-spike smoke corpus. All observed failures remain failures. The unchanged NMA-039 release thresholds and >=100 representative tasks per configuration are not established here.",
+  "inputs": [
+    {
+      "path": ".dev/nma-028-luna/final-direct.jsonl",
+      "sha256": "977781bc797696ab688b5c68eb4f8ff283cdf3e35438231c01c07b3d0e6f3223"
+    },
+    {
+      "path": ".dev/nma-028-luna/final-adapter.jsonl",
+      "sha256": "2419cc6ca47eff9d4931f4b39d74b83c43182f8d49d99598209ac8b9e547287b"
+    },
+    {
+      "path": ".dev/nma-028-luna/final-application.jsonl",
+      "sha256": "53ead3b1d5bcb6020efedca2a8a3cc70dd3ad780fbedfcb3cd1ba6f6a9a81256"
+    },
+    {
+      "path": ".dev/nma-028-luna/final-native-lifecycle.jsonl",
+      "sha256": "aef5c4a398240079881a33b4fb40b89b1cf4408ec8722bd291d9874a313ff706"
+    }
+  ],
+  "raw_outcomes": {
+    "passed": 62,
+    "failed": 28,
+    "user_stop": 9
+  },
+  "read_only_score_reviews": [
+    {
+      "attempt_id": "0160a30a-ff54-458b-8908-f062373ed330",
+      "surface": "direct",
+      "repeat": 2,
+      "raw_score": {
+        "status": "failed",
+        "category": "oracle",
+        "oracle_passed": false
+      },
+      "reason": "Written oracle requires two distinct successful updates and completed named tasks, without requiring lowercase task labels. Only casefolding is applied to saved labels; raw traces remain unchanged."
+    },
+    {
+      "attempt_id": "9eaf9712-61bd-4448-8217-80eaef52b6d3",
+      "surface": "adapter",
+      "repeat": 1,
+      "raw_score": {
+        "status": "failed",
+        "category": "oracle",
+        "oracle_passed": false
+      },
+      "reason": "Written oracle requires two distinct successful updates and completed named tasks, without requiring lowercase task labels. Only casefolding is applied to saved labels; raw traces remain unchanged."
+    },
+    {
+      "attempt_id": "2019f712-210e-460e-ab5b-3ac7c1e292b7",
+      "surface": "adapter",
+      "repeat": 2,
+      "raw_score": {
+        "status": "failed",
+        "category": "oracle",
+        "oracle_passed": false
+      },
+      "reason": "Written oracle requires two distinct successful updates and completed named tasks, without requiring lowercase task labels. Only casefolding is applied to saved labels; raw traces remain unchanged."
+    },
+    {
+      "attempt_id": "67622641-5be2-45d4-9836-160d372fe7e7",
+      "surface": "adapter",
+      "repeat": 3,
+      "raw_score": {
+        "status": "failed",
+        "category": "oracle",
+        "oracle_passed": false
+      },
+      "reason": "Written oracle requires two distinct successful updates and completed named tasks, without requiring lowercase task labels. Only casefolding is applied to saved labels; raw traces remain unchanged."
+    },
+    {
+      "attempt_id": "43164ad9-2a9c-4f11-9411-8592ef9eda09",
+      "surface": "application",
+      "repeat": 1,
+      "raw_score": {
+        "status": "failed",
+        "category": "oracle",
+        "oracle_passed": false
+      },
+      "reason": "Written oracle requires two distinct successful updates and completed named tasks, without requiring lowercase task labels. Only casefolding is applied to saved labels; raw traces remain unchanged."
+    },
+    {
+      "attempt_id": "290d9838-9470-47f3-9957-f99bc3f6087f",
+      "surface": "application",
+      "repeat": 2,
+      "raw_score": {
+        "status": "failed",
+        "category": "oracle",
+        "oracle_passed": false
+      },
+      "reason": "Written oracle requires two distinct successful updates and completed named tasks, without requiring lowercase task labels. Only casefolding is applied to saved labels; raw traces remain unchanged."
+    },
+    {
+      "attempt_id": "d58dff60-cf75-4b74-820d-dee26c69001b",
+      "surface": "application",
+      "repeat": 3,
+      "raw_score": {
+        "status": "failed",
+        "category": "oracle",
+        "oracle_passed": false
+      },
+      "reason": "Written oracle requires two distinct successful updates and completed named tasks, without requiring lowercase task labels. Only casefolding is applied to saved labels; raw traces remain unchanged."
+    },
+    {
+      "attempt_id": "d1652d24-c98a-403e-b3b5-15e313a5a9f5",
+      "surface": "direct",
+      "repeat": 3,
+      "raw_score": {
+        "status": "failed",
+        "category": "oracle",
+        "oracle_passed": false
+      },
+      "reason": "Pinned cron persists successful last_status=ok, not success. One terminal admission/canonical completion/output is required. The expected marker must occur in actual response bytes after the Markdown Response heading, never in the saved prompt."
+    }
+  ],
+  "totals": {
+    "planned": 99,
+    "attempted": 99,
+    "task_successes": 70,
+    "verified_user_stops": 9,
+    "outcomes": {
+      "passed": 70,
+      "failed": 20,
+      "user_stop": 9
+    },
+    "categories": {
+      "none": 70,
+      "oracle": 11,
+      "user_stop": 9,
+      "unknown": 9
+    }
+  },
+  "families": {
+    "short_dm": {
+      "direct": [
+        {
+          "repeat": 1,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 2,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 3,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        }
+      ],
+      "adapter": [
+        {
+          "repeat": 1,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 2,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 3,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        }
+      ],
+      "application": [
+        {
+          "repeat": 1,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 2,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 3,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        }
+      ]
+    },
+    "long_dm": {
+      "direct": [
+        {
+          "repeat": 1,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 2,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 3,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        }
+      ],
+      "adapter": [
+        {
+          "repeat": 1,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 2,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 3,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        }
+      ],
+      "application": [
+        {
+          "repeat": 1,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 2,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 3,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        }
+      ]
+    },
+    "multi_step_tools": {
+      "direct": [
+        {
+          "repeat": 1,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 2,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 3,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        }
+      ],
+      "adapter": [
+        {
+          "repeat": 1,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 2,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 3,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        }
+      ],
+      "application": [
+        {
+          "repeat": 1,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 2,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 3,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        }
+      ]
+    },
+    "browser_navigation": {
+      "direct": [
+        {
+          "repeat": 1,
+          "status": "failed",
+          "category": "oracle",
+          "oracle_passed": false
+        },
+        {
+          "repeat": 2,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 3,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        }
+      ],
+      "adapter": [
+        {
+          "repeat": 1,
+          "status": "failed",
+          "category": "oracle",
+          "oracle_passed": false
+        },
+        {
+          "repeat": 2,
+          "status": "failed",
+          "category": "oracle",
+          "oracle_passed": false
+        },
+        {
+          "repeat": 3,
+          "status": "failed",
+          "category": "oracle",
+          "oracle_passed": false
+        }
+      ],
+      "application": [
+        {
+          "repeat": 1,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 2,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 3,
+          "status": "failed",
+          "category": "oracle",
+          "oracle_passed": false
+        }
+      ]
+    },
+    "browser_form": {
+      "direct": [
+        {
+          "repeat": 1,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 2,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 3,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        }
+      ],
+      "adapter": [
+        {
+          "repeat": 1,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 2,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 3,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        }
+      ],
+      "application": [
+        {
+          "repeat": 1,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 2,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 3,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        }
+      ]
+    },
+    "browser_download": {
+      "direct": [
+        {
+          "repeat": 1,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 2,
+          "status": "failed",
+          "category": "oracle",
+          "oracle_passed": false
+        },
+        {
+          "repeat": 3,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        }
+      ],
+      "adapter": [
+        {
+          "repeat": 1,
+          "status": "failed",
+          "category": "oracle",
+          "oracle_passed": false
+        },
+        {
+          "repeat": 2,
+          "status": "failed",
+          "category": "oracle",
+          "oracle_passed": false
+        },
+        {
+          "repeat": 3,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        }
+      ],
+      "application": [
+        {
+          "repeat": 1,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 2,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 3,
+          "status": "failed",
+          "category": "oracle",
+          "oracle_passed": false
+        }
+      ]
+    },
+    "restart": {
+      "direct": [
+        {
+          "repeat": 1,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 2,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 3,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        }
+      ],
+      "adapter": [
+        {
+          "repeat": 1,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 2,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 3,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        }
+      ],
+      "application": [
+        {
+          "repeat": 1,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 2,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 3,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        }
+      ]
+    },
+    "cancellation": {
+      "direct": [
+        {
+          "repeat": 1,
+          "status": "user_stop",
+          "category": "user_stop",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 2,
+          "status": "user_stop",
+          "category": "user_stop",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 3,
+          "status": "user_stop",
+          "category": "user_stop",
+          "oracle_passed": true
+        }
+      ],
+      "adapter": [
+        {
+          "repeat": 1,
+          "status": "user_stop",
+          "category": "user_stop",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 2,
+          "status": "user_stop",
+          "category": "user_stop",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 3,
+          "status": "user_stop",
+          "category": "user_stop",
+          "oracle_passed": true
+        }
+      ],
+      "application": [
+        {
+          "repeat": 1,
+          "status": "user_stop",
+          "category": "user_stop",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 2,
+          "status": "user_stop",
+          "category": "user_stop",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 3,
+          "status": "user_stop",
+          "category": "user_stop",
+          "oracle_passed": true
+        }
+      ]
+    },
+    "reconnect": {
+      "direct": [
+        {
+          "repeat": 1,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 2,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 3,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        }
+      ],
+      "adapter": [
+        {
+          "repeat": 1,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 2,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 3,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        }
+      ],
+      "application": [
+        {
+          "repeat": 1,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 2,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 3,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        }
+      ]
+    },
+    "offline_goal": {
+      "direct": [
+        {
+          "repeat": 1,
+          "status": "failed",
+          "category": "oracle",
+          "oracle_passed": false
+        },
+        {
+          "repeat": 2,
+          "status": "failed",
+          "category": "oracle",
+          "oracle_passed": false
+        },
+        {
+          "repeat": 3,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        }
+      ],
+      "adapter": [
+        {
+          "repeat": 1,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 2,
+          "status": "failed",
+          "category": "unknown",
+          "oracle_passed": false
+        },
+        {
+          "repeat": 3,
+          "status": "failed",
+          "category": "unknown",
+          "oracle_passed": false
+        }
+      ],
+      "application": [
+        {
+          "repeat": 1,
+          "status": "failed",
+          "category": "unknown",
+          "oracle_passed": false
+        },
+        {
+          "repeat": 2,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 3,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        }
+      ]
+    },
+    "group_handoff": {
+      "direct": [
+        {
+          "repeat": 1,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 2,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 3,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        }
+      ],
+      "adapter": [
+        {
+          "repeat": 1,
+          "status": "failed",
+          "category": "unknown",
+          "oracle_passed": false
+        },
+        {
+          "repeat": 2,
+          "status": "failed",
+          "category": "unknown",
+          "oracle_passed": false
+        },
+        {
+          "repeat": 3,
+          "status": "failed",
+          "category": "unknown",
+          "oracle_passed": false
+        }
+      ],
+      "application": [
+        {
+          "repeat": 1,
+          "status": "failed",
+          "category": "unknown",
+          "oracle_passed": false
+        },
+        {
+          "repeat": 2,
+          "status": "failed",
+          "category": "unknown",
+          "oracle_passed": false
+        },
+        {
+          "repeat": 3,
+          "status": "failed",
+          "category": "unknown",
+          "oracle_passed": false
+        }
+      ]
+    }
+  },
+  "tool_journals": [
+    {
+      "path": ".dev/nma-028-luna/final-direct-control/isolated-tools.db",
+      "sha256": "72f8affa3bd1487bceb964da154bdfd130e92ee458da4751f6576425b040697a",
+      "operations": 26,
+      "states": {
+        "indeterminate": 5,
+        "returned": 21
+      },
+      "tools": {
+        "browser_exec": 20,
+        "terminal": 6
+      },
+      "scopes": {
+        "cancelled": 3,
+        "paused": 7,
+        "uncertain": 2
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "path": ".dev/nma-028-luna/final-adapter-control/isolated-tools.db",
+      "sha256": "fb4fc085e6122e8e2d5377448c45752cad423690f638262c23507a25cd74e120",
+      "operations": 25,
+      "states": {
+        "indeterminate": 8,
+        "returned": 17
+      },
+      "tools": {
+        "browser_exec": 16,
+        "terminal": 9
+      },
+      "scopes": {
+        "cancelled": 3,
+        "paused": 7,
+        "uncertain": 5
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "path": ".dev/nma-028-luna/final-application-control/isolated-tools.db",
+      "sha256": "82f59a5411495bc641d22ab0a938f5f28d24e0896dd809ae546d292d6e80200b",
+      "operations": 33,
+      "states": {
+        "indeterminate": 5,
+        "returned": 28
+      },
+      "tools": {
+        "browser_exec": 23,
+        "terminal": 10
+      },
+      "scopes": {
+        "cancelled": 4,
+        "paused": 9,
+        "uncertain": 2
+      },
+      "original_bytes_unchanged": true
+    },
+    {
+      "path": ".dev/nma-028-luna/final-native-lifecycle-control/isolated-tools.db",
+      "sha256": "371ddffcf329374ebdcb863e2e181d2c10a665ebceb126eed169fba3945cf738",
+      "operations": 12,
+      "states": {
+        "returned": 12
+      },
+      "tools": {
+        "terminal": 12
+      },
+      "scopes": {
+        "ready": 9
+      },
+      "original_bytes_unchanged": true
+    }
+  ],
+  "form_effects": {
+    "attempts": 9,
+    "posts_per_attempt": [
+      {
+        "attempt_id": "8b70920d-751b-4821-bded-fa7a72eda881",
+        "posts": 1
+      },
+      {
+        "attempt_id": "bd222136-197f-4775-8ab3-cb3fc78273cd",
+        "posts": 1
+      },
+      {
+        "attempt_id": "4dccd439-e614-4249-9ede-ec888ec6d34d",
+        "posts": 1
+      },
+      {
+        "attempt_id": "431ed0af-71d8-4a80-84f3-9fe48c073adf",
+        "posts": 1
+      },
+      {
+        "attempt_id": "8b801966-8462-42ff-a371-062982b451a3",
+        "posts": 1
+      },
+      {
+        "attempt_id": "41d2ae04-c67a-46b7-a6f2-4e033f5420db",
+        "posts": 1
+      },
+      {
+        "attempt_id": "01bfe883-b99d-4945-a63b-19c35aa776fd",
+        "posts": 1
+      },
+      {
+        "attempt_id": "5a3b577e-8734-49a2-a665-c2d54ec1105b",
+        "posts": 1
+      },
+      {
+        "attempt_id": "6c046f35-5728-4a37-9d28-173b21a50a66",
+        "posts": 1
+      }
+    ],
+    "limitation": "Missing observations are unavailable, not proof of zero effects; journals retain unknown/indeterminate outcomes."
+  }
+}

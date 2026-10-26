@@ -1,0 +1,23 @@
+{
+  "operations": [
+    {
+      "scope_key": "eda4dafbc8fc1652ee6261e6f96d739c7b4c3b8aee8796f48faed99398052dd8",
+      "operation_id": "1e35fad5206badc4067e8754c4b2f31c2d9f9f7096ad9217db539460c678e6c8",
+      "tool": "terminal",
+      "args_hash": "9e37150ee20b2ef0f4d82d192de0701578ccaa83c904f8523ae33e26e35cde52",
+      "state": "returned",
+      "result": "{\"output\": \"12.5\", \"exit_code\": 0, \"error\": null}",
+      "started": 1792988178.13098,
+      "finished": 1792988181.848017
+    }
+  ],
+  "scopes": [
+    {
+      "scope_key": "eda4dafbc8fc1652ee6261e6f96d739c7b4c3b8aee8796f48faed99398052dd8",
+      "scope_json": "{\"agent_id\": \"cd7f2a4b-ab71-43c9-a15f-4a42afdf8fb2\", \"generation\": 1, \"owner_id\": \"31c32848-c6ad-4b72-b03f-5ea1be677978\", \"thread_id\": \"40bcfb3a-ac4d-43ab-9e11-802fbb2f0818\"}",
+      "container": "nma028-3f8b4396-eda4dafbc8fc1652",
+      "volume": "nma028-3f8b4396-eda4dafbc8fc1652-work",
+      "state": "paused"
+    }
+  ]
+}

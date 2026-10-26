@@ -1,0 +1,869 @@
+{
+  "checked_at": "2026-10-26T03:22:01.929038+00:00",
+  "manifest_sha256": "775c33ef063199fdd7e92ff6353840b3fd884b71d1c01a730d8c8d53b6076389",
+  "artifacts": [
+    {
+      "path": "apps/engine/src/ngertiin_engine/runtime-pin.json",
+      "expected_sha256": "3fee679bce54487ab98a590cb113bb332b2daedc7d37326324f45a19da2acba3",
+      "current_sha256": "8c09f004f7459b0670d805ea6230e715a07a0fcdde0846e93d70ea4c80060467",
+      "current_matches": false,
+      "archived_commit": "424d43c",
+      "archived_sha256": "3fee679bce54487ab98a590cb113bb332b2daedc7d37326324f45a19da2acba3",
+      "archived_matches": true,
+      "disposition": "Provider foundation commit 4347efe extended protocol provenance; upstream Hermes revision remains unchanged"
+    },
+    {
+      "path": "apps/engine/tests/browser/closure-auth.tsx",
+      "expected_sha256": "841492672781314c5488e2bd7b4b9800f90dd1aa1bcd50595974e5909892cf10",
+      "current_sha256": "841492672781314c5488e2bd7b4b9800f90dd1aa1bcd50595974e5909892cf10",
+      "current_matches": true
+    },
+    {
+      "path": "apps/engine/tests/browser/nma028-closure.config.ts",
+      "expected_sha256": "28196e6479888f3b2eea5c50694b9854e64098c0b57e01a7fbdb9d3496c5832b",
+      "current_sha256": "28196e6479888f3b2eea5c50694b9854e64098c0b57e01a7fbdb9d3496c5832b",
+      "current_matches": true
+    },
+    {
+      "path": "apps/engine/tests/browser/nma028.config.ts",
+      "expected_sha256": "0192103c6a2d2de6c82e5d126bcf339ec9749fced2c1883ee7119db635dfdc6a",
+      "current_sha256": "0192103c6a2d2de6c82e5d126bcf339ec9749fced2c1883ee7119db635dfdc6a",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/adapter-corrected.jsonl",
+      "expected_sha256": "f1439e32a47b26aa8a3716d5affc3003fcc69334fd24f85d9249a806b080a469",
+      "current_sha256": "f1439e32a47b26aa8a3716d5affc3003fcc69334fd24f85d9249a806b080a469",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/adapter-initial.jsonl",
+      "expected_sha256": "2262227c53d7723b4df48021dbdbaacf4225a357b770a6252b8a824d207cdf7a",
+      "current_sha256": "2262227c53d7723b4df48021dbdbaacf4225a357b770a6252b8a824d207cdf7a",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/adapter-scored.jsonl",
+      "expected_sha256": "17a86b17f1bd1ae4dc65913678fc99d21d846a6a5edef272db92aa3848eb465b",
+      "current_sha256": "17a86b17f1bd1ae4dc65913678fc99d21d846a6a5edef272db92aa3848eb465b",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/after.json",
+      "expected_sha256": "3e1f5f0844b0b0a45f908a4a245392c80bd16f21597fee6cd4e47144d549d118",
+      "current_sha256": "3e1f5f0844b0b0a45f908a4a245392c80bd16f21597fee6cd4e47144d549d118",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/application-corrected.jsonl",
+      "expected_sha256": "37b644907262bc4559ec42a5bf1aee7155d8851c1e9999ff9fdcae126b7442b8",
+      "current_sha256": "37b644907262bc4559ec42a5bf1aee7155d8851c1e9999ff9fdcae126b7442b8",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/application-initial.jsonl",
+      "expected_sha256": "6ef505473c6a18727f253d77b7efd31bb82fdb37f4488a1c1b57950e8728779b",
+      "current_sha256": "6ef505473c6a18727f253d77b7efd31bb82fdb37f4488a1c1b57950e8728779b",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/application-scored.jsonl",
+      "expected_sha256": "909db90ec92eee3d5a10ec8846aa60f38413c6c82521c9f8208ca88a87eb19b4",
+      "current_sha256": "909db90ec92eee3d5a10ec8846aa60f38413c6c82521c9f8208ca88a87eb19b4",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/before.json",
+      "expected_sha256": "5bc13ed54d951229141d292ac9195cd7cf25b8db280858d4ced2b0f8f2d089b0",
+      "current_sha256": "5bc13ed54d951229141d292ac9195cd7cf25b8db280858d4ced2b0f8f2d089b0",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/biome.json",
+      "expected_sha256": "ab341d3cad6b510b6679d369b00db187de44c16fd99410bc565fc84d611086d9",
+      "current_sha256": "ab341d3cad6b510b6679d369b00db187de44c16fd99410bc565fc84d611086d9",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/capability-manifest.json",
+      "expected_sha256": "0f2411a240c7a79553a9ce65134268c35aa65cb38e3da687b7ced5576abb8a02",
+      "current_sha256": "0f2411a240c7a79553a9ce65134268c35aa65cb38e3da687b7ced5576abb8a02",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/chromium-diagnostic.log",
+      "expected_sha256": "04e6e61a8465b877347c782d60d78c8b908f86d4fb073c18e791f624f46a2f0d",
+      "current_sha256": "04e6e61a8465b877347c782d60d78c8b908f86d4fb073c18e791f624f46a2f0d",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/direct-corrected.jsonl",
+      "expected_sha256": "38a70ceda40c2ac8a0422c63e2528d939d2d559ea241d1a0357cee8405fccde9",
+      "current_sha256": "38a70ceda40c2ac8a0422c63e2528d939d2d559ea241d1a0357cee8405fccde9",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/direct-final.jsonl",
+      "expected_sha256": "a2c0b50a7c4c3b05e25fd2d7f65fd79439a31fa0e6b2c37ac17a50aeca2e218c",
+      "current_sha256": "a2c0b50a7c4c3b05e25fd2d7f65fd79439a31fa0e6b2c37ac17a50aeca2e218c",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/direct-initial.jsonl",
+      "expected_sha256": "3f1d00f4141e14a64bc38fb22d92255d8d5671f11468306aaf32750ece6e9719",
+      "current_sha256": "3f1d00f4141e14a64bc38fb22d92255d8d5671f11468306aaf32750ece6e9719",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/direct-progress-corrected.jsonl",
+      "expected_sha256": "ee1d7793760d62335100dde1446a60c3bc9eb38da1dd90486e31b336a7ccae92",
+      "current_sha256": "ee1d7793760d62335100dde1446a60c3bc9eb38da1dd90486e31b336a7ccae92",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/docker-build.log",
+      "expected_sha256": "131972094ed97e184f2a3d266d86a7ca25485143243920dfce958605ffd5d865",
+      "current_sha256": "131972094ed97e184f2a3d266d86a7ca25485143243920dfce958605ffd5d865",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/docker-final.log",
+      "expected_sha256": "96db3ca69838c3a2f5e87eb78ad6b04edace8e258d20864bf37db62950877b93",
+      "current_sha256": "96db3ca69838c3a2f5e87eb78ad6b04edace8e258d20864bf37db62950877b93",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/docker-rebuild.log",
+      "expected_sha256": "a0e08ff388cc604f67ea79962f92551c427899ae3fe5be9eb494d7b7107bb19e",
+      "current_sha256": "a0e08ff388cc604f67ea79962f92551c427899ae3fe5be9eb494d7b7107bb19e",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/docs-check-final.log",
+      "expected_sha256": "36b78c6d14b9ce23d04cbcaa65d1f86eab1aa0dc0f2367efe0ac983b6e94b3b9",
+      "current_sha256": "36b78c6d14b9ce23d04cbcaa65d1f86eab1aa0dc0f2367efe0ac983b6e94b3b9",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/fault-scope.log",
+      "expected_sha256": "cca8ada911e9d6334953a001dc6904a46120dd1807bc878cfc6f96cd2387a6bd",
+      "current_sha256": "cca8ada911e9d6334953a001dc6904a46120dd1807bc878cfc6f96cd2387a6bd",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/format-final.log",
+      "expected_sha256": "d7188cbf91f08a3caf1ec4a3214f2dc8415fb52f90a1fb6cea7ab6b7a0881d63",
+      "current_sha256": "d7188cbf91f08a3caf1ec4a3214f2dc8415fb52f90a1fb6cea7ab6b7a0881d63",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/harness-tests-final.log",
+      "expected_sha256": "ee09f6debd9f81709cd5af75a47e8b1c6ed9a94b8e82a9b34c00f597199e9c17",
+      "current_sha256": "ee09f6debd9f81709cd5af75a47e8b1c6ed9a94b8e82a9b34c00f597199e9c17",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/live-group.json",
+      "expected_sha256": "9e8c9e65ac9ffea22b75c47bac4d4eb61bda30f618ff3d5e5c6c1bacb8111fc9",
+      "current_sha256": "9e8c9e65ac9ffea22b75c47bac4d4eb61bda30f618ff3d5e5c6c1bacb8111fc9",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/live-lifecycle.log",
+      "expected_sha256": "1a7219a4b68e7b4d099130a31f341e5a51a08a8ad5ebe33cd672dd8adbe678ea",
+      "current_sha256": "1a7219a4b68e7b4d099130a31f341e5a51a08a8ad5ebe33cd672dd8adbe678ea",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/live-wake.json",
+      "expected_sha256": "f33df3d386111109acc5fc1905daf9a4c8752b8b4b946de120930cb2ee9f472d",
+      "current_sha256": "f33df3d386111109acc5fc1905daf9a4c8752b8b4b946de120930cb2ee9f472d",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/native-canary.json",
+      "expected_sha256": "d09bf64d51bead0a656041f63ae58ca05ede2053ea69d89708c4743165486f7e",
+      "current_sha256": "d09bf64d51bead0a656041f63ae58ca05ede2053ea69d89708c4743165486f7e",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/native-canary.log",
+      "expected_sha256": "d0ce697e597c599307d2b8cec27beac71d238c001dd4709a1c520563c67ab592",
+      "current_sha256": "d0ce697e597c599307d2b8cec27beac71d238c001dd4709a1c520563c67ab592",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/native-final.json",
+      "expected_sha256": "cf987a3d9373994267c9aa712178fe3a921ef32cac78820eb5764626b0d05bfc",
+      "current_sha256": "cf987a3d9373994267c9aa712178fe3a921ef32cac78820eb5764626b0d05bfc",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/native-final.log",
+      "expected_sha256": "c276162bd08867d4778ae862a96e1cc7a6fd9971e35175a22506ca03badfd0be",
+      "current_sha256": "c276162bd08867d4778ae862a96e1cc7a6fd9971e35175a22506ca03badfd0be",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/native-initial.log",
+      "expected_sha256": "96bc453e1a40bd41a04e2b5763eec59cf488c6471136b6216aa1e141940f5ac9",
+      "current_sha256": "96bc453e1a40bd41a04e2b5763eec59cf488c6471136b6216aa1e141940f5ac9",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/native-second.log",
+      "expected_sha256": "efd0db633056a420b338d96e54d62bb704fe409b19653e27fd929e6585bf2f39",
+      "current_sha256": "efd0db633056a420b338d96e54d62bb704fe409b19653e27fd929e6585bf2f39",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/native-third.json",
+      "expected_sha256": "7905e2eb1a1e7ce2ca1a29496eb79099af6e021973415de5e267d2fffa38bed2",
+      "current_sha256": "7905e2eb1a1e7ce2ca1a29496eb79099af6e021973415de5e267d2fffa38bed2",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/native-third.log",
+      "expected_sha256": "c276162bd08867d4778ae862a96e1cc7a6fd9971e35175a22506ca03badfd0be",
+      "current_sha256": "c276162bd08867d4778ae862a96e1cc7a6fd9971e35175a22506ca03badfd0be",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/notion-plan-snapshot.md",
+      "expected_sha256": "f71495653683421b300ea8e51016a7266a13731cf9a064a202333d23fd7a7013",
+      "current_sha256": "f71495653683421b300ea8e51016a7266a13731cf9a064a202333d23fd7a7013",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/packaging-review.json",
+      "expected_sha256": "8126e8964955610631ce59a5146e397988f65370d1a320dd1c63dbf1cbe7a567",
+      "current_sha256": "8126e8964955610631ce59a5146e397988f65370d1a320dd1c63dbf1cbe7a567",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/paired-scored.jsonl",
+      "expected_sha256": "7aef600ce1f6430ec236be5d10b6ac13daccf3d4f5735f1f2cacb082704b46b9",
+      "current_sha256": "7aef600ce1f6430ec236be5d10b6ac13daccf3d4f5735f1f2cacb082704b46b9",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/paired-summary.json",
+      "expected_sha256": "4d75cdd115471af09f7ca9bc957152bdeca6b9632e5f2827c40271bc2399752e",
+      "current_sha256": "4d75cdd115471af09f7ca9bc957152bdeca6b9632e5f2827c40271bc2399752e",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/process-cleanup.json",
+      "expected_sha256": "44ea2df14b4334b9eb76a986a5f0905fb1dcffd127dd6be4300360f0bab9b1dc",
+      "current_sha256": "44ea2df14b4334b9eb76a986a5f0905fb1dcffd127dd6be4300360f0bab9b1dc",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/protocol.json",
+      "expected_sha256": "e61058b0eec9b56857e5849b5adc03558684376f66abad89a9d66df957f87e5c",
+      "current_sha256": "e61058b0eec9b56857e5849b5adc03558684376f66abad89a9d66df957f87e5c",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/ruff-final.log",
+      "expected_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "current_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/sandbox-inventory.json",
+      "expected_sha256": "e9b3e130e5448c054a492fd7d977c786f894c8a1227da4710c009d9fed0336c7",
+      "current_sha256": "e9b3e130e5448c054a492fd7d977c786f894c8a1227da4710c009d9fed0336c7",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/ui-api.log",
+      "expected_sha256": "d0f572100a40ce2bf17a78e518f3c85a2919fc52f0f39a31b8e0aa2aa7d9402c",
+      "current_sha256": "d0f572100a40ce2bf17a78e518f3c85a2919fc52f0f39a31b8e0aa2aa7d9402c",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/ui-browser-failed.png",
+      "expected_sha256": "8cafdaf8bfbd2fe1fb949faaae3c76b0c097da9e3c29596bc68e3a35cb4531c6",
+      "current_sha256": "8cafdaf8bfbd2fe1fb949faaae3c76b0c097da9e3c29596bc68e3a35cb4531c6",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/ui-browser-final.txt",
+      "expected_sha256": "ce3cb9f6ecedb646c4d916efdac341b353c09e1b36b2f85ba11333ce929e249c",
+      "current_sha256": "ce3cb9f6ecedb646c4d916efdac341b353c09e1b36b2f85ba11333ce929e249c",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/ui-browser-progress.png",
+      "expected_sha256": "ef23e7caae932cc4a9b7c2d42f9417673ecce5b689ecca0e57dfb32b0fa2a2ec",
+      "current_sha256": "ef23e7caae932cc4a9b7c2d42f9417673ecce5b689ecca0e57dfb32b0fa2a2ec",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/ui-browser-start.png",
+      "expected_sha256": "fa770880036290408120a69ac7df78fb958c7485342f422a9e3b139723076179",
+      "current_sha256": "fa770880036290408120a69ac7df78fb958c7485342f422a9e3b139723076179",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/ui-config-check-final.log",
+      "expected_sha256": "3ba6cf5930a317256a81703bdc0a86b28c185084043fa95c5919711e6f01e6cc",
+      "current_sha256": "3ba6cf5930a317256a81703bdc0a86b28c185084043fa95c5919711e6f01e6cc",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/ui-effects.json",
+      "expected_sha256": "3188bcae46325eb78fcf7f9b57d43d4200de9b748f0786a42f0cb7285590ba5c",
+      "current_sha256": "3188bcae46325eb78fcf7f9b57d43d4200de9b748f0786a42f0cb7285590ba5c",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/ui-native-tools.json",
+      "expected_sha256": "3d0ccd6a68686237bfa601a4021020d2e1db9ee7759fbacd7145d9c96ef0157b",
+      "current_sha256": "3d0ccd6a68686237bfa601a4021020d2e1db9ee7759fbacd7145d9c96ef0157b",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/ui-result.json",
+      "expected_sha256": "507bcb655d11d286112e7941cb69725b7bb42a6cbbe683cc5b110182f6a628c6",
+      "current_sha256": "507bcb655d11d286112e7941cb69725b7bb42a6cbbe683cc5b110182f6a628c6",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/verification.json",
+      "expected_sha256": "eec48306c5167194e5a304ff1186b334b5ce9d57b4a122977b089adfa9550b54",
+      "current_sha256": "eec48306c5167194e5a304ff1186b334b5ce9d57b4a122977b089adfa9550b54",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028/whitespace-final.log",
+      "expected_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "current_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/auth-cleanup.json",
+      "expected_sha256": "ab4d627ed7dd5a180171a19bf55acb336e931cbed338e517c13643eaab1944ba",
+      "current_sha256": "ab4d627ed7dd5a180171a19bf55acb336e931cbed338e517c13643eaab1944ba",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/auth-history-proof.json",
+      "expected_sha256": "2e392f445a2459aa8d294fc2fd420a13f619a4a5350cd1f653834e3a6ddb2ee7",
+      "current_sha256": "2e392f445a2459aa8d294fc2fd420a13f619a4a5350cd1f653834e3a6ddb2ee7",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/auth-proof.json",
+      "expected_sha256": "d9618afd6a4d61aef3f9d8cdff7b44f9fedd51c257a06d0b7268353964f2b495",
+      "current_sha256": "d9618afd6a4d61aef3f9d8cdff7b44f9fedd51c257a06d0b7268353964f2b495",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/authenticated-ui-history.png",
+      "expected_sha256": "cd3afa7bc0f1c89b6b2c045eb98cbedcbfad93d4625f93c615c40e7e5c67fe44",
+      "current_sha256": "cd3afa7bc0f1c89b6b2c045eb98cbedcbfad93d4625f93c615c40e7e5c67fe44",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/backend-measurements.json",
+      "expected_sha256": "d9792abc7c1d5f05c838e9a788e44619dcb61ae85f16bd020be7bcf223f7c0b8",
+      "current_sha256": "d9792abc7c1d5f05c838e9a788e44619dcb61ae85f16bd020be7bcf223f7c0b8",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/final-adapter.jsonl",
+      "expected_sha256": "854a57b6b2f1f2712a0d93c437cc24c5dd2a7d06874bf86cd24d3e0a7605ca6c",
+      "current_sha256": "854a57b6b2f1f2712a0d93c437cc24c5dd2a7d06874bf86cd24d3e0a7605ca6c",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/final-application.jsonl",
+      "expected_sha256": "5a1742120fe29fa1a296fe43f387d84660cb8da0126163531d9ebc10072c257d",
+      "current_sha256": "5a1742120fe29fa1a296fe43f387d84660cb8da0126163531d9ebc10072c257d",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/final-biome.log",
+      "expected_sha256": "2c1dd83d4c99f506378612b917a44dbf00761d50845ac457a27a7890301110f0",
+      "current_sha256": "2c1dd83d4c99f506378612b917a44dbf00761d50845ac457a27a7890301110f0",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/final-direct.jsonl",
+      "expected_sha256": "d6274aa235baee3783a10df9ec734b3cfebae1e1547a7d0ec924c57b06728c7a",
+      "current_sha256": "d6274aa235baee3783a10df9ec734b3cfebae1e1547a7d0ec924c57b06728c7a",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/final-docs-check.log",
+      "expected_sha256": "6126d17b280170513fed9027b918dde88e810384e0a3fb6c4a15184f6c67ed16",
+      "current_sha256": "6126d17b280170513fed9027b918dde88e810384e0a3fb6c4a15184f6c67ed16",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/final-format.log",
+      "expected_sha256": "2bcbe8e6e763d11737554aa861ef6606aea9d87114a002aa9bd426ec920674cf",
+      "current_sha256": "2bcbe8e6e763d11737554aa861ef6606aea9d87114a002aa9bd426ec920674cf",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/final-ruff.log",
+      "expected_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "current_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/final-tracked-whitespace.log",
+      "expected_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "current_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/gateway-stop-proof.json",
+      "expected_sha256": "8a3653311a28c7a510159c7dde066e74007031b02fc983f82756298eafea682b",
+      "current_sha256": "8a3653311a28c7a510159c7dde066e74007031b02fc983f82756298eafea682b",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/gateway-stop-test.log",
+      "expected_sha256": "99edd3597561089992edd9f2156a1643649bd56766e02508eed719c99d39ccb1",
+      "current_sha256": "99edd3597561089992edd9f2156a1643649bd56766e02508eed719c99d39ccb1",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/isolation-cua-placement.json",
+      "expected_sha256": "373507c41bf74e68e6d952f902f4e64d145ed6253635119d0525e594b753a638",
+      "current_sha256": "373507c41bf74e68e6d952f902f4e64d145ed6253635119d0525e594b753a638",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/isolation-image.json",
+      "expected_sha256": "b3e29f95f1e992162ad397933754cd431d0fb15b1cf15e928e45d39b4f80a105",
+      "current_sha256": "b3e29f95f1e992162ad397933754cd431d0fb15b1cf15e928e45d39b4f80a105",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/isolation-prior-attempts.json",
+      "expected_sha256": "2284b5547ccdd9103ca084365a580d22bdf5e387810bcd2b6b01a14e1648cd0d",
+      "current_sha256": "2284b5547ccdd9103ca084365a580d22bdf5e387810bcd2b6b01a14e1648cd0d",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/isolation-tests.json",
+      "expected_sha256": "90a29708385de63680ef7303adab40ae998824caf61535ff3a41be58afd092a1",
+      "current_sha256": "90a29708385de63680ef7303adab40ae998824caf61535ff3a41be58afd092a1",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/native-lifecycle-corrected.jsonl",
+      "expected_sha256": "3f4eb8a97508e6d1e921e3f0389edfa2c4cac736a29f41e3007a534043183669",
+      "current_sha256": "3f4eb8a97508e6d1e921e3f0389edfa2c4cac736a29f41e3007a534043183669",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/native-lifecycle-corrected.log",
+      "expected_sha256": "72ab04a3f4340f0ba3693b4f1065b06aad45d10e7919cd41174b1c6b3ab465b6",
+      "current_sha256": "72ab04a3f4340f0ba3693b4f1065b06aad45d10e7919cd41174b1c6b3ab465b6",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/native-lifecycle-groups-final.jsonl",
+      "expected_sha256": "35d69f566006792fc6ad47d511d3aeeebb69aed1cab3e4c961a1f6bb7cdeebfd",
+      "current_sha256": "35d69f566006792fc6ad47d511d3aeeebb69aed1cab3e4c961a1f6bb7cdeebfd",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/native-lifecycle-groups-final.log",
+      "expected_sha256": "35330b3b4fa6ff59c10522ef0edd76ea3bf946eeff3b4d247fde40d6b32640c5",
+      "current_sha256": "35330b3b4fa6ff59c10522ef0edd76ea3bf946eeff3b4d247fde40d6b32640c5",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/native-lifecycle-groups-recovered-final.jsonl",
+      "expected_sha256": "a4c4152955624d54a5676908885d40364e44346cf61b09cd21bcd121cfe391c1",
+      "current_sha256": "a4c4152955624d54a5676908885d40364e44346cf61b09cd21bcd121cfe391c1",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/native-lifecycle-groups-recovered-final.log",
+      "expected_sha256": "51aceafbda69bdefce2f001a88493bf1e04ee7e22a8ff1d3a796ac9bdfc22dfc",
+      "current_sha256": "51aceafbda69bdefce2f001a88493bf1e04ee7e22a8ff1d3a796ac9bdfc22dfc",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/native-lifecycle-groups-recovered.jsonl",
+      "expected_sha256": "26193e351bcf0cd3c38391df8f660d4fcecdb9c7b07a83e0fc6681befb8383f4",
+      "current_sha256": "26193e351bcf0cd3c38391df8f660d4fcecdb9c7b07a83e0fc6681befb8383f4",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/native-lifecycle-groups-recovered.log",
+      "expected_sha256": "71e2ee17b44baf9ce3ae9d288a7dbe31652ffaa7aba7f95b2a2b7530a81d16ff",
+      "current_sha256": "71e2ee17b44baf9ce3ae9d288a7dbe31652ffaa7aba7f95b2a2b7530a81d16ff",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/native-lifecycle-initial.jsonl",
+      "expected_sha256": "0359981fef6c4181e0357a9dfb54319ba82ed9ae6d97444d561a580b5166962a",
+      "current_sha256": "0359981fef6c4181e0357a9dfb54319ba82ed9ae6d97444d561a580b5166962a",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/native-lifecycle-initial.log",
+      "expected_sha256": "6d80a792e5d28a1a04fd7491fc0369e723e7995f39217b7a8cdb498ffdf28fc3",
+      "current_sha256": "6d80a792e5d28a1a04fd7491fc0369e723e7995f39217b7a8cdb498ffdf28fc3",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/native-lifecycle-offline-provider.jsonl",
+      "expected_sha256": "df33d95b546c4297fca20bc2b4e12ecddb0f104aa692b34e8d2c8ecc996034bf",
+      "current_sha256": "df33d95b546c4297fca20bc2b4e12ecddb0f104aa692b34e8d2c8ecc996034bf",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/native-lifecycle-summary.json",
+      "expected_sha256": "c0c8ae5b5b4086d65c1d835e0845acf8cef9b6621992a737e085c7cbdff964fa",
+      "current_sha256": "c0c8ae5b5b4086d65c1d835e0845acf8cef9b6621992a737e085c7cbdff964fa",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/notion-task-readback.md",
+      "expected_sha256": "fe3d53e3aab74a37678f469425d7ea1849e86fb9f3d7f11d12ab60754b029e68",
+      "current_sha256": "fe3d53e3aab74a37678f469425d7ea1849e86fb9f3d7f11d12ab60754b029e68",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/packaging-local-cdp.json",
+      "expected_sha256": "44a63d9cceef4117ed5dfc7389313ba0b14119fda07debb7b1cb289f9e7f2278",
+      "current_sha256": "44a63d9cceef4117ed5dfc7389313ba0b14119fda07debb7b1cb289f9e7f2278",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/paired-summary.json",
+      "expected_sha256": "d76581cbdf3dca9f9c9131fcb398cccfd23a73e66753fdd377f06de81bf07bd4",
+      "current_sha256": "d76581cbdf3dca9f9c9131fcb398cccfd23a73e66753fdd377f06de81bf07bd4",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/paired-summary.jsonl",
+      "expected_sha256": "f95f9cd8917c9cc9a7657ec457272652066de5938c97659628c492b9934274f2",
+      "current_sha256": "f95f9cd8917c9cc9a7657ec457272652066de5938c97659628c492b9934274f2",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/pilot-app2.jsonl",
+      "expected_sha256": "35b6409e4fb7e3ca88e13fc87aa9d9030575baec549ee24ae9117b62e06e95ab",
+      "current_sha256": "35b6409e4fb7e3ca88e13fc87aa9d9030575baec549ee24ae9117b62e06e95ab",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/pilot-direct.jsonl",
+      "expected_sha256": "8ee19436251ba802eb9086dd10779d2be5c70c7a7a5a5b37e861b96ae5fd59c0",
+      "current_sha256": "8ee19436251ba802eb9086dd10779d2be5c70c7a7a5a5b37e861b96ae5fd59c0",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/pilot-direct2.jsonl",
+      "expected_sha256": "ff0e0bcf14506dfbb5e8fddfed233796f9eaf82fc4bd696d75f532604f977ad8",
+      "current_sha256": "ff0e0bcf14506dfbb5e8fddfed233796f9eaf82fc4bd696d75f532604f977ad8",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/preservation-attempts.json",
+      "expected_sha256": "6cd88efa99198255618186ba4ab2e387d58f2df81d03b44228998abb166fa7b0",
+      "current_sha256": "6cd88efa99198255618186ba4ab2e387d58f2df81d03b44228998abb166fa7b0",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/preservation-controlled-fixture.json",
+      "expected_sha256": "21df7c137f69cd44bea050f34301a5cc3fb980dba27e51849fe30f3694466800",
+      "current_sha256": "21df7c137f69cd44bea050f34301a5cc3fb980dba27e51849fe30f3694466800",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/preservation-rehearsal.json",
+      "expected_sha256": "d6a1fb04d263511f8a587dcc2d903d082c847351effeeb00356db124a2990476",
+      "current_sha256": "d6a1fb04d263511f8a587dcc2d903d082c847351effeeb00356db124a2990476",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/provider-availability.json",
+      "expected_sha256": "c1f8d8cb530b51382cc632b5e4bdf0a9705fa577c9a56f10d3e2fc44b51ee1b6",
+      "current_sha256": "c1f8d8cb530b51382cc632b5e4bdf0a9705fa577c9a56f10d3e2fc44b51ee1b6",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/publication-checks.json",
+      "expected_sha256": "2a42b4dd4219798f98f58903a218ab16959d60f6ea0eaa57b9a0a90edf0bb177",
+      "current_sha256": "2a42b4dd4219798f98f58903a218ab16959d60f6ea0eaa57b9a0a90edf0bb177",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/receipt-review-adapter.json",
+      "expected_sha256": "07fbed12f03f4d842aca640e0db9d688d082f444f4ae89de2c95f2c19969ca05",
+      "current_sha256": "07fbed12f03f4d842aca640e0db9d688d082f444f4ae89de2c95f2c19969ca05",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/receipt-review-application.json",
+      "expected_sha256": "c34a2d147b19ee2b8996a4706d0f7afa28455c45c24df894689ec3ec76e1ddd0",
+      "current_sha256": "c34a2d147b19ee2b8996a4706d0f7afa28455c45c24df894689ec3ec76e1ddd0",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/receipt-review-direct.json",
+      "expected_sha256": "7d15318dec6e88b7107afe298373656e5a7603839567d552f729bf46fe9718cc",
+      "current_sha256": "7d15318dec6e88b7107afe298373656e5a7603839567d552f729bf46fe9718cc",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/evidence/nma-028-closure/replay-tests.log",
+      "expected_sha256": "7b3b0d5a921d7788afd5d0591f4f23616773499e68d52f759b0a65c29bc0ff2c",
+      "current_sha256": "7b3b0d5a921d7788afd5d0591f4f23616773499e68d52f759b0a65c29bc0ff2c",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/nma-028-baseline-and-native-contract.md",
+      "expected_sha256": "cd8d12ebc76bb5c022fae13af80df481cb2fad19c5df9e5ad821843e4e449890",
+      "current_sha256": "cd8d12ebc76bb5c022fae13af80df481cb2fad19c5df9e5ad821843e4e449890",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/nma-028-clerk-auth.md",
+      "expected_sha256": "c86c8a4d8834afe797aa144eeb46fe479391d80487538516cc7203c59f6d66cc",
+      "current_sha256": "c86c8a4d8834afe797aa144eeb46fe479391d80487538516cc7203c59f6d66cc",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/nma-028-isolation-proof.md",
+      "expected_sha256": "36b461ace2377aee4ddad098386e1627c063bdc8435bd9680ce4fb680a79aab5",
+      "current_sha256": "36b461ace2377aee4ddad098386e1627c063bdc8435bd9680ce4fb680a79aab5",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/nma-028-native-contract-closure.md",
+      "expected_sha256": "18b88a6816e7b1e1e955f57c4458657d6e9a630f365d0ec2cc77c591a43fa0bb",
+      "current_sha256": "18b88a6816e7b1e1e955f57c4458657d6e9a630f365d0ec2cc77c591a43fa0bb",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/nma-028-native-lifecycle.md",
+      "expected_sha256": "f681c878de9120f0d01ea47496f244e8e5acf8159b71df6697b053c8ff643375",
+      "current_sha256": "f681c878de9120f0d01ea47496f244e8e5acf8159b71df6697b053c8ff643375",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/nma-028-native-seams.md",
+      "expected_sha256": "b26db23744055a1e9a5f6f6865e4449075047102fcec20c720ef4bfce202900b",
+      "current_sha256": "b26db23744055a1e9a5f6f6865e4449075047102fcec20c720ef4bfce202900b",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/nma-028-packaging-resolution.md",
+      "expected_sha256": "0fa8dedd8063dcc6224841dbfc3c4cb48f6a38916eca7b4284e9015800115b63",
+      "current_sha256": "0fa8dedd8063dcc6224841dbfc3c4cb48f6a38916eca7b4284e9015800115b63",
+      "current_matches": true
+    },
+    {
+      "path": "docs/research/nma-028-preservation-rehearsal.md",
+      "expected_sha256": "3958d5fef9247209c79e04b5356dc94c750ff9e19b35c6152062c9831f6bdc61",
+      "current_sha256": "3958d5fef9247209c79e04b5356dc94c750ff9e19b35c6152062c9831f6bdc61",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/CLOSURE.md",
+      "expected_sha256": "0ff0516204063fd45bcdd2852e441f1587127783168773a017533c6a1553fa53",
+      "current_sha256": "0ff0516204063fd45bcdd2852e441f1587127783168773a017533c6a1553fa53",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/Dockerfile",
+      "expected_sha256": "25b8a549d86cdad5b5e116dc777383fa31b755d9cfe41bd31b7cd725b6ee7f44",
+      "current_sha256": "25b8a549d86cdad5b5e116dc777383fa31b755d9cfe41bd31b7cd725b6ee7f44",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/README.md",
+      "expected_sha256": "2e63964d59bf50b759b2047cd1ac8f4478112f05901bed1506f4dede2524b351",
+      "current_sha256": "2e63964d59bf50b759b2047cd1ac8f4478112f05901bed1506f4dede2524b351",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/audit.py",
+      "expected_sha256": "bfb15f5ba922a2099b1a294309bb665576fd328fd96ef127ff732e6fa6a23b6a",
+      "current_sha256": "bfb15f5ba922a2099b1a294309bb665576fd328fd96ef127ff732e6fa6a23b6a",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/auth_fixture.py",
+      "expected_sha256": "67dce1ec2d996e5d7fff1fdb9bb639c442f83a12044dbbb3bcf55a72e9e08dcc",
+      "current_sha256": "67dce1ec2d996e5d7fff1fdb9bb639c442f83a12044dbbb3bcf55a72e9e08dcc",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/backend_measurements.py",
+      "expected_sha256": "4c97d55a50b618d52b5a1ae7eed149677b163a0bccb5cbb45213cab1ee61ebe4",
+      "current_sha256": "4c97d55a50b618d52b5a1ae7eed149677b163a0bccb5cbb45213cab1ee61ebe4",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/baseline.py",
+      "expected_sha256": "3093c8aea3fb5a07e841d9e267ea5b644c1bc13627e9ea6c012e369a763726a8",
+      "current_sha256": "3093c8aea3fb5a07e841d9e267ea5b644c1bc13627e9ea6c012e369a763726a8",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/build_isolated.py",
+      "expected_sha256": "0500d5291bf694ab8ca7ab504b7183fd4bdd58d4cd5283b027e267e8ba0b58f2",
+      "current_sha256": "0500d5291bf694ab8ca7ab504b7183fd4bdd58d4cd5283b027e267e8ba0b58f2",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/build_native.py",
+      "expected_sha256": "388ef5d48e0648e9b8357abec6f03aa5f9bbda7af043b194ab315138c46357ec",
+      "current_sha256": "388ef5d48e0648e9b8357abec6f03aa5f9bbda7af043b194ab315138c46357ec",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/clerk_browser_auth.py",
+      "expected_sha256": "be595e3796bbb9351916289ce7264fb11f43a299dd9ae621419fe90aa0cb3b91",
+      "current_sha256": "be595e3796bbb9351916289ce7264fb11f43a299dd9ae621419fe90aa0cb3b91",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/closure_results.py",
+      "expected_sha256": "cb52f87f2a5d06aab5b686f02c37982ecfb7497a7347724c29c56487033ec794",
+      "current_sha256": "cb52f87f2a5d06aab5b686f02c37982ecfb7497a7347724c29c56487033ec794",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/complete_baseline.py",
+      "expected_sha256": "8dcfa825bd348b02b1fe3815a35272002970d04c26a6e6714887e519ff32214f",
+      "current_sha256": "8dcfa825bd348b02b1fe3815a35272002970d04c26a6e6714887e519ff32214f",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/history_verification.py",
+      "expected_sha256": "c432d226220930520a2e1e63adcde32057f6ea06d1a0e0adf3bc6ccabc7cf0a1",
+      "current_sha256": "c432d226220930520a2e1e63adcde32057f6ea06d1a0e0adf3bc6ccabc7cf0a1",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/isolated_tools.py",
+      "expected_sha256": "a60d9e279f9135512075223b6bed5e41d4fa63f9a62c3090c98b98485b8efa18",
+      "current_sha256": "a60d9e279f9135512075223b6bed5e41d4fa63f9a62c3090c98b98485b8efa18",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/isolation.Dockerfile",
+      "expected_sha256": "328f15fb0496d44fd68a50560006a9d5e4fe17b46e338138577ef4729893867d",
+      "current_sha256": "328f15fb0496d44fd68a50560006a9d5e4fe17b46e338138577ef4729893867d",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/native_lifecycle_cases.py",
+      "expected_sha256": "6f540141c6ec85aad1cdcda2912cea9beceb98d78c081a666dc8b51a0f450100",
+      "current_sha256": "6f540141c6ec85aad1cdcda2912cea9beceb98d78c081a666dc8b51a0f450100",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/native_probe.py",
+      "expected_sha256": "faaa9352d47100f222f303eebf465ff3529c30e37a4357958d5dc4b6ad241a69",
+      "current_sha256": "faaa9352d47100f222f303eebf465ff3529c30e37a4357958d5dc4b6ad241a69",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/packaging_resolve.py",
+      "expected_sha256": "8cf68e41ba25aa7aaabb816251d426659bc5a238472adc5f19b32fee52395092",
+      "current_sha256": "8cf68e41ba25aa7aaabb816251d426659bc5a238472adc5f19b32fee52395092",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/preservation_rehearsal.py",
+      "expected_sha256": "c30a642af646c7bfeea950dc8afa274305c2ba36538f4f0c82efc5e8ff5c7ae0",
+      "current_sha256": "c30a642af646c7bfeea950dc8afa274305c2ba36538f4f0c82efc5e8ff5c7ae0",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/protocol-closure.json",
+      "expected_sha256": "189f073d366760cc95f53fed3a806ada1ec9f34a242d24c5e26a9d74a787e3cb",
+      "current_sha256": "189f073d366760cc95f53fed3a806ada1ec9f34a242d24c5e26a9d74a787e3cb",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/protocol.json",
+      "expected_sha256": "e61058b0eec9b56857e5849b5adc03558684376f66abad89a9d66df957f87e5c",
+      "current_sha256": "e61058b0eec9b56857e5849b5adc03558684376f66abad89a9d66df957f87e5c",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/receipt_review.py",
+      "expected_sha256": "eaad597ae0fd8a34f02bb06418e73307d0273a19d6674d4768ced56d377ec4b8",
+      "current_sha256": "eaad597ae0fd8a34f02bb06418e73307d0273a19d6674d4768ced56d377ec4b8",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/results.py",
+      "expected_sha256": "84835868ddfb1f354df5740e11bb45776d30331391a0d9003d4b066a4ff91032",
+      "current_sha256": "84835868ddfb1f354df5740e11bb45776d30331391a0d9003d4b066a4ff91032",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/sandbox_inventory.py",
+      "expected_sha256": "1a54223ba8d6355c6156b44ac1a8d32b173372b85aecd7f1b922f5fd2632a1fe",
+      "current_sha256": "1a54223ba8d6355c6156b44ac1a8d32b173372b85aecd7f1b922f5fd2632a1fe",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/spike_gateway.py",
+      "expected_sha256": "c47716ae8df3b182b8f4cdddcd5109845923a45548c10c0b497810298edf883f",
+      "current_sha256": "c47716ae8df3b182b8f4cdddcd5109845923a45548c10c0b497810298edf883f",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/test_baseline.py",
+      "expected_sha256": "b4d3b3bc3e459004718946a5fb07e89ee369e58a86be395d90fe4256e7c7d635",
+      "current_sha256": "b4d3b3bc3e459004718946a5fb07e89ee369e58a86be395d90fe4256e7c7d635",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/test_closure_results.py",
+      "expected_sha256": "cedf84d2f350c442699bfa88f183ed6afc545209f8f3d9ce078f964dd53d2bfc",
+      "current_sha256": "cedf84d2f350c442699bfa88f183ed6afc545209f8f3d9ce078f964dd53d2bfc",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/test_gateway_isolation.py",
+      "expected_sha256": "022d5cd573137b7909fd6b930317310190350d6db19c14150941c65e228ae126",
+      "current_sha256": "022d5cd573137b7909fd6b930317310190350d6db19c14150941c65e228ae126",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/test_isolated_tools.py",
+      "expected_sha256": "401b12d63ae46ef1e692f4d4e8d68d7cf20e4cdfb254a19a65c0c05f2861818f",
+      "current_sha256": "401b12d63ae46ef1e692f4d4e8d68d7cf20e4cdfb254a19a65c0c05f2861818f",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/test_preservation_rehearsal.py",
+      "expected_sha256": "7a522dab665119701b3a963c8da9fbbc570ac7e4800d0a40026949cb97edd222",
+      "current_sha256": "7a522dab665119701b3a963c8da9fbbc570ac7e4800d0a40026949cb97edd222",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/ui.py",
+      "expected_sha256": "4cda16891e54a028f05c1becce24152dc03a843a373a025063fd2f3195f924a0",
+      "current_sha256": "4cda16891e54a028f05c1becce24152dc03a843a373a025063fd2f3195f924a0",
+      "current_matches": true
+    },
+    {
+      "path": "scripts/spikes/nma028/verify_closure.py",
+      "expected_sha256": "484d8806c7abf6f26fea46d00532e98bca44ee0b906799e1d33c871898bf47ab",
+      "current_sha256": "484d8806c7abf6f26fea46d00532e98bca44ee0b906799e1d33c871898bf47ab",
+      "current_matches": true
+    }
+  ],
+  "historical_evidence_modified": false
+}

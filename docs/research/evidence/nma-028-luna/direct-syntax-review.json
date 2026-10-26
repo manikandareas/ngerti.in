@@ -1,0 +1,45 @@
+{
+  "method": "Read-only journal review; failed cells and operation states unchanged",
+  "findings": [
+    {
+      "operation_id": "fa48d11cd7de53892dcb02cc59b044d94c4d69ff6c9275d2a9c8f5217d9eec51",
+      "scope_key": "6078e06492f633df5eb90247abeef78d6740e83cb3cef711223aa6010d991471",
+      "tool": "browser_exec",
+      "args_hash": "7ee85a30ba3fccc6ef26ea91b34f7922349325b2d1c70fe4f6c18d941eef18ba",
+      "recorded_state": "indeterminate",
+      "result": {
+        "success": false,
+        "exit_code": 1,
+        "output": "",
+        "workspace": "/work/state/cache/browser-use/workspace/6078e06492f633df5eb90247abeef78d6740e83cb3cef711223aa6010d991471",
+        "stderr": "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 203, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 410, in <module>\n    main()\n    ~~~~^^\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 255, in main\n    _run(args)\n    ~~~~^^^^^^\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 406, in _run\n    exec(code, globals())\n    ~~~~^^^^^^^^^^^^^^^^^\n  File \"<string>\", line 2\n    tab = new_tab('http://127.0.0.1:8765/')\nIndentationError: unexpected indent"
+      },
+      "cause": "Python compile-time syntax failure before user code execution",
+      "owner": [
+        "NMA-031",
+        "NMA-032"
+      ],
+      "required_change": "Preserve pre-dispatch/compile errors separately from unknown execution effects; prove no-effect before permitting corrected work. Never blind-replay an unknown operation."
+    },
+    {
+      "operation_id": "b3e004d37813a2e0b88a4c728c4fcf2e444283e05f59248965d61e2bd9a7bb50",
+      "scope_key": "a6661d029df4b224220aacc1e17f648620df5f4ee0a7870a8019f25879a981fb",
+      "tool": "browser_exec",
+      "args_hash": "32b40cbe045acd4e52c29b2d44e553386f960f118ef087ebcc156519406fb47e",
+      "recorded_state": "indeterminate",
+      "result": {
+        "success": false,
+        "exit_code": 1,
+        "output": "",
+        "workspace": "/work/state/cache/browser-use/workspace/a6661d029df4b224220aacc1e17f648620df5f4ee0a7870a8019f25879a981fb",
+        "stderr": "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 203, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 410, in <module>\n    main()\n    ~~~~^^\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 255, in main\n    _run(args)\n    ~~~~^^^^^^\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 406, in _run\n    exec(code, globals())\n    ~~~~^^^^^^^^^^^^^^^^^\n  File \"<string>\", line 2\nSyntaxError: 'await' outside function"
+      },
+      "cause": "Python compile-time syntax failure before user code execution",
+      "owner": [
+        "NMA-031",
+        "NMA-032"
+      ],
+      "required_change": "Preserve pre-dispatch/compile errors separately from unknown execution effects; prove no-effect before permitting corrected work. Never blind-replay an unknown operation."
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "provider": "chatgpt",
+  "model": "gpt-6-luna",
+  "protocol": "codex_responses",
+  "base_url": "https://api.openai.com/v1",
+  "connection_id": "a2add009-6d14-4e89-aff4-c06d9d8a99dc",
+  "catalog_models": [
+    "gpt-6.1-sol",
+    "gpt-6-astra",
+    "gpt-6-sol",
+    "gpt-6-luna",
+    "gpt-5.6-sol",
+    "gpt-5.6-terra",
+    "gpt-5.6-luna"
+  ],
+  "renewal_owner": "Existing product gateway; renewable journal was not copied",
+  "disposable_transport": "Fixed Luna-only loopback credential relay; original product gateway alone owns renewal",
+  "expires_at_ms": 1792985042700,
+  "refresh_token_exported": false,
+  "relay_url": "http://127.0.0.1:62609/v1",
+  "counts": {
+    "requests": 447,
+    "models": {
+      "gpt-6-luna": 447
+    },
+    "http_statuses": {
+      "200": 447
+    },
+    "failures": [],
+    "response.completed": 447
+  }
+}

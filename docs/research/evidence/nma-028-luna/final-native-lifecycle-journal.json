@@ -1,0 +1,189 @@
+{
+  "operations": [
+    {
+      "scope_key": "b2d86558c44c844e04c72e0460bb160192373f9ae5ab83851e5006347388bb88",
+      "operation_id": "fcb62491854451446607ff75284afc4894927f1d31b79286ee26273c2d7d6948",
+      "tool": "terminal",
+      "args_hash": "3d6642b98a1974928de67dd354d5c2bd885d3f6184f920d9f8499f3603cf077f",
+      "state": "returned",
+      "result": "{\"output\": \"12.5\", \"exit_code\": 0, \"error\": null}",
+      "started": 1792987414.3400488,
+      "finished": 1792987416.819456
+    },
+    {
+      "scope_key": "b8eb40e19fcf6040ec47cc2d421fc97933db4f155af9925c605115e0f89eeb92",
+      "operation_id": "f7aeddb24a2289fd2936fc64d637cb311fb4d1b440f2fa97beabd4f5d5757ab9",
+      "tool": "terminal",
+      "args_hash": "dd93e9b554cc562c5887a796fd63b98365df51081c66d7acd4df53bf60f6534c",
+      "state": "returned",
+      "result": "{\"output\": \"/work\\n---\\n--- file ---\\n# Fuel consumption report\\n\\n- Distance travelled: 360 km\\n- Fuel used: 45 litres\\n- Consumption: 12.5 litres per 100 km\\n--- verify ---\\n5 lines\", \"exit_code\": 0, \"error\": null}",
+      "started": 1792987429.02263,
+      "finished": 1792987430.9450948
+    },
+    {
+      "scope_key": "8c07af0a5055878bd967a660d46b1e25ff2b3f3b25e333ed8913b313798a035b",
+      "operation_id": "d95792884b1eb1c097765051a478380a909d4818ea63e3e4b493c8bde6811f48",
+      "tool": "terminal",
+      "args_hash": "5f5db9d1a8ab356d78f88012090ac27b9a1c17a87ab447decfc9b66c3e329d61",
+      "state": "returned",
+      "result": "{\"output\": \"12.5\", \"exit_code\": 0, \"error\": null}",
+      "started": 1792987441.832623,
+      "finished": 1792987444.292446
+    },
+    {
+      "scope_key": "5fa825c2901e9824c2ab14d9b7646a723f3155dfca042f8b32301dbe313c2d87",
+      "operation_id": "55c1092f10d4513254cde2bfd9276e3732813d706669a9516524f37bdc716aa8",
+      "tool": "terminal",
+      "args_hash": "69793b2385d3690006caaba29bf0316c5da596ed613e82cc9a6738fac3a6a3d6",
+      "state": "returned",
+      "result": "{\"output\": \"12.5\", \"exit_code\": 0, \"error\": null}",
+      "started": 1792987461.008409,
+      "finished": 1792987463.0003111
+    },
+    {
+      "scope_key": "134bf714746a89d53c2c9356f0cee2225d08e9fb18c0fb1f927bbe360a3840b8",
+      "operation_id": "d6a1bb48167562dd382239afe725d49fb26ae8728fb9a13ad5bdf013df907c9c",
+      "tool": "terminal",
+      "args_hash": "84098593a9df1e47a808ac4c1dd064211a799e00f8927d3be8f9d6e4ce8279b8",
+      "state": "returned",
+      "result": "{\"output\": \"Created: /work/report.md\\n\\n# Fuel Consumption Report\\n\\n- Distance travelled: 360 km\\n- Fuel used: 45 litres\\n- Consumption: 12.5 litres per 100 km\", \"exit_code\": 0, \"error\": null}",
+      "started": 1792987476.4869928,
+      "finished": 1792987478.826654
+    },
+    {
+      "scope_key": "ed71901b808fb0b457d565106479d5704d5c92b0c83365e192ff02e92c0dcd17",
+      "operation_id": "2f0dbec957c9e522e4a9c0aff320f980c56df8c82dc2e745d9bb195cc989b249",
+      "tool": "terminal",
+      "args_hash": "09baa787f41baa3d462e971eb2b2ff559af003d56bf10f5b154431b4cf0bb2fd",
+      "state": "returned",
+      "result": "{\"output\": \"12.5\", \"exit_code\": 0, \"error\": null}",
+      "started": 1792987490.228343,
+      "finished": 1792987492.4009972
+    },
+    {
+      "scope_key": "ed71901b808fb0b457d565106479d5704d5c92b0c83365e192ff02e92c0dcd17",
+      "operation_id": "64e4269344170021e0af71720eb83258321340e199f17f01a01ed93cdc741963",
+      "tool": "terminal",
+      "args_hash": "5d04b5352bce49d593e74ec77607bc63b66839f154b340d276b2edd48dd28539",
+      "state": "returned",
+      "result": "{\"output\": \"12.5\", \"exit_code\": 0, \"error\": null}",
+      "started": 1792987505.18156,
+      "finished": 1792987505.444512
+    },
+    {
+      "scope_key": "8752ed48978930a5fe4ec8cb1a650322d2c4d5093c369b8d5d03a3d9bc7eb849",
+      "operation_id": "6a24a889e0fd9c3e3d8125e8a43d923246ede2d32f5a05b043d1d07be6e218da",
+      "tool": "terminal",
+      "args_hash": "ea6f53d22982454e8cd88b3cd5a770c9c95ceabf4ea3a53e5baad17b1d40b2a8",
+      "state": "returned",
+      "result": "{\"output\": \"12.5\", \"exit_code\": 0, \"error\": null}",
+      "started": 1792987515.528752,
+      "finished": 1792987518.1310852
+    },
+    {
+      "scope_key": "e0f164dc0cdc8d4d4768c1b407acaf848b0ec4e5fa411e4e5935fe336df4e630",
+      "operation_id": "57511e5ee07cc16dbfc038ed6020433264a2702d02e4254447a8030d4388c236",
+      "tool": "terminal",
+      "args_hash": "54d3eeead046e6036f2ef026413e651fdd8a4ae4d788ca9828f8c20934b40a98",
+      "state": "returned",
+      "result": "{\"output\": \"Wrote /work/report.md: 117 bytes\", \"exit_code\": 0, \"error\": null}",
+      "started": 1792987528.961357,
+      "finished": 1792987531.422584
+    },
+    {
+      "scope_key": "e0f164dc0cdc8d4d4768c1b407acaf848b0ec4e5fa411e4e5935fe336df4e630",
+      "operation_id": "255baf63b5e70ef7b2e1fb48bf2e7c7fa188d82864945a90c6332631a1636040",
+      "tool": "terminal",
+      "args_hash": "11d305c9ea9edf3aff6ac5e929f5777b73366252855e8db88b454952c1d1965c",
+      "state": "returned",
+      "result": "{\"output\": \"# Fuel Consumption Report\\n\\n- Distance travelled: 360 km\\n- Fuel used: 45 litres\\n- Consumption: 12.5 litres per 100 km\\nVERIFIED\", \"exit_code\": 0, \"error\": null}",
+      "started": 1792987538.512207,
+      "finished": 1792987538.822551
+    },
+    {
+      "scope_key": "738d27d99b078608701c5d6f39d10d5c4de08adbd48ddd9bc96ad1f6af356211",
+      "operation_id": "b7385fca7f45b3feede58f6c7899b2c5f865de3c8042205cf04d952b8101eb59",
+      "tool": "terminal",
+      "args_hash": "bfbc6418781a21c4be0570d1b731775798cf7980fca1942bc99239bd950145f3",
+      "state": "returned",
+      "result": "{\"output\": \"45 / 360 * 100 = 12.5 L/100 km\", \"exit_code\": 0, \"error\": null}",
+      "started": 1792987551.148105,
+      "finished": 1792987553.5510972
+    },
+    {
+      "scope_key": "738d27d99b078608701c5d6f39d10d5c4de08adbd48ddd9bc96ad1f6af356211",
+      "operation_id": "9f9395014a6dff1c153200832cf1ce3232cef602d92ab74136ec3ed3641680c7",
+      "tool": "terminal",
+      "args_hash": "cd9c7e8f2ce1270ba3f50c1baf29675e8823f6330f660721408437cbfbba6aed",
+      "state": "returned",
+      "result": "{\"output\": \"12.5\", \"exit_code\": 0, \"error\": null}",
+      "started": 1792987561.905057,
+      "finished": 1792987562.255362
+    }
+  ],
+  "scopes": [
+    {
+      "scope_key": "134bf714746a89d53c2c9356f0cee2225d08e9fb18c0fb1f927bbe360a3840b8",
+      "scope_json": "{\"agent_id\": \"bfac71e1-9c88-5ce5-b369-79d836dd9632\", \"generation\": 1, \"owner_id\": \"f034a2c8-a30f-4cd2-ae2b-a71e9c45fbf5\", \"thread_id\": \"65858ea1-b8b1-5d4e-98d4-ffcbeac4ad69\"}",
+      "container": "nma028-a2ead149-134bf714746a89d5",
+      "volume": "nma028-a2ead149-134bf714746a89d5-work",
+      "state": "ready"
+    },
+    {
+      "scope_key": "5fa825c2901e9824c2ab14d9b7646a723f3155dfca042f8b32301dbe313c2d87",
+      "scope_json": "{\"agent_id\": \"c96c5f3e-61ad-564d-8c38-a1ff32838bae\", \"generation\": 1, \"owner_id\": \"f034a2c8-a30f-4cd2-ae2b-a71e9c45fbf5\", \"thread_id\": \"9ef592d4-67d3-58b5-afe6-27717059e852\"}",
+      "container": "nma028-a2ead149-5fa825c2901e9824",
+      "volume": "nma028-a2ead149-5fa825c2901e9824-work",
+      "state": "ready"
+    },
+    {
+      "scope_key": "738d27d99b078608701c5d6f39d10d5c4de08adbd48ddd9bc96ad1f6af356211",
+      "scope_json": "{\"agent_id\": \"47f6ad85-1b1c-5137-9485-6be66fce2c17\", \"generation\": 1, \"owner_id\": \"f034a2c8-a30f-4cd2-ae2b-a71e9c45fbf5\", \"thread_id\": \"70f230bb-28de-5416-942b-d7a22bb76392\"}",
+      "container": "nma028-a2ead149-738d27d99b078608",
+      "volume": "nma028-a2ead149-738d27d99b078608-work",
+      "state": "ready"
+    },
+    {
+      "scope_key": "8752ed48978930a5fe4ec8cb1a650322d2c4d5093c369b8d5d03a3d9bc7eb849",
+      "scope_json": "{\"agent_id\": \"c96c5f3e-61ad-564d-8c38-a1ff32838bae\", \"generation\": 1, \"owner_id\": \"f034a2c8-a30f-4cd2-ae2b-a71e9c45fbf5\", \"thread_id\": \"1b0d958a-a459-5621-8aa8-960917843a57\"}",
+      "container": "nma028-a2ead149-8752ed48978930a5",
+      "volume": "nma028-a2ead149-8752ed48978930a5-work",
+      "state": "ready"
+    },
+    {
+      "scope_key": "8c07af0a5055878bd967a660d46b1e25ff2b3f3b25e333ed8913b313798a035b",
+      "scope_json": "{\"agent_id\": \"47f6ad85-1b1c-5137-9485-6be66fce2c17\", \"generation\": 1, \"owner_id\": \"f034a2c8-a30f-4cd2-ae2b-a71e9c45fbf5\", \"thread_id\": \"65329a8c-4a04-571e-86b6-4424499d0e75\"}",
+      "container": "nma028-a2ead149-8c07af0a5055878b",
+      "volume": "nma028-a2ead149-8c07af0a5055878b-work",
+      "state": "ready"
+    },
+    {
+      "scope_key": "b2d86558c44c844e04c72e0460bb160192373f9ae5ab83851e5006347388bb88",
+      "scope_json": "{\"agent_id\": \"c96c5f3e-61ad-564d-8c38-a1ff32838bae\", \"generation\": 1, \"owner_id\": \"f034a2c8-a30f-4cd2-ae2b-a71e9c45fbf5\", \"thread_id\": \"147e5f2c-66f1-57b7-aaa1-4be9253b7c00\"}",
+      "container": "nma028-a2ead149-b2d86558c44c844e",
+      "volume": "nma028-a2ead149-b2d86558c44c844e-work",
+      "state": "ready"
+    },
+    {
+      "scope_key": "b8eb40e19fcf6040ec47cc2d421fc97933db4f155af9925c605115e0f89eeb92",
+      "scope_json": "{\"agent_id\": \"bfac71e1-9c88-5ce5-b369-79d836dd9632\", \"generation\": 1, \"owner_id\": \"f034a2c8-a30f-4cd2-ae2b-a71e9c45fbf5\", \"thread_id\": \"dc8f3c93-b1a2-53dd-a589-78f2c05fd204\"}",
+      "container": "nma028-a2ead149-b8eb40e19fcf6040",
+      "volume": "nma028-a2ead149-b8eb40e19fcf6040-work",
+      "state": "ready"
+    },
+    {
+      "scope_key": "e0f164dc0cdc8d4d4768c1b407acaf848b0ec4e5fa411e4e5935fe336df4e630",
+      "scope_json": "{\"agent_id\": \"bfac71e1-9c88-5ce5-b369-79d836dd9632\", \"generation\": 1, \"owner_id\": \"f034a2c8-a30f-4cd2-ae2b-a71e9c45fbf5\", \"thread_id\": \"7ec1cdec-a0ff-5f11-9c00-e480adf46a26\"}",
+      "container": "nma028-a2ead149-e0f164dc0cdc8d4d",
+      "volume": "nma028-a2ead149-e0f164dc0cdc8d4d-work",
+      "state": "ready"
+    },
+    {
+      "scope_key": "ed71901b808fb0b457d565106479d5704d5c92b0c83365e192ff02e92c0dcd17",
+      "scope_json": "{\"agent_id\": \"47f6ad85-1b1c-5137-9485-6be66fce2c17\", \"generation\": 1, \"owner_id\": \"f034a2c8-a30f-4cd2-ae2b-a71e9c45fbf5\", \"thread_id\": \"85e4ff16-0b5b-5c7d-a783-ef4033911795\"}",
+      "container": "nma028-a2ead149-ed71901b808fb0b4",
+      "volume": "nma028-a2ead149-ed71901b808fb0b4-work",
+      "state": "ready"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "checked_at": "2026-10-26T03:53:49.657501+00:00",
+  "desktop": {
+    "width": 1440,
+    "height": 1100,
+    "receipt_visible": true,
+    "horizontal_overflow": false,
+    "articles_including_welcome": 3
+  },
+  "mobile": {
+    "width": 390,
+    "height": 844,
+    "receipt_visible": true,
+    "horizontal_overflow": false,
+    "articles_including_welcome": 3
+  },
+  "reload": "Initial transient disconnect during deliberate corpus gateway restart; fresh page load after readiness showed persisted NMA028_SAVED. The target message hash is unchanged.",
+  "visual_review": "Both screenshots inspected; header, stored form request, result and composer readable",
+  "conversation_client_closed_no_later_than": "2026-10-26T03:55:43.577323+00:00",
+  "successful_offline_due_times": [
+    "2026-10-26T03:57:59.643515+00:00",
+    "2026-10-26T03:59:35.748120+00:00"
+  ],
+  "closed_before_all_successful_offline_due_times": true,
+  "fixture_note": "Two authentication-only ClerkJS contexts continue refreshing private JWTs; no conversation UI/client is connected during the successful offline due intervals."
+}

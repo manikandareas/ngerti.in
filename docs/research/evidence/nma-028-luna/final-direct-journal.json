@@ -1,0 +1,350 @@
+{
+  "operations": [
+    {
+      "scope_key": "6078e06492f633df5eb90247abeef78d6740e83cb3cef711223aa6010d991471",
+      "operation_id": "fa48d11cd7de53892dcb02cc59b044d94c4d69ff6c9275d2a9c8f5217d9eec51",
+      "tool": "browser_exec",
+      "args_hash": "7ee85a30ba3fccc6ef26ea91b34f7922349325b2d1c70fe4f6c18d941eef18ba",
+      "state": "indeterminate",
+      "result": "{\"success\": false, \"exit_code\": 1, \"output\": \"\", \"workspace\": \"/work/state/cache/browser-use/workspace/6078e06492f633df5eb90247abeef78d6740e83cb3cef711223aa6010d991471\", \"stderr\": \"Traceback (most recent call last):\\n  File \\\"<frozen runpy>\\\", line 203, in _run_module_as_main\\n  File \\\"<frozen runpy>\\\", line 88, in _run_code\\n  File \\\"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\\\", line 410, in <module>\\n    main()\\n    ~~~~^^\\n  File \\\"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\\\", line 255, in main\\n    _run(args)\\n    ~~~~^^^^^^\\n  File \\\"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\\\", line 406, in _run\\n    exec(code, globals())\\n    ~~~~^^^^^^^^^^^^^^^^^\\n  File \\\"<string>\\\", line 2\\n    tab = new_tab('http://127.0.0.1:8765/')\\nIndentationError: unexpected indent\"}",
+      "started": 1792985036.74886,
+      "finished": 1792985041.845879
+    },
+    {
+      "scope_key": "b813c7b699c1a72823060f4a9167fad9c1339aedbc9e7b09a7485ab11628e30d",
+      "operation_id": "6c11eaa9c77058987a4e782b74f85abb3d2d59f7c321b8f9d046467a2fff8dd6",
+      "tool": "browser_exec",
+      "args_hash": "1162a04998d045cee2ad2741e724e3abb58bea53a55aa2c58d8f2c275b35dacd",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"initial_url: http://127.0.0.1:8765/\\ninitial_dom: Continue\\nNameNoteSubmit\\nDownload CSV\\nlinks: [{'text': 'Continue', 'href': 'http://127.0.0.1:8765/form'}, {'text': 'Download CSV', 'href': 'http://127.0.0.1:8765/download.csv'}]\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/b813c7b699c1a72823060f4a9167fad9c1339aedbc9e7b09a7485ab11628e30d\"}",
+      "started": 1792985060.180249,
+      "finished": 1792985063.158644
+    },
+    {
+      "scope_key": "b813c7b699c1a72823060f4a9167fad9c1339aedbc9e7b09a7485ab11628e30d",
+      "operation_id": "a53f0afda96f7237107ce39f1530dea7d393d9051e3c4ab8b80b22aa97106e2a",
+      "tool": "browser_exec",
+      "args_hash": "d844955de2a050ab395c9535d9bee17bfdfb27016ced5af7c6c127f33335dfa2",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"result_url: http://127.0.0.1:8765/form\\nresult_dom: <html><head><title>\ud83d\udc34 NMA028 isolated form</title></head><body><a href=\\\"/form\\\">Continue</a><form method=\\\"POST\\\" action=\\\"/submit\\\"><label>Name<input name=\\\"name\\\"></label><label>Note<input name=\\\"note\\\"></label><button>Submit</button></form><a href=\\\"/download.csv\\\" download=\\\"report.csv\\\">Download CSV</a></body></html>\\nbody_text: Continue\\nNameNoteSubmit\\nDownload CSV\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/b813c7b699c1a72823060f4a9167fad9c1339aedbc9e7b09a7485ab11628e30d\"}",
+      "started": 1792985067.7110689,
+      "finished": 1792985068.424629
+    },
+    {
+      "scope_key": "c10173b05385599a3126f32a65196c634d3f104764b361bde1e891a0aeaabb9c",
+      "operation_id": "f66afff3eba0296a2f00d9677178620ddaeeaf9805c04dfaa901e873291f2453",
+      "tool": "browser_exec",
+      "args_hash": "753b3ce42be652272cad2f883302a00693edfbbc88dfb6b572eeb6adc64b1b24",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"INITIAL {'url': 'http://127.0.0.1:8765/', 'title': '\ud83d\udc34 NMA028 isolated form', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\nLINKS [{'text': 'Continue', 'href': 'http://127.0.0.1:8765/form'}, {'text': 'Download CSV', 'href': 'http://127.0.0.1:8765/download.csv'}]\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/c10173b05385599a3126f32a65196c634d3f104764b361bde1e891a0aeaabb9c\"}",
+      "started": 1792985084.017973,
+      "finished": 1792985087.7487612
+    },
+    {
+      "scope_key": "c10173b05385599a3126f32a65196c634d3f104764b361bde1e891a0aeaabb9c",
+      "operation_id": "316b375cbc2e20ad872f17444bd8b37490a8ef395a6c8b4cb39ab33ce7c02c65",
+      "tool": "browser_exec",
+      "args_hash": "bf7340c68c5208bcd08fa8ad0e52ddca7da4758a0fc9df4edc0a6c0b947e6452",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"PAGE {'url': 'http://127.0.0.1:8765/form', 'title': '\ud83d\udc34 NMA028 isolated form', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\nDOM Continue\\nNameNoteSubmit\\nDownload CSV\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/c10173b05385599a3126f32a65196c634d3f104764b361bde1e891a0aeaabb9c\"}",
+      "started": 1792985092.4328709,
+      "finished": 1792985093.198326
+    },
+    {
+      "scope_key": "0eab95eb738c7c4500422fe6b72a6329fc053125f74f83034ff87e8cf263a411",
+      "operation_id": "132056b63e20322093d3cc065e18c1cc92fbdba198156f3fde1717f044190dcc",
+      "tool": "browser_exec",
+      "args_hash": "c71747fc950542adfa38d9b126a07a9446ab9e8b6076a75157f381c166ed7ec4",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"{'url': 'http://127.0.0.1:8765/form', 'title': '\ud83d\udc34 NMA028 isolated form', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\nfields [{'name': 'name', 'type': 'text', 'value': ''}, {'name': 'note', 'type': 'text', 'value': ''}]\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/0eab95eb738c7c4500422fe6b72a6329fc053125f74f83034ff87e8cf263a411\"}",
+      "started": 1792985110.651131,
+      "finished": 1792985113.836288
+    },
+    {
+      "scope_key": "0eab95eb738c7c4500422fe6b72a6329fc053125f74f83034ff87e8cf263a411",
+      "operation_id": "17b6bed9fdf955228603141b9fd7d4ff21c199d1f852a3c552ee262653046d62",
+      "tool": "browser_exec",
+      "args_hash": "351b6e5d4888cc0de3cffc2ab4b211b90dd6d608dee234b9f94cb7448b4f5010",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"before {'name': 'Synthetic', 'note': 'NMA028'}\\nsubmit_controls [{'text': 'Submit', 'value': '', 'type': 'submit'}]\\n{'url': 'http://127.0.0.1:8765/submit', 'title': 'Saved', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/0eab95eb738c7c4500422fe6b72a6329fc053125f74f83034ff87e8cf263a411\"}",
+      "started": 1792985119.666882,
+      "finished": 1792985120.3789482
+    },
+    {
+      "scope_key": "0eab95eb738c7c4500422fe6b72a6329fc053125f74f83034ff87e8cf263a411",
+      "operation_id": "c70b0943d6619322af431e7e985069aa0170bb066e7992be60e7155801cd2eff",
+      "tool": "browser_exec",
+      "args_hash": "7004bee9bbfe161f3d7741420b3e90f63e15380d8a818aee87ac9a6c5a3faab6",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"receipt NMA028_SAVED\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/0eab95eb738c7c4500422fe6b72a6329fc053125f74f83034ff87e8cf263a411\"}",
+      "started": 1792985124.869864,
+      "finished": 1792985125.5420082
+    },
+    {
+      "scope_key": "8b2c3fea0f758fd5a11befa655873bf44b3bd7ab67f0448e911aad2a195f785f",
+      "operation_id": "59225b61a95107a18e58ddeb385b2f1637d3b8349c52293332671991f87d73d0",
+      "tool": "browser_exec",
+      "args_hash": "9edfbf64ba85da2315119de1fb9c6884bc103cc92da37415f1d5f2870b5f3c92",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"{'url': 'http://127.0.0.1:8765/form', 'title': '\ud83d\udc34 NMA028 isolated form', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/8b2c3fea0f758fd5a11befa655873bf44b3bd7ab67f0448e911aad2a195f785f\"}",
+      "started": 1792985143.388761,
+      "finished": 1792985147.069443
+    },
+    {
+      "scope_key": "8b2c3fea0f758fd5a11befa655873bf44b3bd7ab67f0448e911aad2a195f785f",
+      "operation_id": "f8976094597eff1e73f949d18fa99f27b40dd7df8bf5e746f5e2dce3ac682ac1",
+      "tool": "browser_exec",
+      "args_hash": "f3321e8964ba561ed8a6f36adbd2b2d918548426be1f1009283c2aedc7652ae9",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"Synthetic | NMA028\\n{'url': 'http://127.0.0.1:8765/submit', 'title': '\ud83d\udc34 Saved', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/8b2c3fea0f758fd5a11befa655873bf44b3bd7ab67f0448e911aad2a195f785f\"}",
+      "started": 1792985154.114521,
+      "finished": 1792985155.1955998
+    },
+    {
+      "scope_key": "8b2c3fea0f758fd5a11befa655873bf44b3bd7ab67f0448e911aad2a195f785f",
+      "operation_id": "a9edae20289d8c70f4af29fc4017e8d876e2e6257a0c2b5d64f662e42267856f",
+      "tool": "browser_exec",
+      "args_hash": "7cf012505c43ebeeba167481c94a945e910b0968cae50866f9fcbae19963b70e",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"NMA028_SAVED\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/8b2c3fea0f758fd5a11befa655873bf44b3bd7ab67f0448e911aad2a195f785f\"}",
+      "started": 1792985159.348211,
+      "finished": 1792985159.9294279
+    },
+    {
+      "scope_key": "3f7898ae29c570911305a6d73811f7c6541f2d91dac678da1f134d35a278637b",
+      "operation_id": "c8daa612b1bdcb3201806e2739346a50237f96ab3b98a0dc2ad612155f400a06",
+      "tool": "browser_exec",
+      "args_hash": "975201caa6112d52f1916daf696622dc8aa6b15c34f163226c9bcbfb69e6f3b4",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"{'url': 'http://127.0.0.1:8765/form', 'title': '\ud83d\udc34 NMA028 isolated form', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\n{'url': 'http://127.0.0.1:8765/submit', 'title': 'Saved', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/3f7898ae29c570911305a6d73811f7c6541f2d91dac678da1f134d35a278637b\"}",
+      "started": 1792985176.7599418,
+      "finished": 1792985180.2267678
+    },
+    {
+      "scope_key": "3f7898ae29c570911305a6d73811f7c6541f2d91dac678da1f134d35a278637b",
+      "operation_id": "97ed53bbf53b06df63af31736fd757dabf9cd97d769425d8ea153d327b85217d",
+      "tool": "browser_exec",
+      "args_hash": "514337fe0ff5aa2ab094c671524e4617bfc9599c888cec8fb27ce26bc4326403",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"NMA028_SAVED\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/3f7898ae29c570911305a6d73811f7c6541f2d91dac678da1f134d35a278637b\"}",
+      "started": 1792985184.161578,
+      "finished": 1792985184.761295
+    },
+    {
+      "scope_key": "c1f550164339dcba47f86a67e39b9d8752c791dd5253c01adab09e879e38f565",
+      "operation_id": "54a8df510b5b6c9fea0c67a1c9c5e1be16e7a277f2396137acc51a2fdf027428",
+      "tool": "browser_exec",
+      "args_hash": "5e4c6f251ab8f0da8256a3ec4e7d1f91efc9e6ec5fc98f84c1832767dacf2147",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"{'url': 'http://127.0.0.1:8765/form', 'title': '\ud83d\udc34 NMA028 isolated form', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\n{}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/c1f550164339dcba47f86a67e39b9d8752c791dd5253c01adab09e879e38f565\"}",
+      "started": 1792985197.419372,
+      "finished": 1792985200.645154
+    },
+    {
+      "scope_key": "c1f550164339dcba47f86a67e39b9d8752c791dd5253c01adab09e879e38f565",
+      "operation_id": "70155c7f3d7790ceed844cc4a2767a6e0a422dc136fc849a5d5675db7a14158a",
+      "tool": "browser_exec",
+      "args_hash": "f1c92cdf9a999a31de9cf4f696e791b2646a308540dac954d4b0004cf295e153",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"Continue\\nNameNoteSubmit\\nDownload CSV\\n[{'text': 'Continue', 'href': 'http://127.0.0.1:8765/form'}, {'text': 'Download CSV', 'href': 'http://127.0.0.1:8765/download.csv'}]\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/c1f550164339dcba47f86a67e39b9d8752c791dd5253c01adab09e879e38f565\"}",
+      "started": 1792985204.723649,
+      "finished": 1792985205.2906392
+    },
+    {
+      "scope_key": "c1f550164339dcba47f86a67e39b9d8752c791dd5253c01adab09e879e38f565",
+      "operation_id": "d4d8ebbb5d25a65250d515bc4055717c755b8744c0f17ddbc8b0d2d3cdeee989",
+      "tool": "browser_exec",
+      "args_hash": "769088dc3672b00b6780e72c278c575d54d45a4be1b4a1554abb04eaf2362930",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"{'url': 'http://127.0.0.1:8765/form', 'title': '\ud83d\udc34 NMA028 isolated form', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\n{'protocolVersion': '1.3', 'product': 'Chrome/156.0.8078.47', 'revision': '@1d17a2e2ee147bb7d6ae2ab6abdb3a2510c17775', 'userAgent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36', 'jsVersion': '15.6.75.19'}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/c1f550164339dcba47f86a67e39b9d8752c791dd5253c01adab09e879e38f565\"}",
+      "started": 1792985210.033194,
+      "finished": 1792985213.802165
+    },
+    {
+      "scope_key": "c1f550164339dcba47f86a67e39b9d8752c791dd5253c01adab09e879e38f565",
+      "operation_id": "7663764b84d027c405ef1662e8bc1971c8e2bb517c08419177f36204ab710646",
+      "tool": "terminal",
+      "args_hash": "790b378e0a708542c6864ff8ba82873ac9d8c2ff63040a411e3f83f6300199bf",
+      "state": "returned",
+      "result": "{\"output\": \"sha256sum: /work/downloads/report.csv: No such file or directory\", \"exit_code\": 1, \"error\": null}",
+      "started": 1792985217.3979268,
+      "finished": 1792985218.835621
+    },
+    {
+      "scope_key": "c1f550164339dcba47f86a67e39b9d8752c791dd5253c01adab09e879e38f565",
+      "operation_id": "6339d6585ee2643ca6b82c237346bf0eb0b61e2bb6cda7906b138948e63bc6cb",
+      "tool": "browser_exec",
+      "args_hash": "79d7541be82e72e48a5856bed637d97a259bbd66728955ddb1979f27f043c89a",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"http://127.0.0.1:8765/download.csv\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/c1f550164339dcba47f86a67e39b9d8752c791dd5253c01adab09e879e38f565\"}",
+      "started": 1792985226.2424471,
+      "finished": 1792985230.063155
+    },
+    {
+      "scope_key": "c1f550164339dcba47f86a67e39b9d8752c791dd5253c01adab09e879e38f565",
+      "operation_id": "00f8a26d05bb5d740ce73c1ace2f81c7d9f0a74ebf6fbd52bfe486ab189c19b8",
+      "tool": "terminal",
+      "args_hash": "790b378e0a708542c6864ff8ba82873ac9d8c2ff63040a411e3f83f6300199bf",
+      "state": "returned",
+      "result": "{\"output\": \"b611b0fafb38f99c14d214548fe8f89e1a7839670c66bb72e2824c9eb181dfb4  /work/downloads/report.csv\", \"exit_code\": 0, \"error\": null}",
+      "started": 1792985233.420285,
+      "finished": 1792985233.672292
+    },
+    {
+      "scope_key": "a6661d029df4b224220aacc1e17f648620df5f4ee0a7870a8019f25879a981fb",
+      "operation_id": "b3e004d37813a2e0b88a4c728c4fcf2e444283e05f59248965d61e2bd9a7bb50",
+      "tool": "browser_exec",
+      "args_hash": "32b40cbe045acd4e52c29b2d44e553386f960f118ef087ebcc156519406fb47e",
+      "state": "indeterminate",
+      "result": "{\"success\": false, \"exit_code\": 1, \"output\": \"\", \"workspace\": \"/work/state/cache/browser-use/workspace/a6661d029df4b224220aacc1e17f648620df5f4ee0a7870a8019f25879a981fb\", \"stderr\": \"Traceback (most recent call last):\\n  File \\\"<frozen runpy>\\\", line 203, in _run_module_as_main\\n  File \\\"<frozen runpy>\\\", line 88, in _run_code\\n  File \\\"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\\\", line 410, in <module>\\n    main()\\n    ~~~~^^\\n  File \\\"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\\\", line 255, in main\\n    _run(args)\\n    ~~~~^^^^^^\\n  File \\\"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\\\", line 406, in _run\\n    exec(code, globals())\\n    ~~~~^^^^^^^^^^^^^^^^^\\n  File \\\"<string>\\\", line 2\\nSyntaxError: 'await' outside function\"}",
+      "started": 1792985247.621393,
+      "finished": 1792985250.1805198
+    },
+    {
+      "scope_key": "416a6d4a866d92c92de6e0e87f57da59494d4ce71acc1bb5ab1e8802ad45ffe8",
+      "operation_id": "1d642f877bea8152689e496441ac17633d8d37d214e128f1a92d310e90ee75f3",
+      "tool": "browser_exec",
+      "args_hash": "853f5b48fbb7d78c563a4969a592d9f550dc9478033e59df050bfc3c05102f54",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"E6629EFC366466D27E15C635F84A2E03\\n{'url': 'http://127.0.0.1:8765/form', 'title': '\ud83d\udc34 NMA028 isolated form', 'w': 780, 'h': 437, 'sx': 0, 'sy': 0, 'pw': 780, 'ph': 437}\\n{}\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/416a6d4a866d92c92de6e0e87f57da59494d4ce71acc1bb5ab1e8802ad45ffe8\"}",
+      "started": 1792985271.0318542,
+      "finished": 1792985273.697101
+    },
+    {
+      "scope_key": "416a6d4a866d92c92de6e0e87f57da59494d4ce71acc1bb5ab1e8802ad45ffe8",
+      "operation_id": "f3cc217758a17fea0babe0884bd002b0788f6de3370cca76319a71f90cba67aa",
+      "tool": "browser_exec",
+      "args_hash": "9623c5640d0ee25f9ac552f0747943c578dc82336f0ec71dc68f06a1f5501205",
+      "state": "returned",
+      "result": "{\"success\": true, \"exit_code\": 0, \"output\": \"[{'text': 'Continue', 'href': 'http://127.0.0.1:8765/form'}, {'text': 'Download CSV', 'href': 'http://127.0.0.1:8765/download.csv'}]\\nclicked\\n\", \"workspace\": \"/work/state/cache/browser-use/workspace/416a6d4a866d92c92de6e0e87f57da59494d4ce71acc1bb5ab1e8802ad45ffe8\"}",
+      "started": 1792985279.298878,
+      "finished": 1792985279.907831
+    },
+    {
+      "scope_key": "416a6d4a866d92c92de6e0e87f57da59494d4ce71acc1bb5ab1e8802ad45ffe8",
+      "operation_id": "8ab1278cb876679d00a03cc2b7c4f0b950f14852a0d382e95ee7355e20c8462d",
+      "tool": "terminal",
+      "args_hash": "76a39f0b62895dee01af7b06ba308b6d1e2d0366cf855aee1d985bece1e5716c",
+      "state": "returned",
+      "result": "{\"output\": \"b611b0fafb38f99c14d214548fe8f89e1a7839670c66bb72e2824c9eb181dfb4  /work/downloads/report.csv\", \"exit_code\": 0, \"error\": null}",
+      "started": 1792985283.2727199,
+      "finished": 1792985284.364887
+    },
+    {
+      "scope_key": "5c784364dc863d39420fbee8db4e1fa2c73201a49a4daf5d02ebfe436997c204",
+      "operation_id": "24984178b95b3836cfead694cad99b0c368322d4ad676e013e2a8e5b4d2c852e",
+      "tool": "terminal",
+      "args_hash": "36cda82db01c67d1621d9f6c00e6b234cd290fead3d4a0518a6b4c33cfa232f6",
+      "state": "indeterminate",
+      "result": null,
+      "started": 1792985324.8536692,
+      "finished": 1792985325.276775
+    },
+    {
+      "scope_key": "8d28c4bf89fa6d5dbb83ddd2b9af39c2dc54b54bc6748d8b00a3ad70627c6694",
+      "operation_id": "72205e7baa0a55beb688c988a277f949421c624978d8f4a249934377eeb45202",
+      "tool": "terminal",
+      "args_hash": "36cda82db01c67d1621d9f6c00e6b234cd290fead3d4a0518a6b4c33cfa232f6",
+      "state": "indeterminate",
+      "result": null,
+      "started": 1792985354.150827,
+      "finished": 1792985354.606356
+    },
+    {
+      "scope_key": "417428fbb8b03d092a47346a898a3429d76d03637aed7fba4633bdb63c0c0b3c",
+      "operation_id": "17adefca326eb43406beb3c65aa0eadb15e5a964fd25c3515bcb8431b8e343ca",
+      "tool": "terminal",
+      "args_hash": "36cda82db01c67d1621d9f6c00e6b234cd290fead3d4a0518a6b4c33cfa232f6",
+      "state": "indeterminate",
+      "result": null,
+      "started": 1792985382.920424,
+      "finished": 1792985383.365265
+    }
+  ],
+  "scopes": [
+    {
+      "scope_key": "0eab95eb738c7c4500422fe6b72a6329fc053125f74f83034ff87e8cf263a411",
+      "scope_json": "{\"agent_id\": \"f16f3117-6c9b-55a4-9d33-3d83fb0c24dd\", \"generation\": 1, \"owner_id\": \"2bf51537-0fd2-4781-8300-65ba81418ebb\", \"thread_id\": \"c205a69c-cd94-514c-9b4c-18ddb42e8d1d\"}",
+      "container": "nma028-e8048307-0eab95eb738c7c45",
+      "volume": "nma028-e8048307-0eab95eb738c7c45-work",
+      "state": "paused"
+    },
+    {
+      "scope_key": "3f7898ae29c570911305a6d73811f7c6541f2d91dac678da1f134d35a278637b",
+      "scope_json": "{\"agent_id\": \"f16f3117-6c9b-55a4-9d33-3d83fb0c24dd\", \"generation\": 1, \"owner_id\": \"2bf51537-0fd2-4781-8300-65ba81418ebb\", \"thread_id\": \"50f16c62-36d2-5ee4-b308-c6eb64f8dd8a\"}",
+      "container": "nma028-e8048307-3f7898ae29c57091",
+      "volume": "nma028-e8048307-3f7898ae29c57091-work",
+      "state": "paused"
+    },
+    {
+      "scope_key": "416a6d4a866d92c92de6e0e87f57da59494d4ce71acc1bb5ab1e8802ad45ffe8",
+      "scope_json": "{\"agent_id\": \"f16f3117-6c9b-55a4-9d33-3d83fb0c24dd\", \"generation\": 1, \"owner_id\": \"2bf51537-0fd2-4781-8300-65ba81418ebb\", \"thread_id\": \"649969c2-fcab-5394-8e58-beb5ea8dd07c\"}",
+      "container": "nma028-e8048307-416a6d4a866d92c9",
+      "volume": "nma028-e8048307-416a6d4a866d92c9-work",
+      "state": "paused"
+    },
+    {
+      "scope_key": "417428fbb8b03d092a47346a898a3429d76d03637aed7fba4633bdb63c0c0b3c",
+      "scope_json": "{\"agent_id\": \"f16f3117-6c9b-55a4-9d33-3d83fb0c24dd\", \"generation\": 1, \"owner_id\": \"2bf51537-0fd2-4781-8300-65ba81418ebb\", \"thread_id\": \"4ef14a68-50ff-5467-8c1f-cb854cb6cee6\"}",
+      "container": "nma028-e8048307-417428fbb8b03d09",
+      "volume": "nma028-e8048307-417428fbb8b03d09-work",
+      "state": "cancelled"
+    },
+    {
+      "scope_key": "5c784364dc863d39420fbee8db4e1fa2c73201a49a4daf5d02ebfe436997c204",
+      "scope_json": "{\"agent_id\": \"f16f3117-6c9b-55a4-9d33-3d83fb0c24dd\", \"generation\": 1, \"owner_id\": \"2bf51537-0fd2-4781-8300-65ba81418ebb\", \"thread_id\": \"548e74f4-3471-5d9a-b625-99767823cdad\"}",
+      "container": "nma028-e8048307-5c784364dc863d39",
+      "volume": "nma028-e8048307-5c784364dc863d39-work",
+      "state": "cancelled"
+    },
+    {
+      "scope_key": "6078e06492f633df5eb90247abeef78d6740e83cb3cef711223aa6010d991471",
+      "scope_json": "{\"agent_id\": \"f16f3117-6c9b-55a4-9d33-3d83fb0c24dd\", \"generation\": 1, \"owner_id\": \"2bf51537-0fd2-4781-8300-65ba81418ebb\", \"thread_id\": \"8277c8a7-a4d5-522e-972b-c029693eff89\"}",
+      "container": "nma028-e8048307-6078e06492f633df",
+      "volume": "nma028-e8048307-6078e06492f633df-work",
+      "state": "uncertain"
+    },
+    {
+      "scope_key": "8b2c3fea0f758fd5a11befa655873bf44b3bd7ab67f0448e911aad2a195f785f",
+      "scope_json": "{\"agent_id\": \"f16f3117-6c9b-55a4-9d33-3d83fb0c24dd\", \"generation\": 1, \"owner_id\": \"2bf51537-0fd2-4781-8300-65ba81418ebb\", \"thread_id\": \"ed2f9cb9-0a5b-5407-ba4d-a91894f5b6cc\"}",
+      "container": "nma028-e8048307-8b2c3fea0f758fd5",
+      "volume": "nma028-e8048307-8b2c3fea0f758fd5-work",
+      "state": "paused"
+    },
+    {
+      "scope_key": "8d28c4bf89fa6d5dbb83ddd2b9af39c2dc54b54bc6748d8b00a3ad70627c6694",
+      "scope_json": "{\"agent_id\": \"f16f3117-6c9b-55a4-9d33-3d83fb0c24dd\", \"generation\": 1, \"owner_id\": \"2bf51537-0fd2-4781-8300-65ba81418ebb\", \"thread_id\": \"230965b6-4971-5f5d-b3c7-488aa68e9364\"}",
+      "container": "nma028-e8048307-8d28c4bf89fa6d5d",
+      "volume": "nma028-e8048307-8d28c4bf89fa6d5d-work",
+      "state": "cancelled"
+    },
+    {
+      "scope_key": "a6661d029df4b224220aacc1e17f648620df5f4ee0a7870a8019f25879a981fb",
+      "scope_json": "{\"agent_id\": \"f16f3117-6c9b-55a4-9d33-3d83fb0c24dd\", \"generation\": 1, \"owner_id\": \"2bf51537-0fd2-4781-8300-65ba81418ebb\", \"thread_id\": \"ca807322-febb-511d-8d9d-52349d481601\"}",
+      "container": "nma028-e8048307-a6661d029df4b224",
+      "volume": "nma028-e8048307-a6661d029df4b224-work",
+      "state": "uncertain"
+    },
+    {
+      "scope_key": "b813c7b699c1a72823060f4a9167fad9c1339aedbc9e7b09a7485ab11628e30d",
+      "scope_json": "{\"agent_id\": \"f16f3117-6c9b-55a4-9d33-3d83fb0c24dd\", \"generation\": 1, \"owner_id\": \"2bf51537-0fd2-4781-8300-65ba81418ebb\", \"thread_id\": \"1bc90410-66cd-5f2a-8d33-c113ed629856\"}",
+      "container": "nma028-e8048307-b813c7b699c1a728",
+      "volume": "nma028-e8048307-b813c7b699c1a728-work",
+      "state": "paused"
+    },
+    {
+      "scope_key": "c10173b05385599a3126f32a65196c634d3f104764b361bde1e891a0aeaabb9c",
+      "scope_json": "{\"agent_id\": \"f16f3117-6c9b-55a4-9d33-3d83fb0c24dd\", \"generation\": 1, \"owner_id\": \"2bf51537-0fd2-4781-8300-65ba81418ebb\", \"thread_id\": \"23220650-5f1a-5bb5-809b-743901889c41\"}",
+      "container": "nma028-e8048307-c10173b05385599a",
+      "volume": "nma028-e8048307-c10173b05385599a-work",
+      "state": "paused"
+    },
+    {
+      "scope_key": "c1f550164339dcba47f86a67e39b9d8752c791dd5253c01adab09e879e38f565",
+      "scope_json": "{\"agent_id\": \"f16f3117-6c9b-55a4-9d33-3d83fb0c24dd\", \"generation\": 1, \"owner_id\": \"2bf51537-0fd2-4781-8300-65ba81418ebb\", \"thread_id\": \"62de7c3a-dde7-58de-95cd-673e1e0e455d\"}",
+      "container": "nma028-e8048307-c1f550164339dcba",
+      "volume": "nma028-e8048307-c1f550164339dcba-work",
+      "state": "paused"
+    }
+  ]
+}

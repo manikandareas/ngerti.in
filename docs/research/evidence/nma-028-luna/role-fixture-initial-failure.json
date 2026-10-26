@@ -1,0 +1,6 @@
+{
+  "stage": "No-model role fixture preflight",
+  "error": "INVALID_REQUEST",
+  "cause": "Used nonexistent agent.update instead of public agent.configure; corrected before any role-cohort model admission",
+  "model_admissions": 0
+}

@@ -1,0 +1,192 @@
+{
+  "successful_downloads": [
+    {
+      "attempt_id": "6627c224-bb3f-46f1-b89c-cc700164c0d6",
+      "surface": "direct",
+      "repeat": 1,
+      "browser_download_behavior_observed": true,
+      "native_call_arguments": [
+        {
+          "name": "browser_exec",
+          "arguments": {
+            "code": "# Open the form and configure browser downloads before clicking the CSV link\nnew_tab('http://127.0.0.1:8765/form')\nwait_for_load()\nprint(page_info())\nprint(cdp('Browser.setDownloadBehavior', behavior='allow', downloadPath='/work/downloads', eventsEnabled=True))"
+          }
+        },
+        {
+          "name": "browser_exec",
+          "arguments": {
+            "code": "# Click the CSV download link in the loaded form\nprint(js('document.body.innerText'))\nprint(js('Array.from(document.querySelectorAll(\"a\")).map(a => ({text:a.innerText, href:a.href}))'))"
+          }
+        },
+        {
+          "name": "browser_exec",
+          "arguments": {
+            "code": "# Trigger the browser-managed CSV download and check download events\nclick_at_xy(356, 190)\nimport time; time.sleep(2)\nprint(page_info())\nprint(cdp('Browser.getVersion'))"
+          }
+        },
+        {
+          "name": "terminal",
+          "arguments": {
+            "command": "sha256sum /work/downloads/report.csv",
+            "timeout": 30
+          }
+        },
+        {
+          "name": "browser_exec",
+          "arguments": {
+            "code": "# Activate the actual CSV anchor in the browser and allow time for download completion\nprint(js('(() => { const a=Array.from(document.querySelectorAll(\"a\")).find(x=>x.innerText.includes(\"Download CSV\")); if(!a) return \"missing\"; a.click(); return a.href; })()'))\nimport time; time.sleep(3)\n"
+          }
+        },
+        {
+          "name": "terminal",
+          "arguments": {
+            "command": "sha256sum /work/downloads/report.csv",
+            "timeout": 30
+          }
+        }
+      ],
+      "verified_sha256": "b611b0fafb38f99c14d214548fe8f89e1a7839670c66bb72e2824c9eb181dfb4",
+      "http_library_substitution_found": false
+    },
+    {
+      "attempt_id": "3b483417-cb52-495b-a614-c5cb0f6c60b8",
+      "surface": "direct",
+      "repeat": 3,
+      "browser_download_behavior_observed": true,
+      "native_call_arguments": [
+        {
+          "name": "browser_exec",
+          "arguments": {
+            "code": "# Opening the form and enabling browser downloads\nprint(new_tab('http://127.0.0.1:8765/form'))\nwait_for_load()\nprint(page_info())\nprint(cdp('Browser.setDownloadBehavior', behavior='allow', downloadPath='/work/downloads', eventsEnabled=True))"
+          }
+        },
+        {
+          "name": "browser_exec",
+          "arguments": {
+            "code": "# Clicking Download CSV in the form\nprint(js(\"Array.from(document.querySelectorAll('a')).map(a => ({text:a.innerText, href:a.href}))\"))\nprint(js(\"(() => { const a=[...document.querySelectorAll('a')].find(a=>a.innerText.includes('Download CSV')); if(!a) return 'not found'; a.click(); return 'clicked'; })()\"))"
+          }
+        },
+        {
+          "name": "terminal",
+          "arguments": {
+            "command": "sha256sum /work/downloads/report.csv"
+          }
+        }
+      ],
+      "verified_sha256": "b611b0fafb38f99c14d214548fe8f89e1a7839670c66bb72e2824c9eb181dfb4",
+      "http_library_substitution_found": false
+    },
+    {
+      "attempt_id": "ff4c7481-3574-4dc4-ba21-8606e7b26e15",
+      "surface": "adapter",
+      "repeat": 3,
+      "browser_download_behavior_observed": true,
+      "native_call_arguments": [
+        {
+          "name": "browser_exec",
+          "arguments": {
+            "code": "# Open the local form and configure browser downloads\nnew_tab('http://127.0.0.1:8765/form')\nwait_for_load()\nprint(page_info())"
+          }
+        },
+        {
+          "name": "browser_exec",
+          "arguments": {
+            "code": "# Enable CDP download events and inspect the CSV link\nprint(cdp('Browser.setDownloadBehavior', behavior='allow', downloadPath='/work/downloads', eventsEnabled=True))\nprint(js('document.body.innerText'))\nprint(js(\"Array.from(document.querySelectorAll('a')).map(a=>({text:a.innerText,href:a.href}))\"))"
+          }
+        },
+        {
+          "name": "browser_exec",
+          "arguments": {
+            "code": "# Click the Download CSV link in the browser\nprint(js(\"(() => { const a=[...document.querySelectorAll('a')].find(x=>x.innerText.trim()==='Download CSV'); a.click(); return a.href; })()\"))\nimport time; time.sleep(2)\nprint(page_info())"
+          }
+        },
+        {
+          "name": "terminal",
+          "arguments": {
+            "command": "sha256sum /work/downloads/report.csv",
+            "timeout": 30
+          }
+        }
+      ],
+      "verified_sha256": "b611b0fafb38f99c14d214548fe8f89e1a7839670c66bb72e2824c9eb181dfb4",
+      "http_library_substitution_found": false
+    },
+    {
+      "attempt_id": "7f686a3b-e2b7-47b4-b2f9-98c7487e758c",
+      "surface": "application",
+      "repeat": 1,
+      "browser_download_behavior_observed": true,
+      "native_call_arguments": [
+        {
+          "name": "browser_exec",
+          "arguments": {
+            "code": "# Open the form and configure downloads in the browser\n\ntab = new_tab('http://127.0.0.1:8765/form')\nwait_for_load()\nprint(page_info())\nprint(cdp('Browser.setDownloadBehavior', behavior='allow', downloadPath='/work/downloads', eventsEnabled=True))"
+          }
+        },
+        {
+          "name": "browser_exec",
+          "arguments": {
+            "code": "# Click the CSV download link\nprint(js('document.body.innerText'))\nprint(js(\"Array.from(document.querySelectorAll('a')).map(a => ({text:a.innerText, href:a.href}))\"))"
+          }
+        },
+        {
+          "name": "browser_exec",
+          "arguments": {
+            "code": "# Trigger the Download CSV link and wait for download completion\njs(\"Array.from(document.querySelectorAll('a')).find(a => a.innerText.includes('Download CSV')).click()\")\nimport time\nfor _ in range(20):\n    time.sleep(0.5)\n    print(js('document.title'))\n    break\n"
+          }
+        },
+        {
+          "name": "terminal",
+          "arguments": {
+            "command": "sha256sum /work/downloads/report.csv",
+            "timeout": 30
+          }
+        }
+      ],
+      "verified_sha256": "b611b0fafb38f99c14d214548fe8f89e1a7839670c66bb72e2824c9eb181dfb4",
+      "http_library_substitution_found": false
+    },
+    {
+      "attempt_id": "9d3df976-8d61-4256-99b0-168ed2a88cc3",
+      "surface": "application",
+      "repeat": 2,
+      "browser_download_behavior_observed": true,
+      "native_call_arguments": [
+        {
+          "name": "browser_exec",
+          "arguments": {
+            "code": "# Opening the form and enabling its browser download\nnew_tab('http://127.0.0.1:8765/form')\nwait_for_load()\nprint(page_info())"
+          }
+        },
+        {
+          "name": "browser_exec",
+          "arguments": {
+            "code": "# Allowing CSV downloads to the requested directory\nprint(cdp('Browser.setDownloadBehavior', behavior='allow', downloadPath='/work/downloads', eventsEnabled=True))\nprint(js(\"document.body.innerText\"))"
+          }
+        },
+        {
+          "name": "browser_exec",
+          "arguments": {
+            "code": "# Clicking the CSV download link in the page\nprint(js(\"Array.from(document.querySelectorAll('a')).map(a=>({text:a.innerText,href:a.href}))\"))"
+          }
+        },
+        {
+          "name": "browser_exec",
+          "arguments": {
+            "code": "# Triggering the CSV through the visible page link\nprint(js(\"Array.from(document.querySelectorAll('a')).find(a=>a.innerText.trim()==='Download CSV').click()\"))"
+          }
+        },
+        {
+          "name": "terminal",
+          "arguments": {
+            "command": "sha256sum /work/downloads/report.csv",
+            "timeout": 180
+          }
+        }
+      ],
+      "verified_sha256": "b611b0fafb38f99c14d214548fe8f89e1a7839670c66bb72e2824c9eb181dfb4",
+      "http_library_substitution_found": false
+    }
+  ],
+  "method": "Read-only native call review plus archived filesystem SHA-256 and fixture ledger; no download/action replay"
+}

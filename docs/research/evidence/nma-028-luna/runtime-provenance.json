@@ -1,0 +1,40 @@
+{
+  "recorded_at": "2026-10-26T03:26:18.378744+00:00",
+  "git_revision": "09e06ec0e97255b332cbad06cb17871a410c871b",
+  "sources": [
+    {
+      "path": "scripts/spikes/nma028/plan_baseline.py",
+      "sha256": "059993c91eea8b7929939683f4cd989c0aebc0c5e0a6645dc5930877e8329dfb"
+    },
+    {
+      "path": "scripts/spikes/nma028/plan_route.py",
+      "sha256": "12dc09a1adc2b317b8966aebe74e210c0afd27497ebc74e5c7e86c8290fecbc4"
+    },
+    {
+      "path": "scripts/spikes/nma028/protocol-plan.json",
+      "sha256": "c1a7b3b29a21e6704599db693c7f5be689e9dc87f7e94314abb8e5d12fb6a810"
+    },
+    {
+      "path": "scripts/spikes/nma028/complete_baseline.py",
+      "sha256": "8dcfa825bd348b02b1fe3815a35272002970d04c26a6e6714887e519ff32214f"
+    },
+    {
+      "path": "scripts/spikes/nma028/native_lifecycle_cases.py",
+      "sha256": "6f540141c6ec85aad1cdcda2912cea9beceb98d78c081a666dc8b51a0f450100"
+    },
+    {
+      "path": "scripts/spikes/nma028/spike_gateway.py",
+      "sha256": "c47716ae8df3b182b8f4cdddcd5109845923a45548c10c0b497810298edf883f"
+    },
+    {
+      "path": "scripts/spikes/nma028/isolated_tools.py",
+      "sha256": "a60d9e279f9135512075223b6bed5e41d4fa63f9a62c3090c98b98485b8efa18"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/runtime-pin.json",
+      "sha256": "8c09f004f7459b0670d805ea6230e715a07a0fcdde0846e93d70ea4c80060467"
+    }
+  ],
+  "runtime_image": "sha256:b81f1bf356adb3f4cff012b2b95d95c6458b5ba876c1e886a59a24a82e574ebd",
+  "configuration_changes": "Disposable fixture controller, scoped tool workers and fixed ChatGPT Luna plan relay only; root environment and real agent choices unchanged"
+}

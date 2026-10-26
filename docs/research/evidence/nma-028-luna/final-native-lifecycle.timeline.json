@@ -1,0 +1,98 @@
+[
+  {
+    "profile": "/private/tmp/n28-plan-lifecycle-0wpdjof8/state",
+    "phase": "start_requested",
+    "at": "2026-10-26T04:00:32.626593+00:00",
+    "instance_id": null
+  },
+  {
+    "profile": "/private/tmp/n28-plan-lifecycle-0wpdjof8/state",
+    "phase": "ready",
+    "at": "2026-10-26T04:00:35.018454+00:00",
+    "instance_id": "da99cbfb25354be4bc60637734cefef0"
+  },
+  {
+    "profile": "/private/tmp/n28-plan-lifecycle-0wpdjof8/state",
+    "phase": "stop_requested",
+    "at": "2026-10-26T04:01:33.696058+00:00",
+    "instance_id": "da99cbfb25354be4bc60637734cefef0"
+  },
+  {
+    "profile": "/private/tmp/n28-plan-lifecycle-0wpdjof8/state",
+    "phase": "stopped",
+    "at": "2026-10-26T04:01:33.714102+00:00",
+    "instance_id": "da99cbfb25354be4bc60637734cefef0"
+  },
+  {
+    "profile": "/private/tmp/n28-plan-lifecycle-0wpdjof8/state",
+    "phase": "start_requested",
+    "at": "2026-10-26T04:01:33.714131+00:00",
+    "instance_id": "da99cbfb25354be4bc60637734cefef0"
+  },
+  {
+    "profile": "/private/tmp/n28-plan-lifecycle-0wpdjof8/state",
+    "phase": "ready",
+    "at": "2026-10-26T04:01:36.085896+00:00",
+    "instance_id": "7efc15936dca4f3f8d53bc6ec2a20c20"
+  },
+  {
+    "profile": "/private/tmp/n28-plan-lifecycle-0wpdjof8/state/profiles/writer",
+    "phase": "start_requested",
+    "at": "2026-10-26T04:03:23.055281+00:00",
+    "instance_id": null
+  },
+  {
+    "profile": "/private/tmp/n28-plan-lifecycle-0wpdjof8/state/profiles/writer",
+    "phase": "ready",
+    "at": "2026-10-26T04:03:25.550176+00:00",
+    "instance_id": "6ea24247361c42afb911f2ac12732e17"
+  },
+  {
+    "profile": "/private/tmp/n28-plan-lifecycle-0wpdjof8/state/profiles/reviewer",
+    "phase": "start_requested",
+    "at": "2026-10-26T04:03:25.550217+00:00",
+    "instance_id": null
+  },
+  {
+    "profile": "/private/tmp/n28-plan-lifecycle-0wpdjof8/state/profiles/reviewer",
+    "phase": "ready",
+    "at": "2026-10-26T04:03:27.264242+00:00",
+    "instance_id": "b0d1ee83b2f8495abd224237323f3bcc"
+  },
+  {
+    "profile": "/private/tmp/n28-plan-lifecycle-0wpdjof8/state",
+    "phase": "stop_requested",
+    "at": "2026-10-26T04:06:06.406825+00:00",
+    "instance_id": "7efc15936dca4f3f8d53bc6ec2a20c20"
+  },
+  {
+    "profile": "/private/tmp/n28-plan-lifecycle-0wpdjof8/state",
+    "phase": "stopped",
+    "at": "2026-10-26T04:06:06.443129+00:00",
+    "instance_id": "7efc15936dca4f3f8d53bc6ec2a20c20"
+  },
+  {
+    "profile": "/private/tmp/n28-plan-lifecycle-0wpdjof8/state/profiles/writer",
+    "phase": "stop_requested",
+    "at": "2026-10-26T04:06:06.444095+00:00",
+    "instance_id": "6ea24247361c42afb911f2ac12732e17"
+  },
+  {
+    "profile": "/private/tmp/n28-plan-lifecycle-0wpdjof8/state/profiles/writer",
+    "phase": "stopped",
+    "at": "2026-10-26T04:06:06.462381+00:00",
+    "instance_id": "6ea24247361c42afb911f2ac12732e17"
+  },
+  {
+    "profile": "/private/tmp/n28-plan-lifecycle-0wpdjof8/state/profiles/reviewer",
+    "phase": "stop_requested",
+    "at": "2026-10-26T04:06:06.462403+00:00",
+    "instance_id": "b0d1ee83b2f8495abd224237323f3bcc"
+  },
+  {
+    "profile": "/private/tmp/n28-plan-lifecycle-0wpdjof8/state/profiles/reviewer",
+    "phase": "stopped",
+    "at": "2026-10-26T04:06:06.482132+00:00",
+    "instance_id": "b0d1ee83b2f8495abd224237323f3bcc"
+  }
+]

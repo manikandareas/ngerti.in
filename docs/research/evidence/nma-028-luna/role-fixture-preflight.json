@@ -1,0 +1,10 @@
+{
+  "public_agent_configurations": 3,
+  "native_model_admissions": 0,
+  "expected_answer_in_roles": false,
+  "agent_config_revisions": [
+    "2",
+    "2",
+    "2"
+  ]
+}

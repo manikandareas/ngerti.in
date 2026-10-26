@@ -1,0 +1,44 @@
+{
+  "authentication": "Actual ClerkJS development sessions; unmodified production current_account",
+  "application_attempt_id": "01bfe883-b99d-4945-a63b-19c35aa776fd",
+  "thread_id": "d0b7c0d5-6ddc-4267-9498-78a93fcf0a4f",
+  "native_lineage": {
+    "native_admission_id": "33f185c1eaa3403f95e04bd496511abe",
+    "native_session_id": "local-b47b15ff7d19fe30acfdc3e9d61f229d0911005bd802ecd11d3b07389f8f03cd",
+    "submissions": [
+      {
+        "receipt": {
+          "agent_id": "796024f6-a954-43c6-9638-1f5da529b937",
+          "command_id": "3467219c-e71d-482d-9909-19a10236974d",
+          "committed_seq": "497",
+          "config_revision": "1",
+          "context_generation": "1",
+          "message_id": "c12040a3-6252-5ab5-937e-0c26600ae72b",
+          "run_id": "a7f61295-eed9-5f67-af7c-8d907f64a469",
+          "schema_version": "nma.v1",
+          "status": "accepted",
+          "thread_id": "d0b7c0d5-6ddc-4267-9498-78a93fcf0a4f"
+        },
+        "command_identity": "3467219c-e71d-482d-9909-19a10236974d"
+      }
+    ]
+  },
+  "message_sha256_before": "0767058816a8c8877c6b9b0adcb92656e2dabeae80a7827c44d4ef5ca11e5450",
+  "peer_model_invocations": 0,
+  "own_lists": [
+    {
+      "identity": 0,
+      "status": 200
+    },
+    {
+      "identity": 1,
+      "status": 200
+    }
+  ],
+  "foreign_owner_denied": {
+    "status": 404,
+    "forged_header_ignored": true
+  },
+  "missing_token_denied": 401,
+  "invalid_token_denied": 401
+}

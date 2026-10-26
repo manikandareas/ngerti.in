@@ -1,0 +1,84 @@
+{
+  "cohort": "Generic product agents with corrected mention syntax",
+  "cases": [
+    {
+      "surface": "adapter",
+      "repeat": 1,
+      "helper_oracle": true,
+      "producer_handle": "researcher-c7670e5c",
+      "artifact_id": "02a072f3-bd93-5dd9-af0f-056f06feef18",
+      "sha256": "96b2b7ca6befb6bc4e385ab7c1dd69fe151c1a85e910cc63b47e7d5b00b684db",
+      "peer_authors": [
+        "d41f4bc0-6938-41f9-8e71-04e8ffae9c21",
+        "1ea95b70-3ab8-4f2b-bd42-a37b63ec7053",
+        "24d8cf70-648e-4045-9b5e-5788be174769"
+      ]
+    },
+    {
+      "surface": "adapter",
+      "repeat": 2,
+      "helper_oracle": false,
+      "producer_handle": "researcher-5b9535e8",
+      "artifact_id": "21f8c429-26d5-5947-be86-66047d76f88f",
+      "sha256": "bf210a4f705111dd466c433304e8a49abfd7f4d2c1b51b07da2c8e05ac6a2497",
+      "peer_authors": [
+        "89ea49fa-5d04-45c9-8292-de11c064aca6",
+        "af6adee8-401e-4d46-804c-553b6b4926bb",
+        "3694957f-2873-4463-aee3-427a3951418a"
+      ]
+    },
+    {
+      "surface": "adapter",
+      "repeat": 3,
+      "helper_oracle": true,
+      "producer_handle": "researcher-bcf07f0e",
+      "artifact_id": "ad300303-2c53-5f8d-af13-995c30c8b884",
+      "sha256": "b15a94343d44013e8630dabb38fe5b6c4092deacbf2d9fe0fa6de1be210c9548",
+      "peer_authors": [
+        "b92308d8-2cb2-4a59-b169-2159e8a9c1af",
+        "f1cb2c4e-5d21-43fc-a490-6abfee577687",
+        "ef583060-2296-4d7e-87e1-baf2b1ecfff2"
+      ]
+    },
+    {
+      "surface": "application",
+      "repeat": 1,
+      "helper_oracle": true,
+      "producer_handle": "researcher-18259045",
+      "artifact_id": "a4698543-d795-5046-9294-9c0e1b4c2168",
+      "sha256": "b249c2a8cbbbbf6fb2aa023a09e8a210ad8cd18c07baaee0d289b043fa96ebb3",
+      "peer_authors": [
+        "61a7f85c-33aa-4fbd-92b5-3d94c70c985a",
+        "0a9ef1bf-c9bc-48cb-aca6-c6408244a8bb",
+        "8ff9fe29-81cf-4dfe-861e-1b95ff092412"
+      ]
+    },
+    {
+      "surface": "application",
+      "repeat": 2,
+      "helper_oracle": true,
+      "producer_handle": "researcher-13628f43",
+      "artifact_id": "f5563243-8ec3-5b09-a986-3deb92317250",
+      "sha256": "3357e0f07f7e422c9ff9220dd0d89c9c9641ea01ef33c8d4e1aeb7c1fdfc6297",
+      "peer_authors": [
+        "da656441-4169-4200-bc8d-10d8bf0ae96c",
+        "a8117715-10aa-4dab-9133-def6b16b6c20",
+        "403f3e3a-3482-45f2-b3f6-07eb9549e3b0"
+      ]
+    },
+    {
+      "surface": "application",
+      "repeat": 3,
+      "helper_oracle": true,
+      "producer_handle": "writer-f7849274",
+      "artifact_id": "f36a2dc7-33ac-5918-bba9-8c492f06c079",
+      "sha256": "b848b1ba63abc0e6af90ef70b13ef5c7356c441931a81849cabb0123c6b520b3",
+      "peer_authors": [
+        "4c4a8286-9557-4b11-95ce-cef3af85fcb0",
+        "df64817b-c1c6-4e2e-bf0e-4c328494a972",
+        "cd7f2a4b-ab71-43c9-a15f-4a42afdf8fb2"
+      ]
+    }
+  ],
+  "limitation": "The inherited helper oracle checks the artifact and Reviewer arithmetic but does not enforce Writer-only production. This cohort is not evidence of role fidelity. The separate role-bound cohort enforces producer and canonical Reviewer read bytes."
+}

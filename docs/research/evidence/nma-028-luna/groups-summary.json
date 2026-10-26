@@ -1,0 +1,193 @@
+{
+  "protocol_id": "nma028-chatgpt-luna-valid-mention-supplement-v1",
+  "protocol_sha256": "d49066e1d7fdc97363d008e76c2e358dfbce245419ca69b7377512ae67ed34a7",
+  "surfaces": {
+    "adapter": {
+      "planned": 3,
+      "executed": 3,
+      "passed": 2,
+      "outcomes": {
+        "passed": 2,
+        "failed": 1
+      },
+      "categories": {
+        "none": 2,
+        "oracle": 1
+      },
+      "success_per_planned": 0.6666666666666666,
+      "success_per_executed": 0.6666666666666666,
+      "wilson95_executed": [
+        0.2076596008020477,
+        0.9385080552796037
+      ],
+      "timings_s": {
+        "admission": {
+          "n": 3,
+          "p50": 0.05545720783993602,
+          "p95": 0.0915994169190526
+        },
+        "first_progress": {
+          "n": 0,
+          "p50": null,
+          "p95": null
+        },
+        "settlement": {
+          "n": 3,
+          "p50": 46.69209949998185,
+          "p95": 47.07953670807183
+        },
+        "recovery": {
+          "n": 0,
+          "p50": null,
+          "p95": null
+        }
+      },
+      "effect_metrics": "unavailable unless independently instrumented; never inferred as zero from missing events"
+    },
+    "application": {
+      "planned": 3,
+      "executed": 3,
+      "passed": 3,
+      "outcomes": {
+        "passed": 3
+      },
+      "categories": {
+        "none": 3
+      },
+      "success_per_planned": 1.0,
+      "success_per_executed": 1.0,
+      "wilson95_executed": [
+        0.4385029682449546,
+        1
+      ],
+      "timings_s": {
+        "admission": {
+          "n": 3,
+          "p50": 0.05255045788362622,
+          "p95": 0.11373904207721353
+        },
+        "first_progress": {
+          "n": 0,
+          "p50": null,
+          "p95": null
+        },
+        "settlement": {
+          "n": 3,
+          "p50": 47.19701583287679,
+          "p95": 51.83757062489167
+        },
+        "recovery": {
+          "n": 0,
+          "p50": null,
+          "p95": null
+        }
+      },
+      "effect_metrics": "unavailable unless independently instrumented; never inferred as zero from missing events"
+    }
+  },
+  "release_gate": "This is a decision-spike smoke corpus. All observed failures remain failures. The unchanged NMA-039 release thresholds and >=100 representative tasks per configuration are not established here.",
+  "inputs": [
+    {
+      "path": ".dev/nma-028-luna/groups-adapter.jsonl",
+      "sha256": "50425751b5cfb7a6cf3ca27e2655837dfcbfae1937a8571379c8284bf8251ff7"
+    },
+    {
+      "path": ".dev/nma-028-luna/groups-application.jsonl",
+      "sha256": "e8943491b53da7815d142b34a7f3285fa5a314571b46705db07f0351f656b8ec"
+    }
+  ],
+  "raw_outcomes": {
+    "passed": 5,
+    "failed": 1
+  },
+  "read_only_score_reviews": [],
+  "totals": {
+    "planned": 6,
+    "attempted": 6,
+    "task_successes": 5,
+    "verified_user_stops": 0,
+    "outcomes": {
+      "passed": 5,
+      "failed": 1
+    },
+    "categories": {
+      "none": 5,
+      "oracle": 1
+    }
+  },
+  "families": {
+    "group_handoff": {
+      "adapter": [
+        {
+          "repeat": 1,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 2,
+          "status": "failed",
+          "category": "oracle",
+          "oracle_passed": false
+        },
+        {
+          "repeat": 3,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        }
+      ],
+      "application": [
+        {
+          "repeat": 1,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 2,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        },
+        {
+          "repeat": 3,
+          "status": "passed",
+          "category": "none",
+          "oracle_passed": true
+        }
+      ]
+    }
+  },
+  "tool_journals": [
+    {
+      "path": ".dev/nma-028-luna/groups-adapter-control/isolated-tools.db",
+      "sha256": "1ea5bce6bfd37092afd6115c662b8104d4ffe63934f1d3aa867a2e0026d070b7",
+      "operations": 0,
+      "states": {},
+      "tools": {},
+      "scopes": {},
+      "original_bytes_unchanged": true
+    },
+    {
+      "path": ".dev/nma-028-luna/groups-application-control/isolated-tools.db",
+      "sha256": "1f1e50cc9409398857ccffbf7c0ea97bb1a74dc895dc1aaf91ff47696ce3079a",
+      "operations": 1,
+      "states": {
+        "returned": 1
+      },
+      "tools": {
+        "terminal": 1
+      },
+      "scopes": {
+        "paused": 1
+      },
+      "original_bytes_unchanged": true
+    }
+  ],
+  "form_effects": {
+    "attempts": 0,
+    "posts_per_attempt": [],
+    "limitation": "Missing observations are unavailable, not proof of zero effects; journals retain unknown/indeterminate outcomes."
+  }
+}

@@ -1,0 +1,241 @@
+{
+  "method": "Read-only source/receipt adjudication; failed outcomes are not promoted",
+  "failed_tasks": [
+    {
+      "attempt_id": "a88f99f8-6d08-4cbe-9b11-e063fdbf5721",
+      "surface": "direct",
+      "scenario": "browser_navigation",
+      "repeat": 1,
+      "cause": "Model-written browser Python failed compilation; scope then refused corrected work",
+      "operation_ids": [
+        "fa48d11cd7de53892dcb02cc59b044d94c4d69ff6c9275d2a9c8f5217d9eec51"
+      ],
+      "stderr": [
+        "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 203, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 410, in <module>\n    main()\n    ~~~~^^\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 255, in main\n    _run(args)\n    ~~~~^^^^^^\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 406, in _run\n    exec(code, globals())\n    ~~~~^^^^^^^^^^^^^^^^^\n  File \"<string>\", line 2\n    tab = new_tab('http://127.0.0.1:8765/')\nIndentationError: unexpected indent"
+      ]
+    },
+    {
+      "attempt_id": "464aef35-cff7-4297-8132-a30f91b49f17",
+      "surface": "direct",
+      "scenario": "browser_download",
+      "repeat": 2,
+      "cause": "Model-written browser Python failed compilation; scope then refused corrected work",
+      "operation_ids": [
+        "b3e004d37813a2e0b88a4c728c4fcf2e444283e05f59248965d61e2bd9a7bb50"
+      ],
+      "stderr": [
+        "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 203, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 410, in <module>\n    main()\n    ~~~~^^\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 255, in main\n    _run(args)\n    ~~~~^^^^^^\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 406, in _run\n    exec(code, globals())\n    ~~~~^^^^^^^^^^^^^^^^^\n  File \"<string>\", line 2\nSyntaxError: 'await' outside function"
+      ]
+    },
+    {
+      "attempt_id": "e0aee197-2f13-4567-bcc3-f9ad098c9c84",
+      "surface": "adapter",
+      "scenario": "browser_navigation",
+      "repeat": 1,
+      "cause": "Model-written browser Python failed compilation; scope then refused corrected work",
+      "operation_ids": [
+        "b2317b694b3eac61087005514432882529b05a28fbdf0b03883d6dd5ab62ed04"
+      ],
+      "stderr": [
+        "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 203, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 410, in <module>\n    main()\n    ~~~~^^\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 255, in main\n    _run(args)\n    ~~~~^^^^^^\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 406, in _run\n    exec(code, globals())\n    ~~~~^^^^^^^^^^^^^^^^^\n  File \"<string>\", line 2\n    tab = new_tab('http://127.0.0.1:8765/')\nIndentationError: unexpected indent"
+      ]
+    },
+    {
+      "attempt_id": "fff081dd-9a70-4958-9fe6-1237784659ed",
+      "surface": "adapter",
+      "scenario": "browser_navigation",
+      "repeat": 2,
+      "cause": "Model-written browser Python failed compilation; scope then refused corrected work",
+      "operation_ids": [
+        "668765244a9fac73d9675547cf7a03acffb5819890dd525f82778577012d60e0"
+      ],
+      "stderr": [
+        "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 203, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 410, in <module>\n    main()\n    ~~~~^^\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 255, in main\n    _run(args)\n    ~~~~^^^^^^\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 406, in _run\n    exec(code, globals())\n    ~~~~^^^^^^^^^^^^^^^^^\n  File \"<string>\", line 2\n    tab = new_tab('http://127.0.0.1:8765/')\nIndentationError: unexpected indent"
+      ]
+    },
+    {
+      "attempt_id": "8e33588b-c732-41c5-9eb4-38f7632c213b",
+      "surface": "adapter",
+      "scenario": "browser_navigation",
+      "repeat": 3,
+      "cause": "Model-written browser Python failed compilation; scope then refused corrected work",
+      "operation_ids": [
+        "489cbf8bfcf973b9d01dd4a586addd3bb112e6f4e8314fa771df86bfa66e0a77"
+      ],
+      "stderr": [
+        "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 203, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 410, in <module>\n    main()\n    ~~~~^^\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 255, in main\n    _run(args)\n    ~~~~^^^^^^\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 406, in _run\n    exec(code, globals())\n    ~~~~^^^^^^^^^^^^^^^^^\n  File \"<string>\", line 2\n    tab = new_tab('http://127.0.0.1:8765/')\nIndentationError: unexpected indent"
+      ]
+    },
+    {
+      "attempt_id": "b8c7f774-b532-49cc-b858-a40824d973ec",
+      "surface": "adapter",
+      "scenario": "browser_download",
+      "repeat": 1,
+      "cause": "Model-written browser Python failed compilation; scope then refused corrected work",
+      "operation_ids": [
+        "59b505f8020f4d79a619825b74d3a34ad134284121f120aa64eb6f39966cf323"
+      ],
+      "stderr": [
+        "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 203, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 410, in <module>\n    main()\n    ~~~~^^\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 255, in main\n    _run(args)\n    ~~~~^^^^^^\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 406, in _run\n    exec(code, globals())\n    ~~~~^^^^^^^^^^^^^^^^^\n  File \"<string>\", line 2\n    tab = new_tab('http://127.0.0.1:8765/form')\nIndentationError: unexpected indent"
+      ]
+    },
+    {
+      "attempt_id": "4ae91eca-ec6a-42cb-a9ae-60450fd1935e",
+      "surface": "adapter",
+      "scenario": "browser_download",
+      "repeat": 2,
+      "cause": "Model-written browser Python failed compilation; scope then refused corrected work",
+      "operation_ids": [
+        "b01bb2ef660d3b37424fe18517f075d79cf41d2ed6478331dce93473ddfb2844"
+      ],
+      "stderr": [
+        "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 203, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 410, in <module>\n    main()\n    ~~~~^^\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 255, in main\n    _run(args)\n    ~~~~^^^^^^\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 406, in _run\n    exec(code, globals())\n    ~~~~^^^^^^^^^^^^^^^^^\n  File \"<string>\", line 2\n    tab = new_tab('http://127.0.0.1:8765/form')\nIndentationError: unexpected indent"
+      ]
+    },
+    {
+      "attempt_id": "129cb03d-d935-4af0-b6cd-2e6b63ee79e7",
+      "surface": "adapter",
+      "scenario": "offline_goal",
+      "repeat": 2,
+      "cause": "Schedule call rejected unsupported summary field; exact native trace requires action-specific argument correction",
+      "operation_ids": [],
+      "stderr": []
+    },
+    {
+      "attempt_id": "f789dd3b-63f4-4371-8b52-1a6fd702506b",
+      "surface": "adapter",
+      "scenario": "offline_goal",
+      "repeat": 3,
+      "cause": "Schedule call rejected unsupported summary field; exact native trace requires action-specific argument correction",
+      "operation_ids": [],
+      "stderr": []
+    },
+    {
+      "attempt_id": "64c508fb-337e-41fd-be30-de5c409aeb23",
+      "surface": "adapter",
+      "scenario": "group_handoff",
+      "repeat": 1,
+      "cause": "Mention punctuation rejected before admission; invalid original fixture request",
+      "operation_ids": [],
+      "stderr": []
+    },
+    {
+      "attempt_id": "64159751-cae0-4e6b-8c66-23f37eb72a69",
+      "surface": "adapter",
+      "scenario": "group_handoff",
+      "repeat": 2,
+      "cause": "Mention punctuation rejected before admission; invalid original fixture request",
+      "operation_ids": [],
+      "stderr": []
+    },
+    {
+      "attempt_id": "a115aa68-dc4d-4376-a471-80c9b2e4096f",
+      "surface": "adapter",
+      "scenario": "group_handoff",
+      "repeat": 3,
+      "cause": "Mention punctuation rejected before admission; invalid original fixture request",
+      "operation_ids": [],
+      "stderr": []
+    },
+    {
+      "attempt_id": "4fe505fa-88a4-40a9-8d10-0b27c96951a7",
+      "surface": "application",
+      "scenario": "browser_navigation",
+      "repeat": 3,
+      "cause": "Model-written browser Python failed compilation; scope then refused corrected work",
+      "operation_ids": [
+        "a92a0f76462bb89d4fef1b3256a5ee1fdb488bc3bd379199411e3e153077fc2c"
+      ],
+      "stderr": [
+        "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 203, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 410, in <module>\n    main()\n    ~~~~^^\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 255, in main\n    _run(args)\n    ~~~~^^^^^^\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 406, in _run\n    exec(code, globals())\n    ~~~~^^^^^^^^^^^^^^^^^\n  File \"<string>\", line 2\n    tab = new_tab('http://127.0.0.1:8765/')\nIndentationError: unexpected indent"
+      ]
+    },
+    {
+      "attempt_id": "4ec010f5-15e5-42b5-bec1-2d8c6bc6a2e0",
+      "surface": "application",
+      "scenario": "browser_download",
+      "repeat": 3,
+      "cause": "Model-written browser Python failed compilation; scope then refused corrected work",
+      "operation_ids": [
+        "e389655fb1c8253544abf6dc64f2948c3850055c874fd489fa8a4a1f89f5ee77"
+      ],
+      "stderr": [
+        "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 203, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 410, in <module>\n    main()\n    ~~~~^^\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 255, in main\n    _run(args)\n    ~~~~^^^^^^\n  File \"/opt/native/lib/python3.14/site-packages/browser_harness/run.py\", line 406, in _run\n    exec(code, globals())\n    ~~~~^^^^^^^^^^^^^^^^^\n  File \"<string>\", line 4\n    print(js('[...document.querySelectorAll(\"a\")].map(a=>({text:a.innerText,href:a.href})))')\n         ^\nSyntaxError: '(' was never closed"
+      ]
+    },
+    {
+      "attempt_id": "fb70cb16-ce1a-48db-8432-e8e0e06884cb",
+      "surface": "application",
+      "scenario": "offline_goal",
+      "repeat": 1,
+      "cause": "Schedule call rejected unsupported summary field; exact native trace requires action-specific argument correction",
+      "operation_ids": [],
+      "stderr": []
+    },
+    {
+      "attempt_id": "7827dede-9840-4730-82eb-cffe8c6a24a5",
+      "surface": "application",
+      "scenario": "group_handoff",
+      "repeat": 1,
+      "cause": "Mention punctuation rejected before admission; invalid original fixture request",
+      "operation_ids": [],
+      "stderr": []
+    },
+    {
+      "attempt_id": "4cd96893-03bf-4c0c-8427-ea25af437167",
+      "surface": "application",
+      "scenario": "group_handoff",
+      "repeat": 2,
+      "cause": "Mention punctuation rejected before admission; invalid original fixture request",
+      "operation_ids": [],
+      "stderr": []
+    },
+    {
+      "attempt_id": "94da886b-a605-46c0-912c-6aa8da4af6c5",
+      "surface": "application",
+      "scenario": "group_handoff",
+      "repeat": 3,
+      "cause": "Mention punctuation rejected before admission; invalid original fixture request",
+      "operation_ids": [],
+      "stderr": []
+    },
+    {
+      "attempt_id": "5f45987a-3bd6-4751-bfb5-b79da2259839",
+      "surface": "direct",
+      "scenario": "offline_goal",
+      "repeat": 1,
+      "cause": "Arithmetic was delivered once after restart, but actual response omitted the requested marker; researcher SOUL adds a handoff style",
+      "output_sha256": [
+        "9e68c6e1b78dd04bf28743511a1d334bb96d067afc3f90e67f6155d695014683"
+      ]
+    },
+    {
+      "attempt_id": "8423359d-399b-4ab3-b14a-dd78af3308f3",
+      "surface": "direct",
+      "scenario": "offline_goal",
+      "repeat": 2,
+      "cause": "Arithmetic was delivered once after restart, but actual response omitted the requested marker; researcher SOUL adds a handoff style",
+      "output_sha256": [
+        "2a5db78a07653c48c5d7c81d59978595d97353c17c11a9291719148dc68456fd"
+      ]
+    }
+  ],
+  "cause_counts": {
+    "Model-written browser Python failed compilation; scope then refused corrected work": 9,
+    "Schedule call rejected unsupported summary field; exact native trace requires action-specific argument correction": 3,
+    "Mention punctuation rejected before admission; invalid original fixture request": 6,
+    "Arithmetic was delivered once after restart, but actual response omitted the requested marker; researcher SOUL adds a handoff style": 2
+  },
+  "recovered_tool_failure_tasks": [
+    {
+      "attempt_id": "6627c224-bb3f-46f1-b89c-cc700164c0d6",
+      "surface": "direct",
+      "scenario": "browser_download",
+      "tool_errors": [
+        "terminal"
+      ]
+    }
+  ],
+  "recovered_task_denominator": 99,
+  "integration_failure_rate": "No causal adapter-only rate is inferred from unequal native/product prompts, roles and tool surfaces."
+}

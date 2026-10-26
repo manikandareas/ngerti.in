@@ -1,0 +1,14 @@
+{
+  "checked_at": "2026-10-26T04:26:42.753714+00:00",
+  "cohorts": {
+    "groups": {
+      "attempts": 6,
+      "helper_successes": 5
+    },
+    "role-groups": {
+      "attempts": 6,
+      "helper_successes": 6,
+      "writer_reviewer_exact_byte_proofs": 6
+    }
+  }
+}

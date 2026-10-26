@@ -1,0 +1,115 @@
+{
+  "run": {
+    "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+    "config_revision": "1",
+    "context_generation": "1",
+    "error_code": "PROVIDER_RECONNECT_REQUIRED",
+    "run_id": "91810aca-b77f-5764-9599-af5b07638c3a",
+    "schema_version": "nma.v1",
+    "status": "failed",
+    "text": "",
+    "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b"
+  },
+  "events": {
+    "events": [
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "1",
+        "discussion_ids": [],
+        "event_id": "c4cd17cd-5871-4d04-a13a-adc7c8b03416",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T01:58:09.639266+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "author_agent_id": null,
+          "author_kind": "user",
+          "content": "Use the todo_list tool to record one completed item named OpenRouter integration verified. After the tool succeeds, reply with one short sentence. Do not create a goal or invoke other tools.",
+          "context_generation": "1",
+          "message_id": "9288eaaa-40b7-5e55-b3f6-15e4781dfdc0",
+          "message_seq": "2",
+          "parts": [
+            {
+              "text": "Use the todo_list tool to record one completed item named OpenRouter integration verified. After the tool succeeds, reply with one short sentence. Do not create a goal or invoke other tools.",
+              "type": "text"
+            }
+          ],
+          "revision": "1",
+          "run_id": "91810aca-b77f-5764-9599-af5b07638c3a",
+          "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b"
+        },
+        "run_id": "91810aca-b77f-5764-9599-af5b07638c3a",
+        "schema_version": "nma.v1",
+        "sequence": "2464",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "message.created"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "1",
+        "discussion_ids": [],
+        "event_id": "2267c855-d1a1-4115-9d20-31d923bc001b",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T01:58:09.639389+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "status": "queued"
+        },
+        "run_id": "91810aca-b77f-5764-9599-af5b07638c3a",
+        "schema_version": "nma.v1",
+        "sequence": "2466",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "run.accepted"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "1",
+        "discussion_ids": [],
+        "event_id": "1b7a4944-8896-4bce-a5a1-5a6dac2c20f0",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T01:58:09.661624+00:00",
+        "parent_run_ids": [],
+        "payload": {},
+        "run_id": "91810aca-b77f-5764-9599-af5b07638c3a",
+        "schema_version": "nma.v1",
+        "sequence": "2469",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "run.started"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "1",
+        "discussion_ids": [],
+        "event_id": "fb325027-39f3-4911-84b7-49b782b274e7",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T01:58:10.805450+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "error_code": "PROVIDER_RECONNECT_REQUIRED",
+          "message_id": null,
+          "status": "failed",
+          "text": ""
+        },
+        "run_id": "91810aca-b77f-5764-9599-af5b07638c3a",
+        "schema_version": "nma.v1",
+        "sequence": "2470",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "run.failed"
+      }
+    ],
+    "last_sequence": "2481",
+    "replay_epoch": "465a92cf-0cc8-4dad-9c63-5a00f254a2a8",
+    "snapshot_required": false
+  }
+}

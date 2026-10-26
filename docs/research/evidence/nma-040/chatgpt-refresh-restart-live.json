@@ -1,0 +1,11 @@
+{
+  "business_snapshots_unchanged_after_restart": true,
+  "provider_refresh_owner": "Gateway Python writer only; expiry metadata forced while the gateway was stopped.",
+  "refresh_error": "{\"code\": \"ENGINE_UNAVAILABLE\"}",
+  "generation_unchanged": true,
+  "credential_version_before": 1,
+  "credential_version_after": 1,
+  "access_token_replaced": false,
+  "refresh_token_rotated": false,
+  "refresh_pending": true
+}

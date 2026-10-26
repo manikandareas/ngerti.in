@@ -16,7 +16,7 @@ For a fresh machine, install the pinned source and runtime:
 
 ```sh
 python3 apps/engine/fetch_runtime.py .dev/hermes.tar.gz --extract .dev/nma-001/source
-uv run --python 3.14.9 python apps/engine/build_runtime.py --source .dev/nma-001/source --out .dev/nma-006-closure/production
+uv run --python 3.14.9 python apps/engine/build_runtime.py --source .dev/nma-001/source --out .dev/nma-040/production
 ```
 
 Restart `make dev` after `.env` changes. Production uses the isolated partition-driver contract below.
@@ -75,7 +75,7 @@ Artifacts are immutable UTF-8 files up to 1 MiB in the owner SQLite partition, w
 
 ## Backup, migration and rollback
 
-Current extension schema is 12. Migrations are additive and checksum-versioned; incompatible versions fail closed. Stop ingress and the gateway before backup. The backup tool holds native profile locks, copies the complete partition, normalizes copied WAL stores, checks integrity/foreign keys and records file hashes and table counts:
+Current extension schema is 14. Migrations are additive and checksum-versioned; incompatible versions fail closed. Stop ingress and the gateway before backup. The backup tool holds native profile locks, copies the complete partition, normalizes copied WAL stores, checks integrity/foreign keys and records file hashes and table counts:
 
 ```sh
 python -m ngertiin_engine.backup backup /state/account /backup/account-snapshot
@@ -109,3 +109,12 @@ Optionally configure Clerk `user.created` events at `/api/accounts/webhooks/cler
 Use `GET/POST /api/agent-engine/v1/bootstrap` to read/request setup; POST returns 202 with Retry-After while pending. Engine reads do not create agents. `GET /conversations` supplies compact summaries and an owner-bound `through_cursor`; finish pagination while retaining that watermark, then replay `/conversations/events` and deduplicate by thread ID. A secondary historical DM has `is_primary=false`; retain history access through existing `/threads` APIs. Snapshot/SSE reads do not mark messages read. `thread.mark_read` advances a decimal message watermark; `thread.open` requires the navigation revision (initial `1`). `POST /agents/{agent_id}/dm` accepts a versioned `thread.ensure_dm` command. Existing `thread.create` for DM resolves to the primary thread. UI consumption is deferred.
 
 For an ambiguous existing primary/default, save an inventory using `ngertiin.agent_engine.conversation_migration inventory --owner UUID --output inventory.json`. Create a frozen `account.reconcile` command with `inventory_digest`, `default_agent_id` (or null) and `primary_dms` mapping; apply with `conversation_migration apply --owner UUID --plan plan.json --output receipt.json`. Inspect the stored receipt before retrying. The operation changes only mappings, never transcripts, sessions, goals or active runs. After resolving an operator error, use `ngertiin.agent_engine.provisioner --retry UUID`. Restore quarantine still requires the existing backup reconciliation procedure.
+
+
+## Provider connections
+
+See [the provider connection report](../../docs/research/nma-040-provider-connections.md) for schema 14, the native credential boundary, API/UI, exact provider contracts and the open real-provider acceptance matrix. The production profile now selects the native `anthropic` extra as well as `acp` and `mcp` from the unchanged Hermes lock. Rebuild into a new runtime directory and point `NMA_RUNTIME_PYTHON` there before using Anthropic wire models. Lazy installation remains disabled.
+
+Existing owner catalogs are imported once, with their model aliases retained. A new local account does not inherit an operator's global API key unless its internal UUID equals `NMA_BOOTSTRAP_OWNER_ID`. Accounts/Tobi/DM setup work without any provider; connect an account at `/connections`, refresh its catalog, then select it in agent settings.
+
+Browser OAuth currently requires the browser and gateway on the same host. Enable `NMA_CHATGPT_LOCAL_OSS=1` only for an eligible local OSS installation. Hosted ChatGPT access and remote callback deployment are separate, unverified release gates.

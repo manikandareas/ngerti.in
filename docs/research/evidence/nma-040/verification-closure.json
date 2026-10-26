@@ -1,0 +1,297 @@
+{
+  "task": "NMA-040",
+  "recorded_at": "2026-10-26T02:32:16.027515+00:00",
+  "closure": "Done at the explicit user instruction, with OpenCode Zen/Go real testing deferred",
+  "notion_status_readback": {
+    "status": "Done",
+    "confirmed_at": "2026-10-26T02:34:00.714Z",
+    "explicit_opencode_exception_present": true,
+    "original_unverified_provider_criterion_left_unchecked": true
+  },
+  "user_instruction": "tutup task NMA-040 namun dengan catatan provider opencode belum diuji",
+  "authority": "https://app.notion.com/p/404abdd61873806db119ef3ee29739f7",
+  "provider_results": {
+    "chatgpt_plan": {
+      "catalog_models": 7,
+      "real_clerk_and_oauth_ui": true,
+      "stream_and_native_tool_passed": true,
+      "group_peers_passed": 2,
+      "offline_goal_units_passed": 2,
+      "reconnect_and_new_native_answer_passed": true,
+      "successful_real_rotation_claimed": false,
+      "real_refresh_outcome": "Network timeout; durable pending intent fenced, no rotating-token replay; reauthorization retained the registration and recovered.",
+      "sources": [
+        "chatgpt-dm-live.json",
+        "chatgpt-group-live.json",
+        "chatgpt-offline-goal-live.json",
+        "chatgpt-refresh-restart-live.json",
+        "chatgpt-renewal-failure-live.json",
+        "chatgpt-reconnect-final-live.json"
+      ]
+    },
+    "openrouter": {
+      "oauth_identity": "provider_user",
+      "account_catalog_models": 445,
+      "oauth_stream_tool_passed": true,
+      "api_key_stream_tool_passed": true,
+      "initial_manually_entered_key_inference_passed": false,
+      "initial_key_error": "PROVIDER_RECONNECT_REQUIRED",
+      "sources": [
+        "openrouter-key-live-initial.json",
+        "openrouter-oauth-live.json",
+        "openrouter-valid-key-live.json"
+      ]
+    },
+    "custom_endpoint": {
+      "provider_account": "Explicit OpenRouter endpoint with the already-authorized account API key",
+      "stream_and_artifact_tool_passed": true,
+      "verified_artifact_count": 1,
+      "initial_placeholder_failure_retained": true,
+      "sources": [
+        "custom-live-placeholder-failure.json",
+        "custom-live-final.json"
+      ]
+    },
+    "opencode_zen": {
+      "real_tested": false,
+      "disposition": "Explicit user-approved closure exception; account not available"
+    },
+    "opencode_go": {
+      "real_tested": false,
+      "disposition": "Explicit user-approved closure exception; account not available"
+    },
+    "original_openai_api_key": {
+      "available_credit": false,
+      "original_admitted_attempts": 3,
+      "successful_inference_tool_cases": 0,
+      "historical_failures_retained": true
+    }
+  },
+  "checks": {
+    "prior_full_combined_baseline": {
+      "passed": 142,
+      "skipped": 9,
+      "manifest": "verification.json",
+      "boundary": "Earlier revision; interrupted run plus ordered continuation, not one uninterrupted run"
+    },
+    "final_targeted_engine": {
+      "passed": 19,
+      "log": "closure-regression.log",
+      "scope": [
+        "native artifact privacy/share/backup",
+        "connections",
+        "OIDC/rotation/concurrent two-owner callbacks",
+        "Responses",
+        "Anthropic"
+      ]
+    },
+    "auth_suite": {
+      "passed": 8,
+      "log": "auth-concurrent-final.log",
+      "included_in_targeted_engine": true
+    },
+    "fixture_cleanup": {
+      "passed": 1,
+      "log": "fixture-cleanup-final.log",
+      "boundary": "Repeated two-owner gateway case after generator teardown fix; disposable gateways now stop in finally"
+    },
+    "backend": {
+      "passed": 20,
+      "log": "backend-live-closure.log"
+    },
+    "static": {
+      "passed": true,
+      "log": "check-live-final.log"
+    },
+    "web_build": {
+      "passed": true,
+      "log": "build.log",
+      "boundary": "No frontend source changed after this successful build"
+    },
+    "wheel": {
+      "wheel": "ngertiin_engine-0.1.0-py3-none-any.whl",
+      "sha256": "72181efbcfc2edbf5d907ba79a569686857a6e1e3dc85141c6a2f720ac213390",
+      "json_resources_valid": true,
+      "workspace_placeholder_fix_packaged": true
+    },
+    "native_source_revision": "7489b22af47ce91b366dde81d5831ea422577498",
+    "known_secret_scan": {
+      "files_scanned": 65,
+      "values_checked": 23,
+      "matched_files": [],
+      "passed": true,
+      "scope": "Root environment plus current and protected pre-refresh provider credential journals; values never exported"
+    },
+    "documentation": {
+      "passed": true,
+      "command": "make docs-check",
+      "local_links": 1396
+    },
+    "whitespace": {
+      "passed": true,
+      "command": "git diff --check"
+    },
+    "commands": {
+      "focused_engine": "HERMES_SOURCE=$PWD/.dev/nma-001/source PYTHONPATH=$PWD/apps/engine/src:$PWD/.dev/nma-001/source NMA_TEST_RUNTIME_PYTHON=$PWD/.dev/nma-040/production/bin/python .dev/nma-006-closure/runtime/bin/python -m pytest apps/engine/tests/test_artifacts.py apps/engine/tests/test_backup.py apps/engine/tests/test_connections.py apps/engine/tests/test_provider_auth.py apps/engine/tests/test_provider_responses.py apps/engine/tests/test_provider_anthropic.py -q -x",
+      "cleanup": "Same environment: pytest apps/engine/tests/test_connections.py::test_two_owner_gateways_cannot_use_each_others_connections -q",
+      "backend": "uv run --project apps/backend python -m unittest discover -s apps/backend/tests -v",
+      "static": "make check; uv run --project apps/backend ruff check apps/engine/src apps/engine/tests apps/engine/build_runtime.py apps/backend/tests; uv run --project apps/backend ruff format --check apps/engine/src apps/engine/tests apps/engine/build_runtime.py apps/backend/tests",
+      "wheel": "uv build --wheel --out-dir /tmp/nma-040-wheel apps/engine"
+    }
+  },
+  "runtime_and_data": {
+    "actual_local_owner_schema_upgrade": "13 to 14",
+    "protected_backup_and_quarantined_restore_verified": true,
+    "original_ids_messages_configs_migration_checksums_preserved": true,
+    "restart_business_snapshots_matched": true,
+    "goal_not_duplicated_after_restart": true,
+    "temporary_test_connections_locally_disconnected": 2,
+    "disconnected_model_selection_rejected": true,
+    "router_agent_restored_to_healthy_oauth": true,
+    "root_environment_changes": [
+      "NMA_RUNTIME_PYTHON=.dev/nma-040/production/bin/python",
+      "NMA_CHATGPT_LOCAL_OSS=1"
+    ],
+    "all_other_root_environment_values_preserved": true,
+    "confidential_backups_exported": false,
+    "committed": false,
+    "pushed": false,
+    "hosted_or_production_deployed": false,
+    "nma028_closed": false
+  },
+  "final_patch": {
+    "workspace": "Only known optional fields unused by the chosen action may be empty or null; raw payload digest, non-empty/unknown-field rejection, scope and effect identity are preserved. Initial red regression and real failed artifact attempt retained.",
+    "fixture": "Manual generator.close() now executes gateway/credential cleanup in finally; the observed leaked disposable process was stopped."
+  },
+  "source_sha256": {
+    ".env.example": "a15e6aeb43c855664f7112446fd07853812b57e0eb33295b10203678ad8c3600",
+    "apps/backend/src/ngertiin/accounts/auth.py": "c6b0045d96c81ffb3e4cac7f76780bb8ffa4b78a041902663585baecfed0a6f6",
+    "apps/backend/src/ngertiin/agent_engine/api.py": "83f8dce76aba0791d569071bd7f0d02aafbf6727bbcfb46fd09af4e7cf65b4d7",
+    "apps/backend/src/ngertiin/agent_engine/partitions.py": "91de577ae4c0b41a92a50daafaf0054bd07d33dca85dafba9ec00c6895de0dcb",
+    "apps/backend/src/ngertiin/api/app.py": "f5b169ee13d448bf7af4e5447b9b2befceb323823f2cd8f27c86d92cc14d3fef",
+    "apps/backend/tests/test_account_provisioning.py": "a32619946021fc82dbd0d6d4f35dca2a9e150d8cd2c0b08e05bbd0a13c68427b",
+    "apps/backend/tests/test_agent_engine.py": "c469b9648c06307c80af6c0134d1f352bc7305d77e67e6a6f8350292483c1404",
+    "apps/engine/README.md": "061b69a9c4fad66380ccf603f07e4baa12177751a7aa71bc606689cbd8434531",
+    "apps/engine/build_runtime.py": "c44894aa132ec90f027abb5550dfe7a2392360b8389df2eae4fed6ea154f9304",
+    "apps/engine/src/ngertiin_engine/adapter.py": "6fd9d683f3adcae9a5fa1f936d1f4473fade6364964c7a11ee1cbc043b3967ad",
+    "apps/engine/src/ngertiin_engine/agents.py": "a177194dbc1ab9c2ff7bc9b5d27e599ed5e03937e16f69a718943d2cbbce6fba",
+    "apps/engine/src/ngertiin_engine/artifacts.py": "5d56660748af7120bfc14a978b0a72d25ab10f0648685ce3d06dcc186cf68ad0",
+    "apps/engine/src/ngertiin_engine/connections.py": "81de0ce77a8bae031c956f61e3a4311eaf31a4dacf3e76d272f0de8d5c365489",
+    "apps/engine/src/ngertiin_engine/conversations.py": "28a570cdb5ae4d927a953a5abc90326dc5f27967085a4e8ea87bebe7f9381057",
+    "apps/engine/src/ngertiin_engine/provider-opencode.json": "aac7b47965ff49ca27c85a2b5d751b8cf02ca2c02fddb6fac94ea607e98baf4e",
+    "apps/engine/src/ngertiin_engine/provider_auth.py": "69b4c4147940288e788e29682013a5d3ac12eeb4f352b01f6317e1463560d5c4",
+    "apps/engine/src/ngertiin_engine/provider_manifest.py": "28249bd9a2a031865132d794cb5dc6cb4f8147680622c83e70e67819af9ecf27",
+    "apps/engine/src/ngertiin_engine/provider_secrets.py": "b27852765f2d086dafa90a7287bd7f1a64cbdf9387a99ffb054fea38f980ecff",
+    "apps/engine/src/ngertiin_engine/provider_transport.py": "3ba27cdef7f0ed90f8c81eebf4507189374f67770cbaa0b9f132af899a401c67",
+    "apps/engine/src/ngertiin_engine/reliability.py": "dc46d9d6076aff33b9d703a551d42e9c6a544d10ff96fa7474d16d885fadbc60",
+    "apps/engine/src/ngertiin_engine/runtime-pin.json": "8c09f004f7459b0670d805ea6230e715a07a0fcdde0846e93d70ea4c80060467",
+    "apps/engine/src/ngertiin_engine/runtime.py": "1e3165462a4c4cc0a4a896fc6e37b26a3c713b2b600719e91001329a8b321217",
+    "apps/engine/src/ngertiin_engine/service.py": "1ae3eddb9aba17b987b74fb500a8d1412ac601990e60c795eed43cc3a7f87188",
+    "apps/engine/src/ngertiin_engine/store.py": "be9721fcea3ebb06948964baa33d50e4cdf7b8d3b55e5991e0ddd202feda479b",
+    "apps/engine/tests/browser/connections.config.ts": "0a40da0df396444b2cd95355c2e7b66236ebf23a9be0849072f64ea4d3984f88",
+    "apps/engine/tests/browser/main.tsx": "410147147bed3347a92408ebe403f2d5b79e01359cd4663678cb588131556f08",
+    "apps/engine/tests/browser/serve_connections.py": "cbab7dc3c4097412a7d9153e21583daa2e9b81a7d9da9e0a9e6ed6eddc5ce350",
+    "apps/engine/tests/conversation_fixtures.py": "d30e7e104eb360e7638eb7768a623dec36e42239783d5f5aa80c71808dbbf529",
+    "apps/engine/tests/test_account_defaults.py": "12cdb7f58213c1e2bc08f18a7831704c09e274a2ca1f83f1a21b445d9b3546c8",
+    "apps/engine/tests/test_artifacts.py": "1b7509083525ef7285ac09c9cfc8d947883eae866a78d146c6715da2168ce3a6",
+    "apps/engine/tests/test_backup.py": "c290acd4e3ac5b0e6c73c617206361e667b7ebc7c7391ac15c9b86640991b98b",
+    "apps/engine/tests/test_connections.py": "c521f8f958ccf887673167a585bd7a750d06aa626fcf57032f72e86e79efe080",
+    "apps/engine/tests/test_connections_live.py": "0483a05b12afbf83c64cf46fe42fda3bc7e4a1f55d9bf03cf08f6a0ebdcac79e",
+    "apps/engine/tests/test_context.py": "86f37f70397c8d40bf1cb973b75154be8f8a47e6386cecdfa82f591fb415e5b6",
+    "apps/engine/tests/test_conversations.py": "56df76f09d3a0ef162a2b3a9215e51382fa61ef337b508e6c9ad0182d5e393f2",
+    "apps/engine/tests/test_direct_messages.py": "1094e4548f21ecff95f95c0113e8484e0f0cdb381c65f632932d13cbaf22dbec",
+    "apps/engine/tests/test_discussions.py": "a617c3ffa3651553ab44235aef70c23d55cb8b061293f02e90b6cea684c4f716",
+    "apps/engine/tests/test_provider_anthropic.py": "24f13343f25a4b98ddaa59a3b9fb4221953389168991ffe5343008af43a82c27",
+    "apps/engine/tests/test_provider_auth.py": "2c07caecf726c70f04875e012e6f680932847440ae8a7835bdd501a46af9a638",
+    "apps/engine/tests/test_provider_responses.py": "1729056dd397e3b4f68973fbd8f1989eb74d3ddb74d08bccc2f544495a70b451",
+    "apps/engine/tests/test_provider_setup.py": "8e36516b61701005c02f81ed18b3065f5fd591052bf95c61d2185d1b0807d444",
+    "apps/engine/tests/test_provider_transport.py": "26aefd4b172999930b4a2411293d465370e3ea86ec965cab901c9adffa644f17",
+    "apps/engine/tests/test_runtime.py": "afaa7f1bd58db7e44141e8ebf6b62f3001722161b45e7bbce6b18639d460a4dd",
+    "apps/engine/tests/test_wakes.py": "062a476cdd88aca7bc38d24b661ef64075a98556931466601cdf2a83b6687c2a",
+    "apps/engine/tests/test_webhooks.py": "db40a1f8594d80e2d0796aad53963b0ecfedb90f13fa9a24be8579a6461a3f8d",
+    "apps/web/src/components/app-shell.tsx": "c543e3e0f5b03ba2868e2d7356bd73d76f87b7899dd42f7d4a327e92511a2eca",
+    "apps/web/src/features/agents/agents-page.tsx": "3f238bb0364ce5c0ad2d26953965ead34f75496cf1aa38c2767df261bc94b4e3",
+    "apps/web/src/features/connections/client.ts": "40a9e07367b3609628c075e9d33f384adcfe3d7b1e614b779473d009b4c8865d",
+    "apps/web/src/features/connections/connection-form.tsx": "05fbedcce12df7b057cf5202fdd0830ff178db0f0168f597d9499ae128992c57",
+    "apps/web/src/features/connections/connections-page.tsx": "ff40c2f3942a071b0041c931d6655e6c54ed1a4bd1115bf5c4251e6747c65c2a",
+    "apps/web/src/features/direct-messages/composer.tsx": "d5020fbcde3276809892039793fddc35f618fbd3bccbf762d11b644e949563fb",
+    "apps/web/src/features/direct-messages/direct-message-page.tsx": "e3661e0eaf94d869fd2af965411a87ea62625ce88e621d1a8fe436b457346412",
+    "apps/web/src/lib/api.ts": "af0074df9ee49563e542404c4deea59615a56d1e13b8316824c8860137f10c11",
+    "apps/web/src/routeTree.gen.ts": "f9adc61563327a612139a341aaa5ed7d329daf783fd5563fd324aa7b9b10d815",
+    "apps/web/src/routes/connections.tsx": "4d1164656b78c57970adfab19c58ad7dcc2bedcccbd5c5299b037db238634d05",
+    "docs/research/nma-040-provider-connections.md": "fc76fc5a42aeb5207dc26a754e285a2894c7ae9b9d6f81ea081341b79d19c508"
+  },
+  "evidence_sha256": {
+    "agent-model.png": "1854e4ba6b4249af09bb6e2ea3a3c7eff6b381ab77c7e679ad7a9f9484d8504d",
+    "agent-selection.png": "f59c55c6016013361230ddbc9626355b561b9e00e956e8a2ff5473acb654429a",
+    "anthropic-tests-final.log": "b3882ded5e432b669465d8a1346417d4e3360660a068e842080f465ee232670b",
+    "anthropic-tests.log": "4673ea83abab10f96fdc468421fc3f40e22590766beff17cff707bb3f3ab54e3",
+    "auth-concurrent-final.log": "f6a56fa44b81f9027ea1094c0e45d0612acd1c57f16263c71e5d33b5496cbe15",
+    "auth-concurrent-initial.log": "a1943cb7b19cb2de1b64d3a6cf255950fcf4eb517fa26a4be35571753c23fc58",
+    "auth-concurrent-redaction-fixture.log": "c84d1cb4c053f9785b516079ec1d8051badf66ea2f7041dee3d68571d13426de",
+    "backend-live-closure.log": "db72283c8d724db4895da7c1f74aa6fd3d9b0332d228c36b3ca15f6fefee9ba5",
+    "backend-tests-bootstrap-initial.log": "048bdc5649c6d79569c851a08a43f9d14060e3659a162e6562c40fd469f41308",
+    "backend-tests.log": "df30fa2b96e954f1370c05ee25d577dfac2cb1275c8302fd8d77ee8744877663",
+    "build.log": "5f19a2684040c1dc45f2b3d43c52889c91a3854849c65c8b786fbcc317b24c9b",
+    "chatgpt-dm-live.json": "ccca43ab783d06a35a337e203faf4a7480703125492ababf427ace8838309dc7",
+    "chatgpt-group-live.json": "120f5aeadbe7877c4b8338748e2ba82499ed6d20d8036fc31a6a39d1125138d7",
+    "chatgpt-minimal-diagnostic.json": "d789ae54caa14ac2f157e461084d49defd3c63b54204c81e124c0f165039a86b",
+    "chatgpt-offline-goal-live.json": "27e934b67f713ab95d12afb573e01c9ef7841f8ba02371d74da130a2ddc634ed",
+    "chatgpt-reconnect-final-live.json": "968e3f7d3d8891a493bff05a41822c6c58c66de0bd6cdbc400bdcc4ff5f42590",
+    "chatgpt-refresh-restart-live.json": "321607942eb08999e3e3496c787834c9eeb34fa23b9621d99c792caeaeaa7f82",
+    "chatgpt-renewal-failure-live.json": "146c85cc0081e05e030a3831ccf572029179270f3c26fd39898a96f5b24cb38b",
+    "check-live-closure.log": "faa74011dcec0dafb35361bc7bbea113f92bffd588468f21e5db9954ed4f7c77",
+    "check-live-final.log": "c6b6a491606069cdead2ae9600694ba669873212dfc92e388a6caeab40e223bd",
+    "check.log": "b1b77eb02621e28bb3682929cfcde1f99e37d56bc0c052581af8f2b8499a13df",
+    "closure-regression.log": "6412e57fc4f56daf88659ac5526e640c20b999d09792b1ee55a70f321d3cc820",
+    "connections-tests.log": "2c28ea1038e32c185726f2f7ca3a22955e92abb2cb82ef841b45e140e55239f3",
+    "custom-live-final.json": "49a283df76035985e53c1b5726d748ce4bffc4ab3bc7b93c8094052edee1068a",
+    "custom-live-placeholder-failure.json": "3b95df77ea6ca74838faf32a5591bb8e03a2167b47590039e3081f838374a2d7",
+    "disconnected-mobile.png": "d42c40575028a07641627e755356c8878246529797a382f472713199dd1bae7b",
+    "dm-native.png": "e13a9ef71b639aa6812b2541e79827ef4be0a3509eb546929b92d07a37c9d4c2",
+    "engine-tests-collection.log": "e6bba3be6c37d5c2afc4d55a9a2973285337bf4b1547b45394e9562debf06d8e",
+    "engine-tests-final-2.log": "d134f97d1c326f3859de7902fcc8e2a4e7169bd1141342efd65c698ae4235d40",
+    "engine-tests-final-3.log": "b92ab064196b426648938869267d2a8d517034a4654e13e3bec1f55a92c69802",
+    "engine-tests-final.log": "2874cf6c4466ba150db74f74d2a3f0d919257582e8b94f6c8861fe5701740cdf",
+    "engine-tests-initial.log": "2ea1a8cfefc7d44b64f0f9f5b58fa48bb655a67bd430446ab3f4e84b1876afda",
+    "engine-tests-resume.json": "7144fad676e4bceb5111b81381030534bd789d6040265992245bc79e2493a09b",
+    "engine-tests-resume.log": "8939d37e5297221b7d32edc5bec919cc0c10ba4ad10662d2e95661a11aef6a10",
+    "engine-tests-resume.txt": "872794a059e507caee9aa2cf1484efcc13674c2484a6b1246138f09a6798eb1a",
+    "fixture-cleanup-final.log": "85f1cb5e5f81174a8a8fb96cc82d05a3ad96664eb7b44ae5e3ba1cd2f3edfd9c",
+    "key-repaired.png": "da6baae6c61aec668b9eaa69afd843b511daf153aebb408a699d51666f35c8af",
+    "live-chatgpt-backup.json": "6fe2d79271dbf0e88f0af0c5d3ab6c79f6bf9fe5dfd19db80ea60a254a4fc298",
+    "live-disconnect-reconnect.json": "74bc6318816e8c911c15393b6c5cce9a0b69b61eb152e79637766e1ad66f26f7",
+    "live-existing-provider.log": "4cd435a8a10411a7bc397ef203c6d9e26e6d249f33e1c29bb9524ece3878c33a",
+    "live-openai-responses-final.log": "557aa1e4c3f0dde1e5fc0d9edb6a769d6c51a347d15373db41880446e6b93b0b",
+    "live-openai-responses.log": "0b231266d6ee7f79f5ef0d1ffd132b92dbc10e15bbef25da5c2a9b010c77918a",
+    "live-user-data-preservation.json": "642e15a6b04ab812a37cb364f42fc430b2b4bc6ff84eeeb98568bb39528bff65",
+    "no-provider-dm.png": "35d75e8cfb717f07f0700863f606a8065f1cd10166e7f0074aecf775f878b366",
+    "oauth-cancelled.png": "d61f0bfbbd7bfbdc6c5236849079c898ef8ec2ad504b3a2c048549dac040353c",
+    "oauth-pending.png": "4ed2fb29ea9d38da1c6bfaae78e3465750f81571eb61cde92793fbc0e87e2b45",
+    "openai-catalog.json": "d3360cf8d107437b4216d378b7ae6e1a7c9af8c0cf58ab420ba7dd9a76e99f19",
+    "openai-minimal-responses.json": "b8c80f37a785224add147a2b0c79cd841cefc51725a3b692047b3906e8a67ad5",
+    "openrouter-key-live-initial.json": "1e02788932122e09b2f6c4d96162ff2c10b6701a45037a545b1d1b7df7136eb7",
+    "openrouter-minimal-diagnostic.json": "45a7215dea31a7e89f23e97b65f263cf7892f218e441cdeff2c129da0dfba036",
+    "openrouter-oauth-live.json": "fa26d9de4d74481df1d1e30ea3b032ecbb9769f01f56cd2a4da4c6718ba1a495",
+    "openrouter-valid-key-live.json": "381df49e5a827239ab25f243ae5742142a39b4a6851f13673cdd537e5aa7a166",
+    "package-live-final.json": "cef230f1c0640a77225a7a83f548d0be36f95143eaa2724c34ffa306c496f323",
+    "package-live-final.log": "526ccf91bacf42064dd9a130498571780f65dcf4ed7a507869ffd2686cb75ad5",
+    "package.json": "c3d010056e450bcfbeff385c5651cc43b7c3738236695be16c08561bbb219eee",
+    "package.log": "526ccf91bacf42064dd9a130498571780f65dcf4ed7a507869ffd2686cb75ad5",
+    "quota-dm.png": "61f25e3198cb516659de08a0e7649408792e1515ca73532b45aa5a96e27957cb",
+    "relay-fence-tests.log": "3264f808c60b2f951879b819b2f775cd28561ecf8d174fc236da4fbf4ae89c1b",
+    "runtime-build.log": "e43cc98e65a252d91527457e2cf20fe21c32fdcecaef110fa5246ce44bda50bd",
+    "runtime-inventory.json": "04ac00e073bb0c922ad6575773f00f14ef584c6884e031bd54909a06b9292e7c",
+    "secret-scan-closure.json": "85d66f2d9843f0337298f22742eb680b9e8d3a65b24ad95ae005d59ed4284f31",
+    "secret-scan.json": "d4a9e23f97df0a795223de92d5baed9f880c2f61fdb7f77e8a97b075002bbb49",
+    "settings-desktop.png": "4e38ac079e1efb7ae217702e4219c4d37917eb202cef3b1237dc6d44231cfd57",
+    "settings-mobile.png": "a4cec348671865b2b45cb8b7a359a8063368075a0067d4d81c70b7f772d3241a",
+    "verification.json": "9b89926d4989c239a1e855ceb9f9ee12619a65a783b40105708e12fbd12729f5",
+    "workspace-placeholder-initial.log": "60a83f3a069fa48e0ff48a3bfa14876d521dadf00ee3561ffd7feed2c0c64eec"
+  },
+  "remaining_limits": [
+    "OpenCode Zen and Go have no real-provider acceptance and are not advertised as verified.",
+    "Hosted ChatGPT partner eligibility and final release acceptance are outside this local delivery.",
+    "Successful real rotating refresh is not claimed; controlled rotation and real timeout/reconnect outcomes are distinct."
+  ]
+}

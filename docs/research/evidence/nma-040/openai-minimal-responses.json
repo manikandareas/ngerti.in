@@ -1,0 +1,12 @@
+{
+  "operation": "OpenAI minimal public Responses diagnostic",
+  "model": "gpt-6.1-sol",
+  "completed": false,
+  "terminals": [
+    "response.failed"
+  ],
+  "status": 200,
+  "retry_after": null,
+  "error_code": "credit_balance_exhausted",
+  "error_type": "insufficient_quota"
+}

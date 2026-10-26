@@ -1,0 +1,7 @@
+{
+  "operation": "Minimal OpenRouter inference diagnostic",
+  "model": "openai/gpt-6-luna",
+  "generation": 1,
+  "connection_status": "connected",
+  "exception_type": "ConnectError"
+}

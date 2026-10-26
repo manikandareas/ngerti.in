@@ -1,0 +1,14 @@
+{
+  "run": {
+    "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+    "config_revision": "1",
+    "context_generation": "1",
+    "error_code": "PROVIDER_RECONNECT_REQUIRED",
+    "run_id": "f9fec840-bb62-5151-98ab-f72610f8814d",
+    "schema_version": "nma.v1",
+    "status": "failed",
+    "text": "",
+    "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e"
+  },
+  "refresh_attempt": "Network timeout with unknown rotating-token outcome; no replay; subsequent reauthorization recovered."
+}

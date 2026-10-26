@@ -1,0 +1,84 @@
+F
+=================================== FAILURES ===================================
+__________ test_artifact_publish_download_scope_share_revoke_restart ___________
+
+runtime = (PosixPath('/tmp/nma-z_6j1wrm'), <http.server.ThreadingHTTPServer object at 0x107fc1e80>, <function runtime.<locals>.c...sconnect', 'provider_auth.start', 'provider_auth.status', ...], 'production_ready': False, 'schema_version': 'nma.v1'})
+public_api = <function public_api.<locals>.request at 0x1080707d0>
+
+    def test_artifact_publish_download_scope_share_revoke_restart(runtime, public_api):
+        root, provider, call, start, *_ = runtime
+        (root / "capabilities.json").write_text(
+            json.dumps(
+                {"tool_grants": {"files": {"enabled": True, "toolset": "nma_workspace"}}}
+            )
+        )
+        writer = capability_agent(call, "file-writer", tool_grants=["files"])
+        reviewer = capability_agent(call, "file-reviewer", tool_grants=["files"])
+        private = call(
+            command(
+                "thread.create",
+                {"kind": "dm", "title": "Private", "agent_ids": [writer["agent_id"]]},
+            )
+        )["result"]["thread"]
+        group = call(
+            command(
+                "thread.create",
+                {
+                    "kind": "group",
+                    "title": "Shared",
+                    "agent_ids": [writer["agent_id"], reviewer["agent_id"]],
+                },
+            )
+        )["result"]["thread"]
+    
+        def scripted(body, text):
+            if not body.get("messages"):
+                return None
+            if body["messages"][-1]["role"] == "tool":
+                return {"role": "assistant", "content": body["messages"][-1]["content"]}
+            if text.startswith("FILE:"):
+                return {
+                    "role": "assistant",
+                    "content": None,
+                    "tool_calls": [
+                        {
+                            "id": "file-operation",
+                            "type": "function",
+                            "function": {
+                                "name": "workspace",
+                                "arguments": text.split(":", 1)[1],
+                            },
+                        }
+                    ],
+                }
+            return None
+    
+        provider.goal_script = scripted
+        try:
+            body = send(
+                private,
+                "FILE:"
+                + json.dumps(
+                    {
+                        "action": "publish",
+                        "filename": "report.md",
+                        "content": "PRIVATE_FILE_CANARY\nA verified report.",
+                        "artifact_id": "",
+                    }
+                ),
+            )
+            receipt = call(body)["result"]
+            settle(call, receipt["run_id"])
+            snap = snapshot(call, private)
+>           assert len(snap["artifacts"]) == 1, snap
+E           AssertionError: {'artifacts': [], 'discussion': None, 'goals': [], 'messages': [{'author_agent_id': None, 'author_kind': 'user', 'cont...1f5fefa5e98d', 'author_kind': 'agent', 'content': '{"error":"INVALID_REQUEST"}', 'context_generation': '1', ...}], ...}
+E           assert 0 == 1
+E            +  where 0 = len([])
+
+apps/engine/tests/test_artifacts.py:78: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_artifacts.py::test_artifact_publish_download_scope_share_revoke_restart
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed in 5.45s

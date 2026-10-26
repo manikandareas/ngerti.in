@@ -1,0 +1,14 @@
+{
+  "wheel_name": "ngertiin_engine-0.1.0-py3-none-any.whl",
+  "sha256": "e59f48f70452c9f0753a52b94b0f67879f34dc5c249bee6e9714fb20b500bc2e",
+  "required_files": {
+    "provider_auth.py": true,
+    "provider_manifest.py": true,
+    "provider_secrets.py": true,
+    "provider_transport.py": true,
+    "connections.py": true,
+    "provider-opencode.json": true,
+    "runtime-pin.json": true
+  },
+  "json_valid": true
+}

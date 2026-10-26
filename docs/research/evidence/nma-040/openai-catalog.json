@@ -1,0 +1,7 @@
+{
+  "operation": "OpenAI account catalog",
+  "status": 200,
+  "selected_model": "gpt-6.1-sol",
+  "model_count": 142,
+  "selected_model_listed": true
+}

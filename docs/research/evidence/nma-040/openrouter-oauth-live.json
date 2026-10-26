@@ -1,0 +1,500 @@
+{
+  "run": {
+    "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+    "config_revision": "2",
+    "context_generation": "1",
+    "error_code": null,
+    "run_id": "3d292d86-a7bc-5a42-b5f7-6b44eb1fd9a5",
+    "schema_version": "nma.v1",
+    "status": "succeeded",
+    "text": "Recorded both OpenRouter integration items as completed.",
+    "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b"
+  },
+  "events": {
+    "events": [
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "2",
+        "discussion_ids": [],
+        "event_id": "eb8d7384-77a0-4b85-b18a-f1da74e3b150",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:04:48.856376+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "author_agent_id": null,
+          "author_kind": "user",
+          "content": "Use the todo_list tool to record one completed item named OpenRouter OAuth integration verified. After the tool succeeds, reply with one short sentence. Do not create a goal or invoke other tools.",
+          "context_generation": "1",
+          "message_id": "e09094fb-69f9-59b8-9834-ba0db649115f",
+          "message_seq": "3",
+          "parts": [
+            {
+              "text": "Use the todo_list tool to record one completed item named OpenRouter OAuth integration verified. After the tool succeeds, reply with one short sentence. Do not create a goal or invoke other tools.",
+              "type": "text"
+            }
+          ],
+          "revision": "1",
+          "run_id": "3d292d86-a7bc-5a42-b5f7-6b44eb1fd9a5",
+          "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b"
+        },
+        "run_id": "3d292d86-a7bc-5a42-b5f7-6b44eb1fd9a5",
+        "schema_version": "nma.v1",
+        "sequence": "2484",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "message.created"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "2",
+        "discussion_ids": [],
+        "event_id": "24b67332-e6ae-4131-b055-c90f5861ecfc",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:04:48.856947+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "status": "queued"
+        },
+        "run_id": "3d292d86-a7bc-5a42-b5f7-6b44eb1fd9a5",
+        "schema_version": "nma.v1",
+        "sequence": "2486",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "run.accepted"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "2",
+        "discussion_ids": [],
+        "event_id": "e4bd6f02-09f2-4db1-8b7c-4c6d2eef6b25",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:04:48.881213+00:00",
+        "parent_run_ids": [],
+        "payload": {},
+        "run_id": "3d292d86-a7bc-5a42-b5f7-6b44eb1fd9a5",
+        "schema_version": "nma.v1",
+        "sequence": "2489",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "run.started"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "2",
+        "discussion_ids": [],
+        "event_id": "5129e943-f0f0-4535-aacd-c6c7ddcd6dc2",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:04:55.882512+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "tool_call_id": "call_dOMROeCv5DbkgFUyY9rCatXT",
+          "tool_name": "tool_search"
+        },
+        "run_id": "3d292d86-a7bc-5a42-b5f7-6b44eb1fd9a5",
+        "schema_version": "nma.v1",
+        "sequence": "2490",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "tool.started"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "2",
+        "discussion_ids": [],
+        "event_id": "c5b17b7f-ac51-470d-a806-e8f84e96d99d",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:04:55.896888+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "is_error": false,
+          "tool_call_id": "call_dOMROeCv5DbkgFUyY9rCatXT",
+          "tool_name": "tool_search"
+        },
+        "run_id": "3d292d86-a7bc-5a42-b5f7-6b44eb1fd9a5",
+        "schema_version": "nma.v1",
+        "sequence": "2491",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "tool.completed"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "2",
+        "discussion_ids": [],
+        "event_id": "139aa53c-7fde-4e33-96cc-4cc1ac8cb8a7",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:05:01.424173+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "tool_call_id": "call_VfD2sE9btozeOJ5O7jJ7TFhD",
+          "tool_name": "tool_describe"
+        },
+        "run_id": "3d292d86-a7bc-5a42-b5f7-6b44eb1fd9a5",
+        "schema_version": "nma.v1",
+        "sequence": "2492",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "tool.started"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "2",
+        "discussion_ids": [],
+        "event_id": "5dcd4637-16ef-40c6-8124-4e522a8c8380",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:05:01.431479+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "is_error": false,
+          "tool_call_id": "call_VfD2sE9btozeOJ5O7jJ7TFhD",
+          "tool_name": "tool_describe"
+        },
+        "run_id": "3d292d86-a7bc-5a42-b5f7-6b44eb1fd9a5",
+        "schema_version": "nma.v1",
+        "sequence": "2493",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "tool.completed"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "2",
+        "discussion_ids": [],
+        "event_id": "b9ce5d26-356a-4479-b3a1-495ba354bb08",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:05:18.768321+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "tool_call_id": "call_uZB5bDpqg6iTwa3BB3k1kXkp",
+          "tool_name": "todo_list"
+        },
+        "run_id": "3d292d86-a7bc-5a42-b5f7-6b44eb1fd9a5",
+        "schema_version": "nma.v1",
+        "sequence": "2494",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "tool.started"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "2",
+        "discussion_ids": [],
+        "event_id": "4fbe9fab-3376-4f0d-8114-21c6af17665d",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:05:18.774403+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "is_error": false,
+          "tool_call_id": "call_uZB5bDpqg6iTwa3BB3k1kXkp",
+          "tool_name": "todo_list"
+        },
+        "run_id": "3d292d86-a7bc-5a42-b5f7-6b44eb1fd9a5",
+        "schema_version": "nma.v1",
+        "sequence": "2495",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "tool.completed"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "2",
+        "discussion_ids": [],
+        "event_id": "14b8c948-22c8-4fcc-8992-9747f011b45d",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:05:23.854122+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": "\n\nRecorded"
+        },
+        "run_id": "3d292d86-a7bc-5a42-b5f7-6b44eb1fd9a5",
+        "schema_version": "nma.v1",
+        "sequence": "2496",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "2",
+        "discussion_ids": [],
+        "event_id": "926501a1-d295-48b6-b9bb-caf35c3766c9",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:05:23.861781+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": " both"
+        },
+        "run_id": "3d292d86-a7bc-5a42-b5f7-6b44eb1fd9a5",
+        "schema_version": "nma.v1",
+        "sequence": "2497",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "2",
+        "discussion_ids": [],
+        "event_id": "45ad1fd4-462e-43d7-a5bb-621171fe23cd",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:05:23.863910+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": " Open"
+        },
+        "run_id": "3d292d86-a7bc-5a42-b5f7-6b44eb1fd9a5",
+        "schema_version": "nma.v1",
+        "sequence": "2498",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "2",
+        "discussion_ids": [],
+        "event_id": "e30a7ed5-52cd-4f67-8cca-0892adbd8549",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:05:23.881058+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": "Router"
+        },
+        "run_id": "3d292d86-a7bc-5a42-b5f7-6b44eb1fd9a5",
+        "schema_version": "nma.v1",
+        "sequence": "2499",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "2",
+        "discussion_ids": [],
+        "event_id": "81c17b1d-479f-4be9-bf04-759105291e81",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:05:23.887314+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": " integration"
+        },
+        "run_id": "3d292d86-a7bc-5a42-b5f7-6b44eb1fd9a5",
+        "schema_version": "nma.v1",
+        "sequence": "2500",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "2",
+        "discussion_ids": [],
+        "event_id": "1530d9c2-3253-40a5-8778-4221c9bb6606",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:05:23.889274+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": " items"
+        },
+        "run_id": "3d292d86-a7bc-5a42-b5f7-6b44eb1fd9a5",
+        "schema_version": "nma.v1",
+        "sequence": "2501",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "2",
+        "discussion_ids": [],
+        "event_id": "6eb6f3db-7928-46b0-86e4-42012c67b2ec",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:05:23.891275+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": " as"
+        },
+        "run_id": "3d292d86-a7bc-5a42-b5f7-6b44eb1fd9a5",
+        "schema_version": "nma.v1",
+        "sequence": "2502",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "2",
+        "discussion_ids": [],
+        "event_id": "73375669-27bc-4444-b267-3762043b6521",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:05:24.017157+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": " completed"
+        },
+        "run_id": "3d292d86-a7bc-5a42-b5f7-6b44eb1fd9a5",
+        "schema_version": "nma.v1",
+        "sequence": "2503",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "2",
+        "discussion_ids": [],
+        "event_id": "1f5d22a1-1b96-4854-84ee-76efe6f81ede",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:05:24.019172+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": "."
+        },
+        "run_id": "3d292d86-a7bc-5a42-b5f7-6b44eb1fd9a5",
+        "schema_version": "nma.v1",
+        "sequence": "2504",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "2",
+        "discussion_ids": [],
+        "event_id": "3bc18064-febe-441d-8202-f619777055f5",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:05:24.193303+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": "Recorded both OpenRouter integration items as completed."
+        },
+        "run_id": "3d292d86-a7bc-5a42-b5f7-6b44eb1fd9a5",
+        "schema_version": "nma.v1",
+        "sequence": "2505",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "message.completed"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "2",
+        "discussion_ids": [],
+        "event_id": "eb7d9a6b-4f74-4028-8bfe-1d75b336d3d8",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:05:24.193446+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "error_code": null,
+          "message_id": "54c8d885-c58e-5f41-8ed7-1ae460a3e29d",
+          "status": "succeeded",
+          "text": "Recorded both OpenRouter integration items as completed."
+        },
+        "run_id": "3d292d86-a7bc-5a42-b5f7-6b44eb1fd9a5",
+        "schema_version": "nma.v1",
+        "sequence": "2506",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "run.succeeded"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "2",
+        "discussion_ids": [],
+        "event_id": "ecdaedb1-392a-4b2a-b3cb-625630dc2b28",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:05:24.441214+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "author_agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+          "author_kind": "agent",
+          "content": "Recorded both OpenRouter integration items as completed.",
+          "context_generation": "1",
+          "message_id": "54c8d885-c58e-5f41-8ed7-1ae460a3e29d",
+          "message_seq": "4",
+          "parts": [
+            {
+              "text": "Recorded both OpenRouter integration items as completed.",
+              "type": "text"
+            }
+          ],
+          "revision": "1",
+          "run_id": "3d292d86-a7bc-5a42-b5f7-6b44eb1fd9a5",
+          "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b"
+        },
+        "run_id": "3d292d86-a7bc-5a42-b5f7-6b44eb1fd9a5",
+        "schema_version": "nma.v1",
+        "sequence": "2507",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "message.created"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "2",
+        "discussion_ids": [],
+        "event_id": "c4f30456-bcfa-40c0-998e-207476a30e29",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:05:24.441647+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "status": "delivered"
+        },
+        "run_id": "3d292d86-a7bc-5a42-b5f7-6b44eb1fd9a5",
+        "schema_version": "nma.v1",
+        "sequence": "2509",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "delivery.settled"
+      }
+    ],
+    "last_sequence": "2516",
+    "replay_epoch": "465a92cf-0cc8-4dad-9c63-5a00f254a2a8",
+    "snapshot_required": false
+  },
+  "identity_kind": "provider_user",
+  "model_count": 445
+}

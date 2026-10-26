@@ -1,0 +1,6 @@
+{
+  "operation": "Minimal public Responses with the newly authorized ChatGPT grant",
+  "model": "gpt-6.1-sol",
+  "exception_type": "ConnectTimeout",
+  "reason": "timed out"
+}

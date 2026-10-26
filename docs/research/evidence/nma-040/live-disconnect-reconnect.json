@@ -1,0 +1,22 @@
+{
+  "chatgpt_reconnected": true,
+  "same_connection_id": true,
+  "same_registration_retained": true,
+  "generation": 2,
+  "model_count": 7,
+  "temporary_connections_disconnected": [
+    {
+      "connection_id": "a5d86c9c-28d7-4193-b43f-d5745c8c24eb",
+      "status": "disconnected",
+      "remote_revocation": "not_requested"
+    },
+    {
+      "connection_id": "cb3b6c4e-6eaa-4733-8ed1-e50666dfeebe",
+      "status": "disconnected",
+      "remote_revocation": "not_requested"
+    }
+  ],
+  "disconnected_selection_rejected": true,
+  "router_agent_restored_to_oauth_connection": true,
+  "remote_key_revocation_not_claimed": true
+}

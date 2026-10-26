@@ -1,0 +1,157 @@
+...........s.....F
+=================================== FAILURES ===================================
+__________ test_scoped_memory_transcript_transfer_revocation_restart ___________
+
+runtime = (PosixPath('/tmp/nma-612n_jnq'), <http.server.ThreadingHTTPServer object at 0x107025cc0>, <function runtime.<locals>.c... 'runtime.events', 'runtime.snapshot', 'run.diagnostics', ...], 'production_ready': False, 'schema_version': 'nma.v1'})
+
+    def test_scoped_memory_transcript_transfer_revocation_restart(runtime):
+        root, provider, call, start, *_ = runtime
+        a, b = create_agent(call, "context-a"), create_agent(call, "context-b")
+        from conversation_fixtures import legacy_dm
+    
+        dm, other_dm, b_dm = (
+            thread(call, "dm", [a]),
+            legacy_dm(root, call, a),
+            thread(call, "dm", [b]),
+        )
+        group, other_group = thread(call, "group", [a, b]), thread(call, "group", [a, b])
+        # Native profile-wide memory must not enter any product conversation.
+        memory_dir = root / "state/memories"
+        memory_dir.mkdir(exist_ok=True)
+        (memory_dir / "MEMORY.md").write_text("PROFILE_PRIVATE_MARKER")
+        (memory_dir / "USER.md").write_text("PROFILE_USER_MARKER")
+        run(call, a, dm, "DM_TRANSCRIPT_SECRET")
+        run(call, a, group, "GROUP_TRANSCRIPT_SHARED")
+        private = remember(call, a, dm, "AGENT_PRIVATE_MARKER", private=True)
+        remember(call, a, dm, "DM_ONLY_MEMORY_MARKER")
+        remember(call, a, group, "GROUP_MEMORY_MARKER")
+        own = read(call, a, dm)
+        assert {m["content"] for m in own["memory"]} == {
+            "AGENT_PRIVATE_MARKER",
+            "DM_ONLY_MEMORY_MARKER",
+        }
+        assert [m["author_kind"] for m in own["messages"]] == ["user", "agent"]
+        assert all(m["thread_id"] == dm["thread_id"] for m in own["messages"])
+        assert {m["content"] for m in read(call, a, other_dm)["memory"]} == {
+            "AGENT_PRIVATE_MARKER"
+        }
+        assert read(call, a, other_dm)["messages"] == []
+        assert read(call, b, b_dm)["memory"] == []
+        assert {m["content"] for m in read(call, b, group)["memory"]} == {
+            "GROUP_MEMORY_MARKER"
+        }
+        assert read(call, a, other_group)["memory"] == []
+        denied = command(
+            "context.read", {"agent_id": b["agent_id"], "thread_id": dm["thread_id"]}
+        )
+        assert call(denied)["error"]["code"] == "NOT_FOUND"
+        assert call(denied, sign(denied, str(uuid4()), KEY))["error"]["code"] == "NOT_FOUND"
+        before = len(provider.requests)
+        run(call, a, dm, "DM_CHECK")
+        dm_requests = json.dumps(provider.requests[before:])
+        assert (
+            "AGENT_PRIVATE_MARKER" in dm_requests and "DM_TRANSCRIPT_SECRET" in dm_requests
+        )
+        assert "GROUP_MEMORY_MARKER" not in dm_requests
+        before = len(provider.requests)
+        run(call, b, group, "GROUP_CHECK")
+        group_requests = json.dumps(provider.requests[before:])
+        assert (
+            "GROUP_MEMORY_MARKER" in group_requests
+            and "GROUP_TRANSCRIPT_SHARED" in group_requests
+        )
+        for marker in (
+            "DM_TRANSCRIPT_SECRET",
+            "AGENT_PRIVATE_MARKER",
+            "DM_ONLY_MEMORY_MARKER",
+            "PROFILE_PRIVATE_MARKER",
+            "PROFILE_USER_MARKER",
+        ):
+            assert marker not in group_requests
+        assert "PROFILE_PRIVATE_MARKER" not in dm_requests
+    
+        # Transfer is an authenticated owner command selecting one immutable source.
+        run(call, a, dm, "Share the selected agent memory with the group.")
+        instruction = [
+            m for m in read(call, a, dm)["messages"] if m["author_kind"] == "user"
+        ][-1]
+        grant_body = command(
+            "scope.grant",
+            {
+                "source_kind": "memory",
+                "source_id": private["memory_id"],
+                "source_revision": "1",
+                "target_thread_id": group["thread_id"],
+                "source_message_id": instruction["message_id"],
+                "reason": "Owner requested this selected fact for the group.",
+            },
+        )
+        grant = call(grant_body)
+        assert "result" in grant, grant
+        assert call(grant_body) == grant
+        transferred = read(call, b, group)["grants"]
+        assert len(transferred) == 1 and transferred[0]["content"] == "AGENT_PRIVATE_MARKER"
+        assert transferred[0]["source_message_id"] == instruction["message_id"]
+        before = len(provider.requests)
+        run(call, b, group, "SHARED_SELECTION_CHECK")
+        assert "AGENT_PRIVATE_MARKER" in json.dumps(provider.requests[before:])
+        assert "DM_TRANSCRIPT_SECRET" not in json.dumps(provider.requests[before:])
+        assert read(call, b, other_group)["grants"] == []
+    
+        start.current.kill()
+        start.current.wait(timeout=10)
+        start()
+        assert call(grant_body) == grant
+        assert read(call, b, group)["grants"] == transferred
+        assert read(call, b, b_dm)["memory"] == []
+        assert read(call, a, other_dm)["messages"] == []
+        configure = command(
+            "agent.configure",
+            {
+                "agent_id": a["agent_id"],
+                "display_name": a["display_name"],
+                "handle": a["handle"],
+                "config": {**a["config"], "soul": "UPDATED_CONTEXT_PERSONA"},
+            },
+        )
+        configure["expected_revision"] = a["revision"]
+        a = call(configure)["result"]["agent"]
+        before = len(provider.requests)
+        run(call, a, dm, "NEW_CONFIG_SAME_PRIVATE_CONTEXT")
+        changed_requests = json.dumps(provider.requests[before:])
+        assert "UPDATED_CONTEXT_PERSONA" in changed_requests
+        assert "DM_TRANSCRIPT_SECRET" in changed_requests
+        assert "AGENT_PRIVATE_MARKER" in changed_requests
+        assert "GROUP_TRANSCRIPT_SHARED" not in changed_requests
+        revoke = command("scope.revoke", {"grant_id": grant["result"]["grant_id"]})
+        revoke["expected_revision"] = "1"
+        assert "result" in call(revoke)
+        assert read(call, b, group)["grants"] == []
+        before = len(provider.requests)
+        run(call, b, group, "REVOKED_SELECTION_CHECK")
+        assert "AGENT_PRIVATE_MARKER" not in json.dumps(provider.requests[before:])
+        delete = command("memory.delete", {"memory_id": private["memory_id"]})
+        delete["expected_revision"] = "1"
+        assert "result" in call(delete)
+        before = len(provider.requests)
+        run(call, a, other_dm, "DELETED_PRIVATE_CHECK")
+        assert "AGENT_PRIVATE_MARKER" not in json.dumps(provider.requests[before:])
+        start.current.kill()
+        start.current.wait(timeout=10)
+        start()
+        assert read(call, b, group)["grants"] == []
+        assert read(call, a, other_dm)["memory"] == []
+        with sqlite3.connect(root / "state/state.db") as db:
+            assert db.execute("PRAGMA foreign_key_check").fetchall() == []
+>           assert (
+                db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 13
+            )
+E           assert 14 == 13
+
+apps/engine/tests/test_context.py:211: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_context.py::test_scoped_memory_transcript_transfer_revocation_restart
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 16 passed, 1 skipped in 77.03s (0:01:17)

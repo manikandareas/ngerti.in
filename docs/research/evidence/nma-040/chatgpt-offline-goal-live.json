@@ -1,0 +1,3409 @@
+{
+  "snapshot": {
+    "artifacts": [],
+    "discussion": null,
+    "goals": [
+      {
+        "created_at": "2026-10-26T01:56:03.847Z",
+        "creation_key": "fuel-efficiency-note",
+        "evidence": [
+          {
+            "accepted_by_agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+            "criterion": "Delivered a short note calculating litres per 100 km, interpreting the result, and independently verifying the arithmetic.",
+            "evidence_id": "b88aea25-c8d3-5544-883a-f698ebdf2703",
+            "generation": "1",
+            "producing_run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+            "source_message_id": "ea8619e5-9403-57fb-bff5-ab6ef1509d19",
+            "summary": "Verified the persisted result from the successful run: (24 \u00f7 300) \u00d7 100 = 8 L/100 km; interpretation states 8 litres used per 100 km. Independent segmentation check gives 24 \u00f7 3 = 8 litres per 100 km and reverse check gives 8 \u00d7 3 = 24 litres, matching the input."
+          }
+        ],
+        "generation": "2",
+        "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+        "objective": "Calculate litres per 100 km from 300 km travelled and 24 litres consumed, provide a short interpretation, independently verify the arithmetic, and deliver the completed note.",
+        "progress": "Verified the persisted result from the successful run: (24 \u00f7 300) \u00d7 100 = 8 L/100 km; interpretation states 8 litres used per 100 km. Independent segmentation check gives 24 \u00f7 3 = 8 litres per 100 km and reverse check gives 8 \u00d7 3 = 24 litres, matching the input.",
+        "responsible_agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "revision": "4",
+        "source_message_id": "ffdbbdcf-6261-57f3-85d7-bc600faade79",
+        "source_run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+        "status": "completed",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "title": "Prepare and verify a short fuel-efficiency note",
+        "units": [
+          {
+            "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+            "generation": "1",
+            "parent_run_id": null,
+            "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+            "settled": true,
+            "status": "succeeded",
+            "verdict": "continue"
+          },
+          {
+            "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+            "generation": "1",
+            "parent_run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+            "run_id": "8e988cbb-46e2-58f6-b47f-ef3a058511ea",
+            "settled": true,
+            "status": "succeeded",
+            "verdict": "done"
+          }
+        ],
+        "updated_at": "2026-10-26T01:58:13.918Z",
+        "wake": null,
+        "wake_condition": null
+      }
+    ],
+    "messages": [
+      {
+        "author_agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "author_kind": "agent",
+        "content": "Hi, I'm Plan Check! I'm here to help you think things through and get things done. What would you like to work on?",
+        "context_generation": "1",
+        "message_id": "5fc71da9-a523-557e-bf47-e83aec397cf1",
+        "message_seq": "1",
+        "origin": "welcome_template",
+        "parts": [
+          {
+            "text": "Hi, I'm Plan Check! I'm here to help you think things through and get things done. What would you like to work on?",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": null,
+        "template_version": 1,
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e"
+      },
+      {
+        "author_agent_id": null,
+        "author_kind": "user",
+        "content": "Use the todo_list tool to record one completed item named 'ChatGPT plan integration verified'. After the tool succeeds, reply with one short sentence explaining what you verified. Do not create a goal or invoke other tools.",
+        "context_generation": "1",
+        "message_id": "cfb0760a-defe-54e1-a1d1-de6eb5990920",
+        "message_seq": "2",
+        "parts": [
+          {
+            "text": "Use the todo_list tool to record one completed item named 'ChatGPT plan integration verified'. After the tool succeeds, reply with one short sentence explaining what you verified. Do not create a goal or invoke other tools.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e"
+      },
+      {
+        "author_agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "author_kind": "agent",
+        "content": "Verified that todo_list recorded \u201cChatGPT plan integration verified\u201d as completed.",
+        "context_generation": "1",
+        "message_id": "1bc8904c-086b-5b2f-97b1-c488aa514da9",
+        "message_seq": "3",
+        "parts": [
+          {
+            "text": "Verified that todo_list recorded \u201cChatGPT plan integration verified\u201d as completed.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e"
+      },
+      {
+        "author_agent_id": null,
+        "author_kind": "user",
+        "content": "Take responsibility for preparing a short fuel-efficiency note from these readings: 300 km travelled and 24 litres consumed. Calculate litres per 100 km, give a short interpretation, then independently verify the arithmetic and finish the work. Keep working through the result and its verification without waiting for another message from me.",
+        "context_generation": "1",
+        "message_id": "ffdbbdcf-6261-57f3-85d7-bc600faade79",
+        "message_seq": "4",
+        "parts": [
+          {
+            "text": "Take responsibility for preparing a short fuel-efficiency note from these readings: 300 km travelled and 24 litres consumed. Calculate litres per 100 km, give a short interpretation, then independently verify the arithmetic and finish the work. Keep working through the result and its verification without waiting for another message from me.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e"
+      },
+      {
+        "author_agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "author_kind": "agent",
+        "content": "Fuel consumption: (24 litres \u00f7 300 km) \u00d7 100 = 8 L/100 km.\n\nThis means the vehicle used an average of 8 litres for every 100 km travelled. Lower L/100 km indicates better fuel efficiency.\n\nIndependent check: 300 km is three 100 km segments; 24 \u00f7 3 = 8 litres per segment. Reversing the calculation, 8 \u00d7 3 = 24 litres, matching the original reading.",
+        "context_generation": "1",
+        "message_id": "ea8619e5-9403-57fb-bff5-ab6ef1509d19",
+        "message_seq": "5",
+        "parts": [
+          {
+            "text": "Fuel consumption: (24 litres \u00f7 300 km) \u00d7 100 = 8 L/100 km.\n\nThis means the vehicle used an average of 8 litres for every 100 km travelled. Lower L/100 km indicates better fuel efficiency.\n\nIndependent check: 300 km is three 100 km segments; 24 \u00f7 3 = 8 litres per segment. Reversing the calculation, 8 \u00d7 3 = 24 litres, matching the original reading.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e"
+      },
+      {
+        "author_agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "author_kind": "agent",
+        "content": "Verified the delivered note and its independent arithmetic check; the responsibility is now recorded as completed.",
+        "context_generation": "1",
+        "message_id": "e6b104fa-3afd-5b54-90b5-4f5f7c5dffdf",
+        "message_seq": "6",
+        "parts": [
+          {
+            "text": "Verified the delivered note and its independent arithmetic check; the responsibility is now recorded as completed.",
+            "type": "text"
+          }
+        ],
+        "revision": "1",
+        "run_id": "8e988cbb-46e2-58f6-b47f-ef3a058511ea",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e"
+      }
+    ],
+    "next_before_message_seq": null,
+    "replay_epoch": "465a92cf-0cc8-4dad-9c63-5a00f254a2a8",
+    "runs": [
+      {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "465a92cf-0cc8-4dad-9c63-5a00f254a2a8",
+        "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Verified that todo_list recorded \u201cChatGPT plan integration verified\u201d as completed.",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "through_sequence": "2481"
+      },
+      {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "465a92cf-0cc8-4dad-9c63-5a00f254a2a8",
+        "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Fuel consumption: (24 litres \u00f7 300 km) \u00d7 100 = 8 L/100 km.\n\nThis means the vehicle used an average of 8 litres for every 100 km travelled. Lower L/100 km indicates better fuel efficiency.\n\nIndependent check: 300 km is three 100 km segments; 24 \u00f7 3 = 8 litres per segment. Reversing the calculation, 8 \u00d7 3 = 24 litres, matching the original reading.",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "through_sequence": "2481"
+      },
+      {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "465a92cf-0cc8-4dad-9c63-5a00f254a2a8",
+        "run_id": "8e988cbb-46e2-58f6-b47f-ef3a058511ea",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Verified the delivered note and its independent arithmetic check; the responsibility is now recorded as completed.",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "through_sequence": "2481"
+      }
+    ],
+    "schema_version": "nma.v1",
+    "thread": {
+      "agents": [
+        {
+          "access_generation": "1",
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config": {
+            "avatar_url": "https://api.dicebear.com/10.x/critters/svg?seed=plan-check",
+            "instructions": "",
+            "model": "a2add009-6d14-4e89-aff4-c06d9d8a99dc:gpt-6.1-sol",
+            "soul": "Be precise, use available tools when requested, and verify each result.",
+            "tool_grants": [
+              "tasks",
+              "files"
+            ]
+          },
+          "config_revision": "1",
+          "created_at": "2026-10-26T01:48:27.057465Z",
+          "display_name": "Plan Check",
+          "handle": "plan-check",
+          "primary_dm_thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "revision": "1",
+          "status": "active",
+          "updated_at": "2026-10-26T01:48:27.057465Z"
+        }
+      ],
+      "context_generation": "1",
+      "dm_agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+      "kind": "dm",
+      "membership_revision": "1",
+      "revision": "1",
+      "status": "open",
+      "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+      "title": "Plan Check"
+    },
+    "through_sequence": "2481"
+  },
+  "diagnoses": [
+    {
+      "admission_state": "applied",
+      "command_id": "fd8cd14c-6314-5387-9223-2b0513d38380",
+      "discussion_ids": [],
+      "effects": [],
+      "event_limit": 256,
+      "goal_ids": [
+        "963972a1-1dab-4c51-9649-1eef30ba78d7"
+      ],
+      "handoff_ids": [],
+      "message_ids": [
+        "ffdbbdcf-6261-57f3-85d7-bc600faade79",
+        "ea8619e5-9403-57fb-bff5-ab6ef1509d19"
+      ],
+      "parent_run_ids": [],
+      "recent_events": [
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "9bd68e2c-f8e7-4c27-b948-f6ff67cc8724",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:55:40.513475+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "author_agent_id": null,
+            "author_kind": "user",
+            "content": "Take responsibility for preparing a short fuel-efficiency note from these readings: 300 km travelled and 24 litres consumed. Calculate litres per 100 km, give a short interpretation, then independently verify the arithmetic and finish the work. Keep working through the result and its verification without waiting for another message from me.",
+            "context_generation": "1",
+            "message_id": "ffdbbdcf-6261-57f3-85d7-bc600faade79",
+            "message_seq": "4",
+            "parts": [
+              {
+                "text": "Take responsibility for preparing a short fuel-efficiency note from these readings: 300 km travelled and 24 litres consumed. Calculate litres per 100 km, give a short interpretation, then independently verify the arithmetic and finish the work. Keep working through the result and its verification without waiting for another message from me.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+            "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2334",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.created"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "c70d9faf-c05b-4504-b82b-52e9f3304048",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:55:40.514293+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "status": "queued"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2336",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "run.accepted"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "6f9d8b3d-3881-4b6b-adca-e2e89c9a968a",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:55:40.553628+00:00",
+          "parent_run_ids": [],
+          "payload": {},
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2339",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "run.started"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "e872640c-fc93-4832-8cab-a9c0a17ec355",
+          "goal_id": null,
+          "goal_ids": [],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:56:03.839372+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "tool_call_id": "call_2Td00ETWlbd2O8RxD4bCb6d4",
+            "tool_name": "responsibility"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2340",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "tool.started"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "39fd6d76-0dab-42d0-b199-f2e5b2c8a794",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:56:03.849407+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "goal": {
+              "created_at": "2026-10-26T01:56:03.847Z",
+              "creation_key": "fuel-efficiency-note",
+              "evidence": [],
+              "generation": "1",
+              "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+              "objective": "Calculate litres per 100 km from 300 km travelled and 24 litres consumed, provide a short interpretation, independently verify the arithmetic, and deliver the completed note.",
+              "progress": "",
+              "responsible_agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+              "revision": "1",
+              "source_message_id": "ffdbbdcf-6261-57f3-85d7-bc600faade79",
+              "source_run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+              "status": "active",
+              "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+              "title": "Prepare and verify a short fuel-efficiency note",
+              "units": [
+                {
+                  "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+                  "settled": false,
+                  "status": "pending",
+                  "verdict": null
+                }
+              ],
+              "updated_at": "2026-10-26T01:56:03.847Z",
+              "wake": null,
+              "wake_condition": null
+            },
+            "operation_id": "73c95eb13ad1b1e8859588209ba0d913ed96dbfc967130aa8daa5012e0e5bf99",
+            "source_message_id": "ffdbbdcf-6261-57f3-85d7-bc600faade79"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2341",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "goal.changed"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "853723a5-227a-4fac-9793-a76f73c5d7cd",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:56:03.855984+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "is_error": false,
+            "tool_call_id": "call_2Td00ETWlbd2O8RxD4bCb6d4",
+            "tool_name": "responsibility"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2342",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "tool.completed"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "fd9dc8fc-bd66-4fed-8758-f8d611466206",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:54.493116+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "tool_call_id": "call_WKYuqQdrkmQcejJC4XgdG2ME",
+            "tool_name": "responsibility"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2349",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "tool.started"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "52ef3ee8-5ed6-4a8d-beff-b303915cdc7d",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:54.498257+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "goal": {
+              "created_at": "2026-10-26T01:56:03.847Z",
+              "creation_key": "fuel-efficiency-note",
+              "evidence": [],
+              "generation": "1",
+              "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+              "objective": "Calculate litres per 100 km from 300 km travelled and 24 litres consumed, provide a short interpretation, independently verify the arithmetic, and deliver the completed note.",
+              "progress": "Calculated consumption as (24 \u00f7 300) \u00d7 100 = 8 L/100 km. Independently checked by dividing the trip into three 100 km segments: 24 \u00f7 3 = 8 litres each; reverse check 8 \u00d7 3 = 24 litres. Deliver the note now, then verify the persisted final result and submit it as evidence to complete this responsibility without waiting for user input.",
+              "responsible_agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+              "revision": "2",
+              "source_message_id": "ffdbbdcf-6261-57f3-85d7-bc600faade79",
+              "source_run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+              "status": "active",
+              "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+              "title": "Prepare and verify a short fuel-efficiency note",
+              "units": [
+                {
+                  "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+                  "settled": false,
+                  "status": "pending",
+                  "verdict": "continue"
+                }
+              ],
+              "updated_at": "2026-10-26T01:57:54.497Z",
+              "wake": null,
+              "wake_condition": null
+            },
+            "operation_id": "c97459c2ba6af78e71dc1d224919ca9faa3222098beed8b90f81891ce0c18bbf",
+            "source_message_id": "ffdbbdcf-6261-57f3-85d7-bc600faade79"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2350",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "goal.changed"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "c9013224-0dd9-4e04-80ea-419261a311f2",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:54.515924+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "is_error": false,
+            "tool_call_id": "call_WKYuqQdrkmQcejJC4XgdG2ME",
+            "tool_name": "responsibility"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2351",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "tool.completed"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "3e98721f-3b8b-41b4-b26a-9ae49b8d338d",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.118863+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "\n\nFuel"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2352",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "61ee5280-03ed-4601-b80a-96c63ddec113",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.127850+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " consumption"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2353",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "5ff2bb46-77cd-4ee3-aeee-7c921a45332d",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.129228+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": ":"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2354",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "ee673f93-ab35-4422-b50f-c1a82891033c",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.130768+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " ("
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2355",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "9bdd7f33-f420-47fd-9dc0-139fc4875a75",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.132057+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "24"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2356",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "1226d511-25af-42a0-8182-07d55fd12323",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.133537+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " litres"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2357",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "2ba37b29-b11e-4cba-b9fa-2f0879bafb4c",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.134968+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " \u00f7"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2358",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "80c22069-06a9-4fa1-8600-4db8b99f668e",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.136356+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " "
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2359",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "b7cc3f1c-9c90-42d5-a691-9effebcbdc15",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.137569+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "300"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2360",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "e4495cc5-302c-488a-b66e-3a83f7620798",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.138595+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " km"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2361",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "b55324f1-9d02-4fa4-bd51-41051167ddf8",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.149314+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": ")"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2362",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "a446371e-d560-4b0e-931d-68b5da4dc5cc",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.157251+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " \u00d7"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2363",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "797d1104-f88e-4158-ae06-c21e2a217e77",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.159114+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " "
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2364",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "31031638-3558-427d-a1e5-3b891ca206d1",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.193214+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "100"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2365",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "98584158-90c9-40b8-b058-9f4b881e21e8",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.199625+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " ="
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2366",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "9480e13f-3d01-47df-bc06-8a14369d9db5",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.226604+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " "
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2367",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "39f8afc1-a99b-45ba-90fe-30c2dfbb6999",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.236281+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "8"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2368",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "d8bb46c1-2d1d-4346-a91f-f96c7abbb69d",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.237713+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " L"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2369",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "df1b0c46-ef60-4420-a717-4c83227c500b",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.238838+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "/"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2370",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "c8ad1efd-9a97-4a65-a48a-1ae8bf88f68c",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.240075+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "100"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2371",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "87571d89-1276-43de-bf6b-eb521733bf22",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.276814+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " km"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2372",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "8dfa4115-816b-4b27-b2e1-c383fbef9df8",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.278013+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": ".\n\n"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2373",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "db7a0e8f-7921-4204-9f17-5675e4c91490",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.289603+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "This"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2374",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "bd63d9dd-ea47-4291-8134-d514d4a54774",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.312805+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " means"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2375",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "dafc77a1-34bd-4457-b5b4-857ed444a623",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.336375+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " the"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2376",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "f531b4f5-f32a-4823-945f-40cac859980a",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.357581+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " vehicle"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2377",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "5b28f61d-1798-406a-8f88-451beb80ac41",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.378164+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " used"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2378",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "e6d3f285-0e97-42d6-bc9e-f5a19b1a3bcd",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.401383+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " an"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2379",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "a91598cf-3f6b-4137-a5c3-4352aae65375",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.403347+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " average"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2380",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "c9b4738e-92dc-4bbd-85f6-45e867552408",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.429958+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " of"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2381",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "e306b668-d0e8-42b6-8a7a-c1f4b58cc4b2",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.455848+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " "
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2382",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "1c75bb51-e716-4cc7-a74e-34fd205668db",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.473608+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "8"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2383",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "958df099-0770-4c65-8ad9-9e2f25b1e94a",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.502348+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " litres"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2384",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "8d61125b-8e54-46fb-ad92-fb1a592695b8",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.527613+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " for"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2385",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "0238e6e4-8739-4880-b9db-5f6b6de0c37c",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.541285+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " every"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2386",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "439879d4-0f3c-4fc5-ad19-46af0b0d1efd",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.560798+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " "
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2387",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "ce924daf-2bfc-4020-96b1-e567ce3007b6",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.562460+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "100"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2388",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "9739a1fb-7457-4dae-add4-1f29eb79d9df",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.586811+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " km"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2389",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "f497e664-19b2-4521-ba8f-d625d5d5b1c2",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.651979+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " travelled"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2390",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "8ff7489f-d2ea-4e93-b396-80cfbf7301bd",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.677462+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "."
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2391",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "a15e9deb-1062-4e0b-b624-4517bf683ddc",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.679803+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " Lower"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2392",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "61c5e602-dfdd-42fc-abba-066ab073ccae",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.781035+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " L"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2393",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "58bc1901-c303-4d82-bc98-f9c4b990e03b",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.787254+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "/"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2394",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "7c5c5246-415e-498c-9e86-73771c95ac69",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.794519+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "100"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2395",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "656420a0-092a-480d-bcac-93d93b43e9b7",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.795633+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " km"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2396",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "10af4055-a0df-4f4c-9373-6ed10af8edf6",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.913895+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " indicates"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2397",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "6e06ff2b-03e0-4dd7-9c25-15a84543d1b4",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.929144+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " better"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2398",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "8ccebd14-f65a-40ab-b1c4-cb8e4399375b",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.931882+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " fuel"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2399",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "4c7c7b81-f505-4643-aeca-d773a4e57832",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.933645+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " efficiency"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2400",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "fba07efe-ebf1-4eb0-a798-9b38ec6c8f56",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.935152+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": ".\n\n"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2401",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "11ad6943-4a6b-4fcb-8d63-535481cad167",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:57:59.936547+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "Independent"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2402",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "4fef3297-a31c-4c24-aa56-47deaba8eb79",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.046359+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " check"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2403",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "d404c66a-2ef9-4097-a796-a0b1892140b0",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.054991+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": ":"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2404",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "9c7dfba5-fbb2-4b4e-9030-571e196d5666",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.056951+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " "
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2405",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "989dd1dc-69af-4da5-8b82-560cfa320159",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.060616+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "300"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2406",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "1e5f910a-88da-4fa3-9573-4414b02d3a8e",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.062532+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " km"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2407",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "60393278-6352-45e0-a084-15bd08363263",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.173547+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " is"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2408",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "80bd25e0-e914-4bf6-9914-b2a751381bb2",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.194308+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " three"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2409",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "cc486a3c-57ca-4b91-bc33-e5b524556948",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.195344+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " "
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2410",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "fb6e9dd4-eaa0-4964-bde4-064a32284916",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.196388+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "100"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2411",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "f161133b-627e-4846-80e0-338f693e068f",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.197272+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " km"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2412",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "76fb9893-00bf-4759-9d12-b7c2bb6bf980",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.198196+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " segments"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2413",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "047de023-e564-4fbb-b2dc-31f125d2a01d",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.303224+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": ";"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2414",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "c37ade3c-4321-488a-b4c9-bed86db70c49",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.305300+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " "
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2415",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "863acdf6-1b61-496a-b8e9-d36a6c764f7b",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.306787+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "24"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2416",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "278266e8-ec90-4b8f-a19b-7a0a0ee693c4",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.317763+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " \u00f7"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2417",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "9f28d5bf-6d19-4c68-a026-8a346a7a1d0f",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.319650+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " "
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2418",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "8dc00054-babd-4165-a3f0-6e172d8d5af5",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.321380+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "3"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2419",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "2dc8bd7a-15c0-4c95-9aa7-1574c98bedcc",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.322840+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " ="
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2420",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "4cbdf33f-ea7d-45fa-86c4-7f3f65ddd45c",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.324191+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " "
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2421",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "14fcc5fe-a35c-4cc0-8725-79f9c7a34caf",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.325450+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "8"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2422",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "f80e3f20-4016-4c63-99e4-a2e35ac9a970",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.326634+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " litres"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2423",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "521d3107-acef-452e-953e-500a3978fd4e",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.327929+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " per"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2424",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "516e5b9d-f345-46a8-8714-1788e5b1a4a3",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.329456+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " segment"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2425",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "8e60fa94-0025-4c5a-82c1-ff2b5f2221e6",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.355012+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "."
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2426",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "50345264-8869-4dc1-aedd-c3c8c0967f03",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.412662+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " Re"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2427",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "24c9e738-c852-4968-ad00-daf4f2f45d8e",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.430609+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "vers"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2428",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "1872fa32-109e-4b09-82f4-75b901dd8045",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.431444+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "ing"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2429",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "de35507c-9a54-45ab-9bd1-85651fc2d039",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.432148+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " the"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2430",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "eea81b9c-9e24-4362-b9ac-98f778c01374",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.449684+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " calculation"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2431",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "f3c2335b-5fb8-452d-966e-0c3543e423a2",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.469212+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": ","
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2432",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "92fa9b3e-174e-4a8a-afd1-db4589e8754d",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.493826+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " "
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2433",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "7eb7b403-20a7-43eb-9dd0-4561524d9e25",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.511497+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "8"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2434",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "c457ac04-dd68-4066-bd0e-faf0245add83",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.545422+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " \u00d7"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2435",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "af555021-c0c4-4496-8dda-8955d9cee953",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.576274+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " "
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2436",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "7e302b46-3c87-4afd-9d31-5e06f8e9cb88",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.585015+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "3"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2437",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "78eb3a00-e945-49be-8908-31eaf353026e",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.586390+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " ="
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2438",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "13bbc648-a413-4de1-ac5c-9d4e66e1d9e4",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.630435+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " "
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2439",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "a606c2ea-7c5e-4501-880d-bd11bfbe358b",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.640320+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "24"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2440",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "c8a5666b-c034-4169-b698-cdf1c6d70195",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.657931+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " litres"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2441",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "00491f2a-c93c-43de-9701-8192a0d8af93",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.684451+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": ","
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2442",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "48a9dce8-a408-44b1-af92-aaac8fd68dbb",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.696667+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " matching"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2443",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "147550a8-1213-4b53-b7f2-4b0789bd69c1",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.723320+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " the"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2444",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "92903bbf-8114-4054-a0ab-87fdf2d4f1a1",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.724760+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " original"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2445",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "b55c5c58-ba28-4859-a938-0521bbc9b9dc",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.744775+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": " reading"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2446",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "fe013045-40f3-491d-b810-81089c574a3d",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:00.767997+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "."
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2447",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.delta"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "a3b9f477-8aff-416f-9d71-00a01888d909",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:01.206230+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "text": "Fuel consumption: (24 litres \u00f7 300 km) \u00d7 100 = 8 L/100 km.\n\nThis means the vehicle used an average of 8 litres for every 100 km travelled. Lower L/100 km indicates better fuel efficiency.\n\nIndependent check: 300 km is three 100 km segments; 24 \u00f7 3 = 8 litres per segment. Reversing the calculation, 8 \u00d7 3 = 24 litres, matching the original reading."
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2448",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.completed"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "4851abdb-807a-430a-8829-663c9c776317",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:01.206388+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "error_code": null,
+            "message_id": "ea8619e5-9403-57fb-bff5-ab6ef1509d19",
+            "status": "succeeded",
+            "text": "Fuel consumption: (24 litres \u00f7 300 km) \u00d7 100 = 8 L/100 km.\n\nThis means the vehicle used an average of 8 litres for every 100 km travelled. Lower L/100 km indicates better fuel efficiency.\n\nIndependent check: 300 km is three 100 km segments; 24 \u00f7 3 = 8 litres per segment. Reversing the calculation, 8 \u00d7 3 = 24 litres, matching the original reading."
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2449",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "run.succeeded"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "5256c05f-7b17-4c32-85db-c9b03a9e26be",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:01.218754+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "author_agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+            "author_kind": "agent",
+            "content": "Fuel consumption: (24 litres \u00f7 300 km) \u00d7 100 = 8 L/100 km.\n\nThis means the vehicle used an average of 8 litres for every 100 km travelled. Lower L/100 km indicates better fuel efficiency.\n\nIndependent check: 300 km is three 100 km segments; 24 \u00f7 3 = 8 litres per segment. Reversing the calculation, 8 \u00d7 3 = 24 litres, matching the original reading.",
+            "context_generation": "1",
+            "message_id": "ea8619e5-9403-57fb-bff5-ab6ef1509d19",
+            "message_seq": "5",
+            "parts": [
+              {
+                "text": "Fuel consumption: (24 litres \u00f7 300 km) \u00d7 100 = 8 L/100 km.\n\nThis means the vehicle used an average of 8 litres for every 100 km travelled. Lower L/100 km indicates better fuel efficiency.\n\nIndependent check: 300 km is three 100 km segments; 24 \u00f7 3 = 8 litres per segment. Reversing the calculation, 8 \u00d7 3 = 24 litres, matching the original reading.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+            "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2450",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.created"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "2b1476b4-2b98-4434-8b91-d48c4864644e",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:01.218988+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "status": "delivered"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2452",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "delivery.settled"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "25dd21df-345e-4759-932a-7d7097e62a54",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:01.239736+00:00",
+          "parent_run_ids": [],
+          "payload": {
+            "goal": {
+              "created_at": "2026-10-26T01:56:03.847Z",
+              "creation_key": "fuel-efficiency-note",
+              "evidence": [],
+              "generation": "1",
+              "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+              "objective": "Calculate litres per 100 km from 300 km travelled and 24 litres consumed, provide a short interpretation, independently verify the arithmetic, and deliver the completed note.",
+              "progress": "Calculated consumption as (24 \u00f7 300) \u00d7 100 = 8 L/100 km. Independently checked by dividing the trip into three 100 km segments: 24 \u00f7 3 = 8 litres each; reverse check 8 \u00d7 3 = 24 litres. Deliver the note now, then verify the persisted final result and submit it as evidence to complete this responsibility without waiting for user input.",
+              "responsible_agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+              "revision": "2",
+              "source_message_id": "ffdbbdcf-6261-57f3-85d7-bc600faade79",
+              "source_run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+              "status": "active",
+              "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+              "title": "Prepare and verify a short fuel-efficiency note",
+              "units": [
+                {
+                  "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": "continue"
+                },
+                {
+                  "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+                  "generation": "1",
+                  "parent_run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+                  "run_id": "8e988cbb-46e2-58f6-b47f-ef3a058511ea",
+                  "settled": false,
+                  "status": "pending",
+                  "verdict": null
+                }
+              ],
+              "updated_at": "2026-10-26T01:57:54.497Z",
+              "wake": null,
+              "wake_condition": null
+            },
+            "source_message_id": "ffdbbdcf-6261-57f3-85d7-bc600faade79"
+          },
+          "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+          "schema_version": "nma.v1",
+          "sequence": "2454",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "goal.changed"
+        }
+      ],
+      "run": {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "465a92cf-0cc8-4dad-9c63-5a00f254a2a8",
+        "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Fuel consumption: (24 litres \u00f7 300 km) \u00d7 100 = 8 L/100 km.\n\nThis means the vehicle used an average of 8 litres for every 100 km travelled. Lower L/100 km indicates better fuel efficiency.\n\nIndependent check: 300 km is three 100 km segments; 24 \u00f7 3 = 8 litres per segment. Reversing the calculation, 8 \u00d7 3 = 24 litres, matching the original reading.",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "through_sequence": "2481"
+      },
+      "trigger_ids": [],
+      "usage": {
+        "available": true,
+        "input_tokens": 13842,
+        "output_tokens": 368,
+        "source": "native_terminal_receipt",
+        "total_tokens": 14210
+      }
+    },
+    {
+      "admission_state": "applied",
+      "command_id": "fda65647-82fe-5d53-b210-f3006cf44d78",
+      "discussion_ids": [],
+      "effects": [],
+      "event_limit": 256,
+      "goal_ids": [
+        "963972a1-1dab-4c51-9649-1eef30ba78d7"
+      ],
+      "handoff_ids": [],
+      "message_ids": [
+        "e6b104fa-3afd-5b54-90b5-4f5f7c5dffdf"
+      ],
+      "parent_run_ids": [
+        "31940194-855a-5349-8622-a71a6f7287d3"
+      ],
+      "recent_events": [
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "92f7ac44-d03e-4dca-a8c1-4fb509ba64c9",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:01.239531+00:00",
+          "parent_run_ids": [
+            "31940194-855a-5349-8622-a71a6f7287d3"
+          ],
+          "payload": {
+            "goal": {
+              "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7"
+            },
+            "parent_run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+            "status": "queued"
+          },
+          "run_id": "8e988cbb-46e2-58f6-b47f-ef3a058511ea",
+          "schema_version": "nma.v1",
+          "sequence": "2453",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "run.accepted"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "6537a3bf-7c13-42e2-b66d-1af80a33905c",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:01.312546+00:00",
+          "parent_run_ids": [
+            "31940194-855a-5349-8622-a71a6f7287d3"
+          ],
+          "payload": {},
+          "run_id": "8e988cbb-46e2-58f6-b47f-ef3a058511ea",
+          "schema_version": "nma.v1",
+          "sequence": "2456",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "run.started"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "82eacbf6-356e-4b68-8a89-591d276ca021",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:08.639640+00:00",
+          "parent_run_ids": [
+            "31940194-855a-5349-8622-a71a6f7287d3"
+          ],
+          "payload": {
+            "tool_call_id": "call_NeRC1mF6oyWHHqBtSWI33STO",
+            "tool_name": "responsibility"
+          },
+          "run_id": "8e988cbb-46e2-58f6-b47f-ef3a058511ea",
+          "schema_version": "nma.v1",
+          "sequence": "2457",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "tool.started"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "6a52fc26-bf6f-4971-88b8-16939b83b001",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:08.650767+00:00",
+          "parent_run_ids": [
+            "31940194-855a-5349-8622-a71a6f7287d3"
+          ],
+          "payload": {
+            "goal": {
+              "created_at": "2026-10-26T01:56:03.847Z",
+              "creation_key": "fuel-efficiency-note",
+              "evidence": [
+                {
+                  "accepted_by_agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+                  "criterion": "Delivered a short note calculating litres per 100 km, interpreting the result, and independently verifying the arithmetic.",
+                  "evidence_id": "b88aea25-c8d3-5544-883a-f698ebdf2703",
+                  "generation": "1",
+                  "producing_run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+                  "source_message_id": "ea8619e5-9403-57fb-bff5-ab6ef1509d19",
+                  "summary": "Verified the persisted result from the successful run: (24 \u00f7 300) \u00d7 100 = 8 L/100 km; interpretation states 8 litres used per 100 km. Independent segmentation check gives 24 \u00f7 3 = 8 litres per 100 km and reverse check gives 8 \u00d7 3 = 24 litres, matching the input."
+                }
+              ],
+              "generation": "1",
+              "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+              "objective": "Calculate litres per 100 km from 300 km travelled and 24 litres consumed, provide a short interpretation, independently verify the arithmetic, and deliver the completed note.",
+              "progress": "Calculated consumption as (24 \u00f7 300) \u00d7 100 = 8 L/100 km. Independently checked by dividing the trip into three 100 km segments: 24 \u00f7 3 = 8 litres each; reverse check 8 \u00d7 3 = 24 litres. Deliver the note now, then verify the persisted final result and submit it as evidence to complete this responsibility without waiting for user input.",
+              "responsible_agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+              "revision": "3",
+              "source_message_id": "ffdbbdcf-6261-57f3-85d7-bc600faade79",
+              "source_run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+              "status": "active",
+              "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+              "title": "Prepare and verify a short fuel-efficiency note",
+              "units": [
+                {
+                  "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": "continue"
+                },
+                {
+                  "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+                  "generation": "1",
+                  "parent_run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+                  "run_id": "8e988cbb-46e2-58f6-b47f-ef3a058511ea",
+                  "settled": false,
+                  "status": "pending",
+                  "verdict": null
+                }
+              ],
+              "updated_at": "2026-10-26T01:58:08.650Z",
+              "wake": null,
+              "wake_condition": null
+            },
+            "operation_id": "67cf31f24f3f4c0ccdf037354364fb3b37a4f3915053e611ce3bafcad9997044",
+            "source_message_id": "ffdbbdcf-6261-57f3-85d7-bc600faade79"
+          },
+          "run_id": "8e988cbb-46e2-58f6-b47f-ef3a058511ea",
+          "schema_version": "nma.v1",
+          "sequence": "2458",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "goal.changed"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "6d5d6a38-4adf-4271-81a8-015c7fd994ac",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:08.660199+00:00",
+          "parent_run_ids": [
+            "31940194-855a-5349-8622-a71a6f7287d3"
+          ],
+          "payload": {
+            "is_error": false,
+            "tool_call_id": "call_NeRC1mF6oyWHHqBtSWI33STO",
+            "tool_name": "responsibility"
+          },
+          "run_id": "8e988cbb-46e2-58f6-b47f-ef3a058511ea",
+          "schema_version": "nma.v1",
+          "sequence": "2459",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "tool.completed"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "3dd5417c-b1cf-49d5-b79f-650a9ded3cc4",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:13.915397+00:00",
+          "parent_run_ids": [
+            "31940194-855a-5349-8622-a71a6f7287d3"
+          ],
+          "payload": {
+            "tool_call_id": "call_IpnZGpCosFKEHPXgsCqRgwu0",
+            "tool_name": "responsibility"
+          },
+          "run_id": "8e988cbb-46e2-58f6-b47f-ef3a058511ea",
+          "schema_version": "nma.v1",
+          "sequence": "2471",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "tool.started"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "a48e8919-7ad1-4115-bcdf-369cca1049a2",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:13.919202+00:00",
+          "parent_run_ids": [
+            "31940194-855a-5349-8622-a71a6f7287d3"
+          ],
+          "payload": {
+            "goal": {
+              "created_at": "2026-10-26T01:56:03.847Z",
+              "creation_key": "fuel-efficiency-note",
+              "evidence": [
+                {
+                  "accepted_by_agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+                  "criterion": "Delivered a short note calculating litres per 100 km, interpreting the result, and independently verifying the arithmetic.",
+                  "evidence_id": "b88aea25-c8d3-5544-883a-f698ebdf2703",
+                  "generation": "1",
+                  "producing_run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+                  "source_message_id": "ea8619e5-9403-57fb-bff5-ab6ef1509d19",
+                  "summary": "Verified the persisted result from the successful run: (24 \u00f7 300) \u00d7 100 = 8 L/100 km; interpretation states 8 litres used per 100 km. Independent segmentation check gives 24 \u00f7 3 = 8 litres per 100 km and reverse check gives 8 \u00d7 3 = 24 litres, matching the input."
+                }
+              ],
+              "generation": "2",
+              "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+              "objective": "Calculate litres per 100 km from 300 km travelled and 24 litres consumed, provide a short interpretation, independently verify the arithmetic, and deliver the completed note.",
+              "progress": "Verified the persisted result from the successful run: (24 \u00f7 300) \u00d7 100 = 8 L/100 km; interpretation states 8 litres used per 100 km. Independent segmentation check gives 24 \u00f7 3 = 8 litres per 100 km and reverse check gives 8 \u00d7 3 = 24 litres, matching the input.",
+              "responsible_agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+              "revision": "4",
+              "source_message_id": "ffdbbdcf-6261-57f3-85d7-bc600faade79",
+              "source_run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+              "status": "completed",
+              "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+              "title": "Prepare and verify a short fuel-efficiency note",
+              "units": [
+                {
+                  "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": "continue"
+                },
+                {
+                  "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+                  "generation": "1",
+                  "parent_run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+                  "run_id": "8e988cbb-46e2-58f6-b47f-ef3a058511ea",
+                  "settled": false,
+                  "status": "pending",
+                  "verdict": "done"
+                }
+              ],
+              "updated_at": "2026-10-26T01:58:13.918Z",
+              "wake": null,
+              "wake_condition": null
+            },
+            "operation_id": "63fd48baddc810ec247144f03f9b43019a217e4dc6ec96f98771db4758bc08be",
+            "source_message_id": "ffdbbdcf-6261-57f3-85d7-bc600faade79"
+          },
+          "run_id": "8e988cbb-46e2-58f6-b47f-ef3a058511ea",
+          "schema_version": "nma.v1",
+          "sequence": "2472",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "goal.changed"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "98ed0169-d6c2-44a2-adf3-504bd56350a3",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:13.924592+00:00",
+          "parent_run_ids": [
+            "31940194-855a-5349-8622-a71a6f7287d3"
+          ],
+          "payload": {
+            "is_error": false,
+            "tool_call_id": "call_IpnZGpCosFKEHPXgsCqRgwu0",
+            "tool_name": "responsibility"
+          },
+          "run_id": "8e988cbb-46e2-58f6-b47f-ef3a058511ea",
+          "schema_version": "nma.v1",
+          "sequence": "2473",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "tool.completed"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "14c3f57f-4bc4-4834-983a-3d78413381f1",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:20.253363+00:00",
+          "parent_run_ids": [
+            "31940194-855a-5349-8622-a71a6f7287d3"
+          ],
+          "payload": {
+            "tool_call_id": "call_oKhzKVuIHGLZTHuEC2AfhJ39",
+            "tool_name": "responsibility"
+          },
+          "run_id": "8e988cbb-46e2-58f6-b47f-ef3a058511ea",
+          "schema_version": "nma.v1",
+          "sequence": "2474",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "tool.started"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "9ea2a674-bcb8-4e0c-a099-c9f43fe2c4ab",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:20.259116+00:00",
+          "parent_run_ids": [
+            "31940194-855a-5349-8622-a71a6f7287d3"
+          ],
+          "payload": {
+            "is_error": false,
+            "tool_call_id": "call_oKhzKVuIHGLZTHuEC2AfhJ39",
+            "tool_name": "responsibility"
+          },
+          "run_id": "8e988cbb-46e2-58f6-b47f-ef3a058511ea",
+          "schema_version": "nma.v1",
+          "sequence": "2475",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "tool.completed"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "bfbd88f3-b03a-4e4f-86d5-cfb6e4f6e40d",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:26.521753+00:00",
+          "parent_run_ids": [
+            "31940194-855a-5349-8622-a71a6f7287d3"
+          ],
+          "payload": {
+            "text": "Verified the delivered note and its independent arithmetic check; the responsibility is now recorded as completed."
+          },
+          "run_id": "8e988cbb-46e2-58f6-b47f-ef3a058511ea",
+          "schema_version": "nma.v1",
+          "sequence": "2476",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.completed"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "9ae48088-62c7-445c-a959-23001f8125ce",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:26.522038+00:00",
+          "parent_run_ids": [
+            "31940194-855a-5349-8622-a71a6f7287d3"
+          ],
+          "payload": {
+            "error_code": null,
+            "message_id": "e6b104fa-3afd-5b54-90b5-4f5f7c5dffdf",
+            "status": "succeeded",
+            "text": "Verified the delivered note and its independent arithmetic check; the responsibility is now recorded as completed."
+          },
+          "run_id": "8e988cbb-46e2-58f6-b47f-ef3a058511ea",
+          "schema_version": "nma.v1",
+          "sequence": "2477",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "run.succeeded"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "e9c277d9-1f2f-4610-b30b-ca1d9456f871",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:26.656285+00:00",
+          "parent_run_ids": [
+            "31940194-855a-5349-8622-a71a6f7287d3"
+          ],
+          "payload": {
+            "author_agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+            "author_kind": "agent",
+            "content": "Verified the delivered note and its independent arithmetic check; the responsibility is now recorded as completed.",
+            "context_generation": "1",
+            "message_id": "e6b104fa-3afd-5b54-90b5-4f5f7c5dffdf",
+            "message_seq": "6",
+            "parts": [
+              {
+                "text": "Verified the delivered note and its independent arithmetic check; the responsibility is now recorded as completed.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "8e988cbb-46e2-58f6-b47f-ef3a058511ea",
+            "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e"
+          },
+          "run_id": "8e988cbb-46e2-58f6-b47f-ef3a058511ea",
+          "schema_version": "nma.v1",
+          "sequence": "2478",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "message.created"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "d4a69e21-9da8-42d2-a082-502e10e1710e",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:26.656684+00:00",
+          "parent_run_ids": [
+            "31940194-855a-5349-8622-a71a6f7287d3"
+          ],
+          "payload": {
+            "status": "delivered"
+          },
+          "run_id": "8e988cbb-46e2-58f6-b47f-ef3a058511ea",
+          "schema_version": "nma.v1",
+          "sequence": "2480",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "delivery.settled"
+        },
+        {
+          "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "config_revision": "1",
+          "discussion_ids": [],
+          "event_id": "9eb4f509-3c33-496f-b8e5-98982a51b210",
+          "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+          "goal_ids": [
+            "963972a1-1dab-4c51-9649-1eef30ba78d7"
+          ],
+          "handoff_ids": [],
+          "occurred_at": "2026-10-26T01:58:26.677759+00:00",
+          "parent_run_ids": [
+            "31940194-855a-5349-8622-a71a6f7287d3"
+          ],
+          "payload": {
+            "goal": {
+              "created_at": "2026-10-26T01:56:03.847Z",
+              "creation_key": "fuel-efficiency-note",
+              "evidence": [
+                {
+                  "accepted_by_agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+                  "criterion": "Delivered a short note calculating litres per 100 km, interpreting the result, and independently verifying the arithmetic.",
+                  "evidence_id": "b88aea25-c8d3-5544-883a-f698ebdf2703",
+                  "generation": "1",
+                  "producing_run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+                  "source_message_id": "ea8619e5-9403-57fb-bff5-ab6ef1509d19",
+                  "summary": "Verified the persisted result from the successful run: (24 \u00f7 300) \u00d7 100 = 8 L/100 km; interpretation states 8 litres used per 100 km. Independent segmentation check gives 24 \u00f7 3 = 8 litres per 100 km and reverse check gives 8 \u00d7 3 = 24 litres, matching the input."
+                }
+              ],
+              "generation": "2",
+              "goal_id": "963972a1-1dab-4c51-9649-1eef30ba78d7",
+              "objective": "Calculate litres per 100 km from 300 km travelled and 24 litres consumed, provide a short interpretation, independently verify the arithmetic, and deliver the completed note.",
+              "progress": "Verified the persisted result from the successful run: (24 \u00f7 300) \u00d7 100 = 8 L/100 km; interpretation states 8 litres used per 100 km. Independent segmentation check gives 24 \u00f7 3 = 8 litres per 100 km and reverse check gives 8 \u00d7 3 = 24 litres, matching the input.",
+              "responsible_agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+              "revision": "4",
+              "source_message_id": "ffdbbdcf-6261-57f3-85d7-bc600faade79",
+              "source_run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+              "status": "completed",
+              "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+              "title": "Prepare and verify a short fuel-efficiency note",
+              "units": [
+                {
+                  "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": "continue"
+                },
+                {
+                  "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+                  "generation": "1",
+                  "parent_run_id": "31940194-855a-5349-8622-a71a6f7287d3",
+                  "run_id": "8e988cbb-46e2-58f6-b47f-ef3a058511ea",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": "done"
+                }
+              ],
+              "updated_at": "2026-10-26T01:58:13.918Z",
+              "wake": null,
+              "wake_condition": null
+            },
+            "source_message_id": "ffdbbdcf-6261-57f3-85d7-bc600faade79"
+          },
+          "run_id": "8e988cbb-46e2-58f6-b47f-ef3a058511ea",
+          "schema_version": "nma.v1",
+          "sequence": "2481",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+          "trigger_ids": [],
+          "type": "goal.changed"
+        }
+      ],
+      "run": {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "context_generation": "1",
+        "error_code": null,
+        "replay_epoch": "465a92cf-0cc8-4dad-9c63-5a00f254a2a8",
+        "run_id": "8e988cbb-46e2-58f6-b47f-ef3a058511ea",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Verified the delivered note and its independent arithmetic check; the responsibility is now recorded as completed.",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "through_sequence": "2481"
+      },
+      "trigger_ids": [],
+      "usage": {
+        "available": true,
+        "input_tokens": 26665,
+        "output_tokens": 295,
+        "source": "native_terminal_receipt",
+        "total_tokens": 26960
+      }
+    }
+  ],
+  "browser_observation": "User moved the target DM tab to connection settings before the goal request. No target-conversation UI was open during continuation; unrelated user tabs were preserved."
+}

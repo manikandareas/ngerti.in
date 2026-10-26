@@ -1,0 +1,456 @@
+{
+  "run": {
+    "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+    "config_revision": "4",
+    "context_generation": "1",
+    "error_code": null,
+    "run_id": "ffb2dbf3-36a7-5932-8347-b0a2b7e0a96c",
+    "schema_version": "nma.v1",
+    "status": "succeeded",
+    "text": "Published `provider-custom-check.txt` successfully.",
+    "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b"
+  },
+  "events": {
+    "events": [
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "04a9f27c-fc02-4010-8fba-158aec9aa20c",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:19:39.748197+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "author_agent_id": null,
+          "author_kind": "user",
+          "content": "The earlier publish calls returned INVALID_REQUEST before creating an artifact. Try the workspace publish again now with action publish, filename provider-custom-check.txt, and content exactly Custom endpoint native tool round trip verified. Omit unused fields, or leave artifact_id empty. Confirm the artifact only after a successful tool result. Do not create a goal.",
+          "context_generation": "1",
+          "message_id": "533333a9-2146-59a3-8b77-daf60ace7164",
+          "message_seq": "9",
+          "parts": [
+            {
+              "text": "The earlier publish calls returned INVALID_REQUEST before creating an artifact. Try the workspace publish again now with action publish, filename provider-custom-check.txt, and content exactly Custom endpoint native tool round trip verified. Omit unused fields, or leave artifact_id empty. Confirm the artifact only after a successful tool result. Do not create a goal.",
+              "type": "text"
+            }
+          ],
+          "revision": "1",
+          "run_id": "ffb2dbf3-36a7-5932-8347-b0a2b7e0a96c",
+          "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b"
+        },
+        "run_id": "ffb2dbf3-36a7-5932-8347-b0a2b7e0a96c",
+        "schema_version": "nma.v1",
+        "sequence": "2574",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "message.created"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "fdfe7548-69dc-4799-a9bc-acc7a3c78b59",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:19:39.749038+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "status": "queued"
+        },
+        "run_id": "ffb2dbf3-36a7-5932-8347-b0a2b7e0a96c",
+        "schema_version": "nma.v1",
+        "sequence": "2576",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "run.accepted"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "9c06b3e5-3b36-4d67-8d4f-dfc5c102c0ef",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:19:39.826628+00:00",
+        "parent_run_ids": [],
+        "payload": {},
+        "run_id": "ffb2dbf3-36a7-5932-8347-b0a2b7e0a96c",
+        "schema_version": "nma.v1",
+        "sequence": "2582",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "run.started"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "b735abb1-9f2c-41b6-99b5-fa51c7d98ab7",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:20:35.084971+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "tool_call_id": "call_gtw16FPpyalTSMp8RZoAUlrK",
+          "tool_name": "workspace"
+        },
+        "run_id": "ffb2dbf3-36a7-5932-8347-b0a2b7e0a96c",
+        "schema_version": "nma.v1",
+        "sequence": "2587",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "tool.started"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "63c0c9d8-62f8-4e90-8c8c-3d77cd0b516e",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:20:35.095060+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "artifact_id": "78adf593-8099-59ca-b933-931abf5e6f29",
+          "byte_count": 48,
+          "filename": "provider-custom-check.txt",
+          "media_type": "text/plain; charset=utf-8",
+          "producing_agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+          "producing_run_id": "ffb2dbf3-36a7-5932-8347-b0a2b7e0a96c",
+          "revision_id": "d6da734b-d1a7-5f68-a158-9708f24745d0",
+          "sha256": "6c84985e9a041921a85be21242fd45d03cdd48396594797332bbd25368498231",
+          "status": "ready",
+          "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b"
+        },
+        "run_id": "ffb2dbf3-36a7-5932-8347-b0a2b7e0a96c",
+        "schema_version": "nma.v1",
+        "sequence": "2588",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "artifact.ready"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "a2bfd9ee-25fd-44d0-b56a-db806bb6f8cb",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:20:35.097934+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "is_error": false,
+          "tool_call_id": "call_gtw16FPpyalTSMp8RZoAUlrK",
+          "tool_name": "workspace"
+        },
+        "run_id": "ffb2dbf3-36a7-5932-8347-b0a2b7e0a96c",
+        "schema_version": "nma.v1",
+        "sequence": "2589",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "tool.completed"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "0dcd6e38-c409-4cec-aa71-ee6ba556e187",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:20:38.180551+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": "\n\nPublished"
+        },
+        "run_id": "ffb2dbf3-36a7-5932-8347-b0a2b7e0a96c",
+        "schema_version": "nma.v1",
+        "sequence": "2590",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "720c738f-a55f-43a2-8c0a-3658df342837",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:20:38.194378+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": " `"
+        },
+        "run_id": "ffb2dbf3-36a7-5932-8347-b0a2b7e0a96c",
+        "schema_version": "nma.v1",
+        "sequence": "2591",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "5b908a16-9a18-4a56-b620-3f9ec484ed17",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:20:38.197005+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": "provider"
+        },
+        "run_id": "ffb2dbf3-36a7-5932-8347-b0a2b7e0a96c",
+        "schema_version": "nma.v1",
+        "sequence": "2592",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "56adadde-a6bd-4458-8c67-1f4d4a203f21",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:20:38.199000+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": "-custom"
+        },
+        "run_id": "ffb2dbf3-36a7-5932-8347-b0a2b7e0a96c",
+        "schema_version": "nma.v1",
+        "sequence": "2593",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "ea793ff0-734e-436c-9310-af17ee5f602f",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:20:38.200681+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": "-check"
+        },
+        "run_id": "ffb2dbf3-36a7-5932-8347-b0a2b7e0a96c",
+        "schema_version": "nma.v1",
+        "sequence": "2594",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "63e65c41-126e-4cb4-9713-6544a69206cd",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:20:38.202229+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": ".txt"
+        },
+        "run_id": "ffb2dbf3-36a7-5932-8347-b0a2b7e0a96c",
+        "schema_version": "nma.v1",
+        "sequence": "2595",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "193d4ae1-d080-4e57-883f-0b4becd70d35",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:20:38.203592+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": "`"
+        },
+        "run_id": "ffb2dbf3-36a7-5932-8347-b0a2b7e0a96c",
+        "schema_version": "nma.v1",
+        "sequence": "2596",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "ab15b9ac-a14f-4460-a3cb-c8963c23e87a",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:20:38.338192+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": " successfully"
+        },
+        "run_id": "ffb2dbf3-36a7-5932-8347-b0a2b7e0a96c",
+        "schema_version": "nma.v1",
+        "sequence": "2597",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "4bfd65ce-0c0a-4e1d-bdab-4e4848aa4705",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:20:38.340079+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": "."
+        },
+        "run_id": "ffb2dbf3-36a7-5932-8347-b0a2b7e0a96c",
+        "schema_version": "nma.v1",
+        "sequence": "2598",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "751e7d12-e791-4fc1-a6d0-7c9b55f88c91",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:20:38.503935+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": "Published `provider-custom-check.txt` successfully."
+        },
+        "run_id": "ffb2dbf3-36a7-5932-8347-b0a2b7e0a96c",
+        "schema_version": "nma.v1",
+        "sequence": "2599",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "message.completed"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "a5365c55-7410-4aa5-ae72-df07d42def17",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:20:38.504173+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "error_code": null,
+          "message_id": "88996547-13a9-54ae-9ef5-e07b17a53f6a",
+          "status": "succeeded",
+          "text": "Published `provider-custom-check.txt` successfully."
+        },
+        "run_id": "ffb2dbf3-36a7-5932-8347-b0a2b7e0a96c",
+        "schema_version": "nma.v1",
+        "sequence": "2600",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "run.succeeded"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "a7404ad3-92c8-4e03-8eeb-c413fb22b176",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:20:38.663364+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "author_agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+          "author_kind": "agent",
+          "content": "Published `provider-custom-check.txt` successfully.",
+          "context_generation": "1",
+          "message_id": "88996547-13a9-54ae-9ef5-e07b17a53f6a",
+          "message_seq": "10",
+          "parts": [
+            {
+              "text": "Published `provider-custom-check.txt` successfully.",
+              "type": "text"
+            }
+          ],
+          "revision": "1",
+          "run_id": "ffb2dbf3-36a7-5932-8347-b0a2b7e0a96c",
+          "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b"
+        },
+        "run_id": "ffb2dbf3-36a7-5932-8347-b0a2b7e0a96c",
+        "schema_version": "nma.v1",
+        "sequence": "2601",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "message.created"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "433dba9a-43bd-43c5-be52-3fb0d13aff51",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:20:38.663677+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "status": "delivered"
+        },
+        "run_id": "ffb2dbf3-36a7-5932-8347-b0a2b7e0a96c",
+        "schema_version": "nma.v1",
+        "sequence": "2603",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "delivery.settled"
+      }
+    ],
+    "last_sequence": "2603",
+    "replay_epoch": "465a92cf-0cc8-4dad-9c63-5a00f254a2a8",
+    "snapshot_required": false
+  },
+  "artifact": {
+    "artifact_id": "78adf593-8099-59ca-b933-931abf5e6f29",
+    "byte_count": 48,
+    "content": "Custom endpoint native tool round trip verified.",
+    "filename": "provider-custom-check.txt",
+    "media_type": "text/plain; charset=utf-8",
+    "producing_agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+    "producing_run_id": "ffb2dbf3-36a7-5932-8347-b0a2b7e0a96c",
+    "revision_id": "d6da734b-d1a7-5f68-a158-9708f24745d0",
+    "sha256": "6c84985e9a041921a85be21242fd45d03cdd48396594797332bbd25368498231",
+    "status": "ready",
+    "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b"
+  },
+  "artifact_count": 1,
+  "key_source": "Existing explicitly authorized OpenRouter account key, declared as a separate custom endpoint; original exhausted OpenAI connection retained."
+}

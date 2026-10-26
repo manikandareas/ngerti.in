@@ -1,0 +1,267 @@
+{
+  "task": "NMA-040",
+  "recorded_at": "2026-10-26T01:34:18.562775+00:00",
+  "status": "In Progress",
+  "authority": {
+    "task": "https://app.notion.com/p/404abdd61873806db119ef3ee29739f7",
+    "dependencies_verified_done": [
+      "NMA-007",
+      "NMA-008",
+      "NMA-010",
+      "NMA-023"
+    ],
+    "notion_writeback": "Confirmed by final page readback on 2026-10-26T01:36:08.096Z: Status In Progress; four acceptance items checked, four left open.",
+    "notion_retry": "Async write rejected with HTTP 503 before queueing; synchronous retry succeeded and was read back."
+  },
+  "revision": {
+    "base_commit": "b0667833653441757e8d15170b4b7768808c658d",
+    "hermes": "7489b22af47ce91b366dde81d5831ea422577498",
+    "extension_schema": 14,
+    "committed": false,
+    "pushed": false,
+    "user_environment_modified": false,
+    "real_owner_migrated": false,
+    "production_deployed": false
+  },
+  "checks": {
+    "engine": {
+      "unique_cases": 151,
+      "passed": 142,
+      "skipped": 9,
+      "failed": 0,
+      "coverage": "Interrupted run plus ordered continuation; five completed cases repeated. Not one uninterrupted result.",
+      "prefix_log": "engine-tests-final-3.log",
+      "continuation_log": "engine-tests-resume.log",
+      "collection": "engine-tests-collection.log",
+      "resume_mapping": "engine-tests-resume.json",
+      "commands": [
+        "HERMES_SOURCE=$PWD/.dev/nma-001/source PYTHONPATH=$PWD/apps/engine/src NMA_TEST_RUNTIME_PYTHON=$PWD/.dev/nma-040/production/bin/python .dev/nma-006-closure/runtime/bin/python -m pytest apps/engine/tests -q -x",
+        "HERMES_SOURCE=$PWD/.dev/nma-001/source PYTHONPATH=$PWD/apps/engine/src NMA_TEST_RUNTIME_PYTHON=$PWD/.dev/nma-040/production/bin/python .dev/nma-006-closure/runtime/bin/python -m pytest apps/engine/tests --collect-only -q",
+        "HERMES_SOURCE=$PWD/.dev/nma-001/source PYTHONPATH=$PWD/apps/engine/src NMA_TEST_RUNTIME_PYTHON=$PWD/.dev/nma-040/production/bin/python .dev/nma-006-closure/runtime/bin/python -m pytest @docs/research/evidence/nma-040/engine-tests-resume.txt -q -x"
+      ],
+      "opt_in_skips": "Commercial-provider/computer acceptance and separate Chromium offline acceptance require explicit environments/flags."
+    },
+    "earlier_uninterrupted_engine": {
+      "passed": 137,
+      "skipped": 9,
+      "log": "engine-tests-final-2.log",
+      "boundary": "Before the five additional relay-generation fence cases and backup assertions."
+    },
+    "relay_and_protocol_focus": {
+      "passed": 14,
+      "log": "relay-fence-tests.log",
+      "command": "HERMES_SOURCE=$PWD/.dev/nma-001/source PYTHONPATH=$PWD/apps/engine/src NMA_TEST_RUNTIME_PYTHON=$PWD/.dev/nma-040/production/bin/python .dev/nma-006-closure/runtime/bin/python -m pytest apps/engine/tests/test_provider_transport.py apps/engine/tests/test_connections.py apps/engine/tests/test_provider_responses.py apps/engine/tests/test_provider_anthropic.py -q -x"
+    },
+    "backend": {
+      "passed": 20,
+      "log": "backend-tests.log",
+      "command": "uv run --project apps/backend python -m unittest discover -s apps/backend/tests -v",
+      "scope": "HTTP identity/session binding, secret validation, disposable PostgreSQL provisioning, no-key Tobi, explicit owner bootstrap, restart and quarantine"
+    },
+    "static": {
+      "passed": true,
+      "command": "make check",
+      "log": "check.log"
+    },
+    "web_build": {
+      "passed": true,
+      "command": "make build",
+      "log": "build.log"
+    },
+    "runtime_build": {
+      "passed": true,
+      "command": ".dev/nma-006-closure/production/bin/python apps/engine/build_runtime.py --source .dev/nma-001/source --out .dev/nma-040/production",
+      "log": "runtime-build.log",
+      "inventory": "runtime-inventory.json",
+      "distributions": 78,
+      "missing_packaged_notices": 0
+    },
+    "wheel": {
+      "passed": true,
+      "command": "uv build --wheel --out-dir /tmp/nma-040-wheel apps/engine",
+      "log": "package.log",
+      "inventory": "package.json"
+    },
+    "secret_scan": {
+      "scope": "Known secret values from root environment; values are never exported",
+      "files_scanned": 36,
+      "values_checked": 9,
+      "matched_files": [],
+      "passed": true
+    },
+    "documentation": {
+      "passed": true,
+      "command": "make docs-check",
+      "result": "71 page hashes, 47 tickets, 4 views and 1395 local links verified"
+    },
+    "engine_static": {
+      "passed": true,
+      "commands": [
+        "uv run --project apps/backend ruff check apps/engine/src apps/engine/tests apps/engine/build_runtime.py apps/backend/tests",
+        "uv run --project apps/backend ruff format --check apps/engine/src apps/engine/tests apps/engine/build_runtime.py apps/backend/tests"
+      ],
+      "formatted_files": 74
+    },
+    "diff_whitespace": {
+      "passed": true,
+      "command": "git diff --check"
+    }
+  },
+  "browser": {
+    "type": "Manual real Chromium walkthrough of production components through a disposable native gateway with synthetic product authentication",
+    "commercial_oauth_approval_verified": false,
+    "real_clerk_sign_in_verified": false,
+    "states": [
+      "settings-desktop.png",
+      "settings-mobile.png",
+      "agent-selection.png",
+      "dm-native.png",
+      "oauth-pending.png",
+      "oauth-cancelled.png",
+      "disconnected-mobile.png",
+      "key-repaired.png",
+      "quota-dm.png",
+      "no-provider-dm.png"
+    ],
+    "no_provider_result": "Welcome and draft preserved; model-unavailable copy and connection/agent repair links verified. Connection link navigated successfully.",
+    "navigation_note": "Initial browser open timed out waiting for the streaming page to finish loading; snapshots and interactions subsequently succeeded.",
+    "temporary_node_modules_symlink_removed": true,
+    "test_services_stopped": true
+  },
+  "real_openai": {
+    "provider": "api.openai.com",
+    "model": "gpt-6.1-sol",
+    "catalog_http_status": 200,
+    "models": 142,
+    "selected_model_listed": true,
+    "admitted_inference_attempts": 3,
+    "completed_inference_and_tool_cases": 0,
+    "separate_minimal_diagnostic_attempts": 1,
+    "diagnostic_terminal": "response.failed",
+    "provider_error": "credit_balance_exhausted",
+    "provider_error_type": "insufficient_quota",
+    "final_product_error": "PROVIDER_QUOTA_EXHAUSTED",
+    "logs": [
+      "live-existing-provider.log",
+      "live-openai-responses.log",
+      "live-openai-responses-final.log",
+      "openai-minimal-responses.json",
+      "openai-catalog.json"
+    ],
+    "historical_failed_attempts_remain_failed": true,
+    "no_credit_purchase_or_account_failover": true,
+    "disposable_live_credentials_removed_after_teardown": true
+  },
+  "open_acceptance": [
+    "Complete real OpenAI inference and useful native tool round trip after credit becomes available.",
+    "Real ChatGPT public plan login/catalog/stream/tool acceptance in an eligible configuration.",
+    "Real OpenRouter OAuth and key catalog/stream/tool acceptance.",
+    "Real OpenCode Zen and Go key/entitlement/stream/tool acceptance with documented workloads.",
+    "Real-provider DM/group/offline-goal and denial/cancel/timeout/refresh/rotation/reconnect/quota/outage matrix; controlled checks do not replace this.",
+    "Hosted ChatGPT partner eligibility is not established or advertised.",
+    "Complete owner-isolation acceptance including concurrent callbacks and restart; current controlled owner/session tests do not close the full matrix."
+  ],
+  "preserved_user_paths": {
+    "docs/agent.pen": "01a9d8d43f2598ebfa5c0868c87dfc53ff4ceb6e9df7f4e2bcc5e31e9fb7c70d",
+    "docs/research/nma-040-provider-auth-library-options-2026-10-25.md": "703443dcb54ed07ec16bc0cb0e94925c4558bbc8233ec96ae7ce320afa65e545"
+  },
+  "source_sha256": {
+    ".env.example": "893686a4dae53f2544245ab197c7498aa4a146860777f3316623c816bd68876a",
+    "apps/backend/src/ngertiin/accounts/auth.py": "c6b0045d96c81ffb3e4cac7f76780bb8ffa4b78a041902663585baecfed0a6f6",
+    "apps/backend/src/ngertiin/agent_engine/api.py": "83f8dce76aba0791d569071bd7f0d02aafbf6727bbcfb46fd09af4e7cf65b4d7",
+    "apps/backend/src/ngertiin/agent_engine/partitions.py": "6fb4c118c07e8b9d225793a728b8e0d2d055dc73921ac8b180df0229fd251d29",
+    "apps/backend/src/ngertiin/api/app.py": "f5b169ee13d448bf7af4e5447b9b2befceb323823f2cd8f27c86d92cc14d3fef",
+    "apps/backend/tests/test_account_provisioning.py": "a32619946021fc82dbd0d6d4f35dca2a9e150d8cd2c0b08e05bbd0a13c68427b",
+    "apps/backend/tests/test_agent_engine.py": "c469b9648c06307c80af6c0134d1f352bc7305d77e67e6a6f8350292483c1404",
+    "apps/engine/README.md": "9aae890e0e112450ae73a45fb7cdb02dd95f9c3650ee73039a0c6f26c78b7425",
+    "apps/engine/build_runtime.py": "c44894aa132ec90f027abb5550dfe7a2392360b8389df2eae4fed6ea154f9304",
+    "apps/engine/src/ngertiin_engine/adapter.py": "6fd9d683f3adcae9a5fa1f936d1f4473fade6364964c7a11ee1cbc043b3967ad",
+    "apps/engine/src/ngertiin_engine/agents.py": "a177194dbc1ab9c2ff7bc9b5d27e599ed5e03937e16f69a718943d2cbbce6fba",
+    "apps/engine/src/ngertiin_engine/connections.py": "81de0ce77a8bae031c956f61e3a4311eaf31a4dacf3e76d272f0de8d5c365489",
+    "apps/engine/src/ngertiin_engine/conversations.py": "28a570cdb5ae4d927a953a5abc90326dc5f27967085a4e8ea87bebe7f9381057",
+    "apps/engine/src/ngertiin_engine/provider-opencode.json": "aac7b47965ff49ca27c85a2b5d751b8cf02ca2c02fddb6fac94ea607e98baf4e",
+    "apps/engine/src/ngertiin_engine/provider_auth.py": "69b4c4147940288e788e29682013a5d3ac12eeb4f352b01f6317e1463560d5c4",
+    "apps/engine/src/ngertiin_engine/provider_manifest.py": "28249bd9a2a031865132d794cb5dc6cb4f8147680622c83e70e67819af9ecf27",
+    "apps/engine/src/ngertiin_engine/provider_secrets.py": "b27852765f2d086dafa90a7287bd7f1a64cbdf9387a99ffb054fea38f980ecff",
+    "apps/engine/src/ngertiin_engine/provider_transport.py": "3ba27cdef7f0ed90f8c81eebf4507189374f67770cbaa0b9f132af899a401c67",
+    "apps/engine/src/ngertiin_engine/reliability.py": "dc46d9d6076aff33b9d703a551d42e9c6a544d10ff96fa7474d16d885fadbc60",
+    "apps/engine/src/ngertiin_engine/runtime-pin.json": "8c09f004f7459b0670d805ea6230e715a07a0fcdde0846e93d70ea4c80060467",
+    "apps/engine/src/ngertiin_engine/runtime.py": "1e3165462a4c4cc0a4a896fc6e37b26a3c713b2b600719e91001329a8b321217",
+    "apps/engine/src/ngertiin_engine/service.py": "1ae3eddb9aba17b987b74fb500a8d1412ac601990e60c795eed43cc3a7f87188",
+    "apps/engine/src/ngertiin_engine/store.py": "be9721fcea3ebb06948964baa33d50e4cdf7b8d3b55e5991e0ddd202feda479b",
+    "apps/engine/tests/browser/connections.config.ts": "0a40da0df396444b2cd95355c2e7b66236ebf23a9be0849072f64ea4d3984f88",
+    "apps/engine/tests/browser/main.tsx": "410147147bed3347a92408ebe403f2d5b79e01359cd4663678cb588131556f08",
+    "apps/engine/tests/browser/serve_connections.py": "cbab7dc3c4097412a7d9153e21583daa2e9b81a7d9da9e0a9e6ed6eddc5ce350",
+    "apps/engine/tests/conversation_fixtures.py": "d30e7e104eb360e7638eb7768a623dec36e42239783d5f5aa80c71808dbbf529",
+    "apps/engine/tests/test_account_defaults.py": "12cdb7f58213c1e2bc08f18a7831704c09e274a2ca1f83f1a21b445d9b3546c8",
+    "apps/engine/tests/test_backup.py": "c290acd4e3ac5b0e6c73c617206361e667b7ebc7c7391ac15c9b86640991b98b",
+    "apps/engine/tests/test_connections.py": "c521f8f958ccf887673167a585bd7a750d06aa626fcf57032f72e86e79efe080",
+    "apps/engine/tests/test_connections_live.py": "0483a05b12afbf83c64cf46fe42fda3bc7e4a1f55d9bf03cf08f6a0ebdcac79e",
+    "apps/engine/tests/test_context.py": "86f37f70397c8d40bf1cb973b75154be8f8a47e6386cecdfa82f591fb415e5b6",
+    "apps/engine/tests/test_conversations.py": "56df76f09d3a0ef162a2b3a9215e51382fa61ef337b508e6c9ad0182d5e393f2",
+    "apps/engine/tests/test_direct_messages.py": "1094e4548f21ecff95f95c0113e8484e0f0cdb381c65f632932d13cbaf22dbec",
+    "apps/engine/tests/test_discussions.py": "a617c3ffa3651553ab44235aef70c23d55cb8b061293f02e90b6cea684c4f716",
+    "apps/engine/tests/test_provider_anthropic.py": "24f13343f25a4b98ddaa59a3b9fb4221953389168991ffe5343008af43a82c27",
+    "apps/engine/tests/test_provider_auth.py": "ab8919e1c8195a52eaeb9f6588dad0bf0d5538893d8c24014b52eb5663357b41",
+    "apps/engine/tests/test_provider_responses.py": "1729056dd397e3b4f68973fbd8f1989eb74d3ddb74d08bccc2f544495a70b451",
+    "apps/engine/tests/test_provider_setup.py": "8e36516b61701005c02f81ed18b3065f5fd591052bf95c61d2185d1b0807d444",
+    "apps/engine/tests/test_provider_transport.py": "26aefd4b172999930b4a2411293d465370e3ea86ec965cab901c9adffa644f17",
+    "apps/engine/tests/test_runtime.py": "8d2507a4b00126a543fdec07b6b705566d2e1290c59664e15e6eb7b74645c76d",
+    "apps/engine/tests/test_wakes.py": "062a476cdd88aca7bc38d24b661ef64075a98556931466601cdf2a83b6687c2a",
+    "apps/engine/tests/test_webhooks.py": "db40a1f8594d80e2d0796aad53963b0ecfedb90f13fa9a24be8579a6461a3f8d",
+    "apps/web/src/components/app-shell.tsx": "c543e3e0f5b03ba2868e2d7356bd73d76f87b7899dd42f7d4a327e92511a2eca",
+    "apps/web/src/features/agents/agents-page.tsx": "3f238bb0364ce5c0ad2d26953965ead34f75496cf1aa38c2767df261bc94b4e3",
+    "apps/web/src/features/connections/client.ts": "40a9e07367b3609628c075e9d33f384adcfe3d7b1e614b779473d009b4c8865d",
+    "apps/web/src/features/connections/connection-form.tsx": "05fbedcce12df7b057cf5202fdd0830ff178db0f0168f597d9499ae128992c57",
+    "apps/web/src/features/connections/connections-page.tsx": "ff40c2f3942a071b0041c931d6655e6c54ed1a4bd1115bf5c4251e6747c65c2a",
+    "apps/web/src/features/direct-messages/composer.tsx": "d5020fbcde3276809892039793fddc35f618fbd3bccbf762d11b644e949563fb",
+    "apps/web/src/features/direct-messages/direct-message-page.tsx": "e3661e0eaf94d869fd2af965411a87ea62625ce88e621d1a8fe436b457346412",
+    "apps/web/src/lib/api.ts": "af0074df9ee49563e542404c4deea59615a56d1e13b8316824c8860137f10c11",
+    "apps/web/src/routeTree.gen.ts": "f9adc61563327a612139a341aaa5ed7d329daf783fd5563fd324aa7b9b10d815",
+    "apps/web/src/routes/connections.tsx": "4d1164656b78c57970adfab19c58ad7dcc2bedcccbd5c5299b037db238634d05",
+    "docs/research/nma-040-provider-connections.md": "7f2817485550ea0e85b1b8edb32657d1a1ceab815e3100b2eceac010c0ea78af"
+  },
+  "evidence_sha256": {
+    "agent-model.png": "1854e4ba6b4249af09bb6e2ea3a3c7eff6b381ab77c7e679ad7a9f9484d8504d",
+    "agent-selection.png": "f59c55c6016013361230ddbc9626355b561b9e00e956e8a2ff5473acb654429a",
+    "anthropic-tests-final.log": "b3882ded5e432b669465d8a1346417d4e3360660a068e842080f465ee232670b",
+    "anthropic-tests.log": "4673ea83abab10f96fdc468421fc3f40e22590766beff17cff707bb3f3ab54e3",
+    "backend-tests-bootstrap-initial.log": "048bdc5649c6d79569c851a08a43f9d14060e3659a162e6562c40fd469f41308",
+    "backend-tests.log": "df30fa2b96e954f1370c05ee25d577dfac2cb1275c8302fd8d77ee8744877663",
+    "build.log": "5f19a2684040c1dc45f2b3d43c52889c91a3854849c65c8b786fbcc317b24c9b",
+    "check.log": "b1b77eb02621e28bb3682929cfcde1f99e37d56bc0c052581af8f2b8499a13df",
+    "connections-tests.log": "2c28ea1038e32c185726f2f7ca3a22955e92abb2cb82ef841b45e140e55239f3",
+    "disconnected-mobile.png": "d42c40575028a07641627e755356c8878246529797a382f472713199dd1bae7b",
+    "dm-native.png": "e13a9ef71b639aa6812b2541e79827ef4be0a3509eb546929b92d07a37c9d4c2",
+    "engine-tests-collection.log": "e6bba3be6c37d5c2afc4d55a9a2973285337bf4b1547b45394e9562debf06d8e",
+    "engine-tests-final-2.log": "d134f97d1c326f3859de7902fcc8e2a4e7169bd1141342efd65c698ae4235d40",
+    "engine-tests-final-3.log": "b92ab064196b426648938869267d2a8d517034a4654e13e3bec1f55a92c69802",
+    "engine-tests-final.log": "2874cf6c4466ba150db74f74d2a3f0d919257582e8b94f6c8861fe5701740cdf",
+    "engine-tests-initial.log": "2ea1a8cfefc7d44b64f0f9f5b58fa48bb655a67bd430446ab3f4e84b1876afda",
+    "engine-tests-resume.json": "7144fad676e4bceb5111b81381030534bd789d6040265992245bc79e2493a09b",
+    "engine-tests-resume.log": "8939d37e5297221b7d32edc5bec919cc0c10ba4ad10662d2e95661a11aef6a10",
+    "engine-tests-resume.txt": "872794a059e507caee9aa2cf1484efcc13674c2484a6b1246138f09a6798eb1a",
+    "key-repaired.png": "da6baae6c61aec668b9eaa69afd843b511daf153aebb408a699d51666f35c8af",
+    "live-existing-provider.log": "4cd435a8a10411a7bc397ef203c6d9e26e6d249f33e1c29bb9524ece3878c33a",
+    "live-openai-responses-final.log": "557aa1e4c3f0dde1e5fc0d9edb6a769d6c51a347d15373db41880446e6b93b0b",
+    "live-openai-responses.log": "0b231266d6ee7f79f5ef0d1ffd132b92dbc10e15bbef25da5c2a9b010c77918a",
+    "no-provider-dm.png": "35d75e8cfb717f07f0700863f606a8065f1cd10166e7f0074aecf775f878b366",
+    "oauth-cancelled.png": "d61f0bfbbd7bfbdc6c5236849079c898ef8ec2ad504b3a2c048549dac040353c",
+    "oauth-pending.png": "4ed2fb29ea9d38da1c6bfaae78e3465750f81571eb61cde92793fbc0e87e2b45",
+    "openai-catalog.json": "d3360cf8d107437b4216d378b7ae6e1a7c9af8c0cf58ab420ba7dd9a76e99f19",
+    "openai-minimal-responses.json": "b8c80f37a785224add147a2b0c79cd841cefc51725a3b692047b3906e8a67ad5",
+    "package.json": "c3d010056e450bcfbeff385c5651cc43b7c3738236695be16c08561bbb219eee",
+    "package.log": "526ccf91bacf42064dd9a130498571780f65dcf4ed7a507869ffd2686cb75ad5",
+    "quota-dm.png": "61f25e3198cb516659de08a0e7649408792e1515ca73532b45aa5a96e27957cb",
+    "relay-fence-tests.log": "3264f808c60b2f951879b819b2f775cd28561ecf8d174fc236da4fbf4ae89c1b",
+    "runtime-build.log": "e43cc98e65a252d91527457e2cf20fe21c32fdcecaef110fa5246ce44bda50bd",
+    "runtime-inventory.json": "04ac00e073bb0c922ad6575773f00f14ef584c6884e031bd54909a06b9292e7c",
+    "secret-scan.json": "d4a9e23f97df0a795223de92d5baed9f880c2f61fdb7f77e8a97b075002bbb49",
+    "settings-desktop.png": "4e38ac079e1efb7ae217702e4219c4d37917eb202cef3b1237dc6d44231cfd57",
+    "settings-mobile.png": "a4cec348671865b2b45cb8b7a359a8063368075a0067d4d81c70b7f772d3241a"
+  },
+  "review": {
+    "method": "Local self-review against the live task and dependency contracts; no delegated review",
+    "late_fix": "Relay credential freezes the exact native run, admission, generation and authority epoch; stale work cannot borrow a later admission in the same session."
+  }
+}

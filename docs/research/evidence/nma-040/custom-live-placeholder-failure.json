@@ -1,0 +1,534 @@
+{
+  "run": {
+    "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+    "config_revision": "4",
+    "context_generation": "1",
+    "error_code": null,
+    "run_id": "1d95ee0a-5cac-5f23-bca9-45481c6ced0e",
+    "schema_version": "nma.v1",
+    "status": "succeeded",
+    "text": "I couldn\u2019t publish `provider-custom-check.txt`; the workspace tool returned `INVALID_REQUEST`, so no artifact was created.",
+    "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b"
+  },
+  "events": {
+    "events": [
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "fe65a372-179f-4763-a2c1-d82f9847268c",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:10:20.398146+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "author_agent_id": null,
+          "author_kind": "user",
+          "content": "Use the workspace tool to publish a text artifact named provider-custom-check.txt containing exactly Custom endpoint native tool round trip verified. After the tool succeeds, report the filename in one short sentence. Do not create a goal or invoke unrelated tools.",
+          "context_generation": "1",
+          "message_id": "1f9d5fc9-4b0d-5a1f-a51b-0c2184719327",
+          "message_seq": "7",
+          "parts": [
+            {
+              "text": "Use the workspace tool to publish a text artifact named provider-custom-check.txt containing exactly Custom endpoint native tool round trip verified. After the tool succeeds, report the filename in one short sentence. Do not create a goal or invoke unrelated tools.",
+              "type": "text"
+            }
+          ],
+          "revision": "1",
+          "run_id": "1d95ee0a-5cac-5f23-bca9-45481c6ced0e",
+          "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b"
+        },
+        "run_id": "1d95ee0a-5cac-5f23-bca9-45481c6ced0e",
+        "schema_version": "nma.v1",
+        "sequence": "2547",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "message.created"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "bd067d3b-5172-4e52-b5d1-62ac169e6334",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:10:20.398530+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "status": "queued"
+        },
+        "run_id": "1d95ee0a-5cac-5f23-bca9-45481c6ced0e",
+        "schema_version": "nma.v1",
+        "sequence": "2549",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "run.accepted"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "d494210f-fbba-4e80-a4c3-c7d8fcd6c3e3",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:10:20.436043+00:00",
+        "parent_run_ids": [],
+        "payload": {},
+        "run_id": "1d95ee0a-5cac-5f23-bca9-45481c6ced0e",
+        "schema_version": "nma.v1",
+        "sequence": "2552",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "run.started"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "9b3ed73a-e324-41e5-81d3-f8a9e6858b6e",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:10:22.357643+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "tool_call_id": "call_901oAAr8JOHB60Axjf1hIpap",
+          "tool_name": "workspace"
+        },
+        "run_id": "1d95ee0a-5cac-5f23-bca9-45481c6ced0e",
+        "schema_version": "nma.v1",
+        "sequence": "2553",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "tool.started"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "f53f6cd8-a277-4afa-b0a8-01d7922ef9a3",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:10:22.362745+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "is_error": true,
+          "tool_call_id": "call_901oAAr8JOHB60Axjf1hIpap",
+          "tool_name": "workspace"
+        },
+        "run_id": "1d95ee0a-5cac-5f23-bca9-45481c6ced0e",
+        "schema_version": "nma.v1",
+        "sequence": "2554",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "tool.completed"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "d26c9ece-c3bb-4785-8a4a-c62bf1215b6f",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:10:26.768027+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "tool_call_id": "call_06h568xHT4E91rYTR5yDgRAY",
+          "tool_name": "workspace"
+        },
+        "run_id": "1d95ee0a-5cac-5f23-bca9-45481c6ced0e",
+        "schema_version": "nma.v1",
+        "sequence": "2555",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "tool.started"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "8a112745-1143-417b-91f3-fe8ca2062c4d",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:10:26.776121+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "is_error": true,
+          "tool_call_id": "call_06h568xHT4E91rYTR5yDgRAY",
+          "tool_name": "workspace"
+        },
+        "run_id": "1d95ee0a-5cac-5f23-bca9-45481c6ced0e",
+        "schema_version": "nma.v1",
+        "sequence": "2556",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "tool.completed"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "baebef63-a85e-49ae-bc90-b8078bec45aa",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:10:32.185539+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "tool_call_id": "call_FxBVj8ZaNbzfLprpAFIsQ6tf",
+          "tool_name": "workspace"
+        },
+        "run_id": "1d95ee0a-5cac-5f23-bca9-45481c6ced0e",
+        "schema_version": "nma.v1",
+        "sequence": "2557",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "tool.started"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "8c25a742-2fda-4e4f-aae3-c7ed491da969",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:10:32.210137+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "is_error": true,
+          "tool_call_id": "call_FxBVj8ZaNbzfLprpAFIsQ6tf",
+          "tool_name": "workspace"
+        },
+        "run_id": "1d95ee0a-5cac-5f23-bca9-45481c6ced0e",
+        "schema_version": "nma.v1",
+        "sequence": "2558",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "tool.completed"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "96c6fc3e-55b7-497a-85cc-98191d37e926",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:10:37.066693+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "tool_call_id": "call_TUW2Vmf3rbW9pGb5YdgfFKJd",
+          "tool_name": "tool_describe"
+        },
+        "run_id": "1d95ee0a-5cac-5f23-bca9-45481c6ced0e",
+        "schema_version": "nma.v1",
+        "sequence": "2559",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "tool.started"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "a26ce1a9-d965-4ce0-b008-19f75bec1831",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:10:37.085616+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "is_error": false,
+          "tool_call_id": "call_TUW2Vmf3rbW9pGb5YdgfFKJd",
+          "tool_name": "tool_describe"
+        },
+        "run_id": "1d95ee0a-5cac-5f23-bca9-45481c6ced0e",
+        "schema_version": "nma.v1",
+        "sequence": "2560",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "tool.completed"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "b4229f0b-527c-4a1a-9b27-d8f65830f925",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:10:40.811478+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "tool_call_id": "call_QoY3E9zJyTNjtfliNTMjVD5L",
+          "tool_name": "workspace"
+        },
+        "run_id": "1d95ee0a-5cac-5f23-bca9-45481c6ced0e",
+        "schema_version": "nma.v1",
+        "sequence": "2561",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "tool.started"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "0ab574cf-5160-4ec1-a5a0-452b2e9144fb",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:10:40.823990+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "is_error": true,
+          "tool_call_id": "call_QoY3E9zJyTNjtfliNTMjVD5L",
+          "tool_name": "workspace"
+        },
+        "run_id": "1d95ee0a-5cac-5f23-bca9-45481c6ced0e",
+        "schema_version": "nma.v1",
+        "sequence": "2562",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "tool.completed"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "40c709ca-68ed-4c79-818d-9c1b29f5e8cd",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:10:45.711967+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "tool_call_id": "call_2HqJ1KGUTsfmzlQAEMDnOJ3j",
+          "tool_name": "workspace"
+        },
+        "run_id": "1d95ee0a-5cac-5f23-bca9-45481c6ced0e",
+        "schema_version": "nma.v1",
+        "sequence": "2563",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "tool.started"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "202d9626-7268-4cb0-b7ce-078c9eaadaeb",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:10:45.717507+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "is_error": true,
+          "tool_call_id": "call_2HqJ1KGUTsfmzlQAEMDnOJ3j",
+          "tool_name": "workspace"
+        },
+        "run_id": "1d95ee0a-5cac-5f23-bca9-45481c6ced0e",
+        "schema_version": "nma.v1",
+        "sequence": "2564",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "tool.completed"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "d3f93327-74c2-48af-b755-a5d5e7a56867",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:10:50.019513+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "tool_call_id": "call_x2vKtpfmD0GRJ3mmZlCEjjBq",
+          "tool_name": "workspace"
+        },
+        "run_id": "1d95ee0a-5cac-5f23-bca9-45481c6ced0e",
+        "schema_version": "nma.v1",
+        "sequence": "2565",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "tool.started"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "a12cdce3-6c25-4f74-bc09-03dbe24cc466",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:10:50.026604+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "is_error": true,
+          "tool_call_id": "call_x2vKtpfmD0GRJ3mmZlCEjjBq",
+          "tool_name": "workspace"
+        },
+        "run_id": "1d95ee0a-5cac-5f23-bca9-45481c6ced0e",
+        "schema_version": "nma.v1",
+        "sequence": "2566",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "tool.completed"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "bcf90542-c585-4ad5-a851-32d0812d9b04",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:10:54.389355+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "tool_call_id": "call_HFqi16GyVho6MLpmY83yXFRy",
+          "tool_name": "workspace"
+        },
+        "run_id": "1d95ee0a-5cac-5f23-bca9-45481c6ced0e",
+        "schema_version": "nma.v1",
+        "sequence": "2567",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "tool.started"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "bad330cf-6737-41ae-b28f-25dd9ac55664",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:10:54.395795+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "is_error": true,
+          "tool_call_id": "call_HFqi16GyVho6MLpmY83yXFRy",
+          "tool_name": "workspace"
+        },
+        "run_id": "1d95ee0a-5cac-5f23-bca9-45481c6ced0e",
+        "schema_version": "nma.v1",
+        "sequence": "2568",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "tool.completed"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "37b2038a-c6f5-47c1-8dbd-7f0a6ea378ce",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:10:57.628403+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": "I couldn\u2019t publish `provider-custom-check.txt`; the workspace tool returned `INVALID_REQUEST`, so no artifact was created."
+        },
+        "run_id": "1d95ee0a-5cac-5f23-bca9-45481c6ced0e",
+        "schema_version": "nma.v1",
+        "sequence": "2569",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "message.completed"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "1496b4b1-0e93-4fc0-90cf-d6fe4b0d324e",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:10:57.628529+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "error_code": null,
+          "message_id": "b4bd0e18-353a-5f07-9cb1-f3ebe5771e29",
+          "status": "succeeded",
+          "text": "I couldn\u2019t publish `provider-custom-check.txt`; the workspace tool returned `INVALID_REQUEST`, so no artifact was created."
+        },
+        "run_id": "1d95ee0a-5cac-5f23-bca9-45481c6ced0e",
+        "schema_version": "nma.v1",
+        "sequence": "2570",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "run.succeeded"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "aaf79ab8-77d3-43c1-a465-6341f1fdb96e",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:10:57.867294+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "author_agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+          "author_kind": "agent",
+          "content": "I couldn\u2019t publish `provider-custom-check.txt`; the workspace tool returned `INVALID_REQUEST`, so no artifact was created.",
+          "context_generation": "1",
+          "message_id": "b4bd0e18-353a-5f07-9cb1-f3ebe5771e29",
+          "message_seq": "8",
+          "parts": [
+            {
+              "text": "I couldn\u2019t publish `provider-custom-check.txt`; the workspace tool returned `INVALID_REQUEST`, so no artifact was created.",
+              "type": "text"
+            }
+          ],
+          "revision": "1",
+          "run_id": "1d95ee0a-5cac-5f23-bca9-45481c6ced0e",
+          "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b"
+        },
+        "run_id": "1d95ee0a-5cac-5f23-bca9-45481c6ced0e",
+        "schema_version": "nma.v1",
+        "sequence": "2571",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "message.created"
+      },
+      {
+        "agent_id": "866281c1-30c9-4168-819c-3a91c4896514",
+        "config_revision": "4",
+        "discussion_ids": [],
+        "event_id": "9cc88070-ab05-4305-a314-b10037bfbf08",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T02:10:57.868047+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "status": "delivered"
+        },
+        "run_id": "1d95ee0a-5cac-5f23-bca9-45481c6ced0e",
+        "schema_version": "nma.v1",
+        "sequence": "2573",
+        "thread_id": "2e43a67c-5ce0-4d1a-b6e7-b867543a900b",
+        "trigger_ids": [],
+        "type": "delivery.settled"
+      }
+    ],
+    "last_sequence": "2573",
+    "replay_epoch": "465a92cf-0cc8-4dad-9c63-5a00f254a2a8",
+    "snapshot_required": false
+  },
+  "acceptance": "failed: requested artifact was not created"
+}

@@ -1,0 +1,65 @@
+F
+=================================== FAILURES ===================================
+____________________ test_native_anthropic_tool_round_trip _____________________
+
+runtime = (PosixPath('/tmp/nma-x3khbaki'), <http.server.ThreadingHTTPServer object at 0x107481940>, <function runtime.<locals>.c... 'runtime.events', 'runtime.snapshot', 'run.diagnostics', ...], 'production_ready': False, 'schema_version': 'nma.v1'})
+
+    def test_native_anthropic_tool_round_trip(runtime):
+        root, _, call, *_ = runtime
+        (root / "capabilities.json").write_text(
+            json.dumps({"tool_grants": {"tasks": {"enabled": True, "toolset": "todo"}}})
+        )
+        provider = ThreadingHTTPServer(("127.0.0.1", 0), Anthropic)
+        provider.requests = []
+        threading.Thread(target=provider.serve_forever, daemon=True).start()
+        try:
+            identity = str(uuid4())
+            call(
+                command(
+                    "connection.add_key",
+                    {
+                        "connection_id": identity,
+                        "provider": "custom",
+                        "label": "Anthropic wire",
+                        "api_key": "anthropic-synthetic-key",
+                        "protocol": "anthropic_messages",
+                        "base_url": f"http://127.0.0.1:{provider.server_port}",
+                    },
+                )
+            )
+            catalog = call(command("connection.models", {"connection_id": identity}))
+            assert "result" in catalog, catalog
+            current = agent(call, identity + ":anthropic-model", "anthropic-agent")
+            thread = call(
+                command("thread.read", {"thread_id": current["primary_dm_thread_id"]})
+            )["result"]
+            receipt = call(send(thread, "Complete one native todo"))["result"]
+>           value = settle(call, receipt["run_id"])
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps/engine/tests/test_provider_anthropic.py:137: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x107504250>
+run_id = '0cf34ce5-0432-5d77-8799-fdcf83273e46', expected = 'succeeded'
+
+    def settle(call, run_id, expected="succeeded"):
+        deadline = time.monotonic() + 45
+        while time.monotonic() < deadline:
+            reply = call(command("runtime.read", {"run_id": run_id}))
+            assert "result" in reply, reply
+            if reply["result"]["status"] not in {"queued", "running"}:
+>               assert reply["result"]["status"] == expected, reply
+E               AssertionError: {'result': {'agent_id': 'cff54720-e5c7-4138-9957-80225b61e91c', 'config_revision': '1', 'context_generation': '1', 'error_code': 'RUNTIME_FAILED', ...}}
+E               assert 'failed' == 'succeeded'
+E                 
+E                 - succeeded
+E                 + failed
+
+apps/engine/tests/test_runtime.py:362: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_provider_anthropic.py::test_native_anthropic_tool_round_trip
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed in 8.65s

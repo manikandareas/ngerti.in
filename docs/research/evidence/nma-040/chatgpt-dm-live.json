@@ -1,0 +1,575 @@
+{
+  "run": {
+    "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+    "config_revision": "1",
+    "context_generation": "1",
+    "error_code": null,
+    "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+    "schema_version": "nma.v1",
+    "status": "succeeded",
+    "text": "Verified that todo_list recorded \u201cChatGPT plan integration verified\u201d as completed.",
+    "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e"
+  },
+  "events": {
+    "events": [
+      {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "discussion_ids": [],
+        "event_id": "3802ca3f-4746-45fa-ab7e-f7898dd625fc",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T01:49:02.027208+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "author_agent_id": null,
+          "author_kind": "user",
+          "content": "Use the todo_list tool to record one completed item named 'ChatGPT plan integration verified'. After the tool succeeds, reply with one short sentence explaining what you verified. Do not create a goal or invoke other tools.",
+          "context_generation": "1",
+          "message_id": "cfb0760a-defe-54e1-a1d1-de6eb5990920",
+          "message_seq": "2",
+          "parts": [
+            {
+              "text": "Use the todo_list tool to record one completed item named 'ChatGPT plan integration verified'. After the tool succeeds, reply with one short sentence explaining what you verified. Do not create a goal or invoke other tools.",
+              "type": "text"
+            }
+          ],
+          "revision": "1",
+          "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e"
+        },
+        "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+        "schema_version": "nma.v1",
+        "sequence": "2283",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "trigger_ids": [],
+        "type": "message.created"
+      },
+      {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "discussion_ids": [],
+        "event_id": "a38a1355-a721-44ca-9e45-8da948758571",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T01:49:02.028687+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "status": "queued"
+        },
+        "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+        "schema_version": "nma.v1",
+        "sequence": "2285",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "trigger_ids": [],
+        "type": "run.accepted"
+      },
+      {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "discussion_ids": [],
+        "event_id": "f8afd460-e71d-4a89-81f9-6bd97deeefb2",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T01:49:02.077992+00:00",
+        "parent_run_ids": [],
+        "payload": {},
+        "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+        "schema_version": "nma.v1",
+        "sequence": "2288",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "trigger_ids": [],
+        "type": "run.started"
+      },
+      {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "discussion_ids": [],
+        "event_id": "d94e77d4-9a30-4704-a9ad-c0f7d0865c73",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T01:49:53.479227+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "tool_call_id": "call_6mqQ8qIYejqthA6X5ki4TcvY",
+          "tool_name": "tool_describe"
+        },
+        "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+        "schema_version": "nma.v1",
+        "sequence": "2289",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "trigger_ids": [],
+        "type": "tool.started"
+      },
+      {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "discussion_ids": [],
+        "event_id": "2d684186-b765-4023-b2c4-206784d6edf3",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T01:49:53.488943+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "is_error": false,
+          "tool_call_id": "call_6mqQ8qIYejqthA6X5ki4TcvY",
+          "tool_name": "tool_describe"
+        },
+        "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+        "schema_version": "nma.v1",
+        "sequence": "2290",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "trigger_ids": [],
+        "type": "tool.completed"
+      },
+      {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "discussion_ids": [],
+        "event_id": "e8e07081-07bd-4cce-8c94-aa5b14be4574",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T01:50:19.134742+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "tool_call_id": "call_1UmqmsTaqF7cAy6iDD5sNdaw",
+          "tool_name": "todo_list"
+        },
+        "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+        "schema_version": "nma.v1",
+        "sequence": "2291",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "trigger_ids": [],
+        "type": "tool.started"
+      },
+      {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "discussion_ids": [],
+        "event_id": "69269e54-35f5-407b-b26f-63dcbc56b45d",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T01:50:19.141346+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "is_error": false,
+          "tool_call_id": "call_1UmqmsTaqF7cAy6iDD5sNdaw",
+          "tool_name": "todo_list"
+        },
+        "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+        "schema_version": "nma.v1",
+        "sequence": "2292",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "trigger_ids": [],
+        "type": "tool.completed"
+      },
+      {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "discussion_ids": [],
+        "event_id": "2e327397-8958-414c-9b88-4caa35450990",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T01:50:23.651367+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": "\n\nVerified"
+        },
+        "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+        "schema_version": "nma.v1",
+        "sequence": "2293",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "discussion_ids": [],
+        "event_id": "13b34c2c-36f0-4e17-86d4-801a34c84ad1",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T01:50:23.658899+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": " that"
+        },
+        "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+        "schema_version": "nma.v1",
+        "sequence": "2294",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "discussion_ids": [],
+        "event_id": "6d23d444-69b9-4ac0-b540-d24b93021b8f",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T01:50:23.661369+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": " todo"
+        },
+        "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+        "schema_version": "nma.v1",
+        "sequence": "2295",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "discussion_ids": [],
+        "event_id": "97c56b4e-f00f-4b83-941d-db238f449ca6",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T01:50:23.744168+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": "_list"
+        },
+        "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+        "schema_version": "nma.v1",
+        "sequence": "2296",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "discussion_ids": [],
+        "event_id": "d25b3ebf-266f-4cef-9970-8edac5edea7c",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T01:50:23.766395+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": " recorded"
+        },
+        "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+        "schema_version": "nma.v1",
+        "sequence": "2297",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "discussion_ids": [],
+        "event_id": "6b52ef7f-68f9-4090-a608-2fd25b7fa4d9",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T01:50:23.784138+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": " \u201c"
+        },
+        "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+        "schema_version": "nma.v1",
+        "sequence": "2298",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "discussion_ids": [],
+        "event_id": "67707d6a-c53e-4fd4-bbdf-ef2123b08507",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T01:50:23.786281+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": "Chat"
+        },
+        "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+        "schema_version": "nma.v1",
+        "sequence": "2299",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "discussion_ids": [],
+        "event_id": "54eb5e6f-7218-480e-a8bd-e4d732631678",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T01:50:23.789165+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": "GPT"
+        },
+        "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+        "schema_version": "nma.v1",
+        "sequence": "2300",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "discussion_ids": [],
+        "event_id": "1a861274-c1fa-458e-bbec-a1d3cae5d0c0",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T01:50:23.791244+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": " plan"
+        },
+        "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+        "schema_version": "nma.v1",
+        "sequence": "2301",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "discussion_ids": [],
+        "event_id": "2578be11-c327-457e-b171-df74da0225dc",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T01:50:23.793742+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": " integration"
+        },
+        "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+        "schema_version": "nma.v1",
+        "sequence": "2302",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "discussion_ids": [],
+        "event_id": "10cbe6a3-5c41-485c-b0f8-014ef2e486e4",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T01:50:23.795645+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": " verified"
+        },
+        "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+        "schema_version": "nma.v1",
+        "sequence": "2303",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "discussion_ids": [],
+        "event_id": "0df8d33e-64e2-4a87-b3ac-c8e55595bbb5",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T01:50:23.805363+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": "\u201d"
+        },
+        "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+        "schema_version": "nma.v1",
+        "sequence": "2304",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "discussion_ids": [],
+        "event_id": "f279d87e-8efb-4bee-bb51-94c02c071d49",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T01:50:23.811356+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": " as"
+        },
+        "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+        "schema_version": "nma.v1",
+        "sequence": "2305",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "discussion_ids": [],
+        "event_id": "8a430eed-bfe5-467c-a200-8325466e7d59",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T01:50:23.812708+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": " completed"
+        },
+        "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+        "schema_version": "nma.v1",
+        "sequence": "2306",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "discussion_ids": [],
+        "event_id": "9ab9d3fa-272e-4696-a68c-80a17c7b7f44",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T01:50:23.873528+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": "."
+        },
+        "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+        "schema_version": "nma.v1",
+        "sequence": "2307",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "trigger_ids": [],
+        "type": "message.delta"
+      },
+      {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "discussion_ids": [],
+        "event_id": "52ba760f-3492-4de1-bb98-4b868b894a2e",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T01:50:24.190126+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "text": "Verified that todo_list recorded \u201cChatGPT plan integration verified\u201d as completed."
+        },
+        "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+        "schema_version": "nma.v1",
+        "sequence": "2308",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "trigger_ids": [],
+        "type": "message.completed"
+      },
+      {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "discussion_ids": [],
+        "event_id": "4df4168a-83ed-4726-a41c-1ad2e7c760aa",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T01:50:24.190256+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "error_code": null,
+          "message_id": "1bc8904c-086b-5b2f-97b1-c488aa514da9",
+          "status": "succeeded",
+          "text": "Verified that todo_list recorded \u201cChatGPT plan integration verified\u201d as completed."
+        },
+        "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+        "schema_version": "nma.v1",
+        "sequence": "2309",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "trigger_ids": [],
+        "type": "run.succeeded"
+      },
+      {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "discussion_ids": [],
+        "event_id": "a3dad8f5-813b-46e4-a059-543dca6fdabd",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T01:50:24.322032+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "author_agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+          "author_kind": "agent",
+          "content": "Verified that todo_list recorded \u201cChatGPT plan integration verified\u201d as completed.",
+          "context_generation": "1",
+          "message_id": "1bc8904c-086b-5b2f-97b1-c488aa514da9",
+          "message_seq": "3",
+          "parts": [
+            {
+              "text": "Verified that todo_list recorded \u201cChatGPT plan integration verified\u201d as completed.",
+              "type": "text"
+            }
+          ],
+          "revision": "1",
+          "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+          "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e"
+        },
+        "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+        "schema_version": "nma.v1",
+        "sequence": "2310",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "trigger_ids": [],
+        "type": "message.created"
+      },
+      {
+        "agent_id": "bb7d1cb2-4b62-43e8-890b-dac26adf59cc",
+        "config_revision": "1",
+        "discussion_ids": [],
+        "event_id": "06214b7b-2ea2-4425-97ae-ad56809edc15",
+        "goal_id": null,
+        "goal_ids": [],
+        "handoff_ids": [],
+        "occurred_at": "2026-10-26T01:50:24.323221+00:00",
+        "parent_run_ids": [],
+        "payload": {
+          "status": "delivered"
+        },
+        "run_id": "9e466435-d7d0-57bf-a9fb-c5353bd8494c",
+        "schema_version": "nma.v1",
+        "sequence": "2312",
+        "thread_id": "1fb19451-e682-4a1e-9d57-b2918b377d0e",
+        "trigger_ids": [],
+        "type": "delivery.settled"
+      }
+    ],
+    "last_sequence": "2312",
+    "replay_epoch": "465a92cf-0cc8-4dad-9c63-5a00f254a2a8",
+    "snapshot_required": false
+  }
+}

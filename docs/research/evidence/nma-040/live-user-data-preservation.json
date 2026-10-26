@@ -1,0 +1,22 @@
+{
+  "nma_agents": {
+    "original_ids": 3,
+    "preserved": true
+  },
+  "nma_threads": {
+    "original_ids": 4,
+    "preserved": true
+  },
+  "nma_messages": {
+    "original_ids": 22,
+    "preserved": true
+  },
+  "nma_goals": {
+    "original_ids": 3,
+    "preserved": true
+  },
+  "original_message_bytes_unchanged": true,
+  "original_agent_config_bytes_unchanged": true,
+  "historical_migration_checksums_unchanged": true,
+  "current_schema": 14
+}

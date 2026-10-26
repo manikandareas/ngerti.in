@@ -1,0 +1,42 @@
+/Users/vitoandareasmanik/Development/project/ngertiin/apps/backend/.venv/lib/python3.13/site-packages/alembic/config.py:604: DeprecationWarning: No path_separator found in configuration; falling back to legacy splitting on spaces, commas, and colons for prepend_sys_path.  Consider adding path_separator=os to Alembic config.
+  util.warn_deprecated(
+test_concurrent_login_and_verified_registration (test_account_provisioning.AccountProvisioning.test_concurrent_login_and_verified_registration) ... ok
+test_environment_bootstrap_requires_explicit_owner_assignment (test_account_provisioning.AccountProvisioning.test_environment_bootstrap_requires_explicit_owner_assignment) ... ERROR
+test_lease_fencing_rejects_old_completion (test_account_provisioning.AccountProvisioning.test_lease_fencing_rejects_old_completion) ... ok
+test_local_partition_without_openai_key_keeps_tobi (test_account_provisioning.AccountProvisioning.test_local_partition_without_openai_key_keeps_tobi) ... Executing <Task pending name='Task-16' coro=<AccountProvisioning.test_local_partition_without_openai_key_keeps_tobi() running at /Users/vitoandareasmanik/Development/project/ngertiin/apps/backend/tests/test_account_provisioning.py:158> wait_for=<Future pending cb=[_chain_future.<locals>._call_check_cancel() at /Users/vitoandareasmanik/.local/share/uv/python/cpython-3.13.12-macos-aarch64-none/lib/python3.13/asyncio/futures.py:384, Task.task_wakeup()] created at /Users/vitoandareasmanik/.local/share/uv/python/cpython-3.13.12-macos-aarch64-none/lib/python3.13/asyncio/base_events.py:459> cb=[_run_until_complete_cb() at /Users/vitoandareasmanik/.local/share/uv/python/cpython-3.13.12-macos-aarch64-none/lib/python3.13/asyncio/base_events.py:181] created at /Users/vitoandareasmanik/.local/share/uv/python/cpython-3.13.12-macos-aarch64-none/lib/python3.13/asyncio/runners.py:100> took 0.667 seconds
+Executing <Task finished name='Task-16' coro=<AccountProvisioning.test_local_partition_without_openai_key_keeps_tobi() done, defined at /Users/vitoandareasmanik/Development/project/ngertiin/apps/backend/tests/test_account_provisioning.py:146> result=None created at /Users/vitoandareasmanik/.local/share/uv/python/cpython-3.13.12-macos-aarch64-none/lib/python3.13/asyncio/runners.py:100> took 0.774 seconds
+ok
+test_ready_recheck_failure_preserves_setup_result (test_account_provisioning.AccountProvisioning.test_ready_recheck_failure_preserves_setup_result) ... ok
+test_real_partition_setup_restart_and_missing_state (test_account_provisioning.AccountProvisioning.test_real_partition_setup_restart_and_missing_state) ... Executing <Task pending name='Task-26' coro=<AccountProvisioning.test_real_partition_setup_restart_and_missing_state() running at /Users/vitoandareasmanik/Development/project/ngertiin/apps/backend/tests/test_account_provisioning.py:214> wait_for=<Future pending cb=[_chain_future.<locals>._call_check_cancel() at /Users/vitoandareasmanik/.local/share/uv/python/cpython-3.13.12-macos-aarch64-none/lib/python3.13/asyncio/futures.py:384, Task.task_wakeup()] created at /Users/vitoandareasmanik/.local/share/uv/python/cpython-3.13.12-macos-aarch64-none/lib/python3.13/asyncio/base_events.py:459> cb=[_run_until_complete_cb() at /Users/vitoandareasmanik/.local/share/uv/python/cpython-3.13.12-macos-aarch64-none/lib/python3.13/asyncio/base_events.py:181] created at /Users/vitoandareasmanik/.local/share/uv/python/cpython-3.13.12-macos-aarch64-none/lib/python3.13/asyncio/runners.py:100> took 0.663 seconds
+Executing <Task pending name='Task-26' coro=<AccountProvisioning.test_real_partition_setup_restart_and_missing_state() running at /Users/vitoandareasmanik/Development/project/ngertiin/apps/backend/tests/test_account_provisioning.py:225> wait_for=<Future pending cb=[_chain_future.<locals>._call_check_cancel() at /Users/vitoandareasmanik/.local/share/uv/python/cpython-3.13.12-macos-aarch64-none/lib/python3.13/asyncio/futures.py:384, Task.task_wakeup()] created at /Users/vitoandareasmanik/.local/share/uv/python/cpython-3.13.12-macos-aarch64-none/lib/python3.13/asyncio/base_events.py:459> cb=[_run_until_complete_cb() at /Users/vitoandareasmanik/.local/share/uv/python/cpython-3.13.12-macos-aarch64-none/lib/python3.13/asyncio/base_events.py:181] created at /Users/vitoandareasmanik/.local/share/uv/python/cpython-3.13.12-macos-aarch64-none/lib/python3.13/asyncio/runners.py:100> took 0.573 seconds
+ok
+test_identity_and_private_profile_are_stable_without_replaying_history (test_agent_engine.AccountMigrationPlan.test_identity_and_private_profile_are_stable_without_replaying_history) ... ok
+test_connection_validation_never_echoes_secret_input (test_agent_engine.AgentEngineHTTP.test_connection_validation_never_echoes_secret_input) ... ok
+test_dm_reads_use_only_current_account_partition (test_agent_engine.AgentEngineHTTP.test_dm_reads_use_only_current_account_partition) ... ok
+test_dm_stream_cursor_is_bound_to_authenticated_owner_and_thread (test_agent_engine.AgentEngineHTTP.test_dm_stream_cursor_is_bound_to_authenticated_owner_and_thread) ... ok
+test_error_mapping_preserves_command_identity (test_agent_engine.AgentEngineHTTP.test_error_mapping_preserves_command_identity) ... ok
+test_oversized_request_is_not_sent_or_reported_retryable (test_agent_engine.AgentEngineHTTP.test_oversized_request_is_not_sent_or_reported_retryable) ... ok
+test_provider_connection_owner_and_secret_validation (test_agent_engine.AgentEngineHTTP.test_provider_connection_owner_and_secret_validation) ... ok
+test_provider_login_uses_verified_product_session (test_agent_engine.AgentEngineHTTP.test_provider_login_uses_verified_product_session) ... ok
+test_public_owner_actor_and_runtime_commands_are_rejected (test_agent_engine.AgentEngineHTTP.test_public_owner_actor_and_runtime_commands_are_rejected) ... ok
+test_read_signs_verified_owner_and_canonical_body (test_agent_engine.AgentEngineHTTP.test_read_signs_verified_owner_and_canonical_body) ... ok
+test_thread_consumers_sign_owner_and_keep_runtime_private (test_agent_engine.AgentEngineHTTP.test_thread_consumers_sign_owner_and_keep_runtime_private) ... ok
+test_unicode_request_uses_supported_frame_and_unchanged_digest (test_agent_engine.AgentEngineHTTP.test_unicode_request_uses_supported_frame_and_unchanged_digest) ... ok
+test_unprovisioned_owner_does_not_use_another_partition (test_agent_engine.AgentEngineHTTP.test_unprovisioned_owner_does_not_use_another_partition) ... ok
+test_retired_routes_and_runtime_are_absent (test_agent_engine.SingleEngineComposition.test_retired_routes_and_runtime_are_absent) ... ok
+
+======================================================================
+ERROR: test_environment_bootstrap_requires_explicit_owner_assignment (test_account_provisioning.AccountProvisioning.test_environment_bootstrap_requires_explicit_owner_assignment)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/backend/tests/test_account_provisioning.py", line 175, in test_environment_bootstrap_requires_explicit_owner_assignment
+    local_configuration(owner, home, env)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/backend/src/ngertiin/agent_engine/partitions.py", line 229, in local_configuration
+    raise ProvisioningError("PARTITION_PATH_TOO_LONG")
+ngertiin.agent_engine.partitions.ProvisioningError: PARTITION_PATH_TOO_LONG
+
+----------------------------------------------------------------------
+Ran 20 tests in 11.415s
+
+FAILED (errors=1)

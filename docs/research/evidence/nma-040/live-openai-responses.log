@@ -1,0 +1,56 @@
+F
+=================================== FAILURES ===================================
+_____________ test_live_existing_connection_stream_and_native_tool _____________
+
+runtime = (PosixPath('/tmp/nma-j4cl401b'), <http.server.ThreadingHTTPServer object at 0x10a24d940>, <function runtime.<locals>.c... 'runtime.events', 'runtime.snapshot', 'run.diagnostics', ...], 'production_ready': False, 'schema_version': 'nma.v1'})
+
+    @pytest.mark.skipif(
+        not os.environ.get("NMA_TEST_LIVE_ENV"),
+        reason="Explicit real-provider environment required",
+    )
+    def test_live_existing_connection_stream_and_native_tool(runtime):
+        root, _, call, *_ = runtime
+        (root / "capabilities.json").write_text(
+            json.dumps({"tool_grants": {"tasks": {"enabled": True, "toolset": "todo"}}})
+        )
+        current = agent(call, "test", "live-provider-proof")
+        thread = call(
+            command("thread.read", {"thread_id": current["primary_dm_thread_id"]})
+        )["result"]
+        result = call(
+            send(
+                thread,
+                "Use the todo_list tool to record one completed item named 'Provider integration verified'. After the tool succeeds, reply with one short sentence. Do not create a goal or invoke other tools.",
+            )
+        )
+        assert "result" in result, result
+        run_id = result["result"]["run_id"]
+>       value = settle(call, run_id)
+                ^^^^^^^^^^^^^^^^^^^^
+
+apps/engine/tests/test_connections_live.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x10a1c83b0>
+run_id = 'd64fce06-5a42-5189-a1a4-50efca0340f6', expected = 'succeeded'
+
+    def settle(call, run_id, expected="succeeded"):
+        deadline = time.monotonic() + 45
+        while time.monotonic() < deadline:
+            reply = call(command("runtime.read", {"run_id": run_id}))
+            assert "result" in reply, reply
+            if reply["result"]["status"] not in {"queued", "running"}:
+>               assert reply["result"]["status"] == expected, reply
+E               AssertionError: {'result': {'agent_id': '4bc41856-3f4d-45ce-9b31-3f775933f72d', 'config_revision': '1', 'context_generation': '1', 'error_code': 'PROVIDER_UNAVAILABLE', ...}}
+E               assert 'failed' == 'succeeded'
+E                 
+E                 - succeeded
+E                 + failed
+
+apps/engine/tests/test_runtime.py:373: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_connections_live.py::test_live_existing_connection_stream_and_native_tool
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed in 6.09s

@@ -1,0 +1,51 @@
+...........s.......s...................F
+=================================== FAILURES ===================================
+________________ test_public_cancel_and_failed_terminal_events _________________
+
+runtime = (PosixPath('/tmp/nma-nchw2d6r'), <http.server.ThreadingHTTPServer object at 0x10bb63c70>, <function runtime.<locals>.c... 'runtime.events', 'runtime.snapshot', 'run.diagnostics', ...], 'production_ready': False, 'schema_version': 'nma.v1'})
+public_api = <function public_api.<locals>.request at 0x10c352ae0>
+
+    def test_public_cancel_and_failed_terminal_events(runtime, public_api):
+        _, provider, call, *_ = runtime
+        thread = dm(call, "http-terminal")
+        provider.blocked.clear()
+        provider.release.clear()
+        receipt = json.load(public_api("/commands", send(thread, "BLOCK_STARTED")))
+        assert provider.blocked.wait(10)
+        try:
+            cancel = command(
+                "run.cancel",
+                {"run_id": receipt["run_id"], "reason": "User stopped this response"},
+            )
+            assert json.load(public_api("/commands", cancel))["cancel_requested"]
+            with public_api("/events?thread_id=" + thread["thread_id"]) as stream:
+                while True:
+                    line = stream.readline().decode().strip()
+                    if line.startswith("data: "):
+                        event = json.loads(line[6:])
+                        if event["type"] == "run.cancelled":
+                            assert event["run_id"] == receipt["run_id"]
+                            assert event["payload"]["text"] == ""
+                            break
+        finally:
+            provider.release.set()
+        error_thread = dm(call, "http-error")
+        receipt = json.load(public_api("/commands", send(error_thread, "FAIL_PROVIDER")))
+        settle(call, receipt["run_id"], "failed")
+        with public_api("/events?thread_id=" + error_thread["thread_id"]) as stream:
+            while True:
+                line = stream.readline().decode().strip()
+                if line.startswith("data: "):
+                    event = json.loads(line[6:])
+                    if event["type"] == "run.failed":
+>                       assert event["payload"]["error_code"] == "RUNTIME_FAILED"
+E                       AssertionError: assert 'PROVIDER_RECONNECT_REQUIRED' == 'RUNTIME_FAILED'
+E                         
+E                         - RUNTIME_FAILED
+E                         + PROVIDER_RECONNECT_REQUIRED
+
+apps/engine/tests/test_direct_messages.py:489: AssertionError
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_direct_messages.py::test_public_cancel_and_failed_terminal_events
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 37 passed, 2 skipped in 133.26s (0:02:13)

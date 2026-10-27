@@ -1,0 +1,20 @@
+{
+  "image": "sha256:8e086e98f78d12b308cf9fec400dbcdf70b088fd0c142ac9f627614feb7d1823",
+  "worker_file_hashes": {
+    "native_worker.py": "a462b9240fcbdc12a75b7bd4179ab3e1aaa1a92a4c3261e5bcf70d6748e933a5",
+    "desktop_worker.py": "719ff3ff4fcd1ca0e385ca66702e3a256157a2f1ed9e3ab29b1c2b564a3fb9c1",
+    "browser_supervision.py": "d8b53a172cf37570fb59aa9695a61ef19ab89f668232d9d5e783ca5ae95910e5",
+    "browser_load.py": "cc022a36639894ae172d02a9d17bb95d9972146835958f3d8ed451efa2606f7b",
+    "outcomes.py": "c461984058206f8138f91f0d4c783a5485670c98ee38066eb13128feefcd8aa1",
+    "coding.py": "d64c2dedb09a517ca38afc9f7fe9ebb1c256268aa749777fa41b726838a75a23"
+  },
+  "matches_worktree": {
+    "native_worker.py": true,
+    "desktop_worker.py": true,
+    "browser_supervision.py": true,
+    "browser_load.py": true,
+    "outcomes.py": true,
+    "coding.py": true
+  },
+  "gateway_source": "Recorded separately in closure verification manifest"
+}

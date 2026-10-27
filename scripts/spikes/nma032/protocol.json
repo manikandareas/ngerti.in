@@ -1,0 +1,52 @@
+{
+  "version": "nma032-native-browser-desktop-v3",
+  "baseline": "scripts/spikes/nma028/protocol.json",
+  "thresholds_changed": false,
+  "smoke_registration": "The three prompts and exact-byte oracles were authored in live_acceptance.py before its first execution. Browser and desktop task success require verified files, not model claims. Assistance requires actual human input and same-agent continuation in a separate UI supplement.",
+  "paired_browser_registration": {
+    "surfaces": [
+      "direct pinned Hermes",
+      "Ngertiin adapter",
+      "authenticated production HTTP"
+    ],
+    "repeats": 3,
+    "oracles": [
+      "one form POST",
+      "exact Chromium download bytes",
+      "iframe observation",
+      "retained original tool receipts"
+    ],
+    "model": "gpt-6-luna",
+    "protocol": "codex_responses",
+    "environment": "same immutable scoped Linux X11/Cua image; isolated synthetic loopback fixtures",
+    "latency": "first progress and settlement p50/p95 with actual n; unavailable measures remain null",
+    "failure_accounting": "retain every attempted cell and provider/tool failure separately; no pooling repaired fixtures",
+    "fixture_clarification": "The final shared prompt identifies the iframe as text-only and the form as top-level, with its actual native submission method. Task bytes and one-POST oracles and baseline thresholds are unchanged. All final surfaces use this same prompt and image; earlier attempts are never pooled."
+  },
+  "invariants": [
+    "no observed duplicate effects",
+    "no cross-owner or cross-thread viewer access",
+    "human disconnect never resumes agent input",
+    "partial actions never blind replay"
+  ],
+  "release_boundary": "NMA-039 retains minimum 100 representative tasks per supported configuration and the unchanged release SLOs. This ticket must still execute all of its required useful tasks, UI, fault, isolation and paired checks.",
+  "retained_attempts": [
+    "Initial three smoke phases and first human-continuation refusal are retained; the tab handback was repaired before final acceptance.",
+    "Original direct browser corpus: 2/3 tasks; one missing button[type=submit] selector retained as unknown.",
+    "Second adapter corpus: 2/3 tasks; one model targeted a top-level form inside the iframe. Receipts remain unknown after disposal."
+  ],
+  "quiet_confirmation": {
+    "id": "nma032-native-browser-desktop-v4-quiet",
+    "planned_cells": 9,
+    "repeats_per_surface": 3,
+    "order": [
+      "direct",
+      "adapter",
+      "application"
+    ],
+    "same_prompt_and_image_as_v3": true,
+    "start_condition": "Full regression/native fault suites and other model tasks completed; no concurrent test or model workload. All nine fresh cells execute in sequence; no selective retries.",
+    "reason": "The v3 comparison overlapped full regression, fault injection and separate useful tasks. Its direct first-progress p95 was 10.003s and HTTP 10.475s; both misses remain recorded. This pre-registered fresh comparison controls that observed workload difference without changing thresholds.",
+    "gateway_changes_since_v3": "Readiness diagnosis now stays inside the 30-second API envelope; explicit screen pause durably fences new input until return. These are fault/recovery changes, not changes to the paired task prompt, image or thresholds."
+  }
+}

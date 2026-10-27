@@ -1,0 +1,261 @@
+F
+=================================== FAILURES ===================================
+________ test_driver_restart_and_display_loss_require_fresh_observation ________
+
+desktop = (<ngertiin_engine.native_executor.IsolatedTools object at 0x10c053770>, Scope(owner_id='6483060b-dfbe-4167-a287-e5eb48...1', thread_id='39e59b63-753e-4e63-bc91-8361b6f81376', generation=1), <function desktop.<locals>.invoke at 0x10c13d170>)
+
+    def test_driver_restart_and_display_loss_require_fresh_observation(desktop):
+        broker, scope, invoke = desktop
+        invoke("terminal", {"command": "mousepad /work/recovery.txt", "background": True})
+        invoke("computer_use", {"action": "wait", "seconds": 2})
+        assert (
+            invoke("computer_use", {"action": "capture", "app": "Mousepad", "mode": "ax"})[
+                "width"
+            ]
+            > 0
+        )
+        container = broker.ensure(scope)["container"]
+        broker._docker("exec", container, "pkill", "-9", "-f", "^/opt/cua/.*")
+        # Native transport may reconnect only for this new observation. No earlier
+        # input operation is submitted again after the driver process is lost.
+        recovered = invoke(
+            "computer_use", {"action": "capture", "app": "Mousepad", "mode": "ax"}
+        )
+        assert recovered.get("width", 0) > 0 or recovered.get("error"), recovered
+        if recovered.get("error"):
+            with pytest.raises(ScopeRefused):
+                broker.ensure(scope)
+            with broker._db() as db:
+                assert (
+                    db.execute(
+                        "SELECT COUNT(*) FROM operations WHERE state='indeterminate'"
+                    ).fetchone()[0]
+                    >= 1
+                )
+        broker.cancel(scope)
+        restarted = Scope(
+            scope.owner_id, scope.agent_id, scope.thread_id, scope.generation + 1
+        )
+        grant = broker.screen.issue(restarted)["grant"]
+        fresh = json.loads(
+            broker.screen.invoke(restarted, grant, "frame", {}, str(uuid4()), lambda: None)
+        )
+        assert fresh["image"].startswith("data:image/png;base64,")
+        container = broker.ensure(restarted)["container"]
+        broker._docker("exec", container, "pkill", "-9", "-x", "Xvfb")
+        broken = json.loads(
+>           broker.screen.invoke(restarted, grant, "frame", {}, str(uuid4()), lambda: None)
+        )
+
+apps/engine/tests/test_native_screens.py:435: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+apps/engine/src/ngertiin_engine/screen_control.py:132: in invoke
+    return self.broker._invoke(
+apps/engine/src/ngertiin_engine/native_executor.py:483: in _invoke
+    target = self.ensure(scope)
+             ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <ngertiin_engine.native_executor.IsolatedTools object at 0x10c053770>
+scope = Scope(owner_id='6483060b-dfbe-4167-a287-e5eb48fe1107', agent_id='c03c7fca-004d-4ab9-8146-370ad2b978a1', thread_id='39e59b63-753e-4e63-bc91-8361b6f81376', generation=2)
+
+    def ensure(self, scope):
+        key = self._scope(scope)
+        with self.lock:
+            with self._db() as db:
+                row = db.execute(
+                    "SELECT container,volume,state FROM scopes WHERE scope_key=?",
+                    (key,),
+                ).fetchone()
+                if row and row[2] not in {"allocating", "ready", "paused"}:
+                    raise ScopeRefused("Scope is cancelled or has an unknown effect")
+                container = "nma-native-" + self.controller[:8] + "-" + key[:16]
+                volume = (
+                    "nma-work-" + self.controller[:8] + "-" + scope.workspace_key[:24]
+                )
+                if row:
+                    # Historical generation volumes retain their original identities.
+                    volume = row[1]
+                if not row:
+                    previous = db.execute(
+                        "SELECT scope_key,container,state FROM scopes WHERE volume=?",
+                        (volume,),
+                    ).fetchall()
+                    for old_key, old_container, old_state in previous:
+                        if old_state in {"uncertain", "recovery_required"}:
+                            raise ScopeRefused(
+                                "Workspace has unresolved execution; inspect before reusing"
+                            )
+                        if db.execute(
+                            "SELECT 1 FROM operations WHERE scope_key=? AND state='dispatching'",
+                            (old_key,),
+                        ).fetchone():
+                            raise ScopeRefused(
+                                "Workspace is executing another generation"
+                            )
+                        self._docker("rm", "--force", old_container, check=False)
+                        self._lose_jobs(db, old_key, "generation_retired")
+                        db.execute(
+                            "UPDATE scopes SET state='retired' WHERE scope_key=?",
+                            (old_key,),
+                        )
+                    db.execute(
+                        "INSERT INTO scopes VALUES (?,?,?,?,?)",
+                        (
+                            key,
+                            json.dumps(scope.__dict__, sort_keys=True),
+                            container,
+                            volume,
+                            "allocating",
+                        ),
+                    )
+            volume_info = self._docker("volume", "inspect", volume, check=False)
+            if volume_info.returncode:
+                with self._db() as db:
+                    current_state = db.execute(
+                        "SELECT state FROM scopes WHERE scope_key=?", (key,)
+                    ).fetchone()[0]
+                    if current_state != "allocating":
+                        db.execute(
+                            "UPDATE scopes SET state='recovery_required' WHERE scope_key=?",
+                            (key,),
+                        )
+                if current_state != "allocating":
+                    raise ScopeRefused(
+                        "Existing workspace missing; empty replacement refused"
+                    )
+                self._docker(
+                    "volume",
+                    "create",
+                    "--label",
+                    self.label,
+                    "--label",
+                    "nma-native.workspace=" + scope.workspace_key,
+                    volume,
+                )
+                self._docker(
+                    "run",
+                    "--rm",
+                    "--network",
+                    "none",
+                    "--read-only",
+                    "--cap-drop",
+                    "ALL",
+                    "--cap-add",
+                    "CHOWN",
+                    "--cap-add",
+                    "FOWNER",
+                    "--security-opt",
+                    "no-new-privileges",
+                    "--user",
+                    "0",
+                    "--mount",
+                    "type=volume,src=" + volume + ",dst=/work",
+                    "--entrypoint",
+                    "/opt/native/bin/python",
+                    self.image,
+                    "-c",
+                    "import os;os.chmod('/work',0o700);os.chown('/work',10001,10001)",
+                )
+            else:
+                labels = json.loads(volume_info.stdout)[0].get("Labels") or {}
+                if labels.get("nma-native.controller") != self.controller or (
+                    labels.get("nma-native.workspace") != scope.workspace_key
+                    and labels.get("nma-native.scope") != key
+                ):
+                    raise ScopeRefused("Unowned workspace volume refused")
+            network = "none"
+            if self.desktop:
+                from ngertiin_engine.browser_egress import ensure_network
+    
+                network = ensure_network(self, scope)
+            inspect = self._docker("inspect", container, check=False)
+            if inspect.returncode:
+                self._docker(
+                    "create",
+                    "--name",
+                    container,
+                    "--label",
+                    self.label,
+                    "--label",
+                    "nma-native.scope=" + key,
+                    "--network",
+                    network,
+                    *(
+                        [
+                            "--env",
+                            "NMA_BROWSER_PROXY=http://egress:8080",
+                            "--env",
+                            "http_proxy=http://egress:8080",
+                            "--env",
+                            "https_proxy=http://egress:8080",
+                            "--env",
+                            "no_proxy=127.0.0.1,localhost",
+                        ]
+                        if self.desktop
+                        else []
+                    ),
+                    "--env",
+                    "NMA_NATIVE_VERIFY_KEY=" + self.public_key,
+                    "--env",
+                    "NMA_NATIVE_SCOPE_KEY=" + key,
+                    "--read-only",
+                    "--cap-drop",
+                    "ALL",
+                    "--security-opt",
+                    "no-new-privileges",
+                    "--pids-limit",
+                    "512",
+                    "--memory",
+                    "2g",
+                    "--cpus",
+                    "2",
+                    "--shm-size",
+                    "512m",
+                    "--mount",
+                    "type=volume,src=" + volume + ",dst=/work",
+                    "--tmpfs",
+                    "/tmp:mode=1777",
+                    "--tmpfs",
+                    "/home/probe:uid=10001,gid=10001,mode=700",
+                    self.image,
+                )
+            else:
+                item = json.loads(inspect.stdout)[0]
+                labels = item["Config"].get("Labels") or {}
+                if (
+                    item["Image"] != self.image
+                    or labels.get("nma-native.controller") != self.controller
+                    or labels.get("nma-native.scope") != key
+                ):
+                    raise ScopeRefused("Unowned or unreviewed container refused")
+            self._docker("start", container)
+            deadline = time.monotonic() + 30
+            while time.monotonic() < deadline:
+                ready = self._docker(
+                    "exec",
+                    container,
+                    "/opt/native/bin/python",
+                    "-c",
+                    "from urllib.request import urlopen; from pathlib import Path;import json;json.load(urlopen('http://127.0.0.1:9222/json/version',timeout=1));assert Path('/work/native.sock').is_socket()",
+                    check=False,
+                )
+                if ready.returncode == 0:
+                    with self._db() as db:
+                        db.execute(
+                            "UPDATE scopes SET state='ready' WHERE scope_key=?", (key,)
+                        )
+                    return {
+                        "container": container,
+                        "volume": volume,
+                        "scope_key": key,
+                    }
+                time.sleep(0.1)
+>           raise RuntimeError("Isolated native environment failed readiness")
+E           RuntimeError: Isolated native environment failed readiness
+
+apps/engine/src/ngertiin_engine/native_executor.py:392: RuntimeError
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_native_screens.py::test_driver_restart_and_display_loss_require_fresh_observation
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 7 deselected in 70.93s (0:01:10)

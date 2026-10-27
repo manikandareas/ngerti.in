@@ -1,0 +1,21 @@
+{
+  "image": "sha256:99144231baae2233fdddfd9a1190d94b18c5a495c664d572113dad61b2d58898",
+  "worker_file_hashes": {
+    "native_worker.py": "a462b9240fcbdc12a75b7bd4179ab3e1aaa1a92a4c3261e5bcf70d6748e933a5",
+    "desktop_worker.py": "719ff3ff4fcd1ca0e385ca66702e3a256157a2f1ed9e3ab29b1c2b564a3fb9c1",
+    "browser_supervision.py": "8ad167b708bc9790f7d438e6434408a8c33df161e6d9a982d142fd09bb036017",
+    "browser_load.py": "1b17643745db06965b11e004e1dca268a2fe85aec1756a1fb0bf5528f60f3d57",
+    "outcomes.py": "c461984058206f8138f91f0d4c783a5485670c98ee38066eb13128feefcd8aa1",
+    "coding.py": "d64c2dedb09a517ca38afc9f7fe9ebb1c256268aa749777fa41b726838a75a23"
+  },
+  "matches_worktree": {
+    "native_worker.py": true,
+    "desktop_worker.py": true,
+    "browser_supervision.py": true,
+    "browser_load.py": true,
+    "outcomes.py": true,
+    "coding.py": true
+  },
+  "upstream_pin": "7489b22af47ce91b366dde81d5831ea422577498",
+  "upstream_hash_mismatches": []
+}

@@ -1,0 +1,16 @@
+{"surface": "adapter", "repeat": 1, "passed": true, "settlement_s": 53.86342274979688}
+{"surface": "adapter", "repeat": 2, "passed": true, "settlement_s": 53.86105545889586}
+{"surface": "adapter", "repeat": 3, "passed": false, "settlement_s": 54.98188012489118}
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/scripts/spikes/nma032/paired_browser.py", line 335, in <module>
+    main()
+    ~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/scripts/spikes/nma032/paired_browser.py", line 328, in main
+    broker.pause(scope)
+    ~~~~~~~~~~~~^^^^^^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/native_executor.py", line 739, in pause
+    return self._pause(scope)
+           ~~~~~~~~~~~^^^^^^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/native_executor.py", line 750, in _pause
+    raise ScopeRefused("Only a settled ready scope can pause")
+ngertiin_engine.native_executor.ScopeRefused: Only a settled ready scope can pause

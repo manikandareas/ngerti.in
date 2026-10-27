@@ -1,0 +1,26 @@
+{
+  "id": "nma032-navigation-lifecycle-v5",
+  "frozen_before_model_cases": true,
+  "predecessor_protocol": "scripts/spikes/nma032/protocol.json",
+  "thresholds": "scripts/spikes/nma028/protocol.json",
+  "thresholds_changed": false,
+  "model": "gpt-6-luna",
+  "protocol": "codex_responses",
+  "image": "sha256:282d3914dd403fb5537a94d768844aa234ab97fd016fe5bf3f7127c585237842",
+  "surfaces": [
+    "direct",
+    "adapter",
+    "application"
+  ],
+  "repeats_per_surface": 3,
+  "planned_cells": 9,
+  "prompt": "Exact existing PROMPT from paired_browser.py; unchanged from v3/v4",
+  "oracles": [
+    "Exactly one form POST",
+    "Exact Chromium-downloaded bytes NATIVE_BROWSER_DOWNLOAD",
+    "Native iframe observation retained in tool history",
+    "Original operation receipts and original failed batches retained"
+  ],
+  "conditions": "Run after regression and useful-task/UI work has settled, one surface/case at a time; no concurrent model or test workload; no selective retries or pooling prior failures.",
+  "repair": "Cross-document Navigation API state qualifies native wait_for_load, truthful native helper description on isolated placement, and preserved redacted native diagnostics with original unknown fence."
+}

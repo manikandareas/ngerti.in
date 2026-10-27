@@ -1,0 +1,16 @@
+{
+  "image": "sha256:2b1d8a33d685fb94eba0d3be20746820c5b646954df1fbc2aa7a185e5307891a",
+  "worker_file_hashes": {
+    "native_worker.py": "97d369b92e03e0cc3cc5fb7f1a279e8fc5c3a9e5428fc7c0ad269afe64b7bda3",
+    "desktop_worker.py": "719ff3ff4fcd1ca0e385ca66702e3a256157a2f1ed9e3ab29b1c2b564a3fb9c1",
+    "browser_supervision.py": "3bf4918ae6123966d8074f469dc76704e938d016909191af3f178ac2ffe6a2f3",
+    "coding.py": "d64c2dedb09a517ca38afc9f7fe9ebb1c256268aa749777fa41b726838a75a23"
+  },
+  "matches_worktree": {
+    "native_worker.py": true,
+    "desktop_worker.py": true,
+    "browser_supervision.py": true,
+    "coding.py": true
+  },
+  "gateway_source": "Tracked separately in verification manifest; gateway modules run outside the capsule."
+}

@@ -1,0 +1,18 @@
+{
+  "artifact": {
+    "artifact_id": "db3d066e-ba6a-5856-91b5-a7879356595d",
+    "byte_count": 14,
+    "filename": "login-result.txt",
+    "media_type": "text/plain",
+    "producing_agent_id": "715e4323-b3a6-49e5-b4ba-fcb8dd17b174",
+    "producing_run_id": "9e9415ae-ab9c-5810-9627-18b120c9d068",
+    "revision_id": "ade1e4d6-9bca-5447-89f3-8de44bc973b2",
+    "sha256": "e5fa887701dc2a339256bcc103198a779be4565a62760f3b1b93c6dcec9e17ff",
+    "status": "ready",
+    "storage": "file.v1",
+    "thread_id": "31938418-ccd8-44aa-a957-0127c4182cb0"
+  },
+  "exact_bytes": true,
+  "same_agent": true,
+  "same_thread": true
+}

@@ -1,0 +1,4 @@
+{'output': '{"closed": true, "exists": false, "content": null}', 'exit_code': 0, 'error': None}
+.{'output': '{"closed": false, "exists": true, "content": "PROBE"}', 'exit_code': 0, 'error': None}
+.
+2 passed in 19.69s

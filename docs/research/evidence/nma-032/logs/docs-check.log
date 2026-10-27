@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/scripts/check_docs.py", line 139, in <module>
+    main()
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/scripts/check_docs.py", line 132, in main
+    assert not broken, "Broken local links:\n" + "\n".join(broken)
+AssertionError: Broken local links:
+docs/research/nma-032-native-browser-desktop.md -> evidence/nma-032/verification.json

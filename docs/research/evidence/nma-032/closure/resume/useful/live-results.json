@@ -1,0 +1,156 @@
+{
+  "model": "gpt-6-luna",
+  "protocol": "codex_responses",
+  "image": "sha256:99144231baae2233fdddfd9a1190d94b18c5a495c664d572113dad61b2d58898",
+  "planned": 3,
+  "cases": [
+    {
+      "name": "browser",
+      "admission": {
+        "result": {
+          "agent_id": "8836ccf7-ce79-434b-b499-484db6086ed9",
+          "command_id": "ad1232cc-fc69-4e8d-bdf6-aee00bb9fd16",
+          "committed_seq": "9",
+          "config_revision": "1",
+          "context_generation": "1",
+          "message_id": "26de759d-16bf-500e-8e54-2b7946903219",
+          "run_id": "aecb2987-8927-553d-b27f-24416cf0727f",
+          "schema_version": "nma.v1",
+          "status": "accepted",
+          "thread_id": "84933e82-4945-48fd-b8e0-cc1dadac2d26"
+        }
+      },
+      "run": {
+        "agent_id": "8836ccf7-ce79-434b-b499-484db6086ed9",
+        "config_revision": "1",
+        "context_generation": "1",
+        "continuation_required": false,
+        "error_code": null,
+        "run_id": "aecb2987-8927-553d-b27f-24416cf0727f",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Verified `FRAME_READY` and `FORM_VERIFIED`; submitted the top-level form once with `NMA032`. Downloaded and published `browser-proof.txt` (23 bytes, contents: `NATIVE_BROWSER_DOWNLOAD`).\n\nArtifact ID: `1ebee981-5922-5461-9ff6-cfcae032315e`",
+        "thread_id": "84933e82-4945-48fd-b8e0-cc1dadac2d26",
+        "turn_exit_reason": "text_response(finish_reason=stop)"
+      },
+      "duplicate_run_id": "aecb2987-8927-553d-b27f-24416cf0727f",
+      "artifacts": [
+        {
+          "artifact_id": "1ebee981-5922-5461-9ff6-cfcae032315e",
+          "byte_count": 23,
+          "filename": "browser-proof.txt",
+          "media_type": "text/plain",
+          "producing_agent_id": "8836ccf7-ce79-434b-b499-484db6086ed9",
+          "producing_run_id": "aecb2987-8927-553d-b27f-24416cf0727f",
+          "revision_id": "a7fb9f8f-25bc-511f-a9e1-8ef34e1b32f5",
+          "sha256": "c375919425f55f09734adfc64a295960c2d41dff3763b660f282ed825df5e070",
+          "status": "ready",
+          "storage": "file.v1",
+          "thread_id": "84933e82-4945-48fd-b8e0-cc1dadac2d26"
+        }
+      ],
+      "passed": true,
+      "bytes_oracle": true,
+      "post_count": "1",
+      "elapsed_seconds": 84.43891958403401
+    },
+    {
+      "name": "desktop",
+      "admission": {
+        "result": {
+          "agent_id": "8836ccf7-ce79-434b-b499-484db6086ed9",
+          "command_id": "3605e5a7-1c34-4e1d-8bc3-eb1f6b65914b",
+          "committed_seq": "129",
+          "config_revision": "1",
+          "context_generation": "1",
+          "message_id": "884b2b79-6056-560c-97ba-b5ceaceee10b",
+          "run_id": "808fee42-d5d5-5df1-b5bf-041e2bb3b400",
+          "schema_version": "nma.v1",
+          "status": "accepted",
+          "thread_id": "84933e82-4945-48fd-b8e0-cc1dadac2d26"
+        }
+      },
+      "run": {
+        "agent_id": "8836ccf7-ce79-434b-b499-484db6086ed9",
+        "config_revision": "1",
+        "context_generation": "1",
+        "continuation_required": false,
+        "error_code": null,
+        "run_id": "808fee42-d5d5-5df1-b5bf-041e2bb3b400",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Mousepad was launched; `computer_use` entered the text and sent Ctrl+S. Terminal verification confirmed `/work/native-desktop.txt` contains exactly `NATIVE_DESKTOP_MODEL_PROOF`. Published as `native-desktop.txt` (26 bytes).\n\nArtifact ID: `d9bd37e9-f22e-5dc2-bdc5-5636508b66fd`",
+        "thread_id": "84933e82-4945-48fd-b8e0-cc1dadac2d26",
+        "turn_exit_reason": "text_response(finish_reason=stop)"
+      },
+      "duplicate_run_id": "808fee42-d5d5-5df1-b5bf-041e2bb3b400",
+      "artifacts": [
+        {
+          "artifact_id": "d9bd37e9-f22e-5dc2-bdc5-5636508b66fd",
+          "byte_count": 26,
+          "filename": "native-desktop.txt",
+          "media_type": "text/plain",
+          "producing_agent_id": "8836ccf7-ce79-434b-b499-484db6086ed9",
+          "producing_run_id": "808fee42-d5d5-5df1-b5bf-041e2bb3b400",
+          "revision_id": "5cb54381-c2d3-5575-b49b-29b846efd404",
+          "sha256": "73c4e7ab268acc4913f559b641b3339ebe45ed98ce63c54f9c4f35dfd9d40003",
+          "status": "ready",
+          "storage": "file.v1",
+          "thread_id": "84933e82-4945-48fd-b8e0-cc1dadac2d26"
+        },
+        {
+          "artifact_id": "52257d9a-add5-5914-a881-e9b4fdd6f2e1",
+          "byte_count": 15132,
+          "filename": "screen.png",
+          "media_type": "image/png",
+          "producing_agent_id": "8836ccf7-ce79-434b-b499-484db6086ed9",
+          "producing_run_id": "808fee42-d5d5-5df1-b5bf-041e2bb3b400",
+          "revision_id": "637c5ba7-995a-5373-b320-985d0e5efa12",
+          "sha256": "f8bf29e7ba25dba96c8ed5e8114201c169e053b79d876810414292ac37f69894",
+          "status": "ready",
+          "storage": "file.v1",
+          "thread_id": "84933e82-4945-48fd-b8e0-cc1dadac2d26"
+        }
+      ],
+      "passed": true,
+      "bytes_oracle": true,
+      "elapsed_seconds": 79.21488100010902
+    },
+    {
+      "name": "assistance",
+      "admission": {
+        "result": {
+          "agent_id": "8836ccf7-ce79-434b-b499-484db6086ed9",
+          "command_id": "14d5947f-c811-4c9f-9d9a-05f52dc1acb9",
+          "committed_seq": "256",
+          "config_revision": "1",
+          "context_generation": "1",
+          "message_id": "ea353918-5f70-56b9-97e1-21861ac4739b",
+          "run_id": "abc891dd-5883-53b8-a730-13baae44e19a",
+          "schema_version": "nma.v1",
+          "status": "accepted",
+          "thread_id": "84933e82-4945-48fd-b8e0-cc1dadac2d26"
+        }
+      },
+      "run": {
+        "agent_id": "8836ccf7-ce79-434b-b499-484db6086ed9",
+        "config_revision": "1",
+        "context_generation": "1",
+        "continuation_required": false,
+        "error_code": null,
+        "run_id": "abc891dd-5883-53b8-a730-13baae44e19a",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Login help requested. Please open the conversation screen to take control; I\u2019ll wait for your explicit return and continuation.",
+        "thread_id": "84933e82-4945-48fd-b8e0-cc1dadac2d26",
+        "turn_exit_reason": "text_response(finish_reason=stop)"
+      },
+      "duplicate_run_id": "abc891dd-5883-53b8-a730-13baae44e19a",
+      "artifacts": [],
+      "passed": true,
+      "control": "requested",
+      "elapsed_seconds": 26.330371084157377
+    }
+  ],
+  "limits": "Three required useful-task smoke cases; not the release sample. Dedicated loopback fixture is explicitly allowed only in this capsule."
+}

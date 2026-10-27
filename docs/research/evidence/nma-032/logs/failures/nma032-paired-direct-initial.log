@@ -1,0 +1,30 @@
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/scripts/spikes/nma032/paired_browser.py", line 335, in <module>
+    main()
+    ~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/scripts/spikes/nma032/paired_browser.py", line 144, in main
+    created = direct.rpc(
+        "session.create",
+    ...<4 lines>...
+        ignore_rules=True,
+    )
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/scripts/spikes/nma028/complete_baseline.py", line 372, in rpc
+    result = asyncio.run(request())
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/asyncio/runners.py", line 205, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/asyncio/runners.py", line 128, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/asyncio/base_events.py", line 720, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/scripts/spikes/nma028/complete_baseline.py", line 363, in request
+    async with websocket(self.home, self.descriptor) as ws:
+               ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/source/tests/gateway/fixtures/local_recovery_probe.py", line 68, in websocket
+    grant = control(home, 'session-ticket', {'profile_id': str(home), 'instance_id': desc['instance_id'], 'purpose': 'interactive'})
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/source/tests/gateway/test_normal_runtime_boot.py", line 33, in control
+    assert reply['ok'], reply
+           ~~~~~^^^^^^
+AssertionError: {'ok': False, 'error': 'PermissionError: bootstrap binding rejected', 'protocol': 1, 'id': 1}

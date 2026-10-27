@@ -1,0 +1,60 @@
+{
+  "checks": [
+    {
+      "name": "owner_connect",
+      "status": 200,
+      "expected": 200,
+      "passed": true
+    },
+    {
+      "name": "owner_frame",
+      "status": 200,
+      "expected": 200,
+      "passed": true
+    },
+    {
+      "name": "missing_bearer",
+      "status": 401,
+      "expected": 401,
+      "passed": true
+    },
+    {
+      "name": "invalid_bearer",
+      "status": 401,
+      "expected": 401,
+      "passed": true
+    },
+    {
+      "name": "foreign_clerk_owner",
+      "status": 404,
+      "expected": 404,
+      "passed": true
+    },
+    {
+      "name": "wrong_thread",
+      "status": 404,
+      "expected": 404,
+      "passed": true
+    },
+    {
+      "name": "wrong_grant",
+      "status": 409,
+      "expected": 409,
+      "passed": true
+    },
+    {
+      "name": "explicit_revoke",
+      "status": 200,
+      "expected": 200,
+      "passed": true
+    },
+    {
+      "name": "revoked_frame",
+      "status": 409,
+      "expected": 409,
+      "passed": true
+    }
+  ],
+  "all_passed": true,
+  "bearer_or_grant_recorded": false
+}

@@ -1,0 +1,52 @@
+{
+  "protocol": "nma032-native-browser-desktop-v4-quiet",
+  "cases": [
+    {
+      "surface": "direct",
+      "planned": 3,
+      "executed": 3,
+      "successful": 3,
+      "task_success_rate": 1.0,
+      "first_progress_p50_s": 6.344351999927312,
+      "first_progress_p95_s": 7.479559291852638,
+      "settlement_p50_s": 39.394496083958074,
+      "settlement_p95_s": 40.482133249985054,
+      "task_success_gate_passed": true,
+      "progress_gate_passed": true
+    },
+    {
+      "surface": "adapter",
+      "planned": 3,
+      "executed": 3,
+      "successful": 2,
+      "task_success_rate": 0.6666666666666666,
+      "first_progress_p50_s": 6.3045361042022705,
+      "first_progress_p95_s": 9.539847135543823,
+      "settlement_p50_s": 45.31328524998389,
+      "settlement_p95_s": 52.16540775005706,
+      "task_success_gate_passed": false,
+      "progress_gate_passed": true
+    },
+    {
+      "surface": "application",
+      "planned": 3,
+      "executed": 3,
+      "successful": 2,
+      "task_success_rate": 0.6666666666666666,
+      "first_progress_p50_s": 5.925651788711548,
+      "first_progress_p95_s": 6.8594770431518555,
+      "settlement_p50_s": 36.90902437502518,
+      "settlement_p95_s": 45.51000637491234,
+      "task_success_gate_passed": false,
+      "progress_gate_passed": true
+    }
+  ],
+  "planned": 9,
+  "executed": 9,
+  "successful": 7,
+  "combined_acceptance_passed": false,
+  "retained_unresolved_effects": 2,
+  "reason": "Adapter model referenced undefined Python page after its one form POST; application model queried a missing form after submission/navigation. Both native errors were retained as indeterminate; neither original batch was replayed. Each final cohort is kept separate.",
+  "attribution": "Model-generated native API/DOM misuse observed; no provider HTTP error observed. Native availability/placement is verified separately; these are still task failures.",
+  "confidence": "Three repeats per surface are smoke evidence only; minimum 100 representative release tasks remains NMA-039."
+}

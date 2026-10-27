@@ -1,0 +1,27 @@
+{
+  "id": "nma032-multimodal-outcome-v6-final",
+  "frozen_before_model_cases": true,
+  "predecessor_protocol": "docs/research/evidence/nma-032/closure/protocol.json",
+  "thresholds": "scripts/spikes/nma028/protocol.json",
+  "thresholds_changed": false,
+  "model": "gpt-6-luna",
+  "protocol": "codex_responses",
+  "image": "sha256:8e086e98f78d12b308cf9fec400dbcdf70b088fd0c142ac9f627614feb7d1823",
+  "surfaces": [
+    "direct",
+    "adapter",
+    "application"
+  ],
+  "repeats_per_surface": 3,
+  "planned_cells": 9,
+  "prompt": "Exact existing PROMPT from paired_browser.py; unchanged from v3/v4",
+  "oracles": [
+    "Exactly one form POST",
+    "Exact Chromium-downloaded bytes NATIVE_BROWSER_DOWNLOAD",
+    "Native iframe observation retained in tool history",
+    "Original operation receipts and original failed batches retained"
+  ],
+  "conditions": "Run after regression and useful-task/UI work has settled, one surface/case at a time; no concurrent model or test workload; no selective retries or pooling prior failures.",
+  "repair": "V5 navigation/guidance/diagnostics correction plus fail-closed native multimodal outcome decoding; failure screenshots retain native blocks and visible diagnostics, original uncertain receipt and no-replay fence. Default browser configuration includes its required native terminal grant.",
+  "runner_sha256": "146f29fefb109b2dde3c9aa49148395ed1d775ab7e33ba08f39edb3d044289f6"
+}

@@ -1,0 +1,39 @@
+import json, shlex
+import pytest
+from test_native_screens import desktop
+
+@pytest.mark.parametrize('close_setting', [True, False])
+def test_transport_boundary(desktop, close_setting):
+    _, _, invoke = desktop
+    assert invoke('browser_exec', {'code': "new_tab('about:blank')"})['success']
+    code = '''import json,time
+from urllib.request import urlopen
+from websockets.sync.client import connect
+from pathlib import Path
+endpoint=json.load(urlopen('http://127.0.0.1:9222/json/version'))['webSocketDebuggerUrl']
+n=0
+def call(ws,method,params={}):
+ global n
+ n+=1
+ ws.send(json.dumps(dict(id=n,method=method,params=params)))
+ while True:
+  result=json.loads(ws.recv())
+  if result.get('id')==n:
+   assert 'error' not in result,result
+   return result.get('result',{})
+ws=connect(endpoint)
+call(ws,'Browser.setDownloadBehavior',dict(behavior='allow',downloadPath='/work/downloads'))
+CLOSE
+pages=json.load(urlopen('http://127.0.0.1:9222/json/list'))
+page=next(p for p in pages if p['type']=='page' and p['url']=='about:blank')
+with connect(page['webSocketDebuggerUrl']) as tab:
+ call(tab,'Runtime.evaluate',dict(expression="document.body.innerHTML='<a download=probe.txt href=data:text/plain,PROBE>Download</a>';document.querySelector('a').click()"))
+p=Path('/work/downloads/probe.txt')
+end=time.monotonic()+3
+while not p.exists() and time.monotonic()<end: time.sleep(.05)
+print(json.dumps(dict(closed=CLOSED,exists=p.exists(),content=p.read_text() if p.exists() else None)))
+ws.close()
+'''.replace('CLOSE\n', 'ws.close()\n' if close_setting else '').replace('CLOSED', str(close_setting))
+    result=invoke('terminal',{'command':'/opt/native/bin/python -c '+shlex.quote(code)})
+    print(result)
+    assert result['exit_code']==0

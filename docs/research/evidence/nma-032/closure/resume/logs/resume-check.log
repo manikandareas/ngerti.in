@@ -1,0 +1,9 @@
+bun run check
+$ python3 scripts/check.py
+$ biome check apps/web
+Checked 44 files in 57ms. No fixes applied.
+$ bun --filter @ngertiin/web typecheck
+@ngertiin/web typecheck: Exited with code 0
+All checks passed!
+149 files already formatted
+Success: no issues found in 55 source files

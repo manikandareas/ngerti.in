@@ -1,0 +1,169 @@
+{
+  "model": "gpt-6-luna",
+  "protocol": "codex_responses",
+  "image": "sha256:2b1d8a33d685fb94eba0d3be20746820c5b646954df1fbc2aa7a185e5307891a",
+  "planned": 3,
+  "cases": [
+    {
+      "name": "browser",
+      "admission": {
+        "result": {
+          "agent_id": "715e4323-b3a6-49e5-b4ba-fcb8dd17b174",
+          "command_id": "cc1666cb-dcad-4f7e-a238-06ca7ba0c076",
+          "committed_seq": "9",
+          "config_revision": "1",
+          "context_generation": "1",
+          "message_id": "e9dd3998-47ca-5a42-9bad-90b86d8ddc75",
+          "run_id": "3173ad3f-9d21-59fe-8985-8702c814c5ed",
+          "schema_version": "nma.v1",
+          "status": "accepted",
+          "thread_id": "31938418-ccd8-44aa-a957-0127c4182cb0"
+        }
+      },
+      "run": {
+        "agent_id": "715e4323-b3a6-49e5-b4ba-fcb8dd17b174",
+        "config_revision": "1",
+        "context_generation": "1",
+        "continuation_required": false,
+        "error_code": null,
+        "run_id": "3173ad3f-9d21-59fe-8985-8702c814c5ed",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Verified `FRAME_READY`, submitted the top-level form once with `NMA032`, and confirmed `FORM_VERIFIED`. Chromium downloaded the link to `/work/downloads/browser-proof.txt`; its 23 bytes are `NATIVE_BROWSER_DOWNLOAD`. Published as `browser-proof.txt` (artifact ID `56ae18ac-21ff-5f76-9440-a05449843e9c`).",
+        "thread_id": "31938418-ccd8-44aa-a957-0127c4182cb0",
+        "turn_exit_reason": "text_response(finish_reason=stop)"
+      },
+      "duplicate_run_id": "3173ad3f-9d21-59fe-8985-8702c814c5ed",
+      "artifacts": [
+        {
+          "artifact_id": "56ae18ac-21ff-5f76-9440-a05449843e9c",
+          "byte_count": 23,
+          "filename": "browser-proof.txt",
+          "media_type": "text/plain",
+          "producing_agent_id": "715e4323-b3a6-49e5-b4ba-fcb8dd17b174",
+          "producing_run_id": "3173ad3f-9d21-59fe-8985-8702c814c5ed",
+          "revision_id": "18dd472b-14ef-5979-8f15-7491277cdd8b",
+          "sha256": "c375919425f55f09734adfc64a295960c2d41dff3763b660f282ed825df5e070",
+          "status": "ready",
+          "storage": "file.v1",
+          "thread_id": "31938418-ccd8-44aa-a957-0127c4182cb0"
+        }
+      ],
+      "passed": true,
+      "bytes_oracle": true,
+      "post_count": "1",
+      "elapsed_seconds": 56.935725167160854
+    },
+    {
+      "name": "desktop",
+      "admission": {
+        "result": {
+          "agent_id": "715e4323-b3a6-49e5-b4ba-fcb8dd17b174",
+          "command_id": "af6a5aca-dd0f-4f7a-a04c-1f8756e24cf1",
+          "committed_seq": "121",
+          "config_revision": "1",
+          "context_generation": "1",
+          "message_id": "a1ff130c-f42c-59f0-8e3c-e27f703757da",
+          "run_id": "f963bb3d-5548-5db5-b95e-2076ee2644ae",
+          "schema_version": "nma.v1",
+          "status": "accepted",
+          "thread_id": "31938418-ccd8-44aa-a957-0127c4182cb0"
+        }
+      },
+      "run": {
+        "agent_id": "715e4323-b3a6-49e5-b4ba-fcb8dd17b174",
+        "config_revision": "1",
+        "context_generation": "1",
+        "continuation_required": false,
+        "error_code": null,
+        "run_id": "f963bb3d-5548-5db5-b95e-2076ee2644ae",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Entered the text in Mousepad, saved with Ctrl+S, and verified `/work/native-desktop.txt` contains `NATIVE_DESKTOP_MODEL_PROOF`. Published as `native-desktop.txt` (artifact ID `7375d1fc-a0c5-5764-ac4e-e37a64087660`).",
+        "thread_id": "31938418-ccd8-44aa-a957-0127c4182cb0",
+        "turn_exit_reason": "text_response(finish_reason=stop)"
+      },
+      "duplicate_run_id": "f963bb3d-5548-5db5-b95e-2076ee2644ae",
+      "artifacts": [
+        {
+          "artifact_id": "7375d1fc-a0c5-5764-ac4e-e37a64087660",
+          "byte_count": 26,
+          "filename": "native-desktop.txt",
+          "media_type": "text/plain",
+          "producing_agent_id": "715e4323-b3a6-49e5-b4ba-fcb8dd17b174",
+          "producing_run_id": "f963bb3d-5548-5db5-b95e-2076ee2644ae",
+          "revision_id": "fec606b6-7698-5271-ae2d-37f61a0ed9fc",
+          "sha256": "73c4e7ab268acc4913f559b641b3339ebe45ed98ce63c54f9c4f35dfd9d40003",
+          "status": "ready",
+          "storage": "file.v1",
+          "thread_id": "31938418-ccd8-44aa-a957-0127c4182cb0"
+        },
+        {
+          "artifact_id": "d648d6a2-f0e3-5164-98e8-d367eca3816b",
+          "byte_count": 15132,
+          "filename": "screen.png",
+          "media_type": "image/png",
+          "producing_agent_id": "715e4323-b3a6-49e5-b4ba-fcb8dd17b174",
+          "producing_run_id": "f963bb3d-5548-5db5-b95e-2076ee2644ae",
+          "revision_id": "ff36961a-17bb-5384-90bf-e11a563779e3",
+          "sha256": "f8bf29e7ba25dba96c8ed5e8114201c169e053b79d876810414292ac37f69894",
+          "status": "ready",
+          "storage": "file.v1",
+          "thread_id": "31938418-ccd8-44aa-a957-0127c4182cb0"
+        },
+        {
+          "artifact_id": "d26aebf7-6ca6-53d2-89a3-880790be51e2",
+          "byte_count": 11187,
+          "filename": "screen.png",
+          "media_type": "image/png",
+          "producing_agent_id": "715e4323-b3a6-49e5-b4ba-fcb8dd17b174",
+          "producing_run_id": "f963bb3d-5548-5db5-b95e-2076ee2644ae",
+          "revision_id": "685461c9-1c91-52c0-8b5a-59a974c3941c",
+          "sha256": "840cbcb2ba7c3657fc29434c0ba52b8f259bd6496eeaf4aa1590e03a5442def9",
+          "status": "ready",
+          "storage": "file.v1",
+          "thread_id": "31938418-ccd8-44aa-a957-0127c4182cb0"
+        }
+      ],
+      "passed": true,
+      "bytes_oracle": true,
+      "elapsed_seconds": 71.68659037491307
+    },
+    {
+      "name": "assistance",
+      "admission": {
+        "result": {
+          "agent_id": "715e4323-b3a6-49e5-b4ba-fcb8dd17b174",
+          "command_id": "b6ea5638-610f-4885-8984-dd2dbcb42f9f",
+          "committed_seq": "230",
+          "config_revision": "1",
+          "context_generation": "1",
+          "message_id": "fa3ea1e7-d395-5b56-bd0a-424edfa7cc6d",
+          "run_id": "6c4731b0-d259-509b-bc1f-d43da2ad6e8f",
+          "schema_version": "nma.v1",
+          "status": "accepted",
+          "thread_id": "31938418-ccd8-44aa-a957-0127c4182cb0"
+        }
+      },
+      "run": {
+        "agent_id": "715e4323-b3a6-49e5-b4ba-fcb8dd17b174",
+        "config_revision": "1",
+        "context_generation": "1",
+        "continuation_required": false,
+        "error_code": null,
+        "run_id": "6c4731b0-d259-509b-bc1f-d43da2ad6e8f",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "Please open the conversation screen and complete login assistance in the browser. Do not send a password in chat; explicitly return control when you\u2019re done.",
+        "thread_id": "31938418-ccd8-44aa-a957-0127c4182cb0",
+        "turn_exit_reason": "text_response(finish_reason=stop)"
+      },
+      "duplicate_run_id": "6c4731b0-d259-509b-bc1f-d43da2ad6e8f",
+      "artifacts": [],
+      "passed": true,
+      "control": "requested",
+      "elapsed_seconds": 26.813904749928042
+    }
+  ],
+  "limits": "Three required useful-task smoke cases; not the release sample. Dedicated loopback fixture is explicitly allowed only in this capsule."
+}

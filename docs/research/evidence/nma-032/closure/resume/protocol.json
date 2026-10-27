@@ -1,0 +1,28 @@
+{
+  "id": "nma032-persistent-download-v8",
+  "frozen_before_model_cases": true,
+  "predecessor_protocol": "docs/research/evidence/nma-032/closure/accepted-protocol.json",
+  "thresholds": "scripts/spikes/nma028/protocol.json",
+  "thresholds_changed": false,
+  "model": "gpt-6-luna",
+  "protocol": "codex_responses",
+  "image": "sha256:99144231baae2233fdddfd9a1190d94b18c5a495c664d572113dad61b2d58898",
+  "surfaces": [
+    "direct",
+    "adapter",
+    "application"
+  ],
+  "repeats_per_surface": 3,
+  "planned_cells": 9,
+  "prompt": "Exact existing PROMPT from paired_browser.py; unchanged from v3/v4",
+  "oracles": [
+    "Exactly one form POST",
+    "Exact Chromium-downloaded bytes NATIVE_BROWSER_DOWNLOAD",
+    "Native iframe observation retained in tool history",
+    "Original operation receipts and original failed batches retained"
+  ],
+  "conditions": "Run after regression and useful-task/UI work has settled, one surface/case at a time; no concurrent model or test workload; no selective retries or pooling prior failures.",
+  "repair": "Keep Browser.setDownloadBehavior on the scoped native supervisor captured connection after native guards; preserve redaction and do not retry lost replies.",
+  "runner_sha256": "146f29fefb109b2dde3c9aa49148395ed1d775ab7e33ba08f39edb3d044289f6",
+  "predecessor_registration": "V7 executed 8/9; all failures retained. Deterministic companion download failed again, and a controlled socket-lifetime probe confirmed reset on disconnect."
+}

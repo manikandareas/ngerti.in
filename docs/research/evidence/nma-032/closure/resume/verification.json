@@ -1,0 +1,206 @@
+{
+  "status": "verified",
+  "image": "sha256:99144231baae2233fdddfd9a1190d94b18c5a495c664d572113dad61b2d58898",
+  "model": "gpt-6-luna",
+  "native_regression": {
+    "passed": 27,
+    "skipped": 0,
+    "seconds": 372.53
+  },
+  "transport_final": {
+    "passed": 3,
+    "skipped": 0
+  },
+  "paired": {
+    "planned": 9,
+    "attempted": 9,
+    "passed": 9,
+    "success_rate": 1.0,
+    "wilson95": [
+      0.7008549515804559,
+      1.0
+    ],
+    "surfaces": {
+      "direct": {
+        "planned": 3,
+        "attempted": 3,
+        "passed": 3,
+        "first_progress_s": {
+          "n": 3,
+          "p50": 6.737122332910076,
+          "p95": 9.481818333966658
+        },
+        "settlement_s": {
+          "n": 3,
+          "p50": 41.41318670893088,
+          "p95": 41.56821325002238
+        }
+      },
+      "adapter": {
+        "planned": 3,
+        "attempted": 3,
+        "passed": 3,
+        "first_progress_s": {
+          "n": 3,
+          "p50": 7.056756019592285,
+          "p95": 9.534569263458252
+        },
+        "settlement_s": {
+          "n": 3,
+          "p50": 41.10818545916118,
+          "p95": 46.66188016696833
+        }
+      },
+      "application": {
+        "planned": 3,
+        "attempted": 3,
+        "passed": 3,
+        "first_progress_s": {
+          "n": 3,
+          "p50": 6.418798923492432,
+          "p95": 6.731624126434326
+        },
+        "settlement_s": {
+          "n": 3,
+          "p50": 44.40059854206629,
+          "p95": 45.79314775019884
+        }
+      }
+    },
+    "gates": {
+      "all_cells": true,
+      "task_success": true,
+      "first_progress": true,
+      "settlement": true,
+      "one_post_each": true,
+      "exact_download_each": true,
+      "iframe_observed_each": true
+    },
+    "release_claim": false,
+    "historical_cohorts_pooled": false
+  },
+  "checks": {
+    "make_check": "passed",
+    "make_build": "passed",
+    "changed_ruff": "passed",
+    "changed_format": "passed",
+    "documentation": "passed",
+    "tracked_whitespace": "passed"
+  },
+  "original_evidence_unchanged": 73,
+  "source_sha256": {
+    "apps/backend/tests/test_native_configuration.py": "4ed747c5e50f3e5cdb072be4e514a663ddd258de8908a329f41b85d805a85384",
+    "apps/engine/desktop-tools.Dockerfile": "6a552771d7a0b01a463442290569e313a5bc0eb2a1fac669004b496838948863",
+    "apps/engine/install_desktop.py": "08e9fd4687e199fa30ff89429968ad759767aac0a4056009c11baf43843c270a",
+    "apps/engine/notices/cua-driver-0.21.0-MIT.txt": "c0779290c1d4783169aa3dbfb55feb505e563ef8a004bbf55298ceffcfbda8d9",
+    "apps/engine/src/ngertiin_engine/browser_egress.py": "04e2d9a332a3815adc24593e7b1fb9cf240026a8d1563dd2d36fbd0474a9d094",
+    "apps/engine/src/ngertiin_engine/browser_load.py": "1b17643745db06965b11e004e1dca268a2fe85aec1756a1fb0bf5528f60f3d57",
+    "apps/engine/src/ngertiin_engine/browser_supervision.py": "8ad167b708bc9790f7d438e6434408a8c33df161e6d9a982d142fd09bb036017",
+    "apps/engine/src/ngertiin_engine/browser_vault.py": "d10099ff44132d3058d7f75f8d94ed911dc96a9349731ffdec6082e462cebccc",
+    "apps/engine/src/ngertiin_engine/desktop_worker.py": "719ff3ff4fcd1ca0e385ca66702e3a256157a2f1ed9e3ab29b1c2b564a3fb9c1",
+    "apps/engine/src/ngertiin_engine/native_media.py": "53903d4f7753fb05d7611a93a496e7cc6c6e87c58d8684debed842009796c693",
+    "apps/engine/src/ngertiin_engine/screen_control.py": "043b1150e5c6948e06c6d55cb544957d5a7202035d8822d0f5bd7cf1bed73ef8",
+    "apps/engine/src/ngertiin_engine/screens.py": "794c350cb151d4eb502cf3c9afcdd396be9df26b8a475be1867654db209a4954",
+    "apps/engine/tests/browser/screen.config.ts": "c93af3568a6ac96d302166987ae5e1a262a6a9d245eda3322c3526bc03bf53d8",
+    "apps/engine/tests/test_browser_cutover.py": "9865cbccb595f80a36d80560d41186677b89d14862832b941e2632096f96823c",
+    "apps/engine/tests/test_browser_download_transport.py": "46e70f9799e08a584fcae9f60c9edbd13f929009f47641051d06f38df3c6c6d6",
+    "apps/engine/tests/test_browser_recovery.py": "52daa39593f767527760d88bb0136362d05f15d2ebff999d5771d2079f55e6b1",
+    "apps/engine/tests/test_native_screens.py": "6c06de621c98b11c62e38657e8a727009ab28d6516caece801bce4f03195505d",
+    "apps/engine/tests/test_screen_gateway.py": "137c26361ff654f66f2643c79941965e6b8694595948e87ab950d8fb443456d4",
+    "apps/web/src/features/direct-messages/screen-controls.tsx": "a003c67640b05155905938d5108ec87e9c155a5a362986f622b983e65e7b46b3",
+    "scripts/spikes/nma032/direct_gateway.py": "596523aa15dcaed28c6ac45f0149800ab3f80c186c2083009e9a99430f01094e",
+    "scripts/spikes/nma032/http_security.py": "5264b96a7f1e48e541fb751569538103225c1de0a1347670d7a534cfe09b54d9",
+    "scripts/spikes/nma032/live_acceptance.py": "1233069899166bf1055f3bba35fa97d8f3e5885e44c1b5c6982b1063f019ba1d",
+    "scripts/spikes/nma032/login_fixture.py": "86be31f22c21022aef16ad38ccf23c5b5e06b2045432af7477afb7d49146d9bc",
+    "scripts/spikes/nma032/paired_browser.py": "146f29fefb109b2dde3c9aa49148395ed1d775ab7e33ba08f39edb3d044289f6",
+    "scripts/spikes/nma032/protocol.json": "7e891b49f69f3cc0ca3ea90e222b6a1b29569c129570c20f0f064283bfc75f74",
+    "scripts/spikes/nma032/provider_relay.py": "3a62a172172968f11a7ee7f5234b8b0f962ebe309c8030aad396669a3daa2756",
+    "scripts/spikes/nma032/ui_login.py": "f8f9cc9abd4c4186c29795e1ef19d61e5d2ad917fb5acee49753f56a573d2674",
+    "apps/backend/src/ngertiin/agent_engine/api.py": "164897ee4ab85caed93ddc10491752ecf3f4e112c73c9127ea52431371a9b5ec",
+    "apps/backend/src/ngertiin/agent_engine/partitions.py": "ae16abab7a38a03b2c86724996961906a1aed0078c5da1dc9a4ea8b898ef67ce",
+    "apps/engine/native-dependencies.json": "b746efed40566b9e02364e3e4fbbdb061651725b77373fd3f62cf089bcefe131",
+    "apps/engine/src/ngertiin_engine/adapter.py": "b759c27483dcc35a4101324fde9561e04a0d7dea3abe0a0826ed1397dbceffad",
+    "apps/engine/src/ngertiin_engine/capabilities.py": "82915f3b8b6d80550294d3aa7ae4fbf5e560b73997e1f9b55e4f30074a5193d9",
+    "apps/engine/src/ngertiin_engine/files.py": "fee72700691b573a0f34c4092f75dc1425e4e7cfdbc6fc032724b651ed8e3d65",
+    "apps/engine/src/ngertiin_engine/integration.py": "77a927a46cec971adc1c7b123c8b982f8126e1ed7ee1b5f78a7eb5e6e7558a1b",
+    "apps/engine/src/ngertiin_engine/native_catalog.py": "f71bf17f6e0d5295f2547dd1cae04bb1a140e232a18a68543adc60ec8e51aee2",
+    "apps/engine/src/ngertiin_engine/native_executor.py": "f130fbc66a63cb34535a1bbdd74307bb6b5dbd32a0651020fe8286fc85c1ac9c",
+    "apps/engine/src/ngertiin_engine/native_surface.py": "48faff639f57fd93d90d8bb39c155bad98006b609ffb666967a7702eb64864ca",
+    "apps/engine/src/ngertiin_engine/native_worker.py": "a462b9240fcbdc12a75b7bd4179ab3e1aaa1a92a4c3261e5bcf70d6748e933a5",
+    "apps/engine/src/ngertiin_engine/outcomes.py": "c461984058206f8138f91f0d4c783a5485670c98ee38066eb13128feefcd8aa1",
+    "apps/engine/src/ngertiin_engine/reliability.py": "568b9a4848c5aa9c658b0383ca12daccaa7a70910423f18b55252eeaf1efeede",
+    "apps/engine/src/ngertiin_engine/runtime-pin.json": "dd3627e0f47415a154e23ca73c6738696f4f69cf57edd0c29ea36431ebb21592",
+    "apps/engine/src/ngertiin_engine/workspaces.py": "fc92144f36eef7bf806be1535b028882a0a60f72f4b6f4dcee5acf991cd3e0df",
+    "apps/engine/tests/test_computer_boundaries.py": "9145ca0f72f23da8917540959e7f63613298c2e9fb0a77106fceb6cd59b1a354",
+    "apps/engine/tests/test_computer_live.py": "2e5ddbf293aaefa5a4e68bda2f052225b95486d44ee68f0b8972b0af2fae6c3d",
+    "apps/web/src/features/direct-messages/direct-message-page.tsx": "78f6fb04fd6e1fa906d99a03a11a6753427ce819635a8e38be31b8affdddfe6c"
+  },
+  "report_sha256": "8f62a2a5c07961a0f41f2dd006294209ee8ea65e74409d5e056104fec6b92d16",
+  "evidence_sha256": {
+    "auth-cleanup.json": "ca82e744ca26dc56e69f38f0772490f5396efd293e8be882a84d43e85c5af548",
+    "auth.json": "de7bbeb12629ac437eb0d195f5cd3fbc43197faa049a8adcc653699f55ac1878",
+    "batch-processes.json": "00e0af498b000769a229873b45c2e00389b7ea23e0cd2c530537b3d45368a36d",
+    "capsule-source.json": "88778ceacd44ab30318e8757b863d87342bad27ee9a85333883acef37187bef1",
+    "download-transport-probe.txt": "410732a7e8e7c48aefb36008bbd0546775a9b57e7d2c4a955040a3607928f082",
+    "foreign/fixture-cleanup.json": "194d7ebd0ddf40dab7277401f6680c73161dbc04c120a779275cd030d3684b43",
+    "http-security.json": "9653323d165017e0bd345a2b99d8e170dfe62b46f025cdcc25c0d0d3395fb94b",
+    "logs/companion-download-after-resolved-image.log": "35787780606acaf2aaed14cde6d485a5e7e2a34226d0be7b1e32caaceffdc719",
+    "logs/companion-download-after.log": "5dcae1d0450239562a625e0457b6187c3d4da5dc4e277d5f65196072a55310cb",
+    "logs/companion-download-before.log": "23edbef77aee8d27ba5aed6f7fb5b7746c5a0aa733f17f337de679a3f7c5c42c",
+    "logs/companion-download-resume.log": "5de125f1a53e45f3a204a26156ffbabf801aaed7812f9dbb9efbdc6576f5389a",
+    "logs/download-boundary.log": "1b4fb755edfb62f5f4a866f18429a2f13a1ee05a354a72fd5fc6c1e597998b2a",
+    "logs/download-image-build.log": "0d39caf843f6812b99c61054139772d903a6e0e90f2ca134871d5a738093d385",
+    "logs/download-image-final.log": "1d6a9845c61ba5aae35e2df8faa3e24c80677b6e6bcad0a85d9c11563c8be97c",
+    "logs/resume-batch.log": "b4f64f914a2008618d9c3a06b523a0d7c44ea7f64df63de6b10fa45e54226a7f",
+    "logs/resume-build.log": "48e80725d8eabf95f225433d33645342e1e24dd1ebe15116ed5d75726fe761bb",
+    "logs/resume-check.log": "6610a3baf6df5f82db392da817a3de6204e65e4ab259472ad23a34ae81037792",
+    "logs/resume-docs-check.log": "7929b6aceebc7931551dcd2d7db0d5f3bc953ba5f258420cdadfa32834d11e7a",
+    "logs/resume-foreign.log": "b89b2f67a1b1bab3ea5518afa667f4203cb5757b78d85619cba4e5b49c07f325",
+    "logs/resume-http-security.log": "8738d4c3ae64c8493efba7118a13d00d745e7405efbc16bc3793c0a7459a6b55",
+    "logs/resume-live.log": "df2fc44c31e86cc6472e587d36343584a9a2a8be1497db5050bc9d91599eff60",
+    "logs/resume-native.log": "102ab6404e4aa5321ff9c42269455bd7f247864111eb430cd551863ed4f56715",
+    "logs/resume-paired-adapter.log": "75f52c211d33c0d50c3ef9511b73853807310fcf7fc7204b005a07ec47315811",
+    "logs/resume-paired-application.log": "153bc05a6b2fd2d6b4a607f8f71e592fdfb4c606ee9b4c3d13a89c8d81409b64",
+    "logs/resume-paired-direct.log": "09bfad34efeb94039923d26d33e3c37021e2b438c6353954d295285863bca648",
+    "logs/resume-preservation.log": "11664ef8c7d08abbac7165ba554a52b8b87d11efcef64b834e86befb229666bd",
+    "logs/resume-preserve-foreign-accepted.log": "1e15f222041f6292b55ff358aa2a4028ef94d7a2806fad4ab4b54ed3e38fd007",
+    "logs/resume-preserve-live-accepted.log": "6405ce32bc5b46983ac1315f719e38bf9705f637f7c4b8f0b7e8cb411886987d",
+    "logs/resume-preserve-remaining.log": "3844aaac05abc4ce8aea7a4cd54c41980a482c089caf4a03f81cb14f802b3724",
+    "logs/resume-preserve-resume-foreign.log": "8b78180d3284a8c645e022f2cec247248cc415b922683f4fa819d6533ca66b9b",
+    "logs/resume-recovery.log": "b3531e718ff90e62aff5ba2fbc076bdb716a8e791dbcc09b2b54f64969f83d48",
+    "logs/resume-resource-cleanup.log": "7d507b4ecd34701a9dd023636fe5960fc41abb3f6b04d2618362b5c1770ff4ac",
+    "logs/resume-transport.log": "077cc5aac71a0325a524e17e626c6d00b959a0c9dc16d98cbad9a41cd8be6d88",
+    "logs/resume-ui.log": "d3e75e61d40c1702dbb4556bb6283f70a7a350643c26b30c1b58c95cbc6657b8",
+    "logs/resume-whitespace.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-audit.json": "3a98855600fa5a71d51de33e4a6ad3cdfea9243f15db4d5380c326dc788e469f",
+    "native-receipts.json": "384a6de4bf7ae009538c69874146f5a9d87d8998c0ceaa4aeda44e34b9805864",
+    "native-transcripts.json": "b5eab59b1c0500d07e6af41fbc0735ba79a1c4da7ded9cc0e035548ac9662e91",
+    "paired-adapter.jsonl": "326d409b5b47e4e2f24991c132dc052bef9ee7422b451d232ab5bb73fd05de63",
+    "paired-application.jsonl": "43bcc9f97948386a78e4735d6fb0bcd6e7b6617db773c086acdecf85a861688a",
+    "paired-direct.jsonl": "6d74f56c9f6af64f9ee5202b0c1bab5edd8904dcf5f519c12b19b4fb45171c58",
+    "preservation-foreign-accepted.json": "af0dafb8c6182716d1683cd7f90f03d1dbc30bf121b0815d415f4570d3911ec1",
+    "preservation-live-accepted.json": "0888bb259a9ecba9300f906602c94848be27230e14350e107d1d6240b23af650",
+    "preservation-resume-foreign.json": "1b919b24e49442517786e1eee5e143e5fb6b73b0fbf55f947104ee798dbbd354",
+    "preservation.json": "775162891b20624d1deb63964fc3d33ac93d2644d1398d0e873d5af4eb2ffe0d",
+    "protocol.json": "64c688a5ef321cfee9652287ef4bfd7c91b07b1906494bc2a10c96594c98edb1",
+    "provider-route.json": "312a0e0dba03240e547b05a343ba1cd16aaeeaef1d7458d2b01fe347a9d31a18",
+    "recovery.json": "89b5ed781b543cf6042b2ad8fc76e7a857011c5eb517fbe28749f7d2ee1632ce",
+    "resource-cleanup.json": "1285ab0503987fd090deada9093c2c7f6494c5375a2bfc61207caec3a7a7d674",
+    "secret-scan.json": "61899f394020522c5f07822bfa873bf5e15e6d9f17f1d1d35d993140dbca7b0a",
+    "summary.json": "486d72ce059d4885eb335e9321cf8c88fa15dfdf0cfbe1874b5dfc3e3d436d31",
+    "ui/conversation-result.png": "dfb9da8992098f408eaa70206215f8790702529147b5a40ffb484c554bc3f72f",
+    "ui/login-masked.png": "004c3fcd27b8e79dba4f1ed976960cc7c5294eefb06e74ff40efc50d3b370ef0",
+    "ui/login-page.png": "fade44442ee0efcac567e9df1aad701f6a1db02eb282375204930a70036a2409",
+    "ui/login-proof.json": "a2ba7ac29d82b24ac11c9d9afc2669197d02c9eee0b5aac900cbac6f78912737",
+    "ui/login-returned.png": "a34c2f82e4bb823fa376854acc508c1a1026275dd32d5d2c4d96e1717164ce3b",
+    "useful/fixture-cleanup.json": "194d7ebd0ddf40dab7277401f6680c73161dbc04c120a779275cd030d3684b43",
+    "useful/live-results.json": "667bae439e68da6814d575f00970b7072a46d1bb970bfcb183b4f28bf7d34069",
+    "useful/live-snapshot.json": "a347a7d2d6a94c5aaa5df7c921c365cdf622f69fca976d3d19697deca976a746"
+  },
+  "limits": [
+    "Local implementation; no deployment or original-account migration",
+    "Historical failures retained and not pooled",
+    "Minimum 100 representative release tasks remains NMA-039/NMA-027",
+    "Private credential-bearing backups not published"
+  ]
+}

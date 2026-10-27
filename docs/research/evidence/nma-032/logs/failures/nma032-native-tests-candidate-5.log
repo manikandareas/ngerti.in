@@ -1,0 +1,72 @@
+...F
+=================================== FAILURES ===================================
+__________ test_native_browser_form_iframe_tabs_download_and_receipt ___________
+
+desktop = (<ngertiin_engine.native_executor.IsolatedTools object at 0x10a73dcd0>, Scope(owner_id='5891ddb9-6c1f-45e7-89e0-4c9904...9', thread_id='70cd90d7-33cf-419c-bcf1-1f19969a11d4', generation=1), <function desktop.<locals>.invoke at 0x10a8699b0>)
+
+    def test_native_browser_form_iframe_tabs_download_and_receipt(desktop):
+        broker, scope, invoke = desktop
+        script = "python -c " + shlex.quote(FIXTURE)
+        assert invoke("terminal", {"command": script, "background": True})["exit_code"] == 0
+        # The disposable fixture listens only inside this capsule. Keep production
+        # private-URL refusal unchanged; explicitly opt this fixture into loopback.
+        configure = "import json;from pathlib import Path;p=Path('/work/state/config.yaml');c=json.loads(p.read_text());c['browser']['allow_private_urls']=True;p.write_text(json.dumps(c))"
+        assert (
+            invoke("terminal", {"command": "python -c " + shlex.quote(configure)})[
+                "exit_code"
+            ]
+            == 0
+        )
+        code = 'import time; new_tab("http://127.0.0.1:8765/"); wait_for_load(); print(page_info()); print(js("document.querySelector(\'iframe\').contentDocument.querySelector(\'#frame\').textContent")); fill_input("#name", "NativeFixture"); js("document.querySelector(\'form\').submit()"); time.sleep(0.5); wait_for_load(); print(js("document.body.innerText"))'
+        result = invoke("browser_exec", {"code": code}, "one-post")
+        assert result.get("success"), result
+        assert "FORM_VERIFIED" in json.dumps(result) and "FRAME_READY" in json.dumps(
+            result
+        ), result
+        assert broker.file_bytes(scope, "post-count") == b"1"
+        assert broker.file_bytes(scope, "submitted") == b"name=NativeFixture&password="
+        assert invoke("browser_exec", {"code": code}, "one-post") == result
+        assert broker.file_bytes(scope, "post-count") == b"1"
+        tabs = invoke("browser_cdp", {"method": "Target.getTargets"})
+        assert not tabs.get("error"), tabs
+        download = invoke(
+            "browser_exec",
+            {
+                "code": 'new_tab("about:blank"); cdp("Browser.setDownloadBehavior", behavior="allow", downloadPath="/work/downloads"); js("document.body.innerHTML=\'<a download=proof.txt href=data:text/plain,VERIFIED_DOWNLOAD>Download</a>\'; document.querySelector(\'a\').click()"); capture_screenshot()'
+            },
+        )
+        assert download.get("_multimodal") or download.get("success"), download
+        assert broker.file_bytes(scope, "downloads/proof.txt") == b"VERIFIED_DOWNLOAD"
+        opened = invoke(
+            "browser_exec",
+            {
+                "code": "from browser_harness.helpers import current_tab,activate_tab;new_tab('http://127.0.0.1:8765/');activate_tab(current_tab());js(\"setTimeout(() => { window.dialogAccepted = confirm('NMA032 dialog') }, 500)\"); print('Dialog scheduled')"
+            },
+        )
+        assert opened.get("success"), opened
+        time.sleep(0.8)
+        handled = invoke("browser_dialog", {"action": "accept"})
+        assert not handled.get("error"), handled
+        confirmed = invoke("browser_exec", {"code": "print(js('window.dialogAccepted'))"})
+        assert "True" in confirmed.get("output", "") or "true" in confirmed.get(
+            "output", ""
+        ), confirmed
+        broker.pause(scope)
+        restored = broker.ensure(scope)
+        cookies = broker._docker(
+            "exec",
+            restored["container"],
+            "/opt/native/bin/python",
+            "-c",
+            "import json;from urllib.request import urlopen;from websockets.sync.client import connect;url=json.load(urlopen('http://127.0.0.1:9222/json/version'))['webSocketDebuggerUrl'];ws=connect(url);ws.send(json.dumps({'id':1,'method':'Storage.getCookies'}));print(ws.recv());ws.close()",
+        )
+>       assert "persisted" in cookies, cookies
+E       AssertionError: {"id":1,"result":{"cookies":[]}}
+E         
+E       assert 'persisted' in '{"id":1,"result":{"cookies":[]}}\n'
+
+apps/engine/tests/test_native_screens.py:243: AssertionError
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_native_screens.py::test_native_browser_form_iframe_tabs_download_and_receipt
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 3 passed in 63.64s (0:01:03)

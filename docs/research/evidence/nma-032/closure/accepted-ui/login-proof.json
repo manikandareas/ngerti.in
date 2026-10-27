@@ -1,0 +1,20 @@
+{
+  "same_agent": true,
+  "same_thread": true,
+  "exact_file_bytes": true,
+  "native_password_field_verified_before_input": true,
+  "input_returned_explicitly": true,
+  "artifact": {
+    "artifact_id": "c6fdaee3-eb66-5174-ad58-8f9f2f72b00d",
+    "byte_count": 14,
+    "filename": "login-result.txt",
+    "media_type": "text/plain",
+    "producing_agent_id": "6500f9bf-9414-4bd9-ade0-230e05961ec0",
+    "producing_run_id": "9630d88f-1eac-5601-b5d8-18f18d1ce3c8",
+    "revision_id": "d5ac165f-fe2d-5bb2-b6cd-1bb132851ed7",
+    "sha256": "e5fa887701dc2a339256bcc103198a779be4565a62760f3b1b93c6dcec9e17ff",
+    "status": "ready",
+    "storage": "file.v1",
+    "thread_id": "65274af5-f099-405a-ab82-a03891a58d8c"
+  }
+}

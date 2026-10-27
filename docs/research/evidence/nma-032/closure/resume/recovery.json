@@ -1,0 +1,10 @@
+{
+  "image": "sha256:99144231baae2233fdddfd9a1190d94b18c5a495c664d572113dad61b2d58898",
+  "recovery_seconds": 26.989676041994244,
+  "n": 1,
+  "under_60_seconds": true,
+  "fresh_png": true,
+  "login_cookie_preserved": true,
+  "all_files_preserved": true,
+  "tabs_or_ram_restored": false
+}

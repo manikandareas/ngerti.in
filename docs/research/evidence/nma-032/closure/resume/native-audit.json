@@ -1,0 +1,101 @@
+[
+  {
+    "surface": "direct",
+    "repeat": 1,
+    "admission_status": "terminal",
+    "admission_outcome": "completed",
+    "operation_states": {
+      "returned": 6
+    },
+    "one_post": true,
+    "exact_download": true
+  },
+  {
+    "surface": "direct",
+    "repeat": 2,
+    "admission_status": "terminal",
+    "admission_outcome": "completed",
+    "operation_states": {
+      "returned": 6
+    },
+    "one_post": true,
+    "exact_download": true
+  },
+  {
+    "surface": "direct",
+    "repeat": 3,
+    "admission_status": "terminal",
+    "admission_outcome": "completed",
+    "operation_states": {
+      "returned": 7
+    },
+    "one_post": true,
+    "exact_download": true
+  },
+  {
+    "surface": "adapter",
+    "repeat": 1,
+    "admission_status": "terminal",
+    "admission_outcome": "completed",
+    "operation_states": {
+      "returned": 12
+    },
+    "one_post": true,
+    "exact_download": true
+  },
+  {
+    "surface": "adapter",
+    "repeat": 2,
+    "admission_status": "terminal",
+    "admission_outcome": "completed",
+    "operation_states": {
+      "returned": 13
+    },
+    "one_post": true,
+    "exact_download": true
+  },
+  {
+    "surface": "adapter",
+    "repeat": 3,
+    "admission_status": "terminal",
+    "admission_outcome": "completed",
+    "operation_states": {
+      "returned": 15
+    },
+    "one_post": true,
+    "exact_download": true
+  },
+  {
+    "surface": "application",
+    "repeat": 1,
+    "admission_status": "terminal",
+    "admission_outcome": "completed",
+    "operation_states": {
+      "returned": 15
+    },
+    "one_post": true,
+    "exact_download": true
+  },
+  {
+    "surface": "application",
+    "repeat": 2,
+    "admission_status": "terminal",
+    "admission_outcome": "completed",
+    "operation_states": {
+      "returned": 13
+    },
+    "one_post": true,
+    "exact_download": true
+  },
+  {
+    "surface": "application",
+    "repeat": 3,
+    "admission_status": "terminal",
+    "admission_outcome": "completed",
+    "operation_states": {
+      "returned": 15
+    },
+    "one_post": true,
+    "exact_download": true
+  }
+]

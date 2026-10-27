@@ -1,0 +1,70 @@
+....F
+=================================== FAILURES ===================================
+___________ test_partial_native_batch_is_unknown_and_never_replayed ____________
+
+desktop = (<ngertiin_engine.native_executor.IsolatedTools object at 0x10a9243b0>, Scope(owner_id='fc01643c-7ccd-42f8-9e6d-81c80e...8', thread_id='5c4205b6-f636-40c1-b5de-889f344c8c9c', generation=1), <function desktop.<locals>.invoke at 0x10a9790c0>)
+
+    def test_partial_native_batch_is_unknown_and_never_replayed(desktop):
+        import model_tools  # noqa: F401
+        from tools.registry import registry
+    
+        broker, scope, _ = desktop
+        code = "from pathlib import Path;import time;Path('/work/partial.txt').write_text('BEFORE');time.sleep(30);Path('/work/partial.txt').write_text('AFTER')"
+        with pytest.raises(UnknownOutcome):
+            broker.invoke(
+                scope,
+                "partial-batch",
+                "browser_exec",
+                {"code": code},
+                schema_hash=digest(registry.get_entry("browser_exec").schema),
+                allowed_tools={"browser_exec"},
+                timeout=3,
+            )
+        assert broker.receipt(scope, "partial-batch")["state"] == "indeterminate"
+        with pytest.raises(UnknownOutcome):
+            broker.invoke(
+                scope,
+                "partial-batch",
+                "browser_exec",
+                {"code": code},
+                schema_hash=digest(registry.get_entry("browser_exec").schema),
+                allowed_tools={"browser_exec"},
+            )
+>       assert broker.file_bytes(scope, "partial.txt") == b"BEFORE"
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps/engine/tests/test_native_screens.py:249: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+apps/engine/src/ngertiin_engine/native_executor.py:713: in file_bytes
+    self._read_volume(scope, code, relative_path).strip(), validate=True
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps/engine/src/ngertiin_engine/native_executor.py:673: in _read_volume
+    return self._docker(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+timeout = 60, input = None, check = True
+args = ('run', '--rm', '--network', 'none', '--read-only', '--cap-drop', ...)
+
+    @staticmethod
+    def _docker(*args, timeout=60, input=None, check=True):
+        result = subprocess.run(
+            ["docker", *args],
+            input=input,
+            text=True,
+            capture_output=True,
+            timeout=timeout,
+            check=False,
+        )
+        if check and result.returncode:
+>           raise RuntimeError("Docker operation failed: " + result.stderr[:1000])
+E           RuntimeError: Docker operation failed: Traceback (most recent call last):
+E             File "<string>", line 5, in <module>
+E               if not path.is_relative_to(root) or not path.is_file() or path.stat().st_size>33554432:raise ValueError('Invalid scoped artifact')
+E                                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           ValueError: Invalid scoped artifact
+
+apps/engine/src/ngertiin_engine/native_executor.py:155: RuntimeError
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_native_screens.py::test_partial_native_batch_is_unknown_and_never_replayed
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 4 passed in 51.08s

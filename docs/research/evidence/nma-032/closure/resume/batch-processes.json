@@ -1,0 +1,35 @@
+[
+  {
+    "surface": "direct",
+    "pid": 12963,
+    "started": 1793067618.041981,
+    "provider_requests_before": 38,
+    "provider_failures_before": 1,
+    "exit_code": 0,
+    "finished": 1793067773.365225,
+    "provider_requests_after": 54,
+    "provider_failures_after": 1
+  },
+  {
+    "surface": "adapter",
+    "pid": 14538,
+    "started": 1793067775.486437,
+    "provider_requests_before": 54,
+    "provider_failures_before": 1,
+    "exit_code": 0,
+    "finished": 1793067976.517375,
+    "provider_requests_after": 71,
+    "provider_failures_after": 1
+  },
+  {
+    "surface": "application",
+    "pid": 16068,
+    "started": 1793067978.632661,
+    "provider_requests_before": 71,
+    "provider_failures_before": 1,
+    "exit_code": 0,
+    "finished": 1793068182.469774,
+    "provider_requests_after": 91,
+    "provider_failures_after": 1
+  }
+]

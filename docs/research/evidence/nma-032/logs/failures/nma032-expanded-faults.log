@@ -1,0 +1,53 @@
+.F
+=================================== FAILURES ===================================
+________ test_driver_restart_and_display_loss_require_fresh_observation ________
+
+desktop = (<ngertiin_engine.native_executor.IsolatedTools object at 0x10e58fed0>, Scope(owner_id='04898937-b8d2-45ac-85a1-5f2613...5', thread_id='4169bdea-9e38-4067-b923-96d28909b4f0', generation=1), <function desktop.<locals>.invoke at 0x10e6b8b40>)
+
+    def test_driver_restart_and_display_loss_require_fresh_observation(desktop):
+        broker, scope, invoke = desktop
+        invoke("terminal", {"command": "mousepad /work/recovery.txt", "background": True})
+        invoke("computer_use", {"action": "wait", "seconds": 2})
+        assert (
+            invoke("computer_use", {"action": "capture", "app": "Mousepad", "mode": "ax"})[
+                "width"
+            ]
+            > 0
+        )
+        container = broker.ensure(scope)["container"]
+        broker._docker("exec", container, "pkill", "-9", "-f", "^/opt/cua/.*")
+        # Native transport may reconnect only for this new observation. No earlier
+        # input operation is submitted again after the driver process is lost.
+        recovered = invoke(
+            "computer_use", {"action": "capture", "app": "Mousepad", "mode": "ax"}
+        )
+        assert recovered.get("width", 0) > 0 or recovered.get("error"), recovered
+>       grant = broker.screen.issue(scope)["grant"]
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps/engine/tests/test_native_screens.py:413: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+apps/engine/src/ngertiin_engine/screen_control.py:55: in issue
+    self.broker.ensure(scope)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <ngertiin_engine.native_executor.IsolatedTools object at 0x10e58fed0>
+scope = Scope(owner_id='04898937-b8d2-45ac-85a1-5f2613f6e416', agent_id='ec581439-a99b-4e6a-a8d7-2e0a95463315', thread_id='4169bdea-9e38-4067-b923-96d28909b4f0', generation=1)
+
+    def ensure(self, scope):
+        key = self._scope(scope)
+        with self.lock:
+            with self._db() as db:
+                row = db.execute(
+                    "SELECT container,volume,state FROM scopes WHERE scope_key=?",
+                    (key,),
+                ).fetchone()
+                if row and row[2] not in {"allocating", "ready", "paused"}:
+>                   raise ScopeRefused("Scope is cancelled or has an unknown effect")
+E                   ngertiin_engine.native_executor.ScopeRefused: Scope is cancelled or has an unknown effect
+
+apps/engine/src/ngertiin_engine/native_executor.py:209: ScopeRefused
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_native_screens.py::test_driver_restart_and_display_loss_require_fresh_observation
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 1 passed, 6 deselected in 63.13s (0:01:03)

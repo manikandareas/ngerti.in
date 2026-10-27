@@ -1,0 +1,36 @@
+{
+  "checks": [
+    {
+      "name": "owner_connect",
+      "status": 200,
+      "expected": 200,
+      "passed": true
+    },
+    {
+      "name": "owner_frame",
+      "status": 200,
+      "expected": 200,
+      "passed": true
+    },
+    {
+      "name": "missing_bearer",
+      "status": 401,
+      "expected": 401,
+      "passed": true
+    },
+    {
+      "name": "invalid_bearer",
+      "status": 401,
+      "expected": 401,
+      "passed": true
+    },
+    {
+      "name": "foreign_clerk_owner",
+      "status": 503,
+      "expected": 404,
+      "passed": false
+    }
+  ],
+  "all_passed": false,
+  "bearer_or_grant_recorded": false
+}

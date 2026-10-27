@@ -1,0 +1,5 @@
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+{"case": "browser", "passed": false, "seconds": 43.99229225004092}
+{"case": "desktop", "passed": false, "seconds": 50.99253408401273}
+{"case": "assistance", "passed": false, "seconds": 21.21310583408922}
+Actual Clerk/native model fixture ready for web takeover.

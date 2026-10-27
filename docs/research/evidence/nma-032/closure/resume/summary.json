@@ -1,0 +1,68 @@
+{
+  "planned": 9,
+  "attempted": 9,
+  "passed": 9,
+  "success_rate": 1.0,
+  "wilson95": [
+    0.7008549515804559,
+    1.0
+  ],
+  "surfaces": {
+    "direct": {
+      "planned": 3,
+      "attempted": 3,
+      "passed": 3,
+      "first_progress_s": {
+        "n": 3,
+        "p50": 6.737122332910076,
+        "p95": 9.481818333966658
+      },
+      "settlement_s": {
+        "n": 3,
+        "p50": 41.41318670893088,
+        "p95": 41.56821325002238
+      }
+    },
+    "adapter": {
+      "planned": 3,
+      "attempted": 3,
+      "passed": 3,
+      "first_progress_s": {
+        "n": 3,
+        "p50": 7.056756019592285,
+        "p95": 9.534569263458252
+      },
+      "settlement_s": {
+        "n": 3,
+        "p50": 41.10818545916118,
+        "p95": 46.66188016696833
+      }
+    },
+    "application": {
+      "planned": 3,
+      "attempted": 3,
+      "passed": 3,
+      "first_progress_s": {
+        "n": 3,
+        "p50": 6.418798923492432,
+        "p95": 6.731624126434326
+      },
+      "settlement_s": {
+        "n": 3,
+        "p50": 44.40059854206629,
+        "p95": 45.79314775019884
+      }
+    }
+  },
+  "gates": {
+    "all_cells": true,
+    "task_success": true,
+    "first_progress": true,
+    "settlement": true,
+    "one_post_each": true,
+    "exact_download_each": true,
+    "iframe_observed_each": true
+  },
+  "release_claim": false,
+  "historical_cohorts_pooled": false
+}

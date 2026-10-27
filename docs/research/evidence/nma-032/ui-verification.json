@@ -1,0 +1,33 @@
+{
+  "same_agent_continuation": "candidate-3/continuation-oracle.json",
+  "real_clerk_http_checks": "candidate-3/http-security-2.json",
+  "viewer_reload_restored_human_ownership": true,
+  "private_field_empty_after_reload": true,
+  "close_during_takeover_left_input_disconnected": true,
+  "explicit_return_restored_agent_input": true,
+  "native_vault_saved_through_ui": true,
+  "native_vault_fill_completed_model_task": true,
+  "native_vault_deleted_through_ui": true,
+  "vault_restart_test": "test_screen_gateway.py",
+  "secret_scan": "candidate-3/secret-scan.json",
+  "desktop_viewport": [
+    1280,
+    1000
+  ],
+  "mobile_viewport": [
+    390,
+    844
+  ],
+  "mobile_document_width": 390,
+  "mobile_dialog_width": 358,
+  "scope": {
+    "owner": "aad239d0-5136-4f26-aafe-2cba7c1ba36a",
+    "agent": "715e4323-b3a6-49e5-b4ba-fcb8dd17b174",
+    "thread": "31938418-ccd8-44aa-a957-0127c4182cb0"
+  },
+  "retained_failed_attempts": [
+    "Initial candidate namespace handback refusal",
+    "Candidate-3 automation clicked controls before the previous input settled; corrected sequencing; one incorrect-target image removed before publishing because it could contain private input",
+    "First HTTP foreign-owner probe returned 503 while that disposable partition was not configured; full configured-owner probe then passed 9/9"
+  ]
+}

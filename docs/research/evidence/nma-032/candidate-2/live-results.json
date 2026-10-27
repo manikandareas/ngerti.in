@@ -1,0 +1,113 @@
+{
+  "model": "gpt-6-luna",
+  "protocol": "codex_responses",
+  "image": "sha256:2b1d8a33d685fb94eba0d3be20746820c5b646954df1fbc2aa7a185e5307891a",
+  "planned": 3,
+  "cases": [
+    {
+      "name": "browser",
+      "admission": {
+        "result": {
+          "agent_id": "a92ae157-e051-475b-bc7f-dba913eb8c2c",
+          "command_id": "54e9cd31-5d85-462c-ba11-e227bb53a64b",
+          "committed_seq": "9",
+          "config_revision": "1",
+          "context_generation": "1",
+          "message_id": "b7bb03a8-37e0-56a0-b2ae-549258799887",
+          "run_id": "41ce2ce6-834e-5cfb-8676-0d228b1256c9",
+          "schema_version": "nma.v1",
+          "status": "accepted",
+          "thread_id": "227ef648-74f8-4290-968c-b4d1f6a8c164"
+        }
+      },
+      "run": {
+        "agent_id": "a92ae157-e051-475b-bc7f-dba913eb8c2c",
+        "config_revision": "1",
+        "context_generation": "1",
+        "continuation_required": false,
+        "error_code": null,
+        "run_id": "41ce2ce6-834e-5cfb-8676-0d228b1256c9",
+        "schema_version": "nma.v1",
+        "status": "indeterminate",
+        "text": "",
+        "thread_id": "227ef648-74f8-4290-968c-b4d1f6a8c164",
+        "turn_exit_reason": "text_response(finish_reason=stop)"
+      },
+      "duplicate_run_id": "41ce2ce6-834e-5cfb-8676-0d228b1256c9",
+      "artifacts": [],
+      "passed": false,
+      "post_count": "unavailable",
+      "elapsed_seconds": 43.99229225004092
+    },
+    {
+      "name": "desktop",
+      "admission": {
+        "result": {
+          "agent_id": "a92ae157-e051-475b-bc7f-dba913eb8c2c",
+          "command_id": "b1959c78-7714-478a-8e14-2e93c990c8bd",
+          "committed_seq": "103",
+          "config_revision": "1",
+          "context_generation": "1",
+          "message_id": "690ccc87-30bb-5d6e-b14a-064ace68fdf6",
+          "run_id": "bd2b8242-fd9c-56d7-b3b2-14dd3c85b835",
+          "schema_version": "nma.v1",
+          "status": "accepted",
+          "thread_id": "227ef648-74f8-4290-968c-b4d1f6a8c164"
+        }
+      },
+      "run": {
+        "agent_id": "a92ae157-e051-475b-bc7f-dba913eb8c2c",
+        "config_revision": "1",
+        "context_generation": "1",
+        "continuation_required": false,
+        "error_code": null,
+        "run_id": "bd2b8242-fd9c-56d7-b3b2-14dd3c85b835",
+        "schema_version": "nma.v1",
+        "status": "indeterminate",
+        "text": "",
+        "thread_id": "227ef648-74f8-4290-968c-b4d1f6a8c164",
+        "turn_exit_reason": "text_response(finish_reason=stop)"
+      },
+      "duplicate_run_id": "bd2b8242-fd9c-56d7-b3b2-14dd3c85b835",
+      "artifacts": [],
+      "passed": false,
+      "elapsed_seconds": 50.99253408401273
+    },
+    {
+      "name": "assistance",
+      "admission": {
+        "result": {
+          "agent_id": "a92ae157-e051-475b-bc7f-dba913eb8c2c",
+          "command_id": "eb4e03a6-4b6f-47bd-b2a6-9b65991b355d",
+          "committed_seq": "182",
+          "config_revision": "1",
+          "context_generation": "1",
+          "message_id": "74edaaea-e8d9-5010-8878-9c1295a7eca8",
+          "run_id": "3ed96fac-d094-5fec-adb6-53cb7e4c9afb",
+          "schema_version": "nma.v1",
+          "status": "accepted",
+          "thread_id": "227ef648-74f8-4290-968c-b4d1f6a8c164"
+        }
+      },
+      "run": {
+        "agent_id": "a92ae157-e051-475b-bc7f-dba913eb8c2c",
+        "config_revision": "1",
+        "context_generation": "1",
+        "continuation_required": false,
+        "error_code": null,
+        "run_id": "3ed96fac-d094-5fec-adb6-53cb7e4c9afb",
+        "schema_version": "nma.v1",
+        "status": "succeeded",
+        "text": "I couldn\u2019t open the page or request login assistance: both tools returned `UNRESOLVED_EFFECT`. No login was attempted and no password was requested in chat.",
+        "thread_id": "227ef648-74f8-4290-968c-b4d1f6a8c164",
+        "turn_exit_reason": "text_response(finish_reason=stop)"
+      },
+      "duplicate_run_id": "3ed96fac-d094-5fec-adb6-53cb7e4c9afb",
+      "artifacts": [],
+      "passed": false,
+      "control": "agent",
+      "elapsed_seconds": 21.21310583408922
+    }
+  ],
+  "limits": "Three required useful-task smoke cases; not the release sample. Dedicated loopback fixture is explicitly allowed only in this capsule."
+}

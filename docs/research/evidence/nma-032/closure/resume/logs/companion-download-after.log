@@ -1,0 +1,43 @@
+E                                                                        [100%]
+==================================== ERRORS ====================================
+____ ERROR at setup of test_companion_cdp_download_setting_survives_return _____
+
+tmp_path = PosixPath('/private/var/folders/j1/p1582yhj20z58phnf_zrzy7w0000gn/T/pytest-of-vitoandareasmanik/pytest-181/test_companion_cdp_download_se0')
+
+    @pytest.fixture
+    def desktop(tmp_path):
+        import model_tools  # noqa: F401
+        from tools.registry import registry
+    
+        scope = Scope(*(str(uuid4()) for _ in range(3)))
+>       broker = IsolatedTools(
+            tmp_path, scope.owner_id, image=os.environ["NMA_TEST_DESKTOP_IMAGE"]
+        )
+
+apps/engine/tests/test_native_screens.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+apps/engine/src/ngertiin_engine/native_executor.py:99: in __init__
+    self.image = self._docker(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+timeout = 60, input = None, check = True
+args = ('image', 'inspect', 'sha256:9544847216702af9ae61b3f0f9d27675f8583693e1fed6b1825568199a09197a', '--format', '{{.Id}}')
+
+    @staticmethod
+    def _docker(*args, timeout=60, input=None, check=True):
+        result = subprocess.run(
+            ["docker", *args],
+            input=input,
+            text=True,
+            capture_output=True,
+            timeout=timeout,
+            check=False,
+        )
+        if check and result.returncode:
+>           raise RuntimeError("Docker operation failed: " + result.stderr[:1000])
+E           RuntimeError: Docker operation failed: Error response from daemon: No such image: sha256:9544847216702af9ae61b3f0f9d27675f8583693e1fed6b1825568199a09197a
+
+apps/engine/src/ngertiin_engine/native_executor.py:159: RuntimeError
+=========================== short test summary info ============================
+ERROR apps/engine/tests/test_native_screens.py::test_companion_cdp_download_setting_survives_return
+12 deselected, 1 error in 0.99s

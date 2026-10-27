@@ -1,0 +1,28 @@
+{
+  "id": "nma032-browser-task-boundary-v7-accepted",
+  "frozen_before_model_cases": true,
+  "predecessor_protocol": "docs/research/evidence/nma-032/closure/final-protocol.json",
+  "thresholds": "scripts/spikes/nma028/protocol.json",
+  "thresholds_changed": false,
+  "model": "gpt-6-luna",
+  "protocol": "codex_responses",
+  "image": "sha256:274813f2b0a0dd2fba15a62f0b2f25fa590548a720bfe65f8c393a05717cbca2",
+  "surfaces": [
+    "direct",
+    "adapter",
+    "application"
+  ],
+  "repeats_per_surface": 3,
+  "planned_cells": 9,
+  "prompt": "Exact existing PROMPT from paired_browser.py; unchanged from v3/v4",
+  "oracles": [
+    "Exactly one form POST",
+    "Exact Chromium-downloaded bytes NATIVE_BROWSER_DOWNLOAD",
+    "Native iframe observation retained in tool history",
+    "Original operation receipts and original failed batches retained"
+  ],
+  "conditions": "Run after regression and useful-task/UI work has settled, one surface/case at a time; no concurrent model or test workload; no selective retries or pooling prior failures.",
+  "repair": "V5 navigation/guidance/diagnostics correction plus fail-closed native multimodal outcome decoding; failure screenshots retain native blocks and visible diagnostics, original uncertain receipt and no-replay fence. Default browser configuration includes its required native terminal grant. The readiness observation also awaits a browser task boundary because form.submit schedules navigation after its JS evaluation returns.",
+  "runner_sha256": "146f29fefb109b2dde3c9aa49148395ed1d775ab7e33ba08f39edb3d044289f6",
+  "predecessor_registration": "V6 comparison not executed: wider regression exposed queued-navigation race. Its 18 passes/one failure, successful useful tasks/UI and preservation remain retained."
+}

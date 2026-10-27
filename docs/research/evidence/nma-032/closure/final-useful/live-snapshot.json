@@ -1,0 +1,262 @@
+{
+  "artifacts": [
+    {
+      "artifact_id": "34f07ffd-f89e-58c5-bbc4-0b7dc394ef2e",
+      "byte_count": 26,
+      "filename": "native-desktop.txt",
+      "media_type": "text/plain",
+      "producing_agent_id": "9f03117f-4b93-4c30-8b00-c1bb90d7e47c",
+      "producing_run_id": "9ba1ee68-5a5b-5f4c-b46d-37422943b09d",
+      "revision_id": "b706edcd-2299-527e-b2a4-e8cd215bca93",
+      "sha256": "73c4e7ab268acc4913f559b641b3339ebe45ed98ce63c54f9c4f35dfd9d40003",
+      "status": "ready",
+      "storage": "file.v1",
+      "thread_id": "6bf66ffb-73d8-46b6-8742-51f91ab728ed"
+    },
+    {
+      "artifact_id": "908aec39-30b6-59bf-ba9e-99eb0643164d",
+      "byte_count": 15132,
+      "filename": "screen.png",
+      "media_type": "image/png",
+      "producing_agent_id": "9f03117f-4b93-4c30-8b00-c1bb90d7e47c",
+      "producing_run_id": "9ba1ee68-5a5b-5f4c-b46d-37422943b09d",
+      "revision_id": "be4a86dc-3e15-5c80-a538-5bec378f160c",
+      "sha256": "f8bf29e7ba25dba96c8ed5e8114201c169e053b79d876810414292ac37f69894",
+      "status": "ready",
+      "storage": "file.v1",
+      "thread_id": "6bf66ffb-73d8-46b6-8742-51f91ab728ed"
+    },
+    {
+      "artifact_id": "6827e010-edca-5e80-b144-458ee52fc3fb",
+      "byte_count": 11174,
+      "filename": "screen.png",
+      "media_type": "image/png",
+      "producing_agent_id": "9f03117f-4b93-4c30-8b00-c1bb90d7e47c",
+      "producing_run_id": "9ba1ee68-5a5b-5f4c-b46d-37422943b09d",
+      "revision_id": "934bb350-f7ee-5345-820d-ba9fa752e95b",
+      "sha256": "0b82f0062ebb883d32ffdefe4dbc5ca464213274afbb64cf6d035cdbd17c329e",
+      "status": "ready",
+      "storage": "file.v1",
+      "thread_id": "6bf66ffb-73d8-46b6-8742-51f91ab728ed"
+    },
+    {
+      "artifact_id": "b78bc7c1-8ae2-57d0-a859-742440833ba5",
+      "byte_count": 23,
+      "filename": "browser-proof.txt",
+      "media_type": "text/plain",
+      "producing_agent_id": "9f03117f-4b93-4c30-8b00-c1bb90d7e47c",
+      "producing_run_id": "96cd7a0c-67cb-515d-8c55-b3266add7d1f",
+      "revision_id": "475937e7-7de7-5a44-84c0-80fd234a7829",
+      "sha256": "c375919425f55f09734adfc64a295960c2d41dff3763b660f282ed825df5e070",
+      "status": "ready",
+      "storage": "file.v1",
+      "thread_id": "6bf66ffb-73d8-46b6-8742-51f91ab728ed"
+    }
+  ],
+  "discussion": null,
+  "goals": [],
+  "messages": [
+    {
+      "attachments": [],
+      "author_agent_id": null,
+      "author_kind": "user",
+      "content": "Use native browser tools to visit http://127.0.0.1:8765/. Inspect the iframe text FRAME_READY with js(\"document.querySelector('iframe').contentDocument.body.innerText\"). The iframe contains no form. Fill TOP-LEVEL input[name=name] with NMA032 and submit the TOP-LEVEL form exactly once via js(\"document.querySelector('form').submit()\"). Verify FORM_VERIFIED, then download the Download link using Chromium into /work/downloads/browser-proof.txt. You may set Browser.setDownloadBehavior through the native cdp helper. Publish the downloaded file using workspace publish_file path downloads/browser-proof.txt and filename browser-proof.txt. Do not replace browser interaction with HTTP/terminal requests; terminal may only inspect output bytes.",
+      "context_generation": "1",
+      "message_id": "89f2dbe4-7cc9-5ecd-9b7c-54a1d98942b7",
+      "message_seq": "2",
+      "parts": [
+        {
+          "text": "Use native browser tools to visit http://127.0.0.1:8765/. Inspect the iframe text FRAME_READY with js(\"document.querySelector('iframe').contentDocument.body.innerText\"). The iframe contains no form. Fill TOP-LEVEL input[name=name] with NMA032 and submit the TOP-LEVEL form exactly once via js(\"document.querySelector('form').submit()\"). Verify FORM_VERIFIED, then download the Download link using Chromium into /work/downloads/browser-proof.txt. You may set Browser.setDownloadBehavior through the native cdp helper. Publish the downloaded file using workspace publish_file path downloads/browser-proof.txt and filename browser-proof.txt. Do not replace browser interaction with HTTP/terminal requests; terminal may only inspect output bytes.",
+          "type": "text"
+        }
+      ],
+      "revision": "1",
+      "run_id": "96cd7a0c-67cb-515d-8c55-b3266add7d1f",
+      "thread_id": "6bf66ffb-73d8-46b6-8742-51f91ab728ed"
+    },
+    {
+      "attachments": [],
+      "author_agent_id": "9f03117f-4b93-4c30-8b00-c1bb90d7e47c",
+      "author_kind": "agent",
+      "content": "Verified `FRAME_READY` and `FORM_VERIFIED`; submitted the top-level form once with `NMA032`. Downloaded and published `browser-proof.txt` (23 bytes; contents: `NATIVE_BROWSER_DOWNLOAD`). Artifact ID: `b78bc7c1-8ae2-57d0-a859-742440833ba5`.",
+      "context_generation": "1",
+      "message_id": "9dd6e8e2-c94d-55bc-9532-133e5315dd78",
+      "message_seq": "3",
+      "parts": [
+        {
+          "text": "Verified `FRAME_READY` and `FORM_VERIFIED`; submitted the top-level form once with `NMA032`. Downloaded and published `browser-proof.txt` (23 bytes; contents: `NATIVE_BROWSER_DOWNLOAD`). Artifact ID: `b78bc7c1-8ae2-57d0-a859-742440833ba5`.",
+          "type": "text"
+        }
+      ],
+      "revision": "1",
+      "run_id": "96cd7a0c-67cb-515d-8c55-b3266add7d1f",
+      "thread_id": "6bf66ffb-73d8-46b6-8742-51f91ab728ed"
+    },
+    {
+      "attachments": [],
+      "author_agent_id": null,
+      "author_kind": "user",
+      "content": "Perform a real non-browser desktop task. Start mousepad /work/native-desktop.txt with terminal background=true. Use computer_use capture on Mousepad, then computer_use type to enter NATIVE_DESKTOP_MODEL_PROOF and save with ctrl+s using delivery_mode foreground (this isolated X11 host needs foreground for hotkeys). Publish native-desktop.txt with workspace publish_file path native-desktop.txt. Only computer_use may enter or save its content; terminal may launch Mousepad and read the file to verify it. Do not write it using code or shell.",
+      "context_generation": "1",
+      "message_id": "e42f7dd6-c105-5173-94cc-44333e8404b7",
+      "message_seq": "4",
+      "parts": [
+        {
+          "text": "Perform a real non-browser desktop task. Start mousepad /work/native-desktop.txt with terminal background=true. Use computer_use capture on Mousepad, then computer_use type to enter NATIVE_DESKTOP_MODEL_PROOF and save with ctrl+s using delivery_mode foreground (this isolated X11 host needs foreground for hotkeys). Publish native-desktop.txt with workspace publish_file path native-desktop.txt. Only computer_use may enter or save its content; terminal may launch Mousepad and read the file to verify it. Do not write it using code or shell.",
+          "type": "text"
+        }
+      ],
+      "revision": "1",
+      "run_id": "9ba1ee68-5a5b-5f4c-b46d-37422943b09d",
+      "thread_id": "6bf66ffb-73d8-46b6-8742-51f91ab728ed"
+    },
+    {
+      "attachments": [],
+      "author_agent_id": "9f03117f-4b93-4c30-8b00-c1bb90d7e47c",
+      "author_kind": "agent",
+      "content": "Mousepad saved `/work/native-desktop.txt`; terminal verification confirmed the contents are `NATIVE_DESKTOP_MODEL_PROOF`. Published `native-desktop.txt` (26 bytes), artifact ID `34f07ffd-f89e-58c5-bbc4-0b7dc394ef2e`.",
+      "context_generation": "1",
+      "message_id": "bc294216-66be-528a-8381-347b35b3eb2b",
+      "message_seq": "5",
+      "parts": [
+        {
+          "text": "Mousepad saved `/work/native-desktop.txt`; terminal verification confirmed the contents are `NATIVE_DESKTOP_MODEL_PROOF`. Published `native-desktop.txt` (26 bytes), artifact ID `34f07ffd-f89e-58c5-bbc4-0b7dc394ef2e`.",
+          "type": "text"
+        }
+      ],
+      "revision": "1",
+      "run_id": "9ba1ee68-5a5b-5f4c-b46d-37422943b09d",
+      "thread_id": "6bf66ffb-73d8-46b6-8742-51f91ab728ed"
+    },
+    {
+      "attachments": [],
+      "author_agent_id": null,
+      "author_kind": "user",
+      "content": "Navigate the native browser to http://127.0.0.1:8765/. Request my help with login using request_human, then end your turn so I can use the conversation screen. Do not request a password in chat. Wait for me to explicitly return control and send a continuation.",
+      "context_generation": "1",
+      "message_id": "48eafd86-3837-5606-b2a0-1d4eab6393c6",
+      "message_seq": "6",
+      "parts": [
+        {
+          "text": "Navigate the native browser to http://127.0.0.1:8765/. Request my help with login using request_human, then end your turn so I can use the conversation screen. Do not request a password in chat. Wait for me to explicitly return control and send a continuation.",
+          "type": "text"
+        }
+      ],
+      "revision": "1",
+      "run_id": "efac302e-99cb-5f38-9999-2fd0bf521b21",
+      "thread_id": "6bf66ffb-73d8-46b6-8742-51f91ab728ed"
+    },
+    {
+      "attachments": [],
+      "author_agent_id": "9f03117f-4b93-4c30-8b00-c1bb90d7e47c",
+      "author_kind": "agent",
+      "content": "The native browser is at `http://127.0.0.1:8765/`. I\u2019ve requested your help through the isolated screen. Please handle the login there, then explicitly return control and send a continuation when you\u2019re finished.",
+      "context_generation": "1",
+      "message_id": "0c8d3cb6-2753-5c87-940e-9b42de3764fa",
+      "message_seq": "7",
+      "parts": [
+        {
+          "text": "The native browser is at `http://127.0.0.1:8765/`. I\u2019ve requested your help through the isolated screen. Please handle the login there, then explicitly return control and send a continuation when you\u2019re finished.",
+          "type": "text"
+        }
+      ],
+      "revision": "1",
+      "run_id": "efac302e-99cb-5f38-9999-2fd0bf521b21",
+      "thread_id": "6bf66ffb-73d8-46b6-8742-51f91ab728ed"
+    }
+  ],
+  "next_before_message_seq": null,
+  "replay_epoch": "20907bed-16a1-4070-80cf-8e4b93d4a39b",
+  "runs": [
+    {
+      "agent_id": "9f03117f-4b93-4c30-8b00-c1bb90d7e47c",
+      "config_revision": "1",
+      "context_generation": "1",
+      "continuation_required": false,
+      "error_code": null,
+      "replay_epoch": "20907bed-16a1-4070-80cf-8e4b93d4a39b",
+      "run_id": "96cd7a0c-67cb-515d-8c55-b3266add7d1f",
+      "schema_version": "nma.v1",
+      "status": "succeeded",
+      "text": "Verified `FRAME_READY` and `FORM_VERIFIED`; submitted the top-level form once with `NMA032`. Downloaded and published `browser-proof.txt` (23 bytes; contents: `NATIVE_BROWSER_DOWNLOAD`). Artifact ID: `b78bc7c1-8ae2-57d0-a859-742440833ba5`.",
+      "thread_id": "6bf66ffb-73d8-46b6-8742-51f91ab728ed",
+      "through_sequence": "282",
+      "turn_exit_reason": "text_response(finish_reason=stop)"
+    },
+    {
+      "agent_id": "9f03117f-4b93-4c30-8b00-c1bb90d7e47c",
+      "config_revision": "1",
+      "context_generation": "1",
+      "continuation_required": false,
+      "error_code": null,
+      "replay_epoch": "20907bed-16a1-4070-80cf-8e4b93d4a39b",
+      "run_id": "9ba1ee68-5a5b-5f4c-b46d-37422943b09d",
+      "schema_version": "nma.v1",
+      "status": "succeeded",
+      "text": "Mousepad saved `/work/native-desktop.txt`; terminal verification confirmed the contents are `NATIVE_DESKTOP_MODEL_PROOF`. Published `native-desktop.txt` (26 bytes), artifact ID `34f07ffd-f89e-58c5-bbc4-0b7dc394ef2e`.",
+      "thread_id": "6bf66ffb-73d8-46b6-8742-51f91ab728ed",
+      "through_sequence": "282",
+      "turn_exit_reason": "text_response(finish_reason=stop)"
+    },
+    {
+      "agent_id": "9f03117f-4b93-4c30-8b00-c1bb90d7e47c",
+      "config_revision": "1",
+      "context_generation": "1",
+      "continuation_required": false,
+      "error_code": null,
+      "replay_epoch": "20907bed-16a1-4070-80cf-8e4b93d4a39b",
+      "run_id": "efac302e-99cb-5f38-9999-2fd0bf521b21",
+      "schema_version": "nma.v1",
+      "status": "succeeded",
+      "text": "The native browser is at `http://127.0.0.1:8765/`. I\u2019ve requested your help through the isolated screen. Please handle the login there, then explicitly return control and send a continuation when you\u2019re finished.",
+      "thread_id": "6bf66ffb-73d8-46b6-8742-51f91ab728ed",
+      "through_sequence": "282",
+      "turn_exit_reason": "text_response(finish_reason=stop)"
+    }
+  ],
+  "schema_version": "nma.v1",
+  "thread": {
+    "agents": [
+      {
+        "access_generation": "1",
+        "agent_id": "9f03117f-4b93-4c30-8b00-c1bb90d7e47c",
+        "config": {
+          "avatar_url": "https://api.dicebear.com/10.x/critters/svg?seed=native-screen-acceptance",
+          "instructions": "",
+          "model": "test",
+          "session": {
+            "compression": {},
+            "context_engine": "compressor",
+            "max_turns": null
+          },
+          "soul": "",
+          "tool_grants": [
+            "browser",
+            "desktop",
+            "terminal",
+            "files",
+            "assistance",
+            "deliver"
+          ]
+        },
+        "config_revision": "1",
+        "created_at": "2026-10-26T18:05:34.056025Z",
+        "display_name": "native-screen-acceptance",
+        "handle": "native-screen-acceptance",
+        "primary_dm_thread_id": "6bf66ffb-73d8-46b6-8742-51f91ab728ed",
+        "revision": "1",
+        "status": "active",
+        "updated_at": "2026-10-26T18:05:34.056025Z"
+      }
+    ],
+    "context_generation": "1",
+    "dm_agent_id": "9f03117f-4b93-4c30-8b00-c1bb90d7e47c",
+    "kind": "dm",
+    "membership_revision": "1",
+    "revision": "1",
+    "status": "open",
+    "thread_id": "6bf66ffb-73d8-46b6-8742-51f91ab728ed",
+    "title": "native-screen-acceptance"
+  },
+  "through_sequence": "282"
+}

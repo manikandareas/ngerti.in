@@ -1,0 +1,30 @@
+[
+  {
+    "fixture": "resume-live",
+    "scopes": 7,
+    "operation_rows_preserved": 208,
+    "all_mapped_resources_removed": true,
+    "controller_label_verified": true
+  },
+  {
+    "fixture": "resume-foreign",
+    "scopes": 1,
+    "operation_rows_preserved": 178,
+    "all_mapped_resources_removed": true,
+    "controller_label_verified": true
+  },
+  {
+    "fixture": "live-accepted",
+    "scopes": 7,
+    "operation_rows_preserved": 139,
+    "all_mapped_resources_removed": true,
+    "controller_label_verified": true
+  },
+  {
+    "fixture": "foreign-accepted",
+    "scopes": 1,
+    "operation_rows_preserved": 154,
+    "all_mapped_resources_removed": true,
+    "controller_label_verified": true
+  }
+]

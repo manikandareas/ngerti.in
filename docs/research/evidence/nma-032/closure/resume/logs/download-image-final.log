@@ -1,0 +1,49 @@
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from desktop-tools.Dockerfile
+#1 transferring dockerfile: 1.00kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/ngertiin-native-base:69b9e9b7ca9eb47b
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 transferring context: 21.16kB 0.0s done
+#4 DONE 0.1s
+
+#5 [1/7] FROM docker.io/library/ngertiin-native-base:69b9e9b7ca9eb47b@sha256:69b9e9b7ca9eb47b76bef9aaa69b55e533c45077a9ce5321d5b2fee11886c7f8
+#5 resolve docker.io/library/ngertiin-native-base:69b9e9b7ca9eb47b@sha256:69b9e9b7ca9eb47b76bef9aaa69b55e533c45077a9ce5321d5b2fee11886c7f8 0.1s done
+#5 DONE 0.1s
+
+#6 [2/7] RUN apt-get update && apt-get install -y --no-install-recommends xvfb openbox dbus-x11 at-spi2-core libgtk-3-0 libxtst6 libxdo3 xdotool mousepad imagemagick && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [3/7] COPY apps/engine/native-dependencies.json /opt/engine/native-dependencies.json
+#7 CACHED
+
+#8 [4/7] COPY apps/engine/install_desktop.py /opt/engine/install_desktop.py
+#8 CACHED
+
+#9 [5/7] RUN /opt/native/bin/python /opt/engine/install_desktop.py
+#9 CACHED
+
+#10 [6/7] COPY apps/engine/notices/cua-driver-0.21.0-MIT.txt /opt/cua/LICENSE.md
+#10 CACHED
+
+#11 [7/7] COPY apps/engine/src/ngertiin_engine /opt/engine/ngertiin_engine
+#11 DONE 0.2s
+
+#12 exporting to image
+#12 exporting layers 0.1s done
+#12 exporting manifest sha256:8993587f927cf9f58daac881ce152115ce8c9a6967758cdaf06b7782b3974a0b 0.0s done
+#12 exporting config sha256:1ffc5e7eb5e576d7b0d2face4e68ec787e27e5f99b96fd51dd33ca52390e1325 0.0s done
+#12 exporting attestation manifest sha256:da9bbf0cdd0caa4d9091824b437cc0cee9758a5bac2e86c7a91cbf5b8fc7e4d4 0.0s done
+#12 exporting manifest list sha256:99144231baae2233fdddfd9a1190d94b18c5a495c664d572113dad61b2d58898 0.0s done
+#12 naming to docker.io/library/ngertiin-native-desktop:nma032-persistent-download
+#12 naming to docker.io/library/ngertiin-native-desktop:nma032-persistent-download done
+#12 unpacking to docker.io/library/ngertiin-native-desktop:nma032-persistent-download 0.1s done
+#12 DONE 0.3s

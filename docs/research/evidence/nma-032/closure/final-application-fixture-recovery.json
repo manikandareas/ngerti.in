@@ -1,0 +1,6 @@
+{
+  "reason": "The original application process stopped at import before any HTTP model cell. Fixture syntax was repaired; its FIXTURE bytes, prompt, image and thresholds are unchanged. These are the three originally planned unexecuted cells, not retries of failed model cells.",
+  "original_log": ".dev/nma032-repair/final-paired-application.log",
+  "continuation_log": ".dev/nma032-repair/final-paired-application-fixture-recovery.log",
+  "recorded_at": 1793039366.915263
+}

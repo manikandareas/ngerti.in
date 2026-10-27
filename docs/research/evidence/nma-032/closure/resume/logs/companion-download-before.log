@@ -1,0 +1,45 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_____________ test_companion_cdp_download_setting_survives_return ______________
+
+desktop = (<ngertiin_engine.native_executor.IsolatedTools object at 0x10e64f620>, Scope(owner_id='487a2d4f-d62b-4fbf-b459-c9e612...2', thread_id='8dd49daa-3452-4e87-96f2-f5fe83523986', generation=1), <function desktop.<locals>.invoke at 0x10e7356f0>)
+
+    def test_companion_cdp_download_setting_survives_return(desktop):
+        broker, scope, invoke = desktop
+        opened = invoke(
+            "browser_exec",
+            {
+                "code": "new_tab('about:blank');js(\"document.body.innerHTML='<a download=companion.txt href=data:text/plain,VERIFIED_COMPANION_DOWNLOAD>Download</a>'\")"
+            },
+        )
+        assert opened.get("success"), opened
+        configured = invoke(
+            "browser_cdp",
+            {
+                "method": "Browser.setDownloadBehavior",
+                "params": {"behavior": "allow", "downloadPath": "/work/downloads"},
+            },
+            "download-setting",
+        )
+        assert configured.get("success"), configured
+        clicked = invoke(
+            "browser_exec", {"code": "js(\"document.querySelector('a').click()\")"}
+        )
+        assert clicked.get("success"), clicked
+        observed = invoke(
+            "terminal",
+            {
+                "command": "python -c \"import time;from pathlib import Path;p=Path('/work/downloads/companion.txt');deadline=time.monotonic()+3\nwhile not p.exists() and time.monotonic()<deadline:time.sleep(.05)\nprint(p.exists())\""
+            },
+        )
+>       assert observed.get("output", "").strip() == "True", observed
+E       AssertionError: {'output': 'False', 'exit_code': 0, 'error': None}
+E       assert 'False' == 'True'
+E         
+E         - True
+E         + False
+
+apps/engine/tests/test_native_screens.py:605: AssertionError
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_native_screens.py::test_companion_cdp_download_setting_survives_return
+1 failed, 12 deselected in 22.93s

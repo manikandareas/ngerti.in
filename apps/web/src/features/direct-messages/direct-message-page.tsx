@@ -10,6 +10,7 @@ import { ArtifactResults } from "./artifact-results";
 import { command, listThreads, submit, type ThreadItem } from "./client";
 import { Composer } from "./composer";
 import { GoalProgress } from "./goal-progress";
+import { ScreenControls } from "./screen-controls";
 import { SessionControls } from "./session-controls";
 import { activeRun, type Run, runLabels } from "./state";
 import { useDirectMessage } from "./use-direct-message";
@@ -191,12 +192,21 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
         >
           <div className="mx-auto max-w-3xl space-y-7 py-6">
             {snapshot && (
-              <SessionControls key={threadId} thread={snapshot.thread} working={working} />
+              <SessionControls
+                key={`session:${threadId}`}
+                thread={snapshot.thread}
+                working={working}
+              />
             )}
             <ArtifactResults artifacts={snapshot?.artifacts ?? []} threadId={threadId} />
             {snapshot && (
-              <WorkspaceControls key={threadId} thread={snapshot.thread} working={working} />
+              <WorkspaceControls
+                key={`workspace:${threadId}`}
+                thread={snapshot.thread}
+                working={working}
+              />
             )}
+            {snapshot && <ScreenControls key={`screen:${threadId}`} thread={snapshot.thread} />}
             {snapshot && (
               <GoalProgress
                 goals={snapshot.goals ?? []}

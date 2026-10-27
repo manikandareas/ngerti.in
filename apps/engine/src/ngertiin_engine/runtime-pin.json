@@ -102,7 +102,42 @@
     "tools/approval.py": "6f19d962993e563e527a6310f481c38d131ad34ab422e540db5c3f949ffa742d",
     "tools/approval_context.py": "9bcac985edbcd610392ac40c84c47ca38f169976f42b7e4acade5eb82709dd97",
     "agent/redact.py": "cea25df8139675b600eca448f70756bfa9ad22f537abf4f123d01bcbfc71e563",
-    "tools/browser_launcher.py": "d2ef7f02457d2f16c3188e55c758d1b1ab9b079a234bed924a7c2d307721b568"
+    "tools/browser_launcher.py": "d2ef7f02457d2f16c3188e55c758d1b1ab9b079a234bed924a7c2d307721b568",
+    "tools/mcp_tool_loop.py": "cced613700760fd2bc4bec437f7760771caac9d00cc2ee4e5f04a7864b90e257",
+    "tools/mcp_tool_discovery.py": "4cc0951ca745691705e11f943eff186a94a6ac41446eac06d5847d7efa56a5dd",
+    "tools/mcp_tool_schema.py": "0a0e214b1e19d2e7719cc1f8f7a4b6ecd5be8df6aab1b6ef61e0049c21428bea",
+    "tools/mcp_tool_scope.py": "da50fa6b9704f535f296657604ff41679ef9e0d0e85154beb7a30a2da63eaac5",
+    "tools/mcp_tool_lifecycle.py": "243bb5f655964ba32e4b8a9855ac2b60a189627628ec58a86487cf998acd3811",
+    "tools/mcp_tool_sampling.py": "ae7c3218d5fedcb43b6dbac78302d2842adb77134369a10aa54c63ec1969eb80",
+    "tools/mcp_oauth.py": "b25655d6a2ca717b3697f2fe98b5f817da5605c203ebdce8823da55398a8b99f",
+    "tools/mcp_oauth_provider.py": "d502124bb36ad9ed09429b5abf86bdf2878373b8c3700ab82a69d22a568c9ffa",
+    "tools/mcp_dashboard_oauth.py": "e05456bcd667771f50a7426d18562de2ff063046e73c0afb4fa595a87232f4f9",
+    "tools/connectors/mcp_oauth.py": "236c2e00c4c6262e78bd7290ef6c1cd8f59eb3fe0c97743373ecdec9613b6dad",
+    "tools/mcp_tool_events.py": "d4d743f2a73857e604d797fd6b5f56061400110007c516a5dea5ea220cee1ad9",
+    "tools/mcp_tool_transport.py": "5fa6c656a9f3a65d9231e0b8d79011a60b5b58a7a33873200effed79b2521908",
+    "tools/mcp_tool_config.py": "8b0c1885099a12f055abc308cd3edb065917e9f85adc3fadbb596ed2e303084e",
+    "tools/web_tools.py": "f9e9dae28a84b00f5b03bdd49398376950231001eece775db2f9d7235a40a1a6",
+    "tools/web_result_cache.py": "2d843914c3236dbd0ab88685b2b7d41ee8060a8ab2ec8e537e4925b417317a2d",
+    "tools/web_tools_truncate.py": "0a7f4df139e4cb21ce14493c540eaadbd0a0adb99288a91d1f1b089d94364af9",
+    "tools/web_tools_extract.py": "54f4eeb509200098aa2ed437c7a528d7d40a0d4708571e4b03a1c5ab1db0683b",
+    "tools/web_tools_rescue.py": "5ad5a66172dcf53e009b29434d1be0133da8cb00b395081bf708cf3e96e79dba",
+    "tools/tool_backend_helpers.py": "7b2a05fe911d6a5028d3693094584de52b281ce818bc573207e13a8a9cc6bab5",
+    "agent/provider_registry.py": "7c39ae4f391b00039e14891bc12f621426f801198cc773453a457cd794948b98",
+    "agent/web_search_registry.py": "894a60888a3994d5215ab371c7a997867a59f0a3319350c3c0cccc3b7f963091",
+    "plugins/web/firecrawl/provider.py": "457c834b8be76ca054ac48f6cd44c3d5812a2cc21f18b277e656f52d26318547",
+    "plugins/web/exa/provider.py": "a870ac3e28c5a3a18e06f371d939d70b3b25ff7437f131f219ac5b45615d31f4",
+    "plugins/web/tavily/provider.py": "65ef99bb5b7fb51301cfc78d2bd51a28026fda9222787df30739f58f285164ec",
+    "plugins/web/brave_free/provider.py": "5fc2564df1ab1ae8aea5e1d0e3a9674472176d26778aa19c19e2366e82d99a73",
+    "plugins/web/searxng/provider.py": "37e78daf39cd2d35b6690664eefa2f9ccc17de9a2840513fed2b71ba68bfbac7",
+    "optional-mcps/notion/manifest.yaml": "f8b403fe7d4b28485776dac7ddc0bc05874b307bffbac0a33829ed46744b1518",
+    "optional-mcps/linear/manifest.yaml": "88d93ae81ff175952802a6cca2b72c3f1be5cd113623dae6b53a67823e44770e",
+    "optional-mcps/n8n-official/manifest.yaml": "1647da81bf326925eacff9726662ba240cc6b336d0dd2c08225ae85cc8e93926",
+    "tools/mcp_tool_common.py": "accf82818f7893d9041e43d6746050ff5e75e7c702125d9c2a63450a19f3c086",
+    "tools/mcp_tool_costs.py": "82124b29a1c8db04aec167680f57676d2de2da1b43129ea7045dc663b102542b",
+    "tools/approval_prompt.py": "f1f26fec96e37b17270ecf716bbbea330b997a02d3ab8052a1b74cb5e441cfb3",
+    "agent/web_search_provider.py": "965deba9b467c3fb2959138a8312b58e8a02016a1ac1124bd3c7ca02e1c380ff",
+    "agent/secret_scope.py": "dce64ce99a6966836108e202e1db41c4be97bd3dad41a79e357f39b8d7e90dec",
+    "hermes_cli/mcp_config.py": "bd017489bfbb2769f73572ed6627b67e61838d8af162bf3072cc664d9a31f696"
   },
   "source_patches": [],
   "integration_seams": [
@@ -134,18 +169,28 @@
     "Scoped native browser schemas reuse upstream dynamic helper descriptions without gateway-host installation warnings; fixed capsule parameters never expose host profile consent.",
     "Browser Use wait_for_load retains its native signature and timeout result while observing cross-document Navigation API state, installed with native CDP initialization; waiting never retries a submitted action.",
     "Returned indeterminate native batches retain redacted stdout/stderr and exact operation references for diagnosis; unknown effects remain fenced and replay is refused.",
-    "Multimodal native failure evidence is decoded from the upstream text_summary and Cua action_result, retaining image blocks and model-visible uncertainty; a screenshot cannot turn a partially failed batch into a confirmed effect."
+    "Multimodal native failure evidence is decoded from the upstream text_summary and Cua action_result, retaining image blocks and model-visible uncertainty; a screenshot cannot turn a partially failed batch into a confirmed effect.",
+    "Owner-scoped application journals expand private connection references at the native session MCP seam; native OAuth worker, PKCE, token refresh and scoped registry own transport behavior. Web callback receipts are session-bound and idempotent; obsolete generations cannot commit.",
+    "Native MCP process configuration launches only operator-pinned images as isolated stdio servers; native HTTP retains identity headers, mTLS, sampling, elicitation, cost configuration; experimental events fail closed until thread-bound wake integration is implemented. Native generated resource/prompt/event utility filters honor the same explicit application selection.",
+    "Native MCP backchannel handlers inherit the pending tool call context, owning model and durable execution fences. Scoped shutdown retains the one native MCP loop until global shutdown to avoid a discovery race.",
+    "Direct native web providers use private owner credentials and thread/generation-bound native home and memo caches. Native long-page truncation retains exact source bytes in the isolated workspace and thread artifact store; optional X readiness is independent.",
+    "Native OAuth commit saves only a disabled secret-free profile receipt for product app references; native tokens persist normally and only scoped agent references activate app transport."
   ],
   "optional_extras": [
     "acp",
     "mcp",
-    "anthropic"
+    "anthropic",
+    "firecrawl",
+    "exa"
   ],
   "provider_runtime_distributions": {
     "httpx": "0.28.1",
     "PyJWT": "2.15.1",
     "cryptography": "50.0.1",
-    "openai": "2.24.0"
+    "openai": "2.24.0",
+    "mcp": "2.3.0",
+    "firecrawl-py": "4.17.0",
+    "exa-py": "2.10.2"
   },
   "protocol_runtime_distributions": {
     "anthropic_messages": {

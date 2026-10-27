@@ -232,6 +232,7 @@ def public_api(runtime):
 from fastapi import FastAPI, Request
 from ngertiin.agent_engine.api import router
 from ngertiin.agent_engine.stream import router as streams
+from ngertiin.agent_engine.apps_api import router as apps
 from ngertiin.accounts.auth import current_account
 from ngertiin.models import Account
 from uuid import UUID
@@ -239,6 +240,7 @@ import uvicorn
 app = FastAPI()
 app.include_router(router)
 app.include_router(streams)
+app.include_router(apps)
 def fixture_account(request: Request):
     request.state.auth_session_id = "fixture-session"
     return Account(id=UUID(os.environ["TEST_OWNER"]), clerk_user_id="fixture")

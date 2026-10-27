@@ -42,6 +42,28 @@ def catalog():
         data = json.loads(Path(path).read_text()) if path else {}
         if not isinstance(data, dict):
             raise TypeError
+        if os.environ.get("NMA_OWNER_ID") and os.environ.get("HERMES_HOME"):
+            from ngertiin_engine.app_connections import owner_apps
+
+            additions = owner_apps().catalog()
+            if set(additions) & set(data.get("mcp_grants", {})):
+                raise EngineError("CAPABILITY_UNAVAILABLE")
+            data = {**data, "mcp_grants": {**data.get("mcp_grants", {}), **additions}}
+            from ngertiin_engine.research import owner_research
+
+            tools, surfaces = owner_research().catalog()
+            if set(tools) & set(data.get("tool_grants", {})) or set(surfaces) & set(
+                data.get("execution_surfaces", {})
+            ):
+                raise EngineError("CAPABILITY_UNAVAILABLE")
+            data = {
+                **data,
+                "tool_grants": {**data.get("tool_grants", {}), **tools},
+                "execution_surfaces": {
+                    **data.get("execution_surfaces", {}),
+                    **surfaces,
+                },
+            }
         return data
     except (OSError, ValueError, TypeError):
         raise EngineError("CAPABILITY_UNAVAILABLE") from None
@@ -121,7 +143,14 @@ def resolve(config, *, expected_snapshots=None):
                 else:
                     # Native session-scoped MCP supports these private transport specifications.
                     # A separate private file keeps values out of catalog responses and SQLite.
-                    server = json.loads(Path(entry["server_file"]).read_text())
+                    if entry.get("app_connection_id"):
+                        from ngertiin_engine.app_connections import owner_apps
+
+                        server = owner_apps().specification(
+                            entry["app_connection_id"], entry["generation"]
+                        )
+                    else:
+                        server = json.loads(Path(entry["server_file"]).read_text())
                     from gateway.session_local_mcp import validate_servers
 
                     url = urlsplit(server.get("url", ""))
@@ -173,10 +202,21 @@ def public_catalog():
         field: [
             public_bundle(key, entry, data)
             if field == "tool_grants"
-            else {"id": key, "label": entry.get("label", key)}
+            else {
+                "id": key,
+                "label": entry.get("label", key),
+                "runtime_ready": entry.get("enabled") is True,
+                "reason": None
+                if entry.get("enabled") is True
+                else "configuration_required",
+            }
             for key, entry in data.get(field, {}).items()
             if isinstance(entry, dict)
-            and (field == "tool_grants" or entry.get("enabled") is True)
+            and (
+                field == "tool_grants"
+                or entry.get("enabled") is True
+                or entry.get("app_connection_id")
+            )
         ]
         for field in FIELDS
     }
@@ -231,7 +271,7 @@ def install_dispatch_guard(database, owner):
             and data.get("execution_surfaces", {})
             .get(entry.get("execution_surface"), {})
             .get("kind")
-            == "scoped_linux"
+            in {"scoped_linux", "scoped_research"}
             for name in resolve_toolset(entry["toolset"])
         }
         present = {value["function"]["name"] for value in values}
@@ -281,6 +321,20 @@ def install_dispatch_guard(database, owner):
         except EngineError as exc:
             return json.dumps({"error": exc.code, "outcome": "rejected"})
         if scoped:
+            from ngertiin_engine.research import invoke as invoke_research
+
+            policy = active_policy()
+            placed, value = invoke_research(
+                name,
+                args,
+                policy.config(secrets=False)["nma_capabilities"],
+                database,
+                owner,
+                original_registry,
+                kwargs,
+            )
+            if placed:
+                return redaction.result(value)
             from ngertiin_engine.native_surface import invoke
 
             policy = active_policy()

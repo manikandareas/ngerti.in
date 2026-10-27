@@ -127,6 +127,7 @@ class Model(BaseHTTPRequestHandler):
         reason = "tool_calls" if tool else "stop"
         response = {
             "id": "local",
+            "model": body.get("model", "test-model"),
             "choices": [{"index": 0, "message": message, "finish_reason": reason}],
             "usage": {"prompt_tokens": 10, "completion_tokens": 5, "total_tokens": 15},
         }

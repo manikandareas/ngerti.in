@@ -9,8 +9,8 @@ from ngertiin_engine.redaction import remember
 
 
 class Vault:
-    def __init__(self, home, owner):
-        self.root, self.owner = Path(home) / "provider-secrets", uuid(owner)
+    def __init__(self, home, owner, *, directory="provider-secrets"):
+        self.root, self.owner = Path(home) / directory, uuid(owner)
         if self.root.is_symlink():
             raise EngineError("CREDENTIAL_UNAVAILABLE")
         self.root.mkdir(mode=0o700, exist_ok=True)
@@ -48,6 +48,13 @@ class Vault:
 
     @staticmethod
     def remember(value):
-        for key in ("access_token", "refresh_token", "id_token", "api_key", "verifier"):
+        for key in (
+            "access_token",
+            "refresh_token",
+            "id_token",
+            "api_key",
+            "verifier",
+            "oauth_client_secret",
+        ):
             if value.get(key):
                 remember({"headers": [{"value": value[key]}]})

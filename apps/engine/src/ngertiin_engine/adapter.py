@@ -52,6 +52,12 @@ class Adapter:
         from ngertiin_engine.provider_transport import ProviderTransport
 
         self.connections = Connections(self.store)
+        from ngertiin_engine.app_auth import AppAuth
+        from ngertiin_engine.app_connections import AppConnections
+
+        self.apps = AppConnections(self.connections.home, self.owner)
+        self.apps.recover_processes()
+        self.app_auth = AppAuth(self.apps)
         self.connections.import_bootstrap(models or {})
         self.agents = Agents(self.store, self.connections.catalog())
         self.provider_transport = ProviderTransport(self.connections)
@@ -169,11 +175,14 @@ class Adapter:
         if not selected_model:
             raise EngineError("MODEL_UNAVAILABLE")
         inference_snapshot = None
-        if "inference" in selected["config"]:
+        if "inference" in selected["config"] or any(
+            grant.startswith("app_")
+            for grant in selected["config"].get("mcp_grants", [])
+        ):
             from ngertiin_engine.inference_config import validate as validate_inference
 
             inference_snapshot = validate_inference(
-                selected["config"]["inference"],
+                selected["config"].get("inference", {}),
                 self.agents.models,
                 selected["config"]["model"],
             )
@@ -432,6 +441,71 @@ class Adapter:
             raise EngineError("INVALID_REQUEST")
         return await asyncio.to_thread(methods[kind], payload)
 
+    async def app_command(self, kind, payload):
+        from ngertiin_engine.app_runtime import discover
+
+        if kind in {"app.interactions", "app.answer"}:
+            from ngertiin_engine import app_interactions
+
+            if kind == "app.interactions" and not payload:
+                return await asyncio.to_thread(app_interactions.listing)
+            if kind == "app.answer":
+                return await asyncio.to_thread(app_interactions.answer, payload)
+            raise EngineError("INVALID_REQUEST")
+
+        if kind.startswith("research."):
+            from ngertiin_engine.research import owner_research
+
+            research = owner_research()
+            if kind == "research.list" and not payload:
+                return research.listing()
+            if kind == "research.configure":
+                return await asyncio.to_thread(research.configure, payload)
+            if kind == "research.disconnect" and not payload:
+                return await asyncio.to_thread(research.disconnect)
+            raise EngineError("INVALID_REQUEST")
+
+        if kind == "app.list":
+            if payload:
+                raise EngineError("INVALID_REQUEST")
+            return self.apps.listing()
+        if kind == "app.configure":
+            result = await asyncio.to_thread(self.apps.configure, payload)
+            self._fence_app(result["grant_id"])
+            return result
+        if kind == "app.select_tools":
+            result = await asyncio.to_thread(self.apps.select_tools, payload)
+            self._fence_app(result["grant_id"])
+            return result
+        if kind in {"app.disconnect", "app.discover"}:
+            identity = self._connection_identity(payload)
+            if kind == "app.disconnect":
+                result = await asyncio.to_thread(self.apps.disconnect, identity)
+                self._fence_app(result["grant_id"])
+                return result
+            generation = self.apps.read(identity)["metadata"]["generation"]
+            return await asyncio.to_thread(discover, self.apps, identity, generation)
+        methods = {
+            "app_auth.start": self.app_auth.start,
+            "app_auth.status": self.app_auth.status,
+            "app_auth.callback": self.app_auth.callback,
+            "app_auth.cancel": lambda p: self.app_auth.status(p, cancel=True),
+        }
+        if kind not in methods:
+            raise EngineError("INVALID_REQUEST")
+        return await asyncio.to_thread(methods[kind], payload)
+
+    def _fence_app(self, grant):
+        def fence(conn):
+            for agent_id, config in conn.execute(
+                "SELECT a.agent_id,c.config FROM nma_agents a JOIN nma_agent_configs c ON c.owner_id=a.owner_id AND c.agent_id=a.agent_id AND c.config_revision=a.config_revision WHERE a.owner_id=?",
+                (self.owner,),
+            ).fetchall():
+                if grant in json.loads(config).get("mcp_grants", []):
+                    self.agents.fence(conn, agent_id)
+
+        self.store.write(fence)
+
     @staticmethod
     def _invalid_provider_request():
         raise EngineError("INVALID_REQUEST")
@@ -473,6 +547,10 @@ class Adapter:
             if kind == "session.inspect":
                 return await controls.inspect(payload)
             return await controls.mutate(body)
+        if kind.startswith(("app.", "app_auth.", "research.")):
+            if body["expected_revision"] is not None:
+                raise EngineError("INVALID_REQUEST")
+            return await self.app_command(kind, payload)
         if kind.startswith(("connection.", "provider_auth.")):
             # Secret-bearing commands never enter the generic command/event journal.
             return await self.provider_command(kind, payload)
@@ -615,6 +693,20 @@ class Adapter:
                 "extension_schema": "16",
                 "lifecycle": "ready",
                 "capabilities": [
+                    "app.list",
+                    "app.configure",
+                    "app.discover",
+                    "app.select_tools",
+                    "app.disconnect",
+                    "app_auth.start",
+                    "app_auth.status",
+                    "app_auth.callback",
+                    "app_auth.cancel",
+                    "app.interactions",
+                    "app.answer",
+                    "research.list",
+                    "research.configure",
+                    "research.disconnect",
                     "connection.list",
                     "connection.add_key",
                     "connection.models",

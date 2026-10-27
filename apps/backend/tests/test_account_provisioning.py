@@ -62,7 +62,9 @@ class AccountProvisioning(unittest.IsolatedAsyncioTestCase):
                 "NMA_PARTITIONS_FILE": cls.tmp.name + "/partitions.json",
                 "NMA_STATE_ROOT": cls.tmp.name + "/s",
                 "HERMES_SOURCE": str(ROOT / ".dev/nma-001/source"),
-                "NMA_RUNTIME_PYTHON": str(ROOT / ".dev/nma-006-closure/production/bin/python"),
+                "NMA_RUNTIME_PYTHON": os.environ.get(
+                    "NMA_TEST_RUNTIME_PYTHON", str(ROOT / ".dev/nma-033/production/bin/python")
+                ),
                 "OPENAI_API_KEY": "disposable-no-provider-call",
                 "OPENAI_MODEL": "test-model",
                 "OPENAI_BASE_URL": "http://127.0.0.1:1/v1",

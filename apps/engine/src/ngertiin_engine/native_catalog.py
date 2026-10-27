@@ -56,7 +56,10 @@ def inspect_bundle(key, entry, data, visiting=()):
         if not isinstance(spec, dict) or spec.get("ready") is not True:
             raise EngineError(
                 "CAPABILITY_UNAVAILABLE",
-                {"capability": key, "reason": "execution_surface_required"},
+                {
+                    "capability": key,
+                    "reason": spec.get("reason", "execution_surface_required"),
+                },
             )
         surface_spec = spec
         if spec.get("kind") == "scoped_linux":
@@ -79,6 +82,11 @@ def inspect_bundle(key, entry, data, visiting=()):
                         "CAPABILITY_UNAVAILABLE",
                         {"capability": key, "reason": "isolated_display_required"},
                     )
+        elif spec.get("kind") == "scoped_research":
+            if not set(names) <= {"web_search", "web_extract", "x_search"}:
+                raise EngineError(
+                    "CAPABILITY_UNAVAILABLE", {"reason": "excluded_surface"}
+                )
         elif spec.get("kind") != "trusted_plugin" or not entry.get("plugin"):
             raise EngineError(
                 "CAPABILITY_UNAVAILABLE",
@@ -114,7 +122,7 @@ def inspect_bundle(key, entry, data, visiting=()):
 
     for variable in required_env:
         remember({"api_key": os.environ.get(variable)})
-    if surface_spec.get("kind") != "scoped_linux" and any(
+    if surface_spec.get("kind") not in {"scoped_linux", "scoped_research"} and any(
         not os.environ.get(v) for v in required_env
     ):
         raise EngineError(
@@ -126,7 +134,7 @@ def inspect_bundle(key, entry, data, visiting=()):
             {"type": "function", "function": {**e.schema, "name": e.name}}
             for e in entries
         ]
-        if surface_spec.get("kind") == "scoped_linux"
+        if surface_spec.get("kind") in {"scoped_linux", "scoped_research"}
         else registry.get_definitions(set(names), quiet=True)
     )
     if len(definitions) != len(names):

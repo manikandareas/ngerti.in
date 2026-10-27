@@ -136,6 +136,33 @@ class AgentEngineHTTP(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(response.status_code, 422)
         self.assertNotIn(canary, response.text)
 
+    async def test_app_configuration_and_callback_validation_never_echo_secrets(self):
+        from fastapi.exceptions import RequestValidationError
+
+        from ngertiin.agent_engine.apps_api import router as app_router
+        from ngertiin.api.app import validation_failure
+
+        self.app.include_router(app_router)
+        self.app.add_exception_handler(RequestValidationError, validation_failure)
+        canary = "app-secret-input-canary-" * 1000
+        for path, body in [
+            (
+                "/api/agent-engine/v1/apps",
+                {
+                    "connection_id": str(uuid4()),
+                    "application": "github",
+                    "label": "Private",
+                    "api_key": canary,
+                },
+            ),
+            (f"/api/agent-engine/v1/apps/auth/{uuid4()}/callback", {"callback_url": canary}),
+        ]:
+            response = await self.client.post(path, json=body)
+            self.assertEqual(response.status_code, 422)
+            self.assertNotIn(canary, response.text)
+            self.assertEqual(response.json()["detail"]["code"], "INVALID_REQUEST")
+        self.assertEqual(self.envelopes, [])
+
     async def test_read_signs_verified_owner_and_canonical_body(self):
         response = await self.client.get("/api/agent-engine/v1/agents")
         self.assertEqual(response.status_code, 200)

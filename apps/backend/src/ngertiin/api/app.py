@@ -17,6 +17,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from ngertiin.accounts.auth import current_account
 from ngertiin.accounts.webhooks import router as account_webhook_router
 from ngertiin.agent_engine.api import router as agent_engine_router
+from ngertiin.agent_engine.apps_api import router as app_connections_router
 from ngertiin.agent_engine.conversations import router as conversation_router
 from ngertiin.agent_engine.recovery import ensure_database_released
 from ngertiin.agent_engine.stream import router as agent_stream_router
@@ -47,6 +48,7 @@ app = FastAPI(
 app.include_router(account_webhook_router)
 app.include_router(conversation_router)
 app.include_router(agent_engine_router)
+app.include_router(app_connections_router)
 app.include_router(agent_stream_router)
 app.include_router(billing_router)
 app.add_middleware(
@@ -62,7 +64,11 @@ app.add_middleware(
 @app.exception_handler(RequestValidationError)
 async def validation_failure(request: Request, error: RequestValidationError):
     if request.url.path.startswith(
-        ("/api/agent-engine/v1/connections", "/api/agent-engine/v1/provider-auth")
+        (
+            "/api/agent-engine/v1/connections",
+            "/api/agent-engine/v1/provider-auth",
+            "/api/agent-engine/v1/apps",
+        )
     ):
         # Validation errors must not echo secret-bearing input or callback bodies.
         return JSONResponse(

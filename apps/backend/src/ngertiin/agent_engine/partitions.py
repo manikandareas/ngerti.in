@@ -220,7 +220,7 @@ class Partitions:
 def local_configuration(owner, home, env):
     source = Path(env.get("HERMES_SOURCE", ROOT / ".dev/nma-001/source")).resolve()
     python = Path(
-        env.get("NMA_RUNTIME_PYTHON", ROOT / ".dev/nma-040/production/bin/python")
+        env.get("NMA_RUNTIME_PYTHON", ROOT / ".dev/nma-033/production/bin/python")
     ).absolute()
     if not python.is_file() or not (source / "gateway/run.py").is_file():
         raise ProvisioningError("PINNED_RUNTIME_REQUIRED")
@@ -303,6 +303,12 @@ def local_configuration(owner, home, env):
                     "enabled": bool(env.get("NMA_NATIVE_TOOLS_IMAGE")),
                     "label": "Isolated terminal",
                     "toolset": "terminal",
+                    "execution_surface": "native_linux",
+                },
+                "native_files": {
+                    "enabled": bool(env.get("NMA_NATIVE_TOOLS_IMAGE")),
+                    "label": "Native file tools",
+                    "toolset": "file",
                     "execution_surface": "native_linux",
                 },
                 "desktop": {

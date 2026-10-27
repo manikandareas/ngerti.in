@@ -64,6 +64,11 @@ def install(database, owner):
     )
 
     redaction.install()
+    from ngertiin_engine import app_interactions, app_runtime, research
+
+    app_runtime.install()
+    research.install()
+    app_interactions.install()
     browser_vault.install()
     capabilities.install_dispatch_guard(database, owner)
     capabilities.install_discovery_guard()
@@ -83,3 +88,6 @@ def install_runner(runner, owner):
     from ngertiin_engine.reliability import install as install_reliability
 
     install_reliability(runner, owner)
+    from ngertiin_engine.app_interactions import attach
+
+    attach(runner, owner)

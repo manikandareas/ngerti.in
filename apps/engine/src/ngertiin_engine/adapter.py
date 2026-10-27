@@ -188,13 +188,13 @@ class Adapter:
             )
         key = digest(
             [
-                "native-context-v2",
+                "native-learning-v1",
                 [payload[k] for k in fields],
                 selected_model,
                 inference_snapshot,
             ]
             if inference_snapshot is not None
-            else ["native-context-v2", [payload[k] for k in fields], selected_model]
+            else ["native-learning-v1", [payload[k] for k in fields], selected_model]
         )
         if key not in self.bindings:
             agent = self.store.write(
@@ -233,9 +233,7 @@ class Adapter:
                 },
                 "persona": compose(
                     agent["display_name"], agent["handle"], agent["config"]
-                )
-                + "\n\n"
-                + "\n\n".join(capabilities["skills"]),
+                ),
                 "access_generation": agent["access_generation"],
                 "session": raw.get("session", {}),
                 **(
@@ -244,6 +242,14 @@ class Adapter:
                     else {}
                 ),
             }
+            if not self.store.write(
+                lambda conn: conn.execute(
+                    "SELECT 1 FROM nma_threads WHERE owner_id=? AND thread_id=?",
+                    (self.owner, payload["thread_id"]),
+                ).fetchone()
+            ):
+                # Private foundation probes have no product learning namespace.
+                config["persona"] += "\n\n" + "\n\n".join(capabilities["skills"])
             self.store.write(
                 lambda conn: conn.execute(
                     "INSERT INTO nma_adapter_bindings VALUES (?,?,?,?,NULL)",
@@ -335,6 +341,10 @@ class Adapter:
         )
         if registered:
             params["ignore_rules"] = True
+            # Native detached review forks have no product admission/credential
+            # lease. Learning runs through this admitted agent's scoped tools;
+            # deterministic maintenance belongs to the gateway housekeeping chore.
+            frozen["auxiliary"]["background_review"] = {"enabled": False}
             frozen["nma_persona"] = True
             frozen["nma_context"] = {
                 field: config[field]
@@ -632,6 +642,15 @@ class Adapter:
             if body["expected_revision"] is not None:
                 raise EngineError("INVALID_REQUEST")
             return self.context.read(payload)
+        if kind.startswith("learning."):
+            from ngertiin_engine.learning import Learning
+
+            result = await asyncio.to_thread(
+                Learning(self.store, self.threads).command, body
+            )
+            if kind == "learning.memory":
+                await self.cancel_stale_contexts()
+            return result
         if kind in {"member.add", "member.remove"}:
             result = self.threads.membership(body)
             await self.cancel_stale_contexts()
@@ -690,7 +709,7 @@ class Adapter:
             return {
                 "schema_version": "nma.v1",
                 "authority_epoch": str(self.authority.epoch),
-                "extension_schema": "16",
+                "extension_schema": "17",
                 "lifecycle": "ready",
                 "capabilities": [
                     "app.list",

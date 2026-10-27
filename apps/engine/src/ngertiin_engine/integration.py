@@ -73,6 +73,9 @@ def install(database, owner):
     capabilities.install_dispatch_guard(database, owner)
     capabilities.install_discovery_guard()
     goals.install()
+    from ngertiin_engine import learning
+
+    learning.install()
     artifacts.install()
     coding.install()
     screens.install()

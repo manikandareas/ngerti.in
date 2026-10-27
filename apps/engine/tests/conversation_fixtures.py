@@ -6,9 +6,10 @@ from uuid import uuid4
 
 def drop_conversation_schema(db):
     from ngertiin_engine.files import DDL
+    from ngertiin_engine.learning_store import DDL as LEARNING_DDL
 
     # A predecessor fixture must also remove every later additive extension.
-    for statement in reversed(DDL):
+    for statement in reversed((*DDL, *LEARNING_DDL)):
         db.execute("DROP TABLE IF EXISTS " + statement.split()[2])
     for table in (
         "nma_goal_unit_outcomes",

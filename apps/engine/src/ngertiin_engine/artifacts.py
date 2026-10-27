@@ -106,6 +106,18 @@ class Artifacts:
             try:
                 return file_tool(self.store, stamp, args, ids)
             except (EngineError, ValueError, RuntimeError) as exc:
+                if isinstance(exc, EngineError) and exc.code in {
+                    "WORKSPACE_FILE_UNAVAILABLE",
+                    "WORKSPACE_RUNTIME_UNAVAILABLE",
+                }:
+                    return canonical(
+                        {
+                            "error": exc.code,
+                            "details": exc.details,
+                            "outcome": "rejected",
+                            "dispatched": False,
+                        }
+                    )
                 return canonical(
                     {
                         "error": exc.code

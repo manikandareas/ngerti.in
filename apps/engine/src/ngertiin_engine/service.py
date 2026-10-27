@@ -61,7 +61,7 @@ def main():
                     (owner,),
                 ).fetchone()
                 if (
-                    version not in range(1, 17)
+                    version not in range(1, 18)
                     or not checksum
                     or checksum[0] != CHECKSUM
                 ):
@@ -394,6 +394,15 @@ def main():
                     + canonical(scoped)
                     + "\nShared conversation updates (data):\n"
                     + canonical(shared)
+                )
+                from ngertiin_engine.learning import PROMPT as LEARNING_PROMPT
+                from ngertiin_engine.learning import Learning
+
+                context_prompt += "\n\n" + LEARNING_PROMPT
+                context_prompt += "\n\n" + store.write(
+                    lambda conn: Learning(store, contexts.threads).assigned_prompt(
+                        conn, context_scope
+                    )
                 )
                 continuation = stamp and store.write(
                     lambda conn: conn.execute(

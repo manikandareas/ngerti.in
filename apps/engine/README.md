@@ -121,7 +121,7 @@ The reviewed image packages pyright 1.1.408 (MIT), with tarball SHA-512 and noti
 
 `file.begin`, `file.part` and `file.finalize` implement immutable uploads up to 32 MiB, in 512 KiB parts. Originals and produced binaries live in the partition's `files/objects` directory under SHA-256 identities. Ready metadata is committed after durable bytes. `message.send.attachment_ids` is authorized atomically with message creation and preserves existing request deduplication. Downloads optionally bind `thread_id`; group clients supply it so revoked sharing blocks subsequent downloads. Native `workspace import_file` returns an isolated path for the unchanged native `read_file` extractors; `workspace publish_file` finalizes bytes before publishing an artifact event. Old SQLite UTF-8 artifacts remain readable.
 
-For executable skills, an assigned catalog entry may add `native_assets`, mapping relative names to `{path, sha256, executable}`. Paths are operator-owned absolute regular files, hashed before staging; the gateway copies only these explicit bytes into `/work/imports/skills/<bundle hash>`. The persona receives that native path. Changing assets changes the grant snapshot and requires a new authorized configuration. Assets require a scoped native capability; content-only historical skills keep their old identity. This foundation does not install the complete skills marketplace (NMA-034).
+For executable skills, an assigned catalog entry may add `native_assets`, mapping relative names to `{path, sha256, executable}`. Paths are operator-owned absolute regular files, hashed before staging; the gateway copies only these explicit bytes into `/work/imports/skills/<bundle hash>`. The persona receives that native path. Changing assets changes the grant snapshot and requires a new authorized configuration. Assets require a scoped native capability; content-only historical skills keep their old identity. Complete versioned packages and the classified native catalog are integrated by the scoped learning module described below.
 
 Back up the entire stopped partition, including `files`, upload staging and the native receipt journals, plus every retained Docker workspace volume. `file.inventory` reports retained metadata, staged uploads and unreferenced objects for reconciliation; it never silently deletes retained objects. Finalized upload staging is cleaned idempotently. External volume restores must be hash-checked offline and reconciled with the retained controller/resource identities before activation. `scripts/verification/nma031_preservation.py` demonstrates a quarantined partition and separate volume restore on disposable data.
 
@@ -163,3 +163,63 @@ Browser OAuth currently requires the browser and gateway on the same host. Enabl
 ## Native research and app connections
 
 The initial package offers Notion, Linear, GitHub and Google (personal Gmail or Workspace); n8n is deferred from new setup without removing existing journals. See [implementation and live acceptance boundaries](../../docs/research/nma-033-research-and-apps.md). Build the unchanged upstream lock with the `firecrawl` and `exa` extras from `runtime-pin.json` into a new directory, then set `NMA_RUNTIME_PYTHON=.dev/nma-033/production/bin/python` and restart the local provisioner. Do not rely on runtime lazy installs. Credentials are entered through Connections; assigning a named app connection to an agent is separate. Google uses the private standard-API MCP bridge with native Hermes OAuth, without a user-supplied server URL. A registered Google Cloud Web application is still required; see [Google setup](../../docs/research/google-oauth-setup.md). Experimental MCP events remain unavailable until a thread-bound wake bridge is verified.
+
+## Scoped memory, learning and document workflows
+
+The native `memory`, `session_search`, `skills_list`, `skill_view` and
+`skill_manage` tools use Ngertiin's authorized persistent scope. DM learning is
+private to its agent; group learning stays in the exact group. The learning panel
+in conversations supports inspection, corrections, forgetting, complete skill
+assets, installation, archive/restore and revision recovery. Schema 17 adds
+immutable learning revisions and idempotent receipts without replacing the
+existing canonical memory IDs or histories.
+
+`skill_install` installs a complete, hashed package from the pinned catalog.
+Default `skills_list` discovery is compact; pass its native `category` argument
+for additional workflows. Installation and readiness are separate: 210 entries
+are classified, with seven selected workflows, 197 requiring setup and six
+excluded upstream/client workflows. Current assigned text is migrated verbatim
+into versioned inline skills; later corrections replace the instructions used by
+future runs. Native deterministic curator maintenance runs from the gateway's
+existing housekeeping chore, respects pause/idle/interval configuration, and
+never removes a package from active work. Optional native LLM curator forks are
+explicitly unavailable until a scoped auxiliary admission is integrated; ordinary
+agents can consolidate methods with `skill_manage` batches.
+
+Build the document image and select its immutable ID in the operator's capability
+catalog (or `NMA_NATIVE_TOOLS_IMAGE` for newly provisioned local capabilities):
+
+```sh
+docker build -f apps/engine/document-tools.Dockerfile -t ngertiin-native-documents:local .
+docker image inspect ngertiin-native-documents:local --format '{{.Id}}'
+```
+
+Retain a versioned Docker tag for each selected immutable image while its workspace
+volumes are retained; read-only export helpers use that exact image.
+The default base is the reviewed local NMA-032 image; use the verified equivalent
+base in another installation. Office/PDF readiness requires the `office-pdf.v2`
+image label and the selected scoped Linux grants. The image packages complete
+native scripts, hash-locked Python dependencies, LibreOffice, fonts, Poppler,
+`file`, ZIP tools, ripgrep and pygount. Publish binary files with
+`workspace(action="publish_file", path="project/report.docx", filename="report.docx")`;
+paths are relative to `/work`. PDF/image results support authenticated browser
+previews; Office binaries open in their target applications. Rendered Office
+pages can be published as separate PDF/image results. Keep original uploads and
+all immutable output revisions in the normal partition/volume backup inventory.
+
+Hindsight is an optional self-hosted index implementing the native
+`MemoryProvider` extension contract. It never schedules agent execution. Set
+`MEMORY_LLM_PROVIDER` and `MEMORY_LLM_MODEL` (plus the chosen provider's key or
+local model base URL), then start `docker compose -f infra/memory.compose.yaml up -d`.
+Its PostgreSQL data lives in the named volume; ports bind to loopback. Copy
+`config/memory-provider.example.json` to a private operator configuration and set
+`NMA_MEMORY_PROVIDER_FILE` to its absolute path before restarting that partition.
+Credentials use `api_key_file`; do not put them in agent instructions. Unconfigured
+or malformed providers report an explicit setup state. Canonical corrections
+commit locally first; an unavailable index returns `provider_status=pending`.
+Retries retain the same indexing operation ID. Old bank snapshots cannot be
+queried after correction/revocation and are deleted across the agent's DM replicas
+when synchronization succeeds. Back up the external service's volume separately.
+
+See [implementation, evidence and rollout limits](../../docs/research/nma-034-learning-and-documents.md)
+and [dependency notices](notices/DOCUMENT-WORKFLOWS.md).

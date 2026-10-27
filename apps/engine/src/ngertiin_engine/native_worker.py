@@ -147,7 +147,12 @@ def dispatch(request):
             else page(request["arguments"], request["task_id"])
         )
         return {"native_result": json.dumps(value), "outcome": "returned"}
-    if request["native_name"] in {"_nma_file", "_nma_status", "_nma_reference"}:
+    if request["native_name"] in {
+        "_nma_file",
+        "_nma_skill_files",
+        "_nma_status",
+        "_nma_reference",
+    }:
         if (
             request["native_name"] not in request["allowed_tools"]
             or request["schema_hash"] != "nma.workspace.v1"
@@ -155,6 +160,11 @@ def dispatch(request):
             raise ValueError("Invalid internal workspace authorization")
         if request["native_name"] == "_nma_file":
             value = transfer(request["arguments"])
+        elif request["native_name"] == "_nma_skill_files":
+            files = request["arguments"].get("files", [])
+            if not 1 <= len(files) <= 256:
+                raise ValueError("Invalid skill package batch")
+            value = {"files": [transfer(item) for item in files]}
         elif request["native_name"] == "_nma_reference":
             from ngertiin_engine.coding import reference
 

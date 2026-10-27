@@ -149,9 +149,11 @@ class Context:
         self.transcript.reconcile()
         return self.store.write(lambda conn: self.retrieve(conn, **payload))
 
-    def invalidate(self, conn, thread_ids):
+    def invalidate(self, conn, thread_ids, *, completing_run_id=None):
         for thread_id in set(thread_ids):
-            fence_context_runs(conn, self.store.owner, thread_id)
+            fence_context_runs(
+                conn, self.store.owner, thread_id, completing_run_id=completing_run_id
+            )
             conn.execute(
                 "UPDATE nma_threads SET context_generation=context_generation+1,revision=revision+1,updated_at=? WHERE owner_id=? AND thread_id=?",
                 (now(), self.store.owner, thread_id),
@@ -172,7 +174,23 @@ class Context:
                 return json.loads(prior[1])
             conn.execute("SAVEPOINT context_mutation")
             try:
+                from ngertiin_engine.learning_store import snapshot_memory
+
+                if body["type"] == "memory.delete":
+                    snapshot_memory(
+                        conn,
+                        self,
+                        self.memory(conn, body["payload"]["memory_id"]),
+                        body["command_id"],
+                    )
                 result = self.apply(conn, body)
+                if body["type"] in {"memory.create", "memory.delete"}:
+                    snapshot_memory(
+                        conn,
+                        self,
+                        self.memory(conn, result["memory_id"]),
+                        body["command_id"],
+                    )
                 seq = next_sequence(conn, self.store.owner)
                 result = {
                     "schema_version": "nma.v1",
@@ -403,8 +421,8 @@ def authorize_context(policy, database, owner, native_session_id=None):
     return {key: marker[key] for key in ("agent_id", "thread_id", "context_generation")}
 
 
-def fence_context_runs(conn, owner, thread_id):
+def fence_context_runs(conn, owner, thread_id, *, completing_run_id=None):
     conn.execute(
-        "INSERT OR IGNORE INTO nma_context_run_fences SELECT r.owner_id,r.run_id,? FROM nma_adapter_runs r JOIN nma_adapter_bindings b ON b.owner_id=r.owner_id AND b.binding_id=r.binding_id LEFT JOIN session_admissions n ON n.admission_id=r.native_admission_id WHERE r.owner_id=? AND json_extract(b.config,'$.thread_id')=? AND (n.status IS NULL OR n.status!='terminal')",
-        (thread_id, owner, thread_id),
+        "INSERT OR IGNORE INTO nma_context_run_fences SELECT r.owner_id,r.run_id,? FROM nma_adapter_runs r JOIN nma_adapter_bindings b ON b.owner_id=r.owner_id AND b.binding_id=r.binding_id LEFT JOIN session_admissions n ON n.admission_id=r.native_admission_id WHERE r.owner_id=? AND json_extract(b.config,'$.thread_id')=? AND (n.status IS NULL OR n.status!='terminal') AND (? IS NULL OR r.run_id<>?)",
+        (thread_id, owner, thread_id, completing_run_id, completing_run_id),
     )

@@ -167,6 +167,9 @@ def invoke(name, arguments, marker, database, owner):
 
             return True, vault_invoke(arguments, broker, scope, reauthorize)
         stage(marker, broker, scope, reauthorize)
+        from ngertiin_engine.learning_assets import stage as stage_learning
+
+        stage_learning(context, broker, scope, reauthorize)
         value = broker.invoke(
             scope,
             operation,

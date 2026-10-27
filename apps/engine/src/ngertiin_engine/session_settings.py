@@ -92,6 +92,10 @@ def install():
 
                 if _settings.get() is not None:
                     frozen["web"] = _settings.get()
+                from ngertiin_engine.skill_packages import settings
+
+                if settings.get() is not None:
+                    frozen["skills"] = settings.get()
                 return frozen
         return original()
 

@@ -100,6 +100,9 @@ class IsolatedTools:
             "image", "inspect", image, "--format", "{{.Id}}"
         ).strip()
         image_info = json.loads(self._docker("image", "inspect", self.image))[0]
+        self.skill_batches = image_info["Config"].get("Labels", {}).get(
+            "org.ngertiin.native.documents"
+        ) in {"office-pdf.v1", "office-pdf.v2"}
         self.desktop = (
             image_info["Config"].get("Labels", {}).get("org.ngertiin.native.desktop")
             == "x11-cua.v1"

@@ -21,6 +21,7 @@ from ngertiin_engine.discussions import DDL as DISCUSSION_DDL
 from ngertiin_engine.files import DDL as FILE_DDL
 from ngertiin_engine.goal_lifecycle import DDL as LIFECYCLE_DDL
 from ngertiin_engine.goals import DDL as GOAL_DDL
+from ngertiin_engine.learning_store import DDL as LEARNING_DDL
 from ngertiin_engine.outcomes import DDL as OUTCOME_DDL
 from ngertiin_engine.reliability import DDL as RELIABILITY_DDL
 from ngertiin_engine.threads import DDL as THREAD_DDL
@@ -38,6 +39,7 @@ DDL = (
 )
 OUTCOME_CHECKSUM = hashlib.sha256("\n".join(OUTCOME_DDL).encode()).hexdigest()
 FILE_CHECKSUM = hashlib.sha256("\n".join(FILE_DDL).encode()).hexdigest()
+LEARNING_CHECKSUM = hashlib.sha256("\n".join(LEARNING_DDL).encode()).hexdigest()
 CONNECTION_CHECKSUM = hashlib.sha256("\n".join(CONNECTION_DDL).encode()).hexdigest()
 CONVERSATION_CHECKSUM = hashlib.sha256("\n".join(CONVERSATION_DDL).encode()).hexdigest()
 DISCUSSION_CHECKSUM = hashlib.sha256("\n".join(DISCUSSION_DDL).encode()).hexdigest()
@@ -102,7 +104,7 @@ class Store:
                 "SELECT checksum FROM nma_schema_migrations WHERE owner_id=? AND version=1",
                 (self.owner,),
             ).fetchone()
-            if rows[0][2] not in range(1, 17) or not saved or saved[0] != CHECKSUM:
+            if rows[0][2] not in range(1, 18) or not saved or saved[0] != CHECKSUM:
                 raise EngineError("UNSUPPORTED_SCHEMA")
             if rows[0][1] > self.authority.epoch:
                 raise EngineError("AUTHORITY_LOST")
@@ -421,6 +423,25 @@ class Store:
             )
             conn.execute("UPDATE nma_partition SET schema_version=16")
         elif saved[0] != FILE_CHECKSUM:
+            raise EngineError("UNSUPPORTED_SCHEMA")
+
+        saved = conn.execute(
+            "SELECT checksum FROM nma_schema_migrations WHERE owner_id=? AND version=17",
+            (self.owner,),
+        ).fetchone()
+        if not saved:
+            for statement in LEARNING_DDL:
+                conn.execute(statement)
+            from ngertiin_engine.context import Context
+            from ngertiin_engine.learning_store import backfill_memory
+
+            backfill_memory(conn, Context(self, None))
+            conn.execute(
+                "INSERT INTO nma_schema_migrations(owner_id,version,checksum) VALUES (?,17,?)",
+                (self.owner, LEARNING_CHECKSUM),
+            )
+            conn.execute("UPDATE nma_partition SET schema_version=17")
+        elif saved[0] != LEARNING_CHECKSUM:
             raise EngineError("UNSUPPORTED_SCHEMA")
 
     def receipt(self, body):

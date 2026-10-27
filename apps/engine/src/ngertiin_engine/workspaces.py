@@ -166,7 +166,26 @@ def file_tool(store, stamp, args, ids):
 
         filename(args["filename"])
         broker.ensure(scope)
-        data = broker.file_bytes(scope, args["path"])
+        try:
+            data = broker.file_bytes(scope, args["path"])
+        except (RuntimeError, ValueError, OSError) as exc:
+            # Reading has no publication effect. A missing/invalid source is a
+            # repairable pre-publication refusal, never an unknown delivery.
+            if isinstance(exc, RuntimeError) and "Invalid scoped artifact" not in str(
+                exc
+            ):
+                raise EngineError(
+                    "WORKSPACE_RUNTIME_UNAVAILABLE",
+                    {
+                        "repair": "Check the workspace runtime and reinstall its exact immutable image before exporting files"
+                    },
+                ) from None
+            raise EngineError(
+                "WORKSPACE_FILE_UNAVAILABLE",
+                {
+                    "repair": "Use a file path relative to /work, for example project/report.docx"
+                },
+            ) from None
 
         def publish(conn):
             check(conn)

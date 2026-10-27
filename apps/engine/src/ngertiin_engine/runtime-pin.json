@@ -137,7 +137,25 @@
     "tools/approval_prompt.py": "f1f26fec96e37b17270ecf716bbbea330b997a02d3ab8052a1b74cb5e441cfb3",
     "agent/web_search_provider.py": "965deba9b467c3fb2959138a8312b58e8a02016a1ac1124bd3c7ca02e1c380ff",
     "agent/secret_scope.py": "dce64ce99a6966836108e202e1db41c4be97bd3dad41a79e357f39b8d7e90dec",
-    "hermes_cli/mcp_config.py": "bd017489bfbb2769f73572ed6627b67e61838d8af162bf3072cc664d9a31f696"
+    "hermes_cli/mcp_config.py": "bd017489bfbb2769f73572ed6627b67e61838d8af162bf3072cc664d9a31f696",
+    "agent/inline_tool_executors.py": "6d48a7d3af3e154db28e4cb48c4b09e0a4a0d9f976a0b25556f91840690482b3",
+    "agent/memory_provider.py": "ac81dcf489c698891f0edebfe26845a75c50d2bde77ec3be8d7938a85c79f1fc",
+    "agent/skill_utils.py": "cb1996a2ef7f52f075f1a45fa64eee4ea9f332b9910da4ecc123ce0ead79fb46",
+    "agent/curator.py": "fde73780c9b72336b0d6e67fb984f9b1506c624037376902972a7c4d3d1e9a6b",
+    "tools/memory_tool.py": "3ac1975d5d34a8e0fd20ea538aa084fc48c5ba21e8b2da4f97f58a7bf3cafaab",
+    "tools/memory_tool_store.py": "3280e2294928815ab2dd52479c5616aee805e27819b901f9af40831a293728c6",
+    "tools/session_search_tool.py": "8ed4f3e49c70cc0723254f8dc81eaf8ea69733a22c32c1a45740717ab8cc6ee8",
+    "tools/skills_tool.py": "f75e1047efba2640daefa2f03b897db12ac74890792621151ed9fbfd974176b8",
+    "tools/skill_manager_tool.py": "131d3720957659c37addd27430693d5d0b7dec0b5176a83b2bedad783b7edcd7",
+    "tools/skill_manager_batch.py": "a5fd36ae5790216f47832f21b48e61dc3dd6785d6eef9965de0bff90e5259870",
+    "tools/skill_manager_guards.py": "ed92ed08bd4b399fdeacb13addb8aae6c3c51d75dbeb876622f3cc7a8b7a74f6",
+    "tools/skill_usage.py": "cd713eaffdd2d8762c8cd4347ac41af7968e7cffc3f7d42bc17f1ba2ab715f4d",
+    "tools/skill_ledger.py": "56121bfa4e5daa57ca7f9eb1767817e06e0ad00fae2e4c7f72bcaaf299e43c27",
+    "tools/skill_provenance.py": "5c492a925cdde61c3257eb5db76568822d26be3d9a2c40d364a9997a3a7cb576",
+    "hermes_state_search.py": "6e8f67ee7ee569adbf7d16bb116f37837e1d8589e2b6410d90a4c13e7079dfcc",
+    "hermes_state_sessions.py": "1eddb7aadd63ca88d366cfe10d9ba3a709f044eb7d6dcb60dbdd699167f7300e",
+    "agent/background_review.py": "b177b1cfe8b06f9e787e37920fd9a7b023a038ecbac951bde4e81535d88aa4dc",
+    "agent/turn_finalizer.py": "4c1e83c6a23bcb7fc10f942306459b54b130975fdce3d76d8fd7f2432698632e"
   },
   "source_patches": [],
   "integration_seams": [
@@ -174,7 +192,10 @@
     "Native MCP process configuration launches only operator-pinned images as isolated stdio servers; native HTTP retains identity headers, mTLS, sampling, elicitation, cost configuration; experimental events fail closed until thread-bound wake integration is implemented. Native generated resource/prompt/event utility filters honor the same explicit application selection.",
     "Native MCP backchannel handlers inherit the pending tool call context, owning model and durable execution fences. Scoped shutdown retains the one native MCP loop until global shutdown to avoid a discovery race.",
     "Direct native web providers use private owner credentials and thread/generation-bound native home and memo caches. Native long-page truncation retains exact source bytes in the isolated workspace and thread artifact store; optional X readiness is independent.",
-    "Native OAuth commit saves only a disabled secret-free profile receipt for product app references; native tokens persist normally and only scoped agent references activate app transport."
+    "Native OAuth commit saves only a disabled secret-free profile receipt for product app references; native tokens persist normally and only scoped agent references activate app transport.",
+    "Native inline memory and session_search retain upstream schemas, matching/budgets, FTS and compression traversal through transactional scoped storage and read-only authorized SQL views; no profile-wide memory is enabled. Native memory mutation receipts (removed_entry, patched_entry_before/after and indexed batch matched/produced entries) preserve stable fact identities and provenance through mixed batches; final content is checked against the native result before persistence.",
+    "Native skill_manage and skill_view operate on authorized complete packages; immutable domain revisions retain all assets/provenance and signed capsule transfer preserves private scope. Native curator transitions run from the existing gateway chore without admitting new work.",
+    "Optional self-hosted Hindsight implements the native MemoryProvider extension contract; content-addressed authorized banks, stable async operation IDs and local revision fences prevent correction/revocation from retrieving stale provider context."
   ],
   "optional_extras": [
     "acp",

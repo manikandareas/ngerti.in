@@ -309,6 +309,9 @@ def install_dispatch_guard(database, owner):
         }
         if policy.editor_mcp_json:
             allowed.update(json.loads(policy.editor_mcp_json)["schemas"])
+        from ngertiin_engine.learning import TOOLS
+
+        allowed.update(TOOLS)
         if function_name not in allowed or registry.get_entry(function_name) is None:
             raise EngineError("CAPABILITY_DENIED")
         return True
@@ -321,6 +324,27 @@ def install_dispatch_guard(database, owner):
         except EngineError as exc:
             return json.dumps({"error": exc.code, "outcome": "rejected"})
         if scoped:
+            from ngertiin_engine.learning import TOOLS, Learning
+
+            if name in TOOLS:
+                from ngertiin_engine.agents import Agents
+                from ngertiin_engine.app_interactions import _store_factory
+                from ngertiin_engine.native_surface import call_identity
+                from ngertiin_engine.reliability import execution
+                from ngertiin_engine.threads import Threads
+
+                if (
+                    _store_factory is None
+                    or call_identity.get() is None
+                    or execution.get() is None
+                ):
+                    return json.dumps(
+                        {"error": "ACCESS_REVOKED", "outcome": "rejected"}
+                    )
+                store = _store_factory()
+                return Learning(store, Threads(store, Agents(store, {}))).tool(
+                    execution.get(), name, args, call_identity.get()
+                )
             from ngertiin_engine.research import invoke as invoke_research
 
             policy = active_policy()

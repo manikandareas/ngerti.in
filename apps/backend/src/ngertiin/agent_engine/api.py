@@ -60,6 +60,10 @@ class Command(BaseModel):
         "workspace.action",
         "screen.action",
         "browser.vault",
+        "learning.memory",
+        "learning.install",
+        "learning.skill",
+        "learning.provider",
     ]
     expected_revision: str | None = Field(pattern=r"^[1-9][0-9]{0,18}$")
     payload: dict
@@ -76,6 +80,15 @@ def failure(code, command_id, details=None):
         "FILE_HASH_MISMATCH": 422,
         "WORKSPACE_BUSY": 409,
         "WORKSPACE_UNAVAILABLE": 422,
+        "WORKSPACE_RUNTIME_UNAVAILABLE": 422,
+        "WORKSPACE_FILE_UNAVAILABLE": 422,
+        "SKILL_UNAVAILABLE": 422,
+        "SKILL_NOT_INSTALLED": 422,
+        "SKILL_UPDATE_CONFLICT": 409,
+        "INVALID_SKILL_PATH": 422,
+        "INVALID_SKILL_PACKAGE": 422,
+        "SKILL_PACKAGE_TOO_LARGE": 422,
+        "MEMORY_PROVIDER_SETUP_REQUIRED": 422,
         "SCREEN_ACCESS_REFUSED": 409,
         "RESTORE_CONFLICT": 409,
         "INVALID_ENDPOINT": 422,
@@ -407,6 +420,14 @@ async def run_diagnostics(run_id: UUID, account: AccountDep):
             "expected_revision": None,
             "payload": {"run_id": str(run_id)},
         },
+    )
+
+
+@router.get("/threads/{thread_id}/learning")
+async def learning_history(thread_id: UUID, agent_id: UUID, account: AccountDep):
+    return await forward(
+        str(account.id),
+        provider_command("learning.read", {"thread_id": str(thread_id), "agent_id": str(agent_id)}),
     )
 
 

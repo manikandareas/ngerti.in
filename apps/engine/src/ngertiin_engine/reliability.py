@@ -538,7 +538,16 @@ class Reliability:
 
     def _tool(self, stamp, name, args, ids, invoke):
         from ngertiin_engine.goals import TOOL, Goals
+        from ngertiin_engine.learning import TOOLS, Learning
         from ngertiin_engine.outcomes import preflight, record, semantics
+
+        if name in TOOLS:
+            from ngertiin_engine.agents import Agents
+            from ngertiin_engine.threads import Threads
+
+            return Learning(
+                self.store, Threads(self.store, Agents(self.store, {}))
+            ).tool(stamp, name, args, ids)
 
         if name == "workspace":
             from ngertiin_engine.artifacts import Artifacts

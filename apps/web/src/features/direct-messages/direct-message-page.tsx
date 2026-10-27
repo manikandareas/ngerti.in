@@ -10,6 +10,7 @@ import { ArtifactResults } from "./artifact-results";
 import { command, listThreads, submit, type ThreadItem } from "./client";
 import { Composer } from "./composer";
 import { GoalProgress } from "./goal-progress";
+import { LearningControls } from "./learning-controls";
 import { ScreenControls } from "./screen-controls";
 import { SessionControls } from "./session-controls";
 import { activeRun, type Run, runLabels } from "./state";
@@ -199,6 +200,7 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
               />
             )}
             <ArtifactResults artifacts={snapshot?.artifacts ?? []} threadId={threadId} />
+            {snapshot && <LearningControls key={`learning:${threadId}`} thread={snapshot.thread} />}
             {snapshot && (
               <WorkspaceControls
                 key={`workspace:${threadId}`}

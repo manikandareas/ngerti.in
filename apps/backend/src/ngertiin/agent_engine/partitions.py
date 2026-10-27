@@ -7,7 +7,6 @@ import json
 import os
 import secrets
 import subprocess
-import sys
 import tempfile
 from pathlib import Path
 from uuid import UUID
@@ -274,6 +273,14 @@ def local_configuration(owner, home, env):
     write_private(
         home / "capabilities.json",
         {
+            "version": 2,
+            "execution_surfaces": {
+                "native_linux": {
+                    "kind": "scoped_linux",
+                    "ready": bool(env.get("NMA_NATIVE_TOOLS_IMAGE")),
+                    "image": env.get("NMA_NATIVE_TOOLS_IMAGE"),
+                }
+            },
             "tool_grants": {
                 "tasks": {
                     "enabled": True,
@@ -286,9 +293,29 @@ def local_configuration(owner, home, env):
                     "toolset": "nma_workspace",
                 },
                 "browser": {
-                    "enabled": bool(env.get("E2B_API_KEY")),
-                    "label": "Browser",
-                    "toolset": "nma_computer",
+                    "enabled": bool(env.get("NMA_NATIVE_TOOLS_IMAGE")),
+                    "label": "Native browser",
+                    "toolset": "browser",
+                    "execution_surface": "native_linux",
+                    "requires": ["terminal"],
+                },
+                "terminal": {
+                    "enabled": bool(env.get("NMA_NATIVE_TOOLS_IMAGE")),
+                    "label": "Isolated terminal",
+                    "toolset": "terminal",
+                    "execution_surface": "native_linux",
+                },
+                "desktop": {
+                    "enabled": bool(env.get("NMA_NATIVE_TOOLS_IMAGE")),
+                    "label": "Isolated desktop",
+                    "toolset": "computer_use",
+                    "execution_surface": "native_linux",
+                },
+                "assistance": {
+                    "enabled": bool(env.get("NMA_NATIVE_TOOLS_IMAGE")),
+                    "label": "Screen assistance",
+                    "toolset": "nma_assistance",
+                    "execution_surface": "native_linux",
                 },
             },
             "mcp_grants": {},
@@ -305,20 +332,21 @@ def local_configuration(owner, home, env):
         "NMA_MODELS_FILE": str(home / "models.json"),
         "NMA_CAPABILITIES_FILE": str(home / "capabilities.json"),
         "NMA_SERVICE_KEY_FILE": str(key),
-        "NMA_COMPUTER_COMMAND": json.dumps(
-            [sys.executable, "-m", "ngertiin.agent_engine.computer_bridge"]
-        ),
     }
     for name in (
         "NMA_BINDINGS_FILE",
         "NMA_WEBHOOK_ROUTES_FILE",
         "NMA_TEST_FAULT",
         "NMA_TEST_MARKER",
+        "NMA_COMPUTER_COMMAND",
     ):
         child.pop(name, None)
     child["NMA_DEFAULT_MODEL"] = "default"
     child["NMA_DEFAULT_GRANTS"] = json.dumps(
-        {"tool_grants": ["tasks", "files"] + (["browser"] if env.get("E2B_API_KEY") else [])}
+        {
+            "tool_grants": ["tasks", "files"]
+            + (["terminal", "browser", "assistance"] if env.get("NMA_NATIVE_TOOLS_IMAGE") else [])
+        }
     )
     # The local OSS ChatGPT flow is opt-in; hosted product availability is separate.
     child["NMA_CHATGPT_LOCAL_OSS"] = env.get("NMA_CHATGPT_LOCAL_OSS", "0")

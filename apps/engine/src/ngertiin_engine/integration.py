@@ -50,6 +50,7 @@ def install(database, owner):
 
     from ngertiin_engine import (
         artifacts,
+        browser_vault,
         capabilities,
         coding,
         computer,
@@ -58,15 +59,18 @@ def install(database, owner):
         goals,
         native_surface,
         redaction,
+        screens,
         session_settings,
     )
 
     redaction.install()
+    browser_vault.install()
     capabilities.install_dispatch_guard(database, owner)
     capabilities.install_discovery_guard()
     goals.install()
     artifacts.install()
     coding.install()
+    screens.install()
     computer.install()
     diagnostics.install_usage()
     context_references.install(database, owner)

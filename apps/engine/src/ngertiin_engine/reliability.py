@@ -637,6 +637,10 @@ class Reliability:
             if error.code != "INDETERMINATE":
                 raise
             value = canonical({"error": error.code, "outcome": "indeterminate"})
+        if name in {"browser_exec", "computer_use"}:
+            from ngertiin_engine.native_media import publish
+
+            value = publish(self.store, stamp, run_id, operation_id, value)
         # A late receipt is evidence, not permission to publish or execute again.
         self.store.write(
             lambda conn: record(conn, self.store.owner, run_id, operation_id, value)

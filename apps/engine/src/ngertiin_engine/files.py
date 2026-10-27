@@ -274,6 +274,10 @@ class Files:
 
     def publish(self, conn, operation, config, run_id, name, media_type, data):
         filename(name)
+        from ngertiin_engine.redaction import _values
+
+        if any(secret.encode() in data for secret in _values.copy() if secret):
+            raise EngineError("CREDENTIAL_EXPORT_REJECTED")
         if len(data) > MAX_FILE_BYTES:
             raise EngineError("REQUEST_TOO_LARGE")
         sha = hashlib.sha256(data).hexdigest()

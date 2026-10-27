@@ -14,7 +14,7 @@ class Workspaces:
         self.adapter = adapter
         self.store = adapter.store
 
-    def selected(self, payload):
+    def selected(self, payload, *, required=("nma_coding",)):
         from ngertiin_engine.capabilities import FIELDS, resolve
         from ngertiin_engine.native_surface import binding
 
@@ -32,7 +32,7 @@ class Workspaces:
         config = agent["config"]
         grants = {field: config.get(field, []) for field in FIELDS}
         resolved, _ = resolve(grants)
-        if "nma_coding" not in resolved["toolsets"]:
+        if not set(required).intersection(resolved["toolsets"]):
             raise EngineError("CAPABILITY_DENIED")
         marker = {
             **resolved,

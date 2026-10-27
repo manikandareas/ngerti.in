@@ -13,6 +13,10 @@ from test_goal_lifecycle import eventually
 from test_runtime import command, settle
 from test_runtime import runtime as native_runtime
 
+pytestmark = pytest.mark.skip(
+    reason="Historical custom browser routing is retired. Native screen/effect boundaries run in test_native_screens and test_screen_gateway."
+)
+
 
 @pytest.fixture(scope="module")
 def runtime(tmp_path_factory):

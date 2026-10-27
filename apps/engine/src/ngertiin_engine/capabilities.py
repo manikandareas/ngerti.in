@@ -242,6 +242,12 @@ def install_dispatch_guard(database, owner):
                     "type": "function",
                     "function": {**entry.schema, "name": name},
                 }
+                if name == "browser_exec" and entry.dynamic_schema_overrides:
+                    # Availability belongs to the capsule, not this gateway host.
+                    # Reuse native helper guidance while retaining the capsule's
+                    # fixed parameters; host real-profile consent adds no surface.
+                    overrides = entry.dynamic_schema_overrides()
+                    definition["function"]["description"] = overrides["description"]
                 if redaction.result(definition) != definition:
                     raise EngineError("CAPABILITY_UNAVAILABLE")
                 values.append(definition)

@@ -34,6 +34,10 @@ class UnknownOutcome(RuntimeError):
     pass
 
 
+class NativeUnavailable(RuntimeError):
+    pass
+
+
 @dataclass(frozen=True)
 class Scope:
     owner_id: str
@@ -95,6 +99,11 @@ class IsolatedTools:
         self.image = self._docker(
             "image", "inspect", image, "--format", "{{.Id}}"
         ).strip()
+        image_info = json.loads(self._docker("image", "inspect", self.image))[0]
+        self.desktop = (
+            image_info["Config"].get("Labels", {}).get("org.ngertiin.native.desktop")
+            == "x11-cua.v1"
+        )
         with self._db() as db:
             db.executescript("""
 CREATE TABLE IF NOT EXISTS metadata (key TEXT PRIMARY KEY,value TEXT NOT NULL);
@@ -122,6 +131,9 @@ CREATE TABLE IF NOT EXISTS incarnations (base_key TEXT PRIMARY KEY,generation IN
                 "SELECT value FROM metadata WHERE key='controller'"
             ).fetchone()[0]
         self.label = "nma-native.controller=" + self.controller
+        from ngertiin_engine.screen_control import ScreenControl
+
+        self.screen = ScreenControl(self)
 
     @contextlib.contextmanager
     def _db(self):
@@ -294,7 +306,13 @@ CREATE TABLE IF NOT EXISTS incarnations (base_key TEXT PRIMARY KEY,generation IN
                     and labels.get("nma-native.scope") != key
                 ):
                     raise ScopeRefused("Unowned workspace volume refused")
+            network = "none"
+            if self.desktop:
+                from ngertiin_engine.browser_egress import ensure_network
+
+                network = ensure_network(self, scope)
             inspect = self._docker("inspect", container, check=False)
+            was_running = False
             if inspect.returncode:
                 self._docker(
                     "create",
@@ -305,7 +323,21 @@ CREATE TABLE IF NOT EXISTS incarnations (base_key TEXT PRIMARY KEY,generation IN
                     "--label",
                     "nma-native.scope=" + key,
                     "--network",
-                    "none",
+                    network,
+                    *(
+                        [
+                            "--env",
+                            "NMA_BROWSER_PROXY=http://egress:8080",
+                            "--env",
+                            "http_proxy=http://egress:8080",
+                            "--env",
+                            "https_proxy=http://egress:8080",
+                            "--env",
+                            "no_proxy=127.0.0.1,localhost",
+                        ]
+                        if self.desktop
+                        else []
+                    ),
                     "--env",
                     "NMA_NATIVE_VERIFY_KEY=" + self.public_key,
                     "--env",
@@ -333,6 +365,7 @@ CREATE TABLE IF NOT EXISTS incarnations (base_key TEXT PRIMARY KEY,generation IN
                 )
             else:
                 item = json.loads(inspect.stdout)[0]
+                was_running = item["State"]["Running"]
                 labels = item["Config"].get("Labels") or {}
                 if (
                     item["Image"] != self.image
@@ -341,7 +374,9 @@ CREATE TABLE IF NOT EXISTS incarnations (base_key TEXT PRIMARY KEY,generation IN
                 ):
                     raise ScopeRefused("Unowned or unreviewed container refused")
             self._docker("start", container)
-            deadline = time.monotonic() + 30
+            # A dead display in an already-running capsule needs explicit
+            # pause/reconnect. Keep diagnosis inside the service's 30s envelope.
+            deadline = time.monotonic() + (3 if was_running else 20)
             while time.monotonic() < deadline:
                 ready = self._docker(
                     "exec",
@@ -362,7 +397,7 @@ CREATE TABLE IF NOT EXISTS incarnations (base_key TEXT PRIMARY KEY,generation IN
                         "scope_key": key,
                     }
                 time.sleep(0.1)
-            raise RuntimeError("Isolated native environment failed readiness")
+            raise NativeUnavailable("Isolated native environment failed readiness")
 
     @contextlib.contextmanager
     def _execution_lock(self, key):
@@ -414,6 +449,7 @@ CREATE TABLE IF NOT EXISTS incarnations (base_key TEXT PRIMARY KEY,generation IN
         allowed_tools,
         timeout=90,
         admission_id=None,
+        control_access=False,
     ):
         key = self._scope(scope)
         if not isinstance(native_name, str) or not isinstance(arguments, dict):
@@ -432,6 +468,15 @@ CREATE TABLE IF NOT EXISTS incarnations (base_key TEXT PRIMARY KEY,generation IN
             ).encode()
         ).hexdigest()
         with self.lock:
+            if not control_access and not self.screen.agent_allowed(scope):
+                return json.dumps(
+                    {
+                        "error": "HUMAN_CONTROL_ACTIVE",
+                        "outcome": "rejected",
+                        "dispatched": False,
+                        "next_step": "Wait for the owner to explicitly resume agent input.",
+                    }
+                )
             with self._db() as db:
                 previous = db.execute(
                     "SELECT tool,args_hash,state,result FROM operations WHERE scope_key=? AND operation_id=?",
@@ -492,6 +537,10 @@ CREATE TABLE IF NOT EXISTS incarnations (base_key TEXT PRIMARY KEY,generation IN
                 raise TypeError("Invalid native result")
             outcome = envelope["outcome"]
             jobs = envelope.get("jobs", [])
+            from ngertiin_engine.redaction import result as redact
+
+            value = redact(value)
+            jobs = redact(jobs)
         except (
             subprocess.TimeoutExpired,
             UnknownOutcome,
@@ -510,6 +559,7 @@ CREATE TABLE IF NOT EXISTS incarnations (base_key TEXT PRIMARY KEY,generation IN
                 )
                 self._lose_jobs(db, key, "native_process_lost")
             self._docker("rm", "--force", target["container"], check=False)
+            self._stop_egress(scope)
             raise UnknownOutcome(
                 "Unknown native outcome; no automatic replay"
             ) from error
@@ -547,7 +597,19 @@ CREATE TABLE IF NOT EXISTS incarnations (base_key TEXT PRIMARY KEY,generation IN
                     "UPDATE operations SET state=?,result=?,finished=? WHERE scope_key=? AND operation_id=?",
                     (
                         outcome,
-                        json.dumps({"result": value}),
+                        json.dumps(
+                            {
+                                "result": json.dumps(
+                                    {
+                                        "observation": "not_cached",
+                                        "next_step": "Request a fresh frame.",
+                                    }
+                                )
+                                if native_name == "_nma_screen"
+                                and arguments.get("action") in {"frame", "reobserve"}
+                                else value
+                            }
+                        ),
                         time.time(),
                         key,
                         operation_id,
@@ -560,9 +622,11 @@ CREATE TABLE IF NOT EXISTS incarnations (base_key TEXT PRIMARY KEY,generation IN
                     self._lose_jobs(db, key, "native_process_lost")
         if fenced:
             self._docker("rm", "--force", target["container"], check=False)
+            self._stop_egress(scope)
             raise UnknownOutcome("Scope cancelled during native dispatch")
         if outcome == "indeterminate":
             self._docker("rm", "--force", target["container"], check=False)
+            self._stop_egress(scope)
         return value
 
     def receipt(self, scope, operation_id):
@@ -662,6 +726,7 @@ print(base64.b64encode(path.read_bytes()).decode())"""
 
     def cancel(self, scope):
         key = self._scope(scope)
+        self.screen.suspend(scope)
         with self.lock, self._db() as db:
             row = db.execute(
                 "SELECT container FROM scopes WHERE scope_key=?", (key,)
@@ -675,6 +740,7 @@ print(base64.b64encode(path.read_bytes()).decode())"""
                 (time.time(), key),
             )
         self._docker("rm", "--force", row[0], check=False)
+        self._stop_egress(scope)
         return {"cancelled": True, "scope_key": key}
 
     def pause(self, scope):
@@ -701,10 +767,16 @@ print(base64.b64encode(path.read_bytes()).decode())"""
                 raise ScopeRefused("Use cancellation for an active scope")
             db.execute("UPDATE scopes SET state='paused' WHERE scope_key=?", (key,))
             self._lose_jobs(db, key, "scope_paused")
-        self._docker("stop", "--timeout", "3", row[0], check=False)
+        self._docker("stop", "--timeout", "15", row[0], check=False)
+        self._stop_egress(scope)
         return {"paused": True, "scope_key": key}
 
     retire = pause
+
+    def _stop_egress(self, scope):
+        if self.desktop:
+            name = "nma-egress-" + self.controller[:8] + "-" + scope.key[:16] + "-proxy"
+            self._docker("stop", "--timeout", "1", name, check=False)
 
     def cleanup(self):
         with self._db() as db:
@@ -712,3 +784,6 @@ print(base64.b64encode(path.read_bytes()).decode())"""
         for container, volume in rows:
             self._docker("rm", "--force", container, check=False)
             self._docker("volume", "rm", volume, check=False)
+        from ngertiin_engine.browser_egress import cleanup
+
+        cleanup(self)

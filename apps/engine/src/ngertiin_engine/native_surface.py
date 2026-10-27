@@ -82,12 +82,13 @@ def binding(marker, context, database, owner):
 
 
 def invoke(name, arguments, marker, database, owner):
+    import jsonschema
     from gateway.session_policy import active_policy
     from tools.registry import registry
     from toolsets import resolve_toolset
 
     from ngertiin_engine.capabilities import authorize, catalog
-    from ngertiin_engine.native_executor import UnknownOutcome
+    from ngertiin_engine.native_executor import NativeUnavailable, UnknownOutcome
     from ngertiin_engine.reliability import execution
 
     data = catalog()
@@ -101,6 +102,20 @@ def invoke(name, arguments, marker, database, owner):
     selected = [s for s in selected if s.get("kind") == "scoped_linux"]
     if not selected:
         return False, None
+    entry = registry.get_entry(name)
+    if entry is None:
+        raise EngineError("CAPABILITY_DENIED")
+    try:
+        jsonschema.validate(arguments, entry.schema["parameters"])
+    except jsonschema.ValidationError:
+        return True, json.dumps(
+            {
+                "error": "INVALID_TOOL_ARGUMENTS",
+                "outcome": "rejected",
+                "dispatched": False,
+            }
+        )
+
     if len({s.get("image") for s in selected}) != 1:
         raise EngineError(
             "CAPABILITY_UNAVAILABLE", {"reason": "conflicting_execution_surfaces"}
@@ -144,6 +159,13 @@ def invoke(name, arguments, marker, database, owner):
     try:
         from ngertiin_engine.skill_assets import stage
 
+        if name == "request_human":
+            reauthorize()
+            return True, json.dumps(broker.screen.request(scope))
+        if name == "browser_vault":
+            from ngertiin_engine.browser_vault import invoke as vault_invoke
+
+            return True, vault_invoke(arguments, broker, scope, reauthorize)
         stage(marker, broker, scope, reauthorize)
         value = broker.invoke(
             scope,
@@ -156,11 +178,20 @@ def invoke(name, arguments, marker, database, owner):
             },
             authorize=reauthorize,
             admission_id=stamp["admission_id"],
+            timeout=min(1800, max(1, arguments.get("timeout_s", 300))) + 15
+            if name == "browser_exec"
+            else 90,
         )
         receipt = broker.receipt(scope, operation)
         if receipt and receipt["state"] in {"indeterminate", "dispatching", "unknown"}:
-            raise EngineError("INDETERMINATE")
+            from ngertiin_engine.outcomes import unknown_result
+
+            return True, unknown_result(value, scope.key, operation, receipt["state"])
         return True, value
+    except NativeUnavailable:
+        raise EngineError(
+            "CAPABILITY_UNAVAILABLE", {"reason": "isolated_display_unavailable"}
+        ) from None
     except UnknownOutcome:
         raise EngineError("INDETERMINATE") from None
 

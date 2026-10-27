@@ -58,6 +58,8 @@ class Command(BaseModel):
         "file.part",
         "file.finalize",
         "workspace.action",
+        "screen.action",
+        "browser.vault",
     ]
     expected_revision: str | None = Field(pattern=r"^[1-9][0-9]{0,18}$")
     payload: dict
@@ -74,6 +76,7 @@ def failure(code, command_id, details=None):
         "FILE_HASH_MISMATCH": 422,
         "WORKSPACE_BUSY": 409,
         "WORKSPACE_UNAVAILABLE": 422,
+        "SCREEN_ACCESS_REFUSED": 409,
         "RESTORE_CONFLICT": 409,
         "INVALID_ENDPOINT": 422,
         "UNSUPPORTED_PROTOCOL": 422,

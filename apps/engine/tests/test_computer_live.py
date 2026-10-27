@@ -9,6 +9,10 @@ import time
 from pathlib import Path
 
 import pytest
+
+pytestmark = pytest.mark.skip(
+    reason="Historical E2B browser routing is retired; native browser/desktop live acceptance is recorded under nma-032."
+)
 from test_capabilities import capability_agent
 from test_direct_messages import send, snapshot
 from test_runtime import command, runtime  # noqa: F401

@@ -32,6 +32,11 @@ def inspect_bundle(key, entry, data, visiting=()):
     if key in visiting:
         raise EngineError("CAPABILITY_DEPENDENCY_CYCLE", {"capability": key})
     name = entry.get("toolset")
+    if name == "nma_computer" and "computer" in resolve_toolset(name):
+        raise EngineError(
+            "CAPABILITY_UNAVAILABLE",
+            {"capability": key, "reason": "retired_custom_browser"},
+        )
     if not isinstance(name, str) or name in {"all", "*"} or not validate_toolset(name):
         raise EngineError(
             "CAPABILITY_UNAVAILABLE", {"capability": key, "reason": "not_installed"}
@@ -58,6 +63,22 @@ def inspect_bundle(key, entry, data, visiting=()):
             from ngertiin_engine.native_surface import verify_image
 
             verify_image(spec.get("image"))
+            if name in {"computer_use", "nma_assistance"}:
+                import json
+
+                from ngertiin_engine.native_executor import IsolatedTools
+
+                info = json.loads(
+                    IsolatedTools._docker("image", "inspect", spec["image"])
+                )[0]
+                if (
+                    info["Config"].get("Labels", {}).get("org.ngertiin.native.desktop")
+                    != "x11-cua.v1"
+                ):
+                    raise EngineError(
+                        "CAPABILITY_UNAVAILABLE",
+                        {"capability": key, "reason": "isolated_display_required"},
+                    )
         elif spec.get("kind") != "trusted_plugin" or not entry.get("plugin"):
             raise EngineError(
                 "CAPABILITY_UNAVAILABLE",

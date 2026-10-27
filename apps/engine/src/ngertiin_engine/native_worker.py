@@ -19,6 +19,7 @@ _started = time.time()
 _seen = set()
 _allowed = None
 _registry = None
+_browser_session = None
 
 
 def registry():
@@ -31,6 +32,16 @@ def registry():
     from ngertiin_engine.coding import install
 
     install(worker=True)
+    from ngertiin_engine.browser_supervision import install as install_supervision
+
+    install_supervision()
+    from tools import vision_tools
+    from tools.computer_use import tool as computer_tool
+
+    # This process transports observations and never calls a model. The gateway
+    # owns the actual provider/image routing and receives native image envelopes.
+    vision_tools._should_use_native_vision_fast_path = lambda: True
+    computer_tool._should_route_through_aux_vision = lambda: False
     from tools.process_registry import process_registry
 
     process_registry.recover_from_checkpoint()
@@ -118,9 +129,24 @@ def transfer(args):
 
 
 def dispatch(request):
+    global _browser_session
     import jsonschema
 
     tools = registry()
+    if request["native_name"] in {"_nma_screen", "_nma_page"}:
+        if (
+            request["native_name"] not in request["allowed_tools"]
+            or request["schema_hash"] != "nma.screen.v1"
+        ):
+            raise ValueError("Invalid screen authorization")
+        from ngertiin_engine.desktop_worker import page, screen
+
+        value = (
+            screen(request["arguments"], request["task_id"], _browser_session)
+            if request["native_name"] == "_nma_screen"
+            else page(request["arguments"], request["task_id"])
+        )
+        return {"native_result": json.dumps(value), "outcome": "returned"}
     if request["native_name"] in {"_nma_file", "_nma_status", "_nma_reference"}:
         if (
             request["native_name"] not in request["allowed_tools"]
@@ -187,13 +213,40 @@ def dispatch(request):
         from ngertiin_engine.coding import after_edit, before_edit
 
         before_edit(entry.name)
-        value = tools.dispatch(
-            entry.name,
-            request["arguments"],
-            task_id=request["task_id"],
-            session_id=request["task_id"],
-            enabled_tools=request["allowed_tools"],
+        from tools.approval import _lock, _session_approved, approve_session
+        from tools.approval_context import (
+            reset_current_session_key,
+            set_current_session_key,
         )
+
+        approval_token = set_current_session_key(request["task_id"])
+        try:
+            if entry.name == "computer_use":
+                mode = request["arguments"].get("delivery_mode", "background")
+                # Map the authenticated product grant to ONE native action,
+                # then clear it. Native hard checks and standard Cua mode stay.
+                approve_session(
+                    request["task_id"],
+                    "cua:" + request["arguments"]["action"] + ":" + mode,
+                )
+            arguments = request["arguments"]
+            if entry.name == "browser_exec":
+                from ngertiin_engine.browser_load import PREAMBLE
+
+                arguments = {**arguments, "code": PREAMBLE + arguments["code"]}
+            value = tools.dispatch(
+                entry.name,
+                arguments,
+                task_id=request["task_id"],
+                session_id=request["task_id"],
+                enabled_tools=request["allowed_tools"],
+            )
+        finally:
+            # clear_session also destroys native capture/driver/kernel state.
+            # Expire the one-call approval without ending the Hermes session.
+            with _lock:
+                _session_approved.pop(request["task_id"], None)
+            reset_current_session_key(approval_token)
         after_edit(entry.name, request["arguments"])
         from types import SimpleNamespace
 
@@ -212,15 +265,27 @@ def dispatch(request):
     except ValueError:
         result = {}
     if (
+        entry.name == "browser_exec"
+        and isinstance(result, dict)
+        and (result.get("success") or result.get("_multimodal"))
+    ):
+        _browser_session = request["arguments"].get("session", "")
+    if (
         entry.name == "coding"
         and request["arguments"].get("action") == "inspect"
         and isinstance(result, dict)
     ):
         result["processes"] = jobs(request["task_id"])
         value = json.dumps(result)
+    from ngertiin_engine.outcomes import failed
+
     unknown = isinstance(result, dict) and (
         result.get("outcome") == "indeterminate"
-        or (entry.name == "browser_exec" and result.get("success") is False)
+        or (
+            entry.name
+            in {"browser_exec", "browser_cdp", "browser_dialog", "computer_use"}
+            and failed(result)
+        )
     )
     return {
         "native_result": value,
@@ -274,11 +339,17 @@ class NativeRPC(socketserver.StreamRequestHandler):
 def serve():
     state = Path("/work/state")
     state.mkdir(mode=0o700, exist_ok=True)
+    desktop = bool(os.environ.get("DISPLAY"))
     (state / "config.yaml").write_text(
         json.dumps(
             {
                 "terminal": {"backend": "local", "cwd": "/work"},
-                "browser": {"engine": "chromium", "allow_private_urls": False},
+                "browser": {
+                    "engine": "chromium",
+                    "allow_private_urls": False,
+                    "cdp_url": "http://127.0.0.1:9222",
+                },
+                "computer_use": {"permission_mode": "standard", "no_overlay": True},
                 "plugins": {"enabled": []},
                 "lsp": {
                     "enabled": True,
@@ -298,6 +369,11 @@ def serve():
     stopped = threading.Event()
     signal.signal(signal.SIGTERM, lambda *_: stopped.set())
     signal.signal(signal.SIGINT, lambda *_: stopped.set())
+    display_processes = []
+    if desktop:
+        from ngertiin_engine.desktop_worker import start
+
+        display_processes = start()
     # The supervisor has exclusive volume ownership and retires the old container
     # before starting this process. SIGKILL can leave Chromium's hostname/PID
     # singleton symlinks behind; they are not live browser or user file state.
@@ -307,9 +383,17 @@ def serve():
         browser = subprocess.Popen(
             [
                 "chromium",
-                "--headless",
+                *([] if desktop else ["--headless"]),
                 "--no-sandbox",
                 "--disable-dev-shm-usage",
+                # Match upstream browser_launcher._PACKAGED_ONLY_FLAGS for this
+                # fresh isolated profile; no host keychain is mounted here.
+                "--password-store=basic",
+                *(
+                    ["--proxy-server=" + os.environ["NMA_BROWSER_PROXY"]]
+                    if os.environ.get("NMA_BROWSER_PROXY")
+                    else []
+                ),
                 "--remote-debugging-port=9222",
                 "--user-data-dir=/work/chromium",
                 "about:blank",
@@ -320,10 +404,14 @@ def serve():
         try:
             stopped.wait()
         finally:
-            browser.terminate()
-            browser.wait(timeout=10)
+            from ngertiin_engine.desktop_worker import stop_browser
+
+            stop_browser(browser)
             native.shutdown()
             native.server_close()
+            for process in reversed(display_processes):
+                process.terminate()
+                process.wait(timeout=10)
 
 
 def call():

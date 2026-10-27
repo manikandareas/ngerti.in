@@ -389,7 +389,11 @@ class Adapter:
 
         try:
             with owner_scope(self.authority):
-                if body["type"] in {"session.compress", "session.reset"} or (
+                if body["type"] in {
+                    "session.compress",
+                    "session.reset",
+                    "screen.action",
+                } or (
                     body["type"] == "workspace.action"
                     and body["payload"].get("arguments", {}).get("action")
                     in {"inspect", "diff", "diagnostics"}
@@ -440,6 +444,13 @@ class Adapter:
 
     async def _dispatch(self, body):
         kind, payload = body["type"], body["payload"]
+        if kind in {"screen.action", "browser.vault"}:
+            from ngertiin_engine.screens import Screens
+
+            screens = Screens(self)
+            return await asyncio.to_thread(
+                screens.action if kind == "screen.action" else screens.vault, body
+            )
         if kind == "workspace.action":
             from ngertiin_engine.workspaces import Workspaces
 

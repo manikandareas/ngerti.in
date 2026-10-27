@@ -13,11 +13,25 @@ DDL = (
 
 
 def semantics(name, args):
+    if name == "computer_use" and args.get("action") in {
+        "capture",
+        "list_apps",
+        "list_windows",
+        "wait",
+    }:
+        return "read"
+    if name == "browser_vault" and args.get("action") == "list":
+        return "read"
     if name in {"read_file", "search_files"}:
         return "read"
     if name == "coding" and args.get("action") in {"inspect", "diagnostics", "diff"}:
         return "read"
-    if name == "process_manage" and args.get("action") in {"list", "poll", "log", "wait"}:
+    if name == "process_manage" and args.get("action") in {
+        "list",
+        "poll",
+        "log",
+        "wait",
+    }:
         return "read"
     if name == "computer" and args.get("operation") in {"observe", "receipt"}:
         return "read"
@@ -82,14 +96,53 @@ def evidence(value):
 def failed(item):
     if not isinstance(item, dict):
         return False
-    if item.get("error") or item.get("isError") or item.get("exit_code", 0):
+    if (
+        item.get("error")
+        or item.get("isError")
+        or item.get("exit_code", 0)
+        or item.get("ok") is False
+        or item.get("success") is False
+    ):
         return True
+    if item.get("_multimodal"):
+        meta = item.get("meta", {})
+        if failed(decode(item.get("text_summary"))) or failed(
+            meta.get("action_result") if isinstance(meta, dict) else None
+        ):
+            return True
     return any(
         failed(child)
         for key in ("results", "calls")
         if isinstance(item.get(key), list)
         for child in item[key]
     )
+
+
+def unknown_result(value, scope_key, operation_id, state):
+    """Retain native diagnostics/media while exposing uncertainty to the model."""
+    native = decode(value)
+    annotation = {
+        "error": native.get("error") or "INDETERMINATE",
+        "outcome": "indeterminate",
+        "native_operation": {
+            "operation_id": operation_id,
+            "scope_key": scope_key,
+            "state": state,
+        },
+        "next_step": "Inspect the original diagnostic and receipt. Reconcile uncertain effects before another mutation; never replay this batch.",
+    }
+    enriched = {**native, **annotation}
+    if native.get("_multimodal"):
+        summary = decode(native.get("text_summary")) or {
+            "native_summary": native.get("text_summary", "")
+        }
+        visible = json.dumps({**summary, **annotation})
+        enriched["text_summary"] = visible
+        enriched["content"] = [
+            {"type": "text", "text": visible},
+            *native.get("content", []),
+        ]
+    return json.dumps(enriched) if isinstance(value, str) else enriched
 
 
 def record(conn, owner, run_id, operation_id, value):

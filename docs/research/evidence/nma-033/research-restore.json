@@ -1,0 +1,29 @@
+{
+  "scope": "Stopped disposable fixture partition; no live credentials or external workspace restore",
+  "schema_version": 16,
+  "database_inventory_preserved": true,
+  "journals": {
+    "app-secrets": {
+      "files": 0,
+      "bytes_identical": true,
+      "private_modes_preserved": true
+    },
+    "app-auth": {
+      "files": 0,
+      "bytes_identical": true,
+      "private_modes_preserved": true
+    },
+    "app-interactions": {
+      "files": 0,
+      "bytes_identical": true,
+      "private_modes_preserved": true
+    },
+    "research-secrets": {
+      "files": 1,
+      "bytes_identical": true,
+      "private_modes_preserved": true
+    }
+  },
+  "quarantine_enforced": true,
+  "external_effects_replayed": 0
+}

@@ -1,0 +1,42 @@
+{
+  "scope": "Existing opt-in integration prerequisites; new app/research cases were not skipped",
+  "tests": [
+    "tests/test_browser_recovery.py::test_isolated_browser_description_matches_available_native_helpers",
+    "tests/test_browser_recovery.py::test_failed_native_batch_preserves_diagnostics_and_never_replays[False]",
+    "tests/test_browser_recovery.py::test_failed_native_batch_preserves_diagnostics_and_never_replays[True]",
+    "tests/test_browser_recovery.py::test_unknown_image_result_preserves_native_blocks_and_failure_semantics",
+    "tests/test_computer_boundaries.py::test_active_revoke_fences_browser_result",
+    "tests/test_computer_boundaries.py::test_unknown_action_keeps_evidence_while_safe_observation_continues",
+    "tests/test_computer_boundaries.py::test_lost_outcome_blocks_until_reconciled",
+    "tests/test_computer_boundaries.py::test_confirmed_guard_rejection_reconciles_only_matching_receipt",
+    "tests/test_computer_live.py::test_browser_writer_reviewer_and_cleanup",
+    "tests/test_connections_live.py::test_live_existing_connection_stream_and_native_tool",
+    "tests/test_discussions_live.py::test_real_group_goal_handoff",
+    "tests/test_goal_lifecycle_live.py::test_ordinary_conversation_to_verified_completion",
+    "tests/test_goals_live.py::test_spike_dataset_through_live_dm",
+    "tests/test_native_screens.py::test_real_nonbrowser_desktop_and_native_accessibility",
+    "tests/test_native_screens.py::test_takeover_fences_batches_disconnect_and_restart",
+    "tests/test_native_screens.py::test_pending_transfer_waits_for_exactly_one_active_batch",
+    "tests/test_native_screens.py::test_native_browser_form_iframe_tabs_download_and_receipt",
+    "tests/test_native_screens.py::test_partial_native_batch_is_unknown_and_never_replayed",
+    "tests/test_native_screens.py::test_failed_batch_with_screenshot_remains_unknown",
+    "tests/test_native_screens.py::test_public_egress_refuses_private_targets_and_interrupted_network",
+    "tests/test_native_screens.py::test_closed_browser_tab_recovers_or_retains_unknown_receipt",
+    "tests/test_native_screens.py::test_simultaneous_owner_displays_and_wrong_scope_grants",
+    "tests/test_native_screens.py::test_stale_window_does_not_redirect_input",
+    "tests/test_native_screens.py::test_driver_restart_and_display_loss_require_fresh_observation",
+    "tests/test_native_screens.py::test_navigation_wait_observes_submitted_document_without_replaying",
+    "tests/test_native_screens.py::test_companion_cdp_download_setting_survives_return",
+    "tests/test_screen_gateway.py::test_screen_grants_and_model_blind_vault_roundtrip",
+    "tests/test_wakes_browser.py::test_browser_closed_gateway_runs_and_reopen_replays[schedule]",
+    "tests/test_wakes_browser.py::test_browser_closed_gateway_runs_and_reopen_replays[event]",
+    "tests/test_wakes_browser.py::test_browser_closed_gateway_runs_and_reopen_replays[peer]",
+    "tests/test_wakes_live.py::test_conversation_schedules_offline_result"
+  ],
+  "reason_groups": {
+    "5_retired_paths": "Historical browser/E2B implementations intentionally retired; no fallback mode is reintroduced",
+    "18_desktop_browser": "Require explicit NMA_TEST_DESKTOP_IMAGE for the distinct desktop/browser suite",
+    "5_live_models": "Require an explicit NMA_TEST_LIVE_ENV; no provider substitution",
+    "3_browser_harness": "Require NMA_TEST_BROWSER=1"
+  }
+}

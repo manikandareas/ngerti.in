@@ -1,0 +1,110 @@
+{
+  "status": "in_progress",
+  "date": "2026-10-27",
+  "hermes_revision": "7489b22af47ce91b366dde81d5831ea422577498",
+  "upstream_source_patches": 0,
+  "selected_apps": [
+    "google-workspace",
+    "notion",
+    "linear",
+    "github",
+    "n8n"
+  ],
+  "focused_tests": {
+    "passed": 7,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 137.2,
+    "scope": "Local OAuth/PKCE/refresh/restart, native HTTP/stdio, forms/sampling, cost consent, unknown-write fencing; native Firecrawl SDK against controlled HTTP fixture"
+  },
+  "static_checks": {
+    "check": "passed",
+    "web_build": "passed_with_existing_chunk_and_directive_warnings",
+    "foundation_inventory": "passed",
+    "full_engine_suite": "passed_with_explicit_skips",
+    "documentation": "passed"
+  },
+  "live_external_apps": {
+    "passed": 0,
+    "required": 5,
+    "state": "awaiting_user_account_setup_and_operation_evidence",
+    "observed_failure": "GitHub remote OAuth rejects missing registered client; now an actionable setup state. No external operation pass is claimed."
+  },
+  "live_research": {
+    "passed": 0,
+    "state": "awaiting_provider_keys"
+  },
+  "protocol_limits": [
+    "URL elicitation declined",
+    "Experimental MCP events unavailable pending thread wake bridge",
+    "identity/mTLS not yet deployed for acceptance"
+  ],
+  "preview": {
+    "authentication": "Normal Clerk; real authenticated browser requests returned HTTP 200 after correcting missing preview provisioner",
+    "url": "http://localhost:3033/connections",
+    "original_account_state": "preserved in its separate partition"
+  },
+  "release_thresholds": {
+    "source": "NMA-028",
+    "established_by_this_batch": false
+  },
+  "restore": {
+    "app_oauth_form_journal_files": 7,
+    "research_journal_files": 1,
+    "bytes_identical": true,
+    "private_file_modes_preserved": true,
+    "database_inventory_preserved": true,
+    "quarantine_enforced": true,
+    "external_effects_replayed": 0,
+    "scope": "two stopped disposable fixture partitions"
+  },
+  "regression": {
+    "passed": 200,
+    "failed": 0,
+    "skipped": 31,
+    "collected": 231,
+    "seconds": 1166.78,
+    "skip_inventory": "skipped-tests.json",
+    "skip_groups": {
+      "retired_browser_paths": 5,
+      "opt_in_desktop_browser": 18,
+      "live_provider": 5,
+      "opt_in_browser_harness": 3
+    },
+    "limitation": "Desktop/browser/live prerequisites not enabled in this general run. Dedicated new app/research cases all ran."
+  },
+  "final_focused_tests": {
+    "passed": 9,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 90.87,
+    "scope": "Latest app/OAuth/filter/recovery/cost/HTTP API changes, research native parity and exact runtime pin"
+  },
+  "backend_tests": {
+    "passed": 27,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 17.55,
+    "warnings": [
+      "Existing Alembic path_separator deprecation"
+    ],
+    "initial_unsuccessful_attempt": "unittest discovery could not import a pytest-only legacy outcome module; rerun with isolated pytest 9.1.1 dependency"
+  },
+  "additional_backend_secret_validation": {
+    "passed": 1,
+    "failed": 0,
+    "seconds": 1.54
+  },
+  "final_native_paging": {
+    "passed": 1,
+    "failed": 0,
+    "seconds": 26.3,
+    "scope": "Latest research test includes actual isolated read_file pagination and direct native result parity"
+  },
+  "ui": "ui.json",
+  "remaining_implementation": [
+    "Experimental MCP events require a product thread/wake bridge",
+    "Google Workspace server/client must be configured",
+    "Real connector operations, provider/X tests and identity/mTLS deployment acceptance pending"
+  ]
+}

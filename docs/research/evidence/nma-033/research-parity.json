@@ -1,0 +1,58 @@
+{
+  "scope": "Single controlled HTTP case; no live provider or SLO claim",
+  "exact_native_result_equality": true,
+  "source_urls": [
+    "https://example.org/source"
+  ],
+  "direct_native_elapsed_ms": 541,
+  "adapter_calls": [
+    {
+      "cache_hits": 0,
+      "cache_misses": 2,
+      "elapsed_ms": 234,
+      "failure_phase": null,
+      "provider": "firecrawl",
+      "tool": "web_search"
+    },
+    {
+      "cache_hits": 1,
+      "cache_misses": 0,
+      "elapsed_ms": 2,
+      "failure_phase": null,
+      "provider": "firecrawl",
+      "tool": "web_search"
+    },
+    {
+      "cache_hits": 0,
+      "cache_misses": 2,
+      "elapsed_ms": 142,
+      "failure_phase": null,
+      "provider": "firecrawl",
+      "tool": "web_search"
+    },
+    {
+      "cache_hits": 0,
+      "cache_misses": 1,
+      "elapsed_ms": 13358,
+      "failure_phase": null,
+      "provider": "firecrawl",
+      "tool": "web_extract"
+    },
+    {
+      "cache_hits": 0,
+      "cache_misses": 2,
+      "elapsed_ms": 20,
+      "failure_phase": "provider_or_extraction",
+      "provider": "firecrawl",
+      "tool": "web_search"
+    },
+    {
+      "cache_hits": 0,
+      "cache_misses": 2,
+      "elapsed_ms": 4,
+      "failure_phase": "provider_or_extraction",
+      "provider": "firecrawl",
+      "tool": "web_search"
+    }
+  ]
+}

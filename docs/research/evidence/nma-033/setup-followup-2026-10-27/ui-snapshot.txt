@@ -1,0 +1,126 @@
+- generic [ref=e1] clickable [onclick]
+  - banner
+    - link "Ngertiin beranda" [ref=e2]
+      - StaticText "ngertiin"
+      - StaticText "."
+    - navigation "Navigasi utama" [ref=e3]
+      - link "Agent" [ref=e7]
+      - link "Koneksi model" [ref=e8]
+      - StaticText "Acceptance account"
+  - main
+    - sectionheader
+      - heading "Koneksi model" [level=1, ref=e9]
+      - paragraph
+        - StaticText "Hubungkan akun inference Anda, lalu pilih koneksi dan model pada masing-masing agent. Penggunaan mengikuti akun dan paket yang dipilih."
+      - link "Atur model agent" [ref=e10]
+    - region "Akun terhubung" [ref=e4]
+      - heading "Akun terhubung" [level=2, ref=e11]
+      - list
+        - listitem [level=1]
+          - heading "Existing connection" [level=3, ref=e22]
+          - paragraph
+            - StaticText "API key / custom endpoint · Selected endpoint account"
+          - StaticText "Periksa akses model"
+          - paragraph
+            - StaticText "Akun 2285486d-eb48-50 · 1 model"
+          - button "Ganti key" [ref=e23]
+          - button "Periksa model" [ref=e24]
+          - button "Putuskan" [ref=e25]
+    - region "Tambahkan koneksi" [ref=e5]
+      - heading "Tambahkan koneksi" [level=2, ref=e12]
+      - paragraph
+        - StaticText "Login provider terpisah dari akun Ngertiin. Pilih nama yang mudah dikenali."
+      - generic
+        - LabelText
+          - StaticText "Provider"
+          - combobox "Provider" [expanded=false, ref=e26]: OpenRouter
+            - MenuListPopup
+              - option "ChatGPT plan" [ref=e36]
+              - option "OpenRouter" [selected, ref=e37]
+              - option "OpenCode Zen" [ref=e38]
+              - option "OpenCode Go" [ref=e39]
+              - option "API key / custom endpoint" [ref=e40]
+        - LabelText
+          - StaticText "Nama koneksi"
+          - textbox "Nama koneksi" [required, ref=e27]
+        - paragraph
+          - StaticText "Login membuat API key untuk akun OpenRouter Anda. Penggunaan memotong kredit OpenRouter."
+        - LabelText
+          - StaticText "API key"
+          - textbox "API key" [ref=e28]
+        - button "Login dengan OpenRouter" [disabled, ref=e14]
+        - button "Simpan API key" [disabled, ref=e15]
+    - region "Aplikasi untuk agent" [ref=e6]
+      - heading "Aplikasi untuk agent" [level=2, ref=e13]
+      - paragraph
+        - StaticText "Hubungkan akun, periksa tools, lalu berikan akses melalui "
+        - link "pengaturan agent" [ref=e16]
+        - StaticText "."
+      - status
+        - StaticText "Koneksi tersimpan. Lanjutkan login atau periksa tools."
+      - article
+        - heading "GitHub setup updated" [level=3, ref=e17]
+        - paragraph
+          - StaticText "Perlu diperiksa · 0 tools ditemukan"
+        - button "Atur ulang koneksi" [ref=e18]
+        - button "Periksa tools" [ref=e19]
+        - button "Putuskan" [ref=e20]
+        - paragraph
+          - StaticText "Koneksi tersedia untuk diuji. Verifikasi setiap operasi aplikasi masih diperlukan."
+      - group
+        - DisclosureTriangle "Riset internet" [expanded=false]
+          - StaticText "Riset internet"
+      - generic
+        - LabelText
+          - StaticText "Aplikasi"
+          - combobox "Aplikasi" [expanded=false, ref=e29]: Google (Gmail & Workspace)
+            - MenuListPopup
+              - option "Notion" [ref=e41]
+              - option "Linear" [ref=e42]
+              - option "GitHub" [ref=e43]
+              - option "Google (Gmail & Workspace)" [selected, ref=e44]
+        - LabelText
+          - StaticText "Nama koneksi"
+          - textbox "Nama koneksi" [required, ref=e30]
+        - paragraph
+          - StaticText "Hubungkan Gmail pribadi atau akun Google Workspace. Koneksi ini mencakup Gmail, Drive, Calendar, Docs, dan Sheets; URL server disiapkan Ngertiin."
+        - paragraph
+          - StaticText "Pengelola Ngertiin perlu menyiapkan OAuth Google sekali terlebih dahulu."
+        - list
+          - listitem [level=1]
+            - ListMarker "1. "
+            - StaticText "Buat atau pilih project di "
+            - link "Google Cloud" [ref=e35]
+            - StaticText ", lalu aktifkan Gmail API, Google Drive API, Google Calendar API, Google Docs API, dan Google Sheets API."
+          - listitem [level=1]
+            - ListMarker "2. "
+            - StaticText "Di Google Auth Platform, siapkan aplikasi External. Jika masih Testing, tambahkan alamat Gmail Anda sebagai test user."
+          - listitem [level=1]
+            - ListMarker "3. "
+            - StaticText "Buat OAuth client jenis Web application dengan Authorized redirect URI berikut:"
+            - code
+              - StaticText "http://localhost:3043/connections"
+          - listitem [level=1]
+            - ListMarker "4. "
+            - StaticText "Masukkan Client ID dan Client Secret aplikasi di bawah. Keduanya berasal dari Google Cloud, bukan password akun Google."
+        - paragraph
+          - StaticText "Untuk penggunaan publik, ikuti proses verifikasi dan kebijakan Google. Token aplikasi Testing dengan scope sensitif dapat berakhir setelah tujuh hari. "
+          - link "Panduan OAuth Google" [ref=e31]
+          - StaticText "."
+        - LabelText
+          - StaticText "Client ID aplikasi Google"
+          - textbox "Client ID aplikasi Google" [required, ref=e32]
+        - LabelText
+          - StaticText "Client Secret aplikasi Google"
+          - textbox "Client Secret aplikasi Google" [required, ref=e33]
+        - LabelText
+          - StaticText "Cara login"
+          - combobox "Cara login" [expanded=false, ref=e34]: Login akun (OAuth)
+            - MenuListPopup
+              - option "Login akun (OAuth)" [selected, ref=e45]
+        - group
+          - DisclosureTriangle "Pengaturan koneksi tambahan" [expanded=false]
+            - StaticText "Pengaturan koneksi tambahan"
+        - button "Tambahkan koneksi aplikasi" [ref=e21]
+  - contentinfo
+    - StaticText "Satu langkah kecil, sedikit lebih paham."

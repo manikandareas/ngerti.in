@@ -1,0 +1,16 @@
+{
+  "status": "authorization_required",
+  "real_google_account": false,
+  "token_exchange": false,
+  "authorization_host": "accounts.google.com",
+  "redirect_uri": [
+    "http://localhost:3033/connections"
+  ],
+  "offline": [
+    "offline"
+  ],
+  "pkce": [
+    "S256"
+  ],
+  "scopes": 6
+}

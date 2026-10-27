@@ -1,0 +1,50 @@
+{
+  "timestamp": "2026-10-27T05:36:21.139168+00:00",
+  "runtime": {
+    "revision": "7489b22af47ce91b366dde81d5831ea422577498",
+    "python": "3.14.9",
+    "sqlite": "3.53.1"
+  },
+  "path": "product AppConnections.native_config -> native scoped MCP registry -> actual vendor",
+  "model_used": false,
+  "workspace_writes": 0,
+  "denominator": 2,
+  "cases": [
+    {
+      "application": "notion",
+      "tool": "notion-fetch",
+      "arguments": {
+        "id": "404abdd618738161ad81d5857fa09cd1"
+      },
+      "passed": true,
+      "expected_page_id_matched": true,
+      "expected_task_title_matched": true,
+      "result_sha256": "650d82bd41f8051c332cb45483e7020027b7ed6faa820cf4b511b1299e3463ca",
+      "result_bytes": 21914,
+      "protocol_version": "2025-11-25",
+      "tools_offered": 64,
+      "tools_enabled": 1,
+      "connection_journal_unchanged": true,
+      "elapsed_seconds": 2.407
+    },
+    {
+      "application": "linear",
+      "tool": "list_teams",
+      "arguments": {
+        "limit": 1,
+        "includeArchived": false
+      },
+      "passed": true,
+      "teams_returned": 1,
+      "provider_ids_present": true,
+      "result_sha256": "e51d7773311e0b535dffb0a604d107693ae5c153ef9389753358bfa60e791c62",
+      "result_bytes": 310,
+      "protocol_version": "2025-11-25",
+      "tools_offered": 69,
+      "tools_enabled": 1,
+      "connection_journal_unchanged": true,
+      "elapsed_seconds": 1.483
+    }
+  ],
+  "passed": 2
+}

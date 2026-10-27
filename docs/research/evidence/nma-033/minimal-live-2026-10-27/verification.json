@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "status": "done_initial_package_minimal_acceptance",
+  "completed_at": "2026-10-27T05:40:09.234401+00:00",
+  "authorization": "selesaikan task NMA-033 dengan minimal test pada connection notion dan linear",
+  "acceptance_change": "Two real saved-connection read checks complete this initial delivery. The broader original live validation gate is retained as historical, not claimed passed.",
+  "live_checks": {
+    "passed": 2,
+    "denominator": 2,
+    "evidence": "connections.json",
+    "workspace_writes": 0,
+    "model_driven_conversation_tested": false,
+    "connection_journals_unchanged": true
+  },
+  "current_checks": {
+    "static": "passed",
+    "docs": "passed",
+    "verifier_ruff": "passed"
+  },
+  "previous_verification_inspected_not_rerun": {
+    "broad_engine": {
+      "passed": 200,
+      "skipped": 31
+    },
+    "followup_engine": {
+      "passed": 20,
+      "skipped": 0
+    },
+    "source_pin": {
+      "passed": 1
+    },
+    "backend": {
+      "passed": 28
+    },
+    "web_build": "passed",
+    "controlled_ui": "passed",
+    "disposable_restore": "passed",
+    "historical_evidence_hashes_verified": 28
+  },
+  "unverified_or_unavailable": [
+    "Notion/Linear writes and other operations",
+    "Model-driven live app use",
+    "GitHub actual account operations",
+    "Google OAuth registration/consent and actual account operations",
+    "Actual research-provider and optional X calls",
+    "Identity/mTLS deployment acceptance",
+    "Experimental MCP event-to-thread wakes unavailable",
+    "URL elicitation unsupported",
+    "Release corpus, thresholds and production rollout"
+  ],
+  "preservation": {
+    "historical_manifests_unchanged": true,
+    "original_account_partition_switched": false,
+    "agent_grants_changed": false,
+    "credentials_copied_to_evidence": false
+  },
+  "followup_report": "../../../nma-033-minimal-acceptance.md"
+}

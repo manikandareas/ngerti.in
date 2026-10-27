@@ -1,0 +1,83 @@
+F......                                                                  [100%]
+=================================== FAILURES ===================================
+_______ test_vendor_connection_can_resubmit_its_stored_endpoint[github] ________
+
+apps = <ngertiin_engine.app_connections.AppConnections object at 0x109b11be0>
+application = 'github'
+
+    @pytest.mark.parametrize('application', ['github', 'notion', 'linear'])
+    def test_vendor_connection_can_resubmit_its_stored_endpoint(apps, application):
+        payload = {'connection_id': str(uuid4()), 'application': application, 'label': 'First account', 'auth_method': 'bearer' if application == 'github' else 'oauth'}
+        if application == 'github':
+            payload['api_key'] = 'app-setup-disposable-secret'
+        saved = apps.configure(payload)
+>       updated = apps.configure({**payload, 'label': 'Updated account', 'expected_generation': saved['generation'], 'url': saved['url']})
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps/engine/tests/test_app_setup.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <ngertiin_engine.app_connections.AppConnections object at 0x109b11be0>
+payload = {'connection_id': '260b0f0a-6879-43f8-a948-a58e24ed127f', 'application': 'github', 'label': 'Updated account', 'auth_method': 'bearer', ...}
+
+    def configure(self, payload):
+        from ngertiin_engine.app_manifest import manifest
+    
+        if set(payload) - {
+            "connection_id",
+            "application",
+            "label",
+            "url",
+            "auth_method",
+            "api_key",
+            "tools",
+            "oauth_client_id",
+            "oauth_client_secret",
+            "stdio_profile",
+            "expected_generation",
+        }:
+            raise EngineError("INVALID_REQUEST")
+        identity = uuid(payload.get("connection_id"))
+        app = next(
+            (v for v in manifest() if v["id"] == payload.get("application")), None
+        )
+        label = payload.get("label")
+        method = payload.get("auth_method", "oauth")
+        if (
+            not app
+            or method not in app["auth_methods"]
+            or not isinstance(label, str)
+            or not 1 <= len(label.strip()) <= 100
+        ):
+            raise EngineError("INVALID_REQUEST")
+        filters = payload.get("tools", [])
+        if (
+            not isinstance(filters, list)
+            or len(filters) > 256
+            or any(
+                not isinstance(name, str)
+                or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,160}", name)
+                for name in filters
+            )
+        ):
+            raise EngineError("INVALID_REQUEST")
+        profile = payload.get("stdio_profile")
+        if profile is not None and (
+            not isinstance(profile, str)
+            or not re.fullmatch(r"[a-z][a-z0-9_-]{0,63}", profile)
+        ):
+            raise EngineError("INVALID_REQUEST")
+        url = (
+            ""
+            if profile
+            else public_url(app["url"] or payload.get("url"), fixed=bool(app["url"]))
+        )
+        # Fixed vendor entries never accept a browser-supplied replacement endpoint.
+        if app["url"] and payload.get("url") not in (None, "", app["url"]):
+>           raise EngineError("INVALID_ENDPOINT")
+E           ngertiin_engine.contracts.EngineError: INVALID_ENDPOINT
+
+apps/engine/src/ngertiin_engine/app_connections.py:137: EngineError
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_app_setup.py::test_vendor_connection_can_resubmit_its_stored_endpoint[github]
+1 failed, 6 passed in 0.30s

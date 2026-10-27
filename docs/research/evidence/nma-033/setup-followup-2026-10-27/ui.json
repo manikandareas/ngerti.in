@@ -1,0 +1,28 @@
+{
+  "account": "disposable fixture, not live GitHub acceptance",
+  "applications": [
+    "notion",
+    "linear",
+    "github",
+    "google-workspace"
+  ],
+  "github_save_then_reconfigure": [
+    {
+      "application": "github",
+      "label": "GitHub setup updated",
+      "status": "configured",
+      "generation": 2,
+      "url": "https://api.githubcopilot.com/mcp"
+    }
+  ],
+  "google_guide_shows_current_origin": true,
+  "no_server_url_input": true,
+  "n8n_new_setup_hidden": true,
+  "live_external_requests": 0,
+  "google_save_then_edit_without_reentering_registration": {
+    "generation": 2,
+    "oauth_configured": true,
+    "registration_preserved": true,
+    "account_accessed": false
+  }
+}

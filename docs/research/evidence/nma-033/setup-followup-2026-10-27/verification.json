@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "date": "2026-10-27",
+  "status": "in_progress_live_acceptance_pending",
+  "hermes_revision": "7489b22af47ce91b366dde81d5831ea422577498",
+  "selected_apps": [
+    "notion",
+    "linear",
+    "github",
+    "google-workspace"
+  ],
+  "deferred_new_setup": [
+    "n8n"
+  ],
+  "engine_tests": {
+    "passed": 20,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 105.46,
+    "files": [
+      "test_app_setup.py",
+      "test_google_mcp.py",
+      "test_app_connections.py",
+      "test_research.py"
+    ],
+    "google_api": "simulated HTTP responses through real native MCP client/server"
+  },
+  "source_pin_tests": {
+    "passed": 1,
+    "seconds": 0.14
+  },
+  "backend_tests": {
+    "passed": 28,
+    "seconds": 19.88
+  },
+  "static_checks": "passed",
+  "web_build": "passed",
+  "docs_checks": "passed",
+  "known_warnings": [
+    "Existing web chunk/directive warnings",
+    "Uvicorn websocket deprecations",
+    "Existing Alembic path_separator deprecation"
+  ],
+  "google_oauth_probe": {
+    "result": "authorization_required",
+    "real_public_google_discovery": true,
+    "valid_client_registration": false,
+    "token_exchange": false,
+    "account_access": false,
+    "canceled_after_consent_url_validation": true
+  },
+  "preview_restart": {
+    "normal_clerk_authentication": true,
+    "applications": 4,
+    "existing_private_files_checked": 6,
+    "identical_bytes_and_modes": true,
+    "original_account_partition_switched": false
+  },
+  "live_connections": {
+    "confirmed": 2,
+    "denominator": 4,
+    "notion_discovered_tools": 68,
+    "linear_discovered_tools": 69,
+    "basis": "User confirmation and read-only preview metadata; not operation acceptance"
+  },
+  "live_operations": {
+    "verified": 0,
+    "denominator": 4,
+    "google": "OAuth client registration and consent missing",
+    "github": "live token connection and operation acceptance pending"
+  },
+  "unsuccessful_development_attempts": [
+    "GitHub slash-normalization regression reproduced before fix",
+    "Native transport HEAD fallback entered an SSE GET; explicit HEAD response fixed handshake",
+    "MCP unexpected-error masking hid provider code; typed ToolError preserves it",
+    "Concurrent-account test corrected to decode native nested JSON results"
+  ],
+  "boundaries": [
+    "Hermes remains sole execution/session/OAuth refresh/recovery owner",
+    "Project-authored private Google API MCP bridge is not unchanged Hermes Google app implementation",
+    "No external Google MCP URL or Developer Preview is required",
+    "One Google API request per write; no retry or redirect",
+    "No real Google operation or token exchange verified",
+    "Other previously recorded task/release gates remain open"
+  ],
+  "previous_manifest": "../manifest.json",
+  "previous_manifest_is_historical": true
+}

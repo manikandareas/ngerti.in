@@ -1,0 +1,81 @@
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+LEARNING_CASE memory 1.326 succeeded
+LEARNING_CASE memory 0.215 succeeded
+.LEARNING_CASE skill_manage 0.452 succeeded
+LEARNING_CASE skill_view 0.428 succeeded
+LEARNING_CASE skill_view 0.422 succeeded
+LEARNING_CASE skill_view 0.426 succeeded
+LEARNING_CASE skill_view 1.272 succeeded
+..LEARNING_CASE skill_install 1.248 succeeded
+FRUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+.LEARNING_CASE memory 0.44 succeeded
+LEARNING_CASE skill_manage 2.719 succeeded
+LEARNING_MIGRATION_BACKUP_RESTORE_VERIFIED d4d751c1cf607a30d6d72e9380c58ac8873fad39133cb61ab981591d33b47376
+.LEARNING_CASE skill_manage 1.852 succeeded
+FRUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+.....RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+.....
+=================================== FAILURES ===================================
+_____ test_pinned_catalog_install_missing_dependency_conflict_and_rollback _____
+
+runtime = (PosixPath('/tmp/nma-qt0ndrka'), <http.server.ThreadingHTTPServer object at 0x10b9f70e0>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '17', 'lifecycle': 'ready', ...})
+
+    def test_pinned_catalog_install_missing_dependency_conflict_and_rollback(runtime):
+        _, provider, call, *_ = runtime
+        agent = capability_agent(call, "catalog-learner")
+        dm = conversation(call, agent)
+        before = inventory(call, agent, dm)
+        assert len(before["catalog"]) == 210
+        entry = next(e for e in before["catalog"] if e["name"] == "docx")
+        installed = invoke(provider, call, dm, "skill_install", {"catalog_id": entry["id"]})
+        assert "skill_id" in installed, installed
+>       item = inventory(call, agent, dm)["skills"][0]
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps/engine/tests/test_learning.py:298: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x10bab5850>
+agent = {'access_generation': '1', 'agent_id': 'f1a9daaf-5e14-4387-b108-f6e1488e62b3', 'config': {'avatar_url': 'https://api.d..., 'session': {'compression': {}, 'context_engine': 'compressor', 'max_turns': None}, ...}, 'config_revision': '1', ...}
+thread = {'agents': [{'access_generation': '1', 'agent_id': 'f1a9daaf-5e14-4387-b108-f6e1488e62b3', 'config': {'avatar_url': 'h...sion': '1', ...}], 'context_generation': '1', 'dm_agent_id': 'f1a9daaf-5e14-4387-b108-f6e1488e62b3', 'kind': 'dm', ...}
+
+    def inventory(call, agent, thread):
+        result = call(
+            command(
+                "learning.read",
+                {"agent_id": agent["agent_id"], "thread_id": thread["thread_id"]},
+            )
+        )
+>       assert "result" in result, result
+E       AssertionError: {'error': {'code': 'INVALID_REQUEST'}}
+E       assert 'result' in {'error': {'code': 'INVALID_REQUEST'}}
+
+apps/engine/tests/test_learning.py:33: AssertionError
+_______ test_native_curator_protects_active_work_and_archives_reversibly _______
+
+runtime = (PosixPath('/tmp/nma-2h01bk6c'), <http.server.ThreadingHTTPServer object at 0x10bc20cd0>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '17', 'lifecycle': 'ready', ...})
+
+    def test_native_curator_protects_active_work_and_archives_reversibly(runtime):
+        root, model, call, start, *_ = runtime
+        agent = capability_agent(call, 'curated-methods')
+        dm = conversation(call, agent)
+        assert invoke(model, call, dm, 'skill_manage', {'operations': [{'action': 'create', 'name': 'aging-method', 'content': '---\nname: aging-method\ndescription: A reusable method\n---\n\nCheck the evidence.'}]})['success']
+        with sqlite3.connect(root / 'state/state.db') as db:
+            db.execute("UPDATE nma_skill_entries SET created_at='2020-01-01T00:00:00+00:00',updated_at='2020-01-01T00:00:00+00:00'")
+            db.execute('DELETE FROM nma_learning_maintenance')
+        model.release.clear()
+        model.blocked.clear()
+        run = call(send(dm, 'BLOCK_STARTED'))['result']['run_id']
+        assert model.blocked.wait(10)
+        request = lambda: command('learning.maintain', {'agent_id': agent['agent_id'], 'thread_id': dm['thread_id']})
+>       assert call(request())['result']['reports'] == []
+E       AssertionError: assert [{'archived':...ted': 0, ...}] == []
+E         
+E         Left contains one more item: {'archived': 1, 'checked': 1, 'marked_stale': 0, 'reactivated': 0, ...}
+E         Use -v to get more diff
+
+apps/engine/tests/test_learning_lifecycle.py:111: AssertionError
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_learning.py::test_pinned_catalog_install_missing_dependency_conflict_and_rollback
+FAILED apps/engine/tests/test_learning_lifecycle.py::test_native_curator_protects_active_work_and_archives_reversibly
+2 failed, 15 passed in 123.55s (0:02:03)

@@ -1,0 +1,188 @@
+{
+  "protocol": "nma028-baseline-v1 reference, supplemental feature cohort; no matched baseline/SLO claim",
+  "turns": [
+    {
+      "log": "nma034-live-15.log",
+      "run_id": "7280f284-cd71-51d7-b0fc-780d0508bfe3",
+      "settlement_seconds": 33.557,
+      "runtime_status": "succeeded"
+    },
+    {
+      "log": "nma034-live-15.log",
+      "run_id": "d1a89e8f-f1be-5c33-9de3-13d22d4d8ab7",
+      "settlement_seconds": 10.264,
+      "runtime_status": "succeeded"
+    },
+    {
+      "log": "nma034-live-15.log",
+      "run_id": "6e5cb4e0-0e1b-5651-82f2-34392e624b01",
+      "settlement_seconds": 7.721,
+      "runtime_status": "succeeded"
+    },
+    {
+      "log": "nma034-live-15.log",
+      "run_id": "facefbfd-efba-58cd-94e3-66ced2db6711",
+      "settlement_seconds": 11.749,
+      "runtime_status": "succeeded"
+    },
+    {
+      "log": "nma034-live-15.log",
+      "run_id": "420012c8-1e5f-5584-a12c-1806d2a66f0c",
+      "settlement_seconds": 14.33,
+      "runtime_status": "succeeded"
+    },
+    {
+      "log": "nma034-live-15.log",
+      "run_id": "9ab26f25-c9a6-55c0-97e0-28c082761926",
+      "settlement_seconds": 120.612,
+      "runtime_status": "succeeded"
+    },
+    {
+      "log": "nma034-live-15.log",
+      "run_id": "a3d23a41-2f58-5a9c-be40-ec663d76d228",
+      "settlement_seconds": 19.491,
+      "runtime_status": "succeeded"
+    },
+    {
+      "log": "nma034-live-15.log",
+      "run_id": "bc5a6ec8-06d4-564c-a5df-bc7f002cfa3c",
+      "settlement_seconds": 324.071,
+      "runtime_status": "indeterminate"
+    },
+    {
+      "log": "nma034-live-documents-19.log",
+      "run_id": "5c84ff21-1da0-5f68-99bd-f3c07f1651d7",
+      "settlement_seconds": 212.126,
+      "runtime_status": "indeterminate"
+    },
+    {
+      "log": "nma034-live-documents-30.log",
+      "run_id": "b3c96008-b679-56ff-b63a-7b01a3b17059",
+      "settlement_seconds": 84.573,
+      "runtime_status": "indeterminate"
+    },
+    {
+      "log": "nma034-live-documents-31.log",
+      "run_id": "cc528879-4a47-570f-8869-fd9bcadb9baf",
+      "settlement_seconds": 85.747,
+      "runtime_status": "indeterminate"
+    },
+    {
+      "log": "nma034-live-documents-33.log",
+      "run_id": "89ee9b2e-35cc-5a7f-81a5-d9d392030dc3",
+      "settlement_seconds": 79.614,
+      "runtime_status": "succeeded"
+    },
+    {
+      "log": "nma034-live-documents-33.log",
+      "run_id": "eae4a7c4-ae40-537b-b39c-7692789182a5",
+      "settlement_seconds": 63.738,
+      "runtime_status": "succeeded"
+    },
+    {
+      "log": "nma034-live-documents-33.log",
+      "run_id": "7b34bfb7-0dab-5743-b2d5-af24d640763b",
+      "settlement_seconds": 47.99,
+      "runtime_status": "succeeded"
+    },
+    {
+      "log": "nma034-live-documents-33.log",
+      "run_id": "a6d2d279-d576-5169-8afa-20c747fa73a8",
+      "settlement_seconds": 62.03,
+      "runtime_status": "succeeded"
+    },
+    {
+      "log": "nma034-live-documents-33.log",
+      "run_id": "56131c26-ae4f-51c3-9fc6-40645ed29186",
+      "settlement_seconds": 55.522,
+      "runtime_status": "succeeded"
+    },
+    {
+      "log": "nma034-live-documents-33.log",
+      "run_id": "f905808a-c9f2-5df7-b4d6-141718560ccd",
+      "settlement_seconds": 52.467,
+      "runtime_status": "succeeded"
+    },
+    {
+      "log": "nma034-live-documents-33.log",
+      "run_id": "f368eef4-62be-5a48-93ee-b41f90156571",
+      "settlement_seconds": 31.285,
+      "runtime_status": "succeeded"
+    },
+    {
+      "log": "nma034-live-documents-33.log",
+      "run_id": "f726b2dc-6b0c-5615-a4f0-ee9bcfd08832",
+      "settlement_seconds": 180.345,
+      "runtime_status": "succeeded"
+    },
+    {
+      "log": "nma034-live-research-coding-36.log",
+      "run_id": "78f01680-909d-5821-99a8-3f8487dcdb48",
+      "settlement_seconds": 91.177,
+      "runtime_status": "succeeded"
+    },
+    {
+      "log": "nma034-live-uploaded-xlsx-37.log",
+      "run_id": "ebb2fe00-4fe7-5bdf-aec5-70939c9d215f",
+      "settlement_seconds": 131.14,
+      "runtime_status": "succeeded"
+    }
+  ],
+  "measured_turn_count": 21,
+  "settlement_p50_s": 62.03,
+  "settlement_p95_s": 212.126,
+  "first_progress_p95": null,
+  "unresolved_receipt_count_in_disposable_attempts": 4,
+  "unresolved_receipts": [
+    {
+      "root": "/tmp/nma-02ik_1a2",
+      "run_id": "bc5a6ec8-06d4-564c-a5df-bc7f002cfa3c",
+      "operation_id": "ce8e21bd8fc6adee43ffde8a17f20327b9bd13c7aaeaf078660259d5879fa234",
+      "tool": "read_file",
+      "semantics": "read",
+      "phase": "dispatched",
+      "provider_operation_id": null
+    },
+    {
+      "root": "/tmp/nma-9uai226k",
+      "run_id": "5c84ff21-1da0-5f68-99bd-f3c07f1651d7",
+      "operation_id": "bede0e05baddbafee406707a3e9729438f52498ec4d4a00da9f04259ba3f0ae6",
+      "tool": "terminal",
+      "semantics": "mutation",
+      "phase": "unknown",
+      "provider_operation_id": null
+    },
+    {
+      "root": "/tmp/nma-1e65a8vk",
+      "run_id": "b3c96008-b679-56ff-b63a-7b01a3b17059",
+      "operation_id": "f9131ed6ae3a124dc7e828f55d085e8c89fb91c06b1e86c3facb57526968b755",
+      "tool": "terminal",
+      "semantics": "mutation",
+      "phase": "unknown",
+      "provider_operation_id": null
+    },
+    {
+      "root": "/tmp/nma-g0f1hlfc",
+      "run_id": "cc528879-4a47-570f-8869-fd9bcadb9baf",
+      "operation_id": "283cd7c208a290ea62b0c95d7116a55e87f49d138d4af8d0b4adaa5911c3380f",
+      "tool": "terminal",
+      "semantics": "mutation",
+      "phase": "unknown",
+      "provider_operation_id": null
+    }
+  ],
+  "visual_correction_after_image_retag": {
+    "run_id": "2281ac20-7bd4-5f3f-bd2f-b7603550845a",
+    "runtime_status": "succeeded",
+    "task_delivery": "failed",
+    "reason": "The old untagged immutable image disappeared during a rebuild; file export required that exact image. Output remained in the old scoped volume.",
+    "blind_replayed": false
+  },
+  "release_slo_claim": false,
+  "final_research_coding_rerun": {
+    "run_id": "b80d5b4a-6fdf-508d-b5c8-9af3027a6f75",
+    "settlement_seconds": 143.212,
+    "runtime_status": "succeeded",
+    "pytest_passed": true
+  }
+}

@@ -1,0 +1,106 @@
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+LEARNING_CASE memory 12.277 succeeded
+F
+=================================== FAILURES ===================================
+_____ test_self_hosted_provider_recall_export_correction_deletion_restart ______
+
+runtime = (PosixPath('/tmp/nma-962n7j5e'), <http.server.ThreadingHTTPServer object at 0x10c2f2510>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '17', 'lifecycle': 'ready', ...})
+
+    def test_self_hosted_provider_recall_export_correction_deletion_restart(runtime):
+        root, model, call, start, *_ = runtime
+        start.current.kill()
+        start.current.wait(timeout=10)
+        start(
+            overrides={
+                "NMA_MEMORY_PROVIDER_FILE": os.environ["NMA_TEST_MEMORY_PROVIDER_FILE"]
+            }
+        )
+        agent, peer = (
+            capability_agent(call, "provider-memory"),
+            capability_agent(call, "provider-peer"),
+        )
+        dm, peer_dm = conversation(call, agent), conversation(call, peer)
+        group = conversation(call, agent, "group", [peer])
+        result = invoke(
+            model,
+            call,
+            dm,
+            "memory",
+            {
+                "action": "add",
+                "target": "user",
+                "content": "The user's favorite color is turquoise.",
+            },
+        )
+        assert result.get("success") and result.get("provider_status") == "ready", result
+    
+        def provider(agent, thread, action, **extra):
+            response = call(
+                command(
+                    "learning.provider",
+                    {
+                        "agent_id": agent["agent_id"],
+                        "thread_id": thread["thread_id"],
+                        "action": action,
+                        **extra,
+                    },
+                )
+            )
+            assert "result" in response, response
+            return response["result"]
+    
+        recalled = provider(agent, dm, "recall", query="What is the user's favorite color?")
+        assert "turquoise" in json.dumps(recalled["result"]).lower(), recalled
+        assert "turquoise" not in json.dumps(
+            provider(peer, peer_dm, "recall", query="Favorite color")
+        )
+        assert "turquoise" not in json.dumps(
+            provider(peer, group, "recall", query="Favorite color")
+        )
+        exported = provider(agent, dm, "export")
+        assert exported["documents"] and "turquoise" in json.dumps(exported["documents"])
+        secondary_dm = legacy_dm(root, call, agent)
+        secondary = provider(agent, secondary_dm, "recall", query="Favorite color")
+        assert "turquoise" in json.dumps(secondary["result"]).lower()
+        memory = inventory(call, agent, dm)["memories"][0]
+        body = command(
+            "learning.memory",
+            {
+                "agent_id": agent["agent_id"],
+                "thread_id": dm["thread_id"],
+                "memory_id": memory["memory_id"],
+                "action": "correct",
+                "content": "The user's favorite color is violet.",
+            },
+        )
+        body["expected_revision"] = memory["revision"]
+        corrected = call(body)
+        assert corrected.get("result", {}).get("provider_status") == "ready", corrected
+        changed = provider(agent, dm, "recall", query="What is the user's favorite color?")
+        assert (
+            "violet" in json.dumps(changed["result"]).lower()
+            and changed["bank_id"] != recalled["bank_id"]
+        )
+        with sqlite3.connect(root / "state/state.db") as db:
+            assert db.execute(
+                "SELECT status FROM nma_memory_provider_banks WHERE bank_id=?",
+                (secondary["bank_id"],),
+            ).fetchone() == ("deleted",)
+        service = json.loads(open(os.environ["NMA_TEST_MEMORY_PROVIDER_FILE"]).read())[
+            "base_url"
+        ]
+>       assert (
+            httpx.get(
+                service + "/v1/default/banks/" + secondary["bank_id"], trust_env=False
+            ).status_code
+            == 404
+        )
+E       AssertionError: assert 405 == 404
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+E        +    where <Response [405 Method Not Allowed]> = <function get at 0x10bdbde80>((('http://127.0.0.1:8894' + '/v1/default/banks/') + 'nma-124c1a2b46373bb17c8dca55427756dfa8e9c068498dcd76'), trust_env=False)
+E        +      where <function get at 0x10bdbde80> = httpx.get
+
+apps/engine/tests/test_memory_provider.py:104: AssertionError
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_memory_provider.py::test_self_hosted_provider_recall_export_correction_deletion_restart
+1 failed in 35.39s

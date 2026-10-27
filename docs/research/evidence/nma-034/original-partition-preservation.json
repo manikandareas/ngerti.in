@@ -1,0 +1,7 @@
+{
+  "schema_version": 14,
+  "observed_read_only": true,
+  "migration_performed": false,
+  "gateway_restart_performed": false,
+  "original_gateway_pid": 72764
+}

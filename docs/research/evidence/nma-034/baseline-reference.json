@@ -1,0 +1,19 @@
+{
+  "protocol_id": "nma028-baseline-v1",
+  "path": "docs/research/evidence/nma-028/protocol.json",
+  "sha256": "e61058b0eec9b56857e5849b5adc03558684376f66abad89a9d66df957f87e5c",
+  "release_thresholds": {
+    "applicable_cases": "All required live cells executed; no blocked cell is a pass.",
+    "task_success_rate_min": 0.95,
+    "integration_failure_rate_max": 0.02,
+    "first_progress_p95_s_max": 10,
+    "settlement_p95_s_max": 180,
+    "recovery_p95_s_max": 60,
+    "observed_duplicate_effects_max": 0,
+    "observed_cross_scope_leaks_max": 0,
+    "observed_stop_violations_max": 0,
+    "unresolved_effects_for_release_max": 0,
+    "confidence": "Release requires at least 100 representative tasks per supported configuration in NMA-039; three repeats do not establish the SLO."
+  },
+  "release_slo_claim": false
+}

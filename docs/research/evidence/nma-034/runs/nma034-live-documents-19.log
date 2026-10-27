@@ -1,0 +1,50 @@
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+LIVE_TURN 5c84ff21-1da0-5f68-99bd-f3c07f1651d7 212.126 indeterminate
+F
+=================================== FAILURES ===================================
+_____________ test_real_model_office_pdf_create_revise_and_publish _____________
+
+runtime = (PosixPath('/tmp/nma-9uai226k'), <http.server.ThreadingHTTPServer object at 0x107266270>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '17', 'lifecycle': 'ready', ...})
+
+    def test_real_model_office_pdf_create_revise_and_publish(runtime):
+        root, _, call, start, *_ = runtime
+        agent, dm = configured(runtime, "live-document-workflows")
+>       turn(
+            call,
+            dm,
+            "Bahan laporan inventaris: 17 peti biru dan 26 peti hijau, total 43 peti. Buat empat file nyata DOCX, XLSX, PPTX dan PDF menggunakan skill native yang sesuai. Temukan dan pasang skill yang dibutuhkan, baca instruksi dan asetnya, buat file di workspace lalu validasi. XLSX wajib memiliki rumus SUM untuk total, bukan angka total yang diketik. Render dan periksa dokumen/slide/PDF, lalu publikasikan keempat file agar dapat diunduh. Ini tugas satu kali, selesaikan pada giliran ini.",
+        )
+
+apps/engine/tests/test_learning_live.py:151: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x10731a4b0>
+thread = {'agents': [{'access_generation': '1', 'agent_id': '6644b122-6776-4062-b02a-0534645c77d9', 'config': {'avatar_url': 'h...sion': '1', ...}], 'context_generation': '1', 'dm_agent_id': '6644b122-6776-4062-b02a-0534645c77d9', 'kind': 'dm', ...}
+text = 'Bahan laporan inventaris: 17 peti biru dan 26 peti hijau, total 43 peti. Buat empat file nyata DOCX, XLSX, PPTX dan P...okumen/slide/PDF, lalu publikasikan keempat file agar dapat diunduh. Ini tugas satu kali, selesaikan pada giliran ini.'
+
+    def turn(call, thread, text):
+        response = call(send(thread, text))
+        assert "result" in response, response
+        started = time.monotonic()
+        run_id = response["result"]["run_id"]
+        while time.monotonic() - started < 360:
+            state = call(command("runtime.read", {"run_id": run_id}))["result"]
+            if state["status"] not in {"queued", "running"}:
+                print(
+                    "LIVE_TURN",
+                    run_id,
+                    round(time.monotonic() - started, 3),
+                    state["status"],
+                    flush=True,
+                )
+>               assert state["status"] == "succeeded", state
+E               AssertionError: {'agent_id': '6644b122-6776-4062-b02a-0534645c77d9', 'config_revision': '1', 'context_generation': '1', 'continuation_required': False, ...}
+E               assert 'indeterminate' == 'succeeded'
+E                 
+E                 - succeeded
+E                 + indeterminate
+
+apps/engine/tests/test_learning_live.py:40: AssertionError
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_learning_live.py::test_real_model_office_pdf_create_revise_and_publish
+1 failed in 216.80s (0:03:36)

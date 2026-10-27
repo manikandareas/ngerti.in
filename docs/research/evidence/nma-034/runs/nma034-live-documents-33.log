@@ -1,0 +1,79 @@
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+LIVE_TURN 89ee9b2e-35cc-5a7f-81a5-d9d392030dc3 79.614 succeeded
+LIVE_TURN eae4a7c4-ae40-537b-b39c-7692789182a5 63.738 succeeded
+LIVE_TURN 7b34bfb7-0dab-5743-b2d5-af24d640763b 47.99 succeeded
+LIVE_TURN a6d2d279-d576-5169-8afa-20c747fa73a8 62.03 succeeded
+LIVE_TURN 56131c26-ae4f-51c3-9fc6-40645ed29186 55.522 succeeded
+LIVE_TURN f905808a-c9f2-5df7-b4d6-141718560ccd 52.467 succeeded
+LIVE_TURN f368eef4-62be-5a48-93ee-b41f90156571 31.285 succeeded
+LIVE_TURN f726b2dc-6b0c-5615-a4f0-ee9bcfd08832 180.345 succeeded
+F
+=================================== FAILURES ===================================
+_____________ test_real_model_office_pdf_create_revise_and_publish _____________
+
+runtime = (PosixPath('/tmp/nma-aikc2eme'), <http.server.ThreadingHTTPServer object at 0x10bd8e510>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '17', 'lifecycle': 'ready', ...})
+
+    def test_real_model_office_pdf_create_revise_and_publish(runtime):
+        root, _, call, start, *_ = runtime
+        agent, dm = configured(runtime, "live-document-workflows")
+        for extension, skill, script in (
+            ("docx", "docx", "docx_create.py"),
+            ("xlsx", "xlsx", "xlsx_create.py"),
+            ("pptx", "powerpoint", "pptx_create.py"),
+            ("pdf", "pdf", "pdf_create.py"),
+        ):
+            turn(
+                call,
+                dm,
+                f"Bahan laporan inventaris dari saya: 17 peti biru dan 26 peti hijau, total 43 peti. Buat file {extension.upper()} nyata bernama inventory.{extension}. Gunakan skill native {skill}: temukan, pasang jika perlu, baca instruksi dan asetnya, simpan spesifikasi JSON dengan write_file, lalu jalankan skrip {script} dari skill_dir. Jangan mengganti workflow dengan skrip buatan sendiri. Validasi hasil dengan skrip skill. Jika formatnya XLSX, total harus memakai rumus SUM dan dihitung ulang. Jika DOCX/PPTX/PDF, render halaman/slide untuk diperiksa. Publikasikan file dengan workspace, path relatif terhadap /work seperti project/inventory.{extension}. Tugas satu kali ini selesai pada giliran ini.",
+            )
+        first = snapshot(call, dm)["artifacts"]
+        assert len(first) == 4, first
+        original_hashes = {a["sha256"] for a in first}
+        start.current.kill()
+        start.current.wait(timeout=10)
+        start()
+        for extension, skill in (
+            ("docx", "docx"),
+            ("xlsx", "xlsx"),
+            ("pptx", "powerpoint"),
+            ("pdf", "pdf"),
+        ):
+            turn(
+                call,
+                dm,
+                f"Revisi file inventory.{extension} tadi: peti biru sekarang 18, hijau tetap 26, total 44. Edit file yang ada dengan skrip native skill {skill}, simpan sebagai revised-inventory.{extension}, jangan buat ulang dari nol. Untuk XLSX pertahankan rumus SUM dan hitung ulang. Untuk DOCX, PPTX dan PDF tambahkan kata VERIFIED. Validasi dan render revisi dengan workflow skill, lalu publikasikan file revisi agar dapat diunduh. Selesaikan pada giliran ini.",
+            )
+        artifacts = [
+            a for a in snapshot(call, dm)["artifacts"] if a["sha256"] not in original_hashes
+        ]
+        assert {Path(a["filename"]).suffix.lower() for a in artifacts} == {
+            ".docx",
+            ".xlsx",
+            ".pptx",
+            ".pdf",
+        }, artifacts
+        assert len(artifacts) == 4, artifacts
+        for artifact in artifacts:
+            path = (
+                root / "state/files/objects" / artifact["sha256"][:2] / artifact["sha256"]
+            )
+            assert hashlib.sha256(path.read_bytes()).hexdigest() == artifact["sha256"]
+            suffix = Path(artifact["filename"]).suffix.lower()
+            if suffix != ".pdf":
+                with zipfile.ZipFile(path) as package:
+                    assert package.testzip() is None
+                    xml = "\n".join(
+                        package.read(name).decode()
+                        for name in package.namelist()
+                        if name.endswith(".xml")
+                    )
+                    assert "44" in xml, (suffix, artifact)
+                    if suffix == ".xlsx":
+>                       assert "<f>" in xml and "SUM(" in xml.upper()
+E                       assert ('<f>' in '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<workbook xmlns="http://schemas.openxmlformats.org/spreadshe...e="/docProps/custom.xml" ContentType="application/vnd.openxmlformats-officedocument.custom-properties+xml"/>\n</Types>')
+
+apps/engine/tests/test_learning_live.py:228: AssertionError
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_learning_live.py::test_real_model_office_pdf_create_revise_and_publish
+1 failed in 581.15s (0:09:41)

@@ -1,0 +1,8 @@
+{
+  "removed_owned_private_inputs": [
+    ".dev/nma034/live.env",
+    ".dev/nma034/auth/private.json",
+    ".dev/nma034/hindsight/server.env"
+  ],
+  "original_env_or_account_credentials_modified": false
+}

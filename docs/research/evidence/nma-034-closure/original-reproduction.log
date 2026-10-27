@@ -1,0 +1,13 @@
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+LEARNING_CASE memory 1.594 succeeded
+LEARNING_CASE memory 0.424 succeeded
+LEARNING_CASE memory 0.208 succeeded
+BATCH_IDENTITY_EVIDENCE {"removed_id": "c7124d95-2099-5faf-ac2d-2a1684b36e86", "patched_id": "dec9a1bd-7018-5edf-8a77-3a436f1f7b6d", "remaining": [{"agent_id": "4d23a31a-b91d-4403-9f26-6549fb01b393", "content": "Corrected remaining preference: violet.", "generation": "2", "history": [{"agent_id": "4d23a31a-b91d-4403-9f26-6549fb01b393", "content": "Corrected remaining preference: violet.", "generation": "2", "memory_id": "dec9a1bd-7018-5edf-8a77-3a436f1f7b6d", "revision": "2", "scope_kind": "agent_private", "source_message_ids": ["00e05faa-995e-53ee-ae6c-e6347504a4b1", "ae939db4-42fd-5e61-ac0e-f61200ea530f"], "status": "active", "thread_id": null}, {"agent_id": "4d23a31a-b91d-4403-9f26-6549fb01b393", "content": "Second independent preference: blue.", "generation": "1", "memory_id": "dec9a1bd-7018-5edf-8a77-3a436f1f7b6d", "revision": "1", "scope_kind": "agent_private", "source_message_ids": ["00e05faa-995e-53ee-ae6c-e6347504a4b1"], "status": "active", "thread_id": null}], "memory_id": "dec9a1bd-7018-5edf-8a77-3a436f1f7b6d", "revision": "2", "scope_kind": "agent_private", "source_message_ids": ["00e05faa-995e-53ee-ae6c-e6347504a4b1", "ae939db4-42fd-5e61-ac0e-f61200ea530f"], "sources": [{"href": "/conversations/2cc6841a-7abc-4ae3-93f0-f1ddbc368f76#message-00e05faa-995e-53ee-ae6c-e6347504a4b1", "message_id": "00e05faa-995e-53ee-ae6c-e6347504a4b1"}, {"href": "/conversations/2cc6841a-7abc-4ae3-93f0-f1ddbc368f76#message-ae939db4-42fd-5e61-ac0e-f61200ea530f", "message_id": "ae939db4-42fd-5e61-ac0e-f61200ea530f"}], "status": "active", "target": "memory", "thread_id": null}], "rows": [["c7124d95-2099-5faf-ac2d-2a1684b36e86", "First independent preference: amber.", "deleted", 2], ["dec9a1bd-7018-5edf-8a77-3a436f1f7b6d", "Corrected remaining preference: violet.", "active", 2]]}
+.
+=============================== warnings summary ===============================
+.dev/nma-001/source/tests/gateway/test_normal_runtime_boot.py:128
+  /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/source/tests/gateway/test_normal_runtime_boot.py:128: PytestUnknownMarkWarning: Unknown pytest.mark.platforms - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.platforms("linux")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+1 passed, 1 warning in 7.17s

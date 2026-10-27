@@ -1,0 +1,20 @@
+{
+  "root": "/tmp/nma-gsnchnvm",
+  "artifact": {
+    "artifact_id": "c30b69a6-26da-50db-85c2-f612cf4dba7b",
+    "byte_count": 497,
+    "filename": "report.md",
+    "media_type": "text/markdown",
+    "producing_agent_id": "6facb0dc-ea34-4903-afbf-4733e87ee090",
+    "producing_run_id": "b80d5b4a-6fdf-508d-b5c8-9af3027a6f75",
+    "revision_id": "b51f0ad2-43b1-59fe-a23b-86dfb2022283",
+    "sha256": "034a11e33dcb007f84f35425b083652051a256ace5a5cb3fe0950c7510b04a17",
+    "status": "ready",
+    "storage": "file.v1",
+    "thread_id": "d6c47e6e-65f6-4cb8-b15b-a2cfb715fec9"
+  },
+  "runtime_passed": true,
+  "pytest_passed": true,
+  "duration_seconds": 149.47,
+  "content_sha256": "034a11e33dcb007f84f35425b083652051a256ace5a5cb3fe0950c7510b04a17"
+}

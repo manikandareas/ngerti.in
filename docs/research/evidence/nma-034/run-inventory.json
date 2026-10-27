@@ -1,0 +1,142 @@
+[
+  {
+    "source": ".dev/nma034-engine-full-16.log",
+    "source_sha256": "dc484888e00207924d8d4ab2dec68cce26942757375b666e3c76dbc57ad5b2ca",
+    "public_copy": "docs/research/evidence/nma-034/runs/nma034-engine-full-16.log",
+    "public_sha256": "dc484888e00207924d8d4ab2dec68cce26942757375b666e3c76dbc57ad5b2ca",
+    "redacted": false
+  },
+  {
+    "source": ".dev/nma034-learning-lifecycle-11.log",
+    "source_sha256": "8a55db01afe70738ccf9c9889464192d2a85add9674ba24687e14c174acc29d9",
+    "public_copy": "docs/research/evidence/nma-034/runs/nma034-learning-lifecycle-11.log",
+    "public_sha256": "8a55db01afe70738ccf9c9889464192d2a85add9674ba24687e14c174acc29d9",
+    "redacted": false
+  },
+  {
+    "source": ".dev/nma034-learning-lifecycle-12.log",
+    "source_sha256": "04b6021c7399a3e8dfd37810810842713e02dba9f1e750f195c014f3c78b531d",
+    "public_copy": "docs/research/evidence/nma-034/runs/nma034-learning-lifecycle-12.log",
+    "public_sha256": "04b6021c7399a3e8dfd37810810842713e02dba9f1e750f195c014f3c78b531d",
+    "redacted": false
+  },
+  {
+    "source": ".dev/nma034-learning-final-38.log",
+    "source_sha256": "4fa54e5ec7545fff1cc6f07539329e490d7d633066b22200a4f87e1c493bf429",
+    "public_copy": "docs/research/evidence/nma-034/runs/nma034-learning-final-38.log",
+    "public_sha256": "4fa54e5ec7545fff1cc6f07539329e490d7d633066b22200a4f87e1c493bf429",
+    "redacted": false
+  },
+  {
+    "source": ".dev/nma034-native-final-40.log",
+    "source_sha256": "7328633f0332aa1293806fc77274f01fbd50336f244895e700577fa435b7f2e0",
+    "public_copy": "docs/research/evidence/nma-034/runs/nma034-native-final-40.log",
+    "public_sha256": "7328633f0332aa1293806fc77274f01fbd50336f244895e700577fa435b7f2e0",
+    "redacted": false
+  },
+  {
+    "source": ".dev/nma034-backend-final-41.log",
+    "source_sha256": "15d5f0e3336699434e254fa3be040e6149ccae78d71c033f1122dd1e8c51da7b",
+    "public_copy": "docs/research/evidence/nma-034/runs/nma034-backend-final-41.log",
+    "public_sha256": "15d5f0e3336699434e254fa3be040e6149ccae78d71c033f1122dd1e8c51da7b",
+    "redacted": false
+  },
+  {
+    "source": ".dev/nma034-live-13.log",
+    "source_sha256": "d3b1441f36ecbc7e494c58afbc17c47ec368cb2ede3fee871cb6bc8f896d7e2b",
+    "public_copy": "docs/research/evidence/nma-034/runs/nma034-live-13.log",
+    "public_sha256": "d3b1441f36ecbc7e494c58afbc17c47ec368cb2ede3fee871cb6bc8f896d7e2b",
+    "redacted": false
+  },
+  {
+    "source": ".dev/nma034-live-15.log",
+    "source_sha256": "1f828a9df25e011cd9103acc38d81f8575d6a9e2fb6186c442ee81d541c85dbf",
+    "public_copy": "docs/research/evidence/nma-034/runs/nma034-live-15.log",
+    "public_sha256": "1f828a9df25e011cd9103acc38d81f8575d6a9e2fb6186c442ee81d541c85dbf",
+    "redacted": false
+  },
+  {
+    "source": ".dev/nma034-live-documents-19.log",
+    "source_sha256": "d2ce191d52bcbc916416e3118c796d4ee7ea4b233da3406c320e991a1d250511",
+    "public_copy": "docs/research/evidence/nma-034/runs/nma034-live-documents-19.log",
+    "public_sha256": "d2ce191d52bcbc916416e3118c796d4ee7ea4b233da3406c320e991a1d250511",
+    "redacted": false
+  },
+  {
+    "source": ".dev/nma034-live-documents-30.log",
+    "source_sha256": "6d58d9360bdddfb46b127951b8f1f9a9df672afa4b92f76d05d44aeb3672844b",
+    "public_copy": "docs/research/evidence/nma-034/runs/nma034-live-documents-30.log",
+    "public_sha256": "6d58d9360bdddfb46b127951b8f1f9a9df672afa4b92f76d05d44aeb3672844b",
+    "redacted": false
+  },
+  {
+    "source": ".dev/nma034-live-documents-31.log",
+    "source_sha256": "a6ecf4607e2a265e903b246549e3f3c6ef6c8ca5c6ca2520d791fe603b80f742",
+    "public_copy": "docs/research/evidence/nma-034/runs/nma034-live-documents-31.log",
+    "public_sha256": "a6ecf4607e2a265e903b246549e3f3c6ef6c8ca5c6ca2520d791fe603b80f742",
+    "redacted": false
+  },
+  {
+    "source": ".dev/nma034-live-documents-33.log",
+    "source_sha256": "91cf45f00cab103fcd9336c8c1f8bef0ab2013dd2c239dd4a045d72b0f030509",
+    "public_copy": "docs/research/evidence/nma-034/runs/nma034-live-documents-33.log",
+    "public_sha256": "91cf45f00cab103fcd9336c8c1f8bef0ab2013dd2c239dd4a045d72b0f030509",
+    "redacted": false
+  },
+  {
+    "source": ".dev/nma034-live-research-coding-36.log",
+    "source_sha256": "55b7dc406c00594ad938ea1e46dcbea5af1f10cfd77a79325d06cc961d8db604",
+    "public_copy": "docs/research/evidence/nma-034/runs/nma034-live-research-coding-36.log",
+    "public_sha256": "55b7dc406c00594ad938ea1e46dcbea5af1f10cfd77a79325d06cc961d8db604",
+    "redacted": false
+  },
+  {
+    "source": ".dev/nma034-live-uploaded-xlsx-37.log",
+    "source_sha256": "18a05df39724e9dc59698571d6033081a8c940a348d0cc54f28fa318db847978",
+    "public_copy": "docs/research/evidence/nma-034/runs/nma034-live-uploaded-xlsx-37.log",
+    "public_sha256": "18a05df39724e9dc59698571d6033081a8c940a348d0cc54f28fa318db847978",
+    "redacted": false
+  },
+  {
+    "source": ".dev/nma034-provider-final-24.log",
+    "source_sha256": "ac1fc49954037cca47844d6b038500ce5c451ee11fa030f75d47192bff2c3821",
+    "public_copy": "docs/research/evidence/nma-034/runs/nma034-provider-final-24.log",
+    "public_sha256": "ac1fc49954037cca47844d6b038500ce5c451ee11fa030f75d47192bff2c3821",
+    "redacted": false
+  },
+  {
+    "source": ".dev/nma034-provider-final-26.log",
+    "source_sha256": "6476083c4e65f014d653888e1fababb8cddf5f24ace901bbfc5a623383bfb39f",
+    "public_copy": "docs/research/evidence/nma-034/runs/nma034-provider-final-26.log",
+    "public_sha256": "6476083c4e65f014d653888e1fababb8cddf5f24ace901bbfc5a623383bfb39f",
+    "redacted": false
+  },
+  {
+    "source": ".dev/nma034-provider-final-42.log",
+    "source_sha256": "ce52cf77657086e3f69c5108ebd598f459491d20ce30a812d3dea2fc367a7e52",
+    "public_copy": "docs/research/evidence/nma-034/runs/nma034-provider-final-42.log",
+    "public_sha256": "ce52cf77657086e3f69c5108ebd598f459491d20ce30a812d3dea2fc367a7e52",
+    "redacted": false
+  },
+  {
+    "source": ".dev/nma034-live-research-coding-final-43.log",
+    "source_sha256": "f18d2afe1afee0a31965cf90f2aea17ce487880ed413b23b2c9757ffab574045",
+    "public_copy": "docs/research/evidence/nma-034/runs/nma034-live-research-coding-final-43.log",
+    "public_sha256": "f18d2afe1afee0a31965cf90f2aea17ce487880ed413b23b2c9757ffab574045",
+    "redacted": false
+  },
+  {
+    "source": ".dev/nma034-check-final-44.log",
+    "source_sha256": "9d112399d743eea26cfc317400389600a49f7e19fdd5dbee5330de4c360d0a55",
+    "public_copy": "docs/research/evidence/nma-034/runs/nma034-check-final-44.log",
+    "public_sha256": "9d112399d743eea26cfc317400389600a49f7e19fdd5dbee5330de4c360d0a55",
+    "redacted": false
+  },
+  {
+    "source": ".dev/nma034-build-final-44.log",
+    "source_sha256": "60ac941db5e39997100a9ab362990b75e42499dafc457b655c6760889f22cffe",
+    "public_copy": "docs/research/evidence/nma-034/runs/nma034-build-final-44.log",
+    "public_sha256": "60ac941db5e39997100a9ab362990b75e42499dafc457b655c6760889f22cffe",
+    "redacted": false
+  }
+]

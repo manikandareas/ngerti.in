@@ -1,0 +1,46 @@
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+LEARNING_CASE memory 1.045 succeeded
+LEARNING_CASE memory 0.221 succeeded
+LEARNING_CASE memory 0.207 succeeded
+BATCH_IDENTITY_EVIDENCE {"removed_id": "96d794fa-b2d5-55b5-957a-8679c9988c50", "patched_id": "b7597fd7-f694-5102-8053-81f46492f9a3", "remaining": [{"agent_id": "38218115-00f7-4218-8191-69037c3e6427", "content": "Corrected remaining preference: violet.", "generation": "2", "history": [{"agent_id": "38218115-00f7-4218-8191-69037c3e6427", "content": "Corrected remaining preference: violet.", "generation": "2", "memory_id": "96d794fa-b2d5-55b5-957a-8679c9988c50", "revision": "2", "scope_kind": "agent_private", "source_message_ids": ["0e3f01e0-29f5-57b6-9453-e001bbdf9a12", "21532ad5-67fa-57c8-bd8c-5b95393b4f24"], "status": "active", "thread_id": null}, {"agent_id": "38218115-00f7-4218-8191-69037c3e6427", "content": "First independent preference: amber.", "generation": "1", "memory_id": "96d794fa-b2d5-55b5-957a-8679c9988c50", "revision": "1", "scope_kind": "agent_private", "source_message_ids": ["21532ad5-67fa-57c8-bd8c-5b95393b4f24"], "status": "active", "thread_id": null}], "memory_id": "96d794fa-b2d5-55b5-957a-8679c9988c50", "revision": "2", "scope_kind": "agent_private", "source_message_ids": ["0e3f01e0-29f5-57b6-9453-e001bbdf9a12", "21532ad5-67fa-57c8-bd8c-5b95393b4f24"], "sources": [{"href": "/conversations/c119e4c4-223d-431a-8837-d4b6f9b2915f#message-0e3f01e0-29f5-57b6-9453-e001bbdf9a12", "message_id": "0e3f01e0-29f5-57b6-9453-e001bbdf9a12"}, {"href": "/conversations/c119e4c4-223d-431a-8837-d4b6f9b2915f#message-21532ad5-67fa-57c8-bd8c-5b95393b4f24", "message_id": "21532ad5-67fa-57c8-bd8c-5b95393b4f24"}], "status": "active", "target": "memory", "thread_id": null}], "rows": [["96d794fa-b2d5-55b5-957a-8679c9988c50", "Corrected remaining preference: violet.", "active", 2], ["b7597fd7-f694-5102-8053-81f46492f9a3", "Second independent preference: blue.", "deleted", 2]]}
+F
+=================================== FAILURES ===================================
+__________ test_remove_and_patch_preserve_the_patched_entry_identity ___________
+
+runtime = (PosixPath('/tmp/nma-xisvls12'), <http.server.ThreadingHTTPServer object at 0x109541a90>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '17', 'lifecycle': 'ready', ...})
+
+    def test_remove_and_patch_preserve_the_patched_entry_identity(runtime):
+        root, model, call, *_ = runtime
+        agent = capability_agent(call, "batch-identity-review")
+        dm = conversation(call, agent)
+        for content in ("First independent preference: amber.", "Second independent preference: blue."):
+            assert invoke(model, call, dm, "memory", {"action": "add", "target": "memory", "content": content})["success"]
+        first, second = inventory(call, agent, dm)["memories"]
+        result = invoke(model, call, dm, "memory", {
+            "target": "memory", "operations": [
+                {"action": "remove", "old_text": first["content"]},
+                {"action": "patch", "old_text": second["content"], "content": "Corrected remaining preference: violet."},
+            ],
+        })
+        assert result["success"], result
+        remaining = inventory(call, agent, dm)["memories"]
+        with sqlite3.connect(root / "state/state.db") as db:
+            rows = db.execute("SELECT memory_id,content,status,revision FROM nma_memory_entries WHERE agent_id=? ORDER BY memory_id", (agent["agent_id"],)).fetchall()
+        print("BATCH_IDENTITY_EVIDENCE", json.dumps({"removed_id": first["memory_id"], "patched_id": second["memory_id"], "remaining": remaining, "rows": rows}))
+        assert len(remaining) == 1
+>       assert remaining[0]["memory_id"] == second["memory_id"]
+E       AssertionError: assert '96d794fa-b2d...-8679c9988c50' == 'b7597fd7-f69...-81f46492f9a3'
+E         
+E         - b7597fd7-f694-5102-8053-81f46492f9a3
+E         + 96d794fa-b2d5-55b5-957a-8679c9988c50
+
+docs/research/evidence/nma-034-review/test_memory_batch_identity.py:29: AssertionError
+=============================== warnings summary ===============================
+.dev/nma-001/source/tests/gateway/test_normal_runtime_boot.py:128
+  /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/source/tests/gateway/test_normal_runtime_boot.py:128: PytestUnknownMarkWarning: Unknown pytest.mark.platforms - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.platforms("linux")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED docs/research/evidence/nma-034-review/test_memory_batch_identity.py::test_remove_and_patch_preserve_the_patched_entry_identity
+1 failed, 1 warning in 5.09s

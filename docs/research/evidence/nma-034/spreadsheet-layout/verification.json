@@ -1,0 +1,57 @@
+{
+  "run_id": "ebb2fe00-4fe7-5bdf-aec5-70939c9d215f",
+  "source": {
+    "artifact_id": "620b13f9-c495-49c5-9c44-95a175825e9b",
+    "byte_count": 5695,
+    "filename": "source-inventory.xlsx",
+    "media_type": "application/octet-stream",
+    "producing_agent_id": null,
+    "producing_run_id": null,
+    "revision_id": "d5238a98-1a18-5b54-bae3-9d7dee7aa6f9",
+    "sha256": "51f21978be9be99b3172781b703a056e0ca9d5094228666ed86cbcf41b5648c2",
+    "status": "ready",
+    "storage": "file.v1",
+    "thread_id": "b0db56bf-849d-4de1-8340-0c810774edc7"
+  },
+  "artifacts": [
+    {
+      "artifact_id": "a15b3df8-c675-54cd-b4bd-12ef430242ff",
+      "byte_count": 20300,
+      "filename": "final-inventory-preview.pdf",
+      "media_type": "application/pdf",
+      "producing_agent_id": "71766a4a-160f-45ab-9c72-7e8c91c0a7e7",
+      "producing_run_id": "ebb2fe00-4fe7-5bdf-aec5-70939c9d215f",
+      "revision_id": "950f7c9d-acfc-5e1f-b4de-4fca95c13cac",
+      "sha256": "1eb9f5a02891540a4f6f9c6ace82bf2a590747e237bf4cc3a7124933756e0492",
+      "status": "ready",
+      "storage": "file.v1",
+      "thread_id": "b0db56bf-849d-4de1-8340-0c810774edc7"
+    },
+    {
+      "artifact_id": "d8c256ef-efce-5e54-bc22-f15d14b2f8f6",
+      "byte_count": 5703,
+      "filename": "final-inventory.xlsx",
+      "media_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "producing_agent_id": "71766a4a-160f-45ab-9c72-7e8c91c0a7e7",
+      "producing_run_id": "ebb2fe00-4fe7-5bdf-aec5-70939c9d215f",
+      "revision_id": "6e33a984-9381-5dba-8fdc-bdfb318e0e99",
+      "sha256": "018f6b5c00c6d0586492d033fa6a3cca32186ffb434d1bb82444a9e16a7423d4",
+      "status": "ready",
+      "storage": "file.v1",
+      "thread_id": "b0db56bf-849d-4de1-8340-0c810774edc7"
+    },
+    {
+      "artifact_id": "620b13f9-c495-49c5-9c44-95a175825e9b",
+      "byte_count": 5695,
+      "filename": "source-inventory.xlsx",
+      "media_type": "application/octet-stream",
+      "producing_agent_id": null,
+      "producing_run_id": null,
+      "revision_id": "d5238a98-1a18-5b54-bae3-9d7dee7aa6f9",
+      "sha256": "51f21978be9be99b3172781b703a056e0ca9d5094228666ed86cbcf41b5648c2",
+      "status": "ready",
+      "storage": "file.v1",
+      "thread_id": "b0db56bf-849d-4de1-8340-0c810774edc7"
+    }
+  ]
+}

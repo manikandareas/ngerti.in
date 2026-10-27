@@ -1,0 +1,522 @@
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+.RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+................RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+.RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+.RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+....ssssRUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+.....RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+..RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+.sssssRUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+.....RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+..sRUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+.....RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+.....RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+...........RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+......sRUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+LEARNING_CASE skill_install 1.353 succeeded
+LEARNING_CASE skill_view 0.213 succeeded
+LEARNING_CASE skill_install 0.204 succeeded
+LEARNING_CASE skill_view 0.429 succeeded
+LEARNING_CASE skill_install 0.425 succeeded
+LEARNING_CASE skill_view 0.488 succeeded
+LEARNING_CASE skill_install 0.422 succeeded
+LEARNING_CASE skill_view 0.44 succeeded
+LEARNING_CASE write_file 24.967 indeterminate
+FRUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+..RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+............sRUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+.......s...RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+....RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+LEARNING_CASE memory 1.158 succeeded
+LEARNING_CASE memory 0.214 succeeded
+.LEARNING_CASE skill_manage 0.514 succeeded
+LEARNING_CASE skill_view 0.415 succeeded
+LEARNING_CASE skill_view 0.218 succeeded
+LEARNING_CASE skill_view 0.207 succeeded
+LEARNING_CASE skill_view 1.09 succeeded
+..LEARNING_CASE skill_install 1.417 succeeded
+LEARNING_CASE skill_view 0.421 succeeded
+.RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+.LEARNING_CASE memory 0.417 succeeded
+LEARNING_CASE skill_manage 1.493 succeeded
+LEARNING_MIGRATION_BACKUP_RESTORE_VERIFIED 49b304edfe764185f43aece34dc857d388a64e5d18dda9d88b45e4340214698e
+.LEARNING_CASE skill_manage 1.342 succeeded
+FssRUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+....RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+LEARNING_CASE memory 21.191 succeeded
+.RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+.RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+...............----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 58054)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_native_isolation.py", line 52, in script
+    if body["messages"][-1]["role"] == "tool":
+       ~~~~^^^^^^^^^^^^
+KeyError: 'messages'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 58059)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_native_isolation.py", line 52, in script
+    if body["messages"][-1]["role"] == "tool":
+       ~~~~^^^^^^^^^^^^
+KeyError: 'messages'
+----------------------------------------
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+.sssssssssssssterminal {"output": "", "exit_code": 0, "error": null}
+coding {"created": true, "checkpoints": [{"hash": "22f4639b1ccdfd256f2379841a34472d20e074a3", "short_hash": "22f4639", "timestamp": "2026-10-27T07:40:16+00:00", "reason": "Ngertiin explicit checkpoint", "files_changed": 0, "insertions": 0, "deletions": 0}]}
+read_file {"content": "1|value: int = 1", "total_lines": 1, "file_size": 15, "truncated": false, "is_binary": false, "is_image": false, "not_found": false}
+patch {"success": true, "diff": "--- a//work/project/main.py\n+++ b//work/project/main.py\n@@ -1 +1 @@\n-value: int = 1\n+value: int = 'broken'\n", "files_modified": ["/work/project/main.py"], "lint": {"status": "ok", "output": ""}, "resolved_path": "/work/project/main.py", "lsp_diagnostics": "LSP diagnostics introduced by your earlier edit of /work/project/main.py (the language server answered after that tool result returned):\n<diagnostics file=\"/work/project/main.py\">\nERROR [1:14] Type \"Literal['broken']\" is not assignable to declared type \"int\" \"Literal['broken']\" is not assignable to \"int\" [reportAssignmentType] (Pyright)\n</diagnostics>"}
+coding {"path": "/work/project/main.py", "diagnostics": [{"range": {"start": {"line": 0, "character": 13}, "end": {"line": 0, "character": 21}}, "message": "Type \"Literal['broken']\" is not assignable to declared type \"int\"\n\u00a0\u00a0\"Literal['broken']\" is not assignable to \"int\"", "severity": 1, "code": "reportAssignmentType", "source": "Pyright", "codeDescription": {"href": "https://github.com/microsoft/pyright/blob/main/docs/configuration.md#reportAssignmentType"}}], "language_server": {"enabled": true, "wait_mode": "document", "wait_timeout": 5.0, "install_strategy": "manual", "clients": [{"server_id": "pyright", "workspace_root": "/work/project", "workspace_folders": ["/work/project"], "state": "running", "running": true}], "broken": [], "disabled_servers": [], "broken_retry_seconds": 0.0, "warmup_timeout": 15.0, "exclude_roots": [], "trusted_workspaces": [], "untrusted_skipped": []}, "verified": true}
+patch {"success": true, "diff": "--- a//work/project/main.py\n+++ b//work/project/main.py\n@@ -1 +1 @@\n-value: int = 'broken'\n+value: int = 2\n", "files_modified": ["/work/project/main.py"], "lint": {"status": "ok", "output": ""}, "resolved_path": "/work/project/main.py"}
+coding {"path": "/work/project/main.py", "diagnostics": [], "language_server": {"enabled": true, "wait_mode": "document", "wait_timeout": 5.0, "install_strategy": "manual", "clients": [{"server_id": "pyright", "workspace_root": "/work/project", "workspace_folders": ["/work/project"], "state": "running", "running": true}], "broken": [], "disabled_servers": [], "broken_retry_seconds": 0.0, "warmup_timeout": 15.0, "exclude_roots": [], "trusted_workspaces": [], "untrusted_skipped": []}, "verified": true}
+coding {"path": "/work/project/other.txt", "diagnostics": null, "language_server": {"enabled": true, "wait_mode": "document", "wait_timeout": 5.0, "install_strategy": "manual", "clients": [{"server_id": "pyright", "workspace_root": "/work/project", "workspace_folders": ["/work/project"], "state": "running", "running": true}], "broken": [], "disabled_servers": [], "broken_retry_seconds": 0.0, "warmup_timeout": 15.0, "exclude_roots": [], "trusted_workspaces": [], "untrusted_skipped": []}, "verified": false}
+terminal {"output": "", "exit_code": 0, "error": null}
+coding {"project": "Default", "root": "/work/project", "folders": ["."], "worktrees": {}, "hashes": {"other.txt": "8882cb1fb322c3a0432d45b8fe6384b6e439714e119d99ad55c31d14c2ecf8d2", "main.py": "4c7be8da8fae01ffd25963566b5cac2855162131b982120ad34aaea5859a2559", "keep.txt": "6b3d1a67d245e5c7da92a450ba29628b9ce0348e80a41d75efe34c9bd71b477a"}, "checkpoints": [{"hash": "46d5800691f850bce0528758ab842a60603ee807", "short_hash": "46d5800", "timestamp": "2026-10-27T07:40:22+00:00", "reason": "Before native terminal", "files_changed": 1, "insertions": 1, "deletions": 1}, {"hash": "ba76aa8bce1391c27324c55fce22fbf29b2d75a4", "short_hash": "ba76aa8", "timestamp": "2026-10-27T07:40:20+00:00", "reason": "Before native patch", "files_changed": 1, "insertions": 1, "deletions": 1}, {"hash": "22f4639b1ccdfd256f2379841a34472d20e074a3", "short_hash": "22f4639", "timestamp": "2026-10-27T07:40:16+00:00", "reason": "Ngertiin explicit checkpoint", "files_changed": 0, "insertions": 0, "deletions": 0}], "instructions": [], "files_persist": true, "ram_persists": "only while the scoped container remains running", "execution_user": 10001, "processes": []}
+coding {"success": true, "stat": "keep.txt  | 1 +\n main.py   | 2 +-\n other.txt | 2 +-\n 3 files changed, 3 insertions(+), 2 deletions(-)", "diff": "diff --git a/keep.txt b/keep.txt\nnew file mode 100644\nindex 0000000..bd9da08\n--- /dev/null\n+++ b/keep.txt\n@@ -0,0 +1 @@\n+UNTRACKED\n\\ No newline at end of file\ndiff --git a/main.py b/main.py\nindex cce5386..05c1228 100644\n--- a/main.py\n+++ b/main.py\n@@ -1 +1 @@\n-value: int = 1\n+value: int = 2\ndiff --git a/other.txt b/other.txt\nindex fea2699..2ce1a8e 100644\n--- a/other.txt\n+++ b/other.txt\n@@ -1 +1 @@\n-Keep this file\n+USER_EDIT\n\\ No newline at end of file", "hashes": {"other.txt": "8882cb1fb322c3a0432d45b8fe6384b6e439714e119d99ad55c31d14c2ecf8d2", "main.py": "4c7be8da8fae01ffd25963566b5cac2855162131b982120ad34aaea5859a2559", "keep.txt": "6b3d1a67d245e5c7da92a450ba29628b9ce0348e80a41d75efe34c9bd71b477a"}}
+coding {"success": true, "restored_to": "22f4639b", "reason": "Ngertiin explicit checkpoint", "directory": "/work/project", "file": "main.py"}
+coding {"worktree_id": "153bad93f0da414e860ce3c5cbbda3e8", "path": "/work/worktrees/153bad93f0da414e860ce3c5cbbda3e8", "repo": "/work/project", "base": "05161fe5b642196b30f1cb39c4d1fbb2c2d8251f", "active": true}
+terminal {"output": "", "exit_code": 0, "error": null}
+coding {"worktree_id": "0ec2242f2acc4b3e93cc506396598966", "path": "/work/worktrees/0ec2242f2acc4b3e93cc506396598966", "repo": "/work/worktrees/153bad93f0da414e860ce3c5cbbda3e8", "base": "05161fe5b642196b30f1cb39c4d1fbb2c2d8251f", "active": true}
+terminal {"output": "", "exit_code": 0, "error": null}
+coding {"path": "/work/worktrees/0ec2242f2acc4b3e93cc506396598966", "repo": "/work/worktrees/153bad93f0da414e860ce3c5cbbda3e8", "base": "05161fe5b642196b30f1cb39c4d1fbb2c2d8251f", "active": false}
+execute_code {"status": "success", "output": "{'content': '1|FIRST', 'total_lines': 1, 'file_size': 5, 'truncated': False, 'is_binary': False, 'is_image': False, 'not_found': False}\n", "exit_code": 0, "tool_calls_made": 1, "duration_seconds": 2.36, "kernel": {"mode": "session", "reused": false, "execution_count": 1, "state_reset": false}, "stdout_truncated": false, "stdout_bytes_captured": 136, "stdout_bytes_total": 136, "stdout_bytes_omitted": 0}
+terminal {"output": "Background process started", "session_id": "proc_1f1402f6183c", "pid": 706, "exit_code": 0, "error": null, "hint": "background=true without notify_on_complete=true means this process runs SILENTLY \u2014 you will not be told when it exits. If this is a bounded task (test suite, build, CI poller, deploy, anything with a defined end), you almost certainly wanted notify_on_complete=true so the system pings you on exit. Re-launch with notify_on_complete=true, or call process(action='poll') / process(action='wait') yourself to learn the outcome. Only ignore this hint for genuine long-lived processes that never exit (servers, watchers, daemons)."}
+process_manage {"status": "ok", "bytes_written": 6}
+process_manage {"status": "exited", "command": "read line; printf 'INPUT:%s' \"$line\"; sleep 2", "exit_code": 0, "completion_reason": "exited", "termination_source": "", "output": "hello\r\nINPUT:hello"}
+terminal {"output": "Background process started", "session_id": "proc_77a1f610891c", "pid": 746, "exit_code": 0, "error": null, "hint": "background=true without notify_on_complete=true means this process runs SILENTLY \u2014 you will not be told when it exits. If this is a bounded task (test suite, build, CI poller, deploy, anything with a defined end), you almost certainly wanted notify_on_complete=true so the system pings you on exit. Re-launch with notify_on_complete=true, or call process(action='poll') / process(action='wait') yourself to learn the outcome. Only ignore this hint for genuine long-lived processes that never exit (servers, watchers, daemons)."}
+process_manage {"status": "killed", "session_id": "proc_77a1f610891c", "completion_reason": "killed", "termination_source": "process.kill", "output": ""}
+terminal {"output": "Background process started", "session_id": "proc_fe1dbb65ed6c", "pid": 776, "exit_code": 0, "error": null, "hint": "background=true without notify_on_complete=true means this process runs SILENTLY \u2014 you will not be told when it exits. If this is a bounded task (test suite, build, CI poller, deploy, anything with a defined end), you almost certainly wanted notify_on_complete=true so the system pings you on exit. Re-launch with notify_on_complete=true, or call process(action='poll') / process(action='wait') yourself to learn the outcome. Only ignore this hint for genuine long-lived processes that never exit (servers, watchers, daemons)."}
+coding {"project": "Default", "root": "/work/worktrees/153bad93f0da414e860ce3c5cbbda3e8", "folders": ["."], "worktrees": {"153bad93f0da414e860ce3c5cbbda3e8": {"path": "/work/worktrees/153bad93f0da414e860ce3c5cbbda3e8", "repo": "/work/project", "base": "05161fe5b642196b30f1cb39c4d1fbb2c2d8251f", "active": true}, "0ec2242f2acc4b3e93cc506396598966": {"path": "/work/worktrees/0ec2242f2acc4b3e93cc506396598966", "repo": "/work/worktrees/153bad93f0da414e860ce3c5cbbda3e8", "base": "05161fe5b642196b30f1cb39c4d1fbb2c2d8251f", "active": false}}, "hashes": {"main.py": "267d3b81a9dcd937f3b46a17a57fc0ca2133373389336861142673a73fc17bc6", "other.txt": "d6fe761f15540a4ae7b2c406f9d528f84ad16c238bc2a888b39214c2e539e306"}, "checkpoints": [{"hash": "17c6dbd971d019da2e9606c6e0a5f99c3b3c866f", "short_hash": "17c6dbd", "timestamp": "2026-10-27T07:40:37+00:00", "reason": "Before native execute_code", "files_changed": 1, "insertions": 1, "deletions": 1}, {"hash": "5e4075a825478cab1499dc90dbd43d0001f4a618", "short_hash": "5e4075a", "timestamp": "2026-10-27T07:40:29+00:00", "reason": "Before native terminal", "files_changed": 0, "insertions": 0, "deletions": 0}], "instructions": [], "files_persist": true, "ram_persists": "only while the scoped container remains running", "execution_user": 10001, "processes": [{"handle": "proc_1f1402f6183c", "state": "exited", "session_id": "proc_1f1402f6183c", "command": "read line; printf 'INPUT:%s' \"$line\"; sleep 2", "cwd": "/work/worktrees/153bad93f0da414e860ce3c5cbbda3e8", "pid": 706, "owner_task_id": "323df0210562242999f981cee0ceebb1e8ec239553d1bd1833d4c2406d353ede", "started_at": "2026-10-27T07:40:42", "uptime_seconds": 5, "status": "exited", "output_preview": "hello\r\nINPUT:hello", "exit_code": 0, "exited_at": 1793086845.5937936, "completion_reason": "exited"}, {"handle": "proc_77a1f610891c", "state": "exited", "session_id": "proc_77a1f610891c", "command": "sleep 60", "cwd": "/work/worktrees/153bad93f0da414e860ce3c5cbbda3e8", "pid": 746, "owner_task_id": "323df0210562242999f981cee0ceebb1e8ec239553d1bd1833d4c2406d353ede", "started_at": "2026-10-27T07:40:46", "uptime_seconds": 1, "status": "exited", "output_preview": "", "exit_code": -15, "exited_at": 1793086847.0199304, "completion_reason": "killed"}, {"handle": "proc_fe1dbb65ed6c", "state": "lost", "session_id": "proc_fe1dbb65ed6c", "command": "sleep 60", "cwd": "/work/worktrees/153bad93f0da414e860ce3c5cbbda3e8", "pid": 776, "owner_task_id": "323df0210562242999f981cee0ceebb1e8ec239553d1bd1833d4c2406d353ede", "started_at": "2026-10-27T07:40:47", "uptime_seconds": 0, "status": "running", "output_preview": ""}]}
+terminal {"output": "", "exit_code": 0, "error": null}
+....RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+.........RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+.RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+......RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+..............RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+.RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+.........F........sRUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+.....................RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+....RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+.........ssssRUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+..........RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+F
+=================================== FAILURES ===================================
+_______ test_native_office_pdf_create_edit_validate_publish_and_restart ________
+
+runtime = (PosixPath('/tmp/nma-tmudtpk6'), <http.server.ThreadingHTTPServer object at 0x10f68a9c0>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '17', 'lifecycle': 'ready', ...})
+
+    def test_native_office_pdf_create_edit_validate_publish_and_restart(runtime):
+        root, provider, call, start, *_ = runtime
+        (root / "capabilities.json").write_text(
+            json.dumps(catalog(os.environ["NMA_TEST_DOCUMENT_IMAGE"]))
+        )
+        agent = capability_agent(
+            call,
+            "document-creator",
+            tool_grants=list(catalog(os.environ["NMA_TEST_DOCUMENT_IMAGE"])["tool_grants"]),
+        )
+        dm = conversation(call, agent)
+        directory = {}
+        for name in ("docx", "xlsx", "powerpoint", "pdf"):
+            entry = next(
+                e for e in inventory(call, agent, dm)["catalog"] if e["name"] == name
+            )
+            assert "skill_id" in invoke(
+                provider, call, dm, "skill_install", {"catalog_id": entry["id"]}
+            )
+            viewed = invoke(provider, call, dm, "skill_view", {"name": name})
+            assert viewed.get("success"), viewed
+            directory[name] = viewed["skill_dir"] + "/scripts/"
+        assert all(i["runtime_ready"] for i in inventory(call, agent, dm)["skills"])
+        specs = {
+            "word.json": {
+                "blocks": [
+                    {"type": "heading", "text": "Inventory report"},
+                    {
+                        "type": "paragraph",
+                        "text": "There are 17 blue and 26 green crates. Total: 43.",
+                    },
+                ]
+            },
+            "excel.json": {
+                "sheets": [
+                    {
+                        "name": "Inventory",
+                        "rows": [
+                            ["Blue", "Green", "Total"],
+                            [17, 26, {"formula": "SUM(A2:B2)"}],
+                        ],
+                    }
+                ]
+            },
+            "slides.json": {
+                "slides": [
+                    {
+                        "layout": "title",
+                        "title": "Inventory report",
+                        "subtitle": "17 blue + 26 green = 43 crates",
+                    }
+                ]
+            },
+            "pdf.json": {
+                "title": "Inventory report",
+                "elements": [
+                    {"type": "heading", "text": "Inventory report"},
+                    {"type": "paragraph", "text": "17 blue + 26 green = 43 crates"},
+                ],
+            },
+        }
+        for path, spec in specs.items():
+>           written = invoke(
+                provider,
+                call,
+                dm,
+                "write_file",
+                {"path": path, "content": json.dumps(spec)},
+            )
+
+apps/engine/tests/test_document_workflows.py:84: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+provider = <http.server.ThreadingHTTPServer object at 0x10f68a9c0>
+call = <function runtime.<locals>.call at 0x10f7b2560>
+thread = {'agents': [{'access_generation': '1', 'agent_id': 'd37cfb2e-b471-4692-a9a7-eb66cb5409c8', 'config': {'avatar_url': 'h...sion': '1', ...}], 'context_generation': '1', 'dm_agent_id': 'd37cfb2e-b471-4692-a9a7-eb66cb5409c8', 'kind': 'dm', ...}
+name = 'write_file'
+arguments = {'path': 'word.json', 'content': '{"blocks": [{"type": "heading", "text": "Inventory report"}, {"type": "paragraph", "text": "There are 17 blue and 26 green crates. Total: 43."}]}'}
+
+    def invoke(provider, call, thread, name, arguments):
+        def script(body, text):
+            if body.get("messages", [])[-1]["role"] == "tool":
+                return {"role": "assistant", "content": "Learning operation observed."}
+            return {
+                "role": "assistant",
+                "content": None,
+                "tool_calls": [
+                    {
+                        "id": "native-learning",
+                        "type": "function",
+                        "function": {"name": name, "arguments": json.dumps(arguments)},
+                    }
+                ],
+            }
+    
+        provider.goal_script = script
+        before = len(provider.requests)
+        try:
+            receipt = call(send(thread, "NMA034 learning case"))
+            assert "result" in receipt, receipt
+            started = time.monotonic()
+            while True:
+                state = call(
+                    command("runtime.read", {"run_id": receipt["result"]["run_id"]})
+                )["result"]
+                if (
+                    state["status"] not in {"queued", "running"}
+                    or time.monotonic() - started > 180
+                ):
+                    break
+                time.sleep(0.2)
+            tools = [
+                m
+                for request in provider.requests[before:]
+                for m in request.get("messages", [])
+                if m["role"] == "tool"
+            ]
+            assert tools, (state, provider.requests[before:])
+            print(
+                "LEARNING_CASE",
+                name,
+                round(time.monotonic() - started, 3),
+                state["status"],
+                flush=True,
+            )
+>           assert state["status"] == "succeeded", (state, tools[-1])
+E           AssertionError: ({'agent_id': 'd37cfb2e-b471-4692-a9a7-eb66cb5409c8', 'config_revision': '1', 'context_generation': '1', 'continuation... '{"error": "[TOOL_ERROR] Error executing write_file: CAPABILITY_UNAVAILABLE"}', 'tool_call_id': 'native-learning_d9'})
+E           assert 'indeterminate' == 'succeeded'
+E             
+E             - succeeded
+E             + indeterminate
+
+apps/engine/tests/test_learning.py:83: AssertionError
+_______ test_native_curator_protects_active_work_and_archives_reversibly _______
+
+runtime = (PosixPath('/tmp/nma-nnsec5k0'), <http.server.ThreadingHTTPServer object at 0x11141f040>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '17', 'lifecycle': 'ready', ...})
+
+    def test_native_curator_protects_active_work_and_archives_reversibly(runtime):
+        root, model, call, start, *_ = runtime
+        agent = capability_agent(call, "curated-methods")
+        dm = conversation(call, agent)
+        assert invoke(
+            model,
+            call,
+            dm,
+            "skill_manage",
+            {
+                "operations": [
+                    {
+                        "action": "create",
+                        "name": "aging-method",
+                        "content": "---\nname: aging-method\ndescription: A reusable method\n---\n\nCheck the evidence.",
+                    }
+                ]
+            },
+        )["success"]
+        with sqlite3.connect(root / "state/state.db") as db:
+            db.execute(
+                "UPDATE nma_skill_entries SET created_at='2020-01-01T00:00:00+00:00',updated_at='2020-01-01T00:00:00+00:00'"
+            )
+            db.execute("DELETE FROM nma_learning_maintenance")
+        model.release.clear()
+        model.blocked.clear()
+        run = call(send(dm, "BLOCK_STARTED"))["result"]["run_id"]
+        assert model.blocked.wait(10)
+        request = lambda: command(
+            "learning.maintain",
+            {"agent_id": agent["agent_id"], "thread_id": dm["thread_id"]},
+        )
+>       assert call(request())["result"]["reports"] == []
+E       AssertionError: assert [{'archived':...ted': 0, ...}] == []
+E         
+E         Left contains one more item: {'archived': 1, 'checked': 1, 'marked_stale': 0, 'reactivated': 0, ...}
+E         Use -v to get more diff
+
+apps/engine/tests/test_learning_lifecycle.py:189: AssertionError
+___________________ test_runtime_pin_rejects_modified_source ___________________
+
+cls = <class 'importlib.metadata.Distribution'>, name = 'firecrawl-py'
+
+    @classmethod
+    def from_name(cls, name: str) -> Distribution:
+        """Return the Distribution for the given package name.
+    
+        :param name: The name of the distribution package to search for.
+        :return: The Distribution instance (or subclass thereof) for the named
+            package, if found.
+        :raises PackageNotFoundError: When the named package's distribution
+            metadata cannot be found.
+        :raises ValueError: When an invalid value is supplied for name.
+        """
+        if not name:
+            raise ValueError("A distribution name is required.")
+        try:
+>           return next(iter(cls.discover(name=name)))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           StopIteration
+
+.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py:407: StopIteration
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = PosixPath('/private/var/folders/j1/p1582yhj20z58phnf_zrzy7w0000gn/T/pytest-of-vitoandareasmanik/pytest-197/test_runtime_pin_rejects_modif0')
+
+    def test_runtime_pin_rejects_modified_source(tmp_path):
+        import shutil
+    
+        from ngertiin_engine import runtime as runtime_module
+        from ngertiin_engine.contracts import EngineError
+        from ngertiin_engine.runtime import verify
+    
+        pin = json.loads(
+            Path(runtime_module.__file__).with_name("runtime-pin.json").read_text()
+        )
+        for name in pin["source_hashes"]:
+            target = tmp_path / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(SOURCE / name, target)
+>       assert verify(tmp_path)["python"] == pin["python"]
+               ^^^^^^^^^^^^^^^^
+
+apps/engine/tests/test_runtime.py:642: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+apps/engine/src/ngertiin_engine/runtime.py:22: in verify
+    if importlib.metadata.version(distribution) != expected:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py:987: in version
+    return distribution(distribution_name).version
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py:960: in distribution
+    return Distribution.from_name(distribution_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'importlib.metadata.Distribution'>, name = 'firecrawl-py'
+
+    @classmethod
+    def from_name(cls, name: str) -> Distribution:
+        """Return the Distribution for the given package name.
+    
+        :param name: The name of the distribution package to search for.
+        :return: The Distribution instance (or subclass thereof) for the named
+            package, if found.
+        :raises PackageNotFoundError: When the named package's distribution
+            metadata cannot be found.
+        :raises ValueError: When an invalid value is supplied for name.
+        """
+        if not name:
+            raise ValueError("A distribution name is required.")
+        try:
+            return next(iter(cls.discover(name=name)))
+        except StopIteration:
+>           raise PackageNotFoundError(name)
+E           importlib.metadata.PackageNotFoundError: No package metadata was found for firecrawl-py
+
+.dev/nma-001/pm-runtime/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py:409: PackageNotFoundError
+________________ test_gateway_files_workspace_and_job_recovery _________________
+
+runtime = (PosixPath('/tmp/nma-svni5a8h'), <http.server.ThreadingHTTPServer object at 0x111a387a0>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '17', 'lifecycle': 'ready', ...})
+public_api = <function public_api.<locals>.request at 0x111921010>
+
+    def test_gateway_files_workspace_and_job_recovery(runtime, public_api):
+        root, provider, call, start, *_ = runtime
+        image = os.environ["NMA_TEST_NATIVE_IMAGE"]
+        asset = root / "native-helper.py"
+        asset.write_text(
+            "#!/opt/native/bin/python\nimport json,os,urllib.request\nprint(json.dumps({'skill_asset':'EXECUTED','uid':os.getuid(),'provider_key':os.environ.get('OPENAI_API_KEY'),'chromium':bool(json.load(urllib.request.urlopen('http://127.0.0.1:9222/json/version'))['Browser'])}))\n"
+        )
+        entry = {
+            "enabled": True,
+            "content": "Run the assigned native helper when requested.",
+            "native_assets": {
+                "helper.py": {
+                    "path": str(asset),
+                    "sha256": hashlib.sha256(asset.read_bytes()).hexdigest(),
+                    "executable": True,
+                }
+            },
+        }
+        configured = catalog(image)
+        configured["skill_refs"] = {"helper": entry}
+        (root / "capabilities.json").write_text(json.dumps(configured))
+        agent = capability_agent(
+            call,
+            "native-file-delivery",
+            tool_grants=list(catalog(image)["tool_grants"]),
+            skill_refs=["helper"],
+        )
+        thread = call(command("thread.read", {"thread_id": agent["primary_dm_thread_id"]}))[
+            "result"
+        ]
+        target = {
+            "name": "terminal",
+            "arguments": {"command": "printf 'PERSISTENT_WORKSPACE' > retained.txt"},
+        }
+    
+        def scripted(body, text):
+            if not body.get("messages"):
+                return None
+            if body["messages"][-1]["role"] == "tool":
+                return {"role": "assistant", "content": body["messages"][-1]["content"]}
+            return {
+                "role": "assistant",
+                "content": None,
+                "tool_calls": [
+                    {
+                        "id": "native-" + uuid4().hex,
+                        "type": "function",
+                        "function": {
+                            "name": target["name"],
+                            "arguments": json.dumps(target["arguments"]),
+                        },
+                    }
+                ],
+            }
+    
+        provider.goal_script = scripted
+    
+        def run(name, arguments, attachments=()):
+            target.update(name=name, arguments=arguments)
+            message = send(thread, "Execute the selected native workflow")
+            message["payload"]["attachment_ids"] = list(attachments)
+            receipt = call(message)
+            assert "result" in receipt, receipt
+            settle(call, receipt["result"]["run_id"])
+            tool = next(
+                m
+                for m in reversed(provider.requests[-1]["messages"])
+                if m["role"] == "tool"
+            )
+            result = json.loads(tool["content"])
+            print(name, json.dumps(result)[:3000], flush=True)
+            assert not result.get("error"), result
+            return result
+    
+        try:
+            from ngertiin_engine.skill_assets import directory
+    
+>           helper = run(
+                "terminal", {"command": "/work/" + directory(entry) + "/helper.py"}
+            )
+
+apps/engine/tests/test_workspace_delivery.py:126: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+apps/engine/tests/test_workspace_delivery.py:112: in run
+    settle(call, receipt["result"]["run_id"])
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x11190f7f0>
+run_id = '2c7ba372-47c2-5cf0-80ff-57f84b526439', expected = 'succeeded'
+
+    def settle(call, run_id, expected="succeeded"):
+        deadline = time.monotonic() + 45
+        while time.monotonic() < deadline:
+            reply = call(command("runtime.read", {"run_id": run_id}))
+            assert "result" in reply, reply
+            if reply["result"]["status"] not in {"queued", "running"}:
+                assert reply["result"]["status"] == expected, reply
+                return reply["result"]
+            time.sleep(0.1)
+>       pytest.fail(f"Run did not settle: {reply}")
+E       Failed: Run did not settle: {'result': {'agent_id': '779ac370-fd9b-480a-9ede-2cdb53a13908', 'config_revision': '1', 'context_generation': '1', 'continuation_required': False, 'error_code': None, 'run_id': '2c7ba372-47c2-5cf0-80ff-57f84b526439', 'schema_version': 'nma.v1', 'status': 'running', 'text': '', 'thread_id': '223d2775-dd6f-4508-b1b5-90cc13be6041', 'turn_exit_reason': ''}}
+
+apps/engine/tests/test_runtime.py:382: Failed
+=============================== warnings summary ===============================
+tests/test_google_mcp.py::test_google_native_mcp_tools_preserve_results_and_revoke
+  /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/runtime/lib/python3.14/site-packages/websockets/legacy/__init__.py:6: DeprecationWarning: websockets.legacy is deprecated; see https://websockets.readthedocs.io/en/stable/howto/upgrade.html for upgrade instructions
+    warnings.warn(  # deprecated in 14.0 - 2024-11-09
+
+tests/test_google_mcp.py::test_google_native_mcp_tools_preserve_results_and_revoke
+  /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/runtime/lib/python3.14/site-packages/uvicorn/protocols/websockets/websockets_impl.py:17: DeprecationWarning: websockets.server.WebSocketServerProtocol is deprecated
+    from websockets.server import WebSocketServerProtocol
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_document_workflows.py::test_native_office_pdf_create_edit_validate_publish_and_restart
+FAILED apps/engine/tests/test_learning_lifecycle.py::test_native_curator_protects_active_work_and_archives_reversibly
+FAILED apps/engine/tests/test_runtime.py::test_runtime_pin_rejects_modified_source
+FAILED apps/engine/tests/test_workspace_delivery.py::test_gateway_files_workspace_and_job_recovery
+4 failed, 217 passed, 33 skipped, 2 warnings in 1468.50s (0:24:28)

@@ -1,0 +1,44 @@
+{
+  "feature_acceptance": "verified locally",
+  "notion_status": "Done",
+  "engine_broad_initial": {
+    "passed": 217,
+    "failed": 4,
+    "skipped": 33
+  },
+  "final_targeted": {
+    "learning_context_lifecycle": {
+      "passed": 12
+    },
+    "native_documents_research_coding_workspace_pin": {
+      "passed": 4
+    },
+    "backend": {
+      "passed": 28
+    },
+    "hindsight_live": {
+      "passed": 1
+    },
+    "uploaded_xlsx_live_and_browser_review": {
+      "passed": 1
+    },
+    "research_coding_live": {
+      "passed": 1
+    }
+  },
+  "web_check": "passed",
+  "web_build": "passed",
+  "ruff_changed_python": "passed",
+  "git_diff_check": "passed",
+  "required_new_live_cases_skipped": 0,
+  "production_rollout": false,
+  "release_slo_passed": false,
+  "original_partition_schema": 14,
+  "original_gateway_restarted": false,
+  "known_disposable_uncertain_receipts": 4,
+  "document_evidence": "live-documents/content-validation.json",
+  "final_spreadsheet_evidence": "spreadsheet-layout/verification.json",
+  "auth_evidence": "learning-auth-scope.json",
+  "notion_evidence": "notion-readback.json",
+  "private_test_credentials_removed": true
+}

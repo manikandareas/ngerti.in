@@ -1,0 +1,13 @@
+{
+  "identities": [
+    {
+      "user_id": "user_3LGcbGeEV9vfD0tmLhXTbS5ZIAq",
+      "deleted": true
+    },
+    {
+      "user_id": "user_3LGcbGp2lfAn7MefzlbAE4I7GlV",
+      "deleted": true
+    }
+  ],
+  "database_dropped": true
+}

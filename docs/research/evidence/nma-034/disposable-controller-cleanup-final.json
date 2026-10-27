@@ -1,0 +1,155 @@
+[
+  {
+    "root": "/tmp/nma-mwqqys2b",
+    "controller": "8bab1b80-0dfd-496b-ae53-1f399dcd19ac",
+    "counts": {
+      "indeterminate": 1,
+      "returned": 5
+    }
+  },
+  {
+    "root": "/tmp/nma-1e65a8vk",
+    "controller": "36b42f50-4bdd-471f-9673-81856cdf8c02",
+    "counts": {
+      "returned": 3
+    }
+  },
+  {
+    "root": "/tmp/nma-02ik_1a2",
+    "controller": "e9c6803b-cc61-4cd2-a3d1-9ea1da56aaf9",
+    "counts": {
+      "returned": 20
+    }
+  },
+  {
+    "root": "/tmp/nma-gsnchnvm",
+    "controller": "6431d1e1-0716-4e26-8c1c-5ef1de43c700",
+    "counts": {
+      "returned": 7
+    }
+  },
+  {
+    "root": "/tmp/nma-9uai226k",
+    "controller": "8dcd5de9-c3cd-4774-a103-f173d6e5481e",
+    "counts": {
+      "returned": 4
+    }
+  },
+  {
+    "root": "/tmp/nma-c79ip03y",
+    "controller": "87493abc-3a74-469a-8687-225b99f06ec5",
+    "counts": {
+      "returned": 8
+    }
+  },
+  {
+    "root": "/tmp/nma-fkrbvfli",
+    "controller": "934e81d6-ea03-41d7-83fa-73d85b69dc5b",
+    "counts": {
+      "returned": 53
+    }
+  },
+  {
+    "root": "/tmp/nma-d5v5lp8v",
+    "controller": "a5271ef8-6a98-4c62-bd84-9d4a2a6f2a30",
+    "counts": {
+      "indeterminate": 1,
+      "returned": 5
+    }
+  },
+  {
+    "root": "/tmp/nma-j_ylqz57",
+    "controller": "2f253ddc-7636-4078-a481-b6ddc7dec4b9",
+    "counts": {
+      "returned": 13
+    }
+  },
+  {
+    "root": "/tmp/nma-ygvvz44d",
+    "controller": "299857b0-7fbe-4fe9-b91e-84a767165168",
+    "counts": {
+      "returned": 6
+    }
+  },
+  {
+    "root": "/tmp/nma-2y0dv768",
+    "controller": "4d5c9538-c334-494e-b3c8-014b8aa312d8",
+    "counts": {
+      "returned": 2
+    }
+  },
+  {
+    "root": "/tmp/nma-7pu5_k_z",
+    "controller": "5a077727-7fa8-4e3f-bde6-2bcb4cab864a",
+    "counts": {
+      "returned": 5
+    }
+  },
+  {
+    "root": "/tmp/nma-mwhnoc8_",
+    "controller": "6cbe024b-e1ca-4976-b31c-0b28ce0c4cc5",
+    "counts": {
+      "returned": 57
+    }
+  },
+  {
+    "root": "/tmp/nma-jn2neu8e",
+    "controller": "383283c8-dc01-4e78-9f64-3c61eaa80fa9",
+    "counts": {
+      "indeterminate": 1,
+      "returned": 1
+    }
+  },
+  {
+    "root": "/tmp/nma-g0f1hlfc",
+    "controller": "e8bb4eb9-140e-48ff-98a5-b5c3f9ed7c6f",
+    "counts": {
+      "returned": 5
+    }
+  },
+  {
+    "root": "/tmp/nma-5af3snos",
+    "controller": "7ba29334-0154-426f-b4f9-833b1a93afec",
+    "counts": {
+      "returned": 11
+    }
+  },
+  {
+    "root": "/tmp/nma-aikc2eme",
+    "controller": "0b775df7-9da3-4889-b93a-a326a720164b",
+    "counts": {
+      "returned": 46
+    }
+  },
+  {
+    "root": "/tmp/nma-h33dh0k8",
+    "controller": "472e2001-d438-4efe-a39b-e733c36ac2ee",
+    "counts": {
+      "returned": 11
+    }
+  },
+  {
+    "root": "/tmp/nma-p0fr1k_w",
+    "controller": "b01b99ac-cf74-4419-a6dc-f361d120164f",
+    "counts": {
+      "returned": 16
+    }
+  },
+  {
+    "root": "/tmp/nma-svni5a8h",
+    "controller": "f4882001-52ad-437d-a0b2-cf5956d6c633",
+    "counts": {}
+  },
+  {
+    "root": "/tmp/nma-yjgvuyq0",
+    "controller": "b50e6988-4193-40c9-bc64-5fe03c2efbf0",
+    "counts": {
+      "returned": 11
+    }
+  },
+  {
+    "root": "/tmp/nma-tmudtpk6",
+    "controller": "9481f99d-a75f-4b21-9127-7203cb9bfc16",
+    "counts": {}
+  }
+]

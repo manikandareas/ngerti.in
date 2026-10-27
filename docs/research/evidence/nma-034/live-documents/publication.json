@@ -1,0 +1,63 @@
+{
+  "metadata": {
+    "owner_id": "354069da-ccc0-435c-b888-4ff4c6785d47",
+    "root": "/tmp/nma-aikc2eme",
+    "agent_id": "5616133c-26b8-441b-8ec0-938f0fabeedf",
+    "thread_id": "a3f37454-c469-4821-b9fd-2332158802b7"
+  },
+  "files": [
+    {
+      "owner_id": "354069da-ccc0-435c-b888-4ff4c6785d47",
+      "artifact_id": "9977ae1e-42d7-5229-967e-bdac50b78d49",
+      "thread_id": "a3f37454-c469-4821-b9fd-2332158802b7",
+      "producing_run_id": "56131c26-ae4f-51c3-9fc6-40645ed29186",
+      "producing_agent_id": "5616133c-26b8-441b-8ec0-938f0fabeedf",
+      "revision_id": "a2c40513-a91a-5434-8973-9fc00cd095d6",
+      "filename": "revised-inventory.docx",
+      "media_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "sha256": "99ac0e9223d26e2d61ea23d6c53939907b5d2ed984e7794bfed2a4dbeb34f78c",
+      "byte_count": 40010,
+      "state": "ready"
+    },
+    {
+      "owner_id": "354069da-ccc0-435c-b888-4ff4c6785d47",
+      "artifact_id": "da7f8d28-6077-503b-ae0c-b4960ed8403c",
+      "thread_id": "a3f37454-c469-4821-b9fd-2332158802b7",
+      "producing_run_id": "f905808a-c9f2-5df7-b4d6-141718560ccd",
+      "producing_agent_id": "5616133c-26b8-441b-8ec0-938f0fabeedf",
+      "revision_id": "a2e031db-a072-5afd-9810-02c9d7992f5e",
+      "filename": "revised-inventory.xlsx",
+      "media_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "sha256": "51f21978be9be99b3172781b703a056e0ca9d5094228666ed86cbcf41b5648c2",
+      "byte_count": 5695,
+      "state": "ready"
+    },
+    {
+      "owner_id": "354069da-ccc0-435c-b888-4ff4c6785d47",
+      "artifact_id": "cc92a05b-d572-57ae-bdfe-0379a3472abb",
+      "thread_id": "a3f37454-c469-4821-b9fd-2332158802b7",
+      "producing_run_id": "f368eef4-62be-5a48-93ee-b41f90156571",
+      "producing_agent_id": "5616133c-26b8-441b-8ec0-938f0fabeedf",
+      "revision_id": "f98b2e50-9325-5d49-8172-1c051aabfcba",
+      "filename": "revised-inventory.pptx",
+      "media_type": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+      "sha256": "c884429024cce2c876c0107ec16c7b7ed2fdf42a42f02ba93b00f69be778f67f",
+      "byte_count": 28445,
+      "state": "ready"
+    },
+    {
+      "owner_id": "354069da-ccc0-435c-b888-4ff4c6785d47",
+      "artifact_id": "b7d40ea2-7acd-548e-9656-bbeff655fd79",
+      "thread_id": "a3f37454-c469-4821-b9fd-2332158802b7",
+      "producing_run_id": "f726b2dc-6b0c-5615-a4f0-ee9bcfd08832",
+      "producing_agent_id": "5616133c-26b8-441b-8ec0-938f0fabeedf",
+      "revision_id": "b6f92c9b-ed21-5da3-b543-f98047b337af",
+      "filename": "revised-inventory.pdf",
+      "media_type": "application/pdf",
+      "sha256": "26cec7d74067b68400997cd30b5efb3d841d17efeea8ba825c3425eb44c53c7c",
+      "byte_count": 4220,
+      "state": "ready"
+    }
+  ],
+  "runtime_admissions": 8
+}

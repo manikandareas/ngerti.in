@@ -105,7 +105,7 @@ def start_api(path):
         os.environ,
         DATABASE_URL=state["database_url"],
         NMA_PARTITIONS_FILE=state["registry"],
-        WEB_ORIGIN="http://127.0.0.1:3028",
+        WEB_ORIGIN=os.environ.get("NMA_ACCEPTANCE_WEB_ORIGIN", "http://127.0.0.1:3028"),
         PYTHONPATH=str(ROOT / "apps/backend/src"),
     )
     process = subprocess.Popen(

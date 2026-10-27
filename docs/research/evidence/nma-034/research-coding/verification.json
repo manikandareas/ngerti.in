@@ -1,0 +1,28 @@
+{
+  "root": "/tmp/nma-7pu5_k_z",
+  "artifact": {
+    "owner_id": "c0a5a1fb-5cce-4769-90c8-43660ea18f59",
+    "artifact_id": "ec236b59-e028-56ce-bf3c-db1f0fb45e20",
+    "thread_id": "c8c25972-4efb-4ee0-b415-8961066b4d05",
+    "producing_run_id": "78f01680-909d-5821-99a8-3f8487dcdb48",
+    "producing_agent_id": "ad505a87-f06b-466c-abfa-683141b3dc3c",
+    "revision_id": "5caf8c3a-49f5-56c1-9139-ac217af6d5ba",
+    "filename": "inventory-report.md",
+    "media_type": "text/plain; charset=utf-8",
+    "sha256": "4cfa56c8bb02812457b24ee5815a3eff8c247092871ede6822a18407871d6a6c",
+    "byte_count": 338
+  },
+  "content_sha256": "4cfa56c8bb02812457b24ee5815a3eff8c247092871ede6822a18407871d6a6c",
+  "skill_views": [
+    [
+      "codebase-inspection",
+      1
+    ],
+    [
+      "grounded-citations",
+      4
+    ]
+  ],
+  "runtime_succeeded": true,
+  "harness_failure": "Unnecessary requirement that final chat text repeat 43; corrected oracle verifies the actual report instead"
+}

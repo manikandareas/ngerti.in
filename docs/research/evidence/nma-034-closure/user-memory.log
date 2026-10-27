@@ -1,0 +1,81 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+____________ test_user_memory_partial_patch_alias_and_final_budget _____________
+
+runtime = (PosixPath('/tmp/nma-xul00uu5'), <http.server.ThreadingHTTPServer object at 0x10be1a120>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '17', 'lifecycle': 'ready', ...})
+
+    def test_user_memory_partial_patch_alias_and_final_budget(runtime):
+        _, model, call, *_ = runtime
+        agent = capability_agent(call, "user-memory-spans")
+        dm = conversation(call, agent)
+        original = "The user prefers “green tea” in the morning."
+        assert invoke(
+            model,
+            call,
+            dm,
+            "memory",
+            {"target": "user", "action": "add", "content": original},
+        )["success"]
+        before = inventory(call, agent, dm)["memories"][0]
+        assert invoke(
+            model,
+            call,
+            dm,
+            "memory",
+            {
+                "target": "user",
+                "action": "patch",
+                "old_text": "green tea",
+                "new_text": "black coffee",
+            },
+        )["success"]
+        changed = inventory(call, agent, dm)["memories"][0]
+        assert changed["memory_id"] == before["memory_id"]
+        assert changed["content"] == original.replace("green tea", "black coffee")
+        assert changed["target"] == "user" and changed["revision"] == "2"
+        # The temporarily oversized batch is valid against the final native budget.
+        large = "Detailed preference: " + "ordinary text " * 85
+        assert invoke(
+            model, call, dm, "memory", {"target": "user", "action": "add", "content": large}
+        )["success"]
+        old = inventory(call, agent, dm)["memories"]
+        replacement = "New preference: " + "different text " * 85
+        result = invoke(
+            model,
+            call,
+            dm,
+            "memory",
+            {
+                "target": "user",
+                "operations": [
+                    {"action": "add", "content": replacement},
+                    {"action": "remove", "old_text": large},
+                    {
+                        "action": "patch",
+                        "old_text": "“black coffee”",
+                        "content": "herbal tea",
+                    },
+                ],
+            },
+        )
+        assert result["success"], result
+        after = inventory(call, agent, dm)["memories"]
+        assert len(after) == 2
+        survivor = next(item for item in after if item["memory_id"] == before["memory_id"])
+        assert survivor["content"] == "The user prefers herbal tea in the morning."
+        assert survivor["revision"] == "3"
+>       added = next(item for item in after if item["content"] == replacement)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       StopIteration
+
+apps/engine/tests/test_memory_batch_identity.py:228: StopIteration
+---------------------------- Captured stdout setup -----------------------------
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+----------------------------- Captured stdout call -----------------------------
+LEARNING_CASE memory 1.325 succeeded
+LEARNING_CASE memory 0.415 succeeded
+LEARNING_CASE memory 0.208 succeeded
+LEARNING_CASE memory 0.209 succeeded
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_memory_batch_identity.py::test_user_memory_partial_patch_alias_and_final_budget
+1 failed in 6.46s

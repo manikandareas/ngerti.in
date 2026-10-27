@@ -1,0 +1,52 @@
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+LEARNING_CASE skill_install 1.321 succeeded
+LEARNING_CASE skill_view 0.447 succeeded
+LEARNING_CASE skill_install 0.421 succeeded
+LEARNING_CASE skill_view 0.453 succeeded
+LEARNING_CASE skill_install 0.415 succeeded
+LEARNING_CASE skill_view 0.412 succeeded
+LEARNING_CASE skill_install 0.441 succeeded
+LEARNING_CASE skill_view 0.42 succeeded
+LEARNING_CASE write_file 17.671 succeeded
+LEARNING_CASE write_file 1.044 succeeded
+LEARNING_CASE write_file 1.058 succeeded
+LEARNING_CASE write_file 1.037 succeeded
+LEARNING_CASE terminal 1.459 succeeded
+LEARNING_CASE terminal 8.344 succeeded
+LEARNING_CASE terminal 3.113 succeeded
+LEARNING_CASE terminal 7.144 succeeded
+LEARNING_CASE terminal 6.434 succeeded
+LEARNING_CASE terminal 5.456 succeeded
+LEARNING_CASE workspace 6.072 succeeded
+LEARNING_CASE workspace 2.524 succeeded
+LEARNING_CASE workspace 1.927 succeeded
+LEARNING_CASE workspace 1.921 succeeded
+DOCUMENT_VERIFIED revised.pdf de027f1920abd8384448dfe656e265c4c5e6e31036f6034f75ead6baf75f575c 1574
+DOCUMENT_VERIFIED revised.pptx d4fbc619da9dd8f4ca5e02ed447bad6dcbcf6ba22e17983c1f97a44b88232a82 28273
+DOCUMENT_VERIFIED revised.xlsx 043b7a7db2f39e99cbc3b681a9143e4ec7f6e6f75f5f70b6264ff7716ae67de1 5149
+DOCUMENT_VERIFIED revised.docx 92924b861e3bb21792abba751d27e9c255f1c3307f2cbe563af7f2b0ef6cd1de 39745
+.LEARNING_CASE skill_install 0.414 succeeded
+LEARNING_CASE skill_view 0.229 succeeded
+LEARNING_CASE skill_install 0.427 succeeded
+LEARNING_CASE skill_view 0.21 succeeded
+LEARNING_CASE skill_install 0.256 succeeded
+LEARNING_CASE skill_view 0.243 succeeded
+LEARNING_CASE write_file 15.029 succeeded
+LEARNING_CASE write_file 1.837 succeeded
+LEARNING_CASE write_file 2.368 succeeded
+LEARNING_CASE terminal 3.546 succeeded
+LEARNING_CASE skill_manage 0.806 succeeded
+.RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+terminal {"output": "{\"skill_asset\": \"EXECUTED\", \"uid\": 10001, \"provider_key\": null, \"chromium\": true}", "exit_code": 0, "error": null}
+workspace {"artifact_id": "67dd2e49-092e-5e4f-8a74-7880b4194303", "byte_count": 21, "filename": "legacy.txt", "media_type": "text/plain; charset=utf-8", "producing_agent_id": "5bb98653-be03-466f-964a-e0939e805051", "producing_run_id": "63c0fccd-bb6d-5c8e-a36d-3f13a5621804", "revision_id": "0bdb5124-9159-51cf-9462-306a36738c53", "sha256": "a7d43160593773c729a99912593d86c6b62a6c66bc191ba6ce4683d8864db993", "status": "ready", "thread_id": "35314977-7de2-4d19-82af-78bacbb74688"}
+terminal {"output": "", "exit_code": 0, "error": null}
+read_file {"content": "1|PERSISTENT_WORKSPACE", "total_lines": 1, "file_size": 20, "truncated": false, "is_binary": false, "is_image": false, "not_found": false}
+workspace {"artifact_id": "c8f0ddc1-0b21-4652-8bd1-3dd83b43f23b", "byte_count": 299, "filename": "\u8a66\u9a13 document.docx", "media_type": "application/octet-stream", "next_step": "Use native read_file on workspace_path to extract supported documents.", "producing_agent_id": null, "producing_run_id": null, "revision_id": "096d9730-b043-5cae-a5f8-92ed1106591e", "sha256": "5eec704292f9785982f3f69caed25b7184ec4a90669477540668f9cad3cd1447", "status": "ready", "storage": "file.v1", "thread_id": "35314977-7de2-4d19-82af-78bacbb74688", "workspace_path": "/work/imports/c8f0ddc1-0b21-4652-8bd1-3dd83b43f23b/\u8a66\u9a13 document.docx"}
+read_file {"content": "1|DOCUMENT_INPUT_CANARY", "total_lines": 1, "file_size": 299, "truncated": false, "extracted_document": true}
+execute_code {"status": "success", "output": "BINARY_READY\n", "exit_code": 0, "tool_calls_made": 0, "duration_seconds": 0.44, "kernel": {"mode": "session", "reused": false, "execution_count": 1, "state_reset": false}, "stdout_truncated": false, "stdout_bytes_captured": 13, "stdout_bytes_total": 13, "stdout_bytes_omitted": 0}
+workspace {"artifact_id": "6617871c-1429-5f51-beb3-202a5f25d172", "byte_count": 2097152, "filename": "\u7d50\u679c output.bin", "media_type": "application/octet-stream", "producing_agent_id": "5bb98653-be03-466f-964a-e0939e805051", "producing_run_id": "61337a82-4254-5657-95a1-265e98f88b4f", "revision_id": "0e15ca7c-3456-5f4c-bd37-aad7034cdd1d", "sha256": "91d3beb88a9b2f778a6c44a1c53b63d3c79931845a9aef84b3fb414610bd1938", "status": "ready", "storage": "file.v1", "thread_id": "35314977-7de2-4d19-82af-78bacbb74688"}
+terminal {"output": "Background process started", "session_id": "proc_9e3ddfb5cd24", "pid": 484, "exit_code": 0, "error": null, "notify_on_complete": true}
+read_file {"status": "unchanged", "message": "File unchanged since last read. The content from the earlier read_file result in this conversation is still current \u2014 refer to that instead of re-reading.", "path": "retained.txt", "dedup": true, "content_returned": false}
+read_file {"content": "1|JOB_DONE", "total_lines": 1, "file_size": 8, "truncated": false, "is_binary": false, "is_image": false, "not_found": false}
+..
+4 passed in 180.86s (0:03:00)

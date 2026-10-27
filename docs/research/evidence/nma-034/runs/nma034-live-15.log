@@ -1,0 +1,54 @@
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+LIVE_TURN 7280f284-cd71-51d7-b0fc-780d0508bfe3 33.557 succeeded
+LIVE_TURN d1a89e8f-f1be-5c33-9de3-13d22d4d8ab7 10.264 succeeded
+LIVE_TURN 6e5cb4e0-0e1b-5651-82f2-34392e624b01 7.721 succeeded
+LIVE_TURN facefbfd-efba-58cd-94e3-66ced2db6711 11.749 succeeded
+LIVE_TURN 420012c8-1e5f-5584-a12c-1806d2a66f0c 14.33 succeeded
+LIVE_TURN 9ab26f25-c9a6-55c0-97e0-28c082761926 120.612 succeeded
+LIVE_TURN a3d23a41-2f58-5a9c-be40-ec663d76d228 19.491 succeeded
+LIVE_LEARNING_ROOT /tmp/nma-02ik_1a2
+.LIVE_TURN bc5a6ec8-06d4-564c-a5df-bc7f002cfa3c 324.071 indeterminate
+F
+=================================== FAILURES ===================================
+_____________ test_real_model_office_pdf_create_revise_and_publish _____________
+
+runtime = (PosixPath('/tmp/nma-02ik_1a2'), <http.server.ThreadingHTTPServer object at 0x1092f2270>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '17', 'lifecycle': 'ready', ...})
+
+        call,
+        dm,
+        "Lupakan sepenuhnya preferensi warna laporan saya dari memori yang tersimpan.",
+>   )
+
+apps/engine/tests/test_learning_live.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x1093a64b0>
+thread = {'agents': [{'access_generation': '1', 'agent_id': 'bcb7038b-7e4c-4d98-a5cc-4ae4f478afa8', 'config': {'avatar_url': 'h...sion': '1', ...}], 'context_generation': '1', 'dm_agent_id': 'bcb7038b-7e4c-4d98-a5cc-4ae4f478afa8', 'kind': 'dm', ...}
+text = 'Bahan laporan inventaris: 17 peti biru dan 26 peti hijau, total 43 peti. Buat empat file nyata DOCX, XLSX, PPTX dan P...okumen/slide/PDF, lalu publikasikan keempat file agar dapat diunduh. Ini tugas satu kali, selesaikan pada giliran ini.'
+
+    
+    def turn(call, thread, text):
+        response = call(send(thread, text))
+        assert "result" in response, response
+        started = time.monotonic()
+        run_id = response["result"]["run_id"]
+        while time.monotonic() - started < 360:
+            state = call(command("runtime.read", {"run_id": run_id}))["result"]
+            if state["status"] not in {"queued", "running"}:
+>               print(
+                    "LIVE_TURN",
+                    run_id,
+                    round(time.monotonic() - started, 3),
+                    state["status"],
+                    flush=True,
+                )
+E               AssertionError: {'agent_id': 'bcb7038b-7e4c-4d98-a5cc-4ae4f478afa8', 'config_revision': '1', 'context_generation': '1', 'continuation_required': False, ...}
+E               assert 'indeterminate' == 'succeeded'
+E                 
+E                 - succeeded
+E                 + indeterminate
+
+apps/engine/tests/test_learning_live.py:33: AssertionError
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_learning_live.py::test_real_model_office_pdf_create_revise_and_publish
+1 failed, 1 passed in 560.10s (0:09:20)

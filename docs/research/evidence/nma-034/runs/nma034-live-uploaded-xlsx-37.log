@@ -1,0 +1,6 @@
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+LIVE_TURN ebb2fe00-4fe7-5bdf-aec5-70939c9d215f 131.14 succeeded
+LIVE_SPREADSHEET_ROOT /tmp/nma-c79ip03y
+LIVE_SPREADSHEET_REVIEW_READY
+.
+1 passed in 260.52s (0:04:20)

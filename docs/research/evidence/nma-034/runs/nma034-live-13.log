@@ -1,0 +1,71 @@
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+FF
+=================================== FAILURES ===================================
+_______ test_real_model_memory_correction_forget_and_learned_skill_reuse _______
+
+runtime = (PosixPath('/tmp/nma-w6dnbw7l'), <http.server.ThreadingHTTPServer object at 0x109b66270>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '17', 'lifecycle': 'ready', ...})
+
+    def test_real_model_memory_correction_forget_and_learned_skill_reuse(runtime):
+        root, _, call, start, *_ = runtime
+>       agent, dm = configured(runtime, 'longitudinal-learning')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps/engine/tests/test_learning_live.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+apps/engine/tests/test_learning_live.py:43: in configured
+    agent = capability_agent(call, handle, tool_grants=list(capabilities['tool_grants']))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x109bee1f0>
+handle = 'longitudinal-learning'
+grants = {'tool_grants': ['terminal', 'files', 'code', 'coding', 'deliver']}
+
+    def capability_agent(call, handle, **grants):
+        payload = {
+            "display_name": handle,
+            "handle": handle,
+            "config": {"soul": "", "instructions": "", "model": "test", **grants},
+        }
+        response = call(command("agent.create", payload))
+>       assert "result" in response, response
+E       AssertionError: {'error': {'code': 'CAPABILITY_UNAVAILABLE', 'details': {'reason': 'immutable_native_image_required'}}}
+E       assert 'result' in {'error': {'code': 'CAPABILITY_UNAVAILABLE', 'details': {'reason': 'immutable_native_image_required'}}}
+
+apps/engine/tests/test_capabilities.py:24: AssertionError
+_____________ test_real_model_office_pdf_create_revise_and_publish _____________
+
+runtime = (PosixPath('/tmp/nma-w6dnbw7l'), <http.server.ThreadingHTTPServer object at 0x109b66270>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '17', 'lifecycle': 'ready', ...})
+
+    def test_real_model_office_pdf_create_revise_and_publish(runtime):
+        root, _, call, start, *_ = runtime
+>       agent, dm = configured(runtime, 'live-document-workflows')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps/engine/tests/test_learning_live.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+apps/engine/tests/test_learning_live.py:43: in configured
+    agent = capability_agent(call, handle, tool_grants=list(capabilities['tool_grants']))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x109bee1f0>
+handle = 'live-document-workflows'
+grants = {'tool_grants': ['terminal', 'files', 'code', 'coding', 'deliver']}
+
+    def capability_agent(call, handle, **grants):
+        payload = {
+            "display_name": handle,
+            "handle": handle,
+            "config": {"soul": "", "instructions": "", "model": "test", **grants},
+        }
+        response = call(command("agent.create", payload))
+>       assert "result" in response, response
+E       AssertionError: {'error': {'code': 'CAPABILITY_UNAVAILABLE', 'details': {'reason': 'immutable_native_image_required'}}}
+E       assert 'result' in {'error': {'code': 'CAPABILITY_UNAVAILABLE', 'details': {'reason': 'immutable_native_image_required'}}}
+
+apps/engine/tests/test_capabilities.py:24: AssertionError
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_learning_live.py::test_real_model_memory_correction_forget_and_learned_skill_reuse
+FAILED apps/engine/tests/test_learning_live.py::test_real_model_office_pdf_create_revise_and_publish
+2 failed in 4.83s

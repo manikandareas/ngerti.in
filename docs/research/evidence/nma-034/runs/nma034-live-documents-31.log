@@ -1,0 +1,56 @@
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+LIVE_TURN cc528879-4a47-570f-8869-fd9bcadb9baf 85.747 indeterminate
+F
+=================================== FAILURES ===================================
+_____________ test_real_model_office_pdf_create_revise_and_publish _____________
+
+runtime = (PosixPath('/tmp/nma-g0f1hlfc'), <http.server.ThreadingHTTPServer object at 0x109e36270>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '17', 'lifecycle': 'ready', ...})
+
+    def test_real_model_office_pdf_create_revise_and_publish(runtime):
+        root, _, call, start, *_ = runtime
+        agent, dm = configured(runtime, "live-document-workflows")
+        for extension, skill, script in (
+            ("docx", "docx", "docx_create.py"),
+            ("xlsx", "xlsx", "xlsx_create.py"),
+            ("pptx", "powerpoint", "pptx_create.py"),
+            ("pdf", "pdf", "pdf_create.py"),
+        ):
+>           turn(
+                call,
+                dm,
+                f"Bahan laporan inventaris dari saya: 17 peti biru dan 26 peti hijau, total 43 peti. Buat file {extension.upper()} nyata bernama inventory.{extension}. Gunakan skill native {skill}: temukan, pasang jika perlu, baca instruksi dan asetnya, simpan spesifikasi JSON dengan write_file, lalu jalankan skrip {script} dari skill_dir. Jangan mengganti workflow dengan skrip buatan sendiri. Validasi hasil dengan skrip skill. Jika formatnya XLSX, total harus memakai rumus SUM dan dihitung ulang. Jika DOCX/PPTX/PDF, render halaman/slide untuk diperiksa. Publikasikan file dengan workspace, path relatif terhadap /work seperti project/inventory.{extension}. Tugas satu kali ini selesai pada giliran ini.",
+            )
+
+apps/engine/tests/test_learning_live.py:180: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x109fa5900>
+thread = {'agents': [{'access_generation': '1', 'agent_id': 'edee3ed6-d493-4389-92ba-4c248bd2f817', 'config': {'avatar_url': 'h...sion': '1', ...}], 'context_generation': '1', 'dm_agent_id': 'edee3ed6-d493-4389-92ba-4c248bd2f817', 'kind': 'dm', ...}
+text = 'Bahan laporan inventaris dari saya: 17 peti biru dan 26 peti hijau, total 43 peti. Buat file DOCX nyata bernama inven...n workspace, path relatif terhadap /work seperti project/inventory.docx. Tugas satu kali ini selesai pada giliran ini.'
+
+    def turn(call, thread, text):
+        response = call(send(thread, text))
+        assert "result" in response, response
+        started = time.monotonic()
+        run_id = response["result"]["run_id"]
+        while time.monotonic() - started < 360:
+            state = call(command("runtime.read", {"run_id": run_id}))["result"]
+            if state["status"] not in {"queued", "running"}:
+                print(
+                    "LIVE_TURN",
+                    run_id,
+                    round(time.monotonic() - started, 3),
+                    state["status"],
+                    flush=True,
+                )
+>               assert state["status"] == "succeeded", state
+E               AssertionError: {'agent_id': 'edee3ed6-d493-4389-92ba-4c248bd2f817', 'config_revision': '1', 'context_generation': '1', 'continuation_required': False, ...}
+E               assert 'indeterminate' == 'succeeded'
+E                 
+E                 - succeeded
+E                 + indeterminate
+
+apps/engine/tests/test_learning_live.py:40: AssertionError
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_learning_live.py::test_real_model_office_pdf_create_revise_and_publish
+1 failed in 90.56s (0:01:30)

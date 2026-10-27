@@ -1,0 +1,26 @@
+[
+  {
+    "filename": "revised-inventory.docx",
+    "sha256": "99ac0e9223d26e2d61ea23d6c53939907b5d2ed984e7794bfed2a4dbeb34f78c",
+    "bytes": 40010,
+    "via": "authenticated production UI download"
+  },
+  {
+    "filename": "revised-inventory.xlsx",
+    "sha256": "51f21978be9be99b3172781b703a056e0ca9d5094228666ed86cbcf41b5648c2",
+    "bytes": 5695,
+    "via": "authenticated production UI download"
+  },
+  {
+    "filename": "revised-inventory.pptx",
+    "sha256": "c884429024cce2c876c0107ec16c7b7ed2fdf42a42f02ba93b00f69be778f67f",
+    "bytes": 28445,
+    "via": "authenticated production UI download"
+  },
+  {
+    "filename": "revised-inventory.pdf",
+    "sha256": "26cec7d74067b68400997cd30b5efb3d841d17efeea8ba825c3425eb44c53c7c",
+    "bytes": 4220,
+    "via": "authenticated production UI download"
+  }
+]

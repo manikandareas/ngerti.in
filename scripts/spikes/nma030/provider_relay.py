@@ -230,6 +230,12 @@ def prepare(vault, owner, partition, connection_id, provider, model):
                             payload = json.loads(raw).get("error", {})
                         except (ValueError, AttributeError):
                             payload = {}
+                        from ngertiin_engine.redaction import text as redact
+
+                        attempt["error_code"] = payload.get("code")
+                        attempt["error_message"] = redact(
+                            str(payload.get("message", ""))
+                        )[:1000]
                         return self.reply(
                             response.status_code,
                             json.dumps(

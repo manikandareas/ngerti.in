@@ -1,0 +1,18 @@
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+LEARNING_CASE memory 2.075 succeeded
+LEARNING_CASE memory 0.416 succeeded
+.LEARNING_CASE skill_manage 0.435 succeeded
+LEARNING_CASE skill_view 0.417 succeeded
+LEARNING_CASE skill_view 0.21 succeeded
+LEARNING_CASE skill_view 0.206 succeeded
+LEARNING_CASE skill_view 1.201 succeeded
+..LEARNING_CASE skill_install 1.492 succeeded
+LEARNING_CASE skill_view 0.205 succeeded
+.RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+.LEARNING_CASE memory 0.208 succeeded
+LEARNING_CASE skill_manage 1.365 succeeded
+LEARNING_MIGRATION_BACKUP_RESTORE_VERIFIED b2a6ae3b0e608776038a8c5f17aa7f56aeadb46c0704a56789fb455a1166e5f9
+.LEARNING_CASE skill_manage 1.348 succeeded
+.RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+.....
+12 passed in 68.75s (0:01:08)

@@ -1,0 +1,68 @@
+{
+  "task": "NMA-034",
+  "date": "2026-10-27",
+  "verdict": "Review: native mixed memory batches corrupt stable identity and provenance",
+  "implementation_modified": false,
+  "new_execution": {
+    "engine_feature_regression": {
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 117.27
+    },
+    "batch_identity_reproduction": {
+      "passed": 0,
+      "failed": 1,
+      "seconds": 5.09
+    },
+    "backend": {
+      "passed": 28
+    },
+    "repository_static": "passed",
+    "engine_ruff": "passed",
+    "tracked_diff_check": "passed"
+  },
+  "integrity": {
+    "integrity.json": {
+      "checked": 72,
+      "mismatches": []
+    },
+    "catalog-integrity.json": {
+      "entries": 210,
+      "classification": {
+        "excluded": 6,
+        "setup_required": 197,
+        "supported": 7
+      },
+      "assets_checked": 1156,
+      "mismatches": []
+    },
+    "runtime-integrity.json": {
+      "hermes_revision": "7489b22af47ce91b366dde81d5831ea422577498",
+      "source_hashes_checked": 153,
+      "mismatches": []
+    }
+  },
+  "not_repeated": [
+    "external model calls",
+    "actual Hindsight service",
+    "authenticated browser actions",
+    "full engine suite"
+  ],
+  "evidence_sha256": {
+    "engine-static.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "regression.log": "e88da5f47dac2d50ced7080708999eaac65d3c09df9506d1cae2c59a4fc009c1",
+    "runtime-integrity.json": "03e69334b2ef819e1355af25fc5f1b380dc666b7c4c39805a8f693f9119fc8b4",
+    "backend.log": "0806f11b42058429f4136a21f8bfa2c725f1f8ae5100288890a336719ed017e6",
+    "backend-rerun.log": "b138d2916791a375679993d3b391aa2767caf615dd8b1e36fdcc690baf6fc85a",
+    "diff-check.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "catalog-integrity.json": "b4e0e8f9ab0fed08e60cf110b466840eda4ec493125ffa9b47aa3cdb655370e3",
+    "test_memory_batch_identity.py": "06f3f69663c723717fd6c53e5fadf5662ce9975251c4efdb769ef605c01c2ad4",
+    "static.log": "4580c3aa7498c70663d76a5cee8f175db412495203df5303653e17ab68a35f24",
+    "batch-identity.log": "d1f48e61e8d5d359d97e32220be1eec684be6728559927d0d7ee06a701824861",
+    "source-snapshot.json": "044993bf56a31c54a1dd192e348303612bd4c4c53ce13f92608c9efd00077aee",
+    "integrity.json": "c08ec9698bcbf3ab3a83e8323ff619bb40091ca67b2215d50743fbd6063f2976"
+  },
+  "notion_status": "Review",
+  "notion_page": "https://app.notion.com/p/404abdd618738183a3b1f1f048428268"
+}

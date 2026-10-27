@@ -1,0 +1,649 @@
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+FFFFRUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+FFFRUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+FFFFFRUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+.....
+=================================== FAILURES ===================================
+__________ test_native_memory_correction_forget_revision_and_restart ___________
+
+runtime = (PosixPath('/tmp/nma-rnhs4rr_'), <http.server.ThreadingHTTPServer object at 0x10738f0e0>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '17', 'lifecycle': 'ready', ...})
+
+    def test_native_memory_correction_forget_revision_and_restart(runtime):
+        root, provider, call, start, *_ = runtime
+        agent = capability_agent(call, "remembering")
+        dm = conversation(call, agent)
+        for _ in range(2):
+>           result = invoke(
+                provider,
+                call,
+                dm,
+                "memory",
+                {
+                    "action": "add",
+                    "target": "user",
+                    "content": "The user prefers concise answers.",
+                },
+            )
+
+apps/engine/tests/test_learning.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+provider = <http.server.ThreadingHTTPServer object at 0x10738f0e0>
+call = <function runtime.<locals>.call at 0x107511850>
+thread = {'agents': [{'access_generation': '1', 'agent_id': 'cf4c71f6-4d93-46a0-a41d-08ab547c6449', 'config': {'avatar_url': 'h...sion': '1', ...}], 'context_generation': '1', 'dm_agent_id': 'cf4c71f6-4d93-46a0-a41d-08ab547c6449', 'kind': 'dm', ...}
+name = 'memory'
+arguments = {'action': 'add', 'target': 'user', 'content': 'The user prefers concise answers.'}
+
+    def invoke(provider, call, thread, name, arguments):
+        def script(body, text):
+            if body.get("messages", [])[-1]["role"] == "tool":
+                return {"role": "assistant", "content": "Learning operation observed."}
+            return {
+                "role": "assistant",
+                "content": None,
+                "tool_calls": [
+                    {
+                        "id": "native-learning",
+                        "type": "function",
+                        "function": {"name": name, "arguments": json.dumps(arguments)},
+                    }
+                ],
+            }
+    
+        provider.goal_script = script
+        before = len(provider.requests)
+        try:
+            receipt = call(send(thread, "NMA034 learning case"))
+            assert "result" in receipt, receipt
+            started = time.monotonic()
+            while True:
+                state = call(
+                    command("runtime.read", {"run_id": receipt["result"]["run_id"]})
+                )["result"]
+                if (
+                    state["status"] not in {"queued", "running"}
+                    or time.monotonic() - started > 180
+                ):
+                    break
+                time.sleep(0.2)
+            tools = [
+                m
+                for request in provider.requests[before:]
+                for m in request.get("messages", [])
+                if m["role"] == "tool"
+            ]
+>           assert tools, (state, provider.requests[before:])
+E           AssertionError: ({'agent_id': 'cf4c71f6-4d93-46a0-a41d-08ab547c6449', 'config_revision': '1', 'context_generation': '1', 'continuation_required': False, ...}, [])
+E           assert []
+
+apps/engine/tests/test_learning.py:75: AssertionError
+_______ test_native_skill_assets_learning_archive_restore_and_isolation ________
+
+runtime = (PosixPath('/tmp/nma-rnhs4rr_'), <http.server.ThreadingHTTPServer object at 0x10738f0e0>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '17', 'lifecycle': 'ready', ...})
+
+    def test_native_skill_assets_learning_archive_restore_and_isolation(runtime):
+        _, provider, call, start, *_ = runtime
+        agent, peer = (
+            capability_agent(call, "learner"),
+            capability_agent(call, "peer-learner"),
+        )
+        dm, peer_dm = conversation(call, agent), conversation(call, peer)
+        group = conversation(call, agent, "group", [peer])
+        content = "---\nname: verify-report\ndescription: Verify a generated report before publication\n---\n\nRead the source, calculate totals, and check the output.\n"
+>       result = invoke(
+            provider,
+            call,
+            dm,
+            "skill_manage",
+            {
+                "operations": [
+                    {"action": "create", "name": "verify-report", "content": content},
+                    {
+                        "action": "write_file",
+                        "name": "verify-report",
+                        "file_path": "scripts/check.py",
+                        "file_content": "print('VERIFIED_REPORT')\n",
+                    },
+                ]
+            },
+        )
+
+apps/engine/tests/test_learning.py:160: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+provider = <http.server.ThreadingHTTPServer object at 0x10738f0e0>
+call = <function runtime.<locals>.call at 0x107511850>
+thread = {'agents': [{'access_generation': '1', 'agent_id': '000b648a-ac4d-42dc-a816-01ddf13158d4', 'config': {'avatar_url': 'h...sion': '1', ...}], 'context_generation': '1', 'dm_agent_id': '000b648a-ac4d-42dc-a816-01ddf13158d4', 'kind': 'dm', ...}
+name = 'skill_manage'
+arguments = {'operations': [{'action': 'create', 'name': 'verify-report', 'content': '---\nname: verify-report\ndescription: Verif...'write_file', 'name': 'verify-report', 'file_path': 'scripts/check.py', 'file_content': "print('VERIFIED_REPORT')\n"}]}
+
+    def invoke(provider, call, thread, name, arguments):
+        def script(body, text):
+            if body.get("messages", [])[-1]["role"] == "tool":
+                return {"role": "assistant", "content": "Learning operation observed."}
+            return {
+                "role": "assistant",
+                "content": None,
+                "tool_calls": [
+                    {
+                        "id": "native-learning",
+                        "type": "function",
+                        "function": {"name": name, "arguments": json.dumps(arguments)},
+                    }
+                ],
+            }
+    
+        provider.goal_script = script
+        before = len(provider.requests)
+        try:
+            receipt = call(send(thread, "NMA034 learning case"))
+            assert "result" in receipt, receipt
+            started = time.monotonic()
+            while True:
+                state = call(
+                    command("runtime.read", {"run_id": receipt["result"]["run_id"]})
+                )["result"]
+                if (
+                    state["status"] not in {"queued", "running"}
+                    or time.monotonic() - started > 180
+                ):
+                    break
+                time.sleep(0.2)
+            tools = [
+                m
+                for request in provider.requests[before:]
+                for m in request.get("messages", [])
+                if m["role"] == "tool"
+            ]
+>           assert tools, (state, provider.requests[before:])
+E           AssertionError: ({'agent_id': '000b648a-ac4d-42dc-a816-01ddf13158d4', 'config_revision': '1', 'context_generation': '1', 'continuation_required': False, ...}, [])
+E           assert []
+
+apps/engine/tests/test_learning.py:75: AssertionError
+_________ test_native_recall_fts_read_time_window_and_private_boundary _________
+
+runtime = (PosixPath('/tmp/nma-rnhs4rr_'), <http.server.ThreadingHTTPServer object at 0x10738f0e0>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '17', 'lifecycle': 'ready', ...})
+
+    def test_native_recall_fts_read_time_window_and_private_boundary(runtime):
+        _, _, call, start, *_ = runtime
+        agent, peer = (
+            capability_agent(call, "recaller"),
+            capability_agent(call, "recall-peer"),
+        )
+        dm = conversation(call, agent)
+        group = conversation(call, agent, "group", [peer])
+>       settle(call, call(send(dm, "PRIVATE_RECALL_ZEBRA"))["result"]["run_id"])
+
+apps/engine/tests/test_learning.py:240: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x107511850>
+run_id = 'b43a9b50-4a4d-5f6d-8542-73392a22d9fd', expected = 'succeeded'
+
+    def settle(call, run_id, expected="succeeded"):
+        deadline = time.monotonic() + 45
+        while time.monotonic() < deadline:
+            reply = call(command("runtime.read", {"run_id": run_id}))
+            assert "result" in reply, reply
+            if reply["result"]["status"] not in {"queued", "running"}:
+>               assert reply["result"]["status"] == expected, reply
+E               AssertionError: {'result': {'agent_id': 'd240c0a3-4e67-44ba-ac97-93e8d60564b7', 'config_revision': '1', 'context_generation': '1', 'continuation_required': False, ...}}
+E               assert 'failed' == 'succeeded'
+E                 
+E                 - succeeded
+E                 + failed
+
+apps/engine/tests/test_runtime.py:379: AssertionError
+_____ test_pinned_catalog_install_missing_dependency_conflict_and_rollback _____
+
+runtime = (PosixPath('/tmp/nma-rnhs4rr_'), <http.server.ThreadingHTTPServer object at 0x10738f0e0>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '17', 'lifecycle': 'ready', ...})
+
+    def test_pinned_catalog_install_missing_dependency_conflict_and_rollback(runtime):
+        _, provider, call, *_ = runtime
+        agent = capability_agent(call, "catalog-learner")
+        dm = conversation(call, agent)
+        before = inventory(call, agent, dm)
+        assert len(before["catalog"]) == 210
+        entry = next(e for e in before["catalog"] if e["name"] == "docx")
+>       installed = invoke(provider, call, dm, "skill_install", {"catalog_id": entry["id"]})
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps/engine/tests/test_learning.py:296: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+provider = <http.server.ThreadingHTTPServer object at 0x10738f0e0>
+call = <function runtime.<locals>.call at 0x107511850>
+thread = {'agents': [{'access_generation': '1', 'agent_id': 'ec236e3a-d402-4aa3-8fcb-cba2763eb1ff', 'config': {'avatar_url': 'h...sion': '1', ...}], 'context_generation': '1', 'dm_agent_id': 'ec236e3a-d402-4aa3-8fcb-cba2763eb1ff', 'kind': 'dm', ...}
+name = 'skill_install', arguments = {'catalog_id': 'skills:productivity/docx'}
+
+    def invoke(provider, call, thread, name, arguments):
+        def script(body, text):
+            if body.get("messages", [])[-1]["role"] == "tool":
+                return {"role": "assistant", "content": "Learning operation observed."}
+            return {
+                "role": "assistant",
+                "content": None,
+                "tool_calls": [
+                    {
+                        "id": "native-learning",
+                        "type": "function",
+                        "function": {"name": name, "arguments": json.dumps(arguments)},
+                    }
+                ],
+            }
+    
+        provider.goal_script = script
+        before = len(provider.requests)
+        try:
+            receipt = call(send(thread, "NMA034 learning case"))
+            assert "result" in receipt, receipt
+            started = time.monotonic()
+            while True:
+                state = call(
+                    command("runtime.read", {"run_id": receipt["result"]["run_id"]})
+                )["result"]
+                if (
+                    state["status"] not in {"queued", "running"}
+                    or time.monotonic() - started > 180
+                ):
+                    break
+                time.sleep(0.2)
+            tools = [
+                m
+                for request in provider.requests[before:]
+                for m in request.get("messages", [])
+                if m["role"] == "tool"
+            ]
+>           assert tools, (state, provider.requests[before:])
+E           AssertionError: ({'agent_id': 'ec236e3a-d402-4aa3-8fcb-cba2763eb1ff', 'config_revision': '1', 'context_generation': '1', 'continuation_required': False, ...}, [])
+E           assert []
+
+apps/engine/tests/test_learning.py:75: AssertionError
+______ test_assigned_text_revision_is_current_and_complete_after_restart _______
+
+runtime = (PosixPath('/tmp/nma-fz802cig'), <http.server.ThreadingHTTPServer object at 0x1073b6e90>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '17', 'lifecycle': 'ready', ...})
+
+    def test_assigned_text_revision_is_current_and_complete_after_restart(runtime):
+        root, model, call, start, *_ = runtime
+        asset = root / 'assigned-reference.txt'
+        asset.write_text('Preserve this assigned reference verbatim.\n')
+        (root / 'capabilities.json').write_text(json.dumps({
+            'tool_grants': {'files': {'enabled': True, 'toolset': 'nma_workspace'}},
+            'skill_refs': {'research': {'enabled': True, 'content': 'ORIGINAL_ASSIGNED_METHOD'}},
+        }))
+        agent = capability_agent(call, 'assigned-research', skill_refs=['research'])
+        dm = conversation(call, agent)
+        first = inventory(call, agent, dm)['skills'][0]
+        assert first['origin'] == 'inline' and 'ORIGINAL_ASSIGNED_METHOD' in first['content']
+        body = command('learning.skill', {
+            'agent_id': agent['agent_id'], 'thread_id': dm['thread_id'],
+            'skill_id': first['skill_id'], 'action': 'correct',
+            'content': first['content'].replace('ORIGINAL_ASSIGNED_METHOD', 'CORRECTED_ASSIGNED_METHOD'),
+        })
+        body['expected_revision'] = '1'
+        assert 'result' in call(body)
+        start.current.kill()
+        start.current.wait(timeout=10)
+        start()
+        before = len(model.requests)
+>       settle(call, call(send(dm, 'Apply the assigned method'))['result']['run_id'])
+
+apps/engine/tests/test_learning_lifecycle.py:41: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x107456f00>
+run_id = '5e2cb8a2-9834-58fb-a400-4191a67eca7a', expected = 'succeeded'
+
+    def settle(call, run_id, expected="succeeded"):
+        deadline = time.monotonic() + 45
+        while time.monotonic() < deadline:
+            reply = call(command("runtime.read", {"run_id": run_id}))
+            assert "result" in reply, reply
+            if reply["result"]["status"] not in {"queued", "running"}:
+>               assert reply["result"]["status"] == expected, reply
+E               AssertionError: {'result': {'agent_id': 'dc4e36f8-1360-445b-b531-391f76f9aa86', 'config_revision': '1', 'context_generation': '1', 'continuation_required': False, ...}}
+E               assert 'failed' == 'succeeded'
+E                 
+E                 - succeeded
+E                 + failed
+
+apps/engine/tests/test_runtime.py:379: AssertionError
+_______ test_concurrent_correction_schema16_backfill_backup_and_restore ________
+
+runtime = (PosixPath('/tmp/nma-fz802cig'), <http.server.ThreadingHTTPServer object at 0x1073b6e90>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '17', 'lifecycle': 'ready', ...})
+tmp_path = PosixPath('/private/var/folders/j1/p1582yhj20z58phnf_zrzy7w0000gn/T/pytest-of-vitoandareasmanik/pytest-195/test_concurrent_correction_sch0')
+
+    def test_concurrent_correction_schema16_backfill_backup_and_restore(runtime, tmp_path):
+        root, model, call, start, *_ = runtime
+        agent = capability_agent(call, 'learning-migration')
+        dm = conversation(call, agent)
+>       assert invoke(model, call, dm, 'memory', {'action': 'add', 'target': 'user', 'content': 'The preferred report color is green.'})['success']
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps/engine/tests/test_learning_lifecycle.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+provider = <http.server.ThreadingHTTPServer object at 0x1073b6e90>
+call = <function runtime.<locals>.call at 0x107456f00>
+thread = {'agents': [{'access_generation': '1', 'agent_id': 'e16f1982-cba3-43f9-989c-5b8df08c2dfe', 'config': {'avatar_url': 'h...sion': '1', ...}], 'context_generation': '1', 'dm_agent_id': 'e16f1982-cba3-43f9-989c-5b8df08c2dfe', 'kind': 'dm', ...}
+name = 'memory'
+arguments = {'action': 'add', 'target': 'user', 'content': 'The preferred report color is green.'}
+
+    def invoke(provider, call, thread, name, arguments):
+        def script(body, text):
+            if body.get("messages", [])[-1]["role"] == "tool":
+                return {"role": "assistant", "content": "Learning operation observed."}
+            return {
+                "role": "assistant",
+                "content": None,
+                "tool_calls": [
+                    {
+                        "id": "native-learning",
+                        "type": "function",
+                        "function": {"name": name, "arguments": json.dumps(arguments)},
+                    }
+                ],
+            }
+    
+        provider.goal_script = script
+        before = len(provider.requests)
+        try:
+            receipt = call(send(thread, "NMA034 learning case"))
+            assert "result" in receipt, receipt
+            started = time.monotonic()
+            while True:
+                state = call(
+                    command("runtime.read", {"run_id": receipt["result"]["run_id"]})
+                )["result"]
+                if (
+                    state["status"] not in {"queued", "running"}
+                    or time.monotonic() - started > 180
+                ):
+                    break
+                time.sleep(0.2)
+            tools = [
+                m
+                for request in provider.requests[before:]
+                for m in request.get("messages", [])
+                if m["role"] == "tool"
+            ]
+>           assert tools, (state, provider.requests[before:])
+E           AssertionError: ({'agent_id': 'e16f1982-cba3-43f9-989c-5b8df08c2dfe', 'config_revision': '1', 'context_generation': '1', 'continuation_required': False, ...}, [])
+E           assert []
+
+apps/engine/tests/test_learning.py:75: AssertionError
+_______ test_native_curator_protects_active_work_and_archives_reversibly _______
+
+runtime = (PosixPath('/tmp/nma-fz802cig'), <http.server.ThreadingHTTPServer object at 0x1073b6e90>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '17', 'lifecycle': 'ready', ...})
+
+    def test_native_curator_protects_active_work_and_archives_reversibly(runtime):
+        root, model, call, start, *_ = runtime
+        agent = capability_agent(call, 'curated-methods')
+        dm = conversation(call, agent)
+>       assert invoke(model, call, dm, 'skill_manage', {'operations': [{'action': 'create', 'name': 'aging-method', 'content': '---\nname: aging-method\ndescription: A reusable method\n---\n\nCheck the evidence.'}]})['success']
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps/engine/tests/test_learning_lifecycle.py:102: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+provider = <http.server.ThreadingHTTPServer object at 0x1073b6e90>
+call = <function runtime.<locals>.call at 0x107456f00>
+thread = {'agents': [{'access_generation': '1', 'agent_id': 'e947a822-df33-4730-9fd1-b7d80a4b7a51', 'config': {'avatar_url': 'h...sion': '1', ...}], 'context_generation': '1', 'dm_agent_id': 'e947a822-df33-4730-9fd1-b7d80a4b7a51', 'kind': 'dm', ...}
+name = 'skill_manage'
+arguments = {'operations': [{'action': 'create', 'name': 'aging-method', 'content': '---\nname: aging-method\ndescription: A reusable method\n---\n\nCheck the evidence.'}]}
+
+    def invoke(provider, call, thread, name, arguments):
+        def script(body, text):
+            if body.get("messages", [])[-1]["role"] == "tool":
+                return {"role": "assistant", "content": "Learning operation observed."}
+            return {
+                "role": "assistant",
+                "content": None,
+                "tool_calls": [
+                    {
+                        "id": "native-learning",
+                        "type": "function",
+                        "function": {"name": name, "arguments": json.dumps(arguments)},
+                    }
+                ],
+            }
+    
+        provider.goal_script = script
+        before = len(provider.requests)
+        try:
+            receipt = call(send(thread, "NMA034 learning case"))
+            assert "result" in receipt, receipt
+            started = time.monotonic()
+            while True:
+                state = call(
+                    command("runtime.read", {"run_id": receipt["result"]["run_id"]})
+                )["result"]
+                if (
+                    state["status"] not in {"queued", "running"}
+                    or time.monotonic() - started > 180
+                ):
+                    break
+                time.sleep(0.2)
+            tools = [
+                m
+                for request in provider.requests[before:]
+                for m in request.get("messages", [])
+                if m["role"] == "tool"
+            ]
+>           assert tools, (state, provider.requests[before:])
+E           AssertionError: ({'agent_id': 'e947a822-df33-4730-9fd1-b7d80a4b7a51', 'config_revision': '1', 'context_generation': '1', 'continuation_required': False, ...}, [])
+E           assert []
+
+apps/engine/tests/test_learning.py:75: AssertionError
+__________ test_scoped_memory_transcript_transfer_revocation_restart ___________
+
+runtime = (PosixPath('/tmp/nma-ropje1bb'), <http.server.ThreadingHTTPServer object at 0x1073b6c10>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '17', 'lifecycle': 'ready', ...})
+
+    def test_scoped_memory_transcript_transfer_revocation_restart(runtime):
+        root, provider, call, start, *_ = runtime
+        a, b = create_agent(call, "context-a"), create_agent(call, "context-b")
+        from conversation_fixtures import legacy_dm
+    
+        dm, other_dm, b_dm = (
+            thread(call, "dm", [a]),
+            legacy_dm(root, call, a),
+            thread(call, "dm", [b]),
+        )
+        group, other_group = thread(call, "group", [a, b]), thread(call, "group", [a, b])
+        # Native profile-wide memory must not enter any product conversation.
+        memory_dir = root / "state/memories"
+        memory_dir.mkdir(exist_ok=True)
+        (memory_dir / "MEMORY.md").write_text("PROFILE_PRIVATE_MARKER")
+        (memory_dir / "USER.md").write_text("PROFILE_USER_MARKER")
+>       run(call, a, dm, "DM_TRANSCRIPT_SECRET")
+
+apps/engine/tests/test_context.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+apps/engine/tests/test_context.py:49: in run
+    result = settle(call, receipt["result"]["run_id"])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x1074550c0>
+run_id = '694985b0-acfa-5097-a364-cdb8a14d52d0', expected = 'succeeded'
+
+    def settle(call, run_id, expected="succeeded"):
+        deadline = time.monotonic() + 45
+        while time.monotonic() < deadline:
+            reply = call(command("runtime.read", {"run_id": run_id}))
+            assert "result" in reply, reply
+            if reply["result"]["status"] not in {"queued", "running"}:
+>               assert reply["result"]["status"] == expected, reply
+E               AssertionError: {'result': {'agent_id': '6dee3d55-c75c-4ac3-b2af-4e5de8c66d17', 'config_revision': '1', 'context_generation': '1', 'continuation_required': False, ...}}
+E               assert 'failed' == 'succeeded'
+E                 
+E                 - succeeded
+E                 + failed
+
+apps/engine/tests/test_runtime.py:379: AssertionError
+___________ test_provenance_cannot_self_grant_or_cross_source_scope ____________
+
+runtime = (PosixPath('/tmp/nma-ropje1bb'), <http.server.ThreadingHTTPServer object at 0x1073b6c10>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '17', 'lifecycle': 'ready', ...})
+
+    def test_provenance_cannot_self_grant_or_cross_source_scope(runtime):
+        _, _, call, *_ = runtime
+        a, b = create_agent(call, "source-a"), create_agent(call, "source-b")
+        dm, group = thread(call, "dm", [a]), thread(call, "group", [a, b])
+>       run(call, a, dm, "SOURCE_PRIVATE")
+
+apps/engine/tests/test_context.py:222: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+apps/engine/tests/test_context.py:49: in run
+    result = settle(call, receipt["result"]["run_id"])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x1074550c0>
+run_id = '3d418a71-dd68-5a64-a2e7-446413017437', expected = 'succeeded'
+
+    def settle(call, run_id, expected="succeeded"):
+        deadline = time.monotonic() + 45
+        while time.monotonic() < deadline:
+            reply = call(command("runtime.read", {"run_id": run_id}))
+            assert "result" in reply, reply
+            if reply["result"]["status"] not in {"queued", "running"}:
+>               assert reply["result"]["status"] == expected, reply
+E               AssertionError: {'result': {'agent_id': 'cef10b70-7c73-4779-8d48-96d647e47112', 'config_revision': '1', 'context_generation': '1', 'continuation_required': False, ...}}
+E               assert 'failed' == 'succeeded'
+E                 
+E                 - succeeded
+E                 + failed
+
+apps/engine/tests/test_runtime.py:379: AssertionError
+______________ test_context_revoke_fences_active_and_queued_work _______________
+
+runtime = (PosixPath('/tmp/nma-ropje1bb'), <http.server.ThreadingHTTPServer object at 0x1073b6c10>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '17', 'lifecycle': 'ready', ...})
+
+    def test_context_revoke_fences_active_and_queued_work(runtime):
+        _, provider, call, start, *_ = runtime
+        a, b = create_agent(call, "queued-a"), create_agent(call, "queued-b")
+        dm, group = thread(call, "dm", [a]), thread(call, "group", [a, b])
+>       run(call, a, dm, "Please share this selected fact.")
+
+apps/engine/tests/test_context.py:260: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+apps/engine/tests/test_context.py:49: in run
+    result = settle(call, receipt["result"]["run_id"])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x1074550c0>
+run_id = '787c7b8a-b6ed-555c-a378-e8cce0d8b583', expected = 'succeeded'
+
+    def settle(call, run_id, expected="succeeded"):
+        deadline = time.monotonic() + 45
+        while time.monotonic() < deadline:
+            reply = call(command("runtime.read", {"run_id": run_id}))
+            assert "result" in reply, reply
+            if reply["result"]["status"] not in {"queued", "running"}:
+>               assert reply["result"]["status"] == expected, reply
+E               AssertionError: {'result': {'agent_id': '08a569d1-c3a0-4a16-b876-0ab78d5d5f0e', 'config_revision': '1', 'context_generation': '1', 'continuation_required': False, ...}}
+E               assert 'failed' == 'succeeded'
+E                 
+E                 - succeeded
+E                 + failed
+
+apps/engine/tests/test_runtime.py:379: AssertionError
+_________ test_additive_schema_three_upgrade_preserves_native_history __________
+
+runtime = (PosixPath('/tmp/nma-ropje1bb'), <http.server.ThreadingHTTPServer object at 0x1073b6c10>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '17', 'lifecycle': 'ready', ...})
+
+    def test_additive_schema_three_upgrade_preserves_native_history(runtime):
+        root, _, call, start, *_ = runtime
+        a = create_agent(call, "upgrade-context")
+        dm = thread(call, "dm", [a])
+>       prior = run(call, a, dm, "PRESERVED_NATIVE_TRANSCRIPT")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps/engine/tests/test_context.py:324: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+apps/engine/tests/test_context.py:49: in run
+    result = settle(call, receipt["result"]["run_id"])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x1074550c0>
+run_id = '1ab8d0d1-3c52-5223-bc68-f79bdedb0cd6', expected = 'succeeded'
+
+    def settle(call, run_id, expected="succeeded"):
+        deadline = time.monotonic() + 45
+        while time.monotonic() < deadline:
+            reply = call(command("runtime.read", {"run_id": run_id}))
+            assert "result" in reply, reply
+            if reply["result"]["status"] not in {"queued", "running"}:
+>               assert reply["result"]["status"] == expected, reply
+E               AssertionError: {'result': {'agent_id': 'c67113ac-0b96-4b21-b167-78585835ecf9', 'config_revision': '1', 'context_generation': '1', 'continuation_required': False, ...}}
+E               assert 'failed' == 'succeeded'
+E                 
+E                 - succeeded
+E                 + failed
+
+apps/engine/tests/test_runtime.py:379: AssertionError
+_________ test_registered_manifest_binding_cannot_load_profile_memory __________
+
+runtime = (PosixPath('/tmp/nma-ropje1bb'), <http.server.ThreadingHTTPServer object at 0x1073b6c10>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '17', 'lifecycle': 'ready', ...})
+
+    def test_registered_manifest_binding_cannot_load_profile_memory(runtime):
+        root, provider, call, start, *_ = runtime
+        a, b = create_agent(call, "manifest-a"), create_agent(call, "manifest-b")
+        group = thread(call, "group", [a, b])
+        bindings_path = root / "bindings.json"
+        bindings = json.loads(bindings_path.read_text())
+        bindings.append(
+            {
+                **bindings[0],
+                "agent_id": a["agent_id"],
+                "thread_id": group["thread_id"],
+                "toolsets": [],
+            }
+        )
+        bindings_path.write_text(json.dumps(bindings))
+        start.current.kill()
+        start.current.wait(timeout=10)
+        start()
+        before = len(provider.requests)
+>       run(call, a, group, "MANIFEST_SCOPE_CHECK")
+
+apps/engine/tests/test_context.py:416: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+apps/engine/tests/test_context.py:49: in run
+    result = settle(call, receipt["result"]["run_id"])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x1074550c0>
+run_id = '40e71982-17f5-509d-87d6-e8a7df11568e', expected = 'succeeded'
+
+    def settle(call, run_id, expected="succeeded"):
+        deadline = time.monotonic() + 45
+        while time.monotonic() < deadline:
+            reply = call(command("runtime.read", {"run_id": run_id}))
+            assert "result" in reply, reply
+            if reply["result"]["status"] not in {"queued", "running"}:
+>               assert reply["result"]["status"] == expected, reply
+E               AssertionError: {'result': {'agent_id': '381c593e-4cb6-419b-9b91-8148c5428a46', 'config_revision': '1', 'context_generation': '1', 'continuation_required': False, ...}}
+E               assert 'failed' == 'succeeded'
+E                 
+E                 - succeeded
+E                 + failed
+
+apps/engine/tests/test_runtime.py:379: AssertionError
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_learning.py::test_native_memory_correction_forget_revision_and_restart
+FAILED apps/engine/tests/test_learning.py::test_native_skill_assets_learning_archive_restore_and_isolation
+FAILED apps/engine/tests/test_learning.py::test_native_recall_fts_read_time_window_and_private_boundary
+FAILED apps/engine/tests/test_learning.py::test_pinned_catalog_install_missing_dependency_conflict_and_rollback
+FAILED apps/engine/tests/test_learning_lifecycle.py::test_assigned_text_revision_is_current_and_complete_after_restart
+FAILED apps/engine/tests/test_learning_lifecycle.py::test_concurrent_correction_schema16_backfill_backup_and_restore
+FAILED apps/engine/tests/test_learning_lifecycle.py::test_native_curator_protects_active_work_and_archives_reversibly
+FAILED apps/engine/tests/test_context.py::test_scoped_memory_transcript_transfer_revocation_restart
+FAILED apps/engine/tests/test_context.py::test_provenance_cannot_self_grant_or_cross_source_scope
+FAILED apps/engine/tests/test_context.py::test_context_revoke_fences_active_and_queued_work
+FAILED apps/engine/tests/test_context.py::test_additive_schema_three_upgrade_preserves_native_history
+FAILED apps/engine/tests/test_context.py::test_registered_manifest_binding_cannot_load_profile_memory
+12 failed, 5 passed in 46.94s

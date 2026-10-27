@@ -1,0 +1,47 @@
+{
+  "task": "NMA-034",
+  "date": "2026-10-27",
+  "status": "Done for local feature acceptance",
+  "fixed_finding": "Native mixed memory batches preserve original identities and provenance using native operation receipts",
+  "head": "92486a10173d78b8b8057145b2553fd2ed0bb058",
+  "new_execution": {
+    "original_reproduction": {
+      "passed": 1,
+      "seconds": 7.17
+    },
+    "memory_learning_context_lifecycle": {
+      "passed": 22,
+      "skipped": 0,
+      "seconds": 107.15
+    },
+    "supplemental_user_memory": {
+      "passed": 1,
+      "skipped": 0,
+      "seconds": 7.36
+    },
+    "repository_checks": "passed",
+    "engine_ruff": "passed"
+  },
+  "retained_failed_attempt": "user-memory.log: test oracle expected trailing whitespace that native add trims; corrected assertion passes",
+  "historical_evidence_integrity": {
+    "checked": 72,
+    "mismatches": []
+  },
+  "source_sha256": {
+    "apps/engine/src/ngertiin_engine/learning_store.py": "4a542131e1632fbfd63c78aa805bde82e34c92c5008c2f2d2d183bb10c29b0c6",
+    "apps/engine/src/ngertiin_engine/runtime-pin.json": "89ac0c0850b798f5e4af69453b7cdea5c61d77e0fe5230324962def072414062",
+    "apps/engine/tests/test_memory_batch_identity.py": "3c9f4a1634e4ed1322d7e064e8a64c7fe08ac72291f63335ba10c0aedd570f11"
+  },
+  "new_evidence_sha256": {
+    "engine-static.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "regression.log": "95003c281b28251f12d5f898679afe5f7b23a12549214207dba086578ecaa499",
+    "user-memory-final.log": "0ea46564572be532062a9b31f017465b07d2b0afdb0c951f4214f3479a8c5681",
+    "original-reproduction.log": "f3b15deae59aadd376d704d52e54b01ffdb8a1e2031a0844a4a781f0d6674b9d",
+    "user-memory.log": "e2ac5e1d776e9e2326142e85c6c78d6809d8003934982e83a6661d794ae71107",
+    "static.log": "14e4ede72b8c74117f27ef7ff02afb691c3b6d58186a61978d76305339e2cfbb"
+  },
+  "production_rollout": false,
+  "release_slo_passed": false,
+  "external_model_provider_browser_rerun": false,
+  "notion_status_readback": "Done"
+}

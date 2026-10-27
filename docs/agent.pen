@@ -54195,6 +54195,4068 @@
           ]
         }
       ]
+    },
+    {
+      "type": "frame",
+      "id": "Xhoqr",
+      "x": 7020,
+      "y": 4901,
+      "name": "Ngertiin / Settings / Connections / light",
+      "theme": {
+        "gumloop-mode": "light",
+        "mode": "light"
+      },
+      "clip": true,
+      "width": 1440,
+      "height": 1000,
+      "fill": {
+        "type": "gradient",
+        "gradientType": "linear",
+        "enabled": true,
+        "rotation": 155,
+        "size": {
+          "height": 1
+        },
+        "colors": [
+          {
+            "color": "#EDF1F7E8",
+            "position": 0
+          },
+          {
+            "color": "#F3F2F0E8",
+            "position": 0.48
+          },
+          {
+            "color": "#F4EDE9E8",
+            "position": 1
+          }
+        ]
+      },
+      "cornerRadius": 12,
+      "stroke": "#FFFFFF80",
+      "strokeWidth": 1,
+      "effect": {
+        "type": "background_blur",
+        "radius": 28
+      },
+      "padding": [
+        10,
+        10,
+        10,
+        0
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "VMrUN",
+          "name": "Integrated sidebar",
+          "width": 292,
+          "height": "fill_container",
+          "fill": "#FFFFFF00",
+          "effect": {
+            "type": "background_blur",
+            "radius": 24
+          },
+          "layout": "vertical",
+          "children": [
+            {
+              "type": "frame",
+              "id": "OZLbp",
+              "name": "Settings navigation",
+              "width": "fill_container",
+              "height": "fill_container",
+              "fill": "#FFFFFF00",
+              "stroke": "$ng-app/border",
+              "layout": "vertical",
+              "gap": 24,
+              "padding": [
+                32,
+                24,
+                28,
+                24
+              ],
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "uwKbR",
+                  "name": "Settings heading with back navigation",
+                  "width": "fill_container",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "NAa90",
+                      "name": "Back to conversation button",
+                      "width": 40,
+                      "height": 40,
+                      "fill": "#FFFFFFB3",
+                      "cornerRadius": 999,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "zniqh",
+                          "name": "Back arrow",
+                          "width": 22,
+                          "height": 22,
+                          "icon": "arrow-left",
+                          "library": "lucide",
+                          "fill": "#24272D"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "kMw6N",
+                      "name": "Settings title",
+                      "fill": "#24272D",
+                      "content": "Settings",
+                      "lineHeight": 1.25,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 22,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "s32IM",
+                  "name": "Settings sections",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 6,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "GXIFH",
+                      "name": "General navigation",
+                      "width": "fill_container",
+                      "height": 46,
+                      "cornerRadius": 10,
+                      "gap": 12,
+                      "padding": [
+                        0,
+                        12
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "vIZuO",
+                          "name": "General icon",
+                          "width": 20,
+                          "height": 20,
+                          "icon": "settings",
+                          "library": "lucide",
+                          "fill": "#484E58"
+                        },
+                        {
+                          "type": "text",
+                          "id": "pQUdw",
+                          "name": "General label",
+                          "fill": "#484E58",
+                          "content": "General",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 16,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "lY17m",
+                      "name": "AI providers navigation",
+                      "width": "fill_container",
+                      "height": 46,
+                      "fill": "#FFFFFF00",
+                      "cornerRadius": 10,
+                      "gap": 12,
+                      "padding": [
+                        0,
+                        12
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "Th3Xc",
+                          "name": "AI providers icon",
+                          "width": 20,
+                          "height": 20,
+                          "icon": "sparkles",
+                          "library": "lucide",
+                          "fill": "$ng-app/muted-foreground"
+                        },
+                        {
+                          "type": "text",
+                          "id": "ANt7A",
+                          "name": "AI providers label",
+                          "fill": "$ng-app/muted-foreground",
+                          "content": "AI providers",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 16,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "kESic",
+                      "name": "Agents navigation",
+                      "width": "fill_container",
+                      "height": 46,
+                      "cornerRadius": 10,
+                      "gap": 12,
+                      "padding": [
+                        0,
+                        12
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "x8JeT",
+                          "name": "Agents icon",
+                          "width": 20,
+                          "height": 20,
+                          "icon": "bot",
+                          "library": "lucide",
+                          "fill": "#484E58"
+                        },
+                        {
+                          "type": "text",
+                          "id": "z2p0Gf",
+                          "name": "Agents label",
+                          "fill": "#484E58",
+                          "content": "Agents",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 16,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "ly2YE",
+                      "name": "Chat navigation",
+                      "width": "fill_container",
+                      "height": 46,
+                      "cornerRadius": 10,
+                      "gap": 12,
+                      "padding": [
+                        0,
+                        12
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "A1NGFj",
+                          "name": "Chat icon",
+                          "width": 20,
+                          "height": 20,
+                          "icon": "message-square",
+                          "library": "lucide",
+                          "fill": "#484E58"
+                        },
+                        {
+                          "type": "text",
+                          "id": "NlXyT",
+                          "name": "Chat label",
+                          "fill": "#484E58",
+                          "content": "Chat",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 16,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "sEfOT",
+                      "name": "Connections navigation",
+                      "width": "fill_container",
+                      "height": 46,
+                      "fill": "#FFFFFFBD",
+                      "cornerRadius": 10,
+                      "gap": 12,
+                      "padding": [
+                        0,
+                        12
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "f3Pypw",
+                          "name": "Connections icon",
+                          "width": 20,
+                          "height": 20,
+                          "icon": "plug",
+                          "library": "lucide",
+                          "fill": "$ng-app/foreground"
+                        },
+                        {
+                          "type": "text",
+                          "id": "l2wJS",
+                          "name": "Connections label",
+                          "fill": "$ng-app/foreground",
+                          "content": "Connections",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 16,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "mWG7g",
+                      "name": "Vault navigation",
+                      "width": "fill_container",
+                      "height": 46,
+                      "cornerRadius": 10,
+                      "gap": 12,
+                      "padding": [
+                        0,
+                        12
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "oBof5",
+                          "name": "Vault icon",
+                          "width": 20,
+                          "height": 20,
+                          "icon": "key-round",
+                          "library": "lucide",
+                          "fill": "#484E58"
+                        },
+                        {
+                          "type": "text",
+                          "id": "JgbGm",
+                          "name": "Vault label",
+                          "fill": "#484E58",
+                          "content": "Vault",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 16,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Ejtl6",
+                      "name": "Account navigation",
+                      "width": "fill_container",
+                      "height": 46,
+                      "cornerRadius": 10,
+                      "gap": 12,
+                      "padding": [
+                        0,
+                        12
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "aDGt7",
+                          "name": "Account icon",
+                          "width": 20,
+                          "height": 20,
+                          "icon": "user-round",
+                          "library": "lucide",
+                          "fill": "#484E58"
+                        },
+                        {
+                          "type": "text",
+                          "id": "slcL3",
+                          "name": "Account label",
+                          "fill": "#484E58",
+                          "content": "Account",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 16,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "g6eDUS",
+                      "name": "Usage & billing navigation",
+                      "width": "fill_container",
+                      "height": 46,
+                      "cornerRadius": 10,
+                      "gap": 12,
+                      "padding": [
+                        0,
+                        12
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "w4drU",
+                          "name": "Usage & billing icon",
+                          "width": 20,
+                          "height": 20,
+                          "icon": "chart-no-axes-combined",
+                          "library": "lucide",
+                          "fill": "#484E58"
+                        },
+                        {
+                          "type": "text",
+                          "id": "u0Uzm",
+                          "name": "Usage & billing label",
+                          "fill": "#484E58",
+                          "content": "Usage & billing",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 16,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Jg7n2",
+                  "name": "Navigation breathing room",
+                  "width": 1,
+                  "height": "fill_container"
+                },
+                {
+                  "type": "frame",
+                  "id": "Tf5Xo",
+                  "name": "Signed-in account",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 4,
+                  "padding": [
+                    16,
+                    4,
+                    0,
+                    4
+                  ],
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "SuAZv",
+                      "name": "User profile",
+                      "width": "fill_container",
+                      "gap": 10,
+                      "padding": [
+                        16,
+                        0,
+                        0,
+                        0
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "E8Evt5",
+                          "name": "Armand Segall / DiceBear avatar",
+                          "width": 32,
+                          "height": 32,
+                          "fill": {
+                            "type": "image",
+                            "enabled": true,
+                            "url": "assets/critters/armand-segall.png",
+                            "mode": "contain"
+                          },
+                          "cornerRadius": 12
+                        },
+                        {
+                          "type": "text",
+                          "id": "hLmSt",
+                          "name": "Armand Segall",
+                          "fill": "#484E58",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Armand Segall",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 16,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "icon",
+                          "id": "Z6I1iU",
+                          "name": "chevrons-up-down",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "chevrons-up-down",
+                          "library": "lucide",
+                          "fill": "#484E58"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "KX5eo",
+          "name": "Inset main surface",
+          "clip": true,
+          "width": "fill_container",
+          "height": "fill_container",
+          "fill": "$ng-app/background",
+          "cornerRadius": 16,
+          "stroke": "#25262A0A",
+          "strokeWidth": 1,
+          "children": [
+            {
+              "type": "frame",
+              "id": "HtdjO",
+              "name": "Connections directory",
+              "width": "fill_container",
+              "height": "fill_container",
+              "layout": "vertical",
+              "gap": 24,
+              "padding": [
+                42,
+                48
+              ],
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "dU6Oz",
+                  "name": "Connections heading and toolbar",
+                  "width": "fill_container",
+                  "gap": 20,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "cWVkX",
+                      "name": "Page title",
+                      "fill": "$ng-app/foreground",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Connections",
+                      "lineHeight": 1.4,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 28,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "bHFGr",
+                      "name": "Search connections",
+                      "width": 240,
+                      "height": 38,
+                      "cornerRadius": 999,
+                      "stroke": "$ng-app/border",
+                      "strokeWidth": 1,
+                      "gap": 8,
+                      "padding": [
+                        0,
+                        12
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "SD8k8",
+                          "name": "search icon",
+                          "width": 16,
+                          "height": 16,
+                          "icon": "search",
+                          "library": "lucide",
+                          "fill": "$ng-app/muted-foreground"
+                        },
+                        {
+                          "type": "text",
+                          "id": "gXFBg",
+                          "name": "Search placeholder",
+                          "fill": "$ng-app/muted-foreground",
+                          "content": "Search connections",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "icon",
+                      "id": "cCFbe",
+                      "name": "refresh-cw icon",
+                      "width": 18,
+                      "height": 18,
+                      "icon": "refresh-cw",
+                      "library": "lucide",
+                      "fill": "$ng-app/muted-foreground"
+                    },
+                    {
+                      "type": "icon",
+                      "id": "Mwq1h",
+                      "name": "settings icon",
+                      "width": 18,
+                      "height": 18,
+                      "icon": "settings",
+                      "library": "lucide",
+                      "fill": "$ng-app/muted-foreground"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "CS64D",
+                      "name": "Add connection",
+                      "fill": "$ng-app/primary",
+                      "cornerRadius": 999,
+                      "gap": 6,
+                      "padding": [
+                        9,
+                        14
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "yfTSB",
+                          "name": "Add label",
+                          "fill": "$ng-app/primary-foreground",
+                          "content": "Add",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "icon",
+                          "id": "N7IB2",
+                          "name": "Add dropdown",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "chevron-down",
+                          "library": "lucide",
+                          "fill": "$ng-app/primary-foreground"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "sJbGi",
+                  "name": "Page description",
+                  "fill": "$ng-app/muted-foreground",
+                  "content": "Connect your tools to let Ngertiin work across your apps.",
+                  "lineHeight": 1.4,
+                  "fontFamily": "$gumloop/font-ui",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "mnWZJ",
+                  "name": "Connection tabs",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "W2OYAB",
+                      "name": "Public tab",
+                      "fill": "$ng-app/muted",
+                      "cornerRadius": 999,
+                      "padding": [
+                        10,
+                        18
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "N6Ocab",
+                          "name": "Public label",
+                          "fill": "$ng-app/foreground",
+                          "content": "Public",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "S4m5og",
+                      "name": "Personal tab",
+                      "cornerRadius": 999,
+                      "padding": [
+                        10,
+                        18
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "jwO8t",
+                          "name": "Personal label",
+                          "fill": "$ng-app/muted-foreground",
+                          "content": "Personal",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "wOdtq",
+                  "name": "Popular section",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 14,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "kHAid",
+                      "name": "Popular heading",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "EZ9hD",
+                          "name": "Popular title",
+                          "fill": "$ng-app/foreground",
+                          "content": "Popular",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 17,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "icon",
+                          "id": "IQc2y",
+                          "name": "chevron-right icon",
+                          "width": 15,
+                          "height": 15,
+                          "icon": "chevron-right",
+                          "library": "lucide",
+                          "fill": "$ng-app/muted-foreground"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "t2FY7",
+                      "name": "Popular row 1",
+                      "width": "fill_container",
+                      "gap": 40,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "G42cc",
+                          "name": "Gmail connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "LrySQ",
+                              "name": "Gmail official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/gmail.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "wIbOZ",
+                              "name": "Gmail details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "N36Jfi",
+                                  "name": "Gmail name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "Gmail",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "iXgGJ",
+                                  "name": "Gmail description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Read and manage Gmail",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "bDkwm",
+                              "name": "plus icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "plus",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "bTbuc",
+                          "name": "Google Drive connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "g8ec48",
+                              "name": "Google Drive official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/drive.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "TUFMS",
+                              "name": "Google Drive details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "E9sbB",
+                                  "name": "Google Drive name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "Google Drive",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "eJqml",
+                                  "name": "Google Drive description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Drive, Docs, Sheets or Slides",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "W6ltAe",
+                              "name": "ellipsis icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "ellipsis",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "d9Ma0N",
+                      "name": "Popular row 2",
+                      "width": "fill_container",
+                      "gap": 40,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "xWbt2",
+                          "name": "Google Calendar connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "S57OF",
+                              "name": "Google Calendar official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/calendar.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "qW5fG",
+                              "name": "Google Calendar details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "jDJv1",
+                                  "name": "Google Calendar name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "Google Calendar",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "i2xcJy",
+                                  "name": "Google Calendar description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Manage Google Calendar events",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "f7Lqh",
+                              "name": "plus icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "plus",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "VPduB",
+                          "name": "GitHub connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "f0TeMg",
+                              "name": "GitHub official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/github.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "U6Os0",
+                              "name": "GitHub details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "p7nAel",
+                                  "name": "GitHub name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "GitHub",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "D4PFF4",
+                                  "name": "GitHub description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Triage PRs, issues, CI, and publish flows",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "R9IRFD",
+                              "name": "ellipsis icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "ellipsis",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "z4Jjq",
+                      "name": "Popular row 3",
+                      "width": "fill_container",
+                      "gap": 40,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "C8X9tI",
+                          "name": "Slack connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "HExJd",
+                              "name": "Slack official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/slack.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "qEBjt",
+                              "name": "Slack details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "MNu5y",
+                                  "name": "Slack name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "Slack",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "DdNpH",
+                                  "name": "Slack description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Read and manage Slack",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "Z0ADv",
+                              "name": "plus icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "plus",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "YMuIl",
+                          "name": "Outlook Email connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "sFSDu",
+                              "name": "Outlook Email official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/outlook.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "ulVci",
+                              "name": "Outlook Email details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "qMJgm",
+                                  "name": "Outlook Email name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "Outlook Email",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "kX73Y",
+                                  "name": "Outlook Email description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Triage Outlook inboxes",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "MKiD1",
+                              "name": "plus icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "plus",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "CQhYS",
+                  "name": "New & Noteworthy section",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 14,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "H7F8IU",
+                      "name": "New & Noteworthy heading",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "Paexj",
+                          "name": "New & Noteworthy title",
+                          "fill": "$ng-app/foreground",
+                          "content": "New & Noteworthy",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 17,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "icon",
+                          "id": "nbuc7",
+                          "name": "chevron-right icon",
+                          "width": 15,
+                          "height": 15,
+                          "icon": "chevron-right",
+                          "library": "lucide",
+                          "fill": "$ng-app/muted-foreground"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "moUwB",
+                      "name": "New & Noteworthy row 1",
+                      "width": "fill_container",
+                      "gap": 40,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "ZKAtu",
+                          "name": "Hevy connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "T065s",
+                              "name": "Hevy official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/hevy.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "PEuJG",
+                              "name": "Hevy details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "VF0Mz",
+                                  "name": "Hevy name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "Hevy",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "Wo2f8",
+                                  "name": "Hevy description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Gym workout plans and insights",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "MHC3Q",
+                              "name": "plus icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "plus",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "CSwfQ",
+                          "name": "Tripsy connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "l17Yk8",
+                              "name": "Tripsy official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/tripsy.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "TGjC9",
+                              "name": "Tripsy details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "nkcYc",
+                                  "name": "Tripsy name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "Tripsy",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "kkX0K",
+                                  "name": "Tripsy description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Plan and organize your trips",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "clDs2",
+                              "name": "plus icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "plus",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "w9DDY9",
+                      "name": "New & Noteworthy row 2",
+                      "width": "fill_container",
+                      "gap": 40,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "u0TyU",
+                          "name": "Sonos connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "W9Ka7",
+                              "name": "Sonos official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/sonos.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "G3gT8",
+                              "name": "Sonos details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "m76gC",
+                                  "name": "Sonos name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "Sonos",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "lgHwI",
+                                  "name": "Sonos description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Control your Sonos system",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "USBQG",
+                              "name": "plus icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "plus",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "XMRBC",
+                          "name": "Canva connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "n6uZR",
+                              "name": "Canva official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/canva.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "Rr5Ck",
+                              "name": "Canva details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "UqAy7",
+                                  "name": "Canva name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "Canva",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "S5ACEi",
+                                  "name": "Canva description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Create, review, edit designs",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "k28lw",
+                              "name": "plus icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "plus",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "DArap",
+                      "name": "New & Noteworthy row 3",
+                      "width": "fill_container",
+                      "gap": 40,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "GyRhI",
+                          "name": "COROS connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "P9V06T",
+                              "name": "COROS official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/coros.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "sc4MR",
+                              "name": "COROS details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "g5HhB",
+                                  "name": "COROS name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "COROS",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "QxBS7",
+                                  "name": "COROS description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Training and health insights",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "EqQpN",
+                              "name": "plus icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "plus",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "G9auoh",
+                          "name": "Adobe connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "gcsaE",
+                              "name": "Adobe official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/adobe.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "v3TuA",
+                              "name": "Adobe details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "PemC1",
+                                  "name": "Adobe name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "Adobe",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "i3wkJt",
+                                  "name": "Adobe description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Design, combine, and edit",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "Modyh",
+                              "name": "plus icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "plus",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "w5QpYB",
+                  "name": "Small Business section",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 14,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "ztwXx",
+                      "name": "Small Business heading",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "y8HL7R",
+                          "name": "Small Business title",
+                          "fill": "$ng-app/foreground",
+                          "content": "Small Business",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 17,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "icon",
+                          "id": "ibKCP",
+                          "name": "chevron-right icon",
+                          "width": 15,
+                          "height": 15,
+                          "icon": "chevron-right",
+                          "library": "lucide",
+                          "fill": "$ng-app/muted-foreground"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "oqUkm",
+                      "name": "Small Business row 1",
+                      "width": "fill_container",
+                      "gap": 40,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "cLjwC",
+                          "name": "Dropbox connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "gCmYB",
+                              "name": "Dropbox official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/dropbox.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "q6Ghet",
+                              "name": "Dropbox details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "qspFF",
+                                  "name": "Dropbox name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "Dropbox",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "Vl5oX",
+                                  "name": "Dropbox description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Find, create, and take action",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "fw5rE",
+                              "name": "plus icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "plus",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "Al0Dr",
+                          "name": "HubSpot connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "c5cxo",
+                              "name": "HubSpot official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/hubspot.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "I3t6b",
+                              "name": "HubSpot details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "nGVgs",
+                                  "name": "HubSpot name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "HubSpot",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "Ror3h",
+                                  "name": "HubSpot description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Insights to action in HubSpot",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "mshDw",
+                              "name": "plus icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "plus",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "u0ucv",
+                      "name": "Small Business row 2",
+                      "width": "fill_container",
+                      "gap": 40,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "sSqBY",
+                          "name": "Stripe connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "d6Zji",
+                              "name": "Stripe official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/stripe.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "k0MAE",
+                              "name": "Stripe details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "xSN9d",
+                                  "name": "Stripe name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "Stripe",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "p8vWbG",
+                                  "name": "Stripe description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Accept payments. Grow revenue.",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "TNVNC",
+                              "name": "plus icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "plus",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "s8vvJ",
+                          "name": "Canva connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "hyp9f",
+                              "name": "Canva official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/canva.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "evabl",
+                              "name": "Canva details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "g80ph",
+                                  "name": "Canva name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "Canva",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "zmCF8",
+                                  "name": "Canva description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Create, review, edit designs",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "FFONJ",
+                              "name": "plus icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "plus",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "Bq1Ov",
+      "x": 8560,
+      "y": 4901,
+      "name": "Ngertiin / Settings / Connections / dark",
+      "theme": {
+        "gumloop-mode": "dark",
+        "mode": "dark"
+      },
+      "clip": true,
+      "width": 1440,
+      "height": 1000,
+      "fill": {
+        "type": "gradient",
+        "gradientType": "linear",
+        "enabled": true,
+        "rotation": 155,
+        "size": {
+          "height": 1
+        },
+        "colors": [
+          {
+            "color": "#252A32EB",
+            "position": 0
+          },
+          {
+            "color": "#252629EB",
+            "position": 0.48
+          },
+          {
+            "color": "#2C282AEB",
+            "position": 1
+          }
+        ]
+      },
+      "cornerRadius": 12,
+      "stroke": "#FFFFFF12",
+      "strokeWidth": 1,
+      "effect": {
+        "type": "background_blur",
+        "radius": 28
+      },
+      "padding": [
+        10,
+        10,
+        10,
+        0
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "e3MRBz",
+          "name": "Integrated sidebar",
+          "width": 292,
+          "height": "fill_container",
+          "fill": "#FFFFFF00",
+          "effect": {
+            "type": "background_blur",
+            "radius": 24
+          },
+          "layout": "vertical",
+          "children": [
+            {
+              "type": "frame",
+              "id": "eiyOd",
+              "name": "Settings navigation",
+              "width": "fill_container",
+              "height": "fill_container",
+              "fill": "#FFFFFF00",
+              "stroke": "$ng-app/border",
+              "layout": "vertical",
+              "gap": 24,
+              "padding": [
+                32,
+                24,
+                28,
+                24
+              ],
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "PiLI1",
+                  "name": "Settings heading with back navigation",
+                  "width": "fill_container",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "Rtoc2",
+                      "name": "Back to conversation button",
+                      "width": 40,
+                      "height": 40,
+                      "fill": "#FFFFFF12",
+                      "cornerRadius": 999,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "C1uitr",
+                          "name": "Back arrow",
+                          "width": 22,
+                          "height": 22,
+                          "icon": "arrow-left",
+                          "library": "lucide",
+                          "fill": "#F0F1F4"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "DgWLV",
+                      "name": "Settings title",
+                      "fill": "#F0F1F4",
+                      "content": "Settings",
+                      "lineHeight": 1.25,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 22,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "JQhNy",
+                  "name": "Settings sections",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 6,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "gsuo5",
+                      "name": "General navigation",
+                      "width": "fill_container",
+                      "height": 46,
+                      "cornerRadius": 10,
+                      "gap": 12,
+                      "padding": [
+                        0,
+                        12
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "x2fIR",
+                          "name": "General icon",
+                          "width": 20,
+                          "height": 20,
+                          "icon": "settings",
+                          "library": "lucide",
+                          "fill": "#CDD0D7"
+                        },
+                        {
+                          "type": "text",
+                          "id": "txFc5",
+                          "name": "General label",
+                          "fill": "#CDD0D7",
+                          "content": "General",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 16,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "i7KLu",
+                      "name": "AI providers navigation",
+                      "width": "fill_container",
+                      "height": 46,
+                      "fill": "#FFFFFF00",
+                      "cornerRadius": 10,
+                      "gap": 12,
+                      "padding": [
+                        0,
+                        12
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "j96Bgs",
+                          "name": "AI providers icon",
+                          "width": 20,
+                          "height": 20,
+                          "icon": "sparkles",
+                          "library": "lucide",
+                          "fill": "$ng-app/muted-foreground"
+                        },
+                        {
+                          "type": "text",
+                          "id": "mtsFZ",
+                          "name": "AI providers label",
+                          "fill": "$ng-app/muted-foreground",
+                          "content": "AI providers",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 16,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "CjGWe",
+                      "name": "Agents navigation",
+                      "width": "fill_container",
+                      "height": 46,
+                      "cornerRadius": 10,
+                      "gap": 12,
+                      "padding": [
+                        0,
+                        12
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "QU6Gj",
+                          "name": "Agents icon",
+                          "width": 20,
+                          "height": 20,
+                          "icon": "bot",
+                          "library": "lucide",
+                          "fill": "#CDD0D7"
+                        },
+                        {
+                          "type": "text",
+                          "id": "mLYZz",
+                          "name": "Agents label",
+                          "fill": "#CDD0D7",
+                          "content": "Agents",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 16,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "V3tt8x",
+                      "name": "Chat navigation",
+                      "width": "fill_container",
+                      "height": 46,
+                      "cornerRadius": 10,
+                      "gap": 12,
+                      "padding": [
+                        0,
+                        12
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "K3GP8",
+                          "name": "Chat icon",
+                          "width": 20,
+                          "height": 20,
+                          "icon": "message-square",
+                          "library": "lucide",
+                          "fill": "#CDD0D7"
+                        },
+                        {
+                          "type": "text",
+                          "id": "jxuj5",
+                          "name": "Chat label",
+                          "fill": "#CDD0D7",
+                          "content": "Chat",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 16,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "FxgXM",
+                      "name": "Connections navigation",
+                      "width": "fill_container",
+                      "height": 46,
+                      "fill": "#FFFFFF14",
+                      "cornerRadius": 10,
+                      "gap": 12,
+                      "padding": [
+                        0,
+                        12
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "f8kGc",
+                          "name": "Connections icon",
+                          "width": 20,
+                          "height": 20,
+                          "icon": "plug",
+                          "library": "lucide",
+                          "fill": "$ng-app/foreground"
+                        },
+                        {
+                          "type": "text",
+                          "id": "K3s1I8",
+                          "name": "Connections label",
+                          "fill": "$ng-app/foreground",
+                          "content": "Connections",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 16,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "vxE9J",
+                      "name": "Vault navigation",
+                      "width": "fill_container",
+                      "height": 46,
+                      "cornerRadius": 10,
+                      "gap": 12,
+                      "padding": [
+                        0,
+                        12
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "fndkO",
+                          "name": "Vault icon",
+                          "width": 20,
+                          "height": 20,
+                          "icon": "key-round",
+                          "library": "lucide",
+                          "fill": "#CDD0D7"
+                        },
+                        {
+                          "type": "text",
+                          "id": "rR6Wj",
+                          "name": "Vault label",
+                          "fill": "#CDD0D7",
+                          "content": "Vault",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 16,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "ZWAKV",
+                      "name": "Account navigation",
+                      "width": "fill_container",
+                      "height": 46,
+                      "cornerRadius": 10,
+                      "gap": 12,
+                      "padding": [
+                        0,
+                        12
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "v53j0h",
+                          "name": "Account icon",
+                          "width": 20,
+                          "height": 20,
+                          "icon": "user-round",
+                          "library": "lucide",
+                          "fill": "#CDD0D7"
+                        },
+                        {
+                          "type": "text",
+                          "id": "k8u52Q",
+                          "name": "Account label",
+                          "fill": "#CDD0D7",
+                          "content": "Account",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 16,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "vuWV6",
+                      "name": "Usage & billing navigation",
+                      "width": "fill_container",
+                      "height": 46,
+                      "cornerRadius": 10,
+                      "gap": 12,
+                      "padding": [
+                        0,
+                        12
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "U6rfAo",
+                          "name": "Usage & billing icon",
+                          "width": 20,
+                          "height": 20,
+                          "icon": "chart-no-axes-combined",
+                          "library": "lucide",
+                          "fill": "#CDD0D7"
+                        },
+                        {
+                          "type": "text",
+                          "id": "rUrZP",
+                          "name": "Usage & billing label",
+                          "fill": "#CDD0D7",
+                          "content": "Usage & billing",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 16,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "q1MVd5",
+                  "name": "Navigation breathing room",
+                  "width": 1,
+                  "height": "fill_container"
+                },
+                {
+                  "type": "frame",
+                  "id": "IkfVU",
+                  "name": "Signed-in account",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 4,
+                  "padding": [
+                    16,
+                    4,
+                    0,
+                    4
+                  ],
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "G7nKK",
+                      "name": "Signed-in account",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "padding": [
+                        16,
+                        4,
+                        0,
+                        4
+                      ],
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "UxWvM",
+                          "name": "User profile",
+                          "width": "fill_container",
+                          "gap": 10,
+                          "padding": [
+                            16,
+                            0,
+                            0,
+                            0
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "bJ32p",
+                              "name": "Armand Segall / DiceBear avatar",
+                              "width": 32,
+                              "height": 32,
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/critters/armand-segall.png",
+                                "mode": "contain"
+                              },
+                              "cornerRadius": 12
+                            },
+                            {
+                              "type": "text",
+                              "id": "at8Nb",
+                              "name": "Armand Segall",
+                              "fill": "#CDD0D7",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Armand Segall",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 16,
+                              "fontWeight": "500"
+                            },
+                            {
+                              "type": "icon",
+                              "id": "Ud6UC",
+                              "name": "chevrons-up-down",
+                              "width": 18,
+                              "height": 18,
+                              "icon": "chevrons-up-down",
+                              "library": "lucide",
+                              "fill": "#CDD0D7"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Uub28",
+          "name": "Inset main surface",
+          "clip": true,
+          "width": "fill_container",
+          "height": "fill_container",
+          "fill": "$ng-app/background",
+          "cornerRadius": 16,
+          "stroke": "#FFFFFF0D",
+          "strokeWidth": 1,
+          "children": [
+            {
+              "type": "frame",
+              "id": "Kkjzd",
+              "name": "Connections directory",
+              "width": "fill_container",
+              "height": "fill_container",
+              "layout": "vertical",
+              "gap": 24,
+              "padding": [
+                42,
+                48
+              ],
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "Lnu32",
+                  "name": "Connections heading and toolbar",
+                  "width": "fill_container",
+                  "gap": 20,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "NCH0g",
+                      "name": "Page title",
+                      "fill": "$ng-app/foreground",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Connections",
+                      "lineHeight": 1.4,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 28,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "p6mX6",
+                      "name": "Search connections",
+                      "width": 240,
+                      "height": 38,
+                      "cornerRadius": 999,
+                      "stroke": "$ng-app/border",
+                      "strokeWidth": 1,
+                      "gap": 8,
+                      "padding": [
+                        0,
+                        12
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "yvKfI",
+                          "name": "search icon",
+                          "width": 16,
+                          "height": 16,
+                          "icon": "search",
+                          "library": "lucide",
+                          "fill": "$ng-app/muted-foreground"
+                        },
+                        {
+                          "type": "text",
+                          "id": "n0LR7q",
+                          "name": "Search placeholder",
+                          "fill": "$ng-app/muted-foreground",
+                          "content": "Search connections",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "icon",
+                      "id": "vQekg",
+                      "name": "refresh-cw icon",
+                      "width": 18,
+                      "height": 18,
+                      "icon": "refresh-cw",
+                      "library": "lucide",
+                      "fill": "$ng-app/muted-foreground"
+                    },
+                    {
+                      "type": "icon",
+                      "id": "J6E7I",
+                      "name": "settings icon",
+                      "width": 18,
+                      "height": 18,
+                      "icon": "settings",
+                      "library": "lucide",
+                      "fill": "$ng-app/muted-foreground"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "TebET",
+                      "name": "Add connection",
+                      "fill": "$ng-app/primary",
+                      "cornerRadius": 999,
+                      "gap": 6,
+                      "padding": [
+                        9,
+                        14
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "YsFgf",
+                          "name": "Add label",
+                          "fill": "$ng-app/primary-foreground",
+                          "content": "Add",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "icon",
+                          "id": "K7yH73",
+                          "name": "Add dropdown",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "chevron-down",
+                          "library": "lucide",
+                          "fill": "$ng-app/primary-foreground"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "p4IccY",
+                  "name": "Page description",
+                  "fill": "$ng-app/muted-foreground",
+                  "content": "Connect your tools to let Ngertiin work across your apps.",
+                  "lineHeight": 1.4,
+                  "fontFamily": "$gumloop/font-ui",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "qvheJ",
+                  "name": "Connection tabs",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "poP5q",
+                      "name": "Public tab",
+                      "fill": "$ng-app/muted",
+                      "cornerRadius": 999,
+                      "padding": [
+                        10,
+                        18
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "xP73u",
+                          "name": "Public label",
+                          "fill": "$ng-app/foreground",
+                          "content": "Public",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "rpy87",
+                      "name": "Personal tab",
+                      "cornerRadius": 999,
+                      "padding": [
+                        10,
+                        18
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "K5AJh8",
+                          "name": "Personal label",
+                          "fill": "$ng-app/muted-foreground",
+                          "content": "Personal",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "rDnfB",
+                  "name": "Popular section",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 14,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "xTiCe",
+                      "name": "Popular heading",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "bZXZK",
+                          "name": "Popular title",
+                          "fill": "$ng-app/foreground",
+                          "content": "Popular",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 17,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "icon",
+                          "id": "x0IlTv",
+                          "name": "chevron-right icon",
+                          "width": 15,
+                          "height": 15,
+                          "icon": "chevron-right",
+                          "library": "lucide",
+                          "fill": "$ng-app/muted-foreground"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "qYrxe",
+                      "name": "Popular row 1",
+                      "width": "fill_container",
+                      "gap": 40,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "ZU4oG",
+                          "name": "Gmail connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "YFOGO",
+                              "name": "Gmail official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/gmail.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "GXhNz",
+                              "name": "Gmail details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "d5rh4r",
+                                  "name": "Gmail name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "Gmail",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "v23PGO",
+                                  "name": "Gmail description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Read and manage Gmail",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "kfgAz",
+                              "name": "plus icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "plus",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "HHCGJ",
+                          "name": "Google Drive connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "qIJ3b",
+                              "name": "Google Drive official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/drive.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "dbdru",
+                              "name": "Google Drive details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "Z2vDI",
+                                  "name": "Google Drive name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "Google Drive",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "NT8im",
+                                  "name": "Google Drive description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Drive, Docs, Sheets or Slides",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "EcA27",
+                              "name": "ellipsis icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "ellipsis",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "aNLFN",
+                      "name": "Popular row 2",
+                      "width": "fill_container",
+                      "gap": 40,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "hhuEY",
+                          "name": "Google Calendar connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "F2dv2",
+                              "name": "Google Calendar official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/calendar.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "DwmUt",
+                              "name": "Google Calendar details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "Lvu1V",
+                                  "name": "Google Calendar name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "Google Calendar",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "PK5rk",
+                                  "name": "Google Calendar description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Manage Google Calendar events",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "f0xJjS",
+                              "name": "plus icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "plus",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "pg5VY",
+                          "name": "GitHub connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "ukP9h",
+                              "name": "GitHub official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/github.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "KTLZv",
+                              "name": "GitHub details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "cDF0K",
+                                  "name": "GitHub name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "GitHub",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "j6ABhq",
+                                  "name": "GitHub description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Triage PRs, issues, CI, and publish flows",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "Xum5j",
+                              "name": "ellipsis icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "ellipsis",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "T13Yh",
+                      "name": "Popular row 3",
+                      "width": "fill_container",
+                      "gap": 40,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "eV1d1",
+                          "name": "Slack connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "W6jrcJ",
+                              "name": "Slack official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/slack.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "ZaCmE",
+                              "name": "Slack details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "f4np9E",
+                                  "name": "Slack name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "Slack",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "N1EOT",
+                                  "name": "Slack description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Read and manage Slack",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "DHwx6",
+                              "name": "plus icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "plus",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "kmpk0",
+                          "name": "Outlook Email connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "lPzJX",
+                              "name": "Outlook Email official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/outlook.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "u2Pzg",
+                              "name": "Outlook Email details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "SsHe1",
+                                  "name": "Outlook Email name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "Outlook Email",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "gmOdV",
+                                  "name": "Outlook Email description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Triage Outlook inboxes",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "cKUjQ",
+                              "name": "plus icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "plus",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Inawg",
+                  "name": "New & Noteworthy section",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 14,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "dDe0x",
+                      "name": "New & Noteworthy heading",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "UrTwP",
+                          "name": "New & Noteworthy title",
+                          "fill": "$ng-app/foreground",
+                          "content": "New & Noteworthy",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 17,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "icon",
+                          "id": "e274Z",
+                          "name": "chevron-right icon",
+                          "width": 15,
+                          "height": 15,
+                          "icon": "chevron-right",
+                          "library": "lucide",
+                          "fill": "$ng-app/muted-foreground"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "tp8O2",
+                      "name": "New & Noteworthy row 1",
+                      "width": "fill_container",
+                      "gap": 40,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "x6Z2G",
+                          "name": "Hevy connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "t78r5",
+                              "name": "Hevy official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/hevy.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "wwDJd",
+                              "name": "Hevy details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "MIJFg",
+                                  "name": "Hevy name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "Hevy",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "b0G5T8",
+                                  "name": "Hevy description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Gym workout plans and insights",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "hTNRd",
+                              "name": "plus icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "plus",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "X2yZOH",
+                          "name": "Tripsy connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "vY6xR",
+                              "name": "Tripsy official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/tripsy.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "Ed9I6",
+                              "name": "Tripsy details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "CAExn",
+                                  "name": "Tripsy name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "Tripsy",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "Nw6Ey",
+                                  "name": "Tripsy description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Plan and organize your trips",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "icbfU",
+                              "name": "plus icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "plus",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "C6IbAn",
+                      "name": "New & Noteworthy row 2",
+                      "width": "fill_container",
+                      "gap": 40,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "wIvEU",
+                          "name": "Sonos connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "ipTX6",
+                              "name": "Sonos official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/sonos.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "s2oJO",
+                              "name": "Sonos details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "xSpmF",
+                                  "name": "Sonos name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "Sonos",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "G2vmtU",
+                                  "name": "Sonos description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Control your Sonos system",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "k4z8bB",
+                              "name": "plus icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "plus",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "tmw8q",
+                          "name": "Canva connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "F9oEyR",
+                              "name": "Canva official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/canva.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "H8AwtA",
+                              "name": "Canva details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "g0Nu2e",
+                                  "name": "Canva name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "Canva",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "bSRmT",
+                                  "name": "Canva description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Create, review, edit designs",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "CFWXn",
+                              "name": "plus icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "plus",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "PF4eo",
+                      "name": "New & Noteworthy row 3",
+                      "width": "fill_container",
+                      "gap": 40,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "t8ZLOK",
+                          "name": "COROS connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "DBFlD",
+                              "name": "COROS official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/coros.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "eFdmy",
+                              "name": "COROS details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "w5P34",
+                                  "name": "COROS name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "COROS",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "DVzgM",
+                                  "name": "COROS description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Training and health insights",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "H9iac",
+                              "name": "plus icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "plus",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "RVudL",
+                          "name": "Adobe connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "PqScT",
+                              "name": "Adobe official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/adobe.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "fV3UK",
+                              "name": "Adobe details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "N3nvhf",
+                                  "name": "Adobe name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "Adobe",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "lYCyN",
+                                  "name": "Adobe description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Design, combine, and edit",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "n0Exf",
+                              "name": "plus icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "plus",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "B5RY6A",
+                  "name": "Small Business section",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 14,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "nxXn7",
+                      "name": "Small Business heading",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "dsxvL",
+                          "name": "Small Business title",
+                          "fill": "$ng-app/foreground",
+                          "content": "Small Business",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 17,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "icon",
+                          "id": "RrABW",
+                          "name": "chevron-right icon",
+                          "width": 15,
+                          "height": 15,
+                          "icon": "chevron-right",
+                          "library": "lucide",
+                          "fill": "$ng-app/muted-foreground"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "v0Tkyf",
+                      "name": "Small Business row 1",
+                      "width": "fill_container",
+                      "gap": 40,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "Er95a",
+                          "name": "Dropbox connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "UZCYO",
+                              "name": "Dropbox official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/dropbox.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "fgSsg",
+                              "name": "Dropbox details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "SAE0a",
+                                  "name": "Dropbox name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "Dropbox",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "Zrgzv",
+                                  "name": "Dropbox description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Find, create, and take action",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "l52yns",
+                              "name": "plus icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "plus",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "wlsip",
+                          "name": "HubSpot connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "oDbx4",
+                              "name": "HubSpot official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/hubspot.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "y3Wr3p",
+                              "name": "HubSpot details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "qbO2d",
+                                  "name": "HubSpot name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "HubSpot",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "BTKPL",
+                                  "name": "HubSpot description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Insights to action in HubSpot",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "QU69r",
+                              "name": "plus icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "plus",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "gl0Ao",
+                      "name": "Small Business row 2",
+                      "width": "fill_container",
+                      "gap": 40,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "qsvEz",
+                          "name": "Stripe connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "uPt7m",
+                              "name": "Stripe official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/stripe.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "kt9NO",
+                              "name": "Stripe details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "Cnj5I",
+                                  "name": "Stripe name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "Stripe",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "oyHiV",
+                                  "name": "Stripe description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Accept payments. Grow revenue.",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "DARsS",
+                              "name": "plus icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "plus",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "ytdTp",
+                          "name": "Canva connection",
+                          "width": "fill_container",
+                          "height": 62,
+                          "gap": 12,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "rectangle",
+                              "cornerRadius": 10,
+                              "id": "aRDSQ",
+                              "name": "Canva official icon from reference",
+                              "fill": {
+                                "type": "image",
+                                "enabled": true,
+                                "url": "assets/connections/canva.png",
+                                "mode": "contain"
+                              },
+                              "width": 38,
+                              "height": 38
+                            },
+                            {
+                              "type": "frame",
+                              "id": "O6eyI",
+                              "name": "Canva details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 5,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "wncGf",
+                                  "name": "Canva name",
+                                  "fill": "$ng-app/foreground",
+                                  "content": "Canva",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 16,
+                                  "fontWeight": "500"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "VdIk8",
+                                  "name": "Canva description",
+                                  "fill": "$ng-app/muted-foreground",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Create, review, edit designs",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "Q4ZsXH",
+                              "name": "plus icon",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "plus",
+                              "library": "lucide",
+                              "fill": "$ng-app/muted-foreground"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ],
   "themes": {

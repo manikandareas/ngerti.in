@@ -40,6 +40,18 @@ export const statuses: Record<string, string> = {
   reconnect_required: "Hubungkan kembali",
 };
 const errors: Record<string, string> = {
+  APP_AUTH_FAILED: "Login aplikasi belum berhasil. Periksa izin akun lalu mulai login kembali.",
+  APP_GOOGLE_OAUTH_REQUIRED:
+    "Koneksi Google perlu OAuth client milik Ngertiin. Pengelola aplikasi harus menyiapkan Client ID dan Client Secret di Google Cloud terlebih dahulu. Anda tidak perlu mengisi URL server.",
+  APP_OAUTH_CLIENT_REQUIRED:
+    "OAuth GitHub memerlukan Client ID aplikasi Ngertiin. Gunakan Atur ulang koneksi dan pilih Token akses, atau isi OAuth Client ID pada pengaturan tambahan.",
+  OAUTH_STATE_INVALID: "Sesi login aplikasi sudah berubah atau kedaluwarsa. Mulai login kembali.",
+  CONNECTOR_UNAVAILABLE:
+    "Server aplikasi belum dapat dihubungi. Periksa koneksi dan coba periksa tools kembali.",
+  INVALID_ENDPOINT:
+    "Alamat layanan belum diizinkan. Minta operator menyiapkan URL server aplikasi ini.",
+  ACCESS_REVOKED:
+    "Izin koneksi sudah berubah. Perbarui koneksi dan simpan kembali pengaturan agent.",
   MODEL_UNAVAILABLE: "Model belum tersedia. Periksa koneksi dan pilih model untuk agent ini.",
   PROVIDER_RECONNECT_REQUIRED: "Akses sudah berakhir. Hubungkan akun kembali.",
   PROVIDER_ENTITLEMENT_REQUIRED: "Akun ini belum memiliki izin atau paket untuk akses tersebut.",

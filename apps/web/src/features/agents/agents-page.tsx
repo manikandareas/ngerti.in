@@ -54,6 +54,9 @@ const capabilityReasons: Record<string, string> = {
   native_image_mismatch: "image eksekusi tidak sesuai konfigurasi",
   native_image_contract_mismatch: "image eksekusi tidak sesuai versi runtime",
   private_schema: "konfigurasi tools perlu diperiksa operator",
+  research_credentials_required: "layanan riset belum dihubungkan",
+  native_file_tools_required: "kemampuan baca file pada ruang kerja perlu disiapkan",
+  xai_access_required: "akses xAI belum dihubungkan",
 };
 export type Agent = {
   agent_id: string;

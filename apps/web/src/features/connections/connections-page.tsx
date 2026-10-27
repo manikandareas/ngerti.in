@@ -5,6 +5,7 @@ import { AppShell } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ApiError, api } from "@/lib/api";
+import { AppConnections } from "./app-connections";
 import {
   base,
   type Connection,
@@ -408,6 +409,7 @@ export function ConnectionsPage() {
             onLogin={login}
           />
         )}
+        <AppConnections />
       </div>
     </AppShell>
   );

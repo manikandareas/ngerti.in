@@ -84771,7 +84771,7 @@
                 {
                   "type": "frame",
                   "id": "txl95",
-                  "name": "Context floating card",
+                  "name": "Agent info floating card / Files",
                   "width": "fill_container",
                   "fill": {
                     "type": "gradient",
@@ -84804,194 +84804,679 @@
                     "radius": 24
                   },
                   "layout": "vertical",
-                  "gap": 18,
+                  "gap": 20,
                   "padding": 20,
                   "children": [
                     {
-                      "type": "text",
-                      "id": "CqFId",
-                      "name": "Trip files",
-                      "fill": "$gumloop/text",
-                      "textGrowth": "fixed-width",
-                      "width": "fill_container",
-                      "content": "Trip files",
-                      "lineHeight": 1.5,
-                      "fontFamily": "$gumloop/font-ui",
-                      "fontSize": 20,
-                      "fontWeight": "normal"
-                    },
-                    {
-                      "type": "text",
-                      "id": "JAxgv",
-                      "name": "Available in this conversation",
-                      "fill": "$gumloop/text-muted",
-                      "textGrowth": "fixed-width",
-                      "width": "fill_container",
-                      "content": "Available in this conversation",
-                      "lineHeight": 1.5,
-                      "fontFamily": "$gumloop/font-ui",
-                      "fontSize": 13,
-                      "fontWeight": "normal"
-                    },
-                    {
                       "type": "frame",
-                      "id": "cfjSO",
-                      "name": "Itinerary.pdf",
+                      "id": "s9SRJ",
+                      "name": "Agent profile",
                       "width": "fill_container",
-                      "stroke": "$gumloop/divider",
-                      "strokeWidth": {
-                        "bottom": 1
-                      },
-                      "layout": "vertical",
-                      "gap": 6,
-                      "padding": [
-                        0,
-                        0,
-                        18,
-                        0
-                      ],
+                      "gap": 12,
+                      "alignItems": "center",
                       "children": [
                         {
-                          "type": "text",
-                          "id": "MAtxh",
-                          "name": "Itinerary.pdf",
-                          "fill": "$gumloop/text-muted",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "Itinerary.pdf",
-                          "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 13,
-                          "fontWeight": "normal"
+                          "type": "frame",
+                          "id": "tG4ks",
+                          "name": "Sales Outbound profile avatar",
+                          "width": 56,
+                          "height": 56,
+                          "fill": {
+                            "type": "image",
+                            "enabled": true,
+                            "url": "assets/critters/sales-outbound.png",
+                            "mode": "contain"
+                          },
+                          "cornerRadius": 16
                         },
                         {
-                          "type": "text",
-                          "id": "HnC8J",
-                          "name": "3 pages · Updated today   ↗",
-                          "fill": "$gumloop/text",
-                          "textGrowth": "fixed-width",
+                          "type": "frame",
+                          "id": "qOyjT",
+                          "name": "Agent name and context",
                           "width": "fill_container",
-                          "content": "3 pages · Updated today   ↗",
-                          "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 15,
-                          "fontWeight": "normal"
+                          "layout": "vertical",
+                          "gap": 4,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "EOcFp",
+                              "name": "Agent display name",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Tobi",
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 18,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "OdIOL",
+                              "name": "Agent type",
+                              "fill": "$gumloop/text-muted",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "@tobi",
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 13,
+                              "fontWeight": "normal"
+                            }
+                          ]
                         }
                       ]
                     },
                     {
                       "type": "frame",
-                      "id": "VhYU3",
-                      "name": "Budget.xlsx",
+                      "id": "PvFpZ",
+                      "name": "Quick actions",
                       "width": "fill_container",
-                      "stroke": "$gumloop/divider",
-                      "strokeWidth": {
-                        "bottom": 1
-                      },
-                      "layout": "vertical",
-                      "gap": 6,
-                      "padding": [
-                        0,
-                        0,
-                        18,
-                        0
-                      ],
+                      "gap": 8,
                       "children": [
                         {
-                          "type": "text",
-                          "id": "lof2U",
-                          "name": "Budget.xlsx",
-                          "fill": "$gumloop/text-muted",
-                          "textGrowth": "fixed-width",
+                          "type": "frame",
+                          "id": "zZFEn",
+                          "name": "Edit agent action",
                           "width": "fill_container",
-                          "content": "Budget.xlsx",
-                          "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 13,
-                          "fontWeight": "normal"
-                        },
-                        {
-                          "type": "text",
-                          "id": "JKGHq",
-                          "name": "Updated yesterday   ↗",
-                          "fill": "$gumloop/text",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "Updated yesterday   ↗",
-                          "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 15,
-                          "fontWeight": "normal"
+                          "height": 38,
+                          "fill": "$ng-app/muted",
+                          "cornerRadius": 9,
+                          "gap": 7,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon",
+                              "id": "fvbu5",
+                              "name": "Edit agent icon",
+                              "width": 16,
+                              "height": 16,
+                              "icon": "pencil",
+                              "library": "lucide",
+                              "fill": "$ng-app/foreground"
+                            },
+                            {
+                              "type": "text",
+                              "id": "jwKpU",
+                              "name": "Edit agent label",
+                              "fill": "$ng-app/foreground",
+                              "content": "Edit agent",
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 13,
+                              "fontWeight": "normal"
+                            }
+                          ]
                         }
                       ]
                     },
                     {
                       "type": "frame",
-                      "id": "U2Pxb",
-                      "name": "Hotel shortlist.pdf",
+                      "id": "G5KoeI",
+                      "name": "Agent details and actions",
                       "width": "fill_container",
-                      "stroke": "$gumloop/divider",
-                      "strokeWidth": {
-                        "bottom": 1
-                      },
+                      "fill": "#FFFFFF00",
                       "layout": "vertical",
-                      "gap": 6,
-                      "padding": [
-                        0,
-                        0,
-                        18,
-                        0
-                      ],
                       "children": [
                         {
-                          "type": "text",
-                          "id": "VcLne",
-                          "name": "Hotel shortlist.pdf",
-                          "fill": "$gumloop/text-muted",
-                          "textGrowth": "fixed-width",
+                          "type": "frame",
+                          "id": "w2l3tR",
+                          "name": "Username row",
                           "width": "fill_container",
-                          "content": "Hotel shortlist.pdf",
-                          "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 13,
-                          "fontWeight": "normal"
+                          "height": 56,
+                          "gap": 12,
+                          "padding": [
+                            6,
+                            0
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "f6Iqg0",
+                              "name": "Username icon background",
+                              "width": 32,
+                              "height": 32,
+                              "fill": "#03A2FE",
+                              "cornerRadius": 8,
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon",
+                                  "id": "E9YUPj",
+                                  "name": "Username icon",
+                                  "opacity": 0.65,
+                                  "width": 18,
+                                  "height": 18,
+                                  "icon": "at-sign",
+                                  "library": "lucide",
+                                  "fill": "#FFFFFF"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "yvBVB",
+                              "name": "Username details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 3,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "CulFB",
+                                  "name": "Agent username",
+                                  "fill": "$gumloop/text",
+                                  "content": "tobi",
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 14,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "N224W",
+                                  "name": "Username label",
+                                  "fill": "$gumloop/text-muted",
+                                  "content": "Username",
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "kjMS7",
+                              "name": "Username QR code",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "qr-code",
+                              "library": "lucide",
+                              "fill": "$gumloop/text-muted"
+                            }
+                          ]
                         },
                         {
-                          "type": "text",
-                          "id": "CF4Rj",
-                          "name": "2 pages · Updated today   ↗",
-                          "fill": "$gumloop/text",
-                          "textGrowth": "fixed-width",
+                          "type": "frame",
+                          "id": "qbpiB",
+                          "name": "Notifications row",
                           "width": "fill_container",
-                          "content": "2 pages · Updated today   ↗",
-                          "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 15,
-                          "fontWeight": "normal"
+                          "height": 56,
+                          "gap": 12,
+                          "padding": [
+                            6,
+                            0
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "cPxjC",
+                              "name": "Notifications icon background",
+                              "width": 32,
+                              "height": 32,
+                              "fill": "#9810FA",
+                              "cornerRadius": 8,
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon",
+                                  "id": "H9m74J",
+                                  "name": "Notifications icon",
+                                  "opacity": 0.65,
+                                  "width": 18,
+                                  "height": 18,
+                                  "icon": "bell",
+                                  "library": "lucide",
+                                  "fill": "#FFFFFF"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "id": "fFPkA",
+                              "name": "Notifications label",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Notifications",
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "id": "YREEv",
+                              "type": "ref",
+                              "ref": "Q86Cwj",
+                              "name": "Notifications enabled",
+                              "fill": "$ng-app/primary",
+                              "stroke": "$ng-app/border",
+                              "descendants": {
+                                "iJgH2": {
+                                  "fill": "$ng-app/primary-foreground"
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "rHswF",
+                          "name": "Add to Group row",
+                          "width": "fill_container",
+                          "height": 56,
+                          "gap": 12,
+                          "padding": [
+                            6,
+                            0
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "Dlodq",
+                              "name": "Add to Group icon background",
+                              "width": 32,
+                              "height": 32,
+                              "fill": "#FE9A00",
+                              "cornerRadius": 8,
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon",
+                                  "id": "yYAM7",
+                                  "name": "Add to Group icon",
+                                  "opacity": 0.65,
+                                  "width": 18,
+                                  "height": 18,
+                                  "icon": "user-round-plus",
+                                  "library": "lucide",
+                                  "fill": "#FFFFFF"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "id": "CeENt",
+                              "name": "Add to Group label",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Add to Group",
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "hwnft",
+                          "name": "Agent Privacy Policy row",
+                          "width": "fill_container",
+                          "height": 56,
+                          "gap": 12,
+                          "padding": [
+                            6,
+                            0
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "n0N0s",
+                              "name": "Agent Privacy Policy icon background",
+                              "width": 32,
+                              "height": 32,
+                              "fill": "#FB3C98",
+                              "cornerRadius": 8,
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon",
+                                  "id": "j2ZuTv",
+                                  "name": "Agent Privacy Policy icon",
+                                  "opacity": 0.65,
+                                  "width": 18,
+                                  "height": 18,
+                                  "icon": "shield-check",
+                                  "library": "lucide",
+                                  "fill": "#FFFFFF"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "id": "PUVpj",
+                              "name": "Agent Privacy Policy label",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Agent Privacy Policy",
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            }
+                          ]
                         }
                       ]
                     },
                     {
                       "type": "frame",
-                      "id": "UIZCu",
-                      "name": "Add files",
-                      "fill": "$ng-app/primary",
-                      "cornerRadius": 10,
-                      "stroke": "$gumloop/divider",
+                      "id": "FUGmQ",
+                      "name": "Shared files",
+                      "width": "fill_container",
+                      "stroke": "$ng-app/border",
+                      "strokeWidth": {
+                        "top": 1
+                      },
+                      "layout": "vertical",
+                      "gap": 12,
                       "padding": [
-                        10,
-                        16
+                        16,
+                        0,
+                        0,
+                        0
                       ],
                       "children": [
                         {
-                          "type": "text",
-                          "id": "raolM",
-                          "name": "Add files",
-                          "fill": "$ng-app/primary-foreground",
-                          "content": "Add files",
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 14,
-                          "fontWeight": "normal"
+                          "id": "GoAgV",
+                          "type": "ref",
+                          "ref": "fO2Zc",
+                          "name": "Media Links Files tabs — Files active",
+                          "width": "fill_container",
+                          "fill": "$ng-app/muted",
+                          "descendants": {
+                            "gnNZM": {
+                              "width": "fill_container",
+                              "padding": 8,
+                              "justifyContent": "center",
+                              "fill": "#FFFFFF00"
+                            },
+                            "VJFDR": {
+                              "content": "Media",
+                              "fill": "$ng-app/muted-foreground"
+                            },
+                            "LuYpm": {
+                              "width": "fill_container",
+                              "padding": 8,
+                              "justifyContent": "center"
+                            },
+                            "R498l": {
+                              "content": "Links",
+                              "fill": "$ng-app/muted-foreground"
+                            },
+                            "AlYaC": {
+                              "width": "fill_container",
+                              "padding": 8,
+                              "justifyContent": "center",
+                              "fill": "$ng-app/card"
+                            },
+                            "ptI5B": {
+                              "content": "Files",
+                              "fill": "$ng-app/card-foreground"
+                            }
+                          }
+                        },
+                        {
+                          "type": "frame",
+                          "id": "FJ47P",
+                          "name": "Files thumbnail grid",
+                          "width": "fill_container",
+                          "gap": 8,
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "cfjSO",
+                              "name": "Itinerary.pdf grid tile",
+                              "width": "fill_container",
+                              "stroke": "$gumloop/divider",
+                              "layout": "vertical",
+                              "gap": 8,
+                              "children": [
+                                {
+                                  "type": "frame",
+                                  "id": "D9K7Q",
+                                  "name": "Itinerary.pdf thumbnail",
+                                  "width": "fill_container",
+                                  "height": 88,
+                                  "fill": "$ng-app/muted",
+                                  "cornerRadius": 10,
+                                  "justifyContent": "center",
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "icon",
+                                      "id": "W4i8t",
+                                      "name": "Itinerary.pdf file type",
+                                      "width": 28,
+                                      "height": 28,
+                                      "icon": "file-text",
+                                      "library": "lucide",
+                                      "fill": "$gumloop/text-muted"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "GRVEy",
+                                  "name": "Itinerary.pdf details",
+                                  "width": "fill_container",
+                                  "layout": "vertical",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "MAtxh",
+                                      "name": "Itinerary.pdf",
+                                      "fill": "$gumloop/text",
+                                      "textGrowth": "fixed-width",
+                                      "width": "fill_container",
+                                      "content": "Itinerary.pdf",
+                                      "lineHeight": 1.4,
+                                      "fontFamily": "$gumloop/font-ui",
+                                      "fontSize": 11,
+                                      "fontWeight": "normal"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "HnC8J",
+                                      "x": 0,
+                                      "y": 23,
+                                      "name": "3 pages · Updated today   ↗",
+                                      "enabled": false,
+                                      "fill": "$gumloop/text-muted",
+                                      "content": "3 pages · Updated today",
+                                      "lineHeight": 1.5,
+                                      "fontFamily": "$gumloop/font-ui",
+                                      "fontSize": 11,
+                                      "fontWeight": "normal"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "icon",
+                                  "id": "MVMKe",
+                                  "x": 0,
+                                  "y": 76,
+                                  "name": "Open Itinerary.pdf",
+                                  "enabled": false,
+                                  "width": 14,
+                                  "height": 14,
+                                  "icon": "arrow-up-right",
+                                  "library": "lucide",
+                                  "fill": "$gumloop/text-muted"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "VhYU3",
+                              "name": "Budget.xlsx grid tile",
+                              "width": "fill_container",
+                              "stroke": "$gumloop/divider",
+                              "layout": "vertical",
+                              "gap": 8,
+                              "children": [
+                                {
+                                  "type": "frame",
+                                  "id": "ttf3C",
+                                  "name": "Budget.xlsx thumbnail",
+                                  "width": "fill_container",
+                                  "height": 88,
+                                  "fill": "$ng-app/muted",
+                                  "cornerRadius": 10,
+                                  "justifyContent": "center",
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "icon",
+                                      "id": "h8IY5z",
+                                      "name": "Budget.xlsx file type",
+                                      "width": 28,
+                                      "height": 28,
+                                      "icon": "file-spreadsheet",
+                                      "library": "lucide",
+                                      "fill": "$gumloop/text-muted"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "U2eFzr",
+                                  "name": "Budget.xlsx details",
+                                  "width": "fill_container",
+                                  "layout": "vertical",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "lof2U",
+                                      "name": "Budget.xlsx",
+                                      "fill": "$gumloop/text",
+                                      "textGrowth": "fixed-width",
+                                      "width": "fill_container",
+                                      "content": "Budget.xlsx",
+                                      "lineHeight": 1.4,
+                                      "fontFamily": "$gumloop/font-ui",
+                                      "fontSize": 11,
+                                      "fontWeight": "normal"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "JKGHq",
+                                      "x": 0,
+                                      "y": 23,
+                                      "name": "Updated yesterday   ↗",
+                                      "enabled": false,
+                                      "fill": "$gumloop/text-muted",
+                                      "content": "Updated yesterday",
+                                      "lineHeight": 1.5,
+                                      "fontFamily": "$gumloop/font-ui",
+                                      "fontSize": 11,
+                                      "fontWeight": "normal"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "icon",
+                                  "id": "vhGVl",
+                                  "x": 0,
+                                  "y": 76,
+                                  "name": "Open Budget.xlsx",
+                                  "enabled": false,
+                                  "width": 14,
+                                  "height": 14,
+                                  "icon": "arrow-up-right",
+                                  "library": "lucide",
+                                  "fill": "$gumloop/text-muted"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "U2Pxb",
+                              "name": "Hotel shortlist.pdf grid tile",
+                              "width": "fill_container",
+                              "stroke": "$gumloop/divider",
+                              "layout": "vertical",
+                              "gap": 8,
+                              "children": [
+                                {
+                                  "type": "frame",
+                                  "id": "svU6d",
+                                  "name": "Hotel shortlist.pdf thumbnail",
+                                  "width": "fill_container",
+                                  "height": 88,
+                                  "fill": "$ng-app/muted",
+                                  "cornerRadius": 10,
+                                  "justifyContent": "center",
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "icon",
+                                      "id": "kPmqZ",
+                                      "name": "Hotel shortlist.pdf file type",
+                                      "width": 28,
+                                      "height": 28,
+                                      "icon": "file-text",
+                                      "library": "lucide",
+                                      "fill": "$gumloop/text-muted"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "u1dcGx",
+                                  "name": "Hotel shortlist.pdf details",
+                                  "width": "fill_container",
+                                  "layout": "vertical",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "VcLne",
+                                      "name": "Hotel shortlist.pdf",
+                                      "fill": "$gumloop/text",
+                                      "textGrowth": "fixed-width",
+                                      "width": "fill_container",
+                                      "content": "Hotel shortlist.pdf",
+                                      "lineHeight": 1.4,
+                                      "fontFamily": "$gumloop/font-ui",
+                                      "fontSize": 11,
+                                      "fontWeight": "normal"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "CF4Rj",
+                                      "x": 0,
+                                      "y": 43,
+                                      "name": "2 pages · Updated today   ↗",
+                                      "enabled": false,
+                                      "fill": "$gumloop/text-muted",
+                                      "content": "2 pages · Updated today",
+                                      "lineHeight": 1.5,
+                                      "fontFamily": "$gumloop/font-ui",
+                                      "fontSize": 11,
+                                      "fontWeight": "normal"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "icon",
+                                  "id": "c0pvcG",
+                                  "x": 0,
+                                  "y": 113,
+                                  "name": "Open Hotel shortlist.pdf",
+                                  "enabled": false,
+                                  "width": 14,
+                                  "height": 14,
+                                  "icon": "arrow-up-right",
+                                  "library": "lucide",
+                                  "fill": "$gumloop/text-muted"
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }
@@ -113555,7 +114040,7 @@
                 {
                   "type": "frame",
                   "id": "X5Ugt",
-                  "name": "Context floating card",
+                  "name": "Agent info floating card / Files",
                   "width": "fill_container",
                   "fill": {
                     "type": "gradient",
@@ -113588,194 +114073,679 @@
                     "radius": 24
                   },
                   "layout": "vertical",
-                  "gap": 18,
+                  "gap": 20,
                   "padding": 20,
                   "children": [
                     {
-                      "type": "text",
-                      "id": "C4ApV",
-                      "name": "Trip files",
-                      "fill": "$gumloop/text",
-                      "textGrowth": "fixed-width",
-                      "width": "fill_container",
-                      "content": "Trip files",
-                      "lineHeight": 1.5,
-                      "fontFamily": "$gumloop/font-ui",
-                      "fontSize": 20,
-                      "fontWeight": "normal"
-                    },
-                    {
-                      "type": "text",
-                      "id": "mqEYa",
-                      "name": "Available in this conversation",
-                      "fill": "$gumloop/text-muted",
-                      "textGrowth": "fixed-width",
-                      "width": "fill_container",
-                      "content": "Available in this conversation",
-                      "lineHeight": 1.5,
-                      "fontFamily": "$gumloop/font-ui",
-                      "fontSize": 13,
-                      "fontWeight": "normal"
-                    },
-                    {
                       "type": "frame",
-                      "id": "QpLtW",
-                      "name": "Itinerary.pdf",
+                      "id": "y5IHZ",
+                      "name": "Agent profile",
                       "width": "fill_container",
-                      "stroke": "$gumloop/divider",
-                      "strokeWidth": {
-                        "bottom": 1
-                      },
-                      "layout": "vertical",
-                      "gap": 6,
-                      "padding": [
-                        0,
-                        0,
-                        18,
-                        0
-                      ],
+                      "gap": 12,
+                      "alignItems": "center",
                       "children": [
                         {
-                          "type": "text",
-                          "id": "EXtrd",
-                          "name": "Itinerary.pdf",
-                          "fill": "$gumloop/text-muted",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "Itinerary.pdf",
-                          "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 13,
-                          "fontWeight": "normal"
+                          "type": "frame",
+                          "id": "H6KcP",
+                          "name": "Sales Outbound profile avatar",
+                          "width": 56,
+                          "height": 56,
+                          "fill": {
+                            "type": "image",
+                            "enabled": true,
+                            "url": "assets/critters/sales-outbound.png",
+                            "mode": "contain"
+                          },
+                          "cornerRadius": 16
                         },
                         {
-                          "type": "text",
-                          "id": "X44KgU",
-                          "name": "3 pages · Updated today   ↗",
-                          "fill": "$gumloop/text",
-                          "textGrowth": "fixed-width",
+                          "type": "frame",
+                          "id": "mBckR",
+                          "name": "Agent name and context",
                           "width": "fill_container",
-                          "content": "3 pages · Updated today   ↗",
-                          "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 15,
-                          "fontWeight": "normal"
+                          "layout": "vertical",
+                          "gap": 4,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "BLMAV",
+                              "name": "Agent display name",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Tobi",
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 18,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "hCHrB",
+                              "name": "Agent type",
+                              "fill": "$gumloop/text-muted",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "@tobi",
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 13,
+                              "fontWeight": "normal"
+                            }
+                          ]
                         }
                       ]
                     },
                     {
                       "type": "frame",
-                      "id": "e9ddf4",
-                      "name": "Budget.xlsx",
+                      "id": "dwnzr",
+                      "name": "Quick actions",
                       "width": "fill_container",
-                      "stroke": "$gumloop/divider",
-                      "strokeWidth": {
-                        "bottom": 1
-                      },
-                      "layout": "vertical",
-                      "gap": 6,
-                      "padding": [
-                        0,
-                        0,
-                        18,
-                        0
-                      ],
+                      "gap": 8,
                       "children": [
                         {
-                          "type": "text",
-                          "id": "siCn3",
-                          "name": "Budget.xlsx",
-                          "fill": "$gumloop/text-muted",
-                          "textGrowth": "fixed-width",
+                          "type": "frame",
+                          "id": "i6doY",
+                          "name": "Edit agent action",
                           "width": "fill_container",
-                          "content": "Budget.xlsx",
-                          "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 13,
-                          "fontWeight": "normal"
-                        },
-                        {
-                          "type": "text",
-                          "id": "kgdYv",
-                          "name": "Updated yesterday   ↗",
-                          "fill": "$gumloop/text",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "Updated yesterday   ↗",
-                          "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 15,
-                          "fontWeight": "normal"
+                          "height": 38,
+                          "fill": "$ng-app/muted",
+                          "cornerRadius": 9,
+                          "gap": 7,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon",
+                              "id": "KObZR",
+                              "name": "Edit agent icon",
+                              "width": 16,
+                              "height": 16,
+                              "icon": "pencil",
+                              "library": "lucide",
+                              "fill": "$ng-app/foreground"
+                            },
+                            {
+                              "type": "text",
+                              "id": "O6oXT",
+                              "name": "Edit agent label",
+                              "fill": "$ng-app/foreground",
+                              "content": "Edit agent",
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 13,
+                              "fontWeight": "normal"
+                            }
+                          ]
                         }
                       ]
                     },
                     {
                       "type": "frame",
-                      "id": "TLzrh",
-                      "name": "Hotel shortlist.pdf",
+                      "id": "Em7hw",
+                      "name": "Agent details and actions",
                       "width": "fill_container",
-                      "stroke": "$gumloop/divider",
-                      "strokeWidth": {
-                        "bottom": 1
-                      },
+                      "fill": "#FFFFFF00",
                       "layout": "vertical",
-                      "gap": 6,
-                      "padding": [
-                        0,
-                        0,
-                        18,
-                        0
-                      ],
                       "children": [
                         {
-                          "type": "text",
-                          "id": "OpR0M",
-                          "name": "Hotel shortlist.pdf",
-                          "fill": "$gumloop/text-muted",
-                          "textGrowth": "fixed-width",
+                          "type": "frame",
+                          "id": "V14IY",
+                          "name": "Username row",
                           "width": "fill_container",
-                          "content": "Hotel shortlist.pdf",
-                          "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 13,
-                          "fontWeight": "normal"
+                          "height": 56,
+                          "gap": 12,
+                          "padding": [
+                            6,
+                            0
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "Z7rh6P",
+                              "name": "Username icon background",
+                              "width": 32,
+                              "height": 32,
+                              "fill": "#03A2FE",
+                              "cornerRadius": 8,
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon",
+                                  "id": "tm1Ps",
+                                  "name": "Username icon",
+                                  "opacity": 0.65,
+                                  "width": 18,
+                                  "height": 18,
+                                  "icon": "at-sign",
+                                  "library": "lucide",
+                                  "fill": "#FFFFFF"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "y2GOG",
+                              "name": "Username details",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 3,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "E5GfAj",
+                                  "name": "Agent username",
+                                  "fill": "$gumloop/text",
+                                  "content": "tobi",
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 14,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "a2dtH",
+                                  "name": "Username label",
+                                  "fill": "$gumloop/text-muted",
+                                  "content": "Username",
+                                  "fontFamily": "$gumloop/font-ui",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "uZprz",
+                              "name": "Username QR code",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "qr-code",
+                              "library": "lucide",
+                              "fill": "$gumloop/text-muted"
+                            }
+                          ]
                         },
                         {
-                          "type": "text",
-                          "id": "MTqtJ",
-                          "name": "2 pages · Updated today   ↗",
-                          "fill": "$gumloop/text",
-                          "textGrowth": "fixed-width",
+                          "type": "frame",
+                          "id": "BbW1t",
+                          "name": "Notifications row",
                           "width": "fill_container",
-                          "content": "2 pages · Updated today   ↗",
-                          "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 15,
-                          "fontWeight": "normal"
+                          "height": 56,
+                          "gap": 12,
+                          "padding": [
+                            6,
+                            0
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "ROqKO",
+                              "name": "Notifications icon background",
+                              "width": 32,
+                              "height": 32,
+                              "fill": "#9810FA",
+                              "cornerRadius": 8,
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon",
+                                  "id": "JahBr",
+                                  "name": "Notifications icon",
+                                  "opacity": 0.65,
+                                  "width": 18,
+                                  "height": 18,
+                                  "icon": "bell",
+                                  "library": "lucide",
+                                  "fill": "#FFFFFF"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "id": "QcWML",
+                              "name": "Notifications label",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Notifications",
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "id": "sv71K",
+                              "type": "ref",
+                              "ref": "Q86Cwj",
+                              "name": "Notifications enabled",
+                              "fill": "$ng-app/primary",
+                              "stroke": "$ng-app/border",
+                              "descendants": {
+                                "iJgH2": {
+                                  "fill": "$ng-app/primary-foreground"
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "ZT8xU",
+                          "name": "Add to Group row",
+                          "width": "fill_container",
+                          "height": 56,
+                          "gap": 12,
+                          "padding": [
+                            6,
+                            0
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "xbzg9",
+                              "name": "Add to Group icon background",
+                              "width": 32,
+                              "height": 32,
+                              "fill": "#FE9A00",
+                              "cornerRadius": 8,
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon",
+                                  "id": "mWGKx",
+                                  "name": "Add to Group icon",
+                                  "opacity": 0.65,
+                                  "width": 18,
+                                  "height": 18,
+                                  "icon": "user-round-plus",
+                                  "library": "lucide",
+                                  "fill": "#FFFFFF"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "id": "DbykJ",
+                              "name": "Add to Group label",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Add to Group",
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "tcex9",
+                          "name": "Agent Privacy Policy row",
+                          "width": "fill_container",
+                          "height": 56,
+                          "gap": 12,
+                          "padding": [
+                            6,
+                            0
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "S9Hqt",
+                              "name": "Agent Privacy Policy icon background",
+                              "width": 32,
+                              "height": 32,
+                              "fill": "#FB3C98",
+                              "cornerRadius": 8,
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon",
+                                  "id": "B3NBi",
+                                  "name": "Agent Privacy Policy icon",
+                                  "opacity": 0.65,
+                                  "width": 18,
+                                  "height": 18,
+                                  "icon": "shield-check",
+                                  "library": "lucide",
+                                  "fill": "#FFFFFF"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "id": "YDnwc",
+                              "name": "Agent Privacy Policy label",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Agent Privacy Policy",
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            }
+                          ]
                         }
                       ]
                     },
                     {
                       "type": "frame",
-                      "id": "G0Svtn",
-                      "name": "Add files",
-                      "fill": "$ng-app/primary",
-                      "cornerRadius": 10,
-                      "stroke": "$gumloop/divider",
+                      "id": "NOUNR",
+                      "name": "Shared files",
+                      "width": "fill_container",
+                      "stroke": "$ng-app/border",
+                      "strokeWidth": {
+                        "top": 1
+                      },
+                      "layout": "vertical",
+                      "gap": 12,
                       "padding": [
-                        10,
-                        16
+                        16,
+                        0,
+                        0,
+                        0
                       ],
                       "children": [
                         {
-                          "type": "text",
-                          "id": "W6FyGx",
-                          "name": "Add files",
-                          "fill": "$ng-app/primary-foreground",
-                          "content": "Add files",
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 14,
-                          "fontWeight": "normal"
+                          "id": "SiFdj",
+                          "type": "ref",
+                          "ref": "fO2Zc",
+                          "name": "Media Links Files tabs — Files active",
+                          "width": "fill_container",
+                          "fill": "$ng-app/muted",
+                          "descendants": {
+                            "gnNZM": {
+                              "width": "fill_container",
+                              "padding": 8,
+                              "justifyContent": "center",
+                              "fill": "#FFFFFF00"
+                            },
+                            "VJFDR": {
+                              "content": "Media",
+                              "fill": "$ng-app/muted-foreground"
+                            },
+                            "LuYpm": {
+                              "width": "fill_container",
+                              "padding": 8,
+                              "justifyContent": "center"
+                            },
+                            "R498l": {
+                              "content": "Links",
+                              "fill": "$ng-app/muted-foreground"
+                            },
+                            "AlYaC": {
+                              "width": "fill_container",
+                              "padding": 8,
+                              "justifyContent": "center",
+                              "fill": "$ng-app/card"
+                            },
+                            "ptI5B": {
+                              "content": "Files",
+                              "fill": "$ng-app/card-foreground"
+                            }
+                          }
+                        },
+                        {
+                          "type": "frame",
+                          "id": "Vf9gi",
+                          "name": "Files thumbnail grid",
+                          "width": "fill_container",
+                          "gap": 8,
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "QpLtW",
+                              "name": "Itinerary.pdf grid tile",
+                              "width": "fill_container",
+                              "stroke": "$gumloop/divider",
+                              "layout": "vertical",
+                              "gap": 8,
+                              "children": [
+                                {
+                                  "type": "frame",
+                                  "id": "RTWQE",
+                                  "name": "Itinerary.pdf thumbnail",
+                                  "width": "fill_container",
+                                  "height": 88,
+                                  "fill": "$ng-app/muted",
+                                  "cornerRadius": 10,
+                                  "justifyContent": "center",
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "icon",
+                                      "id": "HgwWZ",
+                                      "name": "Itinerary.pdf file type",
+                                      "width": 28,
+                                      "height": 28,
+                                      "icon": "file-text",
+                                      "library": "lucide",
+                                      "fill": "$gumloop/text-muted"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "WvMAn",
+                                  "name": "Itinerary.pdf details",
+                                  "width": "fill_container",
+                                  "layout": "vertical",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "EXtrd",
+                                      "name": "Itinerary.pdf",
+                                      "fill": "$gumloop/text",
+                                      "textGrowth": "fixed-width",
+                                      "width": "fill_container",
+                                      "content": "Itinerary.pdf",
+                                      "lineHeight": 1.4,
+                                      "fontFamily": "$gumloop/font-ui",
+                                      "fontSize": 11,
+                                      "fontWeight": "normal"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "X44KgU",
+                                      "x": 0,
+                                      "y": 23,
+                                      "name": "3 pages · Updated today   ↗",
+                                      "enabled": false,
+                                      "fill": "$gumloop/text-muted",
+                                      "content": "3 pages · Updated today",
+                                      "lineHeight": 1.5,
+                                      "fontFamily": "$gumloop/font-ui",
+                                      "fontSize": 11,
+                                      "fontWeight": "normal"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "icon",
+                                  "id": "zmTms",
+                                  "x": 0,
+                                  "y": 76,
+                                  "name": "Open Itinerary.pdf",
+                                  "enabled": false,
+                                  "width": 14,
+                                  "height": 14,
+                                  "icon": "arrow-up-right",
+                                  "library": "lucide",
+                                  "fill": "$gumloop/text-muted"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "e9ddf4",
+                              "name": "Budget.xlsx grid tile",
+                              "width": "fill_container",
+                              "stroke": "$gumloop/divider",
+                              "layout": "vertical",
+                              "gap": 8,
+                              "children": [
+                                {
+                                  "type": "frame",
+                                  "id": "Mxamv",
+                                  "name": "Budget.xlsx thumbnail",
+                                  "width": "fill_container",
+                                  "height": 88,
+                                  "fill": "$ng-app/muted",
+                                  "cornerRadius": 10,
+                                  "justifyContent": "center",
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "icon",
+                                      "id": "X0esJ4",
+                                      "name": "Budget.xlsx file type",
+                                      "width": 28,
+                                      "height": 28,
+                                      "icon": "file-spreadsheet",
+                                      "library": "lucide",
+                                      "fill": "$gumloop/text-muted"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "CXNiQ",
+                                  "name": "Budget.xlsx details",
+                                  "width": "fill_container",
+                                  "layout": "vertical",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "siCn3",
+                                      "name": "Budget.xlsx",
+                                      "fill": "$gumloop/text",
+                                      "textGrowth": "fixed-width",
+                                      "width": "fill_container",
+                                      "content": "Budget.xlsx",
+                                      "lineHeight": 1.4,
+                                      "fontFamily": "$gumloop/font-ui",
+                                      "fontSize": 11,
+                                      "fontWeight": "normal"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "kgdYv",
+                                      "x": 0,
+                                      "y": 23,
+                                      "name": "Updated yesterday   ↗",
+                                      "enabled": false,
+                                      "fill": "$gumloop/text-muted",
+                                      "content": "Updated yesterday",
+                                      "lineHeight": 1.5,
+                                      "fontFamily": "$gumloop/font-ui",
+                                      "fontSize": 11,
+                                      "fontWeight": "normal"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "icon",
+                                  "id": "BmNOW",
+                                  "x": 0,
+                                  "y": 76,
+                                  "name": "Open Budget.xlsx",
+                                  "enabled": false,
+                                  "width": 14,
+                                  "height": 14,
+                                  "icon": "arrow-up-right",
+                                  "library": "lucide",
+                                  "fill": "$gumloop/text-muted"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "TLzrh",
+                              "name": "Hotel shortlist.pdf grid tile",
+                              "width": "fill_container",
+                              "stroke": "$gumloop/divider",
+                              "layout": "vertical",
+                              "gap": 8,
+                              "children": [
+                                {
+                                  "type": "frame",
+                                  "id": "rktEN",
+                                  "name": "Hotel shortlist.pdf thumbnail",
+                                  "width": "fill_container",
+                                  "height": 88,
+                                  "fill": "$ng-app/muted",
+                                  "cornerRadius": 10,
+                                  "justifyContent": "center",
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "icon",
+                                      "id": "bPT0G",
+                                      "name": "Hotel shortlist.pdf file type",
+                                      "width": 28,
+                                      "height": 28,
+                                      "icon": "file-text",
+                                      "library": "lucide",
+                                      "fill": "$gumloop/text-muted"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "enLDn",
+                                  "name": "Hotel shortlist.pdf details",
+                                  "width": "fill_container",
+                                  "layout": "vertical",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "OpR0M",
+                                      "name": "Hotel shortlist.pdf",
+                                      "fill": "$gumloop/text",
+                                      "textGrowth": "fixed-width",
+                                      "width": "fill_container",
+                                      "content": "Hotel shortlist.pdf",
+                                      "lineHeight": 1.4,
+                                      "fontFamily": "$gumloop/font-ui",
+                                      "fontSize": 11,
+                                      "fontWeight": "normal"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "MTqtJ",
+                                      "x": 0,
+                                      "y": 43,
+                                      "name": "2 pages · Updated today   ↗",
+                                      "enabled": false,
+                                      "fill": "$gumloop/text-muted",
+                                      "content": "2 pages · Updated today",
+                                      "lineHeight": 1.5,
+                                      "fontFamily": "$gumloop/font-ui",
+                                      "fontSize": 11,
+                                      "fontWeight": "normal"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "icon",
+                                  "id": "aHn8g",
+                                  "x": 0,
+                                  "y": 113,
+                                  "name": "Open Hotel shortlist.pdf",
+                                  "enabled": false,
+                                  "width": 14,
+                                  "height": 14,
+                                  "icon": "arrow-up-right",
+                                  "library": "lucide",
+                                  "fill": "$gumloop/text-muted"
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }

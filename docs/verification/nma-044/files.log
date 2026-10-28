@@ -1,0 +1,26 @@
+FAIL note.md TimeoutError: locator.waitFor: Timeout 20000ms exceeded.
+Call log:
+[2m  - waiting for getByRole('button', { name: 'nma044-note.md ×', exact: true }) to be visible[22m
+
+FAIL code.py TimeoutError: locator.setInputFiles: Timeout 20000ms exceeded.
+Call log:
+[2m  - waiting for getByLabel('Pilih lampiran')[22m
+
+FAIL report.pdf TimeoutError: locator.setInputFiles: Timeout 20000ms exceeded.
+Call log:
+[2m  - waiting for getByLabel('Pilih lampiran')[22m
+
+FAIL image.png Error: locator.setInputFiles: Target page, context or browser has been closed
+Call log:
+[2m  - waiting for getByLabel('Pilih lampiran')[22m
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+keyboard.press: Target page, context or browser has been closed
+    at /Users/vitoandareasmanik/Development/project/ngertiin/scripts/verification/nma044-files.mjs:6:1009 {
+  log: []
+}
+
+Node.js v25.8.0

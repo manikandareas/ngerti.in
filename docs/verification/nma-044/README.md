@@ -1,0 +1,33 @@
+# NMA-044 local acceptance
+
+Implemented against repository HEAD `6b6cdf7` (the planning inventory used `41da6eb`) and the active `ng-app/*` / `gumloop-mode` design in `docs/agent.pen`. Existing composer/DM edits present at task start were retained. No engine, data model or lifecycle authority was replaced.
+
+## Delivered behavior
+
+- Workspace and memory open in contextual shared Sheets; mobile drawers have opaque surfaces. The conversation remains visible beside the 360px desktop panel. Workspace files are selectable, operations have readable results, and technical details/instructions remain inspectable.
+- File cards support authenticated downloads and markdown, code/text, PDF, image, audio and video previews. Unsupported binaries explicitly retain download fallback. Composer attachments can be previewed before sending; long lists scroll, filenames truncate only on removal controls, and upload status announces progress.
+- Computer supports expanded overlay, contextual desktop panel and mobile drawer without remounting the viewer. Frame polling pauses during control changes; reconnect retires the previous viewer grant before replacing it. Input is never replayed automatically. Private input clears on release/close; vault values are not rendered in responses or transcript.
+- Memory sources/history/correction/forget and skill search/install/readiness/edit/archive/restore/rollback remain reachable. The correction editor has an explicit accessible label and bounded height.
+- Shared Dialog gained an optional overlay switch with the existing default preserved. Semantic tokens and existing shadcn primitives remain centralized.
+
+`coverage.json` maps **66/66 actions**, with zero unmapped rows, to implementation, canvas references and evidence. It records adaptations for screens that the canvas does not fully specify. Mapping is not a claim that every unchanged runtime capability was re-executed.
+
+## Verification and evidence
+
+- `files-results.json`: **7/7** real files downloaded with byte equality. Markdown, code, PDF, image, audio and video previews rendered; DOCX showed the explicit unsupported-preview fallback. These files were actual bytes, not URL-only placeholders.
+- `computer-results.json`: real native connect/takeover/release/revoke all passed. `closure-results.json` separately records passing reconnect after an injected frame-network failure, explicit takeover/release, vault add/list/delete and secret redaction, plus expired/denied download and failed upload presentation. Fault injection validates UI handling, not a real provider outage. Downloads use authenticated API endpoints rather than persisted presigned URLs.
+- `workspace-closure-results.json`: real file listing, checkpoint/diff, expected-hash-fenced selected-file restore, worktree create/release/cleanup and diagnostics passed. Diagnostics returned `verified: true`. A disposable Git/file fixture was prepared in the QA owner's native capsule; tested operations used the actual authenticated UI/API.
+- `resources-results.json` retains the original catalog-install pass. `learning-closure-results.json` records successful skill correction/archive/restore/rollback. A real agent memory tool call created the temporary QA memory; UI correction and source inspection are captured in `memory-correction.png`, and the UI forget command was confirmed by the authenticated inventory read in `final-matrix-results.json`.
+- `final-matrix-results.json`: **24/24** panel/theme/viewport combinations at 1440, 390, 320 and 768, with no horizontal overflow or axe WCAG A/AA violations. Keyboard trapping/focus return passed for all three surfaces. Long attachment filename/removal passed at 320px. `panel-background-results.json` supersedes the 16 memory/workspace screenshots after visual inspection found transparent mobile backgrounds; the corrected opaque surfaces also passed.
+- `computer-panel-results.json`: desktop docking/expansion and light/dark accessibility checks passed. Source reference exports are in `design/`; final screenshots use `final-*`, with functional screenshots for previews, memory, skills, workspace and computer.
+- Final build, typecheck and lint completed successfully. Lint reports three existing unused-variable/parameter warnings in the pre-existing composer/DM edits, not errors. `web-tests-final.log`: **7 passed, 0 failed**. No broad backend rerun was needed for this frontend change. `runtime-tests.log` retains the user-interrupted attempt (**2 passed**, incomplete suite); it is not claimed as full runtime-regression acceptance.
+
+## Retained failures and limits
+
+The initial API/engine were offline and were restarted for the isolated development account. Initial browser/file logs retain the inaccessible draft-preview attempt and a render error corrected before the seven-file pass. The initial computer release failed while frame polling competed with control changes; the final native walkthrough passed after polling was paused during actions.
+
+The first memory fixture used an intentionally unavailable public `memory.create` command and was rejected; the replacement used a real agent tool call. A later locator matched both the source conversation message and the memory card after forget. That was a verification-selector failure, not evidence of failed deletion; the final authenticated inventory confirmed absence. The skill editor's accessible-name/height issue was fixed. Workspace verification initially targeted a retired capsule because memory changes advanced context generation; the current capsule preserved the fixture, and the final workspace run passed. Initial screenshots and failed logs are retained rather than relabeled as passing.
+
+Voice hardware/provider transcription, full document generation and real external-site login/CAPTCHA were not newly exercised; their existing handlers/capability ownership remain mapped. PDF/text/media previews and real DOCX downloads are verified, but no new Office renderer is claimed. Skill removal uses the existing reversible archive operation. No manual screen-reader certification, production deployment or release readiness is claimed. NMA-038 owns remaining capability/portable import-export work; NMA-039 and NMA-027 retain the operational/release gates.
+
+Browser runners are under `scripts/verification/nma044-*.mjs`; they require a private Clerk QA storage state (`NMA044_STORAGE_STATE`). Never commit that state or native viewer grants. The workspace runner additionally requires the current isolated capsule name via `NMA044_CONTAINER_FILE`; historical runners/logs describe the initial attempts, not a requirement to replay all tests. `SHA256SUMS` hashes the retained evidence.

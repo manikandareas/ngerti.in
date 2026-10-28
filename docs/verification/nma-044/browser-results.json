@@ -1,0 +1,17 @@
+{
+  "passed": [
+    "Memori dan skills keyboard and responsive matrix",
+    "Workspace keyboard and responsive matrix",
+    "Layar dan bantuan login keyboard and responsive matrix",
+    "Upload/remove attachment through composer"
+  ],
+  "failed": [
+    {
+      "name": "Preview uploaded markdown and download exact bytes",
+      "error": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Pratinjau nma044-note.md', exact: true })\u001b[22m\n"
+    }
+  ],
+  "limits": [
+    "Development account, real API; no deployment or manual screen-reader audit."
+  ]
+}

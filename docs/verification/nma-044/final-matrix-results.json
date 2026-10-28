@@ -1,0 +1,156 @@
+{
+  "checks": [
+    "Persisted QA memory deletion confirmed through authenticated API after correction/source UI walkthrough",
+    "memory: keyboard focus trap and return",
+    "workspace: keyboard focus trap and return",
+    "computer: keyboard focus trap and return",
+    "Long filename upload/removal at 320px"
+  ],
+  "failures": [],
+  "matrix": [
+    {
+      "panel": "memory",
+      "theme": "light",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "panel": "memory",
+      "theme": "light",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "panel": "memory",
+      "theme": "light",
+      "width": 320,
+      "passed": true
+    },
+    {
+      "panel": "memory",
+      "theme": "light",
+      "width": 768,
+      "passed": true
+    },
+    {
+      "panel": "memory",
+      "theme": "dark",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "panel": "memory",
+      "theme": "dark",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "panel": "memory",
+      "theme": "dark",
+      "width": 320,
+      "passed": true
+    },
+    {
+      "panel": "memory",
+      "theme": "dark",
+      "width": 768,
+      "passed": true
+    },
+    {
+      "panel": "workspace",
+      "theme": "light",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "panel": "workspace",
+      "theme": "light",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "panel": "workspace",
+      "theme": "light",
+      "width": 320,
+      "passed": true
+    },
+    {
+      "panel": "workspace",
+      "theme": "light",
+      "width": 768,
+      "passed": true
+    },
+    {
+      "panel": "workspace",
+      "theme": "dark",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "panel": "workspace",
+      "theme": "dark",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "panel": "workspace",
+      "theme": "dark",
+      "width": 320,
+      "passed": true
+    },
+    {
+      "panel": "workspace",
+      "theme": "dark",
+      "width": 768,
+      "passed": true
+    },
+    {
+      "panel": "computer",
+      "theme": "light",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "panel": "computer",
+      "theme": "light",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "panel": "computer",
+      "theme": "light",
+      "width": 320,
+      "passed": true
+    },
+    {
+      "panel": "computer",
+      "theme": "light",
+      "width": 768,
+      "passed": true
+    },
+    {
+      "panel": "computer",
+      "theme": "dark",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "panel": "computer",
+      "theme": "dark",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "panel": "computer",
+      "theme": "dark",
+      "width": 320,
+      "passed": true
+    },
+    {
+      "panel": "computer",
+      "theme": "dark",
+      "width": 768,
+      "passed": true
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "passed": [
+    "Computer reconnect retains fencing, explicit takeover/release and vault redaction",
+    "Expired download and upload failure presentation with transport faults"
+  ],
+  "failed": [
+    {
+      "name": "Memory inspect, source, correction and forget through UI",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n422 !== 200\n"
+    },
+    {
+      "name": "Skill correction, archive, restore and revision history",
+      "error": "TimeoutError: locator.inputValue: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByLabel('Koreksi skill', { exact: true })\u001b[22m\n"
+    }
+  ],
+  "limits": [
+    "Local isolated QA account. Transport faults exercise presentation, not external provider failure."
+  ]
+}

@@ -1,0 +1,6 @@
+{"action":"connect","status":200}
+{"action":"frame","status":200}
+{"action":"takeover","status":200}
+{"action":"frame","status":200}
+{"action":"resume","status":200}
+{"action":"revoke","status":200}

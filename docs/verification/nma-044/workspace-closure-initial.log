@@ -1,0 +1,11 @@
+Error response from daemon: No such container: nma-native-16bb8219-657e40f3e8ed8704
+Error: Command failed: docker exec nma-native-16bb8219-657e40f3e8ed8704 python3 -c from pathlib import Path; import json; s=json.loads(Path("/work/state/workspaces.json").read_text()); assert s["project"]=="nma044-ui"; (Path(s["root"])/"nma044.py").write_text("value: int = 45\n")
+Error response from daemon: No such container: nma-native-16bb8219-657e40f3e8ed8704
+
+{
+  "checks": [],
+  "limits": [
+    "Isolated QA repository; fixture writes prepare files, all tested operations use the authenticated UI/API."
+  ],
+  "error": "Error: Command failed: docker exec nma-native-16bb8219-657e40f3e8ed8704 python3 -c from pathlib import Path; import json; s=json.loads(Path(\"/work/state/workspaces.json\").read_text()); assert s[\"project\"]==\"nma044-ui\"; (Path(s[\"root\"])/\"nma044.py\").write_text(\"value: int = 45\\n\")\nError response from daemon: No such container: nma-native-16bb8219-657e40f3e8ed8704\n"
+}

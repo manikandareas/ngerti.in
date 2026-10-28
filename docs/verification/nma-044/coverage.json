@@ -1,0 +1,1119 @@
+{
+  "ticket": "NMA-044",
+  "baseline_head": "6b6cdf732aef31f133942a375e7af67c14151553",
+  "original_planning_baseline": "41da6eb",
+  "design": "docs/agent.pen active ng-app/* and gumloop-mode",
+  "coverage": {
+    "mapped": 66,
+    "total": 66,
+    "unmapped": 0
+  },
+  "rows": [
+    {
+      "area": "Upload",
+      "action": "select/drop file",
+      "implementation": "file-upload.tsx; composer.tsx",
+      "design": [
+        "CDkHX",
+        "SySnj"
+      ],
+      "evidence": [
+        "files-results.json",
+        "closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Voice capture/transcription handlers are preserved; microphone hardware/provider transcription was not newly exercised. Audio file delivery/preview was exercised.",
+      "mapped": true
+    },
+    {
+      "area": "Upload",
+      "action": "begin/chunk/finalize upload",
+      "implementation": "file-upload.tsx; composer.tsx",
+      "design": [
+        "CDkHX",
+        "SySnj"
+      ],
+      "evidence": [
+        "files-results.json",
+        "closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Voice capture/transcription handlers are preserved; microphone hardware/provider transcription was not newly exercised. Audio file delivery/preview was exercised.",
+      "mapped": true
+    },
+    {
+      "area": "Upload",
+      "action": "progress",
+      "implementation": "file-upload.tsx; composer.tsx",
+      "design": [
+        "CDkHX",
+        "SySnj"
+      ],
+      "evidence": [
+        "files-results.json",
+        "closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Voice capture/transcription handlers are preserved; microphone hardware/provider transcription was not newly exercised. Audio file delivery/preview was exercised.",
+      "mapped": true
+    },
+    {
+      "area": "Upload",
+      "action": "failure/retry same file",
+      "implementation": "file-upload.tsx; composer.tsx",
+      "design": [
+        "CDkHX",
+        "SySnj"
+      ],
+      "evidence": [
+        "files-results.json",
+        "closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Voice capture/transcription handlers are preserved; microphone hardware/provider transcription was not newly exercised. Audio file delivery/preview was exercised.",
+      "mapped": true
+    },
+    {
+      "area": "Upload",
+      "action": "remove draft attachment",
+      "implementation": "file-upload.tsx; composer.tsx",
+      "design": [
+        "CDkHX",
+        "SySnj"
+      ],
+      "evidence": [
+        "files-results.json",
+        "closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Voice capture/transcription handlers are preserved; microphone hardware/provider transcription was not newly exercised. Audio file delivery/preview was exercised.",
+      "mapped": true
+    },
+    {
+      "area": "Upload",
+      "action": "voice record/stop/cancel",
+      "implementation": "file-upload.tsx; composer.tsx",
+      "design": [
+        "CDkHX",
+        "SySnj"
+      ],
+      "evidence": [
+        "files-results.json",
+        "closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Voice capture/transcription handlers are preserved; microphone hardware/provider transcription was not newly exercised. Audio file delivery/preview was exercised.",
+      "mapped": true
+    },
+    {
+      "area": "Upload",
+      "action": "transcribe audio with attachment fallback",
+      "implementation": "file-upload.tsx; composer.tsx",
+      "design": [
+        "CDkHX",
+        "SySnj"
+      ],
+      "evidence": [
+        "files-results.json",
+        "closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Voice capture/transcription handlers are preserved; microphone hardware/provider transcription was not newly exercised. Audio file delivery/preview was exercised.",
+      "mapped": true
+    },
+    {
+      "area": "Results",
+      "action": "list file cards",
+      "implementation": "artifact-results.tsx; pdf-preview.tsx",
+      "design": [
+        "o0VSi8",
+        "Qjogq",
+        "SySnj"
+      ],
+      "evidence": [
+        "files-results.json",
+        "closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "DOCX and other unsupported binaries retain download fallback; no new document conversion backend. Media generation remains existing capability scope.",
+      "mapped": true
+    },
+    {
+      "area": "Results",
+      "action": "authenticated download",
+      "implementation": "artifact-results.tsx; pdf-preview.tsx",
+      "design": [
+        "o0VSi8",
+        "Qjogq",
+        "SySnj"
+      ],
+      "evidence": [
+        "files-results.json",
+        "closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "DOCX and other unsupported binaries retain download fallback; no new document conversion backend. Media generation remains existing capability scope.",
+      "mapped": true
+    },
+    {
+      "area": "Results",
+      "action": "markdown preview",
+      "implementation": "artifact-results.tsx; pdf-preview.tsx",
+      "design": [
+        "o0VSi8",
+        "Qjogq",
+        "SySnj"
+      ],
+      "evidence": [
+        "files-results.json",
+        "closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "DOCX and other unsupported binaries retain download fallback; no new document conversion backend. Media generation remains existing capability scope.",
+      "mapped": true
+    },
+    {
+      "area": "Results",
+      "action": "code/text preview and truncation",
+      "implementation": "artifact-results.tsx; pdf-preview.tsx",
+      "design": [
+        "o0VSi8",
+        "Qjogq",
+        "SySnj"
+      ],
+      "evidence": [
+        "files-results.json",
+        "closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "DOCX and other unsupported binaries retain download fallback; no new document conversion backend. Media generation remains existing capability scope.",
+      "mapped": true
+    },
+    {
+      "area": "Results",
+      "action": "PDF render/pages",
+      "implementation": "artifact-results.tsx; pdf-preview.tsx",
+      "design": [
+        "o0VSi8",
+        "Qjogq",
+        "SySnj"
+      ],
+      "evidence": [
+        "files-results.json",
+        "closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "DOCX and other unsupported binaries retain download fallback; no new document conversion backend. Media generation remains existing capability scope.",
+      "mapped": true
+    },
+    {
+      "area": "Results",
+      "action": "image preview",
+      "implementation": "artifact-results.tsx; pdf-preview.tsx",
+      "design": [
+        "o0VSi8",
+        "Qjogq",
+        "SySnj"
+      ],
+      "evidence": [
+        "files-results.json",
+        "closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "DOCX and other unsupported binaries retain download fallback; no new document conversion backend. Media generation remains existing capability scope.",
+      "mapped": true
+    },
+    {
+      "area": "Results",
+      "action": "audio preview",
+      "implementation": "artifact-results.tsx; pdf-preview.tsx",
+      "design": [
+        "o0VSi8",
+        "Qjogq",
+        "SySnj"
+      ],
+      "evidence": [
+        "files-results.json",
+        "closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "DOCX and other unsupported binaries retain download fallback; no new document conversion backend. Media generation remains existing capability scope.",
+      "mapped": true
+    },
+    {
+      "area": "Results",
+      "action": "video preview",
+      "implementation": "artifact-results.tsx; pdf-preview.tsx",
+      "design": [
+        "o0VSi8",
+        "Qjogq",
+        "SySnj"
+      ],
+      "evidence": [
+        "files-results.json",
+        "closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "DOCX and other unsupported binaries retain download fallback; no new document conversion backend. Media generation remains existing capability scope.",
+      "mapped": true
+    },
+    {
+      "area": "Results",
+      "action": "unsupported format/download fallback",
+      "implementation": "artifact-results.tsx; pdf-preview.tsx",
+      "design": [
+        "o0VSi8",
+        "Qjogq",
+        "SySnj"
+      ],
+      "evidence": [
+        "files-results.json",
+        "closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "DOCX and other unsupported binaries retain download fallback; no new document conversion backend. Media generation remains existing capability scope.",
+      "mapped": true
+    },
+    {
+      "area": "Results",
+      "action": "expired/denied download state",
+      "implementation": "artifact-results.tsx; pdf-preview.tsx",
+      "design": [
+        "o0VSi8",
+        "Qjogq",
+        "SySnj"
+      ],
+      "evidence": [
+        "files-results.json",
+        "closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "DOCX and other unsupported binaries retain download fallback; no new document conversion backend. Media generation remains existing capability scope.",
+      "mapped": true
+    },
+    {
+      "area": "Results",
+      "action": "close preview/focus return",
+      "implementation": "artifact-results.tsx; pdf-preview.tsx",
+      "design": [
+        "o0VSi8",
+        "Qjogq",
+        "SySnj"
+      ],
+      "evidence": [
+        "files-results.json",
+        "closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "DOCX and other unsupported binaries retain download fallback; no new document conversion backend. Media generation remains existing capability scope.",
+      "mapped": true
+    },
+    {
+      "area": "Workspace",
+      "action": "select agent",
+      "implementation": "workspace-controls.tsx; workspace-result.tsx",
+      "design": [
+        "N9v5U",
+        "okoQu"
+      ],
+      "evidence": [
+        "workspace-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Synthetic Git/file preparation occurred only in the isolated QA capsule. All tested workspace operations used the authenticated product UI and real runtime. Remaining generic fields stay inspectable under Details.",
+      "mapped": true
+    },
+    {
+      "area": "Workspace",
+      "action": "inspect workspace",
+      "implementation": "workspace-controls.tsx; workspace-result.tsx",
+      "design": [
+        "N9v5U",
+        "okoQu"
+      ],
+      "evidence": [
+        "workspace-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Synthetic Git/file preparation occurred only in the isolated QA capsule. All tested workspace operations used the authenticated product UI and real runtime. Remaining generic fields stay inspectable under Details.",
+      "mapped": true
+    },
+    {
+      "area": "Workspace",
+      "action": "select project",
+      "implementation": "workspace-controls.tsx; workspace-result.tsx",
+      "design": [
+        "N9v5U",
+        "okoQu"
+      ],
+      "evidence": [
+        "workspace-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Synthetic Git/file preparation occurred only in the isolated QA capsule. All tested workspace operations used the authenticated product UI and real runtime. Remaining generic fields stay inspectable under Details.",
+      "mapped": true
+    },
+    {
+      "area": "Workspace",
+      "action": "list/select files",
+      "implementation": "workspace-controls.tsx; workspace-result.tsx",
+      "design": [
+        "N9v5U",
+        "okoQu"
+      ],
+      "evidence": [
+        "workspace-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Synthetic Git/file preparation occurred only in the isolated QA capsule. All tested workspace operations used the authenticated product UI and real runtime. Remaining generic fields stay inspectable under Details.",
+      "mapped": true
+    },
+    {
+      "area": "Workspace",
+      "action": "project instructions",
+      "implementation": "workspace-controls.tsx; workspace-result.tsx",
+      "design": [
+        "N9v5U",
+        "okoQu"
+      ],
+      "evidence": [
+        "workspace-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Synthetic Git/file preparation occurred only in the isolated QA capsule. All tested workspace operations used the authenticated product UI and real runtime. Remaining generic fields stay inspectable under Details.",
+      "mapped": true
+    },
+    {
+      "area": "Workspace",
+      "action": "create checkpoint",
+      "implementation": "workspace-controls.tsx; workspace-result.tsx",
+      "design": [
+        "N9v5U",
+        "okoQu"
+      ],
+      "evidence": [
+        "workspace-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Synthetic Git/file preparation occurred only in the isolated QA capsule. All tested workspace operations used the authenticated product UI and real runtime. Remaining generic fields stay inspectable under Details.",
+      "mapped": true
+    },
+    {
+      "area": "Workspace",
+      "action": "select checkpoint",
+      "implementation": "workspace-controls.tsx; workspace-result.tsx",
+      "design": [
+        "N9v5U",
+        "okoQu"
+      ],
+      "evidence": [
+        "workspace-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Synthetic Git/file preparation occurred only in the isolated QA capsule. All tested workspace operations used the authenticated product UI and real runtime. Remaining generic fields stay inspectable under Details.",
+      "mapped": true
+    },
+    {
+      "area": "Workspace",
+      "action": "diff",
+      "implementation": "workspace-controls.tsx; workspace-result.tsx",
+      "design": [
+        "N9v5U",
+        "okoQu"
+      ],
+      "evidence": [
+        "workspace-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Synthetic Git/file preparation occurred only in the isolated QA capsule. All tested workspace operations used the authenticated product UI and real runtime. Remaining generic fields stay inspectable under Details.",
+      "mapped": true
+    },
+    {
+      "area": "Workspace",
+      "action": "restore selected/all files with expected hashes",
+      "implementation": "workspace-controls.tsx; workspace-result.tsx",
+      "design": [
+        "N9v5U",
+        "okoQu"
+      ],
+      "evidence": [
+        "workspace-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Synthetic Git/file preparation occurred only in the isolated QA capsule. All tested workspace operations used the authenticated product UI and real runtime. Remaining generic fields stay inspectable under Details.",
+      "mapped": true
+    },
+    {
+      "area": "Workspace",
+      "action": "diagnostics",
+      "implementation": "workspace-controls.tsx; workspace-result.tsx",
+      "design": [
+        "N9v5U",
+        "okoQu"
+      ],
+      "evidence": [
+        "workspace-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Synthetic Git/file preparation occurred only in the isolated QA capsule. All tested workspace operations used the authenticated product UI and real runtime. Remaining generic fields stay inspectable under Details.",
+      "mapped": true
+    },
+    {
+      "area": "Workspace",
+      "action": "create worktree",
+      "implementation": "workspace-controls.tsx; workspace-result.tsx",
+      "design": [
+        "N9v5U",
+        "okoQu"
+      ],
+      "evidence": [
+        "workspace-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Synthetic Git/file preparation occurred only in the isolated QA capsule. All tested workspace operations used the authenticated product UI and real runtime. Remaining generic fields stay inspectable under Details.",
+      "mapped": true
+    },
+    {
+      "area": "Workspace",
+      "action": "release worktree",
+      "implementation": "workspace-controls.tsx; workspace-result.tsx",
+      "design": [
+        "N9v5U",
+        "okoQu"
+      ],
+      "evidence": [
+        "workspace-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Synthetic Git/file preparation occurred only in the isolated QA capsule. All tested workspace operations used the authenticated product UI and real runtime. Remaining generic fields stay inspectable under Details.",
+      "mapped": true
+    },
+    {
+      "area": "Workspace",
+      "action": "cleanup worktree",
+      "implementation": "workspace-controls.tsx; workspace-result.tsx",
+      "design": [
+        "N9v5U",
+        "okoQu"
+      ],
+      "evidence": [
+        "workspace-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Synthetic Git/file preparation occurred only in the isolated QA capsule. All tested workspace operations used the authenticated product UI and real runtime. Remaining generic fields stay inspectable under Details.",
+      "mapped": true
+    },
+    {
+      "area": "Computer",
+      "action": "connect",
+      "implementation": "screen-controls.tsx; components/ui/dialog.tsx",
+      "design": [
+        "K530XP",
+        "c7eRLE",
+        "hpgzv"
+      ],
+      "evidence": [
+        "computer-results.json",
+        "closure-results.json",
+        "computer-panel-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Input/pause/diagnostic and reload handlers are preserved; new tests focus on takeover/release/reconnect and vault redaction. No real third-party login or CAPTCHA is claimed. Reconnect retires the previous viewer grant before replacement; it never replays input.",
+      "mapped": true
+    },
+    {
+      "area": "Computer",
+      "action": "frame updates",
+      "implementation": "screen-controls.tsx; components/ui/dialog.tsx",
+      "design": [
+        "K530XP",
+        "c7eRLE",
+        "hpgzv"
+      ],
+      "evidence": [
+        "computer-results.json",
+        "closure-results.json",
+        "computer-panel-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Input/pause/diagnostic and reload handlers are preserved; new tests focus on takeover/release/reconnect and vault redaction. No real third-party login or CAPTCHA is claimed. Reconnect retires the previous viewer grant before replacement; it never replays input.",
+      "mapped": true
+    },
+    {
+      "area": "Computer",
+      "action": "takeover",
+      "implementation": "screen-controls.tsx; components/ui/dialog.tsx",
+      "design": [
+        "K530XP",
+        "c7eRLE",
+        "hpgzv"
+      ],
+      "evidence": [
+        "computer-results.json",
+        "closure-results.json",
+        "computer-panel-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Input/pause/diagnostic and reload handlers are preserved; new tests focus on takeover/release/reconnect and vault redaction. No real third-party login or CAPTCHA is claimed. Reconnect retires the previous viewer grant before replacement; it never replays input.",
+      "mapped": true
+    },
+    {
+      "area": "Computer",
+      "action": "release to agent",
+      "implementation": "screen-controls.tsx; components/ui/dialog.tsx",
+      "design": [
+        "K530XP",
+        "c7eRLE",
+        "hpgzv"
+      ],
+      "evidence": [
+        "computer-results.json",
+        "closure-results.json",
+        "computer-panel-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Input/pause/diagnostic and reload handlers are preserved; new tests focus on takeover/release/reconnect and vault redaction. No real third-party login or CAPTCHA is claimed. Reconnect retires the previous viewer grant before replacement; it never replays input.",
+      "mapped": true
+    },
+    {
+      "area": "Computer",
+      "action": "revoke access",
+      "implementation": "screen-controls.tsx; components/ui/dialog.tsx",
+      "design": [
+        "K530XP",
+        "c7eRLE",
+        "hpgzv"
+      ],
+      "evidence": [
+        "computer-results.json",
+        "closure-results.json",
+        "computer-panel-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Input/pause/diagnostic and reload handlers are preserved; new tests focus on takeover/release/reconnect and vault redaction. No real third-party login or CAPTCHA is claimed. Reconnect retires the previous viewer grant before replacement; it never replays input.",
+      "mapped": true
+    },
+    {
+      "area": "Computer",
+      "action": "pause computer",
+      "implementation": "screen-controls.tsx; components/ui/dialog.tsx",
+      "design": [
+        "K530XP",
+        "c7eRLE",
+        "hpgzv"
+      ],
+      "evidence": [
+        "computer-results.json",
+        "closure-results.json",
+        "computer-panel-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Input/pause/diagnostic and reload handlers are preserved; new tests focus on takeover/release/reconnect and vault redaction. No real third-party login or CAPTCHA is claimed. Reconnect retires the previous viewer grant before replacement; it never replays input.",
+      "mapped": true
+    },
+    {
+      "area": "Computer",
+      "action": "diagnostics",
+      "implementation": "screen-controls.tsx; components/ui/dialog.tsx",
+      "design": [
+        "K530XP",
+        "c7eRLE",
+        "hpgzv"
+      ],
+      "evidence": [
+        "computer-results.json",
+        "closure-results.json",
+        "computer-panel-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Input/pause/diagnostic and reload handlers are preserved; new tests focus on takeover/release/reconnect and vault redaction. No real third-party login or CAPTCHA is claimed. Reconnect retires the previous viewer grant before replacement; it never replays input.",
+      "mapped": true
+    },
+    {
+      "area": "Computer",
+      "action": "click input",
+      "implementation": "screen-controls.tsx; components/ui/dialog.tsx",
+      "design": [
+        "K530XP",
+        "c7eRLE",
+        "hpgzv"
+      ],
+      "evidence": [
+        "computer-results.json",
+        "closure-results.json",
+        "computer-panel-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Input/pause/diagnostic and reload handlers are preserved; new tests focus on takeover/release/reconnect and vault redaction. No real third-party login or CAPTCHA is claimed. Reconnect retires the previous viewer grant before replacement; it never replays input.",
+      "mapped": true
+    },
+    {
+      "area": "Computer",
+      "action": "private text input",
+      "implementation": "screen-controls.tsx; components/ui/dialog.tsx",
+      "design": [
+        "K530XP",
+        "c7eRLE",
+        "hpgzv"
+      ],
+      "evidence": [
+        "computer-results.json",
+        "closure-results.json",
+        "computer-panel-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Input/pause/diagnostic and reload handlers are preserved; new tests focus on takeover/release/reconnect and vault redaction. No real third-party login or CAPTCHA is claimed. Reconnect retires the previous viewer grant before replacement; it never replays input.",
+      "mapped": true
+    },
+    {
+      "area": "Computer",
+      "action": "keyboard keys",
+      "implementation": "screen-controls.tsx; components/ui/dialog.tsx",
+      "design": [
+        "K530XP",
+        "c7eRLE",
+        "hpgzv"
+      ],
+      "evidence": [
+        "computer-results.json",
+        "closure-results.json",
+        "computer-panel-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Input/pause/diagnostic and reload handlers are preserved; new tests focus on takeover/release/reconnect and vault redaction. No real third-party login or CAPTCHA is claimed. Reconnect retires the previous viewer grant before replacement; it never replays input.",
+      "mapped": true
+    },
+    {
+      "area": "Computer",
+      "action": "reconnect",
+      "implementation": "screen-controls.tsx; components/ui/dialog.tsx",
+      "design": [
+        "K530XP",
+        "c7eRLE",
+        "hpgzv"
+      ],
+      "evidence": [
+        "computer-results.json",
+        "closure-results.json",
+        "computer-panel-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Input/pause/diagnostic and reload handlers are preserved; new tests focus on takeover/release/reconnect and vault redaction. No real third-party login or CAPTCHA is claimed. Reconnect retires the previous viewer grant before replacement; it never replays input.",
+      "mapped": true
+    },
+    {
+      "area": "Computer",
+      "action": "restore viewer grant after reload",
+      "implementation": "screen-controls.tsx; components/ui/dialog.tsx",
+      "design": [
+        "K530XP",
+        "c7eRLE",
+        "hpgzv"
+      ],
+      "evidence": [
+        "computer-results.json",
+        "closure-results.json",
+        "computer-panel-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Input/pause/diagnostic and reload handlers are preserved; new tests focus on takeover/release/reconnect and vault redaction. No real third-party login or CAPTCHA is claimed. Reconnect retires the previous viewer grant before replacement; it never replays input.",
+      "mapped": true
+    },
+    {
+      "area": "Computer",
+      "action": "desktop dock/expand",
+      "implementation": "screen-controls.tsx; components/ui/dialog.tsx",
+      "design": [
+        "K530XP",
+        "c7eRLE",
+        "hpgzv"
+      ],
+      "evidence": [
+        "computer-results.json",
+        "closure-results.json",
+        "computer-panel-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Input/pause/diagnostic and reload handlers are preserved; new tests focus on takeover/release/reconnect and vault redaction. No real third-party login or CAPTCHA is claimed. Reconnect retires the previous viewer grant before replacement; it never replays input.",
+      "mapped": true
+    },
+    {
+      "area": "Computer",
+      "action": "mobile drawer",
+      "implementation": "screen-controls.tsx; components/ui/dialog.tsx",
+      "design": [
+        "K530XP",
+        "c7eRLE",
+        "hpgzv"
+      ],
+      "evidence": [
+        "computer-results.json",
+        "closure-results.json",
+        "computer-panel-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Input/pause/diagnostic and reload handlers are preserved; new tests focus on takeover/release/reconnect and vault redaction. No real third-party login or CAPTCHA is claimed. Reconnect retires the previous viewer grant before replacement; it never replays input.",
+      "mapped": true
+    },
+    {
+      "area": "Computer",
+      "action": "vault list",
+      "implementation": "screen-controls.tsx; components/ui/dialog.tsx",
+      "design": [
+        "K530XP",
+        "c7eRLE",
+        "hpgzv"
+      ],
+      "evidence": [
+        "computer-results.json",
+        "closure-results.json",
+        "computer-panel-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Input/pause/diagnostic and reload handlers are preserved; new tests focus on takeover/release/reconnect and vault redaction. No real third-party login or CAPTCHA is claimed. Reconnect retires the previous viewer grant before replacement; it never replays input.",
+      "mapped": true
+    },
+    {
+      "area": "Computer",
+      "action": "vault add/password/optional OTP",
+      "implementation": "screen-controls.tsx; components/ui/dialog.tsx",
+      "design": [
+        "K530XP",
+        "c7eRLE",
+        "hpgzv"
+      ],
+      "evidence": [
+        "computer-results.json",
+        "closure-results.json",
+        "computer-panel-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Input/pause/diagnostic and reload handlers are preserved; new tests focus on takeover/release/reconnect and vault redaction. No real third-party login or CAPTCHA is claimed. Reconnect retires the previous viewer grant before replacement; it never replays input.",
+      "mapped": true
+    },
+    {
+      "area": "Computer",
+      "action": "vault delete",
+      "implementation": "screen-controls.tsx; components/ui/dialog.tsx",
+      "design": [
+        "K530XP",
+        "c7eRLE",
+        "hpgzv"
+      ],
+      "evidence": [
+        "computer-results.json",
+        "closure-results.json",
+        "computer-panel-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Input/pause/diagnostic and reload handlers are preserved; new tests focus on takeover/release/reconnect and vault redaction. No real third-party login or CAPTCHA is claimed. Reconnect retires the previous viewer grant before replacement; it never replays input.",
+      "mapped": true
+    },
+    {
+      "area": "Learning",
+      "action": "agent/scope selection",
+      "implementation": "learning-controls.tsx",
+      "design": [
+        "qQDdW",
+        "RDPql"
+      ],
+      "evidence": [
+        "resources-results.json",
+        "learning-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Catalog installation and subsequent skill correction/archive/restore/rollback used the actual API. Memory was created by a real agent tool call, corrected/forgotten through UI, then absence confirmed by API. Archive is the existing reversible remove operation; no invented hard-delete endpoint.",
+      "mapped": true
+    },
+    {
+      "area": "Learning",
+      "action": "inspect memory",
+      "implementation": "learning-controls.tsx",
+      "design": [
+        "qQDdW",
+        "RDPql"
+      ],
+      "evidence": [
+        "resources-results.json",
+        "learning-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Catalog installation and subsequent skill correction/archive/restore/rollback used the actual API. Memory was created by a real agent tool call, corrected/forgotten through UI, then absence confirmed by API. Archive is the existing reversible remove operation; no invented hard-delete endpoint.",
+      "mapped": true
+    },
+    {
+      "area": "Learning",
+      "action": "correct memory",
+      "implementation": "learning-controls.tsx",
+      "design": [
+        "qQDdW",
+        "RDPql"
+      ],
+      "evidence": [
+        "resources-results.json",
+        "learning-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Catalog installation and subsequent skill correction/archive/restore/rollback used the actual API. Memory was created by a real agent tool call, corrected/forgotten through UI, then absence confirmed by API. Archive is the existing reversible remove operation; no invented hard-delete endpoint.",
+      "mapped": true
+    },
+    {
+      "area": "Learning",
+      "action": "forget memory",
+      "implementation": "learning-controls.tsx",
+      "design": [
+        "qQDdW",
+        "RDPql"
+      ],
+      "evidence": [
+        "resources-results.json",
+        "learning-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Catalog installation and subsequent skill correction/archive/restore/rollback used the actual API. Memory was created by a real agent tool call, corrected/forgotten through UI, then absence confirmed by API. Archive is the existing reversible remove operation; no invented hard-delete endpoint.",
+      "mapped": true
+    },
+    {
+      "area": "Learning",
+      "action": "memory sources/revision history",
+      "implementation": "learning-controls.tsx",
+      "design": [
+        "qQDdW",
+        "RDPql"
+      ],
+      "evidence": [
+        "resources-results.json",
+        "learning-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Catalog installation and subsequent skill correction/archive/restore/rollback used the actual API. Memory was created by a real agent tool call, corrected/forgotten through UI, then absence confirmed by API. Archive is the existing reversible remove operation; no invented hard-delete endpoint.",
+      "mapped": true
+    },
+    {
+      "area": "Learning",
+      "action": "inspect skill/readiness",
+      "implementation": "learning-controls.tsx",
+      "design": [
+        "qQDdW",
+        "RDPql"
+      ],
+      "evidence": [
+        "resources-results.json",
+        "learning-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Catalog installation and subsequent skill correction/archive/restore/rollback used the actual API. Memory was created by a real agent tool call, corrected/forgotten through UI, then absence confirmed by API. Archive is the existing reversible remove operation; no invented hard-delete endpoint.",
+      "mapped": true
+    },
+    {
+      "area": "Learning",
+      "action": "correct skill",
+      "implementation": "learning-controls.tsx",
+      "design": [
+        "qQDdW",
+        "RDPql"
+      ],
+      "evidence": [
+        "resources-results.json",
+        "learning-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Catalog installation and subsequent skill correction/archive/restore/rollback used the actual API. Memory was created by a real agent tool call, corrected/forgotten through UI, then absence confirmed by API. Archive is the existing reversible remove operation; no invented hard-delete endpoint.",
+      "mapped": true
+    },
+    {
+      "area": "Learning",
+      "action": "archive/remove from active skills",
+      "implementation": "learning-controls.tsx",
+      "design": [
+        "qQDdW",
+        "RDPql"
+      ],
+      "evidence": [
+        "resources-results.json",
+        "learning-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Catalog installation and subsequent skill correction/archive/restore/rollback used the actual API. Memory was created by a real agent tool call, corrected/forgotten through UI, then absence confirmed by API. Archive is the existing reversible remove operation; no invented hard-delete endpoint.",
+      "mapped": true
+    },
+    {
+      "area": "Learning",
+      "action": "restore skill",
+      "implementation": "learning-controls.tsx",
+      "design": [
+        "qQDdW",
+        "RDPql"
+      ],
+      "evidence": [
+        "resources-results.json",
+        "learning-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Catalog installation and subsequent skill correction/archive/restore/rollback used the actual API. Memory was created by a real agent tool call, corrected/forgotten through UI, then absence confirmed by API. Archive is the existing reversible remove operation; no invented hard-delete endpoint.",
+      "mapped": true
+    },
+    {
+      "area": "Learning",
+      "action": "rollback skill revision",
+      "implementation": "learning-controls.tsx",
+      "design": [
+        "qQDdW",
+        "RDPql"
+      ],
+      "evidence": [
+        "resources-results.json",
+        "learning-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Catalog installation and subsequent skill correction/archive/restore/rollback used the actual API. Memory was created by a real agent tool call, corrected/forgotten through UI, then absence confirmed by API. Archive is the existing reversible remove operation; no invented hard-delete endpoint.",
+      "mapped": true
+    },
+    {
+      "area": "Learning",
+      "action": "skill assets",
+      "implementation": "learning-controls.tsx",
+      "design": [
+        "qQDdW",
+        "RDPql"
+      ],
+      "evidence": [
+        "resources-results.json",
+        "learning-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Catalog installation and subsequent skill correction/archive/restore/rollback used the actual API. Memory was created by a real agent tool call, corrected/forgotten through UI, then absence confirmed by API. Archive is the existing reversible remove operation; no invented hard-delete endpoint.",
+      "mapped": true
+    },
+    {
+      "area": "Learning",
+      "action": "skill usage/source links",
+      "implementation": "learning-controls.tsx",
+      "design": [
+        "qQDdW",
+        "RDPql"
+      ],
+      "evidence": [
+        "resources-results.json",
+        "learning-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Catalog installation and subsequent skill correction/archive/restore/rollback used the actual API. Memory was created by a real agent tool call, corrected/forgotten through UI, then absence confirmed by API. Archive is the existing reversible remove operation; no invented hard-delete endpoint.",
+      "mapped": true
+    },
+    {
+      "area": "Learning",
+      "action": "search catalog",
+      "implementation": "learning-controls.tsx",
+      "design": [
+        "qQDdW",
+        "RDPql"
+      ],
+      "evidence": [
+        "resources-results.json",
+        "learning-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Catalog installation and subsequent skill correction/archive/restore/rollback used the actual API. Memory was created by a real agent tool call, corrected/forgotten through UI, then absence confirmed by API. Archive is the existing reversible remove operation; no invented hard-delete endpoint.",
+      "mapped": true
+    },
+    {
+      "area": "Learning",
+      "action": "install catalog workflow",
+      "implementation": "learning-controls.tsx",
+      "design": [
+        "qQDdW",
+        "RDPql"
+      ],
+      "evidence": [
+        "resources-results.json",
+        "learning-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Catalog installation and subsequent skill correction/archive/restore/rollback used the actual API. Memory was created by a real agent tool call, corrected/forgotten through UI, then absence confirmed by API. Archive is the existing reversible remove operation; no invented hard-delete endpoint.",
+      "mapped": true
+    },
+    {
+      "area": "Citations/workflows",
+      "action": "markdown citation links",
+      "implementation": "direct-message-page.tsx; artifact-results.tsx; learning-controls.tsx",
+      "design": [
+        "o0VSi8",
+        "SySnj",
+        "qQDdW"
+      ],
+      "evidence": [
+        "files-results.json",
+        "learning-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Existing markdown renderer and provenance links retained. Full document generation/provider work is unchanged and was not rerun; actual PDF/DOCX bytes were uploaded/downloaded.",
+      "mapped": true
+    },
+    {
+      "area": "Citations/workflows",
+      "action": "memory/skill source links",
+      "implementation": "direct-message-page.tsx; artifact-results.tsx; learning-controls.tsx",
+      "design": [
+        "o0VSi8",
+        "SySnj",
+        "qQDdW"
+      ],
+      "evidence": [
+        "files-results.json",
+        "learning-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Existing markdown renderer and provenance links retained. Full document generation/provider work is unchanged and was not rerun; actual PDF/DOCX bytes were uploaded/downloaded.",
+      "mapped": true
+    },
+    {
+      "area": "Citations/workflows",
+      "action": "document workflow instructions/assets/readiness",
+      "implementation": "direct-message-page.tsx; artifact-results.tsx; learning-controls.tsx",
+      "design": [
+        "o0VSi8",
+        "SySnj",
+        "qQDdW"
+      ],
+      "evidence": [
+        "files-results.json",
+        "learning-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Existing markdown renderer and provenance links retained. Full document generation/provider work is unchanged and was not rerun; actual PDF/DOCX bytes were uploaded/downloaded.",
+      "mapped": true
+    },
+    {
+      "area": "Citations/workflows",
+      "action": "publish/download document outputs",
+      "implementation": "direct-message-page.tsx; artifact-results.tsx; learning-controls.tsx",
+      "design": [
+        "o0VSi8",
+        "SySnj",
+        "qQDdW"
+      ],
+      "evidence": [
+        "files-results.json",
+        "learning-closure-results.json",
+        "final-matrix-results.json"
+      ],
+      "notes": "Existing markdown renderer and provenance links retained. Full document generation/provider work is unchanged and was not rerun; actual PDF/DOCX bytes were uploaded/downloaded.",
+      "mapped": true
+    }
+  ],
+  "design_adaptations": [
+    "Contextual workspace/memory panels reuse the established 360px editor reservation; mobile uses a full-width Sheet.",
+    "Computer preserves one viewer while switching between expanded overlay and 360px contextual panel; mobile uses a bottom drawer.",
+    "Checkpoint/worktree/skills lifecycle and permission states extend active primitives because canvas lacks complete dedicated screens.",
+    "Attachment previews share an accessible Dialog; long attachment lists scroll inside the composer.",
+    "Document binaries without a supported browser renderer use an explicit download fallback.",
+    "Source serif/heading assets are not added; existing approved Geist typography and semantic light/dark tokens remain."
+  ],
+  "limits": [
+    "Local acceptance only; not deployed or a release decision.",
+    "No manual screen-reader certification.",
+    "Unchanged voice/provider/third-party login operations were mapped but not re-executed.",
+    "NMA-038 owns missing portable import/export and capability completion; NMA-039/NMA-027 remain operational gates."
+  ]
+}

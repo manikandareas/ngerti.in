@@ -1,0 +1,16 @@
+apps/web/src/features/direct-messages/composer.tsx:26:3 lint/correctness/noUnusedFunctionParameters ━━━━━━━━━━
+
+  ! This parameter working is unused.
+  
+    24 │ export function Composer({
+    25 │   thread,
+  > 26 │   working,
+       │   ^^^^^^^
+    27 │   connected,
+    28 │ }: {
+  
+  i Unused parameters might be the result of an incomplete refactoring.
+  
+
+Checked 3 files in 65ms. Fixed 2 files.
+Found 1 warning.

@@ -1,0 +1,15 @@
+[
+  {
+    "name": "Workspace inspect and project/checkpoint",
+    "passed": true
+  },
+  {
+    "name": "Computer connect, takeover, release and close",
+    "passed": false,
+    "error": "TimeoutError: locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('Agent memegang kontrol', { exact: true }) to be visible\u001b[22m\n"
+  },
+  {
+    "name": "Learning catalog install, inspect and archive",
+    "passed": true
+  }
+]

@@ -35,6 +35,20 @@ export type Run = {
   continuation_required?: boolean;
 };
 export type Goal = {
+  subgoals?: { criterion: string; evidence_ids: string[] }[];
+  reviews?: { review_id: string; verdict: string; reason: string; evidence_ids: string[] }[];
+  wake?: {
+    state: string;
+    next_at: string | null;
+    configuration: {
+      kind: string;
+      timezone: string;
+      expression?: string;
+      interval_seconds?: number;
+      session_epoch?: string;
+      job?: { mode: string; lifetime?: string };
+    };
+  } | null;
   responsible_agent_id?: string;
   units?: { run_id: string; settled: boolean }[];
   goal_id: string;

@@ -9,6 +9,14 @@ const labels: Record<Goal["status"], string> = {
   completed: "Selesai",
 };
 
+function scheduledTime(value: string, timezone: string) {
+  try {
+    return new Date(value).toLocaleString("id-ID", { timeZone: timezone });
+  } catch {
+    return value;
+  }
+}
+
 export function GoalProgress({
   goals,
   messages,
@@ -70,6 +78,61 @@ export function GoalProgress({
             {goal.progress && <p className="whitespace-pre-wrap">{goal.progress}</p>}
             {goal.wake_condition && (
               <p className="text-muted-foreground">Menunggu: {goal.wake_condition}</p>
+            )}
+            {!!goal.subgoals?.length && (
+              <div className="space-y-2">
+                <h3 className="text-xs font-semibold">Langkah tujuan</h3>
+                <ul className="space-y-2">
+                  {goal.subgoals.map((step) => (
+                    <li key={step.criterion} className="flex items-start gap-2">
+                      <span className="text-muted-foreground">
+                        {step.evidence_ids.length ? "✓" : "○"}
+                      </span>
+                      <span>
+                        {step.criterion}
+                        <span className="ml-2 text-xs text-muted-foreground">
+                          {step.evidence_ids.length ? "Ada bukti hasil" : "Belum ada bukti"}
+                        </span>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {!!goal.reviews?.length && (
+              <div className="space-y-1 border-l-2 pl-3">
+                <h3 className="text-xs font-semibold">Pemeriksaan hasil</h3>
+                <p>
+                  {goal.reviews.at(-1)?.verdict === "done"
+                    ? "Hasil memenuhi kriteria"
+                    : "Hasil masih perlu ditindaklanjuti"}
+                </p>
+                <p className="text-muted-foreground">{goal.reviews.at(-1)?.reason}</p>
+              </div>
+            )}
+            {goal.wake && (
+              <div className="space-y-1 text-xs text-muted-foreground">
+                <h3 className="font-semibold text-foreground">Jadwal pekerjaan</h3>
+                <p>
+                  {goal.wake.state === "enabled" ? "Aktif" : "Dijeda"} ·{" "}
+                  {goal.wake.configuration.timezone}
+                </p>
+                {goal.wake.next_at && (
+                  <p>
+                    Berikutnya:{" "}
+                    <time dateTime={goal.wake.next_at}>
+                      {scheduledTime(goal.wake.next_at, goal.wake.configuration.timezone)}
+                    </time>
+                  </p>
+                )}
+                {goal.wake.configuration.job?.lifetime === "session" && (
+                  <p>Berulang selama sesi server ini aktif.</p>
+                )}
+                {goal.wake.configuration.job?.mode === "script" && (
+                  <p>Automasi script tanpa pemanggilan model.</p>
+                )}
+                <p>Ubah, jeda, lanjutkan, atau jalankan sekarang lewat percakapan.</p>
+              </div>
             )}
             {goal.evidence.length > 0 && (
               <div className="space-y-2">

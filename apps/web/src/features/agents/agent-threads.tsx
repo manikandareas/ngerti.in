@@ -27,6 +27,8 @@ export function AgentThreads({ agents, edit }: { agents: Agent[]; edit: (agent: 
   const [selected, setSelected] = useState<string | null>(null);
   const [detail, setDetail] = useState<Thread | null>(null);
   const [creating, setCreating] = useState(false);
+  const [step, setStep] = useState(1);
+  const [search, setSearch] = useState("");
   const [kind, setKind] = useState<"dm" | "group">("dm");
   const [title, setTitle] = useState("");
   const [members, setMembers] = useState<string[]>([]);
@@ -114,6 +116,8 @@ export function AgentThreads({ agents, edit }: { agents: Agent[]; edit: (agent: 
           variant="outline"
           onClick={() => {
             setCreating(true);
+            setStep(1);
+            setSearch("");
             setError("");
             setTitle("");
             setMembers([]);
@@ -168,9 +172,9 @@ export function AgentThreads({ agents, edit }: { agents: Agent[]; edit: (agent: 
           if (!busy) setCreating(open);
         }}
       >
-        <DialogContent className="max-h-[90dvh] overflow-y-auto">
+        <DialogContent className="max-h-[90dvh] overflow-y-auto rounded-[20px] sm:max-w-[480px] [background:var(--app-shell-fill)]">
           <DialogHeader>
-            <DialogTitle>Siapkan percakapan</DialogTitle>
+            <DialogTitle>{step === 1 ? "Pilih agent" : "Detail percakapan"}</DialogTitle>
             <DialogDescription>
               Pilih satu agent untuk DM atau 2–6 agent untuk grup. Semua menggunakan profil agent
               yang sudah kamu simpan.
@@ -180,11 +184,12 @@ export function AgentThreads({ agents, edit }: { agents: Agent[]; edit: (agent: 
             className="space-y-4"
             onSubmit={(e) => {
               e.preventDefault();
-              void create();
+              if (step === 1) setStep(2);
+              else void create();
             }}
           >
             <fieldset disabled={busy} className="space-y-4">
-              <label className="block space-y-2 text-sm">
+              <label className={step === 1 ? "block space-y-2 text-sm" : "hidden"}>
                 Jenis
                 <NativeSelect
                   className="h-10 w-full rounded-md border bg-background px-3"
@@ -198,20 +203,33 @@ export function AgentThreads({ agents, edit }: { agents: Agent[]; edit: (agent: 
                   <option value="group">Grup</option>
                 </NativeSelect>
               </label>
-              <label htmlFor="thread-title" className="block space-y-2 text-sm">
+              <label
+                htmlFor="thread-title"
+                className={step === 2 ? "block space-y-2 text-sm" : "hidden"}
+              >
                 Nama percakapan
                 <Input
                   id="thread-title"
-                  required
+                  required={step === 2}
                   maxLength={120}
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                 />
               </label>
-              <fieldset className="space-y-3">
+              <fieldset hidden={step !== 1} className="space-y-3">
                 <legend className="mb-2 text-sm font-medium">Agent</legend>
+                <Input
+                  aria-label="Cari agent"
+                  placeholder="Cari agent"
+                  value={search}
+                  onChange={(event) => setSearch(event.target.value)}
+                />
                 {agents
-                  .filter((a) => a.status === "active")
+                  .filter(
+                    (a) =>
+                      a.status === "active" &&
+                      `${a.display_name} ${a.handle}`.toLowerCase().includes(search.toLowerCase()),
+                  )
                   .map((agent) => (
                     <label key={agent.agent_id} className="flex items-center gap-3 text-sm">
                       <NativeChoice
@@ -244,6 +262,31 @@ export function AgentThreads({ agents, edit }: { agents: Agent[]; edit: (agent: 
                 {error}
               </p>
             )}
+            {step === 2 && (
+              <>
+                <div className="space-y-2">
+                  <p className="text-sm text-muted-foreground">Agent · {members.length}</p>
+                  {agents
+                    .filter((agent) => members.includes(agent.agent_id))
+                    .map((agent) => (
+                      <div
+                        key={agent.agent_id}
+                        className="flex items-center gap-3 rounded-lg bg-background/50 p-3"
+                      >
+                        <AgentAvatar
+                          name={agent.display_name}
+                          url={agent.config.avatar_url}
+                          className="size-8 text-sm"
+                        />
+                        <span className="text-sm">{agent.display_name}</span>
+                      </div>
+                    ))}
+                </div>
+                <Button type="button" variant="ghost" disabled={busy} onClick={() => setStep(1)}>
+                  Kembali
+                </Button>
+              </>
+            )}
             <Button
               type="submit"
               disabled={
@@ -251,7 +294,7 @@ export function AgentThreads({ agents, edit }: { agents: Agent[]; edit: (agent: 
                 (kind === "dm" ? members.length !== 1 : members.length < 2 || members.length > 6)
               }
             >
-              {busy ? "Menyimpan…" : "Simpan percakapan"}
+              {busy ? "Menyimpan…" : step === 1 ? "Lanjut" : "Buat percakapan"}
             </Button>
           </form>
         </DialogContent>
@@ -262,7 +305,7 @@ export function AgentThreads({ agents, edit }: { agents: Agent[]; edit: (agent: 
           if (!open) setSelected(null);
         }}
       >
-        <DialogContent className="max-h-[90dvh] overflow-y-auto">
+        <DialogContent className="max-h-[90dvh] overflow-y-auto rounded-[20px] sm:max-w-[480px] [background:var(--app-shell-fill)]">
           <DialogHeader>
             <DialogTitle>
               {detail

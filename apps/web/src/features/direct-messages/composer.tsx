@@ -204,7 +204,7 @@ export function Composer({
         value={text}
         disabled={!ready || unavailable || !!pending}
         placeholder={`Pesan untuk ${(thread.kind === "group" ? thread.title : thread.agents[0]?.display_name) ?? "agent"}…`}
-        className="max-h-48 min-h-24 resize-y bg-background text-base"
+        className="max-h-48 min-h-12 resize-y rounded-xl bg-background text-sm"
         onChange={(event) => {
           setText(event.target.value);
           save(event.target.value, null);

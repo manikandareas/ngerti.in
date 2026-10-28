@@ -22,15 +22,23 @@ export const Route = createRootRoute({
   }),
   component: Root,
   notFoundComponent: () => (
-    <main className="flex min-h-[80svh] flex-col items-center justify-center gap-5 p-6 text-center">
-      <h1>Halaman tidak ditemukan</h1>
+    <main
+      id="main"
+      className="flex min-h-[80svh] flex-col items-center justify-center gap-5 p-6 text-center"
+    >
+      <h1 className="text-2xl font-semibold">Halaman tidak ditemukan</h1>
       <Link to="/">Kembali ke beranda</Link>
     </main>
   ),
-  errorComponent: ({ error, reset }) => (
-    <main className="flex min-h-[80svh] flex-col items-center justify-center gap-5 p-6 text-center">
-      <h1>Halaman belum dapat dibuka</h1>
-      <p>{error instanceof Error ? error.message : "Silakan coba lagi."}</p>
+  errorComponent: ({ reset }) => (
+    <main
+      id="main"
+      className="flex min-h-[80svh] flex-col items-center justify-center gap-5 p-6 text-center"
+    >
+      <h1 className="text-2xl font-semibold">Halaman belum dapat dibuka</h1>
+      <p className="max-w-md text-sm text-muted-foreground">
+        Terjadi kendala saat membuka halaman. Coba lagi atau kembali ke beranda.
+      </p>
       <Button type="button" onClick={reset}>
         Coba lagi
       </Button>
@@ -77,9 +85,12 @@ function Root() {
           </QueryClientProvider>
         </ClerkProvider>
       ) : (
-        <main className="flex min-h-[80svh] flex-col items-center justify-center gap-5 p-6 text-center">
-          <h1>Ngertiin belum dikonfigurasi</h1>
-          <p>Isi VITE_CLERK_PUBLISHABLE_KEY pada .env root, lalu restart web.</p>
+        <main
+          id="main"
+          className="flex min-h-[80svh] flex-col items-center justify-center gap-5 p-6 text-center"
+        >
+          <h1 className="text-2xl font-semibold">Ngertiin belum dikonfigurasi</h1>
+          <p>Layanan belum siap digunakan. Hubungi pengelola untuk menyelesaikan konfigurasi.</p>
         </main>
       )}
     </Document>

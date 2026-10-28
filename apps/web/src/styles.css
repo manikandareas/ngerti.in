@@ -277,3 +277,76 @@
     animation: none;
   }
 }
+
+/* Active agent.pen desktop shell: eIiDQ / JNgIa. */
+:root {
+  --app-shell-fill: linear-gradient(155deg, #edf1f7e8, #f3f2f0e8 48%, #f4ede9e8);
+  --app-shell-search: #ffffff66;
+  --app-shell-selected: #ffffffb3;
+  --app-shell-edge: #ffffffb3;
+  --app-surface-edge: #25262a0a;
+}
+:root[data-theme="dark"],
+:root.dark {
+  --app-shell-fill: linear-gradient(155deg, #252a32eb, #252629eb 48%, #2c282aeb);
+  --app-shell-search: #ffffff08;
+  --app-shell-selected: #ffffff0f;
+  --app-shell-edge: #ffffff12;
+  --app-surface-edge: #ffffff0d;
+}
+.app-frame {
+  display: flex;
+  height: 100dvh;
+  min-height: 0;
+  background: var(--app-shell-fill);
+}
+.app-surface {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--background);
+  overflow: hidden;
+}
+.conversation-sidebar {
+  background: transparent;
+}
+.conversation-search {
+  background: var(--app-shell-search);
+  border-color: var(--app-shell-edge);
+  border-radius: 10px;
+  box-shadow: none;
+}
+.conversation-link[aria-current="page"] {
+  background: var(--app-shell-selected);
+  border-color: var(--app-shell-edge);
+}
+@media (min-width: 768px) {
+  .app-frame {
+    padding: 10px 10px 10px 0;
+  }
+  .app-surface {
+    border: 1px solid var(--app-surface-edge);
+    border-radius: 16px;
+  }
+  .conversation-sidebar {
+    height: 100%;
+  }
+}
+@media (min-width: 1024px) {
+  body:has([data-context-editor="true"]) .app-surface {
+    margin-right: 360px;
+  }
+  [data-context-editor="true"] {
+    top: 10px;
+    bottom: 10px;
+    right: 10px;
+    height: auto;
+    border-radius: 16px;
+    background: var(--background);
+    box-shadow: none;
+  }
+  [data-context-editor="true"] form {
+    background: var(--app-shell-fill);
+  }
+}

@@ -22,14 +22,14 @@ export function AgentAvatar({
         alt=""
         aria-hidden="true"
         onError={() => setFailed(true)}
-        className={`shrink-0 rounded-full bg-secondary object-cover ${className}`}
+        className={`shrink-0 rounded-xl bg-secondary object-cover ${className}`}
       />
     );
   }
   return (
     <div
       aria-hidden="true"
-      className={`flex shrink-0 items-center justify-center rounded-full bg-secondary font-bold ${className}`}
+      className={`flex shrink-0 items-center justify-center rounded-xl bg-secondary font-bold ${className}`}
     >
       {name.slice(0, 1) || "·"}
     </div>

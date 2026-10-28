@@ -1,13 +1,15 @@
 import { useAuth } from "@clerk/tanstack-react-start";
 import { Link } from "@tanstack/react-router";
-import { ArrowDown, ArrowLeft, MessageCircle } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Streamdown } from "streamdown";
+import { ConversationNavigation } from "@/components/conversation-navigation";
 import { Button } from "@/components/ui/button";
 import { AgentAvatar } from "@/features/agents/agent-avatar";
+import { ThreadInfo } from "@/features/agents/thread-info";
 import { providerFailureMessage } from "@/features/connections/client";
 import { ArtifactResults } from "./artifact-results";
-import { command, listThreads, submit, type ThreadItem } from "./client";
+import { command, submit } from "./client";
 import { CollaborationProgress } from "./collaboration-progress";
 import { Composer } from "./composer";
 import { GoalProgress } from "./goal-progress";
@@ -22,8 +24,6 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
   const { getToken } = useAuth();
   const { snapshot, connection, error, refresh, loadEarlier, loadingEarlier } =
     useDirectMessage(threadId);
-  const [threads, setThreads] = useState<ThreadItem[]>([]);
-  const [listError, setListError] = useState(false);
   const [cancelError, setCancelError] = useState("");
   const [stopping, setStopping] = useState<string | null>(null);
   const cancels = useRef(new Map<string, ReturnType<typeof command>>());
@@ -36,20 +36,6 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
     snapshot?.thread.agents.find((a) => a.agent_id === id)?.display_name ?? "Agent";
   const working = snapshot?.runs.some(activeRun) ?? false;
   const activity = snapshot?.runs.slice().reverse().find(activeRun);
-  useEffect(() => {
-    let alive = true;
-    void getToken()
-      .then(listThreads)
-      .then((items) => {
-        if (alive) setThreads(items);
-      })
-      .catch(() => {
-        if (alive) setListError(true);
-      });
-    return () => {
-      alive = false;
-    };
-  }, [getToken]);
   useEffect(() => {
     if (snapshot && follow.current && scroll.current)
       scroll.current.scrollTop = scroll.current.scrollHeight;
@@ -77,80 +63,47 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
     error: "Koneksi terputus",
   }[connection];
   return (
-    <main id="main" className="flex h-dvh min-h-0 bg-background">
-      <aside
-        className="hidden w-64 shrink-0 flex-col border-r bg-card p-5 md:flex"
-        aria-label="DM dan grup"
-      >
-        <Link to="/agents" className="flex min-h-11 items-center gap-2 text-sm font-semibold">
-          <ArrowLeft className="size-4" /> Agent dan percakapan
-        </Link>
-        <h2 className="mt-8 mb-3 text-sm">DM dan grup</h2>
-        <nav className="min-h-0 flex-1 space-y-1 overflow-y-auto">
-          {threads.map((thread) => (
-            <Link
-              key={thread.thread_id}
-              to="/conversations/$threadId"
-              params={{ threadId: thread.thread_id }}
-              aria-current={thread.thread_id === threadId ? "page" : undefined}
-              className={`flex min-h-12 items-center gap-3 rounded-lg px-3 py-3 text-sm hover:bg-muted ${thread.thread_id === threadId ? "bg-secondary font-semibold" : ""}`}
-            >
-              <MessageCircle className="size-4 shrink-0" />
-              <span className="break-words [overflow-wrap:anywhere]">
-                {thread.kind === "group" ? "Grup · " : "DM · "}
-                {thread.title}
-              </span>
-            </Link>
-          ))}
-          {listError && (
-            <p className="text-sm text-muted-foreground">
-              Daftar belum dimuat.{" "}
-              <Link to="/agents" className="underline">
-                Buka daftar agent
-              </Link>
-              .
-            </p>
-          )}
-        </nav>
-      </aside>
+    <main id="main" className="app-frame">
+      <ConversationNavigation />
       <section
-        className="flex min-w-0 flex-1 flex-col"
+        className="app-surface"
         aria-label={group ? "Percakapan grup" : "Percakapan langsung"}
       >
-        <header className="flex shrink-0 items-center gap-3 border-b bg-card px-4 py-3 sm:px-6">
-          <Button asChild variant="ghost" size="icon" className="size-11 md:hidden">
-            <Link to="/agents" aria-label="Kembali ke agent dan percakapan">
-              <ArrowLeft className="size-5" />
-            </Link>
-          </Button>
-          {group ? (
-            <div
-              className="flex size-10 shrink-0 items-center justify-center rounded-full bg-secondary font-bold"
-              aria-hidden="true"
-            >
-              G
+        <header className="relative flex min-h-[58px] shrink-0 items-center gap-3 px-4 py-3 md:h-[92px] md:justify-center md:px-8">
+          <ConversationNavigation mobile />
+          <div className="flex min-w-0 flex-1 items-center gap-3 md:flex-col md:gap-1">
+            {group ? (
+              <div
+                className="flex size-10 shrink-0 items-center justify-center rounded-full bg-secondary font-bold"
+                aria-hidden="true"
+              >
+                G
+              </div>
+            ) : (
+              <AgentAvatar name={agent?.display_name ?? ""} url={agent?.config.avatar_url} />
+            )}
+            <div className="min-w-0 md:text-center">
+              <h1 className="break-words text-sm font-medium md:rounded-full md:border md:px-2.5 md:py-0.5 [overflow-wrap:anywhere]">
+                {group ? snapshot?.thread.title : (agent?.display_name ?? "Percakapan langsung")}
+              </h1>
+              <p className="sr-only">
+                {group
+                  ? snapshot?.thread.agents.map((a) => `@${a.handle}`).join(" · ")
+                  : agent
+                    ? `@${agent.handle} · DM`
+                    : "Memuat agent…"}
+              </p>
             </div>
-          ) : (
-            <AgentAvatar name={agent?.display_name ?? ""} url={agent?.config.avatar_url} />
-          )}
-          <div className="min-w-0 flex-1">
-            <h1 className="break-words text-lg font-bold [overflow-wrap:anywhere]">
-              {group ? snapshot?.thread.title : (agent?.display_name ?? "Percakapan langsung")}
-            </h1>
-            <p className="text-xs text-muted-foreground">
-              {group
-                ? snapshot?.thread.agents.map((a) => `@${a.handle}`).join(" · ")
-                : agent
-                  ? `@${agent.handle} · DM`
-                  : "Memuat agent…"}
-            </p>
           </div>
-          <Link to="/agents" className="hidden text-sm underline sm:block">
-            Semua agent
-          </Link>
+          <div className="flex items-center gap-3 md:absolute md:right-8 md:top-5">
+            {snapshot && <ThreadInfo thread={snapshot.thread} refresh={refresh} />}
+            <Link to="/agents" className="hidden text-xs text-muted-foreground lg:block">
+              Semua agent
+            </Link>
+          </div>
         </header>
         <div
-          className="flex flex-wrap items-center justify-between gap-2 border-b px-4 py-2 text-xs sm:px-6"
+          className="flex flex-wrap items-center justify-between gap-2 px-4 py-1 text-xs text-muted-foreground sm:px-6"
           role="status"
         >
           <span>
@@ -195,7 +148,9 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
             }
           }}
         >
-          <div className="mx-auto max-w-3xl space-y-7 py-6">
+          <div
+            className={`mx-auto max-w-3xl space-y-7 py-6 ${snapshot?.messages.length === 1 && snapshot.messages[0]?.author_kind === "agent" ? "flex min-h-full flex-col justify-center [&>details]:absolute [&>details]:top-36" : ""}`}
+          >
             {snapshot ? (
               <CollaborationProgress
                 snapshot={snapshot}
@@ -203,23 +158,33 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
                 onStop={(runId) => void cancel({ run_id: runId })}
               />
             ) : null}
-            {snapshot && (
-              <SessionControls
-                key={`session:${threadId}`}
-                thread={snapshot.thread}
-                working={working}
-              />
-            )}
-            <ArtifactResults artifacts={snapshot?.artifacts ?? []} threadId={threadId} />
-            {snapshot && <LearningControls key={`learning:${threadId}`} thread={snapshot.thread} />}
-            {snapshot && (
-              <WorkspaceControls
-                key={`workspace:${threadId}`}
-                thread={snapshot.thread}
-                working={working}
-              />
-            )}
-            {snapshot && <ScreenControls key={`screen:${threadId}`} thread={snapshot.thread} />}
+            <details className="text-xs text-muted-foreground">
+              <summary className="cursor-pointer py-2">
+                Opsi percakapan · konteks, memori, workspace dan layar
+              </summary>
+              <div className="space-y-4 py-4">
+                {" "}
+                {snapshot && (
+                  <SessionControls
+                    key={`session:${threadId}`}
+                    thread={snapshot.thread}
+                    working={working}
+                  />
+                )}
+                <ArtifactResults artifacts={snapshot?.artifacts ?? []} threadId={threadId} />
+                {snapshot && (
+                  <LearningControls key={`learning:${threadId}`} thread={snapshot.thread} />
+                )}
+                {snapshot && (
+                  <WorkspaceControls
+                    key={`workspace:${threadId}`}
+                    thread={snapshot.thread}
+                    working={working}
+                  />
+                )}
+                {snapshot && <ScreenControls key={`screen:${threadId}`} thread={snapshot.thread} />}
+              </div>
+            </details>
             {snapshot && (
               <GoalProgress
                 goals={snapshot.goals ?? []}
@@ -398,7 +363,7 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
                 ))}
           </div>
         </div>
-        <footer className="shrink-0 border-t bg-card px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-6">
+        <footer className="shrink-0 bg-background px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-6">
           <div className="mx-auto max-w-3xl space-y-3">
             {away && (
               <Button

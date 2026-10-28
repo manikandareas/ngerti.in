@@ -75,6 +75,28 @@ async def answer_interaction(body: AppAnswer, account: AccountDep):
     )
 
 
+class MediaConfiguration(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    provider: Literal["meta"]
+    api_key: str = Field(min_length=1, max_length=16000, repr=False)
+    expected_generation: int = Field(ge=0)
+
+
+@router.get("/media")
+async def media_listing(account: AccountDep):
+    return await forward(str(account.id), provider_command("media.list", {}))
+
+
+@router.post("/media")
+async def configure_media(body: MediaConfiguration, account: AccountDep):
+    return await forward(str(account.id), provider_command("media.configure", body.model_dump()))
+
+
+@router.delete("/media")
+async def disconnect_media(account: AccountDep):
+    return await forward(str(account.id), provider_command("media.disconnect", {}))
+
+
 @router.get("/research")
 async def research_listing(account: AccountDep):
     return await forward(str(account.id), provider_command("research.list", {}))

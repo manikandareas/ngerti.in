@@ -55,7 +55,7 @@ class Discussions:
             room, events, local_profiles=[m["profile"] for m in room["members"]]
         )
 
-    def prepare_turn(self, conn, identity, task, key, config):
+    def prepare_turn(self, conn, identity, task, key, config, attachment_ids=None):
         current = conn.execute(
             "SELECT status FROM nma_discussions WHERE owner_id=? AND discussion_id=?",
             (self.store.owner, identity),
@@ -73,6 +73,16 @@ class Discussions:
         text = task.payload["prompt"] + self.adapter.collaboration.prompt(
             conn, config["thread_id"], config["agent_id"]
         )
+        if attachment_ids is None:
+            attachment_ids = [
+                row[0]
+                for row in conn.execute(
+                    "SELECT f.artifact_id FROM nma_message_files f JOIN nma_discussions d ON d.owner_id=f.owner_id AND d.source_message_id=f.message_id WHERE d.owner_id=? AND d.discussion_id=?",
+                    (self.store.owner, identity),
+                )
+            ]
+        if attachment_ids:
+            payload["attachment_ids"] = attachment_ids
         body = command("runtime.submit", {**payload, "text": text}, operation)
         conn.execute(
             "INSERT OR IGNORE INTO nma_commands VALUES (?,?,?,?,NULL)",
@@ -239,6 +249,18 @@ class Discussions:
             ]
             task = self.plan(room, events).task
             key, config = self.binding(thread, task)
+            if attachments:
+                from ngertiin_engine.media_inputs import submission
+
+                submission(
+                    self.store,
+                    {
+                        "thread_id": p["thread_id"],
+                        "text": p["text"],
+                        "attachment_ids": p["attachment_ids"],
+                    },
+                    config,
+                )
 
             def prepare(conn):
                 conn.execute(
@@ -268,7 +290,14 @@ class Discussions:
                         thread["membership_revision"],
                     ),
                 )
-                run = self.prepare_turn(conn, identity, task, key, config)
+                run = self.prepare_turn(
+                    conn,
+                    identity,
+                    task,
+                    key,
+                    config,
+                    attachment_ids=p["attachment_ids"],
+                )
                 self.adapter.context.transcript.append(
                     conn,
                     run,

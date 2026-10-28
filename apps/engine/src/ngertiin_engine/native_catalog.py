@@ -87,6 +87,15 @@ def inspect_bundle(key, entry, data, visiting=()):
                 raise EngineError(
                     "CAPABILITY_UNAVAILABLE", {"reason": "excluded_surface"}
                 )
+        elif spec.get("kind") == "scoped_media":
+            if {
+                "image_gen": ["image_generate"],
+                "vision": ["vision_analyze"],
+                "video": ["video_analyze"],
+            }.get(name) != names:
+                raise EngineError(
+                    "CAPABILITY_UNAVAILABLE", {"reason": "excluded_surface"}
+                )
         elif spec.get("kind") == "scoped_delegation":
             if name != "delegation" or names != ["delegate_task"]:
                 raise EngineError(
@@ -127,9 +136,11 @@ def inspect_bundle(key, entry, data, visiting=()):
 
     for variable in required_env:
         remember({"api_key": os.environ.get(variable)})
-    if surface_spec.get("kind") not in {"scoped_linux", "scoped_research"} and any(
-        not os.environ.get(v) for v in required_env
-    ):
+    if surface_spec.get("kind") not in {
+        "scoped_linux",
+        "scoped_research",
+        "scoped_media",
+    } and any(not os.environ.get(v) for v in required_env):
         raise EngineError(
             "CAPABILITY_UNAVAILABLE",
             {"capability": key, "reason": "configuration_required"},
@@ -140,9 +151,21 @@ def inspect_bundle(key, entry, data, visiting=()):
             for e in entries
         ]
         if surface_spec.get("kind")
-        in {"scoped_linux", "scoped_research", "scoped_delegation"}
+        in {"scoped_linux", "scoped_research", "scoped_delegation", "scoped_media"}
         else registry.get_definitions(set(names), quiet=True)
     )
+    if surface_spec.get("kind") == "scoped_media":
+        from ngertiin_engine.media_analysis import schema as analysis_schema
+        from ngertiin_engine.media_provider import schema
+
+        definitions = [
+            {
+                "type": "function",
+                "function": schema()
+                if name == "image_gen"
+                else analysis_schema(names[0]),
+            }
+        ]
     if len(definitions) != len(names):
         raise EngineError(
             "CAPABILITY_UNAVAILABLE",

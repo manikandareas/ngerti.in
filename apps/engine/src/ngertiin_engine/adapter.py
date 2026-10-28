@@ -489,6 +489,22 @@ class Adapter:
                 return await asyncio.to_thread(app_interactions.answer, payload)
             raise EngineError("INVALID_REQUEST")
 
+        if kind.startswith("media."):
+            from ngertiin_engine.media_provider import owner_media
+
+            media = owner_media()
+            if kind == "media.transcribe":
+                from ngertiin_engine.speech import transcribe
+
+                return await asyncio.to_thread(transcribe, self, payload)
+            if kind == "media.list" and not payload:
+                return media.listing()
+            if kind == "media.configure":
+                return await asyncio.to_thread(media.configure, payload)
+            if kind == "media.disconnect" and not payload:
+                return await asyncio.to_thread(media.disconnect)
+            raise EngineError("INVALID_REQUEST")
+
         if kind.startswith("research."):
             from ngertiin_engine.research import owner_research
 
@@ -583,7 +599,7 @@ class Adapter:
             if kind == "session.inspect":
                 return await controls.inspect(payload)
             return await controls.mutate(body)
-        if kind.startswith(("app.", "app_auth.", "research.")):
+        if kind.startswith(("app.", "app_auth.", "research.", "media.")):
             if body["expected_revision"] is not None:
                 raise EngineError("INVALID_REQUEST")
             return await self.app_command(kind, payload)
@@ -782,7 +798,7 @@ class Adapter:
                 "production_ready": False,
             }
         if kind == "runtime.submit":
-            if set(payload) != {
+            if set(payload) - {"attachment_ids"} != {
                 "agent_id",
                 "thread_id",
                 "config_revision",
@@ -864,11 +880,12 @@ class Adapter:
             )
             from gateway.session_contract import Submission
 
+            from ngertiin_engine.media_inputs import submission
+
+            media_payload = submission(self.store, payload, config)
             receipt = await self.authority.submit(
                 self.actor,
-                Submission(
-                    "nma:" + body["command_id"], ref, {"text": payload["text"]}, "queue"
-                ),
+                Submission("nma:" + body["command_id"], ref, media_payload, "queue"),
             )
             self.store.write(
                 lambda conn: conn.execute(

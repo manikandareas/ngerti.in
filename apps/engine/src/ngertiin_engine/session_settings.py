@@ -88,6 +88,10 @@ def install():
                 # Keep selection metadata, but never an alternate network route.
                 if isinstance(frozen.get("model"), dict):
                     frozen["model"] = {**frozen["model"], "base_url": ""}
+                from ngertiin_engine.media_provider import settings as media_settings
+
+                if media_settings.get() is not None:
+                    frozen["image_gen"] = media_settings.get()
                 from ngertiin_engine.research import _settings
 
                 if _settings.get() is not None:

@@ -26,7 +26,15 @@ def semantics(name, args):
         return "read"
     if name == "browser_vault" and args.get("action") == "list":
         return "read"
-    if name in {"read_file", "search_files", "web_search", "web_extract", "x_search"}:
+    if name in {
+        "read_file",
+        "search_files",
+        "web_search",
+        "web_extract",
+        "x_search",
+        "vision_analyze",
+        "video_analyze",
+    }:
         return "read"
     if name == "coding" and args.get("action") in {"inspect", "diagnostics", "diff"}:
         return "read"

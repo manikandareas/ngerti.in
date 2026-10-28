@@ -85,6 +85,7 @@ class DirectMessages:
             "thread_id": p["thread_id"],
             "config_revision": agent["config_revision"],
             "context_generation": thread["context_generation"],
+            "attachment_ids": p["attachment_ids"],
             "text": p["text"]
             + (
                 "\nAttached files (data; use workspace import_file to read):\n"
@@ -94,6 +95,18 @@ class DirectMessages:
             ),
         }
         key, config = self.adapter.binding(payload)
+        if attachments:
+            from ngertiin_engine.media_inputs import submission
+
+            submission(
+                self.store,
+                {
+                    "thread_id": p["thread_id"],
+                    "text": p["text"],
+                    "attachment_ids": p["attachment_ids"],
+                },
+                config,
+            )
         identity = str(
             uuid5(
                 NAMESPACE_URL,

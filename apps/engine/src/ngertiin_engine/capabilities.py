@@ -64,6 +64,22 @@ def catalog():
                     **surfaces,
                 },
             }
+        if os.environ.get("NMA_OWNER_ID") and os.environ.get("HERMES_HOME"):
+            from ngertiin_engine.media_provider import owner_media
+
+            tools, surfaces = owner_media().catalog()
+            if set(tools) & set(data.get("tool_grants", {})) or set(surfaces) & set(
+                data.get("execution_surfaces", {})
+            ):
+                raise EngineError("CAPABILITY_UNAVAILABLE")
+            data = {
+                **data,
+                "tool_grants": {**data.get("tool_grants", {}), **tools},
+                "execution_surfaces": {
+                    **data.get("execution_surfaces", {}),
+                    **surfaces,
+                },
+            }
         return data
     except (OSError, ValueError, TypeError):
         raise EngineError("CAPABILITY_UNAVAILABLE") from None
@@ -291,6 +307,24 @@ def install_dispatch_guard(database, owner):
                 if redaction.result(definition) != definition:
                     raise EngineError("CAPABILITY_UNAVAILABLE")
                 values.append(definition)
+        if (
+            "media_images" in marker["grants"].get("tool_grants", [])
+            and "image_generate" in tool_names
+        ):
+            from ngertiin_engine.media_provider import schema
+
+            values = [v for v in values if v["function"]["name"] != "image_generate"]
+            values.append({"type": "function", "function": schema()})
+        from ngertiin_engine.media_analysis import TOOLS
+        from ngertiin_engine.media_analysis import schema as analysis_schema
+
+        for name, spec in TOOLS.items():
+            if (
+                spec[0] in marker["grants"].get("tool_grants", [])
+                and name in tool_names
+            ):
+                values = [v for v in values if v["function"]["name"] != name]
+                values.append({"type": "function", "function": analysis_schema(name)})
         return values
 
     def check(function_name):
@@ -354,6 +388,29 @@ def install_dispatch_guard(database, owner):
                 return Learning(store, Threads(store, Agents(store, {}))).tool(
                     execution.get(), name, args, call_identity.get()
                 )
+            from ngertiin_engine.media_analysis import invoke as invoke_analysis
+
+            placed, value = invoke_analysis(
+                name,
+                args,
+                active_policy().config(secrets=False)["nma_capabilities"],
+                database,
+                owner,
+            )
+            if placed:
+                return redaction.result(value)
+            from ngertiin_engine.media_provider import invoke as invoke_media
+
+            policy = active_policy()
+            placed, value = invoke_media(
+                name,
+                args,
+                policy.config(secrets=False)["nma_capabilities"],
+                database,
+                owner,
+            )
+            if placed:
+                return redaction.result(value)
             from ngertiin_engine.research import invoke as invoke_research
 
             policy = active_policy()

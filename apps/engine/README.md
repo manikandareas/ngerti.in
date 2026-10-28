@@ -248,3 +248,16 @@ Back up the whole stopped partition, including native Kanban databases, plus
 external workspace volumes. Rollback uses a verified backup and matching Git
 runtime. It never activates a second engine or replays unknown child effects.
 See [implementation, evidence, configuration and verification limits](../../docs/research/nma-035-native-delegation-collaboration-2026-10-28.md).
+
+
+## Native media
+
+See [configured media delivery and acceptance](../../docs/research/nma-037-native-media.md).
+Connect a private Meta key under Connections, then assign `media_images`, `media_vision`
+and/or `media_video` to the agent. Images use native Hermes generation/edit and vision;
+video understanding uses native video analysis. References are authorized artifacts;
+video can import an HTTPS URL explicitly posted by the user in the current context.
+Uploaded/recorded audio is normalized by installed FFmpeg and transcribed through the
+native Muse STT provider. Completed/unknown receipts retain identity across restart.
+Generation SDK retries are disabled; unknown billed outcomes must not be blindly replayed.
+Video generation and TTS are explicitly user-waived and remain unimplemented.

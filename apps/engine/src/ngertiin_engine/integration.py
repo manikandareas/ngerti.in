@@ -70,6 +70,15 @@ def install(database, owner):
 
     app_runtime.install()
     research.install()
+    from ngertiin_engine import media_provider
+
+    media_provider.install()
+    from ngertiin_engine import speech
+
+    speech.install()
+    from ngertiin_engine import media_analysis
+
+    media_analysis.install()
     app_interactions.install()
     browser_vault.install()
     capabilities.install_dispatch_guard(database, owner)

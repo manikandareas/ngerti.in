@@ -64,6 +64,7 @@ class Command(BaseModel):
         "learning.install",
         "learning.skill",
         "learning.provider",
+        "media.transcribe",
     ]
     expected_revision: str | None = Field(pattern=r"^[1-9][0-9]{0,18}$")
     payload: dict
@@ -132,6 +133,10 @@ def failure(code, command_id, details=None):
         "SESSION_BUSY": 409,
         "COMPRESSION_FAILED": 422,
         "CONTEXT_ENGINE_UNAVAILABLE": 422,
+        "MEDIA_ROUTE_UNAVAILABLE": 422,
+        "UNSUPPORTED_MEDIA": 422,
+        "MEDIA_REFERENCE_REQUIRED": 422,
+        "UNSUPPORTED_MEDIA_CONTROL": 422,
         "INVALID_CONFIGURATION": 422,
         "INVALID_INFERENCE_CONFIGURATION": 422,
         "PROVIDER_CONNECTION_REQUIRED": 422,

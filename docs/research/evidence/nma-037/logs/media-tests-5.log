@@ -1,0 +1,74 @@
+/Users/vitoandareasmanik/.cache/uv/archive-v0/Uhti8kwSaB-uppKgLiv9B/lib/python3.14/site-packages/pytest_asyncio/plugin.py:300: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the "fixture" caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to "function" scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+============================= test session starts ==============================
+platform darwin -- Python 3.14.9, pytest-9.2.0, pluggy-1.7.0
+rootdir: /Users/vitoandareasmanik/Development/project/ngertiin/apps/engine
+configfile: pyproject.toml
+plugins: asyncio-1.4.1, anyio-4.14.2
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 4 items
+
+apps/engine/tests/test_media.py RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+..MUSE_GATEWAY generate [{"artifact_id": "eea2566f-960a-5778-aeb5-ec6e194ad1e3", "byte_count": 32750, "filename": "image.webp", "media_type": "image/webp", "producing_agent_id": "ad12c665-71fd-4e83-a17d-e74dd8f57c6a", "producing_run_id": "9d6ed7f6-6ab6-5d3c-970c-28730a4dacda", "revision_id": "3df042fa-5697-5fe4-b2c8-4ee5d68ec32d", "sha256": "67bf8ba3da125ccee4b706f7c4c6a3c3e0d4814081c07d8c077ae646afd34bb1", "status": "ready", "storage": "file.v1", "thread_id": "c8a26c93-6427-4688-a14a-7cd301cff61a"}]
+MUSE_GATEWAY edit [{"artifact_id": "3f538cf5-9d3b-54ad-b5c4-0209eaece6c3", "byte_count": 32556, "filename": "image.webp", "media_type": "image/webp", "producing_agent_id": "ad12c665-71fd-4e83-a17d-e74dd8f57c6a", "producing_run_id": "2b74e53f-44ea-5f0b-a242-403a8963bc05", "revision_id": "1d3220af-eeb6-5e77-b5a6-dced4a9dbb10", "sha256": "5bbdc7eece5b93f93cf171febea8f4444cc27f774b6fa00d23280779af91b7a8", "status": "ready", "storage": "file.v1", "thread_id": "c8a26c93-6427-4688-a14a-7cd301cff61a"}, {"artifact_id": "eea2566f-960a-5778-aeb5-ec6e194ad1e3", "byte_count": 32750, "filename": "image.webp", "media_type": "image/webp", "producing_agent_id": "ad12c665-71fd-4e83-a17d-e74dd8f57c6a", "producing_run_id": "9d6ed7f6-6ab6-5d3c-970c-28730a4dacda", "revision_id": "3df042fa-5697-5fe4-b2c8-4ee5d68ec32d", "sha256": "67bf8ba3da125ccee4b706f7c4c6a3c3e0d4814081c07d8c077ae646afd34bb1", "status": "ready", "storage": "file.v1", "thread_id": "c8a26c93-6427-4688-a14a-7cd301cff61a"}]
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 58944)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_media.py", line 142, in reply
+    messages = body["messages"]
+               ~~~~^^^^^^^^^^^^
+KeyError: 'messages'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 58946)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_media.py", line 142, in reply
+    messages = body["messages"]
+               ~~~~^^^^^^^^^^^^
+KeyError: 'messages'
+----------------------------------------
+.MUSE_TRANSCRIPTION {"artifact_id": "12711736-8ba5-4d69-ae8a-e12b95e526a8", "provider": "nma-meta", "request_key": "7e562efb-e4a9-4c88-be03-5baf8d7e8319", "state": "completed", "success": true, "transcript": "Please remember that the red circle is blue now.."}
+.
+
+=============================== warnings summary ===============================
+.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14
+  /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14: PytestRemovedIn10Warning: _pytest.python.CallSpec2 has been renamed to CallSpec.
+  The CallSpec2 alias will be removed in pytest 10.
+  Update imports to use CallSpec instead.
+  See https://docs.pytest.org/en/stable/deprecations.html#callspec2-renamed
+    from _pytest.python import CallSpec2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 4 passed, 1 warning in 27.48s =========================

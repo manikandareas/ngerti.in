@@ -1,0 +1,1264 @@
+EEEEEEE                                                                  [100%]
+==================================== ERRORS ====================================
+_____ ERROR at setup of test_binary_lifecycle_message_share_revoke_restart _____
+
+fixturedef = <FixtureDef argname='runtime' scope='module' baseid='tests/test_files.py'>
+request = <SubRequest 'runtime' for <Function test_binary_lifecycle_message_share_revoke_restart>>
+
+    @pytest.hookimpl(wrapper=True)
+    def pytest_fixture_setup(fixturedef: FixtureDef, request) -> object | None:
+        asyncio_mode = _get_asyncio_mode(request.config)
+        if not _is_asyncio_fixture_function(fixturedef.func):
+            if asyncio_mode == Mode.STRICT:
+                # Ignore async fixtures without explicit asyncio mark in strict mode
+                # This applies to pytest_trio fixtures, for example
+>               return (yield)
+                        ^^^^^
+
+.dev/nma-001/runtime/lib/python3.14/site-packages/pytest_asyncio/plugin.py:728: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+apps/engine/tests/test_runtime.py:325: in runtime
+    process, description = start()
+                           ^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+fault = None, overrides = None
+
+    def start(fault=None, overrides=None):
+        start.current_owner = (overrides or {}).get("NMA_OWNER_ID", OWNER)
+        log = (root / f"gateway-{len(processes)}.log").open("w+")
+        process = subprocess.Popen(
+            [RUNTIME_PYTHON, str(Path(__file__).with_name("fault_launcher.py"))]
+            if fault
+            else [RUNTIME_PYTHON, "-m", "ngertiin_engine.service"],
+            cwd=SOURCE,
+            env=env
+            | (overrides or {})
+            | (
+                {"NMA_TEST_FAULT": fault, "NMA_TEST_MARKER": str(root / "fault-fired")}
+                if fault
+                else {}
+            ),
+            stdout=log,
+            stderr=subprocess.STDOUT,
+        )
+        processes.append(process)
+        start.current = process
+        deadline = time.monotonic() + 90
+        while process.poll() is None and time.monotonic() < deadline:
+            try:
+                response = call(command("runtime.describe"))
+                if "result" in response:
+                    return process, response["result"]
+            except (OSError, ValueError):
+                pass
+            time.sleep(0.1)
+        log.flush()
+>       pytest.fail(
+            log.read()
+            if log.seek(0) is None
+            else (root / f"gateway-{len(processes) - 1}.log").read_text()
+        )
+E       Failed: Traceback (most recent call last):
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py", line 407, in from_name
+E           return next(iter(cls.discover(name=name)))
+E       StopIteration
+E       
+E       During handling of the above exception, another exception occurred:
+E       
+E       Traceback (most recent call last):
+E         File "<frozen runpy>", line 203, in _run_module_as_main
+E         File "<frozen runpy>", line 88, in _run_code
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/service.py", line 603, in <module>
+E           main()
+E           ~~~~^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/service.py", line 40, in main
+E           verify(Path(os.environ["HERMES_SOURCE"]).resolve())
+E           ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/runtime.py", line 22, in verify
+E           if importlib.metadata.version(distribution) != expected:
+E              ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py", line 987, in version
+E           return distribution(distribution_name).version
+E                  ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py", line 960, in distribution
+E           return Distribution.from_name(distribution_name)
+E                  ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py", line 409, in from_name
+E           raise PackageNotFoundError(name)
+E       importlib.metadata.PackageNotFoundError: No package metadata was found for firecrawl-py
+
+apps/engine/tests/test_runtime.py:309: Failed
+_ ERROR at setup of test_invalid_uploads_and_incomplete_files_are_not_visible __
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x107422ea0>, _basetemp=None, _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="module")
+    def runtime(tmp_path_factory):
+        root = Path(tempfile.mkdtemp(prefix="nma-", dir="/tmp"))
+        home = root / "state"
+        home.mkdir(mode=0o700)
+        workspace = root / "workspace"
+        workspace.mkdir()
+        server = ThreadingHTTPServer(("127.0.0.1", 0), Model)
+        server.requests = []
+        server.blocked = threading.Event()
+        server.release = threading.Event()
+        threading.Thread(target=server.serve_forever, daemon=True).start()
+        url = f"http://127.0.0.1:{server.server_port}/v1"
+        (home / "config.yaml").write_text(
+            json.dumps(
+                {
+                    "model": {
+                        "provider": "custom",
+                        "default": "adapter-model",
+                        "base_url": url,
+                    },
+                    "platform_toolsets": {"cli": []},
+                    "auxiliary": {"title_generation": {"enabled": False}},
+                    "terminal": {"cwd": str(workspace)},
+                }
+            )
+        )
+        configs = [
+            {
+                "agent_id": AGENT,
+                "thread_id": thread,
+                "config_revision": revision,
+                "context_generation": "1",
+                "model": "adapter-model",
+                "provider": "custom",
+                "base_url": url,
+                "toolsets": ["todo"],
+                "cwd": str(workspace),
+            }
+            for thread, revision in ((THREAD, "1"), (OTHER_THREAD, "1"), (THREAD, "2"))
+        ]
+        (root / "bindings.json").write_text(json.dumps(configs))
+        (root / "key").write_bytes(KEY)
+        (root / "models.json").write_text(
+            json.dumps(
+                {
+                    "test": {
+                        "label": "Test model",
+                        "model": "test-model",
+                        "provider": "custom",
+                        "base_url": url,
+                        "cwd": str(workspace),
+                    }
+                }
+            )
+        )
+        env = child_env() | {
+            "HERMES_HOME": str(home),
+            "PYTHONPATH": os.pathsep.join((str(ENGINE), str(SOURCE))),
+            "HERMES_SOURCE": str(SOURCE),
+            "PYTHONUNBUFFERED": "1",
+            "OPENAI_API_KEY": "loopback-only",
+            "OPENAI_BASE_URL": url,
+            "NMA_OWNER_ID": OWNER,
+            # Explicit default model; account setup must not depend on catalog order.
+            "NMA_DEFAULT_MODEL": "test",
+            "NMA_MODELS_FILE": str(root / "models.json"),
+            "NMA_CAPABILITIES_FILE": str(root / "capabilities.json"),
+            "NMA_SERVICE_KEY_FILE": str(root / "key"),
+            "NMA_BINDINGS_FILE": str(root / "bindings.json"),
+            "NMA_WEBHOOK_ROUTES_FILE": str(root / "webhooks.json"),
+            "NMA_COMPUTER_COMMAND": os.environ.get("NMA_TEST_COMPUTER_COMMAND", "[]"),
+        }
+        if os.environ.get("NMA_TEST_LIVE_ENV"):
+            from dotenv import dotenv_values
+    
+            credentials = dotenv_values(os.environ["NMA_TEST_LIVE_ENV"])
+            model = credentials["OPENAI_MODEL"]
+            endpoint = credentials.get("OPENAI_BASE_URL") or "https://api.openai.com/v1"
+            models = json.loads((root / "models.json").read_text())
+            models["test"].update(
+                model=model,
+                base_url=endpoint,
+                protocol=os.environ.get("NMA_TEST_LIVE_PROTOCOL", "chat_completions"),
+            )
+            (root / "models.json").write_text(json.dumps(models))
+            env.update(
+                OPENAI_API_KEY=credentials["OPENAI_API_KEY"], OPENAI_BASE_URL=endpoint
+            )
+        (root / "capabilities.json").write_text("{}")
+        processes = []
+    
+        def start(fault=None, overrides=None):
+            start.current_owner = (overrides or {}).get("NMA_OWNER_ID", OWNER)
+            log = (root / f"gateway-{len(processes)}.log").open("w+")
+            process = subprocess.Popen(
+                [RUNTIME_PYTHON, str(Path(__file__).with_name("fault_launcher.py"))]
+                if fault
+                else [RUNTIME_PYTHON, "-m", "ngertiin_engine.service"],
+                cwd=SOURCE,
+                env=env
+                | (overrides or {})
+                | (
+                    {"NMA_TEST_FAULT": fault, "NMA_TEST_MARKER": str(root / "fault-fired")}
+                    if fault
+                    else {}
+                ),
+                stdout=log,
+                stderr=subprocess.STDOUT,
+            )
+            processes.append(process)
+            start.current = process
+            deadline = time.monotonic() + 90
+            while process.poll() is None and time.monotonic() < deadline:
+                try:
+                    response = call(command("runtime.describe"))
+                    if "result" in response:
+                        return process, response["result"]
+                except (OSError, ValueError):
+                    pass
+                time.sleep(0.1)
+            log.flush()
+            pytest.fail(
+                log.read()
+                if log.seek(0) is None
+                else (root / f"gateway-{len(processes) - 1}.log").read_text()
+            )
+    
+        def call(body, envelope=None):
+            envelope = (
+                sign(body, start.current_owner, KEY) if envelope is None else envelope
+            )
+            with socket.socket(socket.AF_UNIX) as client:
+                client.settimeout(35)
+                client.connect(str(home / "nma.sock"))
+                client.sendall((json.dumps(envelope) + "\n").encode())
+                return json.loads(client.makefile("rb").readline())
+    
+>       process, description = start()
+                               ^^^^^^^
+
+apps/engine/tests/test_runtime.py:325: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+fault = None, overrides = None
+
+    def start(fault=None, overrides=None):
+        start.current_owner = (overrides or {}).get("NMA_OWNER_ID", OWNER)
+        log = (root / f"gateway-{len(processes)}.log").open("w+")
+        process = subprocess.Popen(
+            [RUNTIME_PYTHON, str(Path(__file__).with_name("fault_launcher.py"))]
+            if fault
+            else [RUNTIME_PYTHON, "-m", "ngertiin_engine.service"],
+            cwd=SOURCE,
+            env=env
+            | (overrides or {})
+            | (
+                {"NMA_TEST_FAULT": fault, "NMA_TEST_MARKER": str(root / "fault-fired")}
+                if fault
+                else {}
+            ),
+            stdout=log,
+            stderr=subprocess.STDOUT,
+        )
+        processes.append(process)
+        start.current = process
+        deadline = time.monotonic() + 90
+        while process.poll() is None and time.monotonic() < deadline:
+            try:
+                response = call(command("runtime.describe"))
+                if "result" in response:
+                    return process, response["result"]
+            except (OSError, ValueError):
+                pass
+            time.sleep(0.1)
+        log.flush()
+>       pytest.fail(
+            log.read()
+            if log.seek(0) is None
+            else (root / f"gateway-{len(processes) - 1}.log").read_text()
+        )
+E       Failed: Traceback (most recent call last):
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py", line 407, in from_name
+E           return next(iter(cls.discover(name=name)))
+E       StopIteration
+E       
+E       During handling of the above exception, another exception occurred:
+E       
+E       Traceback (most recent call last):
+E         File "<frozen runpy>", line 203, in _run_module_as_main
+E         File "<frozen runpy>", line 88, in _run_code
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/service.py", line 603, in <module>
+E           main()
+E           ~~~~^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/service.py", line 40, in main
+E           verify(Path(os.environ["HERMES_SOURCE"]).resolve())
+E           ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/runtime.py", line 22, in verify
+E           if importlib.metadata.version(distribution) != expected:
+E              ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py", line 987, in version
+E           return distribution(distribution_name).version
+E                  ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py", line 960, in distribution
+E           return Distribution.from_name(distribution_name)
+E                  ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py", line 409, in from_name
+E           raise PackageNotFoundError(name)
+E       importlib.metadata.PackageNotFoundError: No package metadata was found for firecrawl-py
+
+apps/engine/tests/test_runtime.py:309: Failed
+__ ERROR at setup of test_capability_assignment_tools_skills_deny_and_revoke ___
+
+fixturedef = <FixtureDef argname='runtime' scope='module' baseid='tests/test_capabilities.py'>
+request = <SubRequest 'runtime' for <Function test_capability_assignment_tools_skills_deny_and_revoke>>
+
+    @pytest.hookimpl(wrapper=True)
+    def pytest_fixture_setup(fixturedef: FixtureDef, request) -> object | None:
+        asyncio_mode = _get_asyncio_mode(request.config)
+        if not _is_asyncio_fixture_function(fixturedef.func):
+            if asyncio_mode == Mode.STRICT:
+                # Ignore async fixtures without explicit asyncio mark in strict mode
+                # This applies to pytest_trio fixtures, for example
+>               return (yield)
+                        ^^^^^
+
+.dev/nma-001/runtime/lib/python3.14/site-packages/pytest_asyncio/plugin.py:728: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+apps/engine/tests/test_runtime.py:325: in runtime
+    process, description = start()
+                           ^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+fault = None, overrides = None
+
+    def start(fault=None, overrides=None):
+        start.current_owner = (overrides or {}).get("NMA_OWNER_ID", OWNER)
+        log = (root / f"gateway-{len(processes)}.log").open("w+")
+        process = subprocess.Popen(
+            [RUNTIME_PYTHON, str(Path(__file__).with_name("fault_launcher.py"))]
+            if fault
+            else [RUNTIME_PYTHON, "-m", "ngertiin_engine.service"],
+            cwd=SOURCE,
+            env=env
+            | (overrides or {})
+            | (
+                {"NMA_TEST_FAULT": fault, "NMA_TEST_MARKER": str(root / "fault-fired")}
+                if fault
+                else {}
+            ),
+            stdout=log,
+            stderr=subprocess.STDOUT,
+        )
+        processes.append(process)
+        start.current = process
+        deadline = time.monotonic() + 90
+        while process.poll() is None and time.monotonic() < deadline:
+            try:
+                response = call(command("runtime.describe"))
+                if "result" in response:
+                    return process, response["result"]
+            except (OSError, ValueError):
+                pass
+            time.sleep(0.1)
+        log.flush()
+>       pytest.fail(
+            log.read()
+            if log.seek(0) is None
+            else (root / f"gateway-{len(processes) - 1}.log").read_text()
+        )
+E       Failed: Traceback (most recent call last):
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py", line 407, in from_name
+E           return next(iter(cls.discover(name=name)))
+E       StopIteration
+E       
+E       During handling of the above exception, another exception occurred:
+E       
+E       Traceback (most recent call last):
+E         File "<frozen runpy>", line 203, in _run_module_as_main
+E         File "<frozen runpy>", line 88, in _run_code
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/service.py", line 603, in <module>
+E           main()
+E           ~~~~^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/service.py", line 40, in main
+E           verify(Path(os.environ["HERMES_SOURCE"]).resolve())
+E           ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/runtime.py", line 22, in verify
+E           if importlib.metadata.version(distribution) != expected:
+E              ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py", line 987, in version
+E           return distribution(distribution_name).version
+E                  ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py", line 960, in distribution
+E           return Distribution.from_name(distribution_name)
+E                  ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py", line 409, in from_name
+E           raise PackageNotFoundError(name)
+E       importlib.metadata.PackageNotFoundError: No package metadata was found for firecrawl-py
+
+apps/engine/tests/test_runtime.py:309: Failed
+_ ERROR at setup of test_session_scoped_mcp_credentials_restart_and_connector_error _
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x107422ea0>, _basetemp=None, _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="module")
+    def runtime(tmp_path_factory):
+        root = Path(tempfile.mkdtemp(prefix="nma-", dir="/tmp"))
+        home = root / "state"
+        home.mkdir(mode=0o700)
+        workspace = root / "workspace"
+        workspace.mkdir()
+        server = ThreadingHTTPServer(("127.0.0.1", 0), Model)
+        server.requests = []
+        server.blocked = threading.Event()
+        server.release = threading.Event()
+        threading.Thread(target=server.serve_forever, daemon=True).start()
+        url = f"http://127.0.0.1:{server.server_port}/v1"
+        (home / "config.yaml").write_text(
+            json.dumps(
+                {
+                    "model": {
+                        "provider": "custom",
+                        "default": "adapter-model",
+                        "base_url": url,
+                    },
+                    "platform_toolsets": {"cli": []},
+                    "auxiliary": {"title_generation": {"enabled": False}},
+                    "terminal": {"cwd": str(workspace)},
+                }
+            )
+        )
+        configs = [
+            {
+                "agent_id": AGENT,
+                "thread_id": thread,
+                "config_revision": revision,
+                "context_generation": "1",
+                "model": "adapter-model",
+                "provider": "custom",
+                "base_url": url,
+                "toolsets": ["todo"],
+                "cwd": str(workspace),
+            }
+            for thread, revision in ((THREAD, "1"), (OTHER_THREAD, "1"), (THREAD, "2"))
+        ]
+        (root / "bindings.json").write_text(json.dumps(configs))
+        (root / "key").write_bytes(KEY)
+        (root / "models.json").write_text(
+            json.dumps(
+                {
+                    "test": {
+                        "label": "Test model",
+                        "model": "test-model",
+                        "provider": "custom",
+                        "base_url": url,
+                        "cwd": str(workspace),
+                    }
+                }
+            )
+        )
+        env = child_env() | {
+            "HERMES_HOME": str(home),
+            "PYTHONPATH": os.pathsep.join((str(ENGINE), str(SOURCE))),
+            "HERMES_SOURCE": str(SOURCE),
+            "PYTHONUNBUFFERED": "1",
+            "OPENAI_API_KEY": "loopback-only",
+            "OPENAI_BASE_URL": url,
+            "NMA_OWNER_ID": OWNER,
+            # Explicit default model; account setup must not depend on catalog order.
+            "NMA_DEFAULT_MODEL": "test",
+            "NMA_MODELS_FILE": str(root / "models.json"),
+            "NMA_CAPABILITIES_FILE": str(root / "capabilities.json"),
+            "NMA_SERVICE_KEY_FILE": str(root / "key"),
+            "NMA_BINDINGS_FILE": str(root / "bindings.json"),
+            "NMA_WEBHOOK_ROUTES_FILE": str(root / "webhooks.json"),
+            "NMA_COMPUTER_COMMAND": os.environ.get("NMA_TEST_COMPUTER_COMMAND", "[]"),
+        }
+        if os.environ.get("NMA_TEST_LIVE_ENV"):
+            from dotenv import dotenv_values
+    
+            credentials = dotenv_values(os.environ["NMA_TEST_LIVE_ENV"])
+            model = credentials["OPENAI_MODEL"]
+            endpoint = credentials.get("OPENAI_BASE_URL") or "https://api.openai.com/v1"
+            models = json.loads((root / "models.json").read_text())
+            models["test"].update(
+                model=model,
+                base_url=endpoint,
+                protocol=os.environ.get("NMA_TEST_LIVE_PROTOCOL", "chat_completions"),
+            )
+            (root / "models.json").write_text(json.dumps(models))
+            env.update(
+                OPENAI_API_KEY=credentials["OPENAI_API_KEY"], OPENAI_BASE_URL=endpoint
+            )
+        (root / "capabilities.json").write_text("{}")
+        processes = []
+    
+        def start(fault=None, overrides=None):
+            start.current_owner = (overrides or {}).get("NMA_OWNER_ID", OWNER)
+            log = (root / f"gateway-{len(processes)}.log").open("w+")
+            process = subprocess.Popen(
+                [RUNTIME_PYTHON, str(Path(__file__).with_name("fault_launcher.py"))]
+                if fault
+                else [RUNTIME_PYTHON, "-m", "ngertiin_engine.service"],
+                cwd=SOURCE,
+                env=env
+                | (overrides or {})
+                | (
+                    {"NMA_TEST_FAULT": fault, "NMA_TEST_MARKER": str(root / "fault-fired")}
+                    if fault
+                    else {}
+                ),
+                stdout=log,
+                stderr=subprocess.STDOUT,
+            )
+            processes.append(process)
+            start.current = process
+            deadline = time.monotonic() + 90
+            while process.poll() is None and time.monotonic() < deadline:
+                try:
+                    response = call(command("runtime.describe"))
+                    if "result" in response:
+                        return process, response["result"]
+                except (OSError, ValueError):
+                    pass
+                time.sleep(0.1)
+            log.flush()
+            pytest.fail(
+                log.read()
+                if log.seek(0) is None
+                else (root / f"gateway-{len(processes) - 1}.log").read_text()
+            )
+    
+        def call(body, envelope=None):
+            envelope = (
+                sign(body, start.current_owner, KEY) if envelope is None else envelope
+            )
+            with socket.socket(socket.AF_UNIX) as client:
+                client.settimeout(35)
+                client.connect(str(home / "nma.sock"))
+                client.sendall((json.dumps(envelope) + "\n").encode())
+                return json.loads(client.makefile("rb").readline())
+    
+>       process, description = start()
+                               ^^^^^^^
+
+apps/engine/tests/test_runtime.py:325: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+fault = None, overrides = None
+
+    def start(fault=None, overrides=None):
+        start.current_owner = (overrides or {}).get("NMA_OWNER_ID", OWNER)
+        log = (root / f"gateway-{len(processes)}.log").open("w+")
+        process = subprocess.Popen(
+            [RUNTIME_PYTHON, str(Path(__file__).with_name("fault_launcher.py"))]
+            if fault
+            else [RUNTIME_PYTHON, "-m", "ngertiin_engine.service"],
+            cwd=SOURCE,
+            env=env
+            | (overrides or {})
+            | (
+                {"NMA_TEST_FAULT": fault, "NMA_TEST_MARKER": str(root / "fault-fired")}
+                if fault
+                else {}
+            ),
+            stdout=log,
+            stderr=subprocess.STDOUT,
+        )
+        processes.append(process)
+        start.current = process
+        deadline = time.monotonic() + 90
+        while process.poll() is None and time.monotonic() < deadline:
+            try:
+                response = call(command("runtime.describe"))
+                if "result" in response:
+                    return process, response["result"]
+            except (OSError, ValueError):
+                pass
+            time.sleep(0.1)
+        log.flush()
+>       pytest.fail(
+            log.read()
+            if log.seek(0) is None
+            else (root / f"gateway-{len(processes) - 1}.log").read_text()
+        )
+E       Failed: Traceback (most recent call last):
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py", line 407, in from_name
+E           return next(iter(cls.discover(name=name)))
+E       StopIteration
+E       
+E       During handling of the above exception, another exception occurred:
+E       
+E       Traceback (most recent call last):
+E         File "<frozen runpy>", line 203, in _run_module_as_main
+E         File "<frozen runpy>", line 88, in _run_code
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/service.py", line 603, in <module>
+E           main()
+E           ~~~~^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/service.py", line 40, in main
+E           verify(Path(os.environ["HERMES_SOURCE"]).resolve())
+E           ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/runtime.py", line 22, in verify
+E           if importlib.metadata.version(distribution) != expected:
+E              ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py", line 987, in version
+E           return distribution(distribution_name).version
+E                  ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py", line 960, in distribution
+E           return Distribution.from_name(distribution_name)
+E                  ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py", line 409, in from_name
+E           raise PackageNotFoundError(name)
+E       importlib.metadata.PackageNotFoundError: No package metadata was found for firecrawl-py
+
+apps/engine/tests/test_runtime.py:309: Failed
+_______ ERROR at setup of test_new_grants_do_not_broaden_an_existing_run _______
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x107422ea0>, _basetemp=None, _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="module")
+    def runtime(tmp_path_factory):
+        root = Path(tempfile.mkdtemp(prefix="nma-", dir="/tmp"))
+        home = root / "state"
+        home.mkdir(mode=0o700)
+        workspace = root / "workspace"
+        workspace.mkdir()
+        server = ThreadingHTTPServer(("127.0.0.1", 0), Model)
+        server.requests = []
+        server.blocked = threading.Event()
+        server.release = threading.Event()
+        threading.Thread(target=server.serve_forever, daemon=True).start()
+        url = f"http://127.0.0.1:{server.server_port}/v1"
+        (home / "config.yaml").write_text(
+            json.dumps(
+                {
+                    "model": {
+                        "provider": "custom",
+                        "default": "adapter-model",
+                        "base_url": url,
+                    },
+                    "platform_toolsets": {"cli": []},
+                    "auxiliary": {"title_generation": {"enabled": False}},
+                    "terminal": {"cwd": str(workspace)},
+                }
+            )
+        )
+        configs = [
+            {
+                "agent_id": AGENT,
+                "thread_id": thread,
+                "config_revision": revision,
+                "context_generation": "1",
+                "model": "adapter-model",
+                "provider": "custom",
+                "base_url": url,
+                "toolsets": ["todo"],
+                "cwd": str(workspace),
+            }
+            for thread, revision in ((THREAD, "1"), (OTHER_THREAD, "1"), (THREAD, "2"))
+        ]
+        (root / "bindings.json").write_text(json.dumps(configs))
+        (root / "key").write_bytes(KEY)
+        (root / "models.json").write_text(
+            json.dumps(
+                {
+                    "test": {
+                        "label": "Test model",
+                        "model": "test-model",
+                        "provider": "custom",
+                        "base_url": url,
+                        "cwd": str(workspace),
+                    }
+                }
+            )
+        )
+        env = child_env() | {
+            "HERMES_HOME": str(home),
+            "PYTHONPATH": os.pathsep.join((str(ENGINE), str(SOURCE))),
+            "HERMES_SOURCE": str(SOURCE),
+            "PYTHONUNBUFFERED": "1",
+            "OPENAI_API_KEY": "loopback-only",
+            "OPENAI_BASE_URL": url,
+            "NMA_OWNER_ID": OWNER,
+            # Explicit default model; account setup must not depend on catalog order.
+            "NMA_DEFAULT_MODEL": "test",
+            "NMA_MODELS_FILE": str(root / "models.json"),
+            "NMA_CAPABILITIES_FILE": str(root / "capabilities.json"),
+            "NMA_SERVICE_KEY_FILE": str(root / "key"),
+            "NMA_BINDINGS_FILE": str(root / "bindings.json"),
+            "NMA_WEBHOOK_ROUTES_FILE": str(root / "webhooks.json"),
+            "NMA_COMPUTER_COMMAND": os.environ.get("NMA_TEST_COMPUTER_COMMAND", "[]"),
+        }
+        if os.environ.get("NMA_TEST_LIVE_ENV"):
+            from dotenv import dotenv_values
+    
+            credentials = dotenv_values(os.environ["NMA_TEST_LIVE_ENV"])
+            model = credentials["OPENAI_MODEL"]
+            endpoint = credentials.get("OPENAI_BASE_URL") or "https://api.openai.com/v1"
+            models = json.loads((root / "models.json").read_text())
+            models["test"].update(
+                model=model,
+                base_url=endpoint,
+                protocol=os.environ.get("NMA_TEST_LIVE_PROTOCOL", "chat_completions"),
+            )
+            (root / "models.json").write_text(json.dumps(models))
+            env.update(
+                OPENAI_API_KEY=credentials["OPENAI_API_KEY"], OPENAI_BASE_URL=endpoint
+            )
+        (root / "capabilities.json").write_text("{}")
+        processes = []
+    
+        def start(fault=None, overrides=None):
+            start.current_owner = (overrides or {}).get("NMA_OWNER_ID", OWNER)
+            log = (root / f"gateway-{len(processes)}.log").open("w+")
+            process = subprocess.Popen(
+                [RUNTIME_PYTHON, str(Path(__file__).with_name("fault_launcher.py"))]
+                if fault
+                else [RUNTIME_PYTHON, "-m", "ngertiin_engine.service"],
+                cwd=SOURCE,
+                env=env
+                | (overrides or {})
+                | (
+                    {"NMA_TEST_FAULT": fault, "NMA_TEST_MARKER": str(root / "fault-fired")}
+                    if fault
+                    else {}
+                ),
+                stdout=log,
+                stderr=subprocess.STDOUT,
+            )
+            processes.append(process)
+            start.current = process
+            deadline = time.monotonic() + 90
+            while process.poll() is None and time.monotonic() < deadline:
+                try:
+                    response = call(command("runtime.describe"))
+                    if "result" in response:
+                        return process, response["result"]
+                except (OSError, ValueError):
+                    pass
+                time.sleep(0.1)
+            log.flush()
+            pytest.fail(
+                log.read()
+                if log.seek(0) is None
+                else (root / f"gateway-{len(processes) - 1}.log").read_text()
+            )
+    
+        def call(body, envelope=None):
+            envelope = (
+                sign(body, start.current_owner, KEY) if envelope is None else envelope
+            )
+            with socket.socket(socket.AF_UNIX) as client:
+                client.settimeout(35)
+                client.connect(str(home / "nma.sock"))
+                client.sendall((json.dumps(envelope) + "\n").encode())
+                return json.loads(client.makefile("rb").readline())
+    
+>       process, description = start()
+                               ^^^^^^^
+
+apps/engine/tests/test_runtime.py:325: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+fault = None, overrides = None
+
+    def start(fault=None, overrides=None):
+        start.current_owner = (overrides or {}).get("NMA_OWNER_ID", OWNER)
+        log = (root / f"gateway-{len(processes)}.log").open("w+")
+        process = subprocess.Popen(
+            [RUNTIME_PYTHON, str(Path(__file__).with_name("fault_launcher.py"))]
+            if fault
+            else [RUNTIME_PYTHON, "-m", "ngertiin_engine.service"],
+            cwd=SOURCE,
+            env=env
+            | (overrides or {})
+            | (
+                {"NMA_TEST_FAULT": fault, "NMA_TEST_MARKER": str(root / "fault-fired")}
+                if fault
+                else {}
+            ),
+            stdout=log,
+            stderr=subprocess.STDOUT,
+        )
+        processes.append(process)
+        start.current = process
+        deadline = time.monotonic() + 90
+        while process.poll() is None and time.monotonic() < deadline:
+            try:
+                response = call(command("runtime.describe"))
+                if "result" in response:
+                    return process, response["result"]
+            except (OSError, ValueError):
+                pass
+            time.sleep(0.1)
+        log.flush()
+>       pytest.fail(
+            log.read()
+            if log.seek(0) is None
+            else (root / f"gateway-{len(processes) - 1}.log").read_text()
+        )
+E       Failed: Traceback (most recent call last):
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py", line 407, in from_name
+E           return next(iter(cls.discover(name=name)))
+E       StopIteration
+E       
+E       During handling of the above exception, another exception occurred:
+E       
+E       Traceback (most recent call last):
+E         File "<frozen runpy>", line 203, in _run_module_as_main
+E         File "<frozen runpy>", line 88, in _run_code
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/service.py", line 603, in <module>
+E           main()
+E           ~~~~^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/service.py", line 40, in main
+E           verify(Path(os.environ["HERMES_SOURCE"]).resolve())
+E           ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/runtime.py", line 22, in verify
+E           if importlib.metadata.version(distribution) != expected:
+E              ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py", line 987, in version
+E           return distribution(distribution_name).version
+E                  ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py", line 960, in distribution
+E           return Distribution.from_name(distribution_name)
+E                  ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py", line 409, in from_name
+E           raise PackageNotFoundError(name)
+E       importlib.metadata.PackageNotFoundError: No package metadata was found for firecrawl-py
+
+apps/engine/tests/test_runtime.py:309: Failed
+_____ ERROR at setup of test_unavailable_connector_is_not_silently_dropped _____
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x107422ea0>, _basetemp=None, _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="module")
+    def runtime(tmp_path_factory):
+        root = Path(tempfile.mkdtemp(prefix="nma-", dir="/tmp"))
+        home = root / "state"
+        home.mkdir(mode=0o700)
+        workspace = root / "workspace"
+        workspace.mkdir()
+        server = ThreadingHTTPServer(("127.0.0.1", 0), Model)
+        server.requests = []
+        server.blocked = threading.Event()
+        server.release = threading.Event()
+        threading.Thread(target=server.serve_forever, daemon=True).start()
+        url = f"http://127.0.0.1:{server.server_port}/v1"
+        (home / "config.yaml").write_text(
+            json.dumps(
+                {
+                    "model": {
+                        "provider": "custom",
+                        "default": "adapter-model",
+                        "base_url": url,
+                    },
+                    "platform_toolsets": {"cli": []},
+                    "auxiliary": {"title_generation": {"enabled": False}},
+                    "terminal": {"cwd": str(workspace)},
+                }
+            )
+        )
+        configs = [
+            {
+                "agent_id": AGENT,
+                "thread_id": thread,
+                "config_revision": revision,
+                "context_generation": "1",
+                "model": "adapter-model",
+                "provider": "custom",
+                "base_url": url,
+                "toolsets": ["todo"],
+                "cwd": str(workspace),
+            }
+            for thread, revision in ((THREAD, "1"), (OTHER_THREAD, "1"), (THREAD, "2"))
+        ]
+        (root / "bindings.json").write_text(json.dumps(configs))
+        (root / "key").write_bytes(KEY)
+        (root / "models.json").write_text(
+            json.dumps(
+                {
+                    "test": {
+                        "label": "Test model",
+                        "model": "test-model",
+                        "provider": "custom",
+                        "base_url": url,
+                        "cwd": str(workspace),
+                    }
+                }
+            )
+        )
+        env = child_env() | {
+            "HERMES_HOME": str(home),
+            "PYTHONPATH": os.pathsep.join((str(ENGINE), str(SOURCE))),
+            "HERMES_SOURCE": str(SOURCE),
+            "PYTHONUNBUFFERED": "1",
+            "OPENAI_API_KEY": "loopback-only",
+            "OPENAI_BASE_URL": url,
+            "NMA_OWNER_ID": OWNER,
+            # Explicit default model; account setup must not depend on catalog order.
+            "NMA_DEFAULT_MODEL": "test",
+            "NMA_MODELS_FILE": str(root / "models.json"),
+            "NMA_CAPABILITIES_FILE": str(root / "capabilities.json"),
+            "NMA_SERVICE_KEY_FILE": str(root / "key"),
+            "NMA_BINDINGS_FILE": str(root / "bindings.json"),
+            "NMA_WEBHOOK_ROUTES_FILE": str(root / "webhooks.json"),
+            "NMA_COMPUTER_COMMAND": os.environ.get("NMA_TEST_COMPUTER_COMMAND", "[]"),
+        }
+        if os.environ.get("NMA_TEST_LIVE_ENV"):
+            from dotenv import dotenv_values
+    
+            credentials = dotenv_values(os.environ["NMA_TEST_LIVE_ENV"])
+            model = credentials["OPENAI_MODEL"]
+            endpoint = credentials.get("OPENAI_BASE_URL") or "https://api.openai.com/v1"
+            models = json.loads((root / "models.json").read_text())
+            models["test"].update(
+                model=model,
+                base_url=endpoint,
+                protocol=os.environ.get("NMA_TEST_LIVE_PROTOCOL", "chat_completions"),
+            )
+            (root / "models.json").write_text(json.dumps(models))
+            env.update(
+                OPENAI_API_KEY=credentials["OPENAI_API_KEY"], OPENAI_BASE_URL=endpoint
+            )
+        (root / "capabilities.json").write_text("{}")
+        processes = []
+    
+        def start(fault=None, overrides=None):
+            start.current_owner = (overrides or {}).get("NMA_OWNER_ID", OWNER)
+            log = (root / f"gateway-{len(processes)}.log").open("w+")
+            process = subprocess.Popen(
+                [RUNTIME_PYTHON, str(Path(__file__).with_name("fault_launcher.py"))]
+                if fault
+                else [RUNTIME_PYTHON, "-m", "ngertiin_engine.service"],
+                cwd=SOURCE,
+                env=env
+                | (overrides or {})
+                | (
+                    {"NMA_TEST_FAULT": fault, "NMA_TEST_MARKER": str(root / "fault-fired")}
+                    if fault
+                    else {}
+                ),
+                stdout=log,
+                stderr=subprocess.STDOUT,
+            )
+            processes.append(process)
+            start.current = process
+            deadline = time.monotonic() + 90
+            while process.poll() is None and time.monotonic() < deadline:
+                try:
+                    response = call(command("runtime.describe"))
+                    if "result" in response:
+                        return process, response["result"]
+                except (OSError, ValueError):
+                    pass
+                time.sleep(0.1)
+            log.flush()
+            pytest.fail(
+                log.read()
+                if log.seek(0) is None
+                else (root / f"gateway-{len(processes) - 1}.log").read_text()
+            )
+    
+        def call(body, envelope=None):
+            envelope = (
+                sign(body, start.current_owner, KEY) if envelope is None else envelope
+            )
+            with socket.socket(socket.AF_UNIX) as client:
+                client.settimeout(35)
+                client.connect(str(home / "nma.sock"))
+                client.sendall((json.dumps(envelope) + "\n").encode())
+                return json.loads(client.makefile("rb").readline())
+    
+>       process, description = start()
+                               ^^^^^^^
+
+apps/engine/tests/test_runtime.py:325: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+fault = None, overrides = None
+
+    def start(fault=None, overrides=None):
+        start.current_owner = (overrides or {}).get("NMA_OWNER_ID", OWNER)
+        log = (root / f"gateway-{len(processes)}.log").open("w+")
+        process = subprocess.Popen(
+            [RUNTIME_PYTHON, str(Path(__file__).with_name("fault_launcher.py"))]
+            if fault
+            else [RUNTIME_PYTHON, "-m", "ngertiin_engine.service"],
+            cwd=SOURCE,
+            env=env
+            | (overrides or {})
+            | (
+                {"NMA_TEST_FAULT": fault, "NMA_TEST_MARKER": str(root / "fault-fired")}
+                if fault
+                else {}
+            ),
+            stdout=log,
+            stderr=subprocess.STDOUT,
+        )
+        processes.append(process)
+        start.current = process
+        deadline = time.monotonic() + 90
+        while process.poll() is None and time.monotonic() < deadline:
+            try:
+                response = call(command("runtime.describe"))
+                if "result" in response:
+                    return process, response["result"]
+            except (OSError, ValueError):
+                pass
+            time.sleep(0.1)
+        log.flush()
+>       pytest.fail(
+            log.read()
+            if log.seek(0) is None
+            else (root / f"gateway-{len(processes) - 1}.log").read_text()
+        )
+E       Failed: Traceback (most recent call last):
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py", line 407, in from_name
+E           return next(iter(cls.discover(name=name)))
+E       StopIteration
+E       
+E       During handling of the above exception, another exception occurred:
+E       
+E       Traceback (most recent call last):
+E         File "<frozen runpy>", line 203, in _run_module_as_main
+E         File "<frozen runpy>", line 88, in _run_code
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/service.py", line 603, in <module>
+E           main()
+E           ~~~~^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/service.py", line 40, in main
+E           verify(Path(os.environ["HERMES_SOURCE"]).resolve())
+E           ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/runtime.py", line 22, in verify
+E           if importlib.metadata.version(distribution) != expected:
+E              ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py", line 987, in version
+E           return distribution(distribution_name).version
+E                  ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py", line 960, in distribution
+E           return Distribution.from_name(distribution_name)
+E                  ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py", line 409, in from_name
+E           raise PackageNotFoundError(name)
+E       importlib.metadata.PackageNotFoundError: No package metadata was found for firecrawl-py
+
+apps/engine/tests/test_runtime.py:309: Failed
+_ ERROR at setup of test_mcp_discovery_secrets_rejected_before_storage_and_after_restart _
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x107422ea0>, _basetemp=None, _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="module")
+    def runtime(tmp_path_factory):
+        root = Path(tempfile.mkdtemp(prefix="nma-", dir="/tmp"))
+        home = root / "state"
+        home.mkdir(mode=0o700)
+        workspace = root / "workspace"
+        workspace.mkdir()
+        server = ThreadingHTTPServer(("127.0.0.1", 0), Model)
+        server.requests = []
+        server.blocked = threading.Event()
+        server.release = threading.Event()
+        threading.Thread(target=server.serve_forever, daemon=True).start()
+        url = f"http://127.0.0.1:{server.server_port}/v1"
+        (home / "config.yaml").write_text(
+            json.dumps(
+                {
+                    "model": {
+                        "provider": "custom",
+                        "default": "adapter-model",
+                        "base_url": url,
+                    },
+                    "platform_toolsets": {"cli": []},
+                    "auxiliary": {"title_generation": {"enabled": False}},
+                    "terminal": {"cwd": str(workspace)},
+                }
+            )
+        )
+        configs = [
+            {
+                "agent_id": AGENT,
+                "thread_id": thread,
+                "config_revision": revision,
+                "context_generation": "1",
+                "model": "adapter-model",
+                "provider": "custom",
+                "base_url": url,
+                "toolsets": ["todo"],
+                "cwd": str(workspace),
+            }
+            for thread, revision in ((THREAD, "1"), (OTHER_THREAD, "1"), (THREAD, "2"))
+        ]
+        (root / "bindings.json").write_text(json.dumps(configs))
+        (root / "key").write_bytes(KEY)
+        (root / "models.json").write_text(
+            json.dumps(
+                {
+                    "test": {
+                        "label": "Test model",
+                        "model": "test-model",
+                        "provider": "custom",
+                        "base_url": url,
+                        "cwd": str(workspace),
+                    }
+                }
+            )
+        )
+        env = child_env() | {
+            "HERMES_HOME": str(home),
+            "PYTHONPATH": os.pathsep.join((str(ENGINE), str(SOURCE))),
+            "HERMES_SOURCE": str(SOURCE),
+            "PYTHONUNBUFFERED": "1",
+            "OPENAI_API_KEY": "loopback-only",
+            "OPENAI_BASE_URL": url,
+            "NMA_OWNER_ID": OWNER,
+            # Explicit default model; account setup must not depend on catalog order.
+            "NMA_DEFAULT_MODEL": "test",
+            "NMA_MODELS_FILE": str(root / "models.json"),
+            "NMA_CAPABILITIES_FILE": str(root / "capabilities.json"),
+            "NMA_SERVICE_KEY_FILE": str(root / "key"),
+            "NMA_BINDINGS_FILE": str(root / "bindings.json"),
+            "NMA_WEBHOOK_ROUTES_FILE": str(root / "webhooks.json"),
+            "NMA_COMPUTER_COMMAND": os.environ.get("NMA_TEST_COMPUTER_COMMAND", "[]"),
+        }
+        if os.environ.get("NMA_TEST_LIVE_ENV"):
+            from dotenv import dotenv_values
+    
+            credentials = dotenv_values(os.environ["NMA_TEST_LIVE_ENV"])
+            model = credentials["OPENAI_MODEL"]
+            endpoint = credentials.get("OPENAI_BASE_URL") or "https://api.openai.com/v1"
+            models = json.loads((root / "models.json").read_text())
+            models["test"].update(
+                model=model,
+                base_url=endpoint,
+                protocol=os.environ.get("NMA_TEST_LIVE_PROTOCOL", "chat_completions"),
+            )
+            (root / "models.json").write_text(json.dumps(models))
+            env.update(
+                OPENAI_API_KEY=credentials["OPENAI_API_KEY"], OPENAI_BASE_URL=endpoint
+            )
+        (root / "capabilities.json").write_text("{}")
+        processes = []
+    
+        def start(fault=None, overrides=None):
+            start.current_owner = (overrides or {}).get("NMA_OWNER_ID", OWNER)
+            log = (root / f"gateway-{len(processes)}.log").open("w+")
+            process = subprocess.Popen(
+                [RUNTIME_PYTHON, str(Path(__file__).with_name("fault_launcher.py"))]
+                if fault
+                else [RUNTIME_PYTHON, "-m", "ngertiin_engine.service"],
+                cwd=SOURCE,
+                env=env
+                | (overrides or {})
+                | (
+                    {"NMA_TEST_FAULT": fault, "NMA_TEST_MARKER": str(root / "fault-fired")}
+                    if fault
+                    else {}
+                ),
+                stdout=log,
+                stderr=subprocess.STDOUT,
+            )
+            processes.append(process)
+            start.current = process
+            deadline = time.monotonic() + 90
+            while process.poll() is None and time.monotonic() < deadline:
+                try:
+                    response = call(command("runtime.describe"))
+                    if "result" in response:
+                        return process, response["result"]
+                except (OSError, ValueError):
+                    pass
+                time.sleep(0.1)
+            log.flush()
+            pytest.fail(
+                log.read()
+                if log.seek(0) is None
+                else (root / f"gateway-{len(processes) - 1}.log").read_text()
+            )
+    
+        def call(body, envelope=None):
+            envelope = (
+                sign(body, start.current_owner, KEY) if envelope is None else envelope
+            )
+            with socket.socket(socket.AF_UNIX) as client:
+                client.settimeout(35)
+                client.connect(str(home / "nma.sock"))
+                client.sendall((json.dumps(envelope) + "\n").encode())
+                return json.loads(client.makefile("rb").readline())
+    
+>       process, description = start()
+                               ^^^^^^^
+
+apps/engine/tests/test_runtime.py:325: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+fault = None, overrides = None
+
+    def start(fault=None, overrides=None):
+        start.current_owner = (overrides or {}).get("NMA_OWNER_ID", OWNER)
+        log = (root / f"gateway-{len(processes)}.log").open("w+")
+        process = subprocess.Popen(
+            [RUNTIME_PYTHON, str(Path(__file__).with_name("fault_launcher.py"))]
+            if fault
+            else [RUNTIME_PYTHON, "-m", "ngertiin_engine.service"],
+            cwd=SOURCE,
+            env=env
+            | (overrides or {})
+            | (
+                {"NMA_TEST_FAULT": fault, "NMA_TEST_MARKER": str(root / "fault-fired")}
+                if fault
+                else {}
+            ),
+            stdout=log,
+            stderr=subprocess.STDOUT,
+        )
+        processes.append(process)
+        start.current = process
+        deadline = time.monotonic() + 90
+        while process.poll() is None and time.monotonic() < deadline:
+            try:
+                response = call(command("runtime.describe"))
+                if "result" in response:
+                    return process, response["result"]
+            except (OSError, ValueError):
+                pass
+            time.sleep(0.1)
+        log.flush()
+>       pytest.fail(
+            log.read()
+            if log.seek(0) is None
+            else (root / f"gateway-{len(processes) - 1}.log").read_text()
+        )
+E       Failed: Traceback (most recent call last):
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py", line 407, in from_name
+E           return next(iter(cls.discover(name=name)))
+E       StopIteration
+E       
+E       During handling of the above exception, another exception occurred:
+E       
+E       Traceback (most recent call last):
+E         File "<frozen runpy>", line 203, in _run_module_as_main
+E         File "<frozen runpy>", line 88, in _run_code
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/service.py", line 603, in <module>
+E           main()
+E           ~~~~^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/service.py", line 40, in main
+E           verify(Path(os.environ["HERMES_SOURCE"]).resolve())
+E           ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/runtime.py", line 22, in verify
+E           if importlib.metadata.version(distribution) != expected:
+E              ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py", line 987, in version
+E           return distribution(distribution_name).version
+E                  ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py", line 960, in distribution
+E           return Distribution.from_name(distribution_name)
+E                  ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/importlib/metadata/__init__.py", line 409, in from_name
+E           raise PackageNotFoundError(name)
+E       importlib.metadata.PackageNotFoundError: No package metadata was found for firecrawl-py
+
+apps/engine/tests/test_runtime.py:309: Failed
+=========================== short test summary info ============================
+ERROR apps/engine/tests/test_files.py::test_binary_lifecycle_message_share_revoke_restart
+ERROR apps/engine/tests/test_files.py::test_invalid_uploads_and_incomplete_files_are_not_visible
+ERROR apps/engine/tests/test_capabilities.py::test_capability_assignment_tools_skills_deny_and_revoke
+ERROR apps/engine/tests/test_capabilities.py::test_session_scoped_mcp_credentials_restart_and_connector_error
+ERROR apps/engine/tests/test_capabilities.py::test_new_grants_do_not_broaden_an_existing_run
+ERROR apps/engine/tests/test_capabilities.py::test_unavailable_connector_is_not_silently_dropped
+ERROR apps/engine/tests/test_capabilities.py::test_mcp_discovery_secrets_rejected_before_storage_and_after_restart
+7 errors in 0.82s

@@ -1,0 +1,73 @@
+/Users/vitoandareasmanik/.cache/uv/archive-v0/Uhti8kwSaB-uppKgLiv9B/lib/python3.14/site-packages/pytest_asyncio/plugin.py:300: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the "fixture" caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to "function" scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+============================= test session starts ==============================
+platform darwin -- Python 3.14.9, pytest-9.2.0, pluggy-1.7.0
+rootdir: /Users/vitoandareasmanik/Development/project/ngertiin/apps/engine
+configfile: pyproject.toml
+plugins: asyncio-1.4.1, anyio-4.14.2
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 3 items
+
+apps/engine/tests/test_media.py RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+..MUSE_GATEWAY generate [{"artifact_id": "56f29fec-fc6d-573e-aed8-78a4ac7339bf", "byte_count": 32720, "filename": "image.webp", "media_type": "image/webp", "producing_agent_id": "e48e40bc-8ea7-4f99-bc8a-7bad6acad535", "producing_run_id": "06c7e7d3-1bbf-5aaa-8340-f64f71683f16", "revision_id": "0c7ed084-6642-5a53-8645-ce1ce17f498e", "sha256": "cda7e4a91df64252ca85ccde0c48d2a3272acd4e347ffe959dd16834d9fccb13", "status": "ready", "storage": "file.v1", "thread_id": "76b79fe1-13b8-4969-bb7c-4396a029c3fa"}]
+MUSE_GATEWAY edit [{"artifact_id": "2c549334-2a60-5ab0-9d3c-72867fdd1d74", "byte_count": 31550, "filename": "image.webp", "media_type": "image/webp", "producing_agent_id": "e48e40bc-8ea7-4f99-bc8a-7bad6acad535", "producing_run_id": "0ec661ce-30bf-55da-bb08-6e45a2e50d81", "revision_id": "9b9cccff-563d-5a13-ac09-83d92d270a4c", "sha256": "da7ab8bd9cfc39ddd0502c3b3339d02abe9e1dcca70894b639f5cb9f9920b3e4", "status": "ready", "storage": "file.v1", "thread_id": "76b79fe1-13b8-4969-bb7c-4396a029c3fa"}, {"artifact_id": "56f29fec-fc6d-573e-aed8-78a4ac7339bf", "byte_count": 32720, "filename": "image.webp", "media_type": "image/webp", "producing_agent_id": "e48e40bc-8ea7-4f99-bc8a-7bad6acad535", "producing_run_id": "06c7e7d3-1bbf-5aaa-8340-f64f71683f16", "revision_id": "0c7ed084-6642-5a53-8645-ce1ce17f498e", "sha256": "cda7e4a91df64252ca85ccde0c48d2a3272acd4e347ffe959dd16834d9fccb13", "status": "ready", "storage": "file.v1", "thread_id": "76b79fe1-13b8-4969-bb7c-4396a029c3fa"}]
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 58604)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_media.py", line 82, in reply
+    messages = body["messages"]
+               ~~~~^^^^^^^^^^^^
+KeyError: 'messages'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 58606)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_media.py", line 82, in reply
+    messages = body["messages"]
+               ~~~~^^^^^^^^^^^^
+KeyError: 'messages'
+----------------------------------------
+.
+
+=============================== warnings summary ===============================
+.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14
+  /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14: PytestRemovedIn10Warning: _pytest.python.CallSpec2 has been renamed to CallSpec.
+  The CallSpec2 alias will be removed in pytest 10.
+  Update imports to use CallSpec instead.
+  See https://docs.pytest.org/en/stable/deprecations.html#callspec2-renamed
+    from _pytest.python import CallSpec2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 3 passed, 1 warning in 27.62s =========================

@@ -1,0 +1,277 @@
+{
+  "artifacts": [
+    {
+      "artifact_id": "22b20c38-7bf3-48f7-9667-3ab98c76d9da",
+      "byte_count": 37004,
+      "filename": "voice-1793191938101.webm",
+      "media_type": "audio/webm",
+      "producing_agent_id": null,
+      "producing_run_id": null,
+      "revision_id": "53d7f559-21ec-5f37-92df-5eb8ac07d720",
+      "sha256": "4bc6fa2f8bf1b8a1e7653b6d055dbc5d6bb5a68b064536dc82b3b9d2941a04c5",
+      "status": "ready",
+      "storage": "file.v1",
+      "thread_id": "f0b1e8b1-58ed-4a8f-b1cc-5823f59c556f"
+    },
+    {
+      "artifact_id": "d02dfde5-cf28-4d10-a3d5-fdfbc732e3e8",
+      "byte_count": 5672,
+      "filename": "voice-1793191794169.webm",
+      "media_type": "audio/webm",
+      "producing_agent_id": null,
+      "producing_run_id": null,
+      "revision_id": "ee03d2a7-d435-58fb-bedd-898778e6f8c4",
+      "sha256": "4e93155bfaf3f46c7932a57e13cec635d80d37c26d51e82aa8434a18f9e82625",
+      "status": "ready",
+      "storage": "file.v1",
+      "thread_id": "f0b1e8b1-58ed-4a8f-b1cc-5823f59c556f"
+    },
+    {
+      "artifact_id": "9b2b8c27-880a-4a9b-a729-fe992071207a",
+      "byte_count": 73544,
+      "filename": "nma037-speech.wav",
+      "media_type": "audio/wav",
+      "producing_agent_id": null,
+      "producing_run_id": null,
+      "revision_id": "44a6cf06-25aa-5363-ae0d-8e385cbf4ad0",
+      "sha256": "2318e76b2f65b9be172651fd966c754fb50155901b212b2e31ee4396e34b890f",
+      "status": "ready",
+      "storage": "file.v1",
+      "thread_id": "f0b1e8b1-58ed-4a8f-b1cc-5823f59c556f"
+    },
+    {
+      "artifact_id": "9013e8f5-5a32-451d-88f0-7e40f8685a33",
+      "byte_count": 3628,
+      "filename": "voice-1793191579207.webm",
+      "media_type": "audio/webm",
+      "producing_agent_id": null,
+      "producing_run_id": null,
+      "revision_id": "1d28e667-1263-50bb-8e92-31687d24814f",
+      "sha256": "e2489cb1d1234157ea909b844c6b72c016b2129d6e05b63ffbacdf8c73918720",
+      "status": "ready",
+      "storage": "file.v1",
+      "thread_id": "f0b1e8b1-58ed-4a8f-b1cc-5823f59c556f"
+    },
+    {
+      "artifact_id": "b01607ff-552d-407e-8df6-d310f7d5a077",
+      "byte_count": 2508,
+      "filename": "voice-1793191286932.webm",
+      "media_type": "audio/webm",
+      "producing_agent_id": null,
+      "producing_run_id": null,
+      "revision_id": "131fee0a-b48a-5a08-8d9a-edd78f47b0dc",
+      "sha256": "4755819e78f4daa0e1acc59f6396e144754067dfd4f6a505d2c4ea6d88ed5114",
+      "status": "ready",
+      "storage": "file.v1",
+      "thread_id": "f0b1e8b1-58ed-4a8f-b1cc-5823f59c556f"
+    }
+  ],
+  "collaboration_tasks": [],
+  "delegations": [],
+  "discussion": null,
+  "goals": [],
+  "messages": [
+    {
+      "attachments": [
+        {
+          "artifact_id": "9013e8f5-5a32-451d-88f0-7e40f8685a33",
+          "byte_count": 3628,
+          "filename": "voice-1793191579207.webm",
+          "media_type": "audio/webm",
+          "producing_agent_id": null,
+          "producing_run_id": null,
+          "revision_id": "1d28e667-1263-50bb-8e92-31687d24814f",
+          "sha256": "e2489cb1d1234157ea909b844c6b72c016b2129d6e05b63ffbacdf8c73918720",
+          "status": "ready",
+          "storage": "file.v1",
+          "thread_id": "f0b1e8b1-58ed-4a8f-b1cc-5823f59c556f"
+        },
+        {
+          "artifact_id": "9b2b8c27-880a-4a9b-a729-fe992071207a",
+          "byte_count": 73544,
+          "filename": "nma037-speech.wav",
+          "media_type": "audio/wav",
+          "producing_agent_id": null,
+          "producing_run_id": null,
+          "revision_id": "44a6cf06-25aa-5363-ae0d-8e385cbf4ad0",
+          "sha256": "2318e76b2f65b9be172651fd966c754fb50155901b212b2e31ee4396e34b890f",
+          "status": "ready",
+          "storage": "file.v1",
+          "thread_id": "f0b1e8b1-58ed-4a8f-b1cc-5823f59c556f"
+        }
+      ],
+      "author_agent_id": null,
+      "author_kind": "user",
+      "content": "Please remember that the red circle is blue now..",
+      "context_generation": "1",
+      "message_id": "864955d6-a9ad-55b0-ab2c-1c280bdb4abf",
+      "message_seq": "2",
+      "parts": [
+        {
+          "text": "Please remember that the red circle is blue now..",
+          "type": "text"
+        }
+      ],
+      "revision": "1",
+      "run_id": "bb3f5b19-9216-5826-8997-3c745cd4e7cb",
+      "thread_id": "f0b1e8b1-58ed-4a8f-b1cc-5823f59c556f"
+    },
+    {
+      "attachments": [],
+      "author_agent_id": "f99fede7-e2ba-4f96-863a-8003f3aa7506",
+      "author_kind": "agent",
+      "content": "RECOVERY_ACK_Please remember that the red circle is blue now..\nAttached files (data; use workspace import_file to read):\n[{\"artifact_id\":\"9013e8f5-5a32-451d-88f0-7e40f8685a33\",\"byte_count\":3628,\"filename\":\"voice-1793191579207.webm\",\"media_type\":\"audio/webm\",\"producing_agent_id\":null,\"producing_run_id\":null,\"revision_id\":\"1d28e667-1263-50bb-8e92-31687d24814f\",\"sha256\":\"e2489cb1d1234157ea909b844c6b72c016b2129d6e05b63ffbacdf8c73918720\",\"status\":\"ready\",\"storage\":\"file.v1\",\"thread_id\":\"f0b1e8b1-58ed-4a8f-b1cc-5823f59c556f\"},{\"artifact_id\":\"9b2b8c27-880a-4a9b-a729-fe992071207a\",\"byte_count\":73544,\"filename\":\"nma037-speech.wav\",\"media_type\":\"audio/wav\",\"producing_agent_id\":null,\"producing_run_id\":null,\"revision_id\":\"44a6cf06-25aa-5363-ae0d-8e385cbf4ad0\",\"sha256\":\"2318e76b2f65b9be172651fd966c754fb50155901b212b2e31ee4396e34b890f\",\"status\":\"ready\",\"storage\":\"file.v1\",\"thread_id\":\"f0b1e8b1-58ed-4a8f-b1cc-5823f59c556f\"}]",
+      "context_generation": "1",
+      "message_id": "ac01fb4d-97ce-5f21-bc42-5abb42746517",
+      "message_seq": "3",
+      "parts": [
+        {
+          "text": "RECOVERY_ACK_Please remember that the red circle is blue now..\nAttached files (data; use workspace import_file to read):\n[{\"artifact_id\":\"9013e8f5-5a32-451d-88f0-7e40f8685a33\",\"byte_count\":3628,\"filename\":\"voice-1793191579207.webm\",\"media_type\":\"audio/webm\",\"producing_agent_id\":null,\"producing_run_id\":null,\"revision_id\":\"1d28e667-1263-50bb-8e92-31687d24814f\",\"sha256\":\"e2489cb1d1234157ea909b844c6b72c016b2129d6e05b63ffbacdf8c73918720\",\"status\":\"ready\",\"storage\":\"file.v1\",\"thread_id\":\"f0b1e8b1-58ed-4a8f-b1cc-5823f59c556f\"},{\"artifact_id\":\"9b2b8c27-880a-4a9b-a729-fe992071207a\",\"byte_count\":73544,\"filename\":\"nma037-speech.wav\",\"media_type\":\"audio/wav\",\"producing_agent_id\":null,\"producing_run_id\":null,\"revision_id\":\"44a6cf06-25aa-5363-ae0d-8e385cbf4ad0\",\"sha256\":\"2318e76b2f65b9be172651fd966c754fb50155901b212b2e31ee4396e34b890f\",\"status\":\"ready\",\"storage\":\"file.v1\",\"thread_id\":\"f0b1e8b1-58ed-4a8f-b1cc-5823f59c556f\"}]",
+          "type": "text"
+        }
+      ],
+      "revision": "1",
+      "run_id": "bb3f5b19-9216-5826-8997-3c745cd4e7cb",
+      "thread_id": "f0b1e8b1-58ed-4a8f-b1cc-5823f59c556f"
+    },
+    {
+      "attachments": [
+        {
+          "artifact_id": "22b20c38-7bf3-48f7-9667-3ab98c76d9da",
+          "byte_count": 37004,
+          "filename": "voice-1793191938101.webm",
+          "media_type": "audio/webm",
+          "producing_agent_id": null,
+          "producing_run_id": null,
+          "revision_id": "53d7f559-21ec-5f37-92df-5eb8ac07d720",
+          "sha256": "4bc6fa2f8bf1b8a1e7653b6d055dbc5d6bb5a68b064536dc82b3b9d2941a04c5",
+          "status": "ready",
+          "storage": "file.v1",
+          "thread_id": "f0b1e8b1-58ed-4a8f-b1cc-5823f59c556f"
+        },
+        {
+          "artifact_id": "d02dfde5-cf28-4d10-a3d5-fdfbc732e3e8",
+          "byte_count": 5672,
+          "filename": "voice-1793191794169.webm",
+          "media_type": "audio/webm",
+          "producing_agent_id": null,
+          "producing_run_id": null,
+          "revision_id": "ee03d2a7-d435-58fb-bedd-898778e6f8c4",
+          "sha256": "4e93155bfaf3f46c7932a57e13cec635d80d37c26d51e82aa8434a18f9e82625",
+          "status": "ready",
+          "storage": "file.v1",
+          "thread_id": "f0b1e8b1-58ed-4a8f-b1cc-5823f59c556f"
+        }
+      ],
+      "author_agent_id": null,
+      "author_kind": "user",
+      "content": "Please remember that the red circle is blue now.",
+      "context_generation": "1",
+      "message_id": "378105dd-0361-54c1-9309-e6e91b27448b",
+      "message_seq": "4",
+      "parts": [
+        {
+          "text": "Please remember that the red circle is blue now.",
+          "type": "text"
+        }
+      ],
+      "revision": "1",
+      "run_id": "2516b39d-80ba-5a29-9228-7091d3350137",
+      "thread_id": "f0b1e8b1-58ed-4a8f-b1cc-5823f59c556f"
+    },
+    {
+      "attachments": [],
+      "author_agent_id": "f99fede7-e2ba-4f96-863a-8003f3aa7506",
+      "author_kind": "agent",
+      "content": "RECOVERY_ACK_Please remember that the red circle is blue now.\nAttached files (data; use workspace import_file to read):\n[{\"artifact_id\":\"d02dfde5-cf28-4d10-a3d5-fdfbc732e3e8\",\"byte_count\":5672,\"filename\":\"voice-1793191794169.webm\",\"media_type\":\"audio/webm\",\"producing_agent_id\":null,\"producing_run_id\":null,\"revision_id\":\"ee03d2a7-d435-58fb-bedd-898778e6f8c4\",\"sha256\":\"4e93155bfaf3f46c7932a57e13cec635d80d37c26d51e82aa8434a18f9e82625\",\"status\":\"ready\",\"storage\":\"file.v1\",\"thread_id\":\"f0b1e8b1-58ed-4a8f-b1cc-5823f59c556f\"},{\"artifact_id\":\"22b20c38-7bf3-48f7-9667-3ab98c76d9da\",\"byte_count\":37004,\"filename\":\"voice-1793191938101.webm\",\"media_type\":\"audio/webm\",\"producing_agent_id\":null,\"producing_run_id\":null,\"revision_id\":\"53d7f559-21ec-5f37-92df-5eb8ac07d720\",\"sha256\":\"4bc6fa2f8bf1b8a1e7653b6d055dbc5d6bb5a68b064536dc82b3b9d2941a04c5\",\"status\":\"ready\",\"storage\":\"file.v1\",\"thread_id\":\"f0b1e8b1-58ed-4a8f-b1cc-5823f59c556f\"}]",
+      "context_generation": "1",
+      "message_id": "50318b3c-1d41-5778-96a3-e64b6f9d6c0d",
+      "message_seq": "5",
+      "parts": [
+        {
+          "text": "RECOVERY_ACK_Please remember that the red circle is blue now.\nAttached files (data; use workspace import_file to read):\n[{\"artifact_id\":\"d02dfde5-cf28-4d10-a3d5-fdfbc732e3e8\",\"byte_count\":5672,\"filename\":\"voice-1793191794169.webm\",\"media_type\":\"audio/webm\",\"producing_agent_id\":null,\"producing_run_id\":null,\"revision_id\":\"ee03d2a7-d435-58fb-bedd-898778e6f8c4\",\"sha256\":\"4e93155bfaf3f46c7932a57e13cec635d80d37c26d51e82aa8434a18f9e82625\",\"status\":\"ready\",\"storage\":\"file.v1\",\"thread_id\":\"f0b1e8b1-58ed-4a8f-b1cc-5823f59c556f\"},{\"artifact_id\":\"22b20c38-7bf3-48f7-9667-3ab98c76d9da\",\"byte_count\":37004,\"filename\":\"voice-1793191938101.webm\",\"media_type\":\"audio/webm\",\"producing_agent_id\":null,\"producing_run_id\":null,\"revision_id\":\"53d7f559-21ec-5f37-92df-5eb8ac07d720\",\"sha256\":\"4bc6fa2f8bf1b8a1e7653b6d055dbc5d6bb5a68b064536dc82b3b9d2941a04c5\",\"status\":\"ready\",\"storage\":\"file.v1\",\"thread_id\":\"f0b1e8b1-58ed-4a8f-b1cc-5823f59c556f\"}]",
+          "type": "text"
+        }
+      ],
+      "revision": "1",
+      "run_id": "2516b39d-80ba-5a29-9228-7091d3350137",
+      "thread_id": "f0b1e8b1-58ed-4a8f-b1cc-5823f59c556f"
+    }
+  ],
+  "next_before_message_seq": null,
+  "replay_epoch": "a9083478-a278-4c7d-afd8-f563e1ebed48",
+  "runs": [
+    {
+      "agent_id": "f99fede7-e2ba-4f96-863a-8003f3aa7506",
+      "config_revision": "1",
+      "context_generation": "1",
+      "continuation_required": false,
+      "error_code": null,
+      "replay_epoch": "a9083478-a278-4c7d-afd8-f563e1ebed48",
+      "run_id": "bb3f5b19-9216-5826-8997-3c745cd4e7cb",
+      "schema_version": "nma.v1",
+      "status": "succeeded",
+      "text": "RECOVERY_ACK_Please remember that the red circle is blue now..\nAttached files (data; use workspace import_file to read):\n[{\"artifact_id\":\"9013e8f5-5a32-451d-88f0-7e40f8685a33\",\"byte_count\":3628,\"filename\":\"voice-1793191579207.webm\",\"media_type\":\"audio/webm\",\"producing_agent_id\":null,\"producing_run_id\":null,\"revision_id\":\"1d28e667-1263-50bb-8e92-31687d24814f\",\"sha256\":\"e2489cb1d1234157ea909b844c6b72c016b2129d6e05b63ffbacdf8c73918720\",\"status\":\"ready\",\"storage\":\"file.v1\",\"thread_id\":\"f0b1e8b1-58ed-4a8f-b1cc-5823f59c556f\"},{\"artifact_id\":\"9b2b8c27-880a-4a9b-a729-fe992071207a\",\"byte_count\":73544,\"filename\":\"nma037-speech.wav\",\"media_type\":\"audio/wav\",\"producing_agent_id\":null,\"producing_run_id\":null,\"revision_id\":\"44a6cf06-25aa-5363-ae0d-8e385cbf4ad0\",\"sha256\":\"2318e76b2f65b9be172651fd966c754fb50155901b212b2e31ee4396e34b890f\",\"status\":\"ready\",\"storage\":\"file.v1\",\"thread_id\":\"f0b1e8b1-58ed-4a8f-b1cc-5823f59c556f\"}]",
+      "thread_id": "f0b1e8b1-58ed-4a8f-b1cc-5823f59c556f",
+      "through_sequence": "30",
+      "turn_exit_reason": "text_response(finish_reason=stop)"
+    },
+    {
+      "agent_id": "f99fede7-e2ba-4f96-863a-8003f3aa7506",
+      "config_revision": "1",
+      "context_generation": "1",
+      "continuation_required": false,
+      "error_code": null,
+      "replay_epoch": "a9083478-a278-4c7d-afd8-f563e1ebed48",
+      "run_id": "2516b39d-80ba-5a29-9228-7091d3350137",
+      "schema_version": "nma.v1",
+      "status": "succeeded",
+      "text": "RECOVERY_ACK_Please remember that the red circle is blue now.\nAttached files (data; use workspace import_file to read):\n[{\"artifact_id\":\"d02dfde5-cf28-4d10-a3d5-fdfbc732e3e8\",\"byte_count\":5672,\"filename\":\"voice-1793191794169.webm\",\"media_type\":\"audio/webm\",\"producing_agent_id\":null,\"producing_run_id\":null,\"revision_id\":\"ee03d2a7-d435-58fb-bedd-898778e6f8c4\",\"sha256\":\"4e93155bfaf3f46c7932a57e13cec635d80d37c26d51e82aa8434a18f9e82625\",\"status\":\"ready\",\"storage\":\"file.v1\",\"thread_id\":\"f0b1e8b1-58ed-4a8f-b1cc-5823f59c556f\"},{\"artifact_id\":\"22b20c38-7bf3-48f7-9667-3ab98c76d9da\",\"byte_count\":37004,\"filename\":\"voice-1793191938101.webm\",\"media_type\":\"audio/webm\",\"producing_agent_id\":null,\"producing_run_id\":null,\"revision_id\":\"53d7f559-21ec-5f37-92df-5eb8ac07d720\",\"sha256\":\"4bc6fa2f8bf1b8a1e7653b6d055dbc5d6bb5a68b064536dc82b3b9d2941a04c5\",\"status\":\"ready\",\"storage\":\"file.v1\",\"thread_id\":\"f0b1e8b1-58ed-4a8f-b1cc-5823f59c556f\"}]",
+      "thread_id": "f0b1e8b1-58ed-4a8f-b1cc-5823f59c556f",
+      "through_sequence": "30",
+      "turn_exit_reason": "text_response(finish_reason=stop)"
+    }
+  ],
+  "schema_version": "nma.v1",
+  "thread": {
+    "agents": [
+      {
+        "access_generation": "1",
+        "agent_id": "f99fede7-e2ba-4f96-863a-8003f3aa7506",
+        "config": {
+          "avatar_url": "https://api.dicebear.com/10.x/critters/svg?seed=media-walkthrough",
+          "instructions": "",
+          "model": "test",
+          "session": {
+            "compression": {},
+            "context_engine": "compressor",
+            "max_turns": null
+          },
+          "soul": "",
+          "tool_grants": [
+            "media_images",
+            "media_vision",
+            "media_video"
+          ]
+        },
+        "config_revision": "1",
+        "created_at": "2026-10-28T12:39:22.235434Z",
+        "display_name": "media-walkthrough",
+        "handle": "media-walkthrough",
+        "primary_dm_thread_id": "f0b1e8b1-58ed-4a8f-b1cc-5823f59c556f",
+        "revision": "1",
+        "status": "active",
+        "updated_at": "2026-10-28T12:39:22.235434Z"
+      }
+    ],
+    "context_generation": "1",
+    "dm_agent_id": "f99fede7-e2ba-4f96-863a-8003f3aa7506",
+    "kind": "dm",
+    "membership_revision": "1",
+    "revision": "1",
+    "status": "open",
+    "thread_id": "f0b1e8b1-58ed-4a8f-b1cc-5823f59c556f",
+    "title": "media-walkthrough"
+  },
+  "through_sequence": "30"
+}

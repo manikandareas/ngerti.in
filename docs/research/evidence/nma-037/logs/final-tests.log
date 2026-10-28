@@ -1,0 +1,122 @@
+/Users/vitoandareasmanik/.cache/uv/archive-v0/Uhti8kwSaB-uppKgLiv9B/lib/python3.14/site-packages/pytest_asyncio/plugin.py:300: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the "fixture" caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to "function" scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+..MUSE_GATEWAY generate [{"artifact_id": "eb012967-f025-5deb-83e0-9137156252d1", "byte_count": 37962, "filename": "image.webp", "media_type": "image/webp", "producing_agent_id": "2d3d201a-7cd5-4e21-b691-df4b74b0f101", "producing_run_id": "a385b151-1ba9-5675-9571-eefe3a0bd11d", "revision_id": "b029dc54-930d-54fc-975d-27e548199fc3", "sha256": "bc096b38c963df35bbd5cda8eccd954ef68a7165863f0d7cc57cddba240d68e4", "status": "ready", "storage": "file.v1", "thread_id": "6c1d336a-95a8-4dcf-ac4b-924dc440a697"}]
+MUSE_GATEWAY edit [{"artifact_id": "89b458e9-afb6-51c8-9c7b-57311fe38664", "byte_count": 35756, "filename": "image.webp", "media_type": "image/webp", "producing_agent_id": "2d3d201a-7cd5-4e21-b691-df4b74b0f101", "producing_run_id": "d8ac96f1-7018-5052-a5d6-8ec12275a05c", "revision_id": "db591565-e881-5f19-a66f-129565df810f", "sha256": "fd54634b9fef7c2649eec7884596d4896e8f2da52bbf43f26b768aa7f4bdfcd9", "status": "ready", "storage": "file.v1", "thread_id": "6c1d336a-95a8-4dcf-ac4b-924dc440a697"}, {"artifact_id": "eb012967-f025-5deb-83e0-9137156252d1", "byte_count": 37962, "filename": "image.webp", "media_type": "image/webp", "producing_agent_id": "2d3d201a-7cd5-4e21-b691-df4b74b0f101", "producing_run_id": "a385b151-1ba9-5675-9571-eefe3a0bd11d", "revision_id": "b029dc54-930d-54fc-975d-27e548199fc3", "sha256": "bc096b38c963df35bbd5cda8eccd954ef68a7165863f0d7cc57cddba240d68e4", "status": "ready", "storage": "file.v1", "thread_id": "6c1d336a-95a8-4dcf-ac4b-924dc440a697"}]
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 60776)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_media.py", line 165, in reply
+    messages = body["messages"]
+               ~~~~^^^^^^^^^^^^
+KeyError: 'messages'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 60778)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_media.py", line 165, in reply
+    messages = body["messages"]
+               ~~~~^^^^^^^^^^^^
+KeyError: 'messages'
+----------------------------------------
+.MUSE_TRANSCRIPTION {"artifact_id": "42c6ce2a-0a94-41a0-a69e-6b4102a0769d", "provider": "nma-meta", "request_key": "0c6fc161-bb6c-4e03-b35e-e1761681366a", "state": "completed", "success": true, "transcript": "Please remember that the red circle is blue now.."}
+.MUSE_ANALYSIS vision_analyze {"success": true, "analysis": "The image is very simple \u2014 just one thing:\n\n* **Color:** A single, solid, vivid primary blue filling the entire image. No gradients, patterns, or other colors.\n* **Geometric shape:** A perfect square.", "artifact_id": "a61bb7a0-4e6f-4710-975a-662ad62a2c9f", "provider": "meta", "model": "muse-spark-1.3", "media_metadata": {}}
+MUSE_ANALYSIS video_analyze {"success": true, "analysis": "The image is the same in both frames \u2014 simple and bold:\n\n* **Colors:** Just two solid, highly saturated colors\n  * A vivid **pure red** for the outer background\n  * A vivid **pure blue** for the center\n\n* **Geometric shapes:** Two squares, one nested inside the other\n  * A large **red square** that fills the whole frame\n  * A smaller **blue square** centered right in the middle of the red one, with its sides parallel to the red square, leaving equal red margins on all four sides.", "artifact_id": "224c17af-f7e9-4f8c-96be-2acfd6ea7213", "provider": "meta", "model": "muse-spark-1.3", "media_metadata": {"programs": [], "stream_groups": [], "streams": [{"codec_name": "h264", "codec_type": "video", "width": 160, "height": 160}], "format": {"duration": "2.000000"}}}
+.F.RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+..RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+FFFFFFRUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+.....RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+..............
+=================================== FAILURES ===================================
+_______________ test_billed_native_image_does_not_retry_lost_ack _______________
+apps/engine/tests/test_media.py:518: in test_billed_native_image_does_not_retry_lost_ack
+    monkeypatch.setattr(
+E   AttributeError: <module 'plugins.image_gen.openai' from '/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/source/plugins/image_gen/openai/__init__.py'> has no attribute 'build_keepalive_http_client'
+__________________________ test_handoff_dedup_restart __________________________
+apps/engine/tests/test_discussions.py:68: in test_handoff_dedup_restart
+    assert "result" in receipt, receipt
+E   AssertionError: {'error': {'code': 'INVALID_REQUEST'}}
+E   assert 'result' in {'error': {'code': 'INVALID_REQUEST'}}
+____________________ test_broadcast_bounce_stop_and_revoke _____________________
+apps/engine/tests/test_discussions.py:95: in test_broadcast_bounce_stop_and_revoke
+    assert "result" in call(send(thread, "Discuss together"))
+E   AssertionError: assert 'result' in {'error': {'code': 'INVALID_REQUEST'}}
+E    +  where {'error': {'code': 'INVALID_REQUEST'}} = <function runtime.<locals>.call at 0x10d474eb0>({'schema_version': 'nma.v1', 'command_id': 'ba4c3a4a-979f-4d3c-bd61-3d1dea305143', 'type': 'message.send', 'expected_revision': None, ...})
+E    +    where {'schema_version': 'nma.v1', 'command_id': 'ba4c3a4a-979f-4d3c-bd61-3d1dea305143', 'type': 'message.send', 'expected_revision': None, ...} = send({'agents': [{'access_generation': '1', 'agent_id': '9a9a74b2-f0a3-4c13-adef-4cf63c1966f1', 'config': {'avatar_url': 'h...rns': None}, ...}, 'config_revision': '1', ...}], 'context_generation': '1', 'dm_agent_id': None, 'kind': 'group', ...}, 'Discuss together')
+____________________ test_group_goal_peer_units_and_cancel _____________________
+apps/engine/tests/test_discussions.py:177: in test_group_goal_peer_units_and_cancel
+    assert "result" in call(
+E   AssertionError: assert 'result' in {'error': {'code': 'INVALID_REQUEST'}}
+E    +  where {'error': {'code': 'INVALID_REQUEST'}} = <function runtime.<locals>.call at 0x10d474eb0>({'schema_version': 'nma.v1', 'command_id': 'e9874856-d091-4da8-905e-7514b8fe098f', 'type': 'message.send', 'expected_revision': None, ...})
+E    +    where {'schema_version': 'nma.v1', 'command_id': 'e9874856-d091-4da8-905e-7514b8fe098f', 'type': 'message.send', 'expected_revision': None, ...} = send({'agents': [{'access_generation': '1', 'agent_id': '9a9a74b2-f0a3-4c13-adef-4cf63c1966f1', 'config': {'avatar_url': 'h...rns': None}, ...}, 'config_revision': '1', ...}], 'context_generation': '1', 'dm_agent_id': None, 'kind': 'group', ...}, '@researcher prepare a report with your peers')
+_______________ test_crash_at_group_transaction_and_publication ________________
+apps/engine/tests/test_discussions.py:221: in test_crash_at_group_transaction_and_publication
+    start.current.wait(timeout=15)
+../../../.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/subprocess.py:1279: in wait
+    return self._wait(timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/subprocess.py:2076: in _wait
+    raise TimeoutExpired(self.args, timeout)
+E   subprocess.TimeoutExpired: Command '['/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-033/production/bin/python', '/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/fault_launcher.py']' timed out after 15 seconds
+________ test_peer_failure_stays_on_shared_goal_without_private_context ________
+apps/engine/tests/test_discussions.py:294: in test_peer_failure_stays_on_shared_goal_without_private_context
+    assert "result" in call(send(thread, "@researcher prepare shared report"))
+E   AssertionError: assert 'result' in {'error': {'code': 'INVALID_REQUEST'}}
+E    +  where {'error': {'code': 'INVALID_REQUEST'}} = <function runtime.<locals>.call at 0x10d474eb0>({'schema_version': 'nma.v1', 'command_id': '454adfc6-5656-42b7-a75b-931f1428d42a', 'type': 'message.send', 'expected_revision': None, ...})
+E    +    where {'schema_version': 'nma.v1', 'command_id': '454adfc6-5656-42b7-a75b-931f1428d42a', 'type': 'message.send', 'expected_revision': None, ...} = send({'agents': [{'access_generation': '1', 'agent_id': '9a9a74b2-f0a3-4c13-adef-4cf63c1966f1', 'config': {'avatar_url': 'h...rns': None}, ...}, 'config_revision': '1', ...}], 'context_generation': '1', 'dm_agent_id': None, 'kind': 'group', ...}, '@researcher prepare shared report')
+_____________ test_peer_cannot_mutate_responsible_agent_lifecycle ______________
+apps/engine/tests/test_discussions.py:358: in test_peer_cannot_mutate_responsible_agent_lifecycle
+    assert "result" in call(send(thread, "@researcher prepare report"))
+E   AssertionError: assert 'result' in {'error': {'code': 'INVALID_REQUEST'}}
+E    +  where {'error': {'code': 'INVALID_REQUEST'}} = <function runtime.<locals>.call at 0x10d474eb0>({'schema_version': 'nma.v1', 'command_id': '087a9959-ccf3-40a5-94b7-9aeb48b66fd6', 'type': 'message.send', 'expected_revision': None, ...})
+E    +    where {'schema_version': 'nma.v1', 'command_id': '087a9959-ccf3-40a5-94b7-9aeb48b66fd6', 'type': 'message.send', 'expected_revision': None, ...} = send({'agents': [{'access_generation': '1', 'agent_id': '9a9a74b2-f0a3-4c13-adef-4cf63c1966f1', 'config': {'avatar_url': 'h...rns': None}, ...}, 'config_revision': '1', ...}], 'context_generation': '1', 'dm_agent_id': None, 'kind': 'group', ...}, '@researcher prepare report')
+=============================== warnings summary ===============================
+.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14
+  /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14: PytestRemovedIn10Warning: _pytest.python.CallSpec2 has been renamed to CallSpec.
+  The CallSpec2 alias will be removed in pytest 10.
+  Update imports to use CallSpec instead.
+  See https://docs.pytest.org/en/stable/deprecations.html#callspec2-renamed
+    from _pytest.python import CallSpec2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_media.py::test_billed_native_image_does_not_retry_lost_ack
+FAILED apps/engine/tests/test_discussions.py::test_handoff_dedup_restart - As...
+FAILED apps/engine/tests/test_discussions.py::test_broadcast_bounce_stop_and_revoke
+FAILED apps/engine/tests/test_discussions.py::test_group_goal_peer_units_and_cancel
+FAILED apps/engine/tests/test_discussions.py::test_crash_at_group_transaction_and_publication
+FAILED apps/engine/tests/test_discussions.py::test_peer_failure_stays_on_shared_goal_without_private_context
+FAILED apps/engine/tests/test_discussions.py::test_peer_cannot_mutate_responsible_agent_lifecycle
+7 failed, 27 passed, 1 warning in 138.27s (0:02:18)

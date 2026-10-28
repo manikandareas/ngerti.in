@@ -1,0 +1,32 @@
+{
+  "hermes_revision": "7489b22af47ce91b366dde81d5831ea422577498",
+  "schema": 20,
+  "files": {
+    "apps/backend/src/ngertiin/agent_engine/api.py": "bc34230796721058e46114f112972dedd43666cfab8750bbb8c2fd10cf55d392",
+    "apps/backend/src/ngertiin/agent_engine/apps_api.py": "40dace5f80c41b1ac0df48c41b1bab8b3384ef544551ec7131e4b1797f7b240d",
+    "apps/engine/README.md": "e1d38526b82f57140b34db86dd6102dc532fd2be66d6367c2da0cfae9be8813a",
+    "apps/engine/src/ngertiin_engine/adapter.py": "6ba4033ac4732d30f82ac9acafe52dc0e645235f19b709f631b95015b9d65c26",
+    "apps/engine/src/ngertiin_engine/capabilities.py": "bf85cc777c266012c9cdd0e60c8178bfc9fc5d6980a513eadefd7b1c58874ce4",
+    "apps/engine/src/ngertiin_engine/direct_messages.py": "88b4e82c3822b6bf83a3d562516eb843e8d225fe5a36562160fb54cfb4d7e917",
+    "apps/engine/src/ngertiin_engine/discussions.py": "4673927ef2b128e431247f83248d358aeb14a74e5fb3cf4b1782170b5d1b0bcc",
+    "apps/engine/src/ngertiin_engine/integration.py": "810bfdf310fbc0044c3e70527e957964fae297053316719ed8af745b37827190",
+    "apps/engine/src/ngertiin_engine/media_analysis.py": "c77bbc840857bf076efd0f800500bc69e5fd4e9d7ad877b17b7fed074adb4ecf",
+    "apps/engine/src/ngertiin_engine/media_inputs.py": "efbcb9d15729de89fdd7599e61cf60abaa498a2e16411eef53f13f450c10e3e8",
+    "apps/engine/src/ngertiin_engine/media_provider.py": "db88189b46e2a74529c57669fd3571a899a6a351a512062e95bd5a59d96363a0",
+    "apps/engine/src/ngertiin_engine/media_sources.py": "2ab3cd22af5b28b1e131b611903c6f977bde7597da2c39f8189f5007c86d4c8d",
+    "apps/engine/src/ngertiin_engine/native_catalog.py": "b726b042b980b3bba0bfda41809d4244ec2b3487fbab5ddfaa08b9b26da4c373",
+    "apps/engine/src/ngertiin_engine/outcomes.py": "4e1764ea73822eb976844fb68d7267c740311d7b823304fa59d0f319e9591452",
+    "apps/engine/src/ngertiin_engine/runtime-pin.json": "1a042bf45bdbb66ae1712eb71ed75c88490e4abf2e60138c136a8f6c81356b16",
+    "apps/engine/src/ngertiin_engine/session_settings.py": "12020c9052444d006892eef85d3234c33e3bda2874bf3255ba5e12109c2cafd9",
+    "apps/engine/src/ngertiin_engine/speech.py": "acd86f0d906db78111886cc6a5d17f489fea51b7bc1d048010e243a010728ad9",
+    "apps/engine/tests/browser/media.config.ts": "de4ff0ee9bef5c2b83099637a373fba5a1295e0097b3d0b7d3554d4516af1c11",
+    "apps/engine/tests/test_media.py": "400bb1ed0921a9261433a0212ac91f2589ff52be1fcf915eea468bfce90d535c",
+    "apps/web/src/features/connections/connections-page.tsx": "f0f80e4312c0f81658b5dcf0764bfa2343a017dc525013ea7db4712ffd9a9755",
+    "apps/web/src/features/connections/media-settings.tsx": "4d67c3a257224ad70022cc3377767e2df09353852c6622c36e8c2224a116a3d7",
+    "apps/web/src/features/direct-messages/artifact-results.tsx": "4cf712e847b02698fb5f08aa7ebe349aed40dd312db841d07c899e52ad6d0689",
+    "apps/web/src/features/direct-messages/composer.tsx": "ef4ac7426ed8a6e267099e81d27c0ea44f14335c349ae7f72ef4aeab801bd399",
+    "apps/web/src/features/direct-messages/file-upload.tsx": "a7cf82e1d10bb50abda084e148f51af00503ff6ff276e05167dec109a75b1ddd",
+    "scripts/spikes/nma037/muse_image.py": "79d21cd368fe6feb2f5b9bd9050979c2544719043aefae200316f48fe096f382",
+    "scripts/spikes/nma037/ui.py": "2fc2d951f5b8781c61e985bc59ef159ac8a75dcc7d701104e8a0f58f2eaf7b6d"
+  }
+}

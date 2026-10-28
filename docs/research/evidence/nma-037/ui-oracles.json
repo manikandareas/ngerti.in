@@ -1,0 +1,11 @@
+{
+  "audioDuration": 2.220132,
+  "audioReadyState": 4,
+  "deniedMicrophoneAlert": true,
+  "knownAudioInjectedThroughWebAudio": true,
+  "physicalMicrophoneTested": false,
+  "scrollWidth": 390,
+  "textStillUsable": true,
+  "userTurnCount": 2,
+  "viewport": 390
+}

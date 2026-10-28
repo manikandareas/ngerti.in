@@ -1,0 +1,30 @@
+[
+  {
+    "artifact_id": "e45d62a0-a5c3-58bc-895d-df84163c6fbe",
+    "byte_count": 42038,
+    "filename": "image.webp",
+    "media_type": "image/webp",
+    "producing_agent_id": "77e92fe3-055f-439e-9b40-a8ca7206f866",
+    "producing_run_id": "b6b01bdc-c952-51a9-9d9b-c33ccba57379",
+    "revision_id": "ca8b0729-31fa-5e59-ab2b-e8338fa310a2",
+    "sha256": "5acdb2c6074b8bac78666a1a20dfd4d1dec10e8120d6e66073e63cec25612433",
+    "status": "ready",
+    "storage": "file.v1",
+    "thread_id": "f2aa9bd9-4a85-4623-b74c-8f519cd207d4",
+    "evidence_path": "docs/research/evidence/nma-037/media/5acdb2c6074b8bac78666a1a20dfd4d1dec10e8120d6e66073e63cec25612433.webp"
+  },
+  {
+    "artifact_id": "1cc15128-5d80-5840-ab1f-9acb1926f0f4",
+    "byte_count": 36396,
+    "filename": "image.webp",
+    "media_type": "image/webp",
+    "producing_agent_id": "77e92fe3-055f-439e-9b40-a8ca7206f866",
+    "producing_run_id": "9273a539-9be3-555c-91c9-5e41ff4cd49b",
+    "revision_id": "9e9cba13-4a11-5fbf-ba1d-348d40e866d1",
+    "sha256": "87a6324baad872dbb41375eee28573b47ccc2ffc4d9bfafa34ce3e09f4fff24f",
+    "status": "ready",
+    "storage": "file.v1",
+    "thread_id": "f2aa9bd9-4a85-4623-b74c-8f519cd207d4",
+    "evidence_path": "docs/research/evidence/nma-037/media/87a6324baad872dbb41375eee28573b47ccc2ffc4d9bfafa34ce3e09f4fff24f.webp"
+  }
+]

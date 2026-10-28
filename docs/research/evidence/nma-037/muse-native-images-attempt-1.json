@@ -1,0 +1,24 @@
+[
+  {
+    "action": "generate",
+    "elapsed_seconds": 13.634489375166595,
+    "success": true,
+    "provider": "openai",
+    "model": "muse-image-1.0",
+    "format": "WEBP",
+    "width": 1600,
+    "height": 1600,
+    "sha256": "ef3d591871c02181794e7edaab3c3ef9586d202756ef9fd8522e74f3308f71f3",
+    "byte_count": 37636,
+    "local_output": "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma037/muse/cache/generated/images/openai_muse-image-1.0_20261028_202319_e2a8cc27.png"
+  },
+  {
+    "action": "edit",
+    "elapsed_seconds": 0.9256288330070674,
+    "success": false,
+    "provider": "openai",
+    "model": "muse-image-1.0",
+    "error_type": "api_error",
+    "error": "OpenAI image editing failed: Error code: 400 - {'error': {'code': None, 'message': 'media at image[0] has MIME type `image/webp`, which does not match declared MIME type `image/png`', 'param': 'image', 'type': 'invalid_request_error'}}"
+  }
+]

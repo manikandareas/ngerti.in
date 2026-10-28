@@ -1,0 +1,27 @@
+apps/engine/tests/browser/media.config.ts (3:24) [33m[UNRESOLVED_IMPORT] [0mCould not resolve '@tailwindcss/vite' in apps/engine/tests/browser/media.config.ts
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m apps/engine/tests/browser/media.config.ts:3:25 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m3 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249mt[0m[38;5;249ma[0m[38;5;249mi[0m[38;5;249ml[0m[38;5;249mw[0m[38;5;249mi[0m[38;5;249mn[0m[38;5;249md[0m[38;5;249mc[0m[38;5;249ms[0m[38;5;249ms[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m"@tailwindcss/vite"[38;5;249m;[0m
+ [38;5;240m  │[0m                         ─────────┬─────────  
+ [38;5;240m  │[0m                                  ╰─────────── Module not found, treating it as an external dependency
+[38;5;246m───╯[0m
+
+apps/engine/tests/browser/media.config.ts (4:18) [33m[UNRESOLVED_IMPORT] [0mCould not resolve '@vitejs/plugin-react' in apps/engine/tests/browser/media.config.ts
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m apps/engine/tests/browser/media.config.ts:4:19 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m4 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249mr[0m[38;5;249me[0m[38;5;249ma[0m[38;5;249mc[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m"@vitejs/plugin-react"[38;5;249m;[0m
+ [38;5;240m  │[0m                   ───────────┬──────────  
+ [38;5;240m  │[0m                              ╰──────────── Module not found, treating it as an external dependency
+[38;5;246m───╯[0m
+
+apps/engine/tests/browser/media.config.ts (5:29) [33m[UNRESOLVED_IMPORT] [0mCould not resolve 'vite' in apps/engine/tests/browser/media.config.ts
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m apps/engine/tests/browser/media.config.ts:5:30 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m5 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0m[38;5;249md[0m[38;5;249me[0m[38;5;249mf[0m[38;5;249mi[0m[38;5;249mn[0m[38;5;249me[0m[38;5;249mC[0m[38;5;249mo[0m[38;5;249mn[0m[38;5;249mf[0m[38;5;249mi[0m[38;5;249mg[0m[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m"vite"[38;5;249m;[0m
+ [38;5;240m  │[0m                              ───┬──  
+ [38;5;240m  │[0m                                 ╰──── Module not found, treating it as an external dependency
+[38;5;246m───╯[0m
+
+failed to load config from /Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/browser/media.config.ts
+error when starting dev server:
+ResolveMessage {}

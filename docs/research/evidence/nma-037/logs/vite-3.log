@@ -1,0 +1,19 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (apps/engine/tests/browser/media.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+  VITE v8.3.4  ready in 368 ms
+
+  ➜  Local:   http://127.0.0.1:3037/
+8:42:33 PM [vite] (client) hmr update /@fs/Users/vitoandareasmanik/Development/project/ngertiin/apps/web/src/features/connections/media-settings.tsx, /style.css
+8:42:34 PM [vite] (client) hmr update /@fs/Users/vitoandareasmanik/Development/project/ngertiin/apps/web/src/features/connections/media-settings.tsx, /style.css
+8:43:23 PM [vite] http proxy error: /api/agent-engine/v1/commands
+Error: ECONNREFUSED
+    at <anonymous> (node:_http_client:249:24)
+    at processTicksAndRejections (native:7:39)
+8:50:50 PM [vite] (client) hmr update /@fs/Users/vitoandareasmanik/Development/project/ngertiin/apps/web/src/features/direct-messages/file-upload.tsx, /style.css
+8:51:19 PM [vite] (client) hmr update /@fs/Users/vitoandareasmanik/Development/project/ngertiin/apps/web/src/features/direct-messages/file-upload.tsx, /style.css
+8:52:53 PM [vite] (client) hmr update /@fs/Users/vitoandareasmanik/Development/project/ngertiin/apps/web/src/features/connections/media-settings.tsx, /style.css
+8:52:54 PM [vite] (client) hmr update /@fs/Users/vitoandareasmanik/Development/project/ngertiin/apps/web/src/features/connections/media-settings.tsx, /style.css
+9:03:45 PM [vite] (client) hmr update /@fs/Users/vitoandareasmanik/Development/project/ngertiin/apps/web/src/features/direct-messages/composer.tsx, /style.css
+9:03:45 PM [vite] (client) hmr update /@fs/Users/vitoandareasmanik/Development/project/ngertiin/apps/web/src/features/direct-messages/composer.tsx, /style.css

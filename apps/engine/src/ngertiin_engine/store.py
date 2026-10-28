@@ -9,6 +9,7 @@ import json
 
 from ngertiin_engine.agents import DDL as AGENT_DDL
 from ngertiin_engine.artifacts import DDL as ARTIFACT_DDL
+from ngertiin_engine.collaboration import DDL as COLLABORATION_DDL
 from ngertiin_engine.computer import DDL as COMPUTER_DDL
 from ngertiin_engine.connections import DDL as CONNECTION_DDL
 from ngertiin_engine.context import DDL as CONTEXT_DDL
@@ -16,6 +17,7 @@ from ngertiin_engine.context import fence_context_runs
 from ngertiin_engine.contracts import EngineError, canonical, digest, next_sequence
 from ngertiin_engine.conversations import DDL as CONVERSATION_DDL
 from ngertiin_engine.conversations import backfill
+from ngertiin_engine.delegation_store import DDL as DELEGATION_DDL
 from ngertiin_engine.direct_messages import DDL as DM_DDL
 from ngertiin_engine.discussions import DDL as DISCUSSION_DDL
 from ngertiin_engine.files import DDL as FILE_DDL
@@ -38,6 +40,9 @@ DDL = (
     "CREATE TABLE nma_adapter_runs (owner_id TEXT NOT NULL, run_id TEXT NOT NULL, binding_id TEXT NOT NULL, operation_id TEXT NOT NULL, native_admission_id TEXT, PRIMARY KEY(owner_id,run_id), UNIQUE(owner_id,operation_id), FOREIGN KEY(owner_id,binding_id) REFERENCES nma_adapter_bindings(owner_id,binding_id), FOREIGN KEY(owner_id,operation_id) REFERENCES nma_commands(owner_id,command_id))",
 )
 OUTCOME_CHECKSUM = hashlib.sha256("\n".join(OUTCOME_DDL).encode()).hexdigest()
+DELEGATION_CHECKSUM = hashlib.sha256(
+    "\n".join((*DELEGATION_DDL, *COLLABORATION_DDL)).encode()
+).hexdigest()
 FILE_CHECKSUM = hashlib.sha256("\n".join(FILE_DDL).encode()).hexdigest()
 LEARNING_CHECKSUM = hashlib.sha256("\n".join(LEARNING_DDL).encode()).hexdigest()
 CONNECTION_CHECKSUM = hashlib.sha256("\n".join(CONNECTION_DDL).encode()).hexdigest()
@@ -104,7 +109,7 @@ class Store:
                 "SELECT checksum FROM nma_schema_migrations WHERE owner_id=? AND version=1",
                 (self.owner,),
             ).fetchone()
-            if rows[0][2] not in range(1, 18) or not saved or saved[0] != CHECKSUM:
+            if rows[0][2] not in range(1, 19) or not saved or saved[0] != CHECKSUM:
                 raise EngineError("UNSUPPORTED_SCHEMA")
             if rows[0][1] > self.authority.epoch:
                 raise EngineError("AUTHORITY_LOST")
@@ -158,7 +163,8 @@ class Store:
             for row in conn.execute(
                 "SELECT thread_id FROM nma_threads WHERE owner_id=?", (self.owner,)
             ).fetchall():
-                fence_context_runs(conn, self.owner, row[0])
+                # Schema 4 is being backfilled before delegation exists.
+                fence_context_runs(conn, self.owner, row[0], include_children=False)
             # Existing sessions lack the context marker; require fresh scoped bindings.
             conn.execute(
                 "UPDATE nma_threads SET context_generation=context_generation+1,revision=revision+1"
@@ -443,6 +449,24 @@ class Store:
             conn.execute("UPDATE nma_partition SET schema_version=17")
         elif saved[0] != LEARNING_CHECKSUM:
             raise EngineError("UNSUPPORTED_SCHEMA")
+
+        saved = conn.execute(
+            "SELECT checksum FROM nma_schema_migrations WHERE owner_id=? AND version=18",
+            (self.owner,),
+        ).fetchone()
+        if not saved:
+            for statement in (*DELEGATION_DDL, *COLLABORATION_DDL):
+                conn.execute(statement)
+            conn.execute(
+                "INSERT INTO nma_schema_migrations(owner_id,version,checksum) VALUES (?,18,?)",
+                (self.owner, DELEGATION_CHECKSUM),
+            )
+            conn.execute("UPDATE nma_partition SET schema_version=18")
+        elif saved[0] != DELEGATION_CHECKSUM:
+            raise EngineError("UNSUPPORTED_SCHEMA")
+        from ngertiin_engine.delegation_store import Children
+
+        Children(self).recover(conn)
 
     def receipt(self, body):
         def read(conn):

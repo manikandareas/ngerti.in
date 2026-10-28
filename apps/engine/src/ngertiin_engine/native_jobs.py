@@ -26,10 +26,19 @@ def reconcile(adapter):
         for encoded, state in rows:
             scope = Scope(**json.loads(encoded))
             try:
+                child = adapter.store.write(
+                    lambda conn, scope=scope: conn.execute(
+                        "SELECT c.child_session_id,c.status,b.config FROM nma_delegated_children c JOIN nma_adapter_runs r ON r.owner_id=c.owner_id AND r.run_id=c.root_run_id JOIN nma_adapter_bindings b USING(owner_id,binding_id) WHERE c.owner_id=? AND json_extract(c.descriptor,'$.resource_agent_id')=?",
+                        (adapter.owner, scope.agent_id),
+                    ).fetchone()
+                )
+                agent_id = json.loads(child[2])["agent_id"] if child else scope.agent_id
+                if child and child[1] not in {"running", "completed", "schema_invalid"}:
+                    raise EngineError("ACCESS_REVOKED")
                 thread, agent = adapter.store.write(
-                    lambda conn, scope=scope: (
-                        adapter.context.scope(conn, scope.agent_id, scope.thread_id),
-                        adapter.agents.get(conn, scope.agent_id),
+                    lambda conn, scope=scope, agent_id=agent_id: (
+                        adapter.context.scope(conn, agent_id, scope.thread_id),
+                        adapter.agents.get(conn, agent_id),
                     )
                 )
                 grants = {k: agent["config"].get(k, []) for k in FIELDS}
@@ -39,7 +48,7 @@ def reconcile(adapter):
                 marker = {
                     **resolved,
                     "grants": grants,
-                    "agent_id": scope.agent_id,
+                    "agent_id": agent_id,
                     "access_generation": agent["access_generation"],
                 }
                 _, _, current = binding(
@@ -47,6 +56,7 @@ def reconcile(adapter):
                     {
                         "thread_id": scope.thread_id,
                         "context_generation": thread["context_generation"],
+                        **({"child_session_id": child[0]} if child else {}),
                     },
                     home / "state.db",
                     adapter.owner,

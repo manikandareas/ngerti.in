@@ -421,8 +421,17 @@ def authorize_context(policy, database, owner, native_session_id=None):
     return {key: marker[key] for key in ("agent_id", "thread_id", "context_generation")}
 
 
-def fence_context_runs(conn, owner, thread_id, *, completing_run_id=None):
+def fence_context_runs(
+    conn, owner, thread_id, *, completing_run_id=None, include_children=True
+):
+    children = (
+        " OR EXISTS (SELECT 1 FROM nma_delegated_children c WHERE c.owner_id=r.owner_id AND c.root_run_id=r.run_id AND c.status='running')"
+        if include_children
+        else ""
+    )
     conn.execute(
-        "INSERT OR IGNORE INTO nma_context_run_fences SELECT r.owner_id,r.run_id,? FROM nma_adapter_runs r JOIN nma_adapter_bindings b ON b.owner_id=r.owner_id AND b.binding_id=r.binding_id LEFT JOIN session_admissions n ON n.admission_id=r.native_admission_id WHERE r.owner_id=? AND json_extract(b.config,'$.thread_id')=? AND (n.status IS NULL OR n.status!='terminal') AND (? IS NULL OR r.run_id<>?)",
+        "INSERT OR IGNORE INTO nma_context_run_fences SELECT r.owner_id,r.run_id,? FROM nma_adapter_runs r JOIN nma_adapter_bindings b ON b.owner_id=r.owner_id AND b.binding_id=r.binding_id LEFT JOIN session_admissions n ON n.admission_id=r.native_admission_id WHERE r.owner_id=? AND json_extract(b.config,'$.thread_id')=? AND (n.status IS NULL OR n.status!='terminal'"
+        + children
+        + ") AND (? IS NULL OR r.run_id<>?)",
         (thread_id, owner, thread_id, completing_run_id, completing_run_id),
     )

@@ -87,6 +87,11 @@ def inspect_bundle(key, entry, data, visiting=()):
                 raise EngineError(
                     "CAPABILITY_UNAVAILABLE", {"reason": "excluded_surface"}
                 )
+        elif spec.get("kind") == "scoped_delegation":
+            if name != "delegation" or names != ["delegate_task"]:
+                raise EngineError(
+                    "CAPABILITY_UNAVAILABLE", {"reason": "excluded_surface"}
+                )
         elif spec.get("kind") != "trusted_plugin" or not entry.get("plugin"):
             raise EngineError(
                 "CAPABILITY_UNAVAILABLE",
@@ -134,7 +139,8 @@ def inspect_bundle(key, entry, data, visiting=()):
             {"type": "function", "function": {**e.schema, "name": e.name}}
             for e in entries
         ]
-        if surface_spec.get("kind") in {"scoped_linux", "scoped_research"}
+        if surface_spec.get("kind")
+        in {"scoped_linux", "scoped_research", "scoped_delegation"}
         else registry.get_definitions(set(names), quiet=True)
     )
     if len(definitions) != len(names):

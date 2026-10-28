@@ -182,17 +182,30 @@ class ProviderTransport:
 
         def record(conn):
             reliability = Reliability(self.connections.store)
-            row = reliability.check(conn, route["execution"])
+            # A response can arrive after cancellation/revocation. Its usage is
+            # still billable evidence, while its content grants no delivery or
+            # tool authority. The owner write epoch remains fenced by Store.
+            stamp = route["execution"]
+            row = reliability.native(conn, stamp.get("admission_id"))
             if row is None:
                 return
             snapshot = route["snapshot"]
             payload = {
+                "child_session_id": route["execution"].get("child_session_id"),
                 "provider": snapshot["provider_id"],
                 "connection_id": snapshot["connection_id"],
                 "model": snapshot["model"],
                 "billing": snapshot.get("billing"),
                 "http_status": status,
                 "error_code": error,
+                "late_receipt": reliability.stopped(conn, row[0])
+                or bool(
+                    stamp.get("child_session_id")
+                    and conn.execute(
+                        "SELECT 1 FROM nma_delegated_children WHERE owner_id=? AND child_session_id=? AND status<>'running'",
+                        (self.connections.owner, stamp["child_session_id"]),
+                    ).fetchone()
+                ),
             }
             if isinstance(usage, dict):
                 payload["usage"] = {
@@ -297,7 +310,10 @@ class ProviderTransport:
                     trust_env=False,
                 )
             )
-            with self.connections.vault.locked(snapshot["connection_id"]):
+            with ExitStack() as dispatch:
+                dispatch.enter_context(
+                    self.connections.vault.locked(snapshot["connection_id"])
+                )
                 try:
                     key = self.connections.credential(snapshot)
                 except EngineError as exc:
@@ -316,14 +332,29 @@ class ProviderTransport:
                     headers["x-opencode-session"] = hashlib.sha256(
                         (self.connections.owner + ":" + route["thread_id"]).encode()
                     ).hexdigest()
-                response = resources.enter_context(
-                    client.stream(
-                        "POST",
-                        snapshot["base_url"] + suffix,
-                        json=body,
-                        headers=headers,
-                    )
+                request = client.build_request(
+                    "POST",
+                    snapshot["base_url"] + suffix,
+                    json=body,
+                    headers=headers,
                 )
+                original_body = request.stream
+
+                class DispatchBody(httpx.SyncByteStream):
+                    def __iter__(self):
+                        # HTTPX/httpcore exhaust the body after writing its final
+                        # bytes, before waiting for response headers. Revoke stays
+                        # ordered against send, but siblings need not await an
+                        # entire provider's time-to-first-token under this lock.
+                        yield from original_body
+                        dispatch.close()
+
+                    def close(self):
+                        original_body.close()
+
+                request.stream = DispatchBody()
+                response = client.send(request, stream=True)
+                resources.callback(response.close)
             if response.is_error:
                 raw = response.read()
                 try:

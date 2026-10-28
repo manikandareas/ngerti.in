@@ -9,6 +9,14 @@ def drop_conversation_schema(db):
     from ngertiin_engine.learning_store import DDL as LEARNING_DDL
 
     # A predecessor fixture must also remove every later additive extension.
+    for table in (
+        "nma_collaboration_units",
+        "nma_collaboration_operations",
+        "nma_collaboration_tasks",
+        "nma_delegation_batches",
+        "nma_delegated_children",
+    ):
+        db.execute("DROP TABLE IF EXISTS " + table)
     for statement in reversed((*DDL, *LEARNING_DDL)):
         db.execute("DROP TABLE IF EXISTS " + statement.split()[2])
     for table in (

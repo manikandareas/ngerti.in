@@ -13,6 +13,10 @@ DDL = (
 
 
 def semantics(name, args):
+    if name == "delegate_task":
+        # Native children retain their own effect receipts. A coordination call
+        # must not fence the tools of the children it is currently waiting for.
+        return "read" if args.get("action") == "list" else "coordination"
     if name == "computer_use" and args.get("action") in {
         "capture",
         "list_apps",

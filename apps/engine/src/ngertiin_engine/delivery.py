@@ -4,8 +4,8 @@
 def background(conn, owner, run_id):
     return (
         conn.execute(
-            "SELECT 1 FROM nma_goal_units WHERE owner_id=? AND run_id=? AND parent_run_id IS NOT NULL UNION ALL SELECT 1 FROM nma_discussion_turns WHERE owner_id=? AND run_id=? UNION ALL SELECT 1 FROM nma_webhook_batches WHERE owner_id=? AND run_id=?",
-            (owner, run_id) * 3,
+            "SELECT 1 FROM nma_goal_units WHERE owner_id=? AND run_id=? AND parent_run_id IS NOT NULL UNION ALL SELECT 1 FROM nma_discussion_turns WHERE owner_id=? AND run_id=? UNION ALL SELECT 1 FROM nma_webhook_batches WHERE owner_id=? AND run_id=? UNION ALL SELECT 1 FROM nma_delegation_batches WHERE owner_id=? AND resume_run_id=? UNION ALL SELECT 1 FROM nma_collaboration_units WHERE owner_id=? AND run_id=?",
+            (owner, run_id) * 5,
         ).fetchone()
         is not None
     )

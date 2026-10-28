@@ -275,13 +275,20 @@ def local_configuration(owner, home, env):
         {
             "version": 2,
             "execution_surfaces": {
+                "native_children": {"kind": "scoped_delegation", "ready": True},
                 "native_linux": {
                     "kind": "scoped_linux",
                     "ready": bool(env.get("NMA_NATIVE_TOOLS_IMAGE")),
                     "image": env.get("NMA_NATIVE_TOOLS_IMAGE"),
-                }
+                },
             },
             "tool_grants": {
+                "delegation": {
+                    "enabled": True,
+                    "label": "Temporary assistants",
+                    "toolset": "delegation",
+                    "execution_surface": "native_children",
+                },
                 "tasks": {
                     "enabled": True,
                     "label": "Task list",

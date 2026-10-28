@@ -53,8 +53,10 @@ def install(database, owner):
         browser_vault,
         capabilities,
         coding,
+        collaboration,
         computer,
         context_references,
+        delegation,
         diagnostics,
         goals,
         native_surface,
@@ -84,6 +86,8 @@ def install(database, owner):
     context_references.install(database, owner)
     session_settings.install()
     native_surface.install()
+    collaboration.install()
+    delegation.install()
     _installed = True
 
 

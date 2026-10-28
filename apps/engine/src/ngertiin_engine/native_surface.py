@@ -5,6 +5,7 @@ import threading
 from contextvars import ContextVar
 from functools import lru_cache
 from pathlib import Path
+from uuid import NAMESPACE_URL, uuid5
 
 from ngertiin_engine.contracts import EngineError, digest
 
@@ -12,6 +13,17 @@ call_identity = ContextVar("nma_native_call_identity", default=None)
 _brokers = {}
 _active = {}
 _lock = threading.RLock()
+
+
+def child_resource_agent(owner, parent_agent_id, child_session_id):
+    return str(
+        uuid5(
+            NAMESPACE_URL,
+            digest(
+                [owner, parent_agent_id, "temporary-child-resource", child_session_id]
+            ),
+        )
+    )
 
 
 @lru_cache(maxsize=32)
@@ -49,6 +61,8 @@ def verify_image(image):
 
 
 def binding(marker, context, database, owner):
+    from gateway.session_policy import active_policy
+
     from ngertiin_engine.capabilities import catalog
     from ngertiin_engine.native_executor import IsolatedTools, Scope
 
@@ -64,14 +78,26 @@ def binding(marker, context, database, owner):
         raise EngineError("WORKSPACE_UNAVAILABLE")
     image = images.pop()
     verify_image(image)
+    policy = active_policy()
+    child_id = context.get("child_session_id") or (
+        policy.config(secrets=False).get("nma_child_session_id") if policy else None
+    )
+    components = [marker["access_generation"], context["context_generation"]]
+    if child_id:
+        components.append(child_id)
     generation = (
         int(
-            digest([marker["access_generation"], context["context_generation"]])[:15],
+            digest(components)[:15],
             16,
         )
         + 1
     )
-    scope = Scope(owner, marker["agent_id"], context["thread_id"], generation)
+    resource_agent = (
+        child_resource_agent(owner, marker["agent_id"], child_id)
+        if child_id
+        else marker["agent_id"]
+    )
+    scope = Scope(owner, resource_agent, context["thread_id"], generation)
     key = digest([owner, image])
     with _lock:
         if key not in _brokers:
@@ -130,6 +156,8 @@ def invoke(name, arguments, marker, database, owner):
     context = config.get("nma_context")
     if not context:
         raise EngineError("ACCESS_REVOKED")
+    if config.get("nma_child_session_id"):
+        context = {**context, "child_session_id": config["nma_child_session_id"]}
     key, broker, scope = binding(marker, context, database, owner)
     with _lock:
         _active.setdefault(ids.session_id, set()).add((key, scope))

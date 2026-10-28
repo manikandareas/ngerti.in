@@ -20,9 +20,15 @@ def correlation(conn, owner, run_id):
         "SELECT trigger_id FROM nma_triggers WHERE owner_id=? AND run_id=? UNION ALL SELECT batch_id FROM nma_webhook_batches WHERE owner_id=? AND run_id=?",
         (owner, run_id) * 2,
     ).fetchall()
+    resumes = conn.execute(
+        "SELECT parent_run_id FROM nma_delegation_batches WHERE owner_id=? AND resume_run_id=?",
+        (owner, run_id),
+    ).fetchall()
     return {
         "goal_ids": [r[0] for r in units],
-        "parent_run_ids": sorted({r[1] for r in units if r[1]}),
+        "parent_run_ids": sorted(
+            {r[1] for r in units if r[1]} | {r[0] for r in resumes}
+        ),
         "discussion_ids": [r[0] for r in turns],
         "handoff_ids": [r[1] for r in turns],
         "trigger_ids": [r[0] for r in triggers],

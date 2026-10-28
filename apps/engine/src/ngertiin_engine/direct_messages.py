@@ -125,7 +125,7 @@ class DirectMessages:
             )
             # Freeze the interrupted set with ingress, including work not yet delivered.
             rows = conn.execute(
-                "SELECT r.run_id FROM nma_adapter_runs r JOIN nma_adapter_bindings b ON b.owner_id=r.owner_id AND b.binding_id=r.binding_id LEFT JOIN session_admissions a ON a.admission_id=r.native_admission_id WHERE r.owner_id=? AND json_extract(b.config,'$.thread_id')=? AND (a.status IS NULL OR a.status!='terminal')",
+                "SELECT r.run_id FROM nma_adapter_runs r JOIN nma_adapter_bindings b ON b.owner_id=r.owner_id AND b.binding_id=r.binding_id LEFT JOIN session_admissions a ON a.admission_id=r.native_admission_id WHERE r.owner_id=? AND json_extract(b.config,'$.thread_id')=? AND (a.status IS NULL OR a.status!='terminal' OR EXISTS (SELECT 1 FROM nma_delegated_children c WHERE c.owner_id=r.owner_id AND c.root_run_id=r.run_id AND c.status='running') OR EXISTS (SELECT 1 FROM nma_delegation_batches d WHERE d.owner_id=r.owner_id AND d.parent_run_id=r.run_id AND d.state='pending'))",
                 (self.store.owner, p["thread_id"]),
             ).fetchall()
             for (old_run,) in rows:
@@ -261,6 +261,14 @@ class DirectMessages:
                 "SELECT t.run_id FROM nma_discussion_turns t JOIN nma_discussions d USING(owner_id,discussion_id) WHERE t.owner_id=? AND d.thread_id=? AND d.rowid=(SELECT MAX(latest.rowid) FROM nma_discussions latest WHERE latest.owner_id=d.owner_id AND latest.thread_id=d.thread_id)",
                 (self.store.owner, thread["thread_id"]),
             ).fetchall()
+            pending += conn.execute(
+                "SELECT b.resume_run_id FROM nma_delegation_batches b JOIN nma_adapter_runs r ON r.owner_id=b.owner_id AND r.run_id=b.parent_run_id JOIN nma_adapter_bindings a USING(owner_id,binding_id) WHERE b.owner_id=? AND b.resume_run_id IS NOT NULL AND json_extract(a.config,'$.thread_id')=?",
+                (self.store.owner, thread["thread_id"]),
+            ).fetchall()
+            pending += conn.execute(
+                "SELECT u.run_id FROM nma_collaboration_units u JOIN nma_collaboration_tasks t USING(owner_id,task_id) WHERE u.owner_id=? AND t.thread_id=? AND u.settled=0",
+                (self.store.owner, thread["thread_id"]),
+            ).fetchall()
             for (run_id,) in pending:
                 if run_id in runs:
                     continue
@@ -275,10 +283,20 @@ class DirectMessages:
             ).fetchone()
             # The helper uses this same connection; state and watermark are atomic.
             from ngertiin_engine.artifacts import Artifacts
+            from ngertiin_engine.delegation_store import Children
 
             epoch, seq = self.watermark(conn)
+            work = {
+                "delegations": Children(self.store).listing(conn, thread["thread_id"]),
+                "collaboration_tasks": self.adapter.collaboration.listing(
+                    conn, thread["thread_id"]
+                ),
+            }
+            if size + len(canonical(work).encode()) > 4 * 1024 * 1024:
+                raise EngineError("RESPONSE_TOO_LARGE")
             return {
                 "schema_version": "nma.v1",
+                **work,
                 "discussion": dict(
                     zip(("discussion_id", "status", "reason"), discussion)
                 )

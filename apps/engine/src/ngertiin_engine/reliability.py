@@ -1,6 +1,7 @@
 """Durable boundaries within the native gateway; never schedule or retry execution."""
 
 import json
+import threading
 from contextvars import ContextVar
 from datetime import UTC, datetime
 from uuid import NAMESPACE_URL, uuid4, uuid5
@@ -10,6 +11,9 @@ from ngertiin_engine.delivery import background, quiet
 from ngertiin_engine.redaction import result as redact
 
 execution = ContextVar("nma_execution", default=None)
+effect_call = ContextVar("nma_effect_call", default=None)
+_child_effects = {}
+_child_effect_lock = threading.Lock()
 DDL = (
     "CREATE TABLE nma_run_terminals (owner_id TEXT NOT NULL, run_id TEXT NOT NULL, status TEXT NOT NULL, PRIMARY KEY(owner_id,run_id,status), FOREIGN KEY(owner_id,run_id) REFERENCES nma_adapter_runs(owner_id,run_id))",
     "CREATE TABLE nma_run_stops (owner_id TEXT NOT NULL, run_id TEXT NOT NULL, PRIMARY KEY(owner_id,run_id), FOREIGN KEY(owner_id,run_id) REFERENCES nma_adapter_runs(owner_id,run_id))",
@@ -54,8 +58,11 @@ class Reliability:
             return None
         if self.stopped(conn, row[0]):
             raise EngineError("RUN_CANCELLED")
+        from ngertiin_engine.delegation_store import Children
+
+        child = Children(self.store).check(conn, stamp, row)
         if (
-            row[2] != "started"
+            (row[2] != "started" and not child)
             or row[3] != self.store.authority.epoch
             or row[4] != stamp.get("execution_generation")
             or stamp.get("authority_epoch") != self.store.authority.epoch
@@ -309,20 +316,32 @@ class Reliability:
             if not native:
                 raise EngineError("NOT_FOUND")
             discussion = conn.execute(
-                "SELECT discussion_id FROM nma_discussion_turns WHERE owner_id=? AND run_id=?",
-                (self.store.owner, run_id),
+                "SELECT discussion_id FROM nma_discussion_turns WHERE owner_id=? AND run_id=? UNION SELECT t.discussion_id FROM nma_collaboration_units u JOIN nma_collaboration_tasks t USING(owner_id,task_id) WHERE u.owner_id=? AND u.run_id=?",
+                (self.store.owner, run_id, self.store.owner, run_id),
             ).fetchone()
             if discussion:
+                from ngertiin_engine.collaboration import cancel_tasks
+
+                cancel_tasks(
+                    self.store, conn, discussion[0], "User stopped the discussion"
+                )
                 conn.execute(
                     "UPDATE nma_discussions SET status='cancelled',reason='user_stopped' WHERE owner_id=? AND discussion_id=?",
                     (self.store.owner, discussion[0]),
                 )
                 for (peer,) in conn.execute(
-                    "SELECT run_id FROM nma_discussion_turns WHERE owner_id=? AND discussion_id=? AND published=0",
-                    (self.store.owner, discussion[0]),
+                    "SELECT run_id FROM nma_discussion_turns WHERE owner_id=? AND discussion_id=? AND published=0 UNION SELECT u.run_id FROM nma_collaboration_units u JOIN nma_collaboration_tasks t USING(owner_id,task_id) WHERE u.owner_id=? AND t.discussion_id=? AND u.settled=0",
+                    (self.store.owner, discussion[0], self.store.owner, discussion[0]),
                 ).fetchall():
                     self.cancel_event(conn, peer)
             self.cancel_descendants(conn, run_id)
+            conn.execute(
+                "UPDATE nma_delegation_batches SET state='cancelled' WHERE owner_id=? AND parent_run_id=? AND state='pending'",
+                (self.store.owner, run_id),
+            )
+            from ngertiin_engine.delegation_store import Children
+
+            Children(self.store).cancel_run(conn, run_id)
             if native[0] != "terminal":
                 self.cancel_event(conn, run_id)
 
@@ -332,8 +351,8 @@ class Reliability:
         from ngertiin_engine.direct_messages import command
 
         rows = conn.execute(
-            "WITH RECURSIVE descendants(run_id) AS (SELECT ? UNION SELECT u.run_id FROM nma_goal_units u JOIN descendants d ON u.parent_run_id=d.run_id WHERE u.owner_id=?) SELECT run_id FROM descendants",
-            (run_id, self.store.owner),
+            "WITH RECURSIVE links(parent,child) AS (SELECT parent_run_id,run_id FROM nma_goal_units WHERE owner_id=? UNION SELECT parent_run_id,resume_run_id FROM nma_delegation_batches WHERE owner_id=? AND resume_run_id IS NOT NULL), descendants(run_id) AS (SELECT ? UNION SELECT l.child FROM links l JOIN descendants d ON l.parent=d.run_id) SELECT run_id FROM descendants",
+            (self.store.owner, self.store.owner, run_id),
         ).fetchall()
         for (child,) in rows:
             conn.execute(
@@ -529,6 +548,55 @@ class Reliability:
         return self.store.write(read)
 
     def tool(self, stamp, name, args, ids, invoke):
+        token = object()
+        context = effect_call.set(token)
+        try:
+            value = self._scoped_tool(stamp, name, args, ids, invoke)
+            if stamp.get("child_session_id"):
+                from ngertiin_engine.delegation_store import Children
+
+                Children(self.store).receipt(stamp, name, value)
+            return value
+        finally:
+            effect_call.reset(context)
+            with _child_effect_lock:
+                for key in [
+                    key for key, entry in _child_effects.items() if entry[0] is token
+                ]:
+                    _child_effects.pop(key)
+
+    def _scoped_tool(self, stamp, name, args, ids, invoke):
+        if stamp.get("child_session_id"):
+            from gateway.session_policy import active_policy
+            from toolsets import resolve_toolset
+
+            policy = active_policy()
+            config = policy.config(secrets=False) if policy else {}
+            allowed = {
+                tool
+                for toolset in config.get("nma_capabilities", {}).get("toolsets", [])
+                for tool in resolve_toolset(toolset)
+            }
+            if config.get("nma_child_mcp") and policy.editor_mcp_json:
+                allowed.update(json.loads(policy.editor_mcp_json)["schemas"])
+            if name not in allowed:
+                return canonical({"error": "CAPABILITY_DENIED", "outcome": "rejected"})
+        if stamp.get("child_session_id") and name in {
+            "memory",
+            "session_search",
+            "skills_list",
+            "skill_view",
+            "skill_manage",
+            "skill_install",
+            "hindsight_recall",
+            "responsibility",
+            "collaboration",
+        }:
+            return canonical({"error": "CAPABILITY_DENIED", "outcome": "rejected"})
+        if name == "collaboration":
+            from ngertiin_engine.delegation import _adapter
+
+            return _adapter.collaboration.tool(stamp, args, ids)
         if name == "computer":
             from ngertiin_engine.computer import dispatch_lock
 
@@ -600,18 +668,40 @@ class Reliability:
                 "INSERT INTO nma_effect_outcomes VALUES (?,?,?,?,?,'intent',NULL,NULL,NULL)",
                 (self.store.owner, row[0], operation_id, name, semantics(name, args)),
             )
-            if (
-                semantics(name, args) == "mutation"
-                and conn.execute(
-                    "SELECT 1 FROM nma_effects e JOIN nma_effect_outcomes o USING(owner_id,run_id,operation_id) JOIN nma_adapter_runs r USING(owner_id,run_id) JOIN nma_adapter_bindings b USING(owner_id,binding_id) WHERE e.owner_id=? AND e.status='dispatching' AND o.semantics='mutation' AND json_extract(b.config,'$.thread_id')=? AND NOT (e.run_id=? AND e.operation_id=?) LIMIT 1",
+            if semantics(name, args) == "mutation" or (
+                name == "delegate_task" and args.get("action", "spawn") == "spawn"
+            ):
+                pending = conn.execute(
+                    "SELECT e.run_id,e.operation_id,o.phase FROM nma_effects e JOIN nma_effect_outcomes o USING(owner_id,run_id,operation_id) JOIN nma_adapter_runs r USING(owner_id,run_id) JOIN nma_adapter_bindings b USING(owner_id,binding_id) WHERE e.owner_id=? AND e.status='dispatching' AND (o.semantics='mutation' OR (o.tool_name='delegate_task' AND o.phase='unknown')) AND json_extract(b.config,'$.thread_id')=? AND NOT (e.run_id=? AND e.operation_id=?)",
                     (
                         self.store.owner,
                         json.loads(row[1])["thread_id"],
                         row[0],
                         operation_id,
                     ),
-                ).fetchone()
-            ):
+                ).fetchall()
+                unresolved = False
+                for other_run, other_operation, phase in pending:
+                    with _child_effect_lock:
+                        active = _child_effects.get(
+                            (self.store.owner, other_run, other_operation)
+                        )
+                    # Only a known live independent child may overlap. A missing
+                    # in-process marker after crash/timeout is unknown, not active.
+                    live = (
+                        phase in {"intent", "dispatched"}
+                        and active
+                        and conn.execute(
+                            "SELECT 1 FROM nma_delegated_children WHERE owner_id=? AND child_session_id=? AND status='running' AND authority_epoch=?",
+                            (self.store.owner, active[1], self.store.authority.epoch),
+                        ).fetchone()
+                    )
+                    if not live or active[1] == stamp.get("child_session_id"):
+                        unresolved = True
+                        break
+            else:
+                unresolved = False
+            if unresolved:
                 blocked = canonical(
                     {
                         "error": "UNRESOLVED_EFFECT",
@@ -621,6 +711,22 @@ class Reliability:
                 )
                 record(conn, self.store.owner, row[0], operation_id, blocked)
                 return row[0], {"value": blocked}
+            if semantics(name, args) == "mutation" and stamp.get("child_session_id"):
+                with _child_effect_lock:
+                    _child_effects[(self.store.owner, row[0], operation_id)] = (
+                        effect_call.get(),
+                        stamp["child_session_id"],
+                    )
+                from ngertiin_engine.delegation_store import Children
+
+                Children(self.store).progress(
+                    conn,
+                    row[0],
+                    json.loads(row[1]),
+                    stamp["child_session_id"],
+                    name,
+                    operation_id,
+                )
             return row[0], None
 
         run_id, receipt = self.store.write(prepare)

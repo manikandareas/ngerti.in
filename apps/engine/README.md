@@ -223,3 +223,28 @@ when synchronization succeeds. Back up the external service's volume separately.
 
 See [implementation, evidence and rollout limits](../../docs/research/nma-034-learning-and-documents.md)
 and [dependency notices](notices/DOCUMENT-WORKFLOWS.md).
+
+## Temporary delegation and persistent peer tasks
+
+Extension schema 18 adds native temporary-child/result lineage and durable group
+task/review receipts. The existing gateway remains the only execution authority;
+native Kanban receives verified receipts without enabling its dispatcher.
+
+Enable an operator `delegation` grant using the `scoped_delegation` execution
+surface in [the capability example](config/capabilities-v2.example.json), then
+select that grant in the permanent agent's configuration. Existing catalogs and
+agent grants are preserved. Native `delegate_task` supports parallel tasks,
+owner-local `model_ref`, structured `output_schema`, list/steer/stop, and explicit
+`allowed_toolsets` narrowing (`[]` disables all child tools). Child workspaces are
+separate scoped capsules; use explicit artifacts/context to transfer inputs and
+the existing `coding` tool for actual Git worktrees.
+
+Group members use `collaboration` to hand off expected results, dependencies and
+artifact references, submit results, review/request changes, and block/unblock.
+The conversation projects actual task receipts and distinguishes temporary
+assistants from persistent peers. A textual mention is not a completed task.
+
+Back up the whole stopped partition, including native Kanban databases, plus
+external workspace volumes. Rollback uses a verified backup and matching Git
+runtime. It never activates a second engine or replays unknown child effects.
+See [implementation, evidence, configuration and verification limits](../../docs/research/nma-035-native-delegation-collaboration-2026-10-28.md).

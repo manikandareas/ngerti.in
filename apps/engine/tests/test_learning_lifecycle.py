@@ -101,10 +101,19 @@ def test_concurrent_correction_schema16_backfill_backup_and_restore(runtime, tmp
     ]
     start.current.send_signal(signal.SIGINT)
     start.current.wait(timeout=25)
-    # Reconstruct the actual predecessor by removing only extension 17. The
+    # Reconstruct the actual predecessor by removing extensions 18 and 17. The
     # canonical schema-16 memory ID/content/receipt must remain byte-for-byte.
     with sqlite3.connect(root / "state/state.db") as db:
         before = db.execute("SELECT * FROM nma_memory_entries").fetchall()
+        for name in (
+            "nma_collaboration_units",
+            "nma_collaboration_operations",
+            "nma_collaboration_tasks",
+            "nma_delegation_batches",
+            "nma_delegated_children",
+        ):
+            db.execute("DROP TABLE " + name)
+        db.execute("DELETE FROM nma_schema_migrations WHERE version=18")
         for statement in reversed(DDL):
             db.execute("DROP TABLE " + statement.split()[2])
         db.execute("DELETE FROM nma_schema_migrations WHERE version=17")
@@ -135,7 +144,7 @@ def test_concurrent_correction_schema16_backfill_backup_and_restore(runtime, tmp
     start.current.send_signal(signal.SIGINT)
     start.current.wait(timeout=25)
     learned = backup(root / "state", tmp_path / "learned")
-    assert learned["schema_version"] == 17
+    assert learned["schema_version"] == 18
     restore(tmp_path / "learned", tmp_path / "restored", OWNER)
     (root / "state").rename(root / "offline-original")
     (tmp_path / "restored").rename(root / "state")

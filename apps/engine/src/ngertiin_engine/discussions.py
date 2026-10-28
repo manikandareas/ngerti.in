@@ -4,6 +4,7 @@ The pinned native discussion planner owns routing, rotation, silence and bounds.
 Ngertiin stores its frozen inputs and deterministic turns in the owner transaction.
 """
 
+import asyncio
 import json
 import re
 from dataclasses import asdict
@@ -23,6 +24,19 @@ def native_policy():
     from gateway import hosted_room_discussion
 
     return hosted_room_discussion
+
+
+def mention_text(text, handles):
+    """Normalize sentence punctuation only in planner input; retain transcript bytes."""
+
+    def replace(match):
+        value = match.group(1)
+        if value.casefold() in handles:
+            return match.group(0)
+        clean = value.rstrip(".,:;!?")
+        return "@" + clean if clean.casefold() in handles else match.group(0)
+
+    return re.sub(r"@([A-Za-z0-9][A-Za-z0-9._:-]*)", replace, text)
 
 
 class Discussions:
@@ -56,9 +70,10 @@ class Discussions:
             k: config[k]
             for k in ("agent_id", "thread_id", "config_revision", "context_generation")
         }
-        body = command(
-            "runtime.submit", {**payload, "text": task.payload["prompt"]}, operation
+        text = task.payload["prompt"] + self.adapter.collaboration.prompt(
+            conn, config["thread_id"], config["agent_id"]
         )
+        body = command("runtime.submit", {**payload, "text": text}, operation)
         conn.execute(
             "INSERT OR IGNORE INTO nma_commands VALUES (?,?,?,?,NULL)",
             (self.store.owner, operation, digest(body), canonical(body)),
@@ -178,7 +193,7 @@ class Discussions:
                 "everyone",
             }
             if any(
-                h.casefold() not in handles
+                h.rstrip(".,:;!?").casefold() not in handles
                 for h in re.findall(r"@([A-Za-z0-9][A-Za-z0-9._:-]*)", p["text"])
             ):
                 raise EngineError("INVALID_MENTION")
@@ -212,7 +227,7 @@ class Discussions:
                     "actor": {"kind": "user", "id": self.store.owner},
                     "payload": {
                         "thread_id": thread["thread_id"],
-                        "text": p["text"]
+                        "text": mention_text(p["text"], handles)
                         + (
                             "\nAttached files (data; use workspace import_file to read):\n"
                             + canonical(attachments)
@@ -291,21 +306,29 @@ class Discussions:
         return {**receipt, "duplicate": True} if saved else receipt
 
     def stop_thread(self, conn, thread_id):
+        for (run,) in conn.execute(
+            "SELECT DISTINCT r.run_id FROM nma_adapter_runs r JOIN nma_adapter_bindings b USING(owner_id,binding_id) WHERE r.owner_id=? AND json_extract(b.config,'$.thread_id')=? AND (EXISTS (SELECT 1 FROM nma_delegated_children c WHERE c.owner_id=r.owner_id AND c.root_run_id=r.run_id AND c.status='running') OR EXISTS (SELECT 1 FROM nma_delegation_batches d WHERE d.owner_id=r.owner_id AND d.parent_run_id=r.run_id AND d.state='pending'))",
+            (self.store.owner, thread_id),
+        ).fetchall():
+            self.adapter.reliability.cancel_event(conn, run)
         rows = conn.execute(
-            "SELECT discussion_id FROM nma_discussions WHERE owner_id=? AND thread_id=? AND status='active'",
+            "SELECT d.discussion_id FROM nma_discussions d WHERE d.owner_id=? AND d.thread_id=? AND (d.status='active' OR EXISTS (SELECT 1 FROM nma_collaboration_tasks t WHERE t.owner_id=d.owner_id AND t.discussion_id=d.discussion_id AND json_extract(t.task,'$.status') IN ('pending','submitting','review','reviewing','changes_requested')))",
             (self.store.owner, thread_id),
         ).fetchall()
         for (identity,) in rows:
             self.stop(conn, identity, "user_interrupted")
 
     def stop(self, conn, identity, reason):
+        from ngertiin_engine.collaboration import cancel_tasks
+
+        cancel_tasks(self.store, conn, identity, reason)
         conn.execute(
             "UPDATE nma_discussions SET status='cancelled',reason=? WHERE owner_id=? AND discussion_id=?",
             (reason, self.store.owner, identity),
         )
         for (run,) in conn.execute(
-            "SELECT run_id FROM nma_discussion_turns WHERE owner_id=? AND discussion_id=? AND published=0",
-            (self.store.owner, identity),
+            "SELECT run_id FROM nma_discussion_turns WHERE owner_id=? AND discussion_id=? AND published=0 UNION SELECT u.run_id FROM nma_collaboration_units u JOIN nma_collaboration_tasks t USING(owner_id,task_id) WHERE u.owner_id=? AND t.discussion_id=? AND u.settled=0",
+            (self.store.owner, identity, self.store.owner, identity),
         ).fetchall():
             self.adapter.reliability.cancel_event(conn, run)
 
@@ -377,12 +400,33 @@ class Discussions:
                 task = self.plan(room, events).task
                 if task is None or asdict(task) != data:
                     raise EngineError("DISCUSSION_RECONSTRUCTION_FAILED")
+                config = self.adapter.bindings[self.adapter.row(run)[0]]
+                self.store.write(
+                    lambda conn, run=run, config=config, state=state: (
+                        self.adapter.collaboration.settle(
+                            conn, run, config, state["status"]
+                        )
+                    )
+                )
+                routing = self.store.write(
+                    lambda conn, thread=thread, identity=identity: (
+                        self.adapter.collaboration.routing(conn, thread, identity)
+                    )
+                )
                 publication = native_policy().plan_publication(
                     room,
                     events,
                     task,
                     status="settled" if state["status"] == "succeeded" else "failed",
-                    result={"text": state.get("text", ""), "error": "RUNTIME_FAILED"},
+                    result={
+                        "text": mention_text(
+                            state.get("text", ""),
+                            {a["handle"].casefold() for a in thread["agents"]}
+                            | {"all", "everyone"},
+                        )
+                        + routing,
+                        "error": "RUNTIME_FAILED",
+                    },
                     local_profiles=[m["profile"] for m in room["members"]],
                 )
                 for event in publication.events:
@@ -435,6 +479,12 @@ class Discussions:
                     )
                 )
         self.publish_states()
+        from ngertiin_engine.collaboration_delivery import reconcile
+
+        await reconcile(self.adapter)
+        from ngertiin_engine.collaboration_native import project
+
+        await asyncio.to_thread(project, self.adapter)
         await self.adapter.recover_run_stops(locked=True)
 
     def publish_states(self):

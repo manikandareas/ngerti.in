@@ -353,6 +353,6 @@ class Agents:
 
     def fence(self, conn, agent_id):
         conn.execute(
-            "INSERT OR IGNORE INTO nma_agent_run_fences SELECT r.owner_id,r.run_id,? FROM nma_adapter_runs r JOIN nma_adapter_bindings b ON b.owner_id=r.owner_id AND b.binding_id=r.binding_id LEFT JOIN session_admissions n ON n.admission_id=r.native_admission_id WHERE r.owner_id=? AND json_extract(b.config,'$.agent_id')=? AND (n.status IS NULL OR n.status!='terminal')",
+            "INSERT OR IGNORE INTO nma_agent_run_fences SELECT r.owner_id,r.run_id,? FROM nma_adapter_runs r JOIN nma_adapter_bindings b ON b.owner_id=r.owner_id AND b.binding_id=r.binding_id LEFT JOIN session_admissions n ON n.admission_id=r.native_admission_id WHERE r.owner_id=? AND json_extract(b.config,'$.agent_id')=? AND (n.status IS NULL OR n.status!='terminal' OR EXISTS (SELECT 1 FROM nma_delegated_children c WHERE c.owner_id=r.owner_id AND c.root_run_id=r.run_id AND c.status='running'))",
             (agent_id, self.store.owner, agent_id),
         )

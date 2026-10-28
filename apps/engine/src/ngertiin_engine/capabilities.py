@@ -307,11 +307,16 @@ def install_dispatch_guard(database, owner):
         allowed = {
             name for toolset in marker["toolsets"] for name in resolve_toolset(toolset)
         }
-        if policy.editor_mcp_json:
+        if policy.editor_mcp_json and (
+            not policy.config(secrets=False).get("nma_child_session_id")
+            or policy.config(secrets=False).get("nma_child_mcp")
+        ):
             allowed.update(json.loads(policy.editor_mcp_json)["schemas"])
         from ngertiin_engine.learning import TOOLS
 
-        allowed.update(TOOLS)
+        if not policy.config(secrets=False).get("nma_child_session_id"):
+            allowed.update(TOOLS)
+            allowed.add("collaboration")
         if function_name not in allowed or registry.get_entry(function_name) is None:
             raise EngineError("CAPABILITY_DENIED")
         return True
@@ -324,6 +329,10 @@ def install_dispatch_guard(database, owner):
         except EngineError as exc:
             return json.dumps({"error": exc.code, "outcome": "rejected"})
         if scoped:
+            if name == "delegate_task":
+                return json.dumps(
+                    {"error": "DELEGATION_REQUIRES_NATIVE_AGENT", "outcome": "rejected"}
+                )
             from ngertiin_engine.learning import TOOLS, Learning
 
             if name in TOOLS:

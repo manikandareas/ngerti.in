@@ -699,7 +699,7 @@ def test_agent_additive_migration_from_foundation(runtime):
     )
     with sqlite3.connect(root / "state/state.db") as db:
         assert (
-            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 17
+            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 18
         )
         assert db.execute("SELECT count(*) FROM nma_commands").fetchone()[0] == before
         assert db.execute("PRAGMA foreign_key_check").fetchall() == []

@@ -69,7 +69,13 @@ class Adapter:
         self.context = Context(self.store, self.threads)
         self.dm = DirectMessages(self)
         self.discussions = Discussions(self)
+        from ngertiin_engine.collaboration import Collaboration
+
+        self.collaboration = Collaboration(self)
         self.goals = Goals(self.store)
+        from ngertiin_engine.delegation import configured
+
+        configured(self)
         self.actor = Principal(
             "nma:" + owner,
             authority.profile_id,
@@ -309,6 +315,26 @@ class Adapter:
             "auxiliary": {"title_generation": {"enabled": False}},
             "platform_toolsets": {"cli": config["toolsets"]},
         }
+        if "delegation" in config["toolsets"]:
+            from hermes_cli.config import load_config_readonly
+
+            native = load_config_readonly().get("delegation", {})
+            knobs = {
+                "max_spawn_depth",
+                "max_concurrent_children",
+                "max_iterations",
+                "child_timeout_seconds",
+                "orchestrator_enabled",
+                "independent_completions",
+                "compression_threshold_tokens",
+                "oneshot_max_children",
+            }
+            frozen["delegation"] = {
+                **{k: v for k, v in native.items() if k in knobs},
+                "backend": "ngertiin",
+                "worktree_isolation": False,
+            }
+            frozen["nma_delegation_models"] = self.connections.catalog()
         from ngertiin_engine.session_settings import frozen as session_settings
 
         frozen.update(session_settings(config.get("session", {})))
@@ -709,7 +735,7 @@ class Adapter:
             return {
                 "schema_version": "nma.v1",
                 "authority_epoch": str(self.authority.epoch),
-                "extension_schema": "17",
+                "extension_schema": "18",
                 "lifecycle": "ready",
                 "capabilities": [
                     "app.list",
@@ -1053,6 +1079,9 @@ class Adapter:
                 self.store.finish(command, {"error_code": error.code})
 
     async def recover_run_stops(self, *, locked=False):
+        from ngertiin_engine.delegation_store import Children
+
+        await asyncio.to_thread(Children(self.store).sweep)
         rows = self.store.write(
             lambda conn: conn.execute(
                 "SELECT body FROM nma_commands c JOIN nma_runtime_outbox o ON o.owner_id=c.owner_id AND o.operation_id=c.command_id WHERE c.owner_id=? AND o.state='pending' AND json_extract(c.body,'$.type')='run.cancel'",

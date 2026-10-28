@@ -155,7 +155,23 @@
     "hermes_state_search.py": "6e8f67ee7ee569adbf7d16bb116f37837e1d8589e2b6410d90a4c13e7079dfcc",
     "hermes_state_sessions.py": "1eddb7aadd63ca88d366cfe10d9ba3a709f044eb7d6dcb60dbdd699167f7300e",
     "agent/background_review.py": "b177b1cfe8b06f9e787e37920fd9a7b023a038ecbac951bde4e81535d88aa4dc",
-    "agent/turn_finalizer.py": "4c1e83c6a23bcb7fc10f942306459b54b130975fdce3d76d8fd7f2432698632e"
+    "agent/turn_finalizer.py": "4c1e83c6a23bcb7fc10f942306459b54b130975fdce3d76d8fd7f2432698632e",
+    "agent/delegation_provider.py": "3182eb1b2833e95bc2fa978b90ac5462138a63a7eec7dbc583cc452535101895",
+    "agent/delegation_registry.py": "00e1c370b58137c51c621c9ba088e6b07b3691942843a2c2c9a0bf4e78ecf3eb",
+    "agent/tool_executor.py": "1b1b67d4b88f73c51dc147d0e0383b36c561d921d278d801326de5ba24b29702",
+    "tools/delegate_tool.py": "e10851b169053b5de90700185edaab943f33b74edae92b0175c5c89b8bbd8922",
+    "tools/delegate_tool_config.py": "1fd923dacfd2979603a80f88f49285bd06bba4bc7231006a8e42d313e0d9dab0",
+    "tools/delegate_tool_child_run.py": "cad9e57d5e46bb5005ed274eb21365baddf2e6962cd6f271eaf1bf3350f83866",
+    "tools/delegate_tool_dispatch.py": "09bde43d67b503f96e45f86664b358162edba2c79ba168c1312ccc59a4e606c1",
+    "tools/delegate_tool_registry.py": "4a8978dc5105c7ba473c0cac6507e54e819462c2103c42c33ad65e2abb2a2b21",
+    "tools/delegate_tool_results.py": "74f03a6ee71ba71fa32d451ab8bf999cab0789dd38b63dd3f5c467e38bb01109",
+    "tools/delegate_tool_routes.py": "8e33cfeecd7aea1b79e9dc433198297000ddf95484dc813910bff64d2b338ad9",
+    "tools/delegate_tool_tasks.py": "5cee5ec897c79dc7b9d3aa2cbb43f8ca94ce5a11e784d2a9374d7e37b935b165",
+    "tools/delegate_tool_toolsets.py": "c839d14a931c3f1397525014ffab8ce41dfd8c171d16f7edb500bbb4cfbdd343",
+    "tools/async_delegation.py": "77ff669472cbbb829c92415c5233fe7e930d113d867aa2a1bfda7aee6beb32fc",
+    "tools/delegation_output_schema.py": "4466e1e3ca6bf7fb911430dd0acd028adc973f230342dee976074f58b1fa51fb",
+    "agent/delegation_context.py": "104f8c5a37f87fad7950c9c6f9c228aec90bfce8ac91e75f135571bd0f5101fc",
+    "gateway/session_finite.py": "65b9ddd09dfabf23cc96efc2cffa32d8d5c1ce808589a2271e1fc8b6e7ec6db4"
   },
   "source_patches": [],
   "integration_seams": [
@@ -195,7 +211,10 @@
     "Native OAuth commit saves only a disabled secret-free profile receipt for product app references; native tokens persist normally and only scoped agent references activate app transport.",
     "Native inline memory and session_search retain upstream schemas, matching/budgets, FTS and compression traversal through transactional scoped storage and read-only authorized SQL views; no profile-wide memory is enabled. Native memory mutation receipts (removed_entry, patched_entry_before/after and indexed batch matched/produced entries) preserve stable fact identities and provenance through mixed batches; final content is checked against the native result before persistence.",
     "Native skill_manage and skill_view operate on authorized complete packages; immutable domain revisions retain all assets/provenance and signed capsule transfer preserves private scope. Native curator transitions run from the existing gateway chore without admitting new work.",
-    "Optional self-hosted Hindsight implements the native MemoryProvider extension contract; content-addressed authorized banks, stable async operation IDs and local revision fences prevent correction/revocation from retrieving stale provider context."
+    "Optional self-hosted Hindsight implements the native MemoryProvider extension contract; content-addressed authorized banks, stable async operation IDs and local revision fences prevent correction/revocation from retrieving stale provider context.",
+    "Native delegation provider extension selects frozen owner-local model references through per-child credential relay leases. Exact-pin dispatch, construction and conversation seams preserve native lifecycle, schema validation, concurrency, controls and scoped tool authorization; host worktree discovery is replaced by isolated child workspaces and explicit artifact transfer.",
+    "Native asynchronous delegation receipts re-enter through the existing gateway admission outbox with stable completion identities and original source-message scope. Completed children are not respawned; dead unfinished workers remain unknown; user interruption and revocation fence delivery.",
+    "Persistent peer task handoff and review project verified native session outcomes into scoped product tasks and native Kanban kernel receipts. No Kanban dispatcher or second model executor is enabled."
   ],
   "optional_extras": [
     "acp",

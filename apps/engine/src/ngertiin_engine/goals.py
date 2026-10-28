@@ -183,6 +183,16 @@ class Goals:
                 (self.store.owner, row[0]),
             ).fetchone()
         if not message:
+            message = conn.execute(
+                "SELECT source_message_id FROM nma_delegation_batches WHERE owner_id=? AND resume_run_id=?",
+                (self.store.owner, row[0]),
+            ).fetchone()
+        if not message:
+            message = conn.execute(
+                "SELECT source_message_id FROM nma_collaboration_units WHERE owner_id=? AND run_id=?",
+                (self.store.owner, row[0]),
+            ).fetchone()
+        if not message:
             raise EngineError("NOT_FOUND")
         return row[0], config, message[0]
 

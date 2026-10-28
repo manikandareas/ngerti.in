@@ -175,8 +175,8 @@ class Continuation:
 
         active_discussion = self.store.write(
             lambda conn: conn.execute(
-                "SELECT 1 FROM nma_discussion_turns t JOIN nma_discussions d USING(owner_id,discussion_id) WHERE t.owner_id=? AND t.run_id=? AND d.status='active'",
-                (self.store.owner, run_id),
+                "SELECT 1 FROM nma_discussion_turns t JOIN nma_discussions d USING(owner_id,discussion_id) WHERE t.owner_id=? AND t.run_id=? AND d.status='active' UNION SELECT 1 FROM nma_collaboration_tasks t JOIN nma_discussion_goals g USING(owner_id,discussion_id) WHERE g.owner_id=? AND g.goal_id=? AND json_extract(t.task,'$.status') IN ('pending','submitting','review','reviewing','changes_requested')",
+                (self.store.owner, run_id, self.store.owner, goal_id),
             ).fetchone()
         )
         if active_discussion:
@@ -290,6 +290,9 @@ class Continuation:
 
         with owner_scope(self.adapter.authority):
             async with self.adapter.lock:
+                from ngertiin_engine.delegation_delivery import reconcile
+
+                await reconcile(self.adapter)
                 await self.adapter.discussions.tick()
                 self.reconcile()
                 if time.monotonic() >= self.next_wake_poll:

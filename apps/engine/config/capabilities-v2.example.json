@@ -7,6 +7,7 @@
     "skill_refs": []
   },
   "execution_surfaces": {
+    "native_children": {"kind": "scoped_delegation", "ready": true},
     "native_linux": {
       "kind": "scoped_linux",
       "ready": false,
@@ -14,6 +15,7 @@
     }
   },
   "tool_grants": {
+    "delegation": {"enabled": true, "label": "Temporary assistants", "toolset": "delegation", "execution_surface": "native_children"},
     "tasks": {"enabled": true, "label": "Tasks", "toolset": "todo"},
     "files": {"enabled": true, "label": "Files", "toolset": "nma_workspace"},
     "native_terminal": {

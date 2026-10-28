@@ -61,7 +61,7 @@ def main():
                     (owner,),
                 ).fetchone()
                 if (
-                    version not in range(1, 18)
+                    version not in range(1, 19)
                     or not checksum
                     or checksum[0] != CHECKSUM
                 ):
@@ -416,7 +416,18 @@ def main():
                         (owner, stamp.get("admission_id")),
                     ).fetchone()
                 )
-                if current is not None or continuation or discussion:
+                completion = stamp and store.write(
+                    lambda conn: conn.execute(
+                        "SELECT 1 FROM nma_delegation_batches b JOIN nma_adapter_runs r ON r.owner_id=b.owner_id AND r.run_id=b.resume_run_id JOIN session_admissions a ON a.request_id='nma:'||r.operation_id WHERE b.owner_id=? AND a.admission_id=? UNION SELECT 1 FROM nma_collaboration_units u JOIN nma_adapter_runs r USING(owner_id,run_id) JOIN session_admissions a ON a.request_id='nma:'||r.operation_id WHERE u.owner_id=? AND a.admission_id=?",
+                        (
+                            owner,
+                            stamp.get("admission_id"),
+                            owner,
+                            stamp.get("admission_id"),
+                        ),
+                    ).fetchone()
+                )
+                if current is not None or continuation or discussion or completion:
                     from ngertiin_engine.goals import PROMPT, Goals
 
                     context_prompt += (

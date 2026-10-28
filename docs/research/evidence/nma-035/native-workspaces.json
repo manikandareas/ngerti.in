@@ -1,0 +1,66 @@
+{
+  "passed": true,
+  "fixture_root": "/tmp/nma-s6hm7vet",
+  "children": [
+    {
+      "child_session_id": "20261028_165549_c06865",
+      "parent_run_id": "027b5ff2-c19d-569f-9309-7c33e4b756a8",
+      "status": "completed",
+      "activity": "coding",
+      "agent_id": "4ebe0c68-fea6-46c8-b888-ccb5fb5bcc8f",
+      "artifact_ids": [
+        "01b201fb-241b-52a1-a1ee-9483e4ff0721"
+      ],
+      "goal": "Create the first private Git worktree and artifact",
+      "model": "test-model",
+      "operation_id": "86df55274d29010282358ef8a4a26094c494df76fd6c498b98f768620b5f25e6",
+      "resource_agent_id": "55e1cb9a-962c-5d8c-aa09-5cf80f30cbc4",
+      "task_index": 0,
+      "toolsets": [
+        "code_execution",
+        "file",
+        "nma_coding",
+        "nma_workspace",
+        "terminal"
+      ],
+      "worktree_ids": [
+        "7adadfe9513840d480edca8dd885993d"
+      ]
+    },
+    {
+      "child_session_id": "20261028_165549_8ffa74",
+      "parent_run_id": "027b5ff2-c19d-569f-9309-7c33e4b756a8",
+      "status": "completed",
+      "activity": "coding",
+      "agent_id": "4ebe0c68-fea6-46c8-b888-ccb5fb5bcc8f",
+      "artifact_ids": [
+        "f3abbd84-7b16-5284-ad1e-50a13431b7e5"
+      ],
+      "goal": "Create the second private Git worktree and artifact",
+      "model": "test-model",
+      "operation_id": "35e9dbb23008a9b8a33c286c9784d150f28a33846a85d83205998d8239f39749",
+      "resource_agent_id": "a76ee94c-5107-5715-b57f-2f17bbc453f4",
+      "task_index": 1,
+      "toolsets": [
+        "code_execution",
+        "file",
+        "nma_coding",
+        "nma_workspace",
+        "terminal"
+      ],
+      "worktree_ids": [
+        "b4ada18a53dc43298ac594e0bcac39ad"
+      ]
+    }
+  ],
+  "artifacts": [],
+  "distinct_scopes": 2,
+  "native_operations": [
+    [
+      "returned",
+      4
+    ]
+  ],
+  "tool_image": "sha256:6580374cc2db359e4db9723c7a1c679a6b609d1a0fa91b1432cd3df9096adb6d",
+  "oracle": "Each child initialized its own repository at the same path with different bytes, created a real native Git worktree, then published its own exact marker file."
+}

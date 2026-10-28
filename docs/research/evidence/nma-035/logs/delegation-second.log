@@ -1,0 +1,61 @@
+/Users/vitoandareasmanik/.cache/uv/archive-v0/Uhti8kwSaB-uppKgLiv9B/lib/python3.14/site-packages/pytest_asyncio/plugin.py:300: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the "fixture" caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to "function" scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+F
+=================================== FAILURES ===================================
+______________ test_native_parallel_children_results_and_restart _______________
+
+runtime = (PosixPath('/tmp/nma-k1f2gdf8'), <http.server.ThreadingHTTPServer object at 0x10b9278c0>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '17', 'lifecycle': 'ready', ...})
+
+    def test_native_parallel_children_results_and_restart(runtime):
+        root, provider, call, start, *_ = runtime
+        agent, thread = setup(root, call)
+        seen = set()
+    
+        def script(body, text):
+            messages = body.get("messages", [])
+            systems = json.dumps([m for m in messages if m["role"] == "system"])
+            if "focused subagent" in systems:
+                seen.add(text)
+                return {"role": "assistant", "content": '{"answer":42}'}
+            if any(m["role"] == "tool" for m in messages):
+                return {"role": "assistant", "content": "Delegation results observed."}
+            return tool("delegate_task", {"tasks": [
+                {"goal": "Calculate the first independent answer", "output_schema": {"type": "object", "required": ["answer"], "properties": {"answer": {"type": "integer"}}}},
+                {"goal": "Calculate the second independent answer", "model_ref": "test", "allowed_toolsets": []},
+            ]})
+    
+        provider.goal_script = script
+        receipt = call(send(thread, "Calculate using two temporary assistants"))
+        assert "result" in receipt, receipt
+        run = receipt["result"]["run_id"]
+        settle(call, run)
+        deadline = time.monotonic() + 30
+        while time.monotonic() < deadline:
+            snap = snapshot(call, thread)
+            children = snap.get("delegations", [])
+            if len(children) == 2 and all(c["status"] != "running" for c in children):
+                break
+            time.sleep(.1)
+>       assert len(children) == 2, (snap, provider.requests)
+E       AssertionError: ({'artifacts': [], 'delegations': [], 'discussion': None, 'goals': [], ...}, [{'messages': [{'role': 'system', 'conten...ed"}', 'tool_call_id': 'delegation-case'}], 'model': 'test-model', 'reasoning_effort': 'medium', 'stream': True, ...}])
+E       assert 0 == 2
+E        +  where 0 = len([])
+
+apps/engine/tests/test_delegation.py:60: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+=============================== warnings summary ===============================
+.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14
+  /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14: PytestRemovedIn10Warning: _pytest.python.CallSpec2 has been renamed to CallSpec.
+  The CallSpec2 alias will be removed in pytest 10.
+  Update imports to use CallSpec instead.
+  See https://docs.pytest.org/en/stable/deprecations.html#callspec2-renamed
+    from _pytest.python import CallSpec2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_delegation.py::test_native_parallel_children_results_and_restart
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 1 warning in 34.79s

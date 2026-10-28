@@ -1,0 +1,120 @@
+{
+  "artifacts": [],
+  "collaboration_tasks": [],
+  "delegations": [
+    {
+      "agent_id": "9e2b9bd8-8061-4f52-a169-1e082dd06774",
+      "child_session_id": "20261028_163036_382795",
+      "goal": "UI_WAIT_CHILD: independently verify the calculation",
+      "kind": "temporary_subagent",
+      "model": "test-model",
+      "parent_child_id": null,
+      "parent_run_id": "0230ea74-fac8-5232-812a-079e0fcea891",
+      "resource_agent_id": "10a9af56-4b9d-5914-a36e-a277acbac356",
+      "result": null,
+      "status": "running",
+      "subagent_id": "sa-0-a487c069",
+      "task_index": 0,
+      "toolsets": []
+    }
+  ],
+  "discussion": null,
+  "goals": [],
+  "messages": [
+    {
+      "attachments": [],
+      "author_agent_id": null,
+      "author_kind": "user",
+      "content": "Gunakan asisten sementara untuk memeriksa perhitungan ini.",
+      "context_generation": "1",
+      "message_id": "c9c3037d-0d88-5b92-886d-e9100bd4549d",
+      "message_seq": "2",
+      "parts": [
+        {
+          "text": "Gunakan asisten sementara untuk memeriksa perhitungan ini.",
+          "type": "text"
+        }
+      ],
+      "revision": "1",
+      "run_id": "0230ea74-fac8-5232-812a-079e0fcea891",
+      "thread_id": "ccdd3211-3a93-4562-97fa-76eba52f2821"
+    },
+    {
+      "attachments": [],
+      "author_agent_id": "9e2b9bd8-8061-4f52-a169-1e082dd06774",
+      "author_kind": "agent",
+      "content": "Asisten sementara sedang menghitung. Anda dapat menghentikan pekerjaan ini.",
+      "context_generation": "1",
+      "message_id": "6dabac19-ceee-5d87-9826-60744566cb6e",
+      "message_seq": "3",
+      "parts": [
+        {
+          "text": "Asisten sementara sedang menghitung. Anda dapat menghentikan pekerjaan ini.",
+          "type": "text"
+        }
+      ],
+      "revision": "1",
+      "run_id": "0230ea74-fac8-5232-812a-079e0fcea891",
+      "thread_id": "ccdd3211-3a93-4562-97fa-76eba52f2821"
+    }
+  ],
+  "next_before_message_seq": null,
+  "replay_epoch": "2b2e8ba3-8d70-49c7-b09e-0688f229152a",
+  "runs": [
+    {
+      "agent_id": "9e2b9bd8-8061-4f52-a169-1e082dd06774",
+      "config_revision": "1",
+      "context_generation": "1",
+      "continuation_required": false,
+      "error_code": null,
+      "replay_epoch": "2b2e8ba3-8d70-49c7-b09e-0688f229152a",
+      "run_id": "0230ea74-fac8-5232-812a-079e0fcea891",
+      "schema_version": "nma.v1",
+      "status": "succeeded",
+      "text": "Asisten sementara sedang menghitung. Anda dapat menghentikan pekerjaan ini.",
+      "thread_id": "ccdd3211-3a93-4562-97fa-76eba52f2821",
+      "through_sequence": "133",
+      "turn_exit_reason": "text_response(finish_reason=stop)"
+    }
+  ],
+  "schema_version": "nma.v1",
+  "thread": {
+    "agents": [
+      {
+        "access_generation": "1",
+        "agent_id": "9e2b9bd8-8061-4f52-a169-1e082dd06774",
+        "config": {
+          "avatar_url": "https://api.dicebear.com/10.x/critters/svg?seed=coordinator-5e1792dc",
+          "instructions": "",
+          "model": "test",
+          "session": {
+            "compression": {},
+            "context_engine": "compressor",
+            "max_turns": null
+          },
+          "soul": "",
+          "tool_grants": [
+            "delegation"
+          ]
+        },
+        "config_revision": "1",
+        "created_at": "2026-10-28T08:30:34.574638Z",
+        "display_name": "coordinator-5e1792dc",
+        "handle": "coordinator-5e1792dc",
+        "primary_dm_thread_id": "ccdd3211-3a93-4562-97fa-76eba52f2821",
+        "revision": "1",
+        "status": "active",
+        "updated_at": "2026-10-28T08:30:34.574638Z"
+      }
+    ],
+    "context_generation": "1",
+    "dm_agent_id": "9e2b9bd8-8061-4f52-a169-1e082dd06774",
+    "kind": "dm",
+    "membership_revision": "1",
+    "revision": "1",
+    "status": "open",
+    "thread_id": "ccdd3211-3a93-4562-97fa-76eba52f2821",
+    "title": "coordinator-5e1792dc"
+  },
+  "through_sequence": "133"
+}

@@ -1,0 +1,22 @@
+{
+  "repository_base": "cfcb393a48e4b2e03cc430478f15d413e1d09e31",
+  "hermes_revision": "7489b22af47ce91b366dde81d5831ea422577498",
+  "archive_sha256": "8bb5bc691b509caa847b4e388258be2adec297f06b1ee01f56c9a742eb043d95",
+  "verified_source_hashes": 169,
+  "python": "3.14.9",
+  "sqlite": "3.53.1",
+  "platform": "macOS-26.3-arm64-arm-64bit-Mach-O",
+  "reviewed_native_image": "sha256:6580374cc2db359e4db9723c7a1c679a6b609d1a0fa91b1432cd3df9096adb6d",
+  "provider_runtime_versions": {
+    "httpx": "0.28.1",
+    "PyJWT": "2.15.1",
+    "cryptography": "50.0.1",
+    "openai": "2.24.0",
+    "mcp": "2.3.0",
+    "firecrawl-py": "4.17.0",
+    "exa-py": "2.10.2"
+  },
+  "original_account_migrated": false,
+  "deployment_performed": false,
+  "notices": "apps/engine/notices; unchanged upstream MIT pin"
+}

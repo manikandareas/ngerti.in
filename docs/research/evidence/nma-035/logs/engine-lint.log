@@ -1,0 +1,50 @@
+I001 [*] Import block is un-sorted or un-formatted
+  --> apps/engine/src/ngertiin_engine/store.py:7:1
+   |
+ 5 |   """
+ 6 |
+ 7 | / import hashlib
+ 8 | | import json
+ 9 | |
+10 | | from ngertiin_engine.agents import DDL as AGENT_DDL
+11 | | from ngertiin_engine.delegation_store import DDL as DELEGATION_DDL
+12 | | from ngertiin_engine.collaboration import DDL as COLLABORATION_DDL
+13 | | from ngertiin_engine.artifacts import DDL as ARTIFACT_DDL
+14 | | from ngertiin_engine.computer import DDL as COMPUTER_DDL
+15 | | from ngertiin_engine.connections import DDL as CONNECTION_DDL
+16 | | from ngertiin_engine.context import DDL as CONTEXT_DDL
+17 | | from ngertiin_engine.context import fence_context_runs
+18 | | from ngertiin_engine.contracts import EngineError, canonical, digest, next_sequence
+19 | | from ngertiin_engine.conversations import DDL as CONVERSATION_DDL
+20 | | from ngertiin_engine.conversations import backfill
+21 | | from ngertiin_engine.direct_messages import DDL as DM_DDL
+22 | | from ngertiin_engine.discussions import DDL as DISCUSSION_DDL
+23 | | from ngertiin_engine.files import DDL as FILE_DDL
+24 | | from ngertiin_engine.goal_lifecycle import DDL as LIFECYCLE_DDL
+25 | | from ngertiin_engine.goals import DDL as GOAL_DDL
+26 | | from ngertiin_engine.learning_store import DDL as LEARNING_DDL
+27 | | from ngertiin_engine.outcomes import DDL as OUTCOME_DDL
+28 | | from ngertiin_engine.reliability import DDL as RELIABILITY_DDL
+29 | | from ngertiin_engine.threads import DDL as THREAD_DDL
+30 | | from ngertiin_engine.wakes import DDL as WAKE_DDL
+31 | | from ngertiin_engine.webhooks import DDL as WEBHOOK_DDL
+   | |_______________________________________________________^
+32 |
+33 |   DDL = (
+   |
+help: Organize imports
+   |
+10 | from ngertiin_engine.agents import DDL as AGENT_DDL
+   - from ngertiin_engine.delegation_store import DDL as DELEGATION_DDL
+11 + from ngertiin_engine.artifacts import DDL as ARTIFACT_DDL
+12 | from ngertiin_engine.collaboration import DDL as COLLABORATION_DDL
+   - from ngertiin_engine.artifacts import DDL as ARTIFACT_DDL
+13 | from ngertiin_engine.computer import DDL as COMPUTER_DDL
+--------------------------------------------------------------------------------
+19 | from ngertiin_engine.conversations import backfill
+20 + from ngertiin_engine.delegation_store import DDL as DELEGATION_DDL
+21 | from ngertiin_engine.direct_messages import DDL as DM_DDL
+   |
+
+Found 1 error.
+[*] 1 fixable with `--fix`.

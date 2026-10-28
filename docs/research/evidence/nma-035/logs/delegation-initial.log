@@ -1,0 +1,149 @@
+Installed 6 packages in 22ms
+/Users/vitoandareasmanik/.cache/uv/archive-v0/Uhti8kwSaB-uppKgLiv9B/lib/python3.14/site-packages/pytest_asyncio/plugin.py:300: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the "fixture" caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to "function" scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+E
+==================================== ERRORS ====================================
+_____ ERROR at setup of test_native_parallel_children_results_and_restart ______
+
+fixturedef = <FixtureDef argname='runtime' scope='module' baseid='tests/test_delegation.py'>
+request = <SubRequest 'runtime' for <Function test_native_parallel_children_results_and_restart>>
+
+    @pytest.hookimpl(wrapper=True)
+    def pytest_fixture_setup(fixturedef: FixtureDef, request) -> object | None:
+        if (
+            fixturedef.argname == "event_loop_policy"
+            and fixturedef.func.__module__ != __name__
+        ):
+            warnings.warn(
+                PytestDeprecationWarning(_EVENT_LOOP_POLICY_FIXTURE_DEPRECATION_WARNING),
+            )
+        asyncio_mode = _get_asyncio_mode(request.config)
+        if not _is_asyncio_fixture_function(fixturedef.func):
+            if asyncio_mode == Mode.STRICT:
+                # Ignore async fixtures without explicit asyncio mark in strict mode
+                # This applies to pytest_trio fixtures, for example
+>               return (yield)
+                        ^^^^^
+
+../../../.cache/uv/archive-v0/Uhti8kwSaB-uppKgLiv9B/lib/python3.14/site-packages/pytest_asyncio/plugin.py:925: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+apps/engine/tests/test_runtime.py:325: in runtime
+    process, description = start()
+                           ^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+fault = None, overrides = None
+
+    def start(fault=None, overrides=None):
+        start.current_owner = (overrides or {}).get("NMA_OWNER_ID", OWNER)
+        log = (root / f"gateway-{len(processes)}.log").open("w+")
+        process = subprocess.Popen(
+            [RUNTIME_PYTHON, str(Path(__file__).with_name("fault_launcher.py"))]
+            if fault
+            else [RUNTIME_PYTHON, "-m", "ngertiin_engine.service"],
+            cwd=SOURCE,
+            env=env
+            | (overrides or {})
+            | (
+                {"NMA_TEST_FAULT": fault, "NMA_TEST_MARKER": str(root / "fault-fired")}
+                if fault
+                else {}
+            ),
+            stdout=log,
+            stderr=subprocess.STDOUT,
+        )
+        processes.append(process)
+        start.current = process
+        deadline = time.monotonic() + 90
+        while process.poll() is None and time.monotonic() < deadline:
+            try:
+                response = call(command("runtime.describe"))
+                if "result" in response:
+                    return process, response["result"]
+            except (OSError, ValueError):
+                pass
+            time.sleep(0.1)
+        log.flush()
+>       pytest.fail(
+            log.read()
+            if log.seek(0) is None
+            else (root / f"gateway-{len(processes) - 1}.log").read_text()
+        )
+E       Failed: 2026-10-28 15:15:52,711 WARNING gateway.run: No messaging platforms enabled.
+E       2026-10-28 15:15:52,849 WARNING agent.model_metadata: Could not determine context length for model 'adapter-model' (base_url=http://127.0.0.1:60705/v1) — falling back to 256,000 tokens. Set model.context_length in config.yaml to override.
+E       Traceback (most recent call last):
+E         File "<frozen runpy>", line 203, in _run_module_as_main
+E         File "<frozen runpy>", line 88, in _run_code
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/service.py", line 592, in <module>
+E           main()
+E           ~~~~^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/service.py", line 588, in main
+E           run.main()
+E           ~~~~~~~~^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/source/gateway/run.py", line 5187, in main
+E           success = asyncio.run(start_gateway(config))
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/asyncio/runners.py", line 205, in run
+E           return runner.run(main)
+E                  ~~~~~~~~~~^^^^^^
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/asyncio/runners.py", line 128, in run
+E           return self._loop.run_until_complete(task)
+E                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+E         File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/asyncio/base_events.py", line 720, in run_until_complete
+E           return future.result()
+E                  ~~~~~~~~~~~~~^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/source/gateway/run.py", line 5092, in start_gateway
+E           return await bootstrap(config, replace, verbosity, force, idle_exit)
+E                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/source/gateway/run_bootstrap.py", line 886, in start_gateway
+E           _early_verdict = await _start_gateway_run_runner(runner, _signal_initiated_shutdown)
+E                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/source/gateway/run_bootstrap.py", line 684, in _start_gateway_run_runner
+E           success = await runner.start()
+E                     ^^^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/service.py", line 455, in start
+E           self.nma_adapter = Adapter(
+E                              ~~~~~~~^
+E               active_authority(self), owner, configurations, models
+E               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           )
+E           ^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/adapter.py", line 49, in __init__
+E           self.store = Store(authority, owner)
+E                        ~~~~~^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/store.py", line 65, in __init__
+E           self.write(self._bootstrap, bootstrap=True)
+E           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/store.py", line 82, in write
+E           return self.authority.db._execute_write(fenced)
+E                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/source/hermes_state.py", line 1048, in _execute_write
+E           result = fn(self._conn)
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/store.py", line 80, in fenced
+E           return operation(conn)
+E         File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/src/ngertiin_engine/store.py", line 456, in _bootstrap
+E           conn.execute(
+E           ~~~~~~~~~~~~^
+E               "INSERT INTO nma_schema_migrations VALUES (?,18,?)",
+E               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               (self.owner, DELEGATION_CHECKSUM),
+E               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           )
+E           ^
+E       sqlite3.OperationalError: table nma_schema_migrations has 4 columns but 3 values were supplied
+
+apps/engine/tests/test_runtime.py:309: Failed
+=============================== warnings summary ===============================
+.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14
+  /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14: PytestRemovedIn10Warning: _pytest.python.CallSpec2 has been renamed to CallSpec.
+  The CallSpec2 alias will be removed in pytest 10.
+  Update imports to use CallSpec instead.
+  See https://docs.pytest.org/en/stable/deprecations.html#callspec2-renamed
+    from _pytest.python import CallSpec2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+ERROR apps/engine/tests/test_delegation.py::test_native_parallel_children_results_and_restart
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 warning, 1 error in 2.94s

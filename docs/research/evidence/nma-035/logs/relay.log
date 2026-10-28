@@ -1,0 +1,20 @@
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/scripts/spikes/nma032/provider_relay.py", line 75, in <module>
+    main()
+    ~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/scripts/spikes/nma032/provider_relay.py", line 45, in main
+    server, private, evidence = module.prepare(
+                                ~~~~~~~~~~~~~~^
+        vault,
+        ^^^^^^
+    ...<4 lines>...
+        "gpt-6-luna",
+        ^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/scripts/spikes/nma030/provider_relay.py", line 138, in prepare
+    selected = current()
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/scripts/spikes/nma030/provider_relay.py", line 120, in current
+    client.connect(partition["socket"])
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory

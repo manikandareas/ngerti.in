@@ -1,0 +1,84 @@
+Agent dan percakapan
+DM dan grup
+Grup · Editorial
+DM · writer
+DM · coordinator-c3857680
+DM · reviewer
+DM · researcher
+G
+Editorial
+
+@researcher · @writer · @reviewer
+
+Semua agent
+Pekerjaan bersama selesai · Riwayat tersimpan
+Pekerjaan bersama
+writer · Selesai
+Publish the verified report, ask reviewer to inspect its exact artifact, and apply any requested changes.
+
+Actual report artifact published.
+
+Inspected the corrected artifact; accepted.
+
+Penanggung jawab: writer · Pemeriksa: reviewer
+
+1 hasil tersimpan di percakapan
+
+Konteks percakapan
+File hasil · 2
+report.txt
+Pratinjau
+Unduh
+report.txt
+Pratinjau
+Unduh
+
+report.txt
+
+Verified report revision 5
+Tutup pratinjau
+Memori dan skills +
+Workspace & perubahan kode
+Layar dan bantuan login
+Kamu
+
+@researcher. Work together to produce and review a report
+
+researcher
+
+Research is ready for the writer.
+
+writer
+
+Report submitted for independent review.
+
+reviewer
+
+Changes requested.
+
+writer
+
+Report submitted for independent review.
+
+reviewer
+
+Verified report accepted.
+
+Kamu
+
+@researcher ringkas hasil laporan yang sudah diperiksa
+
+researcher
+
+Laporan sudah diperbaiki Writer dan diperiksa Reviewer. File hasilnya tersedia di percakapan.
+
+Pesan terbaru
+Pesan untuk Editorial
+@researcher
+@writer
+@reviewer
+Lampirkan file
+
+Percakapan tersimpan. Kamu bisa kembali kapan saja.
+
+Kirim pesan

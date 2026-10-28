@@ -1,0 +1,305 @@
+/Users/vitoandareasmanik/.cache/uv/archive-v0/Uhti8kwSaB-uppKgLiv9B/lib/python3.14/site-packages/pytest_asyncio/plugin.py:300: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the "fixture" caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to "function" scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+F
+=================================== FAILURES ===================================
+______________ test_native_parallel_children_results_and_restart _______________
+
+runtime = (PosixPath('/tmp/nma-4j5zvqa_'), <http.server.ThreadingHTTPServer object at 0x1099e3a10>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '18', 'lifecycle': 'ready', ...})
+
+    def test_native_parallel_children_results_and_restart(runtime):
+        root, provider, call, start, *_ = runtime
+        agent, thread = setup(root, call)
+        seen = set()
+        barrier = threading.Barrier(2)
+    
+        def script(body, text):
+            messages = body.get("messages", [])
+            systems = json.dumps([m for m in messages if m["role"] == "system"])
+            if "focused subagent" in systems:
+                seen.add(text)
+                barrier.wait(timeout=10)
+                return {"role": "assistant", "content": '{"answer":42}'}
+            if any(m["role"] == "tool" for m in messages):
+                return {"role": "assistant", "content": "Delegation results observed."}
+            return tool("delegate_task", {"tasks": [
+                {"goal": "Calculate the first independent answer", "output_schema": {"type": "object", "required": ["answer"], "properties": {"answer": {"type": "integer"}}}},
+                {"goal": "Calculate the second independent answer", "model_ref": "test", "allowed_toolsets": []},
+            ]})
+    
+        provider.goal_script = script
+        receipt = call(send(thread, "Calculate using two temporary assistants"))
+        assert "result" in receipt, receipt
+        run = receipt["result"]["run_id"]
+        settle(call, run)
+        deadline = time.monotonic() + 30
+        while time.monotonic() < deadline:
+            snap = snapshot(call, thread)
+            children = snap.get("delegations", [])
+            if len(children) == 2 and all(c["status"] != "running" for c in children):
+                break
+            time.sleep(.1)
+        assert len(children) == 2, (snap, provider.requests)
+>       assert all(c["status"] == "completed" for c in children), children
+E       AssertionError: [{'child_session_id': '20261028_153107_3a513d', 'goal': 'Calculate the second independent answer', 'kind': 'temporary_...7_f682d0', 'goal': 'Calculate the first independent answer', 'kind': 'temporary_subagent', 'model': 'test-model', ...}]
+E       assert False
+E        +  where False = all(<generator object test_native_parallel_children_results_and_restart.<locals>.<genexpr> at 0x109acfb90>)
+
+apps/engine/tests/test_delegation.py:65: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+----------------------------- Captured stderr call -----------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 62443)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation.py", line 43, in script
+    barrier.wait(timeout=10)
+    ~~~~~~~~~~~~^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/threading.py", line 740, in wait
+    self._wait(timeout)
+    ~~~~~~~~~~^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/threading.py", line 778, in _wait
+    raise BrokenBarrierError
+threading.BrokenBarrierError
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 62457)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation.py", line 43, in script
+    barrier.wait(timeout=10)
+    ~~~~~~~~~~~~^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/threading.py", line 731, in wait
+    self._enter() # Block while the barrier drains.
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/threading.py", line 755, in _enter
+    raise BrokenBarrierError
+threading.BrokenBarrierError
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 62460)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation.py", line 43, in script
+    barrier.wait(timeout=10)
+    ~~~~~~~~~~~~^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/threading.py", line 731, in wait
+    self._enter() # Block while the barrier drains.
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/threading.py", line 755, in _enter
+    raise BrokenBarrierError
+threading.BrokenBarrierError
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 62461)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation.py", line 43, in script
+    barrier.wait(timeout=10)
+    ~~~~~~~~~~~~^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/threading.py", line 731, in wait
+    self._enter() # Block while the barrier drains.
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/threading.py", line 755, in _enter
+    raise BrokenBarrierError
+threading.BrokenBarrierError
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 62467)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation.py", line 43, in script
+    barrier.wait(timeout=10)
+    ~~~~~~~~~~~~^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/threading.py", line 731, in wait
+    self._enter() # Block while the barrier drains.
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/threading.py", line 755, in _enter
+    raise BrokenBarrierError
+threading.BrokenBarrierError
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 62469)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation.py", line 43, in script
+    barrier.wait(timeout=10)
+    ~~~~~~~~~~~~^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/threading.py", line 731, in wait
+    self._enter() # Block while the barrier drains.
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/threading.py", line 755, in _enter
+    raise BrokenBarrierError
+threading.BrokenBarrierError
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 62478)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation.py", line 43, in script
+    barrier.wait(timeout=10)
+    ~~~~~~~~~~~~^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/threading.py", line 731, in wait
+    self._enter() # Block while the barrier drains.
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/threading.py", line 755, in _enter
+    raise BrokenBarrierError
+threading.BrokenBarrierError
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 62488)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation.py", line 43, in script
+    barrier.wait(timeout=10)
+    ~~~~~~~~~~~~^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/threading.py", line 731, in wait
+    self._enter() # Block while the barrier drains.
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/threading.py", line 755, in _enter
+    raise BrokenBarrierError
+threading.BrokenBarrierError
+----------------------------------------
+=============================== warnings summary ===============================
+.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14
+  /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14: PytestRemovedIn10Warning: _pytest.python.CallSpec2 has been renamed to CallSpec.
+  The CallSpec2 alias will be removed in pytest 10.
+  Update imports to use CallSpec instead.
+  See https://docs.pytest.org/en/stable/deprecations.html#callspec2-renamed
+    from _pytest.python import CallSpec2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_delegation.py::test_native_parallel_children_results_and_restart
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 1 warning in 35.88s

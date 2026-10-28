@@ -1,0 +1,100 @@
+/Users/vitoandareasmanik/.cache/uv/archive-v0/Uhti8kwSaB-uppKgLiv9B/lib/python3.14/site-packages/pytest_asyncio/plugin.py:300: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the "fixture" caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to "function" scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+.F
+=================================== FAILURES ===================================
+_______ test_nested_children_cancel_or_revoke_before_late_results[True] ________
+
+runtime = (PosixPath('/tmp/nma-4iqw0m3r'), <http.server.ThreadingHTTPServer object at 0x10939fcb0>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '18', 'lifecycle': 'ready', ...})
+revoke = True
+
+    @pytest.mark.parametrize("revoke", [False, True])
+    def test_nested_children_cancel_or_revoke_before_late_results(runtime, revoke):
+        root, provider, call, start, *_ = runtime
+        config = json.loads((root / "state/config.yaml").read_text())
+        config["delegation"] = {"max_spawn_depth": 2}
+        (root / "state/config.yaml").write_text(json.dumps(config))
+        start.current.kill()
+        start.current.wait(timeout=10)
+        start()
+        agent, thread = setup(root, call)
+        blocked, release = threading.Event(), threading.Event()
+    
+        def script(body, text):
+            messages = body.get("messages", [])
+            if not messages:
+                return None
+            prompt = next(m["content"] for m in reversed(messages) if m["role"] == "user")
+            child = "focused subagent" in json.dumps(
+                [m for m in messages if m["role"] == "system"]
+            )
+            if child and "GRANDCHILD_CALCULATION" in prompt:
+                blocked.set()
+                release.wait(20)
+                return {"role": "assistant", "content": "FORBIDDEN_NESTED_LATE_RESULT"}
+            if any(m["role"] == "tool" for m in messages):
+                return {"role": "assistant", "content": "The delegated work is running."}
+            return tool(
+                "delegate_task",
+                {
+                    "goal": "GRANDCHILD_CALCULATION"
+                    if child
+                    else "Delegate one independent calculation to a nested assistant"
+                },
+            )
+    
+        provider.goal_script = script
+        receipt = call(send(thread, "Use a nested temporary assistant"))["result"]
+        try:
+            assert blocked.wait(15)
+            children = snapshot(call, thread)["delegations"]
+            assert (
+                len(children) == 2
+                and sum(c["parent_child_id"] is not None for c in children) == 1
+            ), children
+            if revoke:
+                edit = command(
+                    "agent.configure",
+                    {
+                        "agent_id": agent["agent_id"],
+                        "display_name": agent["display_name"],
+                        "handle": agent["handle"],
+                        "config": {**agent["config"], "tool_grants": []},
+                    },
+                )
+                edit["expected_revision"] = agent["revision"]
+                assert "result" in call(edit)
+            else:
+                assert "result" in call(
+                    command("run.cancel", {"run_id": receipt["run_id"]})
+                )
+            release.set()
+            deadline = time.monotonic() + 10
+            while time.monotonic() < deadline:
+                snap = snapshot(call, thread)
+                if all(c["status"] == "cancelled" for c in snap["delegations"]):
+                    break
+                time.sleep(0.1)
+>           assert all(
+                c["status"] == "cancelled" and c["result"] is None
+                for c in snap["delegations"]
+            ), snap
+E           AssertionError: {'artifacts': [], 'collaboration_tasks': [], 'delegations': [{'agent_id': 'a6dfe911-2d1f-4a5c-a8c1-d12d5340d85f', 'chi...egate one independent calculation to a nested assistant', 'kind': 'temporary_subagent', ...}], 'discussion': None, ...}
+E           assert False
+E            +  where False = all(<generator object test_nested_children_cancel_or_revoke_before_late_results.<locals>.<genexpr> at 0x1094d3c60>)
+
+apps/engine/tests/test_delegation_controls.py:83: AssertionError
+=============================== warnings summary ===============================
+.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14
+  /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14: PytestRemovedIn10Warning: _pytest.python.CallSpec2 has been renamed to CallSpec.
+  The CallSpec2 alias will be removed in pytest 10.
+  Update imports to use CallSpec instead.
+  See https://docs.pytest.org/en/stable/deprecations.html#callspec2-renamed
+    from _pytest.python import CallSpec2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_delegation_controls.py::test_nested_children_cancel_or_revoke_before_late_results[True]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 1 passed, 1 warning in 8.55s

@@ -1,0 +1,386 @@
+{
+  "artifacts": [
+    {
+      "artifact_id": "57cd70bc-3860-5c22-99af-b17b71806f35",
+      "byte_count": 26,
+      "filename": "report.txt",
+      "media_type": "text/plain; charset=utf-8",
+      "producing_agent_id": "78a05767-15cb-4a47-9ae9-0929aaca2653",
+      "producing_run_id": "ebf0921c-0603-55b5-a510-40c3bc2ab18a",
+      "revision_id": "57bdffbc-e7a2-5c69-8c1d-308e5e461b41",
+      "sha256": "d951c221b017037f44995f34e639c64f8235db458b5283c8d4a536b0eb29feaa",
+      "status": "ready",
+      "thread_id": "0ed2c8dd-c1fa-496f-aa1e-7b9468bba56a"
+    },
+    {
+      "artifact_id": "42329ba8-c479-5fdc-9cea-06ff0c69ed62",
+      "byte_count": 26,
+      "filename": "report.txt",
+      "media_type": "text/plain; charset=utf-8",
+      "producing_agent_id": "78a05767-15cb-4a47-9ae9-0929aaca2653",
+      "producing_run_id": "c546d0ed-bc94-5a26-a9b5-ef604d1388f8",
+      "revision_id": "e5b38008-4f73-58db-8037-67758ec9158c",
+      "sha256": "b0b5c751fe46fed39342c3d73c41b5e8050a6965499f7a95ead00532f22acc95",
+      "status": "ready",
+      "thread_id": "0ed2c8dd-c1fa-496f-aa1e-7b9468bba56a"
+    }
+  ],
+  "collaboration_tasks": [
+    {
+      "artifact_ids": [
+        "57cd70bc-3860-5c22-99af-b17b71806f35"
+      ],
+      "assignee_agent_id": "78a05767-15cb-4a47-9ae9-0929aaca2653",
+      "creator_agent_id": "6f2aca58-e389-453e-9f74-42cd5e84c156",
+      "decision": "approve",
+      "dependencies": [],
+      "discussion_id": "32f57fab-b8fe-52fb-a4b9-d9fa1134b595",
+      "expected_result": "Publish the verified report, ask reviewer to inspect its exact artifact, and apply any requested changes.",
+      "goal_id": null,
+      "history": [
+        {
+          "actor_agent_id": "78a05767-15cb-4a47-9ae9-0929aaca2653",
+          "artifact_ids": [
+            "42329ba8-c479-5fdc-9cea-06ff0c69ed62"
+          ],
+          "reviewer_agent_id": "fdfa0abb-f554-4d57-b478-09bafca20b4b",
+          "run_id": "c546d0ed-bc94-5a26-a9b5-ef604d1388f8",
+          "status": "review",
+          "summary": "Actual report artifact published."
+        },
+        {
+          "actor_agent_id": "fdfa0abb-f554-4d57-b478-09bafca20b4b",
+          "artifact_ids": [
+            "42329ba8-c479-5fdc-9cea-06ff0c69ed62"
+          ],
+          "reviewer_agent_id": "fdfa0abb-f554-4d57-b478-09bafca20b4b",
+          "run_id": "e57e851b-75df-503a-a1c3-7df53952a5a2",
+          "status": "changes_requested",
+          "summary": "Inspected exact stored report; clarify the title."
+        },
+        {
+          "actor_agent_id": "78a05767-15cb-4a47-9ae9-0929aaca2653",
+          "artifact_ids": [
+            "57cd70bc-3860-5c22-99af-b17b71806f35"
+          ],
+          "reviewer_agent_id": "fdfa0abb-f554-4d57-b478-09bafca20b4b",
+          "run_id": "ebf0921c-0603-55b5-a510-40c3bc2ab18a",
+          "status": "review",
+          "summary": "Actual report artifact published."
+        },
+        {
+          "actor_agent_id": "fdfa0abb-f554-4d57-b478-09bafca20b4b",
+          "artifact_ids": [
+            "57cd70bc-3860-5c22-99af-b17b71806f35"
+          ],
+          "reviewer_agent_id": "fdfa0abb-f554-4d57-b478-09bafca20b4b",
+          "run_id": "98ca488a-f541-5b63-a392-6f9733570ed9",
+          "status": "completed",
+          "summary": "Inspected the corrected artifact; accepted."
+        }
+      ],
+      "implementer_agent_id": "78a05767-15cb-4a47-9ae9-0929aaca2653",
+      "membership_revision": "1",
+      "result_run_id": "ebf0921c-0603-55b5-a510-40c3bc2ab18a",
+      "review_run_id": "98ca488a-f541-5b63-a392-6f9733570ed9",
+      "review_summary": "Inspected the corrected artifact; accepted.",
+      "reviewer_agent_id": "fdfa0abb-f554-4d57-b478-09bafca20b4b",
+      "revision": "9",
+      "source_artifact_ids": [],
+      "source_run_id": "dffc5841-ce22-5539-bef9-7c128e615d78",
+      "status": "completed",
+      "submitted_from_status": "changes_requested",
+      "summary": "Actual report artifact published.",
+      "task_id": "cfbbb3d2-4af0-5c54-b848-4e774eacb4c4",
+      "thread_id": "0ed2c8dd-c1fa-496f-aa1e-7b9468bba56a"
+    }
+  ],
+  "delegations": [],
+  "discussion": {
+    "discussion_id": "32f57fab-b8fe-52fb-a4b9-d9fa1134b595",
+    "reason": "max_rounds",
+    "status": "bounded"
+  },
+  "goals": [],
+  "messages": [
+    {
+      "attachments": [],
+      "author_agent_id": null,
+      "author_kind": "user",
+      "content": "@researcher. Work together to produce and review a report",
+      "context_generation": "1",
+      "message_id": "4ec0872b-e175-5ab3-b736-4566063f12b9",
+      "message_seq": "1",
+      "parts": [
+        {
+          "text": "@researcher. Work together to produce and review a report",
+          "type": "text"
+        }
+      ],
+      "revision": "1",
+      "run_id": "dffc5841-ce22-5539-bef9-7c128e615d78",
+      "thread_id": "0ed2c8dd-c1fa-496f-aa1e-7b9468bba56a"
+    },
+    {
+      "attachments": [],
+      "author_agent_id": "6f2aca58-e389-453e-9f74-42cd5e84c156",
+      "author_kind": "agent",
+      "content": "Research is ready for the writer.",
+      "context_generation": "1",
+      "message_id": "23c24908-bc14-5c91-bd57-71a6bb91c370",
+      "message_seq": "2",
+      "parts": [
+        {
+          "text": "Research is ready for the writer.",
+          "type": "text"
+        }
+      ],
+      "revision": "1",
+      "run_id": "dffc5841-ce22-5539-bef9-7c128e615d78",
+      "thread_id": "0ed2c8dd-c1fa-496f-aa1e-7b9468bba56a"
+    },
+    {
+      "attachments": [],
+      "author_agent_id": "78a05767-15cb-4a47-9ae9-0929aaca2653",
+      "author_kind": "agent",
+      "content": "Report submitted for independent review.",
+      "context_generation": "1",
+      "message_id": "4c26afb6-0e9d-53c4-99f4-2c6bf0f22370",
+      "message_seq": "3",
+      "parts": [
+        {
+          "text": "Report submitted for independent review.",
+          "type": "text"
+        }
+      ],
+      "revision": "1",
+      "run_id": "c546d0ed-bc94-5a26-a9b5-ef604d1388f8",
+      "thread_id": "0ed2c8dd-c1fa-496f-aa1e-7b9468bba56a"
+    },
+    {
+      "attachments": [],
+      "author_agent_id": "fdfa0abb-f554-4d57-b478-09bafca20b4b",
+      "author_kind": "agent",
+      "content": "Changes requested.",
+      "context_generation": "1",
+      "message_id": "549ceca7-6b09-5780-ae8e-3f30083e2d0f",
+      "message_seq": "4",
+      "parts": [
+        {
+          "text": "Changes requested.",
+          "type": "text"
+        }
+      ],
+      "revision": "1",
+      "run_id": "e57e851b-75df-503a-a1c3-7df53952a5a2",
+      "thread_id": "0ed2c8dd-c1fa-496f-aa1e-7b9468bba56a"
+    },
+    {
+      "attachments": [],
+      "author_agent_id": "78a05767-15cb-4a47-9ae9-0929aaca2653",
+      "author_kind": "agent",
+      "content": "Report submitted for independent review.",
+      "context_generation": "1",
+      "message_id": "6ed2de3f-b0f5-54f6-a0a0-1676b2bfd7b2",
+      "message_seq": "5",
+      "parts": [
+        {
+          "text": "Report submitted for independent review.",
+          "type": "text"
+        }
+      ],
+      "revision": "1",
+      "run_id": "ebf0921c-0603-55b5-a510-40c3bc2ab18a",
+      "thread_id": "0ed2c8dd-c1fa-496f-aa1e-7b9468bba56a"
+    },
+    {
+      "attachments": [],
+      "author_agent_id": "fdfa0abb-f554-4d57-b478-09bafca20b4b",
+      "author_kind": "agent",
+      "content": "Verified report accepted.",
+      "context_generation": "1",
+      "message_id": "d8ca1776-0dc5-505c-908d-595c96a4b8b4",
+      "message_seq": "6",
+      "parts": [
+        {
+          "text": "Verified report accepted.",
+          "type": "text"
+        }
+      ],
+      "revision": "1",
+      "run_id": "98ca488a-f541-5b63-a392-6f9733570ed9",
+      "thread_id": "0ed2c8dd-c1fa-496f-aa1e-7b9468bba56a"
+    }
+  ],
+  "next_before_message_seq": null,
+  "replay_epoch": "7cdbe80e-467b-4cd0-b964-9b4f2081fafc",
+  "runs": [
+    {
+      "agent_id": "6f2aca58-e389-453e-9f74-42cd5e84c156",
+      "config_revision": "2",
+      "context_generation": "1",
+      "continuation_required": false,
+      "error_code": null,
+      "replay_epoch": "7cdbe80e-467b-4cd0-b964-9b4f2081fafc",
+      "run_id": "dffc5841-ce22-5539-bef9-7c128e615d78",
+      "schema_version": "nma.v1",
+      "status": "succeeded",
+      "text": "Research is ready for the writer.",
+      "thread_id": "0ed2c8dd-c1fa-496f-aa1e-7b9468bba56a",
+      "through_sequence": "133",
+      "turn_exit_reason": "text_response(finish_reason=stop)"
+    },
+    {
+      "agent_id": "78a05767-15cb-4a47-9ae9-0929aaca2653",
+      "config_revision": "2",
+      "context_generation": "1",
+      "continuation_required": false,
+      "error_code": null,
+      "replay_epoch": "7cdbe80e-467b-4cd0-b964-9b4f2081fafc",
+      "run_id": "c546d0ed-bc94-5a26-a9b5-ef604d1388f8",
+      "schema_version": "nma.v1",
+      "status": "succeeded",
+      "text": "Report submitted for independent review.",
+      "thread_id": "0ed2c8dd-c1fa-496f-aa1e-7b9468bba56a",
+      "through_sequence": "133",
+      "turn_exit_reason": "text_response(finish_reason=stop)"
+    },
+    {
+      "agent_id": "fdfa0abb-f554-4d57-b478-09bafca20b4b",
+      "config_revision": "2",
+      "context_generation": "1",
+      "continuation_required": false,
+      "error_code": null,
+      "replay_epoch": "7cdbe80e-467b-4cd0-b964-9b4f2081fafc",
+      "run_id": "e57e851b-75df-503a-a1c3-7df53952a5a2",
+      "schema_version": "nma.v1",
+      "status": "succeeded",
+      "text": "Changes requested.",
+      "thread_id": "0ed2c8dd-c1fa-496f-aa1e-7b9468bba56a",
+      "through_sequence": "133",
+      "turn_exit_reason": "text_response(finish_reason=stop)"
+    },
+    {
+      "agent_id": "78a05767-15cb-4a47-9ae9-0929aaca2653",
+      "config_revision": "2",
+      "context_generation": "1",
+      "continuation_required": false,
+      "error_code": null,
+      "replay_epoch": "7cdbe80e-467b-4cd0-b964-9b4f2081fafc",
+      "run_id": "ebf0921c-0603-55b5-a510-40c3bc2ab18a",
+      "schema_version": "nma.v1",
+      "status": "succeeded",
+      "text": "Report submitted for independent review.",
+      "thread_id": "0ed2c8dd-c1fa-496f-aa1e-7b9468bba56a",
+      "through_sequence": "133",
+      "turn_exit_reason": "text_response(finish_reason=stop)"
+    },
+    {
+      "agent_id": "fdfa0abb-f554-4d57-b478-09bafca20b4b",
+      "config_revision": "2",
+      "context_generation": "1",
+      "continuation_required": false,
+      "error_code": null,
+      "replay_epoch": "7cdbe80e-467b-4cd0-b964-9b4f2081fafc",
+      "run_id": "98ca488a-f541-5b63-a392-6f9733570ed9",
+      "schema_version": "nma.v1",
+      "status": "succeeded",
+      "text": "Verified report accepted.",
+      "thread_id": "0ed2c8dd-c1fa-496f-aa1e-7b9468bba56a",
+      "through_sequence": "133",
+      "turn_exit_reason": "text_response(finish_reason=stop)"
+    }
+  ],
+  "schema_version": "nma.v1",
+  "thread": {
+    "agents": [
+      {
+        "access_generation": "1",
+        "agent_id": "6f2aca58-e389-453e-9f74-42cd5e84c156",
+        "config": {
+          "avatar_url": "https://api.dicebear.com/10.x/critters/svg?seed=researcher",
+          "instructions": "",
+          "model": "test",
+          "session": {
+            "compression": {},
+            "context_engine": "compressor",
+            "max_turns": null
+          },
+          "soul": "SOUL_researcher",
+          "tool_grants": [
+            "files"
+          ]
+        },
+        "config_revision": "2",
+        "created_at": "2026-10-28T08:32:34.115884Z",
+        "display_name": "researcher",
+        "handle": "researcher",
+        "primary_dm_thread_id": "9fc5bc50-3d86-44b8-9f11-4e50d5201eb0",
+        "revision": "2",
+        "status": "active",
+        "updated_at": "2026-10-28T08:32:34.144272Z"
+      },
+      {
+        "access_generation": "1",
+        "agent_id": "78a05767-15cb-4a47-9ae9-0929aaca2653",
+        "config": {
+          "avatar_url": "https://api.dicebear.com/10.x/critters/svg?seed=writer",
+          "instructions": "",
+          "model": "test",
+          "session": {
+            "compression": {},
+            "context_engine": "compressor",
+            "max_turns": null
+          },
+          "soul": "SOUL_writer",
+          "tool_grants": [
+            "files"
+          ]
+        },
+        "config_revision": "2",
+        "created_at": "2026-10-28T08:32:34.128451Z",
+        "display_name": "writer",
+        "handle": "writer",
+        "primary_dm_thread_id": "1737cfbd-7277-41d9-9d4a-93bee7bca232",
+        "revision": "2",
+        "status": "active",
+        "updated_at": "2026-10-28T08:32:34.149038Z"
+      },
+      {
+        "access_generation": "1",
+        "agent_id": "fdfa0abb-f554-4d57-b478-09bafca20b4b",
+        "config": {
+          "avatar_url": "https://api.dicebear.com/10.x/critters/svg?seed=reviewer",
+          "instructions": "",
+          "model": "test",
+          "session": {
+            "compression": {},
+            "context_engine": "compressor",
+            "max_turns": null
+          },
+          "soul": "SOUL_reviewer",
+          "tool_grants": [
+            "files"
+          ]
+        },
+        "config_revision": "2",
+        "created_at": "2026-10-28T08:32:34.137253Z",
+        "display_name": "reviewer",
+        "handle": "reviewer",
+        "primary_dm_thread_id": "4d5240e7-d82d-4a93-976e-3c2ae880998b",
+        "revision": "2",
+        "status": "active",
+        "updated_at": "2026-10-28T08:32:34.153197Z"
+      }
+    ],
+    "context_generation": "1",
+    "dm_agent_id": null,
+    "kind": "group",
+    "membership_revision": "1",
+    "revision": "1",
+    "status": "open",
+    "thread_id": "0ed2c8dd-c1fa-496f-aa1e-7b9468bba56a",
+    "title": "Editorial"
+  },
+  "through_sequence": "133"
+}

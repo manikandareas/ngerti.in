@@ -1,0 +1,4 @@
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+{"name": "parallel_structured_results", "passed": true, "elapsed_seconds": 16.432}
+{"name": "specialist_patch_review", "passed": true, "elapsed_seconds": 10.528}
+{"name": "researcher_writer_reviewer", "passed": true, "elapsed_seconds": 35.317}

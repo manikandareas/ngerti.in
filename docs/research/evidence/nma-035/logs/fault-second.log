@@ -1,0 +1,50 @@
+/Users/vitoandareasmanik/.cache/uv/archive-v0/Uhti8kwSaB-uppKgLiv9B/lib/python3.14/site-packages/pytest_asyncio/plugin.py:300: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the "fixture" caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to "function" scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+.F
+=================================== FAILURES ===================================
+____________________ test_child_cancel_fences_late_results _____________________
+
+runtime = (PosixPath('/tmp/nma-vaqx2ik6'), <http.server.ThreadingHTTPServer object at 0x10bea3cb0>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '18', 'lifecycle': 'ready', ...})
+
+    def test_child_cancel_fences_late_results(runtime):
+        root, provider, call, _start, *_ = runtime
+>       _agent, thread = setup(root, call)
+                         ^^^^^^^^^^^^^^^^^
+
+apps/engine/tests/test_delegation.py:82: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+apps/engine/tests/test_delegation.py:28: in setup
+    agent = capability_agent(call, "coordinator", tool_grants=["delegation"])
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x10c0233d0>, handle = 'coordinator'
+grants = {'tool_grants': ['delegation']}
+
+    def capability_agent(call, handle, **grants):
+        payload = {
+            "display_name": handle,
+            "handle": handle,
+            "config": {"soul": "", "instructions": "", "model": "test", **grants},
+        }
+        response = call(command("agent.create", payload))
+>       assert "result" in response, response
+E       AssertionError: {'error': {'code': 'HANDLE_CONFLICT', 'details': {}}}
+E       assert 'result' in {'error': {'code': 'HANDLE_CONFLICT', 'details': {}}}
+
+apps/engine/tests/test_capabilities.py:24: AssertionError
+=============================== warnings summary ===============================
+.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14
+  /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14: PytestRemovedIn10Warning: _pytest.python.CallSpec2 has been renamed to CallSpec.
+  The CallSpec2 alias will be removed in pytest 10.
+  Update imports to use CallSpec instead.
+  See https://docs.pytest.org/en/stable/deprecations.html#callspec2-renamed
+    from _pytest.python import CallSpec2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_delegation.py::test_child_cancel_fences_late_results
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 1 passed, 1 warning in 6.19s

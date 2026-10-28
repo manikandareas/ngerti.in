@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/scripts/verification/nma035_live.py", line 125, in <module>
+    main()
+    ~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/scripts/verification/nma035_live.py", line 29, in main
+    connection = next(c for c in owner["connections"] if c["provider"] == "openrouter" and c["status"] == "connected" and c.get("auth_method") == "oauth")
+StopIteration

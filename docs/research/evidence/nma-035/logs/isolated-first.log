@@ -1,0 +1,876 @@
+/Users/vitoandareasmanik/.cache/uv/archive-v0/Uhti8kwSaB-uppKgLiv9B/lib/python3.14/site-packages/pytest_asyncio/plugin.py:300: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the "fixture" caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to "function" scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+F
+=================================== FAILURES ===================================
+_________ test_parallel_native_children_worktrees_and_artifact_lineage _________
+
+runtime = (PosixPath('/tmp/nma-9ut4iinc'), <http.server.ThreadingHTTPServer object at 0x107c5fcb0>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '18', 'lifecycle': 'ready', ...})
+
+    def test_parallel_native_children_worktrees_and_artifact_lineage(runtime):
+        root, provider, call, _start, *_ = runtime
+        image = os.environ["NMA_TEST_NATIVE_IMAGE"]
+        data = catalog(image)
+        data["execution_surfaces"]["children"] = {
+            "kind": "scoped_delegation",
+            "ready": True,
+        }
+        data["tool_grants"]["delegation"] = {
+            "enabled": True,
+            "toolset": "delegation",
+            "execution_surface": "children",
+        }
+        (root / "capabilities.json").write_text(json.dumps(data))
+        agent = capability_agent(
+            call, "child-workspaces", tool_grants=list(data["tool_grants"])
+        )
+        thread = conversation(call, agent)
+        outputs = []
+        worktrees = []
+    
+        def script(body, text):
+            messages = body.get("messages", [])
+            if not messages:
+                return None
+            child = "focused subagent" in json.dumps(
+                [m for m in messages if m["role"] == "system"]
+            )
+            if not child:
+                if any(m["role"] == "tool" for m in messages):
+                    return {
+                        "role": "assistant",
+                        "content": "Child workspace results observed.",
+                    }
+                return tool(
+                    "delegate_task",
+                    {
+                        "tasks": [
+                            {"goal": "Create the first private Git worktree and artifact"},
+                            {"goal": "Create the second private Git worktree and artifact"},
+                        ]
+                    },
+                )
+            goal = next(m["content"] for m in reversed(messages) if m["role"] == "user")
+            marker = "FIRST_CHILD" if "first private" in goal else "SECOND_CHILD"
+            recent = []
+            for message in reversed(messages):
+                if message["role"] == "user":
+                    break
+                if message["role"] == "tool":
+                    recent.append((message["name"], json.loads(message["content"])))
+            if not recent:
+                code = (
+                    "import subprocess,time;from pathlib import Path;p=Path('/work/project');p.mkdir(parents=True,exist_ok=True);subprocess.run(['git','init','-q',str(p)],check=True);subprocess.run(['git','-C',str(p),'config','user.email','fixture@example.invalid'],check=True);subprocess.run(['git','-C',str(p),'config','user.name','Fixture'],check=True);(p/'child.txt').write_text("
+                    + repr(marker)
+                    + ");subprocess.run(['git','-C',str(p),'add','child.txt'],check=True);subprocess.run(['git','-C',str(p),'commit','-qm','Seed child workspace'],check=True);time.sleep(2);print((p/'child.txt').read_text())"
+                )
+                return tool("terminal", {"command": "python -c " + repr(code)})
+            name, value = recent[0]
+            assert not value.get("error"), value
+            if name == "terminal":
+                assert marker in json.dumps(value), value
+                outputs.append(marker)
+                return tool("coding", {"action": "worktree"})
+            if name == "coding":
+                assert "worktree" in json.dumps(value), value
+                worktrees.append(value)
+                return tool(
+                    "workspace",
+                    {
+                        "action": "publish_file",
+                        "path": "project/child.txt",
+                        "filename": marker + ".txt",
+                    },
+                )
+            assert name == "workspace", recent
+            return {
+                "role": "assistant",
+                "content": "Verified " + marker + " private worktree and artifact.",
+            }
+    
+        provider.goal_script = script
+        try:
+            assert "result" in call(
+                send(thread, "Use two temporary assistants, each in its own Git worktree")
+            )
+            deadline = time.monotonic() + 180
+            while time.monotonic() < deadline:
+                snap = snapshot(call, thread)
+                if len(snap["delegations"]) == 2 and all(
+                    c["status"] != "running" for c in snap["delegations"]
+                ):
+                    break
+                time.sleep(0.2)
+>           assert all(c["status"] == "completed" for c in snap["delegations"]), snap
+E           AssertionError: {'artifacts': [], 'collaboration_tasks': [], 'delegations': [{'activity': 'terminal', 'child_session_id': '20261028_15...l': 'Create the first private Git worktree and artifact', 'kind': 'temporary_subagent', ...}], 'discussion': None, ...}
+E           assert False
+E            +  where False = all(<generator object test_parallel_native_children_worktrees_and_artifact_lineage.<locals>.<genexpr> at 0x107e59cb0>)
+
+apps/engine/tests/test_delegation_workspaces.py:118: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+----------------------------- Captured stderr call -----------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49386)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation_workspaces.py", line 74, in script
+    recent.append((message["name"], json.loads(message["content"])))
+                   ~~~~~~~^^^^^^^^
+KeyError: 'name'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49388)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation_workspaces.py", line 74, in script
+    recent.append((message["name"], json.loads(message["content"])))
+                   ~~~~~~~^^^^^^^^
+KeyError: 'name'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49398)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation_workspaces.py", line 74, in script
+    recent.append((message["name"], json.loads(message["content"])))
+                   ~~~~~~~^^^^^^^^
+KeyError: 'name'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49402)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation_workspaces.py", line 74, in script
+    recent.append((message["name"], json.loads(message["content"])))
+                   ~~~~~~~^^^^^^^^
+KeyError: 'name'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49404)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation_workspaces.py", line 74, in script
+    recent.append((message["name"], json.loads(message["content"])))
+                   ~~~~~~~^^^^^^^^
+KeyError: 'name'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49406)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation_workspaces.py", line 74, in script
+    recent.append((message["name"], json.loads(message["content"])))
+                   ~~~~~~~^^^^^^^^
+KeyError: 'name'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49410)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation_workspaces.py", line 74, in script
+    recent.append((message["name"], json.loads(message["content"])))
+                   ~~~~~~~^^^^^^^^
+KeyError: 'name'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49413)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation_workspaces.py", line 74, in script
+    recent.append((message["name"], json.loads(message["content"])))
+                   ~~~~~~~^^^^^^^^
+KeyError: 'name'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49429)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation_workspaces.py", line 74, in script
+    recent.append((message["name"], json.loads(message["content"])))
+                   ~~~~~~~^^^^^^^^
+KeyError: 'name'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49431)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation_workspaces.py", line 74, in script
+    recent.append((message["name"], json.loads(message["content"])))
+                   ~~~~~~~^^^^^^^^
+KeyError: 'name'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49435)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation_workspaces.py", line 74, in script
+    recent.append((message["name"], json.loads(message["content"])))
+                   ~~~~~~~^^^^^^^^
+KeyError: 'name'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49440)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation_workspaces.py", line 74, in script
+    recent.append((message["name"], json.loads(message["content"])))
+                   ~~~~~~~^^^^^^^^
+KeyError: 'name'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49442)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation_workspaces.py", line 74, in script
+    recent.append((message["name"], json.loads(message["content"])))
+                   ~~~~~~~^^^^^^^^
+KeyError: 'name'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49446)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation_workspaces.py", line 74, in script
+    recent.append((message["name"], json.loads(message["content"])))
+                   ~~~~~~~^^^^^^^^
+KeyError: 'name'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49464)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation_workspaces.py", line 74, in script
+    recent.append((message["name"], json.loads(message["content"])))
+                   ~~~~~~~^^^^^^^^
+KeyError: 'name'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49466)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation_workspaces.py", line 74, in script
+    recent.append((message["name"], json.loads(message["content"])))
+                   ~~~~~~~^^^^^^^^
+KeyError: 'name'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49468)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation_workspaces.py", line 74, in script
+    recent.append((message["name"], json.loads(message["content"])))
+                   ~~~~~~~^^^^^^^^
+KeyError: 'name'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49472)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation_workspaces.py", line 74, in script
+    recent.append((message["name"], json.loads(message["content"])))
+                   ~~~~~~~^^^^^^^^
+KeyError: 'name'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49474)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation_workspaces.py", line 74, in script
+    recent.append((message["name"], json.loads(message["content"])))
+                   ~~~~~~~^^^^^^^^
+KeyError: 'name'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49479)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation_workspaces.py", line 74, in script
+    recent.append((message["name"], json.loads(message["content"])))
+                   ~~~~~~~^^^^^^^^
+KeyError: 'name'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49481)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation_workspaces.py", line 74, in script
+    recent.append((message["name"], json.loads(message["content"])))
+                   ~~~~~~~^^^^^^^^
+KeyError: 'name'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49487)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation_workspaces.py", line 74, in script
+    recent.append((message["name"], json.loads(message["content"])))
+                   ~~~~~~~^^^^^^^^
+KeyError: 'name'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49571)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation_workspaces.py", line 74, in script
+    recent.append((message["name"], json.loads(message["content"])))
+                   ~~~~~~~^^^^^^^^
+KeyError: 'name'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49573)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation_workspaces.py", line 74, in script
+    recent.append((message["name"], json.loads(message["content"])))
+                   ~~~~~~~^^^^^^^^
+KeyError: 'name'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49577)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation_workspaces.py", line 74, in script
+    recent.append((message["name"], json.loads(message["content"])))
+                   ~~~~~~~^^^^^^^^
+KeyError: 'name'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49581)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation_workspaces.py", line 74, in script
+    recent.append((message["name"], json.loads(message["content"])))
+                   ~~~~~~~^^^^^^^^
+KeyError: 'name'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49583)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation_workspaces.py", line 74, in script
+    recent.append((message["name"], json.loads(message["content"])))
+                   ~~~~~~~^^^^^^^^
+KeyError: 'name'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49588)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation_workspaces.py", line 74, in script
+    recent.append((message["name"], json.loads(message["content"])))
+                   ~~~~~~~^^^^^^^^
+KeyError: 'name'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49592)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation_workspaces.py", line 74, in script
+    recent.append((message["name"], json.loads(message["content"])))
+                   ~~~~~~~^^^^^^^^
+KeyError: 'name'
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49600)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_delegation_workspaces.py", line 74, in script
+    recent.append((message["name"], json.loads(message["content"])))
+                   ~~~~~~~^^^^^^^^
+KeyError: 'name'
+----------------------------------------
+=============================== warnings summary ===============================
+.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14
+  /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14: PytestRemovedIn10Warning: _pytest.python.CallSpec2 has been renamed to CallSpec.
+  The CallSpec2 alias will be removed in pytest 10.
+  Update imports to use CallSpec instead.
+  See https://docs.pytest.org/en/stable/deprecations.html#callspec2-renamed
+    from _pytest.python import CallSpec2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_delegation_workspaces.py::test_parallel_native_children_worktrees_and_artifact_lineage
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 1 warning in 185.01s (0:03:05)

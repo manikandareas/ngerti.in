@@ -1,0 +1,142 @@
+/Users/vitoandareasmanik/.cache/uv/archive-v0/Uhti8kwSaB-uppKgLiv9B/lib/python3.14/site-packages/pytest_asyncio/plugin.py:300: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the "fixture" caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to "function" scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+F
+=================================== FAILURES ===================================
+_________ test_parallel_native_children_worktrees_and_artifact_lineage _________
+
+runtime = (PosixPath('/tmp/nma-kvr_uc3q'), <http.server.ThreadingHTTPServer object at 0x10bf63cb0>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '18', 'lifecycle': 'ready', ...})
+
+    def test_parallel_native_children_worktrees_and_artifact_lineage(runtime):
+        root, provider, call, _start, *_ = runtime
+        image = os.environ["NMA_TEST_NATIVE_IMAGE"]
+        data = catalog(image)
+        data["execution_surfaces"]["children"] = {
+            "kind": "scoped_delegation",
+            "ready": True,
+        }
+        data["tool_grants"]["delegation"] = {
+            "enabled": True,
+            "toolset": "delegation",
+            "execution_surface": "children",
+        }
+        (root / "capabilities.json").write_text(json.dumps(data))
+        agent = capability_agent(
+            call, "child-workspaces", tool_grants=list(data["tool_grants"])
+        )
+        thread = conversation(call, agent)
+        outputs = []
+        worktrees = []
+        failures = []
+    
+        def script(body, text):
+            messages = body.get("messages", [])
+            if not messages:
+                return None
+            child = "focused subagent" in json.dumps(
+                [m for m in messages if m["role"] == "system"]
+            )
+            if not child:
+                if any(m["role"] == "tool" for m in messages):
+                    return {
+                        "role": "assistant",
+                        "content": "Child workspace results observed.",
+                    }
+                return tool(
+                    "delegate_task",
+                    {
+                        "tasks": [
+                            {"goal": "Create the first private Git worktree and artifact"},
+                            {"goal": "Create the second private Git worktree and artifact"},
+                        ]
+                    },
+                )
+            goal = next(m["content"] for m in reversed(messages) if m["role"] == "user")
+            marker = "FIRST_CHILD" if "first private" in goal else "SECOND_CHILD"
+            recent = []
+            for message in reversed(messages):
+                if message["role"] == "user":
+                    break
+                if message["role"] == "tool":
+                    name = next(
+                        call["function"]["name"]
+                        for entry in messages if entry["role"] == "assistant"
+                        for call in entry.get("tool_calls", [])
+                        if call["id"] == message["tool_call_id"]
+                    )
+                    try:
+                        value = json.loads(message["content"])
+                    except ValueError:
+                        value = {"native_text": message["content"]}
+                    recent.append((name, value))
+            if not recent:
+                code = (
+                    "import subprocess,time;from pathlib import Path;p=Path('/work/project');p.mkdir(parents=True,exist_ok=True);subprocess.run(['git','init','-q',str(p)],check=True);subprocess.run(['git','-C',str(p),'config','user.email','fixture@example.invalid'],check=True);subprocess.run(['git','-C',str(p),'config','user.name','Fixture'],check=True);(p/'child.txt').write_text("
+                    + repr(marker)
+                    + ");subprocess.run(['git','-C',str(p),'add','child.txt'],check=True);subprocess.run(['git','-C',str(p),'commit','-qm','Seed child workspace'],check=True);time.sleep(2);print((p/'child.txt').read_text())"
+                )
+                return tool("terminal", {"command": "python -c " + repr(code)})
+            name, value = recent[0]
+            if value.get("error"):
+                failures.append(value)
+                return {"role": "assistant", "content": "The native tool reported a failure."}
+            if name == "terminal":
+                if marker not in json.dumps(value):
+                    failures.append(value)
+                    return {"role": "assistant", "content": "The expected native output was absent."}
+                outputs.append(marker)
+                return tool("coding", {"action": "worktree"})
+            if name == "coding":
+                if not value.get("worktree_id"):
+                    failures.append(value)
+                    return {"role": "assistant", "content": "No actual worktree was returned."}
+                worktrees.append(value)
+                return tool(
+                    "workspace",
+                    {
+                        "action": "publish_file",
+                        "path": "project/child.txt",
+                        "filename": marker + ".txt",
+                    },
+                )
+            assert name == "workspace", recent
+            return {
+                "role": "assistant",
+                "content": "Verified " + marker + " private worktree and artifact.",
+            }
+    
+        provider.goal_script = script
+        try:
+            assert "result" in call(
+                send(thread, "Use two temporary assistants, each in its own Git worktree")
+            )
+            deadline = time.monotonic() + 180
+            while time.monotonic() < deadline:
+                snap = snapshot(call, thread)
+                if len(snap["delegations"]) == 2 and all(
+                    c["status"] != "running" for c in snap["delegations"]
+                ):
+                    break
+                time.sleep(0.2)
+            assert all(c["status"] == "completed" for c in snap["delegations"]), snap
+>           assert not failures, failures
+E           AssertionError: [{'error': 'INDETERMINATE', 'outcome': 'indeterminate'}, {'error': 'INDETERMINATE', 'outcome': 'indeterminate'}]
+E           assert not [{'error': 'INDETERMINATE', 'outcome': 'indeterminate'}, {'error': 'INDETERMINATE', 'outcome': 'indeterminate'}]
+
+apps/engine/tests/test_delegation_workspaces.py:136: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+=============================== warnings summary ===============================
+.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14
+  /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14: PytestRemovedIn10Warning: _pytest.python.CallSpec2 has been renamed to CallSpec.
+  The CallSpec2 alias will be removed in pytest 10.
+  Update imports to use CallSpec instead.
+  See https://docs.pytest.org/en/stable/deprecations.html#callspec2-renamed
+    from _pytest.python import CallSpec2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_delegation_workspaces.py::test_parallel_native_children_worktrees_and_artifact_lineage
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 1 warning in 23.55s

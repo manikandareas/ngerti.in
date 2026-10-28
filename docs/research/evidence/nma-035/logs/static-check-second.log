@@ -1,0 +1,27 @@
+$ python3 scripts/check.py
+$ biome check apps/web
+Checked 51 files in 78ms. No fixes applied.
+$ bun --filter @ngertiin/web typecheck
+@ngertiin/web typecheck: Exited with code 0
+All checks passed!
+unformatted: File would be reformatted
+  --> scripts/verification/nma035_ui.py:41:24
+   |
+40 |         test_peer_handoff_review_changes_artifact_and_restart(state, True)
+   -         threads = call(
+   -             test_runtime.command("thread.list", {"after": None})
+   -         )["result"]["items"]
+41 +         threads = call(test_runtime.command("thread.list", {"after": None}))["result"][
+42 +             "items"
+43 +         ]
+44 |         group = next(t for t in threads if t["kind"] == "group")
+   |
+
+1 file would be reformatted, 156 files already formatted
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/scripts/check.py", line 46, in <module>
+    subprocess.run(command, cwd=ROOT, check=True)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['uv', 'run', '--project', 'apps/backend', 'ruff', 'format', '--check', 'apps/backend/src', 'apps/backend/migrations', 'scripts']' returned non-zero exit status 1.
+error: script "check" exited with code 1

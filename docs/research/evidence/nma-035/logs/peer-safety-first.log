@@ -1,0 +1,309 @@
+/Users/vitoandareasmanik/.cache/uv/archive-v0/Uhti8kwSaB-uppKgLiv9B/lib/python3.14/site-packages/pytest_asyncio/plugin.py:300: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the "fixture" caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to "function" scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+F
+=================================== FAILURES ===================================
+____________ test_peer_dependencies_block_unblock_and_handoff_dedup ____________
+
+runtime = (PosixPath('/tmp/nma-o81zldnd'), <http.server.ThreadingHTTPServer object at 0x10b717cb0>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '18', 'lifecycle': 'ready', ...})
+
+    def test_peer_dependencies_block_unblock_and_handoff_dedup(runtime):
+        root, provider, call, start, *_ = runtime
+        thread = group(call)
+        first = second = None
+        stage = 0
+        submitted = []
+    
+        def script(body, text):
+            nonlocal first, second, stage
+            messages = body.get("messages", [])
+            if not messages:
+                return None
+            prompt = next(m["content"] for m in reversed(messages) if m["role"] == "user")
+            assigned = json.loads(prompt.split("Assigned tasks (data):\n")[-1])
+            recent = next(
+                (
+                    json.loads(m["content"])
+                    for m in reversed(messages)
+                    if m["role"] == "tool"
+                ),
+                None,
+            )
+            if "You are @researcher" in prompt:
+                if stage < 2:
+                    if recent:
+                        first = recent["task"]["task_id"]
+                    stage += 1
+                    return tool(
+                        "collaboration",
+                        {
+                            "action": "handoff",
+                            "assignee": "writer",
+                            "creation_key": "first",
+                            "expected_result": "Verify the source calculation",
+                        },
+                    )
+                if stage == 2:
+                    assert recent["task"]["task_id"] == first
+                    stage += 1
+                    return tool(
+                        "collaboration",
+                        {
+                            "action": "handoff",
+                            "assignee": "writer",
+                            "creation_key": "dependent",
+                            "expected_result": "Combine only after the verified source calculation",
+                            "dependencies": [first],
+                        },
+                    )
+                if recent:
+                    second = recent["task"]["task_id"]
+                return {"role": "assistant", "content": "Two concrete tasks are assigned."}
+            if "You are @writer" in prompt or "SOUL_writer" in json.dumps(messages):
+                if not assigned:
+                    return {"role": "assistant", "content": "PASS"}
+                task = recent["task"] if recent else assigned[0]
+                if recent and task["status"] == "submitting":
+                    submitted.append(task["task_id"])
+                    return {
+                        "role": "assistant",
+                        "content": "Verified task result submitted.",
+                    }
+                if (
+                    task["task_id"] == first
+                    and not task["history"]
+                    and task["status"] != "blocked"
+                ):
+                    return tool(
+                        "collaboration",
+                        {
+                            "action": "block",
+                            "task_id": task["task_id"],
+                            "expected_revision": task["revision"],
+                            "summary": "Waiting for the source verification",
+                        },
+                    )
+                if task["status"] == "blocked":
+                    return tool(
+                        "collaboration",
+                        {
+                            "action": "unblock",
+                            "task_id": task["task_id"],
+                            "expected_revision": task["revision"],
+                        },
+                    )
+                return tool(
+                    "collaboration",
+                    {
+                        "action": "submit",
+                        "task_id": task["task_id"],
+                        "expected_revision": task["revision"],
+                        "summary": "Source verified."
+                        if task["task_id"] == first
+                        else "Combined the verified source.",
+                    },
+                )
+            return {"role": "assistant", "content": "PASS"}
+    
+        provider.goal_script = script
+        request = send(
+            thread, "@researcher assign a source check and a dependent synthesis"
+        )
+        assert "result" in call(request)
+>       snap, _ = wait_group(root, call, thread)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps/engine/tests/test_collaboration_safety.py:118: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+root = PosixPath('/tmp/nma-o81zldnd')
+call = <function runtime.<locals>.call at 0x10b8bef00>
+thread = {'agents': [{'access_generation': '1', 'agent_id': '76d2c5d7-ce74-4e27-b265-1f28cdaa3c72', 'config': {'avatar_url': 'h...rns': None}, ...}, 'config_revision': '1', ...}], 'context_generation': '1', 'dm_agent_id': None, 'kind': 'group', ...}
+
+    def wait_group(root, call, thread):
+        for _ in range(200):
+            value = snapshot(call, thread)
+            with sqlite3.connect(root / "state/state.db") as db:
+                status = db.execute(
+                    "SELECT status FROM nma_discussions ORDER BY rowid DESC LIMIT 1"
+                ).fetchone()
+            if status and status[0] != "active":
+                return value, status[0]
+            time.sleep(0.1)
+>       raise AssertionError(value)
+E       AssertionError: {'artifacts': [], 'collaboration_tasks': [{'artifact_ids': [], 'assignee_agent_id': '3d46b739-de5f-4628-bd8e-338cadb8d83c', 'creator_agent_id': '76d2c5d7-ce74-4e27-b265-1f28cdaa3c72', 'decision': None, 'dependencies': [], 'discussion_id': 'd2e6dc60-64c3-5141-b538-349969803680', 'expected_result': 'Verify the source calculation', 'goal_id': None, 'history': [], 'implementer_agent_id': '3d46b739-de5f-4628-bd8e-338cadb8d83c', 'membership_revision': '1', 'result_run_id': None, 'reviewer_agent_id': None, 'revision': '1', 'source_artifact_ids': [], 'source_run_id': '901cb9e8-0c71-5574-a18b-7063de588055', 'status': 'pending', 'summary': '', 'task_id': 'fe938053-e7a1-580e-884c-28399fdd2b0d', 'thread_id': 'dba2d336-54eb-4a6a-9033-c91d8ce13f57'}], 'delegations': [], 'discussion': {'discussion_id': 'd2e6dc60-64c3-5141-b538-349969803680', 'reason': 'member_turn', 'status': 'active'}, 'goals': [], 'messages': [{'attachments': [], 'author_agent_id': None, 'author_kind': 'user', 'content': '@researcher assign a source check and a dependent synthesis', 'context_generation': '1', 'message_id': '0f59142b-dab4-5320-9d71-cc768a8c0196', 'message_seq': '1', 'parts': [{'text': '@researcher assign a source check and a dependent synthesis', 'type': 'text'}], 'revision': '1', 'run_id': '901cb9e8-0c71-5574-a18b-7063de588055', 'thread_id': 'dba2d336-54eb-4a6a-9033-c91d8ce13f57'}], 'next_before_message_seq': None, 'replay_epoch': '8787a56c-7e8a-40db-b55b-2f79a1bb8515', 'runs': [{'agent_id': '76d2c5d7-ce74-4e27-b265-1f28cdaa3c72', 'config_revision': '1', 'context_generation': '1', 'continuation_required': False, 'error_code': None, 'replay_epoch': '8787a56c-7e8a-40db-b55b-2f79a1bb8515', 'run_id': '901cb9e8-0c71-5574-a18b-7063de588055', 'schema_version': 'nma.v1', 'status': 'running', 'text': '', 'thread_id': 'dba2d336-54eb-4a6a-9033-c91d8ce13f57', 'through_sequence': '28', 'turn_exit_reason': ''}], 'schema_version': 'nma.v1', 'thread': {'agents': [{'access_generation': '1', 'agent_id': '76d2c5d7-ce74-4e27-b265-1f28cdaa3c72', 'config': {'avatar_url': 'https://api.dicebear.com/10.x/critters/svg?seed=researcher', 'instructions': '', 'model': 'test', 'session': {'compression': {}, 'context_engine': 'compressor', 'max_turns': None}, 'soul': 'SOUL_researcher'}, 'config_revision': '1', 'created_at': '2026-10-28T08:24:04.793033Z', 'display_name': 'researcher', 'handle': 'researcher', 'primary_dm_thread_id': 'f2c6e8b3-2726-48ec-9863-bfc20c7504cb', 'revision': '1', 'status': 'active', 'updated_at': '2026-10-28T08:24:04.793033Z'}, {'access_generation': '1', 'agent_id': '3d46b739-de5f-4628-bd8e-338cadb8d83c', 'config': {'avatar_url': 'https://api.dicebear.com/10.x/critters/svg?seed=writer', 'instructions': '', 'model': 'test', 'session': {'compression': {}, 'context_engine': 'compressor', 'max_turns': None}, 'soul': 'SOUL_writer'}, 'config_revision': '1', 'created_at': '2026-10-28T08:24:04.804792Z', 'display_name': 'writer', 'handle': 'writer', 'primary_dm_thread_id': '7d4ea18a-4d51-4a82-aeda-cb0d2a8a4bbb', 'revision': '1', 'status': 'active', 'updated_at': '2026-10-28T08:24:04.804792Z'}, {'access_generation': '1', 'agent_id': '1872e543-0047-4554-b557-d6085de43d66', 'config': {'avatar_url': 'https://api.dicebear.com/10.x/critters/svg?seed=reviewer', 'instructions': '', 'model': 'test', 'session': {'compression': {}, 'context_engine': 'compressor', 'max_turns': None}, 'soul': 'SOUL_reviewer'}, 'config_revision': '1', 'created_at': '2026-10-28T08:24:04.809537Z', 'display_name': 'reviewer', 'handle': 'reviewer', 'primary_dm_thread_id': 'eda5e08c-041f-47e9-8a76-4ab7b531ab3f', 'revision': '1', 'status': 'active', 'updated_at': '2026-10-28T08:24:04.809537Z'}], 'context_generation': '1', 'dm_agent_id': None, 'kind': 'group', 'membership_revision': '1', 'revision': '1', 'status': 'open', 'thread_id': 'dba2d336-54eb-4a6a-9033-c91d8ce13f57', 'title': 'Editorial'}, 'through_sequence': '28'}
+
+apps/engine/tests/test_discussions.py:44: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+----------------------------- Captured stderr call -----------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52285)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_collaboration_safety.py", line 29, in script
+    recent = next(
+        (
+    ...<4 lines>...
+        None,
+    )
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_collaboration_safety.py", line 31, in <genexpr>
+    json.loads(m["content"])
+    ~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 2 (char 1)
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52287)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_collaboration_safety.py", line 29, in script
+    recent = next(
+        (
+    ...<4 lines>...
+        None,
+    )
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_collaboration_safety.py", line 31, in <genexpr>
+    json.loads(m["content"])
+    ~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 2 (char 1)
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52289)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_collaboration_safety.py", line 29, in script
+    recent = next(
+        (
+    ...<4 lines>...
+        None,
+    )
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_collaboration_safety.py", line 31, in <genexpr>
+    json.loads(m["content"])
+    ~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 2 (char 1)
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52293)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_collaboration_safety.py", line 29, in script
+    recent = next(
+        (
+    ...<4 lines>...
+        None,
+    )
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_collaboration_safety.py", line 31, in <genexpr>
+    json.loads(m["content"])
+    ~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 2 (char 1)
+----------------------------------------
+=============================== warnings summary ===============================
+.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14
+  /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14: PytestRemovedIn10Warning: _pytest.python.CallSpec2 has been renamed to CallSpec.
+  The CallSpec2 alias will be removed in pytest 10.
+  Update imports to use CallSpec instead.
+  See https://docs.pytest.org/en/stable/deprecations.html#callspec2-renamed
+    from _pytest.python import CallSpec2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_collaboration_safety.py::test_peer_dependencies_block_unblock_and_handoff_dedup
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 1 warning in 26.66s

@@ -1,0 +1,13 @@
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/scripts/verification/nma035_ui.py", line 123, in <module>
+    main()
+    ~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/scripts/verification/nma035_ui.py", line 41, in main
+    threads = call(
+              ~~~~~
+        test_runtime.command("thread.list", {"after": None, "limit": 100})
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    )["result"]["items"]
+    ~^^^^^^^^^^
+KeyError: 'result'

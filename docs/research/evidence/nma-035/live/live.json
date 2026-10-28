@@ -1,0 +1,980 @@
+{
+  "provider": "openrouter",
+  "model": "openai/gpt-6-luna",
+  "denominator": 3,
+  "cases": [
+    {
+      "name": "parallel_structured_results",
+      "admission": {
+        "result": {
+          "agent_id": "68d35fa8-35fa-4d51-a06b-77c659a39874",
+          "command_id": "415c77e6-ad3b-4b60-9d04-64389b271b27",
+          "committed_seq": "10",
+          "config_revision": "1",
+          "context_generation": "1",
+          "message_id": "ac3966f4-d8e0-5860-9020-c1d467106ed1",
+          "run_id": "a909323b-2dee-5a2f-bc4a-a92d96014e15",
+          "schema_version": "nma.v1",
+          "status": "accepted",
+          "thread_id": "581a56d4-7dab-4e93-bb59-63925f3b5aad"
+        }
+      },
+      "passed": true,
+      "elapsed_seconds": 16.432,
+      "snapshot": {
+        "artifacts": [],
+        "collaboration_tasks": [],
+        "delegations": [
+          {
+            "child_session_id": "20261028_154738_40df0b",
+            "goal": "Independently calculate 19+23 and return the result.",
+            "kind": "temporary_subagent",
+            "model": "openai/gpt-6-luna",
+            "parent_child_id": null,
+            "parent_run_id": "a909323b-2dee-5a2f-bc4a-a92d96014e15",
+            "result": {
+              "api_calls": 2,
+              "duration_seconds": 6.99,
+              "schema_valid": true,
+              "summary": "{\"answer\":42}"
+            },
+            "status": "completed",
+            "subagent_id": "sa-1-e8c5cf79",
+            "task_index": 1,
+            "toolsets": []
+          },
+          {
+            "child_session_id": "20261028_154738_cbdb25",
+            "goal": "Independently calculate 17+26 and return the result.",
+            "kind": "temporary_subagent",
+            "model": "openai/gpt-6-luna",
+            "parent_child_id": null,
+            "parent_run_id": "a909323b-2dee-5a2f-bc4a-a92d96014e15",
+            "result": {
+              "api_calls": 2,
+              "duration_seconds": 7.81,
+              "schema_valid": true,
+              "summary": "{\"answer\":43}"
+            },
+            "status": "completed",
+            "subagent_id": "sa-0-91fd0b63",
+            "task_index": 0,
+            "toolsets": []
+          }
+        ],
+        "discussion": null,
+        "goals": [],
+        "messages": [
+          {
+            "attachments": [],
+            "author_agent_id": null,
+            "author_kind": "user",
+            "content": "For this one calculation use delegate_task exactly once with two tasks. One temporary assistant must calculate 17+26 and the other 19+23 independently. Each task must set output_schema to an object with one required integer answer property and allowed_toolsets to an empty array. They can work in the background; their results will return automatically. Once both actual results arrive, combine their answers and report TOTAL_<sum>. Do not invent their results or repeatedly spawn replacements. This is a one-time calculation, not an ongoing responsibility.",
+            "context_generation": "1",
+            "message_id": "ac3966f4-d8e0-5860-9020-c1d467106ed1",
+            "message_seq": "2",
+            "parts": [
+              {
+                "text": "For this one calculation use delegate_task exactly once with two tasks. One temporary assistant must calculate 17+26 and the other 19+23 independently. Each task must set output_schema to an object with one required integer answer property and allowed_toolsets to an empty array. They can work in the background; their results will return automatically. Once both actual results arrive, combine their answers and report TOTAL_<sum>. Do not invent their results or repeatedly spawn replacements. This is a one-time calculation, not an ongoing responsibility.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "a909323b-2dee-5a2f-bc4a-a92d96014e15",
+            "thread_id": "581a56d4-7dab-4e93-bb59-63925f3b5aad"
+          },
+          {
+            "attachments": [],
+            "author_agent_id": "68d35fa8-35fa-4d51-a06b-77c659a39874",
+            "author_kind": "agent",
+            "content": "Both calculations are delegated and running; I\u2019ll combine their actual results when they return.",
+            "context_generation": "1",
+            "message_id": "16c9e800-0249-5e70-9ea5-a49e874b06e5",
+            "message_seq": "3",
+            "parts": [
+              {
+                "text": "Both calculations are delegated and running; I\u2019ll combine their actual results when they return.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "a909323b-2dee-5a2f-bc4a-a92d96014e15",
+            "thread_id": "581a56d4-7dab-4e93-bb59-63925f3b5aad"
+          },
+          {
+            "attachments": [],
+            "author_agent_id": "68d35fa8-35fa-4d51-a06b-77c659a39874",
+            "author_kind": "agent",
+            "content": "TOTAL_85",
+            "context_generation": "1",
+            "message_id": "ed9ae13e-82d9-598b-bd21-314769e099f1",
+            "message_seq": "4",
+            "parts": [
+              {
+                "text": "TOTAL_85",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "74add0da-618e-5596-a94a-6a8b7e866e93",
+            "thread_id": "581a56d4-7dab-4e93-bb59-63925f3b5aad"
+          }
+        ],
+        "next_before_message_seq": null,
+        "replay_epoch": "445f1f84-3ff5-4738-97dd-8903be8137d4",
+        "runs": [
+          {
+            "agent_id": "68d35fa8-35fa-4d51-a06b-77c659a39874",
+            "config_revision": "1",
+            "context_generation": "1",
+            "continuation_required": false,
+            "error_code": null,
+            "replay_epoch": "445f1f84-3ff5-4738-97dd-8903be8137d4",
+            "run_id": "a909323b-2dee-5a2f-bc4a-a92d96014e15",
+            "schema_version": "nma.v1",
+            "status": "succeeded",
+            "text": "Both calculations are delegated and running; I\u2019ll combine their actual results when they return.",
+            "thread_id": "581a56d4-7dab-4e93-bb59-63925f3b5aad",
+            "through_sequence": "54",
+            "turn_exit_reason": "text_response(finish_reason=stop)"
+          },
+          {
+            "agent_id": "68d35fa8-35fa-4d51-a06b-77c659a39874",
+            "config_revision": "1",
+            "context_generation": "1",
+            "continuation_required": false,
+            "error_code": null,
+            "replay_epoch": "445f1f84-3ff5-4738-97dd-8903be8137d4",
+            "run_id": "74add0da-618e-5596-a94a-6a8b7e866e93",
+            "schema_version": "nma.v1",
+            "status": "succeeded",
+            "text": "TOTAL_85",
+            "thread_id": "581a56d4-7dab-4e93-bb59-63925f3b5aad",
+            "through_sequence": "54",
+            "turn_exit_reason": "text_response(finish_reason=stop)"
+          }
+        ],
+        "schema_version": "nma.v1",
+        "thread": {
+          "agents": [
+            {
+              "access_generation": "1",
+              "agent_id": "68d35fa8-35fa-4d51-a06b-77c659a39874",
+              "config": {
+                "avatar_url": "https://api.dicebear.com/10.x/critters/svg?seed=live-coordinator",
+                "instructions": "",
+                "model": "test",
+                "session": {
+                  "compression": {},
+                  "context_engine": "compressor",
+                  "max_turns": null
+                },
+                "soul": "",
+                "tool_grants": [
+                  "delegation",
+                  "files"
+                ]
+              },
+              "config_revision": "1",
+              "created_at": "2026-10-28T07:47:33.221172Z",
+              "display_name": "live-coordinator",
+              "handle": "live-coordinator",
+              "primary_dm_thread_id": "581a56d4-7dab-4e93-bb59-63925f3b5aad",
+              "revision": "1",
+              "status": "active",
+              "updated_at": "2026-10-28T07:47:33.221172Z"
+            }
+          ],
+          "context_generation": "1",
+          "dm_agent_id": "68d35fa8-35fa-4d51-a06b-77c659a39874",
+          "kind": "dm",
+          "membership_revision": "1",
+          "revision": "1",
+          "status": "open",
+          "thread_id": "581a56d4-7dab-4e93-bb59-63925f3b5aad",
+          "title": "live-coordinator"
+        },
+        "through_sequence": "54"
+      }
+    },
+    {
+      "name": "specialist_patch_review",
+      "admission": {
+        "result": {
+          "agent_id": "68d35fa8-35fa-4d51-a06b-77c659a39874",
+          "command_id": "908b4b9e-ec51-4272-99ce-22a721980730",
+          "committed_seq": "60",
+          "config_revision": "1",
+          "context_generation": "1",
+          "message_id": "301d33d7-5163-5901-a199-42557fc7279f",
+          "run_id": "c4dc7bbe-86f2-5cfc-836a-3eeaddbe4015",
+          "schema_version": "nma.v1",
+          "status": "accepted",
+          "thread_id": "581a56d4-7dab-4e93-bb59-63925f3b5aad"
+        }
+      },
+      "passed": true,
+      "elapsed_seconds": 10.528,
+      "snapshot": {
+        "artifacts": [],
+        "collaboration_tasks": [],
+        "delegations": [
+          {
+            "child_session_id": "20261028_154754_1370f5",
+            "goal": "Independently review the supplied patch against its specification. Inspect the diff only; do not execute code. Return JSON findings.",
+            "kind": "temporary_subagent",
+            "model": "openai/gpt-6-luna",
+            "parent_child_id": null,
+            "parent_run_id": "c4dc7bbe-86f2-5cfc-836a-3eeaddbe4015",
+            "result": {
+              "api_calls": 1,
+              "duration_seconds": 5.64,
+              "schema_valid": true,
+              "summary": "{\"findings\":[{\"title\":\"[P1] Preserve zero-count guard\"}]}"
+            },
+            "status": "completed",
+            "subagent_id": "sa-0-dc8313d2",
+            "task_index": 0,
+            "toolsets": []
+          },
+          {
+            "child_session_id": "20261028_154738_40df0b",
+            "goal": "Independently calculate 19+23 and return the result.",
+            "kind": "temporary_subagent",
+            "model": "openai/gpt-6-luna",
+            "parent_child_id": null,
+            "parent_run_id": "a909323b-2dee-5a2f-bc4a-a92d96014e15",
+            "result": {
+              "api_calls": 2,
+              "duration_seconds": 6.99,
+              "schema_valid": true,
+              "summary": "{\"answer\":42}"
+            },
+            "status": "completed",
+            "subagent_id": "sa-1-e8c5cf79",
+            "task_index": 1,
+            "toolsets": []
+          },
+          {
+            "child_session_id": "20261028_154738_cbdb25",
+            "goal": "Independently calculate 17+26 and return the result.",
+            "kind": "temporary_subagent",
+            "model": "openai/gpt-6-luna",
+            "parent_child_id": null,
+            "parent_run_id": "a909323b-2dee-5a2f-bc4a-a92d96014e15",
+            "result": {
+              "api_calls": 2,
+              "duration_seconds": 7.81,
+              "schema_valid": true,
+              "summary": "{\"answer\":43}"
+            },
+            "status": "completed",
+            "subagent_id": "sa-0-91fd0b63",
+            "task_index": 0,
+            "toolsets": []
+          }
+        ],
+        "discussion": null,
+        "goals": [],
+        "messages": [
+          {
+            "attachments": [],
+            "author_agent_id": null,
+            "author_kind": "user",
+            "content": "For this one calculation use delegate_task exactly once with two tasks. One temporary assistant must calculate 17+26 and the other 19+23 independently. Each task must set output_schema to an object with one required integer answer property and allowed_toolsets to an empty array. They can work in the background; their results will return automatically. Once both actual results arrive, combine their answers and report TOTAL_<sum>. Do not invent their results or repeatedly spawn replacements. This is a one-time calculation, not an ongoing responsibility.",
+            "context_generation": "1",
+            "message_id": "ac3966f4-d8e0-5860-9020-c1d467106ed1",
+            "message_seq": "2",
+            "parts": [
+              {
+                "text": "For this one calculation use delegate_task exactly once with two tasks. One temporary assistant must calculate 17+26 and the other 19+23 independently. Each task must set output_schema to an object with one required integer answer property and allowed_toolsets to an empty array. They can work in the background; their results will return automatically. Once both actual results arrive, combine their answers and report TOTAL_<sum>. Do not invent their results or repeatedly spawn replacements. This is a one-time calculation, not an ongoing responsibility.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "a909323b-2dee-5a2f-bc4a-a92d96014e15",
+            "thread_id": "581a56d4-7dab-4e93-bb59-63925f3b5aad"
+          },
+          {
+            "attachments": [],
+            "author_agent_id": "68d35fa8-35fa-4d51-a06b-77c659a39874",
+            "author_kind": "agent",
+            "content": "Both calculations are delegated and running; I\u2019ll combine their actual results when they return.",
+            "context_generation": "1",
+            "message_id": "16c9e800-0249-5e70-9ea5-a49e874b06e5",
+            "message_seq": "3",
+            "parts": [
+              {
+                "text": "Both calculations are delegated and running; I\u2019ll combine their actual results when they return.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "a909323b-2dee-5a2f-bc4a-a92d96014e15",
+            "thread_id": "581a56d4-7dab-4e93-bb59-63925f3b5aad"
+          },
+          {
+            "attachments": [],
+            "author_agent_id": "68d35fa8-35fa-4d51-a06b-77c659a39874",
+            "author_kind": "agent",
+            "content": "TOTAL_85",
+            "context_generation": "1",
+            "message_id": "ed9ae13e-82d9-598b-bd21-314769e099f1",
+            "message_seq": "4",
+            "parts": [
+              {
+                "text": "TOTAL_85",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "74add0da-618e-5596-a94a-6a8b7e866e93",
+            "thread_id": "581a56d4-7dab-4e93-bb59-63925f3b5aad"
+          },
+          {
+            "attachments": [],
+            "author_agent_id": null,
+            "author_kind": "user",
+            "content": "Delegate an independent code review to one temporary specialist using delegate_task. Supply this exact specification and patch as its context: mean(total,count) must return 0 when count is zero; otherwise total/count. Actual patch: diff --git a/stats.py b/stats.py\n--- a/stats.py\n+++ b/stats.py\n@@ -1,2 +1,2 @@\n def mean(total, count):\n-    return 0 if count == 0 else total / count\n+    return total / count\nThe reviewer must return JSON with a findings array and a title per finding, using output_schema, and must inspect the supplied diff rather than execute code. Wait for its actual result, then explain the defect. This is a one-time review, not an ongoing responsibility.",
+            "context_generation": "1",
+            "message_id": "301d33d7-5163-5901-a199-42557fc7279f",
+            "message_seq": "5",
+            "parts": [
+              {
+                "text": "Delegate an independent code review to one temporary specialist using delegate_task. Supply this exact specification and patch as its context: mean(total,count) must return 0 when count is zero; otherwise total/count. Actual patch: diff --git a/stats.py b/stats.py\n--- a/stats.py\n+++ b/stats.py\n@@ -1,2 +1,2 @@\n def mean(total, count):\n-    return 0 if count == 0 else total / count\n+    return total / count\nThe reviewer must return JSON with a findings array and a title per finding, using output_schema, and must inspect the supplied diff rather than execute code. Wait for its actual result, then explain the defect. This is a one-time review, not an ongoing responsibility.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "c4dc7bbe-86f2-5cfc-836a-3eeaddbe4015",
+            "thread_id": "581a56d4-7dab-4e93-bb59-63925f3b5aad"
+          },
+          {
+            "attachments": [],
+            "author_agent_id": "68d35fa8-35fa-4d51-a06b-77c659a39874",
+            "author_kind": "agent",
+            "content": "The independent review is running; I\u2019ll report its actual finding when it returns.",
+            "context_generation": "1",
+            "message_id": "f87c4e1f-ae12-597b-a1b9-34f63d2cd7cf",
+            "message_seq": "6",
+            "parts": [
+              {
+                "text": "The independent review is running; I\u2019ll report its actual finding when it returns.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "c4dc7bbe-86f2-5cfc-836a-3eeaddbe4015",
+            "thread_id": "581a56d4-7dab-4e93-bb59-63925f3b5aad"
+          }
+        ],
+        "next_before_message_seq": null,
+        "replay_epoch": "445f1f84-3ff5-4738-97dd-8903be8137d4",
+        "runs": [
+          {
+            "agent_id": "68d35fa8-35fa-4d51-a06b-77c659a39874",
+            "config_revision": "1",
+            "context_generation": "1",
+            "continuation_required": false,
+            "error_code": null,
+            "replay_epoch": "445f1f84-3ff5-4738-97dd-8903be8137d4",
+            "run_id": "a909323b-2dee-5a2f-bc4a-a92d96014e15",
+            "schema_version": "nma.v1",
+            "status": "succeeded",
+            "text": "Both calculations are delegated and running; I\u2019ll combine their actual results when they return.",
+            "thread_id": "581a56d4-7dab-4e93-bb59-63925f3b5aad",
+            "through_sequence": "89",
+            "turn_exit_reason": "text_response(finish_reason=stop)"
+          },
+          {
+            "agent_id": "68d35fa8-35fa-4d51-a06b-77c659a39874",
+            "config_revision": "1",
+            "context_generation": "1",
+            "continuation_required": false,
+            "error_code": null,
+            "replay_epoch": "445f1f84-3ff5-4738-97dd-8903be8137d4",
+            "run_id": "74add0da-618e-5596-a94a-6a8b7e866e93",
+            "schema_version": "nma.v1",
+            "status": "succeeded",
+            "text": "TOTAL_85",
+            "thread_id": "581a56d4-7dab-4e93-bb59-63925f3b5aad",
+            "through_sequence": "89",
+            "turn_exit_reason": "text_response(finish_reason=stop)"
+          },
+          {
+            "agent_id": "68d35fa8-35fa-4d51-a06b-77c659a39874",
+            "config_revision": "1",
+            "context_generation": "1",
+            "continuation_required": false,
+            "error_code": null,
+            "replay_epoch": "445f1f84-3ff5-4738-97dd-8903be8137d4",
+            "run_id": "c4dc7bbe-86f2-5cfc-836a-3eeaddbe4015",
+            "schema_version": "nma.v1",
+            "status": "succeeded",
+            "text": "The independent review is running; I\u2019ll report its actual finding when it returns.",
+            "thread_id": "581a56d4-7dab-4e93-bb59-63925f3b5aad",
+            "through_sequence": "89",
+            "turn_exit_reason": "text_response(finish_reason=stop)"
+          }
+        ],
+        "schema_version": "nma.v1",
+        "thread": {
+          "agents": [
+            {
+              "access_generation": "1",
+              "agent_id": "68d35fa8-35fa-4d51-a06b-77c659a39874",
+              "config": {
+                "avatar_url": "https://api.dicebear.com/10.x/critters/svg?seed=live-coordinator",
+                "instructions": "",
+                "model": "test",
+                "session": {
+                  "compression": {},
+                  "context_engine": "compressor",
+                  "max_turns": null
+                },
+                "soul": "",
+                "tool_grants": [
+                  "delegation",
+                  "files"
+                ]
+              },
+              "config_revision": "1",
+              "created_at": "2026-10-28T07:47:33.221172Z",
+              "display_name": "live-coordinator",
+              "handle": "live-coordinator",
+              "primary_dm_thread_id": "581a56d4-7dab-4e93-bb59-63925f3b5aad",
+              "revision": "1",
+              "status": "active",
+              "updated_at": "2026-10-28T07:47:33.221172Z"
+            }
+          ],
+          "context_generation": "1",
+          "dm_agent_id": "68d35fa8-35fa-4d51-a06b-77c659a39874",
+          "kind": "dm",
+          "membership_revision": "1",
+          "revision": "1",
+          "status": "open",
+          "thread_id": "581a56d4-7dab-4e93-bb59-63925f3b5aad",
+          "title": "live-coordinator"
+        },
+        "through_sequence": "89"
+      }
+    },
+    {
+      "name": "researcher_writer_reviewer",
+      "admission": {
+        "result": {
+          "command_id": "3355c1d3-b9d4-4aad-adc4-82d5f800ce4b",
+          "committed_seq": "107",
+          "discussion_id": "358a1735-e32e-5a4a-81a7-e1b88da045ed",
+          "message_id": "b756b1f2-50f2-510d-97c8-e04a327f755b",
+          "run_id": "25e1b1fd-6bea-533e-9b0a-3d48c7faa8a9",
+          "schema_version": "nma.v1",
+          "status": "accepted",
+          "thread_id": "b971a713-f06f-422c-b5a7-e66391f92531"
+        }
+      },
+      "passed": true,
+      "elapsed_seconds": 35.317,
+      "snapshot": {
+        "artifacts": [
+          {
+            "artifact_id": "ebecd614-68d1-5355-a606-93e83b88d54f",
+            "byte_count": 152,
+            "filename": "fuel-efficiency-report.txt",
+            "media_type": "text/plain; charset=utf-8",
+            "producing_agent_id": "dbfcbb4e-e5cf-491a-bcbf-1f3c0763b5fe",
+            "producing_run_id": "a84d432e-fcc8-5dfb-bb8b-b930959ac18b",
+            "revision_id": "1cd1b444-400b-55f5-9dca-56683e50e43d",
+            "sha256": "455ff282747ab2ead0f62f54563cd4ab7484089fbc62aa4a615a37ae7602d2e1",
+            "status": "ready",
+            "thread_id": "b971a713-f06f-422c-b5a7-e66391f92531"
+          }
+        ],
+        "collaboration_tasks": [
+          {
+            "artifact_ids": [
+              "ebecd614-68d1-5355-a606-93e83b88d54f"
+            ],
+            "assignee_agent_id": "dbfcbb4e-e5cf-491a-bcbf-1f3c0763b5fe",
+            "creator_agent_id": "34069307-4776-45ed-b421-8223f14c506b",
+            "decision": "approve",
+            "dependencies": [],
+            "discussion_id": "358a1735-e32e-5a4a-81a7-e1b88da045ed",
+            "expected_result": "Publish one short fuel-efficiency report artifact stating 360 km travelled and 45 litres used, showing the calculation (45 \u00f7 360) \u00d7 100 = 12.5 litres per 100 km, and submit the task to reviewer for review of that exact artifact.",
+            "goal_id": null,
+            "history": [
+              {
+                "run_id": "a84d432e-fcc8-5dfb-bb8b-b930959ac18b",
+                "status": "review",
+                "summary": "Published fuel-efficiency report with 360 km, 45 litres, and the calculation yielding 12.5 L/100 km."
+              },
+              {
+                "run_id": "efd7295f-1c31-508f-9574-838d3bcfee45",
+                "status": "completed",
+                "summary": "Reviewed the exact artifact ebecd614-68d1-5355-a606-93e83b88d54f. It states 360 km and 45 litres and correctly calculates (45 \u00f7 360) \u00d7 100 = 12.5 L/100 km."
+              }
+            ],
+            "implementer_agent_id": "dbfcbb4e-e5cf-491a-bcbf-1f3c0763b5fe",
+            "result_run_id": "a84d432e-fcc8-5dfb-bb8b-b930959ac18b",
+            "review_run_id": "efd7295f-1c31-508f-9574-838d3bcfee45",
+            "review_summary": "Reviewed the exact artifact ebecd614-68d1-5355-a606-93e83b88d54f. It states 360 km and 45 litres and correctly calculates (45 \u00f7 360) \u00d7 100 = 12.5 L/100 km.",
+            "reviewer_agent_id": "ee48a2db-460f-4b90-a3eb-bd44cd9d2419",
+            "revision": "5",
+            "source_run_id": "25e1b1fd-6bea-533e-9b0a-3d48c7faa8a9",
+            "status": "completed",
+            "summary": "Published fuel-efficiency report with 360 km, 45 litres, and the calculation yielding 12.5 L/100 km.",
+            "task_id": "5a7bed0e-8bf6-53a1-9212-546cec431185",
+            "thread_id": "b971a713-f06f-422c-b5a7-e66391f92531"
+          }
+        ],
+        "delegations": [],
+        "discussion": {
+          "discussion_id": "358a1735-e32e-5a4a-81a7-e1b88da045ed",
+          "reason": "member_turn",
+          "status": "active"
+        },
+        "goals": [],
+        "messages": [
+          {
+            "attachments": [],
+            "author_agent_id": null,
+            "author_kind": "user",
+            "content": "Work together on one short fuel-efficiency report for 360 km using 45 litres. Researcher calculates litres per 100 km and creates a collaboration handoff to writer. Writer publishes the actual report artifact and submits its assigned task to reviewer. Reviewer reads that exact artifact and approves the task if correct. Use the collaboration tool so responsibility, artifact references and review are durable. No user routing is needed. This is one report, not a repeating responsibility.",
+            "context_generation": "1",
+            "message_id": "b756b1f2-50f2-510d-97c8-e04a327f755b",
+            "message_seq": "1",
+            "parts": [
+              {
+                "text": "Work together on one short fuel-efficiency report for 360 km using 45 litres. Researcher calculates litres per 100 km and creates a collaboration handoff to writer. Writer publishes the actual report artifact and submits its assigned task to reviewer. Reviewer reads that exact artifact and approves the task if correct. Use the collaboration tool so responsibility, artifact references and review are durable. No user routing is needed. This is one report, not a repeating responsibility.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "25e1b1fd-6bea-533e-9b0a-3d48c7faa8a9",
+            "thread_id": "b971a713-f06f-422c-b5a7-e66391f92531"
+          },
+          {
+            "attachments": [],
+            "author_agent_id": "34069307-4776-45ed-b421-8223f14c506b",
+            "author_kind": "agent",
+            "content": "Fuel efficiency is 12.5 L/100 km: (45 \u00f7 360) \u00d7 100. I handed the report deliverable to @writer.",
+            "context_generation": "1",
+            "message_id": "6df42019-cd11-582f-9518-68b974970588",
+            "message_seq": "2",
+            "parts": [
+              {
+                "text": "Fuel efficiency is 12.5 L/100 km: (45 \u00f7 360) \u00d7 100. I handed the report deliverable to @writer.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "25e1b1fd-6bea-533e-9b0a-3d48c7faa8a9",
+            "thread_id": "b971a713-f06f-422c-b5a7-e66391f92531"
+          },
+          {
+            "attachments": [],
+            "author_agent_id": "dbfcbb4e-e5cf-491a-bcbf-1f3c0763b5fe",
+            "author_kind": "agent",
+            "content": "Published the report artifact (ebecd614-68d1-5355-a606-93e83b88d54f) and submitted it for review. @reviewer, please review that artifact.",
+            "context_generation": "1",
+            "message_id": "96c86de8-0245-5bea-aa0c-2fb556d2e1f9",
+            "message_seq": "3",
+            "parts": [
+              {
+                "text": "Published the report artifact (ebecd614-68d1-5355-a606-93e83b88d54f) and submitted it for review. @reviewer, please review that artifact.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "a84d432e-fcc8-5dfb-bb8b-b930959ac18b",
+            "thread_id": "b971a713-f06f-422c-b5a7-e66391f92531"
+          },
+          {
+            "attachments": [],
+            "author_agent_id": "ee48a2db-460f-4b90-a3eb-bd44cd9d2419",
+            "author_kind": "agent",
+            "content": "Reviewed the exact report artifact (ebecd614-68d1-5355-a606-93e83b88d54f) and approved it: 45 \u00f7 360 \u00d7 100 = 12.5 L/100 km. @writer, the report is correct.",
+            "context_generation": "1",
+            "message_id": "42b04088-5ca1-5165-8ffa-f9166f83f4b7",
+            "message_seq": "4",
+            "parts": [
+              {
+                "text": "Reviewed the exact report artifact (ebecd614-68d1-5355-a606-93e83b88d54f) and approved it: 45 \u00f7 360 \u00d7 100 = 12.5 L/100 km. @writer, the report is correct.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "efd7295f-1c31-508f-9574-838d3bcfee45",
+            "thread_id": "b971a713-f06f-422c-b5a7-e66391f92531"
+          }
+        ],
+        "next_before_message_seq": null,
+        "replay_epoch": "445f1f84-3ff5-4738-97dd-8903be8137d4",
+        "runs": [
+          {
+            "agent_id": "dbfcbb4e-e5cf-491a-bcbf-1f3c0763b5fe",
+            "config_revision": "1",
+            "context_generation": "1",
+            "continuation_required": false,
+            "error_code": null,
+            "replay_epoch": "445f1f84-3ff5-4738-97dd-8903be8137d4",
+            "run_id": "afb0b4e4-46dc-5990-9b1a-e5bd866984d9",
+            "schema_version": "nma.v1",
+            "status": "recovering",
+            "text": "",
+            "thread_id": "b971a713-f06f-422c-b5a7-e66391f92531",
+            "through_sequence": "176",
+            "turn_exit_reason": ""
+          },
+          {
+            "agent_id": "34069307-4776-45ed-b421-8223f14c506b",
+            "config_revision": "1",
+            "context_generation": "1",
+            "continuation_required": false,
+            "error_code": null,
+            "replay_epoch": "445f1f84-3ff5-4738-97dd-8903be8137d4",
+            "run_id": "25e1b1fd-6bea-533e-9b0a-3d48c7faa8a9",
+            "schema_version": "nma.v1",
+            "status": "succeeded",
+            "text": "Fuel efficiency is 12.5 L/100 km: (45 \u00f7 360) \u00d7 100. I handed the report deliverable to @writer.",
+            "thread_id": "b971a713-f06f-422c-b5a7-e66391f92531",
+            "through_sequence": "176",
+            "turn_exit_reason": "text_response(finish_reason=stop)"
+          },
+          {
+            "agent_id": "dbfcbb4e-e5cf-491a-bcbf-1f3c0763b5fe",
+            "config_revision": "1",
+            "context_generation": "1",
+            "continuation_required": false,
+            "error_code": null,
+            "replay_epoch": "445f1f84-3ff5-4738-97dd-8903be8137d4",
+            "run_id": "a84d432e-fcc8-5dfb-bb8b-b930959ac18b",
+            "schema_version": "nma.v1",
+            "status": "succeeded",
+            "text": "Published the report artifact (ebecd614-68d1-5355-a606-93e83b88d54f) and submitted it for review. @reviewer, please review that artifact.",
+            "thread_id": "b971a713-f06f-422c-b5a7-e66391f92531",
+            "through_sequence": "176",
+            "turn_exit_reason": "text_response(finish_reason=stop)"
+          },
+          {
+            "agent_id": "ee48a2db-460f-4b90-a3eb-bd44cd9d2419",
+            "config_revision": "1",
+            "context_generation": "1",
+            "continuation_required": false,
+            "error_code": null,
+            "replay_epoch": "445f1f84-3ff5-4738-97dd-8903be8137d4",
+            "run_id": "efd7295f-1c31-508f-9574-838d3bcfee45",
+            "schema_version": "nma.v1",
+            "status": "succeeded",
+            "text": "Reviewed the exact report artifact (ebecd614-68d1-5355-a606-93e83b88d54f) and approved it: 45 \u00f7 360 \u00d7 100 = 12.5 L/100 km. @writer, the report is correct.",
+            "thread_id": "b971a713-f06f-422c-b5a7-e66391f92531",
+            "through_sequence": "176",
+            "turn_exit_reason": "text_response(finish_reason=stop)"
+          }
+        ],
+        "schema_version": "nma.v1",
+        "thread": {
+          "agents": [
+            {
+              "access_generation": "1",
+              "agent_id": "34069307-4776-45ed-b421-8223f14c506b",
+              "config": {
+                "avatar_url": "https://api.dicebear.com/10.x/critters/svg?seed=researcher",
+                "instructions": "Calculate the supplied fuel efficiency. Use collaboration handoff with assignee writer and the exact expected deliverable. Share your computed result in your reply. Do not perform the writer or reviewer work.",
+                "model": "test",
+                "session": {
+                  "compression": {},
+                  "context_engine": "compressor",
+                  "max_turns": null
+                },
+                "soul": "",
+                "tool_grants": [
+                  "files"
+                ]
+              },
+              "config_revision": "1",
+              "created_at": "2026-10-28T07:48:00.202315Z",
+              "display_name": "Researcher",
+              "handle": "researcher",
+              "primary_dm_thread_id": "b75a027a-ba79-40c6-a5f2-534604c5732f",
+              "revision": "1",
+              "status": "active",
+              "updated_at": "2026-10-28T07:48:00.202315Z"
+            },
+            {
+              "access_generation": "1",
+              "agent_id": "dbfcbb4e-e5cf-491a-bcbf-1f3c0763b5fe",
+              "config": {
+                "avatar_url": "https://api.dicebear.com/10.x/critters/svg?seed=writer",
+                "instructions": "Use your assigned collaboration task. Publish the actual report text with workspace publish. Submit that task with the actual artifact_id and reviewer reviewer. Do not ask the user to route work; do not claim review before the reviewer acts.",
+                "model": "test",
+                "session": {
+                  "compression": {},
+                  "context_engine": "compressor",
+                  "max_turns": null
+                },
+                "soul": "",
+                "tool_grants": [
+                  "files"
+                ]
+              },
+              "config_revision": "1",
+              "created_at": "2026-10-28T07:48:00.204801Z",
+              "display_name": "Writer",
+              "handle": "writer",
+              "primary_dm_thread_id": "5a04069b-65fe-4602-8e83-cba38c12bd82",
+              "revision": "1",
+              "status": "active",
+              "updated_at": "2026-10-28T07:48:00.204801Z"
+            },
+            {
+              "access_generation": "1",
+              "agent_id": "ee48a2db-460f-4b90-a3eb-bd44cd9d2419",
+              "config": {
+                "avatar_url": "https://api.dicebear.com/10.x/critters/svg?seed=reviewer",
+                "instructions": "Inspect your assigned review task. Read its exact artifact with workspace read. Verify the calculation. Approve using collaboration review only if correct; otherwise request_changes with a concrete reason. Do not create replacement tasks.",
+                "model": "test",
+                "session": {
+                  "compression": {},
+                  "context_engine": "compressor",
+                  "max_turns": null
+                },
+                "soul": "",
+                "tool_grants": [
+                  "files"
+                ]
+              },
+              "config_revision": "1",
+              "created_at": "2026-10-28T07:48:00.206843Z",
+              "display_name": "Reviewer",
+              "handle": "reviewer",
+              "primary_dm_thread_id": "59ba3ddd-32f7-42d9-acb2-acaa6f73542b",
+              "revision": "1",
+              "status": "active",
+              "updated_at": "2026-10-28T07:48:00.206843Z"
+            }
+          ],
+          "context_generation": "1",
+          "dm_agent_id": null,
+          "kind": "group",
+          "membership_revision": "1",
+          "revision": "1",
+          "status": "open",
+          "thread_id": "b971a713-f06f-422c-b5a7-e66391f92531",
+          "title": "Live editorial review"
+        },
+        "through_sequence": "176"
+      }
+    }
+  ],
+  "original_credential_journals_unchanged": true,
+  "provider_evidence": {
+    "provider": "openrouter",
+    "model": "openai/gpt-6-luna",
+    "protocol": "chat_completions",
+    "connection_id": "aa04e69a-6978-4bd6-89de-e2ec64f165ec",
+    "auth_method": "oauth",
+    "requests": [
+      {
+        "started": 1454120.89443575,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 3.884026999818161
+      },
+      {
+        "started": 1454125.001019041,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 6.071246749954298
+      },
+      {
+        "started": 1454125.030367416,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 4.934211333980784
+      },
+      {
+        "started": 1454125.082234166,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 5.504954916890711
+      },
+      {
+        "started": 1454130.010588916,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 1.9206547089852393
+      },
+      {
+        "started": 1454130.630866625,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 2.1244219578802586
+      },
+      {
+        "started": 1454132.963322458,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 2.9846133328974247
+      },
+      {
+        "started": 1454136.468823583,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 4.387353916885331
+      },
+      {
+        "started": 1454141.101440791,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 1.8690277498681098
+      },
+      {
+        "started": 1454141.114045875,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 5.5821139581967145
+      },
+      {
+        "started": 1454146.99968925,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 2.8894261659588665
+      },
+      {
+        "started": 1454147.249517083,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 3.2329879170283675
+      },
+      {
+        "started": 1454149.943797666,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 3.935219041770324
+      },
+      {
+        "started": 1454153.960916333,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 2.807173583190888
+      },
+      {
+        "started": 1454157.513002958,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 3.7907720000948757
+      },
+      {
+        "started": 1454161.362280208,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 2.4299341251607984
+      },
+      {
+        "started": 1454163.867863875,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 3.3449723748490214
+      },
+      {
+        "started": 1454167.842694583,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 3.6317633748985827
+      },
+      {
+        "started": 1454171.559972291,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 1.6765108339022845
+      },
+      {
+        "started": 1454173.302600375,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 2.202340291114524
+      },
+      {
+        "started": 1454175.576431,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 2.6731221249792725
+      },
+      {
+        "started": 1454178.321623708,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 3.1581311251502484
+      }
+    ],
+    "failures": []
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "authentication": "Production current_account, actual ClerkJS session tokens",
+  "identities": {
+    "0": {
+      "verified": true,
+      "http_status": 200,
+      "owner_id": "e9150747-20ac-46dd-8ceb-e076071fde76",
+      "clerk_subject": "user_3LJcbS1s1hjZ9pDD4hIzqCgKY6g",
+      "issuer": "https://one-coral-139.clerk.accounts.dev",
+      "azp": "http://127.0.0.1:3028",
+      "token_expiry": 1793176696,
+      "verified_at": 1793176636.5380118
+    }
+  },
+  "denials": {
+    "missing": 401,
+    "invalid": 401
+  },
+  "clerk_js": {
+    "version": "4.73.14",
+    "source_url": "https://one-coral-139.clerk.accounts.dev/npm/@clerk/clerk-js@4.73.14/dist/clerk.browser.js",
+    "sha256": "ba810599aac22a26d3ca6c959b81a05aebac85142d0cdae85a601e39fd2c422c",
+    "bytes": 237761
+  },
+  "origin": "http://127.0.0.1:3028"
+}

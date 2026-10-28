@@ -1,0 +1,230 @@
+/Users/vitoandareasmanik/.cache/uv/archive-v0/Uhti8kwSaB-uppKgLiv9B/lib/python3.14/site-packages/pytest_asyncio/plugin.py:300: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the "fixture" caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to "function" scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+.F
+=================================== FAILURES ===================================
+____________ test_peer_handoff_review_changes_artifact_and_restart _____________
+
+runtime = (PosixPath('/tmp/nma-hdwj5cug'), <http.server.ThreadingHTTPServer object at 0x107d9f110>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '18', 'lifecycle': 'ready', ...})
+
+    def test_peer_handoff_review_changes_artifact_and_restart(runtime):
+        root, provider, call, start, *_ = runtime
+        thread = group(call)
+        task_id = None
+        artifact_id = None
+        reviews = 0
+    
+        def script(body, text):
+            nonlocal task_id, artifact_id, reviews
+            messages = body["messages"]
+            prompt = next(m["content"] for m in reversed(messages) if m["role"] == "user")
+            assigned = json.loads(prompt.split("Assigned tasks (data):\n")[-1])
+            recent = []
+            for message in reversed(messages):
+                if message["role"] == "user":
+                    break
+                if message["role"] == "tool":
+                    recent.append(json.loads(message["content"]))
+            if "You are @researcher" in prompt:
+                if not recent:
+                    return tool("collaboration", {"action": "handoff", "assignee": "writer", "expected_result": "Publish the verified report, ask reviewer to inspect its exact artifact, and apply any requested changes."})
+                task_id = recent[0]["task"]["task_id"]
+                return {"role": "assistant", "content": "Research is ready for the writer."}
+            if "You are @writer" in prompt:
+                pending = next((t for t in assigned if t["status"] in {"pending", "changes_requested"}), None)
+                if not pending:
+                    return {"role": "assistant", "content": "PASS"}
+                if not recent:
+                    return tool("workspace", {"action": "publish", "filename": "report.txt", "content": "Verified report revision " + pending["revision"]})
+                if "artifact" in recent[0]:
+                    artifact_id = recent[0]["artifact"]["artifact_id"]
+                    return tool("collaboration", {"action": "submit", "task_id": pending["task_id"], "expected_revision": pending["revision"], "summary": "Actual report artifact published.", "artifact_ids": [artifact_id], "reviewer": "reviewer"})
+                assert "task" in recent[0], recent
+                return {"role": "assistant", "content": "Report submitted for independent review."}
+            pending = next((t for t in assigned if t["status"] == "review"), None)
+            if not pending:
+                return {"role": "assistant", "content": "PASS"}
+            if not recent:
+                return tool("workspace", {"action": "read", "artifact_id": pending["artifact_ids"][0]})
+            if "task" not in recent[0]:
+                assert "Verified report revision" in json.dumps(recent[0]), recent
+                reviews += 1
+                return tool("collaboration", {"action": "review", "task_id": pending["task_id"], "expected_revision": pending["revision"], "decision": "request_changes" if reviews == 1 else "approve", "summary": "Inspected exact stored report; clarify the title." if reviews == 1 else "Inspected the corrected artifact; accepted."})
+            return {"role": "assistant", "content": "Changes requested." if reviews == 1 else "Verified report accepted."}
+    
+        provider.goal_script = script
+        result = call(send(thread, "Work together to produce and review a report"))
+        assert "result" in result, result
+>       snap, status = wait_group(root, call, thread)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps/engine/tests/test_collaboration.py:61: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+root = PosixPath('/tmp/nma-hdwj5cug')
+call = <function runtime.<locals>.call at 0x107e40e00>
+thread = {'agents': [{'access_generation': '1', 'agent_id': '52f8d311-0f00-4f69-a202-adb76c948da6', 'config': {'avatar_url': 'h...rns': None}, ...}, 'config_revision': '1', ...}], 'context_generation': '1', 'dm_agent_id': None, 'kind': 'group', ...}
+
+    def wait_group(root, call, thread):
+        for _ in range(200):
+            value = snapshot(call, thread)
+            with sqlite3.connect(root / "state/state.db") as db:
+                status = db.execute(
+                    "SELECT status FROM nma_discussions ORDER BY rowid DESC LIMIT 1"
+                ).fetchone()
+            if status and status[0] != "active":
+                return value, status[0]
+            time.sleep(0.1)
+>       raise AssertionError(value)
+E       AssertionError: {'artifacts': [], 'collaboration_tasks': [{'artifact_ids': [], 'assignee_agent_id': '9bdfce93-84fd-437b-a43a-aa4f4e971f47', 'creator_agent_id': '52f8d311-0f00-4f69-a202-adb76c948da6', 'decision': None, 'dependencies': [], 'discussion_id': '029e1337-5746-59b1-942c-e92fdf9c7f4f', 'expected_result': 'Publish the verified report, ask reviewer to inspect its exact artifact, and apply any requested changes.', 'goal_id': None, 'history': [], 'implementer_agent_id': '9bdfce93-84fd-437b-a43a-aa4f4e971f47', 'result_run_id': None, 'reviewer_agent_id': None, 'revision': '1', 'source_run_id': '7e31a623-3e3d-5500-b1ee-d294cb0939a0', 'status': 'pending', 'summary': '', 'task_id': 'c546b109-b183-539c-b3d2-1dc2be3f3546', 'thread_id': '7db5c80b-7fca-4d75-a51b-f09af7461dc7'}], 'delegations': [], 'discussion': {'discussion_id': '029e1337-5746-59b1-942c-e92fdf9c7f4f', 'reason': 'member_turn', 'status': 'active'}, 'goals': [], 'messages': [{'attachments': [], 'author_agent_id': None, 'author_kind': 'user', 'content': 'Work together to produce and review a report', 'context_generation': '1', 'message_id': '31a9a14f-8e06-51c7-b20a-c7e258dbf389', 'message_seq': '1', 'parts': [{'text': 'Work together to produce and review a report', 'type': 'text'}], 'revision': '1', 'run_id': '7e31a623-3e3d-5500-b1ee-d294cb0939a0', 'thread_id': '7db5c80b-7fca-4d75-a51b-f09af7461dc7'}, {'attachments': [], 'author_agent_id': '52f8d311-0f00-4f69-a202-adb76c948da6', 'author_kind': 'agent', 'content': 'Research is ready for the writer.', 'context_generation': '1', 'message_id': 'a02d13db-d9af-5c1f-af32-f55bb4e41c6d', 'message_seq': '2', 'parts': [{'text': 'Research is ready for the writer.', 'type': 'text'}], 'revision': '1', 'run_id': '7e31a623-3e3d-5500-b1ee-d294cb0939a0', 'thread_id': '7db5c80b-7fca-4d75-a51b-f09af7461dc7'}], 'next_before_message_seq': None, 'replay_epoch': '634cfb93-2483-4eeb-8fc6-ffbec2f7bbee', 'runs': [{'agent_id': '9bdfce93-84fd-437b-a43a-aa4f4e971f47', 'config_revision': '1', 'context_generation': '1', 'continuation_required': False, 'error_code': None, 'replay_epoch': '634cfb93-2483-4eeb-8fc6-ffbec2f7bbee', 'run_id': 'c7ce4582-d166-50d3-bd8a-a8d26248feb3', 'schema_version': 'nma.v1', 'status': 'running', 'text': '', 'thread_id': '7db5c80b-7fca-4d75-a51b-f09af7461dc7', 'through_sequence': '35', 'turn_exit_reason': ''}, {'agent_id': '52f8d311-0f00-4f69-a202-adb76c948da6', 'config_revision': '1', 'context_generation': '1', 'continuation_required': False, 'error_code': None, 'replay_epoch': '634cfb93-2483-4eeb-8fc6-ffbec2f7bbee', 'run_id': '7e31a623-3e3d-5500-b1ee-d294cb0939a0', 'schema_version': 'nma.v1', 'status': 'succeeded', 'text': 'Research is ready for the writer.', 'thread_id': '7db5c80b-7fca-4d75-a51b-f09af7461dc7', 'through_sequence': '35', 'turn_exit_reason': 'text_response(finish_reason=stop)'}], 'schema_version': 'nma.v1', 'thread': {'agents': [{'access_generation': '1', 'agent_id': '52f8d311-0f00-4f69-a202-adb76c948da6', 'config': {'avatar_url': 'https://api.dicebear.com/10.x/critters/svg?seed=researcher', 'instructions': '', 'model': 'test', 'session': {'compression': {}, 'context_engine': 'compressor', 'max_turns': None}, 'soul': 'SOUL_researcher'}, 'config_revision': '1', 'created_at': '2026-10-28T07:23:55.822805Z', 'display_name': 'researcher', 'handle': 'researcher', 'primary_dm_thread_id': '5d438a1f-14e6-43b9-ac4e-d8e24fa248a8', 'revision': '1', 'status': 'active', 'updated_at': '2026-10-28T07:23:55.822805Z'}, {'access_generation': '1', 'agent_id': '9bdfce93-84fd-437b-a43a-aa4f4e971f47', 'config': {'avatar_url': 'https://api.dicebear.com/10.x/critters/svg?seed=writer', 'instructions': '', 'model': 'test', 'session': {'compression': {}, 'context_engine': 'compressor', 'max_turns': None}, 'soul': 'SOUL_writer'}, 'config_revision': '1', 'created_at': '2026-10-28T07:23:55.832864Z', 'display_name': 'writer', 'handle': 'writer', 'primary_dm_thread_id': '01e9e861-70e5-4f80-aa5e-ac0b1fc5abfc', 'revision': '1', 'status': 'active', 'updated_at': '2026-10-28T07:23:55.832864Z'}, {'access_generation': '1', 'agent_id': 'e0ccb57f-41bb-4097-a6c9-e27e429f5e31', 'config': {'avatar_url': 'https://api.dicebear.com/10.x/critters/svg?seed=reviewer', 'instructions': '', 'model': 'test', 'session': {'compression': {}, 'context_engine': 'compressor', 'max_turns': None}, 'soul': 'SOUL_reviewer'}, 'config_revision': '1', 'created_at': '2026-10-28T07:23:55.838567Z', 'display_name': 'reviewer', 'handle': 'reviewer', 'primary_dm_thread_id': '34c3b803-47f7-4efe-a4d2-ec5b5f438fd0', 'revision': '1', 'status': 'active', 'updated_at': '2026-10-28T07:23:55.838567Z'}], 'context_generation': '1', 'dm_agent_id': None, 'kind': 'group', 'membership_revision': '1', 'revision': '1', 'status': 'open', 'thread_id': '7db5c80b-7fca-4d75-a51b-f09af7461dc7', 'title': 'Editorial'}, 'through_sequence': '35'}
+
+apps/engine/tests/test_discussions.py:44: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+----------------------------- Captured stderr call -----------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 61281)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_collaboration.py", line 30, in script
+    recent.append(json.loads(message["content"]))
+                  ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 61283)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_collaboration.py", line 30, in script
+    recent.append(json.loads(message["content"]))
+                  ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 61288)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_collaboration.py", line 30, in script
+    recent.append(json.loads(message["content"]))
+                  ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 61292)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_collaboration.py", line 30, in script
+    recent.append(json.loads(message["content"]))
+                  ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+----------------------------------------
+=============================== warnings summary ===============================
+.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14
+  /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14: PytestRemovedIn10Warning: _pytest.python.CallSpec2 has been renamed to CallSpec.
+  The CallSpec2 alias will be removed in pytest 10.
+  Update imports to use CallSpec instead.
+  See https://docs.pytest.org/en/stable/deprecations.html#callspec2-renamed
+    from _pytest.python import CallSpec2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_collaboration.py::test_peer_handoff_review_changes_artifact_and_restart
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 1 passed, 1 warning in 33.56s

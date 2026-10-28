@@ -1,0 +1,96 @@
+{
+  "passed": true,
+  "restored_previous_git_schema": 17,
+  "retained_forward_schema": 18,
+  "preserved_identity": [
+    [
+      "a54cca49-5a03-4786-aa2e-ec9d9bd8dfec",
+      "preserved-identity"
+    ]
+  ],
+  "known_child_states": [
+    [
+      "completed",
+      1
+    ]
+  ],
+  "tasks": [
+    {
+      "task_id": "4a80e60c-54d3-5225-8322-e495eb8c18ca",
+      "revision": 9,
+      "receipt": {
+        "artifact_ids": [
+          "dbeaab1b-c70f-53e2-8021-2e4a0acce897"
+        ],
+        "assignee_agent_id": "efa136a8-2992-441b-8aed-05caf52388c7",
+        "creator_agent_id": "48689e06-b89d-4697-9673-91170486805f",
+        "decision": "approve",
+        "dependencies": [],
+        "discussion_id": "6623d93c-5dcd-5bb3-a2ab-9b16ee957305",
+        "expected_result": "Publish the verified report, ask reviewer to inspect its exact artifact, and apply any requested changes.",
+        "goal_id": null,
+        "history": [
+          {
+            "actor_agent_id": "efa136a8-2992-441b-8aed-05caf52388c7",
+            "artifact_ids": [
+              "6161ef5e-5838-50ef-aefd-87fb1d7e8896"
+            ],
+            "reviewer_agent_id": "be21d282-ba7b-4957-98c2-6036dbef8e5e",
+            "run_id": "42874ae2-cfd4-5e96-9a98-1a4b57d8558f",
+            "status": "review",
+            "summary": "Actual report artifact published."
+          },
+          {
+            "actor_agent_id": "be21d282-ba7b-4957-98c2-6036dbef8e5e",
+            "artifact_ids": [
+              "6161ef5e-5838-50ef-aefd-87fb1d7e8896"
+            ],
+            "reviewer_agent_id": "be21d282-ba7b-4957-98c2-6036dbef8e5e",
+            "run_id": "9a3d869e-44a1-5a90-9f00-df9331ead0bc",
+            "status": "changes_requested",
+            "summary": "Inspected exact stored report; clarify the title."
+          },
+          {
+            "actor_agent_id": "efa136a8-2992-441b-8aed-05caf52388c7",
+            "artifact_ids": [
+              "dbeaab1b-c70f-53e2-8021-2e4a0acce897"
+            ],
+            "reviewer_agent_id": "be21d282-ba7b-4957-98c2-6036dbef8e5e",
+            "run_id": "eec13253-decc-5d9b-bf26-3d89fa3455de",
+            "status": "review",
+            "summary": "Actual report artifact published."
+          },
+          {
+            "actor_agent_id": "be21d282-ba7b-4957-98c2-6036dbef8e5e",
+            "artifact_ids": [
+              "dbeaab1b-c70f-53e2-8021-2e4a0acce897"
+            ],
+            "reviewer_agent_id": "be21d282-ba7b-4957-98c2-6036dbef8e5e",
+            "run_id": "ae1fbf37-dbd0-51da-b1e5-00e2252c5944",
+            "status": "completed",
+            "summary": "Inspected the corrected artifact; accepted."
+          }
+        ],
+        "implementer_agent_id": "efa136a8-2992-441b-8aed-05caf52388c7",
+        "membership_revision": "1",
+        "result_run_id": "eec13253-decc-5d9b-bf26-3d89fa3455de",
+        "review_run_id": "ae1fbf37-dbd0-51da-b1e5-00e2252c5944",
+        "review_summary": "Inspected the corrected artifact; accepted.",
+        "reviewer_agent_id": "be21d282-ba7b-4957-98c2-6036dbef8e5e",
+        "source_artifact_ids": [],
+        "source_run_id": "fb47f09f-616f-5ab0-8c8f-c3124b3a3c1d",
+        "status": "completed",
+        "submitted_from_status": "changes_requested",
+        "summary": "Actual report artifact published.",
+        "thread_id": "c2c45e03-f758-418f-854d-1f2904bcd85d"
+      }
+    }
+  ],
+  "native_board_states": [
+    [
+      "done",
+      1
+    ]
+  ],
+  "oracle": "The acceptance test restored complete forward state without another provider call, then restored the verified predecessor backup and launched the previous Git runtime while retaining the forward partition separately."
+}

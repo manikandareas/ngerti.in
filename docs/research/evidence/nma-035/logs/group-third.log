@@ -1,0 +1,204 @@
+/Users/vitoandareasmanik/.cache/uv/archive-v0/Uhti8kwSaB-uppKgLiv9B/lib/python3.14/site-packages/pytest_asyncio/plugin.py:300: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the "fixture" caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to "function" scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+F
+=================================== FAILURES ===================================
+____________ test_peer_handoff_review_changes_artifact_and_restart _____________
+
+runtime = (PosixPath('/tmp/nma-7fgq7rxv'), <http.server.ThreadingHTTPServer object at 0x10bf17a10>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '18', 'lifecycle': 'ready', ...})
+
+    def test_peer_handoff_review_changes_artifact_and_restart(runtime):
+        root, provider, call, start, *_ = runtime
+        (root / "capabilities.json").write_text(json.dumps({"tool_grants": {"files": {"enabled": True, "toolset": "nma_workspace"}}}))
+        thread = group(call)
+        for agent in thread["agents"]:
+            edit = command("agent.configure", {"agent_id": agent["agent_id"], "display_name": agent["display_name"], "handle": agent["handle"], "config": {**agent["config"], "tool_grants": ["files"]}})
+            edit["expected_revision"] = agent["revision"]
+            assert "result" in call(edit)
+        thread = call(command("thread.read", {"thread_id": thread["thread_id"]}))["result"]
+        task_id = None
+        artifact_id = None
+        reviews = 0
+    
+        def script(body, text):
+            nonlocal task_id, artifact_id, reviews
+            messages = body["messages"]
+            prompt = next(m["content"] for m in reversed(messages) if m["role"] == "user")
+            assigned = json.loads(prompt.split("Assigned tasks (data):\n")[-1])
+            recent = []
+            for message in reversed(messages):
+                if message["role"] == "user":
+                    break
+                if message["role"] == "tool":
+                    recent.append(json.loads(message["content"]))
+            if "You are @researcher" in prompt:
+                if not recent:
+                    return tool("collaboration", {"action": "handoff", "assignee": "writer", "expected_result": "Publish the verified report, ask reviewer to inspect its exact artifact, and apply any requested changes."})
+                task_id = recent[0]["task"]["task_id"]
+                return {"role": "assistant", "content": "Research is ready for the writer."}
+            if "You are @writer" in prompt:
+                pending = next((t for t in assigned if t["status"] in {"pending", "changes_requested"}), None)
+                if not pending:
+                    return {"role": "assistant", "content": "PASS"}
+                if not recent:
+                    return tool("workspace", {"action": "publish", "filename": "report.txt", "content": "Verified report revision " + pending["revision"]})
+                if "artifact" in recent[0]:
+                    artifact_id = recent[0]["artifact"]["artifact_id"]
+                    return tool("collaboration", {"action": "submit", "task_id": pending["task_id"], "expected_revision": pending["revision"], "summary": "Actual report artifact published.", "artifact_ids": [artifact_id], "reviewer": "reviewer"})
+                assert "task" in recent[0], recent
+                return {"role": "assistant", "content": "Report submitted for independent review."}
+            pending = next((t for t in assigned if t["status"] == "review"), None)
+            if not pending:
+                return {"role": "assistant", "content": "PASS"}
+            if not recent:
+                return tool("workspace", {"action": "read", "artifact_id": pending["artifact_ids"][0]})
+            if "task" not in recent[0]:
+                assert "Verified report revision" in json.dumps(recent[0]), recent
+                reviews += 1
+                return tool("collaboration", {"action": "review", "task_id": pending["task_id"], "expected_revision": pending["revision"], "decision": "request_changes" if reviews == 1 else "approve", "summary": "Inspected exact stored report; clarify the title." if reviews == 1 else "Inspected the corrected artifact; accepted."})
+            return {"role": "assistant", "content": "Changes requested." if reviews == 1 else "Verified report accepted."}
+    
+        provider.goal_script = script
+        result = call(send(thread, "Work together to produce and review a report"))
+        assert "result" in result, result
+>       snap, status = wait_group(root, call, thread)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps/engine/tests/test_collaboration.py:67: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+root = PosixPath('/tmp/nma-7fgq7rxv')
+call = <function runtime.<locals>.call at 0x10c0964b0>
+thread = {'agents': [{'access_generation': '1', 'agent_id': 'c5e6db72-d442-45aa-86aa-d95f83262ba2', 'config': {'avatar_url': 'h...rns': None}, ...}, 'config_revision': '2', ...}], 'context_generation': '1', 'dm_agent_id': None, 'kind': 'group', ...}
+
+    def wait_group(root, call, thread):
+        for _ in range(200):
+            value = snapshot(call, thread)
+            with sqlite3.connect(root / "state/state.db") as db:
+                status = db.execute(
+                    "SELECT status FROM nma_discussions ORDER BY rowid DESC LIMIT 1"
+                ).fetchone()
+            if status and status[0] != "active":
+                return value, status[0]
+            time.sleep(0.1)
+>       raise AssertionError(value)
+E       AssertionError: {'artifacts': [{'artifact_id': 'a2473b87-a6f3-5115-89ed-1f9bbac5ee80', 'byte_count': 26, 'filename': 'report.txt', 'media_type': 'text/plain; charset=utf-8', 'producing_agent_id': '44c586be-acf4-4cbc-aae2-f047e3630bda', 'producing_run_id': 'e659d828-a0c0-52de-887a-a8375191ac82', 'revision_id': '47af6f7f-3cdc-5df3-961e-7a5a49fed725', 'sha256': 'b0b5c751fe46fed39342c3d73c41b5e8050a6965499f7a95ead00532f22acc95', 'status': 'ready', 'thread_id': 'face0025-a7e2-4b43-abf6-69dc95a9ff0a'}], 'collaboration_tasks': [{'artifact_ids': [], 'assignee_agent_id': '44c586be-acf4-4cbc-aae2-f047e3630bda', 'creator_agent_id': 'c5e6db72-d442-45aa-86aa-d95f83262ba2', 'decision': None, 'dependencies': [], 'discussion_id': 'cec24d2b-0a9c-540f-8844-1acdacb48450', 'expected_result': 'Publish the verified report, ask reviewer to inspect its exact artifact, and apply any requested changes.', 'goal_id': None, 'history': [], 'implementer_agent_id': '44c586be-acf4-4cbc-aae2-f047e3630bda', 'result_run_id': None, 'reviewer_agent_id': None, 'revision': '1', 'source_run_id': 'e3e5bfed-faa9-5c9a-a65b-872018f10830', 'status': 'pending', 'summary': '', 'task_id': 'b19b3cdc-b409-54ab-8537-ab69bf56fab8', 'thread_id': 'face0025-a7e2-4b43-abf6-69dc95a9ff0a'}], 'delegations': [], 'discussion': {'discussion_id': 'cec24d2b-0a9c-540f-8844-1acdacb48450', 'reason': 'member_turn', 'status': 'active'}, 'goals': [], 'messages': [{'attachments': [], 'author_agent_id': None, 'author_kind': 'user', 'content': 'Work together to produce and review a report', 'context_generation': '1', 'message_id': '606de294-9dd5-5458-87b8-fb5d63717320', 'message_seq': '1', 'parts': [{'text': 'Work together to produce and review a report', 'type': 'text'}], 'revision': '1', 'run_id': 'e3e5bfed-faa9-5c9a-a65b-872018f10830', 'thread_id': 'face0025-a7e2-4b43-abf6-69dc95a9ff0a'}, {'attachments': [], 'author_agent_id': 'c5e6db72-d442-45aa-86aa-d95f83262ba2', 'author_kind': 'agent', 'content': 'Research is ready for the writer.', 'context_generation': '1', 'message_id': '495cb038-317c-56f8-91ae-8aa54c0319f5', 'message_seq': '2', 'parts': [{'text': 'Research is ready for the writer.', 'type': 'text'}], 'revision': '1', 'run_id': 'e3e5bfed-faa9-5c9a-a65b-872018f10830', 'thread_id': 'face0025-a7e2-4b43-abf6-69dc95a9ff0a'}], 'next_before_message_seq': None, 'replay_epoch': '98b65b5d-a341-4281-8e14-b154bf422cce', 'runs': [{'agent_id': '44c586be-acf4-4cbc-aae2-f047e3630bda', 'config_revision': '2', 'context_generation': '1', 'continuation_required': False, 'error_code': None, 'replay_epoch': '98b65b5d-a341-4281-8e14-b154bf422cce', 'run_id': 'e659d828-a0c0-52de-887a-a8375191ac82', 'schema_version': 'nma.v1', 'status': 'running', 'text': '', 'thread_id': 'face0025-a7e2-4b43-abf6-69dc95a9ff0a', 'through_sequence': '47', 'turn_exit_reason': ''}, {'agent_id': 'c5e6db72-d442-45aa-86aa-d95f83262ba2', 'config_revision': '2', 'context_generation': '1', 'continuation_required': False, 'error_code': None, 'replay_epoch': '98b65b5d-a341-4281-8e14-b154bf422cce', 'run_id': 'e3e5bfed-faa9-5c9a-a65b-872018f10830', 'schema_version': 'nma.v1', 'status': 'succeeded', 'text': 'Research is ready for the writer.', 'thread_id': 'face0025-a7e2-4b43-abf6-69dc95a9ff0a', 'through_sequence': '47', 'turn_exit_reason': 'text_response(finish_reason=stop)'}], 'schema_version': 'nma.v1', 'thread': {'agents': [{'access_generation': '1', 'agent_id': 'c5e6db72-d442-45aa-86aa-d95f83262ba2', 'config': {'avatar_url': 'https://api.dicebear.com/10.x/critters/svg?seed=researcher', 'instructions': '', 'model': 'test', 'session': {'compression': {}, 'context_engine': 'compressor', 'max_turns': None}, 'soul': 'SOUL_researcher', 'tool_grants': ['files']}, 'config_revision': '2', 'created_at': '2026-10-28T07:25:51.729061Z', 'display_name': 'researcher', 'handle': 'researcher', 'primary_dm_thread_id': '83275730-7e6d-4d47-ad0e-aa594df1c35e', 'revision': '2', 'status': 'active', 'updated_at': '2026-10-28T07:25:51.758416Z'}, {'access_generation': '1', 'agent_id': '44c586be-acf4-4cbc-aae2-f047e3630bda', 'config': {'avatar_url': 'https://api.dicebear.com/10.x/critters/svg?seed=writer', 'instructions': '', 'model': 'test', 'session': {'compression': {}, 'context_engine': 'compressor', 'max_turns': None}, 'soul': 'SOUL_writer', 'tool_grants': ['files']}, 'config_revision': '2', 'created_at': '2026-10-28T07:25:51.742404Z', 'display_name': 'writer', 'handle': 'writer', 'primary_dm_thread_id': '2c4c4344-6446-4ecb-8871-ff002a3af3b4', 'revision': '2', 'status': 'active', 'updated_at': '2026-10-28T07:25:51.762681Z'}, {'access_generation': '1', 'agent_id': '56720112-219d-4b57-b0a0-1c2700472821', 'config': {'avatar_url': 'https://api.dicebear.com/10.x/critters/svg?seed=reviewer', 'instructions': '', 'model': 'test', 'session': {'compression': {}, 'context_engine': 'compressor', 'max_turns': None}, 'soul': 'SOUL_reviewer', 'tool_grants': ['files']}, 'config_revision': '2', 'created_at': '2026-10-28T07:25:51.747353Z', 'display_name': 'reviewer', 'handle': 'reviewer', 'primary_dm_thread_id': '21c53c51-8aab-45e6-b687-e9117ceb38a4', 'revision': '2', 'status': 'active', 'updated_at': '2026-10-28T07:25:51.765507Z'}], 'context_generation': '1', 'dm_agent_id': None, 'kind': 'group', 'membership_revision': '1', 'revision': '1', 'status': 'open', 'thread_id': 'face0025-a7e2-4b43-abf6-69dc95a9ff0a', 'title': 'Editorial'}, 'through_sequence': '47'}
+
+apps/engine/tests/test_discussions.py:44: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+----------------------------- Captured stderr call -----------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 61486)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_collaboration.py", line 51, in script
+    assert "task" in recent[0], recent
+AssertionError: [{'artifact_id': 'a2473b87-a6f3-5115-89ed-1f9bbac5ee80', 'byte_count': 26, 'filename': 'report.txt', 'media_type': 'text/plain; charset=utf-8', ...}]
+assert 'task' in {'artifact_id': 'a2473b87-a6f3-5115-89ed-1f9bbac5ee80', 'byte_count': 26, 'filename': 'report.txt', 'media_type': 'text/plain; charset=utf-8', ...}
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 61488)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_collaboration.py", line 51, in script
+    assert "task" in recent[0], recent
+AssertionError: [{'artifact_id': 'a2473b87-a6f3-5115-89ed-1f9bbac5ee80', 'byte_count': 26, 'filename': 'report.txt', 'media_type': 'text/plain; charset=utf-8', ...}]
+assert 'task' in {'artifact_id': 'a2473b87-a6f3-5115-89ed-1f9bbac5ee80', 'byte_count': 26, 'filename': 'report.txt', 'media_type': 'text/plain; charset=utf-8', ...}
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 61490)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_collaboration.py", line 51, in script
+    assert "task" in recent[0], recent
+AssertionError: [{'artifact_id': 'a2473b87-a6f3-5115-89ed-1f9bbac5ee80', 'byte_count': 26, 'filename': 'report.txt', 'media_type': 'text/plain; charset=utf-8', ...}]
+assert 'task' in {'artifact_id': 'a2473b87-a6f3-5115-89ed-1f9bbac5ee80', 'byte_count': 26, 'filename': 'report.txt', 'media_type': 'text/plain; charset=utf-8', ...}
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 61496)
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/vitoandareasmanik/.hermes/tools/python-3.14.9+20261021-darwin-arm64/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 123, in do_POST
+    scripted = script(body, text)
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_collaboration.py", line 51, in script
+    assert "task" in recent[0], recent
+AssertionError: [{'artifact_id': 'a2473b87-a6f3-5115-89ed-1f9bbac5ee80', 'byte_count': 26, 'filename': 'report.txt', 'media_type': 'text/plain; charset=utf-8', ...}]
+assert 'task' in {'artifact_id': 'a2473b87-a6f3-5115-89ed-1f9bbac5ee80', 'byte_count': 26, 'filename': 'report.txt', 'media_type': 'text/plain; charset=utf-8', ...}
+----------------------------------------
+=============================== warnings summary ===============================
+.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14
+  /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14: PytestRemovedIn10Warning: _pytest.python.CallSpec2 has been renamed to CallSpec.
+  The CallSpec2 alias will be removed in pytest 10.
+  Update imports to use CallSpec instead.
+  See https://docs.pytest.org/en/stable/deprecations.html#callspec2-renamed
+    from _pytest.python import CallSpec2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_collaboration.py::test_peer_handoff_review_changes_artifact_and_restart
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 1 warning in 26.09s

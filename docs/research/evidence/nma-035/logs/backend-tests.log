@@ -1,0 +1,13 @@
+Installed 6 packages in 34ms
+/Users/vitoandareasmanik/.cache/uv/archive-v0/2RQa6iiGv5wA3XJIKf-0B/lib/python3.13/site-packages/pytest_asyncio/plugin.py:300: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the "fixture" caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to "function" scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+............................                                             [100%]
+=============================== warnings summary ===============================
+tests/test_account_provisioning.py::AccountProvisioning::test_concurrent_login_and_verified_registration
+  /Users/vitoandareasmanik/Development/project/ngertiin/apps/backend/.venv/lib/python3.13/site-packages/alembic/config.py:604: DeprecationWarning: No path_separator found in configuration; falling back to legacy splitting on spaces, commas, and colons for prepend_sys_path.  Consider adding path_separator=os to Alembic config.
+    util.warn_deprecated(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+28 passed, 1 warning in 22.68s

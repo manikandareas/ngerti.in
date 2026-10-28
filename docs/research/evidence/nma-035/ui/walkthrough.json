@@ -1,0 +1,34 @@
+{
+  "passed": true,
+  "authentication": "Actual ClerkJS session, production current_account and production API; controlled model HTTP and frontend router/bootstrap shim",
+  "cases": {
+    "desktop_1440x1000": true,
+    "mobile_390x844_no_horizontal_overflow": true,
+    "peer_expected_result_and_responsible_reviewer_visible": true,
+    "artifact_preview": true,
+    "artifact_download_exact_sha256": "d951c221b017037f44995f34e639c64f8235db458b5283c8d4a536b0eb29feaa",
+    "mobile_stop_updates_without_reload": true,
+    "stopped_child_survives_reload": true,
+    "late_child_result_suppressed": true,
+    "group_message_sent_from_ui_and_answered": true,
+    "missing_and_invalid_auth_denied": true,
+    "disposable_auth_cleanup": true
+  },
+  "limitations": [
+    "Local development browser/component walkthrough, not deployed production UX or release-SLO proof.",
+    "Initial control attempt retained under attempt-1; final control used the visible DOM button handler after browser CLI scrolling missed its target."
+  ],
+  "cleanup": {
+    "identities": [
+      {
+        "user_id": "user_3LJcbS1s1hjZ9pDD4hIzqCgKY6g",
+        "deleted": true
+      },
+      {
+        "user_id": "user_3LJcbcsJhWCuJvQVHWVpPU8b7kr",
+        "deleted": true
+      }
+    ],
+    "database_dropped": true
+  }
+}

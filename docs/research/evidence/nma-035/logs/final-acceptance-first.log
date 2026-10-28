@@ -1,0 +1,21 @@
+/Users/vitoandareasmanik/.cache/uv/archive-v0/Uhti8kwSaB-uppKgLiv9B/lib/python3.14/site-packages/pytest_asyncio/plugin.py:300: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the "fixture" caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to "function" scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+.......................                                                  [100%]
+=============================== warnings summary ===============================
+.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14
+  /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14: PytestRemovedIn10Warning: _pytest.python.CallSpec2 has been renamed to CallSpec.
+  The CallSpec2 alias will be removed in pytest 10.
+  Update imports to use CallSpec instead.
+  See https://docs.pytest.org/en/stable/deprecations.html#callspec2-renamed
+    from _pytest.python import CallSpec2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+============================= slowest 5 durations ==============================
+18.41s call     tests/test_delegation_workspaces.py::test_parallel_native_children_worktrees_and_artifact_lineage
+14.27s call     tests/test_collaboration_migration.py::test_additive_upgrade_restore_and_previous_git_runtime_rollback
+6.07s call     tests/test_context.py::test_scoped_memory_transcript_transfer_revocation_restart
+5.46s call     tests/test_delegation_recovery.py::test_lost_completion_event_uses_native_known_result_once
+5.35s call     tests/test_delegation_recovery.py::test_partial_crash_preserves_known_and_unknown_results_without_respawn
+23 passed, 1 warning in 122.29s (0:02:02)

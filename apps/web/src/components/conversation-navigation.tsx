@@ -5,7 +5,7 @@ import { Menu, Plus, Search, Settings, Users } from "lucide-react";
 import { useState } from "react";
 import { AgentAvatar } from "@/features/agents/agent-avatar";
 import type { Agent } from "@/features/agents/agents-page";
-import { listThreads } from "@/features/direct-messages/client";
+import { listConversationSummaries, listThreads } from "@/features/direct-messages/client";
 import { api } from "@/lib/api";
 
 import { Button } from "./ui/button";
@@ -21,6 +21,12 @@ export function ConversationNavigation({ mobile = false }: { mobile?: boolean })
     queryKey: ["navigation-threads", userId, path],
     queryFn: async () => listThreads(await getToken()),
     enabled: !!isSignedIn,
+  });
+  const summaries = useQuery({
+    queryKey: ["conversation-summaries", userId],
+    queryFn: async () => listConversationSummaries(await getToken()),
+    enabled: !!isSignedIn,
+    refetchInterval: 15000,
   });
   const profiles = useQuery({
     queryKey: ["navigation-agent-profiles", userId, path],
@@ -103,12 +109,22 @@ export function ConversationNavigation({ mobile = false }: { mobile?: boolean })
                 className="size-9 text-sm"
               />
             )}
-            <span className="min-w-0 break-words [overflow-wrap:anywhere]">
+            <span className="min-w-0 flex-1 break-words [overflow-wrap:anywhere]">
               {thread.title}
-              <span className="block text-xs text-muted-foreground">
-                {thread.kind === "group" ? "Grup" : "DM"}
+              <span className="block truncate text-xs text-muted-foreground">
+                {summaries.data?.find((item) => item.thread_id === thread.thread_id)?.last_message
+                  ?.preview || (thread.kind === "group" ? "Grup" : "DM")}
               </span>
             </span>
+            {summaries.data?.some(
+              (item) => item.thread_id === thread.thread_id && BigInt(item.unread_count) > 0n,
+            ) && (
+              <span
+                className="size-2 shrink-0 rounded-full bg-primary"
+                role="img"
+                aria-label="Hasil belum dibaca"
+              />
+            )}
           </Link>
         ))}
       </nav>

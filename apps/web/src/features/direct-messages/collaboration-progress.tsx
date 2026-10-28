@@ -1,3 +1,4 @@
+import { TaskRow } from "@/components/beautiful-ui/conversation";
 import { Button } from "@/components/ui/button";
 import type { Snapshot } from "./state";
 
@@ -36,12 +37,13 @@ export function CollaborationProgress({
     <section aria-label="Pekerjaan bersama" className="min-w-0 space-y-3 border-y py-4">
       <h2 className="text-sm font-medium">Pekerjaan bersama</h2>
       {tasks.map((task) => (
-        <details key={task.task_id} className="min-w-0 text-sm">
-          <summary className="cursor-pointer break-words py-2">
-            {nameOf(task.assignee_agent_id)} · {labels[task.status] ?? task.status}
-            <span className="mt-1 block text-muted-foreground">{task.expected_result}</span>
-          </summary>
-          <div className="space-y-2 border-l pl-3 text-muted-foreground">
+        <TaskRow
+          key={task.task_id}
+          title={task.expected_result}
+          status={`${nameOf(task.assignee_agent_id)} · ${labels[task.status] ?? task.status}`}
+          state={task.status}
+        >
+          <div className="space-y-2 text-muted-foreground">
             {task.summary ? (
               <p className="whitespace-pre-wrap break-words">{task.summary}</p>
             ) : null}
@@ -58,19 +60,19 @@ export function CollaborationProgress({
             ) : null}
             {task.dependencies.length ? <p>{task.dependencies.length} tugas terkait</p> : null}
           </div>
-        </details>
+        </TaskRow>
       ))}
       {children.map((child) => {
         const parent = snapshot.runs.find((run) => run.run_id === child.parent_run_id);
         const agentId = child.agent_id ?? parent?.agent_id;
         return (
-          <details key={child.child_session_id} className="min-w-0 text-sm">
-            <summary className="cursor-pointer break-words py-2">
-              Asisten sementara {agentId ? `untuk ${nameOf(agentId)}` : ""} ·{" "}
-              {labels[child.status] ?? child.status}
-              <span className="mt-1 block text-muted-foreground">{child.goal}</span>
-            </summary>
-            <div className="space-y-2 border-l pl-3 text-muted-foreground">
+          <TaskRow
+            key={child.child_session_id}
+            title={child.goal}
+            status={`Asisten sementara ${agentId ? `untuk ${nameOf(agentId)}` : ""} · ${labels[child.status] ?? child.status}`}
+            state={child.status}
+          >
+            <div className="space-y-2 text-muted-foreground">
               <p className="break-words">{child.model}</p>
               {child.activity && child.status === "running" ? (
                 <p>Aktivitas: {child.activity}</p>
@@ -98,7 +100,7 @@ export function CollaborationProgress({
                 </Button>
               ) : null}
             </div>
-          </details>
+          </TaskRow>
         );
       })}
     </section>

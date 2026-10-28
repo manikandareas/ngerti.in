@@ -1,4 +1,5 @@
 import { useAuth } from "@clerk/tanstack-react-start";
+import { Mic, Paperclip, Square } from "lucide-react";
 import { type Ref, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { command, submit } from "./client";
@@ -12,12 +13,14 @@ export function FileUpload({
   onReady,
   onTranscript,
   uploadRef,
+  compact = false,
 }: {
   threadId: string;
   disabled: boolean;
   onReady: (file: Artifact) => void;
   onTranscript?: (text: string, artifactId: string) => void;
   uploadRef?: Ref<UploadHandle>;
+  compact?: boolean;
 }) {
   const { getToken, userId } = useAuth();
   const [progress, setProgress] = useState<string | null>(null);
@@ -186,7 +189,7 @@ export function FileUpload({
   }
   useImperativeHandle(uploadRef, () => ({ upload }));
   return (
-    <div className="space-y-1">
+    <div className="flex flex-wrap items-center gap-1">
       <input
         ref={input}
         className="sr-only"
@@ -200,21 +203,35 @@ export function FileUpload({
       />
       <Button
         type="button"
-        variant="outline"
-        size="sm"
+        variant={compact ? "ghost" : "outline"}
+        size={compact && !progress ? "icon" : "sm"}
         disabled={disabled || !!progress || recording}
+        aria-label={progress ?? "Lampirkan file"}
+        title={progress ?? "Lampirkan file"}
         onClick={() => input.current?.click()}
       >
-        {progress ?? "Lampirkan file"}
+        {compact && !progress ? <Paperclip className="size-4" /> : (progress ?? "Lampirkan file")}
       </Button>
       <Button
         type="button"
-        variant="outline"
-        size="sm"
+        variant={compact ? "ghost" : "outline"}
+        size={compact ? "icon" : "sm"}
         disabled={disabled || !!progress}
+        aria-label={recording ? "Selesai rekam" : "Rekam suara"}
+        title={recording ? "Selesai rekam" : "Rekam suara"}
         onClick={() => void record()}
       >
-        {recording ? "Selesai rekam" : "Rekam suara"}
+        {compact ? (
+          recording ? (
+            <Square className="size-4" />
+          ) : (
+            <Mic className="size-4" />
+          )
+        ) : recording ? (
+          "Selesai rekam"
+        ) : (
+          "Rekam suara"
+        )}
       </Button>
       {recording && (
         <Button

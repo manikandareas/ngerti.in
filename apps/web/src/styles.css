@@ -350,3 +350,23 @@
     background: var(--app-shell-fill);
   }
 }
+
+/* Beautiful UI pixel-grid loading state, adapted to the active design tokens. */
+@keyframes beautiful-pixel-on {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.beautiful-loader-cell {
+  animation: beautiful-pixel-on 650ms ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .beautiful-loader-cell {
+    animation: none;
+    opacity: 0.65;
+  }
+}

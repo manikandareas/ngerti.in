@@ -21,10 +21,12 @@ export function GoalProgress({
   goals,
   messages,
   agents = [],
+  onNavigate,
 }: {
   goals: Goal[];
   messages: Message[];
   agents?: Thread["agents"];
+  onNavigate?: () => void;
 }) {
   if (!goals.length) return null;
   return (
@@ -63,6 +65,7 @@ export function GoalProgress({
                     .map((m) => (
                       <li key={m.message_id}>
                         <a
+                          onClick={onNavigate}
                           className="inline-flex min-h-11 items-center text-xs underline"
                           href={`#message-${m.message_id}`}
                         >
@@ -100,7 +103,7 @@ export function GoalProgress({
               </div>
             )}
             {!!goal.reviews?.length && (
-              <div className="space-y-1 border-l-2 pl-3">
+              <div className="space-y-1 rounded-lg bg-muted p-3">
                 <h3 className="text-xs font-semibold">Pemeriksaan hasil</h3>
                 <p>
                   {goal.reviews.at(-1)?.verdict === "done"
@@ -114,8 +117,12 @@ export function GoalProgress({
               <div className="space-y-1 text-xs text-muted-foreground">
                 <h3 className="font-semibold text-foreground">Jadwal pekerjaan</h3>
                 <p>
-                  {goal.wake.state === "enabled" ? "Aktif" : "Dijeda"} ·{" "}
-                  {goal.wake.configuration.timezone}
+                  {goal.wake.state === "enabled"
+                    ? "Aktif"
+                    : goal.wake.state === "paused"
+                      ? "Dijeda"
+                      : goal.wake.state}{" "}
+                  · {goal.wake.configuration.timezone}
                 </p>
                 {goal.wake.next_at && (
                   <p>
@@ -131,6 +138,24 @@ export function GoalProgress({
                 {goal.wake.configuration.job?.mode === "script" && (
                   <p>Automasi script tanpa pemanggilan model.</p>
                 )}
+                <p>
+                  Jenis:{" "}
+                  {goal.wake.configuration.kind === "interval"
+                    ? "Berkala"
+                    : goal.wake.configuration.kind === "cron"
+                      ? "Jadwal rutin"
+                      : goal.wake.configuration.kind === "heartbeat"
+                        ? "Pemeriksaan berkala saat agent senggang"
+                        : goal.wake.configuration.kind === "once"
+                          ? "Sekali"
+                          : goal.wake.configuration.kind}
+                </p>
+                {goal.wake.configuration.expression && (
+                  <p>Jadwal: {goal.wake.configuration.expression}</p>
+                )}
+                {goal.wake.configuration.interval_seconds && (
+                  <p>Setiap {goal.wake.configuration.interval_seconds} detik</p>
+                )}
                 <p>Ubah, jeda, lanjutkan, atau jalankan sekarang lewat percakapan.</p>
               </div>
             )}
@@ -138,13 +163,14 @@ export function GoalProgress({
               <div className="space-y-2">
                 <h3 className="text-xs font-semibold">Bukti hasil</h3>
                 {goal.evidence.map((evidence) => (
-                  <div key={evidence.evidence_id} className="space-y-1 border-l-2 pl-3">
+                  <div key={evidence.evidence_id} className="space-y-1 rounded-lg bg-muted p-3">
                     <p className="font-medium">{evidence.criterion}</p>
                     <p className="text-muted-foreground">{evidence.summary}</p>
                     {messages.some(
                       (message) => message.message_id === evidence.source_message_id,
                     ) && (
                       <a
+                        onClick={onNavigate}
                         className="inline-flex min-h-11 items-center text-xs underline"
                         href={`#message-${evidence.source_message_id}`}
                       >

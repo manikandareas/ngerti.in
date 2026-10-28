@@ -35,3 +35,22 @@ export async function listThreads(token: string | null) {
   } while (after);
   return items;
 }
+
+export type ConversationSummary = ThreadItem & {
+  unread_count: string;
+  last_read_sequence: string;
+  last_message: { message_seq: string; preview: string } | null;
+};
+export async function listConversationSummaries(token: string | null) {
+  const items: ConversationSummary[] = [];
+  let after: string | null = null;
+  do {
+    const page: { items: ConversationSummary[]; next_cursor: string | null } = await api(
+      `${base}/conversations${after ? `?after=${encodeURIComponent(after)}` : ""}`,
+      token,
+    );
+    items.push(...page.items);
+    after = page.next_cursor;
+  } while (after);
+  return items;
+}

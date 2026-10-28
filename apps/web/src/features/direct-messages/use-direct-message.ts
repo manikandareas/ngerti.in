@@ -25,6 +25,10 @@ export function useDirectMessage(threadId: string) {
     let stream: ReturnType<typeof createEventSource> | undefined;
     let sequence = 0n;
     generation.current += 1;
+    if (state.current?.thread.thread_id !== threadId) {
+      state.current = null;
+      setSnapshot(null);
+    }
     setError("");
     setConnection("connecting");
     setLoadingEarlier(false);
@@ -145,5 +149,12 @@ export function useDirectMessage(threadId: string) {
       if (version === generation.current) setLoadingEarlier(false);
     }
   }
-  return { snapshot, connection, error, refresh, loadEarlier, loadingEarlier };
+  return {
+    snapshot: snapshot?.thread.thread_id === threadId ? snapshot : null,
+    connection,
+    error,
+    refresh,
+    loadEarlier,
+    loadingEarlier,
+  };
 }

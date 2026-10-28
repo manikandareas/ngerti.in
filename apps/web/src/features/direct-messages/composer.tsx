@@ -1,6 +1,8 @@
 import { useAuth } from "@clerk/tanstack-react-start";
 import { Link } from "@tanstack/react-router";
+import { ArrowUp, AtSign } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { PromptBar } from "@/components/beautiful-ui/conversation";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { providerFailureMessage } from "@/features/connections/client";
@@ -70,7 +72,14 @@ export function Composer({
     }
   }
   async function send() {
-    if (lock.current || !ready || (!text.trim() && !attachments.length && !pending)) return;
+    if (
+      lock.current ||
+      !ready ||
+      !connected ||
+      (unavailable && !pending) ||
+      (!text.trim() && !attachments.length && !pending)
+    )
+      return;
     lock.current = true;
     setBusy(true);
     setError("");
@@ -172,111 +181,126 @@ export function Composer({
           tidak akan digandakan.
         </p>
       )}
-      <label htmlFor="dm-message" className="sr-only">
-        Pesan untuk {thread.kind === "group" ? thread.title : thread.agents[0]?.display_name}
-      </label>
-      {thread.kind === "group" && (
-        <fieldset className="flex flex-wrap gap-1" aria-label="Mention anggota">
-          {thread.agents.map((agent) => (
+      <PromptBar>
+        <label htmlFor="dm-message" className="sr-only">
+          Pesan untuk {thread.kind === "group" ? thread.title : thread.agents[0]?.display_name}
+        </label>
+        {thread.kind === "group" && (
+          <fieldset className="flex flex-wrap gap-1" aria-label="Mention anggota">
+            {thread.agents.map((agent) => (
+              <Button
+                key={agent.agent_id}
+                type="button"
+                variant="ghost"
+                size="sm"
+                disabled={busy || !!pending || agent.status !== "active"}
+                onClick={() => {
+                  const value = `${text}${text && !text.endsWith(" ") ? " " : ""}@${agent.handle} `;
+                  setText(value);
+                  save(value, null);
+                  input.current?.focus();
+                }}
+              >
+                <AtSign className="size-3" aria-hidden="true" />
+                {agent.handle}
+              </Button>
+            ))}
+          </fieldset>
+        )}
+        <Textarea
+          ref={input}
+          id="dm-message"
+          rows={1}
+          maxLength={100000}
+          value={text}
+          disabled={!ready || unavailable || !!pending}
+          placeholder={`Pesan untuk ${(thread.kind === "group" ? thread.title : thread.agents[0]?.display_name) ?? "agent"}…`}
+          className="max-h-48 min-h-12 resize-y border-0 bg-transparent text-sm shadow-none focus-visible:ring-0"
+          onChange={(event) => {
+            setText(event.target.value);
+            save(event.target.value, null);
+          }}
+          onKeyDown={(event) => {
+            if (
+              event.key === "Enter" &&
+              !event.shiftKey &&
+              !event.nativeEvent.isComposing &&
+              !window.matchMedia("(pointer: coarse)").matches
+            ) {
+              event.preventDefault();
+              if (connected) void send();
+            }
+          }}
+        />
+        <div className="flex flex-wrap items-center gap-2">
+          <FileUpload
+            compact
+            uploadRef={uploadRef}
+            threadId={thread.thread_id}
+            disabled={busy || !!pending || !ready || unavailable || attachments.length >= 10}
+            onTranscript={(transcript, artifactId) => {
+              const draft = currentDraft.current;
+              if (
+                draft.pending ||
+                !draft.attachments.some((file) => file.artifact_id === artifactId)
+              )
+                return;
+              const value = `${draft.text}${draft.text ? "\n" : ""}${transcript}`;
+              setText(value);
+              save(value, null, draft.attachments);
+              input.current?.focus();
+            }}
+            onReady={(file) => {
+              const next = [...attachments.filter((a) => a.artifact_id !== file.artifact_id), file];
+              setAttachments(next);
+              save(text, pending, next);
+            }}
+          />
+          {attachments.map((file) => (
             <Button
-              key={agent.agent_id}
+              key={file.artifact_id}
               type="button"
               variant="ghost"
               size="sm"
               disabled={busy || !!pending}
               onClick={() => {
-                const value = `${text}${text && !text.endsWith(" ") ? " " : ""}@${agent.handle} `;
-                setText(value);
-                save(value, null);
-                input.current?.focus();
+                const next = attachments.filter((a) => a.artifact_id !== file.artifact_id);
+                setAttachments(next);
+                save(text, pending, next);
               }}
             >
-              @{agent.handle}
+              {file.filename} ×
             </Button>
           ))}
-        </fieldset>
-      )}
-      <Textarea
-        ref={input}
-        id="dm-message"
-        rows={3}
-        maxLength={100000}
-        value={text}
-        disabled={!ready || unavailable || !!pending}
-        placeholder={`Pesan untuk ${(thread.kind === "group" ? thread.title : thread.agents[0]?.display_name) ?? "agent"}…`}
-        className="max-h-48 min-h-12 resize-y rounded-xl bg-background text-sm"
-        onChange={(event) => {
-          setText(event.target.value);
-          save(event.target.value, null);
-        }}
-        onKeyDown={(event) => {
-          if (
-            event.key === "Enter" &&
-            !event.shiftKey &&
-            !event.nativeEvent.isComposing &&
-            !window.matchMedia("(pointer: coarse)").matches
-          ) {
-            event.preventDefault();
-            if (connected) void send();
-          }
-        }}
-      />
-      <div className="flex flex-wrap items-center gap-2">
-        <FileUpload
-          uploadRef={uploadRef}
-          threadId={thread.thread_id}
-          disabled={busy || !!pending || !ready || unavailable || attachments.length >= 10}
-          onTranscript={(transcript, artifactId) => {
-            const draft = currentDraft.current;
-            if (draft.pending || !draft.attachments.some((file) => file.artifact_id === artifactId))
-              return;
-            const value = `${draft.text}${draft.text ? "\n" : ""}${transcript}`;
-            setText(value);
-            save(value, null, draft.attachments);
-            input.current?.focus();
-          }}
-          onReady={(file) => {
-            const next = [...attachments.filter((a) => a.artifact_id !== file.artifact_id), file];
-            setAttachments(next);
-            save(text, pending, next);
-          }}
-        />
-        {attachments.map((file) => (
-          <Button
-            key={file.artifact_id}
-            type="button"
-            variant="ghost"
-            size="sm"
-            disabled={busy || !!pending}
-            onClick={() => {
-              const next = attachments.filter((a) => a.artifact_id !== file.artifact_id);
-              setAttachments(next);
-              save(text, pending, next);
-            }}
-          >
-            {file.filename} ×
-          </Button>
-        ))}
-      </div>
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="max-w-sm text-xs text-muted-foreground">
-          {working
-            ? "Pesan baru menghentikan jawaban yang berjalan dan menyampaikan arahanmu."
-            : "Percakapan tersimpan. Kamu bisa kembali kapan saja."}
-        </p>
-        <Button
-          type="submit"
-          disabled={
-            !ready ||
-            busy ||
-            (unavailable && !pending) ||
-            !connected ||
-            (!text.trim() && !attachments.length && !pending)
-          }
-        >
-          {busy ? "Mengirim…" : pending ? "Periksa / kirim kembali" : "Kirim pesan"}
-        </Button>
-      </div>
+          <div className="ml-auto">
+            <Button
+              type="submit"
+              size={pending ? "default" : "icon"}
+              aria-label={
+                busy ? "Mengirim pesan" : pending ? "Periksa / kirim kembali" : "Kirim pesan"
+              }
+              disabled={
+                !ready ||
+                busy ||
+                (unavailable && !pending) ||
+                !connected ||
+                (!text.trim() && !attachments.length && !pending)
+              }
+            >
+              {pending && !busy ? (
+                "Periksa / kirim kembali"
+              ) : (
+                <ArrowUp className="size-4" aria-hidden="true" />
+              )}
+            </Button>
+          </div>
+        </div>
+      </PromptBar>
+      <p className="max-w-sm text-xs text-muted-foreground">
+        {working
+          ? "Pesan baru menghentikan jawaban yang berjalan dan menyampaikan arahanmu."
+          : "Percakapan tersimpan. Kamu bisa kembali kapan saja."}
+      </p>
     </form>
   );
 }

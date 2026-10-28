@@ -30,6 +30,7 @@ export function SessionControls({ thread, working }: { thread: Thread; working: 
   const [busy, setBusy] = useState("");
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
+  const [session, setSession] = useState<Session | null>(null);
   const [ready, setReady] = useState(false);
   const pending = useRef<Control | null>(null);
   const lock = useRef(false);
@@ -78,6 +79,32 @@ export function SessionControls({ thread, working }: { thread: Thread; working: 
     if (activeKey.current === key) pending.current = body;
   }
 
+  async function inspect() {
+    if (lock.current || !ready || !agentId) return;
+    lock.current = true;
+    setBusy("inspect");
+    setError("");
+    try {
+      const value = await api<Session>(
+        `${base}/threads/${thread.thread_id}/session?agent_id=${encodeURIComponent(agentId)}`,
+        await getToken(),
+      );
+      if (activeKey.current === key) setSession(value);
+    } catch (cause) {
+      if (activeKey.current === key)
+        setError(
+          cause instanceof ApiError && cause.code === "SESSION_UNAVAILABLE"
+            ? "Kirim pesan terlebih dahulu untuk memulai konteks agent ini."
+            : "Status konteks belum dapat dimuat. Coba kembali.",
+        );
+    } finally {
+      if (activeKey.current === key) {
+        lock.current = false;
+        setBusy("");
+      }
+    }
+  }
+
   async function change(operation: "compress" | "reset") {
     if (lock.current || !ready || working || !agentId) return;
     lock.current = true;
@@ -114,6 +141,7 @@ export function SessionControls({ thread, working }: { thread: Thread; working: 
       );
       remember(null);
       if (activeKey.current !== key) return;
+      setSession(null);
       setNotice(
         operation === "reset"
           ? "Konteks baru siap. Riwayat percakapan tetap tersimpan."
@@ -130,6 +158,7 @@ export function SessionControls({ thread, working }: { thread: Thread; working: 
       )
         remember(null);
       if (activeKey.current !== key) return;
+      setSession(null);
       setError(
         cause instanceof ApiError && cause.code === "SESSION_UNAVAILABLE"
           ? "Kirim pesan terlebih dahulu untuk memulai konteks agent ini."
@@ -164,6 +193,7 @@ export function SessionControls({ thread, working }: { thread: Thread; working: 
               disabled={!ready || Boolean(busy) || pending.current !== null}
               onChange={(event) => {
                 setAgentId(event.target.value);
+                setSession(null);
                 setNotice("");
                 setError("");
               }}
@@ -177,7 +207,35 @@ export function SessionControls({ thread, working }: { thread: Thread; working: 
             </NativeSelect>
           </label>
         )}
+        {session && (
+          <div role="status" className="rounded-lg bg-muted p-3 text-xs">
+            <p>
+              Status:{" "}
+              {(
+                {
+                  idle: "Siap dilanjutkan",
+                  running: "Sedang bekerja",
+                  recovering: "Sedang dipulihkan",
+                  indeterminate: "Hasil belum diketahui",
+                } as Record<string, string>
+              )[session.execution_state] ?? session.execution_state}
+            </p>
+            <p>Versi konteks: {session.session_revision}</p>
+            <p>
+              Lanjutkan sesi dengan mengirim pesan. Periksa hasil tindakan yang belum diketahui
+              sebelum meminta pengulangan.
+            </p>
+          </div>
+        )}
         <div className="flex flex-wrap gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={!ready || Boolean(busy)}
+            onClick={() => void inspect()}
+          >
+            {busy === "inspect" ? "Memeriksa…" : "Periksa konteks"}
+          </Button>
           <Button
             variant="outline"
             size="sm"
@@ -189,7 +247,11 @@ export function SessionControls({ thread, working }: { thread: Thread; working: 
             }
             onClick={() => void change("compress")}
           >
-            {busy === "compress" ? "Meringkas…" : "Ringkas konteks"}
+            {busy === "compress"
+              ? "Meringkas…"
+              : pending.current?.type === "session.compress"
+                ? "Periksa hasil ringkasan"
+                : "Ringkas konteks"}
           </Button>
           <Button
             variant="ghost"
@@ -202,7 +264,11 @@ export function SessionControls({ thread, working }: { thread: Thread; working: 
             }
             onClick={() => void change("reset")}
           >
-            {busy === "reset" ? "Menyiapkan…" : "Mulai konteks baru"}
+            {busy === "reset"
+              ? "Menyiapkan…"
+              : pending.current?.type === "session.reset"
+                ? "Periksa konteks baru"
+                : "Mulai konteks baru"}
           </Button>
         </div>
         {working && <p className="text-muted-foreground">Tersedia setelah pekerjaan selesai.</p>}

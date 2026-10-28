@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Contextual edit keeps conversation and identity",
+    "passed": true
+  },
+  {
+    "name": "Unauthenticated owner data remains denied",
+    "passed": true
+  },
+  {
+    "name": "Unavailable member is explicit",
+    "passed": true
+  }
+]

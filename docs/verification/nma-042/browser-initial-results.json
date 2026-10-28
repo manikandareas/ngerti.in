@@ -1,0 +1,41 @@
+{
+  "checks": [
+    "/agents light 1440",
+    "/agents light 390",
+    "/agents light 320",
+    "/agents light 768",
+    "/agents dark 1440",
+    "/agents dark 390",
+    "/agents dark 320",
+    "/agents dark 768",
+    "/ light 1440",
+    "/ light 390",
+    "/ light 320",
+    "/ light 768",
+    "/ dark 1440",
+    "/ dark 390",
+    "/ dark 320",
+    "/ dark 768"
+  ],
+  "failures": [
+    {
+      "name": "New account opens Tobi without mandatory configuration",
+      "error": "TimeoutError: page.waitForURL: Timeout 45000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation to \"**/conversations/**\" until \"load\"\n  navigated to \"http://localhost:3000/\"\n============================================================"
+    },
+    {
+      "name": "Mobile navigation keyboard trap and focus return",
+      "error": "TimeoutError: locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('Tidak ada percakapan yang cocok.') to be visible\u001b[22m\n"
+    },
+    {
+      "name": "Agent editor retains advanced configuration",
+      "error": "TimeoutError: locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Edit Tobi', exact: true })\u001b[22m\n"
+    },
+    {
+      "name": "Group wizard opens at member selection",
+      "error": "TimeoutError: locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Siapkan percakapan' })\u001b[22m\n"
+    }
+  ],
+  "limits": [
+    "Local development only; no deployment or manual screen-reader audit."
+  ]
+}

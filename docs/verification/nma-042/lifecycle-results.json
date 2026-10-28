@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Archive and restore preserves agent",
+    "passed": true
+  },
+  {
+    "name": "Revision conflict preserves unsaved draft",
+    "passed": true
+  },
+  {
+    "name": "Missing conversation fails without losing navigation",
+    "passed": true
+  }
+]

@@ -19856,6 +19856,82 @@
                           "fill": "$gumloop/text-muted"
                         }
                       ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "ZzsIW",
+                      "name": "Goals section title",
+                      "fill": "$gumloop/text-muted",
+                      "content": "Goals",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "B6CKmp",
+                      "name": "Qualified meetings goal",
+                      "width": "fill_container",
+                      "gap": 10,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "qwjza",
+                          "name": "Goal target",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "target",
+                          "library": "lucide",
+                          "fill": "$gumloop/text-muted"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "KCMzN",
+                          "name": "Goal details",
+                          "width": "fill_container",
+                          "gap": 8,
+                          "justifyContent": "space_between",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "TozIy",
+                              "name": "Book 10 qualified meetings",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Book 10 qualified meetings",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "suUYN",
+                              "name": "Goal status",
+                              "fill": "$gumloop/text-muted",
+                              "content": "Active",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "icon",
+                          "id": "b70Zb",
+                          "name": "chevron-right",
+                          "width": 16,
+                          "height": 16,
+                          "icon": "chevron-right",
+                          "library": "lucide",
+                          "fill": "$gumloop/text-muted"
+                        }
+                      ]
                     }
                   ]
                 }
@@ -21578,6 +21654,82 @@
                           "fill": "$gumloop/text-muted"
                         }
                       ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "ULBNn",
+                      "name": "Goals section title",
+                      "fill": "$gumloop/text-muted",
+                      "content": "Goals",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "C3LhQ",
+                      "name": "Qualified meetings goal",
+                      "width": "fill_container",
+                      "gap": 10,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "sWhqd",
+                          "name": "Goal target",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "target",
+                          "library": "lucide",
+                          "fill": "$gumloop/text-muted"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "UdaUO",
+                          "name": "Goal details",
+                          "width": "fill_container",
+                          "gap": 8,
+                          "justifyContent": "space_between",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "c1M0w4",
+                              "name": "Book 10 qualified meetings",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Book 10 qualified meetings",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "haN9r",
+                              "name": "Goal status",
+                              "fill": "$gumloop/text-muted",
+                              "content": "Active",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "icon",
+                          "id": "sYAiU",
+                          "name": "chevron-right",
+                          "width": 16,
+                          "height": 16,
+                          "icon": "chevron-right",
+                          "library": "lucide",
+                          "fill": "$gumloop/text-muted"
+                        }
+                      ]
                     }
                   ]
                 }
@@ -22803,40 +22955,6 @@
                       "width": "fill_container",
                       "gap": 8,
                       "children": [
-                        {
-                          "type": "frame",
-                          "id": "O2Uur",
-                          "name": "Message action",
-                          "width": "fill_container",
-                          "height": 38,
-                          "fill": "$ng-app/muted",
-                          "cornerRadius": 9,
-                          "gap": 7,
-                          "justifyContent": "center",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "icon",
-                              "id": "ntc8Q",
-                              "name": "Message icon",
-                              "width": 16,
-                              "height": 16,
-                              "icon": "message-circle",
-                              "library": "lucide",
-                              "fill": "$ng-app/foreground"
-                            },
-                            {
-                              "type": "text",
-                              "id": "MMuqx",
-                              "name": "Message label",
-                              "fill": "$ng-app/foreground",
-                              "content": "Message",
-                              "fontFamily": "$gumloop/font-ui",
-                              "fontSize": 13,
-                              "fontWeight": "normal"
-                            }
-                          ]
-                        },
                         {
                           "type": "frame",
                           "id": "SaJBE",
@@ -24483,40 +24601,6 @@
                       "width": "fill_container",
                       "gap": 8,
                       "children": [
-                        {
-                          "type": "frame",
-                          "id": "A8ZOX",
-                          "name": "Message action",
-                          "width": "fill_container",
-                          "height": 38,
-                          "fill": "$ng-app/muted",
-                          "cornerRadius": 9,
-                          "gap": 7,
-                          "justifyContent": "center",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "icon",
-                              "id": "EbUCT",
-                              "name": "Message icon",
-                              "width": 16,
-                              "height": 16,
-                              "icon": "message-circle",
-                              "library": "lucide",
-                              "fill": "$ng-app/foreground"
-                            },
-                            {
-                              "type": "text",
-                              "id": "j6QEY",
-                              "name": "Message label",
-                              "fill": "$ng-app/foreground",
-                              "content": "Message",
-                              "fontFamily": "$gumloop/font-ui",
-                              "fontSize": 13,
-                              "fontWeight": "normal"
-                            }
-                          ]
-                        },
                         {
                           "type": "frame",
                           "id": "hhKiY",
@@ -71221,7 +71305,7 @@
                 "radius": 32
               },
               "layout": "vertical",
-              "gap": 22,
+              "gap": 20,
               "padding": 28,
               "children": [
                 {
@@ -71278,10 +71362,10 @@
                       "type": "frame",
                       "id": "LUqRj",
                       "name": "Goal symbol",
-                      "width": 52,
-                      "height": 52,
-                      "fill": "$ng-app/accent",
-                      "cornerRadius": 16,
+                      "width": 56,
+                      "height": 56,
+                      "fill": "#11AC4B",
+                      "cornerRadius": 18,
                       "justifyContent": "center",
                       "alignItems": "center",
                       "children": [
@@ -71289,11 +71373,11 @@
                           "type": "icon",
                           "id": "GqkbE",
                           "name": "Goal target",
-                          "width": 24,
-                          "height": 24,
+                          "width": 26,
+                          "height": 26,
                           "icon": "target",
                           "library": "lucide",
-                          "fill": "$ng-app/accent-foreground"
+                          "fill": "#FFFFFF"
                         }
                       ]
                     },
@@ -71335,7 +71419,7 @@
                   "fill": "#FFFFFFB3",
                   "cornerRadius": 16,
                   "layout": "vertical",
-                  "gap": 16,
+                  "gap": 14,
                   "padding": 20,
                   "children": [
                     {
@@ -71348,7 +71432,7 @@
                         "bottom": 1
                       },
                       "layout": "vertical",
-                      "gap": 4,
+                      "gap": 6,
                       "padding": [
                         0,
                         0,
@@ -71366,7 +71450,7 @@
                           "content": "Goal",
                           "lineHeight": 1.5,
                           "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 13,
+                          "fontSize": 12,
                           "fontWeight": "normal"
                         },
                         {
@@ -71379,7 +71463,7 @@
                           "content": "A relaxed two-day trip under Rp2 million per person.",
                           "lineHeight": 1.5,
                           "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 15,
+                          "fontSize": 14,
                           "fontWeight": "normal"
                         }
                       ]
@@ -71394,7 +71478,7 @@
                         "bottom": 1
                       },
                       "layout": "vertical",
-                      "gap": 4,
+                      "gap": 6,
                       "padding": [
                         0,
                         0,
@@ -71412,7 +71496,7 @@
                           "content": "Completed",
                           "lineHeight": 1.5,
                           "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 13,
+                          "fontSize": 12,
                           "fontWeight": "normal"
                         },
                         {
@@ -71425,7 +71509,7 @@
                           "content": "Compared 3 stays and estimated transport costs.",
                           "lineHeight": 1.5,
                           "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 15,
+                          "fontSize": 14,
                           "fontWeight": "normal"
                         }
                       ]
@@ -71440,7 +71524,7 @@
                         "bottom": 1
                       },
                       "layout": "vertical",
-                      "gap": 4,
+                      "gap": 6,
                       "padding": [
                         0,
                         0,
@@ -71458,7 +71542,7 @@
                           "content": "Next",
                           "lineHeight": 1.5,
                           "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 13,
+                          "fontSize": 12,
                           "fontWeight": "normal"
                         },
                         {
@@ -71471,7 +71555,7 @@
                           "content": "Confirm your dates so I can check availability.",
                           "lineHeight": 1.5,
                           "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 15,
+                          "fontSize": 14,
                           "fontWeight": "normal"
                         }
                       ]
@@ -71486,7 +71570,7 @@
                         "bottom": 1
                       },
                       "layout": "vertical",
-                      "gap": 4,
+                      "gap": 6,
                       "padding": [
                         0,
                         0,
@@ -71504,7 +71588,7 @@
                           "content": "Responsible",
                           "lineHeight": 1.5,
                           "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 13,
+                          "fontSize": 12,
                           "fontWeight": "normal"
                         },
                         {
@@ -71517,7 +71601,7 @@
                           "content": "Tobi",
                           "lineHeight": 1.5,
                           "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 15,
+                          "fontSize": 14,
                           "fontWeight": "normal"
                         }
                       ]
@@ -71529,7 +71613,7 @@
                       "width": "fill_container",
                       "stroke": "$gumloop/divider",
                       "layout": "vertical",
-                      "gap": 4,
+                      "gap": 6,
                       "children": [
                         {
                           "type": "text",
@@ -71541,7 +71625,7 @@
                           "content": "Saved result",
                           "lineHeight": 1.5,
                           "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 13,
+                          "fontSize": 12,
                           "fontWeight": "normal"
                         },
                         {
@@ -71554,7 +71638,7 @@
                           "content": "Bandung shortlist.pdf ↗",
                           "lineHeight": 1.5,
                           "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 15,
+                          "fontSize": 14,
                           "fontWeight": "normal"
                         }
                       ]
@@ -72542,6 +72626,41 @@
                           ]
                         }
                       ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "QYizH",
+                      "layoutPosition": "absolute",
+                      "x": 998,
+                      "y": 20,
+                      "name": "Conversation header actions",
+                      "width": 52,
+                      "height": 34,
+                      "gap": 16,
+                      "justifyContent": "end",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "una6n",
+                          "name": "settings",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "settings",
+                          "library": "lucide",
+                          "fill": "$gumloop/text-muted"
+                        },
+                        {
+                          "type": "icon",
+                          "id": "iG3HS",
+                          "name": "Schedules menu",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "list",
+                          "library": "lucide",
+                          "fill": "$gumloop/text-muted"
+                        }
+                      ]
                     }
                   ]
                 },
@@ -72765,295 +72884,359 @@
                   ]
                 }
               ]
-            },
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "mLDAA",
+          "layoutPosition": "absolute",
+          "x": 0,
+          "y": 0,
+          "name": "Schedule dialog backdrop",
+          "width": 1440,
+          "height": 1000,
+          "fill": "#18202E45",
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
             {
               "type": "frame",
-              "id": "xQOkA",
-              "name": "Routine details panel",
-              "width": 360,
-              "height": "fill_container",
-              "fill": "#FFFFFF00",
-              "stroke": "$gumloop/divider",
+              "id": "R9X4Uj",
+              "name": "Schedule details glass dialog",
+              "width": 600,
+              "fill": "#F8FAFCF2",
+              "cornerRadius": 28,
+              "stroke": "#FFFFFFCC",
+              "strokeWidth": 1,
+              "effect": {
+                "type": "background_blur",
+                "radius": 32
+              },
               "layout": "vertical",
-              "gap": 16,
-              "padding": [
-                20,
-                16,
-                24,
-                8
-              ],
+              "gap": 20,
+              "padding": 28,
               "children": [
                 {
                   "type": "frame",
-                  "id": "QYizH",
-                  "name": "Panel controls",
+                  "id": "X5EDyw",
+                  "name": "Schedule dialog title bar",
                   "width": "fill_container",
-                  "height": 34,
-                  "gap": 16,
-                  "justifyContent": "end",
+                  "justifyContent": "space_between",
                   "alignItems": "center",
                   "children": [
                     {
-                      "type": "icon",
-                      "id": "una6n",
-                      "name": "settings",
-                      "width": 18,
-                      "height": 18,
-                      "icon": "settings",
-                      "library": "lucide",
-                      "fill": "$gumloop/text-muted"
-                    },
-                    {
-                      "type": "icon",
-                      "id": "iG3HS",
-                      "name": "x",
-                      "width": 18,
-                      "height": 18,
-                      "icon": "x",
-                      "library": "lucide",
-                      "fill": "$gumloop/text-muted"
+                      "type": "frame",
+                      "id": "Xl0Yb",
+                      "name": "Close goal dialog",
+                      "width": 36,
+                      "height": 36,
+                      "fill": "#FFFFFF99",
+                      "cornerRadius": 999,
+                      "stroke": "$ng-app/border",
+                      "strokeWidth": 1,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "t1kgH",
+                          "name": "Close",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "x",
+                          "library": "lucide",
+                          "fill": "$ng-app/foreground"
+                        }
+                      ]
                     }
                   ]
                 },
                 {
                   "type": "frame",
-                  "id": "R9X4Uj",
-                  "name": "Context floating card",
+                  "id": "FWa9k",
+                  "name": "Schedule identity",
                   "width": "fill_container",
-                  "fill": {
-                    "type": "gradient",
-                    "gradientType": "linear",
-                    "enabled": true,
-                    "rotation": 155,
-                    "size": {
-                      "height": 1
-                    },
-                    "colors": [
-                      {
-                        "color": "#EDF1F7E8",
-                        "position": 0
-                      },
-                      {
-                        "color": "#F3F2F0E8",
-                        "position": 0.48
-                      },
-                      {
-                        "color": "#F4EDE9E8",
-                        "position": 1
-                      }
-                    ]
-                  },
-                  "cornerRadius": 20,
-                  "stroke": "#FFFFFF80",
-                  "strokeWidth": 1,
-                  "effect": {
-                    "type": "background_blur",
-                    "radius": 24
-                  },
                   "layout": "vertical",
-                  "gap": 18,
-                  "padding": 20,
+                  "gap": 8,
+                  "padding": [
+                    0,
+                    0,
+                    4,
+                    0
+                  ],
+                  "alignItems": "center",
                   "children": [
                     {
                       "type": "frame",
-                      "id": "UrrZb",
-                      "name": "Computer agent profile",
-                      "width": "fill_container",
-                      "gap": 12,
+                      "id": "QA8qY",
+                      "name": "Goal symbol",
+                      "width": 56,
+                      "height": 56,
+                      "fill": "#F15822",
+                      "cornerRadius": 18,
+                      "justifyContent": "center",
                       "alignItems": "center",
                       "children": [
                         {
-                          "type": "frame",
-                          "id": "NH6F0",
-                          "name": "Sales Outbound profile avatar",
-                          "width": 56,
-                          "height": 56,
-                          "fill": {
-                            "type": "image",
-                            "enabled": true,
-                            "url": "assets/critters/sales-outbound.png",
-                            "mode": "contain"
-                          },
-                          "cornerRadius": 16
-                        },
-                        {
-                          "type": "frame",
-                          "id": "lzIi2",
-                          "name": "Agent name and context",
-                          "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 4,
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "RAqaG",
-                              "name": "Agent display name",
-                              "fill": "$gumloop/text",
-                              "textGrowth": "fixed-width",
-                              "width": "fill_container",
-                              "content": "Tobi",
-                              "fontFamily": "$gumloop/font-ui",
-                              "fontSize": 18,
-                              "fontWeight": "600"
-                            },
-                            {
-                              "type": "text",
-                              "id": "TOV6O",
-                              "name": "Agent type",
-                              "fill": "$gumloop/text-muted",
-                              "textGrowth": "fixed-width",
-                              "width": "fill_container",
-                              "content": "Your personal assistant",
-                              "fontFamily": "$gumloop/font-ui",
-                              "fontSize": 13,
-                              "fontWeight": "normal"
-                            }
-                          ]
+                          "type": "icon",
+                          "id": "fuyZX",
+                          "name": "Schedule icon",
+                          "width": 26,
+                          "height": 26,
+                          "icon": "calendar-clock",
+                          "library": "lucide",
+                          "fill": "#FFFFFF"
                         }
                       ]
                     },
                     {
-                      "type": "frame",
-                      "id": "fyxYN",
-                      "name": "Agent desktop preview",
-                      "clip": true,
+                      "type": "text",
+                      "id": "psERr",
+                      "name": "Monday overview",
+                      "fill": "$gumloop/text",
+                      "textGrowth": "fixed-width",
                       "width": "fill_container",
-                      "fill": "$ng-app/muted",
-                      "cornerRadius": 10,
-                      "stroke": "$ng-app/border",
-                      "strokeWidth": 1,
-                      "layout": "vertical",
-                      "gap": 12,
-                      "padding": 14,
+                      "content": "Monday overview",
+                      "lineHeight": 1.2,
+                      "textAlign": "center",
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 26,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "G0j9l",
+                      "name": "Schedule frequency",
+                      "fill": "$gumloop/text-muted",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Every Monday · 08:00 WITA",
+                      "lineHeight": 1.5,
+                      "textAlign": "center",
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "fyxYN",
+                  "name": "Upcoming calendar highlights",
+                  "clip": true,
+                  "width": "fill_container",
+                  "fill": "#FFFFFFB3",
+                  "cornerRadius": 16,
+                  "stroke": "$ng-app/border",
+                  "layout": "vertical",
+                  "padding": 20,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "QLwQs",
+                      "name": "Calendar date heading",
+                      "width": "fill_container",
+                      "padding": [
+                        0,
+                        0,
+                        12,
+                        0
+                      ],
                       "children": [
                         {
                           "type": "text",
                           "id": "CfFv5",
                           "name": "Monday · 2 November",
-                          "fill": "$ng-app/foreground",
+                          "fill": "$gumloop/text",
                           "content": "Monday · 2 November",
                           "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "XvVus",
+                      "name": "Team catch-up agenda row",
+                      "width": "fill_container",
+                      "stroke": "$gumloop/divider",
+                      "strokeWidth": {
+                        "bottom": 1
+                      },
+                      "gap": 16,
+                      "padding": [
+                        12,
+                        0
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "FKmGY",
+                          "name": "09:00 time",
+                          "fill": "$gumloop/text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": 52,
+                          "content": "09:00",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-mono",
                           "fontSize": 12,
                           "fontWeight": "normal"
                         },
                         {
                           "type": "text",
                           "id": "cvvRX",
-                          "name": "09:00   Team catch-up",
+                          "name": "Team catch-up",
                           "fill": "$ng-app/foreground",
-                          "content": "09:00   Team catch-up",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Team catch-up",
+                          "lineHeight": 1.5,
                           "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "V2auek",
+                      "name": "Lunch with Maya agenda row",
+                      "width": "fill_container",
+                      "stroke": "$gumloop/divider",
+                      "strokeWidth": {
+                        "bottom": 1
+                      },
+                      "gap": 16,
+                      "padding": [
+                        12,
+                        0
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "t55Ye",
+                          "name": "11:30 time",
+                          "fill": "$gumloop/text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": 52,
+                          "content": "11:30",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-mono",
                           "fontSize": 12,
                           "fontWeight": "normal"
                         },
                         {
                           "type": "text",
                           "id": "MERVD",
-                          "name": "11:30   Lunch with Maya",
+                          "name": "Lunch with Maya",
                           "fill": "$ng-app/foreground",
-                          "content": "11:30   Lunch with Maya",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Lunch with Maya",
+                          "lineHeight": 1.5,
                           "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "ZUBZD",
+                      "name": "Project review agenda row",
+                      "width": "fill_container",
+                      "stroke": "$gumloop/divider",
+                      "gap": 16,
+                      "padding": [
+                        12,
+                        0
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "OI91O",
+                          "name": "15:00 time",
+                          "fill": "$gumloop/text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": 52,
+                          "content": "15:00",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-mono",
                           "fontSize": 12,
                           "fontWeight": "normal"
                         },
                         {
                           "type": "text",
                           "id": "RPREz",
-                          "name": "15:00   Project review",
+                          "name": "Project review",
                           "fill": "$ng-app/foreground",
-                          "content": "15:00   Project review",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Project review",
+                          "lineHeight": 1.5,
                           "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 12,
+                          "fontSize": 14,
                           "fontWeight": "normal"
                         }
                       ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "OTMMG",
+                  "name": "Schedule delivery details",
+                  "width": "fill_container",
+                  "fill": "#FFFFFFB3",
+                  "cornerRadius": 16,
+                  "stroke": "$gumloop/divider",
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": 20,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "hgy1E",
+                      "name": "Your week, at a glance",
+                      "fill": "$ng-app/foreground",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Your week, at a glance",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 14,
+                      "fontWeight": "600"
                     },
                     {
                       "type": "text",
-                      "id": "ZDUXO",
-                      "name": "Schedules heading",
+                      "id": "H3WC3r",
+                      "name": "Calendar highlights and anything to prepare.",
                       "fill": "$gumloop/text-muted",
-                      "content": "Schedules",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Calendar highlights and anything to prepare.",
+                      "lineHeight": 1.5,
                       "fontFamily": "$gumloop/font-ui",
                       "fontSize": 13,
                       "fontWeight": "normal"
                     },
                     {
                       "type": "frame",
-                      "id": "dXOHy",
-                      "name": "Overnight outbound routine",
-                      "width": "fill_container",
-                      "gap": 10,
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "icon",
-                          "id": "EXhT6",
-                          "name": "clock-3",
-                          "width": 18,
-                          "height": 18,
-                          "icon": "clock-3",
-                          "library": "lucide",
-                          "fill": "$gumloop/text-muted"
-                        },
-                        {
-                          "type": "frame",
-                          "id": "X94Epq",
-                          "name": "Routine details",
-                          "width": "fill_container",
-                          "gap": 8,
-                          "justifyContent": "space_between",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "mbWzK",
-                              "name": "Overnight outbound",
-                              "fill": "$gumloop/text",
-                              "content": "Monday overview",
-                              "lineHeight": 1.5,
-                              "fontFamily": "$gumloop/font-ui",
-                              "fontSize": 14,
-                              "fontWeight": "normal"
-                            },
-                            {
-                              "type": "text",
-                              "id": "l5qlV",
-                              "name": "Sundays",
-                              "fill": "$gumloop/text-muted",
-                              "content": "Mon · 08:00",
-                              "lineHeight": 1.5,
-                              "fontFamily": "$gumloop/font-ui",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "icon",
-                          "id": "dPbgm",
-                          "name": "chevron-right",
-                          "width": 16,
-                          "height": 16,
-                          "icon": "chevron-right",
-                          "library": "lucide",
-                          "fill": "$gumloop/text-muted"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "frame",
-                      "id": "OTMMG",
-                      "name": "Expanded schedule",
+                      "id": "iTyXP",
+                      "name": "Next delivery row",
                       "width": "fill_container",
                       "stroke": "$gumloop/divider",
                       "strokeWidth": {
                         "top": 1
                       },
-                      "layout": "vertical",
-                      "gap": 12,
+                      "gap": 16,
                       "padding": [
-                        14,
+                        12,
                         0,
                         0,
                         0
@@ -73061,28 +73244,15 @@
                       "children": [
                         {
                           "type": "text",
-                          "id": "hgy1E",
-                          "name": "Your week, at a glance",
-                          "fill": "$ng-app/foreground",
+                          "id": "iEQks",
+                          "name": "Next run label",
+                          "fill": "$gumloop/text-muted",
                           "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "Your week, at a glance",
+                          "width": 88,
+                          "content": "Next run",
                           "lineHeight": 1.5,
                           "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 15,
-                          "fontWeight": "normal"
-                        },
-                        {
-                          "type": "text",
-                          "id": "H3WC3r",
-                          "name": "Calendar highlights and anything to prepare.",
-                          "fill": "$ng-app/foreground",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "Calendar highlights and anything to prepare.",
-                          "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 13,
+                          "fontSize": 12,
                           "fontWeight": "normal"
                         },
                         {
@@ -73092,7 +73262,31 @@
                           "fill": "$ng-app/foreground",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
-                          "content": "Next · Mon, 2 Nov at 08:00 WITA",
+                          "content": "Mon, 2 Nov · 08:00 WITA",
+                          "lineHeight": 1.5,
+                          "textAlign": "right",
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "V3JCl",
+                      "name": "Last delivery row",
+                      "width": "fill_container",
+                      "stroke": "$gumloop/divider",
+                      "gap": 16,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "jxQr2",
+                          "name": "Last update label",
+                          "fill": "$gumloop/text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": 88,
+                          "content": "Last update",
                           "lineHeight": 1.5,
                           "fontFamily": "$gumloop/font-ui",
                           "fontSize": 12,
@@ -73105,23 +73299,70 @@
                           "fill": "$ng-app/foreground",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
-                          "content": "Last update · Delivered 26 Oct ↗",
+                          "content": "Delivered 26 Oct ↗",
                           "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 12,
-                          "fontWeight": "normal"
-                        },
-                        {
-                          "type": "text",
-                          "id": "vEzSa",
-                          "name": "Edit schedule                         Pause",
-                          "fill": "$ng-app/foreground",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "Edit schedule                         Pause",
-                          "lineHeight": 1.5,
+                          "textAlign": "right",
                           "fontFamily": "$gumloop/font-ui",
                           "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "m3uiU",
+                  "name": "Schedule dialog actions",
+                  "width": "fill_container",
+                  "gap": 10,
+                  "justifyContent": "end",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "Y1RCZj",
+                      "name": "Pause goal",
+                      "fill": "$ng-app/primary",
+                      "cornerRadius": 10,
+                      "stroke": "$gumloop/divider",
+                      "padding": [
+                        10,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "rommS",
+                          "name": "Edit schedule",
+                          "fill": "$ng-app/primary-foreground",
+                          "content": "Edit schedule",
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "x7YMx",
+                      "name": "Stop goal",
+                      "fill": "$ng-app/background",
+                      "cornerRadius": 10,
+                      "stroke": "$gumloop/divider",
+                      "strokeWidth": 1,
+                      "padding": [
+                        10,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "vniAw",
+                          "name": "Pause schedule",
+                          "fill": "$gumloop/text",
+                          "content": "Pause schedule",
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 14,
                           "fontWeight": "normal"
                         }
                       ]
@@ -75730,6 +75971,41 @@
                           ]
                         }
                       ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "KmV0B",
+                      "layoutPosition": "absolute",
+                      "x": 998,
+                      "y": 20,
+                      "name": "Conversation header actions",
+                      "width": 52,
+                      "height": 34,
+                      "gap": 16,
+                      "justifyContent": "end",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "FDn1h",
+                          "name": "settings",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "settings",
+                          "library": "lucide",
+                          "fill": "$gumloop/text-muted"
+                        },
+                        {
+                          "type": "icon",
+                          "id": "bOyQ9",
+                          "name": "Group members menu",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "users",
+                          "library": "lucide",
+                          "fill": "$gumloop/text-muted"
+                        }
+                      ]
                     }
                   ]
                 },
@@ -75896,94 +76172,82 @@
                   ]
                 }
               ]
-            },
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "uE19f",
+          "layoutPosition": "absolute",
+          "x": 0,
+          "y": 0,
+          "name": "Group members dialog backdrop",
+          "width": 1440,
+          "height": 1000,
+          "fill": "#18202E45",
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
             {
               "type": "frame",
-              "id": "FZsw3",
-              "name": "Group members panel",
-              "width": 360,
-              "height": "fill_container",
-              "fill": "#FFFFFF00",
-              "stroke": "$gumloop/divider",
+              "id": "l6ktU",
+              "name": "Group members glass dialog",
+              "width": 600,
+              "fill": "#F8FAFCF2",
+              "cornerRadius": 28,
+              "stroke": "#FFFFFFCC",
+              "strokeWidth": 1,
+              "effect": {
+                "type": "background_blur",
+                "radius": 32
+              },
               "layout": "vertical",
-              "gap": 16,
-              "padding": [
-                20,
-                16,
-                24,
-                8
-              ],
+              "gap": 24,
+              "padding": 28,
               "children": [
                 {
                   "type": "frame",
-                  "id": "KmV0B",
-                  "name": "Panel controls",
+                  "id": "l6Vzn",
+                  "name": "Group members dialog title bar",
                   "width": "fill_container",
-                  "height": 34,
-                  "gap": 16,
-                  "justifyContent": "end",
+                  "justifyContent": "space_between",
                   "alignItems": "center",
                   "children": [
                     {
-                      "type": "icon",
-                      "id": "FDn1h",
-                      "name": "settings",
-                      "width": 18,
-                      "height": 18,
-                      "icon": "settings",
-                      "library": "lucide",
-                      "fill": "$gumloop/text-muted"
-                    },
-                    {
-                      "type": "icon",
-                      "id": "bOyQ9",
-                      "name": "x",
-                      "width": 18,
-                      "height": 18,
-                      "icon": "x",
-                      "library": "lucide",
-                      "fill": "$gumloop/text-muted"
+                      "type": "frame",
+                      "id": "iwaB2",
+                      "name": "Close goal dialog",
+                      "width": 36,
+                      "height": 36,
+                      "fill": "#FFFFFF99",
+                      "cornerRadius": 999,
+                      "stroke": "$ng-app/border",
+                      "strokeWidth": 1,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "txnWG",
+                          "name": "Close",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "x",
+                          "library": "lucide",
+                          "fill": "$ng-app/foreground"
+                        }
+                      ]
                     }
                   ]
                 },
                 {
                   "type": "frame",
-                  "id": "l6ktU",
-                  "name": "Context floating card",
+                  "id": "r1iFI1",
+                  "name": "Group identity",
                   "width": "fill_container",
-                  "fill": {
-                    "type": "gradient",
-                    "gradientType": "linear",
-                    "enabled": true,
-                    "rotation": 155,
-                    "size": {
-                      "height": 1
-                    },
-                    "colors": [
-                      {
-                        "color": "#EDF1F7E8",
-                        "position": 0
-                      },
-                      {
-                        "color": "#F3F2F0E8",
-                        "position": 0.48
-                      },
-                      {
-                        "color": "#F4EDE9E8",
-                        "position": 1
-                      }
-                    ]
-                  },
-                  "cornerRadius": 20,
-                  "stroke": "#FFFFFF80",
-                  "strokeWidth": 1,
-                  "effect": {
-                    "type": "background_blur",
-                    "radius": 24
-                  },
                   "layout": "vertical",
-                  "gap": 18,
-                  "padding": 20,
+                  "gap": 8,
+                  "alignItems": "center",
                   "children": [
                     {
                       "type": "text",
@@ -75993,10 +76257,11 @@
                       "textGrowth": "fixed-width",
                       "width": "fill_container",
                       "content": "Bandung trip",
-                      "lineHeight": 1.5,
+                      "lineHeight": 1.2,
+                      "textAlign": "center",
                       "fontFamily": "$gumloop/font-ui",
-                      "fontSize": 20,
-                      "fontWeight": "normal"
+                      "fontSize": 26,
+                      "fontWeight": "600"
                     },
                     {
                       "type": "text",
@@ -76007,10 +76272,26 @@
                       "width": "fill_container",
                       "content": "You and 3 agents",
                       "lineHeight": 1.5,
+                      "textAlign": "center",
                       "fontFamily": "$gumloop/font-ui",
                       "fontSize": 13,
                       "fontWeight": "normal"
-                    },
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "gSvne",
+                  "name": "Group agent list",
+                  "width": "fill_container",
+                  "fill": "#FFFFFFB3",
+                  "cornerRadius": 16,
+                  "layout": "vertical",
+                  "padding": [
+                    4,
+                    20
+                  ],
+                  "children": [
                     {
                       "type": "frame",
                       "id": "OrMO9",
@@ -76020,40 +76301,86 @@
                       "strokeWidth": {
                         "bottom": 1
                       },
-                      "layout": "vertical",
-                      "gap": 6,
+                      "gap": 12,
                       "padding": [
-                        0,
-                        0,
-                        18,
+                        16,
                         0
                       ],
+                      "alignItems": "center",
                       "children": [
                         {
-                          "type": "text",
-                          "id": "KloZI",
-                          "name": "Tobi",
-                          "fill": "$gumloop/text-muted",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "Tobi",
-                          "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 13,
-                          "fontWeight": "normal"
+                          "type": "frame",
+                          "id": "s1Cgk",
+                          "name": "Tobi avatar",
+                          "width": 40,
+                          "height": 40,
+                          "fill": {
+                            "type": "image",
+                            "enabled": true,
+                            "url": "assets/critters/sales-outbound.png",
+                            "mode": "contain"
+                          },
+                          "cornerRadius": 12
                         },
                         {
-                          "type": "text",
-                          "id": "r5U1c",
-                          "name": "Planning · Remove",
-                          "fill": "$gumloop/text",
-                          "textGrowth": "fixed-width",
+                          "type": "frame",
+                          "id": "rYC1C",
+                          "name": "Tobi details",
                           "width": "fill_container",
-                          "content": "Planning · Remove",
-                          "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 15,
-                          "fontWeight": "normal"
+                          "layout": "vertical",
+                          "gap": 2,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "KloZI",
+                              "name": "Tobi",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Tobi",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 14,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "r5U1c",
+                              "name": "Planning · Remove",
+                              "fill": "$gumloop/text-muted",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Planning",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 13,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "g0ogFA",
+                          "name": "Remove Tobi",
+                          "cornerRadius": 8,
+                          "stroke": "$ng-app/border",
+                          "strokeWidth": 1,
+                          "padding": [
+                            8,
+                            10
+                          ],
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "LXDCn",
+                              "name": "Remove label",
+                              "fill": "$gumloop/text-muted",
+                              "content": "Remove",
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            }
+                          ]
                         }
                       ]
                     },
@@ -76066,40 +76393,86 @@
                       "strokeWidth": {
                         "bottom": 1
                       },
-                      "layout": "vertical",
-                      "gap": 6,
+                      "gap": 12,
                       "padding": [
-                        0,
-                        0,
-                        18,
+                        16,
                         0
                       ],
+                      "alignItems": "center",
                       "children": [
                         {
-                          "type": "text",
-                          "id": "PnMV9",
-                          "name": "Travel",
-                          "fill": "$gumloop/text-muted",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "Travel",
-                          "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 13,
-                          "fontWeight": "normal"
+                          "type": "frame",
+                          "id": "I0xPP",
+                          "name": "Travel avatar",
+                          "width": 40,
+                          "height": 40,
+                          "fill": {
+                            "type": "image",
+                            "enabled": true,
+                            "url": "assets/critters/chief.png",
+                            "mode": "contain"
+                          },
+                          "cornerRadius": 12
                         },
                         {
-                          "type": "text",
-                          "id": "WrynR",
-                          "name": "Places and routes · Remove",
-                          "fill": "$gumloop/text",
-                          "textGrowth": "fixed-width",
+                          "type": "frame",
+                          "id": "Xswl6",
+                          "name": "Travel details",
                           "width": "fill_container",
-                          "content": "Places and routes · Remove",
-                          "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 15,
-                          "fontWeight": "normal"
+                          "layout": "vertical",
+                          "gap": 2,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "PnMV9",
+                              "name": "Travel",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Travel",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 14,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "WrynR",
+                              "name": "Places and routes · Remove",
+                              "fill": "$gumloop/text-muted",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Places and routes",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 13,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "RMmsK",
+                          "name": "Remove Travel",
+                          "cornerRadius": 8,
+                          "stroke": "$ng-app/border",
+                          "strokeWidth": 1,
+                          "padding": [
+                            8,
+                            10
+                          ],
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "m7fGqw",
+                              "name": "Remove label",
+                              "fill": "$gumloop/text-muted",
+                              "content": "Remove",
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            }
+                          ]
                         }
                       ]
                     },
@@ -76109,92 +76482,98 @@
                       "name": "Budget",
                       "width": "fill_container",
                       "stroke": "$gumloop/divider",
-                      "strokeWidth": {
-                        "bottom": 1
-                      },
-                      "layout": "vertical",
-                      "gap": 6,
+                      "gap": 12,
                       "padding": [
-                        0,
-                        0,
-                        18,
+                        16,
                         0
                       ],
+                      "alignItems": "center",
                       "children": [
                         {
-                          "type": "text",
-                          "id": "e0n5Y",
-                          "name": "Budget",
-                          "fill": "$gumloop/text-muted",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "Budget",
-                          "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 13,
-                          "fontWeight": "normal"
+                          "type": "frame",
+                          "id": "W3cGm",
+                          "name": "Budget avatar",
+                          "width": 40,
+                          "height": 40,
+                          "fill": {
+                            "type": "image",
+                            "enabled": true,
+                            "url": "assets/critters/expense-manager.png",
+                            "mode": "contain"
+                          },
+                          "cornerRadius": 12
                         },
                         {
-                          "type": "text",
-                          "id": "e7Eg4I",
-                          "name": "Expenses · Remove",
-                          "fill": "$gumloop/text",
-                          "textGrowth": "fixed-width",
+                          "type": "frame",
+                          "id": "ARd9l",
+                          "name": "Budget details",
                           "width": "fill_container",
-                          "content": "Expenses · Remove",
-                          "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 15,
-                          "fontWeight": "normal"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "frame",
-                      "id": "KT7eo",
-                      "name": "Shared context",
-                      "width": "fill_container",
-                      "stroke": "$gumloop/divider",
-                      "strokeWidth": {
-                        "bottom": 1
-                      },
-                      "layout": "vertical",
-                      "gap": 6,
-                      "padding": [
-                        0,
-                        0,
-                        18,
-                        0
-                      ],
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "rprC0",
-                          "name": "Shared context",
-                          "fill": "$gumloop/text-muted",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "Shared context",
-                          "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 13,
-                          "fontWeight": "normal"
+                          "layout": "vertical",
+                          "gap": 2,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "e0n5Y",
+                              "name": "Budget",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Budget",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 14,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "e7Eg4I",
+                              "name": "Expenses · Remove",
+                              "fill": "$gumloop/text-muted",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Expenses",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 13,
+                              "fontWeight": "normal"
+                            }
+                          ]
                         },
                         {
-                          "type": "text",
-                          "id": "joCYd",
-                          "name": "Agents use this group’s conversation. Private ch",
-                          "fill": "$gumloop/text",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "Agents use this group’s conversation. Private chats stay separate.",
-                          "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 15,
-                          "fontWeight": "normal"
+                          "type": "frame",
+                          "id": "JBRZt",
+                          "name": "Remove Budget",
+                          "cornerRadius": 8,
+                          "stroke": "$ng-app/border",
+                          "strokeWidth": 1,
+                          "padding": [
+                            8,
+                            10
+                          ],
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "oSd5b",
+                              "name": "Remove label",
+                              "fill": "$gumloop/text-muted",
+                              "content": "Remove",
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            }
+                          ]
                         }
                       ]
-                    },
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "hi5t4",
+                  "name": "Group members dialog actions",
+                  "width": "fill_container",
+                  "justifyContent": "end",
+                  "children": [
                     {
                       "type": "frame",
                       "id": "w3Tsc",
@@ -99710,7 +100089,7 @@
                 "radius": 32
               },
               "layout": "vertical",
-              "gap": 22,
+              "gap": 20,
               "padding": 28,
               "children": [
                 {
@@ -99767,10 +100146,10 @@
                       "type": "frame",
                       "id": "amUFs",
                       "name": "Goal symbol",
-                      "width": 52,
-                      "height": 52,
-                      "fill": "$ng-app/accent",
-                      "cornerRadius": 16,
+                      "width": 56,
+                      "height": 56,
+                      "fill": "#11AC4B",
+                      "cornerRadius": 18,
                       "justifyContent": "center",
                       "alignItems": "center",
                       "children": [
@@ -99778,11 +100157,11 @@
                           "type": "icon",
                           "id": "W9y5H",
                           "name": "Goal target",
-                          "width": 24,
-                          "height": 24,
+                          "width": 26,
+                          "height": 26,
                           "icon": "target",
                           "library": "lucide",
-                          "fill": "$ng-app/accent-foreground"
+                          "fill": "#FFFFFF"
                         }
                       ]
                     },
@@ -99824,7 +100203,7 @@
                   "fill": "#171A2080",
                   "cornerRadius": 16,
                   "layout": "vertical",
-                  "gap": 16,
+                  "gap": 14,
                   "padding": 20,
                   "children": [
                     {
@@ -99837,7 +100216,7 @@
                         "bottom": 1
                       },
                       "layout": "vertical",
-                      "gap": 4,
+                      "gap": 6,
                       "padding": [
                         0,
                         0,
@@ -99855,7 +100234,7 @@
                           "content": "Goal",
                           "lineHeight": 1.5,
                           "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 13,
+                          "fontSize": 12,
                           "fontWeight": "normal"
                         },
                         {
@@ -99868,7 +100247,7 @@
                           "content": "A relaxed two-day trip under Rp2 million per person.",
                           "lineHeight": 1.5,
                           "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 15,
+                          "fontSize": 14,
                           "fontWeight": "normal"
                         }
                       ]
@@ -99883,7 +100262,7 @@
                         "bottom": 1
                       },
                       "layout": "vertical",
-                      "gap": 4,
+                      "gap": 6,
                       "padding": [
                         0,
                         0,
@@ -99901,7 +100280,7 @@
                           "content": "Completed",
                           "lineHeight": 1.5,
                           "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 13,
+                          "fontSize": 12,
                           "fontWeight": "normal"
                         },
                         {
@@ -99914,7 +100293,7 @@
                           "content": "Compared 3 stays and estimated transport costs.",
                           "lineHeight": 1.5,
                           "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 15,
+                          "fontSize": 14,
                           "fontWeight": "normal"
                         }
                       ]
@@ -99929,7 +100308,7 @@
                         "bottom": 1
                       },
                       "layout": "vertical",
-                      "gap": 4,
+                      "gap": 6,
                       "padding": [
                         0,
                         0,
@@ -99947,7 +100326,7 @@
                           "content": "Next",
                           "lineHeight": 1.5,
                           "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 13,
+                          "fontSize": 12,
                           "fontWeight": "normal"
                         },
                         {
@@ -99960,7 +100339,7 @@
                           "content": "Confirm your dates so I can check availability.",
                           "lineHeight": 1.5,
                           "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 15,
+                          "fontSize": 14,
                           "fontWeight": "normal"
                         }
                       ]
@@ -99975,7 +100354,7 @@
                         "bottom": 1
                       },
                       "layout": "vertical",
-                      "gap": 4,
+                      "gap": 6,
                       "padding": [
                         0,
                         0,
@@ -99993,7 +100372,7 @@
                           "content": "Responsible",
                           "lineHeight": 1.5,
                           "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 13,
+                          "fontSize": 12,
                           "fontWeight": "normal"
                         },
                         {
@@ -100006,7 +100385,7 @@
                           "content": "Tobi",
                           "lineHeight": 1.5,
                           "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 15,
+                          "fontSize": 14,
                           "fontWeight": "normal"
                         }
                       ]
@@ -100018,7 +100397,7 @@
                       "width": "fill_container",
                       "stroke": "$gumloop/divider",
                       "layout": "vertical",
-                      "gap": 4,
+                      "gap": 6,
                       "children": [
                         {
                           "type": "text",
@@ -100030,7 +100409,7 @@
                           "content": "Saved result",
                           "lineHeight": 1.5,
                           "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 13,
+                          "fontSize": 12,
                           "fontWeight": "normal"
                         },
                         {
@@ -100043,7 +100422,7 @@
                           "content": "Bandung shortlist.pdf ↗",
                           "lineHeight": 1.5,
                           "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 15,
+                          "fontSize": 14,
                           "fontWeight": "normal"
                         }
                       ]
@@ -101031,6 +101410,41 @@
                           ]
                         }
                       ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "HzcuS",
+                      "layoutPosition": "absolute",
+                      "x": 998,
+                      "y": 20,
+                      "name": "Conversation header actions",
+                      "width": 52,
+                      "height": 34,
+                      "gap": 16,
+                      "justifyContent": "end",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "Z3oSHF",
+                          "name": "settings",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "settings",
+                          "library": "lucide",
+                          "fill": "$gumloop/text-muted"
+                        },
+                        {
+                          "type": "icon",
+                          "id": "DoDPM",
+                          "name": "Schedules menu",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "list",
+                          "library": "lucide",
+                          "fill": "$gumloop/text-muted"
+                        }
+                      ]
                     }
                   ]
                 },
@@ -101254,295 +101668,359 @@
                   ]
                 }
               ]
-            },
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "PByiT",
+          "layoutPosition": "absolute",
+          "x": 0,
+          "y": 0,
+          "name": "Schedule dialog backdrop",
+          "width": 1440,
+          "height": 1000,
+          "fill": "#080A107A",
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
             {
               "type": "frame",
-              "id": "dpY23",
-              "name": "Routine details panel",
-              "width": 360,
-              "height": "fill_container",
-              "fill": "#FFFFFF00",
-              "stroke": "$gumloop/divider",
+              "id": "qQSSh",
+              "name": "Schedule details glass dialog",
+              "width": 600,
+              "fill": "#25282FF2",
+              "cornerRadius": 28,
+              "stroke": "#FFFFFF26",
+              "strokeWidth": 1,
+              "effect": {
+                "type": "background_blur",
+                "radius": 32
+              },
               "layout": "vertical",
-              "gap": 16,
-              "padding": [
-                20,
-                16,
-                24,
-                8
-              ],
+              "gap": 20,
+              "padding": 28,
               "children": [
                 {
                   "type": "frame",
-                  "id": "HzcuS",
-                  "name": "Panel controls",
+                  "id": "ZfIiL",
+                  "name": "Schedule dialog title bar",
                   "width": "fill_container",
-                  "height": 34,
-                  "gap": 16,
-                  "justifyContent": "end",
+                  "justifyContent": "space_between",
                   "alignItems": "center",
                   "children": [
                     {
-                      "type": "icon",
-                      "id": "Z3oSHF",
-                      "name": "settings",
-                      "width": 18,
-                      "height": 18,
-                      "icon": "settings",
-                      "library": "lucide",
-                      "fill": "$gumloop/text-muted"
-                    },
-                    {
-                      "type": "icon",
-                      "id": "DoDPM",
-                      "name": "x",
-                      "width": 18,
-                      "height": 18,
-                      "icon": "x",
-                      "library": "lucide",
-                      "fill": "$gumloop/text-muted"
+                      "type": "frame",
+                      "id": "I93lu",
+                      "name": "Close schedule dialog",
+                      "width": 36,
+                      "height": 36,
+                      "fill": "#FFFFFF0D",
+                      "cornerRadius": 999,
+                      "stroke": "$ng-app/border",
+                      "strokeWidth": 1,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "VroAI",
+                          "name": "Close",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "x",
+                          "library": "lucide",
+                          "fill": "$ng-app/foreground"
+                        }
+                      ]
                     }
                   ]
                 },
                 {
                   "type": "frame",
-                  "id": "qQSSh",
-                  "name": "Context floating card",
+                  "id": "uwk0c",
+                  "name": "Schedule identity",
                   "width": "fill_container",
-                  "fill": {
-                    "type": "gradient",
-                    "gradientType": "linear",
-                    "enabled": true,
-                    "rotation": 155,
-                    "size": {
-                      "height": 1
-                    },
-                    "colors": [
-                      {
-                        "color": "#252A32EB",
-                        "position": 0
-                      },
-                      {
-                        "color": "#252629EB",
-                        "position": 0.48
-                      },
-                      {
-                        "color": "#2C282AEB",
-                        "position": 1
-                      }
-                    ]
-                  },
-                  "cornerRadius": 20,
-                  "stroke": "#FFFFFF12",
-                  "strokeWidth": 1,
-                  "effect": {
-                    "type": "background_blur",
-                    "radius": 24
-                  },
                   "layout": "vertical",
-                  "gap": 18,
-                  "padding": 20,
+                  "gap": 8,
+                  "padding": [
+                    0,
+                    0,
+                    4,
+                    0
+                  ],
+                  "alignItems": "center",
                   "children": [
                     {
                       "type": "frame",
-                      "id": "THH6h",
-                      "name": "Computer agent profile",
-                      "width": "fill_container",
-                      "gap": 12,
+                      "id": "zCuvq",
+                      "name": "Goal symbol",
+                      "width": 56,
+                      "height": 56,
+                      "fill": "#F15822",
+                      "cornerRadius": 18,
+                      "justifyContent": "center",
                       "alignItems": "center",
                       "children": [
                         {
-                          "type": "frame",
-                          "id": "vZA3d",
-                          "name": "Sales Outbound profile avatar",
-                          "width": 56,
-                          "height": 56,
-                          "fill": {
-                            "type": "image",
-                            "enabled": true,
-                            "url": "assets/critters/sales-outbound.png",
-                            "mode": "contain"
-                          },
-                          "cornerRadius": 16
-                        },
-                        {
-                          "type": "frame",
-                          "id": "USH0p",
-                          "name": "Agent name and context",
-                          "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 4,
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "e9ubs",
-                              "name": "Agent display name",
-                              "fill": "$gumloop/text",
-                              "textGrowth": "fixed-width",
-                              "width": "fill_container",
-                              "content": "Tobi",
-                              "fontFamily": "$gumloop/font-ui",
-                              "fontSize": 18,
-                              "fontWeight": "600"
-                            },
-                            {
-                              "type": "text",
-                              "id": "Ehu4h",
-                              "name": "Agent type",
-                              "fill": "$gumloop/text-muted",
-                              "textGrowth": "fixed-width",
-                              "width": "fill_container",
-                              "content": "Your personal assistant",
-                              "fontFamily": "$gumloop/font-ui",
-                              "fontSize": 13,
-                              "fontWeight": "normal"
-                            }
-                          ]
+                          "type": "icon",
+                          "id": "J4xoPB",
+                          "name": "Schedule icon",
+                          "width": 26,
+                          "height": 26,
+                          "icon": "calendar-clock",
+                          "library": "lucide",
+                          "fill": "#FFFFFF"
                         }
                       ]
                     },
                     {
-                      "type": "frame",
-                      "id": "Z4fyM",
-                      "name": "Agent desktop preview",
-                      "clip": true,
+                      "type": "text",
+                      "id": "aoMYw",
+                      "name": "Monday overview",
+                      "fill": "$gumloop/text",
+                      "textGrowth": "fixed-width",
                       "width": "fill_container",
-                      "fill": "$ng-app/muted",
-                      "cornerRadius": 10,
-                      "stroke": "$ng-app/border",
-                      "strokeWidth": 1,
-                      "layout": "vertical",
-                      "gap": 12,
-                      "padding": 14,
+                      "content": "Monday overview",
+                      "lineHeight": 1.2,
+                      "textAlign": "center",
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 26,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "re1YM",
+                      "name": "Schedule frequency",
+                      "fill": "$gumloop/text-muted",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Every Monday · 08:00 WITA",
+                      "lineHeight": 1.5,
+                      "textAlign": "center",
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Z4fyM",
+                  "name": "Upcoming calendar highlights",
+                  "clip": true,
+                  "width": "fill_container",
+                  "fill": "#FFFFFF08",
+                  "cornerRadius": 16,
+                  "stroke": "$ng-app/border",
+                  "layout": "vertical",
+                  "padding": 20,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "BuTDv",
+                      "name": "Calendar date heading",
+                      "width": "fill_container",
+                      "padding": [
+                        0,
+                        0,
+                        12,
+                        0
+                      ],
                       "children": [
                         {
                           "type": "text",
                           "id": "tVS9T",
                           "name": "Monday · 2 November",
-                          "fill": "$ng-app/foreground",
+                          "fill": "$gumloop/text",
                           "content": "Monday · 2 November",
                           "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 13,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "qE347",
+                      "name": "Team catch-up agenda row",
+                      "width": "fill_container",
+                      "stroke": "$gumloop/divider",
+                      "strokeWidth": {
+                        "bottom": 1
+                      },
+                      "gap": 16,
+                      "padding": [
+                        12,
+                        0
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "K1zDsS",
+                          "name": "09:00 time",
+                          "fill": "$gumloop/text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": 52,
+                          "content": "09:00",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-mono",
                           "fontSize": 12,
                           "fontWeight": "normal"
                         },
                         {
                           "type": "text",
                           "id": "cxM4U",
-                          "name": "09:00   Team catch-up",
+                          "name": "Team catch-up",
                           "fill": "$ng-app/foreground",
-                          "content": "09:00   Team catch-up",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Team catch-up",
+                          "lineHeight": 1.5,
                           "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "SeFe7",
+                      "name": "Lunch with Maya agenda row",
+                      "width": "fill_container",
+                      "stroke": "$gumloop/divider",
+                      "strokeWidth": {
+                        "bottom": 1
+                      },
+                      "gap": 16,
+                      "padding": [
+                        12,
+                        0
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "nmSTz",
+                          "name": "11:30 time",
+                          "fill": "$gumloop/text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": 52,
+                          "content": "11:30",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-mono",
                           "fontSize": 12,
                           "fontWeight": "normal"
                         },
                         {
                           "type": "text",
                           "id": "rNz8J",
-                          "name": "11:30   Lunch with Maya",
+                          "name": "Lunch with Maya",
                           "fill": "$ng-app/foreground",
-                          "content": "11:30   Lunch with Maya",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Lunch with Maya",
+                          "lineHeight": 1.5,
                           "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "A7aK2",
+                      "name": "Project review agenda row",
+                      "width": "fill_container",
+                      "stroke": "$gumloop/divider",
+                      "gap": 16,
+                      "padding": [
+                        12,
+                        0
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "a3FpAK",
+                          "name": "15:00 time",
+                          "fill": "$gumloop/text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": 52,
+                          "content": "15:00",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$gumloop/font-mono",
                           "fontSize": 12,
                           "fontWeight": "normal"
                         },
                         {
                           "type": "text",
                           "id": "xyVMd",
-                          "name": "15:00   Project review",
+                          "name": "Project review",
                           "fill": "$ng-app/foreground",
-                          "content": "15:00   Project review",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Project review",
+                          "lineHeight": 1.5,
                           "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 12,
+                          "fontSize": 14,
                           "fontWeight": "normal"
                         }
                       ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "lSqwy",
+                  "name": "Schedule delivery details",
+                  "width": "fill_container",
+                  "fill": "#FFFFFF08",
+                  "cornerRadius": 16,
+                  "stroke": "$gumloop/divider",
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": 20,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "tU5f4",
+                      "name": "Your week, at a glance",
+                      "fill": "$ng-app/foreground",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Your week, at a glance",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$gumloop/font-ui",
+                      "fontSize": 14,
+                      "fontWeight": "600"
                     },
                     {
                       "type": "text",
-                      "id": "MPmlt",
-                      "name": "Schedules heading",
+                      "id": "rQj7Z",
+                      "name": "Calendar highlights and anything to prepare.",
                       "fill": "$gumloop/text-muted",
-                      "content": "Schedules",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Calendar highlights and anything to prepare.",
+                      "lineHeight": 1.5,
                       "fontFamily": "$gumloop/font-ui",
                       "fontSize": 13,
                       "fontWeight": "normal"
                     },
                     {
                       "type": "frame",
-                      "id": "yjPru",
-                      "name": "Overnight outbound routine",
-                      "width": "fill_container",
-                      "gap": 10,
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "icon",
-                          "id": "gHHOz",
-                          "name": "clock-3",
-                          "width": 18,
-                          "height": 18,
-                          "icon": "clock-3",
-                          "library": "lucide",
-                          "fill": "$gumloop/text-muted"
-                        },
-                        {
-                          "type": "frame",
-                          "id": "N6zmQV",
-                          "name": "Routine details",
-                          "width": "fill_container",
-                          "gap": 8,
-                          "justifyContent": "space_between",
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "CqN44",
-                              "name": "Overnight outbound",
-                              "fill": "$gumloop/text",
-                              "content": "Monday overview",
-                              "lineHeight": 1.5,
-                              "fontFamily": "$gumloop/font-ui",
-                              "fontSize": 14,
-                              "fontWeight": "normal"
-                            },
-                            {
-                              "type": "text",
-                              "id": "lGfoe",
-                              "name": "Sundays",
-                              "fill": "$gumloop/text-muted",
-                              "content": "Mon · 08:00",
-                              "lineHeight": 1.5,
-                              "fontFamily": "$gumloop/font-ui",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "icon",
-                          "id": "n3EyV",
-                          "name": "chevron-right",
-                          "width": 16,
-                          "height": 16,
-                          "icon": "chevron-right",
-                          "library": "lucide",
-                          "fill": "$gumloop/text-muted"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "frame",
-                      "id": "lSqwy",
-                      "name": "Expanded schedule",
+                      "id": "VryPF",
+                      "name": "Next delivery row",
                       "width": "fill_container",
                       "stroke": "$gumloop/divider",
                       "strokeWidth": {
                         "top": 1
                       },
-                      "layout": "vertical",
-                      "gap": 12,
+                      "gap": 16,
                       "padding": [
-                        14,
+                        12,
                         0,
                         0,
                         0
@@ -101550,28 +102028,15 @@
                       "children": [
                         {
                           "type": "text",
-                          "id": "tU5f4",
-                          "name": "Your week, at a glance",
-                          "fill": "$ng-app/foreground",
+                          "id": "xCiXg",
+                          "name": "Next run label",
+                          "fill": "$gumloop/text-muted",
                           "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "Your week, at a glance",
+                          "width": 88,
+                          "content": "Next run",
                           "lineHeight": 1.5,
                           "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 15,
-                          "fontWeight": "normal"
-                        },
-                        {
-                          "type": "text",
-                          "id": "rQj7Z",
-                          "name": "Calendar highlights and anything to prepare.",
-                          "fill": "$ng-app/foreground",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "Calendar highlights and anything to prepare.",
-                          "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 13,
+                          "fontSize": 12,
                           "fontWeight": "normal"
                         },
                         {
@@ -101581,7 +102046,31 @@
                           "fill": "$ng-app/foreground",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
-                          "content": "Next · Mon, 2 Nov at 08:00 WITA",
+                          "content": "Mon, 2 Nov · 08:00 WITA",
+                          "lineHeight": 1.5,
+                          "textAlign": "right",
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "NEPag",
+                      "name": "Last delivery row",
+                      "width": "fill_container",
+                      "stroke": "$gumloop/divider",
+                      "gap": 16,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "I8u4Y3",
+                          "name": "Last update label",
+                          "fill": "$gumloop/text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": 88,
+                          "content": "Last update",
                           "lineHeight": 1.5,
                           "fontFamily": "$gumloop/font-ui",
                           "fontSize": 12,
@@ -101594,23 +102083,70 @@
                           "fill": "$ng-app/foreground",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
-                          "content": "Last update · Delivered 26 Oct ↗",
+                          "content": "Delivered 26 Oct ↗",
                           "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 12,
-                          "fontWeight": "normal"
-                        },
-                        {
-                          "type": "text",
-                          "id": "XpKQP",
-                          "name": "Edit schedule                         Pause",
-                          "fill": "$ng-app/foreground",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "Edit schedule                         Pause",
-                          "lineHeight": 1.5,
+                          "textAlign": "right",
                           "fontFamily": "$gumloop/font-ui",
                           "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "meIfH",
+                  "name": "Schedule dialog actions",
+                  "width": "fill_container",
+                  "gap": 10,
+                  "justifyContent": "end",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "K5ecvX",
+                      "name": "Pause goal",
+                      "fill": "$ng-app/primary",
+                      "cornerRadius": 10,
+                      "stroke": "$gumloop/divider",
+                      "padding": [
+                        10,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "b5iiq",
+                          "name": "Edit schedule",
+                          "fill": "$ng-app/primary-foreground",
+                          "content": "Edit schedule",
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "TAffu",
+                      "name": "Stop goal",
+                      "fill": "$ng-app/background",
+                      "cornerRadius": 10,
+                      "stroke": "$gumloop/divider",
+                      "strokeWidth": 1,
+                      "padding": [
+                        10,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "bc9Zl",
+                          "name": "Pause schedule",
+                          "fill": "$gumloop/text",
+                          "content": "Pause schedule",
+                          "fontFamily": "$gumloop/font-ui",
+                          "fontSize": 14,
                           "fontWeight": "normal"
                         }
                       ]
@@ -104219,6 +104755,41 @@
                           ]
                         }
                       ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "LGO93",
+                      "layoutPosition": "absolute",
+                      "x": 998,
+                      "y": 20,
+                      "name": "Conversation header actions",
+                      "width": 52,
+                      "height": 34,
+                      "gap": 16,
+                      "justifyContent": "end",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "GhSnF",
+                          "name": "settings",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "settings",
+                          "library": "lucide",
+                          "fill": "$gumloop/text-muted"
+                        },
+                        {
+                          "type": "icon",
+                          "id": "Pe0Bu",
+                          "name": "Group members menu",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "users",
+                          "library": "lucide",
+                          "fill": "$gumloop/text-muted"
+                        }
+                      ]
                     }
                   ]
                 },
@@ -104385,94 +104956,82 @@
                   ]
                 }
               ]
-            },
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "BQzb0",
+          "layoutPosition": "absolute",
+          "x": 0,
+          "y": 0,
+          "name": "Group members dialog backdrop",
+          "width": 1440,
+          "height": 1000,
+          "fill": "#080A107A",
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
             {
               "type": "frame",
-              "id": "IZeg3",
-              "name": "Group members panel",
-              "width": 360,
-              "height": "fill_container",
-              "fill": "#FFFFFF00",
-              "stroke": "$gumloop/divider",
+              "id": "OClPF",
+              "name": "Group members glass dialog",
+              "width": 600,
+              "fill": "#25282FF2",
+              "cornerRadius": 28,
+              "stroke": "#FFFFFF26",
+              "strokeWidth": 1,
+              "effect": {
+                "type": "background_blur",
+                "radius": 32
+              },
               "layout": "vertical",
-              "gap": 16,
-              "padding": [
-                20,
-                16,
-                24,
-                8
-              ],
+              "gap": 24,
+              "padding": 28,
               "children": [
                 {
                   "type": "frame",
-                  "id": "LGO93",
-                  "name": "Panel controls",
+                  "id": "aKWqx",
+                  "name": "Group members dialog title bar",
                   "width": "fill_container",
-                  "height": 34,
-                  "gap": 16,
-                  "justifyContent": "end",
+                  "justifyContent": "space_between",
                   "alignItems": "center",
                   "children": [
                     {
-                      "type": "icon",
-                      "id": "GhSnF",
-                      "name": "settings",
-                      "width": 18,
-                      "height": 18,
-                      "icon": "settings",
-                      "library": "lucide",
-                      "fill": "$gumloop/text-muted"
-                    },
-                    {
-                      "type": "icon",
-                      "id": "Pe0Bu",
-                      "name": "x",
-                      "width": 18,
-                      "height": 18,
-                      "icon": "x",
-                      "library": "lucide",
-                      "fill": "$gumloop/text-muted"
+                      "type": "frame",
+                      "id": "VRfHD",
+                      "name": "Close goal dialog",
+                      "width": 36,
+                      "height": 36,
+                      "fill": "#FFFFFF0D",
+                      "cornerRadius": 999,
+                      "stroke": "$ng-app/border",
+                      "strokeWidth": 1,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "TbM9H",
+                          "name": "Close",
+                          "width": 18,
+                          "height": 18,
+                          "icon": "x",
+                          "library": "lucide",
+                          "fill": "$ng-app/foreground"
+                        }
+                      ]
                     }
                   ]
                 },
                 {
                   "type": "frame",
-                  "id": "OClPF",
-                  "name": "Context floating card",
+                  "id": "M5OhW",
+                  "name": "Group identity",
                   "width": "fill_container",
-                  "fill": {
-                    "type": "gradient",
-                    "gradientType": "linear",
-                    "enabled": true,
-                    "rotation": 155,
-                    "size": {
-                      "height": 1
-                    },
-                    "colors": [
-                      {
-                        "color": "#252A32EB",
-                        "position": 0
-                      },
-                      {
-                        "color": "#252629EB",
-                        "position": 0.48
-                      },
-                      {
-                        "color": "#2C282AEB",
-                        "position": 1
-                      }
-                    ]
-                  },
-                  "cornerRadius": 20,
-                  "stroke": "#FFFFFF12",
-                  "strokeWidth": 1,
-                  "effect": {
-                    "type": "background_blur",
-                    "radius": 24
-                  },
                   "layout": "vertical",
-                  "gap": 18,
-                  "padding": 20,
+                  "gap": 8,
+                  "alignItems": "center",
                   "children": [
                     {
                       "type": "text",
@@ -104482,10 +105041,11 @@
                       "textGrowth": "fixed-width",
                       "width": "fill_container",
                       "content": "Bandung trip",
-                      "lineHeight": 1.5,
+                      "lineHeight": 1.2,
+                      "textAlign": "center",
                       "fontFamily": "$gumloop/font-ui",
-                      "fontSize": 20,
-                      "fontWeight": "normal"
+                      "fontSize": 26,
+                      "fontWeight": "600"
                     },
                     {
                       "type": "text",
@@ -104496,10 +105056,26 @@
                       "width": "fill_container",
                       "content": "You and 3 agents",
                       "lineHeight": 1.5,
+                      "textAlign": "center",
                       "fontFamily": "$gumloop/font-ui",
                       "fontSize": 13,
                       "fontWeight": "normal"
-                    },
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "v251Lj",
+                  "name": "Group agent list",
+                  "width": "fill_container",
+                  "fill": "#FFFFFF08",
+                  "cornerRadius": 16,
+                  "layout": "vertical",
+                  "padding": [
+                    4,
+                    20
+                  ],
+                  "children": [
                     {
                       "type": "frame",
                       "id": "Ie9hw",
@@ -104509,40 +105085,86 @@
                       "strokeWidth": {
                         "bottom": 1
                       },
-                      "layout": "vertical",
-                      "gap": 6,
+                      "gap": 12,
                       "padding": [
-                        0,
-                        0,
-                        18,
+                        16,
                         0
                       ],
+                      "alignItems": "center",
                       "children": [
                         {
-                          "type": "text",
-                          "id": "sVZo4",
-                          "name": "Tobi",
-                          "fill": "$gumloop/text-muted",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "Tobi",
-                          "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 13,
-                          "fontWeight": "normal"
+                          "type": "frame",
+                          "id": "zLQs9",
+                          "name": "Tobi avatar",
+                          "width": 40,
+                          "height": 40,
+                          "fill": {
+                            "type": "image",
+                            "enabled": true,
+                            "url": "assets/critters/sales-outbound.png",
+                            "mode": "contain"
+                          },
+                          "cornerRadius": 12
                         },
                         {
-                          "type": "text",
-                          "id": "TrnQ2",
-                          "name": "Planning · Remove",
-                          "fill": "$gumloop/text",
-                          "textGrowth": "fixed-width",
+                          "type": "frame",
+                          "id": "Y1tSM7",
+                          "name": "Tobi details",
                           "width": "fill_container",
-                          "content": "Planning · Remove",
-                          "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 15,
-                          "fontWeight": "normal"
+                          "layout": "vertical",
+                          "gap": 2,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "sVZo4",
+                              "name": "Tobi",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Tobi",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 14,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "TrnQ2",
+                              "name": "Planning · Remove",
+                              "fill": "$gumloop/text-muted",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Planning",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 13,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "syNXZ",
+                          "name": "Remove Tobi",
+                          "cornerRadius": 8,
+                          "stroke": "$ng-app/border",
+                          "strokeWidth": 1,
+                          "padding": [
+                            8,
+                            10
+                          ],
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "JgzAy",
+                              "name": "Remove label",
+                              "fill": "$gumloop/text-muted",
+                              "content": "Remove",
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            }
+                          ]
                         }
                       ]
                     },
@@ -104555,40 +105177,86 @@
                       "strokeWidth": {
                         "bottom": 1
                       },
-                      "layout": "vertical",
-                      "gap": 6,
+                      "gap": 12,
                       "padding": [
-                        0,
-                        0,
-                        18,
+                        16,
                         0
                       ],
+                      "alignItems": "center",
                       "children": [
                         {
-                          "type": "text",
-                          "id": "Y9sfeh",
-                          "name": "Travel",
-                          "fill": "$gumloop/text-muted",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "Travel",
-                          "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 13,
-                          "fontWeight": "normal"
+                          "type": "frame",
+                          "id": "FWPMw",
+                          "name": "Travel avatar",
+                          "width": 40,
+                          "height": 40,
+                          "fill": {
+                            "type": "image",
+                            "enabled": true,
+                            "url": "assets/critters/chief.png",
+                            "mode": "contain"
+                          },
+                          "cornerRadius": 12
                         },
                         {
-                          "type": "text",
-                          "id": "fh03D",
-                          "name": "Places and routes · Remove",
-                          "fill": "$gumloop/text",
-                          "textGrowth": "fixed-width",
+                          "type": "frame",
+                          "id": "SiZQx",
+                          "name": "Travel details",
                           "width": "fill_container",
-                          "content": "Places and routes · Remove",
-                          "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 15,
-                          "fontWeight": "normal"
+                          "layout": "vertical",
+                          "gap": 2,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "Y9sfeh",
+                              "name": "Travel",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Travel",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 14,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "fh03D",
+                              "name": "Places and routes · Remove",
+                              "fill": "$gumloop/text-muted",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Places and routes",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 13,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "T897cJ",
+                          "name": "Remove Travel",
+                          "cornerRadius": 8,
+                          "stroke": "$ng-app/border",
+                          "strokeWidth": 1,
+                          "padding": [
+                            8,
+                            10
+                          ],
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "jv7db",
+                              "name": "Remove label",
+                              "fill": "$gumloop/text-muted",
+                              "content": "Remove",
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            }
+                          ]
                         }
                       ]
                     },
@@ -104598,92 +105266,98 @@
                       "name": "Budget",
                       "width": "fill_container",
                       "stroke": "$gumloop/divider",
-                      "strokeWidth": {
-                        "bottom": 1
-                      },
-                      "layout": "vertical",
-                      "gap": 6,
+                      "gap": 12,
                       "padding": [
-                        0,
-                        0,
-                        18,
+                        16,
                         0
                       ],
+                      "alignItems": "center",
                       "children": [
                         {
-                          "type": "text",
-                          "id": "ztzLL",
-                          "name": "Budget",
-                          "fill": "$gumloop/text-muted",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "Budget",
-                          "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 13,
-                          "fontWeight": "normal"
+                          "type": "frame",
+                          "id": "wc5te",
+                          "name": "Budget avatar",
+                          "width": 40,
+                          "height": 40,
+                          "fill": {
+                            "type": "image",
+                            "enabled": true,
+                            "url": "assets/critters/expense-manager.png",
+                            "mode": "contain"
+                          },
+                          "cornerRadius": 12
                         },
                         {
-                          "type": "text",
-                          "id": "ko5ee",
-                          "name": "Expenses · Remove",
-                          "fill": "$gumloop/text",
-                          "textGrowth": "fixed-width",
+                          "type": "frame",
+                          "id": "cXmeQ",
+                          "name": "Budget details",
                           "width": "fill_container",
-                          "content": "Expenses · Remove",
-                          "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 15,
-                          "fontWeight": "normal"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "frame",
-                      "id": "e04tf",
-                      "name": "Shared context",
-                      "width": "fill_container",
-                      "stroke": "$gumloop/divider",
-                      "strokeWidth": {
-                        "bottom": 1
-                      },
-                      "layout": "vertical",
-                      "gap": 6,
-                      "padding": [
-                        0,
-                        0,
-                        18,
-                        0
-                      ],
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "NC4ot",
-                          "name": "Shared context",
-                          "fill": "$gumloop/text-muted",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "Shared context",
-                          "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 13,
-                          "fontWeight": "normal"
+                          "layout": "vertical",
+                          "gap": 2,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "ztzLL",
+                              "name": "Budget",
+                              "fill": "$gumloop/text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Budget",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 14,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "ko5ee",
+                              "name": "Expenses · Remove",
+                              "fill": "$gumloop/text-muted",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Expenses",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 13,
+                              "fontWeight": "normal"
+                            }
+                          ]
                         },
                         {
-                          "type": "text",
-                          "id": "ut2ck",
-                          "name": "Agents use this group’s conversation. Private ch",
-                          "fill": "$gumloop/text",
-                          "textGrowth": "fixed-width",
-                          "width": "fill_container",
-                          "content": "Agents use this group’s conversation. Private chats stay separate.",
-                          "lineHeight": 1.5,
-                          "fontFamily": "$gumloop/font-ui",
-                          "fontSize": 15,
-                          "fontWeight": "normal"
+                          "type": "frame",
+                          "id": "EV8LR",
+                          "name": "Remove Budget",
+                          "cornerRadius": 8,
+                          "stroke": "$ng-app/border",
+                          "strokeWidth": 1,
+                          "padding": [
+                            8,
+                            10
+                          ],
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "nzTES",
+                              "name": "Remove label",
+                              "fill": "$gumloop/text-muted",
+                              "content": "Remove",
+                              "fontFamily": "$gumloop/font-ui",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            }
+                          ]
                         }
                       ]
-                    },
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Safyd",
+                  "name": "Group members dialog actions",
+                  "width": "fill_container",
+                  "justifyContent": "end",
+                  "children": [
                     {
                       "type": "frame",
                       "id": "B8DD7z",

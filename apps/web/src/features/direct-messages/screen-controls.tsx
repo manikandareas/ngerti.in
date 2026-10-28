@@ -1,4 +1,5 @@
 import { useAuth } from "@clerk/tanstack-react-start";
+import { Monitor } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
+import { ApiError } from "@/lib/api";
 import { command, submit } from "./client";
 import type { Thread } from "./state";
 
@@ -26,6 +28,7 @@ type Login = { id: string; label: string; origin: string; identifier: string };
 export function ScreenControls({ thread }: { thread: Thread }) {
   const { getToken, userId } = useAuth();
   const [open, setOpen] = useState(false);
+  const [docked, setDocked] = useState(false);
   const [agentId, setAgentId] = useState(thread.agents[0]?.agent_id ?? "");
   const [connection, setConnection] = useState<Screen | null>(null);
   const [frame, setFrame] = useState("");
@@ -74,7 +77,7 @@ export function ScreenControls({ thread }: { thread: Thread }) {
   );
 
   useEffect(() => {
-    if (!connection?.grant || !open) return;
+    if (!connection?.grant || !open || busy || connection.control === "disconnected") return;
     let active = true;
     let timer: ReturnType<typeof setTimeout>;
     async function refresh() {
@@ -99,7 +102,7 @@ export function ScreenControls({ thread }: { thread: Thread }) {
       active = false;
       clearTimeout(timer);
     };
-  }, [connection?.grant, request, open]);
+  }, [connection?.grant, connection?.control, request, open, busy]);
 
   async function act(action: string, extra: object = {}) {
     if (busy) return;
@@ -107,6 +110,15 @@ export function ScreenControls({ thread }: { thread: Thread }) {
     setBusy(true);
     setError("");
     try {
+      if (action === "connect" && connection?.grant) {
+        // Retire this viewer before replacing its grant so human ownership cannot
+        // remain attached to an inaccessible token after a network interruption.
+        try {
+          await request("revoke", { grant: connection.grant });
+        } catch (cause) {
+          if (!(cause instanceof ApiError && cause.code === "SCREEN_ACCESS_REFUSED")) throw cause;
+        }
+      }
       const value = await request(action, {
         ...(connection?.grant && action !== "connect" ? { grant: connection.grant } : {}),
         ...extra,
@@ -118,6 +130,7 @@ export function ScreenControls({ thread }: { thread: Thread }) {
         if (storageKey) sessionStorage.removeItem(storageKey);
       } else setConnection((current) => ({ ...current, ...value }));
       if (value.observation?.image) setFrame(value.observation.image);
+      if (action === "resume" || action === "revoke" || action === "pause") setSecret("");
       if (action === "diagnostics") {
         setDiagnostic(
           value.ready
@@ -172,21 +185,40 @@ export function ScreenControls({ thread }: { thread: Thread }) {
     <Dialog
       open={open}
       onOpenChange={(next) => {
+        if (!next && busy) return;
         setOpen(next);
-        if (!next && human) void act("revoke");
+        if (!next) {
+          setSecret("");
+          setPassword("");
+          setOtpSecret("");
+          if (human) void act("revoke");
+        }
       }}
     >
       <DialogTrigger asChild>
         <Button type="button" variant="outline" size="sm">
-          Layar dan bantuan login
+          <Monitor className="size-4" /> Layar dan bantuan login
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-h-[94dvh] overflow-y-auto sm:max-w-5xl">
+      <DialogContent
+        showOverlay={!docked}
+        data-context-editor={docked ? "true" : undefined}
+        className={`max-h-[94dvh] overflow-y-auto rounded-t-2xl sm:max-w-5xl sm:rounded-2xl max-sm:top-auto max-sm:bottom-0 max-sm:translate-y-0 max-sm:w-full ${docked ? "lg:left-auto lg:right-2.5 lg:top-2.5 lg:bottom-2.5 lg:w-[360px] lg:max-w-[360px] lg:translate-x-0 lg:translate-y-0 lg:content-start" : ""}`}
+      >
         <DialogTitle>Layar dan bantuan login</DialogTitle>
         <DialogDescription>
           Layar privat agent di percakapan ini. Menutup layar saat Anda memegang kontrol menahan
           input sampai kontrol dikembalikan.
         </DialogDescription>
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          className="hidden w-fit lg:inline-flex"
+          onClick={() => setDocked(!docked)}
+        >
+          {docked ? "Perbesar layar" : "Tampilkan sebagai panel"}
+        </Button>
         <div className="mt-3 space-y-3">
           <label className="block">
             Agent{" "}
@@ -208,7 +240,7 @@ export function ScreenControls({ thread }: { thread: Thread }) {
               ))}
             </NativeSelect>
           </label>
-          <p role="status">
+          <p role="status" className="rounded-xl bg-muted px-4 py-3 text-sm font-medium">
             {connection
               ? labels[connection.control ?? "agent"]
               : "Hubungkan layar privat percakapan ini."}
@@ -233,6 +265,11 @@ export function ScreenControls({ thread }: { thread: Thread }) {
                 >
                   Ambil kontrol
                 </Button>
+                {connection.control === "disconnected" && (
+                  <Button size="sm" disabled={busy} onClick={() => void act("connect")}>
+                    Hubungkan kembali
+                  </Button>
+                )}
                 <Button
                   size="sm"
                   variant="outline"
@@ -269,10 +306,17 @@ export function ScreenControls({ thread }: { thread: Thread }) {
             )}
           </div>
           {diagnostic && <p role="status">{diagnostic}</p>}
+          {!frame && (
+            <div className="flex min-h-52 flex-col items-center justify-center gap-3 rounded-xl border bg-muted/50 p-6 text-center text-sm text-muted-foreground">
+              <Monitor className="size-8" />
+              <p>{busy ? "Menghubungkan layar…" : "Layar komputer agent akan tampil di sini."}</p>
+              <p>Ambil kontrol untuk membantu login, lalu kembalikan ke agent.</p>
+            </div>
+          )}
           {frame && (
             <button
               type="button"
-              className="block w-full overflow-hidden rounded border disabled:cursor-default"
+              className="block w-full overflow-hidden rounded-xl border bg-muted disabled:cursor-default"
               aria-label="Layar komputer privat; klik saat memegang kontrol"
               disabled={!human || busy}
               onClick={(e) => {
@@ -340,7 +384,7 @@ export function ScreenControls({ thread }: { thread: Thread }) {
               </div>
             </div>
           )}
-          <details>
+          <details className="rounded-xl border p-4">
             <summary className="cursor-pointer">Login tersimpan</summary>
             <div className="mt-2 space-y-2">
               <Button
@@ -427,7 +471,7 @@ export function ScreenControls({ thread }: { thread: Thread }) {
             </div>
           </details>
           {error && (
-            <p role="alert" className="break-words text-destructive">
+            <p role="alert" className="break-words text-destructive-foreground">
               {error}
             </p>
           )}

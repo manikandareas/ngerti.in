@@ -1,7 +1,9 @@
 import { useAuth } from "@clerk/tanstack-react-start";
-import { Download } from "lucide-react";
+import { Download, FileText, LoaderCircle } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Streamdown } from "streamdown";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { apiUrl } from "@/lib/api";
 import { base } from "./client";
 import { PdfPreview } from "./pdf-preview";
@@ -41,7 +43,14 @@ export function ArtifactResults({
         `${apiUrl}${base}/artifacts/${item.artifact_id}/revisions/${item.revision_id}/download${threadId ? `?thread_id=${threadId}` : ""}`,
         { headers: token ? { Authorization: `Bearer ${token}` } : {} },
       );
-      if (!response.ok) throw new Error("Download failed");
+      if (!response.ok)
+        throw new Error(
+          response.status === 401 || response.status === 403
+            ? "Akses file kedaluwarsa atau tidak diizinkan. Muat ulang percakapan lalu coba kembali."
+            : response.status === 404 || response.status === 410
+              ? "File atau versi ini sudah tidak tersedia. Minta agent mengirim ulang."
+              : "File belum dapat diunduh. Coba kembali.",
+        );
       const blob = await response.blob();
       if (showPreview) {
         if (
@@ -59,6 +68,7 @@ export function ArtifactResults({
         }
         setPreview({
           name: item.filename,
+          media: /\.md$/i.test(item.filename) ? "text/markdown" : item.media_type,
           text:
             (await blob.slice(0, 64000).text()) +
             (blob.size > 64000 ? "\n…Pratinjau dipotong. Unduh file lengkap." : ""),
@@ -71,27 +81,39 @@ export function ArtifactResults({
       link.download = item.filename;
       link.click();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
-    } catch {
-      setError("File belum dapat diunduh. Coba kembali.");
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "File belum dapat diunduh. Coba kembali.");
     } finally {
       setPending(null);
     }
   }
   return (
-    <details className="rounded-lg border p-4">
-      <summary className="cursor-pointer text-sm font-medium">
+    <section className="min-w-0 space-y-3" aria-label={label} aria-busy={pending !== null}>
+      <h3 className="text-sm font-medium">
         {label} · {artifacts.length}
-      </summary>
+      </h3>
       <ul className="mt-3 space-y-2">
         {artifacts.map((item) => (
-          <li key={item.artifact_id} className="flex items-center justify-between gap-3 text-sm">
-            <span className="min-w-0 break-words">{item.filename}</span>
-            {(!item.media_type ||
-              item.media_type.startsWith("text/") ||
+          <li
+            key={item.artifact_id}
+            className="flex flex-wrap items-center gap-2 rounded-xl border bg-muted/40 p-3 text-sm"
+          >
+            <FileText className="size-5 shrink-0 text-muted-foreground" />
+            <div className="min-w-0 flex-1 basis-32">
+              <p className="break-all font-medium">{item.filename}</p>
+              <p className="text-xs text-muted-foreground">
+                {item.filename.includes(".")
+                  ? item.filename.split(".").at(-1)?.toUpperCase()
+                  : "File"}
+                {item.byte_count != null &&
+                  ` · ${item.byte_count < 1024 ? `${item.byte_count} B` : `${Math.ceil(item.byte_count / 1024)} KB`}`}
+              </p>
+            </div>
+            {(item.media_type?.startsWith("text/") ||
               item.media_type === "application/pdf" ||
-              item.media_type.startsWith("image/") ||
-              item.media_type.startsWith("audio/") ||
-              item.media_type.startsWith("video/") ||
+              item.media_type?.startsWith("image/") ||
+              item.media_type?.startsWith("audio/") ||
+              item.media_type?.startsWith("video/") ||
               /\.(json|md|csv|txt|py|ipynb)$/i.test(item.filename)) && (
               <Button
                 variant="ghost"
@@ -103,6 +125,14 @@ export function ArtifactResults({
                 Pratinjau
               </Button>
             )}
+            {item.media_type &&
+              !/^(text|image|audio|video)\//.test(item.media_type) &&
+              item.media_type !== "application/pdf" &&
+              !/\.(json|md|csv|txt|py|ipynb)$/i.test(item.filename) && (
+                <p className="basis-full text-xs text-muted-foreground">
+                  Pratinjau format ini belum tersedia. Unduh untuk membukanya.
+                </p>
+              )}
             <Button
               variant="ghost"
               size="sm"
@@ -117,47 +147,73 @@ export function ArtifactResults({
         ))}
       </ul>
       {preview && (
-        <div className="mt-3 space-y-2">
-          <p className="break-all text-sm">{preview.name}</p>
-          {preview.url ? (
-            preview.media?.startsWith("image/") ? (
-              <img
-                src={preview.url}
-                alt={preview.name}
-                className="max-h-96 max-w-full object-contain"
-              />
-            ) : preview.media?.startsWith("audio/") ? (
-              <audio src={preview.url} controls preload="metadata" aria-label={preview.name}>
-                <track kind="captions" />
-              </audio>
-            ) : preview.media?.startsWith("video/") ? (
-              <video
-                src={preview.url}
-                controls
-                preload="metadata"
-                className="max-h-96 max-w-full"
-                aria-label={preview.name}
-              >
-                <track kind="captions" />
-              </video>
+        <Dialog
+          open
+          onOpenChange={(open) => {
+            if (!open) setPreview(null);
+          }}
+        >
+          <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-3xl">
+            <DialogTitle className="break-all pr-6">{preview.name}</DialogTitle>
+            <DialogDescription>
+              Pratinjau file. Unduh untuk menyimpan versi lengkap.
+            </DialogDescription>
+            {preview.url ? (
+              preview.media?.startsWith("image/") ? (
+                <img
+                  src={preview.url}
+                  alt={preview.name}
+                  className="max-h-96 max-w-full object-contain"
+                />
+              ) : preview.media?.startsWith("audio/") ? (
+                <audio
+                  className="w-full"
+                  src={preview.url}
+                  controls
+                  preload="metadata"
+                  aria-label={preview.name}
+                >
+                  <track kind="captions" />
+                </audio>
+              ) : preview.media?.startsWith("video/") ? (
+                <video
+                  src={preview.url}
+                  controls
+                  preload="metadata"
+                  className="max-h-96 w-full"
+                  aria-label={preview.name}
+                >
+                  <track kind="captions" />
+                </video>
+              ) : (
+                <PdfPreview key={preview.url} url={preview.url} name={preview.name} />
+              )
+            ) : preview.media === "text/markdown" ? (
+              <div className="min-w-0 overflow-auto">
+                <Streamdown mode="static">{preview.text ?? ""}</Streamdown>
+              </div>
             ) : (
-              <PdfPreview key={preview.url} url={preview.url} name={preview.name} />
-            )
-          ) : (
-            <pre className="max-h-64 overflow-auto whitespace-pre-wrap break-all rounded bg-muted p-3 text-xs">
-              {preview.text}
-            </pre>
-          )}
-          <Button size="sm" variant="ghost" onClick={() => setPreview(null)}>
-            Tutup pratinjau
-          </Button>
-        </div>
+              <pre className="max-h-64 overflow-auto whitespace-pre-wrap break-all rounded bg-muted p-3 text-xs">
+                {preview.text}
+              </pre>
+            )}
+            <Button size="sm" variant="ghost" onClick={() => setPreview(null)}>
+              Tutup pratinjau
+            </Button>
+          </DialogContent>
+        </Dialog>
+      )}
+      {pending && (
+        <p role="status" className="flex items-center gap-2 text-xs text-muted-foreground">
+          <LoaderCircle className="size-3 animate-spin motion-reduce:animate-none" />
+          Menyiapkan file…
+        </p>
       )}
       {error && (
-        <p role="alert" className="mt-2 text-sm text-destructive">
+        <p role="alert" className="mt-2 text-sm text-destructive-foreground">
           {error}
         </p>
       )}
-    </details>
+    </section>
   );
 }

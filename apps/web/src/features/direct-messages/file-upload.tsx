@@ -25,6 +25,7 @@ export function FileUpload({
   const { getToken, userId } = useAuth();
   const [progress, setProgress] = useState<string | null>(null);
   const [error, setError] = useState("");
+  const [filename, setFilename] = useState("");
   const input = useRef<HTMLInputElement>(null);
   const lock = useRef(false);
   const recorder = useRef<MediaRecorder | null>(null);
@@ -108,6 +109,7 @@ export function FileUpload({
     if (lock.current || disabled) return;
     lock.current = true;
     setError("");
+    setFilename(file.name);
     setProgress("Menyiapkan file…");
     try {
       if (file.size > 32 * 1024 * 1024) throw new Error("Ukuran file maksimal 32 MiB.");
@@ -246,8 +248,16 @@ export function FileUpload({
           Batal rekam
         </Button>
       )}
+      {progress && (
+        <p
+          role="status"
+          className="basis-full rounded-lg bg-muted/60 px-3 py-2 text-xs text-muted-foreground"
+        >
+          <span className="break-all font-medium text-foreground">{filename}</span> · {progress}
+        </p>
+      )}
       {error && (
-        <p role="alert" className="text-sm text-destructive">
+        <p role="alert" className="text-sm text-destructive-foreground">
           {error}
         </p>
       )}

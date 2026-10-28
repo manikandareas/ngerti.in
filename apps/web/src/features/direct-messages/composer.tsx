@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { providerFailureMessage } from "@/features/connections/client";
 import { ApiError } from "@/lib/api";
+import { ArtifactResults } from "./artifact-results";
 import { command, submit } from "./client";
 import { FileUpload, type UploadHandle } from "./file-upload";
 import type { Artifact, Thread } from "./state";
@@ -256,22 +257,31 @@ export function Composer({
               save(text, pending, next);
             }}
           />
-          {attachments.map((file) => (
-            <Button
-              key={file.artifact_id}
-              type="button"
-              variant="ghost"
-              size="sm"
-              disabled={busy || !!pending}
-              onClick={() => {
-                const next = attachments.filter((a) => a.artifact_id !== file.artifact_id);
-                setAttachments(next);
-                save(text, pending, next);
-              }}
-            >
-              {file.filename} ×
-            </Button>
-          ))}
+          {attachments.length > 0 && (
+            <div className="max-h-52 min-w-0 basis-full overflow-y-auto">
+              <ArtifactResults
+                artifacts={attachments}
+                threadId={thread.thread_id}
+                label="Lampiran"
+              />
+              {attachments.map((file) => (
+                <Button
+                  key={file.artifact_id}
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  disabled={busy || !!pending}
+                  onClick={() => {
+                    const next = attachments.filter((a) => a.artifact_id !== file.artifact_id);
+                    setAttachments(next);
+                    save(text, pending, next);
+                  }}
+                >
+                  <span className="max-w-56 truncate">{file.filename} ×</span>
+                </Button>
+              ))}
+            </div>
+          )}
           <div className="ml-auto">
             <Button
               type="submit"
@@ -296,11 +306,6 @@ export function Composer({
           </div>
         </div>
       </PromptBar>
-      <p className="max-w-sm text-xs text-muted-foreground">
-        {working
-          ? "Pesan baru menghentikan jawaban yang berjalan dan menyampaikan arahanmu."
-          : "Percakapan tersimpan. Kamu bisa kembali kapan saja."}
-      </p>
     </form>
   );
 }

@@ -119,30 +119,6 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
             </Link>
           </div>
         </header>
-        <div
-          className="flex flex-wrap items-center justify-between gap-2 px-4 py-1 text-xs text-muted-foreground sm:px-6"
-          role="status"
-        >
-          <span>
-            {connection !== "connected"
-              ? connectionText
-              : activity
-                ? `${nameOf(activity.agent_id)}: ${activity.activity ?? runLabels[activity.status]}`
-                : snapshot?.collaboration_tasks?.length &&
-                    snapshot.collaboration_tasks.every((task) => task.status === "completed")
-                  ? "Pekerjaan bersama selesai · Riwayat tersimpan"
-                  : snapshot?.discussion?.status === "bounded"
-                    ? "Batas diskusi tercapai · Kirim arahan untuk melanjutkan"
-                    : snapshot?.discussion?.status === "cancelled"
-                      ? "Diskusi dihentikan · Riwayat tersimpan"
-                      : "Tersambung · Riwayat tersimpan"}
-          </span>
-          {(connection === "reconnecting" || connection === "error") && (
-            <Button variant="ghost" size="sm" onClick={refresh}>
-              Sambungkan kembali
-            </Button>
-          )}
-        </div>
         {error && (
           <div
             role="alert"
@@ -154,7 +130,7 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
             </Button>
           </div>
         )}
-        <div className="flex shrink-0 items-center justify-end gap-1 px-4 sm:px-6">
+        <div className="flex shrink-0 flex-wrap items-center justify-end gap-1 px-4 sm:px-6">
           <Sheet open={panel} onOpenChange={setPanel}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="sm">
@@ -187,6 +163,15 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
               </div>
             </SheetContent>
           </Sheet>
+          {snapshot && <LearningControls key={`learning:${threadId}`} thread={snapshot.thread} />}
+          {snapshot && (
+            <WorkspaceControls
+              key={`workspace:${threadId}`}
+              thread={snapshot.thread}
+              working={working}
+            />
+          )}
+          {snapshot && <ScreenControls key={`screen:${threadId}`} thread={snapshot.thread} />}
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="sm" aria-label="Opsi percakapan">
@@ -217,19 +202,6 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
                     />
                   )}
                   <ArtifactResults artifacts={snapshot?.artifacts ?? []} threadId={threadId} />
-                  {snapshot && (
-                    <LearningControls key={`learning:${threadId}`} thread={snapshot.thread} />
-                  )}
-                  {snapshot && (
-                    <WorkspaceControls
-                      key={`workspace:${threadId}`}
-                      thread={snapshot.thread}
-                      working={working}
-                    />
-                  )}
-                  {snapshot && (
-                    <ScreenControls key={`screen:${threadId}`} thread={snapshot.thread} />
-                  )}
                 </div>
               </div>
             </SheetContent>

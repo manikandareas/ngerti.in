@@ -1,4 +1,5 @@
 import { useAuth } from "@clerk/tanstack-react-start";
+import { Brain } from "lucide-react";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,6 +7,7 @@ import { NativeSelect } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
 import { ApiError, api } from "@/lib/api";
 import { base, command, submit } from "./client";
+import { ResourcePanel } from "./resource-panel";
 import type { Thread } from "./state";
 
 type Memory = {
@@ -119,24 +121,17 @@ export function LearningControls({ thread }: { thread: Thread }) {
   }
 
   return (
-    <section
-      className="rounded-xl border border-border/70 p-3"
-      aria-label="Memori dan skills"
-      aria-busy={busy}
+    <ResourcePanel
+      title="Memori dan skills"
+      icon={<Brain className="size-4" />}
+      description="Yang diingat dan dipelajari agent dari percakapan."
+      open={open}
+      onOpenChange={(next) => {
+        setOpen(next);
+        if (next) void load();
+      }}
     >
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          aria-expanded={open}
-          onClick={() => {
-            setOpen(!open);
-            if (!open) void load();
-          }}
-        >
-          Memori dan skills {open ? "−" : "+"}
-        </Button>
+      <div aria-busy={busy}>
         {open && thread.kind === "group" && (
           <NativeSelect
             className="max-w-full rounded-md border bg-background p-2 text-sm"
@@ -172,7 +167,7 @@ export function LearningControls({ thread }: { thread: Thread }) {
             Agent juga dapat memperbaruinya melalui percakapan.
           </p>
           {error && (
-            <p role="alert" className="text-sm text-destructive">
+            <p role="alert" className="text-sm text-destructive-foreground">
               {error}
             </p>
           )}
@@ -214,7 +209,8 @@ export function LearningControls({ thread }: { thread: Thread }) {
                 Koreksi {editing.kind === "memory" ? "memori" : "skill"}
                 <Textarea
                   id={`learning-edit-${thread.thread_id}`}
-                  className="min-h-32"
+                  aria-label={`Koreksi ${editing.kind === "memory" ? "memori" : "skill"}`}
+                  className="min-h-32 max-h-64 overflow-y-auto"
                   value={editing.text}
                   onChange={(event) => setEditing({ ...editing, text: event.target.value })}
                 />
@@ -249,10 +245,7 @@ export function LearningControls({ thread }: { thread: Thread }) {
                   </p>
                 )}
                 {data.memories.map((memory) => (
-                  <article
-                    key={memory.memory_id}
-                    className="space-y-2 border-b border-border/60 py-3 last:border-0"
-                  >
+                  <article key={memory.memory_id} className="space-y-3 rounded-xl bg-muted/60 p-4">
                     <p className="whitespace-pre-wrap break-words text-sm">{memory.content}</p>
                     <div className="flex flex-wrap gap-2">
                       <Button
@@ -517,6 +510,6 @@ export function LearningControls({ thread }: { thread: Thread }) {
           )}
         </div>
       )}
-    </section>
+    </ResourcePanel>
   );
 }

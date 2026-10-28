@@ -75,7 +75,7 @@ export function PdfPreview({ url, name }: { url: string; name: string }) {
   return (
     <div className="space-y-3" aria-busy={busy}>
       {error && (
-        <p role="alert" className="text-sm text-destructive">
+        <p role="alert" className="text-sm text-destructive-foreground">
           {error}
         </p>
       )}

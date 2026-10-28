@@ -1,10 +1,13 @@
 import { useAuth } from "@clerk/tanstack-react-start";
+import { FolderOpen } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
 import { command, submit } from "./client";
+import { ResourcePanel } from "./resource-panel";
 import type { Thread } from "./state";
+import { WorkspaceResult } from "./workspace-result";
 
 type Workspace = {
   project?: string;
@@ -23,7 +26,7 @@ export function WorkspaceControls({ thread, working }: { thread: Thread; working
   const [project, setProject] = useState("");
   const [checkpoint, setCheckpoint] = useState("");
   const [path, setPath] = useState("");
-  const [output, setOutput] = useState("");
+  const [output, setOutput] = useState<Record<string, unknown> | null>(null);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   async function action(arguments_: object, inspect = false) {
@@ -41,7 +44,18 @@ export function WorkspaceControls({ thread, working }: { thread: Thread; working
       );
       if (result.error) throw new Error(result.error);
       if (inspect) setWorkspace(result);
-      setOutput(JSON.stringify(result, null, 2));
+      else if (workspace && !("error" in result)) {
+        const refreshed = await submit<Workspace>(
+          command("workspace.action", {
+            thread_id: thread.thread_id,
+            agent_id: agentId,
+            arguments: { action: "inspect" },
+          }),
+          await getToken(),
+        );
+        if (!refreshed.error) setWorkspace(refreshed);
+      }
+      setOutput(inspect ? null : result);
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Workspace belum tersedia.");
     } finally {
@@ -49,9 +63,13 @@ export function WorkspaceControls({ thread, working }: { thread: Thread; working
     }
   }
   return (
-    <details className="rounded-lg border p-4">
-      <summary className="cursor-pointer text-sm font-medium">Workspace & perubahan kode</summary>
-      <div className="mt-3 space-y-3 text-sm">
+    <ResourcePanel
+      title="Workspace"
+      icon={<FolderOpen className="size-4" />}
+      description="File, proyek, dan perubahan kode dalam percakapan ini."
+    >
+      <div className="space-y-4 text-sm" aria-busy={busy}>
+        {busy && <p role="status">Memuat workspace…</p>}
         <p className="text-muted-foreground">
           Pilih agent untuk melihat file, diagnostik, dan checkpoint percakapan ini.
         </p>
@@ -65,7 +83,7 @@ export function WorkspaceControls({ thread, working }: { thread: Thread; working
               onChange={(e) => {
                 setAgentId(e.target.value);
                 setWorkspace(null);
-                setOutput("");
+                setOutput(null);
                 setCheckpoint("");
               }}
             >
@@ -142,6 +160,21 @@ export function WorkspaceControls({ thread, working }: { thread: Thread; working
                 ))}
               </NativeSelect>
             </label>
+            {Object.keys(workspace.hashes ?? {}).length > 0 && (
+              <div className="space-y-1">
+                <h3 className="font-medium">File proyek</h3>
+                {Object.keys(workspace.hashes ?? {}).map((file) => (
+                  <Button
+                    key={file}
+                    variant={path === file ? "secondary" : "ghost"}
+                    className="h-auto w-full justify-start whitespace-normal break-all text-left"
+                    onClick={() => setPath(file)}
+                  >
+                    {file}
+                  </Button>
+                ))}
+              </div>
+            )}
             <Input
               aria-label="Path file workspace"
               className="w-full rounded border bg-background p-2"
@@ -208,16 +241,27 @@ export function WorkspaceControls({ thread, working }: { thread: Thread; working
           </>
         )}
         {error && (
-          <p role="alert" className="text-destructive">
+          <p role="alert" className="text-destructive-foreground">
             {error}
           </p>
         )}
+        {workspace && (
+          <details className="rounded-xl border p-3">
+            <summary className="cursor-pointer text-sm font-medium">
+              Detail workspace dan petunjuk proyek
+            </summary>
+            <div className="mt-3">
+              <WorkspaceResult value={workspace} />
+            </div>
+          </details>
+        )}
         {output && (
-          <pre className="max-h-72 overflow-auto whitespace-pre-wrap break-all rounded bg-muted p-3 text-xs">
-            {output}
-          </pre>
+          <section aria-label="Hasil operasi workspace" className="rounded-xl bg-muted/50 p-4">
+            <h3 className="mb-3 font-medium">Hasil operasi</h3>
+            <WorkspaceResult value={output} />
+          </section>
         )}
       </div>
-    </details>
+    </ResourcePanel>
   );
 }

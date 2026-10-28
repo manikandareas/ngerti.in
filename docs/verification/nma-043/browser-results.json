@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "Goals empty state, keyboard trap and focus return",
+    "Existing options remain discoverable",
+    "Real provider send and two-tab durable transcript",
+    "Offline reconnect and refresh do not duplicate publication",
+    "Read watermark persists across reload",
+    "Conversation light 1440: overflow and axe",
+    "Conversation light 390: overflow and axe",
+    "Conversation light 320: overflow and axe",
+    "Conversation light 768: overflow and axe",
+    "Conversation dark 1440: overflow and axe",
+    "Conversation dark 390: overflow and axe",
+    "Conversation dark 320: overflow and axe",
+    "Conversation dark 768: overflow and axe",
+    "Session inspect uses durable native context"
+  ],
+  "failures": [],
+  "limits": [
+    "Local development, real authenticated API/provider. No production deployment or manual screen reader audit."
+  ],
+  "marker": "NMA043-1793198409956",
+  "replyRun": "c20c67c3-51dc-54f4-bbe5-81efe039777d",
+  "readSequence": "3"
+}

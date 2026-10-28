@@ -1,0 +1,6 @@
+PASS Automatic goal capture and clarification through ordinary chat
+PASS Goal pause through chat
+PASS Goal resume and change through chat
+PASS Stop active work retains user message without duplicate answer
+PASS Long content scroll preserves reading position and jump to latest
+PASS Conversation permission denies unauthenticated reads

@@ -1,0 +1,13 @@
+{
+  "checks": [
+    "Steering supersedes active answer and publishes one new result",
+    "Goal panel light 1440: focus and accessibility",
+    "Goal panel light 390: focus and accessibility",
+    "Goal panel dark 1440: focus and accessibility",
+    "Goal panel dark 390: focus and accessibility"
+  ],
+  "failures": [],
+  "limits": [
+    "Local development, real authenticated API/provider. No production deployment or manual screen reader audit."
+  ]
+}

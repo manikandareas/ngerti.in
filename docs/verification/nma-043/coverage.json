@@ -1,0 +1,120 @@
+{
+  "baseline": "e349f95",
+  "planning_baseline": "41da6eb",
+  "design": "docs/agent.pen",
+  "beautiful_ui_commit": "44a274e598395ab61e7c96c26fda2758780253b7",
+  "actions": [
+    {
+      "surface": "Transcript and streaming markdown/code",
+      "implementation": "direct-message-page.tsx + beautiful-ui/conversation.tsx",
+      "design_reference": "LqqSi/GvP4L",
+      "evidence": "browser-results.json; group-results.json",
+      "notes": "Author identity, persisted messages, streaming text, code/table overflow and attachment rendering retained."
+    },
+    {
+      "surface": "Composer send, drafts, pending receipt, keyboard, steering",
+      "implementation": "composer.tsx",
+      "design_reference": "GvP4L",
+      "evidence": "browser-results.json; lifecycle-results.json; closure-results.json",
+      "notes": "Existing command/request identity, membership revision and sessionStorage draft preserved. Enter and submit guards align."
+    },
+    {
+      "surface": "Mentions and multi-author groups",
+      "implementation": "composer.tsx + collaboration-progress.tsx",
+      "design_reference": "LqqSi",
+      "evidence": "group-results.json; collaboration-regression.log",
+      "notes": "Inactive mention buttons disabled; native routing remains authoritative."
+    },
+    {
+      "surface": "Stop and uncertain effects",
+      "implementation": "direct-message-page.tsx",
+      "design_reference": "QmxYi/YEtOy",
+      "evidence": "lifecycle-results.json; presentation-results.json; runtime-regression-configured.log",
+      "notes": "Real cancel plus deterministic unknown-effect runtime tests and separately labelled presentation fixtures. No blind retry."
+    },
+    {
+      "surface": "Reconnect, replay, two tabs",
+      "implementation": "use-direct-message.ts + state.ts",
+      "design_reference": "ZWVyR",
+      "evidence": "browser-results.json; runtime-regression-configured.log; web-tests-final.log",
+      "notes": "SSE cursor, bigint order and authoritative publication identity preserved."
+    },
+    {
+      "surface": "Long history, load earlier and latest",
+      "implementation": "direct-message-page.tsx + use-direct-message.ts",
+      "design_reference": "x1pigr",
+      "evidence": "lifecycle-results.json; runtime-regression-configured.log",
+      "notes": "Existing pagination retained with scroll anchoring; live long content/jump checked."
+    },
+    {
+      "surface": "Return with results and read state",
+      "implementation": "use-read-state.ts + conversation-navigation.tsx",
+      "design_reference": "x1pigr",
+      "evidence": "browser-results.json; runtime-regression-configured.log",
+      "notes": "Existing summary and mark_read API; visible bottom acknowledges monotonically; no browser background execution introduced."
+    },
+    {
+      "surface": "Clarification and application elicitation",
+      "implementation": "composer.tsx; options link to /connections",
+      "design_reference": "ATYiC",
+      "evidence": "lifecycle-results.json",
+      "notes": "Ordinary clarification replies remain chat. Existing account-wide MCP interaction form remains reachable; no thread binding supplied by API."
+    },
+    {
+      "surface": "Tool, temporary subagent and peer handoff progress",
+      "implementation": "collaboration-progress.tsx + beautiful-ui/conversation.tsx",
+      "design_reference": "LqqSi/GvP4L",
+      "evidence": "presentation-results.json; group-results.json; collaboration-regression.log",
+      "notes": "Tasks, summaries, reviews, dependencies, artifacts, model and parent cancellation retained. No scripted progress."
+    },
+    {
+      "surface": "Goals, evidence, reviews, subgoals and contributions",
+      "implementation": "goal-progress.tsx",
+      "design_reference": "Arwjx",
+      "evidence": "lifecycle-results.json; closure-results.json; runtime-regression-configured.log",
+      "notes": "Shared Sheet; evidence links close panel and navigate to transcript; no mandatory goal form."
+    },
+    {
+      "surface": "Schedules, timezone and heartbeat",
+      "implementation": "goal-progress.tsx",
+      "design_reference": "BeivF",
+      "evidence": "schedule-results.json; collaboration-regression.log",
+      "notes": "Existing wake state/kind/interval/expression/next_at rendered; live future one-shot schedule created then paused. Calendar agenda absent from API."
+    },
+    {
+      "surface": "Webhook status",
+      "implementation": "existing runtime webhook path; no snapshot projection",
+      "design_reference": "BeivF gap",
+      "evidence": "README.md",
+      "notes": "Explicit NMA-038 capability gap: no webhook status is available in the existing user-facing snapshot. Not claimed implemented."
+    },
+    {
+      "surface": "Inspect, resume, compress, reset",
+      "implementation": "session-controls.tsx",
+      "design_reference": "ZWVyR/YEtOy gap",
+      "evidence": "browser-results.json; session-recovery-results.json; runtime-regression-configured.log",
+      "notes": "Inspect exposes native state/revision; resume via message path. Timed-out compress resolves same command; reset preserves transcript/goals."
+    },
+    {
+      "surface": "Existing attachments, memory, workspace and computer entry points",
+      "implementation": "Opsi Sheet: artifact-results, learning-controls, workspace-controls, screen-controls",
+      "design_reference": "NMA-044 follow-on",
+      "evidence": "browser-results.json",
+      "notes": "Components/handlers retained in focus-managed panel. Compact attachment/mic controls only; full preview/control redesign belongs to NMA-044."
+    },
+    {
+      "surface": "Light/dark, responsive, focus, loading/error/permission",
+      "implementation": "shared tokens, Sheet, conversation UI",
+      "design_reference": "all nine references and dark pairs",
+      "evidence": "browser-results.json; closure-results.json; presentation-results.json",
+      "notes": "Live 1440/390/320/768 both themes; live panel and fixture fault/permission coverage labelled separately."
+    }
+  ],
+  "boundaries": [
+    "NMA-038 missing capability contracts",
+    "NMA-044 workspace/multimodal redesign",
+    "NMA-045 connections presentation",
+    "NMA-039/NMA-027 operations and release"
+  ],
+  "deployment": false
+}

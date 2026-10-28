@@ -1,0 +1,15 @@
+{
+  "checks": [
+    "Automatic goal capture and clarification through ordinary chat",
+    "Goal pause through chat",
+    "Goal resume and change through chat",
+    "Stop active work retains user message without duplicate answer",
+    "Long content scroll preserves reading position and jump to latest",
+    "Conversation permission denies unauthenticated reads"
+  ],
+  "failures": [],
+  "limits": [
+    "Local development, real authenticated API/provider. No production deployment or manual screen reader audit."
+  ],
+  "goal": "7d3b233a-022a-4cd0-a903-733c68e6a26d"
+}

@@ -1,0 +1,7 @@
+Using CPython 3.14.3
+Creating virtual environment at: apps/engine/.venv
+   Building ngertiin-engine @ file:///Users/vitoandareasmanik/Development/project/ngertiin/apps/engine
+      Built ngertiin-engine @ file:///Users/vitoandareasmanik/Development/project/ngertiin/apps/engine
+Installed 1 package in 5ms
+error: Failed to spawn: `pytest`
+  Caused by: No such file or directory (os error 2)

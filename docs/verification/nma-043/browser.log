@@ -1,0 +1,14 @@
+PASS Goals empty state, keyboard trap and focus return
+PASS Existing options remain discoverable
+PASS Real provider send and two-tab durable transcript
+PASS Offline reconnect and refresh do not duplicate publication
+PASS Read watermark persists across reload
+PASS Conversation light 1440: overflow and axe
+PASS Conversation light 390: overflow and axe
+PASS Conversation light 320: overflow and axe
+PASS Conversation light 768: overflow and axe
+PASS Conversation dark 1440: overflow and axe
+PASS Conversation dark 390: overflow and axe
+PASS Conversation dark 320: overflow and axe
+PASS Conversation dark 768: overflow and axe
+PASS Session inspect uses durable native context

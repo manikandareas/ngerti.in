@@ -1,0 +1,804 @@
+{
+  "ng-app/background": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#FFFFFF",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#18191B",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/foreground": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#18191B",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#FFFFFF",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/card": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#FFFFFF",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#202124",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/card-foreground": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#18191B",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#FFFFFF",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/popover": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#FFFFFF",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#282A2D",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/popover-foreground": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#18191B",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#FFFFFF",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/muted": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#F3F3F6",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#2F3135",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/muted-foreground": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#5F5F68",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#BBBBC4",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/primary": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#18191B",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#FFFFFF",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/primary-foreground": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#FFFFFF",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#18191B",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/secondary": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#F3F3F6",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#2F3135",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/secondary-foreground": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#18191B",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#FFFFFF",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/accent": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#D1D0FE",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#3D395E",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/accent-foreground": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#18191B",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#E7CDFF",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/border": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#E2E2E8",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#414247",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/input": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#EBEBF1",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#515258",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/ring": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#0190FF",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#71CFFF",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/primary-edge": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#18191B",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#FFFFFF",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/primary-depth": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#18191B",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#FFFFFF",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/info": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#BAE1FF",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#23445C",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/info-foreground": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#18191B",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#BAE1FF",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/info-subtle": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#EBF6FF",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#203343",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/info-subtle-foreground": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#165A8C",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#BAE1FF",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/info-border": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#80BCE9",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#48728F",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/warning": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#FFF1C1",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#493A20",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/warning-foreground": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#854D0E",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#FFF085",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/warning-subtle": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#FFF1C1",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#493A20",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/warning-subtle-foreground": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#854D0E",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#FFF085",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/warning-border": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#D9BC66",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#8A743E",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/success": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#D8FCE6",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#203D2E",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/success-foreground": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#166534",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#61EAA3",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/success-border": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#80CCA3",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#407C58",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/destructive": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#FFE3E2",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#492528",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/destructive-foreground": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#B91C1C",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#FFB8A8",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/destructive-subtle": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#FFE3E2",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#492528",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/destructive-subtle-foreground": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#B91C1C",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#FFB8A8",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/destructive-border": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#E9AAA7",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#96585B",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/reward": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#FFF1C1",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#493A20",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/reward-foreground": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#854D0E",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#FFF085",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/badge-new": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#D1D0FE",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#3D395E",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/badge-new-foreground": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#18191B",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#E7CDFF",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/overlay": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#18191B80",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#00000099",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/overlay-strong": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#18191BA6",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#000000B3",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/overlay-subtle": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#18191B40",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#00000040",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/candy-icon/blueberry": {
+    "type": "color",
+    "value": "#6b66e1"
+  },
+  "ng-app/candy-icon/grape": {
+    "type": "color",
+    "value": "#9161be"
+  },
+  "ng-app/candy-icon/lemon-drop": {
+    "type": "color",
+    "value": "#8c7500"
+  },
+  "ng-app/candy-icon/bubblegum": {
+    "type": "color",
+    "value": "#c74588"
+  },
+  "ng-app/candy-icon/tangerine": {
+    "type": "color",
+    "value": "#b16200"
+  },
+  "ng-app/desktop-shell": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#F1F0EE",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#27282B",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  },
+  "ng-app/desktop-edge": {
+    "type": "color",
+    "value": [
+      {
+        "value": "#E3E2E0",
+        "theme": {
+          "gumloop-mode": "light"
+        }
+      },
+      {
+        "value": "#36373B",
+        "theme": {
+          "gumloop-mode": "dark"
+        }
+      }
+    ]
+  }
+}

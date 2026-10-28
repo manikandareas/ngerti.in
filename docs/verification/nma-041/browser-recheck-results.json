@@ -1,0 +1,28 @@
+{
+  "authentication": "Actual Clerk session, authenticated production route, no API mocks",
+  "viewports": [
+    {
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "violations": [],
+      "incomplete": []
+    }
+  ],
+  "interactions": [
+    {
+      "name": "Buka popover: keyboard and focus return",
+      "passed": true
+    },
+    {
+      "name": "Select keyboard selection",
+      "passed": true
+    }
+  ],
+  "failures": [],
+  "limits": [
+    "Foundation catalog only; complete feature walkthrough belongs to NMA-042 through NMA-046.",
+    "Automated accessibility tree and axe checks are not a manual screen-reader audit.",
+    "Local development verification, not deployment or operational acceptance."
+  ]
+}

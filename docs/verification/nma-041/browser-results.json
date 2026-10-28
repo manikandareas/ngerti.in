@@ -1,0 +1,158 @@
+{
+  "authentication": "Actual Clerk session, authenticated production route, no API mocks",
+  "viewports": [
+    {
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "light",
+      "width": 320,
+      "overflow": false,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "overflow": false,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "violations": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".hover\\:bg-destructive\\/90"
+            ],
+            [
+              ".bg-accent"
+            ],
+            [
+              ".bg-success"
+            ],
+            [
+              ".dark\\:bg-destructive"
+            ]
+          ]
+        }
+      ],
+      "incomplete": []
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "dark",
+      "width": 320,
+      "overflow": false,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "overflow": false,
+      "violations": [],
+      "incomplete": []
+    }
+  ],
+  "interactions": [
+    {
+      "name": "Dialog keyboard activation, focus trap and focus return",
+      "passed": true
+    },
+    {
+      "name": "Buka panel: keyboard and focus return",
+      "passed": true
+    },
+    {
+      "name": "Buka menu: keyboard and focus return",
+      "passed": true
+    },
+    {
+      "name": "Native select, checkbox, switch and radio semantics",
+      "passed": true
+    },
+    {
+      "name": "Tabs and accordion keyboard interaction",
+      "passed": true
+    },
+    {
+      "name": "Tooltip keyboard access",
+      "passed": true
+    },
+    {
+      "name": "Button hover, pressed, focus, disabled and loading",
+      "passed": true
+    },
+    {
+      "name": "Reduced motion",
+      "passed": true
+    },
+    {
+      "name": "200 percent text zoom without horizontal overflow",
+      "passed": true
+    }
+  ],
+  "failures": [
+    {
+      "name": "dark-1440",
+      "audit": {
+        "overflow": false,
+        "violations": [
+          {
+            "id": "color-contrast",
+            "targets": [
+              [
+                ".hover\\:bg-destructive\\/90"
+              ],
+              [
+                ".bg-accent"
+              ],
+              [
+                ".bg-success"
+              ],
+              [
+                ".dark\\:bg-destructive"
+              ]
+            ]
+          }
+        ],
+        "incomplete": []
+      }
+    },
+    {
+      "name": "Buka popover: keyboard and focus return",
+      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(await trigger.evaluate(el=>el===document.activeElement))\n"
+    },
+    {
+      "name": "Select keyboard selection",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n'Tobi' !== 'Writer'\n"
+    }
+  ],
+  "limits": [
+    "Foundation catalog only; complete feature walkthrough belongs to NMA-042 through NMA-046.",
+    "Automated accessibility tree and axe checks are not a manual screen-reader audit.",
+    "Local development verification, not deployment or operational acceptance."
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "viewports": 8,
+  "interactions": 9,
+  "failures": [
+    {
+      "name": "dark-1440",
+      "audit": {
+        "overflow": false,
+        "violations": [
+          {
+            "id": "color-contrast",
+            "targets": [
+              [
+                ".hover\\:bg-destructive\\/90"
+              ],
+              [
+                ".bg-accent"
+              ],
+              [
+                ".bg-success"
+              ],
+              [
+                ".dark\\:bg-destructive"
+              ]
+            ]
+          }
+        ],
+        "incomplete": []
+      }
+    },
+    {
+      "name": "Buka popover: keyboard and focus return",
+      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(await trigger.evaluate(el=>el===document.activeElement))\n"
+    },
+    {
+      "name": "Select keyboard selection",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n'Tobi' !== 'Writer'\n"
+    }
+  ]
+}

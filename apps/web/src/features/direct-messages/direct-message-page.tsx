@@ -8,6 +8,7 @@ import { AgentAvatar } from "@/features/agents/agent-avatar";
 import { providerFailureMessage } from "@/features/connections/client";
 import { ArtifactResults } from "./artifact-results";
 import { command, listThreads, submit, type ThreadItem } from "./client";
+import { CollaborationProgress } from "./collaboration-progress";
 import { Composer } from "./composer";
 import { GoalProgress } from "./goal-progress";
 import { LearningControls } from "./learning-controls";
@@ -53,7 +54,7 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
     if (snapshot && follow.current && scroll.current)
       scroll.current.scrollTop = scroll.current.scrollHeight;
   }, [snapshot]);
-  async function cancel(run: Run) {
+  async function cancel(run: Pick<Run, "run_id">) {
     if (stopping) return;
     setStopping(run.run_id);
     setCancelError("");
@@ -157,11 +158,14 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
               ? connectionText
               : activity
                 ? `${nameOf(activity.agent_id)}: ${activity.activity ?? runLabels[activity.status]}`
-                : snapshot?.discussion?.status === "bounded"
-                  ? "Batas diskusi tercapai · Kirim arahan untuk melanjutkan"
-                  : snapshot?.discussion?.status === "cancelled"
-                    ? "Diskusi dihentikan · Riwayat tersimpan"
-                    : "Tersambung · Riwayat tersimpan"}
+                : snapshot?.collaboration_tasks?.length &&
+                    snapshot.collaboration_tasks.every((task) => task.status === "completed")
+                  ? "Pekerjaan bersama selesai · Riwayat tersimpan"
+                  : snapshot?.discussion?.status === "bounded"
+                    ? "Batas diskusi tercapai · Kirim arahan untuk melanjutkan"
+                    : snapshot?.discussion?.status === "cancelled"
+                      ? "Diskusi dihentikan · Riwayat tersimpan"
+                      : "Tersambung · Riwayat tersimpan"}
           </span>
           {(connection === "reconnecting" || connection === "error") && (
             <Button variant="ghost" size="sm" onClick={refresh}>
@@ -192,6 +196,13 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
           }}
         >
           <div className="mx-auto max-w-3xl space-y-7 py-6">
+            {snapshot ? (
+              <CollaborationProgress
+                snapshot={snapshot}
+                stopping={stopping}
+                onStop={(runId) => void cancel({ run_id: runId })}
+              />
+            ) : null}
             {snapshot && (
               <SessionControls
                 key={`session:${threadId}`}

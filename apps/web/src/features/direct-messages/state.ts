@@ -53,6 +53,8 @@ export type Goal = {
   }[];
 };
 export type Snapshot = {
+  delegations?: Delegation[];
+  collaboration_tasks?: CollaborationTask[];
   artifacts?: Artifact[];
   discussion?: { discussion_id: string; status: string; reason: string } | null;
   goals?: Goal[];
@@ -61,6 +63,35 @@ export type Snapshot = {
   runs: Run[];
   through_cursor: string;
   next_before_message_seq: string | null;
+};
+export type Delegation = {
+  child_session_id: string;
+  parent_run_id: string;
+  parent_child_id: string | null;
+  subagent_id: string;
+  kind: "temporary_subagent";
+  status: string;
+  goal: string;
+  model: string;
+  agent_id?: string;
+  activity?: string;
+  artifact_ids?: string[];
+  worktree_ids?: string[];
+  result: { summary?: string; schema_valid?: boolean; api_calls?: number } | null;
+};
+export type CollaborationTask = {
+  task_id: string;
+  revision: string;
+  expected_result: string;
+  assignee_agent_id: string;
+  implementer_agent_id: string;
+  reviewer_agent_id: string | null;
+  status: string;
+  summary: string;
+  review_summary?: string;
+  block_reason?: string;
+  artifact_ids: string[];
+  dependencies: string[];
 };
 export type Artifact = {
   artifact_id: string;
@@ -105,6 +136,30 @@ export function mergeMessages(current: Message[], incoming: Message[]) {
 
 export function applyEvent(state: Snapshot, event: Event): Snapshot {
   if (event.thread_id !== state.thread.thread_id) throw new Error("Unexpected conversation event");
+  if (event.type === "delegation.changed") {
+    const child = event.payload.child as Delegation;
+    return {
+      ...state,
+      delegations: [
+        ...(state.delegations ?? []).filter(
+          (item) => item.child_session_id !== child.child_session_id,
+        ),
+        child,
+      ],
+    };
+  }
+  if (event.type === "collaboration.changed") {
+    const task = event.payload.task as CollaborationTask;
+    const prior = state.collaboration_tasks?.find((item) => item.task_id === task.task_id);
+    if (prior && BigInt(prior.revision) >= BigInt(task.revision)) return state;
+    return {
+      ...state,
+      collaboration_tasks: [
+        ...(state.collaboration_tasks ?? []).filter((item) => item.task_id !== task.task_id),
+        task,
+      ],
+    };
+  }
   if (event.type === "artifact.ready") {
     const artifact = event.payload as unknown as Artifact;
     return {

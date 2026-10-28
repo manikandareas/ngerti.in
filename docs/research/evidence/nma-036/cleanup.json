@@ -1,0 +1,14 @@
+{
+  "users": [
+    {
+      "user_id": "user_3LJnwfMx9pfIlcE66RWCZnYokLH",
+      "readback_status": 404
+    },
+    {
+      "user_id": "user_3LJnwk6DjZgqOJjwFXT2Wc9xBxj",
+      "readback_status": 404
+    }
+  ],
+  "disposable_database_absent": true,
+  "production_or_original_account_modified": false
+}

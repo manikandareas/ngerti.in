@@ -1,0 +1,36 @@
+{
+  "authentication": "Actual ClerkJS development session; unmodified production current_account and production API",
+  "model_http": "Controlled fixture, separate from real-model cohort",
+  "routing_bootstrap": "Local fixture shims",
+  "desktop": {
+    "width": 1440,
+    "height": 1000,
+    "horizontal_overflow": false
+  },
+  "mobile": {
+    "document": 390,
+    "overflow": false,
+    "viewport": 390
+  },
+  "checks": {
+    "criteria_and_evidence": true,
+    "native_judge_projection": true,
+    "schedule_and_local_time": true,
+    "mouse_and_keyboard_disclosure": true,
+    "conversation_pause": true,
+    "mobile_resume": true,
+    "reload_persistence": true,
+    "result_anchor_matches_persisted_message": true,
+    "browser_errors_empty": true
+  },
+  "http": {
+    "own_snapshot": 200,
+    "forged_owner_header_ignored": 200,
+    "missing_auth": 401,
+    "invalid_auth": 401,
+    "unknown_goal": 404,
+    "schedule_after_reload": "enabled",
+    "completion_review_present": true
+  },
+  "hosted_login_or_deployment": false
+}

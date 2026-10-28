@@ -1,0 +1,132 @@
+{
+  "scope": "Snapshot harness over real gateway; controlled provider; not production authenticated UI",
+  "requests_while_closed": 0,
+  "model_requests_while_closed": 2,
+  "goal": {
+    "completion_contract": null,
+    "created_at": "2026-10-28T11:19:01.032Z",
+    "creation_key": "fuel",
+    "evidence": [],
+    "generation": "2",
+    "goal_id": "48527861-86f1-42f0-af00-bfb9603ae237",
+    "objective": "Prepare fuel report for Friday",
+    "progress": "Calculated 12 litres per 100 km",
+    "responsible_agent_id": "df263b7a-a6fe-4126-af84-acd8fed39d44",
+    "reviews": [],
+    "revision": "4",
+    "source_message_id": "e9357c86-dfa0-5712-8964-d317b3c92eee",
+    "source_run_id": "bbd01f11-328b-5f34-83ad-d3a2db34f594",
+    "status": "waiting",
+    "subgoals": [],
+    "thread_id": "46eb7dd0-0f7c-4518-b941-80550d2d55f0",
+    "title": "Fuel report",
+    "units": [
+      {
+        "agent_id": "df263b7a-a6fe-4126-af84-acd8fed39d44",
+        "generation": "1",
+        "parent_run_id": null,
+        "result_message_id": "31682c82-4ed7-57a5-899f-59c913dd9f52",
+        "result_preview": "RECOVERY_ACK_RESPONSIBILITY:{\"action\": \"create\", \"creation_key\": \"fuel\", \"title\": \"Fuel report\", \"objective\": \"Prepare fuel report for Friday\"}",
+        "run_id": "bbd01f11-328b-5f34-83ad-d3a2db34f594",
+        "settled": true,
+        "status": "succeeded",
+        "verdict": null
+      },
+      {
+        "agent_id": "df263b7a-a6fe-4126-af84-acd8fed39d44",
+        "generation": "2",
+        "parent_run_id": null,
+        "result_message_id": "552dbf79-997e-5108-bd17-23d917f8d0b7",
+        "result_preview": "RECOVERY_ACK_RESPONSIBILITY:{\"action\": \"schedule\", \"goal_id\": \"48527861-86f1-42f0-af00-bfb9603ae237\", \"expected_revision\": \"1\", \"wake\": {\"kind\": \"once\", \"timezone\": \"Asia/Makassar\", \"missed_policy\": \"coalesce\", \"at\": \"2026-10-28T11:21:01.248688Z\"}}",
+        "run_id": "8b4969d7-a4a2-5e04-b9e7-c2d6b23aef9f",
+        "settled": true,
+        "status": "succeeded",
+        "verdict": "wait"
+      },
+      {
+        "agent_id": "df263b7a-a6fe-4126-af84-acd8fed39d44",
+        "generation": "2",
+        "parent_run_id": "bbd01f11-328b-5f34-83ad-d3a2db34f594",
+        "result_message_id": "9c16648b-43ed-5d91-a63c-d8d8bbb163b9",
+        "result_preview": "RESULT: fuel calculation is 12 litres per 100 km.",
+        "run_id": "cefa5d9f-d552-5a23-a67e-a3c9cc4cdc5c",
+        "settled": true,
+        "status": "succeeded",
+        "verdict": "wait"
+      }
+    ],
+    "updated_at": "2026-10-28T11:19:07.528Z",
+    "wake": {
+      "configuration": {
+        "at": "2026-10-28T11:21:01.248688Z",
+        "kind": "once",
+        "missed_policy": "coalesce",
+        "timezone": "Asia/Makassar"
+      },
+      "definition_id": "aa8ac309-1635-5a45-b07c-f4fa61485b66",
+      "goal_generation": "2",
+      "kind": "schedule",
+      "next_at": null,
+      "revision": "1",
+      "state": "enabled"
+    },
+    "wake_condition": "The user supplies next week's readings"
+  },
+  "browser": [
+    {
+      "command": [
+        "open",
+        "http://127.0.0.1:55185"
+      ],
+      "stdout": "\u2713 Offline wake acceptance\n  http://127.0.0.1:55185/\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "snapshot"
+      ],
+      "stdout": "- main\n  - heading \"Gateway snapshot harness\" [level=1, ref=e1]\n  - paragraph\n    - StaticText \"Goal: Fuel report \u00b7 waiting\"\n  - paragraph\n    - StaticText \"Execution units: 2\"\n  - paragraph\n    - StaticText \"RESPONSIBILITY:{\\\"action\\\": \\\"create\\\", \\\"creation_key\\\": \\\"fuel\\\", \\\"title\\\": \\\"Fuel report\\\", \\\"objective\\\": \\\"Prepare fuel report for Friday\\\"}\"\n  - paragraph\n    - StaticText \"RECOVERY_ACK_RESPONSIBILITY:{\\\"action\\\": \\\"create\\\", \\\"creation_key\\\": \\\"fuel\\\", \\\"title\\\": \\\"Fuel report\\\", \\\"objective\\\": \\\"Prepare fuel report for Friday\\\"}\"\n  - paragraph\n    - StaticText \"RESPONSIBILITY:{\\\"action\\\": \\\"schedule\\\", \\\"goal_id\\\": \\\"48527861-86f1-42f0-af00-bfb9603ae237\\\", \\\"expected_revision\\\": \\\"1\\\", \\\"wake\\\": {\\\"kind\\\": \\\"once\\\", \\\"timezone\\\": \\\"Asia/Makassar\\\", \\\"missed_policy\\\": \\\"coalesce\\\", \\\"at\\\": \\\"2026-10-28T11:21:01.248688Z\\\"}}\"\n  - paragraph\n    - StaticText \"RECOVERY_ACK_RESPONSIBILITY:{\\\"action\\\": \\\"schedule\\\", \\\"goal_id\\\": \\\"48527861-86f1-42f0-af00-bfb9603ae237\\\", \\\"expected_revision\\\": \\\"1\\\", \\\"wake\\\": {\\\"kind\\\": \\\"once\\\", \\\"timezone\\\": \\\"Asia/Makassar\\\", \\\"missed_policy\\\": \\\"coalesce\\\", \\\"at\\\": \\\"2026-10-28T11:21:01.248688Z\\\"}}\"\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "screenshot",
+        "/Users/vitoandareasmanik/Development/project/ngertiin/docs/research/evidence/nma-036/offline-browser/schedule/browser-before.png"
+      ],
+      "stdout": "\u2713 Screenshot saved to /Users/vitoandareasmanik/Development/project/ngertiin/docs/research/evidence/nma-036/offline-browser/schedule/browser-before.png\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "close"
+      ],
+      "stdout": "\u2713 Browser closed\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "open",
+        "http://127.0.0.1:55185"
+      ],
+      "stdout": "\u2713 Offline wake acceptance\n  http://127.0.0.1:55185/\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "get",
+        "text",
+        "body"
+      ],
+      "stdout": "Gateway snapshot harness\n\nGoal: Fuel report \u00b7 waiting\n\nExecution units: 3\n\nRESPONSIBILITY:{\"action\": \"create\", \"creation_key\": \"fuel\", \"title\": \"Fuel report\", \"objective\": \"Prepare fuel report for Friday\"}\n\nRECOVERY_ACK_RESPONSIBILITY:{\"action\": \"create\", \"creation_key\": \"fuel\", \"title\": \"Fuel report\", \"objective\": \"Prepare fuel report for Friday\"}\n\nRESPONSIBILITY:{\"action\": \"schedule\", \"goal_id\": \"48527861-86f1-42f0-af00-bfb9603ae237\", \"expected_revision\": \"1\", \"wake\": {\"kind\": \"once\", \"timezone\": \"Asia/Makassar\", \"missed_policy\": \"coalesce\", \"at\": \"2026-10-28T11:21:01.248688Z\"}}\n\nRECOVERY_ACK_RESPONSIBILITY:{\"action\": \"schedule\", \"goal_id\": \"48527861-86f1-42f0-af00-bfb9603ae237\", \"expected_revision\": \"1\", \"wake\": {\"kind\": \"once\", \"timezone\": \"Asia/Makassar\", \"missed_policy\": \"coalesce\", \"at\": \"2026-10-28T11:21:01.248688Z\"}}\n\nRESULT: fuel calculation is 12 litres per 100 km.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "screenshot",
+        "/Users/vitoandareasmanik/Development/project/ngertiin/docs/research/evidence/nma-036/offline-browser/schedule/browser-after.png"
+      ],
+      "stdout": "\u2713 Screenshot saved to /Users/vitoandareasmanik/Development/project/ngertiin/docs/research/evidence/nma-036/offline-browser/schedule/browser-after.png\n",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "runtime": {
+    "revision": "7489b22af47ce91b366dde81d5831ea422577498",
+    "python": "3.14.9",
+    "sqlite": "3.53.1"
+  },
+  "pinned_source_files": 171,
+  "original_manifest_files": 182,
+  "original_manifest_mismatches": [],
+  "historical_ddl_modules": 21,
+  "historical_ddl_mismatches": []
+}

@@ -1,0 +1,335 @@
+{
+  "artifacts": [],
+  "collaboration_tasks": [],
+  "delegations": [],
+  "discussion": null,
+  "goals": [
+    {
+      "completion_contract": {
+        "judge_required": true,
+        "outcome": "A fuel efficiency report with verified arithmetic: 12.5 litres per 100 km.",
+        "subgoals": [
+          "Verified arithmetic"
+        ]
+      },
+      "created_at": "2026-10-28T10:31:56.097Z",
+      "creation_key": "fuel-efficiency",
+      "evidence": [
+        {
+          "accepted_by_agent_id": "1c424dd1-4365-4085-984f-ef9981e1a43a",
+          "criterion": "Verified arithmetic",
+          "evidence_id": "15847fa3-df21-58d8-ada0-8d4ad1db7960",
+          "generation": "1",
+          "producing_run_id": "4d0bd325-0e07-57b8-b997-207112a46d4a",
+          "source_message_id": "9a01ea67-3353-5c59-b59f-db92c2bc9936",
+          "summary": "45 / 360 \u00d7 100 = 12.5 litres per 100 km; independently checked."
+        }
+      ],
+      "generation": "2",
+      "goal_id": "d5c2675c-3e3c-4dbb-98a0-2e3c49a5ce87",
+      "objective": "Produce and verify fuel efficiency for 360 km and 45 litres.",
+      "progress": "45 / 360 \u00d7 100 = 12.5 litres per 100 km; independently checked.",
+      "responsible_agent_id": "1c424dd1-4365-4085-984f-ef9981e1a43a",
+      "reviews": [
+        {
+          "contract_digest": "434a64a25480491dbf2a01ef9796c669bb5fc66abcd1e28ae3cbc9ee3035e919",
+          "evidence_ids": [
+            "15847fa3-df21-58d8-ada0-8d4ad1db7960"
+          ],
+          "generation": "1",
+          "goal_revision": "4",
+          "parse_failed": false,
+          "reason": "The persisted calculation is 45 / 360 \u00d7 100 = 12.5 litres per 100 km.",
+          "request_digest": "6ef475b6721093f4a0a7366df5c90ef1366c62d633795cdddc34218111a14a9e",
+          "review_id": "e6c88a7b-0ba1-5fcf-a3d7-815db9a1f12f",
+          "run_id": "2c9a7a24-12c3-562f-ba54-200826cd4d3f",
+          "transport_failed": false,
+          "verdict": "done",
+          "wait_directive": null
+        }
+      ],
+      "revision": "6",
+      "source_message_id": "73d6ce88-5e5c-5248-b46c-81f93103627d",
+      "source_run_id": "4d0bd325-0e07-57b8-b997-207112a46d4a",
+      "status": "completed",
+      "subgoals": [
+        {
+          "criterion": "Verified arithmetic",
+          "evidence_ids": [
+            "15847fa3-df21-58d8-ada0-8d4ad1db7960"
+          ]
+        }
+      ],
+      "thread_id": "b4c22229-179b-47c5-9c25-b0ce3153c134",
+      "title": "Fuel efficiency report",
+      "units": [
+        {
+          "agent_id": "1c424dd1-4365-4085-984f-ef9981e1a43a",
+          "generation": "1",
+          "parent_run_id": null,
+          "result_message_id": "9a01ea67-3353-5c59-b59f-db92c2bc9936",
+          "result_preview": "Fuel efficiency report: 45 litres / 360 km \u00d7 100 = 12.5 litres per 100 km. Independent check: 12.5 \u00d7 3.6 = 45 litres.",
+          "run_id": "4d0bd325-0e07-57b8-b997-207112a46d4a",
+          "settled": true,
+          "status": "succeeded",
+          "verdict": "continue"
+        },
+        {
+          "agent_id": "1c424dd1-4365-4085-984f-ef9981e1a43a",
+          "generation": "1",
+          "parent_run_id": "4d0bd325-0e07-57b8-b997-207112a46d4a",
+          "result_message_id": "84fb1d9f-202a-51c4-ad61-25a85b8c58ff",
+          "result_preview": "The fuel efficiency report is complete and its arithmetic has been independently checked.",
+          "run_id": "2c9a7a24-12c3-562f-ba54-200826cd4d3f",
+          "settled": true,
+          "status": "succeeded",
+          "verdict": "done"
+        }
+      ],
+      "updated_at": "2026-10-28T10:31:56.572Z",
+      "wake": null,
+      "wake_condition": null
+    },
+    {
+      "completion_contract": null,
+      "created_at": "2026-10-28T10:31:57.068Z",
+      "creation_key": "daily-stock",
+      "evidence": [],
+      "generation": "2",
+      "goal_id": "85034d34-4ca7-4003-9515-ba7f89fe784b",
+      "objective": "Prepare the daily warehouse stock report at 09:00 Asia/Makassar.",
+      "progress": "",
+      "responsible_agent_id": "1c424dd1-4365-4085-984f-ef9981e1a43a",
+      "reviews": [],
+      "revision": "2",
+      "source_message_id": "1596ef54-f5d9-556c-828e-5f5e9ba3a81e",
+      "source_run_id": "f5b6a86e-e4e3-5c02-8384-b5e2fc544664",
+      "status": "waiting",
+      "subgoals": [],
+      "thread_id": "b4c22229-179b-47c5-9c25-b0ce3153c134",
+      "title": "Daily stock report",
+      "units": [
+        {
+          "agent_id": "1c424dd1-4365-4085-984f-ef9981e1a43a",
+          "generation": "1",
+          "parent_run_id": null,
+          "result_message_id": "0bd1016a-f952-5b7d-80e5-025d508c8bba",
+          "result_preview": "The daily report schedule has been updated.",
+          "run_id": "f5b6a86e-e4e3-5c02-8384-b5e2fc544664",
+          "settled": false,
+          "status": "succeeded",
+          "verdict": null
+        },
+        {
+          "agent_id": "1c424dd1-4365-4085-984f-ef9981e1a43a",
+          "generation": "2",
+          "parent_run_id": null,
+          "result_message_id": "0bd1016a-f952-5b7d-80e5-025d508c8bba",
+          "result_preview": "The daily report schedule has been updated.",
+          "run_id": "f5b6a86e-e4e3-5c02-8384-b5e2fc544664",
+          "settled": false,
+          "status": "succeeded",
+          "verdict": "wait"
+        }
+      ],
+      "updated_at": "2026-10-28T10:31:57.126Z",
+      "wake": {
+        "configuration": {
+          "expression": "0 9 * * *",
+          "job": {
+            "context": "Prepare the daily warehouse report",
+            "mode": "model"
+          },
+          "kind": "cron",
+          "missed_policy": "coalesce",
+          "timezone": "Asia/Makassar"
+        },
+        "definition_id": "3d12cbc2-ff14-5c2a-884c-a4125c6f1063",
+        "goal_generation": "2",
+        "kind": "schedule",
+        "next_at": "2026-10-29T01:00:00Z",
+        "revision": "1",
+        "state": "enabled"
+      },
+      "wake_condition": "Scheduled wake"
+    }
+  ],
+  "messages": [
+    {
+      "attachments": [],
+      "author_agent_id": null,
+      "author_kind": "user",
+      "content": "Please prepare a fuel efficiency report for 360 km and 45 litres. Verify the arithmetic and complete it automatically.",
+      "context_generation": "1",
+      "message_id": "73d6ce88-5e5c-5248-b46c-81f93103627d",
+      "message_seq": "2",
+      "parts": [
+        {
+          "text": "Please prepare a fuel efficiency report for 360 km and 45 litres. Verify the arithmetic and complete it automatically.",
+          "type": "text"
+        }
+      ],
+      "revision": "1",
+      "run_id": "4d0bd325-0e07-57b8-b997-207112a46d4a",
+      "thread_id": "b4c22229-179b-47c5-9c25-b0ce3153c134"
+    },
+    {
+      "attachments": [],
+      "author_agent_id": "1c424dd1-4365-4085-984f-ef9981e1a43a",
+      "author_kind": "agent",
+      "content": "Fuel efficiency report: 45 litres / 360 km \u00d7 100 = 12.5 litres per 100 km. Independent check: 12.5 \u00d7 3.6 = 45 litres.",
+      "context_generation": "1",
+      "message_id": "9a01ea67-3353-5c59-b59f-db92c2bc9936",
+      "message_seq": "3",
+      "parts": [
+        {
+          "text": "Fuel efficiency report: 45 litres / 360 km \u00d7 100 = 12.5 litres per 100 km. Independent check: 12.5 \u00d7 3.6 = 45 litres.",
+          "type": "text"
+        }
+      ],
+      "revision": "1",
+      "run_id": "4d0bd325-0e07-57b8-b997-207112a46d4a",
+      "thread_id": "b4c22229-179b-47c5-9c25-b0ce3153c134"
+    },
+    {
+      "attachments": [],
+      "author_agent_id": "1c424dd1-4365-4085-984f-ef9981e1a43a",
+      "author_kind": "agent",
+      "content": "The fuel efficiency report is complete and its arithmetic has been independently checked.",
+      "context_generation": "1",
+      "message_id": "84fb1d9f-202a-51c4-ad61-25a85b8c58ff",
+      "message_seq": "4",
+      "parts": [
+        {
+          "text": "The fuel efficiency report is complete and its arithmetic has been independently checked.",
+          "type": "text"
+        }
+      ],
+      "revision": "1",
+      "run_id": "2c9a7a24-12c3-562f-ba54-200826cd4d3f",
+      "thread_id": "b4c22229-179b-47c5-9c25-b0ce3153c134"
+    },
+    {
+      "attachments": [],
+      "author_agent_id": null,
+      "author_kind": "user",
+      "content": "Schedule a daily stock report for 09:00 Asia/Makassar.",
+      "context_generation": "1",
+      "message_id": "1596ef54-f5d9-556c-828e-5f5e9ba3a81e",
+      "message_seq": "5",
+      "parts": [
+        {
+          "text": "Schedule a daily stock report for 09:00 Asia/Makassar.",
+          "type": "text"
+        }
+      ],
+      "revision": "1",
+      "run_id": "f5b6a86e-e4e3-5c02-8384-b5e2fc544664",
+      "thread_id": "b4c22229-179b-47c5-9c25-b0ce3153c134"
+    },
+    {
+      "attachments": [],
+      "author_agent_id": "1c424dd1-4365-4085-984f-ef9981e1a43a",
+      "author_kind": "agent",
+      "content": "The daily report schedule has been updated.",
+      "context_generation": "1",
+      "message_id": "0bd1016a-f952-5b7d-80e5-025d508c8bba",
+      "message_seq": "6",
+      "parts": [
+        {
+          "text": "The daily report schedule has been updated.",
+          "type": "text"
+        }
+      ],
+      "revision": "1",
+      "run_id": "f5b6a86e-e4e3-5c02-8384-b5e2fc544664",
+      "thread_id": "b4c22229-179b-47c5-9c25-b0ce3153c134"
+    }
+  ],
+  "next_before_message_seq": null,
+  "replay_epoch": "89f3d146-6fc7-4a13-9284-bbd179279980",
+  "runs": [
+    {
+      "agent_id": "1c424dd1-4365-4085-984f-ef9981e1a43a",
+      "config_revision": "1",
+      "context_generation": "1",
+      "continuation_required": false,
+      "error_code": null,
+      "replay_epoch": "89f3d146-6fc7-4a13-9284-bbd179279980",
+      "run_id": "4d0bd325-0e07-57b8-b997-207112a46d4a",
+      "schema_version": "nma.v1",
+      "status": "succeeded",
+      "text": "Fuel efficiency report: 45 litres / 360 km \u00d7 100 = 12.5 litres per 100 km. Independent check: 12.5 \u00d7 3.6 = 45 litres.",
+      "thread_id": "b4c22229-179b-47c5-9c25-b0ce3153c134",
+      "through_sequence": "75",
+      "turn_exit_reason": "text_response(finish_reason=stop)"
+    },
+    {
+      "agent_id": "1c424dd1-4365-4085-984f-ef9981e1a43a",
+      "config_revision": "1",
+      "context_generation": "1",
+      "continuation_required": false,
+      "error_code": null,
+      "replay_epoch": "89f3d146-6fc7-4a13-9284-bbd179279980",
+      "run_id": "2c9a7a24-12c3-562f-ba54-200826cd4d3f",
+      "schema_version": "nma.v1",
+      "status": "succeeded",
+      "text": "The fuel efficiency report is complete and its arithmetic has been independently checked.",
+      "thread_id": "b4c22229-179b-47c5-9c25-b0ce3153c134",
+      "through_sequence": "75",
+      "turn_exit_reason": "text_response(finish_reason=stop)"
+    },
+    {
+      "agent_id": "1c424dd1-4365-4085-984f-ef9981e1a43a",
+      "config_revision": "1",
+      "context_generation": "1",
+      "continuation_required": false,
+      "error_code": null,
+      "replay_epoch": "89f3d146-6fc7-4a13-9284-bbd179279980",
+      "run_id": "f5b6a86e-e4e3-5c02-8384-b5e2fc544664",
+      "schema_version": "nma.v1",
+      "status": "succeeded",
+      "text": "The daily report schedule has been updated.",
+      "thread_id": "b4c22229-179b-47c5-9c25-b0ce3153c134",
+      "through_sequence": "75",
+      "turn_exit_reason": "text_response(finish_reason=stop)"
+    }
+  ],
+  "schema_version": "nma.v1",
+  "thread": {
+    "agents": [
+      {
+        "access_generation": "1",
+        "agent_id": "1c424dd1-4365-4085-984f-ef9981e1a43a",
+        "config": {
+          "avatar_url": "https://api.dicebear.com/10.x/critters/svg?seed=goal-walkthrough",
+          "instructions": "",
+          "model": "test",
+          "session": {
+            "compression": {},
+            "context_engine": "compressor",
+            "max_turns": null
+          },
+          "soul": ""
+        },
+        "config_revision": "1",
+        "created_at": "2026-10-28T10:31:55.021715Z",
+        "display_name": "goal-walkthrough",
+        "handle": "goal-walkthrough",
+        "primary_dm_thread_id": "b4c22229-179b-47c5-9c25-b0ce3153c134",
+        "revision": "1",
+        "status": "active",
+        "updated_at": "2026-10-28T10:31:55.021715Z"
+      }
+    ],
+    "context_generation": "1",
+    "dm_agent_id": "1c424dd1-4365-4085-984f-ef9981e1a43a",
+    "kind": "dm",
+    "membership_revision": "1",
+    "revision": "1",
+    "status": "open",
+    "thread_id": "b4c22229-179b-47c5-9c25-b0ce3153c134",
+    "title": "goal-walkthrough"
+  },
+  "through_sequence": "75"
+}

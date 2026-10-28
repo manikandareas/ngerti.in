@@ -1,0 +1,69 @@
+{
+  "date": "2026-10-28",
+  "verdict": "Review",
+  "findings": [
+    {
+      "priority": "P2",
+      "title": "Scheduled job route lost on continuation",
+      "test": "test_job_continuation.py",
+      "passed": false,
+      "seconds": 14.98
+    },
+    {
+      "priority": "P2",
+      "title": "Silent script publication changes after output-checkpoint restart",
+      "test": "test_silent_restart.py",
+      "passed": false,
+      "seconds": 24.13
+    }
+  ],
+  "fresh_regression": {
+    "passed": 64,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 456.75
+  },
+  "static": "passed",
+  "engine_lint": "passed",
+  "integrity": {
+    "runtime": {
+      "revision": "7489b22af47ce91b366dde81d5831ea422577498",
+      "python": "3.14.9",
+      "sqlite": "3.53.1"
+    },
+    "pinned_source_files": 171,
+    "original_manifest_files": 182,
+    "original_manifest_mismatches": [],
+    "historical_ddl_modules": 21,
+    "historical_ddl_mismatches": []
+  },
+  "not_rerun": [
+    "External real-model cohort",
+    "Authenticated production-component browser walkthrough",
+    "Full broad engine suite"
+  ],
+  "notion_status_modified": false,
+  "production_source_modified": false,
+  "files": {
+    "docs/research/evidence/nma-036-review/browser/event/browser-after.png": "68aee089c4d544e237a5390ce24dfb6dcd50b7823f3fc459afc14fd3e72d9aac",
+    "docs/research/evidence/nma-036-review/browser/event/browser-before.png": "4894238f628fb444c6ee5bec32cf34106e909eb99d04a8579220aeda8ac46ccb",
+    "docs/research/evidence/nma-036-review/browser/event/browser-closure.json": "fc59ba4a8f959a69bab63b03db3a9e369228b6b97e8576c35382ad8fb3ad46f3",
+    "docs/research/evidence/nma-036-review/browser/peer/browser-after.png": "3f432157a868e964f5db2c5c00257b771ffa9beef843fef03cd1019e308cda5c",
+    "docs/research/evidence/nma-036-review/browser/peer/browser-before.png": "61a3ddcf06b220abad7d10ab63ea9e484e26e4e480b41fcedd9f680109c3aba3",
+    "docs/research/evidence/nma-036-review/browser/peer/browser-closure.json": "314764ef95a9c001061032aaf30148d8bfe99202897e1cbbddb753bd9fc31142",
+    "docs/research/evidence/nma-036-review/browser/schedule/browser-after.png": "cdcd34d7f11102161e931f88b144ea8f6e2e1ece9f5b7e68fa7f0a69699175ba",
+    "docs/research/evidence/nma-036-review/browser/schedule/browser-before.png": "779fd813b7444dc452f8991fa5f5a4a7622a26f87e1dea90161b74e4a1a39416",
+    "docs/research/evidence/nma-036-review/browser/schedule/browser-closure.json": "c84034ec990eaab449d6df3bc8b66f96eaa31137657995afa4c58e36d12e5cdb",
+    "docs/research/evidence/nma-036-review/engine-lint.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "docs/research/evidence/nma-036-review/integrity.json": "e6b9488f5fe557da3c078c587f1292fd255f37670d9248e47efc3923b5035d41",
+    "docs/research/evidence/nma-036-review/job-continuation.log": "97712fc85db0cfd6b796e2da0d69614b432173de56bda7c425b967a4b892633a",
+    "docs/research/evidence/nma-036-review/output_checkpoint_launcher.py": "2fb5d7def3761bb4797a5456a7ad8b7d59d3cc73b534922a5032b4c9e73e5756",
+    "docs/research/evidence/nma-036-review/regression.log": "add712fd010c160bc4eed5d4fb7d04b13b1e30b59cf2827af3575ec2f8e099f3",
+    "docs/research/evidence/nma-036-review/reproduce.sh": "8c7199dbf995437269ce374148cd184c231a6b6751632500bdc098e90bc051d6",
+    "docs/research/evidence/nma-036-review/silent-restart.log": "bfd012d48113a836a47e7c939ea46a226c59f6c47ced81a5ebf12c4a49442fac",
+    "docs/research/evidence/nma-036-review/static.log": "e4d6008693b9024807d957fbb020343ba826af24477b3292f0151586cf397697",
+    "docs/research/evidence/nma-036-review/test_job_continuation.py": "7f74c9af97c48a8f7c896ed80902b126d92c397965f176b3963145d064213a65",
+    "docs/research/evidence/nma-036-review/test_silent_restart.py": "4e1796d8067b99c55671979e4468ef80595716da3a07e334c2b6af35991d5c09",
+    "docs/research/nma-036-implementation-review.md": "d80d40c797437762cc8a140cb83a5ff2d7c6a4bbb365593d51cd27d077adbc76"
+  }
+}

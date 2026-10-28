@@ -1,0 +1,93 @@
+/Users/vitoandareasmanik/.cache/uv/archive-v0/Uhti8kwSaB-uppKgLiv9B/lib/python3.14/site-packages/pytest_asyncio/plugin.py:300: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the "fixture" caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to "function" scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_________________ test_job_route_survives_linked_continuation __________________
+
+runtime = (PosixPath('/tmp/nma-mzkiasi1'), <http.server.ThreadingHTTPServer object at 0x109bbc440>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '20', 'lifecycle': 'ready', ...})
+providers = [<http.server.ThreadingHTTPServer object at 0x109bf0690>, <http.server.ThreadingHTTPServer object at 0x109bf0550>]
+
+    def test_job_route_survives_linked_continuation(runtime, providers):
+        import json
+        import time
+    
+        from test_capabilities import capability_agent
+        from test_connections import connect
+        from test_goal_lifecycle import eventually
+        from test_runtime import command
+    
+        root, primary, call, *_ = runtime
+        connection, _ = connect(call, providers[0], "Calendar job model")
+        (root / "capabilities.json").write_text(
+            json.dumps(
+                {
+                    "skill_refs": {
+                        "daily": {"enabled": True, "content": "JOB_SELECTED_SKILL_MARKER"}
+                    }
+                }
+            )
+        )
+        agent = capability_agent(call, "job-specific-route", skill_refs=["daily"])
+        thread = call(
+            command(
+                "thread.create",
+                {"kind": "dm", "title": "Job route", "agent_ids": [agent["agent_id"]]},
+            )
+        )["result"]["thread"]
+        goal = begin(call, thread)
+        act(
+            call,
+            thread,
+            action="schedule",
+            goal_id=goal["goal_id"],
+            expected_revision=goal["revision"],
+            wake={
+                "kind": "once",
+                "timezone": "UTC",
+                "missed_policy": "coalesce",
+                "at": utc(time.time() + 5),
+                "job": {
+                    "mode": "model",
+                    "model": connection + ":test-model",
+                    "skills": ["daily"],
+                    "context": "JOB_CONTEXT_MARKER",
+                },
+            },
+        )
+        from test_goal_lifecycle import continuation_script
+        continuation_script(providers[0], goal["goal_id"], verdict="continue")
+        continuation_script(primary, goal["goal_id"], verdict="wait")
+        before = len(primary.requests)
+        eventually(lambda: len(providers[0].requests), lambda n: n > 0, timeout=30)
+        eventually(lambda: snapshot(call, thread)["goals"][0],
+                   lambda g: len(g["units"]) >= 4 and all(u["settled"] for u in g["units"]), timeout=30)
+        requests = json.dumps(providers[0].requests)
+        assert "JOB_SELECTED_SKILL_MARKER" in requests
+        assert "JOB_CONTEXT_MARKER" in requests
+        assert all(r["model"] == "test-model" for r in providers[0].requests)
+>       assert len(primary.requests) == before
+E       assert 6 == 4
+E        +  where 6 = len([{'messages': [{'role': 'system', 'content': 'You are Hermes Agent, built by Nous Research. Be direct: match the lengt... "context": "JOB_CONTEXT_MARKER"}}}'}, ...], 'model': 'test-model', 'reasoning_effort': 'medium', 'stream': True, ...}])
+E        +    where [{'messages': [{'role': 'system', 'content': 'You are Hermes Agent, built by Nous Research. Be direct: match the lengt... "context": "JOB_CONTEXT_MARKER"}}}'}, ...], 'model': 'test-model', 'reasoning_effort': 'medium', 'stream': True, ...}] = <http.server.ThreadingHTTPServer object at 0x109bbc440>.requests
+
+docs/research/evidence/nma-036-review/test_job_continuation.py:67: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+=============================== warnings summary ===============================
+.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14
+  /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14: PytestRemovedIn10Warning: _pytest.python.CallSpec2 has been renamed to CallSpec.
+  The CallSpec2 alias will be removed in pytest 10.
+  Update imports to use CallSpec instead.
+  See https://docs.pytest.org/en/stable/deprecations.html#callspec2-renamed
+    from _pytest.python import CallSpec2
+
+.dev/nma-001/source/tests/gateway/test_normal_runtime_boot.py:128
+  /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/source/tests/gateway/test_normal_runtime_boot.py:128: PytestUnknownMarkWarning: Unknown pytest.mark.platforms - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.platforms("linux")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED docs/research/evidence/nma-036-review/test_job_continuation.py::test_job_route_survives_linked_continuation
+1 failed, 2 warnings in 14.98s

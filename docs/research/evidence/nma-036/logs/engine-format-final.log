@@ -1,0 +1,51 @@
+unformatted: File would be reformatted
+   --> apps/engine/src/ngertiin_engine/plugins.py:116:18
+    |
+115 |
+    -     for item in [*value.get("pip_dependencies", []), *value.get("python_dependencies", [])]:
+116 +     for item in [
+117 +         *value.get("pip_dependencies", []),
+118 +         *value.get("python_dependencies", []),
+119 +     ]:
+120 |         try:
+121 |             requirement = Requirement(item)
+122 |             pins = list(requirement.specifier)
+    -             if requirement.url or len(pins) != 1 or pins[0].operator != "==" or "*" in pins[0].version:
+123 +             if (
+124 +                 requirement.url
+125 +                 or len(pins) != 1
+126 +                 or pins[0].operator != "=="
+127 +                 or "*" in pins[0].version
+128 +             ):
+129 |                 raise ValueError
+    -             if importlib.metadata.version(requirement.name) not in requirement.specifier:
+130 +             if (
+131 +                 importlib.metadata.version(requirement.name)
+132 +                 not in requirement.specifier
+133 +             ):
+134 |                 raise ValueError
+    -         except (InvalidRequirement, ValueError, TypeError, importlib.metadata.PackageNotFoundError):
+135 +         except (
+136 +             InvalidRequirement,
+137 +             ValueError,
+138 +             TypeError,
+139 +             importlib.metadata.PackageNotFoundError,
+140 +         ):
+141 |             raise EngineError("PLUGIN_DEPENDENCIES_REQUIRE_PROVISIONING") from None
+--------------------------------------------------------------------------------
+217 |         with sqlite3.connect(f"file:{database}?mode=ro", uri=True) as conn:
+    -             exists = conn.execute("SELECT 1 FROM sqlite_master WHERE name='session_admissions'").fetchone()
+    -             if exists and conn.execute("SELECT 1 FROM session_admissions WHERE status<>'terminal' LIMIT 1").fetchone():
+218 +             exists = conn.execute(
+219 +                 "SELECT 1 FROM sqlite_master WHERE name='session_admissions'"
+220 +             ).fetchone()
+221 +             if (
+222 +                 exists
+223 +                 and conn.execute(
+224 +                     "SELECT 1 FROM session_admissions WHERE status<>'terminal' LIMIT 1"
+225 +                 ).fetchone()
+226 +             ):
+227 |                 raise EngineError("PLUGIN_UPDATE_REQUIRES_DRAINED_GATEWAY")
+    |
+
+1 file would be reformatted, 160 files already formatted

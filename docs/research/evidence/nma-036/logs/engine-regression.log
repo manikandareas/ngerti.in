@@ -1,0 +1,121 @@
+/Users/vitoandareasmanik/.cache/uv/archive-v0/Uhti8kwSaB-uppKgLiv9B/lib/python3.14/site-packages/pytest_asyncio/plugin.py:300: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the "fixture" caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to "function" scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+.............................ssss........................sssss.......s.. [ 23%]
+.........F...........................sss..............s..........s...... [ 47%]
+........ssss...............s.................sssssssssssss.............. [ 70%]
+.......................................s................................ [ 94%]
+..ssss...........                                                        [100%]
+=================================== FAILURES ===================================
+____________________ test_child_cancel_fences_late_results _____________________
+
+runtime = (PosixPath('/tmp/nma-zzq65jrm'), <http.server.ThreadingHTTPServer object at 0x10e101640>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '20', 'lifecycle': 'ready', ...})
+
+    def test_child_cancel_fences_late_results(runtime):
+        root, provider, call, _start, *_ = runtime
+        _agent, thread = setup(root, call)
+        provider.release.clear()
+        provider.blocked.clear()
+    
+        def script(body, text):
+            messages = body.get("messages", [])
+            if not messages:
+                return None
+            if "focused subagent" in json.dumps(
+                [m for m in messages if m["role"] == "system"]
+            ):
+                provider.blocked.set()
+                provider.release.wait(15)
+                return {"role": "assistant", "content": "FORBIDDEN_LATE_CHILD_RESULT"}
+            if any(m["role"] == "tool" for m in messages):
+                return {"role": "assistant", "content": "Child delegation started."}
+            return tool(
+                "delegate_task", {"goal": "Wait for the independent child calculation"}
+            )
+    
+        provider.goal_script = script
+        receipt = call(send(thread, "Use a temporary child"))["result"]
+        assert provider.blocked.wait(10)
+        assert "result" in call(command("run.cancel", {"run_id": receipt["run_id"]}))
+        provider.release.set()
+        deadline = time.monotonic() + 10
+        while time.monotonic() < deadline:
+            snap = snapshot(call, thread)
+            children = snap["delegations"]
+            if children and children[0]["status"] != "running":
+                break
+            time.sleep(0.1)
+        assert children and children[0]["status"] == "cancelled", snap
+        assert children[0]["result"] is None
+        time.sleep(0.5)
+        assert not any(
+            "FORBIDDEN_LATE_CHILD_RESULT" in m["content"]
+            for m in snapshot(call, thread)["messages"]
+        )
+        with sqlite3.connect(root / "state/state.db") as db:
+            attempts = [
+                json.loads(row[0])["payload"]
+                for row in db.execute(
+                    "SELECT payload FROM nma_events WHERE json_extract(payload,'$.type')='provider.attempt' AND json_extract(payload,'$.payload.child_session_id')=?",
+                    (children[0]["child_session_id"],),
+                )
+            ]
+>       assert len(attempts) == 1 and attempts[0]["late_receipt"] is True, attempts
+E       AssertionError: []
+E       assert (0 == 1)
+E        +  where 0 = len([])
+
+apps/engine/tests/test_delegation.py:180: AssertionError
+=============================== warnings summary ===============================
+.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14
+  /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14: PytestRemovedIn10Warning: _pytest.python.CallSpec2 has been renamed to CallSpec.
+  The CallSpec2 alias will be removed in pytest 10.
+  Update imports to use CallSpec instead.
+  See https://docs.pytest.org/en/stable/deprecations.html#callspec2-renamed
+    from _pytest.python import CallSpec2
+
+tests/test_google_mcp.py::test_google_native_mcp_tools_preserve_results_and_revoke
+  /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-033/production/lib/python3.14/site-packages/websockets/legacy/__init__.py:6: DeprecationWarning: websockets.legacy is deprecated; see https://websockets.readthedocs.io/en/stable/howto/upgrade.html for upgrade instructions
+    warnings.warn(  # deprecated in 14.0 - 2024-11-09
+
+tests/test_google_mcp.py::test_google_native_mcp_tools_preserve_results_and_revoke
+  /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-033/production/lib/python3.14/site-packages/uvicorn/protocols/websockets/websockets_impl.py:17: DeprecationWarning: websockets.server.WebSocketServerProtocol is deprecated
+    from websockets.server import WebSocketServerProtocol
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+SKIPPED [1] apps/engine/tests/test_browser_recovery.py:58: Requires the reviewed browser image
+SKIPPED [2] apps/engine/tests/test_browser_recovery.py:75: Requires the reviewed browser image
+SKIPPED [1] apps/engine/tests/test_browser_recovery.py:174: Requires the reviewed browser image
+SKIPPED [4] apps/engine/tests/test_computer_boundaries.py: Historical custom browser routing is retired. Native screen/effect boundaries run in test_native_screens and test_screen_gateway.
+SKIPPED [1] apps/engine/tests/test_computer_live.py:21: Opt-in real E2B resources
+SKIPPED [1] apps/engine/tests/test_connections_live.py:13: Explicit real-provider environment required
+SKIPPED [1] apps/engine/tests/test_discussions_live.py:19: Real model acceptance is opt-in
+SKIPPED [1] apps/engine/tests/test_document_workflows.py:22: Requires the actual document image
+SKIPPED [1] apps/engine/tests/test_document_workflows.py:150: Requires the actual document image
+SKIPPED [1] apps/engine/tests/test_goal_lifecycle_live.py:18: Live provider evaluation is opt-in
+SKIPPED [1] apps/engine/tests/test_goals_live.py:24: Live provider evaluation is opt-in
+SKIPPED [1] apps/engine/tests/test_learning_live.py:83: Requires the selected real model and reviewed native document image
+SKIPPED [1] apps/engine/tests/test_learning_live.py:175: Requires the selected real model and reviewed native document image
+SKIPPED [1] apps/engine/tests/test_learning_live.py:266: Requires the selected real model and reviewed native document image
+SKIPPED [1] apps/engine/tests/test_learning_live.py:318: Requires the selected real model and reviewed native document image
+SKIPPED [1] apps/engine/tests/test_memory_provider.py:22: Requires an actual isolated self-hosted memory service
+SKIPPED [1] apps/engine/tests/test_native_screens.py:58: Requires the reviewed X11/Cua image
+SKIPPED [1] apps/engine/tests/test_native_screens.py:85: Requires the reviewed X11/Cua image
+SKIPPED [1] apps/engine/tests/test_native_screens.py:137: Requires the reviewed X11/Cua image
+SKIPPED [1] apps/engine/tests/test_native_screens.py:187: Requires the reviewed X11/Cua image
+SKIPPED [1] apps/engine/tests/test_native_screens.py:249: Requires the reviewed X11/Cua image
+SKIPPED [1] apps/engine/tests/test_native_screens.py:283: Requires the reviewed X11/Cua image
+SKIPPED [1] apps/engine/tests/test_native_screens.py:294: Requires the reviewed X11/Cua image
+SKIPPED [1] apps/engine/tests/test_native_screens.py:343: Requires the reviewed X11/Cua image
+SKIPPED [1] apps/engine/tests/test_native_screens.py:370: Requires the reviewed X11/Cua image
+SKIPPED [1] apps/engine/tests/test_native_screens.py:452: Requires the reviewed X11/Cua image
+SKIPPED [1] apps/engine/tests/test_native_screens.py:482: Requires the reviewed X11/Cua image
+SKIPPED [1] apps/engine/tests/test_native_screens.py:534: Requires the reviewed X11/Cua image
+SKIPPED [1] apps/engine/tests/test_native_screens.py:577: Requires the reviewed X11/Cua image
+SKIPPED [1] apps/engine/tests/test_screen_gateway.py:19: Requires the reviewed desktop image
+SKIPPED [3] apps/engine/tests/test_wakes_browser.py:21: Opt-in Chromium acceptance
+SKIPPED [1] apps/engine/tests/test_wakes_live.py:20: Live provider evaluation is opt-in
+FAILED apps/engine/tests/test_delegation.py::test_child_cancel_fences_late_results
+1 failed, 266 passed, 38 skipped, 3 warnings in 1135.62s (0:18:55)

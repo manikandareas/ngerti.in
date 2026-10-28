@@ -1,0 +1,118 @@
+- generic [ref=e1] clickable [onclick]
+  - main
+    - region "Percakapan langsung" [ref=e2]
+      - sectionheader
+        - link "Kembali ke agent dan percakapan" [ref=e3]
+        - heading "goal-walkthrough" [level=1, ref=e4]
+        - paragraph
+          - StaticText "@goal-walkthrough · DM"
+      - status
+        - StaticText "Tersambung · Riwayat tersimpan"
+      - group
+        - DisclosureTriangle "Konteks percakapan" [expanded=false]
+          - StaticText "Konteks percakapan"
+      - region "Memori dan skills" [ref=e5]
+        - button "Memori dan skills +" [expanded=false, ref=e19]
+          - StaticText "Memori dan skills +"
+      - group
+        - DisclosureTriangle "Workspace & perubahan kode" [expanded=false]
+          - StaticText "Workspace & perubahan kode"
+      - button "Layar dan bantuan login" [expanded=false, ref=e6]
+      - region "Progress goals" [ref=e7]
+        - heading "Goals percakapan" [level=2, ref=e20]
+        - StaticText "2"
+        - StaticText " tanggung jawab"
+        - paragraph
+          - StaticText "Agent mengelola progress di sini. Ubah, jeda, atau hentikan lewat percakapan."
+        - group
+          - DisclosureTriangle "Fuel efficiency reportSelesai" [expanded=true]
+            - StaticText "Fuel efficiency reportSelesai"
+          - paragraph
+            - StaticText "Produce and verify fuel efficiency for 360 km and 45 litres."
+          - paragraph
+            - StaticText "45 / 360 × 100 = 12.5 litres per 100 km; independently checked."
+          - heading "Langkah tujuan" [level=3, ref=e33]
+          - list
+            - listitem [level=1]
+              - StaticText "✓"
+              - StaticText "Verified arithmetic"
+              - StaticText "Ada bukti hasil"
+          - heading "Pemeriksaan hasil" [level=3, ref=e34]
+          - paragraph
+            - StaticText "Hasil memenuhi kriteria"
+          - paragraph
+            - StaticText "The persisted calculation is 45 / 360 × 100 = 12.5 litres per 100 km."
+          - heading "Bukti hasil" [level=3, ref=e35]
+          - paragraph
+            - StaticText "Verified arithmetic"
+          - paragraph
+            - StaticText "45 / 360 × 100 = 12.5 litres per 100 km; independently checked."
+          - link "Lihat pesan hasil" [ref=e36]
+        - group
+          - DisclosureTriangle "Daily stock reportMenunggu" [expanded=true]
+            - StaticText "Daily stock reportMenunggu"
+          - paragraph
+            - StaticText "Prepare the daily warehouse stock report at 09:00 Asia/Makassar."
+          - paragraph
+            - StaticText "Menunggu: Scheduled wake"
+          - heading "Jadwal pekerjaan" [level=3, ref=e37]
+          - paragraph
+            - StaticText "Aktif · Asia/Makassar"
+          - paragraph
+            - StaticText "Berikutnya: "
+            - time
+              - StaticText "29/10/2026, 09.00.00"
+          - paragraph
+            - StaticText "Ubah, jeda, lanjutkan, atau jalankan sekarang lewat percakapan."
+      - article "Pesan goal-walkthrough" [ref=e8]
+        - heading "goal-walkthrough" [level=2, ref=e21]
+        - paragraph
+          - StaticText "Hi, I'm goal-walkthrough! I'm here to help you think things through and get things done. What would you like to work on?"
+      - article "Pesan Kamu" [ref=e9]
+        - heading "Kamu" [level=2, ref=e22]
+        - paragraph
+          - StaticText "Please prepare a fuel efficiency report for 360 km and 45 litres. Verify the arithmetic and complete it automatically."
+      - article "Pesan goal-walkthrough" [ref=e10]
+        - heading "goal-walkthrough" [level=2, ref=e23]
+        - paragraph
+          - StaticText "Fuel efficiency report: 45 litres / 360 km × 100 = 12.5 litres per 100 km. Independent check: 12.5 × 3.6 = 45 litres."
+      - article "Pesan goal-walkthrough" [ref=e11]
+        - heading "goal-walkthrough" [level=2, ref=e24]
+        - paragraph
+          - StaticText "The fuel efficiency report is complete and its arithmetic has been independently checked."
+      - article "Pesan Kamu" [ref=e12]
+        - heading "Kamu" [level=2, ref=e25]
+        - paragraph
+          - StaticText "Schedule a daily stock report for 09:00 Asia/Makassar."
+      - article "Pesan goal-walkthrough" [ref=e13]
+        - heading "goal-walkthrough" [level=2, ref=e26]
+        - paragraph
+          - StaticText "The daily report schedule has been updated."
+      - article "Pesan Kamu" [ref=e14]
+        - heading "Kamu" [level=2, ref=e27]
+        - paragraph
+          - StaticText "Pause the daily report schedule."
+      - article "Pesan goal-walkthrough" [ref=e15]
+        - heading "goal-walkthrough" [level=2, ref=e28]
+        - paragraph
+          - StaticText "The daily report schedule has been updated."
+      - article "Pesan Kamu" [ref=e16]
+        - heading "Kamu" [level=2, ref=e29]
+        - paragraph
+          - StaticText "Resume the daily report schedule."
+      - article "Pesan goal-walkthrough" [ref=e17]
+        - heading "goal-walkthrough" [level=2, ref=e30]
+        - paragraph
+          - StaticText "The daily report schedule has been updated."
+      - sectionfooter
+        - button "Pesan terbaru" [ref=e18]
+        - generic
+          - LabelText
+            - StaticText "Pesan untuk goal-walkthrough"
+          - textbox "Pesan untuk goal-walkthrough" [ref=e31]
+          - generic
+            - button "Pilih lampiran" [ref=e38]: No file chosen
+            - button "Lampirkan file" [ref=e39]
+          - paragraph
+            - StaticText "Percakapan tersimpan. Kamu bisa kembali kapan saja."
+          - button "Kirim pesan" [disabled, ref=e32]

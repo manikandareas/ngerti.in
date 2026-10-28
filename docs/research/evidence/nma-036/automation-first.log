@@ -1,0 +1,71 @@
+/Users/vitoandareasmanik/.cache/uv/archive-v0/Uhti8kwSaB-uppKgLiv9B/lib/python3.14/site-packages/pytest_asyncio/plugin.py:300: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the "fixture" caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to "function" scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+F                                                                        [100%]
+=================================== FAILURES ===================================
+______ test_script_only_dependencies_offline_restart_and_zero_model_usage ______
+
+runtime = (PosixPath('/tmp/nma-pc_9zq4e'), <http.server.ThreadingHTTPServer object at 0x107f48830>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '18', 'lifecycle': 'ready', ...})
+
+    @pytest.mark.skipif(
+        not os.environ.get("NMA_TEST_NATIVE_IMAGE"), reason="Requires native Linux image"
+    )
+    def test_script_only_dependencies_offline_restart_and_zero_model_usage(runtime):
+        root, provider, call, start, *_ = runtime
+        image = os.environ["NMA_TEST_NATIVE_IMAGE"]
+        (root / "capabilities.json").write_text(json.dumps(catalog(image)))
+        agent = capability_agent(call, "script-worker", tool_grants=["terminal"])
+        thread = call(
+            command(
+                "thread.create",
+                {
+                    "kind": "dm",
+                    "title": "Script automation",
+                    "agent_ids": [agent["agent_id"]],
+                },
+            )
+        )["result"]["thread"]
+>       goal = begin(call, thread)
+               ^^^^^^^^^^^^^^^^^^^
+
+apps/engine/tests/test_automation.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+apps/engine/tests/test_goal_lifecycle.py:86: in begin
+    create(call, thread)
+apps/engine/tests/test_goals.py:33: in create
+    return act(
+apps/engine/tests/test_goals.py:17: in act
+    settle(call, result["run_id"])
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x107f807d0>
+run_id = 'db354ac7-6929-5e88-8f3c-b26dd2ed380c', expected = 'succeeded'
+
+    def settle(call, run_id, expected="succeeded"):
+        deadline = time.monotonic() + 45
+        while time.monotonic() < deadline:
+            reply = call(command("runtime.read", {"run_id": run_id}))
+            assert "result" in reply, reply
+            if reply["result"]["status"] not in {"queued", "running"}:
+                assert reply["result"]["status"] == expected, reply
+                return reply["result"]
+            time.sleep(0.1)
+>       pytest.fail(f"Run did not settle: {reply}")
+E       Failed: Run did not settle: {'result': {'agent_id': 'c237686e-3d7e-4464-a69b-50d53ccb31ac', 'config_revision': '1', 'context_generation': '1', 'continuation_required': False, 'error_code': None, 'run_id': 'db354ac7-6929-5e88-8f3c-b26dd2ed380c', 'schema_version': 'nma.v1', 'status': 'running', 'text': '', 'thread_id': '9c167215-4807-429e-ad50-bd220dc5f5d7', 'turn_exit_reason': ''}}
+
+apps/engine/tests/test_runtime.py:382: Failed
+---------------------------- Captured stdout setup -----------------------------
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+=============================== warnings summary ===============================
+.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14
+  /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14: PytestRemovedIn10Warning: _pytest.python.CallSpec2 has been renamed to CallSpec.
+  The CallSpec2 alias will be removed in pytest 10.
+  Update imports to use CallSpec instead.
+  See https://docs.pytest.org/en/stable/deprecations.html#callspec2-renamed
+    from _pytest.python import CallSpec2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_automation.py::test_script_only_dependencies_offline_restart_and_zero_model_usage
+1 failed, 1 warning in 49.19s

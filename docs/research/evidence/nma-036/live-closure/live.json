@@ -1,0 +1,2331 @@
+{
+  "runtime_source": {
+    "apps/engine/src/ngertiin_engine/__init__.py": "4064e84d1acb1ffa1e8097c5af6566b57929ce94cb0c67c80b64945dec02770f",
+    "apps/engine/src/ngertiin_engine/adapter.py": "301660c85d0486a46c88cbe84b687daf10ff4d1efb7061fd5d13d54d334fb79c",
+    "apps/engine/src/ngertiin_engine/agents.py": "ce4562661720d61f79ec06d82fc307634a694217a457a8ce9ae70aa22651f05c",
+    "apps/engine/src/ngertiin_engine/app_auth.py": "14ef1b920af8b7210f932514ef815d13d9c3683450d33a82c8a20eb67179523c",
+    "apps/engine/src/ngertiin_engine/app_connections.py": "f470062ef094b3363854a1f01ed7ba09ad51e5ce4f417e143c4e6f0467492a59",
+    "apps/engine/src/ngertiin_engine/app_interactions.py": "bb37805076ef123f6c5d26e1cfca9a0450af834ced9c7d685f2ff4629a221da8",
+    "apps/engine/src/ngertiin_engine/app_manifest.py": "e4e82dcd586e9161ce435077595d7ab48b527a62e6edcef1ee5f5d6adcb01be9",
+    "apps/engine/src/ngertiin_engine/app_runtime.py": "c1731e38a67c361980dc6b7f3ea2228496f73b85d00b63d2386decece2518951",
+    "apps/engine/src/ngertiin_engine/app_stdio.py": "48b07a0fd14a68221057bf4536d149cdbb1a1d51bfde31ef0ea922f7552ad058",
+    "apps/engine/src/ngertiin_engine/artifacts.py": "31508dca1ab80fdc0d26d5e3ecbfea83f6d539a0467e500e1e5f5ec526bc95e9",
+    "apps/engine/src/ngertiin_engine/automation.py": "8183987fd4b196d9c79ea082be38bab484e1f9d4e9bb8681a82e52be9adf9a5a",
+    "apps/engine/src/ngertiin_engine/backup.py": "013a9f7c6f073464ca7e63521501486671aba290504faab5de932579ef5145c1",
+    "apps/engine/src/ngertiin_engine/browser_egress.py": "04e2d9a332a3815adc24593e7b1fb9cf240026a8d1563dd2d36fbd0474a9d094",
+    "apps/engine/src/ngertiin_engine/browser_load.py": "1b17643745db06965b11e004e1dca268a2fe85aec1756a1fb0bf5528f60f3d57",
+    "apps/engine/src/ngertiin_engine/browser_supervision.py": "8ad167b708bc9790f7d438e6434408a8c33df161e6d9a982d142fd09bb036017",
+    "apps/engine/src/ngertiin_engine/browser_vault.py": "d10099ff44132d3058d7f75f8d94ed911dc96a9349731ffdec6082e462cebccc",
+    "apps/engine/src/ngertiin_engine/capabilities.py": "e8ec396bb4921ade1647f816b2734bea95b10efbf0918d7762d0245b3e3a778e",
+    "apps/engine/src/ngertiin_engine/coding.py": "d64c2dedb09a517ca38afc9f7fe9ebb1c256268aa749777fa41b726838a75a23",
+    "apps/engine/src/ngertiin_engine/collaboration.py": "b19e6a64cdeb5018d1c682cb8d4157c763fcfbccfd54a7f822b47135fd2bb479",
+    "apps/engine/src/ngertiin_engine/collaboration_delivery.py": "c6ca120adeed2065f5b3ce68030f63dba2fd2985830c98c690a7063e38c3de22",
+    "apps/engine/src/ngertiin_engine/collaboration_native.py": "62c0b4568bb78447909145b6257a4a4e41afd5b4a9b878079505ed5986446c82",
+    "apps/engine/src/ngertiin_engine/computer.py": "cf422c9152e51cea0972e37a7a38a4f7596af308e92bd77805dbcbce1f10a5e3",
+    "apps/engine/src/ngertiin_engine/connections.py": "81de0ce77a8bae031c956f61e3a4311eaf31a4dacf3e76d272f0de8d5c365489",
+    "apps/engine/src/ngertiin_engine/context.py": "df67ed7cefe258480e6252fbe9a321383c6736059ba615192ceeff782fb748d7",
+    "apps/engine/src/ngertiin_engine/context_references.py": "f8324a9997bb325275e88dcb83b2f4f1355e6ea71639998bba9f16f11428d4bd",
+    "apps/engine/src/ngertiin_engine/contracts.py": "db560c0e33c70897c7bc2eda73d63efd4105482f5be06ae36cadc48632779526",
+    "apps/engine/src/ngertiin_engine/conversations.py": "28a570cdb5ae4d927a953a5abc90326dc5f27967085a4e8ea87bebe7f9381057",
+    "apps/engine/src/ngertiin_engine/delegation.py": "a01a7471c5e8cf94cdf04f7033333d69e3356388b9ccf2327b5d2b5fb43ace1c",
+    "apps/engine/src/ngertiin_engine/delegation_delivery.py": "82eae6917953137ae058d9a36cf6e20df634408782e40ad76a20b52c5abd6e1e",
+    "apps/engine/src/ngertiin_engine/delegation_store.py": "cf17ef6d61c2bb51a3430de7ae0fce77cc56f916d2c12c463643cc14253281f9",
+    "apps/engine/src/ngertiin_engine/delivery.py": "365a812606a081eb4cd1b99aba2c67ae0155b8715b1c22d4da52fe6699b943da",
+    "apps/engine/src/ngertiin_engine/desktop_worker.py": "719ff3ff4fcd1ca0e385ca66702e3a256157a2f1ed9e3ab29b1c2b564a3fb9c1",
+    "apps/engine/src/ngertiin_engine/diagnostics.py": "a4a1fc2b53e0603f4fd21d9e5c47273133b6a5578a6cee199f17392f4a4b729c",
+    "apps/engine/src/ngertiin_engine/direct_messages.py": "c04b153a775d955f24e6e6deead00f1e5ad19688e70269fc2383d95ba40467a3",
+    "apps/engine/src/ngertiin_engine/discussions.py": "91837b29013341ab81dfd08129cf58d384d9e3a75df47b94161054066d89b921",
+    "apps/engine/src/ngertiin_engine/files.py": "fee72700691b573a0f34c4092f75dc1425e4e7cfdbc6fc032724b651ed8e3d65",
+    "apps/engine/src/ngertiin_engine/goal_commands.py": "bdb3ddb4d412d43e5f54e6342cdf48962dd394109b1e8bc344a6ef2492827d5b",
+    "apps/engine/src/ngertiin_engine/goal_continuation.py": "ea532d9aa876d031df5c89f429ccb18791a854ff742d1826f98ffc8501d71fa7",
+    "apps/engine/src/ngertiin_engine/goal_lifecycle.py": "086226995467893e563e16a8e6375d4b4362a6fdf47a931a711d53b31ce5d9bc",
+    "apps/engine/src/ngertiin_engine/goal_review.py": "8fa53335fa184828ff693dd8ad6856db7d6deb40693ca4b6442788e8bf270fae",
+    "apps/engine/src/ngertiin_engine/goals.py": "0f9d23e8be7990b25117f276096b9324947b3d2f72c1d5cdfe578203317a46fe",
+    "apps/engine/src/ngertiin_engine/google_mcp.py": "a714eceee8d398252be31bead568ff15eaef67d56d6afea70ddbf85598996284",
+    "apps/engine/src/ngertiin_engine/google_workspace.py": "8fb9facaad8a68139b885c2060365159cbc76aefec6c35e2d0dec9c3766dc5c0",
+    "apps/engine/src/ngertiin_engine/inbox.py": "ebf3aacc0f8dbd90ae47f237788739acc4f29b5a6d6f7b790c0d685c7b4cee6b",
+    "apps/engine/src/ngertiin_engine/inference.py": "c2a42622cd480e5c7515b9fa5e8e6338b25c606dfcffb549e237a19a0842f766",
+    "apps/engine/src/ngertiin_engine/inference_config.py": "b39fd01d154f4b9fe0ec6600d2a3c8e4bd4346a8acd8084d28fa424d58416b98",
+    "apps/engine/src/ngertiin_engine/integration.py": "30e60d3ea3a55bb82ac036a34cb13f2d00797c30b14b05f96a672b2bee9dffc0",
+    "apps/engine/src/ngertiin_engine/learning.py": "05c796105892bca56a5dc689038330ff430f37f829dae7606ea501ca8b67b4b8",
+    "apps/engine/src/ngertiin_engine/learning_assets.py": "da39a3df788b390afa39e5df3d3d2c8ff9756be079fd18c8864e034da821a5ac",
+    "apps/engine/src/ngertiin_engine/learning_curator.py": "bb3df540c6a7fa5fb55d7c01e0f6cd4ab7b5e68b89f2ae448ad1e85a55124a31",
+    "apps/engine/src/ngertiin_engine/learning_store.py": "4a542131e1632fbfd63c78aa805bde82e34c92c5008c2f2d2d183bb10c29b0c6",
+    "apps/engine/src/ngertiin_engine/memory_provider.py": "3b325b1413c408158fe0d220e0d490555b13f93e0c1b77f5b323c1df9920f91d",
+    "apps/engine/src/ngertiin_engine/native_catalog.py": "83311b4dc0ce478de0c0ba1b24b111aa193881b45d9f2541010ebd2dec22f45f",
+    "apps/engine/src/ngertiin_engine/native_executor.py": "0225d5493348f60f8e9208280bf1629767c358aecbdc21c016f65597723eaa44",
+    "apps/engine/src/ngertiin_engine/native_jobs.py": "ab39a91de479fc9965b480ebcfb6f581e1eacf28fddf9e0fd8c1043f523cf37d",
+    "apps/engine/src/ngertiin_engine/native_media.py": "53903d4f7753fb05d7611a93a496e7cc6c6e87c58d8684debed842009796c693",
+    "apps/engine/src/ngertiin_engine/native_surface.py": "dacb1fc04c0681802e53d2826241ec98575077ad52035556fb29100f4a48703c",
+    "apps/engine/src/ngertiin_engine/native_worker.py": "78878b98e0ff64de6623bd34faf33a21f55279e3296cff2a1b483b910079d50e",
+    "apps/engine/src/ngertiin_engine/outcomes.py": "a5f3e0448a5f6d8c5edf290296f559d117543ead665181efb53ec85c190910af",
+    "apps/engine/src/ngertiin_engine/plugins.py": "645fa2a841bbe7f1f7ff398238adf3d7e75549f016f25eb6218e8f822c651c4d",
+    "apps/engine/src/ngertiin_engine/process_waits.py": "11e8a9d2ecf4fefb6a307b6c04a982c8d8880706ceee30f522f205fa7520dff8",
+    "apps/engine/src/ngertiin_engine/provider_auth.py": "69b4c4147940288e788e29682013a5d3ac12eeb4f352b01f6317e1463560d5c4",
+    "apps/engine/src/ngertiin_engine/provider_manifest.py": "28249bd9a2a031865132d794cb5dc6cb4f8147680622c83e70e67819af9ecf27",
+    "apps/engine/src/ngertiin_engine/provider_secrets.py": "99b2eb338f151d4e1525bdcc98347f394039c830ba81d90d655750d7a7cd4498",
+    "apps/engine/src/ngertiin_engine/provider_transport.py": "f0421690963e78a84ef493b0ed77930371f31f8db1155e008c945d117be59840",
+    "apps/engine/src/ngertiin_engine/recall.py": "01523c2e13b550ac4cd2a676715860039388da8b52c3fa436a8a6f0565139d47",
+    "apps/engine/src/ngertiin_engine/redaction.py": "a6cab4afc0cc6389ad20f1ca77428681a816ea06c59938dfb12bd412782abc6e",
+    "apps/engine/src/ngertiin_engine/reliability.py": "f6fa563f3f9c669e6c1b1e33bd32006e29a222214d86ff5b30a0860a5fbe5904",
+    "apps/engine/src/ngertiin_engine/research.py": "772fc9477a5bd74207ac22a552da6ce6b359b0432e48446e1a9a659946a7d621",
+    "apps/engine/src/ngertiin_engine/runtime.py": "1e3165462a4c4cc0a4a896fc6e37b26a3c713b2b600719e91001329a8b321217",
+    "apps/engine/src/ngertiin_engine/screen_control.py": "043b1150e5c6948e06c6d55cb544957d5a7202035d8822d0f5bd7cf1bed73ef8",
+    "apps/engine/src/ngertiin_engine/screens.py": "794c350cb151d4eb502cf3c9afcdd396be9df26b8a475be1867654db209a4954",
+    "apps/engine/src/ngertiin_engine/service.py": "3dea0eeaa831a70175c3ee1de3050a4bc88e9f369cf18945e4994c6bf75aebba",
+    "apps/engine/src/ngertiin_engine/session_context.py": "09566915eea7363545f17e379c5613ea531dba24f6774c31b767a3bc4b79b303",
+    "apps/engine/src/ngertiin_engine/session_controls.py": "bf0bab8b3cbaaee20bd92e8cf85c8df5e3b99f83f4d333ad4ede2852161c608f",
+    "apps/engine/src/ngertiin_engine/session_settings.py": "8ddae03b4bd26b26e22191a068fc5eac0827299fc90b9909b8f7f1994d069ac2",
+    "apps/engine/src/ngertiin_engine/skill_assets.py": "1e9aacd8500665810f4adfddd4d9ee544feb574104858cb5a30f99888817f01f",
+    "apps/engine/src/ngertiin_engine/skill_packages.py": "cd41306d06c1a02059d08b66df153f097372c9fda5155090921a2e8efe14a270",
+    "apps/engine/src/ngertiin_engine/store.py": "656241d544a38658e09ec46c0a3067425593fd1d670a7ef667103c258b3e66bb",
+    "apps/engine/src/ngertiin_engine/threads.py": "ff3c0080e382fffe935f33ee2f1005d20e2702d063e7b4fcc7ce156264e53218",
+    "apps/engine/src/ngertiin_engine/transcript.py": "f15a2ee5e86d7bc91360f92752e9d6c55f3c7f6d774a2afb72ae83808d2ff38b",
+    "apps/engine/src/ngertiin_engine/wakes.py": "d0bac4b52a1a8e7b0642f28d240df83f4fa65b00d9ba17bb6fddaa152dd694db",
+    "apps/engine/src/ngertiin_engine/webhooks.py": "8f56ff77799192dbbc5adf3ddef94668f96999b513afca977a697c842caec81d",
+    "apps/engine/src/ngertiin_engine/workspaces.py": "dccb30c02b06e7f35dd9d2eef011a437f669bd5b824e6fea814e95a8ff7d6729",
+    "apps/engine/src/ngertiin_engine/runtime-pin.json": "42bbe99805ec9144dd7c0c48324636eb66d5c5d77369b899f372a3a950a07da7"
+  },
+  "provider": "openrouter",
+  "model": "openai/gpt-6-luna",
+  "denominator": 6,
+  "protocol": "nma036-goals-automation-v2",
+  "cases": [
+    {
+      "name": "longitudinal_intent_correction_duplicate_stop",
+      "passed": true,
+      "attempted": true,
+      "evidence": {
+        "artifacts": [],
+        "collaboration_tasks": [],
+        "delegations": [],
+        "discussion": null,
+        "goals": [
+          {
+            "completion_contract": null,
+            "created_at": "2026-10-28T11:20:18.936Z",
+            "creation_key": "warehouse-a-stock-report",
+            "evidence": [],
+            "generation": "3",
+            "goal_id": "a07945c4-f6c3-4f3e-9ed2-dfd020603ada",
+            "objective": "Prepare a stock report for Warehouse B using stock numbers the user will provide later.",
+            "progress": "Corrected the same responsibility to Warehouse B; awaiting the user's Warehouse B stock numbers. No polling or schedule is set.",
+            "responsible_agent_id": "ecb78305-18af-4349-aaa3-d2c5a36b24c0",
+            "reviews": [],
+            "revision": "5",
+            "source_message_id": "5f036431-e573-5bb0-bd99-8aef8cb831c6",
+            "source_run_id": "1c59bc90-a2eb-521d-b010-97dc06fa1572",
+            "status": "stopped",
+            "subgoals": [],
+            "thread_id": "1131b82c-9326-4f93-8388-4988e5d75266",
+            "title": "Prepare Warehouse B stock report",
+            "units": [
+              {
+                "agent_id": "ecb78305-18af-4349-aaa3-d2c5a36b24c0",
+                "generation": "1",
+                "parent_run_id": null,
+                "result_message_id": "6989a3e4-4623-57c3-94d2-57ca2989d3b8",
+                "result_preview": "Captured. I\u2019ll prepare the Warehouse A stock report once you provide the numbers. No polling or schedule is set.",
+                "run_id": "1c59bc90-a2eb-521d-b010-97dc06fa1572",
+                "settled": true,
+                "status": "succeeded",
+                "verdict": "wait"
+              },
+              {
+                "agent_id": "ecb78305-18af-4349-aaa3-d2c5a36b24c0",
+                "generation": "2",
+                "parent_run_id": null,
+                "result_message_id": "e998e010-a658-53fe-a7c5-05b6038ceaa8",
+                "result_preview": "Updated the same responsibility to Warehouse B. I\u2019ll wait for the Warehouse B stock numbers; no polling or schedule is set.",
+                "run_id": "a13aadf8-d00c-5330-b4af-5b2a971c7702",
+                "settled": true,
+                "status": "succeeded",
+                "verdict": "wait"
+              }
+            ],
+            "updated_at": "2026-10-28T11:20:37.976Z",
+            "wake": null,
+            "wake_condition": null
+          }
+        ],
+        "messages": [
+          {
+            "attachments": [],
+            "author_agent_id": null,
+            "author_kind": "user",
+            "content": "Hypothetically, how might a daily warehouse stock report work? This is a discussion only; do not start or create a responsibility.",
+            "context_generation": "1",
+            "message_id": "3b7232f2-359c-523c-99d6-654351440c7b",
+            "message_seq": "2",
+            "parts": [
+              {
+                "text": "Hypothetically, how might a daily warehouse stock report work? This is a discussion only; do not start or create a responsibility.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "5576cdf0-d439-5196-a07e-a0ae832c4d06",
+            "thread_id": "1131b82c-9326-4f93-8388-4988e5d75266"
+          },
+          {
+            "attachments": [],
+            "author_agent_id": "ecb78305-18af-4349-aaa3-d2c5a36b24c0",
+            "author_kind": "agent",
+            "content": "A daily warehouse stock report typically runs after the day\u2019s inventory transactions are recorded. It combines opening balances with receipts, shipments, transfers, adjustments, and returns, then compares the calculated stock with any physical counts.\n\nIt might show:\n\n- SKU, item description, and location\n- Opening quantity, received, shipped, adjusted, and closing quantity\n- Reorder threshold and low-stock flags\n- Items with zero stock, unusual changes, or mismatches\n- Report time and data source, so readers know how current it is\n\nA scheduled process could generate it as a spreadsheet or dashboard, send it to warehouse and purchasing staff, and retain prior reports for trend checks. A good design also calls out missing or delayed transaction data rather than presenting incomplete figures as final.",
+            "context_generation": "1",
+            "message_id": "504e432c-674b-5bee-b8a8-2c08579187c2",
+            "message_seq": "3",
+            "parts": [
+              {
+                "text": "A daily warehouse stock report typically runs after the day\u2019s inventory transactions are recorded. It combines opening balances with receipts, shipments, transfers, adjustments, and returns, then compares the calculated stock with any physical counts.\n\nIt might show:\n\n- SKU, item description, and location\n- Opening quantity, received, shipped, adjusted, and closing quantity\n- Reorder threshold and low-stock flags\n- Items with zero stock, unusual changes, or mismatches\n- Report time and data source, so readers know how current it is\n\nA scheduled process could generate it as a spreadsheet or dashboard, send it to warehouse and purchasing staff, and retain prior reports for trend checks. A good design also calls out missing or delayed transaction data rather than presenting incomplete figures as final.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "5576cdf0-d439-5196-a07e-a0ae832c4d06",
+            "thread_id": "1131b82c-9326-4f93-8388-4988e5d75266"
+          },
+          {
+            "attachments": [],
+            "author_agent_id": null,
+            "author_kind": "user",
+            "content": "Now take ongoing responsibility for preparing my warehouse A stock report. I will provide the stock numbers later. Capture this responsibility and wait for my data; do not schedule any polling.",
+            "context_generation": "1",
+            "message_id": "5f036431-e573-5bb0-bd99-8aef8cb831c6",
+            "message_seq": "4",
+            "parts": [
+              {
+                "text": "Now take ongoing responsibility for preparing my warehouse A stock report. I will provide the stock numbers later. Capture this responsibility and wait for my data; do not schedule any polling.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "1c59bc90-a2eb-521d-b010-97dc06fa1572",
+            "thread_id": "1131b82c-9326-4f93-8388-4988e5d75266"
+          },
+          {
+            "attachments": [],
+            "author_agent_id": "ecb78305-18af-4349-aaa3-d2c5a36b24c0",
+            "author_kind": "agent",
+            "content": "Captured. I\u2019ll prepare the Warehouse A stock report once you provide the numbers. No polling or schedule is set.",
+            "context_generation": "1",
+            "message_id": "6989a3e4-4623-57c3-94d2-57ca2989d3b8",
+            "message_seq": "5",
+            "parts": [
+              {
+                "text": "Captured. I\u2019ll prepare the Warehouse A stock report once you provide the numbers. No polling or schedule is set.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "1c59bc90-a2eb-521d-b010-97dc06fa1572",
+            "thread_id": "1131b82c-9326-4f93-8388-4988e5d75266"
+          },
+          {
+            "attachments": [],
+            "author_agent_id": null,
+            "author_kind": "user",
+            "content": "Correction: this responsibility is for warehouse B, not warehouse A. Update the same goal and keep waiting for my data.",
+            "context_generation": "1",
+            "message_id": "a52b6f35-e08f-5d22-956a-62424fba1b1b",
+            "message_seq": "6",
+            "parts": [
+              {
+                "text": "Correction: this responsibility is for warehouse B, not warehouse A. Update the same goal and keep waiting for my data.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "a13aadf8-d00c-5330-b4af-5b2a971c7702",
+            "thread_id": "1131b82c-9326-4f93-8388-4988e5d75266"
+          },
+          {
+            "attachments": [],
+            "author_agent_id": "ecb78305-18af-4349-aaa3-d2c5a36b24c0",
+            "author_kind": "agent",
+            "content": "Updated the same responsibility to Warehouse B. I\u2019ll wait for the Warehouse B stock numbers; no polling or schedule is set.",
+            "context_generation": "1",
+            "message_id": "e998e010-a658-53fe-a7c5-05b6038ceaa8",
+            "message_seq": "7",
+            "parts": [
+              {
+                "text": "Updated the same responsibility to Warehouse B. I\u2019ll wait for the Warehouse B stock numbers; no polling or schedule is set.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "a13aadf8-d00c-5330-b4af-5b2a971c7702",
+            "thread_id": "1131b82c-9326-4f93-8388-4988e5d75266"
+          },
+          {
+            "attachments": [],
+            "author_agent_id": null,
+            "author_kind": "user",
+            "content": "As discussed, keep responsibility for the same warehouse B stock report, waiting for my numbers. This repeats my earlier request, not a second task.",
+            "context_generation": "1",
+            "message_id": "a7a75cd1-c69a-5380-b2dd-0643b0ad4645",
+            "message_seq": "8",
+            "parts": [
+              {
+                "text": "As discussed, keep responsibility for the same warehouse B stock report, waiting for my numbers. This repeats my earlier request, not a second task.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "7038aa96-a5b4-5ce4-bdc2-a1cede17fa57",
+            "thread_id": "1131b82c-9326-4f93-8388-4988e5d75266"
+          },
+          {
+            "attachments": [],
+            "author_agent_id": "ecb78305-18af-4349-aaa3-d2c5a36b24c0",
+            "author_kind": "agent",
+            "content": "Understood. The existing Warehouse B stock report responsibility remains active and waiting for your numbers; no second task or polling schedule was created.",
+            "context_generation": "1",
+            "message_id": "37ec9df3-c4b8-5308-856b-8dd21d022fbd",
+            "message_seq": "9",
+            "parts": [
+              {
+                "text": "Understood. The existing Warehouse B stock report responsibility remains active and waiting for your numbers; no second task or polling schedule was created.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "7038aa96-a5b4-5ce4-bdc2-a1cede17fa57",
+            "thread_id": "1131b82c-9326-4f93-8388-4988e5d75266"
+          },
+          {
+            "attachments": [],
+            "author_agent_id": null,
+            "author_kind": "user",
+            "content": "Stop the warehouse B stock-report responsibility permanently. Do not recreate it or schedule more work.",
+            "context_generation": "1",
+            "message_id": "5413a211-4361-5c6f-aac4-f88996c9aa99",
+            "message_seq": "10",
+            "parts": [
+              {
+                "text": "Stop the warehouse B stock-report responsibility permanently. Do not recreate it or schedule more work.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "bdf5b625-9f3d-5063-a0e7-4309cf2f29fd",
+            "thread_id": "1131b82c-9326-4f93-8388-4988e5d75266"
+          },
+          {
+            "attachments": [],
+            "author_agent_id": "ecb78305-18af-4349-aaa3-d2c5a36b24c0",
+            "author_kind": "agent",
+            "content": "The Warehouse B stock-report responsibility is permanently stopped. I won\u2019t recreate it or schedule further work.",
+            "context_generation": "1",
+            "message_id": "7d5e8629-e691-598b-a3ec-8994816f4e33",
+            "message_seq": "11",
+            "parts": [
+              {
+                "text": "The Warehouse B stock-report responsibility is permanently stopped. I won\u2019t recreate it or schedule further work.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "bdf5b625-9f3d-5063-a0e7-4309cf2f29fd",
+            "thread_id": "1131b82c-9326-4f93-8388-4988e5d75266"
+          }
+        ],
+        "next_before_message_seq": null,
+        "replay_epoch": "56215410-4732-4532-8541-5b6c040036d9",
+        "runs": [
+          {
+            "agent_id": "ecb78305-18af-4349-aaa3-d2c5a36b24c0",
+            "config_revision": "1",
+            "context_generation": "1",
+            "continuation_required": false,
+            "error_code": null,
+            "replay_epoch": "56215410-4732-4532-8541-5b6c040036d9",
+            "run_id": "5576cdf0-d439-5196-a07e-a0ae832c4d06",
+            "schema_version": "nma.v1",
+            "status": "succeeded",
+            "text": "A daily warehouse stock report typically runs after the day\u2019s inventory transactions are recorded. It combines opening balances with receipts, shipments, transfers, adjustments, and returns, then compares the calculated stock with any physical counts.\n\nIt might show:\n\n- SKU, item description, and location\n- Opening quantity, received, shipped, adjusted, and closing quantity\n- Reorder threshold and low-stock flags\n- Items with zero stock, unusual changes, or mismatches\n- Report time and data source, so readers know how current it is\n\nA scheduled process could generate it as a spreadsheet or dashboard, send it to warehouse and purchasing staff, and retain prior reports for trend checks. A good design also calls out missing or delayed transaction data rather than presenting incomplete figures as final.",
+            "thread_id": "1131b82c-9326-4f93-8388-4988e5d75266",
+            "through_sequence": "330",
+            "turn_exit_reason": "text_response(finish_reason=stop)"
+          },
+          {
+            "agent_id": "ecb78305-18af-4349-aaa3-d2c5a36b24c0",
+            "config_revision": "1",
+            "context_generation": "1",
+            "continuation_required": false,
+            "error_code": null,
+            "replay_epoch": "56215410-4732-4532-8541-5b6c040036d9",
+            "run_id": "1c59bc90-a2eb-521d-b010-97dc06fa1572",
+            "schema_version": "nma.v1",
+            "status": "succeeded",
+            "text": "Captured. I\u2019ll prepare the Warehouse A stock report once you provide the numbers. No polling or schedule is set.",
+            "thread_id": "1131b82c-9326-4f93-8388-4988e5d75266",
+            "through_sequence": "330",
+            "turn_exit_reason": "text_response(finish_reason=stop)"
+          },
+          {
+            "agent_id": "ecb78305-18af-4349-aaa3-d2c5a36b24c0",
+            "config_revision": "1",
+            "context_generation": "1",
+            "continuation_required": false,
+            "error_code": null,
+            "replay_epoch": "56215410-4732-4532-8541-5b6c040036d9",
+            "run_id": "a13aadf8-d00c-5330-b4af-5b2a971c7702",
+            "schema_version": "nma.v1",
+            "status": "succeeded",
+            "text": "Updated the same responsibility to Warehouse B. I\u2019ll wait for the Warehouse B stock numbers; no polling or schedule is set.",
+            "thread_id": "1131b82c-9326-4f93-8388-4988e5d75266",
+            "through_sequence": "330",
+            "turn_exit_reason": "text_response(finish_reason=stop)"
+          },
+          {
+            "agent_id": "ecb78305-18af-4349-aaa3-d2c5a36b24c0",
+            "config_revision": "1",
+            "context_generation": "1",
+            "continuation_required": false,
+            "error_code": null,
+            "replay_epoch": "56215410-4732-4532-8541-5b6c040036d9",
+            "run_id": "7038aa96-a5b4-5ce4-bdc2-a1cede17fa57",
+            "schema_version": "nma.v1",
+            "status": "succeeded",
+            "text": "Understood. The existing Warehouse B stock report responsibility remains active and waiting for your numbers; no second task or polling schedule was created.",
+            "thread_id": "1131b82c-9326-4f93-8388-4988e5d75266",
+            "through_sequence": "330",
+            "turn_exit_reason": "text_response(finish_reason=stop)"
+          },
+          {
+            "agent_id": "ecb78305-18af-4349-aaa3-d2c5a36b24c0",
+            "config_revision": "1",
+            "context_generation": "1",
+            "continuation_required": false,
+            "error_code": null,
+            "replay_epoch": "56215410-4732-4532-8541-5b6c040036d9",
+            "run_id": "bdf5b625-9f3d-5063-a0e7-4309cf2f29fd",
+            "schema_version": "nma.v1",
+            "status": "succeeded",
+            "text": "The Warehouse B stock-report responsibility is permanently stopped. I won\u2019t recreate it or schedule further work.",
+            "thread_id": "1131b82c-9326-4f93-8388-4988e5d75266",
+            "through_sequence": "330",
+            "turn_exit_reason": "text_response(finish_reason=stop)"
+          }
+        ],
+        "schema_version": "nma.v1",
+        "thread": {
+          "agents": [
+            {
+              "access_generation": "1",
+              "agent_id": "ecb78305-18af-4349-aaa3-d2c5a36b24c0",
+              "config": {
+                "avatar_url": "https://api.dicebear.com/10.x/critters/svg?seed=live-goal-intent",
+                "instructions": "",
+                "model": "test",
+                "session": {
+                  "compression": {},
+                  "context_engine": "compressor",
+                  "max_turns": null
+                },
+                "soul": "",
+                "tool_grants": []
+              },
+              "config_revision": "1",
+              "created_at": "2026-10-28T11:20:10.490095Z",
+              "display_name": "live-goal-intent",
+              "handle": "live-goal-intent",
+              "primary_dm_thread_id": "1131b82c-9326-4f93-8388-4988e5d75266",
+              "revision": "1",
+              "status": "active",
+              "updated_at": "2026-10-28T11:20:10.490095Z"
+            }
+          ],
+          "context_generation": "1",
+          "dm_agent_id": "ecb78305-18af-4349-aaa3-d2c5a36b24c0",
+          "kind": "dm",
+          "membership_revision": "1",
+          "revision": "1",
+          "status": "open",
+          "thread_id": "1131b82c-9326-4f93-8388-4988e5d75266",
+          "title": "live-goal-intent"
+        },
+        "through_sequence": "330"
+      },
+      "elapsed_seconds": 32.004
+    },
+    {
+      "name": "native_subgoal_judge_completion",
+      "passed": true,
+      "attempted": true,
+      "evidence": {
+        "artifacts": [],
+        "collaboration_tasks": [],
+        "delegations": [],
+        "discussion": null,
+        "goals": [
+          {
+            "completion_contract": {
+              "judge_required": true,
+              "subgoals": [
+                "Verified arithmetic"
+              ]
+            },
+            "created_at": "2026-10-28T11:20:59.604Z",
+            "creation_key": "verified-arithmetic-17-plus-26",
+            "evidence": [
+              {
+                "accepted_by_agent_id": "d84e15f2-ff41-4f45-9a8e-da13243723d0",
+                "criterion": "Verified arithmetic",
+                "evidence_id": "08a3c313-42cf-5352-8028-4127de15f832",
+                "generation": "1",
+                "producing_run_id": "6aaaae97-1efe-5446-940a-cfc70eeb3dd2",
+                "source_message_id": "619dc80f-e124-52d2-b53b-3d47c4eceb43",
+                "summary": "Persisted report states 17 + 26 = 43 and checks the sum as 17 + 20 = 37, then 37 + 6 = 43."
+              }
+            ],
+            "generation": "2",
+            "goal_id": "e7efcb78-7b8e-4dc1-a3c5-a7b0e45b38f4",
+            "objective": "Produce and persist a report stating the calculation 17 + 26 and its correct result, submit evidence for the exact subgoal criterion \u201cVerified arithmetic,\u201d obtain a done verdict from the native independent judge, and complete only after that verdict.",
+            "progress": "Persisted report states 17 + 26 = 43 and checks the sum as 17 + 20 = 37, then 37 + 6 = 43.",
+            "responsible_agent_id": "d84e15f2-ff41-4f45-9a8e-da13243723d0",
+            "reviews": [
+              {
+                "contract_digest": "f9e6f86bc1cec726c69d9b5a49942a30eba78cad03cd8ed0dd41da890e6058c6",
+                "evidence_ids": [
+                  "08a3c313-42cf-5352-8028-4127de15f832"
+                ],
+                "generation": "1",
+                "goal_revision": "5",
+                "parse_failed": false,
+                "reason": "The committed, succeeded evidence record contains the report \u201c17 + 26 = 43\u201d with a correct verification, satisfying \u201cVerified arithmetic.\u201d",
+                "request_digest": "ceb4fff9d7038426a300b9b8d6dee70113ae1081494d74d7a5511867bed2f6c1",
+                "review_id": "908f524a-3bd2-5945-8b91-18d253e76454",
+                "run_id": "a23febe4-792a-5553-ac81-e8f2f31f4627",
+                "transport_failed": false,
+                "verdict": "done",
+                "wait_directive": null
+              }
+            ],
+            "revision": "7",
+            "source_message_id": "e392662f-e4a8-5c2f-9016-1df6a38ca20c",
+            "source_run_id": "6aaaae97-1efe-5446-940a-cfc70eeb3dd2",
+            "status": "completed",
+            "subgoals": [
+              {
+                "criterion": "Verified arithmetic",
+                "evidence_ids": [
+                  "08a3c313-42cf-5352-8028-4127de15f832"
+                ]
+              }
+            ],
+            "thread_id": "96af7ee3-2c37-4591-b4b7-e483013ee6ef",
+            "title": "Verified report calculating 17 + 26",
+            "units": [
+              {
+                "agent_id": "d84e15f2-ff41-4f45-9a8e-da13243723d0",
+                "generation": "1",
+                "parent_run_id": null,
+                "result_message_id": "619dc80f-e124-52d2-b53b-3d47c4eceb43",
+                "result_preview": "Report: 17 + 26 = 43. The calculation checks out: 17 + 20 = 37, and 37 + 6 = 43.",
+                "run_id": "6aaaae97-1efe-5446-940a-cfc70eeb3dd2",
+                "settled": true,
+                "status": "succeeded",
+                "verdict": "continue"
+              },
+              {
+                "agent_id": "d84e15f2-ff41-4f45-9a8e-da13243723d0",
+                "generation": "1",
+                "parent_run_id": "6aaaae97-1efe-5446-940a-cfc70eeb3dd2",
+                "result_message_id": "cc97c0c9-8749-5cf2-a75f-e72e6909e93b",
+                "result_preview": "The report stating 17 + 26 = 43 was persisted. Evidence for \u201cVerified arithmetic\u201d was submitted, the native judge returned \u201cdone,\u201d and the responsibility is complete.",
+                "run_id": "a23febe4-792a-5553-ac81-e8f2f31f4627",
+                "settled": true,
+                "status": "succeeded",
+                "verdict": "done"
+              }
+            ],
+            "updated_at": "2026-10-28T11:21:48.621Z",
+            "wake": null,
+            "wake_condition": null
+          }
+        ],
+        "messages": [
+          {
+            "attachments": [],
+            "author_agent_id": null,
+            "author_kind": "user",
+            "content": "Take responsibility for a verified report calculating 17+26. Configure the optional completion contract with subgoals [\"Verified arithmetic\"] and judge_required true. Produce the actual result, persist it, submit evidence for that exact criterion, invoke verify_goal to have the native independent judge inspect it, and only complete when it returns done. Continue automatically through all steps without asking me to activate anything.",
+            "context_generation": "1",
+            "message_id": "e392662f-e4a8-5c2f-9016-1df6a38ca20c",
+            "message_seq": "2",
+            "parts": [
+              {
+                "text": "Take responsibility for a verified report calculating 17+26. Configure the optional completion contract with subgoals [\"Verified arithmetic\"] and judge_required true. Produce the actual result, persist it, submit evidence for that exact criterion, invoke verify_goal to have the native independent judge inspect it, and only complete when it returns done. Continue automatically through all steps without asking me to activate anything.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "6aaaae97-1efe-5446-940a-cfc70eeb3dd2",
+            "thread_id": "96af7ee3-2c37-4591-b4b7-e483013ee6ef"
+          },
+          {
+            "attachments": [],
+            "author_agent_id": "d84e15f2-ff41-4f45-9a8e-da13243723d0",
+            "author_kind": "agent",
+            "content": "Report: 17 + 26 = 43. The calculation checks out: 17 + 20 = 37, and 37 + 6 = 43.",
+            "context_generation": "1",
+            "message_id": "619dc80f-e124-52d2-b53b-3d47c4eceb43",
+            "message_seq": "3",
+            "parts": [
+              {
+                "text": "Report: 17 + 26 = 43. The calculation checks out: 17 + 20 = 37, and 37 + 6 = 43.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "6aaaae97-1efe-5446-940a-cfc70eeb3dd2",
+            "thread_id": "96af7ee3-2c37-4591-b4b7-e483013ee6ef"
+          },
+          {
+            "attachments": [],
+            "author_agent_id": "d84e15f2-ff41-4f45-9a8e-da13243723d0",
+            "author_kind": "agent",
+            "content": "The report stating 17 + 26 = 43 was persisted. Evidence for \u201cVerified arithmetic\u201d was submitted, the native judge returned \u201cdone,\u201d and the responsibility is complete.",
+            "context_generation": "1",
+            "message_id": "cc97c0c9-8749-5cf2-a75f-e72e6909e93b",
+            "message_seq": "4",
+            "parts": [
+              {
+                "text": "The report stating 17 + 26 = 43 was persisted. Evidence for \u201cVerified arithmetic\u201d was submitted, the native judge returned \u201cdone,\u201d and the responsibility is complete.",
+                "type": "text"
+              }
+            ],
+            "revision": "1",
+            "run_id": "a23febe4-792a-5553-ac81-e8f2f31f4627",
+            "thread_id": "96af7ee3-2c37-4591-b4b7-e483013ee6ef"
+          }
+        ],
+        "next_before_message_seq": null,
+        "replay_epoch": "56215410-4732-4532-8541-5b6c040036d9",
+        "runs": [
+          {
+            "agent_id": "d84e15f2-ff41-4f45-9a8e-da13243723d0",
+            "config_revision": "1",
+            "context_generation": "1",
+            "continuation_required": false,
+            "error_code": null,
+            "replay_epoch": "56215410-4732-4532-8541-5b6c040036d9",
+            "run_id": "6aaaae97-1efe-5446-940a-cfc70eeb3dd2",
+            "schema_version": "nma.v1",
+            "status": "succeeded",
+            "text": "Report: 17 + 26 = 43. The calculation checks out: 17 + 20 = 37, and 37 + 6 = 43.",
+            "thread_id": "96af7ee3-2c37-4591-b4b7-e483013ee6ef",
+            "through_sequence": "425",
+            "turn_exit_reason": "text_response(finish_reason=stop)"
+          },
+          {
+            "agent_id": "d84e15f2-ff41-4f45-9a8e-da13243723d0",
+            "config_revision": "1",
+            "context_generation": "1",
+            "continuation_required": false,
+            "error_code": null,
+            "replay_epoch": "56215410-4732-4532-8541-5b6c040036d9",
+            "run_id": "a23febe4-792a-5553-ac81-e8f2f31f4627",
+            "schema_version": "nma.v1",
+            "status": "succeeded",
+            "text": "The report stating 17 + 26 = 43 was persisted. Evidence for \u201cVerified arithmetic\u201d was submitted, the native judge returned \u201cdone,\u201d and the responsibility is complete.",
+            "thread_id": "96af7ee3-2c37-4591-b4b7-e483013ee6ef",
+            "through_sequence": "425",
+            "turn_exit_reason": "text_response(finish_reason=stop)"
+          }
+        ],
+        "schema_version": "nma.v1",
+        "thread": {
+          "agents": [
+            {
+              "access_generation": "1",
+              "agent_id": "d84e15f2-ff41-4f45-9a8e-da13243723d0",
+              "config": {
+                "avatar_url": "https://api.dicebear.com/10.x/critters/svg?seed=live-goal-review",
+                "instructions": "",
+                "model": "test",
+                "session": {
+                  "compression": {},
+                  "context_engine": "compressor",
+                  "max_turns": null
+                },
+                "soul": "",
+                "tool_grants": []
+              },
+              "config_revision": "1",
+              "created_at": "2026-10-28T11:20:42.466738Z",
+              "display_name": "live-goal-review",
+              "handle": "live-goal-review",
+              "primary_dm_thread_id": "96af7ee3-2c37-4591-b4b7-e483013ee6ef",
+              "revision": "1",
+              "status": "active",
+              "updated_at": "2026-10-28T11:20:42.466738Z"
+            }
+          ],
+          "context_generation": "1",
+          "dm_agent_id": "d84e15f2-ff41-4f45-9a8e-da13243723d0",
+          "kind": "dm",
+          "membership_revision": "1",
+          "revision": "1",
+          "status": "open",
+          "thread_id": "96af7ee3-2c37-4591-b4b7-e483013ee6ef",
+          "title": "live-goal-review"
+        },
+        "through_sequence": "425"
+      },
+      "elapsed_seconds": 69.138
+    },
+    {
+      "name": "offline_model_schedule_restart",
+      "passed": true,
+      "attempted": true,
+      "evidence": {
+        "snapshot": {
+          "artifacts": [],
+          "collaboration_tasks": [],
+          "delegations": [],
+          "discussion": null,
+          "goals": [
+            {
+              "completion_contract": null,
+              "created_at": "2026-10-28T11:21:59.286Z",
+              "creation_key": "calculate-19-times-23",
+              "evidence": [
+                {
+                  "accepted_by_agent_id": "f041ec3c-41f8-4e49-95e1-713c9f3d827f",
+                  "criterion": "Calculate 19 \u00d7 23 at or after the scheduled UTC wake and record the answer.",
+                  "evidence_id": "b5f5901b-e324-5791-bfe6-1c6a2f52a670",
+                  "generation": "2",
+                  "producing_run_id": "5af86c0a-8896-5073-8110-3e520e04e9f5",
+                  "source_message_id": "67e7c5b7-900d-536e-8611-9509aa5b64b9",
+                  "summary": "At the scheduled wake, calculated 19 \u00d7 23 = 437. This persisted agent result records the answer after the wake."
+                }
+              ],
+              "generation": "3",
+              "goal_id": "0eb002d7-dc82-4173-8359-66885d3d115d",
+              "objective": "At 2026-10-28T11:22:09.649790Z, calculate 19 \u00d7 23, verify the persisted result, and complete the responsibility.",
+              "progress": "At the scheduled wake, calculated 19 \u00d7 23 = 437. This persisted agent result records the answer after the wake.",
+              "responsible_agent_id": "f041ec3c-41f8-4e49-95e1-713c9f3d827f",
+              "reviews": [],
+              "revision": "8",
+              "source_message_id": "e3fbbf77-b2af-55b4-989c-09d9ec6f3485",
+              "source_run_id": "232b77ad-8084-5543-b8a0-47d6fef14e71",
+              "status": "completed",
+              "subgoals": [],
+              "thread_id": "efe4d203-8380-454f-a56a-68d0d6f3fb25",
+              "title": "Calculate 19 \u00d7 23 at the scheduled UTC time",
+              "units": [
+                {
+                  "agent_id": "f041ec3c-41f8-4e49-95e1-713c9f3d827f",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "result_message_id": "51449300-0443-59f3-b38f-0605c2d7fc68",
+                  "result_preview": "Scheduled the one-time UTC wake for 2026-10-28T11:22:09.649790Z and am waiting; I have not calculated the result yet.",
+                  "run_id": "232b77ad-8084-5543-b8a0-47d6fef14e71",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": null
+                },
+                {
+                  "agent_id": "f041ec3c-41f8-4e49-95e1-713c9f3d827f",
+                  "generation": "2",
+                  "parent_run_id": null,
+                  "result_message_id": "51449300-0443-59f3-b38f-0605c2d7fc68",
+                  "result_preview": "Scheduled the one-time UTC wake for 2026-10-28T11:22:09.649790Z and am waiting; I have not calculated the result yet.",
+                  "run_id": "232b77ad-8084-5543-b8a0-47d6fef14e71",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": "wait"
+                },
+                {
+                  "agent_id": "f041ec3c-41f8-4e49-95e1-713c9f3d827f",
+                  "generation": "2",
+                  "parent_run_id": "232b77ad-8084-5543-b8a0-47d6fef14e71",
+                  "result_message_id": "67e7c5b7-900d-536e-8611-9509aa5b64b9",
+                  "result_preview": "19 \u00d7 23 = 437. The result is recorded; the next continuation should verify the persisted result and submit evidence for completion.",
+                  "run_id": "5af86c0a-8896-5073-8110-3e520e04e9f5",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": "continue"
+                },
+                {
+                  "agent_id": "f041ec3c-41f8-4e49-95e1-713c9f3d827f",
+                  "generation": "2",
+                  "parent_run_id": "5af86c0a-8896-5073-8110-3e520e04e9f5",
+                  "result_message_id": "dbff4357-f804-5e1e-accf-9770b2f817bd",
+                  "result_preview": "19 \u00d7 23 = 437. The persisted calculation was accepted as evidence, and the responsibility is complete.",
+                  "run_id": "5348098c-fbe3-5e7c-a66e-562c4714321b",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": "done"
+                }
+              ],
+              "updated_at": "2026-10-28T11:22:38.521Z",
+              "wake": {
+                "configuration": {
+                  "at": "2026-10-28T11:22:09.649790Z",
+                  "kind": "once",
+                  "missed_policy": "coalesce",
+                  "timezone": "UTC"
+                },
+                "definition_id": "d3b96f4e-13fd-5396-9abd-a914a890cf57",
+                "goal_generation": "2",
+                "kind": "schedule",
+                "next_at": null,
+                "revision": "1",
+                "state": "paused"
+              },
+              "wake_condition": null
+            }
+          ],
+          "messages": [
+            {
+              "attachments": [],
+              "author_agent_id": null,
+              "author_kind": "user",
+              "content": "Take responsibility for calculating 19*23, but do the calculation only at 2026-10-28T11:22:09.649790Z. Schedule a once wake in UTC with missed_policy coalesce, then wait. At the wake produce the answer, verify the persisted result and complete without more input.",
+              "context_generation": "1",
+              "message_id": "e3fbbf77-b2af-55b4-989c-09d9ec6f3485",
+              "message_seq": "2",
+              "parts": [
+                {
+                  "text": "Take responsibility for calculating 19*23, but do the calculation only at 2026-10-28T11:22:09.649790Z. Schedule a once wake in UTC with missed_policy coalesce, then wait. At the wake produce the answer, verify the persisted result and complete without more input.",
+                  "type": "text"
+                }
+              ],
+              "revision": "1",
+              "run_id": "232b77ad-8084-5543-b8a0-47d6fef14e71",
+              "thread_id": "efe4d203-8380-454f-a56a-68d0d6f3fb25"
+            },
+            {
+              "attachments": [],
+              "author_agent_id": "f041ec3c-41f8-4e49-95e1-713c9f3d827f",
+              "author_kind": "agent",
+              "content": "Scheduled the one-time UTC wake for 2026-10-28T11:22:09.649790Z and am waiting; I have not calculated the result yet.",
+              "context_generation": "1",
+              "message_id": "51449300-0443-59f3-b38f-0605c2d7fc68",
+              "message_seq": "3",
+              "parts": [
+                {
+                  "text": "Scheduled the one-time UTC wake for 2026-10-28T11:22:09.649790Z and am waiting; I have not calculated the result yet.",
+                  "type": "text"
+                }
+              ],
+              "revision": "1",
+              "run_id": "232b77ad-8084-5543-b8a0-47d6fef14e71",
+              "thread_id": "efe4d203-8380-454f-a56a-68d0d6f3fb25"
+            },
+            {
+              "attachments": [],
+              "author_agent_id": "f041ec3c-41f8-4e49-95e1-713c9f3d827f",
+              "author_kind": "agent",
+              "content": "19 \u00d7 23 = 437. The result is recorded; the next continuation should verify the persisted result and submit evidence for completion.",
+              "context_generation": "1",
+              "message_id": "67e7c5b7-900d-536e-8611-9509aa5b64b9",
+              "message_seq": "4",
+              "parts": [
+                {
+                  "text": "19 \u00d7 23 = 437. The result is recorded; the next continuation should verify the persisted result and submit evidence for completion.",
+                  "type": "text"
+                }
+              ],
+              "revision": "1",
+              "run_id": "5af86c0a-8896-5073-8110-3e520e04e9f5",
+              "thread_id": "efe4d203-8380-454f-a56a-68d0d6f3fb25"
+            },
+            {
+              "attachments": [],
+              "author_agent_id": "f041ec3c-41f8-4e49-95e1-713c9f3d827f",
+              "author_kind": "agent",
+              "content": "19 \u00d7 23 = 437. The persisted calculation was accepted as evidence, and the responsibility is complete.",
+              "context_generation": "1",
+              "message_id": "dbff4357-f804-5e1e-accf-9770b2f817bd",
+              "message_seq": "5",
+              "parts": [
+                {
+                  "text": "19 \u00d7 23 = 437. The persisted calculation was accepted as evidence, and the responsibility is complete.",
+                  "type": "text"
+                }
+              ],
+              "revision": "1",
+              "run_id": "5348098c-fbe3-5e7c-a66e-562c4714321b",
+              "thread_id": "efe4d203-8380-454f-a56a-68d0d6f3fb25"
+            }
+          ],
+          "next_before_message_seq": null,
+          "replay_epoch": "56215410-4732-4532-8541-5b6c040036d9",
+          "runs": [
+            {
+              "agent_id": "f041ec3c-41f8-4e49-95e1-713c9f3d827f",
+              "config_revision": "1",
+              "context_generation": "1",
+              "continuation_required": false,
+              "error_code": null,
+              "replay_epoch": "56215410-4732-4532-8541-5b6c040036d9",
+              "run_id": "232b77ad-8084-5543-b8a0-47d6fef14e71",
+              "schema_version": "nma.v1",
+              "status": "succeeded",
+              "text": "Scheduled the one-time UTC wake for 2026-10-28T11:22:09.649790Z and am waiting; I have not calculated the result yet.",
+              "thread_id": "efe4d203-8380-454f-a56a-68d0d6f3fb25",
+              "through_sequence": "538",
+              "turn_exit_reason": "text_response(finish_reason=stop)"
+            },
+            {
+              "agent_id": "f041ec3c-41f8-4e49-95e1-713c9f3d827f",
+              "config_revision": "1",
+              "context_generation": "1",
+              "continuation_required": false,
+              "error_code": null,
+              "replay_epoch": "56215410-4732-4532-8541-5b6c040036d9",
+              "run_id": "5af86c0a-8896-5073-8110-3e520e04e9f5",
+              "schema_version": "nma.v1",
+              "status": "succeeded",
+              "text": "19 \u00d7 23 = 437. The result is recorded; the next continuation should verify the persisted result and submit evidence for completion.",
+              "thread_id": "efe4d203-8380-454f-a56a-68d0d6f3fb25",
+              "through_sequence": "538",
+              "turn_exit_reason": "text_response(finish_reason=stop)"
+            },
+            {
+              "agent_id": "f041ec3c-41f8-4e49-95e1-713c9f3d827f",
+              "config_revision": "1",
+              "context_generation": "1",
+              "continuation_required": false,
+              "error_code": null,
+              "replay_epoch": "56215410-4732-4532-8541-5b6c040036d9",
+              "run_id": "5348098c-fbe3-5e7c-a66e-562c4714321b",
+              "schema_version": "nma.v1",
+              "status": "succeeded",
+              "text": "19 \u00d7 23 = 437. The persisted calculation was accepted as evidence, and the responsibility is complete.",
+              "thread_id": "efe4d203-8380-454f-a56a-68d0d6f3fb25",
+              "through_sequence": "538",
+              "turn_exit_reason": "text_response(finish_reason=stop)"
+            }
+          ],
+          "schema_version": "nma.v1",
+          "thread": {
+            "agents": [
+              {
+                "access_generation": "1",
+                "agent_id": "f041ec3c-41f8-4e49-95e1-713c9f3d827f",
+                "config": {
+                  "avatar_url": "https://api.dicebear.com/10.x/critters/svg?seed=live-goal-offline",
+                  "instructions": "",
+                  "model": "test",
+                  "session": {
+                    "compression": {},
+                    "context_engine": "compressor",
+                    "max_turns": null
+                  },
+                  "soul": "",
+                  "tool_grants": []
+                },
+                "config_revision": "1",
+                "created_at": "2026-10-28T11:21:51.610616Z",
+                "display_name": "live-goal-offline",
+                "handle": "live-goal-offline",
+                "primary_dm_thread_id": "efe4d203-8380-454f-a56a-68d0d6f3fb25",
+                "revision": "1",
+                "status": "active",
+                "updated_at": "2026-10-28T11:21:51.610616Z"
+              }
+            ],
+            "context_generation": "1",
+            "dm_agent_id": "f041ec3c-41f8-4e49-95e1-713c9f3d827f",
+            "kind": "dm",
+            "membership_revision": "1",
+            "revision": "1",
+            "status": "open",
+            "thread_id": "efe4d203-8380-454f-a56a-68d0d6f3fb25",
+            "title": "live-goal-offline"
+          },
+          "through_sequence": "538"
+        },
+        "occurrences": [
+          [
+            "dc9c70ee-92ee-5a97-a5e5-f202a3850568",
+            "5af86c0a-8896-5073-8110-3e520e04e9f5",
+            "settled"
+          ]
+        ]
+      },
+      "elapsed_seconds": 49.55
+    },
+    {
+      "name": "offline_script_chain",
+      "passed": true,
+      "attempted": true,
+      "evidence": {
+        "snapshot": {
+          "artifacts": [],
+          "collaboration_tasks": [],
+          "delegations": [],
+          "discussion": null,
+          "goals": [
+            {
+              "completion_contract": null,
+              "created_at": "2026-10-28T11:22:46.143Z",
+              "creation_key": "script-only-calculation-2026-10-28",
+              "evidence": [],
+              "generation": "2",
+              "goal_id": "57755ab2-812d-4bee-9a92-378ba4a561a4",
+              "objective": "Execute the specified two-step script calculation once at 2026-10-28T11:23:06.853473Z in UTC, using missed_policy coalesce and no model call in the job.",
+              "progress": "Automation completed",
+              "responsible_agent_id": "b186cd55-3bda-4bd4-9e9d-d0059cd44575",
+              "reviews": [],
+              "revision": "4",
+              "source_message_id": "511960f7-ecb7-59db-b15b-991caad3ef73",
+              "source_run_id": "4cec864b-5f76-5834-83be-d4edb7b13b6b",
+              "status": "waiting",
+              "subgoals": [],
+              "thread_id": "cc7d9e4f-c61e-400d-8f01-29c23f240f56",
+              "title": "Run scheduled script-only calculation",
+              "units": [
+                {
+                  "agent_id": "b186cd55-3bda-4bd4-9e9d-d0059cd44575",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "result_message_id": "ca090112-3a97-51a8-b014-823d122e8dc4",
+                  "result_preview": "The once-only script job is scheduled for 2026-10-28 11:23:06.853473 UTC with missed_policy coalesce and the two requested dependent steps. The scheduled job is script-only; I did not call terminal. I\u2019m waiting for its result.",
+                  "run_id": "4cec864b-5f76-5834-83be-d4edb7b13b6b",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": null
+                },
+                {
+                  "agent_id": "b186cd55-3bda-4bd4-9e9d-d0059cd44575",
+                  "generation": "2",
+                  "parent_run_id": null,
+                  "result_message_id": "ca090112-3a97-51a8-b014-823d122e8dc4",
+                  "result_preview": "The once-only script job is scheduled for 2026-10-28 11:23:06.853473 UTC with missed_policy coalesce and the two requested dependent steps. The scheduled job is script-only; I did not call terminal. I\u2019m waiting for its result.",
+                  "run_id": "4cec864b-5f76-5834-83be-d4edb7b13b6b",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": "wait"
+                },
+                {
+                  "agent_id": "b186cd55-3bda-4bd4-9e9d-d0059cd44575",
+                  "generation": "2",
+                  "parent_run_id": "4cec864b-5f76-5834-83be-d4edb7b13b6b",
+                  "result_message_id": "ca4e5618-ebe3-5837-8aeb-14b01f66f46c",
+                  "result_preview": "{\"first\":{\"error\":null,\"exit_code\":0,\"output\":\"41\"},\"next\":{\"error\":null,\"exit_code\":0,\"output\":\"42\"}}",
+                  "run_id": "05a5d953-7aee-5ec0-99e6-6248be9807cf",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": "wait"
+                }
+              ],
+              "updated_at": "2026-10-28T11:23:10.325Z",
+              "wake": {
+                "configuration": {
+                  "at": "2026-10-28T11:23:06.853473Z",
+                  "job": {
+                    "lifetime": "durable",
+                    "mode": "script",
+                    "steps": [
+                      {
+                        "command": "printf 41",
+                        "depends_on": [],
+                        "id": "first"
+                      },
+                      {
+                        "command": "python -c 'import json,os; print(int(json.loads(os.environ[\"NMA_DEPENDENCY_RESULTS\"])[\"first\"][\"output\"])+1)'",
+                        "depends_on": [
+                          "first"
+                        ],
+                        "id": "next"
+                      }
+                    ]
+                  },
+                  "kind": "once",
+                  "missed_policy": "coalesce",
+                  "timezone": "UTC"
+                },
+                "definition_id": "09014421-9bb7-5ad3-b837-80227f9ae707",
+                "goal_generation": "2",
+                "kind": "schedule",
+                "next_at": null,
+                "revision": "1",
+                "state": "enabled"
+              },
+              "wake_condition": "Next scheduled occurrence"
+            }
+          ],
+          "messages": [
+            {
+              "attachments": [],
+              "author_agent_id": null,
+              "author_kind": "user",
+              "content": "Take responsibility for a script-only calculation at 2026-10-28T11:23:06.853473Z. Create a once schedule in UTC with missed_policy coalesce and job mode script, steps exactly [{\"id\":\"first\",\"command\":\"printf 41\",\"depends_on\":[]},{\"id\":\"next\",\"command\":\"python -c 'import json,os; print(int(json.loads(os.environ[\\\"NMA_DEPENDENCY_RESULTS\\\"])[\\\"first\\\"][\\\"output\\\"])+1)'\",\"depends_on\":[\"first\"]}]. Do not call terminal in this turn; the scheduled script job must execute without any model call. Wait after scheduling.",
+              "context_generation": "1",
+              "message_id": "511960f7-ecb7-59db-b15b-991caad3ef73",
+              "message_seq": "2",
+              "parts": [
+                {
+                  "text": "Take responsibility for a script-only calculation at 2026-10-28T11:23:06.853473Z. Create a once schedule in UTC with missed_policy coalesce and job mode script, steps exactly [{\"id\":\"first\",\"command\":\"printf 41\",\"depends_on\":[]},{\"id\":\"next\",\"command\":\"python -c 'import json,os; print(int(json.loads(os.environ[\\\"NMA_DEPENDENCY_RESULTS\\\"])[\\\"first\\\"][\\\"output\\\"])+1)'\",\"depends_on\":[\"first\"]}]. Do not call terminal in this turn; the scheduled script job must execute without any model call. Wait after scheduling.",
+                  "type": "text"
+                }
+              ],
+              "revision": "1",
+              "run_id": "4cec864b-5f76-5834-83be-d4edb7b13b6b",
+              "thread_id": "cc7d9e4f-c61e-400d-8f01-29c23f240f56"
+            },
+            {
+              "attachments": [],
+              "author_agent_id": "b186cd55-3bda-4bd4-9e9d-d0059cd44575",
+              "author_kind": "agent",
+              "content": "The once-only script job is scheduled for 2026-10-28 11:23:06.853473 UTC with missed_policy coalesce and the two requested dependent steps. The scheduled job is script-only; I did not call terminal. I\u2019m waiting for its result.",
+              "context_generation": "1",
+              "message_id": "ca090112-3a97-51a8-b014-823d122e8dc4",
+              "message_seq": "3",
+              "parts": [
+                {
+                  "text": "The once-only script job is scheduled for 2026-10-28 11:23:06.853473 UTC with missed_policy coalesce and the two requested dependent steps. The scheduled job is script-only; I did not call terminal. I\u2019m waiting for its result.",
+                  "type": "text"
+                }
+              ],
+              "revision": "1",
+              "run_id": "4cec864b-5f76-5834-83be-d4edb7b13b6b",
+              "thread_id": "cc7d9e4f-c61e-400d-8f01-29c23f240f56"
+            },
+            {
+              "attachments": [],
+              "author_agent_id": "b186cd55-3bda-4bd4-9e9d-d0059cd44575",
+              "author_kind": "agent",
+              "content": "{\"first\":{\"error\":null,\"exit_code\":0,\"output\":\"41\"},\"next\":{\"error\":null,\"exit_code\":0,\"output\":\"42\"}}",
+              "context_generation": "1",
+              "message_id": "ca4e5618-ebe3-5837-8aeb-14b01f66f46c",
+              "message_seq": "4",
+              "parts": [
+                {
+                  "text": "{\"first\":{\"error\":null,\"exit_code\":0,\"output\":\"41\"},\"next\":{\"error\":null,\"exit_code\":0,\"output\":\"42\"}}",
+                  "type": "text"
+                }
+              ],
+              "revision": "1",
+              "run_id": "05a5d953-7aee-5ec0-99e6-6248be9807cf",
+              "thread_id": "cc7d9e4f-c61e-400d-8f01-29c23f240f56"
+            }
+          ],
+          "next_before_message_seq": null,
+          "replay_epoch": "56215410-4732-4532-8541-5b6c040036d9",
+          "runs": [
+            {
+              "agent_id": "b186cd55-3bda-4bd4-9e9d-d0059cd44575",
+              "config_revision": "1",
+              "context_generation": "1",
+              "continuation_required": false,
+              "error_code": null,
+              "replay_epoch": "56215410-4732-4532-8541-5b6c040036d9",
+              "run_id": "4cec864b-5f76-5834-83be-d4edb7b13b6b",
+              "schema_version": "nma.v1",
+              "status": "succeeded",
+              "text": "The once-only script job is scheduled for 2026-10-28 11:23:06.853473 UTC with missed_policy coalesce and the two requested dependent steps. The scheduled job is script-only; I did not call terminal. I\u2019m waiting for its result.",
+              "thread_id": "cc7d9e4f-c61e-400d-8f01-29c23f240f56",
+              "through_sequence": "632",
+              "turn_exit_reason": "text_response(finish_reason=stop)"
+            },
+            {
+              "agent_id": "b186cd55-3bda-4bd4-9e9d-d0059cd44575",
+              "config_revision": "1",
+              "context_generation": "1",
+              "continuation_required": false,
+              "error_code": null,
+              "replay_epoch": "56215410-4732-4532-8541-5b6c040036d9",
+              "run_id": "05a5d953-7aee-5ec0-99e6-6248be9807cf",
+              "schema_version": "nma.v1",
+              "status": "recovering",
+              "text": "",
+              "thread_id": "cc7d9e4f-c61e-400d-8f01-29c23f240f56",
+              "through_sequence": "632",
+              "turn_exit_reason": ""
+            }
+          ],
+          "schema_version": "nma.v1",
+          "thread": {
+            "agents": [
+              {
+                "access_generation": "1",
+                "agent_id": "b186cd55-3bda-4bd4-9e9d-d0059cd44575",
+                "config": {
+                  "avatar_url": "https://api.dicebear.com/10.x/critters/svg?seed=live-goal-script",
+                  "instructions": "",
+                  "model": "test",
+                  "session": {
+                    "compression": {},
+                    "context_engine": "compressor",
+                    "max_turns": null
+                  },
+                  "soul": "",
+                  "tool_grants": [
+                    "terminal"
+                  ]
+                },
+                "config_revision": "1",
+                "created_at": "2026-10-28T11:22:41.161464Z",
+                "display_name": "live-goal-script",
+                "handle": "live-goal-script",
+                "primary_dm_thread_id": "cc7d9e4f-c61e-400d-8f01-29c23f240f56",
+                "revision": "1",
+                "status": "active",
+                "updated_at": "2026-10-28T11:22:41.161464Z"
+              }
+            ],
+            "context_generation": "1",
+            "dm_agent_id": "b186cd55-3bda-4bd4-9e9d-d0059cd44575",
+            "kind": "dm",
+            "membership_revision": "1",
+            "revision": "1",
+            "status": "open",
+            "thread_id": "cc7d9e4f-c61e-400d-8f01-29c23f240f56",
+            "title": "live-goal-script"
+          },
+          "through_sequence": "632"
+        },
+        "job": [
+          [
+            "completed",
+            "{\"first\":{\"error\":null,\"exit_code\":0,\"output\":\"41\"},\"next\":{\"error\":null,\"exit_code\":0,\"output\":\"42\"}}",
+            "05a5d953-7aee-5ec0-99e6-6248be9807cf"
+          ]
+        ]
+      },
+      "elapsed_seconds": 43.52
+    },
+    {
+      "name": "signed_duplicate_webhook_restart",
+      "passed": true,
+      "attempted": true,
+      "evidence": {
+        "snapshot": {
+          "artifacts": [],
+          "collaboration_tasks": [],
+          "delegations": [],
+          "discussion": null,
+          "goals": [
+            {
+              "completion_contract": null,
+              "created_at": "2026-10-28T11:23:33.395Z",
+              "creation_key": "calculate-31-plus-11-on-authenticated-event",
+              "evidence": [
+                {
+                  "accepted_by_agent_id": "cef9bd78-a84f-44f6-9ce3-11539cc0467d",
+                  "criterion": "On authenticated external event with data field calculate_42, produce the correct sum 31 + 11.",
+                  "evidence_id": "7c193470-a777-57ff-8589-b238bb77be0a",
+                  "generation": "1",
+                  "producing_run_id": "27fe5058-2416-5f7c-ab0b-f26fc59f7921",
+                  "source_message_id": "fa825c0d-a0e0-5e42-91fb-3a24849ccdec",
+                  "summary": "Persisted agent result confirms the authenticated webhook contained data: calculate_42 and states 31 + 11 = 42."
+                }
+              ],
+              "generation": "2",
+              "goal_id": "feedfe2a-3e5c-4d73-a0a1-301c9c414d3e",
+              "objective": "When an authenticated external event arrives with data field calculate_42, calculate 31 + 11, produce the result, verify its persisted evidence, and complete the responsibility automatically.",
+              "progress": "Persisted agent result confirms the authenticated webhook contained data: calculate_42 and states 31 + 11 = 42.",
+              "responsible_agent_id": "cef9bd78-a84f-44f6-9ce3-11539cc0467d",
+              "reviews": [],
+              "revision": "7",
+              "source_message_id": "fd8e292e-1a10-57be-96e8-de8633d2982c",
+              "source_run_id": "d47e0ee7-b702-59eb-ad32-6c3e90b7d6b5",
+              "status": "completed",
+              "subgoals": [],
+              "thread_id": "bc48967c-2d85-47eb-80ac-de426789ac6f",
+              "title": "Calculate 31 + 11 when authenticated event arrives",
+              "units": [
+                {
+                  "agent_id": "cef9bd78-a84f-44f6-9ce3-11539cc0467d",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "result_message_id": "606bad3a-11b6-5333-bcaf-b8064b2cab02",
+                  "result_preview": "I\u2019ll wait for an authenticated event containing the `calculate_42` data field. No polling or schedule is set.",
+                  "run_id": "d47e0ee7-b702-59eb-ad32-6c3e90b7d6b5",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": "wait"
+                },
+                {
+                  "agent_id": "cef9bd78-a84f-44f6-9ce3-11539cc0467d",
+                  "generation": "1",
+                  "parent_run_id": "d47e0ee7-b702-59eb-ad32-6c3e90b7d6b5",
+                  "result_message_id": "fa825c0d-a0e0-5e42-91fb-3a24849ccdec",
+                  "result_preview": "31 + 11 = 42. The authenticated webhook contained `data: calculate_42`; persisted-evidence verification and completion are pending.",
+                  "run_id": "27fe5058-2416-5f7c-ab0b-f26fc59f7921",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": "continue"
+                },
+                {
+                  "agent_id": "cef9bd78-a84f-44f6-9ce3-11539cc0467d",
+                  "generation": "1",
+                  "parent_run_id": "27fe5058-2416-5f7c-ab0b-f26fc59f7921",
+                  "result_message_id": "cd791c8c-1039-5d61-98f0-b77dedc1d70d",
+                  "result_preview": "31 + 11 = 42. The persisted result is accepted as evidence; the responsibility is continuing to verify it before completion.",
+                  "run_id": "db955b60-7758-5611-97af-51245f213637",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": "continue"
+                },
+                {
+                  "agent_id": "cef9bd78-a84f-44f6-9ce3-11539cc0467d",
+                  "generation": "1",
+                  "parent_run_id": "db955b60-7758-5611-97af-51245f213637",
+                  "result_message_id": "939641e3-c5cc-52cb-ac9d-3f87f8f28f0b",
+                  "result_preview": "31 + 11 = 42. The persisted evidence is verified, and the responsibility is complete.",
+                  "run_id": "f965499e-b54d-5a04-b68e-717a71670370",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": "done"
+                }
+              ],
+              "updated_at": "2026-10-28T11:24:04.042Z",
+              "wake": null,
+              "wake_condition": null
+            }
+          ],
+          "messages": [
+            {
+              "attachments": [],
+              "author_agent_id": null,
+              "author_kind": "user",
+              "content": "Take responsibility for calculating 31+11 when an authenticated external event arrives with data field calculate_42. Until then wait without polling or a schedule. When the event arrives produce the result, verify its persisted evidence and complete automatically.",
+              "context_generation": "1",
+              "message_id": "fd8e292e-1a10-57be-96e8-de8633d2982c",
+              "message_seq": "2",
+              "parts": [
+                {
+                  "text": "Take responsibility for calculating 31+11 when an authenticated external event arrives with data field calculate_42. Until then wait without polling or a schedule. When the event arrives produce the result, verify its persisted evidence and complete automatically.",
+                  "type": "text"
+                }
+              ],
+              "revision": "1",
+              "run_id": "d47e0ee7-b702-59eb-ad32-6c3e90b7d6b5",
+              "thread_id": "bc48967c-2d85-47eb-80ac-de426789ac6f"
+            },
+            {
+              "attachments": [],
+              "author_agent_id": "cef9bd78-a84f-44f6-9ce3-11539cc0467d",
+              "author_kind": "agent",
+              "content": "I\u2019ll wait for an authenticated event containing the `calculate_42` data field. No polling or schedule is set.",
+              "context_generation": "1",
+              "message_id": "606bad3a-11b6-5333-bcaf-b8064b2cab02",
+              "message_seq": "3",
+              "parts": [
+                {
+                  "text": "I\u2019ll wait for an authenticated event containing the `calculate_42` data field. No polling or schedule is set.",
+                  "type": "text"
+                }
+              ],
+              "revision": "1",
+              "run_id": "d47e0ee7-b702-59eb-ad32-6c3e90b7d6b5",
+              "thread_id": "bc48967c-2d85-47eb-80ac-de426789ac6f"
+            },
+            {
+              "attachments": [],
+              "author_agent_id": "cef9bd78-a84f-44f6-9ce3-11539cc0467d",
+              "author_kind": "agent",
+              "content": "31 + 11 = 42. The authenticated webhook contained `data: calculate_42`; persisted-evidence verification and completion are pending.",
+              "context_generation": "1",
+              "message_id": "fa825c0d-a0e0-5e42-91fb-3a24849ccdec",
+              "message_seq": "4",
+              "parts": [
+                {
+                  "text": "31 + 11 = 42. The authenticated webhook contained `data: calculate_42`; persisted-evidence verification and completion are pending.",
+                  "type": "text"
+                }
+              ],
+              "revision": "1",
+              "run_id": "27fe5058-2416-5f7c-ab0b-f26fc59f7921",
+              "thread_id": "bc48967c-2d85-47eb-80ac-de426789ac6f"
+            },
+            {
+              "attachments": [],
+              "author_agent_id": "cef9bd78-a84f-44f6-9ce3-11539cc0467d",
+              "author_kind": "agent",
+              "content": "31 + 11 = 42. The persisted result is accepted as evidence; the responsibility is continuing to verify it before completion.",
+              "context_generation": "1",
+              "message_id": "cd791c8c-1039-5d61-98f0-b77dedc1d70d",
+              "message_seq": "5",
+              "parts": [
+                {
+                  "text": "31 + 11 = 42. The persisted result is accepted as evidence; the responsibility is continuing to verify it before completion.",
+                  "type": "text"
+                }
+              ],
+              "revision": "1",
+              "run_id": "db955b60-7758-5611-97af-51245f213637",
+              "thread_id": "bc48967c-2d85-47eb-80ac-de426789ac6f"
+            },
+            {
+              "attachments": [],
+              "author_agent_id": "cef9bd78-a84f-44f6-9ce3-11539cc0467d",
+              "author_kind": "agent",
+              "content": "31 + 11 = 42. The persisted evidence is verified, and the responsibility is complete.",
+              "context_generation": "1",
+              "message_id": "939641e3-c5cc-52cb-ac9d-3f87f8f28f0b",
+              "message_seq": "6",
+              "parts": [
+                {
+                  "text": "31 + 11 = 42. The persisted evidence is verified, and the responsibility is complete.",
+                  "type": "text"
+                }
+              ],
+              "revision": "1",
+              "run_id": "f965499e-b54d-5a04-b68e-717a71670370",
+              "thread_id": "bc48967c-2d85-47eb-80ac-de426789ac6f"
+            }
+          ],
+          "next_before_message_seq": null,
+          "replay_epoch": "56215410-4732-4532-8541-5b6c040036d9",
+          "runs": [
+            {
+              "agent_id": "cef9bd78-a84f-44f6-9ce3-11539cc0467d",
+              "config_revision": "1",
+              "context_generation": "1",
+              "continuation_required": false,
+              "error_code": null,
+              "replay_epoch": "56215410-4732-4532-8541-5b6c040036d9",
+              "run_id": "d47e0ee7-b702-59eb-ad32-6c3e90b7d6b5",
+              "schema_version": "nma.v1",
+              "status": "succeeded",
+              "text": "I\u2019ll wait for an authenticated event containing the `calculate_42` data field. No polling or schedule is set.",
+              "thread_id": "bc48967c-2d85-47eb-80ac-de426789ac6f",
+              "through_sequence": "731",
+              "turn_exit_reason": "text_response(finish_reason=stop)"
+            },
+            {
+              "agent_id": "cef9bd78-a84f-44f6-9ce3-11539cc0467d",
+              "config_revision": "1",
+              "context_generation": "1",
+              "continuation_required": false,
+              "error_code": null,
+              "replay_epoch": "56215410-4732-4532-8541-5b6c040036d9",
+              "run_id": "27fe5058-2416-5f7c-ab0b-f26fc59f7921",
+              "schema_version": "nma.v1",
+              "status": "succeeded",
+              "text": "31 + 11 = 42. The authenticated webhook contained `data: calculate_42`; persisted-evidence verification and completion are pending.",
+              "thread_id": "bc48967c-2d85-47eb-80ac-de426789ac6f",
+              "through_sequence": "731",
+              "turn_exit_reason": "text_response(finish_reason=stop)"
+            },
+            {
+              "agent_id": "cef9bd78-a84f-44f6-9ce3-11539cc0467d",
+              "config_revision": "1",
+              "context_generation": "1",
+              "continuation_required": false,
+              "error_code": null,
+              "replay_epoch": "56215410-4732-4532-8541-5b6c040036d9",
+              "run_id": "db955b60-7758-5611-97af-51245f213637",
+              "schema_version": "nma.v1",
+              "status": "succeeded",
+              "text": "31 + 11 = 42. The persisted result is accepted as evidence; the responsibility is continuing to verify it before completion.",
+              "thread_id": "bc48967c-2d85-47eb-80ac-de426789ac6f",
+              "through_sequence": "731",
+              "turn_exit_reason": "text_response(finish_reason=stop)"
+            },
+            {
+              "agent_id": "cef9bd78-a84f-44f6-9ce3-11539cc0467d",
+              "config_revision": "1",
+              "context_generation": "1",
+              "continuation_required": false,
+              "error_code": null,
+              "replay_epoch": "56215410-4732-4532-8541-5b6c040036d9",
+              "run_id": "f965499e-b54d-5a04-b68e-717a71670370",
+              "schema_version": "nma.v1",
+              "status": "succeeded",
+              "text": "31 + 11 = 42. The persisted evidence is verified, and the responsibility is complete.",
+              "thread_id": "bc48967c-2d85-47eb-80ac-de426789ac6f",
+              "through_sequence": "731",
+              "turn_exit_reason": "text_response(finish_reason=stop)"
+            }
+          ],
+          "schema_version": "nma.v1",
+          "thread": {
+            "agents": [
+              {
+                "access_generation": "1",
+                "agent_id": "cef9bd78-a84f-44f6-9ce3-11539cc0467d",
+                "config": {
+                  "avatar_url": "https://api.dicebear.com/10.x/critters/svg?seed=live-goal-webhook",
+                  "instructions": "",
+                  "model": "test",
+                  "session": {
+                    "compression": {},
+                    "context_engine": "compressor",
+                    "max_turns": null
+                  },
+                  "soul": "",
+                  "tool_grants": []
+                },
+                "config_revision": "1",
+                "created_at": "2026-10-28T11:23:24.685369Z",
+                "display_name": "live-goal-webhook",
+                "handle": "live-goal-webhook",
+                "primary_dm_thread_id": "bc48967c-2d85-47eb-80ac-de426789ac6f",
+                "revision": "1",
+                "status": "active",
+                "updated_at": "2026-10-28T11:23:24.685369Z"
+              }
+            ],
+            "context_generation": "1",
+            "dm_agent_id": "cef9bd78-a84f-44f6-9ce3-11539cc0467d",
+            "kind": "dm",
+            "membership_revision": "1",
+            "revision": "1",
+            "status": "open",
+            "thread_id": "bc48967c-2d85-47eb-80ac-de426789ac6f",
+            "title": "live-goal-webhook"
+          },
+          "through_sequence": "731"
+        },
+        "first": {
+          "result": {
+            "batch_id": "6b7e7fb8-d67a-409f-a09a-8a6bbc9c18e0",
+            "duplicate": false,
+            "status": "accepted"
+          }
+        },
+        "duplicate": {
+          "result": {
+            "batch_id": "6b7e7fb8-d67a-409f-a09a-8a6bbc9c18e0",
+            "duplicate": true,
+            "status": "accepted"
+          }
+        }
+      },
+      "elapsed_seconds": 42.528
+    },
+    {
+      "name": "native_goal_delegation",
+      "passed": true,
+      "attempted": true,
+      "evidence": {
+        "snapshot": {
+          "artifacts": [],
+          "collaboration_tasks": [],
+          "delegations": [
+            {
+              "agent_id": "a8b02ca1-5ed7-4327-87a4-fb0dd317a32d",
+              "child_session_id": "20261028_192423_a842fb",
+              "goal": "Calculate 17 + 26 and return the arithmetic result with a one-line verification (show the addition).",
+              "kind": "temporary_subagent",
+              "model": "openai/gpt-6-luna",
+              "parent_child_id": null,
+              "parent_run_id": "b3283aef-919c-5fa6-bd9f-d2174375d99e",
+              "resource_agent_id": "f05669dd-4c47-5054-82aa-aac350a5fd05",
+              "result": {
+                "api_calls": 1,
+                "duration_seconds": 4.51,
+                "summary": "17 + 26 = 43. Verification: 17 + 26 = 43."
+              },
+              "status": "completed",
+              "subagent_id": "sa-0-0694113c",
+              "task_index": 0,
+              "toolsets": []
+            }
+          ],
+          "discussion": null,
+          "goals": [
+            {
+              "completion_contract": null,
+              "created_at": "2026-10-28T11:24:17.330Z",
+              "creation_key": "verified-arithmetic-report-17-plus-26",
+              "evidence": [
+                {
+                  "accepted_by_agent_id": "a8b02ca1-5ed7-4327-87a4-fb0dd317a32d",
+                  "criterion": "Exactly one temporary native child calculated 17 + 26 and its actual returned result was reviewed.",
+                  "evidence_id": "f4898952-176f-549a-b7d6-0d70a70927de",
+                  "generation": "1",
+                  "producing_run_id": "c17e4351-7e23-5a58-ae1d-d62fa32c8400",
+                  "source_message_id": "9c22db27-8536-5eb8-b693-42c90e22ca9f",
+                  "summary": "The sole delegated child returned: \u201c17 + 26 = 43. Verification: 17 + 26 = 43.\u201d I reviewed the actual result, which confirms the arithmetic."
+                }
+              ],
+              "generation": "2",
+              "goal_id": "d98d76fb-46bc-4f4f-9841-e54acd22a6b1",
+              "objective": "Produce a verified report calculating 17 + 26 using exactly one temporary native child, review its actual returned result, and complete this goal with persisted evidence.",
+              "progress": "The sole delegated child returned: \u201c17 + 26 = 43. Verification: 17 + 26 = 43.\u201d I reviewed the actual result, which confirms the arithmetic.",
+              "responsible_agent_id": "a8b02ca1-5ed7-4327-87a4-fb0dd317a32d",
+              "reviews": [],
+              "revision": "6",
+              "source_message_id": "2aa8aa5d-16e1-5e9e-b892-a87704fa5c3c",
+              "source_run_id": "b3283aef-919c-5fa6-bd9f-d2174375d99e",
+              "status": "completed",
+              "subgoals": [],
+              "thread_id": "87d71595-4d7b-4b80-9d17-9062d6625269",
+              "title": "Verified report: 17 + 26",
+              "units": [
+                {
+                  "agent_id": "a8b02ca1-5ed7-4327-87a4-fb0dd317a32d",
+                  "generation": "1",
+                  "parent_run_id": null,
+                  "result_message_id": "3e9bcdd1-5204-5520-9be9-ef4697ed907c",
+                  "result_preview": "The single child is calculating 17 + 26; I recorded the goal to continue when its result returns.",
+                  "run_id": "b3283aef-919c-5fa6-bd9f-d2174375d99e",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": "continue"
+                },
+                {
+                  "agent_id": "a8b02ca1-5ed7-4327-87a4-fb0dd317a32d",
+                  "generation": "1",
+                  "parent_run_id": "b3283aef-919c-5fa6-bd9f-d2174375d99e",
+                  "result_message_id": "9c22db27-8536-5eb8-b693-42c90e22ca9f",
+                  "result_preview": "The child returned 17 + 26 = 43. I reviewed the result and recorded the goal to continue so it can be persisted as evidence.",
+                  "run_id": "c17e4351-7e23-5a58-ae1d-d62fa32c8400",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": "continue"
+                },
+                {
+                  "agent_id": "a8b02ca1-5ed7-4327-87a4-fb0dd317a32d",
+                  "generation": "1",
+                  "parent_run_id": "c17e4351-7e23-5a58-ae1d-d62fa32c8400",
+                  "result_message_id": "3de6c859-a72e-5e29-a8a1-d861079aa750",
+                  "result_preview": "Verified report: 17 + 26 = 43. The sole child\u2019s returned calculation was reviewed, persisted as evidence, and the responsibility is complete.",
+                  "run_id": "6e9722ae-91a5-51f3-9120-6212dbbb68dc",
+                  "settled": true,
+                  "status": "succeeded",
+                  "verdict": "done"
+                }
+              ],
+              "updated_at": "2026-10-28T11:24:46.975Z",
+              "wake": null,
+              "wake_condition": null
+            }
+          ],
+          "messages": [
+            {
+              "attachments": [],
+              "author_agent_id": null,
+              "author_kind": "user",
+              "content": "Take responsibility for a verified report calculating 17+26. Use exactly one temporary native child to calculate the answer, then review its actual returned result and complete this same persistent goal using persisted evidence. Let the child return automatically; do not poll, create replacements, or wait for another user message. When only child completion or this turn's persistence is pending, record continue and finish this turn so the gateway can deliver the next unit.",
+              "context_generation": "1",
+              "message_id": "2aa8aa5d-16e1-5e9e-b892-a87704fa5c3c",
+              "message_seq": "2",
+              "parts": [
+                {
+                  "text": "Take responsibility for a verified report calculating 17+26. Use exactly one temporary native child to calculate the answer, then review its actual returned result and complete this same persistent goal using persisted evidence. Let the child return automatically; do not poll, create replacements, or wait for another user message. When only child completion or this turn's persistence is pending, record continue and finish this turn so the gateway can deliver the next unit.",
+                  "type": "text"
+                }
+              ],
+              "revision": "1",
+              "run_id": "b3283aef-919c-5fa6-bd9f-d2174375d99e",
+              "thread_id": "87d71595-4d7b-4b80-9d17-9062d6625269"
+            },
+            {
+              "attachments": [],
+              "author_agent_id": "a8b02ca1-5ed7-4327-87a4-fb0dd317a32d",
+              "author_kind": "agent",
+              "content": "The single child is calculating 17 + 26; I recorded the goal to continue when its result returns.",
+              "context_generation": "1",
+              "message_id": "3e9bcdd1-5204-5520-9be9-ef4697ed907c",
+              "message_seq": "3",
+              "parts": [
+                {
+                  "text": "The single child is calculating 17 + 26; I recorded the goal to continue when its result returns.",
+                  "type": "text"
+                }
+              ],
+              "revision": "1",
+              "run_id": "b3283aef-919c-5fa6-bd9f-d2174375d99e",
+              "thread_id": "87d71595-4d7b-4b80-9d17-9062d6625269"
+            },
+            {
+              "attachments": [],
+              "author_agent_id": "a8b02ca1-5ed7-4327-87a4-fb0dd317a32d",
+              "author_kind": "agent",
+              "content": "The child returned 17 + 26 = 43. I reviewed the result and recorded the goal to continue so it can be persisted as evidence.",
+              "context_generation": "1",
+              "message_id": "9c22db27-8536-5eb8-b693-42c90e22ca9f",
+              "message_seq": "4",
+              "parts": [
+                {
+                  "text": "The child returned 17 + 26 = 43. I reviewed the result and recorded the goal to continue so it can be persisted as evidence.",
+                  "type": "text"
+                }
+              ],
+              "revision": "1",
+              "run_id": "c17e4351-7e23-5a58-ae1d-d62fa32c8400",
+              "thread_id": "87d71595-4d7b-4b80-9d17-9062d6625269"
+            },
+            {
+              "attachments": [],
+              "author_agent_id": "a8b02ca1-5ed7-4327-87a4-fb0dd317a32d",
+              "author_kind": "agent",
+              "content": "Verified report: 17 + 26 = 43. The sole child\u2019s returned calculation was reviewed, persisted as evidence, and the responsibility is complete.",
+              "context_generation": "1",
+              "message_id": "3de6c859-a72e-5e29-a8a1-d861079aa750",
+              "message_seq": "5",
+              "parts": [
+                {
+                  "text": "Verified report: 17 + 26 = 43. The sole child\u2019s returned calculation was reviewed, persisted as evidence, and the responsibility is complete.",
+                  "type": "text"
+                }
+              ],
+              "revision": "1",
+              "run_id": "6e9722ae-91a5-51f3-9120-6212dbbb68dc",
+              "thread_id": "87d71595-4d7b-4b80-9d17-9062d6625269"
+            }
+          ],
+          "next_before_message_seq": null,
+          "replay_epoch": "56215410-4732-4532-8541-5b6c040036d9",
+          "runs": [
+            {
+              "agent_id": "a8b02ca1-5ed7-4327-87a4-fb0dd317a32d",
+              "config_revision": "1",
+              "context_generation": "1",
+              "continuation_required": false,
+              "error_code": null,
+              "replay_epoch": "56215410-4732-4532-8541-5b6c040036d9",
+              "run_id": "b3283aef-919c-5fa6-bd9f-d2174375d99e",
+              "schema_version": "nma.v1",
+              "status": "succeeded",
+              "text": "The single child is calculating 17 + 26; I recorded the goal to continue when its result returns.",
+              "thread_id": "87d71595-4d7b-4b80-9d17-9062d6625269",
+              "through_sequence": "824",
+              "turn_exit_reason": "text_response(finish_reason=stop)"
+            },
+            {
+              "agent_id": "a8b02ca1-5ed7-4327-87a4-fb0dd317a32d",
+              "config_revision": "1",
+              "context_generation": "1",
+              "continuation_required": false,
+              "error_code": null,
+              "replay_epoch": "56215410-4732-4532-8541-5b6c040036d9",
+              "run_id": "c17e4351-7e23-5a58-ae1d-d62fa32c8400",
+              "schema_version": "nma.v1",
+              "status": "succeeded",
+              "text": "The child returned 17 + 26 = 43. I reviewed the result and recorded the goal to continue so it can be persisted as evidence.",
+              "thread_id": "87d71595-4d7b-4b80-9d17-9062d6625269",
+              "through_sequence": "824",
+              "turn_exit_reason": "text_response(finish_reason=stop)"
+            },
+            {
+              "agent_id": "a8b02ca1-5ed7-4327-87a4-fb0dd317a32d",
+              "config_revision": "1",
+              "context_generation": "1",
+              "continuation_required": false,
+              "error_code": null,
+              "replay_epoch": "56215410-4732-4532-8541-5b6c040036d9",
+              "run_id": "6e9722ae-91a5-51f3-9120-6212dbbb68dc",
+              "schema_version": "nma.v1",
+              "status": "succeeded",
+              "text": "Verified report: 17 + 26 = 43. The sole child\u2019s returned calculation was reviewed, persisted as evidence, and the responsibility is complete.",
+              "thread_id": "87d71595-4d7b-4b80-9d17-9062d6625269",
+              "through_sequence": "824",
+              "turn_exit_reason": "text_response(finish_reason=stop)"
+            }
+          ],
+          "schema_version": "nma.v1",
+          "thread": {
+            "agents": [
+              {
+                "access_generation": "1",
+                "agent_id": "a8b02ca1-5ed7-4327-87a4-fb0dd317a32d",
+                "config": {
+                  "avatar_url": "https://api.dicebear.com/10.x/critters/svg?seed=live-goal-child",
+                  "instructions": "",
+                  "model": "test",
+                  "session": {
+                    "compression": {},
+                    "context_engine": "compressor",
+                    "max_turns": null
+                  },
+                  "soul": "",
+                  "tool_grants": [
+                    "delegation"
+                  ]
+                },
+                "config_revision": "1",
+                "created_at": "2026-10-28T11:24:07.215123Z",
+                "display_name": "live-goal-child",
+                "handle": "live-goal-child",
+                "primary_dm_thread_id": "87d71595-4d7b-4b80-9d17-9062d6625269",
+                "revision": "1",
+                "status": "active",
+                "updated_at": "2026-10-28T11:24:07.215123Z"
+              }
+            ],
+            "context_generation": "1",
+            "dm_agent_id": "a8b02ca1-5ed7-4327-87a4-fb0dd317a32d",
+            "kind": "dm",
+            "membership_revision": "1",
+            "revision": "1",
+            "status": "open",
+            "thread_id": "87d71595-4d7b-4b80-9d17-9062d6625269",
+            "title": "live-goal-child"
+          },
+          "through_sequence": "824"
+        },
+        "batches": [
+          [
+            "355d75fa08721a9463b30bb8864249f0aa90e1e3bf50cea70490d8e0ebfd8155",
+            "admitted",
+            "c17e4351-7e23-5a58-ae1d-d62fa32c8400"
+          ]
+        ]
+      },
+      "elapsed_seconds": 42.25
+    }
+  ],
+  "original_credential_journals_unchanged": true,
+  "provider_evidence": {
+    "provider": "openrouter",
+    "model": "openai/gpt-6-luna",
+    "protocol": "chat_completions",
+    "connection_id": "aa04e69a-6978-4bd6-89de-e2ec64f165ec",
+    "auth_method": "oauth",
+    "requests": [
+      {
+        "started": 1466879.042135166,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 4.419611792080104
+      },
+      {
+        "started": 1466883.704942041,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 2.0615919169504195
+      },
+      {
+        "started": 1466885.84948875,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 2.499950874829665
+      },
+      {
+        "started": 1466888.401271208,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 1.7391029170248657
+      },
+      {
+        "started": 1466890.583602208,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 2.137462625047192
+      },
+      {
+        "started": 1466892.806023041,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 2.185083916876465
+      },
+      {
+        "started": 1466895.037802958,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 1.6967866669874638
+      },
+      {
+        "started": 1466899.677281166,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 2.7161356669384986
+      },
+      {
+        "started": 1466902.6824485,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 2.110734332818538
+      },
+      {
+        "started": 1466904.877239125,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 2.26485608285293
+      },
+      {
+        "started": 1466910.29360025,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 7.17032254091464
+      },
+      {
+        "started": 1466917.552708958,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 8.883232000051066
+      },
+      {
+        "started": 1466926.504768833,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 7.947235916974023
+      },
+      {
+        "started": 1466934.724940291,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 8.111047709127888
+      },
+      {
+        "started": 1466942.93917325,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 10.0925800409168
+      },
+      {
+        "started": 1466953.110850708,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 10.210688249906525
+      },
+      {
+        "started": 1466963.873000583,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 2.9783122499939054
+      },
+      {
+        "started": 1466966.984414166,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 2.333686084020883
+      },
+      {
+        "started": 1466969.49965875,
+        "parameters": {},
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 3.205877250060439
+      },
+      {
+        "started": 1466972.817122958,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 2.6362302501220256
+      },
+      {
+        "started": 1466975.523026708,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 2.198812374845147
+      },
+      {
+        "started": 1466978.668762375,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 3.8575913331005722
+      },
+      {
+        "started": 1466982.579541291,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 3.533094458980486
+      },
+      {
+        "started": 1466986.191596041,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 4.421931917080656
+      },
+      {
+        "started": 1466990.708877666,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 2.521946042077616
+      },
+      {
+        "started": 1466993.272454166,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 3.1291913338936865
+      },
+      {
+        "started": 1467000.817118458,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 3.6423747919034213
+      },
+      {
+        "started": 1467004.536167291,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 1.7366254590451717
+      },
+      {
+        "started": 1467006.408593333,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 2.368537832982838
+      },
+      {
+        "started": 1467008.896539666,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 5.240086459089071
+      },
+      {
+        "started": 1467014.706313916,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 2.8626266249921173
+      },
+      {
+        "started": 1467017.644731083,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 2.8940641251392663
+      },
+      {
+        "started": 1467020.63312425,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 4.728428333066404
+      },
+      {
+        "started": 1467025.4192395,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 2.107523415936157
+      },
+      {
+        "started": 1467028.929625541,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 4.036789041943848
+      },
+      {
+        "started": 1467033.042666791,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 6.814140334026888
+      },
+      {
+        "started": 1467039.91965575,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 3.352458416018635
+      },
+      {
+        "started": 1467043.327660541,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 4.062682916875929
+      },
+      {
+        "started": 1467072.973606541,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 3.366394208976999
+      },
+      {
+        "started": 1467076.434233375,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 3.794419583166018
+      },
+      {
+        "started": 1467080.30369225,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 5.3591944999061525
+      },
+      {
+        "started": 1467085.756322458,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 1.692807667190209
+      },
+      {
+        "started": 1467091.568352833,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 4.750309208175167
+      },
+      {
+        "started": 1467096.404331666,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 3.103251500055194
+      },
+      {
+        "started": 1467100.0261055,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 2.410552790854126
+      },
+      {
+        "started": 1467102.520852333,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 2.5368507080711424
+      },
+      {
+        "started": 1467105.149795208,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 3.052347125019878
+      },
+      {
+        "started": 1467108.710464125,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 2.167229332961142
+      },
+      {
+        "started": 1467110.956188166,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 2.4891107089351863
+      },
+      {
+        "started": 1467114.36459975,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 5.3723580001387745
+      },
+      {
+        "started": 1467119.787849375,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 4.37725216592662
+      },
+      {
+        "started": 1467124.2246415,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 5.652036875020713
+      },
+      {
+        "started": 1467130.02970275,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 2.9305623329710215
+      },
+      {
+        "started": 1467130.045327291,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 4.442610959056765
+      },
+      {
+        "started": 1467133.049032458,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 4.094319291878492
+      },
+      {
+        "started": 1467137.855813916,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 1.8049506668467075
+      },
+      {
+        "started": 1467139.725227875,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 4.297611416084692
+      },
+      {
+        "started": 1467144.091834583,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 3.9588067079894245
+      },
+      {
+        "started": 1467148.425435708,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 2.9846921251155436
+      },
+      {
+        "started": 1467151.474381541,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 2.343752750195563
+      },
+      {
+        "started": 1467153.863081083,
+        "parameters": {
+          "reasoning_effort": "medium"
+        },
+        "http_status": 200,
+        "completed": true,
+        "duration_s": 1.9022352921310812
+      }
+    ],
+    "failures": []
+  },
+  "runtime_source_unchanged_during_cohort": true
+}

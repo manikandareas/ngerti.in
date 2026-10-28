@@ -1,0 +1,9 @@
+{
+  "own_snapshot": 200,
+  "forged_owner_header_ignored": 200,
+  "missing_auth": 401,
+  "invalid_auth": 401,
+  "unknown_goal": 404,
+  "schedule_after_reload": "enabled",
+  "completion_review_present": true
+}

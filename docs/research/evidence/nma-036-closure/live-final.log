@@ -1,0 +1,7 @@
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+{"name": "longitudinal_intent_correction_duplicate_stop", "passed": true, "elapsed_seconds": 47.106}
+{"name": "native_subgoal_judge_completion", "passed": true, "elapsed_seconds": 32.712}
+{"name": "offline_model_schedule_restart", "passed": false, "elapsed_seconds": 51.471}
+{"name": "offline_script_chain", "passed": true, "elapsed_seconds": 35.363}
+{"name": "signed_duplicate_webhook_restart", "passed": true, "elapsed_seconds": 40.536}
+{"name": "native_goal_delegation", "passed": true, "elapsed_seconds": 37.0}

@@ -1,0 +1,151 @@
+{
+  "classification": "model_argument_error",
+  "actual_goal_id": "b0870845-22fd-4cd8-8d26-b9f48434024b",
+  "repeated_malformed_goal_id": "b0870845-22fd-4c8d-8d26-b9f48434024b",
+  "finding": "The model transposed cd8 to c8d after successful create and schedule. Repeated list calls returned the correct identity. Scope lookup correctly rejected the nonexistent ID. The occurrence ran once and delivered 437 but lifecycle completion failed.",
+  "native_tool_trace": [
+    {
+      "message_id": 44,
+      "arguments": {
+        "action": "create",
+        "creation_key": "calculate-19x23",
+        "title": "Calculate 19 \u00d7 23 at the scheduled UTC wake",
+        "objective": "Calculate 19 \u00d7 23 only when the scheduled once wake at 2026-10-28T11:56:16.440053Z occurs; then report the answer, verify the persisted result, and complete without further user input."
+      }
+    },
+    {
+      "message_id": 45,
+      "returned_goal_id": "b0870845-22fd-4cd8-8d26-b9f48434024b"
+    },
+    {
+      "message_id": 46,
+      "arguments": {
+        "action": "schedule",
+        "goal_id": "b0870845-22fd-4cd8-8d26-b9f48434024b",
+        "expected_revision": "1",
+        "wake": {
+          "kind": "once",
+          "timezone": "UTC",
+          "missed_policy": "coalesce",
+          "at": "2026-10-28T11:56:16.440053Z"
+        }
+      }
+    },
+    {
+      "message_id": 47,
+      "returned_goal_id": "b0870845-22fd-4cd8-8d26-b9f48434024b"
+    },
+    {
+      "message_id": 48,
+      "arguments": {
+        "action": "wait",
+        "expected_revision": "2",
+        "goal_id": "b0870845-22fd-4c8d-8d26-b9f48434024b",
+        "summary": "Scheduled a once wake for 2026-10-28T11:56:16.440053Z UTC with missed_policy coalesce; defer the arithmetic until that wake.",
+        "wake_condition": "Scheduled once wake at 2026-10-28T11:56:16.440053Z UTC"
+      }
+    },
+    {
+      "message_id": 49,
+      "result": {
+        "error": "NOT_FOUND"
+      }
+    },
+    {
+      "message_id": 50,
+      "arguments": {
+        "action": "list"
+      }
+    },
+    {
+      "message_id": 51,
+      "returned_goal_ids": [
+        "b0870845-22fd-4cd8-8d26-b9f48434024b"
+      ]
+    },
+    {
+      "message_id": 54,
+      "arguments": {
+        "action": "continue",
+        "goal_id": "b0870845-22fd-4c8d-8d26-b9f48434024b",
+        "expected_revision": "2",
+        "summary": "The scheduled once wake has fired at 2026-10-28T11:56:16.440053Z UTC. Next, calculate 19 \u00d7 23, report the result, then verify the persisted result and complete."
+      }
+    },
+    {
+      "message_id": 55,
+      "result": {
+        "error": "NOT_FOUND"
+      }
+    },
+    {
+      "message_id": 56,
+      "arguments": {
+        "action": "list"
+      }
+    },
+    {
+      "message_id": 57,
+      "returned_goal_ids": [
+        "b0870845-22fd-4cd8-8d26-b9f48434024b"
+      ]
+    },
+    {
+      "message_id": 58,
+      "arguments": {
+        "action": "continue",
+        "expected_revision": "3",
+        "goal_id": "b0870845-22fd-4c8d-8d26-b9f48434024b",
+        "summary": "The scheduled wake has fired. Calculated 19 \u00d7 23 = 437; next verify this persisted result with evidence and complete the goal."
+      }
+    },
+    {
+      "message_id": 59,
+      "result": {
+        "error": "NOT_FOUND"
+      }
+    },
+    {
+      "message_id": 60,
+      "arguments": {
+        "action": "continue",
+        "expected_revision": "3",
+        "goal_id": "b0870845-22fd-4c8d-8d26-b9f48434024b",
+        "summary": "19 \u00d7 23 = 437 after the scheduled wake. Preserve this result, then verify the persisted result and complete."
+      }
+    },
+    {
+      "message_id": 61,
+      "result": {
+        "error": "NOT_FOUND"
+      }
+    },
+    {
+      "message_id": 62,
+      "arguments": {
+        "action": "list"
+      }
+    },
+    {
+      "message_id": 63,
+      "returned_goal_ids": [
+        "b0870845-22fd-4cd8-8d26-b9f48434024b"
+      ]
+    },
+    {
+      "message_id": 64,
+      "arguments": {
+        "action": "block",
+        "expected_revision": "3",
+        "goal_id": "b0870845-22fd-4c8d-8d26-b9f48434024b",
+        "summary": "After the scheduled UTC wake, calculated 19 \u00d7 23 = 437. Verification/completion is blocked because responsibility continue calls return NOT_FOUND, and the current run has no persisted result_message_id yet. The result must settle before evidence can be submitted."
+      }
+    },
+    {
+      "message_id": 65,
+      "result": {
+        "error": "NOT_FOUND"
+      }
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "runtime": {
+    "revision": "7489b22af47ce91b366dde81d5831ea422577498",
+    "python": "3.14.9",
+    "sqlite": "3.53.1"
+  },
+  "pinned_source_files": 171,
+  "original_manifest_files": 182,
+  "changed_since_original_delivery": [
+    "apps/engine/src/ngertiin_engine/automation.py",
+    "apps/engine/src/ngertiin_engine/goal_continuation.py",
+    "apps/engine/src/ngertiin_engine/process_waits.py",
+    "apps/engine/tests/fault_launcher.py"
+  ],
+  "review_evidence_mismatches": [],
+  "historical_ddl_modules": 21,
+  "historical_ddl_mismatches": [],
+  "wheel_source_files": 88,
+  "wheel_source_mismatches": []
+}

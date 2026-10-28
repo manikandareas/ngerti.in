@@ -1,0 +1,275 @@
+/Users/vitoandareasmanik/.cache/uv/archive-v0/Uhti8kwSaB-uppKgLiv9B/lib/python3.14/site-packages/pytest_asyncio/plugin.py:300: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the "fixture" caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to "function" scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+....F.........................FF.F
+=================================== FAILURES ===================================
+____________________ test_child_cancel_fences_late_results _____________________
+
+runtime = (PosixPath('/tmp/nma-9a3w81p_'), <http.server.ThreadingHTTPServer object at 0x10bf2c7d0>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '20', 'lifecycle': 'ready', ...})
+
+    def test_child_cancel_fences_late_results(runtime):
+        root, provider, call, _start, *_ = runtime
+        _agent, thread = setup(root, call)
+        provider.release.clear()
+        provider.blocked.clear()
+    
+        def script(body, text):
+            messages = body.get("messages", [])
+            if not messages:
+                return None
+            if "focused subagent" in json.dumps(
+                [m for m in messages if m["role"] == "system"]
+            ):
+                provider.blocked.set()
+                provider.release.wait(15)
+                return {"role": "assistant", "content": "FORBIDDEN_LATE_CHILD_RESULT"}
+            if any(m["role"] == "tool" for m in messages):
+                return {"role": "assistant", "content": "Child delegation started."}
+            return tool(
+                "delegate_task", {"goal": "Wait for the independent child calculation"}
+            )
+    
+        provider.goal_script = script
+        receipt = call(send(thread, "Use a temporary child"))["result"]
+        assert provider.blocked.wait(10)
+        assert "result" in call(command("run.cancel", {"run_id": receipt["run_id"]}))
+        provider.release.set()
+        deadline = time.monotonic() + 10
+        while time.monotonic() < deadline:
+            snap = snapshot(call, thread)
+            children = snap["delegations"]
+            if children and children[0]["status"] != "running":
+                break
+            time.sleep(0.1)
+        assert children and children[0]["status"] == "cancelled", snap
+        assert children[0]["result"] is None
+        time.sleep(0.5)
+        assert not any(
+            "FORBIDDEN_LATE_CHILD_RESULT" in m["content"]
+            for m in snapshot(call, thread)["messages"]
+        )
+        deadline = time.monotonic() + 10
+        attempts = []
+        while time.monotonic() < deadline:
+            with sqlite3.connect(root / "state/state.db") as db:
+                attempts = [
+                    json.loads(row[0])["payload"]
+                    for row in db.execute(
+                        "SELECT payload FROM nma_events WHERE json_extract(payload,'$.type')='provider.attempt' AND json_extract(payload,'$.payload.child_session_id')=?",
+                        (children[0]["child_session_id"],),
+                    )
+                ]
+            if attempts:
+                break
+            time.sleep(0.05)
+>       assert len(attempts) == 1 and attempts[0]["late_receipt"] is True, attempts
+E       AssertionError: []
+E       assert (0 == 1)
+E        +  where 0 = len([])
+
+apps/engine/tests/test_delegation.py:186: AssertionError
+_______________ test_schedule_pause_resume_preserves_definition ________________
+
+runtime = (PosixPath('/tmp/nma-6p8adbtv'), <http.server.ThreadingHTTPServer object at 0x10c423ad0>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '20', 'lifecycle': 'ready', ...})
+
+    def test_schedule_pause_resume_preserves_definition(runtime):
+        from test_wakes import schedule
+    
+        _, _, call, start, *_ = runtime
+        thread = dm(call, "schedule-controls")
+        goal = begin(call, thread)
+        goal = schedule(call, thread, goal, "interval")
+        identity = goal["wake"]["definition_id"]
+        settings = goal["wake"]["configuration"]
+        act(
+            call,
+            thread,
+            action="pause_schedule",
+            goal_id=goal["goal_id"],
+            expected_revision=goal["revision"],
+        )
+        paused = snapshot(call, thread)["goals"][0]
+        assert paused["status"] == "waiting" and paused["wake"]["state"] == "paused"
+        act(
+            call,
+            thread,
+            action="pause_schedule",
+            goal_id=goal["goal_id"],
+            expected_revision=paused["revision"],
+        )
+        assert snapshot(call, thread)["goals"][0] == paused
+        start.current.kill()
+        start.current.wait(timeout=10)
+        start()
+        act(
+            call,
+            thread,
+            action="resume_schedule",
+            goal_id=goal["goal_id"],
+            expected_revision=paused["revision"],
+        )
+        resumed = snapshot(call, thread)["goals"][0]
+        assert resumed["wake"]["state"] == "enabled"
+        assert resumed["wake"]["definition_id"] == identity
+        assert resumed["wake"]["configuration"] == settings
+        act(
+            call,
+            thread,
+            action="resume_schedule",
+            goal_id=goal["goal_id"],
+            expected_revision=resumed["revision"],
+        )
+>       assert snapshot(call, thread)["goals"][0] == resumed
+E       AssertionError: assert {'completion_...nce': [], ...} == {'completion_...nce': [], ...}
+E         
+E         Omitting 20 identical items, use -vv to show
+E         Differing items:
+E         {'units': [{'agent_id': '643e8b05-5ac3-43c5-854a-608714695939', 'generation': '1', 'parent_run_id': None, 'result_mess...4695939', 'generation': '4', 'parent_run_id': None, 'result_message_id': 'fa7085d2-7748-5526-b29b-4a5f9ac122e0', ...}]} != {'units': [{'agent_id': '643e8b05-5ac3-43c5-854a-608714695939', 'generation': '1', 'parent_run_id': None, 'result_mess...4695939', 'generation': '4', 'parent_run_id': None, 'result_message_id': 'fa7085d2-7748-5526-b29b-4a5f9ac122e0', ...}]}
+E         Use -v to get more diff
+
+apps/engine/tests/test_calendar_wakes.py:196: AssertionError
+_______________ test_session_recurrence_does_not_survive_restart _______________
+
+runtime = (PosixPath('/tmp/nma-6p8adbtv'), <http.server.ThreadingHTTPServer object at 0x10c423ad0>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '20', 'lifecycle': 'ready', ...})
+
+    def test_session_recurrence_does_not_survive_restart(runtime):
+        _, _, call, start, *_ = runtime
+        thread = dm(call, "session-recurrence")
+        goal = begin(call, thread)
+        act(
+            call,
+            thread,
+            action="schedule",
+            goal_id=goal["goal_id"],
+            expected_revision=goal["revision"],
+            wake={
+                **calendar("UTC"),
+                "job": {
+                    "mode": "model",
+                    "lifetime": "session",
+                    "context": "Check only during this session",
+                },
+            },
+        )
+        goal = snapshot(call, thread)["goals"][0]
+        assert goal["wake"]["state"] == "enabled"
+        start.current.kill()
+        start.current.wait(timeout=10)
+        start()
+        from test_goal_lifecycle import eventually
+    
+>       final = eventually(
+            lambda: snapshot(call, thread)["goals"][0],
+            lambda g: g["wake"]["state"] == "paused",
+        )
+
+apps/engine/tests/test_calendar_wakes.py:225: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+read = <function test_session_recurrence_does_not_survive_restart.<locals>.<lambda> at 0x10cf46090>
+predicate = <function test_session_recurrence_does_not_survive_restart.<locals>.<lambda> at 0x10cf45fe0>
+timeout = 20
+
+    def eventually(read, predicate, timeout=20):
+        until = time.monotonic() + timeout
+        while time.monotonic() < until:
+            value = read()
+            if predicate(value):
+                return value
+            time.sleep(0.1)
+>       raise AssertionError(value)
+E       AssertionError: {'completion_contract': None, 'created_at': '2026-10-28T11:08:21.646Z', 'creation_key': 'fuel', 'evidence': [], 'generation': '2', 'goal_id': '67c8af3a-3517-46a4-9872-20ae6bb35b6e', 'objective': 'Prepare fuel report for Friday', 'progress': '', 'responsible_agent_id': '65dd5bac-16b8-4f6b-a66c-de2774c0e342', 'reviews': [], 'revision': '2', 'source_message_id': '0ef34f25-1972-56e6-9aa9-bb5b82d360e2', 'source_run_id': 'c858a119-c52b-5ac6-b916-809438a94f2e', 'status': 'waiting', 'subgoals': [], 'thread_id': '0714207e-0946-4d50-9d01-e652e6a9e9b8', 'title': 'Fuel report', 'units': [{'agent_id': '65dd5bac-16b8-4f6b-a66c-de2774c0e342', 'generation': '1', 'parent_run_id': None, 'result_message_id': 'ca496482-1932-552a-892b-4ed2ed8e0aef', 'result_preview': 'RECOVERY_ACK_RESPONSIBILITY:{"action": "create", "creation_key": "fuel", "title": "Fuel report", "objective": "Prepare fuel report for Friday"}', 'run_id': 'c858a119-c52b-5ac6-b916-809438a94f2e', 'settled': True, 'status': 'succeeded', 'verdict': None}, {'agent_id': '65dd5bac-16b8-4f6b-a66c-de2774c0e342', 'generation': '2', 'parent_run_id': None, 'result_message_id': 'c261309f-6fae-528c-b127-fb9e03c13599', 'result_preview': 'RECOVERY_ACK_RESPONSIBILITY:{"action": "schedule", "goal_id": "67c8af3a-3517-46a4-9872-20ae6bb35b6e", "expected_revision": "1", "wake": {"kind": "cron", "timezone": "UTC", "missed_policy": "coalesce", "expression": "0 9 * * *", "job": {"mode": "model", "lifetime": "session", "context": "Check only during this session"}}}', 'run_id': '61b9dba7-81f0-5b00-81f7-43dd8ec93146', 'settled': False, 'status': 'succeeded', 'verdict': 'wait'}], 'updated_at': '2026-10-28T11:08:31.985Z', 'wake': {'configuration': {'expression': '0 9 * * *', 'job': {'context': 'Check only during this session', 'lifetime': 'session', 'mode': 'model'}, 'kind': 'cron', 'missed_policy': 'coalesce', 'session_epoch': '4', 'timezone': 'UTC'}, 'definition_id': '9cb7723c-112a-5018-8c18-f11f2cda9dac', 'goal_generation': '2', 'kind': 'schedule', 'next_at': '2026-10-29T09:00:00Z', 'revision': '1', 'state': 'enabled'}, 'wake_condition': 'Scheduled wake'}
+
+apps/engine/tests/test_goal_lifecycle.py:21: AssertionError
+__________ test_job_specific_model_skill_and_context_use_owner_route ___________
+
+runtime = (PosixPath('/tmp/nma-6p8adbtv'), <http.server.ThreadingHTTPServer object at 0x10c423ad0>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '20', 'lifecycle': 'ready', ...})
+providers = [<http.server.ThreadingHTTPServer object at 0x10cf9b350>, <http.server.ThreadingHTTPServer object at 0x10cf9b680>]
+
+    def test_job_specific_model_skill_and_context_use_owner_route(runtime, providers):
+        import json
+        import time
+    
+        from test_capabilities import capability_agent
+        from test_connections import connect
+        from test_goal_lifecycle import eventually
+        from test_runtime import command
+    
+        root, primary, call, *_ = runtime
+        connection, _ = connect(call, providers[0], "Calendar job model")
+        (root / "capabilities.json").write_text(
+            json.dumps(
+                {
+                    "skill_refs": {
+                        "daily": {"enabled": True, "content": "JOB_SELECTED_SKILL_MARKER"}
+                    }
+                }
+            )
+        )
+        agent = capability_agent(call, "job-specific-route", skill_refs=["daily"])
+        thread = call(
+            command(
+                "thread.create",
+                {"kind": "dm", "title": "Job route", "agent_ids": [agent["agent_id"]]},
+            )
+        )["result"]["thread"]
+        goal = begin(call, thread)
+        act(
+            call,
+            thread,
+            action="schedule",
+            goal_id=goal["goal_id"],
+            expected_revision=goal["revision"],
+            wake={
+                "kind": "once",
+                "timezone": "UTC",
+                "missed_policy": "coalesce",
+                "at": utc(time.time() + 5),
+                "job": {
+                    "mode": "model",
+                    "model": connection + ":test-model",
+                    "skills": ["daily"],
+                    "context": "JOB_CONTEXT_MARKER",
+                },
+            },
+        )
+        before = len(primary.requests)
+>       eventually(lambda: len(providers[0].requests), lambda n: n > 0, timeout=30)
+
+apps/engine/tests/test_calendar_wakes.py:299: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+read = <function test_job_specific_model_skill_and_context_use_owner_route.<locals>.<lambda> at 0x10d088e00>
+predicate = <function test_job_specific_model_skill_and_context_use_owner_route.<locals>.<lambda> at 0x10d0890c0>
+timeout = 30
+
+    def eventually(read, predicate, timeout=20):
+        until = time.monotonic() + timeout
+        while time.monotonic() < until:
+            value = read()
+            if predicate(value):
+                return value
+            time.sleep(0.1)
+>       raise AssertionError(value)
+E       AssertionError: 0
+
+apps/engine/tests/test_goal_lifecycle.py:21: AssertionError
+=============================== warnings summary ===============================
+.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14
+  /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14: PytestRemovedIn10Warning: _pytest.python.CallSpec2 has been renamed to CallSpec.
+  The CallSpec2 alias will be removed in pytest 10.
+  Update imports to use CallSpec instead.
+  See https://docs.pytest.org/en/stable/deprecations.html#callspec2-renamed
+    from _pytest.python import CallSpec2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_delegation.py::test_child_cancel_fences_late_results
+FAILED apps/engine/tests/test_calendar_wakes.py::test_schedule_pause_resume_preserves_definition
+FAILED apps/engine/tests/test_calendar_wakes.py::test_session_recurrence_does_not_survive_restart
+FAILED apps/engine/tests/test_calendar_wakes.py::test_job_specific_model_skill_and_context_use_owner_route
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! KeyboardInterrupt !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_goal_lifecycle.py:20: KeyboardInterrupt
+(to show a full traceback on KeyboardInterrupt use --full-trace)
+4 failed, 30 passed, 1 warning in 372.39s (0:06:12)

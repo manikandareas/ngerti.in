@@ -1,0 +1,108 @@
+{
+  "scope": "Snapshot harness over real gateway; controlled provider; not production authenticated UI",
+  "requests_while_closed": 0,
+  "model_requests_while_closed": 2,
+  "goal": {
+    "completion_contract": null,
+    "created_at": "2026-10-28T12:03:33.263Z",
+    "creation_key": "fuel",
+    "evidence": [],
+    "generation": "1",
+    "goal_id": "487922bc-1354-4ee9-8e4e-80ab61d6eb55",
+    "objective": "Prepare fuel report for Friday",
+    "progress": "Calculated 12 litres per 100 km",
+    "responsible_agent_id": "cd81a201-0e9d-4265-a694-54490650aa8e",
+    "reviews": [],
+    "revision": "3",
+    "source_message_id": "7a9b5eaa-00b9-53c0-b389-33e8ae89febd",
+    "source_run_id": "91dec4e4-af2b-5591-b3c6-b87dfc1b7ce5",
+    "status": "waiting",
+    "subgoals": [],
+    "thread_id": "c111b7e9-de68-4d52-9584-59fee5bd1862",
+    "title": "Fuel report",
+    "units": [
+      {
+        "agent_id": "cd81a201-0e9d-4265-a694-54490650aa8e",
+        "generation": "1",
+        "parent_run_id": null,
+        "result_message_id": "371f79b9-d02f-5feb-8206-2e946fdda336",
+        "result_preview": "RECOVERY_ACK_RESPONSIBILITY:{\"action\": \"create\", \"creation_key\": \"fuel\", \"title\": \"Fuel report\", \"objective\": \"Prepare fuel report for Friday\"}",
+        "run_id": "91dec4e4-af2b-5591-b3c6-b87dfc1b7ce5",
+        "settled": true,
+        "status": "succeeded",
+        "verdict": null
+      },
+      {
+        "agent_id": "cd81a201-0e9d-4265-a694-54490650aa8e",
+        "generation": "1",
+        "parent_run_id": "91dec4e4-af2b-5591-b3c6-b87dfc1b7ce5",
+        "result_message_id": "2520cea7-52ec-5e0d-a803-27d08d491b5e",
+        "result_preview": "RESULT: fuel calculation is 12 litres per 100 km.",
+        "run_id": "51b9aae9-407e-52ab-b340-5350042f06f3",
+        "settled": true,
+        "status": "succeeded",
+        "verdict": "wait"
+      }
+    ],
+    "updated_at": "2026-10-28T12:03:43.524Z",
+    "wake": null,
+    "wake_condition": "The user supplies next week's readings"
+  },
+  "browser": [
+    {
+      "command": [
+        "open",
+        "http://127.0.0.1:56056"
+      ],
+      "stdout": "\u2713 Offline wake acceptance\n  http://127.0.0.1:56056/\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "snapshot"
+      ],
+      "stdout": "- main\n  - heading \"Gateway snapshot harness\" [level=1, ref=e1]\n  - paragraph\n    - StaticText \"Goal: Fuel report \u00b7 active\"\n  - paragraph\n    - StaticText \"Execution units: 1\"\n  - paragraph\n    - StaticText \"RESPONSIBILITY:{\\\"action\\\": \\\"create\\\", \\\"creation_key\\\": \\\"fuel\\\", \\\"title\\\": \\\"Fuel report\\\", \\\"objective\\\": \\\"Prepare fuel report for Friday\\\"}\"\n  - paragraph\n    - StaticText \"RECOVERY_ACK_RESPONSIBILITY:{\\\"action\\\": \\\"create\\\", \\\"creation_key\\\": \\\"fuel\\\", \\\"title\\\": \\\"Fuel report\\\", \\\"objective\\\": \\\"Prepare fuel report for Friday\\\"}\"\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "screenshot",
+        "/Users/vitoandareasmanik/Development/project/ngertiin/docs/research/evidence/nma-036-closure/browser-final/event/browser-before.png"
+      ],
+      "stdout": "\u2713 Screenshot saved to /Users/vitoandareasmanik/Development/project/ngertiin/docs/research/evidence/nma-036-closure/browser-final/event/browser-before.png\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "close"
+      ],
+      "stdout": "\u2713 Browser closed\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "open",
+        "http://127.0.0.1:56056"
+      ],
+      "stdout": "\u2713 Offline wake acceptance\n  http://127.0.0.1:56056/\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "get",
+        "text",
+        "body"
+      ],
+      "stdout": "Gateway snapshot harness\n\nGoal: Fuel report \u00b7 waiting\n\nExecution units: 2\n\nRESPONSIBILITY:{\"action\": \"create\", \"creation_key\": \"fuel\", \"title\": \"Fuel report\", \"objective\": \"Prepare fuel report for Friday\"}\n\nRECOVERY_ACK_RESPONSIBILITY:{\"action\": \"create\", \"creation_key\": \"fuel\", \"title\": \"Fuel report\", \"objective\": \"Prepare fuel report for Friday\"}\n\nRESULT: fuel calculation is 12 litres per 100 km.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "screenshot",
+        "/Users/vitoandareasmanik/Development/project/ngertiin/docs/research/evidence/nma-036-closure/browser-final/event/browser-after.png"
+      ],
+      "stdout": "\u2713 Screenshot saved to /Users/vitoandareasmanik/Development/project/ngertiin/docs/research/evidence/nma-036-closure/browser-final/event/browser-after.png\n",
+      "stderr": ""
+    }
+  ]
+}

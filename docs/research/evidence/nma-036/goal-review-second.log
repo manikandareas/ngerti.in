@@ -1,0 +1,114 @@
+/Users/vitoandareasmanik/.cache/uv/archive-v0/Uhti8kwSaB-uppKgLiv9B/lib/python3.14/site-packages/pytest_asyncio/plugin.py:300: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the "fixture" caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to "function" scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_______________ test_contract_subgoal_evidence_and_native_judge ________________
+
+runtime = (PosixPath('/tmp/nma-jm839b5f'), <http.server.ThreadingHTTPServer object at 0x10be4f620>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '18', 'lifecycle': 'ready', ...})
+
+    def test_contract_subgoal_evidence_and_native_judge(runtime):
+        _, provider, call, start, *_ = runtime
+        thread = dm(call, "subgoal-review")
+        goal = begin(call, thread)
+        contract = {
+            "outcome": "Calculate fuel consumption",
+            "subgoals": ["Verified calculation"],
+            "judge_required": True,
+        }
+        act(
+            call,
+            thread,
+            action="configure_goal",
+            goal_id=goal["goal_id"],
+            expected_revision=goal["revision"],
+            completion_contract=contract,
+        )
+        goal = snapshot(call, thread)["goals"][0]
+        assert goal["completion_contract"] == contract
+        assert goal["subgoals"][0]["evidence_ids"] == []
+        continuation_script(provider, goal["goal_id"])
+        continue_goal(call, thread, goal)
+        goal = eventually(
+            lambda: snapshot(call, thread)["goals"][0],
+            lambda g: g["status"] == "waiting" and all(u["settled"] for u in g["units"]),
+        )
+        source = next(
+            m
+            for m in reversed(snapshot(call, thread)["messages"])
+            if m["author_kind"] == "agent" and m["run_id"] == goal["units"][-1]["run_id"]
+        )
+        act(
+            call,
+            thread,
+            action="submit_evidence",
+            goal_id=goal["goal_id"],
+            expected_revision=goal["revision"],
+            source_message_id=source["message_id"],
+            criterion="Verified calculation",
+            summary="12 litres per 100 km",
+        )
+        goal = snapshot(call, thread)["goals"][0]
+        evidence = [goal["evidence"][0]["evidence_id"]]
+        assert goal["subgoals"][0]["evidence_ids"] == evidence
+        act(
+            call,
+            thread,
+            action="complete",
+            goal_id=goal["goal_id"],
+            expected_revision=goal["revision"],
+            evidence_ids=evidence,
+        )
+        assert snapshot(call, thread)["goals"][0]["status"] == "waiting"
+        old = provider.goal_script
+    
+        def respond(body, text):
+            if (
+                "evidence_id" in text
+                and "Verified calculation" in text
+                and not text.startswith("RESPONSIBILITY:")
+            ):
+                return {
+                    "role": "assistant",
+                    "content": json.dumps(
+                        {
+                            "verdict": "done",
+                            "reason": "Persisted calculation satisfies criterion",
+                        }
+                    ),
+                }
+            return old(body, text)
+    
+        provider.goal_script = respond
+        act(
+            call,
+            thread,
+            action="verify_goal",
+            goal_id=goal["goal_id"],
+            expected_revision=goal["revision"],
+            evidence_ids=evidence,
+        )
+        goal = snapshot(call, thread)["goals"][0]
+>       assert goal["reviews"][-1]["verdict"] == "done", goal["reviews"][-1]
+E       AssertionError: {'contract_digest': 'e09bbbcd70d6a101ac3db5a3a39f62c2e3ce69c0fd6496a14629d8be2932b5e9', 'evidence_ids': ['7e80567e-b726-52c3-816f-f8037bd37b1e'], 'generation': '1', 'goal_revision': '5', ...}
+E       assert 'continue' == 'done'
+E         
+E         - done
+E         + continue
+
+apps/engine/tests/test_goal_review.py:94: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+=============================== warnings summary ===============================
+.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14
+  /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14: PytestRemovedIn10Warning: _pytest.python.CallSpec2 has been renamed to CallSpec.
+  The CallSpec2 alias will be removed in pytest 10.
+  Update imports to use CallSpec instead.
+  See https://docs.pytest.org/en/stable/deprecations.html#callspec2-renamed
+    from _pytest.python import CallSpec2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_goal_review.py::test_contract_subgoal_evidence_and_native_judge
+1 failed, 1 warning in 8.37s

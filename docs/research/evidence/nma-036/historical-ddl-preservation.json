@@ -1,0 +1,27 @@
+{
+  "baseline_commit": "c3d92d9f47cb31303bbfeaeef88b4b92a23cbb20",
+  "historical_ddl_equal": {
+    "apps/engine/src/ngertiin_engine/screen_control.py": true,
+    "apps/engine/src/ngertiin_engine/store.py": true,
+    "apps/engine/src/ngertiin_engine/goal_lifecycle.py": true,
+    "apps/engine/src/ngertiin_engine/files.py": true,
+    "apps/engine/src/ngertiin_engine/discussions.py": true,
+    "apps/engine/src/ngertiin_engine/reliability.py": true,
+    "apps/engine/src/ngertiin_engine/goals.py": true,
+    "apps/engine/src/ngertiin_engine/wakes.py": true,
+    "apps/engine/src/ngertiin_engine/connections.py": true,
+    "apps/engine/src/ngertiin_engine/computer.py": true,
+    "apps/engine/src/ngertiin_engine/agents.py": true,
+    "apps/engine/src/ngertiin_engine/learning_store.py": true,
+    "apps/engine/src/ngertiin_engine/threads.py": true,
+    "apps/engine/src/ngertiin_engine/context.py": true,
+    "apps/engine/src/ngertiin_engine/outcomes.py": true,
+    "apps/engine/src/ngertiin_engine/delegation_store.py": true,
+    "apps/engine/src/ngertiin_engine/collaboration.py": true,
+    "apps/engine/src/ngertiin_engine/direct_messages.py": true,
+    "apps/engine/src/ngertiin_engine/artifacts.py": true,
+    "apps/engine/src/ngertiin_engine/webhooks.py": true,
+    "apps/engine/src/ngertiin_engine/conversations.py": true
+  },
+  "count": 21
+}

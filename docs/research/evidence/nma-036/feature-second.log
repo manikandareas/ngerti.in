@@ -1,0 +1,197 @@
+/Users/vitoandareasmanik/.cache/uv/archive-v0/Uhti8kwSaB-uppKgLiv9B/lib/python3.14/site-packages/pytest_asyncio/plugin.py:300: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the "fixture" caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to "function" scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+.............FF...                                                       [100%]
+=================================== FAILURES ===================================
+___ test_script_only_dependencies_offline_restart_and_zero_model_usage[None] ___
+
+runtime = (PosixPath('/tmp/nma-l49d_yt8'), <http.server.ThreadingHTTPServer object at 0x10b3b6f90>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '20', 'lifecycle': 'ready', ...})
+fault = None
+
+    @pytest.mark.skipif(
+        not os.environ.get("NMA_TEST_NATIVE_IMAGE"), reason="Requires native Linux image"
+    )
+    @pytest.mark.parametrize("fault", [None, "after_automation_effect"])
+    def test_script_only_dependencies_offline_restart_and_zero_model_usage(runtime, fault):
+        root, provider, call, start, *_ = runtime
+        image = os.environ["NMA_TEST_NATIVE_IMAGE"]
+        (root / "capabilities.json").write_text(json.dumps(catalog(image)))
+        agent = capability_agent(
+            call, "script-worker-" + (fault or "plain"), tool_grants=["terminal"]
+        )
+        thread = call(
+            command(
+                "thread.create",
+                {
+                    "kind": "dm",
+                    "title": "Script automation",
+                    "agent_ids": [agent["agent_id"]],
+                },
+            )
+        )["result"]["thread"]
+        goal = begin(call, thread)
+        steps = [
+            {
+                "id": "first",
+                "command": "printf X >> effect-count; printf '41'",
+                "depends_on": [],
+            },
+            {
+                "id": "next",
+                "command": """python -c 'import json,os; d=json.loads(os.environ["NMA_DEPENDENCY_RESULTS"]); print(int(d["first"]["output"])+1)' """,
+                "depends_on": ["first"],
+            },
+        ]
+        act(
+            call,
+            thread,
+            action="schedule",
+            goal_id=goal["goal_id"],
+            expected_revision=goal["revision"],
+            wake={
+                "kind": "once",
+                "at": utc(time.time() + 3),
+                "timezone": "UTC",
+                "missed_policy": "coalesce",
+                "job": {"mode": "script", "steps": steps},
+            },
+        )
+        before = len(provider.requests)
+        start.current.kill()
+        start.current.wait(timeout=10)
+        time.sleep(3)
+        start(fault)
+        if fault:
+            eventually(
+                lambda: start.current.poll(), lambda code: code is not None, timeout=60
+            )
+            start()
+    
+        def read():
+            with sqlite3.connect(root / "state/state.db") as db:
+                return db.execute(
+                    "SELECT j.state,j.outputs,j.run_id FROM nma_automation_jobs j JOIN nma_triggers t USING(owner_id,trigger_id) JOIN nma_trigger_definitions d USING(owner_id,definition_id) WHERE d.goal_id=?",
+                    (goal["goal_id"],),
+                ).fetchall()
+    
+        try:
+            rows = eventually(
+                read, lambda rows: rows and rows[0][0] != "running", timeout=60
+            )
+            assert rows[0][0] == "completed", rows
+            outputs = json.loads(rows[0][1])
+            assert outputs["next"]["output"].strip() == "42", outputs
+            assert len(provider.requests) == before
+            diagnostic = call(command("run.diagnostics", {"run_id": rows[0][2]}))["result"]
+>           assert diagnostic["usage"] == {}
+E           AssertionError: assert {'available':...inal_receipt'} == {}
+E             
+E             Left contains 2 more items:
+E             {'available': False, 'source': 'native_terminal_receipt'}
+E             Use -v to get more diff
+
+apps/engine/tests/test_automation.py:95: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+RUNTIME_EVIDENCE {"python": "3.14.9", "sqlite": "3.53.1", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+_ test_script_only_dependencies_offline_restart_and_zero_model_usage[after_automation_effect] _
+
+runtime = (PosixPath('/tmp/nma-l49d_yt8'), <http.server.ThreadingHTTPServer object at 0x10b3b6f90>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '20', 'lifecycle': 'ready', ...})
+fault = 'after_automation_effect'
+
+    @pytest.mark.skipif(
+        not os.environ.get("NMA_TEST_NATIVE_IMAGE"), reason="Requires native Linux image"
+    )
+    @pytest.mark.parametrize("fault", [None, "after_automation_effect"])
+    def test_script_only_dependencies_offline_restart_and_zero_model_usage(runtime, fault):
+        root, provider, call, start, *_ = runtime
+        image = os.environ["NMA_TEST_NATIVE_IMAGE"]
+        (root / "capabilities.json").write_text(json.dumps(catalog(image)))
+        agent = capability_agent(
+            call, "script-worker-" + (fault or "plain"), tool_grants=["terminal"]
+        )
+        thread = call(
+            command(
+                "thread.create",
+                {
+                    "kind": "dm",
+                    "title": "Script automation",
+                    "agent_ids": [agent["agent_id"]],
+                },
+            )
+        )["result"]["thread"]
+        goal = begin(call, thread)
+        steps = [
+            {
+                "id": "first",
+                "command": "printf X >> effect-count; printf '41'",
+                "depends_on": [],
+            },
+            {
+                "id": "next",
+                "command": """python -c 'import json,os; d=json.loads(os.environ["NMA_DEPENDENCY_RESULTS"]); print(int(d["first"]["output"])+1)' """,
+                "depends_on": ["first"],
+            },
+        ]
+        act(
+            call,
+            thread,
+            action="schedule",
+            goal_id=goal["goal_id"],
+            expected_revision=goal["revision"],
+            wake={
+                "kind": "once",
+                "at": utc(time.time() + 3),
+                "timezone": "UTC",
+                "missed_policy": "coalesce",
+                "job": {"mode": "script", "steps": steps},
+            },
+        )
+        before = len(provider.requests)
+        start.current.kill()
+        start.current.wait(timeout=10)
+        time.sleep(3)
+        start(fault)
+        if fault:
+            eventually(
+                lambda: start.current.poll(), lambda code: code is not None, timeout=60
+            )
+            start()
+    
+        def read():
+            with sqlite3.connect(root / "state/state.db") as db:
+                return db.execute(
+                    "SELECT j.state,j.outputs,j.run_id FROM nma_automation_jobs j JOIN nma_triggers t USING(owner_id,trigger_id) JOIN nma_trigger_definitions d USING(owner_id,definition_id) WHERE d.goal_id=?",
+                    (goal["goal_id"],),
+                ).fetchall()
+    
+        try:
+            rows = eventually(
+                read, lambda rows: rows and rows[0][0] != "running", timeout=60
+            )
+            assert rows[0][0] == "completed", rows
+            outputs = json.loads(rows[0][1])
+            assert outputs["next"]["output"].strip() == "42", outputs
+            assert len(provider.requests) == before
+            diagnostic = call(command("run.diagnostics", {"run_id": rows[0][2]}))["result"]
+>           assert diagnostic["usage"] == {}
+E           AssertionError: assert {'available':...inal_receipt'} == {}
+E             
+E             Left contains 2 more items:
+E             {'available': False, 'source': 'native_terminal_receipt'}
+E             Use -v to get more diff
+
+apps/engine/tests/test_automation.py:95: AssertionError
+=============================== warnings summary ===============================
+.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14
+  /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-033/production/lib/python3.14/site-packages/anyio/pytest_plugin.py:14: PytestRemovedIn10Warning: _pytest.python.CallSpec2 has been renamed to CallSpec.
+  The CallSpec2 alias will be removed in pytest 10.
+  Update imports to use CallSpec instead.
+  See https://docs.pytest.org/en/stable/deprecations.html#callspec2-renamed
+    from _pytest.python import CallSpec2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_automation.py::test_script_only_dependencies_offline_restart_and_zero_model_usage[None]
+FAILED apps/engine/tests/test_automation.py::test_script_only_dependencies_offline_restart_and_zero_model_usage[after_automation_effect]
+2 failed, 16 passed, 1 warning in 126.56s (0:02:06)

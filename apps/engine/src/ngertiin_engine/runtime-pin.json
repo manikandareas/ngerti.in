@@ -171,7 +171,9 @@
     "tools/async_delegation.py": "77ff669472cbbb829c92415c5233fe7e930d113d867aa2a1bfda7aee6beb32fc",
     "tools/delegation_output_schema.py": "4466e1e3ca6bf7fb911430dd0acd028adc973f230342dee976074f58b1fa51fb",
     "agent/delegation_context.py": "104f8c5a37f87fad7950c9c6f9c228aec90bfce8ac91e75f135571bd0f5101fc",
-    "gateway/session_finite.py": "65b9ddd09dfabf23cc96efc2cffa32d8d5c1ce808589a2271e1fc8b6e7ec6db4"
+    "gateway/session_finite.py": "65b9ddd09dfabf23cc96efc2cffa32d8d5c1ce808589a2271e1fc8b6e7ec6db4",
+    "cron/blueprint_catalog.py": "24846d6dad50e2c352f04025feb59879eb7a58cabf9c616c9531448e3107bee6",
+    "cron/blueprint_plugins.py": "c8fde40dd7040b2cfca74cdc35a3d93afc53da7a12150c755a55c7c20c1bf610"
   },
   "source_patches": [],
   "integration_seams": [

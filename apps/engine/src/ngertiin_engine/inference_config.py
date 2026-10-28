@@ -153,8 +153,12 @@ def validate(value, models, primary_id):
         "compression",
         "vision",
         "review",
+        "goal_judge",
     }:
-        invalid("auxiliary", "Supported slots are compression, vision and review")
+        invalid(
+            "auxiliary",
+            "Supported slots are compression, vision, review and goal_judge",
+        )
     frozen_aux = {}
     for task, spec in auxiliary.items():
         if (

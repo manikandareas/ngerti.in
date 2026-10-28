@@ -328,7 +328,7 @@ def test_definition_replacement_and_additive_upgrade(runtime):
             == checksums
         )
         assert (
-            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 18
+            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 20
         )
         assert db.execute("PRAGMA integrity_check").fetchone()[0] == "ok"
         assert db.execute("PRAGMA foreign_key_check").fetchall() == []

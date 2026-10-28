@@ -9,6 +9,7 @@ import json
 
 from ngertiin_engine.agents import DDL as AGENT_DDL
 from ngertiin_engine.artifacts import DDL as ARTIFACT_DDL
+from ngertiin_engine.automation import DDL as AUTOMATION_DDL
 from ngertiin_engine.collaboration import DDL as COLLABORATION_DDL
 from ngertiin_engine.computer import DDL as COMPUTER_DDL
 from ngertiin_engine.connections import DDL as CONNECTION_DDL
@@ -22,9 +23,11 @@ from ngertiin_engine.direct_messages import DDL as DM_DDL
 from ngertiin_engine.discussions import DDL as DISCUSSION_DDL
 from ngertiin_engine.files import DDL as FILE_DDL
 from ngertiin_engine.goal_lifecycle import DDL as LIFECYCLE_DDL
+from ngertiin_engine.goal_review import DDL as GOAL_REVIEW_DDL
 from ngertiin_engine.goals import DDL as GOAL_DDL
 from ngertiin_engine.learning_store import DDL as LEARNING_DDL
 from ngertiin_engine.outcomes import DDL as OUTCOME_DDL
+from ngertiin_engine.process_waits import DDL as PROCESS_WAIT_DDL
 from ngertiin_engine.reliability import DDL as RELIABILITY_DDL
 from ngertiin_engine.threads import DDL as THREAD_DDL
 from ngertiin_engine.wakes import DDL as WAKE_DDL
@@ -53,6 +56,10 @@ ARTIFACT_CHECKSUM = hashlib.sha256("\n".join(INTEGRATION_DDL).encode()).hexdiges
 WEBHOOK_CHECKSUM = hashlib.sha256("\n".join(WEBHOOK_DDL).encode()).hexdigest()
 WAKE_CHECKSUM = hashlib.sha256("\n".join(WAKE_DDL).encode()).hexdigest()
 LIFECYCLE_CHECKSUM = hashlib.sha256("\n".join(LIFECYCLE_DDL).encode()).hexdigest()
+AUTOMATION_CHECKSUM = hashlib.sha256(
+    "\n".join((*AUTOMATION_DDL, *PROCESS_WAIT_DDL)).encode()
+).hexdigest()
+GOAL_REVIEW_CHECKSUM = hashlib.sha256("\n".join(GOAL_REVIEW_DDL).encode()).hexdigest()
 GOAL_CHECKSUM = hashlib.sha256("\n".join(GOAL_DDL).encode()).hexdigest()
 DM_CHECKSUM = hashlib.sha256("\n".join(DM_DDL).encode()).hexdigest()
 RELIABILITY_CHECKSUM = hashlib.sha256("\n".join(RELIABILITY_DDL).encode()).hexdigest()
@@ -109,7 +116,7 @@ class Store:
                 "SELECT checksum FROM nma_schema_migrations WHERE owner_id=? AND version=1",
                 (self.owner,),
             ).fetchone()
-            if rows[0][2] not in range(1, 19) or not saved or saved[0] != CHECKSUM:
+            if rows[0][2] not in range(1, 21) or not saved or saved[0] != CHECKSUM:
                 raise EngineError("UNSUPPORTED_SCHEMA")
             if rows[0][1] > self.authority.epoch:
                 raise EngineError("AUTHORITY_LOST")
@@ -464,9 +471,39 @@ class Store:
             conn.execute("UPDATE nma_partition SET schema_version=18")
         elif saved[0] != DELEGATION_CHECKSUM:
             raise EngineError("UNSUPPORTED_SCHEMA")
+        saved = conn.execute(
+            "SELECT checksum FROM nma_schema_migrations WHERE owner_id=? AND version=19",
+            (self.owner,),
+        ).fetchone()
+        if not saved:
+            for statement in GOAL_REVIEW_DDL:
+                conn.execute(statement)
+            conn.execute(
+                "INSERT INTO nma_schema_migrations(owner_id,version,checksum) VALUES (?,19,?)",
+                (self.owner, GOAL_REVIEW_CHECKSUM),
+            )
+            conn.execute("UPDATE nma_partition SET schema_version=19")
+        elif saved[0] != GOAL_REVIEW_CHECKSUM:
+            raise EngineError("UNSUPPORTED_SCHEMA")
+        saved = conn.execute(
+            "SELECT checksum FROM nma_schema_migrations WHERE owner_id=? AND version=20",
+            (self.owner,),
+        ).fetchone()
+        if not saved:
+            for statement in (*AUTOMATION_DDL, *PROCESS_WAIT_DDL):
+                conn.execute(statement)
+            conn.execute(
+                "INSERT INTO nma_schema_migrations(owner_id,version,checksum) VALUES (?,20,?)",
+                (self.owner, AUTOMATION_CHECKSUM),
+            )
+            conn.execute("UPDATE nma_partition SET schema_version=20")
+        elif saved[0] != AUTOMATION_CHECKSUM:
+            raise EngineError("UNSUPPORTED_SCHEMA")
         from ngertiin_engine.delegation_store import Children
 
         Children(self).recover(conn)
+        # All historical and current migration checksums have now been verified.
+        conn.execute("UPDATE nma_partition SET schema_version=20")
 
     def receipt(self, body):
         def read(conn):

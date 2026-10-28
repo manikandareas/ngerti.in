@@ -260,6 +260,11 @@ def test_native_recall_fts_read_time_window_and_private_boundary(runtime):
     assert "SHARED_RECALL_GIRAFFE" in json.dumps(
         recall(peer, group, {"query": "SHARED_RECALL_GIRAFFE"})
     )
+    browse = recall(agent, dm, {})
+    assert "error" not in browse, browse
+    shared_browse = recall(peer, group, {})
+    assert "error" not in shared_browse, shared_browse
+    assert "PRIVATE_RECALL_ZEBRA" not in json.dumps(shared_browse)
     session = next(iter(own["sources"]))
     assert "PRIVATE_RECALL_ZEBRA" in json.dumps(
         recall(agent, dm, {"session_id": session})

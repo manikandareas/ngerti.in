@@ -81,3 +81,90 @@ def test_relay_rejects_stale_work_before_provider_dispatch(
         assert failure.value.code == expected
     finally:
         db.close()
+
+
+@pytest.mark.parametrize("stream", [False, True])
+@pytest.mark.parametrize("disconnect_at", ["headers", "body"])
+def test_disconnected_receiver_retains_provider_usage(
+    stream, disconnect_at, monkeypatch
+):
+    """A closed native worker must not discard a completed provider receipt."""
+    import io
+    import json
+    from contextlib import nullcontext
+
+    import httpx
+    from ngertiin_engine.reliability import Reliability
+
+    relay = ProviderTransport.__new__(ProviderTransport)
+    relay.key, relay.routes, relay.base = b"disposable-key", {}, "http://127.0.0.1:1"
+    relay.connections = SimpleNamespace(
+        store=SimpleNamespace(write=lambda operation: operation(None)),
+        vault=SimpleNamespace(locked=lambda identity: nullcontext()),
+        credential=lambda snapshot: "disposable-upstream-key",
+    )
+    monkeypatch.setattr(Reliability, "check", lambda *args: ("run", "{}"))
+    receipts = []
+    relay.note = lambda route, status, usage=None, error=None: receipts.append(
+        {"run_id": route["run_id"], "status": status, "usage": usage, "error": error}
+    )
+    usage = {"prompt_tokens": 10, "completion_tokens": 5, "total_tokens": 15}
+    body = json.dumps({"model": "example", "stream": stream}).encode()
+    content = (
+        (
+            'data: {"choices": []}\n\ndata: '
+            + json.dumps({"usage": usage})
+            + "\n\ndata: [DONE]\n\n"
+        ).encode()
+        if stream
+        else json.dumps({"choices": [], "usage": usage}).encode()
+    )
+    upstream_calls = []
+
+    def upstream(request):
+        upstream_calls.append(request)
+        return httpx.Response(
+            200,
+            content=content,
+            headers={
+                "Content-Type": "text/event-stream" if stream else "application/json"
+            },
+        )
+
+    client = httpx.Client
+    monkeypatch.setattr(
+        "ngertiin_engine.provider_transport.httpx.Client",
+        lambda **kwargs: client(transport=httpx.MockTransport(upstream), **kwargs),
+    )
+    _, runtime = relay.runtime(
+        {
+            "model": "example",
+            "provider_id": "custom",
+            "protocol": "chat_completions",
+            "connection_id": "connection",
+            "base_url": "https://provider.invalid/v1",
+        },
+        "thread",
+        "run",
+        "session",
+        {"admission_id": "admission"},
+    )
+
+    def broken(*args):
+        raise BrokenPipeError("The cancelled native worker disconnected")
+
+    handler = SimpleNamespace(
+        path=urlsplit(runtime["base_url"]).path + "/chat/completions",
+        headers={
+            "Authorization": "Bearer " + runtime["api_key"],
+            "Content-Length": str(len(body)),
+        },
+        rfile=io.BytesIO(body),
+        wfile=SimpleNamespace(write=broken, flush=lambda: None),
+        send_response=lambda status: None,
+        send_header=lambda *args: None,
+        end_headers=broken if disconnect_at == "headers" else lambda: None,
+    )
+    relay.forward(handler)
+    assert len(upstream_calls) == 1
+    assert receipts == [{"run_id": "run", "status": 200, "usage": usage, "error": None}]

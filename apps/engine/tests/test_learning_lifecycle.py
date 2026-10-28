@@ -144,7 +144,7 @@ def test_concurrent_correction_schema16_backfill_backup_and_restore(runtime, tmp
     start.current.send_signal(signal.SIGINT)
     start.current.wait(timeout=25)
     learned = backup(root / "state", tmp_path / "learned")
-    assert learned["schema_version"] == 18
+    assert learned["schema_version"] == 20
     restore(tmp_path / "learned", tmp_path / "restored", OWNER)
     (root / "state").rename(root / "offline-original")
     (tmp_path / "restored").rename(root / "state")

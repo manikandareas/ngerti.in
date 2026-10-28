@@ -10,6 +10,10 @@ def drop_conversation_schema(db):
 
     # A predecessor fixture must also remove every later additive extension.
     for table in (
+        "nma_goal_process_waits",
+        "nma_automation_jobs",
+        "nma_goal_reviews",
+        "nma_goal_contracts",
         "nma_collaboration_units",
         "nma_collaboration_operations",
         "nma_collaboration_tasks",

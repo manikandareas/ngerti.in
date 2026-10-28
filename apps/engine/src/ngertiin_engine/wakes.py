@@ -25,17 +25,27 @@ def utc(value):
 
 
 def configuration(args, now):
-    """Explicit UTC instants/fixed elapsed intervals; no implicit local DST rules."""
+    """Validate explicit instants, elapsed intervals or zoned calendar schedules."""
     from hermes_cli.heartbeat import MIN_INTERVAL_SECONDS
 
     try:
+        from ngertiin_engine.automation import validate
+
+        job = validate(args["job"]) if "job" in args else None
+        args = {k: v for k, v in args.items() if k != "job"}
         zone = args["timezone"]
         ZoneInfo(zone)
         mode = args["kind"]
-        if mode not in {"once", "interval", "heartbeat"}:
+        if mode not in {"once", "interval", "heartbeat", "cron"}:
             raise ValueError
         expected = {"kind", "timezone", "missed_policy"}
-        expected.add("at" if mode == "once" else "interval_seconds")
+        expected.add(
+            "at"
+            if mode == "once"
+            else "expression"
+            if mode == "cron"
+            else "interval_seconds"
+        )
         if set(args) != expected or args["missed_policy"] != "coalesce":
             raise ValueError
         if mode == "once":
@@ -45,6 +55,15 @@ def configuration(args, now):
             due = stamp.timestamp()
             if due <= now:
                 raise ValueError
+        elif mode == "cron":
+            expression = args["expression"]
+            if (
+                not isinstance(expression, str)
+                or len(expression) > 256
+                or len(expression.split()) != 5
+            ):
+                raise ValueError
+            due = calendar_next(args, now)
         else:
             interval = args["interval_seconds"]
             if (
@@ -53,7 +72,7 @@ def configuration(args, now):
             ):
                 raise ValueError
             due = now + interval
-        return dict(args), due
+        return {**args, **({"job": job} if job else {})}, due
     except (
         KeyError,
         TypeError,
@@ -69,12 +88,41 @@ def next_time(config, now):
         return None
     if config["kind"] == "heartbeat":
         return now + config["interval_seconds"]
+    if config["kind"] == "cron":
+        return calendar_next(config, now)
     from cron.jobs import compute_next_run
 
     result = compute_next_run(
         {"kind": "interval", "minutes": config["interval_seconds"] / 60}, utc(now)
     )
     return datetime.fromisoformat(result).timestamp()
+
+
+def calendar_next(config, now):
+    """Pinned Hermes calendar arithmetic with a per-definition zone.
+
+    compute_next_run uses the process profile timezone. Mirror its wall-clock
+    and fold algorithm without mutating process configuration across jobs.
+    The gateway remains the only occurrence producer; no native job is registered.
+    """
+    from cron import jobs
+
+    if not jobs._ensure_croniter():
+        raise EngineError("CALENDAR_DEPENDENCY_UNAVAILABLE")
+    zone = ZoneInfo(config["timezone"])
+    base = datetime.fromtimestamp(now, zone).replace(tzinfo=None)
+    iterator = jobs.croniter(config["expression"], base)
+    wall = iterator.get_next(datetime)
+    for _ in range(2):
+        for fold in (0, 1):
+            candidate = wall.replace(tzinfo=zone, fold=fold).timestamp()
+            if candidate > now:
+                return candidate
+        wall = iterator.get_next(datetime)
+    candidate = wall.replace(tzinfo=zone).timestamp()
+    if candidate <= now:
+        raise ValueError("Calendar schedule did not advance")
+    return candidate
 
 
 class Wakes:
@@ -102,17 +150,27 @@ class Wakes:
         from ngertiin_engine.goal_lifecycle import Lifecycle
 
         now = time.time() if now is None else now
-        if set(args) != {"action", "goal_id", "expected_revision", "wake"}:
+        fields = {"action", "goal_id", "expected_revision"}
+        if args["action"] == "schedule":
+            fields.add("wake")
+        if set(args) != fields:
             raise EngineError("INVALID_REQUEST")
         if counter(args["expected_revision"]) != goal["revision"]:
             raise EngineError("REVISION_CONFLICT")
         if goal["status"] not in {"active", "waiting"}:
             raise EngineError("GOAL_STOPPED")
-        settings, due = configuration(args["wake"], now)
+        previous = self.read(conn, goal["goal_id"])
+        if args["action"] == "run_now":
+            if not previous or previous["state"] != "enabled":
+                raise EngineError("SCHEDULE_NOT_ENABLED")
+            settings, due = previous["configuration"], now
+        else:
+            settings, due = configuration(args["wake"], now)
+        if settings.get("job", {}).get("lifetime") == "session":
+            settings["session_epoch"] = str(self.store.authority.epoch)
         identity = str(
             uuid5(NAMESPACE_URL, self.store.owner + ":wake:" + goal["goal_id"])
         )
-        previous = self.read(conn, goal["goal_id"])
         revision = int(previous["revision"]) + 1 if previous else 1
         lifecycle = Lifecycle(self.store)
         # Editing the definition fences prior queued/running automatic work as well.
@@ -146,7 +204,88 @@ class Wakes:
         lifecycle.link(conn, updated, run_id, message_id, "wait")
         return True
 
+    def control(self, conn, goal, config, run_id, message_id, args):
+        from ngertiin_engine.goal_lifecycle import Lifecycle
+
+        if set(args) != {"action", "goal_id", "expected_revision"}:
+            raise EngineError("INVALID_REQUEST")
+        if counter(args["expected_revision"]) != goal["revision"]:
+            raise EngineError("REVISION_CONFLICT")
+        if goal["status"] not in {"active", "waiting"}:
+            raise EngineError("GOAL_STOPPED")
+        previous = self.read(conn, goal["goal_id"])
+        if not previous:
+            raise EngineError("SCHEDULE_NOT_FOUND")
+        if args["action"] == "resume_schedule":
+            if not conn.execute(
+                "SELECT 1 FROM nma_messages WHERE owner_id=? AND run_id=? AND message_id=? AND author_kind='user'",
+                (self.store.owner, run_id, message_id),
+            ).fetchone():
+                raise EngineError("USER_INTENT_REQUIRED")
+            if previous["state"] == "enabled":
+                return False
+            if previous["state"] != "paused":
+                raise EngineError("SCHEDULE_NOT_PAUSED")
+            wake = {
+                k: v
+                for k, v in previous["configuration"].items()
+                if k != "session_epoch"
+            }
+            if (
+                wake["kind"] == "once"
+                and datetime.fromisoformat(wake["at"]).timestamp() <= time.time()
+            ):
+                wake = {**wake, "at": utc(time.time() + 1)}
+            return self.set(
+                conn,
+                goal,
+                config,
+                run_id,
+                message_id,
+                {**args, "action": "schedule", "wake": wake},
+            )
+        if previous["state"] == "paused":
+            return False
+        lifecycle = Lifecycle(self.store)
+        lifecycle.fence(conn, goal["goal_id"], except_run=run_id)
+        lifecycle.changed(conn, goal["goal_id"], generation=True)
+        lifecycle.state(
+            conn, goal["goal_id"], "waiting", goal["progress"], "Schedule paused"
+        )
+        conn.execute(
+            "UPDATE nma_trigger_definitions SET state='paused',revision=revision+1,next_at=NULL WHERE owner_id=? AND goal_id=?",
+            (self.store.owner, goal["goal_id"]),
+        )
+        self.invalidate(conn)
+        return True
+
     def invalidate(self, conn):
+        expired = conn.execute(
+            "SELECT t.run_id FROM nma_trigger_definitions d JOIN nma_triggers t USING(owner_id,definition_id) WHERE d.owner_id=? AND json_extract(d.configuration,'$.session_epoch') IS NOT NULL AND json_extract(d.configuration,'$.session_epoch')!=? AND t.status='admitted' AND t.run_id IS NOT NULL",
+            (
+                self.store.owner,
+                str(
+                    getattr(getattr(self.store, "authority", None), "epoch", "unknown")
+                ),
+            ),
+        ).fetchall()
+        from ngertiin_engine.reliability import Reliability
+
+        for (run,) in expired:
+            if not conn.execute(
+                "SELECT 1 FROM nma_run_terminals WHERE owner_id=? AND run_id=?",
+                (self.store.owner, run),
+            ).fetchone():
+                Reliability(self.store).cancel_event(conn, run)
+        conn.execute(
+            "UPDATE nma_trigger_definitions SET state='paused',next_at=NULL WHERE owner_id=? AND json_extract(configuration,'$.session_epoch') IS NOT NULL AND json_extract(configuration,'$.session_epoch')!=?",
+            (
+                self.store.owner,
+                str(
+                    getattr(getattr(self.store, "authority", None), "epoch", "unknown")
+                ),
+            ),
+        )
         # Old-generation watches never resurrect after pause/resume, reset or completion.
         conn.execute(
             "UPDATE nma_trigger_definitions SET state='paused',next_at=NULL WHERE owner_id=? AND state='enabled' AND EXISTS (SELECT 1 FROM nma_goals g JOIN nma_goal_lifecycle l ON l.owner_id=g.owner_id AND l.goal_id=g.goal_id JOIN nma_threads t ON t.owner_id=g.owner_id AND t.thread_id=g.thread_id WHERE g.owner_id=nma_trigger_definitions.owner_id AND g.goal_id=nma_trigger_definitions.goal_id AND (g.generation!=nma_trigger_definitions.goal_generation OR t.context_generation!=nma_trigger_definitions.context_generation OR t.status!='open' OR l.status NOT IN ('active','waiting')))",
@@ -244,6 +383,17 @@ class Wakes:
                     "context_generation": thread["context_generation"],
                 }
             )
+            settings = self.store.write(
+                lambda c: json.loads(
+                    c.execute(
+                        "SELECT configuration FROM nma_trigger_definitions WHERE owner_id=? AND goal_id=?",
+                        (self.store.owner, goal_id),
+                    ).fetchone()[0]
+                )
+            )
+            from ngertiin_engine.automation import job_binding
+
+            key, config = job_binding(adapter, key, config, settings.get("job"))
         except EngineError as exc:
             if exc.code in {"AUTHORITY_LOST", "ENGINE_UNAVAILABLE"}:
                 raise
@@ -294,6 +444,19 @@ class Wakes:
                 config,
                 {"trigger_id": trigger_id, "configuration": json.loads(row[1])},
             )
+            settings = json.loads(row[1])
+            if settings.get("job", {}).get("mode") == "script":
+                script_config = {**config, "automation": settings["job"]}
+                conn.execute(
+                    "INSERT OR IGNORE INTO nma_automation_jobs VALUES (?,?,?,?,?,'running')",
+                    (
+                        self.store.owner,
+                        trigger_id,
+                        run_id,
+                        canonical(script_config),
+                        "{}",
+                    ),
+                )
             conn.execute(
                 "UPDATE nma_triggers SET status='admitted',run_id=?,coalesced_through=? WHERE owner_id=? AND trigger_id=?",
                 (run_id, now, self.store.owner, trigger_id),

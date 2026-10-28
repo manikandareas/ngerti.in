@@ -3,7 +3,7 @@
 import json
 import math
 
-from ngertiin_engine.contracts import EngineError, uuid
+from ngertiin_engine.contracts import EngineError, digest, uuid
 from ngertiin_engine.redaction import result as redact
 
 
@@ -172,12 +172,37 @@ class Diagnostics:
                 "SELECT binding_id FROM nma_adapter_runs WHERE owner_id=? AND run_id=?",
                 (self.store.owner, run_id),
             ).fetchone()[0]
+            script = conn.execute(
+                "SELECT trigger_id,state,configuration,outputs FROM nma_automation_jobs WHERE owner_id=? AND run_id=?",
+                (self.store.owner, run_id),
+            ).fetchone()
+            automation = None
+            if script:
+                job = json.loads(script[2])["automation"]
+                automation = {
+                    "trigger_id": script[0],
+                    "state": script[1],
+                    "execution_kind": "script",
+                    "inference_calls": 0,
+                    "step_operation_ids": {
+                        step["id"]: digest([script[0], step["id"]])
+                        for step in job["steps"]
+                    },
+                    "outputs": json.loads(script[3]),
+                }
             return {
+                "automation": automation,
                 "run": snapshot,
                 **correlation(conn, self.store.owner, run_id),
                 "command_id": row[0],
                 "admission_state": row[2],
-                "usage": usage(load_result(saved[0]) if saved else {}),
+                "usage": {
+                    "available": True,
+                    "source": "script_only_execution",
+                    "inference_calls": 0,
+                }
+                if script
+                else usage(load_result(saved[0]) if saved else {}),
                 "message_ids": [r[0] for r in messages],
                 "session": SessionContext(self.store)._metadata(conn, binding_id),
                 "work_outcomes": [

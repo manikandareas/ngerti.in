@@ -56,6 +56,35 @@ def search(store, contexts, scope, arguments):
     if selected and selected not in allowed:
         raise EngineError("NOT_FOUND")
 
+    class ScopedConnection:
+        """Keep native reads on the scoped views, without table-only index hints."""
+
+        def __init__(self, connection):
+            object.__setattr__(self, "connection", connection)
+
+        def __getattr__(self, name):
+            return getattr(self.connection, name)
+
+        def __setattr__(self, name, value):
+            setattr(self.connection, name, value)
+
+        def __enter__(self):
+            self.connection.__enter__()
+            return self
+
+        def __exit__(self, *args):
+            return self.connection.__exit__(*args)
+
+        def execute(self, sql, *args):
+            # The exact pinned native preview/activity queries force indexes on
+            # messages. SQLite cannot apply a main-table index to a TEMP view.
+            # Remove only those planner hints; retain the authorized view and
+            # every native predicate/parameter. Never switch to main.messages.
+            sql = sql.replace(" INDEXED BY idx_messages_session_id", "").replace(
+                " INDEXED BY idx_messages_session", ""
+            )
+            return self.connection.execute(sql, *args)
+
     class ScopedSessionDB(SessionDB):
         def _connect_read_only(self, timeout):
             conn = super()._connect_read_only(timeout)
@@ -71,7 +100,7 @@ def search(store, contexts, scope, arguments):
             conn.execute(
                 "CREATE TEMP VIEW messages AS SELECT m.* FROM main.messages m JOIN nma_recall_allowed a ON a.id=m.session_id"
             )
-            return conn
+            return ScopedConnection(conn)
 
     db = ScopedSessionDB(db_path=Path(store.authority.db.db_path), read_only=True)
     try:

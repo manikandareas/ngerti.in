@@ -101,6 +101,8 @@ async def reconcile(adapter):
             operation=operation,
             run=run,
             binding=binding,
+            message=message,
+            ids=ids,
         ):
             current = conn.execute(
                 "SELECT state FROM nma_delegation_batches WHERE owner_id=? AND batch_id=?",
@@ -134,6 +136,22 @@ async def reconcile(adapter):
             except EngineError:
                 conn.execute(
                     "UPDATE nma_delegation_batches SET state='revoked' WHERE owner_id=? AND batch_id=?",
+                    (store.owner, batch),
+                )
+                return False
+            from ngertiin_engine.wakes import Wakes
+
+            # Drain any pre-existing generic turn before assigning the native
+            # result wake. New generic turns are parked while this batch waits.
+            if Wakes(store).busy(conn, config["thread_id"]):
+                return False
+            stale_goal = conn.execute(
+                "SELECT 1 FROM nma_goal_units u JOIN nma_goals g USING(owner_id,goal_id) JOIN nma_goal_lifecycle l USING(owner_id,goal_id) WHERE u.owner_id=? AND u.run_id=? AND u.generation=(SELECT MAX(x.generation) FROM nma_goal_units x WHERE x.owner_id=u.owner_id AND x.goal_id=u.goal_id AND x.run_id=u.run_id) AND (u.generation!=g.generation OR l.status IN ('paused','stopped','completed'))",
+                (store.owner, parent),
+            ).fetchone()
+            if stale_goal:
+                conn.execute(
+                    "UPDATE nma_delegation_batches SET state='cancelled' WHERE owner_id=? AND batch_id=?",
                     (store.owner, batch),
                 )
                 return False
@@ -179,6 +197,47 @@ async def reconcile(adapter):
                 "UPDATE nma_delegation_batches SET state='admitted',resume_run_id=? WHERE owner_id=? AND batch_id=?",
                 (run, store.owner, batch),
             )
+            # The native completion turn owns the next step for each explicit
+            # product responsibility; do not also enqueue a generic continuation.
+            linked = conn.execute(
+                "SELECT u.goal_id,u.generation FROM nma_goal_units u JOIN nma_goals g USING(owner_id,goal_id) WHERE u.owner_id=? AND u.run_id=? AND u.generation=g.generation",
+                (store.owner, parent),
+            ).fetchall()
+            from ngertiin_engine.goal_lifecycle import Lifecycle
+
+            for goal_id, generation in linked:
+                conn.execute(
+                    "INSERT OR IGNORE INTO nma_goal_units(owner_id,goal_id,generation,run_id,source_message_id,parent_run_id) VALUES (?,?,?,?,?,?)",
+                    (store.owner, goal_id, generation, run, message, parent),
+                )
+                settled_units = conn.execute(
+                    "SELECT u.run_id,u.verdict,(SELECT t.status FROM nma_run_terminals t WHERE t.owner_id=u.owner_id AND t.run_id=u.run_id ORDER BY t.rowid DESC LIMIT 1) FROM nma_goal_units u WHERE u.owner_id=? AND u.goal_id=? AND u.generation=? AND u.run_id!=? AND u.settled=0 AND EXISTS (SELECT 1 FROM nma_run_terminals t WHERE t.owner_id=u.owner_id AND t.run_id=u.run_id)",
+                    (store.owner, goal_id, generation, run),
+                ).fetchall()
+                for settled_run, verdict, status in settled_units:
+                    conn.execute(
+                        "UPDATE nma_goal_units SET settled=1 WHERE owner_id=? AND goal_id=? AND generation=? AND run_id=?",
+                        (store.owner, goal_id, generation, settled_run),
+                    )
+                    conn.execute(
+                        "INSERT OR IGNORE INTO nma_goal_unit_outcomes VALUES (?,?,?,?,?,?,?)",
+                        (
+                            store.owner,
+                            settled_run,
+                            goal_id,
+                            status,
+                            verdict,
+                            run,
+                            canonical(ids),
+                        ),
+                    )
+                Lifecycle(store).changed(conn, goal_id)
+                Lifecycle(store).state(
+                    conn,
+                    goal_id,
+                    "active",
+                    "Native delegated results are ready for review",
+                )
             adapter.reliability.append(
                 conn,
                 run,

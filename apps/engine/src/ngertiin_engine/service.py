@@ -61,7 +61,7 @@ def main():
                     (owner,),
                 ).fetchone()
                 if (
-                    version not in range(1, 19)
+                    version not in range(1, 21)
                     or not checksum
                     or checksum[0] != CHECKSUM
                 ):

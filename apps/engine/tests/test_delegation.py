@@ -169,14 +169,20 @@ def test_child_cancel_fences_late_results(runtime):
         "FORBIDDEN_LATE_CHILD_RESULT" in m["content"]
         for m in snapshot(call, thread)["messages"]
     )
-    with sqlite3.connect(root / "state/state.db") as db:
-        attempts = [
-            json.loads(row[0])["payload"]
-            for row in db.execute(
-                "SELECT payload FROM nma_events WHERE json_extract(payload,'$.type')='provider.attempt' AND json_extract(payload,'$.payload.child_session_id')=?",
-                (children[0]["child_session_id"],),
-            )
-        ]
+    deadline = time.monotonic() + 10
+    attempts = []
+    while time.monotonic() < deadline:
+        with sqlite3.connect(root / "state/state.db") as db:
+            attempts = [
+                json.loads(row[0])["payload"]
+                for row in db.execute(
+                    "SELECT payload FROM nma_events WHERE json_extract(payload,'$.type')='provider.attempt' AND json_extract(payload,'$.payload.child_session_id')=?",
+                    (children[0]["child_session_id"],),
+                )
+            ]
+        if attempts:
+            break
+        time.sleep(0.05)
     assert len(attempts) == 1 and attempts[0]["late_receipt"] is True, attempts
     assert attempts[0]["usage"]["total_tokens"] == 15
 

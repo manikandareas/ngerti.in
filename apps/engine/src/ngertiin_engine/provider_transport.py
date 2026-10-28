@@ -371,14 +371,31 @@ class ProviderTransport:
                     canonical({"error": {"code": error, "message": error}}).encode(),
                 )
                 return
-            handler.send_response(response.status_code)
-            handler.send_header(
-                "Content-Type",
-                response.headers.get("Content-Type", "application/json"),
-            )
-            handler.send_header("Connection", "close")
-            handler.end_headers()
+            connected = True
+            try:
+                handler.send_response(response.status_code)
+                handler.send_header(
+                    "Content-Type",
+                    response.headers.get("Content-Type", "application/json"),
+                )
+                handler.send_header("Connection", "close")
+                handler.end_headers()
+            except (BrokenPipeError, ConnectionResetError):
+                connected = False
             handler.close_connection = True
+
+            def deliver(data):
+                nonlocal connected
+                if connected:
+                    try:
+                        handler.wfile.write(data)
+                        handler.wfile.flush()
+                    except (BrokenPipeError, ConnectionResetError):
+                        connected = False
+
+            # Cancellation may close the native worker's socket before provider
+            # usage arrives. Drain this already-dispatched response within the
+            # existing transport timeout and retain its receipt, without replay.
             usage = None
             if snapshot["protocol"] == "codex_responses" or response.headers.get(
                 "Content-Type", ""
@@ -412,15 +429,13 @@ class ProviderTransport:
                                 )
                         except ValueError:
                             pass
-                    handler.wfile.write((line + "\n").encode())
-                    handler.wfile.flush()
+                    deliver((line + "\n").encode())
             else:
                 captured = bytearray()
                 for chunk in response.iter_bytes():
                     if len(captured) + len(chunk) <= 1024 * 1024:
                         captured.extend(chunk)
-                    handler.wfile.write(chunk)
-                    handler.wfile.flush()
+                    deliver(chunk)
                 try:
                     usage = json.loads(captured).get("usage")
                 except (ValueError, AttributeError):

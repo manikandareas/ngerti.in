@@ -82,6 +82,8 @@ class Continuation:
                 }
             )
         )
+        if config.get("automation", {}).get("context"):
+            text += "\nJob context (data): " + config["automation"]["context"]
         if wake:
             text += "\nScheduled wake (data): " + canonical(wake)
             if wake["configuration"]["kind"] == "heartbeat":
@@ -98,7 +100,14 @@ class Continuation:
             k: config[k]
             for k in ("agent_id", "thread_id", "config_revision", "context_generation")
         }
-        body = command("runtime.submit", {**payload, "text": text}, identity)
+        script_only = bool(
+            wake and wake["configuration"].get("job", {}).get("mode") == "script"
+        )
+        body = command(
+            "automation.execute" if script_only else "runtime.submit",
+            {**payload, "text": text},
+            identity,
+        )
         conn.execute(
             "INSERT OR IGNORE INTO nma_commands VALUES (?,?,?,?,NULL)",
             (self.store.owner, identity, digest(body), canonical(body)),
@@ -122,6 +131,18 @@ class Continuation:
                 parent_run,
             ),
         )
+        if script_only:
+            result = canonical(
+                {"run_id": run_id, "status": "accepted", "execution_kind": "script"}
+            )
+            conn.execute(
+                "UPDATE nma_commands SET result=? WHERE owner_id=? AND command_id=?",
+                (result, self.store.owner, identity),
+            )
+            conn.execute(
+                "UPDATE nma_runtime_outbox SET state='applied',result=? WHERE owner_id=? AND operation_id=?",
+                (result, self.store.owner, identity),
+            )
         self.adapter.reliability.append(
             conn,
             run_id,
@@ -175,8 +196,16 @@ class Continuation:
 
         active_discussion = self.store.write(
             lambda conn: conn.execute(
-                "SELECT 1 FROM nma_discussion_turns t JOIN nma_discussions d USING(owner_id,discussion_id) WHERE t.owner_id=? AND t.run_id=? AND d.status='active' UNION SELECT 1 FROM nma_collaboration_tasks t JOIN nma_discussion_goals g USING(owner_id,discussion_id) WHERE g.owner_id=? AND g.goal_id=? AND json_extract(t.task,'$.status') IN ('pending','submitting','review','reviewing','changes_requested')",
-                (self.store.owner, run_id, self.store.owner, goal_id),
+                "SELECT 1 FROM nma_discussion_turns t JOIN nma_discussions d USING(owner_id,discussion_id) WHERE t.owner_id=? AND t.run_id=? AND d.status='active' UNION SELECT 1 FROM nma_collaboration_tasks t JOIN nma_discussion_goals g USING(owner_id,discussion_id) WHERE g.owner_id=? AND g.goal_id=? AND json_extract(t.task,'$.status') IN ('pending','submitting','review','reviewing','changes_requested') UNION SELECT 1 FROM nma_delegation_batches b JOIN nma_goal_units p ON p.owner_id=b.owner_id AND p.run_id=b.parent_run_id WHERE p.owner_id=? AND p.goal_id=? AND p.generation=? AND b.state='pending'",
+                (
+                    self.store.owner,
+                    run_id,
+                    self.store.owner,
+                    goal_id,
+                    self.store.owner,
+                    goal_id,
+                    generation,
+                ),
             ).fetchone()
         )
         if active_discussion:
@@ -207,6 +236,9 @@ class Continuation:
                         "context_generation": thread["context_generation"],
                     }
                 )
+                from ngertiin_engine.automation import continuation_binding
+
+                key, config = continuation_binding(self.adapter, key, config, run_id)
             except EngineError as exc:
                 binding_error = exc.code
 
@@ -229,10 +261,18 @@ class Continuation:
                 "blocked",
             }:
                 cancelled = self.adapter.reliability.stopped(conn, run_id)
-                reason = binding_error or (
-                    "RUN_" + status.upper()
-                    if status != "succeeded" or cancelled
-                    else None
+                unknown_children = conn.execute(
+                    "SELECT 1 FROM nma_delegation_batches WHERE owner_id=? AND parent_run_id=? AND state='unknown'",
+                    (self.store.owner, run_id),
+                ).fetchone()
+                reason = (
+                    binding_error
+                    or ("DELEGATION_OUTCOME_UNKNOWN" if unknown_children else None)
+                    or (
+                        "RUN_" + status.upper()
+                        if status != "succeeded" or cancelled
+                        else None
+                    )
                 )
                 if reason is None and parent and unit[1] is None:
                     reason = "LIFECYCLE_DECISION_REQUIRED"
@@ -302,6 +342,16 @@ class Continuation:
 
                     Wakes(self.store).prepare(self.adapter, self, time.time())
                     self.next_wake_poll = time.monotonic() + POLL_SECONDS
+                from ngertiin_engine.automation import Automations
+
+                if not hasattr(self, "automations"):
+                    self.automations = Automations(self.adapter)
+                self.automations.tick()
+                from ngertiin_engine.process_waits import (
+                    prepare as prepare_process_waits,
+                )
+
+                prepare_process_waits(self.adapter, self)
                 from ngertiin_engine.webhooks import Webhooks
 
                 Webhooks(self.adapter).prepare(self, time.time())

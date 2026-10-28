@@ -247,7 +247,7 @@ def test_additive_upgrade_preserves_schema_nine(runtime):
     start()
     with sqlite3.connect(root / "state/state.db") as db:
         assert (
-            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 18
+            db.execute("SELECT schema_version FROM nma_partition").fetchone()[0] == 20
         )
         assert (
             db.execute(

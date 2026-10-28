@@ -74,16 +74,28 @@ class Lifecycle:
                 "settled": bool(r[4]),
                 "agent_id": r[5],
                 "status": r[6] or "pending",
+                "result_message_id": r[7],
+                "result_preview": "\n".join(
+                    part.get("text", "")
+                    for part in json.loads(r[8] or "[]")
+                    if part.get("type") == "text"
+                )[:2000],
             }
             for r in conn.execute(
-                "SELECT u.run_id,u.generation,u.parent_run_id,u.verdict,u.settled,json_extract(b.config,'$.agent_id'),t.status FROM nma_goal_units u JOIN nma_adapter_runs r ON r.owner_id=u.owner_id AND r.run_id=u.run_id JOIN nma_adapter_bindings b ON b.owner_id=r.owner_id AND b.binding_id=r.binding_id LEFT JOIN nma_run_terminals t ON t.rowid=(SELECT MAX(x.rowid) FROM nma_run_terminals x WHERE x.owner_id=u.owner_id AND x.run_id=u.run_id) WHERE u.owner_id=? AND u.goal_id=? ORDER BY u.rowid",
+                "SELECT u.run_id,u.generation,u.parent_run_id,u.verdict,u.settled,json_extract(b.config,'$.agent_id'),t.status,m.message_id,m.parts FROM nma_goal_units u JOIN nma_adapter_runs r ON r.owner_id=u.owner_id AND r.run_id=u.run_id JOIN nma_adapter_bindings b ON b.owner_id=r.owner_id AND b.binding_id=r.binding_id LEFT JOIN nma_run_terminals t ON t.rowid=(SELECT MAX(x.rowid) FROM nma_run_terminals x WHERE x.owner_id=u.owner_id AND x.run_id=u.run_id) LEFT JOIN nma_messages m ON m.owner_id=u.owner_id AND m.run_id=u.run_id AND m.author_kind='agent' WHERE u.owner_id=? AND u.goal_id=? ORDER BY u.rowid",
                 (self.store.owner, goal["goal_id"]),
             )
         ]
+        # Keep durable result references for every unit; bound prompt previews
+        # while the complete result remains in the authorized transcript.
+        for unit in goal["units"][:-4]:
+            unit["result_preview"] = ""
         from ngertiin_engine.wakes import Wakes
 
         goal["wake"] = Wakes(self.store).read(conn, goal["goal_id"])
-        return goal
+        from ngertiin_engine.goal_review import enrich
+
+        return enrich(self.store, conn, goal)
 
     def state(self, conn, goal_id, status, progress="", wake=None):
         conn.execute(
@@ -110,14 +122,38 @@ class Lifecycle:
 
     def fence(self, conn, goal_id, *, except_run=None):
         conn.execute(
-            "UPDATE nma_discussions SET status='cancelled',reason='goal_fenced' WHERE owner_id=? AND discussion_id IN (SELECT discussion_id FROM nma_discussion_goals WHERE owner_id=? AND goal_id=?)",
+            "UPDATE nma_discussions SET status='cancelled',reason='goal_fenced' WHERE owner_id=? AND status='active' AND discussion_id IN (SELECT discussion_id FROM nma_discussion_goals WHERE owner_id=? AND goal_id=?)",
             (self.store.owner, self.store.owner, goal_id),
         )
-        rows = conn.execute(
-            "SELECT DISTINCT run_id FROM nma_goal_units WHERE owner_id=? AND goal_id=?",
+        from ngertiin_engine.collaboration import cancel_tasks
+        from ngertiin_engine.delegation_store import Children
+
+        discussions = conn.execute(
+            "SELECT discussion_id FROM nma_discussion_goals WHERE owner_id=? AND goal_id=?",
             (self.store.owner, goal_id),
         ).fetchall()
+        for (discussion,) in discussions:
+            cancel_tasks(self.store, conn, discussion, "goal_fenced")
+        rows = conn.execute(
+            "WITH RECURSIVE lineage(run_id) AS (SELECT run_id FROM nma_goal_units WHERE owner_id=? AND goal_id=? UNION SELECT t.run_id FROM nma_discussion_turns t JOIN nma_discussion_goals g USING(owner_id,discussion_id) WHERE g.owner_id=? AND g.goal_id=? UNION SELECT u.run_id FROM nma_collaboration_units u JOIN nma_collaboration_tasks t USING(owner_id,task_id) JOIN nma_discussion_goals g USING(owner_id,discussion_id) WHERE g.owner_id=? AND g.goal_id=? UNION SELECT b.resume_run_id FROM nma_delegation_batches b JOIN lineage p ON b.parent_run_id=p.run_id WHERE b.owner_id=? AND b.resume_run_id IS NOT NULL) SELECT DISTINCT run_id FROM lineage",
+            (
+                self.store.owner,
+                goal_id,
+                self.store.owner,
+                goal_id,
+                self.store.owner,
+                goal_id,
+                self.store.owner,
+            ),
+        ).fetchall()
         for (run_id,) in rows:
+            # A successful parent may still own live children or an undelivered
+            # completion. Fence those without invalidating its settled evidence.
+            Children(self.store).cancel_run(conn, run_id)
+            conn.execute(
+                "UPDATE nma_delegation_batches SET state='cancelled' WHERE owner_id=? AND parent_run_id=? AND (state='pending' OR (state='admitted' AND resume_run_id IS NOT ? AND NOT EXISTS (SELECT 1 FROM nma_run_terminals t WHERE t.owner_id=nma_delegation_batches.owner_id AND t.run_id=nma_delegation_batches.resume_run_id)))",
+                (self.store.owner, run_id, except_run),
+            )
             if run_id == except_run:
                 continue
             # Settled results remain valid evidence; only live/pending work is cancelled.
@@ -241,6 +277,9 @@ class Lifecycle:
             self.changed(conn, goal["goal_id"])
             return True
         if action == "complete":
+            from ngertiin_engine.goal_review import require_completion
+
+            require_completion(self.store, conn, goal, args["evidence_ids"])
             ids = args["evidence_ids"]
             if (
                 not isinstance(ids, list)
@@ -348,11 +387,16 @@ class Lifecycle:
             "SELECT 1 FROM nma_run_terminals WHERE owner_id=? AND run_id=? AND status='succeeded'",
             (self.store.owner, message["run_id"]),
         ).fetchone()
-        if (
-            not linked
-            or not succeeded
-            or self.reliability.stopped(conn, message["run_id"])
-        ):
+        if not succeeded and linked:
+            raise EngineError(
+                "EVIDENCE_REQUIRED",
+                {
+                    "reason": "result_run_not_settled",
+                    "next_action": "continue",
+                    "instruction": "Continue this responsibility now. After this turn settles, verify the persisted result in the next turn. Do not wait for user input or a timer.",
+                },
+            )
+        if not linked or self.reliability.stopped(conn, message["run_id"]):
             raise EngineError("EVIDENCE_REQUIRED")
         identity = str(
             uuid5(

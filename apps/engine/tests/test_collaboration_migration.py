@@ -25,6 +25,10 @@ def test_additive_upgrade_restore_and_previous_git_runtime_rollback(runtime, tmp
     dm = conversation(call, agent)
     receipt = call(send(dm, "Preserve this original conversation"))["result"]
     settle(call, receipt["run_id"])
+    from test_goal_lifecycle import begin
+
+    preserved_goal = begin(call, dm)
+    call(command("goal.stop", {"goal_id": preserved_goal["goal_id"]}))
     messages = snapshot(call, dm)["messages"]
 
     def stop():
@@ -34,6 +38,10 @@ def test_additive_upgrade_restore_and_previous_git_runtime_rollback(runtime, tmp
     stop()
     with sqlite3.connect(root / "state/state.db") as db:
         for name in (
+            "nma_goal_process_waits",
+            "nma_automation_jobs",
+            "nma_goal_reviews",
+            "nma_goal_contracts",
             "nma_collaboration_units",
             "nma_collaboration_operations",
             "nma_collaboration_tasks",
@@ -41,12 +49,12 @@ def test_additive_upgrade_restore_and_previous_git_runtime_rollback(runtime, tmp
             "nma_delegated_children",
         ):
             db.execute("DROP TABLE " + name)
-        db.execute("DELETE FROM nma_schema_migrations WHERE version=18")
+        db.execute("DELETE FROM nma_schema_migrations WHERE version>=18")
         db.execute("UPDATE nma_partition SET schema_version=17")
     predecessor = tmp_path / "predecessor"
     assert backup(root / "state", predecessor)["schema_version"] == 17
     start()
-    assert call(command("runtime.describe"))["result"]["extension_schema"] == "18"
+    assert call(command("runtime.describe"))["result"]["extension_schema"] == "20"
     assert snapshot(call, dm)["messages"] == messages
     assert (
         call(command("thread.read", {"thread_id": dm["thread_id"]}))["result"][
@@ -93,7 +101,7 @@ def test_additive_upgrade_restore_and_previous_git_runtime_rollback(runtime, tmp
     stop()
     forward = tmp_path / "forward"
     manifest = backup(root / "state", forward)
-    assert manifest["schema_version"] == 18
+    assert manifest["schema_version"] == 20
     assert any("kanban/boards/nma-peers-" in name for name in manifest["files"])
     restore(forward, tmp_path / "restored", OWNER)
     (root / "state").rename(root / "offline-forward")
@@ -125,7 +133,15 @@ def test_additive_upgrade_restore_and_previous_git_runtime_rollback(runtime, tmp
             )
         }
     )
-    assert description["extension_schema"] == "17"
+    assert description["extension_schema"] == "18"
     assert snapshot(call, dm)["messages"] == messages
     assert len(provider.requests) == count
-    print("SCHEMA_17_TO_18_RESTORE_AND_PREVIOUS_GIT_ROLLBACK_VERIFIED")
+    stop()
+    start()
+    assert call(command("runtime.describe"))["result"]["extension_schema"] == "20"
+    restored = snapshot(call, dm)
+    assert restored["messages"] == messages
+    assert restored["goals"][0]["goal_id"] == preserved_goal["goal_id"]
+    assert restored["goals"][0]["status"] == "stopped"
+    assert len(provider.requests) == count
+    print("SCHEMA_17_AND_18_TO_20_RESTORE_AND_PREVIOUS_GIT_SCHEMA_18_ROLLBACK_VERIFIED")

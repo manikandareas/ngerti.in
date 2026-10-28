@@ -735,7 +735,13 @@ class Adapter:
             return {
                 "schema_version": "nma.v1",
                 "authority_epoch": str(self.authority.epoch),
-                "extension_schema": "18",
+                "extension_schema": self.store.write(
+                    lambda conn: str(
+                        conn.execute(
+                            "SELECT schema_version FROM nma_partition"
+                        ).fetchone()[0]
+                    )
+                ),
                 "lifecycle": "ready",
                 "capabilities": [
                     "app.list",
@@ -804,6 +810,33 @@ class Adapter:
                     body, self.admission_result(pending_run, payload)
                 )
             key, config = self.binding(payload)
+            prepared = self.store.write(
+                lambda c: c.execute(
+                    "SELECT b.binding_id,b.config FROM nma_adapter_runs r JOIN nma_adapter_bindings b USING(owner_id,binding_id) WHERE r.owner_id=? AND r.run_id=?",
+                    (self.owner, pending_run),
+                ).fetchone()
+            )
+            if prepared:
+                candidate = json.loads(prepared[1])
+                if candidate.get("automation"):
+                    if any(
+                        candidate.get(field) != config.get(field)
+                        for field in (
+                            "agent_id",
+                            "thread_id",
+                            "context_generation",
+                            "config_revision",
+                            "access_generation",
+                        )
+                    ):
+                        raise EngineError("ACCESS_REVOKED")
+                    job = candidate["automation"]
+                    if (
+                        job.get("model")
+                        and job["model"] not in self.connections.catalog()
+                    ):
+                        raise EngineError("MODEL_UNAVAILABLE")
+                    key, config = prepared[0], candidate
             prior = self.store.admit(body)
             if prior:
                 return prior

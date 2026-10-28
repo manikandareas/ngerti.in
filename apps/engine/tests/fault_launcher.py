@@ -59,6 +59,60 @@ if point in {
         return value
 
     Store.write = write
+elif point == "after_automation_outputs":
+    import json
+
+    original = Store.write
+
+    def write(self, operation, **kwargs):
+        value = original(self, operation, **kwargs)
+        if "Automations.execute.<locals>.<lambda>" in operation.__qualname__:
+            rows = original(
+                self,
+                lambda c: c.execute(
+                    "SELECT configuration,outputs FROM nma_automation_jobs WHERE state='running'"
+                ).fetchall(),
+            )
+            if any(
+                len(json.loads(outputs))
+                == len(json.loads(config)["automation"]["steps"])
+                for config, outputs in rows
+            ):
+                crash()
+        return value
+
+    Store.write = write
+elif point == "after_job_continuation_commit":
+    from ngertiin_engine.goal_continuation import Continuation
+
+    original = Continuation.deliver_unit
+
+    async def deliver(self, row):
+        parent = self.store.write(
+            lambda c: c.execute(
+                "SELECT b.config FROM nma_goal_units u JOIN nma_adapter_runs r ON r.owner_id=u.owner_id AND r.run_id=u.parent_run_id JOIN nma_adapter_bindings b USING(owner_id,binding_id) WHERE u.owner_id=? AND u.run_id=?",
+                (self.store.owner, row[1]),
+            ).fetchone()
+        )
+        import json
+
+        if parent and json.loads(parent[0]).get("automation"):
+            crash()
+        return await original(self, row)
+
+    Continuation.deliver_unit = deliver
+elif point == "after_automation_effect":
+    from ngertiin_engine.native_executor import IsolatedTools
+
+    original = IsolatedTools.invoke
+
+    def invoke(self, *args, **kwargs):
+        value = original(self, *args, **kwargs)
+        if str(kwargs.get("admission_id", "")).startswith("automation:"):
+            crash()
+        return value
+
+    IsolatedTools.invoke = invoke
 elif point == "defer_transcript":
     from ngertiin_engine.transcript import Transcript
 

@@ -61,7 +61,7 @@ function Root() {
               colorInputForeground: "var(--foreground)",
               colorDanger: "var(--danger)",
               borderRadius: "0.75rem",
-              fontFamily: '"Nunito Sans", system-ui, sans-serif',
+              fontFamily: '"Geist", system-ui, sans-serif',
             },
             elements: {
               rootBox: { width: "100%" },

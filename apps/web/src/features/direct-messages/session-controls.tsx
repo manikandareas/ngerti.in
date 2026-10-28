@@ -1,6 +1,7 @@
 import { useAuth } from "@clerk/tanstack-react-start";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { NativeSelect } from "@/components/ui/native-select";
 import { ApiError, api } from "@/lib/api";
 import { base, command, submit } from "./client";
 import type { Thread } from "./state";
@@ -158,7 +159,7 @@ export function SessionControls({ thread, working }: { thread: Thread; working: 
         {thread.kind === "group" && (
           <label className="flex flex-wrap items-center gap-3">
             Agent
-            <select
+            <NativeSelect
               value={agentId}
               disabled={!ready || Boolean(busy) || pending.current !== null}
               onChange={(event) => {
@@ -173,7 +174,7 @@ export function SessionControls({ thread, working }: { thread: Thread; working: 
                   {agent.display_name}
                 </option>
               ))}
-            </select>
+            </NativeSelect>
           </label>
         )}
         <div className="flex flex-wrap gap-2">

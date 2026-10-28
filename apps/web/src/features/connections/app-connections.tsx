@@ -2,7 +2,9 @@ import { useAuth } from "@clerk/tanstack-react-start";
 import { Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { NativeChoice } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { NativeSelect } from "@/components/ui/native-select";
 import { ApiError, api } from "@/lib/api";
 import { AppInteractions } from "./app-interactions";
 import { base, connectionError, send } from "./client";
@@ -327,7 +329,7 @@ export function AppConnections() {
               >
                 {connection.tools.map((tool) => (
                   <label key={tool.name} className="flex items-start gap-2 text-sm">
-                    <input
+                    <NativeChoice
                       type="checkbox"
                       name="tool"
                       value={tool.name}
@@ -384,7 +386,7 @@ export function AppConnections() {
       >
         <label className="space-y-1 text-sm">
           Aplikasi
-          <select
+          <NativeSelect
             className="h-10 w-full rounded-md border bg-background px-3"
             value={application}
             disabled={!!editing}
@@ -405,7 +407,7 @@ export function AppConnections() {
                 {item.label}
               </option>
             ))}
-          </select>
+          </NativeSelect>
         </label>
         <label htmlFor="app-label" className="space-y-1 text-sm">
           Nama koneksi
@@ -429,7 +431,7 @@ export function AppConnections() {
         )}
         <label className="space-y-1 text-sm">
           Cara login
-          <select
+          <NativeSelect
             className="h-10 w-full rounded-md border bg-background px-3"
             value={method}
             onChange={(e) => setMethod(e.target.value)}
@@ -442,7 +444,7 @@ export function AppConnections() {
                 {value === "oauth" ? "Login akun (OAuth)" : "Token akses"}
               </option>
             ))}
-          </select>
+          </NativeSelect>
         </label>
         {method === "bearer" && (
           <label htmlFor="app-key" className="space-y-1 text-sm">

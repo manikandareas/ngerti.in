@@ -2,6 +2,7 @@ import { useAuth } from "@clerk/tanstack-react-start";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { NativeChoice } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -10,6 +11,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { NativeSelect } from "@/components/ui/native-select";
 import { api } from "@/lib/api";
 import { AgentAvatar } from "./agent-avatar";
 import type { Agent } from "./agents-page";
@@ -184,7 +186,7 @@ export function AgentThreads({ agents, edit }: { agents: Agent[]; edit: (agent: 
             <fieldset disabled={busy} className="space-y-4">
               <label className="block space-y-2 text-sm">
                 Jenis
-                <select
+                <NativeSelect
                   className="h-10 w-full rounded-md border bg-background px-3"
                   value={kind}
                   onChange={(e) => {
@@ -194,7 +196,7 @@ export function AgentThreads({ agents, edit }: { agents: Agent[]; edit: (agent: 
                 >
                   <option value="dm">DM</option>
                   <option value="group">Grup</option>
-                </select>
+                </NativeSelect>
               </label>
               <label htmlFor="thread-title" className="block space-y-2 text-sm">
                 Nama percakapan
@@ -212,7 +214,7 @@ export function AgentThreads({ agents, edit }: { agents: Agent[]; edit: (agent: 
                   .filter((a) => a.status === "active")
                   .map((agent) => (
                     <label key={agent.agent_id} className="flex items-center gap-3 text-sm">
-                      <input
+                      <NativeChoice
                         type={kind === "dm" ? "radio" : "checkbox"}
                         name="thread-members"
                         checked={members.includes(agent.agent_id)}

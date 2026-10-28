@@ -3,6 +3,7 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AppShell } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
+import { NativeChoice } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -11,6 +12,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { NativeSelect } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
 import { command, listThreads, submit } from "@/features/direct-messages/client";
 import type { Thread } from "@/features/direct-messages/state";
@@ -411,7 +413,7 @@ export function AgentsPage() {
               </Link>
               <label className="block space-y-2 text-sm">
                 Model
-                <select
+                <NativeSelect
                   className="h-10 w-full rounded-md border bg-background px-3"
                   required
                   value={draft.config.model}
@@ -429,7 +431,7 @@ export function AgentsPage() {
                       {model.label}
                     </option>
                   ))}
-                </select>
+                </NativeSelect>
               </label>
               <InferenceSettingsEditor
                 value={draft.config.inference}
@@ -462,7 +464,7 @@ export function AgentsPage() {
                       )}
                       {options.map((item) => (
                         <label key={item.id} className="flex items-center gap-2 text-sm">
-                          <input
+                          <NativeChoice
                             type="checkbox"
                             checked={assigned.includes(item.id)}
                             disabled={

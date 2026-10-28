@@ -8,6 +8,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { NativeSelect } from "@/components/ui/native-select";
 import { command, submit } from "./client";
 import type { Thread } from "./state";
 
@@ -188,7 +190,7 @@ export function ScreenControls({ thread }: { thread: Thread }) {
         <div className="mt-3 space-y-3">
           <label className="block">
             Agent{" "}
-            <select
+            <NativeSelect
               className="max-w-full rounded border bg-background p-2"
               value={agentId}
               disabled={busy || !!connection}
@@ -204,7 +206,7 @@ export function ScreenControls({ thread }: { thread: Thread }) {
                   {agent.display_name}
                 </option>
               ))}
-            </select>
+            </NativeSelect>
           </label>
           <p role="status">
             {connection
@@ -309,7 +311,7 @@ export function ScreenControls({ thread }: { thread: Thread }) {
                   void act("input", { input: { kind: "text", text } });
                 }}
               >
-                <input
+                <Input
                   aria-label="Teks privat ke layar"
                   type="password"
                   autoComplete="off"
@@ -381,7 +383,7 @@ export function ScreenControls({ thread }: { thread: Thread }) {
                   });
                 }}
               >
-                <input
+                <Input
                   aria-label="Origin login"
                   type="url"
                   required
@@ -390,7 +392,7 @@ export function ScreenControls({ thread }: { thread: Thread }) {
                   value={origin}
                   onChange={(e) => setOrigin(e.target.value)}
                 />
-                <input
+                <Input
                   aria-label="Username login"
                   required
                   autoComplete="off"
@@ -399,7 +401,7 @@ export function ScreenControls({ thread }: { thread: Thread }) {
                   value={identifier}
                   onChange={(e) => setIdentifier(e.target.value)}
                 />
-                <input
+                <Input
                   aria-label="Password tersimpan"
                   type="password"
                   required
@@ -412,7 +414,7 @@ export function ScreenControls({ thread }: { thread: Thread }) {
                 <Button size="sm" variant="outline" disabled={busy || !password}>
                   Simpan login
                 </Button>
-                <input
+                <Input
                   aria-label="Kunci autentikator opsional"
                   type="password"
                   autoComplete="off"

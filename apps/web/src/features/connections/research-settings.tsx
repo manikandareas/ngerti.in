@@ -2,6 +2,7 @@ import { useAuth } from "@clerk/tanstack-react-start";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { NativeSelect } from "@/components/ui/native-select";
 import { api } from "@/lib/api";
 import { base, connectionError, send } from "./client";
 
@@ -100,7 +101,7 @@ export function ResearchSettings() {
         </p>
         <label htmlFor="research-search" className="space-y-1 text-sm">
           Pencarian
-          <select
+          <NativeSelect
             id="research-search"
             className="h-10 w-full rounded-md border bg-background px-3"
             value={search}
@@ -109,11 +110,11 @@ export function ResearchSettings() {
             {data?.providers.map((item) => (
               <option key={item.id}>{item.id}</option>
             ))}
-          </select>
+          </NativeSelect>
         </label>
         <label htmlFor="research-extract" className="space-y-1 text-sm">
           Pembaca halaman
-          <select
+          <NativeSelect
             id="research-extract"
             className="h-10 w-full rounded-md border bg-background px-3"
             value={extract}
@@ -124,7 +125,7 @@ export function ResearchSettings() {
               .map((item) => (
                 <option key={item.id}>{item.id}</option>
               ))}
-          </select>
+          </NativeSelect>
         </label>
         <label htmlFor="research-search-key" className="space-y-1 text-sm">
           {search === "searxng" ? "URL SearXNG" : "API key pencarian"}

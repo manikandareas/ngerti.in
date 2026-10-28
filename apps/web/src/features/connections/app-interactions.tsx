@@ -2,6 +2,7 @@ import { useAuth } from "@clerk/tanstack-react-start";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { NativeSelect } from "@/components/ui/native-select";
 import { api } from "@/lib/api";
 import { base, connectionError, send } from "./client";
 
@@ -97,7 +98,7 @@ export function AppInteractions() {
             >
               <span>{property.title ?? name}</span>
               {property.enum ? (
-                <select
+                <NativeSelect
                   id={`${item.interaction_id}-${name}`}
                   name={name}
                   className="h-10 w-full rounded-md border bg-background px-3"
@@ -105,7 +106,7 @@ export function AppInteractions() {
                   {property.enum.map((value) => (
                     <option key={value}>{value}</option>
                   ))}
-                </select>
+                </NativeSelect>
               ) : (
                 <Input
                   id={`${item.interaction_id}-${name}`}

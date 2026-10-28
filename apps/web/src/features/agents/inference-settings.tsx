@@ -1,4 +1,6 @@
+import { NativeChoice } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { NativeSelect } from "@/components/ui/native-select";
 
 export type ModelOption = {
   id: string;
@@ -41,7 +43,7 @@ function ModelChoices({
       <p className="text-xs text-muted-foreground">Urutan mengikuti pilihan Anda.</p>
       {options.map((model) => (
         <label key={model.id} className="flex items-start gap-2 text-sm">
-          <input
+          <NativeChoice
             type="checkbox"
             className="mt-1"
             checked={selected.includes(model.id)}
@@ -133,7 +135,7 @@ export function InferenceSettingsEditor({
       {selected?.protocol !== "anthropic_messages" && (
         <label className="block space-y-2 text-sm">
           Penalaran
-          <select
+          <NativeSelect
             className={selectClass}
             value={
               (parameters.reasoning_effort as string | undefined) ??
@@ -158,7 +160,7 @@ export function InferenceSettingsEditor({
                 {effort}
               </option>
             ))}
-          </select>
+          </NativeSelect>
         </label>
       )}
       <ModelChoices
@@ -176,7 +178,7 @@ export function InferenceSettingsEditor({
         ].map(([slot, label]) => (
           <label key={slot} className="block space-y-2 text-sm">
             {label}
-            <select
+            <NativeSelect
               className={selectClass}
               value={settings.auxiliary?.[slot]?.model ?? ""}
               onChange={(event) => {
@@ -199,14 +201,14 @@ export function InferenceSettingsEditor({
                   {model.label}
                 </option>
               ))}
-            </select>
+            </NativeSelect>
           </label>
         ))}
       </fieldset>
       {selected?.provider_id === "openrouter" && (
         <label className="block space-y-2 text-sm">
           Prioritas provider OpenRouter
-          <select
+          <NativeSelect
             className={selectClass}
             value={settings.provider_routing?.sort ?? ""}
             onChange={(event) =>
@@ -222,7 +224,7 @@ export function InferenceSettingsEditor({
             <option value="price">Biaya</option>
             <option value="latency">Latensi</option>
             <option value="throughput">Kecepatan token</option>
-          </select>
+          </NativeSelect>
         </label>
       )}
       <ModelChoices
@@ -258,7 +260,7 @@ export function InferenceSettingsEditor({
         {settings.credential_pool && (
           <label className="block space-y-2 text-sm">
             Pemilihan koneksi
-            <select
+            <NativeSelect
               className={selectClass}
               value={settings.credential_pool.strategy}
               onChange={(event) =>
@@ -273,7 +275,7 @@ export function InferenceSettingsEditor({
               <option value="fill_first">Utamakan koneksi pertama</option>
               <option value="round_robin">Bergiliran</option>
               <option value="random">Acak</option>
-            </select>
+            </NativeSelect>
           </label>
         )}
       </details>

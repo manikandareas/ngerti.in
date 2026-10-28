@@ -1,6 +1,8 @@
 import { useAuth } from "@clerk/tanstack-react-start";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { NativeSelect } from "@/components/ui/native-select";
 import { command, submit } from "./client";
 import type { Thread } from "./state";
 
@@ -56,7 +58,7 @@ export function WorkspaceControls({ thread, working }: { thread: Thread; working
         <div className="flex flex-wrap items-end gap-2">
           <label>
             Agent
-            <select
+            <NativeSelect
               className="ml-2 rounded border bg-background p-2"
               value={agentId}
               disabled={busy}
@@ -72,7 +74,7 @@ export function WorkspaceControls({ thread, working }: { thread: Thread; working
                   {agent.display_name}
                 </option>
               ))}
-            </select>
+            </NativeSelect>
           </label>
           <Button
             type="button"
@@ -90,7 +92,7 @@ export function WorkspaceControls({ thread, working }: { thread: Thread; working
               {workspace.project} · {workspace.root}
             </p>
             <div className="flex flex-wrap gap-2">
-              <input
+              <Input
                 aria-label="Nama proyek"
                 className="min-w-0 rounded border bg-background p-2"
                 value={project}
@@ -127,7 +129,7 @@ export function WorkspaceControls({ thread, working }: { thread: Thread; working
             </div>
             <label className="block">
               Checkpoint
-              <select
+              <NativeSelect
                 className="ml-2 max-w-full rounded border bg-background p-2"
                 value={checkpoint}
                 onChange={(e) => setCheckpoint(e.target.value)}
@@ -138,9 +140,9 @@ export function WorkspaceControls({ thread, working }: { thread: Thread; working
                     {c.short_hash} · {c.reason}
                   </option>
                 ))}
-              </select>
+              </NativeSelect>
             </label>
-            <input
+            <Input
               aria-label="Path file workspace"
               className="w-full rounded border bg-background p-2"
               value={path}

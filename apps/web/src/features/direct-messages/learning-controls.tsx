@@ -2,6 +2,7 @@ import { useAuth } from "@clerk/tanstack-react-start";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { NativeSelect } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
 import { ApiError, api } from "@/lib/api";
 import { base, command, submit } from "./client";
@@ -137,7 +138,7 @@ export function LearningControls({ thread }: { thread: Thread }) {
           Memori dan skills {open ? "−" : "+"}
         </Button>
         {open && thread.kind === "group" && (
-          <select
+          <NativeSelect
             className="max-w-full rounded-md border bg-background p-2 text-sm"
             aria-label="Agent pembelajaran"
             value={agentId}
@@ -159,7 +160,7 @@ export function LearningControls({ thread }: { thread: Thread }) {
                   {agent.display_name}
                 </option>
               ))}
-          </select>
+          </NativeSelect>
         )}
       </div>
       {open && (

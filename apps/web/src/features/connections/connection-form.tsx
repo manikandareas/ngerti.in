@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { NativeChoice } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { NativeSelect } from "@/components/ui/native-select";
 import type { Provider } from "./client";
 
 export type KeyDraft = {
@@ -65,7 +67,7 @@ export function ConnectionForm({
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="space-y-2 text-sm">
             <span className="block">Provider</span>
-            <select
+            <NativeSelect
               className="h-10 w-full rounded-md border bg-background px-3"
               value={providerId}
               disabled={busy || blocked}
@@ -80,7 +82,7 @@ export function ConnectionForm({
                   {p.label}
                 </option>
               ))}
-            </select>
+            </NativeSelect>
           </label>
           <label htmlFor="connection-label" className="space-y-2 text-sm">
             <span className="block">Nama koneksi</span>
@@ -102,7 +104,7 @@ export function ConnectionForm({
           </p>
         ) : providerId === "opencode-go" ? (
           <label className="flex items-start gap-3 text-sm">
-            <input
+            <NativeChoice
               type="checkbox"
               checked={coding}
               onChange={(event) => setCoding(event.target.checked)}
@@ -136,7 +138,7 @@ export function ConnectionForm({
             </label>
             <label className="space-y-2 text-sm">
               <span className="block">Protokol</span>
-              <select
+              <NativeSelect
                 className="h-10 w-full rounded-md border bg-background px-3"
                 value={protocol}
                 onChange={(e) => setProtocol(e.target.value)}
@@ -144,7 +146,7 @@ export function ConnectionForm({
                 <option value="chat_completions">OpenAI Chat Completions</option>
                 <option value="codex_responses">OpenAI Responses</option>
                 <option value="anthropic_messages">Anthropic Messages</option>
-              </select>
+              </NativeSelect>
             </label>
           </div>
         )}

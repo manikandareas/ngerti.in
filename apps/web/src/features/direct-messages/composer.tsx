@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { providerFailureMessage } from "@/features/connections/client";
 import { ApiError } from "@/lib/api";
 import { command, submit } from "./client";
-import { FileUpload } from "./file-upload";
+import { FileUpload, type UploadHandle } from "./file-upload";
 import type { Artifact, Thread } from "./state";
 
 type Pending = ReturnType<typeof command> & {
@@ -37,6 +37,9 @@ export function Composer({
   const [repairNeeded, setRepairNeeded] = useState(false);
   const [ready, setReady] = useState(false);
   const lock = useRef(false);
+  const uploadRef = useRef<UploadHandle | null>(null);
+  const currentDraft = useRef({ text, attachments, pending });
+  currentDraft.current = { text, attachments, pending };
   const input = useRef<HTMLTextAreaElement>(null);
   const alive = useRef(true);
   useEffect(() => {
@@ -126,6 +129,15 @@ export function Composer({
   return (
     <form
       className="space-y-3"
+      onPaste={(event) => {
+        const file = Array.from(event.clipboardData.files).find((item) =>
+          item.type.startsWith("image/"),
+        );
+        if (file && !busy && !pending && attachments.length < 10) {
+          event.preventDefault();
+          void uploadRef.current?.upload(file);
+        }
+      }}
       onSubmit={(event) => {
         event.preventDefault();
         void send();
@@ -211,8 +223,18 @@ export function Composer({
       />
       <div className="flex flex-wrap items-center gap-2">
         <FileUpload
+          uploadRef={uploadRef}
           threadId={thread.thread_id}
           disabled={busy || !!pending || !ready || unavailable || attachments.length >= 10}
+          onTranscript={(transcript, artifactId) => {
+            const draft = currentDraft.current;
+            if (draft.pending || !draft.attachments.some((file) => file.artifact_id === artifactId))
+              return;
+            const value = `${draft.text}${draft.text ? "\n" : ""}${transcript}`;
+            setText(value);
+            save(value, null, draft.attachments);
+            input.current?.focus();
+          }}
           onReady={(file) => {
             const next = [...attachments.filter((a) => a.artifact_id !== file.artifact_id), file];
             setAttachments(next);

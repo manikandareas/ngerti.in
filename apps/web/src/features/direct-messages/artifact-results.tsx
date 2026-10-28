@@ -44,7 +44,12 @@ export function ArtifactResults({
       if (!response.ok) throw new Error("Download failed");
       const blob = await response.blob();
       if (showPreview) {
-        if (item.media_type === "application/pdf" || item.media_type?.startsWith("image/")) {
+        if (
+          item.media_type === "application/pdf" ||
+          item.media_type?.startsWith("image/") ||
+          item.media_type?.startsWith("audio/") ||
+          item.media_type?.startsWith("video/")
+        ) {
           setPreview({
             name: item.filename,
             url: URL.createObjectURL(blob),
@@ -85,6 +90,8 @@ export function ArtifactResults({
               item.media_type.startsWith("text/") ||
               item.media_type === "application/pdf" ||
               item.media_type.startsWith("image/") ||
+              item.media_type.startsWith("audio/") ||
+              item.media_type.startsWith("video/") ||
               /\.(json|md|csv|txt|py|ipynb)$/i.test(item.filename)) && (
               <Button
                 variant="ghost"
@@ -119,6 +126,20 @@ export function ArtifactResults({
                 alt={preview.name}
                 className="max-h-96 max-w-full object-contain"
               />
+            ) : preview.media?.startsWith("audio/") ? (
+              <audio src={preview.url} controls preload="metadata" aria-label={preview.name}>
+                <track kind="captions" />
+              </audio>
+            ) : preview.media?.startsWith("video/") ? (
+              <video
+                src={preview.url}
+                controls
+                preload="metadata"
+                className="max-h-96 max-w-full"
+                aria-label={preview.name}
+              >
+                <track kind="captions" />
+              </video>
             ) : (
               <PdfPreview key={preview.url} url={preview.url} name={preview.name} />
             )

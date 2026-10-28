@@ -16,6 +16,7 @@ import {
   statuses,
 } from "./client";
 import { ConnectionForm, type KeyDraft } from "./connection-form";
+import { MediaSettings } from "./media-settings";
 
 export function ConnectionsPage() {
   const { getToken, userId } = useAuth();
@@ -409,6 +410,7 @@ export function ConnectionsPage() {
             onLogin={login}
           />
         )}
+        <MediaSettings />
         <AppConnections />
       </div>
     </AppShell>

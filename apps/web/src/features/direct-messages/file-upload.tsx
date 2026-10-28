@@ -1,25 +1,108 @@
 import { useAuth } from "@clerk/tanstack-react-start";
-import { useRef, useState } from "react";
+import { type Ref, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { command, submit } from "./client";
 import type { Artifact } from "./state";
+
+export type UploadHandle = { upload: (file: File) => Promise<void> };
 
 export function FileUpload({
   threadId,
   disabled,
   onReady,
+  onTranscript,
+  uploadRef,
 }: {
   threadId: string;
   disabled: boolean;
   onReady: (file: Artifact) => void;
+  onTranscript?: (text: string, artifactId: string) => void;
+  uploadRef?: Ref<UploadHandle>;
 }) {
   const { getToken, userId } = useAuth();
   const [progress, setProgress] = useState<string | null>(null);
   const [error, setError] = useState("");
   const input = useRef<HTMLInputElement>(null);
   const lock = useRef(false);
+  const recorder = useRef<MediaRecorder | null>(null);
+  const micLock = useRef(false);
+  const alive = useRef(true);
+  const discard = useRef(false);
+  const [recording, setRecording] = useState(false);
+  useEffect(() => {
+    alive.current = true;
+    return () => {
+      alive.current = false;
+      discard.current = true;
+      recorder.current?.stream.getTracks().forEach((track) => {
+        track.stop();
+      });
+      if (recorder.current?.state === "recording") recorder.current.stop();
+    };
+  }, []);
+  async function record() {
+    if (recording) {
+      recorder.current?.stop();
+      return;
+    }
+    if (micLock.current) return;
+    micLock.current = true;
+    let stream: MediaStream | undefined;
+    try {
+      if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === "undefined")
+        throw new Error("Rekaman suara tidak tersedia pada browser ini.");
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const recordingStream = stream;
+      if (!alive.current) {
+        recordingStream.getTracks().forEach((track) => {
+          track.stop();
+        });
+        return;
+      }
+      const device = new MediaRecorder(stream);
+      recorder.current = device;
+      discard.current = false;
+      const chunks: Blob[] = [];
+      device.ondataavailable = (event) => {
+        if (event.data.size) chunks.push(event.data);
+      };
+      const timer = setTimeout(() => {
+        if (device.state === "recording") device.stop();
+      }, 600000);
+      device.onstop = () => {
+        clearTimeout(timer);
+        recordingStream.getTracks().forEach((track) => {
+          track.stop();
+        });
+        if (!alive.current) return;
+        setRecording(false);
+        if (!discard.current) {
+          const mime = device.mimeType.split(";")[0] || "audio/webm";
+          const extension = mime.includes("mp4") ? "m4a" : mime.includes("ogg") ? "ogg" : "webm";
+          void upload(new File(chunks, `voice-${Date.now()}.${extension}`, { type: mime }));
+        }
+      };
+      device.onerror = () => {
+        discard.current = true;
+        device.stop();
+        setError("Rekaman terhenti. Kamu tetap bisa mengetik pesan.");
+      };
+      device.start();
+      setError("");
+      setRecording(true);
+    } catch {
+      stream?.getTracks().forEach((track) => {
+        track.stop();
+      });
+      setError(
+        "Mikrofon belum dapat digunakan. Izinkan akses mikrofon atau lanjutkan dengan teks.",
+      );
+    } finally {
+      micLock.current = false;
+    }
+  }
   async function upload(file: File) {
-    if (lock.current) return;
+    if (lock.current || disabled) return;
     lock.current = true;
     setError("");
     setProgress("Menyiapkan file…");
@@ -72,7 +155,25 @@ export function FileUpload({
         command("file.finalize", { artifact_id: identity }),
         token,
       );
+      if (!alive.current) return;
       onReady(ready);
+      if (file.type.startsWith("audio/") && onTranscript) {
+        setProgress("Mentranskripsikan suara…");
+        const result = await submit<{ success?: boolean; transcript?: string; error?: string }>(
+          command("media.transcribe", {
+            artifact_id: ready.artifact_id,
+            thread_id: threadId,
+            request_key: identity,
+          }),
+          token,
+        );
+        if (alive.current && result.success && result.transcript)
+          onTranscript(result.transcript, ready.artifact_id);
+        else if (alive.current)
+          setError(
+            "Transkripsi belum tersedia. Rekaman tetap tersimpan sebagai lampiran; kamu bisa mengetik pesan.",
+          );
+      }
     } catch (reason) {
       setError(
         `${reason instanceof Error ? reason.message : "Upload belum selesai."} Pilih file yang sama untuk melanjutkan.`,
@@ -83,6 +184,7 @@ export function FileUpload({
       if (input.current) input.current.value = "";
     }
   }
+  useImperativeHandle(uploadRef, () => ({ upload }));
   return (
     <div className="space-y-1">
       <input
@@ -90,7 +192,7 @@ export function FileUpload({
         className="sr-only"
         type="file"
         aria-label="Pilih lampiran"
-        disabled={disabled || !!progress}
+        disabled={disabled || !!progress || recording}
         onChange={(e) => {
           const file = e.target.files?.[0];
           if (file) void upload(file);
@@ -100,11 +202,33 @@ export function FileUpload({
         type="button"
         variant="outline"
         size="sm"
-        disabled={disabled || !!progress}
+        disabled={disabled || !!progress || recording}
         onClick={() => input.current?.click()}
       >
         {progress ?? "Lampirkan file"}
       </Button>
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        disabled={disabled || !!progress}
+        onClick={() => void record()}
+      >
+        {recording ? "Selesai rekam" : "Rekam suara"}
+      </Button>
+      {recording && (
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          onClick={() => {
+            discard.current = true;
+            recorder.current?.stop();
+          }}
+        >
+          Batal rekam
+        </Button>
+      )}
       {error && (
         <p role="alert" className="text-sm text-destructive">
           {error}

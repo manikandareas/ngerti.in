@@ -1,0 +1,45 @@
+{
+  "baseline_commit": "50e3e9132fe8a0c2c943c3848c02c82e04ed1b19",
+  "openbot": {
+    "repository": "https://github.com/nightly-labs/openbot",
+    "revision": "01e4b18e238e5de72a3570162c9f4275bb585786",
+    "observed_modules": [
+      {
+        "path": "src/backend/agent-service.ts",
+        "sha256": "69a7463763ca7c36ff5e4c7bb5bfa7d81df82b573ceb33df885a2764d4b90c5a"
+      },
+      {
+        "path": "src/backend/agent/profile-tools.ts",
+        "sha256": "e3737bee62d9b7760b713845044acccf53846e467fb82f0ecd3b2869530a2fd5"
+      },
+      {
+        "path": "src/backend/agent/thread-lifecycle.ts",
+        "sha256": "cf169084eca7a4b0924dcf0cfc06ef8ec70e83f56b49e2f51aa2fa07cab1d14b"
+      },
+      {
+        "path": "src/backend/agent/developer-instructions.ts",
+        "sha256": "89434210ab8bd58ed3f0135242247ef3c69f8bb547d15d0e8b79964622fb1703"
+      }
+    ],
+    "observed_flows": [
+      "AgentService.createAgent validation/profile/model assignment, workspace/sendMessage/rollback boundaries",
+      "Strict profile tool fields, expected runtime refresh before next turn",
+      "ThreadLifecycle.refreshAgentRuntime, applyPendingRuntimeRefresh and toolFingerprint profile-aware Codex replacement",
+      "Developer instruction identity serialization and separate skill sources"
+    ],
+    "adoption": "Behavioral port into the existing Bun application authority: atomic product identity/setup and receipts, strict scoped profile tools, deferred native-session refresh and explicit profile context. No upstream initial model run on creation, desktop/cloud/provider fallback or universal approval. Codex profile edits replace sessions because upstream documents stale developer instructions on resume. Ngertiin preserves old bindings and bounded thread-only product history."
+  },
+  "stack": {
+    "bun": "1.3.10",
+    "typescript": "7.0.2",
+    "elysia": "1.4.30",
+    "zod": "4.4.3",
+    "muse_sdk": "1.4.14",
+    "codex_cli": "0.165.0",
+    "muse_cli": "1.4.14-R7309.1",
+    "application_contract": "1.3.0",
+    "broker_contract": "1.1.0",
+    "mcp_protocol": "2025-06-18"
+  },
+  "upgrade": "Compare the four exact Openbot modules, profile schema, pending-runtime refresh/fingerprint behavior and instruction construction. Keep product scope unchanged. Rerun concurrent setup, revision/scope/revoke and per-harness fixture/process/native create/update/config/history/restart checks before updating pins."
+}

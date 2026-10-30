@@ -14,9 +14,8 @@ type Message = {
   error?: unknown;
 };
 const file = join(process.env.CODEX_HOME as string, "fixture-sessions.json");
-let sessions: Record<string, { model: string; history: string[] }> = (await Bun.file(file).exists())
-  ? await Bun.file(file).json()
-  : {};
+let sessions: Record<string, { model: string; history: string[]; instructions?: string }> =
+  (await Bun.file(file).exists()) ? await Bun.file(file).json() : {};
 let account = process.env.OPENAI_API_KEY
   ? { type: "apiKey" }
   : { type: "chatgpt", email: "fixture@example.test", planType: "plus" };
@@ -37,6 +36,7 @@ async function receive(message: Message) {
     }
     const text = JSON.stringify({
       history: sessions[current.thread].history,
+      profile_instructions: sessions[current.thread].instructions,
       tool: message.result,
     });
     notify("item/agentMessage/delta", {
@@ -76,7 +76,11 @@ async function receive(message: Message) {
     case "thread/start": {
       const id = crypto.randomUUID();
       if (!p.model) throw new Error("Missing model.");
-      sessions[id] = { model: p.model, history: [] };
+      sessions[id] = {
+        model: p.model,
+        history: [],
+        instructions: String(p.developerInstructions ?? ""),
+      };
       await Bun.write(file, JSON.stringify(sessions));
       reply({ thread: { id }, model: p.model, modelProvider: "openai" });
       break;
@@ -135,7 +139,9 @@ async function receive(message: Message) {
           callId: "call",
           namespace: null,
           tool: "ngertiin_product_tool",
-          arguments: { name: "ngertiin.read_run_context", arguments: {} },
+          arguments: text.startsWith("product-tool:")
+            ? JSON.parse(text.slice("product-tool:".length))
+            : { name: "ngertiin.read_run_context", arguments: {} },
         },
       });
       break;

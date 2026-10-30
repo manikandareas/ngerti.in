@@ -6,6 +6,7 @@ import type { Entity } from "../../contracts";
 import type { HarnessClient, Inspection, SessionIdentity } from "../broker";
 import type { LaunchContext } from "../context";
 import { HarnessError, type Settings } from "../contracts";
+import { productToolNames } from "../product-tool-contracts";
 import { CodexRpc, type RpcMessage } from "./rpc";
 
 export const codexCapabilities = {
@@ -29,12 +30,12 @@ const toolSpec = {
   type: "function",
   name: "ngertiin_product_tool",
   description:
-    "Call a scoped Ngertiin product tool. Use ngertiin.read_run_context with empty arguments to read the current run input and its agent/thread/run identities.",
+    "Call a scoped Ngertiin product tool. Use ngertiin.read_run_context with empty arguments for current run identity. Call ngertiin.describe_tools with empty arguments for configuration tool schemas, then ngertiin.list_agents to inspect profiles and revisions.",
   inputSchema: {
     type: "object",
     properties: {
-      name: { type: "string", enum: ["ngertiin.read_run_context"] },
-      arguments: { type: "object", properties: {}, additionalProperties: false },
+      name: { type: "string", enum: productToolNames },
+      arguments: { type: "object", additionalProperties: true },
     },
     required: ["name", "arguments"],
     additionalProperties: false,
@@ -329,8 +330,8 @@ export class CodexClient implements HarnessClient {
         tool: z.literal("ngertiin_product_tool"),
         namespace: z.null().optional(),
         arguments: z.object({
-          name: z.literal("ngertiin.read_run_context"),
-          arguments: z.strictObject({}),
+          name: z.string().refine((name) => productToolNames.includes(name)),
+          arguments: z.record(z.string(), z.unknown()),
         }),
       })
       .parse(message.params);

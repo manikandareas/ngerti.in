@@ -1,6 +1,7 @@
 import { createApi } from "./api";
 import { Background } from "./background";
 import { developmentConfig } from "./config";
+import { Conversations } from "./conversations";
 import { HarnessAccounts } from "./harness/accounts";
 import { HarnessBroker } from "./harness/broker";
 import { CodexAccounts } from "./harness/codex/accounts";
@@ -15,6 +16,7 @@ import { Store } from "./store";
 const config = developmentConfig();
 const store = new Store(config.database, config.owner_id);
 const lifecycle = new Lifecycle(store);
+new Conversations(lifecycle).setup();
 const tools = new ProductTools(lifecycle, (scope, name) => {
   console.log(
     JSON.stringify({

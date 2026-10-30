@@ -2,11 +2,12 @@ import { timingSafeEqual } from "node:crypto";
 import { z } from "zod";
 import type { ToolLease } from "../broker";
 import { HarnessError } from "../contracts";
+import { productToolCatalog, productToolNames } from "../product-tool-contracts";
 
 // MCP clients may add transport metadata; only name and arguments cross the app boundary.
 const toolCall = z.object({
-  name: z.literal("ngertiin.read_run_context"),
-  arguments: z.strictObject({}),
+  name: z.string().refine((name) => productToolNames.includes(name)),
+  arguments: z.record(z.string(), z.unknown()),
 });
 /** Per-session native endpoint. Its token cannot access the application's MCP endpoint. */
 export class MuseTools {
@@ -17,7 +18,7 @@ export class MuseTools {
     this.server = Bun.serve({
       hostname: "127.0.0.1",
       port: 0,
-      maxRequestBodySize: 16_384,
+      maxRequestBodySize: 1_048_576,
       fetch: async (request) => {
         const expected = Buffer.from(`Bearer ${this.token}`);
         const supplied = Buffer.from(request.headers.get("Authorization") ?? "");
@@ -51,14 +52,7 @@ export class MuseTools {
             };
           else if (frame.method === "tools/list")
             result = {
-              tools: [
-                {
-                  name: "ngertiin.read_run_context",
-                  description:
-                    "Read the current Ngertiin run input and agent/thread/run identities.",
-                  inputSchema: { type: "object", properties: {}, additionalProperties: false },
-                },
-              ],
+              tools: productToolCatalog(),
             };
           else if (frame.method === "tools/call")
             result = await this.call(toolCall.parse(frame.params));

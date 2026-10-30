@@ -84,8 +84,8 @@ test("scope and strict schemas reject cross-thread admission and caller-owned id
   const f = setup();
   const other = f.lifecycle.create("agent", {
     name: "Other",
-    harness: "muse",
-    connection_id: crypto.randomUUID(),
+    harness: "codex",
+    connection_id: f.store.get("agent", f.agent.id).connection_id,
   });
   expect(() =>
     f.lifecycle.admit({ thread_id: f.thread.id, agent_id: other.id, text: "Read private DM" }),

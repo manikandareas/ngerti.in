@@ -235,10 +235,8 @@ export class MuseClient implements HarnessClient {
           {
             sessionId: this.#session,
             input: [
-              {
-                type: "text",
-                text: [this.instructions, request.text].filter(Boolean).join("\n\n"),
-              },
+              ...(this.instructions ? [{ type: "text", text: this.instructions }] : []),
+              { type: "text", text: request.text },
             ],
             ifBusy: "queue",
             workspaceRoots: [this.workspace],
@@ -351,7 +349,10 @@ export class MuseClient implements HarnessClient {
       );
     if (history.session.sessionId !== this.#session)
       throw new HarnessError("PROTOCOL_ERROR", "unknown");
-    for (const value of history.history.items ?? history.history.snapshot?.state.items ?? []) {
+    const finalItems = history.history.items ?? history.history.snapshot?.state.items;
+    if (!finalItems) throw new HarnessError("NATIVE_UNKNOWN", "unknown");
+    active.items.clear();
+    for (const value of finalItems) {
       if (value.turnId === active.turn) active.items.set(value.itemId, value);
     }
     this.publish(active);

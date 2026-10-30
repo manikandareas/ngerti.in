@@ -81,9 +81,14 @@ export class Store {
           CREATE UNIQUE INDEX IF NOT EXISTS native_session ON entities (
             json_extract(body, '$.harness'), json_extract(body, '$.connection_id'), json_extract(body, '$.native_session_id')
           ) WHERE kind='binding';
-          CREATE UNIQUE INDEX IF NOT EXISTS thread_binding ON entities (
+          DROP INDEX IF EXISTS thread_binding;
+          CREATE UNIQUE INDEX thread_binding ON entities (
             json_extract(body, '$.thread_id'), json_extract(body, '$.agent_id')
-          ) WHERE kind='binding';
+          ) WHERE kind='binding' AND COALESCE(json_extract(body, '$.active'), 1)=1;
+          CREATE UNIQUE INDEX IF NOT EXISTS agent_handle ON entities (json_extract(body, '$.handle')) WHERE kind='agent';
+          CREATE UNIQUE INDEX IF NOT EXISTS system_agent ON entities (json_extract(body, '$.system_role')) WHERE kind='agent';
+          CREATE UNIQUE INDEX IF NOT EXISTS primary_dm ON entities (json_extract(body, '$.member_agent_ids[0]'))
+            WHERE kind='thread' AND json_extract(body, '$.type')='dm';
           CREATE UNIQUE INDEX IF NOT EXISTS routine_occurrence ON entities (
             json_extract(body, '$.routine_id'), json_extract(body, '$.routine_generation'), json_extract(body, '$.scheduled_for')
           ) WHERE kind='occurrence';
@@ -183,6 +188,14 @@ export class Store {
       )
       .all(after, limit)
       .map(({ cursor, body }) => ({ ...JSON.parse(body), cursor }));
+  }
+
+  get cursor(): number {
+    return (
+      this.#db
+        .query<{ cursor: number }, []>("SELECT COALESCE(MAX(cursor),0) AS cursor FROM events")
+        .get()?.cursor ?? 0
+    );
   }
 
   close() {

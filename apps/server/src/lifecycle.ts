@@ -1,6 +1,8 @@
 import {
   admissionInput,
   agentInput,
+  agentSnapshot,
+  agentUpdate,
   artifactInput,
   DomainError,
   type Entity,
@@ -54,10 +56,19 @@ export class Lifecycle {
       const base = this.base();
       switch (kind) {
         case "agent":
-          return this.store.put({ ...base, ...agentInput.parse(input), kind, grant_revision: 1 });
+          return this.createAgent(input);
         case "thread": {
           const data = threadInput.parse(input);
           for (const agentId of data.member_agent_ids) this.store.get("agent", agentId);
+          if (data.type === "dm") {
+            const existing = this.store
+              .list("thread")
+              .find(
+                (item) =>
+                  item.type === "dm" && item.member_agent_ids[0] === data.member_agent_ids[0],
+              );
+            if (existing) return existing;
+          }
           return this.store.put({ ...base, ...data, kind });
         }
         case "goal": {
@@ -97,6 +108,62 @@ export class Lifecycle {
         }
       }
     });
+  }
+
+  createAgent(input: unknown): Entity<"agent"> {
+    const data = agentInput.parse(input);
+    const connection = this.store.get("connection", data.connection_id);
+    if (connection.state !== "active" || connection.harness !== data.harness)
+      throw new DomainError("SCOPE_DENIED", 403);
+    const base = this.base();
+    const handle = data.handle ?? `agent_${base.id.replaceAll("-", "")}`;
+    if (this.store.list("agent").some((item) => item.handle === handle))
+      throw new DomainError("CONFLICT");
+    return this.store.put({
+      ...base,
+      ...data,
+      handle,
+      kind: "agent",
+      grant_revision: 1,
+      system_role: null,
+      configuration_access: "self",
+    });
+  }
+
+  updateAgent(agentId: string, input: unknown): Entity<"agent"> {
+    const data = agentUpdate.parse(input);
+    return this.store.transaction(() => {
+      const current = this.store.get("agent", agentId);
+      if (current.revision !== data.expected_revision) throw new DomainError("CONFLICT");
+      const merged = agentInput.parse({ ...agentInput.strip().parse(current), ...data.changes });
+      const connection = this.store.get("connection", merged.connection_id);
+      if (connection.state !== "active" || connection.harness !== merged.harness)
+        throw new DomainError("SCOPE_DENIED", 403);
+      if (
+        merged.handle === null ||
+        this.store
+          .list("agent")
+          .some((item) => item.id !== agentId && item.handle === merged.handle)
+      )
+        throw new DomainError("CONFLICT");
+      return this.update(current, merged);
+    });
+  }
+
+  /** Active work keeps its dispatch snapshot; configuration edits affect the next claim. */
+  executionAgent(threadId: string, agentId: string): Entity<"agent"> {
+    const current = this.store.get("agent", agentId);
+    const running = this.store
+      .list("run")
+      .find(
+        (item) =>
+          item.thread_id === threadId &&
+          item.agent_id === agentId &&
+          (active.has(item.status) || item.status === "unknown"),
+      );
+    if (!running?.agent_snapshot) return current;
+    const { agent_id: _id, revision, ...profile } = running.agent_snapshot;
+    return { ...current, ...profile, revision };
   }
 
   private checkGoal(goalId: string, threadId: string, agentId: string) {
@@ -160,6 +227,7 @@ export class Lifecycle {
         authority_epoch: null,
         binding_id: null,
         native_run_id: null,
+        agent_snapshot: null,
       });
       return { message, run };
     });
@@ -167,18 +235,21 @@ export class Lifecycle {
 
   bind(threadId: string, agentId: string, nativeSessionId: string) {
     return this.store.transaction(() => {
-      const { agent } = this.scope(threadId, agentId);
+      this.scope(threadId, agentId);
+      const agent = this.executionAgent(threadId, agentId);
       const existing = this.store
         .list("binding")
-        .find((item) => item.thread_id === threadId && item.agent_id === agentId);
+        .find((item) => item.active && item.thread_id === threadId && item.agent_id === agentId);
       if (existing) {
         if (
-          existing.native_session_id !== nativeSessionId ||
-          existing.connection_id !== agent.connection_id ||
-          existing.harness !== agent.harness
-        )
-          throw new DomainError("CONFLICT");
-        return existing;
+          existing.connection_id === agent.connection_id &&
+          existing.harness === agent.harness &&
+          existing.agent_revision === agent.revision
+        ) {
+          if (existing.native_session_id !== nativeSessionId) throw new DomainError("CONFLICT");
+          return existing;
+        }
+        this.update(existing, { active: false });
       }
       return this.store.put({
         ...this.base(),
@@ -188,7 +259,9 @@ export class Lifecycle {
         harness: agent.harness,
         connection_id: agent.connection_id,
         native_session_id: nativeSessionId,
-        generation: 1,
+        generation: (existing?.generation ?? 0) + 1,
+        active: true,
+        agent_revision: agent.revision,
       });
     });
   }
@@ -207,13 +280,24 @@ export class Lifecycle {
       if (agent.grant_revision !== next.grant_revision) throw new DomainError("STALE_DISPATCH");
       const binding = this.store
         .list("binding")
-        .find((item) => item.thread_id === threadId && item.agent_id === agentId);
+        .find((item) => item.active && item.thread_id === threadId && item.agent_id === agentId);
       if (!binding) throw new DomainError("CONFLICT");
+      if (
+        binding.connection_id !== agent.connection_id ||
+        binding.harness !== agent.harness ||
+        binding.agent_revision !== agent.revision
+      )
+        throw new DomainError("STALE_DISPATCH");
       return this.update(next, {
         status: "dispatching",
         dispatch_token: crypto.randomUUID(),
         authority_epoch: this.epoch,
         binding_id: binding.id,
+        agent_snapshot: agentSnapshot.parse({
+          ...agentInput.strip().parse(agent),
+          agent_id: agent.id,
+          revision: agent.revision,
+        }),
       });
     });
   }
@@ -250,7 +334,8 @@ export class Lifecycle {
   authorizeDispatch(runId: string, token: string) {
     return this.store.transaction(() => {
       const run = this.dispatch(runId, token);
-      const { agent } = this.scope(run.thread_id, run.agent_id);
+      this.scope(run.thread_id, run.agent_id);
+      const agent = this.executionAgent(run.thread_id, run.agent_id);
       if (run.cancellation !== "none" || agent.grant_revision !== run.grant_revision)
         throw new DomainError("STALE_DISPATCH");
       this.responsibility(run);

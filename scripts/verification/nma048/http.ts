@@ -122,13 +122,23 @@ try {
   await stop();
   await start();
   const saved = await request("/v1/entities/connection");
-  assert.equal(saved.length, 2);
+  assert.equal(
+    saved.filter(
+      (connection: { id: string }) => connection.id === plan.id || connection.id === key.id,
+    ).length,
+    2,
+  );
   assert.deepEqual(
     saved.find((row: { id: string }) => row.id === plan.id),
     revoked,
   );
   const events = await request("/v1/events");
-  assert.equal(events.events.length, 3);
+  assert.equal(
+    events.events.filter(
+      (event: { entity_id: string }) => event.entity_id === plan.id || event.entity_id === key.id,
+    ).length,
+    3,
+  );
   results.push({ check: "connection_and_event_replay_after_process_restart", status: "pass" });
   await stop();
   console.log(

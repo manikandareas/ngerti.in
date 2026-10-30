@@ -1,0 +1,13 @@
+{
+  "resolved_iterations": [
+    {"area":"schema","finding":"Zod create defaults were applied by a partial patch and reset omitted fields.","resolution":"Separated required profile field definitions from create defaults; patches use only explicitly supplied fields. Revision and native configuration tests pass."},
+    {"area":"fixture","finding":"Muse scenario fixtures compared the entire input to a command, and obsolete ephemeral items contaminated final JSON output.","resolution":"The user turn is a separate input block; fixtures inspect that block. Terminal authoritative history replaces ephemeral adapter items. Both native adapters accept the full configuration tool catalog."},
+    {"area":"test_setup","finding":"Direct bun test from repository root let child Bun fixtures autoload the root .env and report BILLING_MISMATCH.","resolution":"Use the established workspace test command, which runs from apps/server. Native credential contexts still exclude ambient provider keys; no secret values were retained."},
+    {"area":"process_regression","finding":"Broker probe expected exactly two connections/three total events before automatic Tobi setup existed.","resolution":"Probe asserts the exact two probe IDs and their three events; automatic setup is verified separately."},
+    {"area":"restart_setup","finding":"A Codex restart was attempted before the prior authority finished shutdown; the lock correctly rejected it and the HTTP probe could not connect. No native run was admitted.","resolution":"Waited for authority exit, then restarted and completed exact-binding/history verification."}
+  ],
+  "native_behavior_findings": [
+    {"file":"native-muse-before-clarified-probe.json","finding":"Three native turns succeeded, including create/update tools and new profile application. The model refused to repeat a dummy marker called private; the continuity assertion failed.","outcome":"Retained failed scenario; not counted as continuity acceptance."},
+    {"file":"native-muse-initial.json","finding":"Three further native turns succeeded. Clarifying same-thread permission in profile instructions did not overcome the earlier refusal in that conversation history; continuity assertion failed again.","outcome":"Retained failed scenario. A fresh agent's DM with an ordinary continuity marker is tested separately in native-muse-continuity.json; no unknown effect or automatic effect replay occurred."}
+  ]
+}

@@ -5,6 +5,7 @@ import type { Background } from "./background";
 import {
   admissionInput,
   agentInput,
+  agentUpdate,
   artifactInput,
   CONTRACT_VERSION,
   contractDocument,
@@ -15,6 +16,7 @@ import {
   routineInput,
   threadInput,
 } from "./contracts";
+import { Conversations, conversationSnapshot, historyQuery } from "./conversations";
 import type { AccountService } from "./harness/accounts";
 import { detectHarness } from "./harness/availability";
 import type { HarnessBroker } from "./harness/broker";
@@ -41,6 +43,7 @@ export function createApi(
   } = { connections: new Connections(lifecycle), tools: new ProductTools(lifecycle) },
 ) {
   if (token.length < 32) throw new Error("A private development token is required.");
+  const conversations = new Conversations(lifecycle);
   function command(request: Request, body: unknown, action: () => unknown) {
     const commandId = id.parse(request.headers.get("Idempotency-Key"));
     return lifecycle.store.command(
@@ -117,7 +120,24 @@ export function createApi(
       registered_executors: background.executorCount,
       api_readiness_gate: "pending",
     }))
-    .get("/v1/contracts", () => contractDocument())
+    .get("/v1/contracts", () => ({
+      ...contractDocument(),
+      projections: {
+        conversation: z.toJSONSchema(conversationSnapshot),
+        history_query: z.toJSONSchema(historyQuery, { io: "input" }),
+      },
+    }))
+    .post("/v1/setup", ({ request, body }) => command(request, body, () => conversations.setup()), {
+      body: z.strictObject({}),
+    })
+    .get("/v1/threads/:id/snapshot", ({ params }) => conversations.snapshot(params.id), {
+      params: z.object({ id }),
+    })
+    .get(
+      "/v1/threads/:id/history",
+      ({ params, query }) => conversations.history(params.id, query),
+      { params: z.object({ id }), query: historyQuery },
+    )
     .get("/v1/harness/contracts", () => brokerContract())
     .get("/v1/harnesses", async () =>
       Promise.all((["codex", "muse"] as const).map((id) => (services.detect ?? detectHarness)(id))),
@@ -222,6 +242,20 @@ export function createApi(
       "/v1/agents",
       ({ request, body }) => command(request, body, () => lifecycle.create("agent", body)),
       { body: agentInput },
+    )
+    .post(
+      "/v1/agents/:id/configuration",
+      ({ request, params, body }) =>
+        command(request, body, () => lifecycle.updateAgent(params.id, body)),
+      { params: z.object({ id }), body: agentUpdate },
+    )
+    .post(
+      "/v1/agents/:id/dm",
+      ({ request, params, body }) =>
+        command(request, body, () =>
+          lifecycle.create("thread", { type: "dm", member_agent_ids: [params.id] }),
+        ),
+      { params: z.object({ id }), body: z.strictObject({}) },
     )
     .post(
       "/v1/threads",

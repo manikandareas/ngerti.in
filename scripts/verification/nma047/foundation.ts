@@ -80,10 +80,14 @@ try {
   assert.equal(ready.registered_executors, 2);
   assert.equal(ready.api_readiness_gate, "pending");
   checks.push("make_dev_boots_without_hermes_postgres_or_provider_keys");
+  const connection = await api(first.url, "/v1/connections", {
+    harness: "codex",
+    authentication: { method: "native_login", billing_source: "subscription" },
+  });
   const agent = await api(first.url, "/v1/agents", {
     name: "Process proof",
     harness: "codex",
-    connection_id: crypto.randomUUID(),
+    connection_id: connection.id,
   });
   const thread = await api(first.url, "/v1/threads", { type: "dm", member_agent_ids: [agent.id] });
   const key = crypto.randomUUID();

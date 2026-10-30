@@ -1,0 +1,22 @@
+{
+  "evidence": "native_http",
+  "harness": "codex",
+  "phase": "resume",
+  "billing_source": "subscription",
+  "subscription_muse": "unavailable",
+  "results": [
+    {
+      "case": "native_turn",
+      "status": "succeeded",
+      "run_id": "84f3adb3-9eab-4247-a9e0-be142cca2438",
+      "native_run_id": "01a18dbf-6950-76e0-bb1b-4386a92424eb",
+      "binding_id": "7ef80fb1-f936-4628-86ce-d5ac83edf0ce",
+      "agent_revision": 4,
+      "answer": "PROFILE_fdb433b3\nDM_28390f4a-d948-436e-88dd-1c7cf2083959"
+    },
+    {
+      "case": "native_restart_exact_binding_and_history",
+      "status": "pass"
+    }
+  ]
+}

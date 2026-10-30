@@ -1,6 +1,7 @@
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { Connections } from "../src/harness/connections";
 import { Lifecycle } from "../src/lifecycle";
 import { Store } from "../src/store";
 
@@ -9,10 +10,14 @@ export function fixture() {
   const owner = crypto.randomUUID();
   let store = new Store(join(dir, "state.sqlite"), owner);
   let lifecycle = new Lifecycle(store);
+  const connection = new Connections(lifecycle).create({
+    harness: "codex",
+    authentication: { method: "native_login", billing_source: "subscription" },
+  });
   const agent = lifecycle.create("agent", {
     name: "Researcher",
     harness: "codex",
-    connection_id: crypto.randomUUID(),
+    connection_id: connection.id,
   });
   const thread = lifecycle.create("thread", { type: "dm", member_agent_ids: [agent.id] });
   return {

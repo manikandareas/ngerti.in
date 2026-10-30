@@ -1,10 +1,11 @@
 import { timingSafeEqual } from "node:crypto";
 import { z } from "zod";
-import { DomainError, type Entity } from "../contracts";
+import { type agentInput, type agentUpdate, DomainError, type Entity } from "../contracts";
 import type { Lifecycle } from "../lifecycle";
 import { canonical } from "../store";
 import { Connections } from "./connections";
 import { type ToolScope, toolScope } from "./contracts";
+import { productToolSchemas } from "./product-tool-contracts";
 
 export type Resource = {
   kind: "agent" | "thread" | "run" | "message" | "goal" | "routine" | "artifact";
@@ -37,7 +38,107 @@ export class ProductTools {
           thread_id: run.thread_id,
           run_id: run.id,
           input: message.text,
+          agent_snapshot: run.agent_snapshot,
         };
+      },
+    });
+    this.register("ngertiin.describe_tools", {
+      schema: z.strictObject({}),
+      resources: () => [],
+      execute: (_input, { authorize }) => {
+        authorize();
+        return {
+          tools: [...this.#tools].map(([name, tool]) => ({
+            name,
+            inputSchema: z.toJSONSchema(tool.schema),
+          })),
+        };
+      },
+    });
+    this.register("ngertiin.list_agents", {
+      schema: z.strictObject({}),
+      resources: () => [],
+      execute: (_input, { scope, authorize }) => {
+        authorize();
+        const caller = lifecycle.store.get("agent", scope.agent_id);
+        const agents =
+          caller.configuration_access === "owner" ? lifecycle.store.list("agent") : [caller];
+        return {
+          agents,
+          connections: lifecycle.store
+            .list("connection")
+            .filter(
+              (connection) =>
+                connection.state === "active" &&
+                (caller.configuration_access === "owner" || connection.id === caller.connection_id),
+            )
+            .map((connection) => ({
+              id: connection.id,
+              harness: connection.harness,
+              authentication: {
+                method: connection.authentication.method,
+                billing_source: connection.authentication.billing_source,
+              },
+              models: connection.models,
+            })),
+        };
+      },
+    });
+    this.register("ngertiin.create_agent", {
+      schema: productToolSchemas["ngertiin.create_agent"],
+      resources: () => [],
+      execute: (input, { scope, authorize }) => {
+        const data = input as { command_id: string; profile: z.infer<typeof agentInput> };
+        authorize();
+        if (lifecycle.store.get("agent", scope.agent_id).configuration_access !== "owner")
+          throw new DomainError("SCOPE_DENIED", 403);
+        return lifecycle.store.command(
+          data.command_id,
+          {
+            operation: "create_agent",
+            owner_id: scope.owner_id,
+            actor_id: scope.agent_id,
+            profile: data.profile,
+          },
+          () => {
+            const connection = lifecycle.store.get("connection", data.profile.connection_id);
+            if (connection.state !== "active" || connection.harness !== data.profile.harness)
+              throw new DomainError("SCOPE_DENIED", 403);
+            const agent = lifecycle.createAgent(data.profile);
+            const thread = lifecycle.create("thread", { type: "dm", member_agent_ids: [agent.id] });
+            return { agent, thread };
+          },
+        );
+      },
+    });
+    this.register("ngertiin.update_agent", {
+      schema: productToolSchemas["ngertiin.update_agent"],
+      resources: () => [],
+      execute: (input, { scope, authorize }) => {
+        const data = input as z.infer<typeof agentUpdate> & {
+          command_id: string;
+          agent_id: string;
+        };
+        authorize();
+        const caller = lifecycle.store.get("agent", scope.agent_id);
+        if (caller.id !== data.agent_id && caller.configuration_access !== "owner")
+          throw new DomainError("SCOPE_DENIED", 403);
+        return lifecycle.store.command(
+          data.command_id,
+          {
+            operation: "update_agent",
+            owner_id: scope.owner_id,
+            actor_id: caller.id,
+            target: data.agent_id,
+            expected_revision: data.expected_revision,
+            changes: data.changes,
+          },
+          () =>
+            lifecycle.updateAgent(data.agent_id, {
+              expected_revision: data.expected_revision,
+              changes: data.changes,
+            }),
+        );
       },
     });
   }
@@ -47,7 +148,10 @@ export class ProductTools {
     this.#tools.set(name, tool);
   }
   issue(run: Entity<"run">) {
-    const { agent, connection } = new Connections(this.lifecycle).forAgent(run.agent_id);
+    const { agent, connection } = new Connections(this.lifecycle).forAgent(
+      run.agent_id,
+      run.thread_id,
+    );
     if (!run.binding_id) throw new DomainError("SCOPE_DENIED", 403);
     const scope = toolScope.parse({
       owner_id: run.owner_id,
@@ -94,7 +198,10 @@ export class ProductTools {
     const run = store.get("run", scope.run_id);
     if (!run.dispatch_token) throw new DomainError("SCOPE_DENIED", 403);
     this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
-    const { agent, connection } = new Connections(this.lifecycle).forAgent(scope.agent_id);
+    const { agent, connection } = new Connections(this.lifecycle).forAgent(
+      scope.agent_id,
+      scope.thread_id,
+    );
     const binding = store.get("binding", scope.binding_id);
     if (
       scope.owner_id !== store.ownerId ||

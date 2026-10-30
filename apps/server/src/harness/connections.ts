@@ -75,8 +75,10 @@ export class Connections {
     const current = this.get(id);
     return current.state === "revoked" ? current : this.update(current, { state: "revoked" });
   }
-  forAgent(agentId: string) {
-    const agent = this.lifecycle.store.get("agent", agentId);
+  forAgent(agentId: string, threadId?: string) {
+    const agent = threadId
+      ? this.lifecycle.executionAgent(threadId, agentId)
+      : this.lifecycle.store.get("agent", agentId);
     const connection = this.get(agent.connection_id);
     if (connection.state !== "active" || connection.harness !== agent.harness)
       throw new DomainError("SCOPE_DENIED", 403);

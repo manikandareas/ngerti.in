@@ -132,7 +132,7 @@ async function handle(request: {
         history: { mode: "inline", items: p.excludeItems === false ? items : [], snapshot: null },
       });
     case "turn/start": {
-      const input = p.input.map((v: { text: string }) => v.text).join("\n");
+      const input = p.input.at(-1)?.text ?? "";
       if (input === "reject") return fail(request.id);
       active = { id: p.commandId, input };
       items.push({
@@ -207,13 +207,16 @@ async function handle(request: {
       await rpc("initialize", { protocolVersion: "2025-06-18" });
       await rpc("tools/list", {});
       const tool = await rpc("tools/call", {
-        name: "ngertiin.read_run_context",
-        arguments: {},
+        ...(input.startsWith("product-tool:")
+          ? JSON.parse(input.slice("product-tool:".length))
+          : { name: "ngertiin.read_run_context", arguments: {} }),
         _meta: { progressToken: "native-progress" },
       });
+      items = items.filter((entry) => entry.itemId !== itemId);
       finish(
         JSON.stringify({
           tool,
+          profile_instructions: p.input.length > 1 ? p.input[0].text : "",
           history: items.filter((v) => v.kind === "userMessage").map((v) => v.text),
         }),
       );

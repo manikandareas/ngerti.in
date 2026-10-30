@@ -7,6 +7,7 @@ export interface ExecutorContext {
   started(nativeRunId?: string): void;
 }
 export interface HarnessExecutor {
+  prepare?(threadId: string, agentId: string): Promise<unknown>;
   execute(
     run: Entity<"run">,
     context: ExecutorContext,
@@ -17,6 +18,7 @@ type Work = { run: Entity<"run">; controller: AbortController; done: Promise<voi
 /** Scheduler and dispatcher share the application authority; neither runs a model loop. */
 export class Background {
   readonly #work = new Map<string, Work>();
+  readonly #preparing = new Map<string, Promise<void>>();
   #timer: ReturnType<typeof setInterval> | null = null;
   #stopping = false;
   #closed = false;
@@ -54,22 +56,56 @@ export class Background {
         work.controller.abort();
     }
     for (const queued of this.lifecycle.store.list("run")) {
-      if (this.#work.size >= this.concurrency) break;
+      if (this.#work.size + this.#preparing.size >= this.concurrency) break;
       if (queued.status !== "queued") continue;
+      if (
+        this.lifecycle.store
+          .list("run")
+          .some(
+            (run) =>
+              run.thread_id === queued.thread_id &&
+              run.agent_id === queued.agent_id &&
+              ["dispatching", "running", "cancel_requested", "unknown"].includes(run.status),
+          )
+      )
+        continue;
       const agent = this.lifecycle.store.get("agent", queued.agent_id);
       const executor = this.executors[agent.harness];
       // Missing adapters keep work queued. Never fall back to another provider or engine.
       if (!executor) continue;
-      try {
-        const run = this.lifecycle.claimNext(queued.thread_id, queued.agent_id);
-        if (!run) continue;
-        const controller = new AbortController();
-        const work: Work = { run, controller, done: Promise.resolve() };
-        this.#work.set(run.id, work);
-        work.done = this.execute(work, executor);
-      } catch (error) {
-        this.report(error instanceof DomainError ? error.code : "DISPATCH_ERROR");
+      const lane = `${queued.thread_id}:${queued.agent_id}`;
+      if (this.#preparing.has(lane)) continue;
+      if (executor.prepare) {
+        const pending = executor
+          .prepare(queued.thread_id, queued.agent_id)
+          .then(() => {
+            if (!this.#stopping) this.claim(queued.thread_id, queued.agent_id);
+          })
+          .catch((error) =>
+            this.report(error instanceof DomainError ? error.code : "SESSION_PREPARATION_FAILED"),
+          )
+          .finally(() => this.#preparing.delete(lane));
+        this.#preparing.set(lane, pending);
+        continue;
       }
+      this.claim(queued.thread_id, queued.agent_id);
+    }
+  }
+
+  private claim(threadId: string, agentId: string) {
+    if (this.#work.size >= this.concurrency) return;
+    const agent = this.lifecycle.store.get("agent", agentId);
+    const executor = this.executors[agent.harness];
+    if (!executor) return;
+    try {
+      const run = this.lifecycle.claimNext(threadId, agentId);
+      if (!run) return;
+      const controller = new AbortController();
+      const work: Work = { run, controller, done: Promise.resolve() };
+      this.#work.set(run.id, work);
+      work.done = this.execute(work, executor);
+    } catch (error) {
+      this.report(error instanceof DomainError ? error.code : "DISPATCH_ERROR");
     }
   }
 
@@ -99,6 +135,7 @@ export class Background {
   }
 
   async idle() {
+    await Promise.all([...this.#preparing.values()]);
     await Promise.all([...this.#work.values()].map((work) => work.done));
   }
 

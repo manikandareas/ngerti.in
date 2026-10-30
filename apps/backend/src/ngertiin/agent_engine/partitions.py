@@ -276,6 +276,7 @@ def local_configuration(owner, home, env):
             "version": 2,
             "execution_surfaces": {
                 "native_children": {"kind": "scoped_delegation", "ready": True},
+                "conversation": {"kind": "scoped_conversation", "ready": True},
                 "native_linux": {
                     "kind": "scoped_linux",
                     "ready": bool(env.get("NMA_NATIVE_TOOLS_IMAGE")),
@@ -283,6 +284,12 @@ def local_configuration(owner, home, env):
                 },
             },
             "tool_grants": {
+                "clarification": {
+                    "enabled": True,
+                    "label": "Clarifying questions",
+                    "toolset": "clarify",
+                    "execution_surface": "conversation",
+                },
                 "delegation": {
                     "enabled": True,
                     "label": "Temporary assistants",
@@ -357,7 +364,7 @@ def local_configuration(owner, home, env):
     child["NMA_DEFAULT_MODEL"] = "default"
     child["NMA_DEFAULT_GRANTS"] = json.dumps(
         {
-            "tool_grants": ["tasks", "files"]
+            "tool_grants": ["tasks", "files", "clarification"]
             + (["terminal", "browser", "assistance"] if env.get("NMA_NATIVE_TOOLS_IMAGE") else [])
         }
     )

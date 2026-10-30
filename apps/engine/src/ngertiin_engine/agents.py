@@ -253,7 +253,7 @@ class Agents:
             raise EngineError(result["error"]["code"], result["error"].get("details"))
         return result
 
-    def apply(self, conn, body):
+    def apply(self, conn, body, *, identity=None):
         kind, p, expected = body["type"], body["payload"], body["expected_revision"]
         owner = self.store.owner
         now = datetime.now(UTC).isoformat().replace("+00:00", "Z")
@@ -261,7 +261,7 @@ class Agents:
             if set(p) != {"display_name", "handle", "config"} or expected is not None:
                 raise EngineError("INVALID_REQUEST")
             name, handle, config = self.validate_config(p)
-            agent_id = str(uuid4())
+            agent_id = identity or str(uuid4())
             conn.execute(
                 "INSERT INTO nma_agents VALUES (?,?,?,?,'active',1,1,1,?,?)",
                 (owner, agent_id, handle, name, now, now),

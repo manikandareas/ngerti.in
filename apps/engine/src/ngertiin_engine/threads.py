@@ -54,6 +54,15 @@ class Threads:
         ).fetchall()
         # Resolve the authoritative identity on every read; never duplicate profiles per channel.
         thread["agents"] = [self.agents.get(conn, member[0]) for member in members]
+        named = conn.execute(
+            "SELECT 1 FROM nma_commands WHERE owner_id=? AND json_extract(body,'$.type')='history.rename' AND json_extract(result,'$.thread.thread_id')=? LIMIT 1",
+            (self.store.owner, thread_id),
+        ).fetchone()
+        thread["title_customized"] = bool(named) or bool(
+            thread["kind"] == "dm"
+            and thread["agents"]
+            and thread["agents"][0]["primary_dm_thread_id"] != thread_id
+        )
         return thread
 
     def read(self, payload):

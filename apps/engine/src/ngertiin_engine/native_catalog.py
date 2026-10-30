@@ -82,6 +82,11 @@ def inspect_bundle(key, entry, data, visiting=()):
                         "CAPABILITY_UNAVAILABLE",
                         {"capability": key, "reason": "isolated_display_required"},
                     )
+        elif spec.get("kind") == "scoped_conversation":
+            if name != "clarify" or names != ["clarify"]:
+                raise EngineError(
+                    "CAPABILITY_UNAVAILABLE", {"reason": "excluded_surface"}
+                )
         elif spec.get("kind") == "scoped_research":
             if not set(names) <= {"web_search", "web_extract", "x_search"}:
                 raise EngineError(

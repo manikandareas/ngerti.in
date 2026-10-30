@@ -44,6 +44,14 @@ class Transcript:
         item["parts"] = json.loads(item["content"])
         item["content"] = item["parts"][0]["text"]
         item["revision"] = "1"
+        source = conn.execute(
+            "SELECT source_message_id FROM nma_messages WHERE owner_id=? AND message_id=?",
+            (self.store.owner, message_id),
+        ).fetchone()[0]
+        if source:
+            item["origin"] = "selected_history"
+            item["source_message_id"] = source
+
         from ngertiin_engine.files import Files
 
         ids = [

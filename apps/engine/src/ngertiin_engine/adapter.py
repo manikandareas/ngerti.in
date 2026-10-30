@@ -80,7 +80,13 @@ class Adapter:
             "nma:" + owner,
             authority.profile_id,
             frozenset(
-                {"session:create", "session:read", "session:submit", "session:control"}
+                {
+                    "session:create",
+                    "session:read",
+                    "session:submit",
+                    "session:control",
+                    "session:respond",
+                }
             ),
             "nma:" + owner,
         )
@@ -592,6 +598,53 @@ class Adapter:
             if kind == "file.inventory" and not payload:
                 return files.inventory()
             return await asyncio.to_thread(files.upload, kind, payload, self.threads)
+        if kind in {"clarification.list", "clarification.answer"}:
+            from ngertiin_engine.clarifications import Clarifications
+
+            controls = Clarifications(self)
+            if kind == "clarification.list" and body["expected_revision"] is None:
+                return controls.listing(payload)
+            if kind == "clarification.answer":
+                return await controls.answer(body)
+            raise EngineError("INVALID_REQUEST")
+        if kind == "agent.presets":
+            if payload or body["expected_revision"] is not None:
+                raise EngineError("INVALID_REQUEST")
+            from hermes_cli.personality import BUILTIN_PERSONALITIES
+
+            return {
+                "items": [
+                    {"id": name, "soul": soul}
+                    for name, soul in BUILTIN_PERSONALITIES.items()
+                ]
+            }
+        if kind.startswith("history."):
+            from ngertiin_engine.history import History
+
+            history = History(self)
+            if kind == "history.retry":
+                return await self.dm.send(history.retry(body))
+            if kind == "history.search" and body["expected_revision"] is None:
+                return history.search(payload)
+            if kind == "history.usage" and body["expected_revision"] is None:
+                return history.usage(payload)
+            if kind in {"history.rename", "history.branch"}:
+                return history.mutate(body)
+            raise EngineError("INVALID_REQUEST")
+        if kind.startswith("portable."):
+            from ngertiin_engine.portable import Portable
+
+            portable = Portable(self)
+            if kind == "portable.import":
+                self.agents.models = self.connections.catalog()
+                return portable.import_bundle(body)
+            if body["expected_revision"] is not None:
+                raise EngineError("INVALID_REQUEST")
+            if kind == "portable.export":
+                return portable.export(payload)
+            if kind == "portable.preview":
+                return portable.preview(payload)
+            raise EngineError("INVALID_REQUEST")
         if kind in {"session.inspect", "session.compress", "session.reset"}:
             from ngertiin_engine.session_controls import SessionControls
 
@@ -794,6 +847,17 @@ class Adapter:
                     "artifact.read",
                     "artifact.share",
                     "artifact.revoke",
+                    "clarification.list",
+                    "clarification.answer",
+                    "agent.presets",
+                    "history.search",
+                    "history.usage",
+                    "history.rename",
+                    "history.branch",
+                    "history.retry",
+                    "portable.export",
+                    "portable.preview",
+                    "portable.import",
                 ],
                 "production_ready": False,
             }

@@ -112,6 +112,7 @@ class SessionContext:
             and not (
                 m["author_kind"] == "agent"
                 and m["author_agent_id"] == config["agent_id"]
+                and m.get("origin") != "selected_history"
             )
         ]
 

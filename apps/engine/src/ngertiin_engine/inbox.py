@@ -40,11 +40,15 @@ class Inbox:
             "SELECT COUNT(*) FROM nma_messages WHERE owner_id=? AND thread_id=? AND author_kind='agent' AND message_seq>?",
             (self.owner, thread_id, row[5]),
         ).fetchone()[0]
+        named = conn.execute(
+            "SELECT 1 FROM nma_commands WHERE owner_id=? AND json_extract(body,'$.type')='history.rename' AND json_extract(result,'$.thread.thread_id')=? LIMIT 1",
+            (self.owner, thread_id),
+        ).fetchone()
         return {
             "thread_id": thread_id,
             "kind": row[0],
             "is_primary": bool(primary),
-            "title": identity[0] if identity else row[1],
+            "title": identity[0] if identity and primary and not named else row[1],
             "dm_agent_id": row[2],
             "status": row[3],
             "agent_status": identity[1] if identity else None,

@@ -35,6 +35,11 @@ logger = logging.getLogger(__name__)
 
 
 def main():
+    raise RuntimeError("The Hermes engine is retired. Run `make dev` for the harness-first server.")
+
+
+def historical_main():
+    """Retained implementation for source comparison; not an application entry point."""
     from ngertiin_engine.runtime import verify
 
     verify(Path(os.environ["HERMES_SOURCE"]).resolve())

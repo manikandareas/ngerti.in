@@ -1,27 +1,45 @@
 # Ngertiin
 
-Persistent agents collaborate with one user through private DMs and groups, capture goals from conversation, and continue work through durable schedules, events and handoffs.
+Ngertiin is a persistent agent workspace for one human owner, private DMs, groups, automatic goals and Routine. The active product scope and acceptance are maintained in [Ngertiin Multi Agent](https://app.notion.com/p/402abdd6187381e3a720f4b01d824e1a) and its [backlog](https://app.notion.com/p/116e1edcee864b5da91887466d728aac).
 
-The multi-agent engine is the only execution path. Hermes owns admission, sessions, scheduling, cancellation and recovery. The product API authenticates accounts and forwards commands to their isolated engine partitions. There is no legacy/pivot mode or fallback executor.
-
-Product decisions and acceptance are maintained in [Ngertiin Multi Agent](https://app.notion.com/p/402abdd6187381e3a720f4b01d824e1a) and its [backlog](https://app.notion.com/p/116e1edcee864b5da91887466d728aac).
-
-The product opens on `/agents`. Both private and group conversations use
-`/conversations/<threadId>`; see the [active web routes](apps/web/README.md#route-aplikasi).
+The harness-first backend uses **Bun, TypeScript, Elysia and SQLite**. One application authority owns identity, admission, queue state, events, stop intent and recovery. Background scheduler and dispatcher modules run in that service. Codex App Server and Muse SDK/MSP will own native execution; no Hermes executor or fallback is started.
 
 ## Development
 
-1. Copy `.env.example` to `.env` and configure Clerk and PostgreSQL.
-2. Run `make install`, `make infra-up`, and `make setup`.
-3. Install the pinned runtime using [the engine guide](apps/engine/README.md). Set `HERMES_SOURCE`, `NMA_RUNTIME_PYTHON`, `OPENAI_API_KEY`, `OPENAI_MODEL` and `NMA_DEV_OWNER_IDS` (a JSON array of PostgreSQL account UUIDs) in `.env`. Set `NMA_PARTITIONS_FILE=.dev/engine/partitions.json`. For a new account, run `make api` and `make web`, sign in once, then read its UUID from `accounts` before starting the full stack.
-4. Run `make dev`. It starts the native account gateways, API and web together; Ctrl+C stops all three. Open `http://localhost:3000`. Local configuration/model catalogs are refreshed from `.env` at startup; signing keys and durable account state are preserved under `~/.ngertiin/<checkout-id>/<account-id>`. Restart `make dev` after changing `.env`. Production provisioning remains separate and the local launcher refuses production mode.
+Requirements: Bun **1.3.10** and `make`. PostgreSQL, Docker, Python, provider credentials and a browser are not required for foundation startup.
 
-`make check` runs static checks; `make build` builds the web application. Runtime acceptance, backup/restore and retirement evidence are recorded in [the acceptance and transition report](docs/research/nma-025-026-acceptance-cutover.md).
+```sh
+make install
+make setup
+make dev
+```
 
-## State and rollback
+The API listens on `127.0.0.1:8000`. State defaults to `.dev/harness-first/`. Override `NGERTIIN_PORT` or `NGERTIIN_STATE_DIR` when needed; see [.env.example](.env.example). `APP_ENV` must be `development`. `make api`, `bun run dev`, `bun run dev:api` and the compatibility `python3 scripts/dev.py` all start the same server.
 
-PostgreSQL accounts, billing history, historical application tables and historical objects are preserved. Historical schema migrations remain immutable; their presence does not enable a retired engine. Do not drop volumes or apply migration downgrades as cleanup.
+The bootstrap creates a stable owner UUID and private bearer token in `installation.json` with mode `0600`. Use that token in `Authorization: Bearer <token>` for API requests. Every mutation also requires a UUID `Idempotency-Key`. The startup log names the credentials file without printing its token. Local bearer access is a development boundary, not the deferred full login/pairing implementation.
 
-The current engine owns complete owner-scoped SQLite partitions. Backups must cover native/product stores, external workspace state and secret references. Restores are quarantined until reconciliation. Rollback uses an isolated previous Git revision and a verified backup, preserving all data written after cutover; it is not a runtime mode switch.
+- `GET /health/live`: process liveness.
+- `GET /health/ready`: foundation readiness and the number of registered executors.
+- `GET /v1/contracts`: versioned domain and command JSON schemas.
+- `GET /v1/events?after=0&limit=100`: durable event replay with a cursor.
+- See the [API and lifecycle contract](docs/architecture/harness-first-contract.md) for foundation commands and invariants.
 
-The original Compose project name is retained solely to keep existing named volumes attached. MinIO holds historical objects; current text artifacts live in the owner partition. Old documentation under `docs/product`, `docs/backlog` and older engineering/research reports is historical evidence, not the current product contract.
+The default foundation has **zero registered native executors**. Admitted work stays queued until the adapter tickets supply one. Basic one-time and fixed-interval Routine occurrences can enqueue work in the background. This does not claim completed inference, automatic conversational goals, full Routine behavior, or the NMA-060 API readiness gate.
+
+## Verification
+
+```sh
+make check
+bun run verify:foundation
+make build
+```
+
+`make check` checks the active backend and retained web source, then runs backend contract/integration tests. The process probe starts `make dev` in temporary state, checks HTTP and scheduling, kills and restarts it, and removes only its own temporary directory. `make build` checks the retained web build; it is not new UI acceptance.
+
+The [implementation ADR](docs/architecture/adr-0001-harness-first-foundation.md) records source provenance, runtime compatibility, storage choices and phase boundaries. [NMA-047 verification](docs/verification/nma-047/README.md) records actual results and limitations.
+
+## Historical source and data
+
+`apps/engine` and the Python `apps/backend` retain historical implementations for targeted audit and later reuse. Their Hermes API, engine and provisioner entry points are retired and reject startup. They are not dependencies of the active server, installation or CI checks. Historical Compose volumes, `.env`, old runtime state and evidence are untouched. Do not treat older guides or Done records as current acceptance.
+
+Development data does not require a migration from the historical runtime. A different `NGERTIIN_STATE_DIR` creates a fresh development installation. Existing new-runtime state must survive normal restarts; incompatible or foreign-owner databases are refused. Rollback uses a previous Git revision and verified backup, rather than a runtime fallback switch. UI work waits for NMA-060; installation on other devices waits for NMA-064.

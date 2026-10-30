@@ -134,6 +134,11 @@ async def run():
 
 
 def main():
+    raise RuntimeError("The Hermes provisioner is retired. Run `make dev` for the harness-first server.")
+
+
+def historical_main():
+    """Retained implementation for source comparison; not an application entry point."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--retry", type=UUID, help="Requeue one account after operator reconciliation"

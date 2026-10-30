@@ -1,0 +1,14 @@
+$ bun scripts/verification/nma047/foundation.ts
+30 |     try {
+31 |       // Held for the process lifetime in a separate database. The OS releases it on a crash.
+32 |       this.#lock.exec("PRAGMA busy_timeout=0; BEGIN EXCLUSIVE");
+33 |     } catch {
+34 |       this.#lock.close();
+35 |       throw new Error("Another application authority owns this state directory.");
+                     ^
+error: Another application authority owns this state directory.
+      at new Store (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/src/store.ts:35:17)
+      at /Users/vitoandareasmanik/Development/project/ngertiin/scripts/verification/nma047/foundation.ts:109:22
+
+Bun v1.3.10 (macOS arm64)
+error: script "verify:foundation" exited with code 1

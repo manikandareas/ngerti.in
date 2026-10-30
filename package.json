@@ -3,17 +3,21 @@
   "private": true,
   "packageManager": "bun@1.3.10",
   "workspaces": [
+    "apps/server",
     "apps/web"
   ],
   "scripts": {
-    "dev": "python3 scripts/dev.py",
+    "dev": "bun run --filter @ngertiin/server dev",
     "dev:web": "bun --env-file=.env --filter @ngertiin/web dev",
-    "dev:api": "uv run --project apps/backend uvicorn ngertiin.api.app:app --reload --host 127.0.0.1 --port 8000 --reload-dir apps/backend/src --timeout-graceful-shutdown 5",
+    "dev:api": "bun run --filter @ngertiin/server dev",
+    "setup": "bun apps/server/src/setup.ts",
     "build": "bun --filter @ngertiin/web build",
-    "typecheck": "bun --filter @ngertiin/web typecheck",
-    "lint": "biome check apps/web",
+    "typecheck": "bun run --filter @ngertiin/server typecheck && bun --filter @ngertiin/web typecheck",
+    "lint": "biome check apps/web && bun run --filter @ngertiin/server lint",
     "format": "biome check --write apps/web",
-    "check": "python3 scripts/check.py"
+    "check": "bun run lint && bun run typecheck && bun run test:server",
+    "test:server": "bun run --filter @ngertiin/server test",
+    "verify:foundation": "bun scripts/verification/nma047/foundation.ts"
   },
   "engines": {
     "node": ">=22.12"

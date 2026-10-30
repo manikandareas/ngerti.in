@@ -1,3 +1,5 @@
+> **Historical source.** Hermes is deferred under the harness-first plan. This engine and its provisioner entry points reject startup. The instructions below describe the historical implementation; use the [active development guide](../../README.md) and [ADR](../../docs/architecture/adr-0001-harness-first-foundation.md). Retained modules require audit before reuse.
+
 # Ngertiin agent engine
 
 This is the only product execution engine. The pinned Hermes gateway owns admission, sessions, scheduling, cancellation, handoffs and recovery; the backend is an authenticated transport and trusted E2B actuator. There is no legacy runtime switch or fallback executor.

@@ -1,0 +1,15 @@
+{
+  "lockfileVersion": 1,
+  "configVersion": 1,
+  "workspaces": {
+    "": {
+      "name": "ngertiin-foundation-native-probes",
+      "dependencies": {
+        "@muse-code/sdk": "1.4.12",
+      },
+    },
+  },
+  "packages": {
+    "@muse-code/sdk": ["@muse-code/sdk@1.4.12", "", { "peerDependencies": { "@types/node": ">=20" }, "optionalPeers": ["@types/node"] }, "sha512-tbgoGmNx+d3A7YqCtJktlW10bjoeeeEOCiSsdc5ATCubg8ayNF5ULdOvuQAQmBZDXjYqoOAzsKSxs8UT7v2x1A=="],
+  }
+}

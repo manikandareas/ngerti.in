@@ -1,0 +1,51 @@
+{
+  "scope": "NMA-047 harness-first foundation",
+  "status": "foundation_acceptance_passed",
+  "contract_tests": {
+    "planned": 28,
+    "pass": 28,
+    "fail": 0,
+    "skip": 0,
+    "assertions": 94
+  },
+  "process_http": {
+    "planned": 8,
+    "pass": 8,
+    "fail": 0,
+    "skip": 0,
+    "includes": "controlled native-acceptance fault fixture"
+  },
+  "compatibility": {
+    "planned": 2,
+    "pass": 2,
+    "fail": 0,
+    "skip": 0,
+    "codex": "native initialize only",
+    "muse": "official SDK against MSP fixture"
+  },
+  "checks": {
+    "server_lint": "pass",
+    "server_types": "pass",
+    "web_types": "pass",
+    "web_build": "pass_with_warnings",
+    "frozen_install": "pass",
+    "root_check": "failed_on_5_preexisting_web_lint_diagnostics",
+    "web_source_changed": false,
+    "documentation": "71 page hashes, 47 historical tickets, 4 views, 1536 local links pass",
+    "whitespace": "pass",
+    "python_retirement_syntax": "pass"
+  },
+  "provider_acceptance": {
+    "login": "not_attempted",
+    "model_discovery": "not_attempted",
+    "completed_inference": "not_attempted",
+    "product_tool_round_trip": "not_attempted",
+    "billing": "not_verified"
+  },
+  "gates": {
+    "NMA-060": "pending",
+    "UI": "not_started",
+    "installation": "not_started"
+  },
+  "committed": false
+}

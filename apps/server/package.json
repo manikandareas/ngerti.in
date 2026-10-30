@@ -1,0 +1,19 @@
+{
+  "name": "@ngertiin/server",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun src/main.ts",
+    "test": "bun test tests",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check ."
+  },
+  "dependencies": {
+    "elysia": "1.4.30",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@types/bun": "1.3.10",
+    "typescript": "7.0.2"
+  }
+}

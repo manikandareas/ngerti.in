@@ -1,0 +1,6 @@
+{
+  "name": "ngertiin-foundation-native-probes",
+  "private": true,
+  "type": "module",
+  "dependencies": { "@muse-code/sdk": "1.4.12" }
+}

@@ -1,11 +1,4 @@
-"""Run the durable account provisioner in development."""
-
-from ngertiin.agent_engine.provisioner import main
-from ngertiin.config import get_settings
+"""Retired launcher retained so historical source references remain navigable."""
 
 if __name__ == "__main__":
-    if get_settings().app_env != "development":
-        raise RuntimeError(
-            "Use the production provisioner with an isolated partition driver"
-        )
-    main()
+    raise SystemExit("The Hermes launcher is retired. Run `make dev` for the harness-first server.")

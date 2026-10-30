@@ -1,0 +1,73 @@
+{
+  "baseline_commit": "e471a71084fa86df4be94587ad256d87ffabe9c9",
+  "openbot": {
+    "repository": "https://github.com/nightly-labs/openbot",
+    "revision": "01e4b18e238e5de72a3570162c9f4275bb585786",
+    "adoption": "Behavioral port of selected flows; no whole-application vendoring",
+    "observed_modules": [
+      {
+        "path": "docs/architecture/structure.md",
+        "sha256": "c6a16f6e9b4a229569427d8912f45121f66b18117c6457de412e23ef2f51ed2e"
+      },
+      {
+        "path": "src/backend/agent-service.ts",
+        "sha256": "69a7463763ca7c36ff5e4c7bb5bfa7d81df82b573ceb33df885a2764d4b90c5a"
+      },
+      {
+        "path": "src/backend/agent/boot-recovery.ts",
+        "sha256": "133660cac639f7fd867528d8093496ff23f0f496f324582b343297fa47ec1f2c"
+      },
+      {
+        "path": "src/backend/mailbox-store.ts",
+        "sha256": "8405444b338256dc3e728a3c91e3a83181bd701740b3c97fc873678d6abe3a43"
+      },
+      {
+        "path": "src/backend/agent/turn-lifecycle.ts",
+        "sha256": "8c3e0dab075c84888384f47511a1b1d1f259aec0a224ae803f59d30897b74328"
+      },
+      {
+        "path": "src/backend/agent/routine-scheduler.ts",
+        "sha256": "f6625378d3c54d8c03934fec3edbdad65b27cc6fd21dfe81adbd48becce9166a"
+      },
+      {
+        "path": "src/backend/routine-timer.ts",
+        "sha256": "ffe4b7911a170d5c7547eccb5664af2b80c77ded78abeb2a5ce077117c18093d"
+      },
+      {
+        "path": "src/backend/agent-client.ts",
+        "sha256": "e835ad0d18a011bd1d5a8bad4c64b57f24914e023fd7a15de080f360d91f2ab2"
+      },
+      {
+        "path": "src/backend/app-server-client.ts",
+        "sha256": "6eceaf8a8560d0e13ed7bd9c75dbbda4bd6c4a7b05f6a2a92a8002dc455e2a0e"
+      },
+      {
+        "path": "src/backend/muse-client.ts",
+        "sha256": "2d4173e3f7cd0a52eabd83fa4e05625faa427d5e67c299c42988f516214776fc"
+      },
+      {
+        "path": "package.json",
+        "sha256": "aab5ed684df43194c6d1810696d44d20950081fa1592239e71787118354f239e"
+      }
+    ]
+  },
+  "versions": {
+    "bun": "1.3.10",
+    "typescript": "7.0.2",
+    "elysia": "1.4.30",
+    "zod": "4.4.3",
+    "muse_sdk": "1.4.12",
+    "codex_cli": "codex-cli 0.165.0",
+    "host": "Darwin arm64",
+    "sqlite": "3.51.0"
+  },
+  "native_acceptance": {
+    "codex": "Isolated App Server initialize only",
+    "muse": "Official SDK with protocol fixture; native CLI not tested",
+    "login": "not_attempted",
+    "model_discovery": "not_attempted",
+    "completed_inference": "not_attempted",
+    "product_tool_round_trip": "not_attempted",
+    "billing": "not_verified"
+  }
+}

@@ -1,15 +1,15 @@
 import { useAuth } from "@clerk/tanstack-react-start";
 import { Link } from "@tanstack/react-router";
-import { ArrowUp, AtSign } from "lucide-react";
+import { ArrowUp, LoaderCircle } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { PromptBar } from "@/components/beautiful-ui/conversation";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { providerFailureMessage } from "@/features/connections/client";
 import { ApiError } from "@/lib/api";
 import { ArtifactResults } from "./artifact-results";
 import { command, submit } from "./client";
 import { FileUpload, type UploadHandle } from "./file-upload";
+import { MentionInput } from "./mention-input";
 import type { Artifact, Thread } from "./state";
 
 type Pending = ReturnType<typeof command> & {
@@ -204,43 +204,22 @@ export function Composer({
         <label htmlFor="dm-message" className="sr-only">
           Pesan untuk {thread.kind === "group" ? thread.title : thread.agents[0]?.display_name}
         </label>
-        {thread.kind === "group" && (
-          <fieldset
-            className="order-first flex basis-full flex-wrap gap-1"
-            aria-label="Mention anggota"
-          >
-            {thread.agents.map((agent) => (
-              <Button
-                key={agent.agent_id}
-                type="button"
-                variant="ghost"
-                size="sm"
-                disabled={busy || !!pending || agent.status !== "active"}
-                onClick={() => {
-                  const value = `${text}${text && !text.endsWith(" ") ? " " : ""}@${agent.handle} `;
-                  setText(value);
-                  save(value, null);
-                  input.current?.focus();
-                }}
-              >
-                <AtSign className="size-3" aria-hidden="true" />
-                {agent.handle}
-              </Button>
-            ))}
-          </fieldset>
-        )}
-        <Textarea
-          ref={input}
+        <MentionInput
+          inputRef={input}
+          agents={thread.kind === "group" ? thread.agents : []}
           id="dm-message"
           rows={1}
           maxLength={100000}
           value={text}
           disabled={!ready || unavailable || !!pending}
-          placeholder={`Pesan untuk ${(thread.kind === "group" ? thread.title : thread.agents[0]?.display_name) ?? "agent"}…`}
-          className="relative order-2 max-h-48 min-h-11 min-w-0 flex-1 md:min-h-[46px] resize-none border-0 bg-transparent px-2 py-2.5 text-[15px] shadow-none [field-sizing:content] focus-visible:ring-0"
-          onChange={(event) => {
-            setText(event.target.value);
-            save(event.target.value, null);
+          placeholder={
+            thread.kind === "group"
+              ? "Tulis pesan atau tag agent dengan @"
+              : `Pesan untuk ${thread.agents[0]?.display_name ?? "agent"}…`
+          }
+          onValueChange={(value) => {
+            setText(value);
+            save(value, null);
           }}
           onKeyDown={(event) => {
             if (
@@ -278,30 +257,34 @@ export function Composer({
               save(text, pending, next);
             }}
           />
-          {(text.trim() || attachments.length > 0 || pending) && (
-            <div className="relative order-4">
-              <Button
-                type="submit"
-                size={pending ? "default" : "icon"}
-                aria-label={
-                  busy ? "Mengirim pesan" : pending ? "Periksa / kirim kembali" : "Kirim pesan"
-                }
-                disabled={
-                  !ready ||
-                  busy ||
-                  (unavailable && !pending) ||
-                  !connected ||
-                  (!text.trim() && !attachments.length && !pending)
-                }
-              >
-                {pending && !busy ? (
-                  "Periksa / kirim kembali"
-                ) : (
-                  <ArrowUp className="size-4" aria-hidden="true" />
-                )}
-              </Button>
-            </div>
-          )}
+          <div className="relative order-4 ml-auto self-end">
+            <Button
+              type="submit"
+              size={pending && !busy ? "default" : "icon"}
+              className="rounded-full shadow-none"
+              aria-label={
+                busy ? "Mengirim pesan" : pending ? "Periksa / kirim kembali" : "Kirim pesan"
+              }
+              disabled={
+                !ready ||
+                busy ||
+                (unavailable && !pending) ||
+                !connected ||
+                (!text.trim() && !attachments.length && !pending)
+              }
+            >
+              {pending && !busy ? (
+                "Periksa / kirim kembali"
+              ) : busy ? (
+                <LoaderCircle
+                  className="size-4 animate-spin motion-reduce:animate-none"
+                  aria-hidden="true"
+                />
+              ) : (
+                <ArrowUp className="size-4" aria-hidden="true" />
+              )}
+            </Button>
+          </div>
         </div>
       </PromptBar>
     </form>

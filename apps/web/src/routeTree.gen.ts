@@ -10,26 +10,22 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AgentsRouteImport } from './routes/agents'
-import { Route as ConnectionsRouteImport } from './routes/connections'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as DesignSystemRouteImport } from './routes/design-system'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as SignUpRouteImport } from './routes/sign-up'
-import { Route as ConversationsThreadIdRouteImport } from './routes/conversations.$threadId'
+import { Route as AuthenticatedWorkspaceRouteImport } from './routes/_authenticated._workspace'
+import { Route as AuthenticatedConnectionsRouteImport } from './routes/_authenticated.connections'
+import { Route as AuthenticatedWorkspaceAgentsRouteImport } from './routes/_authenticated._workspace.agents'
+import { Route as AuthenticatedWorkspaceConversationsThreadIdRouteImport } from './routes/_authenticated._workspace.conversations.$threadId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AgentsRoute = AgentsRouteImport.update({
-  id: '/agents',
-  path: '/agents',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ConnectionsRoute = ConnectionsRouteImport.update({
-  id: '/connections',
-  path: '/connections',
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DesignSystemRoute = DesignSystemRouteImport.update({
@@ -47,78 +43,97 @@ const SignUpRoute = SignUpRouteImport.update({
   path: '/sign-up',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ConversationsThreadIdRoute = ConversationsThreadIdRouteImport.update({
-  id: '/conversations/$threadId',
-  path: '/conversations/$threadId',
-  getParentRoute: () => rootRouteImport,
+const AuthenticatedWorkspaceRoute = AuthenticatedWorkspaceRouteImport.update({
+  id: '/_workspace',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedConnectionsRoute =
+  AuthenticatedConnectionsRouteImport.update({
+    id: '/connections',
+    path: '/connections',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedWorkspaceAgentsRoute =
+  AuthenticatedWorkspaceAgentsRouteImport.update({
+    id: '/agents',
+    path: '/agents',
+    getParentRoute: () => AuthenticatedWorkspaceRoute,
+  } as any)
+const AuthenticatedWorkspaceConversationsThreadIdRoute =
+  AuthenticatedWorkspaceConversationsThreadIdRouteImport.update({
+    id: '/conversations/$threadId',
+    path: '/conversations/$threadId',
+    getParentRoute: () => AuthenticatedWorkspaceRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/agents': typeof AgentsRoute
-  '/connections': typeof ConnectionsRoute
   '/design-system': typeof DesignSystemRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
-  '/conversations/$threadId': typeof ConversationsThreadIdRoute
+  '/connections': typeof AuthenticatedConnectionsRoute
+  '/agents': typeof AuthenticatedWorkspaceAgentsRoute
+  '/conversations/$threadId': typeof AuthenticatedWorkspaceConversationsThreadIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/agents': typeof AgentsRoute
-  '/connections': typeof ConnectionsRoute
   '/design-system': typeof DesignSystemRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
-  '/conversations/$threadId': typeof ConversationsThreadIdRoute
+  '/connections': typeof AuthenticatedConnectionsRoute
+  '/agents': typeof AuthenticatedWorkspaceAgentsRoute
+  '/conversations/$threadId': typeof AuthenticatedWorkspaceConversationsThreadIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/agents': typeof AgentsRoute
-  '/connections': typeof ConnectionsRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/design-system': typeof DesignSystemRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
-  '/conversations/$threadId': typeof ConversationsThreadIdRoute
+  '/_authenticated/_workspace': typeof AuthenticatedWorkspaceRouteWithChildren
+  '/_authenticated/connections': typeof AuthenticatedConnectionsRoute
+  '/_authenticated/_workspace/agents': typeof AuthenticatedWorkspaceAgentsRoute
+  '/_authenticated/_workspace/conversations/$threadId': typeof AuthenticatedWorkspaceConversationsThreadIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/agents'
-    | '/connections'
     | '/design-system'
     | '/sign-in'
     | '/sign-up'
+    | '/connections'
+    | '/agents'
     | '/conversations/$threadId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/agents'
-    | '/connections'
     | '/design-system'
     | '/sign-in'
     | '/sign-up'
+    | '/connections'
+    | '/agents'
     | '/conversations/$threadId'
   id:
     | '__root__'
     | '/'
-    | '/agents'
-    | '/connections'
+    | '/_authenticated'
     | '/design-system'
     | '/sign-in'
     | '/sign-up'
-    | '/conversations/$threadId'
+    | '/_authenticated/_workspace'
+    | '/_authenticated/connections'
+    | '/_authenticated/_workspace/agents'
+    | '/_authenticated/_workspace/conversations/$threadId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AgentsRoute: typeof AgentsRoute
-  ConnectionsRoute: typeof ConnectionsRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   DesignSystemRoute: typeof DesignSystemRoute
   SignInRoute: typeof SignInRoute
   SignUpRoute: typeof SignUpRoute
-  ConversationsThreadIdRoute: typeof ConversationsThreadIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -130,18 +145,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/agents': {
-      id: '/agents'
-      path: '/agents'
-      fullPath: '/agents'
-      preLoaderRoute: typeof AgentsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/connections': {
-      id: '/connections'
-      path: '/connections'
-      fullPath: '/connections'
-      preLoaderRoute: typeof ConnectionsRouteImport
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/design-system': {
@@ -165,24 +173,74 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignUpRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/conversations/$threadId': {
-      id: '/conversations/$threadId'
+    '/_authenticated/_workspace': {
+      id: '/_authenticated/_workspace'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedWorkspaceRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/connections': {
+      id: '/_authenticated/connections'
+      path: '/connections'
+      fullPath: '/connections'
+      preLoaderRoute: typeof AuthenticatedConnectionsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/_workspace/agents': {
+      id: '/_authenticated/_workspace/agents'
+      path: '/agents'
+      fullPath: '/agents'
+      preLoaderRoute: typeof AuthenticatedWorkspaceAgentsRouteImport
+      parentRoute: typeof AuthenticatedWorkspaceRoute
+    }
+    '/_authenticated/_workspace/conversations/$threadId': {
+      id: '/_authenticated/_workspace/conversations/$threadId'
       path: '/conversations/$threadId'
       fullPath: '/conversations/$threadId'
-      preLoaderRoute: typeof ConversationsThreadIdRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedWorkspaceConversationsThreadIdRouteImport
+      parentRoute: typeof AuthenticatedWorkspaceRoute
     }
   }
 }
 
+interface AuthenticatedWorkspaceRouteChildren {
+  AuthenticatedWorkspaceAgentsRoute: typeof AuthenticatedWorkspaceAgentsRoute
+  AuthenticatedWorkspaceConversationsThreadIdRoute: typeof AuthenticatedWorkspaceConversationsThreadIdRoute
+}
+
+const AuthenticatedWorkspaceRouteChildren: AuthenticatedWorkspaceRouteChildren =
+  {
+    AuthenticatedWorkspaceAgentsRoute: AuthenticatedWorkspaceAgentsRoute,
+    AuthenticatedWorkspaceConversationsThreadIdRoute:
+      AuthenticatedWorkspaceConversationsThreadIdRoute,
+  }
+
+const AuthenticatedWorkspaceRouteWithChildren =
+  AuthenticatedWorkspaceRoute._addFileChildren(
+    AuthenticatedWorkspaceRouteChildren,
+  )
+
+interface AuthenticatedRouteChildren {
+  AuthenticatedWorkspaceRoute: typeof AuthenticatedWorkspaceRouteWithChildren
+  AuthenticatedConnectionsRoute: typeof AuthenticatedConnectionsRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedWorkspaceRoute: AuthenticatedWorkspaceRouteWithChildren,
+  AuthenticatedConnectionsRoute: AuthenticatedConnectionsRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AgentsRoute: AgentsRoute,
-  ConnectionsRoute: ConnectionsRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
   DesignSystemRoute: DesignSystemRoute,
   SignInRoute: SignInRoute,
   SignUpRoute: SignUpRoute,
-  ConversationsThreadIdRoute: ConversationsThreadIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -11,3 +11,10 @@ scripted replies, simulated progress/retries, marketing labels and unconnected
 model/dictation controls are removed. Status is supplied by the existing runtime.
 Reduced motion disables the loader animation. Expandable content is removed from
 the focus order while closed. No second component theme or runtime is installed.
+
+The composer follows the Prompt Bar pill variant: inline controls, a full-width
+input row for longer drafts, and a round send button. Group @ suggestions use
+active thread members, filter display names/handles, and insert the canonical
+handle at the caret. The shadcn/Radix popover is portalled to avoid clipping;
+Arrow keys, Enter/Tab, Escape and pointer selection preserve textarea focus.
+Model selection remains in agent settings, matching persistent agent identity.

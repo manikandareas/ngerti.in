@@ -1,7 +1,6 @@
 import { useAuth } from "@clerk/tanstack-react-start";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
-import { AppShell } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { NativeChoice } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -110,7 +109,7 @@ function AgentManagement({
   initialAgent?: Agent;
   onClose?: () => void;
 }) {
-  const Container = initialAgent ? Fragment : AppShell;
+  const Container = Fragment;
   const { getToken } = useAuth();
   const navigate = useNavigate();
   const [opening, setOpening] = useState<string | null>(null);

@@ -1,5 +1,5 @@
 import { useAuth } from "@clerk/tanstack-react-start";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { PanelRight } from "lucide-react";
 import { useRef, useState } from "react";
@@ -27,6 +27,7 @@ import { AgentAvatar } from "./agent-avatar";
 import { type Agent, ContextualAgentEditor } from "./agents-page";
 export function ThreadInfo({ thread, refresh }: { thread: Thread; refresh: () => void }) {
   const { getToken, userId } = useAuth();
+  const cache = useQueryClient();
   const [editing, setEditing] = useState<Agent | null>(null);
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -66,6 +67,9 @@ export function ThreadInfo({ thread, refresh }: { thread: Thread; refresh: () =>
     try {
       await submit(pending.current.body, await getToken());
       pending.current = null;
+      void cache.invalidateQueries({
+        queryKey: ["navigation-group-members", userId, thread.thread_id],
+      });
       refresh();
     } catch {
       setError(
@@ -81,6 +85,9 @@ export function ThreadInfo({ thread, refresh }: { thread: Thread; refresh: () =>
         agent={editing}
         onClose={() => {
           setEditing(null);
+          void cache.invalidateQueries({
+            queryKey: ["navigation-group-members", userId, thread.thread_id],
+          });
           refresh();
         }}
       />

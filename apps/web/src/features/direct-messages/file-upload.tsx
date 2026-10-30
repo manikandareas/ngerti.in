@@ -208,7 +208,11 @@ export function FileUpload({
         variant={compact ? "ghost" : "outline"}
         size={compact && !progress ? "icon" : "sm"}
         disabled={disabled || !!progress || recording}
-        className={compact ? "relative order-1 shrink-0 rounded-full" : undefined}
+        className={
+          compact
+            ? "relative order-1 shrink-0 self-end rounded-full text-muted-foreground"
+            : undefined
+        }
         aria-label={progress ?? "Lampirkan file"}
         title={progress ?? "Lampirkan file"}
         onClick={() => input.current?.click()}
@@ -222,7 +226,7 @@ export function FileUpload({
         disabled={disabled || !!progress}
         className={
           compact
-            ? "relative order-3 shrink-0 md:size-9 md:bg-primary md:text-primary-foreground md:hover:bg-primary/90"
+            ? "relative order-3 shrink-0 self-end rounded-full text-muted-foreground"
             : undefined
         }
         aria-label={recording ? "Selesai rekam" : "Rekam suara"}

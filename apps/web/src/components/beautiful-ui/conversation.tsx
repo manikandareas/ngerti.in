@@ -81,7 +81,7 @@ export function TaskRow({
 
 export function PromptBar({ children }: { children: ReactNode }) {
   return (
-    <div className="conversation-composer relative flex min-w-0 flex-wrap items-center gap-1 border bg-background p-2.5 focus-within:border-ring">
+    <div className="conversation-composer relative flex min-w-0 flex-wrap items-end gap-1 rounded-[28px] border bg-background p-1.5 shadow-sm transition-colors focus-within:border-ring">
       {children}
     </div>
   );

@@ -34,15 +34,15 @@ export function ResourcePanel({
         </Button>
       </SheetTrigger>
       <SheetContent
-        showOverlay={false}
+        overlayClassName="lg:hidden"
         data-context-editor="true"
         className="gap-4 border-0 p-4 data-[side=right]:w-full data-[side=right]:sm:max-w-[360px]"
       >
-        <SheetHeader className="border-b pr-12">
+        <SheetHeader className="px-0 pr-10">
           <SheetTitle>{title}</SheetTitle>
-          <SheetDescription>{description}</SheetDescription>
+          <SheetDescription className="sr-only">{description}</SheetDescription>
         </SheetHeader>
-        <div className="min-w-0 space-y-4 px-4 pb-6">{children}</div>
+        <div className="min-w-0 space-y-4 pb-6">{children}</div>
       </SheetContent>
     </Sheet>
   );

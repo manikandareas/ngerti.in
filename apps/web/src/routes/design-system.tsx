@@ -1,7 +1,7 @@
 import { useAuth } from "@clerk/tanstack-react-start";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { LoaderCircle, Moon, Sun } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Brand } from "@/components/brand";
 import {
   Accordion,
@@ -68,7 +68,10 @@ function DesignSystemRoute() {
 }
 
 function DesignSystem() {
-  const [dark, setDark] = useState(() => document.documentElement.dataset.theme === "dark");
+  const [dark, setDark] = useState(false);
+  useEffect(() => {
+    setDark(document.documentElement.dataset.theme === "dark");
+  }, []);
   const [feedback, setFeedback] = useState("Pilih tindakan untuk mencoba komponen.");
   return (
     <main id="main" className="mx-auto max-w-6xl space-y-10 px-4 py-8 sm:px-8">

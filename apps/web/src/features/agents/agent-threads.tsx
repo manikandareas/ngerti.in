@@ -128,7 +128,7 @@ export function AgentThreads({ agents, edit }: { agents: Agent[]; edit: (agent: 
         </Button>
       </div>
       {error && (
-        <p role="alert" className="text-sm text-destructive">
+        <p role="alert" className="text-sm text-destructive-foreground">
           {error}
         </p>
       )}
@@ -176,8 +176,7 @@ export function AgentThreads({ agents, edit }: { agents: Agent[]; edit: (agent: 
           <DialogHeader>
             <DialogTitle>{step === 1 ? "Pilih agent" : "Detail percakapan"}</DialogTitle>
             <DialogDescription>
-              Pilih satu agent untuk DM atau 2–6 agent untuk grup. Semua menggunakan profil agent
-              yang sudah kamu simpan.
+              Pilih satu agent untuk DM atau 2–6 agent untuk grup.
             </DialogDescription>
           </DialogHeader>
           <form
@@ -231,7 +230,10 @@ export function AgentThreads({ agents, edit }: { agents: Agent[]; edit: (agent: 
                       `${a.display_name} ${a.handle}`.toLowerCase().includes(search.toLowerCase()),
                   )
                   .map((agent) => (
-                    <label key={agent.agent_id} className="flex items-center gap-3 text-sm">
+                    <label
+                      key={agent.agent_id}
+                      className="flex min-h-14 items-center gap-3 rounded-xl bg-background/60 px-3 py-2 text-sm"
+                    >
                       <NativeChoice
                         type={kind === "dm" ? "radio" : "checkbox"}
                         name="thread-members"
@@ -249,16 +251,15 @@ export function AgentThreads({ agents, edit }: { agents: Agent[]; edit: (agent: 
                       <AgentAvatar
                         name={agent.display_name}
                         url={agent.config.avatar_url}
-                        className="size-6 text-xs"
+                        className="size-8 text-xs"
                       />
-                      {agent.display_name}{" "}
-                      <span className="text-muted-foreground">@{agent.handle}</span>
+                      <span className="min-w-0 flex-1 truncate">{agent.display_name}</span>
                     </label>
                   ))}
               </fieldset>
             </fieldset>
             {error && (
-              <p role="alert" className="text-sm text-destructive">
+              <p role="alert" className="text-sm text-destructive-foreground">
                 {error}
               </p>
             )}
@@ -320,7 +321,7 @@ export function AgentThreads({ agents, edit }: { agents: Agent[]; edit: (agent: 
             </DialogDescription>
           </DialogHeader>
           {error && (
-            <p role="alert" className="text-sm text-destructive">
+            <p role="alert" className="text-sm text-destructive-foreground">
               {error} Tutup dan coba buka kembali.
             </p>
           )}

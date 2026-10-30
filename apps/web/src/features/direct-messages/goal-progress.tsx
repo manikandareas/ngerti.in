@@ -30,13 +30,13 @@ export function GoalProgress({
 }) {
   if (!goals.length) return null;
   return (
-    <section aria-label="Progress goals" className="space-y-3 border-b pb-5">
+    <section aria-label="Progress goals" className="space-y-3">
       <div className="flex items-baseline justify-between gap-3">
         <h2 className="text-sm font-semibold">Goals percakapan</h2>
-        <span className="text-xs text-muted-foreground">{goals.length} tanggung jawab</span>
+        <span className="text-xs text-muted-foreground">{goals.length} goal</span>
       </div>
       <p className="text-xs text-muted-foreground">
-        Agent mengelola progress di sini. Ubah, jeda, atau hentikan lewat percakapan.
+        Ubah, jeda, atau hentikan goal lewat percakapan.
       </p>
       {goals.map((goal) => (
         <details key={goal.goal_id} className="rounded-lg border px-4 py-3">

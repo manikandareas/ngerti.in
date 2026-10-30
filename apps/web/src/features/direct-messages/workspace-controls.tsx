@@ -70,30 +70,29 @@ export function WorkspaceControls({ thread, working }: { thread: Thread; working
     >
       <div className="space-y-4 text-sm" aria-busy={busy}>
         {busy && <p role="status">Memuat workspace…</p>}
-        <p className="text-muted-foreground">
-          Pilih agent untuk melihat file, diagnostik, dan checkpoint percakapan ini.
-        </p>
         <div className="flex flex-wrap items-end gap-2">
-          <label>
-            Agent
-            <NativeSelect
-              className="ml-2 rounded border bg-background p-2"
-              value={agentId}
-              disabled={busy}
-              onChange={(e) => {
-                setAgentId(e.target.value);
-                setWorkspace(null);
-                setOutput(null);
-                setCheckpoint("");
-              }}
-            >
-              {thread.agents.map((agent) => (
-                <option key={agent.agent_id} value={agent.agent_id}>
-                  {agent.display_name}
-                </option>
-              ))}
-            </NativeSelect>
-          </label>
+          {thread.kind === "group" && (
+            <label>
+              Agent
+              <NativeSelect
+                className="ml-2 rounded border bg-background p-2"
+                value={agentId}
+                disabled={busy}
+                onChange={(e) => {
+                  setAgentId(e.target.value);
+                  setWorkspace(null);
+                  setOutput(null);
+                  setCheckpoint("");
+                }}
+              >
+                {thread.agents.map((agent) => (
+                  <option key={agent.agent_id} value={agent.agent_id}>
+                    {agent.display_name}
+                  </option>
+                ))}
+              </NativeSelect>
+            </label>
+          )}
           <Button
             type="button"
             variant="outline"
@@ -109,57 +108,62 @@ export function WorkspaceControls({ thread, working }: { thread: Thread; working
             <p className="break-all">
               {workspace.project} · {workspace.root}
             </p>
-            <div className="flex flex-wrap gap-2">
-              <Input
-                aria-label="Nama proyek"
-                className="min-w-0 rounded border bg-background p-2"
-                value={project}
-                onChange={(e) => setProject(e.target.value)}
-                placeholder="Nama proyek"
-              />
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                disabled={busy || working || !project.trim()}
-                onClick={() => void action({ action: "project", project, folders: ["."] }, true)}
-              >
-                Buka proyek
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                disabled={busy || working}
-                onClick={() => void action({ action: "checkpoint" })}
-              >
-                Simpan checkpoint
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                disabled={busy || working}
-                onClick={() => void action({ action: "worktree" })}
-              >
-                Buat worktree
-              </Button>
-            </div>
-            <label className="block">
-              Checkpoint
-              <NativeSelect
-                className="ml-2 max-w-full rounded border bg-background p-2"
-                value={checkpoint}
-                onChange={(e) => setCheckpoint(e.target.value)}
-              >
-                <option value="">Pilih checkpoint</option>
-                {workspace.checkpoints?.map((c) => (
-                  <option key={c.hash} value={c.hash}>
-                    {c.short_hash} · {c.reason}
-                  </option>
-                ))}
-              </NativeSelect>
-            </label>
+            <details className="space-y-3">
+              <summary className="cursor-pointer text-sm font-medium">
+                Proyek dan checkpoint
+              </summary>
+              <div className="flex flex-wrap gap-2">
+                <Input
+                  aria-label="Nama proyek"
+                  className="min-w-0 rounded border bg-background p-2"
+                  value={project}
+                  onChange={(e) => setProject(e.target.value)}
+                  placeholder="Nama proyek"
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  disabled={busy || working || !project.trim()}
+                  onClick={() => void action({ action: "project", project, folders: ["."] }, true)}
+                >
+                  Buka proyek
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  disabled={busy || working}
+                  onClick={() => void action({ action: "checkpoint" })}
+                >
+                  Simpan checkpoint
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  disabled={busy || working}
+                  onClick={() => void action({ action: "worktree" })}
+                >
+                  Buat worktree
+                </Button>
+              </div>
+              <label className="block">
+                Checkpoint
+                <NativeSelect
+                  className="ml-2 max-w-full rounded border bg-background p-2"
+                  value={checkpoint}
+                  onChange={(e) => setCheckpoint(e.target.value)}
+                >
+                  <option value="">Pilih checkpoint</option>
+                  {workspace.checkpoints?.map((c) => (
+                    <option key={c.hash} value={c.hash}>
+                      {c.short_hash} · {c.reason}
+                    </option>
+                  ))}
+                </NativeSelect>
+              </label>
+            </details>
             {Object.keys(workspace.hashes ?? {}).length > 0 && (
               <div className="space-y-1">
                 <h3 className="font-medium">File proyek</h3>
@@ -175,69 +179,75 @@ export function WorkspaceControls({ thread, working }: { thread: Thread; working
                 ))}
               </div>
             )}
-            <Input
-              aria-label="Path file workspace"
-              className="w-full rounded border bg-background p-2"
-              value={path}
-              onChange={(e) => setPath(e.target.value)}
-              placeholder="Path file, misalnya src/main.py"
-            />
-            <div className="flex flex-wrap gap-2">
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                disabled={busy || !path}
-                onClick={() => void action({ action: "diagnostics", path })}
-              >
-                Diagnostik
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                disabled={busy || !checkpoint}
-                onClick={() => void action({ action: "diff", checkpoint })}
-              >
-                Lihat diff
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                disabled={busy || working || !checkpoint || !workspace.hashes}
-                onClick={() =>
-                  void action({
-                    action: "restore",
-                    checkpoint,
-                    ...(path ? { path } : {}),
-                    expected_hashes: workspace.hashes,
-                  })
-                }
-              >
-                {path ? "Pulihkan file terpilih" : "Pulihkan perubahan agent"}
-              </Button>
-            </div>
-            {Object.entries(workspace.worktrees ?? {})
-              .filter(([, item]) => !item.removed)
-              .map(([id, item]) => (
-                <div key={id} className="flex flex-wrap items-center gap-2">
-                  <span className="break-all">
-                    {item.path} · {item.active ? "aktif" : "dilepas"}
-                  </span>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    disabled={busy || working}
-                    onClick={() =>
-                      void action({ action: item.active ? "release" : "cleanup", worktree_id: id })
-                    }
-                  >
-                    {item.active ? "Lepas tugas" : "Bersihkan"}
-                  </Button>
-                </div>
-              ))}
+            <details className="space-y-3">
+              <summary className="cursor-pointer text-sm font-medium">Perubahan kode</summary>
+              <Input
+                aria-label="Path file workspace"
+                className="w-full rounded border bg-background p-2"
+                value={path}
+                onChange={(e) => setPath(e.target.value)}
+                placeholder="Path file, misalnya src/main.py"
+              />
+              <div className="flex flex-wrap gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  disabled={busy || !path}
+                  onClick={() => void action({ action: "diagnostics", path })}
+                >
+                  Diagnostik
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  disabled={busy || !checkpoint}
+                  onClick={() => void action({ action: "diff", checkpoint })}
+                >
+                  Lihat diff
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  disabled={busy || working || !checkpoint || !workspace.hashes}
+                  onClick={() =>
+                    void action({
+                      action: "restore",
+                      checkpoint,
+                      ...(path ? { path } : {}),
+                      expected_hashes: workspace.hashes,
+                    })
+                  }
+                >
+                  {path ? "Pulihkan file terpilih" : "Pulihkan perubahan agent"}
+                </Button>
+              </div>
+              {Object.entries(workspace.worktrees ?? {})
+                .filter(([, item]) => !item.removed)
+                .map(([id, item]) => (
+                  <div key={id} className="flex flex-wrap items-center gap-2">
+                    <span className="break-all">
+                      {item.path} · {item.active ? "aktif" : "dilepas"}
+                    </span>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      disabled={busy || working}
+                      onClick={() =>
+                        void action({
+                          action: item.active ? "release" : "cleanup",
+                          worktree_id: id,
+                        })
+                      }
+                    >
+                      {item.active ? "Lepas tugas" : "Bersihkan"}
+                    </Button>
+                  </div>
+                ))}
+            </details>
           </>
         )}
         {error && (

@@ -28,7 +28,7 @@ type Login = { id: string; label: string; origin: string; identifier: string };
 export function ScreenControls({ thread }: { thread: Thread }) {
   const { getToken, userId } = useAuth();
   const [open, setOpen] = useState(false);
-  const [docked, setDocked] = useState(false);
+  const [docked, setDocked] = useState(true);
   const [agentId, setAgentId] = useState(thread.agents[0]?.agent_id ?? "");
   const [connection, setConnection] = useState<Screen | null>(null);
   const [frame, setFrame] = useState("");
@@ -206,9 +206,8 @@ export function ScreenControls({ thread }: { thread: Thread }) {
         className={`max-h-[94dvh] overflow-y-auto rounded-t-2xl sm:max-w-5xl sm:rounded-2xl max-sm:top-auto max-sm:bottom-0 max-sm:translate-y-0 max-sm:w-full ${docked ? "lg:left-auto lg:right-2.5 lg:top-2.5 lg:bottom-2.5 lg:w-[360px] lg:max-w-[360px] lg:translate-x-0 lg:translate-y-0 lg:content-start" : ""}`}
       >
         <DialogTitle>Layar dan bantuan login</DialogTitle>
-        <DialogDescription>
-          Layar privat agent di percakapan ini. Menutup layar saat Anda memegang kontrol menahan
-          input sampai kontrol dikembalikan.
+        <DialogDescription className={human ? undefined : "sr-only"}>
+          Menutup layar menahan input hingga kontrol dikembalikan.
         </DialogDescription>
         <Button
           type="button"
@@ -220,26 +219,28 @@ export function ScreenControls({ thread }: { thread: Thread }) {
           {docked ? "Perbesar layar" : "Tampilkan sebagai panel"}
         </Button>
         <div className="mt-3 space-y-3">
-          <label className="block">
-            Agent{" "}
-            <NativeSelect
-              className="max-w-full rounded border bg-background p-2"
-              value={agentId}
-              disabled={busy || !!connection}
-              onChange={(e) => {
-                epoch.current++;
-                setAgentId(e.target.value);
-                setFrame("");
-                setLogins([]);
-              }}
-            >
-              {thread.agents.map((agent) => (
-                <option key={agent.agent_id} value={agent.agent_id}>
-                  {agent.display_name}
-                </option>
-              ))}
-            </NativeSelect>
-          </label>
+          {thread.kind === "group" && (
+            <label className="block">
+              Agent{" "}
+              <NativeSelect
+                className="max-w-full rounded border bg-background p-2"
+                value={agentId}
+                disabled={busy || !!connection}
+                onChange={(e) => {
+                  epoch.current++;
+                  setAgentId(e.target.value);
+                  setFrame("");
+                  setLogins([]);
+                }}
+              >
+                {thread.agents.map((agent) => (
+                  <option key={agent.agent_id} value={agent.agent_id}>
+                    {agent.display_name}
+                  </option>
+                ))}
+              </NativeSelect>
+            </label>
+          )}
           <p role="status" className="rounded-xl bg-muted px-4 py-3 text-sm font-medium">
             {connection
               ? labels[connection.control ?? "agent"]
@@ -261,6 +262,7 @@ export function ScreenControls({ thread }: { thread: Thread }) {
                   size="sm"
                   variant="outline"
                   disabled={busy || human}
+                  className={human ? "hidden" : undefined}
                   onClick={() => void act("takeover")}
                 >
                   Ambil kontrol
@@ -274,34 +276,42 @@ export function ScreenControls({ thread }: { thread: Thread }) {
                   size="sm"
                   variant="outline"
                   disabled={busy || connection.control === "agent"}
+                  className={!human ? "hidden" : undefined}
                   onClick={() => void act("resume")}
                 >
                   Kembalikan ke agent
                 </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  disabled={busy}
-                  onClick={() => void act("revoke")}
-                >
-                  Putuskan akses
-                </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  disabled={busy}
-                  onClick={() => void act("pause")}
-                >
-                  Jeda komputer
-                </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  disabled={busy}
-                  onClick={() => void act("diagnostics")}
-                >
-                  Periksa koneksi
-                </Button>
+                <details className="basis-full space-y-2">
+                  <summary className="cursor-pointer py-1 text-xs text-muted-foreground">
+                    Opsi komputer
+                  </summary>
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      disabled={busy}
+                      onClick={() => void act("revoke")}
+                    >
+                      Putuskan akses
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      disabled={busy}
+                      onClick={() => void act("pause")}
+                    >
+                      Jeda komputer
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      disabled={busy}
+                      onClick={() => void act("diagnostics")}
+                    >
+                      Periksa koneksi
+                    </Button>
+                  </div>
+                </details>
               </>
             )}
           </div>
@@ -342,8 +352,7 @@ export function ScreenControls({ thread }: { thread: Thread }) {
           {human && (
             <div className="space-y-2">
               <p>
-                Klik target pada layar, lalu kirim teks atau tombol. Agent menunggu sampai kontrol
-                dikembalikan. Setelah itu, lanjutkan melalui percakapan.
+                Klik layar atau kirim teks dan tombol. Agent menunggu sampai kontrol dikembalikan.
               </p>
               <form
                 className="flex gap-2"

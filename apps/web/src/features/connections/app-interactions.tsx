@@ -67,7 +67,7 @@ export function AppInteractions() {
   return (
     <section aria-label="Permintaan aplikasi" className="space-y-3">
       {error && (
-        <p role="alert" className="text-sm text-destructive">
+        <p role="alert" className="text-sm text-destructive-foreground">
           {error}
         </p>
       )}

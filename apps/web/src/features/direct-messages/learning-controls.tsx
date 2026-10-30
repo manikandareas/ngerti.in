@@ -160,12 +160,6 @@ export function LearningControls({ thread }: { thread: Thread }) {
       </div>
       {open && (
         <div className="space-y-5 pt-3">
-          <p className="text-xs text-muted-foreground">
-            {thread.kind === "group"
-              ? "Pembelajaran di sini hanya tersedia dalam grup ini."
-              : "Memori dan metode privat mengikuti agent ini di DM-nya."}{" "}
-            Agent juga dapat memperbaruinya melalui percakapan.
-          </p>
           {error && (
             <p role="alert" className="text-sm text-destructive-foreground">
               {error}

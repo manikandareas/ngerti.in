@@ -1,6 +1,7 @@
 import { useAuth } from "@clerk/tanstack-react-start";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
+import { PanelRight } from "lucide-react";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,6 +12,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { base, command, submit } from "@/features/direct-messages/client";
 import type { Thread } from "@/features/direct-messages/state";
 import { api } from "@/lib/api";
@@ -76,11 +85,73 @@ export function ThreadInfo({ thread, refresh }: { thread: Thread; refresh: () =>
         }}
       />
     );
+  if (thread.kind === "dm") {
+    const agent = thread.agents[0];
+    return (
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetTrigger asChild>
+          <Button variant="ghost" size="icon" aria-label="Info agent" title="Info agent">
+            <PanelRight className="size-4" />
+          </Button>
+        </SheetTrigger>
+        <SheetContent
+          overlayClassName="lg:hidden"
+          data-context-editor="true"
+          className="gap-5 border-0 p-5 data-[side=right]:w-full data-[side=right]:sm:max-w-[360px]"
+        >
+          <SheetHeader className="px-0 pr-10">
+            <SheetTitle>Info agent</SheetTitle>
+            <SheetDescription className="sr-only">Profil dan karakter agent.</SheetDescription>
+          </SheetHeader>
+          {agent && (
+            <>
+              <div className="flex flex-col items-center gap-2 text-center">
+                <AgentAvatar
+                  name={agent.display_name}
+                  url={agent.config.avatar_url}
+                  className="size-14"
+                />
+                <h2 className="text-base font-medium">{agent.display_name}</h2>
+                <p className="text-xs text-muted-foreground">@{agent.handle}</p>
+                {agent.status !== "active" && (
+                  <p className="text-sm text-muted-foreground">Tidak tersedia</p>
+                )}
+              </div>
+              <Button
+                variant="secondary"
+                disabled={agent.status === "archived"}
+                onClick={() => {
+                  setOpen(false);
+                  setEditing(agent);
+                }}
+              >
+                Edit agent
+              </Button>
+              {agent.config.soul && (
+                <details className="space-y-2 border-t pt-4">
+                  <summary className="cursor-pointer text-sm font-medium">Karakter</summary>
+                  <p className="whitespace-pre-wrap text-sm wrap-anywhere">{agent.config.soul}</p>
+                </details>
+              )}
+              <Button asChild variant="ghost">
+                <Link to="/agents">Kelola agent dan grup</Link>
+              </Button>
+            </>
+          )}
+        </SheetContent>
+      </Sheet>
+    );
+  }
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="sm">
-          {thread.kind === "group" ? "Anggota" : "Info agent"}
+        <Button
+          variant="ghost"
+          size="icon"
+          aria-label={thread.kind === "group" ? "Anggota" : "Info agent"}
+          title={thread.kind === "group" ? "Anggota" : "Info agent"}
+        >
+          <PanelRight className="size-4" />
         </Button>
       </DialogTrigger>
       <DialogContent className="max-h-[90dvh] overflow-y-auto rounded-[20px] sm:max-w-[480px] [background:var(--app-shell-fill)]">
@@ -88,14 +159,17 @@ export function ThreadInfo({ thread, refresh }: { thread: Thread; refresh: () =>
           <DialogTitle>{thread.title}</DialogTitle>
           <DialogDescription>
             {thread.kind === "group"
-              ? `Kamu dan ${thread.agents.length} agent. Pencabutan akses menghentikan pekerjaan anggota di grup ini.`
+              ? `Kamu dan ${thread.agents.length} agent.`
               : "Identitas agent sama di DM dan grup. Riwayat DM tetap privat."}
           </DialogDescription>
         </DialogHeader>
         {thread.agents.map((agent) => (
-          <div key={agent.agent_id} className="flex items-center gap-3 rounded-lg bg-muted/40 p-3">
+          <div
+            key={agent.agent_id}
+            className="flex min-w-0 flex-wrap items-center gap-2 rounded-lg bg-muted/40 p-3"
+          >
             <AgentAvatar name={agent.display_name} url={agent.config.avatar_url} />
-            <div className="min-w-0 flex-1 break-words">
+            <div className="min-w-0 flex-1 basis-20 wrap-anywhere">
               <p className="font-medium">{agent.display_name}</p>
               <p className="text-xs text-muted-foreground">
                 @{agent.handle} · {agent.status === "active" ? "Aktif" : "Tidak tersedia"}
@@ -143,7 +217,7 @@ export function ThreadInfo({ thread, refresh }: { thread: Thread; refresh: () =>
                 <Button
                   key={agent.agent_id}
                   variant="outline"
-                  className="mr-2"
+                  className="mr-2 h-auto min-h-9 max-w-full whitespace-normal text-left"
                   disabled={busy || thread.agents.length >= 6 || thread.status !== "open"}
                   onClick={() => void change("member.add", agent.agent_id)}
                 >
@@ -153,7 +227,7 @@ export function ThreadInfo({ thread, refresh }: { thread: Thread; refresh: () =>
           </div>
         )}
         {error && (
-          <div role="alert" className="text-sm text-destructive">
+          <div role="alert" className="text-sm text-destructive-foreground">
             <p>{error}</p>
             <Button variant="outline" onClick={refresh}>
               Muat ulang anggota
@@ -161,7 +235,7 @@ export function ThreadInfo({ thread, refresh }: { thread: Thread; refresh: () =>
           </div>
         )}
         <Button asChild variant="outline">
-          <Link to="/agents">Edit profil dan kemampuan agent</Link>
+          <Link to="/agents">Kelola agent</Link>
         </Button>
       </DialogContent>
     </Dialog>

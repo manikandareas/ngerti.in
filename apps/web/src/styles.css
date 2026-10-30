@@ -19,6 +19,7 @@
     --primary: #18191b;
     --primary-foreground: #ffffff;
     --secondary: #f3f3f6;
+    --message-surface: #f4f4f5;
     --secondary-foreground: #18191b;
     --accent: #d1d0fe;
     --accent-foreground: #18191b;
@@ -74,6 +75,7 @@
     --primary: #ffffff;
     --primary-foreground: #18191b;
     --secondary: #2f3135;
+    --message-surface: #282a2d;
     --secondary-foreground: #ffffff;
     --accent: #3d395e;
     --accent-foreground: #e7cdff;
@@ -280,7 +282,12 @@
 
 /* Active agent.pen desktop shell: eIiDQ / JNgIa. */
 :root {
-  --app-shell-fill: linear-gradient(155deg, #edf1f7e8, #f3f2f0e8 48%, #f4ede9e8);
+  --app-shell-fill: linear-gradient(
+    -146.119deg,
+    #edf1f7e8 16.574%,
+    #f3f2f0e8 48.663%,
+    #f4ede9e8 83.426%
+  );
   --app-shell-search: #ffffff66;
   --app-shell-selected: #ffffffb3;
   --app-shell-edge: #ffffffb3;
@@ -288,7 +295,12 @@
 }
 :root[data-theme="dark"],
 :root.dark {
-  --app-shell-fill: linear-gradient(155deg, #252a32eb, #252629eb 48%, #2c282aeb);
+  --app-shell-fill: linear-gradient(
+    -146.119deg,
+    #252a32eb 16.574%,
+    #252629eb 48.663%,
+    #2c282aeb 83.426%
+  );
   --app-shell-search: #ffffff08;
   --app-shell-selected: #ffffff0f;
   --app-shell-edge: #ffffff12;
@@ -368,5 +380,90 @@
   .beautiful-loader-cell {
     animation: none;
     opacity: 0.65;
+  }
+}
+
+/* agent.pen: 68 px desktop composer; separate mobile attachment affordance. */
+.conversation-composer {
+  border-radius: 34px;
+}
+@media (max-width: 767px) {
+  .conversation-composer {
+    border: 0;
+    padding: 2px 0;
+    gap: 4px;
+    background: transparent;
+  }
+  .conversation-composer::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 0 44px;
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    background: var(--background);
+    pointer-events: none;
+  }
+  .conversation-composer:focus-within::before {
+    border-color: var(--ring);
+  }
+  .conversation-composer > [aria-label="Lampirkan file"] {
+    background: var(--muted);
+  }
+}
+
+/* Keep Clerk branding legible above its development-mode decoration. */
+.cl-footerItem p,
+.cl-footerItem a {
+  position: relative;
+  z-index: 1;
+  background: var(--muted);
+}
+.cl-footerItem [data-clerk-dev-mode-notice] {
+  color: var(--warning-foreground);
+}
+
+/* Contextual panels retain the conversation and collapse navigation to the avatar rail. */
+@media (min-width: 1024px) {
+  body:has([data-context-editor="true"]) .conversation-sidebar {
+    width: 80px;
+  }
+  body:has([data-context-editor="true"]) .conversation-sidebar > div {
+    padding: 20px 12px;
+    align-items: center;
+  }
+  body:has([data-context-editor="true"]) .conversation-sidebar .conversation-search-wrapper,
+  body:has([data-context-editor="true"]) .conversation-sidebar .conversation-section,
+  body:has([data-context-editor="true"]) .conversation-sidebar .conversation-preview,
+  body:has([data-context-editor="true"]) .conversation-sidebar .conversation-settings,
+  body:has([data-context-editor="true"]) .conversation-sidebar .conversation-account > span {
+    display: none;
+  }
+  body:has([data-context-editor="true"]) .conversation-sidebar nav[aria-label="DM dan grup"] {
+    width: 100%;
+  }
+  body:has([data-context-editor="true"]) .conversation-link {
+    min-height: 56px;
+    padding: 8px;
+    justify-content: center;
+    position: relative;
+  }
+  body:has([data-context-editor="true"]) .conversation-link [aria-label="Hasil belum dibaca"] {
+    position: absolute;
+    right: 2px;
+    top: 4px;
+  }
+}
+@media (max-width: 767px) {
+  [data-slot="sheet-content"][data-context-editor="true"] {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: auto;
+    max-height: 85dvh;
+    min-height: min(60dvh, 480px);
+    width: 100%;
+    border-radius: 20px 20px 0 0;
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
   }
 }

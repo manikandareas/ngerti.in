@@ -1,5 +1,5 @@
 import { useAuth } from "@clerk/tanstack-react-start";
-import { Mic, Paperclip, Square } from "lucide-react";
+import { Mic, Plus, Square } from "lucide-react";
 import { type Ref, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { command, submit } from "./client";
@@ -191,7 +191,7 @@ export function FileUpload({
   }
   useImperativeHandle(uploadRef, () => ({ upload }));
   return (
-    <div className="flex flex-wrap items-center gap-1">
+    <div className={compact ? "contents" : "flex flex-wrap items-center gap-1"}>
       <input
         ref={input}
         className="sr-only"
@@ -208,17 +208,23 @@ export function FileUpload({
         variant={compact ? "ghost" : "outline"}
         size={compact && !progress ? "icon" : "sm"}
         disabled={disabled || !!progress || recording}
+        className={compact ? "relative order-1 shrink-0 rounded-full" : undefined}
         aria-label={progress ?? "Lampirkan file"}
         title={progress ?? "Lampirkan file"}
         onClick={() => input.current?.click()}
       >
-        {compact && !progress ? <Paperclip className="size-4" /> : (progress ?? "Lampirkan file")}
+        {compact && !progress ? <Plus className="size-5" /> : (progress ?? "Lampirkan file")}
       </Button>
       <Button
         type="button"
         variant={compact ? "ghost" : "outline"}
         size={compact ? "icon" : "sm"}
         disabled={disabled || !!progress}
+        className={
+          compact
+            ? "relative order-3 shrink-0 md:size-9 md:bg-primary md:text-primary-foreground md:hover:bg-primary/90"
+            : undefined
+        }
         aria-label={recording ? "Selesai rekam" : "Rekam suara"}
         title={recording ? "Selesai rekam" : "Rekam suara"}
         onClick={() => void record()}
@@ -240,6 +246,7 @@ export function FileUpload({
           type="button"
           variant="ghost"
           size="sm"
+          className={compact ? "relative order-5" : undefined}
           onClick={() => {
             discard.current = true;
             recorder.current?.stop();
@@ -251,13 +258,13 @@ export function FileUpload({
       {progress && (
         <p
           role="status"
-          className="basis-full rounded-lg bg-muted/60 px-3 py-2 text-xs text-muted-foreground"
+          className="relative order-5 basis-full rounded-lg bg-muted/60 px-3 py-2 text-xs text-muted-foreground"
         >
           <span className="break-all font-medium text-foreground">{filename}</span> · {progress}
         </p>
       )}
       {error && (
-        <p role="alert" className="text-sm text-destructive-foreground">
+        <p role="alert" className="relative order-5 basis-full text-sm text-destructive-foreground">
           {error}
         </p>
       )}

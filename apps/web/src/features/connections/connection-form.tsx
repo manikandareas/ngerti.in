@@ -16,36 +16,35 @@ export type KeyDraft = {
 
 export function ConnectionForm({
   providers,
+  initialProvider = "openrouter",
+  preset,
   busy,
   blocked,
   onKey,
   onLogin,
 }: {
   providers: Provider[];
+  initialProvider?: string;
+  preset?: { label: string; url: string; protocol: string };
   busy: boolean;
   blocked: boolean;
   onKey: (draft: KeyDraft) => Promise<boolean>;
   onLogin: (provider: string, label: string) => void;
 }) {
-  const [providerId, setProviderId] = useState("openrouter");
-  const [label, setLabel] = useState("");
+  const [providerId, setProviderId] = useState(initialProvider);
+  const [label, setLabel] = useState(preset?.label ?? "");
   const [key, setKey] = useState("");
-  const [url, setUrl] = useState("https://api.openai.com/v1");
-  const [protocol, setProtocol] = useState("chat_completions");
+  const [url, setUrl] = useState(preset?.url ?? "https://api.openai.com/v1");
+  const [protocol, setProtocol] = useState(preset?.protocol ?? "chat_completions");
   const [coding, setCoding] = useState(false);
   const provider = providers.find((p) => p.id === providerId);
   const ready =
     !busy && !blocked && label.trim().length > 0 && (providerId !== "opencode-go" || coding);
   return (
-    <section className="space-y-5 border-t pt-6" aria-labelledby="add-connection-title">
-      <div>
-        <h2 id="add-connection-title" className="text-lg font-semibold">
-          Tambahkan koneksi
-        </h2>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Login provider terpisah dari akun Ngertiin. Pilih nama yang mudah dikenali.
-        </p>
-      </div>
+    <section className="space-y-5" aria-labelledby="add-connection-title">
+      <h2 id="add-connection-title" className="sr-only">
+        Tambahkan koneksi
+      </h2>
       <form
         className="space-y-4"
         onSubmit={async (event) => {
@@ -64,7 +63,7 @@ export function ConnectionForm({
           if (saved) setLabel("");
         }}
       >
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-4">
           <label className="space-y-2 text-sm">
             <span className="block">Provider</span>
             <NativeSelect
@@ -125,7 +124,8 @@ export function ConnectionForm({
           </p>
         )}
         {providerId === "custom" && (
-          <div className="grid gap-4 sm:grid-cols-2">
+          <details open={preset ? undefined : true} className="space-y-4">
+            <summary className="cursor-pointer text-sm font-medium">Endpoint dan protokol</summary>
             <label htmlFor="connection-endpoint" className="space-y-2 text-sm">
               <span className="block">Endpoint API</span>
               <Input
@@ -148,7 +148,7 @@ export function ConnectionForm({
                 <option value="anthropic_messages">Anthropic Messages</option>
               </NativeSelect>
             </label>
-          </div>
+          </details>
         )}
         {provider?.auth_methods.includes("api_key") && (
           <label htmlFor="connection-key" className="block space-y-2 text-sm">

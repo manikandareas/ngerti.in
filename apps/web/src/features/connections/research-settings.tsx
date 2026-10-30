@@ -25,7 +25,7 @@ const keyNames: Record<string, string> = {
   searxng: "SEARXNG_URL",
 };
 
-export function ResearchSettings() {
+export function ResearchSettings({ expanded = false }: { expanded?: boolean }) {
   const { getToken, userId } = useAuth();
   const [data, setData] = useState<Research | null>(null);
   const [search, setSearch] = useState("firecrawl");
@@ -55,7 +55,7 @@ export function ResearchSettings() {
     };
   }, [getToken, userId]);
   return (
-    <details className="rounded-xl border p-4">
+    <details open={expanded || undefined} className="rounded-lg border p-5">
       <summary className="cursor-pointer font-medium">Riset internet</summary>
       <form
         className="mt-4 grid gap-3 sm:grid-cols-2"
@@ -166,7 +166,7 @@ export function ResearchSettings() {
           />
         </label>
         {error && (
-          <p role="alert" className="text-sm text-destructive sm:col-span-2">
+          <p role="alert" className="text-sm text-destructive-foreground sm:col-span-2">
             {error}
           </p>
         )}

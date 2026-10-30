@@ -38,7 +38,7 @@ function ModelChoices({
       .map((id) => ({ id, label: `${id} (tidak tersedia)` })),
   ];
   return (
-    <fieldset className="space-y-2">
+    <fieldset className="space-y-2 border-t pt-4">
       <legend className="mb-2 text-sm font-medium">{label}</legend>
       <p className="text-xs text-muted-foreground">Urutan mengikuti pilihan Anda.</p>
       {options.map((model) => (
@@ -89,7 +89,7 @@ export function InferenceSettingsEditor({
     update({ parameters: next });
   }
   return (
-    <details className="space-y-4 rounded-md border p-4">
+    <details className="space-y-4 rounded-lg bg-muted/50 p-5">
       <summary className="cursor-pointer text-sm font-medium">Pengaturan model lanjutan</summary>
       <p className="text-sm text-muted-foreground">
         Berlaku untuk pekerjaan berikutnya. Setiap model menggunakan akun dan biaya pada koneksinya.

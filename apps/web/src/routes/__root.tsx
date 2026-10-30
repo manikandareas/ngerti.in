@@ -74,6 +74,7 @@ function Root() {
             elements: {
               rootBox: { width: "100%" },
               cardBox: { width: "100%", boxShadow: "none", border: "1px solid var(--border)" },
+              footer: { background: "var(--muted)" },
               formButtonPrimary: { color: "var(--primary-foreground)" },
             },
           }}

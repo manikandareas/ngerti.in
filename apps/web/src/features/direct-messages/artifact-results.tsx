@@ -13,10 +13,14 @@ export function ArtifactResults({
   artifacts,
   threadId,
   label = "File hasil",
+  compact = false,
+  onRemove,
 }: {
   artifacts: Artifact[];
   threadId?: string;
   label?: string;
+  compact?: boolean;
+  onRemove?: (artifact: Artifact) => void;
 }) {
   const { getToken } = useAuth();
   const [pending, setPending] = useState<string | null>(null);
@@ -89,19 +93,28 @@ export function ArtifactResults({
   }
   return (
     <section className="min-w-0 space-y-3" aria-label={label} aria-busy={pending !== null}>
-      <h3 className="text-sm font-medium">
+      <h3 className={compact ? "sr-only" : "text-sm font-medium"}>
         {label} · {artifacts.length}
       </h3>
-      <ul className="mt-3 space-y-2">
+      <ul className={compact ? "flex flex-wrap gap-2" : "mt-3 space-y-2"}>
         {artifacts.map((item) => (
           <li
             key={item.artifact_id}
-            className="flex flex-wrap items-center gap-2 rounded-xl border bg-muted/40 p-3 text-sm"
+            className={
+              compact
+                ? "flex min-w-0 max-w-full items-center gap-1 rounded-full border bg-muted/40 px-2 py-1 text-xs"
+                : "flex flex-wrap items-center gap-2 rounded-xl border bg-muted/40 p-3 text-sm"
+            }
           >
             <FileText className="size-5 shrink-0 text-muted-foreground" />
-            <div className="min-w-0 flex-1 basis-32">
-              <p className="break-all font-medium">{item.filename}</p>
-              <p className="text-xs text-muted-foreground">
+            <div className={compact ? "min-w-0 max-w-40 flex-1" : "min-w-0 flex-1 basis-32"}>
+              <p
+                className={compact ? "truncate font-medium" : "break-all font-medium"}
+                title={item.filename}
+              >
+                {item.filename}
+              </p>
+              <p className={compact ? "sr-only" : "text-xs text-muted-foreground"}>
                 {item.filename.includes(".")
                   ? item.filename.split(".").at(-1)?.toUpperCase()
                   : "File"}
@@ -125,7 +138,8 @@ export function ArtifactResults({
                 Pratinjau
               </Button>
             )}
-            {item.media_type &&
+            {!compact &&
+              item.media_type &&
               !/^(text|image|audio|video)\//.test(item.media_type) &&
               item.media_type !== "application/pdf" &&
               !/\.(json|md|csv|txt|py|ipynb)$/i.test(item.filename) && (
@@ -141,8 +155,21 @@ export function ArtifactResults({
               onClick={() => void download(item)}
             >
               <Download className="size-4" />{" "}
-              {pending === item.artifact_id ? "Mengunduh…" : "Unduh"}
+              <span className={compact ? "sr-only" : undefined}>
+                {pending === item.artifact_id ? "Mengunduh…" : "Unduh"}
+              </span>
             </Button>
+            {onRemove && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon-sm"
+                aria-label={`${item.filename} ×`}
+                onClick={() => onRemove(item)}
+              >
+                ×
+              </Button>
+            )}
           </li>
         ))}
       </ul>

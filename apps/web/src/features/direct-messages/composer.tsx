@@ -23,7 +23,6 @@ type Pending = ReturnType<typeof command> & {
 };
 export function Composer({
   thread,
-  working,
   connected,
 }: {
   thread: Thread;
@@ -182,12 +181,34 @@ export function Composer({
           tidak akan digandakan.
         </p>
       )}
+      {attachments.length > 0 && (
+        <div className="relative max-h-52 min-w-0 basis-full overflow-y-auto">
+          <ArtifactResults
+            artifacts={attachments}
+            threadId={thread.thread_id}
+            label="Lampiran"
+            compact
+            onRemove={
+              busy || pending
+                ? undefined
+                : (file) => {
+                    const next = attachments.filter((a) => a.artifact_id !== file.artifact_id);
+                    setAttachments(next);
+                    save(text, pending, next);
+                  }
+            }
+          />
+        </div>
+      )}
       <PromptBar>
         <label htmlFor="dm-message" className="sr-only">
           Pesan untuk {thread.kind === "group" ? thread.title : thread.agents[0]?.display_name}
         </label>
         {thread.kind === "group" && (
-          <fieldset className="flex flex-wrap gap-1" aria-label="Mention anggota">
+          <fieldset
+            className="order-first flex basis-full flex-wrap gap-1"
+            aria-label="Mention anggota"
+          >
             {thread.agents.map((agent) => (
               <Button
                 key={agent.agent_id}
@@ -216,7 +237,7 @@ export function Composer({
           value={text}
           disabled={!ready || unavailable || !!pending}
           placeholder={`Pesan untuk ${(thread.kind === "group" ? thread.title : thread.agents[0]?.display_name) ?? "agent"}…`}
-          className="max-h-48 min-h-12 resize-y border-0 bg-transparent text-sm shadow-none focus-visible:ring-0"
+          className="relative order-2 max-h-48 min-h-11 min-w-0 flex-1 md:min-h-[46px] resize-none border-0 bg-transparent px-2 py-2.5 text-[15px] shadow-none [field-sizing:content] focus-visible:ring-0"
           onChange={(event) => {
             setText(event.target.value);
             save(event.target.value, null);
@@ -233,7 +254,7 @@ export function Composer({
             }
           }}
         />
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="contents">
           <FileUpload
             compact
             uploadRef={uploadRef}
@@ -257,53 +278,30 @@ export function Composer({
               save(text, pending, next);
             }}
           />
-          {attachments.length > 0 && (
-            <div className="max-h-52 min-w-0 basis-full overflow-y-auto">
-              <ArtifactResults
-                artifacts={attachments}
-                threadId={thread.thread_id}
-                label="Lampiran"
-              />
-              {attachments.map((file) => (
-                <Button
-                  key={file.artifact_id}
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  disabled={busy || !!pending}
-                  onClick={() => {
-                    const next = attachments.filter((a) => a.artifact_id !== file.artifact_id);
-                    setAttachments(next);
-                    save(text, pending, next);
-                  }}
-                >
-                  <span className="max-w-56 truncate">{file.filename} ×</span>
-                </Button>
-              ))}
+          {(text.trim() || attachments.length > 0 || pending) && (
+            <div className="relative order-4">
+              <Button
+                type="submit"
+                size={pending ? "default" : "icon"}
+                aria-label={
+                  busy ? "Mengirim pesan" : pending ? "Periksa / kirim kembali" : "Kirim pesan"
+                }
+                disabled={
+                  !ready ||
+                  busy ||
+                  (unavailable && !pending) ||
+                  !connected ||
+                  (!text.trim() && !attachments.length && !pending)
+                }
+              >
+                {pending && !busy ? (
+                  "Periksa / kirim kembali"
+                ) : (
+                  <ArrowUp className="size-4" aria-hidden="true" />
+                )}
+              </Button>
             </div>
           )}
-          <div className="ml-auto">
-            <Button
-              type="submit"
-              size={pending ? "default" : "icon"}
-              aria-label={
-                busy ? "Mengirim pesan" : pending ? "Periksa / kirim kembali" : "Kirim pesan"
-              }
-              disabled={
-                !ready ||
-                busy ||
-                (unavailable && !pending) ||
-                !connected ||
-                (!text.trim() && !attachments.length && !pending)
-              }
-            >
-              {pending && !busy ? (
-                "Periksa / kirim kembali"
-              ) : (
-                <ArrowUp className="size-4" aria-hidden="true" />
-              )}
-            </Button>
-          </div>
         </div>
       </PromptBar>
     </form>

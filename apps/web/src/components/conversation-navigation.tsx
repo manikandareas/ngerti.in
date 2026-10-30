@@ -51,25 +51,25 @@ export function ConversationNavigation({ mobile = false }: { mobile?: boolean })
   );
   const content = (
     <div className="flex h-full min-h-0 flex-col gap-[22px] p-5 md:p-7">
-      <div className="relative">
+      <div className="conversation-search-wrapper relative">
         <Search className="pointer-events-none absolute left-3 top-3.5 size-4 text-muted-foreground" />
         <Input
-          className="conversation-search h-11 pl-10"
+          className="conversation-search h-[43px] pl-10"
           aria-label="Cari percakapan"
           placeholder="Cari percakapan"
           value={search}
           onChange={(event) => setSearch(event.target.value)}
         />
       </div>
-      <div className="flex items-center justify-between">
+      <div className="conversation-section relative flex h-[18px] items-center justify-between">
         <h2 className="text-xs font-medium text-muted-foreground">Percakapan</h2>
-        <Button asChild variant="ghost" size="icon-sm">
+        <Button asChild variant="ghost" size="icon-sm" className="absolute right-0">
           <Link to="/agents" aria-label="Percakapan baru" onClick={() => setOpen(false)}>
             <Plus className="size-4" />
           </Link>
         </Button>
       </div>
-      <nav aria-label="DM dan grup" className="min-h-0 flex-1 space-y-1 overflow-y-auto">
+      <nav aria-label="DM dan grup" className="min-h-0 flex-1 space-y-1.5 overflow-y-auto">
         {isPending && isSignedIn && (
           <p role="status" className="text-sm text-muted-foreground">
             Memuat percakapan…
@@ -95,7 +95,9 @@ export function ConversationNavigation({ mobile = false }: { mobile?: boolean })
             params={{ threadId: thread.thread_id }}
             onClick={() => setOpen(false)}
             activeProps={{ className: "font-medium", "aria-current": "page" }}
-            className="conversation-link flex min-h-14 items-center gap-3 rounded-[10px] border border-transparent px-2.5 py-3 text-sm hover:bg-card/40"
+            title={thread.title}
+            aria-label={thread.title}
+            className="conversation-link flex min-h-[66px] items-center gap-3 rounded-[10px] border border-transparent px-2.5 py-3 text-sm hover:bg-card/40"
           >
             {thread.kind === "group" ? (
               <Users className="size-4 shrink-0" />
@@ -106,10 +108,10 @@ export function ConversationNavigation({ mobile = false }: { mobile?: boolean })
                   profiles.data?.find((agent) => agent.agent_id === thread.dm_agent_id)?.config
                     .avatar_url
                 }
-                className="size-9 text-sm"
+                className="size-10 text-sm"
               />
             )}
-            <span className="min-w-0 flex-1 break-words [overflow-wrap:anywhere]">
+            <span className="conversation-preview min-w-0 flex-1 truncate">
               {thread.title}
               <span className="block truncate text-xs text-muted-foreground">
                 {summaries.data?.find((item) => item.thread_id === thread.thread_id)?.last_message
@@ -128,7 +130,7 @@ export function ConversationNavigation({ mobile = false }: { mobile?: boolean })
           </Link>
         ))}
       </nav>
-      <nav aria-label="Pengaturan" className="space-y-1 border-t pt-3">
+      <nav aria-label="Pengaturan" className="conversation-settings space-y-1 border-t pt-3">
         <Button asChild variant="ghost" className="w-full justify-start">
           <Link to="/agents" onClick={() => setOpen(false)}>
             <Users />
@@ -142,7 +144,7 @@ export function ConversationNavigation({ mobile = false }: { mobile?: boolean })
           </Link>
         </Button>
       </nav>
-      <div className="flex items-center gap-3 text-sm">
+      <div className="conversation-account flex items-center gap-3 text-sm">
         {isSignedIn ? (
           <>
             <div className="size-8 shrink-0">
@@ -169,7 +171,10 @@ export function ConversationNavigation({ mobile = false }: { mobile?: boolean })
           <Menu />
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="gap-0 data-[side=left]:w-[min(344px,100vw)]">
+      <SheetContent
+        side="bottom"
+        className="h-[85dvh] max-h-[calc(100dvh-48px)] gap-0 rounded-t-2xl pb-[env(safe-area-inset-bottom)]"
+      >
         <SheetTitle className="sr-only">Navigasi</SheetTitle>
         <SheetDescription className="sr-only">
           Percakapan, agent dan pengaturan akun.

@@ -2,10 +2,18 @@ import { useAuth } from "@clerk/tanstack-react-start";
 import { Link } from "@tanstack/react-router";
 import { ArrowDown, SlidersHorizontal, Target } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { Streamdown } from "streamdown";
+import { type Components, defaultComponents, Streamdown } from "streamdown";
 import { ChatMessage, LoadingState } from "@/components/beautiful-ui/conversation";
 import { ConversationNavigation } from "@/components/conversation-navigation";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   Sheet,
   SheetContent,
@@ -15,14 +23,19 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { AgentAvatar } from "@/features/agents/agent-avatar";
+import { PortableExport } from "@/features/agents/portable-export";
 import { ThreadInfo } from "@/features/agents/thread-info";
 import { providerFailureMessage } from "@/features/connections/client";
+import { ConversationConnections } from "@/features/connections/conversation-connections";
 import { ArtifactResults } from "./artifact-results";
+import { ClarificationPrompts } from "./clarification-prompts";
 import { command, submit } from "./client";
 import { CollaborationProgress } from "./collaboration-progress";
 import { Composer } from "./composer";
 import { GoalProgress } from "./goal-progress";
+import { HistoryControls } from "./history-controls";
 import { LearningControls } from "./learning-controls";
+import { RetryRun } from "./retry-run";
 import { ScreenControls } from "./screen-controls";
 import { SessionControls } from "./session-controls";
 import { activeRun, type Run, runLabels } from "./state";
@@ -37,18 +50,18 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
   const [cancelError, setCancelError] = useState("");
   const [stopping, setStopping] = useState<string | null>(null);
   const cancels = useRef(new Map<string, ReturnType<typeof command>>());
-  const scroll = useRef<HTMLDivElement>(null);
+  const scroll = useRef<HTMLElement>(null);
   const follow = useRef(true);
   const historyAnchor = useRef<{ height: number; top: number } | null>(null);
   const [away, setAway] = useState(false);
   useReadState(threadId, snapshot?.messages.at(-1)?.message_seq, away);
   const [panel, setPanel] = useState(false);
+  const [toolsOpen, setToolsOpen] = useState(false);
   const agent = snapshot?.thread.agents[0];
   const group = snapshot?.thread.kind === "group";
   const nameOf = (id?: string) =>
     snapshot?.thread.agents.find((a) => a.agent_id === id)?.display_name ?? "Agent";
   const working = snapshot?.runs.some(activeRun) ?? false;
-  const activity = snapshot?.runs.slice().reverse().find(activeRun);
   useEffect(() => {
     if (snapshot && historyAnchor.current && scroll.current && !loadingEarlier) {
       scroll.current.scrollTop =
@@ -86,9 +99,9 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
         className="app-surface"
         aria-label={group ? "Percakapan grup" : "Percakapan langsung"}
       >
-        <header className="relative flex min-h-[58px] shrink-0 items-center gap-3 px-4 py-3 md:h-[92px] md:justify-center md:px-8">
+        <header className="relative flex min-h-[58px] shrink-0 items-center gap-1 px-3 py-1.5 md:h-[92px] md:justify-center md:px-8">
           <ConversationNavigation mobile />
-          <div className="flex min-w-0 flex-1 items-center gap-3 md:flex-col md:gap-1">
+          <div className="absolute left-1/2 flex min-w-0 max-w-[calc(100%-10rem)] -translate-x-1/2 items-center justify-center gap-2 md:static md:max-w-none md:flex-1 md:translate-x-0 md:flex-col md:gap-0.5">
             {group ? (
               <div
                 className="flex size-10 shrink-0 items-center justify-center rounded-full bg-secondary font-bold"
@@ -97,11 +110,17 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
                 G
               </div>
             ) : (
-              <AgentAvatar name={agent?.display_name ?? ""} url={agent?.config.avatar_url} />
+              <AgentAvatar
+                name={agent?.display_name ?? ""}
+                url={agent?.config.avatar_url}
+                className="size-8 md:size-11"
+              />
             )}
             <div className="min-w-0 md:text-center">
-              <h1 className="break-words text-sm font-medium md:rounded-full md:border md:px-2.5 md:py-0.5 [overflow-wrap:anywhere]">
-                {group ? snapshot?.thread.title : (agent?.display_name ?? "Percakapan langsung")}
+              <h1 className="max-w-[40vw] truncate rounded-full bg-muted px-2.5 py-0.5 text-sm font-medium md:max-w-64 md:border md:bg-transparent [overflow-wrap:anywhere]">
+                {group || snapshot?.thread.title_customized
+                  ? snapshot?.thread.title
+                  : (agent?.display_name ?? "Percakapan langsung")}
               </h1>
               <p className="sr-only">
                 {group
@@ -112,13 +131,125 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-3 md:absolute md:right-8 md:top-5">
+          <div className="ml-auto flex items-center md:absolute md:right-4 md:top-5">
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Opsi percakapan"
+              title="Opsi percakapan"
+              aria-expanded={toolsOpen}
+              aria-controls="conversation-tools"
+              onClick={() => setToolsOpen(!toolsOpen)}
+            >
+              <SlidersHorizontal className="size-4" />
+            </Button>
             {snapshot && <ThreadInfo thread={snapshot.thread} refresh={refresh} />}
-            <Link to="/agents" className="hidden text-xs text-muted-foreground lg:block">
-              Semua agent
-            </Link>
           </div>
         </header>
+        <div id="conversation-tools" hidden={!toolsOpen} className="shrink-0 px-4 sm:px-6">
+          <nav aria-label="Alat percakapan" className="flex flex-wrap justify-end gap-1 py-2">
+            <Dialog open={panel} onOpenChange={setPanel}>
+              <DialogTrigger asChild>
+                <Button variant="ghost" size="sm">
+                  <Target className="size-4" />
+                  Goals{snapshot?.goals?.length ? ` · ${snapshot.goals.length}` : ""}
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-h-[85dvh] overflow-y-auto rounded-[20px] sm:max-w-[480px]">
+                <DialogHeader>
+                  <DialogTitle>Goals dan jadwal</DialogTitle>
+                  <DialogDescription className="sr-only">
+                    Agent menangkap tujuan dari percakapan. Ubah, jeda, atau lanjutkan dengan
+                    mengirim pesan.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="px-4 pb-6">
+                  {snapshot && (
+                    <GoalProgress
+                      onNavigate={() => setPanel(false)}
+                      goals={snapshot.goals ?? []}
+                      messages={snapshot.messages}
+                      agents={snapshot.thread.agents}
+                    />
+                  )}
+                  {!snapshot?.goals?.length && (
+                    <p className="py-6 text-sm text-muted-foreground">
+                      Belum ada goal. Ceritakan hasil yang ingin kamu capai di percakapan.
+                    </p>
+                  )}
+                </div>
+              </DialogContent>
+            </Dialog>
+            {snapshot && <LearningControls key={`learning:${threadId}`} thread={snapshot.thread} />}
+            {snapshot && (
+              <WorkspaceControls
+                key={`workspace:${threadId}`}
+                thread={snapshot.thread}
+                working={working}
+              />
+            )}
+            {snapshot && <ScreenControls key={`screen:${threadId}`} thread={snapshot.thread} />}
+            <ConversationConnections />
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  aria-label="Konteks dan file hasil"
+                  title="Konteks dan file hasil"
+                >
+                  <SlidersHorizontal className="size-4" /> Konteks dan file hasil
+                </Button>
+              </SheetTrigger>
+              <SheetContent
+                data-context-editor="true"
+                overlayClassName="lg:hidden"
+                className="w-full sm:max-w-[360px]"
+              >
+                <SheetHeader>
+                  <SheetTitle>Opsi percakapan</SheetTitle>
+                  <SheetDescription>
+                    Konteks, memori, workspace dan layar untuk percakapan ini.
+                  </SheetDescription>
+                </SheetHeader>
+                <div className="px-4 pb-6">
+                  <div className="space-y-4 py-4">
+                    <Link
+                      to="/connections"
+                      className="inline-flex min-h-11 items-center text-sm underline"
+                    >
+                      Permintaan aplikasi dan koneksi
+                    </Link>
+                    {snapshot && (
+                      <SessionControls
+                        key={`session:${threadId}`}
+                        thread={snapshot.thread}
+                        working={working}
+                      />
+                    )}
+                    {snapshot && (
+                      <HistoryControls
+                        key={`history:${threadId}`}
+                        thread={snapshot.thread}
+                        messages={snapshot.messages}
+                        refresh={refresh}
+                      />
+                    )}
+                    {snapshot && (
+                      <PortableExport
+                        key={`portable:${threadId}`}
+                        thread={snapshot.thread}
+                        messages={snapshot.messages}
+                        artifacts={snapshot.artifacts ?? []}
+                      />
+                    )}
+                    <ArtifactResults artifacts={snapshot?.artifacts ?? []} threadId={threadId} />
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </nav>
+        </div>
         {error && (
           <div
             role="alert"
@@ -130,85 +261,16 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
             </Button>
           </div>
         )}
-        <div className="flex shrink-0 flex-wrap items-center justify-end gap-1 px-4 sm:px-6">
-          <Sheet open={panel} onOpenChange={setPanel}>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="sm">
-                <Target className="size-4" />
-                Goals{snapshot?.goals?.length ? ` · ${snapshot.goals.length}` : ""}
-              </Button>
-            </SheetTrigger>
-            <SheetContent className="w-full sm:max-w-md">
-              <SheetHeader>
-                <SheetTitle>Goals dan jadwal</SheetTitle>
-                <SheetDescription>
-                  Agent menangkap tujuan dari percakapan. Ubah, jeda, atau lanjutkan dengan mengirim
-                  pesan.
-                </SheetDescription>
-              </SheetHeader>
-              <div className="px-4 pb-6">
-                {snapshot && (
-                  <GoalProgress
-                    onNavigate={() => setPanel(false)}
-                    goals={snapshot.goals ?? []}
-                    messages={snapshot.messages}
-                    agents={snapshot.thread.agents}
-                  />
-                )}
-                {!snapshot?.goals?.length && (
-                  <p className="py-6 text-sm text-muted-foreground">
-                    Belum ada goal. Ceritakan hasil yang ingin kamu capai di percakapan.
-                  </p>
-                )}
-              </div>
-            </SheetContent>
-          </Sheet>
-          {snapshot && <LearningControls key={`learning:${threadId}`} thread={snapshot.thread} />}
-          {snapshot && (
-            <WorkspaceControls
-              key={`workspace:${threadId}`}
-              thread={snapshot.thread}
-              working={working}
-            />
-          )}
-          {snapshot && <ScreenControls key={`screen:${threadId}`} thread={snapshot.thread} />}
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="sm" aria-label="Opsi percakapan">
-                <SlidersHorizontal className="size-4" />
-                <span className="hidden sm:inline">Opsi</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent className="w-full sm:max-w-lg">
-              <SheetHeader>
-                <SheetTitle>Opsi percakapan</SheetTitle>
-                <SheetDescription>
-                  Konteks, memori, workspace dan layar untuk percakapan ini.
-                </SheetDescription>
-              </SheetHeader>
-              <div className="px-4 pb-6">
-                <div className="space-y-4 py-4">
-                  <Link
-                    to="/connections"
-                    className="inline-flex min-h-11 items-center text-sm underline"
-                  >
-                    Permintaan aplikasi dan koneksi
-                  </Link>
-                  {snapshot && (
-                    <SessionControls
-                      key={`session:${threadId}`}
-                      thread={snapshot.thread}
-                      working={working}
-                    />
-                  )}
-                  <ArtifactResults artifacts={snapshot?.artifacts ?? []} threadId={threadId} />
-                </div>
-              </div>
-            </SheetContent>
-          </Sheet>
-        </div>
-        <div
+        {connection !== "connected" && (
+          <p role="status" className="px-4 py-2 text-center text-xs text-muted-foreground">
+            {connectionText}
+          </p>
+        )}
+        <section
           ref={scroll}
+          aria-label="Riwayat pesan"
+          // biome-ignore lint/a11y/noNoninteractiveTabindex: Keyboard users need a focusable scroll region.
+          tabIndex={0}
           className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 sm:px-6"
           onScroll={() => {
             const el = scroll.current;
@@ -218,7 +280,7 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
             }
           }}
         >
-          <div className="mx-auto max-w-3xl space-y-6 py-6">
+          <div className="mx-auto max-w-[766px] space-y-2.5 py-4">
             {snapshot ? (
               <CollaborationProgress
                 snapshot={snapshot}
@@ -277,11 +339,12 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
                         (item) => item.agent_id === message.author_agent_id,
                       )?.display_name ?? "Agent");
               return (
-                <div key={message.message_id} className="space-y-6">
+                <div key={message.message_id} className="space-y-2.5">
                   <ChatMessage
                     id={`message-${message.message_id}`}
                     author={author}
                     user={message.author_kind === "user"}
+                    showIdentity={!!group || message.author_kind === "system"}
                     avatar={
                       <AgentAvatar
                         name={author}
@@ -293,6 +356,11 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
                       />
                     }
                   >
+                    {message.origin === "selected_history" && (
+                      <p className="mb-2 text-xs opacity-90">
+                        Riwayat pilihan · tidak menjalankan pekerjaan lama
+                      </p>
+                    )}
                     <MessageText text={message.content} />
                     {!!message.attachments?.length && (
                       <div className="mt-3">
@@ -354,6 +422,9 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
                           )}
                         </div>
                       )}
+                      {!group && run.status === "failed" && (
+                        <RetryRun runId={run.run_id} refresh={refresh} />
+                      )}
                       {run.status === "indeterminate" && (
                         <p className="text-sm text-muted-foreground">
                           Pekerjaan tidak diulang otomatis karena hasil sebelumnya belum diketahui.
@@ -404,6 +475,9 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
                         hasil sebelum meminta tindakan yang sama.
                       </p>
                     )}
+                    {!group && run.status === "failed" && (
+                      <RetryRun runId={run.run_id} refresh={refresh} />
+                    )}
                     {run.continuation_required && (
                       <p className="text-sm text-muted-foreground">
                         Hasil sementara tersimpan. Kirim arahan untuk melanjutkan.
@@ -425,9 +499,9 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
                   </article>
                 ))}
           </div>
-        </div>
-        <footer className="shrink-0 bg-background px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-6">
-          <div className="mx-auto max-w-3xl space-y-3">
+        </section>
+        <footer className="shrink-0 bg-background px-3 py-2.5 pb-[max(0.625rem,env(safe-area-inset-bottom))] sm:px-6 md:pb-6">
+          <div className="mx-auto max-w-[766px] space-y-3">
             {away && (
               <Button
                 variant="outline"
@@ -446,6 +520,7 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
                 {cancelError}
               </p>
             )}
+            {snapshot && <ClarificationPrompts thread={snapshot.thread} working={working} />}
             {snapshot && (
               <Composer
                 key={threadId}
@@ -460,10 +535,21 @@ export function DirectMessagePage({ threadId }: { threadId: string }) {
     </main>
   );
 }
+const messageComponents: Components = {
+  code: (props) => (
+    <defaultComponents.code {...props} tabIndex={"data-block" in props ? 0 : undefined} />
+  ),
+  table: (props) => <defaultComponents.table {...props} tabIndex={0} />,
+};
+
 function MessageText({ text, streaming = false }: { text: string; streaming?: boolean }) {
   return (
-    <div className="min-w-0 wrap-anywhere text-sm leading-relaxed [&_pre]:max-w-full [&_pre]:overflow-x-auto [&_h1]:text-xl [&_h2]:text-lg [&_table]:block [&_table]:overflow-x-auto">
-      <Streamdown mode={streaming ? "streaming" : "static"} isAnimating={streaming}>
+    <div className="min-w-0 wrap-anywhere text-[15px] leading-[1.5] [&_pre]:max-w-full [&_h1]:text-xl [&_h2]:text-lg [&_table]:block [&_table]:overflow-x-auto">
+      <Streamdown
+        components={messageComponents}
+        mode={streaming ? "streaming" : "static"}
+        isAnimating={streaming}
+      >
         {text}
       </Streamdown>
     </div>

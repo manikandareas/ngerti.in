@@ -4,12 +4,16 @@ export type Thread = {
   thread_id: string;
   kind: "dm" | "group";
   title: string;
+  title_customized?: boolean;
   dm_agent_id: string | null;
+  revision: string;
   membership_revision: string;
   status: "open" | "archived";
   agents: Agent[];
 };
 export type Message = {
+  origin?: string;
+  source_message_id?: string;
   message_id: string;
   message_seq: string;
   run_id: string;

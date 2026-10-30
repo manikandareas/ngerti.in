@@ -81,7 +81,7 @@ export function TaskRow({
 
 export function PromptBar({ children }: { children: ReactNode }) {
   return (
-    <div className="min-w-0 rounded-2xl border bg-background p-2 focus-within:border-ring">
+    <div className="conversation-composer relative flex min-w-0 flex-wrap items-center gap-1 border bg-background p-2.5 focus-within:border-ring">
       {children}
     </div>
   );
@@ -91,12 +91,14 @@ export function ChatMessage({
   author,
   user,
   avatar,
+  showIdentity = true,
   children,
   id,
 }: {
   author: string;
   user: boolean;
   avatar?: ReactNode;
+  showIdentity?: boolean;
   children: ReactNode;
   id?: string;
 }) {
@@ -106,11 +108,13 @@ export function ChatMessage({
       aria-label={`Pesan ${author}`}
       className={`flex min-w-0 gap-2.5 scroll-mt-4 ${user ? "justify-end" : ""}`}
     >
-      {!user && <div className="mt-1 shrink-0">{avatar}</div>}
+      {!user && showIdentity && <div className="mt-1 shrink-0">{avatar}</div>}
       <div
-        className={`min-w-0 max-w-[90%] rounded-xl px-4 py-3 sm:max-w-[85%] ${user ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground"}`}
+        className={`min-w-0 max-w-[90%] rounded-xl px-4 py-2.5 sm:max-w-[85%] ${user ? "bg-primary text-primary-foreground" : "bg-[var(--message-surface)] text-secondary-foreground"}`}
       >
-        <h2 className={user ? "sr-only" : "mb-1.5 text-xs font-medium"}>{author}</h2>
+        <h2 className={user || !showIdentity ? "sr-only" : "mb-1.5 text-xs font-medium"}>
+          {author}
+        </h2>
         {children}
       </div>
     </article>

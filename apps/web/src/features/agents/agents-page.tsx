@@ -24,6 +24,9 @@ import {
   InferenceSettingsEditor,
   type ModelOption,
 } from "./inference-settings";
+import { PersonalityPresets } from "./personality-presets";
+import { PortableImport } from "./portable-import";
+import { type SessionSettings, SessionSettingsEditor } from "./session-settings";
 
 type CapabilityField = "tool_grants" | "mcp_grants" | "skill_refs";
 type CapabilityOption = {
@@ -39,6 +42,7 @@ type Config = {
   model: string;
   avatar_url?: string;
   inference?: InferenceSettings;
+  session?: SessionSettings;
 } & Partial<Record<CapabilityField, string[]>>;
 const capabilityLabels: Record<CapabilityField, string> = {
   tool_grants: "Tools",
@@ -265,6 +269,7 @@ function AgentManagement({
               </Button>
             </div>
           )}
+          <PortableImport />
           <div className="flex gap-2">
             <Button variant={!archived ? "secondary" : "ghost"} onClick={() => setArchived(false)}>
               Agent aktif
@@ -295,18 +300,16 @@ function AgentManagement({
                   .map((agent) => (
                     <article
                       key={agent.agent_id}
-                      className="flex flex-wrap items-center justify-between gap-4 rounded-xl border-b bg-card px-2 py-5"
+                      className="flex flex-wrap items-center justify-between gap-4 border-b px-2 py-4"
                     >
-                      <div className="flex min-w-0 items-center gap-4">
+                      <div className="flex min-w-0 flex-1 items-center gap-3">
                         <AgentAvatar name={agent.display_name} url={agent.config.avatar_url} />
                         <div className="min-w-0">
-                          <h2 className="break-words font-semibold">{agent.display_name}</h2>
+                          <h2 className="break-words text-base font-medium">
+                            {agent.display_name}
+                          </h2>
                           <p className="text-sm text-muted-foreground">
                             @{agent.handle} · {statusLabels[agent.status]}
-                          </p>
-                          <p className="mt-2 text-xs text-muted-foreground">
-                            {data.models.find((m) => m.id === agent.config.model)?.label ??
-                              agent.config.model}
                           </p>
                         </div>
                       </div>
@@ -333,8 +336,13 @@ function AgentManagement({
                           >
                             {opening === agent.agent_id ? "Membuka…" : "Buka DM"}
                           </Button>
-                          <Button variant="outline" disabled={busy} onClick={() => edit(agent)}>
-                            Edit {agent.display_name}
+                          <Button
+                            variant="outline"
+                            disabled={busy}
+                            onClick={() => edit(agent)}
+                            aria-label={`Edit ${agent.display_name}`}
+                          >
+                            Edit
                           </Button>
                         </div>
                       )}
@@ -357,16 +365,13 @@ function AgentManagement({
       >
         <SheetContent
           side="right"
-          showOverlay={!initialAgent}
-          data-context-editor={initialAgent ? "true" : undefined}
+          overlayClassName="lg:hidden"
+          data-context-editor="true"
           className="gap-4 border-0 p-5 data-[side=right]:w-full data-[side=right]:sm:max-w-[360px] [background:var(--app-shell-fill)]"
         >
           <SheetHeader className="px-0 pt-8">
             <SheetTitle>{selected ? `Edit ${selected.display_name}` : "Buat agent"}</SheetTitle>
-            <SheetDescription>
-              Identitas ini digunakan di DM dan grup. Perubahan karakter dan model berlaku pada run
-              baru.
-            </SheetDescription>
+            <SheetDescription>Atur nama dan karakter agent.</SheetDescription>
           </SheetHeader>
           <form
             className="space-y-4 rounded-2xl bg-background/70 p-4"
@@ -406,10 +411,14 @@ function AgentManagement({
                   Huruf kecil, angka, garis bawah, atau tanda hubung. Awali dengan huruf.
                 </span>
               </label>
+              <PersonalityPresets
+                onSelect={(soul) => setDraft({ ...draft, config: { ...draft.config, soul } })}
+              />
               <label htmlFor="agent-soul" className="block space-y-2 text-sm">
-                Karakter (soul)
+                Karakter
                 <Textarea
                   id="agent-soul"
+                  className="min-h-28 max-h-48 overflow-y-auto"
                   rows={3}
                   maxLength={16000}
                   placeholder="Teliti, ingin tahu, dan menjelaskan sumber dengan jelas."
@@ -428,6 +437,7 @@ function AgentManagement({
                     Instruksi
                     <Textarea
                       id="agent-instructions"
+                      className="min-h-28 max-h-48 overflow-y-auto"
                       rows={3}
                       maxLength={16000}
                       placeholder="Cara kerja dan hal yang perlu diperhatikan agent."
@@ -472,6 +482,12 @@ function AgentManagement({
                     models={data?.models ?? []}
                     onChange={(inference) =>
                       setDraft({ ...draft, config: { ...draft.config, inference } })
+                    }
+                  />
+                  <SessionSettingsEditor
+                    value={draft.config.session}
+                    onChange={(session) =>
+                      setDraft({ ...draft, config: { ...draft.config, session } })
                     }
                   />
                   <details className="rounded-lg border p-4">
@@ -548,7 +564,7 @@ function AgentManagement({
               </details>
             </fieldset>
             {error && (
-              <div role="alert" className="space-y-2 text-sm text-destructive">
+              <div role="alert" className="space-y-2 text-sm text-destructive-foreground">
                 <p>{error}</p>
                 <p>
                   Jika konfigurasi telah berubah, tutup editor dan muat ulang sebelum mengedit lagi.

@@ -1,4 +1,4 @@
-# Harness-first domain and API contract v1.0.0
+# Harness-first domain and API contract v1.1.0
 
 Executable schemas live in [contracts.ts](../../apps/server/src/contracts.ts) and are exported by authenticated `GET /v1/contracts`. These are foundation contracts; NMA-060 remains the API readiness gate before UI adoption. JSON Schema describes field shapes. Runtime Zod refinements and the application service enforce the cross-field and relational invariants below.
 
@@ -8,10 +8,11 @@ All entities contain server-generated UUID `id`, server-owned `owner_id`, intege
 
 | Entity | Responsibility and references |
 | --- | --- |
-| Agent | Persistent name/instructions, selected `codex`/`muse` harness, connection identity, optional workspace identity and grant revision. The connection/workspace references reserve seams for their owning tickets; this foundation does not claim they are connected or granted. |
+| Connection | Selected harness/authentication/billing source, credential reference, observed account/login/catalog/inference and explicit capabilities. Secret values stay outside domain records. See the [broker contract](harness-broker-contract.md). |
+| Agent | Persistent name/instructions, selected `codex`/`muse` harness, connection identity, model/reasoning selection, optional workspace identity and grant revision. The connection/workspace references reserve seams for their owning tickets; this foundation does not claim they are connected or granted. |
 | Thread | DM/group identity and member agent IDs. Private transcript and group transcript remain separate. |
 | Message | Thread, `user`/`agent`/`routine` author, optional agent/Routine/run reference, original text and partial/complete state. Scheduler input is explicitly authored by the Routine, not attributed to a new human message. |
-| Run | Admitted input message, target agent/thread, optional goal/Routine, status/outcome, grant snapshot, dispatch token, authority epoch and native binding. |
+| Run | Admitted input message, target agent/thread, optional goal/Routine, status/outcome, grant snapshot, dispatch token, authority epoch and native binding/run identity. |
 | Goal | Agent/thread responsibility, generation, active/paused/stopped/completed state and artifact evidence IDs. The schema rejects completed goals without evidence; validating useful evidence and automatic completion belongs to NMA-057. |
 | Routine | Agent/thread, optional goal, instruction, timezone, typed one-time/fixed-interval schedule, generation, state and persisted next due time. Full cron/calendar/DST semantics remain NMA-057. |
 | Occurrence | Routine ID, generation, scheduled UTC time and admitted run ID. The tuple `(routine_id, routine_generation, scheduled_for)` is unique. |
@@ -22,11 +23,16 @@ SQLite stores typed projections, immutable event envelopes and command receipts.
 
 ## Commands and queries
 
-`GET /health/live` is public process liveness. All other routes require `Authorization: Bearer <installation token>`. Every POST requires a UUID `Idempotency-Key`. Repeating the same key, method, path and normalized body returns the original receipt even after restart. Different input under the same key returns `IDEMPOTENCY_CONFLICT` with HTTP 409. Unknown properties, including injected `owner_id`, are rejected. Validation errors do not echo request input or native exception details.
+`GET /health/live` is public process liveness. Except the separately scoped MCP endpoint, all other routes require `Authorization: Bearer <installation token>`. Application command POSTs require a UUID `Idempotency-Key`. The MCP endpoint follows its separate JSON-RPC/run-lease contract. Repeating the same key, method, path and normalized body returns the original receipt even after restart. Different input under the same key returns `IDEMPOTENCY_CONFLICT` with HTTP 409. Unknown properties, including injected `owner_id`, are rejected. Validation errors do not echo request input or native exception details.
 
 | Route | Behavior |
 | --- | --- |
 | `GET /health/ready` | Foundation status and registered executor count. `api_readiness_gate=pending`; not a completed-inference check. |
+| `GET /v1/harnesses` | Backend-host executable/version policy detection for Codex and Muse. |
+| `GET /v1/harness/contracts` | Broker schemas, explicit capability/error/terminal/tool-scope contracts. |
+| `POST /v1/connections` | Persist an explicit connection/auth/billing choice without secret values. |
+| `POST /v1/connections/:id/revoke` | Durably revoke the connection and invalidate its authorization generation. |
+| `POST /v1/harness/tools` | Structured MCP bridge using a server-issued run bearer instead of installation authentication. See the broker contract for protocol/auth/GET behavior. |
 | `GET /v1/contracts` | Contract version, entity/event/command JSON schemas and error codes. |
 | `GET /v1/entities/:kind` | Read a typed collection in this installation. |
 | `GET /v1/entities/:kind/:id` | Read an entity; foreign/missing IDs return 404. |
@@ -62,7 +68,7 @@ Replace placeholder IDs with stored UUIDs. A one-time Routine body uses `schedul
 | active state after process death | Startup recovery | unknown; retain binding/token/stop intent and block that execution lane. |
 | unknown | Trusted adapter reconciliation | A terminal outcome from an identified native receipt; never automatic requeue. |
 
-FIFO ordering is per `(thread_id, agent_id)`. A partial unique index and transactional claim allow one active or unknown run per lane. Other lanes can execute concurrently, bounded by dispatcher concurrency. The final dispatch gate rechecks membership, current grant revision, goal/Routine state and connection/harness binding before invoking native execution. Future adapters must also verify their current credential/capability grants at the native dispatch boundary.
+FIFO ordering is per `(thread_id, agent_id)`. A partial unique index and transactional claim allow one active or unknown run per lane. Other lanes can execute concurrently, bounded by dispatcher concurrency. The final dispatch gate rechecks membership, current grant revision, goal/Routine state and connection/harness binding before invoking native execution. The broker rechecks current connection/account/capability state and selected model at the native dispatch boundary. Native accepted observations persist `native_run_id` through the application lifecycle before product tools execute.
 
 A shutdown abort signal expresses stop intent. If the executor cannot confirm its result before the deadline, the run becomes unknown; late completion cannot write to closed state. No generic retry route turns an unknown run into queued work. Internal native receipt reconciliation is not exposed as a caller-controlled HTTP success override.
 
@@ -73,3 +79,5 @@ An event contains `schema_version=1`, monotonic integer `cursor`, owner ID, type
 The background scheduler treats the database as the source of due state. A one-second wake loop re-reads current Routine/goal state, creates a unique occurrence and run, and advances the next due time in one transaction. Repeated ticks/restarts do not duplicate a committed occurrence. Missed fixed intervals collapse to the latest due slot; a Routine with any queued/active/unknown run does not create another overlapping run. A paused/stopped responsibility remains stopped across restart. Full misfire/timezone/conversational/quiet policies are outside this foundation.
 
 Error codes: `INVALID_REQUEST`, `UNAUTHORIZED`, `NOT_FOUND`, `CONFLICT`, `IDEMPOTENCY_CONFLICT`, `SCOPE_DENIED`, `STALE_DISPATCH`, `RECONCILIATION_REQUIRED`, `INTERNAL_ERROR`. Auth errors use 401, scope errors 403, missing records 404, stale/conflicting work 409, invalid bodies 422, oversized declared bodies 413. Unexpected errors return a generic 500 without native details.
+
+Version 1.1 adds connection entities and nullable per-agent model/reasoning and per-run native identity. Defaults permit replay of earlier foundation records; the event JSON Schema uses input/default semantics so old event payloads remain valid without rewriting immutable events. The SQLite DDL version remains 1 because its tables/indexes are unchanged.

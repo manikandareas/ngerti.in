@@ -1,6 +1,7 @@
 import { z } from "zod";
+import { connectionFields } from "./harness/contracts";
 
-export const CONTRACT_VERSION = "1.0.0";
+export const CONTRACT_VERSION = "1.1.0";
 export const id = z.uuid();
 const text = z.string().min(1).max(100_000);
 const base = {
@@ -17,6 +18,8 @@ export const agentInput = z.strictObject({
   connection_id: id,
   instructions: z.string().max(100_000).default(""),
   workspace_id: id.nullable().default(null),
+  model_id: z.string().min(1).max(200).nullable().default(null),
+  reasoning: z.string().max(100).nullable().default(null),
 });
 export const agent = agentInput.extend({
   ...base,
@@ -61,6 +64,7 @@ export const run = z
     dispatch_token: id.nullable(),
     authority_epoch: id.nullable(),
     binding_id: id.nullable(),
+    native_run_id: z.string().min(1).max(1000).nullable().default(null),
   })
   .refine((value) => {
     const terminal = ["succeeded", "failed", "cancelled", "unknown"].includes(value.status);
@@ -172,7 +176,13 @@ export const binding = z.strictObject({
   native_session_id: z.string().min(1).max(1000),
   generation: z.int().positive(),
 });
+export const connection = z.strictObject({
+  ...base,
+  kind: z.literal("connection"),
+  ...connectionFields,
+});
 export const schemas = {
+  connection,
   agent,
   thread,
   run,
@@ -186,6 +196,7 @@ export const schemas = {
 export type Kind = keyof typeof schemas;
 export type Entity<K extends Kind = Kind> = z.infer<(typeof schemas)[K]>;
 export const kindSchema = z.enum([
+  "connection",
   "agent",
   "thread",
   "run",
@@ -213,6 +224,7 @@ export const domainEvent = z.strictObject({
   revision: z.int().positive(),
   created_at: z.iso.datetime(),
   data: z.discriminatedUnion("kind", [
+    connection,
     agent,
     thread,
     run,
@@ -250,7 +262,7 @@ export function contractDocument() {
     entities: Object.fromEntries(
       Object.entries(schemas).map(([key, value]) => [key, z.toJSONSchema(value)]),
     ),
-    event: z.toJSONSchema(domainEvent),
+    event: z.toJSONSchema(domainEvent, { io: "input" }),
     commands: Object.fromEntries(
       Object.entries({
         agent: agentInput,

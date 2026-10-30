@@ -1,0 +1,63 @@
+{
+  "baseline_commit": "f5640df431c067b01a02f0f09f97d61076494fba",
+  "openbot": {
+    "repository": "https://github.com/nightly-labs/openbot",
+    "revision": "01e4b18e238e5de72a3570162c9f4275bb585786",
+    "observed_modules": [
+      {
+        "path": "src/backend/agent-client.ts",
+        "sha256": "e835ad0d18a011bd1d5a8bad4c64b57f24914e023fd7a15de080f360d91f2ab2",
+        "matches_pinned_revision": true
+      },
+      {
+        "path": "src/backend/provider-drivers.ts",
+        "sha256": "21a5d48989efcf7abffb9c65897789dc89beba8bd31f9fa6d9ec4ba276eaef48",
+        "matches_pinned_revision": true
+      },
+      {
+        "path": "src/backend/acp-configuration.ts",
+        "sha256": "527fe5b6dc1131a4beb3d147949a0e8f5abdf75eac389a109b6d00019655a5df",
+        "matches_pinned_revision": true
+      },
+      {
+        "path": "src/backend/acp-connection.ts",
+        "sha256": "c963a2ab72343943d85f5592e9ae98dd8ce556f9412335522aff05726e077f74",
+        "matches_pinned_revision": true
+      },
+      {
+        "path": "src/backend/cli.ts",
+        "sha256": "d5f0f0e822da40cd14f9ca395c4d0618ccefe62756d2b3974129e5e1c696151e",
+        "matches_pinned_revision": true
+      },
+      {
+        "path": "src/backend/muse-client.ts",
+        "sha256": "2d4173e3f7cd0a52eabd83fa4e05625faa427d5e67c299c42988f516214776fc",
+        "matches_pinned_revision": true
+      }
+    ],
+    "adoption": "Selected behavioral port; no generic ACP or extra provider integration"
+  },
+  "muse_sdk": {
+    "package": "@muse-code/sdk",
+    "version": "1.4.12",
+    "readme_sha256": "423657f39b58d0e784f85afb35a8087225ea67c060b6d77a2410cb9ff9928229",
+    "readme_observation": "SDK and CLI versions ship in lockstep; CLI minimum uses the pinned 1.4.12 SDK floor",
+    "server_dependency_added": false
+  },
+  "protocol_sources": [
+    "https://modelcontextprotocol.io/specification/2025-06-18/basic/transports",
+    "https://modelcontextprotocol.io/specification/2025-06-18/server/tools",
+    "https://modelcontextprotocol.io/specification/2025-03-26/basic/lifecycle"
+  ],
+  "versions": {
+    "bun": "1.3.10",
+    "typescript": "7.0.2",
+    "elysia": "1.4.30",
+    "zod": "4.4.3",
+    "codex_cli": "0.165.0",
+    "muse_cli": null,
+    "muse_sdk": "1.4.12",
+    "mcp_server_protocol": "2025-06-18"
+  },
+  "upgrade": "Compare pinned source flows, native protocol and SDK changelog; rerun policy, isolation, lifecycle, tool and affected native probes before updating tested versions."
+}

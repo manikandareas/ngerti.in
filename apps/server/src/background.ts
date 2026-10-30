@@ -4,7 +4,7 @@ import type { Lifecycle } from "./lifecycle";
 export interface ExecutorContext {
   signal: AbortSignal;
   /** Called only after native acceptance. Abort intent alone never confirms native stop. */
-  started(): void;
+  started(nativeRunId?: string): void;
 }
 export interface HarnessExecutor {
   execute(
@@ -80,8 +80,8 @@ export class Background {
       const run = this.lifecycle.authorizeDispatch(work.run.id, token);
       const outcome = await executor.execute(run, {
         signal: work.controller.signal,
-        started: () => {
-          if (!this.#closed) this.lifecycle.started(run.id, token);
+        started: (nativeRunId) => {
+          if (!this.#closed) this.lifecycle.started(run.id, token, nativeRunId);
         },
       });
       if (this.#closed) return;

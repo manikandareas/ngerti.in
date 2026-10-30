@@ -15,9 +15,22 @@ import {
   routineInput,
   threadInput,
 } from "./contracts";
+import { detectHarness } from "./harness/availability";
+import { Connections } from "./harness/connections";
+import { brokerContract, connectionInput, HarnessError } from "./harness/contracts";
+import { ProductTools } from "./harness/tools";
 import type { Lifecycle } from "./lifecycle";
 
-export function createApi(lifecycle: Lifecycle, background: Background, token: string) {
+export function createApi(
+  lifecycle: Lifecycle,
+  background: Background,
+  token: string,
+  services: {
+    connections: Connections;
+    tools: ProductTools;
+    detect?: typeof detectHarness;
+  } = { connections: new Connections(lifecycle), tools: new ProductTools(lifecycle) },
+) {
   if (token.length < 32) throw new Error("A private development token is required.");
   function command(request: Request, body: unknown, action: () => unknown) {
     const commandId = id.parse(request.headers.get("Idempotency-Key"));
@@ -29,6 +42,10 @@ export function createApi(lifecycle: Lifecycle, background: Background, token: s
   }
   return new Elysia({ name: "ngertiin-foundation", serve: { maxRequestBodySize: 1_048_576 } })
     .onError(({ error, code, set }) => {
+      if (error instanceof HarnessError) {
+        set.status = 409;
+        return { error: { code: error.code, message: error.message, outcome: error.outcome } };
+      }
       if (error instanceof DomainError) {
         set.status = error.status;
         return { error: { code: error.code, message: error.message } };
@@ -50,6 +67,28 @@ export function createApi(lifecycle: Lifecycle, background: Background, token: s
     .get("/health/live", () => ({ status: "alive" }))
     .onRequest(({ request }) => {
       if (request.method === "GET" && new URL(request.url).pathname === "/health/live") return;
+      const size = Number(request.headers.get("Content-Length") ?? 0);
+      if (!Number.isFinite(size) || size > 1_048_576) throw new DomainError("INVALID_REQUEST", 413);
+      // The MCP endpoint accepts only a server-issued run lease, never the installation token.
+      if (
+        ["GET", "POST"].includes(request.method) &&
+        new URL(request.url).pathname === "/v1/harness/tools"
+      ) {
+        const url = new URL(request.url);
+        const origin = request.headers.get("Origin");
+        if (
+          !["127.0.0.1", "localhost", "[::1]"].includes(url.hostname) ||
+          (origin !== null && origin !== url.origin)
+        )
+          throw new DomainError("SCOPE_DENIED", 403);
+        const protocol = request.headers.get("MCP-Protocol-Version");
+        if (protocol !== null && protocol !== "2025-06-18")
+          throw new DomainError("INVALID_REQUEST", 400);
+        services.tools.authenticate(
+          (request.headers.get("Authorization") ?? "").replace(/^Bearer /, ""),
+        );
+        return;
+      }
       const supplied = request.headers.get("Authorization") ?? "";
       const expected = `Bearer ${token}`;
       const suppliedBytes = Buffer.from(supplied);
@@ -59,8 +98,6 @@ export function createApi(lifecycle: Lifecycle, background: Background, token: s
         !timingSafeEqual(suppliedBytes, expectedBytes)
       )
         throw new DomainError("UNAUTHORIZED", 401);
-      const size = Number(request.headers.get("Content-Length") ?? 0);
-      if (!Number.isFinite(size) || size > 1_048_576) throw new DomainError("INVALID_REQUEST", 413);
     })
     .get("/health/ready", () => ({
       status: "foundation_ready",
@@ -72,6 +109,29 @@ export function createApi(lifecycle: Lifecycle, background: Background, token: s
       api_readiness_gate: "pending",
     }))
     .get("/v1/contracts", () => contractDocument())
+    .get("/v1/harness/contracts", () => brokerContract())
+    .get("/v1/harnesses", async () =>
+      Promise.all((["codex", "muse"] as const).map((id) => (services.detect ?? detectHarness)(id))),
+    )
+    .post(
+      "/v1/connections",
+      ({ request, body }) => command(request, body, () => services.connections.create(body)),
+      { body: connectionInput },
+    )
+    .post(
+      "/v1/connections/:id/revoke",
+      ({ request, params }) => command(request, {}, () => services.connections.revoke(params.id)),
+      { params: z.object({ id }) },
+    )
+    .post("/v1/harness/tools", async ({ request, body }) => {
+      const result = await services.tools.rpc(
+        (request.headers.get("Authorization") ?? "").replace(/^Bearer /, ""),
+        body,
+      );
+      if (result === null) return new Response(null, { status: 202 });
+      return result;
+    })
+    .get("/v1/harness/tools", () => new Response(null, { status: 405 }))
     .get("/v1/entities/:kind", ({ params }) => lifecycle.store.list(params.kind), {
       params: z.object({ kind: kindSchema }),
     })

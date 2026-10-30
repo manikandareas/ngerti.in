@@ -159,6 +159,7 @@ export class Lifecycle {
         dispatch_token: null,
         authority_epoch: null,
         binding_id: null,
+        native_run_id: null,
       });
       return { message, run };
     });
@@ -171,7 +172,12 @@ export class Lifecycle {
         .list("binding")
         .find((item) => item.thread_id === threadId && item.agent_id === agentId);
       if (existing) {
-        if (existing.native_session_id !== nativeSessionId) throw new DomainError("CONFLICT");
+        if (
+          existing.native_session_id !== nativeSessionId ||
+          existing.connection_id !== agent.connection_id ||
+          existing.harness !== agent.harness
+        )
+          throw new DomainError("CONFLICT");
         return existing;
       }
       return this.store.put({
@@ -223,10 +229,20 @@ export class Lifecycle {
     return run;
   }
 
-  started(runId: string, token: string) {
+  started(runId: string, token: string, nativeRunId?: string) {
     return this.store.transaction(() => {
       const run = this.dispatch(runId, token);
-      if (run.status === "dispatching") return this.update(run, { status: "running" });
+      if (
+        run.native_run_id !== null &&
+        nativeRunId !== undefined &&
+        run.native_run_id !== nativeRunId
+      )
+        throw new DomainError("STALE_DISPATCH");
+      if (run.status === "dispatching" || (nativeRunId !== undefined && run.native_run_id === null))
+        return this.update(run, {
+          status: run.status === "dispatching" ? "running" : run.status,
+          native_run_id: nativeRunId ?? run.native_run_id,
+        });
       return run;
     });
   }
@@ -240,7 +256,12 @@ export class Lifecycle {
       this.responsibility(run);
       if (!run.binding_id) throw new DomainError("STALE_DISPATCH");
       const binding = this.store.get("binding", run.binding_id);
-      if (binding.connection_id !== agent.connection_id || binding.harness !== agent.harness)
+      if (
+        binding.connection_id !== agent.connection_id ||
+        binding.harness !== agent.harness ||
+        binding.agent_id !== agent.id ||
+        binding.thread_id !== run.thread_id
+      )
         throw new DomainError("STALE_DISPATCH");
       return run;
     });

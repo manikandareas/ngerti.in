@@ -82,9 +82,8 @@ def install():
                     "description": "Optional subset of the parent's toolsets. Empty means no tools.",
                 },
             }
-            models = selected.get("nma_delegation_models", {})
-            if models:
-                parameters["model_ref"]["enum"] = sorted(models)
+            # Account catalogs can exceed provider tool-schema enum limits.
+            # route_task validates references against the frozen owner catalog.
             toolsets = selected.get("nma_capabilities", {}).get("toolsets", [])
             if toolsets:
                 parameters["allowed_toolsets"]["items"]["enum"] = list(toolsets)

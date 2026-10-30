@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ngertiin Ticket"
+  short_description: "Implementasi, brainstorming, dan tanya tiket Ngertiin"
+  default_prompt: "$ngertiin-ticket NMA-047 implementasi"

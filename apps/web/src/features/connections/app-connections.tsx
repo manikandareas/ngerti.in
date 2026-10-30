@@ -1,5 +1,6 @@
+import { ServiceIcon } from "./service-icon";
 import { useAuth } from "@clerk/tanstack-react-start";
-import { Plug, Plus, Search } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { NativeChoice } from "@/components/ui/checkbox";
@@ -203,7 +204,7 @@ export function AppConnections({ contextual = false }: { contextual?: boolean })
             <Heading
               id="app-connections-title"
               className={
-                contextual ? "text-base font-semibold" : "text-[28px] font-semibold tracking-tight"
+                contextual ? "text-base font-semibold" : "text-2xl font-semibold tracking-tight"
               }
             >
               Connections
@@ -221,7 +222,7 @@ export function AppConnections({ contextual = false }: { contextual?: boolean })
                   />
                 </label>
                 <Button
-                  className="rounded-full"
+                  size="sm"
                   onClick={() => configure(data?.applications[0]?.id ?? "notion")}
                   disabled={!data}
                 >
@@ -233,7 +234,7 @@ export function AppConnections({ contextual = false }: { contextual?: boolean })
           </div>
           <p
             className={
-              contextual ? "text-[13px] text-muted-foreground" : "text-base text-muted-foreground"
+              contextual ? "text-[13px] text-muted-foreground" : "text-sm leading-6 text-muted-foreground"
             }
           >
             Connect your tools to let Ngertiin work across your apps.
@@ -245,29 +246,30 @@ export function AppConnections({ contextual = false }: { contextual?: boolean })
         </TabsList>
         <TabsContent value="available">
           <section aria-label="Direktori aplikasi" className="space-y-4">
-            <h2 className="text-[17px] font-semibold">Aplikasi untuk agent</h2>
+            <h2 className="text-sm font-semibold">Aplikasi untuk agent</h2>
             {!data ? (
               <div role="status" aria-label="Memuat aplikasi">
                 <Skeleton className="h-20 w-full" />
               </div>
             ) : (
-              <div className="grid gap-x-8 gap-y-3 lg:grid-cols-2">
+              <div className="grid gap-3 lg:grid-cols-2">
                 {data.applications
                   .filter((app) =>
                     `${app.label} ${app.id}`.toLowerCase().includes(search.toLowerCase()),
                   )
                   .map((app) => (
-                    <button
+                    <Button
+                      variant="ghost"
                       type="button"
                       key={app.id}
-                      className="flex min-h-20 items-center gap-3 rounded-lg px-2 py-3 text-left hover:bg-muted/50"
+                      className="flex h-auto min-h-20 items-center gap-3 rounded-lg border px-4 py-3 text-left whitespace-normal hover:bg-muted/50"
                       onClick={() => configure(app.id)}
                     >
-                      <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted">
-                        <Plug className="size-5" />
+                      <span className="flex size-10 shrink-0 items-center justify-center rounded-lg">
+                        <ServiceIcon service={app.id} />
                       </span>
                       <span className="min-w-0 flex-1">
-                        <span className="block text-base font-medium">{app.label}</span>
+                        <span className="block text-sm font-medium">{app.label}</span>
                         <span className="mt-1 block text-[13px] text-muted-foreground">
                           {app.id === "google-workspace"
                             ? "Gmail, Drive, Docs, Sheets & Calendar"
@@ -275,7 +277,7 @@ export function AppConnections({ contextual = false }: { contextual?: boolean })
                         </span>
                       </span>
                       <Plus className="size-4 shrink-0 text-muted-foreground" />
-                    </button>
+                    </Button>
                   ))}
               </div>
             )}
@@ -342,7 +344,7 @@ export function AppConnections({ contextual = false }: { contextual?: boolean })
               .map((connection) => (
                 <article
                   key={connection.connection_id}
-                  className="space-y-3 rounded-lg bg-muted/60 p-5 [overflow-wrap:anywhere]"
+                  className="space-y-3 rounded-lg/60 p-5 [overflow-wrap:anywhere]"
                 >
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div>

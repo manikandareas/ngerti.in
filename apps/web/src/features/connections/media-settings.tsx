@@ -65,7 +65,7 @@ export function MediaSettings() {
     }
   }
   return (
-    <section className="space-y-3 rounded-xl border p-4" aria-label="Koneksi gambar">
+    <section className="space-y-4 rounded-lg border p-5" aria-label="Koneksi gambar">
       <h2 className="font-semibold">Muse multimodal</h2>
       <p className="text-sm text-muted-foreground">
         Buat dan edit gambar, pahami gambar/video, dan transkripsikan suara. Aktifkan kemampuan Muse
@@ -76,7 +76,7 @@ export function MediaSettings() {
           {data.status === "configured" ? "Terhubung" : "Terputus"} · {data.model}
         </p>
       )}
-      <label htmlFor="muse-api-key" className="block space-y-1 text-sm">
+      <label htmlFor="muse-api-key" className="block space-y-2 text-sm">
         Meta Model API key
         <Input
           id="muse-api-key"

@@ -1,0 +1,42 @@
+[
+  {
+    "service": "openai",
+    "url": "https://icons.computer/icons/6448311069.png",
+    "source": "https://apps.apple.com/us/app/chatgpt/id6448311069"
+  },
+  {
+    "service": "anthropic",
+    "url": "https://icons.computer/icons/6473753684.png",
+    "source": "https://apps.apple.com/us/app/claude-by-anthropic/id6473753684"
+  },
+  {
+    "service": "gemini",
+    "url": "https://icons.computer/icons/6477489729.png",
+    "source": "https://apps.apple.com/us/app/google-gemini/id6477489729"
+  },
+  {
+    "service": "xai",
+    "url": "https://icons.computer/icons/6670324846.png",
+    "source": "https://apps.apple.com/us/app/grok-ai/id6670324846"
+  },
+  {
+    "service": "notion",
+    "url": "https://icons.computer/icons/1232780281.png",
+    "source": "https://apps.apple.com/us/app/notion-notes-tasks-ai/id1232780281"
+  },
+  {
+    "service": "github",
+    "url": "https://icons.computer/icons/1477376905.png",
+    "source": "https://apps.apple.com/us/app/github/id1477376905"
+  },
+  {
+    "service": "linear",
+    "url": "https://icons.computer/icons/1645587184.png",
+    "source": "https://apps.apple.com/us/app/linear-mobile/id1645587184"
+  },
+  {
+    "service": "google-workspace",
+    "url": "https://icons.computer/icons/507874739.png",
+    "source": "https://apps.apple.com/us/app/google-drive/id507874739"
+  }
+]

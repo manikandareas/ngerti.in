@@ -1,6 +1,7 @@
+import { ServiceIcon } from "./service-icon";
 import { useAuth } from "@clerk/tanstack-react-start";
 import { Link } from "@tanstack/react-router";
-import { ChevronRight, KeyRound, Plus, Sparkles } from "lucide-react";
+import { ChevronRight, KeyRound, Plus } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -184,27 +185,27 @@ export function ConnectionsPage() {
   }
   return (
     <SettingsShell section={section} onSection={navigate}>
-      <div hidden={section !== "providers"} className="space-y-8">
+      <div hidden={section !== "providers"} className="space-y-6">
         <header className="space-y-3">
-          <h1 className="text-[30px] font-semibold tracking-tight">Connect your AI provider</h1>
-          <p className="text-base text-muted-foreground">
+          <h1 className="text-2xl font-semibold tracking-tight">Connect your AI provider</h1>
+          <p className="text-sm leading-6 text-muted-foreground">
             Choose the providers your agents can use. Connect an account or add an API key to get
             started.
           </p>
         </header>
         <div className="flex flex-wrap gap-3">
-          <Button className="h-11" onClick={() => openProvider("openai")}>
+          <Button size="sm" onClick={() => openProvider("openai")}>
             <Plus />
             Connect OpenAI
           </Button>
-          <Button className="h-11" variant="outline" onClick={() => openProvider("openrouter")}>
+          <Button size="sm" variant="outline" onClick={() => openProvider("openrouter")}>
             <Plus />
             Add another provider
           </Button>
         </div>
         <section aria-labelledby="provider-directory" className="space-y-4">
           <div className="flex items-center justify-between gap-3">
-            <h2 id="provider-directory" className="text-[17px] font-semibold">
+            <h2 id="provider-directory" className="text-sm font-semibold">
               Setup providers
             </h2>
             <span className="text-xs text-muted-foreground">
@@ -253,17 +254,18 @@ export function ConnectionsPage() {
                         c.base_url === providerPresets[provider.id]?.url)),
                 );
                 return (
-                  <button
+                  <Button
+                    variant="ghost"
                     key={provider.id}
                     type="button"
-                    className="grid min-h-24 w-full grid-cols-[44px_minmax(0,1fr)_16px] items-center gap-x-3 gap-y-2 rounded-2xl sm:flex sm:gap-4 border px-4 py-[18px] text-left hover:bg-muted/40 sm:px-5"
+                    className="grid h-auto min-h-20 w-full grid-cols-[36px_minmax(0,1fr)_16px] items-center gap-x-3 gap-y-2 rounded-lg sm:flex sm:gap-4 border px-4 py-4 text-left whitespace-normal hover:bg-muted/40"
                     onClick={() => openProvider(provider.id)}
                   >
-                    <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-muted">
-                      <Sparkles className="size-5" />
+                    <span className="flex size-9 shrink-0 items-center justify-center">
+                      <ServiceIcon service={provider.id} />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block text-base font-semibold">{provider.label}</span>
+                      <span className="block text-sm font-medium">{provider.label}</span>
                       <span className="mt-1 block text-[13px] text-muted-foreground">
                         {provider.description}
                       </span>
@@ -275,7 +277,7 @@ export function ConnectionsPage() {
                       {connected ? "Connected" : "Not connected"}
                     </Badge>
                     <ChevronRight className="col-start-3 row-start-1 size-4 shrink-0 text-muted-foreground" />
-                  </button>
+                  </Button>
                 );
               })}
             </div>
@@ -559,9 +561,9 @@ export function ConnectionsPage() {
         <AppConnections />
       </div>
       {section === "research" && (
-        <div className="space-y-8">
+        <div className="space-y-6">
           <header className="space-y-3">
-            <h1 className="text-[30px] font-semibold">Riset internet</h1>
+            <h1 className="text-2xl font-semibold">Riset internet</h1>
             <p className="text-muted-foreground">
               Pilih layanan pencarian dan pembaca halaman untuk agent.
             </p>
@@ -570,9 +572,9 @@ export function ConnectionsPage() {
         </div>
       )}
       {section === "media" && (
-        <div className="space-y-8">
+        <div className="space-y-6">
           <header className="space-y-3">
-            <h1 className="text-[30px] font-semibold">Gambar, video & suara</h1>
+            <h1 className="text-2xl font-semibold">Gambar, video & suara</h1>
             <p className="text-muted-foreground">
               Kelola kesiapan provider multimodal untuk agent.
             </p>

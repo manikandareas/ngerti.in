@@ -23,16 +23,16 @@ export function SettingsShell({
 }) {
   const [open, setOpen] = useState(false);
   const navigation = (
-    <div className="flex h-full flex-col gap-6 px-6 pb-7 pt-8">
+    <div className="flex h-full flex-col gap-6 px-3 py-5">
       <div className="flex items-center gap-3">
-        <Button asChild variant="secondary" size="icon" className="rounded-full">
+        <Button asChild variant="ghost" size="icon" className="size-8">
           <Link to="/" aria-label="Kembali ke percakapan">
             <ArrowLeft />
           </Link>
         </Button>
-        <span className="text-[22px] font-semibold">Settings</span>
+        <span className="text-base font-semibold">Settings</span>
       </div>
-      <nav aria-label="Settings" className="space-y-1.5">
+      <nav aria-label="Settings" className="space-y-1">
         {(
           [
             { id: "providers", label: "AI providers", icon: Sparkles },
@@ -44,7 +44,7 @@ export function SettingsShell({
           <Button
             key={item.id}
             variant="ghost"
-            className={`h-[46px] w-full justify-start gap-3 px-3 text-base ${section === item.id ? "bg-card/75 font-semibold" : "font-medium"}`}
+            className={`h-9 w-full justify-start gap-2.5 px-3 text-sm ${section === item.id ? "bg-accent text-accent-foreground font-medium" : "font-medium"}`}
             aria-current={section === item.id ? "page" : undefined}
             onClick={() => {
               onSection(item.id);
@@ -58,7 +58,7 @@ export function SettingsShell({
         <Button
           asChild
           variant="ghost"
-          className="h-[46px] w-full justify-start gap-3 px-3 text-base"
+          className="h-9 w-full justify-start gap-2.5 px-3 text-sm"
         >
           <Link to="/agents">
             <Bot />
@@ -68,7 +68,7 @@ export function SettingsShell({
         <Button
           asChild
           variant="ghost"
-          className="h-[46px] w-full justify-start gap-3 px-3 text-base"
+          className="h-9 w-full justify-start gap-2.5 px-3 text-sm"
         >
           <Link to="/">
             <MessageSquare />
@@ -86,7 +86,7 @@ export function SettingsShell({
   );
   return (
     <div className="app-frame settings-frame">
-      <aside className="hidden w-[292px] shrink-0 md:block">{navigation}</aside>
+      <aside className="hidden w-[232px] shrink-0 md:block">{navigation}</aside>
       <div className="app-surface">
         <header className="flex items-center gap-3 border-b p-3 md:hidden">
           <Sheet open={open} onOpenChange={setOpen}>
@@ -107,9 +107,9 @@ export function SettingsShell({
         </header>
         <main
           id="main"
-          className="settings-content min-h-0 flex-1 overflow-y-auto px-4 py-6 sm:px-8 md:px-12 md:py-[42px]"
+          className="settings-content min-h-0 flex-1 overflow-y-auto px-5 py-8 sm:px-8 lg:px-12 lg:py-10"
         >
-          {children}
+          <div className="mx-auto w-full max-w-3xl">{children}</div>
         </main>
       </div>
     </div>

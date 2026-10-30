@@ -58,7 +58,7 @@ export function ResearchSettings({ expanded = false }: { expanded?: boolean }) {
     <details open={expanded || undefined} className="rounded-lg border p-5">
       <summary className="cursor-pointer font-medium">Riset internet</summary>
       <form
-        className="mt-4 grid gap-3 sm:grid-cols-2"
+        className="mt-4 grid gap-5 sm:grid-cols-2"
         onSubmit={(event) => {
           event.preventDefault();
           if (busy) return;
@@ -99,7 +99,7 @@ export function ResearchSettings({ expanded = false }: { expanded?: boolean }) {
           Pilih layanan pencarian dan pembaca halaman. Kunci hanya digunakan untuk koneksi akun ini.
           {data?.configuration?.status === "disconnected" ? " Layanan saat ini terputus." : ""}
         </p>
-        <label htmlFor="research-search" className="space-y-1 text-sm">
+        <label htmlFor="research-search" className="space-y-2 text-sm">
           Pencarian
           <NativeSelect
             id="research-search"
@@ -112,7 +112,7 @@ export function ResearchSettings({ expanded = false }: { expanded?: boolean }) {
             ))}
           </NativeSelect>
         </label>
-        <label htmlFor="research-extract" className="space-y-1 text-sm">
+        <label htmlFor="research-extract" className="space-y-2 text-sm">
           Pembaca halaman
           <NativeSelect
             id="research-extract"
@@ -127,7 +127,7 @@ export function ResearchSettings({ expanded = false }: { expanded?: boolean }) {
               ))}
           </NativeSelect>
         </label>
-        <label htmlFor="research-search-key" className="space-y-1 text-sm">
+        <label htmlFor="research-search-key" className="space-y-2 text-sm">
           {search === "searxng" ? "URL SearXNG" : "API key pencarian"}
           <Input
             id="research-search-key"
@@ -139,7 +139,7 @@ export function ResearchSettings({ expanded = false }: { expanded?: boolean }) {
           />
         </label>
         {extract !== search && (
-          <label htmlFor="research-extract-key" className="space-y-1 text-sm">
+          <label htmlFor="research-extract-key" className="space-y-2 text-sm">
             API key pembaca halaman
             <Input
               id="research-extract-key"
@@ -150,7 +150,7 @@ export function ResearchSettings({ expanded = false }: { expanded?: boolean }) {
             />
           </label>
         )}
-        <label htmlFor="research-x-key" className="space-y-1 text-sm">
+        <label htmlFor="research-x-key" className="space-y-2 text-sm">
           API key xAI (opsional)
           <Input
             id="research-x-key"

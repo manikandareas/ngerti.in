@@ -1,0 +1,90 @@
+{
+  "ticket": "NMA-049",
+  "status": "Done",
+  "scope": "Native Codex adapter and backend/API evidence only",
+  "dependency_status": {
+    "NMA-047": "Done",
+    "NMA-048": "Done"
+  },
+  "checks": {
+    "backend": {
+      "planned": 68,
+      "pass": 68,
+      "fail": 0,
+      "skip": 0,
+      "assertions": 253
+    },
+    "foundation_process_http": {
+      "planned": 8,
+      "pass": 8,
+      "fail": 0,
+      "skip": 0
+    },
+    "broker_process_http": {
+      "planned": 5,
+      "pass": 5,
+      "fail": 0,
+      "skip": 0
+    },
+    "primary_native_checks": {
+      "planned": 9,
+      "pass": 9,
+      "fail": 0
+    },
+    "native_final_rechecks": {
+      "planned": 2,
+      "pass": 2,
+      "fail": 0
+    }
+  },
+  "native_outcomes": {
+    "evidence": "native_http_run_outcomes",
+    "total_native_runs": 12,
+    "outcomes": {
+      "succeeded": 10,
+      "cancelled": 1,
+      "failed": 1
+    },
+    "unknown_outcomes": 0,
+    "subscription": {
+      "connection_count": 1,
+      "inference": "succeeded"
+    },
+    "key": {
+      "connection_count": 1,
+      "expected_invalid_key_rejection": true,
+      "successful_valid_key_inference": "not_tested_no_valid_key_supplied"
+    }
+  },
+  "limitations": [
+    "No valid API key was supplied; successful valid-key native inference was not attempted.",
+    "Permission escalation/media/compaction are explicitly unsupported on this adapter surface.",
+    "Active-crash reconciliation, full conversational control, workspace/browser and other domain tools remain with their owning tickets.",
+    "Muse, API gate NMA-060, UI, installation and production readiness are not claimed."
+  ],
+  "commit": null,
+  "push": false,
+  "deployment": false,
+  "ui_changed": false,
+  "data_reset": false,
+  "code_organization": {
+    "directory": "apps/server/src/harness/codex",
+    "modules": [
+      "adapter.ts",
+      "client.ts",
+      "accounts.ts",
+      "rpc.ts"
+    ],
+    "executable_bodies_unchanged": true,
+    "lint": "pass",
+    "typecheck": "pass",
+    "backend": {
+      "pass": 68,
+      "fail": 0,
+      "skip": 0,
+      "assertions": 253
+    },
+    "native_probes_rerun": false,
+    "commit": null
+  }
+}

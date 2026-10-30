@@ -77,7 +77,7 @@ try {
   const installation = JSON.parse(readFileSync(join(state, "installation.json"), "utf8"));
   token = installation.token;
   const ready = await api(first.url, "/health/ready");
-  assert.equal(ready.registered_executors, 0);
+  assert.equal(ready.registered_executors, 1);
   assert.equal(ready.api_readiness_gate, "pending");
   checks.push("make_dev_boots_without_hermes_postgres_or_provider_keys");
   const agent = await api(first.url, "/v1/agents", {

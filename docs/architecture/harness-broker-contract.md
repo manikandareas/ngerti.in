@@ -1,6 +1,6 @@
-# Harness broker contract v1.0.0
+# Harness broker contract v1.1.0
 
-Implemented for [NMA-048](https://app.notion.com/p/409abdd618738145ae75fb44fdf47e83), on the [NMA-047 foundation](adr-0001-harness-first-foundation.md). The application contract is now v1.1.0. Native Codex/Muse implementations remain NMA-049/050; the default development bootstrap registers zero executors. This is a broker/fixture contract, not native inference or the NMA-060 API gate.
+Implemented for [NMA-048](https://app.notion.com/p/409abdd618738145ae75fb44fdf47e83), on the [NMA-047 foundation](adr-0001-harness-first-foundation.md). NMA-049 adds the [native Codex adapter](codex-adapter.md), cancel/permission capabilities and optional native steer operation. The application contract is v1.2.0 and the bootstrap registers one Codex executor. Muse remains NMA-050. The original NMA-048 results below describe broker/fixture evidence; Codex native acceptance is recorded separately and NMA-060 remains pending.
 
 ## Executable and capability policy
 

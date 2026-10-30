@@ -2,7 +2,7 @@
 
 Ngertiin is a persistent agent workspace for one human owner, private DMs, groups, automatic goals and Routine. The active product scope and acceptance are maintained in [Ngertiin Multi Agent](https://app.notion.com/p/402abdd6187381e3a720f4b01d824e1a) and its [backlog](https://app.notion.com/p/116e1edcee864b5da91887466d728aac).
 
-The harness-first backend uses **Bun, TypeScript, Elysia and SQLite**. One application authority owns identity, admission, queue state, events, stop intent and recovery. Background scheduler and dispatcher modules run in that service. Codex App Server and Muse SDK/MSP will own native execution; no Hermes executor or fallback is started.
+The harness-first backend uses **Bun, TypeScript, Elysia and SQLite**. One application authority owns identity, admission, queue state, events, stop intent and recovery. Background scheduler and dispatcher modules run in that service. Codex App Server supplies native execution; the Muse SDK/MSP adapter remains NMA-050. No Hermes executor or fallback is started.
 
 ## Development
 
@@ -16,7 +16,7 @@ make dev
 
 The API listens on `127.0.0.1:8000`. State defaults to `.dev/harness-first/`. Override `NGERTIIN_PORT` or `NGERTIIN_STATE_DIR` when needed; see [.env.example](.env.example). `APP_ENV` must be `development`. `make api`, `bun run dev`, `bun run dev:api` and the compatibility `python3 scripts/dev.py` all start the same server.
 
-The bootstrap creates a stable owner UUID and private bearer token in `installation.json` with mode `0600`. Use that token in `Authorization: Bearer <token>` for API requests. Every mutation also requires a UUID `Idempotency-Key`. The startup log names the credentials file without printing its token. Local bearer access is a development boundary, not the deferred full login/pairing implementation.
+The bootstrap creates a stable owner UUID and private bearer token in `installation.json` with mode `0600`. Use that token in `Authorization: Bearer <token>` for API requests. Durable domain commands also require a UUID `Idempotency-Key`. Native login/inspection/session/steer operations have separate request semantics documented in the [Codex adapter guide](docs/architecture/codex-adapter.md). The startup log names the credentials file without printing its token. Local bearer access is a development boundary, not the deferred full login/pairing implementation.
 
 - `GET /health/live`: process liveness.
 - `GET /health/ready`: foundation readiness and the number of registered executors.
@@ -24,7 +24,7 @@ The bootstrap creates a stable owner UUID and private bearer token in `installat
 - `GET /v1/events?after=0&limit=100`: durable event replay with a cursor.
 - See the [API and lifecycle contract](docs/architecture/harness-first-contract.md) for foundation commands and invariants.
 
-The default foundation has **zero registered native executors**. Admitted work stays queued until the adapter tickets supply one. Basic one-time and fixed-interval Routine occurrences can enqueue work in the background. This does not claim completed inference, automatic conversational goals, full Routine behavior, or the NMA-060 API readiness gate.
+The default bootstrap registers **one Codex native executor**. Select a connection, complete its own login, inspect models, then open the agent/thread session before admitting work. See the [Codex adapter guide](docs/architecture/codex-adapter.md). Codex 0.165.0 has completed subscription-backed inference, scoped product-tool calls, resume after restart, steer and cancellation through the application API. Basic Routine occurrences can enqueue work in the background. Automatic conversational goals, full Routine behavior, Muse acceptance and the NMA-060 API readiness gate remain with their owning tickets.
 
 ## Verification
 

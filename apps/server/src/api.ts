@@ -16,6 +16,8 @@ import {
   threadInput,
 } from "./contracts";
 import { detectHarness } from "./harness/availability";
+import type { HarnessBroker } from "./harness/broker";
+import type { CodexAccounts } from "./harness/codex/accounts";
 import { Connections } from "./harness/connections";
 import { brokerContract, connectionInput, HarnessError } from "./harness/contracts";
 import { ProductTools } from "./harness/tools";
@@ -29,6 +31,8 @@ export function createApi(
     connections: Connections;
     tools: ProductTools;
     detect?: typeof detectHarness;
+    broker?: HarnessBroker;
+    accounts?: CodexAccounts;
   } = { connections: new Connections(lifecycle), tools: new ProductTools(lifecycle) },
 ) {
   if (token.length < 32) throw new Error("A private development token is required.");
@@ -122,6 +126,48 @@ export function createApi(
       "/v1/connections/:id/revoke",
       ({ request, params }) => command(request, {}, () => services.connections.revoke(params.id)),
       { params: z.object({ id }) },
+    )
+    .post(
+      "/v1/connections/:id/inspect",
+      ({ params }) => {
+        if (!services.accounts) throw new HarnessError("ADAPTER_UNAVAILABLE");
+        return services.accounts.inspect(params.id);
+      },
+      { params: z.object({ id }) },
+    )
+    .post(
+      "/v1/connections/:id/login",
+      ({ params }) => {
+        if (!services.accounts) throw new HarnessError("ADAPTER_UNAVAILABLE");
+        return services.accounts.login(params.id);
+      },
+      { params: z.object({ id }) },
+    )
+    .post(
+      "/v1/connections/:id/login/cancel",
+      async ({ params }) => {
+        if (!services.accounts) throw new HarnessError("ADAPTER_UNAVAILABLE");
+        await services.accounts.cancel(params.id);
+        return { status: "cancelled" };
+      },
+      { params: z.object({ id }) },
+    )
+    .post(
+      "/v1/threads/:id/sessions",
+      ({ params, body }) => {
+        if (!services.broker) throw new HarnessError("ADAPTER_UNAVAILABLE");
+        return services.broker.openSession(params.id, body.agent_id);
+      },
+      { params: z.object({ id }), body: z.strictObject({ agent_id: id }) },
+    )
+    .post(
+      "/v1/runs/:id/steer",
+      async ({ params, body }) => {
+        if (!services.broker) throw new HarnessError("ADAPTER_UNAVAILABLE");
+        await services.broker.steer(params.id, body.text);
+        return { status: "accepted" };
+      },
+      { params: z.object({ id }), body: z.strictObject({ text: z.string().min(1).max(100_000) }) },
     )
     .post("/v1/harness/tools", async ({ request, body }) => {
       const result = await services.tools.rpc(

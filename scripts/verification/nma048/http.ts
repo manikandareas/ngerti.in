@@ -93,9 +93,9 @@ try {
   const contracts = await request("/v1/harness/contracts");
   assert.equal(contracts.capabilities.properties.resume.enum.includes("unknown"), true);
   const readiness = await request("/health/ready");
-  assert.equal(readiness.registered_executors, 0);
+  assert.equal(readiness.registered_executors, 1);
   assert.equal(readiness.api_readiness_gate, "pending");
-  results.push({ check: "broker_contract_without_implicit_native_executor", status: "pass" });
+  results.push({ check: "broker_contract_with_explicit_codex_executor", status: "pass" });
   const command = crypto.randomUUID();
   const input = {
     harness: "codex",

@@ -1,4 +1,4 @@
-# Harness-first domain and API contract v1.1.0
+# Harness-first domain and API contract v1.2.0
 
 Executable schemas live in [contracts.ts](../../apps/server/src/contracts.ts) and are exported by authenticated `GET /v1/contracts`. These are foundation contracts; NMA-060 remains the API readiness gate before UI adoption. JSON Schema describes field shapes. Runtime Zod refinements and the application service enforce the cross-field and relational invariants below.
 
@@ -23,7 +23,7 @@ SQLite stores typed projections, immutable event envelopes and command receipts.
 
 ## Commands and queries
 
-`GET /health/live` is public process liveness. Except the separately scoped MCP endpoint, all other routes require `Authorization: Bearer <installation token>`. Application command POSTs require a UUID `Idempotency-Key`. The MCP endpoint follows its separate JSON-RPC/run-lease contract. Repeating the same key, method, path and normalized body returns the original receipt even after restart. Different input under the same key returns `IDEMPOTENCY_CONFLICT` with HTTP 409. Unknown properties, including injected `owner_id`, are rejected. Validation errors do not echo request input or native exception details.
+`GET /health/live` is public process liveness. Except the separately scoped MCP endpoint, all other routes require `Authorization: Bearer <installation token>`. Durable domain command POSTs require a UUID `Idempotency-Key`; native login/inspection/session/steer operations use the separate semantics described in the adapter guide. The MCP endpoint follows its separate JSON-RPC/run-lease contract. Repeating the same key, method, path and normalized body returns the original receipt even after restart. Different input under the same key returns `IDEMPOTENCY_CONFLICT` with HTTP 409. Unknown properties, including injected `owner_id`, are rejected. Validation errors do not echo request input or native exception details.
 
 | Route | Behavior |
 | --- | --- |
@@ -32,6 +32,11 @@ SQLite stores typed projections, immutable event envelopes and command receipts.
 | `GET /v1/harness/contracts` | Broker schemas, explicit capability/error/terminal/tool-scope contracts. |
 | `POST /v1/connections` | Persist an explicit connection/auth/billing choice without secret values. |
 | `POST /v1/connections/:id/revoke` | Durably revoke the connection and invalidate its authorization generation. |
+| `POST /v1/connections/:id/inspect` | Inspect Codex login and model catalog independently of inference. |
+| `POST /v1/connections/:id/login` | Start connection-owned native ChatGPT login; return the browser authorization URL. |
+| `POST /v1/connections/:id/login/cancel` | Cancel a pending native login. |
+| `POST /v1/threads/:id/sessions` | Open/resume the member agent's binding, using body `agent_id`. |
+| `POST /v1/runs/:id/steer` | Send `text` to the current native turn; does not create a second run. |
 | `POST /v1/harness/tools` | Structured MCP bridge using a server-issued run bearer instead of installation authentication. See the broker contract for protocol/auth/GET behavior. |
 | `GET /v1/contracts` | Contract version, entity/event/command JSON schemas and error codes. |
 | `GET /v1/entities/:kind` | Read a typed collection in this installation. |
@@ -80,4 +85,4 @@ The background scheduler treats the database as the source of due state. A one-s
 
 Error codes: `INVALID_REQUEST`, `UNAUTHORIZED`, `NOT_FOUND`, `CONFLICT`, `IDEMPOTENCY_CONFLICT`, `SCOPE_DENIED`, `STALE_DISPATCH`, `RECONCILIATION_REQUIRED`, `INTERNAL_ERROR`. Auth errors use 401, scope errors 403, missing records 404, stale/conflicting work 409, invalid bodies 422, oversized declared bodies 413. Unexpected errors return a generic 500 without native details.
 
-Version 1.1 adds connection entities and nullable per-agent model/reasoning and per-run native identity. Defaults permit replay of earlier foundation records; the event JSON Schema uses input/default semantics so old event payloads remain valid without rewriting immutable events. The SQLite DDL version remains 1 because its tables/indexes are unchanged.
+Version 1.1 adds connection entities and nullable per-agent model/reasoning and per-run native identity. Version 1.2 adds Codex native operations and explicit cancel/permission capabilities, with unknown defaults for older records. Native login/inspect/session/steer operations use the [adapter operation semantics](codex-adapter.md), outside durable domain command receipt replay. Defaults permit replay of earlier foundation records; the event JSON Schema uses input/default semantics so old event payloads remain valid without rewriting immutable events. The SQLite DDL version remains 1 because its tables/indexes are unchanged.

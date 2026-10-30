@@ -10,6 +10,8 @@ export const capabilities = z.strictObject({
   compaction: capabilityState,
   product_tools: capabilityState,
   settings: capabilityState,
+  cancel: capabilityState.default("unknown"),
+  permission_requests: capabilityState.default("unknown"),
 });
 export type Capabilities = z.infer<typeof capabilities>;
 export const unknownCapabilities: Capabilities = {
@@ -20,6 +22,8 @@ export const unknownCapabilities: Capabilities = {
   compaction: "unknown",
   product_tools: "unknown",
   settings: "unknown",
+  cancel: "unknown",
+  permission_requests: "unknown",
 };
 export const authentication = z.discriminatedUnion("method", [
   z.strictObject({ method: z.literal("native_login"), billing_source: z.literal("subscription") }),
@@ -104,7 +108,7 @@ export class HarnessError extends Error {
 }
 export function brokerContract() {
   return {
-    version: "1.0.0",
+    version: "1.1.0",
     connection: z.toJSONSchema(connectionInput),
     capabilities: z.toJSONSchema(capabilities),
     settings: z.toJSONSchema(settings),

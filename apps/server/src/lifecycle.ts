@@ -332,6 +332,30 @@ export class Lifecycle {
       });
     });
   }
+  /** Persist redacted native output in the owning thread before publishing its terminal run. */
+  appendAnswer(runId: string, text: string, state: "complete" | "partial" = "complete") {
+    return this.store.transaction(() => {
+      const run = this.store.get("run", runId);
+      if (!active.has(run.status) || !run.native_run_id) throw new DomainError("STALE_DISPATCH");
+      if (
+        this.store
+          .list("message")
+          .some((message) => message.run_id === runId && message.author === "agent")
+      )
+        throw new DomainError("CONFLICT");
+      return this.store.put({
+        ...this.base(),
+        kind: "message",
+        thread_id: run.thread_id,
+        author: "agent",
+        author_agent_id: run.agent_id,
+        routine_id: null,
+        run_id: run.id,
+        text,
+        state,
+      });
+    });
+  }
 
   cancel(runId: string) {
     return this.store.transaction(() => {

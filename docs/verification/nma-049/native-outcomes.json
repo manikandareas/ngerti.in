@@ -1,0 +1,19 @@
+{
+  "evidence": "native_http_run_outcomes",
+  "total_native_runs": 12,
+  "outcomes": {
+    "succeeded": 10,
+    "cancelled": 1,
+    "failed": 1
+  },
+  "unknown_outcomes": 0,
+  "subscription": {
+    "connection_count": 1,
+    "inference": "succeeded"
+  },
+  "key": {
+    "connection_count": 1,
+    "expected_invalid_key_rejection": true,
+    "successful_valid_key_inference": "not_tested_no_valid_key_supplied"
+  }
+}

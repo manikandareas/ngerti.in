@@ -1,0 +1,23 @@
+{
+  "evidence": "native_subscription_http",
+  "phase": "controls",
+  "cli": "0.165.0",
+  "planned": 2,
+  "passed": 2,
+  "failed": 0,
+  "results": [
+    {
+      "case": "native_cancel_intent_and_confirmation",
+      "status": "pass",
+      "run_id": "6a5e65d4-b477-4905-a6e3-b46940bff520",
+      "intent": "requested",
+      "terminal": "cancelled"
+    },
+    {
+      "case": "native_steer_current_turn",
+      "status": "pass",
+      "run_id": "6f4edd3b-b128-4c93-8b7e-06ec315a4813",
+      "answer": "NMA049_STEER_OK"
+    }
+  ]
+}

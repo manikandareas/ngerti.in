@@ -21,7 +21,10 @@ export class ProductTools {
   readonly #negotiated = new Set<string>();
   readonly #initialized = new Set<string>();
   readonly #tools = new Map<string, Tool>();
-  constructor(readonly lifecycle: Lifecycle) {
+  constructor(
+    readonly lifecycle: Lifecycle,
+    private readonly completed: (scope: ToolScope, name: string) => void = () => {},
+  ) {
     this.register("ngertiin.read_run_context", {
       schema: z.strictObject({}),
       resources: () => [],
@@ -135,6 +138,7 @@ export class ProductTools {
     // Asynchronous tools must call authorize immediately before committing their effect.
     const result = await tool.execute(parsed, { scope: Object.freeze({ ...scope }), authorize });
     authorize();
+    this.completed(scope, name);
     return result;
   }
   authenticate(token: string) {

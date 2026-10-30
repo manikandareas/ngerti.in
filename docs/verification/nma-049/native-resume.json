@@ -1,0 +1,24 @@
+{
+  "evidence": "native_subscription_http",
+  "phase": "resume",
+  "cli": "0.165.0",
+  "planned": 2,
+  "passed": 2,
+  "failed": 0,
+  "results": [
+    {
+      "case": "native_resume_history_after_service_restart",
+      "status": "pass",
+      "dm_run_id": "7c5bcacd-25a1-42d3-bc9a-305badbe46f4",
+      "group_run_id": "d7dfac5b-a5f4-4ad1-8ed9-32d856ccd7a2",
+      "preserved_binding_count": 2,
+      "crossed_markers": 0
+    },
+    {
+      "case": "native_product_tool_restored_after_restart",
+      "status": "pass",
+      "run_id": "98ee8f26-955b-4e1c-81f5-cb281ac9688f",
+      "answer": "I’ll read the current run context.NMA049_RESUMED_TOOL_OK 98ee8f26-955b-4e1c-81f5-cb281ac9688f ddc9f6f2-c4e3-4728-a95f-2c454ff4ed29"
+    }
+  ]
+}

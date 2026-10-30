@@ -1,5 +1,7 @@
 # ADR 0001: harness-first application foundation
 
+This ADR retains the NMA-047 foundation evidence at adoption time. NMA-049 subsequently registers the [native Codex adapter](codex-adapter.md); references below to zero native executors describe the original foundation revision.
+
 Accepted for development on 2026-10-30. The user explicitly approved **Bun + SQLite + Elysia with background scheduler and dispatcher** during NMA-047. Product scope remains governed by [the active Notion architecture](https://app.notion.com/p/402abdd6187381beacd6c48fa521b99f) and [NMA-047](https://app.notion.com/p/409abdd6187381bab741d401c8031f67). This ADR records an implemented foundation, not completed native adapters or API readiness.
 
 ## Decision and executable boundary

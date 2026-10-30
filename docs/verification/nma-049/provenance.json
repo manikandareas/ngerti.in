@@ -1,0 +1,91 @@
+{
+  "baseline_commit": "aac195c289025176c0ee4fb471b37de6f9e631d5",
+  "openbot": {
+    "repository": "https://github.com/nightly-labs/openbot",
+    "revision": "01e4b18e238e5de72a3570162c9f4275bb585786",
+    "observed_modules": [
+      {
+        "path": "src/backend/app-server-client.ts",
+        "sha256": "6eceaf8a8560d0e13ed7bd9c75dbbda4bd6c4a7b05f6a2a92a8002dc455e2a0e"
+      },
+      {
+        "path": "src/backend/provider-drivers.ts",
+        "sha256": "21a5d48989efcf7abffb9c65897789dc89beba8bd31f9fa6d9ec4ba276eaef48"
+      }
+    ],
+    "adoption": "Behavioral port of JSONL correlation, native requests/events, account CODEX_HOME, paged models and process cleanup; Bun-owned per-lane processes, stripped environments, explicit key option, server-side HTTP tool leases, no inherited Openbot desktop/cloud/provider fallback."
+  },
+  "native_protocol": {
+    "cli": "codex-cli 0.165.0",
+    "minimum_cli": "0.165.0",
+    "sdk": null,
+    "generation_command": "codex app-server generate-ts --experimental --out <temporary directory>",
+    "observed_fields": [
+      {
+        "path": "v2/ThreadStartParams.ts",
+        "sha256": "dc8bebec4181a5502fc141b0122cc48e066b3b5c77d9fd2a4de875fcd6d66a68"
+      },
+      {
+        "path": "v2/ThreadResumeParams.ts",
+        "sha256": "6ea6561448792277f9b52ac9d920d71ef8c9be6e43621ee6329fb948329e8ff7"
+      },
+      {
+        "path": "v2/TurnStartParams.ts",
+        "sha256": "64583b9d553a89984453ed0de44651728b57dd4fd51dfad0f6ceedccee823b9a"
+      },
+      {
+        "path": "v2/TurnSteerParams.ts",
+        "sha256": "602fc51f70643ab684d360f50d31284d26367bbe6af21517d2cb88cd4b6637fd"
+      },
+      {
+        "path": "v2/GetAccountResponse.ts",
+        "sha256": "e0d48a4d1993b7637062f347ebc7e943615de9b74c56afb2558ca1b024517cf3"
+      },
+      {
+        "path": "v2/Account.ts",
+        "sha256": "9d8027571a61b23c72ea26a763bc5f93f75c31e0e37df06510768f0dad70da56"
+      },
+      {
+        "path": "v2/Model.ts",
+        "sha256": "dfd08785a85631da29a50f495b8271ef0f8b9f2f140ab69155debfeba2ea70cf"
+      },
+      {
+        "path": "v2/DynamicToolSpec.ts",
+        "sha256": "bd4b06afea9395a426f8facc9d800f4b201fea44fab667f854710acff4c8f393"
+      },
+      {
+        "path": "v2/DynamicToolFunctionSpec.ts",
+        "sha256": "41586221845d8de57d4c6cc91d83f3e004c905648ba62754f5876e331a81d9a8"
+      },
+      {
+        "path": "v2/DynamicToolCallParams.ts",
+        "sha256": "6524a162207514c3a50a1e65f9abed9c59d97f38fb9cf221f740340ef5c5051f"
+      },
+      {
+        "path": "v2/DynamicToolCallResponse.ts",
+        "sha256": "df53cf5e967d26aa59615db06f4179a7b2330f44df4298a8393eaf9f48f7e115"
+      },
+      {
+        "path": "v2/TurnCompletedNotification.ts",
+        "sha256": "1f56d73cb06876533fb224cd285634d3e090b21b647009be0e7c622937e40d3e"
+      },
+      {
+        "path": "v2/PermissionsRequestApprovalResponse.ts",
+        "sha256": "60259c885b04fe35e3596d74921b3ca8c8cba3cb5bd582305b9d90e14fff9930"
+      }
+    ],
+    "official_documentation": "https://learn.chatgpt.com/docs/app-server",
+    "documentation_sha256": "f879715bb0d440db60b71e7a5bfe1258d045520feabe3fc6b11847100c8d064b",
+    "experimental_api": true
+  },
+  "stack": {
+    "bun": "1.3.10",
+    "typescript": "7.0.2",
+    "elysia": "1.4.30",
+    "zod": "4.4.3",
+    "mcp_protocol": "2025-06-18",
+    "application_contract": "1.2.0",
+    "broker_contract": "1.1.0"
+  },
+  "upgrade": "Compare the pinned Openbot modules and generated CLI protocol, auth/account modes, dynamic tool spec/result, native terminal IDs/settings, then rerun targeted fixture/process and native subscription/tool/resume/control probes. Update minimum/tested versions only with evidence; do not adopt extra upstream features automatically."
+}

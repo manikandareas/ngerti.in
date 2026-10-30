@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { connectionFields } from "./harness/contracts";
 
-export const CONTRACT_VERSION = "1.1.0";
+export const CONTRACT_VERSION = "1.2.0";
 export const id = z.uuid();
 const text = z.string().min(1).max(100_000);
 const base = {

@@ -42,6 +42,7 @@ export interface HarnessClient {
     onEvent(event: NativeEvent): void;
   }): Promise<unknown>;
   stop(identity: SessionIdentity, runId: string): Promise<{ confirmed: boolean }>;
+  steer?(identity: SessionIdentity, runId: string, text: string): Promise<void>;
   close(): Promise<void>;
 }
 export interface HarnessAdapter {
@@ -52,6 +53,7 @@ export interface HarnessAdapter {
       connection_id: string;
       agent_id: string;
       thread_id: string;
+      instructions?: string;
     },
   ): Promise<HarnessClient>;
 }
@@ -88,7 +90,11 @@ export class HarnessBroker {
     readonly tools: ProductTools,
     private readonly adapters: Partial<Record<HarnessId, HarnessAdapter>> = {},
     private readonly detect: (harness: HarnessId) => Promise<Availability> = detectHarness,
-    private readonly publish: (runId: string, event: NativeEvent) => void = () => {},
+    private readonly publish: (
+      runId: string,
+      event: NativeEvent,
+      outcome?: string,
+    ) => void = () => {},
     private readonly timeouts = { request_ms: 30_000, close_ms: 1000 },
   ) {
     this.connections = new Connections(lifecycle);
@@ -171,6 +177,7 @@ export class HarnessBroker {
         connection_id: initial.connection.id,
         agent_id: agentId,
         thread_id: threadId,
+        instructions: initial.agent.instructions,
       });
       void connecting
         .then((late) => {
@@ -280,6 +287,24 @@ export class HarnessBroker {
       throw new DomainError("STALE_DISPATCH");
     return connection;
   }
+  async steer(runId: string, text: string) {
+    const run = this.lifecycle.store.get("run", runId);
+    if (!run.dispatch_token || run.status !== "running") throw new DomainError("CONFLICT");
+    this.lifecycle.authorizeDispatch(runId, run.dispatch_token);
+    const session = await this.session(run.thread_id, run.agent_id);
+    this.requireCapability(this.check(session, run.thread_id, run.agent_id), "steer");
+    if (!session.client.steer) throw new HarnessError("CAPABILITY_UNSUPPORTED");
+    this.lifecycle.authorizeDispatch(runId, run.dispatch_token);
+    try {
+      await bounded(
+        session.client.steer({ native_session_id: session.binding.native_session_id }, runId, text),
+        this.timeouts.request_ms,
+      );
+    } catch (error) {
+      if (error instanceof HarnessError && error.code === "NATIVE_REJECTED") throw error;
+      throw new HarnessError("NATIVE_UNKNOWN", "unknown");
+    }
+  }
   private requireCapability(
     connection: Entity<"connection">,
     capability: keyof Entity<"connection">["capabilities"],
@@ -298,6 +323,7 @@ export class HarnessBroker {
     let accepted: string | null = null;
     let finished = false;
     let outcome: "succeeded" | "failed" | "cancelled" | "unknown" = "unknown";
+    let text = "";
     try {
       const session = await this.session(run.thread_id, run.agent_id);
       const connection = this.check(session, run.thread_id, run.agent_id);
@@ -328,7 +354,6 @@ export class HarnessBroker {
       this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
       lease = this.tools.issue(run);
       session.launch.redactor.add(lease.token);
-      let text = "";
       let stopped: (result: unknown) => void = () => {};
       const stopResult = new Promise<unknown>((resolve) => {
         stopped = resolve;
@@ -392,7 +417,6 @@ export class HarnessBroker {
       )
         throw new HarnessError("PROTOCOL_ERROR", "unknown");
       outcome = result.status;
-      if (text) this.publish(run.id, { type: "text", text: session.launch.redactor.text(text) });
     } catch (error) {
       outcome = dispatched
         ? !accepted && error instanceof HarnessError && error.outcome === "not_dispatched"
@@ -403,6 +427,11 @@ export class HarnessBroker {
       finished = true;
       removeAbort();
       lease?.revoke();
+      if (!this.#closed && text) {
+        const session = this.#sessions.get(`${run.thread_id}:${run.agent_id}`);
+        if (session)
+          this.publish(run.id, { type: "text", text: session.launch.redactor.text(text) }, outcome);
+      }
       if (!this.#closed && dispatched) {
         const connection = this.connections.get(
           lease?.scope.connection_id ??

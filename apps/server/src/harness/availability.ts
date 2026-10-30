@@ -9,7 +9,7 @@ export const manifests = {
     tested_native_version: "0.165.0",
     protocol: "app_server",
     sdk_version: null,
-    evidence: "native_initialize_only",
+    evidence: "native_subscription_http",
     authentication_methods: ["native_login", "api_key"],
     capabilities: { ...unknownCapabilities },
   },

@@ -1,6 +1,6 @@
-# Harness broker contract v1.1.0
+# Harness broker contract v1.2.0
 
-Implemented for [NMA-048](https://app.notion.com/p/409abdd618738145ae75fb44fdf47e83), on the [NMA-047 foundation](adr-0001-harness-first-foundation.md). NMA-049 adds the [native Codex adapter](codex-adapter.md), cancel/permission capabilities and optional native steer operation. The application contract is v1.2.0 and the bootstrap registers one Codex executor. Muse remains NMA-050. The original NMA-048 results below describe broker/fixture evidence; Codex native acceptance is recorded separately and NMA-060 remains pending.
+Implemented for [NMA-048](https://app.notion.com/p/409abdd618738145ae75fb44fdf47e83), on the [NMA-047 foundation](adr-0001-harness-first-foundation.md). NMA-049 adds the [native Codex adapter](codex-adapter.md), cancel/permission capabilities and optional native steer operation. The application contract is v1.2.0 and the bootstrap registers Codex and Muse executors. NMA-050 adds the [Muse SDK/MSP adapter](muse-adapter.md), per-run interaction query/answer operations and an explicit effective billing projection. The original NMA-048 results below describe broker/fixture evidence; Codex native acceptance is recorded separately and NMA-060 remains pending.
 
 ## Executable and capability policy
 
@@ -9,13 +9,16 @@ Authenticated `GET /v1/harnesses` probes executables on the **backend host**, us
 | Harness | Minimum CLI | Native tested CLI | Protocol | SDK | Evidence |
 | --- | --- | --- | --- | --- | --- |
 | Codex/ChatGPT | 0.165.0 | 0.165.0 | App Server | None | Isolated native initialize/initialized only |
-| Muse Code | 1.4.12 | Unknown: not installed | MSP schema v1 | @muse-code/sdk 1.4.12 | Official SDK with an MSP fixture |
+| Muse Code | 1.4.14 | 1.4.14-R7309.1 | MSP schema v1 | @muse-code/sdk 1.4.14 | Native API-key/dev-credit HTTP inference/tools/resume/question/stop; subscription unverified |
 
 The Codex floor conservatively starts at the installed/handshake-tested version. The Muse floor follows the SDK's documented lockstep CLI/SDK release policy, not an inference from Openbot's older CLI fixtures. Boundary tests exercise both floors, including the previous patch release. Muse `-R` product release suffixes are accepted. Newer CLI versions still require adapter protocol/capability negotiation; native support beyond these observations is unverified.
 
 Every capability is explicitly `supported`, `unsupported` or `unknown`: resume, steer, image input, video input, compaction, product tools and settings. Manifest defaults are all `unknown`. Native adapters must supply observations; optional fields never imply support. The broker refuses unknown/unsupported resume rather than silently replacing a session. Steer/media/compaction implementations belong to their owning tickets.
 
 ## Connections and billing
+
+`authentication.billing_source` records the explicit selection. `effective_billing_source` starts as `unknown` and changes only after inspection verifies the credential actually used. A browser-login completion alone does not update it. A stored or environment key cannot masquerade as a Muse subscription; a mismatch rejects inspection/dispatch. It identifies the credential lane, not remaining quota or successful provider inference.
+
 
 `POST /v1/connections` accepts exactly one of these selections, plus `harness: codex | muse`:
 
@@ -68,6 +71,6 @@ Openbot revision `01e4b18e238e5de72a3570162c9f4275bb585786` is the primary behav
 - `acp-configuration.ts`: process-wide model selection hazards; use one process/client per agent/thread and immutable per-agent selection, rather than importing generic ACP discovery/configuration.
 - `acp-connection.ts`: owned processes, record-buffered diagnostics and cleanup; use Bun process primitives, bounded redaction and isolated environments instead of inheriting the entire server environment.
 - `cli.ts`: executable/version detection and Muse release suffixes; use explicit conservative floors and distinguish version-policy acceptance from native capability evidence.
-- Installed official `@muse-code/sdk@1.4.12/README.md`: exact SDK/CLI lockstep policy. No SDK is added to the production server until NMA-050 implements its native adapter.
+- Installed official `@muse-code/sdk@1.4.12/README.md`: exact SDK/CLI lockstep policy. NMA-050 subsequently pins the production server to 1.4.14, matching the SDK source at the ticket revision; see its provenance and native evidence.
 
 Exact source paths/hashes and local adaptations are in [provenance.json](../verification/nma-048/provenance.json). On upgrade, compare these modules, the SDK's release/deprecation notes and the pinned MCP surface, update manifest evidence rather than inventing tested versions, then rerun boundary, isolation, lifecycle, tool and native probes. Do not adopt extra runtimes or permissions from upstream automatically.

@@ -58,6 +58,8 @@ export class CodexAccounts {
       if (this.#closed || current.state !== "active") throw new DomainError("SCOPE_DENIED", 403);
       current = this.connections.update(current, {
         login: observed.login,
+        effective_billing_source:
+          observed.login === "authenticated" ? observed.billing_source : "unknown",
         account_id: observed.account_id,
         capabilities: observed.capabilities,
       });

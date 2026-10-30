@@ -23,6 +23,7 @@ export class Connections {
       updated_at: now,
       state: "active",
       account_id: null,
+      effective_billing_source: "unknown",
       login: "unknown",
       discovery: "not_attempted",
       models: [],
@@ -35,7 +36,14 @@ export class Connections {
     changes: Partial<
       Pick<
         Entity<"connection">,
-        "state" | "account_id" | "login" | "discovery" | "models" | "inference" | "capabilities"
+        | "state"
+        | "account_id"
+        | "login"
+        | "discovery"
+        | "models"
+        | "inference"
+        | "capabilities"
+        | "effective_billing_source"
       >
     >,
   ) {

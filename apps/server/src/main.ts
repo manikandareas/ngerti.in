@@ -1,10 +1,13 @@
 import { createApi } from "./api";
 import { Background } from "./background";
 import { developmentConfig } from "./config";
+import { HarnessAccounts } from "./harness/accounts";
 import { HarnessBroker } from "./harness/broker";
 import { CodexAccounts } from "./harness/codex/accounts";
 import { CodexAdapter } from "./harness/codex/adapter";
 import { CredentialContexts } from "./harness/context";
+import { MuseAccounts } from "./harness/muse/accounts";
+import { MuseAdapter } from "./harness/muse/adapter";
 import { ProductTools } from "./harness/tools";
 import { Lifecycle } from "./lifecycle";
 import { Store } from "./store";
@@ -30,6 +33,7 @@ const broker = new HarnessBroker(
   tools,
   {
     codex: new CodexAdapter(() => `http://127.0.0.1:${app.server?.port}/v1/harness/tools`),
+    muse: new MuseAdapter(() => `http://127.0.0.1:${app.server?.port}/v1/harness/tools`),
   },
   undefined,
   (runId, event, outcome) => {
@@ -37,7 +41,12 @@ const broker = new HarnessBroker(
       lifecycle.appendAnswer(runId, event.text, outcome === "succeeded" ? "complete" : "partial");
   },
 );
-const accounts = new CodexAccounts(broker.connections, credentials);
+const codexAccounts = new CodexAccounts(broker.connections, credentials);
+const museAccounts = new MuseAccounts(broker.connections, credentials);
+const accounts = new HarnessAccounts(broker.connections, {
+  codex: codexAccounts,
+  muse: museAccounts,
+});
 const background = new Background(lifecycle, broker.executors(), (code) =>
   console.error(JSON.stringify({ event: "background.error", code })),
 );
@@ -70,7 +79,7 @@ async function stop() {
   await app.stop();
   await background.stop();
   await broker.close();
-  await accounts.close();
+  await Promise.allSettled([codexAccounts.close(), museAccounts.close()]);
   store.close();
   process.exit(0);
 }

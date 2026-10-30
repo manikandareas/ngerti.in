@@ -43,6 +43,8 @@ export interface HarnessClient {
   }): Promise<unknown>;
   stop(identity: SessionIdentity, runId: string): Promise<{ confirmed: boolean }>;
   steer?(identity: SessionIdentity, runId: string, text: string): Promise<void>;
+  interactions?(runId: string): unknown;
+  respond?(runId: string, answer: unknown): Promise<unknown>;
   close(): Promise<void>;
 }
 export interface HarnessAdapter {
@@ -54,6 +56,7 @@ export interface HarnessAdapter {
       agent_id: string;
       thread_id: string;
       instructions?: string;
+      model_id?: string;
     },
   ): Promise<HarnessClient>;
 }
@@ -178,6 +181,7 @@ export class HarnessBroker {
         agent_id: agentId,
         thread_id: threadId,
         instructions: initial.agent.instructions,
+        model_id: selected.model_id,
       });
       void connecting
         .then((late) => {
@@ -200,6 +204,8 @@ export class HarnessBroker {
         throw new HarnessError("PROTOCOL_ERROR");
       current = this.connections.update(current, {
         login: observed.login,
+        effective_billing_source:
+          observed.login === "authenticated" ? observed.billing_source : "unknown",
         account_id: observed.account_id,
         capabilities: capabilities.parse(observed.capabilities),
       });
@@ -268,6 +274,14 @@ export class HarnessBroker {
       return session;
     } catch (error) {
       controller.abort();
+      if (error instanceof HarnessError && error.code === "BILLING_MISMATCH") {
+        const latest = this.connections.get(initial.connection.id);
+        if (!this.#closed && latest.state === "active")
+          this.connections.update(latest, {
+            login: "rejected",
+            effective_billing_source: "unknown",
+          });
+      }
       if (client) await bounded(client.close(), this.timeouts.close_ms).catch(() => {});
       if (error instanceof HarnessError || error instanceof DomainError) throw error;
       throw new HarnessError("PROTOCOL_ERROR");
@@ -304,6 +318,26 @@ export class HarnessBroker {
       if (error instanceof HarnessError && error.code === "NATIVE_REJECTED") throw error;
       throw new HarnessError("NATIVE_UNKNOWN", "unknown");
     }
+  }
+  private async interactionSession(runId: string) {
+    const run = this.lifecycle.store.get("run", runId);
+    if (!run.dispatch_token || run.status !== "running" || run.cancellation !== "none")
+      throw new DomainError("CONFLICT");
+    this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
+    const session = await this.session(run.thread_id, run.agent_id);
+    this.requireCapability(this.check(session, run.thread_id, run.agent_id), "permission_requests");
+    this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
+    return session;
+  }
+  async interactions(runId: string) {
+    const session = await this.interactionSession(runId);
+    if (!session.client.interactions) throw new HarnessError("CAPABILITY_UNSUPPORTED");
+    return session.client.interactions(runId);
+  }
+  async respond(runId: string, answer: unknown) {
+    const session = await this.interactionSession(runId);
+    if (!session.client.respond) throw new HarnessError("CAPABILITY_UNSUPPORTED");
+    return session.client.respond(runId, answer);
   }
   private requireCapability(
     connection: Entity<"connection">,

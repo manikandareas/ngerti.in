@@ -89,6 +89,7 @@ export class CredentialContexts {
       XDG_CONFIG_HOME: join(home, ".config"),
       XDG_DATA_HOME: join(home, ".local", "share"),
       MUSE_NO_AUTO_UPDATE: "1",
+      MUSE_CONTRIBUTOR_MODE: "0",
     });
     const redactor = new Redactor();
     if (connection.authentication.method === "api_key") {

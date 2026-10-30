@@ -165,6 +165,13 @@ test("minimum policies reject below-floor and prerelease versions for both harne
     state: "supported",
     version: "1.4.12-R2.3",
   });
+  expect(versionState("Muse Code 1.4.14 (1.4.14-R7309.1)", manifests.muse.minimum_version)).toEqual(
+    { state: "supported", version: "1.4.14-R7309.1" },
+  );
+  expect(versionState("Muse Code 1.4.14 (1.4.13-R1.1)", manifests.muse.minimum_version).state).toBe(
+    "unknown",
+  );
+  expect(versionState("1.4.13", manifests.muse.minimum_version).state).toBe("too_old");
 });
 
 test("real executable probes distinguish supported, old, missing, unknown and failed without returning diagnostics", async () => {
@@ -498,7 +505,10 @@ test("native account cannot silently switch selected authentication or billing",
     "BILLING_MISMATCH",
   );
   expect(prompts).toBe(0);
-  expect(connections.get(connection.id).login).toBe("unknown");
+  expect(connections.get(connection.id)).toMatchObject({
+    login: "rejected",
+    effective_billing_source: "unknown",
+  });
 });
 
 test("unknown resume never starts a replacement session", async () => {

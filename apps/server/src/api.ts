@@ -15,11 +15,16 @@ import {
   routineInput,
   threadInput,
 } from "./contracts";
+import type { AccountService } from "./harness/accounts";
 import { detectHarness } from "./harness/availability";
 import type { HarnessBroker } from "./harness/broker";
-import type { CodexAccounts } from "./harness/codex/accounts";
 import { Connections } from "./harness/connections";
-import { brokerContract, connectionInput, HarnessError } from "./harness/contracts";
+import {
+  brokerContract,
+  connectionInput,
+  HarnessError,
+  interactionAnswer,
+} from "./harness/contracts";
 import { ProductTools } from "./harness/tools";
 import type { Lifecycle } from "./lifecycle";
 
@@ -32,7 +37,7 @@ export function createApi(
     tools: ProductTools;
     detect?: typeof detectHarness;
     broker?: HarnessBroker;
-    accounts?: CodexAccounts;
+    accounts?: AccountService;
   } = { connections: new Connections(lifecycle), tools: new ProductTools(lifecycle) },
 ) {
   if (token.length < 32) throw new Error("A private development token is required.");
@@ -168,6 +173,22 @@ export function createApi(
         return { status: "accepted" };
       },
       { params: z.object({ id }), body: z.strictObject({ text: z.string().min(1).max(100_000) }) },
+    )
+    .get(
+      "/v1/runs/:id/interactions",
+      ({ params }) => {
+        if (!services.broker) throw new HarnessError("ADAPTER_UNAVAILABLE");
+        return services.broker.interactions(params.id);
+      },
+      { params: z.object({ id }) },
+    )
+    .post(
+      "/v1/runs/:id/interactions",
+      ({ params, body }) => {
+        if (!services.broker) throw new HarnessError("ADAPTER_UNAVAILABLE");
+        return services.broker.respond(params.id, body);
+      },
+      { params: z.object({ id }), body: interactionAnswer },
     )
     .post("/v1/harness/tools", async ({ request, body }) => {
       const result = await services.tools.rpc(

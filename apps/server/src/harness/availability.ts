@@ -15,11 +15,11 @@ export const manifests = {
   },
   muse: {
     executable: "muse",
-    minimum_version: "1.4.12",
-    tested_native_version: null,
+    minimum_version: "1.4.14",
+    tested_native_version: "1.4.14-R7309.1",
     protocol: "msp_v1",
-    sdk_version: "1.4.12",
-    evidence: "sdk_fixture_only",
+    sdk_version: "1.4.14",
+    evidence: "native_api_key_http_subscription_unverified",
     authentication_methods: ["native_login", "api_key"],
     capabilities: { ...unknownCapabilities },
   },
@@ -36,7 +36,12 @@ export function versionState(
   output: string,
   minimum: string,
 ): Pick<Availability, "state" | "version"> {
-  const match = output
+  const nativeMuse = output
+    .trim()
+    .match(/^Muse Code (\d+\.\d+\.\d+) \((\d+\.\d+\.\d+-R\d+(?:\.\d+)?)\)$/);
+  if (nativeMuse && !nativeMuse[2].startsWith(`${nativeMuse[1]}-R`))
+    return { state: "unknown", version: null };
+  const match = (nativeMuse ? nativeMuse[2] : output)
     .trim()
     .match(
       /^(?:codex-cli\s+|muse(?:-code)?\s+)?v?(\d+)\.(\d+)\.(\d+)(-R\d+(?:\.\d+)?)?(?:\+[-\w.]+)?$/i,

@@ -43,6 +43,7 @@ export const connectionFields = {
   state: z.enum(["active", "revoked"]),
   grant_revision: z.int().positive(),
   account_id: z.string().min(1).max(200).nullable(),
+  effective_billing_source: z.enum(["unknown", "subscription", "api_key"]).default("unknown"),
   login: z.enum(["unknown", "authenticated", "required", "rejected"]),
   discovery: z.enum(["not_attempted", "succeeded", "failed"]),
   models: z.array(model).max(1000),
@@ -79,6 +80,29 @@ export const toolScope = z.strictObject({
   connection_revision: z.int().positive(),
 });
 export type ToolScope = z.infer<typeof toolScope>;
+export const interactionAnswer = z.discriminatedUnion("type", [
+  z.strictObject({
+    type: z.literal("approval"),
+    request_id: z.string().min(1).max(1000),
+    source_index: z.int(),
+    choice_id: z.string().min(1).max(1000),
+  }),
+  z.strictObject({
+    type: z.literal("user_input"),
+    request_id: z.string().min(1).max(1000),
+    answers: z
+      .array(
+        z.strictObject({
+          questionId: z.string().min(1).max(1000),
+          freeText: z.string().max(500).optional(),
+          selectedLabel: z.string().optional(),
+          selectedLabels: z.array(z.string()).optional(),
+        }),
+      )
+      .max(100),
+  }),
+]);
+
 export const brokerErrorCodes = [
   "EXECUTABLE_MISSING",
   "VERSION_TOO_OLD",
@@ -108,13 +132,14 @@ export class HarnessError extends Error {
 }
 export function brokerContract() {
   return {
-    version: "1.1.0",
+    version: "1.2.0",
     connection: z.toJSONSchema(connectionInput),
     capabilities: z.toJSONSchema(capabilities),
     settings: z.toJSONSchema(settings),
     event: z.toJSONSchema(nativeEvent),
     terminal: z.toJSONSchema(terminal),
     tool_scope: z.toJSONSchema(toolScope),
+    interaction_answer: z.toJSONSchema(interactionAnswer),
     errors: brokerErrorCodes,
     operations: [
       "inspect",
@@ -124,6 +149,8 @@ export function brokerContract() {
       "prompt",
       "stop",
       "settings",
+      "interactions",
+      "respond",
       "close",
     ],
   };

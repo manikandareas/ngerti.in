@@ -1,0 +1,36 @@
+{
+  "phase": "initial",
+  "billing_source": "api_key",
+  "subscription": "not_available",
+  "runtime": "bun@1.3.10",
+  "results": [
+    {
+      "case": "effective_credential_and_catalog",
+      "status": "pass",
+      "login": "authenticated",
+      "discovery": "succeeded",
+      "inference_before": "not_attempted",
+      "billing_source": "api_key",
+      "model_count": 5
+    },
+    {
+      "case": "native_run",
+      "status": "succeeded",
+      "run_id": "c91943f1-6944-41d9-8725-8b75773ec767",
+      "native_run_id": "01a18da3-14dd-7000-8464-8e58936f70ce",
+      "answer": "MUSE_DEV_CREDITS_OK"
+    },
+    {
+      "case": "native_run",
+      "status": "succeeded",
+      "run_id": "4f166429-e14c-4d39-a98d-850885d4ad6e",
+      "native_run_id": "01a18da3-3423-7000-915e-3b57a3cd83a0",
+      "answer": "Reading run context to get exact IDs.Tool call `ngertiin.read_run_context` failed: scoped product tool unavailable. No run_id/thread_id returned, so not guessing them.Retrying run context fetch for exact IDs.Result for `ngertiin.read_run_context` with `{}`:\n\n- Attempt 1 failed: scoped product tool unavailable, no IDs returned.\n- Attempt 2 failed: scoped product tool unavailable, no IDs returned.\n\nNo run_id and thread_id available to report. Not guessing values."
+    },
+    {
+      "case": "initial",
+      "status": "fail",
+      "reason": "false == true"
+    }
+  ]
+}

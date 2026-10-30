@@ -1,0 +1,172 @@
+{
+  "baseline": "41da6eb",
+  "head": "12903c403cbebbcceeadf08b7fa726dc2579571d",
+  "baseline_actions": {
+    "thread.create": [
+      "apps/web/src/features/agents/agent-threads.tsx",
+      "apps/web/src/features/agents/agents-page.tsx"
+    ],
+    "agent.create": [
+      "apps/web/src/features/agents/agents-page.tsx"
+    ],
+    "agent.restore": [
+      "apps/web/src/features/agents/agents-page.tsx"
+    ],
+    "agent.archive": [
+      "apps/web/src/features/agents/agents-page.tsx"
+    ],
+    "agent.configure": [
+      "apps/web/src/features/agents/agents-page.tsx"
+    ],
+    "message.send": [
+      "apps/web/src/features/direct-messages/composer.tsx"
+    ],
+    "run.cancel": [
+      "apps/web/src/features/direct-messages/direct-message-page.tsx"
+    ],
+    "file.part": [
+      "apps/web/src/features/direct-messages/file-upload.tsx"
+    ],
+    "file.finalize": [
+      "apps/web/src/features/direct-messages/file-upload.tsx"
+    ],
+    "file.begin": [
+      "apps/web/src/features/direct-messages/file-upload.tsx"
+    ],
+    "media.transcribe": [
+      "apps/web/src/features/direct-messages/file-upload.tsx"
+    ],
+    "learning.skill": [
+      "apps/web/src/features/direct-messages/learning-controls.tsx"
+    ],
+    "learning.memory": [
+      "apps/web/src/features/direct-messages/learning-controls.tsx"
+    ],
+    "learning.install": [
+      "apps/web/src/features/direct-messages/learning-controls.tsx"
+    ],
+    "screen.action": [
+      "apps/web/src/features/direct-messages/screen-controls.tsx"
+    ],
+    "session.compress": [
+      "apps/web/src/features/direct-messages/session-controls.tsx"
+    ],
+    "session.reset": [
+      "apps/web/src/features/direct-messages/session-controls.tsx"
+    ],
+    "run.failed": [
+      "apps/web/src/features/direct-messages/state.ts"
+    ],
+    "run.delta": [
+      "apps/web/src/features/direct-messages/state.ts"
+    ],
+    "run.cancelled": [
+      "apps/web/src/features/direct-messages/state.ts"
+    ],
+    "run.indeterminate": [
+      "apps/web/src/features/direct-messages/state.ts"
+    ],
+    "message.created": [
+      "apps/web/src/features/direct-messages/state.ts"
+    ],
+    "run.completed": [
+      "apps/web/src/features/direct-messages/state.ts"
+    ],
+    "run.started": [
+      "apps/web/src/features/direct-messages/state.ts"
+    ],
+    "workspace.action": [
+      "apps/web/src/features/direct-messages/workspace-controls.tsx"
+    ]
+  },
+  "current_actions": {
+    "thread.ensure_dm": [
+      "apps/web/src/features/agents/agents-page.tsx"
+    ],
+    "agent.create": [
+      "apps/web/src/features/agents/agents-page.tsx"
+    ],
+    "agent.restore": [
+      "apps/web/src/features/agents/agents-page.tsx"
+    ],
+    "agent.archive": [
+      "apps/web/src/features/agents/agents-page.tsx"
+    ],
+    "agent.configure": [
+      "apps/web/src/features/agents/agents-page.tsx"
+    ],
+    "thread.create": [
+      "apps/web/src/features/agents/agent-threads.tsx"
+    ],
+    "member.add": [
+      "apps/web/src/features/agents/thread-info.tsx"
+    ],
+    "member.remove": [
+      "apps/web/src/features/agents/thread-info.tsx"
+    ],
+    "run.failed": [
+      "apps/web/src/features/direct-messages/state.ts"
+    ],
+    "run.delta": [
+      "apps/web/src/features/direct-messages/state.ts"
+    ],
+    "run.cancelled": [
+      "apps/web/src/features/direct-messages/state.ts"
+    ],
+    "run.indeterminate": [
+      "apps/web/src/features/direct-messages/state.ts"
+    ],
+    "message.created": [
+      "apps/web/src/features/direct-messages/state.ts"
+    ],
+    "run.completed": [
+      "apps/web/src/features/direct-messages/state.ts"
+    ],
+    "run.started": [
+      "apps/web/src/features/direct-messages/state.ts"
+    ],
+    "thread.mark_read": [
+      "apps/web/src/features/direct-messages/use-read-state.ts"
+    ],
+    "screen.action": [
+      "apps/web/src/features/direct-messages/screen-controls.tsx"
+    ],
+    "run.cancel": [
+      "apps/web/src/features/direct-messages/direct-message-page.tsx"
+    ],
+    "workspace.action": [
+      "apps/web/src/features/direct-messages/workspace-controls.tsx"
+    ],
+    "message.send": [
+      "apps/web/src/features/direct-messages/composer.tsx"
+    ],
+    "session.compress": [
+      "apps/web/src/features/direct-messages/session-controls.tsx"
+    ],
+    "session.reset": [
+      "apps/web/src/features/direct-messages/session-controls.tsx"
+    ],
+    "file.part": [
+      "apps/web/src/features/direct-messages/file-upload.tsx"
+    ],
+    "file.finalize": [
+      "apps/web/src/features/direct-messages/file-upload.tsx"
+    ],
+    "file.begin": [
+      "apps/web/src/features/direct-messages/file-upload.tsx"
+    ],
+    "media.transcribe": [
+      "apps/web/src/features/direct-messages/file-upload.tsx"
+    ],
+    "learning.skill": [
+      "apps/web/src/features/direct-messages/learning-controls.tsx"
+    ],
+    "learning.memory": [
+      "apps/web/src/features/direct-messages/learning-controls.tsx"
+    ],
+    "learning.install": [
+      "apps/web/src/features/direct-messages/learning-controls.tsx"
+    ]
+  },
+  "missing": []
+}

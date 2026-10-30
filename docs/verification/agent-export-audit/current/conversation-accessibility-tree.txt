@@ -1,0 +1,48 @@
+- main:
+  - complementary:
+    - textbox "Cari percakapan"
+    - heading "Percakapan" [level=2]
+    - link "Percakapan baru":
+      - /url: /agents
+    - navigation "DM dan grup":
+      - link "Travel QA":
+        - /url: /conversations/3848e4db-09e5-4b4c-a1c4-9804d9686d34
+        - text: Travel QA Hi, I'm Travel QA! I'm here to help you think things through and get things done. What would you like to work on?
+        - img "Hasil belum dibaca"
+      - link "NMA043 Collaboration":
+        - /url: /conversations/69974eb5-6e87-4242-b209-54213a09e2eb
+        - text: NMA043 Collaboration Saran saya luangkan sore santai untuk jalan pelan dan ngopi di kawasan Dago sambil mampir ke Taman Hutan Raya Ir. H. Djuanda.
+      - link "Tobi":
+        - /url: /conversations/73b75a7c-df14-4f9f-9a8c-f5752ffb454c
+        - text: Tobi SIAP
+      - link "Bandung QA":
+        - /url: /conversations/bf6aac68-4bf8-41c5-8a59-10a48eee911d
+        - text: Bandung QA Grup
+    - navigation "Pengaturan":
+      - link "Kelola agent dan grup":
+        - /url: /agents
+      - link "Koneksi dan pengaturan":
+        - /url: /connections
+    - button "Open user menu":
+      - img "'s logo"
+    - text: Akun saya
+  - region "Percakapan langsung":
+    - heading "AgentDenganNamaSangatPanjangTanpaSpasiAgentDenganNamaSangatPanjangTanpaSpasiAgentDenganNamaSangatPanjangTanpaSpasiAgentDenganNamaSangatPanjangTanpaSpasiAgentDenganNamaSangatPanjangTanpaSpasiAgentDenganNamaSangatPanjangTanpaSpasi" [level=1]
+    - paragraph: "@tobi · DM"
+    - button "Opsi percakapan"
+    - button "Info agent"
+    - status: Menyambungkan kembali… Pekerjaan tetap berjalan di server.
+    - article "Pesan AgentDenganNamaSangatPanjangTanpaSpasiAgentDenganNamaSangatPanjangTanpaSpasiAgentDenganNamaSangatPanjangTanpaSpasiAgentDenganNamaSangatPanjangTanpaSpasiAgentDenganNamaSangatPanjangTanpaSpasiAgentDenganNamaSangatPanjangTanpaSpasi":
+      - heading "AgentDenganNamaSangatPanjangTanpaSpasiAgentDenganNamaSangatPanjangTanpaSpasiAgentDenganNamaSangatPanjangTanpaSpasiAgentDenganNamaSangatPanjangTanpaSpasiAgentDenganNamaSangatPanjangTanpaSpasiAgentDenganNamaSangatPanjangTanpaSpasi" [level=2]
+      - heading "Catatan panjang" [level=1]
+      - paragraph: LongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifierLongUnbrokenIdentifier
+      - text: ts
+      - button "Download file"
+      - button "Copy Code"
+      - code: const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123; const x = 123;
+    - text: Pesan untuk AgentDenganNamaSangatPanjangTanpaSpasiAgentDenganNamaSangatPanjangTanpaSpasiAgentDenganNamaSangatPanjangTanpaSpasiAgentDenganNamaSangatPanjangTanpaSpasiAgentDenganNamaSangatPanjangTanpaSpasiAgentDenganNamaSangatPanjangTanpaSpasi
+    - textbox "Pesan untuk AgentDenganNamaSangatPanjangTanpaSpasiAgentDenganNamaSangatPanjangTanpaSpasiAgentDenganNamaSangatPanjangTanpaSpasiAgentDenganNamaSangatPanjangTanpaSpasiAgentDenganNamaSangatPanjangTanpaSpasiAgentDenganNamaSangatPanjangTanpaSpasi":
+      - /placeholder: Pesan untuk AgentDenganNamaSangatPanjangTanpaSpasiAgentDenganNamaSangatPanjangTanpaSpasiAgentDenganNamaSangatPanjangTanpaSpasiAgentDenganNamaSangatPanjangTanpaSpasiAgentDenganNamaSangatPanjangTanpaSpasiAgentDenganNamaSangatPanjangTanpaSpasi…
+    - button "Pilih lampiran"
+    - button "Lampirkan file"
+    - button "Rekam suara"

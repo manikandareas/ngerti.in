@@ -1,0 +1,340 @@
+{
+  "passed": [
+    "fixture-memory-populated",
+    "fixture-workspace-files",
+    "fixture-workspace-advanced",
+    "fixture-computer-panel",
+    "fixture-computer-viewer"
+  ],
+  "failed": [
+    {
+      "name": "computer",
+      "error": "TimeoutError: locator.click: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Ambil kontrol', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button data-size=\"sm\" data-slot=\"button\" data-variant=\"outline\" class=\"group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap transition-colors duration-150 outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive-foreground aria-invalid:ring-3 aria-invalid:ring-destructive/20 da…>Ambil kontrol</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div data-state=\"open\" data-slot=\"dialog-overlay\" class=\"fixed inset-0 isolate z-50 bg-overlay duration-100 supports-backdrop-filter:backdrop-blur-xs data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0\"></div> intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div data-state=\"open\" data-slot=\"dialog-overlay\" class=\"fixed inset-0 isolate z-50 bg-overlay duration-100 supports-backdrop-filter:backdrop-blur-xs data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0\"></div> intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    38 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is visible, enabled and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - <div data-state=\"open\" data-slot=\"dialog-overlay\" class=\"fixed inset-0 isolate z-50 bg-overlay duration-100 supports-backdrop-filter:backdrop-blur-xs data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0\"></div> intercepts pointer events\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n"
+    }
+  ],
+  "matrix": [
+    {
+      "name": "fixture-memory-populated",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-memory-populated",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-memory-populated",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-memory-populated",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-memory-populated",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-memory-populated",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-memory-populated",
+      "width": 768,
+      "theme": "light",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-memory-populated",
+      "width": 768,
+      "theme": "dark",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-workspace-files",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-workspace-files",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-workspace-files",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-workspace-files",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-workspace-files",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-workspace-files",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-workspace-files",
+      "width": 768,
+      "theme": "light",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-workspace-files",
+      "width": 768,
+      "theme": "dark",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-workspace-advanced",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-workspace-advanced",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-workspace-advanced",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-workspace-advanced",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-workspace-advanced",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-workspace-advanced",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-workspace-advanced",
+      "width": 768,
+      "theme": "light",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-workspace-advanced",
+      "width": 768,
+      "theme": "dark",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-computer-panel",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-computer-panel",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-computer-panel",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-computer-panel",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-computer-panel",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-computer-panel",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-computer-panel",
+      "width": 768,
+      "theme": "light",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-computer-panel",
+      "width": 768,
+      "theme": "dark",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-computer-viewer",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-computer-viewer",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-computer-viewer",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-computer-viewer",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-computer-viewer",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-computer-viewer",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-computer-viewer",
+      "width": 768,
+      "theme": "light",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    },
+    {
+      "name": "fixture-computer-viewer",
+      "width": 768,
+      "theme": "dark",
+      "overflow": false,
+      "panelOverflow": false,
+      "violations": []
+    }
+  ],
+  "limits": [
+    "Presentation fixtures, not native computer, memory or workspace execution evidence."
+  ]
+}

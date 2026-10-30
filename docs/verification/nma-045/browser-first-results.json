@@ -1,0 +1,71 @@
+{
+  "passed": [
+    "providers light 1440",
+    "providers light 390",
+    "providers light 320",
+    "providers light 768",
+    "providers dark 1440",
+    "providers dark 390",
+    "providers dark 320",
+    "providers dark 768",
+    "research light 1440",
+    "research light 390",
+    "research light 320",
+    "research light 768",
+    "research dark 1440",
+    "research dark 390",
+    "research dark 320",
+    "research dark 768",
+    "media light 1440",
+    "media light 390",
+    "media light 320",
+    "media light 768",
+    "media dark 1440",
+    "media dark 390",
+    "media dark 320",
+    "media dark 768",
+    "Search, empty state and app setup preserve managed app controls",
+    "Mobile Settings keyboard trap and focus return"
+  ],
+  "failed": [
+    {
+      "name": "apps light 1440",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     id: 'aria-valid-attr-value',\n+     nodes: [\n+       [\n+         '#radix-_R_159l6_-trigger-available'\n+       ]\n+     ]\n+   }\n+ ]\n- []\n"
+    },
+    {
+      "name": "apps light 390",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     id: 'aria-valid-attr-value',\n+     nodes: [\n+       [\n+         '#radix-_R_159l6_-trigger-available'\n+       ]\n+     ]\n+   }\n+ ]\n- []\n"
+    },
+    {
+      "name": "apps light 320",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     id: 'aria-valid-attr-value',\n+     nodes: [\n+       [\n+         '#radix-_R_159l6_-trigger-available'\n+       ]\n+     ]\n+   }\n+ ]\n- []\n"
+    },
+    {
+      "name": "apps light 768",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     id: 'aria-valid-attr-value',\n+     nodes: [\n+       [\n+         '#radix-_R_159l6_-trigger-available'\n+       ]\n+     ]\n+   }\n+ ]\n- []\n"
+    },
+    {
+      "name": "apps dark 1440",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     id: 'aria-valid-attr-value',\n+     nodes: [\n+       [\n+         '#radix-_R_159l6_-trigger-available'\n+       ]\n+     ]\n+   }\n+ ]\n- []\n"
+    },
+    {
+      "name": "apps dark 390",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     id: 'aria-valid-attr-value',\n+     nodes: [\n+       [\n+         '#radix-_R_159l6_-trigger-available'\n+       ]\n+     ]\n+   }\n+ ]\n- []\n"
+    },
+    {
+      "name": "apps dark 320",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     id: 'aria-valid-attr-value',\n+     nodes: [\n+       [\n+         '#radix-_R_159l6_-trigger-available'\n+       ]\n+     ]\n+   }\n+ ]\n- []\n"
+    },
+    {
+      "name": "apps dark 768",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     id: 'aria-valid-attr-value',\n+     nodes: [\n+       [\n+         '#radix-_R_159l6_-trigger-available'\n+       ]\n+     ]\n+   }\n+ ]\n- []\n"
+    },
+    {
+      "name": "Provider dialog includes presets and all existing provider methods",
+      "error": "TimeoutError: locator.waitFor: Timeout 12000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('dialog') to be visible\u001b[22m\n"
+    }
+  ],
+  "limits": [
+    "Real local development API and Clerk session; no deployment or manual screen reader audit."
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "passed": [
+    "Provider form and app setup fit mobile and preserve focus",
+    "Unavailable primary model remains selected when catalog disappears"
+  ],
+  "failed": [
+    {
+      "name": "App configured state, local disconnect and Google setup are reachable",
+      "error": "TimeoutError: locator.selectOption: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('dialog').getByRole('combobox', { name: 'Cara login' })\u001b[22m\n\u001b[2m    - locator resolved to <select data-size=\"default\" data-slot=\"native-select\" class=\"min-w-0 appearance-none border-control-border py-1 text-sm transition-colors outline-none select-none selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed aria-invalid:border-destructive-foreground aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-[size=sm]:h-7 data-[si…>…</select>\u001b[22m\n\u001b[2m  - attempting select option action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible and enabled\u001b[22m\n\u001b[2m      - did not find some options\u001b[22m\n\u001b[2m    - retrying select option action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible and enabled\u001b[22m\n\u001b[2m      - did not find some options\u001b[22m\n\u001b[2m    - retrying select option action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    30 × waiting for element to be visible and enabled\u001b[22m\n\u001b[2m       - did not find some options\u001b[22m\n\u001b[2m     - retrying select option action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n"
+    }
+  ],
+  "limits": [
+    "Faults change transport presentation only; no claim of external OAuth/provider acceptance."
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "passed": [
+    "App configured state, local disconnect and Google setup are reachable"
+  ],
+  "failed": [],
+  "limits": [
+    "Faults change transport presentation only; no claim of external OAuth/provider acceptance."
+  ]
+}

@@ -1,0 +1,714 @@
+[
+  {
+    "id": "I2CzB",
+    "name": "Gumloop / 00 / Start here and evidence",
+    "width": 1440,
+    "height": 901,
+    "nodes": 25,
+    "text": "GUMLOOP / DESIGN SYSTEM / REVERSE ENGINEERED\nA calm interface.\nA playful intelligence.\nThe primary design system for the Ngertiin app. Foundations, components, product patterns and responsive compositions derived from Gumloop. Application aliases: ng-app/* · Theme: gumloop-mode.\n01 Color and semantic tokens\n02 Typography and hierarchy\n03 Layout, spacing and elevation\n04 Actions, links and states\n05 Forms and selection\n06 Navigation and overlays\n07 Agent and content patterns\n08 Insights and enterprise\n09 Desktop composition\n10 Mobile composition\n11 Motion and accessibility\n12 Source assets and provenance\n13 Utility primitives and aliases\n14 Website patterns and footer\nSOURCE  https://www.gumloop.com/?ref=saaspo.com\nObserved 23 Oct 2026 · Desktop 1440 px · Mobile 363 px · Public website only\nOBSERVED = DOM, computed styles or source SVG · DERIVED = reusable mapping of observed styles · EXTENDED = proposed states or patterns not exposed by the public page\nREA controlled browser capture: ev_cceb2923023f06276cbb7d865fb2b607903066207e7bfce2b93d212f6944750f · Chromium 148 · homepage navigation and accessibility captured successfully."
+  },
+  {
+    "id": "z86f4k",
+    "name": "Gumloop / 01 / Color and semantic tokens",
+    "width": 1440,
+    "height": 1467,
+    "nodes": 136,
+    "text": "GUMLOOP / 01\nColor is a signal.\nOBSERVED · Exact source CSS variables converted from Lab to sRGB. Preserve original token names.\n01.1 / Neutral surfaces\nink\n#18191B\nink-hover\n#2C2D30\nbody-muted\n#5F5F68\nneutral-muted\n#8E8E98\nhairline\n#E2E2E8\nwash\n#F4F4F5\nsurface\n#FFFFFF\n01.2 / Brand accents · light / default / dark\npink\n#DE51A8\norange\n#ED6142\ngreen\n#3FCC83\nblue\n#0190FF\npurple\n#6E6ADE\npink-light\n#FCCEE8\norange-light\n#FFB8A8\ngreen-light\n#61EAA3\nblue-light\n#BAE1FF\npurple-light\n#D1D0FE\npink-dark\n#C6005C\norange-dark\n#D45438\ngreen-dark\n#26C162\nblue-dark\n#007EDF\npurple-dark\n#5D59C1\n01.3 / Candy and illustration accents\nbubblegum\n#FF59AF\nblueberry\n#7671F9\ngrape\n#C181FE\nlemon-drop\n#FFD400\ntangerine\n#FF8D00\nmarshmallow\n#FFFAEE\n01.4 / Semantic foreground and background pairs\nCompleted\nsuccess / success-foreground\nApproval required\nwarning / warning-foreground\nAction failed\ndestructive / destructive-foreground\nUse ink for primary actions. Reserve candy accents for agents, illustrations and data categories. Do not assume every accent is suitable for small text. Semantic values above are observed source tokens; accessibility refinements are documented in section 11."
+  },
+  {
+    "id": "fWBn0",
+    "name": "Gumloop / 02 / Typography with room to breathe.",
+    "width": 1440,
+    "height": 1049,
+    "nodes": 58,
+    "text": "GUMLOOP / 02\nTypography with room to breathe.\nOBSERVED · Gellix variable for display and prose, Geist Sans for UI, Geist Mono for metadata. Source weights are predominantly 400 and 500.\nGellix / Brand\nAa Bb Cc 0123\nSource family: Gellix Uprights VF.\nPen uses its available font fallback if Gellix is absent.\nGeist / Interface\nAa Bb Cc 0123\nGeist · 400 / 500 / 600\nGeist Mono / Data\nAa Bb 0123\nGeist Mono · 400 / 500 / 600\nDisplay / desktop\n48 px / 48 px · 500\nBuild, share, optimize & control agents\nHeading 2 / desktop\n36 px / 45 px · 500\nLet your experts build the agents\nHeading 2 / mobile\n30 px / 38 px · 500\nA real browser for every agent\nHeading 3\n20 px / 25 px · 500\nMeet your team where they work\nLead paragraph\n18 px / 28 px · 400\nAgents bring your tools and knowledge together.\nBody / interface\n16 px / 24 px · 400\nConnect your tools. Start with a clear instruction.\nButton / label\n14 px / 20 px · 400\nExplore agents\nMetadata / caption\n12 px / 18 px · 400\n23 OCT 2026 · 38 ACCOUNTS REVIEWED\nMeasured at 1440 px: H1 48/48, tracking -1.2; H2 36/45, tracking -0.9. At 363 px: H1 36/40; H2 30/37.5. UI labels 14/20. Examples use concise editorial copy."
+  },
+  {
+    "id": "ul8zK",
+    "name": "Gumloop / 03 / Structure before decoration.",
+    "width": 1440,
+    "height": 1278,
+    "nodes": 123,
+    "text": "GUMLOOP / 03\nStructure before decoration.\nOBSERVED + DERIVED · A 4 px spacing base, quiet borders, compact controls and generous page sections.\n03.1 / Spacing scale\n4 px\n8 px\n12 px\n16 px\n20 px\n24 px\n28 px\n32 px\n36 px\n40 px\n48 px\n52 px\n64 px\n80 px\n96 px\n160 px\n03.2 / Corner radius\n4 px\n6 px\n8 px / control\n10 px\n16 px\n24 px\nFull / pill\n03.3 / Responsive page grid\nDesktop observed: 1440 px page, 40 px side padding, 52 px nav. 12 columns shown as DERIVED guide. Mobile observed: 26 px side padding at 363 px; single-column content and two-column customer logos.\nDesktop / ≥ 1280\n40 px page inset · H1 48/48\nTwo-column hero · horizontal navigation\nTablet / 768–1279\nResponsive transition inferred from classes\nContent reflows · 32 px working inset\nMobile / < 768\n26 px observed inset · H1 36/40\nStacked CTAs · 36 px menu toggle\n03.4 / Surface hierarchy\nBase\n1 px hairline · flat\nInset\n1 px hairline · flat\nFloating\nSource layered shadow simplified for Pen\nInverse\n1 px hairline · 5% white surface\nSection rhythm observed: 40 / 64 / 160 px. Use 16–24 px internal groups and 28–32 px between related blocks. Avoid assigning the same radius to every layer."
+  },
+  {
+    "id": "P9Veix",
+    "name": "Gumloop / 04 / Actions that stay out of the way.",
+    "width": 1440,
+    "height": 1028,
+    "nodes": 98,
+    "text": "GUMLOOP / 04\nActions that stay out of the way.\nOBSERVED default styles · DERIVED variants · EXTENDED focus, loading and disabled states are documented explicitly.\n04.1 / Button family\nSmall\n32 px · radius 8\nGet Started\nBook a demo\nView details\nDefault\n36 px · radius 8\nGet Started\nBook a demo\nView details\nLarge\n40 px · radius 8\nGet Started\nBook a demo\nView details\n04.2 / State matrix\nGet Started\nDefault / observed\nGet Started\nHover / observed\nGet Started\nFocus / extended\nGet Started\nPressed / extended\nGet Started\nDisabled / extended\nWorking…\nLoading / extended\n04.3 / Links and icon controls\nRead docs\nExplore agents\nVisit website\n04.4 / Badges, tags and compact status\nNeutral\nNew\nConnected\nNeeds review\nFailed\nObserved CTA: Geist Sans 14 px / 500; 18 px horizontal padding; 8 px radius; primary has no shadow. Secondary uses a 1 px floating ring plus very light layered shadow. Loading/pressed/disabled are extended library states; semantic chip labels are examples."
+  },
+  {
+    "id": "tlTIn",
+    "name": "Gumloop / 05 / Forms with clear feedback.",
+    "width": 1440,
+    "height": 1137,
+    "nodes": 87,
+    "text": "GUMLOOP / 05\nForms with clear feedback.\nOBSERVED: contact inputs, textarea and company-size select. EXTENDED: validation, search, checkboxes, radios and switches complete the reusable library.\n05.1 / Text field states\nWork email\nyou@company.com\nCompany\nAcme Inc.\nWork email\nyou@company.com\nWork email\nalex@\nEnter a valid work email address.\nCompany\nAcme Inc.\nMeasured contact control: 40 px high, 12 px horizontal inset, radius 8 px, Geist 14 px. Default surface #FCFCFC; border #EBEBF1.\n05.2 / Select and textarea\nCompany size\nSelect company size\n1–10\n11–50\n51–200\n201–500\n501+\nHow can we help?\nTell us more\nCompany-size values above illustrate the library. Contact page's native hidden select is exposed via a combobox. Textarea source default is 60 px; this specimen expands to 88 px.\n05.3 / Selection primitives · extended\nCheckbox / off\nCheckbox / on\nRadio / off\nRadio / on\nSwitch / off\nSwitch / on\n05.4 / Search and helper feedback\nFind a connector\nSearch connectors\nUse labels above controls. Keep helper text close to its field. Pair validation color with explicit text and an icon.\nFocus ring: 3 px / blue / 50% from source classes. Disabled: 50% opacity and pointer events off. Validation shown here is extended."
+  },
+  {
+    "id": "uge9Q",
+    "name": "Gumloop / 06 / Navigation and progressive disclosure.",
+    "width": 1440,
+    "height": 1211,
+    "nodes": 73,
+    "text": "GUMLOOP / 06\nNavigation and progressive disclosure.\nOBSERVED navigation labels and FAQ structure · DERIVED menu composition · EXTENDED modal, tooltip and notification anatomy.\nSolutions\nResources\nEnterprise\nPricing\nConnectors\nCareers\nBook a demo\nGet Started\nSource navbar is 52 px high. This library specimen adds a 10 px safe canvas inset. Logo is imported from the original SVG. Below: reconstructed reusable menu layout.\nExplore solutions\nAI agents\nGive your team an expert for every task.\nUse cases\nStart with a job your team already does.\nConnectors\nBring your tools and knowledge together.\nTooltip / extended\nView agent activity\nConnect this workspace?\nAgents will use the tools you allow. You can change access in workspace settings.\nCancel\nConnect workspace\nWorkspace connected\nYour agent is ready to use this tool.\n06.2 / Accordion / closed and open\nHow does an agent use connectors?\nCan I manage access for my team?\nAssign clear roles and grant the minimum tool access each agent needs. Keep approval steps visible to the people responsible.\nDialog and toast are extended components. Use a 40% ink overlay, trap focus inside modal dialogs, restore focus on close, and provide visible close controls. FAQ answers here are illustrative copy."
+  },
+  {
+    "id": "zo2C3",
+    "name": "Gumloop / 07 / The agent is the organizing unit.",
+    "width": 1440,
+    "height": 1197,
+    "nodes": 82,
+    "text": "GUMLOOP / 07\nThe agent is the organizing unit.\nOBSERVED marketing demos translated into editable components. Sample content is shortened; this is a public-site pattern library.\nAccount research agent\nTurns company context into a concise brief.\nConnected\nSales\n3 CONNECTORS · LAST RUN 4 MIN AGO\nWorkspace connector\nConnected to your team\nA browser for every agent\nGive agents a workspace to navigate, act and hand work back to you.\nAccount research agent\nPrepare a brief for my next customer meeting.\nAccount research agent\nCollecting company context\nReviewing recent activity\nPreparing the meeting brief\nYour meeting brief is ready. The account has three recent product milestones and one open action for your team.\nCustomer meeting brief\nDocument · ready to open\n3 sources reviewed · 1 document prepared\nAsk a follow-up…\nSend\n07.2 / Editorial cards\nCUSTOMER STORY\nTeams move faster together.\nUse a compact quote, a clear attribution and one meaningful result.\nCHANGELOG\nA new capability, clearly stated.\nPair a short title with a quiet date and a concise description.\nEMPTY STATE\nStart with one clear task.\nShow a useful next step before presenting configuration.\nOfficial candy illustrations are preserved from source SVGs. UI icons are Lucide approximations. Composer, empty-state and artifact interaction states are extended; agent identity, tool steps and user-message surface are derived from homepage demos."
+  },
+  {
+    "id": "FM2vQ",
+    "name": "Gumloop / 08 / Clarity at an enterprise scale.",
+    "width": 1440,
+    "height": 1398,
+    "nodes": 123,
+    "text": "GUMLOOP / 08\nClarity at an enterprise scale.\nOBSERVED inverse brand palette and dashboard motifs · DERIVED editable metrics, usage chart and activity table. Numbers are illustrative.\nTasks automated\n36M+\nMarketing-style scale indicator\nAgents deployed\n10K+\nMarketing-style scale indicator\nBudget used\n68%\nIllustrative monthly allowance\nUsage by month\nAn editable bar treatment of the source usage motif\nJan\nFeb\nMar\nApr\nMay\nJun\nILLUSTRATIVE VALUES · SINGLE CONSISTENT SCALE\nUsage monitoring\nSet a clear budget and review where credits go.\nRoles and permissions\nGive each team a clear scope of access.\nPolicies and guardrails\nMake approval boundaries visible before work runs.\n08.2 / Activity and audit table\nAGENT\nACTION\nSTATUS\nWHEN\nResearch agent\nPrepared meeting brief\nCompleted\n2 min ago\nOperations agent\nRequested workspace access\nReview\n8 min ago\nSupport agent\nSummarized open tickets\nCompleted\n14 min ago\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\nInverse tokens: ink #18191B; surface white at 5%; border white at 14%; body white at 68%; muted #9A9AA4. Keep chart legends and text labels alongside color."
+  },
+  {
+    "id": "Dn2pt",
+    "name": "Gumloop / 12 / Original vectors. Explicit provenance.",
+    "width": 1440,
+    "height": 1210,
+    "nodes": 83,
+    "text": "GUMLOOP / 12\nOriginal vectors. Explicit provenance.\nOBSERVED · Official wordmark and six candy shapes preserved from the public site source. These are source assets, not newly drawn approximations.\nSVG imported from header\nOriginal path geometry retained\nKeep the wordmark quiet. Let agents carry the color.\nUse original SVGs with clear space. Candy illustrations use a saturated base and a translucent white highlight. Avoid recreating them from generic icons.\n12.1 / Official candy library\nblue_raspberry\ncherry\ngrape\nlemon\nsour_apple\ntangerine\n12.2 / Category mapping from source\nmarketing\nsales\noperations\nengineering\nsupport\n12.3 / Evidence and reconstruction boundaries\nHomepage\nNavigation, hero, agent demonstrations, feature cards, customer section, insights and inverse enterprise controls.\nContact\nWork email and company inputs, company-size combobox, textarea and Continue action. No form was submitted.\nPricing\nPricing page layout, navigation disclosures and FAQ structure. Pricing amounts were not copied into this library.\nREA\nControlled Chromium 148 scenario loaded homepage and captured accessibility. Evidence ev_cceb2923023f06276cbb7d865fb2b607903066207e7bfce2b93d212f6944750f.\nLimitations\nAuthenticated application states were not inspected. Lucide UI icons are substitutes. Source Gellix is requested; font availability in Pen may require a fallback. Extended components are clearly labelled.\nSOURCE URLS\nhttps://www.gumloop.com/?ref=saaspo.com\nhttps://www.gumloop.com/contact\nhttps://www.gumloop.com/pricing\n23 Oct 2026 · Source SVG snapshots stored in docs/assets/gumloop\nDIRECTORY SOURCE https://www.gumloop.com/connectors · Search field and public page structure inspected."
+  },
+  {
+    "id": "i7hpO",
+    "name": "Gumloop / 09 / Desktop composition / 1440 reference.",
+    "width": 1440,
+    "height": 1674,
+    "nodes": 106,
+    "text": "GUMLOOP / 09\nDesktop composition / 1440 reference.\nDERIVED · Reusable components assembled into a source-inspired marketing page. This demonstrates the system, not a pixel-for-pixel page capture.\nSolutions\nResources\nEnterprise\nPricing\nConnectors\nCareers\nBook a demo\nGet Started\nBuild, share,\noptimize &\ncontrol agents\nPut your team's knowledge to work with agents that understand your tools.\nGet Started\nBook a demo\nAccount research agent\nTurns company context into a concise brief.\nConnected\nSales\n3 CONNECTORS · LAST RUN 4 MIN AGO\nWorkspace connector\nConnected to your team\nA useful result,\nready for your team.\nClear actions. Shared context. Visible progress.\nBuilt for teams that move quickly\nShopify\nInstacart\nGusto\nSamsara\nRamp\nGive every expert an agent.\nBuild with context\nStart with the work your team knows.\nConnect your tools\nUse a clear connection and access model.\nKeep people in control\nMake handoffs and approvals visible.\nThe logo strip uses text placeholders, not recreated customer logos. Layout uses observed hero metrics and library components. All cards, actions and navigation are editable instances."
+  },
+  {
+    "id": "z8kRA",
+    "name": "Gumloop / 10 / Mobile composition / 390 reference.",
+    "width": 1440,
+    "height": 1329,
+    "nodes": 125,
+    "text": "GUMLOOP / 10\nMobile composition / 390 reference.\nDERIVED · Three concrete responsive states: landing, open navigation and sales form. Source mobile measurements were taken at 363 px.\nBuild, share,\noptimize &\ncontrol agents\nPut your team's knowledge to work.\nGet Started\nBook a demo\nAccount research agent\nTurns company context into a concise brief.\nConnected\nSales\n3 CONNECTORS · LAST RUN 4 MIN AGO\nA real browser\nfor every agent\nClear tools, shared context and visible progress for every team.\nSolutions\nResources\nEnterprise\nPricing\nConnectors\nCareers\nGet Started\nBook a demo\nUse a visible close button.\nKeep navigation keyboard reachable.\nBook a demo\nTell us a little about your team.\nWork email\nyou@company.com\nCompany\nAcme Inc.\nCompany size\nSelect company size\nHow can we help?\nTell us more\nContinue\nYour details help us prepare a useful conversation.\nResponsive rules: stack hero columns, keep content in one flow, stretch primary CTAs, hide desktop nav links behind a 36 px toggle, preserve field labels, and use a 44 px effective touch target. Navigation-open and form copy are reconstructed specimens."
+  },
+  {
+    "id": "mDM3Y",
+    "name": "Gumloop / 11 / Behavior is part of the design.",
+    "width": 1440,
+    "height": 1548,
+    "nodes": 86,
+    "text": "GUMLOOP / 11\nBehavior is part of the design.\nOBSERVED motion values and state classes · EXTENDED accessibility rules and accessible text alternatives. Contrast ratios use WCAG relative luminance.\n150 ms\nFast feedback\nStandard button and control transition\n300 ms\nNavigation\nSource navigation color transition\n500 ms\nCandy ribbon\nSource transform transition\ncubic-bezier(0.77, 0, 0.175, 1)\nRespect reduced motion. Keep task status understandable in a static frame. Use motion to communicate a change in state; preserve the final state when animation is disabled.\n11.1 / Contrast audit\nAa\nInk / white\n17.59:1\nAA normal text\nAa\nBody muted / white\n6.32:1\nAA normal text\nAa\nNeutral muted / white\n3.24:1\nUse accessible text alternative\nAa\nSuccess source\n2.76:1\nUse accessible text alternative\nAa\nWarning source\n2.78:1\nUse accessible text alternative\nAa\nDestructive source\n3.60:1\nUse accessible text alternative\nAa\nAccessible success\n6.45:1\nAA normal text\nAa\nAccessible warning\n6.07:1\nAA normal text\nAa\nAccessible error\n5.34:1\nAA normal text\n11.2 / Interaction rules\nKeyboard and focus\nVisible 3 px focus ring. Focus follows the visual order. Dialogs trap focus and return it when closed. Escape closes transient overlays.\nTouch and feedback\nUse a 44 px effective target even when the visible control is 32–36 px. Every loading state has a text label. Avoid relying on color alone.\nForms and semantics\nAlways pair inputs with labels. Keep error messages specific and adjacent. Use aria-expanded for disclosures and clear names for icon-only actions.\nSource semantic foregrounds can miss 4.5:1 on their tinted backgrounds. The a11y-* text tokens are deliberate extensions for normal-sized text; original source tokens remain unchanged. Gellix fallback availability and authenticated product behavior remain unverified."
+  },
+  {
+    "id": "xlDQu",
+    "name": "Gumloop / 13 / The supporting cast.",
+    "width": 1440,
+    "height": 1302,
+    "nodes": 79,
+    "text": "GUMLOOP / 13\nThe supporting cast.\nEXTENDED · Utility primitives complete the implementation library. Geometry and typography follow observed Gumloop styles.\n13.1 / Tabs, breadcrumbs and pagination\nOverview\nActivity\nSettings\nWorkspace\nAgents\nResearch\n←\n1\n2\n3\n…\n10\n→\n13.2 / Progress, skeleton and avatars\nPreparing your workspace\n60% · expose a readable value\nUse static placeholders with reduced motion\nAJ\nAJ\nAJ\nInitials are an explicit fallback\n13.3 / Alerts and persistent feedback\nSuccess\nYour workspace is connected and ready.\nWarning\nThis action needs a teammate's approval.\nError\nThe connection failed. Review access and try again.\n13.4 / Semantic aliases / isolated theme axis\nA consistent semantic layer\nsurface · text · text-muted · divider\nA consistent semantic layer\nsurface · text · text-muted · divider\nTheme axis: gumloop-mode = light | dark. It is separate from the existing document's mode axis. Brand primitives retain source values. Semantic aliases are derived; accessible feedback text is an explicit extension."
+  },
+  {
+    "id": "Yb9Pe",
+    "name": "Gumloop / 14 / A complete website vocabulary.",
+    "width": 1440,
+    "height": 1473,
+    "nodes": 100,
+    "text": "GUMLOOP / 14\nA complete website vocabulary.\nOBSERVED announcement and footer structures · DERIVED directory cards, pricing anatomy and closing CTA. Current pricing is intentionally represented by a placeholder.\nLive Workshop: How Gumloop uses Gumloop\nRegister\n14.1 / Directory card\nWorkspace connector\nA clear description of what the connection enables.\nCONNECTOR · MCP\nSearch servers\nSearch servers\nObserved directory search label: Search servers. Native control is borderless inside its container. This specimen uses the general library field.\n14.2 / Pricing card anatomy\nPlan name\nPrice / month\nOne concise sentence that explains who this plan serves.\nGet Started\nCore allowance\nTeam access\nShared connections\nBuild your team of agents\nBring the work, tools and knowledge your team already has.\nExplore agents\n14.3 / Footer\nUse Cases\nData Analysis\nMeeting Prep\nSupport Agent\nPopular\nChangelog\nTemplates\nConnectors\nCompany\nAbout\nCareers\nSecurity\nResources\nDocs\nUniversity\nWorkshops\nSocial\nYouTube\nTwitter\nLinkedIn\nCompare\nChatGPT Work\nClaude Cowork\nGlean\n© 2026 AgentHub Inc. Privacy Policy Terms & Conditions\nFooter links are a representative subset of observed categories. Full link destinations belong in implementation. Pricing card is a structural template and makes no claim about current plan amounts."
+  },
+  {
+    "id": "eIiDQ",
+    "name": "Ngertiin / Light",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 123,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nSales Outbound\n11:03 PM\nDone.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nSales\nTODAY · 11:03 PM\nPrepare tonight’s outreach. Focus on Acme and Globex.\nI’ve prepared 36 LinkedIn outreach drafts, including Daniel Alvarez at Acme and Vicky Chen at Globex. None have been sent.\nI pulled 52 accounts from Salesforce and 3 lookalike segments from Hex, skipped 4 recently contacted LinkedIn profiles, and queued 36 drafts in Sequencer. Nothing has been sent.\nUse the latest account context. Keep the openers personal.\nMessages from\nAccount Manager\nand\nChief\nAccount Manager sent over the Acme + Globex threads and Chief flagged the priority accounts. Both are folded into tonight’s list.\nThe 36 drafts are sitting in the LinkedIn queue on my screen: recipient, opener, and a Draft badge on each. Nothing goes out until you’ve had a look.\nThe top 10 look good. Send it. Run this every week.\nCreated routine\nOvernight outbound\nDone.\nSend me a short recap every Monday morning, too.\nAbsolutely. I’ll include sends, replies, and accounts worth following up.\nMessage Sales Outbound"
+  },
+  {
+    "id": "JNgIa",
+    "name": "Ngertiin / Dark",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 123,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nSales Outbound\n11:03 PM\nDone.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nSales\nTODAY · 11:03 PM\nPrepare tonight’s outreach. Focus on Acme and Globex.\nI’ve prepared 36 LinkedIn outreach drafts, including Daniel Alvarez at Acme and Vicky Chen at Globex. None have been sent.\nI pulled 52 accounts from Salesforce and 3 lookalike segments from Hex, skipped 4 recently contacted LinkedIn profiles, and queued 36 drafts in Sequencer. Nothing has been sent.\nUse the latest account context. Keep the openers personal.\nMessages from\nAccount Manager\nand\nChief\nAccount Manager sent over the Acme + Globex threads and Chief flagged the priority accounts. Both are folded into tonight’s list.\nThe 36 drafts are sitting in the LinkedIn queue on my screen: recipient, opener, and a Draft badge on each. Nothing goes out until you’ve had a look.\nThe top 10 look good. Send it. Run this every week.\nCreated routine\nOvernight outbound\nDone.\nSend me a short recap every Monday morning, too.\nAbsolutely. I’ll include sends, replies, and accounts worth following up.\nMessage Sales Outbound"
+  },
+  {
+    "id": "K530XP",
+    "name": "Ngertiin / Computer panel / light",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 134,
+    "text": "Sales\nTODAY · 11:03 PM\nPrepare tonight’s outreach. Focus on Acme and Globex.\nI’ve prepared 36 LinkedIn outreach drafts, including Daniel Alvarez at Acme and Vicky Chen at Globex. None have been sent.\nI pulled 52 accounts from Salesforce and 3 lookalike segments from Hex, skipped 4 recently contacted LinkedIn profiles, and queued 36 drafts in Sequencer. Nothing has been sent.\nUse the latest account context. Keep the openers personal.\nMessages from\nAccount Manager\nand\nChief\nAccount Manager sent over the Acme + Globex threads and Chief flagged the priority accounts. Both are folded into tonight’s list.\nThe 36 drafts are sitting in the LinkedIn queue on my screen: recipient, opener, and a Draft badge on each. Nothing goes out until you’ve had a look.\nThe top 10 look good. Send it. Run this every week.\nCreated routine\nOvernight outbound\nDone.\nSend me a short recap every Monday morning, too.\nAbsolutely. I’ll include sends, replies, and accounts worth following up.\nMessage Sales Outbound\nSales\n@sales_outbound\nOpen computer\nAgent info\nLinkedIn outreach\nPriya Natarajan\nDraft\nMarcus Webb\nDraft\nElena Sørensen\nDraft\nDaniel Alvarez\nDraft\n36 drafts queued\n0 sent\nSales’s computer · LinkedIn outreach\nSchedules\nOvernight outbound\nSundays\nGoals\nBook 10 qualified meetings\nActive"
+  },
+  {
+    "id": "X4AABB",
+    "name": "Ngertiin / Computer panel / dark",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 135,
+    "text": "Sales\nTODAY · 11:03 PM\nPrepare tonight’s outreach. Focus on Acme and Globex.\nI’ve prepared 36 LinkedIn outreach drafts, including Daniel Alvarez at Acme and Vicky Chen at Globex. None have been sent.\nI pulled 52 accounts from Salesforce and 3 lookalike segments from Hex, skipped 4 recently contacted LinkedIn profiles, and queued 36 drafts in Sequencer. Nothing has been sent.\nUse the latest account context. Keep the openers personal.\nMessages from\nAccount Manager\nand\nChief\nAccount Manager sent over the Acme + Globex threads and Chief flagged the priority accounts. Both are folded into tonight’s list.\nThe 36 drafts are sitting in the LinkedIn queue on my screen: recipient, opener, and a Draft badge on each. Nothing goes out until you’ve had a look.\nThe top 10 look good. Send it. Run this every week.\nCreated routine\nOvernight outbound\nDone.\nSend me a short recap every Monday morning, too.\nAbsolutely. I’ll include sends, replies, and accounts worth following up.\nMessage Sales Outbound\nSales\n@sales_outbound\nOpen computer\nAgent info\nLinkedIn outreach\nPriya Natarajan\nDraft\nMarcus Webb\nDraft\nElena Sørensen\nDraft\nDaniel Alvarez\nDraft\n36 drafts queued\n0 sent\nSales’s computer · LinkedIn outreach\nSchedules\nOvernight outbound\nSundays\nGoals\nBook 10 qualified meetings\nActive"
+  },
+  {
+    "id": "cbYZ8",
+    "name": "Ngertiin / Agent info / light",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 126,
+    "text": "Sales\nTODAY · 11:03 PM\nPrepare tonight’s outreach. Focus on Acme and Globex.\nI’ve prepared 36 LinkedIn outreach drafts, including Daniel Alvarez at Acme and Vicky Chen at Globex. None have been sent.\nI pulled 52 accounts from Salesforce and 3 lookalike segments from Hex, skipped 4 recently contacted LinkedIn profiles, and queued 36 drafts in Sequencer. Nothing has been sent.\nUse the latest account context. Keep the openers personal.\nMessages from\nAccount Manager\nand\nChief\nAccount Manager sent over the Acme + Globex threads and Chief flagged the priority accounts. Both are folded into tonight’s list.\nThe 36 drafts are sitting in the LinkedIn queue on my screen: recipient, opener, and a Draft badge on each. Nothing goes out until you’ve had a look.\nThe top 10 look good. Send it. Run this every week.\nCreated routine\nOvernight outbound\nDone.\nSend me a short recap every Monday morning, too.\nAbsolutely. I’ll include sends, replies, and accounts worth following up.\nMessage Sales Outbound\nSales\n@sales_outbound\nEdit agent\nsales_outbound\nUsername\nNotifications\nAdd to Group\nAgent Privacy Policy\nMedia\nLinks\nFiles"
+  },
+  {
+    "id": "MKgaP",
+    "name": "Ngertiin / Agent info / dark",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 126,
+    "text": "Sales\nTODAY · 11:03 PM\nPrepare tonight’s outreach. Focus on Acme and Globex.\nI’ve prepared 36 LinkedIn outreach drafts, including Daniel Alvarez at Acme and Vicky Chen at Globex. None have been sent.\nI pulled 52 accounts from Salesforce and 3 lookalike segments from Hex, skipped 4 recently contacted LinkedIn profiles, and queued 36 drafts in Sequencer. Nothing has been sent.\nUse the latest account context. Keep the openers personal.\nMessages from\nAccount Manager\nand\nChief\nAccount Manager sent over the Acme + Globex threads and Chief flagged the priority accounts. Both are folded into tonight’s list.\nThe 36 drafts are sitting in the LinkedIn queue on my screen: recipient, opener, and a Draft badge on each. Nothing goes out until you’ve had a look.\nThe top 10 look good. Send it. Run this every week.\nCreated routine\nOvernight outbound\nDone.\nSend me a short recap every Monday morning, too.\nAbsolutely. I’ll include sends, replies, and accounts worth following up.\nMessage Sales Outbound\nSales\n@sales_outbound\nEdit agent\nsales_outbound\nUsername\nNotifications\nAdd to Group\nAgent Privacy Policy\nMedia\nLinks\nFiles"
+  },
+  {
+    "id": "UX2gj",
+    "name": "Ngertiin / New Bot / light",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 110,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nSales Outbound\n11:03 PM\nDone.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nNew Bot\nHey Avery. Good to meet you.\nWhat do you mainly want me helping with?\nPick whatever’s closest, or type your own.\nA\nInbox & email\nB\nSlack & messages\nC\nCoding & repos\nD\nResearch & writing\nE\nA bit of everything\nType your own answer\nMessage New Bot"
+  },
+  {
+    "id": "za55u",
+    "name": "Ngertiin / New Bot / dark",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 110,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nSales Outbound\n11:03 PM\nDone.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nNew Bot\nHey Avery. Good to meet you.\nWhat do you mainly want me helping with?\nPick whatever’s closest, or type your own.\nA\nInbox & email\nB\nSlack & messages\nC\nCoding & repos\nD\nResearch & writing\nE\nA bit of everything\nType your own answer\nMessage New Bot"
+  },
+  {
+    "id": "c7eRLE",
+    "name": "Ngertiin / Computer overlay / light",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 160,
+    "text": "Sales\nTODAY · 11:03 PM\nPrepare tonight’s outreach. Focus on Acme and Globex.\nI’ve prepared 36 LinkedIn outreach drafts, including Daniel Alvarez at Acme and Vicky Chen at Globex. None have been sent.\nI pulled 52 accounts from Salesforce and 3 lookalike segments from Hex, skipped 4 recently contacted LinkedIn profiles, and queued 36 drafts in Sequencer. Nothing has been sent.\nUse the latest account context. Keep the openers personal.\nMessages from\nAccount Manager\nand\nChief\nAccount Manager sent over the Acme + Globex threads and Chief flagged the priority accounts. Both are folded into tonight’s list.\nThe 36 drafts are sitting in the LinkedIn queue on my screen: recipient, opener, and a Draft badge on each. Nothing goes out until you’ve had a look.\nThe top 10 look good. Send it. Run this every week.\nCreated routine\nOvernight outbound\nDone.\nSend me a short recap every Monday morning, too.\nAbsolutely. I’ll include sends, replies, and accounts worth following up.\nMessage Sales Outbound\nSales\n@sales_outbound\nOpen computer\nAgent info\nLinkedIn outreach\nPriya Natarajan\nDraft\nMarcus Webb\nDraft\nElena Sørensen\nDraft\nDaniel Alvarez\nDraft\n36 drafts queued\n0 sent\nSales’s computer · LinkedIn outreach\nSchedules\nOvernight outbound\nSundays\nSales’s computer\nTake control\nLinkedIn outreach\nPriya Natarajan\nDraft\nMarcus Webb\nDraft\nElena Sørensen\nDraft\nDaniel Alvarez\nDraft\n36 drafts queued\n0 sent"
+  },
+  {
+    "id": "e2JsoA",
+    "name": "Ngertiin / Computer overlay / dark",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 161,
+    "text": "Sales\nTODAY · 11:03 PM\nPrepare tonight’s outreach. Focus on Acme and Globex.\nI’ve prepared 36 LinkedIn outreach drafts, including Daniel Alvarez at Acme and Vicky Chen at Globex. None have been sent.\nI pulled 52 accounts from Salesforce and 3 lookalike segments from Hex, skipped 4 recently contacted LinkedIn profiles, and queued 36 drafts in Sequencer. Nothing has been sent.\nUse the latest account context. Keep the openers personal.\nMessages from\nAccount Manager\nand\nChief\nAccount Manager sent over the Acme + Globex threads and Chief flagged the priority accounts. Both are folded into tonight’s list.\nThe 36 drafts are sitting in the LinkedIn queue on my screen: recipient, opener, and a Draft badge on each. Nothing goes out until you’ve had a look.\nThe top 10 look good. Send it. Run this every week.\nCreated routine\nOvernight outbound\nDone.\nSend me a short recap every Monday morning, too.\nAbsolutely. I’ll include sends, replies, and accounts worth following up.\nMessage Sales Outbound\nSales\n@sales_outbound\nOpen computer\nAgent info\nLinkedIn outreach\nPriya Natarajan\nDraft\nMarcus Webb\nDraft\nElena Sørensen\nDraft\nDaniel Alvarez\nDraft\n36 drafts queued\n0 sent\nSales’s computer · LinkedIn outreach\nSchedules\nOvernight outbound\nSundays\nSales’s computer\nTake control\nLinkedIn outreach\nPriya Natarajan\nDraft\nMarcus Webb\nDraft\nElena Sørensen\nDraft\nDaniel Alvarez\nDraft\n36 drafts queued\n0 sent"
+  },
+  {
+    "id": "cgLON",
+    "name": "Ngertiin / Mobile / Chat / light",
+    "width": 390,
+    "height": 844,
+    "nodes": 44,
+    "text": "9:41\nSales Outbound\nTODAY · 11:03 PM\nThe 36 drafts are sitting in the LinkedIn queue on my screen: recipient, opener, and a Draft badge on each. Nothing goes out until you’ve had a look.\nThe top 10 look good. Send it. Run this every week.\nCreated routine · Overnight outbound\nDone.\nSend me a short recap every Monday morning, too.\nAbsolutely. I’ll include sends, replies, and accounts worth following up.\nMessage Sales"
+  },
+  {
+    "id": "Su5O0",
+    "name": "Ngertiin / Mobile / Chat / dark",
+    "width": 390,
+    "height": 844,
+    "nodes": 44,
+    "text": "9:41\nSales Outbound\nTODAY · 11:03 PM\nThe 36 drafts are sitting in the LinkedIn queue on my screen: recipient, opener, and a Draft badge on each. Nothing goes out until you’ve had a look.\nThe top 10 look good. Send it. Run this every week.\nCreated routine · Overnight outbound\nDone.\nSend me a short recap every Monday morning, too.\nAbsolutely. I’ll include sends, replies, and accounts worth following up.\nMessage Sales"
+  },
+  {
+    "id": "ob177",
+    "name": "Ngertiin / Mobile / Computer drawer / light",
+    "width": 390,
+    "height": 844,
+    "nodes": 97,
+    "text": "9:41\nSales Outbound\nTODAY · 11:03 PM\nThe 36 drafts are sitting in the LinkedIn queue on my screen: recipient, opener, and a Draft badge on each. Nothing goes out until you’ve had a look.\nThe top 10 look good. Send it. Run this every week.\nCreated routine · Overnight outbound\nDone.\nSend me a short recap every Monday morning, too.\nAbsolutely. I’ll include sends, replies, and accounts worth following up.\nMessage Sales\nComputer\nSales\n@sales_outbound\nOpen computer\nAgent info\nLinkedIn outreach\nPriya Natarajan\nDraft\nMarcus Webb\nDraft\nElena Sørensen\nDraft\nDaniel Alvarez\nDraft\n36 drafts queued\n0 sent\nSales’s computer · LinkedIn outreach\nSchedules\nOvernight outbound\nSundays"
+  },
+  {
+    "id": "j7JEM",
+    "name": "Ngertiin / Mobile / Computer drawer / dark",
+    "width": 390,
+    "height": 844,
+    "nodes": 97,
+    "text": "9:41\nSales Outbound\nTODAY · 11:03 PM\nThe 36 drafts are sitting in the LinkedIn queue on my screen: recipient, opener, and a Draft badge on each. Nothing goes out until you’ve had a look.\nThe top 10 look good. Send it. Run this every week.\nCreated routine · Overnight outbound\nDone.\nSend me a short recap every Monday morning, too.\nAbsolutely. I’ll include sends, replies, and accounts worth following up.\nMessage Sales\nComputer\nSales\n@sales_outbound\nOpen computer\nAgent info\nLinkedIn outreach\nPriya Natarajan\nDraft\nMarcus Webb\nDraft\nElena Sørensen\nDraft\nDaniel Alvarez\nDraft\n36 drafts queued\n0 sent\nSales’s computer · LinkedIn outreach\nSchedules\nOvernight outbound\nSundays"
+  },
+  {
+    "id": "Kdxum",
+    "name": "Ngertiin / Mobile / Computer viewer / light",
+    "width": 390,
+    "height": 844,
+    "nodes": 53,
+    "text": "9:41\nSales Outbound\nYou’re viewing Sales’s computer\nLinkedIn outreach\nPriya Natarajan\nDraft\nMarcus Webb\nDraft\nElena Sørensen\nDraft\nDaniel Alvarez\nDraft\n36 drafts queued\n0 sent\nTake control"
+  },
+  {
+    "id": "nKtpD",
+    "name": "Ngertiin / Mobile / Computer viewer / dark",
+    "width": 390,
+    "height": 844,
+    "nodes": 53,
+    "text": "9:41\nSales Outbound\nYou’re viewing Sales’s computer\nLinkedIn outreach\nPriya Natarajan\nDraft\nMarcus Webb\nDraft\nElena Sørensen\nDraft\nDaniel Alvarez\nDraft\n36 drafts queued\n0 sent\nTake control"
+  },
+  {
+    "id": "mW5wo",
+    "name": "Ngertiin / Mobile / Agent info drawer / light",
+    "width": 390,
+    "height": 844,
+    "nodes": 99,
+    "text": "9:41\nSales Outbound\nTODAY · 11:03 PM\nThe 36 drafts are sitting in the LinkedIn queue on my screen: recipient, opener, and a Draft badge on each. Nothing goes out until you’ve had a look.\nThe top 10 look good. Send it. Run this every week.\nCreated routine · Overnight outbound\nDone.\nSend me a short recap every Monday morning, too.\nAbsolutely. I’ll include sends, replies, and accounts worth following up.\nMessage Sales\nAgent info\nSales\n@sales_outbound\nMessage\nEdit agent\nsales_outbound\nUsername\nNotifications\nAdd to Group\nAgent Privacy Policy\nMedia\nLinks\nFiles"
+  },
+  {
+    "id": "nu2ap",
+    "name": "Ngertiin / Mobile / Agent info drawer / dark",
+    "width": 390,
+    "height": 844,
+    "nodes": 99,
+    "text": "9:41\nSales Outbound\nTODAY · 11:03 PM\nThe 36 drafts are sitting in the LinkedIn queue on my screen: recipient, opener, and a Draft badge on each. Nothing goes out until you’ve had a look.\nThe top 10 look good. Send it. Run this every week.\nCreated routine · Overnight outbound\nDone.\nSend me a short recap every Monday morning, too.\nAbsolutely. I’ll include sends, replies, and accounts worth following up.\nMessage Sales\nAgent info\nSales\n@sales_outbound\nMessage\nEdit agent\nsales_outbound\nUsername\nNotifications\nAdd to Group\nAgent Privacy Policy\nMedia\nLinks\nFiles"
+  },
+  {
+    "id": "H0wHo0",
+    "name": "Ngertiin / Mobile / New Bot / light",
+    "width": 390,
+    "height": 844,
+    "nodes": 56,
+    "text": "9:41\nNew Bot\nHey Avery. Good to meet you.\nWhat do you mainly want me helping with?\nPick whatever’s closest, or type your own.\nA\nInbox & email\nB\nSlack & messages\nC\nCoding & repos\nD\nResearch & writing\nE\nA bit of everything\nType your own answer\nMessage New Bot"
+  },
+  {
+    "id": "Z2al65",
+    "name": "Ngertiin / Mobile / New Bot / dark",
+    "width": 390,
+    "height": 844,
+    "nodes": 56,
+    "text": "9:41\nNew Bot\nHey Avery. Good to meet you.\nWhat do you mainly want me helping with?\nPick whatever’s closest, or type your own.\nA\nInbox & email\nB\nSlack & messages\nC\nCoding & repos\nD\nResearch & writing\nE\nA bit of everything\nType your own answer\nMessage New Bot"
+  },
+  {
+    "id": "mEZdZ",
+    "name": "Ngertiin / Mobile / Bot list drawer / light",
+    "width": 390,
+    "height": 844,
+    "nodes": 113,
+    "text": "9:41\nSales Outbound\nTODAY · 11:03 PM\nThe 36 drafts are sitting in the LinkedIn queue on my screen: recipient, opener, and a Draft badge on each. Nothing goes out until you’ve had a look.\nThe top 10 look good. Send it. Run this every week.\nCreated routine · Overnight outbound\nDone.\nSend me a short recap every Monday morning, too.\nAbsolutely. I’ll include sends, replies, and accounts worth following up.\nMessage Sales\nChats\nSearch\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nSales Outbound\n11:03 PM\nDone.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall"
+  },
+  {
+    "id": "s4hR1",
+    "name": "Ngertiin / Mobile / Bot list drawer / dark",
+    "width": 390,
+    "height": 844,
+    "nodes": 113,
+    "text": "9:41\nSales Outbound\nTODAY · 11:03 PM\nThe 36 drafts are sitting in the LinkedIn queue on my screen: recipient, opener, and a Draft badge on each. Nothing goes out until you’ve had a look.\nThe top 10 look good. Send it. Run this every week.\nCreated routine · Overnight outbound\nDone.\nSend me a short recap every Monday morning, too.\nAbsolutely. I’ll include sends, replies, and accounts worth following up.\nMessage Sales\nChats\nSearch\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nSales Outbound\n11:03 PM\nDone.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall"
+  },
+  {
+    "id": "Qjogq",
+    "name": "Ngertiin / Assistant attachment / light",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 116,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nSales Outbound\n11:03 PM\nDone.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nSales\nTODAY · 11:03 PM\nSend me the outreach drafts for Acme and Globex as a file.\nI’ve prepared 36 personalized outreach drafts for Acme and Globex. The full document is attached below.\nAcme & Globex — Outreach Drafts\n36 personalized LinkedIn drafts for your review.\n01. Daniel Alvarez · Acme\nHi Daniel — I noticed Acme’s recent expansion. I’d love to share how we’re helping teams simplify outbound while keeping it personal…\nAcme & Globex outreach drafts\nMD · 36 drafts\nEach draft includes the recipient, account context, and a personal opener. Nothing has been sent — ready for your review.\nAre these based on the latest account updates?\nYes. I included Acme’s expansion and Globex’s latest launch, plus context from Account Manager.\nGreat. Keep them as drafts — I’ll review the openers first.\nOf course. All 36 will stay in draft until you’re ready.\nMessage Sales Outbound"
+  },
+  {
+    "id": "P9Bdar",
+    "name": "Ngertiin / Assistant attachment / dark",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 116,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nSales Outbound\n11:03 PM\nDone.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nSales\nTODAY · 11:03 PM\nSend me the outreach drafts for Acme and Globex as a file.\nI’ve prepared 36 personalized outreach drafts for Acme and Globex. The full document is attached below.\nAcme & Globex — Outreach Drafts\n36 personalized LinkedIn drafts for your review.\n01. Daniel Alvarez · Acme\nHi Daniel — I noticed Acme’s recent expansion. I’d love to share how we’re helping teams simplify outbound while keeping it personal…\nAcme & Globex outreach drafts\nMD · 36 drafts\nEach draft includes the recipient, account context, and a personal opener. Nothing has been sent — ready for your review.\nAre these based on the latest account updates?\nYes. I included Acme’s expansion and Globex’s latest launch, plus context from Account Manager.\nGreat. Keep them as drafts — I’ll review the openers first.\nOf course. All 36 will stay in draft until you’re ready.\nMessage Sales Outbound"
+  },
+  {
+    "id": "SySnj",
+    "name": "Ngertiin / Conversation cards / Light",
+    "width": 1448,
+    "height": 1415,
+    "nodes": 227,
+    "text": "Conversation cards\nLIGHT / Attachments, choices, live work & secure actions\n01 / FILE ATTACHMENT\nAcme & Globex — Outreach Drafts\n36 personalized LinkedIn drafts for your review.\n01. Daniel Alvarez · Acme\nHi Daniel — I noticed Acme’s recent expansion. I’d love to share how we’re helping teams simplify outbound while keeping it personal…\nAcme & Globex outreach drafts\nMD · 36 drafts\n02 / QUESTION & CHOICES\nWhat do you mainly want me helping with?\nPick whatever’s closest, or type your own.\nA\nInbox & email\nB\nSlack & messages\nC\nCoding & repos\nD\nResearch & writing\nE\nA bit of everything\nType your own answer\n02B / ANSWER SELECTED\nWhat do you mainly want me helping with?\nA\nInbox & email\n10 / CODE DIFF\nmessage-input.tsx\n+2\n−1\n18\nfunction sendMessage() {\n19\n−\nsubmit(message);\n19\n+\nif (!message.trim()) return;\n20\n+\nsubmit(message.trim());\n21\n}\nUndo\nLihat file\n04 / COMPUTER · ACTIVE\nComputer\n● Live\nPreparing your LinkedIn outreach queue.\nLinkedIn outreach\nPriya Natarajan\nDraft\nMarcus Webb\nDraft\nElena Sørensen\nDraft\nDaniel Alvarez\nDraft\n36 drafts queued\n0 sent\n05 / VAULT · CREDENTIAL REQUEST\nConnect Salesforce\nlogin.salesforce.com\nAdd credentials\n06 / APPROVAL\nAllow Sales to send this email in Gmail?\nSales wants to follow up with Daniel at Acme about simplifying outbound.\nFrom\nalex@company.com\nTo\ndaniel@acme.com\nSubject\nA simpler outbound workflow\nHi Daniel,\nI noticed Acme’s recent expansion. Would you be open to a quick chat about simplifying your outbound workflow?\n\nBest,\nAlex\nSend\nDon’t send\nVAULT / DIALOG OPEN STATE\nAdd credentials\nSalesforce · login.salesforce.com\nEmail\nyou@company.com\nPassword\nEnter your password\nUse these credentials for Sales to sign in to Salesforce.\nSave to Vault\nCancel\n07 / ROUTINE CREATED\nCreated routine\nOvernight outbound\n09 / GOAL CREATED\nCreated goal\nBook 10 qualified meetings\n11 / FILE DIFF BADGE & POPOVER\nChurnSchedule.tsx\n+74\n-41\nChurnSchedule.tsx\n+74\n-41\nconst slots = coldSlots(week);\n-\nconst windows = slots;\n+\nconst windows = slots.filter(\n+\n(s) => s.temp <= -12,\n+\n);"
+  },
+  {
+    "id": "tuJiI",
+    "name": "Ngertiin / Conversation cards / Dark",
+    "width": 1448,
+    "height": 1415,
+    "nodes": 227,
+    "text": "Conversation cards\nDARK / Attachments, choices, live work & secure actions\n01 / FILE ATTACHMENT\nAcme & Globex — Outreach Drafts\n36 personalized LinkedIn drafts for your review.\n01. Daniel Alvarez · Acme\nHi Daniel — I noticed Acme’s recent expansion. I’d love to share how we’re helping teams simplify outbound while keeping it personal…\nAcme & Globex outreach drafts\nMD · 36 drafts\n02 / QUESTION & CHOICES\nWhat do you mainly want me helping with?\nPick whatever’s closest, or type your own.\nA\nInbox & email\nB\nSlack & messages\nC\nCoding & repos\nD\nResearch & writing\nE\nA bit of everything\nType your own answer\n02B / ANSWER SELECTED\nWhat do you mainly want me helping with?\nA\nInbox & email\n10 / CODE DIFF\nmessage-input.tsx\n+2\n−1\n18\nfunction sendMessage() {\n19\n−\nsubmit(message);\n19\n+\nif (!message.trim()) return;\n20\n+\nsubmit(message.trim());\n21\n}\nUndo\nLihat file\n04 / COMPUTER · ACTIVE\nComputer\n● Live\nPreparing your LinkedIn outreach queue.\nLinkedIn outreach\nPriya Natarajan\nDraft\nMarcus Webb\nDraft\nElena Sørensen\nDraft\nDaniel Alvarez\nDraft\n36 drafts queued\n0 sent\n05 / VAULT · CREDENTIAL REQUEST\nConnect Salesforce\nlogin.salesforce.com\nAdd credentials\n06 / APPROVAL\nAllow Sales to send this email in Gmail?\nSales wants to follow up with Daniel at Acme about simplifying outbound.\nFrom\nalex@company.com\nTo\ndaniel@acme.com\nSubject\nA simpler outbound workflow\nHi Daniel,\nI noticed Acme’s recent expansion. Would you be open to a quick chat about simplifying your outbound workflow?\n\nBest,\nAlex\nSend\nDon’t send\nVAULT / DIALOG OPEN STATE\nAdd credentials\nSalesforce · login.salesforce.com\nEmail\nyou@company.com\nPassword\nEnter your password\nUse these credentials for Sales to sign in to Salesforce.\nSave to Vault\nCancel\n07 / ROUTINE CREATED\nCreated routine\nOvernight outbound\n09 / GOAL CREATED\nCreated goal\nBook 10 qualified meetings\n11 / FILE DIFF BADGE & POPOVER\nChurnSchedule.tsx\n+74\n-41\nChurnSchedule.tsx\n+74\n-41\nconst slots = coldSlots(week);\n-\nconst windows = slots;\n+\nconst windows = slots.filter(\n+\n(s) => s.temp <= -12,\n+\n);"
+  },
+  {
+    "id": "EO5eO",
+    "name": "Ngertiin / Settings / AI providers / light",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 109,
+    "text": "Settings\nGeneral\nAI providers\nAgents\nChat\nConnections\nVault\nAccount\nUsage & billing\nArmand Segall\nConnect your AI provider\nChoose the providers your agents can use. Connect an account or add an API key to get started.\nConnect OpenAI\nAdd another provider\nSetup providers\n1 connected\nOpenAI\nUse your OpenAI API account\nConnected\nAnthropic\nConnect Claude with an API key\nNot connected\nGoogle Gemini\nConnect your Google AI account\nNot connected\nxAI\nConnect Grok with an API key\nNot connected\nOpenRouter\nAccess multiple providers with one API key\nNot connected\nManage saved provider credentials in Vault."
+  },
+  {
+    "id": "ayvol",
+    "name": "Ngertiin / Settings / AI providers / dark",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 110,
+    "text": "Settings\nGeneral\nAI providers\nAgents\nChat\nConnections\nVault\nAccount\nUsage & billing\nArmand Segall\nConnect your AI provider\nChoose the providers your agents can use. Connect an account or add an API key to get started.\nConnect OpenAI\nAdd another provider\nSetup providers\n1 connected\nOpenAI\nUse your OpenAI API account\nConnected\nAnthropic\nConnect Claude with an API key\nNot connected\nGoogle Gemini\nConnect your Google AI account\nNot connected\nxAI\nConnect Grok with an API key\nNot connected\nOpenRouter\nAccess multiple providers with one API key\nNot connected\nManage saved provider credentials in Vault."
+  },
+  {
+    "id": "Xhoqr",
+    "name": "Ngertiin / Settings / Connections / light",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 172,
+    "text": "Settings\nGeneral\nAI providers\nAgents\nChat\nConnections\nVault\nAccount\nUsage & billing\nArmand Segall\nConnections\nSearch connections\nAdd\nConnect your tools to let Ngertiin work across your apps.\nPublic\nPersonal\nPopular\nGmail\nRead and manage Gmail\nGoogle Drive\nDrive, Docs, Sheets or Slides\nGoogle Calendar\nManage Google Calendar events\nGitHub\nTriage PRs, issues, CI, and publish flows\nSlack\nRead and manage Slack\nOutlook Email\nTriage Outlook inboxes\nNew & Noteworthy\nHevy\nGym workout plans and insights\nTripsy\nPlan and organize your trips\nSonos\nControl your Sonos system\nCanva\nCreate, review, edit designs\nCOROS\nTraining and health insights\nAdobe\nDesign, combine, and edit\nSmall Business\nDropbox\nFind, create, and take action\nHubSpot\nInsights to action in HubSpot\nStripe\nAccept payments. Grow revenue.\nCanva\nCreate, review, edit designs"
+  },
+  {
+    "id": "Bq1Ov",
+    "name": "Ngertiin / Settings / Connections / dark",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 173,
+    "text": "Settings\nGeneral\nAI providers\nAgents\nChat\nConnections\nVault\nAccount\nUsage & billing\nArmand Segall\nConnections\nSearch connections\nAdd\nConnect your tools to let Ngertiin work across your apps.\nPublic\nPersonal\nPopular\nGmail\nRead and manage Gmail\nGoogle Drive\nDrive, Docs, Sheets or Slides\nGoogle Calendar\nManage Google Calendar events\nGitHub\nTriage PRs, issues, CI, and publish flows\nSlack\nRead and manage Slack\nOutlook Email\nTriage Outlook inboxes\nNew & Noteworthy\nHevy\nGym workout plans and insights\nTripsy\nPlan and organize your trips\nSonos\nControl your Sonos system\nCanva\nCreate, review, edit designs\nCOROS\nTraining and health insights\nAdobe\nDesign, combine, and edit\nSmall Business\nDropbox\nFind, create, and take action\nHubSpot\nInsights to action in HubSpot\nStripe\nAccept payments. Grow revenue.\nCanva\nCreate, review, edit designs"
+  },
+  {
+    "id": "N99WIF",
+    "name": "Ngertiin / Tobi first welcome / light",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 49,
+    "text": "Search\nConversations\nTobi\n11:03 PM\nYour shortlist is ready.\nArmand Segall\nTobi\nHi, I’m Tobi. Tell me what you need a hand with — a plan, a question, or something you want taken care of.\nPlan a trip\nHelp me learn\nOrganize my week\nMessage Tobi"
+  },
+  {
+    "id": "LqqSi",
+    "name": "Ngertiin / Group collaboration / light",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 108,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nOffsite crew\nPlan a relaxed two-day team trip to Bandung. Keep it under Rp2 million per person.\nTobi\nI’ll put the plan together. Travel is checking stays, and Budget is comparing costs.\nTravel\nI found three quiet stays near the city. Here are the two with room for everyone.\nBudget\nThe Dago option leaves Rp450,000 per person for meals and transport.\nTobi\nPutting the pieces together… ▍\nMessage Offsite crew"
+  },
+  {
+    "id": "GvP4L",
+    "name": "Ngertiin / Working and steering / light",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 97,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nFinding your quiet corner…\nCompare three places to stay in Bandung for next weekend.\nI’m checking availability, total prices, and how far each place is from the city.\nPrioritize somewhere quiet. We’ll have a car.\nGot it. I’ll focus on quieter areas and include parking.\nMessage Tobi"
+  },
+  {
+    "id": "x1pigr",
+    "name": "Ngertiin / Return with new results / light",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 99,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nFind a quiet stay under Rp900,000 a night. I’ll check back tomorrow.\nNEW MESSAGES\nI found two places that fit. My pick is Pine House: Rp780,000 a night, breakfast included, and free parking. Nothing has been booked.\nBandung stays\n2 options · Prices checked today\nPine House · Rp780,000 / night\nDago Garden · Rp850,000 / night\nView saved result\nView comparison\nMessage Tobi"
+  },
+  {
+    "id": "ATYiC",
+    "name": "Ngertiin / Needs your input / light",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 96,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nA little detail from you…\nHelp me organize our trip and find a place to stay.\nI have the shortlist ready. What dates are you traveling?\n6–8 November\nChoose dates\nMessage Tobi"
+  },
+  {
+    "id": "ZWVyR",
+    "name": "Ngertiin / Connection interrupted / light",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 91,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nReconnecting…\nPrepare the comparison as a document.\nI’ve gathered the options and I’m preparing the document.\nMessage Tobi"
+  },
+  {
+    "id": "QmxYi",
+    "name": "Ngertiin / Uncertain action result / light",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 97,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nSend the itinerary to Maya.\nI lost the connection before Gmail confirmed the send. I’ll check whether the email arrived in Sent before trying again.\nItinerary for Bandung\nTo maya@example.com\nDelivery not yet confirmed\nView saved result\nCheck status\nMessage Tobi"
+  },
+  {
+    "id": "YEtOy",
+    "name": "Ngertiin / Stopped work / light",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 90,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nCompare the hotels and prepare a booking.\nStop for now. Our dates might change.\nStopped. I’ve kept the shortlist, and no booking was made. Tell me when you have the new dates.\nMessage Tobi"
+  },
+  {
+    "id": "CDkHX",
+    "name": "Ngertiin / Upload in composer / light",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 93,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nShare the itinerary you already have. I can help make it easier to follow.\nReceipts.zip\nItinerary.pdf\nMessage Tobi"
+  },
+  {
+    "id": "o0VSi8",
+    "name": "Ngertiin / Document result / light",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 94,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nMake a simple itinerary we can share.\nHere’s a relaxed two-day plan with travel time and room for breaks.\nA weekend in Bandung\nFriday · Arrive, settle in, dinner nearby\nSaturday · Morning walk, lunch, free afternoon\nSunday · Slow breakfast and head home\n\nItinerary.pdf · 3 pages\nView saved result\nMessage Tobi"
+  },
+  {
+    "id": "Arwjx",
+    "name": "Ngertiin / Goal details / light",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 123,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nHelp me plan a relaxed trip to Bandung.\nCreated goal\nPlan a relaxed trip to Bandung\nI’ve saved the shortlist. You can review the details here, or tell me what to change.\nMessage Tobi\nTrip to Bandung\nWaiting for dates\nGoal\nA relaxed two-day trip under Rp2 million per person.\nCompleted\nCompared 3 stays and estimated transport costs.\nNext\nConfirm your dates so I can check availability.\nResponsible\nTobi\nSaved result\nBandung shortlist.pdf ↗\nPause goal\nStop goal"
+  },
+  {
+    "id": "BeivF",
+    "name": "Ngertiin / Schedules / light",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 128,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nSend me a short calendar overview every Monday morning.\nCreated schedule\nMonday overview · Mon, 08:00 WITA\nI’ll send it every Monday at 08:00 WITA. You can adjust or pause it here.\nMessage Tobi\nMonday overview\nEvery Monday · 08:00 WITA\nMonday · 2 November\n09:00\nTeam catch-up\n11:30\nLunch with Maya\n15:00\nProject review\nYour week, at a glance\nCalendar highlights and anything to prepare.\nNext run\nMon, 2 Nov · 08:00 WITA\nLast update\nDelivered 26 Oct ↗\nEdit schedule\nPause schedule"
+  },
+  {
+    "id": "u4j9h",
+    "name": "Ngertiin / Create group / 01 Choose agents / light",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 132,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nHelp me plan a relaxed trip to Bandung.\nI’ve saved the shortlist. You can review the details here, or tell me what to change.\nMessage Tobi\nChoose agents\nNext\nSearch agents\nTobi\nTravel\nYour agents\nTobi\nPlanning\nTravel\nPlaces and routes\nBudget\nExpenses"
+  },
+  {
+    "id": "MbDGi",
+    "name": "Ngertiin / Group members / light",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 120,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nHelp me plan a relaxed trip to Bandung.\nI’ve saved the shortlist. You can review the details here, or tell me what to change.\nMessage Tobi\nBandung trip\nYou and 3 agents\nTobi\nPlanning\nRemove\nTravel\nPlaces and routes\nRemove\nBudget\nExpenses\nRemove\nAdd agent"
+  },
+  {
+    "id": "SXqTq",
+    "name": "Ngertiin / Edit agent / light",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 109,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nHelp me plan a relaxed trip to Bandung.\nI’ve saved the shortlist. You can review the details here, or tell me what to change.\nMessage Tobi\nEdit Tobi\nMake this assistant your own\nName\nTobi\nHow I should help\nBe practical and concise. Help me plan my week and follow through.\nApps Tobi can use\nGoogle Calendar · Google Drive\nAdvanced\nModel and capabilities ›\nSave changes\nCancel"
+  },
+  {
+    "id": "OzO6z",
+    "name": "Ngertiin / Connected app / light",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 107,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nLet Tobi help with my calendar.\nChoose which agents can use this account.\nMessage Tobi\nGoogle Calendar\nConnected\nAccount\navery@gmail.com\nAvailable to\n✓ Tobi\n○ Travel\n○ Budget\nAccess\nRead events and create or update your calendar.\nConnection\nLast used today\nSave access\nDisconnect"
+  },
+  {
+    "id": "X8V64i",
+    "name": "Ngertiin / Reconnect app / light",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 104,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nSend the itinerary to Maya.\nGmail needs you to sign in again. Your draft is saved.\nMessage Tobi\nReconnect Gmail\nYour session has expired\nAccount\navery@gmail.com\nWaiting work\nSend the Bandung itinerary to Maya.\nWhat happens next\nSign in again so Tobi can continue. Your draft is saved.\nReconnect Gmail\nNot now"
+  },
+  {
+    "id": "P8HgX",
+    "name": "Ngertiin / Provider connection / light",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 102,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nI’d like to use my own AI account.\nChoose a connection method to continue.\nMessage Tobi\nConnect OpenAI\nChoose how to connect\nUse your ChatGPT account\nSign in with your existing account ›\nUse an API key\nAdd a key from your OpenAI account ›\nCustom endpoint\nAdvanced connection settings ›\nCancel"
+  },
+  {
+    "id": "qQDdW",
+    "name": "Ngertiin / Agent memory / light",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 102,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nWhat do you remember about my preferences?\nHere’s what I use to personalize my help. You can change or remove any of it.\nMessage Tobi\nWhat Tobi remembers\nPersonal preferences\nTravel\nYou prefer quiet stays and flexible plans. Edit\nCommunication\nShort updates, with details when requested. Edit\nSaved preference\nYour home time zone is WITA. Remove\nAdd a preference"
+  },
+  {
+    "id": "N9v5U",
+    "name": "Ngertiin / Workspace files / light",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 144,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nHelp me plan a relaxed trip to Bandung.\nI’ve saved the shortlist. You can review the details here, or tell me what to change.\nMessage Tobi\nTobi\n@tobi\nEdit agent\ntobi\nUsername\nNotifications\nAdd to Group\nAgent Privacy Policy\nMedia\nLinks\nFiles\nItinerary.pdf\nBudget.xlsx\nHotel shortlist.pdf"
+  },
+  {
+    "id": "hpgzv",
+    "name": "Ngertiin / Computer takeover active / light",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 160,
+    "text": "Sales\nTODAY · 11:03 PM\nPrepare tonight’s outreach. Focus on Acme and Globex.\nI’ve prepared 36 LinkedIn outreach drafts, including Daniel Alvarez at Acme and Vicky Chen at Globex. None have been sent.\nI pulled 52 accounts from Salesforce and 3 lookalike segments from Hex, skipped 4 recently contacted LinkedIn profiles, and queued 36 drafts in Sequencer. Nothing has been sent.\nUse the latest account context. Keep the openers personal.\nMessages from\nAccount Manager\nand\nChief\nAccount Manager sent over the Acme + Globex threads and Chief flagged the priority accounts. Both are folded into tonight’s list.\nThe 36 drafts are sitting in the LinkedIn queue on my screen: recipient, opener, and a Draft badge on each. Nothing goes out until you’ve had a look.\nThe top 10 look good. Send it. Run this every week.\nCreated routine\nOvernight outbound\nDone.\nSend me a short recap every Monday morning, too.\nAbsolutely. I’ll include sends, replies, and accounts worth following up.\nMessage Sales Outbound\nSales\n@sales_outbound\nOpen computer\nAgent info\nLinkedIn outreach\nPriya Natarajan\nDraft\nMarcus Webb\nDraft\nElena Sørensen\nDraft\nDaniel Alvarez\nDraft\n36 drafts queued\n0 sent\nSales’s computer · LinkedIn outreach\nSchedules\nOvernight outbound\nSundays\nSales’s computer\nReturn to agent\nLinkedIn outreach\nPriya Natarajan\nDraft\nMarcus Webb\nDraft\nElena Sørensen\nDraft\nDaniel Alvarez\nDraft\n36 drafts queued\n0 sent"
+  },
+  {
+    "id": "fQSoX",
+    "name": "Ngertiin / Tobi first welcome / dark",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 49,
+    "text": "Search\nConversations\nTobi\n11:03 PM\nYour shortlist is ready.\nArmand Segall\nTobi\nHi, I’m Tobi. Tell me what you need a hand with — a plan, a question, or something you want taken care of.\nPlan a trip\nHelp me learn\nOrganize my week\nMessage Tobi"
+  },
+  {
+    "id": "mND3y",
+    "name": "Ngertiin / Group collaboration / dark",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 108,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nOffsite crew\nPlan a relaxed two-day team trip to Bandung. Keep it under Rp2 million per person.\nTobi\nI’ll put the plan together. Travel is checking stays, and Budget is comparing costs.\nTravel\nI found three quiet stays near the city. Here are the two with room for everyone.\nBudget\nThe Dago option leaves Rp450,000 per person for meals and transport.\nTobi\nPutting the pieces together… ▍\nMessage Offsite crew"
+  },
+  {
+    "id": "YcJey",
+    "name": "Ngertiin / Working and steering / dark",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 97,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nFinding your quiet corner…\nCompare three places to stay in Bandung for next weekend.\nI’m checking availability, total prices, and how far each place is from the city.\nPrioritize somewhere quiet. We’ll have a car.\nGot it. I’ll focus on quieter areas and include parking.\nMessage Tobi"
+  },
+  {
+    "id": "gycJO",
+    "name": "Ngertiin / Return with new results / dark",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 99,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nFind a quiet stay under Rp900,000 a night. I’ll check back tomorrow.\nNEW MESSAGES\nI found two places that fit. My pick is Pine House: Rp780,000 a night, breakfast included, and free parking. Nothing has been booked.\nBandung stays\n2 options · Prices checked today\nPine House · Rp780,000 / night\nDago Garden · Rp850,000 / night\nView saved result\nView comparison\nMessage Tobi"
+  },
+  {
+    "id": "Y8B79t",
+    "name": "Ngertiin / Needs your input / dark",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 96,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nA little detail from you…\nHelp me organize our trip and find a place to stay.\nI have the shortlist ready. What dates are you traveling?\n6–8 November\nChoose dates\nMessage Tobi"
+  },
+  {
+    "id": "tmYYk",
+    "name": "Ngertiin / Connection interrupted / dark",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 91,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nReconnecting…\nPrepare the comparison as a document.\nI’ve gathered the options and I’m preparing the document.\nMessage Tobi"
+  },
+  {
+    "id": "JlRaF",
+    "name": "Ngertiin / Uncertain action result / dark",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 97,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nSend the itinerary to Maya.\nI lost the connection before Gmail confirmed the send. I’ll check whether the email arrived in Sent before trying again.\nItinerary for Bandung\nTo maya@example.com\nDelivery not yet confirmed\nView saved result\nCheck status\nMessage Tobi"
+  },
+  {
+    "id": "w700N2",
+    "name": "Ngertiin / Stopped work / dark",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 90,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nCompare the hotels and prepare a booking.\nStop for now. Our dates might change.\nStopped. I’ve kept the shortlist, and no booking was made. Tell me when you have the new dates.\nMessage Tobi"
+  },
+  {
+    "id": "k3te1T",
+    "name": "Ngertiin / Upload in composer / dark",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 93,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nShare the itinerary you already have. I can help make it easier to follow.\nReceipts.zip\nItinerary.pdf\nMessage Tobi"
+  },
+  {
+    "id": "I3HhW7",
+    "name": "Ngertiin / Document result / dark",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 94,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nMake a simple itinerary we can share.\nHere’s a relaxed two-day plan with travel time and room for breaks.\nA weekend in Bandung\nFriday · Arrive, settle in, dinner nearby\nSaturday · Morning walk, lunch, free afternoon\nSunday · Slow breakfast and head home\n\nItinerary.pdf · 3 pages\nView saved result\nMessage Tobi"
+  },
+  {
+    "id": "cmE42",
+    "name": "Ngertiin / Goal details / dark",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 123,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nHelp me plan a relaxed trip to Bandung.\nCreated goal\nPlan a relaxed trip to Bandung\nI’ve saved the shortlist. You can review the details here, or tell me what to change.\nMessage Tobi\nTrip to Bandung\nWaiting for dates\nGoal\nA relaxed two-day trip under Rp2 million per person.\nCompleted\nCompared 3 stays and estimated transport costs.\nNext\nConfirm your dates so I can check availability.\nResponsible\nTobi\nSaved result\nBandung shortlist.pdf ↗\nPause goal\nStop goal"
+  },
+  {
+    "id": "xaUPU",
+    "name": "Ngertiin / Schedules / dark",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 128,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nSend me a short calendar overview every Monday morning.\nCreated schedule\nMonday overview · Mon, 08:00 WITA\nI’ll send it every Monday at 08:00 WITA. You can adjust or pause it here.\nMessage Tobi\nMonday overview\nEvery Monday · 08:00 WITA\nMonday · 2 November\n09:00\nTeam catch-up\n11:30\nLunch with Maya\n15:00\nProject review\nYour week, at a glance\nCalendar highlights and anything to prepare.\nNext run\nMon, 2 Nov · 08:00 WITA\nLast update\nDelivered 26 Oct ↗\nEdit schedule\nPause schedule"
+  },
+  {
+    "id": "dJSxU",
+    "name": "Ngertiin / Create group / 01 Choose agents / dark",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 132,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nHelp me plan a relaxed trip to Bandung.\nI’ve saved the shortlist. You can review the details here, or tell me what to change.\nMessage Tobi\nChoose agents\nNext\nSearch agents\nTobi\nTravel\nYour agents\nTobi\nPlanning\nTravel\nPlaces and routes\nBudget\nExpenses"
+  },
+  {
+    "id": "K1f2iI",
+    "name": "Ngertiin / Group members / dark",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 120,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nHelp me plan a relaxed trip to Bandung.\nI’ve saved the shortlist. You can review the details here, or tell me what to change.\nMessage Tobi\nBandung trip\nYou and 3 agents\nTobi\nPlanning\nRemove\nTravel\nPlaces and routes\nRemove\nBudget\nExpenses\nRemove\nAdd agent"
+  },
+  {
+    "id": "WedCb",
+    "name": "Ngertiin / Edit agent / dark",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 109,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nHelp me plan a relaxed trip to Bandung.\nI’ve saved the shortlist. You can review the details here, or tell me what to change.\nMessage Tobi\nEdit Tobi\nMake this assistant your own\nName\nTobi\nHow I should help\nBe practical and concise. Help me plan my week and follow through.\nApps Tobi can use\nGoogle Calendar · Google Drive\nAdvanced\nModel and capabilities ›\nSave changes\nCancel"
+  },
+  {
+    "id": "C44VK",
+    "name": "Ngertiin / Connected app / dark",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 107,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nLet Tobi help with my calendar.\nChoose which agents can use this account.\nMessage Tobi\nGoogle Calendar\nConnected\nAccount\navery@gmail.com\nAvailable to\n✓ Tobi\n○ Travel\n○ Budget\nAccess\nRead events and create or update your calendar.\nConnection\nLast used today\nSave access\nDisconnect"
+  },
+  {
+    "id": "E1nbYS",
+    "name": "Ngertiin / Reconnect app / dark",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 104,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nSend the itinerary to Maya.\nGmail needs you to sign in again. Your draft is saved.\nMessage Tobi\nReconnect Gmail\nYour session has expired\nAccount\navery@gmail.com\nWaiting work\nSend the Bandung itinerary to Maya.\nWhat happens next\nSign in again so Tobi can continue. Your draft is saved.\nReconnect Gmail\nNot now"
+  },
+  {
+    "id": "V5MV55",
+    "name": "Ngertiin / Provider connection / dark",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 102,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nI’d like to use my own AI account.\nChoose a connection method to continue.\nMessage Tobi\nConnect OpenAI\nChoose how to connect\nUse your ChatGPT account\nSign in with your existing account ›\nUse an API key\nAdd a key from your OpenAI account ›\nCustom endpoint\nAdvanced connection settings ›\nCancel"
+  },
+  {
+    "id": "RDPql",
+    "name": "Ngertiin / Agent memory / dark",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 102,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nWhat do you remember about my preferences?\nHere’s what I use to personalize my help. You can change or remove any of it.\nMessage Tobi\nWhat Tobi remembers\nPersonal preferences\nTravel\nYou prefer quiet stays and flexible plans. Edit\nCommunication\nShort updates, with details when requested. Edit\nSaved preference\nYour home time zone is WITA. Remove\nAdd a preference"
+  },
+  {
+    "id": "okoQu",
+    "name": "Ngertiin / Workspace files / dark",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 144,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nHelp me plan a relaxed trip to Bandung.\nI’ve saved the shortlist. You can review the details here, or tell me what to change.\nMessage Tobi\nTobi\n@tobi\nEdit agent\ntobi\nUsername\nNotifications\nAdd to Group\nAgent Privacy Policy\nMedia\nLinks\nFiles\nItinerary.pdf\nBudget.xlsx\nHotel shortlist.pdf"
+  },
+  {
+    "id": "y83OX2",
+    "name": "Ngertiin / Computer takeover active / dark",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 160,
+    "text": "Sales\nTODAY · 11:03 PM\nPrepare tonight’s outreach. Focus on Acme and Globex.\nI’ve prepared 36 LinkedIn outreach drafts, including Daniel Alvarez at Acme and Vicky Chen at Globex. None have been sent.\nI pulled 52 accounts from Salesforce and 3 lookalike segments from Hex, skipped 4 recently contacted LinkedIn profiles, and queued 36 drafts in Sequencer. Nothing has been sent.\nUse the latest account context. Keep the openers personal.\nMessages from\nAccount Manager\nand\nChief\nAccount Manager sent over the Acme + Globex threads and Chief flagged the priority accounts. Both are folded into tonight’s list.\nThe 36 drafts are sitting in the LinkedIn queue on my screen: recipient, opener, and a Draft badge on each. Nothing goes out until you’ve had a look.\nThe top 10 look good. Send it. Run this every week.\nCreated routine\nOvernight outbound\nDone.\nSend me a short recap every Monday morning, too.\nAbsolutely. I’ll include sends, replies, and accounts worth following up.\nMessage Sales Outbound\nSales\n@sales_outbound\nOpen computer\nAgent info\nLinkedIn outreach\nPriya Natarajan\nDraft\nMarcus Webb\nDraft\nElena Sørensen\nDraft\nDaniel Alvarez\nDraft\n36 drafts queued\n0 sent\nSales’s computer · LinkedIn outreach\nSchedules\nOvernight outbound\nSundays\nSales’s computer\nReturn to agent\nLinkedIn outreach\nPriya Natarajan\nDraft\nMarcus Webb\nDraft\nElena Sørensen\nDraft\nDaniel Alvarez\nDraft\n36 drafts queued\n0 sent"
+  },
+  {
+    "id": "yiSpv",
+    "name": "Ngertiin / Create group / 02 Details / light",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 119,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nHelp me plan a relaxed trip to Bandung.\nI’ve saved the shortlist. You can review the details here, or tell me what to change.\nMessage Tobi\nNew group\nCreate\nGroup name\nBandung trip\nDescription (optional)\nPlan a relaxed two-day trip to Bandung.\nAgents · 2\nTobi\nTravel"
+  },
+  {
+    "id": "sKjdE",
+    "name": "Ngertiin / Create group / 02 Details / dark",
+    "width": 1440,
+    "height": 1000,
+    "nodes": 119,
+    "text": "Search\nConversations\nChief\n3:02 AM\nBooked the venue and sent the…\nTobi\n11:03 PM\nYour shortlist is ready.\nInbox Manager\n8:02 PM\nInbox at zero. 5 drafts parked.\nAccount Manager\n6:02 PM\nInvite’s out to Vicky. Globex…\nTalent Scout\n3:02 PM\n3 intros drafted in your voice.\nExpense Manager\n7:02 PM\nReport filed. 9 receipts.\nOffsite crew\n5:02 PM\nThat leaves the pipeline. I’d…\nArmand Segall\nTobi\nHelp me plan a relaxed trip to Bandung.\nI’ve saved the shortlist. You can review the details here, or tell me what to change.\nMessage Tobi\nNew group\nCreate\nGroup name\nBandung trip\nDescription (optional)\nPlan a relaxed two-day trip to Bandung.\nAgents · 2\nTobi\nTravel"
+  }
+]

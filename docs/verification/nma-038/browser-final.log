@@ -1,0 +1,13 @@
+FAIL Tobi reaches authenticated conversation with durable real artifact Error: locator.waitFor: Error: strict mode violation: getByText('The verified report is saved as nma038-report.txt.', { exact: true }) resolved to 2 elements:
+    1) <span class="block truncate text-xs text-muted-foreground">The verified report is saved as nma038-report.txt.</span> aka getByRole('link', { name: 'Tobi' })
+    2) <p>The verified report is saved as nma038-report.txt.</p> aka getByRole('region', { name: 'Percakapan langsung' }).getByText('The verified report is saved')
+
+Call log:
+[2m  - waiting for getByText('The verified report is saved as nma038-report.txt.', { exact: true }) to be visible[22m
+
+PASS History search, rename, usage and keyboard accessibility
+PASS Selected history and artifact export has actual downloaded bytes
+PASS Import preview, conflict, lost acknowledgement and reload deduplicate
+PASS Second owner cannot read or export source conversation
+PASS Personality preset updates editor and saved config persists
+PASS Branch inherits text, preserves primary DM and starts no work

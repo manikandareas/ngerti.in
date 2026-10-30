@@ -1,0 +1,28 @@
+bun run check
+$ python3 scripts/check.py
+$ biome check apps/web
+Checked 80 files in 110ms. No fixes applied.
+$ bun --filter @ngertiin/web typecheck
+@ngertiin/web typecheck: Exited with code 0
+All checks passed!
+unformatted: File would be reformatted
+   --> scripts/verification/nma038_fixture.py:150:1
+    |
+149 |         provider.goal_script = respond
+150 +
+151 |         def release_delayed_stream():
+--------------------------------------------------------------------------------
+156 |                     return
+157 +
+158 |         threading.Thread(target=release_delayed_stream, daemon=True).start()
+    |
+
+1 file would be reformatted, 163 files already formatted
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/scripts/check.py", line 46, in <module>
+    subprocess.run(command, cwd=ROOT, check=True)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['uv', 'run', '--project', 'apps/backend', 'ruff', 'format', '--check', 'apps/backend/src', 'apps/backend/migrations', 'scripts']' returned non-zero exit status 1.
+error: script "check" exited with code 1
+make: *** [check] Error 1

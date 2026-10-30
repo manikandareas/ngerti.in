@@ -1,0 +1,9 @@
+FAIL Real send, streamed reply and two-tab convergence without duplicate publication Error: locator.waitFor: Error: strict mode violation: getByText(/NMA046-1793204142007/) resolved to 2 elements:
+    1) <span class="block truncate text-xs text-muted-foreground">NMA046-1793204142007: Jawab tepat satu kata SIAP.…</span> aka getByRole('link', { name: 'Tobi NMA046-1793204142007:' })
+    2) <p>NMA046-1793204142007: Jawab tepat satu kata SIAP.…</p> aka getByRole('region', { name: 'Percakapan langsung' }).getByText('NMA046-1793204142007: Jawab')
+
+Call log:
+[2m  - waiting for getByText(/NMA046-1793204142007/) to be visible[22m
+
+PASS Refresh preserves message identities, private route and read state
+PASS Offline disables send, exposes reconnect and keeps draft until recovery

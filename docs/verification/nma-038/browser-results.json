@@ -1,0 +1,70 @@
+{
+  "passed": [
+    "History search, rename, usage and keyboard accessibility",
+    "Selected history and artifact export has actual downloaded bytes",
+    "Second owner cannot read or export source conversation"
+  ],
+  "failed": [
+    {
+      "name": "Tobi reaches authenticated conversation with durable real artifact",
+      "error": "Error: locator.waitFor: Error: strict mode violation: getByRole('heading', { name: 'Tobi', exact: true }) resolved to 3 elements:\n    1) <h1 class=\"max-w-[40vw] truncate rounded-full bg-muted px-2.5 py-0.5 text-sm font-medium md:max-w-64 md:border md:bg-transparent [overflow-wrap:anywhere]\">Tobi</h1> aka locator('h1')\n    2) <h2 class=\"sr-only\">Tobi</h2> aka locator('article').filter({ hasText: 'TobiHi, I\\'m Tobi! I\\'m here to' }).getByRole('heading')\n    3) <h2 class=\"sr-only\">Tobi</h2> aka locator('article').filter({ hasText: 'TobiThe verified report is' }).getByRole('heading')\n\nCall log:\n\u001b[2m  - waiting for getByRole('heading', { name: 'Tobi', exact: true }) to be visible\u001b[22m\n"
+    },
+    {
+      "name": "Import preview, conflict, lost acknowledgement and reload deduplicate",
+      "error": "TimeoutError: locator.click: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Periksa hasil impor', exact: true })\u001b[22m\n"
+    },
+    {
+      "name": "Personality preset updates editor and saved config persists",
+      "error": "TimeoutError: locator.selectOption: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByLabel('Contoh karakter', { exact: true })\u001b[22m\n"
+    },
+    {
+      "name": "Branch inherits text, preserves primary DM and starts no work",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     id: 'color-contrast',\n+     targets: [\n+       [\n+         '.text-primary-foreground > .mb-2'\n+       ]\n+     ]\n+   }\n+ ]\n- []\n"
+    }
+  ],
+  "accessibility": [
+    {
+      "name": "history-desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "history-mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "export-mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "import-preview-mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "branch-mobile",
+      "overflow": false,
+      "violations": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".text-primary-foreground > .mb-2"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "conversation-desktop-final",
+      "overflow": false,
+      "violations": []
+    }
+  ],
+  "pageErrors": [],
+  "limits": [
+    "Actual Clerk development sessions and production API; loopback controlled inference, actual Hermes execution and artifact publication. No production deployment or release reliability claim."
+  ]
+}

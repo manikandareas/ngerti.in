@@ -1,0 +1,177 @@
+..........................................................F.FF.......... [ 93%]
+.....                                                                    [100%]
+=================================== FAILURES ===================================
+_______ test_session_scoped_mcp_credentials_restart_and_connector_error ________
+
+runtime = (PosixPath('/tmp/nma-8_v9hm6i'), <http.server.ThreadingHTTPServer object at 0x109c97b50>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '20', 'lifecycle': 'ready', ...})
+
+    def test_session_scoped_mcp_credentials_restart_and_connector_error(runtime):
+        root, server, call, start, *_ = runtime
+        with socket.socket() as reservation:
+            reservation.bind(("127.0.0.1", 0))
+            port = reservation.getsockname()[1]
+        connector_log = (root / "connector.log").open("w")
+        receipts = root / "connector-receipts.txt"
+        receipts.write_text("")
+        connector = subprocess.Popen(
+            [
+                sys.executable,
+                str(Path(__file__).with_name("mcp_fixture.py")),
+                str(port),
+                str(receipts),
+            ],
+            stdout=connector_log,
+            stderr=subprocess.STDOUT,
+        )
+        try:
+            deadline = time.monotonic() + 10
+            while time.monotonic() < deadline:
+                try:
+                    with socket.create_connection(("127.0.0.1", port), timeout=0.1):
+                        break
+                except OSError:
+                    time.sleep(0.05)
+            secret = "nma-disposable-connector-secret"
+            (root / "connector.json").write_text(
+                json.dumps(
+                    {
+                        "type": "http",
+                        "name": "fixture",
+                        "url": f"http://127.0.0.1:{port}/mcp",
+                        "headers": [{"name": "Authorization", "value": "Bearer " + secret}],
+                    }
+                )
+            )
+            (root / "capabilities.json").write_text(
+                json.dumps(
+                    {
+                        "mcp_grants": {
+                            "connector": {
+                                "enabled": True,
+                                "server_file": str(root / "connector.json"),
+                            }
+                        }
+                    }
+                )
+            )
+>           agent = capability_agent(call, "mcp-agent", mcp_grants=["connector"])
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps/engine/tests/test_capabilities.py:165: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x109d1b530>, handle = 'mcp-agent'
+grants = {'mcp_grants': ['connector']}
+
+    def capability_agent(call, handle, **grants):
+        payload = {
+            "display_name": handle,
+            "handle": handle,
+            "config": {"soul": "", "instructions": "", "model": "test", **grants},
+        }
+        response = call(command("agent.create", payload))
+>       assert "result" in response, response
+E       AssertionError: {'error': {'code': 'CAPABILITY_UNAVAILABLE', 'details': {}}}
+E       assert 'result' in {'error': {'code': 'CAPABILITY_UNAVAILABLE', 'details': {}}}
+
+apps/engine/tests/test_capabilities.py:24: AssertionError
+______________ test_unavailable_connector_is_not_silently_dropped ______________
+
+runtime = (PosixPath('/tmp/nma-8_v9hm6i'), <http.server.ThreadingHTTPServer object at 0x109c97b50>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '20', 'lifecycle': 'ready', ...})
+
+    def test_unavailable_connector_is_not_silently_dropped(runtime):
+        root, server, call, _, *_ = runtime
+        path = root / "unavailable-connector.json"
+        path.write_text(
+            json.dumps(
+                {
+                    "type": "http",
+                    "name": "unavailable",
+                    "url": "http://127.0.0.1:1/mcp",
+                    "headers": [],
+                }
+            )
+        )
+        (root / "capabilities.json").write_text(
+            json.dumps(
+                {"mcp_grants": {"unavailable": {"enabled": True, "server_file": str(path)}}}
+            )
+        )
+>       agent = capability_agent(call, "unavailable-connector", mcp_grants=["unavailable"])
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps/engine/tests/test_capabilities.py:324: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x109d1b530>
+handle = 'unavailable-connector', grants = {'mcp_grants': ['unavailable']}
+
+    def capability_agent(call, handle, **grants):
+        payload = {
+            "display_name": handle,
+            "handle": handle,
+            "config": {"soul": "", "instructions": "", "model": "test", **grants},
+        }
+        response = call(command("agent.create", payload))
+>       assert "result" in response, response
+E       AssertionError: {'error': {'code': 'CAPABILITY_UNAVAILABLE', 'details': {}}}
+E       assert 'result' in {'error': {'code': 'CAPABILITY_UNAVAILABLE', 'details': {}}}
+
+apps/engine/tests/test_capabilities.py:24: AssertionError
+_____ test_mcp_discovery_secrets_rejected_before_storage_and_after_restart _____
+
+runtime = (PosixPath('/tmp/nma-8_v9hm6i'), <http.server.ThreadingHTTPServer object at 0x109c97b50>, <function runtime.<locals>.c...r', 'app.select_tools', 'app.disconnect', 'app_auth.start', ...], 'extension_schema': '20', 'lifecycle': 'ready', ...})
+
+    def test_mcp_discovery_secrets_rejected_before_storage_and_after_restart(runtime):
+        root, model, call, start, *_ = runtime
+        with socket.socket() as reservation:
+            reservation.bind(("127.0.0.1", 0))
+            port = reservation.getsockname()[1]
+        receipts = root / "schema-receipts.txt"
+        receipts.write_text("")
+        secret = "nma-disposable-connector-secret"
+        private = {
+            "type": "http",
+            "name": "schema",
+            "url": f"http://127.0.0.1:{port}/mcp",
+            "headers": [{"name": "Authorization", "value": "Bearer " + secret}],
+        }
+        (root / "schema-connector.json").write_text(json.dumps(private))
+        (root / "capabilities.json").write_text(
+            json.dumps(
+                {
+                    "mcp_grants": {
+                        "schema": {
+                            "enabled": True,
+                            "server_file": str(root / "schema-connector.json"),
+                        }
+                    }
+                }
+            )
+        )
+>       agent = capability_agent(call, "schema-isolation", mcp_grants=["schema"])
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps/engine/tests/test_capabilities.py:371: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+call = <function runtime.<locals>.call at 0x109d1b530>
+handle = 'schema-isolation', grants = {'mcp_grants': ['schema']}
+
+    def capability_agent(call, handle, **grants):
+        payload = {
+            "display_name": handle,
+            "handle": handle,
+            "config": {"soul": "", "instructions": "", "model": "test", **grants},
+        }
+        response = call(command("agent.create", payload))
+>       assert "result" in response, response
+E       AssertionError: {'error': {'code': 'CAPABILITY_UNAVAILABLE', 'details': {}}}
+E       assert 'result' in {'error': {'code': 'CAPABILITY_UNAVAILABLE', 'details': {}}}
+
+apps/engine/tests/test_capabilities.py:24: AssertionError
+=========================== short test summary info ============================
+FAILED apps/engine/tests/test_capabilities.py::test_session_scoped_mcp_credentials_restart_and_connector_error
+FAILED apps/engine/tests/test_capabilities.py::test_unavailable_connector_is_not_silently_dropped
+FAILED apps/engine/tests/test_capabilities.py::test_mcp_discovery_secrets_rejected_before_storage_and_after_restart
+3 failed, 74 passed in 187.21s (0:03:07)

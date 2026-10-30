@@ -1,0 +1,16 @@
+{
+  "passed": [
+    "OAuth pending restores attempt after reload and cancels durably",
+    "Permission denial and reload recovery are visible",
+    "Advanced inference remains reachable and does not replace unavailable selection"
+  ],
+  "failed": [
+    {
+      "name": "API key save, replace and local disconnect retain account identity",
+      "error": "TimeoutError: locator.waitFor: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText(/Koneksi diputus lokal/) to be visible\u001b[22m\n"
+    }
+  ],
+  "limits": [
+    "No paid inference or real remote provider revocation; disposable local connection records only. Fault injection is presentation evidence."
+  ]
+}

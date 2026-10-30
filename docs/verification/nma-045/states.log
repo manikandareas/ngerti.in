@@ -1,0 +1,20 @@
+PASS Provider form and app setup fit mobile and preserve focus
+PASS Unavailable primary model remains selected when catalog disappears
+FAIL App configured state, local disconnect and Google setup are reachable TimeoutError: locator.selectOption: Timeout 15000ms exceeded.
+Call log:
+[2m  - waiting for getByRole('dialog').getByRole('combobox', { name: 'Cara login' })[22m
+[2m    - locator resolved to <select data-size="default" data-slot="native-select" class="min-w-0 appearance-none border-control-border py-1 text-sm transition-colors outline-none select-none selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed aria-invalid:border-destructive-foreground aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-[size=sm]:h-7 data-[si…>…</select>[22m
+[2m  - attempting select option action[22m
+[2m    2 × waiting for element to be visible and enabled[22m
+[2m      - did not find some options[22m
+[2m    - retrying select option action[22m
+[2m    - waiting 20ms[22m
+[2m    2 × waiting for element to be visible and enabled[22m
+[2m      - did not find some options[22m
+[2m    - retrying select option action[22m
+[2m      - waiting 100ms[22m
+[2m    30 × waiting for element to be visible and enabled[22m
+[2m       - did not find some options[22m
+[2m     - retrying select option action[22m
+[2m       - waiting 500ms[22m
+

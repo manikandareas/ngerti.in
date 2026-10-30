@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/scripts/verification/nma038_fixture.py", line 67, in <module>
+    main()
+    ~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/scripts/verification/nma038_fixture.py", line 25, in main
+    import test_runtime
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_runtime.py", line 17, in <module>
+    import pytest
+ModuleNotFoundError: No module named 'pytest'

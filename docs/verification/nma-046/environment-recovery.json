@@ -1,0 +1,6 @@
+{
+  "cause": "Local API/provisioner stopped during verification. Default restart regenerated the QA capability file without its previous opt-in native image and coding grant, causing admission snapshot mismatch and ACCESS_REVOKED/RUNTIME_FAILED.",
+  "repair": "Restored the exact NMA-044 QA configuration from its retained backup and original setup recipe; no product runtime code or agent revisions changed.",
+  "image": "sha256:6580374cc2db359e4db9723c7a1c679a6b609d1a0fa91b1432cd3df9096adb6d",
+  "limits": "This is environment recovery, not proof of all native capabilities. Earlier failures are retained."
+}

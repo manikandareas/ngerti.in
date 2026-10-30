@@ -1,0 +1,23 @@
+- main:
+  - region "Masuk ke akun":
+    - text: ngertiin .
+    - heading "Selamat datang kembali" [level=1]
+    - paragraph: Ceritakan kebutuhanmu. Agentmu siap membantu dari percakapan pertama.
+    - heading "Masuk ke Ngerti.in" [level=1]
+    - paragraph: Selamat datang kembali! Silakan masuk untuk melanjutkan
+    - button "Lanjutkan dengan Google"
+    - paragraph: atau
+    - text: Alamat email
+    - textbox "Alamat email":
+      - /placeholder: Enter your email address
+    - button "Lanjutkan":
+      - text: Lanjutkan
+      - img
+    - text: Belum punya akun?
+    - link "Daftar":
+      - /url: http://localhost:3000/sign-up
+    - paragraph: Secured by
+    - link "Clerk logo":
+      - /url: https://go.clerk.com/components
+      - img
+    - paragraph: Development mode

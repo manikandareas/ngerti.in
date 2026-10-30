@@ -1,0 +1,17 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+locator.waitFor: Timeout 20000ms exceeded.
+Call log:
+[2m  - waiting for getByRole('textbox', { name: /Pesan untuk/ }) to be visible[22m
+
+    at conversation (/Users/vitoandareasmanik/Development/project/ngertiin/scripts/verification/nma038-browser.mjs:18:160)
+    at async file:///Users/vitoandareasmanik/Development/project/ngertiin/scripts/verification/nma038-browser.mjs:20:1 {
+  log: [
+    "  - waiting for getByRole('textbox', { name: /Pesan untuk/ }) to be visible"
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v25.8.0

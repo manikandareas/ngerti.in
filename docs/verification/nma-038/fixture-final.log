@@ -1,0 +1,12 @@
+Installed 5 packages in 11ms
+RUNTIME_EVIDENCE {"python": "3.13.12", "sqlite": "3.50.4", "platform": "Darwin", "architecture": "arm64", "journal_mode": "wal"}
+Traceback (most recent call last):
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/scripts/verification/nma038_fixture.py", line 67, in <module>
+    main()
+    ~~~~^^
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/scripts/verification/nma038_fixture.py", line 30, in main
+    from test_direct_messages import send
+  File "/Users/vitoandareasmanik/Development/project/ngertiin/apps/engine/tests/test_direct_messages.py", line 367
+    except OSError, ValueError:
+           ^^^^^^^^^^^^^^^^^^^
+SyntaxError: multiple exception types must be parenthesized

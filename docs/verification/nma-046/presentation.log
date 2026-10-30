@@ -1,0 +1,8 @@
+PASS Indeterminate fixture light 1440 has no retry
+PASS Indeterminate fixture light 390 has no retry
+PASS Indeterminate fixture dark 1440 has no retry
+PASS Indeterminate fixture dark 390 has no retry
+PASS Task and temporary-subagent rows expose evidence with keyboard
+PASS Tool progress honors reduced motion
+PASS Archived permission state retains history and prevents send
+PASS History error has recoverable state

@@ -1,0 +1,20 @@
+{
+  "verified": true,
+  "partition_files": 380,
+  "counts": {
+    "nma_agents": 5,
+    "nma_primary_dms": 5,
+    "nma_messages": 33,
+    "nma_memory_entries": 0,
+    "nma_skill_entries": 0,
+    "nma_files": 2,
+    "nma_commands": 66,
+    "nma_effects": 0
+  },
+  "portable_import_receipts": 2,
+  "database_counts_equal": true,
+  "restore_quarantined": true,
+  "schema_version": 20,
+  "native_external_volumes_used": false,
+  "original_account_modified": false
+}

@@ -1,0 +1,157 @@
+PASS dm light 1440
+PASS dm light 390
+PASS dm light 320
+PASS dm light 768
+PASS dm dark 1440
+PASS dm dark 390
+PASS dm dark 320
+PASS dm dark 768
+PASS Header disclosure preserves all resource actions and keyboard focus
+PASS goals light 1440
+PASS goals light 390
+PASS goals light 320
+PASS goals light 768
+PASS goals dark 1440
+PASS goals dark 390
+PASS goals dark 320
+PASS goals dark 768
+PASS goals keyboard trap and focus return
+PASS memory light 1440
+PASS memory light 390
+PASS memory light 320
+PASS memory light 768
+PASS memory dark 1440
+PASS memory dark 390
+PASS memory dark 320
+PASS memory dark 768
+PASS memory keyboard trap and focus return
+PASS workspace light 1440
+PASS workspace light 390
+PASS workspace light 320
+PASS workspace light 768
+PASS workspace dark 1440
+PASS workspace dark 390
+PASS workspace dark 320
+PASS workspace dark 768
+PASS workspace keyboard trap and focus return
+PASS computer light 1440
+PASS computer light 390
+PASS computer light 320
+PASS computer light 768
+PASS computer dark 1440
+PASS computer dark 390
+PASS computer dark 320
+PASS computer dark 768
+PASS computer keyboard trap and focus return
+PASS context-connections light 1440
+PASS context-connections light 390
+PASS context-connections light 320
+PASS context-connections light 768
+PASS context-connections dark 1440
+PASS context-connections dark 390
+PASS context-connections dark 320
+PASS context-connections dark 768
+PASS context-connections keyboard trap and focus return
+PASS session-artifacts light 1440
+PASS session-artifacts light 390
+PASS session-artifacts light 320
+PASS session-artifacts light 768
+PASS session-artifacts dark 1440
+PASS session-artifacts dark 390
+PASS session-artifacts dark 320
+PASS session-artifacts dark 768
+PASS session-artifacts keyboard trap and focus return
+PASS Draft, multiline, long content and compact composer at 320px
+PASS Attachment upload, long filename, preview and removal
+FAIL Mobile navigation keyboard trap, search and focus return AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     id: 'color-contrast',
++     targets: [
++       [
++         '#radix-_R_4pl6_ > .h-full.gap-\\[22px\\].p-5 > .justify-between.items-center.flex > .text-xs.text-muted-foreground.font-medium'
++       ],
++       [
++         'p[role="status"]'
++       ],
++       [
++         '#radix-_R_4pl6_ > .h-full.gap-\\[22px\\].p-5 > .space-y-1.border-t.pt-3 > .h-9.px-\\[18px\\].has-data-\\[icon\\=inline-end\\]\\:pr-2:nth-child(1)'
++       ],
++       [
++         '#radix-_R_4pl6_ > .h-full.gap-\\[22px\\].p-5 > .space-y-1.border-t.pt-3 > .h-9.px-\\[18px\\][href$="connections"]'
++       ],
++       [
++         '#radix-_R_4pl6_ > .h-full.gap-\\[22px\\].p-5 > .gap-3.text-sm.items-center > span'
++       ]
++     ]
++   }
++ ]
+- []
+
+PASS group light 1440
+PASS group light 390
+PASS group light 320
+PASS group light 768
+PASS group dark 1440
+PASS group dark 390
+PASS group dark 320
+PASS group dark 768
+PASS agents light 1440
+PASS agents light 390
+PASS agents light 320
+PASS agents light 768
+PASS agents dark 1440
+PASS agents dark 390
+PASS agents dark 320
+PASS agents dark 768
+PASS providers light 1440
+PASS providers light 390
+PASS providers light 320
+PASS providers light 768
+PASS providers dark 1440
+PASS providers dark 390
+PASS providers dark 320
+PASS providers dark 768
+PASS apps light 1440
+PASS apps light 390
+PASS apps light 320
+PASS apps light 768
+PASS apps dark 1440
+PASS apps dark 390
+PASS apps dark 320
+PASS apps dark 768
+PASS research light 1440
+PASS research light 390
+PASS research light 320
+PASS research light 768
+PASS research dark 1440
+PASS research dark 390
+PASS research dark 320
+PASS research dark 768
+PASS media light 1440
+PASS media light 390
+PASS media light 320
+PASS media light 768
+PASS media dark 1440
+PASS media dark 390
+PASS media dark 320
+PASS media dark 768
+PASS design-system light 1440
+PASS design-system light 390
+PASS design-system light 320
+PASS design-system light 768
+PASS design-system dark 1440
+PASS design-system dark 390
+PASS design-system dark 320
+PASS design-system dark 768
+PASS 404 light 1440
+PASS 404 light 390
+PASS 404 light 320
+PASS 404 light 768
+PASS 404 dark 1440
+PASS 404 dark 390
+PASS 404 dark 320
+PASS 404 dark 768
+PASS 200 percent browser-equivalent viewport reflow

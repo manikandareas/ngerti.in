@@ -1,0 +1,536 @@
+[
+  {
+    "id": "I2CzB",
+    "name": "Gumloop / 00 / Start here and evidence",
+    "width": 1440,
+    "height": 901
+  },
+  {
+    "id": "z86f4k",
+    "name": "Gumloop / 01 / Color and semantic tokens",
+    "width": 1440,
+    "height": 1467
+  },
+  {
+    "id": "fWBn0",
+    "name": "Gumloop / 02 / Typography with room to breathe.",
+    "width": 1440,
+    "height": 1049
+  },
+  {
+    "id": "ul8zK",
+    "name": "Gumloop / 03 / Structure before decoration.",
+    "width": 1440,
+    "height": 1278
+  },
+  {
+    "id": "P9Veix",
+    "name": "Gumloop / 04 / Actions that stay out of the way.",
+    "width": 1440,
+    "height": 1028
+  },
+  {
+    "id": "tlTIn",
+    "name": "Gumloop / 05 / Forms with clear feedback.",
+    "width": 1440,
+    "height": 1137
+  },
+  {
+    "id": "uge9Q",
+    "name": "Gumloop / 06 / Navigation and progressive disclosure.",
+    "width": 1440,
+    "height": 1111
+  },
+  {
+    "id": "zo2C3",
+    "name": "Gumloop / 07 / The agent is the organizing unit.",
+    "width": 1440,
+    "height": 1197
+  },
+  {
+    "id": "FM2vQ",
+    "name": "Gumloop / 08 / Clarity at an enterprise scale.",
+    "width": 1440,
+    "height": 1302
+  },
+  {
+    "id": "Dn2pt",
+    "name": "Gumloop / 12 / Original vectors. Explicit provenance.",
+    "width": 1440,
+    "height": 1210
+  },
+  {
+    "id": "i7hpO",
+    "name": "Gumloop / 09 / Desktop composition / 1440 reference.",
+    "width": 1440,
+    "height": 1590
+  },
+  {
+    "id": "z8kRA",
+    "name": "Gumloop / 10 / Mobile composition / 390 reference.",
+    "width": 1440,
+    "height": 1329
+  },
+  {
+    "id": "mDM3Y",
+    "name": "Gumloop / 11 / Behavior is part of the design.",
+    "width": 1440,
+    "height": 1332
+  },
+  {
+    "id": "xlDQu",
+    "name": "Gumloop / 13 / The supporting cast.",
+    "width": 1440,
+    "height": 1302
+  },
+  {
+    "id": "Yb9Pe",
+    "name": "Gumloop / 14 / A complete website vocabulary.",
+    "width": 1440,
+    "height": 1425
+  },
+  {
+    "id": "eIiDQ",
+    "name": "Ngertiin / Light",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "JNgIa",
+    "name": "Ngertiin / Dark",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "K530XP",
+    "name": "Ngertiin / Computer panel / light",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "X4AABB",
+    "name": "Ngertiin / Computer panel / dark",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "cbYZ8",
+    "name": "Ngertiin / Agent info / light",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "MKgaP",
+    "name": "Ngertiin / Agent info / dark",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "UX2gj",
+    "name": "Ngertiin / New Bot / light",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "za55u",
+    "name": "Ngertiin / New Bot / dark",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "c7eRLE",
+    "name": "Ngertiin / Computer overlay / light",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "e2JsoA",
+    "name": "Ngertiin / Computer overlay / dark",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "cgLON",
+    "name": "Ngertiin / Mobile / Chat / light",
+    "width": 390,
+    "height": 844
+  },
+  {
+    "id": "Su5O0",
+    "name": "Ngertiin / Mobile / Chat / dark",
+    "width": 390,
+    "height": 844
+  },
+  {
+    "id": "ob177",
+    "name": "Ngertiin / Mobile / Computer drawer / light",
+    "width": 390,
+    "height": 844
+  },
+  {
+    "id": "j7JEM",
+    "name": "Ngertiin / Mobile / Computer drawer / dark",
+    "width": 390,
+    "height": 844
+  },
+  {
+    "id": "Kdxum",
+    "name": "Ngertiin / Mobile / Computer viewer / light",
+    "width": 390,
+    "height": 844
+  },
+  {
+    "id": "nKtpD",
+    "name": "Ngertiin / Mobile / Computer viewer / dark",
+    "width": 390,
+    "height": 844
+  },
+  {
+    "id": "mW5wo",
+    "name": "Ngertiin / Mobile / Agent info drawer / light",
+    "width": 390,
+    "height": 844
+  },
+  {
+    "id": "nu2ap",
+    "name": "Ngertiin / Mobile / Agent info drawer / dark",
+    "width": 390,
+    "height": 844
+  },
+  {
+    "id": "H0wHo0",
+    "name": "Ngertiin / Mobile / New Bot / light",
+    "width": 390,
+    "height": 844
+  },
+  {
+    "id": "Z2al65",
+    "name": "Ngertiin / Mobile / New Bot / dark",
+    "width": 390,
+    "height": 844
+  },
+  {
+    "id": "mEZdZ",
+    "name": "Ngertiin / Mobile / Bot list drawer / light",
+    "width": 390,
+    "height": 844
+  },
+  {
+    "id": "s4hR1",
+    "name": "Ngertiin / Mobile / Bot list drawer / dark",
+    "width": 390,
+    "height": 844
+  },
+  {
+    "id": "Qjogq",
+    "name": "Ngertiin / Assistant attachment / light",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "P9Bdar",
+    "name": "Ngertiin / Assistant attachment / dark",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "SySnj",
+    "name": "Ngertiin / Conversation cards / Light",
+    "width": 1448,
+    "height": 1415
+  },
+  {
+    "id": "tuJiI",
+    "name": "Ngertiin / Conversation cards / Dark",
+    "width": 1448,
+    "height": 1415
+  },
+  {
+    "id": "EO5eO",
+    "name": "Ngertiin / Settings / AI providers / light",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "ayvol",
+    "name": "Ngertiin / Settings / AI providers / dark",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "Xhoqr",
+    "name": "Ngertiin / Settings / Connections / light",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "Bq1Ov",
+    "name": "Ngertiin / Settings / Connections / dark",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "N99WIF",
+    "name": "Ngertiin / Tobi first welcome / light",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "LqqSi",
+    "name": "Ngertiin / Group collaboration / light",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "GvP4L",
+    "name": "Ngertiin / Working and steering / light",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "x1pigr",
+    "name": "Ngertiin / Return with new results / light",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "ATYiC",
+    "name": "Ngertiin / Needs your input / light",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "ZWVyR",
+    "name": "Ngertiin / Connection interrupted / light",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "QmxYi",
+    "name": "Ngertiin / Uncertain action result / light",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "YEtOy",
+    "name": "Ngertiin / Stopped work / light",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "CDkHX",
+    "name": "Ngertiin / Upload in composer / light",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "o0VSi8",
+    "name": "Ngertiin / Document result / light",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "Arwjx",
+    "name": "Ngertiin / Goal details / light",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "BeivF",
+    "name": "Ngertiin / Schedules / light",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "u4j9h",
+    "name": "Ngertiin / Create group / 01 Choose agents / light",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "MbDGi",
+    "name": "Ngertiin / Group members / light",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "SXqTq",
+    "name": "Ngertiin / Edit agent / light",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "OzO6z",
+    "name": "Ngertiin / Connected app / light",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "X8V64i",
+    "name": "Ngertiin / Reconnect app / light",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "P8HgX",
+    "name": "Ngertiin / Provider connection / light",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "qQDdW",
+    "name": "Ngertiin / Agent memory / light",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "N9v5U",
+    "name": "Ngertiin / Workspace files / light",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "hpgzv",
+    "name": "Ngertiin / Computer takeover active / light",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "fQSoX",
+    "name": "Ngertiin / Tobi first welcome / dark",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "mND3y",
+    "name": "Ngertiin / Group collaboration / dark",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "YcJey",
+    "name": "Ngertiin / Working and steering / dark",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "gycJO",
+    "name": "Ngertiin / Return with new results / dark",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "Y8B79t",
+    "name": "Ngertiin / Needs your input / dark",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "tmYYk",
+    "name": "Ngertiin / Connection interrupted / dark",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "JlRaF",
+    "name": "Ngertiin / Uncertain action result / dark",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "w700N2",
+    "name": "Ngertiin / Stopped work / dark",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "k3te1T",
+    "name": "Ngertiin / Upload in composer / dark",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "I3HhW7",
+    "name": "Ngertiin / Document result / dark",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "cmE42",
+    "name": "Ngertiin / Goal details / dark",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "xaUPU",
+    "name": "Ngertiin / Schedules / dark",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "dJSxU",
+    "name": "Ngertiin / Create group / 01 Choose agents / dark",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "K1f2iI",
+    "name": "Ngertiin / Group members / dark",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "WedCb",
+    "name": "Ngertiin / Edit agent / dark",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "C44VK",
+    "name": "Ngertiin / Connected app / dark",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "E1nbYS",
+    "name": "Ngertiin / Reconnect app / dark",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "V5MV55",
+    "name": "Ngertiin / Provider connection / dark",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "RDPql",
+    "name": "Ngertiin / Agent memory / dark",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "okoQu",
+    "name": "Ngertiin / Workspace files / dark",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "y83OX2",
+    "name": "Ngertiin / Computer takeover active / dark",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "yiSpv",
+    "name": "Ngertiin / Create group / 02 Details / light",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "id": "sKjdE",
+    "name": "Ngertiin / Create group / 02 Details / dark",
+    "width": 1440,
+    "height": 1000
+  }
+]

@@ -1,0 +1,2 @@
+$ bun --filter @ngertiin/web typecheck
+@ngertiin/web typecheck: Exited with code 0

@@ -1,0 +1,34 @@
+FAIL Tobi reaches authenticated conversation with durable real artifact Error: locator.waitFor: Error: strict mode violation: getByRole('heading', { name: 'Tobi', exact: true }) resolved to 3 elements:
+    1) <h1 class="max-w-[40vw] truncate rounded-full bg-muted px-2.5 py-0.5 text-sm font-medium md:max-w-64 md:border md:bg-transparent [overflow-wrap:anywhere]">Tobi</h1> aka locator('h1')
+    2) <h2 class="sr-only">Tobi</h2> aka locator('article').filter({ hasText: 'TobiHi, I\'m Tobi! I\'m here to' }).getByRole('heading')
+    3) <h2 class="sr-only">Tobi</h2> aka locator('article').filter({ hasText: 'TobiThe verified report is' }).getByRole('heading')
+
+Call log:
+[2m  - waiting for getByRole('heading', { name: 'Tobi', exact: true }) to be visible[22m
+
+PASS History search, rename, usage and keyboard accessibility
+PASS Selected history and artifact export has actual downloaded bytes
+FAIL Import preview, conflict, lost acknowledgement and reload deduplicate TimeoutError: locator.click: Timeout 20000ms exceeded.
+Call log:
+[2m  - waiting for getByRole('button', { name: 'Periksa hasil impor', exact: true })[22m
+
+PASS Second owner cannot read or export source conversation
+FAIL Personality preset updates editor and saved config persists TimeoutError: locator.selectOption: Timeout 20000ms exceeded.
+Call log:
+[2m  - waiting for getByLabel('Contoh karakter', { exact: true })[22m
+
+FAIL Branch inherits text, preserves primary DM and starts no work AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     id: 'color-contrast',
++     targets: [
++       [
++         '.text-primary-foreground > .mb-2'
++       ]
++     ]
++   }
++ ]
+- []
+

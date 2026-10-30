@@ -1,0 +1,9 @@
+{
+  "passed": [],
+  "failed": [],
+  "accessibility": [],
+  "pageErrors": [],
+  "limits": [
+    "Actual Clerk development sessions and production API; loopback controlled inference, actual Hermes execution and artifact publication. No production deployment or release reliability claim."
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "task": "NMA-045",
+  "baseline": "12903c4",
+  "design": "docs/agent.pen",
+  "mapped_action_groups": 13,
+  "unmapped_existing_action_groups": 0,
+  "actions": [
+    {
+      "action": "Provider catalog and API key / OAuth / subscription selection",
+      "implementation": "connection-form.tsx; connections-page.tsx",
+      "reference": "EO5eO / ayvol",
+      "evidence": "browser-results.json; inventory.json"
+    },
+    {
+      "action": "Custom endpoint and three protocol choices; OpenCode Go coding acknowledgement",
+      "implementation": "connection-form.tsx",
+      "reference": "EO5eO / ayvol pattern extension",
+      "evidence": "browser-results.json; inventory.json; source controls"
+    },
+    {
+      "action": "Pending reload, cancel, retry, expired and denied login",
+      "implementation": "connections-page.tsx",
+      "reference": "P8HgX / V5MV55",
+      "evidence": "lifecycle-first-results.json; api-regression.log; login-restored.png"
+    },
+    {
+      "action": "Account identity, key replacement, catalog inspection/list, unavailable state, reconnect and local/remote disconnect",
+      "implementation": "connections-page.tsx",
+      "reference": "EO5eO / P8HgX",
+      "evidence": "lifecycle-results.json; local-disconnect.png; api-regression.log"
+    },
+    {
+      "action": "Managed app selection, search, configure, reset, OAuth/bearer methods and reconnect",
+      "implementation": "app-connections.tsx",
+      "reference": "Xhoqr / Bq1Ov / X8V64i / E1nbYS",
+      "evidence": "states-app-recheck-results.json; configured-app.png; reconnect-app.png"
+    },
+    {
+      "action": "Discover tools, select grants and revoke future access",
+      "implementation": "app-connections.tsx",
+      "reference": "OzO6z / C44VK",
+      "evidence": "api-regression.log; source preserved handlers"
+    },
+    {
+      "action": "Google client setup, token / OAuth settings and isolated MCP server profiles",
+      "implementation": "google-setup.tsx; app-connections.tsx",
+      "reference": "Xhoqr pattern extension",
+      "evidence": "google-setup.png; browser-results.json"
+    },
+    {
+      "action": "App consent and structured interaction accept/cancel",
+      "implementation": "app-interactions.tsx",
+      "reference": "OzO6z pattern extension",
+      "evidence": "api-regression.log; source preserved handlers"
+    },
+    {
+      "action": "Search/extract backends, xAI credentials, retain/update keys, disconnect research",
+      "implementation": "research-settings.tsx",
+      "reference": "active settings tokens / progressive disclosure",
+      "evidence": "research-*.png; browser-results.json; source preserved handlers"
+    },
+    {
+      "action": "Multimodal readiness, key save/replace and disconnect",
+      "implementation": "media-settings.tsx",
+      "reference": "active settings tokens",
+      "evidence": "media-*.png; browser-results.json; source preserved handlers"
+    },
+    {
+      "action": "Temperature, output tokens, reasoning, fallback, auxiliary models, provider routing, MoA, credential pool",
+      "implementation": "inference-settings.tsx",
+      "reference": "active fields / progressive disclosure",
+      "evidence": "advanced-inference.png; states-first-results.json; model-unavailable.png"
+    },
+    {
+      "action": "Contextual account cards, app tools and requests without leaving conversation",
+      "implementation": "conversation-connections.tsx; app-connections.tsx",
+      "reference": "OzO6z / X8V64i / P8HgX and dark pairs",
+      "evidence": "context-first-results.json; context-results.json"
+    },
+    {
+      "action": "Permission/error/loading/empty states, keyboard/focus, responsive light/dark",
+      "implementation": "all scoped connection surfaces",
+      "reference": "active shadcn primitives",
+      "evidence": "browser-first-results.json; browser-results.json; save-errors.log; context-results.json"
+    }
+  ],
+  "limits": [
+    "Preserved research/media/interaction handlers are statically mapped and covered by layout/regression where recorded; not every external operation was re-executed.",
+    "No paid provider inference or remote consent/revocation claim.",
+    "Native image integration test skipped; release gates remain open.",
+    "Source mockup content unavailable in runtime is not fabricated."
+  ]
+}

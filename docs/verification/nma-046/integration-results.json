@@ -1,0 +1,11 @@
+{
+  "passed": [
+    "Real send, streamed reply and two-tab convergence without duplicate publication",
+    "Refresh preserves message identities, private route and read state",
+    "Offline disables send, exposes reconnect and keeps draft until recovery"
+  ],
+  "failed": [],
+  "limits": [
+    "Real local API and configured provider on isolated QA account. No external tools requested. No production deployment."
+  ]
+}

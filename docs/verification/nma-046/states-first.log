@@ -1,0 +1,384 @@
+FAIL sign-in light 1440 AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     id: 'color-contrast',
++     targets: [
++       [
++         '.cl-internal-560t1i'
++       ]
++     ]
++   }
++ ]
+- []
+
+FAIL sign-in light 390 AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     id: 'color-contrast',
++     targets: [
++       [
++         '.cl-internal-560t1i'
++       ]
++     ]
++   }
++ ]
+- []
+
+FAIL sign-in light 320 AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     id: 'color-contrast',
++     targets: [
++       [
++         '.cl-internal-560t1i'
++       ]
++     ]
++   }
++ ]
+- []
+
+FAIL sign-in light 768 AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     id: 'color-contrast',
++     targets: [
++       [
++         '.cl-internal-560t1i'
++       ]
++     ]
++   }
++ ]
+- []
+
+FAIL sign-in dark 1440 AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     id: 'color-contrast',
++     targets: [
++       [
++         '.cl-internal-560t1i'
++       ]
++     ]
++   }
++ ]
+- []
+
+FAIL sign-in dark 390 AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     id: 'color-contrast',
++     targets: [
++       [
++         '.cl-internal-560t1i'
++       ]
++     ]
++   }
++ ]
+- []
+
+FAIL sign-in dark 320 AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     id: 'color-contrast',
++     targets: [
++       [
++         '.cl-internal-560t1i'
++       ]
++     ]
++   }
++ ]
+- []
+
+FAIL sign-in dark 768 AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     id: 'color-contrast',
++     targets: [
++       [
++         '.cl-internal-560t1i'
++       ]
++     ]
++   }
++ ]
+- []
+
+FAIL sign-up light 1440 AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     id: 'color-contrast',
++     targets: [
++       [
++         '.cl-internal-560t1i'
++       ]
++     ]
++   }
++ ]
+- []
+
+FAIL sign-up light 390 AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     id: 'color-contrast',
++     targets: [
++       [
++         '.cl-internal-560t1i'
++       ]
++     ]
++   }
++ ]
+- []
+
+FAIL sign-up light 320 AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     id: 'color-contrast',
++     targets: [
++       [
++         '.cl-internal-560t1i'
++       ]
++     ]
++   }
++ ]
+- []
+
+FAIL sign-up light 768 AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     id: 'color-contrast',
++     targets: [
++       [
++         '.cl-internal-560t1i'
++       ]
++     ]
++   }
++ ]
+- []
+
+FAIL sign-up dark 1440 AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     id: 'color-contrast',
++     targets: [
++       [
++         '.cl-internal-560t1i'
++       ]
++     ]
++   }
++ ]
+- []
+
+FAIL sign-up dark 390 AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     id: 'color-contrast',
++     targets: [
++       [
++         '.cl-internal-560t1i'
++       ]
++     ]
++   }
++ ]
+- []
+
+FAIL sign-up dark 320 AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     id: 'color-contrast',
++     targets: [
++       [
++         '.cl-internal-560t1i'
++       ]
++     ]
++   }
++ ]
+- []
+
+FAIL sign-up dark 768 AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     id: 'color-contrast',
++     targets: [
++       [
++         '.cl-internal-560t1i'
++       ]
++     ]
++   }
++ ]
+- []
+
+PASS fixture-empty light 1440
+PASS fixture-empty light 390
+PASS fixture-empty light 320
+PASS fixture-empty light 768
+PASS fixture-empty dark 1440
+PASS fixture-empty dark 390
+PASS fixture-empty dark 320
+PASS fixture-empty dark 768
+FAIL fixture-long light 1440 AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     id: 'scrollable-region-focusable',
++     targets: [
++       [
++         'pre'
++       ]
++     ]
++   }
++ ]
+- []
+
+FAIL fixture-long light 390 AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     id: 'scrollable-region-focusable',
++     targets: [
++       [
++         'pre'
++       ]
++     ]
++   }
++ ]
+- []
+
+FAIL fixture-long light 320 AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     id: 'scrollable-region-focusable',
++     targets: [
++       [
++         'pre'
++       ]
++     ]
++   }
++ ]
+- []
+
+FAIL fixture-long light 768 AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     id: 'scrollable-region-focusable',
++     targets: [
++       [
++         'pre'
++       ]
++     ]
++   }
++ ]
+- []
+
+FAIL fixture-long dark 1440 AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     id: 'scrollable-region-focusable',
++     targets: [
++       [
++         'pre'
++       ]
++     ]
++   }
++ ]
+- []
+
+FAIL fixture-long dark 390 AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     id: 'scrollable-region-focusable',
++     targets: [
++       [
++         'pre'
++       ]
++     ]
++   }
++ ]
+- []
+
+FAIL fixture-long dark 320 AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     id: 'scrollable-region-focusable',
++     targets: [
++       [
++         'pre'
++       ]
++     ]
++   }
++ ]
+- []
+
+FAIL fixture-long dark 768 AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     id: 'scrollable-region-focusable',
++     targets: [
++       [
++         'pre'
++       ]
++     ]
++   }
++ ]
+- []
+
+PASS fixture-permission light 1440
+PASS fixture-permission light 390
+PASS fixture-permission light 320
+PASS fixture-permission light 768
+PASS fixture-permission dark 1440
+PASS fixture-permission dark 390
+PASS fixture-permission dark 320
+PASS fixture-permission dark 768
+PASS fixture-loading light 1440
+PASS fixture-loading light 390
+PASS fixture-loading light 320
+PASS fixture-loading light 768
+PASS fixture-loading dark 1440
+PASS fixture-loading dark 390
+PASS fixture-loading dark 320
+PASS fixture-loading dark 768

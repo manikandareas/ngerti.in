@@ -1,0 +1,38 @@
+{
+  "iterations": [
+    {
+      "case": "initial_contract_regression",
+      "result": "93 pass, 2 fail out of 95; old contract version/entity-list assertions updated for v1.4.0 and control entity; final suite clean"
+    },
+    {
+      "case": "interrogative_stop",
+      "result": "11 pass, 1 fail out of 12 targeted controls tests; a question mark was stripped and Stop? misclassified; questions now remain ordinary input"
+    },
+    {
+      "case": "muse_native_single_turn_steer",
+      "result": "First generation succeeded after steer acknowledgement, but correction continued in another native turn. Following application dispatch lost acknowledgement and remains unknown. Steer capability changed to unknown; no replay.",
+      "evidence": [
+        "native-muse-initial.json",
+        "native-muse-initial.log",
+        "server-muse-initial.log"
+      ]
+    },
+    {
+      "case": "muse_replay_probe_pagination",
+      "result": "Second native cohort completed generation and confirmed cancellation; assertion failed because the probe searched only the first 1000 events. Pagination-only recheck passed using two pages, without a new model request.",
+      "evidence": [
+        "native-muse-replay-limit.json",
+        "native-muse-replay-limit.log",
+        "native-muse.json"
+      ]
+    },
+    {
+      "case": "verification_setup",
+      "result": "Initial new-field TypeScript expectations, formatter invocation paths and a cold-read probe relative state directory were corrected before final checks. No credential contents were printed."
+    },
+    {
+      "case": "source_access",
+      "result": "Knowledge-graph tools unavailable. Firecrawl lacked credits; pinned local Openbot source was verified and primary Elysia documentation read directly."
+    }
+  ]
+}

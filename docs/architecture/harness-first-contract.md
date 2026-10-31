@@ -1,4 +1,6 @@
-# Harness-first domain and API contract v1.2.0
+# Harness-first domain and API contract v1.4.0
+
+NMA-052 adds the [agent/conversation API](agent-conversation-api.md). NMA-053 adds the [conversation control, streaming and recovery contract](conversation-control-api.md), which supersedes the foundation-only queue/streaming/recovery limits below. The executable schemas describe the complete current version; NMA-060 remains pending.
 
 Executable schemas live in [contracts.ts](../../apps/server/src/contracts.ts) and are exported by authenticated `GET /v1/contracts`. These are foundation contracts; NMA-060 remains the API readiness gate before UI adoption. JSON Schema describes field shapes. Runtime Zod refinements and the application service enforce the cross-field and relational invariants below.
 

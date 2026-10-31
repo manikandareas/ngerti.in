@@ -67,6 +67,13 @@ export const nativeEvent = z.discriminatedUnion("type", [
     native_run_id: z.string().min(1).max(1000),
   }),
   z.strictObject({ type: z.literal("text"), text: z.string().max(100_000) }),
+  z.strictObject({ type: z.literal("text_snapshot"), text: z.string().max(100_000) }),
+  z.strictObject({ type: z.literal("dispatch"), native_run_id: z.string().min(1).max(1000) }),
+  z.strictObject({ type: z.literal("activity"), activity: z.enum(["generating", "tool_running"]) }),
+  z.strictObject({
+    type: z.literal("failure"),
+    code: z.enum(["LOGIN_REQUIRED", "AUTH_REJECTED", "SERVICE_UNAVAILABLE", "NATIVE_REJECTED"]),
+  }),
 ]);
 export type NativeEvent = z.infer<typeof nativeEvent>;
 export const toolScope = z.strictObject({
@@ -130,9 +137,27 @@ export class HarnessError extends Error {
     super(code);
   }
 }
+export function diagnostic(error: unknown) {
+  const safe =
+    error instanceof HarnessError ? error : new HarnessError("NATIVE_UNKNOWN", "unknown");
+  return {
+    code: safe.code,
+    category:
+      safe.outcome === "unknown"
+        ? ("unknown" as const)
+        : ["AUTH_REJECTED", "LOGIN_REQUIRED", "CREDENTIAL_MISSING"].includes(safe.code)
+          ? ("authentication" as const)
+          : ["SERVICE_UNAVAILABLE", "PROBE_FAILED"].includes(safe.code)
+            ? ("temporary" as const)
+            : safe.code === "NATIVE_REJECTED"
+              ? ("provider" as const)
+              : ("configuration" as const),
+    outcome: safe.outcome,
+  };
+}
 export function brokerContract() {
   return {
-    version: "1.2.0",
+    version: "1.3.0",
     connection: z.toJSONSchema(connectionInput),
     capabilities: z.toJSONSchema(capabilities),
     settings: z.toJSONSchema(settings),

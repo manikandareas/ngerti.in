@@ -13,10 +13,14 @@ import {
   goalInput,
   id,
   kindSchema,
+  queueDelete,
+  queueEdit,
   routineInput,
+  steerInput,
   threadInput,
 } from "./contracts";
 import { Conversations, conversationSnapshot, historyQuery } from "./conversations";
+import { eventStream } from "./event-stream";
 import type { AccountService } from "./harness/accounts";
 import { detectHarness } from "./harness/availability";
 import type { HarnessBroker } from "./harness/broker";
@@ -29,6 +33,7 @@ import {
 } from "./harness/contracts";
 import { ProductTools } from "./harness/tools";
 import type { Lifecycle } from "./lifecycle";
+import { RunControls } from "./run-controls";
 
 export function createApi(
   lifecycle: Lifecycle,
@@ -44,6 +49,7 @@ export function createApi(
 ) {
   if (token.length < 32) throw new Error("A private development token is required.");
   const conversations = new Conversations(lifecycle);
+  const controls = new RunControls(lifecycle);
   function command(request: Request, body: unknown, action: () => unknown) {
     const commandId = id.parse(request.headers.get("Idempotency-Key"));
     return lifecycle.store.command(
@@ -187,12 +193,32 @@ export function createApi(
     )
     .post(
       "/v1/runs/:id/steer",
-      async ({ params, body }) => {
+      async ({ request, params, body }) => {
         if (!services.broker) throw new HarnessError("ADAPTER_UNAVAILABLE");
-        await services.broker.steer(params.id, body.text);
-        return { status: "accepted" };
+        const control = command(request, body, () =>
+          controls.requestSteer(params.id, body),
+        ) as ReturnType<RunControls["requestSteer"]>;
+        return services.broker.dispatchSteer(control.id);
       },
-      { params: z.object({ id }), body: z.strictObject({ text: z.string().min(1).max(100_000) }) },
+      { params: z.object({ id }), body: steerInput },
+    )
+    .post(
+      "/v1/runs/:id/reconcile",
+      ({ params }) => {
+        if (!services.broker) throw new HarnessError("ADAPTER_UNAVAILABLE");
+        return services.broker.reconcile(params.id);
+      },
+      { params: z.object({ id }), body: z.strictObject({}) },
+    )
+    .post(
+      "/v1/messages/:id/edit",
+      ({ request, params, body }) => command(request, body, () => controls.edit(params.id, body)),
+      { params: z.object({ id }), body: queueEdit },
+    )
+    .post(
+      "/v1/messages/:id/delete",
+      ({ request, params, body }) => command(request, body, () => controls.remove(params.id, body)),
+      { params: z.object({ id }), body: queueDelete },
     )
     .get(
       "/v1/runs/:id/interactions",
@@ -225,6 +251,20 @@ export function createApi(
     .get("/v1/entities/:kind/:id", ({ params }) => lifecycle.store.get(params.kind, params.id), {
       params: z.object({ kind: kindSchema, id }),
     })
+    .get(
+      "/v1/events/stream",
+      ({ request, query }) =>
+        eventStream(
+          lifecycle.store,
+          z.coerce
+            .number()
+            .int()
+            .min(0)
+            .parse(request.headers.get("Last-Event-ID") ?? query.after),
+          request.signal,
+        ),
+      { query: z.object({ after: z.coerce.number().int().min(0).default(0) }) },
+    )
     .get(
       "/v1/events",
       ({ query }) => {
@@ -277,18 +317,33 @@ export function createApi(
       ({ request, body }) => command(request, body, () => lifecycle.create("artifact", body)),
       { body: artifactInput },
     )
-    .post("/v1/runs", ({ request, body }) => command(request, body, () => lifecycle.admit(body)), {
-      body: admissionInput,
-    })
+    .post(
+      "/v1/runs",
+      ({ request, body }) => {
+        const result = command(request, body, () => controls.send(body));
+        background.notifyControls();
+        return result;
+      },
+      {
+        body: admissionInput,
+      },
+    )
     .post(
       "/v1/runs/:id/cancel",
-      ({ request, params }) => command(request, {}, () => lifecycle.cancel(params.id)),
+      ({ request, params }) => {
+        const result = command(request, {}, () => lifecycle.cancel(params.id));
+        background.notifyControls();
+        return result;
+      },
       { params: z.object({ id }) },
     )
     .post(
       "/v1/goals/:id/control",
-      ({ request, params, body }) =>
-        command(request, body, () => lifecycle.controlGoal(params.id, body.state)),
+      ({ request, params, body }) => {
+        const result = command(request, body, () => lifecycle.controlGoal(params.id, body.state));
+        background.notifyControls();
+        return result;
+      },
       {
         params: z.object({ id }),
         body: z.strictObject({ state: z.enum(["active", "paused", "stopped"]) }),

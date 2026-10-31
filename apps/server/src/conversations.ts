@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { agent, binding, DomainError, id, message, run, thread } from "./contracts";
+import { agent, binding, control, DomainError, id, message, run, thread } from "./contracts";
 import { Connections } from "./harness/connections";
 import type { Lifecycle } from "./lifecycle";
 
@@ -13,6 +13,7 @@ export const conversationSnapshot = z.strictObject({
   agents: z.array(agent),
   bindings: z.array(binding),
   runs: z.array(run),
+  controls: z.array(control),
   messages: z.array(message),
   has_more: z.boolean(),
   next_before: id.nullable(),
@@ -76,11 +77,11 @@ export class Conversations {
     const end = before === undefined ? all.length : all.findIndex((item) => item.id === before);
     if (end < 0) throw new DomainError("SCOPE_DENIED", 403);
     const start = Math.max(0, end - limit);
-    const messages = all.slice(start, end);
+    const messages = all.slice(start, end).filter((item) => item.state !== "deleted");
     return {
       messages,
       has_more: start > 0,
-      next_before: start > 0 ? (messages[0]?.id ?? null) : null,
+      next_before: start > 0 ? (all[start]?.id ?? null) : null,
     };
   }
 
@@ -94,6 +95,7 @@ export class Conversations {
         agents: thread.member_agent_ids.map((id) => store.get("agent", id)),
         bindings: store.list("binding").filter((item) => item.thread_id === threadId),
         runs: store.list("run").filter((item) => item.thread_id === threadId),
+        controls: store.list("control").filter((item) => item.thread_id === threadId),
         ...this.history(threadId),
       });
     });

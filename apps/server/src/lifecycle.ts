@@ -13,7 +13,7 @@ import {
 import type { Store } from "./store";
 
 const active = new Set(["dispatching", "running", "cancel_requested"]);
-const final = new Set(["succeeded", "failed", "cancelled"]);
+const final = new Set(["succeeded", "failed", "cancelled", "steered"]);
 
 /** Owns admission, identity, queue decisions, stop intent and recovery. Harnesses own execution. */
 export class Lifecycle {
@@ -21,7 +21,16 @@ export class Lifecycle {
   constructor(readonly store: Store) {
     this.store.transaction(() => {
       for (const run of this.store.list("run")) {
-        if (active.has(run.status)) this.update(run, { status: "unknown", outcome: "unknown" });
+        if (active.has(run.status))
+          this.update(run, { status: "unknown", outcome: "unknown", activity: "unknown" });
+      }
+      for (const control of this.store.list("control")) {
+        if (control.state === "requested")
+          this.update(control, { state: "unknown", error_code: "NATIVE_UNKNOWN" });
+        if (control.state === "requested" && control.queued_run_id) {
+          const queued = this.store.get("run", control.queued_run_id);
+          if (queued.status === "queued") this.update(queued, { delivery: "unknown" });
+        }
       }
     });
   }
@@ -228,6 +237,10 @@ export class Lifecycle {
         binding_id: null,
         native_run_id: null,
         agent_snapshot: null,
+        delivery: "pending",
+        activity: "idle",
+        diagnostic: null,
+        native_dispatch_id: null,
       });
       return { message, run };
     });
@@ -275,7 +288,7 @@ export class Lifecycle {
         .filter((run) => run.thread_id === threadId && run.agent_id === agentId);
       if (lane.some((run) => active.has(run.status) || run.status === "unknown")) return null;
       const next = lane.find((run) => run.status === "queued");
-      if (!next) return null;
+      if (next?.delivery !== "pending") return null;
       this.responsibility(next);
       if (agent.grant_revision !== next.grant_revision) throw new DomainError("STALE_DISPATCH");
       const binding = this.store
@@ -298,6 +311,7 @@ export class Lifecycle {
           agent_id: agent.id,
           revision: agent.revision,
         }),
+        delivery: "delivered",
       });
     });
   }
@@ -326,6 +340,7 @@ export class Lifecycle {
         return this.update(run, {
           status: run.status === "dispatching" ? "running" : run.status,
           native_run_id: nativeRunId ?? run.native_run_id,
+          activity: run.cancellation === "requested" ? "stopping" : "generating",
         });
       return run;
     });
@@ -410,10 +425,14 @@ export class Lifecycle {
       const run = this.dispatch(runId, token);
       if (outcome === "cancelled" && run.cancellation !== "requested")
         throw new DomainError("CONFLICT");
+      const answer = this.store.answer(runId);
+      if (answer && answer.state !== (outcome === "succeeded" ? "complete" : "partial"))
+        this.update(answer, { state: outcome === "succeeded" ? "complete" : "partial" });
       return this.update(run, {
         status: outcome,
         outcome,
         cancellation: outcome === "cancelled" ? "confirmed" : run.cancellation,
+        activity: outcome === "unknown" ? "unknown" : "idle",
       });
     });
   }
@@ -421,24 +440,47 @@ export class Lifecycle {
   appendAnswer(runId: string, text: string, state: "complete" | "partial" = "complete") {
     return this.store.transaction(() => {
       const run = this.store.get("run", runId);
-      if (!active.has(run.status) || !run.native_run_id) throw new DomainError("STALE_DISPATCH");
-      if (
-        this.store
-          .list("message")
-          .some((message) => message.run_id === runId && message.author === "agent")
-      )
-        throw new DomainError("CONFLICT");
-      return this.store.put({
-        ...this.base(),
-        kind: "message",
-        thread_id: run.thread_id,
-        author: "agent",
-        author_agent_id: run.agent_id,
-        routine_id: null,
-        run_id: run.id,
-        text,
-        state,
-      });
+      if (!active.has(run.status) || !run.native_run_id || run.authority_epoch !== this.epoch)
+        throw new DomainError("STALE_DISPATCH");
+      return this.writeAnswer(run, text, state);
+    });
+  }
+
+  private writeAnswer(run: Entity<"run">, text: string, state: "complete" | "partial") {
+    const existing = this.store.answer(run.id);
+    if (existing) {
+      if (existing.text === text && existing.state === state) return existing;
+      return this.update(existing, { text, state });
+    }
+    return this.store.put({
+      ...this.base(),
+      kind: "message",
+      thread_id: run.thread_id,
+      author: "agent",
+      author_agent_id: run.agent_id,
+      routine_id: null,
+      run_id: run.id,
+      text,
+      state,
+    });
+  }
+
+  observe(
+    runId: string,
+    token: string,
+    fields: Pick<Partial<Entity<"run">>, "activity" | "native_dispatch_id" | "diagnostic">,
+  ) {
+    return this.store.transaction(() => {
+      const run = this.dispatch(runId, token);
+      return this.update(run, fields);
+    });
+  }
+
+  recordDiagnostic(runId: string, diagnostic: Entity<"run">["diagnostic"]) {
+    return this.store.transaction(() => {
+      const run = this.store.get("run", runId);
+      if (JSON.stringify(run.diagnostic) === JSON.stringify(diagnostic)) return run;
+      return this.update(run, { diagnostic });
     });
   }
 
@@ -449,10 +491,16 @@ export class Lifecycle {
       return this.update(
         run,
         run.status === "queued"
-          ? { status: "cancelled", outcome: "cancelled", cancellation: "confirmed" }
+          ? {
+              status: "cancelled",
+              outcome: "cancelled",
+              cancellation: "confirmed",
+              delivery: "removed",
+            }
           : {
               status: run.status === "unknown" ? "unknown" : "cancel_requested",
               cancellation: "requested",
+              activity: run.status === "unknown" ? "unknown" : "stopping",
             },
       );
     });
@@ -464,20 +512,30 @@ export class Lifecycle {
     expectedRevision: number,
     outcome: "succeeded" | "failed" | "cancelled",
     receiptId: string,
+    text?: string,
+    nativeRunId?: string,
   ) {
     if (!receiptId.trim()) throw new DomainError("RECONCILIATION_REQUIRED");
-    return this.store.command(receiptId, { runId, expectedRevision, outcome }, () => {
-      const run = this.store.get("run", runId);
-      if (run.revision !== expectedRevision || run.status !== "unknown")
-        throw new DomainError("CONFLICT");
-      if (outcome === "cancelled" && run.cancellation !== "requested")
-        throw new DomainError("CONFLICT");
-      return this.update(run, {
-        status: outcome,
-        outcome,
-        cancellation: outcome === "cancelled" ? "confirmed" : run.cancellation,
-      });
-    });
+    return this.store.command(
+      receiptId,
+      { runId, expectedRevision, outcome, text: text ?? null, nativeRunId: nativeRunId ?? null },
+      () => {
+        const run = this.store.get("run", runId);
+        if (run.revision !== expectedRevision || run.status !== "unknown")
+          throw new DomainError("CONFLICT");
+        if (outcome === "cancelled" && run.cancellation !== "requested")
+          throw new DomainError("CONFLICT");
+        if (text !== undefined && (text || this.store.answer(run.id)))
+          this.writeAnswer(run, text, outcome === "succeeded" ? "complete" : "partial");
+        return this.update(run, {
+          status: outcome,
+          outcome,
+          cancellation: outcome === "cancelled" ? "confirmed" : run.cancellation,
+          activity: "idle",
+          native_run_id: nativeRunId ?? run.native_run_id,
+        });
+      },
+    );
   }
 
   controlGoal(goalId: string, state: "paused" | "stopped" | "active") {

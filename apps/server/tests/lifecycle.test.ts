@@ -269,6 +269,7 @@ test("event cursor pagination is stable and contracts expose all domain entities
     "artifact",
     "binding",
     "connection",
+    "control",
     "goal",
     "message",
     "occurrence",

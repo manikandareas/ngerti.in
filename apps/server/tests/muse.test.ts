@@ -220,15 +220,66 @@ test("interrupt acknowledgement remains intent until native cancelled terminal a
     cancellation: "confirmed",
   });
 });
-test("steer targets one native turn without a second application run", async () => {
+test("unverified Muse steering preserves queued correction and does not dispatch it natively", async () => {
   const lane = setup();
   const run = await admit(lane, "wait");
   await waitRunning(run.id);
-  await post(`/v1/runs/${run.id}/steer`, { text: "Updated direction" });
+  const queued = f.lifecycle.admit({
+    thread_id: lane.thread.id,
+    agent_id: lane.agent.id,
+    text: "Updated direction",
+  });
+  const control = await post(`/v1/runs/${run.id}/steer`, { queued_run_id: queued.run.id });
+  expect(control).toMatchObject({ state: "rejected", error_code: "CAPABILITY_UNKNOWN" });
+  expect(f.store.get("run", queued.run.id).delivery).toBe("pending");
+  await post(`/v1/runs/${run.id}/cancel`);
   await background.idle();
-  expect(f.store.get("run", run.id).status).toBe("succeeded");
-  expect(f.store.list("message").at(-1)?.text).toBe("Updated direction");
+  expect(f.store.get("run", run.id).status).toBe("cancelled");
+  expect(f.store.list("run")).toHaveLength(2);
+});
+
+test("Muse streams a stable partial message and repairs final native text without duplicate messages", async () => {
+  const lane = setup();
+  const run = await admit(lane, "stream-wait");
+  await waitRunning(run.id);
+  for (let i = 0; i < 100 && !f.store.list("message").some((item) => item.author === "agent"); i++)
+    await Bun.sleep(5);
+  const partial = f.store.list("message").find((item) => item.author === "agent");
+  expect(partial?.state).toBe("partial");
+  expect(partial?.text).toContain("Streaming native output");
+  await post(`/v1/runs/${run.id}/cancel`);
+  await background.idle();
+  expect(f.store.list("message").filter((item) => item.author === "agent")).toHaveLength(1);
+  expect(f.store.get("message", partial?.id as string).state).toBe("partial");
+});
+
+test("Muse reconciles durable native commit and product-tool receipt after process loss without resubmission", async () => {
+  const lane = setup();
+  const run = await admit(
+    lane,
+    `crash-after-commit:${JSON.stringify({ name: "ngertiin.update_agent", arguments: { command_id: crypto.randomUUID(), agent_id: lane.agent.id, expected_revision: 1, changes: { soul: "Committed exactly once" } } })}`,
+  );
+  await background.idle();
+  expect(f.store.get("run", run.id).status).toBe("unknown");
+  expect(f.store.get("agent", lane.agent.id).revision).toBe(2);
+  await background.stop();
+  await broker.close();
+  await accounts.close();
+  await app.stop();
+  f.restart();
+  compose();
+  const result = await post(`/v1/runs/${run.id}/reconcile`, {});
+  expect(result.status).toBe("succeeded");
+  const cursor = f.store.cursor;
+  expect((await post(`/v1/runs/${run.id}/reconcile`, {})).status).toBe("succeeded");
+  expect(f.store.cursor).toBe(cursor);
+  expect(f.store.get("agent", lane.agent.id)).toMatchObject({
+    revision: 2,
+    soul: "Committed exactly once",
+  });
   expect(f.store.list("run")).toHaveLength(1);
+  expect(f.store.list("message").filter((item) => item.author === "agent")).toHaveLength(1);
+  expect(f.store.list("message").find((item) => item.author === "agent")?.state).toBe("complete");
 });
 test("interrupt acknowledgement alone cannot fabricate cancellation", async () => {
   const lane = setup();
@@ -338,3 +389,34 @@ for (const [input, status] of [
         state: "partial",
       });
   });
+
+test("typed Muse authentication rejection and temporary provider failure retain distinct diagnostics", async () => {
+  const lane = setup();
+  const temporary = await admit(lane, "terminal-temporary");
+  await background.idle();
+  expect(f.store.get("run", temporary.id)).toMatchObject({
+    status: "failed",
+    diagnostic: { code: "SERVICE_UNAVAILABLE", category: "temporary", outcome: "failed" },
+  });
+  expect(f.store.get("connection", lane.connection.id).login).toBe("authenticated");
+  const auth = await admit(lane, "terminal-auth");
+  await background.idle();
+  expect(f.store.get("run", auth.id)).toMatchObject({
+    status: "failed",
+    diagnostic: { code: "LOGIN_REQUIRED", category: "authentication", outcome: "failed" },
+  });
+  expect(f.store.get("connection", lane.connection.id).login).toBe("required");
+  expect(f.store.get("connection", lane.connection.id).authentication.billing_source).toBe(
+    "subscription",
+  );
+});
+
+test("authoritative empty Muse history clears ephemeral text without minting a second answer", async () => {
+  const lane = setup();
+  const run = await admit(lane, "empty-final");
+  await background.idle();
+  expect(f.store.get("run", run.id).status).toBe("succeeded");
+  const answer = f.store.answer(run.id);
+  expect(answer).toMatchObject({ text: "", state: "complete" });
+  expect(f.store.list("message").filter((item) => item.author === "agent")).toHaveLength(1);
+});

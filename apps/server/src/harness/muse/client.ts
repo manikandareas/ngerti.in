@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { mkdirSync } from "node:fs";
 import { z } from "zod";
 import type { Entity } from "../../contracts";
-import type { HarnessClient, Inspection, SessionIdentity } from "../broker";
+import type { HarnessClient, Inspection, RecoveryObservation, SessionIdentity } from "../broker";
 import type { LaunchContext } from "../context";
 import { HarnessError, type Settings } from "../contracts";
 import { MuseTools } from "./tools";
@@ -10,7 +10,8 @@ import { MuseTransport } from "./transport";
 
 export const museCapabilities = {
   resume: "supported",
-  steer: "supported",
+  // R7309.1 can carry an admitted steer into a second native turn. Single-turn mapping is unverified.
+  steer: "unknown",
   cancel: "supported",
   permission_requests: "supported",
   product_tools: "supported",
@@ -229,6 +230,7 @@ export class MuseClient implements HarnessClient {
       accepted: () => this.#active === active && active.accepted,
     };
     try {
+      request.onEvent({ type: "dispatch", native_run_id: active.turn });
       const result = z.object({ turnId: nativeId, disposition: z.literal("started") }).parse(
         await this.transport.command(
           "turn/start",
@@ -272,9 +274,23 @@ export class MuseClient implements HarnessClient {
   private publish(active: Active) {
     if (active.published) return;
     active.published = true;
-    for (const value of active.items.values())
-      if (value.kind === "agentMessage" && value.text)
-        active.request.onEvent({ type: "text", text: value.text });
+    active.request.onEvent({
+      type: "text_snapshot",
+      text: [...active.items.values()]
+        .filter((value) => value.kind === "agentMessage")
+        .map((value) => value.text ?? "")
+        .join(""),
+    });
+  }
+  private preview(active: Active) {
+    this.accept(active);
+    active.request.onEvent({
+      type: "text_snapshot",
+      text: [...active.items.values()]
+        .filter((value) => value.kind === "agentMessage")
+        .map((value) => value.text ?? "")
+        .join(""),
+    });
   }
   private enqueue(method: string, params: unknown) {
     this.#events = this.#events.then(() => this.receive(method, params)).catch(() => this.fail());
@@ -313,7 +329,15 @@ export class MuseClient implements HarnessClient {
       const value = item.parse(params.item);
       if (value.turnId !== active.turn) return;
       const old = active.items.get(value.itemId);
-      if (!old || old.revision < value.revision) active.items.set(value.itemId, value);
+      if (!old || old.revision < value.revision) {
+        active.items.set(value.itemId, value);
+        if (value.kind === "agentMessage") this.preview(active);
+        else if (value.kind === "toolCall")
+          active.request.onEvent({
+            type: "activity",
+            activity: method === "item/completed" ? "generating" : "tool_running",
+          });
+      }
       return;
     }
     if (method === "item/delta") {
@@ -324,13 +348,30 @@ export class MuseClient implements HarnessClient {
       if (held?.turnId === active.turn && held.kind === "agentMessage" && delta.field === "text") {
         held.text = (held.text ?? "") + delta.delta;
         if (held.text.length > 100_000) throw new HarnessError("PROTOCOL_ERROR", "unknown");
+        this.preview(active);
       }
       return;
     }
     if (method !== "turn/completed") return;
-    const result = z.object({ turnId: nativeId, terminal: z.string() }).parse(raw);
+    const result = z
+      .object({
+        turnId: nativeId,
+        terminal: z.string(),
+        error: z.object({ kind: z.string(), retryable: z.boolean() }).optional(),
+      })
+      .parse(raw);
     if (result.turnId !== active.turn) throw new HarnessError("PROTOCOL_ERROR", "unknown");
     this.accept(active);
+    if (result.terminal === "failed")
+      active.request.onEvent({
+        type: "failure",
+        code:
+          result.error?.kind === "authRequired"
+            ? "LOGIN_REQUIRED"
+            : result.error?.retryable
+              ? "SERVICE_UNAVAILABLE"
+              : "NATIVE_REJECTED",
+      });
     // Deltas may be dropped. Read the durable final text, including failed/cancelled partial output.
     const history = z
       .object({
@@ -374,6 +415,53 @@ export class MuseClient implements HarnessClient {
     if (!active || identity.native_session_id !== this.#session || active.request.run_id !== runId)
       throw new HarnessError("NATIVE_REJECTED");
     return active;
+  }
+  async reconcile(identity: SessionIdentity, nativeRunId: string): Promise<RecoveryObservation> {
+    const result = z
+      .object({
+        session: z.object({ sessionId: nativeId }),
+        lastTurn: z
+          .object({
+            turnId: nativeId,
+            terminal: z.string(),
+            reason: z.string().optional(),
+            error: z.object({ kind: z.string() }).optional(),
+          })
+          .optional(),
+        history: z.object({
+          items: z.array(item).nullable(),
+          snapshot: z.object({ state: z.object({ items: z.array(item) }) }).nullable(),
+        }),
+      })
+      .parse(
+        await this.transport.read("session/read", {
+          sessionId: identity.native_session_id,
+          excludeItems: false,
+        }),
+      );
+    if (result.session.sessionId !== identity.native_session_id)
+      throw new HarnessError("PROTOCOL_ERROR", "unknown");
+    const turn = result.lastTurn?.turnId === nativeRunId ? result.lastTurn : undefined;
+    // A synthesized host-death failure does not prove the external effect failed.
+    const status =
+      !turn || (turn.terminal === "failed" && !turn.error)
+        ? "unknown"
+        : turn.terminal === "completed"
+          ? "succeeded"
+          : turn.terminal === "failed"
+            ? "failed"
+            : turn.terminal === "cancelled"
+              ? "cancelled"
+              : "unknown";
+    return {
+      ...identity,
+      native_run_id: nativeRunId,
+      status,
+      text: (result.history.items ?? result.history.snapshot?.state.items ?? [])
+        .filter((value) => value.turnId === nativeRunId && value.kind === "agentMessage")
+        .map((value) => value.text ?? "")
+        .join(""),
+    };
   }
   async stop(identity: SessionIdentity, runId: string) {
     const active = this.active(identity, runId);

@@ -1,4 +1,6 @@
 // Protocol fixture only. No provider login or inference is performed by this process.
+
+import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 type Message = {
@@ -14,16 +16,37 @@ type Message = {
   error?: unknown;
 };
 const file = join(process.env.CODEX_HOME as string, "fixture-sessions.json");
-let sessions: Record<string, { model: string; history: string[]; instructions?: string }> =
-  (await Bun.file(file).exists()) ? await Bun.file(file).json() : {};
+let sessions: Record<
+  string,
+  {
+    model: string;
+    history: string[];
+    instructions?: string;
+    turns?: { id: string; status: string; items: { type: string; text: string }[] }[];
+  }
+> = (await Bun.file(file).exists()) ? await Bun.file(file).json() : {};
 let account = process.env.OPENAI_API_KEY
   ? { type: "apiKey" }
   : { type: "chatgpt", email: "fixture@example.test", planType: "plus" };
-let current: { thread: string; turn: string; text: string } | null = null;
+let current: { thread: string; turn: string; text: string; answer: string } | null = null;
 const send = (message: Message) => process.stdout.write(`${JSON.stringify(message)}\n`);
-const notify = (method: string, params: Record<string, unknown>) => send({ method, params });
+const notify = (method: string, params: Record<string, unknown>) => {
+  if (method === "item/agentMessage/delta" && current) current.answer += String(params.delta);
+  send({ method, params });
+};
 const finish = (status = "completed", turn = current?.turn) => {
-  if (current) notify("turn/completed", { threadId: current.thread, turn: { id: turn, status } });
+  if (current) {
+    const turns = sessions[current.thread].turns ?? [];
+    sessions[current.thread].turns = turns;
+    turns.push({
+      id: current.turn,
+      status,
+      items: [{ type: "agentMessage", text: current.answer }],
+    });
+    writeFileSync(file, JSON.stringify(sessions));
+    if (current.text.startsWith("crash-after-commit:")) process.exit(1);
+    notify("turn/completed", { threadId: current.thread, turn: { id: turn, status } });
+  }
 };
 async function receive(message: Message) {
   const p = message.params ?? {};
@@ -94,6 +117,11 @@ async function receive(message: Message) {
       reply({ thread: { id: p.threadId }, model: p.model, modelProvider: "openai" });
       break;
     }
+    case "thread/read": {
+      sessions = await Bun.file(file).json();
+      reply({ thread: { id: p.threadId, turns: sessions[p.threadId as string]?.turns ?? [] } });
+      break;
+    }
     case "turn/start": {
       if (!p.threadId || !p.input) throw new Error("Missing turn input.");
       const text = p.input[0].text;
@@ -101,7 +129,7 @@ async function receive(message: Message) {
         send({ id: message.id, error: { code: -1, message: "sk-native-secret" } });
         break;
       }
-      current = { thread: p.threadId, turn: crypto.randomUUID(), text };
+      current = { thread: p.threadId, turn: crypto.randomUUID(), text, answer: "" };
       sessions[current.thread].history.push(text);
       await Bun.write(file, JSON.stringify(sessions));
       // Deliberately send acceptance, tools and completion before the response is consumed.
@@ -122,6 +150,14 @@ async function receive(message: Message) {
         break;
       }
       if (text === "wait") break;
+      if (text === "stream-wait") {
+        notify("item/agentMessage/delta", {
+          threadId: current.thread,
+          turnId: current.turn,
+          delta: "Streaming native output. ".repeat(12),
+        });
+        break;
+      }
       if (text === "permission") {
         send({
           id: "permission",
@@ -139,9 +175,10 @@ async function receive(message: Message) {
           callId: "call",
           namespace: null,
           tool: "ngertiin_product_tool",
-          arguments: text.startsWith("product-tool:")
-            ? JSON.parse(text.slice("product-tool:".length))
-            : { name: "ngertiin.read_run_context", arguments: {} },
+          arguments:
+            text.startsWith("product-tool:") || text.startsWith("crash-after-commit:")
+              ? JSON.parse(text.slice(text.indexOf(":") + 1))
+              : { name: "ngertiin.read_run_context", arguments: {} },
         },
       });
       break;

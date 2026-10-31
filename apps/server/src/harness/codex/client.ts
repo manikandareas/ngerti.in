@@ -3,7 +3,7 @@ import { mkdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { z } from "zod";
 import type { Entity } from "../../contracts";
-import type { HarnessClient, Inspection, SessionIdentity } from "../broker";
+import type { HarnessClient, Inspection, RecoveryObservation, SessionIdentity } from "../broker";
 import type { LaunchContext } from "../context";
 import { HarnessError, type Settings } from "../contracts";
 import { productToolNames } from "../product-tool-contracts";
@@ -306,6 +306,8 @@ export class CodexClient implements HarnessClient {
         .object({ id: nativeId, status: z.enum(["completed", "failed", "interrupted"]) })
         .parse(params.turn);
       this.accept(active, turn.id);
+      if (turn.status === "failed")
+        active.request.onEvent({ type: "failure", code: "NATIVE_REJECTED" });
       active.resolve({
         status:
           turn.status === "completed"
@@ -343,6 +345,7 @@ export class CodexClient implements HarnessClient {
       active.request.signal.aborted
     )
       throw new HarnessError("PROTOCOL_ERROR", "unknown");
+    active.request.onEvent({ type: "activity", activity: "tool_running" });
     const rpc = async (method: string, body: unknown, notification = false) => {
       if (this.#active !== active || active.request.signal.aborted)
         throw new HarnessError("NATIVE_REJECTED");
@@ -390,6 +393,48 @@ export class CodexClient implements HarnessClient {
       })),
       success: !result.isError,
     });
+    active.request.onEvent({ type: "activity", activity: "generating" });
+  }
+  async reconcile(identity: SessionIdentity, nativeRunId: string): Promise<RecoveryObservation> {
+    const result = z
+      .object({
+        thread: z.object({
+          id: nativeId,
+          turns: z.array(
+            z.object({
+              id: nativeId,
+              status: z.string(),
+              items: z.array(z.object({ type: z.string(), text: z.string().optional() })),
+            }),
+          ),
+        }),
+      })
+      .parse(
+        await this.rpc.request("thread/read", {
+          threadId: identity.native_session_id,
+          includeTurns: true,
+        }),
+      );
+    if (result.thread.id !== identity.native_session_id)
+      throw new HarnessError("PROTOCOL_ERROR", "unknown");
+    const turn = result.thread.turns.find((value) => value.id === nativeRunId);
+    return {
+      ...identity,
+      native_run_id: nativeRunId,
+      status:
+        turn?.status === "completed"
+          ? "succeeded"
+          : turn?.status === "failed"
+            ? "failed"
+            : turn?.status === "interrupted"
+              ? "cancelled"
+              : "unknown",
+      text:
+        turn?.items
+          .filter((value) => value.type === "agentMessage")
+          .map((value) => value.text ?? "")
+          .join("") ?? "",
+    };
   }
   async steer(identity: SessionIdentity, runId: string, text: string) {
     const active = this.#active;

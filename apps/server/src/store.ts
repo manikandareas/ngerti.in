@@ -21,6 +21,7 @@ export function canonical(value: unknown): string {
 export class Store {
   readonly #db: Database;
   readonly #lock: Database;
+  #closed = false;
   constructor(
     readonly path: string,
     readonly ownerId: string,
@@ -92,6 +93,8 @@ export class Store {
           CREATE UNIQUE INDEX IF NOT EXISTS routine_occurrence ON entities (
             json_extract(body, '$.routine_id'), json_extract(body, '$.routine_generation'), json_extract(body, '$.scheduled_for')
           ) WHERE kind='occurrence';
+          CREATE UNIQUE INDEX IF NOT EXISTS run_answer ON entities (json_extract(body, '$.run_id'))
+            WHERE kind='message' AND json_extract(body, '$.author')='agent' AND json_extract(body, '$.run_id') IS NOT NULL;
           PRAGMA application_id=${APPLICATION_ID}; PRAGMA user_version=${SCHEMA_VERSION};
         `);
           const saved = this.#db
@@ -148,6 +151,15 @@ export class Store {
       .map((row) => schemas[kind].parse(JSON.parse(row.body)) as Entity<K>);
   }
 
+  answer(runId: string): Entity<"message"> | null {
+    const row = this.#db
+      .query<{ body: string }, [string]>(
+        "SELECT body FROM entities WHERE kind='message' AND json_extract(body,'$.author')='agent' AND json_extract(body,'$.run_id')=?",
+      )
+      .get(runId);
+    return row ? schemas.message.parse(JSON.parse(row.body)) : null;
+  }
+
   put<T extends Entity>(entity: T, expectedRevision: number | null = null): T {
     const validated = schemas[entity.kind].parse(entity);
     if (validated.owner_id !== this.ownerId) throw new DomainError("SCOPE_DENIED", 403);
@@ -199,7 +211,11 @@ export class Store {
   }
 
   close() {
+    this.#closed = true;
     this.#db.close();
     this.#lock.close();
+  }
+  get closed() {
+    return this.#closed;
   }
 }

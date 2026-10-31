@@ -1,4 +1,5 @@
 import { DomainError, type Entity } from "./contracts";
+import { diagnostic } from "./harness/contracts";
 import type { Lifecycle } from "./lifecycle";
 
 export interface ExecutorContext {
@@ -57,7 +58,7 @@ export class Background {
     }
     for (const queued of this.lifecycle.store.list("run")) {
       if (this.#work.size + this.#preparing.size >= this.concurrency) break;
-      if (queued.status !== "queued") continue;
+      if (queued.status !== "queued" || queued.delivery !== "pending") continue;
       if (
         this.lifecycle.store
           .list("run")
@@ -81,15 +82,24 @@ export class Background {
           .then(() => {
             if (!this.#stopping) this.claim(queued.thread_id, queued.agent_id);
           })
-          .catch((error) =>
-            this.report(error instanceof DomainError ? error.code : "SESSION_PREPARATION_FAILED"),
-          )
+          .catch((error) => {
+            if (!this.#closed && !this.#stopping)
+              this.lifecycle.recordDiagnostic(queued.id, diagnostic(error));
+            this.report(error instanceof DomainError ? error.code : "SESSION_PREPARATION_FAILED");
+          })
           .finally(() => this.#preparing.delete(lane));
         this.#preparing.set(lane, pending);
         continue;
       }
       this.claim(queued.thread_id, queued.agent_id);
     }
+  }
+
+  /** Control requests bypass ordinary work and do not wait for the next scheduler tick. */
+  notifyControls() {
+    for (const work of this.#work.values())
+      if (this.lifecycle.store.get("run", work.run.id).cancellation === "requested")
+        work.controller.abort();
   }
 
   private claim(threadId: string, agentId: string) {

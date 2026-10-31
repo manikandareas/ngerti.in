@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { connectionFields } from "./harness/contracts";
 
-export const CONTRACT_VERSION = "1.3.0";
+export const CONTRACT_VERSION = "1.4.0";
 export const id = z.uuid();
 const text = z.string().min(1).max(100_000);
 const base = {
@@ -83,6 +83,7 @@ export const runStatus = z.enum([
   "failed",
   "cancelled",
   "unknown",
+  "steered",
 ]);
 export const run = z
   .strictObject({
@@ -95,7 +96,18 @@ export const run = z
     routine_id: id.nullable(),
     status: runStatus,
     cancellation: z.enum(["none", "requested", "confirmed"]),
-    outcome: z.enum(["none", "succeeded", "failed", "cancelled", "unknown"]),
+    outcome: z.enum(["none", "succeeded", "failed", "cancelled", "unknown", "steered"]),
+    delivery: z.enum(["pending", "steering", "unknown", "delivered", "removed"]).default("pending"),
+    activity: z.enum(["idle", "generating", "tool_running", "stopping", "unknown"]).default("idle"),
+    diagnostic: z
+      .strictObject({
+        code: z.string().regex(/^[A-Z_]+$/),
+        category: z.enum(["temporary", "authentication", "configuration", "provider", "unknown"]),
+        outcome: z.enum(["not_dispatched", "unknown", "failed"]),
+      })
+      .nullable()
+      .default(null),
+    native_dispatch_id: z.string().min(1).max(1000).nullable().default(null),
     grant_revision: z.int().positive(),
     dispatch_token: id.nullable(),
     authority_epoch: id.nullable(),
@@ -104,7 +116,9 @@ export const run = z
     agent_snapshot: agentSnapshot.nullable().default(null),
   })
   .refine((value) => {
-    const terminal = ["succeeded", "failed", "cancelled", "unknown"].includes(value.status);
+    const terminal = ["succeeded", "failed", "cancelled", "unknown", "steered"].includes(
+      value.status,
+    );
     if (value.outcome !== (terminal ? value.status : "none")) return false;
     if (value.cancellation === "confirmed" && value.status !== "cancelled") return false;
     if (value.status === "cancel_requested" && value.cancellation !== "requested") return false;
@@ -127,12 +141,13 @@ export const message = z
     author_agent_id: id.nullable(),
     routine_id: id.nullable(),
     run_id: id.nullable(),
-    text,
-    state: z.enum(["complete", "partial"]),
+    text: z.string().max(100_000),
+    state: z.enum(["complete", "partial", "deleted"]),
   })
   .refine(
     (value) =>
       (value.author === "agent") === (value.author_agent_id !== null) &&
+      (value.author === "agent" || value.text.length > 0) &&
       (value.author !== "routine" || value.routine_id !== null),
     "Invalid message author.",
   );
@@ -220,6 +235,33 @@ export const connection = z.strictObject({
   kind: z.literal("connection"),
   ...connectionFields,
 });
+export const steerInput = z
+  .strictObject({
+    text: text.optional(),
+    queued_run_id: id.optional(),
+    expected_native_run_id: z.string().min(1).max(1000).optional(),
+  })
+  .refine(
+    (value) => (value.text !== undefined) !== (value.queued_run_id !== undefined),
+    "Choose one steering source.",
+  );
+export const queueEdit = z.strictObject({ expected_revision: z.int().positive(), text });
+export const queueDelete = z.strictObject({ expected_revision: z.int().positive() });
+export const control = z.strictObject({
+  ...base,
+  kind: z.literal("control"),
+  thread_id: id,
+  agent_id: id,
+  run_id: id,
+  message_id: id,
+  queued_run_id: id.nullable(),
+  native_run_id: z.string().min(1).max(1000),
+  state: z.enum(["requested", "accepted", "rejected", "unknown"]),
+  error_code: z
+    .string()
+    .regex(/^[A-Z_]+$/)
+    .nullable(),
+});
 export const schemas = {
   connection,
   agent,
@@ -231,6 +273,7 @@ export const schemas = {
   artifact,
   binding,
   occurrence,
+  control,
 };
 export type Kind = keyof typeof schemas;
 export type Entity<K extends Kind = Kind> = z.infer<(typeof schemas)[K]>;
@@ -245,6 +288,7 @@ export const kindSchema = z.enum([
   "artifact",
   "binding",
   "occurrence",
+  "control",
 ]);
 export const admissionInput = z.strictObject({
   thread_id: id,
@@ -273,6 +317,7 @@ export const domainEvent = z.strictObject({
     artifact,
     binding,
     occurrence,
+    control,
   ]),
 });
 export type DomainEvent = z.infer<typeof domainEvent>;
@@ -286,6 +331,7 @@ export const errorCodes = [
   "STALE_DISPATCH",
   "RECONCILIATION_REQUIRED",
   "INTERNAL_ERROR",
+  "CONTROL_AMBIGUOUS",
 ] as const;
 export class DomainError extends Error {
   constructor(
@@ -311,6 +357,9 @@ export function contractDocument() {
         routine: routineInput,
         artifact: artifactInput,
         admit: admissionInput,
+        edit_queued_message: queueEdit,
+        delete_queued_message: queueDelete,
+        steer: steerInput,
       }).map(([key, value]) => [key, z.toJSONSchema(value)]),
     ),
     errors: errorCodes,

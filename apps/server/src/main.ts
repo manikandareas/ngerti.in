@@ -29,20 +29,10 @@ const tools = new ProductTools(lifecycle, (scope, name) => {
   );
 });
 const credentials = new CredentialContexts(config.stateDir);
-const broker = new HarnessBroker(
-  lifecycle,
-  credentials,
-  tools,
-  {
-    codex: new CodexAdapter(() => `http://127.0.0.1:${app.server?.port}/v1/harness/tools`),
-    muse: new MuseAdapter(() => `http://127.0.0.1:${app.server?.port}/v1/harness/tools`),
-  },
-  undefined,
-  (runId, event, outcome) => {
-    if (event.type === "text")
-      lifecycle.appendAnswer(runId, event.text, outcome === "succeeded" ? "complete" : "partial");
-  },
-);
+const broker = new HarnessBroker(lifecycle, credentials, tools, {
+  codex: new CodexAdapter(() => `http://127.0.0.1:${app.server?.port}/v1/harness/tools`),
+  muse: new MuseAdapter(() => `http://127.0.0.1:${app.server?.port}/v1/harness/tools`),
+});
 const codexAccounts = new CodexAccounts(broker.connections, credentials);
 const museAccounts = new MuseAccounts(broker.connections, credentials);
 const accounts = new HarnessAccounts(broker.connections, {
@@ -61,6 +51,7 @@ const app = createApi(lifecycle, background, config.token, {
 try {
   app.listen({ hostname: "127.0.0.1", port: config.port });
   background.start();
+  void broker.recover();
 } catch (error) {
   store.close();
   throw error;

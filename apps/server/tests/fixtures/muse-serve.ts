@@ -10,6 +10,7 @@ let config: { url: string; headers: Record<string, string> };
 let session: Record<string, unknown>;
 let items: Record<string, unknown>[] = [];
 let active: { id: string; input: string } | null = null;
+let lastTurn: { turnId: string; terminal: string } | undefined;
 let cursor = 0;
 function notify(method: string, params: Record<string, unknown>) {
   process.stdout.write(
@@ -17,9 +18,16 @@ function notify(method: string, params: Record<string, unknown>) {
   );
 }
 function persist() {
-  writeFileSync(join(home, `${session.sessionId}.json`), JSON.stringify({ session, items }));
+  writeFileSync(
+    join(home, `${session.sessionId}.json`),
+    JSON.stringify({ session, items, lastTurn }),
+  );
 }
-function finish(text: string, terminal = "completed") {
+function finish(
+  text: string,
+  terminal = "completed",
+  error?: { kind: string; retryable: boolean },
+) {
   if (!active) return;
   const value = {
     itemId: crypto.randomUUID(),
@@ -30,9 +38,11 @@ function finish(text: string, terminal = "completed") {
     turnId: active.id,
   };
   items.push(value);
+  lastTurn = { turnId: active.id, terminal };
   persist();
+  if (active.input.startsWith("crash-after-commit:")) process.exit(1);
   notify("item/completed", { item: value });
-  notify("turn/completed", { turnId: active.id, terminal });
+  notify("turn/completed", { turnId: active.id, terminal, error });
   active = null;
 }
 function fail(id: string | number, kind = "commandRejected") {
@@ -127,8 +137,18 @@ async function handle(request: {
       persist();
       return result({ commandId: p.commandId, status: "accepted" });
     case "session/read":
+      if (!session || session.sessionId !== p.sessionId) {
+        try {
+          ({ session, items, lastTurn } = JSON.parse(
+            readFileSync(join(home, `${p.sessionId}.json`), "utf8"),
+          ));
+        } catch {
+          return fail(request.id, "notFound");
+        }
+      }
       return result({
         session,
+        lastTurn,
         history: { mode: "inline", items: p.excludeItems === false ? items : [], snapshot: null },
       });
     case "turn/start": {
@@ -166,6 +186,35 @@ async function handle(request: {
       }
       if (input === "gap") return notify("view/gap", { after: "1", next: "3" });
       if (input === "wait" || input === "stop-ack-only") return;
+      if (input === "empty-final") {
+        notify("item/started", {
+          item: {
+            itemId: crypto.randomUUID(),
+            kind: "agentMessage",
+            turnId: active.id,
+            revision: 0,
+            status: "inProgress",
+            text: "Ephemeral text that is absent from the final durable history. ".repeat(8),
+          },
+        });
+        lastTurn = { turnId: active.id, terminal: "completed" };
+        persist();
+        notify("turn/completed", { turnId: active.id, terminal: "completed" });
+        active = null;
+        return;
+      }
+      if (input === "stream-wait") {
+        const value = {
+          itemId: crypto.randomUUID(),
+          kind: "agentMessage",
+          turnId: active.id,
+          revision: 0,
+          status: "inProgress",
+          text: "Streaming native output. ".repeat(12),
+        };
+        items.push(value);
+        return notify("item/started", { item: value });
+      }
       if (input === "question")
         return notify("userInput/requested", {
           userInputId: "question-1",
@@ -187,6 +236,10 @@ async function handle(request: {
           subject: { kind: "command", command: "fixture command" },
         });
       if (input === "failed") return finish("Partial response", "failed");
+      if (input === "terminal-auth")
+        return finish("Partial response", "failed", { kind: "authRequired", retryable: false });
+      if (input === "terminal-temporary")
+        return finish("Partial response", "failed", { kind: "modelError", retryable: true });
       if (input === "unknown-terminal") return finish("Partial response", "new-terminal");
       const turnId = active.id;
       const itemId = crypto.randomUUID();
@@ -207,8 +260,8 @@ async function handle(request: {
       await rpc("initialize", { protocolVersion: "2025-06-18" });
       await rpc("tools/list", {});
       const tool = await rpc("tools/call", {
-        ...(input.startsWith("product-tool:")
-          ? JSON.parse(input.slice("product-tool:".length))
+        ...(input.startsWith("product-tool:") || input.startsWith("crash-after-commit:")
+          ? JSON.parse(input.slice(input.indexOf(":") + 1))
           : { name: "ngertiin.read_run_context", arguments: {} }),
         _meta: { progressToken: "native-progress" },
       });

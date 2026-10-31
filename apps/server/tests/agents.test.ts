@@ -293,9 +293,13 @@ for (const harness of ["codex", "muse"] as const) {
     });
     expect(f.store.get("run", active.id).agent_snapshot?.revision).toBe(lane.agent.revision);
     expect(f.lifecycle.executionAgent(lane.thread_id, lane.agent_id).name).toBe("Tobi");
-    await api(`/v1/runs/${active.id}/steer`, { text: "Finish active work" });
+    if (harness === "codex")
+      await api(`/v1/runs/${active.id}/steer`, { text: "Finish active work" });
+    else await api(`/v1/runs/${active.id}/cancel`, {});
     await background.idle();
-    expect(f.store.get("run", active.id).status).toBe("succeeded");
+    expect(f.store.get("run", active.id).status).toBe(
+      harness === "codex" ? "succeeded" : "cancelled",
+    );
     const next = await run(lane.thread_id, lane.agent_id, "Use current profile");
     expect(next.run.agent_snapshot?.revision).toBe(edited.revision);
     expect(next.run.binding_id).not.toBe(active.binding_id);

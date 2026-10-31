@@ -18,6 +18,21 @@ export class Redactor {
       output = output.split(value).join("[REDACTED]");
     return output.replace(/(Bearer\s+)\S+/gi, "$1[REDACTED]").replace(/\bsk-[\w-]+/g, "[REDACTED]");
   }
+  /** Withhold possible secret prefixes across native chunks before publishing a text snapshot. */
+  stream(input: string, final = false) {
+    if (final) return this.text(input);
+    let cut = Math.max(
+      0,
+      input.length - Math.max(8, ...[...this.#values].map((value) => value.length)),
+    );
+    for (const value of this.#values) {
+      const index = input.lastIndexOf(value, cut);
+      if (index >= 0 && index + value.length > cut) cut = index;
+    }
+    const open = /(?:Bearer\s+\S*|\bsk-[\w-]*)$/i.exec(input);
+    if (open) cut = Math.min(cut, open.index);
+    return this.text(input.slice(0, cut));
+  }
 }
 /** Buffer complete records before redaction; discard oversized records rather than expose fragments. */
 export class Diagnostics {

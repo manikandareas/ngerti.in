@@ -1,0 +1,11 @@
+{
+  "evidence": "native_read_only_receipt",
+  "harness": "codex",
+  "native_run_id": "01a18fe0-36d0-7272-a739-f32f2e032a16",
+  "native_session_id": "01a18fe0-1b2b-7821-96af-04a183029e15",
+  "status": "cancelled",
+  "text_length": 0,
+  "text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "prompt_submissions": 0,
+  "session_resumes": 0
+}

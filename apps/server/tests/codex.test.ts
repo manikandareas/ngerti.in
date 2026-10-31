@@ -224,3 +224,48 @@ test("explicit native turn rejection fails without publishing native error secre
   expect(f.store.get("run", run.id).status).toBe("failed");
   expect(JSON.stringify(f.store.events(0))).not.toContain("sk-native-secret");
 });
+
+test("Codex streams a stable partial message before the native turn completes", async () => {
+  const lane = setup();
+  const run = await admit(lane, "stream-wait");
+  await waitRunning(run.id);
+  for (let i = 0; i < 100 && !f.store.list("message").some((item) => item.author === "agent"); i++)
+    await Bun.sleep(5);
+  const partial = f.store.list("message").find((item) => item.author === "agent");
+  expect(partial?.state).toBe("partial");
+  expect(partial?.text).toContain("Streaming native output");
+  expect(f.store.get("run", run.id).status).toBe("running");
+  await post(`/v1/runs/${run.id}/steer`, { text: "Finish with this correction" });
+  await background.idle();
+  expect(f.store.list("message").filter((item) => item.author === "agent")).toHaveLength(1);
+  expect(f.store.get("message", partial?.id as string).state).toBe("complete");
+});
+
+test("Codex reconciles native commit before publication after restart without repeating a tool effect", async () => {
+  const lane = setup();
+  const command = crypto.randomUUID();
+  const run = await admit(
+    lane,
+    `crash-after-commit:${JSON.stringify({ name: "ngertiin.update_agent", arguments: { command_id: command, agent_id: lane.agent.id, expected_revision: 1, changes: { soul: "Committed exactly once" } } })}`,
+  );
+  await background.idle();
+  expect(f.store.get("run", run.id).status).toBe("unknown");
+  expect(f.store.get("agent", lane.agent.id).revision).toBe(2);
+  await background.stop();
+  await broker.close();
+  await app.stop();
+  f.restart();
+  compose();
+  const result = await post(`/v1/runs/${run.id}/reconcile`, {});
+  expect(result.status).toBe("succeeded");
+  const cursor = f.store.cursor;
+  expect((await post(`/v1/runs/${run.id}/reconcile`, {})).status).toBe("succeeded");
+  expect(f.store.cursor).toBe(cursor);
+  expect(f.store.get("agent", lane.agent.id)).toMatchObject({
+    revision: 2,
+    soul: "Committed exactly once",
+  });
+  expect(f.store.list("run")).toHaveLength(1);
+  expect(f.store.list("message").filter((item) => item.author === "agent")).toHaveLength(1);
+  expect(f.store.list("message").find((item) => item.author === "agent")?.state).toBe("complete");
+});

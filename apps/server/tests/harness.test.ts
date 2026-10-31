@@ -17,6 +17,7 @@ import { CredentialContexts, Diagnostics, Redactor } from "../src/harness/contex
 import { HarnessError, type NativeEvent, unknownCapabilities } from "../src/harness/contracts";
 import { OwnedProcess } from "../src/harness/process";
 import { ProductTools } from "../src/harness/tools";
+import { RunControls } from "../src/run-controls";
 import { fixture } from "./helpers";
 
 let f: ReturnType<typeof fixture>;
@@ -1288,4 +1289,175 @@ test("two simultaneous key connections on the same harness retain their selected
   expect(f.store.list("run").map((run) => run.status)).toEqual(["succeeded", "succeeded"]);
   expect(JSON.stringify(f.store.events(0))).not.toContain("secret-a");
   expect(JSON.stringify(f.store.events(0))).not.toContain("secret-b");
+});
+
+test("concurrent steering receipts send once and a lost acknowledgement never resends", async () => {
+  const connections = setup();
+  const lane = assign(
+    connections.create({
+      harness: "codex",
+      authentication: { method: "native_login", billing_source: "subscription" },
+    }),
+  );
+  let calls = 0;
+  const native = makeBroker({
+    codex: adapter("codex", async () =>
+      client({
+        async inspect() {
+          return {
+            login: "authenticated",
+            account_id: "account-a",
+            auth_method: "native_login",
+            billing_source: "subscription",
+            capabilities: { ...caps, steer: "supported" },
+          };
+        },
+        async steer() {
+          calls++;
+          await Bun.sleep(5);
+          throw new HarnessError("NATIVE_UNKNOWN", "unknown");
+        },
+      }),
+    ),
+  });
+  await native.openSession(lane.thread.id, lane.agent.id);
+  const active = f.lifecycle.admit({
+    thread_id: lane.thread.id,
+    agent_id: lane.agent.id,
+    text: "Inspect",
+  });
+  const run = f.lifecycle.claimNext(lane.thread.id, lane.agent.id);
+  if (!run?.dispatch_token) throw new Error("Missing run.");
+  f.lifecycle.started(run.id, run.dispatch_token, "native-turn");
+  const queued = f.lifecycle.admit({
+    thread_id: lane.thread.id,
+    agent_id: lane.agent.id,
+    text: "Correction",
+  });
+  const controls = new RunControls(f.lifecycle);
+  const control = controls.requestSteer(active.run.id, { queued_run_id: queued.run.id });
+  const results = await Promise.all(
+    Array.from({ length: 16 }, () => native.dispatchSteer(control.id)),
+  );
+  expect(results.every((item) => item.state === "unknown")).toBe(true);
+  expect(calls).toBe(1);
+  expect((await native.dispatchSteer(control.id)).state).toBe("unknown");
+  expect(calls).toBe(1);
+  expect(f.store.get("run", queued.run.id).delivery).toBe("unknown");
+});
+
+test("native receipt reads recheck revocation before committing recovered output", async () => {
+  const connections = setup();
+  const connection = connections.create({
+    harness: "codex",
+    authentication: { method: "native_login", billing_source: "subscription" },
+  });
+  const lane = assign(connection);
+  let ready: () => void = () => {};
+  let release: () => void = () => {};
+  const entered = new Promise<void>((resolve) => {
+    ready = resolve;
+  });
+  const held = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  const native = makeBroker({
+    codex: adapter("codex", async () =>
+      client({
+        async reconcile(identity, nativeRunId) {
+          ready();
+          await held;
+          return {
+            ...identity,
+            native_run_id: nativeRunId,
+            status: "succeeded",
+            text: "Recovered output",
+          };
+        },
+      }),
+    ),
+  });
+  await native.openSession(lane.thread.id, lane.agent.id);
+  f.lifecycle.admit({ thread_id: lane.thread.id, agent_id: lane.agent.id, text: "Inspect" });
+  const run = f.lifecycle.claimNext(lane.thread.id, lane.agent.id);
+  if (!run?.dispatch_token) throw new Error("Missing run.");
+  f.lifecycle.started(run.id, run.dispatch_token, "native-turn");
+  f.lifecycle.settle(run.id, run.dispatch_token, "unknown");
+  const recovering = native.reconcile(run.id);
+  await entered;
+  connections.revoke(connection.id);
+  release();
+  await expect(recovering).rejects.toThrow("STALE_DISPATCH");
+  expect(f.store.get("run", run.id).status).toBe("unknown");
+  expect(f.store.answer(run.id)).toBeNull();
+});
+
+test("an unconfirmed native stop reaches a bounded unknown outcome and fences late events", async () => {
+  const connections = setup();
+  const lane = assign(
+    connections.create({
+      harness: "codex",
+      authentication: { method: "native_login", billing_source: "subscription" },
+    }),
+  );
+  let ready: () => void = () => {};
+  const entered = new Promise<void>((resolve) => {
+    ready = resolve;
+  });
+  let closes = 0;
+  tools = new ProductTools(f.lifecycle);
+  broker = new HarnessBroker(
+    f.lifecycle,
+    new CredentialContexts(f.dir),
+    tools,
+    {
+      codex: adapter("codex", async () =>
+        client({
+          async prompt(request) {
+            request.onEvent({
+              type: "accepted",
+              native_session_id: request.identity.native_session_id,
+              native_run_id: "native-turn",
+            });
+            ready();
+            return new Promise(() => {});
+          },
+          async close() {
+            closes++;
+          },
+        }),
+      ),
+    },
+    async () => ({
+      harness: "codex",
+      state: "supported",
+      executable: process.execPath,
+      version: "0.165.0",
+      manifest: manifests.codex,
+    }),
+    undefined,
+    { request_ms: 20, close_ms: 20 },
+  );
+  await broker.openSession(lane.thread.id, lane.agent.id);
+  const admitted = f.lifecycle.admit({
+    thread_id: lane.thread.id,
+    agent_id: lane.agent.id,
+    text: "Inspect",
+  });
+  const background = new Background(f.lifecycle, broker.executors());
+  background.tick();
+  await entered;
+  f.lifecycle.cancel(admitted.run.id);
+  background.notifyControls();
+  expect(f.store.get("run", admitted.run.id).status).toBe("cancel_requested");
+  await background.idle();
+  expect(f.store.get("run", admitted.run.id)).toMatchObject({
+    status: "unknown",
+    cancellation: "requested",
+    diagnostic: { code: "NATIVE_UNKNOWN" },
+  });
+  expect(closes).toBeGreaterThan(0);
+  background.tick();
+  expect(background.activeCount).toBe(0);
+  await background.stop();
 });

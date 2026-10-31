@@ -1,0 +1,24 @@
+{
+  "results": [
+    {
+      "harness": "codex",
+      "agents": 1,
+      "goals_stopped": 1,
+      "unfinished": 0,
+      "unknown_preserved": []
+    },
+    {
+      "harness": "muse",
+      "agents": 2,
+      "goals_stopped": 2,
+      "unfinished": 0,
+      "unknown_preserved": [
+        {
+          "id": "a4040164-5de0-470b-9990-30782a5c53f4",
+          "cancellation": "requested",
+          "dispatch_replayed": false
+        }
+      ]
+    }
+  ]
+}

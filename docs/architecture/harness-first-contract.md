@@ -1,4 +1,4 @@
-# Harness-first domain and API contract v1.11.0
+# Harness-first domain and API contract v1.12.0
 
 The [consumer contract](api-consumer-contract.md) is the current integration entry point. It links the versioned executable export, response examples, HTTP operation semantics and requirement coverage. The sections below retain the original foundation contract and its extension history; later domain guides and executable schemas supersede foundation-only limits. NMA-060 is In Progress and the API readiness gate remains pending.
 

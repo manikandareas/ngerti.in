@@ -1,6 +1,6 @@
-# API consumer contract 1.11.0
+# API consumer contract 1.12.0
 
-Authenticated `GET /v1/contracts` exports the installed server's contract. The checked-in [1.11.0 bundle](../contracts/1.11.0.json) is an equivalent JSON Schema contract, not an OpenAPI document. [Consumer fixtures](../verification/nma-060/consumer-fixtures.json) are actual responses from an isolated HTTP test client. Exporting or consuming these artifacts does not establish NMA-060 readiness. [Gate evidence](../verification/nma-060/README.md) records the open prerequisites.
+Authenticated `GET /v1/contracts` exports the installed server's contract. The checked-in [1.12.0 bundle](../contracts/1.12.0.json) is an equivalent JSON Schema contract, not an OpenAPI document. [Consumer fixtures](../verification/nma-060/cancellation/consumer-fixtures.json) are actual responses from an isolated HTTP test client. Exporting or consuming these artifacts does not establish NMA-060 readiness. [Gate evidence](../verification/nma-060/README.md) records the open prerequisites.
 
 ## Surfaces and schemas
 
@@ -30,7 +30,7 @@ Representative admission input:
 {"thread_id":"<stored thread UUID>","agent_id":"<member agent UUID>","text":"Please inspect this project."}
 ```
 
-The response contains `message`, nullable `run`, and nullable `control`. Clear conversational stop can return a control result with no new model run. Use returned identities. The concrete UUIDs in the isolated fixture file are examples from that fixture installation, not IDs to submit to another installation.
+The response contains `message`, nullable `run`, and nullable `control`. New admission always returns `control: null`; the native agent interprets cancellation and uses `ngertiin.cancel_run` or goal/Routine controls. Historical receipt retries can retain the earlier control shape. Use returned identities. The concrete UUIDs in the isolated fixture file are examples from that fixture installation, not IDs to submit to another installation.
 
 ## Snapshot, replay and streaming
 
@@ -41,6 +41,8 @@ The response contains `message`, nullable `run`, and nullable `control`. Clear c
 5. Treat the projection and cursor as one checkpoint. Recover a missing checkpoint from a new snapshot. Opening a snapshot/stream/history does not submit inference or resume a session.
 
 Version 1.11.0 corrects a published-event union that previously omitted six browser/Composio entity kinds, while the store already emitted them. The entity registry now also supplies event kinds, so a schema extension cannot silently omit its replay variant. Event envelope `schema_version` remains 1; historical events are not rewritten.
+
+Version 1.12.0 adds scoped `ngertiin.cancel_run` and removes regex-based conversational cancellation. See the [updated cancellation contract](conversation-control-api.md) and [verification](../verification/nma-060/cancellation/README.md). The original [1.11.0 capture](../contracts/1.11.0.json) is retained unchanged.
 
 ## State and errors
 

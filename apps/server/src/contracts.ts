@@ -30,7 +30,7 @@ import {
   workspaceInput,
 } from "./workspace-contracts";
 
-export const CONTRACT_VERSION = "1.11.0";
+export const CONTRACT_VERSION = "1.12.0";
 export const id = z.uuid();
 const text = z.string().min(1).max(100_000);
 const base = {

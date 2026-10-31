@@ -48,6 +48,24 @@ const finish = (status = "completed", turn = current?.turn) => {
     notify("turn/completed", { threadId: current.thread, turn: { id: turn, status } });
   }
 };
+function requestProductTool(text: string) {
+  if (!current) throw new Error("No active fixture turn.");
+  send({
+    id: "product",
+    method: "item/tool/call",
+    params: {
+      threadId: text === "wrong-scope" ? "private-other-thread" : current.thread,
+      turnId: current.turn,
+      callId: "call",
+      namespace: null,
+      tool: "ngertiin_product_tool",
+      arguments:
+        text.startsWith("product-tool:") || text.startsWith("crash-after-commit:")
+          ? JSON.parse(text.slice(text.indexOf(":") + 1))
+          : { name: "ngertiin.read_run_context", arguments: {} },
+    },
+  });
+}
 async function receive(message: Message) {
   const p = message.params ?? {};
   const reply = (result: unknown) => send({ id: message.id, result });
@@ -68,7 +86,10 @@ async function receive(message: Message) {
       itemId: "answer",
       delta: text,
     });
-    finish();
+    const requested = current.text.startsWith("product-tool:")
+      ? JSON.parse(current.text.slice(current.text.indexOf(":") + 1))
+      : null;
+    if (requested?.name !== "ngertiin.cancel_run") finish();
     return;
   }
   switch (message.method) {
@@ -180,25 +201,16 @@ async function receive(message: Message) {
         });
         break;
       }
-      send({
-        id: "product",
-        method: "item/tool/call",
-        params: {
-          threadId: text === "wrong-scope" ? "private-other-thread" : current.thread,
-          turnId: current.turn,
-          callId: "call",
-          namespace: null,
-          tool: "ngertiin_product_tool",
-          arguments:
-            text.startsWith("product-tool:") || text.startsWith("crash-after-commit:")
-              ? JSON.parse(text.slice(text.indexOf(":") + 1))
-              : { name: "ngertiin.read_run_context", arguments: {} },
-        },
-      });
+      requestProductTool(text);
       break;
     }
     case "turn/steer":
       reply({ turnId: current?.turn });
+      if (current && p.input?.[0].text?.startsWith("product-tool:")) {
+        current.text = p.input[0].text;
+        requestProductTool(current.text);
+        break;
+      }
       notify("item/agentMessage/delta", {
         threadId: current?.thread,
         turnId: current?.turn,

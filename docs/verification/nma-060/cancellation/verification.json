@@ -1,0 +1,105 @@
+{
+  "change": "Agent-selected cancellation / C07",
+  "ticket": "NMA-053",
+  "status": "Done for selected cancellation amendment",
+  "api_gate": "NMA-060 In Progress / pending",
+  "baseline_commit": "980a8755f13eeb06cc144654c920594096dde036",
+  "date": "2026-10-31",
+  "contract_version": "1.12.0",
+  "checks": {
+    "backend_suite": {
+      "pass": 234,
+      "fail": 0,
+      "skip": 0,
+      "assertions": 1431,
+      "report": "logs/tests.log"
+    },
+    "final_focused_controls_and_protocol": {
+      "pass": 15,
+      "fail": 0,
+      "assertions": 140
+    },
+    "lint": "pass, 93 files, no warnings",
+    "server_typecheck": "pass",
+    "verifier_typecheck": "pass",
+    "consumer_http_sse": {
+      "evidence_level": "contract_fixture_http_in_process",
+      "pass": 6,
+      "fail": 0,
+      "skip": 0,
+      "checks": [
+        "published_contract_matches_router_and_keeps_gate_pending",
+        "original_command_receipt_is_stable_and_distinct_from_current_run_state",
+        "snapshot_cursor_pagination_duplicate_replay_and_tombstones_preserve_projection",
+        "authenticated_sse_matches_polling_and_last_event_id_precedes_query",
+        "domain_harness_validation_and_authentication_error_examples_validate",
+        "sqlite_restart_preserves_original_receipt_events_and_cancelled_state_without_dispatch"
+      ],
+      "routes": 77,
+      "entities": 26,
+      "product_tools": 36,
+      "native_inference": 0,
+      "api_readiness_gate": "pending"
+    },
+    "foundation_process": {
+      "pass": 8,
+      "fail": 0,
+      "skip": 0
+    },
+    "broker_http": {
+      "pass": 5,
+      "fail": 0,
+      "skip": 0
+    },
+    "retained_files_verified": 341,
+    "readonly_event_validation": 2097,
+    "readonly_entity_validation": 461,
+    "retained_unknown_app_effects": 2
+  },
+  "native": {
+    "requests": 2,
+    "cancelled_confirmed": 2,
+    "failed": 0,
+    "unknown": 0,
+    "skipped": 0,
+    "codex": {
+      "cli": "0.166.0",
+      "model": "gpt-6.1-sol",
+      "billing": "existing explicit ChatGPT subscription",
+      "steering": "native verified during active shell work",
+      "elapsed_ms": 11153
+    },
+    "muse": {
+      "cli": "1.4.14-R7309.1",
+      "sdk": "1.4.14",
+      "model": "muse-spark-1.3",
+      "billing": "explicit API-key / developer credits",
+      "steering": "unknown; not attempted or claimed",
+      "elapsed_ms": 9334
+    },
+    "admission_receipt_replay": "Both original receipts replayed with no additional runs/events",
+    "latency_claim": "Two admission-to-settlement observations; no guaranteed cancellation latency"
+  },
+  "boundaries": {
+    "ui_changed": false,
+    "user_data_reset": false,
+    "historical_raw_evidence_rewritten": false,
+    "old_1_11_schema_preserved": true,
+    "commit": false,
+    "push": false,
+    "deployment": false
+  },
+  "cleanup": {
+    "proof_goals": 0,
+    "proof_routines": 0,
+    "task_muse_connection": "revoked",
+    "generated_credential_copy": "removed",
+    "original_subscription_connection": "active and preserved",
+    "native_server": "graceful shutdown exit 0",
+    "proof_runs": "both terminal cancelled/confirmed"
+  },
+  "remaining_global_conditions": [
+    "NMA-050 Muse subscription and permission evidence remains open.",
+    "NMA-060 response-surface/cleanup/final full-gate acceptance remains pending."
+  ]
+}

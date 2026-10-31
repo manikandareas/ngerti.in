@@ -277,6 +277,11 @@ async function handle(request: {
         _meta: { progressToken: "native-progress" },
       });
       items = items.filter((entry) => entry.itemId !== itemId);
+      if (
+        input.startsWith("product-tool:") &&
+        JSON.parse(input.slice(input.indexOf(":") + 1)).name === "ngertiin.cancel_run"
+      )
+        return;
       finish(
         JSON.stringify({
           tool,

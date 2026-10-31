@@ -91,6 +91,7 @@ const mappings: Mapping[] = [
   {
     ids: "C05 C06 C07 H01 H02 H05",
     owner: "NMA-053",
+    tools: ["ngertiin.cancel_run", "ngertiin.control_goal"],
     routes: [
       "GET /v1/events",
       "GET /v1/events/stream",
@@ -221,7 +222,7 @@ const mappings: Mapping[] = [
   },
 ];
 
-const contract = (await Bun.file("docs/contracts/1.11.0.json").json()) as ReturnType<
+const contract = (await Bun.file("docs/contracts/1.12.0.json").json()) as ReturnType<
   typeof contractDocument
 > &
   ReturnType<typeof consumerContract> & { http: ReturnType<typeof httpContract> };
@@ -249,6 +250,10 @@ const coverage = mappings.flatMap((mapping) => {
       event_entities: mapping.events,
       tests: mapping.tests.map((t) => `apps/server/tests/${t}`),
       retained_evidence: evidence,
+      ...(id === "C07" ? {
+        current_evidence: "docs/verification/nma-060/cancellation/README.md",
+        decision_amendment: "docs/verification/nma-060/cancellation/decision.json",
+      } : {}),
       limits: mapping.limits ?? [],
       acceptance: "mapped_gate_pending",
     };
@@ -262,7 +267,7 @@ assert.deepEqual(
     .sort(),
 );
 await Bun.write(
-  "docs/verification/nma-060/coverage.json",
+  "docs/verification/nma-060/cancellation/coverage.json",
   `${JSON.stringify(
     {
       contract_version: contract.version,

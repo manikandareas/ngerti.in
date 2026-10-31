@@ -1,0 +1,3 @@
+{"event":"foundation.started","url":"http://127.0.0.1:49959","credentials_file":"/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma049-native/installation.json","registered_executors":2,"api_readiness_gate":"pending"}
+{"event":"product_tool.completed","run_id":"e68e230c-9de2-46ca-9574-dd9fab4c9bfc","thread_id":"5861dd2e-458a-43e3-98e1-a4ba1f76c9a4","agent_id":"fa74f15f-540e-4811-a4a2-1f5372cc2de7","name":"ngertiin.cancel_run"}
+{"event":"product_tool.completed","run_id":"10fa743c-c8e9-4f86-aeb8-5adaa9d2668b","thread_id":"fe2ab78b-8acf-4b00-8500-60d91a491eed","agent_id":"92236f83-d516-4880-bc3e-2fcdb15a8c1a","name":"ngertiin.cancel_run"}

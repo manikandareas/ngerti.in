@@ -1,0 +1,61 @@
+{
+  "phase": "provision",
+  "captured_at": "2026-10-31T10:17:28.349Z",
+  "evidence_level": "native_via_application_http",
+  "checks": [
+    "selected_codex_subscription_and_muse_developer_credit_connections_in_existing_owner"
+  ],
+  "configurations": [
+    {
+      "harness": "codex",
+      "model": "gpt-6.1-sol",
+      "connection_id": "adb3115f-7e82-43e4-89af-3e2550683e38",
+      "auth_method": "native_login",
+      "billing": "subscription",
+      "model_count": 8,
+      "capabilities": {
+        "resume": "supported",
+        "steer": "supported",
+        "image_input": "supported",
+        "video_input": "unsupported",
+        "compaction": "unsupported",
+        "product_tools": "supported",
+        "settings": "supported",
+        "cancel": "supported",
+        "permission_requests": "unsupported",
+        "native_files": "supported",
+        "native_shell": "supported",
+        "native_code": "supported",
+        "native_git": "supported",
+        "web_search": "supported",
+        "web_read": "supported"
+      }
+    },
+    {
+      "harness": "muse",
+      "model": "muse-spark-1.3",
+      "connection_id": "a0ba699e-3b4e-4fab-8ef0-320d5905e7fa",
+      "auth_method": "api_key",
+      "billing": "api_key",
+      "model_count": 5,
+      "capabilities": {
+        "resume": "supported",
+        "steer": "unknown",
+        "image_input": "unsupported",
+        "video_input": "unsupported",
+        "compaction": "unsupported",
+        "product_tools": "supported",
+        "settings": "supported",
+        "cancel": "supported",
+        "permission_requests": "supported",
+        "native_files": "unsupported",
+        "native_shell": "unsupported",
+        "native_code": "unsupported",
+        "native_git": "unsupported",
+        "web_search": "unsupported",
+        "web_read": "unsupported"
+      }
+    }
+  ],
+  "completed_at": "2026-10-31T10:17:36.221Z"
+}

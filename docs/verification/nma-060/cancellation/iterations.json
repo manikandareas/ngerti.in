@@ -1,0 +1,28 @@
+[
+  {
+    "phase": "before_implementation",
+    "tests": {
+      "pass": 11,
+      "fail": 2
+    },
+    "failures": [
+      "Chat text stop was classified into stop_run instead of ordinary admission.",
+      "ngertiin.cancel_run was absent."
+    ],
+    "resolution": "Removed language recognizer, registered scoped self-cancel and added receipt-fencing handling."
+  },
+  {
+    "phase": "focused_typecheck",
+    "tests": {
+      "pass": 17,
+      "fail": 0
+    },
+    "issue": "Fixture agent reference is a broad Entity union; connection_id requires a typed store read.",
+    "resolution": "Read the agent through store.get(agent, id). Final server/verifier typechecks pass."
+  },
+  {
+    "phase": "fixture_lint",
+    "issue": "Helper extraction initially used non-null assertions.",
+    "resolution": "Added an explicit active-fixture-turn guard. Final lint has zero warnings."
+  }
+]

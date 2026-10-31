@@ -1,16 +1,24 @@
-# Conversation control and recovery API v1.4.0
+# Conversation control and recovery API v1.12.0
 
-NMA-053 extends the existing application authority, SQLite event/receipt store and native adapters. The [agent/conversation API](agent-conversation-api.md) remains the identity/history foundation. The application contract is **1.4.0**, and the broker contract is **1.3.0**. NMA-060 remains pending; this work changes no UI.
+NMA-053 uses the existing application authority, SQLite event/receipt store and native adapters. The [agent/conversation API](agent-conversation-api.md) remains the identity/history foundation. Application contract **1.12.0** replaces the original deterministic cancellation recognizer with agent-selected structured tools, following the user's decision on 2026-10-31. Broker contract remains **1.5.0**. NMA-060 remains pending; this work changes no UI.
 
-## Ordinary input and priority control
+## Ordinary input, steering and cancellation
 
-`POST /v1/runs` keeps its existing admission body and requires installation authentication plus a UUID `Idempotency-Key`. Ordinary user input is persisted as a message and a FIFO queued run. The response includes `control: null`. Routine input goes through ordinary lifecycle admission and is never interpreted as a user cancellation command.
+`POST /v1/runs` requires installation authentication plus a UUID `Idempotency-Key`. Every new user text, including cancellation wording, is persisted unchanged as a message and ordinary FIFO queued run with `control: null`. The server does not classify natural language or choose a cancellation target from text. Earlier command keys still return their original historical receipts, which can contain the former conversational control response; those receipts are not rewritten.
 
-Clear, standalone cancellation utterances take an independent control path. Examples include `stop`, `gajadi deh`, `tolong hentikan pekerjaan ini`, `please cancel the current task`, `jangan dilanjutkan`, `pause goal ini` and `stop goal ini`. Recognition is deliberately conservative: questions, quoted commands, hypothetical discussion, negation such as `do not stop`, and instructions containing a stop operation remain ordinary input. This is a bounded direct-intent recognizer, not a general language-understanding claim.
+When the agent is working, use `POST /v1/runs/:id/steer` to send a correction to the active native turn. The native agent interprets the full conversation and steering context, then chooses a scoped product tool. Steering is delivery of input, not confirmed interpretation or cancellation. Processing can wait for native tool execution, and an unavailable steer capability is not silently bypassed. Ordinary messages keep their FIFO behavior; no second model classifier or mandatory approval is introduced.
 
-The server resolves the target from the supplied agent/thread and current run, otherwise the first waiting run. A run stop leaves its goal and Routine active. An explicit goal command uses `goal_id`, the current run's goal, or the only active/paused goal in that lane. Ambiguous goal scope returns `CONTROL_AMBIGUOUS` (409), without changing responsibilities or requesting an approval. It never guesses another thread's goal or stops all goals.
+| Structured tool | Input | Effect |
+| --- | --- | --- |
+| `ngertiin.cancel_run` | `command_id` UUID | Request stop of the calling run selected from its server-issued lease. There is no caller-supplied target ID. Goal and Routine remain active. |
+| `ngertiin.control_goal` | `command_id`, `goal_id`, `expected_revision`, `state` | Existing scoped active/paused/stopped responsibility control; pause/stop invalidates linked continuation work. |
+| `ngertiin.control_routine` | `command_id`, `routine_id`, `expected_revision`, `state` | Existing scoped schedule control. |
 
-A conversational control response contains the original user `message`, the affected `run` or `null`, and `control.action: stop_run | pause_goal | stop_goal`. Goal commands also return `control.goal`. The input message and domain changes share the command receipt transaction. Control messages have `run_id: null`; they do not create another model request. Repeating the command key returns the original receipt and cannot target a later run. Cancellation signals reach active executors immediately, before the ordinary scheduler tick or queue drain.
+The cancellation tool returns the committed run receipt with `cancel_requested` and `cancellation: requested`. It does not fabricate native confirmation. The background lifecycle observes that intent and signals the native executor on its next wake; native completion and interrupt can race. A successful self-stop call may return its own committed receipt, but the lease cannot authorize subsequent tools or another self-stop attempt. The durable command key prevents a different operation from reusing the same identity. A lost response is inspected through owner entity/event state; stopped credentials do not gain general replay access.
+
+Agent instructions distinguish stopping the current run from pausing/stopping a goal or schedule, preserve quotations/hypotheticals as context, and request clarification for an ambiguous responsibility. Language interpretation remains native-agent behavior; the backend enforces authorization, revisions, idempotency and terminal observations.
+
+`POST /v1/runs/:id/cancel` with installation authentication and `Idempotency-Key` remains an explicit independent control operation for a stalled agent or unavailable steering. It does not wait for the agent's model loop or ordinary queue and notifies the executor immediately. There is no regex-triggered chat shortcut or mandatory new UI button. Run stop leaves the goal/Routine active; explicit goal/Routine control is required to stop future work.
 
 ## Editing and deleting waiting messages
 

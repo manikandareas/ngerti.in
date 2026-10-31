@@ -8,50 +8,6 @@ import {
 } from "./contracts";
 import type { Lifecycle } from "./lifecycle";
 
-/** Only standalone, unquoted control utterances take this independent path. User text stays unchanged. */
-export function cancellationIntent(text: string): "run" | "pause_goal" | "stop_goal" | null {
-  if (/[?？]/u.test(text)) return null;
-  const sentence = text
-    .trim()
-    .toLowerCase()
-    .replace(/[.!?,]+$/u, "")
-    .trim();
-  const polite = sentence
-    .replace(/^(?:please|tolong)\s+/u, "")
-    .replace(/\s+(?:please|ya|dong|deh)$/u, "");
-  if (
-    /^(?:stop|cancel|abort|hentikan|batalkan|berhenti)(?:\s+(?:this|that|the|current|work|job|now|pekerjaan|run|task|tugas|yang|sedang|berjalan|ini|sekarang|lagi|dulu|saja|aja))*$/u.test(
-      polite,
-    )
-  )
-    return "run";
-  if (
-    /^(?:(?:ga|gak|nggak|jangan)(?:\s+usah)?\s+(?:dilanjutkan|dilanjutin|lanjutkan|lanjutin|lanjut|diteruskan)|(?:sudah|udah)\s+cukup|don't continue)$/u.test(
-      polite,
-    )
-  )
-    return "run";
-  if (
-    /^(?:gak|ga|nggak|tidak|enggak)\s*jadi(?:\s+(?:aja|deh))?$|^gajadi(?:\s+deh)?$|^never mind$/u.test(
-      polite,
-    )
-  )
-    return "run";
-  if (
-    /^(?:pause|jeda|tunda)(?:\s+(?:this|the|current))?\s+(?:goal|tujuan)(?:\s+(?:ini|sekarang))?$/u.test(
-      polite,
-    )
-  )
-    return "pause_goal";
-  if (
-    /^(?:stop|cancel|hentikan|batalkan)(?:\s+(?:this|the|current))?\s+(?:goal|tujuan)(?:\s+(?:ini|sekarang))?$/u.test(
-      polite,
-    )
-  )
-    return "stop_goal";
-  return null;
-}
-
 export class RunControls {
   constructor(readonly lifecycle: Lifecycle) {}
   private update<T extends Entity>(value: T, fields: Partial<T>): T {
@@ -90,77 +46,7 @@ export class RunControls {
     });
   }
   send(input: unknown) {
-    const data = admissionInput.parse(input);
-    const intent = cancellationIntent(data.text);
-    if (!intent) return { ...this.lifecycle.admit(data), control: null };
-    return this.lifecycle.store.transaction(() => {
-      const store = this.lifecycle.store;
-      const thread = store.get("thread", data.thread_id);
-      store.get("agent", data.agent_id);
-      if (!thread.member_agent_ids.includes(data.agent_id))
-        throw new DomainError("SCOPE_DENIED", 403);
-      const lane = store
-        .list("run")
-        .filter((item) => item.thread_id === data.thread_id && item.agent_id === data.agent_id);
-      const current =
-        lane.find((item) =>
-          ["dispatching", "running", "cancel_requested", "unknown"].includes(item.status),
-        ) ?? lane.find((item) => item.status === "queued" && item.delivery === "pending");
-      let goal: Entity<"goal"> | undefined;
-      if (intent !== "run") {
-        const goals = store
-          .list("goal")
-          .filter(
-            (item) =>
-              item.thread_id === data.thread_id &&
-              item.agent_id === data.agent_id &&
-              ["active", "paused"].includes(item.state),
-          );
-        const goalId = data.goal_id ?? current?.goal_id;
-        goal = goalId
-          ? goals.find((item) => item.id === goalId)
-          : goals.length === 1
-            ? goals[0]
-            : undefined;
-        if (!goal) throw new DomainError("CONTROL_AMBIGUOUS");
-      }
-      if (
-        data.routine_id ||
-        (intent === "run" && data.goal_id && current?.goal_id !== data.goal_id)
-      )
-        throw new DomainError("SCOPE_DENIED", 403);
-      const now = new Date().toISOString();
-      const message = store.put({
-        id: crypto.randomUUID(),
-        owner_id: store.ownerId,
-        revision: 1,
-        created_at: now,
-        updated_at: now,
-        kind: "message",
-        purpose: "conversation",
-        source_run_id: null,
-        artifact_ids: [],
-        thread_id: data.thread_id,
-        author: "user",
-        author_agent_id: null,
-        routine_id: null,
-        run_id: null,
-        text: data.text,
-        state: "complete",
-      });
-      if (goal) {
-        const result = this.lifecycle.controlGoal(
-          goal.id,
-          intent === "pause_goal" ? "paused" : "stopped",
-        );
-        return { message, run: null, control: { action: intent, goal: result } };
-      }
-      return {
-        message,
-        run: current ? this.lifecycle.cancel(current.id) : null,
-        control: { action: "stop_run" },
-      };
-    });
+    return { ...this.lifecycle.admit(admissionInput.parse(input)), control: null };
   }
   requestSteer(runId: string, input: unknown) {
     const data = steerInput.parse(input);

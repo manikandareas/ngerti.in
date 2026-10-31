@@ -2,9 +2,11 @@ import { afterEach, expect, test } from "bun:test";
 import { createApi } from "../src/api";
 import { Background } from "../src/background";
 import { Conversations } from "../src/conversations";
+import { Connections } from "../src/harness/connections";
 import { Redactor } from "../src/harness/context";
 import { diagnostic, HarnessError } from "../src/harness/contracts";
-import { cancellationIntent, RunControls } from "../src/run-controls";
+import { ProductTools } from "../src/harness/tools";
+import { RunControls } from "../src/run-controls";
 import { fixture } from "./helpers";
 
 let f: ReturnType<typeof fixture>;
@@ -43,6 +45,21 @@ function start() {
   if (!run?.dispatch_token) throw new Error("Missing claimed run.");
   f.lifecycle.started(run.id, run.dispatch_token, "native-turn");
   return { ...receipt, token: run.dispatch_token };
+}
+
+function scopedTools(runId: string) {
+  const connections = new Connections(f.lifecycle);
+  const connection = connections.get(f.store.get("agent", f.agent.id).connection_id);
+  connections.update(connection, {
+    capabilities: { ...connection.capabilities, product_tools: "supported" },
+  });
+  const tools = new ProductTools(f.lifecycle);
+  const lease = tools.issue(f.store.get("run", runId));
+  return {
+    tools,
+    lease,
+    call: (name: string, input: unknown) => tools.call(lease.token, lease.scope, name, input),
+  };
 }
 
 test("queued HTTP edits use revisions, preserve FIFO and survive exact retries and restart", async () => {
@@ -118,35 +135,28 @@ test("deletion-only history pages keep a usable pagination anchor", () => {
   ).toBe("Older visible input");
 });
 
-test("contextual stop excludes quotations, hypothetical discussion, negation and task payloads", () => {
+test("chat text always preserves ordinary FIFO admission without choosing cancellation intent", () => {
+  const controls = setup();
+  const current = start();
   for (const text of [
     "stop",
     "gajadi deh",
-    "ga jadi deh",
-    "tolong hentikan pekerjaan ini ya",
     "Please cancel the current task.",
-    "never mind",
-  ])
-    expect(cancellationIntent(text)).toBe("run");
-  for (const text of [
-    '"stop"',
-    "What happens if I say stop?",
-    "Kalau aku bilang gajadi deh gimana?",
+    "pause goal ini",
+    "hentikan tujuan ini",
+    'Explain "stop"',
     "Do not stop",
-    "Jangan stop",
-    "Write a stop button",
-    "Translate: stop",
-    "stop the server after the tests",
-    "Stop?",
-    "```stop```",
-    "If this fails, stop.",
-  ])
-    expect(cancellationIntent(text)).toBeNull();
-  expect(cancellationIntent("pause goal ini")).toBe("pause_goal");
-  expect(cancellationIntent("hentikan tujuan ini")).toBe("stop_goal");
+    "Enough for this task, leave the rest for tomorrow",
+  ]) {
+    const admitted = controls.send({ thread_id: f.thread.id, agent_id: f.agent.id, text });
+    expect(admitted.control).toBeNull();
+    expect(admitted.message.text).toBe(text);
+    expect(admitted.run?.status).toBe("queued");
+    expect(f.store.get("run", current.run.id).cancellation).toBe("none");
+  }
 });
 
-test("conversational stop bypasses a stalled agent and an occupied ordinary queue", async () => {
+test("direct HTTP cancellation bypasses a stalled agent and an occupied ordinary queue", async () => {
   setup();
   let resolve: (outcome: "cancelled") => void = () => {};
   let aborted = false;
@@ -168,13 +178,8 @@ test("conversational stop bypasses a stalled agent and an occupied ordinary queu
   background.tick();
   const waiting = f.admit("This should remain waiting");
   const key = crypto.randomUUID();
-  const result = await api(
-    "/v1/runs",
-    { thread_id: f.thread.id, agent_id: f.agent.id, text: "gajadi deh" },
-    key,
-  );
-  expect(result.body.control.action).toBe("stop_run");
-  expect(result.body.run.status).toBe("cancel_requested");
+  const result = await api(`/v1/runs/${current.run.id}/cancel`, {}, key);
+  expect(result.body.status).toBe("cancel_requested");
   expect(aborted).toBe(true);
   expect(f.store.get("run", current.run.id).cancellation).toBe("requested");
   expect(f.store.get("run", waiting.run.id).status).toBe("queued");
@@ -182,25 +187,25 @@ test("conversational stop bypasses a stalled agent and an occupied ordinary queu
   resolve("cancelled");
   await background.idle();
   expect(f.store.get("run", current.run.id).cancellation).toBe("confirmed");
-  expect(
-    (
-      await api(
-        "/v1/runs",
-        { thread_id: f.thread.id, agent_id: f.agent.id, text: "gajadi deh" },
-        key,
-      )
-    ).body,
-  ).toEqual(result.body);
+  expect((await api(`/v1/runs/${current.run.id}/cancel`, {}, key)).body).toEqual(result.body);
 });
 
-test("quoted stop is ordinary queued work; run stop leaves its goal active; goal stop cancels continuation", async () => {
-  const controls = setup();
+test("the cancellation tool stops only its current run, returns its receipt and fences later tools", async () => {
+  setup();
   const goal = f.lifecycle.create("goal", {
     thread_id: f.thread.id,
     agent_id: f.agent.id,
     title: "Research",
   });
-  const first = f.lifecycle.admit({
+  const routine = f.lifecycle.create("routine", {
+    thread_id: f.thread.id,
+    agent_id: f.agent.id,
+    goal_id: goal.id,
+    instruction: "Continue later",
+    timezone: "UTC",
+    schedule: { type: "interval", anchor_at: "2026-10-31T00:00:00.000Z", every_ms: 60000 },
+  });
+  const admitted = f.lifecycle.admit({
     thread_id: f.thread.id,
     agent_id: f.agent.id,
     text: "Begin",
@@ -209,40 +214,94 @@ test("quoted stop is ordinary queued work; run stop leaves its goal active; goal
   const active = f.lifecycle.claimNext(f.thread.id, f.agent.id);
   if (!active?.dispatch_token) throw new Error("No active run.");
   f.lifecycle.started(active.id, active.dispatch_token, "native");
-  expect(
-    controls.send({ thread_id: f.thread.id, agent_id: f.agent.id, text: 'Explain "stop"' }).run
-      ?.status,
-  ).toBe("queued");
-  controls.send({ thread_id: f.thread.id, agent_id: f.agent.id, text: "stop" });
+  const waiting = f.admit("Leave this queued");
+  const s = scopedTools(active.id),
+    command_id = crypto.randomUUID();
+  const receipt = await s.call("ngertiin.cancel_run", { command_id });
+  expect(receipt).toMatchObject({
+    id: admitted.run.id,
+    kind: "run",
+    status: "cancel_requested",
+    cancellation: "requested",
+    outcome: "none",
+  });
   expect(f.store.get("goal", goal.id).state).toBe("active");
-  f.lifecycle.settle(first.run.id, active.dispatch_token, "cancelled");
-  const continuation = f.lifecycle.admit({
-    thread_id: f.thread.id,
-    agent_id: f.agent.id,
-    goal_id: goal.id,
-    text: "Continue later",
-  });
-  const stopped = controls.send({
-    thread_id: f.thread.id,
-    agent_id: f.agent.id,
-    text: "stop goal ini",
-  });
-  expect(stopped.control?.action).toBe("stop_goal");
-  expect(f.store.get("run", continuation.run.id).status).toBe("cancelled");
+  expect(f.store.get("routine", routine.id).state).toBe("active");
+  expect(f.store.get("run", waiting.run.id).status).toBe("queued");
+  expect(f.store.get("run", active.id).product_tools).toContain("ngertiin.cancel_run");
+  const cursor = f.store.cursor;
+  await expect(s.call("ngertiin.read_run_context", {})).rejects.toThrow("STALE_DISPATCH");
+  await expect(s.call("ngertiin.cancel_run", { command_id })).rejects.toThrow("STALE_DISPATCH");
+  expect(f.store.cursor).toBe(cursor);
   f.restart();
-  expect(f.store.get("goal", goal.id).state).toBe("stopped");
+  expect(f.store.get("run", active.id)).toMatchObject({
+    status: "unknown",
+    cancellation: "requested",
+  });
+  expect(f.store.get("goal", goal.id).state).toBe("active");
+  expect(f.store.get("routine", routine.id).state).toBe("active");
 });
 
-test("ambiguous or cross-thread goal cancellation never guesses a responsibility", () => {
-  const controls = setup();
-  for (const title of ["First", "Second"])
-    f.lifecycle.create("goal", { thread_id: f.thread.id, agent_id: f.agent.id, title });
-  const before = f.store.cursor;
-  expect(() =>
-    controls.send({ thread_id: f.thread.id, agent_id: f.agent.id, text: "stop goal" }),
-  ).toThrow("CONTROL_AMBIGUOUS");
-  expect(f.store.cursor).toBe(before);
-  expect(f.store.list("goal").every((item) => item.state === "active")).toBe(true);
+test("cancellation tool rejects caller target injection, forged scope and revoked grants", async () => {
+  setup();
+  const current = start(),
+    s = scopedTools(current.run.id);
+  const group = f.lifecycle.create("thread", { type: "group", member_agent_ids: [f.agent.id] });
+  const foreign = f.lifecycle.admit({
+    agent_id: f.agent.id,
+    thread_id: group.id,
+    text: "Other conversation",
+  });
+  await expect(
+    s.call("ngertiin.cancel_run", { command_id: crypto.randomUUID(), run_id: foreign.run.id }),
+  ).rejects.toThrow();
+  await expect(
+    s.tools.call(s.lease.token, { ...s.lease.scope, thread_id: group.id }, "ngertiin.cancel_run", {
+      command_id: crypto.randomUUID(),
+    }),
+  ).rejects.toThrow("SCOPE_DENIED");
+  const connections = new Connections(f.lifecycle);
+  connections.revoke(f.store.get("agent", f.agent.id).connection_id);
+  await expect(s.call("ngertiin.cancel_run", { command_id: crypto.randomUUID() })).rejects.toThrow(
+    "SCOPE_DENIED",
+  );
+  expect(f.store.get("run", current.run.id).cancellation).toBe("none");
+  expect(f.store.get("run", foreign.run.id).cancellation).toBe("none");
+});
+
+test("agent goal control selects an explicit responsibility and persists its stopped continuation", async () => {
+  setup();
+  const first = f.lifecycle.create("goal", {
+    thread_id: f.thread.id,
+    agent_id: f.agent.id,
+    title: "First",
+  });
+  const other = f.lifecycle.create("goal", {
+    thread_id: f.thread.id,
+    agent_id: f.agent.id,
+    title: "Other",
+  });
+  const current = start(),
+    s = scopedTools(current.run.id);
+  const continuation = f.lifecycle.admit({
+    agent_id: f.agent.id,
+    thread_id: f.thread.id,
+    goal_id: first.id,
+    text: "Continue later",
+  });
+  const stopped = await s.call("ngertiin.control_goal", {
+    command_id: crypto.randomUUID(),
+    goal_id: first.id,
+    expected_revision: first.revision,
+    state: "stopped",
+  });
+  expect(stopped).toMatchObject({ id: first.id, state: "stopped" });
+  expect(f.store.get("run", continuation.run.id).status).toBe("cancelled");
+  expect(f.store.get("goal", other.id).state).toBe("active");
+  expect(f.store.get("run", current.run.id).cancellation).toBe("none");
+  f.restart();
+  expect(f.store.get("goal", first.id).state).toBe("stopped");
+  expect(f.store.get("goal", other.id).state).toBe("active");
 });
 
 test("queued steering is reserved atomically, revision-protected and never dispatched twice", () => {

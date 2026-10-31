@@ -211,6 +211,10 @@ export function consumerContract() {
           "HTTP success and agent text do not establish a native or external effect outcome.",
         usage: "Unavailable native usage remains unknown; no zero or unlimited inference is made.",
         billing: "Authentication method and effective billing are distinct; no silent fallback.",
+        conversational_cancellation:
+          "The native agent interprets chat/steering and calls scoped cancel_run or goal/Routine tools; new chat admission never classifies cancellation text.",
+        direct_cancellation:
+          "POST /v1/runs/:id/cancel remains independent of model processing and ordinary queue delivery.",
       },
     },
     readiness: {

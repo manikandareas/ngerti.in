@@ -22,6 +22,7 @@ import {
 import { relativePath, uploadInput } from "../workspace-contracts";
 
 export const productToolSchemas = {
+  "ngertiin.cancel_run": z.strictObject({ command_id: id }),
   "ngertiin.list_apps": z.strictObject({}),
   "ngertiin.search_app_tools": appSearch,
   "ngertiin.execute_app_tool": appExecute,

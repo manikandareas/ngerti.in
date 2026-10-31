@@ -6,13 +6,18 @@ import { Background } from "../../../apps/server/src/background";
 import { type DomainEvent, domainEvent, type Entity } from "../../../apps/server/src/contracts";
 import { fixture } from "../../../apps/server/tests/helpers";
 
-const directory = "docs/verification/nma-060";
+const directory = process.argv[2] ?? "docs/verification/nma-060/cancellation";
 const f = fixture(),
   token = "c".repeat(64);
 let app = createApi(f.lifecycle, new Background(f.lifecycle), token);
 const checks: string[] = [];
 const examples: Record<string, unknown> = {};
-async function request(path: string, body?: unknown, key: string = crypto.randomUUID(), bearer = token) {
+async function request(
+  path: string,
+  body?: unknown,
+  key: string = crypto.randomUUID(),
+  bearer = token,
+) {
   return app.handle(
     new Request(`http://localhost${path}`, {
       method: body === undefined ? "GET" : "POST",
@@ -32,7 +37,7 @@ async function json(path: string, body?: unknown, key?: string) {
 }
 try {
   const contract = await json("/v1/contracts");
-  assert.equal(contract.version, "1.11.0");
+  assert.equal(contract.version, "1.12.0");
   assert.equal(contract.http.length, app.routes.length);
   assert.equal(contract.readiness.state, "pending");
   for (const name of Object.keys(responseSchemas)) assert(contract.projections[name]);

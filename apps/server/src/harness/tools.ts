@@ -52,6 +52,22 @@ export class ProductTools {
     registerLearningTools(this);
     registerGroupTools(this);
     registerGoalTools(this);
+    this.register("ngertiin.cancel_run", {
+      schema: productToolSchemas["ngertiin.cancel_run"],
+      resources: () => [],
+      execute: (input, { scope, authorize }) => {
+        const { command_id } = input as { command_id: string };
+        authorize();
+        return lifecycle.store.command(
+          command_id,
+          { operation: "ngertiin.cancel_run", run_id: scope.run_id },
+          () => {
+            authorize();
+            return lifecycle.cancel(scope.run_id);
+          },
+        );
+      },
+    });
     const artifacts = new Artifacts(lifecycle);
     const workspaces = artifacts.workspaces;
     const workspaceFor = (access: ToolAccess) => {
@@ -360,14 +376,18 @@ export class ProductTools {
     // Asynchronous tools must call authorize immediately before committing their effect.
     const before = this.lifecycle.store.get("run", scope.run_id);
     const result = await tool.execute(parsed, { scope: Object.freeze({ ...scope }), authorize });
-    const receipt = result as Partial<Entity<"goal"> | Entity<"routine">> | null;
+    const receipt = result as Partial<Entity<"goal"> | Entity<"routine"> | Entity<"run">> | null;
     const endsOwnScope =
       before.cancellation === "none" &&
       receipt &&
-      ((name === "ngertiin.control_goal" &&
-        receipt.kind === "goal" &&
-        receipt.state !== "active" &&
-        (before.goal_id === receipt.id || receipt.current_run_id === before.id)) ||
+      ((name === "ngertiin.cancel_run" &&
+        receipt.kind === "run" &&
+        receipt.id === before.id &&
+        receipt.cancellation === "requested") ||
+        (name === "ngertiin.control_goal" &&
+          receipt.kind === "goal" &&
+          receipt.state !== "active" &&
+          (before.goal_id === receipt.id || receipt.current_run_id === before.id)) ||
         (name === "ngertiin.control_routine" &&
           receipt.kind === "routine" &&
           receipt.state !== "active" &&

@@ -54,7 +54,7 @@ for (const number of tickets) {
   report.manifests.push(entry);
 }
 const database = new Database(report.database.path, { readonly: true, strict: true });
-const published = z.fromJSONSchema((await Bun.file("docs/contracts/1.11.0.json").json()).event);
+const published = z.fromJSONSchema((await Bun.file("docs/contracts/1.12.0.json").json()).event);
 try {
   for (const { cursor, body } of database
     .query<{ cursor: number; body: string }, []>("SELECT cursor, body FROM events ORDER BY cursor")
@@ -101,7 +101,10 @@ try {
 } finally {
   database.close();
 }
-await Bun.write("docs/verification/nma-060/retained.json", `${JSON.stringify(report, null, 2)}\n`);
+await Bun.write(
+  "docs/verification/nma-060/cancellation/retained.json",
+  `${JSON.stringify(report, null, 2)}\n`,
+);
 assert.equal(
   report.database.schema_failures.length,
   0,

@@ -16,6 +16,8 @@ export const capabilities = z.strictObject({
   native_shell: capabilityState.default("unknown"),
   native_code: capabilityState.default("unknown"),
   native_git: capabilityState.default("unknown"),
+  web_search: capabilityState.default("unknown"),
+  web_read: capabilityState.default("unknown"),
 });
 export type Capabilities = z.infer<typeof capabilities>;
 export const unknownCapabilities: Capabilities = {
@@ -32,6 +34,8 @@ export const unknownCapabilities: Capabilities = {
   native_shell: "unknown",
   native_code: "unknown",
   native_git: "unknown",
+  web_search: "unknown",
+  web_read: "unknown",
 };
 export const authentication = z.discriminatedUnion("method", [
   z.strictObject({ method: z.literal("native_login"), billing_source: z.literal("subscription") }),
@@ -45,6 +49,7 @@ export const connectionInput = z.strictObject({ harness: harnessId, authenticati
 export const model = z.strictObject({
   id: z.string().min(1).max(200),
   reasoning: z.array(z.string().max(100)).max(50),
+  input_modalities: z.array(z.enum(["text", "image", "video"])).optional(),
 });
 export const connectionFields = {
   ...connectionInput.shape,
@@ -69,6 +74,12 @@ export const terminal = z.strictObject({
   native_run_id: z.string().min(1).max(1000).nullable(),
 });
 export const nativeEvent = z.discriminatedUnion("type", [
+  z.strictObject({
+    type: z.literal("web_source"),
+    url: z.url().max(4000),
+    title: z.string().max(500),
+    operation: z.enum(["search", "openPage", "findInPage"]),
+  }),
   z.strictObject({
     type: z.literal("native_tool"),
     item_id: z.string().max(1000),
@@ -173,7 +184,7 @@ export function diagnostic(error: unknown) {
 }
 export function brokerContract() {
   return {
-    version: "1.4.0",
+    version: "1.5.0",
     connection: z.toJSONSchema(connectionInput),
     capabilities: z.toJSONSchema(capabilities),
     settings: z.toJSONSchema(settings),

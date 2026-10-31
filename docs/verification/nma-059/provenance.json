@@ -1,0 +1,88 @@
+{
+  "baseline_commit": "d17046037c943252e22325ddb74fd04518409405",
+  "openbot": {
+    "repository": "https://github.com/nightly-labs/openbot",
+    "revision": "01e4b18e238e5de72a3570162c9f4275bb585786",
+    "observed_modules": [
+      {
+        "path": "docs/architecture/integrations.md",
+        "sha256": "8007a30ba4aacf92e733be27d1e2fb68e9a9daefba4db1c9a5f8e249aa928a1d"
+      },
+      {
+        "path": "src/backend/agent/mcp-tools.ts",
+        "sha256": "add17001e214019af22b3256abcab1c8442f73a392b71848bc9ca6f9b1e73801"
+      },
+      {
+        "path": "src/backend/agent/tool-catalog.ts",
+        "sha256": "36a09250262d0a796967e499d2f4757f1e229c7f2c730cc5b1f4c7e3f53e3e72"
+      },
+      {
+        "path": "docs/architecture/providers.md",
+        "sha256": "e288de377da590b93b1186b8f71f26bd636de4152fedabfce8f02ab913199e58"
+      }
+    ],
+    "adaptations": [
+      "Reuse discovery/describe/dispatch separation, exact native run scope and backend-only credentials. Retain one Ngertiin lifecycle and existing MCP/dynamic-tool bridge.",
+      "Composio Platform sessions replace upstream connector-specific OAuth and marketplace configuration. Only owner API returns Connect Links; application tool discovery and calls use existing run leases.",
+      "Final authorization checks current local generations after async session/account reads, verifies the remote session account pin, and persists receipts before dispatch.",
+      "Codex owns native live web search/read and image inference. Scoped immutable artifacts are decoded/normalized in memory; no provider SDK model loop or alternate billing source is introduced."
+    ],
+    "not_adopted": [
+      "Marketplace, arbitrary custom MCP registration, desktop/native integrations and cloud relay",
+      "Universal upstream approval prompts or in-agent credential/OAuth configuration",
+      "Additional model providers or automatic web/vision billing fallback"
+    ]
+  },
+  "dependencies": {
+    "bun": "1.3.10",
+    "typescript": "7.0.2",
+    "elysia": "1.4.30",
+    "zod": "4.4.3",
+    "@composio/core": "0.27.0",
+    "@composio/client": "2.0.0-rc.19",
+    "sharp": "0.35.5",
+    "@muse-code/sdk": "1.4.14"
+  },
+  "native": {
+    "codex_cli": "0.165.0",
+    "model": "gpt-6.1-sol",
+    "billing": "explicit ChatGPT subscription",
+    "muse_native_retest": false,
+    "codex_protocol_command": "codex app-server generate-ts --experimental --out .dev/nma059/codex-protocol",
+    "protocol_modules": [
+      {
+        "path": "v2/UserInput.ts",
+        "sha256": "c033ab3da70c17ceae32e8b4770a2557f8ef9f59c07c5419387a45c55193fc59"
+      },
+      {
+        "path": "v2/Model.ts",
+        "sha256": "dfd08785a85631da29a50f495b8271ef0f8b9f2f140ab69155debfeba2ea70cf"
+      },
+      {
+        "path": "WebSearchItem.ts",
+        "sha256": "a1b284386beaf4c0c3e96aaee8f6e8dede09212b4f41977baf8fbccc637bf236"
+      },
+      {
+        "path": "v2/WebSearchAction.ts",
+        "sha256": "f1dc1197e35b48fd16134a80353ebb606256126a634b4580406a5bffed1b0395"
+      }
+    ]
+  },
+  "official_docs": [
+    "https://docs.composio.dev/reference/sdk-reference/typescript/sessions",
+    "https://docs.composio.dev/reference/sdk-reference/typescript/session",
+    "https://docs.composio.dev/docs/configuring-sessions"
+  ],
+  "live_api_exception": {
+    "rest_api": "v3.1",
+    "code": 4300,
+    "status": 400,
+    "request_id": "bff5c564-5173-4cdd-86aa-bea47ed03d52",
+    "observation": "This project rejects the per-call account selector because multi-account selection is disabled. The SDK/current reference advertise wider support. Pin connectedAccounts at session creation and omit the redundant per-call selector. Do not change project settings or credentials."
+  },
+  "upgrade": [
+    "Compare SDK session create/use/search/execute/log schema and no-retry transport; retain owner identity and account pins.",
+    "Regenerate native Codex declarations and recheck inputModalities, image payload and webSearch item action mapping.",
+    "Rerun account drift/revoke/stop/unknown receipt tests, native app read with log ID, sourced research and visual inference. Never promote source inspection to native acceptance."
+  ]
+}

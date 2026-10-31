@@ -9,6 +9,9 @@ import { type agentInput, type agentUpdate, DomainError, type Entity } from "../
 import { registerGoalTools } from "../goals/tools";
 import { authorizeResponsibilityWork } from "../goals/work-fence";
 import { registerGroupTools } from "../groups/tools";
+import type { AppHost } from "../integrations/host";
+import { Applications } from "../integrations/service";
+import { registerAppTools } from "../integrations/tools";
 import { registerLearningTools } from "../learning/tools";
 import type { Lifecycle } from "../lifecycle";
 import { canonical } from "../store";
@@ -28,6 +31,7 @@ type Tool = {
 };
 export class ProductTools {
   readonly browsers: Browsers;
+  readonly applications: Applications;
   readonly #leases = new Map<string, ToolScope>();
   readonly #negotiated = new Set<string>();
   readonly #initialized = new Set<string>();
@@ -36,7 +40,10 @@ export class ProductTools {
     readonly lifecycle: Lifecycle,
     private readonly completed: (scope: ToolScope, name: string) => void = () => {},
     browserHost?: BrowserHost,
+    appHost?: AppHost,
   ) {
+    this.applications = new Applications(lifecycle, appHost);
+    registerAppTools(this);
     this.browsers = new Browsers(
       lifecycle,
       browserHost ?? new DockerBrowserHost(dirname(lifecycle.store.path), lifecycle.store.ownerId),
@@ -455,7 +462,15 @@ export class ProductTools {
         } catch (error) {
           result = {
             content: [
-              { type: "text", text: error instanceof DomainError ? error.code : "TOOL_FAILED" },
+              {
+                type: "text",
+                text:
+                  error instanceof DomainError
+                    ? error.code
+                    : error instanceof z.ZodError
+                      ? "INVALID_REQUEST. Read ngertiin.describe_tools for the exact argument schema."
+                      : "TOOL_FAILED",
+              },
             ],
             isError: true,
           };

@@ -344,6 +344,8 @@ export class Lifecycle {
       workspace_revision: null,
       native_tools: [],
       product_tools: [],
+      sources: [],
+      visual_inputs: [],
     });
   }
 
@@ -646,7 +648,13 @@ export class Lifecycle {
     token: string,
     fields: Pick<
       Partial<Entity<"run">>,
-      "activity" | "native_dispatch_id" | "diagnostic" | "native_tools" | "product_tools"
+      | "activity"
+      | "native_dispatch_id"
+      | "diagnostic"
+      | "native_tools"
+      | "product_tools"
+      | "sources"
+      | "visual_inputs"
     >,
   ) {
     return this.store.transaction(() => {

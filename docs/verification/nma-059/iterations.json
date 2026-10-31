@@ -1,0 +1,55 @@
+[
+  {
+    "iteration": "initial SDK install/typecheck",
+    "result": "SDK constructor option names were checked against installed types; unsupported auto-upload and retry constructor options removed. SDK execute transport already disables retries."
+  },
+  {
+    "iteration": "initial formatting",
+    "result": "Root Biome invocation rejected nested server root configuration; rerun inside apps/server. No config was changed.",
+    "evidence": "logs/format.log"
+  },
+  {
+    "iteration": "initial integration tests",
+    "result": "7 pass/5 fail: spreading a full run lease into strict app_session schema added unrecognized fields. Persist only agent/thread identity. Final 16 focused tests pass.",
+    "evidence": "logs/focused-initial.log"
+  },
+  {
+    "iteration": "initial full backend tests",
+    "result": "208 pass/3 fail: two outdated version/entity assertions and a Codex connection generation defect.",
+    "evidence": "logs/tests-initial.log"
+  },
+  {
+    "iteration": "second backend test",
+    "result": "222 pass/1 fail. Native model metadata with an undefined optional property changed canonical comparison before JSON persistence, causing needless connection generation changes across DM/group sessions. Omit absent optional metadata.",
+    "evidence": "logs/tests-second.log"
+  },
+  {
+    "iteration": "first app native scenario",
+    "result": "Native run succeeded, acceptance failed. Model guessed tool_slug instead of wrapper field tool; zero provider dispatches. Added actionable safe schema errors and clarified wrapper guidance.",
+    "evidence": "native-application.json"
+  },
+  {
+    "iteration": "GitHub and Notion native app attempts",
+    "result": "Native runs succeeded; both app acknowledgements unknown. No successful provider data/log ID. Receipts retained; no replay. Notion request ID dbc1a113-c00c-4e0a-a9d3-22f1a09237b2.",
+    "evidence": [
+      "native-application-retry.json",
+      "native-application-notion.json",
+      "receipts-after.json"
+    ]
+  },
+  {
+    "iteration": "source/live compatibility investigation",
+    "result": "Search reports uppercase toolkit names; normalize them before filtering. SDK/current docs permit top-level account, but live project rejects it with HTTP 400/code 4300. One distinct diagnostic rate-limit read reproduced the rejection. Pin the account in the session and omit the redundant selector.",
+    "evidence": "account-selector-diagnostic.json"
+  },
+  {
+    "iteration": "final Linear native scenario",
+    "result": "Useful provider read through agent API succeeded with nonempty Composio log ID. Initial unknown effects unchanged.",
+    "evidence": "native-application-linear.json"
+  },
+  {
+    "iteration": "final regression",
+    "result": "227/227 pass, 0 fail/skip; 1378 assertions. 16 focused tests; final lint/typecheck and existing 8 foundation/5 broker checks pass.",
+    "evidence": "logs/tests-delivery.log"
+  }
+]

@@ -15,7 +15,7 @@ export const codexCapabilities = {
   steer: "supported",
   cancel: "supported",
   permission_requests: "unsupported",
-  image_input: "unsupported",
+  image_input: "supported",
   video_input: "unsupported",
   compaction: "unsupported",
   product_tools: "supported",
@@ -24,6 +24,8 @@ export const codexCapabilities = {
   native_shell: "supported",
   native_code: "supported",
   native_git: "supported",
+  web_search: "supported",
+  web_read: "supported",
 } as const;
 const nativeId = z.string().min(1).max(1000);
 const threadResponse = z.object({
@@ -35,7 +37,7 @@ const toolSpec = {
   type: "function",
   name: "ngertiin_product_tool",
   description:
-    "Call a scoped Ngertiin product tool. Use ngertiin.read_run_context with empty arguments for current run identity. Call ngertiin.describe_tools with empty arguments for configuration tool schemas, then ngertiin.list_agents to inspect profiles and revisions.",
+    "Call a scoped Ngertiin product tool. Use ngertiin.read_run_context with empty arguments for current run identity. Call ngertiin.describe_tools with empty arguments for exact product-tool argument schemas; do not infer argument names from the downstream service. Use ngertiin.list_agents to inspect profiles and revisions.",
   inputSchema: {
     type: "object",
     properties: {
@@ -177,6 +179,7 @@ export class CodexClient implements HarnessClient {
           data: z.array(
             z.object({
               model: z.string().min(1),
+              inputModalities: z.array(z.enum(["text", "image"])).optional(),
               supportedReasoningEfforts: z.array(z.object({ reasoningEffort: z.string() })),
             }),
           ),
@@ -186,6 +189,7 @@ export class CodexClient implements HarnessClient {
       models.push(
         ...page.data.map((model) => ({
           id: model.model,
+          ...(model.inputModalities ? { input_modalities: model.inputModalities } : {}),
           reasoning: model.supportedReasoningEfforts.map((effort) => effort.reasoningEffort),
         })),
       );
@@ -211,6 +215,7 @@ export class CodexClient implements HarnessClient {
       config: {
         model_reasoning_effort: selected.reasoning,
         project_doc_max_bytes: 0,
+        web_search: this.context.purpose === "routing" ? "disabled" : "live",
         ...(this.context.purpose === "routing"
           ? { "features.shell_tool": false, "features.unified_exec": false, web_search: "disabled" }
           : {}),
@@ -287,6 +292,7 @@ export class CodexClient implements HarnessClient {
               ? [{ type: "text", text: request.learning_context, text_elements: [] }]
               : []),
             { type: "text", text: request.text, text_elements: [] },
+            ...(request.images ?? []).map((url) => ({ type: "image", url })),
           ],
           model: request.settings.model_id,
           effort: request.settings.reasoning,
@@ -367,10 +373,35 @@ export class CodexClient implements HarnessClient {
             status: z.string().optional(),
             command: z.string().optional(),
             exitCode: z.number().int().nullable().optional(),
+            action: z
+              .object({ type: z.string(), url: z.string().nullable().optional() })
+              .nullable()
+              .optional(),
           }),
         })
         .parse(params);
       if (event.turnId !== active.turn) throw new HarnessError("PROTOCOL_ERROR", "unknown");
+      if (event.item.type === "webSearch" && message.method === "item/completed") {
+        active.request.onEvent({
+          type: "native_tool",
+          item_id: event.item.id,
+          name: "webSearch",
+          command: null,
+          state: "completed",
+          exit_code: null,
+        });
+        const action = event.item.action;
+        if (action?.url && ["openPage", "findInPage"].includes(action.type)) {
+          const parsed = z.url().safeParse(action.url);
+          if (parsed.success)
+            active.request.onEvent({
+              type: "web_source",
+              url: parsed.data,
+              title: "Native web source",
+              operation: action.type as "openPage" | "findInPage",
+            });
+        }
+      }
       if (["commandExecution", "fileChange"].includes(event.item.type))
         active.request.onEvent({
           type: "native_tool",

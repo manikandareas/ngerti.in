@@ -1,0 +1,8 @@
+{
+  "url": "https://bun.sh/docs/runtime/sqlite#transactions",
+  "fetched": true,
+  "content_sha256": "ca44fa183dcf2fbe3bf0682daf30c95006176841bfc1231a0d54091c319e9288",
+  "contains_transaction": true,
+  "contains_rollback": true,
+  "native_source_and_answer_evidence": "native-research.json"
+}

@@ -9,6 +9,7 @@ import {
   routineWrite,
 } from "../goals/contracts";
 import { askHumanInput, handoffInput } from "../groups/contracts";
+import { appExecute, appSearch } from "../integrations/contracts";
 import {
   memoryDelete,
   memoryQuery,
@@ -21,6 +22,9 @@ import {
 import { relativePath, uploadInput } from "../workspace-contracts";
 
 export const productToolSchemas = {
+  "ngertiin.list_apps": z.strictObject({}),
+  "ngertiin.search_app_tools": appSearch,
+  "ngertiin.execute_app_tool": appExecute,
   "ngertiin.browser_sessions": z.strictObject({}),
   "ngertiin.browser_open": z.strictObject({ profile_id: id }),
   "ngertiin.browser_action": browserActionInput,

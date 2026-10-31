@@ -1,0 +1,93 @@
+{
+  "phase": "application-linear",
+  "started_at": "2026-10-31T09:17:42.770Z",
+  "checks": [
+    "authorized_provider_read_through_agent_api_with_log_id"
+  ],
+  "run": {
+    "id": "fb41a6d2-0947-47f7-b520-b9f36c9a9e93",
+    "owner_id": "7ba9c73a-373f-403b-9d70-2e1696a447cf",
+    "revision": 16,
+    "created_at": "2026-10-31T09:17:42.787Z",
+    "updated_at": "2026-10-31T09:18:07.266Z",
+    "kind": "run",
+    "thread_id": "29ad2a02-e436-4e3a-a16f-cba124b68b5c",
+    "agent_id": "1df90119-bcf3-4e65-9181-a53a9184edf7",
+    "input_message_id": "d66bb3fd-4aa2-4cbf-b116-bcc2059b2946",
+    "task_id": null,
+    "thread_revision": null,
+    "goal_id": null,
+    "routine_id": null,
+    "goal_generation": null,
+    "routine_generation": null,
+    "publication": "immediate",
+    "pending_answer": null,
+    "status": "succeeded",
+    "cancellation": "none",
+    "outcome": "succeeded",
+    "delivery": "delivered",
+    "activity": "idle",
+    "diagnostic": null,
+    "native_dispatch_id": null,
+    "grant_revision": 1,
+    "dispatch_token": "aad9eede-2b4d-4ecd-aa57-886075bd3550",
+    "authority_epoch": "f524cf68-e272-4902-8bb8-6786b320fbbb",
+    "binding_id": "cb03563c-b895-44e5-816f-e29f15f2a8f1",
+    "native_run_id": "01a19140-30a9-7462-8997-0b4c03604483",
+    "agent_snapshot": {
+      "name": "Integration proof Codex",
+      "handle": "integration_f5cb88be",
+      "avatar": null,
+      "soul": "",
+      "skills": [],
+      "harness": "codex",
+      "connection_id": "adb3115f-7e82-43e4-89af-3e2550683e38",
+      "instructions": "These are isolated one-time verification tasks, not persistent goals or Routines. Use only the explicitly requested native modality or assigned application tool. Do not read unrelated host files, create goals, change memory or create schedules. Do not repeat unknown external effects.",
+      "workspace_id": null,
+      "model_id": "gpt-6.1-sol",
+      "reasoning": "medium",
+      "agent_id": "1df90119-bcf3-4e65-9181-a53a9184edf7",
+      "revision": 1
+    },
+    "workspace_id": "b86efbee-ab08-458b-8fd8-ef66791864fa",
+    "workspace_revision": 1,
+    "product_tools": [
+      "ngertiin.describe_tools",
+      "ngertiin.list_apps",
+      "ngertiin.search_app_tools",
+      "ngertiin.execute_app_tool"
+    ],
+    "sources": [],
+    "visual_inputs": [],
+    "native_tools": []
+  },
+  "answer": "I’ll check the wrapper schemas and assigned Linear tool, then make one read and report only the display name, user ID, and receipt log ID.Display name: **vitoandareas15**  \nUser ID: `c95941f6-c688-44cf-8e2d-56795458ee85`  \nReceipt log ID: `log_YGVQ9hK9pgtQ`",
+  "elapsed_ms": 24525,
+  "effects": [
+    {
+      "id": "48b6873e-6161-442e-a072-a25e6c606cb5",
+      "owner_id": "7ba9c73a-373f-403b-9d70-2e1696a447cf",
+      "revision": 2,
+      "created_at": "2026-10-31T09:18:04.723Z",
+      "updated_at": "2026-10-31T09:18:05.387Z",
+      "connection_id": "f77d44a1-f632-474b-9313-a7969241f171",
+      "account_id": "ca_PM2fUcjK7Ox-",
+      "agent_id": "1df90119-bcf3-4e65-9181-a53a9184edf7",
+      "thread_id": "29ad2a02-e436-4e3a-a16f-cba124b68b5c",
+      "run_id": "fb41a6d2-0947-47f7-b520-b9f36c9a9e93",
+      "generation": 3,
+      "tool": "LINEAR_GET_CURRENT_USER",
+      "fingerprint": "5a5f29b512c5ca3b27e0946fc0cb37f238661ab408e68bf75e63e69bb667b053",
+      "state": "succeeded",
+      "log_id": "log_YGVQ9hK9pgtQ",
+      "request_id": null,
+      "sdk_error": null,
+      "error_code": null,
+      "kind": "app_effect",
+      "result_keys": [
+        "user"
+      ]
+    }
+  ],
+  "completed_at": "2026-10-31T09:18:07.319Z"
+}

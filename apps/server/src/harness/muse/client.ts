@@ -22,6 +22,8 @@ export const museCapabilities = {
   native_git: "unsupported",
   image_input: "unsupported",
   video_input: "unsupported",
+  web_search: "unsupported",
+  web_read: "unsupported",
   compaction: "unsupported",
 } as const;
 

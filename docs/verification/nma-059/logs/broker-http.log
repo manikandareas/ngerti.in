@@ -1,0 +1,41 @@
+{
+  "runtime": "bun@1.3.10",
+  "planned": 5,
+  "pass": 5,
+  "fail": 0,
+  "skip": 0,
+  "results": [
+    {
+      "check": "host_executable_detection",
+      "status": "pass",
+      "detail": [
+        {
+          "harness": "codex",
+          "state": "supported",
+          "version": "0.166.0"
+        },
+        {
+          "harness": "muse",
+          "state": "missing",
+          "version": null
+        }
+      ]
+    },
+    {
+      "check": "broker_contract_with_explicit_native_executors",
+      "status": "pass"
+    },
+    {
+      "check": "connection_selection_and_idempotent_receipt",
+      "status": "pass"
+    },
+    {
+      "check": "durable_connection_revocation",
+      "status": "pass"
+    },
+    {
+      "check": "connection_and_event_replay_after_process_restart",
+      "status": "pass"
+    }
+  ]
+}

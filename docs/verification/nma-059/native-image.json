@@ -1,0 +1,70 @@
+{
+  "phase": "image",
+  "started_at": "2026-10-31T08:55:34.762Z",
+  "checks": [
+    "native_visual_content_and_normalization_receipt"
+  ],
+  "run": {
+    "id": "6b92b11a-aec5-4047-a009-e2bde6917d70",
+    "owner_id": "7ba9c73a-373f-403b-9d70-2e1696a447cf",
+    "revision": 5,
+    "created_at": "2026-10-31T08:55:35.031Z",
+    "updated_at": "2026-10-31T08:55:39.200Z",
+    "kind": "run",
+    "thread_id": "29ad2a02-e436-4e3a-a16f-cba124b68b5c",
+    "agent_id": "1df90119-bcf3-4e65-9181-a53a9184edf7",
+    "input_message_id": "b58027ed-b77a-48ab-93c3-c8b9d25eeae4",
+    "task_id": null,
+    "thread_revision": null,
+    "goal_id": null,
+    "routine_id": null,
+    "goal_generation": null,
+    "routine_generation": null,
+    "publication": "immediate",
+    "pending_answer": null,
+    "status": "succeeded",
+    "cancellation": "none",
+    "outcome": "succeeded",
+    "delivery": "delivered",
+    "activity": "idle",
+    "diagnostic": null,
+    "native_dispatch_id": null,
+    "grant_revision": 1,
+    "dispatch_token": "ab2098ac-08fe-4d01-8090-4b93ee5a1ffc",
+    "authority_epoch": "0a4bfadf-3bc8-4852-80bc-6a9ff97619a1",
+    "binding_id": "cb03563c-b895-44e5-816f-e29f15f2a8f1",
+    "native_run_id": "01a1912b-e641-7812-a6e9-deda216296b2",
+    "agent_snapshot": {
+      "name": "Integration proof Codex",
+      "handle": "integration_f5cb88be",
+      "avatar": null,
+      "soul": "",
+      "skills": [],
+      "harness": "codex",
+      "connection_id": "adb3115f-7e82-43e4-89af-3e2550683e38",
+      "instructions": "These are isolated one-time verification tasks, not persistent goals or Routines. Use only the explicitly requested native modality or assigned application tool. Do not read unrelated host files, create goals, change memory or create schedules. Do not repeat unknown external effects.",
+      "workspace_id": null,
+      "model_id": "gpt-6.1-sol",
+      "reasoning": "medium",
+      "agent_id": "1df90119-bcf3-4e65-9181-a53a9184edf7",
+      "revision": 1
+    },
+    "workspace_id": "b86efbee-ab08-458b-8fd8-ef66791864fa",
+    "workspace_revision": 1,
+    "product_tools": [],
+    "sources": [],
+    "visual_inputs": [
+      {
+        "artifact_id": "9808f15d-735f-4e2f-b532-1175797088da",
+        "source_sha256": "a4054aaec5ed51b74438192a9ccf259ad19f439a2e5b506e2ed87f84f642d010",
+        "normalized_sha256": "a4054aaec5ed51b74438192a9ccf259ad19f439a2e5b506e2ed87f84f642d010",
+        "width": 600,
+        "height": 360
+      }
+    ],
+    "native_tools": []
+  },
+  "answer": "The printed code is **RAVEN 7146**. The shapes are a blue square and a yellow-orange triangle.",
+  "elapsed_ms": 5113,
+  "completed_at": "2026-10-31T08:55:40.148Z"
+}

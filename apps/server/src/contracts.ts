@@ -9,6 +9,12 @@ import { goalCommands, goalFields, schedule, timezone } from "./goals/contracts"
 import { groupCommands, humanRequestFields, routeFields, taskFields } from "./groups/contracts";
 import { connectionFields } from "./harness/contracts";
 import {
+  appConnectionFields,
+  appEffectFields,
+  appSessionFields,
+  integrationCommands,
+} from "./integrations/contracts";
+import {
   harnessInventoryFields,
   learningCommands,
   memoryFields,
@@ -24,7 +30,7 @@ import {
   workspaceInput,
 } from "./workspace-contracts";
 
-export const CONTRACT_VERSION = "1.9.0";
+export const CONTRACT_VERSION = "1.10.0";
 export const id = z.uuid();
 const text = z.string().min(1).max(100_000);
 const base = {
@@ -151,6 +157,28 @@ export const run = z
     workspace_id: id.nullable().default(null),
     workspace_revision: z.int().positive().nullable().default(null),
     product_tools: z.array(z.string().max(200)).max(200).default([]),
+    sources: z
+      .array(
+        z.strictObject({
+          url: z.url().max(4000),
+          title: z.string().max(500),
+          operation: z.enum(["search", "openPage", "findInPage"]),
+        }),
+      )
+      .max(100)
+      .default([]),
+    visual_inputs: z
+      .array(
+        z.strictObject({
+          artifact_id: id,
+          source_sha256: z.string().length(64),
+          normalized_sha256: z.string().length(64),
+          width: z.int().positive(),
+          height: z.int().positive(),
+        }),
+      )
+      .max(4)
+      .default([]),
     native_tools: z
       .array(
         z.strictObject({
@@ -361,6 +389,13 @@ export const browserAction = z.strictObject({
   kind: z.literal("browser_action"),
 });
 export const schemas = {
+  app_connection: z.strictObject({
+    ...base,
+    ...appConnectionFields,
+    kind: z.literal("app_connection"),
+  }),
+  app_session: z.strictObject({ ...base, ...appSessionFields, kind: z.literal("app_session") }),
+  app_effect: z.strictObject({ ...base, ...appEffectFields, kind: z.literal("app_effect") }),
   browser_profile: browserProfile,
   browser_session: browserSession,
   browser_action: browserAction,
@@ -388,6 +423,9 @@ export const schemas = {
 export type Kind = keyof typeof schemas;
 export type Entity<K extends Kind = Kind> = z.infer<(typeof schemas)[K]>;
 export const kindSchema = z.enum([
+  "app_connection",
+  "app_session",
+  "app_effect",
   "browser_profile",
   "browser_session",
   "browser_action",
@@ -471,6 +509,10 @@ export const errorCodes = [
   "BROWSER_UNKNOWN",
   "BROWSER_AUTH_REQUIRED",
   "BROWSER_ACTION_FAILED",
+  "APP_UNAVAILABLE",
+  "APP_AUTH_REQUIRED",
+  "APP_UNKNOWN",
+  "APP_TOOL_FAILED",
 ] as const;
 export class DomainError extends Error {
   constructor(
@@ -489,6 +531,7 @@ export function contractDocument() {
     event: z.toJSONSchema(domainEvent, { io: "input" }),
     commands: Object.fromEntries(
       Object.entries({
+        ...integrationCommands,
         ...browserCommands,
         ...groupCommands,
         ...goalCommands,

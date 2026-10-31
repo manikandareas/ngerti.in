@@ -1,0 +1,210 @@
+{
+  "phase": "after",
+  "checks": [
+    "one_known_app_success_and_two_retained_unknown_effects",
+    "original_admission_receipts_replay_without_new_runs_or_app_effects",
+    "application_sessions_effects_and_run_observations_persist_after_backend_restart"
+  ],
+  "captured_at": "2026-10-31T09:21:07.270Z",
+  "effects": [
+    {
+      "id": "85b43eb7-7769-44a3-92af-74883354c6bb",
+      "owner_id": "7ba9c73a-373f-403b-9d70-2e1696a447cf",
+      "revision": 2,
+      "created_at": "2026-10-31T09:00:38.116Z",
+      "updated_at": "2026-10-31T09:00:38.556Z",
+      "connection_id": "a666ac60-ce91-4537-9137-854ed8baf340",
+      "account_id": "ca_Y7oUhkC-brcm",
+      "agent_id": "1df90119-bcf3-4e65-9181-a53a9184edf7",
+      "thread_id": "29ad2a02-e436-4e3a-a16f-cba124b68b5c",
+      "run_id": "2fd66f6b-3598-4b16-b3af-1d4a982b862d",
+      "generation": 3,
+      "tool": "GITHUB_GET_THE_AUTHENTICATED_USER",
+      "fingerprint": "815c655181d6a589c99813b766ebbfd8b961762a5585d2c356796aafd1a10867",
+      "state": "unknown",
+      "log_id": null,
+      "request_id": null,
+      "sdk_error": null,
+      "error_code": "APP_UNKNOWN",
+      "kind": "app_effect",
+      "result_keys": []
+    },
+    {
+      "id": "a79fb467-a557-44db-b92f-b975284f74b2",
+      "owner_id": "7ba9c73a-373f-403b-9d70-2e1696a447cf",
+      "revision": 2,
+      "created_at": "2026-10-31T09:13:46.981Z",
+      "updated_at": "2026-10-31T09:13:47.590Z",
+      "connection_id": "881f3189-8398-45a9-bd5d-4445bcc8850e",
+      "account_id": "ca_mnR6B5fOJPeF",
+      "agent_id": "1df90119-bcf3-4e65-9181-a53a9184edf7",
+      "thread_id": "29ad2a02-e436-4e3a-a16f-cba124b68b5c",
+      "run_id": "d8c1bdf4-f32f-4e06-8159-52fc63644dd3",
+      "generation": 3,
+      "tool": "NOTION_SEARCH_NOTION_PAGE",
+      "fingerprint": "54b47b124ab26b6e9a809d182e3d672212d2ed25167adc372ce97c81814814d4",
+      "state": "unknown",
+      "log_id": null,
+      "request_id": "dbc1a113-c00c-4e0a-a9d3-22f1a09237b2",
+      "sdk_error": "Error",
+      "error_code": "APP_UNKNOWN",
+      "kind": "app_effect",
+      "result_keys": []
+    },
+    {
+      "id": "48b6873e-6161-442e-a072-a25e6c606cb5",
+      "owner_id": "7ba9c73a-373f-403b-9d70-2e1696a447cf",
+      "revision": 2,
+      "created_at": "2026-10-31T09:18:04.723Z",
+      "updated_at": "2026-10-31T09:18:05.387Z",
+      "connection_id": "f77d44a1-f632-474b-9313-a7969241f171",
+      "account_id": "ca_PM2fUcjK7Ox-",
+      "agent_id": "1df90119-bcf3-4e65-9181-a53a9184edf7",
+      "thread_id": "29ad2a02-e436-4e3a-a16f-cba124b68b5c",
+      "run_id": "fb41a6d2-0947-47f7-b520-b9f36c9a9e93",
+      "generation": 3,
+      "tool": "LINEAR_GET_CURRENT_USER",
+      "fingerprint": "5a5f29b512c5ca3b27e0946fc0cb37f238661ab408e68bf75e63e69bb667b053",
+      "state": "succeeded",
+      "log_id": "log_YGVQ9hK9pgtQ",
+      "request_id": null,
+      "sdk_error": null,
+      "error_code": null,
+      "kind": "app_effect",
+      "result_keys": [
+        "user"
+      ]
+    }
+  ],
+  "sessions": [
+    {
+      "id": "0e5d0468-4e7f-403e-8838-4322e479b0bf",
+      "owner_id": "7ba9c73a-373f-403b-9d70-2e1696a447cf",
+      "revision": 1,
+      "created_at": "2026-10-31T08:58:21.485Z",
+      "updated_at": "2026-10-31T08:58:21.485Z",
+      "connection_id": "a666ac60-ce91-4537-9137-854ed8baf340",
+      "agent_id": "1df90119-bcf3-4e65-9181-a53a9184edf7",
+      "thread_id": "29ad2a02-e436-4e3a-a16f-cba124b68b5c",
+      "generation": 3,
+      "native_session_id": "trs_YXr2h21sXxIr",
+      "kind": "app_session"
+    },
+    {
+      "id": "ebf08ba9-f1ea-4025-aad1-922f3bd9f87b",
+      "owner_id": "7ba9c73a-373f-403b-9d70-2e1696a447cf",
+      "revision": 1,
+      "created_at": "2026-10-31T09:13:41.889Z",
+      "updated_at": "2026-10-31T09:13:41.889Z",
+      "connection_id": "881f3189-8398-45a9-bd5d-4445bcc8850e",
+      "agent_id": "1df90119-bcf3-4e65-9181-a53a9184edf7",
+      "thread_id": "29ad2a02-e436-4e3a-a16f-cba124b68b5c",
+      "generation": 3,
+      "native_session_id": "trs_U7XLFNK1MFmn",
+      "kind": "app_session"
+    },
+    {
+      "id": "9f07aa02-9512-4baf-94bf-fd9163bb736b",
+      "owner_id": "7ba9c73a-373f-403b-9d70-2e1696a447cf",
+      "revision": 1,
+      "created_at": "2026-10-31T09:17:58.990Z",
+      "updated_at": "2026-10-31T09:17:58.990Z",
+      "connection_id": "f77d44a1-f632-474b-9313-a7969241f171",
+      "agent_id": "1df90119-bcf3-4e65-9181-a53a9184edf7",
+      "thread_id": "29ad2a02-e436-4e3a-a16f-cba124b68b5c",
+      "generation": 3,
+      "native_session_id": "trs_CoHsA-awHYTR",
+      "kind": "app_session"
+    }
+  ],
+  "runs": [
+    {
+      "id": "6b92b11a-aec5-4047-a009-e2bde6917d70",
+      "status": "succeeded",
+      "native_run_id": "01a1912b-e641-7812-a6e9-deda216296b2",
+      "product_tools": [],
+      "sources": [],
+      "visual_inputs": [
+        {
+          "artifact_id": "9808f15d-735f-4e2f-b532-1175797088da",
+          "source_sha256": "a4054aaec5ed51b74438192a9ccf259ad19f439a2e5b506e2ed87f84f642d010",
+          "normalized_sha256": "a4054aaec5ed51b74438192a9ccf259ad19f439a2e5b506e2ed87f84f642d010",
+          "width": 600,
+          "height": 360
+        }
+      ]
+    },
+    {
+      "id": "c93d3b03-8870-4f55-8e05-af2cb917d9ea",
+      "status": "succeeded",
+      "native_run_id": "01a1912c-8a42-7d60-ad3d-40c53adba111",
+      "product_tools": [],
+      "sources": [
+        {
+          "url": "https://bun.sh/docs/runtime/sqlite",
+          "title": "Native web source",
+          "operation": "openPage"
+        }
+      ],
+      "visual_inputs": []
+    },
+    {
+      "id": "7e3119d1-36e3-4f97-893d-6c395d665330",
+      "status": "succeeded",
+      "native_run_id": "01a1912e-3d6e-75e2-9030-669973b78784",
+      "product_tools": [
+        "ngertiin.list_apps",
+        "ngertiin.search_app_tools"
+      ],
+      "sources": [],
+      "visual_inputs": []
+    },
+    {
+      "id": "2fd66f6b-3598-4b16-b3af-1d4a982b862d",
+      "status": "succeeded",
+      "native_run_id": "01a19130-47ef-7653-a134-ea1573f8b3b8",
+      "product_tools": [
+        "ngertiin.describe_tools",
+        "ngertiin.list_apps",
+        "ngertiin.search_app_tools",
+        "ngertiin.execute_app_tool"
+      ],
+      "sources": [],
+      "visual_inputs": []
+    },
+    {
+      "id": "d8c1bdf4-f32f-4e06-8159-52fc63644dd3",
+      "status": "succeeded",
+      "native_run_id": "01a1913c-4b69-70e3-9800-804ae9b282bc",
+      "product_tools": [
+        "ngertiin.describe_tools",
+        "ngertiin.list_apps",
+        "ngertiin.search_app_tools",
+        "ngertiin.execute_app_tool"
+      ],
+      "sources": [],
+      "visual_inputs": []
+    },
+    {
+      "id": "fb41a6d2-0947-47f7-b520-b9f36c9a9e93",
+      "status": "succeeded",
+      "native_run_id": "01a19140-30a9-7462-8997-0b4c03604483",
+      "product_tools": [
+        "ngertiin.describe_tools",
+        "ngertiin.list_apps",
+        "ngertiin.search_app_tools",
+        "ngertiin.execute_app_tool"
+      ],
+      "sources": [],
+      "visual_inputs": []
+    },
+    {
+      "id": "2e97b57e-c1f6-4ff6-9d74-83171f4660ca",
+      "status": "failed",
+      "native_run_id": null,
+      "product_tools": [],
+      "sources": [],
+      "visual_inputs": []
+    }
+  ]
+}

@@ -38,6 +38,7 @@ import {
   interactionAnswer,
 } from "./harness/contracts";
 import { ProductTools } from "./harness/tools";
+import { appAssignment, appAuthorize, appSearch } from "./integrations/contracts";
 import { ApplicationSkills } from "./learning/application-skills";
 import {
   learningContext,
@@ -75,6 +76,7 @@ export function createApi(
   const artifacts = new Artifacts(lifecycle);
   const workspaces = artifacts.workspaces;
   const browsers = services.tools.browsers;
+  const applications = services.tools.applications;
   let browserViews: BrowserViews | undefined;
   function command(request: Request, body: unknown, action: () => unknown) {
     const commandId = id.parse(request.headers.get("Idempotency-Key"));
@@ -178,6 +180,44 @@ export function createApi(
       { params: z.object({ id }), query: historyQuery },
     )
     .get("/v1/harness/contracts", () => brokerContract())
+    .get(
+      "/v1/apps/catalog",
+      ({ query }) => applications.catalog(query.search ?? "", query.cursor),
+      {
+        query: z.object({
+          search: z.string().max(100).optional(),
+          cursor: z.string().max(500).optional(),
+        }),
+      },
+    )
+    .get("/v1/apps/connections", () => applications.list())
+    .post("/v1/apps/connect", ({ body }) => applications.connect(body.toolkit), {
+      body: appAuthorize,
+    })
+    .post(
+      "/v1/apps/connections/:id/reconnect",
+      ({ params }) => {
+        const connection = lifecycle.store.get("app_connection", params.id);
+        return applications.connect(connection.toolkit, connection.id);
+      },
+      { params: z.object({ id }), body: z.strictObject({}) },
+    )
+    .post("/v1/apps/connections/:id/refresh", ({ params }) => applications.refresh(params.id), {
+      params: z.object({ id }),
+      body: z.strictObject({}),
+    })
+    .post(
+      "/v1/apps/connections/:id/revoke",
+      ({ request, params, body }) => command(request, body, () => applications.revoke(params.id)),
+      { params: z.object({ id }), body: z.strictObject({}) },
+    )
+    .post(
+      "/v1/apps/connections/:id/assign",
+      ({ request, params, body }) =>
+        command(request, body, () => applications.assign(params.id, body)),
+      { params: z.object({ id }), body: appAssignment },
+    )
+    .post("/v1/apps/search", ({ body }) => applications.search(body), { body: appSearch })
     .get("/v1/harnesses", async () =>
       Promise.all((["codex", "muse"] as const).map((id) => (services.detect ?? detectHarness)(id))),
     )

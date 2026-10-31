@@ -1,0 +1,119 @@
+bun test v1.3.10 (30e609e0)
+
+apps/server/tests/multimodal.test.ts:
+(pass) visual inputs use immutable scoped bytes and record normalization hashes [165.81ms]
+(pass) text-only or unknown models cannot silently receive image inputs [31.16ms]
+(pass) unsupported video and unsupported harness image input fail before native dispatch [15.90ms]
+(pass) malformed bytes and falsely declared image formats are rejected [23.38ms]
+
+apps/server/tests/integrations.test.ts:
+35 |     class Definition extends Parent {
+36 |     }
+37 |     Object.defineProperty(Definition, "name", { value: name });
+38 |     function _(def) {
+39 |         var _a;
+40 |         const inst = params?.Parent ? new Definition() : this;
+                                           ^
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "run_id",
+      "binding_id",
+      "grant_revision",
+      "connection_revision"
+    ],
+    "path": [],
+    "message": "Unrecognized keys: \"run_id\", \"binding_id\", \"grant_revision\", \"connection_revision\""
+  }
+]
+      at /Users/vitoandareasmanik/Development/project/ngertiin/node_modules/.bun/zod@4.4.3/node_modules/zod/v4/core/core.js:40:39
+(fail) application effects use the existing owner, exact account and durable sanitized receipts [32.79ms]
+35 |     class Definition extends Parent {
+36 |     }
+37 |     Object.defineProperty(Definition, "name", { value: name });
+38 |     function _(def) {
+39 |         var _a;
+40 |         const inst = params?.Parent ? new Definition() : this;
+                                           ^
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "run_id",
+      "binding_id",
+      "grant_revision",
+      "connection_revision"
+    ],
+    "path": [],
+    "message": "Unrecognized keys: \"run_id\", \"binding_id\", \"grant_revision\", \"connection_revision\""
+  }
+]
+      at /Users/vitoandareasmanik/Development/project/ngertiin/node_modules/.bun/zod@4.4.3/node_modules/zod/v4/core/core.js:40:39
+(fail) discovery filters foreign toolkits and agent execution cannot call unassigned or meta tools [20.12ms]
+(pass) DM assignment grants do not leak to a group or another owner resource [18.69ms]
+(pass) revoke or reassignment during final SDK preflight prevents the external request [75.88ms]
+35 |     class Definition extends Parent {
+36 |     }
+37 |     Object.defineProperty(Definition, "name", { value: name });
+38 |     function _(def) {
+39 |         var _a;
+40 |         const inst = params?.Parent ? new Definition() : this;
+                                           ^
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "run_id",
+      "binding_id",
+      "grant_revision",
+      "connection_revision"
+    ],
+    "path": [],
+    "message": "Unrecognized keys: \"run_id\", \"binding_id\", \"grant_revision\", \"connection_revision\""
+  }
+]
+      at /Users/vitoandareasmanik/Development/project/ngertiin/node_modules/.bun/zod@4.4.3/node_modules/zod/v4/core/core.js:40:39
+(fail) remote expiry is checked before every execution and reconnect fences old sessions [20.27ms]
+35 |     class Definition extends Parent {
+36 |     }
+37 |     Object.defineProperty(Definition, "name", { value: name });
+38 |     function _(def) {
+39 |         var _a;
+40 |         const inst = params?.Parent ? new Definition() : this;
+                                           ^
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "run_id",
+      "binding_id",
+      "grant_revision",
+      "connection_revision"
+    ],
+    "path": [],
+    "message": "Unrecognized keys: \"run_id\", \"binding_id\", \"grant_revision\", \"connection_revision\""
+  }
+]
+      at /Users/vitoandareasmanik/Development/project/ngertiin/node_modules/.bun/zod@4.4.3/node_modules/zod/v4/core/core.js:40:39
+(fail) concurrent calls cannot duplicate a provider effect [19.34ms]
+144 | 
+145 |   get<K extends Kind>(kind: K, id: string): Entity<K> {
+146 |     const row = this.#db
+147 |       .query<{ body: string }, [string, string]>("SELECT body FROM entities WHERE kind=? AND id=?")
+148 |       .get(kind, id);
+149 |     if (!row) throw new DomainError("NOT_FOUND", 404);
+                          ^
+error: NOT_FOUND
+ status: 404,
+   code: "NOT_FOUND"
+
+      at get (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/src/store.ts:149:21)
+      at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/integrations.test.ts:201:18)
+(fail) lost acknowledgements survive restart, preserve unknown, and prohibit blind replay [27.56ms]
+(pass) credential-like host output and signed URLs never reach tool results [1.04ms]
+
+ 7 pass
+ 5 fail
+ 24 expect() calls
+Ran 12 tests across 2 files. [1110.00ms]

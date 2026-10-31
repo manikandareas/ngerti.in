@@ -266,6 +266,9 @@ test("event cursor pagination is stable and contracts expose all domain entities
   expect([...page, ...remainder]).toEqual(f.store.events(0));
   expect(Object.keys(contractDocument().entities).sort()).toEqual([
     "agent",
+    "app_connection",
+    "app_effect",
+    "app_session",
     "artifact",
     "binding",
     "browser_action",

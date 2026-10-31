@@ -1,4 +1,10 @@
 import { z } from "zod";
+import {
+  browserActionFields,
+  browserCommands,
+  browserProfileFields,
+  browserSessionFields,
+} from "./browser/contracts";
 import { goalCommands, goalFields, schedule, timezone } from "./goals/contracts";
 import { groupCommands, humanRequestFields, routeFields, taskFields } from "./groups/contracts";
 import { connectionFields } from "./harness/contracts";
@@ -18,7 +24,7 @@ import {
   workspaceInput,
 } from "./workspace-contracts";
 
-export const CONTRACT_VERSION = "1.8.0";
+export const CONTRACT_VERSION = "1.9.0";
 export const id = z.uuid();
 const text = z.string().min(1).max(100_000);
 const base = {
@@ -339,7 +345,25 @@ export const humanRequest = z.strictObject({
   ...humanRequestFields,
   kind: z.literal("human_request"),
 });
+export const browserProfile = z.strictObject({
+  ...base,
+  ...browserProfileFields,
+  kind: z.literal("browser_profile"),
+});
+export const browserSession = z.strictObject({
+  ...base,
+  ...browserSessionFields,
+  kind: z.literal("browser_session"),
+});
+export const browserAction = z.strictObject({
+  ...base,
+  ...browserActionFields,
+  kind: z.literal("browser_action"),
+});
 export const schemas = {
+  browser_profile: browserProfile,
+  browser_session: browserSession,
+  browser_action: browserAction,
   group_route: groupRoute,
   peer_task: peerTask,
   human_request: humanRequest,
@@ -364,6 +388,9 @@ export const schemas = {
 export type Kind = keyof typeof schemas;
 export type Entity<K extends Kind = Kind> = z.infer<(typeof schemas)[K]>;
 export const kindSchema = z.enum([
+  "browser_profile",
+  "browser_session",
+  "browser_action",
   "group_route",
   "peer_task",
   "human_request",
@@ -440,6 +467,10 @@ export const errorCodes = [
   "ROUTING_INVALID",
   "ROUTING_STALE",
   "RESPONSIBILITY_DEFERRED",
+  "BROWSER_UNAVAILABLE",
+  "BROWSER_UNKNOWN",
+  "BROWSER_AUTH_REQUIRED",
+  "BROWSER_ACTION_FAILED",
 ] as const;
 export class DomainError extends Error {
   constructor(
@@ -458,6 +489,7 @@ export function contractDocument() {
     event: z.toJSONSchema(domainEvent, { io: "input" }),
     commands: Object.fromEntries(
       Object.entries({
+        ...browserCommands,
         ...groupCommands,
         ...goalCommands,
         ...learningCommands,

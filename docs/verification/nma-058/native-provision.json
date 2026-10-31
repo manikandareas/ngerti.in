@@ -1,0 +1,222 @@
+{
+  "phase": "provision",
+  "started_at": "2026-10-31T08:05:03.979Z",
+  "checks": [
+    "explicit_billing_selection"
+  ],
+  "observations": {},
+  "codex_account": {
+    "id": "adb3115f-7e82-43e4-89af-3e2550683e38",
+    "owner_id": "7ba9c73a-373f-403b-9d70-2e1696a447cf",
+    "revision": 12,
+    "created_at": "2026-10-30T15:50:29.932Z",
+    "updated_at": "2026-10-31T03:33:59.587Z",
+    "kind": "connection",
+    "harness": "codex",
+    "authentication": {
+      "method": "native_login",
+      "billing_source": "subscription"
+    },
+    "state": "active",
+    "grant_revision": 7,
+    "account_id": "1a4a908aef634323d94a340a08c8330ca25340fc39fa938917a02cca44642a45",
+    "effective_billing_source": "subscription",
+    "login": "authenticated",
+    "discovery": "succeeded",
+    "models": [
+      {
+        "id": "gpt-6.1-sol",
+        "reasoning": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max",
+          "ultra"
+        ]
+      },
+      {
+        "id": "gpt-6-astra",
+        "reasoning": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max",
+          "ultra"
+        ]
+      },
+      {
+        "id": "gpt-6.1-terra",
+        "reasoning": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max",
+          "ultra"
+        ]
+      },
+      {
+        "id": "gpt-6-sol",
+        "reasoning": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max",
+          "ultra"
+        ]
+      },
+      {
+        "id": "gpt-6-luna",
+        "reasoning": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ]
+      },
+      {
+        "id": "gpt-5.6-sol",
+        "reasoning": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max",
+          "ultra"
+        ]
+      },
+      {
+        "id": "gpt-5.6-terra",
+        "reasoning": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max",
+          "ultra"
+        ]
+      },
+      {
+        "id": "gpt-5.6-luna",
+        "reasoning": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ]
+      }
+    ],
+    "inference": "succeeded",
+    "capabilities": {
+      "resume": "supported",
+      "steer": "supported",
+      "image_input": "unsupported",
+      "video_input": "unsupported",
+      "compaction": "unsupported",
+      "product_tools": "supported",
+      "settings": "supported",
+      "cancel": "supported",
+      "permission_requests": "unsupported",
+      "native_files": "supported",
+      "native_shell": "supported",
+      "native_code": "supported",
+      "native_git": "supported"
+    }
+  },
+  "muse_account": {
+    "id": "810c6e33-9d4c-4dd2-a319-913af1af591c",
+    "owner_id": "7ba9c73a-373f-403b-9d70-2e1696a447cf",
+    "revision": 3,
+    "created_at": "2026-10-31T08:05:04.050Z",
+    "updated_at": "2026-10-31T08:05:09.567Z",
+    "kind": "connection",
+    "harness": "muse",
+    "authentication": {
+      "method": "api_key",
+      "billing_source": "api_key",
+      "credential_ref": "50518761-7113-4ccc-bb41-1b2b6a54b673"
+    },
+    "state": "active",
+    "grant_revision": 3,
+    "account_id": "f3ea4320ba97606f970626627be52cd7bc38e516eb859c0740051ada03341a73",
+    "effective_billing_source": "api_key",
+    "login": "authenticated",
+    "discovery": "succeeded",
+    "models": [
+      {
+        "id": "muse-wonder-1.0",
+        "reasoning": [
+          "minimal",
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ]
+      },
+      {
+        "id": "muse-spark-1.3",
+        "reasoning": [
+          "minimal",
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ]
+      },
+      {
+        "id": "muse-spark-1.3-contributor",
+        "reasoning": [
+          "minimal",
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ]
+      },
+      {
+        "id": "muse-spark-1.2",
+        "reasoning": [
+          "minimal",
+          "low",
+          "medium",
+          "high",
+          "xhigh"
+        ]
+      },
+      {
+        "id": "muse-spark-1.2-contributor",
+        "reasoning": [
+          "minimal",
+          "low",
+          "medium",
+          "high",
+          "xhigh"
+        ]
+      }
+    ],
+    "inference": "not_attempted",
+    "capabilities": {
+      "resume": "supported",
+      "steer": "unknown",
+      "image_input": "unsupported",
+      "video_input": "unsupported",
+      "compaction": "unsupported",
+      "product_tools": "supported",
+      "settings": "supported",
+      "cancel": "supported",
+      "permission_requests": "supported",
+      "native_files": "unsupported",
+      "native_shell": "unsupported",
+      "native_code": "unsupported",
+      "native_git": "unsupported"
+    }
+  }
+}

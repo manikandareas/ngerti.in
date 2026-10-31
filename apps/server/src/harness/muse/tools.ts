@@ -3,6 +3,7 @@ import { z } from "zod";
 import type { ToolLease } from "../broker";
 import { HarnessError } from "../contracts";
 import { productToolCatalog, productToolNames } from "../product-tool-contracts";
+import { toolContentBlock } from "../tool-results";
 
 // MCP clients may add transport metadata; only name and arguments cross the app boundary.
 const toolCall = z.object({
@@ -129,7 +130,7 @@ export class MuseTools {
     const value = z
       .object({
         result: z.object({
-          content: z.array(z.object({ type: z.literal("text"), text: z.string() })),
+          content: z.array(toolContentBlock),
           isError: z.boolean(),
         }),
       })

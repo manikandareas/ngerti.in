@@ -1,0 +1,38 @@
+[
+  {
+    "evidence": "image-build-attempt-1.log",
+    "result": "failed",
+    "cause": "Lock resolved on macOS included PyObjC in the Linux build",
+    "correction": "Regenerated exact hashed dependencies for Linux aarch64 / Python 3.12; final image built successfully"
+  },
+  {
+    "evidence": "host-smoke-attempt-1.json",
+    "result": "failed",
+    "cause": "Docker inspect for a missing container returned an empty JSON array",
+    "correction": "Treat an empty array as missing; final real MCP smoke passed"
+  },
+  {
+    "evidence": "backend-tests-attempt-1.log",
+    "result": "203 pass, 1 fail",
+    "cause": "Existing entity-list assertion omitted the three new browser entities",
+    "correction": "Updated the contract assertion; final suite 210/210 pass"
+  },
+  {
+    "evidence": "native-start-attempt-1.json",
+    "result": "Codex inference succeeded; VNC verifier failed",
+    "cause": "Verifier sent the RFB version as a text WebSocket frame; gateway correctly requires binary frames",
+    "correction": "Use binary RFB; original Codex admission receipt was rechecked without another inference. Both initial tasks and framebuffer captures succeeded"
+  },
+  {
+    "evidence": "native-start-recheck-after-grant.json",
+    "result": "Verifier received CONFLICT",
+    "cause": "An overlapping receipt recheck requested a fresh browser observation while the expiry task owned the profile",
+    "correction": "No new inference or action replay. Final accounting uses original durable receipts and captures; do not count a verifier recheck as a new task"
+  },
+  {
+    "evidence": "unknown-browser.json",
+    "result": "one intentionally unknown action after a real successful click",
+    "cause": "Injected acknowledgement loss after native completion",
+    "correction": "Kept unknown across restart, observed saved note, and proved exactly one click dispatch. Unknown is not relabeled success"
+  }
+]

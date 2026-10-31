@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { browserActionInput } from "../browser/contracts";
 import { agentInput, agentUpdate, id } from "../contracts";
 import {
   captureGoal,
@@ -20,6 +21,9 @@ import {
 import { relativePath, uploadInput } from "../workspace-contracts";
 
 export const productToolSchemas = {
+  "ngertiin.browser_sessions": z.strictObject({}),
+  "ngertiin.browser_open": z.strictObject({ profile_id: id }),
+  "ngertiin.browser_action": browserActionInput,
   "ngertiin.list_goals": z.strictObject({}),
   "ngertiin.capture_goal": captureGoal.extend({ command_id: id }),
   "ngertiin.report_goal": reportGoal.safeExtend({ command_id: id }),

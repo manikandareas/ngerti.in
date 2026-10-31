@@ -1,0 +1,20 @@
+bun test v1.3.10 (30e609e0)
+
+apps/server/tests/browser/domain.test.ts:
+(pass) browser grants are explicit per conversation and action permission is separate from viewing [42.34ms]
+(pass) actions commit a receipt before dispatch and exact retry never repeats the native effect [33.63ms]
+(pass) revocation during connect fences final native action dispatch [12.05ms]
+(pass) stop rejects late actions without dispatching browser effects [13.59ms]
+(pass) unknown acknowledgements survive application restart without blind replay [24.17ms]
+(pass) foreign targets, stale generations, unlisted tools and local profile URLs are rejected [17.21ms]
+(pass) concurrent native calls serialize by profile, and unknown effects remain held after close [27.55ms]
+(pass) cancellation during a dispatched effect holds unknown and suppresses returned page content [117.38ms]
+(pass) indexed input requires a fresh observation and exact native target [31.71ms]
+(pass) HTTP browser resources require owner authentication and explicit scoped grants [71.26ms]
+(pass) single-use view tickets reject foreign origins and existing viewers close on grant change [126.58ms]
+(pass) callback credentials and raw browser errors are excluded from tool output [0.43ms]
+
+ 12 pass
+ 0 fail
+ 47 expect() calls
+Ran 12 tests across 1 file. [718.00ms]

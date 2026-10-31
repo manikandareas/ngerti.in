@@ -3,6 +3,8 @@ import { Elysia } from "elysia";
 import { z } from "zod";
 import { Artifacts } from "./artifacts";
 import type { Background } from "./background";
+import { browserCapabilities, browserProfileInput, browserScope } from "./browser/contracts";
+import { BrowserViews } from "./browser/view";
 import {
   admissionInput,
   agentInput,
@@ -72,6 +74,8 @@ export function createApi(
   const skills = new ApplicationSkills(lifecycle);
   const artifacts = new Artifacts(lifecycle);
   const workspaces = artifacts.workspaces;
+  const browsers = services.tools.browsers;
+  let browserViews: BrowserViews | undefined;
   function command(request: Request, body: unknown, action: () => unknown) {
     const commandId = id.parse(request.headers.get("Idempotency-Key"));
     return lifecycle.store.command(
@@ -107,6 +111,7 @@ export function createApi(
         },
       };
     })
+    .onStop(() => browserViews?.close())
     .get("/health/live", () => ({ status: "alive" }))
     .onRequest(({ request }) => {
       if (request.method === "GET" && new URL(request.url).pathname === "/health/live") return;
@@ -562,6 +567,58 @@ export function createApi(
           lifecycle.authorizeDispatch(run.id, run.dispatch_token);
         }),
       { body: publicationInput },
+    )
+    .get("/v1/browser/contracts", () => browserCapabilities())
+    .get("/v1/browser/profiles", ({ query }) => browsers.list(browserScope.parse(query)), {
+      query: browserScope,
+    })
+    .post(
+      "/v1/browser/profiles",
+      ({ request, body }) => command(request, body, () => browsers.create(body)),
+      { body: browserProfileInput },
+    )
+    .post(
+      "/v1/browser/profiles/:id/grants",
+      ({ request, params, body }) =>
+        command(request, body, () =>
+          browsers.grant(params.id, body.expected_revision, body.profile),
+        ),
+      {
+        params: z.object({ id }),
+        body: z.strictObject({
+          expected_revision: z.int().positive(),
+          profile: browserProfileInput,
+        }),
+      },
+    )
+    .post("/v1/browser/profiles/:id/open", ({ params, body }) => browsers.open(params.id, body), {
+      params: z.object({ id }),
+      body: browserScope,
+    })
+    .get("/v1/browser/sessions/:id", ({ params, query }) => browsers.observe(params.id, query), {
+      params: z.object({ id }),
+      query: browserScope,
+    })
+    .get(
+      "/v1/browser/sessions/:id/receipts",
+      ({ params, query }) => browsers.receipts(params.id, query),
+      { params: z.object({ id }), query: browserScope },
+    )
+    .post(
+      "/v1/browser/sessions/:id/view",
+      ({ params, body, request }) => {
+        browserViews ??= new BrowserViews(browsers);
+        return browserViews.issue(params.id, body, new URL(request.url).origin);
+      },
+      { params: z.object({ id }), body: browserScope },
+    )
+    .post(
+      "/v1/browser/sessions/:id/control",
+      ({ params, body }) => browsers.control(params.id, body, body.operation),
+      {
+        params: z.object({ id }),
+        body: browserScope.extend({ operation: z.enum(["detach", "close", "reset"]) }),
+      },
     )
     .post(
       "/v1/runs",

@@ -1,0 +1,54 @@
+{
+  "codex": {
+    "dom_size": [
+      1279,
+      812
+    ],
+    "vnc_size": [
+      1280,
+      900
+    ],
+    "dom_marker_bounds": [
+      40,
+      128,
+      279,
+      247
+    ],
+    "vnc_marker_bounds": [
+      40,
+      215,
+      279,
+      334
+    ],
+    "browser_chrome_offset_y": 87,
+    "matching_pixels": 1033029,
+    "pixels": 1038548,
+    "matching_fraction": 0.9946858498596117
+  },
+  "muse": {
+    "dom_size": [
+      1279,
+      812
+    ],
+    "vnc_size": [
+      1280,
+      900
+    ],
+    "dom_marker_bounds": [
+      40,
+      128,
+      279,
+      247
+    ],
+    "vnc_marker_bounds": [
+      40,
+      215,
+      279,
+      334
+    ],
+    "browser_chrome_offset_y": 87,
+    "matching_pixels": 1033123,
+    "pixels": 1038548,
+    "matching_fraction": 0.9947763608422528
+  }
+}

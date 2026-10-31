@@ -72,6 +72,7 @@ async function stop() {
   await app.stop();
   await background.stop();
   await broker.close();
+  await tools.browsers.shutdown();
   await Promise.allSettled([codexAccounts.close(), museAccounts.close()]);
   store.close();
   process.exit(0);

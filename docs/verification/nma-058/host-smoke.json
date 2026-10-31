@@ -1,0 +1,32 @@
+{
+  "started_at": "2026-10-31T08:03:27.650Z",
+  "checks": [
+    "direct_mcp_state_native_target",
+    "managed_loopback_rfb"
+  ],
+  "setup_ms": 5438.163208,
+  "navigation": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Navigated to: https://example.com"
+      }
+    ],
+    "isError": false
+  },
+  "state": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"binding\": {\n    \"native_session_id\": \"06ae5a0d-517a-77cc-8000-bb5af9b7b2bd\",\n    \"target_id\": \"47908A64DD579FF1576DCFF49DF3F35E\",\n    \"tabs\": [\n      {\n        \"target_id\": \"47908A64DD579FF1576DCFF49DF3F35E\",\n        \"tab_id\": \"F35E\"\n      }\n    ]\n  },\n  \"url\": \"https://example.com/\",\n  \"title\": \"example.com\",\n  \"tabs\": [\n    {\n      \"url\": \"https://example.com/\",\n      \"title\": \"example.com\"\n    }\n  ],\n  \"interactive_elements\": [\n    {\n      \"index\": 33,\n      \"tag\": \"a\",\n      \"text\": \"Learn more\",\n      \"href\": \"https://iana.org/help/example-domains\"\n    }\n  ],\n  \"viewport\": {\n    \"width\": 1264,\n    \"height\": 756\n  },\n  \"page\": {\n    \"width\": 1264,\n    \"height\": 809\n  },\n  \"scroll\": {\n    \"x\": 0,\n    \"y\": 0\n  },\n  \"screenshot_dimensions\": {\n    \"width\": 1264,\n    \"height\": 756\n  }\n}"
+      },
+      {
+        "type": "image",
+        "data": "[retained as host-browser.png]",
+        "mimeType": "image/png"
+      }
+    ],
+    "isError": false
+  },
+  "vnc_port_bound": true
+}

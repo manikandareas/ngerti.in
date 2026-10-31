@@ -1,6 +1,10 @@
 import { timingSafeEqual } from "node:crypto";
+import { dirname } from "node:path";
 import { z } from "zod";
 import { Artifacts } from "../artifacts";
+import { type BrowserHost, DockerBrowserHost } from "../browser/host";
+import { Browsers } from "../browser/service";
+import { registerBrowserTools } from "../browser/tools";
 import { type agentInput, type agentUpdate, DomainError, type Entity } from "../contracts";
 import { registerGoalTools } from "../goals/tools";
 import { authorizeResponsibilityWork } from "../goals/work-fence";
@@ -23,6 +27,7 @@ type Tool = {
   execute(input: unknown, access: ToolAccess): unknown | Promise<unknown>;
 };
 export class ProductTools {
+  readonly browsers: Browsers;
   readonly #leases = new Map<string, ToolScope>();
   readonly #negotiated = new Set<string>();
   readonly #initialized = new Set<string>();
@@ -30,7 +35,13 @@ export class ProductTools {
   constructor(
     readonly lifecycle: Lifecycle,
     private readonly completed: (scope: ToolScope, name: string) => void = () => {},
+    browserHost?: BrowserHost,
   ) {
+    this.browsers = new Browsers(
+      lifecycle,
+      browserHost ?? new DockerBrowserHost(dirname(lifecycle.store.path), lifecycle.store.ownerId),
+    );
+    registerBrowserTools(this);
     registerLearningTools(this);
     registerGroupTools(this);
     registerGoalTools(this);
@@ -429,8 +440,16 @@ export class ProductTools {
         try {
           const value = await this.call(token, scope, params.name, params.arguments);
           result = {
-            content: [{ type: "text", text: JSON.stringify(value) }],
-            structuredContent: { result: value },
+            content: toolContent(params.name, value),
+            structuredContent: {
+              result:
+                params.name === "ngertiin.browser_action" &&
+                value &&
+                typeof value === "object" &&
+                "receipt" in value
+                  ? { receipt: value.receipt }
+                  : value,
+            },
             isError: false,
           };
         } catch (error) {
@@ -452,4 +471,20 @@ export class ProductTools {
     }
     return { jsonrpc: "2.0", id: request.id, result };
   }
+}
+
+function toolContent(name: string, value: unknown) {
+  if (
+    name === "ngertiin.browser_action" &&
+    value &&
+    typeof value === "object" &&
+    "content" in value &&
+    "receipt" in value
+  ) {
+    return [
+      { type: "text", text: JSON.stringify({ receipt: value.receipt }) },
+      ...(value.content as unknown[]),
+    ];
+  }
+  return [{ type: "text", text: JSON.stringify(value) }];
 }

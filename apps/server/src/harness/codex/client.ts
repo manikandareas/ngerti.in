@@ -7,6 +7,7 @@ import type { HarnessClient, Inspection, RecoveryObservation, SessionIdentity } 
 import type { LaunchContext } from "../context";
 import { HarnessError, type Settings } from "../contracts";
 import { productToolNames } from "../product-tool-contracts";
+import { toolContentBlock } from "../tool-results";
 import { CodexRpc, type RpcMessage } from "./rpc";
 
 export const codexCapabilities = {
@@ -470,7 +471,7 @@ export class CodexClient implements HarnessClient {
     const result = z
       .object({
         result: z.object({
-          content: z.array(z.object({ type: z.literal("text"), text: z.string() })),
+          content: z.array(toolContentBlock),
           isError: z.boolean(),
         }),
       })
@@ -478,10 +479,14 @@ export class CodexClient implements HarnessClient {
     if (this.#active !== active || active.request.signal.aborted)
       throw new HarnessError("NATIVE_REJECTED");
     this.rpc.respond(message.id, {
-      contentItems: result.content.map((item) => ({
-        type: "inputText",
-        text: this.context.redactor.text(item.text),
-      })),
+      contentItems: result.content.map((item) =>
+        item.type === "text"
+          ? {
+              type: "inputText",
+              text: this.context.redactor.text(item.text),
+            }
+          : { type: "inputImage", imageUrl: `data:${item.mimeType};base64,${item.data}` },
+      ),
       success: !result.isError,
     });
     active.request.onEvent({ type: "activity", activity: "generating" });

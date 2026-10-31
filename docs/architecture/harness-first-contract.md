@@ -1,4 +1,4 @@
-# Harness-first domain and API contract v1.5.0
+# Harness-first domain and API contract v1.6.0
 
 NMA-052 adds the [agent/conversation API](agent-conversation-api.md). NMA-053 adds the [conversation control, streaming and recovery contract](conversation-control-api.md), which supersedes the foundation-only queue/streaming/recovery limits below. NMA-054 adds the [workspace/file/artifact API](workspace-artifact-api.md) and scoped native coding. The executable schemas describe the complete current version; NMA-060 remains pending.
 
@@ -20,6 +20,10 @@ All entities contain server-generated UUID `id`, server-owned `owner_id`, intege
 | Occurrence | Routine ID, generation, scheduled UTC time and admitted run ID. The tuple `(routine_id, routine_generation, scheduled_for)` is unique. |
 | Workspace | Active owner/agent/thread file authority, managed or explicitly bound project root, root identity and revocation. |
 | Artifact | Immutable verified bytes, scope, SHA-256, size, source path and native publication/sharing provenance. See the [workspace/artifact contract](workspace-artifact-api.md). |
+| Memory | Stable scoped identity, optimistic revisions, current fact or empty permanent tombstone; historical events/receipts retained. |
+| Skill / Skill revision | Application-owned package identity and immutable versioned description/instructions/assets with verified SHA-256. |
+| Skill assignment | Per-agent scoped enablement of an explicit application package version; revisions fence concurrent changes. |
+| Harness inventory | Binding-scoped native skill catalog and read-only inherited package snapshots, with separate native/folder availability. See the [memory/skills API](memory-skills-api.md). |
 | Binding | Agent/thread/connection/harness to native-session identity, with a generation. A native session cannot be reused across DM/group threads for the same connection. Binding/rotation/resume behavior is completed by the broker/adapters. |
 
 SQLite stores typed projections, immutable event envelopes and command receipts. A mutation and its events/receipt share one transaction; rolled-back changes produce no replayable event. Optimistic revision checks reject stale updates. A lifetime authority lock prevents simultaneous application writers for the same state directory. Schema/application/owner mismatches are startup errors rather than permission to reset data.

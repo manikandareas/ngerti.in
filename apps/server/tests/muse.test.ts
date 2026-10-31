@@ -366,6 +366,76 @@ for (const input of ["question", "approval"])
       input === "question" ? "SQLite" : "deny",
     );
   });
+test("replayed Muse approval notifications are reconciled before display or dispatch", async () => {
+  const lane = setup();
+  const run = await admit(lane, "approval-stale");
+  await waitRunning(run.id);
+  const response = await fetch(
+    `http://127.0.0.1:${app.server?.port}/v1/runs/${run.id}/interactions`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    },
+  );
+  expect(await response.json()).toEqual({ approvals: [], user_inputs: [] });
+  const stale = await fetch(`http://127.0.0.1:${app.server?.port}/v1/runs/${run.id}/interactions`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      type: "approval",
+      request_id: "approval-1",
+      source_index: 2,
+      choice_id: "deny",
+    }),
+  });
+  expect(stale.status).toBe(409);
+  await post(`/v1/runs/${run.id}/cancel`);
+  background.notifyControls();
+  await background.idle();
+  expect(f.store.get("run", run.id).status).toBe("cancelled");
+});
+
+test("a late pending-state response cannot repopulate interactions after native completion", async () => {
+  const lane = setup();
+  const run = await admit(lane, "approval-finish-during-read");
+  await waitRunning(run.id);
+  const response = await fetch(
+    `http://127.0.0.1:${app.server?.port}/v1/runs/${run.id}/interactions`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    },
+  );
+  expect(response.status).toBe(409);
+  await background.idle();
+  expect(f.store.get("run", run.id).status).toBe("succeeded");
+  const next = await admit(lane, "Next work after pending-state race");
+  await background.idle();
+  expect(f.store.get("run", next.id).status).toBe("succeeded");
+});
+
+test("revocation during a native pending-state read fences the subsequent approval decision", async () => {
+  const lane = setup();
+  const run = await admit(lane, "approval-delayed");
+  await waitRunning(run.id);
+  const responding = fetch(`http://127.0.0.1:${app.server?.port}/v1/runs/${run.id}/interactions`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      type: "approval",
+      request_id: "approval-1",
+      source_index: 2,
+      choice_id: "deny",
+    }),
+  });
+  await Bun.sleep(15);
+  new Connections(f.lifecycle).revoke(lane.connection.id);
+  expect((await responding).status).toBe(403);
+  await post(`/v1/runs/${run.id}/cancel`);
+  background.notifyControls();
+  await background.idle();
+  expect(f.store.get("run", run.id).status).toBe("cancelled");
+  expect(f.store.answer(run.id)?.text ?? "").not.toContain("Permission deny");
+});
+
 for (const [input, status] of [
   ["failed", "failed"],
   ["disconnect", "unknown"],

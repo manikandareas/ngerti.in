@@ -1,6 +1,14 @@
 import { z } from "zod";
 import { connectionFields } from "./harness/contracts";
 import {
+  harnessInventoryFields,
+  learningCommands,
+  memoryFields,
+  skillAssignmentFields,
+  skillFields,
+  skillRevisionFields,
+} from "./learning/contracts";
+import {
   artifactContentFields,
   publicationInput,
   uploadInput,
@@ -8,7 +16,7 @@ import {
   workspaceInput,
 } from "./workspace-contracts";
 
-export const CONTRACT_VERSION = "1.5.0";
+export const CONTRACT_VERSION = "1.6.0";
 export const id = z.uuid();
 const text = z.string().min(1).max(100_000);
 const base = {
@@ -296,7 +304,29 @@ export const control = z.strictObject({
     .regex(/^[A-Z_]+$/)
     .nullable(),
 });
+export const memory = z.strictObject({ ...base, ...memoryFields, kind: z.literal("memory") });
+export const skill = z.strictObject({ ...base, ...skillFields, kind: z.literal("skill") });
+export const skillRevision = z.strictObject({
+  ...base,
+  ...skillRevisionFields,
+  kind: z.literal("skill_revision"),
+});
+export const skillAssignment = z.strictObject({
+  ...base,
+  ...skillAssignmentFields,
+  kind: z.literal("skill_assignment"),
+});
+export const harnessInventory = z.strictObject({
+  ...base,
+  ...harnessInventoryFields,
+  kind: z.literal("harness_inventory"),
+});
 export const schemas = {
+  memory,
+  skill,
+  skill_revision: skillRevision,
+  skill_assignment: skillAssignment,
+  harness_inventory: harnessInventory,
   connection,
   agent,
   thread,
@@ -313,6 +343,11 @@ export const schemas = {
 export type Kind = keyof typeof schemas;
 export type Entity<K extends Kind = Kind> = z.infer<(typeof schemas)[K]>;
 export const kindSchema = z.enum([
+  "memory",
+  "skill",
+  "skill_revision",
+  "skill_assignment",
+  "harness_inventory",
   "connection",
   "agent",
   "thread",
@@ -344,6 +379,11 @@ export const domainEvent = z.strictObject({
   revision: z.int().positive(),
   created_at: z.iso.datetime(),
   data: z.discriminatedUnion("kind", [
+    memory,
+    skill,
+    skillRevision,
+    skillAssignment,
+    harnessInventory,
     connection,
     agent,
     thread,
@@ -388,6 +428,7 @@ export function contractDocument() {
     event: z.toJSONSchema(domainEvent, { io: "input" }),
     commands: Object.fromEntries(
       Object.entries({
+        ...learningCommands,
         agent: agentInput,
         update_agent: agentUpdate,
         thread: threadInput,

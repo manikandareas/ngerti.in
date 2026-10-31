@@ -8,6 +8,8 @@ Bun 1.3.10, TypeScript 7.0.2, Elysia 1.4.30 and Zod 4.4.3. Run `make dev` from t
 - `conversations.ts`, `agent-instructions.ts`: atomic Tobi/DM/welcome setup, consistent conversation reads and native profile context. See the [agent/conversation API and examples](../../docs/architecture/agent-conversation-api.md).
 - `workspaces.ts`, `workspace-files.ts`, `workspace-posix.ts`: scoped project binding and descriptor-relative file access; Bun compiles the fixed `workspace-openat.c` ABI wrapper.
 - `artifacts.ts`: immutable bytes, explicit sharing and durable native publication. See the [workspace/artifact API](../../docs/architecture/workspace-artifact-api.md).
+- `learning/`: scoped facts/tombstones, immutable application skill packages, pinned assignments and trusted learning-tool handlers. See the [memory/skills API](../../docs/architecture/memory-skills-api.md).
+- `harness/inherited-skills.ts`: read-only native catalogs and confined inherited package snapshots, separate from app packages.
 - `background.ts`: scheduler and bounded concurrent dispatcher; injectable executor port, explicitly registered Codex and Muse adapters.
 - `harness/`: broker/client contracts, host version detection, isolated credential/process context, connection projections and scoped MCP product tools. See the [broker contract](../../docs/architecture/harness-broker-contract.md).
 - `api.ts`: Elysia HTTP validation, local authentication, commands, reads and replay.

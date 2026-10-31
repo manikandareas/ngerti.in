@@ -1,0 +1,67 @@
+{
+  "baseline_commit": "71d6ac49830d9cae1c5c6b8591530a44312cff0c",
+  "openbot": {
+    "repository": "https://github.com/nightly-labs/openbot",
+    "revision": "01e4b18e238e5de72a3570162c9f4275bb585786",
+    "observed_modules": [
+      {
+        "path": "src/backend/agent/agent-memories.ts",
+        "sha256": "f4ab02434a0107860fdd3ea5665a62c55e76737b3bfb75f0a174d78b5693aabc"
+      },
+      {
+        "path": "src/backend/agent/memory-review.ts",
+        "sha256": "16e582a4bf42191ad0dedd0318e288656a19e36ab4cc6581d1d3a181bfb6a089"
+      },
+      {
+        "path": "src/backend/agent/skill-tools.ts",
+        "sha256": "9cf79b419038352cc6154b5e543267d56eb12eda44155c88745e0e4c516a6f25"
+      },
+      {
+        "path": "docs/architecture/skills-and-plugins.md",
+        "sha256": "6f8237fda2f1843e3ebdce0573ec21111db9fc5757cf5509338c5791f601f870"
+      },
+      {
+        "path": "src/backend/local-mcp-bridge.ts",
+        "sha256": "5c1ead2d7ea759b88213dc7f4862063a13f1e7f8c12f43708b427860a659af0c"
+      }
+    ],
+    "adoption": [
+      "Memory identity, revision fencing and scoped recall; permanent local tombstones and acknowledged atomic receipts replace volatile turn staging.",
+      "App-owned local skill versions and pinned installation; SQLite packages replace filesystem copies into native installations.",
+      "Separate inherited/home and application skills; isolated connection/current-workspace discovery replaces host-global and shared-directory reads.",
+      "Trusted structured session bridge; memory-only run leases avoid shared-token caller inference.",
+      "Memory review source observed for stale-review risks; its extra model reviewer/scheduler is not adopted."
+    ]
+  },
+  "stack": {
+    "bun": "1.3.10",
+    "typescript": "7.0.2",
+    "elysia": "1.4.30",
+    "zod": "4.4.3",
+    "muse_sdk": "1.4.14",
+    "codex_cli": "0.165.0",
+    "muse_cli": "1.4.14-R7309.1",
+    "application_contract": "1.6.0",
+    "broker_contract": "1.4.0",
+    "mcp_protocol": "2025-06-18",
+    "platform": "macOS arm64"
+  },
+  "native_protocols": {
+    "codex": [
+      "skills/list",
+      "thread/start config.project_doc_max_bytes=0"
+    ],
+    "muse": [
+      "skill/list",
+      "approval/listPending",
+      "approval/decide"
+    ],
+    "muse_generated_declarations_sha256": "48c5b53e2f83c38298b6d84def7c396838cb43fd6a5b0e612eacbe0362c39954",
+    "codex_generated_types": [
+      "v2/SkillsListParams.ts",
+      "v2/SkillsListEntry.ts",
+      "v2/SkillMetadata.ts"
+    ]
+  },
+  "upgrade": "Diff the five pinned Openbot modules and native generated skill/interaction schemas. Preserve scoped leases, explicit sharing, revision/tombstone checks, immutable app versions and zero native-package writes. Re-run API/fixture, symlink/hardlink, process-crash, per-adapter native memory/skill and restart probes; retain unsupported/unknown states. Do not import global-memory, host-home, marketplace, installer or extra runtime scope."
+}

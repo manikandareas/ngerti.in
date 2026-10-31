@@ -1,0 +1,43 @@
+{
+  "harness": "codex",
+  "phase": "resume",
+  "started_at": "2026-10-31T04:31:16.595Z",
+  "results": [
+    {
+      "case": "restart_resume_immutable_assets_pinned_assignment_and_stale_receipt_no_resurrection",
+      "status": "pass"
+    }
+  ],
+  "runs": [
+    {
+      "id": "e1a56f33-42ed-46b0-b78d-514e0053132f",
+      "prompt_sha256": "73cb9ec1215e703879bcf76375e7cfece9579e10bee9363cbfa510cceae1c385",
+      "status": "succeeded",
+      "diagnostic": null,
+      "product_tools": [
+        "ngertiin.write_memory",
+        "ngertiin.list_memories",
+        "ngertiin.read_skill",
+        "ngertiin.read_skill",
+        "ngertiin.list_skills"
+      ],
+      "binding_id": "d188f87c-ae4e-4ab5-b0b8-c4904d3b1c7d",
+      "native_run_id": "01a19039-f191-7dc3-b753-14c698af4d13",
+      "answer": "I’ll replay the exact command, then check that the memory remains deleted and the skill versions and assignment survived the restart.Verified after restart:\n\n- Replay returned the old revision 2 receipt; current memory remains a **deleted revision 3 tombstone**.\n- Skill v1 asset: `\"42006\\n\"`\n- Skill v2 asset: `\"Total: 42006\\n\"`\n- Assignment remains enabled and pinned to **version 1**.\n\nNo new identities, changes, assignments, or files were created."
+    }
+  ],
+  "agent_id": "c018ab45-4930-4e66-bb7c-15e6c5429603",
+  "thread_id": "0816849f-f748-439c-9883-0837ca044079",
+  "group_id": "8459d349-0e57-4f66-9866-a86234dd4d07",
+  "workspace_id": "9932f99a-f26d-43a0-b384-61bcac255647",
+  "connection_id": "adb3115f-7e82-43e4-89af-3e2550683e38",
+  "memory_id": "d1deebbd-2535-48b3-a6e4-a2b02cd47cf8",
+  "correction_command": "5192066e-0e93-4d8b-a0d5-cfce945347fd",
+  "skill_id": "eb0d16f5-c7a1-4995-86e0-ede7f2c2c8e0",
+  "binding_id": "d188f87c-ae4e-4ab5-b0b8-c4904d3b1c7d",
+  "native_session_id": "01a19035-f308-7fc1-98ff-361b3d5f3022",
+  "billing": "subscription",
+  "model": "gpt-6.1-sol",
+  "status": "pass",
+  "finished_at": "2026-10-31T04:31:34.080Z"
+}

@@ -122,9 +122,12 @@ async function receive(message: Message) {
       reply({ thread: { id: p.threadId, turns: sessions[p.threadId as string]?.turns ?? [] } });
       break;
     }
+    case "skills/list":
+      reply({ data: [{ cwd: Array.isArray(p.cwds) ? p.cwds[0] : "", skills: [], errors: [] }] });
+      break;
     case "turn/start": {
       if (!p.threadId || !p.input) throw new Error("Missing turn input.");
-      const text = p.input[0].text;
+      const text = p.input.at(-1)?.text ?? "";
       if (text === "reject") {
         send({ id: message.id, error: { code: -1, message: "sk-native-secret" } });
         break;

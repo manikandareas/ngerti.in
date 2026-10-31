@@ -1,8 +1,26 @@
 import { z } from "zod";
 import { agentInput, agentUpdate, id } from "../contracts";
+import {
+  memoryDelete,
+  memoryQuery,
+  memoryWrite,
+  skillAssign,
+  skillCreate,
+  skillRead,
+  skillRevise,
+} from "../learning/contracts";
 import { relativePath, uploadInput } from "../workspace-contracts";
 
 export const productToolSchemas = {
+  "ngertiin.list_memories": memoryQuery,
+  "ngertiin.write_memory": memoryWrite.extend({ command_id: id }),
+  "ngertiin.delete_memory": memoryDelete.extend({ command_id: id }),
+  "ngertiin.list_skills": z.strictObject({}),
+  "ngertiin.read_skill": skillRead,
+  "ngertiin.read_harness_skill": z.strictObject({ key: z.string().min(1).max(200) }),
+  "ngertiin.create_skill": skillCreate.extend({ command_id: id }),
+  "ngertiin.revise_skill": skillRevise.extend({ command_id: id }),
+  "ngertiin.assign_skill": skillAssign.extend({ command_id: id }),
   "ngertiin.read_run_context": z.strictObject({}),
   "ngertiin.describe_tools": z.strictObject({}),
   "ngertiin.list_agents": z.strictObject({}),

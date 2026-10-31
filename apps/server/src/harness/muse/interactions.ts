@@ -1,4 +1,4 @@
-import type { z } from "zod";
+import { z } from "zod";
 import { HarnessError, interactionAnswer } from "../contracts";
 import { approval, userInput } from "./protocol";
 import type { MuseTransport } from "./transport";
@@ -13,6 +13,14 @@ export class MuseInteractions {
   clear() {
     this.approvals.clear();
     this.questions.clear();
+  }
+  replacePending(raw: unknown) {
+    const snapshot = z
+      .object({ approvals: z.array(approval), userInputs: z.array(userInput) })
+      .parse(raw);
+    this.clear();
+    for (const value of snapshot.approvals) this.approvals.set(value.approvalId, value);
+    for (const value of snapshot.userInputs) this.questions.set(value.userInputId, value);
   }
   snapshot() {
     return { approvals: [...this.approvals.values()], user_inputs: [...this.questions.values()] };

@@ -151,6 +151,8 @@ async function handle(request: {
         lastTurn,
         history: { mode: "inline", items: p.excludeItems === false ? items : [], snapshot: null },
       });
+    case "skill/list":
+      return result({ skills: [] });
     case "turn/start": {
       const input = p.input.at(-1)?.text ?? "";
       if (input === "reject") return fail(request.id);
@@ -228,7 +230,12 @@ async function handle(request: {
             },
           ],
         });
-      if (input === "approval")
+      if (
+        input === "approval" ||
+        input === "approval-delayed" ||
+        input === "approval-stale" ||
+        input === "approval-finish-during-read"
+      )
         return notify("approval/requested", {
           approvalId: "approval-1",
           currentRequirementId: { approvalId: "approval-1", sourceIndex: 2 },
@@ -284,6 +291,74 @@ async function handle(request: {
       result({ turnId: p.expectedTurnId, commandId: p.commandId, status: "accepted" });
       finish(p.input[0].text);
       return;
+    case "approval/listPending":
+      if (active?.input === "approval-delayed") {
+        setTimeout(
+          () =>
+            result({
+              approvals: [
+                {
+                  approvalId: "approval-1",
+                  currentRequirementId: { approvalId: "approval-1", sourceIndex: 2 },
+                  availableChoices: [{ choiceId: "deny", decision: "denied", scope: "once" }],
+                  subject: { kind: "command" },
+                },
+              ],
+              userInputs: [],
+            }),
+          75,
+        );
+        return;
+      }
+      if (active?.input === "approval-finish-during-read") {
+        finish("Completed while pending state was in flight");
+        setTimeout(
+          () =>
+            result({
+              approvals: [
+                {
+                  approvalId: "approval-1",
+                  currentRequirementId: { approvalId: "approval-1", sourceIndex: 2 },
+                  availableChoices: [{ choiceId: "deny", decision: "denied", scope: "once" }],
+                  subject: { kind: "command" },
+                },
+              ],
+              userInputs: [],
+            }),
+          50,
+        );
+        return;
+      }
+      return result({
+        approvals:
+          active?.input === "approval"
+            ? [
+                {
+                  approvalId: "approval-1",
+                  currentRequirementId: { approvalId: "approval-1", sourceIndex: 2 },
+                  availableChoices: [{ choiceId: "deny", decision: "denied", scope: "once" }],
+                  subject: { kind: "command", command: "fixture command" },
+                },
+              ]
+            : [],
+        userInputs:
+          active?.input === "question"
+            ? [
+                {
+                  userInputId: "question-1",
+                  questions: [
+                    {
+                      id: "q",
+                      header: "Choice",
+                      question: "Choose a store",
+                      options: [{ label: "SQLite" }, { label: "Postgres" }],
+                      selection: { mode: "single" },
+                    },
+                  ],
+                },
+              ]
+            : [],
+      });
     case "approval/decide":
       notify("approval/resolved", { approvalId: p.approvalId });
       result({ status: "accepted", commandId: p.commandId });

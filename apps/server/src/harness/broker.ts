@@ -2,6 +2,8 @@ import { agentInstructions } from "../agent-instructions";
 import { Artifacts } from "../artifacts";
 import type { ExecutorContext, HarnessExecutor } from "../background";
 import { DomainError, type Entity } from "../contracts";
+import type { NativeSkillMetadata } from "../learning/contracts";
+import { Memories } from "../learning/memories";
 import type { Lifecycle } from "../lifecycle";
 import { RunControls } from "../run-controls";
 import { canonical } from "../store";
@@ -19,6 +21,7 @@ import {
   settings,
   terminal,
 } from "./contracts";
+import { persistInheritedSkills, skillInstructions } from "./inherited-skills";
 import type { ProductTools } from "./tools";
 
 export type SessionIdentity = { native_session_id: string };
@@ -39,6 +42,7 @@ export type RecoveryObservation = {
 /** One client/process per connection + agent + thread. No global account/model mutation. */
 export interface HarnessClient {
   inspect(): Promise<Inspection>;
+  skills?(): Promise<NativeSkillMetadata[]>;
   discoverModels(): Promise<Entity<"connection">["models"]>;
   start(settings: Settings): Promise<SessionIdentity>;
   resume(identity: SessionIdentity, settings: Settings): Promise<SessionIdentity>;
@@ -47,6 +51,7 @@ export interface HarnessClient {
     identity: SessionIdentity;
     run_id: string;
     text: string;
+    learning_context?: string;
     settings: Settings;
     tools: ToolLease;
     signal: AbortSignal;
@@ -227,6 +232,7 @@ export class HarnessBroker {
         instructions: [
           agentInstructions(initial.agent),
           this.historyContext(threadId, agentId, initial.agent.revision),
+          this.workspaceGuidance(workspaces, workspace.id),
           `Your authorized workspace is ${launch.workspace?.root}. Use ngertiin.read_run_context for explicit input attachments. Publish downloadable output only by calling ngertiin.publish_artifact with a workspace-relative path and a fresh command_id. A path mentioned in prose does not publish an artifact.`,
         ]
           .filter(Boolean)
@@ -309,6 +315,7 @@ export class HarnessBroker {
       )
         throw new HarnessError("PROTOCOL_ERROR");
       if (this.#closed) throw new HarnessError("ADAPTER_UNAVAILABLE");
+      const inherited = await this.nativeSkills(client);
       const latest = this.member(threadId, agentId);
       if (
         this.#closed ||
@@ -319,6 +326,7 @@ export class HarnessBroker {
         throw new DomainError("STALE_DISPATCH");
       workspaces.get(workspace.id);
       const binding = this.lifecycle.bind(threadId, agentId, identity.native_session_id, workspace);
+      persistInheritedSkills(this.lifecycle, launch, binding.id, inherited);
       const session = {
         client,
         launch,
@@ -593,12 +601,38 @@ export class HarnessBroker {
   async interactions(runId: string) {
     const session = await this.interactionSession(runId);
     if (!session.client.interactions) throw new HarnessError("CAPABILITY_UNSUPPORTED");
-    return session.client.interactions(runId);
+    const snapshot = await session.client.interactions(runId);
+    if ((await this.interactionSession(runId)) !== session) throw new DomainError("STALE_DISPATCH");
+    return snapshot;
   }
   async respond(runId: string, answer: unknown) {
     const session = await this.interactionSession(runId);
     if (!session.client.respond) throw new HarnessError("CAPABILITY_UNSUPPORTED");
+    // Reconcile native pending state, then recheck application grants after that asynchronous read.
+    if (session.client.interactions) await session.client.interactions(runId);
+    if ((await this.interactionSession(runId)) !== session) throw new DomainError("STALE_DISPATCH");
     return session.client.respond(runId, answer);
+  }
+  private async nativeSkills(client: HarnessClient) {
+    if (!client.skills) return { native_catalog: [], native_state: "unknown" as const };
+    try {
+      return {
+        native_catalog: await bounded(client.skills(), this.timeouts.request_ms),
+        native_state: "supported" as const,
+      };
+    } catch {
+      return { native_catalog: [], native_state: "unknown" as const };
+    }
+  }
+  private workspaceGuidance(workspaces: Workspaces, workspaceId: string) {
+    try {
+      const bytes = workspaces.files(workspaceId).read("AGENTS.md");
+      if (bytes.length > 64_000) throw new DomainError("INVALID_REQUEST", 413);
+      return `Project guidance from AGENTS.md inside your authorized workspace only:\n${new TextDecoder("utf-8", { fatal: true }).decode(bytes)}`;
+    } catch (error) {
+      if (error instanceof DomainError && error.code === "NOT_FOUND") return "";
+      throw error;
+    }
   }
   private requireCapability(
     connection: Entity<"connection">,
@@ -650,6 +684,10 @@ export class HarnessBroker {
       this.check(session, run.thread_id, run.agent_id);
       this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
       if (run.workspace_id) new Artifacts(this.lifecycle).verifyInputs(run);
+      const inherited = await this.nativeSkills(session.client);
+      this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
+      this.check(session, run.thread_id, run.agent_id);
+      persistInheritedSkills(this.lifecycle, session.launch, session.binding.id, inherited);
       lease = this.tools.issue(run);
       session.launch.redactor.add(lease.token);
       let stopped: (result: unknown) => void = () => {};
@@ -696,6 +734,16 @@ export class HarnessBroker {
           identity: { native_session_id: session.binding.native_session_id },
           run_id: run.id,
           text: this.lifecycle.store.get("message", run.input_message_id).text,
+          learning_context: [
+            "Current authoritative learning state. Use these identities/revisions instead of obsolete facts in native history. Deleted records must remain deleted. Do not recreate them from older transcript or tool receipts. Use ngertiin.list_memories for fresh scoped recall and ngertiin.write_memory/delete_memory for changes; new identities start at expected_revision 0. Changes are committed when their tool receipt succeeds, even if this run later stops. Use a fresh UUID command_id for a distinct mutation and the same UUID on retries. Visibility is explicit: dm_private, group or shared (across this agent's conversations). Never promote private content into shared memory or a shared skill without an explicit sharing request.",
+            JSON.stringify(
+              new Memories(this.lifecycle).recall(
+                { agent_id: run.agent_id, thread_id: run.thread_id },
+                { include_deleted: true },
+              ),
+            ),
+            skillInstructions(this.lifecycle, { agent_id: run.agent_id, thread_id: run.thread_id }),
+          ].join("\n\n"),
           settings: { ...session.selected },
           tools: lease,
           signal: context.signal,

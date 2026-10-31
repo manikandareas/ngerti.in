@@ -2,6 +2,7 @@ import { timingSafeEqual } from "node:crypto";
 import { z } from "zod";
 import { Artifacts } from "../artifacts";
 import { type agentInput, type agentUpdate, DomainError, type Entity } from "../contracts";
+import { registerLearningTools } from "../learning/tools";
 import type { Lifecycle } from "../lifecycle";
 import { canonical } from "../store";
 import { Connections } from "./connections";
@@ -27,6 +28,7 @@ export class ProductTools {
     readonly lifecycle: Lifecycle,
     private readonly completed: (scope: ToolScope, name: string) => void = () => {},
   ) {
+    registerLearningTools(this);
     const artifacts = new Artifacts(lifecycle);
     const workspaces = artifacts.workspaces;
     const workspaceFor = (access: ToolAccess) => {

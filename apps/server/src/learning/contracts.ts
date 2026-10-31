@@ -1,0 +1,138 @@
+import { z } from "zod";
+
+export const learningContext = z.strictObject({ agent_id: z.uuid(), thread_id: z.uuid() });
+export type LearningContext = z.infer<typeof learningContext>;
+export const learningVisibility = z.enum(["dm_private", "group", "shared"]);
+const scopeFields = {
+  agent_id: z.uuid(),
+  thread_id: z.uuid(),
+  visibility: learningVisibility,
+};
+export const memoryWrite = z.strictObject({
+  memory_id: z.uuid(),
+  expected_revision: z.int().min(0),
+  visibility: learningVisibility,
+  text: z.string().trim().min(1).max(8000),
+});
+export const memoryDelete = z.strictObject({
+  memory_id: z.uuid(),
+  expected_revision: z.int().positive(),
+});
+export const memoryQuery = z.strictObject({
+  query: z.string().max(1000).default(""),
+  after: z.uuid().nullable().default(null),
+  limit: z.int().min(1).max(100).default(50),
+  include_deleted: z.boolean().default(false),
+});
+export const memoryFields = {
+  ...scopeFields,
+  text: z.string().max(8000),
+  state: z.enum(["active", "deleted"]),
+  source_run_id: z.uuid().nullable(),
+};
+export const skillName = z.string().regex(/^[a-z][a-z0-9-]{0,63}$/);
+const assetPath = z
+  .string()
+  .min(1)
+  .max(300)
+  .refine(
+    (path) =>
+      !path.includes("\\") &&
+      !path.includes("\0") &&
+      !path.startsWith("/") &&
+      path
+        .split("/")
+        .every((part) => /^[a-zA-Z0-9_.-]+$/.test(part) && ![".", ".."].includes(part)) &&
+      path.toLowerCase() !== "skill.md",
+    "Invalid skill asset path.",
+  );
+export const skillAsset = z.union([
+  z.strictObject({ path: assetPath, text: z.string().max(64_000) }),
+  z.strictObject({
+    path: assetPath,
+    content_base64: z
+      .string()
+      .max(90_000)
+      .regex(/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/),
+  }),
+]);
+export type SkillAsset = z.infer<typeof skillAsset>;
+export const skillPackage = z
+  .strictObject({
+    description: z.string().trim().min(1).max(1024),
+    instructions: z.string().trim().min(1).max(64_000),
+    assets: z.array(skillAsset).max(32).default([]),
+  })
+  .refine(
+    (value) =>
+      new Set(value.assets.map((asset) => asset.path.toLowerCase())).size === value.assets.length &&
+      Buffer.byteLength(JSON.stringify(value)) <= 200_000,
+    "Duplicate assets or oversized package.",
+  );
+export const skillCreate = z.strictObject({
+  name: skillName,
+  visibility: learningVisibility,
+  package: skillPackage,
+});
+export const skillRevise = z.strictObject({
+  skill_id: z.uuid(),
+  expected_revision: z.int().positive(),
+  package: skillPackage,
+});
+export const skillRead = z.strictObject({ skill_id: z.uuid(), version: z.int().positive() });
+export const skillAssign = z.strictObject({
+  skill_id: z.uuid(),
+  version: z.int().positive(),
+  expected_revision: z.int().min(0),
+  enabled: z.boolean(),
+});
+export const skillFields = { ...scopeFields, name: skillName, source: z.literal("application") };
+export const skillRevisionFields = {
+  skill_id: z.uuid(),
+  version: z.int().positive(),
+  package: skillPackage,
+  sha256: z.string().regex(/^[a-f0-9]{64}$/),
+  source_run_id: z.uuid().nullable(),
+};
+export const skillAssignmentFields = {
+  ...scopeFields,
+  skill_id: z.uuid(),
+  version: z.int().positive(),
+  enabled: z.boolean(),
+};
+export const inheritedSkill = z.strictObject({
+  key: z.string().max(200),
+  name: skillName,
+  location: z.string().max(500),
+  package: skillPackage,
+  sha256: z.string().regex(/^[a-f0-9]{64}$/),
+});
+export const nativeSkillMetadata = z.strictObject({
+  key: z.string().max(300),
+  name: z.string().min(1).max(200),
+  description: z.string().max(4000),
+  native_source: z.string().max(100),
+  enabled: z.boolean(),
+});
+export type NativeSkillMetadata = z.infer<typeof nativeSkillMetadata>;
+export const harnessInventoryFields = {
+  agent_id: z.uuid(),
+  thread_id: z.uuid(),
+  connection_id: z.uuid(),
+  binding_id: z.uuid(),
+  harness: z.enum(["codex", "muse"]),
+  state: z.enum(["supported", "unknown"]),
+  skills: z.array(inheritedSkill).max(100),
+  rejected_packages: z.int().min(0),
+  native_catalog: z.array(nativeSkillMetadata).max(500).default([]),
+  native_state: z.enum(["supported", "unknown"]).default("unknown"),
+};
+export const learningCommands = {
+  memory_write: memoryWrite,
+  memory_delete: memoryDelete,
+  memory_query: memoryQuery,
+  skill_create: skillCreate,
+  skill_revise: skillRevise,
+  skill_read: skillRead,
+  skill_assign: skillAssign,
+};

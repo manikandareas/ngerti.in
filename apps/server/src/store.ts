@@ -97,6 +97,9 @@ export class Store {
             WHERE kind='message' AND json_extract(body, '$.author')='agent' AND json_extract(body, '$.run_id') IS NOT NULL;
           CREATE UNIQUE INDEX IF NOT EXISTS lane_workspace ON entities (json_extract(body, '$.thread_id'), json_extract(body, '$.agent_id')) WHERE kind='workspace' AND json_extract(body, '$.state')='active';
           CREATE UNIQUE INDEX IF NOT EXISTS artifact_publication ON entities (json_extract(body, '$.run_id'), json_extract(body, '$.source_path'), json_extract(body, '$.sha256')) WHERE kind='artifact' AND json_extract(body, '$.origin')='native_output';
+          CREATE UNIQUE INDEX IF NOT EXISTS skill_name ON entities (json_extract(body, '$.visibility'), CASE WHEN json_extract(body, '$.visibility')='shared' THEN json_extract(body, '$.agent_id') ELSE json_extract(body, '$.thread_id') END, json_extract(body, '$.name')) WHERE kind='skill';
+          CREATE UNIQUE INDEX IF NOT EXISTS skill_version ON entities (json_extract(body, '$.skill_id'), json_extract(body, '$.version')) WHERE kind='skill_revision';
+          CREATE UNIQUE INDEX IF NOT EXISTS harness_inventory_binding ON entities (json_extract(body, '$.binding_id')) WHERE kind='harness_inventory';
           PRAGMA application_id=${APPLICATION_ID}; PRAGMA user_version=${SCHEMA_VERSION};
         `);
           const saved = this.#db
@@ -163,6 +166,8 @@ export class Store {
   }
 
   put<T extends Entity>(entity: T, expectedRevision: number | null = null): T {
+    if (entity.kind === "skill_revision" && expectedRevision !== null)
+      throw new DomainError("CONFLICT");
     const validated = schemas[entity.kind].parse(entity);
     if (validated.owner_id !== this.ownerId) throw new DomainError("SCOPE_DENIED", 403);
     return this.transaction(() => {

@@ -123,6 +123,27 @@ export class MuseClient implements HarnessClient {
       capabilities: { ...museCapabilities },
     };
   }
+  async skills() {
+    const response = z
+      .object({
+        skills: z.array(
+          z.object({
+            selector: z.string(),
+            description: z.string(),
+            source: z.string(),
+            activation: z.string().optional(),
+          }),
+        ),
+      })
+      .parse(await this.transport.read("skill/list", { sessionId: this.#session }));
+    return response.skills.map((skill) => ({
+      key: `native:muse:${skill.source}:${skill.selector}`,
+      name: skill.selector,
+      description: skill.description,
+      native_source: skill.source,
+      enabled: skill.activation !== "disabled",
+    }));
+  }
   async discoverModels(): Promise<Entity<"connection">["models"]> {
     const catalog = z
       .object({
@@ -242,6 +263,9 @@ export class MuseClient implements HarnessClient {
             sessionId: this.#session,
             input: [
               ...(this.instructions ? [{ type: "text", text: this.instructions }] : []),
+              ...(request.learning_context
+                ? [{ type: "text", text: request.learning_context }]
+                : []),
               { type: "text", text: request.text },
             ],
             ifBusy: "queue",
@@ -488,8 +512,12 @@ export class MuseClient implements HarnessClient {
     });
     if (result.turnId !== active.turn) throw new HarnessError("NATIVE_UNKNOWN", "unknown");
   }
-  interactions(runId: string) {
+  async interactions(runId: string) {
     if (this.#active?.request.run_id !== runId) throw new HarnessError("NATIVE_REJECTED");
+    const pending = await this.transport.read("approval/listPending", { sessionId: this.#session });
+    if (this.#active?.request.run_id !== runId || this.#active.request.signal.aborted)
+      throw new HarnessError("NATIVE_REJECTED");
+    this.#interactions.replacePending(pending);
     return JSON.parse(
       this.context.redactor.text(
         JSON.stringify({

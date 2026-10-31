@@ -1,0 +1,547 @@
+{
+  "harness": "codex",
+  "phase": "initial",
+  "started_at": "2026-10-31T04:26:54.518Z",
+  "results": [
+    {
+      "case": "native_learning_round_trip_two_skill_sources_immutable_versions_collision_and_correction",
+      "status": "pass",
+      "revision_hashes": [
+        "38d874f81af96ac834c64e3a65d4d9bb93b41325ba0c4a62cf9ea7d54d0d645d",
+        "4508f6001bcecc4462db32b098dd37907cd2ae252cdd4b6791d492372e7006c8"
+      ]
+    },
+    {
+      "case": "native_group_recall_and_skill_asset_isolation",
+      "status": "pass"
+    },
+    {
+      "case": "native_delete_tombstone_and_byte_stable_harness_packages",
+      "status": "pass",
+      "files_verified": 51
+    }
+  ],
+  "runs": [
+    {
+      "id": "8f3d6c1c-6ae1-43e2-abf0-01e9598ccf3a",
+      "prompt_sha256": "9a6382663f8cd6f5b43516cb7cfaff1ae4265cf3bad24eef4906d80c5cbb94c3",
+      "status": "succeeded",
+      "diagnostic": null,
+      "product_tools": [
+        "ngertiin.describe_tools",
+        "ngertiin.list_skills",
+        "ngertiin.read_harness_skill",
+        "ngertiin.list_memories",
+        "ngertiin.write_memory",
+        "ngertiin.create_skill",
+        "ngertiin.list_agents",
+        "ngertiin.assign_skill",
+        "ngertiin.read_skill",
+        "ngertiin.revise_skill",
+        "ngertiin.read_skill",
+        "ngertiin.read_skill",
+        "ngertiin.list_skills"
+      ],
+      "binding_id": "d188f87c-ae4e-4ab5-b0b8-c4904d3b1c7d",
+      "native_run_id": "01a19035-f940-7fa2-99e7-1dfe0bddb696",
+      "answer": "I’ll use the Ngertiin tools to read the harness asset, correct the memory, and create and verify a separate application skill while leaving the harness unchanged.The harness asset gives 18,437 + 23,569 = 42,006. The memory correction succeeded at revision 2. I’m now creating the private application skill and will verify both versions with the assignment pinned to version 1.Completed using Ngertiin tools.\n\n- Computed sum: **18,437 + 23,569 = 42,006**.\n- Corrected the private memory to **“Reports should be brief.”** at revision 2.\n- Created private application skill `native-report` and verified immutable assets:\n  - Version 1: `\"42006\\n\"`\n  - Version 2: `\"Total: 42006\\n\"`\n- Assignment remains enabled and pinned to **version 1**.\n- Final skill listing confirms the name collision is qualified by **application** versus **harness** source.\n- Harness package unchanged; no native files created or modified."
+    },
+    {
+      "id": "610000c1-a0c9-4b95-aeb9-47059b7646d2",
+      "prompt_sha256": "9e993d5c8e60b7afc89765e01d1f858420fc5d5c33490f0da1f268bc0ce66fb6",
+      "status": "succeeded",
+      "diagnostic": null,
+      "product_tools": [
+        "ngertiin.describe_tools",
+        "ngertiin.list_memories",
+        "ngertiin.list_skills"
+      ],
+      "binding_id": "57b2e193-a9b6-4540-83cb-7de3f8424f87",
+      "native_run_id": "01a19036-9ba0-7902-95b1-0c12f1ac149f",
+      "answer": "I’ll check the group’s visible memories and skills, then attempt the private skill read. I’ll make no changes.The read of skill `eb0d16f5-c7a1-4995-86e0-ede7f2c2c8e0`, version 1, returned `SCOPE_DENIED`. No private skill content was returned or copied.\n\nFresh memory recall showed only:\n\n- **Group:** “This group checks scoped learning.” — revision 1\n- **Shared:** “Use plain language.” — revision 1\n\nNo private memories were visible. `list_skills` returned no application skills; harness and native inventories remain available. No changes were made."
+    },
+    {
+      "id": "9bae3c70-b752-4189-ad85-9fcbbfc576e3",
+      "prompt_sha256": "0e66bd5bc859a6f3a1bebc06b294a56d8b81b166ad1fb0fe3c0037ec00618ef2",
+      "status": "succeeded",
+      "diagnostic": null,
+      "product_tools": [
+        "ngertiin.delete_memory",
+        "ngertiin.list_memories"
+      ],
+      "binding_id": "d188f87c-ae4e-4ab5-b0b8-c4904d3b1c7d",
+      "native_run_id": "01a19036-c4dd-7583-9a59-d89441d9d5c7",
+      "answer": "I’ll delete the specified memory at revision 2, then verify its revision 3 tombstone without changing other memories or skills.Deleted memory `d1deebbd-2535-48b3-a6e4-a2b02cd47cf8`. Listing with `include_deleted: true` confirmed its **revision 3 tombstone**: state `deleted`, text empty.\n\nOther memories and skills were unchanged."
+    }
+  ],
+  "agent_id": "c018ab45-4930-4e66-bb7c-15e6c5429603",
+  "thread_id": "0816849f-f748-439c-9883-0837ca044079",
+  "group_id": "8459d349-0e57-4f66-9866-a86234dd4d07",
+  "workspace_id": "9932f99a-f26d-43a0-b384-61bcac255647",
+  "connection_id": "adb3115f-7e82-43e4-89af-3e2550683e38",
+  "billing": "subscription",
+  "model": "gpt-6.1-sol",
+  "memory_id": "d1deebbd-2535-48b3-a6e4-a2b02cd47cf8",
+  "correction_command": "5192066e-0e93-4d8b-a0d5-cfce945347fd",
+  "binding_id": "d188f87c-ae4e-4ab5-b0b8-c4904d3b1c7d",
+  "native_session_id": "01a19035-f308-7fc1-98ff-361b3d5f3022",
+  "native_hashes": {
+    "0/.system/review-agent/agents/openai.yaml": "4d867a46d15e36ac880176484aae160f59855340c6059b2ea6ab9fbc9af084de",
+    "0/.system/review-agent/SKILL.md": "07079efd0dc76f05fade424e5dfb048dce1de2df7626e1a4f56292a4f3f92228",
+    "0/.system/.codex-system-skills.marker": "626d55b2d6105b5e8ad04dc5a654a2fb922c4f517d9df3239b68c157f01ec0b9",
+    "0/.system/skill-creator/references/openai_yaml.md": "ffac39318e408108141d40f820968e59f70434a891694f9bf1d25be8237b150c",
+    "0/.system/skill-creator/agents/openai.yaml": "d07d21b93fcf3d4dc8d9a3399c05fc226a49a333a96d3e1c68b451b8dd9eade6",
+    "0/.system/skill-creator/scripts/init_skill.py": "bf0656a5f9d8d8cdecf0245eaf27e1df8e0e9b6d40ccdda814eb8e3d5f6992c8",
+    "0/.system/skill-creator/scripts/quick_validate.py": "ee6dba90f44d37171c5a6edb8095979c54919ff6822c1a907afca2e78c48738c",
+    "0/.system/skill-creator/scripts/generate_openai_yaml.py": "816df12072d74faf924d802a6599a139997e1441e90bfe4869ec304f2e5e2851",
+    "0/.system/skill-creator/SKILL.md": "6656e54755638e8efcf275a472b9672eaa8a9a1b9e59dc210e275b03b59e1e66",
+    "0/.system/skill-creator/license.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "0/.system/skill-creator/assets/skill-creator-small.svg": "6591bf8ea9bb9435890dbdea299e0d2bd05f3aa893a335d26e4c535e93c8e7fb",
+    "0/.system/skill-creator/assets/skill-creator.png": "a4024b0306ddb05847e1012879d37aaf1e658205199da596f5145ed7a88d9162",
+    "0/.system/skill-installer/agents/openai.yaml": "5ce223d8b1070b82c42298538f1b8d376f788eb9e7a42a987e8c094070d73f0e",
+    "0/.system/skill-installer/scripts/github_utils.py": "61c1bbe2ae217433b4b6f9f09f21aca4df52c12598068343ade719f706e4859b",
+    "0/.system/skill-installer/scripts/list-skills.py": "9d6dfb2abf3afeee7f027a89fb1626b918a973da18f4eb6c25681286301beb41",
+    "0/.system/skill-installer/scripts/install-skill-from-github.py": "38f311b75664bb063808f982c600271ebc4b560830f491705190f88a94e3e781",
+    "0/.system/skill-installer/SKILL.md": "d68b77e5bbb34dedab89d134da52855f140fc4b4299b80104f534e3b9e98f8ee",
+    "0/.system/skill-installer/LICENSE.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "0/.system/skill-installer/assets/skill-installer.png": "d0a230b1a79b71b858b7c215a0fbb0768d6459c14ea4ef80c61592629bf0e605",
+    "0/.system/skill-installer/assets/skill-installer-small.svg": "3928703ff00dc1a681e7a22401843b7edcbd4b2051651ce4c43b75f7e140504e",
+    "0/.system/openai-docs/references/mcp-diagnostics.md": "49bbd2f73df7bbd7f86c80425dea4da2d301c22046080399a36bfc0ca49509e9",
+    "0/.system/openai-docs/references/model-migration.md": "138c05dd06047b069a7aab09e657b6a6a0d25b6959cbe2473baae95f47e72883",
+    "0/.system/openai-docs/references/upgrade-guide.md": "63352ece4bd1ee82b225bb4cb4fa2ea4f0dbf57a308845fa30f2c8d7f1d291d1",
+    "0/.system/openai-docs/references/model-selection.md": "ba2d164abbca30435a460a0bc3a7d82398dce2bdf092705c98ba55b3f3af38a8",
+    "0/.system/openai-docs/references/upgrading-to-gpt-6-astra.md": "cacacdfe0b516f7420af51df10dfa0829bf67c4a670544d58992f6ce4ac22583",
+    "0/.system/openai-docs/references/official-docs.md": "7962f2dce55089b93bde4115bb89fd42f20993c1597a2b13edd4956f463875b9",
+    "0/.system/openai-docs/references/prompting-guide.md": "5c791edd5bfc9363cb4251ac3ccd3b1dbac3bb2a6654f78606a9d2357c97c172",
+    "0/.system/openai-docs/references/latest-model.md": "7e5b9437c6ad98a73da46ba3f7f5c86f88aea2a15242318f32c487eb28a90852",
+    "0/.system/openai-docs/references/codex-self-knowledge.md": "8c8fb00e6e5cb1977924f5164684a6095427fa828bbc765225f17d9aeb79a912",
+    "0/.system/openai-docs/agents/openai.yaml": "44b9efac6be1bae32d869aa2942fecbe4dcae82682ee03e4120f2f9b7d4658ec",
+    "0/.system/openai-docs/scripts/resolve-latest-model-info": "7354dbb030ca0736dd633a7ca1b930cf640abd40370725dea3a458cb51d49523",
+    "0/.system/openai-docs/scripts/fetch-codex-manual.mjs": "1ea0ca869e3fdf06e83a9972fc4c602b0505a96b22e4b0d9629656f5b545e5ff",
+    "0/.system/openai-docs/scripts/resolve-latest-model-info.cjs": "589b89515ab63fff87efde0b9c76eb72e674582aebc3afbc29ceae09abddafe3",
+    "0/.system/openai-docs/SKILL.md": "aa6829e21df2223167c85d2e49b6337a7345c84c1033f1ec10182c7882b36d45",
+    "0/.system/openai-docs/LICENSE.txt": "4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9",
+    "0/.system/openai-docs/assets/openai-small.svg": "45be1f0757eb18889eefb1e7db79668ef46a275dc4e0e78e8df5ebd7f6cdeadc",
+    "0/.system/openai-docs/assets/openai.png": "156cc84d7332bfe95b310350bd470b690d22aa33d65340cc6c2e06022946194c",
+    "0/.system/imagegen/references/sample-prompts.md": "70474177d151855b175c6133de2aae1d90b7f146b0dab50ec830972c47d72183",
+    "0/.system/imagegen/references/cli.md": "ecfc2e09261a0feb3482517a5fa0ff410cb7d1958e3cbd2ac6b61586f5b81405",
+    "0/.system/imagegen/references/codex-network.md": "c88298ca4481f6116a16fa7987434fc977f8b311c1bbc0c3d862ffd0c5981148",
+    "0/.system/imagegen/references/image-api.md": "dc975d7af8a4888967251a0276014b4a71ea30455294944b762256373ce3e569",
+    "0/.system/imagegen/references/prompting.md": "b210b051c775860267080941eba968212bf0ac7fce581d75c5dcc217d8293f8b",
+    "0/.system/imagegen/agents/openai.yaml": "9ca574af14580dc7a2a3dc37a1796d17f93cb8850be66501f0799ef8603e9dc0",
+    "0/.system/imagegen/scripts/remove_chroma_key.py": "a5893c4bd04b21abced33731ea89d2ac428e81d92a0368eb18ffbe4fda5253e2",
+    "0/.system/imagegen/scripts/image_gen.py": "b4345cf835e5b593b97df6bb2b70bda493b8a97eee4cabbc99b2fa57dba9b448",
+    "0/.system/imagegen/SKILL.md": "681ddb4ad6d06a2acc78a3535b583f8d0c1ea800ecda3d56370d3310fd2cd4ba",
+    "0/.system/imagegen/LICENSE.txt": "4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9",
+    "0/.system/imagegen/assets/imagegen.png": "95952f644064eb9e890f98d8db07216347186526e4c41ad66d3420629eb86e20",
+    "0/.system/imagegen/assets/imagegen-small.svg": "cff5f34f57ff60b3ee92eaedd17b15e96dd4b9e776df3e78936c9e00d42be294",
+    "2/native-report/references/factors.txt": "8e6b83ab70af4056becb0f311e3ac39f900ad34323db5cdf674a9fa279ec9dd0",
+    "2/native-report/SKILL.md": "af74d3e0023c00d07adf374d7fdb2a4e128df740909abc187087a1e6bd845541"
+  },
+  "initial_inventory": {
+    "application": [],
+    "harness": [
+      {
+        "key": "harness:imagegen:d684b888f923e0a6",
+        "name": "imagegen",
+        "location": "codex/.system/imagegen",
+        "description": "Generate or edit raster images when the task benefits from AI-created bitmap visuals such as photos, illustrations, textures, sprites, mockups, or transparent-background cutouts. Use when Codex should create a brand-new image, transform an existing image, or derive visual variants from references, and the output should be a bitmap asset rather than repo-native code or vector. Do not use when the task is better handled by editing existing SVG/vector/code-native assets, extending an established icon or logo system, or building the visual directly in HTML/CSS/canvas.",
+        "sha256": "d684b888f923e0a65ebe3e40dbe80e7561932d001d35bddf0e1e7a99bb6642f0",
+        "source": "harness",
+        "writable": false
+      },
+      {
+        "key": "harness:openai-docs:fe211d27dbd80df6",
+        "name": "openai-docs",
+        "location": "codex/.system/openai-docs",
+        "description": "Use for Codex models/pricing, scheduled tasks, skills, settings, setup, troubleshooting, customization, automations, and self-knowledge—including 'you,' 'your,' 'this app,' or 'this coding agent' when they refer to Codex—and for OpenAI APIs/products and ChatGPT Work. Also use for model choice/migration, prompting, SDKs, Responses, Realtime, agents, evals, and Chat/Work/Codex comparisons. Do not use for generic app/software tasks that merely mention Codex.",
+        "sha256": "fe211d27dbd80df60e154df67c9b9cf7bd081d915e8b47078932d2e229696560",
+        "source": "harness",
+        "writable": false
+      },
+      {
+        "key": "harness:review-agent:e8dd308a0cf789c0",
+        "name": "review-agent",
+        "location": "codex/.system/review-agent",
+        "description": "Perform a read-only, defect-first review of a specified code change and return every actionable finding. Use when another agent delegates review of uncommitted changes, a base-branch diff, a commit, or custom review instructions.",
+        "sha256": "e8dd308a0cf789c060f8abe2e4cac86118fb975fdae2cd509daf8f8b35ffbe09",
+        "source": "harness",
+        "writable": false
+      },
+      {
+        "key": "harness:skill-creator:2162e7ab718f5f35",
+        "name": "skill-creator",
+        "location": "codex/.system/skill-creator",
+        "description": "Create or update a Codex skill with appropriately scoped instructions and any needed supporting resources.",
+        "sha256": "2162e7ab718f5f35a1fa82f713eb953d6cc75aa6d612547d3c77637b38b9cae7",
+        "source": "harness",
+        "writable": false
+      },
+      {
+        "key": "harness:skill-installer:8488c03ebea5d0c6",
+        "name": "skill-installer",
+        "location": "codex/.system/skill-installer",
+        "description": "Install Codex skills into $CODEX_HOME/skills from a curated list or a GitHub repo path. Use when a user asks to list installable skills, install a curated skill, or install a skill from another repo (including private repos).",
+        "sha256": "8488c03ebea5d0c66501a91c658523abb621d278aadf444cede10efd2faad04d",
+        "source": "harness",
+        "writable": false
+      },
+      {
+        "key": "harness:native-report:3f43552656a6892f",
+        "name": "native-report",
+        "location": "workspace/native-report",
+        "description": "Read two integers from the bundled factors asset and write a concise sum report.",
+        "sha256": "3f43552656a6892f84cfd475874188d74ced6ad5c35260da5dcb1c2730ef225b",
+        "source": "harness",
+        "writable": false
+      }
+    ],
+    "harness_state": "supported",
+    "native_state": "supported",
+    "native_catalog": [
+      {
+        "key": "native:codex:repo:native-report",
+        "name": "native-report",
+        "description": "Read two integers from the bundled factors asset and write a concise sum report.",
+        "native_source": "repo",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:repo:ngertiin-ticket",
+        "name": "ngertiin-ticket",
+        "description": "Work on a Ngertiin Notion ticket: implement and verify it, brainstorm its design, or answer questions about its scope, dependencies, and code.",
+        "native_source": "repo",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:google-drive:google-docs",
+        "name": "google-drive:google-docs",
+        "description": "Create and edit native Google Docs through connected tools.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:google-drive:google-drive",
+        "name": "google-drive:google-drive",
+        "description": "Use connected Google Drive as the single entrypoint for Drive, Docs, Sheets, and Slides work. Use when the user wants to find, fetch, organize, share, export, copy, or delete Drive files, or summarize and edit Google Docs, Google Sheets, and Google Slides through one unified Google Drive plugin.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:google-drive:google-drive-comments",
+        "name": "google-drive:google-drive-comments",
+        "description": "Write, reply to, and resolve Google Drive comments on Docs, Sheets, Slides, and Drive files with evidence-backed location context. Use when the user asks to leave comments, review a file with comments, respond to comment threads, or resolve Drive comments.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:google-drive:google-sheets",
+        "name": "google-drive:google-sheets",
+        "description": "Analyze and edit connected Google Sheets with range precision. Use when the user wants to create Google Sheets, find a spreadsheet, inspect tabs or ranges, search rows, plan formulas, create or repair charts, clean or restructure tables, write concise summaries, or make explicit cell-range updates.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:google-drive:google-slides",
+        "name": "google-drive:google-slides",
+        "description": "Route Google Slides authoring requests and derive a design system from a native template or reference deck. Use this skill when the user provides an existing native Google Slides deck as a template, reference, or prior-period source, or asks to edit, update, repair, restyle, or clean up an existing native Google Slides deck. Use the Presentations skill instead for net-new presentation creation when no existing native Google Slides deck must be followed.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:notion:notion-database-designer",
+        "name": "notion:notion-database-designer",
+        "description": "Turns scattered notes and recurring work into useful Notion trackers for requests, content plans, or team work. Use to set up or improve a tracker, choosing its fields and views from the user's needs; ordinary record updates belong to the task's workflow.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:notion:notion-meeting-intelligence",
+        "name": "notion:notion-meeting-intelligence",
+        "description": "Prepares Notion meeting agendas, pre-reads, decision briefs, and follow-up actions. Use for meeting preparation, carrying context into recurring meetings, or turning meeting outcomes into next steps. Simple meeting lookups or saving notes verbatim do not need this workflow.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:notion:notion-research-documentation",
+        "name": "notion:notion-research-documentation",
+        "description": "Synthesizes Notion workspace evidence into cited answers, comparisons, briefs, or reports. Use to investigate a question, connect findings across sources, or reconcile conflicting information, with external research when useful. Simple lookups, fetching a known page, or summarizing one supplied page do not need this workflow.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:notion:notion-setup",
+        "name": "notion:notion-setup",
+        "description": "Sets up Notion after the user installs the Notion plugin or chooses Set up.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:notion:notion-spec-to-implementation",
+        "name": "notion:notion-spec-to-implementation",
+        "description": "Converts Notion product or technical specs into implementation plans, linked tasks, and evidence-based progress updates. Use for planning or implementing a spec, creating tasks from requirements, or reconciling implementation with spec changes.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:notion:notion-weekly-project-digest",
+        "name": "notion:notion-weekly-project-digest",
+        "description": "Produces evidence-based weekly project or team updates by comparing reporting periods, tasks, decisions, and blockers in Notion. Use for recurring status digests; use spec-to-implementation for requirement-level implementation tracking.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:openai-templates:artifact-template-analytics-dashboard",
+        "name": "openai-templates:artifact-template-analytics-dashboard",
+        "description": "Create a spreadsheet using the Analytics Dashboard template and its retained reference file. Use when the user selects or names Analytics Dashboard. Monitor acquisition, engagement, retention, revenue, and conversion funnel KPIs with charts.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:openai-templates:artifact-template-business-review",
+        "name": "openai-templates:artifact-template-business-review",
+        "description": "Create a presentation using the Business Review template and its retained reference file. Use when the user selects or names Business Review. Review business performance, KPIs, segment results, strategic priorities, decisions, and outlook.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:openai-templates:artifact-template-design-report",
+        "name": "openai-templates:artifact-template-design-report",
+        "description": "Create a document using the Design Report template and its retained reference file. Use when the user selects or names Design Report. Produce design reports with an executive summary, key findings, implications, recommendations, and appendix.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:openai-templates:artifact-template-experiment-analysis",
+        "name": "openai-templates:artifact-template-experiment-analysis",
+        "description": "Create a document using the Experiment Analysis template and its retained reference file. Use when the user selects or names Experiment Analysis. Analyze experiments with hypotheses, methodology, results, interpretation, limitations, and next steps.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:openai-templates:artifact-template-financial-budget",
+        "name": "openai-templates:artifact-template-financial-budget",
+        "description": "Create a spreadsheet using the Financial Budget template and its retained reference file. Use when the user selects or names Financial Budget. Model actuals, budget and scenario forecasts, variances, cash runway, and departmental plans.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:openai-templates:artifact-template-investment-committee-memo",
+        "name": "openai-templates:artifact-template-investment-committee-memo",
+        "description": "Create a document using the Investment Committee Memo template and its retained reference file. Use when the user selects or names Investment Committee Memo. Prepare investment committee memos with the thesis, transaction details, financial analysis, risks, and recommendation.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:openai-templates:artifact-template-legal-memorandum",
+        "name": "openai-templates:artifact-template-legal-memorandum",
+        "description": "Create a document using the Legal Memorandum template and its retained reference file. Use when the user selects or names Legal Memorandum. Draft legal memoranda with the issue, brief answer, relevant facts, analysis, and conclusion.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:openai-templates:artifact-template-market-trends-report",
+        "name": "openai-templates:artifact-template-market-trends-report",
+        "description": "Create a presentation using the Market Trends Report template and its retained reference file. Use when the user selects or names Market Trends Report. Communicate market or industry trends, supporting evidence, implications, and recommended responses.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:openai-templates:artifact-template-minimal-letterhead",
+        "name": "openai-templates:artifact-template-minimal-letterhead",
+        "description": "Create a document using the Minimal Letterhead template and its retained reference file. Use when the user selects or names Minimal Letterhead. Write professional business letters with sender, recipient, message, and signature fields in a minimal letterhead layout.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:openai-templates:artifact-template-operating-calendar",
+        "name": "openai-templates:artifact-template-operating-calendar",
+        "description": "Create a spreadsheet using the Operating Calendar template and its retained reference file. Use when the user selects or names Operating Calendar. Plan annual and monthly operating milestones, campaigns, launches, deadlines, and recurring events.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:openai-templates:artifact-template-operating-review",
+        "name": "openai-templates:artifact-template-operating-review",
+        "description": "Create a presentation using the Operating Review template and its retained reference file. Use when the user selects or names Operating Review. Run weekly operating reviews with scorecards, functional updates, risks, decisions, and action items.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:openai-templates:artifact-template-project-kickoff",
+        "name": "openai-templates:artifact-template-project-kickoff",
+        "description": "Create a presentation using the Project Kickoff template and its retained reference file. Use when the user selects or names Project Kickoff. Align teams on project goals, scope, roles, milestones, risks, and the working model.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:openai-templates:artifact-template-project-tracker",
+        "name": "openai-templates:artifact-template-project-tracker",
+        "description": "Create a spreadsheet using the Project Tracker template and its retained reference file. Use when the user selects or names Project Tracker. Manage workstreams, tasks, owners, status, priority, dates, launch pulse, and a Gantt schedule.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:openai-templates:artifact-template-sales-pipeline",
+        "name": "openai-templates:artifact-template-sales-pipeline",
+        "description": "Create a spreadsheet using the Sales Pipeline template and its retained reference file. Use when the user selects or names Sales Pipeline. Track opportunities, stages, owners, deal sizes, probabilities, forecasts, next steps, and risks.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:openai-templates:artifact-template-simple-dark-mode",
+        "name": "openai-templates:artifact-template-simple-dark-mode",
+        "description": "Create a presentation using the Simple Dark Mode template and its retained reference file. Use when the user selects or names Simple Dark Mode. Create clean dark-mode presentations with bold typography, simple sections, charts, and imagery.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:openai-templates:artifact-template-simple-light-mode",
+        "name": "openai-templates:artifact-template-simple-light-mode",
+        "description": "Create a presentation using the Simple Light Mode template and its retained reference file. Use when the user selects or names Simple Light Mode. Create clean light-mode presentations with spacious typography, simple sections, charts, and imagery.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:openai-templates:artifact-template-strategy-memorandum",
+        "name": "openai-templates:artifact-template-strategy-memorandum",
+        "description": "Create a document using the Strategy Memorandum template and its retained reference file. Use when the user selects or names Strategy Memorandum. Present strategic context, choices, rationale, risks, milestones, and a clear recommendation.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:openai-templates:artifact-template-system-design",
+        "name": "openai-templates:artifact-template-system-design",
+        "description": "Create a document using the System Design template and its retained reference file. Use when the user selects or names System Design. Document system architecture, requirements, components, data flows, APIs, tradeoffs, and operational considerations.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:openai-templates:artifact-template-team-alignment",
+        "name": "openai-templates:artifact-template-team-alignment",
+        "description": "Create a presentation using the Team Alignment template and its retained reference file. Use when the user selects or names Team Alignment. Facilitate team offsites and planning with context, goals, priorities, decisions, and action items.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:openai-templates:artifact-template-three-statement-forecast",
+        "name": "openai-templates:artifact-template-three-statement-forecast",
+        "description": "Create a spreadsheet using the Three-Statement Forecast template and its retained reference file. Use when the user selects or names Three-Statement Forecast. Build an integrated income statement, balance sheet, and cash flow forecast with assumptions, checks, and an executive summary.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:pages:maintain-space",
+        "name": "pages:maintain-space",
+        "description": "Reconcile new evidence into existing ChatGPT Pages or a Space when the user requests upkeep. For a direct text correction, use write-page. Do not use for ordinary chat drafts, writing, or advice, or treat a selected Page as a request to save. Schedule future upkeep only when requested.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:pages:manage-schedules",
+        "name": "pages:manage-schedules",
+        "description": "Review a ChatGPT Space page and its schedules, recommend useful recurring work, and create, update, or remove scheduled automations.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:pages:organize-space",
+        "name": "pages:organize-space",
+        "description": "Organize existing ChatGPT Pages and Space structure when the user requests changes to that structure. Do not use for ordinary chat drafts or advice; a selected Page alone does not authorize reorganization. A narrow text edit does not need this workflow.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:pages:write-page",
+        "name": "pages:write-page",
+        "description": "Create or edit requested Page/Space content, or use for prose you have already decided to save as a standalone Markdown file, only if the user did not explicitly request a Markdown file. Honor established formats, destinations, and repository documentation. A selected Page alone does not authorize a write.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:plugin-management:plugin-management",
+        "name": "plugin-management:plugin-management",
+        "description": "Discover and suggest relevant plugins, inspect app permissions and dependencies, and manage plugin connections or removal. Use when the user asks about plugins or when a task would materially benefit from an external app, account, service, or data source that available tools cannot access.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:sites:sites",
+        "name": "sites:sites",
+        "description": "Use Sites when the user wants a website built for them (including a landing page, portfolio, dashboard, portal, tracker, hub, game, event registration, or tool), requests changes to a website already built with Sites, wants to publish a website with Sites, or wants to manage Sites hosting.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:sites:sites-remix",
+        "name": "sites:sites-remix",
+        "description": "Remix a Site built with the Sites plugin into a new Site. Use when the user has identified the source Site and asks to remix it.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:work-pets:create-pet",
+        "name": "work-pets:create-pet",
+        "description": "Create, repair, validate, preview, upload, or activate an animated v2 pet in ChatGPT Work mode from a character idea, brand cue, or reference image. Use for new ChatGPT Pets, custom mascots, non-pixel styles, and unattached sprite sheets requiring nine animation states plus sixteen look directions. Preserve Library artifacts and Pets MCP lifecycle behavior. Exclude real pets, standalone images, and other-app pets; clarify before invoking.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:work-pets:pets",
+        "name": "work-pets:pets",
+        "description": "List, inspect, select, download, or delete animated pets in ChatGPT Work mode. Use for an explicit pet in ChatGPT or established ChatGPT Pets context. Exclude real-world and other-app pets; clarify before invoking.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:user:work-pets:update-pet",
+        "name": "work-pets:update-pet",
+        "description": "Inspect, validate, preview, repair, or update a custom pet in ChatGPT Work mode, including its name, description, or sprite sheet. Use for a pet in ChatGPT or established ChatGPT Pets context. Exclude real-world and other-app pets; clarify before invoking.",
+        "native_source": "user",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:system:imagegen",
+        "name": "imagegen",
+        "description": "Generate or edit raster images when the task benefits from AI-created bitmap visuals such as photos, illustrations, textures, sprites, mockups, or transparent-background cutouts. Use when Codex should create a brand-new image, transform an existing image, or derive visual variants from references, and the output should be a bitmap asset rather than repo-native code or vector. Do not use when the task is better handled by editing existing SVG/vector/code-native assets, extending an established icon or logo system, or building the visual directly in HTML/CSS/canvas.",
+        "native_source": "system",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:system:openai-docs",
+        "name": "openai-docs",
+        "description": "Use for Codex models/pricing, scheduled tasks, skills, settings, setup, troubleshooting, customization, automations, and self-knowledge—including 'you,' 'your,' 'this app,' or 'this coding agent' when they refer to Codex—and for OpenAI APIs/products and ChatGPT Work. Also use for model choice/migration, prompting, SDKs, Responses, Realtime, agents, evals, and Chat/Work/Codex comparisons. Do not use for generic app/software tasks that merely mention Codex.",
+        "native_source": "system",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:system:review-agent",
+        "name": "review-agent",
+        "description": "Perform a read-only, defect-first review of a specified code change and return every actionable finding. Use when another agent delegates review of uncommitted changes, a base-branch diff, a commit, or custom review instructions.",
+        "native_source": "system",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:system:skill-creator",
+        "name": "skill-creator",
+        "description": "Create or update a Codex skill with appropriately scoped instructions and any needed supporting resources.",
+        "native_source": "system",
+        "enabled": true
+      },
+      {
+        "key": "native:codex:system:skill-installer",
+        "name": "skill-installer",
+        "description": "Install Codex skills into $CODEX_HOME/skills from a curated list or a GitHub repo path. Use when a user asks to list installable skills, install a curated skill, or install a skill from another repo (including private repos).",
+        "native_source": "system",
+        "enabled": true
+      }
+    ],
+    "rejected_packages": 0,
+    "configured_references": [],
+    "conflict_policy": "qualified_identity_required; no_cross_source_overwrite; pinned_application_versions",
+    "collisions": []
+  },
+  "skill_id": "eb0d16f5-c7a1-4995-86e0-ede7f2c2c8e0",
+  "status": "pass",
+  "finished_at": "2026-10-31T04:28:01.065Z"
+}

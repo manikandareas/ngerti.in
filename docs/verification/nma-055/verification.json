@@ -1,0 +1,97 @@
+{
+  "ticket": "NMA-055",
+  "date": "2026-10-31",
+  "baseline_commit": "71d6ac49830d9cae1c5c6b8591530a44312cff0c",
+  "application_contract": "1.6.0",
+  "checks": {
+    "server_tests": {
+      "planned": 149,
+      "pass": 149,
+      "fail": 0,
+      "skip": 0,
+      "assertions": 942
+    },
+    "lint": "pass",
+    "typecheck": "pass",
+    "foundation": {
+      "planned": 8,
+      "pass": 8,
+      "fail": 0,
+      "skip": 0
+    },
+    "broker_http": {
+      "planned": 5,
+      "pass": 5,
+      "fail": 0,
+      "skip": 0
+    },
+    "learning_crash_fixture": {
+      "planned": 9,
+      "pass": 9,
+      "replayed_native_requests": 0
+    },
+    "native_final": {
+      "planned_runs": 8,
+      "pass": 8,
+      "fail": 0,
+      "cancelled": 0,
+      "unknown": 0
+    },
+    "all_admitted_native_runs": {
+      "total": 9,
+      "succeeded": 9,
+      "failed": 0,
+      "cancelled": 0,
+      "unknown": 0
+    }
+  },
+  "new_tests": 18,
+  "billing": {
+    "codex": "explicit_subscription",
+    "muse": "explicit_api_key_developer_credits; subscription_not_verified"
+  },
+  "native_files_byte_stable": {
+    "codex": 51,
+    "muse_inherited_fixture": 2
+  },
+  "limits": [
+    "macOS arm64 verified",
+    "Native permission acknowledgement uncertainty retained in iterations.json and native/control-observations.json",
+    "SIGKILL process fixture is not provider-crash/power-loss proof",
+    "Historical events/transcripts/old receipts are retained; tombstones control active recall",
+    "API readiness/UI/installer/deployment remain separate"
+  ],
+  "commit_created": false,
+  "push_or_deployment": false,
+  "ui_changes": false,
+  "user_data_reset": false,
+  "services_stopped": true,
+  "file_cleanup": {
+    "date": "2026-10-31",
+    "moved_files": 30,
+    "moved_source_and_test_files": 7,
+    "moved_evidence_files": 23,
+    "original_raw_evidence_files_byte_identical": 27,
+    "production_files_compared": 44,
+    "production_bodies_identical_excluding_imports": true,
+    "application_broker_tool_schemas_identical": true,
+    "server_tests": {
+      "planned": 149,
+      "pass": 149,
+      "fail": 0,
+      "skip": 0,
+      "assertions": 913
+    },
+    "lint": "pass",
+    "typecheck": "pass",
+    "process_crash_checks": {
+      "planned": 9,
+      "pass": 9,
+      "report": "logs/file-cleanup-crash.json"
+    },
+    "native_inference_rerun": false,
+    "original_native_evidence_retained": true,
+    "verification_script_changes": "Adjusted report/input paths and added an optional crash-report destination to keep reruns separate.",
+    "commit_created": false
+  }
+}

@@ -136,6 +136,36 @@ export class CodexClient implements HarnessClient {
       capabilities: { ...codexCapabilities },
     };
   }
+  async skills() {
+    const response = z
+      .object({
+        data: z.array(
+          z.object({
+            cwd: z.string(),
+            skills: z.array(
+              z.object({
+                name: z.string(),
+                description: z.string(),
+                scope: z.string(),
+                enabled: z.boolean(),
+              }),
+            ),
+            errors: z.array(z.unknown()),
+          }),
+        ),
+      })
+      .parse(await this.rpc.request("skills/list", { cwds: [this.workspace], forceReload: true }));
+    if (response.data.some((item) => item.errors.length)) throw new HarnessError("PROTOCOL_ERROR");
+    return response.data.flatMap((item) =>
+      item.skills.map((skill) => ({
+        key: `native:codex:${skill.scope}:${skill.name}`,
+        name: skill.name,
+        description: skill.description,
+        native_source: skill.scope,
+        enabled: skill.enabled,
+      })),
+    );
+  }
   async discoverModels(): Promise<Entity<"connection">["models"]> {
     const models: Entity<"connection">["models"] = [];
     const seen = new Set<string>();
@@ -175,7 +205,9 @@ export class CodexClient implements HarnessClient {
         ? { permissions: "ngertiin", runtimeWorkspaceRoots: [this.workspace] }
         : { sandbox: "read-only" }),
       developerInstructions: this.instructions,
-      config: { model_reasoning_effort: selected.reasoning },
+      // The application supplies confined workspace guidance. Native ancestor discovery can
+      // otherwise read host/repository instructions outside this conversation's grant.
+      config: { model_reasoning_effort: selected.reasoning, project_doc_max_bytes: 0 },
     };
   }
   private bind(result: unknown, selected: Settings, expected?: string): SessionIdentity {
@@ -243,7 +275,12 @@ export class CodexClient implements HarnessClient {
         await this.rpc.request("turn/start", {
           threadId: this.#session,
           clientUserMessageId: request.run_id,
-          input: [{ type: "text", text: request.text, text_elements: [] }],
+          input: [
+            ...(request.learning_context
+              ? [{ type: "text", text: request.learning_context, text_elements: [] }]
+              : []),
+            { type: "text", text: request.text, text_elements: [] },
+          ],
           model: request.settings.model_id,
           effort: request.settings.reasoning,
           approvalPolicy: "never",

@@ -1,0 +1,140 @@
+{
+  "services": [
+    {
+      "harness": "codex",
+      "runs": [
+        {
+          "id": "8f3d6c1c-6ae1-43e2-abf0-01e9598ccf3a",
+          "status": "succeeded",
+          "diagnostic": null,
+          "product_tools": [
+            "ngertiin.describe_tools",
+            "ngertiin.list_skills",
+            "ngertiin.read_harness_skill",
+            "ngertiin.list_memories",
+            "ngertiin.write_memory",
+            "ngertiin.create_skill",
+            "ngertiin.list_agents",
+            "ngertiin.assign_skill",
+            "ngertiin.read_skill",
+            "ngertiin.revise_skill",
+            "ngertiin.read_skill",
+            "ngertiin.read_skill",
+            "ngertiin.list_skills"
+          ]
+        },
+        {
+          "id": "610000c1-a0c9-4b95-aeb9-47059b7646d2",
+          "status": "succeeded",
+          "diagnostic": null,
+          "product_tools": [
+            "ngertiin.describe_tools",
+            "ngertiin.list_memories",
+            "ngertiin.list_skills"
+          ]
+        },
+        {
+          "id": "9bae3c70-b752-4189-ad85-9fcbbfc576e3",
+          "status": "succeeded",
+          "diagnostic": null,
+          "product_tools": [
+            "ngertiin.delete_memory",
+            "ngertiin.list_memories"
+          ]
+        },
+        {
+          "id": "e1a56f33-42ed-46b0-b78d-514e0053132f",
+          "status": "succeeded",
+          "diagnostic": null,
+          "product_tools": [
+            "ngertiin.write_memory",
+            "ngertiin.list_memories",
+            "ngertiin.read_skill",
+            "ngertiin.read_skill",
+            "ngertiin.list_skills"
+          ]
+        }
+      ],
+      "proof_goals": 0,
+      "proof_routines": 0
+    },
+    {
+      "harness": "muse",
+      "runs": [
+        {
+          "id": "87ba8850-b15d-4188-9b07-a7f4c192bed2",
+          "status": "succeeded",
+          "diagnostic": null,
+          "product_tools": [
+            "ngertiin.describe_tools",
+            "ngertiin.write_memory",
+            "ngertiin.list_memories",
+            "ngertiin.read_skill",
+            "ngertiin.read_skill",
+            "ngertiin.list_skills"
+          ]
+        },
+        {
+          "id": "dfe04217-0030-40c3-b1c5-2d1a544ae1ea",
+          "status": "succeeded",
+          "diagnostic": null,
+          "product_tools": [
+            "ngertiin.describe_tools",
+            "ngertiin.write_memory",
+            "ngertiin.list_memories",
+            "ngertiin.read_skill",
+            "ngertiin.read_skill",
+            "ngertiin.list_skills"
+          ]
+        },
+        {
+          "id": "650d6af4-f857-4732-8faa-965b56db2ea2",
+          "status": "succeeded",
+          "diagnostic": null,
+          "product_tools": [
+            "ngertiin.describe_tools",
+            "ngertiin.list_skills",
+            "ngertiin.read_harness_skill",
+            "ngertiin.list_memories",
+            "ngertiin.write_memory",
+            "ngertiin.create_skill",
+            "ngertiin.assign_skill",
+            "ngertiin.read_skill",
+            "ngertiin.revise_skill",
+            "ngertiin.read_skill",
+            "ngertiin.read_skill",
+            "ngertiin.list_skills"
+          ]
+        },
+        {
+          "id": "746be812-7d2e-48bd-b96d-086ca97d3de9",
+          "status": "succeeded",
+          "diagnostic": null,
+          "product_tools": [
+            "ngertiin.describe_tools",
+            "ngertiin.list_skills",
+            "ngertiin.list_memories"
+          ]
+        },
+        {
+          "id": "3273b530-41e4-4d92-82e8-61c7fe29bc50",
+          "status": "succeeded",
+          "diagnostic": null,
+          "product_tools": [
+            "ngertiin.describe_tools",
+            "ngertiin.delete_memory",
+            "ngertiin.list_memories"
+          ]
+        }
+      ],
+      "proof_goals": 0,
+      "proof_routines": 0
+    }
+  ],
+  "active_proof_runs": 0,
+  "verification_services_stopped": true,
+  "commit_created": false,
+  "push_or_deployment": false,
+  "user_data_reset": false,
+  "ui_changes": false
+}

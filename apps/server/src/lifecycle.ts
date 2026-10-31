@@ -7,9 +7,12 @@ import {
   DomainError,
   type Entity,
   goalInput,
+  goal as goalSchema,
   routineInput,
+  routine as routineSchema,
   threadInput,
 } from "./contracts";
+import { dueWindow, firstDue } from "./goals/schedule";
 import type { Store } from "./store";
 import { Workspaces } from "./workspaces";
 
@@ -96,27 +99,31 @@ export class Lifecycle {
         case "goal": {
           const data = goalInput.parse(input);
           this.scope(data.thread_id, data.agent_id);
-          return this.store.put({
-            ...base,
-            ...data,
-            kind,
-            state: "active",
-            generation: 1,
-            evidence_artifact_ids: [],
-          });
+          return this.store.put(
+            goalSchema.parse({
+              ...base,
+              ...data,
+              kind,
+              state: "active",
+              generation: 1,
+              evidence_artifact_ids: [],
+            }),
+          );
         }
         case "routine": {
           const data = routineInput.parse(input);
           this.scope(data.thread_id, data.agent_id);
           if (data.goal_id) this.checkGoal(data.goal_id, data.thread_id, data.agent_id);
-          return this.store.put({
-            ...base,
-            ...data,
-            kind,
-            state: "active",
-            generation: 1,
-            next_run_at: data.schedule.type === "once" ? data.schedule.at : data.schedule.anchor_at,
-          });
+          return this.store.put(
+            routineSchema.parse({
+              ...base,
+              ...data,
+              kind,
+              state: "active",
+              generation: 1,
+              next_run_at: firstDue(data.schedule, data.timezone),
+            }),
+          );
         }
         case "artifact": {
           const data = artifactInput.parse(input);
@@ -214,10 +221,24 @@ export class Lifecycle {
   }
 
   private responsibility(run: Entity<"run">) {
-    if (run.goal_id) this.checkGoal(run.goal_id, run.thread_id, run.agent_id);
+    if (run.task_id) {
+      const task = this.store.get("peer_task", run.task_id);
+      if (
+        task.state === "cancelled" ||
+        task.goal_ids.some((id) => this.store.get("goal", id).state !== "active")
+      )
+        throw new DomainError("STALE_DISPATCH");
+    }
+    if (run.goal_id) {
+      const goal = this.checkGoal(run.goal_id, run.thread_id, run.agent_id);
+      if (run.goal_generation !== null && run.goal_generation !== goal.generation)
+        throw new DomainError("STALE_DISPATCH");
+    }
     if (run.routine_id) {
       const routine = this.store.get("routine", run.routine_id);
       if (routine.state !== "active") throw new DomainError("CONFLICT");
+      if (run.routine_generation !== null && run.routine_generation !== routine.generation)
+        throw new DomainError("STALE_DISPATCH");
       if (routine.goal_id) this.checkGoal(routine.goal_id, run.thread_id, run.agent_id);
     }
   }
@@ -254,7 +275,7 @@ export class Lifecycle {
       const message = this.store.put({
         ...this.base(),
         kind: "message",
-        purpose: "conversation",
+        purpose: author === "routine" ? "continuation" : "conversation",
         source_run_id: null,
         thread_id: data.thread_id,
         author,
@@ -299,6 +320,13 @@ export class Lifecycle {
       thread_revision: thread.type === "group" ? thread.revision : null,
       goal_id: options.goal_id ?? null,
       routine_id: options.routine_id ?? null,
+      goal_generation: options.goal_id ? this.store.get("goal", options.goal_id).generation : null,
+      routine_generation: options.routine_id
+        ? this.store.get("routine", options.routine_id).generation
+        : null,
+      publication:
+        options.routine_id || message.purpose === "continuation" ? "deferred" : "immediate",
+      pending_answer: null,
       status: "queued",
       cancellation: "none",
       outcome: "none",
@@ -460,7 +488,7 @@ export class Lifecycle {
     });
   }
 
-  /** Basic durable scheduling seam. Conversational creation, cron/DST and quiet behavior belong to NMA-057. */
+  /** The application's single scheduler admits an occurrence and advances its cursor atomically. */
   fireRoutine(routineId: string, now: Date) {
     return this.store.transaction(() => {
       const routine = this.store.get("routine", routineId);
@@ -470,23 +498,35 @@ export class Lifecycle {
         Date.parse(routine.next_run_at) > now.getTime()
       )
         return null;
-      if (routine.goal_id) this.checkGoal(routine.goal_id, routine.thread_id, routine.agent_id);
-      if (
-        this.store.list("run").some((run) => run.routine_id === routineId && !final.has(run.status))
-      )
-        return null;
-      let scheduledFor = routine.next_run_at;
-      let next: string | null = null;
-      if (routine.schedule.type === "interval") {
-        const start = Date.parse(routine.next_run_at);
-        const period = routine.schedule.every_ms;
-        const latest = start + Math.floor((now.getTime() - start) / period) * period;
-        scheduledFor = new Date(latest).toISOString();
-        next = new Date(latest + period).toISOString();
+      this.scope(routine.thread_id, routine.agent_id);
+      if (routine.goal_id) {
+        const goal = this.checkGoal(routine.goal_id, routine.thread_id, routine.agent_id);
+        if (goal.work_state !== "ready") return null;
+        if (goal.current_run_id) {
+          const current = this.store.get("run", goal.current_run_id);
+          if (!final.has(current.status)) return null;
+          if (
+            current.task_id &&
+            !["completed", "failed", "cancelled"].includes(
+              this.store.get("peer_task", current.task_id).state,
+            )
+          )
+            return null;
+        }
+        if (this.store.list("run").some((r) => r.goal_id === goal.id && !final.has(r.status)))
+          return null;
       }
+      if (this.store.list("run").some((r) => r.routine_id === routineId && !final.has(r.status)))
+        return null;
+      const { scheduled_for, next } = dueWindow(
+        routine.schedule,
+        routine.timezone,
+        routine.next_run_at,
+        now,
+      );
       return this.store.command(
-        `routine:${routine.id}:${routine.generation}:${scheduledFor}`,
-        { scheduledFor },
+        `routine:${routine.id}:${routine.generation}:${scheduled_for}`,
+        { scheduled_for },
         () => {
           const receipt = this.admit(
             {
@@ -503,10 +543,17 @@ export class Lifecycle {
             kind: "occurrence",
             routine_id: routine.id,
             routine_generation: routine.generation,
-            scheduled_for: scheduledFor,
+            scheduled_for,
             run_id: receipt.run.id,
           });
           this.update(routine, { next_run_at: next });
+          if (routine.goal_id) {
+            const goal = this.store.get("goal", routine.goal_id);
+            this.update(goal, {
+              current_run_id: receipt.run.id,
+              source_run_ids: [...new Set([...goal.source_run_ids, receipt.run.id])].slice(-200),
+            });
+          }
           return occurrence;
         },
       );
@@ -518,6 +565,7 @@ export class Lifecycle {
       const run = this.dispatch(runId, token);
       if (outcome === "cancelled" && run.cancellation !== "requested")
         throw new DomainError("CONFLICT");
+      this.publishDeferred(run, outcome);
       const answer = this.store.answer(runId);
       if (answer && answer.state !== (outcome === "succeeded" ? "complete" : "partial"))
         this.update(answer, { state: outcome === "succeeded" ? "complete" : "partial" });
@@ -535,8 +583,40 @@ export class Lifecycle {
       const run = this.store.get("run", runId);
       if (!active.has(run.status) || !run.native_run_id || run.authority_epoch !== this.epoch)
         throw new DomainError("STALE_DISPATCH");
+      if (run.cancellation !== "none") throw new DomainError("STALE_DISPATCH");
+      this.authorizeDispatch(run.id, run.dispatch_token as string);
+      if (
+        this.store
+          .list("goal")
+          .some((g) => g.current_run_id === run.id && g.deferred_by_run_id === run.id)
+      )
+        return run;
+      if (run.publication !== "immediate") {
+        return this.update(run, { pending_answer: text });
+      }
       return this.writeAnswer(run, text, state);
     });
+  }
+
+  private publishDeferred(run: Entity<"run">, outcome: string, text = run.pending_answer) {
+    if (!text && run.goal_id) {
+      const goal = this.store.get("goal", run.goal_id);
+      if (goal.report_run_id === run.id && goal.work_state !== "ready") text = goal.progress;
+    }
+    if (
+      run.publication !== "deferred" ||
+      outcome !== "succeeded" ||
+      !text ||
+      run.cancellation !== "none"
+    )
+      return;
+    try {
+      this.scope(run.thread_id, run.agent_id);
+      this.responsibility(run);
+    } catch {
+      return;
+    }
+    this.writeAnswer(run, text, "complete");
   }
 
   private writeAnswer(run: Entity<"run">, text: string, state: "complete" | "partial") {
@@ -624,8 +704,21 @@ export class Lifecycle {
           throw new DomainError("CONFLICT");
         if (outcome === "cancelled" && run.cancellation !== "requested")
           throw new DomainError("CONFLICT");
-        if (text !== undefined && (text || this.store.answer(run.id)))
-          this.writeAnswer(run, text, outcome === "succeeded" ? "complete" : "partial");
+        if (run.publication !== "immediate")
+          this.publishDeferred(run, outcome, text ?? run.pending_answer);
+        else if (
+          text !== undefined &&
+          run.cancellation === "none" &&
+          (text || this.store.answer(run.id))
+        ) {
+          try {
+            this.scope(run.thread_id, run.agent_id);
+            this.responsibility(run);
+            this.writeAnswer(run, text, outcome === "succeeded" ? "complete" : "partial");
+          } catch {
+            /* Retain the receipt without publishing into revoked responsibility scope. */
+          }
+        }
         return this.update(run, {
           status: outcome,
           outcome,
@@ -637,20 +730,69 @@ export class Lifecycle {
     );
   }
 
-  controlGoal(goalId: string, state: "paused" | "stopped" | "active") {
+  controlGoal(goalId: string, state: "paused" | "stopped" | "active" | "completed") {
     return this.store.transaction(() => {
       const goal = this.store.get("goal", goalId);
       if (goal.state === "completed") throw new DomainError("CONFLICT");
       if (goal.state === state) return goal;
-      const result = this.update(goal, { state, generation: goal.generation + 1 });
+      if (state === "completed") {
+        if (
+          goal.state !== "active" ||
+          goal.work_state !== "completion_pending" ||
+          !goal.current_run_id ||
+          goal.report_run_id !== goal.current_run_id ||
+          !goal.evidence_artifact_ids.length
+        )
+          throw new DomainError("CONFLICT");
+        const run = this.store.get("run", goal.current_run_id);
+        if (run.status !== "succeeded" || run.cancellation !== "none")
+          throw new DomainError("CONFLICT");
+      }
+      const result = this.update(goal, {
+        state,
+        generation: goal.generation + 1,
+        continuation_at: state === "active" ? new Date().toISOString() : null,
+        work_state: state === "active" || state === "completed" ? "ready" : goal.work_state,
+        current_run_id:
+          state === "active" &&
+          goal.current_run_id &&
+          final.has(this.store.get("run", goal.current_run_id).status)
+            ? null
+            : goal.current_run_id,
+      });
       if (state !== "active") {
+        for (const task of this.store.list("peer_task")) {
+          if (
+            !task.goal_ids.includes(goalId) ||
+            ["completed", "failed", "cancelled"].includes(task.state)
+          )
+            continue;
+          this.cancel(task.current_run_id);
+          this.update(task, { state: "cancelled" });
+          for (const request of this.store.list("human_request"))
+            if (request.task_id === task.id && request.state === "pending")
+              this.update(request, { state: "cancelled" });
+        }
         for (const routine of this.store.list("routine")) {
-          if (routine.goal_id === goalId && routine.state === "active")
-            this.update(routine, { state, generation: routine.generation + 1 });
+          if (routine.goal_id === goalId && routine.state !== "stopped")
+            this.update(routine, {
+              state: state === "completed" ? "stopped" : state,
+              paused_by_goal: state === "paused" && routine.state === "active",
+              generation: routine.generation + 1,
+            });
         }
         for (const run of this.store.list("run"))
-          if (run.goal_id === goalId && !final.has(run.status)) this.cancel(run.id);
+          if ((run.goal_id === goalId || run.id === goal.current_run_id) && !final.has(run.status))
+            this.cancel(run.id);
       }
+      if (state === "active")
+        for (const routine of this.store.list("routine"))
+          if (routine.goal_id === goalId && routine.paused_by_goal && routine.state === "paused")
+            this.update(routine, {
+              state: "active",
+              paused_by_goal: false,
+              generation: routine.generation + 1,
+            });
       return result;
     });
   }

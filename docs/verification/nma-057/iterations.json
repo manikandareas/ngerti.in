@@ -1,0 +1,98 @@
+{
+  "retained_backend_iterations": [
+    "logs/tests-initial.log",
+    "logs/tests-iteration-2.log",
+    "logs/tests-iteration-3.log",
+    "logs/tests-iteration-4.log",
+    "logs/tests-iteration-5.log",
+    "logs/tests-iteration-6.log",
+    "logs/tests-iteration-7.log",
+    "logs/tests-final.log"
+  ],
+  "retained_goal_iterations": [
+    "logs/goals-initial.log",
+    "logs/goals-iteration-2.log",
+    "logs/goals-future-stage-fence.log"
+  ],
+  "failures_and_corrections": [
+    {
+      "kind": "schema_runtime_failure",
+      "report": "logs/tests-initial.log",
+      "actual": "96 passed, 73 failed; refined Zod schema could not use omit.",
+      "correction": "Build strict HTTP fields then parse the complete refined domain input."
+    },
+    {
+      "kind": "stale_contract_expectation",
+      "report": "logs/tests-iteration-2.log",
+      "actual": "168 passed, 1 failed; expected contract 1.7.0.",
+      "correction": "Assert the implemented 1.8.0 contract."
+    },
+    {
+      "kind": "stale_fixture_revision",
+      "report": "logs/goals-iteration-2.log",
+      "actual": "17 passed, 2 failed after write_routine legitimately advanced the goal revision.",
+      "correction": "Read the authoritative revision before reporting."
+    },
+    {
+      "kind": "reused_fixture_path",
+      "report": "logs/goals-future-stage-fence.log",
+      "actual": "25 passed, 1 failed because a two-stage fixture reused an existing output filename.",
+      "correction": "Give each fixture run a distinct output path."
+    },
+    {
+      "kind": "progress_projection_expectation",
+      "report": "logs/tests-iteration-7.log",
+      "actual": "194 passed, 1 failed; structured deferred progress is an intended second history message.",
+      "correction": "Verify one user input, one structured progress message and no internal continuation bubble."
+    },
+    {
+      "kind": "verifier_capability_assumption",
+      "report": "native/hypothetical-attempt-1.json",
+      "actual": "Codex does not support the Muse interaction poll used by the initial verifier; both original runs succeeded.",
+      "correction": "Poll native interactions only for Muse and recheck original HTTP receipts without inference."
+    },
+    {
+      "kind": "verifier_continuation_assumption_and_observer_race",
+      "reports": [
+        "native/stage-attempt-1.json",
+        "native/stage-attempt-2-last-observation.json",
+        "native/stage.json",
+        "logs/native-stage-attempt-1.log",
+        "logs/native-stage-attempt-2.log"
+      ],
+      "actual": "Both harnesses chose a valid one-shot Routine rather than standalone continuation. Initial and recheck observers briefly wrote the same report/proof file; a session baseline was lost.",
+      "correction": "Accept either valid wake owner, wait for all cohort outcomes, serialize evidence writes, and recover exact bindings from the retained pre-restart snapshot."
+    },
+    {
+      "kind": "native_early_execution",
+      "reports": [
+        "native/stage.json",
+        "native/stage-muse.json"
+      ],
+      "actual_native_run_ids": [
+        "73926fe1-8417-4373-bd9a-dbdd64660157",
+        "58590dd3-03ca-4666-a00c-4d0b387c8d15"
+      ],
+      "actual": "Two Muse source runs completed inference and arithmetic but performed future stages too early.",
+      "correction": "Persist source deferral, reject source completion/product file/publication effects with RESPONSIBILITY_DEFERRED, publish structured progress, and require a distinct scheduler run. Guarded native source/restart/completion passed."
+    },
+    {
+      "kind": "verifier_missing_session_baseline",
+      "report": "native/resume-codex-attempt-1.json",
+      "actual": "Same-session assertion compared an actual binding with undefined; underlying native work had succeeded.",
+      "correction": "Read the actual pre-restart binding from correct.json; receipt-only recheck passed without inference."
+    },
+    {
+      "kind": "verifier_schedule_tag_assumption",
+      "report": "native/routines-attempt-1.json",
+      "actual": "Both native recurring Routines validly used interval; verifier initially required heartbeat.",
+      "correction": "Recheck original receipts as recurring schedules; the subsequent explicit conversational edit preserves identities and changes both to heartbeat."
+    },
+    {
+      "kind": "verification_client_lint",
+      "report": "logs/verification-client-format.log",
+      "actual": "Two assignment-in-expression errors and dynamic JSON any warnings in host-specific clients.",
+      "correction": "Separate assignments; error-only client check passes in logs/verification-client-final.log. Backend lint/typecheck are separate and fully pass."
+    }
+  ]
+}

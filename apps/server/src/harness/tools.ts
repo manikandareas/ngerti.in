@@ -2,6 +2,8 @@ import { timingSafeEqual } from "node:crypto";
 import { z } from "zod";
 import { Artifacts } from "../artifacts";
 import { type agentInput, type agentUpdate, DomainError, type Entity } from "../contracts";
+import { registerGoalTools } from "../goals/tools";
+import { authorizeResponsibilityWork } from "../goals/work-fence";
 import { registerGroupTools } from "../groups/tools";
 import { registerLearningTools } from "../learning/tools";
 import type { Lifecycle } from "../lifecycle";
@@ -31,6 +33,7 @@ export class ProductTools {
   ) {
     registerLearningTools(this);
     registerGroupTools(this);
+    registerGoalTools(this);
     const artifacts = new Artifacts(lifecycle);
     const workspaces = artifacts.workspaces;
     const workspaceFor = (access: ToolAccess) => {
@@ -77,6 +80,7 @@ export class ProductTools {
               { operation: name, workspace_id: workspace.id, path: data.path, text: data.text },
               () => {
                 access.authorize();
+                authorizeResponsibilityWork(lifecycle, access.scope.run_id);
                 workspaces.files(workspace.id).create(data.path, Buffer.from(data.text));
                 return { path: data.path };
               },
@@ -106,6 +110,9 @@ export class ProductTools {
           thread_id: run.thread_id,
           run_id: run.id,
           input: message.text,
+          input_message_id: message.id,
+          goal_id: run.goal_id,
+          routine_id: run.routine_id,
           workspace_id: run.workspace_id,
           attachments: message.artifact_ids.map((id) => {
             const item = lifecycle.store.get("artifact", id);
@@ -268,11 +275,24 @@ export class ProductTools {
     }
     throw new DomainError("UNAUTHORIZED", 401);
   }
-  private authorize(scope: ToolScope) {
+  private authorize(scope: ToolScope, controlReceipt = false) {
     const store = this.lifecycle.store;
     const run = store.get("run", scope.run_id);
     if (!run.dispatch_token) throw new DomainError("SCOPE_DENIED", 403);
-    this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
+    if (controlReceipt) {
+      if (
+        run.authority_epoch !== this.lifecycle.epoch ||
+        run.cancellation !== "requested" ||
+        !["running", "cancel_requested"].includes(run.status)
+      )
+        throw new DomainError("STALE_DISPATCH");
+      const thread = store.get("thread", run.thread_id);
+      if (
+        !thread.member_agent_ids.includes(run.agent_id) ||
+        (run.thread_revision !== null && run.thread_revision !== thread.revision)
+      )
+        throw new DomainError("SCOPE_DENIED", 403);
+    } else this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
     const { agent, connection } = new Connections(this.lifecycle).forAgent(
       scope.agent_id,
       scope.thread_id,
@@ -320,8 +340,25 @@ export class ProductTools {
     };
     authorize();
     // Asynchronous tools must call authorize immediately before committing their effect.
+    const before = this.lifecycle.store.get("run", scope.run_id);
     const result = await tool.execute(parsed, { scope: Object.freeze({ ...scope }), authorize });
-    authorize();
+    const receipt = result as Partial<Entity<"goal"> | Entity<"routine">> | null;
+    const endsOwnScope =
+      before.cancellation === "none" &&
+      receipt &&
+      ((name === "ngertiin.control_goal" &&
+        receipt.kind === "goal" &&
+        receipt.state !== "active" &&
+        (before.goal_id === receipt.id || receipt.current_run_id === before.id)) ||
+        (name === "ngertiin.control_routine" &&
+          receipt.kind === "routine" &&
+          receipt.state !== "active" &&
+          before.routine_id === receipt.id));
+    // A synchronous self-stop may return its committed receipt, but cannot authorize another tool.
+    if (endsOwnScope) {
+      if (!this.#leases.has(token)) throw new DomainError("UNAUTHORIZED", 401);
+      this.authorize(scope, true);
+    } else authorize();
     const current = this.lifecycle.store.get("run", scope.run_id);
     this.lifecycle.observe(current.id, current.dispatch_token as string, {
       product_tools: [...current.product_tools, name].slice(-200),

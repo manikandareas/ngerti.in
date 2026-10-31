@@ -2,6 +2,7 @@ import { agentInstructions } from "../agent-instructions";
 import { Artifacts } from "../artifacts";
 import type { ExecutorContext, HarnessExecutor } from "../background";
 import { DomainError, type Entity } from "../contracts";
+import { Goals } from "../goals/service";
 import { Groups } from "../groups/service";
 import type { NativeSkillMetadata } from "../learning/contracts";
 import { Memories } from "../learning/memories";
@@ -656,6 +657,20 @@ export class HarnessBroker {
     if (state !== "supported")
       throw new HarnessError(state === "unknown" ? "CAPABILITY_UNKNOWN" : "CAPABILITY_UNSUPPORTED");
   }
+  private appendIfAuthorized(runId: string, text: string, state: "complete" | "partial") {
+    try {
+      this.lifecycle.appendAnswer(runId, text, state);
+      return true;
+    } catch (error) {
+      if (
+        error instanceof DomainError &&
+        ["STALE_DISPATCH", "SCOPE_DENIED", "CONFLICT"].includes(error.code)
+      )
+        return false;
+      throw error;
+    }
+  }
+
   async execute(
     run: Entity<"run">,
     context: ExecutorContext,
@@ -755,6 +770,7 @@ export class HarnessBroker {
               ? ""
               : [
                   new Groups(this.lifecycle).context(run),
+                  new Goals(this.lifecycle).context(run),
                   "Current authoritative learning state. Use these identities/revisions instead of obsolete facts in native history. Deleted records must remain deleted. Do not recreate them from older transcript or tool receipts. Use ngertiin.list_memories for fresh scoped recall and ngertiin.write_memory/delete_memory for changes; new identities start at expected_revision 0. Changes are committed when their tool receipt succeeds, even if this run later stops. Use a fresh UUID command_id for a distinct mutation and the same UUID on retries. Visibility is explicit: dm_private, group or shared (across this agent's conversations). Never promote private content into shared memory or a shared skill without an explicit sharing request.",
                   JSON.stringify(
                     new Memories(this.lifecycle).recall(
@@ -830,7 +846,7 @@ export class HarnessBroker {
             ) {
               const safe = session.launch.redactor.stream(text);
               if (safe) {
-                this.lifecycle.appendAnswer(run.id, safe, "partial");
+                this.appendIfAuthorized(run.id, safe, "partial");
                 lastPublishedAt = Date.now();
               }
             }
@@ -863,12 +879,13 @@ export class HarnessBroker {
         const session = this.#sessions.get(`${run.thread_id}:${run.agent_id}`);
         if (session && accepted) {
           const safe = session.launch.redactor.text(text);
-          this.lifecycle.appendAnswer(
+          const published = this.appendIfAuthorized(
             run.id,
             safe,
             outcome === "succeeded" ? "complete" : "partial",
           );
-          this.publish(run.id, { type: "text", text: safe }, outcome);
+          if (published && this.lifecycle.store.get("run", run.id).publication === "immediate")
+            this.publish(run.id, { type: "text", text: safe }, outcome);
         }
       }
       if (!this.#closed && dispatched) {

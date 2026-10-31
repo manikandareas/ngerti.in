@@ -21,6 +21,8 @@ import {
 } from "./contracts";
 import { Conversations, conversationSnapshot, historyQuery } from "./conversations";
 import { eventStream } from "./event-stream";
+import { captureGoal, reportGoal, routineControl, routineWrite } from "./goals/contracts";
+import { Goals } from "./goals/service";
 import { groupMessage, humanReply, membershipUpdate } from "./groups/contracts";
 import { Groups } from "./groups/service";
 import type { AccountService } from "./harness/accounts";
@@ -64,6 +66,7 @@ export function createApi(
   if (token.length < 32) throw new Error("A private development token is required.");
   const conversations = new Conversations(lifecycle);
   const groups = new Groups(lifecycle);
+  const goals = new Goals(lifecycle);
   const controls = new RunControls(lifecycle);
   const memories = new Memories(lifecycle);
   const skills = new ApplicationSkills(lifecycle);
@@ -421,6 +424,53 @@ export function createApi(
       "/v1/threads",
       ({ request, body }) => command(request, body, () => lifecycle.create("thread", body)),
       { body: threadInput },
+    )
+    .get(
+      "/v1/threads/:id/goals",
+      ({ params, query }) => goals.list({ thread_id: params.id, agent_id: query.agent_id }),
+      { params: z.object({ id }), query: z.strictObject({ agent_id: id }) },
+    )
+    .post(
+      "/v1/goals/capture",
+      ({ request, body }) =>
+        command(request, body, () => {
+          const { run_id, ...input } = body;
+          return goals.capture(run_id, input);
+        }),
+      { body: captureGoal.extend({ run_id: id }) },
+    )
+    .post(
+      "/v1/goals/:id/progress",
+      ({ request, params, body }) =>
+        command(request, body, () => {
+          const { run_id, ...input } = body;
+          return goals.report(run_id, { ...input, goal_id: params.id });
+        }),
+      {
+        params: z.object({ id }),
+        body: z.strictObject({ ...reportGoal.shape, run_id: id }).omit({ goal_id: true }),
+      },
+    )
+    .post(
+      "/v1/routines/write",
+      ({ request, body }) =>
+        command(request, body, () => {
+          const { run_id, ...input } = body;
+          return goals.writeRoutine(run_id, input);
+        }),
+      { body: routineWrite.extend({ run_id: id }) },
+    )
+    .post(
+      "/v1/routines/:id/control",
+      ({ request, params, body }) => {
+        const result = command(request, body, () => {
+          const routine = lifecycle.store.get("routine", params.id);
+          return goals.controlRoutine(routine, { ...body, routine_id: params.id });
+        });
+        background.notifyControls();
+        return result;
+      },
+      { params: z.object({ id }), body: routineControl.omit({ routine_id: true }) },
     )
     .post(
       "/v1/goals",

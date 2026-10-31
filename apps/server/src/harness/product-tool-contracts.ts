@@ -1,5 +1,12 @@
 import { z } from "zod";
 import { agentInput, agentUpdate, id } from "../contracts";
+import {
+  captureGoal,
+  goalControl,
+  reportGoal,
+  routineControl,
+  routineWrite,
+} from "../goals/contracts";
 import { askHumanInput, handoffInput } from "../groups/contracts";
 import {
   memoryDelete,
@@ -13,6 +20,13 @@ import {
 import { relativePath, uploadInput } from "../workspace-contracts";
 
 export const productToolSchemas = {
+  "ngertiin.list_goals": z.strictObject({}),
+  "ngertiin.capture_goal": captureGoal.extend({ command_id: id }),
+  "ngertiin.report_goal": reportGoal.safeExtend({ command_id: id }),
+  "ngertiin.control_goal": goalControl.extend({ command_id: id }),
+  "ngertiin.write_routine": routineWrite.extend({ command_id: id }),
+  "ngertiin.control_routine": routineControl.extend({ command_id: id }),
+  "ngertiin.routine_no_update": z.strictObject({ command_id: id }),
   "ngertiin.group_read_task": z.strictObject({
     task_id: id,
     offset: z.int().min(0).max(100_000).default(0),

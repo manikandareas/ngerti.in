@@ -1,0 +1,25 @@
+bun test v1.3.10 (30e609e0)
+
+apps/server/tests/goals/domain.test.ts:
+(pass) multiple responsibilities retain their own source/objective/progress and correction identity after restart [43.69ms]
+(pass) capture rejects foreign, deleted and automatic trigger source identities [30.84ms]
+(pass) continuation admission is durable and repeated ticks/restart do not create another run [21.71ms]
+(pass) unknown native outcome never becomes a retry, completion or second scheduled effect [18.21ms]
+(pass) wait has no busy-loop, even with an associated heartbeat and after restart [19.79ms]
+(pass) blocked has no busy-loop, even with an associated heartbeat and after restart [17.04ms]
+(pass) completion requires verified nonempty produced bytes and successful native settlement [16.19ms]
+(pass) failed or stopped runs cannot finalize pending completion or publish deferred late results [17.06ms]
+(pass) calendar schedules honor IANA wall time and skip DST gaps and repeated fall-back instants [1.70ms]
+(pass) heartbeat coalesces missed occurrences and changed schedules invalidate old queued generation [21.61ms]
+(pass) quiet scheduled output has no streamed or final bubble, while relevant output publishes once [24.03ms]
+(pass) quiet cannot hide a result artifact, human request or explicit blocker [26.53ms]
+(pass) stop run keeps goal/Routine responsibility but never silently retries the cancelled continuation [21.63ms]
+(pass) pause/resume preserves an independently paused Routine; stop fences queued work across restart [31.16ms]
+(pass) goal handoff/HITL retains one task owner; stop invalidates descendant tasks and replies [26.08ms]
+(pass) scoped structured capture retries commit once and self-stop returns its receipt then revokes tools [37.68ms]
+(pass) HTTP contracts expose goal/Routine commands, snapshot/replay and authenticated idempotent updates [41.76ms]
+
+ 17 pass
+ 0 fail
+ 95 expect() calls
+Ran 17 tests across 1 file. [715.00ms]

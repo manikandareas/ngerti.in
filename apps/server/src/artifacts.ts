@@ -11,6 +11,7 @@ import {
 } from "node:fs";
 import { basename, join } from "node:path";
 import { artifact, DomainError, type Entity } from "./contracts";
+import { authorizeResponsibilityWork } from "./goals/work-fence";
 import type { Lifecycle } from "./lifecycle";
 import { MAX_FILE_BYTES, publicationInput, uploadInput } from "./workspace-contracts";
 import { Workspaces } from "./workspaces";
@@ -167,6 +168,7 @@ export class Artifacts {
       commandId,
       { operation: "publish_artifact", ...data },
       () => {
+        authorizeResponsibilityWork(this.lifecycle, run.id);
         const bytes = this.workspaces.files(workspace.id).read(data.path);
         authorize();
         this.workspaces.authorizeRun(this.lifecycle.store.get("run", run.id));
@@ -182,6 +184,18 @@ export class Artifacts {
           );
         if (previous) return previous;
         const binding = this.lifecycle.store.get("binding", run.binding_id as string);
+        if (run.publication === "quiet") {
+          const current = this.lifecycle.store.get("run", run.id);
+          this.lifecycle.store.put(
+            {
+              ...current,
+              publication: "deferred",
+              revision: current.revision + 1,
+              updated_at: new Date().toISOString(),
+            },
+            current.revision,
+          );
+        }
         return this.save(commandId, workspace, bytes, {
           name: basename(data.path),
           media_type: data.media_type,

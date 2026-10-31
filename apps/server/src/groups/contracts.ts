@@ -27,6 +27,7 @@ export const routeFields = {
   error_code: z.string().nullable(),
 };
 export const taskFields = {
+  goal_ids: z.array(id).max(100).default([]),
   thread_id: id,
   agent_id: id,
   source_agent_id: id.nullable(),

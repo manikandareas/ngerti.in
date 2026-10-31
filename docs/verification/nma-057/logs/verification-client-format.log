@@ -1,0 +1,290 @@
+scripts/verification/nma057/native.ts:14:14 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    12 │ const proofFile = resolve(".dev/nma057/proof.json");
+    13 │ mkdirSync(resolve(".dev/nma057"), { recursive: true, mode: 0o700 });
+  > 14 │ const proof: any = existsSync(proofFile)
+       │              ^^^
+    15 │   ? await Bun.file(proofFile).json()
+    16 │   : { runs: {}, inputs: {}, agents: [], checks: [] };
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+scripts/verification/nma057/native.ts:18:15 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    16 │   : { runs: {}, inputs: {}, agents: [], checks: [] };
+    17 │ const { token } = await Bun.file(join(directory, "installation.json")).json();
+  > 18 │ const report: any = {
+       │               ^^^
+    19 │   phase,
+    20 │   started_at: new Date().toISOString(),
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+scripts/verification/nma057/native.ts:35:39 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    33 │   return writes;
+    34 │ };
+  > 35 │ async function cohort(action: (agent: any) => Promise<void>) {
+       │                                       ^^^
+    36 │   const selected = phase.endsWith("-codex")
+    37 │     ? proof.agents.filter((a: any) => a.harness === "codex")
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+scripts/verification/nma057/native.ts:37:31 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    35 │ async function cohort(action: (agent: any) => Promise<void>) {
+    36 │   const selected = phase.endsWith("-codex")
+  > 37 │     ? proof.agents.filter((a: any) => a.harness === "codex")
+       │                               ^^^
+    38 │     : phase.endsWith("-muse")
+    39 │       ? proof.agents.filter((a: any) => a.harness === "muse")
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+scripts/verification/nma057/native.ts:39:33 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    37 │     ? proof.agents.filter((a: any) => a.harness === "codex")
+    38 │     : phase.endsWith("-muse")
+  > 39 │       ? proof.agents.filter((a: any) => a.harness === "muse")
+       │                                 ^^^
+    40 │       : proof.agents;
+    41 │   const results = await Promise.allSettled(selected.map(action));
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+scripts/verification/nma057/native.ts:59:32 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    57 │   return value;
+    58 │ }
+  > 59 │ async function snapshot(agent: any) {
+       │                                ^^^
+    60 │   const s = await api(`/v1/threads/${agent.thread_id}/snapshot`);
+    61 │   report.observations[agent.harness] = s;
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+scripts/verification/nma057/native.ts:65:31 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    63 │   return s;
+    64 │ }
+  > 65 │ async function approvals(run: any) {
+       │                               ^^^
+    66 │   if (
+    67 │     run.status !== "running" ||
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+scripts/verification/nma057/native.ts:68:28 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    66 │   if (
+    67 │     run.status !== "running" ||
+  > 68 │     !proof.agents.some((a: any) => a.id === run.agent_id && a.harness === "muse")
+       │                            ^^^
+    69 │   )
+    70 │     return;
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+scripts/verification/nma057/receipts.ts:26:24 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    24 │ }
+    25 │ const snapshots = await Promise.all(
+  > 26 │   proof.agents.map((a: any) => api(`/v1/threads/${a.thread_id}/snapshot`)),
+       │                        ^^^
+    27 │ );
+    28 │ const runs = snapshots.flatMap((s: any) => s.runs);
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+scripts/verification/nma057/receipts.ts:28:36 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    26 │   proof.agents.map((a: any) => api(`/v1/threads/${a.thread_id}/snapshot`)),
+    27 │ );
+  > 28 │ const runs = snapshots.flatMap((s: any) => s.runs);
+       │                                    ^^^
+    29 │ const goals = snapshots.flatMap((s: any) => s.goals);
+    30 │ const routines = snapshots.flatMap((s: any) => s.routines);
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+scripts/verification/nma057/receipts.ts:29:37 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    27 │ );
+    28 │ const runs = snapshots.flatMap((s: any) => s.runs);
+  > 29 │ const goals = snapshots.flatMap((s: any) => s.goals);
+       │                                     ^^^
+    30 │ const routines = snapshots.flatMap((s: any) => s.routines);
+    31 │ assert(
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+scripts/verification/nma057/receipts.ts:30:40 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    28 │ const runs = snapshots.flatMap((s: any) => s.runs);
+    29 │ const goals = snapshots.flatMap((s: any) => s.goals);
+  > 30 │ const routines = snapshots.flatMap((s: any) => s.routines);
+       │                                        ^^^
+    31 │ assert(
+    32 │   runs.every((r: any) => r.status === "succeeded"),
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+scripts/verification/nma057/receipts.ts:32:18 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    30 │ const routines = snapshots.flatMap((s: any) => s.routines);
+    31 │ assert(
+  > 32 │   runs.every((r: any) => r.status === "succeeded"),
+       │                  ^^^
+    33 │   "Inspect all non-success outcomes before cleanup or replay.",
+    34 │ );
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+scripts/verification/nma057/receipts.ts:35:24 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    33 │   "Inspect all non-success outcomes before cleanup or replay.",
+    34 │ );
+  > 35 │ assert(goals.every((g: any) => ["stopped", "completed"].includes(g.state)));
+       │                        ^^^
+    36 │ assert(routines.every((r: any) => r.state === "stopped"));
+    37 │ const report: any = {
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+scripts/verification/nma057/receipts.ts:36:27 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    34 │ );
+    35 │ assert(goals.every((g: any) => ["stopped", "completed"].includes(g.state)));
+  > 36 │ assert(routines.every((r: any) => r.state === "stopped"));
+       │                           ^^^
+    37 │ const report: any = {
+    38 │   mode,
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+scripts/verification/nma057/receipts.ts:37:15 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    35 │ assert(goals.every((g: any) => ["stopped", "completed"].includes(g.state)));
+    36 │ assert(routines.every((r: any) => r.state === "stopped"));
+  > 37 │ const report: any = {
+       │               ^^^
+    38 │   mode,
+    39 │   native_runs: runs.length,
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+scripts/verification/nma057/receipts.ts:40:30 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    38 │   mode,
+    39 │   native_runs: runs.length,
+  > 40 │   succeeded: runs.filter((r: any) => r.status === "succeeded").length,
+       │                              ^^^
+    41 │   failed: 0,
+    42 │   cancelled: 0,
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+scripts/verification/nma057/receipts.ts:49:26 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    47 │   routines: routines.length,
+    48 │   active_routines: 0,
+  > 49 │   outcomes: runs.map((r: any) => ({
+       │                          ^^^
+    50 │     run_id: r.id,
+    51 │     agent_id: r.agent_id,
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+scripts/verification/nma057/receipts.ts:67:74 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    65 │   assert.equal(snapshots[1].cursor, cursor);
+    66 │   let replayed = 0;
+  > 67 │   for (const [label, record] of Object.entries(proof.inputs) as [string, any][]) {
+       │                                                                          ^^^
+    68 │     const receipt = await api("/v1/runs", record.body, record.key);
+    69 │     assert.equal(receipt.run.id, proof.runs[label]);
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+scripts/verification/nma057/receipts.ts:73:26 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    71 │   }
+    72 │   const after = await Promise.all(
+  > 73 │     proof.agents.map((a: any) => api(`/v1/threads/${a.thread_id}/snapshot`)),
+       │                          ^^^
+    74 │   );
+    75 │   assert.deepEqual(after, snapshots);
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
+Diagnostics not shown: 61.
+Checked 3 files in 68ms. Fixed 3 files.
+Found 2 errors.
+Found 79 warnings.
+check ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Some errors were emitted while applying fixes.
+  
+

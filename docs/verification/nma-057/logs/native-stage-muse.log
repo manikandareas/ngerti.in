@@ -1,0 +1,1 @@
+{"phase":"stage-muse","status":"fail","checks":[],"error":"Expected values to be strictly equal:\n+ actual - expected\n\n+ 'completion_pending'\n- 'ready'\n"}

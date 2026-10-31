@@ -5,11 +5,14 @@ import {
   binding,
   control,
   DomainError,
+  goal,
   groupRoute,
   humanRequest,
   id,
   message,
+  occurrence,
   peerTask,
+  routine,
   run,
   thread,
   workspace,
@@ -34,6 +37,9 @@ export const conversationSnapshot = z.strictObject({
   routes: z.array(groupRoute),
   tasks: z.array(peerTask),
   human_requests: z.array(humanRequest),
+  goals: z.array(goal),
+  routines: z.array(routine),
+  occurrences: z.array(occurrence),
   has_more: z.boolean(),
   next_before: id.nullable(),
 });
@@ -125,6 +131,11 @@ export class Conversations {
         routes: store.list("group_route").filter((item) => item.thread_id === threadId),
         tasks: store.list("peer_task").filter((item) => item.thread_id === threadId),
         human_requests: store.list("human_request").filter((item) => item.thread_id === threadId),
+        goals: store.list("goal").filter((item) => item.thread_id === threadId),
+        routines: store.list("routine").filter((item) => item.thread_id === threadId),
+        occurrences: store
+          .list("occurrence")
+          .filter((item) => store.get("routine", item.routine_id).thread_id === threadId),
         ...this.history(threadId),
       });
     });

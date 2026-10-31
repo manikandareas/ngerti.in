@@ -1,0 +1,67 @@
+# Persistent responsibilities and Routine API
+
+Application contract **1.8.0** extends the existing [conversation controls](conversation-control-api.md), [group collaboration](group-collaboration-api.md), [memory/skills](memory-skills-api.md), queue, SQLite authority lock, transactional command receipts and event replay. It introduces no additional model/tool loop, scheduler process or engine. Browser connections are not required for execution; the backend and native harness host must remain alive. Host shutdown/suspend is not offline execution.
+
+## Conversation to responsibility
+
+Every working native turn receives fresh scoped goal/Routine state and instructions to recognize real responsibilities from ordinary conversation. The harness chooses the semantic capture/correction/wait/stop decision and invokes structured product tools. Hypothetical questions and quotations are not commitments. There is no required form, slash command, activation button, extra application inference or prose parser for goal capture. Each conversation remains private; a router session receives no product tools or responsibility context.
+
+The tools use server-issued run leases. Agent, owner and thread identities are derived from the lease. Membership, connection/grant revisions, run dispatch and native binding are checked before effects. Mutation, command receipt and publication events commit in the same SQLite transaction. New mutations use a UUID `command_id`; exact retries reuse it. An old receipt is historical evidence and does not revive a stopped goal or old schedule.
+
+| Tool | Arguments, excluding command_id | Behavior |
+| --- | --- | --- |
+| `ngertiin.list_goals` | `{}`; no command_id | Goals and Routines for this agent in this thread, including paused/stopped/completed records. |
+| `ngertiin.capture_goal` | `goal_id`, `expected_revision`, `title`, `objective`, `source_message_id` | Revision 0 creates a stable identity. Corrections use the same ID/current revision. Source must be this run's user input or explicit peer handoff/review, never a foreign/private message or automatic tick. |
+| `ngertiin.report_goal` | `goal_id`, `expected_revision`, `progress`, `disposition`, `evidence_artifact_ids`, `continuation` | Persist a progress decision and its source. Dispositions: continue, scheduled, wait, blocked, completed. |
+| `ngertiin.control_goal` | `goal_id`, `expected_revision`, `state` | Active, paused or stopped; invalidate old continuation generations and cancel related queued/native/task work. |
+| `ngertiin.write_routine` | `routine_id`, `expected_revision`, `goal_id`, `instruction`, `schedule`, `timezone` | Create at revision 0; revise the same identity otherwise. The thread/agent are implicit. |
+| `ngertiin.control_routine` | `routine_id`, `expected_revision`, `state` | Active, paused or stopped. Invalidate old generations; stopped identities are not silently recreated. |
+| `ngertiin.routine_no_update` | No fields beyond command_id | Structured quiet decision for an automatic goal/Routine run. No localized phrase matching or marker parsing. |
+
+`read_run_context` exposes `input_message_id`, `goal_id`, `routine_id`, and actual attachments. Multiple goals can originate from one input, with separate objective, source references, progress, evidence, generation and continuation. Context injection is bounded; `list_goals` returns the full authoritative inventory. Historical events retain prior revisions even when bounded source-reference lists roll forward.
+
+## Continuation and completion
+
+A standalone capture has an immediate default continuation after its source run succeeds. A report with `continue` supplies `{ "at": "UTC instant", "instruction": "next useful work" }`. The scheduler stores an internal continuation message and run atomically under `goal:<id>:<generation>:<sequence>`. Internal inputs never appear as human or agent chat bubbles. Repeated ticks, process restarts and command retries reuse the admitted identity.
+
+`wait` and `blocked` have no polling wakeup. A later scoped user turn can update that goal, while group user/peer waits retain the existing exact task/request continuation owner. Native `unknown` remains held for receipt reconciliation; it is never treated as a successful turn or permission to retry an external effect. A standalone continuation that exits without a structured decision becomes blocked, preventing an unproductive busy loop. After an explicit deferral, the source run cannot undo that decision, complete the goal, or use product file/publication tools to perform the future stage. It receives RESPONSIBILITY_DEFERRED; a distinct scheduler run is authorized for that stage. Source-turn final publication uses the structured progress decision rather than a later prose completion claim. Other independent responsibilities can still be recorded for subsequent admission. Native workspace bytes are not completion/publication proof without their authorized application receipts.
+
+A linked active Routine owns scheduled wakeups. Creating it clears capture's default immediate continuation. `scheduled` records progress with that schedule as owner; a second `continue` wakeup is rejected while the linked Routine is active. Multiple genuine Routines remain distinct triggers, each with its own occurrence identity. In-flight work, pending peer/HITL tasks and unknown outcomes prevent overlapping responsibility runs.
+
+`completed` is initially `completion_pending`. Evidence must reference nonempty, hash-verified immutable bytes produced by actual native work in this agent/thread. Metadata-only artifacts, uploads and foreign outputs cannot prove completion. Bytes are verified again at finalization. The goal completes only after its reporting native run succeeds without cancellation and its task lineage settles. A plain answer claiming success does not complete a goal. Failed/unknown/cancelled work cannot finalize it. The application verifies evidence existence, provenance and bytes; the harness evaluates whether that result meets the objective.
+
+## Schedules and quiet publication
+
+| Schedule | Shape |
+| --- | --- |
+| One-shot | `{ "type": "once", "at": "2026-11-02T01:00:00.000Z" }` |
+| Recurring interval | `{ "type": "interval", "anchor_at": "2026-11-02T01:00:00.000Z", "every_ms": 3600000 }` |
+| Heartbeat | `{ "type": "heartbeat", "anchor_at": "2026-11-02T01:00:00.000Z", "every_ms": 21600000 }` |
+| Local calendar | `{ "type": "calendar", "local_time": "09:00", "weekdays": [1,2,3,4,5] }` with e.g. `timezone: "Asia/Makassar"` |
+
+Weekdays use 0=Sunday through 6=Saturday. Intervals/heartbeats measure elapsed milliseconds; calendar recurrence uses IANA wall time. A missing DST time is skipped; an ambiguous repeated time fires at its first instant only. One-shot timestamps are explicit UTC instants. Missed periodic ticks coalesce to one latest occurrence instead of a catch-up burst.
+
+A Routine occurrence is durable under `(routine_id, routine_generation, scheduled_for)`. Creating its input/run/occurrence, advancing its schedule and linking goal lineage share one transaction. Schedule edits invalidate and cancel old queued work; a lost native acknowledgement remains unknown even after an edit. The scheduler does not blindly repeat that work.
+
+Automatic run output is deferred until successful native settlement. `routine_no_update` suppresses its entire chat answer, including streamed text; the run, tools and occurrence remain available as evidence. A quiet decision cannot hide an already published artifact, a human request or an explicit blocker/completion. A later meaningful report/artifact restores deferred publication. Ordinary user runs keep streaming. Late responses after cancellation, goal stop or scope revocation cannot publish into the conversation, but native receipts remain available for reconciliation.
+
+## Controls and group boundaries
+
+Stopping a run records cancellation intent separately from native stopped confirmation. It leaves the goal and future Routine schedule intact. A stopped known occurrence is not replayed; a later scheduled occurrence has a new identity. A standalone cancelled run requires a new scoped user/resume decision before continuation. Unknown native work remains fenced even after pause/resume.
+
+Pause/stop goal invalidates its generation, linked schedules, queued continuations, group task descendants and outstanding owner requests. Pause remembers which Routines were paused by the goal; resume does not enable Routines the user had already paused independently. A stopped goal/schedule is not silently resumed from old native context. Group membership removal stops the removed agent's goals and standalone Routines; readding the member does not revive them. A synchronous self-stop may return its own committed control receipt, but the cancelled lease cannot execute another tool.
+
+## HTTP, snapshots and replay
+
+All routes except liveness require the private development bearer token. Mutations require a UUID `Idempotency-Key` and strict schemas; foreign identities, stale revisions, conflicting retries and invalid source/evidence are rejected with the existing safe errors. These trusted owner/test-client routes use the same domain methods as native tools.
+
+- `GET /v1/threads/:id/goals?agent_id=<uuid>`: scoped inventory.
+- `POST /v1/goals/capture`: capture arguments plus `run_id`.
+- `POST /v1/goals/:id/progress`: report arguments excluding goal_id, plus `run_id`.
+- `POST /v1/routines/write`: Routine arguments plus `run_id`.
+- `POST /v1/routines/:id/control`: `{ "expected_revision": 2, "state": "paused" }`.
+- Existing `POST /v1/goals/:id/control`, `POST /v1/runs/:id/cancel` and direct foundation goal/Routine creation remain available.
+- Thread snapshots include `goals`, `routines`, `occurrences`, and their authoritative cursor. Existing events/SSE replay exposes committed revisions and stable run/message identities.
+- `GET /v1/contracts` publishes all entity/command/error schemas, version 1.8.0.
+
+The HTTP capability is backend readiness evidence only. UI/API-wide readiness, installers, deployment, webhooks, additional providers and general desktop/computer use are outside this ticket. See [verification evidence](../verification/nma-057/README.md) for actual denominators, versions, retained failures and native limitations.

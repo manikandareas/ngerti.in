@@ -1,0 +1,49 @@
+bun test v1.3.10 (30e609e0)
+
+apps/server/tests/goals/domain.test.ts:
+(pass) multiple responsibilities retain their own source/objective/progress and correction identity after restart [46.15ms]
+(pass) capture rejects foreign, deleted and automatic trigger source identities [30.21ms]
+(pass) continuation admission is durable and repeated ticks/restart do not create another run [19.00ms]
+(pass) unknown native outcome never becomes a retry, completion or second scheduled effect [16.82ms]
+180 |   test(`${disposition} has no busy-loop, even with an associated heartbeat and after restart`, () => {
+181 |     const goals = setup();
+182 |     const run = start();
+183 |     const goal = capture(goals, run);
+184 |     routine(goals, run, goal.id);
+185 |     goals.report(run.id, {
+                ^
+error: CONFLICT
+      at transaction (bun:sqlite:423:13)
+      at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/goals/domain.test.ts:185:11)
+(fail) wait has no busy-loop, even with an associated heartbeat and after restart [10.96ms]
+180 |   test(`${disposition} has no busy-loop, even with an associated heartbeat and after restart`, () => {
+181 |     const goals = setup();
+182 |     const run = start();
+183 |     const goal = capture(goals, run);
+184 |     routine(goals, run, goal.id);
+185 |     goals.report(run.id, {
+                ^
+error: CONFLICT
+      at transaction (bun:sqlite:423:13)
+      at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/goals/domain.test.ts:185:11)
+(fail) blocked has no busy-loop, even with an associated heartbeat and after restart [10.72ms]
+(pass) completion requires verified nonempty produced bytes and successful native settlement [16.50ms]
+(pass) failed or stopped runs cannot finalize pending completion or publish deferred late results [16.01ms]
+(pass) calendar schedules honor IANA wall time and skip DST gaps and repeated fall-back instants [2.31ms]
+(pass) heartbeat coalesces missed occurrences and changed schedules invalidate old queued generation [18.36ms]
+(pass) quiet scheduled output has no streamed or final bubble, while relevant output publishes once [17.71ms]
+(pass) quiet cannot hide a result artifact, human request or explicit blocker [16.21ms]
+(pass) stop run keeps goal/Routine responsibility but never silently retries the cancelled continuation [14.92ms]
+(pass) pause/resume preserves an independently paused Routine; stop fences queued work across restart [18.71ms]
+(pass) goal handoff/HITL retains one task owner; stop invalidates descendant tasks and replies [20.59ms]
+(pass) scoped structured capture retries commit once and self-stop returns its receipt then revokes tools [34.12ms]
+(pass) HTTP contracts expose goal/Routine commands, snapshot/replay and authenticated idempotent updates [40.25ms]
+
+apps/server/tests/goals/adapters.test.ts:
+(pass) codex structured goal capture and quiet Routine round trip survive native-client restart [181.04ms]
+(pass) muse structured goal capture and quiet Routine round trip survive native-client restart [163.25ms]
+
+ 17 pass
+ 2 fail
+ 107 expect() calls
+Ran 19 tests across 2 files. [1006.00ms]

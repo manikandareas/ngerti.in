@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { goalCommands, goalFields, schedule, timezone } from "./goals/contracts";
 import { groupCommands, humanRequestFields, routeFields, taskFields } from "./groups/contracts";
 import { connectionFields } from "./harness/contracts";
 import {
@@ -17,7 +18,7 @@ import {
   workspaceInput,
 } from "./workspace-contracts";
 
-export const CONTRACT_VERSION = "1.7.0";
+export const CONTRACT_VERSION = "1.8.0";
 export const id = z.uuid();
 const text = z.string().min(1).max(100_000);
 const base = {
@@ -117,6 +118,10 @@ export const run = z
     thread_revision: z.int().positive().nullable().default(null),
     goal_id: id.nullable(),
     routine_id: id.nullable(),
+    goal_generation: z.int().positive().nullable().default(null),
+    routine_generation: z.int().positive().nullable().default(null),
+    publication: z.enum(["immediate", "deferred", "quiet"]).default("immediate"),
+    pending_answer: z.string().max(100_000).nullable().default(null),
     status: runStatus,
     cancellation: z.enum(["none", "requested", "confirmed"]),
     outcome: z.enum(["none", "succeeded", "failed", "cancelled", "unknown", "steered"]),
@@ -203,6 +208,7 @@ export const goal = goalInput
   .extend({
     ...base,
     kind: z.literal("goal"),
+    ...goalFields,
     state: z.enum(["active", "paused", "stopped", "completed"]),
     generation: z.int().positive(),
     evidence_artifact_ids: z.array(id),
@@ -211,32 +217,21 @@ export const goal = goalInput
     (value) => value.state !== "completed" || value.evidence_artifact_ids.length > 0,
     "Completed goals require evidence.",
   );
-export const schedule = z.discriminatedUnion("type", [
-  z.strictObject({ type: z.literal("once"), at: z.iso.datetime() }),
-  z.strictObject({
-    type: z.literal("interval"),
-    anchor_at: z.iso.datetime(),
-    every_ms: z.int().min(1000).max(31_536_000_000),
-  }),
-]);
+export { schedule } from "./goals/contracts";
 export const routineInput = z.strictObject({
   thread_id: id,
   agent_id: id,
   goal_id: id.nullable().default(null),
   instruction: text,
   schedule,
-  timezone: z.string().refine((v) => {
-    try {
-      new Intl.DateTimeFormat("en", { timeZone: v });
-      return true;
-    } catch {
-      return false;
-    }
-  }, "Invalid timezone."),
+  timezone,
 });
 export const routine = routineInput.extend({
   ...base,
   kind: z.literal("routine"),
+  source_message_id: id.nullable().default(null),
+  source_run_id: id.nullable().default(null),
+  paused_by_goal: z.boolean().default(false),
   state: z.enum(["active", "paused", "stopped"]),
   generation: z.int().positive(),
   next_run_at: z.iso.datetime().nullable(),
@@ -444,6 +439,7 @@ export const errorCodes = [
   "CONTROL_AMBIGUOUS",
   "ROUTING_INVALID",
   "ROUTING_STALE",
+  "RESPONSIBILITY_DEFERRED",
 ] as const;
 export class DomainError extends Error {
   constructor(
@@ -463,6 +459,7 @@ export function contractDocument() {
     commands: Object.fromEntries(
       Object.entries({
         ...groupCommands,
+        ...goalCommands,
         ...learningCommands,
         agent: agentInput,
         update_agent: agentUpdate,

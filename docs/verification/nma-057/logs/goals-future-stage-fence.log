@@ -1,0 +1,56 @@
+bun test v1.3.10 (30e609e0)
+
+apps/server/tests/goals/domain.test.ts:
+(pass) multiple responsibilities retain their own source/objective/progress and correction identity after restart [43.37ms]
+(pass) capture rejects foreign, deleted and automatic trigger source identities [29.92ms]
+(pass) continuation admission is durable and repeated ticks/restart do not create another run [35.51ms]
+(pass) unknown native outcome never becomes a retry, completion or second scheduled effect [36.58ms]
+(pass) wait has no busy-loop, even with an associated heartbeat and after restart [33.64ms]
+(pass) blocked has no busy-loop, even with an associated heartbeat and after restart [25.73ms]
+(pass) completion requires verified nonempty produced bytes and successful native settlement [25.98ms]
+(pass) failed or stopped runs cannot finalize pending completion or publish deferred late results [26.28ms]
+(pass) calendar schedules honor IANA wall time and skip DST gaps and repeated fall-back instants [4.44ms]
+(pass) heartbeat coalesces missed occurrences and changed schedules invalidate old queued generation [32.98ms]
+(pass) quiet scheduled output has no streamed or final bubble, while relevant output publishes once [37.09ms]
+(pass) quiet cannot hide a result artifact, human request or explicit blocker [25.77ms]
+(pass) stop run preserves future Routine responsibility without replaying the cancelled run [20.68ms]
+(pass) pause/resume preserves an independently paused Routine; stop fences queued work across restart [25.07ms]
+(pass) goal handoff/HITL retains one task owner; stop invalidates descendant tasks and replies [41.81ms]
+(pass) scoped structured capture retries commit once and self-stop returns its receipt then revokes tools [74.33ms]
+(pass) HTTP contracts expose goal/Routine commands, snapshot/replay and authenticated idempotent updates [100.17ms]
+(pass) an active linked Routine owns its wakeups and cannot race a second continuation [41.55ms]
+(pass) completion from an unsuccessful native run remains blocked with evidence retained [31.07ms]
+(pass) explicit resume continues a stopped known run while unknown source receipts remain fenced [26.41ms]
+(pass) membership removal and readd cannot revive goal or standalone Routine generations [16.15ms]
+(pass) completion rechecks evidence bytes after reporting and blocks a tampered artifact [14.40ms]
+(pass) a meaningful artifact after a quiet decision restores final publication [19.16ms]
+18 |   symbols: { workspace_openat: { args: ["i32", "ptr", "i32", "i32"], returns: "i32" } },
+19 | });
+20 | function failure(): never {
+21 |   const address = library.symbols[darwin ? "__error" : "__errno_location"]();
+22 |   const code = address ? new Int32Array(toArrayBuffer(address as Pointer, 0, 4))[0] : 0;
+23 |   throw new DomainError(code === 2 ? "NOT_FOUND" : "SCOPE_DENIED", code === 2 ? 404 : 403);
+             ^
+error: SCOPE_DENIED
+ status: 403,
+   code: "SCOPE_DENIED"
+
+      at failure (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/src/workspace-posix.ts:23:9)
+      at openAt (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/src/workspace-posix.ts:28:23)
+      at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/src/workspace-files.ts:140:22)
+      at withParent (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/src/workspace-files.ts:92:14)
+      at artifact (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/goals/domain.test.ts:52:40)
+      at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/goals/domain.test.ts:662:63)
+(fail) a source run cannot undo its yield, publish future result bytes or complete the deferred goal [35.26ms]
+
+apps/server/tests/goals/adapters.test.ts:
+(pass) codex structured goal capture and quiet Routine round trip survive native-client restart [271.18ms]
+(pass) muse structured goal capture and quiet Routine round trip survive native-client restart [193.30ms]
+
+1 tests failed:
+(fail) a source run cannot undo its yield, publish future result bytes or complete the deferred goal [35.26ms]
+
+ 25 pass
+ 1 fail
+ 145 expect() calls
+Ran 26 tests across 2 files. [1.54s]

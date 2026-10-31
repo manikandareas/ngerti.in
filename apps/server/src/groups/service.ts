@@ -96,6 +96,7 @@ export class Groups {
     return this.store.put({
       ...base,
       kind: "peer_task",
+      goal_ids: parent?.goal_ids ?? [],
       thread_id: message.thread_id,
       agent_id: agentId,
       source_agent_id: source?.agent_id ?? null,
@@ -116,6 +117,24 @@ export class Groups {
       if (group.revision !== data.expected_revision) throw new DomainError("CONFLICT");
       for (const id of data.member_agent_ids) this.store.get("agent", id);
       const saved = this.update(group, { member_agent_ids: data.member_agent_ids });
+      for (const goal of this.store.list("goal"))
+        if (
+          goal.thread_id === threadId &&
+          !saved.member_agent_ids.includes(goal.agent_id) &&
+          ["active", "paused"].includes(goal.state)
+        )
+          this.lifecycle.controlGoal(goal.id, "stopped");
+      for (const routine of this.store.list("routine"))
+        if (
+          routine.thread_id === threadId &&
+          !saved.member_agent_ids.includes(routine.agent_id) &&
+          routine.state !== "stopped"
+        )
+          this.update(routine, {
+            state: "stopped",
+            generation: routine.generation + 1,
+            next_run_at: null,
+          });
       for (const task of this.store.list("peer_task"))
         if (
           task.thread_id === threadId &&

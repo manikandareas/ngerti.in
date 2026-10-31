@@ -30,7 +30,7 @@ import {
   workspaceInput,
 } from "./workspace-contracts";
 
-export const CONTRACT_VERSION = "1.10.0";
+export const CONTRACT_VERSION = "1.11.0";
 export const id = z.uuid();
 const text = z.string().min(1).max(100_000);
 const base = {
@@ -422,34 +422,7 @@ export const schemas = {
 };
 export type Kind = keyof typeof schemas;
 export type Entity<K extends Kind = Kind> = z.infer<(typeof schemas)[K]>;
-export const kindSchema = z.enum([
-  "app_connection",
-  "app_session",
-  "app_effect",
-  "browser_profile",
-  "browser_session",
-  "browser_action",
-  "group_route",
-  "peer_task",
-  "human_request",
-  "memory",
-  "skill",
-  "skill_revision",
-  "skill_assignment",
-  "harness_inventory",
-  "connection",
-  "agent",
-  "thread",
-  "run",
-  "message",
-  "goal",
-  "routine",
-  "artifact",
-  "binding",
-  "occurrence",
-  "control",
-  "workspace",
-]);
+export const kindSchema = z.enum(Object.keys(schemas) as [Kind, ...Kind[]]);
 export const admissionInput = z.strictObject({
   thread_id: id,
   agent_id: id,
@@ -467,28 +440,10 @@ export const domainEvent = z.strictObject({
   entity_id: id,
   revision: z.int().positive(),
   created_at: z.iso.datetime(),
-  data: z.discriminatedUnion("kind", [
-    groupRoute,
-    peerTask,
-    humanRequest,
-    memory,
-    skill,
-    skillRevision,
-    skillAssignment,
-    harnessInventory,
-    connection,
-    agent,
-    thread,
-    run,
-    message,
-    goal,
-    routine,
-    artifact,
-    binding,
-    occurrence,
-    control,
-    workspace,
-  ]),
+  data: z.discriminatedUnion(
+    "kind",
+    Object.values(schemas) as [(typeof schemas)[Kind], ...(typeof schemas)[Kind][]],
+  ),
 });
 export type DomainEvent = z.infer<typeof domainEvent>;
 export const errorCodes = [
@@ -549,7 +504,7 @@ export function contractDocument() {
         edit_queued_message: queueEdit,
         delete_queued_message: queueDelete,
         steer: steerInput,
-      }).map(([key, value]) => [key, z.toJSONSchema(value)]),
+      }).map(([key, value]) => [key, z.toJSONSchema(value, { io: "input" })]),
     ),
     errors: errorCodes,
   };

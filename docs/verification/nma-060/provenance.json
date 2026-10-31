@@ -1,0 +1,53 @@
+{
+  "baseline_commit": "980a8755f13eeb06cc144654c920594096dde036",
+  "openbot": {
+    "repository": "https://github.com/nightly-labs/openbot",
+    "revision": "01e4b18e238e5de72a3570162c9f4275bb585786",
+    "modules": [
+      {
+        "path": "docs/architecture/change-rules.md",
+        "sha256": "fb2591a2a05ebcee4eecac49d575b045af5d82b35b3904331f2eb1cd09eaafe1",
+        "observed_flow_and_local_boundary": "Keep contracts at boundaries, validation beside contracts, synchronous SQLite transactions and native cancellation/recovery ownership."
+      },
+      {
+        "path": "src/backend/agent/boot-recovery.ts",
+        "sha256": "133660cac639f7fd867528d8093496ff23f0f496f324582b343297fa47ec1f2c",
+        "observed_flow_and_local_boundary": "Observe exact provider history/turn receipts before settling orphaned work; never replay unknown side effects. Ngertiin retains unknown rather than mapping all uncertainty to interrupted."
+      },
+      {
+        "path": "src/backend/agent-client.ts",
+        "sha256": "e835ad0d18a011bd1d5a8bad4c64b57f24914e023fd7a15de080f360d91f2ab2",
+        "observed_flow_and_local_boundary": "Keep native process/events/history/capability ownership separate from application lifecycle. Preserve typed timeout and private diagnostic boundaries."
+      }
+    ],
+    "adoption": "Review of existing behavioral ports and public contract boundaries. No new upstream runtime, Effect dependency, desktop/cloud service or source vendoring."
+  },
+  "versions": {
+    "bun": "1.3.10",
+    "typescript": "7.0.2",
+    "elysia": "1.4.30",
+    "zod": "4.4.3",
+    "@muse-code/sdk": "1.4.14",
+    "@composio/core": "0.27.0",
+    "sharp": "0.35.5",
+    "application_contract": "1.11.0",
+    "broker_contract": "1.5.0",
+    "platform": "Darwin arm64"
+  },
+  "executable_observations": {
+    "codex_on_current_PATH": "0.166.0; detected, no native inference on this version in this gate",
+    "codex_retained_minimum_tested": "0.165.0",
+    "muse_on_default_PATH": "missing",
+    "muse_explicit_binary": ".dev/nma050/muse",
+    "muse_explicit_version": "1.4.14-R7309.1",
+    "muse_minimum": "1.4.14",
+    "native_requests_this_gate": 0
+  },
+  "framework_reference": "https://elysiajs.com/llms.txt",
+  "upgrade": [
+    "Recheck installed Elysia route metadata/validators and regenerate static contract.",
+    "Rerun all-kind replay, command input/default, consumer fixture, privacy/cancel/recovery checks.",
+    "Refresh live Notion prerequisites and required native scenarios/denominators on the chosen version before changing readiness."
+  ],
+  "discovery": "MCP graph tools were unavailable in the tool inventory; targeted rg/file reads and an active-import audit were used as the documented fallback."
+}

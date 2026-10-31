@@ -1,0 +1,1433 @@
+{
+  "contract_version": "1.11.0",
+  "requirement_count": 47,
+  "coverage": [
+    {
+      "id": "A04",
+      "owner": "NMA-057",
+      "routes": [
+        "GET /v1/threads/:id/goals",
+        "POST /v1/goals/capture",
+        "POST /v1/goals/:id/progress",
+        "POST /v1/routines/write",
+        "POST /v1/routines/:id/control",
+        "POST /v1/goals/:id/control"
+      ],
+      "tools": [
+        "ngertiin.capture_goal",
+        "ngertiin.report_goal",
+        "ngertiin.write_routine",
+        "ngertiin.routine_no_update"
+      ],
+      "event_entities": [
+        "goal",
+        "routine",
+        "occurrence",
+        "run",
+        "message"
+      ],
+      "tests": [
+        "apps/server/tests/goals/domain.test.ts",
+        "apps/server/tests/goals/adapters.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-057/README.md",
+      "limits": [
+        "Muse uses explicit API-key/developer credits; subscription is open on NMA-050.",
+        "Earlier behavioral failures remain retained; native inference success is separate."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "E01",
+      "owner": "NMA-057",
+      "routes": [
+        "GET /v1/threads/:id/goals",
+        "POST /v1/goals/capture",
+        "POST /v1/goals/:id/progress",
+        "POST /v1/routines/write",
+        "POST /v1/routines/:id/control",
+        "POST /v1/goals/:id/control"
+      ],
+      "tools": [
+        "ngertiin.capture_goal",
+        "ngertiin.report_goal",
+        "ngertiin.write_routine",
+        "ngertiin.routine_no_update"
+      ],
+      "event_entities": [
+        "goal",
+        "routine",
+        "occurrence",
+        "run",
+        "message"
+      ],
+      "tests": [
+        "apps/server/tests/goals/domain.test.ts",
+        "apps/server/tests/goals/adapters.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-057/README.md",
+      "limits": [
+        "Muse uses explicit API-key/developer credits; subscription is open on NMA-050.",
+        "Earlier behavioral failures remain retained; native inference success is separate."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "E02",
+      "owner": "NMA-057",
+      "routes": [
+        "GET /v1/threads/:id/goals",
+        "POST /v1/goals/capture",
+        "POST /v1/goals/:id/progress",
+        "POST /v1/routines/write",
+        "POST /v1/routines/:id/control",
+        "POST /v1/goals/:id/control"
+      ],
+      "tools": [
+        "ngertiin.capture_goal",
+        "ngertiin.report_goal",
+        "ngertiin.write_routine",
+        "ngertiin.routine_no_update"
+      ],
+      "event_entities": [
+        "goal",
+        "routine",
+        "occurrence",
+        "run",
+        "message"
+      ],
+      "tests": [
+        "apps/server/tests/goals/domain.test.ts",
+        "apps/server/tests/goals/adapters.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-057/README.md",
+      "limits": [
+        "Muse uses explicit API-key/developer credits; subscription is open on NMA-050.",
+        "Earlier behavioral failures remain retained; native inference success is separate."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "E03",
+      "owner": "NMA-057",
+      "routes": [
+        "GET /v1/threads/:id/goals",
+        "POST /v1/goals/capture",
+        "POST /v1/goals/:id/progress",
+        "POST /v1/routines/write",
+        "POST /v1/routines/:id/control",
+        "POST /v1/goals/:id/control"
+      ],
+      "tools": [
+        "ngertiin.capture_goal",
+        "ngertiin.report_goal",
+        "ngertiin.write_routine",
+        "ngertiin.routine_no_update"
+      ],
+      "event_entities": [
+        "goal",
+        "routine",
+        "occurrence",
+        "run",
+        "message"
+      ],
+      "tests": [
+        "apps/server/tests/goals/domain.test.ts",
+        "apps/server/tests/goals/adapters.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-057/README.md",
+      "limits": [
+        "Muse uses explicit API-key/developer credits; subscription is open on NMA-050.",
+        "Earlier behavioral failures remain retained; native inference success is separate."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "E04",
+      "owner": "NMA-057",
+      "routes": [
+        "GET /v1/threads/:id/goals",
+        "POST /v1/goals/capture",
+        "POST /v1/goals/:id/progress",
+        "POST /v1/routines/write",
+        "POST /v1/routines/:id/control",
+        "POST /v1/goals/:id/control"
+      ],
+      "tools": [
+        "ngertiin.capture_goal",
+        "ngertiin.report_goal",
+        "ngertiin.write_routine",
+        "ngertiin.routine_no_update"
+      ],
+      "event_entities": [
+        "goal",
+        "routine",
+        "occurrence",
+        "run",
+        "message"
+      ],
+      "tests": [
+        "apps/server/tests/goals/domain.test.ts",
+        "apps/server/tests/goals/adapters.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-057/README.md",
+      "limits": [
+        "Muse uses explicit API-key/developer credits; subscription is open on NMA-050.",
+        "Earlier behavioral failures remain retained; native inference success is separate."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "E06",
+      "owner": "NMA-057",
+      "routes": [
+        "GET /v1/threads/:id/goals",
+        "POST /v1/goals/capture",
+        "POST /v1/goals/:id/progress",
+        "POST /v1/routines/write",
+        "POST /v1/routines/:id/control",
+        "POST /v1/goals/:id/control"
+      ],
+      "tools": [
+        "ngertiin.capture_goal",
+        "ngertiin.report_goal",
+        "ngertiin.write_routine",
+        "ngertiin.routine_no_update"
+      ],
+      "event_entities": [
+        "goal",
+        "routine",
+        "occurrence",
+        "run",
+        "message"
+      ],
+      "tests": [
+        "apps/server/tests/goals/domain.test.ts",
+        "apps/server/tests/goals/adapters.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-057/README.md",
+      "limits": [
+        "Muse uses explicit API-key/developer credits; subscription is open on NMA-050.",
+        "Earlier behavioral failures remain retained; native inference success is separate."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "E07",
+      "owner": "NMA-057",
+      "routes": [
+        "GET /v1/threads/:id/goals",
+        "POST /v1/goals/capture",
+        "POST /v1/goals/:id/progress",
+        "POST /v1/routines/write",
+        "POST /v1/routines/:id/control",
+        "POST /v1/goals/:id/control"
+      ],
+      "tools": [
+        "ngertiin.capture_goal",
+        "ngertiin.report_goal",
+        "ngertiin.write_routine",
+        "ngertiin.routine_no_update"
+      ],
+      "event_entities": [
+        "goal",
+        "routine",
+        "occurrence",
+        "run",
+        "message"
+      ],
+      "tests": [
+        "apps/server/tests/goals/domain.test.ts",
+        "apps/server/tests/goals/adapters.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-057/README.md",
+      "limits": [
+        "Muse uses explicit API-key/developer credits; subscription is open on NMA-050.",
+        "Earlier behavioral failures remain retained; native inference success is separate."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "E08",
+      "owner": "NMA-057",
+      "routes": [
+        "GET /v1/threads/:id/goals",
+        "POST /v1/goals/capture",
+        "POST /v1/goals/:id/progress",
+        "POST /v1/routines/write",
+        "POST /v1/routines/:id/control",
+        "POST /v1/goals/:id/control"
+      ],
+      "tools": [
+        "ngertiin.capture_goal",
+        "ngertiin.report_goal",
+        "ngertiin.write_routine",
+        "ngertiin.routine_no_update"
+      ],
+      "event_entities": [
+        "goal",
+        "routine",
+        "occurrence",
+        "run",
+        "message"
+      ],
+      "tests": [
+        "apps/server/tests/goals/domain.test.ts",
+        "apps/server/tests/goals/adapters.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-057/README.md",
+      "limits": [
+        "Muse uses explicit API-key/developer credits; subscription is open on NMA-050.",
+        "Earlier behavioral failures remain retained; native inference success is separate."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "B01",
+      "owner": "NMA-048",
+      "routes": [
+        "GET /v1/harnesses",
+        "GET /v1/harness/contracts",
+        "POST /v1/connections",
+        "POST /v1/agents/:id/configuration"
+      ],
+      "tools": [],
+      "event_entities": [
+        "connection",
+        "agent",
+        "binding"
+      ],
+      "tests": [
+        "apps/server/tests/harness.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-048/README.md",
+      "limits": [
+        "Runtime support is capability-specific; unsupported/unknown remain valid."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "B04",
+      "owner": "NMA-048",
+      "routes": [
+        "GET /v1/harnesses",
+        "GET /v1/harness/contracts",
+        "POST /v1/connections",
+        "POST /v1/agents/:id/configuration"
+      ],
+      "tools": [],
+      "event_entities": [
+        "connection",
+        "agent",
+        "binding"
+      ],
+      "tests": [
+        "apps/server/tests/harness.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-048/README.md",
+      "limits": [
+        "Runtime support is capability-specific; unsupported/unknown remain valid."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "B06",
+      "owner": "NMA-048",
+      "routes": [
+        "GET /v1/harnesses",
+        "GET /v1/harness/contracts",
+        "POST /v1/connections",
+        "POST /v1/agents/:id/configuration"
+      ],
+      "tools": [],
+      "event_entities": [
+        "connection",
+        "agent",
+        "binding"
+      ],
+      "tests": [
+        "apps/server/tests/harness.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-048/README.md",
+      "limits": [
+        "Runtime support is capability-specific; unsupported/unknown remain valid."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "T02",
+      "owner": "NMA-048",
+      "routes": [
+        "GET /v1/harnesses",
+        "GET /v1/harness/contracts",
+        "POST /v1/connections",
+        "POST /v1/agents/:id/configuration"
+      ],
+      "tools": [],
+      "event_entities": [
+        "connection",
+        "agent",
+        "binding"
+      ],
+      "tests": [
+        "apps/server/tests/harness.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-048/README.md",
+      "limits": [
+        "Runtime support is capability-specific; unsupported/unknown remain valid."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "B02",
+      "owner": "NMA-050",
+      "routes": [
+        "POST /v1/connections/:id/login",
+        "POST /v1/connections/:id/inspect",
+        "POST /v1/threads/:id/sessions"
+      ],
+      "tools": [
+        "ngertiin.read_run_context"
+      ],
+      "event_entities": [
+        "connection",
+        "binding",
+        "run"
+      ],
+      "tests": [
+        "apps/server/tests/muse.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-050/README.md",
+      "limits": [
+        "OPEN: no Muse subscription-backed request/tool round trip or live native permission decision. Key-backed evidence does not close these criteria."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "B03",
+      "owner": "NMA-050",
+      "routes": [
+        "POST /v1/connections/:id/login",
+        "POST /v1/connections/:id/inspect",
+        "POST /v1/threads/:id/sessions"
+      ],
+      "tools": [
+        "ngertiin.read_run_context"
+      ],
+      "event_entities": [
+        "connection",
+        "binding",
+        "run"
+      ],
+      "tests": [
+        "apps/server/tests/muse.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-050/README.md",
+      "limits": [
+        "OPEN: no Muse subscription-backed request/tool round trip or live native permission decision. Key-backed evidence does not close these criteria."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "PR02",
+      "owner": "NMA-050",
+      "routes": [
+        "POST /v1/connections/:id/login",
+        "POST /v1/connections/:id/inspect",
+        "POST /v1/threads/:id/sessions"
+      ],
+      "tools": [
+        "ngertiin.read_run_context"
+      ],
+      "event_entities": [
+        "connection",
+        "binding",
+        "run"
+      ],
+      "tests": [
+        "apps/server/tests/muse.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-050/README.md",
+      "limits": [
+        "OPEN: no Muse subscription-backed request/tool round trip or live native permission decision. Key-backed evidence does not close these criteria."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "PR01",
+      "owner": "NMA-049",
+      "routes": [
+        "POST /v1/connections/:id/inspect",
+        "POST /v1/threads/:id/sessions",
+        "POST /v1/runs"
+      ],
+      "tools": [
+        "ngertiin.read_run_context"
+      ],
+      "event_entities": [
+        "connection",
+        "binding",
+        "run"
+      ],
+      "tests": [
+        "apps/server/tests/codex.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-049/README.md",
+      "limits": [],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "C01",
+      "owner": "NMA-052",
+      "routes": [
+        "POST /v1/setup",
+        "POST /v1/agents",
+        "POST /v1/agents/:id/configuration",
+        "POST /v1/agents/:id/dm",
+        "GET /v1/threads/:id/snapshot",
+        "GET /v1/threads/:id/history"
+      ],
+      "tools": [
+        "ngertiin.create_agent",
+        "ngertiin.update_agent"
+      ],
+      "event_entities": [
+        "agent",
+        "thread",
+        "message",
+        "binding"
+      ],
+      "tests": [
+        "apps/server/tests/agents.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-052/README.md",
+      "limits": [],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "C02",
+      "owner": "NMA-052",
+      "routes": [
+        "POST /v1/setup",
+        "POST /v1/agents",
+        "POST /v1/agents/:id/configuration",
+        "POST /v1/agents/:id/dm",
+        "GET /v1/threads/:id/snapshot",
+        "GET /v1/threads/:id/history"
+      ],
+      "tools": [
+        "ngertiin.create_agent",
+        "ngertiin.update_agent"
+      ],
+      "event_entities": [
+        "agent",
+        "thread",
+        "message",
+        "binding"
+      ],
+      "tests": [
+        "apps/server/tests/agents.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-052/README.md",
+      "limits": [],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "C03",
+      "owner": "NMA-052",
+      "routes": [
+        "POST /v1/setup",
+        "POST /v1/agents",
+        "POST /v1/agents/:id/configuration",
+        "POST /v1/agents/:id/dm",
+        "GET /v1/threads/:id/snapshot",
+        "GET /v1/threads/:id/history"
+      ],
+      "tools": [
+        "ngertiin.create_agent",
+        "ngertiin.update_agent"
+      ],
+      "event_entities": [
+        "agent",
+        "thread",
+        "message",
+        "binding"
+      ],
+      "tests": [
+        "apps/server/tests/agents.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-052/README.md",
+      "limits": [],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "C04",
+      "owner": "NMA-052",
+      "routes": [
+        "POST /v1/setup",
+        "POST /v1/agents",
+        "POST /v1/agents/:id/configuration",
+        "POST /v1/agents/:id/dm",
+        "GET /v1/threads/:id/snapshot",
+        "GET /v1/threads/:id/history"
+      ],
+      "tools": [
+        "ngertiin.create_agent",
+        "ngertiin.update_agent"
+      ],
+      "event_entities": [
+        "agent",
+        "thread",
+        "message",
+        "binding"
+      ],
+      "tests": [
+        "apps/server/tests/agents.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-052/README.md",
+      "limits": [],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "C05",
+      "owner": "NMA-053",
+      "routes": [
+        "GET /v1/events",
+        "GET /v1/events/stream",
+        "POST /v1/messages/:id/edit",
+        "POST /v1/messages/:id/delete",
+        "POST /v1/runs/:id/steer",
+        "POST /v1/runs/:id/cancel",
+        "POST /v1/runs/:id/reconcile",
+        "GET /v1/runs/:id/interactions"
+      ],
+      "tools": [],
+      "event_entities": [
+        "run",
+        "message",
+        "control",
+        "binding"
+      ],
+      "tests": [
+        "apps/server/tests/controls.test.ts",
+        "apps/server/tests/background.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-053/README.md",
+      "limits": [
+        "Muse single-turn steer remains unknown and is not dispatched. Unknown effects are never blindly replayed."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "C06",
+      "owner": "NMA-053",
+      "routes": [
+        "GET /v1/events",
+        "GET /v1/events/stream",
+        "POST /v1/messages/:id/edit",
+        "POST /v1/messages/:id/delete",
+        "POST /v1/runs/:id/steer",
+        "POST /v1/runs/:id/cancel",
+        "POST /v1/runs/:id/reconcile",
+        "GET /v1/runs/:id/interactions"
+      ],
+      "tools": [],
+      "event_entities": [
+        "run",
+        "message",
+        "control",
+        "binding"
+      ],
+      "tests": [
+        "apps/server/tests/controls.test.ts",
+        "apps/server/tests/background.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-053/README.md",
+      "limits": [
+        "Muse single-turn steer remains unknown and is not dispatched. Unknown effects are never blindly replayed."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "C07",
+      "owner": "NMA-053",
+      "routes": [
+        "GET /v1/events",
+        "GET /v1/events/stream",
+        "POST /v1/messages/:id/edit",
+        "POST /v1/messages/:id/delete",
+        "POST /v1/runs/:id/steer",
+        "POST /v1/runs/:id/cancel",
+        "POST /v1/runs/:id/reconcile",
+        "GET /v1/runs/:id/interactions"
+      ],
+      "tools": [],
+      "event_entities": [
+        "run",
+        "message",
+        "control",
+        "binding"
+      ],
+      "tests": [
+        "apps/server/tests/controls.test.ts",
+        "apps/server/tests/background.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-053/README.md",
+      "limits": [
+        "Muse single-turn steer remains unknown and is not dispatched. Unknown effects are never blindly replayed."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "H01",
+      "owner": "NMA-053",
+      "routes": [
+        "GET /v1/events",
+        "GET /v1/events/stream",
+        "POST /v1/messages/:id/edit",
+        "POST /v1/messages/:id/delete",
+        "POST /v1/runs/:id/steer",
+        "POST /v1/runs/:id/cancel",
+        "POST /v1/runs/:id/reconcile",
+        "GET /v1/runs/:id/interactions"
+      ],
+      "tools": [],
+      "event_entities": [
+        "run",
+        "message",
+        "control",
+        "binding"
+      ],
+      "tests": [
+        "apps/server/tests/controls.test.ts",
+        "apps/server/tests/background.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-053/README.md",
+      "limits": [
+        "Muse single-turn steer remains unknown and is not dispatched. Unknown effects are never blindly replayed."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "H02",
+      "owner": "NMA-053",
+      "routes": [
+        "GET /v1/events",
+        "GET /v1/events/stream",
+        "POST /v1/messages/:id/edit",
+        "POST /v1/messages/:id/delete",
+        "POST /v1/runs/:id/steer",
+        "POST /v1/runs/:id/cancel",
+        "POST /v1/runs/:id/reconcile",
+        "GET /v1/runs/:id/interactions"
+      ],
+      "tools": [],
+      "event_entities": [
+        "run",
+        "message",
+        "control",
+        "binding"
+      ],
+      "tests": [
+        "apps/server/tests/controls.test.ts",
+        "apps/server/tests/background.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-053/README.md",
+      "limits": [
+        "Muse single-turn steer remains unknown and is not dispatched. Unknown effects are never blindly replayed."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "H05",
+      "owner": "NMA-053",
+      "routes": [
+        "GET /v1/events",
+        "GET /v1/events/stream",
+        "POST /v1/messages/:id/edit",
+        "POST /v1/messages/:id/delete",
+        "POST /v1/runs/:id/steer",
+        "POST /v1/runs/:id/cancel",
+        "POST /v1/runs/:id/reconcile",
+        "GET /v1/runs/:id/interactions"
+      ],
+      "tools": [],
+      "event_entities": [
+        "run",
+        "message",
+        "control",
+        "binding"
+      ],
+      "tests": [
+        "apps/server/tests/controls.test.ts",
+        "apps/server/tests/background.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-053/README.md",
+      "limits": [
+        "Muse single-turn steer remains unknown and is not dispatched. Unknown effects are never blindly replayed."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "D01",
+      "owner": "NMA-056",
+      "routes": [
+        "POST /v1/threads",
+        "POST /v1/groups/:id/membership",
+        "POST /v1/groups/:id/messages",
+        "POST /v1/human-requests/:id/reply"
+      ],
+      "tools": [
+        "ngertiin.group_handoff",
+        "ngertiin.group_ask_user",
+        "ngertiin.group_read_task"
+      ],
+      "event_entities": [
+        "group_route",
+        "peer_task",
+        "human_request",
+        "message"
+      ],
+      "tests": [
+        "apps/server/tests/groups/domain.test.ts",
+        "apps/server/tests/groups/adapters.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-056/README.md",
+      "limits": [
+        "Retained cross-runtime group evidence uses Codex subscription and Muse explicit key. Muse live router selection was not separately claimed."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "D02",
+      "owner": "NMA-056",
+      "routes": [
+        "POST /v1/threads",
+        "POST /v1/groups/:id/membership",
+        "POST /v1/groups/:id/messages",
+        "POST /v1/human-requests/:id/reply"
+      ],
+      "tools": [
+        "ngertiin.group_handoff",
+        "ngertiin.group_ask_user",
+        "ngertiin.group_read_task"
+      ],
+      "event_entities": [
+        "group_route",
+        "peer_task",
+        "human_request",
+        "message"
+      ],
+      "tests": [
+        "apps/server/tests/groups/domain.test.ts",
+        "apps/server/tests/groups/adapters.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-056/README.md",
+      "limits": [
+        "Retained cross-runtime group evidence uses Codex subscription and Muse explicit key. Muse live router selection was not separately claimed."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "D03",
+      "owner": "NMA-056",
+      "routes": [
+        "POST /v1/threads",
+        "POST /v1/groups/:id/membership",
+        "POST /v1/groups/:id/messages",
+        "POST /v1/human-requests/:id/reply"
+      ],
+      "tools": [
+        "ngertiin.group_handoff",
+        "ngertiin.group_ask_user",
+        "ngertiin.group_read_task"
+      ],
+      "event_entities": [
+        "group_route",
+        "peer_task",
+        "human_request",
+        "message"
+      ],
+      "tests": [
+        "apps/server/tests/groups/domain.test.ts",
+        "apps/server/tests/groups/adapters.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-056/README.md",
+      "limits": [
+        "Retained cross-runtime group evidence uses Codex subscription and Muse explicit key. Muse live router selection was not separately claimed."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "D05",
+      "owner": "NMA-056",
+      "routes": [
+        "POST /v1/threads",
+        "POST /v1/groups/:id/membership",
+        "POST /v1/groups/:id/messages",
+        "POST /v1/human-requests/:id/reply"
+      ],
+      "tools": [
+        "ngertiin.group_handoff",
+        "ngertiin.group_ask_user",
+        "ngertiin.group_read_task"
+      ],
+      "event_entities": [
+        "group_route",
+        "peer_task",
+        "human_request",
+        "message"
+      ],
+      "tests": [
+        "apps/server/tests/groups/domain.test.ts",
+        "apps/server/tests/groups/adapters.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-056/README.md",
+      "limits": [
+        "Retained cross-runtime group evidence uses Codex subscription and Muse explicit key. Muse live router selection was not separately claimed."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "F01",
+      "owner": "NMA-054",
+      "routes": [
+        "POST /v1/workspaces",
+        "GET /v1/workspaces/:id/files",
+        "GET /v1/workspaces/:id/file",
+        "POST /v1/workspaces/:id/uploads",
+        "GET /v1/artifacts/:id/content",
+        "POST /v1/artifacts/:id/share"
+      ],
+      "tools": [
+        "ngertiin.get_workspace",
+        "ngertiin.read_file",
+        "ngertiin.create_file",
+        "ngertiin.publish_artifact"
+      ],
+      "event_entities": [
+        "workspace",
+        "artifact",
+        "run"
+      ],
+      "tests": [
+        "apps/server/tests/workspaces.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-054/README.md",
+      "limits": [
+        "Native coding/Git demonstrated on Codex; Muse uses scoped file product tools and native shell is unsupported in this adapter."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "F02",
+      "owner": "NMA-054",
+      "routes": [
+        "POST /v1/workspaces",
+        "GET /v1/workspaces/:id/files",
+        "GET /v1/workspaces/:id/file",
+        "POST /v1/workspaces/:id/uploads",
+        "GET /v1/artifacts/:id/content",
+        "POST /v1/artifacts/:id/share"
+      ],
+      "tools": [
+        "ngertiin.get_workspace",
+        "ngertiin.read_file",
+        "ngertiin.create_file",
+        "ngertiin.publish_artifact"
+      ],
+      "event_entities": [
+        "workspace",
+        "artifact",
+        "run"
+      ],
+      "tests": [
+        "apps/server/tests/workspaces.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-054/README.md",
+      "limits": [
+        "Native coding/Git demonstrated on Codex; Muse uses scoped file product tools and native shell is unsupported in this adapter."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "F03",
+      "owner": "NMA-054",
+      "routes": [
+        "POST /v1/workspaces",
+        "GET /v1/workspaces/:id/files",
+        "GET /v1/workspaces/:id/file",
+        "POST /v1/workspaces/:id/uploads",
+        "GET /v1/artifacts/:id/content",
+        "POST /v1/artifacts/:id/share"
+      ],
+      "tools": [
+        "ngertiin.get_workspace",
+        "ngertiin.read_file",
+        "ngertiin.create_file",
+        "ngertiin.publish_artifact"
+      ],
+      "event_entities": [
+        "workspace",
+        "artifact",
+        "run"
+      ],
+      "tests": [
+        "apps/server/tests/workspaces.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-054/README.md",
+      "limits": [
+        "Native coding/Git demonstrated on Codex; Muse uses scoped file product tools and native shell is unsupported in this adapter."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "F04",
+      "owner": "NMA-054",
+      "routes": [
+        "POST /v1/workspaces",
+        "GET /v1/workspaces/:id/files",
+        "GET /v1/workspaces/:id/file",
+        "POST /v1/workspaces/:id/uploads",
+        "GET /v1/artifacts/:id/content",
+        "POST /v1/artifacts/:id/share"
+      ],
+      "tools": [
+        "ngertiin.get_workspace",
+        "ngertiin.read_file",
+        "ngertiin.create_file",
+        "ngertiin.publish_artifact"
+      ],
+      "event_entities": [
+        "workspace",
+        "artifact",
+        "run"
+      ],
+      "tests": [
+        "apps/server/tests/workspaces.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-054/README.md",
+      "limits": [
+        "Native coding/Git demonstrated on Codex; Muse uses scoped file product tools and native shell is unsupported in this adapter."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "F05",
+      "owner": "NMA-059",
+      "routes": [
+        "GET /v1/apps/catalog",
+        "GET /v1/apps/connections",
+        "POST /v1/apps/connect",
+        "POST /v1/apps/connections/:id/assign",
+        "POST /v1/apps/search",
+        "POST /v1/runs"
+      ],
+      "tools": [
+        "ngertiin.list_apps",
+        "ngertiin.search_app_tools",
+        "ngertiin.execute_app_tool"
+      ],
+      "event_entities": [
+        "app_connection",
+        "app_session",
+        "app_effect",
+        "run"
+      ],
+      "tests": [
+        "apps/server/tests/integrations.test.ts",
+        "apps/server/tests/multimodal.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-059/README.md",
+      "limits": [
+        "Retained Codex image, sourced web research and Linear read succeeded. Two app effects remain unknown. Muse visual/search and native video are unsupported; no silent fallback."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "F08",
+      "owner": "NMA-059",
+      "routes": [
+        "GET /v1/apps/catalog",
+        "GET /v1/apps/connections",
+        "POST /v1/apps/connect",
+        "POST /v1/apps/connections/:id/assign",
+        "POST /v1/apps/search",
+        "POST /v1/runs"
+      ],
+      "tools": [
+        "ngertiin.list_apps",
+        "ngertiin.search_app_tools",
+        "ngertiin.execute_app_tool"
+      ],
+      "event_entities": [
+        "app_connection",
+        "app_session",
+        "app_effect",
+        "run"
+      ],
+      "tests": [
+        "apps/server/tests/integrations.test.ts",
+        "apps/server/tests/multimodal.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-059/README.md",
+      "limits": [
+        "Retained Codex image, sourced web research and Linear read succeeded. Two app effects remain unknown. Muse visual/search and native video are unsupported; no silent fallback."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "F09",
+      "owner": "NMA-059",
+      "routes": [
+        "GET /v1/apps/catalog",
+        "GET /v1/apps/connections",
+        "POST /v1/apps/connect",
+        "POST /v1/apps/connections/:id/assign",
+        "POST /v1/apps/search",
+        "POST /v1/runs"
+      ],
+      "tools": [
+        "ngertiin.list_apps",
+        "ngertiin.search_app_tools",
+        "ngertiin.execute_app_tool"
+      ],
+      "event_entities": [
+        "app_connection",
+        "app_session",
+        "app_effect",
+        "run"
+      ],
+      "tests": [
+        "apps/server/tests/integrations.test.ts",
+        "apps/server/tests/multimodal.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-059/README.md",
+      "limits": [
+        "Retained Codex image, sourced web research and Linear read succeeded. Two app effects remain unknown. Muse visual/search and native video are unsupported; no silent fallback."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "F06",
+      "owner": "NMA-058",
+      "routes": [
+        "GET /v1/browser/contracts",
+        "POST /v1/browser/profiles",
+        "POST /v1/browser/profiles/:id/grants",
+        "POST /v1/browser/profiles/:id/open",
+        "GET /v1/browser/sessions/:id",
+        "GET /v1/browser/sessions/:id/receipts",
+        "POST /v1/browser/sessions/:id/view",
+        "POST /v1/browser/sessions/:id/control"
+      ],
+      "tools": [
+        "ngertiin.browser_sessions",
+        "ngertiin.browser_open",
+        "ngertiin.browser_action"
+      ],
+      "event_entities": [
+        "browser_profile",
+        "browser_session",
+        "browser_action"
+      ],
+      "tests": [
+        "apps/server/tests/browser/domain.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-058/README.md",
+      "limits": [
+        "Direct browser-use MCP and view-only RFB/VNC; retained real browser evidence is not new product UI acceptance. Arbitrary-site auth detection is unknown."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "G01",
+      "owner": "NMA-055",
+      "routes": [
+        "GET /v1/learning/memories",
+        "POST /v1/learning/memories/write",
+        "POST /v1/learning/memories/delete",
+        "GET /v1/learning/skills",
+        "POST /v1/learning/skills/create",
+        "POST /v1/learning/skills/revise",
+        "POST /v1/learning/skills/assign",
+        "POST /v1/harness/tools"
+      ],
+      "tools": [
+        "ngertiin.list_memories",
+        "ngertiin.write_memory",
+        "ngertiin.delete_memory",
+        "ngertiin.read_harness_skill",
+        "ngertiin.create_skill",
+        "ngertiin.revise_skill"
+      ],
+      "event_entities": [
+        "memory",
+        "skill",
+        "skill_revision",
+        "skill_assignment",
+        "harness_inventory"
+      ],
+      "tests": [
+        "apps/server/tests/learning/domain.test.ts",
+        "apps/server/tests/learning/adapters.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-055/README.md",
+      "limits": [],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "G02",
+      "owner": "NMA-055",
+      "routes": [
+        "GET /v1/learning/memories",
+        "POST /v1/learning/memories/write",
+        "POST /v1/learning/memories/delete",
+        "GET /v1/learning/skills",
+        "POST /v1/learning/skills/create",
+        "POST /v1/learning/skills/revise",
+        "POST /v1/learning/skills/assign",
+        "POST /v1/harness/tools"
+      ],
+      "tools": [
+        "ngertiin.list_memories",
+        "ngertiin.write_memory",
+        "ngertiin.delete_memory",
+        "ngertiin.read_harness_skill",
+        "ngertiin.create_skill",
+        "ngertiin.revise_skill"
+      ],
+      "event_entities": [
+        "memory",
+        "skill",
+        "skill_revision",
+        "skill_assignment",
+        "harness_inventory"
+      ],
+      "tests": [
+        "apps/server/tests/learning/domain.test.ts",
+        "apps/server/tests/learning/adapters.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-055/README.md",
+      "limits": [],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "G03",
+      "owner": "NMA-055",
+      "routes": [
+        "GET /v1/learning/memories",
+        "POST /v1/learning/memories/write",
+        "POST /v1/learning/memories/delete",
+        "GET /v1/learning/skills",
+        "POST /v1/learning/skills/create",
+        "POST /v1/learning/skills/revise",
+        "POST /v1/learning/skills/assign",
+        "POST /v1/harness/tools"
+      ],
+      "tools": [
+        "ngertiin.list_memories",
+        "ngertiin.write_memory",
+        "ngertiin.delete_memory",
+        "ngertiin.read_harness_skill",
+        "ngertiin.create_skill",
+        "ngertiin.revise_skill"
+      ],
+      "event_entities": [
+        "memory",
+        "skill",
+        "skill_revision",
+        "skill_assignment",
+        "harness_inventory"
+      ],
+      "tests": [
+        "apps/server/tests/learning/domain.test.ts",
+        "apps/server/tests/learning/adapters.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-055/README.md",
+      "limits": [],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "G04",
+      "owner": "NMA-055",
+      "routes": [
+        "GET /v1/learning/memories",
+        "POST /v1/learning/memories/write",
+        "POST /v1/learning/memories/delete",
+        "GET /v1/learning/skills",
+        "POST /v1/learning/skills/create",
+        "POST /v1/learning/skills/revise",
+        "POST /v1/learning/skills/assign",
+        "POST /v1/harness/tools"
+      ],
+      "tools": [
+        "ngertiin.list_memories",
+        "ngertiin.write_memory",
+        "ngertiin.delete_memory",
+        "ngertiin.read_harness_skill",
+        "ngertiin.create_skill",
+        "ngertiin.revise_skill"
+      ],
+      "event_entities": [
+        "memory",
+        "skill",
+        "skill_revision",
+        "skill_assignment",
+        "harness_inventory"
+      ],
+      "tests": [
+        "apps/server/tests/learning/domain.test.ts",
+        "apps/server/tests/learning/adapters.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-055/README.md",
+      "limits": [],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "T03",
+      "owner": "NMA-055",
+      "routes": [
+        "GET /v1/learning/memories",
+        "POST /v1/learning/memories/write",
+        "POST /v1/learning/memories/delete",
+        "GET /v1/learning/skills",
+        "POST /v1/learning/skills/create",
+        "POST /v1/learning/skills/revise",
+        "POST /v1/learning/skills/assign",
+        "POST /v1/harness/tools"
+      ],
+      "tools": [
+        "ngertiin.list_memories",
+        "ngertiin.write_memory",
+        "ngertiin.delete_memory",
+        "ngertiin.read_harness_skill",
+        "ngertiin.create_skill",
+        "ngertiin.revise_skill"
+      ],
+      "event_entities": [
+        "memory",
+        "skill",
+        "skill_revision",
+        "skill_assignment",
+        "harness_inventory"
+      ],
+      "tests": [
+        "apps/server/tests/learning/domain.test.ts",
+        "apps/server/tests/learning/adapters.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-055/README.md",
+      "limits": [],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "T01",
+      "owner": "NMA-060",
+      "routes": [
+        "GET /health/ready",
+        "GET /v1/contracts",
+        "GET /v1/events"
+      ],
+      "tools": [],
+      "event_entities": [
+        "run",
+        "control",
+        "browser_action",
+        "app_effect"
+      ],
+      "tests": [
+        "apps/server/tests/contracts.test.ts",
+        "apps/server/tests/lifecycle.test.ts",
+        "apps/server/tests/api.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-060/README.md",
+      "limits": [
+        "Gate pending NMA-050. Current contract checks plus retained native reports are not a fresh full native cohort.",
+        "Historical Python source remains quarantined behind retired entry points; full remaining dead-source cleanup is not claimed closed."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "T04",
+      "owner": "NMA-060",
+      "routes": [
+        "GET /health/ready",
+        "GET /v1/contracts",
+        "GET /v1/events"
+      ],
+      "tools": [],
+      "event_entities": [
+        "run",
+        "control",
+        "browser_action",
+        "app_effect"
+      ],
+      "tests": [
+        "apps/server/tests/contracts.test.ts",
+        "apps/server/tests/lifecycle.test.ts",
+        "apps/server/tests/api.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-060/README.md",
+      "limits": [
+        "Gate pending NMA-050. Current contract checks plus retained native reports are not a fresh full native cohort.",
+        "Historical Python source remains quarantined behind retired entry points; full remaining dead-source cleanup is not claimed closed."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "H03",
+      "owner": "NMA-060",
+      "routes": [
+        "GET /health/ready",
+        "GET /v1/contracts",
+        "GET /v1/events"
+      ],
+      "tools": [],
+      "event_entities": [
+        "run",
+        "control",
+        "browser_action",
+        "app_effect"
+      ],
+      "tests": [
+        "apps/server/tests/contracts.test.ts",
+        "apps/server/tests/lifecycle.test.ts",
+        "apps/server/tests/api.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-060/README.md",
+      "limits": [
+        "Gate pending NMA-050. Current contract checks plus retained native reports are not a fresh full native cohort.",
+        "Historical Python source remains quarantined behind retired entry points; full remaining dead-source cleanup is not claimed closed."
+      ],
+      "acceptance": "mapped_gate_pending"
+    },
+    {
+      "id": "T06",
+      "owner": "NMA-060",
+      "routes": [
+        "GET /health/ready",
+        "GET /v1/contracts",
+        "GET /v1/events"
+      ],
+      "tools": [],
+      "event_entities": [
+        "run",
+        "control",
+        "browser_action",
+        "app_effect"
+      ],
+      "tests": [
+        "apps/server/tests/contracts.test.ts",
+        "apps/server/tests/lifecycle.test.ts",
+        "apps/server/tests/api.test.ts"
+      ],
+      "retained_evidence": "docs/verification/nma-060/README.md",
+      "limits": [
+        "Gate pending NMA-050. Current contract checks plus retained native reports are not a fresh full native cohort.",
+        "Historical Python source remains quarantined behind retired entry points; full remaining dead-source cleanup is not claimed closed."
+      ],
+      "acceptance": "mapped_gate_pending"
+    }
+  ],
+  "note": "Mapping and reference validation do not establish native acceptance. Read each retained report and its denominator/limits."
+}

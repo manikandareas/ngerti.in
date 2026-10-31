@@ -1,0 +1,92 @@
+{
+  "ticket": "NMA-060",
+  "date": "2026-10-31",
+  "status": "In Progress",
+  "api_readiness_gate": "pending",
+  "dependencies": {
+    "done": 9,
+    "total": 10,
+    "open": "NMA-050"
+  },
+  "baseline_commit": "980a8755f13eeb06cc144654c920594096dde036",
+  "contract_version": "1.11.0",
+  "checks": {
+    "backend_tests": {
+      "pass": 231,
+      "fail": 0,
+      "skip": 0,
+      "assertions": 1388,
+      "evidence": "logs/tests.log"
+    },
+    "server_lint": "pass; 92 files",
+    "server_typecheck": "pass",
+    "verifier_typecheck": "pass",
+    "consumer": {
+      "evidence_level": "contract_fixture_http_in_process",
+      "pass": 6,
+      "fail": 0,
+      "skip": 0,
+      "checks": [
+        "published_contract_matches_router_and_keeps_gate_pending",
+        "original_command_receipt_is_stable_and_distinct_from_current_run_state",
+        "snapshot_cursor_pagination_duplicate_replay_and_tombstones_preserve_projection",
+        "authenticated_sse_matches_polling_and_last_event_id_precedes_query",
+        "domain_harness_validation_and_authentication_error_examples_validate",
+        "sqlite_restart_preserves_original_receipt_events_and_cancelled_state_without_dispatch"
+      ],
+      "routes": 77,
+      "entities": 26,
+      "product_tools": 35,
+      "native_inference": 0,
+      "api_readiness_gate": "pending"
+    },
+    "foundation_process_http": {
+      "pass": 8,
+      "fail": 0,
+      "skip": 0,
+      "evidence": "logs/foundation.log"
+    },
+    "broker_http": {
+      "pass": 5,
+      "fail": 0,
+      "skip": 0,
+      "evidence": "logs/broker-http.log"
+    },
+    "coverage": {
+      "matrix_decisions": 83,
+      "backend_required_mapped": 47,
+      "mapping_groups": 12
+    },
+    "retained": {
+      "manifests": 10,
+      "evidence_files_verified": 341,
+      "events_validated": 2051,
+      "entity_kinds": 26,
+      "entities_validated": 442,
+      "unknown_app_effects_retained": 2,
+      "schema_failures": 0,
+      "readonly": true,
+      "fresh_native_acceptance": false
+    },
+    "retirement": {
+      "active_local_modules": 66,
+      "historical_imports": 0,
+      "full_dead_source_removal": "open"
+    }
+  },
+  "native_requests_this_gate": 0,
+  "remaining_acceptance": [
+    "NMA-050 Muse subscription-backed request/useful product-tool and live interactive permission decision.",
+    "Final operation-specific response review beyond core projections and native integration/fault verification on chosen final revision.",
+    "Complete obsolete runtime source cleanup/removal audit; active entry points are already retired."
+  ],
+  "boundaries": {
+    "ui_changed": false,
+    "user_data_reset": false,
+    "historical_evidence_rewritten": false,
+    "external_messages": false,
+    "commit": false,
+    "push": false,
+    "deployment": false
+  }
+}

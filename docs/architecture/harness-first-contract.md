@@ -1,4 +1,6 @@
-# Harness-first domain and API contract v1.6.0
+# Harness-first domain and API contract v1.11.0
+
+The [consumer contract](api-consumer-contract.md) is the current integration entry point. It links the versioned executable export, response examples, HTTP operation semantics and requirement coverage. The sections below retain the original foundation contract and its extension history; later domain guides and executable schemas supersede foundation-only limits. NMA-060 is In Progress and the API readiness gate remains pending.
 
 NMA-052 adds the [agent/conversation API](agent-conversation-api.md). NMA-053 adds the [conversation control, streaming and recovery contract](conversation-control-api.md), which supersedes the foundation-only queue/streaming/recovery limits below. NMA-054 adds the [workspace/file/artifact API](workspace-artifact-api.md) and scoped native coding. The executable schemas describe the complete current version; NMA-060 remains pending.
 

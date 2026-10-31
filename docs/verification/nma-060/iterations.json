@@ -1,0 +1,27 @@
+[
+  {
+    "phase": "regression_before_fix",
+    "pass": 1,
+    "fail": 1,
+    "reason": "Stored browser_profile replay failed domainEvent validation because six browser/Composio variants were absent. Corrected registry-derived event union; final regression passed."
+  },
+  {
+    "phase": "event_union_typecheck",
+    "reason": "Object.values did not satisfy the nonempty tuple constraint. Added a typed tuple assertion; final backend typecheck passed."
+  },
+  {
+    "phase": "full_suite_version_assertion",
+    "pass": 230,
+    "fail": 1,
+    "reason": "Goal HTTP test expected previous 1.10.0 after contract changed to 1.11.0. Updated version assertion; final 231/231 passed.",
+    "evidence": "logs/tests-version-assertion.log"
+  },
+  {
+    "phase": "formatter_invocation",
+    "reason": "Root configuration excludes verification scripts and direct cross-root formatting detects nested root. Used the server formatter configuration via stdin; no repository configuration change."
+  },
+  {
+    "phase": "verifier_typecheck",
+    "reason": "TypeScript 7 explicit-file checks required --ignoreConfig, then a UUID default narrowed a parameter type. Added explicit string input annotation; final verifier typecheck passed."
+  }
+]

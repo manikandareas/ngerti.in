@@ -1,6 +1,7 @@
 import { timingSafeEqual } from "node:crypto";
 import { Elysia } from "elysia";
 import { z } from "zod";
+import { consumerContract, httpContract } from "./api-contract";
 import { Artifacts } from "./artifacts";
 import type { Background } from "./background";
 import { browserCapabilities, browserProfileInput, browserScope } from "./browser/contracts";
@@ -21,7 +22,7 @@ import {
   steerInput,
   threadInput,
 } from "./contracts";
-import { Conversations, conversationSnapshot, historyQuery } from "./conversations";
+import { Conversations, historyQuery } from "./conversations";
 import { eventStream } from "./event-stream";
 import { captureGoal, reportGoal, routineControl, routineWrite } from "./goals/contracts";
 import { Goals } from "./goals/service";
@@ -86,7 +87,8 @@ export function createApi(
       action,
     );
   }
-  return new Elysia({
+  let describeHttp: () => ReturnType<typeof httpContract> = () => [];
+  const api = new Elysia({
     name: "ngertiin-foundation",
     serve: { maxRequestBodySize: 24 * 1024 * 1024 },
   })
@@ -163,10 +165,8 @@ export function createApi(
     }))
     .get("/v1/contracts", () => ({
       ...contractDocument(),
-      projections: {
-        conversation: z.toJSONSchema(conversationSnapshot),
-        history_query: z.toJSONSchema(historyQuery, { io: "input" }),
-      },
+      ...consumerContract(),
+      http: describeHttp(),
     }))
     .post("/v1/setup", ({ request, body }) => command(request, body, () => conversations.setup()), {
       body: z.strictObject({}),
@@ -692,4 +692,6 @@ export function createApi(
         body: z.strictObject({ state: z.enum(["active", "paused", "stopped"]) }),
       },
     );
+  describeHttp = () => httpContract(api.routes);
+  return api;
 }

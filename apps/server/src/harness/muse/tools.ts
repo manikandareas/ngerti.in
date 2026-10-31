@@ -14,7 +14,10 @@ export class MuseTools {
   readonly token = `${crypto.randomUUID()}${crypto.randomUUID()}`;
   readonly server;
   active: { lease: ToolLease; signal: AbortSignal; accepted: () => boolean } | null = null;
-  constructor(private readonly endpoint: () => string) {
+  constructor(
+    private readonly endpoint: () => string,
+    private readonly enabled = true,
+  ) {
     this.server = Bun.serve({
       hostname: "127.0.0.1",
       port: 0,
@@ -52,7 +55,7 @@ export class MuseTools {
             };
           else if (frame.method === "tools/list")
             result = {
-              tools: productToolCatalog(),
+              tools: this.enabled ? productToolCatalog() : [],
             };
           else if (frame.method === "tools/call")
             result = await this.call(toolCall.parse(frame.params));

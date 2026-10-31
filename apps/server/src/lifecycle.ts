@@ -58,6 +58,12 @@ export class Lifecycle {
     const thread = this.store.get("thread", threadId);
     const agent = this.store.get("agent", agentId);
     if (!thread.member_agent_ids.includes(agent.id)) throw new DomainError("SCOPE_DENIED", 403);
+    if (
+      thread.purpose === "routing" &&
+      thread.group_thread_id &&
+      !this.store.get("thread", thread.group_thread_id).member_agent_ids.includes(agentId)
+    )
+      throw new DomainError("SCOPE_DENIED", 403);
     return { thread, agent };
   }
 
@@ -79,7 +85,13 @@ export class Lifecycle {
               );
             if (existing) return existing;
           }
-          return this.store.put({ ...base, ...data, kind });
+          return this.store.put({
+            ...base,
+            ...data,
+            kind,
+            purpose: "conversation",
+            group_thread_id: null,
+          });
         }
         case "goal": {
           const data = goalInput.parse(input);
@@ -213,7 +225,7 @@ export class Lifecycle {
   admit(input: unknown, author: "user" | "routine" = "user") {
     const data = admissionInput.parse(input);
     return this.store.transaction(() => {
-      const { agent } = this.scope(data.thread_id, data.agent_id);
+      this.scope(data.thread_id, data.agent_id);
       if (data.goal_id) this.checkGoal(data.goal_id, data.thread_id, data.agent_id);
       if (data.routine_id) {
         const routine = this.store.get("routine", data.routine_id);
@@ -242,6 +254,8 @@ export class Lifecycle {
       const message = this.store.put({
         ...this.base(),
         kind: "message",
+        purpose: "conversation",
+        source_run_id: null,
         thread_id: data.thread_id,
         author,
         author_agent_id: null,
@@ -251,34 +265,57 @@ export class Lifecycle {
         artifact_ids: data.artifact_ids,
         state: "complete",
       });
-      const run = this.store.put({
-        ...this.base(),
+      const run = this.enqueue(message, data.agent_id, {
         id: runId,
-        kind: "run",
-        thread_id: data.thread_id,
-        agent_id: data.agent_id,
-        input_message_id: message.id,
         goal_id: data.goal_id,
         routine_id: data.routine_id,
-        status: "queued",
-        cancellation: "none",
-        outcome: "none",
-        grant_revision: agent.grant_revision,
-        dispatch_token: null,
-        authority_epoch: null,
-        binding_id: null,
-        native_run_id: null,
-        agent_snapshot: null,
-        delivery: "pending",
-        activity: "idle",
-        diagnostic: null,
-        native_dispatch_id: null,
-        workspace_id: null,
-        workspace_revision: null,
-        native_tools: [],
-        product_tools: [],
       });
       return { message, run };
+    });
+  }
+
+  /** Trusted application admission of an existing authored group message. */
+  enqueue(
+    message: Entity<"message">,
+    agentId: string,
+    options: {
+      id?: string;
+      task_id?: string;
+      goal_id?: string | null;
+      routine_id?: string | null;
+    } = {},
+  ): Entity<"run"> {
+    const { agent, thread } = this.scope(message.thread_id, agentId);
+    if (this.store.get("message", message.id).thread_id !== thread.id)
+      throw new DomainError("SCOPE_DENIED", 403);
+    return this.store.put({
+      ...this.base(),
+      id: options.id ?? crypto.randomUUID(),
+      kind: "run",
+      thread_id: thread.id,
+      agent_id: agentId,
+      input_message_id: message.id,
+      task_id: options.task_id ?? null,
+      thread_revision: thread.type === "group" ? thread.revision : null,
+      goal_id: options.goal_id ?? null,
+      routine_id: options.routine_id ?? null,
+      status: "queued",
+      cancellation: "none",
+      outcome: "none",
+      grant_revision: agent.grant_revision,
+      dispatch_token: null,
+      authority_epoch: null,
+      binding_id: null,
+      native_run_id: null,
+      agent_snapshot: null,
+      delivery: "pending",
+      activity: "idle",
+      diagnostic: null,
+      native_dispatch_id: null,
+      workspace_id: null,
+      workspace_revision: null,
+      native_tools: [],
+      product_tools: [],
     });
   }
 
@@ -326,13 +363,15 @@ export class Lifecycle {
   /** Adapter seam only; no executor is registered by this foundation. */
   claimNext(threadId: string, agentId: string): Entity<"run"> | null {
     return this.store.transaction(() => {
-      const { agent } = this.scope(threadId, agentId);
+      const { agent, thread } = this.scope(threadId, agentId);
       const lane = this.store
         .list("run")
         .filter((run) => run.thread_id === threadId && run.agent_id === agentId);
       if (lane.some((run) => active.has(run.status) || run.status === "unknown")) return null;
       const next = lane.find((run) => run.status === "queued");
       if (next?.delivery !== "pending") return null;
+      if (next.thread_revision !== null && next.thread_revision !== thread.revision)
+        throw new DomainError("STALE_DISPATCH");
       this.responsibility(next);
       if (agent.grant_revision !== next.grant_revision) throw new DomainError("STALE_DISPATCH");
       const binding = this.store
@@ -395,7 +434,14 @@ export class Lifecycle {
   authorizeDispatch(runId: string, token: string) {
     return this.store.transaction(() => {
       const run = this.dispatch(runId, token);
-      this.scope(run.thread_id, run.agent_id);
+      const { thread } = this.scope(run.thread_id, run.agent_id);
+      if (run.thread_revision !== null && thread.revision !== run.thread_revision)
+        throw new DomainError("STALE_DISPATCH");
+      if (thread.purpose === "routing" && thread.group_thread_id) {
+        const group = this.store.get("thread", thread.group_thread_id);
+        if (!group.member_agent_ids.includes(run.agent_id))
+          throw new DomainError("SCOPE_DENIED", 403);
+      }
       const agent = this.executionAgent(run.thread_id, run.agent_id);
       if (run.cancellation !== "none" || agent.grant_revision !== run.grant_revision)
         throw new DomainError("STALE_DISPATCH");
@@ -502,6 +548,8 @@ export class Lifecycle {
     return this.store.put({
       ...this.base(),
       kind: "message",
+      purpose: "conversation",
+      source_run_id: null,
       thread_id: run.thread_id,
       author: "agent",
       author_agent_id: run.agent_id,

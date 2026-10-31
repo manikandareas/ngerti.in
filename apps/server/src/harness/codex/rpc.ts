@@ -40,7 +40,7 @@ export class CodexRpc {
         "-c",
         'shell_environment_policy.inherit="none"',
         ...workspacePolicy(context),
-        ...(context.workspace
+        ...(context.workspace && context.purpose !== "routing"
           ? ["--enable", "shell_tool", "--enable", "unified_exec"]
           : ["--disable", "shell_tool", "--disable", "unified_exec"]),
         "--disable",

@@ -93,7 +93,7 @@ test("HTTP errors do not echo malformed input or exception details", async () =>
 test("HTTP exposes schemas and cursor replay, and validates cursor bounds", async () => {
   const app = setup();
   f.admit();
-  expect((await (await app.handle(request("/v1/contracts"))).json()).version).toBe("1.6.0");
+  expect((await (await app.handle(request("/v1/contracts"))).json()).version).toBe("1.7.0");
   const first = await (await app.handle(request("/v1/events?limit=1"))).json();
   const second = await (await app.handle(request(`/v1/events?after=${first.next_cursor}`))).json();
   expect(second.events[0].cursor).toBeGreaterThan(first.next_cursor);

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { groupCommands, humanRequestFields, routeFields, taskFields } from "./groups/contracts";
 import { connectionFields } from "./harness/contracts";
 import {
   harnessInventoryFields,
@@ -16,7 +17,7 @@ import {
   workspaceInput,
 } from "./workspace-contracts";
 
-export const CONTRACT_VERSION = "1.6.0";
+export const CONTRACT_VERSION = "1.7.0";
 export const id = z.uuid();
 const text = z.string().min(1).max(100_000);
 const base = {
@@ -88,7 +89,12 @@ export const threadInput = z
       (v.type !== "dm" || v.member_agent_ids.length === 1),
     "Invalid thread membership.",
   );
-export const thread = threadInput.safeExtend({ ...base, kind: z.literal("thread") });
+export const thread = threadInput.safeExtend({
+  ...base,
+  kind: z.literal("thread"),
+  purpose: z.enum(["conversation", "routing"]).default("conversation"),
+  group_thread_id: id.nullable().default(null),
+});
 export const runStatus = z.enum([
   "queued",
   "dispatching",
@@ -107,6 +113,8 @@ export const run = z
     thread_id: id,
     agent_id: id,
     input_message_id: id,
+    task_id: id.nullable().default(null),
+    thread_revision: z.int().positive().nullable().default(null),
     goal_id: id.nullable(),
     routine_id: id.nullable(),
     status: runStatus,
@@ -171,6 +179,10 @@ export const message = z
     author_agent_id: id.nullable(),
     routine_id: id.nullable(),
     run_id: id.nullable(),
+    purpose: z
+      .enum(["conversation", "handoff", "review", "human_request", "human_reply", "continuation"])
+      .default("conversation"),
+    source_run_id: id.nullable().default(null),
     text: z.string().max(100_000),
     state: z.enum(["complete", "partial", "deleted"]),
     artifact_ids: z.array(id).max(20).default([]),
@@ -321,7 +333,21 @@ export const harnessInventory = z.strictObject({
   ...harnessInventoryFields,
   kind: z.literal("harness_inventory"),
 });
+export const groupRoute = z.strictObject({
+  ...base,
+  ...routeFields,
+  kind: z.literal("group_route"),
+});
+export const peerTask = z.strictObject({ ...base, ...taskFields, kind: z.literal("peer_task") });
+export const humanRequest = z.strictObject({
+  ...base,
+  ...humanRequestFields,
+  kind: z.literal("human_request"),
+});
 export const schemas = {
+  group_route: groupRoute,
+  peer_task: peerTask,
+  human_request: humanRequest,
   memory,
   skill,
   skill_revision: skillRevision,
@@ -343,6 +369,9 @@ export const schemas = {
 export type Kind = keyof typeof schemas;
 export type Entity<K extends Kind = Kind> = z.infer<(typeof schemas)[K]>;
 export const kindSchema = z.enum([
+  "group_route",
+  "peer_task",
+  "human_request",
   "memory",
   "skill",
   "skill_revision",
@@ -379,6 +408,9 @@ export const domainEvent = z.strictObject({
   revision: z.int().positive(),
   created_at: z.iso.datetime(),
   data: z.discriminatedUnion("kind", [
+    groupRoute,
+    peerTask,
+    humanRequest,
     memory,
     skill,
     skillRevision,
@@ -410,6 +442,8 @@ export const errorCodes = [
   "RECONCILIATION_REQUIRED",
   "INTERNAL_ERROR",
   "CONTROL_AMBIGUOUS",
+  "ROUTING_INVALID",
+  "ROUTING_STALE",
 ] as const;
 export class DomainError extends Error {
   constructor(
@@ -428,6 +462,7 @@ export function contractDocument() {
     event: z.toJSONSchema(domainEvent, { io: "input" }),
     commands: Object.fromEntries(
       Object.entries({
+        ...groupCommands,
         ...learningCommands,
         agent: agentInput,
         update_agent: agentUpdate,

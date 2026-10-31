@@ -93,8 +93,9 @@ export class Store {
           CREATE UNIQUE INDEX IF NOT EXISTS routine_occurrence ON entities (
             json_extract(body, '$.routine_id'), json_extract(body, '$.routine_generation'), json_extract(body, '$.scheduled_for')
           ) WHERE kind='occurrence';
-          CREATE UNIQUE INDEX IF NOT EXISTS run_answer ON entities (json_extract(body, '$.run_id'))
-            WHERE kind='message' AND json_extract(body, '$.author')='agent' AND json_extract(body, '$.run_id') IS NOT NULL;
+          DROP INDEX IF EXISTS run_answer;
+          CREATE UNIQUE INDEX run_answer ON entities (json_extract(body, '$.run_id'))
+            WHERE kind='message' AND json_extract(body, '$.author')='agent' AND json_extract(body, '$.run_id') IS NOT NULL AND COALESCE(json_extract(body, '$.purpose'), 'conversation')='conversation';
           CREATE UNIQUE INDEX IF NOT EXISTS lane_workspace ON entities (json_extract(body, '$.thread_id'), json_extract(body, '$.agent_id')) WHERE kind='workspace' AND json_extract(body, '$.state')='active';
           CREATE UNIQUE INDEX IF NOT EXISTS artifact_publication ON entities (json_extract(body, '$.run_id'), json_extract(body, '$.source_path'), json_extract(body, '$.sha256')) WHERE kind='artifact' AND json_extract(body, '$.origin')='native_output';
           CREATE UNIQUE INDEX IF NOT EXISTS skill_name ON entities (json_extract(body, '$.visibility'), CASE WHEN json_extract(body, '$.visibility')='shared' THEN json_extract(body, '$.agent_id') ELSE json_extract(body, '$.thread_id') END, json_extract(body, '$.name')) WHERE kind='skill';
@@ -159,7 +160,7 @@ export class Store {
   answer(runId: string): Entity<"message"> | null {
     const row = this.#db
       .query<{ body: string }, [string]>(
-        "SELECT body FROM entities WHERE kind='message' AND json_extract(body,'$.author')='agent' AND json_extract(body,'$.run_id')=?",
+        "SELECT body FROM entities WHERE kind='message' AND json_extract(body,'$.author')='agent' AND json_extract(body,'$.run_id')=? AND COALESCE(json_extract(body,'$.purpose'), 'conversation')='conversation'",
       )
       .get(runId);
     return row ? schemas.message.parse(JSON.parse(row.body)) : null;

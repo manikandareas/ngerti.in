@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { agentInput, agentUpdate, id } from "../contracts";
+import { askHumanInput, handoffInput } from "../groups/contracts";
 import {
   memoryDelete,
   memoryQuery,
@@ -12,6 +13,12 @@ import {
 import { relativePath, uploadInput } from "../workspace-contracts";
 
 export const productToolSchemas = {
+  "ngertiin.group_read_task": z.strictObject({
+    task_id: id,
+    offset: z.int().min(0).max(100_000).default(0),
+  }),
+  "ngertiin.group_handoff": handoffInput.extend({ command_id: id }),
+  "ngertiin.group_ask_user": askHumanInput.extend({ command_id: id }),
   "ngertiin.list_memories": memoryQuery,
   "ngertiin.write_memory": memoryWrite.extend({ command_id: id }),
   "ngertiin.delete_memory": memoryDelete.extend({ command_id: id }),

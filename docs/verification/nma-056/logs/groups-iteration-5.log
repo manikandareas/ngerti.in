@@ -1,0 +1,26 @@
+bun test v1.3.10 (30e609e0)
+
+tests/groups/domain.test.ts:
+(pass) mention selects exactly one valid member and invalid addresses create no work [27.19ms]
+(pass) model routing uses the scoped packet, validates output and never writes selection bubbles [19.82ms]
+(pass) invalid model route fails closed: not JSON [13.10ms]
+(pass) invalid model route fails closed: [] [14.23ms]
+(pass) invalid model route fails closed: {"agent_id":"bad"} [11.04ms]
+(pass) invalid model route fails closed: {"agent_id":"93c64fb9-0f36-4bf8-ab6c-1f195de91d2f"} [12.27ms]
+(pass) invalid model route fails closed: {"agent_id":"fd09f705-6b93-4bf2-93fd-2f1e0d36d67e","extra":true} [12.95ms]
+(pass) membership edits fence stale routing and revoke queued work even after readding the member [14.89ms]
+(pass) cross-harness child review, lineage and atomic parent continuation survive repeated restart reconciliation [32.42ms]
+(pass) human reply stays bound to its request across restart and duplicate/stale replies cannot resume another task [20.26ms]
+(pass) unknown source or child remains held and only native reconciliation can release the exact continuation [23.55ms]
+(pass) revocation between claim and tool/dispatch denies new peer effects [14.59ms]
+(pass) self/ancestor handoff cycles and a second unrelated HITL request are rejected [16.31ms]
+(pass) HTTP exact retries, schemas, authored scope and request conflicts remain explicit [28.92ms]
+
+tests/groups/adapters.test.ts:
+(pass) codex routing and cross-harness peer/HITL use real protocol fixtures and durable tool receipts [344.07ms]
+(pass) muse routing and cross-harness peer/HITL use real protocol fixtures and durable tool receipts [301.81ms]
+
+ 16 pass
+ 0 fail
+ 124 expect() calls
+Ran 16 tests across 2 files. [1110.00ms]

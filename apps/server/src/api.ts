@@ -21,6 +21,8 @@ import {
 } from "./contracts";
 import { Conversations, conversationSnapshot, historyQuery } from "./conversations";
 import { eventStream } from "./event-stream";
+import { groupMessage, humanReply, membershipUpdate } from "./groups/contracts";
+import { Groups } from "./groups/service";
 import type { AccountService } from "./harness/accounts";
 import { detectHarness } from "./harness/availability";
 import type { HarnessBroker } from "./harness/broker";
@@ -61,6 +63,7 @@ export function createApi(
 ) {
   if (token.length < 32) throw new Error("A private development token is required.");
   const conversations = new Conversations(lifecycle);
+  const groups = new Groups(lifecycle);
   const controls = new RunControls(lifecycle);
   const memories = new Memories(lifecycle);
   const skills = new ApplicationSkills(lifecycle);
@@ -394,6 +397,25 @@ export function createApi(
           lifecycle.create("thread", { type: "dm", member_agent_ids: [params.id] }),
         ),
       { params: z.object({ id }), body: z.strictObject({}) },
+    )
+    .post(
+      "/v1/groups/:id/membership",
+      ({ request, params, body }) => {
+        const result = command(request, body, () => groups.membership(params.id, body));
+        background.notifyControls();
+        return result;
+      },
+      { params: z.object({ id }), body: membershipUpdate },
+    )
+    .post(
+      "/v1/groups/:id/messages",
+      ({ request, params, body }) => command(request, body, () => groups.send(params.id, body)),
+      { params: z.object({ id }), body: groupMessage },
+    )
+    .post(
+      "/v1/human-requests/:id/reply",
+      ({ request, params, body }) => command(request, body, () => groups.reply(params.id, body)),
+      { params: z.object({ id }), body: humanReply },
     )
     .post(
       "/v1/threads",

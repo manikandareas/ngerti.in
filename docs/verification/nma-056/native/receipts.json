@@ -1,0 +1,25 @@
+{
+  "planned": 4,
+  "passed": 4,
+  "failed": 0,
+  "skipped": 0,
+  "checks": [
+    "original_group_send_receipt_replayed",
+    "original_human_reply_receipt_replayed_twice",
+    "zero_extra_events_messages_tasks_or_runs",
+    "native_router_zero_product_or_native_tools"
+  ],
+  "group_id": "19f8bfc7-fbf1-4588-bb5b-af4a84ebfc9e",
+  "cursor": 723,
+  "native_application_runs": {
+    "total": 5,
+    "succeeded": 5,
+    "failed": 0,
+    "cancelled": 0,
+    "unknown": 0
+  },
+  "proof_only_pre_dispatch_cancelled_runs": [
+    "98d36e5a-8584-4994-ad8d-ebf1ac11b912",
+    "968fc9bc-66fc-4583-9c92-d647a0088abd"
+  ]
+}

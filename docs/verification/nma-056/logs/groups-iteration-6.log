@@ -1,0 +1,30 @@
+bun test v1.3.10 (30e609e0)
+
+tests/groups/domain.test.ts:
+(pass) mention selects exactly one valid member and invalid addresses create no work [31.11ms]
+(pass) model routing uses the scoped packet, validates output and never writes selection bubbles [19.70ms]
+(pass) invalid model route fails closed: not JSON [14.12ms]
+(pass) invalid model route fails closed: [] [13.39ms]
+(pass) invalid model route fails closed: {"agent_id":"bad"} [11.91ms]
+(pass) invalid model route fails closed: {"agent_id":"398a8703-d893-4d97-94ea-4f9b49ce252e"} [12.20ms]
+(pass) invalid model route fails closed: {"agent_id":"28faf6fb-3a52-47b8-b332-8ebd98224385","extra":true} [12.64ms]
+(pass) membership edits fence stale routing and revoke queued work even after readding the member [18.40ms]
+(pass) cross-harness child review, lineage and atomic parent continuation survive repeated restart reconciliation [35.85ms]
+(pass) human reply stays bound to its request across restart and duplicate/stale replies cannot resume another task [23.17ms]
+(pass) unknown source or child remains held and only native reconciliation can release the exact continuation [23.67ms]
+(pass) revocation between claim and tool/dispatch denies new peer effects [15.53ms]
+(pass) self/ancestor handoff cycles and a second unrelated HITL request are rejected [17.94ms]
+(pass) HTTP exact retries, schemas, authored scope and request conflicts remain explicit [38.66ms]
+(pass) a pending human request remains answerable while native outcome is unknown, without blind replay [22.82ms]
+(pass) routing leases cannot call product tools and revoked router work never dispatches after readd [15.06ms]
+(pass) task result retrieval remains group scoped and bounded, including long peer results [27.30ms]
+(pass) a failed collaboration transaction leaves no task, authored request, event or parent hold [19.89ms]
+
+tests/groups/adapters.test.ts:
+(pass) codex routing and cross-harness peer/HITL use real protocol fixtures and durable tool receipts [363.76ms]
+(pass) muse routing and cross-harness peer/HITL use real protocol fixtures and durable tool receipts [348.79ms]
+
+ 20 pass
+ 0 fail
+ 146 expect() calls
+Ran 20 tests across 2 files. [1240.00ms]

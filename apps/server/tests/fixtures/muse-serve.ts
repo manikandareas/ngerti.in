@@ -187,6 +187,10 @@ async function handle(request: {
         return process.exit(1);
       }
       if (input === "gap") return notify("view/gap", { after: "1", next: "3" });
+      if (input.startsWith("Select exactly one responding agent")) {
+        const packet = JSON.parse(input.slice(input.indexOf("\n") + 1));
+        return finish(JSON.stringify({ agent_id: packet.members.at(-1).agent_id }));
+      }
       if (input === "wait" || input === "stop-ack-only") return;
       if (input === "empty-final") {
         notify("item/started", {

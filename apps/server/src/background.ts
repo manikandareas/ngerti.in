@@ -1,4 +1,5 @@
 import { DomainError, type Entity } from "./contracts";
+import { Groups } from "./groups/service";
 import { diagnostic } from "./harness/contracts";
 import type { Lifecycle } from "./lifecycle";
 
@@ -45,6 +46,7 @@ export class Background {
 
   tick(now = new Date()) {
     if (this.#stopping) return;
+    new Groups(this.lifecycle).advance();
     for (const routine of this.lifecycle.store.list("routine")) {
       try {
         this.lifecycle.fireRoutine(routine.id, now);

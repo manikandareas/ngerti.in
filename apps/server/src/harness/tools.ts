@@ -2,6 +2,7 @@ import { timingSafeEqual } from "node:crypto";
 import { z } from "zod";
 import { Artifacts } from "../artifacts";
 import { type agentInput, type agentUpdate, DomainError, type Entity } from "../contracts";
+import { registerGroupTools } from "../groups/tools";
 import { registerLearningTools } from "../learning/tools";
 import type { Lifecycle } from "../lifecycle";
 import { canonical } from "../store";
@@ -29,6 +30,7 @@ export class ProductTools {
     private readonly completed: (scope: ToolScope, name: string) => void = () => {},
   ) {
     registerLearningTools(this);
+    registerGroupTools(this);
     const artifacts = new Artifacts(lifecycle);
     const workspaces = artifacts.workspaces;
     const workspaceFor = (access: ToolAccess) => {
@@ -111,6 +113,7 @@ export class ProductTools {
             return { id: item.id, name: item.name, path: item.source_path, sha256: item.sha256 };
           }),
           agent_snapshot: run.agent_snapshot,
+          task: run.task_id ? lifecycle.store.get("peer_task", run.task_id) : null,
         };
       },
     });
@@ -304,6 +307,8 @@ export class ProductTools {
   }
   async call(token: string, claimedScope: unknown, name: string, input: unknown) {
     const scope = this.lease(token);
+    if (this.lifecycle.store.get("thread", scope.thread_id).purpose === "routing")
+      throw new DomainError("SCOPE_DENIED", 403);
     if (canonical(toolScope.parse(claimedScope)) !== canonical(scope))
       throw new DomainError("SCOPE_DENIED", 403);
     const tool = this.#tools.get(name);
@@ -371,7 +376,10 @@ export class ProductTools {
         break;
       case "tools/list":
         result = {
-          tools: [...this.#tools].map(([name, tool]) => ({
+          tools: (this.lifecycle.store.get("thread", scope.thread_id).purpose === "routing"
+            ? []
+            : [...this.#tools]
+          ).map(([name, tool]) => ({
             name,
             inputSchema: z.toJSONSchema(tool.schema),
           })),

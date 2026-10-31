@@ -1,0 +1,21 @@
+15 | async function api(path: string, body?: unknown, key = crypto.randomUUID()) {
+16 |   const response = await fetch(`${base}${path}`, { method: body === undefined ? "GET" : "POST", headers: {
+17 |     Authorization: `Bearer ${token}`, "Content-Type": "application/json", "Idempotency-Key": key,
+18 |   }, ...(body === undefined ? {} : { body: JSON.stringify(body) }) });
+19 |   const value = await response.json();
+20 |   assert.equal(response.status, 200, `${path}: ${value.error?.code}`);
+              ^
+AssertionError: /v1/runs/f81a0610-909b-4b21-9d1c-fab921af43b8/interactions: NATIVE_REJECTED
+
+409 !== 200
+
+ generatedMessage: false,
+     actual: 409,
+   expected: 200,
+   operator: "strictEqual",
+       code: "ERR_ASSERTION"
+
+      at api (/Users/vitoandareasmanik/Development/project/ngertiin/scripts/verification/nma056/native.ts:20:10)
+      at processTicksAndRejections (native:7:39)
+
+Bun v1.3.10 (macOS arm64)

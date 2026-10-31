@@ -207,7 +207,13 @@ export class CodexClient implements HarnessClient {
       developerInstructions: this.instructions,
       // The application supplies confined workspace guidance. Native ancestor discovery can
       // otherwise read host/repository instructions outside this conversation's grant.
-      config: { model_reasoning_effort: selected.reasoning, project_doc_max_bytes: 0 },
+      config: {
+        model_reasoning_effort: selected.reasoning,
+        project_doc_max_bytes: 0,
+        ...(this.context.purpose === "routing"
+          ? { "features.shell_tool": false, "features.unified_exec": false, web_search: "disabled" }
+          : {}),
+      },
     };
   }
   private bind(result: unknown, selected: Settings, expected?: string): SessionIdentity {
@@ -224,7 +230,7 @@ export class CodexClient implements HarnessClient {
         ...this.threadParams(selected),
         allowProviderModelFallback: false,
         ephemeral: false,
-        dynamicTools: [toolSpec],
+        dynamicTools: this.context.purpose === "routing" ? [] : [toolSpec],
       }),
       selected,
     );

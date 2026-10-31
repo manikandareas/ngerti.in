@@ -153,6 +153,17 @@ async function receive(message: Message) {
         break;
       }
       if (text === "wait") break;
+      if (text.startsWith("Select exactly one responding agent")) {
+        const packet = JSON.parse(text.slice(text.indexOf("\n") + 1));
+        notify("item/agentMessage/delta", {
+          threadId: current.thread,
+          turnId: current.turn,
+          itemId: "answer",
+          delta: JSON.stringify({ agent_id: packet.members.at(-1).agent_id }),
+        });
+        finish();
+        break;
+      }
       if (text === "stream-wait") {
         notify("item/agentMessage/delta", {
           threadId: current.thread,

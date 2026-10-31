@@ -67,6 +67,7 @@ export class Diagnostics {
   }
 }
 export type LaunchContext = {
+  purpose?: "conversation" | "routing";
   env: Record<string, string>;
   state_directory: string;
   redactor: Redactor;

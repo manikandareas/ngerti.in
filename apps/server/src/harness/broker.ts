@@ -1,9 +1,11 @@
 import { agentInstructions } from "../agent-instructions";
+import { Artifacts } from "../artifacts";
 import type { ExecutorContext, HarnessExecutor } from "../background";
 import { DomainError, type Entity } from "../contracts";
 import type { Lifecycle } from "../lifecycle";
 import { RunControls } from "../run-controls";
 import { canonical } from "../store";
+import { Workspaces } from "../workspaces";
 import { type Availability, detectHarness, type HarnessId, requireAvailable } from "./availability";
 import { Connections } from "./connections";
 import type { CredentialContexts, LaunchContext } from "./context";
@@ -147,7 +149,10 @@ export class HarnessBroker {
     const existing = this.#sessions.get(lane);
     if (existing) {
       const current = this.member(threadId, agentId);
-      if (existing.agent_revision === current.agent.revision) {
+      if (
+        existing.agent_revision === current.agent.revision &&
+        this.lifecycle.store.get("binding", existing.binding.id).active
+      ) {
         this.check(existing, threadId, agentId);
         return existing;
       }
@@ -198,7 +203,19 @@ export class HarnessBroker {
     );
     if (this.#closed) throw new HarnessError("ADAPTER_UNAVAILABLE");
     const controller = new AbortController();
-    const launch = { ...this.credentials.create(initial.connection), signal: controller.signal };
+    const workspaces = new Workspaces(this.lifecycle);
+    const workspace = workspaces.ensure(threadId, agentId);
+    const launch: LaunchContext = {
+      ...this.credentials.create(initial.connection),
+      signal: controller.signal,
+      workspace: {
+        id: workspace.id,
+        root: workspaces.path(workspace),
+        revision: workspace.revision,
+      },
+    };
+    const temporary = workspaces.temporary(workspace);
+    launch.env = { ...launch.env, TMPDIR: temporary, TMP: temporary, TEMP: temporary };
     let client: HarnessClient | undefined;
     try {
       const connecting = adapter.connect({
@@ -210,6 +227,7 @@ export class HarnessBroker {
         instructions: [
           agentInstructions(initial.agent),
           this.historyContext(threadId, agentId, initial.agent.revision),
+          `Your authorized workspace is ${launch.workspace?.root}. Use ngertiin.read_run_context for explicit input attachments. Publish downloadable output only by calling ngertiin.publish_artifact with a workspace-relative path and a fresh command_id. A path mentioned in prose does not publish an artifact.`,
         ]
           .filter(Boolean)
           .join("\n\n"),
@@ -274,7 +292,9 @@ export class HarnessBroker {
             binding.agent_id === agentId &&
             binding.connection_id === current.id &&
             binding.harness === current.harness &&
-            binding.agent_revision === initial.agent.revision,
+            binding.agent_revision === initial.agent.revision &&
+            binding.workspace_id === workspace.id &&
+            binding.workspace_revision === workspace.revision,
         );
       if (previous) this.requireCapability(current, "resume");
       const identity = await bounded(
@@ -297,7 +317,8 @@ export class HarnessBroker {
         latest.agent.revision !== initial.agent.revision
       )
         throw new DomainError("STALE_DISPATCH");
-      const binding = this.lifecycle.bind(threadId, agentId, identity.native_session_id);
+      workspaces.get(workspace.id);
+      const binding = this.lifecycle.bind(threadId, agentId, identity.native_session_id, workspace);
       const session = {
         client,
         launch,
@@ -328,6 +349,7 @@ export class HarnessBroker {
     const { agent, connection } = this.member(threadId, agentId);
     const binding = this.lifecycle.store.get("binding", session.binding.id);
     if (
+      !binding.active ||
       binding.revision !== session.binding.revision ||
       binding.native_session_id !== session.binding.native_session_id ||
       session.binding.connection_id !== connection.id ||
@@ -337,6 +359,11 @@ export class HarnessBroker {
       canonical(session.selected) !== canonical(this.selection(agent))
     )
       throw new DomainError("STALE_DISPATCH");
+    if (binding.workspace_id) {
+      const workspace = new Workspaces(this.lifecycle).get(binding.workspace_id);
+      if (workspace.revision !== binding.workspace_revision)
+        throw new DomainError("STALE_DISPATCH");
+    }
     return connection;
   }
   private historyContext(threadId: string, agentId: string, revision: number) {
@@ -474,7 +501,25 @@ export class HarnessBroker {
     );
     const controller = new AbortController();
     if (this.#closed) throw new HarnessError("ADAPTER_UNAVAILABLE");
-    const launch = { ...this.credentials.create(connection), signal: controller.signal };
+    const workspaces = new Workspaces(this.lifecycle);
+    const workspace = run.workspace_id ? workspaces.authorizeRun(run) : null;
+    const launch: LaunchContext = {
+      ...this.credentials.create(connection),
+      signal: controller.signal,
+      ...(workspace
+        ? {
+            workspace: {
+              id: workspace.id,
+              root: workspaces.path(workspace),
+              revision: workspace.revision,
+            },
+          }
+        : {}),
+    };
+    if (workspace) {
+      const temporary = workspaces.temporary(workspace);
+      launch.env = { ...launch.env, TMPDIR: temporary, TMP: temporary, TEMP: temporary };
+    }
     this.#recoveryControllers.add(controller);
     let client: HarnessClient | undefined;
     try {
@@ -604,6 +649,7 @@ export class HarnessBroker {
       );
       this.check(session, run.thread_id, run.agent_id);
       this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
+      if (run.workspace_id) new Artifacts(this.lifecycle).verifyInputs(run);
       lease = this.tools.issue(run);
       session.launch.redactor.add(lease.token);
       let stopped: (result: unknown) => void = () => {};
@@ -681,7 +727,20 @@ export class HarnessBroker {
               this.lifecycle.observe(run.id, run.dispatch_token as string, {
                 activity: event.activity,
               });
-            else if (event.type === "failure") {
+            else if (event.type === "native_tool") {
+              const current = this.lifecycle.store.get("run", run.id);
+              const tools = current.native_tools.filter((item) => item.item_id !== event.item_id);
+              tools.push({
+                item_id: event.item_id,
+                name: event.name,
+                command: event.command,
+                state: event.state,
+                exit_code: event.exit_code,
+              });
+              this.lifecycle.observe(run.id, run.dispatch_token as string, {
+                native_tools: tools.slice(-200),
+              });
+            } else if (event.type === "failure") {
               this.lifecycle.observe(run.id, run.dispatch_token as string, {
                 diagnostic: { ...diagnostic(new HarnessError(event.code)), outcome: "failed" },
               });

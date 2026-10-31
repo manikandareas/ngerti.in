@@ -1,5 +1,6 @@
 import { timingSafeEqual } from "node:crypto";
 import { z } from "zod";
+import { Artifacts } from "../artifacts";
 import { type agentInput, type agentUpdate, DomainError, type Entity } from "../contracts";
 import type { Lifecycle } from "../lifecycle";
 import { canonical } from "../store";
@@ -26,6 +27,69 @@ export class ProductTools {
     readonly lifecycle: Lifecycle,
     private readonly completed: (scope: ToolScope, name: string) => void = () => {},
   ) {
+    const artifacts = new Artifacts(lifecycle);
+    const workspaces = artifacts.workspaces;
+    const workspaceFor = (access: ToolAccess) => {
+      access.authorize();
+      return workspaces.authorizeRun(lifecycle.store.get("run", access.scope.run_id));
+    };
+    for (const name of [
+      "ngertiin.get_workspace",
+      "ngertiin.list_files",
+      "ngertiin.read_file",
+      "ngertiin.create_file",
+      "ngertiin.publish_artifact",
+    ] as const) {
+      this.register(name, {
+        schema: productToolSchemas[name],
+        resources: () => [],
+        execute: (raw, access) => {
+          const workspace = workspaceFor(access);
+          const data = raw as {
+            command_id: string;
+            path: string;
+            text: string;
+            media_type: string;
+          };
+          if (name === "ngertiin.get_workspace")
+            return {
+              workspace_id: workspace.id,
+              name: workspace.name,
+              root: workspaces.path(workspace),
+            };
+          if (name === "ngertiin.list_files")
+            return workspaces.files(workspace.id).list(data.path, "", 200);
+          if (name === "ngertiin.read_file") {
+            const bytes = workspaces.files(workspace.id).read(data.path);
+            if (bytes.length > 100_000) throw new DomainError("INVALID_REQUEST", 413);
+            return {
+              path: data.path,
+              text: new TextDecoder("utf-8", { fatal: true }).decode(bytes),
+            };
+          }
+          if (name === "ngertiin.create_file")
+            return lifecycle.store.command(
+              data.command_id,
+              { operation: name, workspace_id: workspace.id, path: data.path, text: data.text },
+              () => {
+                access.authorize();
+                workspaces.files(workspace.id).create(data.path, Buffer.from(data.text));
+                return { path: data.path };
+              },
+            );
+          return artifacts.publish(
+            data.command_id,
+            {
+              workspace_id: workspace.id,
+              run_id: access.scope.run_id,
+              path: data.path,
+              media_type: data.media_type,
+            },
+            access.authorize,
+          );
+        },
+      });
+    }
     this.register("ngertiin.read_run_context", {
       schema: z.strictObject({}),
       resources: () => [],
@@ -38,6 +102,12 @@ export class ProductTools {
           thread_id: run.thread_id,
           run_id: run.id,
           input: message.text,
+          workspace_id: run.workspace_id,
+          attachments: message.artifact_ids.map((id) => {
+            const item = lifecycle.store.get("artifact", id);
+            if (item.workspace_id !== run.workspace_id) throw new DomainError("SCOPE_DENIED", 403);
+            return { id: item.id, name: item.name, path: item.source_path, sha256: item.sha256 };
+          }),
           agent_snapshot: run.agent_snapshot,
         };
       },
@@ -245,6 +315,10 @@ export class ProductTools {
     // Asynchronous tools must call authorize immediately before committing their effect.
     const result = await tool.execute(parsed, { scope: Object.freeze({ ...scope }), authorize });
     authorize();
+    const current = this.lifecycle.store.get("run", scope.run_id);
+    this.lifecycle.observe(current.id, current.dispatch_token as string, {
+      product_tools: [...current.product_tools, name].slice(-200),
+    });
     this.completed(scope, name);
     return result;
   }

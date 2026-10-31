@@ -14,6 +14,7 @@ export class OwnedProcess {
     try {
       this.child = Bun.spawn([executable, ...args], {
         env: { ...context.env },
+        cwd: context.state_directory,
         stdin: "pipe",
         stdout: "pipe",
         stderr: "pipe",

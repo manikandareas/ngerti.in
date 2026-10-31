@@ -19,6 +19,7 @@ export class MuseTransport {
       args: [
         ...args,
         "serve",
+        ...(context.workspace ? ["--preset", "empty"] : []),
         "--disable-shell",
         "--disable-write",
         "--contributor-mode",

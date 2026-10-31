@@ -1,6 +1,7 @@
 import type { LaunchContext } from "../context";
 import { HarnessError } from "../contracts";
 import { OwnedProcess } from "../process";
+import { workspacePolicy } from "./workspace-policy";
 
 export type RpcMessage = {
   id?: string | number;
@@ -38,10 +39,10 @@ export class CodexRpc {
         `forced_login_method="${context.env.OPENAI_API_KEY ? "api" : "chatgpt"}"`,
         "-c",
         'shell_environment_policy.inherit="none"',
-        "--disable",
-        "shell_tool",
-        "--disable",
-        "unified_exec",
+        ...workspacePolicy(context),
+        ...(context.workspace
+          ? ["--enable", "shell_tool", "--enable", "unified_exec"]
+          : ["--disable", "shell_tool", "--disable", "unified_exec"]),
         "--disable",
         "computer_use",
         "--disable",

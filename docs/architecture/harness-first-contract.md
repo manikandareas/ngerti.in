@@ -1,6 +1,6 @@
-# Harness-first domain and API contract v1.4.0
+# Harness-first domain and API contract v1.5.0
 
-NMA-052 adds the [agent/conversation API](agent-conversation-api.md). NMA-053 adds the [conversation control, streaming and recovery contract](conversation-control-api.md), which supersedes the foundation-only queue/streaming/recovery limits below. The executable schemas describe the complete current version; NMA-060 remains pending.
+NMA-052 adds the [agent/conversation API](agent-conversation-api.md). NMA-053 adds the [conversation control, streaming and recovery contract](conversation-control-api.md), which supersedes the foundation-only queue/streaming/recovery limits below. NMA-054 adds the [workspace/file/artifact API](workspace-artifact-api.md) and scoped native coding. The executable schemas describe the complete current version; NMA-060 remains pending.
 
 Executable schemas live in [contracts.ts](../../apps/server/src/contracts.ts) and are exported by authenticated `GET /v1/contracts`. These are foundation contracts; NMA-060 remains the API readiness gate before UI adoption. JSON Schema describes field shapes. Runtime Zod refinements and the application service enforce the cross-field and relational invariants below.
 
@@ -18,7 +18,8 @@ All entities contain server-generated UUID `id`, server-owned `owner_id`, intege
 | Goal | Agent/thread responsibility, generation, active/paused/stopped/completed state and artifact evidence IDs. The schema rejects completed goals without evidence; validating useful evidence and automatic completion belongs to NMA-057. |
 | Routine | Agent/thread, optional goal, instruction, timezone, typed one-time/fixed-interval schedule, generation, state and persisted next due time. Full cron/calendar/DST semantics remain NMA-057. |
 | Occurrence | Routine ID, generation, scheduled UTC time and admitted run ID. The tuple `(routine_id, routine_generation, scheduled_for)` is unique. |
-| Artifact | Agent/thread and optional run references, media type, SHA-256 and opaque storage key. Artifact bytes, upload/download and content verification remain NMA-054. No arbitrary filesystem path is accepted. |
+| Workspace | Active owner/agent/thread file authority, managed or explicitly bound project root, root identity and revocation. |
+| Artifact | Immutable verified bytes, scope, SHA-256, size, source path and native publication/sharing provenance. See the [workspace/artifact contract](workspace-artifact-api.md). |
 | Binding | Agent/thread/connection/harness to native-session identity, with a generation. A native session cannot be reused across DM/group threads for the same connection. Binding/rotation/resume behavior is completed by the broker/adapters. |
 
 SQLite stores typed projections, immutable event envelopes and command receipts. A mutation and its events/receipt share one transaction; rolled-back changes produce no replayable event. Optimistic revision checks reject stale updates. A lifetime authority lock prevents simultaneous application writers for the same state directory. Schema/application/owner mismatches are startup errors rather than permission to reset data.

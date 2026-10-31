@@ -1,0 +1,169 @@
+{
+  "reports": [
+    {
+      "report": "native-codex-final.json",
+      "raw_verifier_status": "pass",
+      "runs": [
+        {
+          "id": "0eae7b46-cd43-4617-87be-76943f98cda4",
+          "state": "succeeded"
+        }
+      ],
+      "error": null
+    },
+    {
+      "report": "native-codex-initial.json",
+      "raw_verifier_status": "pass",
+      "runs": [
+        {
+          "id": "f5f739e7-2624-4bc8-b9a4-5ebcba80b801",
+          "state": "succeeded"
+        }
+      ],
+      "error": null
+    },
+    {
+      "report": "native-codex-nested-search.json",
+      "raw_verifier_status": "fail",
+      "runs": [
+        {
+          "id": "ed98892a-2047-45a8-b3b3-b1f52d834cf6",
+          "state": "succeeded"
+        }
+      ],
+      "error": "Native search did not complete."
+    },
+    {
+      "report": "native-codex-resume-final.json",
+      "raw_verifier_status": "pass",
+      "runs": [
+        {
+          "id": "24ae7a2f-0521-4ef7-a395-f90d9f89709a",
+          "state": "succeeded"
+        }
+      ],
+      "error": null
+    },
+    {
+      "report": "native-codex-resume.json",
+      "raw_verifier_status": "pass",
+      "runs": [
+        {
+          "id": "f899e6d4-b33d-4faa-8867-7352bfc6c449",
+          "state": "succeeded"
+        }
+      ],
+      "error": null
+    },
+    {
+      "report": "native-codex-server-restart-race.json",
+      "raw_verifier_status": "fail",
+      "runs": [],
+      "error": "Unable to connect. Is the computer able to access the url?"
+    },
+    {
+      "report": "native-codex-toolchain-limit.json",
+      "raw_verifier_status": "pass",
+      "runs": [
+        {
+          "id": "ac775344-f840-4d48-8313-a458303673fa",
+          "state": "succeeded"
+        }
+      ],
+      "error": null
+    },
+    {
+      "report": "native-muse-final.json",
+      "raw_verifier_status": "pass",
+      "runs": [
+        {
+          "id": "6fcce315-2abd-4924-959b-eb465a6cc223",
+          "state": "succeeded"
+        }
+      ],
+      "error": null
+    },
+    {
+      "report": "native-muse-initial.json",
+      "raw_verifier_status": "pass",
+      "runs": [
+        {
+          "id": "5db57618-8e02-405d-a2c6-2ba5a111a945",
+          "state": "succeeded"
+        }
+      ],
+      "error": null
+    },
+    {
+      "report": "native-muse-resume-final.json",
+      "raw_verifier_status": "pass",
+      "runs": [
+        {
+          "id": "3232fb26-8c5b-45f3-8c7a-35f1de1652c9",
+          "state": "succeeded"
+        }
+      ],
+      "error": null
+    },
+    {
+      "report": "native-muse-resume.json",
+      "raw_verifier_status": "pass",
+      "runs": [
+        {
+          "id": "80a207ae-002d-4879-b884-eed39fcf51e4",
+          "state": "succeeded"
+        }
+      ],
+      "error": null
+    },
+    {
+      "report": "native-muse-server-restart-race.json",
+      "raw_verifier_status": "fail",
+      "runs": [],
+      "error": "Unable to connect. Is the computer able to access the url?"
+    },
+    {
+      "report": "native-muse-unreadable-upload.json",
+      "raw_verifier_status": "pass",
+      "runs": [
+        {
+          "id": "d88b7e65-c41d-4fb7-b2da-5ac1f24747ff",
+          "state": "succeeded"
+        }
+      ],
+      "error": null
+    }
+  ],
+  "acceptance_corrections": [
+    {
+      "report": "native-codex-toolchain-limit.json",
+      "classification": "incomplete_native_acceptance",
+      "reason": "Raw verifier incorrectly accepted any successful command; Python and Git actually failed under too-narrow toolchain permissions. The application run succeeded with a shell fallback. Raw report remains unchanged; not counted as coding acceptance."
+    },
+    {
+      "report": "native-codex-nested-search.json",
+      "classification": "failed_verifier_assertion",
+      "reason": "Python/Git completed, but grep ran inside Python rather than as a separately observed native command; the strict verifier failed. Retained without promotion to final acceptance."
+    },
+    {
+      "report": "native-muse-unreadable-upload.json",
+      "classification": "incomplete_input_read_acceptance",
+      "reason": "Raw verifier accepted a generated expected output without proving successful input read. An Apple arm64 variadic openat mode ABI bug created the staging file with incorrect permissions, so read_file failed. Fixed through a C ABI wrapper and exact-mode/read regressions; final probes require a persisted successful read_file observation."
+    },
+    {
+      "reports": [
+        "native-codex-server-restart-race.json",
+        "native-muse-server-restart-race.json"
+      ],
+      "classification": "infrastructure_failure_zero_native_runs",
+      "reason": "Verification was started before the previous authority had finished shutting down. The authority lock correctly refused another writer. Waited for process exit before restarting; no native runs were admitted."
+    }
+  ],
+  "final_proofs": [
+    "native-codex-final.json",
+    "native-muse-final.json",
+    "native-codex-resume-final.json",
+    "native-muse-resume-final.json"
+  ],
+  "additional_hardening": "Private temporary roots moved outside agent-writeable directories. The final native cohort plants a .tmp symlink to the installation state and still verifies six denied foreign/credential/symlink operations. The final restart cohort reattaches the original input so final input-hash checks execute."
+}

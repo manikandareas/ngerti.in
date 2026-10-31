@@ -1,12 +1,12 @@
 import { timingSafeEqual } from "node:crypto";
 import { Elysia } from "elysia";
 import { z } from "zod";
+import { Artifacts } from "./artifacts";
 import type { Background } from "./background";
 import {
   admissionInput,
   agentInput,
   agentUpdate,
-  artifactInput,
   CONTRACT_VERSION,
   contractDocument,
   DomainError,
@@ -34,6 +34,7 @@ import {
 import { ProductTools } from "./harness/tools";
 import type { Lifecycle } from "./lifecycle";
 import { RunControls } from "./run-controls";
+import { fileQuery, publicationInput, uploadInput, workspaceInput } from "./workspace-contracts";
 
 export function createApi(
   lifecycle: Lifecycle,
@@ -50,6 +51,8 @@ export function createApi(
   if (token.length < 32) throw new Error("A private development token is required.");
   const conversations = new Conversations(lifecycle);
   const controls = new RunControls(lifecycle);
+  const artifacts = new Artifacts(lifecycle);
+  const workspaces = artifacts.workspaces;
   function command(request: Request, body: unknown, action: () => unknown) {
     const commandId = id.parse(request.headers.get("Idempotency-Key"));
     return lifecycle.store.command(
@@ -58,7 +61,10 @@ export function createApi(
       action,
     );
   }
-  return new Elysia({ name: "ngertiin-foundation", serve: { maxRequestBodySize: 1_048_576 } })
+  return new Elysia({
+    name: "ngertiin-foundation",
+    serve: { maxRequestBodySize: 24 * 1024 * 1024 },
+  })
     .onError(({ error, code, set }) => {
       if (error instanceof HarnessError) {
         set.status = 409;
@@ -86,7 +92,10 @@ export function createApi(
     .onRequest(({ request }) => {
       if (request.method === "GET" && new URL(request.url).pathname === "/health/live") return;
       const size = Number(request.headers.get("Content-Length") ?? 0);
-      if (!Number.isFinite(size) || size > 1_048_576) throw new DomainError("INVALID_REQUEST", 413);
+      const maximum = /^\/v1\/workspaces\/[^/]+\/uploads$/.test(new URL(request.url).pathname)
+        ? 24 * 1024 * 1024
+        : 1_048_576;
+      if (!Number.isFinite(size) || size > maximum) throw new DomainError("INVALID_REQUEST", 413);
       // The MCP endpoint accepts only a server-issued run lease, never the installation token.
       if (
         ["GET", "POST"].includes(request.method) &&
@@ -313,9 +322,85 @@ export function createApi(
       { body: routineInput },
     )
     .post(
+      "/v1/workspaces",
+      ({ request, body }) => command(request, body, () => workspaces.bind(body)),
+      { body: workspaceInput },
+    )
+    .get(
+      "/v1/threads/:id/workspace",
+      ({ params, query }) => workspaces.current(params.id, query.agent_id),
+      { params: z.object({ id }), query: z.strictObject({ agent_id: id }) },
+    )
+    .post(
+      "/v1/workspaces/:id/revoke",
+      ({ request, params, body }) => {
+        const result = command(request, body, () => workspaces.revoke(params.id));
+        background.notifyControls();
+        return result;
+      },
+      { params: z.object({ id }), body: z.strictObject({}) },
+    )
+    .get(
+      "/v1/workspaces/:id/files",
+      ({ params, query }) => workspaces.files(params.id).list(query.path, query.after, query.limit),
+      { params: z.object({ id }), query: fileQuery },
+    )
+    .get(
+      "/v1/workspaces/:id/file",
+      ({ params, query }) => {
+        const bytes = workspaces.files(params.id).read(query.path);
+        return new Response(bytes, {
+          headers: {
+            "Content-Type": "application/octet-stream",
+            "Content-Disposition": "attachment",
+            "X-Content-Type-Options": "nosniff",
+            "Cache-Control": "no-store",
+          },
+        });
+      },
+      { params: z.object({ id }), query: z.strictObject({ path: z.string().min(1).max(1000) }) },
+    )
+    .post(
+      "/v1/workspaces/:id/uploads",
+      ({ request, params, body }) =>
+        artifacts.upload(params.id, id.parse(request.headers.get("Idempotency-Key")), body),
+      { params: z.object({ id }), body: uploadInput },
+    )
+    .get(
+      "/v1/artifacts/:id/content",
+      ({ params, query }) => {
+        const result = artifacts.download(params.id, query.workspace_id);
+        return new Response(result.bytes, {
+          headers: {
+            "Content-Type": result.artifact.media_type,
+            "Content-Disposition": `attachment; filename*=UTF-8''${encodeURIComponent(result.artifact.name)}`,
+            "X-Content-Type-Options": "nosniff",
+            "Cache-Control": "no-store",
+            ETag: `"${result.artifact.sha256}"`,
+          },
+        });
+      },
+      { params: z.object({ id }), query: z.strictObject({ workspace_id: id }) },
+    )
+    .post(
+      "/v1/artifacts/:id/share",
+      ({ request, params, body }) =>
+        artifacts.share(
+          params.id,
+          body.workspace_id,
+          id.parse(request.headers.get("Idempotency-Key")),
+        ),
+      { params: z.object({ id }), body: z.strictObject({ workspace_id: id }) },
+    )
+    .post(
       "/v1/artifacts",
-      ({ request, body }) => command(request, body, () => lifecycle.create("artifact", body)),
-      { body: artifactInput },
+      ({ request, body }) =>
+        artifacts.publish(id.parse(request.headers.get("Idempotency-Key")), body, () => {
+          const run = lifecycle.store.get("run", body.run_id);
+          if (!run.dispatch_token) throw new DomainError("SCOPE_DENIED", 403);
+          lifecycle.authorizeDispatch(run.id, run.dispatch_token);
+        }),
+      { body: publicationInput },
     )
     .post(
       "/v1/runs",

@@ -19,7 +19,8 @@ export class MuseAdapter implements HarnessAdapter {
           MUSE_CONTRIBUTOR_MODE: context.model_id?.endsWith("-contributor") ? "1" : "0",
         },
       },
-      join(context.state_directory, "lanes", context.agent_id, context.thread_id, "workspace"),
+      context.workspace?.root ??
+        join(context.state_directory, "lanes", context.agent_id, context.thread_id, "workspace"),
       this.endpoint,
       context.instructions,
       this.args,

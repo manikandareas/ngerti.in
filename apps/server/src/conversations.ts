@@ -1,5 +1,16 @@
 import { z } from "zod";
-import { agent, binding, control, DomainError, id, message, run, thread } from "./contracts";
+import {
+  agent,
+  artifact,
+  binding,
+  control,
+  DomainError,
+  id,
+  message,
+  run,
+  thread,
+  workspace,
+} from "./contracts";
 import { Connections } from "./harness/connections";
 import type { Lifecycle } from "./lifecycle";
 
@@ -15,6 +26,8 @@ export const conversationSnapshot = z.strictObject({
   runs: z.array(run),
   controls: z.array(control),
   messages: z.array(message),
+  workspaces: z.array(workspace),
+  artifacts: z.array(artifact),
   has_more: z.boolean(),
   next_before: id.nullable(),
 });
@@ -63,6 +76,7 @@ export class Conversations {
         routine_id: null,
         run_id: null,
         state: "complete",
+        artifact_ids: [],
         text: "Hi, I'm Tobi. Tell me what you'd like to work on. I can help you create and configure agents through our conversation.",
       });
       return { agent_id: tobi.id, thread_id: dm.id, welcome_message_id: welcome.id };
@@ -96,6 +110,8 @@ export class Conversations {
         bindings: store.list("binding").filter((item) => item.thread_id === threadId),
         runs: store.list("run").filter((item) => item.thread_id === threadId),
         controls: store.list("control").filter((item) => item.thread_id === threadId),
+        workspaces: store.list("workspace").filter((item) => item.thread_id === threadId),
+        artifacts: store.list("artifact").filter((item) => item.thread_id === threadId),
         ...this.history(threadId),
       });
     });

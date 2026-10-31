@@ -276,5 +276,6 @@ test("event cursor pagination is stable and contracts expose all domain entities
     "routine",
     "run",
     "thread",
+    "workspace",
   ]);
 });

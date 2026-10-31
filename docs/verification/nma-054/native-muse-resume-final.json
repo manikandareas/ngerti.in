@@ -1,0 +1,33 @@
+{
+  "harness": "muse",
+  "phase": "resume-final",
+  "started_at": "2026-10-31T03:50:05.247Z",
+  "results": [
+    {
+      "case": "restart_native_resume_persistent_download_no_republication",
+      "status": "pass",
+      "artifacts": 2
+    }
+  ],
+  "runs": [
+    {
+      "id": "3232fb26-8c5b-45f3-8c7a-35f1de1652c9",
+      "prompt_sha256": "83dd0559beaedeb57a1e4fdcf6a177e2a8ed0fe5a945c7c1737aa14beb290b33",
+      "state": "succeeded",
+      "diagnostic": null,
+      "native_tools": [],
+      "product_tools": [
+        "ngertiin.read_run_context",
+        "ngertiin.read_file",
+        "ngertiin.read_file"
+      ],
+      "answer_sha256": "810045267c4263612ec9de0989533b62228388dd21246a0382f26706f0fdf25a",
+      "answer_text": "Checking the existing files without creating anything new.Existing [report.txt](/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma050/state/workspaces/187025fc-0807-496f-9056-8cf9e14571f1/files/report.txt) shows total=7.\n"
+    }
+  ],
+  "agent_id": "f97c4f3b-5c0f-4426-abae-71ac35ca6fb3",
+  "thread_id": "f2f854b6-329b-45c4-b47d-5ac31c80b9bb",
+  "workspace_id": "187025fc-0807-496f-9056-8cf9e14571f1",
+  "status": "pass",
+  "finished_at": "2026-10-31T03:50:32.022Z"
+}

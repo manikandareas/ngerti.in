@@ -1,0 +1,57 @@
+{
+  "baseline_commit": "9a8d0dd525bcb9544794a5e7d92651814656200a",
+  "openbot": {
+    "repository": "https://github.com/nightly-labs/openbot",
+    "revision": "01e4b18e238e5de72a3570162c9f4275bb585786",
+    "observed_modules": [
+      {
+        "path": "src/backend/agent/workspace-sandbox.ts",
+        "sha256": "e6805cc93ac1b2132f6330ffbdc4656608466018a397b2271e98eec35ac01834"
+      },
+      {
+        "path": "src/backend/agent/attachment-gateway.ts",
+        "sha256": "202e466c7562e2cf956feb4437f17e9e71388bde2d861ed3a76d91b7cae91729"
+      },
+      {
+        "path": "src/backend/agent/answer-file-paths.ts",
+        "sha256": "ff8c6981e560092011c2cd61669dfa7dfdcce78513722016613cbd01a8575f9e"
+      },
+      {
+        "path": "src/backend/mailbox-store.ts",
+        "sha256": "8405444b338256dc3e728a3c91e3a83181bd701740b3c97fc873678d6abe3a43"
+      }
+    ],
+    "observed_flows": [
+      "workspace roots and per-turn native sandbox policy",
+      "AttachmentGateway.openSource no-symlink, regular-file, O_NOFOLLOW and source identity checks",
+      "MailboxStore.stageGeneratedAttachments and persistGeneratedAttachmentsWithConversation transactional publication",
+      "answerFilePaths automatic prose parsing observed and deliberately not adopted"
+    ],
+    "local_adaptation": "Behavioral port into the existing Bun/SQLite application authority. Root reads are restricted rather than inheriting Openbot broad host reads. Directory-relative openat walks prevent ancestor substitution. Immutable flushed bytes precede transactional metadata/event/command publication. Explicit structured artifact publication replaces answer-path parsing. No global shared root, allowAnyReadablePath, full-access fallback or cleanup of uncertain files is adopted."
+  },
+  "stack": {
+    "bun": "1.3.10",
+    "typescript": "7.0.2",
+    "elysia": "1.4.30",
+    "zod": "4.4.3",
+    "muse_sdk": "1.4.14",
+    "codex_cli": "0.165.0",
+    "muse_cli": "1.4.14-R7309.1",
+    "application_contract": "1.5.0",
+    "broker_contract": "1.4.0",
+    "mcp_protocol": "2025-06-18",
+    "platform": "macOS arm64",
+    "filesystem_abi": "Bun built-in TinyCC fixed openat wrapper plus POSIX libc"
+  },
+  "native_references": [
+    {
+      "url": "https://learn.chatgpt.com/docs/permissions",
+      "purpose": "Named Codex filesystem permissions; root deny, scoped roots, private temporary path and system toolchain reads."
+    },
+    {
+      "url": "https://dev.meta.ai/docs/muse-code/permissions",
+      "purpose": "Separate native approvals/sandbox and per-profile enforcement limitations; current adapter withholds broad native file/shell tools."
+    }
+  ],
+  "upgrade": "Diff the four pinned upstream modules, generated Codex native protocol types and official Muse CLI/SDK contracts. Recheck the openat ABI and descriptor race tests on each supported OS/architecture, private temporary-root substitution, toolchain access, protected names, native tool receipts, per-harness file round trips and restart. Do not promote Muse direct native tools or change its preset without proving scope-compatible enforcement. Distribution/packaging of the C source belongs to the later installer gate."
+}

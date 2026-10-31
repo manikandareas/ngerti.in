@@ -11,6 +11,7 @@ import {
   threadInput,
 } from "./contracts";
 import type { Store } from "./store";
+import { Workspaces } from "./workspaces";
 
 const active = new Set(["dispatching", "running", "cancel_requested"]);
 const final = new Set(["succeeded", "failed", "cancelled", "steered"]);
@@ -113,7 +114,19 @@ export class Lifecycle {
             if (run.thread_id !== data.thread_id || run.agent_id !== data.agent_id)
               throw new DomainError("SCOPE_DENIED", 403);
           }
-          return this.store.put({ ...base, ...data, kind });
+          return this.store.put({
+            ...base,
+            ...data,
+            kind,
+            workspace_id: null,
+            name: "artifact",
+            size_bytes: null,
+            source_path: null,
+            origin: "metadata",
+            source_artifact_id: null,
+            native_session_id: null,
+            native_run_id: null,
+          });
         }
       }
     });
@@ -121,6 +134,7 @@ export class Lifecycle {
 
   createAgent(input: unknown): Entity<"agent"> {
     const data = agentInput.parse(input);
+    if (data.workspace_id !== null) throw new DomainError("SCOPE_DENIED", 403);
     const connection = this.store.get("connection", data.connection_id);
     if (connection.state !== "active" || connection.harness !== data.harness)
       throw new DomainError("SCOPE_DENIED", 403);
@@ -145,6 +159,10 @@ export class Lifecycle {
       const current = this.store.get("agent", agentId);
       if (current.revision !== data.expected_revision) throw new DomainError("CONFLICT");
       const merged = agentInput.parse({ ...agentInput.strip().parse(current), ...data.changes });
+      if (merged.workspace_id !== null) {
+        const workspace = new Workspaces(this).get(merged.workspace_id);
+        if (workspace.agent_id !== agentId) throw new DomainError("SCOPE_DENIED", 403);
+      }
       const connection = this.store.get("connection", merged.connection_id);
       if (connection.state !== "active" || connection.harness !== merged.harness)
         throw new DomainError("SCOPE_DENIED", 403);
@@ -207,6 +225,19 @@ export class Lifecycle {
           throw new DomainError("SCOPE_DENIED", 403);
         if (routine.state !== "active") throw new DomainError("CONFLICT");
       }
+      for (const artifactId of data.artifact_ids) {
+        const item = this.store.get("artifact", artifactId);
+        if (
+          item.thread_id !== data.thread_id ||
+          item.agent_id !== data.agent_id ||
+          !item.workspace_id ||
+          item.source_path === null
+        )
+          throw new DomainError("SCOPE_DENIED", 403);
+        const workspace = new Workspaces(this).get(item.workspace_id);
+        if (workspace.thread_id !== data.thread_id || workspace.agent_id !== data.agent_id)
+          throw new DomainError("SCOPE_DENIED", 403);
+      }
       const runId = crypto.randomUUID();
       const message = this.store.put({
         ...this.base(),
@@ -217,6 +248,7 @@ export class Lifecycle {
         routine_id: data.routine_id,
         run_id: runId,
         text: data.text,
+        artifact_ids: data.artifact_ids,
         state: "complete",
       });
       const run = this.store.put({
@@ -241,12 +273,21 @@ export class Lifecycle {
         activity: "idle",
         diagnostic: null,
         native_dispatch_id: null,
+        workspace_id: null,
+        workspace_revision: null,
+        native_tools: [],
+        product_tools: [],
       });
       return { message, run };
     });
   }
 
-  bind(threadId: string, agentId: string, nativeSessionId: string) {
+  bind(
+    threadId: string,
+    agentId: string,
+    nativeSessionId: string,
+    workspace: Entity<"workspace"> = new Workspaces(this).ensure(threadId, agentId),
+  ) {
     return this.store.transaction(() => {
       this.scope(threadId, agentId);
       const agent = this.executionAgent(threadId, agentId);
@@ -257,7 +298,8 @@ export class Lifecycle {
         if (
           existing.connection_id === agent.connection_id &&
           existing.harness === agent.harness &&
-          existing.agent_revision === agent.revision
+          existing.agent_revision === agent.revision &&
+          existing.workspace_id === (workspace?.id ?? null)
         ) {
           if (existing.native_session_id !== nativeSessionId) throw new DomainError("CONFLICT");
           return existing;
@@ -275,6 +317,8 @@ export class Lifecycle {
         generation: (existing?.generation ?? 0) + 1,
         active: true,
         agent_revision: agent.revision,
+        workspace_id: workspace?.id ?? null,
+        workspace_revision: workspace?.revision ?? null,
       });
     });
   }
@@ -306,6 +350,8 @@ export class Lifecycle {
         dispatch_token: crypto.randomUUID(),
         authority_epoch: this.epoch,
         binding_id: binding.id,
+        workspace_id: binding.workspace_id,
+        workspace_revision: binding.workspace_revision,
         agent_snapshot: agentSnapshot.parse({
           ...agentInput.strip().parse(agent),
           agent_id: agent.id,
@@ -354,6 +400,7 @@ export class Lifecycle {
       if (run.cancellation !== "none" || agent.grant_revision !== run.grant_revision)
         throw new DomainError("STALE_DISPATCH");
       this.responsibility(run);
+      if (run.workspace_id) new Workspaces(this).authorizeRun(run);
       if (!run.binding_id) throw new DomainError("STALE_DISPATCH");
       const binding = this.store.get("binding", run.binding_id);
       if (
@@ -462,13 +509,17 @@ export class Lifecycle {
       run_id: run.id,
       text,
       state,
+      artifact_ids: [],
     });
   }
 
   observe(
     runId: string,
     token: string,
-    fields: Pick<Partial<Entity<"run">>, "activity" | "native_dispatch_id" | "diagnostic">,
+    fields: Pick<
+      Partial<Entity<"run">>,
+      "activity" | "native_dispatch_id" | "diagnostic" | "native_tools" | "product_tools"
+    >,
   ) {
     return this.store.transaction(() => {
       const run = this.dispatch(runId, token);

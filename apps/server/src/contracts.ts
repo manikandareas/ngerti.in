@@ -1,7 +1,14 @@
 import { z } from "zod";
 import { connectionFields } from "./harness/contracts";
+import {
+  artifactContentFields,
+  publicationInput,
+  uploadInput,
+  workspaceFields,
+  workspaceInput,
+} from "./workspace-contracts";
 
-export const CONTRACT_VERSION = "1.4.0";
+export const CONTRACT_VERSION = "1.5.0";
 export const id = z.uuid();
 const text = z.string().min(1).max(100_000);
 const base = {
@@ -114,6 +121,21 @@ export const run = z
     binding_id: id.nullable(),
     native_run_id: z.string().min(1).max(1000).nullable().default(null),
     agent_snapshot: agentSnapshot.nullable().default(null),
+    workspace_id: id.nullable().default(null),
+    workspace_revision: z.int().positive().nullable().default(null),
+    product_tools: z.array(z.string().max(200)).max(200).default([]),
+    native_tools: z
+      .array(
+        z.strictObject({
+          item_id: z.string().max(1000),
+          name: z.string().max(200),
+          command: z.string().max(8000).nullable().default(null),
+          state: z.enum(["started", "completed", "failed"]),
+          exit_code: z.int().nullable(),
+        }),
+      )
+      .max(200)
+      .default([]),
   })
   .refine((value) => {
     const terminal = ["succeeded", "failed", "cancelled", "unknown", "steered"].includes(
@@ -143,6 +165,7 @@ export const message = z
     run_id: id.nullable(),
     text: z.string().max(100_000),
     state: z.enum(["complete", "partial", "deleted"]),
+    artifact_ids: z.array(id).max(20).default([]),
   })
   .refine(
     (value) =>
@@ -217,7 +240,16 @@ export const artifactInput = z.strictObject({
     .regex(/^[a-zA-Z0-9_-]+$/)
     .max(200),
 });
-export const artifact = artifactInput.extend({ ...base, kind: z.literal("artifact") });
+export const artifact = artifactInput.extend({
+  ...base,
+  ...artifactContentFields,
+  kind: z.literal("artifact"),
+});
+export const workspace = z.strictObject({
+  ...base,
+  ...workspaceFields,
+  kind: z.literal("workspace"),
+});
 export const binding = z.strictObject({
   ...base,
   kind: z.literal("binding"),
@@ -229,6 +261,8 @@ export const binding = z.strictObject({
   generation: z.int().positive(),
   active: z.boolean().default(true),
   agent_revision: z.int().positive().default(1),
+  workspace_id: id.nullable().default(null),
+  workspace_revision: z.int().positive().nullable().default(null),
 });
 export const connection = z.strictObject({
   ...base,
@@ -274,6 +308,7 @@ export const schemas = {
   binding,
   occurrence,
   control,
+  workspace,
 };
 export type Kind = keyof typeof schemas;
 export type Entity<K extends Kind = Kind> = z.infer<(typeof schemas)[K]>;
@@ -289,6 +324,7 @@ export const kindSchema = z.enum([
   "binding",
   "occurrence",
   "control",
+  "workspace",
 ]);
 export const admissionInput = z.strictObject({
   thread_id: id,
@@ -296,6 +332,7 @@ export const admissionInput = z.strictObject({
   text,
   goal_id: id.nullable().default(null),
   routine_id: id.nullable().default(null),
+  artifact_ids: z.array(id).max(20).default([]),
 });
 export const domainEvent = z.strictObject({
   schema_version: z.literal(1),
@@ -318,6 +355,7 @@ export const domainEvent = z.strictObject({
     binding,
     occurrence,
     control,
+    workspace,
   ]),
 });
 export type DomainEvent = z.infer<typeof domainEvent>;
@@ -355,7 +393,10 @@ export function contractDocument() {
         thread: threadInput,
         goal: goalInput,
         routine: routineInput,
-        artifact: artifactInput,
+        artifact: publicationInput,
+        workspace: workspaceInput,
+        upload: uploadInput,
+        publish_artifact: publicationInput,
         admit: admissionInput,
         edit_queued_message: queueEdit,
         delete_queued_message: queueDelete,

@@ -95,6 +95,8 @@ export class Store {
           ) WHERE kind='occurrence';
           CREATE UNIQUE INDEX IF NOT EXISTS run_answer ON entities (json_extract(body, '$.run_id'))
             WHERE kind='message' AND json_extract(body, '$.author')='agent' AND json_extract(body, '$.run_id') IS NOT NULL;
+          CREATE UNIQUE INDEX IF NOT EXISTS lane_workspace ON entities (json_extract(body, '$.thread_id'), json_extract(body, '$.agent_id')) WHERE kind='workspace' AND json_extract(body, '$.state')='active';
+          CREATE UNIQUE INDEX IF NOT EXISTS artifact_publication ON entities (json_extract(body, '$.run_id'), json_extract(body, '$.source_path'), json_extract(body, '$.sha256')) WHERE kind='artifact' AND json_extract(body, '$.origin')='native_output';
           PRAGMA application_id=${APPLICATION_ID}; PRAGMA user_version=${SCHEMA_VERSION};
         `);
           const saved = this.#db

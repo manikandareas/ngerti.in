@@ -1,0 +1,33 @@
+{
+  "harness": "muse",
+  "phase": "resume",
+  "started_at": "2026-10-31T03:45:02.145Z",
+  "results": [
+    {
+      "case": "restart_native_resume_persistent_download_no_republication",
+      "status": "pass",
+      "artifacts": 2
+    }
+  ],
+  "runs": [
+    {
+      "id": "80a207ae-002d-4879-b884-eed39fcf51e4",
+      "prompt_sha256": "83dd0559beaedeb57a1e4fdcf6a177e2a8ed0fe5a945c7c1737aa14beb290b33",
+      "state": "succeeded",
+      "diagnostic": null,
+      "native_tools": [],
+      "product_tools": [
+        "ngertiin.read_run_context",
+        "ngertiin.read_file",
+        "ngertiin.read_file"
+      ],
+      "answer_sha256": "0bab16c812285eeaa4cefe41490c1ad51f8a36aa694135f0606f04949dc25c47",
+      "answer_text": "Checking the existing CSV and report values — no new files.Existing [report.txt](/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma050/state/workspaces/63a907c0-42c1-4f33-904a-050edf84808d/files/report.txt) shows total=7."
+    }
+  ],
+  "agent_id": "de2fdc18-f822-47c8-a91c-a5f54ecf7cee",
+  "thread_id": "d026a34c-6555-4a08-a530-eb8b29ae4743",
+  "workspace_id": "63a907c0-42c1-4f33-904a-050edf84808d",
+  "status": "pass",
+  "finished_at": "2026-10-31T03:45:27.264Z"
+}

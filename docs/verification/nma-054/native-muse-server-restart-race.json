@@ -1,0 +1,10 @@
+{
+  "harness": "muse",
+  "phase": "initial",
+  "started_at": "2026-10-31T03:39:31.482Z",
+  "results": [],
+  "runs": [],
+  "status": "fail",
+  "error": "Unable to connect. Is the computer able to access the url?",
+  "finished_at": "2026-10-31T03:39:31.494Z"
+}

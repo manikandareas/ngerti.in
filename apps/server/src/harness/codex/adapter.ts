@@ -12,7 +12,8 @@ export class CodexAdapter implements HarnessAdapter {
     const client = new CodexClient(
       context.executable,
       context,
-      join(context.state_directory, "lanes", context.agent_id, context.thread_id, "workspace"),
+      context.workspace?.root ??
+        join(context.state_directory, "lanes", context.agent_id, context.thread_id, "workspace"),
       this.endpoint,
       context.instructions,
       this.args,

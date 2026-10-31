@@ -19,6 +19,10 @@ export const codexCapabilities = {
   compaction: "unsupported",
   product_tools: "supported",
   settings: "supported",
+  native_files: "supported",
+  native_shell: "supported",
+  native_code: "supported",
+  native_git: "supported",
 } as const;
 const nativeId = z.string().min(1).max(1000);
 const threadResponse = z.object({
@@ -167,7 +171,9 @@ export class CodexClient implements HarnessClient {
       modelProvider: "openai",
       cwd: this.workspace,
       approvalPolicy: "never",
-      sandbox: "read-only",
+      ...(this.context.workspace
+        ? { permissions: "ngertiin", runtimeWorkspaceRoots: [this.workspace] }
+        : { sandbox: "read-only" }),
       developerInstructions: this.instructions,
       config: { model_reasoning_effort: selected.reasoning },
     };
@@ -241,7 +247,13 @@ export class CodexClient implements HarnessClient {
           model: request.settings.model_id,
           effort: request.settings.reasoning,
           approvalPolicy: "never",
-          sandboxPolicy: { type: "readOnly", networkAccess: false },
+          ...(this.context.workspace
+            ? {
+                permissions: "ngertiin",
+                runtimeWorkspaceRoots: [this.workspace],
+                cwd: this.workspace,
+              }
+            : { sandboxPolicy: { type: "readOnly", networkAccess: false } }),
         }),
       );
       this.accept(active, response.turn.id);
@@ -290,12 +302,48 @@ export class CodexClient implements HarnessClient {
     }
     if (
       !active ||
-      !["turn/started", "turn/completed", "item/agentMessage/delta"].includes(message.method ?? "")
+      ![
+        "turn/started",
+        "turn/completed",
+        "item/agentMessage/delta",
+        "item/started",
+        "item/completed",
+      ].includes(message.method ?? "")
     )
       return;
     const params = z.object({ threadId: nativeId }).passthrough().parse(message.params);
     if (params.threadId !== this.#session) return;
-    if (message.method === "turn/started") {
+    if (message.method === "item/started" || message.method === "item/completed") {
+      const event = z
+        .object({
+          turnId: nativeId,
+          item: z.object({
+            id: nativeId,
+            type: z.string(),
+            status: z.string().optional(),
+            command: z.string().optional(),
+            exitCode: z.number().int().nullable().optional(),
+          }),
+        })
+        .parse(params);
+      if (event.turnId !== active.turn) throw new HarnessError("PROTOCOL_ERROR", "unknown");
+      if (["commandExecution", "fileChange"].includes(event.item.type))
+        active.request.onEvent({
+          type: "native_tool",
+          item_id: event.item.id,
+          name: event.item.type,
+          command: event.item.command
+            ? this.context.redactor.text(event.item.command).slice(0, 8000)
+            : null,
+          state:
+            message.method === "item/started"
+              ? "started"
+              : event.item.status === "failed"
+                ? "failed"
+                : "completed",
+          exit_code: event.item.exitCode ?? null,
+        });
+    } else if (message.method === "turn/started") {
       this.accept(active, z.object({ id: nativeId }).parse(params.turn).id);
     } else if (message.method === "item/agentMessage/delta") {
       const delta = z.object({ turnId: nativeId, delta: z.string() }).parse(params);

@@ -1,0 +1,18 @@
+{
+  "results": [
+    {
+      "family": "codex",
+      "runs": 4,
+      "messages": 6,
+      "restart_read_only": true
+    },
+    {
+      "family": "muse",
+      "runs": 4,
+      "messages": 5,
+      "restart_read_only": true
+    }
+  ],
+  "pass": 2,
+  "fail": 0
+}

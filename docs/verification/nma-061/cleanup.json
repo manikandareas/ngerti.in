@@ -1,0 +1,14 @@
+{
+  "connections": [
+    {
+      "harness": "codex",
+      "revoked": true
+    },
+    {
+      "harness": "muse",
+      "revoked": true
+    }
+  ],
+  "copied_credentials_removed": true,
+  "original_credentials_untouched": true
+}

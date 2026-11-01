@@ -2,6 +2,7 @@ import type { Elysia } from "elysia";
 import { z } from "zod";
 import type { Background } from "../background";
 import { id } from "../contracts";
+import { Creation, groupConfiguration } from "../conversations/creation";
 import { groupMessage, humanReply, membershipUpdate } from "../groups/contracts";
 import { Groups } from "../groups/service";
 import type { Lifecycle } from "../lifecycle";
@@ -15,6 +16,12 @@ export function registerGroupRoutes(
 ) {
   const groups = new Groups(lifecycle);
   return api
+    .post(
+      "/v1/groups/:id/configuration",
+      ({ request, params, body }) =>
+        command(request, body, () => new Creation(lifecycle).configureGroup(params.id, body)),
+      { params: z.object({ id }), body: groupConfiguration },
+    )
     .post(
       "/v1/groups/:id/membership",
       ({ request, params, body }) => {

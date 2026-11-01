@@ -71,6 +71,8 @@ export function registerAgentTools(tools: ProductTools) {
       };
       authorize();
       const caller = lifecycle.store.get("agent", scope.agent_id);
+      if (lifecycle.store.get("thread", scope.thread_id).type === "group")
+        throw new DomainError("SCOPE_DENIED", 403);
       if (caller.id !== data.agent_id && caller.configuration_access !== "owner")
         throw new DomainError("SCOPE_DENIED", 403);
       return lifecycle.store.command(

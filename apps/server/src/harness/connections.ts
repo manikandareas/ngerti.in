@@ -6,7 +6,7 @@ import { connectionInput, unknownCapabilities } from "./contracts";
 /** Secret-free connection projections share the application store, transactions and events. */
 export class Connections {
   constructor(readonly lifecycle: Lifecycle) {}
-  get(id: string) {
+  get(id: string | null) {
     return this.lifecycle.store.get("connection", id);
   }
   create(input: unknown) {
@@ -71,7 +71,7 @@ export class Connections {
       connection.revision,
     );
   }
-  revoke(id: string) {
+  revoke(id: string | null) {
     const current = this.get(id);
     return current.state === "revoked" ? current : this.update(current, { state: "revoked" });
   }
@@ -80,7 +80,12 @@ export class Connections {
       ? this.lifecycle.executionAgent(threadId, agentId)
       : this.lifecycle.store.get("agent", agentId);
     const connection = this.get(agent.connection_id);
-    if (connection.state !== "active" || connection.harness !== agent.harness)
+    if (
+      connection.state !== "active" ||
+      connection.harness !== agent.harness ||
+      (agent.billing_source !== null &&
+        connection.authentication.billing_source !== agent.billing_source)
+    )
       throw new DomainError("SCOPE_DENIED", 403);
     return { agent, connection };
   }

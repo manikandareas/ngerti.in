@@ -19,7 +19,8 @@ const agentFields = {
     )
     .max(100),
   harness,
-  connection_id: id,
+  connection_id: id.nullable(),
+  billing_source: z.enum(["subscription", "api_key"]).nullable(),
   instructions: z.string().max(100_000),
   workspace_id: id.nullable(),
   model_id: z.string().min(1).max(200).nullable(),
@@ -27,6 +28,7 @@ const agentFields = {
 };
 export const agentInput = z.strictObject({
   ...agentFields,
+  billing_source: agentFields.billing_source.default(null),
   handle: agentFields.handle.default(null),
   avatar: agentFields.avatar.default(null),
   soul: agentFields.soul.default(""),

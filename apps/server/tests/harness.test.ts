@@ -1256,7 +1256,7 @@ test("two simultaneous key connections on the same harness retain their selected
       codex: adapter("codex", async (context) => {
         const index = context.env.OPENAI_API_KEY === "secret-a" ? 0 : 1;
         seen.push(context.env.OPENAI_API_KEY);
-        expect(context.connection_id).toBe(lanes[index].agent.connection_id);
+        expect(context.connection_id).toBe(lanes[index].agent.connection_id as string);
         return client({
           async inspect() {
             return {

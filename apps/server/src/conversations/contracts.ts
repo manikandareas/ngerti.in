@@ -17,6 +17,9 @@ export const thread = threadInput.safeExtend({
   kind: z.literal("thread"),
   purpose: z.enum(["conversation", "routing"]).default("conversation"),
   group_thread_id: id.nullable().default(null),
+  name: z.string().trim().min(1).max(200).nullable().default(null),
+  shared_instructions: z.string().max(100_000).default(""),
+  creation_operation_id: id.nullable().default(null),
 });
 export const message = z
   .strictObject({
@@ -31,6 +34,7 @@ export const message = z
       .enum(["conversation", "handoff", "review", "human_request", "human_reply", "continuation"])
       .default("conversation"),
     source_run_id: id.nullable().default(null),
+    creation_operation_id: id.nullable().default(null),
     text: z.string().max(100_000),
     state: z.enum(["complete", "partial", "deleted"]),
     artifact_ids: z.array(id).max(20).default([]),

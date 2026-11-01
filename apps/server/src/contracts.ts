@@ -95,7 +95,7 @@ export {
   workspace,
 };
 
-export const CONTRACT_VERSION = "1.12.0";
+export const CONTRACT_VERSION = "1.13.0";
 
 export const schemas = {
   app_connection: appConnection,

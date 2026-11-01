@@ -1,10 +1,34 @@
 import { z } from "zod";
+import { Creation, type groupConfiguration } from "../conversations/creation";
 import { productToolSchemas } from "../harness/product-tool-contracts";
 import type { ProductTools } from "../harness/tools";
 import { Groups } from "./service";
 
 export function registerGroupTools(tools: ProductTools) {
   const groups = new Groups(tools.lifecycle);
+  tools.register("ngertiin.update_group", {
+    schema: productToolSchemas["ngertiin.update_group"],
+    resources: () => [],
+    execute: (raw, access) => {
+      access.authorize();
+      const { command_id, ...input } = raw as z.infer<typeof groupConfiguration> & {
+        command_id: string;
+      };
+      return tools.lifecycle.store.command(
+        command_id,
+        {
+          operation: "update_group",
+          thread_id: access.scope.thread_id,
+          actor_id: access.scope.agent_id,
+          input,
+        },
+        () => {
+          access.authorize();
+          return new Creation(tools.lifecycle).configureGroup(access.scope.thread_id, input);
+        },
+      );
+    },
+  });
   tools.register("ngertiin.group_read_task", {
     schema: productToolSchemas["ngertiin.group_read_task"],
     resources: () => [],

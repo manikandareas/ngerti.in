@@ -72,6 +72,7 @@ export class Groups {
     return this.store.put({
       ...this.base(),
       kind: "message",
+      creation_operation_id: null,
       thread_id: threadId,
       text,
       purpose,
@@ -216,6 +217,9 @@ export class Groups {
       const routingThread = this.store.put({
         ...this.base(),
         kind: "thread",
+        creation_operation_id: null,
+        name: null,
+        shared_instructions: "",
         type: "group",
         purpose: "routing",
         group_thread_id: threadId,
@@ -487,6 +491,9 @@ export class Groups {
     return `Current group context; use only this shared thread, never private DM history. Only selected agents speak. Use ngertiin.group_handoff for peer work/review and ngertiin.group_ask_user for necessary user input/review/approval. After either tool, end this turn and wait; the application continues the task with bound results. Do not invent a peer or user response.\n${JSON.stringify(
       {
         group_id: group.id,
+        revision: group.revision,
+        name: group.name,
+        shared_instructions: group.shared_instructions,
         task_id: run.task_id,
         owner_id: this.store.ownerId,
         members: this.profiles(group),

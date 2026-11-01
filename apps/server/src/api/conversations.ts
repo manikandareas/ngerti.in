@@ -2,12 +2,39 @@ import type { Elysia } from "elysia";
 import { z } from "zod";
 import { agentInput, agentUpdate, id, threadInput } from "../contracts";
 import { Conversations, historyQuery } from "../conversations";
+import {
+  Creation,
+  createAgentConversation,
+  createGroupConversation,
+  openingState,
+  retryOpening,
+} from "../conversations/creation";
 import type { Lifecycle } from "../lifecycle";
 import type { Command } from "./services";
 
 export function registerConversationRoutes(api: Elysia, lifecycle: Lifecycle, command: Command) {
   const conversations = new Conversations(lifecycle);
+  const creation = new Creation(lifecycle);
   return api
+    .get("/v1/threads/:id/opening", ({ params }) => openingState(lifecycle, params.id), {
+      params: z.object({ id }),
+    })
+    .post(
+      "/v1/threads/:id/opening/retry",
+      ({ request, params, body }) =>
+        command(request, body, () => retryOpening(lifecycle, params.id, body.expected_run_id)),
+      { params: z.object({ id }), body: z.strictObject({ expected_run_id: id }) },
+    )
+    .post(
+      "/v1/creation/agents",
+      ({ request, body }) => creation.agent(id.parse(request.headers.get("Idempotency-Key")), body),
+      { body: createAgentConversation },
+    )
+    .post(
+      "/v1/creation/groups",
+      ({ request, body }) => creation.group(id.parse(request.headers.get("Idempotency-Key")), body),
+      { body: createGroupConversation },
+    )
     .post("/v1/setup", ({ request, body }) => command(request, body, () => conversations.setup()), {
       body: z.strictObject({}),
     })

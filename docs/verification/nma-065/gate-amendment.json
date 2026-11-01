@@ -1,0 +1,44 @@
+{
+  "gate": "NMA-060",
+  "prerequisite": "NMA-065",
+  "contract": "1.13.0",
+  "decisions": [
+    "A03",
+    "C02",
+    "C03",
+    "C04",
+    "D01",
+    "D02",
+    "D05",
+    "E01",
+    "F01",
+    "H01",
+    "H02",
+    "H03",
+    "H06"
+  ],
+  "routes": [
+    "POST /v1/creation/agents",
+    "POST /v1/creation/groups",
+    "GET /v1/threads/:id/opening",
+    "POST /v1/threads/:id/opening/retry",
+    "POST /v1/groups/:id/configuration"
+  ],
+  "tools": [
+    "ngertiin.update_agent",
+    "ngertiin.update_group"
+  ],
+  "events": [
+    "agent",
+    "thread",
+    "message",
+    "run",
+    "group_route",
+    "peer_task"
+  ],
+  "tests": [
+    "apps/server/tests/creation.test.ts"
+  ],
+  "evidence": "docs/verification/nma-065/README.md",
+  "scope": "Creation/personalization amendment only; existing prerequisite mappings and API readiness gate remain separate."
+}

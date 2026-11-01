@@ -82,6 +82,7 @@ export class Conversations {
         created_at: now,
         updated_at: now,
         kind: "message",
+        creation_operation_id: null,
         purpose: "conversation",
         source_run_id: null,
         thread_id: dm.id,

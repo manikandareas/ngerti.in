@@ -94,6 +94,9 @@ export class Lifecycle {
             kind,
             purpose: "conversation",
             group_thread_id: null,
+            name: null,
+            shared_instructions: "",
+            creation_operation_id: null,
           });
         }
         case "goal": {
@@ -154,8 +157,14 @@ export class Lifecycle {
   createAgent(input: unknown): Entity<"agent"> {
     const data = agentInput.parse(input);
     if (data.workspace_id !== null) throw new DomainError("SCOPE_DENIED", 403);
-    const connection = this.store.get("connection", data.connection_id);
-    if (connection.state !== "active" || connection.harness !== data.harness)
+    const connection = data.connection_id ? this.store.get("connection", data.connection_id) : null;
+    if (
+      connection &&
+      (connection.state !== "active" ||
+        connection.harness !== data.harness ||
+        (data.billing_source !== null &&
+          connection.authentication.billing_source !== data.billing_source))
+    )
       throw new DomainError("SCOPE_DENIED", 403);
     const base = this.base();
     const handle = data.handle ?? `agent_${base.id.replaceAll("-", "")}`;
@@ -182,8 +191,16 @@ export class Lifecycle {
         const workspace = new Workspaces(this).get(merged.workspace_id);
         if (workspace.agent_id !== agentId) throw new DomainError("SCOPE_DENIED", 403);
       }
-      const connection = this.store.get("connection", merged.connection_id);
-      if (connection.state !== "active" || connection.harness !== merged.harness)
+      const connection = merged.connection_id
+        ? this.store.get("connection", merged.connection_id)
+        : null;
+      if (
+        connection &&
+        (connection.state !== "active" ||
+          connection.harness !== merged.harness ||
+          (merged.billing_source !== null &&
+            connection.authentication.billing_source !== merged.billing_source))
+      )
         throw new DomainError("SCOPE_DENIED", 403);
       if (
         merged.handle === null ||
@@ -275,6 +292,7 @@ export class Lifecycle {
       const message = this.store.put({
         ...this.base(),
         kind: "message",
+        creation_operation_id: null,
         purpose: author === "routine" ? "continuation" : "conversation",
         source_run_id: null,
         thread_id: data.thread_id,
@@ -358,6 +376,7 @@ export class Lifecycle {
     return this.store.transaction(() => {
       this.scope(threadId, agentId);
       const agent = this.executionAgent(threadId, agentId);
+      if (!agent.connection_id) throw new DomainError("SCOPE_DENIED", 403);
       const existing = this.store
         .list("binding")
         .find((item) => item.active && item.thread_id === threadId && item.agent_id === agentId);
@@ -630,6 +649,7 @@ export class Lifecycle {
     return this.store.put({
       ...this.base(),
       kind: "message",
+      creation_operation_id: null,
       purpose: "conversation",
       source_run_id: null,
       thread_id: run.thread_id,

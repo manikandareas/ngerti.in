@@ -37,7 +37,7 @@ async function json(path: string, body?: unknown, key?: string) {
 }
 try {
   const contract = await json("/v1/contracts");
-  assert.equal(contract.version, "1.12.0");
+  assert.equal(contract.version, "1.13.0");
   assert.equal(contract.http.length, app.routes.length);
   assert.equal(contract.readiness.state, "pending");
   for (const name of Object.keys(responseSchemas)) assert(contract.projections[name]);

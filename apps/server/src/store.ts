@@ -142,7 +142,8 @@ export class Store {
     });
   }
 
-  get<K extends Kind>(kind: K, id: string): Entity<K> {
+  get<K extends Kind>(kind: K, id: string | null): Entity<K> {
+    if (id === null) throw new DomainError("NOT_FOUND", 404);
     const row = this.#db
       .query<{ body: string }, [string, string]>("SELECT body FROM entities WHERE kind=? AND id=?")
       .get(kind, id);

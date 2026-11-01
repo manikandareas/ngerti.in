@@ -83,6 +83,7 @@ export class RunControls {
           created_at: now,
           updated_at: now,
           kind: "message",
+          creation_operation_id: null,
           purpose: "conversation",
           source_run_id: null,
           artifact_ids: [],

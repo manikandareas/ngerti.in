@@ -443,6 +443,7 @@ export class Goals {
         const message = this.store.put({
           ...this.base(),
           kind: "message",
+          creation_operation_id: null,
           thread_id: goal.thread_id,
           author: "agent",
           author_agent_id: goal.agent_id,

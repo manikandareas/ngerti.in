@@ -1,0 +1,132 @@
+{
+  "messages": [
+    {
+      "id": "8845a818-553a-450e-99ee-cc27c6e99cd8",
+      "owner_id": "16341282-4302-42f4-9cca-f187246d8b53",
+      "revision": 1,
+      "created_at": "2026-11-01T12:20:51.462Z",
+      "updated_at": "2026-11-01T12:20:51.462Z",
+      "kind": "message",
+      "thread_id": "9119129f-67b6-4939-8055-4cc42d6a2c0d",
+      "author": "user",
+      "author_agent_id": null,
+      "routine_id": null,
+      "run_id": "d80be34e-54bd-482c-87d9-537ac9cb5a42",
+      "purpose": "conversation",
+      "source_run_id": null,
+      "creation_operation_id": null,
+      "text": "Read the large printed code in this image, and name both colored shapes. Do not use tools or create goals/Routine.",
+      "state": "complete",
+      "artifact_ids": [
+        "e112466b-3584-416b-8424-6afdcb3cdd94"
+      ]
+    },
+    {
+      "id": "1672fc79-659a-41f4-bdad-b7949f3d558e",
+      "owner_id": "16341282-4302-42f4-9cca-f187246d8b53",
+      "revision": 2,
+      "created_at": "2026-11-01T12:20:57.970Z",
+      "updated_at": "2026-11-01T12:20:58.128Z",
+      "kind": "message",
+      "thread_id": "9119129f-67b6-4939-8055-4cc42d6a2c0d",
+      "author": "agent",
+      "author_agent_id": "4f74fe0d-f923-4598-918a-11e96e10e2a2",
+      "routine_id": null,
+      "run_id": "d80be34e-54bd-482c-87d9-537ac9cb5a42",
+      "purpose": "conversation",
+      "source_run_id": null,
+      "creation_operation_id": null,
+      "text": "The code is **RAVEN 7146**. The shapes are a **blue square** and a **yellow triangle**.",
+      "state": "complete",
+      "artifact_ids": []
+    }
+  ],
+  "runs": [
+    {
+      "id": "d80be34e-54bd-482c-87d9-537ac9cb5a42",
+      "owner_id": "16341282-4302-42f4-9cca-f187246d8b53",
+      "revision": 5,
+      "created_at": "2026-11-01T12:20:51.466Z",
+      "updated_at": "2026-11-01T12:20:58.132Z",
+      "kind": "run",
+      "thread_id": "9119129f-67b6-4939-8055-4cc42d6a2c0d",
+      "agent_id": "4f74fe0d-f923-4598-918a-11e96e10e2a2",
+      "input_message_id": "8845a818-553a-450e-99ee-cc27c6e99cd8",
+      "task_id": null,
+      "thread_revision": null,
+      "goal_id": null,
+      "routine_id": null,
+      "goal_generation": null,
+      "routine_generation": null,
+      "publication": "immediate",
+      "pending_answer": null,
+      "status": "succeeded",
+      "cancellation": "none",
+      "outcome": "succeeded",
+      "delivery": "delivered",
+      "activity": "idle",
+      "diagnostic": null,
+      "native_dispatch_id": null,
+      "grant_revision": 1,
+      "dispatch_token": "67784f4f-296d-4b90-8c2f-27ebdc70f758",
+      "authority_epoch": "28a96f1c-9730-47bb-af09-7013f081f9cf",
+      "binding_id": "147ee98f-3709-4721-b5bb-f877c6d5ce6a",
+      "native_run_id": "01a1970e-3780-78d0-b9c6-bd5f1f35831d",
+      "agent_snapshot": {
+        "name": "NMA062 codex",
+        "handle": "proof062_codex",
+        "avatar": null,
+        "soul": "",
+        "skills": [],
+        "harness": "codex",
+        "connection_id": "ef29734f-86ab-4e9f-bb2a-15fbf20223f3",
+        "billing_source": "subscription",
+        "instructions": "Follow the user's requested verification precisely. Use only scoped Ngertiin tools for requested work. Do not contact people or alter unrelated resources.",
+        "workspace_id": null,
+        "model_id": "gpt-6.1-sol",
+        "reasoning": null,
+        "agent_id": "4f74fe0d-f923-4598-918a-11e96e10e2a2",
+        "revision": 1
+      },
+      "workspace_id": "6817aaeb-ea2d-43d1-b6c3-8d2f37c1e137",
+      "workspace_revision": 1,
+      "product_tools": [],
+      "sources": [],
+      "visual_inputs": [
+        {
+          "artifact_id": "e112466b-3584-416b-8424-6afdcb3cdd94",
+          "source_sha256": "a4054aaec5ed51b74438192a9ccf259ad19f439a2e5b506e2ed87f84f642d010",
+          "normalized_sha256": "a4054aaec5ed51b74438192a9ccf259ad19f439a2e5b506e2ed87f84f642d010",
+          "width": 600,
+          "height": 360
+        }
+      ],
+      "native_tools": []
+    }
+  ],
+  "artifacts": [
+    {
+      "thread_id": "9119129f-67b6-4939-8055-4cc42d6a2c0d",
+      "agent_id": "4f74fe0d-f923-4598-918a-11e96e10e2a2",
+      "run_id": null,
+      "media_type": "image/png",
+      "sha256": "a4054aaec5ed51b74438192a9ccf259ad19f439a2e5b506e2ed87f84f642d010",
+      "storage_key": "e112466b-3584-416b-8424-6afdcb3cdd94",
+      "id": "e112466b-3584-416b-8424-6afdcb3cdd94",
+      "owner_id": "16341282-4302-42f4-9cca-f187246d8b53",
+      "revision": 1,
+      "created_at": "2026-11-01T12:20:51.401Z",
+      "updated_at": "2026-11-01T12:20:51.401Z",
+      "workspace_id": "6817aaeb-ea2d-43d1-b6c3-8d2f37c1e137",
+      "name": "visual-input.png",
+      "size_bytes": 9614,
+      "source_path": "inputs/e112466b-3584-416b-8424-6afdcb3cdd94/visual-input.png",
+      "origin": "upload",
+      "source_artifact_id": null,
+      "native_session_id": null,
+      "native_run_id": null,
+      "kind": "artifact"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,2 @@
+# Preserve captured tool output byte-for-byte, including intentional trailing spaces.
+logs/*.log -whitespace

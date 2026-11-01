@@ -34,7 +34,10 @@ export function command<T>(path: string, body: unknown = {}) {
 }
 
 export function pendingMessage(threadId: string): string | null {
-  const saved = localStorage.getItem(`ngertiin:pending:message:${threadId}`);
+  return pendingText(`message:${threadId}`);
+}
+export function pendingText(slot: string): string | null {
+  const saved = localStorage.getItem(`ngertiin:pending:${slot}`);
   if (!saved) return null;
   try {
     return (JSON.parse(saved) as { body: { text: string } }).body.text;

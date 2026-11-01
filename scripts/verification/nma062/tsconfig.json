@@ -1,0 +1,10 @@
+{
+  "extends": "../../../apps/server/tsconfig.json",
+  "compilerOptions": {
+    "typeRoots": [
+      "../../../apps/server/node_modules/@types",
+      "../../../apps/web-client/node_modules/@types"
+    ]
+  },
+  "include": ["*.ts"]
+}

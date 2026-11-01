@@ -1,0 +1,21 @@
+{
+  "items": [
+    {
+      "slug": "linear",
+      "name": "Linear",
+      "connected": false
+    },
+    {
+      "slug": "linear_mcp",
+      "name": "Linear MCP",
+      "connected": false
+    },
+    {
+      "slug": "productlane",
+      "name": "Productlane",
+      "connected": false
+    }
+  ],
+  "external_connect_or_execute": false,
+  "errors": []
+}

@@ -1,3 +1,4 @@
+import type { Artifact, Goal, HumanRequest, PeerTask, Routine, Workspace } from "./work";
 // Consumer projections of the published Ngertiin API 1.17.0.
 export interface Base {
   id: string;
@@ -6,6 +7,7 @@ export interface Base {
 }
 export interface Agent extends Base {
   name: string;
+  handle: string | null;
   avatar: string | null;
   soul: string;
   instructions: string;
@@ -22,6 +24,7 @@ export interface Thread extends Base {
   name: string | null;
   member_agent_ids: string[];
   creation_operation_id: string | null;
+  shared_instructions: string;
 }
 export interface Message extends Base {
   thread_id: string;
@@ -30,6 +33,8 @@ export interface Message extends Base {
   text: string;
   state: string;
   run_id: string | null;
+  artifact_ids: string[];
+  purpose: string;
 }
 export interface Run extends Base {
   input_message_id: string;
@@ -41,6 +46,10 @@ export interface Run extends Base {
   diagnostic: { code: string; category: string; outcome: string } | null;
   product_tools: string[];
   native_tools: { item_id: string; name: string; state: string }[];
+  sources: { url: string; title: string; operation: string }[];
+  publication: string;
+  goal_id: string | null;
+  routine_id: string | null;
 }
 export interface Connection extends Base {
   harness: "codex" | "muse";
@@ -51,7 +60,7 @@ export interface Connection extends Base {
   effective_billing_source: string;
   inference: string;
   discovery: string;
-  models: { id: string; reasoning: string[] }[];
+  models: { id: string; reasoning: string[]; input_modalities?: string[] }[];
   capabilities: Record<string, "supported" | "unsupported" | "unknown">;
 }
 export interface Snapshot {
@@ -63,6 +72,20 @@ export interface Snapshot {
   has_more: boolean;
   next_before: string | null;
   controls: { id: string; state: string; error_code: string | null }[];
+  workspaces: Workspace[];
+  artifacts: Artifact[];
+  goals: Goal[];
+  routines: Routine[];
+  human_requests: HumanRequest[];
+  tasks: PeerTask[];
+  routes: {
+    id: string;
+    state: string;
+    message_id: string;
+    selected_agent_id: string | null;
+    error_code: string | null;
+  }[];
+  occurrences: { id: string; routine_id: string; scheduled_for: string; run_id: string }[];
 }
 export interface Opening {
   recovery: string;

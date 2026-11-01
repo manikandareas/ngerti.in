@@ -1,0 +1,109 @@
+{
+  "source": "logs/work.log",
+  "pass": 22,
+  "fail": 0,
+  "skip": 0,
+  "checks": [
+    {
+      "name": "[desktop] \u203a tests/work.spec.ts:44:1 \u203a contextual goals, Routine and files use real scoped state and keep stop responsibility distinct from stop run (2.4s)",
+      "result": "passed"
+    },
+    {
+      "name": "[desktop] \u203a tests/work.spec.ts:101:1 \u203a group creation recovers a lost acknowledgement, routes messages and keeps member DM resources private (2.8s)",
+      "result": "passed"
+    },
+    {
+      "name": "[desktop] \u203a tests/work.spec.ts:166:1 \u203a browser viewer connects to the managed browser and reconnects its view without replaying actions (9.9s)",
+      "result": "passed"
+    },
+    {
+      "name": "[desktop] \u203a tests/work.spec.ts:212:1 \u203a application access is assigned explicitly to this context and unsupported images never upload (2.1s)",
+      "result": "passed"
+    },
+    {
+      "name": "[desktop] \u203a tests/work.spec.ts:259:1 \u203a native input and a specific approval preserve request identity through the real broker (3.0s)",
+      "result": "passed"
+    },
+    {
+      "name": "[desktop] \u203a tests/work.spec.ts:290:1 \u203a rejected group membership preserves the draft and allows a corrected operation (1.2s)",
+      "result": "passed"
+    },
+    {
+      "name": "[desktop] \u203a tests/work.spec.ts:318:1 \u203a sharing copies only the selected file into the explicit destination and preserves byte identity (1.4s)",
+      "result": "passed"
+    },
+    {
+      "name": "[desktop] \u203a tests/work.spec.ts:383:1 \u203a all concurrent group lanes expose their native questions and free text uses one answer representation (6.1s)",
+      "result": "passed"
+    },
+    {
+      "name": "[desktop] \u203a tests/work.spec.ts:419:1 \u203a an unconfirmed human reply is restored verbatim and locked across reload (3.9s)",
+      "result": "passed"
+    },
+    {
+      "name": "[desktop] \u203a tests/work.spec.ts:455:1 \u203a membership editing keeps its original revision and cannot overwrite a concurrent change (1.5s)",
+      "result": "passed"
+    },
+    {
+      "name": "[desktop] \u203a tests/work.spec.ts:484:1 \u203a four ordinary file attachments still allow a supported image (3.6s)",
+      "result": "passed"
+    },
+    {
+      "name": "[mobile] \u203a tests/work.spec.ts:44:1 \u203a contextual goals, Routine and files use real scoped state and keep stop responsibility distinct from stop run (2.8s)",
+      "result": "passed"
+    },
+    {
+      "name": "[mobile] \u203a tests/work.spec.ts:101:1 \u203a group creation recovers a lost acknowledgement, routes messages and keeps member DM resources private (4.0s)",
+      "result": "passed"
+    },
+    {
+      "name": "[mobile] \u203a tests/work.spec.ts:166:1 \u203a browser viewer connects to the managed browser and reconnects its view without replaying actions (10.3s)",
+      "result": "passed"
+    },
+    {
+      "name": "[mobile] \u203a tests/work.spec.ts:212:1 \u203a application access is assigned explicitly to this context and unsupported images never upload (2.1s)",
+      "result": "passed"
+    },
+    {
+      "name": "[mobile] \u203a tests/work.spec.ts:259:1 \u203a native input and a specific approval preserve request identity through the real broker (4.2s)",
+      "result": "passed"
+    },
+    {
+      "name": "[mobile] \u203a tests/work.spec.ts:290:1 \u203a rejected group membership preserves the draft and allows a corrected operation (1.2s)",
+      "result": "passed"
+    },
+    {
+      "name": "[mobile] \u203a tests/work.spec.ts:318:1 \u203a sharing copies only the selected file into the explicit destination and preserves byte identity (1.5s)",
+      "result": "passed"
+    },
+    {
+      "name": "[mobile] \u203a tests/work.spec.ts:383:1 \u203a all concurrent group lanes expose their native questions and free text uses one answer representation (7.2s)",
+      "result": "passed"
+    },
+    {
+      "name": "[mobile] \u203a tests/work.spec.ts:419:1 \u203a an unconfirmed human reply is restored verbatim and locked across reload (7.6s)",
+      "result": "passed"
+    },
+    {
+      "name": "[mobile] \u203a tests/work.spec.ts:455:1 \u203a membership editing keeps its original revision and cannot overwrite a concurrent change (1.5s)",
+      "result": "passed"
+    },
+    {
+      "name": "[mobile] \u203a tests/work.spec.ts:484:1 \u203a four ordinary file attachments still allow a supported image (7.6s)",
+      "result": "passed"
+    }
+  ],
+  "boundaries": {
+    "http_domain_sqlite": "real",
+    "managed_browser_rfb": "real",
+    "harness_protocol": "fixture",
+    "application_provider": "fixture",
+    "provider_inference": 0
+  },
+  "additional_app_receipt_checks": {
+    "source": "logs/app-receipts.log",
+    "pass": 2,
+    "fail": 0,
+    "skip": 0
+  }
+}

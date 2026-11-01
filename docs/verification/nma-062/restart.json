@@ -1,0 +1,9 @@
+{
+  "native_runs_before": 14,
+  "native_runs_after": 14,
+  "new_inference": 0,
+  "exact_stable_projections": 2,
+  "mobile_read_reload": 2,
+  "artifact_bytes_verified": true,
+  "global_agent_profiles_unchanged": true
+}

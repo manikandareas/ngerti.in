@@ -1,0 +1,19 @@
+{
+  "proof_connections_revoked": 4,
+  "copied_credential_files_removed": 2,
+  "paused_routines": 2,
+  "completed_native_runs": 14,
+  "proof_browser_containers_removed": [
+    "fcd8233d0223",
+    "b07d59d4bb33",
+    "a7c9788759a5",
+    "d7a18564c942",
+    "dcfefbe266b1",
+    "ec3e8dded0aa",
+    "3626a1aeda44",
+    "67991c5b08c4",
+    "42ac8b5c7840",
+    "73990d5de618"
+  ],
+  "original_credentials_and_other_containers_preserved": true
+}

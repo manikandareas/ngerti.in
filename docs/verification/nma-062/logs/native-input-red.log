@@ -1,0 +1,16 @@
+59156 |       throw new Error("Serialized error must have either an error or a value");
+59157 |     return parseSerializedValue(error.value, void 0);
+59158 |   }
+59159 |   let e;
+59160 |   if (error.error.name === "TimeoutError")
+59161 |     e = new TimeoutError2(error.error.message);
+                    ^
+TimeoutError: waitFor: Timeout 5000ms exceeded.
+Call log:
+[2m  - waiting for getByRole('textbox', { name: 'Jawaban untuk NMA062 codex', exact: true }) to be visible[22m
+
+  log: [ "  - waiting for getByRole('textbox', { name: 'Jawaban untuk NMA062 codex', exact: true }) to be visible" ],
+
+      at /Users/vitoandareasmanik/Development/project/ngertiin/node_modules/.bun/playwright-core@1.64.1/node_modules/playwright-core/lib/coreBundle.js:59161:13
+
+Bun v1.3.10 (macOS arm64)

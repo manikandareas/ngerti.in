@@ -16,6 +16,7 @@ export function ConversationNavigation({
   createMenu,
   setCreateMenu,
   createAgent,
+  createGroup,
   choose,
   openSettings,
 }: {
@@ -26,6 +27,7 @@ export function ConversationNavigation({
   createMenu: boolean;
   setCreateMenu: (open: boolean) => void;
   createAgent: () => void;
+  createGroup: () => void;
   choose: (id: string) => void;
   openSettings: () => void;
 }) {
@@ -59,12 +61,7 @@ export function ConversationNavigation({
             <Button variant="ghost" className="w-full justify-start" onClick={createAgent}>
               <HugeiconsIcon icon={Add01Icon} strokeWidth={1.6} /> Create agent
             </Button>
-            <Button
-              variant="ghost"
-              className="w-full justify-start"
-              disabled
-              title="Pembuatan grup belum tersedia."
-            >
+            <Button variant="ghost" className="w-full justify-start" onClick={createGroup}>
               Create group
             </Button>
           </PopoverContent>

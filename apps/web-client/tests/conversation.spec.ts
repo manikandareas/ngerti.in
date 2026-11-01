@@ -7,7 +7,7 @@ async function sidebar(page: Page) {
 async function createAgent(page: Page) {
   await sidebar(page);
   await page.getByRole("button", { name: "Buat baru" }).click();
-  await expect(page.getByRole("button", { name: "Create group", exact: true })).toBeDisabled();
+  await expect(page.getByRole("button", { name: "Create group", exact: true })).toBeEnabled();
   const response = page.waitForResponse(
     (r) => r.url().endsWith("/v1/creation/agents") && r.request().method() === "POST",
   );

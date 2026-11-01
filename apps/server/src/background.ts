@@ -25,6 +25,7 @@ export class Background {
   #timer: ReturnType<typeof setInterval> | null = null;
   #stopping = false;
   #closed = false;
+  #dispatchCursor: string | null = null;
   constructor(
     readonly lifecycle: Lifecycle,
     private readonly executors: Partial<Record<"codex" | "muse", HarnessExecutor>> = {},
@@ -60,7 +61,13 @@ export class Background {
       if (this.lifecycle.store.get("run", work.run.id).cancellation === "requested")
         work.controller.abort();
     }
-    for (const queued of this.lifecycle.store.list("run")) {
+    const runs = this.lifecycle.store.list("run");
+    const offset =
+      this.#dispatchCursor === null
+        ? 0
+        : runs.findIndex((run) => run.id === this.#dispatchCursor) + 1;
+    // A lane that cannot prepare must not starve later, ready lanes on every tick.
+    for (const queued of [...runs.slice(offset), ...runs.slice(0, offset)]) {
       if (this.#work.size + this.#preparing.size >= this.concurrency) break;
       if (queued.status !== "queued" || queued.delivery !== "pending") continue;
       if (
@@ -80,6 +87,7 @@ export class Background {
       if (!executor) continue;
       const lane = `${queued.thread_id}:${queued.agent_id}`;
       if (this.#preparing.has(lane)) continue;
+      this.#dispatchCursor = queued.id;
       if (executor.prepare) {
         const pending = executor
           .prepare(queued.thread_id, queued.agent_id)

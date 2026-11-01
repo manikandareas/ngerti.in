@@ -1,0 +1,22 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4321" --strictPort
+[WebServer] (node:2248) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 10 tests using 1 worker
+
+(node:2250) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop] › tests/work.spec.ts:44:1 › contextual goals, Routine and files use real scoped state and keep stop responsibility distinct from stop run (3.7s)
+  ✓   2 [desktop] › tests/work.spec.ts:383:1 › all concurrent group lanes expose their native questions and free text uses one answer representation (3.7s)
+  ✓   3 [desktop] › tests/work.spec.ts:416:1 › an unconfirmed human reply is restored verbatim and locked across reload (1.3s)
+  ✓   4 [desktop] › tests/work.spec.ts:452:1 › membership editing keeps its original revision and cannot overwrite a concurrent change (1.5s)
+  ✓   5 [desktop] › tests/work.spec.ts:481:1 › four ordinary file attachments still allow a supported image (1.8s)
+(node:2266) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   6 [mobile] › tests/work.spec.ts:44:1 › contextual goals, Routine and files use real scoped state and keep stop responsibility distinct from stop run (2.4s)
+  ✓   7 [mobile] › tests/work.spec.ts:383:1 › all concurrent group lanes expose their native questions and free text uses one answer representation (2.5s)
+  ✓   8 [mobile] › tests/work.spec.ts:416:1 › an unconfirmed human reply is restored verbatim and locked across reload (1.9s)
+  ✓   9 [mobile] › tests/work.spec.ts:452:1 › membership editing keeps its original revision and cannot overwrite a concurrent change (1.5s)
+  ✓  10 [mobile] › tests/work.spec.ts:481:1 › four ordinary file attachments still allow a supported image (2.7s)
+
+  10 passed (27.3s)

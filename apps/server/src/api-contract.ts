@@ -1,12 +1,14 @@
 import { z } from "zod";
+import { operationResponse, operationSchemas } from "./api-responses";
 import { browserCapabilities } from "./browser/contracts";
-import { domainEvent, errorCodes, goal, id, message, run } from "./contracts";
+import { API_READINESS_GATE, domainEvent, errorCodes, goal, id, message, run } from "./contracts";
 import { conversationSnapshot, historyQuery } from "./conversations";
 import { manifests } from "./harness/availability";
 import { brokerContract, brokerErrorCodes } from "./harness/contracts";
 import { productToolCatalog } from "./harness/product-tool-contracts";
 
 export const responseSchemas = {
+  ...operationSchemas,
   conversation: conversationSnapshot,
   history_query: historyQuery,
   history: z.strictObject({
@@ -139,6 +141,7 @@ export function httpContract(routes: readonly Route[]) {
             : mcp
               ? "json_rpc"
               : "json",
+      response: operationResponse(method, path),
     };
   });
 }
@@ -223,9 +226,9 @@ export function consumerContract() {
     },
     readiness: {
       ticket: "NMA-060",
-      state: "pending",
+      state: API_READINESS_GATE,
       scope: "engine_backend_api_only",
-      evidence: "docs/verification/nma-060/README.md",
+      evidence: "docs/verification/nma-060/final-cohort/README.md",
     },
   };
 }

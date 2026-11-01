@@ -156,7 +156,7 @@ test("consumer contract describes actual routes without executing native operati
   expect(
     contract.http.filter((r: { authentication: string }) => r.authentication === "run_lease"),
   ).toHaveLength(2);
-  expect(contract.readiness.state).toBe("pending");
+  expect(contract.readiness.state).toBe("ready");
   expect(f.store.cursor).toBe(cursor);
   expect(f.store.list("run")).toHaveLength(0);
   expect(() => httpContract([{ method: "POST", path: "/v1/unclassified", hooks: {} }])).toThrow(

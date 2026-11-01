@@ -6,7 +6,7 @@ export const manifests = {
   codex: {
     executable: "codex",
     minimum_version: "0.165.0",
-    tested_native_version: "0.165.0",
+    tested_native_version: "0.166.0",
     protocol: "app_server",
     sdk_version: null,
     evidence: "native_subscription_http",

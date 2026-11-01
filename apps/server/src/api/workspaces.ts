@@ -23,7 +23,7 @@ export function registerWorkspaceRoutes(
     )
     .get(
       "/v1/threads/:id/workspace",
-      ({ params, query }) => workspaces.current(params.id, query.agent_id),
+      ({ params, query }) => Response.json(workspaces.current(params.id, query.agent_id)),
       { params: z.object({ id }), query: z.strictObject({ agent_id: id }) },
     )
     .post(

@@ -94,7 +94,7 @@ try {
   assert.equal(contracts.capabilities.properties.resume.enum.includes("unknown"), true);
   const readiness = await request("/health/ready");
   assert.equal(readiness.registered_executors, 2);
-  assert.equal(readiness.api_readiness_gate, "pending");
+  assert.equal(readiness.api_readiness_gate, "ready");
   results.push({ check: "broker_contract_with_explicit_native_executors", status: "pass" });
   const command = crypto.randomUUID();
   const input = {

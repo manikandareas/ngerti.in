@@ -11,12 +11,21 @@ export const item = z.object({
 });
 export const approval = z.object({
   approvalId: nativeId,
+  toolName: z.string().optional(),
+  rawArgs: z.string().optional(),
   currentRequirementId: z.object({ approvalId: nativeId, sourceIndex: z.int() }),
   availableChoices: z.array(
-    z.object({ choiceId: nativeId, decision: z.string(), scope: z.string() }),
+    z.object({
+      choiceId: nativeId,
+      decision: z.string(),
+      scope: z.string(),
+      label: z.string().optional(),
+      rulePreview: z.string().optional(),
+    }),
   ),
   subject: z.object({
     kind: z.string(),
+    toolName: z.string().optional(),
     command: z.string().optional(),
     path: z.string().optional(),
   }),

@@ -95,7 +95,8 @@ export {
   workspace,
 };
 
-export const CONTRACT_VERSION = "1.13.0";
+export const CONTRACT_VERSION = "1.16.0";
+export const API_READINESS_GATE = "ready" as const;
 
 export const schemas = {
   app_connection: appConnection,

@@ -58,3 +58,7 @@ NMA-053 reports Muse steer as `unknown`: live R7309.1 behavior did not preserve 
 ## Evidence and remaining acceptance
 
 [Verification](../verification/nma-050/README.md) separates SDK fixtures from native HTTP checks. The user has developer credits, without an active subscription available for this task. Native key-backed inference, useful product-tool calls, separate DM/group history, restart resume, question/answer and cancellation passed. Native browser subscription login/inference/tool billing and a live interactive permission-decision cycle remain unverified. Fixture approval, rejection, scope, failure, lost connection and acknowledgement-only stop tests are separate evidence. NMA-050 remains **In Progress** until its remaining native acceptance is satisfied; no UI, installer or production readiness is claimed.
+
+## Native interaction repair (2026-11-01)
+
+Workspace conversations select `request_user_input` and `mcp__ngertiin__*` using `run.toolset`; routing selects no tools. Shell and filesystem writes remain disabled. The earlier empty preset withheld questions too. Native approval display fields survive projection and redaction. See [interaction verification](../verification/nma-050/interactions/README.md) for real question, allow-once, deny and stale-response results and the isolated Ask-me probe configuration.

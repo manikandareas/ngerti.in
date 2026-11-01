@@ -359,7 +359,7 @@ for (const input of ["question", "approval"])
             answers: [{ questionId: "q", selectedLabel: "SQLite" }],
           }
         : { type: "approval", request_id: "approval-1", source_index: 2, choice_id: "deny" };
-    await post(`/v1/runs/${run.id}/interactions`, answer);
+    expect(await post(`/v1/runs/${run.id}/interactions`, answer)).toEqual({ status: "submitted" });
     await background.idle();
     expect(f.store.get("run", run.id).status).toBe("succeeded");
     expect(f.store.list("message").at(-1)?.text).toContain(

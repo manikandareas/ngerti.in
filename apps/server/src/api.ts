@@ -12,7 +12,7 @@ import type { ApiServices } from "./api/services";
 import { registerWorkspaceRoutes } from "./api/workspaces";
 import { consumerContract, httpContract } from "./api-contract";
 import type { Background } from "./background";
-import { CONTRACT_VERSION, contractDocument } from "./contracts";
+import { API_READINESS_GATE, CONTRACT_VERSION, contractDocument } from "./contracts";
 import { Connections } from "./harness/connections";
 import { ProductTools } from "./harness/tools";
 import type { Lifecycle } from "./lifecycle";
@@ -37,7 +37,7 @@ export function createApi(
       scheduler: "running",
       dispatcher: "running",
       registered_executors: background.executorCount,
-      api_readiness_gate: "pending",
+      api_readiness_gate: API_READINESS_GATE,
     }))
     .get("/v1/contracts", () => ({
       ...contractDocument(),

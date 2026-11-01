@@ -6,6 +6,7 @@ import { EXPECTED_SCHEMA_FINGERPRINT } from "@muse-code/sdk";
 
 const home = process.env.HOME as string;
 mkdirSync(home, { recursive: true });
+writeFileSync(join(home, "launch-args.json"), JSON.stringify(process.argv.slice(2)));
 let config: { url: string; headers: Record<string, string> };
 let session: Record<string, unknown>;
 let items: Record<string, unknown>[] = [];

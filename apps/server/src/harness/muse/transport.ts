@@ -19,7 +19,13 @@ export class MuseTransport {
       args: [
         ...args,
         "serve",
-        ...(context.workspace ? ["--preset", "empty"] : []),
+        // Select only interaction and scoped app tools; the empty preset also removes questions.
+        ...(context.workspace
+          ? [
+              "--config",
+              `run.toolset=${JSON.stringify(context.purpose === "routing" ? [] : ["request_user_input", "mcp__ngertiin__*"])}`,
+            ]
+          : []),
         "--disable-shell",
         "--disable-write",
         "--contributor-mode",

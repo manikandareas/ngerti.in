@@ -1,6 +1,6 @@
-# API consumer contract 1.12.0
+# API consumer contract 1.16.0
 
-Authenticated `GET /v1/contracts` exports the installed server's contract. The checked-in [1.12.0 bundle](../contracts/1.12.0.json) is an equivalent JSON Schema contract, not an OpenAPI document. [Consumer fixtures](../verification/nma-060/cancellation/consumer-fixtures.json) are actual responses from an isolated HTTP test client. Exporting or consuming these artifacts does not establish NMA-060 readiness. [Gate evidence](../verification/nma-060/README.md) records the open prerequisites.
+Authenticated `GET /v1/contracts` exports the installed server's contract. The checked-in [1.16.0 bundle](../contracts/1.16.0.json) is an equivalent JSON Schema contract, not an OpenAPI document. [Consumer fixtures](../verification/nma-060/final-cohort/consumer-fixtures.json) are actual responses from an isolated HTTP test client. [Gate evidence](../verification/nma-060/final-cohort/README.md) records accepted engine/API readiness, including the explicit Muse API-key billing scope. UI, installation and production acceptance remain separate.
 
 ## Surfaces and schemas
 
@@ -9,12 +9,12 @@ Authenticated `GET /v1/contracts` exports the installed server's contract. The c
 | `entities` | Current typed entities from `/v1/entities/:kind[/:id]`; snapshots contain these same shapes. |
 | `event` | Every committed entity kind, including browser profiles/sessions/actions and Composio connections/sessions/effects. Immutable older payloads may omit later defaulted fields. |
 | `commands` | Domain command inputs, including defaulted/optional fields. Cross-field and relational rules still run on the server. |
-| `http` | Actual registered method/path and request body/query/params JSON schemas; authentication, idempotency and response transport. `null` request schema means no validator is installed, not a promise to reject a body. Encode query parameters as strings; coercion remains server-owned. |
-| `projections` | Conversation snapshot, history page, event page, setup, admission/control response and HTTP error envelope. These do not claim schemas for every provider-specific observation response. |
+| `http` | Actual registered method/path and request body/query/params JSON schemas; authentication, idempotency, response transport and reviewed operation response contracts. `null` request schema means no validator is installed, not a promise to reject a body. Encode query parameters as strings; coercion remains server-owned. |
+| `projections` | Conversation snapshot, history page, event page, setup, admission/control response and HTTP error envelope. Operation projections additionally cover creation/opening, goals, learning, files, app connections/search, browser/VNC, login and native interactions. Every JSON operation has a response schema or an explicit document/projection reference; non-JSON routes declare framing/status. Unknown added GET routes fail export as well as unclassified POST routes. |
 | `harness`, `harness_versions`, `browser` | Broker contract, exact minimum/tested versions, browser capabilities and structured browser action arguments. Installed executable discovery does not prove account/model/inference readiness. |
 | `product_tools` | Structured MCP tool names and argument schemas; discovery does not grant a tool or resource. |
 | `protocols` | Replay, command receipts, SSE, errors, stop/outcome/billing semantics and VNC transport. |
-| `readiness` | API-wide gate remains `pending`; it is distinct from process liveness and foundation readiness. |
+| `readiness` | API-wide gate is `ready`; it is distinct from process liveness, account/harness availability, UI, installation and production readiness. |
 
 The HTTP table is derived from Elysia 1.4.30's installed route records and their Zod validators. POST command/operation policies are explicit; export fails if a new POST lacks a policy. This avoids invoking provider operations to discover schemas. Dependency versions remain pinned in the existing lockfile. No OpenAPI dependency, alternate scheduler or model loop is added.
 
@@ -54,4 +54,14 @@ Ordinary errors use `{"error":{"code":"...","message":"..."}}`; harness errors a
 
 Use the exact operation result descriptions in [agents/DMs](agent-conversation-api.md), [control/recovery](conversation-control-api.md), [groups](group-collaboration-api.md), [goals/Routine](goals-routines-api.md), [memory/skills](memory-skills-api.md), [workspace/artifacts](workspace-artifact-api.md), [browser/VNC](browser-session-api.md), [apps/research/visual](apps-research-visual-api.md), [Codex](codex-adapter.md) and [Muse](muse-adapter.md). Entity/schema ownership and reproducible test/evidence references are in [coverage.json](../verification/nma-060/coverage.json).
 
-NMA-050 remains In Progress for Muse subscription-backed inference/product-tool use and a live native permission-decision cycle. The gate also retains an open final response-surface review, complete obsolete-source cleanup and a final native integration/fault acceptance pass on the selected revision. Unsupported Muse steer/native coding/visual input and native video are explicit capability boundaries, not implicit fallback work. UI, installer and production acceptance are later phases.
+NMA-050 remains In Progress; its live native permission-decision cycle remains a gate condition. Muse subscription is separately unverified but excluded as a gate blocker by the explicit billing amendment. The response-surface review and obsolete-source cleanup are recorded in the completion report; gate-wide native integration/fault acceptance remains open. Unsupported Muse steer/native coding/visual input and native video are explicit capability boundaries, not implicit fallback work. UI, installer and production acceptance are later phases.
+
+## Version 1.16.0 response review
+
+Each `http.response.schema` is a JSON Schema for that operation's successful body. `reference` resolves a named projection, except `contract_document` (the self-describing complete export), `harness` and `browser` (their published contract documents), and `protocols.mcp` (JSON-RPC framing). Generic entity routes return the discriminated entity union; choose the requested `kind` for the exact shape. SSE carries the published `event` schema. Bytes and empty MCP responses must not be parsed as JSON. Errors continue to use the common error projection.
+
+A workspace query with no bound workspace returns JSON `null`, rather than an empty successful body. This behavior is covered by an HTTP consumer regression. Native interaction answers return `{ "status": "submitted" }` after the adapter acknowledges the command. This is not permission resolution or tool completion: refresh pending interactions and observe authoritative run/events. Unsupported Codex interactive permissions remain capability errors; Muse approval choice IDs and stage guards remain native and must be returned unchanged.
+
+The latest gate billing decision accepts Codex ChatGPT subscription plus explicitly selected Muse API-key billing. Muse subscription is not a blocker for this gate. Native permission acceptance remains separate and unverified until a real native cycle is captured. See [current completion evidence](../verification/nma-060/completion/README.md) for fresh checks and remaining conditions.
+
+Native approval projections preserve the tool name, arguments and native choice labels/previews for display. Treat these strings as untrusted text; submit only a currently offered choice and stage. Submitted does not mean the action completed.

@@ -78,7 +78,7 @@ try {
   token = installation.token;
   const ready = await api(first.url, "/health/ready");
   assert.equal(ready.registered_executors, 2);
-  assert.equal(ready.api_readiness_gate, "pending");
+  assert.equal(ready.api_readiness_gate, "ready");
   checks.push("make_dev_boots_without_hermes_postgres_or_provider_keys");
   const connection = await api(first.url, "/v1/connections", {
     harness: "codex",

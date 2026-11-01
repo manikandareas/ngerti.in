@@ -524,7 +524,9 @@ export class HarnessBroker {
     // Reconcile native pending state, then recheck application grants after that asynchronous read.
     if (session.client.interactions) await session.client.interactions(runId);
     if ((await this.interactionSession(runId)) !== session) throw new DomainError("STALE_DISPATCH");
-    return session.client.respond(runId, answer);
+    await session.client.respond(runId, answer);
+    // A native acknowledgement is not proof that the approved action completed.
+    return { status: "submitted" as const };
   }
   private async nativeSkills(client: HarnessClient) {
     if (!client.skills) return { native_catalog: [], native_state: "unknown" as const };

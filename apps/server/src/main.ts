@@ -1,6 +1,7 @@
 import { createApi } from "./api";
 import { Background } from "./background";
 import { developmentConfig } from "./config";
+import { API_READINESS_GATE } from "./contracts";
 import { Conversations } from "./conversations";
 import { HarnessAccounts } from "./harness/accounts";
 import { HarnessBroker } from "./harness/broker";
@@ -62,7 +63,7 @@ console.log(
     url: `http://127.0.0.1:${app.server?.port}`,
     credentials_file: config.installationFile,
     registered_executors: background.executorCount,
-    api_readiness_gate: "pending",
+    api_readiness_gate: API_READINESS_GATE,
   }),
 );
 let stopping = false;

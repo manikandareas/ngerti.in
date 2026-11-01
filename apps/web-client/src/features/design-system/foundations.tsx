@@ -17,11 +17,24 @@ const colorGroups = [
       "frame",
       "panel",
       "composer",
+      "control",
+      "control-hover",
+      "menu-hover",
+      "menu-active",
+      "scrollbar",
     ],
   },
   {
     title: "Content & borders",
-    tokens: ["foreground", "muted-foreground", "text-tertiary", "text-disabled", "border", "input"],
+    tokens: [
+      "foreground",
+      "muted-foreground",
+      "text-tertiary",
+      "text-disabled",
+      "border",
+      "input",
+      "input-focus",
+    ],
   },
   {
     title: "Primary & actions",
@@ -76,9 +89,18 @@ const typeScale = [
   { name: "Title", className: "text-title font-medium", value: "20/28 · medium" },
   { name: "Body", className: "text-base leading-6", value: "16/24 · regular" },
   { name: "UI", className: "text-ui", value: "14/20 · regular" },
+  {
+    name: "Control",
+    className: "text-(length:--text-control-label)/5 font-medium",
+    value: "13/20 · medium",
+  },
   { name: "Label", className: "text-sm leading-6 font-medium", value: "14/24 · medium" },
   { name: "Caption", className: "text-caption", value: "12/18 · regular" },
-  { name: "Code", className: "font-mono text-caption", value: "Geist Mono · 13/20" },
+  {
+    name: "Code",
+    className: "font-mono text-(length:--text-control-label)/5",
+    value: "Geist Mono · 13/20",
+  },
 ];
 
 const radii = [
@@ -87,6 +109,8 @@ const radii = [
   { name: "Navigation", className: "rounded-nav", value: "10px" },
   { name: "Card", className: "rounded-card", value: "16px" },
   { name: "Dialog", className: "rounded-dialog", value: "12px" },
+  { name: "Menu", className: "rounded-menu", value: "14px" },
+  { name: "Menu item", className: "rounded-menu-item", value: "6px" },
   { name: "Pill", className: "rounded-pill", value: "999px" },
 ];
 
@@ -100,7 +124,13 @@ export function Foundations() {
       const style = getComputedStyle(document.documentElement);
       const names = colorGroups
         .flatMap((group) => group.tokens)
-        .concat(["duration-fast", "duration-enter", "duration-exit"]);
+        .concat([
+          "duration-fast",
+          "duration-enter",
+          "duration-exit",
+          "duration-pop",
+          "duration-sheet",
+        ]);
       setValues(
         Object.fromEntries(names.map((name) => [name, style.getPropertyValue(`--${name}`).trim()])),
       );
@@ -143,7 +173,7 @@ export function Foundations() {
                   type="button"
                   aria-label={`Salin token ${name}`}
                   onClick={() => void copyToken(name)}
-                  className="min-w-0 space-y-3 rounded-control text-left outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-3 focus-visible:ring-offset-card"
+                  className="min-w-0 space-y-3 rounded-control text-left outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   <span
                     data-token={name}
@@ -263,8 +293,9 @@ export function Foundations() {
             <h2>Sizing, focus & motion</h2>
           </CardTitle>
           <CardDescription>
-            Control 28/32/36px. Focus ring 2px dengan offset 2px. Gunakan Tab untuk mencoba focus
-            state.
+            Control 28/32/36px. Menu row minimal 30px, atau 40px pada layar sentuh. Input memakai
+            border focus yang lembut; kontrol form memakai ring tipis 1px. Aksi umum memakai focus
+            ring 2px dengan offset 2px. Gunakan Tab untuk mencobanya.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -278,6 +309,8 @@ export function Foundations() {
             <span>Fast {values["duration-fast"]}</span>
             <span>Enter {values["duration-enter"]}</span>
             <span>Exit {values["duration-exit"]}</span>
+            <span>Popup {values["duration-pop"]}</span>
+            <span>Sheet {values["duration-sheet"]}</span>
           </div>
           <p className="text-sm text-muted-foreground">
             Layout: max-content 1216px, page 1440px. Preferensi reduced motion menonaktifkan animasi

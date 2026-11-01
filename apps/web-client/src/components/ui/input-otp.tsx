@@ -32,7 +32,7 @@ function InputOTPGroup({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="input-otp-group"
       className={cn(
-        "flex items-center rounded-control has-aria-invalid:border-destructive has-aria-invalid:ring-3 has-aria-invalid:ring-destructive/20 dark:has-aria-invalid:ring-destructive/40",
+        "flex items-center rounded-control has-aria-invalid:border-destructive has-aria-invalid:ring-1 has-aria-invalid:ring-destructive/20 dark:has-aria-invalid:ring-destructive/20",
         className,
       )}
       {...props}
@@ -55,7 +55,7 @@ function InputOTPSlot({
       data-slot="input-otp-slot"
       data-active={isActive}
       className={cn(
-        "relative flex size-8 items-center justify-center border-y border-r border-input text-sm transition-colors duration-(--duration-fast) outline-none first:rounded-l-lg first:border-l last:rounded-r-lg aria-invalid:border-destructive data-[active=true]:z-10 data-[active=true]:border-ring data-[active=true]:ring-3 data-[active=true]:ring-ring/50 data-[active=true]:aria-invalid:border-destructive data-[active=true]:aria-invalid:ring-destructive/20 dark:data-[active=true]:aria-invalid:ring-destructive/40",
+        "relative flex size-control-md items-center justify-center border-y border-r border-input bg-card text-(length:--text-control-label)/5 transition-colors duration-(--duration-fast) outline-none first:rounded-l-control first:border-l last:rounded-r-control aria-invalid:border-destructive data-[active=true]:z-10 data-[active=true]:border-input-focus data-[active=true]:ring-1 data-[active=true]:ring-input-focus/20 data-[active=true]:aria-invalid:border-destructive data-[active=true]:aria-invalid:ring-destructive/20 dark:data-[active=true]:aria-invalid:ring-destructive/20",
         className,
       )}
       {...props}
@@ -78,7 +78,7 @@ function InputOTPSeparator({ ...props }: React.ComponentProps<"div">) {
       role="separator"
       {...props}
     >
-      <HugeiconsIcon icon={MinusSignIcon} strokeWidth={2} />
+      <HugeiconsIcon icon={MinusSignIcon} strokeWidth={1.75} />
     </div>
   );
 }

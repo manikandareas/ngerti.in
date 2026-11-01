@@ -36,7 +36,7 @@ for (const mode of ["light", "dark"] as const) {
     );
     await expect(page.locator('[data-swatch="primary"]')).toHaveCSS(
       "background-color",
-      mode === "light" ? "rgb(11, 98, 196)" : "rgb(16, 132, 254)",
+      "rgb(11, 98, 196)",
     );
     await expect(page.locator("#email")).toHaveCSS("height", "32px");
     await expect(page.locator("#email")).toHaveCSS("border-radius", "8px");
@@ -44,7 +44,7 @@ for (const mode of ["light", "dark"] as const) {
     await expect(page.locator("body")).toHaveCSS("font-family", /Geist Variable/);
     await expect(page.locator('[data-slot="code-block"]')).toHaveCSS(
       "background-color",
-      "rgb(31, 31, 31)",
+      mode === "light" ? "rgb(240, 240, 240)" : "rgb(31, 31, 31)",
     );
     await expect(page.locator('[data-slot="code-block-content"]')).toHaveCSS(
       "font-family",

@@ -35,9 +35,7 @@ for (const mode of ["light", "dark"] as const) {
     await expect(page.locator('[data-token-value="background"]')).toHaveText(
       mode === "light" ? "#fcfcfc" : "#121212",
     );
-    await expect(page.locator('[data-token-value="primary"]')).toHaveText(
-      mode === "light" ? "#0b62c4" : "#1084fe",
-    );
+    await expect(page.locator('[data-token-value="primary"]')).toHaveText("#0b62c4");
     await expect(page.locator('[data-token="card"]')).toHaveCSS(
       "background-color",
       mode === "light" ? "rgb(240, 240, 240)" : "rgb(31, 31, 31)",
@@ -144,3 +142,124 @@ test("invalid component falls back to foundations and unknown routes show 404", 
   await page.goto("/unknown-page");
   await expect(page.getByRole("heading", { name: "Halaman tidak ditemukan." })).toBeVisible();
 });
+
+for (const mode of ["light", "dark"] as const) {
+  test(`${mode}: popup families use the OpenMaus menu geometry`, async ({ page }, testInfo) => {
+    await page.goto("/design-system?component=dropdown-menu");
+    await page
+      .getByRole("radio", { name: mode === "light" ? "Mode terang" : "Mode gelap" })
+      .click();
+    const surface = mode === "light" ? "rgb(255, 255, 255)" : "rgb(31, 31, 31)";
+    const rowHeight = testInfo.project.use.hasTouch ? "40px" : "30px";
+
+    for (const component of ["dropdown-menu", "context-menu", "menubar", "select", "combobox"]) {
+      await test.step(component, async () => {
+        await page.goto(`/design-system?component=${component}`);
+        const example = page.locator(`[data-example="${component}"]`);
+        if (component === "dropdown-menu")
+          await example.getByRole("button", { name: "Buka menu" }).click();
+        if (component === "context-menu")
+          await example.getByText("Klik kanan atau tekan lama area ini").click({ button: "right" });
+        if (component === "menubar")
+          await example.getByRole("menuitem", { name: "File", exact: true }).click();
+        if (component === "select") await example.getByRole("combobox").click();
+        if (component === "combobox") await example.getByRole("combobox").fill("T");
+        const popup = page.locator(`[data-slot="${component}-content"]`);
+        await expect(popup).toBeVisible();
+        await expect(popup).toHaveCSS("border-radius", "14px");
+        await expect(popup).toHaveCSS("background-color", surface);
+        if (["dropdown-menu", "context-menu", "menubar"].includes(component)) {
+          await expect
+            .poll(() => popup.evaluate((element) => element.getBoundingClientRect().width))
+            .toBeGreaterThanOrEqual(192);
+        }
+        const inset =
+          component === "combobox" ? popup.locator('[data-slot="combobox-list"]') : popup;
+        await expect(inset).toHaveCSS("padding-top", "6px");
+        const row = popup.locator(`[data-slot="${component}-item"]`).first();
+        await expect(row).toHaveCSS("min-height", rowHeight);
+        await expect(row).toHaveCSS("border-radius", "6px");
+        await page.screenshot({ path: testInfo.outputPath(`${mode}-${component}-open.png`) });
+        await page.keyboard.press("Escape");
+        await expect(popup).not.toBeVisible();
+      });
+    }
+  });
+
+  test(`${mode}: control focus, switch travel, and neutral bubbles`, async ({ page }, testInfo) => {
+    await page.goto("/design-system?component=input");
+    await page
+      .getByRole("radio", { name: mode === "light" ? "Mode terang" : "Mode gelap" })
+      .click();
+    const input = page.getByRole("textbox", { name: "Email", exact: true });
+    await input.focus();
+    await expect(input).toHaveCSS("height", "32px");
+    await expect(input).toHaveCSS("border-radius", "8px");
+    await expect(input).toHaveCSS("font-size", testInfo.project.use.isMobile ? "16px" : "13px");
+    await expect(input).toHaveCSS(
+      "border-color",
+      mode === "light" ? "rgb(201, 201, 201)" : "rgb(65, 65, 65)",
+    );
+    await expect(input).toHaveCSS("box-shadow", "none");
+    await expect(page.locator("#demo-invalid")).toHaveCSS(
+      "border-color",
+      mode === "light" ? "rgb(192, 43, 58)" : "rgb(255, 86, 103)",
+    );
+
+    await page.goto("/design-system?component=button");
+    const primary = page
+      .locator('[data-example="button"]')
+      .getByRole("button", { name: "default", exact: true });
+    await expect(primary).toHaveCSS("font-size", "13px");
+    await expect(primary).toHaveCSS("color", "rgb(255, 255, 255)");
+
+    await page.goto("/design-system?component=switch");
+    const control = page.getByRole("switch", { name: "Aktifkan notifikasi" });
+    await expect(control).toHaveCSS("width", "36px");
+    await expect(control).toHaveCSS("height", "20px");
+    const thumb = control.locator('[data-slot="switch-thumb"]');
+    const checkedX = (await thumb.boundingBox())?.x;
+    await control.click();
+    await expect(control).not.toBeChecked();
+    await expect(thumb).toHaveCSS("translate", "2px");
+    const uncheckedX = (await thumb.boundingBox())?.x;
+    if (checkedX === undefined || uncheckedX === undefined)
+      throw new Error("Switch thumb is missing");
+    expect(checkedX - uncheckedX).toBeCloseTo(14);
+    await page.goto("/design-system?component=bubble");
+    await expect(page.locator('[data-slot="bubble-content"]').first()).toHaveCSS(
+      "background-color",
+      mode === "light" ? "rgb(7, 7, 7)" : "rgb(90, 90, 90)",
+    );
+    await expect(page.locator('[data-slot="bubble-content"]').first()).toHaveCSS(
+      "border-radius",
+      "20px",
+    );
+
+    if (testInfo.project.use.isMobile) {
+      await page.goto("/design-system?component=sidebar");
+      await page
+        .locator('[data-example="sidebar"]')
+        .getByRole("button", { name: "Toggle Sidebar" })
+        .click();
+      const sidebar = page.locator('[data-slot="sidebar"][data-mobile="true"]');
+      await expect(sidebar).toBeVisible();
+      await expect(sidebar).toHaveCSS("width", "390px");
+      await sidebar.getByRole("button", { name: "Close", exact: true }).click();
+      await expect(sidebar).not.toBeVisible();
+    }
+
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/design-system?component=dialog");
+    await page.getByRole("button", { name: "Buka dialog", exact: true }).click();
+    const dialog = page.getByRole("dialog");
+    await expect(dialog).toBeVisible();
+    expect(
+      await dialog.evaluate((element) =>
+        Number.parseFloat(getComputedStyle(element).animationDuration),
+      ),
+    ).toBeLessThan(0.001);
+    await page.keyboard.press("Escape");
+    await expect(page.getByRole("button", { name: "Buka dialog", exact: true })).toBeFocused();
+  });
+}

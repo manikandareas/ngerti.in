@@ -45,7 +45,10 @@ function BreadcrumbLink({
   return (
     <Comp
       data-slot="breadcrumb-link"
-      className={cn("transition-colors hover:text-foreground", className)}
+      className={cn(
+        "transition-colors duration-(--duration-fast) hover:text-foreground",
+        className,
+      )}
       {...props}
     />
   );
@@ -71,7 +74,7 @@ function BreadcrumbSeparator({ children, className, ...props }: React.ComponentP
       className={cn("[&>svg]:size-3.5", className)}
       {...props}
     >
-      {children ?? <HugeiconsIcon icon={ArrowRight01Icon} strokeWidth={2} />}
+      {children ?? <HugeiconsIcon icon={ArrowRight01Icon} strokeWidth={1.75} />}
     </li>
   );
 }
@@ -85,7 +88,7 @@ function BreadcrumbEllipsis({ className, ...props }: React.ComponentProps<"span"
       className={cn("flex size-5 items-center justify-center [&>svg]:size-4", className)}
       {...props}
     >
-      <HugeiconsIcon icon={MoreHorizontalCircle01Icon} strokeWidth={2} />
+      <HugeiconsIcon icon={MoreHorizontalCircle01Icon} strokeWidth={1.75} />
       <span className="sr-only">More</span>
     </span>
   );

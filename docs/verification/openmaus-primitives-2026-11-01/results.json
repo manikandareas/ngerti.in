@@ -1,0 +1,1053 @@
+{
+  "ui": {
+    "full_report": "/private/tmp/ngertiin-primitives-final-ui.json",
+    "sha256": "d7dea9e330827c05f00cab36c4b37ab766077fa671c4051aadedab639a8474db",
+    "stats": {
+      "startTime": "2026-11-01T13:29:21.585Z",
+      "duration": 148685.023,
+      "expected": 48,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "cases": [
+      {
+        "title": "dedicated route opens directly and refreshes",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 4055
+          }
+        ]
+      },
+      {
+        "title": "light: foundations use live Midnight/Daylight tokens",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 4110
+          }
+        ]
+      },
+      {
+        "title": "light: every installed primitive has a working preview",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 50039
+          }
+        ]
+      },
+      {
+        "title": "dark: foundations use live Midnight/Daylight tokens",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 1081
+          }
+        ]
+      },
+      {
+        "title": "dark: every installed primitive has a working preview",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 49029
+          }
+        ]
+      },
+      {
+        "title": "search and category filters narrow the primitive list",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 5792
+          }
+        ]
+      },
+      {
+        "title": "interactive previews work and can reset",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 8051
+          }
+        ]
+      },
+      {
+        "title": "questionnaire demo advances and submits locally",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 2573
+          }
+        ]
+      },
+      {
+        "title": "invalid component falls back to foundations and unknown routes show 404",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 505
+          }
+        ]
+      },
+      {
+        "title": "light: popup families use the OpenMaus menu geometry",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 4854
+          }
+        ]
+      },
+      {
+        "title": "light: control focus, switch travel, and neutral bubbles",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 2788
+          }
+        ]
+      },
+      {
+        "title": "dark: popup families use the OpenMaus menu geometry",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 4831
+          }
+        ]
+      },
+      {
+        "title": "dark: control focus, switch travel, and neutral bubbles",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 3076
+          }
+        ]
+      },
+      {
+        "title": "dedicated route opens directly and refreshes",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 1434
+          }
+        ]
+      },
+      {
+        "title": "light: foundations use live Midnight/Daylight tokens",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 1301
+          }
+        ]
+      },
+      {
+        "title": "light: every installed primitive has a working preview",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 36365
+          }
+        ]
+      },
+      {
+        "title": "dark: foundations use live Midnight/Daylight tokens",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 788
+          }
+        ]
+      },
+      {
+        "title": "dark: every installed primitive has a working preview",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 36612
+          }
+        ]
+      },
+      {
+        "title": "search and category filters narrow the primitive list",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 2436
+          }
+        ]
+      },
+      {
+        "title": "interactive previews work and can reset",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 4757
+          }
+        ]
+      },
+      {
+        "title": "questionnaire demo advances and submits locally",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 2557
+          }
+        ]
+      },
+      {
+        "title": "invalid component falls back to foundations and unknown routes show 404",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 631
+          }
+        ]
+      },
+      {
+        "title": "light: popup families use the OpenMaus menu geometry",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 4538
+          }
+        ]
+      },
+      {
+        "title": "light: control focus, switch travel, and neutral bubbles",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 4118
+          }
+        ]
+      },
+      {
+        "title": "dark: popup families use the OpenMaus menu geometry",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 6601
+          }
+        ]
+      },
+      {
+        "title": "dark: control focus, switch travel, and neutral bubbles",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 4898
+          }
+        ]
+      },
+      {
+        "title": "light: solid primary stays opaque throughout hover transitions",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 1951
+          }
+        ]
+      },
+      {
+        "title": "light: shared primary preserves press and disabled states",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 3187
+          }
+        ]
+      },
+      {
+        "title": "dark: solid primary stays opaque throughout hover transitions",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 1972
+          }
+        ]
+      },
+      {
+        "title": "dark: shared primary preserves press and disabled states",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 3653
+          }
+        ]
+      },
+      {
+        "title": "light: solid primary stays opaque throughout hover transitions",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 3044
+          }
+        ]
+      },
+      {
+        "title": "light: shared primary preserves press and disabled states",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 4098
+          }
+        ]
+      },
+      {
+        "title": "dark: solid primary stays opaque throughout hover transitions",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 2054
+          }
+        ]
+      },
+      {
+        "title": "dark: shared primary preserves press and disabled states",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 3934
+          }
+        ]
+      },
+      {
+        "title": "light: Midnight/Daylight colors, control sizes, and fonts",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 848
+          }
+        ]
+      },
+      {
+        "title": "dark: Midnight/Daylight colors, control sizes, and fonts",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 1292
+          }
+        ]
+      },
+      {
+        "title": "explicit theme survives reload and system changes",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 1614
+          }
+        ]
+      },
+      {
+        "title": "system mode follows live OS changes",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 971
+          }
+        ]
+      },
+      {
+        "title": "theme still works when browser storage is unavailable",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 1200
+          }
+        ]
+      },
+      {
+        "title": "portaled dialog and select inherit the dark theme",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 1623
+          }
+        ]
+      },
+      {
+        "title": "controls, tabs, and toast remain interactive",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 771
+          }
+        ]
+      },
+      {
+        "title": "light: Midnight/Daylight colors, control sizes, and fonts",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 972
+          }
+        ]
+      },
+      {
+        "title": "dark: Midnight/Daylight colors, control sizes, and fonts",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 1122
+          }
+        ]
+      },
+      {
+        "title": "explicit theme survives reload and system changes",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 1055
+          }
+        ]
+      },
+      {
+        "title": "system mode follows live OS changes",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 581
+          }
+        ]
+      },
+      {
+        "title": "theme still works when browser storage is unavailable",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 1077
+          }
+        ]
+      },
+      {
+        "title": "portaled dialog and select inherit the dark theme",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 1205
+          }
+        ]
+      },
+      {
+        "title": "controls, tabs, and toast remain interactive",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 761
+          }
+        ]
+      }
+    ]
+  },
+  "popup_final": {
+    "full_report": "/private/tmp/ngertiin-primitives-final-popup.json",
+    "sha256": "4bf4408bb95abfd77e94ed3388a9e978d2a0388ae757c7a2d4344def5179956b",
+    "stats": {
+      "startTime": "2026-11-01T13:34:55.713Z",
+      "duration": 18380.571,
+      "expected": 4,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "cases": [
+      {
+        "title": "light: popup families use the OpenMaus menu geometry",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 6618
+          }
+        ]
+      },
+      {
+        "title": "dark: popup families use the OpenMaus menu geometry",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 7170
+          }
+        ]
+      },
+      {
+        "title": "light: popup families use the OpenMaus menu geometry",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 6563
+          }
+        ]
+      },
+      {
+        "title": "dark: popup families use the OpenMaus menu geometry",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 6904
+          }
+        ]
+      }
+    ]
+  },
+  "conversation": {
+    "full_report": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/test-results/conversation-report.json",
+    "sha256": "1403acf620abb510db90e3d2131cc063d360b429b5ae3a85b4296b6ecfe9e4d6",
+    "stats": {
+      "startTime": "2026-11-01T13:28:47.399Z",
+      "duration": 25675.534,
+      "expected": 10,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "cases": [
+      {
+        "title": "real API: create, durable opener, queued edit/delete, memory, panel and reload",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 7352
+          }
+        ]
+      },
+      {
+        "title": "lost acknowledgement reuses exact creation operation across reload",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 2160
+          }
+        ]
+      },
+      {
+        "title": "loopback bridge refuses cross-origin requests",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 6
+          }
+        ]
+      },
+      {
+        "title": "lost message acknowledgement remains recoverable after reload without duplicate admission",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 2398
+          }
+        ]
+      },
+      {
+        "title": "cancelled opening can continue in the same chat without another opener",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 1408
+          }
+        ]
+      },
+      {
+        "title": "real API: create, durable opener, queued edit/delete, memory, panel and reload",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 3134
+          }
+        ]
+      },
+      {
+        "title": "lost acknowledgement reuses exact creation operation across reload",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 2000
+          }
+        ]
+      },
+      {
+        "title": "loopback bridge refuses cross-origin requests",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 4
+          }
+        ]
+      },
+      {
+        "title": "lost message acknowledgement remains recoverable after reload without duplicate admission",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 1427
+          }
+        ]
+      },
+      {
+        "title": "cancelled opening can continue in the same chat without another opener",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 1480
+          }
+        ]
+      }
+    ]
+  },
+  "work": {
+    "full_report": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/test-results/work-report.json",
+    "sha256": "b1e09b611ae7d551c8b7df58dd929f3c8e4a6bf6c94b11a18e566aa2ecde396b",
+    "stats": {
+      "startTime": "2026-11-01T13:30:38.918Z",
+      "duration": 150961.62399999998,
+      "expected": 22,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "cases": [
+      {
+        "title": "contextual goals, Routine and files use real scoped state and keep stop responsibility distinct from stop run",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 3703
+          }
+        ]
+      },
+      {
+        "title": "group creation recovers a lost acknowledgement, routes messages and keeps member DM resources private",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 4922
+          }
+        ]
+      },
+      {
+        "title": "browser viewer connects to the managed browser and reconnects its view without replaying actions",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 31928
+          }
+        ]
+      },
+      {
+        "title": "application access is assigned explicitly to this context and unsupported images never upload",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 8347
+          }
+        ]
+      },
+      {
+        "title": "native input and a specific approval preserve request identity through the real broker",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 3809
+          }
+        ]
+      },
+      {
+        "title": "rejected group membership preserves the draft and allows a corrected operation",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 3088
+          }
+        ]
+      },
+      {
+        "title": "sharing copies only the selected file into the explicit destination and preserves byte identity",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 2904
+          }
+        ]
+      },
+      {
+        "title": "all concurrent group lanes expose their native questions and free text uses one answer representation",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 3808
+          }
+        ]
+      },
+      {
+        "title": "an unconfirmed human reply is restored verbatim and locked across reload",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 3307
+          }
+        ]
+      },
+      {
+        "title": "membership editing keeps its original revision and cannot overwrite a concurrent change",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 1290
+          }
+        ]
+      },
+      {
+        "title": "four ordinary file attachments still allow a supported image",
+        "project": "desktop",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 2778
+          }
+        ]
+      },
+      {
+        "title": "contextual goals, Routine and files use real scoped state and keep stop responsibility distinct from stop run",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 2857
+          }
+        ]
+      },
+      {
+        "title": "group creation recovers a lost acknowledgement, routes messages and keeps member DM resources private",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 3785
+          }
+        ]
+      },
+      {
+        "title": "browser viewer connects to the managed browser and reconnects its view without replaying actions",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 18903
+          }
+        ]
+      },
+      {
+        "title": "application access is assigned explicitly to this context and unsupported images never upload",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 16444
+          }
+        ]
+      },
+      {
+        "title": "native input and a specific approval preserve request identity through the real broker",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 6563
+          }
+        ]
+      },
+      {
+        "title": "rejected group membership preserves the draft and allows a corrected operation",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 1595
+          }
+        ]
+      },
+      {
+        "title": "sharing copies only the selected file into the explicit destination and preserves byte identity",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 1658
+          }
+        ]
+      },
+      {
+        "title": "all concurrent group lanes expose their native questions and free text uses one answer representation",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 4843
+          }
+        ]
+      },
+      {
+        "title": "an unconfirmed human reply is restored verbatim and locked across reload",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 7500
+          }
+        ]
+      },
+      {
+        "title": "membership editing keeps its original revision and cannot overwrite a concurrent change",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 1558
+          }
+        ]
+      },
+      {
+        "title": "four ordinary file attachments still allow a supported image",
+        "project": "mobile",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration_ms": 7506
+          }
+        ]
+      }
+    ]
+  },
+  "settings": {
+    "full_log": "/tmp/ngertiin-primitives-settings.log",
+    "sha256": "3e27c5818aba40b24ce73a47f833042ad364476d1ce5d94f420fe27a9bce81a2",
+    "stats": {
+      "expected": 10,
+      "unexpected": 0,
+      "skipped": 0
+    },
+    "cases": [
+      {
+        "title": "settings navigation, search, theme and return preserve the conversation draft",
+        "project": "desktop",
+        "status": "expected",
+        "duration": "5.8s"
+      },
+      {
+        "title": "provider detail, key dialog, native-login fixture and actionable inspection failure",
+        "project": "desktop",
+        "status": "expected",
+        "duration": "4.7s"
+      },
+      {
+        "title": "real key onboarding retries a lost acknowledgement without duplicate, then revokes",
+        "project": "desktop",
+        "status": "expected",
+        "duration": "6.4s"
+      },
+      {
+        "title": "missing runtime remains repairable without claiming provider readiness",
+        "project": "desktop",
+        "status": "expected",
+        "duration": "8.1s"
+      },
+      {
+        "title": "dedicated settings and provider URLs support reload, history and narrow viewports",
+        "project": "desktop",
+        "status": "expected",
+        "duration": "6.9s"
+      },
+      {
+        "title": "settings navigation, search, theme and return preserve the conversation draft",
+        "project": "mobile",
+        "status": "expected",
+        "duration": "3.9s"
+      },
+      {
+        "title": "provider detail, key dialog, native-login fixture and actionable inspection failure",
+        "project": "mobile",
+        "status": "expected",
+        "duration": "3.7s"
+      },
+      {
+        "title": "real key onboarding retries a lost acknowledgement without duplicate, then revokes",
+        "project": "mobile",
+        "status": "expected",
+        "duration": "4.7s"
+      },
+      {
+        "title": "missing runtime remains repairable without claiming provider readiness",
+        "project": "mobile",
+        "status": "expected",
+        "duration": "6.9s"
+      },
+      {
+        "title": "dedicated settings and provider URLs support reload, history and narrow viewports",
+        "project": "mobile",
+        "status": "expected",
+        "duration": "7.2s"
+      }
+    ]
+  }
+}

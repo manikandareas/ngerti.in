@@ -19,7 +19,7 @@ function Command({ className, ...props }: React.ComponentProps<typeof CommandPri
     <CommandPrimitive
       data-slot="command"
       className={cn(
-        "flex size-full flex-col overflow-hidden rounded-xl! bg-popover p-1 text-popover-foreground",
+        "flex size-full max-h-[min(480px,70vh)] flex-col overflow-hidden rounded-menu bg-popover p-1.5 text-popover-foreground",
         className,
       )}
       {...props}
@@ -47,7 +47,10 @@ function CommandDialog({
         <DialogDescription>{description}</DialogDescription>
       </DialogHeader>
       <DialogContent
-        className={cn("top-1/3 translate-y-0 overflow-hidden rounded-xl! p-0", className)}
+        className={cn(
+          "top-[14vh] translate-y-0 overflow-hidden rounded-menu p-0 sm:max-w-[560px]",
+          className,
+        )}
         showCloseButton={showCloseButton}
       >
         {children}
@@ -62,17 +65,21 @@ function CommandInput({
 }: React.ComponentProps<typeof CommandPrimitive.Input>) {
   return (
     <div data-slot="command-input-wrapper" className="p-1 pb-0">
-      <InputGroup className="h-8! rounded-lg! border-input/30 bg-input/30 shadow-none! *:data-[slot=input-group-addon]:pl-2!">
+      <InputGroup className="h-control-md rounded-control border-border/50 bg-control shadow-none focus-within:border-input-focus *:data-[slot=input-group-addon]:pl-2!">
         <CommandPrimitive.Input
           data-slot="command-input"
           className={cn(
-            "w-full text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
+            "w-full text-base outline-hidden md:text-(length:--text-control-label)/5 disabled:cursor-not-allowed disabled:opacity-50",
             className,
           )}
           {...props}
         />
         <InputGroupAddon>
-          <HugeiconsIcon icon={SearchIcon} strokeWidth={2} className="size-4 shrink-0 opacity-50" />
+          <HugeiconsIcon
+            icon={SearchIcon}
+            strokeWidth={1.75}
+            className="size-4 shrink-0 opacity-50"
+          />
         </InputGroupAddon>
       </InputGroup>
     </div>
@@ -84,7 +91,7 @@ function CommandList({ className, ...props }: React.ComponentProps<typeof Comman
     <CommandPrimitive.List
       data-slot="command-list"
       className={cn(
-        "no-scrollbar max-h-72 scroll-py-1 overflow-x-hidden overflow-y-auto outline-none",
+        "no-scrollbar min-h-0 max-h-[min(480px,70vh)] flex-1 scroll-py-1 overflow-x-hidden overflow-y-auto outline-none",
         className,
       )}
       {...props}
@@ -128,7 +135,7 @@ function CommandSeparator({
   return (
     <CommandPrimitive.Separator
       data-slot="command-separator"
-      className={cn("-mx-1 h-px bg-border", className)}
+      className={cn("mx-1.5 h-px bg-border/50", className)}
       {...props}
     />
   );
@@ -143,7 +150,7 @@ function CommandItem({
     <CommandPrimitive.Item
       data-slot="command-item"
       className={cn(
-        "group/command-item relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none in-data-[slot=dialog-content]:rounded-lg! data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 data-selected:bg-muted data-selected:text-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 data-selected:*:[svg]:text-foreground",
+        "group/command-item relative flex min-h-menu-item cursor-default items-center gap-2 rounded-menu-item px-2 py-1.5 text-sm leading-[18px] transition-colors duration-(--duration-fast) outline-hidden select-none touch:min-h-menu-item-touch data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 hover:bg-menu-hover active:bg-menu-active data-selected:bg-menu-hover data-selected:text-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 data-selected:*:[svg]:text-foreground",
         className,
       )}
       {...props}
@@ -151,7 +158,7 @@ function CommandItem({
       {children}
       <HugeiconsIcon
         icon={Tick02Icon}
-        strokeWidth={2}
+        strokeWidth={1.75}
         className="ml-auto opacity-0 group-has-data-[slot=command-shortcut]/command-item:hidden group-data-[checked=true]/command-item:opacity-100"
       />
     </CommandPrimitive.Item>

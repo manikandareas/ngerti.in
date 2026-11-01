@@ -9,7 +9,7 @@ function Spinner({
   return (
     <HugeiconsIcon
       icon={Loading03Icon}
-      strokeWidth={2}
+      strokeWidth={1.75}
       data-slot="spinner"
       role="status"
       aria-label="Loading"

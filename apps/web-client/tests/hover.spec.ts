@@ -18,9 +18,9 @@ async function samplePaint(control: Locator, interact: () => Promise<void>) {
 }
 
 for (const mode of ["light", "dark"] as const) {
-  const fill = mode === "light" ? "rgb(11, 98, 196)" : "rgb(16, 132, 254)";
-  const hover = mode === "light" ? "rgb(9, 87, 175)" : "rgb(55, 153, 255)";
-  const pressed = mode === "light" ? "rgb(8, 75, 152)" : "rgb(101, 177, 255)";
+  const fill = "rgb(11, 98, 196)";
+  const hover = "rgb(9, 87, 175)";
+  const pressed = "rgb(8, 75, 152)";
 
   test(`${mode}: solid primary stays opaque throughout hover transitions`, async ({ page }) => {
     await page.goto("/design-system?component=button");

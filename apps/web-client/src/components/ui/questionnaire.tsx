@@ -100,7 +100,7 @@ function QuestionnaireChoice({
     <QuestionnairePrimitive.Choice
       data-slot="questionnaire-choice"
       className={cn(
-        "group/questionnaire-choice relative flex min-h-11 cursor-pointer items-start gap-2.5 rounded-lg border border-input bg-transparent px-3 py-2.5 text-start text-sm transition-colors outline-none select-none hover:bg-muted/50 has-[>input:focus-visible]:border-ring has-[>input:focus-visible]:ring-3 has-[>input:focus-visible]:ring-ring/50 data-invalid:border-destructive dark:bg-input/20 data-checked:border-primary/40 data-checked:bg-muted dark:data-checked:bg-muted",
+        "group/questionnaire-choice relative flex min-h-11 cursor-pointer items-start gap-2.5 rounded-control border border-input bg-card px-3 py-2.5 text-start text-sm transition-colors duration-(--duration-fast) outline-none select-none hover:bg-menu-hover has-[>input:focus-visible]:border-input-focus has-[>input:focus-visible]:ring-1 has-[>input:focus-visible]:ring-input-focus/20 data-invalid:border-destructive data-checked:border-input-focus data-checked:bg-muted dark:data-checked:bg-muted",
         "data-disabled:pointer-events-none data-disabled:cursor-not-allowed data-disabled:opacity-50",
         className,
       )}
@@ -121,7 +121,7 @@ function QuestionnaireChoice({
         />
         <HugeiconsIcon
           icon={Tick02Icon}
-          strokeWidth={2}
+          strokeWidth={1.75}
           data-slot="questionnaire-choice-indicator-check"
           className="hidden size-3.5 group-data-[type=radio]/questionnaire-choice:hidden group-data-checked/questionnaire-choice:block"
         />
@@ -162,7 +162,7 @@ function QuestionnaireInput({
       <QuestionnairePrimitive.Input
         data-slot="questionnaire-input"
         className={cn(
-          "h-8 min-h-11 w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 py-1 text-base transition-[color,box-shadow,background-color] outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-offset-3 focus-visible:ring-offset-card focus-visible:ring-ring disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 sm:min-h-0 md:text-sm dark:aria-invalid:ring-destructive/40",
+          "h-8 min-h-11 w-full min-w-0 rounded-control border border-input bg-card px-2.5 py-1 text-base transition-[color,box-shadow,background-color] outline-none focus-visible:border-input-focus disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-1 aria-invalid:ring-destructive/20 sm:min-h-0 md:text-(length:--text-control-label)/5 dark:aria-invalid:ring-destructive/20",
           "selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground",
           className,
         )}

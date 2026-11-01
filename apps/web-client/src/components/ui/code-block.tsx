@@ -6,7 +6,7 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 
 const codeBlockVariants = cva(
-  "group/code-block relative flex w-full min-w-0 flex-col overflow-hidden rounded-lg text-sm has-[>[data-slot=code-block-content]:focus-visible]:ring-3 has-[>[data-slot=code-block-content]:focus-visible]:ring-ring/50 data-[size=sm]:text-xs",
+  "group/code-block relative flex w-full min-w-0 flex-col overflow-hidden rounded-card text-(length:--text-control-label)/5 has-[>[data-slot=code-block-content]:focus-visible]:ring-2 has-[>[data-slot=code-block-content]:focus-visible]:ring-ring data-[size=sm]:text-xs",
   {
     variants: {
       variant: {
@@ -33,7 +33,7 @@ function CodeBlock({
       data-slot="code-block"
       data-variant={variant}
       data-size={size}
-      className={cn("dark", codeBlockVariants({ variant }), className)}
+      className={cn(codeBlockVariants({ variant }), className)}
       {...props}
     />
   );
@@ -70,7 +70,7 @@ function CodeBlockActions({ className, ...props }: React.ComponentProps<"div">) 
     <div
       data-slot="code-block-actions"
       className={cn(
-        "-my-1 ms-auto -me-1.5 flex shrink-0 items-center gap-1 [[data-slot=code-block]>&]:absolute [[data-slot=code-block]>&]:end-2 [[data-slot=code-block]>&]:top-2 [[data-slot=code-block]>&]:z-10 [[data-slot=code-block]>&]:m-0 [[data-slot=code-block]>&]:opacity-0 [[data-slot=code-block]>&]:transition-opacity [[data-slot=code-block]>&]:group-focus-within/code-block:opacity-100 [[data-slot=code-block]>&]:group-hover/code-block:opacity-100 group-data-[size=sm]/code-block:[[data-slot=code-block]>&]:end-1.5 group-data-[size=sm]/code-block:[[data-slot=code-block]>&]:top-1.5 [[data-slot=code-block]>&]:pointer-coarse:opacity-100 [[data-slot=code-block]>&]:*:[button]:bg-background [[data-slot=code-block]>&]:*:[button]:ring-1 [[data-slot=code-block]>&]:*:[button]:ring-border",
+        "-my-1 ms-auto -me-1.5 flex shrink-0 items-center gap-1 [[data-slot=code-block]>&]:absolute [[data-slot=code-block]>&]:end-2 [[data-slot=code-block]>&]:top-2 [[data-slot=code-block]>&]:z-10 [[data-slot=code-block]>&]:m-0 [[data-slot=code-block]>&]:opacity-0 [[data-slot=code-block]>&]:transition-opacity [[data-slot=code-block]>&]:duration-(--duration-fast) [[data-slot=code-block]>&]:group-focus-within/code-block:opacity-100 [[data-slot=code-block]>&]:group-hover/code-block:opacity-100 group-data-[size=sm]/code-block:[[data-slot=code-block]>&]:end-1.5 group-data-[size=sm]/code-block:[[data-slot=code-block]>&]:top-1.5 [[data-slot=code-block]>&]:pointer-coarse:opacity-100 [[data-slot=code-block]>&]:*:[button]:bg-background [[data-slot=code-block]>&]:*:[button]:ring-1 [[data-slot=code-block]>&]:*:[button]:ring-border",
         className,
       )}
       {...props}
@@ -116,9 +116,9 @@ function CodeBlockCopyButton({
         {...props}
       >
         {copied ? (
-          <HugeiconsIcon icon={Tick02Icon} strokeWidth={2} />
+          <HugeiconsIcon icon={Tick02Icon} strokeWidth={1.75} />
         ) : (
-          <HugeiconsIcon icon={Copy01Icon} strokeWidth={2} />
+          <HugeiconsIcon icon={Copy01Icon} strokeWidth={1.75} />
         )}
       </Button>
       <span aria-live="polite" className="sr-only">

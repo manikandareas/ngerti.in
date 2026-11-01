@@ -17,14 +17,20 @@ const Toaster = ({ ...props }: ToasterProps) => {
       theme={theme as ToasterProps["theme"]}
       className="toaster group"
       icons={{
-        success: <HugeiconsIcon icon={CheckmarkCircle02Icon} strokeWidth={2} className="size-4" />,
-        info: <HugeiconsIcon icon={InformationCircleIcon} strokeWidth={2} className="size-4" />,
-        warning: <HugeiconsIcon icon={Alert02Icon} strokeWidth={2} className="size-4" />,
+        success: (
+          <HugeiconsIcon icon={CheckmarkCircle02Icon} strokeWidth={1.75} className="size-4" />
+        ),
+        info: <HugeiconsIcon icon={InformationCircleIcon} strokeWidth={1.75} className="size-4" />,
+        warning: <HugeiconsIcon icon={Alert02Icon} strokeWidth={1.75} className="size-4" />,
         error: (
-          <HugeiconsIcon icon={MultiplicationSignCircleIcon} strokeWidth={2} className="size-4" />
+          <HugeiconsIcon
+            icon={MultiplicationSignCircleIcon}
+            strokeWidth={1.75}
+            className="size-4"
+          />
         ),
         loading: (
-          <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-4 animate-spin" />
+          <HugeiconsIcon icon={Loading03Icon} strokeWidth={1.75} className="size-4 animate-spin" />
         ),
       }}
       style={
@@ -32,7 +38,16 @@ const Toaster = ({ ...props }: ToasterProps) => {
           "--normal-bg": "var(--popover)",
           "--normal-text": "var(--popover-foreground)",
           "--normal-border": "var(--border)",
-          "--border-radius": "var(--radius)",
+          "--border-radius": "var(--radius-menu)",
+          "--success-bg": "var(--success)",
+          "--success-text": "var(--success-foreground)",
+          "--success-border": "var(--success-foreground)",
+          "--error-bg": "var(--danger-soft)",
+          "--error-text": "var(--destructive)",
+          "--error-border": "var(--destructive)",
+          "--warning-bg": "var(--warning)",
+          "--warning-text": "var(--warning-foreground)",
+          "--warning-border": "var(--warning-foreground)",
         } as React.CSSProperties
       }
       toastOptions={{

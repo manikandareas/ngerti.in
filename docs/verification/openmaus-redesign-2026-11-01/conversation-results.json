@@ -1,0 +1,147 @@
+{
+  "command": "bunx playwright test --config playwright.conversation.config.ts",
+  "stats": {
+    "startTime": "2026-11-01T10:17:12.386Z",
+    "duration": 17897.822,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "errors": [],
+  "cases": [
+    {
+      "title": "real API: create, durable opener, queued edit/delete, memory, panel and reload",
+      "file": "conversation.spec.ts",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2416,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "lost acknowledgement reuses exact creation operation across reload",
+      "file": "conversation.spec.ts",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1084,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "loopback bridge refuses cross-origin requests",
+      "file": "conversation.spec.ts",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 26,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "lost message acknowledgement remains recoverable after reload without duplicate admission",
+      "file": "conversation.spec.ts",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1375,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "cancelled opening can continue in the same chat without another opener",
+      "file": "conversation.spec.ts",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 968,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "real API: create, durable opener, queued edit/delete, memory, panel and reload",
+      "file": "conversation.spec.ts",
+      "project": "mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2668,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "lost acknowledgement reuses exact creation operation across reload",
+      "file": "conversation.spec.ts",
+      "project": "mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1916,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "loopback bridge refuses cross-origin requests",
+      "file": "conversation.spec.ts",
+      "project": "mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 8,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "lost message acknowledgement remains recoverable after reload without duplicate admission",
+      "file": "conversation.spec.ts",
+      "project": "mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1307,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "cancelled opening can continue in the same chat without another opener",
+      "file": "conversation.spec.ts",
+      "project": "mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1403,
+          "errors": []
+        }
+      ]
+    }
+  ],
+  "raw_report_path": "/tmp/ngertiin-redesign-final-conversation.json",
+  "raw_report_sha256": "bf28c41b0812f0e83bcb16c39a4d3627975832e924a7187b1811c69d80f14577",
+  "environment": "Isolated temporary SQLite state, real API, production preview, no native executors"
+}

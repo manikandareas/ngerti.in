@@ -15,7 +15,7 @@ const test = base.extend({
 });
 
 test.beforeEach(async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/theme-preview");
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   await page.evaluate(() => document.fonts.ready);
 });

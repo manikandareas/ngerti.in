@@ -23,6 +23,8 @@ test("dedicated route opens directly and refreshes", async ({ page }) => {
   await expect(page.getByTestId("foundations")).toBeVisible();
   await page.getByRole("link", { name: "Kembali ke beranda" }).click();
   await expect(page).toHaveURL("/");
+  const openNavigation = page.getByRole("button", { name: "Buka percakapan", exact: true });
+  if (await openNavigation.isVisible()) await openNavigation.click();
   await page.getByRole("link", { name: "Design system", exact: true }).click();
   await expect(page).toHaveURL("/design-system");
 });

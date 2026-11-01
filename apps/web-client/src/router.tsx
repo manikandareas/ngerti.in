@@ -25,6 +25,12 @@ const rootRoute = createRootRoute({
 const homeRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
+  component: lazyRouteComponent(() => import("@/features/conversation/workspace")),
+});
+
+const themePreviewRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/theme-preview",
   component: lazyRouteComponent(() => import("@/pages/home")),
 });
 
@@ -41,7 +47,7 @@ const designSystemRoute = createRoute({
 });
 
 export const router = createRouter({
-  routeTree: rootRoute.addChildren([homeRoute, designSystemRoute]),
+  routeTree: rootRoute.addChildren([homeRoute, designSystemRoute, themePreviewRoute]),
   scrollRestoration: true,
 });
 

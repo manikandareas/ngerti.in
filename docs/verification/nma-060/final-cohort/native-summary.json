@@ -1,0 +1,663 @@
+{
+  "native_runs": 38,
+  "succeeded": 36,
+  "cancelled_confirmed": 2,
+  "failed": 0,
+  "unknown": 0,
+  "unsupported_rejected_before_dispatch": [
+    {
+      "id": "4948956d-4dda-4978-af50-9fc859d68b13",
+      "owner_id": "7ba9c73a-373f-403b-9d70-2e1696a447cf",
+      "revision": 4,
+      "created_at": "2026-11-01T08:13:35.647Z",
+      "updated_at": "2026-11-01T08:13:36.225Z",
+      "kind": "run",
+      "thread_id": "e9744196-eee0-4d2e-ac86-8484d07b17dc",
+      "agent_id": "af976917-0c7a-42e1-9e25-8190f3778548",
+      "input_message_id": "9aa5fcaa-b3c4-459a-8686-58b978c14ed0",
+      "task_id": null,
+      "thread_revision": null,
+      "goal_id": null,
+      "routine_id": null,
+      "goal_generation": null,
+      "routine_generation": null,
+      "publication": "immediate",
+      "pending_answer": null,
+      "status": "failed",
+      "cancellation": "none",
+      "outcome": "failed",
+      "delivery": "delivered",
+      "activity": "idle",
+      "diagnostic": {
+        "code": "CAPABILITY_UNSUPPORTED",
+        "category": "configuration",
+        "outcome": "not_dispatched"
+      },
+      "native_dispatch_id": null,
+      "grant_revision": 1,
+      "dispatch_token": "ada7dbfc-bb13-4e4d-8757-74f2b6e59aaa",
+      "authority_epoch": "d5aad9fe-d78c-467f-9b2a-c17f281f8019",
+      "binding_id": "6b62bc71-8ec2-4db2-a533-8b65733dd887",
+      "native_run_id": null,
+      "agent_snapshot": {
+        "name": "Integration proof Codex",
+        "handle": "integration_9aa1db38",
+        "avatar": null,
+        "soul": "",
+        "skills": [],
+        "harness": "codex",
+        "connection_id": "adb3115f-7e82-43e4-89af-3e2550683e38",
+        "billing_source": null,
+        "instructions": "These are isolated one-time verification tasks, not persistent goals or Routines. Use only the explicitly requested native modality or assigned application tool. Do not read unrelated host files, create goals, change memory or create schedules. Do not repeat unknown external effects.",
+        "workspace_id": null,
+        "model_id": "gpt-6.1-sol",
+        "reasoning": "medium",
+        "agent_id": "af976917-0c7a-42e1-9e25-8190f3778548",
+        "revision": 1
+      },
+      "workspace_id": "af30b834-a74c-4085-93a8-7650e24d5e83",
+      "workspace_revision": 1,
+      "product_tools": [],
+      "sources": [],
+      "visual_inputs": [],
+      "native_tools": []
+    }
+  ],
+  "retained_failed_setup": {
+    "id": "be238aa5-9d38-4fff-9e2d-0ccd48dda528",
+    "owner_id": "7ba9c73a-373f-403b-9d70-2e1696a447cf",
+    "revision": 3,
+    "created_at": "2026-11-01T08:09:52.552Z",
+    "updated_at": "2026-11-01T08:13:29.178Z",
+    "kind": "run",
+    "thread_id": "29ad2a02-e436-4e3a-a16f-cba124b68b5c",
+    "agent_id": "1df90119-bcf3-4e65-9181-a53a9184edf7",
+    "input_message_id": "0cf6ec76-3080-43f7-b60a-d80b91425b93",
+    "task_id": null,
+    "thread_revision": null,
+    "goal_id": null,
+    "routine_id": null,
+    "goal_generation": null,
+    "routine_generation": null,
+    "publication": "immediate",
+    "pending_answer": null,
+    "status": "cancelled",
+    "cancellation": "confirmed",
+    "outcome": "cancelled",
+    "delivery": "removed",
+    "activity": "idle",
+    "diagnostic": {
+      "code": "NATIVE_UNKNOWN",
+      "category": "unknown",
+      "outcome": "unknown"
+    },
+    "native_dispatch_id": null,
+    "grant_revision": 1,
+    "dispatch_token": null,
+    "authority_epoch": null,
+    "binding_id": null,
+    "native_run_id": null,
+    "agent_snapshot": null,
+    "workspace_id": null,
+    "workspace_revision": null,
+    "product_tools": [],
+    "sources": [],
+    "visual_inputs": [],
+    "native_tools": []
+  },
+  "runs": [
+    {
+      "id": "d27bc6bf-2ee3-4e05-b38d-a5a3b89954b5",
+      "agent_id": "3588d821-e033-4a93-8b76-d6fdabdbd093",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a19627-8b42-79d0-9770-085dfd3d6598",
+      "product_tools": [
+        "ngertiin.describe_tools",
+        "ngertiin.list_agents",
+        "ngertiin.update_agent"
+      ]
+    },
+    {
+      "id": "c17df46d-a002-411e-b962-f34f30de64ba",
+      "agent_id": "de707b55-03d8-47ef-92a3-25e5b9d2b2c6",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a19627-8f07-7000-843f-34fa7e1d2333",
+      "product_tools": [
+        "ngertiin.describe_tools",
+        "ngertiin.list_agents",
+        "ngertiin.update_agent"
+      ]
+    },
+    {
+      "id": "a3675366-46c9-4db4-b335-1b9beac3f408",
+      "agent_id": "3588d821-e033-4a93-8b76-d6fdabdbd093",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a19628-42aa-7fb1-8de6-a8e3ac8f7a41",
+      "product_tools": []
+    },
+    {
+      "id": "e462ee3c-ae67-4f2e-9067-e0520c8289f3",
+      "agent_id": "3588d821-e033-4a93-8b76-d6fdabdbd093",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a19628-44ff-7881-ab4f-b4bb59d6b612",
+      "product_tools": []
+    },
+    {
+      "id": "567fe9a3-9e41-4dda-bddd-165add91951d",
+      "agent_id": "3588d821-e033-4a93-8b76-d6fdabdbd093",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a19628-5616-7da3-8347-43eae5ba3d17",
+      "product_tools": [
+        "ngertiin.describe_tools",
+        "ngertiin.update_group"
+      ]
+    },
+    {
+      "id": "1d00af2b-9ab8-423b-9005-7660cc2df0ca",
+      "agent_id": "de707b55-03d8-47ef-92a3-25e5b9d2b2c6",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a19628-5e25-7000-8ede-9bb777cbbe84",
+      "product_tools": [
+        "ngertiin.describe_tools",
+        "ngertiin.update_group"
+      ]
+    },
+    {
+      "id": "56155596-a847-48b6-9dfe-1e48b9051ff5",
+      "agent_id": "37387adf-8a09-4154-b367-951dc0ae4bde",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a19628-c468-7b01-9e27-3cf532274526",
+      "product_tools": [
+        "ngertiin.describe_tools",
+        "ngertiin.browser_sessions",
+        "ngertiin.browser_open",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action"
+      ]
+    },
+    {
+      "id": "9ed1c087-2775-4752-ae80-f13e9748b875",
+      "agent_id": "8892164d-ac35-4527-bdbb-a39285c4b0ca",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a19629-3e0a-79a2-9d95-4d1bb28bb69c",
+      "product_tools": []
+    },
+    {
+      "id": "19508390-cc68-445f-8597-2045466ffd14",
+      "agent_id": "53c2e5c2-0b02-4674-a51b-ea1af9608e42",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a19629-43a6-7000-9acd-1a54de8feebc",
+      "product_tools": []
+    },
+    {
+      "id": "a3a768a9-29e4-4368-bda5-1dd5cbd26515",
+      "agent_id": "8892164d-ac35-4527-bdbb-a39285c4b0ca",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a19629-6302-7413-b80d-93838fbc11ed",
+      "product_tools": [
+        "ngertiin.describe_tools",
+        "ngertiin.list_goals",
+        "ngertiin.read_run_context",
+        "ngertiin.capture_goal",
+        "ngertiin.report_goal",
+        "ngertiin.capture_goal",
+        "ngertiin.report_goal"
+      ]
+    },
+    {
+      "id": "78d423b8-1346-405f-8a58-8a0f57dc4dba",
+      "agent_id": "53c2e5c2-0b02-4674-a51b-ea1af9608e42",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a19629-627a-7000-984b-0817a8051fb1",
+      "product_tools": [
+        "ngertiin.describe_tools",
+        "ngertiin.read_run_context",
+        "ngertiin.list_goals",
+        "ngertiin.capture_goal",
+        "ngertiin.capture_goal",
+        "ngertiin.report_goal",
+        "ngertiin.report_goal"
+      ]
+    },
+    {
+      "id": "1c9f8745-6685-4ffe-8485-173ce89a9875",
+      "agent_id": "8892164d-ac35-4527-bdbb-a39285c4b0ca",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a1962a-6e2f-7f22-9d0d-89330ba07a47",
+      "product_tools": [
+        "ngertiin.read_run_context",
+        "ngertiin.list_goals",
+        "ngertiin.capture_goal",
+        "ngertiin.report_goal"
+      ]
+    },
+    {
+      "id": "241e6a67-0a66-402d-9b53-6c7815178ad8",
+      "agent_id": "53c2e5c2-0b02-4674-a51b-ea1af9608e42",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a1962a-6c60-7000-93b1-4b71be7e1421",
+      "product_tools": [
+        "ngertiin.read_run_context",
+        "ngertiin.capture_goal",
+        "ngertiin.report_goal"
+      ]
+    },
+    {
+      "id": "61135748-8934-4286-bd18-a7af6858149a",
+      "agent_id": "8892164d-ac35-4527-bdbb-a39285c4b0ca",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a1962a-da55-7673-9f9b-5ce81698db2d",
+      "product_tools": [
+        "ngertiin.read_run_context",
+        "ngertiin.list_goals",
+        "ngertiin.read_file",
+        "ngertiin.capture_goal",
+        "ngertiin.create_file",
+        "ngertiin.read_file",
+        "ngertiin.write_routine",
+        "ngertiin.list_goals",
+        "ngertiin.report_goal"
+      ]
+    },
+    {
+      "id": "24fa2fa0-71fa-4a04-bc9a-160cbbaf0325",
+      "agent_id": "53c2e5c2-0b02-4674-a51b-ea1af9608e42",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a1962a-d9e5-7000-9781-3d96a0c9bb52",
+      "product_tools": [
+        "ngertiin.read_run_context",
+        "ngertiin.read_file",
+        "ngertiin.list_files",
+        "ngertiin.create_file",
+        "ngertiin.write_routine",
+        "ngertiin.list_goals",
+        "ngertiin.report_goal",
+        "ngertiin.list_goals",
+        "ngertiin.read_file"
+      ]
+    },
+    {
+      "id": "81d1a377-9688-487f-adc0-68b6225b5bb0",
+      "agent_id": "4f60987f-b4fa-439e-9b77-d19ceaa826bb",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a1962b-99c5-7000-8257-06e85c98d385",
+      "product_tools": [
+        "ngertiin.describe_tools",
+        "ngertiin.browser_sessions",
+        "ngertiin.browser_open",
+        "ngertiin.browser_sessions",
+        "ngertiin.browser_sessions",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action"
+      ]
+    },
+    {
+      "id": "cdaeef7d-09be-4b97-9b19-f144e76d9d39",
+      "agent_id": "af976917-0c7a-42e1-9e25-8190f3778548",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a1962b-c132-7303-8dd4-716bf7a64832",
+      "product_tools": []
+    },
+    {
+      "id": "9c55db4f-e5d1-4a9c-82a8-f2053c39d2af",
+      "agent_id": "af976917-0c7a-42e1-9e25-8190f3778548",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a1962c-1c20-78c2-b395-155c6fad20eb",
+      "product_tools": [
+        "ngertiin.describe_tools",
+        "ngertiin.list_apps",
+        "ngertiin.search_app_tools",
+        "ngertiin.execute_app_tool"
+      ]
+    },
+    {
+      "id": "5beb2a08-7527-418f-95fa-6afe579e3bf7",
+      "agent_id": "37387adf-8a09-4154-b367-951dc0ae4bde",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a1962e-cc35-7a32-ade8-5f5792a6e7c6",
+      "product_tools": [
+        "ngertiin.browser_sessions",
+        "ngertiin.browser_open",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action"
+      ]
+    },
+    {
+      "id": "3962a5db-ffe2-434e-bb91-7aa7dd64890b",
+      "agent_id": "4f60987f-b4fa-439e-9b77-d19ceaa826bb",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a1962f-4e6a-7000-a89b-5e9bad16b3b9",
+      "product_tools": [
+        "ngertiin.browser_sessions",
+        "ngertiin.browser_open",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action"
+      ]
+    },
+    {
+      "id": "feccb663-7b7e-4023-a89e-4176491dc3da",
+      "agent_id": "8892164d-ac35-4527-bdbb-a39285c4b0ca",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a1962f-a89a-7413-a003-73a92f55de5d",
+      "product_tools": [
+        "ngertiin.read_file",
+        "ngertiin.list_goals",
+        "ngertiin.create_file",
+        "ngertiin.read_file",
+        "ngertiin.publish_artifact",
+        "ngertiin.report_goal"
+      ]
+    },
+    {
+      "id": "36c51ba4-5944-48b8-97d9-5d571fb3f901",
+      "agent_id": "70212b70-2a1f-40d9-92f5-5813a654d5ba",
+      "status": "cancelled",
+      "cancellation": "confirmed",
+      "diagnostic": null,
+      "native_run_id": "01a1962f-ad25-7302-82b4-954072eca36b",
+      "product_tools": []
+    },
+    {
+      "id": "8696de63-3c16-42e6-81a3-1102be1e4d9d",
+      "agent_id": "5760032e-e735-48c6-9c53-2a999fc5b41f",
+      "status": "cancelled",
+      "cancellation": "confirmed",
+      "diagnostic": null,
+      "native_run_id": "01a1962f-bf79-7000-a0b3-4cffe10b77cf",
+      "product_tools": []
+    },
+    {
+      "id": "3f647e78-b79f-4330-848e-19875e6ada77",
+      "agent_id": "53c2e5c2-0b02-4674-a51b-ea1af9608e42",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a19630-582d-7000-8943-c2479e88407c",
+      "product_tools": [
+        "ngertiin.read_file",
+        "ngertiin.create_file",
+        "ngertiin.read_file",
+        "ngertiin.publish_artifact",
+        "ngertiin.report_goal"
+      ]
+    },
+    {
+      "id": "e48dc955-9830-454e-84cf-17f524f34012",
+      "agent_id": "8892164d-ac35-4527-bdbb-a39285c4b0ca",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a19630-9994-7b22-b391-794b2fe55972",
+      "product_tools": [
+        "ngertiin.read_run_context",
+        "ngertiin.list_goals",
+        "ngertiin.capture_goal",
+        "ngertiin.write_routine",
+        "ngertiin.report_goal",
+        "ngertiin.capture_goal",
+        "ngertiin.write_routine",
+        "ngertiin.report_goal"
+      ]
+    },
+    {
+      "id": "cd0b8057-a792-4afe-9702-fa68524359a5",
+      "agent_id": "53c2e5c2-0b02-4674-a51b-ea1af9608e42",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a19631-0249-7000-a698-94b2ef8cf34c",
+      "product_tools": [
+        "ngertiin.read_run_context",
+        "ngertiin.capture_goal",
+        "ngertiin.write_routine",
+        "ngertiin.capture_goal",
+        "ngertiin.write_routine",
+        "ngertiin.list_goals",
+        "ngertiin.report_goal",
+        "ngertiin.report_goal"
+      ]
+    },
+    {
+      "id": "9fa00082-5a90-417d-b510-e454dc91067a",
+      "agent_id": "8892164d-ac35-4527-bdbb-a39285c4b0ca",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a19631-ea6f-7932-9efe-47c788eadff0",
+      "product_tools": [
+        "ngertiin.list_goals",
+        "ngertiin.read_run_context",
+        "ngertiin.capture_goal",
+        "ngertiin.write_routine",
+        "ngertiin.report_goal",
+        "ngertiin.capture_goal",
+        "ngertiin.write_routine",
+        "ngertiin.report_goal"
+      ]
+    },
+    {
+      "id": "17e4b0a9-2388-4a10-bdc5-c68c7bd2171f",
+      "agent_id": "53c2e5c2-0b02-4674-a51b-ea1af9608e42",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a19631-e998-7000-8028-a6c4528a7f87",
+      "product_tools": [
+        "ngertiin.write_routine",
+        "ngertiin.write_routine",
+        "ngertiin.list_goals",
+        "ngertiin.read_run_context"
+      ]
+    },
+    {
+      "id": "cc5a352e-1bfd-4f0c-9fa0-b1f90e172a03",
+      "agent_id": "37387adf-8a09-4154-b367-951dc0ae4bde",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a19633-5d0d-7933-a188-1a6dfad6d734",
+      "product_tools": [
+        "ngertiin.browser_sessions",
+        "ngertiin.browser_open",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action"
+      ]
+    },
+    {
+      "id": "ea0fb2b6-d26c-49c3-90d2-22f803a21fbb",
+      "agent_id": "4f60987f-b4fa-439e-9b77-d19ceaa826bb",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a19633-f8d8-7000-a0ba-f6ae2343c762",
+      "product_tools": [
+        "ngertiin.browser_sessions",
+        "ngertiin.browser_open",
+        "ngertiin.browser_action",
+        "ngertiin.browser_action"
+      ]
+    },
+    {
+      "id": "827b06b6-7874-4d5d-9a7f-dc84d1fcb140",
+      "agent_id": "8892164d-ac35-4527-bdbb-a39285c4b0ca",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a19634-afa0-7341-8c02-3e383a0c9f8e",
+      "product_tools": [
+        "ngertiin.read_file",
+        "ngertiin.routine_no_update"
+      ]
+    },
+    {
+      "id": "f1411096-bba9-4d42-987b-a856172d11a8",
+      "agent_id": "53c2e5c2-0b02-4674-a51b-ea1af9608e42",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a19634-b444-7000-af02-7f2ddf65b937",
+      "product_tools": [
+        "ngertiin.read_run_context",
+        "ngertiin.list_files",
+        "ngertiin.list_files",
+        "ngertiin.read_file",
+        "ngertiin.routine_no_update"
+      ]
+    },
+    {
+      "id": "5dcd2009-3710-48e0-a7ba-becd61eb7792",
+      "agent_id": "8892164d-ac35-4527-bdbb-a39285c4b0ca",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a19635-1dbe-7c20-b782-9b6289df578a",
+      "product_tools": [
+        "ngertiin.list_goals",
+        "ngertiin.read_file",
+        "ngertiin.create_file",
+        "ngertiin.read_file",
+        "ngertiin.publish_artifact",
+        "ngertiin.report_goal"
+      ]
+    },
+    {
+      "id": "30e75e2f-cc83-42fd-a6f0-f73816f3cae1",
+      "agent_id": "53c2e5c2-0b02-4674-a51b-ea1af9608e42",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a19635-4863-7000-b16c-b7e8dff333d0",
+      "product_tools": [
+        "ngertiin.read_run_context",
+        "ngertiin.list_files",
+        "ngertiin.read_file",
+        "ngertiin.create_file",
+        "ngertiin.read_file",
+        "ngertiin.publish_artifact",
+        "ngertiin.report_goal"
+      ]
+    },
+    {
+      "id": "52730041-3f68-4c33-9d23-f2003d1b94d7",
+      "agent_id": "8892164d-ac35-4527-bdbb-a39285c4b0ca",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a19636-0904-7352-a429-2d5a98ad82b2",
+      "product_tools": [
+        "ngertiin.list_goals",
+        "ngertiin.control_routine",
+        "ngertiin.control_goal"
+      ]
+    },
+    {
+      "id": "2216e397-6161-4aa0-8aa8-55d150c2a5e4",
+      "agent_id": "53c2e5c2-0b02-4674-a51b-ea1af9608e42",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a19636-082d-7000-bd2d-d4c2c83072b4",
+      "product_tools": [
+        "ngertiin.control_routine",
+        "ngertiin.list_goals",
+        "ngertiin.control_goal"
+      ]
+    },
+    {
+      "id": "1cf1fc10-b722-4fa0-a748-1b4959b93620",
+      "agent_id": "70212b70-2a1f-40d9-92f5-5813a654d5ba",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a19638-1215-7751-8eb3-7c5ba2131878",
+      "product_tools": [
+        "ngertiin.read_run_context"
+      ]
+    },
+    {
+      "id": "f3e47625-eac5-4674-b633-ae5ef4bfc040",
+      "agent_id": "5760032e-e735-48c6-9c53-2a999fc5b41f",
+      "status": "succeeded",
+      "cancellation": "none",
+      "diagnostic": null,
+      "native_run_id": "01a19638-36b9-7000-af1b-975f416c4695",
+      "product_tools": [
+        "ngertiin.read_run_context"
+      ]
+    }
+  ],
+  "goals_stopped_or_completed": true,
+  "routines_inactive": true
+}

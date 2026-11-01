@@ -1,0 +1,10 @@
+import assert from "node:assert/strict";
+const p = await Bun.file(".dev/nma060-modalities-final-proof.json").json();
+const selected = await Bun.file(".dev/nma059/application-selection.json").json();
+const {token} = await Bun.file(".dev/nma049-native/installation.json").json();
+const headers = {Authorization:`Bearer ${token}`,"Content-Type":"application/json","Idempotency-Key":crypto.randomUUID()};
+const r=await fetch(`http://127.0.0.1:49959/v1/entities/app_connection/${selected.connection_id}`,{headers});assert.equal(r.status,200);const c=await r.json();
+const cleanup=process.argv[2]==="cleanup";
+const grants=c.grants.filter((g:any)=>g.agent_id!==p.agent.id || g.thread_id!==p.thread.id);
+if(!cleanup)grants.push({agent_id:p.agent.id,thread_id:p.thread.id,tools:[selected.tool]});
+const response=await fetch(`http://127.0.0.1:49959/v1/apps/connections/${c.id}/assign`,{method:"POST",headers,body:JSON.stringify({expected_revision:c.revision,grants})});assert.equal(response.status,200);console.log(cleanup?"Removed only the gate probe grant":"Assigned only the selected read-only tool to the gate probe");

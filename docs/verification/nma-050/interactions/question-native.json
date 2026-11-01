@@ -1,0 +1,89 @@
+{
+  "evidence_level": "native_question_answer_not_permission_approval",
+  "run": {
+    "id": "33a68b9f-bad3-458b-bb34-3c651eea8241",
+    "owner_id": "7ba9c73a-373f-403b-9d70-2e1696a447cf",
+    "revision": 7,
+    "created_at": "2026-11-01T08:03:42.427Z",
+    "updated_at": "2026-11-01T08:03:55.944Z",
+    "kind": "run",
+    "thread_id": "5f2c378a-9166-415e-9ddb-03cda7d15711",
+    "agent_id": "f793638b-6254-4e0f-884a-09eae96ad673",
+    "input_message_id": "696d1798-aa2a-42ce-b3e7-7a4a72c3af20",
+    "task_id": null,
+    "thread_revision": null,
+    "goal_id": null,
+    "routine_id": null,
+    "goal_generation": null,
+    "routine_generation": null,
+    "publication": "immediate",
+    "pending_answer": null,
+    "status": "succeeded",
+    "cancellation": "none",
+    "outcome": "succeeded",
+    "delivery": "delivered",
+    "activity": "idle",
+    "diagnostic": null,
+    "native_dispatch_id": "01a19622-cbf7-7000-bcf6-27b7eaa59442",
+    "grant_revision": 1,
+    "dispatch_token": "ae7ffb63-f998-4173-8598-cc4d06900ea6",
+    "authority_epoch": "1775d038-0e80-47d4-8ea9-b354cbe0208a",
+    "binding_id": "2fa143bc-84b6-4367-8758-f33b976fb1c9",
+    "native_run_id": "01a19622-cbf7-7000-bcf6-27b7eaa59442",
+    "agent_snapshot": {
+      "name": "Valuable Porcupine",
+      "handle": "agent_f793638b62544e0f884a09eae96ad673",
+      "avatar": "🤖",
+      "soul": "",
+      "skills": [],
+      "harness": "muse",
+      "connection_id": "7768845a-e730-4c36-bcdc-48c2483146f2",
+      "billing_source": "api_key",
+      "instructions": "",
+      "workspace_id": null,
+      "model_id": "muse-spark-1.3",
+      "reasoning": "medium",
+      "agent_id": "f793638b-6254-4e0f-884a-09eae96ad673",
+      "revision": 1
+    },
+    "workspace_id": "44411298-bf98-4c78-8c32-3a518d846b19",
+    "workspace_revision": 1,
+    "product_tools": [],
+    "sources": [],
+    "visual_inputs": [],
+    "native_tools": []
+  },
+  "pending": {
+    "approvals": [],
+    "user_inputs": [
+      {
+        "userInputId": "01a19622-d9d6-7453-80be-4e5b7d41a02c",
+        "questions": [
+          {
+            "id": "arith_check",
+            "header": "Arithmetic",
+            "question": "Which arithmetic check should I perform: 2+3 or 4+5?",
+            "options": [
+              {
+                "label": "2+3"
+              },
+              {
+                "label": "4+5"
+              }
+            ],
+            "selection": {
+              "mode": "single"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "answer": {
+    "status": "submitted"
+  },
+  "pass": true,
+  "error": null,
+  "native_requests": 1,
+  "permission_approval_verified": false
+}

@@ -1,0 +1,10 @@
+{
+  "connection_id": "7768845a-e730-4c36-bcdc-48c2483146f2",
+  "connection_revoked": true,
+  "credential_copy_removed": true,
+  "native_runs": 5,
+  "succeeded": 4,
+  "cancelled_confirmed": 1,
+  "failed_verifier_runs": 1,
+  "terminal_unknown": 0
+}

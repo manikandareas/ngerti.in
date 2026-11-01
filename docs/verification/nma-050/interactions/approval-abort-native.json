@@ -1,0 +1,212 @@
+{
+  "evidence_level": "native_permission_abort",
+  "run": {
+    "id": "ca935a1e-09ff-4b83-b69e-85f09d30e806",
+    "owner_id": "7ba9c73a-373f-403b-9d70-2e1696a447cf",
+    "revision": 9,
+    "created_at": "2026-11-01T08:07:40.074Z",
+    "updated_at": "2026-11-01T08:07:58.003Z",
+    "kind": "run",
+    "thread_id": "52b684e9-05b9-4e12-9416-a4edcb7a9d96",
+    "agent_id": "ba65bb0b-8c41-44f6-8fe9-b0b77059aade",
+    "input_message_id": "5015894e-9524-4001-8d88-73d45f5e5141",
+    "task_id": null,
+    "thread_revision": null,
+    "goal_id": null,
+    "routine_id": null,
+    "goal_generation": null,
+    "routine_generation": null,
+    "publication": "immediate",
+    "pending_answer": null,
+    "status": "succeeded",
+    "cancellation": "none",
+    "outcome": "succeeded",
+    "delivery": "delivered",
+    "activity": "idle",
+    "diagnostic": null,
+    "native_dispatch_id": "01a19626-68d3-7000-80d2-d36333548507",
+    "grant_revision": 1,
+    "dispatch_token": "33234c7d-a441-4f4c-9dfb-0677105e310d",
+    "authority_epoch": "d5aad9fe-d78c-467f-9b2a-c17f281f8019",
+    "binding_id": "bb4e26bf-0ebd-4f35-871d-68a8694b532c",
+    "native_run_id": "01a19626-68d3-7000-80d2-d36333548507",
+    "agent_snapshot": {
+      "name": "Creepy Beaver",
+      "handle": "agent_ba65bb0b8c4144f68fe9b0b77059aade",
+      "avatar": "🤖",
+      "soul": "",
+      "skills": [],
+      "harness": "muse",
+      "connection_id": "7768845a-e730-4c36-bcdc-48c2483146f2",
+      "billing_source": "api_key",
+      "instructions": "",
+      "workspace_id": null,
+      "model_id": "muse-spark-1.3",
+      "reasoning": "medium",
+      "agent_id": "ba65bb0b-8c41-44f6-8fe9-b0b77059aade",
+      "revision": 1
+    },
+    "workspace_id": "e2ab7a17-628b-470f-b8ae-2ea00455a467",
+    "workspace_revision": 1,
+    "product_tools": [],
+    "sources": [],
+    "visual_inputs": [],
+    "native_tools": []
+  },
+  "requests": [
+    {
+      "approvals": [
+        {
+          "approvalId": "01a19626-7884-79a2-975d-2798a0ae30be",
+          "toolName": "mcp__ngertiin__ngertiin_list_agents",
+          "rawArgs": "{}",
+          "currentRequirementId": {
+            "approvalId": "01a19626-7884-79a2-975d-2798a0ae30be",
+            "sourceIndex": 0
+          },
+          "availableChoices": [
+            {
+              "choiceId": "allow_once",
+              "decision": "approved",
+              "scope": "once",
+              "label": "Allow once"
+            },
+            {
+              "choiceId": "allow_session",
+              "decision": "approvedForSession",
+              "scope": "session",
+              "label": "Allow for this session",
+              "rulePreview": "tool `mcp__ngertiin__ngertiin_list_agents`"
+            },
+            {
+              "choiceId": "allow_local_mcp_tool",
+              "decision": "approvedPolicyAmendment",
+              "scope": "localPersistent",
+              "label": "Always allow this MCP tool",
+              "rulePreview": "tool `mcp__ngertiin__ngertiin_list_agents`"
+            },
+            {
+              "choiceId": "abort",
+              "decision": "abort",
+              "scope": "once",
+              "label": "Reject"
+            }
+          ],
+          "subject": {
+            "kind": "tool",
+            "toolName": "mcp__ngertiin__ngertiin_list_agents"
+          }
+        }
+      ],
+      "user_inputs": []
+    },
+    {
+      "approvals": [
+        {
+          "approvalId": "01a19626-89e0-7c50-9336-49433e05d7a9",
+          "toolName": "mcp__ngertiin__ngertiin_update_agent",
+          "rawArgs": "{\"agent_id\":\"ba65bb0b-8c41-44f6-8fe9-b0b77059aade\",\"changes\":{\"name\":\"Permission proof\"},\"command_id\":\"11111111-1111-4111-8111-111111111111\",\"expected_revision\":1}",
+          "currentRequirementId": {
+            "approvalId": "01a19626-89e0-7c50-9336-49433e05d7a9",
+            "sourceIndex": 0
+          },
+          "availableChoices": [
+            {
+              "choiceId": "allow_once",
+              "decision": "approved",
+              "scope": "once",
+              "label": "Allow once"
+            },
+            {
+              "choiceId": "allow_session",
+              "decision": "approvedForSession",
+              "scope": "session",
+              "label": "Allow for this session",
+              "rulePreview": "tool `mcp__ngertiin__ngertiin_update_agent`"
+            },
+            {
+              "choiceId": "allow_local_mcp_tool",
+              "decision": "approvedPolicyAmendment",
+              "scope": "localPersistent",
+              "label": "Always allow this MCP tool",
+              "rulePreview": "tool `mcp__ngertiin__ngertiin_update_agent`"
+            },
+            {
+              "choiceId": "abort",
+              "decision": "abort",
+              "scope": "once",
+              "label": "Reject"
+            }
+          ],
+          "subject": {
+            "kind": "tool",
+            "toolName": "mcp__ngertiin__ngertiin_update_agent"
+          }
+        }
+      ],
+      "user_inputs": []
+    }
+  ],
+  "stale_response": {
+    "status": 409,
+    "body": {
+      "error": {
+        "code": "CONFLICT",
+        "message": "CONFLICT"
+      }
+    }
+  },
+  "pending": {
+    "approvals": [
+      {
+        "approvalId": "01a19626-89e0-7c50-9336-49433e05d7a9",
+        "toolName": "mcp__ngertiin__ngertiin_update_agent",
+        "rawArgs": "{\"agent_id\":\"ba65bb0b-8c41-44f6-8fe9-b0b77059aade\",\"changes\":{\"name\":\"Permission proof\"},\"command_id\":\"11111111-1111-4111-8111-111111111111\",\"expected_revision\":1}",
+        "currentRequirementId": {
+          "approvalId": "01a19626-89e0-7c50-9336-49433e05d7a9",
+          "sourceIndex": 0
+        },
+        "availableChoices": [
+          {
+            "choiceId": "allow_once",
+            "decision": "approved",
+            "scope": "once",
+            "label": "Allow once"
+          },
+          {
+            "choiceId": "allow_session",
+            "decision": "approvedForSession",
+            "scope": "session",
+            "label": "Allow for this session",
+            "rulePreview": "tool `mcp__ngertiin__ngertiin_update_agent`"
+          },
+          {
+            "choiceId": "allow_local_mcp_tool",
+            "decision": "approvedPolicyAmendment",
+            "scope": "localPersistent",
+            "label": "Always allow this MCP tool",
+            "rulePreview": "tool `mcp__ngertiin__ngertiin_update_agent`"
+          },
+          {
+            "choiceId": "abort",
+            "decision": "abort",
+            "scope": "once",
+            "label": "Reject"
+          }
+        ],
+        "subject": {
+          "kind": "tool",
+          "toolName": "mcp__ngertiin__ngertiin_update_agent"
+        }
+      }
+    ],
+    "user_inputs": []
+  },
+  "answer": {
+    "status": "submitted"
+  },
+  "pass": true,
+  "error": null,
+  "native_requests": 1,
+  "permission_approval_verified": true
+}

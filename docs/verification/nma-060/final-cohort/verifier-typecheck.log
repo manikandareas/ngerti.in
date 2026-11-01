@@ -1,0 +1,1 @@
+../../scripts/verification/nma060/rfb.ts(15,44): error TS2353: Object literal may only specify known properties, and 'headers' does not exist in type 'string[]'.

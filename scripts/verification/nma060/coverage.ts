@@ -62,7 +62,7 @@ const mappings: Mapping[] = [
     events: ["connection", "binding", "run"],
     tests: ["muse.test.ts"],
     limits: [
-      "OPEN: no Muse subscription-backed request/tool round trip or live native permission decision. Key-backed evidence does not close these criteria.",
+      "OPEN: live native permission decision remains unverified. Explicit Muse API-key billing is accepted for this gate; subscription remains unverified separately.",
     ],
   },
   {
@@ -216,13 +216,13 @@ const mappings: Mapping[] = [
     events: ["run", "control", "browser_action", "app_effect"],
     tests: ["contracts.test.ts", "lifecycle.test.ts", "api.test.ts"],
     limits: [
-      "Gate pending NMA-050. Current contract checks plus retained native reports are not a fresh full native cohort.",
+      "Gate closure uses the accepted billing amendment and final-cohort native evidence; retained reports keep their original scope.",
       "Historical Python source remains quarantined behind retired entry points; full remaining dead-source cleanup is not claimed closed.",
     ],
   },
 ];
 
-const contract = (await Bun.file("docs/contracts/1.12.0.json").json()) as ReturnType<
+const contract = (await Bun.file("docs/contracts/1.16.0.json").json()) as ReturnType<
   typeof contractDocument
 > &
   ReturnType<typeof consumerContract> & { http: ReturnType<typeof httpContract> };
@@ -255,7 +255,7 @@ const coverage = mappings.flatMap((mapping) => {
         decision_amendment: "docs/verification/nma-060/cancellation/decision.json",
       } : {}),
       limits: mapping.limits ?? [],
-      acceptance: "mapped_gate_pending",
+      acceptance: "mapped_with_gate_evidence",
     };
   });
 });
@@ -266,12 +266,19 @@ assert.deepEqual(
     .map((d) => d.id)
     .sort(),
 );
+const creation = await Bun.file("docs/verification/nma-065/gate-amendment.json").json();
+for (const route of creation.routes) assert(contract.http.some(r => `${r.method} ${r.path}` === route), route);
+for (const tool of creation.tools) assert(contract.product_tools.some(t => t.name === tool), tool);
+for (const kind of creation.events) assert(kind in contract.entities, kind);
+for (const test of creation.tests) assert(existsSync(test), test);
+assert(existsSync(creation.evidence));
 await Bun.write(
-  "docs/verification/nma-060/cancellation/coverage.json",
+  `${process.argv[2] ?? "docs/verification/nma-060/final-cohort"}/coverage.json`,
   `${JSON.stringify(
     {
       contract_version: contract.version,
       requirement_count: seen.size,
+      amendments: [{ ...creation, verified_against: contract.version }],
       coverage,
       note: "Mapping and reference validation do not establish native acceptance. Read each retained report and its denominator/limits.",
     },
@@ -284,6 +291,6 @@ console.log(
     decisions: scope.decisions.length,
     backend_requirements: seen.size,
     mappings: mappings.length,
-    unresolved_dependency: "NMA-050",
+    unresolved_dependency: null,
   }),
 );

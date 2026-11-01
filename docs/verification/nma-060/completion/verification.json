@@ -1,0 +1,46 @@
+{
+  "baseline": "80f66b9786d7776138fbe001b26ef068f1132624",
+  "status": "In Progress",
+  "api_readiness": "pending",
+  "contract": "1.14.0",
+  "checks": {
+    "backend": {
+      "pass": 243,
+      "fail": 0,
+      "skip": 0,
+      "assertions": 1591
+    },
+    "consumer": {
+      "pass": 6,
+      "fail": 0
+    },
+    "foundation_process": {
+      "pass": 8,
+      "fail": 0
+    },
+    "broker_http": {
+      "pass": 5,
+      "fail": 0
+    },
+    "lint": "pass",
+    "typecheck": "pass",
+    "verification_scripts_typecheck": "pass",
+    "native_cases": {
+      "planned": 7,
+      "pass": 6,
+      "fail": 1,
+      "skip": 0,
+      "unknown": 0
+    },
+    "native_run_terminals": {
+      "succeeded": 7
+    },
+    "native_permission_cycles_verified": 0
+  },
+  "remaining": [
+    "NMA-050 native interactive permission acceptance",
+    "Investigate failed native question probe in the current empty-preset adapter configuration",
+    "Complete gate-wide final native/fault acceptance"
+  ],
+  "billing": "Codex ChatGPT subscription; explicit Muse API key. Muse subscription is unverified and is not a gate blocker."
+}

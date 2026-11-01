@@ -6,7 +6,7 @@ import { Background } from "../../../apps/server/src/background";
 import { type DomainEvent, domainEvent, type Entity } from "../../../apps/server/src/contracts";
 import { fixture } from "../../../apps/server/tests/helpers";
 
-const directory = process.argv[2] ?? "docs/verification/nma-060/cancellation";
+const directory = process.argv[2] ?? "docs/verification/nma-060/final-cohort";
 const f = fixture(),
   token = "c".repeat(64);
 let app = createApi(f.lifecycle, new Background(f.lifecycle), token);
@@ -37,11 +37,11 @@ async function json(path: string, body?: unknown, key?: string) {
 }
 try {
   const contract = await json("/v1/contracts");
-  assert.equal(contract.version, "1.13.0");
+  assert.equal(contract.version, "1.16.0");
   assert.equal(contract.http.length, app.routes.length);
-  assert.equal(contract.readiness.state, "pending");
+  assert.equal(contract.readiness.state, "ready");
   for (const name of Object.keys(responseSchemas)) assert(contract.projections[name]);
-  checks.push("published_contract_matches_router_and_keeps_gate_pending");
+  checks.push("published_contract_matches_router_and_reports_api_ready");
   await Bun.write(
     `docs/contracts/${contract.version}.json`,
     `${JSON.stringify(contract, null, 2)}\n`,

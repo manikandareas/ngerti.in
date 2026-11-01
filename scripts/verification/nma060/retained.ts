@@ -1,11 +1,11 @@
 import { Database } from "bun:sqlite";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { z } from "../../../apps/server/node_modules/zod";
 import { domainEvent, kindSchema, schemas } from "../../../apps/server/src/contracts";
 
-const tickets = [49, 50, 52, 53, 54, 55, 56, 57, 58, 59];
+const tickets = [49, 50, 52, 53, 54, 55, 56, 57, 58, 59, 65];
 const report = {
   evidence_level: "retained_evidence_integrity_and_read_only_schema_validation",
   captured_at: new Date().toISOString(),
@@ -16,6 +16,7 @@ const report = {
     retained_verified: number;
     source_files: number;
     source_changed_since_capture: string[];
+    source_missing_since_capture: string[];
   }[],
   database: {
     path: process.argv[2] ?? ".dev/nma049-native/ngertiin.sqlite",
@@ -36,11 +37,17 @@ for (const number of tickets) {
     retained_verified: 0,
     source_files: 0,
     source_changed_since_capture: [] as string[],
+    source_missing_since_capture: [] as string[],
   };
   const lines = readFileSync(`${prefix}SHA256SUMS`, "utf8").trim().split("\n");
   for (const line of lines) {
     const [, expected, path] = line.match(/^([a-f0-9]{64})  (.+)$/) ?? [];
     assert(expected && path, `${ticket} manifest syntax`);
+    if (!path.startsWith(prefix) && !existsSync(path)) {
+      entry.source_files++;
+      entry.source_missing_since_capture.push(path);
+      continue;
+    }
     const actual = createHash("sha256").update(readFileSync(path)).digest("hex");
     if (path.startsWith(prefix)) {
       entry.retained_files++;
@@ -54,7 +61,7 @@ for (const number of tickets) {
   report.manifests.push(entry);
 }
 const database = new Database(report.database.path, { readonly: true, strict: true });
-const published = z.fromJSONSchema((await Bun.file("docs/contracts/1.12.0.json").json()).event);
+const published = z.fromJSONSchema((await Bun.file("docs/contracts/1.16.0.json").json()).event);
 try {
   for (const { cursor, body } of database
     .query<{ cursor: number; body: string }, []>("SELECT cursor, body FROM events ORDER BY cursor")
@@ -102,7 +109,7 @@ try {
   database.close();
 }
 await Bun.write(
-  "docs/verification/nma-060/cancellation/retained.json",
+  `${process.argv[2] ?? "docs/verification/nma-060/final-cohort"}/retained.json`,
   `${JSON.stringify(report, null, 2)}\n`,
 );
 assert.equal(

@@ -1,0 +1,11 @@
+{
+  "muse_connection_revoked": true,
+  "credential_copy_removed": true,
+  "original_codex_connection_preserved": true,
+  "browser_hosts_closed": true,
+  "application_probe_grant_removed": true,
+  "goals_stopped_or_completed": true,
+  "routines_inactive": true,
+  "verifier_service_stopped": true,
+  "fixture_site_stopped": true
+}

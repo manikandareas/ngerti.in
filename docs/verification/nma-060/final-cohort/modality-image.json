@@ -1,0 +1,7 @@
+{
+  "phase": "image",
+  "started_at": "2026-11-01T08:09:52.212Z",
+  "checks": [],
+  "error": "AssertionError [ERR_ASSERTION]: /v1/workspaces/b86efbee-ab08-458b-8fd8-ef66791864fa/uploads: SCOPE_DENIED\n\n403 !== 200\n",
+  "completed_at": "2026-11-01T08:09:52.414Z"
+}

@@ -1,0 +1,41 @@
+bun test v1.3.10 (30e609e0)
+
+apps/server/tests/operation-responses.test.ts:
+(pass) consumer validates real creation, learning, workspace, group and control responses [147.69ms]
+
+apps/server/tests/muse.test.ts:
+(pass) official Muse SDK fixture completes an actual scoped HTTP product-tool call [122.46ms]
+(pass) native history resumes the exact DM after restart without importing group history [258.59ms]
+(pass) effective stored key cannot masquerade as a subscription after browser login [99.80ms]
+(pass) missing credentials remain login-required and device login does not claim inference [124.28ms]
+(pass) key-selected connection cannot start browser login [17.92ms]
+(pass) interrupt acknowledgement remains intent until native cancelled terminal arrives [106.77ms]
+(pass) unverified Muse steering preserves queued correction and does not dispatch it natively [116.30ms]
+(pass) Muse streams a stable partial message and repairs final native text without duplicate messages [107.04ms]
+(pass) Muse reconciles durable native commit and product-tool receipt after process loss without resubmission [143.73ms]
+(pass) interrupt acknowledgement alone cannot fabricate cancellation [177.44ms]
+(pass) revoked connection cannot answer a pending native question [117.48ms]
+(pass) native question exposes scoped pending interaction and validates its answer [87.59ms]
+(pass) native approval exposes scoped pending interaction and validates its answer [84.01ms]
+(pass) replayed Muse approval notifications are reconciled before display or dispatch [107.76ms]
+(pass) a late pending-state response cannot repopulate interactions after native completion [163.75ms]
+(pass) revocation during a native pending-state read fences the subsequent approval decision [234.23ms]
+(pass) native failed remains failed [112.39ms]
+(pass) native disconnect remains unknown [132.46ms]
+(pass) native gap remains unknown [86.24ms]
+(pass) native unknown-terminal remains unknown [83.89ms]
+(pass) native reject remains failed [84.65ms]
+(pass) typed Muse authentication rejection and temporary provider failure retain distinct diagnostics [129.91ms]
+(pass) authoritative empty Muse history clears ephemeral text without minting a second answer [71.12ms]
+
+apps/server/tests/contracts.test.ts:
+(pass) every registered domain route retains the shared authentication guard [14.58ms]
+(pass) published replay schema accepts browser and application receipts across restart [38.48ms]
+(pass) published command schemas retain optional defaulted admission fields [16.47ms]
+(pass) consumer contract describes actual routes without executing native operations [48.73ms]
+(pass) published response schemas validate admission, control, history, snapshots and safe errors [15.85ms]
+
+ 29 pass
+ 0 fail
+ 246 expect() calls
+Ran 29 tests across 3 files. [3.33s]

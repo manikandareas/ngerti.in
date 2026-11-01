@@ -1,66 +1,69 @@
-# Page 1 theme mapping
+# Midnight / Daylight design system
 
-Source: the **design** Wonder file, **Page 1**, read on 2026-11-01. Both the original light library and the new dark library are authoritative for this app's visual tokens. [Dark AccessGrid Design Guide](https://app.wonder.so/manik/files/01a18cb6-c994-74d9-89eb-8d765dcbc3cd/branches/main/pages/01a18cb6-c995-7d94-819a-7fcc2fe7748e?nodeId=a2a45b18-48bc-574e-b1c1-099776338969).
+The active visual reference is [OpenMausBot 0.1.137 research](../../docs/research/openmausbot-2026-11-01/README.md), captured on 2026-11-01 from the installed app and upstream commit `7124ebc4ff57b7e7dc5c0ad94c09ff9f842c93c9`. This replaces the previous Page 1 / AccessGrid visual theme in `apps/web-client` at the user's request. `apps/web` and backend contracts are unchanged.
 
-This is a local adaptation of the Page 1 library, not an official AccessGrid theme. Existing `apps/web` tokens and components are untouched.
+The implementation adapts the messenger layout and semantic palette. It retains Ngertiin identity, Hugeicons, the existing Radix/shadcn component APIs, and the published harness-first API. The product authority remains Notion; NMA-060 was fetched as Done on 2026-11-01. New visual work does not itself close NMA-062/063 or imply native-provider acceptance.
 
-## Colors
+## Color roles
 
-`src/styles/theme.css` owns the values. Components consume standard shadcn/Tailwind semantics, not canvas-specific CSS variables.
+`src/styles/theme.css` owns global values and Tailwind mappings; `src/index.css` owns global base rules. Feature composition lives in `src/features/conversation/workspace.css`. Both the real workspace and `/design-system` consume the same tokens.
 
-| App token | Page 1 role | Light | Dark |
+| Token | Role | Daylight | Midnight |
 | --- | --- | --- | --- |
-| `background` | Canvas | `#F7F7F8` | `#111114` |
-| `foreground` | Primary content | `#26262B` | `#F7F7F8` |
-| `card` | Surface | `#FFFFFF` | `#1B1B1E` |
-| `popover` | Floating/raised surface | `#FFFFFF` | `#303036` |
-| `secondary`, `muted` | Subtle surface | `#EEEEF0` | `#26262B` |
-| `muted-foreground` | Secondary content | `#5E5F6B` | `#B8B9C1` |
-| `text-tertiary` | Tertiary content | `#4D4E57` | `#92939E` |
-| `primary` | Primary action | `#285DF5` | `#285DF5` |
-| `primary-start` | Gradient top | `#3275FF` | `#285AE8` |
-| `primary-hover` | Hover action | `#285AE8` | `#285AE8` |
-| `primary-pressed` | Pressed action | `#2658E9` | `#2658E9` |
-| `primary-foreground` | On-primary label | `#FFFFFF` | `#FFFFFF` |
-| `link` | Readable blue text | `#285DF5` | `#8FAFFF` |
-| `accent` | Soft blue surface | `#EEF5FF` | `#192847` |
-| `border` | Default boundary | `#D9D9DE` | `#42424A` |
-| `input` | Control boundary | `#92939E` | `#747583` |
-| `ring` | Focus | `#285DF5` | `#8FAFFF` |
-| `success` / `success-foreground` | Success surface / text | `#F0FDF4` / `#166534` | `#142E21` / `#86EFAC` |
-| `warning` / `warning-foreground` | Warning surface / text | `#FFFBEB` / `#92400E` | `#352811` / `#FCD34D` |
-| `danger-soft` / `destructive` | Danger surface / text | `#FEF2F2` / `#B91C1C` | `#381C22` / `#FCA5A5` |
-| `danger-action` | Filled destructive action | `#B91C1C` | `#B91C1C` |
-| `disabled-surface` / `disabled-foreground` | Disabled action | `#EEEEF0` / `#92939E` | `#303036` / `#B8B9C1` |
-| `overlay` | Scrim | `#26262B66` | `#000000B3` |
+| `background` | Conversation canvas | `#fcfcfc` | `#121212` |
+| `frame` | Surrounding shell / sidebar | `#ededed` | `#090909` |
+| `panel` | Secondary panel surface | `#f5f5f5` | `#0e0e0e` |
+| `card` | Replies and grouped content | `#f0f0f0` | `#1f1f1f` |
+| `popover` | Menus and floating controls | `#ffffff` | `#1f1f1f` |
+| `secondary` | Selected row / header capsule | `#e4e4e4` | `#202020` |
+| `accent` | Hover / active surface | `#e4e4e4` | `#2c2c2c` |
+| `composer` | Message input shell | `#ffffff` | `#1f1f1f` |
+| `foreground` | Main text | `#1c1c1c` | `#f5f5f5` |
+| `muted-foreground` | Secondary text | `#555555` | `#b1b1b1` |
+| `text-tertiary` | Hints and metadata | `#5c5c5c` | `#a1a1a1` |
+| `primary` | Global primary action | `#0b62c4` | `#1084fe` |
+| `primary-foreground` | Text on primary | `#ffffff` | `#070707` |
+| `primary-hover` / `primary-pressed` | Solid action states | `#0957af` / `#084b98` | `#3799ff` / `#65b1ff` |
+| `link` | Readable action text | `#0b5cb8` | `#7fc0ff` |
+| `ring` | Keyboard focus | `#0b62c4` | `#459ffe` |
+| `border` | Hairline boundary | `#d0d0d0` | `#383838` |
+| `success-foreground` | Success text | `#1f7a4d` | `#38d591` |
+| `destructive` | Error text | `#c02b3a` | `#ff5667` |
+| `warning-foreground` | Warning text | `#805200` | `#ffb547` |
 
-The destructive text token and filled action token are deliberately separate. Dark error text stays pale pink; a destructive button keeps the source red fill with a white label. Dark disabled actions use the explicit muted treatment documented on the dark artboard instead of opacity. Light disabled actions use the same canvas disabled color role; the original light canvas opacity expression is not copied into code.
+Blue is the global primary; pink is one agent identity color. The client assigns a deterministic local color from agent ID, so renaming an agent or viewing it in a group does not change its visual identity. Tobi uses neutral silver. No new persisted backend color field is introduced. The source identity palette is retained as `identity-*` tokens; white text uses a darker 72% identity-color / 28% black mix for bubbles, avatars and send controls. These colors do not redefine the global primary token.
 
-Sidebar tokens alias the same surfaces/actions. Chart series reuse the existing Page 1 blue, teal, violet, amber, and indigo palette; the dark first series uses the readable blue link token. There was no separate chart palette on Page 1, so this is a semantic extension using existing colors.
+Accessibility adaptations are intentional: opaque secondary/quiet inks, stronger composer/input boundaries, darker light warning text, and dark text on the bright Midnight primary/destructive fills. Body labels must meet 4.5:1. Semantic contrast pairs are checked from rendered browser values; the upstream palette alone is not treated as an accessibility result.
 
-## Typography, spacing, and shape
+Primary buttons use a solid fill with explicit hover/pressed colors, no gradient or decorative shadow. The legacy `bg-primary-gradient` utility renders the same solid primary for the specimen's existing call sites. `primary-start` is a compatibility alias to primary, not a separate gradient stop.
 
-- Inter Variable for display, headings, body, and UI; Geist Mono Variable for code and technical labels. Both are self-hosted. Page 1 already substitutes Inter for the source site's ABC Diatype display face.
-- Body 16/24, UI 15/24, label 14/24, caption 13/20, title 24/32, heading 36/40 (30/34 on mobile), display 64/64 (38/44 on mobile).
-- Tailwind's 4px spacing scale maps to Page 1's existing spacing tokens. Content max-width is 1216px; page width is 1440px.
-- Control radius 5px, small surface 8px, card 16px, dialog 20px, navigation 13px, badge/pill 999px.
-- Control heights: small 32px, default 36px, large 44px. Inputs keep a 16px font on mobile to avoid browser zoom; desktop labels use 14px.
-- Focus ring 2px with 3px offset; fast transitions 160ms. Reduced-motion preferences override decorative transitions and animations.
+## Typography and geometry
 
-## Shared component adjustments
+- UI: self-hosted Geist Variable 5.3.0. Code: Geist Mono Variable 5.3.0. Native/system fallbacks remain available. No runtime font CDN.
+- Workspace body/replies 15/24px; primary UI 14/20px; sidebar preview 13/18px; metadata 11–12px. Coarse/mobile input stays 16px to prevent focus zoom.
+- Fixed product type scale: UI 14/20, caption 12/18, title 20/28, heading 30/36 (24/32 mobile). The larger display specimen remains a documentation-only role.
+- Spacing uses the Tailwind 4px base and 2px subdivisions. Header capsule preserves the source optical 7.5px / 13.5px padding.
+- Sidebar280px; contextual panel 320px; centered conversation column 60rem, user bubble max 35rem/80%, assistant content max 44rem/88%.
+- Control radius 8px, navigation 10px, generic card 16px, modal 12px, menu 14px. Capsule headers and icon buttons are fully round. Chat bubbles use 16–20px, with a 24px composer shell.
+- Button heights 28/32/36px; touch layouts retain readable input text and accessible names.
+- The optional native window/place frame is not copied as fake macOS chrome. The web shell uses a narrow neutral frame around a rounded conversation surface.
 
-Installed primitives retain upstream APIs and behavior. Their local visual changes are:
+## Responsive behavior and motion
 
-- `Button`: source gradient, explicit hover/pressed colors, filled destructive action, readable blue links, disabled states, and control dimensions.
-- `Input`, `Textarea`, `Select`, native select, and input groups: source control surfaces/borders/radii; no generic translucent gray input fill in dark mode.
-- `Card`, dialog/alert dialog, and floating menus: source radii, border tokens, spacing, shadows, and scrims.
-- `Badge` and `Alert`: semantic success/warning/destructive variants and paired foreground colors.
-- `Switch` and `Slider`: semantic light thumb instead of a hard-coded color.
-- `Tooltip`: inverse surface and content pair in either mode.
-- `CodeBlock`: always uses the dark surface, matching the API code specimen on Page 1.
-- All applicable primitives: tokenized focus, borders, and transition duration. Syntax-highlighting colors remain the upstream Shiki code palette; Page 1 does not define a complete syntax-token palette.
-- `Spinner`: props use Hugeicons' actual component type so its numeric `strokeWidth` is not widened by React's generic SVG props.
+Below 768px the roster and profile use Radix sheets with modal focus handling and explicit close controls. Between 768px and 1279px, opening the detail panel hides the inline roster; the menu button opens it as a sheet. At 1280px and above, the 280px roster and 320px profile can remain alongside the chat. The conversation remains the return point.
 
-The progress primitive also forwards its value to the accessible Radix root. Minor upstream lint compatibility fixes remove redundant breadcrumb/pagination roles, use stable chart/error keys, render chart CSS as style text children, and remove redundant React state-setter dependencies. These preserve the public component API.
+Color transitions 120ms, panel entrance 240ms and exit 180ms; easing `cubic-bezier(.22,1,.36,1)`. Reduced-motion rules remove panel movement and suppress decorative animation. Focus uses the semantic ring with a 2px offset. Theme choice continues to use `next-themes` and the existing persistent storage key.
 
-Biome exceptions are limited to upstream ARIA grouping wrappers, position-based source/slider keys, keyboard-scrollable code blocks, input add-on click-to-focus behavior (the input remains keyboard focusable), and the reduced-motion override. All other repository lint rules remain enabled.
+## Components and existing behavior
+
+- Navigation: Tobi once at the top, agent/group conversation rows, compact theme controls and Settings at the bottom.
+- Header: centered avatar/name capsule opens the contextual panel; model/billing opens existing connection settings.
+- Messages: identity-tinted user bubbles, neutral assistant replies, compact truthful queue/error/tool state. Edit/delete/steer/stop/reconcile operations retain existing server-side behavior.
+- Composer: one compact growing input, keyboard/IME guard, accessible send/queue/reconcile labels, retained draft and durable operation identity. No unimplemented attachment action is introduced.
+- Profile: one centered identity, one row of Agent/Anggota/File/Goals/Routine tabs, quieter instructions/memory/skills, advanced connection disclosure. Unsupported tabs and group creation remain disabled rather than simulating completion.
+- Shared primitives: semantic Card radius, solid Button, global neutral surfaces, local font and consistent focus tokens. All 63 installed primitive previews remain available.
+- Settings: existing real account/model/billing controls and theme controls, restyled through shared tokens. Subscription does not silently switch to API-key billing.
+
+## Provenance and upgrades
+
+This is a visual/interaction adaptation of the pinned research, not an upstream source port or replacement runtime. Keep the original research snapshots and hashes unchanged. On an upgrade, compare the new source token values and component measurements, update this mapping deliberately, and rerun build/typecheck/lint, theme/contrast/hover/gallery checks and real-API conversation regressions. Provider-native acceptance and feature completion remain separate from those checks.

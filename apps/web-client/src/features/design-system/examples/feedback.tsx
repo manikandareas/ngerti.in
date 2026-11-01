@@ -56,7 +56,7 @@ const examples = {
       <AccordionItem value="tokens">
         <AccordionTrigger>Dari mana token berasal?</AccordionTrigger>
         <AccordionContent>
-          Dari design system Page 1, dengan semantic tokens yang sama di aplikasi.
+          Dari design system Midnight/Daylight, dengan semantic tokens yang sama di aplikasi.
         </AccordionContent>
       </AccordionItem>
     </Accordion>

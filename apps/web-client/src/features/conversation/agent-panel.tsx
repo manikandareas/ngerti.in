@@ -73,19 +73,8 @@ export function AgentPanel({
     }
   }
   return (
-    <div className="space-y-6 py-5">
+    <div className="agent-profile-content space-y-5">
       <section className="space-y-3">
-        <div className="flex items-center gap-3">
-          <span className="grid size-12 place-items-center rounded-card bg-accent text-xl">
-            {agent.avatar ?? agent.name[0]}
-          </span>
-          <div>
-            <h2 className="font-medium">{agent.name}</h2>
-            <p className="text-caption text-muted-foreground">
-              {agent.harness} · {agent.model_id ?? "Default model"}
-            </p>
-          </div>
-        </div>
         <p className="whitespace-pre-wrap text-sm text-muted-foreground">
           {agent.soul || "Ceritakan bantuan yang kamu butuhkan di chat."}
         </p>
@@ -98,9 +87,8 @@ export function AgentPanel({
         <p className="text-caption text-muted-foreground">
           Ubah nama, peran, dan cara kerja melalui percakapan.
         </p>
-        <Badge variant="outline">Profil revision {agent.revision}</Badge>
       </section>
-      <section className="space-y-3 border-t pt-5">
+      <section className="profile-section space-y-3">
         <h3 className="font-medium">Memory</h3>
         {notice && (
           <p role="status" className="text-sm text-link">
@@ -111,7 +99,7 @@ export function AgentPanel({
           <p className="text-sm text-muted-foreground">Belum ada memory dalam percakapan ini.</p>
         )}
         {memories.map((memory) => (
-          <div key={memory.id} className="space-y-2 rounded-lg border p-3">
+          <div key={memory.id} className="profile-memory space-y-2">
             {editing?.id === memory.id ? (
               <>
                 <Label htmlFor="memory-edit">Koreksi memory</Label>
@@ -181,7 +169,7 @@ export function AgentPanel({
           </Button>
         )}
       </section>
-      <section className="space-y-3 border-t pt-5">
+      <section className="profile-section space-y-3">
         <h3 className="font-medium">Skills</h3>
         <p className="text-caption text-muted-foreground">
           Skills aplikasi dapat dibuat dan diperbaiki melalui chat. Skills bawaan harness hanya
@@ -219,9 +207,9 @@ export function AgentPanel({
           </>
         )}
       </section>
-      <details className="border-t pt-5">
+      <details className="profile-disclosure">
         <summary className="cursor-pointer font-medium">Koneksi & model</summary>
-        <div className="mt-4">
+        <div>
           <ConnectionSettings
             agent={agent}
             connections={connections}

@@ -23,7 +23,7 @@ export default function DesignSystemPage() {
 
   return (
     <>
-      <header className="sticky top-0 z-30 border-b bg-background/90 backdrop-blur-md">
+      <header className="sticky top-0 z-30 border-b bg-background">
         <div className="mx-auto flex max-w-page flex-wrap items-center justify-between gap-3 px-6 py-4 sm:px-10">
           <div className="flex items-center gap-3">
             <Button variant="ghost" size="icon" asChild>
@@ -41,8 +41,8 @@ export default function DesignSystemPage() {
       <main className="mx-auto max-w-content space-y-8 px-6 py-8 sm:px-10 sm:py-12">
         <div className="space-y-4">
           <div className="flex flex-wrap items-center gap-2">
-            <Badge variant="outline">Page 1</Badge>
-            <Badge variant="secondary">Light & dark</Badge>
+            <Badge variant="outline">OpenMausBot reference</Badge>
+            <Badge variant="secondary">Daylight & Midnight</Badge>
           </div>
           <h1 className="text-heading-mobile font-medium tracking-tight sm:text-heading">
             Design system
@@ -77,7 +77,7 @@ export default function DesignSystemPage() {
         </Tabs>
       </main>
       <footer className="mx-auto max-w-content border-t px-6 py-6 text-caption text-muted-foreground sm:px-10">
-        Page 1 · Inter & Geist Mono · shadcn primitives · Hugeicons
+        Midnight / Daylight · Geist & Geist Mono · shadcn primitives · Hugeicons
       </footer>
     </>
   );

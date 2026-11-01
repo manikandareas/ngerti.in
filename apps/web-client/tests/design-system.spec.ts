@@ -30,18 +30,20 @@ test("dedicated route opens directly and refreshes", async ({ page }) => {
 });
 
 for (const mode of ["light", "dark"] as const) {
-  test(`${mode}: foundations use live Page 1 tokens`, async ({ page }) => {
+  test(`${mode}: foundations use live Midnight/Daylight tokens`, async ({ page }) => {
     await page.goto("/design-system");
     await page
       .getByRole("radio", { name: mode === "light" ? "Mode terang" : "Mode gelap" })
       .click();
     await expect(page.locator('[data-token-value="background"]')).toHaveText(
-      mode === "light" ? "#f7f7f8" : "#111114",
+      mode === "light" ? "#fcfcfc" : "#121212",
     );
-    await expect(page.locator('[data-token-value="primary"]')).toHaveText("#285df5");
+    await expect(page.locator('[data-token-value="primary"]')).toHaveText(
+      mode === "light" ? "#0b62c4" : "#1084fe",
+    );
     await expect(page.locator('[data-token="card"]')).toHaveCSS(
       "background-color",
-      mode === "light" ? "rgb(255, 255, 255)" : "rgb(27, 27, 30)",
+      mode === "light" ? "rgb(240, 240, 240)" : "rgb(31, 31, 31)",
     );
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
       true,

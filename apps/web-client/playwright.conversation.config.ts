@@ -14,7 +14,7 @@ export default defineConfig({
   testMatch: "conversation.spec.ts",
   workers: 1,
   retries: 0,
-  reporter: [["list"], ["json", { outputFile: "../../docs/verification/nma-061/browser.json" }]],
+  reporter: [["list"], ["json", { outputFile: "test-results/conversation-report.json" }]],
   use: {
     baseURL: "http://127.0.0.1:4311",
     screenshot: "only-on-failure",

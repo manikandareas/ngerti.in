@@ -21,35 +21,74 @@ test.beforeEach(async ({ page }) => {
 });
 
 for (const mode of ["light", "dark"] as const) {
-  test(`${mode}: Page 1 colors, control sizes, and fonts`, async ({ page }) => {
+  test(`${mode}: Midnight/Daylight colors, control sizes, and fonts`, async ({ page }) => {
     await page
       .getByRole("radio", { name: mode === "light" ? "Mode terang" : "Mode gelap" })
       .click();
     await expect(page.locator("html")).toHaveClass(mode);
     await expect(page.locator("body")).toHaveCSS(
       "background-color",
-      mode === "light" ? "rgb(247, 247, 248)" : "rgb(17, 17, 20)",
+      mode === "light" ? "rgb(252, 252, 252)" : "rgb(18, 18, 18)",
     );
     await expect(page.locator('[data-swatch="card"]')).toHaveCSS(
       "background-color",
-      mode === "light" ? "rgb(255, 255, 255)" : "rgb(27, 27, 30)",
+      mode === "light" ? "rgb(240, 240, 240)" : "rgb(31, 31, 31)",
     );
     await expect(page.locator('[data-swatch="primary"]')).toHaveCSS(
       "background-color",
-      "rgb(40, 93, 245)",
+      mode === "light" ? "rgb(11, 98, 196)" : "rgb(16, 132, 254)",
     );
-    await expect(page.locator("#email")).toHaveCSS("height", "36px");
-    await expect(page.locator("#email")).toHaveCSS("border-radius", "5px");
+    await expect(page.locator("#email")).toHaveCSS("height", "32px");
+    await expect(page.locator("#email")).toHaveCSS("border-radius", "8px");
     await expect(page.locator('[data-slot="card"]').first()).toHaveCSS("border-radius", "16px");
-    await expect(page.locator("body")).toHaveCSS("font-family", /Inter Variable/);
+    await expect(page.locator("body")).toHaveCSS("font-family", /Geist Variable/);
     await expect(page.locator('[data-slot="code-block"]')).toHaveCSS(
       "background-color",
-      "rgb(27, 27, 30)",
+      "rgb(31, 31, 31)",
     );
     await expect(page.locator('[data-slot="code-block-content"]')).toHaveCSS(
       "font-family",
       /Geist Mono Variable/,
     );
+    const contrast = await page.evaluate(() => {
+      const style = getComputedStyle(document.documentElement);
+      const probe = document.createElement("span");
+      document.body.append(probe);
+      function luminance(token: string) {
+        probe.style.color = style.getPropertyValue(`--${token}`);
+        const rgb = getComputedStyle(probe)
+          .color.match(/[\d.]+/g)
+          ?.slice(0, 3)
+          .map(Number);
+        if (rgb?.length !== 3) throw new Error(`Unresolved color ${token}`);
+        const linear = rgb.map((v) => {
+          const c = v / 255;
+          return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+        });
+        return linear[0] * 0.2126 + linear[1] * 0.7152 + linear[2] * 0.0722;
+      }
+      const pairs = [
+        ["foreground", "background"],
+        ["muted-foreground", "card"],
+        ["text-tertiary", "panel"],
+        ["primary-foreground", "primary"],
+        ["destructive-foreground", "danger-action"],
+        ["success-foreground", "success"],
+        ["warning-foreground", "warning"],
+      ];
+      const ratios = pairs.map(([ink, surface]) => {
+        const a = luminance(ink),
+          b = luminance(surface);
+        return {
+          pair: `${ink}/${surface}`,
+          ratio: (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05),
+        };
+      });
+      probe.remove();
+      return ratios;
+    });
+    for (const pair of contrast)
+      expect(pair.ratio, `${pair.pair} text contrast`).toBeGreaterThanOrEqual(4.5);
     await expect(page.locator("footer")).toBeVisible();
     const widths = await page.evaluate(() => ({
       viewport: innerWidth,
@@ -106,13 +145,13 @@ test("portaled dialog and select inherit the dark theme", async ({ page }) => {
   await page.getByRole("radio", { name: "Mode gelap" }).click();
   await page.getByRole("button", { name: "Buka dialog" }).click();
   const dialog = page.getByRole("dialog");
-  await expect(dialog).toHaveCSS("background-color", "rgb(48, 48, 54)");
-  await expect(dialog).toHaveCSS("border-radius", "20px");
+  await expect(dialog).toHaveCSS("background-color", "rgb(31, 31, 31)");
+  await expect(dialog).toHaveCSS("border-radius", "12px");
   await page.keyboard.press("Escape");
   await expect(dialog).not.toBeVisible();
   await expect(page.getByRole("button", { name: "Buka dialog" })).toBeFocused();
   await page.getByRole("combobox", { name: "Access scope" }).click();
-  await expect(page.getByRole("listbox")).toHaveCSS("background-color", "rgb(48, 48, 54)");
+  await expect(page.getByRole("listbox")).toHaveCSS("background-color", "rgb(31, 31, 31)");
   await page.getByRole("option", { name: "Meeting rooms" }).click();
   await expect(page.getByRole("combobox", { name: "Access scope" })).toHaveText("Meeting rooms");
 });

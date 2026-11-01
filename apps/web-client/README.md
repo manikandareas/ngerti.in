@@ -1,6 +1,6 @@
 # Web client
 
-Standalone React + TypeScript application built with Vite. The conversation workspace consumes the harness-first API 1.16.0. The existing Page 1 design system and component catalog remain available.
+Standalone React + TypeScript application built with Vite. The conversation workspace consumes the harness-first API 1.16.0. The visual foundation follows the OpenMausBot Midnight/Daylight research; the component catalog remains available.
 
 ## Development
 
@@ -67,7 +67,7 @@ bunx shadcn@4.23.0 add <component>
 
 `components.json` selects `hugeicons` for future additions. The AI Elements Conversation component adds `use-stick-to-bottom`; its icon is adapted to Hugeicons and its controls reuse the local Button. Beautiful UI Tool Chips inform the compact tool activity composition. Icons use `@hugeicons/react` and the free stroke-rounded pack `@hugeicons/core-free-icons`; no Lucide dependency remains in this app. Import icons individually so the production bundle includes only used icons.
 
-UI components are owned source files. Do not pass `--overwrite` without reviewing the local Page 1 theme changes. The component inventory is in `src/lib/component-catalog.ts`; refresh it when adding or removing primitives.
+UI components are owned source files. Do not pass `--overwrite` without reviewing the local Midnight/Daylight theme changes. The component inventory is in `src/lib/component-catalog.ts`; refresh it when adding or removing primitives.
 
 ## Themes
 

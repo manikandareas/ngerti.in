@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "@fontsource-variable/inter";
+@import "@fontsource-variable/geist";
 @import "@fontsource-variable/geist-mono";
 @import "./styles/theme.css";
 
@@ -17,11 +17,18 @@
   }
 
   body {
-    @apply m-0 min-w-80 bg-background text-base leading-6 text-foreground;
+    @apply m-0 min-w-80 bg-background text-sm leading-5 text-foreground;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
   }
 
   ::selection {
-    @apply bg-accent text-accent-foreground;
+    background: color-mix(in srgb, var(--primary) 25%, transparent);
+    color: var(--foreground);
   }
 
   button:not(:disabled),
@@ -42,5 +49,5 @@
 }
 
 @utility bg-primary-gradient {
-  background-image: var(--primary-gradient);
+  background-color: var(--primary);
 }

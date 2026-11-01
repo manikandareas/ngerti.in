@@ -59,7 +59,7 @@ const swatches = [
   { name: "Subtle", token: "muted", className: "bg-muted" },
   { name: "Raised", token: "popover", className: "bg-popover" },
   { name: "Primary", token: "primary", className: "bg-primary" },
-  { name: "Soft blue", token: "accent", className: "bg-accent" },
+  { name: "Selection", token: "accent", className: "bg-accent" },
 ];
 
 function HomePage() {
@@ -84,9 +84,7 @@ function HomePage() {
 
       <main id="main" className="space-y-8">
         <div className="space-y-3">
-          <p className="font-mono text-caption uppercase tracking-wider text-link">
-            Page 1 · Design system
-          </p>
+          <p className="text-caption text-muted-foreground">Midnight / Daylight · Design system</p>
           <h1 className="text-heading-mobile font-medium tracking-tight sm:text-heading">
             Komponen yang konsisten, di setiap tema.
           </h1>
@@ -348,7 +346,7 @@ function HomePage() {
         </Card>
       </main>
       <footer className="border-t pt-6 text-caption text-muted-foreground">
-        Inter untuk UI. Geist Mono untuk kode. Light dan dark menggunakan fondasi yang sama.
+        Geist untuk UI. Geist Mono untuk kode. Light dan dark menggunakan fondasi yang sama.
       </footer>
     </div>
   );

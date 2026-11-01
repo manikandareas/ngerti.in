@@ -7,17 +7,26 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 const colorGroups = [
   {
     title: "Surfaces",
-    tokens: ["background", "card", "muted", "popover", "surface-raised", "surface-inverse"],
+    tokens: [
+      "background",
+      "card",
+      "muted",
+      "popover",
+      "surface-raised",
+      "surface-inverse",
+      "frame",
+      "panel",
+      "composer",
+    ],
   },
   {
     title: "Content & borders",
     tokens: ["foreground", "muted-foreground", "text-tertiary", "text-disabled", "border", "input"],
   },
   {
-    title: "Brand & actions",
+    title: "Primary & actions",
     tokens: [
       "primary",
-      "primary-start",
       "primary-hover",
       "primary-pressed",
       "link",
@@ -39,6 +48,17 @@ const colorGroups = [
       "disabled-surface",
     ],
   },
+  {
+    title: "Agent identity · separate from primary",
+    tokens: [
+      "identity-pink",
+      "identity-blue",
+      "identity-teal",
+      "identity-purple",
+      "identity-orange",
+      "identity-silver",
+    ],
+  },
   { title: "Data visualization", tokens: ["chart-1", "chart-2", "chart-3", "chart-4", "chart-5"] },
 ];
 
@@ -51,22 +71,22 @@ const typeScale = [
   {
     name: "Heading",
     className: "text-heading-mobile sm:text-heading font-medium tracking-tight",
-    value: "36/40 · mobile 30/34",
+    value: "30/36 · mobile 24/32",
   },
-  { name: "Title", className: "text-title font-medium", value: "24/32 · medium" },
+  { name: "Title", className: "text-title font-medium", value: "20/28 · medium" },
   { name: "Body", className: "text-base leading-6", value: "16/24 · regular" },
-  { name: "UI", className: "text-ui", value: "15/24 · regular" },
+  { name: "UI", className: "text-ui", value: "14/20 · regular" },
   { name: "Label", className: "text-sm leading-6 font-medium", value: "14/24 · medium" },
-  { name: "Caption", className: "text-caption", value: "13/20 · regular" },
+  { name: "Caption", className: "text-caption", value: "12/18 · regular" },
   { name: "Code", className: "font-mono text-caption", value: "Geist Mono · 13/20" },
 ];
 
 const radii = [
-  { name: "Control", className: "rounded-control", value: "5px" },
+  { name: "Control", className: "rounded-control", value: "8px" },
   { name: "Small surface", className: "rounded-lg", value: "8px" },
-  { name: "Navigation", className: "rounded-nav", value: "13px" },
+  { name: "Navigation", className: "rounded-nav", value: "10px" },
   { name: "Card", className: "rounded-card", value: "16px" },
-  { name: "Dialog", className: "rounded-dialog", value: "20px" },
+  { name: "Dialog", className: "rounded-dialog", value: "12px" },
   { name: "Pill", className: "rounded-pill", value: "999px" },
 ];
 
@@ -151,7 +171,7 @@ export function Foundations() {
             <h2>Typography</h2>
           </CardTitle>
           <CardDescription>
-            Inter untuk display, heading, dan UI. Geist Mono untuk kode. Regular 400, medium 500,
+            Geist untuk display, heading, dan UI. Geist Mono untuk kode. Regular 400, medium 500,
             semibold 600.
           </CardDescription>
         </CardHeader>
@@ -220,14 +240,14 @@ export function Foundations() {
                 <h2>Elevation</h2>
               </CardTitle>
               <CardDescription>
-                Border menentukan struktur; shadow memberi kedalaman.
+                Permukaan netral membentuk hierarki; shadow tipis untuk elemen yang mengambang.
               </CardDescription>
             </CardHeader>
             <CardContent className="grid grid-cols-3 gap-4">
               {["shadow-sm", "shadow-md", "shadow-lg"].map((shadow) => (
                 <div
                   key={shadow}
-                  className={`rounded-lg border bg-popover p-4 text-center font-mono text-caption ${shadow}`}
+                  className={`rounded-lg bg-popover p-4 text-center font-mono text-caption ${shadow}`}
                 >
                   {shadow.replace("shadow-", "")}
                 </div>
@@ -243,15 +263,15 @@ export function Foundations() {
             <h2>Sizing, focus & motion</h2>
           </CardTitle>
           <CardDescription>
-            Control 32/36/44px. Focus ring 2px dengan offset 3px. Gunakan Tab untuk mencoba focus
+            Control 28/32/36px. Focus ring 2px dengan offset 2px. Gunakan Tab untuk mencoba focus
             state.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="flex flex-wrap items-center gap-3">
-            <Button size="sm">Small · 32</Button>
-            <Button>Default · 36</Button>
-            <Button size="lg">Large · 44</Button>
+            <Button size="sm">Small · 28</Button>
+            <Button>Default · 32</Button>
+            <Button size="lg">Large · 36</Button>
             <Button disabled>Disabled</Button>
           </div>
           <div className="flex flex-wrap gap-6 font-mono text-caption text-muted-foreground">

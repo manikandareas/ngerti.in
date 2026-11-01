@@ -87,7 +87,7 @@ test("real API: create, durable opener, queued edit/delete, memory, panel and re
     await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
   ).toBeTruthy();
   await page.screenshot({
-    path: `../../docs/verification/nma-061/${testInfo.project.name}-panel.png`,
+    path: testInfo.outputPath(`${testInfo.project.name}-panel.png`),
   });
   await page
     .getByRole("button", {
@@ -97,7 +97,7 @@ test("real API: create, durable opener, queued edit/delete, memory, panel and re
     .click();
   await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toBeVisible();
   await page.screenshot({
-    path: `../../docs/verification/nma-061/${testInfo.project.name}-chat.png`,
+    path: testInfo.outputPath(`${testInfo.project.name}-chat.png`),
   });
   expect(errors).toEqual([]);
 });

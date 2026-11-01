@@ -4,11 +4,16 @@
   "packageManager": "bun@1.3.10",
   "workspaces": [
     "apps/server",
-    "apps/web"
+    "apps/web",
+    "apps/web-client"
   ],
   "scripts": {
     "dev": "bun run --filter @ngertiin/server dev",
     "dev:web": "bun --env-file=.env --filter @ngertiin/web dev",
+    "dev:web-client": "bun --filter @ngertiin/web-client dev",
+    "build:web-client": "bun --filter @ngertiin/web-client build",
+    "typecheck:web-client": "bun --filter @ngertiin/web-client typecheck",
+    "lint:web-client": "bun --filter @ngertiin/web-client lint",
     "dev:api": "bun run --filter @ngertiin/server dev",
     "setup": "bun apps/server/src/setup.ts",
     "build": "bun --filter @ngertiin/web build",

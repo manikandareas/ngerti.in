@@ -1,0 +1,67 @@
+{
+  "captured_date": "2026-11-01",
+  "timezone": "Asia/Makassar",
+  "tool": "CUA native application observations",
+  "target": {
+    "path": "/Applications/OpenMausBot.app",
+    "bundle_id": "com.openmausbot.app",
+    "version": "0.1.137",
+    "build": "0.1.137",
+    "info_plist_sha256": "88bb5d0763d7a5d7f86e46280d04dea1372adf57709b785da35cbf9d35d56ab0",
+    "window_title": "MausBot",
+    "renderer_url": "http://127.0.0.1:8799/"
+  },
+  "actions": [
+    {
+      "id": "R1",
+      "file": "screenshots/01-conversation.png",
+      "action": "Observe existing chat with error and table"
+    },
+    {
+      "id": "R2",
+      "file": "screenshots/02-agent-profile.png",
+      "action": "Click header name/avatar"
+    },
+    {
+      "id": "R3",
+      "file": "screenshots/03-agent-library.png",
+      "action": "Select Library"
+    },
+    {
+      "id": "R4",
+      "file": "screenshots/04-create-menu.png",
+      "action": "Close profile and open New or share"
+    },
+    {
+      "id": "R5",
+      "file": "screenshots/05-create-group.png",
+      "action": "Open New group chat, no submit"
+    },
+    {
+      "id": "R6",
+      "file": "screenshots/06-general-settings.png",
+      "action": "Open Settings then General, no setting changes"
+    },
+    {
+      "id": "R7",
+      "file": "screenshots/07-model-picker.png",
+      "action": "Open model picker, no selection"
+    },
+    {
+      "id": "R8",
+      "file": "screenshots/08-composer-add.png",
+      "action": "Open composer Add, no action selection"
+    }
+  ],
+  "scope": [
+    "Visual/navigation observation of existing application",
+    "No inference, new entity, account, preference, or network traffic analysis",
+    "Runtime screenshot evidence was captured via CUA, not REA browser scenario tools",
+    "Final OpenMausBot view restored to original conversation"
+  ],
+  "capture_limitations": [
+    "Retina pixels differ from CSS pixels",
+    "Historical chat appears in screenshots; review before public redistribution",
+    "No frame-perfect animation timing or computed style inspection"
+  ]
+}

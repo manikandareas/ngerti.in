@@ -1,0 +1,190 @@
+{
+  "date": "2026-11-01",
+  "source_repository": "https://github.com/milind-soni/OpenMausBot",
+  "source_commit": "7124ebc4ff57b7e7dc5c0ad94c09ff9f842c93c9",
+  "installed_app": "/Applications/OpenMausBot.app",
+  "version": "0.1.137",
+  "source_build_equivalence": "unverified; declared package versions match",
+  "rea_version": "6.5.0",
+  "manifest_excludes": [
+    "evidence/manifest.json",
+    "evidence/SHA256SUMS"
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 11057,
+      "sha256": "0725f796aeda84ab100c2e58ed94a701df6189615fd81562c041d1201083589b"
+    },
+    {
+      "path": "assets/Geist-OFL.txt",
+      "bytes": 4383,
+      "sha256": "c683bfbcc7e087f5d37a54ef628f10387c451a83ddc459b151403a164ac46c90"
+    },
+    {
+      "path": "assets/README.md",
+      "bytes": 599,
+      "sha256": "d26cb109ea8ecbc38eb1cd9d04fcf0325c7d00d0496e9f930ba113bc48e1e542"
+    },
+    {
+      "path": "assets/geist-latin-wght-normal-BgDaEnEv.woff2",
+      "bytes": 29400,
+      "sha256": "19f9c92546aa300c312235e3125af1b81394d8db9a4bc4a425cd5b641d2d54e1"
+    },
+    {
+      "path": "assets/geist-mono-latin-wght-normal-XN7g48iV.woff2",
+      "bytes": 23128,
+      "sha256": "684ad5b531f81d43c1e8c7038262d5db7cdc1f68006e04d6c7769efa8d33c8cc"
+    },
+    {
+      "path": "design-system.md",
+      "bytes": 8560,
+      "sha256": "7624028dba702aaec09610b7ded596249552f04968a6409f9a3c10d3abb7fc5a"
+    },
+    {
+      "path": "design-tokens.css",
+      "bytes": 5961,
+      "sha256": "4f76474a55ee51e37f91eb7ea1e5a3480b3020d866ca0a8c6c6dc4b062311656"
+    },
+    {
+      "path": "design-tokens.json",
+      "bytes": 7938,
+      "sha256": "6908f92276cf7989e3e3e540a296e8057388098a00b9af18e3fb65dde635f9ca"
+    },
+    {
+      "path": "evidence/OpenMausBot-LICENSE.txt",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "evidence/OpenMausBot-NOTICE.txt",
+      "bytes": 3629,
+      "sha256": "7500515df9ee7d89a8cb95633233e0d5beafaa6907c9834bb5df2c87f8c304cc"
+    },
+    {
+      "path": "evidence/artifact-checks.json",
+      "bytes": 1779,
+      "sha256": "5b82e9393919e0968d29223e21f3104d59dcec6697352957052afb86af88f651"
+    },
+    {
+      "path": "evidence/notion-screen-map.json",
+      "bytes": 13232,
+      "sha256": "91cf5de18f14ca8faca23970c056140cd26953ddfc22cbf5c6361685db66e955"
+    },
+    {
+      "path": "evidence/rea-app-summary.json",
+      "bytes": 28328,
+      "sha256": "5b470cb564b1762dd6f4c286381923d75d7d66e92a7f23dffdd194184f05f16a"
+    },
+    {
+      "path": "evidence/rea-ui-complete-record.json.gz",
+      "bytes": 2956141,
+      "sha256": "44d2a23db970cacfcf2391b87032b556f1cd02a1044dd644ea82fddd6d13d693"
+    },
+    {
+      "path": "evidence/rea-ui-modules.json",
+      "bytes": 11675,
+      "sha256": "64e756635ca89053a155b8061124312e2857e6c8c95bb5f2316dec976b042efc"
+    },
+    {
+      "path": "evidence/rea-ui-summary.json",
+      "bytes": 13889,
+      "sha256": "2224626a73de2186b6401169ef5449cbadf4790884606ca89d2f8f9515de2520"
+    },
+    {
+      "path": "evidence/runtime-observations.json",
+      "bytes": 2055,
+      "sha256": "b326e2460c8b14d0e31b82a7603315fea7d6e249222565355f15e59cc6a4a913"
+    },
+    {
+      "path": "evidence/screenshots/01-conversation.png",
+      "bytes": 508646,
+      "sha256": "163b40fbb445492451e37906929a5c552c7ca9e1ea2e5bb8cb6bcfaaafa9c502"
+    },
+    {
+      "path": "evidence/screenshots/02-agent-profile.png",
+      "bytes": 569099,
+      "sha256": "3ff60c4f73dc9da5e0472b8f295d4ed456f2b749f44652a01d293c0df4b0fd9d"
+    },
+    {
+      "path": "evidence/screenshots/03-agent-library.png",
+      "bytes": 549345,
+      "sha256": "1812872dff487e2dc4faa601dedd1bf1ab2800f8a6ddf9f657fccc2199c23e86"
+    },
+    {
+      "path": "evidence/screenshots/04-create-menu.png",
+      "bytes": 514184,
+      "sha256": "5ed9f9b4d3f2fe69a7849e2b27c3881f97883c25ed2574fcd9bd300a825cb558"
+    },
+    {
+      "path": "evidence/screenshots/05-create-group.png",
+      "bytes": 410148,
+      "sha256": "cede36367d3085be0817519fff929821ac8c620870ce0ff94caa8256b3b3253d"
+    },
+    {
+      "path": "evidence/screenshots/06-general-settings.png",
+      "bytes": 357169,
+      "sha256": "b4a01a3d04dffcf20a3aa9b9df4ad8757ee9223873b8e4dee464a66d9467a5e6"
+    },
+    {
+      "path": "evidence/screenshots/07-model-picker.png",
+      "bytes": 544766,
+      "sha256": "728395b11884fe70a54fa11613426b4561bda44ef5ae64310b46e91fef6418ce"
+    },
+    {
+      "path": "evidence/screenshots/08-composer-add.png",
+      "bytes": 498872,
+      "sha256": "834b8e4c971a0ada2e9683e61baa822da08ab731a5cd36341584797a6d6ce328"
+    },
+    {
+      "path": "evidence/screenshots/09-reference-desktop.png",
+      "bytes": 99228,
+      "sha256": "0272f912b859115002d3064f1ae4c55b9de83d97a23c5c622c6460c42e5038fa"
+    },
+    {
+      "path": "evidence/screenshots/10-reference-daylight.png",
+      "bytes": 99634,
+      "sha256": "e0b4ddbf65844ca23a7cf50a2695d517980d50cb1ce24be9b57347dc96893a6a"
+    },
+    {
+      "path": "evidence/screenshots/11-reference-mobile-panel.png",
+      "bytes": 28217,
+      "sha256": "e1317dd6c4bbd746e0b877faca4f35e9943678f127f52c521ff31ab2b59c499e"
+    },
+    {
+      "path": "evidence/screenshots/12-reference-mobile-chat.png",
+      "bytes": 40182,
+      "sha256": "d0aedaa9c2d0c47fa7ef3cbf1940b78baaf57e542fa42f933f700420008f3402"
+    },
+    {
+      "path": "evidence/shipped-styles.css",
+      "bytes": 313231,
+      "sha256": "ec0fc627dd6325e29c71a320b0cc8013e1de0162486db9da0e932d3915d6cf01"
+    },
+    {
+      "path": "evidence/source-design-tokens.json",
+      "bytes": 22821,
+      "sha256": "5190ba967cacbe65ec21d47cf8c9e92e1b5ef192bc232ca823e70276da27ecc7"
+    },
+    {
+      "path": "evidence/source-excerpts.md",
+      "bytes": 16181,
+      "sha256": "c532550f971f9ef6b3f7272c42d70a88123d0721d6b902e5cae18cdb7f8e3e59"
+    },
+    {
+      "path": "reference.html",
+      "bytes": 30302,
+      "sha256": "c7acf339a51c6bf935b9aa2d672f9bd573f0f020b647dd2ac20c88c37067873c"
+    },
+    {
+      "path": "source-findings.md",
+      "bytes": 17825,
+      "sha256": "b8a3aef095fe31eff7f500b676f8e5a8859cba6fe866f13d99a128651c5d9556"
+    },
+    {
+      "path": "verification.md",
+      "bytes": 4715,
+      "sha256": "8abb33f81a46cd5684f131835b14f07215fbfdee2a6f9bcebdbb179a8deb341a"
+    }
+  ]
+}

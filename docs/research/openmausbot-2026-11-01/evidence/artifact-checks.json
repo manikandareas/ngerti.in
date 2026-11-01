@@ -1,0 +1,63 @@
+{
+  "date": "2026-11-01",
+  "checks": {
+    "html_unique_ids": {
+      "status": "pass",
+      "count": 45
+    },
+    "javascript_syntax": {
+      "status": "pass"
+    },
+    "json_parsing": {
+      "status": "pass",
+      "input_files": 7
+    },
+    "complete_ui_evidence_record": {
+      "status": "pass",
+      "evidence_id": "ev_baf48007a04d11e208f83aaf5ed542435a9f2fabb7afb706eb1a8fb30e9e155b",
+      "operation": "analyze_javascript_application"
+    },
+    "shipped_css_identity": {
+      "status": "pass",
+      "sha256": "ec0fc627dd6325e29c71a320b0cc8013e1de0162486db9da0e932d3915d6cf01"
+    },
+    "shipped_css_selected_tokens": {
+      "status": "pass",
+      "matched": 93,
+      "total": 93
+    },
+    "source_token_comparison": {
+      "status": "pass-with-documented-difference",
+      "matched": 92,
+      "total": 93,
+      "differences": [
+        {
+          "skin": "daylight",
+          "property": "--shadow-float",
+          "shipped": "0 4px 12px -1px #1c1c1c14, 0 2px 4px -2px #1c1c1c0f",
+          "source": "0 4px 12px -1px rgb(28 28 28 / 0.08), 0 2px 4px -2px rgb(28 28 28 / 0.06)"
+        }
+      ],
+      "explanation": "Shadow alpha is minified from decimal rgb to 8-bit hex; baseline literals remain distinct."
+    },
+    "reference_external_dispatch_static_review": {
+      "status": "pass",
+      "note": "No external script, fetch or WebSocket; placeholder actions only."
+    },
+    "authored_text_whitespace": {
+      "status": "pass",
+      "files": 14,
+      "immutable_inputs_excluded": [
+        "Geist-OFL.txt",
+        "OpenMausBot-LICENSE.txt",
+        "OpenMausBot-NOTICE.txt",
+        "shipped-styles.css",
+        "source-excerpts.md"
+      ]
+    },
+    "markdown_local_links": {
+      "status": "pass",
+      "count": 36
+    }
+  }
+}

@@ -1,0 +1,494 @@
+{
+  "evidence_id": "ev_e2cdb4879babd84dbc78f06edb604b021184ee6bcfb9729be4a2a2ce41caa93e",
+  "subject": {
+    "name": "app.asar",
+    "digest": {
+      "sha256": "123baad523c82bcc3210d5092d0c1d9f211c4cfcb44de43813f8bff1cbd14e6f"
+    },
+    "local_path": "/Applications/OpenMausBot.app/Contents/Resources/app.asar",
+    "format": "asar",
+    "architecture": null
+  },
+  "provider": {
+    "id": "rea-analysis-view",
+    "name": "REA analysis view projection",
+    "version": "1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis-view",
+  "operation": "inspect_analysis_view",
+  "parameters": {
+    "parent_evidence_id": "ev_72b333c028c6ab0f6ddbcc8a3b2241eb3777165ea03409e67d19d013e6909abd",
+    "view": {
+      "kind": "summary"
+    }
+  },
+  "raw_result": null,
+  "normalized_result": {
+    "kind": "summary",
+    "view": {
+      "kind": "summary"
+    },
+    "parent_evidence_id": "ev_72b333c028c6ab0f6ddbcc8a3b2241eb3777165ea03409e67d19d013e6909abd",
+    "parent_operation": "analyze_javascript_application",
+    "parent_digest": "72b333c028c6ab0f6ddbcc8a3b2241eb3777165ea03409e67d19d013e6909abd",
+    "view_digest": "3724cd45979b57b9448b63fcb5e171287088fb1f9748c257e89f8f50957ca3e9",
+    "artifact": {
+      "path": "/Applications/OpenMausBot.app/Contents/Resources/app.asar",
+      "sha256": "123baad523c82bcc3210d5092d0c1d9f211c4cfcb44de43813f8bff1cbd14e6f"
+    },
+    "coverage": {
+      "status": "complete-within-view",
+      "examined": 840,
+      "total": 1910,
+      "next_offset": null,
+      "exhausted": true
+    },
+    "limitations": [
+      "Boundary extraction covers unshadowed JSON/global coercions plus parse and validation method candidates.",
+      "Child-process extraction covers asynchronous node:child_process creation, literal argv/env/stdio options, exit/error listeners, and kill signals.",
+      "CommonJS and ESM binding relationships were recovered from inert syntax and resolved only within the inventoried artifact container.",
+      "Configuration extraction covers process.env, process.argv, node:fs reads, and direct logical defaults.",
+      "Dynamic IPC channel expressions remain unresolved and are never paired by textual similarity.",
+      "Electron API identity follows proven lexical module aliases and structurally verified module-namespace interop. Other reassignments, dynamic selections, and visibly overwritten namespace members are unresolved; missing findings do not establish absence. Arbitrary call side effects and runtime registration are not evaluated.",
+      "Electron relationships are derived from inert syntax; runtime registration, reachability, defaults, and enforcement remain unproven.",
+      "Event extraction covers EventEmitter-style literal registrations, removals, and dispatch candidates; dynamic names remain unknown.",
+      "Function fingerprints are static candidates; equal digests can remain ambiguous and do not prove behavioral equivalence.",
+      "Graph coverage is incomplete; unavailable facts remain explicit and must not be read as absence.",
+      "JavaScript and HTML were parsed as inert text; bundle bootstrap code was never executed.",
+      "Local data flow does not claim control-flow-sensitive reaching definitions or arbitrary dynamic property resolution.",
+      "Promise ownership covers explicit unshadowed Promise construction, static factories, aggregation, chaining, and await syntax only.",
+      "Request extraction covers fetch, WebSocket, node:http/node:https construction, direct option fields, and exact local response consumers.",
+      "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-send.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+      "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-send.node-test.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+      "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-signin.node-test.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+      "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-staging.node-test.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+      "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-sync-client.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+      "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-sync-client.node-test.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+      "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-sync-engine.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+      "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-sync-engine.node-test.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+      "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-sync-main.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+      "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-sync-main.node-test.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+      "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-sync-mark.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+      "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-sync-plan.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+      "Resource extraction covers built-in filesystem/network acquisition and exact local close/destroy/end handles.",
+      "619 additional limitations omitted from this view; consult source parent Evidence ev_72b333c028c6ab0f6ddbcc8a3b2241eb3777165ea03409e67d19d013e6909abd for the complete list (the caller-supplied record, or its retaining session)."
+    ],
+    "unknowns": [
+      "23145 semantic graph unknowns remain in the parent Evidence.",
+      "625 application graph unknowns remain in the parent Evidence.",
+      "Boundary extraction covers unshadowed JSON/global coercions plus parse and validation method candidates.",
+      "Child-process extraction covers asynchronous node:child_process creation, literal argv/env/stdio options, exit/error listeners, and kill signals.",
+      "CommonJS and ESM binding relationships were recovered from inert syntax and resolved only within the inventoried artifact container.",
+      "Configuration extraction covers process.env, process.argv, node:fs reads, and direct logical defaults.",
+      "Dynamic IPC channel expressions remain unresolved and are never paired by textual similarity.",
+      "Electron API identity follows proven lexical module aliases and structurally verified module-namespace interop. Other reassignments, dynamic selections, and visibly overwritten namespace members are unresolved; missing findings do not establish absence. Arbitrary call side effects and runtime registration are not evaluated.",
+      "Electron relationships are derived from inert syntax; runtime registration, reachability, defaults, and enforcement remain unproven.",
+      "Event extraction covers EventEmitter-style literal registrations, removals, and dispatch candidates; dynamic names remain unknown.",
+      "Function fingerprints are static candidates; equal digests can remain ambiguous and do not prove behavioral equivalence.",
+      "Graph coverage is incomplete; unavailable facts remain explicit and must not be read as absence.",
+      "JavaScript and HTML were parsed as inert text; bundle bootstrap code was never executed.",
+      "Local data flow does not claim control-flow-sensitive reaching definitions or arbitrary dynamic property resolution.",
+      "Promise ownership covers explicit unshadowed Promise construction, static factories, aggregation, chaining, and await syntax only.",
+      "Request extraction covers fetch, WebSocket, node:http/node:https construction, direct option fields, and exact local response consumers.",
+      "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-send.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+      "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-send.node-test.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+      "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-signin.node-test.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+      "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-staging.node-test.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+      "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-sync-client.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+      "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-sync-client.node-test.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+      "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-sync-engine.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+      "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-sync-engine.node-test.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+      "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-sync-main.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+      "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-sync-main.node-test.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+      "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-sync-mark.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+      "Resource extraction covers built-in filesystem/network acquisition and exact local close/destroy/end handles.",
+      "graph.coverage.status is partial",
+      "semantic_graph.coverage.status is partial",
+      "620 additional unknowns omitted from this view; consult source parent Evidence ev_72b333c028c6ab0f6ddbcc8a3b2241eb3777165ea03409e67d19d013e6909abd for the complete list (the caller-supplied record, or its retaining session)."
+    ],
+    "summary": {
+      "input_path": "/Applications/OpenMausBot.app/Contents/Resources/app.asar",
+      "format": "asar",
+      "root_artifact_sha256": "123baad523c82bcc3210d5092d0c1d9f211c4cfcb44de43813f8bff1cbd14e6f",
+      "statistics": {
+        "relevant_files": 375,
+        "nested_asar_containers": 0,
+        "text_bytes_read": 4135216,
+        "invalid_utf8_files": 0,
+        "parsed_javascript_files": 373,
+        "visited_ast_nodes": 616297,
+        "findings": 3063,
+        "modules": 159,
+        "parse_failures": 0
+      },
+      "electron": {
+        "browser_windows": 4,
+        "explicit_web_preferences": 11,
+        "preload_entrypoints": 2,
+        "context_bridge_apis": 3,
+        "exposed_api_members": 3,
+        "ipc": {
+          "operations": 322,
+          "literal_channels": 225,
+          "dynamic_channel_operations": 2,
+          "renderer_transmissions": 200,
+          "renderer_listeners": 25,
+          "main_handlers": 97,
+          "paired_renderer_transmissions": 94,
+          "ambiguous_renderer_transmissions": 0,
+          "unpaired_literal_renderer_transmissions": 106
+        },
+        "sender_validation_observations": 10,
+        "utility_processes": 2,
+        "resolved_utility_entrypoints": 0,
+        "native_addon_bindings": 0,
+        "resolved_native_addon_bindings": 0
+      },
+      "coverage": {
+        "application": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_count": null,
+          "limits": [
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 0,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 1188166,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 12272524,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 20024474,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 210844,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 2386420,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 269484,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 285292,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 301210,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 3541004,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 378898,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 435344,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 5242,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 5417406,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 62256,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 78064,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 8342402,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 8721668,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_result_budget_bytes",
+              "value": 970923540,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_semantic_result_budget_bytes",
+              "value": 0,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_worker_heap_limit_bytes",
+              "value": 1098907648,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_worker_timeout_ms",
+              "value": 60000,
+              "unit": "milliseconds"
+            }
+          ]
+        },
+        "semantic": {
+          "status": "partial",
+          "truncated": true,
+          "omitted_nodes": null,
+          "omitted_relations": null,
+          "limits": [
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 1188166,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 12272524,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 20024474,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 210844,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 2386420,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 269484,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 3541004,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 378898,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 435344,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 5417406,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 62256,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 8342402,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_available_result_budget_bytes",
+              "value": 8721668,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_parent_result_budget_bytes",
+              "value": 970923540,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_semantic_result_budget_bytes",
+              "value": 0,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_worker_heap_limit_bytes",
+              "value": 1098907648,
+              "unit": "bytes"
+            },
+            {
+              "name": "javascript_analysis_worker_timeout_ms",
+              "value": 60000,
+              "unit": "milliseconds"
+            }
+          ],
+          "families": [
+            {
+              "family": "boundary",
+              "status": "partial",
+              "retained_relations": 102,
+              "omitted_relations": null,
+              "unknown_count": 319
+            },
+            {
+              "family": "call-flow",
+              "status": "partial",
+              "retained_relations": 4679,
+              "omitted_relations": null,
+              "unknown_count": 6340
+            },
+            {
+              "family": "child-process",
+              "status": "partial",
+              "retained_relations": 0,
+              "omitted_relations": null,
+              "unknown_count": 319
+            },
+            {
+              "family": "closure",
+              "status": "partial",
+              "retained_relations": 6261,
+              "omitted_relations": null,
+              "unknown_count": 319
+            },
+            {
+              "family": "configuration",
+              "status": "partial",
+              "retained_relations": 19,
+              "omitted_relations": null,
+              "unknown_count": 336
+            },
+            {
+              "family": "data-flow",
+              "status": "partial",
+              "retained_relations": 42675,
+              "omitted_relations": null,
+              "unknown_count": 4229
+            },
+            {
+              "family": "event",
+              "status": "partial",
+              "retained_relations": 34,
+              "omitted_relations": null,
+              "unknown_count": 338
+            },
+            {
+              "family": "object-flow",
+              "status": "partial",
+              "retained_relations": 7180,
+              "omitted_relations": null,
+              "unknown_count": 8744
+            },
+            {
+              "family": "promise-ownership",
+              "status": "partial",
+              "retained_relations": 1090,
+              "omitted_relations": null,
+              "unknown_count": 1238
+            },
+            {
+              "family": "request",
+              "status": "partial",
+              "retained_relations": 2,
+              "omitted_relations": null,
+              "unknown_count": 320
+            },
+            {
+              "family": "resource-lifecycle",
+              "status": "partial",
+              "retained_relations": 0,
+              "omitted_relations": null,
+              "unknown_count": 319
+            },
+            {
+              "family": "timer",
+              "status": "partial",
+              "retained_relations": 16,
+              "omitted_relations": null,
+              "unknown_count": 324
+            }
+          ]
+        },
+        "application_unknowns": 625,
+        "semantic_unknowns": 23145
+      },
+      "limitation_count": 635
+    }
+  },
+  "confidence": "derived",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Boundary extraction covers unshadowed JSON/global coercions plus parse and validation method candidates.",
+    "Child-process extraction covers asynchronous node:child_process creation, literal argv/env/stdio options, exit/error listeners, and kill signals.",
+    "CommonJS and ESM binding relationships were recovered from inert syntax and resolved only within the inventoried artifact container.",
+    "Configuration extraction covers process.env, process.argv, node:fs reads, and direct logical defaults.",
+    "Dynamic IPC channel expressions remain unresolved and are never paired by textual similarity.",
+    "Electron API identity follows proven lexical module aliases and structurally verified module-namespace interop. Other reassignments, dynamic selections, and visibly overwritten namespace members are unresolved; missing findings do not establish absence. Arbitrary call side effects and runtime registration are not evaluated.",
+    "Electron relationships are derived from inert syntax; runtime registration, reachability, defaults, and enforcement remain unproven.",
+    "Event extraction covers EventEmitter-style literal registrations, removals, and dispatch candidates; dynamic names remain unknown.",
+    "Function fingerprints are static candidates; equal digests can remain ambiguous and do not prove behavioral equivalence.",
+    "Graph coverage is incomplete; unavailable facts remain explicit and must not be read as absence.",
+    "JavaScript and HTML were parsed as inert text; bundle bootstrap code was never executed.",
+    "Local data flow does not claim control-flow-sensitive reaching definitions or arbitrary dynamic property resolution.",
+    "Promise ownership covers explicit unshadowed Promise construction, static factories, aggregation, chaining, and await syntax only.",
+    "Request extraction covers fetch, WebSocket, node:http/node:https construction, direct option fields, and exact local response consumers.",
+    "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-send.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+    "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-send.node-test.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+    "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-signin.node-test.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+    "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-staging.node-test.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+    "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-sync-client.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+    "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-sync-client.node-test.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+    "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-sync-engine.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+    "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-sync-engine.node-test.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+    "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-sync-main.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+    "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-sync-main.node-test.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+    "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-sync-mark.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+    "Resource constraint during analyze_javascript_application: Expanded application relationships for electron/cloud-sync-plan.mjs exceed the parent's result budget; complete static facts were retained on the file node",
+    "Resource extraction covers built-in filesystem/network acquisition and exact local close/destroy/end handles.",
+    "619 additional limitations omitted from this view; consult source parent Evidence ev_72b333c028c6ab0f6ddbcc8a3b2241eb3777165ea03409e67d19d013e6909abd for the complete list (the caller-supplied record, or its retaining session)."
+  ],
+  "relationship_coverage": null,
+  "locations": [
+    {
+      "kind": "artifact-path",
+      "path": "/Applications/OpenMausBot.app/Contents/Resources/app.asar"
+    }
+  ],
+  "evidence_links": [
+    "ev_72b333c028c6ab0f6ddbcc8a3b2241eb3777165ea03409e67d19d013e6909abd"
+  ]
+}

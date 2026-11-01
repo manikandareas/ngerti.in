@@ -1,1 +1,0 @@
-"""Server-authenticated account ownership."""

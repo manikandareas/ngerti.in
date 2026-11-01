@@ -1,0 +1,1249 @@
+{
+  "baseline": "80f66b9786d7776138fbe001b26ef068f1132624",
+  "archive": ".dev/nma060/retired-source.tar.gz",
+  "archive_sha256": "62420be7448f5dc52d514f7e47331a3e462379fe8d3fe063162068b2cf8bbc01",
+  "verified_files": 310,
+  "files": [
+    {
+      "path": "apps/backend/alembic.ini",
+      "sha256": "6988347c5c22ce4864eb06e9c85f320d1de26547bd58158dcc62c2284096496c"
+    },
+    {
+      "path": "apps/backend/migrations/env.py",
+      "sha256": "25c675c49ad08607563b7ce658126fcea7e38f5e71acc197cb0e40181a3f07a0"
+    },
+    {
+      "path": "apps/backend/migrations/versions/0001_v1_baseline.py",
+      "sha256": "a4abf619f63eb7bc94ba1d67e44dffb7a456cb9bfed4543dfeadeb5c6f9435c0"
+    },
+    {
+      "path": "apps/backend/migrations/versions/0002_background_tasks.py",
+      "sha256": "02543e0f409f078ba609b0691d508df95eafd5897305553eb63a8b57ba21bf0e"
+    },
+    {
+      "path": "apps/backend/migrations/versions/0003_product_files.py",
+      "sha256": "9079008e8f1d8d9c105630dd9d0025362eae42a007ca6342f2d70f21aeebb847"
+    },
+    {
+      "path": "apps/backend/migrations/versions/0004_sandbox_runtime.py",
+      "sha256": "81ae63e3017b2a491dd866b007f908497c28a5f9ee01ab9e4aa91e61acdb911f"
+    },
+    {
+      "path": "apps/backend/migrations/versions/0005_browser_workspace.py",
+      "sha256": "93dd76e8453ffcc54a9c32c5b7ffbca09215bfe7c13b861b455834a644746fb3"
+    },
+    {
+      "path": "apps/backend/migrations/versions/0006_user_schedules.py",
+      "sha256": "3e6a1992697a309d4ccf725aadcacfa46735836abd0548067d6b169c5901ce79"
+    },
+    {
+      "path": "apps/backend/migrations/versions/0007_persona_revisions.py",
+      "sha256": "35adf44209d11a6a0477c6ebfc28bd6bb134de4c5191881b7ab95a2bd3aded8c"
+    },
+    {
+      "path": "apps/backend/migrations/versions/0008_personal_memory.py",
+      "sha256": "ed7e716a1103099ce84ef8d7e5d57d591097ff6d500a59a15dd1626d1b275d16"
+    },
+    {
+      "path": "apps/backend/migrations/versions/0009_personal_goals.py",
+      "sha256": "42d5ba26bb579c97756b9b873d1730c6b1e0a73afe3fbac1bd79868569e7a0c1"
+    },
+    {
+      "path": "apps/backend/migrations/versions/0010_proactive_candidates.py",
+      "sha256": "3bbbc4717887066acfe2d55eadb9fcbc9cb74e790ffda7dda01693972ba83c49"
+    },
+    {
+      "path": "apps/backend/migrations/versions/0011_proactive_delivery.py",
+      "sha256": "bf1be03c06e6eced5b53aa9efc07bb4d67970113a5f1543a75e347d70f9616bf"
+    },
+    {
+      "path": "apps/backend/migrations/versions/0012_resource_library.py",
+      "sha256": "2d56f11abf5f1170fb81f723c037e69fa9fd8717ee85f45ea3920ee5f8468c48"
+    },
+    {
+      "path": "apps/backend/migrations/versions/0013_compute_usage.py",
+      "sha256": "f83f539eac680fca224f08602ee3ed56d7c43a633613bd9bcab1bd81583b115b"
+    },
+    {
+      "path": "apps/backend/migrations/versions/0014_subscription_billing.py",
+      "sha256": "75b336551b7d191b6b40a5c2f0855bd0fcb5e2fea72d0e76e30498a2562cf460"
+    },
+    {
+      "path": "apps/backend/migrations/versions/0015_subscription_lifecycle.py",
+      "sha256": "43a6eba650e54b0fcd93f40c930a6106ef0b5983d95c3276a0fe8507e5f074a9"
+    },
+    {
+      "path": "apps/backend/migrations/versions/0016_recovery_versions.py",
+      "sha256": "b30929a0324790faab9d7b65ab3eecf6a4486b3f30eb32fd6567dc3e44313236"
+    },
+    {
+      "path": "apps/backend/migrations/versions/0017_restore_storage_binding.py",
+      "sha256": "fb3789a00b8a8ee92a321ad0a16b45f86966f05031cc4e2e0f78a07ccf72b58e"
+    },
+    {
+      "path": "apps/backend/migrations/versions/0018_browser_provider_profiles.py",
+      "sha256": "19afea248e544f7c3f73b1fa11e55513efcd157633ce3ee2a4ba8874d1c0b148"
+    },
+    {
+      "path": "apps/backend/migrations/versions/0019_browser_continuation.py",
+      "sha256": "09bd954226550e31f2d73c7710cb96ef6b2363b31d9f7bf488884d2c8aca09d3"
+    },
+    {
+      "path": "apps/backend/migrations/versions/0020_computer_workflow.py",
+      "sha256": "5ebd23020eb0bf648930e32c780909e8eda94b03f723471214a1bc58e6a33600"
+    },
+    {
+      "path": "apps/backend/migrations/versions/0021_browser_metering.py",
+      "sha256": "245463d5fca1734d12242cc937364fe16322cce80ecf224cbc806674c2fb49ae"
+    },
+    {
+      "path": "apps/backend/migrations/versions/0022_account_provisioning.py",
+      "sha256": "abe59552cf50f48c817fe8c46a9c168def0437a8af68e69e0a96428d3cd966a0"
+    },
+    {
+      "path": "apps/backend/pyproject.toml",
+      "sha256": "2715892f63e47e523d8d0c3a35255b3896a3a96aa9d3fa06057e70966faf8540"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/__init__.py",
+      "sha256": "75b1c6ced378f5bcabb8b675f6f703748001639871aa93dec0e5203a5fc2789d"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/accounts/__init__.py",
+      "sha256": "77884562da3ccea590aeea3789f9c59d4a06e5840d963681bc61e4b25ed3eb3a"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/accounts/access.py",
+      "sha256": "400eb5f9ebebe9ac5d34e4b1efa3c3c299f4bb02b1cbaf7f47794cad33f0156c"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/accounts/auth.py",
+      "sha256": "c6b0045d96c81ffb3e4cac7f76780bb8ffa4b78a041902663585baecfed0a6f6"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/accounts/provisioning.py",
+      "sha256": "78afc27c4582ef92efad449a9bca608ab58c493beb24f52c13254ebe232c3c05"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/accounts/webhooks.py",
+      "sha256": "015b8de70212effe4601cb47145fbe73c2f9cd04b228e19317c4698f9e26e1c0"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/agent_engine/__init__.py",
+      "sha256": "c8fb056da895a6c95d960d843a0b2951796a8415c02601af5dfd9a533522df40"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/agent_engine/api.py",
+      "sha256": "26869f731f33fbabfca5512f418829bceefe16689ffb79d02a28584b20ac8db7"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/agent_engine/apps_api.py",
+      "sha256": "40dace5f80c41b1ac0df48c41b1bab8b3384ef544551ec7131e4b1797f7b240d"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/agent_engine/computer_bridge.py",
+      "sha256": "f42d47de55e41d7e572719fc165cb3a5815ae21a8ef1059b0d550cfe0ab9f11b"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/agent_engine/conversation_migration.py",
+      "sha256": "d6208049c06b956937a760858a87e4d5c0276678b12f8073e76950ea708ab043"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/agent_engine/conversations.py",
+      "sha256": "4e2b63218dfc68454c95991549708b651fb71bbaf59fa35fc817791e754cd62f"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/agent_engine/migration.py",
+      "sha256": "be8f413d2a2f46fcf38bb7cf5f01dcda31a214f5272c73ba752665318fb4b445"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/agent_engine/partitions.py",
+      "sha256": "149fbd4097e9c7c06cc8840c1287fef3ff04842a67e17258532d1de9c93de0be"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/agent_engine/provisioner.py",
+      "sha256": "0d7c76eb18486a13eb2fa22dd08a62de74012847e015cbfec4c52b6b2bbe1d3d"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/agent_engine/recovery.py",
+      "sha256": "d62ccdc163c0a71b757649ebd5fd82286032c7cdc6c44d12a818baa3867b0b9e"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/agent_engine/stream.py",
+      "sha256": "eb24bb03309d3675db28a6244f9644d5601701245b05a5789b89dccba620cbb0"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/api/__init__.py",
+      "sha256": "908fa97b74a498e99dae5b461a2f990b822f7206598017a40c27c2fde0154ca9"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/api/app.py",
+      "sha256": "6ae0bfaad3632b7f6451ad60fc0faa687ecd55692e482acc4c407360f4a48f2f"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/async_db.py",
+      "sha256": "2637f145b47235f23a1ef0b99656194cfaa1a64f8bda84f0963bf5c9d4d51d9f"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/billing/__init__.py",
+      "sha256": "181a64251f6bdb22f4eedc84927c196d96d03d15f433f2c90b40113ec38bcdc0"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/billing/api.py",
+      "sha256": "6d474e1ed8ff190940b4e0c56aafef3ff9444a972f51505dc5d0e906bfee8230"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/billing/contracts.py",
+      "sha256": "9d0f4da1376e3ec8e868b8e1dc466299e7dab24ad2e12db4b3be10883c26bd7f"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/billing/duitku.py",
+      "sha256": "833a7c092591324982bc3e6988a58218f02aa0757dfcc1eb940f4f5daa2abe94"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/billing/http.py",
+      "sha256": "e1219176326bde0707e3435e9b7874fffbe320ea244ec0dcf133e6ba5d20b804"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/billing/lemon.py",
+      "sha256": "c1c363bb5c73cd7c68e3b8d6c359ab1df23986fc50e520a446b94d602e785aa9"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/billing/lifecycle.py",
+      "sha256": "3683352807f3d4232ae3b50781bf1524b47e244cd966ea01b3ed5262d650fbbc"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/billing/recovery.py",
+      "sha256": "96ec4934ecb3511a2fc9b15649262afc9f79bf97ed58199fe7f49c342f0f0ba4"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/billing/service.py",
+      "sha256": "5b9191cff975fb401ffc2e9840dd8d8360e019c3f8c25feedfeb6667b8a20fd5"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/billing/store.py",
+      "sha256": "3047d4ed6f8257ee6a601e2650dc7c4f838d3496e6ea30746e6596904c6ba6e8"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/billing/webhooks.py",
+      "sha256": "c49c881be647cdc19e1ae04f5f69613eecd7e7b80257e4e7fbd6869edff6ba20"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/__init__.py",
+      "sha256": "aa33a5584c326139fd8b58795e76b6721cb8baeeeab405739de414379f43fe3c"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/actuator.py",
+      "sha256": "464834a75884c1d5508314b898674109787d43395cb06024ba7e9ddc9767b319"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/capability.py",
+      "sha256": "62256d48de90814e057cc6b279bc531168406cce52a3e54f1de54d65d29199f1"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/cdp.py",
+      "sha256": "1691b7454aaee4fea38d0cc76b3df5b6f36e139d5480f1deb7b2c666c7424f8b"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/contracts.py",
+      "sha256": "31bb22f9daa38b69ff4bc046fce8ef80cd08d7d91293c86c8b8b76b0f93ac798"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/desktop.py",
+      "sha256": "6b10fdafd727c1c813f0430640d4bcbc69d960540f8c7c6f0c504e1bd3e7f934"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/desktop_io.py",
+      "sha256": "10c158163792ed16830d75c6c5baf23d30aead3c323dbbb818e20cd00bf79492"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/e2b.py",
+      "sha256": "4768c7153f3c01bf4571709b24a3cf51cf85c121ea9dc9f289eb42eee85eb66f"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/egress.py",
+      "sha256": "bc681e6d8129fb48d0ddf06993a782675f1cd15bd85e9ac000e79efcee5b3ab4"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/jev_assets/LICENSE",
+      "sha256": "5afa3d97bf1e6f998d587fa101e3fe0d0c416840b7fe77bcd6ae97690a334631"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/jev_assets/privacy.js",
+      "sha256": "ee93748632b00ddcda7179e1d77641158f5481e4c83b810319859e1d8992989a"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/jev_assets/snapshot.js",
+      "sha256": "1cfc7f1ee356798f04627bd1efc73c96784d8be2684369a93fd6e7c398b70c62"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/jev_assets/target_context.js",
+      "sha256": "487a4d798a24cbde4d45aab33113cfbfe32e6533ca8a7a4d36a53b9576d9d365"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/jev_runner.py",
+      "sha256": "26afe519cf32596d3fd4d75fbd3651ec06d4b7e1ba94d494f15f681f6cbc1cb9"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/targets.py",
+      "sha256": "f5e9971e0ec59d3b0d94bf02c16728ff186aa3419b58f2eac821cad50f20a551"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/computer/template.py",
+      "sha256": "eea8601b1d243dde67cf8d3ba78ef47664364702ee0e0e28e09afc4646e8d0e5"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/config.py",
+      "sha256": "b1d8851c11ca8e61a3b997f8897a9f2d98bfc9e012584694d2e9c04cb2287cb9"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/db.py",
+      "sha256": "c12b8cbf8c454dc6d7bf63fb0b6db018613ed6b0bf0ecaf3e765aa93d62c1b4e"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/e2b.py",
+      "sha256": "2dc2fe080f351f53e276736b376342b7842dc44596547ecb10648cdc55b1fbab"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/health.py",
+      "sha256": "fa6b604c557696fa2f1be6bf7b0cdebfbb223116245d019f8b20ca811b26039a"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/models.py",
+      "sha256": "0ade4176fe799617bf9e9e75084b1e4b2acf7360d952971fc1d2dfca5237703a"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/quotas/__init__.py",
+      "sha256": "da5449caff280cde1c13318aef8e363e5a361c0e9553049221ef36ee69387cc9"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/quotas/errors.py",
+      "sha256": "4575c8029f7e17386808e884689883f9038776ac02a3703665e46174a8b2af2c"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/quotas/ledger.py",
+      "sha256": "0ab870c9b5214fbd3cc5965543a6d437a67743d4763d7c5e3446f8df77ab1f77"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/quotas/periods.py",
+      "sha256": "83de3dc1cbb86f5927325ea74c552a967057a62070a1ca47926051f34273ea24"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/quotas/policy.py",
+      "sha256": "afbee6b3e7f5ab5b431422d2611da2b9798ba73ab781c788377be6fe31040e37"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/sandbox/__init__.py",
+      "sha256": "004fa7e411bf44c7e531cdde6931c9210e4536732f6e552961fd9cc1b09231b9"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/sandbox/contracts.py",
+      "sha256": "5302439fca571218e98579fae7c9a6b9f138f1fc5692faeae06d0d409e1d7091"
+    },
+    {
+      "path": "apps/backend/src/ngertiin/setup.py",
+      "sha256": "8bcd49bfc798fd249989105a9d228f98689335796bc22b9aa32e348e20589987"
+    },
+    {
+      "path": "apps/backend/tests/test_account_provisioning.py",
+      "sha256": "4a1b01f2c742e0a5b20397addbf8ba7454bd90dd6194ec5b6becc4264c2f0750"
+    },
+    {
+      "path": "apps/backend/tests/test_agent_engine.py",
+      "sha256": "7630ba183c61c249d7a008d119bfe5ce4e4e778de755718ccfc85f0a93cff9f3"
+    },
+    {
+      "path": "apps/backend/tests/test_engine_computer_outcomes.py",
+      "sha256": "86601d31cb1ac2ad8f5ed084d2545b57b855ec432f905134e74c23e978d8d35e"
+    },
+    {
+      "path": "apps/backend/tests/test_native_configuration.py",
+      "sha256": "4ed747c5e50f3e5cdb072be4e514a663ddd258de8908a329f41b85d805a85384"
+    },
+    {
+      "path": "apps/backend/uv.lock",
+      "sha256": "cd01198d9808f487b0bc1030595473a8be23b3936331cc2b3edd41845e045383"
+    },
+    {
+      "path": "apps/engine/.dockerignore",
+      "sha256": "d48311f483f508673ce5a90089ed286fee25d9d112be047ead3d0787c51cfb5a"
+    },
+    {
+      "path": "apps/engine/Dockerfile",
+      "sha256": "b1af23ecd0d52a575b2831829f027744998bd9f3d065d0702cc63ecf26934e5f"
+    },
+    {
+      "path": "apps/engine/build_runtime.py",
+      "sha256": "c44894aa132ec90f027abb5550dfe7a2392360b8389df2eae4fed6ea154f9304"
+    },
+    {
+      "path": "apps/engine/build_skill_catalog.py",
+      "sha256": "cd399b26b60563f25a1cd5126684863817b539a4272dec413015ee0cac950585"
+    },
+    {
+      "path": "apps/engine/collect_inventory.py",
+      "sha256": "4c12a60ba1e0e627044736164c22e75183c80a5950cf416e0e735bc81d51e6e4"
+    },
+    {
+      "path": "apps/engine/config/capabilities-v2.example.json",
+      "sha256": "94c89e9d5856c136b857557d779a405e74c435b1ad7099e21f2d72e35b38f3c5"
+    },
+    {
+      "path": "apps/engine/config/memory-provider.example.json",
+      "sha256": "a50c7ee2c87daf956e08b4b72e13781911593ef6cde33905af24452bcd37096f"
+    },
+    {
+      "path": "apps/engine/desktop-tools.Dockerfile",
+      "sha256": "6a552771d7a0b01a463442290569e313a5bc0eb2a1fac669004b496838948863"
+    },
+    {
+      "path": "apps/engine/document-requirements.in",
+      "sha256": "11709b54f41dadb8725f3856e7b7c79dec437cf06c0f13f9ed1e55ec8bd40af9"
+    },
+    {
+      "path": "apps/engine/document-requirements.lock",
+      "sha256": "5e082a8265919b60e88c6648fb789e132bc3bbf948771499b49ee626d39d9838"
+    },
+    {
+      "path": "apps/engine/document-tools.Dockerfile",
+      "sha256": "0316f71ba03926e42269c4729e2d3ef1893a9aa50445bf46d02fdfd97cc315a3"
+    },
+    {
+      "path": "apps/engine/fetch_runtime.py",
+      "sha256": "32ab83f951487ab377e6eb67e036c375d2577c64707b43f779cee49fba500664"
+    },
+    {
+      "path": "apps/engine/install_desktop.py",
+      "sha256": "08e9fd4687e199fa30ff89429968ad759767aac0a4056009c11baf43843c270a"
+    },
+    {
+      "path": "apps/engine/native-dependencies.json",
+      "sha256": "b746efed40566b9e02364e3e4fbbdb061651725b77373fd3f62cf089bcefe131"
+    },
+    {
+      "path": "apps/engine/native-tools.Dockerfile",
+      "sha256": "55dca1bbd8e98afb3ead4e4d66658a0f3b06a3fb373a5fc08ae9cc1f0ce94da0"
+    },
+    {
+      "path": "apps/engine/pyproject.toml",
+      "sha256": "cca0c5f77d1857ce86b8a7defd9ebf6f1d3c6c788598e8018025643dd01b506f"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/__init__.py",
+      "sha256": "4064e84d1acb1ffa1e8097c5af6566b57929ce94cb0c67c80b64945dec02770f"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/adapter.py",
+      "sha256": "bf859aaf4a44a45ec855a0dd6b50c4273d96008af05f12fc16e739e707d04b1a"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/agents.py",
+      "sha256": "c7d0f50c4539a27a7bcbf4adf89993ebaadbd67dfc8bfea5b84e1d2fbbe4a5cf"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/app_auth.py",
+      "sha256": "14ef1b920af8b7210f932514ef815d13d9c3683450d33a82c8a20eb67179523c"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/app_connections.py",
+      "sha256": "f470062ef094b3363854a1f01ed7ba09ad51e5ce4f417e143c4e6f0467492a59"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/app_interactions.py",
+      "sha256": "bb37805076ef123f6c5d26e1cfca9a0450af834ced9c7d685f2ff4629a221da8"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/app_manifest.py",
+      "sha256": "e4e82dcd586e9161ce435077595d7ab48b527a62e6edcef1ee5f5d6adcb01be9"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/app_runtime.py",
+      "sha256": "c1731e38a67c361980dc6b7f3ea2228496f73b85d00b63d2386decece2518951"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/app_stdio.py",
+      "sha256": "48b07a0fd14a68221057bf4536d149cdbb1a1d51bfde31ef0ea922f7552ad058"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/artifacts.py",
+      "sha256": "31508dca1ab80fdc0d26d5e3ecbfea83f6d539a0467e500e1e5f5ec526bc95e9"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/automation.py",
+      "sha256": "c29d02425b3ca345880184511ce0b7d3c2661f1d46fad016a300ee9f6d93cf75"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/backup.py",
+      "sha256": "013a9f7c6f073464ca7e63521501486671aba290504faab5de932579ef5145c1"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/browser_egress.py",
+      "sha256": "04e2d9a332a3815adc24593e7b1fb9cf240026a8d1563dd2d36fbd0474a9d094"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/browser_load.py",
+      "sha256": "1b17643745db06965b11e004e1dca268a2fe85aec1756a1fb0bf5528f60f3d57"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/browser_supervision.py",
+      "sha256": "8ad167b708bc9790f7d438e6434408a8c33df161e6d9a982d142fd09bb036017"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/browser_vault.py",
+      "sha256": "d10099ff44132d3058d7f75f8d94ed911dc96a9349731ffdec6082e462cebccc"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/capabilities.py",
+      "sha256": "bf85cc777c266012c9cdd0e60c8178bfc9fc5d6980a513eadefd7b1c58874ce4"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/clarifications.py",
+      "sha256": "959412ad927e54569632f3c526f8fca2c67a7dc8c19756f08e30f658c06fc793"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/coding.py",
+      "sha256": "d64c2dedb09a517ca38afc9f7fe9ebb1c256268aa749777fa41b726838a75a23"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/collaboration.py",
+      "sha256": "b19e6a64cdeb5018d1c682cb8d4157c763fcfbccfd54a7f822b47135fd2bb479"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/collaboration_delivery.py",
+      "sha256": "c6ca120adeed2065f5b3ce68030f63dba2fd2985830c98c690a7063e38c3de22"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/collaboration_native.py",
+      "sha256": "62c0b4568bb78447909145b6257a4a4e41afd5b4a9b878079505ed5986446c82"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/computer.py",
+      "sha256": "cf422c9152e51cea0972e37a7a38a4f7596af308e92bd77805dbcbce1f10a5e3"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/connections.py",
+      "sha256": "81de0ce77a8bae031c956f61e3a4311eaf31a4dacf3e76d272f0de8d5c365489"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/context.py",
+      "sha256": "df67ed7cefe258480e6252fbe9a321383c6736059ba615192ceeff782fb748d7"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/context_references.py",
+      "sha256": "f8324a9997bb325275e88dcb83b2f4f1355e6ea71639998bba9f16f11428d4bd"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/contracts.py",
+      "sha256": "db560c0e33c70897c7bc2eda73d63efd4105482f5be06ae36cadc48632779526"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/conversations.py",
+      "sha256": "28a570cdb5ae4d927a953a5abc90326dc5f27967085a4e8ea87bebe7f9381057"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/delegation.py",
+      "sha256": "51a61a031aeaa72a2c0715fdefbe7566edd8d50816349953718c584f952700df"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/delegation_delivery.py",
+      "sha256": "82eae6917953137ae058d9a36cf6e20df634408782e40ad76a20b52c5abd6e1e"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/delegation_store.py",
+      "sha256": "cf17ef6d61c2bb51a3430de7ae0fce77cc56f916d2c12c463643cc14253281f9"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/delivery.py",
+      "sha256": "365a812606a081eb4cd1b99aba2c67ae0155b8715b1c22d4da52fe6699b943da"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/desktop_worker.py",
+      "sha256": "719ff3ff4fcd1ca0e385ca66702e3a256157a2f1ed9e3ab29b1c2b564a3fb9c1"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/diagnostics.py",
+      "sha256": "a4a1fc2b53e0603f4fd21d9e5c47273133b6a5578a6cee199f17392f4a4b729c"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/direct_messages.py",
+      "sha256": "88b4e82c3822b6bf83a3d562516eb843e8d225fe5a36562160fb54cfb4d7e917"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/discussions.py",
+      "sha256": "4673927ef2b128e431247f83248d358aeb14a74e5fb3cf4b1782170b5d1b0bcc"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/files.py",
+      "sha256": "fee72700691b573a0f34c4092f75dc1425e4e7cfdbc6fc032724b651ed8e3d65"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/goal_commands.py",
+      "sha256": "bdb3ddb4d412d43e5f54e6342cdf48962dd394109b1e8bc344a6ef2492827d5b"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/goal_continuation.py",
+      "sha256": "0c97337d66aeb91a6055cb5017f8759d94717a406eb6954a066dfa05ba6b486b"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/goal_lifecycle.py",
+      "sha256": "086226995467893e563e16a8e6375d4b4362a6fdf47a931a711d53b31ce5d9bc"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/goal_review.py",
+      "sha256": "8fa53335fa184828ff693dd8ad6856db7d6deb40693ca4b6442788e8bf270fae"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/goals.py",
+      "sha256": "0f9d23e8be7990b25117f276096b9324947b3d2f72c1d5cdfe578203317a46fe"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/google_mcp.py",
+      "sha256": "a714eceee8d398252be31bead568ff15eaef67d56d6afea70ddbf85598996284"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/google_workspace.py",
+      "sha256": "8fb9facaad8a68139b885c2060365159cbc76aefec6c35e2d0dec9c3766dc5c0"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/history.py",
+      "sha256": "c0d0a2be46d0356529f0e6b55a03ad944f7b2c3fc327915f7f800ad6d229f54c"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/inbox.py",
+      "sha256": "4e2468c3a8a6a8ecad0db0c55804c75a7ed61de9e0cf37fed68f45acaac4d509"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/inference.py",
+      "sha256": "c2a42622cd480e5c7515b9fa5e8e6338b25c606dfcffb549e237a19a0842f766"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/inference_config.py",
+      "sha256": "b39fd01d154f4b9fe0ec6600d2a3c8e4bd4346a8acd8084d28fa424d58416b98"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/integration.py",
+      "sha256": "810bfdf310fbc0044c3e70527e957964fae297053316719ed8af745b37827190"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/learning.py",
+      "sha256": "05c796105892bca56a5dc689038330ff430f37f829dae7606ea501ca8b67b4b8"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/learning_assets.py",
+      "sha256": "da39a3df788b390afa39e5df3d3d2c8ff9756be079fd18c8864e034da821a5ac"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/learning_curator.py",
+      "sha256": "bb3df540c6a7fa5fb55d7c01e0f6cd4ab7b5e68b89f2ae448ad1e85a55124a31"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/learning_store.py",
+      "sha256": "4a542131e1632fbfd63c78aa805bde82e34c92c5008c2f2d2d183bb10c29b0c6"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/media_analysis.py",
+      "sha256": "c77bbc840857bf076efd0f800500bc69e5fd4e9d7ad877b17b7fed074adb4ecf"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/media_inputs.py",
+      "sha256": "efbcb9d15729de89fdd7599e61cf60abaa498a2e16411eef53f13f450c10e3e8"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/media_provider.py",
+      "sha256": "db88189b46e2a74529c57669fd3571a899a6a351a512062e95bd5a59d96363a0"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/media_sources.py",
+      "sha256": "2ab3cd22af5b28b1e131b611903c6f977bde7597da2c39f8189f5007c86d4c8d"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/memory_provider.py",
+      "sha256": "3b325b1413c408158fe0d220e0d490555b13f93e0c1b77f5b323c1df9920f91d"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/native_catalog.py",
+      "sha256": "9bc87ac1fc893d696bba9e3fda51f5fc7db12d38ed872beeff544bed6da1c9cc"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/native_executor.py",
+      "sha256": "0225d5493348f60f8e9208280bf1629767c358aecbdc21c016f65597723eaa44"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/native_jobs.py",
+      "sha256": "ab39a91de479fc9965b480ebcfb6f581e1eacf28fddf9e0fd8c1043f523cf37d"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/native_media.py",
+      "sha256": "53903d4f7753fb05d7611a93a496e7cc6c6e87c58d8684debed842009796c693"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/native_surface.py",
+      "sha256": "dacb1fc04c0681802e53d2826241ec98575077ad52035556fb29100f4a48703c"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/native_worker.py",
+      "sha256": "78878b98e0ff64de6623bd34faf33a21f55279e3296cff2a1b483b910079d50e"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/outcomes.py",
+      "sha256": "4e1764ea73822eb976844fb68d7267c740311d7b823304fa59d0f319e9591452"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/plugins.py",
+      "sha256": "645fa2a841bbe7f1f7ff398238adf3d7e75549f016f25eb6218e8f822c651c4d"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/portable.py",
+      "sha256": "160034db0845dd2c5c99e0d01f06927f8ec2ef8cc5e81a047ce81c96fd3aaf4f"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/portable_manifest.py",
+      "sha256": "db806cc5fc1b7d92f53e157aec78b7719b69153e5421acb8fb391f83a3e3cb6e"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/process_waits.py",
+      "sha256": "cf6d265be5df291a291f0709b2c2977e0f651ca3a421841197b1fd389b1173f5"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/provider-opencode.json",
+      "sha256": "aac7b47965ff49ca27c85a2b5d751b8cf02ca2c02fddb6fac94ea607e98baf4e"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/provider_auth.py",
+      "sha256": "69b4c4147940288e788e29682013a5d3ac12eeb4f352b01f6317e1463560d5c4"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/provider_manifest.py",
+      "sha256": "28249bd9a2a031865132d794cb5dc6cb4f8147680622c83e70e67819af9ecf27"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/provider_secrets.py",
+      "sha256": "99b2eb338f151d4e1525bdcc98347f394039c830ba81d90d655750d7a7cd4498"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/provider_transport.py",
+      "sha256": "9a6421b401c9b53d547810e768d9ebe54640bc93920a03d9a6793c0cfc71dd96"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/recall.py",
+      "sha256": "01523c2e13b550ac4cd2a676715860039388da8b52c3fa436a8a6f0565139d47"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/redaction.py",
+      "sha256": "a6cab4afc0cc6389ad20f1ca77428681a816ea06c59938dfb12bd412782abc6e"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/reliability.py",
+      "sha256": "f6fa563f3f9c669e6c1b1e33bd32006e29a222214d86ff5b30a0860a5fbe5904"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/research.py",
+      "sha256": "772fc9477a5bd74207ac22a552da6ce6b359b0432e48446e1a9a659946a7d621"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/runtime-pin.json",
+      "sha256": "1a042bf45bdbb66ae1712eb71ed75c88490e4abf2e60138c136a8f6c81356b16"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/runtime.py",
+      "sha256": "1e3165462a4c4cc0a4a896fc6e37b26a3c713b2b600719e91001329a8b321217"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/screen_control.py",
+      "sha256": "043b1150e5c6948e06c6d55cb544957d5a7202035d8822d0f5bd7cf1bed73ef8"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/screens.py",
+      "sha256": "794c350cb151d4eb502cf3c9afcdd396be9df26b8a475be1867654db209a4954"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/service.py",
+      "sha256": "df6f36086922afa4fe2ebe89edebafc16a7307f0db770069a4ec7caa4707a8e6"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/session_context.py",
+      "sha256": "07834ea4743715cd09bffd26fe3f88b5b1922ae343c30dd4039dcd839ddff7ae"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/session_controls.py",
+      "sha256": "bf0bab8b3cbaaee20bd92e8cf85c8df5e3b99f83f4d333ad4ede2852161c608f"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/session_settings.py",
+      "sha256": "12020c9052444d006892eef85d3234c33e3bda2874bf3255ba5e12109c2cafd9"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/skill-catalog.json",
+      "sha256": "f2c9124d5e527c0d9c443864a69ad1ee165313218013f4284d84ca08aca326db"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/skill_assets.py",
+      "sha256": "1e9aacd8500665810f4adfddd4d9ee544feb574104858cb5a30f99888817f01f"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/skill_overrides/docx_common.py",
+      "sha256": "1b114fe98acb8fac034ef0344f7a631fd8961c0a431e6254504a0102e7ce3e41"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/skill_packages.py",
+      "sha256": "cd41306d06c1a02059d08b66df153f097372c9fda5155090921a2e8efe14a270"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/speech.py",
+      "sha256": "acd86f0d906db78111886cc6a5d17f489fea51b7bc1d048010e243a010728ad9"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/store.py",
+      "sha256": "656241d544a38658e09ec46c0a3067425593fd1d670a7ef667103c258b3e66bb"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/threads.py",
+      "sha256": "2280e1ac50be77f614eb0c0d17c5acae517cb31d0bda1e4d3b8503f54969ec8c"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/transcript.py",
+      "sha256": "a070ef2c1ccee90dd1ee445f75ba3ce59e388d36ddb48e0b325417ca50293caf"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/wakes.py",
+      "sha256": "d0bac4b52a1a8e7b0642f28d240df83f4fa65b00d9ba17bb6fddaa152dd694db"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/webhooks.py",
+      "sha256": "8f56ff77799192dbbc5adf3ddef94668f96999b513afca977a697c842caec81d"
+    },
+    {
+      "path": "apps/engine/src/ngertiin_engine/workspaces.py",
+      "sha256": "dccb30c02b06e7f35dd9d2eef011a437f669bd5b824e6fea814e95a8ff7d6729"
+    },
+    {
+      "path": "apps/engine/tests/app_fixture.py",
+      "sha256": "59c4e673bc658b455449c4bb82a48da2af4e1dc3bd289f33b55f5fb453bea1e3"
+    },
+    {
+      "path": "apps/engine/tests/browser/apps.config.ts",
+      "sha256": "d0c6f74f897865758bf49fbbce86d4e2683bfe3fafff996533e790bccd44be54"
+    },
+    {
+      "path": "apps/engine/tests/browser/auth.tsx",
+      "sha256": "39bf937b9163e8c765486e17aa90ab9dec4ff5a486b97a0730380aac8eda3a7f"
+    },
+    {
+      "path": "apps/engine/tests/browser/automation.config.ts",
+      "sha256": "dc8ba0b30de1851a1e4ef5107e859ec1707b92e8516df573437ce3656ce09dcd"
+    },
+    {
+      "path": "apps/engine/tests/browser/closure-auth.tsx",
+      "sha256": "841492672781314c5488e2bd7b4b9800f90dd1aa1bcd50595974e5909892cf10"
+    },
+    {
+      "path": "apps/engine/tests/browser/collaboration.config.ts",
+      "sha256": "d4daa329c0e55475da187465db654cd697e9c0d05b951b661ff3ff32f121f32f"
+    },
+    {
+      "path": "apps/engine/tests/browser/connections.config.ts",
+      "sha256": "0a40da0df396444b2cd95355c2e7b66236ebf23a9be0849072f64ea4d3984f88"
+    },
+    {
+      "path": "apps/engine/tests/browser/index.html",
+      "sha256": "0f84842ddc4b22cda8903975e1597c2dd9df85b64d7de6c3c2a6c77464be4183"
+    },
+    {
+      "path": "apps/engine/tests/browser/learning.config.ts",
+      "sha256": "9285cab02cf8e6b3c9cfe37456ee997d48bf762be648c6a21f7ba9cf3f186372"
+    },
+    {
+      "path": "apps/engine/tests/browser/main.tsx",
+      "sha256": "410147147bed3347a92408ebe403f2d5b79e01359cd4663678cb588131556f08"
+    },
+    {
+      "path": "apps/engine/tests/browser/media.config.ts",
+      "sha256": "de4ff0ee9bef5c2b83099637a373fba5a1295e0097b3d0b7d3554d4516af1c11"
+    },
+    {
+      "path": "apps/engine/tests/browser/native-routing.config.ts",
+      "sha256": "79e000f7df3e8041e7611b8b357a4beac258b93e26f468ede25d01cedf111745"
+    },
+    {
+      "path": "apps/engine/tests/browser/nma028-closure.config.ts",
+      "sha256": "28196e6479888f3b2eea5c50694b9854e64098c0b57e01a7fbdb9d3496c5832b"
+    },
+    {
+      "path": "apps/engine/tests/browser/nma028.config.ts",
+      "sha256": "0192103c6a2d2de6c82e5d126bcf339ec9749fced2c1883ee7119db635dfdc6a"
+    },
+    {
+      "path": "apps/engine/tests/browser/router.tsx",
+      "sha256": "8cd0e2835178b2417e5bec5cedfd64dcca5bc2083986ed7e65a27875effade69"
+    },
+    {
+      "path": "apps/engine/tests/browser/screen.config.ts",
+      "sha256": "c93af3568a6ac96d302166987ae5e1a262a6a9d245eda3322c3526bc03bf53d8"
+    },
+    {
+      "path": "apps/engine/tests/browser/serve.py",
+      "sha256": "ebe625df21547c29b876e279a811e5131e71dd1d3721951587e8d52a5a4e798b"
+    },
+    {
+      "path": "apps/engine/tests/browser/serve_apps.py",
+      "sha256": "c553e954029e6d6f4df721069deb541952fab9bf17b45573f77b85d5100638d2"
+    },
+    {
+      "path": "apps/engine/tests/browser/serve_connections.py",
+      "sha256": "cbab7dc3c4097412a7d9153e21583daa2e9b81a7d9da9e0a9e6ed6eddc5ce350"
+    },
+    {
+      "path": "apps/engine/tests/browser/style.css",
+      "sha256": "074844a037e99da3d34d7f41359add589153f4a17a75640b17a084fb338f7e1d"
+    },
+    {
+      "path": "apps/engine/tests/browser/vite.config.ts",
+      "sha256": "773d5be4c6c00c5278f4de2e2dca87d7dea285fbc8de0467f551db5f89c0f79e"
+    },
+    {
+      "path": "apps/engine/tests/browser/workspace-snapshot.config.ts",
+      "sha256": "ca1544ea7e0ef9f6b806c154f309544fd54a8a0d4160cc922f36b06f7346233c"
+    },
+    {
+      "path": "apps/engine/tests/browser/workspace.config.ts",
+      "sha256": "8ab665d3eb04bba37b55ff6563cf0d286f32fa7bfdd7b1f22c15bad44163e677"
+    },
+    {
+      "path": "apps/engine/tests/conversation_fixtures.py",
+      "sha256": "627295d8434e8fca399d5363d48eec11a0d86fda69d4c754b98d9485f24779b0"
+    },
+    {
+      "path": "apps/engine/tests/fault_launcher.py",
+      "sha256": "86b84783a5b094fc7d45db1eaa75f4b1016c5e5300c3b7b1d3f62e89045e1d26"
+    },
+    {
+      "path": "apps/engine/tests/mcp_fixture.py",
+      "sha256": "183234d70e9f02bbf2ecef163ba6bc499ebb90efc638974840c2651a7a8b1b2d"
+    },
+    {
+      "path": "apps/engine/tests/test_account_defaults.py",
+      "sha256": "12cdb7f58213c1e2bc08f18a7831704c09e274a2ca1f83f1a21b445d9b3546c8"
+    },
+    {
+      "path": "apps/engine/tests/test_app_connections.py",
+      "sha256": "47303d0bc4edb228430982a4db01406fc028bde80a9e4f8533b84d2718b26f4d"
+    },
+    {
+      "path": "apps/engine/tests/test_app_setup.py",
+      "sha256": "b24d71162066006c43a82f30867a3498cbf6fc6eafcd15d2e865af43fb34ce56"
+    },
+    {
+      "path": "apps/engine/tests/test_artifacts.py",
+      "sha256": "1b7509083525ef7285ac09c9cfc8d947883eae866a78d146c6715da2168ce3a6"
+    },
+    {
+      "path": "apps/engine/tests/test_automation.py",
+      "sha256": "5e048cfcbfb64a4b5483b0bc11e21ae16dc66f16ef8e9912207830b23802b34c"
+    },
+    {
+      "path": "apps/engine/tests/test_automation_recovery.py",
+      "sha256": "d5b223381ee5db560a85c620f4e0a223e1894195dc871e56ce0ccd54299576f1"
+    },
+    {
+      "path": "apps/engine/tests/test_backup.py",
+      "sha256": "c290acd4e3ac5b0e6c73c617206361e667b7ebc7c7391ac15c9b86640991b98b"
+    },
+    {
+      "path": "apps/engine/tests/test_browser_cutover.py",
+      "sha256": "9865cbccb595f80a36d80560d41186677b89d14862832b941e2632096f96823c"
+    },
+    {
+      "path": "apps/engine/tests/test_browser_download_transport.py",
+      "sha256": "46e70f9799e08a584fcae9f60c9edbd13f929009f47641051d06f38df3c6c6d6"
+    },
+    {
+      "path": "apps/engine/tests/test_browser_recovery.py",
+      "sha256": "52daa39593f767527760d88bb0136362d05f15d2ebff999d5771d2079f55e6b1"
+    },
+    {
+      "path": "apps/engine/tests/test_calendar_wakes.py",
+      "sha256": "da8d2cf67cc11cfb97f8ee253b9ba7980b7f603199824875635e15bc35088999"
+    },
+    {
+      "path": "apps/engine/tests/test_capabilities.py",
+      "sha256": "fd54401307b04655082a59a28ba5bdbe2c0bc4dbb5acc3a5b5ccc4dbbd296e13"
+    },
+    {
+      "path": "apps/engine/tests/test_catalog_upgrade.py",
+      "sha256": "96ca149a28599d4aa1230fff3ca43e5ad5f7a0b49f6f14b861f44fd75dd13bd0"
+    },
+    {
+      "path": "apps/engine/tests/test_clarifications.py",
+      "sha256": "68743320014f09a9030cc15c63ed5d765585613c2ee78a7b120ddc0a8e2ec8ee"
+    },
+    {
+      "path": "apps/engine/tests/test_code_admission.py",
+      "sha256": "79adf50c9b9289ebf62b445aa04f1a33f8e0eea64411c7b2536e58287c8a4f66"
+    },
+    {
+      "path": "apps/engine/tests/test_collaboration.py",
+      "sha256": "5439e91dc883fdbcf127ce08114e82e750560d37f3d2c8995004ed988b2f7558"
+    },
+    {
+      "path": "apps/engine/tests/test_collaboration_migration.py",
+      "sha256": "5a8f8dd36874586232d4d922f92a519789feedfdc512604e0333dfca2c576494"
+    },
+    {
+      "path": "apps/engine/tests/test_collaboration_safety.py",
+      "sha256": "75de3b0fba66874810f71cbbaeef5658f1f8d22a3aef7ea6aa5531594a41b140"
+    },
+    {
+      "path": "apps/engine/tests/test_computer_boundaries.py",
+      "sha256": "9145ca0f72f23da8917540959e7f63613298c2e9fb0a77106fceb6cd59b1a354"
+    },
+    {
+      "path": "apps/engine/tests/test_computer_live.py",
+      "sha256": "2e5ddbf293aaefa5a4e68bda2f052225b95486d44ee68f0b8972b0af2fae6c3d"
+    },
+    {
+      "path": "apps/engine/tests/test_connections.py",
+      "sha256": "c521f8f958ccf887673167a585bd7a750d06aa626fcf57032f72e86e79efe080"
+    },
+    {
+      "path": "apps/engine/tests/test_connections_live.py",
+      "sha256": "0483a05b12afbf83c64cf46fe42fda3bc7e4a1f55d9bf03cf08f6a0ebdcac79e"
+    },
+    {
+      "path": "apps/engine/tests/test_context.py",
+      "sha256": "5fb839aaba06b2b03e660ee7b1301e71b145a845e4d32944e627555423745ff8"
+    },
+    {
+      "path": "apps/engine/tests/test_conversations.py",
+      "sha256": "78b82e175bcfa3faddd1e9113eb19ebfad0d9481a65dc7739f07af1215f55b82"
+    },
+    {
+      "path": "apps/engine/tests/test_delegation.py",
+      "sha256": "a86cf8c00a46fc22a206d908dc3b79fe4e264fa88f668b0bdba1dfcdc8268daa"
+    },
+    {
+      "path": "apps/engine/tests/test_delegation_catalog.py",
+      "sha256": "2e6d5d9c53136c9feffe72b6f036d78706d1c428382011c8c5e97e162e63e34d"
+    },
+    {
+      "path": "apps/engine/tests/test_delegation_controls.py",
+      "sha256": "5f87566dcdb93a66cc4d3f4e2255a67f4683776052fd1efe147e43f1bc5f28cd"
+    },
+    {
+      "path": "apps/engine/tests/test_delegation_recovery.py",
+      "sha256": "8aa4ada2403bb5901f2d27d0ef59cae4d148f362737ead3bb69df39c20e93d74"
+    },
+    {
+      "path": "apps/engine/tests/test_delegation_workspaces.py",
+      "sha256": "28605a4024ff0182c5b4f25eb51111ca5cf8974fc5f80aecff443ca1de8a855f"
+    },
+    {
+      "path": "apps/engine/tests/test_direct_messages.py",
+      "sha256": "bc23a87eeefa0fe3d4228a361e834b6a0744f38f022f47db66b3ab75f8e0aafb"
+    },
+    {
+      "path": "apps/engine/tests/test_discussions.py",
+      "sha256": "a617c3ffa3651553ab44235aef70c23d55cb8b061293f02e90b6cea684c4f716"
+    },
+    {
+      "path": "apps/engine/tests/test_discussions_live.py",
+      "sha256": "6834a5ef6fcd14b6f56669f2fafcdfa738a75fc80807f8e0a38abbd2077810ad"
+    },
+    {
+      "path": "apps/engine/tests/test_document_workflows.py",
+      "sha256": "d0a3e9dea009b597df6118d837c05e8f55c2ad778a8649d0e8e181e0513c28bd"
+    },
+    {
+      "path": "apps/engine/tests/test_files.py",
+      "sha256": "a02693326e90ed8b8edb2484a25827162152ee878b4b392b6f0c7f502649cac1"
+    },
+    {
+      "path": "apps/engine/tests/test_goal_delegation.py",
+      "sha256": "034e2d240d057fb4563fa1002d65f7c9deb9079c98eab28d0c4d8087c5818925"
+    },
+    {
+      "path": "apps/engine/tests/test_goal_lifecycle.py",
+      "sha256": "67064f88815fc13836e740d2746e3ca0b30fea7f76473c1bfc66658c7209eee6"
+    },
+    {
+      "path": "apps/engine/tests/test_goal_lifecycle_live.py",
+      "sha256": "39de62e9d7c8b702a8adddcb78056f21a747f89cf2dbd624e510c3b975ceaae1"
+    },
+    {
+      "path": "apps/engine/tests/test_goal_review.py",
+      "sha256": "78e596e0d0f3c025965122e9a5384f7bff57437980c4dddbb11cf18b4a867bcd"
+    },
+    {
+      "path": "apps/engine/tests/test_goals.py",
+      "sha256": "9d11cfeac34a822ad042ad65548daa06a5b987e3306e627ac371cdbdc139d607"
+    },
+    {
+      "path": "apps/engine/tests/test_goals_live.py",
+      "sha256": "9b28582c9cabe772667a489700df774932d649a0773bbe586677812c9a1f89bd"
+    },
+    {
+      "path": "apps/engine/tests/test_google_mcp.py",
+      "sha256": "fd9ba43fc6d00b2d2a03632a241e54872f857b98fdb0903a0bb067679f7e97d3"
+    },
+    {
+      "path": "apps/engine/tests/test_history_portable.py",
+      "sha256": "06444aae0f5b520fe6e65f94c6bcc15f7929672738a3c36379531b3c5b661ec1"
+    },
+    {
+      "path": "apps/engine/tests/test_integration_delivery.py",
+      "sha256": "0806612ad1052518eba310ac8e5372addd114cfae5bc5ebcd11fb877bdc7edad"
+    },
+    {
+      "path": "apps/engine/tests/test_learning.py",
+      "sha256": "adb444def368274d0fe453f594b569ea8c358b4ad349b0311bb961cd71bdbff6"
+    },
+    {
+      "path": "apps/engine/tests/test_learning_lifecycle.py",
+      "sha256": "021c2047e5b6aca1cc1d2392ed44810df0032ad32c6a760d0f63f80b51d741a1"
+    },
+    {
+      "path": "apps/engine/tests/test_learning_live.py",
+      "sha256": "b54b5e971f97036b19146e9e2bbaa3ae1a034d41d69505651b67df7d909161cd"
+    },
+    {
+      "path": "apps/engine/tests/test_media.py",
+      "sha256": "400bb1ed0921a9261433a0212ac91f2589ff52be1fcf915eea468bfce90d535c"
+    },
+    {
+      "path": "apps/engine/tests/test_membership.py",
+      "sha256": "232e8c8d943982d3086c41971dbb2d1350a4868f12f974bab2e7cd20be1dad78"
+    },
+    {
+      "path": "apps/engine/tests/test_memory_batch_identity.py",
+      "sha256": "3c9f4a1634e4ed1322d7e064e8a64c7fe08ac72291f63335ba10c0aedd570f11"
+    },
+    {
+      "path": "apps/engine/tests/test_memory_provider.py",
+      "sha256": "bb47ad1ea04ed5560fef91394ba2126cb61a65103d69f4427572f0b3211fb143"
+    },
+    {
+      "path": "apps/engine/tests/test_migration.py",
+      "sha256": "bc27bb66fd8a9094a3f2c9d36a944b759fedec5aa04dad55f098d02ed032f98e"
+    },
+    {
+      "path": "apps/engine/tests/test_native_capability_routing.py",
+      "sha256": "5d21d8c27ee62194870eb0d9c0839126d66d7ddd568df4f19637ce7fe3aaf8cd"
+    },
+    {
+      "path": "apps/engine/tests/test_native_isolation.py",
+      "sha256": "d2df2e8b2dcca4fe5b1b7215743d8eea7faff475cec0a55b098b5d037980e39b"
+    },
+    {
+      "path": "apps/engine/tests/test_native_screens.py",
+      "sha256": "6c06de621c98b11c62e38657e8a727009ab28d6516caece801bce4f03195505d"
+    },
+    {
+      "path": "apps/engine/tests/test_native_workspaces.py",
+      "sha256": "09cb103c7d92a65269186375927e2cd8265064e2e12f10a35d62afdd9be9577d"
+    },
+    {
+      "path": "apps/engine/tests/test_provider_anthropic.py",
+      "sha256": "f35eda61d3b00ffad1a224edbb9d860fcf111c54df54c64c858811b862749a7e"
+    },
+    {
+      "path": "apps/engine/tests/test_provider_auth.py",
+      "sha256": "2c07caecf726c70f04875e012e6f680932847440ae8a7835bdd501a46af9a638"
+    },
+    {
+      "path": "apps/engine/tests/test_provider_responses.py",
+      "sha256": "1729056dd397e3b4f68973fbd8f1989eb74d3ddb74d08bccc2f544495a70b451"
+    },
+    {
+      "path": "apps/engine/tests/test_provider_setup.py",
+      "sha256": "8e36516b61701005c02f81ed18b3065f5fd591052bf95c61d2185d1b0807d444"
+    },
+    {
+      "path": "apps/engine/tests/test_provider_transport.py",
+      "sha256": "240072ebdca00d79151e3b801e6b9de9d7fd29cbd3021a624d4581409826aae0"
+    },
+    {
+      "path": "apps/engine/tests/test_reliability.py",
+      "sha256": "d0557cc8219383763a9d4e73ad3421da218b827299be710cb1523ebe9ef0405f"
+    },
+    {
+      "path": "apps/engine/tests/test_research.py",
+      "sha256": "2639b78630938ec81b314659d491c2748db47366c69310bb99ded62fd56c175b"
+    },
+    {
+      "path": "apps/engine/tests/test_runtime.py",
+      "sha256": "6f0c4ce35782d39b4ad119b97678ece76dfab268a0f4408f0448f6579e9c1d30"
+    },
+    {
+      "path": "apps/engine/tests/test_screen_gateway.py",
+      "sha256": "137c26361ff654f66f2643c79941965e6b8694595948e87ab950d8fb443456d4"
+    },
+    {
+      "path": "apps/engine/tests/test_session_fidelity.py",
+      "sha256": "28899fa1a2cf36d601e5680e19360b1be116c0daff331ddca060540f8e06c6d4"
+    },
+    {
+      "path": "apps/engine/tests/test_threads.py",
+      "sha256": "cacf73869669484616f7f41f9971cbebc836cf98d6626606ad3afab7d3effcdf"
+    },
+    {
+      "path": "apps/engine/tests/test_wakes.py",
+      "sha256": "46d79fc3e437d6c5b5af3d2a754abb617a987a366cf0666bad0b3ee2bed641c9"
+    },
+    {
+      "path": "apps/engine/tests/test_wakes_browser.py",
+      "sha256": "9c20ba9cf721c652500cda8e19022035bc6a3868f5e839ffff6d7b2fc601e9c3"
+    },
+    {
+      "path": "apps/engine/tests/test_wakes_live.py",
+      "sha256": "5d37fbd975534aff524636ee2cbc1dd33f4525c82230760d87ecbb6c80368d57"
+    },
+    {
+      "path": "apps/engine/tests/test_webhooks.py",
+      "sha256": "df5b5385f1043cb80694a0e1fc4d508ed3cfbd320e9f52fc2dc7fa3e30ec16c6"
+    },
+    {
+      "path": "apps/engine/tests/test_workspace_delivery.py",
+      "sha256": "3af095f5940d725dfefabbad5460747d6f23966716d17c3de81ed5a9d31796b2"
+    },
+    {
+      "path": "apps/engine/uv.lock",
+      "sha256": "e91df0c70a0cbdc0f884e104769b93da2145c914d611ad384d3ad56bd2b65843"
+    },
+    {
+      "path": "scripts/dev_engine.py",
+      "sha256": "f700fde3055bdd7497f46dc1d70c723337a24261683c380a352fcea7521ed80e"
+    },
+    {
+      "path": "scripts/build_e2b_templates.py",
+      "sha256": "53a0fbdb83ff17ec75bc6fb3e0d820963908413d68024ee23743a703a5f628fd"
+    },
+    {
+      "path": "scripts/probe_e2b_browser.py",
+      "sha256": "b17801221710b2d4c2241ead5eaad73f9e61df904769812e22cad8f43648be6c"
+    },
+    {
+      "path": "scripts/billing_webhook_proxy.py",
+      "sha256": "5cb523cef0152e13d552304128aa93f811dc9928d16101276b95e0907e27d141"
+    },
+    {
+      "path": "scripts/rehearse_data_restore.py",
+      "sha256": "a3cea026afc27d0a5c3874d72e142899719a423ea694e77785740746cd305af1"
+    },
+    {
+      "path": "scripts/rehearse_object_restore.py",
+      "sha256": "9da81b9e16ac4b9961a9a7e9ad15db50177faf6bc91de139f4995021612eac01"
+    },
+    {
+      "path": "infra/compose.yaml",
+      "sha256": "69f79d97ac9191b92f31d66b12e893882e0e15a2b07c243b8a8890b59044e5ca"
+    },
+    {
+      "path": "infra/memory.compose.yaml",
+      "sha256": "32fc0fb395cd83e0f7a1ceb430de861f43cf9d10efc8c302bef9d5c82daa72bd"
+    },
+    {
+      "path": "infra/minio.Dockerfile",
+      "sha256": "e516efa2a5debf51ec41790217a9594b3698191b7dc8dcef7cc2f8965eb556a5"
+    }
+  ],
+  "boundary": "Tracked obsolete runtime source/configuration only. Historical evidence, notices, untracked files, credentials, databases and Docker resources are preserved. Restore historical source from this Git revision or the verified local archive."
+}

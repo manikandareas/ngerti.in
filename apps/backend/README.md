@@ -1,7 +1,7 @@
-# Historical Python backend
+# Retired backend runtime
 
-This tree is retained for source audit and selective reuse under the harness-first plan. The active HTTP API, lifecycle authority and background services live in [apps/server](../server/README.md).
+The active application lifecycle, API and harness adapters live in [apps/server](../server/README.md). Obsolete Python/Hermes source, dependency locks, build recipes and migration tooling were removed after their replacement boundaries became available. This directory is not a runtime fallback.
 
-`ngertiin.api.app` and the provisioner `main()` reject startup. The active development command, package dependencies and CI do not load this tree. Accounts/billing, browser, integration and historical persistence modules have not automatically become accepted harness-first implementations. Audit them against the owning active ticket before reuse; remove irrelevant modules once their replacement boundary exists.
+Historical source is available at Git revision `80f66b9786d7776138fbe001b26ef068f1132624`. Restore a separate historical checkout to reproduce old scripts; do not install those dependencies into the active workspace. The verified local archive and per-file hashes are recorded in [the retirement manifest](../../docs/verification/nma-060/completion/retirement.json). Historical verification artifacts and license/provenance notices remain unchanged.
 
-Historical migrations, tests and evidence are retained. No PostgreSQL data, Compose volume, secrets or user files were reset by NMA-047.
+No databases, credentials, untracked files, Docker containers or volumes were removed. Harness-first operation uses its own persistence; it does not require migration of the retired development data.

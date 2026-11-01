@@ -2,7 +2,7 @@
 
 Ngertiin is a persistent agent workspace for one human owner, private DMs, groups, automatic goals and Routine. The active product scope and acceptance are maintained in [Ngertiin Multi Agent](https://app.notion.com/p/402abdd6187381e3a720f4b01d824e1a) and its [backlog](https://app.notion.com/p/116e1edcee864b5da91887466d728aac).
 
-The harness-first backend uses **Bun, TypeScript, Elysia and SQLite**. One application authority owns identity, admission, queue state, events, stop intent and recovery. Background scheduler and dispatcher modules run in that service. Codex App Server and the Muse SDK/MSP adapter supply native execution. Muse subscription and native permission acceptance remain open on NMA-050. No Hermes executor or fallback is started.
+The harness-first backend uses **Bun, TypeScript, Elysia and SQLite**. One application authority owns identity, admission, queue state, events, stop intent and recovery. Background scheduler and dispatcher modules run in that service. Codex App Server and the Muse SDK/MSP adapter supply native execution. Muse native interaction acceptance is verified; subscription remains unverified and is excluded from the explicitly accepted API-key billing scope. No Hermes executor or fallback is started.
 
 ## Development
 
@@ -40,6 +40,6 @@ The [implementation ADR](docs/architecture/adr-0001-harness-first-foundation.md)
 
 ## Historical source and data
 
-Obsolete Python/Hermes source, dependency locks and build/configuration tooling have been removed. The [retirement manifest](docs/verification/nma-060/completion/retirement.json) records the exact prior Git revision, verified local archive and file hashes. Historical scripts require that separate historical checkout. Databases, Docker resources, `.env`, runtime state, provenance notices and evidence are untouched. The active server has no Hermes fallback.
+The retired `apps/backend` and `apps/engine` directories have been removed, including their local virtual environments, caches, bytecode and downloaded runtime archive. Remaining notices and historical READMEs are preserved in the [retired runtime archive](docs/archive/retired-python-runtime/README.md). Obsolete Python/Hermes source, dependency locks and build/configuration tooling were retired earlier. The [retirement manifest](docs/verification/nma-060/completion/retirement.json) records the exact prior Git revision, verified local archive and file hashes. Historical scripts require that separate historical checkout. Databases, Docker resources, `.env`, runtime state, provenance notices and evidence are untouched. The active server has no Hermes fallback.
 
-Development data does not require a migration from the historical runtime. A different `NGERTIIN_STATE_DIR` creates a fresh development installation. Existing new-runtime state must survive normal restarts; incompatible or foreign-owner databases are refused. Rollback uses a previous Git revision and verified backup, rather than a runtime fallback switch. UI work waits for NMA-060; installation on other devices waits for NMA-064.
+Development data does not require a migration from the historical runtime. A different `NGERTIIN_STATE_DIR` creates a fresh development installation. Existing new-runtime state must survive normal restarts; incompatible or foreign-owner databases are refused. Rollback uses a previous Git revision and verified backup, rather than a runtime fallback switch. The engine/API gate is complete; UI implementation and installation on other devices remain separate phases.

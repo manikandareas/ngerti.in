@@ -269,3 +269,14 @@ test("Codex reconciles native commit before publication after restart without re
   expect(f.store.list("message").filter((item) => item.author === "agent")).toHaveLength(1);
   expect(f.store.list("message").find((item) => item.author === "agent")?.state).toBe("complete");
 });
+
+test("default reasoning omits the native config override and completes a turn", async () => {
+  const lane = setup();
+  f.lifecycle.updateAgent(lane.agent.id, {
+    expected_revision: lane.agent.revision,
+    changes: { reasoning: null },
+  });
+  const run = await admit(lane, "Use the native reasoning default.");
+  await background.idle();
+  expect(f.store.get("run", run.id).status).toBe("succeeded");
+});

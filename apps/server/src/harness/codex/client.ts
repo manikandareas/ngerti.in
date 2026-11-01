@@ -213,7 +213,7 @@ export class CodexClient implements HarnessClient {
       // The application supplies confined workspace guidance. Native ancestor discovery can
       // otherwise read host/repository instructions outside this conversation's grant.
       config: {
-        model_reasoning_effort: selected.reasoning,
+        ...(selected.reasoning === null ? {} : { model_reasoning_effort: selected.reasoning }),
         project_doc_max_bytes: 0,
         web_search: this.context.purpose === "routing" ? "disabled" : "live",
         ...(this.context.purpose === "routing"

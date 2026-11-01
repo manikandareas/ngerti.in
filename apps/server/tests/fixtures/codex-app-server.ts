@@ -120,6 +120,13 @@ async function receive(message: Message) {
     case "thread/start": {
       const id = crypto.randomUUID();
       if (!p.model) throw new Error("Missing model.");
+      if ((p.config as Record<string, unknown> | undefined)?.model_reasoning_effort === null) {
+        send({
+          id: message.id,
+          error: { code: -32602, message: "Null config values are invalid." },
+        });
+        break;
+      }
       sessions[id] = {
         model: p.model,
         history: [],

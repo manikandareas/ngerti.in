@@ -11,7 +11,8 @@ import {
   manifests,
   versionState,
 } from "../src/harness/availability";
-import { type HarnessAdapter, HarnessBroker, type HarnessClient } from "../src/harness/broker";
+import { HarnessBroker } from "../src/harness/broker";
+import type { HarnessAdapter, HarnessClient } from "../src/harness/client";
 import { Connections } from "../src/harness/connections";
 import { CredentialContexts, Diagnostics, Redactor } from "../src/harness/context";
 import { HarnessError, type NativeEvent, unknownCapabilities } from "../src/harness/contracts";

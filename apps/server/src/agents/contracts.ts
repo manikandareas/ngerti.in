@@ -1,0 +1,53 @@
+import { z } from "zod";
+import { base, harness, id } from "../contracts/base";
+
+const agentFields = {
+  name: z.string().trim().min(1).max(200),
+  handle: z
+    .string()
+    .regex(/^[a-z][a-z0-9_-]{0,63}$/)
+    .nullable(),
+  avatar: z.string().max(2000).nullable(),
+  soul: z.string().max(100_000),
+  skills: z
+    .array(
+      z.strictObject({
+        source: z.enum(["harness", "application"]),
+        name: z.string().min(1).max(200),
+        revision: z.int().positive().nullable(),
+      }),
+    )
+    .max(100),
+  harness,
+  connection_id: id,
+  instructions: z.string().max(100_000),
+  workspace_id: id.nullable(),
+  model_id: z.string().min(1).max(200).nullable(),
+  reasoning: z.string().max(100).nullable(),
+};
+export const agentInput = z.strictObject({
+  ...agentFields,
+  handle: agentFields.handle.default(null),
+  avatar: agentFields.avatar.default(null),
+  soul: agentFields.soul.default(""),
+  skills: agentFields.skills.default([]),
+  instructions: agentFields.instructions.default(""),
+  workspace_id: agentFields.workspace_id.default(null),
+  model_id: agentFields.model_id.default(null),
+  reasoning: agentFields.reasoning.default(null),
+});
+export const agent = agentInput.extend({
+  ...base,
+  kind: z.literal("agent"),
+  grant_revision: z.int().positive(),
+  system_role: z.literal("tobi").nullable().default(null),
+  configuration_access: z.enum(["self", "owner"]).default("self"),
+});
+export const agentUpdate = z.strictObject({
+  expected_revision: z.int().positive(),
+  changes: z
+    .strictObject(agentFields)
+    .partial()
+    .refine((value) => Object.keys(value).length > 0, "Empty update."),
+});
+export const agentSnapshot = agentInput.extend({ agent_id: id, revision: z.int().positive() });

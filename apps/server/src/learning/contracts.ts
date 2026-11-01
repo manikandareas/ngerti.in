@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { base } from "../contracts/base";
 
 export const learningContext = z.strictObject({ agent_id: z.uuid(), thread_id: z.uuid() });
 export type LearningContext = z.infer<typeof learningContext>;
@@ -136,3 +137,21 @@ export const learningCommands = {
   skill_read: skillRead,
   skill_assign: skillAssign,
 };
+
+export const memory = z.strictObject({ ...base, ...memoryFields, kind: z.literal("memory") });
+export const skill = z.strictObject({ ...base, ...skillFields, kind: z.literal("skill") });
+export const skillRevision = z.strictObject({
+  ...base,
+  ...skillRevisionFields,
+  kind: z.literal("skill_revision"),
+});
+export const skillAssignment = z.strictObject({
+  ...base,
+  ...skillAssignmentFields,
+  kind: z.literal("skill_assignment"),
+});
+export const harnessInventory = z.strictObject({
+  ...base,
+  ...harnessInventoryFields,
+  kind: z.literal("harness_inventory"),
+});

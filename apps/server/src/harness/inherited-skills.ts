@@ -9,7 +9,7 @@ import {
   skillPackage,
 } from "../learning/contracts";
 import type { Lifecycle } from "../lifecycle";
-import { canonicalDirectory, WorkspaceFiles } from "../workspace-files";
+import { canonicalDirectory, WorkspaceFiles } from "../workspaces/files";
 import type { LaunchContext } from "./context";
 
 /** Read-only discovery in the isolated connection home and the current workspace, never host HOME. */

@@ -13,8 +13,8 @@ import { basename, join } from "node:path";
 import { artifact, DomainError, type Entity } from "./contracts";
 import { authorizeResponsibilityWork } from "./goals/work-fence";
 import type { Lifecycle } from "./lifecycle";
-import { MAX_FILE_BYTES, publicationInput, uploadInput } from "./workspace-contracts";
-import { Workspaces } from "./workspaces";
+import { MAX_FILE_BYTES, publicationInput, uploadInput } from "./workspaces/contracts";
+import { Workspaces } from "./workspaces/service";
 
 const digest = (bytes: Uint8Array) => createHash("sha256").update(bytes).digest("hex");
 /** Immutable bytes are durable before their transactional publication/event/command receipt. */

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { base, id } from "../contracts/base";
 
 export const MAX_FILE_BYTES = 16 * 1024 * 1024;
 export const relativePath = z
@@ -67,4 +68,26 @@ export const fileQuery = z.strictObject({
   path: z.string().max(1000).default(""),
   after: z.string().max(200).default(""),
   limit: z.coerce.number().int().min(1).max(500).default(200),
+});
+
+export const artifactInput = z.strictObject({
+  thread_id: id,
+  agent_id: id,
+  run_id: id.nullable().default(null),
+  media_type: z.string().min(1).max(200),
+  sha256: z.string().regex(/^[a-f0-9]{64}$/),
+  storage_key: z
+    .string()
+    .regex(/^[a-zA-Z0-9_-]+$/)
+    .max(200),
+});
+export const artifact = artifactInput.extend({
+  ...base,
+  ...artifactContentFields,
+  kind: z.literal("artifact"),
+});
+export const workspace = z.strictObject({
+  ...base,
+  ...workspaceFields,
+  kind: z.literal("workspace"),
 });

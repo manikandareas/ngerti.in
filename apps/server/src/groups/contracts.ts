@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { base } from "../contracts/base";
 
 const id = z.uuid();
 const text = z.string().min(1).max(100_000);
@@ -79,3 +80,15 @@ export const groupCommands = {
   group_ask_user: askHumanInput,
   group_user_reply: humanReply,
 };
+
+export const groupRoute = z.strictObject({
+  ...base,
+  ...routeFields,
+  kind: z.literal("group_route"),
+});
+export const peerTask = z.strictObject({ ...base, ...taskFields, kind: z.literal("peer_task") });
+export const humanRequest = z.strictObject({
+  ...base,
+  ...humanRequestFields,
+  kind: z.literal("human_request"),
+});

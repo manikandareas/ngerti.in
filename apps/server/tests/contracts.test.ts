@@ -9,6 +9,21 @@ import { fixture } from "./helpers";
 let f: ReturnType<typeof fixture>;
 afterEach(() => f?.close());
 
+test("every registered domain route retains the shared authentication guard", async () => {
+  f = fixture();
+  const app = createApi(f.lifecycle, new Background(f.lifecycle), "a".repeat(64));
+  const cursor = f.store.cursor;
+  for (const route of app.routes) {
+    if (route.path === "/health/live") continue;
+    const path = route.path.replace(/:[a-z_]+/g, crypto.randomUUID());
+    const response = await app.handle(
+      new Request(`http://localhost${path}`, { method: route.method }),
+    );
+    expect(response.status, `${route.method} ${route.path}`).toBe(401);
+  }
+  expect(f.store.cursor).toBe(cursor);
+});
+
 test("published replay schema accepts browser and application receipts across restart", () => {
   f = fixture();
   const uuid = () => crypto.randomUUID();

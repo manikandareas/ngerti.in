@@ -1,6 +1,6 @@
 import { timingSafeEqual } from "node:crypto";
 import { z } from "zod";
-import type { ToolLease } from "../broker";
+import type { ToolLease } from "../client";
 import { HarnessError } from "../contracts";
 import { productToolCatalog, productToolNames } from "../product-tool-contracts";
 import { toolContentBlock } from "../tool-results";

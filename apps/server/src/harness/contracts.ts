@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { base, harness, id } from "../contracts/base";
 
 export const harnessId = z.enum(["codex", "muse"]);
 export const capabilityState = z.enum(["supported", "unsupported", "unknown"]);
@@ -207,3 +208,23 @@ export function brokerContract() {
     ],
   };
 }
+
+export const binding = z.strictObject({
+  ...base,
+  kind: z.literal("binding"),
+  thread_id: id,
+  agent_id: id,
+  connection_id: id,
+  harness,
+  native_session_id: z.string().min(1).max(1000),
+  generation: z.int().positive(),
+  active: z.boolean().default(true),
+  agent_revision: z.int().positive().default(1),
+  workspace_id: id.nullable().default(null),
+  workspace_revision: z.int().positive().nullable().default(null),
+});
+export const connection = z.strictObject({
+  ...base,
+  kind: z.literal("connection"),
+  ...connectionFields,
+});

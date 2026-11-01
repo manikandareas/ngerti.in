@@ -19,7 +19,7 @@ import {
   skillRead,
   skillRevise,
 } from "../learning/contracts";
-import { relativePath, uploadInput } from "../workspace-contracts";
+import { relativePath, uploadInput } from "../workspaces/contracts";
 
 export const productToolSchemas = {
   "ngertiin.cancel_run": z.strictObject({ command_id: id }),

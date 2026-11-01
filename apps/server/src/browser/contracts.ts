@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { base } from "../contracts/base";
 
 const uuid = z.uuid();
 export const browserScope = z.strictObject({ agent_id: uuid, thread_id: uuid });
@@ -108,3 +109,19 @@ export function browserCapabilities() {
     desktop: "unsupported",
   };
 }
+
+export const browserProfile = z.strictObject({
+  ...base,
+  ...browserProfileFields,
+  kind: z.literal("browser_profile"),
+});
+export const browserSession = z.strictObject({
+  ...base,
+  ...browserSessionFields,
+  kind: z.literal("browser_session"),
+});
+export const browserAction = z.strictObject({
+  ...base,
+  ...browserActionFields,
+  kind: z.literal("browser_action"),
+});

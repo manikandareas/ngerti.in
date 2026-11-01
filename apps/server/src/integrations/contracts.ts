@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { base } from "../contracts/base";
 
 export const toolkitSlug = z.string().regex(/^[a-z][a-z0-9_]{0,100}$/);
 export const appToolSlug = z
@@ -61,3 +62,19 @@ export const integrationCommands = {
   app_search: appSearch,
   app_execute: appExecute,
 };
+
+export const appConnection = z.strictObject({
+  ...base,
+  ...appConnectionFields,
+  kind: z.literal("app_connection"),
+});
+export const appSession = z.strictObject({
+  ...base,
+  ...appSessionFields,
+  kind: z.literal("app_session"),
+});
+export const appEffect = z.strictObject({
+  ...base,
+  ...appEffectFields,
+  kind: z.literal("app_effect"),
+});

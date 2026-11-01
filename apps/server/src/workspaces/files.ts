@@ -10,9 +10,9 @@ import {
   writeFileSync,
 } from "node:fs";
 import { isAbsolute, join, parse, resolve } from "node:path";
-import { DomainError } from "./contracts";
-import { MAX_FILE_BYTES, relativePath } from "./workspace-contracts";
-import { mkdirAt, openAt, readDirectory } from "./workspace-posix";
+import { DomainError } from "../contracts";
+import { MAX_FILE_BYTES, relativePath } from "./contracts";
+import { mkdirAt, openAt, readDirectory } from "./posix";
 
 export const deniedWorkspaceNames = [
   ".env",

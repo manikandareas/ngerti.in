@@ -1,5 +1,5 @@
 import { join } from "node:path";
-import type { HarnessAdapter } from "../broker";
+import type { HarnessAdapter } from "../client";
 import { MuseClient } from "./client";
 
 export class MuseAdapter implements HarnessAdapter {

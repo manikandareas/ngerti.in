@@ -14,7 +14,7 @@ import {
 } from "./contracts";
 import { dueWindow, firstDue } from "./goals/schedule";
 import type { Store } from "./store";
-import { Workspaces } from "./workspaces";
+import { Workspaces } from "./workspaces/service";
 
 const active = new Set(["dispatching", "running", "cancel_requested"]);
 const final = new Set(["succeeded", "failed", "cancelled", "steered"]);

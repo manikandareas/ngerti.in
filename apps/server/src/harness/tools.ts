@@ -1,13 +1,12 @@
 import { timingSafeEqual } from "node:crypto";
 import { dirname } from "node:path";
 import { z } from "zod";
-import { Artifacts } from "../artifacts";
+import { registerAgentTools } from "../agents/tools";
 import { type BrowserHost, DockerBrowserHost } from "../browser/host";
 import { Browsers } from "../browser/service";
 import { registerBrowserTools } from "../browser/tools";
-import { type agentInput, type agentUpdate, DomainError, type Entity } from "../contracts";
+import { DomainError, type Entity } from "../contracts";
 import { registerGoalTools } from "../goals/tools";
-import { authorizeResponsibilityWork } from "../goals/work-fence";
 import { registerGroupTools } from "../groups/tools";
 import type { AppHost } from "../integrations/host";
 import { Applications } from "../integrations/service";
@@ -15,8 +14,10 @@ import { registerAppTools } from "../integrations/tools";
 import { registerLearningTools } from "../learning/tools";
 import type { Lifecycle } from "../lifecycle";
 import { canonical } from "../store";
+import { registerWorkspaceTools } from "../workspaces/tools";
 import { Connections } from "./connections";
 import { type ToolScope, toolScope } from "./contracts";
+import { ProductToolMcp } from "./mcp";
 import { productToolSchemas } from "./product-tool-contracts";
 
 export type Resource = {
@@ -33,9 +34,16 @@ export class ProductTools {
   readonly browsers: Browsers;
   readonly applications: Applications;
   readonly #leases = new Map<string, ToolScope>();
-  readonly #negotiated = new Set<string>();
-  readonly #initialized = new Set<string>();
   readonly #tools = new Map<string, Tool>();
+  readonly #mcp = new ProductToolMcp({
+    scope: (token) => this.lease(token),
+    list: (scope) =>
+      (this.lifecycle.store.get("thread", scope.thread_id).purpose === "routing"
+        ? []
+        : [...this.#tools]
+      ).map(([name, tool]) => ({ name, inputSchema: z.toJSONSchema(tool.schema) })),
+    call: (token, scope, name, input) => this.call(token, scope, name, input),
+  });
   constructor(
     readonly lifecycle: Lifecycle,
     private readonly completed: (scope: ToolScope, name: string) => void = () => {},
@@ -68,70 +76,7 @@ export class ProductTools {
         );
       },
     });
-    const artifacts = new Artifacts(lifecycle);
-    const workspaces = artifacts.workspaces;
-    const workspaceFor = (access: ToolAccess) => {
-      access.authorize();
-      return workspaces.authorizeRun(lifecycle.store.get("run", access.scope.run_id));
-    };
-    for (const name of [
-      "ngertiin.get_workspace",
-      "ngertiin.list_files",
-      "ngertiin.read_file",
-      "ngertiin.create_file",
-      "ngertiin.publish_artifact",
-    ] as const) {
-      this.register(name, {
-        schema: productToolSchemas[name],
-        resources: () => [],
-        execute: (raw, access) => {
-          const workspace = workspaceFor(access);
-          const data = raw as {
-            command_id: string;
-            path: string;
-            text: string;
-            media_type: string;
-          };
-          if (name === "ngertiin.get_workspace")
-            return {
-              workspace_id: workspace.id,
-              name: workspace.name,
-              root: workspaces.path(workspace),
-            };
-          if (name === "ngertiin.list_files")
-            return workspaces.files(workspace.id).list(data.path, "", 200);
-          if (name === "ngertiin.read_file") {
-            const bytes = workspaces.files(workspace.id).read(data.path);
-            if (bytes.length > 100_000) throw new DomainError("INVALID_REQUEST", 413);
-            return {
-              path: data.path,
-              text: new TextDecoder("utf-8", { fatal: true }).decode(bytes),
-            };
-          }
-          if (name === "ngertiin.create_file")
-            return lifecycle.store.command(
-              data.command_id,
-              { operation: name, workspace_id: workspace.id, path: data.path, text: data.text },
-              () => {
-                access.authorize();
-                authorizeResponsibilityWork(lifecycle, access.scope.run_id);
-                workspaces.files(workspace.id).create(data.path, Buffer.from(data.text));
-                return { path: data.path };
-              },
-            );
-          return artifacts.publish(
-            data.command_id,
-            {
-              workspace_id: workspace.id,
-              run_id: access.scope.run_id,
-              path: data.path,
-              media_type: data.media_type,
-            },
-            access.authorize,
-          );
-        },
-      });
-    }
+    registerWorkspaceTools(this);
     this.register("ngertiin.read_run_context", {
       schema: z.strictObject({}),
       resources: () => [],
@@ -171,92 +116,7 @@ export class ProductTools {
         };
       },
     });
-    this.register("ngertiin.list_agents", {
-      schema: z.strictObject({}),
-      resources: () => [],
-      execute: (_input, { scope, authorize }) => {
-        authorize();
-        const caller = lifecycle.store.get("agent", scope.agent_id);
-        const agents =
-          caller.configuration_access === "owner" ? lifecycle.store.list("agent") : [caller];
-        return {
-          agents,
-          connections: lifecycle.store
-            .list("connection")
-            .filter(
-              (connection) =>
-                connection.state === "active" &&
-                (caller.configuration_access === "owner" || connection.id === caller.connection_id),
-            )
-            .map((connection) => ({
-              id: connection.id,
-              harness: connection.harness,
-              authentication: {
-                method: connection.authentication.method,
-                billing_source: connection.authentication.billing_source,
-              },
-              models: connection.models,
-            })),
-        };
-      },
-    });
-    this.register("ngertiin.create_agent", {
-      schema: productToolSchemas["ngertiin.create_agent"],
-      resources: () => [],
-      execute: (input, { scope, authorize }) => {
-        const data = input as { command_id: string; profile: z.infer<typeof agentInput> };
-        authorize();
-        if (lifecycle.store.get("agent", scope.agent_id).configuration_access !== "owner")
-          throw new DomainError("SCOPE_DENIED", 403);
-        return lifecycle.store.command(
-          data.command_id,
-          {
-            operation: "create_agent",
-            owner_id: scope.owner_id,
-            actor_id: scope.agent_id,
-            profile: data.profile,
-          },
-          () => {
-            const connection = lifecycle.store.get("connection", data.profile.connection_id);
-            if (connection.state !== "active" || connection.harness !== data.profile.harness)
-              throw new DomainError("SCOPE_DENIED", 403);
-            const agent = lifecycle.createAgent(data.profile);
-            const thread = lifecycle.create("thread", { type: "dm", member_agent_ids: [agent.id] });
-            return { agent, thread };
-          },
-        );
-      },
-    });
-    this.register("ngertiin.update_agent", {
-      schema: productToolSchemas["ngertiin.update_agent"],
-      resources: () => [],
-      execute: (input, { scope, authorize }) => {
-        const data = input as z.infer<typeof agentUpdate> & {
-          command_id: string;
-          agent_id: string;
-        };
-        authorize();
-        const caller = lifecycle.store.get("agent", scope.agent_id);
-        if (caller.id !== data.agent_id && caller.configuration_access !== "owner")
-          throw new DomainError("SCOPE_DENIED", 403);
-        return lifecycle.store.command(
-          data.command_id,
-          {
-            operation: "update_agent",
-            owner_id: scope.owner_id,
-            actor_id: caller.id,
-            target: data.agent_id,
-            expected_revision: data.expected_revision,
-            changes: data.changes,
-          },
-          () =>
-            lifecycle.updateAgent(data.agent_id, {
-              expected_revision: data.expected_revision,
-              changes: data.changes,
-            }),
-        );
-      },
-    });
+    registerAgentTools(this);
   }
   register(name: string, tool: Tool) {
     if (!/^[a-z][\w.]{1,100}$/.test(name) || this.#tools.has(name))
@@ -292,8 +152,7 @@ export class ProductTools {
       scope: Object.freeze({ ...scope }),
       revoke: () => {
         this.#leases.delete(token);
-        this.#negotiated.delete(token);
-        this.#initialized.delete(token);
+        this.#mcp.revoke(token);
       },
     };
   }
@@ -409,117 +268,9 @@ export class ProductTools {
   }
   revokeAll() {
     this.#leases.clear();
-    this.#negotiated.clear();
-    this.#initialized.clear();
+    this.#mcp.clear();
   }
-  async rpc(token: string, input: unknown) {
-    const request = z
-      .strictObject({
-        jsonrpc: z.literal("2.0"),
-        id: z.union([z.string(), z.number().int()]).optional(),
-        method: z.string(),
-        params: z.record(z.string(), z.unknown()).optional(),
-      })
-      .parse(input);
-    const scope = this.lease(token);
-    if (request.method === "notifications/initialized" && request.id === undefined) {
-      if (!this.#negotiated.has(token)) throw new DomainError("CONFLICT");
-      this.#initialized.add(token);
-      return null;
-    }
-    if (request.id === undefined) throw new DomainError("INVALID_REQUEST", 422);
-    if (!["initialize", "ping"].includes(request.method) && !this.#initialized.has(token))
-      throw new DomainError("CONFLICT");
-    let result: unknown;
-    switch (request.method) {
-      case "initialize": {
-        z.object({
-          protocolVersion: z.string(),
-          capabilities: z.record(z.string(), z.unknown()),
-          clientInfo: z.object({ name: z.string(), version: z.string() }),
-        }).parse(request.params);
-        this.#negotiated.add(token);
-        result = {
-          protocolVersion: "2025-06-18",
-          capabilities: { tools: {} },
-          serverInfo: { name: "ngertiin-product-tools", version: "1.0.0" },
-        };
-        break;
-      }
-      case "ping":
-        result = {};
-        break;
-      case "tools/list":
-        result = {
-          tools: (this.lifecycle.store.get("thread", scope.thread_id).purpose === "routing"
-            ? []
-            : [...this.#tools]
-          ).map(([name, tool]) => ({
-            name,
-            inputSchema: z.toJSONSchema(tool.schema),
-          })),
-        };
-        break;
-      case "tools/call": {
-        const params = z
-          .strictObject({ name: z.string(), arguments: z.unknown() })
-          .parse(request.params);
-        try {
-          const value = await this.call(token, scope, params.name, params.arguments);
-          result = {
-            content: toolContent(params.name, value),
-            structuredContent: {
-              result:
-                params.name === "ngertiin.browser_action" &&
-                value &&
-                typeof value === "object" &&
-                "receipt" in value
-                  ? { receipt: value.receipt }
-                  : value,
-            },
-            isError: false,
-          };
-        } catch (error) {
-          result = {
-            content: [
-              {
-                type: "text",
-                text:
-                  error instanceof DomainError
-                    ? error.code
-                    : error instanceof z.ZodError
-                      ? "INVALID_REQUEST. Read ngertiin.describe_tools for the exact argument schema."
-                      : "TOOL_FAILED",
-              },
-            ],
-            isError: true,
-          };
-        }
-        break;
-      }
-      default:
-        return {
-          jsonrpc: "2.0",
-          id: request.id,
-          error: { code: -32601, message: "Method not found." },
-        };
-    }
-    return { jsonrpc: "2.0", id: request.id, result };
+  rpc(token: string, input: unknown) {
+    return this.#mcp.rpc(token, input);
   }
-}
-
-function toolContent(name: string, value: unknown) {
-  if (
-    name === "ngertiin.browser_action" &&
-    value &&
-    typeof value === "object" &&
-    "content" in value &&
-    "receipt" in value
-  ) {
-    return [
-      { type: "text", text: JSON.stringify({ receipt: value.receipt }) },
-      ...(value.content as unknown[]),
-    ];
-  }
-  return [{ type: "text", text: JSON.stringify(value) }];
 }

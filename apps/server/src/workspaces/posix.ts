@@ -1,6 +1,6 @@
 import { CString, cc, dlopen, type Pointer, ptr, toArrayBuffer } from "bun:ffi";
 import { closeSync } from "node:fs";
-import { DomainError } from "./contracts";
+import { DomainError } from "../contracts";
 
 // Node's fs API has no openat. Descriptor-relative traversal avoids ancestor-swap races;
 // /dev/fd/<directory>/<name> is not traversable on macOS.
@@ -14,7 +14,7 @@ const library = dlopen(darwin ? "/usr/lib/libSystem.B.dylib" : "libc.so.6", {
   [darwin ? "__error" : "__errno_location"]: { args: [], returns: "ptr" },
 });
 const fixed = cc({
-  source: new URL("./workspace-openat.c", import.meta.url),
+  source: new URL("./openat.c", import.meta.url),
   symbols: { workspace_openat: { args: ["i32", "ptr", "i32", "i32"], returns: "i32" } },
 });
 function failure(): never {

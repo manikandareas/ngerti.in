@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { mkdirSync } from "node:fs";
 import { z } from "zod";
 import type { Entity } from "../../contracts";
-import type { HarnessClient, Inspection, RecoveryObservation, SessionIdentity } from "../broker";
+import type { HarnessClient, Inspection, RecoveryObservation, SessionIdentity } from "../client";
 import type { LaunchContext } from "../context";
 import { HarnessError, type Settings } from "../contracts";
 import { MuseTools } from "./tools";

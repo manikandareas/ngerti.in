@@ -1,9 +1,9 @@
 import { lstatSync, mkdirSync, realpathSync } from "node:fs";
 import { dirname, isAbsolute, join, relative, resolve } from "node:path";
-import { DomainError, type Entity } from "./contracts";
-import type { Lifecycle } from "./lifecycle";
-import { workspaceInput } from "./workspace-contracts";
-import { allowedPath, canonicalDirectory, WorkspaceFiles } from "./workspace-files";
+import { DomainError, type Entity } from "../contracts";
+import type { Lifecycle } from "../lifecycle";
+import { workspaceInput } from "./contracts";
+import { allowedPath, canonicalDirectory, WorkspaceFiles } from "./files";
 
 export const within = (root: string, path: string) => {
   const rest = relative(root, path);

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { base, text as domainText } from "../contracts/base";
 
 const id = z.uuid();
 const text = z.string().trim().min(1).max(100_000);
@@ -89,3 +90,48 @@ export const goalCommands = {
   write_routine: routineWrite,
   control_routine: routineControl,
 };
+
+export const goalInput = z.strictObject({
+  thread_id: id,
+  agent_id: id,
+  title: z.string().min(1).max(1000),
+});
+export const goal = goalInput
+  .extend({
+    ...base,
+    kind: z.literal("goal"),
+    ...goalFields,
+    state: z.enum(["active", "paused", "stopped", "completed"]),
+    generation: z.int().positive(),
+    evidence_artifact_ids: z.array(id),
+  })
+  .refine(
+    (value) => value.state !== "completed" || value.evidence_artifact_ids.length > 0,
+    "Completed goals require evidence.",
+  );
+export const routineInput = z.strictObject({
+  thread_id: id,
+  agent_id: id,
+  goal_id: id.nullable().default(null),
+  instruction: domainText,
+  schedule,
+  timezone,
+});
+export const routine = routineInput.extend({
+  ...base,
+  kind: z.literal("routine"),
+  source_message_id: id.nullable().default(null),
+  source_run_id: id.nullable().default(null),
+  paused_by_goal: z.boolean().default(false),
+  state: z.enum(["active", "paused", "stopped"]),
+  generation: z.int().positive(),
+  next_run_at: z.iso.datetime().nullable(),
+});
+export const occurrence = z.strictObject({
+  ...base,
+  kind: z.literal("occurrence"),
+  routine_id: id,
+  routine_generation: z.int().positive(),
+  scheduled_for: z.iso.datetime(),
+  run_id: id,
+});

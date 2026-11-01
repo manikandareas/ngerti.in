@@ -3,7 +3,7 @@ import { mkdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { z } from "zod";
 import type { Entity } from "../../contracts";
-import type { HarnessClient, Inspection, RecoveryObservation, SessionIdentity } from "../broker";
+import type { HarnessClient, Inspection, RecoveryObservation, SessionIdentity } from "../client";
 import type { LaunchContext } from "../context";
 import { HarnessError, type Settings } from "../contracts";
 import { productToolNames } from "../product-tool-contracts";

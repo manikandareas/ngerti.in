@@ -1,5 +1,5 @@
 import { existsSync } from "node:fs";
-import { deniedWorkspaceNames } from "../../workspace-files";
+import { deniedWorkspaceNames } from "../../workspaces/files";
 import type { LaunchContext } from "../context";
 
 /** Native command permissions; provider authentication remains outside the model's filesystem. */

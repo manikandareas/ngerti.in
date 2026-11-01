@@ -1,5 +1,5 @@
 import { join } from "node:path";
-import type { HarnessAdapter } from "../broker";
+import type { HarnessAdapter } from "../client";
 import { CodexClient } from "./client";
 
 export class CodexAdapter implements HarnessAdapter {

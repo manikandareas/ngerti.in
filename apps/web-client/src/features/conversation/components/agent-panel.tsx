@@ -3,9 +3,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { command, request } from "./api";
-import { ConnectionSettings } from "./settings";
-import type { Agent, Connection, Memory, Skills } from "./types";
+import { ConnectionSettings } from "@/features/conversation/components/settings";
+import { command, request } from "@/lib/api-client";
+import type { Agent, Connection, Memory, Skills } from "@/types/workspace";
 
 export function AgentPanel({
   agent,
@@ -14,6 +14,9 @@ export function AgentPanel({
   connections,
   refresh,
   report,
+  manageProviders,
+  configurationOpen,
+  setConfigurationOpen,
 }: {
   agent: Agent;
   threadId: string;
@@ -21,6 +24,9 @@ export function AgentPanel({
   connections: Connection[];
   refresh: () => Promise<unknown>;
   report: (error: string) => void;
+  manageProviders: () => void;
+  configurationOpen: boolean;
+  setConfigurationOpen: (open: boolean) => void;
 }) {
   const [memories, setMemories] = useState<Memory[]>([]);
   const [skills, setSkills] = useState<Skills | null>(null);
@@ -73,7 +79,7 @@ export function AgentPanel({
     }
   }
   return (
-    <div className="agent-profile-content space-y-5">
+    <div className="agent-profile-content [padding-block:16px] space-y-5">
       <section className="space-y-3">
         <p className="whitespace-pre-wrap text-sm text-muted-foreground">
           {agent.soul || "Ceritakan bantuan yang kamu butuhkan di chat."}
@@ -88,7 +94,7 @@ export function AgentPanel({
           Ubah nama, peran, dan cara kerja melalui percakapan.
         </p>
       </section>
-      <section className="profile-section space-y-3">
+      <section className="profile-section [border-top:1px_solid_var(--border-subtle)] pt-4.5 space-y-3">
         <h3 className="font-medium">Memory</h3>
         {notice && (
           <p role="status" className="text-sm text-link">
@@ -99,7 +105,10 @@ export function AgentPanel({
           <p className="text-sm text-muted-foreground">Belum ada memory dalam percakapan ini.</p>
         )}
         {memories.map((memory) => (
-          <div key={memory.id} className="profile-memory space-y-2">
+          <div
+            key={memory.id}
+            className="profile-memory [padding-block:12px] [border-bottom:1px_solid_var(--border-subtle)] space-y-2"
+          >
             {editing?.id === memory.id ? (
               <>
                 <Label htmlFor="memory-edit">Koreksi memory</Label>
@@ -169,7 +178,7 @@ export function AgentPanel({
           </Button>
         )}
       </section>
-      <section className="profile-section space-y-3">
+      <section className="profile-section [border-top:1px_solid_var(--border-subtle)] pt-4.5 space-y-3">
         <h3 className="font-medium">Skills</h3>
         <p className="text-caption text-muted-foreground">
           Skills aplikasi dapat dibuat dan diperbaiki melalui chat. Skills bawaan harness hanya
@@ -207,7 +216,11 @@ export function AgentPanel({
           </>
         )}
       </section>
-      <details className="profile-disclosure">
+      <details
+        className="profile-disclosure rounded-[12px] bg-card"
+        open={configurationOpen}
+        onToggle={(event) => setConfigurationOpen(event.currentTarget.open)}
+      >
         <summary className="cursor-pointer font-medium">Koneksi & model</summary>
         <div>
           <ConnectionSettings
@@ -215,6 +228,7 @@ export function AgentPanel({
             connections={connections}
             refresh={refresh}
             report={report}
+            manageProviders={manageProviders}
           />
         </div>
       </details>

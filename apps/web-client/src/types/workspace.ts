@@ -1,4 +1,4 @@
-// Consumer projections of the published Ngertiin API 1.16.0.
+// Consumer projections of the published Ngertiin API 1.17.0.
 export interface Base {
   id: string;
   revision: number;
@@ -83,5 +83,9 @@ export interface Availability {
   harness: string;
   state: string;
   version: string | null;
-  manifest: { minimum_version: string; tested_native_version: string };
+  manifest: {
+    minimum_version: string;
+    tested_native_version: string;
+    authentication_methods: string[];
+  };
 }

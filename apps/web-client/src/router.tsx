@@ -24,8 +24,30 @@ const rootRoute = createRootRoute({
 
 const homeRoute = createRoute({
   getParentRoute: () => rootRoute,
+  id: "workspace",
+  component: lazyRouteComponent(() => import("@/app/workspace-layout")),
+});
+
+const conversationRoute = createRoute({
+  getParentRoute: () => homeRoute,
   path: "/",
-  component: lazyRouteComponent(() => import("@/features/conversation/workspace")),
+  component: () => null,
+});
+
+const settingsRoute = createRoute({
+  getParentRoute: () => homeRoute,
+  path: "settings",
+  validateSearch: (
+    search: Record<string, unknown>,
+  ): { section?: "general" | "providers" | "about"; provider?: "codex" | "muse" } => ({
+    section:
+      search.section === "providers" || search.section === "about" ? search.section : undefined,
+    provider:
+      search.section === "providers" && (search.provider === "codex" || search.provider === "muse")
+        ? search.provider
+        : undefined,
+  }),
+  component: lazyRouteComponent(() => import("@/features/settings/components/settings-page")),
 });
 
 const themePreviewRoute = createRoute({
@@ -47,7 +69,11 @@ const designSystemRoute = createRoute({
 });
 
 export const router = createRouter({
-  routeTree: rootRoute.addChildren([homeRoute, designSystemRoute, themePreviewRoute]),
+  routeTree: rootRoute.addChildren([
+    homeRoute.addChildren([conversationRoute, settingsRoute]),
+    designSystemRoute,
+    themePreviewRoute,
+  ]),
   scrollRestoration: true,
 });
 

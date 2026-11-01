@@ -14,17 +14,22 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  type Category,
+  catalog,
+  categories,
+  componentImport,
+} from "@/features/design-system/catalog";
 import type { ComponentName } from "@/lib/component-catalog";
-import { type Category, catalog, categories, componentImport } from "./catalog";
 
 const exampleGroups = {
-  actions: lazy(() => import("./examples/actions")),
-  forms: lazy(() => import("./examples/forms")),
-  navigation: lazy(() => import("./examples/navigation")),
-  overlays: lazy(() => import("./examples/overlays")),
-  display: lazy(() => import("./examples/display")),
-  feedback: lazy(() => import("./examples/feedback")),
-  conversation: lazy(() => import("./examples/conversation")),
+  actions: lazy(() => import("@/features/design-system/examples/actions")),
+  forms: lazy(() => import("@/features/design-system/examples/forms")),
+  navigation: lazy(() => import("@/features/design-system/examples/navigation")),
+  overlays: lazy(() => import("@/features/design-system/examples/overlays")),
+  display: lazy(() => import("@/features/design-system/examples/display")),
+  feedback: lazy(() => import("@/features/design-system/examples/feedback")),
+  conversation: lazy(() => import("@/features/design-system/examples/conversation")),
 };
 
 export function PrimitiveGallery({ selected }: { selected: ComponentName }) {

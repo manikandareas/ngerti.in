@@ -1,8 +1,9 @@
 import { UserGroupIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import type { CSSProperties } from "react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
-import type { Agent } from "./types";
+import type { Agent } from "@/types/workspace";
 
 const tones = ["pink", "blue", "teal", "purple", "orange"] as const;
 
@@ -30,12 +31,21 @@ export function AgentAvatar({
   className?: string;
 }) {
   return (
-    <span className={cn("agent-avatar", className)} style={agentStyle(agent)} aria-hidden="true">
-      {group ? (
-        <HugeiconsIcon icon={UserGroupIcon} strokeWidth={1.6} />
-      ) : (
-        (agent?.avatar ?? (agent?.name ?? name ?? "n").slice(0, 1).toLocaleUpperCase())
+    <Avatar
+      className={cn(
+        "agent-avatar w-9.5 h-9.5 rounded-[12px] [background:var(--agent-bubble,_var(--user-bubble))] [color:#fff] [font-size:16px] inline-flex items-center justify-center shrink-0 font-medium",
+        className,
       )}
-    </span>
+      style={agentStyle(agent)}
+      aria-hidden="true"
+    >
+      <AvatarFallback className="rounded-[inherit] bg-transparent text-inherit [font-size:inherit]">
+        {group ? (
+          <HugeiconsIcon icon={UserGroupIcon} strokeWidth={1.6} />
+        ) : (
+          (agent?.avatar ?? (agent?.name ?? name ?? "n").slice(0, 1).toLocaleUpperCase())
+        )}
+      </AvatarFallback>
+    </Avatar>
   );
 }

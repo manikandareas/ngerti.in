@@ -43,7 +43,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { type ExampleProps, type ExampleSet, renderExample } from "./shared";
+import {
+  type ExampleProps,
+  type ExampleSet,
+  renderExample,
+} from "@/features/design-system/examples/shared";
 
 function ChartExample() {
   return (

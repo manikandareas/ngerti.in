@@ -55,7 +55,11 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { type ExampleProps, type ExampleSet, renderExample } from "./shared";
+import {
+  type ExampleProps,
+  type ExampleSet,
+  renderExample,
+} from "@/features/design-system/examples/shared";
 
 function PaginationExample() {
   const [page, setPage] = useState(1);

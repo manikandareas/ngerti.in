@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Spinner } from "@/components/ui/spinner";
-import type { Run } from "./types";
+import type { Run } from "@/types/workspace";
 
 // Beautiful UI Tool Chips: compact, expandable tool activity, using our theme primitives.
 export function ToolChips({ run }: { run: Run }) {

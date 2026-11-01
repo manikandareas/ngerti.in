@@ -22,7 +22,11 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
-import { type ExampleProps, type ExampleSet, renderExample } from "./shared";
+import {
+  type ExampleProps,
+  type ExampleSet,
+  renderExample,
+} from "@/features/design-system/examples/shared";
 
 function ProgressExample() {
   const [value, setValue] = useState(64);

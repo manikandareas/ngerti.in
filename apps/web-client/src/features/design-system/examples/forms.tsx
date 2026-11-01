@@ -34,7 +34,11 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { type ExampleProps, type ExampleSet, renderExample } from "./shared";
+import {
+  type ExampleProps,
+  type ExampleSet,
+  renderExample,
+} from "@/features/design-system/examples/shared";
 
 function Inputs() {
   return (

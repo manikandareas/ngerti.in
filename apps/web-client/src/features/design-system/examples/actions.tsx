@@ -6,7 +6,11 @@ import { ButtonGroup } from "@/components/ui/button-group";
 import { Spinner } from "@/components/ui/spinner";
 import { Toggle } from "@/components/ui/toggle";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { type ExampleProps, type ExampleSet, renderExample } from "./shared";
+import {
+  type ExampleProps,
+  type ExampleSet,
+  renderExample,
+} from "@/features/design-system/examples/shared";
 
 function Buttons() {
   return (

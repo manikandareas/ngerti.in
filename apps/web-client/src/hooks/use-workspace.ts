@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { command, followEvents, request } from "./api";
-import type { Agent, Connection, Opening, Snapshot, Thread } from "./types";
+import { command, followEvents, request } from "@/lib/api-client";
+import type { Agent, Connection, Opening, Snapshot, Thread } from "@/types/workspace";
 
 export function useWorkspace() {
   const [agents, setAgents] = useState<Agent[]>([]);

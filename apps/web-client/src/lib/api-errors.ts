@@ -1,4 +1,8 @@
 const repairs: Record<string, string> = {
+  ADAPTER_UNAVAILABLE: "Layanan akun belum tersedia. Periksa service backend, lalu coba lagi.",
+  CREDENTIAL_MISSING: "API key belum tersedia pada host. Tambahkan key melalui Providers.",
+  VERSION_UNKNOWN: "Versi runtime belum dikenali. Periksa versi yang terpasang pada host backend.",
+  PROBE_FAILED: "Runtime belum dapat diperiksa. Periksa instalasinya pada host backend.",
   MODEL_UNAVAILABLE: "Pilih model yang tersedia di pengaturan koneksi.",
   AUTH_REQUIRED: "Hubungkan akun pada pengaturan, lalu periksa kembali koneksinya.",
   AUTH_REJECTED: "Akun ditolak. Periksa login pada host harness.",

@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { agentSnapshot } from "../agents/contracts";
+import { attachmentObservation } from "../attachments/contracts";
 import { base, id, text } from "../contracts/base";
 import { nativeInteractionJournal } from "../harness/interaction-contracts";
 
@@ -53,6 +54,7 @@ export const run = z
     workspace_id: id.nullable().default(null),
     workspace_revision: z.int().positive().nullable().default(null),
     product_tools: z.array(z.string().max(200)).max(200).default([]),
+    attachment_observations: z.array(attachmentObservation).max(200).default([]),
     sources: z
       .array(
         z.strictObject({
@@ -133,6 +135,7 @@ export const control = z.strictObject({
     .nullable(),
 });
 export const admissionInput = z.strictObject({
+  submission_id: id.optional(),
   thread_id: id,
   agent_id: id,
   text,

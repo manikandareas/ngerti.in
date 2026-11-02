@@ -55,6 +55,7 @@ export const publicationInput = z.strictObject({
   media_type: uploadInput.shape.media_type,
 });
 export const artifactContentFields = {
+  materialization: z.enum(["pending", "ready"]).default("ready"),
   workspace_id: z.uuid().nullable().default(null),
   name: z.string().max(200).default("artifact"),
   size_bytes: z.int().min(0).max(MAX_FILE_BYTES).nullable().default(null),

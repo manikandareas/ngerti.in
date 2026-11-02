@@ -2,6 +2,8 @@ import { timingSafeEqual } from "node:crypto";
 import { dirname } from "node:path";
 import { z } from "zod";
 import { registerAgentTools } from "../agents/tools";
+import { Attachments } from "../attachments/service";
+import { registerAttachmentTools } from "../attachments/tools";
 import { type BrowserHost, DockerBrowserHost } from "../browser/host";
 import { Browsers } from "../browser/service";
 import { registerBrowserTools } from "../browser/tools";
@@ -77,6 +79,7 @@ export class ProductTools {
       },
     });
     registerWorkspaceTools(this);
+    registerAttachmentTools(this);
     this.register("ngertiin.read_run_context", {
       schema: z.strictObject({}),
       resources: () => [],
@@ -93,11 +96,7 @@ export class ProductTools {
           goal_id: run.goal_id,
           routine_id: run.routine_id,
           workspace_id: run.workspace_id,
-          attachments: message.artifact_ids.map((id) => {
-            const item = lifecycle.store.get("artifact", id);
-            if (item.workspace_id !== run.workspace_id) throw new DomainError("SCOPE_DENIED", 403);
-            return { id: item.id, name: item.name, path: item.source_path, sha256: item.sha256 };
-          }),
+          ...new Attachments(lifecycle).current(run),
           agent_snapshot: run.agent_snapshot,
           task: run.task_id ? lifecycle.store.get("peer_task", run.task_id) : null,
         };

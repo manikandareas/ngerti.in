@@ -1,5 +1,6 @@
 import type { Elysia } from "elysia";
 import { z } from "zod";
+import { AttachmentSubmissions } from "../attachments/submissions";
 import type { Background } from "../background";
 import { admissionInput, id, queueDelete, queueEdit, steerInput } from "../contracts";
 import { HarnessError, interactionAnswer } from "../harness/contracts";
@@ -70,7 +71,13 @@ export function registerRunRoutes(
     .post(
       "/v1/runs",
       ({ request, body }) => {
-        const result = command(request, body, () => controls.send(body));
+        const submissions = new AttachmentSubmissions(lifecycle);
+        const result = command(request, body, () =>
+          body.submission_id
+            ? submissions.commit(body, id.parse(request.headers.get("Idempotency-Key")))
+            : controls.send(body),
+        );
+        submissions.materialize(result.message);
         background.notifyControls();
         return result;
       },

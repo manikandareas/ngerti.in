@@ -92,7 +92,7 @@ test("key onboarding preserves explicit Codex API billing and published request/
       }),
     )
   ).json();
-  expect(contract.version).toBe("1.20.0");
+  expect(contract.version).toBe("1.21.0");
   const route = contract.http.find(
     (item: { path: string; method: string }) =>
       item.method === "POST" && item.path === "/v1/connections/api-key",

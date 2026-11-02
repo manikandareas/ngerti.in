@@ -1,4 +1,5 @@
 import { dirname } from "node:path";
+import { registerAttachmentRoutes } from "./api/attachments";
 import { registerBrowserRoutes } from "./api/browser";
 import { registerConversationRoutes } from "./api/conversations";
 import { registerEventRoutes } from "./api/events";
@@ -55,6 +56,7 @@ export function createApi(
   registerGroupRoutes(api, lifecycle, background, command);
   registerGoalRoutes(api, lifecycle, background, command);
   registerWorkspaceRoutes(api, lifecycle, background, command);
+  registerAttachmentRoutes(api, lifecycle);
   registerBrowserRoutes(api, services, command);
   registerRunRoutes(api, lifecycle, background, services, command);
   return api;

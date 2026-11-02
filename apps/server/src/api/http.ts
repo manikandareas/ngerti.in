@@ -50,7 +50,9 @@ export function createHttp(token: string, tools: ProductTools) {
     .onRequest(({ request }) => {
       if (request.method === "GET" && new URL(request.url).pathname === "/health/live") return;
       const size = Number(request.headers.get("Content-Length") ?? 0);
-      const maximum = /^\/v1\/workspaces\/[^/]+\/uploads$/.test(new URL(request.url).pathname)
+      const maximum = /^\/v1\/(?:workspaces\/[^/]+\/uploads|message-uploads)$/.test(
+        new URL(request.url).pathname,
+      )
         ? 24 * 1024 * 1024
         : 1_048_576;
       if (!Number.isFinite(size) || size > maximum) throw new DomainError("INVALID_REQUEST", 413);

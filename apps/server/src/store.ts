@@ -142,6 +142,13 @@ export class Store {
     });
   }
 
+  receipt(commandId: string): unknown | null {
+    const row = this.#db
+      .query<{ receipt: string }, [string]>("SELECT receipt FROM commands WHERE id=?")
+      .get(commandId);
+    return row ? JSON.parse(row.receipt) : null;
+  }
+
   get<K extends Kind>(kind: K, id: string | null): Entity<K> {
     if (id === null) throw new DomainError("NOT_FOUND", 404);
     const row = this.#db

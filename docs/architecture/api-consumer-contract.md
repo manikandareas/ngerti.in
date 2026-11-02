@@ -1,6 +1,8 @@
-# API consumer contract 1.16.0
+# API consumer contract 1.21.0
 
 Authenticated `GET /v1/contracts` exports the installed server's contract. The checked-in [1.16.0 bundle](../contracts/1.16.0.json) is an equivalent JSON Schema contract, not an OpenAPI document. [Consumer fixtures](../verification/nma-060/final-cohort/consumer-fixtures.json) are actual responses from an isolated HTTP test client. [Gate evidence](../verification/nma-060/final-cohort/README.md) records accepted engine/API readiness, including the explicit Muse API-key billing scope. UI, installation and production acceptance remain separate.
+
+The [1.21.0 bundle](../contracts/1.21.0.json) adds private submit-time attachment uploads, admission reconciliation, derived document states, bounded attachment observations and scoped list/read/search tools. The earlier bundle and gate evidence above retain their original scope. See [attachment verification](../verification/attachments/README.md) and the [workspace contract](workspace-artifact-api.md).
 
 ## Surfaces and schemas
 

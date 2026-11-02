@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { agent, agentInput, agentSnapshot, agentUpdate } from "./agents/contracts";
+import { attachmentDocument, stagedUpload } from "./attachments/contracts";
 import {
   browserAction,
   browserCommands,
@@ -95,10 +96,12 @@ export {
   workspace,
 };
 
-export const CONTRACT_VERSION = "1.20.0";
+export const CONTRACT_VERSION = "1.21.0";
 export const API_READINESS_GATE = "ready" as const;
 
 export const schemas = {
+  attachment_upload: stagedUpload,
+  attachment_document: attachmentDocument,
   app_connection: appConnection,
   app_session: appSession,
   app_effect: appEffect,

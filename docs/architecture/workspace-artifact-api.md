@@ -1,6 +1,32 @@
-# Workspace and artifact API v1.5.0
+# Workspace and artifact API v1.21.0
 
 NMA-054 extends the existing application authority with real workspace resources and immutable artifact bytes. Application schemas are **1.5.0**; broker schemas are **1.4.0**. [Conversation controls and recovery](conversation-control-api.md) remain the lifecycle foundation. The API gate NMA-060, file-tree UI, preview and installation remain pending.
+
+The paragraph above records the original foundation capture. Contract **1.21.0** adds the submit-time attachment and document flow below. NMA-060's earlier engine/API gate closure remains separate from this amendment's verification and from distribution or production acceptance.
+
+## Submit-time attachments
+
+New composer files stay in the browser until submit. The browser freezes one operation in IndexedDB, including its files and exact message body. Removing a draft attachment sends no upload request. Existing workspace attachments are referenced without copying their bytes again.
+
+After submit, `POST /v1/message-uploads` takes a UUID `Idempotency-Key` as the future artifact identity, plus `submission_id`, `thread_id`, `agent_id`, `name`, `media_type` and `content_base64`. Each request retains the existing 16 MiB decoded limit and 24 MiB transport limit. It creates a private `attachment_upload`, not a workspace artifact. Staging is DM-scoped; group attachment admission remains unsupported.
+
+`POST /v1/runs` accepts optional `submission_id`, equal to its command key. Its `artifact_ids` may contain matching staged identities and existing scoped artifacts. All selected uploads must validate before artifact metadata, message, run and upload commitment are saved in one SQLite transaction. Durable bytes precede that transaction. Workspace input files are materialized only after commit; pending materialization recovers on startup and before native dispatch. A filesystem write is not described as a SQLite transaction. Projection failures keep the saved message and fence dispatch instead of duplicating admission.
+
+`GET /v1/message-submissions/:id` returns `committed` with the original admission receipt, `pending`, or `missing`. The client reconciles before retrying. An unconfirmed result retains its exact body/key and local file copies across refresh. Definitive rejection restores an editable draft. Successful reconciliation clears the local pending copy. A saved message keeps its files when inference fails or stops.
+
+Uncommitted uploads expire after 24 hours. Startup, later staging activity and the background minute sweep remove only expired private bytes with no committed artifact reference. Original user artifacts and earlier unlinked uploads are preserved. The explicit owner workspace-upload API below remains available for deliberate workspace operations.
+
+## Document context and tools
+
+`ngertiin.list_attachments` lists sent files and published agent output visible to the current run's conversation/workspace, with bounded cursor pagination. Draft uploads, later queued messages and foreign/revoked resources are excluded. `read_run_context` now distinguishes current `attachments` from bounded `previous_attachments`.
+
+`ngertiin.read_attachment` accepts `artifact_id`, optional `start_page`/`end_page`, `offset` and `max_chars`. Reads cover at most twenty consecutive pages and 30,000 returned characters. `ngertiin.search_attachment` performs case-insensitive literal text search and returns bounded excerpts and PDF page indices. Page numbering starts at 1 in PDF order; it does not claim to identify printed page labels.
+
+PDF.js 6.5.438 handles text extraction in a child process without provider credentials, with two active parsers, a 15-second deadline and a 2 MB output cap. Initial extraction covers up to 300 pages, 60,000 characters per PDF page and 800,000 retained document characters. Explicit reads can request later pages. TXT/Markdown/CSV and other declared UTF-8 text use local decoding. Empty, invalid, unsupported and limited documents have explicit states; OCR and additional document formats are not claimed. Images retain the existing native capability path.
+
+Derived text is keyed by artifact identity, immutable source hash and parser version. Cache writes are atomic; interrupted derived content can be recomputed. Original bytes and access are rechecked before cached content is returned. File-based prompts receive attachment metadata and bounded previews (two pages, at most 2,000 characters each, 12,000 preview characters in total). The native harness still owns the model/tool loop. Source excerpts are untrusted data.
+
+Snapshots include `attachment_documents`. Runs retain bounded `attachment_observations`: artifact/hash, operation (`context`, `read`, `search`), pages, truncation and timestamp. Accepted native prompt context and returned tool content are evidence boundaries; they do not prove comprehension or answer correctness. `succeeded` keeps its runtime meaning. User-facing chips keep their original document/image icon. A shared hover tooltip or touch popover contains file metadata, image preview and only relevant progress/error status. Local drafts have no "not sent" label, and technical extraction details are not displayed by default.
 
 ## Scope and binding
 

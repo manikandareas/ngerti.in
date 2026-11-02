@@ -270,6 +270,8 @@ test("event cursor pagination is stable and contracts expose all domain entities
     "app_effect",
     "app_session",
     "artifact",
+    "attachment_document",
+    "attachment_upload",
     "binding",
     "browser_action",
     "browser_profile",

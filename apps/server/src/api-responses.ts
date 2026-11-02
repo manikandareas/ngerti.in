@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { agentActivities } from "./agents/activity";
+import { submissionStatus } from "./api/attachments";
 import { browserContent } from "./browser/contracts";
 import { API_READINESS_GATE, agent, domainEvent, id, runStatus, schemas } from "./contracts";
 import { conversationPreviews } from "./conversations/previews";
@@ -193,6 +194,8 @@ reference("GET", "/v1/browser/contracts", "browser");
 routes("GET", ["/v1/harnesses"], operationSchemas.harness_availability);
 reference("POST", "/v1/setup", "setup");
 reference("POST", "/v1/runs", "admission");
+routes("POST", ["/v1/message-uploads"], schemas.attachment_upload);
+routes("GET", ["/v1/message-submissions/:id"], submissionStatus);
 reference("GET", "/v1/threads/:id/snapshot", "conversation");
 reference("GET", "/v1/threads/:id/history", "history");
 reference("GET", "/v1/events", "events");

@@ -1,3 +1,4 @@
+import { AttachmentSubmissions } from "./attachments/submissions";
 import { DomainError, type Entity } from "./contracts";
 import { Goals } from "./goals/service";
 import { Groups } from "./groups/service";
@@ -26,6 +27,7 @@ export class Background {
   #stopping = false;
   #closed = false;
   #dispatchCursor: string | null = null;
+  #lastAttachmentSweep = 0;
   constructor(
     readonly lifecycle: Lifecycle,
     private readonly executors: Partial<Record<"codex" | "muse", HarnessExecutor>> = {},
@@ -48,6 +50,14 @@ export class Background {
 
   tick(now = new Date()) {
     if (this.#stopping) return;
+    if (now.getTime() - this.#lastAttachmentSweep >= 60_000) {
+      this.#lastAttachmentSweep = now.getTime();
+      try {
+        new AttachmentSubmissions(this.lifecycle).sweep(now);
+      } catch {
+        this.report("ATTACHMENT_CLEANUP_ERROR");
+      }
+    }
     new Groups(this.lifecycle).advance();
     new Goals(this.lifecycle).advance(now);
     for (const routine of this.lifecycle.store.list("routine")) {

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { attachmentList, attachmentRead, attachmentSearch } from "../attachments/contracts";
 import { browserActionInput } from "../browser/contracts";
 import { agentInput, agentUpdate, id } from "../contracts";
 import { groupConfiguration } from "../conversations/creation";
@@ -23,6 +24,9 @@ import {
 import { relativePath, uploadInput } from "../workspaces/contracts";
 
 export const productToolSchemas = {
+  "ngertiin.list_attachments": attachmentList,
+  "ngertiin.read_attachment": attachmentRead,
+  "ngertiin.search_attachment": attachmentSearch,
   "ngertiin.update_group": groupConfiguration.extend({ command_id: id }),
   "ngertiin.cancel_run": z.strictObject({ command_id: id }),
   "ngertiin.list_apps": z.strictObject({}),

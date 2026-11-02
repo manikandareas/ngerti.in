@@ -1,4 +1,5 @@
 import { Artifacts } from "../artifacts";
+import { Attachments } from "../attachments/service";
 import type { ExecutorContext, HarnessExecutor } from "../background";
 import { DomainError, type Entity } from "../contracts";
 import type { Lifecycle } from "../lifecycle";
@@ -656,6 +657,12 @@ export class HarnessBroker {
       this.check(session, run.thread_id, run.agent_id);
       this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
       if (run.workspace_id) new Artifacts(this.lifecycle).verifyInputs(run);
+      const attachments = new Attachments(this.lifecycle);
+      const authorizeAttachments = () => {
+        this.check(session, run.thread_id, run.agent_id);
+        this.lifecycle.authorizeDispatch(run.id, run.dispatch_token as string);
+      };
+      const attachmentContext = await attachments.context(run, authorizeAttachments);
       const visual = await prepareVisualInputs(
         this.lifecycle,
         run,
@@ -719,7 +726,9 @@ export class HarnessBroker {
           run_id: run.id,
           images: visual.images,
           text: this.lifecycle.store.get("message", run.input_message_id).text,
-          learning_context: runLearningContext(this.lifecycle, run),
+          learning_context: [runLearningContext(this.lifecycle, run), attachmentContext.text]
+            .filter(Boolean)
+            .join("\n\n"),
           settings: { ...session.selected },
           tools: lease,
           signal: context.signal,
@@ -736,6 +745,7 @@ export class HarnessBroker {
                 throw new HarnessError("PROTOCOL_ERROR", "unknown");
               accepted = event.native_run_id;
               context.started(event.native_run_id);
+              attachments.record(run.id, attachmentContext.observations, authorizeAttachments);
             }
             if (event.type === "text") {
               text += event.text;

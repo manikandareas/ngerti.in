@@ -15,6 +15,7 @@ import {
   peerTask,
   routine,
   run,
+  schemas,
   thread,
   workspace,
 } from "./contracts";
@@ -35,6 +36,7 @@ export const conversationSnapshot = z.strictObject({
   messages: z.array(message),
   workspaces: z.array(workspace),
   artifacts: z.array(artifact),
+  attachment_documents: z.array(schemas.attachment_document).default([]),
   routes: z.array(groupRoute),
   tasks: z.array(peerTask),
   human_requests: z.array(humanRequest),
@@ -131,6 +133,9 @@ export class Conversations {
         controls: store.list("control").filter((item) => item.thread_id === threadId),
         workspaces: store.list("workspace").filter((item) => item.thread_id === threadId),
         artifacts: store.list("artifact").filter((item) => item.thread_id === threadId),
+        attachment_documents: store
+          .list("attachment_document")
+          .filter((item) => item.thread_id === threadId),
         routes: store.list("group_route").filter((item) => item.thread_id === threadId),
         tasks: store.list("peer_task").filter((item) => item.thread_id === threadId),
         human_requests: store.list("human_request").filter((item) => item.thread_id === threadId),

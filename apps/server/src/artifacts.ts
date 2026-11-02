@@ -7,6 +7,7 @@ import {
   mkdirSync,
   openSync,
   readSync,
+  unlinkSync,
   writeFileSync,
 } from "node:fs";
 import { basename, join } from "node:path";
@@ -112,12 +113,79 @@ export class Artifacts {
     const workspace = this.workspaces.authorizeRun(run);
     const message = this.lifecycle.store.get("message", run.input_message_id);
     for (const id of message.artifact_ids) {
+      this.materialize(id);
       const { artifact: item } = this.download(id, workspace.id);
       if (
         !item.source_path ||
         digest(this.workspaces.files(workspace.id).read(item.source_path)) !== item.sha256
       )
         throw new DomainError("CONFLICT");
+    }
+  }
+  reserveUpload(id: string, input: unknown) {
+    const data = uploadInput.parse(input);
+    const bytes = Buffer.from(data.content_base64, "base64");
+    if (bytes.toString("base64") !== data.content_base64 || bytes.length > MAX_FILE_BYTES)
+      throw new DomainError("INVALID_REQUEST", 422);
+    this.persist(id, bytes);
+    return {
+      name: data.name,
+      media_type: data.media_type,
+      size_bytes: bytes.length,
+      sha256: digest(bytes),
+    };
+  }
+  commitUpload(upload: Entity<"attachment_upload">, workspace: Entity<"workspace">) {
+    const bytes = this.bytes(upload.id);
+    if (digest(bytes) !== upload.sha256 || bytes.length !== upload.size_bytes)
+      throw new DomainError("CONFLICT");
+    const now = new Date().toISOString();
+    return this.lifecycle.store.put(
+      artifact.parse({
+        id: upload.id,
+        kind: "artifact",
+        owner_id: workspace.owner_id,
+        revision: 1,
+        created_at: now,
+        updated_at: now,
+        workspace_id: workspace.id,
+        thread_id: workspace.thread_id,
+        agent_id: workspace.agent_id,
+        storage_key: upload.id,
+        sha256: upload.sha256,
+        size_bytes: upload.size_bytes,
+        name: upload.name,
+        media_type: upload.media_type,
+        source_path: `inputs/${upload.id}/${upload.name}`,
+        origin: "upload",
+        materialization: "pending",
+      }),
+    );
+  }
+  materialize(artifactId: string) {
+    const item = this.lifecycle.store.get("artifact", artifactId);
+    if (item.materialization !== "pending") return item;
+    if (!item.workspace_id || !item.source_path) throw new DomainError("SCOPE_DENIED", 403);
+    const { bytes } = this.download(item.id, item.workspace_id);
+    this.stage(item.workspace_id, item.source_path, bytes);
+    return this.lifecycle.store.put(
+      {
+        ...item,
+        materialization: "ready",
+        revision: item.revision + 1,
+        updated_at: new Date().toISOString(),
+      },
+      item.revision,
+    );
+  }
+  discardReserved(upload: Entity<"attachment_upload">) {
+    if (this.lifecycle.store.list("artifact").some((item) => item.storage_key === upload.id))
+      return;
+    try {
+      if (digest(this.bytes(upload.id)) !== upload.sha256) throw new DomainError("CONFLICT");
+      unlinkSync(join(this.blobRoot, upload.id));
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
     }
   }
   upload(workspaceId: string, commandId: string, input: unknown) {

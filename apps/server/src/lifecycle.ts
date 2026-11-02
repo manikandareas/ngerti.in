@@ -148,6 +148,7 @@ export class Lifecycle {
             size_bytes: null,
             source_path: null,
             origin: "metadata",
+            materialization: "ready",
             source_artifact_id: null,
             native_session_id: null,
             native_run_id: null,
@@ -367,6 +368,7 @@ export class Lifecycle {
       workspace_revision: null,
       native_tools: [],
       product_tools: [],
+      attachment_observations: [],
       sources: [],
       visual_inputs: [],
     });

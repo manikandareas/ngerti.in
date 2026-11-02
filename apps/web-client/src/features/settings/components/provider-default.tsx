@@ -1,4 +1,3 @@
-import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ModelPicker } from "@/features/conversation/components/model-picker";
@@ -10,6 +9,7 @@ import {
   SettingsRow,
   SettingsSection,
 } from "@/features/settings/components/shared";
+import { useSettingsDialog } from "@/features/settings/hooks/use-settings-dialog";
 import { observedStates } from "@/features/settings/utils/provider-state";
 import type { Agent, Connection } from "@/types/workspace";
 
@@ -22,7 +22,7 @@ export function ProviderDefault({
   connections: Connection[];
   refresh: () => Promise<unknown>;
 }) {
-  const navigate = useNavigate();
+  const { open: openSettings } = useSettingsDialog();
   const [error, setError] = useState("");
   const [details, setDetails] = useState(false);
   const current = connections.find((connection) => connection.id === agent?.connection_id);
@@ -39,10 +39,7 @@ export function ProviderDefault({
             refresh={refresh}
             report={setError}
             manageProviders={() => {
-              void navigate({
-                to: "/settings",
-                search: { section: "providers", provider: current?.harness },
-              });
+              void openSettings("providers", current?.harness);
             }}
             label={
               <span className="settings-default-copy">

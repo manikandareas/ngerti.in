@@ -5,8 +5,10 @@ import {
   Link,
   lazyRouteComponent,
   Outlet,
+  redirect,
 } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
+import { validateSettingsSearch } from "@/features/settings/lib/settings-search";
 import { type ComponentName, components } from "@/lib/component-catalog";
 
 const rootRoute = createRootRoute({
@@ -25,6 +27,7 @@ const rootRoute = createRootRoute({
 const homeRoute = createRoute({
   getParentRoute: () => rootRoute,
   id: "workspace",
+  validateSearch: validateSettingsSearch,
   component: lazyRouteComponent(() => import("@/app/workspace-layout")),
 });
 
@@ -35,8 +38,8 @@ const conversationRoute = createRoute({
 });
 
 const settingsRoute = createRoute({
-  getParentRoute: () => homeRoute,
-  path: "settings",
+  getParentRoute: () => rootRoute,
+  path: "/settings",
   validateSearch: (
     search: Record<string, unknown>,
   ): { section?: "general" | "providers" | "about"; provider?: "codex" | "muse" } => ({
@@ -47,7 +50,13 @@ const settingsRoute = createRoute({
         ? search.provider
         : undefined,
   }),
-  component: lazyRouteComponent(() => import("@/features/settings/components/settings-page")),
+  beforeLoad: ({ search }) => {
+    throw redirect({
+      to: "/",
+      search: { settings: search.section ?? "general", provider: search.provider },
+      replace: true,
+    });
+  },
 });
 
 const themePreviewRoute = createRoute({
@@ -76,7 +85,8 @@ const designSystemRoute = createRoute({
 
 export const router = createRouter({
   routeTree: rootRoute.addChildren([
-    homeRoute.addChildren([conversationRoute, settingsRoute]),
+    homeRoute.addChildren([conversationRoute]),
+    settingsRoute,
     designSystemRoute,
     themePreviewRoute,
     avatarStudioRoute,

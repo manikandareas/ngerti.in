@@ -12,13 +12,15 @@ const harnesses = ["codex", "muse"].map((harness) => ({
     authentication_methods: ["native_login", "api_key"],
   },
 }));
-async function settings(page: Page) {
-  await page.goto("/");
+async function settings(page: Page, url = "/") {
+  await page.goto(url);
   await expect(page.getByRole("button", { name: "Detail Tobi", exact: true })).toBeVisible();
   const menu = page.getByRole("button", { name: "Buka percakapan", exact: true });
   if (await menu.isVisible()) await menu.click();
   await page.getByRole("button", { name: "Pengaturan", exact: true }).click();
-  await expect(page).toHaveURL(/\/settings/);
+  await expect(page).toHaveURL(
+    (url) => url.pathname === "/" && url.searchParams.get("settings") === "general",
+  );
   await expect(page.getByRole("dialog", { name: "Pengaturan", exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: "Tutup pengaturan", exact: true })).toBeVisible();
 }
@@ -56,14 +58,20 @@ test("settings navigation, search, theme and return preserve the conversation dr
 }, info) => {
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
-  await settings(page);
+  await settings(page, "/?context=retained");
+  await page.goBack();
+  await expect(page.getByRole("dialog", { name: "Pengaturan", exact: true })).toBeHidden();
+  await page.goForward();
+  await expect(page.getByRole("dialog", { name: "Pengaturan", exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Tutup pengaturan", exact: true }).click();
   await page
     .getByRole("textbox", { name: "Pesan", exact: true })
     .fill("Draft retained while checking settings.");
+  const composer = await page.getByRole("textbox", { name: "Pesan", exact: true }).elementHandle();
   const menu = page.getByRole("button", { name: "Buka percakapan", exact: true });
   if (await menu.isVisible()) await menu.click();
   await page.getByRole("button", { name: "Pengaturan", exact: true }).click();
+  expect(await composer?.evaluate((element) => element.isConnected)).toBeTruthy();
   const search = page.getByRole("textbox", { name: "Cari pengaturan", exact: true });
   if (await search.isVisible()) {
     await search.fill("unknown menu");
@@ -103,7 +111,13 @@ test("settings navigation, search, theme and return preserve the conversation dr
     await page.evaluate(() => !!document.activeElement?.closest('[role="dialog"]')),
   ).toBeTruthy();
   await page.keyboard.press("Escape");
-  await expect(page).toHaveURL(/\/$/);
+  await expect(page).toHaveURL(
+    (url) =>
+      url.pathname === "/" &&
+      !url.searchParams.has("settings") &&
+      url.searchParams.get("context") === "retained",
+  );
+  expect(await composer?.evaluate((element) => element.isConnected)).toBeTruthy();
   await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toHaveText(
     "Draft retained while checking settings.",
   );
@@ -302,7 +316,12 @@ test("settings overlay and provider URLs support reload, history and narrow view
   await settings(page);
   await providers(page);
   await detail(page, "Muse Code");
-  await expect(page).toHaveURL(/section=providers.*provider=muse/);
+  await expect(page).toHaveURL(
+    (url) =>
+      url.pathname === "/" &&
+      url.searchParams.get("settings") === "providers" &&
+      url.searchParams.get("provider") === "muse",
+  );
   await page.goBack();
   await expect(page.locator('.settings-nav-item[aria-current="page"]')).toHaveText("Providers");
   await expect(
@@ -325,6 +344,19 @@ test("settings overlay and provider URLs support reload, history and narrow view
     ).toBeTruthy();
     await page.screenshot({ path: info.outputPath(`provider-${width}.png`) });
   }
+  await page.goto("/settings?section=providers&provider=muse");
+  await expect(page).toHaveURL(
+    (url) =>
+      url.pathname === "/" &&
+      url.searchParams.get("settings") === "providers" &&
+      url.searchParams.get("provider") === "muse",
+  );
+  await expect(
+    page.getByRole("region", { name: "Pengaturan Muse Code", exact: true }),
+  ).toBeVisible();
+  await page.locator(".settings-scrim").click({ position: { x: 8, y: 8 } });
+  await expect(page.getByRole("dialog", { name: "Pengaturan", exact: true })).toBeHidden();
+  await expect(page).toHaveURL((url) => url.pathname === "/" && !url.searchParams.has("settings"));
 });
 
 test("default model picker persists Tobi choices and new agents inherit the explicit account and billing", async ({

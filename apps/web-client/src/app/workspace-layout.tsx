@@ -1,4 +1,3 @@
-import { Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import {
   ArrowUp,
   Check,
@@ -11,7 +10,16 @@ import {
   Square,
   X,
 } from "lucide-react";
-import { Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  Fragment,
+  lazy,
+  Suspense,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   Conversation,
   ConversationContent,
@@ -31,11 +39,6 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
-import { useMediaQuery } from "@/hooks/use-media-query";
-import { useIsMobile } from "@/hooks/use-mobile";
-
-type SettingsPageId = "general" | "providers" | "about";
-
 import { Answer } from "@/features/conversation/components/answer";
 import { AttachInput } from "@/features/conversation/components/attach-input";
 import {
@@ -62,7 +65,11 @@ import {
   useNativeTranscript,
 } from "@/features/conversation/lib/native-transcript";
 import { useComposerAttachments } from "@/features/conversation/lib/use-composer-attachments";
+import { useSettingsDialog } from "@/features/settings/hooks/use-settings-dialog";
+import type { SettingsSectionId } from "@/features/settings/lib/settings-search";
 import { SettingsWorkspaceContext } from "@/hooks/settings-workspace";
+import { useMediaQuery } from "@/hooks/use-media-query";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { useWorkspace } from "@/hooks/use-workspace";
 import {
   ApiError,
@@ -95,11 +102,11 @@ const controlText: Record<string, string> = {
   complete: "Pengiriman arahan selesai",
 };
 const DOUBLE_ENTER_STEER_WINDOW_MS = 1500;
+const SettingsDialog = lazy(() => import("@/features/settings/components/settings-dialog"));
 
 export default function Workspace() {
   const workspace = useWorkspace();
-  const navigate = useNavigate();
-  const isSettings = useRouterState({ select: (state) => state.location.pathname === "/settings" });
+  const { isOpen: isSettings, open: showSettings, close: closeSettings } = useSettingsDialog();
   const {
     agents,
     threads,
@@ -226,9 +233,9 @@ export default function Workspace() {
     observer.observe(input);
     return () => observer.disconnect();
   }, [draft, pending, editing?.id, editText, editPending, snapshot?.thread.id]);
-  function openSettings(page: SettingsPageId = "providers") {
+  function openSettings(page: SettingsSectionId = "providers") {
     setNavigation(false);
-    void navigate({ to: "/settings", search: { section: page === "general" ? undefined : page } });
+    void showSettings(page);
   }
   function choose(id: string) {
     currentThread.current = id;
@@ -626,7 +633,7 @@ export default function Workspace() {
           if (dm.id !== threadId) choose(dm.id);
           setDetails(true);
           setConfigurationOpen(true);
-          void navigate({ to: "/" });
+          void closeSettings();
         },
       }}
     >
@@ -1322,7 +1329,11 @@ export default function Workspace() {
           }}
         />
       </div>
-      <Outlet />
+      {isSettings && (
+        <Suspense fallback={null}>
+          <SettingsDialog />
+        </Suspense>
+      )}
     </SettingsWorkspaceContext.Provider>
   );
 }

@@ -1,4 +1,4 @@
-import { Link, useNavigate, useSearch } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { ChevronDown, Info, Settings, Sparkles, X } from "lucide-react";
 import { Dialog as DialogPrimitive } from "radix-ui";
 import { useEffect, useRef, useState } from "react";
@@ -7,6 +7,8 @@ import { ProviderSettings } from "@/features/settings/components/providers";
 import { SettingsSearch } from "@/features/settings/components/settings-search";
 import { SettingsRow, SettingsSection } from "@/features/settings/components/shared";
 import { ThemeSelect } from "@/features/settings/components/theme-select";
+import { useSettingsDialog } from "@/features/settings/hooks/use-settings-dialog";
+import type { SettingsSectionId } from "@/features/settings/lib/settings-search";
 import { useSettingsWorkspace } from "@/hooks/settings-workspace";
 import "../settings.css";
 
@@ -30,13 +32,10 @@ const sections = [
     icon: Info,
   },
 ] as const;
-export type SettingsPageId = (typeof sections)[number]["id"];
-
-export default function SettingsPage() {
+export default function SettingsDialog() {
   const { agents, connections, refresh, openAgent } = useSettingsWorkspace();
-  const search = useSearch({ from: "/workspace/settings" });
-  const navigate = useNavigate();
-  const page = search.section ?? "general";
+  const { section, open, close } = useSettingsDialog();
+  const page = section ?? "general";
   const [query, setQuery] = useState("");
   const dialog = useRef<HTMLDivElement>(null);
   const returnFocus = useRef(document.activeElement);
@@ -68,17 +67,8 @@ export default function SettingsPage() {
   const currentMatches = matches.some((item) => item.id === page);
 
   useEffect(() => {
-    if (q && !currentMatches && firstMatch)
-      void navigate({
-        to: "/settings",
-        search: { section: firstMatch === "general" ? undefined : firstMatch },
-        replace: true,
-      });
-  }, [q, currentMatches, firstMatch, navigate]);
-
-  function close() {
-    void navigate({ to: "/" });
-  }
+    if (q && !currentMatches && firstMatch) void open(firstMatch, undefined, true);
+  }, [q, currentMatches, firstMatch, open]);
 
   return (
     <DialogPrimitive.Root open onOpenChange={(open) => !open && close()}>
@@ -128,8 +118,13 @@ export default function SettingsPage() {
                   return (
                     <Link
                       key={item.id}
-                      to="/settings"
-                      search={{ section: item.id === "general" ? undefined : item.id }}
+                      from="/"
+                      search={(previous) => ({
+                        ...previous,
+                        settings: item.id,
+                        provider: undefined,
+                      })}
+                      resetScroll={false}
                       activeOptions={{ exact: true, explicitUndefined: true }}
                       className="settings-nav-item"
                       data-settings-page={item.id}
@@ -156,11 +151,7 @@ export default function SettingsPage() {
                     value={page}
                     onChange={(event) => {
                       setQuery("");
-                      const section = event.target.value as SettingsPageId;
-                      void navigate({
-                        to: "/settings",
-                        search: { section: section === "general" ? undefined : section },
-                      });
+                      void open(event.target.value as SettingsSectionId);
                     }}
                   >
                     {sections.map((item) => (

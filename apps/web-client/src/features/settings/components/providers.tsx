@@ -1,4 +1,3 @@
-import { useNavigate, useSearch } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -15,6 +14,7 @@ import {
   SettingsDisclosure,
   SettingsSection,
 } from "@/features/settings/components/shared";
+import { useSettingsDialog } from "@/features/settings/hooks/use-settings-dialog";
 import { request } from "@/lib/api-client";
 import type { Agent, Availability, Connection } from "@/types/workspace";
 
@@ -29,8 +29,7 @@ export function ProviderSettings({
   refresh: () => Promise<unknown>;
   openAgent: (agent: Agent) => void;
 }) {
-  const { provider: selected } = useSearch({ from: "/workspace/settings" });
-  const navigate = useNavigate();
+  const { provider: selected, open: openSettings } = useSettingsDialog();
   const [query, setQuery] = useState("");
   const [availability, setAvailability] = useState<Availability[] | null>(null);
   const [runtimeError, setRuntimeError] = useState("");
@@ -127,10 +126,7 @@ export function ProviderSettings({
                 setVisited((current) =>
                   current.includes(provider.id) ? current : [...current, provider.id],
                 );
-                void navigate({
-                  to: "/settings",
-                  search: { section: "providers", provider: open ? undefined : provider.id },
-                });
+                void openSettings("providers", open ? undefined : provider.id);
               }}
             >
               {open ? "Selesai" : verified ? "Kelola" : "Siapkan"}
@@ -187,7 +183,7 @@ export function ProviderSettings({
           onToggle={() => {
             setMore(!moreOpen);
             if (moreOpen && other.some((provider) => provider.id === selected))
-              void navigate({ to: "/settings", search: { section: "providers" } });
+              void openSettings("providers");
           }}
           trailing={
             <span className="provider-more-marks" aria-hidden="true">

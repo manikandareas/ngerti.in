@@ -220,5 +220,7 @@ test("unverified discovery exposes inspection failure and a repair entry without
   await group.getByRole("button", { name: "Periksa akun & model", exact: true }).click();
   await expect(menu.getByRole("alert")).toContainText("Layanan akun belum tersedia");
   await menu.getByRole("button", { name: "Kelola akun & model", exact: true }).click();
-  await expect(page).toHaveURL(/\/settings.*section=providers/);
+  await expect(page).toHaveURL(
+    (url) => url.pathname === "/" && url.searchParams.get("settings") === "providers",
+  );
 });

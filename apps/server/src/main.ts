@@ -8,6 +8,7 @@ import { HarnessBroker } from "./harness/broker";
 import { CodexAccounts } from "./harness/codex/accounts";
 import { CodexAdapter } from "./harness/codex/adapter";
 import { CredentialContexts } from "./harness/context";
+import { CredentialStorage } from "./harness/credential-storage";
 import { MuseAccounts } from "./harness/muse/accounts";
 import { MuseAdapter } from "./harness/muse/adapter";
 import { ProductTools } from "./harness/tools";
@@ -48,6 +49,7 @@ const app = createApi(lifecycle, background, config.token, {
   tools,
   broker,
   accounts,
+  credentialStorage: new CredentialStorage(config.stateDir),
 });
 try {
   app.listen({ hostname: "127.0.0.1", port: config.port });

@@ -1,7 +1,8 @@
 import { z } from "zod";
 import { browserContent } from "./browser/contracts";
-import { API_READINESS_GATE, agent, domainEvent, id, schemas } from "./contracts";
+import { API_READINESS_GATE, agent, domainEvent, id, runStatus, schemas } from "./contracts";
 import { capabilities } from "./harness/contracts";
+import { nativeInteractionJournal } from "./harness/interaction-contracts";
 import { approval, userInput } from "./harness/muse/protocol";
 import { inheritedSkill, nativeSkillMetadata } from "./learning/contracts";
 
@@ -122,6 +123,13 @@ export const operationSchemas = {
   ]),
   login_cancel: z.strictObject({ status: z.literal("cancelled") }),
   interactions: z.strictObject({ approvals: z.array(approval), user_inputs: z.array(userInput) }),
+  interaction_history: z.strictObject({
+    run_id: id,
+    run_status: runStatus,
+    cancellation: z.enum(["none", "requested", "confirmed"]),
+    coverage: z.literal("observed_requests_only"),
+    records: nativeInteractionJournal,
+  }),
   interaction_submitted: z.strictObject({ status: z.literal("submitted") }),
   app_catalog: z.strictObject({
     items: z.array(z.strictObject({ slug: z.string(), name: z.string(), connected: z.boolean() })),
@@ -210,13 +218,19 @@ routes("POST", ["/v1/goals/:id/progress"], operationSchemas.goal_progress);
 routes("POST", ["/v1/routines", "/v1/routines/write", "/v1/routines/:id/control"], schemas.routine);
 routes(
   "POST",
-  ["/v1/connections", "/v1/connections/:id/revoke", "/v1/connections/:id/inspect"],
+  [
+    "/v1/connections",
+    "/v1/connections/api-key",
+    "/v1/connections/:id/revoke",
+    "/v1/connections/:id/inspect",
+  ],
   schemas.connection,
 );
 routes("POST", ["/v1/connections/:id/login"], operationSchemas.login);
 routes("POST", ["/v1/connections/:id/login/cancel"], operationSchemas.login_cancel);
 routes("POST", ["/v1/threads/:id/sessions"], schemas.binding);
 routes("GET", ["/v1/runs/:id/interactions"], operationSchemas.interactions);
+routes("GET", ["/v1/runs/:id/interactions/history"], operationSchemas.interaction_history);
 routes("POST", ["/v1/runs/:id/interactions"], operationSchemas.interaction_submitted);
 routes("GET", ["/v1/learning/memories"], operationSchemas.memories);
 routes("POST", ["/v1/learning/memories/write", "/v1/learning/memories/delete"], schemas.memory);

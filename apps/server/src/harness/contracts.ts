@@ -47,6 +47,15 @@ export const authentication = z.discriminatedUnion("method", [
   }),
 ]);
 export const connectionInput = z.strictObject({ harness: harnessId, authentication });
+export const apiKeyConnectionInput = z.strictObject({
+  harness: harnessId,
+  api_key: z
+    .string()
+    .min(1)
+    .max(16384)
+    .regex(/^[^\r\n\0]+$/)
+    .refine((value) => value.trim().length > 0),
+});
 export const model = z.strictObject({
   id: z.string().min(1).max(200),
   reasoning: z.array(z.string().max(100)).max(50),

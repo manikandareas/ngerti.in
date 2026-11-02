@@ -4,6 +4,7 @@ import { DomainError, type Entity } from "../contracts";
 import type { Lifecycle } from "../lifecycle";
 import { prepareVisualInputs } from "../multimodal";
 import { RunControls } from "../run-controls";
+import { InteractionJournal } from "../runs/interaction-journal";
 import { canonical } from "../store";
 import { Workspaces } from "../workspaces/service";
 import { type Availability, detectHarness, type HarnessId, requireAvailable } from "./availability";
@@ -33,13 +34,21 @@ type Session = {
   controller: AbortController;
   agent_revision: number;
 };
-async function bounded<T>(operation: Promise<T>, timeoutMs: number) {
+async function bounded<T>(operation: Promise<T>, timeoutMs: number, effect = false) {
   let timer: ReturnType<typeof setTimeout> | undefined;
   try {
     return await Promise.race([
       operation,
       new Promise<never>((_, reject) => {
-        timer = setTimeout(() => reject(new HarnessError("SERVICE_UNAVAILABLE")), timeoutMs);
+        timer = setTimeout(
+          () =>
+            reject(
+              effect
+                ? new HarnessError("NATIVE_UNKNOWN", "unknown")
+                : new HarnessError("SERVICE_UNAVAILABLE"),
+            ),
+          timeoutMs,
+        );
       }),
     ]);
   } finally {
@@ -48,6 +57,7 @@ async function bounded<T>(operation: Promise<T>, timeoutMs: number) {
 }
 export class HarnessBroker {
   readonly connections: Connections;
+  readonly #interactionJournal: InteractionJournal;
   readonly #sessions = new Map<string, Session>();
   readonly #opening = new Map<string, Promise<Session>>();
   readonly #connectionOpens = new Map<string, Promise<void>>();
@@ -69,6 +79,7 @@ export class HarnessBroker {
     private readonly timeouts = { request_ms: 30_000, close_ms: 1000 },
   ) {
     this.connections = new Connections(lifecycle);
+    this.#interactionJournal = new InteractionJournal(lifecycle.store);
     for (const [id, adapter] of Object.entries(adapters))
       if (adapter?.harness !== id) throw new Error("Adapter identity mismatch.");
   }
@@ -514,17 +525,59 @@ export class HarnessBroker {
   async interactions(runId: string) {
     const session = await this.interactionSession(runId);
     if (!session.client.interactions) throw new HarnessError("CAPABILITY_UNSUPPORTED");
-    const snapshot = await session.client.interactions(runId);
+    const snapshot = await bounded(
+      Promise.resolve(session.client.interactions(runId)),
+      this.timeouts.request_ms,
+    );
     if ((await this.interactionSession(runId)) !== session) throw new DomainError("STALE_DISPATCH");
-    return snapshot;
+    return this.#interactionJournal.observe(runId, snapshot, (text) =>
+      session.launch.redactor.text(text),
+    );
   }
   async respond(runId: string, answer: unknown) {
+    const replay = this.#interactionJournal.replay(runId, answer);
+    if (replay) return replay;
     const session = await this.interactionSession(runId);
-    if (!session.client.respond) throw new HarnessError("CAPABILITY_UNSUPPORTED");
+    if (!session.client.respond || !session.client.interactions)
+      throw new HarnessError("CAPABILITY_UNSUPPORTED");
     // Reconcile native pending state, then recheck application grants after that asynchronous read.
-    if (session.client.interactions) await session.client.interactions(runId);
+    await this.interactions(runId);
     if ((await this.interactionSession(runId)) !== session) throw new DomainError("STALE_DISPATCH");
-    await session.client.respond(runId, answer);
+    const attempt = this.#interactionJournal.begin(runId, answer, (text) =>
+      session.launch.redactor.text(text),
+    );
+    if (!attempt) return { status: "submitted" as const };
+    const settle = (
+      state: "submitted" | "not_dispatched" | "unknown",
+      error: HarnessError | null = null,
+    ) =>
+      this.#interactionJournal.settle(
+        runId,
+        attempt.record_id,
+        attempt.attempt_id,
+        state,
+        error ? diagnostic(error) : null,
+      );
+    try {
+      const observed = Promise.resolve(session.client.respond(runId, answer)).then(
+        () => {
+          settle("submitted");
+        },
+        (error: unknown) => {
+          const failure =
+            error instanceof HarnessError ? error : new HarnessError("NATIVE_UNKNOWN", "unknown");
+          settle(failure.outcome === "not_dispatched" ? "not_dispatched" : "unknown", failure);
+          throw failure;
+        },
+      );
+      // A later acknowledgement may settle this exact attempt, never create another dispatch.
+      await bounded(observed, this.timeouts.request_ms, true);
+    } catch (error) {
+      const failure =
+        error instanceof HarnessError ? error : new HarnessError("NATIVE_UNKNOWN", "unknown");
+      settle(failure.outcome === "not_dispatched" ? "not_dispatched" : "unknown", failure);
+      throw failure;
+    }
     // A native acknowledgement is not proof that the approved action completed.
     return { status: "submitted" as const };
   }
@@ -820,6 +873,8 @@ export class HarnessBroker {
     return outcome;
   }
   async close() {
+    if (this.#closed) return;
+    this.#interactionJournal.recover();
     for (const control of this.lifecycle.store.list("control"))
       if (control.state === "requested")
         new RunControls(this.lifecycle).settleSteer(control.id, "unknown", "NATIVE_UNKNOWN");

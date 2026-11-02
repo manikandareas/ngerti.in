@@ -1,3 +1,4 @@
+import { dirname } from "node:path";
 import { registerBrowserRoutes } from "./api/browser";
 import { registerConversationRoutes } from "./api/conversations";
 import { registerEventRoutes } from "./api/events";
@@ -14,6 +15,7 @@ import { consumerContract, httpContract } from "./api-contract";
 import type { Background } from "./background";
 import { API_READINESS_GATE, CONTRACT_VERSION, contractDocument } from "./contracts";
 import { Connections } from "./harness/connections";
+import { CredentialStorage } from "./harness/credential-storage";
 import { ProductTools } from "./harness/tools";
 import type { Lifecycle } from "./lifecycle";
 
@@ -24,6 +26,7 @@ export function createApi(
   services: ApiServices = {
     connections: new Connections(lifecycle),
     tools: new ProductTools(lifecycle),
+    credentialStorage: new CredentialStorage(dirname(lifecycle.store.path)),
   },
 ) {
   if (token.length < 32) throw new Error("A private development token is required.");

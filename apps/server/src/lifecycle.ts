@@ -13,6 +13,7 @@ import {
   threadInput,
 } from "./contracts";
 import { dueWindow, firstDue } from "./goals/schedule";
+import { InteractionJournal } from "./runs/interaction-journal";
 import type { Store } from "./store";
 import { Workspaces } from "./workspaces/service";
 
@@ -28,6 +29,7 @@ export class Lifecycle {
         if (active.has(run.status))
           this.update(run, { status: "unknown", outcome: "unknown", activity: "unknown" });
       }
+      new InteractionJournal(this.store).recover();
       for (const control of this.store.list("control")) {
         if (control.state === "requested")
           this.update(control, { state: "unknown", error_code: "NATIVE_UNKNOWN" });
@@ -353,6 +355,7 @@ export class Lifecycle {
       authority_epoch: null,
       binding_id: null,
       native_run_id: null,
+      native_interactions: [],
       agent_snapshot: null,
       delivery: "pending",
       activity: "idle",

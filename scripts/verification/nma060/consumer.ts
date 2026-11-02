@@ -3,7 +3,12 @@ import { z } from "../../../apps/server/node_modules/zod";
 import { createApi } from "../../../apps/server/src/api";
 import { responseSchemas } from "../../../apps/server/src/api-contract";
 import { Background } from "../../../apps/server/src/background";
-import { type DomainEvent, domainEvent, type Entity } from "../../../apps/server/src/contracts";
+import {
+  CONTRACT_VERSION,
+  type DomainEvent,
+  domainEvent,
+  type Entity,
+} from "../../../apps/server/src/contracts";
 import { fixture } from "../../../apps/server/tests/helpers";
 
 const directory = process.argv[2] ?? "docs/verification/nma-060/final-cohort";
@@ -37,7 +42,7 @@ async function json(path: string, body?: unknown, key?: string) {
 }
 try {
   const contract = await json("/v1/contracts");
-  assert.equal(contract.version, "1.16.0");
+  assert.equal(contract.version, CONTRACT_VERSION);
   assert.equal(contract.http.length, app.routes.length);
   assert.equal(contract.readiness.state, "ready");
   for (const name of Object.keys(responseSchemas)) assert(contract.projections[name]);
@@ -193,7 +198,7 @@ try {
         entities: Object.keys(contract.entities).length,
         product_tools: contract.product_tools.length,
         native_inference: 0,
-        api_readiness_gate: "pending",
+        api_readiness_gate: contract.readiness.state,
       },
       null,
       2,

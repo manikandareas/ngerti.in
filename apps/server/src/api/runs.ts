@@ -5,6 +5,7 @@ import { admissionInput, id, queueDelete, queueEdit, steerInput } from "../contr
 import { HarnessError, interactionAnswer } from "../harness/contracts";
 import type { Lifecycle } from "../lifecycle";
 import { RunControls } from "../run-controls";
+import { InteractionJournal } from "../runs/interaction-journal";
 import type { ApiServices, Command } from "./services";
 
 export function registerRunRoutes(
@@ -44,6 +45,11 @@ export function registerRunRoutes(
       "/v1/messages/:id/delete",
       ({ request, params, body }) => command(request, body, () => controls.remove(params.id, body)),
       { params: z.object({ id }), body: queueDelete },
+    )
+    .get(
+      "/v1/runs/:id/interactions/history",
+      ({ params }) => new InteractionJournal(lifecycle.store).history(params.id),
+      { params: z.object({ id }) },
     )
     .get(
       "/v1/runs/:id/interactions",

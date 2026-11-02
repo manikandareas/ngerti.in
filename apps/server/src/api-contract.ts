@@ -45,6 +45,7 @@ const durablePaths = new Set([
   "/v1/threads/:id/opening/retry",
   "/v1/groups/:id/configuration",
   "/v1/connections",
+  "/v1/connections/api-key",
   "/v1/connections/:id/revoke",
   "/v1/runs/:id/steer",
   "/v1/messages/:id/edit",
@@ -161,6 +162,30 @@ export function consumerContract() {
     browser: browserCapabilities(),
     product_tools: productToolCatalog(),
     protocols: {
+      native_interactions: {
+        history: "GET /v1/runs/:id/interactions/history",
+        coverage: "observed_requests_only",
+        identity: ["run_id", "type", "request_id", "source_index"],
+        chronology: {
+          anchor:
+            "First observed same-run agent conversation message; input-message fallback when no agent output exists.",
+          offset:
+            "UTF-16 code units (JavaScript String.length); null for input-message or legacy fallback.",
+          prefix_hash:
+            "SHA-256 of the UTF-8 observed message prefix; never replace the first anchor on later observations.",
+          unavailable:
+            "Use a per-run fallback when message/prefix is unavailable or changed; do not fabricate engine ordering or timestamps.",
+        },
+        response_replay:
+          "Same submitted answer returns its acknowledgement without native dispatch; changed input conflicts.",
+        unknown_response:
+          "An in-flight attempt after timeout, disconnect or restart is fenced until an acknowledgement for that same attempt is observed. Never blindly replay.",
+        observation:
+          "Request disappearance, native submission acknowledgement and run termination are separate observations; none establishes that an approved action completed.",
+        bounds: { records_per_run: 1000, snapshot_bytes: 131072, journal_bytes: 2097152 },
+        privacy:
+          "Installation-owner private normalized requests and redacted answer displays only; no opaque native event or response-body log.",
+      },
       event: {
         schema_version: 1,
         sse_event: "domain",

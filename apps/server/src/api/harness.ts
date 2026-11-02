@@ -2,7 +2,12 @@ import type { Elysia } from "elysia";
 import { z } from "zod";
 import { id } from "../contracts";
 import { detectHarness } from "../harness/availability";
-import { brokerContract, connectionInput, HarnessError } from "../harness/contracts";
+import {
+  apiKeyConnectionInput,
+  brokerContract,
+  connectionInput,
+  HarnessError,
+} from "../harness/contracts";
 import type { ApiServices, Command } from "./services";
 
 export function registerHarnessRoutes(api: Elysia, services: ApiServices, command: Command) {
@@ -15,6 +20,32 @@ export function registerHarnessRoutes(api: Elysia, services: ApiServices, comman
       "/v1/connections",
       ({ request, body }) => command(request, body, () => services.connections.create(body)),
       { body: connectionInput },
+    )
+    .post(
+      "/v1/connections/api-key",
+      ({ request, body }) => {
+        const storage = services.credentialStorage;
+        if (!storage) throw new HarnessError("ADAPTER_UNAVAILABLE");
+        let reference: string | undefined;
+        try {
+          // The command store retains a SHA-256 fingerprint and secret-free receipt only.
+          return command(request, body, () => {
+            reference = storage.write(body.api_key);
+            return services.connections.create({
+              harness: body.harness,
+              authentication: {
+                method: "api_key",
+                billing_source: "api_key",
+                credential_ref: reference,
+              },
+            });
+          });
+        } catch (error) {
+          if (reference) storage.remove(reference);
+          throw error;
+        }
+      },
+      { body: apiKeyConnectionInput },
     )
     .post(
       "/v1/connections/:id/revoke",

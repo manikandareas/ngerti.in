@@ -1,7 +1,15 @@
 import type { AvatarConfig } from "@ngertiin/avatar/config";
 import type { NativeInteraction } from "./native-interactions";
-import type { Artifact, Goal, HumanRequest, PeerTask, Routine, Workspace } from "./work";
-// Consumer projections of the published Ngertiin API 1.20.0.
+import type {
+  Artifact,
+  AttachmentDocument,
+  Goal,
+  HumanRequest,
+  PeerTask,
+  Routine,
+  Workspace,
+} from "./work";
+// Consumer projections of the published Ngertiin API 1.21.0.
 export interface Base {
   id: string;
   revision: number;
@@ -105,6 +113,7 @@ export interface Snapshot {
   controls: { id: string; state: string; error_code: string | null }[];
   workspaces: Workspace[];
   artifacts: Artifact[];
+  attachment_documents?: AttachmentDocument[];
   goals: Goal[];
   routines: Routine[];
   human_requests: HumanRequest[];

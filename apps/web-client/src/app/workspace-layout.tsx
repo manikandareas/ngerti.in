@@ -69,12 +69,17 @@ import { UserMessageText } from "@/features/conversation/components/user-message
 import { WorkActivity } from "@/features/conversation/components/work-activity";
 import { WorkspaceProviders } from "@/features/conversation/components/workspace-providers";
 import { attachmentParts } from "@/features/conversation/lib/attachment-references";
+import {
+  prepareSubmission,
+  RejectedSubmission,
+} from "@/features/conversation/lib/message-submission";
 import { messageTimeline } from "@/features/conversation/lib/message-timeline";
 import {
   type NativeTranscriptFragment,
   useNativeTranscript,
 } from "@/features/conversation/lib/native-transcript";
 import { useComposerAttachments } from "@/features/conversation/lib/use-composer-attachments";
+import { useMessageSubmission } from "@/features/conversation/lib/use-message-submission";
 import { useSettingsDialog } from "@/features/settings/hooks/use-settings-dialog";
 import type { SettingsSectionId } from "@/features/settings/lib/settings-search";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -162,7 +167,12 @@ export default function Workspace() {
   useEffect(() => {
     if (!narrowNavigation) setNavigation(false);
   }, [narrowNavigation]);
-  const pending = threadId ? pendingMessage(threadId) : null;
+  const submission = useMessageSubmission(threadId);
+  useEffect(() => {
+    if (submission.failure) setError(submission.failure);
+  }, [submission.failure, setError]);
+  const pending =
+    (threadId ? pendingMessage(threadId) : null) ?? submission.pending?.body.text ?? null;
   const editPending = editing ? pendingText(`queued-edit:${editing.id}`) : null;
   const agent = snapshot?.agents[0];
   const connection = connections.find((c) => c.id === agent?.connection_id);
@@ -190,14 +200,18 @@ export default function Workspace() {
     snapshot,
     connection,
     draft: pending ?? draft,
+    pending: submission.pending,
     input: composerInput,
-    disabled: busy || pending !== null || !!editing,
+    disabled: busy || submission.loading || !!submission.failure || pending !== null || !!editing,
     report,
-    refresh,
     attached: () => setDetails(false),
   });
   const attachments = composerFiles.referenced(pending ?? draft);
-  const attachmentsBlocked = attachments.some((file) => file.state !== "ready");
+  const attachmentsBlocked =
+    (pending === null &&
+      attachments.some((file) => file.state === "uploading" || file.state === "failed")) ||
+    submission.loading ||
+    !!submission.failure;
   useLayoutEffect(() => {
     const surface = conversationSurface.current;
     if (!surface) return;
@@ -308,18 +322,39 @@ export default function Workspace() {
       return;
     const text = pending ?? draft;
     void act(async () => {
-      const content = pending ? { text, artifact_ids: [] } : composerFiles.message(text);
-      await durableCommand(
-        `message:${threadId}`,
-        snapshot?.thread.type === "group" ? `/v1/groups/${threadId}/messages` : "/v1/runs",
-        snapshot?.thread.type === "group"
-          ? { text: content.text }
-          : {
-              thread_id: threadId,
-              agent_id: agent.id,
-              ...content,
-            },
-      );
+      const content = pending
+        ? { text, artifact_ids: [], sources: [] }
+        : composerFiles.message(text);
+      if (submission.failure) throw new Error(submission.failure);
+      if (submission.pending || content.artifact_ids.length) {
+        const operation =
+          submission.pending ??
+          prepareSubmission(threadId, agent.id, content.text, content.sources);
+        composerFiles.restore(operation);
+        try {
+          await submission.send(operation, (id, state) =>
+            composerFiles.progress(threadId, id, state),
+          );
+        } catch (error) {
+          if (error instanceof RejectedSubmission && currentThread.current === threadId) {
+            composerFiles.restore(error.operation);
+            setDraft(error.operation.body.text);
+          }
+          throw error;
+        }
+      } else
+        await durableCommand(
+          `message:${threadId}`,
+          snapshot?.thread.type === "group" ? `/v1/groups/${threadId}/messages` : "/v1/runs",
+          snapshot?.thread.type === "group"
+            ? { text: content.text }
+            : {
+                thread_id: threadId,
+                agent_id: agent.id,
+                text: content.text,
+                artifact_ids: content.artifact_ids,
+              },
+        );
       if (currentThread.current !== threadId) return;
       setDraft("");
     });
@@ -984,6 +1019,10 @@ export default function Workspace() {
                                     <UserMessageText
                                       message={message}
                                       artifacts={snapshot.artifacts}
+                                      documents={snapshot.attachment_documents}
+                                      preparing={
+                                        run ? ["queued", "dispatching"].includes(run.status) : false
+                                      }
                                     />
                                   </div>
                                   <MessageTime at={message.created_at} />
@@ -1148,12 +1187,6 @@ export default function Workspace() {
                   >
                     Siapkan koneksi agar {agent?.name} bisa mulai bekerja →
                   </Button>
-                )}
-                {pending && (
-                  <p className="mb-2 text-caption text-muted-foreground">
-                    Pengiriman sebelumnya belum terkonfirmasi. Periksa dengan identitas pesan yang
-                    sama sebelum mengirim pesan baru.
-                  </p>
                 )}
                 {activeRuns.length > 1 && (
                   <div className="mb-2 flex flex-wrap gap-2" aria-label="Run aktif" role="status">

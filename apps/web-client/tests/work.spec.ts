@@ -442,7 +442,7 @@ test("browser viewer connects to the managed browser and reconnects its view wit
   await page.getByRole("button", { name: `Detail ${a.agent.name}`, exact: true }).click();
   await page.getByRole("tab", { name: "Computer", exact: true }).click();
   await expect(
-    page.getByRole("heading", { name: "Browser percakapan", exact: true }),
+    page.getByRole("button", { name: "Aktifkan browser percakapan", exact: true }),
   ).toBeVisible();
   const created = page.waitForResponse(
     (r) => r.url().endsWith("/v1/browser/profiles") && r.request().method() === "POST",

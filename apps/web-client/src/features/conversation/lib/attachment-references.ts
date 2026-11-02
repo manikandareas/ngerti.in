@@ -1,11 +1,13 @@
-import type { Artifact } from "@/types/work";
+import type { Artifact, AttachmentDocument } from "@/types/work";
 
 export interface ComposerAttachment {
   id: string;
   name: string;
   mediaType: string;
   size: number | null;
-  state: "uploading" | "ready" | "failed";
+  state: "local" | "uploading" | "ready" | "failed";
+  file?: File;
+  documentState?: string;
   artifact?: Artifact;
   previewUrl?: string;
   error?: string;
@@ -39,7 +41,11 @@ export function attachmentParts(text: string): ComposerPart[] {
   return parts;
 }
 
-export function uploadedAttachment(artifact: Artifact): ComposerAttachment {
+export function uploadedAttachment(
+  artifact: Artifact,
+  document?: AttachmentDocument,
+  preparing = false,
+): ComposerAttachment {
   return {
     id: artifact.id,
     name: artifact.name,
@@ -47,5 +53,8 @@ export function uploadedAttachment(artifact: Artifact): ComposerAttachment {
     size: artifact.size_bytes,
     state: "ready",
     artifact,
+    documentState:
+      document?.state ??
+      (preparing || artifact.materialization === "pending" ? "preparing" : undefined),
   };
 }

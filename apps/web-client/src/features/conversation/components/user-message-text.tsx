@@ -3,16 +3,20 @@ import {
   attachmentParts,
   uploadedAttachment,
 } from "@/features/conversation/lib/attachment-references";
-import type { Artifact } from "@/types/work";
+import type { Artifact, AttachmentDocument } from "@/types/work";
 import type { Message } from "@/types/workspace";
 import { AttachmentChip } from "./attachment-chip";
 
 export function UserMessageText({
   message,
   artifacts,
+  documents,
+  preparing,
 }: {
   message: Message;
   artifacts: Artifact[];
+  documents?: AttachmentDocument[];
+  preparing?: boolean;
 }) {
   return attachmentParts(message.text).map((part) => {
     if ("text" in part) return <Fragment key={`text-${part.offset}`}>{part.text}</Fragment>;
@@ -20,7 +24,14 @@ export function UserMessageText({
       ? artifacts.find((file) => file.id === part.id)
       : undefined;
     return artifact ? (
-      <AttachmentChip key={`${part.id}-${part.offset}`} file={uploadedAttachment(artifact)} />
+      <AttachmentChip
+        key={`${part.id}-${part.offset}`}
+        file={uploadedAttachment(
+          artifact,
+          documents?.find((document) => document.artifact_id === artifact.id),
+          preparing,
+        )}
+      />
     ) : (
       <Fragment key={`reference-${part.offset}`}>{part.reference}</Fragment>
     );

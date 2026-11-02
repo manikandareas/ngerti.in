@@ -34,6 +34,7 @@ export interface Workspace extends Base {
   state: "active" | "revoked";
 }
 export interface Artifact extends Base {
+  materialization?: "pending" | "ready";
   thread_id: string;
   agent_id: string;
   workspace_id: string | null;
@@ -44,6 +45,10 @@ export interface Artifact extends Base {
   sha256: string;
   origin: string;
   source_artifact_id: string | null;
+}
+export interface AttachmentDocument extends Base {
+  artifact_id: string;
+  state: "ready" | "partial" | "empty" | "unsupported" | "failed";
 }
 export interface HumanRequest extends Base {
   thread_id: string;

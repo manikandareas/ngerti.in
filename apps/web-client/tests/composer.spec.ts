@@ -60,7 +60,7 @@ test("inline chips align with surrounding text, keep default gaps and allow file
   await page
     .getByLabel("Lampirkan file ke pesan", { exact: true })
     .setInputFiles([documentFile("a.txt"), documentFile("b.txt")]);
-  await expect(composer.locator('[data-upload-state="ready"]')).toHaveCount(2);
+  await expect(composer.locator('[data-upload-state="local"]')).toHaveCount(2);
   const geometry = await composer.evaluate((element) => {
     const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
     let text = walker.nextNode();
@@ -108,7 +108,7 @@ test("long filenames leave only one normal space before the following text", asy
   await page
     .getByLabel("Lampirkan file ke pesan", { exact: true })
     .setInputFiles(documentFile(name));
-  await expect(composer.locator('[data-upload-state="ready"]')).toHaveCount(1);
+  await expect(composer.locator('[data-upload-state="local"]')).toHaveCount(1);
   await page.keyboard.insertText("pelajari dokumen ini");
   const boxes = await composer.evaluate((element) => {
     const host = element.querySelector(".composer-attachment-node");
@@ -161,14 +161,14 @@ test("files stay inline at the cursor and send stable references in sentence ord
   await page
     .getByLabel("Lampirkan file ke pesan", { exact: true })
     .setInputFiles(documentFile("dokumen [utama].txt", "First document"));
-  await expect(composer.locator('[data-upload-state="ready"]')).toHaveCount(1);
+  await expect(composer.locator('[data-upload-state="local"]')).toHaveCount(1);
   await composer.press("ControlOrMeta+a");
   await composer.press("ArrowRight");
   await expect.poll(() => composer.evaluate(() => window.getSelection()?.isCollapsed)).toBe(true);
   await page
     .getByLabel("Lampirkan file ke pesan", { exact: true })
     .setInputFiles(documentFile("dokumen [utama].txt", "Second document"));
-  await expect(composer.locator('[data-upload-state="ready"]')).toHaveCount(2);
+  await expect(composer.locator('[data-upload-state="local"]')).toHaveCount(2);
   await expect(page.locator(".composer-dock > fieldset")).toHaveCount(0);
   await page.screenshot({ path: info.outputPath("inline-file-composer.png") });
   const sent = page.waitForRequest(
@@ -191,7 +191,7 @@ test("files stay inline at the cursor and send stable references in sentence ord
   ).toEqual(body.artifact_ids);
 });
 
-test("upload shimmer leaves typing available, blocks send, and retries a lost reply with the same key", async ({
+test("files stay local until submit and a lost upload reply retries the same operation", async ({
   page,
 }, info) => {
   const { thread, composer } = await setup(page);
@@ -201,7 +201,7 @@ test("upload shimmer leaves typing available, blocks send, and retries a lost re
   });
   const keys: string[] = [];
   let calls = 0;
-  await page.route("**/v1/workspaces/*/uploads", async (route) => {
+  await page.route("**/v1/message-uploads", async (route) => {
     keys.push(route.request().headers()["idempotency-key"]);
     calls++;
     if (calls === 1) {
@@ -215,36 +215,89 @@ test("upload shimmer leaves typing available, blocks send, and retries a lost re
     .getByLabel("Lampirkan file ke pesan", { exact: true })
     .setInputFiles(documentFile("laporan.txt"));
   const chip = composer.locator("[data-attachment-chip]");
-  await expect(chip).toHaveAttribute("data-upload-state", "uploading");
-  expect(await chip.evaluate((element) => getComputedStyle(element, "::after").animationName)).toBe(
-    "attachment-shimmer",
-  );
+  await expect(chip).toHaveAttribute("data-upload-state", "local");
+  expect(calls).toBe(0);
+  expect(
+    (await (await page.request.get(`/v1/threads/${thread.id}/snapshot`)).json()).artifacts,
+  ).toHaveLength(0);
   await composer.press("ControlOrMeta+a");
   await composer.press("ArrowRight");
   await page.keyboard.insertText("dan simpan kesimpulannya.");
-  await expect(composer).toContainText("dan simpan kesimpulannya.");
-  await expect(page.getByRole("button", { name: "Kirim", exact: true })).toBeDisabled();
-  await composer.press("Enter");
+  await page.getByRole("button", { name: "Kirim", exact: true }).click();
+  await expect(chip).toHaveAttribute("data-upload-state", "uploading");
+  await expect(composer).not.toBeEditable();
   expect(
-    (await (await page.request.get(`/v1/threads/${thread.id}/snapshot`)).json()).runs,
-  ).toHaveLength(1);
-  await page.screenshot({ path: info.outputPath("inline-file-uploading.png") });
+    (await (await page.request.get(`/v1/threads/${thread.id}/snapshot`)).json()).artifacts,
+  ).toHaveLength(0);
+  await page.screenshot({ path: info.outputPath("submit-file-uploading.png") });
   await page.emulateMedia({ reducedMotion: "reduce" });
   expect(await chip.evaluate((element) => getComputedStyle(element, "::after").animationName)).toBe(
     "none",
   );
   release();
   await expect(chip).toHaveAttribute("data-upload-state", "failed");
-  await page.getByRole("button", { name: "Coba lagi laporan.txt", exact: true }).click();
-  await expect(chip).toHaveAttribute("data-upload-state", "ready");
+  await expect(page.getByRole("button", { name: "Periksa pengiriman", exact: true })).toBeEnabled();
+  await page.getByRole("button", { name: "Periksa pengiriman", exact: true }).click();
+  await expect(composer).toHaveText("");
   expect(keys).toHaveLength(2);
-  expect(keys[0]).toBeTruthy();
   expect(keys[1]).toBe(keys[0]);
   expect(
     (await (await page.request.get(`/v1/threads/${thread.id}/snapshot`)).json()).artifacts,
   ).toHaveLength(1);
-  await expect(composer).toContainText("dan simpan kesimpulannya.");
-  await expect(page.getByRole("button", { name: "Kirim", exact: true })).toBeEnabled();
+});
+
+test("removing a selected file never uploads it and status stays behind its icon", async ({
+  page,
+}, info) => {
+  const { thread, composer } = await setup(page);
+  let uploads = 0;
+  page.on("request", (request) => {
+    if (request.url().endsWith("/v1/message-uploads")) uploads++;
+  });
+  await page
+    .getByLabel("Lampirkan file ke pesan", { exact: true })
+    .setInputFiles(documentFile("wrong-file.txt"));
+  const status = composer.getByRole("button", { name: "Pratinjau wrong-file.txt", exact: true });
+  await expect(status.locator("[data-attachment-file-icon]")).toHaveCount(1);
+  await expect(
+    composer.getByRole("button", { name: "Status wrong-file.txt", exact: true }),
+  ).toHaveCount(0);
+  if (info.project.name === "mobile") await status.tap();
+  else await status.hover();
+  const details = page.locator(
+    info.project.name === "mobile"
+      ? '[data-slot="popover-content"]'
+      : '[data-slot="tooltip-content"]',
+  );
+  await expect(details.getByText("wrong-file.txt", { exact: true })).toBeVisible();
+  await expect(details).toContainText("TXT · 16 B");
+  expect((await details.boundingBox())?.width).toBeLessThanOrEqual(256);
+  await expect(page.getByText("Belum dikirim.", { exact: true })).toHaveCount(0);
+  await page
+    .locator('[data-slot="popover-content"], [data-slot="tooltip-content"]')
+    .evaluateAll(async (items) => {
+      await Promise.all(
+        items
+          .flatMap((item) => item.getAnimations())
+          .filter((animation) =>
+            Number.isFinite(Number(animation.effect?.getComputedTiming().endTime)),
+          )
+          .map((animation) => animation.finished),
+      );
+    });
+  await page.screenshot({ path: info.outputPath("attachment-status-tooltip.png") });
+  await page.keyboard.press("Escape");
+  await composer
+    .getByRole("button", { name: "Hapus lampiran wrong-file.txt", exact: true })
+    .click();
+  await expect(composer.locator("[data-attachment-chip]")).toHaveCount(0);
+  await composer.fill("Pesan tanpa file");
+  await page.getByRole("button", { name: "Kirim", exact: true }).click();
+  await expect(composer).toHaveText("");
+  expect(uploads).toBe(0);
+  expect(
+    (await (await page.request.get(`/v1/threads/${thread.id}/snapshot`)).json()).artifacts,
+  ).toHaveLength(0);
 });
 
 test("image chips preview through shadcn overlays and remove, undo and paste as whole objects", async ({
@@ -256,7 +309,7 @@ test("image chips preview through shadcn overlays and remove, undo and paste as 
     .getByLabel("Lampirkan file ke pesan", { exact: true })
     .setInputFiles("../../docs/verification/nma-059/visual-input.png");
   const chip = composer.locator("[data-attachment-chip]");
-  await expect(chip).toHaveAttribute("data-upload-state", "ready");
+  await expect(chip).toHaveAttribute("data-upload-state", "local");
   const preview = composer.getByRole("button", { name: "Pratinjau visual-input.png", exact: true });
   if (info.project.name === "mobile") await preview.tap();
   else await preview.hover();
@@ -268,7 +321,8 @@ test("image chips preview through shadcn overlays and remove, undo and paste as 
   await expect(
     overlay.getByRole("img", { name: "Pratinjau visual-input.png", exact: true }),
   ).toBeVisible();
-  await expect(overlay).toContainText("image/png");
+  await expect(overlay).toContainText("visual-input.png");
+  expect((await overlay.boundingBox())?.width).toBeLessThanOrEqual(256);
   await page.screenshot({ path: info.outputPath("inline-image-preview.png") });
   await page.keyboard.press("Escape");
   await chip.hover();
@@ -309,6 +363,35 @@ test("image chips preview through shadcn overlays and remove, undo and paste as 
   await expect(composer).toContainText("Lihat gambar ini");
 });
 
+test("a rejected second file restores an editable draft without publishing the first file", async ({
+  page,
+}) => {
+  const { thread, composer } = await setup(page);
+  await page
+    .getByLabel("Lampirkan file ke pesan", { exact: true })
+    .setInputFiles([documentFile("keep.txt"), documentFile("remove.txt")]);
+  await page.route("**/v1/message-uploads", async (route) => {
+    if (route.request().postDataJSON().name === "remove.txt")
+      await route.fulfill({
+        status: 422,
+        json: { error: { code: "INVALID_REQUEST", message: "Fixture rejection." } },
+      });
+    else await route.fulfill({ response: await route.fetch() });
+  });
+  await page.getByRole("button", { name: "Kirim", exact: true }).click();
+  await expect(composer).toBeEditable();
+  await expect(composer.locator('[data-upload-state="local"]')).toHaveCount(2);
+  expect(
+    (await (await page.request.get(`/v1/threads/${thread.id}/snapshot`)).json()).artifacts,
+  ).toHaveLength(0);
+  await composer.getByRole("button", { name: "Hapus lampiran remove.txt", exact: true }).click();
+  await page.getByRole("button", { name: "Kirim", exact: true }).click();
+  await expect(composer).toHaveText("");
+  expect(
+    (await (await page.request.get(`/v1/threads/${thread.id}/snapshot`)).json()).artifacts,
+  ).toHaveLength(1);
+});
+
 test("pending sends restore inline file references and replay the exact message after reload", async ({
   page,
 }) => {
@@ -317,7 +400,7 @@ test("pending sends restore inline file references and replay the exact message 
   await page
     .getByLabel("Lampirkan file ke pesan", { exact: true })
     .setInputFiles(documentFile("pending.txt"));
-  await expect(composer.locator('[data-upload-state="ready"]')).toHaveCount(1);
+  await expect(composer.locator('[data-upload-state="local"]')).toHaveCount(1);
   const operations: { key: string; body: unknown }[] = [];
   await page.route("**/v1/runs", async (route) => {
     operations.push({
@@ -331,15 +414,14 @@ test("pending sends restore inline file references and replay the exact message 
   await page.getByRole("button", { name: "Kirim", exact: true }).click();
   await expect(page.getByRole("button", { name: "Periksa pengiriman", exact: true })).toBeVisible();
   await page.reload();
-  await expect(composer.locator('[data-upload-state="ready"]')).toHaveCount(1);
+  await expect(composer.locator('[data-upload-state="local"]')).toHaveCount(1);
   await expect(composer).not.toBeEditable();
   await expect(
     composer.getByRole("button", { name: "Hapus lampiran pending.txt", exact: true }),
   ).toHaveCount(0);
   await page.getByRole("button", { name: "Periksa pengiriman", exact: true }).click();
   await expect(composer).toHaveText("");
-  expect(operations).toHaveLength(2);
-  expect(operations[1]).toEqual(operations[0]);
+  expect(operations).toHaveLength(1);
   const snapshot = await (await page.request.get(`/v1/threads/${thread.id}/snapshot`)).json();
   expect(snapshot.runs).toHaveLength(2);
   expect(snapshot.artifacts).toHaveLength(1);

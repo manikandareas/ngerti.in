@@ -1,8 +1,7 @@
-import { type RefObject, useEffect, useRef, useState } from "react";
+import { type RefObject, useCallback, useEffect, useRef, useState } from "react";
 import { attachmentIssue } from "@/features/conversation/components/attach-input";
 import type { ComposerInputHandle } from "@/features/conversation/components/composer-input";
-import { ensureWorkspace, uploadFile } from "@/lib/workspace-files";
-import type { Artifact, Workspace } from "@/types/work";
+import type { Artifact } from "@/types/work";
 import type { Connection, Snapshot } from "@/types/workspace";
 import {
   attachmentParts,
@@ -10,66 +9,121 @@ import {
   type ComposerAttachment,
   uploadedAttachment,
 } from "./attachment-references";
+import type { MessageSubmission } from "./message-submission";
 
 interface Options {
   threadId: string | null;
   snapshot: Snapshot | null;
   connection?: Connection;
   draft: string;
+  pending?: MessageSubmission | null;
   input: RefObject<ComposerInputHandle | null>;
   disabled: boolean;
   report: (message: string) => void;
-  refresh: () => Promise<unknown>;
   attached: () => void;
 }
-type Upload = { file: File; key: string; controller?: AbortController; workspaceId?: string };
 
 export function useComposerAttachments(options: Options) {
   const [entries, setEntries] = useState<Record<string, ComposerAttachment>>({});
   const entriesRef = useRef(entries);
-  entriesRef.current = entries;
   const latest = useRef(options);
   latest.current = options;
-  const uploads = useRef(new Map<string, Upload>());
   const urls = useRef(new Map<string, string>());
-  const workspace = useRef<Promise<Workspace> | null>(null);
   const entryScope = useRef(options.threadId);
+  const update = useCallback((id: string, entry: ComposerAttachment) => {
+    entriesRef.current = { ...entriesRef.current, [id]: entry };
+    setEntries(entriesRef.current);
+  }, []);
+  const restore = useCallback(
+    (operation: MessageSubmission) => {
+      if (operation.body.thread_id !== latest.current.threadId) return;
+      for (const source of operation.files) {
+        let previewUrl = urls.current.get(source.id);
+        if (!previewUrl && source.file.type.startsWith("image/")) {
+          previewUrl = URL.createObjectURL(source.file);
+          urls.current.set(source.id, previewUrl);
+        }
+        update(source.id, {
+          id: source.id,
+          name: source.file.name,
+          mediaType: source.file.type || "application/octet-stream",
+          size: source.file.size,
+          state: "local",
+          file: source.file,
+          previewUrl,
+        });
+      }
+    },
+    [update],
+  );
   useEffect(() => {
     entryScope.current = options.threadId;
-    setEntries({});
     entriesRef.current = {};
-    workspace.current = null;
-    const tasks = uploads.current;
+    setEntries({});
     const previews = urls.current;
     return () => {
-      for (const upload of tasks.values()) upload.controller?.abort();
       for (const url of previews.values()) URL.revokeObjectURL(url);
-      tasks.clear();
       previews.clear();
     };
   }, [options.threadId]);
+  useEffect(() => {
+    if (options.pending) restore(options.pending);
+  }, [options.pending, restore]);
+  useEffect(() => {
+    const retained = new Set(
+      attachmentParts(options.draft).flatMap((part) => ("id" in part ? [part.id] : [])),
+    );
+    let changed = false;
+    const next = { ...entriesRef.current };
+    for (const [id, url] of urls.current)
+      if (!retained.has(id)) {
+        URL.revokeObjectURL(url);
+        urls.current.delete(id);
+        if (next[id]) next[id] = { ...next[id], previewUrl: undefined };
+        changed = true;
+      }
+    for (const id of retained) {
+      const file = next[id]?.file;
+      if (!file?.type.startsWith("image/") || urls.current.has(id)) continue;
+      const previewUrl = URL.createObjectURL(file);
+      urls.current.set(id, previewUrl);
+      next[id] = { ...next[id], previewUrl };
+      changed = true;
+    }
+    if (!changed) return;
+    entriesRef.current = next;
+    setEntries(next);
+  }, [options.draft]);
 
-  function update(id: string, file: ComposerAttachment) {
-    entriesRef.current = { ...entriesRef.current, [id]: file };
-    setEntries(entriesRef.current);
-  }
   function lookup(id: string): ComposerAttachment | undefined {
     if (entryScope.current !== latest.current.threadId) return undefined;
-    const entry =
-      entriesRef.current[id] ??
-      Object.values(entriesRef.current).find((file) => file.artifact?.id === id);
-    if (entry?.artifact && entry.artifact.thread_id !== latest.current.threadId) return undefined;
+    const entry = entriesRef.current[id];
     if (entry) return entry;
     const artifact = latest.current.snapshot?.artifacts.find(
       (file) => file.id === id && file.thread_id === latest.current.threadId,
     );
-    return artifact ? uploadedAttachment(artifact) : undefined;
+    if (artifact)
+      return uploadedAttachment(
+        artifact,
+        latest.current.snapshot?.attachment_documents?.find((d) => d.artifact_id === id),
+      );
+    const source = latest.current.pending?.files.find((file) => file.id === id);
+    return source
+      ? {
+          id,
+          name: source.file.name,
+          mediaType: source.file.type,
+          size: source.file.size,
+          state: "local",
+          file: source.file,
+        }
+      : undefined;
   }
   function referenced(text: string) {
-    const ids = new Set<string>();
+    const seen = new Set<string>();
     return attachmentParts(text).flatMap((part) => {
-      if (!("id" in part) || ids.has(part.id)) return [];
-      ids.add(part.id);
+      if (!("id" in part) || seen.has(part.id)) return [];
+      seen.add(part.id);
       const file = lookup(part.id);
       return file ? [file] : [];
     });
@@ -86,52 +140,6 @@ export function useComposerAttachments(options: Options) {
       return false;
     }
     return true;
-  }
-  async function upload(id: string) {
-    const source = uploads.current.get(id);
-    const entry = entriesRef.current[id];
-    const current = latest.current;
-    const snapshot = current.snapshot;
-    if (!source || !entry || !snapshot || current.disabled || source.controller) return;
-    const scope = current.threadId;
-    const controller = new AbortController();
-    source.controller = controller;
-    update(id, { ...entry, state: "uploading", error: undefined });
-    try {
-      if (!source.workspaceId) {
-        const preparing =
-          workspace.current ??
-          ensureWorkspace(snapshot.agents[0].id, snapshot.thread.id, snapshot.workspaces);
-        workspace.current = preparing;
-        try {
-          source.workspaceId = (await preparing).id;
-        } catch (error) {
-          if (workspace.current === preparing) workspace.current = null;
-          throw error;
-        }
-      }
-      controller.signal.throwIfAborted();
-      const artifact = await uploadFile(source.workspaceId, source.file, {
-        key: source.key,
-        signal: controller.signal,
-      });
-      if (latest.current.threadId !== scope || controller.signal.aborted) return;
-      update(id, { ...uploadedAttachment(artifact), id });
-      const preview = urls.current.get(id);
-      if (preview) URL.revokeObjectURL(preview);
-      urls.current.delete(id);
-      uploads.current.delete(id);
-      void latest.current.refresh().catch(() => {});
-    } catch (error) {
-      if (latest.current.threadId !== scope || controller.signal.aborted) return;
-      update(id, {
-        ...entry,
-        state: "failed",
-        error: error instanceof Error ? error.message : "File belum terunggah.",
-      });
-    } finally {
-      source.controller = undefined;
-    }
   }
   function addFiles(files: File[]) {
     const current = latest.current;
@@ -160,19 +168,19 @@ export function useComposerAttachments(options: Options) {
         name: file.name,
         mediaType: file.type || "application/octet-stream",
         size: file.size,
-        state: "uploading",
+        state: "local",
+        file,
         previewUrl,
       };
-      uploads.current.set(id, { file, key: crypto.randomUUID() });
       update(id, entry);
       added.push(entry);
       count++;
       if (file.type.startsWith("image/")) images++;
     }
-    if (!added.length) return;
-    current.input.current?.insertAttachments(added);
-    current.attached();
-    for (const file of added) void upload(file.id);
+    if (added.length) {
+      current.input.current?.insertAttachments(added);
+      current.attached();
+    }
   }
   function attachArtifact(artifact: Artifact) {
     const current = latest.current;
@@ -187,7 +195,7 @@ export function useComposerAttachments(options: Options) {
       !allowed(
         artifact.media_type,
         active.length,
-        active.filter((file) => file.mediaType.startsWith("image/")).length,
+        active.filter((f) => f.mediaType.startsWith("image/")).length,
       )
     )
       return;
@@ -198,18 +206,25 @@ export function useComposerAttachments(options: Options) {
   }
   function message(text: string) {
     const ids = new Set<string>();
+    const sources: { id: string; file: File }[] = [];
     const body = attachmentParts(text)
       .map((part) => {
         if ("text" in part) return part.text;
         const file = lookup(part.id);
-        if (!file) return part.reference;
-        if (file.state !== "ready" || !file.artifact)
-          throw new Error("Tunggu lampiran selesai diunggah atau hapus lampiran yang gagal.");
-        ids.add(file.artifact.id);
-        return attachmentReference(file.artifact.id, file.name);
+        if (!file || (!file.artifact && !file.file))
+          throw new Error("Lampiran belum tersedia. Pilih ulang file tersebut.");
+        const id = file.artifact?.id ?? file.id;
+        if (!ids.has(id) && file.file) sources.push({ id, file: file.file });
+        ids.add(id);
+        return attachmentReference(id, file.name);
       })
       .join("");
-    return { text: body, artifact_ids: [...ids] };
+    return { text: body, artifact_ids: [...ids], sources };
+  }
+  function progress(scope: string, id: string, state: "uploading" | "ready" | "failed") {
+    if (scope !== latest.current.threadId) return;
+    const entry = lookup(id);
+    if (entry) update(id, { ...entry, state });
   }
   return {
     lookup,
@@ -217,8 +232,11 @@ export function useComposerAttachments(options: Options) {
     addFiles,
     attachArtifact,
     message,
+    restore,
+    progress,
     retry: (id: string) => {
-      void upload(id);
+      const file = lookup(id);
+      if (file) update(id, { ...file, state: "local", error: undefined });
     },
   };
 }

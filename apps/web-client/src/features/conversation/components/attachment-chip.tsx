@@ -1,5 +1,4 @@
 import {
-  AlertCircleIcon,
   Cancel01Icon,
   File02Icon,
   Image01Icon,
@@ -12,32 +11,43 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import type { ComposerAttachment } from "@/features/conversation/lib/attachment-references";
 import { artifactUrl } from "@/lib/workspace-files";
 
+function attachmentStatus(file: ComposerAttachment) {
+  if (file.state === "failed") return "Periksa pengiriman.";
+  if (file.state === "uploading") return "Mengirim…";
+  if (file.documentState === "preparing") return "Menyiapkan file…";
+  if (file.documentState === "partial") return "Sebagian isi file belum bisa dibaca.";
+  if (["failed", "empty", "unsupported"].includes(file.documentState ?? ""))
+    return "File belum bisa dibaca.";
+  return null;
+}
+
 function AttachmentPreview({ file }: { file: ComposerAttachment }) {
   const image = /^image\/(png|jpeg|webp)$/.test(file.mediaType);
   const url = file.previewUrl ?? (file.artifact ? artifactUrl(file.artifact) : undefined);
   const size =
     file.size === null
       ? ""
-      : file.size < 1024 * 1024
-        ? `${Math.max(1, Math.round(file.size / 1024))} KB`
-        : `${(file.size / (1024 * 1024)).toFixed(1)} MB`;
+      : file.size < 1024
+        ? `${file.size} B`
+        : file.size < 1024 * 1024
+          ? `${Math.round(file.size / 1024)} KB`
+          : `${(file.size / (1024 * 1024)).toFixed(1)} MB`;
+  const type = /\.([a-z0-9]{1,12})$/i.exec(file.name)?.[1].toUpperCase();
+  const status = attachmentStatus(file);
   return (
     <div className="attachment-preview min-w-0 space-y-2">
       {image && url && (
         <img
           src={url}
           alt={`Pratinjau ${file.name}`}
-          className="max-h-44 w-full rounded-lg object-contain"
+          className="max-h-44 max-w-full rounded-md object-contain"
         />
       )}
-      <div className="break-words text-[13px] font-medium leading-5">{file.name}</div>
-      <div className="text-[11px] text-muted-foreground">
-        {file.mediaType} {size ? `· ${size}` : ""}
-      </div>
-      {file.state === "uploading" && (
-        <p className="text-[12px] text-muted-foreground">Mengunggah…</p>
+      <div className="break-words font-medium">{file.name}</div>
+      {(type || size) && (
+        <div className="opacity-80">{[type, size].filter(Boolean).join(" · ")}</div>
       )}
-      {file.error && <p className="text-[12px] text-destructive">{file.error}</p>}
+      {status && <p className="opacity-80">{status}</p>}
     </div>
   );
 }
@@ -54,18 +64,14 @@ export function AttachmentChip({
   retry?: () => void;
 }) {
   const [open, setOpen] = useState(false);
-  const Icon =
-    file.state === "failed"
-      ? AlertCircleIcon
-      : file.mediaType.startsWith("image/")
-        ? Image01Icon
-        : File02Icon;
+  const working = file.state === "uploading" || file.documentState === "preparing";
+  const icon = file.mediaType.startsWith("image/") ? Image01Icon : File02Icon;
   return (
     <span
       className="attachment-chip"
       data-attachment-chip={file.id}
       data-upload-state={file.state}
-      aria-busy={file.state === "uploading"}
+      aria-busy={working}
       contentEditable={false}
     >
       <Popover open={open} onOpenChange={setOpen}>
@@ -78,25 +84,20 @@ export function AttachmentChip({
                 aria-label={`Pratinjau ${file.name}`}
                 onMouseDown={(event) => event.preventDefault()}
               >
-                <HugeiconsIcon icon={Icon} size={12} strokeWidth={1.7} aria-hidden="true" />
+                <HugeiconsIcon
+                  icon={icon}
+                  size={12}
+                  strokeWidth={1.7}
+                  data-attachment-file-icon
+                  aria-hidden="true"
+                />
                 <span dir="auto" className="truncate">
                   {file.name}
-                </span>
-                <span className="sr-only">
-                  {file.state === "uploading"
-                    ? "Mengunggah"
-                    : file.state === "failed"
-                      ? "Upload gagal"
-                      : "Terunggah"}
                 </span>
               </button>
             </TooltipTrigger>
           </PopoverTrigger>
-          <TooltipContent
-            side="top"
-            sideOffset={8}
-            className="block max-w-64 rounded-xl bg-popover p-3 text-popover-foreground shadow-lg ring-1 ring-border/50"
-          >
+          <TooltipContent side="top" sideOffset={8} className="max-w-64">
             <AttachmentPreview file={file} />
           </TooltipContent>
         </Tooltip>
@@ -111,7 +112,7 @@ export function AttachmentChip({
           <AttachmentPreview file={file} />
         </PopoverContent>
       </Popover>
-      {file.state === "failed" && retry && (
+      {file.state === "failed" && !file.file && retry && (
         <button
           type="button"
           className="attachment-chip-action"

@@ -1,0 +1,3163 @@
+{
+  "config": {
+    "argv": [
+      "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+      "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/node_modules/.bin/playwright",
+      "test",
+      "--workers=1",
+      "--output=/tmp/ngertiin-fidelity-completion-ui",
+      "--reporter=json"
+    ],
+    "configFile": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/playwright.config.ts",
+    "rootDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/tmp/ngertiin-fidelity-completion-ui",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "desktop",
+        "name": "desktop",
+        "testDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+        "testIgnore": [
+          "conversation.spec.ts",
+          "model-picker.spec.ts",
+          "rich-answer.spec.ts",
+          "settings.spec.ts",
+          "work.spec.ts"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/tmp/ngertiin-fidelity-completion-ui",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "mobile",
+        "name": "mobile",
+        "testDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+        "testIgnore": [
+          "conversation.spec.ts",
+          "model-picker.spec.ts",
+          "rich-answer.spec.ts",
+          "settings.spec.ts",
+          "work.spec.ts"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/tmp/ngertiin-fidelity-completion-ui",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "desktop",
+        "testDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+        "snapshotDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+        "testIgnore": [
+          "conversation.spec.ts",
+          "model-picker.spec.ts",
+          "rich-answer.spec.ts",
+          "settings.spec.ts",
+          "work.spec.ts"
+        ],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 30000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4301",
+          "colorScheme": "light",
+          "screenshot": "only-on-failure",
+          "trace": "retain-on-failure",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "screen": {
+            "width": 1920,
+            "height": 1080
+          },
+          "deviceScaleFactor": 1,
+          "isMobile": false,
+          "hasTouch": false,
+          "defaultBrowserType": "chromium"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "desktop"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/tmp/ngertiin-fidelity-completion-ui",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "mobile",
+        "testDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+        "snapshotDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+        "testIgnore": [
+          "conversation.spec.ts",
+          "model-picker.spec.ts",
+          "rich-answer.spec.ts",
+          "settings.spec.ts",
+          "work.spec.ts"
+        ],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 30000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4301",
+          "colorScheme": "light",
+          "screenshot": "only-on-failure",
+          "trace": "retain-on-failure",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "screen": {
+            "width": 1920,
+            "height": 1080
+          },
+          "deviceScaleFactor": 1,
+          "isMobile": true,
+          "hasTouch": true,
+          "defaultBrowserType": "chromium"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "mobile"
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "design-system.spec.ts",
+      "file": "design-system.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "dedicated route opens directly and refreshes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3507,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:12:50.631Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cb9959aea8a42eda7d1c-1b25a6241fc307e5a8ac",
+          "file": "design-system.spec.ts",
+          "line": 16,
+          "column": 1
+        },
+        {
+          "title": "light: foundations use live Midnight/Daylight tokens",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2532,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:12:55.724Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cb9959aea8a42eda7d1c-0498eadfeba509ce6222",
+          "file": "design-system.spec.ts",
+          "line": 30,
+          "column": 3
+        },
+        {
+          "title": "light: every installed primitive has a working preview",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 53381,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "accordion",
+                      "duration": 1046
+                    },
+                    {
+                      "title": "alert",
+                      "duration": 723
+                    },
+                    {
+                      "title": "alert-dialog",
+                      "duration": 946
+                    },
+                    {
+                      "title": "aspect-ratio",
+                      "duration": 993
+                    },
+                    {
+                      "title": "attachment",
+                      "duration": 1344
+                    },
+                    {
+                      "title": "avatar",
+                      "duration": 1269
+                    },
+                    {
+                      "title": "badge",
+                      "duration": 1061
+                    },
+                    {
+                      "title": "breadcrumb",
+                      "duration": 819
+                    },
+                    {
+                      "title": "bubble",
+                      "duration": 638
+                    },
+                    {
+                      "title": "button",
+                      "duration": 2046
+                    },
+                    {
+                      "title": "button-group",
+                      "duration": 1792
+                    },
+                    {
+                      "title": "calendar",
+                      "duration": 1330
+                    },
+                    {
+                      "title": "card",
+                      "duration": 1037
+                    },
+                    {
+                      "title": "carousel",
+                      "duration": 900
+                    },
+                    {
+                      "title": "chart",
+                      "duration": 1411
+                    },
+                    {
+                      "title": "checkbox",
+                      "duration": 1079
+                    },
+                    {
+                      "title": "code-block",
+                      "duration": 722
+                    },
+                    {
+                      "title": "collapsible",
+                      "duration": 866
+                    },
+                    {
+                      "title": "combobox",
+                      "duration": 659
+                    },
+                    {
+                      "title": "command",
+                      "duration": 601
+                    },
+                    {
+                      "title": "context-menu",
+                      "duration": 540
+                    },
+                    {
+                      "title": "dialog",
+                      "duration": 739
+                    },
+                    {
+                      "title": "direction",
+                      "duration": 809
+                    },
+                    {
+                      "title": "drawer",
+                      "duration": 1125
+                    },
+                    {
+                      "title": "dropdown-menu",
+                      "duration": 894
+                    },
+                    {
+                      "title": "empty",
+                      "duration": 1035
+                    },
+                    {
+                      "title": "field",
+                      "duration": 1055
+                    },
+                    {
+                      "title": "hover-card",
+                      "duration": 662
+                    },
+                    {
+                      "title": "input",
+                      "duration": 671
+                    },
+                    {
+                      "title": "input-group",
+                      "duration": 730
+                    },
+                    {
+                      "title": "input-otp",
+                      "duration": 702
+                    },
+                    {
+                      "title": "item",
+                      "duration": 737
+                    },
+                    {
+                      "title": "kbd",
+                      "duration": 586
+                    },
+                    {
+                      "title": "label",
+                      "duration": 817
+                    },
+                    {
+                      "title": "marker",
+                      "duration": 727
+                    },
+                    {
+                      "title": "menubar",
+                      "duration": 665
+                    },
+                    {
+                      "title": "message",
+                      "duration": 564
+                    },
+                    {
+                      "title": "message-scroller",
+                      "duration": 989
+                    },
+                    {
+                      "title": "native-select",
+                      "duration": 889
+                    },
+                    {
+                      "title": "navigation-menu",
+                      "duration": 970
+                    },
+                    {
+                      "title": "pagination",
+                      "duration": 746
+                    },
+                    {
+                      "title": "popover",
+                      "duration": 627
+                    },
+                    {
+                      "title": "progress",
+                      "duration": 696
+                    },
+                    {
+                      "title": "questionnaire",
+                      "duration": 662
+                    },
+                    {
+                      "title": "radio-group",
+                      "duration": 497
+                    },
+                    {
+                      "title": "resizable",
+                      "duration": 478
+                    },
+                    {
+                      "title": "scroll-area",
+                      "duration": 417
+                    },
+                    {
+                      "title": "select",
+                      "duration": 412
+                    },
+                    {
+                      "title": "separator",
+                      "duration": 482
+                    },
+                    {
+                      "title": "sheet",
+                      "duration": 460
+                    },
+                    {
+                      "title": "sidebar",
+                      "duration": 558
+                    },
+                    {
+                      "title": "skeleton",
+                      "duration": 461
+                    },
+                    {
+                      "title": "slider",
+                      "duration": 532
+                    },
+                    {
+                      "title": "sonner",
+                      "duration": 676
+                    },
+                    {
+                      "title": "spinner",
+                      "duration": 672
+                    },
+                    {
+                      "title": "switch",
+                      "duration": 655
+                    },
+                    {
+                      "title": "table",
+                      "duration": 646
+                    },
+                    {
+                      "title": "tabs",
+                      "duration": 801
+                    },
+                    {
+                      "title": "textarea",
+                      "duration": 927
+                    },
+                    {
+                      "title": "toggle",
+                      "duration": 704
+                    },
+                    {
+                      "title": "toggle-group",
+                      "duration": 682
+                    },
+                    {
+                      "title": "tooltip",
+                      "duration": 591
+                    },
+                    {
+                      "title": "trace",
+                      "duration": 683
+                    }
+                  ],
+                  "startTime": "2026-11-01T16:12:58.318Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cb9959aea8a42eda7d1c-3697c2250af57a7f4dfd",
+          "file": "design-system.spec.ts",
+          "line": 53,
+          "column": 3
+        },
+        {
+          "title": "dark: foundations use live Midnight/Daylight tokens",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2306,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:13:51.778Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cb9959aea8a42eda7d1c-49502c0f8f441569f5f0",
+          "file": "design-system.spec.ts",
+          "line": 30,
+          "column": 3
+        },
+        {
+          "title": "dark: every installed primitive has a working preview",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 44019,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "accordion",
+                      "duration": 696
+                    },
+                    {
+                      "title": "alert",
+                      "duration": 612
+                    },
+                    {
+                      "title": "alert-dialog",
+                      "duration": 516
+                    },
+                    {
+                      "title": "aspect-ratio",
+                      "duration": 576
+                    },
+                    {
+                      "title": "attachment",
+                      "duration": 618
+                    },
+                    {
+                      "title": "avatar",
+                      "duration": 544
+                    },
+                    {
+                      "title": "badge",
+                      "duration": 667
+                    },
+                    {
+                      "title": "breadcrumb",
+                      "duration": 804
+                    },
+                    {
+                      "title": "bubble",
+                      "duration": 626
+                    },
+                    {
+                      "title": "button",
+                      "duration": 855
+                    },
+                    {
+                      "title": "button-group",
+                      "duration": 867
+                    },
+                    {
+                      "title": "calendar",
+                      "duration": 908
+                    },
+                    {
+                      "title": "card",
+                      "duration": 772
+                    },
+                    {
+                      "title": "carousel",
+                      "duration": 866
+                    },
+                    {
+                      "title": "chart",
+                      "duration": 1387
+                    },
+                    {
+                      "title": "checkbox",
+                      "duration": 825
+                    },
+                    {
+                      "title": "code-block",
+                      "duration": 661
+                    },
+                    {
+                      "title": "collapsible",
+                      "duration": 908
+                    },
+                    {
+                      "title": "combobox",
+                      "duration": 687
+                    },
+                    {
+                      "title": "command",
+                      "duration": 571
+                    },
+                    {
+                      "title": "context-menu",
+                      "duration": 572
+                    },
+                    {
+                      "title": "dialog",
+                      "duration": 531
+                    },
+                    {
+                      "title": "direction",
+                      "duration": 647
+                    },
+                    {
+                      "title": "drawer",
+                      "duration": 512
+                    },
+                    {
+                      "title": "dropdown-menu",
+                      "duration": 673
+                    },
+                    {
+                      "title": "empty",
+                      "duration": 562
+                    },
+                    {
+                      "title": "field",
+                      "duration": 572
+                    },
+                    {
+                      "title": "hover-card",
+                      "duration": 725
+                    },
+                    {
+                      "title": "input",
+                      "duration": 754
+                    },
+                    {
+                      "title": "input-group",
+                      "duration": 708
+                    },
+                    {
+                      "title": "input-otp",
+                      "duration": 702
+                    },
+                    {
+                      "title": "item",
+                      "duration": 558
+                    },
+                    {
+                      "title": "kbd",
+                      "duration": 709
+                    },
+                    {
+                      "title": "label",
+                      "duration": 659
+                    },
+                    {
+                      "title": "marker",
+                      "duration": 628
+                    },
+                    {
+                      "title": "menubar",
+                      "duration": 654
+                    },
+                    {
+                      "title": "message",
+                      "duration": 671
+                    },
+                    {
+                      "title": "message-scroller",
+                      "duration": 667
+                    },
+                    {
+                      "title": "native-select",
+                      "duration": 779
+                    },
+                    {
+                      "title": "navigation-menu",
+                      "duration": 585
+                    },
+                    {
+                      "title": "pagination",
+                      "duration": 533
+                    },
+                    {
+                      "title": "popover",
+                      "duration": 640
+                    },
+                    {
+                      "title": "progress",
+                      "duration": 553
+                    },
+                    {
+                      "title": "questionnaire",
+                      "duration": 884
+                    },
+                    {
+                      "title": "radio-group",
+                      "duration": 481
+                    },
+                    {
+                      "title": "resizable",
+                      "duration": 587
+                    },
+                    {
+                      "title": "scroll-area",
+                      "duration": 754
+                    },
+                    {
+                      "title": "select",
+                      "duration": 559
+                    },
+                    {
+                      "title": "separator",
+                      "duration": 539
+                    },
+                    {
+                      "title": "sheet",
+                      "duration": 472
+                    },
+                    {
+                      "title": "sidebar",
+                      "duration": 660
+                    },
+                    {
+                      "title": "skeleton",
+                      "duration": 452
+                    },
+                    {
+                      "title": "slider",
+                      "duration": 505
+                    },
+                    {
+                      "title": "sonner",
+                      "duration": 542
+                    },
+                    {
+                      "title": "spinner",
+                      "duration": 850
+                    },
+                    {
+                      "title": "switch",
+                      "duration": 520
+                    },
+                    {
+                      "title": "table",
+                      "duration": 751
+                    },
+                    {
+                      "title": "tabs",
+                      "duration": 761
+                    },
+                    {
+                      "title": "textarea",
+                      "duration": 595
+                    },
+                    {
+                      "title": "toggle",
+                      "duration": 723
+                    },
+                    {
+                      "title": "toggle-group",
+                      "duration": 652
+                    },
+                    {
+                      "title": "tooltip",
+                      "duration": 614
+                    },
+                    {
+                      "title": "trace",
+                      "duration": 569
+                    }
+                  ],
+                  "startTime": "2026-11-01T16:13:54.163Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cb9959aea8a42eda7d1c-fc64df68409661e22bca",
+          "file": "design-system.spec.ts",
+          "line": 53,
+          "column": 3
+        },
+        {
+          "title": "search and category filters narrow the primitive list",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 962,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:14:38.250Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cb9959aea8a42eda7d1c-9ac922a5b7e0137f2469",
+          "file": "design-system.spec.ts",
+          "line": 80,
+          "column": 1
+        },
+        {
+          "title": "interactive previews work and can reset",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3856,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:14:39.233Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cb9959aea8a42eda7d1c-39612237575dae37f040",
+          "file": "design-system.spec.ts",
+          "line": 103,
+          "column": 1
+        },
+        {
+          "title": "questionnaire demo advances and submits locally",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1250,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:14:43.098Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cb9959aea8a42eda7d1c-3b77e6a3a1f1dba4978b",
+          "file": "design-system.spec.ts",
+          "line": 129,
+          "column": 1
+        },
+        {
+          "title": "invalid component falls back to foundations and unknown routes show 404",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 340,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:14:44.355Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cb9959aea8a42eda7d1c-300ecdb8e3782a397124",
+          "file": "design-system.spec.ts",
+          "line": 138,
+          "column": 1
+        },
+        {
+          "title": "light: popup families use the OpenMaus menu geometry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5908,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "dropdown-menu",
+                      "duration": 1208
+                    },
+                    {
+                      "title": "context-menu",
+                      "duration": 1535
+                    },
+                    {
+                      "title": "menubar",
+                      "duration": 979
+                    },
+                    {
+                      "title": "select",
+                      "duration": 727
+                    },
+                    {
+                      "title": "combobox",
+                      "duration": 1091
+                    }
+                  ],
+                  "startTime": "2026-11-01T16:14:44.704Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cb9959aea8a42eda7d1c-6b806bb345e4ab01dad1",
+          "file": "design-system.spec.ts",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "light: control focus, switch travel, and neutral bubbles",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3264,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:14:50.626Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cb9959aea8a42eda7d1c-a68cdf7a24670e1ff2df",
+          "file": "design-system.spec.ts",
+          "line": 196,
+          "column": 3
+        },
+        {
+          "title": "dark: popup families use the OpenMaus menu geometry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5584,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "dropdown-menu",
+                      "duration": 1055
+                    },
+                    {
+                      "title": "context-menu",
+                      "duration": 1175
+                    },
+                    {
+                      "title": "menubar",
+                      "duration": 1468
+                    },
+                    {
+                      "title": "select",
+                      "duration": 607
+                    },
+                    {
+                      "title": "combobox",
+                      "duration": 918
+                    }
+                  ],
+                  "startTime": "2026-11-01T16:14:53.903Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cb9959aea8a42eda7d1c-4bc600f75a4774ab596b",
+          "file": "design-system.spec.ts",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "dark: control focus, switch travel, and neutral bubbles",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3360,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:14:59.517Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cb9959aea8a42eda7d1c-b047889bb2ff6335c580",
+          "file": "design-system.spec.ts",
+          "line": 196,
+          "column": 3
+        },
+        {
+          "title": "dedicated route opens directly and refreshes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 973,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:15:27.243Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cb9959aea8a42eda7d1c-9954842f021e2cfda0e3",
+          "file": "design-system.spec.ts",
+          "line": 16,
+          "column": 1
+        },
+        {
+          "title": "light: foundations use live Midnight/Daylight tokens",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 482,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:15:28.389Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cb9959aea8a42eda7d1c-e60a7d6e8e8cd2be2c41",
+          "file": "design-system.spec.ts",
+          "line": 30,
+          "column": 3
+        },
+        {
+          "title": "light: every installed primitive has a working preview",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 29920,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "accordion",
+                      "duration": 386
+                    },
+                    {
+                      "title": "alert",
+                      "duration": 407
+                    },
+                    {
+                      "title": "alert-dialog",
+                      "duration": 384
+                    },
+                    {
+                      "title": "aspect-ratio",
+                      "duration": 413
+                    },
+                    {
+                      "title": "attachment",
+                      "duration": 392
+                    },
+                    {
+                      "title": "avatar",
+                      "duration": 405
+                    },
+                    {
+                      "title": "badge",
+                      "duration": 406
+                    },
+                    {
+                      "title": "breadcrumb",
+                      "duration": 409
+                    },
+                    {
+                      "title": "bubble",
+                      "duration": 397
+                    },
+                    {
+                      "title": "button",
+                      "duration": 986
+                    },
+                    {
+                      "title": "button-group",
+                      "duration": 380
+                    },
+                    {
+                      "title": "calendar",
+                      "duration": 471
+                    },
+                    {
+                      "title": "card",
+                      "duration": 395
+                    },
+                    {
+                      "title": "carousel",
+                      "duration": 390
+                    },
+                    {
+                      "title": "chart",
+                      "duration": 469
+                    },
+                    {
+                      "title": "checkbox",
+                      "duration": 391
+                    },
+                    {
+                      "title": "code-block",
+                      "duration": 445
+                    },
+                    {
+                      "title": "collapsible",
+                      "duration": 468
+                    },
+                    {
+                      "title": "combobox",
+                      "duration": 465
+                    },
+                    {
+                      "title": "command",
+                      "duration": 421
+                    },
+                    {
+                      "title": "context-menu",
+                      "duration": 393
+                    },
+                    {
+                      "title": "dialog",
+                      "duration": 431
+                    },
+                    {
+                      "title": "direction",
+                      "duration": 398
+                    },
+                    {
+                      "title": "drawer",
+                      "duration": 437
+                    },
+                    {
+                      "title": "dropdown-menu",
+                      "duration": 486
+                    },
+                    {
+                      "title": "empty",
+                      "duration": 400
+                    },
+                    {
+                      "title": "field",
+                      "duration": 445
+                    },
+                    {
+                      "title": "hover-card",
+                      "duration": 439
+                    },
+                    {
+                      "title": "input",
+                      "duration": 455
+                    },
+                    {
+                      "title": "input-group",
+                      "duration": 403
+                    },
+                    {
+                      "title": "input-otp",
+                      "duration": 414
+                    },
+                    {
+                      "title": "item",
+                      "duration": 447
+                    },
+                    {
+                      "title": "kbd",
+                      "duration": 515
+                    },
+                    {
+                      "title": "label",
+                      "duration": 465
+                    },
+                    {
+                      "title": "marker",
+                      "duration": 459
+                    },
+                    {
+                      "title": "menubar",
+                      "duration": 514
+                    },
+                    {
+                      "title": "message",
+                      "duration": 471
+                    },
+                    {
+                      "title": "message-scroller",
+                      "duration": 400
+                    },
+                    {
+                      "title": "native-select",
+                      "duration": 403
+                    },
+                    {
+                      "title": "navigation-menu",
+                      "duration": 428
+                    },
+                    {
+                      "title": "pagination",
+                      "duration": 398
+                    },
+                    {
+                      "title": "popover",
+                      "duration": 389
+                    },
+                    {
+                      "title": "progress",
+                      "duration": 383
+                    },
+                    {
+                      "title": "questionnaire",
+                      "duration": 716
+                    },
+                    {
+                      "title": "radio-group",
+                      "duration": 667
+                    },
+                    {
+                      "title": "resizable",
+                      "duration": 541
+                    },
+                    {
+                      "title": "scroll-area",
+                      "duration": 578
+                    },
+                    {
+                      "title": "select",
+                      "duration": 474
+                    },
+                    {
+                      "title": "separator",
+                      "duration": 534
+                    },
+                    {
+                      "title": "sheet",
+                      "duration": 719
+                    },
+                    {
+                      "title": "sidebar",
+                      "duration": 740
+                    },
+                    {
+                      "title": "skeleton",
+                      "duration": 543
+                    },
+                    {
+                      "title": "slider",
+                      "duration": 460
+                    },
+                    {
+                      "title": "sonner",
+                      "duration": 412
+                    },
+                    {
+                      "title": "spinner",
+                      "duration": 433
+                    },
+                    {
+                      "title": "switch",
+                      "duration": 384
+                    },
+                    {
+                      "title": "table",
+                      "duration": 449
+                    },
+                    {
+                      "title": "tabs",
+                      "duration": 512
+                    },
+                    {
+                      "title": "textarea",
+                      "duration": 566
+                    },
+                    {
+                      "title": "toggle",
+                      "duration": 487
+                    },
+                    {
+                      "title": "toggle-group",
+                      "duration": 547
+                    },
+                    {
+                      "title": "tooltip",
+                      "duration": 500
+                    },
+                    {
+                      "title": "trace",
+                      "duration": 485
+                    }
+                  ],
+                  "startTime": "2026-11-01T16:15:28.880Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cb9959aea8a42eda7d1c-e69a4a31c9653b5a415d",
+          "file": "design-system.spec.ts",
+          "line": 53,
+          "column": 3
+        },
+        {
+          "title": "dark: foundations use live Midnight/Daylight tokens",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 517,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:15:58.810Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cb9959aea8a42eda7d1c-283638e6950fd0249aa2",
+          "file": "design-system.spec.ts",
+          "line": 30,
+          "column": 3
+        },
+        {
+          "title": "dark: every installed primitive has a working preview",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 39782,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "accordion",
+                      "duration": 529
+                    },
+                    {
+                      "title": "alert",
+                      "duration": 451
+                    },
+                    {
+                      "title": "alert-dialog",
+                      "duration": 384
+                    },
+                    {
+                      "title": "aspect-ratio",
+                      "duration": 428
+                    },
+                    {
+                      "title": "attachment",
+                      "duration": 449
+                    },
+                    {
+                      "title": "avatar",
+                      "duration": 545
+                    },
+                    {
+                      "title": "badge",
+                      "duration": 523
+                    },
+                    {
+                      "title": "breadcrumb",
+                      "duration": 511
+                    },
+                    {
+                      "title": "bubble",
+                      "duration": 695
+                    },
+                    {
+                      "title": "button",
+                      "duration": 767
+                    },
+                    {
+                      "title": "button-group",
+                      "duration": 541
+                    },
+                    {
+                      "title": "calendar",
+                      "duration": 913
+                    },
+                    {
+                      "title": "card",
+                      "duration": 1133
+                    },
+                    {
+                      "title": "carousel",
+                      "duration": 695
+                    },
+                    {
+                      "title": "chart",
+                      "duration": 872
+                    },
+                    {
+                      "title": "checkbox",
+                      "duration": 854
+                    },
+                    {
+                      "title": "code-block",
+                      "duration": 816
+                    },
+                    {
+                      "title": "collapsible",
+                      "duration": 612
+                    },
+                    {
+                      "title": "combobox",
+                      "duration": 649
+                    },
+                    {
+                      "title": "command",
+                      "duration": 904
+                    },
+                    {
+                      "title": "context-menu",
+                      "duration": 916
+                    },
+                    {
+                      "title": "dialog",
+                      "duration": 841
+                    },
+                    {
+                      "title": "direction",
+                      "duration": 975
+                    },
+                    {
+                      "title": "drawer",
+                      "duration": 1279
+                    },
+                    {
+                      "title": "dropdown-menu",
+                      "duration": 859
+                    },
+                    {
+                      "title": "empty",
+                      "duration": 677
+                    },
+                    {
+                      "title": "field",
+                      "duration": 635
+                    },
+                    {
+                      "title": "hover-card",
+                      "duration": 664
+                    },
+                    {
+                      "title": "input",
+                      "duration": 723
+                    },
+                    {
+                      "title": "input-group",
+                      "duration": 610
+                    },
+                    {
+                      "title": "input-otp",
+                      "duration": 651
+                    },
+                    {
+                      "title": "item",
+                      "duration": 514
+                    },
+                    {
+                      "title": "kbd",
+                      "duration": 631
+                    },
+                    {
+                      "title": "label",
+                      "duration": 500
+                    },
+                    {
+                      "title": "marker",
+                      "duration": 545
+                    },
+                    {
+                      "title": "menubar",
+                      "duration": 516
+                    },
+                    {
+                      "title": "message",
+                      "duration": 647
+                    },
+                    {
+                      "title": "message-scroller",
+                      "duration": 548
+                    },
+                    {
+                      "title": "native-select",
+                      "duration": 563
+                    },
+                    {
+                      "title": "navigation-menu",
+                      "duration": 588
+                    },
+                    {
+                      "title": "pagination",
+                      "duration": 692
+                    },
+                    {
+                      "title": "popover",
+                      "duration": 525
+                    },
+                    {
+                      "title": "progress",
+                      "duration": 576
+                    },
+                    {
+                      "title": "questionnaire",
+                      "duration": 571
+                    },
+                    {
+                      "title": "radio-group",
+                      "duration": 844
+                    },
+                    {
+                      "title": "resizable",
+                      "duration": 537
+                    },
+                    {
+                      "title": "scroll-area",
+                      "duration": 475
+                    },
+                    {
+                      "title": "select",
+                      "duration": 438
+                    },
+                    {
+                      "title": "separator",
+                      "duration": 484
+                    },
+                    {
+                      "title": "sheet",
+                      "duration": 456
+                    },
+                    {
+                      "title": "sidebar",
+                      "duration": 557
+                    },
+                    {
+                      "title": "skeleton",
+                      "duration": 531
+                    },
+                    {
+                      "title": "slider",
+                      "duration": 514
+                    },
+                    {
+                      "title": "sonner",
+                      "duration": 488
+                    },
+                    {
+                      "title": "spinner",
+                      "duration": 494
+                    },
+                    {
+                      "title": "switch",
+                      "duration": 459
+                    },
+                    {
+                      "title": "table",
+                      "duration": 593
+                    },
+                    {
+                      "title": "tabs",
+                      "duration": 641
+                    },
+                    {
+                      "title": "textarea",
+                      "duration": 477
+                    },
+                    {
+                      "title": "toggle",
+                      "duration": 439
+                    },
+                    {
+                      "title": "toggle-group",
+                      "duration": 470
+                    },
+                    {
+                      "title": "tooltip",
+                      "duration": 488
+                    },
+                    {
+                      "title": "trace",
+                      "duration": 447
+                    }
+                  ],
+                  "startTime": "2026-11-01T16:15:59.339Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cb9959aea8a42eda7d1c-9cca62ab975f766196e2",
+          "file": "design-system.spec.ts",
+          "line": 53,
+          "column": 3
+        },
+        {
+          "title": "search and category filters narrow the primitive list",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1456,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:16:39.145Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cb9959aea8a42eda7d1c-e010b48589211f726eeb",
+          "file": "design-system.spec.ts",
+          "line": 80,
+          "column": 1
+        },
+        {
+          "title": "interactive previews work and can reset",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3714,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:16:40.612Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cb9959aea8a42eda7d1c-11e036919fc95996e915",
+          "file": "design-system.spec.ts",
+          "line": 103,
+          "column": 1
+        },
+        {
+          "title": "questionnaire demo advances and submits locally",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1425,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:16:44.337Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cb9959aea8a42eda7d1c-dd0db6ff443d99b5e0fc",
+          "file": "design-system.spec.ts",
+          "line": 129,
+          "column": 1
+        },
+        {
+          "title": "invalid component falls back to foundations and unknown routes show 404",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 469,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:16:45.779Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cb9959aea8a42eda7d1c-ffb8bd33814bf0cd47fa",
+          "file": "design-system.spec.ts",
+          "line": 138,
+          "column": 1
+        },
+        {
+          "title": "light: popup families use the OpenMaus menu geometry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6639,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "dropdown-menu",
+                      "duration": 1547
+                    },
+                    {
+                      "title": "context-menu",
+                      "duration": 1540
+                    },
+                    {
+                      "title": "menubar",
+                      "duration": 1354
+                    },
+                    {
+                      "title": "select",
+                      "duration": 1020
+                    },
+                    {
+                      "title": "combobox",
+                      "duration": 730
+                    }
+                  ],
+                  "startTime": "2026-11-01T16:16:46.260Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cb9959aea8a42eda7d1c-7a88bfe985f577b01b7c",
+          "file": "design-system.spec.ts",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "light: control focus, switch travel, and neutral bubbles",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3958,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:16:52.908Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cb9959aea8a42eda7d1c-5f6aeb89fa40012d4835",
+          "file": "design-system.spec.ts",
+          "line": 196,
+          "column": 3
+        },
+        {
+          "title": "dark: popup families use the OpenMaus menu geometry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6509,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "dropdown-menu",
+                      "duration": 1552
+                    },
+                    {
+                      "title": "context-menu",
+                      "duration": 1547
+                    },
+                    {
+                      "title": "menubar",
+                      "duration": 1314
+                    },
+                    {
+                      "title": "select",
+                      "duration": 1062
+                    },
+                    {
+                      "title": "combobox",
+                      "duration": 733
+                    }
+                  ],
+                  "startTime": "2026-11-01T16:16:56.883Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cb9959aea8a42eda7d1c-f920eb305dbd1d70c13f",
+          "file": "design-system.spec.ts",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "dark: control focus, switch travel, and neutral bubbles",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4535,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:17:03.404Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cb9959aea8a42eda7d1c-8f95691175dfb0fd7ee0",
+          "file": "design-system.spec.ts",
+          "line": 196,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "title": "fidelity.spec.ts",
+      "file": "fidelity.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "light: source messenger geometry, nested navigation and responsive surfaces",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2545,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:15:02.903Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e952102408661d6a7ca6-d64cbe75049dcf52417c",
+          "file": "fidelity.spec.ts",
+          "line": 6,
+          "column": 3
+        },
+        {
+          "title": "dark: source messenger geometry, nested navigation and responsive surfaces",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2502,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:15:05.461Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e952102408661d6a7ca6-ddcfcf93718ec37c687b",
+          "file": "fidelity.spec.ts",
+          "line": 6,
+          "column": 3
+        },
+        {
+          "title": "source responsive roster and context transitions release modal focus at desktop width",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1740,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:15:07.972Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e952102408661d6a7ca6-eedd707225a93f8ae213",
+          "file": "fidelity.spec.ts",
+          "line": 103,
+          "column": 1
+        },
+        {
+          "title": "light: source messenger geometry, nested navigation and responsive surfaces",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2398,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:17:07.966Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e952102408661d6a7ca6-094aaae5c194175a6115",
+          "file": "fidelity.spec.ts",
+          "line": 6,
+          "column": 3
+        },
+        {
+          "title": "dark: source messenger geometry, nested navigation and responsive surfaces",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2235,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:17:10.373Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e952102408661d6a7ca6-4ea4a15424cd1a861310",
+          "file": "fidelity.spec.ts",
+          "line": 6,
+          "column": 3
+        },
+        {
+          "title": "source responsive roster and context transitions release modal focus at desktop width",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1788,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:17:12.656Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e952102408661d6a7ca6-d3f56e486f41b2cd420d",
+          "file": "fidelity.spec.ts",
+          "line": 103,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "hover.spec.ts",
+      "file": "hover.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "light: solid primary stays opaque throughout hover transitions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1785,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:15:09.726Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "70f89da19dfd4fd948ee-864cc75edee5b9e4b383",
+          "file": "hover.spec.ts",
+          "line": 25,
+          "column": 3
+        },
+        {
+          "title": "light: shared primary preserves press and disabled states",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4325,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:15:11.518Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "70f89da19dfd4fd948ee-72d88d31806a1d4a2833",
+          "file": "hover.spec.ts",
+          "line": 48,
+          "column": 3
+        },
+        {
+          "title": "dark: solid primary stays opaque throughout hover transitions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1659,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:15:15.848Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "70f89da19dfd4fd948ee-99b2ab61ac36696c2370",
+          "file": "hover.spec.ts",
+          "line": 25,
+          "column": 3
+        },
+        {
+          "title": "dark: shared primary preserves press and disabled states",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4291,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:15:17.512Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "70f89da19dfd4fd948ee-4df258d51ad7b489101b",
+          "file": "hover.spec.ts",
+          "line": 48,
+          "column": 3
+        },
+        {
+          "title": "light: solid primary stays opaque throughout hover transitions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1764,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:17:14.461Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "70f89da19dfd4fd948ee-293c52ed3315e90640b1",
+          "file": "hover.spec.ts",
+          "line": 25,
+          "column": 3
+        },
+        {
+          "title": "light: shared primary preserves press and disabled states",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3847,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:17:16.232Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "70f89da19dfd4fd948ee-d190538537822948ad95",
+          "file": "hover.spec.ts",
+          "line": 48,
+          "column": 3
+        },
+        {
+          "title": "dark: solid primary stays opaque throughout hover transitions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1659,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:17:20.087Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "70f89da19dfd4fd948ee-f6a85af23729f3d2ea3b",
+          "file": "hover.spec.ts",
+          "line": 25,
+          "column": 3
+        },
+        {
+          "title": "dark: shared primary preserves press and disabled states",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4304,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:17:21.752Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "70f89da19dfd4fd948ee-71c25a29d92dae488fd8",
+          "file": "hover.spec.ts",
+          "line": 48,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "title": "theme.spec.ts",
+      "file": "theme.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "light: Midnight/Daylight colors, control sizes, and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 617,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:15:21.822Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8168eb6e17e693d86faf-4d58dc98e079cf5e0ea9",
+          "file": "theme.spec.ts",
+          "line": 24,
+          "column": 3
+        },
+        {
+          "title": "dark: Midnight/Daylight colors, control sizes, and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 557,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:15:22.451Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8168eb6e17e693d86faf-ad0973bc93baa21197bb",
+          "file": "theme.spec.ts",
+          "line": 24,
+          "column": 3
+        },
+        {
+          "title": "explicit theme survives reload and system changes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 533,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:15:23.014Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8168eb6e17e693d86faf-e4dddd89d3914acc4ba9",
+          "file": "theme.spec.ts",
+          "line": 103,
+          "column": 1
+        },
+        {
+          "title": "system mode follows live OS changes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 419,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:15:23.555Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8168eb6e17e693d86faf-d0e5c270550dbcc22373",
+          "file": "theme.spec.ts",
+          "line": 117,
+          "column": 1
+        },
+        {
+          "title": "theme still works when browser storage is unavailable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 458,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:15:23.981Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8168eb6e17e693d86faf-3419e9a1f68ca68075d9",
+          "file": "theme.spec.ts",
+          "line": 129,
+          "column": 1
+        },
+        {
+          "title": "portaled dialog and select inherit the dark theme",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 761,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:15:24.446Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8168eb6e17e693d86faf-be04769706ae373e6a1e",
+          "file": "theme.spec.ts",
+          "line": 145,
+          "column": 1
+        },
+        {
+          "title": "controls, tabs, and toast remain interactive",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 974,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:15:25.213Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8168eb6e17e693d86faf-850a701e67ff7d52e7c2",
+          "file": "theme.spec.ts",
+          "line": 161,
+          "column": 1
+        },
+        {
+          "title": "light: Midnight/Daylight colors, control sizes, and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 415,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:17:26.071Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8168eb6e17e693d86faf-caaddf79304ab8c61fe1",
+          "file": "theme.spec.ts",
+          "line": 24,
+          "column": 3
+        },
+        {
+          "title": "dark: Midnight/Daylight colors, control sizes, and fonts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 355,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:17:26.494Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8168eb6e17e693d86faf-3315f978da72c3cdfe4e",
+          "file": "theme.spec.ts",
+          "line": 24,
+          "column": 3
+        },
+        {
+          "title": "explicit theme survives reload and system changes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 464,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:17:26.854Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8168eb6e17e693d86faf-ca7ea5d8b1dd09650e8d",
+          "file": "theme.spec.ts",
+          "line": 103,
+          "column": 1
+        },
+        {
+          "title": "system mode follows live OS changes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 331,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:17:27.324Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8168eb6e17e693d86faf-170ffb923732e24efeb8",
+          "file": "theme.spec.ts",
+          "line": 117,
+          "column": 1
+        },
+        {
+          "title": "theme still works when browser storage is unavailable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 456,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:17:27.662Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8168eb6e17e693d86faf-8d447d02ea0a5da3dd9f",
+          "file": "theme.spec.ts",
+          "line": 129,
+          "column": 1
+        },
+        {
+          "title": "portaled dialog and select inherit the dark theme",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 680,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:17:28.124Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8168eb6e17e693d86faf-fc8615ef1491d22c208b",
+          "file": "theme.spec.ts",
+          "line": 145,
+          "column": 1
+        },
+        {
+          "title": "controls, tabs, and toast remain interactive",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 476,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-01T16:17:28.811Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8168eb6e17e693d86faf-91387d622dc0e36dc89f",
+          "file": "theme.spec.ts",
+          "line": 161,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-01T16:12:48.876Z",
+    "duration": 280744.169,
+    "expected": 54,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

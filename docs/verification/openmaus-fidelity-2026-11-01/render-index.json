@@ -1,0 +1,1229 @@
+{
+  "screenshots": [
+    {
+      "path": "evidence/screenshots/ui/design-system-dark-every-i-9f039-itive-has-a-working-preview-desktop/dark-button.png",
+      "cohort": "ui",
+      "width": 808,
+      "height": 256,
+      "sha256": "bb91fa067578d353677393525cc6f5bb6f1f70d5ad8b289847394b97dcc9eaf4"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-dark-every-i-9f039-itive-has-a-working-preview-desktop/dark-calendar.png",
+      "cohort": "ui",
+      "width": 808,
+      "height": 331,
+      "sha256": "92ff185272e6ea607ce9a4fac5308707d2b3118b2f4fe19d8c99e285a26358ac"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-dark-every-i-9f039-itive-has-a-working-preview-desktop/dark-chart.png",
+      "cohort": "ui",
+      "width": 808,
+      "height": 274,
+      "sha256": "b99739f744fc584bb4406b898b93420d5dbb2902bf23640809b76d854e658c58"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-dark-every-i-9f039-itive-has-a-working-preview-desktop/dark-questionnaire.png",
+      "cohort": "ui",
+      "width": 808,
+      "height": 284,
+      "sha256": "25382706477e50a7c382481420c29e9b4123447b1719afd5e218dd82fe9bacea"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-dark-every-i-9f039-itive-has-a-working-preview-desktop/dark-sidebar.png",
+      "cohort": "ui",
+      "width": 808,
+      "height": 370,
+      "sha256": "880b57926b4bf4110706c06ac70990e7d6f41fc8f8f664979f36bfef8d3be678"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-dark-every-i-9f039-itive-has-a-working-preview-mobile/dark-button.png",
+      "cohort": "ui",
+      "width": 294,
+      "height": 256,
+      "sha256": "e4714e2f7754b7b67e4c0349f12a99b04926a8a83e9ded4edd87e463c3b2e085"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-dark-every-i-9f039-itive-has-a-working-preview-mobile/dark-calendar.png",
+      "cohort": "ui",
+      "width": 294,
+      "height": 315,
+      "sha256": "e1022ab05c5bd1f74fde6273e02ba1b18e21f29ce0aa217c235bdcbb1eb8130c"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-dark-every-i-9f039-itive-has-a-working-preview-mobile/dark-chart.png",
+      "cohort": "ui",
+      "width": 294,
+      "height": 258,
+      "sha256": "480a28825a7ead970bde6bb1f30f0db83ea1b5e1a629f1d34dae53ca872e9192"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-dark-every-i-9f039-itive-has-a-working-preview-mobile/dark-questionnaire.png",
+      "cohort": "ui",
+      "width": 294,
+      "height": 280,
+      "sha256": "034598ca1f6afc1449473597ff4288114d71a8d6cf98fcfc83f4282876fe75d7"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-dark-every-i-9f039-itive-has-a-working-preview-mobile/dark-sidebar.png",
+      "cohort": "ui",
+      "width": 294,
+      "height": 354,
+      "sha256": "09687c186dd5cf562a21bb3980b08783b5be2a62389441b71be0a8eb94503547"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-dark-foundat-87cd3-ve-Midnight-Daylight-tokens-desktop/dark-foundations.png",
+      "cohort": "ui",
+      "width": 1440,
+      "height": 4686,
+      "sha256": "f9ce87675b94a33ebf9d3f09a9c9cbe752f587ffc3945994d2941068585589e8"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-dark-foundat-87cd3-ve-Midnight-Daylight-tokens-mobile/dark-foundations.png",
+      "cohort": "ui",
+      "width": 390,
+      "height": 7884,
+      "sha256": "61bc24e0f9121fcab55b26ded99f580197ccfe425f2d0be98b45af6f1870f31b"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-dark-popup-f-536b7--the-OpenMaus-menu-geometry-desktop/dark-combobox-open.png",
+      "cohort": "ui",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "836a394ac7e29906e14fc2dc6bfc15378d72e22a0cc139baf7f42c0557b5b356"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-dark-popup-f-536b7--the-OpenMaus-menu-geometry-desktop/dark-context-menu-open.png",
+      "cohort": "ui",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "120c640c7976d8657d7436c62e7a9a465488e23e02ebb771698ff9a406ddea03"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-dark-popup-f-536b7--the-OpenMaus-menu-geometry-desktop/dark-dropdown-menu-open.png",
+      "cohort": "ui",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "ab52899b50c1e7542d23fdd036f30361455490b0e5905f4d1c106e36940fcc19"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-dark-popup-f-536b7--the-OpenMaus-menu-geometry-desktop/dark-menubar-open.png",
+      "cohort": "ui",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "7bd3ddf7b97fa24ae458f4c550aeecdf340620c108369ccb2b981b132b5eaa41"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-dark-popup-f-536b7--the-OpenMaus-menu-geometry-desktop/dark-select-open.png",
+      "cohort": "ui",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "c8f97e675d164a4ce985b180b50f70b81dd1c102c8be86efbb95debb435217dc"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-dark-popup-f-536b7--the-OpenMaus-menu-geometry-mobile/dark-combobox-open.png",
+      "cohort": "ui",
+      "width": 390,
+      "height": 844,
+      "sha256": "cd58b27fc4afed99063b6caa1b12ae2a7b7b057f4532141652480dfaa6bbcfc3"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-dark-popup-f-536b7--the-OpenMaus-menu-geometry-mobile/dark-context-menu-open.png",
+      "cohort": "ui",
+      "width": 390,
+      "height": 844,
+      "sha256": "380dde5927ea550f37e62ecfd32f4608b22d51a2a8aebb3f7f0f520a889b69f5"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-dark-popup-f-536b7--the-OpenMaus-menu-geometry-mobile/dark-dropdown-menu-open.png",
+      "cohort": "ui",
+      "width": 390,
+      "height": 844,
+      "sha256": "e9afcdec902723418e1a0e0d4554a815138616e9ff10782c14da4c3c8cbde734"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-dark-popup-f-536b7--the-OpenMaus-menu-geometry-mobile/dark-menubar-open.png",
+      "cohort": "ui",
+      "width": 390,
+      "height": 844,
+      "sha256": "c1e470702abb1e287b73ffbc5e2336fe9b3b506c8e37afd6e1bc858ced9c56c1"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-dark-popup-f-536b7--the-OpenMaus-menu-geometry-mobile/dark-select-open.png",
+      "cohort": "ui",
+      "width": 390,
+      "height": 844,
+      "sha256": "f4be16e2fbbb306c30243487e23823135145534ef87ea7c6bdf01987ae7e593d"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-light-every--a4b81-itive-has-a-working-preview-desktop/light-button.png",
+      "cohort": "ui",
+      "width": 808,
+      "height": 256,
+      "sha256": "1826043418bfa39eda1009709821eb39256b0e2a4da1b87c52231474c4a0db5c"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-light-every--a4b81-itive-has-a-working-preview-desktop/light-calendar.png",
+      "cohort": "ui",
+      "width": 808,
+      "height": 331,
+      "sha256": "c5656c0aa0cbc12a6904595a1fd62e4b608475fc4c5d469ef3561c0d30243d2a"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-light-every--a4b81-itive-has-a-working-preview-desktop/light-chart.png",
+      "cohort": "ui",
+      "width": 808,
+      "height": 274,
+      "sha256": "ad08e178b886484ec84ebba340ac9a11695b3a80c41a910f3cdd64256aa45fd0"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-light-every--a4b81-itive-has-a-working-preview-desktop/light-questionnaire.png",
+      "cohort": "ui",
+      "width": 808,
+      "height": 284,
+      "sha256": "b968ae9fe95310a187d576ccdf7e9677c4ddf7611d8351d74d97193999bfca1f"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-light-every--a4b81-itive-has-a-working-preview-desktop/light-sidebar.png",
+      "cohort": "ui",
+      "width": 808,
+      "height": 370,
+      "sha256": "7d1541794790bd54110b8662ec72bfd37b54f052b425fa45b39c08a36fd0d5d8"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-light-every--a4b81-itive-has-a-working-preview-mobile/light-button.png",
+      "cohort": "ui",
+      "width": 294,
+      "height": 256,
+      "sha256": "0a448cd1708b28371940bd6fd2f4a0740fbca8512a4de2b825613d6d969ac98d"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-light-every--a4b81-itive-has-a-working-preview-mobile/light-calendar.png",
+      "cohort": "ui",
+      "width": 294,
+      "height": 315,
+      "sha256": "387a8a607fdcfbc9dda2b086b1c03daa5eaa678af05ee8b3db282a335bc386ed"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-light-every--a4b81-itive-has-a-working-preview-mobile/light-chart.png",
+      "cohort": "ui",
+      "width": 294,
+      "height": 258,
+      "sha256": "622fbe05f7500cc6c33d11b0221a01dca87c7fb4230600db0cae1f3f5778162c"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-light-every--a4b81-itive-has-a-working-preview-mobile/light-questionnaire.png",
+      "cohort": "ui",
+      "width": 294,
+      "height": 280,
+      "sha256": "cdbea48a00e3e6f30c57ba8e51b25df5309deccc4dbd15808185d6325c67326c"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-light-every--a4b81-itive-has-a-working-preview-mobile/light-sidebar.png",
+      "cohort": "ui",
+      "width": 294,
+      "height": 354,
+      "sha256": "00a5bcb5c223847ce2a22d35784c6778cec0aa1a85136347437c9b21b30b0481"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-light-founda-b39f6-ve-Midnight-Daylight-tokens-desktop/light-foundations.png",
+      "cohort": "ui",
+      "width": 1440,
+      "height": 4686,
+      "sha256": "13b5f741fa7b25c7411db8eefdfd2ca027e788af767fcbaf87f510758d9ccb58"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-light-founda-b39f6-ve-Midnight-Daylight-tokens-mobile/light-foundations.png",
+      "cohort": "ui",
+      "width": 390,
+      "height": 7884,
+      "sha256": "1e4674a0a504b199c06dc9e79437ea294e4c32fbb1484a55f255fabf7eb4a7f0"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-light-popup--be920--the-OpenMaus-menu-geometry-desktop/light-combobox-open.png",
+      "cohort": "ui",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "e951d6d7355a5eb5eff4a5f405235a5544742b1d27fdec8fa75812e6a12a9aa5"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-light-popup--be920--the-OpenMaus-menu-geometry-desktop/light-context-menu-open.png",
+      "cohort": "ui",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "963ed0cf127eb7f8ab09cdba72808b22bd2285b9d9acc562d21307705ae23d12"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-light-popup--be920--the-OpenMaus-menu-geometry-desktop/light-dropdown-menu-open.png",
+      "cohort": "ui",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "e4527c027f0ea5f53d93d03ca0525aa8e70819dff064c58263b8bdaafa595004"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-light-popup--be920--the-OpenMaus-menu-geometry-desktop/light-menubar-open.png",
+      "cohort": "ui",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "ae542c3e3cd2408f652d02db4cf0c3bb6bf6ddd7a55a164ed66247685a89d362"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-light-popup--be920--the-OpenMaus-menu-geometry-desktop/light-select-open.png",
+      "cohort": "ui",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "8e5a6b4fb78d6f79c5b88cd3b810e8cebc5792450c20d9e6969726025e1e7142"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-light-popup--be920--the-OpenMaus-menu-geometry-mobile/light-combobox-open.png",
+      "cohort": "ui",
+      "width": 390,
+      "height": 844,
+      "sha256": "4c12ac5fc7e9b067a40a96e82851f716104f2c57bc37a1036283f7ebdacb18fe"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-light-popup--be920--the-OpenMaus-menu-geometry-mobile/light-context-menu-open.png",
+      "cohort": "ui",
+      "width": 390,
+      "height": 844,
+      "sha256": "de26a8effb771e5519d9c072070463652515e37a172de2146572177371de30e5"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-light-popup--be920--the-OpenMaus-menu-geometry-mobile/light-dropdown-menu-open.png",
+      "cohort": "ui",
+      "width": 390,
+      "height": 844,
+      "sha256": "8bd73fe200bd1d728362ca43f8d8f02cd984a41f203cc009d0c5171941708625"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-light-popup--be920--the-OpenMaus-menu-geometry-mobile/light-menubar-open.png",
+      "cohort": "ui",
+      "width": 390,
+      "height": 844,
+      "sha256": "edc19ccd3f3805c65e71d70fe1fa9931e1d4b59c7d6d3fa421f06567769ab09d"
+    },
+    {
+      "path": "evidence/screenshots/ui/design-system-light-popup--be920--the-OpenMaus-menu-geometry-mobile/light-select-open.png",
+      "cohort": "ui",
+      "width": 390,
+      "height": 844,
+      "sha256": "f155402bef03c4dc5a0791bd410529616ea77afbda28863a8a0b70443fc9f270"
+    },
+    {
+      "path": "evidence/screenshots/ui/fidelity-dark-source-messe-f0ed7-ion-and-responsive-surfaces-desktop/agent-panel.png",
+      "cohort": "ui",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "9bf800a28f8d76ab71903e20656633888a4b64fedb4733db15b4f1d05e44fe5b"
+    },
+    {
+      "path": "evidence/screenshots/ui/fidelity-dark-source-messe-f0ed7-ion-and-responsive-surfaces-desktop/conversation.png",
+      "cohort": "ui",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "a0307a8a4f8e17e5c5edb8796d6978c347ca0fd0facacb39ffd42480dafba0b4"
+    },
+    {
+      "path": "evidence/screenshots/ui/fidelity-dark-source-messe-f0ed7-ion-and-responsive-surfaces-desktop/create-menu.png",
+      "cohort": "ui",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "42443cb4a513f16d4dd77453106584074028be7d5f8c2962e7d1a8cb8c15c812"
+    },
+    {
+      "path": "evidence/screenshots/ui/fidelity-dark-source-messe-f0ed7-ion-and-responsive-surfaces-desktop/model-menu.png",
+      "cohort": "ui",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "07e225f418518444e142ef62c974feabc247c135aebea15c645f85fbf296a2e8"
+    },
+    {
+      "path": "evidence/screenshots/ui/fidelity-dark-source-messe-f0ed7-ion-and-responsive-surfaces-mobile/agent-panel.png",
+      "cohort": "ui",
+      "width": 390,
+      "height": 844,
+      "sha256": "aaa01b32744db6461a8825533d73d92e75994cae43e053daf27c05a769af72fc"
+    },
+    {
+      "path": "evidence/screenshots/ui/fidelity-dark-source-messe-f0ed7-ion-and-responsive-surfaces-mobile/conversation.png",
+      "cohort": "ui",
+      "width": 390,
+      "height": 844,
+      "sha256": "fef10de0dae8ddf108768cf548b610baa1a027a101a4d78379adaa1ae202c271"
+    },
+    {
+      "path": "evidence/screenshots/ui/fidelity-dark-source-messe-f0ed7-ion-and-responsive-surfaces-mobile/create-menu.png",
+      "cohort": "ui",
+      "width": 390,
+      "height": 844,
+      "sha256": "89c39cbfde4b0e1d64583f318b0206c7c329e5a8a1fa01b631253eee624e863d"
+    },
+    {
+      "path": "evidence/screenshots/ui/fidelity-dark-source-messe-f0ed7-ion-and-responsive-surfaces-mobile/model-menu.png",
+      "cohort": "ui",
+      "width": 390,
+      "height": 844,
+      "sha256": "381db949dffcdee83cd36bfe838054ed5cee85b052d8c24debffa48520f01150"
+    },
+    {
+      "path": "evidence/screenshots/ui/fidelity-light-source-mess-0d90a-ion-and-responsive-surfaces-desktop/agent-panel.png",
+      "cohort": "ui",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "5ead0cea10d79f6bf3618a6f5116c72eae1e0ef305c5bb7884af7a1c7557ceb1"
+    },
+    {
+      "path": "evidence/screenshots/ui/fidelity-light-source-mess-0d90a-ion-and-responsive-surfaces-desktop/conversation.png",
+      "cohort": "ui",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "36fef9ebe322b1950650743ab92c608a67d4403500ed04b300ce4b8f3f306fcd"
+    },
+    {
+      "path": "evidence/screenshots/ui/fidelity-light-source-mess-0d90a-ion-and-responsive-surfaces-desktop/create-menu.png",
+      "cohort": "ui",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "72f23671dd8052aa1124e07cf800ced1ff02e0c47bb9c536a2fdb78cf7772324"
+    },
+    {
+      "path": "evidence/screenshots/ui/fidelity-light-source-mess-0d90a-ion-and-responsive-surfaces-desktop/model-menu.png",
+      "cohort": "ui",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "74259a910063172ea892005ad3669791b73e8d7af73fa434bada52d9631a0c87"
+    },
+    {
+      "path": "evidence/screenshots/ui/fidelity-light-source-mess-0d90a-ion-and-responsive-surfaces-mobile/agent-panel.png",
+      "cohort": "ui",
+      "width": 390,
+      "height": 844,
+      "sha256": "2c8139f7a3ffa6a8f95aa272fae42afa71537926fc5e9bce72c986de046891d9"
+    },
+    {
+      "path": "evidence/screenshots/ui/fidelity-light-source-mess-0d90a-ion-and-responsive-surfaces-mobile/conversation.png",
+      "cohort": "ui",
+      "width": 390,
+      "height": 844,
+      "sha256": "147792d92b2c06bcd57e1e72ff7851c20bcfad3ac53b4b9a8574e5f169ca4916"
+    },
+    {
+      "path": "evidence/screenshots/ui/fidelity-light-source-mess-0d90a-ion-and-responsive-surfaces-mobile/create-menu.png",
+      "cohort": "ui",
+      "width": 390,
+      "height": 844,
+      "sha256": "ffbae29df45548b3221bd632fe10dcc7e66c94db459da012c559d931196a4bdd"
+    },
+    {
+      "path": "evidence/screenshots/ui/fidelity-light-source-mess-0d90a-ion-and-responsive-surfaces-mobile/model-menu.png",
+      "cohort": "ui",
+      "width": 390,
+      "height": 844,
+      "sha256": "93c041aed1c90c82fca018ffcccc298626fbf9c4961ceac2df7c64c3921b2cdb"
+    },
+    {
+      "path": "evidence/screenshots/ui/theme-dark-Midnight-Daylight-colors-control-sizes-and-fonts-desktop/dark.png",
+      "cohort": "ui",
+      "width": 1440,
+      "height": 2046,
+      "sha256": "ae3a6aa32630df2889637fafdb6c4328b578b9802a6b2e62243180844541fcdd"
+    },
+    {
+      "path": "evidence/screenshots/ui/theme-dark-Midnight-Daylight-colors-control-sizes-and-fonts-mobile/dark.png",
+      "cohort": "ui",
+      "width": 390,
+      "height": 3286,
+      "sha256": "99294130dae25269492f6fcc0cad8ea0d729db26da707c4af8cf6678bacb691f"
+    },
+    {
+      "path": "evidence/screenshots/ui/theme-light-Midnight-Daylight-colors-control-sizes-and-fonts-desktop/light.png",
+      "cohort": "ui",
+      "width": 1440,
+      "height": 2046,
+      "sha256": "90f507ce7b8df35b681a291cbfd23e237c0ee9ca5e11225d84135644b8d92910"
+    },
+    {
+      "path": "evidence/screenshots/ui/theme-light-Midnight-Daylight-colors-control-sizes-and-fonts-mobile/light.png",
+      "cohort": "ui",
+      "width": 390,
+      "height": 3286,
+      "sha256": "c4e8d0542fd023914ec1547efe999646ddb1bec9210b19294477fe85d42606b0"
+    },
+    {
+      "path": "evidence/screenshots/conversation/conversation-real-API-crea-f69a1-ete-memory-panel-and-reload-desktop/desktop-chat.png",
+      "cohort": "conversation",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "dbaddcb0f9c4b0a84dc6370d80758f2e31b6d460a95134b68293b1b52e76cd63"
+    },
+    {
+      "path": "evidence/screenshots/conversation/conversation-real-API-crea-f69a1-ete-memory-panel-and-reload-desktop/desktop-panel.png",
+      "cohort": "conversation",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "a4dc28b120e417b4ef98e1b762a2482158922fb6b10c4ba4ac964967a199597e"
+    },
+    {
+      "path": "evidence/screenshots/conversation/conversation-real-API-crea-f69a1-ete-memory-panel-and-reload-mobile/mobile-chat.png",
+      "cohort": "conversation",
+      "width": 390,
+      "height": 844,
+      "sha256": "7c524951fbb7e8262174c371443e7c86174a2b059cde7c09b7488f42c68a21c3"
+    },
+    {
+      "path": "evidence/screenshots/conversation/conversation-real-API-crea-f69a1-ete-memory-panel-and-reload-mobile/mobile-panel.png",
+      "cohort": "conversation",
+      "width": 390,
+      "height": 844,
+      "sha256": "814493fe497d386d7cb27a9b0f54a9a8cb00359bd70e9121d44f505243db7284"
+    },
+    {
+      "path": "evidence/screenshots/conversation/model-picker-model-menu-se-39d64--explicitly-selects-billing-desktop/model-menu.png",
+      "cohort": "conversation",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "9cc66be2aa480b4fc10884084d2a9658477e72a1e42ade16c37ae5a268409f6f"
+    },
+    {
+      "path": "evidence/screenshots/conversation/model-picker-model-menu-se-39d64--explicitly-selects-billing-mobile/model-menu.png",
+      "cohort": "conversation",
+      "width": 390,
+      "height": 844,
+      "sha256": "686a61f17bcb2d9252ec388e2663c20793fab5d4ffdff86040a49f3d9a638fa1"
+    },
+    {
+      "path": "evidence/screenshots/conversation/rich-answer-long-reply-tab-893b2-ilter-without-dropping-data-desktop/long-table-filtered.png",
+      "cohort": "conversation",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "97e5fc01b43d1ed98e0c43b428681fc7d9a098a35c6df2bb3f87d59b7941401e"
+    },
+    {
+      "path": "evidence/screenshots/conversation/rich-answer-long-reply-tab-893b2-ilter-without-dropping-data-mobile/long-table-filtered.png",
+      "cohort": "conversation",
+      "width": 390,
+      "height": 844,
+      "sha256": "ffe203999696456f5db27025b5dba4593139ed2e78030416f4f163190c2d7293"
+    },
+    {
+      "path": "evidence/screenshots/conversation/rich-answer-rich-reply-mat-14b29-ns-and-safe-rendering-dark--desktop/rich-answer-dark.png",
+      "cohort": "conversation",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "13dc71764da15e018113828f385dc104b813d10ee99f0e5fc07af12e02fca129"
+    },
+    {
+      "path": "evidence/screenshots/conversation/rich-answer-rich-reply-mat-14b29-ns-and-safe-rendering-dark--desktop/table-expanded-dark.png",
+      "cohort": "conversation",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "2a7d2082f8b44bf87b08dc67a1e2a61c7d836ef569d5e0cdbca55a951d2a39b7"
+    },
+    {
+      "path": "evidence/screenshots/conversation/rich-answer-rich-reply-mat-14b29-ns-and-safe-rendering-dark--mobile/rich-answer-dark.png",
+      "cohort": "conversation",
+      "width": 390,
+      "height": 844,
+      "sha256": "1a04645fe8be088b667b0ed3ac421e73f5bc10ea54e3aacf7fe49d776186b924"
+    },
+    {
+      "path": "evidence/screenshots/conversation/rich-answer-rich-reply-mat-14b29-ns-and-safe-rendering-dark--mobile/table-expanded-dark.png",
+      "cohort": "conversation",
+      "width": 390,
+      "height": 844,
+      "sha256": "daeea94b5e6f259af8a7d85c72230a95ccca865dba6c625d4d50baae9bdfcf85"
+    },
+    {
+      "path": "evidence/screenshots/conversation/rich-answer-rich-reply-mat-3a4c6-s-and-safe-rendering-light--desktop/rich-answer-light.png",
+      "cohort": "conversation",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "31c370f8175fb98207973e9a71846f1ff5a10b8cfea4a89cceba1dc6b162c0a3"
+    },
+    {
+      "path": "evidence/screenshots/conversation/rich-answer-rich-reply-mat-3a4c6-s-and-safe-rendering-light--desktop/table-expanded-light.png",
+      "cohort": "conversation",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "66e243c63a84056ba38d1b805148cd232dff62377e4434b866882b4d351bf3a1"
+    },
+    {
+      "path": "evidence/screenshots/conversation/rich-answer-rich-reply-mat-3a4c6-s-and-safe-rendering-light--mobile/rich-answer-light.png",
+      "cohort": "conversation",
+      "width": 390,
+      "height": 844,
+      "sha256": "de4ed2da2f5950434fdde4c5d9b5e9356eaba2e181b4b06e8e5288b4feee9068"
+    },
+    {
+      "path": "evidence/screenshots/conversation/rich-answer-rich-reply-mat-3a4c6-s-and-safe-rendering-light--mobile/table-expanded-light.png",
+      "cohort": "conversation",
+      "width": 390,
+      "height": 844,
+      "sha256": "fca53a83f0b2497774686ce14d787593f0bcbb9e2fd79e69a4d8cdb4630ed312"
+    },
+    {
+      "path": "evidence/screenshots/settings-initial/settings-default-model-pic-ae6c2-xplicit-account-and-billing-desktop/default-model-truth.png",
+      "cohort": "settings-initial",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "05fb1d436542066c164ee2f30e2bd5dde1740d7e06ce18bff764a49cac9e082f"
+    },
+    {
+      "path": "evidence/screenshots/settings-initial/settings-default-model-pic-ae6c2-xplicit-account-and-billing-mobile/default-model-truth.png",
+      "cohort": "settings-initial",
+      "width": 390,
+      "height": 844,
+      "sha256": "3354389c1dfa451a142d7c9ec6911eb98d8db5b1509151bcdaaec27e3d0df86d"
+    },
+    {
+      "path": "evidence/screenshots/settings-initial/settings-provider-inline-s-7961e-tionable-inspection-failure-desktop/api-key-inline.png",
+      "cohort": "settings-initial",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "8afa5f7b167776197dd052a76bc5946dc70590f4009604d485c3452135f5bf6f"
+    },
+    {
+      "path": "evidence/screenshots/settings-initial/settings-provider-inline-s-7961e-tionable-inspection-failure-desktop/provider-detail.png",
+      "cohort": "settings-initial",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "b0ad71c31420b0185ff3eea00ee49c0dae48bc9c20a3dc37ade6062f3bb63e80"
+    },
+    {
+      "path": "evidence/screenshots/settings-initial/settings-provider-inline-s-7961e-tionable-inspection-failure-mobile/api-key-inline.png",
+      "cohort": "settings-initial",
+      "width": 390,
+      "height": 844,
+      "sha256": "51e42774923174ef25f3c94d949edfcac53e9f74deef5b35657a4bcec7e36f78"
+    },
+    {
+      "path": "evidence/screenshots/settings-initial/settings-provider-inline-s-7961e-tionable-inspection-failure-mobile/provider-detail.png",
+      "cohort": "settings-initial",
+      "width": 390,
+      "height": 844,
+      "sha256": "d40babd5fd6cff1f7e04bfb8399dd4658d2ccc64667bf20405e992c249dcc8be"
+    },
+    {
+      "path": "evidence/screenshots/settings-initial/settings-real-key-onboardi-1109f-hout-duplicate-then-revokes-desktop/saved-key.png",
+      "cohort": "settings-initial",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "1ac2c6bf59e3502cee4405dd37035ff359d3c96c32939211c0bba277332bd416"
+    },
+    {
+      "path": "evidence/screenshots/settings-initial/settings-real-key-onboardi-1109f-hout-duplicate-then-revokes-mobile/saved-key.png",
+      "cohort": "settings-initial",
+      "width": 390,
+      "height": 844,
+      "sha256": "d8f34fece4dfbceb5fbb972a30da461c149ecfba7a9f512e09eabd96da9f5bb6"
+    },
+    {
+      "path": "evidence/screenshots/settings-initial/settings-settings-navigati-5dee4-erve-the-conversation-draft-desktop/general-gelap.png",
+      "cohort": "settings-initial",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "68c9f2fcaa700cb076ed525b1bc4e91ccfbab58871c71707041eccf5fb828a60"
+    },
+    {
+      "path": "evidence/screenshots/settings-initial/settings-settings-navigati-5dee4-erve-the-conversation-draft-desktop/general-terang.png",
+      "cohort": "settings-initial",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "52460d37753fd8ba38841f7eceb78d777642db8faa3a9dccaddbd474996e1bd9"
+    },
+    {
+      "path": "evidence/screenshots/settings-initial/settings-settings-navigati-5dee4-erve-the-conversation-draft-mobile/general-gelap.png",
+      "cohort": "settings-initial",
+      "width": 390,
+      "height": 844,
+      "sha256": "cccda5e0964aa49e777f020784bb4cfb3b90ade022af855f0e5133c590c0bec4"
+    },
+    {
+      "path": "evidence/screenshots/settings-initial/settings-settings-navigati-5dee4-erve-the-conversation-draft-mobile/general-terang.png",
+      "cohort": "settings-initial",
+      "width": 390,
+      "height": 844,
+      "sha256": "4247cb0cd17eba13e733d9a1ff86aef666fbf623472b533389eeb64813fcb280"
+    },
+    {
+      "path": "evidence/screenshots/settings-initial/settings-settings-overlay--50d1a-istory-and-narrow-viewports-desktop/provider-1024.png",
+      "cohort": "settings-initial",
+      "width": 1024,
+      "height": 900,
+      "sha256": "675555c5255a6b73f48d0ca5045c390976c8d8374e7fc7e8665d3332681acbf5"
+    },
+    {
+      "path": "evidence/screenshots/settings-initial/settings-settings-overlay--50d1a-istory-and-narrow-viewports-desktop/provider-1440.png",
+      "cohort": "settings-initial",
+      "width": 1440,
+      "height": 900,
+      "sha256": "351173976629c88976eb3a7ad72bf01afb510ed2d7dda68790c47f339533292d"
+    },
+    {
+      "path": "evidence/screenshots/settings-initial/settings-settings-overlay--50d1a-istory-and-narrow-viewports-desktop/provider-768.png",
+      "cohort": "settings-initial",
+      "width": 768,
+      "height": 900,
+      "sha256": "ab61f16251ea3e42f8b2c23c1891ac5a982deb660381c741d11b1d911574554c"
+    },
+    {
+      "path": "evidence/screenshots/settings-initial/settings-settings-overlay--50d1a-istory-and-narrow-viewports-mobile/provider-320.png",
+      "cohort": "settings-initial",
+      "width": 320,
+      "height": 900,
+      "sha256": "73e913cd3674139cf9821ca3a466721c4b26633b254a8f685862c2933ec6b3f5"
+    },
+    {
+      "path": "evidence/screenshots/settings-initial/settings-settings-overlay--50d1a-istory-and-narrow-viewports-mobile/provider-390.png",
+      "cohort": "settings-initial",
+      "width": 390,
+      "height": 900,
+      "sha256": "d3e704e727e4766b5ce3bdb5e2ed3b27e058a8fe7bd8dc66c2e34fba4bee006c"
+    },
+    {
+      "path": "evidence/screenshots/work/work-an-ambiguous-native-s-c3f23-ads-reload-and-cancellation-desktop/native-unknown.png",
+      "cohort": "work",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "55087a2d824dc279be76cced88eb87d74600063f174916b2a785c26ed26c1cd5"
+    },
+    {
+      "path": "evidence/screenshots/work/work-an-ambiguous-native-s-c3f23-ads-reload-and-cancellation-mobile/native-unknown.png",
+      "cohort": "work",
+      "width": 390,
+      "height": 844,
+      "sha256": "6b1b8c07dfba15e830b39002b79996cbb4f710fa41ed0a3344c344722a78dcb4"
+    },
+    {
+      "path": "evidence/screenshots/work/work-application-access-is-04af4-pported-images-never-upload-desktop/apps-catalog.png",
+      "cohort": "work",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "35b61b44c507edf35664c71b7adfb9854a6f33bcf74c2f72bf07e7ca7f1095c1"
+    },
+    {
+      "path": "evidence/screenshots/work/work-application-access-is-04af4-pported-images-never-upload-desktop/apps-connected.png",
+      "cohort": "work",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "c9e512a8b8d5cfcecf202c8e4f85eba7f2813ee48caa4f199e710c7b386c742b"
+    },
+    {
+      "path": "evidence/screenshots/work/work-application-access-is-04af4-pported-images-never-upload-mobile/apps-catalog.png",
+      "cohort": "work",
+      "width": 390,
+      "height": 844,
+      "sha256": "483e8061d7ef3685bbbed04144e21f65f0692974e6352c9e7cbaa5c36425d990"
+    },
+    {
+      "path": "evidence/screenshots/work/work-application-access-is-04af4-pported-images-never-upload-mobile/apps-connected.png",
+      "cohort": "work",
+      "width": 390,
+      "height": 844,
+      "sha256": "e11faa467a2c9b4f92022db59c8282fb37becda06e937676587de5aaa948feaa"
+    },
+    {
+      "path": "evidence/screenshots/work/work-apps-catalog-searches-23c34-ads-without-changing-grants-desktop/apps-auth-recovery.png",
+      "cohort": "work",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "9260595837435604f1e4db876ad775abf26277894f518b1592cbb049ff4a9054"
+    },
+    {
+      "path": "evidence/screenshots/work/work-apps-catalog-searches-23c34-ads-without-changing-grants-desktop/apps-reconnected.png",
+      "cohort": "work",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "875370506d72a12d8861a8dadb60213990114b361c367fdb1e39fbe538b73331"
+    },
+    {
+      "path": "evidence/screenshots/work/work-apps-catalog-searches-23c34-ads-without-changing-grants-mobile/apps-auth-recovery.png",
+      "cohort": "work",
+      "width": 390,
+      "height": 844,
+      "sha256": "a3d1ae5eb38dfebf85cb2b6dc02b794d470071c347dcd60586a020adef49dd5c"
+    },
+    {
+      "path": "evidence/screenshots/work/work-apps-catalog-searches-23c34-ads-without-changing-grants-mobile/apps-reconnected.png",
+      "cohort": "work",
+      "width": 390,
+      "height": 844,
+      "sha256": "4a38ac42cbf89c1d57542629e12d49785027a7747402468407ac6d33f3ce1669"
+    },
+    {
+      "path": "evidence/screenshots/work/work-browser-viewer-connec-3006a-w-without-replaying-actions-desktop/browser-preview.png",
+      "cohort": "work",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "f096e8527543a0988ac59617ef240c3c0ce9214b57ec51dad566d3b1ea0a1284"
+    },
+    {
+      "path": "evidence/screenshots/work/work-browser-viewer-connec-3006a-w-without-replaying-actions-desktop/browser-profiles.png",
+      "cohort": "work",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "096921d22328702a91c0086c218e0e3b2e5171257334281d549737fb749bcc06"
+    },
+    {
+      "path": "evidence/screenshots/work/work-browser-viewer-connec-3006a-w-without-replaying-actions-desktop/browser-view.png",
+      "cohort": "work",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "e57cac84c04e5966ac90e987463f842a5c4def390de381824158b6bf1b489674"
+    },
+    {
+      "path": "evidence/screenshots/work/work-browser-viewer-connec-3006a-w-without-replaying-actions-mobile/browser-preview.png",
+      "cohort": "work",
+      "width": 390,
+      "height": 844,
+      "sha256": "1dd65ab66cd219e39f76267d882a94ab9c251ed3780726f25a0e110eb0a4d88e"
+    },
+    {
+      "path": "evidence/screenshots/work/work-browser-viewer-connec-3006a-w-without-replaying-actions-mobile/browser-profiles.png",
+      "cohort": "work",
+      "width": 390,
+      "height": 844,
+      "sha256": "fe89711f2fd8836040fce94770bd73fa08c90d7787ffac957720aea028855792"
+    },
+    {
+      "path": "evidence/screenshots/work/work-browser-viewer-connec-3006a-w-without-replaying-actions-mobile/browser-view.png",
+      "cohort": "work",
+      "width": 390,
+      "height": 844,
+      "sha256": "9fc1ac8ef35682a25c8784baba7ffd8011e2ae526e3293938a397b8d8e64737f"
+    },
+    {
+      "path": "evidence/screenshots/work/work-contextual-goals-Rout-ce88c-lity-distinct-from-stop-run-desktop/agent-profile.png",
+      "cohort": "work",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "286b770fde06f405eed60a79a0627e3fe3a759e0e8c4875c9d73bfcd683e0dcf"
+    },
+    {
+      "path": "evidence/screenshots/work/work-contextual-goals-Rout-ce88c-lity-distinct-from-stop-run-desktop/desktop-files.png",
+      "cohort": "work",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "7b17a05fb440e87c9bdf35f4faaaf603f2826cba958fff14cd34702d703f93b1"
+    },
+    {
+      "path": "evidence/screenshots/work/work-contextual-goals-Rout-ce88c-lity-distinct-from-stop-run-desktop/goal-detail.png",
+      "cohort": "work",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "0b8e82f02816d66b57d91d08b21450c1cd6751368e9fe5cc70ef3b7ea79529b2"
+    },
+    {
+      "path": "evidence/screenshots/work/work-contextual-goals-Rout-ce88c-lity-distinct-from-stop-run-desktop/goals-list.png",
+      "cohort": "work",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "d3210912cef118441f7183ab89d965f39d5bb06190fe10237e0c3dcefd1a0984"
+    },
+    {
+      "path": "evidence/screenshots/work/work-contextual-goals-Rout-ce88c-lity-distinct-from-stop-run-desktop/routine-detail.png",
+      "cohort": "work",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "7228ff266eaf7378ea6e7caf43478206e0e7e8d7084f0b7155eab995a74bafb0"
+    },
+    {
+      "path": "evidence/screenshots/work/work-contextual-goals-Rout-ce88c-lity-distinct-from-stop-run-mobile/agent-profile.png",
+      "cohort": "work",
+      "width": 390,
+      "height": 844,
+      "sha256": "45aeb5dcb891f04a2aa53bb9fc491b43f2f675e20ba2427c813e9e8c9d1219d3"
+    },
+    {
+      "path": "evidence/screenshots/work/work-contextual-goals-Rout-ce88c-lity-distinct-from-stop-run-mobile/goal-detail.png",
+      "cohort": "work",
+      "width": 390,
+      "height": 844,
+      "sha256": "a2de3e6c8b8a28f3249819816f37b53ef07483703568d59ae687023212fa15f0"
+    },
+    {
+      "path": "evidence/screenshots/work/work-contextual-goals-Rout-ce88c-lity-distinct-from-stop-run-mobile/goals-list.png",
+      "cohort": "work",
+      "width": 390,
+      "height": 844,
+      "sha256": "b667793bb1abd550ef928f32e9f347abffb8a28e916fa584cb52df8ed8faaa97"
+    },
+    {
+      "path": "evidence/screenshots/work/work-contextual-goals-Rout-ce88c-lity-distinct-from-stop-run-mobile/mobile-files.png",
+      "cohort": "work",
+      "width": 390,
+      "height": 844,
+      "sha256": "30a20e500c45744860c7dcddca473f96954d1aac10e70fba2827d49db05f6c20"
+    },
+    {
+      "path": "evidence/screenshots/work/work-contextual-goals-Rout-ce88c-lity-distinct-from-stop-run-mobile/routine-detail.png",
+      "cohort": "work",
+      "width": 390,
+      "height": 844,
+      "sha256": "530d427dadab43028f34bc7d9c122cee8da3bb9c2ac8a7be9ab8551cf7896d5d"
+    },
+    {
+      "path": "evidence/screenshots/work/work-file-previews-reuse-s-22941-without-executing-file-HTML-desktop/file-code.png",
+      "cohort": "work",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "f5b4a9801f02efb0dd4fea6211b97268b85f0fb88a156720c4e4b8dd1b69072b"
+    },
+    {
+      "path": "evidence/screenshots/work/work-file-previews-reuse-s-22941-without-executing-file-HTML-desktop/file-markdown.png",
+      "cohort": "work",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "2f3f62335f91cdddcfbc37ee88cb4585849d2f30124ddfab58b8464db21908de"
+    },
+    {
+      "path": "evidence/screenshots/work/work-file-previews-reuse-s-22941-without-executing-file-HTML-desktop/file-table.png",
+      "cohort": "work",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "dbb162e15f1b4e214fa5a566bf63015fa73ae36d86f52ab634da63d9b8613a8f"
+    },
+    {
+      "path": "evidence/screenshots/work/work-file-previews-reuse-s-22941-without-executing-file-HTML-mobile/file-code.png",
+      "cohort": "work",
+      "width": 390,
+      "height": 844,
+      "sha256": "ddab1f4cb2062df5bcee6219aa1acccdf4c8f42c387b81a4c5482b78cceaeee2"
+    },
+    {
+      "path": "evidence/screenshots/work/work-file-previews-reuse-s-22941-without-executing-file-HTML-mobile/file-markdown.png",
+      "cohort": "work",
+      "width": 390,
+      "height": 844,
+      "sha256": "c1a59cf7b4e3a1d6045d8dcd3c7f0a4f3cc76f72ca68ebd015e472565c99c4b5"
+    },
+    {
+      "path": "evidence/screenshots/work/work-file-previews-reuse-s-22941-without-executing-file-HTML-mobile/file-table.png",
+      "cohort": "work",
+      "width": 390,
+      "height": 844,
+      "sha256": "a099ab26d0822be82ad2b793ccd8586fb5ca285e36fc8657addca00a22d8a2c8"
+    },
+    {
+      "path": "evidence/screenshots/work/work-group-creation-recove-26d1f-member-DM-resources-private-desktop/create-group.png",
+      "cohort": "work",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "216c18e1d98192413935c46f0ae93f5bca7d7051fe3558f829e221bf0a379d3f"
+    },
+    {
+      "path": "evidence/screenshots/work/work-group-creation-recove-26d1f-member-DM-resources-private-desktop/group-profile.png",
+      "cohort": "work",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "ad8eef38983979f698d3946a70055f1401d5f747b8879867c4eef1e1b2a4c8d9"
+    },
+    {
+      "path": "evidence/screenshots/work/work-group-creation-recove-26d1f-member-DM-resources-private-mobile/create-group.png",
+      "cohort": "work",
+      "width": 390,
+      "height": 844,
+      "sha256": "2acb676659da594888ebc1e67dfe168d30d502cbe35e812d3a157105854693b5"
+    },
+    {
+      "path": "evidence/screenshots/work/work-group-creation-recove-26d1f-member-DM-resources-private-mobile/group-profile.png",
+      "cohort": "work",
+      "width": 390,
+      "height": 844,
+      "sha256": "25c6bccf2a1789d8ff9b3fe10f3e3d70fb8024b21f1f11bb1ec2e21eedd32377"
+    },
+    {
+      "path": "evidence/screenshots/work/work-native-acknowledgemen-9f586-d-and-connection-revocation-desktop/native-approval.png",
+      "cohort": "work",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "ad4fecb7dd2bbc2ec4ed06f69681a789ffea044ff83b55d0ef85c1f6b2bfe434"
+    },
+    {
+      "path": "evidence/screenshots/work/work-native-acknowledgemen-9f586-d-and-connection-revocation-desktop/native-question.png",
+      "cohort": "work",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "429316a6071ca2876202889eb428153454056222428b126237485754c78de509"
+    },
+    {
+      "path": "evidence/screenshots/work/work-native-acknowledgemen-9f586-d-and-connection-revocation-desktop/native-settled.png",
+      "cohort": "work",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "7e4963da2ed8348ed463a0ac141ed233f7a81500a1beb4c0f8aaf23088dd0708"
+    },
+    {
+      "path": "evidence/screenshots/work/work-native-acknowledgemen-9f586-d-and-connection-revocation-mobile/native-approval.png",
+      "cohort": "work",
+      "width": 390,
+      "height": 844,
+      "sha256": "65ed7c96c3f3f0c5aacaf4120a02c8a840a22629b5cc0b37ac1c5ba9d14dd717"
+    },
+    {
+      "path": "evidence/screenshots/work/work-native-acknowledgemen-9f586-d-and-connection-revocation-mobile/native-question.png",
+      "cohort": "work",
+      "width": 390,
+      "height": 844,
+      "sha256": "51934d81238fa65b04d04ac3e8bd2185b71fcba5d6eabcde1490223695d47a9a"
+    },
+    {
+      "path": "evidence/screenshots/work/work-native-acknowledgemen-9f586-d-and-connection-revocation-mobile/native-settled.png",
+      "cohort": "work",
+      "width": 390,
+      "height": 844,
+      "sha256": "bfa4f83b133fbb170f0b0f33218b9779b06dacac3c0419948c64c323a54c4828"
+    },
+    {
+      "path": "evidence/screenshots/work/work-unsafe-Markdown-cuts--99e64-led-native-history-fallback-desktop/native-anchor-changed-prefix.png",
+      "cohort": "work",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "a7526ab1e30184bb4ada050cab0b38d15419751848b540ce83bccd5033a836fe"
+    },
+    {
+      "path": "evidence/screenshots/work/work-unsafe-Markdown-cuts--99e64-led-native-history-fallback-desktop/native-anchor-code.png",
+      "cohort": "work",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "b382085d4ea05cd5a73cb1cd2b678f2914b0971a93ba0bb48281e4be87c6b076"
+    },
+    {
+      "path": "evidence/screenshots/work/work-unsafe-Markdown-cuts--99e64-led-native-history-fallback-desktop/native-anchor-table.png",
+      "cohort": "work",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "951d3aa53547a9c8b9f57ed9e491b329fdb005e9592887cfe99bf4a582771f78"
+    },
+    {
+      "path": "evidence/screenshots/settings/settings-default-model-pic-ae6c2-xplicit-account-and-billing-desktop/default-model-truth.png",
+      "cohort": "settings",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "d1f26b1ebcf2101fe4890843d6e0dbb74e666a0e15efee242f40c9be07dc80e7"
+    },
+    {
+      "path": "evidence/screenshots/settings/settings-default-model-pic-ae6c2-xplicit-account-and-billing-mobile/default-model-truth.png",
+      "cohort": "settings",
+      "width": 390,
+      "height": 844,
+      "sha256": "3354389c1dfa451a142d7c9ec6911eb98d8db5b1509151bcdaaec27e3d0df86d"
+    },
+    {
+      "path": "evidence/screenshots/settings/settings-provider-inline-s-7961e-tionable-inspection-failure-desktop/api-key-inline.png",
+      "cohort": "settings",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "8afa5f7b167776197dd052a76bc5946dc70590f4009604d485c3452135f5bf6f"
+    },
+    {
+      "path": "evidence/screenshots/settings/settings-provider-inline-s-7961e-tionable-inspection-failure-desktop/provider-detail.png",
+      "cohort": "settings",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "c4aa8221919d74da208f698fc5ea0604caeef87c22e2b3d7a16dc62b934a71d0"
+    },
+    {
+      "path": "evidence/screenshots/settings/settings-provider-inline-s-7961e-tionable-inspection-failure-mobile/api-key-inline.png",
+      "cohort": "settings",
+      "width": 390,
+      "height": 844,
+      "sha256": "51e42774923174ef25f3c94d949edfcac53e9f74deef5b35657a4bcec7e36f78"
+    },
+    {
+      "path": "evidence/screenshots/settings/settings-provider-inline-s-7961e-tionable-inspection-failure-mobile/provider-detail.png",
+      "cohort": "settings",
+      "width": 390,
+      "height": 844,
+      "sha256": "d40babd5fd6cff1f7e04bfb8399dd4658d2ccc64667bf20405e992c249dcc8be"
+    },
+    {
+      "path": "evidence/screenshots/settings/settings-real-key-onboardi-1109f-hout-duplicate-then-revokes-desktop/saved-key.png",
+      "cohort": "settings",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "cdbea18bacea633a4db3292a19175c9bb62e7958d214ff79a0dd5c14693636a4"
+    },
+    {
+      "path": "evidence/screenshots/settings/settings-real-key-onboardi-1109f-hout-duplicate-then-revokes-mobile/saved-key.png",
+      "cohort": "settings",
+      "width": 390,
+      "height": 844,
+      "sha256": "0f46dfc6fdf4a19a4499609884c645a7d19dae399ab9d0e7efc13255ce1bd1be"
+    },
+    {
+      "path": "evidence/screenshots/settings/settings-settings-navigati-5dee4-erve-the-conversation-draft-desktop/general-gelap.png",
+      "cohort": "settings",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "68c9f2fcaa700cb076ed525b1bc4e91ccfbab58871c71707041eccf5fb828a60"
+    },
+    {
+      "path": "evidence/screenshots/settings/settings-settings-navigati-5dee4-erve-the-conversation-draft-desktop/general-terang.png",
+      "cohort": "settings",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "52460d37753fd8ba38841f7eceb78d777642db8faa3a9dccaddbd474996e1bd9"
+    },
+    {
+      "path": "evidence/screenshots/settings/settings-settings-navigati-5dee4-erve-the-conversation-draft-mobile/general-gelap.png",
+      "cohort": "settings",
+      "width": 390,
+      "height": 844,
+      "sha256": "cccda5e0964aa49e777f020784bb4cfb3b90ade022af855f0e5133c590c0bec4"
+    },
+    {
+      "path": "evidence/screenshots/settings/settings-settings-navigati-5dee4-erve-the-conversation-draft-mobile/general-terang.png",
+      "cohort": "settings",
+      "width": 390,
+      "height": 844,
+      "sha256": "4247cb0cd17eba13e733d9a1ff86aef666fbf623472b533389eeb64813fcb280"
+    },
+    {
+      "path": "evidence/screenshots/settings/settings-settings-overlay--50d1a-istory-and-narrow-viewports-desktop/provider-1024.png",
+      "cohort": "settings",
+      "width": 1024,
+      "height": 900,
+      "sha256": "384cb829a34e58658e65170c251b96aad4614b2469c485b2f66e6996bdcec086"
+    },
+    {
+      "path": "evidence/screenshots/settings/settings-settings-overlay--50d1a-istory-and-narrow-viewports-desktop/provider-1440.png",
+      "cohort": "settings",
+      "width": 1440,
+      "height": 900,
+      "sha256": "351173976629c88976eb3a7ad72bf01afb510ed2d7dda68790c47f339533292d"
+    },
+    {
+      "path": "evidence/screenshots/settings/settings-settings-overlay--50d1a-istory-and-narrow-viewports-desktop/provider-768.png",
+      "cohort": "settings",
+      "width": 768,
+      "height": 900,
+      "sha256": "1f835e937677d350d7b193fd8ab7532d32fa5e35deaac31cb91ad3640bff1925"
+    },
+    {
+      "path": "evidence/screenshots/settings/settings-settings-overlay--50d1a-istory-and-narrow-viewports-mobile/provider-320.png",
+      "cohort": "settings",
+      "width": 320,
+      "height": 900,
+      "sha256": "6169ab1d624a651145de2b29f61c3c200ff10454c8590919efa0645c2ab83306"
+    },
+    {
+      "path": "evidence/screenshots/settings/settings-settings-overlay--50d1a-istory-and-narrow-viewports-mobile/provider-390.png",
+      "cohort": "settings",
+      "width": 390,
+      "height": 900,
+      "sha256": "3dd25abff413ae7330a53267c486e891c56884f6cc88e54101c2da985760aac9"
+    },
+    {
+      "path": "evidence/screenshots/work-projection/work-completed-native-step-44694-ied-receipts-remain-visible-desktop/tool-activity-collapsed.png",
+      "cohort": "work-projection",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "3daef2e4326ed11350856e2bf7cdd1572c1b42c99be795de84cd5e5bb0af63d6"
+    },
+    {
+      "path": "evidence/screenshots/work-projection/work-completed-native-step-44694-ied-receipts-remain-visible-mobile/tool-activity-collapsed.png",
+      "cohort": "work-projection",
+      "width": 390,
+      "height": 844,
+      "sha256": "f721cb6feaaa3ad6e427c4be91b7cc70b7b21ca4677820eda802aa12ce4ad50f"
+    },
+    {
+      "path": "evidence/screenshots/work-projection/work-unsafe-Markdown-cuts--99e64-led-native-history-fallback-desktop/native-anchor-changed-prefix.png",
+      "cohort": "work-projection",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "293fd7f699b3e4f5327212a577996bccf16ee1079453022c20d623d871407855"
+    },
+    {
+      "path": "evidence/screenshots/work-projection/work-unsafe-Markdown-cuts--99e64-led-native-history-fallback-desktop/native-anchor-code.png",
+      "cohort": "work-projection",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "c3954093c25b4d0896057c76260f56ac4a38eb809883e155409bdb480eb4f86e"
+    },
+    {
+      "path": "evidence/screenshots/work-projection/work-unsafe-Markdown-cuts--99e64-led-native-history-fallback-desktop/native-anchor-table.png",
+      "cohort": "work-projection",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "02f258a87051d23135152992a472d6d980dbee25d864d5a465d4fd340416e333"
+    },
+    {
+      "path": "evidence/screenshots/work-projection/work-unsafe-Markdown-cuts--99e64-led-native-history-fallback-mobile/native-anchor-changed-prefix.png",
+      "cohort": "work-projection",
+      "width": 390,
+      "height": 844,
+      "sha256": "496cb7aa3e8a1f5badda9dd14bcef4c62066537203db569f1bce5ba8038be984"
+    },
+    {
+      "path": "evidence/screenshots/work-projection/work-unsafe-Markdown-cuts--99e64-led-native-history-fallback-mobile/native-anchor-code.png",
+      "cohort": "work-projection",
+      "width": 390,
+      "height": 844,
+      "sha256": "69e5e967ee83037b56d5e91ae6f84146115a86469c29292470b65d33922f0637"
+    },
+    {
+      "path": "evidence/screenshots/work-projection/work-unsafe-Markdown-cuts--99e64-led-native-history-fallback-mobile/native-anchor-table.png",
+      "cohort": "work-projection",
+      "width": 390,
+      "height": 844,
+      "sha256": "e52c62edcbcf20d5995381ce41b01627d5b50580a47a00bd6e53916880f9372c"
+    },
+    {
+      "path": "evidence/screenshots/work-tools/work-completed-native-step-44694-ied-receipts-remain-visible-desktop/tool-activity-collapsed.png",
+      "cohort": "work-tools",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "3de66a6fc7e32372077904758bed4a54adc9ebeadc73749d3e9d8cf2bc04b569"
+    },
+    {
+      "path": "evidence/screenshots/work-tools/work-completed-native-step-44694-ied-receipts-remain-visible-desktop/tool-activity-expanded.png",
+      "cohort": "work-tools",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "712c3242c1de789432b87ed827d9138d7472ab65656350b74531a083bdba7fe7"
+    },
+    {
+      "path": "evidence/screenshots/work-tools/work-completed-native-step-44694-ied-receipts-remain-visible-mobile/tool-activity-collapsed.png",
+      "cohort": "work-tools",
+      "width": 390,
+      "height": 844,
+      "sha256": "6e0869cea4f68e6df6e198a624a67a4adf8f810e8ded217cfb9bce6e7aba3a37"
+    },
+    {
+      "path": "evidence/screenshots/work-tools/work-completed-native-step-44694-ied-receipts-remain-visible-mobile/tool-activity-expanded.png",
+      "cohort": "work-tools",
+      "width": 390,
+      "height": 844,
+      "sha256": "9b96c69339283f7d4561be08993ee860c127b5ced6a8ac1d5dc9f33bf6aa680f"
+    },
+    {
+      "path": "evidence/screenshots/settings-focus/settings-settings-navigati-5dee4-erve-the-conversation-draft-desktop/general-gelap.png",
+      "cohort": "settings-focus",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "68c9f2fcaa700cb076ed525b1bc4e91ccfbab58871c71707041eccf5fb828a60"
+    },
+    {
+      "path": "evidence/screenshots/settings-focus/settings-settings-navigati-5dee4-erve-the-conversation-draft-desktop/general-terang.png",
+      "cohort": "settings-focus",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "52460d37753fd8ba38841f7eceb78d777642db8faa3a9dccaddbd474996e1bd9"
+    },
+    {
+      "path": "evidence/screenshots/settings-focus/settings-settings-navigati-5dee4-erve-the-conversation-draft-mobile/general-gelap.png",
+      "cohort": "settings-focus",
+      "width": 390,
+      "height": 844,
+      "sha256": "cccda5e0964aa49e777f020784bb4cfb3b90ade022af855f0e5133c590c0bec4"
+    },
+    {
+      "path": "evidence/screenshots/settings-focus/settings-settings-navigati-5dee4-erve-the-conversation-draft-mobile/general-terang.png",
+      "cohort": "settings-focus",
+      "width": 390,
+      "height": 844,
+      "sha256": "4247cb0cd17eba13e733d9a1ff86aef666fbf623472b533389eeb64813fcb280"
+    }
+  ]
+}

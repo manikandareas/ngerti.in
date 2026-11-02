@@ -1,0 +1,120 @@
+{
+  "completed_at": "2026-11-01T16:41:35.546860+00:00",
+  "status": "verified_local_existing_feature_redesign",
+  "reference": {
+    "app": "OpenMausBot",
+    "version": "0.1.137",
+    "source_revision": "7124ebc4ff57b7e7dc5c0ad94c09ff9f842c93c9",
+    "app_asar_sha256": "123baad523c82bcc3210d5092d0c1d9f211c4cfcb44de43813f8bff1cbd14e6f",
+    "css_sha256": "ec0fc627dd6325e29c71a320b0cc8013e1de0162486db9da0e932d3915d6cf01"
+  },
+  "scope": {
+    "mapped_surfaces": 19,
+    "active_client": "apps/web-client",
+    "required_harnesses": [
+      "codex",
+      "muse"
+    ],
+    "source_mapping": "feature-coverage.md",
+    "committed": false,
+    "deployed": false,
+    "notion_status_changed": false
+  },
+  "browser": {
+    "unique_passed": 122,
+    "failed": 0,
+    "skipped": 0,
+    "viewports": [
+      "1440x1000",
+      "390x844"
+    ],
+    "gallery_previews": 252,
+    "case_index": "browser-results.json",
+    "by_file": {
+      "conversation.spec.ts": 14,
+      "design-system.spec.ts": 26,
+      "fidelity.spec.ts": 6,
+      "hover.spec.ts": 8,
+      "model-picker.spec.ts": 4,
+      "rich-answer.spec.ts": 6,
+      "settings.spec.ts": 12,
+      "theme.spec.ts": 14,
+      "work.spec.ts": 32
+    },
+    "aggregation": "Latest passing result per file, title and viewport. Raw earlier failures are retained; retries disabled."
+  },
+  "backend": {
+    "passed": 270,
+    "failed": 0,
+    "skipped": 0,
+    "assertions": 1735,
+    "files": 26
+  },
+  "api_consumer": {
+    "evidence_level": "contract_fixture_http_in_process",
+    "pass": 6,
+    "fail": 0,
+    "skip": 0,
+    "checks": [
+      "published_contract_matches_router_and_reports_api_ready",
+      "original_command_receipt_is_stable_and_distinct_from_current_run_state",
+      "snapshot_cursor_pagination_duplicate_replay_and_tombstones_preserve_projection",
+      "authenticated_sse_matches_polling_and_last_event_id_precedes_query",
+      "domain_harness_validation_and_authentication_error_examples_validate",
+      "sqlite_restart_preserves_original_receipt_events_and_cancelled_state_without_dispatch"
+    ],
+    "routes": 84,
+    "entities": 26,
+    "product_tools": 37,
+    "native_inference": 0,
+    "api_readiness_gate": "ready"
+  },
+  "static": {
+    "web_build": "passed",
+    "web_lint": "passed, 178 files",
+    "web_typecheck": "passed",
+    "playwright_typecheck": "passed",
+    "verification_fixture_typecheck": "passed",
+    "frozen_install": "passed, 738 installs across 844 packages",
+    "diff_check": "passed",
+    "historical_evidence": "36/36 original hashes preserved",
+    "preexisting_backend_content": "13/13 preserved under declared journal/version additions",
+    "local_links": "passed",
+    "source_hashes": "202/202 passed"
+  },
+  "render": {
+    "screenshots": 175,
+    "index": "render-index.json",
+    "desktop_preview": "preview-desktop.png",
+    "mobile_preview": "preview-mobile.png",
+    "fixture_data": true
+  },
+  "runtime": {
+    "verified_at": "2026-11-01T16:34:04.895650+00:00",
+    "contract_version": "1.18.0",
+    "api_readiness_gate": "ready",
+    "entity_collections_preserved": 26,
+    "installation_credentials_unchanged": true,
+    "active_runs_before_restart": 0,
+    "data_reset": false,
+    "backup_integrity": "ok",
+    "backup_scope": "Private local SQLite backup; not distributed with evidence.",
+    "run_journal_projection": true
+  },
+  "boundaries": [
+    "Source patterns, finite rendered geometry and regression results do not establish literal whole-application pixel equality.",
+    "Native harness and external app-provider behavior in browser cohorts is explicitly fixture-backed; HTTP/SQLite, scoped grants and journals are real.",
+    "Managed browser observation/VNC and view-only reconnect use the real managed browser.",
+    "No fresh native provider login, billing or inference acceptance is claimed by these fixture cohorts.",
+    "Submitted native acknowledgement does not prove approved action completion; unknown submissions remain fenced.",
+    "Vite reports a large lazily loaded C++ grammar chunk; the warning is retained.",
+    "Installer, deployment and NMA-063 Done remain outside this local redesign verification."
+  ],
+  "manual_review": {
+    "reference": "Installed OpenMausBot conversation/question/profile inspected without changing accounts or submitting input.",
+    "development": "Active client on3001 visibly loads existing conversation, model/account, rich replies and tool folding after API1.18 restart. No message submitted.",
+    "responsive_viewport_restored": true,
+    "temporary_review_client_and_api_stopped": true
+  },
+  "focus_race_diagnostic": "evidence/focus-race-diagnostic.json"
+}

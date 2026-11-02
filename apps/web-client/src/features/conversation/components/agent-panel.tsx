@@ -12,7 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { AgentModelRow, ConnectionSettings } from "@/features/conversation/components/settings";
+import { AgentModelRow } from "@/features/conversation/components/settings";
 import { command, request } from "@/lib/api-client";
 import type { Agent, Connection, Memory, Skills } from "@/types/workspace";
 import { PanelCard, PanelEmpty, PanelNavRow, PanelPageHeader } from "./panel-primitives";
@@ -27,8 +27,6 @@ export function AgentPanel({
   refresh,
   report,
   manageProviders,
-  configurationOpen,
-  setConfigurationOpen,
   page,
   navigate,
 }: {
@@ -39,8 +37,6 @@ export function AgentPanel({
   refresh: () => Promise<unknown>;
   report: (error: string) => void;
   manageProviders: () => void;
-  configurationOpen: boolean;
-  setConfigurationOpen: (open: boolean) => void;
   page: AgentPage;
   navigate: (page: AgentPage) => void;
 }) {
@@ -95,24 +91,12 @@ export function AgentPanel({
     }
   }
   function back() {
-    setConfigurationOpen(false);
     navigate("overview");
   }
   const nativeCount = (skills?.harness.length ?? 0) + (skills?.native_catalog.length ?? 0);
   return (
     <div className="agent-profile-content min-w-0 pb-1 pt-3.5">
-      {configurationOpen ? (
-        <>
-          <PanelPageHeader title="Koneksi & model" onBack={back} />
-          <ConnectionSettings
-            agent={agent}
-            connections={connections}
-            refresh={refresh}
-            report={report}
-            manageProviders={manageProviders}
-          />
-        </>
-      ) : page === "instructions" ? (
+      {page === "instructions" ? (
         <>
           <PanelPageHeader
             title="Arahan kerja"

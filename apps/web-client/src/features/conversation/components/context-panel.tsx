@@ -1,5 +1,5 @@
 import { Calendar03Icon, Plug01Icon, Target02Icon } from "@hugeicons/core-free-icons";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Artifact } from "@/types/work";
 import type { Agent, Connection, Snapshot, Thread } from "@/types/workspace";
@@ -15,7 +15,7 @@ import { Responsibilities } from "./responsibilities";
 export type PanelLocation = {
   tab: "detail" | "library" | "computer";
   id: string | null;
-  page?: "apps" | "goals" | "routine";
+  page?: AgentPage | "apps" | "goals" | "routine";
 };
 export function ContextPanel({
   snapshot,
@@ -30,8 +30,6 @@ export function ContextPanel({
   source,
   attach,
   manageProviders,
-  configurationOpen,
-  setConfigurationOpen,
 }: {
   snapshot: Snapshot;
   agents: Agent[];
@@ -45,11 +43,12 @@ export function ContextPanel({
   source: (id?: string) => void;
   attach: (a: Artifact) => void;
   manageProviders: () => void;
-  configurationOpen: boolean;
-  setConfigurationOpen: (open: boolean) => void;
 }) {
   const agent = snapshot.agents[0];
-  const [page, setPage] = useState<AgentPage>("overview");
+  const page =
+    location.page === "memory" || location.page === "skills" || location.page === "instructions"
+      ? location.page
+      : "overview";
   const appsOpen = location.page === "apps";
   const responsibility =
     location.page === "goals" || location.page === "routine" ? location.page : null;
@@ -67,7 +66,7 @@ export function ContextPanel({
     (location.tab === "detail" &&
       (appsOpen ||
         responsibility !== null ||
-        (snapshot.thread.type === "dm" && (page !== "overview" || configurationOpen)))) ||
+        (snapshot.thread.type === "dm" && page !== "overview"))) ||
     selectedDetail;
   const container = useRef<HTMLDivElement>(null);
   const opener = useRef<string | null>(null);
@@ -82,8 +81,6 @@ export function ContextPanel({
   }, [nested, location.page, location.id]);
   const openFile = (id: string) => locate({ tab: "library", id });
   const openDetail = () => {
-    setPage("overview");
-    setConfigurationOpen(false);
     locate({ tab: "detail", id: null });
   };
   return (
@@ -97,8 +94,6 @@ export function ContextPanel({
       onKeyDown={(event) => {
         if (event.key !== "Escape" || event.defaultPrevented || !nested) return;
         if (event.target instanceof Node && !event.currentTarget.contains(event.target)) return;
-        setPage("overview");
-        setConfigurationOpen(false);
         locate({
           tab: location.tab,
           id: null,
@@ -109,8 +104,6 @@ export function ContextPanel({
       }}
       value={location.tab}
       onValueChange={(tab) => {
-        setPage("overview");
-        setConfigurationOpen(false);
         locate({ tab: tab as PanelLocation["tab"], id: null });
       }}
       className="context-panel gap-2 pb-5"
@@ -184,7 +177,7 @@ export function ContextPanel({
           <AgentPanel
             key={agent.id}
             page={page}
-            navigate={setPage}
+            navigate={(page) => locate({ tab: "detail", id: null, page })}
             agent={agent}
             threadId={snapshot.thread.id}
             cursor={snapshot.cursor}
@@ -192,8 +185,6 @@ export function ContextPanel({
             refresh={refresh}
             report={report}
             manageProviders={manageProviders}
-            configurationOpen={configurationOpen}
-            setConfigurationOpen={setConfigurationOpen}
           />
         ) : (
           <GroupPanel
@@ -209,7 +200,7 @@ export function ContextPanel({
         {!appsOpen &&
           !responsibility &&
           location.id === null &&
-          (snapshot.thread.type === "group" || (page === "overview" && !configurationOpen)) && (
+          (snapshot.thread.type === "group" || page === "overview") && (
             <>
               <PanelCard label="Tanggung jawab">
                 <PanelNavRow

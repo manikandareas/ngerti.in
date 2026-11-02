@@ -6,7 +6,6 @@ import {
   ComputerIcon,
   Menu01Icon,
   PencilEdit01Icon,
-  Settings01Icon,
   StopIcon,
   Tick02Icon,
 } from "@hugeicons/core-free-icons";
@@ -151,7 +150,6 @@ export default function Workspace() {
   const lock = useRef(false);
   const [navigation, setNavigation] = useState(false);
   const [details, setDetails] = useState(false);
-  const [configurationOpen, setConfigurationOpen] = useState(false);
   const [createMenu, setCreateMenu] = useState(false);
   const [createGroupOpen, setCreateGroupOpen] = useState(false);
   const [location, locate] = useState<PanelLocation>({ tab: "detail", id: null });
@@ -269,7 +267,6 @@ export default function Workspace() {
     setHistoryLoaded(false);
     setNavigation(false);
     setDetails(false);
-    setConfigurationOpen(false);
     setDraft("");
     pendingComposerFocus.current = false;
     setEditing(null);
@@ -428,7 +425,6 @@ export default function Workspace() {
         setNavigation(false);
         setDetails(true);
         locate({ tab: "detail", id: null, page: "apps" });
-        setConfigurationOpen(false);
       }}
       openSettings={() => {
         openSettings("general");
@@ -504,8 +500,6 @@ export default function Workspace() {
       source={(id) => void source(id).catch((e) => report(e.message))}
       attach={composerFiles.attachArtifact}
       manageProviders={() => openSettings("providers")}
-      configurationOpen={configurationOpen}
-      setConfigurationOpen={setConfigurationOpen}
     />
   ) : null;
   const messages = [
@@ -685,18 +679,6 @@ export default function Workspace() {
   const detailToolbar = (
     <div className="details-toolbar flex shrink-0 items-center justify-end gap-1 p-3">
       <Button
-        size="icon"
-        variant="ghost"
-        className="rounded-full"
-        aria-label="Pengaturan agent"
-        onClick={() => {
-          locate({ tab: "detail", id: null });
-          setConfigurationOpen(snapshot?.thread.type === "dm");
-        }}
-      >
-        <HugeiconsIcon icon={Settings01Icon} size={18} strokeWidth={1.5} />
-      </Button>
-      <Button
         size="icon-sm"
         variant="ghost"
         aria-label={mobile ? "Close" : "Tutup detail"}
@@ -725,7 +707,7 @@ export default function Workspace() {
           if (!dm) return;
           if (dm.id !== threadId) choose(dm.id);
           setDetails(true);
-          setConfigurationOpen(true);
+          locate({ tab: "detail", id: null });
           void closeSettings();
         },
       }}

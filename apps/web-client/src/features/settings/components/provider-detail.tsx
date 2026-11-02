@@ -198,7 +198,7 @@ export function ProviderDetail({
         ) : (
           <SettingsRow
             title="Pilih provider di panel Agent"
-            description="Buka percakapan, pilih nama agent, lalu atur koneksi dan model pada bagian Koneksi & model."
+            description="Buka percakapan, pilih nama agent, lalu atur koneksi dan model melalui pilihan Model."
           />
         )}
       </SettingsSection>

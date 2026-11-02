@@ -1,3 +1,4 @@
+import { defaultAgentAvatar } from "@ngertiin/avatar/config";
 import {
   admissionInput,
   agentInput,
@@ -176,6 +177,7 @@ export class Lifecycle {
       ...base,
       ...data,
       handle,
+      avatar_config: data.avatar_config ?? defaultAgentAvatar(base.id),
       kind: "agent",
       grant_revision: 1,
       system_role: null,

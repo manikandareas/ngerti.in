@@ -63,7 +63,7 @@ export function HumanReply({
     >
       <p className="flex items-center gap-1.5 text-[13px] leading-[18px] text-muted-foreground">
         {agent ? (
-          <AgentAvatar agent={agent} state="happy" className="size-4" />
+          <AgentAvatar agent={agent} state="listening" className="size-4" />
         ) : (
           <MessageCircle size={14} strokeWidth={1.5} aria-hidden="true" />
         )}

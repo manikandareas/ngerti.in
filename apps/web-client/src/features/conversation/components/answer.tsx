@@ -1,5 +1,6 @@
 import {
   Children,
+  type CSSProperties,
   createContext,
   isValidElement,
   memo,
@@ -12,6 +13,7 @@ import remarkGfm from "remark-gfm";
 import { Bubble, BubbleContent } from "@/components/ui/bubble";
 import { AnswerCode } from "@/features/conversation/components/answer-code";
 import { MarkdownTable, plainMarkdown } from "@/features/conversation/components/markdown-table";
+import { MessageTime } from "@/features/conversation/components/message-time";
 import { parseFenceInfo } from "@/features/conversation/lib/code-snippet";
 import { splitReplyBlocks } from "@/features/conversation/lib/formatted-reply";
 import { blockDirection } from "@/features/conversation/lib/text-direction";
@@ -122,7 +124,10 @@ const renderers: Components = {
 
 function MarkdownBody({ text }: { text: string }) {
   return (
-    <div className="chat-answer chat-md min-w-0 whitespace-normal break-words text-[15px] leading-[22px] [&>*+*]:mt-2.5 [&_strong]:font-semibold">
+    <div
+      data-message-text
+      className="chat-answer chat-md min-w-0 whitespace-normal break-words text-[15px] leading-[22px] [&>*+*]:mt-2.5 [&_strong]:font-semibold"
+    >
       <Markdown remarkPlugins={[remarkGfm]} skipHtml components={renderers}>
         {text}
       </Markdown>
@@ -144,7 +149,13 @@ export const Answer = memo(function Answer({
   text,
   openResource,
   snapshot,
-}: { text: string } & AnswerScope) {
+  sender,
+  sentAt,
+}: {
+  text: string;
+  sentAt?: string;
+  sender?: { name: string; style: CSSProperties; open?: () => void };
+} & AnswerScope) {
   const scope = useMemo(() => ({ openResource, snapshot }), [openResource, snapshot]);
   const blocks = useMemo(
     () =>
@@ -160,29 +171,52 @@ export const Answer = memo(function Answer({
         data-reply-blocks
         className="assistant-answer flex w-full max-w-full flex-col items-start gap-1"
       >
-        {blocks.map((block) => {
-          const content = <MarkdownBody key={block.id} text={block.text} />;
-          return block.kind === "table" ? (
-            <div
-              key={block.id}
-              data-reply-table
-              className="my-2 w-full max-w-[88%] first:mt-0 last:mb-0"
-            >
-              {content}
-            </div>
-          ) : (
-            <Bubble
-              key={block.id}
-              variant="secondary"
-              data-chat-bubble="simple"
-              className="chat-agent-bubble"
-            >
-              <BubbleContent className="chat-bubble-content text-[15px] leading-[22px]">
+        {sender ? (
+          <Bubble
+            variant="secondary"
+            data-chat-bubble="group"
+            className="chat-agent-bubble group-agent-bubble"
+            style={sender.style}
+          >
+            <BubbleContent className="chat-bubble-content text-[15px] leading-[22px]">
+              {sender.open ? (
+                <button type="button" className="group-bubble-author" onClick={sender.open}>
+                  {sender.name}
+                </button>
+              ) : (
+                <span className="group-bubble-author">{sender.name}</span>
+              )}
+              <MarkdownBody text={text} />
+              <MessageTime at={sentAt} className="group-bubble-time" />
+            </BubbleContent>
+          </Bubble>
+        ) : (
+          blocks.map((block) => {
+            const content = <MarkdownBody key={block.id} text={block.text} />;
+            return block.kind === "table" ? (
+              <div
+                key={block.id}
+                data-reply-table
+                className="my-2 w-full max-w-[88%] first:mt-0 last:mb-0"
+              >
                 {content}
-              </BubbleContent>
-            </Bubble>
-          );
-        })}
+                <MessageTime at={sentAt} />
+              </div>
+            ) : (
+              <Bubble
+                key={block.id}
+                variant="secondary"
+                data-chat-bubble="simple"
+                className="chat-agent-bubble"
+              >
+                <BubbleContent className="chat-bubble-content text-[15px] leading-[22px]">
+                  {content}
+                  <MessageTime at={sentAt} />
+                </BubbleContent>
+              </Bubble>
+            );
+          })
+        )}
       </div>
     </AnswerContext.Provider>
   );

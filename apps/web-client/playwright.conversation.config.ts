@@ -11,7 +11,12 @@ const env = {
 };
 export default defineConfig({
   testDir: "./tests",
-  testMatch: ["conversation.spec.ts", "model-picker.spec.ts", "rich-answer.spec.ts"],
+  testMatch: [
+    "conversation.spec.ts",
+    "model-picker.spec.ts",
+    "rich-answer.spec.ts",
+    "agent-avatar.spec.ts",
+  ],
   workers: 1,
   retries: 0,
   reporter: [["list"], ["json", { outputFile: "test-results/conversation-report.json" }]],

@@ -394,7 +394,7 @@ function NativeApprovalCard({
     <section className="w-full max-w-[560px] space-y-3 rounded-[20px] bg-card px-4 pb-3.5 pt-3 ring-[0.5px] ring-foreground/10">
       <p className="flex items-center gap-1.5 text-[13px] leading-[18px] text-muted-foreground">
         {agent ? (
-          <AgentAvatar agent={agent} state="happy" className="size-4" />
+          <AgentAvatar agent={agent} state="listening" className="size-4" />
         ) : (
           <ShieldCheck size={14} strokeWidth={1.5} />
         )}
@@ -524,7 +524,7 @@ function NativeQuestion({
       }}
     >
       <p className="mb-1.5 flex items-center gap-1.5 text-[13px] leading-[18px] text-muted-foreground">
-        {agent && <AgentAvatar agent={agent} state="happy" className="size-4" />}
+        {agent && <AgentAvatar agent={agent} state="listening" className="size-4" />}
         {author} menunggu jawaban kamu
       </p>
       <div className="mb-3 flex items-start gap-2">

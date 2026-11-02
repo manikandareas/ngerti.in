@@ -95,7 +95,7 @@ export function ConversationNavigation({
           onClick={() => choose(primary.id)}
         >
           <span className="relative flex">
-            <AgentAvatar agent={tobi} className="size-14" />
+            <AgentAvatar agent={tobi} threadId={primary.id} className="size-14" />
             <span className="primary-role-badge absolute -bottom-px -right-px flex size-4 items-center justify-center rounded-full bg-[#e8993a] text-white ring-2 ring-panel">
               <Crown size={10} strokeWidth={1.5} fill="currentColor" aria-hidden="true" />
             </span>
@@ -126,6 +126,7 @@ export function ConversationNavigation({
               >
                 <AgentAvatar
                   agent={member}
+                  threadId={thread.id}
                   name={name}
                   group={thread.type === "group"}
                   largeGroup

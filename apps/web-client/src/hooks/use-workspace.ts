@@ -1,9 +1,17 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { command, followEvents, request } from "@/lib/api-client";
-import type { Agent, Connection, Opening, Snapshot, Thread } from "@/types/workspace";
+import type {
+  Agent,
+  AgentActivities,
+  Connection,
+  Opening,
+  Snapshot,
+  Thread,
+} from "@/types/workspace";
 
 export function useWorkspace() {
   const [agents, setAgents] = useState<Agent[]>([]);
+  const [activity, setActivity] = useState<AgentActivities>({ cursor: 0, items: [] });
   const [threads, setThreads] = useState<Thread[]>([]);
   const [connections, setConnections] = useState<Connection[]>([]);
   const [threadId, selectThread] = useState<string | null>(() =>
@@ -21,10 +29,11 @@ export function useWorkspace() {
   const refresh = useCallback(
     async (signal?: AbortSignal) => {
       const generation = epoch.current;
-      const [nextAgents, nextThreads, nextConnections] = await Promise.all([
+      const [nextAgents, nextThreads, nextConnections, nextActivity] = await Promise.all([
         request<Agent[]>("/v1/entities/agent", undefined, undefined, signal),
         request<Thread[]>("/v1/entities/thread", undefined, undefined, signal),
         request<Connection[]>("/v1/entities/connection", undefined, undefined, signal),
+        request<AgentActivities>("/v1/agents/activity", undefined, undefined, signal),
       ]);
       if (signal?.aborted || generation !== epoch.current || selectedThread.current !== threadId)
         return;
@@ -36,6 +45,7 @@ export function useWorkspace() {
       );
       setThreads(nextThreads.filter((t) => t.purpose === "conversation"));
       setConnections(nextConnections);
+      setActivity((previous) => (nextActivity.cursor >= previous.cursor ? nextActivity : previous));
       if (threadId) {
         const [next, state] = await Promise.all([
           request<Snapshot>(`/v1/threads/${threadId}/snapshot`, undefined, undefined, signal),
@@ -48,8 +58,9 @@ export function useWorkspace() {
           setSnapshot(next);
           setOpening(state);
         }
-        return next.cursor;
+        return Math.min(next.cursor, nextActivity.cursor);
       }
+      return nextActivity.cursor;
     },
     [threadId],
   );
@@ -119,6 +130,7 @@ export function useWorkspace() {
   };
   return {
     agents,
+    activity,
     threads,
     connections,
     snapshot,

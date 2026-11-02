@@ -118,7 +118,6 @@ export function BrowserSection({
                 <span className="opacity-60">
                   <AgentAvatar
                     agent={selected}
-                    state={lastSession?.active_run_id ? "working" : "sleeping"}
                     className={lastSession?.active_run_id ? "size-[52px]" : "size-11"}
                   />
                 </span>

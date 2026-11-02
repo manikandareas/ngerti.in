@@ -1,5 +1,6 @@
 import type { Elysia } from "elysia";
 import { z } from "zod";
+import { readAgentActivities } from "../agents/activity";
 import { agentInput, agentUpdate, id, threadInput } from "../contracts";
 import { Conversations, historyQuery } from "../conversations";
 import {
@@ -16,6 +17,7 @@ export function registerConversationRoutes(api: Elysia, lifecycle: Lifecycle, co
   const conversations = new Conversations(lifecycle);
   const creation = new Creation(lifecycle);
   return api
+    .get("/v1/agents/activity", () => readAgentActivities(lifecycle.store))
     .get("/v1/threads/:id/opening", ({ params }) => openingState(lifecycle, params.id), {
       params: z.object({ id }),
     })

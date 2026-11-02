@@ -5,6 +5,7 @@ import type { Artifact } from "@/types/work";
 import type { Agent, Connection, Snapshot, Thread } from "@/types/workspace";
 import { type AgentPage, AgentPanel } from "./agent-panel";
 import { AppConnections } from "./app-connections";
+import { AgentActivityStatus } from "./avatar-activity";
 import { BrowserSection } from "./browser-section";
 import { FilesPanel } from "./files-panel";
 import { GroupPanel } from "./group-panel";
@@ -112,7 +113,6 @@ export function ContextPanel({
                 <AgentAvatar
                   key={member.id}
                   agent={member}
-                  state="happy"
                   className="size-[52px] rounded-2xl ring-[3px] ring-background"
                 />
               ))}
@@ -120,15 +120,9 @@ export function ContextPanel({
           ) : (
             <AgentAvatar
               agent={agent}
-              state={
-                snapshot.runs.some(
-                  (run) =>
-                    run.agent_id === agent?.id && ["running", "dispatching"].includes(run.status),
-                )
-                  ? "working"
-                  : "idle"
-              }
               animated
+              interactive
+              followPointer
               className="size-20 rounded-[24px] text-3xl"
             />
           )}
@@ -141,6 +135,7 @@ export function ContextPanel({
           >
             {snapshot.thread.name ?? agent?.name ?? "Percakapan"}
           </h2>
+          {snapshot.thread.type === "dm" && <AgentActivityStatus agentId={agent?.id} />}
         </div>
         <TabsList className="context-tabs mt-[15px]" aria-label="Detail sesuai konteks">
           <TabsTrigger value="agent">

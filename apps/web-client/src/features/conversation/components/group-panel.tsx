@@ -39,7 +39,13 @@ export function GroupPanel({
           }}
         />
         <div className="flex flex-col items-center gap-3 py-4 text-center">
-          <AgentAvatar agent={profile} className="size-16 rounded-[20px] text-2xl" />
+          <AgentAvatar
+            agent={profile}
+            animated
+            interactive
+            followPointer
+            className="size-16 rounded-[20px] text-2xl"
+          />
           <p className="text-[13px] leading-[1.5] text-muted-foreground">
             {profile.soul || "Anggota grup"}
           </p>

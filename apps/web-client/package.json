@@ -16,6 +16,7 @@
     "test:work": "bun run build && playwright test --config playwright.work.config.ts"
   },
   "dependencies": {
+    "@ngertiin/avatar": "workspace:*",
     "@base-ui/react": "^1.9.0",
     "@fontsource-variable/geist": "^5.3.0",
     "@fontsource-variable/geist-mono": "^5.3.0",

@@ -1,0 +1,10 @@
+{
+  "name": "@ngertiin/avatar",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./catalog": "./src/catalog.ts",
+    "./config": "./src/config.ts"
+  }
+}

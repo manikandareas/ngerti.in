@@ -49,6 +49,7 @@ import { ContextPanel, type PanelLocation } from "@/features/conversation/compon
 import { CreateGroup } from "@/features/conversation/components/create-group";
 import { HumanReply } from "@/features/conversation/components/human-reply";
 import { AgentAvatar, agentStyle } from "@/features/conversation/components/identity";
+import { MessageTime } from "@/features/conversation/components/message-time";
 import { ModelPicker } from "@/features/conversation/components/model-picker";
 import { NativeInteractions } from "@/features/conversation/components/native-interactions";
 import { ConversationNavigation } from "@/features/conversation/components/navigation";
@@ -58,6 +59,7 @@ import {
 } from "@/features/conversation/components/queued-messages";
 import { UserMessageText } from "@/features/conversation/components/user-message-text";
 import { WorkActivity } from "@/features/conversation/components/work-activity";
+import { WorkspaceProviders } from "@/features/conversation/components/workspace-providers";
 import { attachmentParts } from "@/features/conversation/lib/attachment-references";
 import { messageTimeline } from "@/features/conversation/lib/message-timeline";
 import {
@@ -67,7 +69,6 @@ import {
 import { useComposerAttachments } from "@/features/conversation/lib/use-composer-attachments";
 import { useSettingsDialog } from "@/features/settings/hooks/use-settings-dialog";
 import type { SettingsSectionId } from "@/features/settings/lib/settings-search";
-import { SettingsWorkspaceContext } from "@/hooks/settings-workspace";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useWorkspace } from "@/hooks/use-workspace";
@@ -120,6 +121,7 @@ export default function Workspace() {
     setError,
   } = workspace;
   const [draft, setDraft] = useState("");
+  const [composerFocused, setComposerFocused] = useState(false);
   const conversationSurface = useRef<HTMLElement>(null);
   const composerInput = useRef<ComposerInputHandle>(null);
   const pendingComposerFocus = useRef(false);
@@ -539,10 +541,21 @@ export default function Workspace() {
     );
   }
   function answer(message: MessageEntity) {
+    const author = agents.find((agent) => agent.id === message.author_agent_id);
+    const sender =
+      snapshot?.thread.type === "group" && message.author === "agent"
+        ? {
+            name: author?.name ?? "Agent",
+            style: agentStyle(author),
+            open: author ? () => openResource("agent", author.id) : undefined,
+          }
+        : undefined;
     const anchors = nativeTranscript.anchors.get(message.id) ?? [];
     if (!anchors.length)
       return (
         <Answer
+          sentAt={message.created_at}
+          sender={sender}
           text={message.text || "Sedang menulis…"}
           openResource={openResource}
           snapshot={snapshot ?? undefined}
@@ -555,7 +568,13 @@ export default function Workspace() {
       return (
         <Fragment key={offset}>
           {text && (
-            <Answer text={text} openResource={openResource} snapshot={snapshot ?? undefined} />
+            <Answer
+              sentAt={message.created_at}
+              sender={sender}
+              text={text}
+              openResource={openResource}
+              snapshot={snapshot ?? undefined}
+            />
           )}
           {fragments.map(nativeFragment)}
         </Fragment>
@@ -566,6 +585,8 @@ export default function Workspace() {
         {parts}
         {start < message.text.length && (
           <Answer
+            sentAt={message.created_at}
+            sender={sender}
             text={message.text.slice(start)}
             openResource={openResource}
             snapshot={snapshot ?? undefined}
@@ -620,8 +641,14 @@ export default function Workspace() {
     </div>
   );
   return (
-    <SettingsWorkspaceContext.Provider
-      value={{
+    <WorkspaceProviders
+      activity={{
+        items: workspace.activity.items,
+        threadId,
+        listeningThreadId: composerFocused && draft.trim() ? threadId : null,
+        online: workspace.online,
+      }}
+      settings={{
         agents,
         connections,
         refresh,
@@ -708,8 +735,6 @@ export default function Workspace() {
                   agent={agent}
                   group={snapshot?.thread.type === "group"}
                   members={snapshot?.agents}
-                  state={activeRun ? "working" : "idle"}
-                  animated={!!activeRun}
                   className="size-6 rounded-lg text-xs"
                 />
                 <span className="truncate">
@@ -871,35 +896,58 @@ export default function Workspace() {
                           data-join-above={joins(visibleMessages[index - 1], message) || undefined}
                           data-join-below={joins(message, visibleMessages[index + 1]) || undefined}
                         >
-                          <MessageContent>
-                            <MessageHeader
-                              className={
-                                snapshot.thread.type === "group" && message.author !== "user"
-                                  ? "message-author px-3 text-[12px] text-muted-foreground font-normal"
-                                  : "sr-only"
-                              }
+                          {snapshot.thread.type === "group" && message.author === "agent" && (
+                            <button
+                              type="button"
+                              className="group-message-avatar mt-0.5 shrink-0 self-start rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                              aria-label={`Profil ${author?.name ?? "agent"}`}
+                              disabled={!author}
+                              onClick={() => {
+                                if (author) openResource("agent", author.id);
+                              }}
                             >
-                              {message.author === "user" ? (
-                                "Kamu"
-                              ) : snapshot.thread.type === "group" && author ? (
-                                <button
-                                  type="button"
-                                  className="text-link hover:underline"
-                                  onClick={() => openResource("agent", author.id)}
-                                >
-                                  {author.name}
-                                </button>
-                              ) : (
-                                (author?.name ?? "Agent")
-                              )}
-                            </MessageHeader>
+                              <AgentAvatar
+                                agent={author}
+                                className="size-8"
+                                animated={message.state === "partial"}
+                                state={message.state === "partial" ? undefined : "idle"}
+                              />
+                            </button>
+                          )}
+                          <MessageContent>
+                            {!(snapshot.thread.type === "group" && message.author === "agent") && (
+                              <MessageHeader
+                                className={
+                                  snapshot.thread.type === "group" && message.author !== "user"
+                                    ? "message-author px-3 text-[12px] text-muted-foreground font-normal"
+                                    : "sr-only"
+                                }
+                              >
+                                {message.author === "user" ? (
+                                  "Kamu"
+                                ) : snapshot.thread.type === "group" && author ? (
+                                  <button
+                                    type="button"
+                                    className="text-link hover:underline"
+                                    onClick={() => openResource("agent", author.id)}
+                                  >
+                                    {author.name}
+                                  </button>
+                                ) : (
+                                  (author?.name ?? "Agent")
+                                )}
+                              </MessageHeader>
+                            )}
                             {message.author === "user" ? (
                               <Bubble variant="secondary" className="chat-user-bubble">
                                 <BubbleContent className="chat-bubble-content text-[15px] leading-[22px] whitespace-pre-wrap">
-                                  <UserMessageText
-                                    message={message}
-                                    artifacts={snapshot.artifacts}
-                                  />
+                                  <div data-message-text>
+                                    <UserMessageText
+                                      message={message}
+                                      artifacts={snapshot.artifacts}
+                                    />
+                                  </div>
+                                  <MessageTime at={message.created_at} />
                                 </BubbleContent>
                               </Bubble>
                             ) : (
@@ -1045,7 +1093,13 @@ export default function Workspace() {
                 </ConversationContent>
                 <ConversationScrollButton className="conversation-latest" />
               </Conversation>
-              <div className="composer-dock [max-width:calc(var(--chat-column-max)_+_40px)] [margin:auto] [padding:12px_20px_16px] w-full shrink-0">
+              <div
+                onFocusCapture={() => setComposerFocused(true)}
+                onBlurCapture={(event) => {
+                  if (!event.currentTarget.contains(event.relatedTarget)) setComposerFocused(false);
+                }}
+                className="composer-dock [max-width:calc(var(--chat-column-max)_+_40px)] [margin:auto] [padding:12px_20px_16px] w-full shrink-0"
+              >
                 {connection?.login !== "authenticated" && (
                   <Button
                     variant="ghost"
@@ -1334,6 +1388,6 @@ export default function Workspace() {
           <SettingsDialog />
         </Suspense>
       )}
-    </SettingsWorkspaceContext.Provider>
+    </WorkspaceProviders>
   );
 }

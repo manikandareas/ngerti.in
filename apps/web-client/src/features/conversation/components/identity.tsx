@@ -1,19 +1,14 @@
 import { Users } from "lucide-react";
-import type { CSSProperties } from "react";
-import chromeAvatar from "@/assets/openmaus/cursor-chrome.webp";
-import { CursorAvatar, type CursorState } from "@/components/openmaus-avatar/CursorAvatar";
+import { type CSSProperties, useEffect, useMemo, useRef, useState } from "react";
+import { AgentAvatar as ProceduralAvatar } from "@/features/avatar/components/agent-avatar";
+import type { AvatarState } from "@/features/avatar/engine/catalog";
+import { defaultAgentAvatar, parseAvatarConfig } from "@/features/avatar/engine/config";
+import type { AvatarController } from "@/features/avatar/engine/controller";
 import { cn } from "@/lib/utils";
 import type { Agent } from "@/types/workspace";
+import { useAvatarActivity } from "./avatar-activity";
 
 const tones = ["pink", "blue", "teal", "purple", "orange"] as const;
-const colors = {
-  pink: "#d84f8b",
-  blue: "#377fe6",
-  teal: "#01a492",
-  purple: "#8057c8",
-  orange: "#e78531",
-  silver: "#a8adb4",
-};
 // Flat Simple-mode fills evaluated with upstream userBubbleTone at the pinned revision.
 const bubbleFills = {
   pink: "#d03b73",
@@ -27,19 +22,6 @@ const bubbleFills = {
 function toneOf(agent?: Agent) {
   const hash = Array.from(agent?.id ?? "").reduce((value, char) => value + char.charCodeAt(0), 0);
   return agent?.system_role === "tobi" ? "silver" : tones[hash % tones.length];
-}
-
-// The same three-stop material used by OpenMausBot's GradientAvatar.
-function gradientOf(color: string): [string, string, string] {
-  const mix = (toward: number, amount: number) =>
-    `#${[1, 3, 5]
-      .map((at) =>
-        Math.round(parseInt(color.slice(at, at + 2), 16) * (1 - amount) + toward * amount)
-          .toString(16)
-          .padStart(2, "0"),
-      )
-      .join("")}`;
-  return [mix(255, 0.55), color, mix(0, 0.42)];
 }
 
 // A local visual identity, stable across DM/group views and profile renames.
@@ -59,8 +41,11 @@ export function AgentAvatar({
   largeGroup = false,
   members,
   className,
-  state = "idle",
-  animated = false,
+  state,
+  animated,
+  threadId,
+  interactive = false,
+  followPointer = false,
 }: {
   agent?: Agent;
   name?: string;
@@ -68,17 +53,55 @@ export function AgentAvatar({
   largeGroup?: boolean;
   members?: Agent[];
   className?: string;
-  state?: CursorState;
+  state?: AvatarState;
   animated?: boolean;
+  threadId?: string;
+  interactive?: boolean;
+  followPointer?: boolean;
 }) {
+  const view = useAvatarActivity(agent?.id, threadId);
+  const { version, seed, shape, color, face } = agent?.avatar_config ?? {};
+  const config = useMemo(
+    () =>
+      parseAvatarConfig({ version, seed, shape, color, face }) ??
+      defaultAgentAvatar(agent?.id ?? "unknown-agent", agent?.system_role === "tobi"),
+    [agent?.id, agent?.system_role, version, seed, shape, color, face],
+  );
+  const controller = useRef<AvatarController | null>(null);
+  const runId = view.activity?.run_id;
+  const status = view.activity?.status;
+  const waiting = view.activity?.waiting_for_user;
+  const previous = useRef({ runId, status });
+  const [celebrating, setCelebrating] = useState(false);
+  useEffect(() => {
+    const last = previous.current;
+    previous.current = { runId, status };
+    if (last.runId === runId && last.status !== "succeeded" && status === "succeeded" && !waiting) {
+      setCelebrating(true);
+      const timer = setTimeout(() => setCelebrating(false), 1600);
+      return () => clearTimeout(timer);
+    }
+    setCelebrating(false);
+  }, [runId, status, waiting]);
+  const effectiveState =
+    state ?? (celebrating && view.state === "idle" ? "celebrating" : view.state);
+  const animate = animated ?? effectiveState !== "idle";
+  const Host = interactive && !group ? "button" : "span";
   return (
-    <span
+    <Host
+      type={Host === "button" ? "button" : undefined}
+      onClick={Host === "button" ? () => controller.current?.play("boop") : undefined}
+      aria-label={Host === "button" ? `Sapa ${agent?.name ?? name ?? "agent"}` : undefined}
+      aria-hidden={Host === "button" ? undefined : true}
+      title={view.label}
+      data-agent-id={group ? undefined : agent?.id}
+      data-activity-label={view.label}
+      data-avatar-seed={group ? undefined : config.seed}
       className={cn(
         "agent-avatar relative size-9 inline-flex shrink-0 items-center justify-center text-base font-medium",
         className,
       )}
       style={agentStyle(agent)}
-      aria-hidden="true"
     >
       {group ? (
         members?.length ? (
@@ -87,6 +110,8 @@ export function AgentAvatar({
               <AgentAvatar
                 key={member.id}
                 agent={member}
+                threadId={threadId}
+                animated={animated}
                 className={largeGroup ? "size-[26px]" : "size-[58%]"}
               />
             ))}
@@ -99,28 +124,16 @@ export function AgentAvatar({
         ) : (
           <Users className="size-6 text-muted-foreground" strokeWidth={1.5} />
         )
-      ) : agent?.system_role === "tobi" ? (
-        <img src={chromeAvatar} alt="" className="size-full object-contain" />
-      ) : agent?.avatar && agent.avatar !== "🤖" ? (
-        <span className="flex size-full items-center justify-center rounded-[25%] bg-secondary text-[inherit]">
-          {agent.avatar}
-        </span>
       ) : (
-        <CursorAvatar
+        <ProceduralAvatar
+          ref={controller}
+          config={config}
+          state={effectiveState}
           size="100%"
-          className="size-full"
-          title={null}
-          state={state}
-          gradient={gradientOf(colors[toneOf(agent)])}
-          eyeScale={1.12}
-          mouthStroke={11}
-          paused={!animated}
-          autoBlink={animated}
-          autoExpression={animated}
-          lookAround={0}
+          animated={animate}
+          followPointer={followPointer}
         />
       )}
-      <span className="sr-only">{agent?.name ?? name}</span>
-    </span>
+    </Host>
   );
 }

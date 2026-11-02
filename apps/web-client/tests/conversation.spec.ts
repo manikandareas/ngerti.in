@@ -40,9 +40,9 @@ test("an idle DM shows its first admitted message directly in the conversation",
     .getByRole("textbox", { name: "Pesan", exact: true })
     .fill("Send directly in an idle DM.");
   await page.getByRole("button", { name: "Kirim", exact: true }).click();
-  await expect(page.locator(".conversation-message .chat-user-bubble")).toHaveText(
-    "Send directly in an idle DM.",
-  );
+  await expect(
+    page.locator(".conversation-message .chat-user-bubble [data-message-text]"),
+  ).toHaveText("Send directly in an idle DM.");
   await expect(page.locator("[data-queued-message]")).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Arahkan sekarang", exact: true })).toHaveCount(0);
   await expect(page.locator(".message-run-state")).toContainText("Menghubungkan");
@@ -93,6 +93,7 @@ test("queued inputs enter the transcript after the preceding answer, including l
   });
   const composer = page.getByRole("textbox", { name: "Pesan", exact: true });
   for (const text of ["Input 1", "Input 2", "Input 3"]) {
+    await expect(composer).toHaveAttribute("contenteditable", "true");
     await composer.fill(text);
     await composer.press("Enter");
     await expect(composer).toHaveText("");
@@ -110,7 +111,7 @@ test("queued inputs enter the transcript after the preceding answer, including l
   await page.reload();
   await expect(
     page.locator(
-      ".conversation-message .chat-user-bubble, .conversation-message .chat-agent-bubble",
+      ".conversation-message .chat-user-bubble [data-message-text], .conversation-message .chat-agent-bubble [data-message-text]",
     ),
   ).toHaveText(["Input 1", "Answer 1", "Input 2"]);
   await expect(page.locator("[data-queued-message]")).toHaveCount(1);
@@ -118,7 +119,7 @@ test("queued inputs enter the transcript after the preceding answer, including l
   await page.reload();
   await expect(
     page.locator(
-      ".conversation-message .chat-user-bubble, .conversation-message .chat-agent-bubble",
+      ".conversation-message .chat-user-bubble [data-message-text], .conversation-message .chat-agent-bubble [data-message-text]",
     ),
   ).toHaveText(["Input 1", "Answer 1", "Input 2", "Answer 2", "Input 3", "Answer 3"]);
   await expect(page.locator("[data-queued-message]")).toHaveCount(0);

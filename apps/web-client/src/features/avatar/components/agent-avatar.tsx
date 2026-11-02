@@ -7,7 +7,7 @@ import "./avatar.css";
 export interface AgentAvatarProps {
   config: AvatarConfig;
   state?: AvatarState;
-  size?: number;
+  size?: number | string;
   animated?: boolean;
   followPointer?: boolean;
   shadow?: boolean;
@@ -42,11 +42,13 @@ export function AgentAvatar({
     [],
   );
 
+  initial.current = { config, state };
   useEffect(() => {
-    initial.current = { config, state };
     controller.current?.setConfig(config);
+  }, [config]);
+  useEffect(() => {
     controller.current?.setState(state);
-  }, [config, state]);
+  }, [state]);
 
   useEffect(() => {
     if (!host.current) return;
@@ -67,7 +69,7 @@ export function AgentAvatar({
     <span
       ref={host}
       className={`ngertiin-avatar ${className}`}
-      style={{ "--avatar-size": `${size}px` } as CSSProperties}
+      style={{ "--avatar-size": typeof size === "number" ? `${size}px` : size } as CSSProperties}
       role="img"
       aria-label={label}
       aria-hidden={label ? undefined : true}

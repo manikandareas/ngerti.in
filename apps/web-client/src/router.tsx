@@ -68,6 +68,9 @@ const themePreviewRoute = createRoute({
 const avatarStudioRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/avatar-studio",
+  validateSearch: (search: Record<string, unknown>): { agent?: string } => ({
+    agent: typeof search.agent === "string" ? search.agent : undefined,
+  }),
   component: lazyRouteComponent(() => import("@/features/avatar/components/avatar-studio")),
 });
 

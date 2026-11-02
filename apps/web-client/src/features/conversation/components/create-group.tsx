@@ -125,7 +125,7 @@ export function CreateGroup({
                     )
                   }
                 />
-                <AgentAvatar agent={a} state="happy" className="size-7 rounded-lg text-xs" />
+                <AgentAvatar agent={a} state="idle" className="size-7 rounded-lg text-xs" />
                 <span className="min-w-0 flex-1 truncate text-[14px]">{a.name}</span>
                 <span
                   aria-hidden="true"

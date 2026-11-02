@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { Brain, FileText, Pencil, Trash2, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
@@ -280,6 +281,13 @@ export function AgentPanel({
           <p className="mx-1 mb-3.5 whitespace-pre-wrap text-center text-[13px] leading-[1.5] text-muted-foreground">
             {agent.soul || "Ceritakan bantuan yang kamu butuhkan di chat."}
           </p>
+          <div className="mb-3 flex justify-center">
+            <Button variant="ghost" size="sm" asChild>
+              <Link to="/avatar-studio" search={{ agent: agent.id }}>
+                Ubah avatar
+              </Link>
+            </Button>
+          </div>
           <PanelCard>
             <AgentModelRow
               agent={agent}

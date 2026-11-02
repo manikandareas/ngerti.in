@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useSearch } from "@tanstack/react-router";
 import {
   ArrowDownToLine,
   ArrowLeft,
@@ -15,6 +15,8 @@ import {
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
+import { command, request } from "@/lib/api-client";
+import type { Agent } from "@/types/workspace";
 import {
   type AvatarAction,
   type AvatarColor,
@@ -27,7 +29,12 @@ import {
   avatarShapes,
   avatarStates,
 } from "../engine/catalog";
-import { type AvatarConfig, createAvatar, parseAvatarConfig } from "../engine/config";
+import {
+  type AvatarConfig,
+  createAvatar,
+  defaultAgentAvatar,
+  parseAvatarConfig,
+} from "../engine/config";
 import type { AvatarController } from "../engine/controller";
 import { downloadAvatarFile, exportAvatar } from "../engine/export";
 import { AgentAvatar } from "./agent-avatar";
@@ -82,6 +89,13 @@ function makeFamily(): AvatarConfig[] {
 }
 
 export default function AvatarStudio() {
+  const { agent: agentId } = useSearch({ from: "/avatar-studio" });
+  const [target, setTarget] = useState<Agent | null>(null);
+  const [loading, setLoading] = useState(!!agentId);
+  const [loadError, setLoadError] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState("");
+  const [saved, setSaved] = useState<string | null>(null);
   const [config, setConfig] = useState(loadConfig);
   const [tab, setTab] = useState<keyof typeof tabs>("shape");
   const [state, setState] = useState<AvatarState>("idle");
@@ -96,13 +110,49 @@ export default function AvatarStudio() {
   const { resolvedTheme, setTheme } = useTheme();
 
   useEffect(() => {
+    if (!agentId) {
+      setTarget(null);
+      setLoading(false);
+      return;
+    }
+    const abort = new AbortController();
+    setLoading(true);
+    setLoadError("");
+    setSaved(null);
+    setSaveError("");
+    request<Agent>(
+      `/v1/entities/agent/${encodeURIComponent(agentId)}`,
+      undefined,
+      undefined,
+      abort.signal,
+    )
+      .then((agent) => {
+        if (abort.signal.aborted) return;
+        setTarget(agent);
+        setConfig(
+          parseAvatarConfig(agent.avatar_config) ??
+            defaultAgentAvatar(agent.id, agent.system_role === "tobi"),
+        );
+        setState("idle");
+      })
+      .catch((error) => {
+        if (!abort.signal.aborted) setLoadError(error.message);
+      })
+      .finally(() => {
+        if (!abort.signal.aborted) setLoading(false);
+      });
+    return () => abort.abort();
+  }, [agentId]);
+
+  useEffect(() => {
+    if (agentId) return;
     try {
       localStorage.setItem(storageKey, JSON.stringify(config));
       setStorageError(false);
     } catch {
       setStorageError(true);
     }
-  }, [config]);
+  }, [config, agentId]);
   useEffect(() => () => clearTimeout(reactionTimer.current), []);
 
   function play(action: AvatarAction) {
@@ -144,6 +194,38 @@ export default function AvatarStudio() {
     setState("idle");
   }
 
+  async function saveToAgent() {
+    if (!target || saving) return;
+    setSaving(true);
+    setSaveError("");
+    setSaved(null);
+    try {
+      const updated = await command<Agent>(`/v1/agents/${target.id}/configuration`, {
+        expected_revision: target.revision,
+        changes: { avatar_config: config },
+      });
+      setTarget(updated);
+      setSaved(JSON.stringify(config));
+      toast.success(`Avatar ${updated.name} tersimpan.`);
+    } catch (error) {
+      setSaveError(
+        error instanceof Error
+          ? `${error.message} Buka ulang editor untuk memuat profil terbaru sebelum mencoba lagi.`
+          : "Avatar belum tersimpan.",
+      );
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  if (agentId && (loading || loadError || target?.id !== agentId))
+    return (
+      <main className="avatar-studio space-y-4 py-12">
+        <Link to="/">Kembali ke Ngertiin</Link>
+        <p role={loadError ? "alert" : "status"}>{loadError || "Memuat avatar agent…"}</p>
+      </main>
+    );
+
   return (
     <main className="avatar-studio">
       <header className="studio-header">
@@ -170,7 +252,11 @@ export default function AvatarStudio() {
       <section className="studio-intro">
         <div>
           <h1>Teman kecil, banyak ekspresi.</h1>
-          <p>Beri agent-mu karakter yang hidup. Mulai dari satu bentuk.</p>
+          <p>
+            {target
+              ? `Karakter untuk ${target.name}. Dipakai di DM dan grup.`
+              : "Beri agent-mu karakter yang hidup. Mulai dari satu bentuk."}
+          </p>
         </div>
         <button
           type="button"
@@ -183,6 +269,29 @@ export default function AvatarStudio() {
           <Dices size={16} /> Acak karakter
         </button>
       </section>
+
+      {target && (
+        <div className="mb-5 flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            className="studio-button studio-button-primary"
+            disabled={saving}
+            onClick={() => void saveToAgent()}
+          >
+            {saving ? "Menyimpan…" : `Gunakan untuk ${target.name}`}
+          </button>
+          {saved === JSON.stringify(config) && (
+            <span role="status" className="text-sm text-muted-foreground">
+              Avatar tersimpan untuk {target.name}.
+            </span>
+          )}
+          {saveError && (
+            <p role="alert" className="text-sm text-destructive">
+              {saveError}
+            </p>
+          )}
+        </div>
+      )}
 
       <div className="studio-workbench">
         <section className="studio-preview" aria-label="Pratinjau avatar">
@@ -430,9 +539,11 @@ export default function AvatarStudio() {
           <div className="studio-recipe">
             <div>
               <span>
-                {storageError
-                  ? "Penyimpanan browser tidak tersedia"
-                  : "Karakter tersimpan di browser"}
+                {target
+                  ? `Avatar ${target.name}`
+                  : storageError
+                    ? "Penyimpanan browser tidak tersedia"
+                    : "Karakter tersimpan di browser"}
               </span>
               <p>Simpan resep untuk memakai karakter ini lagi.</p>
             </div>

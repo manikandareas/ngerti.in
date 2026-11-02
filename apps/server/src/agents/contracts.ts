@@ -1,5 +1,20 @@
+import { avatarColors, avatarFaces, avatarShapes } from "@ngertiin/avatar/catalog";
 import { z } from "zod";
 import { base, harness, id } from "../contracts/base";
+
+export const avatarConfig = z.strictObject({
+  version: z.literal(1),
+  seed: z.string().min(1).max(128),
+  shape: z.enum(
+    Object.keys(avatarShapes) as [keyof typeof avatarShapes, ...Array<keyof typeof avatarShapes>],
+  ),
+  color: z.enum(
+    Object.keys(avatarColors) as [keyof typeof avatarColors, ...Array<keyof typeof avatarColors>],
+  ),
+  face: z.enum(
+    Object.keys(avatarFaces) as [keyof typeof avatarFaces, ...Array<keyof typeof avatarFaces>],
+  ),
+});
 
 const agentFields = {
   name: z.string().trim().min(1).max(200),
@@ -7,7 +22,12 @@ const agentFields = {
     .string()
     .regex(/^[a-z][a-z0-9_-]{0,63}$/)
     .nullable(),
-  avatar: z.string().max(2000).nullable(),
+  avatar: z
+    .string()
+    .max(2000)
+    .nullable()
+    .describe("Legacy text avatar. Use avatar_config for procedural agent identity."),
+  avatar_config: avatarConfig.nullable(),
   soul: z.string().max(100_000),
   skills: z
     .array(
@@ -31,6 +51,7 @@ export const agentInput = z.strictObject({
   billing_source: agentFields.billing_source.default(null),
   handle: agentFields.handle.default(null),
   avatar: agentFields.avatar.default(null),
+  avatar_config: agentFields.avatar_config.default(null),
   soul: agentFields.soul.default(""),
   skills: agentFields.skills.default([]),
   instructions: agentFields.instructions.default(""),

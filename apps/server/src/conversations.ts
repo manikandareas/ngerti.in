@@ -1,3 +1,4 @@
+import { defaultAgentAvatar } from "@ngertiin/avatar/config";
 import { z } from "zod";
 import {
   agent,
@@ -58,6 +59,7 @@ export class Conversations {
       const created = this.lifecycle.createAgent({
         name: "Tobi",
         handle: "tobi",
+        avatar_config: defaultAgentAvatar("tobi-circle", true),
         soul: "A thoughtful generalist who helps the user turn conversations into useful work.",
         instructions:
           "Help the user configure agents through Ngertiin product tools when requested. Report actual results and respect each conversation's private context.",

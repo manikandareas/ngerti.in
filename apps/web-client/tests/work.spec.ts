@@ -25,7 +25,7 @@ async function capture(page: Page, path: string) {
 async function expectNativeReceiptOrder(page: Page, ids: string[]) {
   expect(
     await page.evaluate((expected) => {
-      const user = [...document.querySelectorAll(".chat-user-bubble")].find(
+      const user = [...document.querySelectorAll(".chat-user-bubble [data-message-text]")].find(
         (element) => element.textContent?.trim() === "fixture interaction preface",
       );
       const preface = [...document.querySelectorAll("p")].find(
@@ -77,7 +77,8 @@ async function chooseAgent(page: Page, name: string) {
   if (await open.isVisible()) await open.click();
   await page
     .getByRole("navigation", { name: "Percakapan", exact: true })
-    .getByRole("button", { name: `${name} Codex / ChatGPT`, exact: true })
+    .getByRole("button")
+    .filter({ has: page.getByText(name, { exact: true }) })
     .click();
   await expect(page.getByRole("button", { name: `Detail ${name}`, exact: true })).toBeVisible();
 }

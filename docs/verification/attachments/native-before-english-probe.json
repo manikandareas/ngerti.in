@@ -1,0 +1,703 @@
+{
+  "contract": "1.21.0",
+  "started_at": "2026-11-02T10:01:20.182Z",
+  "lanes": [
+    {
+      "harness": "codex",
+      "version": "0.166.0",
+      "first": {
+        "run": {
+          "id": "6644f6e2-16d2-490d-a778-2aedbcf1fcf9",
+          "owner_id": "0f109ece-1e4d-47d9-8e04-338f099de399",
+          "revision": 12,
+          "created_at": "2026-11-02T10:01:20.594Z",
+          "updated_at": "2026-11-02T10:01:34.253Z",
+          "kind": "run",
+          "thread_id": "9ea96430-cc2b-442e-96e7-fbffc494fb6c",
+          "agent_id": "b153f6c2-b92e-49f3-9ac8-01c16cf8d7c3",
+          "input_message_id": "4705c3e8-620d-456f-b70a-5522548bb571",
+          "task_id": null,
+          "thread_revision": null,
+          "goal_id": null,
+          "routine_id": null,
+          "goal_generation": null,
+          "routine_generation": null,
+          "publication": "immediate",
+          "pending_answer": null,
+          "status": "succeeded",
+          "cancellation": "none",
+          "outcome": "succeeded",
+          "delivery": "delivered",
+          "activity": "idle",
+          "diagnostic": null,
+          "native_dispatch_id": null,
+          "grant_revision": 1,
+          "dispatch_token": "6e0c7de5-4f44-48bb-8151-78d40e3763e9",
+          "authority_epoch": "1963febf-dd3b-4e39-b2a2-8b5b0650bf22",
+          "binding_id": "678fdb07-e2df-41bc-93bd-18c9ad403eea",
+          "native_run_id": "01a19bb4-d953-7791-9a97-87fe1b3012d4",
+          "native_interactions": [],
+          "agent_snapshot": {
+            "name": "Attachment proof codex",
+            "handle": "agent_b153f6c2b92e49f39ac801c16cf8d7c3",
+            "avatar": null,
+            "avatar_config": {
+              "version": 1,
+              "seed": "b153f6c2-b92e-49f3-9ac8-01c16cf8d7c3",
+              "shape": "oval",
+              "color": "iris",
+              "face": "excited"
+            },
+            "soul": "",
+            "skills": [],
+            "harness": "codex",
+            "connection_id": "21c46fe4-b162-4fb3-a3d9-b9c20d8c4b74",
+            "billing_source": "subscription",
+            "instructions": "",
+            "workspace_id": null,
+            "model_id": "gpt-6.1-sol",
+            "reasoning": null,
+            "agent_id": "b153f6c2-b92e-49f3-9ac8-01c16cf8d7c3",
+            "revision": 1
+          },
+          "workspace_id": "e4065acc-83b7-4c50-a736-763afeb59199",
+          "workspace_revision": 1,
+          "product_tools": [
+            "ngertiin.describe_tools",
+            "ngertiin.read_attachment"
+          ],
+          "attachment_observations": [
+            {
+              "artifact_id": "9ed19da8-de1b-4541-88cf-b5d2667ebe90",
+              "source_sha256": "e43023a9e524a9b86fe38c066676a4b6f0c85c769d6023dfc0b00db66b181acf",
+              "operation": "context",
+              "pages": [
+                1,
+                2
+              ],
+              "truncated": true,
+              "created_at": "2026-11-02T10:01:22.974Z"
+            },
+            {
+              "artifact_id": "9ed19da8-de1b-4541-88cf-b5d2667ebe90",
+              "source_sha256": "e43023a9e524a9b86fe38c066676a4b6f0c85c769d6023dfc0b00db66b181acf",
+              "operation": "read",
+              "pages": [
+                3
+              ],
+              "truncated": false,
+              "created_at": "2026-11-02T10:01:30.529Z"
+            }
+          ],
+          "sources": [],
+          "visual_inputs": [],
+          "native_tools": []
+        },
+        "answer": "Saya akan membaca halaman 3 dari file tersebut.Kode verifikasinya adalah **TURQUOISE-01f9a770**, tercantum dalam **verification.pdf, halaman 3**.",
+        "binding": {
+          "id": "678fdb07-e2df-41bc-93bd-18c9ad403eea",
+          "owner_id": "0f109ece-1e4d-47d9-8e04-338f099de399",
+          "revision": 1,
+          "created_at": "2026-11-02T10:01:22.727Z",
+          "updated_at": "2026-11-02T10:01:22.727Z",
+          "kind": "binding",
+          "thread_id": "9ea96430-cc2b-442e-96e7-fbffc494fb6c",
+          "agent_id": "b153f6c2-b92e-49f3-9ac8-01c16cf8d7c3",
+          "connection_id": "21c46fe4-b162-4fb3-a3d9-b9c20d8c4b74",
+          "harness": "codex",
+          "native_session_id": "01a19bb4-d770-75c1-819f-821fa2e78be4",
+          "generation": 1,
+          "active": true,
+          "agent_revision": 1,
+          "workspace_id": "e4065acc-83b7-4c50-a736-763afeb59199",
+          "workspace_revision": 1
+        }
+      },
+      "followup": {
+        "run": {
+          "id": "2efa8af2-4e77-4480-9bef-8e558ebefe5f",
+          "owner_id": "0f109ece-1e4d-47d9-8e04-338f099de399",
+          "revision": 15,
+          "created_at": "2026-11-02T10:01:34.632Z",
+          "updated_at": "2026-11-02T10:01:48.388Z",
+          "kind": "run",
+          "thread_id": "9ea96430-cc2b-442e-96e7-fbffc494fb6c",
+          "agent_id": "b153f6c2-b92e-49f3-9ac8-01c16cf8d7c3",
+          "input_message_id": "98f96571-6e9e-4c0b-b813-031c90cbe275",
+          "task_id": null,
+          "thread_revision": null,
+          "goal_id": null,
+          "routine_id": null,
+          "goal_generation": null,
+          "routine_generation": null,
+          "publication": "immediate",
+          "pending_answer": null,
+          "status": "succeeded",
+          "cancellation": "none",
+          "outcome": "succeeded",
+          "delivery": "delivered",
+          "activity": "idle",
+          "diagnostic": null,
+          "native_dispatch_id": null,
+          "grant_revision": 1,
+          "dispatch_token": "589d49d2-1fe1-45ea-baa5-2b3b038cc623",
+          "authority_epoch": "c8a0a8e9-f450-4a23-81b0-b5fc5f6e023f",
+          "binding_id": "678fdb07-e2df-41bc-93bd-18c9ad403eea",
+          "native_run_id": "01a19bb5-0b3e-73b0-a5bc-5815ee07848d",
+          "native_interactions": [],
+          "agent_snapshot": {
+            "name": "Attachment proof codex",
+            "handle": "agent_b153f6c2b92e49f39ac801c16cf8d7c3",
+            "avatar": null,
+            "avatar_config": {
+              "version": 1,
+              "seed": "b153f6c2-b92e-49f3-9ac8-01c16cf8d7c3",
+              "shape": "oval",
+              "color": "iris",
+              "face": "excited"
+            },
+            "soul": "",
+            "skills": [],
+            "harness": "codex",
+            "connection_id": "21c46fe4-b162-4fb3-a3d9-b9c20d8c4b74",
+            "billing_source": "subscription",
+            "instructions": "",
+            "workspace_id": null,
+            "model_id": "gpt-6.1-sol",
+            "reasoning": null,
+            "agent_id": "b153f6c2-b92e-49f3-9ac8-01c16cf8d7c3",
+            "revision": 1
+          },
+          "workspace_id": "e4065acc-83b7-4c50-a736-763afeb59199",
+          "workspace_revision": 1,
+          "product_tools": [
+            "ngertiin.list_attachments",
+            "ngertiin.search_attachment",
+            "ngertiin.read_attachment"
+          ],
+          "attachment_observations": [
+            {
+              "artifact_id": "9ed19da8-de1b-4541-88cf-b5d2667ebe90",
+              "source_sha256": "e43023a9e524a9b86fe38c066676a4b6f0c85c769d6023dfc0b00db66b181acf",
+              "operation": "search",
+              "pages": [
+                4
+              ],
+              "truncated": false,
+              "created_at": "2026-11-02T10:01:43.491Z"
+            },
+            {
+              "artifact_id": "9ed19da8-de1b-4541-88cf-b5d2667ebe90",
+              "source_sha256": "e43023a9e524a9b86fe38c066676a4b6f0c85c769d6023dfc0b00db66b181acf",
+              "operation": "read",
+              "pages": [
+                4
+              ],
+              "truncated": false,
+              "created_at": "2026-11-02T10:01:45.999Z"
+            }
+          ],
+          "sources": [],
+          "visual_inputs": [],
+          "native_tools": []
+        },
+        "answer": "Saya akan mencari frasa “Final marker” pada lampiran tadi, lalu membaca halaman hasilnya.Dalam **verification.pdf, halaman 4**, tertulis: **“Final marker: indigo otter 7246”**.",
+        "binding": {
+          "id": "678fdb07-e2df-41bc-93bd-18c9ad403eea",
+          "owner_id": "0f109ece-1e4d-47d9-8e04-338f099de399",
+          "revision": 1,
+          "created_at": "2026-11-02T10:01:22.727Z",
+          "updated_at": "2026-11-02T10:01:22.727Z",
+          "kind": "binding",
+          "thread_id": "9ea96430-cc2b-442e-96e7-fbffc494fb6c",
+          "agent_id": "b153f6c2-b92e-49f3-9ac8-01c16cf8d7c3",
+          "connection_id": "21c46fe4-b162-4fb3-a3d9-b9c20d8c4b74",
+          "harness": "codex",
+          "native_session_id": "01a19bb4-d770-75c1-819f-821fa2e78be4",
+          "generation": 1,
+          "active": true,
+          "agent_revision": 1,
+          "workspace_id": "e4065acc-83b7-4c50-a736-763afeb59199",
+          "workspace_revision": 1
+        }
+      },
+      "connection": {
+        "id": "21c46fe4-b162-4fb3-a3d9-b9c20d8c4b74",
+        "owner_id": "0f109ece-1e4d-47d9-8e04-338f099de399",
+        "revision": 4,
+        "created_at": "2026-11-02T10:01:20.571Z",
+        "updated_at": "2026-11-02T10:01:34.252Z",
+        "kind": "connection",
+        "harness": "codex",
+        "authentication": {
+          "method": "native_login",
+          "billing_source": "subscription"
+        },
+        "state": "active",
+        "grant_revision": 3,
+        "account_id": "1a4a908aef634323d94a340a08c8330ca25340fc39fa938917a02cca44642a45",
+        "effective_billing_source": "subscription",
+        "login": "authenticated",
+        "discovery": "succeeded",
+        "models": [
+          {
+            "id": "gpt-6.1-sol",
+            "reasoning": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max",
+              "ultra"
+            ],
+            "input_modalities": [
+              "text",
+              "image"
+            ]
+          },
+          {
+            "id": "gpt-6-astra",
+            "reasoning": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max",
+              "ultra"
+            ],
+            "input_modalities": [
+              "text",
+              "image"
+            ]
+          },
+          {
+            "id": "gpt-6.1-terra",
+            "reasoning": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max",
+              "ultra"
+            ],
+            "input_modalities": [
+              "text",
+              "image"
+            ]
+          },
+          {
+            "id": "gpt-6-sol",
+            "reasoning": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max",
+              "ultra"
+            ],
+            "input_modalities": [
+              "text",
+              "image"
+            ]
+          },
+          {
+            "id": "gpt-6-luna",
+            "reasoning": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ],
+            "input_modalities": [
+              "text",
+              "image"
+            ]
+          },
+          {
+            "id": "gpt-5.6-sol",
+            "reasoning": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max",
+              "ultra"
+            ],
+            "input_modalities": [
+              "text",
+              "image"
+            ]
+          },
+          {
+            "id": "gpt-5.6-terra",
+            "reasoning": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max",
+              "ultra"
+            ],
+            "input_modalities": [
+              "text",
+              "image"
+            ]
+          },
+          {
+            "id": "gpt-5.6-luna",
+            "reasoning": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ],
+            "input_modalities": [
+              "text",
+              "image"
+            ]
+          }
+        ],
+        "inference": "succeeded",
+        "capabilities": {
+          "resume": "supported",
+          "steer": "supported",
+          "image_input": "supported",
+          "video_input": "unsupported",
+          "compaction": "unsupported",
+          "product_tools": "supported",
+          "settings": "supported",
+          "cancel": "supported",
+          "permission_requests": "unsupported",
+          "native_files": "supported",
+          "native_shell": "supported",
+          "native_code": "supported",
+          "native_git": "supported",
+          "web_search": "supported",
+          "web_read": "supported"
+        }
+      },
+      "pass": true
+    },
+    {
+      "harness": "muse",
+      "version": "1.4.14-R7309.1",
+      "first": {
+        "run": {
+          "id": "ee1f87ea-f709-4edd-8922-0ff4a54333de",
+          "owner_id": "0f109ece-1e4d-47d9-8e04-338f099de399",
+          "revision": 10,
+          "created_at": "2026-11-02T10:01:48.651Z",
+          "updated_at": "2026-11-02T10:02:07.509Z",
+          "kind": "run",
+          "thread_id": "537b5ccc-f07e-4d66-8131-d2f3a2e12585",
+          "agent_id": "fea668c5-47ab-4adf-80d5-a6c916580b8f",
+          "input_message_id": "2718ffe6-0cb5-440e-b5d5-db381b08f5de",
+          "task_id": null,
+          "thread_revision": null,
+          "goal_id": null,
+          "routine_id": null,
+          "goal_generation": null,
+          "routine_generation": null,
+          "publication": "immediate",
+          "pending_answer": null,
+          "status": "succeeded",
+          "cancellation": "none",
+          "outcome": "succeeded",
+          "delivery": "delivered",
+          "activity": "idle",
+          "diagnostic": null,
+          "native_dispatch_id": "01a19bb5-494d-7000-ac64-47383b4aae0f",
+          "grant_revision": 1,
+          "dispatch_token": "47bc1e34-f845-4da7-bad3-15c71e5567df",
+          "authority_epoch": "c8a0a8e9-f450-4a23-81b0-b5fc5f6e023f",
+          "binding_id": "e0c57a7c-d252-4fa5-99af-3decd940ecb2",
+          "native_run_id": "01a19bb5-494d-7000-ac64-47383b4aae0f",
+          "native_interactions": [],
+          "agent_snapshot": {
+            "name": "Attachment proof muse",
+            "handle": "agent_fea668c547ab4adf80d5a6c916580b8f",
+            "avatar": null,
+            "avatar_config": {
+              "version": 1,
+              "seed": "fea668c5-47ab-4adf-80d5-a6c916580b8f",
+              "shape": "oval",
+              "color": "wisteria",
+              "face": "happy"
+            },
+            "soul": "",
+            "skills": [],
+            "harness": "muse",
+            "connection_id": "0ee3d084-5136-4a97-926b-d2afa05f8e8b",
+            "billing_source": "api_key",
+            "instructions": "",
+            "workspace_id": null,
+            "model_id": "muse-spark-1.3",
+            "reasoning": null,
+            "agent_id": "fea668c5-47ab-4adf-80d5-a6c916580b8f",
+            "revision": 1
+          },
+          "workspace_id": "c26064f2-bcc6-4c0d-993f-934e3d9fbb87",
+          "workspace_revision": 1,
+          "product_tools": [
+            "ngertiin.read_attachment"
+          ],
+          "attachment_observations": [
+            {
+              "artifact_id": "1dd64613-bff8-46ea-a7be-2de4f279076d",
+              "source_sha256": "e43023a9e524a9b86fe38c066676a4b6f0c85c769d6023dfc0b00db66b181acf",
+              "operation": "context",
+              "pages": [
+                1,
+                2
+              ],
+              "truncated": true,
+              "created_at": "2026-11-02T10:01:51.676Z"
+            },
+            {
+              "artifact_id": "1dd64613-bff8-46ea-a7be-2de4f279076d",
+              "source_sha256": "e43023a9e524a9b86fe38c066676a4b6f0c85c769d6023dfc0b00db66b181acf",
+              "operation": "read",
+              "pages": [
+                3
+              ],
+              "truncated": false,
+              "created_at": "2026-11-02T10:01:58.835Z"
+            }
+          ],
+          "sources": [],
+          "visual_inputs": [],
+          "native_tools": []
+        },
+        "answer": "Membaca halaman 3 dari file Anda untuk menemukan kode verifikasi.Kode verifikasi pada halaman 3 adalah **TURQUOISE-01f9a770**.\n\nSumber: file `verification.pdf`, halaman 3.",
+        "binding": {
+          "id": "e0c57a7c-d252-4fa5-99af-3decd940ecb2",
+          "owner_id": "0f109ece-1e4d-47d9-8e04-338f099de399",
+          "revision": 1,
+          "created_at": "2026-11-02T10:01:51.346Z",
+          "updated_at": "2026-11-02T10:01:51.346Z",
+          "kind": "binding",
+          "thread_id": "537b5ccc-f07e-4d66-8131-d2f3a2e12585",
+          "agent_id": "fea668c5-47ab-4adf-80d5-a6c916580b8f",
+          "connection_id": "0ee3d084-5136-4a97-926b-d2afa05f8e8b",
+          "harness": "muse",
+          "native_session_id": "01a19bb5-4395-7000-9471-3efec99b6196",
+          "generation": 1,
+          "active": true,
+          "agent_revision": 1,
+          "workspace_id": "c26064f2-bcc6-4c0d-993f-934e3d9fbb87",
+          "workspace_revision": 1
+        }
+      },
+      "followup": {
+        "run": {
+          "id": "847e27dd-26b0-4890-9ac4-336c2143b39b",
+          "owner_id": "0f109ece-1e4d-47d9-8e04-338f099de399",
+          "revision": 16,
+          "created_at": "2026-11-02T10:02:07.833Z",
+          "updated_at": "2026-11-02T10:02:36.848Z",
+          "kind": "run",
+          "thread_id": "537b5ccc-f07e-4d66-8131-d2f3a2e12585",
+          "agent_id": "fea668c5-47ab-4adf-80d5-a6c916580b8f",
+          "input_message_id": "905f4139-56d0-4452-a0d0-7148000c1f7f",
+          "task_id": null,
+          "thread_revision": null,
+          "goal_id": null,
+          "routine_id": null,
+          "goal_generation": null,
+          "routine_generation": null,
+          "publication": "immediate",
+          "pending_answer": null,
+          "status": "succeeded",
+          "cancellation": "none",
+          "outcome": "succeeded",
+          "delivery": "delivered",
+          "activity": "idle",
+          "diagnostic": null,
+          "native_dispatch_id": "01a19bb5-915a-7000-8680-044d5b4a2e39",
+          "grant_revision": 1,
+          "dispatch_token": "3bc23475-1b34-4818-b98a-fd4827f544f1",
+          "authority_epoch": "0c41fc15-e3f3-4cad-b0c1-2e13234a915c",
+          "binding_id": "e0c57a7c-d252-4fa5-99af-3decd940ecb2",
+          "native_run_id": "01a19bb5-915a-7000-8680-044d5b4a2e39",
+          "native_interactions": [],
+          "agent_snapshot": {
+            "name": "Attachment proof muse",
+            "handle": "agent_fea668c547ab4adf80d5a6c916580b8f",
+            "avatar": null,
+            "avatar_config": {
+              "version": 1,
+              "seed": "fea668c5-47ab-4adf-80d5-a6c916580b8f",
+              "shape": "oval",
+              "color": "wisteria",
+              "face": "happy"
+            },
+            "soul": "",
+            "skills": [],
+            "harness": "muse",
+            "connection_id": "0ee3d084-5136-4a97-926b-d2afa05f8e8b",
+            "billing_source": "api_key",
+            "instructions": "",
+            "workspace_id": null,
+            "model_id": "muse-spark-1.3",
+            "reasoning": null,
+            "agent_id": "fea668c5-47ab-4adf-80d5-a6c916580b8f",
+            "revision": 1
+          },
+          "workspace_id": "c26064f2-bcc6-4c0d-993f-934e3d9fbb87",
+          "workspace_revision": 1,
+          "product_tools": [
+            "ngertiin.list_attachments",
+            "ngertiin.search_attachment",
+            "ngertiin.read_attachment"
+          ],
+          "attachment_observations": [
+            {
+              "artifact_id": "1dd64613-bff8-46ea-a7be-2de4f279076d",
+              "source_sha256": "e43023a9e524a9b86fe38c066676a4b6f0c85c769d6023dfc0b00db66b181acf",
+              "operation": "search",
+              "pages": [
+                4
+              ],
+              "truncated": false,
+              "created_at": "2026-11-02T10:02:24.354Z"
+            },
+            {
+              "artifact_id": "1dd64613-bff8-46ea-a7be-2de4f279076d",
+              "source_sha256": "e43023a9e524a9b86fe38c066676a4b6f0c85c769d6023dfc0b00db66b181acf",
+              "operation": "read",
+              "pages": [
+                4
+              ],
+              "truncated": false,
+              "created_at": "2026-11-02T10:02:30.533Z"
+            }
+          ],
+          "sources": [],
+          "visual_inputs": [],
+          "native_tools": []
+        },
+        "answer": "Baik, saya ikuti alurnya: daftar lampiran, cari frasa, lalu baca halamannya.Lampiran ditemukan, sekarang saya cari frasa yang diminta.Frasa ketemu di halaman 4, saya baca halaman itu untuk memastikan isinya.Hasil pencarian frasa 'Final marker':\n\nIsi: **Final marker: indigo otter 7246**\n\nSumber: file `verification.pdf`, halaman 4.",
+        "binding": {
+          "id": "e0c57a7c-d252-4fa5-99af-3decd940ecb2",
+          "owner_id": "0f109ece-1e4d-47d9-8e04-338f099de399",
+          "revision": 1,
+          "created_at": "2026-11-02T10:01:51.346Z",
+          "updated_at": "2026-11-02T10:01:51.346Z",
+          "kind": "binding",
+          "thread_id": "537b5ccc-f07e-4d66-8131-d2f3a2e12585",
+          "agent_id": "fea668c5-47ab-4adf-80d5-a6c916580b8f",
+          "connection_id": "0ee3d084-5136-4a97-926b-d2afa05f8e8b",
+          "harness": "muse",
+          "native_session_id": "01a19bb5-4395-7000-9471-3efec99b6196",
+          "generation": 1,
+          "active": true,
+          "agent_revision": 1,
+          "workspace_id": "c26064f2-bcc6-4c0d-993f-934e3d9fbb87",
+          "workspace_revision": 1
+        }
+      },
+      "connection": {
+        "id": "0ee3d084-5136-4a97-926b-d2afa05f8e8b",
+        "owner_id": "0f109ece-1e4d-47d9-8e04-338f099de399",
+        "revision": 5,
+        "created_at": "2026-11-02T10:01:48.641Z",
+        "updated_at": "2026-11-02T10:02:09.316Z",
+        "kind": "connection",
+        "harness": "muse",
+        "authentication": {
+          "method": "api_key",
+          "billing_source": "api_key",
+          "credential_ref": "27f55185-e354-4205-bdf7-8c92d2b97121"
+        },
+        "state": "active",
+        "grant_revision": 4,
+        "account_id": "f3ea4320ba97606f970626627be52cd7bc38e516eb859c0740051ada03341a73",
+        "effective_billing_source": "api_key",
+        "login": "authenticated",
+        "discovery": "succeeded",
+        "models": [
+          {
+            "id": "muse-wonder-1.0",
+            "reasoning": [
+              "minimal",
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          {
+            "id": "muse-spark-1.3",
+            "reasoning": [
+              "minimal",
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          {
+            "id": "muse-spark-1.3-contributor",
+            "reasoning": [
+              "minimal",
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          {
+            "id": "muse-spark-1.2",
+            "reasoning": [
+              "minimal",
+              "low",
+              "medium",
+              "high",
+              "xhigh"
+            ]
+          },
+          {
+            "id": "muse-spark-1.2-contributor",
+            "reasoning": [
+              "minimal",
+              "low",
+              "medium",
+              "high",
+              "xhigh"
+            ]
+          }
+        ],
+        "inference": "succeeded",
+        "capabilities": {
+          "resume": "supported",
+          "steer": "unknown",
+          "image_input": "unsupported",
+          "video_input": "unsupported",
+          "compaction": "unsupported",
+          "product_tools": "supported",
+          "settings": "supported",
+          "cancel": "supported",
+          "permission_requests": "supported",
+          "native_files": "unsupported",
+          "native_shell": "unsupported",
+          "native_code": "unsupported",
+          "native_git": "unsupported",
+          "web_search": "unsupported",
+          "web_read": "unsupported"
+        }
+      },
+      "pass": true
+    }
+  ],
+  "pass": true,
+  "cleanup": {
+    "owned_services_stopped": true,
+    "isolated_credentials_removed": true,
+    "original_state_preserved": true
+  }
+}

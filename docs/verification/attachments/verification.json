@@ -1,0 +1,131 @@
+{
+  "scope": "Submit-time composer attachments, durable admission/retry/recovery, scoped document tools and concise icon status",
+  "contract_version": "1.21.0",
+  "checks": {
+    "backend": {
+      "pass": 284,
+      "fail": 0,
+      "skip": 0,
+      "assertions": 1835
+    },
+    "server_typecheck": "pass",
+    "server_lint": "pass",
+    "web_build": "pass",
+    "web_typecheck": "pass (included in build)",
+    "web_lint": "pass",
+    "workspace_browser": {
+      "pass": 48,
+      "fail": 0,
+      "projects": [
+        "desktop",
+        "mobile"
+      ],
+      "note": "Preceded the final UI-only status refinement; final composer checks cover that refinement."
+    },
+    "composer_final": {
+      "pass": 16,
+      "fail": 0,
+      "projects": [
+        "desktop",
+        "mobile"
+      ],
+      "note": "After document/image icon and metadata changes; final shadcn surface/width checks are recorded separately."
+    },
+    "native_final": {
+      "pass": 4,
+      "fail": 0,
+      "unknown": 0,
+      "billing": {
+        "codex": "ChatGPT subscription",
+        "muse": "explicit API key"
+      },
+      "source_question": "Unique marker on page 3, outside automatic preview",
+      "followup": "After restart, previous-file list/search/read with native session continuity"
+    },
+    "native_verifier_strict_typecheck": {
+      "pass": true,
+      "workdir": "apps/server",
+      "command": "node_modules/.bin/tsc --ignoreConfig --noEmit --strict --skipLibCheck --moduleResolution bundler --module preserve --target esnext --types bun ../../scripts/verification/attachments/native.ts"
+    },
+    "tooltip_final": {
+      "pass": 4,
+      "fail": 0,
+      "projects": [
+        "desktop",
+        "mobile"
+      ],
+      "max_width_px": 256,
+      "style": "Existing shadcn TooltipContent defaults; only maximum width is constrained.",
+      "content": "Original document/image icon, file name/type/size and image preview; no info icon or unsent label. Only relevant progress/error status."
+    }
+  },
+  "source": {
+    "upstream_revision": "01e4b18e238e5de72a3570162c9f4275bb585786",
+    "modules": [
+      {
+        "path": "src/backend/agent/attachment-gateway.ts",
+        "sha256": "202e466c7562e2cf956feb4437f17e9e71388bde2d861ed3a76d91b7cae91729",
+        "working_bytes_match_revision": true
+      },
+      {
+        "path": "src/backend/mailbox-store.ts",
+        "sha256": "8405444b338256dc3e728a3c91e3a83181bd701740b3c97fc873678d6abe3a43",
+        "working_bytes_match_revision": true
+      }
+    ],
+    "reuse": "Behavioral reuse of checked source access and staged publication with conversation persistence; implemented within the existing Bun/SQLite lifecycle. Broad host reads, global sharing and prose path publication were not adopted.",
+    "parser": "pdfjs-dist 6.5.438; text parser revision pdfjs-6.5.438-text-1",
+    "upgrade": "Review upstream attachment and mailbox changes, pin parser changes, then rerun extraction, access, publication/recovery, native bridge and browser checks."
+  },
+  "retained_attempts": [
+    "native-first-attempt.json: two Codex runs passed; Muse executable missing from PATH before admission",
+    "native-before-cache-recovery.json: four runs passed before cache recovery refinement",
+    "native-before-english-probe.json: four runs passed with earlier probe prompts"
+  ],
+  "boundaries": {
+    "ocr": false,
+    "group_attachment_admission": false,
+    "billing_fallback": false,
+    "production_or_installer_acceptance": false,
+    "commit_or_push": false
+  },
+  "docs": {
+    "changed_document_links": {
+      "pass": true,
+      "checked": 25
+    },
+    "global_check": {
+      "pass": false,
+      "existing_broken_links": 85,
+      "all_failures_outside_changed_documents": true
+    }
+  },
+  "local_runtime": {
+    "health": {
+      "status": "foundation_ready",
+      "contract_version": "1.21.0",
+      "persistence": "ready",
+      "scheduler": "running",
+      "dispatcher": "running",
+      "registered_executors": 2,
+      "api_readiness_gate": "ready"
+    },
+    "user_content_before": {
+      "messages": 40,
+      "artifacts": 21,
+      "content_sha256": "2820d6662e44ccc9fded4a9f83a9085f912cdb54b560e8710aa61cf381e85ca5"
+    },
+    "user_content_after": {
+      "messages": 40,
+      "artifacts": 21,
+      "content_sha256": "2820d6662e44ccc9fded4a9f83a9085f912cdb54b560e8710aa61cf381e85ca5"
+    },
+    "original_content_unchanged": true,
+    "new_tools_published": true
+  },
+  "credential_scan": {
+    "known_values": 12,
+    "files": 68,
+    "matches": 0
+  }
+}

@@ -16,7 +16,6 @@
     "test:work": "bun run build && playwright test --config playwright.work.config.ts"
   },
   "dependencies": {
-    "@ngertiin/avatar": "workspace:*",
     "@base-ui/react": "^1.9.0",
     "@fontsource-variable/geist": "^5.3.0",
     "@fontsource-variable/geist-mono": "^5.3.0",
@@ -24,6 +23,7 @@
     "@hugeicons/core-free-icons": "^4.4.0",
     "@hugeicons/react": "^1.1.10",
     "@lexical/react": "0.53.0",
+    "@ngertiin/avatar": "workspace:*",
     "@novnc/novnc": "1.7.0",
     "@shadcn/react": "^0.3.1",
     "@tanstack/react-router": "1.170.44",
@@ -35,7 +35,6 @@
     "embla-carousel-react": "^8.6.0",
     "input-otp": "^1.5.0",
     "lexical": "0.53.0",
-    "lucide-react": "0.539.0",
     "next-themes": "^0.4.6",
     "papaparse": "5.7.0",
     "radix-ui": "^1.8.1",

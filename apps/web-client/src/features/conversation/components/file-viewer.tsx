@@ -1,4 +1,5 @@
-import { Download, FileText, LoaderCircle } from "lucide-react";
+import { Download04Icon, File02Icon, Loading03Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -138,7 +139,12 @@ export function FileViewer({ file, close }: { file: FileView | null; close: () =
           <DialogTitle
             className={`flex items-start gap-2 pr-7 font-medium ${view?.table ? "text-[14px]" : "text-[15px]"}`}
           >
-            <FileText size={17} strokeWidth={1.5} className="mt-0.5 shrink-0" />
+            <HugeiconsIcon
+              icon={File02Icon}
+              size={17}
+              strokeWidth={1.5}
+              className="mt-0.5 shrink-0"
+            />
             <span className="break-all">{file?.name}</span>
           </DialogTitle>
           <DialogDescription className="sr-only">
@@ -188,7 +194,7 @@ export function FileViewer({ file, close }: { file: FileView | null; close: () =
               role="status"
               className="flex items-center justify-center gap-2 p-12 text-[13px] text-muted-foreground"
             >
-              <LoaderCircle size={16} className="motion-safe:animate-spin" />
+              <HugeiconsIcon icon={Loading03Icon} size={16} className="motion-safe:animate-spin" />
               Membuka file…
             </div>
           )}
@@ -204,7 +210,7 @@ export function FileViewer({ file, close }: { file: FileView | null; close: () =
           className={`shrink-0 self-start ${view?.table ? "mx-4 mb-4" : ""}`}
         >
           <a href={file?.url} download={file?.name}>
-            <Download size={14} strokeWidth={1.5} />
+            <HugeiconsIcon icon={Download04Icon} size={14} strokeWidth={1.5} />
             Unduh file
           </a>
         </Button>

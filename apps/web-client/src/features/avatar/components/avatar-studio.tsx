@@ -1,17 +1,19 @@
-import { Link, useSearch } from "@tanstack/react-router";
 import {
-  ArrowDownToLine,
-  ArrowLeft,
-  Check,
-  ChevronDown,
-  Dices,
-  FileUp,
-  Moon,
-  MousePointer2,
-  RotateCcw,
-  Sparkles,
-  Sun,
-} from "lucide-react";
+  ArrowDown01Icon,
+  ArrowLeft02Icon,
+  Cursor01Icon,
+  DiceFaces05Icon,
+  Download04Icon,
+  FileUploadIcon,
+  Moon02Icon,
+  RotateLeft01Icon,
+  SparklesIcon,
+  Sun03Icon,
+  Tick02Icon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Link, useSearch } from "@tanstack/react-router";
+
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -231,7 +233,7 @@ export default function AvatarStudio() {
       <header className="studio-header">
         <div className="studio-breadcrumb">
           <Link to="/" className="studio-icon-button" aria-label="Kembali ke Ngertiin">
-            <ArrowLeft size={17} />
+            <HugeiconsIcon icon={ArrowLeft02Icon} size={17} />
           </Link>
           <span className="studio-wordmark">
             ngertiin<span>.</span>
@@ -245,7 +247,11 @@ export default function AvatarStudio() {
           aria-label={resolvedTheme === "dark" ? "Gunakan tema terang" : "Gunakan tema gelap"}
           onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
         >
-          {resolvedTheme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+          {resolvedTheme === "dark" ? (
+            <HugeiconsIcon icon={Sun03Icon} size={18} />
+          ) : (
+            <HugeiconsIcon icon={Moon02Icon} size={18} />
+          )}
         </button>
       </header>
 
@@ -266,7 +272,7 @@ export default function AvatarStudio() {
             play("wave");
           }}
         >
-          <Dices size={16} /> Acak karakter
+          <HugeiconsIcon icon={DiceFaces05Icon} size={16} /> Acak karakter
         </button>
       </section>
 
@@ -306,7 +312,7 @@ export default function AvatarStudio() {
                 aria-label="Reset karakter"
                 onClick={() => chooseConfig(initialConfig)}
               >
-                <RotateCcw size={16} />
+                <HugeiconsIcon icon={RotateLeft01Icon} size={16} />
               </button>
             </div>
             <button
@@ -353,7 +359,7 @@ export default function AvatarStudio() {
                     </option>
                   ))}
                 </select>
-                <ChevronDown size={14} />
+                <HugeiconsIcon icon={ArrowDown01Icon} size={14} />
               </span>
             </label>
             <label className="studio-pointer-toggle">
@@ -362,7 +368,7 @@ export default function AvatarStudio() {
                 checked={followPointer}
                 onChange={(event) => setFollowPointer(event.target.checked)}
               />
-              <MousePointer2 size={14} />
+              <HugeiconsIcon icon={Cursor01Icon} size={14} />
               <span>Ikuti kursor</span>
             </label>
           </div>
@@ -380,7 +386,7 @@ export default function AvatarStudio() {
                 disabled={exporting}
                 onClick={() => download("png")}
               >
-                <ArrowDownToLine size={15} />
+                <HugeiconsIcon icon={Download04Icon} size={15} />
                 {exporting ? "Menyiapkan…" : "Unduh PNG"}
               </button>
               <button
@@ -434,7 +440,11 @@ export default function AvatarStudio() {
                       />
                       <span>{definition.label}</span>
                       {config.shape === shape ? (
-                        <Check className="studio-selected-check" size={12} />
+                        <HugeiconsIcon
+                          icon={Tick02Icon}
+                          className="studio-selected-check"
+                          size={12}
+                        />
                       ) : null}
                     </label>
                   ))}
@@ -466,7 +476,11 @@ export default function AvatarStudio() {
                       />
                       <span>{label}</span>
                       {config.face === face ? (
-                        <Check className="studio-selected-check" size={12} />
+                        <HugeiconsIcon
+                          icon={Tick02Icon}
+                          className="studio-selected-check"
+                          size={12}
+                        />
                       ) : null}
                     </label>
                   ))}
@@ -500,7 +514,7 @@ export default function AvatarStudio() {
                   ))}
                 </div>
                 <div className="studio-motion-note">
-                  <MousePointer2 size={18} />
+                  <HugeiconsIcon icon={Cursor01Icon} size={18} />
                   <p>
                     Mata mengikuti kursor, berkedip, dan bereaksi saat disapa. Coba juga ubah state
                     agent di bawah pratinjau.
@@ -531,7 +545,7 @@ export default function AvatarStudio() {
                     checked={config.color === color}
                     onChange={() => setConfig({ ...config, color: color as AvatarColor })}
                   />
-                  {config.color === color ? <Check size={15} /> : null}
+                  {config.color === color ? <HugeiconsIcon icon={Tick02Icon} size={15} /> : null}
                 </label>
               ))}
             </div>
@@ -558,7 +572,7 @@ export default function AvatarStudio() {
                   )
                 }
               >
-                <ArrowDownToLine size={14} />
+                <HugeiconsIcon icon={Download04Icon} size={14} />
                 Simpan resep
               </button>
               <button
@@ -567,7 +581,7 @@ export default function AvatarStudio() {
                 aria-label="Buka resep karakter"
                 onClick={() => fileInput.current?.click()}
               >
-                <FileUp size={16} />
+                <HugeiconsIcon icon={FileUploadIcon} size={16} />
               </button>
               <input
                 ref={fileInput}
@@ -593,7 +607,7 @@ export default function AvatarStudio() {
             className="studio-text-button"
             onClick={() => setFamily(Array.from({ length: 6 }, randomAvatar))}
           >
-            <Sparkles size={15} />
+            <HugeiconsIcon icon={SparklesIcon} size={15} />
             Buat keluarga baru
           </button>
         </div>

@@ -1,4 +1,5 @@
-import { Check, LoaderCircle, RefreshCw, Search } from "lucide-react";
+import { Loading03Icon, RefreshIcon, Search01Icon, Tick02Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -111,7 +112,8 @@ export function AppConnections({ snapshot, onBack }: { snapshot: Snapshot; onBac
             <p className="flex min-w-0 items-center gap-1.5 text-[14px] font-semibold leading-5">
               <span className="truncate">{name}</span>
               {connection.state === "active" && (
-                <Check
+                <HugeiconsIcon
+                  icon={Tick02Icon}
                   size={13}
                   strokeWidth={2.5}
                   className="shrink-0 text-success-foreground"
@@ -139,7 +141,7 @@ export function AppConnections({ snapshot, onBack }: { snapshot: Snapshot; onBac
             title="Periksa koneksi"
             onClick={() => void authorization.check(connection, name)}
           >
-            <RefreshCw size={15} />
+            <HugeiconsIcon icon={RefreshIcon} size={15} />
           </button>
           {connection.state === "active" ? (
             <button
@@ -183,14 +185,18 @@ export function AppConnections({ snapshot, onBack }: { snapshot: Snapshot; onBac
     <div className="context-section pt-3.5">
       <PanelPageHeader
         title="Koneksi aplikasi"
-        back={snapshot.thread.type === "group" ? "Anggota" : "Agent"}
+        back="Detail"
         onBack={onBack}
         intro="Hubungkan aplikasi melalui Composio, lalu pilih akses untuk percakapan ini."
       />
       <div className="space-y-4">
         <div className="flex items-center gap-2">
           <label className="flex h-9 min-w-0 flex-1 items-center gap-2.5 rounded-full bg-secondary/70 px-3.5 focus-within:ring-1 focus-within:ring-ring">
-            <Search size={15} className="shrink-0 text-muted-foreground" />
+            <HugeiconsIcon
+              icon={Search01Icon}
+              size={15}
+              className="shrink-0 text-muted-foreground"
+            />
             <input
               aria-label="Cari aplikasi"
               maxLength={100}
@@ -235,7 +241,11 @@ export function AppConnections({ snapshot, onBack }: { snapshot: Snapshot; onBac
                 role="status"
                 className="flex items-center justify-center gap-2 py-12 text-[13px] text-muted-foreground"
               >
-                <LoaderCircle size={14} className="motion-safe:animate-spin" />
+                <HugeiconsIcon
+                  icon={Loading03Icon}
+                  size={14}
+                  className="motion-safe:animate-spin"
+                />
                 Memuat aplikasi…
               </p>
             )}

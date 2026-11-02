@@ -1,4 +1,5 @@
-import { Plus } from "lucide-react";
+import { Add01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import type { Connection, Snapshot } from "@/types/workspace";
@@ -63,7 +64,7 @@ export function AttachInput({
         onMouseDown={(event) => event.preventDefault()}
         onClick={() => input.current?.click()}
       >
-        <Plus size={18} strokeWidth={1.5} />
+        <HugeiconsIcon icon={Add01Icon} size={18} strokeWidth={1.5} />
       </Button>
     </>
   );

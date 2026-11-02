@@ -1,4 +1,10 @@
-import { ChevronRight, KeyRound, ShieldCheck, Sparkles } from "lucide-react";
+import {
+  ArrowRight01Icon,
+  Key01Icon,
+  Shield01Icon,
+  SparklesIcon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { billingLabel } from "@/features/settings/components/shared";
 import type { Agent, Connection } from "@/types/workspace";
 import { ModelPicker } from "./model-picker";
@@ -25,7 +31,7 @@ export function AgentModelRow(props: ConnectionSettingsProps) {
               className="grid size-7 shrink-0 place-items-center rounded-lg bg-foreground/[0.05] text-muted-foreground max-md:size-8 max-md:rounded-full"
               aria-hidden="true"
             >
-              <Sparkles size={15} strokeWidth={1.5} />
+              <HugeiconsIcon icon={SparklesIcon} size={15} strokeWidth={1.5} />
             </span>
             <span className="text-[14px] font-medium text-foreground">Model</span>
           </span>
@@ -70,7 +76,7 @@ export function ConnectionSettings(props: ConnectionSettingsProps) {
         <AgentModelRow {...props} />
         <PanelNavRow
           title="Kelola providers"
-          icon={KeyRound}
+          icon={Key01Icon}
           hint={
             connection
               ? connection.harness === "muse"
@@ -85,9 +91,15 @@ export function ConnectionSettings(props: ConnectionSettingsProps) {
       {connection && (
         <details className="group/connection rounded-[12px] bg-composer ring-1 ring-inset ring-foreground/[0.06]">
           <summary className="flex min-h-[46px] cursor-pointer list-none items-center gap-2.5 px-3.5 py-[11px] text-[14px] [&::-webkit-details-marker]:hidden">
-            <ShieldCheck size={15} strokeWidth={1.5} className="text-muted-foreground" />
+            <HugeiconsIcon
+              icon={Shield01Icon}
+              size={15}
+              strokeWidth={1.5}
+              className="text-muted-foreground"
+            />
             <span className="flex-1 font-medium">Status koneksi</span>
-            <ChevronRight
+            <HugeiconsIcon
+              icon={ArrowRight01Icon}
               size={15}
               strokeWidth={1.5}
               className="text-muted-foreground group-open/connection:rotate-90"

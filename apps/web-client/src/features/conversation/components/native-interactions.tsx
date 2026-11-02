@@ -1,4 +1,10 @@
-import { Check, ChevronRight, LoaderCircle, ShieldCheck } from "lucide-react";
+import {
+  ArrowRight01Icon,
+  Loading03Icon,
+  Shield01Icon,
+  Tick02Icon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { type ComponentProps, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -396,7 +402,7 @@ function NativeApprovalCard({
         {agent ? (
           <AgentAvatar agent={agent} state="listening" className="size-4" />
         ) : (
-          <ShieldCheck size={14} strokeWidth={1.5} />
+          <HugeiconsIcon icon={Shield01Icon} size={14} strokeWidth={1.5} />
         )}
         {author} meminta keputusan
       </p>
@@ -405,7 +411,12 @@ function NativeApprovalCard({
       </h3>
       <details className="group/approval text-[13px] text-muted-foreground">
         <summary className="flex w-fit cursor-pointer list-none items-center gap-1 rounded-full px-2 py-1 hover:bg-foreground/[0.05] [&::-webkit-details-marker]:hidden">
-          <ChevronRight size={13} strokeWidth={1.5} className="group-open/approval:rotate-90" />
+          <HugeiconsIcon
+            icon={ArrowRight01Icon}
+            size={13}
+            strokeWidth={1.5}
+            className="group-open/approval:rotate-90"
+          />
           Rincian tindakan
         </summary>
         <pre className="mt-2 max-h-48 overflow-auto whitespace-pre-wrap break-words rounded-xl bg-foreground/[0.045] px-3 py-2 font-mono text-[12px] leading-[18px]">
@@ -553,7 +564,9 @@ function NativeQuestion({
                   : "text-muted-foreground hover:bg-foreground/[0.06]",
               )}
             >
-              {answered(q) && <Check size={13} className="text-success-foreground" />}
+              {answered(q) && (
+                <HugeiconsIcon icon={Tick02Icon} size={13} className="text-success-foreground" />
+              )}
               {q.header || `Pertanyaan ${index + 1}`}
             </button>
           ))}
@@ -622,14 +635,21 @@ function NativeQuestion({
                 )}
               </span>
               {sending === option.label ? (
-                <LoaderCircle
+                <HugeiconsIcon
+                  icon={Loading03Icon}
                   size={16}
                   className="shrink-0 motion-safe:animate-spin"
                   aria-hidden="true"
                 />
               ) : (
                 checked && (
-                  <Check size={16} strokeWidth={2.4} className="shrink-0" aria-hidden="true" />
+                  <HugeiconsIcon
+                    icon={Tick02Icon}
+                    size={16}
+                    strokeWidth={2.4}
+                    className="shrink-0"
+                    aria-hidden="true"
+                  />
                 )
               )}
             </ChoiceButton>
@@ -660,8 +680,10 @@ function NativeQuestion({
             className="min-h-9 rounded-full px-4 text-[14px] touch:min-h-11"
             disabled={!ready || busy}
           >
-            {busy ? <LoaderCircle size={15} className="motion-safe:animate-spin" /> : null}Kirim
-            jawaban ke harness
+            {busy ? (
+              <HugeiconsIcon icon={Loading03Icon} size={15} className="motion-safe:animate-spin" />
+            ) : null}
+            Kirim jawaban ke harness
           </Button>
         </div>
       )}

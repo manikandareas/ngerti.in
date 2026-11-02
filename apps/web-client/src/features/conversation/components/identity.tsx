@@ -1,4 +1,5 @@
-import { Users } from "lucide-react";
+import { UserGroupIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { type CSSProperties, useEffect, useMemo, useRef, useState } from "react";
 import { AgentAvatar as ProceduralAvatar } from "@/features/avatar/components/agent-avatar";
 import type { AvatarState } from "@/features/avatar/engine/catalog";
@@ -46,6 +47,7 @@ export function AgentAvatar({
   threadId,
   interactive = false,
   followPointer = false,
+  showActivityLabel = true,
 }: {
   agent?: Agent;
   name?: string;
@@ -58,6 +60,7 @@ export function AgentAvatar({
   threadId?: string;
   interactive?: boolean;
   followPointer?: boolean;
+  showActivityLabel?: boolean;
 }) {
   const view = useAvatarActivity(agent?.id, threadId);
   const { version, seed, shape, color, face } = agent?.avatar_config ?? {};
@@ -93,9 +96,9 @@ export function AgentAvatar({
       onClick={Host === "button" ? () => controller.current?.play("boop") : undefined}
       aria-label={Host === "button" ? `Sapa ${agent?.name ?? name ?? "agent"}` : undefined}
       aria-hidden={Host === "button" ? undefined : true}
-      title={view.label}
+      title={showActivityLabel ? view.label : undefined}
       data-agent-id={group ? undefined : agent?.id}
-      data-activity-label={view.label}
+      data-activity-label={showActivityLabel ? view.label : undefined}
       data-avatar-seed={group ? undefined : config.seed}
       className={cn(
         "agent-avatar relative size-9 inline-flex shrink-0 items-center justify-center text-base font-medium",
@@ -112,6 +115,7 @@ export function AgentAvatar({
                 agent={member}
                 threadId={threadId}
                 animated={animated}
+                showActivityLabel={showActivityLabel}
                 className={largeGroup ? "size-8" : "size-[58%]"}
               />
             ))}
@@ -122,7 +126,11 @@ export function AgentAvatar({
             )}
           </span>
         ) : (
-          <Users className="size-6 text-muted-foreground" strokeWidth={1.5} />
+          <HugeiconsIcon
+            icon={UserGroupIcon}
+            className="size-6 text-muted-foreground"
+            strokeWidth={1.5}
+          />
         )
       ) : (
         <ProceduralAvatar

@@ -1,4 +1,5 @@
-import { Globe, Monitor } from "lucide-react";
+import { ComputerIcon, Globe02Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useApiResource } from "@/hooks/use-api-resource";
@@ -7,18 +8,16 @@ import type { BrowserObservation, BrowserProfile, BrowserSession } from "@/types
 import type { Agent } from "@/types/workspace";
 import { type BrowserView, BrowserViewer } from "./browser-viewer";
 import { AgentAvatar } from "./identity";
-import { PanelCard, PanelEmpty, PanelPageHeader } from "./panel-primitives";
+import { PanelCard, PanelEmpty } from "./panel-primitives";
 
 export function BrowserSection({
   agents,
   threadId,
   cursor,
-  onBack,
 }: {
   agents: Agent[];
   threadId: string;
   cursor: number;
-  onBack: () => void;
 }) {
   const [selectedAgent, setSelectedAgent] = useState(agents[0]?.id ?? "");
   const agentId = agents.find((a) => a.id === selectedAgent)?.id ?? agents[0]?.id ?? "";
@@ -64,12 +63,6 @@ export function BrowserSection({
   };
   return (
     <div className="context-section pt-3.5">
-      <PanelPageHeader
-        title="Browser percakapan"
-        back="File"
-        onBack={onBack}
-        intro="Lihat browser yang digunakan agent dalam konteks ini. Login tersimpan pada profil browser tersebut."
-      />
       <div className="space-y-3">
         {agents.length > 1 && (
           <label className="block space-y-2 text-sm">
@@ -117,6 +110,7 @@ export function BrowserSection({
               <>
                 <span className="opacity-60">
                   <AgentAvatar
+                    showActivityLabel={false}
                     agent={selected}
                     className={lastSession?.active_run_id ? "size-[52px]" : "size-11"}
                   />
@@ -137,7 +131,7 @@ export function BrowserSection({
                 aria-hidden="true"
                 className="absolute bottom-2.5 right-2.5 flex h-7 items-center gap-1.5 rounded-full border border-foreground/10 bg-panel/80 px-2.5 text-[12px] opacity-0 backdrop-blur-sm transition-opacity group-hover/screen:opacity-100 group-focus-within/screen:opacity-100 touch:opacity-100"
               >
-                <Monitor size={13} strokeWidth={1.5} />
+                <HugeiconsIcon icon={ComputerIcon} size={13} strokeWidth={1.5} />
                 Lihat
               </span>
             )}
@@ -154,7 +148,8 @@ export function BrowserSection({
               key={profile.id}
               className="flex min-h-[46px] items-center gap-2.5 px-3.5 py-[11px]"
             >
-              <Globe
+              <HugeiconsIcon
+                icon={Globe02Icon}
                 size={16}
                 strokeWidth={1.5}
                 className="shrink-0 text-muted-foreground"

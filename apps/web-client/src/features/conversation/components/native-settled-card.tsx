@@ -1,4 +1,11 @@
-import { Check, Clock3, LoaderCircle, Square, X } from "lucide-react";
+import {
+  Cancel01Icon,
+  Clock01Icon,
+  Loading03Icon,
+  StopIcon,
+  Tick02Icon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useId, useState } from "react";
 import type { NativeInteraction } from "@/types/native-interactions";
 
@@ -62,7 +69,7 @@ export function NativeSettledCard({
   const kind = record.type === "user_input" ? "jawaban" : "keputusan";
   let label = "Permintaan tersimpan";
   let explanation = "Input native tidak tersedia saat ini. Riwayat ini tetap tersimpan.";
-  let icon = <Clock3 size={13} />;
+  let icon = <HugeiconsIcon icon={Clock01Icon} size={13} />;
   if (submission?.state === "submitted") {
     label =
       record.type === "user_input"
@@ -74,37 +81,44 @@ export function NativeSettledCard({
         : "Keputusan diterima harness";
     explanation =
       "Harness mengonfirmasi penerimaan. Ini tidak menyatakan tindakan dijalankan atau pekerjaan selesai.";
-    icon = <Check size={13} strokeWidth={2.4} className="text-success-foreground" />;
+    icon = (
+      <HugeiconsIcon
+        icon={Tick02Icon}
+        size={13}
+        strokeWidth={2.4}
+        className="text-success-foreground"
+      />
+    );
   } else if (submission?.state === "unknown") {
     label = `Pengiriman ${kind} belum terkonfirmasi`;
     explanation = "Belum ada konfirmasi penerimaan. Jangan kirim ulang; periksa status.";
   } else if (submission?.state === "submitting") {
     label = `Menunggu konfirmasi ${kind}`;
     explanation = "Penerimaan belum dikonfirmasi. Pengiriman ulang dinonaktifkan.";
-    icon = <LoaderCircle size={13} className="motion-safe:animate-spin" />;
+    icon = <HugeiconsIcon icon={Loading03Icon} size={13} className="motion-safe:animate-spin" />;
   } else if (submission?.state === "not_dispatched") {
     label = `${record.type === "user_input" ? "Jawaban" : "Keputusan"} belum dikirim`;
     explanation =
       "Harness memastikan jawaban belum dikirim. Periksa permintaan terbaru sebelum mencoba lagi.";
-    icon = <X size={13} />;
+    icon = <HugeiconsIcon icon={Cancel01Icon} size={13} />;
   } else if (cancellation === "requested") {
     label = "Stop diminta; belum dikonfirmasi harness";
     explanation =
       "Permintaan stop belum membuktikan native run berhenti. Tidak ada jawaban tercatat.";
-    icon = <Square size={11} strokeWidth={2.4} />;
+    icon = <HugeiconsIcon icon={StopIcon} size={11} strokeWidth={2.4} />;
   } else if (cancellation === "confirmed") {
     label = "Run dihentikan; jawaban native tidak tercatat";
     explanation =
       "Penghentian run dikonfirmasi. Tidak ada keputusan akhir permintaan yang dilaporkan.";
-    icon = <Square size={11} strokeWidth={2.4} />;
+    icon = <HugeiconsIcon icon={StopIcon} size={11} strokeWidth={2.4} />;
   } else if (record.observed_state === "not_pending") {
     label = "Permintaan tidak lagi tercantum";
     explanation = "Jawaban, penolakan, atau kedaluwarsa permintaan tidak dilaporkan.";
-    icon = <X size={13} />;
+    icon = <HugeiconsIcon icon={Cancel01Icon} size={13} />;
   } else if (["succeeded", "failed", "cancelled"].includes(runStatus)) {
     label = "Run selesai; jawaban native tidak tercatat";
     explanation = "Status run tidak menentukan jawaban atau keputusan akhir permintaan ini.";
-    icon = <X size={13} />;
+    icon = <HugeiconsIcon icon={Cancel01Icon} size={13} />;
   } else if (runStatus === "unknown") {
     label = "Status run belum terkonfirmasi";
     explanation =

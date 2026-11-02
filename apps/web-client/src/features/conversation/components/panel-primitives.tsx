@@ -1,4 +1,5 @@
-import { ChevronLeft, ChevronRight, type LucideIcon } from "lucide-react";
+import { ArrowLeft01Icon, ArrowRight01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
@@ -43,7 +44,7 @@ export function PanelNavRow({
   title: string;
   hint?: ReactNode;
   value?: ReactNode;
-  icon?: LucideIcon;
+  icon?: IconSvgElement;
   onClick: () => void;
   children?: ReactNode;
   "aria-label"?: string;
@@ -65,7 +66,7 @@ export function PanelNavRow({
             className="grid size-7 shrink-0 place-items-center rounded-lg bg-foreground/[0.05] text-muted-foreground max-md:size-8 max-md:rounded-full"
             aria-hidden="true"
           >
-            <Icon size={15} strokeWidth={1.5} />
+            <HugeiconsIcon icon={Icon} size={15} strokeWidth={1.5} />
           </span>
         ))}
       <span className="min-w-0 flex-1">
@@ -81,7 +82,8 @@ export function PanelNavRow({
           {value}
         </span>
       )}
-      <ChevronRight
+      <HugeiconsIcon
+        icon={ArrowRight01Icon}
         size={15}
         strokeWidth={1.5}
         className="shrink-0 text-muted-foreground"
@@ -93,7 +95,7 @@ export function PanelNavRow({
 
 export function PanelPageHeader({
   title,
-  back = "Agent",
+  back = "Detail",
   onBack,
   intro,
 }: {
@@ -111,7 +113,7 @@ export function PanelPageHeader({
         aria-label={`Kembali ke ${back.toLowerCase()}`}
         className="mt-0.5 inline-flex items-center gap-0.5 rounded-[7px] py-1 pl-0.5 pr-2 text-[13px] text-muted-foreground hover:bg-foreground/[0.04] hover:text-foreground"
       >
-        <ChevronLeft size={15} strokeWidth={1.5} aria-hidden="true" />
+        <HugeiconsIcon icon={ArrowLeft01Icon} size={15} strokeWidth={1.5} aria-hidden="true" />
         {back}
       </button>
       <h3 className="mx-1 mt-1.5 break-words text-[18px] font-semibold">{title}</h3>

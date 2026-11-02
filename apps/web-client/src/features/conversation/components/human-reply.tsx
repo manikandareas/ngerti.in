@@ -1,4 +1,10 @@
-import { Check, LoaderCircle, MessageCircle, X } from "lucide-react";
+import {
+  BubbleChatIcon,
+  Cancel01Icon,
+  Loading03Icon,
+  Tick02Icon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -30,9 +36,14 @@ export function HumanReply({
     return (
       <p className="flex w-full max-w-[560px] items-center gap-1.5 text-[13px] leading-[18px] text-muted-foreground">
         {request.state === "answered" ? (
-          <Check size={13} className="shrink-0 text-success-foreground" aria-hidden="true" />
+          <HugeiconsIcon
+            icon={Tick02Icon}
+            size={13}
+            className="shrink-0 text-success-foreground"
+            aria-hidden="true"
+          />
         ) : (
-          <X size={13} className="shrink-0" aria-hidden="true" />
+          <HugeiconsIcon icon={Cancel01Icon} size={13} className="shrink-0" aria-hidden="true" />
         )}
         {request.state === "answered"
           ? "Jawaban tersimpan untuk permintaan ini."
@@ -65,7 +76,7 @@ export function HumanReply({
         {agent ? (
           <AgentAvatar agent={agent} state="listening" className="size-4" />
         ) : (
-          <MessageCircle size={14} strokeWidth={1.5} aria-hidden="true" />
+          <HugeiconsIcon icon={BubbleChatIcon} size={14} strokeWidth={1.5} aria-hidden="true" />
         )}
         {author} ·{" "}
         {request.purpose === "review"
@@ -101,7 +112,9 @@ export function HumanReply({
           className="min-h-9 rounded-full px-4 text-[14px] touch:min-h-11"
           disabled={busy || !(pending ?? text).trim()}
         >
-          {busy && <LoaderCircle size={15} className="motion-safe:animate-spin" />}
+          {busy && (
+            <HugeiconsIcon icon={Loading03Icon} size={15} className="motion-safe:animate-spin" />
+          )}
           {busy ? "Mengirim jawaban…" : pending !== null ? "Periksa jawaban" : "Kirim jawaban"}
         </Button>
       </div>

@@ -1,22 +1,21 @@
-import { Globe, Plug } from "lucide-react";
+import { Calendar03Icon, Plug01Icon, Target02Icon } from "@hugeicons/core-free-icons";
 import { useEffect, useRef, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Artifact } from "@/types/work";
 import type { Agent, Connection, Snapshot, Thread } from "@/types/workspace";
 import { type AgentPage, AgentPanel } from "./agent-panel";
 import { AppConnections } from "./app-connections";
-import { AgentActivityStatus } from "./avatar-activity";
 import { BrowserSection } from "./browser-section";
 import { FilesPanel } from "./files-panel";
 import { GroupPanel } from "./group-panel";
 import { AgentAvatar } from "./identity";
-import { PanelCard, PanelNavRow } from "./panel-primitives";
+import { PanelCard, PanelNavRow, PanelPageHeader } from "./panel-primitives";
 import { Responsibilities } from "./responsibilities";
 
 export type PanelLocation = {
-  tab: "agent" | "files" | "goals" | "routine";
+  tab: "detail" | "library" | "computer";
   id: string | null;
-  page?: "apps" | "browser";
+  page?: "apps" | "goals" | "routine";
 };
 export function ContextPanel({
   snapshot,
@@ -52,24 +51,27 @@ export function ContextPanel({
   const agent = snapshot.agents[0];
   const [page, setPage] = useState<AgentPage>("overview");
   const appsOpen = location.page === "apps";
+  const responsibility =
+    location.page === "goals" || location.page === "routine" ? location.page : null;
   const selectedDetail =
     location.id !== null &&
-    (location.tab === "files"
+    (location.tab === "library"
       ? snapshot.artifacts.some((item) => item.id === location.id)
-      : location.tab === "goals"
+      : responsibility === "goals"
         ? snapshot.goals.some((item) => item.id === location.id)
-        : location.tab === "routine"
+        : responsibility === "routine"
           ? snapshot.routines.some((item) => item.id === location.id)
           : snapshot.thread.type === "group" &&
             snapshot.agents.some((item) => item.id === location.id));
   const nested =
-    (location.tab === "agent" &&
+    (location.tab === "detail" &&
       (appsOpen ||
+        responsibility !== null ||
         (snapshot.thread.type === "dm" && (page !== "overview" || configurationOpen)))) ||
-    selectedDetail ||
-    location.page === "browser";
+    selectedDetail;
   const container = useRef<HTMLDivElement>(null);
   const opener = useRef<string | null>(null);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: nested page and item navigation must move focus to the new back button.
   useEffect(() => {
     if (nested) container.current?.querySelector<HTMLButtonElement>("[data-panel-back]")?.focus();
     else if (opener.current) {
@@ -77,8 +79,13 @@ export function ContextPanel({
         .find((button) => button.dataset.panelNav === opener.current)
         ?.focus();
     }
-  }, [nested]);
-  const openFile = (id: string) => locate({ tab: "files", id });
+  }, [nested, location.page, location.id]);
+  const openFile = (id: string) => locate({ tab: "library", id });
+  const openDetail = () => {
+    setPage("overview");
+    setConfigurationOpen(false);
+    locate({ tab: "detail", id: null });
+  };
   return (
     <Tabs
       ref={container}
@@ -92,7 +99,11 @@ export function ContextPanel({
         if (event.target instanceof Node && !event.currentTarget.contains(event.target)) return;
         setPage("overview");
         setConfigurationOpen(false);
-        locate({ tab: location.tab, id: null });
+        locate({
+          tab: location.tab,
+          id: null,
+          ...(responsibility && location.id ? { page: responsibility } : {}),
+        });
         event.preventDefault();
         event.stopPropagation();
       }}
@@ -111,6 +122,7 @@ export function ContextPanel({
             <div className="mt-0.5 flex -space-x-3">
               {snapshot.agents.slice(0, 3).map((member) => (
                 <AgentAvatar
+                  showActivityLabel={false}
                   key={member.id}
                   agent={member}
                   className="size-[52px] rounded-2xl ring-[3px] ring-background"
@@ -119,6 +131,7 @@ export function ContextPanel({
             </div>
           ) : (
             <AgentAvatar
+              showActivityLabel={false}
               agent={agent}
               animated
               interactive
@@ -135,27 +148,38 @@ export function ContextPanel({
           >
             {snapshot.thread.name ?? agent?.name ?? "Percakapan"}
           </h2>
-          {snapshot.thread.type === "dm" && <AgentActivityStatus agentId={agent?.id} />}
         </div>
-        <TabsList className="context-tabs mt-[15px]" aria-label="Detail sesuai konteks">
-          <TabsTrigger value="agent">
-            {snapshot.thread.type === "group" ? "Anggota" : "Agent"}
-          </TabsTrigger>
-          <TabsTrigger value="files">File</TabsTrigger>
-          <TabsTrigger value="goals">Goals</TabsTrigger>
-          <TabsTrigger value="routine">Routine</TabsTrigger>
+        <TabsList className="context-tabs" aria-label="Detail sesuai konteks">
+          <TabsTrigger value="detail">Detail</TabsTrigger>
+          <TabsTrigger value="library">Library</TabsTrigger>
+          <TabsTrigger value="computer">Computer</TabsTrigger>
         </TabsList>
       </div>
-      <TabsContent value="agent">
-        {appsOpen ? (
-          <AppConnections
-            snapshot={snapshot}
-            onBack={() => {
-              setPage("overview");
-              setConfigurationOpen(false);
-              locate({ tab: "agent", id: null });
-            }}
-          />
+      <TabsContent value="detail">
+        {responsibility ? (
+          <>
+            {!selectedDetail && (
+              <div className="pt-3.5">
+                <PanelPageHeader
+                  title={responsibility === "goals" ? "Goals" : "Routine"}
+                  onBack={openDetail}
+                />
+              </div>
+            )}
+            <Responsibilities
+              kind={responsibility}
+              refresh={refresh}
+              snapshot={snapshot}
+              selected={location.id}
+              select={(id) => locate({ tab: "detail", page: responsibility, id })}
+              compose={compose}
+              openFile={openFile}
+              openGoal={(id) => locate({ tab: "detail", page: "goals", id })}
+              source={source}
+            />
+          </>
+        ) : appsOpen ? (
+          <AppConnections snapshot={snapshot} onBack={openDetail} />
         ) : agent && snapshot.thread.type === "dm" ? (
           <AgentPanel
             key={agent.id}
@@ -175,7 +199,7 @@ export function ContextPanel({
           <GroupPanel
             key={location.id ?? "members"}
             initialMember={location.id}
-            selectMember={(id) => locate({ tab: "agent", id })}
+            selectMember={(id) => locate({ tab: "detail", id })}
             snapshot={snapshot}
             agents={agents}
             refresh={refresh}
@@ -183,63 +207,52 @@ export function ContextPanel({
           />
         )}
         {!appsOpen &&
+          !responsibility &&
           location.id === null &&
           (snapshot.thread.type === "group" || (page === "overview" && !configurationOpen)) && (
-            <PanelCard label="Akses">
-              <PanelNavRow
-                title="Koneksi aplikasi"
-                icon={Plug}
-                onClick={() => locate({ tab: "agent", id: null, page: "apps" })}
-              />
-            </PanelCard>
-          )}
-      </TabsContent>
-      <TabsContent value="files">
-        {location.page === "browser" ? (
-          <BrowserSection
-            agents={snapshot.agents}
-            threadId={snapshot.thread.id}
-            cursor={snapshot.cursor}
-            onBack={() => locate({ tab: "files", id: null })}
-          />
-        ) : (
-          <>
-            <FilesPanel
-              snapshot={snapshot}
-              threads={threads}
-              agents={agents}
-              selected={location.id}
-              select={(id) => locate({ tab: "files", id })}
-              refresh={refresh}
-              attach={attach}
-            />
-            {agent && !location.id && (
-              <PanelCard label="Browser">
+            <>
+              <PanelCard label="Tanggung jawab">
                 <PanelNavRow
-                  title="Browser percakapan"
-                  icon={Globe}
-                  onClick={() => locate({ tab: "files", id: null, page: "browser" })}
+                  title="Goals"
+                  value={snapshot.goals.length || undefined}
+                  icon={Target02Icon}
+                  onClick={() => locate({ tab: "detail", id: null, page: "goals" })}
+                />
+                <PanelNavRow
+                  title="Routine"
+                  value={snapshot.routines.length || undefined}
+                  icon={Calendar03Icon}
+                  onClick={() => locate({ tab: "detail", id: null, page: "routine" })}
                 />
               </PanelCard>
-            )}
-          </>
-        )}
+              <PanelCard label="Akses">
+                <PanelNavRow
+                  title="Koneksi aplikasi"
+                  icon={Plug01Icon}
+                  onClick={() => locate({ tab: "detail", id: null, page: "apps" })}
+                />
+              </PanelCard>
+            </>
+          )}
       </TabsContent>
-      {(["goals", "routine"] as const).map((kind) => (
-        <TabsContent key={kind} value={kind}>
-          <Responsibilities
-            kind={kind}
-            refresh={refresh}
-            snapshot={snapshot}
-            selected={location.id}
-            select={(id) => locate({ tab: kind, id })}
-            compose={compose}
-            openFile={openFile}
-            openGoal={(id) => locate({ tab: "goals", id })}
-            source={source}
-          />
-        </TabsContent>
-      ))}
+      <TabsContent value="library">
+        <FilesPanel
+          snapshot={snapshot}
+          threads={threads}
+          agents={agents}
+          selected={location.id}
+          select={(id) => locate({ tab: "library", id })}
+          refresh={refresh}
+          attach={attach}
+        />
+      </TabsContent>
+      <TabsContent value="computer">
+        <BrowserSection
+          agents={snapshot.agents}
+          threadId={snapshot.thread.id}
+          cursor={snapshot.cursor}
+        />
+      </TabsContent>
     </Tabs>
   );
 }

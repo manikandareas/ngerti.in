@@ -1,5 +1,7 @@
+import { ArrowDown02Icon, ArrowUp02Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { ArrowDown, ArrowUp } from "lucide-react";
+
 import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { tableAction } from "@/features/conversation/lib/rich-content-actions";
 import {
@@ -134,9 +136,10 @@ export function TableViewport({
     column.align ?? (numeric[index] || direction === "rtl" ? "right" : "left");
   const arrow = (index: number, className?: string) =>
     sort?.column === index && sort.descending ? (
-      <ArrowDown size={12} className={className} aria-hidden="true" />
+      <HugeiconsIcon icon={ArrowDown02Icon} size={12} className={className} aria-hidden="true" />
     ) : (
-      <ArrowUp
+      <HugeiconsIcon
+        icon={ArrowUp02Icon}
         size={12}
         className={cn(className, sort?.column !== index && !card && "opacity-35")}
         aria-hidden="true"

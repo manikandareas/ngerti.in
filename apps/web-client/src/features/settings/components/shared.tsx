@@ -1,4 +1,5 @@
-import { ChevronRight } from "lucide-react";
+import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { type ReactNode, useId } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
@@ -106,7 +107,8 @@ export function SettingsDisclosure({
           </span>
           <span className="settings-disclosure-trailing">
             {trailing}
-            <ChevronRight
+            <HugeiconsIcon
+              icon={ArrowRight01Icon}
               size={14}
               aria-hidden="true"
               className={`settings-disclosure-chevron ${open ? "rotate-90" : ""}`}

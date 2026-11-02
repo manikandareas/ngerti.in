@@ -1,4 +1,10 @@
-import { CalendarClock, FileText, MessageSquare, Target } from "lucide-react";
+import {
+  BubbleChatIcon,
+  Calendar03Icon,
+  File02Icon,
+  Target02Icon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { Button } from "@/components/ui/button";
 import type { Snapshot } from "@/types/workspace";
 import { PanelCard, PanelEmpty, PanelNavRow, PanelPageHeader } from "./panel-primitives";
@@ -79,7 +85,7 @@ export function Responsibilities({
             goal.evidence_artifact_ids.map((id) => (
               <PanelNavRow
                 key={id}
-                icon={FileText}
+                icon={File02Icon}
                 title={snapshot.artifacts.find((a) => a.id === id)?.name ?? "Buka bukti hasil"}
                 onClick={() => openFile(id)}
               />
@@ -89,7 +95,7 @@ export function Responsibilities({
           )}
         </PanelCard>
         <Button variant="outline" size="sm" onClick={() => source(goal.source_message_ids[0])}>
-          <MessageSquare size={13} strokeWidth={1.5} />
+          <HugeiconsIcon icon={BubbleChatIcon} size={13} strokeWidth={1.5} />
           Lihat percakapan asal
         </Button>
         <p className="text-caption text-muted-foreground">
@@ -194,7 +200,7 @@ export function Responsibilities({
           size="sm"
           onClick={() => source(routine.source_message_id ?? undefined)}
         >
-          <MessageSquare size={13} strokeWidth={1.5} />
+          <HugeiconsIcon icon={BubbleChatIcon} size={13} strokeWidth={1.5} />
           Lihat percakapan asal
         </Button>
         <Button
@@ -272,7 +278,7 @@ export function Responsibilities({
                 key={item.id}
                 title={item.title}
                 aria-label={item.title}
-                icon={kind === "goals" ? Target : CalendarClock}
+                icon={kind === "goals" ? Target02Icon : Calendar03Icon}
                 hint={
                   <span className="line-clamp-2">
                     {item.state} · {item.detail}

@@ -1,15 +1,16 @@
 import {
-  ArrowUp,
-  Check,
-  ChevronRight,
-  Clock3,
-  Menu,
-  Monitor,
-  Pencil,
-  Settings,
-  Square,
-  X,
-} from "lucide-react";
+  ArrowRight01Icon,
+  ArrowUp02Icon,
+  Cancel01Icon,
+  Clock01Icon,
+  ComputerIcon,
+  Menu01Icon,
+  PencilEdit01Icon,
+  Settings01Icon,
+  StopIcon,
+  Tick02Icon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import {
   Fragment,
   lazy,
@@ -148,7 +149,7 @@ export default function Workspace() {
   const [configurationOpen, setConfigurationOpen] = useState(false);
   const [createMenu, setCreateMenu] = useState(false);
   const [createGroupOpen, setCreateGroupOpen] = useState(false);
-  const [location, locate] = useState<PanelLocation>({ tab: "agent", id: null });
+  const [location, locate] = useState<PanelLocation>({ tab: "detail", id: null });
   const currentThread = useRef(threadId);
   currentThread.current = threadId;
   const [editing, setEditing] = useState<MessageEntity | null>(null);
@@ -259,7 +260,7 @@ export default function Workspace() {
     pendingComposerFocus.current = false;
     setEditing(null);
     setEditText("");
-    locate({ tab: "agent", id: null });
+    locate({ tab: "detail", id: null });
   }
   async function act(action: () => Promise<void>) {
     if (lock.current) return;
@@ -391,7 +392,7 @@ export default function Workspace() {
       openApps={() => {
         setNavigation(false);
         setDetails(true);
-        locate({ tab: "agent", id: null, page: "apps" });
+        locate({ tab: "detail", id: null, page: "apps" });
         setConfigurationOpen(false);
       }}
       openSettings={() => {
@@ -417,8 +418,14 @@ export default function Workspace() {
     setDraft(text);
     setDetails(false);
   }
-  function openResource(tab: PanelLocation["tab"], id: string) {
-    locate({ tab, id });
+  function openResource(kind: "agent" | "files" | "goals" | "routine", id: string) {
+    locate(
+      kind === "files"
+        ? { tab: "library", id }
+        : kind === "agent"
+          ? { tab: "detail", id: snapshot?.thread.type === "group" ? id : null }
+          : { tab: "detail", page: kind, id },
+    );
     setDetails(true);
   }
   async function source(id?: string) {
@@ -648,11 +655,11 @@ export default function Workspace() {
         className="rounded-full"
         aria-label="Pengaturan agent"
         onClick={() => {
-          locate({ tab: "agent", id: null });
+          locate({ tab: "detail", id: null });
           setConfigurationOpen(snapshot?.thread.type === "dm");
         }}
       >
-        <Settings size={18} strokeWidth={1.5} />
+        <HugeiconsIcon icon={Settings01Icon} size={18} strokeWidth={1.5} />
       </Button>
       <Button
         size="icon-sm"
@@ -660,7 +667,7 @@ export default function Workspace() {
         aria-label={mobile ? "Close" : "Tutup detail"}
         onClick={() => setDetails(false)}
       >
-        <X size={18} strokeWidth={1.5} />
+        <HugeiconsIcon icon={Cancel01Icon} size={18} strokeWidth={1.5} />
       </Button>
     </div>
   );
@@ -744,14 +751,14 @@ export default function Workspace() {
               aria-label="Buka percakapan"
               onClick={() => setNavigation(true)}
             >
-              <Menu size={18} strokeWidth={1.5} />
+              <HugeiconsIcon icon={Menu01Icon} size={18} strokeWidth={1.5} />
             </Button>
             <div className="header-identity-position [grid-column:2] [grid-row:1] [padding-left:0] flex justify-center flex-1 min-w-0">
               <Button
                 variant="ghost"
                 type="button"
                 onClick={() => {
-                  if (!details) locate({ tab: "agent", id: null });
+                  if (!details) locate({ tab: "detail", id: null });
                   setDetails((value) => !value);
                 }}
                 disabled={!agent}
@@ -774,7 +781,10 @@ export default function Workspace() {
                     aria-hidden="true"
                     className="-ml-2 flex w-0 shrink-0 overflow-hidden opacity-0 transition-[width,margin,opacity] duration-[140ms] group-hover:ml-0 group-hover:w-3 group-hover:opacity-100 group-focus-visible:ml-0 group-focus-visible:w-3 group-focus-visible:opacity-100"
                   >
-                    <ChevronRight className="size-3 shrink-0 text-muted-foreground" />
+                    <HugeiconsIcon
+                      icon={ArrowRight01Icon}
+                      className="size-3 shrink-0 text-muted-foreground"
+                    />
                   </span>
                 )}
                 {activeRun && (
@@ -795,7 +805,7 @@ export default function Workspace() {
                   className="header-action model-selector rounded-full text-[13px]"
                   onClick={() => {
                     setDetails(true);
-                    locate({ tab: "agent", id: null });
+                    locate({ tab: "detail", id: null });
                   }}
                 >
                   Routing otomatis
@@ -819,10 +829,10 @@ export default function Workspace() {
                 title="Browser agent"
                 onClick={() => {
                   setDetails(true);
-                  locate({ tab: "files", id: null, page: "browser" });
+                  locate({ tab: "computer", id: null });
                 }}
               >
-                <Monitor className="size-[18px]" strokeWidth={1.5} />
+                <HugeiconsIcon icon={ComputerIcon} className="size-[18px]" strokeWidth={1.5} />
               </Button>
             </div>
           </header>
@@ -1170,7 +1180,7 @@ export default function Workspace() {
                             })
                           }
                         >
-                          <Square size={10} className="fill-current" />
+                          <HugeiconsIcon icon={StopIcon} size={10} className="fill-current" />
                           <span className="truncate">{label}</span>
                         </Button>
                       );
@@ -1200,7 +1210,12 @@ export default function Workspace() {
                     data-queued-edit={editing.id}
                     className="flex items-center gap-2 px-3 pb-1.5 pt-2 text-[13px] leading-[18px] text-muted-foreground"
                   >
-                    <Pencil size={14} className="shrink-0" aria-hidden="true" />
+                    <HugeiconsIcon
+                      icon={PencilEdit01Icon}
+                      size={14}
+                      className="shrink-0"
+                      aria-hidden="true"
+                    />
                     <span className="min-w-0 flex-1">
                       {editPending !== null
                         ? "Perubahan belum terkonfirmasi. Periksa operasi yang sama."
@@ -1216,7 +1231,7 @@ export default function Workspace() {
                       disabled={busy || editPending !== null}
                       onClick={cancelQueuedEdit}
                     >
-                      <X size={14} aria-hidden="true" />
+                      <HugeiconsIcon icon={Cancel01Icon} size={14} aria-hidden="true" />
                     </button>
                   </div>
                 )}
@@ -1302,7 +1317,7 @@ export default function Workspace() {
                           disabled={busy || activeRun.status === "cancel_requested"}
                           onClick={() => stop(activeRun)}
                         >
-                          <Square className="size-2.5 fill-current" />
+                          <HugeiconsIcon icon={StopIcon} className="size-2.5 fill-current" />
                         </Button>
                       )}
                       <Button
@@ -1352,15 +1367,15 @@ export default function Workspace() {
                         }
                       >
                         {stopInSlot ? (
-                          <Square className="size-2.5 fill-current" />
+                          <HugeiconsIcon icon={StopIcon} className="size-2.5 fill-current" />
                         ) : busy ? (
                           <Spinner />
                         ) : editing ? (
-                          <Check size={16} strokeWidth={1.75} />
+                          <HugeiconsIcon icon={Tick02Icon} size={16} strokeWidth={1.75} />
                         ) : activeRun ? (
-                          <Clock3 size={14} strokeWidth={1.75} />
+                          <HugeiconsIcon icon={Clock01Icon} size={14} strokeWidth={1.75} />
                         ) : (
-                          <ArrowUp size={16} strokeWidth={1.75} />
+                          <HugeiconsIcon icon={ArrowUp02Icon} size={16} strokeWidth={1.75} />
                         )}
                       </Button>
                     </div>

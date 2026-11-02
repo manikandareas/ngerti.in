@@ -1,5 +1,5 @@
-import { Search } from "lucide-react";
-
+import { Search01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 export function SettingsSearch({
   label,
   placeholder,
@@ -13,7 +13,7 @@ export function SettingsSearch({
 }) {
   return (
     <div className="settings-search">
-      <Search size={15} aria-hidden="true" />
+      <HugeiconsIcon icon={Search01Icon} size={15} aria-hidden="true" />
       <input
         aria-label={label}
         placeholder={placeholder}

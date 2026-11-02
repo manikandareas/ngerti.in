@@ -1,11 +1,12 @@
 import {
-  CalendarClock,
-  ChevronRight,
-  ExternalLink,
-  LoaderCircle,
-  Target,
-  Users,
-} from "lucide-react";
+  ArrowRight01Icon,
+  Calendar03Icon,
+  LinkSquare02Icon,
+  Loading03Icon,
+  Target02Icon,
+  UserGroupIcon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { Button } from "@/components/ui/button";
 import type { Message, Run, Snapshot } from "@/types/workspace";
 
@@ -28,7 +29,12 @@ export function WorkActivity({
     <div className="space-y-2 text-caption text-muted-foreground">
       {route?.state === "pending" && (
         <p className="flex items-center gap-1.5">
-          <LoaderCircle size={13} className="motion-safe:animate-spin" aria-hidden="true" />
+          <HugeiconsIcon
+            icon={Loading03Icon}
+            size={13}
+            className="motion-safe:animate-spin"
+            aria-hidden="true"
+          />
           Memilih satu penjawab…
         </p>
       )}
@@ -42,7 +48,13 @@ export function WorkActivity({
       )}
       {tasks.map((task) => (
         <p key={task.id} className="flex items-start gap-1.5">
-          <Users size={13} strokeWidth={1.5} className="mt-0.5 shrink-0" aria-hidden="true" />
+          <HugeiconsIcon
+            icon={UserGroupIcon}
+            size={13}
+            strokeWidth={1.5}
+            className="mt-0.5 shrink-0"
+            aria-hidden="true"
+          />
           <span>
             {snapshot.agents.find((a) => a.id === task.source_agent_id)?.name ?? "Agent"} meminta
             bantuan {snapshot.agents.find((a) => a.id === task.agent_id)?.name ?? "anggota"} ·{" "}
@@ -62,22 +74,23 @@ export function WorkActivity({
       ))}
       {run?.goal_id && (
         <Button variant="ghost" size="sm" onClick={() => open("goals", run.goal_id as string)}>
-          <Target size={13} strokeWidth={1.5} />
+          <HugeiconsIcon icon={Target02Icon} size={13} strokeWidth={1.5} />
           Goal: {snapshot.goals.find((g) => g.id === run.goal_id)?.title ?? "Lihat tanggung jawab"}
         </Button>
       )}
       {run?.routine_id && (
         <Button variant="ghost" size="sm" onClick={() => open("routine", run.routine_id as string)}>
-          <CalendarClock size={13} strokeWidth={1.5} />
+          <HugeiconsIcon icon={Calendar03Icon} size={13} strokeWidth={1.5} />
           Lihat Routine
         </Button>
       )}
       {!!run?.sources?.length && (
         <details className="group/sources w-fit max-w-full rounded-xl border border-border/40 bg-panel">
           <summary className="flex min-h-8 cursor-pointer list-none items-center gap-2 rounded-xl px-3 py-1.5 text-[13px] hover:bg-secondary [&::-webkit-details-marker]:hidden">
-            <ExternalLink size={13} strokeWidth={1.5} aria-hidden="true" />
+            <HugeiconsIcon icon={LinkSquare02Icon} size={13} strokeWidth={1.5} aria-hidden="true" />
             Sumber riset · {run.sources.length}
-            <ChevronRight
+            <HugeiconsIcon
+              icon={ArrowRight01Icon}
               size={13}
               strokeWidth={1.5}
               className="ml-auto group-open/sources:rotate-90"

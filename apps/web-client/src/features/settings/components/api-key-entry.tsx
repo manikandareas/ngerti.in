@@ -1,4 +1,11 @@
-import { CircleAlert, Eye, EyeOff, KeyRound, Loader2 } from "lucide-react";
+import {
+  AlertCircleIcon,
+  Key01Icon,
+  Loading03Icon,
+  ViewIcon,
+  ViewOffIcon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { type ProviderId, providers } from "@/features/settings/components/shared";
@@ -73,7 +80,12 @@ export function ApiKeyEntry({
       className="settings-key-entry"
     >
       <div className="settings-key-heading">
-        <KeyRound size={16} aria-hidden="true" className="settings-key-mark" />
+        <HugeiconsIcon
+          icon={Key01Icon}
+          size={16}
+          aria-hidden="true"
+          className="settings-key-mark"
+        />
         <div>
           <p>{company} API key</p>
           <p>Biaya API terpisah dari subscription {name}.</p>
@@ -127,15 +139,22 @@ export function ApiKeyEntry({
               aria-pressed={visible}
             >
               {visible ? (
-                <EyeOff size={14} aria-hidden="true" />
+                <HugeiconsIcon icon={ViewOffIcon} size={14} aria-hidden="true" />
               ) : (
-                <Eye size={14} aria-hidden="true" />
+                <HugeiconsIcon icon={ViewIcon} size={14} aria-hidden="true" />
               )}
             </button>
           </div>
           <div className="settings-key-actions">
             <Button type="submit" disabled={busy || !key.trim()}>
-              {busy && <Loader2 size={12} aria-hidden="true" className="animate-spin" />}
+              {busy && (
+                <HugeiconsIcon
+                  icon={Loading03Icon}
+                  size={12}
+                  aria-hidden="true"
+                  className="animate-spin"
+                />
+              )}
               {uncertain ? "Periksa penyimpanan" : "Simpan key"}
             </Button>
             <Button type="button" variant="outline" disabled={busy} onClick={close}>
@@ -148,7 +167,12 @@ export function ApiKeyEntry({
         </p>
         {error && (
           <p role="alert" className="settings-key-error">
-            <CircleAlert size={13} aria-hidden="true" className="settings-key-error-icon" />
+            <HugeiconsIcon
+              icon={AlertCircleIcon}
+              size={13}
+              aria-hidden="true"
+              className="settings-key-error-icon"
+            />
             <span>{error}</span>
           </p>
         )}

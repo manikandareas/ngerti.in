@@ -24,12 +24,3 @@ export function useAvatarActivity(agentId?: string, threadId?: string) {
     ),
   };
 }
-
-export function AgentActivityStatus({ agentId }: { agentId?: string }) {
-  const { label } = useAvatarActivity(agentId);
-  return (
-    <span role="status" className="mt-1 text-[12px] text-muted-foreground">
-      {label}
-    </span>
-  );
-}

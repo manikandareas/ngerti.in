@@ -1,4 +1,11 @@
-import { AlertCircle, FileText, Image as ImageIcon, RotateCw, X } from "lucide-react";
+import {
+  AlertCircleIcon,
+  Cancel01Icon,
+  File02Icon,
+  Image01Icon,
+  RotateRight01Icon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -49,10 +56,10 @@ export function AttachmentChip({
   const [open, setOpen] = useState(false);
   const Icon =
     file.state === "failed"
-      ? AlertCircle
+      ? AlertCircleIcon
       : file.mediaType.startsWith("image/")
-        ? ImageIcon
-        : FileText;
+        ? Image01Icon
+        : File02Icon;
   return (
     <span
       className="attachment-chip"
@@ -71,7 +78,7 @@ export function AttachmentChip({
                 aria-label={`Pratinjau ${file.name}`}
                 onMouseDown={(event) => event.preventDefault()}
               >
-                <Icon size={12} strokeWidth={1.7} aria-hidden="true" />
+                <HugeiconsIcon icon={Icon} size={12} strokeWidth={1.7} aria-hidden="true" />
                 <span dir="auto" className="truncate">
                   {file.name}
                 </span>
@@ -113,7 +120,7 @@ export function AttachmentChip({
           onMouseDown={(event) => event.preventDefault()}
           onClick={retry}
         >
-          <RotateCw size={12} aria-hidden="true" />
+          <HugeiconsIcon icon={RotateRight01Icon} size={12} aria-hidden="true" />
         </button>
       )}
       {remove && file.state !== "uploading" && (
@@ -125,7 +132,7 @@ export function AttachmentChip({
           onMouseDown={(event) => event.preventDefault()}
           onClick={remove}
         >
-          <X size={11} aria-hidden="true" />
+          <HugeiconsIcon icon={Cancel01Icon} size={11} aria-hidden="true" />
         </button>
       )}
     </span>

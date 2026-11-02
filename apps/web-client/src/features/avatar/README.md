@@ -74,7 +74,7 @@ without a recipe use the same deterministic defaults until a recipe is saved. No
 or inference is required. The former text/emoji `avatar` field remains a legacy field;
 procedural identity uses `avatar_config`, including scoped product-tool updates.
 
-Open **Ubah avatar** in the DM agent panel to edit `/avatar-studio?agent=<id>`. The editor
+Open `/avatar-studio?agent=<id>` directly to edit an agent avatar. The editor
 loads that agent's current recipe and saves through the revision-checked configuration
 command. Conflict or uncertain acknowledgement remains an explicit error; edits never
 silently overwrite a newer profile. Without an agent target, the studio still stores its

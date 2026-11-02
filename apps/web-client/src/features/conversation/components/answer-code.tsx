@@ -1,4 +1,12 @@
-import { Check, Copy, Download, MoreHorizontal, WrapText, X } from "lucide-react";
+import {
+  Cancel01Icon,
+  Copy01Icon,
+  Download04Icon,
+  MoreHorizontalIcon,
+  TextWrapIcon,
+  Tick02Icon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { Fragment, type ReactNode, useEffect, useState } from "react";
 import {
   DropdownMenu,
@@ -82,11 +90,21 @@ export function AnswerCode({
           aria-label={copyLabel}
         >
           {copied === "failed" ? (
-            <X size={14} className="text-destructive" aria-hidden="true" />
+            <HugeiconsIcon
+              icon={Cancel01Icon}
+              size={14}
+              className="text-destructive"
+              aria-hidden="true"
+            />
           ) : copied === "copied" ? (
-            <Check size={14} className="text-(--success-foreground)" aria-hidden="true" />
+            <HugeiconsIcon
+              icon={Tick02Icon}
+              size={14}
+              className="text-(--success-foreground)"
+              aria-hidden="true"
+            />
           ) : (
-            <Copy size={14} aria-hidden="true" />
+            <HugeiconsIcon icon={Copy01Icon} size={14} aria-hidden="true" />
           )}
         </button>
         {copied !== "idle" && (
@@ -97,16 +115,16 @@ export function AnswerCode({
         <DropdownMenu open={menu} onOpenChange={setMenu}>
           <DropdownMenuTrigger asChild>
             <button type="button" className={plateButton} aria-label="Opsi kode" title="Opsi kode">
-              <MoreHorizontal size={14} aria-hidden="true" />
+              <HugeiconsIcon icon={MoreHorizontalIcon} size={14} aria-hidden="true" />
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuCheckboxItem checked={wrap} onCheckedChange={setWrap}>
-              <WrapText size={14} aria-hidden="true" />
+              <HugeiconsIcon icon={TextWrapIcon} size={14} aria-hidden="true" />
               Bungkus baris
             </DropdownMenuCheckboxItem>
             <DropdownMenuItem onSelect={() => downloadSnippetFile(getSnippetFileName(lang), code)}>
-              <Download size={14} aria-hidden="true" />
+              <HugeiconsIcon icon={Download04Icon} size={14} aria-hidden="true" />
               Simpan sebagai file
             </DropdownMenuItem>
             <DropdownMenuSeparator />

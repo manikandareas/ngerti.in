@@ -1,5 +1,7 @@
+import { Globe02Icon, RefreshIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import type RFB from "@novnc/novnc";
-import { Globe, RefreshCw } from "lucide-react";
+
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -35,7 +37,7 @@ export function BrowserViewer({
       <DialogContent className="flex max-h-[94svh] flex-col gap-3 rounded-[16px] p-4 sm:max-w-5xl">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-[15px] font-medium">
-            <Globe size={17} strokeWidth={1.5} />
+            <HugeiconsIcon icon={Globe02Icon} size={17} strokeWidth={1.5} />
             Browser percakapan
           </DialogTitle>
           <DialogDescription>
@@ -144,7 +146,7 @@ function BrowserScreen({ target }: { target: BrowserView }) {
       <div className="flex flex-wrap items-center justify-between gap-2 text-caption">
         <span role="status">{state}</span>
         <Button variant="outline" size="sm" onClick={() => setAttempt((n) => n + 1)}>
-          <RefreshCw size={13} strokeWidth={1.5} />
+          <HugeiconsIcon icon={RefreshIcon} size={13} strokeWidth={1.5} />
           Sambungkan ulang tampilan
         </Button>
       </div>

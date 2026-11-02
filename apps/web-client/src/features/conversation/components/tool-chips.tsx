@@ -1,4 +1,11 @@
-import { Check, ChevronRight, Circle, LoaderCircle, X } from "lucide-react";
+import {
+  ArrowRight01Icon,
+  Cancel01Icon,
+  CircleIcon,
+  Loading03Icon,
+  Tick02Icon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useId, useState } from "react";
 import type { Run } from "@/types/workspace";
 
@@ -87,12 +94,29 @@ function ActivityRun({ activities, runStatus }: { activities: Activity[]; runSta
           className="flex min-w-0 max-w-full items-center gap-2 rounded-full border border-border/40 bg-panel px-3 py-1.5 text-[13px] text-muted-foreground hover:bg-secondary"
         >
           {open ? (
-            <ChevronRight size={13} className="shrink-0 rotate-90" aria-hidden="true" />
+            <HugeiconsIcon
+              icon={ArrowRight01Icon}
+              size={13}
+              className="shrink-0 rotate-90"
+              aria-hidden="true"
+            />
           ) : (
-            <Check size={13} className="shrink-0 text-success-foreground" aria-hidden="true" />
+            <HugeiconsIcon
+              icon={Tick02Icon}
+              size={13}
+              className="shrink-0 text-success-foreground"
+              aria-hidden="true"
+            />
           )}
           <span className="min-w-0 max-w-[480px] truncate font-medium leading-5">{summary}</span>
-          {!open && <ChevronRight size={13} className="shrink-0" aria-hidden="true" />}
+          {!open && (
+            <HugeiconsIcon
+              icon={ArrowRight01Icon}
+              size={13}
+              className="shrink-0"
+              aria-hidden="true"
+            />
+          )}
         </button>
       </div>
       {open && (
@@ -134,22 +158,29 @@ function ToolActivity({ tool, runStatus }: { tool: Activity; runStatus: string }
         className={`flex min-h-8 cursor-pointer list-none items-center gap-2 rounded-xl px-3 py-1.5 hover:bg-secondary [&::-webkit-details-marker]:hidden ${failed ? "text-destructive" : "text-muted-foreground"}`}
       >
         {running ? (
-          <LoaderCircle
+          <HugeiconsIcon
+            icon={Loading03Icon}
             size={13}
             className="shrink-0 motion-safe:animate-spin"
             aria-hidden="true"
           />
         ) : failed ? (
-          <X size={13} className="shrink-0" aria-hidden="true" />
+          <HugeiconsIcon icon={Cancel01Icon} size={13} className="shrink-0" aria-hidden="true" />
         ) : complete ? (
-          <Check size={13} className="shrink-0 text-success-foreground" aria-hidden="true" />
+          <HugeiconsIcon
+            icon={Tick02Icon}
+            size={13}
+            className="shrink-0 text-success-foreground"
+            aria-hidden="true"
+          />
         ) : (
-          <Circle size={13} className="shrink-0" aria-hidden="true" />
+          <HugeiconsIcon icon={CircleIcon} size={13} className="shrink-0" aria-hidden="true" />
         )}
         <span className="min-w-0 max-w-[30rem] truncate font-medium leading-5">
           {actionLabel(tool.name)}
         </span>
-        <ChevronRight
+        <HugeiconsIcon
+          icon={ArrowRight01Icon}
           size={13}
           className="ml-auto shrink-0 group-open/tool:rotate-90"
           aria-hidden="true"

@@ -1,16 +1,17 @@
 import {
-  Check,
-  ChevronDown,
-  ChevronRight,
-  ChevronUp,
-  KeyRound,
-  Loader2,
-  LogIn,
-  RefreshCw,
-  Search,
-  Settings,
-  X,
-} from "lucide-react";
+  ArrowDown01Icon,
+  ArrowRight01Icon,
+  ArrowUp01Icon,
+  Cancel01Icon,
+  Key01Icon,
+  Loading03Icon,
+  Login01Icon,
+  RefreshIcon,
+  Search01Icon,
+  Settings01Icon,
+  Tick02Icon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { type ReactNode, useEffect, useId, useRef, useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
@@ -295,7 +296,8 @@ export function ModelPicker({
         >
           {showSearch && (
             <div className="group/search flex h-9 shrink-0 items-center gap-2 border-b-[0.5px] border-foreground/10 pl-3.5 pr-2">
-              <Search
+              <HugeiconsIcon
+                icon={Search01Icon}
                 size={16}
                 strokeWidth={1.75}
                 className="shrink-0 text-(--text-tertiary)"
@@ -320,7 +322,12 @@ export function ModelPicker({
                   aria-label="Hapus pencarian model"
                   className="flex size-5 shrink-0 items-center justify-center rounded-full text-(--text-tertiary) hover:bg-menu-hover"
                 >
-                  <X size={14} strokeWidth={1.75} aria-hidden="true" />
+                  <HugeiconsIcon
+                    icon={Cancel01Icon}
+                    size={14}
+                    strokeWidth={1.75}
+                    aria-hidden="true"
+                  />
                 </button>
               )}
             </div>
@@ -347,7 +354,12 @@ export function ModelPicker({
                           `${providerName(current)} · ${current ? billingLabel(current.authentication.billing_source) : "Akun tidak tersedia"}`}
                       </span>
                     </span>
-                    <Check size={14} className="shrink-0 text-link" aria-hidden="true" />
+                    <HugeiconsIcon
+                      icon={Tick02Icon}
+                      size={14}
+                      className="shrink-0 text-link"
+                      aria-hidden="true"
+                    />
                   </button>
                   <hr className={cn(separator, "border-0")} />
                 </>
@@ -371,7 +383,12 @@ export function ModelPicker({
                       </span>
                       <span className="min-w-0 truncate">{providerName(connection)}</span>
                       {connection.authentication.billing_source === "api_key" && (
-                        <KeyRound size={12} className="ml-auto shrink-0" aria-label="API key" />
+                        <HugeiconsIcon
+                          icon={Key01Icon}
+                          size={12}
+                          className="ml-auto shrink-0"
+                          aria-label="API key"
+                        />
                       )}
                     </h3>
                     <p className="pl-8 pr-2 text-[12px] leading-4 text-(--text-tertiary)">
@@ -388,7 +405,8 @@ export function ModelPicker({
                         onClick={manage}
                       >
                         <span className={gutter}>
-                          <LogIn
+                          <HugeiconsIcon
+                            icon={Login01Icon}
                             size={16}
                             strokeWidth={1.75}
                             className="text-muted-foreground"
@@ -398,7 +416,8 @@ export function ModelPicker({
                         <span className="min-w-0 flex-1 truncate">
                           {connection.state === "revoked" ? "Hubungkan kembali" : "Login akun"}
                         </span>
-                        <ChevronRight
+                        <HugeiconsIcon
+                          icon={ArrowRight01Icon}
                           size={16}
                           strokeWidth={1.75}
                           className="text-(--text-tertiary)"
@@ -424,14 +443,16 @@ export function ModelPicker({
                             <span className={gutter} />
                             <span className="min-w-0 flex-1 truncate capitalize">{model.id}</span>
                             {busy === key ? (
-                              <Loader2
+                              <HugeiconsIcon
+                                icon={Loading03Icon}
                                 size={14}
                                 className="shrink-0 animate-spin"
                                 aria-hidden="true"
                               />
                             ) : (
                               selected && (
-                                <Check
+                                <HugeiconsIcon
+                                  icon={Tick02Icon}
                                   size={14}
                                   className="shrink-0 text-link"
                                   aria-hidden="true"
@@ -465,9 +486,15 @@ export function ModelPicker({
                           >
                             <span className={gutter}>
                               {busy === connection.id ? (
-                                <Loader2 size={14} className="animate-spin" aria-hidden="true" />
+                                <HugeiconsIcon
+                                  icon={Loading03Icon}
+                                  size={14}
+                                  className="animate-spin"
+                                  aria-hidden="true"
+                                />
                               ) : (
-                                <RefreshCw
+                                <HugeiconsIcon
+                                  icon={RefreshIcon}
                                   size={16}
                                   strokeWidth={1.75}
                                   className="text-muted-foreground"
@@ -509,14 +536,16 @@ export function ModelPicker({
                               : `Tampilkan semua ${connection.models.length} model`}
                           </span>
                           {toggle === "less" ? (
-                            <ChevronUp
+                            <HugeiconsIcon
+                              icon={ArrowUp01Icon}
                               size={16}
                               strokeWidth={1.75}
                               className="shrink-0 text-(--text-tertiary)"
                               aria-hidden="true"
                             />
                           ) : (
-                            <ChevronDown
+                            <HugeiconsIcon
+                              icon={ArrowDown01Icon}
                               size={16}
                               strokeWidth={1.75}
                               className="shrink-0 text-(--text-tertiary)"
@@ -612,7 +641,8 @@ export function ModelPicker({
             )}
             <button type="button" data-menu-row data-simple-manage className={row} onClick={manage}>
               <span className={gutter}>
-                <Settings
+                <HugeiconsIcon
+                  icon={Settings01Icon}
                   size={16}
                   strokeWidth={1.75}
                   className="text-muted-foreground"
@@ -620,7 +650,8 @@ export function ModelPicker({
                 />
               </span>
               <span className="min-w-0 flex-1 truncate">Kelola akun & model</span>
-              <ChevronRight
+              <HugeiconsIcon
+                icon={ArrowRight01Icon}
                 size={16}
                 strokeWidth={1.75}
                 className="shrink-0 text-(--text-tertiary)"

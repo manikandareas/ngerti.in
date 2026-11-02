@@ -1,4 +1,5 @@
-import { FileText, Pencil, Users } from "lucide-react";
+import { File02Icon, PencilEdit01Icon, UserGroupIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { command } from "@/lib/api-client";
@@ -40,6 +41,7 @@ export function GroupPanel({
         />
         <div className="flex flex-col items-center gap-3 py-4 text-center">
           <AgentAvatar
+            showActivityLabel={false}
             agent={profile}
             animated
             interactive
@@ -69,7 +71,7 @@ export function GroupPanel({
                 "Ceritakan apa yang ingin dikerjakan bersama di percakapan."}
             </span>
           }
-          icon={FileText}
+          icon={File02Icon}
           aria-label="Ubah melalui percakapan"
           onClick={() => compose("Bantu perbarui tujuan dan arahan bersama grup ini: ")}
         />
@@ -85,7 +87,7 @@ export function GroupPanel({
               setMember(a.id);
             }}
           >
-            <AgentAvatar agent={a} className="size-8 rounded-[10px]" />
+            <AgentAvatar showActivityLabel={false} agent={a} className="size-8 rounded-[10px]" />
           </PanelNavRow>
         ))}
       </PanelCard>
@@ -99,9 +101,19 @@ export function GroupPanel({
         }}
       >
         <summary className="flex min-h-[46px] cursor-pointer list-none items-center gap-2.5 px-3.5 py-[11px] text-[14px] font-medium [&::-webkit-details-marker]:hidden">
-          <Users size={15} strokeWidth={1.5} className="text-muted-foreground" />
+          <HugeiconsIcon
+            icon={UserGroupIcon}
+            size={15}
+            strokeWidth={1.5}
+            className="text-muted-foreground"
+          />
           Kelola anggota
-          <Pencil size={13} strokeWidth={1.5} className="ml-auto text-muted-foreground" />
+          <HugeiconsIcon
+            icon={PencilEdit01Icon}
+            size={13}
+            strokeWidth={1.5}
+            className="ml-auto text-muted-foreground"
+          />
         </summary>
         <form
           className="space-y-3 px-3.5 pb-3.5"
@@ -140,7 +152,11 @@ export function GroupPanel({
                     )
                   }
                 />
-                <AgentAvatar agent={a} className="size-7 rounded-lg text-xs" />
+                <AgentAvatar
+                  showActivityLabel={false}
+                  agent={a}
+                  className="size-7 rounded-lg text-xs"
+                />
                 <span className="truncate text-[13px]">{a.name}</span>
               </label>
             ))}

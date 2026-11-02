@@ -663,7 +663,7 @@ button.group-bubble-author:focus-visible {
 .context-panel .context-tabs {
   width: calc(100% - 24px);
   height: 36px;
-  margin: 0 12px;
+  margin: 16px 12px 0;
   padding: 0;
   gap: 2px;
   background: transparent;

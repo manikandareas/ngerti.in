@@ -1,4 +1,5 @@
-import { Check } from "lucide-react";
+import { Tick02Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -131,7 +132,7 @@ export function CreateGroup({
                   aria-hidden="true"
                   className={`pointer-events-none grid size-[18px] shrink-0 place-items-center rounded-full border ${members.includes(a.id) ? "border-primary bg-primary text-primary-foreground" : "border-border/60"}`}
                 >
-                  {members.includes(a.id) && <Check size={12} />}
+                  {members.includes(a.id) && <HugeiconsIcon icon={Tick02Icon} size={12} />}
                 </span>
               </label>
             ))}

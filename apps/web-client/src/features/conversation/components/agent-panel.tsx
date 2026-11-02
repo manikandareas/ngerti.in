@@ -1,5 +1,12 @@
-import { Link } from "@tanstack/react-router";
-import { Brain, FileText, Pencil, Trash2, Zap } from "lucide-react";
+import {
+  BrainIcon,
+  Delete02Icon,
+  File02Icon,
+  FlashIcon,
+  PencilEdit01Icon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -175,7 +182,7 @@ export function AgentPanel({
                           setText(memory.text);
                         }}
                       >
-                        <Pencil size={12} strokeWidth={1.5} />
+                        <HugeiconsIcon icon={PencilEdit01Icon} size={12} strokeWidth={1.5} />
                         Koreksi
                       </Button>
                       <Button
@@ -185,7 +192,7 @@ export function AgentPanel({
                         disabled={busy}
                         onClick={() => void save(memory, true)}
                       >
-                        <Trash2 size={12} strokeWidth={1.5} />
+                        <HugeiconsIcon icon={Delete02Icon} size={12} strokeWidth={1.5} />
                         Hapus memory
                       </Button>
                     </div>
@@ -230,7 +237,12 @@ export function AgentPanel({
           <PanelCard label="Skills aplikasi">
             {skills?.application.map((skill) => (
               <div key={skill.id} className="flex items-center gap-2.5 px-3.5 py-3">
-                <Zap size={15} strokeWidth={1.5} className="shrink-0 text-muted-foreground" />
+                <HugeiconsIcon
+                  icon={FlashIcon}
+                  size={15}
+                  strokeWidth={1.5}
+                  className="shrink-0 text-muted-foreground"
+                />
                 <span className="min-w-0 flex-1 text-[14px]">{skill.name}</span>
                 <Badge variant="secondary" className="shrink-0 text-[11px] font-normal">
                   Aplikasi
@@ -281,13 +293,6 @@ export function AgentPanel({
           <p className="mx-1 mb-3.5 whitespace-pre-wrap text-center text-[13px] leading-[1.5] text-muted-foreground">
             {agent.soul || "Ceritakan bantuan yang kamu butuhkan di chat."}
           </p>
-          <div className="mb-3 flex justify-center">
-            <Button variant="ghost" size="sm" asChild>
-              <Link to="/avatar-studio" search={{ agent: agent.id }}>
-                Ubah avatar
-              </Link>
-            </Button>
-          </div>
           <PanelCard>
             <AgentModelRow
               agent={agent}
@@ -298,7 +303,7 @@ export function AgentPanel({
             />
             <PanelNavRow
               title="Arahan kerja"
-              icon={FileText}
+              icon={File02Icon}
               onClick={() => navigate("instructions")}
             />
           </PanelCard>
@@ -306,13 +311,13 @@ export function AgentPanel({
             <PanelNavRow
               title="Memory"
               value={memories.length || undefined}
-              icon={Brain}
+              icon={BrainIcon}
               onClick={() => navigate("memory")}
             />
             <PanelNavRow
               title="Skills"
               value={(skills?.application.length ?? 0) + nativeCount || undefined}
-              icon={Zap}
+              icon={FlashIcon}
               onClick={() => navigate("skills")}
             />
           </PanelCard>

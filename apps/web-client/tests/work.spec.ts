@@ -109,6 +109,14 @@ test("contextual goals, Routine and files use real scoped state and keep stop re
   });
   await chooseAgent(page, a.agent.name);
   await page.getByRole("button", { name: `Detail ${a.agent.name}`, exact: true }).click();
+  await expect(page.locator("#conversation-details").getByRole("tab")).toHaveText([
+    "Detail",
+    "Library",
+    "Computer",
+  ]);
+  await expect(page.locator(".context-hero").getByRole("status")).toHaveCount(0);
+  await expect(page.locator(".context-hero [data-activity-label]")).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Ubah avatar", exact: true })).toHaveCount(0);
   await capture(page, testInfo.outputPath("agent-profile.png"));
   await page
     .locator("#conversation-details")
@@ -116,8 +124,8 @@ test("contextual goals, Routine and files use real scoped state and keep stop re
     .click();
   await expect(page.getByRole("dialog", { name: "Pilih model", exact: true })).toBeVisible();
   await page.keyboard.press("Escape");
-  await expect(page.getByRole("tab", { name: "Agent", exact: true })).toBeVisible();
-  await page.getByRole("tab", { name: "Goals", exact: true }).click();
+  await expect(page.getByRole("tab", { name: "Detail", exact: true })).toBeVisible();
+  await page.locator('[data-panel-nav="Goals"]').click();
   await capture(page, testInfo.outputPath("goals-list.png"));
   await page.getByRole("button", { name: "Research progress", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Research progress", exact: true })).toBeVisible();
@@ -147,7 +155,7 @@ test("contextual goals, Routine and files use real scoped state and keep stop re
   await expect(page.getByRole("button", { name: "Periksa perubahan", exact: true })).toBeVisible();
   await page.reload();
   await page.getByRole("button", { name: `Detail ${a.agent.name}`, exact: true }).click();
-  await page.getByRole("tab", { name: "Goals", exact: true }).click();
+  await page.locator('[data-panel-nav="Goals"]').click();
   await page.getByRole("button", { name: "Research progress", exact: true }).click();
   await expect(page.getByRole("button", { name: "Periksa perubahan", exact: true })).toBeVisible();
   await page.unroute(`**/v1/goals/${goal.id}/control`);
@@ -174,7 +182,8 @@ test("contextual goals, Routine and files use real scoped state and keep stop re
   await page.getByRole("button", { name: "Lanjutkan goal", exact: true }).click();
   expect((await resume).ok()).toBeTruthy();
   await page.getByRole("button", { name: "Kembali ke goals", exact: true }).click();
-  await page.getByRole("tab", { name: "Routine", exact: true }).click();
+  await page.getByRole("button", { name: "Kembali ke detail", exact: true }).click();
+  await page.locator('[data-panel-nav="Routine"]').click();
   const pauseRoutine = page.waitForResponse((response) =>
     response.url().endsWith(`/v1/routines/${routine.id}/control`),
   );
@@ -233,9 +242,10 @@ test("contextual goals, Routine and files use real scoped state and keep stop re
       .sort(),
   );
   expect(userAdmissions).toEqual([]);
-  await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toHaveText("");
+  await expect(page.locator('[role="textbox"][aria-label="Pesan"]')).toHaveText("");
   await page.getByRole("button", { name: "Kembali ke goals", exact: true }).click();
-  await page.getByRole("tab", { name: "File", exact: true }).click();
+  await page.getByRole("button", { name: "Kembali ke detail", exact: true }).click();
+  await page.getByRole("tab", { name: "Library", exact: true }).click();
   await page.getByRole("button", { name: "Gunakan folder percakapan", exact: true }).click();
   await page.getByLabel("Unggah file", { exact: true }).setInputFiles({
     name: "research.txt",
@@ -294,7 +304,7 @@ test("file previews reuse source tables, code and markdown without executing fil
   });
   await chooseAgent(page, a.agent.name);
   await page.getByRole("button", { name: `Detail ${a.agent.name}`, exact: true }).click();
-  await page.getByRole("tab", { name: "File", exact: true }).click();
+  await page.getByRole("tab", { name: "Library", exact: true }).click();
   async function open(name: string) {
     await expect(page.locator('[data-slot="dialog-content"]')).toHaveCount(0);
     const back = page.locator("#conversation-details [data-panel-back]");
@@ -370,7 +380,7 @@ test("group creation recovers a lost acknowledgement, routes messages and keeps 
   await expect(page.getByLabel("Nama grup", { exact: true })).toHaveValue("Research circle");
   await page.getByRole("button", { name: "Periksa pembuatan grup", exact: true }).click();
   await page.getByRole("button", { name: "Detail Research circle", exact: true }).click();
-  await expect(page.getByRole("tab", { name: "Anggota", exact: true })).toBeVisible();
+  await expect(page.getByRole("tab", { name: "Detail", exact: true })).toBeVisible();
   await capture(page, testInfo.outputPath("group-profile.png"));
   await page.getByRole("button", { name: `Profil anggota ${a.agent.name}`, exact: true }).click();
   await expect(
@@ -430,9 +440,10 @@ test("browser viewer connects to the managed browser and reconnects its view wit
   });
   await chooseAgent(page, a.agent.name);
   await page.getByRole("button", { name: `Detail ${a.agent.name}`, exact: true }).click();
-  await page.getByRole("tab", { name: "File", exact: true }).click();
-  await expect(page.getByText("Browser percakapan", { exact: true })).toBeVisible();
-  await page.getByText("Browser percakapan", { exact: true }).click();
+  await page.getByRole("tab", { name: "Computer", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: "Browser percakapan", exact: true }),
+  ).toBeVisible();
   const created = page.waitForResponse(
     (r) => r.url().endsWith("/v1/browser/profiles") && r.request().method() === "POST",
   );
@@ -598,7 +609,11 @@ test("application access is assigned explicitly to this context and unsupported 
   const close = page.getByRole("button", { name: "Tutup detail", exact: true });
   if (await close.isVisible()) await close.click();
   else await page.getByRole("button", { name: "Close", exact: true }).click();
-  await expect(page.getByText("Fixture ready", { exact: true })).toBeVisible({ timeout: 20000 });
+  await expect(
+    page
+      .getByRole("main", { name: "Percakapan aktif" })
+      .getByText("Fixture ready", { exact: true }),
+  ).toBeVisible({ timeout: 20000 });
   await page
     .getByRole("textbox", { name: "Pesan", exact: true })
     .fill(`fixture apps:${created.id}`);
@@ -732,19 +747,28 @@ test("tool calls stay out of the conversation while native receipts remain persi
   await chooseAgent(page, agent.name);
   await page.getByRole("textbox", { name: "Pesan", exact: true }).fill("fixture tools");
   await page.getByRole("button", { name: "Kirim", exact: true }).click();
-  await expect(page.getByText("Fixture ready", { exact: true })).toBeVisible({ timeout: 20000 });
-  const snapshot = await (await page.request.get(`/v1/threads/${thread.id}/snapshot`)).json();
-  expect(snapshot.runs[0].native_tools.map((tool: { state: string }) => tool.state)).toEqual([
-    "completed",
-    "completed",
-    "failed",
-    "started",
-  ]);
+  await expect(
+    page
+      .getByRole("main", { name: "Percakapan aktif" })
+      .getByText("Fixture ready", { exact: true }),
+  ).toBeVisible({ timeout: 20000 });
+  await expect
+    .poll(async () => {
+      const snapshot = await (await page.request.get(`/v1/threads/${thread.id}/snapshot`)).json();
+      return snapshot.runs.flatMap((run: { native_tools: { state: string }[] }) =>
+        run.native_tools.map((tool) => tool.state),
+      );
+    })
+    .toEqual(["completed", "completed", "failed", "started"]);
   await expect(page.locator("[data-activity-run], [data-tool-activity]")).toHaveCount(0);
   await expect(page.getByText("fixture_read_source", { exact: true })).toHaveCount(0);
   await capture(page, testInfo.outputPath("tool-calls-hidden.png"));
   await page.reload();
-  await expect(page.getByText("Fixture ready", { exact: true })).toBeVisible();
+  await expect(
+    page
+      .getByRole("main", { name: "Percakapan aktif" })
+      .getByText("Fixture ready", { exact: true }),
+  ).toBeVisible();
   await expect(page.locator("[data-activity-run], [data-tool-activity]")).toHaveCount(0);
 });
 
@@ -1144,7 +1168,7 @@ test("sharing copies only the selected file into the explicit destination and pr
   });
   await chooseAgent(page, a.agent.name);
   await page.getByRole("button", { name: `Detail ${a.agent.name}`, exact: true }).click();
-  await page.getByRole("tab", { name: "File", exact: true }).click();
+  await page.getByRole("tab", { name: "Library", exact: true }).click();
   await page.getByRole("button", { name: "File share.txt", exact: true }).click();
   await page.getByText("Bagikan salinan ke percakapan lain", { exact: true }).click();
   await page.getByLabel("Folder tujuan", { exact: true }).selectOption(destination.id);
@@ -1173,12 +1197,13 @@ async function fixtureAgent(page: Page, prefix: string) {
     billing_source: "subscription",
   });
 }
-async function chooseGroup(page: Page, name: string, count: number) {
+async function chooseGroup(page: Page, name: string) {
   const open = page.getByRole("button", { name: "Buka percakapan", exact: true });
   if (await open.isVisible()) await open.click();
   await page
     .getByRole("navigation", { name: "Percakapan", exact: true })
-    .getByRole("button", { name: `${name} ${count} agent`, exact: true })
+    .getByRole("button")
+    .filter({ has: page.getByText(name, { exact: true }) })
     .click();
   await expect(page.getByRole("button", { name: `Detail ${name}`, exact: true })).toBeVisible();
 }
@@ -1200,7 +1225,7 @@ test("all concurrent group lanes expose their native questions and free text use
     agent_id: b.id,
     text: "fixture interaction multiple",
   });
-  await chooseGroup(page, group.name, 2);
+  await chooseGroup(page, group.name);
   const first = page.getByRole("region", { name: `Permintaan native ${a.name}`, exact: true });
   const second = page.getByRole("region", { name: `Permintaan native ${b.name}`, exact: true });
   await expect(
@@ -1239,7 +1264,7 @@ test("an unconfirmed human reply is restored verbatim and locked across reload",
     agent_id: agent.id,
     text: "fixture human",
   });
-  await chooseGroup(page, group.name, 1);
+  await chooseGroup(page, group.name);
   const input = page.getByRole("textbox", { name: `Jawaban untuk ${agent.name}`, exact: true });
   await input.fill("Keep this exact answer.");
   await page.route("**/v1/human-requests/*/reply", (route) => route.abort("failed"));
@@ -1272,7 +1297,7 @@ test("membership editing keeps its original revision and cannot overwrite a conc
     a.agent.id,
     b.agent.id,
   ]);
-  await chooseGroup(page, group.name, 2);
+  await chooseGroup(page, group.name);
   await page.getByRole("button", { name: `Detail ${group.name}`, exact: true }).click();
   await page.getByText("Kelola anggota", { exact: true }).click();
   await post(page, `/v1/groups/${group.id}/membership`, {
@@ -1301,7 +1326,11 @@ test("four ordinary file attachments still allow a supported image", async ({ pa
   await chooseAgent(page, agent.name);
   await page.getByRole("textbox", { name: "Pesan", exact: true }).fill("fixture warmup");
   await page.getByRole("button", { name: "Kirim", exact: true }).click();
-  await expect(page.getByText("Fixture ready", { exact: true })).toBeVisible({ timeout: 20000 });
+  await expect(
+    page
+      .getByRole("main", { name: "Percakapan aktif" })
+      .getByText("Fixture ready", { exact: true }),
+  ).toBeVisible({ timeout: 20000 });
   for (let i = 0; i < 4; i++) {
     await expect(page.getByRole("button", { name: "Tambah lampiran", exact: true })).toBeEnabled();
     await page.getByLabel("Lampirkan file ke pesan", { exact: true }).setInputFiles({

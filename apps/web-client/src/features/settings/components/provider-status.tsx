@@ -1,4 +1,5 @@
-import { Info } from "lucide-react";
+import { InformationCircleIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -29,7 +30,7 @@ export function ProviderStatus({ connection }: { connection: Connection }) {
         <PopoverHeader>
           <PopoverTitle>
             <span className="flex items-center gap-2">
-              <Info size={16} aria-hidden="true" />
+              <HugeiconsIcon icon={InformationCircleIcon} size={16} aria-hidden="true" />
               Status & kemampuan
             </span>
           </PopoverTitle>

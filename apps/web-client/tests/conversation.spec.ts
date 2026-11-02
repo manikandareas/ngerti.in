@@ -229,7 +229,7 @@ test("real API: create, durable opener, queued edit/delete, memory, panel and re
   });
   expect(memory.ok()).toBeTruthy();
   await page.getByRole("button", { name: `Detail ${created.agent.name}` }).click();
-  await expect(page.getByRole("tab", { name: "Agent", exact: true })).toBeVisible();
+  await expect(page.getByRole("tab", { name: "Detail", exact: true })).toBeVisible();
   await page.getByRole("button", { name: /^Memory/ }).click();
   await expect(page.getByText("Prefers concise explanations.", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Koreksi", exact: true }).click();

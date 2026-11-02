@@ -1,5 +1,13 @@
+import {
+  Add01Icon,
+  Cancel01Icon,
+  Plug01Icon,
+  UserGroupIcon,
+  UserIcon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { Link } from "@tanstack/react-router";
-import { Plug, Plus, UserRound, Users, X } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { AgentAvatar } from "@/features/conversation/components/identity";
@@ -61,7 +69,7 @@ export function ConversationNavigation({
               aria-label="Buat baru"
               disabled={busy}
             >
-              <Plus size={17} strokeWidth={1.5} />
+              <HugeiconsIcon icon={Add01Icon} size={17} strokeWidth={1.5} />
             </Button>
           </PopoverTrigger>
           <PopoverContent
@@ -89,10 +97,10 @@ export function ConversationNavigation({
             }}
           >
             <Button variant="ghost" className="w-full justify-start" onClick={createAgent}>
-              <Plus size={16} strokeWidth={1.5} /> Create agent
+              <HugeiconsIcon icon={Add01Icon} size={16} strokeWidth={1.5} /> Create agent
             </Button>
             <Button variant="ghost" className="w-full justify-start" onClick={createGroup}>
-              <Users size={16} strokeWidth={1.5} /> Create group
+              <HugeiconsIcon icon={UserGroupIcon} size={16} strokeWidth={1.5} /> Create group
             </Button>
           </PopoverContent>
         </Popover>
@@ -104,7 +112,7 @@ export function ConversationNavigation({
             aria-label="Close"
             onClick={closeNavigation}
           >
-            <X size={18} strokeWidth={1.5} />
+            <HugeiconsIcon icon={Cancel01Icon} size={18} strokeWidth={1.5} />
           </Button>
         )}
       </div>
@@ -162,14 +170,14 @@ export function ConversationNavigation({
             aria-label="Pengaturan"
             onClick={openSettings}
           >
-            <UserRound size={18} strokeWidth={1.5} />
+            <HugeiconsIcon icon={UserIcon} size={18} strokeWidth={1.5} />
           </Button>
           <Button
             variant="ghost"
             className="h-9 min-w-0 flex-1 gap-2 rounded-full bg-card text-[13px] font-medium"
             onClick={openApps}
           >
-            <Plug size={16} strokeWidth={1.5} />
+            <HugeiconsIcon icon={Plug01Icon} size={16} strokeWidth={1.5} />
             Hubungkan aplikasi
           </Button>
         </div>

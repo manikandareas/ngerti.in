@@ -113,9 +113,9 @@ for (const mode of ["light", "dark"] as const) {
     await page.screenshot({ path: info.outputPath("agent-panel.png") });
     await page.getByRole("button", { name: "Memory", exact: true }).click();
     await expect(page.getByRole("heading", { name: "Memory", exact: true })).toBeVisible();
-    await expect(page.getByRole("tab", { name: "Agent", exact: true })).toBeHidden();
+    await expect(page.getByRole("tab", { name: "Detail", exact: true })).toBeHidden();
     await page.keyboard.press("Escape");
-    await expect(page.getByRole("tab", { name: "Agent", exact: true })).toBeVisible();
+    await expect(page.getByRole("tab", { name: "Detail", exact: true })).toBeVisible();
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
     ).toBeTruthy();

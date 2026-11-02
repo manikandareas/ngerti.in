@@ -1,4 +1,5 @@
-import { ArrowRight, Plus } from "lucide-react";
+import { Add01Icon, ArrowRight02Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useRef, useState } from "react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
@@ -93,7 +94,11 @@ export function ProviderDetail({
             disabled={!!account.busy || !ready || !supportsLogin}
             onClick={() => void account.addAccount()}
           >
-            {account.busy === "new" ? <Spinner /> : <Plus size={14} aria-hidden="true" />}
+            {account.busy === "new" ? (
+              <Spinner />
+            ) : (
+              <HugeiconsIcon icon={Add01Icon} size={14} aria-hidden="true" />
+            )}
             {account.uncertainAccount ? "Periksa penambahan" : "Tambah akun"}
           </Button>
         }
@@ -134,7 +139,7 @@ export function ProviderDetail({
               disabled={!!account.busy || !supportsKey}
               onClick={() => setAddKey(true)}
             >
-              <Plus size={14} aria-hidden="true" />
+              <HugeiconsIcon icon={Add01Icon} size={14} aria-hidden="true" />
               Tambah key
             </Button>
           </SettingsRow>
@@ -186,7 +191,7 @@ export function ProviderDetail({
             >
               <Button variant="outline" onClick={() => openAgent(agent)}>
                 Atur agent
-                <ArrowRight size={14} aria-hidden="true" />
+                <HugeiconsIcon icon={ArrowRight02Icon} size={14} aria-hidden="true" />
               </Button>
             </SettingsRow>
           ))

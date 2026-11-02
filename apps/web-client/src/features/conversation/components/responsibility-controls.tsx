@@ -1,4 +1,5 @@
-import { LoaderCircle, Pause, Play, Square } from "lucide-react";
+import { Loading03Icon, PauseIcon, PlayIcon, StopIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { type ReactNode, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -137,11 +138,15 @@ export function ResponsibilityControls({
               onClick={() => void apply(current.state === "paused" ? "active" : "paused")}
             >
               {busy ? (
-                <LoaderCircle size={13} className="motion-safe:animate-spin" />
+                <HugeiconsIcon
+                  icon={Loading03Icon}
+                  size={13}
+                  className="motion-safe:animate-spin"
+                />
               ) : current.state === "paused" ? (
-                <Play size={13} strokeWidth={1.5} />
+                <HugeiconsIcon icon={PlayIcon} size={13} strokeWidth={1.5} />
               ) : (
-                <Pause size={13} strokeWidth={1.5} />
+                <HugeiconsIcon icon={PauseIcon} size={13} strokeWidth={1.5} />
               )}
               {current.state === "paused" ? "Lanjutkan goal" : "Jeda goal"}
             </Button>
@@ -151,7 +156,7 @@ export function ResponsibilityControls({
               disabled={busy || pending !== null}
               onClick={() => void apply("stopped")}
             >
-              <Square size={12} strokeWidth={1.5} />
+              <HugeiconsIcon icon={StopIcon} size={12} strokeWidth={1.5} />
               Hentikan goal
             </Button>
           </div>
@@ -165,7 +170,7 @@ export function ResponsibilityControls({
           disabled={busy || pending !== null}
           onClick={() => void apply("stopped")}
         >
-          <Square size={12} strokeWidth={1.5} />
+          <HugeiconsIcon icon={StopIcon} size={12} strokeWidth={1.5} />
           Hentikan Routine
         </Button>
       )}

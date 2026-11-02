@@ -1,5 +1,13 @@
+import {
+  ArrowDown01Icon,
+  Cancel01Icon,
+  InformationCircleIcon,
+  Settings01Icon,
+  SparklesIcon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { Link } from "@tanstack/react-router";
-import { ChevronDown, Info, Settings, Sparkles, X } from "lucide-react";
+
 import { Dialog as DialogPrimitive } from "radix-ui";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -17,19 +25,19 @@ const sections = [
     id: "general",
     label: "Umum",
     keywords: "tampilan tema terang gelap sistem",
-    icon: Settings,
+    icon: Settings01Icon,
   },
   {
     id: "providers",
     label: "Providers",
     keywords: "chatgpt codex muse akun login api key subscription koneksi model biaya runtime",
-    icon: Sparkles,
+    icon: SparklesIcon,
   },
   {
     id: "about",
     label: "Tentang",
     keywords: "ngertiin bantuan dokumentasi",
-    icon: Info,
+    icon: InformationCircleIcon,
   },
 ] as const;
 export default function SettingsDialog() {
@@ -131,7 +139,7 @@ export default function SettingsDialog() {
                       aria-current={page === item.id ? "page" : undefined}
                       onClick={() => setQuery("")}
                     >
-                      <Icon size={15} aria-hidden="true" />
+                      <HugeiconsIcon icon={Icon} size={15} aria-hidden="true" />
                       <span>{item.label}</span>
                     </Link>
                   );
@@ -160,7 +168,7 @@ export default function SettingsDialog() {
                       </option>
                     ))}
                   </select>
-                  <ChevronDown size={14} aria-hidden="true" />
+                  <HugeiconsIcon icon={ArrowDown01Icon} size={14} aria-hidden="true" />
                 </div>
                 <h2>{current.label}</h2>
               </header>
@@ -169,7 +177,7 @@ export default function SettingsDialog() {
                 aria-label="Tutup pengaturan"
                 title="Tutup pengaturan (Esc)"
               >
-                <X size={16} aria-hidden="true" />
+                <HugeiconsIcon icon={Cancel01Icon} size={16} aria-hidden="true" />
               </DialogPrimitive.Close>
               <main
                 className="settings-scroll"

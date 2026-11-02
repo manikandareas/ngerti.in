@@ -1,4 +1,13 @@
-import { Check, Copy, Download, Maximize2, Search, WrapText, X } from "lucide-react";
+import {
+  ArrowExpand01Icon,
+  Cancel01Icon,
+  Copy01Icon,
+  Download04Icon,
+  Search01Icon,
+  TextWrapIcon,
+  Tick02Icon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import {
   type ReactNode,
   useDeferredValue,
@@ -59,7 +68,7 @@ function TableDialog({
           {title}
         </h2>
         <button type="button" onClick={onClose} className={tableAction} aria-label="Tutup tabel">
-          <X size={16} aria-hidden="true" />
+          <HugeiconsIcon icon={Cancel01Icon} size={16} aria-hidden="true" />
         </button>
       </header>
       <div className="min-h-0 overflow-auto p-3 sm:p-5">{children}</div>
@@ -128,7 +137,7 @@ export function RichTable({
     );
   const search = (className: string) => (
     <label className={className}>
-      <Search size={13} aria-hidden="true" />
+      <HugeiconsIcon icon={Search01Icon} size={13} aria-hidden="true" />
       <input
         value={query}
         onChange={(event) => setQuery(event.target.value)}
@@ -168,7 +177,7 @@ export function RichTable({
           aria-pressed={wrap}
           onClick={() => setWrap(!wrap)}
         >
-          <WrapText size={14} aria-hidden="true" />
+          <HugeiconsIcon icon={TextWrapIcon} size={14} aria-hidden="true" />
         </button>
       )}
       <button
@@ -179,9 +188,9 @@ export function RichTable({
         onClick={() => void copy()}
       >
         {copied === "copied" ? (
-          <Check size={14} aria-hidden="true" />
+          <HugeiconsIcon icon={Tick02Icon} size={14} aria-hidden="true" />
         ) : (
-          <Copy size={14} aria-hidden="true" />
+          <HugeiconsIcon icon={Copy01Icon} size={14} aria-hidden="true" />
         )}
       </button>
       <button
@@ -191,7 +200,7 @@ export function RichTable({
         title="Unduh tabel"
         onClick={download}
       >
-        <Download size={14} aria-hidden="true" />
+        <HugeiconsIcon icon={Download04Icon} size={14} aria-hidden="true" />
       </button>
       {plate && (
         <button
@@ -204,7 +213,7 @@ export function RichTable({
             setOpen(true);
           }}
         >
-          <Maximize2 size={14} aria-hidden="true" />
+          <HugeiconsIcon icon={ArrowExpand01Icon} size={14} aria-hidden="true" />
         </button>
       )}
     </>

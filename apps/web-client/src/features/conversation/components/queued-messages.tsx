@@ -1,4 +1,5 @@
-import { CornerDownRight, Pencil, Trash2 } from "lucide-react";
+import { ArrowTurnForwardIcon, Delete02Icon, PencilEdit01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { repairMessage } from "@/lib/api-errors";
 import type { Message, Run } from "@/types/workspace";
 
@@ -54,7 +55,8 @@ export function QueuedMessages({
             data-queued-message
             className="flex min-h-10 min-w-0 items-center gap-2 px-2.5 py-1.5"
           >
-            <CornerDownRight
+            <HugeiconsIcon
+              icon={ArrowTurnForwardIcon}
               size={14}
               strokeWidth={1.8}
               className="shrink-0 text-muted-foreground"
@@ -76,7 +78,7 @@ export function QueuedMessages({
                 title="Arahkan pesan berikutnya ke pekerjaan yang sedang berjalan"
                 className="flex h-7 shrink-0 items-center gap-1 rounded-lg px-2 text-[13px] font-medium text-muted-foreground hover:bg-accent hover:text-foreground disabled:cursor-wait disabled:opacity-60"
               >
-                <CornerDownRight size={13} strokeWidth={2} />
+                <HugeiconsIcon icon={ArrowTurnForwardIcon} size={13} strokeWidth={2} />
                 Arahkan
               </button>
             )}
@@ -88,7 +90,7 @@ export function QueuedMessages({
               title="Edit pesan menunggu"
               className="flex size-7 shrink-0 items-center justify-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground disabled:opacity-60"
             >
-              <Pencil size={14} aria-hidden="true" />
+              <HugeiconsIcon icon={PencilEdit01Icon} size={14} aria-hidden="true" />
             </button>
             <button
               type="button"
@@ -98,7 +100,7 @@ export function QueuedMessages({
               title="Hapus pesan menunggu"
               className="flex size-7 shrink-0 items-center justify-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground disabled:opacity-60"
             >
-              <Trash2 size={14} aria-hidden="true" />
+              <HugeiconsIcon icon={Delete02Icon} size={14} aria-hidden="true" />
             </button>
           </li>
         ))}

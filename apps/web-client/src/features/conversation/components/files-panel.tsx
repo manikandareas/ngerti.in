@@ -1,13 +1,14 @@
 import {
-  ArrowUp,
-  ChevronRight,
-  Download,
-  FileText,
-  Folder,
-  FolderOpen,
-  Share2,
-  Upload,
-} from "lucide-react";
+  ArrowRight01Icon,
+  ArrowUp02Icon,
+  Download04Icon,
+  File02Icon,
+  Folder01Icon,
+  FolderOpenIcon,
+  Share08Icon,
+  Upload04Icon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -95,7 +96,7 @@ export function FilesPanel({
         <>
           <PanelPageHeader
             title={artifact.name}
-            back="File"
+            back="Library"
             onBack={() => {
               select(null);
               setDestinations(null);
@@ -122,13 +123,13 @@ export function FilesPanel({
           </PanelCard>
           <div className="flex flex-wrap gap-2">
             <Button size="sm" onClick={() => open(artifact)}>
-              <FileText size={14} strokeWidth={1.5} />
+              <HugeiconsIcon icon={File02Icon} size={14} strokeWidth={1.5} />
               Buka {artifact.name}
             </Button>
             {active.some((w) => w.id === artifact.workspace_id) && (
               <Button variant="outline" size="sm" asChild>
                 <a href={artifactUrl(artifact)} download={artifact.name}>
-                  <Download size={14} strokeWidth={1.5} />
+                  <HugeiconsIcon icon={Download04Icon} size={14} strokeWidth={1.5} />
                   Unduh {artifact.name}
                 </a>
               </Button>
@@ -154,9 +155,15 @@ export function FilesPanel({
             }}
           >
             <summary className="flex min-h-[46px] cursor-pointer list-none items-center gap-2.5 px-3.5 py-[11px] text-[14px] [&::-webkit-details-marker]:hidden">
-              <Share2 size={15} strokeWidth={1.5} className="shrink-0 text-muted-foreground" />
+              <HugeiconsIcon
+                icon={Share08Icon}
+                size={15}
+                strokeWidth={1.5}
+                className="shrink-0 text-muted-foreground"
+              />
               <span className="flex-1">Bagikan salinan ke percakapan lain</span>
-              <ChevronRight
+              <HugeiconsIcon
+                icon={ArrowRight01Icon}
                 size={15}
                 strokeWidth={1.5}
                 className="shrink-0 text-muted-foreground group-open/share:rotate-90"
@@ -238,7 +245,8 @@ export function FilesPanel({
             <PanelCard label="Folder kerja">
               <div className="space-y-3 px-3.5 py-3">
                 <div className="flex items-start gap-2.5">
-                  <FolderOpen
+                  <HugeiconsIcon
+                    icon={FolderOpenIcon}
                     size={18}
                     strokeWidth={1.5}
                     className="mt-0.5 shrink-0 text-muted-foreground"
@@ -261,7 +269,7 @@ export function FilesPanel({
                     }
                   }}
                 >
-                  <Upload size={14} strokeWidth={1.5} />
+                  <HugeiconsIcon icon={Upload04Icon} size={14} strokeWidth={1.5} />
                   Unggah file
                 </Label>
                 <input
@@ -291,7 +299,7 @@ export function FilesPanel({
                       setAfter("");
                     }}
                   >
-                    <ArrowUp size={13} strokeWidth={1.5} />
+                    <HugeiconsIcon icon={ArrowUp02Icon} size={13} strokeWidth={1.5} />
                     Folder induk
                   </Button>
                 )}
@@ -330,13 +338,15 @@ export function FilesPanel({
                           }}
                         >
                           {entry.type === "directory" ? (
-                            <Folder
+                            <HugeiconsIcon
+                              icon={Folder01Icon}
                               size={16}
                               strokeWidth={1.5}
                               className="shrink-0 text-muted-foreground"
                             />
                           ) : (
-                            <FileText
+                            <HugeiconsIcon
+                              icon={File02Icon}
                               size={16}
                               strokeWidth={1.5}
                               className="shrink-0 text-muted-foreground"
@@ -351,7 +361,7 @@ export function FilesPanel({
                             download={entry.name}
                             aria-label={`Unduh ${entry.name}`}
                           >
-                            <Download size={14} strokeWidth={1.5} />
+                            <HugeiconsIcon icon={Download04Icon} size={14} strokeWidth={1.5} />
                           </a>
                         )}
                       </div>
@@ -389,11 +399,17 @@ export function FilesPanel({
             className="group/folder rounded-[12px] bg-composer ring-1 ring-inset ring-foreground/[0.06]"
           >
             <summary className="flex min-h-[46px] cursor-pointer list-none items-center gap-2.5 px-3.5 py-[11px] text-[14px] [&::-webkit-details-marker]:hidden">
-              <FolderOpen size={15} strokeWidth={1.5} className="text-muted-foreground" />
+              <HugeiconsIcon
+                icon={FolderOpenIcon}
+                size={15}
+                strokeWidth={1.5}
+                className="text-muted-foreground"
+              />
               <span className="flex-1">
                 {workspace ? "Ubah folder yang terhubung" : "Hubungkan folder"}
               </span>
-              <ChevronRight
+              <HugeiconsIcon
+                icon={ArrowRight01Icon}
                 size={15}
                 strokeWidth={1.5}
                 className="text-muted-foreground group-open/folder:rotate-90"
@@ -469,7 +485,7 @@ export function FilesPanel({
                   key={item.id}
                   title={item.name}
                   aria-label={`File ${item.name}`}
-                  icon={FileText}
+                  icon={File02Icon}
                   hint={`${item.origin === "upload" ? "Lampiran" : "Hasil"} · ${snapshot.agents.find((agent) => agent.id === item.agent_id)?.name ?? "Agent"}`}
                   onClick={() => select(item.id)}
                 />

@@ -1,3 +1,4 @@
+import { Download, FileText, LoaderCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -7,17 +8,53 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  FILE_PREVIEW_MAX_BYTES,
+  parseTableFile,
+  type TextTable,
+  tableDelimiter,
+} from "@/features/conversation/lib/table-file";
+import { MarkdownDocument } from "./answer";
+import { AnswerCode } from "./answer-code";
+import { RichTable } from "./rich-table";
+import "./file-viewer.css";
 
 export type FileView = { name: string; url: string; mediaType?: string };
+type FileContent = {
+  url: string;
+  text?: string;
+  image?: string;
+  table?: TextTable;
+  language?: string;
+  markdown?: boolean;
+  truncated?: boolean;
+  error?: string;
+};
+const codeLanguages: Record<string, string> = {
+  json: "json",
+  ts: "typescript",
+  tsx: "tsx",
+  js: "javascript",
+  py: "python",
+  html: "html",
+  css: "css",
+  yaml: "yaml",
+  yml: "yaml",
+  jsx: "jsx",
+  mjs: "javascript",
+  cjs: "javascript",
+  sql: "sql",
+  sh: "bash",
+  xml: "xml",
+  toml: "toml",
+};
 export function FileViewer({ file, close }: { file: FileView | null; close: () => void }) {
-  const [content, setContent] = useState<{
-    url: string;
-    text?: string;
-    image?: string;
-    error?: string;
-  } | null>(null);
+  const [content, setContent] = useState<FileContent | null>(null);
+  const [attempt, setAttempt] = useState(0);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: attempt explicitly retries the same scoped file read.
   useEffect(() => {
     if (!file) return;
+    setContent(null);
     const abort = new AbortController();
     let objectUrl: string | undefined;
     void fetch(file.url, { signal: abort.signal })
@@ -30,21 +67,44 @@ export function FileViewer({ file, close }: { file: FileView | null; close: () =
           /\.(png|jpe?g|webp)$/i.test(file.name);
         const text =
           file.mediaType?.startsWith("text/") ||
-          /\.(txt|md|json|csv|log|ts|tsx|js|py|html|css|yaml|yml)$/i.test(file.name);
+          /\.(txt|md|json|csv|tsv|log|ts|tsx|js|py|html|css|yaml|yml)$/i.test(file.name);
         if (abort.signal.aborted) return;
         if (raster) {
           objectUrl = URL.createObjectURL(blob);
           setContent({ url: file.url, image: objectUrl });
         } else if (text) {
-          const value = await blob.slice(0, 128_000).text();
-          if (!abort.signal.aborted)
+          const delimiter = tableDelimiter(file.name);
+          if (delimiter && blob.size > FILE_PREVIEW_MAX_BYTES)
+            throw new Error(
+              "Tabel melewati batas pratinjau 128 KB. Unduh file untuk membaca seluruh tabel.",
+            );
+          let value: string;
+          try {
+            value = delimiter
+              ? new TextDecoder("utf-8", { fatal: true }).decode(
+                  await blob.slice(0, FILE_PREVIEW_MAX_BYTES).arrayBuffer(),
+                )
+              : await blob.slice(0, FILE_PREVIEW_MAX_BYTES).text();
+          } catch {
+            throw new Error("Tabel bukan teks UTF-8 yang valid. Unduh file untuk membukanya.");
+          }
+          if (abort.signal.aborted) return;
+          const extension = file.name.split(".").at(-1)?.toLowerCase() ?? "";
+          if (delimiter) {
+            try {
+              setContent({ url: file.url, table: parseTableFile(value, delimiter) });
+            } catch {
+              throw new Error(
+                "Tabel tidak valid atau terlalu besar untuk ditampilkan. Periksa jumlah kolom dan tanda kutip, atau unduh file.",
+              );
+            }
+          } else
             setContent({
               url: file.url,
-              text:
-                value +
-                (blob.size > 128_000
-                  ? "\n… Pratinjau dibatasi. Unduh untuk membaca seluruh file."
-                  : ""),
+              text: value,
+              language: codeLanguages[extension],
+              markdown: extension === "md",
+              truncated: blob.size > FILE_PREVIEW_MAX_BYTES,
             });
         } else
           setContent({
@@ -52,14 +112,14 @@ export function FileViewer({ file, close }: { file: FileView | null; close: () =
             text: "Pratinjau belum tersedia untuk format ini. Unduh file untuk membukanya.",
           });
       })
-      .catch((e) => {
-        if (!abort.signal.aborted) setContent({ url: file.url, error: e.message });
+      .catch((error) => {
+        if (!abort.signal.aborted) setContent({ url: file.url, error: error.message });
       });
     return () => {
       abort.abort();
       if (objectUrl) URL.revokeObjectURL(objectUrl);
     };
-  }, [file]);
+  }, [file, attempt]);
   const view = content?.url === file?.url ? content : null;
   return (
     <Dialog
@@ -68,28 +128,83 @@ export function FileViewer({ file, close }: { file: FileView | null; close: () =
         if (!open) close();
       }}
     >
-      <DialogContent className="max-h-[90svh] overflow-y-auto sm:max-w-3xl">
-        <DialogHeader>
-          <DialogTitle className="break-all">{file?.name}</DialogTitle>
-          <DialogDescription>File dari folder percakapan yang dipilih.</DialogDescription>
+      <DialogContent
+        overlayClassName="file-preview-overlay"
+        className={`flex flex-col overflow-hidden rounded-2xl ${view?.table ? "max-h-[94dvh] w-[min(96vw,1400px)] gap-0 border border-border bg-panel p-0 shadow-2xl ring-0 sm:max-w-none" : "max-h-[90svh] gap-3 p-4 sm:max-w-3xl"}`}
+      >
+        <DialogHeader
+          className={view?.table ? "shrink-0 border-b border-border/40 px-4 py-3" : undefined}
+        >
+          <DialogTitle
+            className={`flex items-start gap-2 pr-7 font-medium ${view?.table ? "text-[14px]" : "text-[15px]"}`}
+          >
+            <FileText size={17} strokeWidth={1.5} className="mt-0.5 shrink-0" />
+            <span className="break-all">{file?.name}</span>
+          </DialogTitle>
+          <DialogDescription className="sr-only">
+            File dari folder percakapan yang dipilih.
+          </DialogDescription>
         </DialogHeader>
-        {view?.error ? (
-          <p role="alert" className="text-sm text-destructive">
-            {view.error}
+        <div className={`min-h-0 min-w-0 flex-1 overflow-auto ${view?.table ? "p-3 sm:p-5" : ""}`}>
+          {view?.error ? (
+            <div className="space-y-3 p-8 text-center">
+              <p role="alert" className="text-[13px] leading-5 text-destructive">
+                {view.error}
+              </p>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setContent(null);
+                  setAttempt((value) => value + 1);
+                }}
+              >
+                Coba buka lagi
+              </Button>
+            </div>
+          ) : view?.image ? (
+            <img
+              src={view.image}
+              alt={file?.name ?? "File"}
+              className="max-h-[65svh] w-full object-contain"
+            />
+          ) : view?.table ? (
+            <RichTable
+              expanded
+              name={file?.name}
+              columns={view.table.headers.map((text, index) => ({ id: `column-${index}`, text }))}
+              rows={view.table.rows.map((row) => row.map((text) => ({ text })))}
+            />
+          ) : view?.markdown ? (
+            <MarkdownDocument text={view.text ?? ""} />
+          ) : view?.language ? (
+            <AnswerCode code={view.text ?? ""} lang={view.language} />
+          ) : view?.text !== undefined ? (
+            <pre className="max-h-[60svh] overflow-auto whitespace-pre-wrap break-words rounded-xl bg-foreground/[0.045] px-4 py-3 font-mono text-[13px] leading-relaxed">
+              {view.text}
+            </pre>
+          ) : (
+            <div
+              role="status"
+              className="flex items-center justify-center gap-2 p-12 text-[13px] text-muted-foreground"
+            >
+              <LoaderCircle size={16} className="motion-safe:animate-spin" />
+              Membuka file…
+            </div>
+          )}
+        </div>
+        {view?.truncated && (
+          <p role="status" className="text-[12px] text-muted-foreground">
+            Pratinjau dibatasi 128 KB. Unduh untuk membaca seluruh file.
           </p>
-        ) : view?.image ? (
-          <img
-            src={view.image}
-            alt={file?.name ?? "File"}
-            className="max-h-[65svh] w-full object-contain"
-          />
-        ) : (
-          <pre className="max-h-[60svh] overflow-auto whitespace-pre-wrap break-words rounded-lg bg-muted p-4 text-sm">
-            {view?.text ?? "Membuka file…"}
-          </pre>
         )}
-        <Button asChild variant="outline">
+        <Button
+          asChild
+          variant="outline"
+          className={`shrink-0 self-start ${view?.table ? "mx-4 mb-4" : ""}`}
+        >
           <a href={file?.url} download={file?.name}>
+            <Download size={14} strokeWidth={1.5} />
             Unduh file
           </a>
         </Button>

@@ -1,0 +1,5 @@
+/* OpenMausBot TableDialog backdrop, kept independent of generic dialog translucency. */
+.file-preview-overlay {
+  background: #0000008c;
+  backdrop-filter: none;
+}

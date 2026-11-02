@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { Check, LoaderCircle, RefreshCw, Search } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -6,33 +7,43 @@ import { useApiResource } from "@/hooks/use-api-resource";
 import { command, request } from "@/lib/api-client";
 import type { AppConnection, AppEffect } from "@/types/work";
 import type { Snapshot } from "@/types/workspace";
+import { PanelCard, PanelEmpty, PanelPageHeader } from "./panel-primitives";
+import { useAppAuthorization } from "./use-app-authorization";
 
 type AppTool = { slug: string; description?: string };
 type Catalog = { items: { slug: string; name: string; connected: boolean }[]; cursor?: string };
-export function AppConnections({ snapshot }: { snapshot: Snapshot }) {
-  const [expanded, setExpanded] = useState(false);
-  const connections = useApiResource<AppConnection[]>(
-    expanded ? "/v1/apps/connections" : null,
-    snapshot.cursor,
-  );
-  const effects = useApiResource<AppEffect[]>(
-    expanded ? "/v1/entities/app_effect" : null,
-    snapshot.cursor,
-  );
+const pill =
+  "inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-full bg-secondary/70 px-3 text-[13px] font-medium leading-5 transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-40 touch:h-9";
+export function AppConnections({ snapshot, onBack }: { snapshot: Snapshot; onBack: () => void }) {
+  const connections = useApiResource<AppConnection[]>("/v1/apps/connections", snapshot.cursor);
+  const effects = useApiResource<AppEffect[]>("/v1/entities/app_effect", snapshot.cursor);
+  const authorization = useAppAuthorization(connections.retry);
   const [search, setSearch] = useState("");
-  const [catalog, setCatalog] = useState<Catalog | null>(null);
-  const [busy, setBusy] = useState(false);
+  const [debounced, setDebounced] = useState("");
+  const currentQuery = useRef(debounced);
+  currentQuery.current = debounced;
+  useEffect(() => {
+    const timer = setTimeout(() => setDebounced(search.trim()), 180);
+    return () => clearTimeout(timer);
+  }, [search]);
+  const catalogResource = useApiResource<Catalog>(
+    `/v1/apps/catalog?search=${encodeURIComponent(debounced)}`,
+  );
+  const [pages, setPages] = useState<{ query: string; value: Catalog } | null>(null);
+  const catalog = pages?.query === debounced ? pages.value : catalogResource.data;
+  const [taskBusy, setTaskBusy] = useState(false);
+  const busy = taskBusy || authorization.busy;
   const [error, setError] = useState("");
-  const [link, setLink] = useState<{ id: string; url: string } | null>(null);
   const [editing, setEditing] = useState<AppConnection | null>(null);
   const [agentId, setAgentId] = useState(snapshot.agents[0]?.id ?? "");
   const [query, setQuery] = useState("");
   const [tools, setTools] = useState<AppTool[]>([]);
   const [selected, setSelected] = useState<string[]>([]);
   const [notice, setNotice] = useState("");
+  const [connectedOnly, setConnectedOnly] = useState(false);
   async function act(fn: () => Promise<void>) {
     if (busy) return;
-    setBusy(true);
+    setTaskBusy(true);
     setError("");
     setNotice("");
     try {
@@ -42,7 +53,7 @@ export function AppConnections({ snapshot }: { snapshot: Snapshot }) {
     } catch (e) {
       setError(e instanceof Error ? e.message : "Koneksi aplikasi belum tersedia.");
     } finally {
-      setBusy(false);
+      setTaskBusy(false);
     }
   }
   function edit(connection: AppConnection, id = agentId) {
@@ -55,111 +66,275 @@ export function AppConnections({ snapshot }: { snapshot: Snapshot }) {
     setQuery("");
     setNotice("");
   }
+  const inventory = connections.data?.filter((connection) => connection.state !== "revoked") ?? [];
+  const matches = (name: string) => name.toLowerCase().includes(search.trim().toLowerCase());
+  // Filter already-loaded rows immediately; the debounced server result remains authoritative.
+  const visibleCatalog =
+    catalog?.items.filter(
+      (app) => search.trim() === debounced || matches(`${app.name} ${app.slug}`),
+    ) ?? [];
+  const visibleConnections = inventory.filter((connection) =>
+    matches(
+      `${connection.toolkit} ${catalog?.items.find((app) => app.slug === connection.toolkit)?.name ?? ""}`,
+    ),
+  );
+  const represented = new Set(
+    visibleCatalog.map(
+      (app) => inventory.findLast((connection) => connection.toolkit === app.slug)?.id,
+    ),
+  );
+  const extras = connectedOnly
+    ? visibleConnections
+    : visibleConnections.filter((connection) => !represented.has(connection.id));
   const recent =
     effects.data?.filter(
-      (e) =>
-        e.thread_id === snapshot.thread.id && snapshot.thread.member_agent_ids.includes(e.agent_id),
+      (effect) =>
+        effect.thread_id === snapshot.thread.id &&
+        snapshot.thread.member_agent_ids.includes(effect.agent_id),
     ) ?? [];
+  function connectionRow(connection: AppConnection, name: string) {
+    const granted = connection.grants.filter(
+      (grant) =>
+        grant.thread_id === snapshot.thread.id &&
+        snapshot.thread.member_agent_ids.includes(grant.agent_id),
+    ).length;
+    const link = authorization.link?.id === connection.id ? authorization.link : null;
+    return (
+      <section
+        key={connection.id}
+        aria-label={`Koneksi ${connection.toolkit} ${connection.id.slice(0, 8)}`}
+        className="rounded-xl px-2 py-2 transition-colors hover:bg-secondary/40"
+      >
+        <div className="flex items-center gap-3">
+          <ServiceIcon name={name} />
+          <div className="min-w-0 flex-1">
+            <p className="flex min-w-0 items-center gap-1.5 text-[14px] font-semibold leading-5">
+              <span className="truncate">{name}</span>
+              {connection.state === "active" && (
+                <Check
+                  size={13}
+                  strokeWidth={2.5}
+                  className="shrink-0 text-success-foreground"
+                  aria-label="Terhubung"
+                />
+              )}
+            </p>
+            <p className="truncate text-[13px] leading-[18px] text-muted-foreground">
+              {connection.state === "active"
+                ? granted
+                  ? "Akses percakapan diberikan"
+                  : "Terhubung · pilih akses percakapan"
+                : authorization.polling?.id === connection.id
+                  ? "Menunggu konfirmasi login"
+                  : connection.state === "auth_required"
+                    ? "Login diperlukan"
+                    : "Menunggu koneksi"}
+            </p>
+          </div>
+          <button
+            type="button"
+            className="flex size-8 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:bg-secondary disabled:opacity-40"
+            disabled={busy}
+            aria-label={`Periksa koneksi ${connection.toolkit}`}
+            title="Periksa koneksi"
+            onClick={() => void authorization.check(connection, name)}
+          >
+            <RefreshCw size={15} />
+          </button>
+          {connection.state === "active" ? (
+            <button
+              type="button"
+              className={pill}
+              disabled={busy}
+              aria-label={`Kelola akses ${connection.toolkit}`}
+              onClick={() => edit(connection)}
+            >
+              Kelola akses
+            </button>
+          ) : connection.state === "auth_required" ? (
+            <button
+              type="button"
+              className={pill}
+              disabled={busy}
+              aria-label={`Hubungkan ulang ${connection.toolkit}`}
+              onClick={() => void authorization.authorize(connection.toolkit, name, connection.id)}
+            >
+              Hubungkan ulang
+            </button>
+          ) : null}
+        </div>
+        {link && (
+          <a
+            href={link.url}
+            target="_blank"
+            rel="noreferrer"
+            className="ms-[52px] mt-1 block text-[13px] text-link underline underline-offset-2"
+            onClick={(event) => {
+              if (!authorization.continueLink(name)) event.preventDefault();
+            }}
+          >
+            Lanjutkan koneksi di Composio ↗
+          </a>
+        )}
+      </section>
+    );
+  }
   return (
-    <details
-      className="context-section border-t pt-4"
-      onToggle={(e) => setExpanded(e.currentTarget.open)}
-    >
-      <summary className="cursor-pointer text-sm font-medium">Koneksi aplikasi</summary>
-      <div className="mt-3 space-y-4">
-        <p className="text-caption text-muted-foreground">
-          Hubungkan aplikasi melalui Composio, lalu pilih akses untuk percakapan ini.
-        </p>
-        {(error || connections.error) && (
-          <p role="alert" className="text-sm text-destructive">
-            {error || connections.error}
+    <div className="context-section pt-3.5">
+      <PanelPageHeader
+        title="Koneksi aplikasi"
+        back={snapshot.thread.type === "group" ? "Anggota" : "Agent"}
+        onBack={onBack}
+        intro="Hubungkan aplikasi melalui Composio, lalu pilih akses untuk percakapan ini."
+      />
+      <div className="space-y-4">
+        <div className="flex items-center gap-2">
+          <label className="flex h-9 min-w-0 flex-1 items-center gap-2.5 rounded-full bg-secondary/70 px-3.5 focus-within:ring-1 focus-within:ring-ring">
+            <Search size={15} className="shrink-0 text-muted-foreground" />
+            <input
+              aria-label="Cari aplikasi"
+              maxLength={100}
+              value={search}
+              onChange={(event) => {
+                setSearch(event.target.value);
+                setPages(null);
+              }}
+              placeholder="Cari aplikasi…"
+              className="min-w-0 flex-1 bg-transparent text-[14px] outline-none placeholder:text-muted-foreground"
+            />
+          </label>
+          <button
+            type="button"
+            aria-pressed={connectedOnly}
+            onClick={() => setConnectedOnly((value) => !value)}
+            className={`${pill} ${connectedOnly ? "bg-foreground/10 text-foreground" : "text-muted-foreground"}`}
+          >
+            Terhubung
+            {inventory.filter((connection) => connection.state === "active").length > 0
+              ? ` ${inventory.filter((connection) => connection.state === "active").length}`
+              : ""}
+          </button>
+        </div>
+        {(error || authorization.error || connections.error) && (
+          <p role="alert" className="text-[13px] leading-5 text-destructive">
+            {error || authorization.error || connections.error}
           </p>
         )}
-        {connections.data
-          ?.filter((c) => c.state !== "revoked")
-          .map((c) => (
-            <section
-              key={c.id}
-              aria-label={`Koneksi ${c.toolkit} ${c.id.slice(0, 8)}`}
-              className="space-y-2 border-b pb-3"
-            >
-              <p className="text-sm font-medium">
-                {c.toolkit}{" "}
-                <span className="font-normal text-muted-foreground">
-                  ·{" "}
-                  {c.state === "active"
-                    ? "Terhubung"
-                    : c.state === "auth_required"
-                      ? "Login diperlukan"
-                      : "Menunggu koneksi"}
-                </span>
+        {authorization.notice && (
+          <p role="status" className="text-[13px] leading-5 text-muted-foreground">
+            {authorization.notice}
+          </p>
+        )}
+        {!editing && (
+          <section
+            aria-label={connectedOnly ? "Akun aplikasi terhubung" : "Katalog aplikasi"}
+            className="space-y-1"
+          >
+            {!connectedOnly && !catalog && !catalogResource.error && (
+              <p
+                role="status"
+                className="flex items-center justify-center gap-2 py-12 text-[13px] text-muted-foreground"
+              >
+                <LoaderCircle size={14} className="motion-safe:animate-spin" />
+                Memuat aplikasi…
               </p>
-              {link?.id === c.id && (
-                <a
-                  href={link.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-sm text-link underline"
+            )}
+            {!connectedOnly && catalogResource.error && (
+              <p role="alert" className="text-[13px] leading-5 text-muted-foreground">
+                Katalog aplikasi belum dapat dimuat.{" "}
+                <button
+                  type="button"
+                  className="text-link underline"
+                  onClick={catalogResource.retry}
                 >
-                  Lanjutkan koneksi di Composio ↗
-                </a>
-              )}
-              <p className="text-caption text-muted-foreground">
-                {c.grants.filter(
-                  (g) =>
-                    g.thread_id === snapshot.thread.id &&
-                    snapshot.thread.member_agent_ids.includes(g.agent_id),
-                ).length
-                  ? "Akses diberikan dalam percakapan ini"
-                  : "Belum diberikan ke percakapan ini"}
+                  Muat ulang katalog
+                </button>
               </p>
-              <div className="flex flex-wrap gap-1">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  disabled={busy}
-                  aria-label={`Periksa koneksi ${c.toolkit}`}
-                  onClick={() =>
-                    void act(async () => {
-                      await request(`/v1/apps/connections/${c.id}/refresh`, {});
-                    })
-                  }
-                >
-                  Periksa koneksi
-                </Button>
-                {c.state === "active" ? (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    aria-label={`Kelola akses ${c.toolkit}`}
-                    onClick={() => edit(c)}
+            )}
+            {!connectedOnly &&
+              visibleCatalog.map((app) => {
+                const connection = inventory.findLast((value) => value.toolkit === app.slug);
+                return connection ? (
+                  connectionRow(connection, app.name)
+                ) : (
+                  <div
+                    key={app.slug}
+                    className="flex min-w-0 items-center gap-3 rounded-xl px-2 py-2 transition-colors hover:bg-secondary/40"
                   >
-                    Kelola akses
-                  </Button>
-                ) : c.state === "auth_required" ? (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    disabled={busy}
-                    onClick={() =>
-                      void act(async () => {
-                        const value = await request<{ connect_url: string }>(
-                          `/v1/apps/connections/${c.id}/reconnect`,
-                          {},
-                        );
-                        setLink({ id: c.id, url: value.connect_url });
-                      })
-                    }
-                  >
-                    Hubungkan ulang
-                  </Button>
-                ) : null}
-              </div>
-            </section>
-          ))}
+                    <ServiceIcon name={app.name} />
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-[14px] font-semibold leading-5">{app.name}</p>
+                      <p className="truncate text-[13px] leading-[18px] text-muted-foreground">
+                        {app.connected
+                          ? "Akun terhubung di Composio"
+                          : "Hubungkan melalui Composio"}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      className={pill}
+                      disabled={busy || !connections.data}
+                      aria-label={`Hubungkan ${app.name}`}
+                      onClick={() => void authorization.authorize(app.slug, app.name)}
+                    >
+                      Hubungkan
+                    </button>
+                  </div>
+                );
+              })}
+            {extras.map((connection) =>
+              connectionRow(
+                connection,
+                catalog?.items.find((app) => app.slug === connection.toolkit)?.name ??
+                  connection.toolkit,
+              ),
+            )}
+            {((connectedOnly && connections.data && !extras.length) ||
+              (!connectedOnly && catalog && !visibleCatalog.length && !extras.length)) && (
+              <PanelEmpty>Tidak ada aplikasi yang cocok.</PanelEmpty>
+            )}
+            {!connectedOnly && catalog?.cursor && (
+              <button
+                type="button"
+                className={`${pill} mx-auto flex`}
+                disabled={busy}
+                onClick={() =>
+                  void act(async () => {
+                    const queryAtStart = debounced;
+                    const next = await request<Catalog>(
+                      `/v1/apps/catalog?search=${encodeURIComponent(debounced)}&cursor=${encodeURIComponent(catalog.cursor ?? "")}`,
+                    );
+                    if (currentQuery.current === queryAtStart)
+                      setPages({
+                        query: queryAtStart,
+                        value: {
+                          items: [
+                            ...new Map(
+                              [...catalog.items, ...next.items].map((app) => [app.slug, app]),
+                            ).values(),
+                          ],
+                          cursor: next.cursor,
+                        },
+                      });
+                  })
+                }
+              >
+                Aplikasi berikutnya
+              </button>
+            )}
+          </section>
+        )}
         {editing && (
-          <section className="space-y-3 border-b pb-4" aria-label={`Akses ${editing.toolkit}`}>
-            <h4 className="text-sm font-medium">Akses {editing.toolkit}</h4>
+          <section
+            className="space-y-3 rounded-[12px] bg-card px-3.5 py-3"
+            aria-label={`Akses ${editing.toolkit}`}
+          >
+            <div className="flex items-center justify-between gap-2">
+              <h4 className="text-sm font-medium">Akses {editing.toolkit}</h4>
+              <button type="button" className={pill} onClick={() => setEditing(null)}>
+                Selesai
+              </button>
+            </div>
             {snapshot.thread.type === "group" && (
               <>
                 <Label htmlFor="app-agent">Anggota yang mendapat akses</Label>
@@ -253,72 +428,10 @@ export function AppConnections({ snapshot }: { snapshot: Snapshot }) {
             )}
           </section>
         )}
-        <form
-          className="space-y-2"
-          onSubmit={(e) => {
-            e.preventDefault();
-            void act(async () =>
-              setCatalog(
-                await request<Catalog>(`/v1/apps/catalog?search=${encodeURIComponent(search)}`),
-              ),
-            );
-          }}
-        >
-          <Label htmlFor="app-search">Cari aplikasi</Label>
-          <Input
-            id="app-search"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Kalender, email, atau aplikasi lain…"
-          />
-          <Button size="sm" variant="outline" disabled={busy}>
-            Cari aplikasi
-          </Button>
-        </form>
-        {catalog?.items.map((app) => (
-          <div key={app.slug} className="flex items-center justify-between gap-2 py-2">
-            <span className="text-sm">{app.name}</span>
-            <Button
-              variant="ghost"
-              size="sm"
-              disabled={busy}
-              aria-label={`Hubungkan ${app.name}`}
-              onClick={() =>
-                void act(async () => {
-                  const value = await request<{ connection: AppConnection; connect_url: string }>(
-                    "/v1/apps/connect",
-                    { toolkit: app.slug },
-                  );
-                  setLink({ id: value.connection.id, url: value.connect_url });
-                })
-              }
-            >
-              Hubungkan
-            </Button>
-          </div>
-        ))}
-        {catalog?.cursor && (
-          <Button
-            variant="ghost"
-            size="sm"
-            disabled={busy}
-            onClick={() =>
-              void act(async () => {
-                const next = await request<Catalog>(
-                  `/v1/apps/catalog?search=${encodeURIComponent(search)}&cursor=${encodeURIComponent(catalog.cursor ?? "")}`,
-                );
-                setCatalog({ items: [...catalog.items, ...next.items], cursor: next.cursor });
-              })
-            }
-          >
-            Aplikasi berikutnya
-          </Button>
-        )}
         {recent.length > 0 && (
-          <section className="space-y-3">
-            <h4 className="text-caption font-medium text-muted-foreground">Hasil aplikasi</h4>
+          <PanelCard label="Hasil aplikasi">
             {recent.map((e) => (
-              <details key={e.id} className="text-sm">
+              <details key={e.id} className="px-3.5 py-3 text-[13px]">
                 <summary className="cursor-pointer">
                   {e.tool.toLowerCase().replaceAll("_", " ")} ·{" "}
                   {e.state === "succeeded"
@@ -345,10 +458,10 @@ export function AppConnections({ snapshot }: { snapshot: Snapshot }) {
                 </div>
               </details>
             ))}
-          </section>
+          </PanelCard>
         )}
         {effects.error && (
-          <p className="text-caption text-muted-foreground">
+          <p className="text-[13px] text-muted-foreground">
             Hasil aplikasi belum dapat dimuat.{" "}
             <button type="button" className="text-link underline" onClick={effects.retry}>
               Muat ulang
@@ -356,6 +469,18 @@ export function AppConnections({ snapshot }: { snapshot: Snapshot }) {
           </p>
         )}
       </div>
-    </details>
+    </div>
+  );
+}
+
+/** The current catalog projection has no logo/domain fields: use the upstream ServiceIcon initial fallback. */
+function ServiceIcon({ name }: { name: string }) {
+  return (
+    <span
+      aria-hidden="true"
+      className="flex size-10 shrink-0 items-center justify-center rounded-[10px] bg-secondary text-[15px] font-semibold text-muted-foreground"
+    >
+      {name.slice(0, 1).toUpperCase()}
+    </span>
   );
 }

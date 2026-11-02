@@ -11,6 +11,8 @@ const repairs: Record<string, string> = {
   EXECUTABLE_MISSING: "Harness belum ditemukan pada host backend.",
   VERSION_TOO_OLD: "Versi harness terlalu lama. Perbarui harness pada host backend.",
   NATIVE_REJECTED: "Harness menolak permintaan. Periksa model, reasoning, dan koneksi.",
+  NATIVE_UNKNOWN: "Hasil pengiriman belum diketahui. Jangan kirim ulang; periksa status.",
+  STALE_DISPATCH: "Sesi pekerjaan sudah berubah. Muat permintaan terbaru sebelum menjawab.",
   CAPABILITY_UNSUPPORTED: "Kemampuan ini tidak didukung oleh harness yang dipilih.",
   CAPABILITY_UNKNOWN: "Dukungan kemampuan ini belum diketahui. Periksa koneksi terlebih dahulu.",
   CONFLICT: "Data sudah berubah. Muat state terbaru sebelum mengubahnya lagi.",

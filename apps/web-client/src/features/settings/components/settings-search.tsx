@@ -1,6 +1,4 @@
-import { Search01Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
+import { Search } from "lucide-react";
 
 export function SettingsSearch({
   label,
@@ -14,17 +12,20 @@ export function SettingsSearch({
   onChange: (value: string) => void;
 }) {
   return (
-    <InputGroup className="settings-search w-full bg-background">
-      <InputGroupAddon>
-        <HugeiconsIcon icon={Search01Icon} strokeWidth={1.5} />
-      </InputGroupAddon>
-      <InputGroupInput
-        className="h-full min-w-0 bg-transparent dark:bg-transparent"
+    <div className="settings-search">
+      <Search size={15} aria-hidden="true" />
+      <input
         aria-label={label}
         placeholder={placeholder}
         value={value}
         onChange={(event) => onChange(event.target.value)}
+        onKeyDown={(event) => {
+          if (event.key !== "Escape" || !value) return;
+          event.preventDefault();
+          event.stopPropagation();
+          onChange("");
+        }}
       />
-    </InputGroup>
+    </div>
   );
 }

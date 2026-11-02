@@ -21,18 +21,19 @@ test.beforeEach(async ({ page }) => {
 });
 
 for (const mode of ["light", "dark"] as const) {
-  test(`${mode}: Midnight/Daylight colors, control sizes, and fonts`, async ({ page }) => {
+  test(`${mode}: Midnight/Daylight colors, control sizes, and fonts`, async ({ page }, info) => {
+    const phone = info.project.name === "mobile";
     await page
       .getByRole("radio", { name: mode === "light" ? "Mode terang" : "Mode gelap" })
       .click();
     await expect(page.locator("html")).toHaveClass(mode);
     await expect(page.locator("body")).toHaveCSS(
       "background-color",
-      mode === "light" ? "rgb(252, 252, 252)" : "rgb(18, 18, 18)",
+      mode === "light" ? "rgb(252, 252, 252)" : phone ? "rgb(20, 20, 20)" : "rgb(18, 18, 18)",
     );
     await expect(page.locator('[data-swatch="card"]')).toHaveCSS(
       "background-color",
-      mode === "light" ? "rgb(240, 240, 240)" : "rgb(31, 31, 31)",
+      mode === "light" ? "rgb(240, 240, 240)" : phone ? "rgb(36, 36, 38)" : "rgb(31, 31, 31)",
     );
     await expect(page.locator('[data-swatch="primary"]')).toHaveCSS(
       "background-color",
@@ -44,7 +45,7 @@ for (const mode of ["light", "dark"] as const) {
     await expect(page.locator("body")).toHaveCSS("font-family", /Geist Variable/);
     await expect(page.locator('[data-slot="code-block"]')).toHaveCSS(
       "background-color",
-      mode === "light" ? "rgb(240, 240, 240)" : "rgb(31, 31, 31)",
+      mode === "light" ? "rgb(240, 240, 240)" : phone ? "rgb(36, 36, 38)" : "rgb(31, 31, 31)",
     );
     await expect(page.locator('[data-slot="code-block-content"]')).toHaveCSS(
       "font-family",
@@ -141,17 +142,18 @@ test("theme still works when browser storage is unavailable", async ({ page }) =
   await expect(page.locator("html")).toHaveClass("light");
 });
 
-test("portaled dialog and select inherit the dark theme", async ({ page }) => {
+test("portaled dialog and select inherit the dark theme", async ({ page }, info) => {
+  const surface = info.project.name === "mobile" ? "rgb(44, 44, 46)" : "rgb(31, 31, 31)";
   await page.getByRole("radio", { name: "Mode gelap" }).click();
   await page.getByRole("button", { name: "Buka dialog" }).click();
   const dialog = page.getByRole("dialog");
-  await expect(dialog).toHaveCSS("background-color", "rgb(31, 31, 31)");
+  await expect(dialog).toHaveCSS("background-color", surface);
   await expect(dialog).toHaveCSS("border-radius", "12px");
   await page.keyboard.press("Escape");
   await expect(dialog).not.toBeVisible();
   await expect(page.getByRole("button", { name: "Buka dialog" })).toBeFocused();
   await page.getByRole("combobox", { name: "Access scope" }).click();
-  await expect(page.getByRole("listbox")).toHaveCSS("background-color", "rgb(31, 31, 31)");
+  await expect(page.getByRole("listbox")).toHaveCSS("background-color", surface);
   await page.getByRole("option", { name: "Meeting rooms" }).click();
   await expect(page.getByRole("combobox", { name: "Access scope" })).toHaveText("Meeting rooms");
 });

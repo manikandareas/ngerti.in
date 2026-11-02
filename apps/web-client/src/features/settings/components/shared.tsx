@@ -1,16 +1,8 @@
-import { ChatGptIcon, MetaIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Children, Fragment, type ReactNode } from "react";
+import { ChevronRight } from "lucide-react";
+import { type ReactNode, useId } from "react";
 import { Badge } from "@/components/ui/badge";
-import {
-  Item,
-  ItemActions,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemSeparator,
-  ItemTitle,
-} from "@/components/ui/item";
+import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
+import { ProviderBrandMark } from "@/features/settings/components/provider-mark";
 import type { Connection } from "@/types/workspace";
 
 export const providers = [
@@ -31,10 +23,11 @@ export type ProviderId = (typeof providers)[number]["id"];
 export function ProviderMark({ id }: { id: ProviderId }) {
   return (
     <span
-      className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg border bg-background text-foreground [[data-slot=select-item]_&]:size-4 [[data-slot=select-item]_&]:border-0 [[data-slot=select-trigger]_&]:size-4 [[data-slot=select-trigger]_&]:border-0 [&_svg]:size-4"
+      className="provider-mark inline-flex size-4 shrink-0 items-center justify-center text-foreground"
+      data-provider={id}
       aria-hidden="true"
     >
-      <HugeiconsIcon icon={id === "codex" ? ChatGptIcon : MetaIcon} size={24} strokeWidth={1.8} />
+      <ProviderBrandMark provider={id} />
     </span>
   );
 }
@@ -48,19 +41,12 @@ export function SettingsSection({
   action?: ReactNode;
 }) {
   return (
-    <section className="settings-section mt-6 space-y-3">
-      <div className="settings-section-heading flex flex-wrap items-center justify-between gap-3 [&>h3]:text-sm [&>h3]:font-medium [&>div]:w-full [&>div]:sm:w-56">
+    <section className="settings-section">
+      <div className="settings-section-heading">
         <h3>{title}</h3>
         {action}
       </div>
-      <ItemGroup className="settings-group gap-0 overflow-hidden rounded-xl border bg-card text-card-foreground">
-        {Children.toArray(children).map((child, index) => (
-          <Fragment key={child && typeof child === "object" && "key" in child ? child.key : index}>
-            {index > 0 && <ItemSeparator className="settings-divider my-0" role="presentation" />}
-            {child}
-          </Fragment>
-        ))}
-      </ItemGroup>
+      <div className="settings-group">{children}</div>
     </section>
   );
 }
@@ -73,20 +59,65 @@ export function SettingsRow({
   description?: ReactNode;
   children?: ReactNode;
 }) {
+  const titleId = useId();
   return (
-    <Item role="listitem" className="settings-row min-h-20 gap-4 rounded-none border-0 p-4">
-      <ItemContent className="settings-row-copy min-w-0 basis-48">
-        <ItemTitle className="line-clamp-none break-words">{title}</ItemTitle>
+    <Item role="group" aria-labelledby={titleId} className="settings-row">
+      <ItemContent className="settings-row-copy">
+        <ItemTitle id={titleId} className="line-clamp-none break-words">
+          {title}
+        </ItemTitle>
         {description && (
           <ItemDescription className="line-clamp-none break-words">{description}</ItemDescription>
         )}
       </ItemContent>
-      {children && (
-        <ItemActions className="settings-row-control max-w-full flex-wrap gap-2 sm:ml-auto">
-          {children}
-        </ItemActions>
-      )}
+      {children && <ItemActions className="settings-row-control">{children}</ItemActions>}
     </Item>
+  );
+}
+export function SettingsDisclosure({
+  title,
+  subtitle,
+  trailing,
+  open,
+  onToggle,
+  children,
+}: {
+  title: string;
+  subtitle?: ReactNode;
+  trailing?: ReactNode;
+  open: boolean;
+  onToggle: () => void;
+  children: ReactNode;
+}) {
+  const region = useId();
+  return (
+    <section className="settings-disclosure">
+      <div className="settings-group">
+        <button
+          type="button"
+          className="settings-disclosure-trigger"
+          aria-expanded={open}
+          aria-controls={region}
+          onClick={onToggle}
+        >
+          <span className="settings-disclosure-copy">
+            <span>{title}</span>
+            {subtitle && <span>{subtitle}</span>}
+          </span>
+          <span className="settings-disclosure-trailing">
+            {trailing}
+            <ChevronRight
+              size={14}
+              aria-hidden="true"
+              className={`settings-disclosure-chevron ${open ? "rotate-90" : ""}`}
+            />
+          </span>
+        </button>
+      </div>
+      <div id={region} className="settings-disclosure-content" hidden={!open}>
+        {children}
+      </div>
+    </section>
   );
 }
 export function connectionLabel(connection: Connection) {

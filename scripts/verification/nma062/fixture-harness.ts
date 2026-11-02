@@ -10,6 +10,7 @@ export function fixtureAdapter(tools: ProductTools): HarnessAdapter {
       const sessionId = crypto.randomUUID();
       let asked = false;
       let multiple = false;
+      let ambiguous = false;
       let pending: {
         resolve: (status: "succeeded" | "cancelled") => void;
         input: boolean;
@@ -68,6 +69,15 @@ export function fixtureAdapter(tools: ProductTools): HarnessAdapter {
               question: "Which fixture report format?",
             });
           }
+          if (input.text === "fixture tools") {
+            for (const [item_id, name, state] of [
+              ["read-source", "fixture_read_source", "completed"],
+              ["read-notes", "fixture_read_notes", "completed"],
+              ["failed-command", "fixture_shell_failure", "failed"],
+              ["unverified-step", "fixture_pending", "started"],
+            ] as const)
+              input.onEvent({ type: "native_tool", item_id, name, state, command: null, exit_code: null });
+          }
           if (!input.text.includes("fixture interaction")) {
             input.onEvent({ type: "text", text: "Fixture ready" });
             return {
@@ -77,6 +87,13 @@ export function fixtureAdapter(tools: ProductTools): HarnessAdapter {
             };
           }
           multiple = input.text.includes("multiple");
+          ambiguous = input.text.includes("unknown");
+          if (input.text.includes("preface"))
+            input.onEvent({
+              type: "text",
+              // The published prefix ends in blank lines despite the redactor's credential tail reserve.
+              text: `Before the question.\n\n${"This fixture introduction stays local and performs no external action.\n\n".repeat(40)}${"\n".repeat(4096)}`,
+            });
           const status = await new Promise<"succeeded" | "cancelled">((resolve) => {
             pending = { resolve, input: true, approval: true, selected: "", choice: "" };
             input.signal.addEventListener("abort", () => resolve("cancelled"), { once: true });
@@ -147,6 +164,9 @@ export function fixtureAdapter(tools: ProductTools): HarnessAdapter {
         async respond(_runId, raw) {
           const answer = interactionAnswer.parse(raw);
           if (!pending) throw new Error("No pending fixture request.");
+          // Simulate an ambiguous native transport; keep the request pending for replay-fence QA.
+          if (ambiguous && answer.type === "user_input")
+            throw new Error("Fixture native acknowledgement unavailable.");
           if (answer.type === "user_input") {
             const value = answer.answers[0];
             if (

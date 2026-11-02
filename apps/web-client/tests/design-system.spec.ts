@@ -27,18 +27,19 @@ test("dedicated route opens directly and refreshes", async ({ page }) => {
 });
 
 for (const mode of ["light", "dark"] as const) {
-  test(`${mode}: foundations use live Midnight/Daylight tokens`, async ({ page }) => {
+  test(`${mode}: foundations use live Midnight/Daylight tokens`, async ({ page }, info) => {
+    const phone = info.project.name === "mobile";
     await page.goto("/design-system");
     await page
       .getByRole("radio", { name: mode === "light" ? "Mode terang" : "Mode gelap" })
       .click();
     await expect(page.locator('[data-token-value="background"]')).toHaveText(
-      mode === "light" ? "#fcfcfc" : "#121212",
+      mode === "light" ? "#fcfcfc" : phone ? "#141414" : "#121212",
     );
     await expect(page.locator('[data-token-value="primary"]')).toHaveText("#0b62c4");
     await expect(page.locator('[data-token="card"]')).toHaveCSS(
       "background-color",
-      mode === "light" ? "rgb(240, 240, 240)" : "rgb(31, 31, 31)",
+      mode === "light" ? "rgb(240, 240, 240)" : phone ? "rgb(36, 36, 38)" : "rgb(31, 31, 31)",
     );
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
       true,
@@ -149,7 +150,10 @@ for (const mode of ["light", "dark"] as const) {
     await page
       .getByRole("radio", { name: mode === "light" ? "Mode terang" : "Mode gelap" })
       .click();
-    const surface = mode === "light" ? "rgb(255, 255, 255)" : "rgb(31, 31, 31)";
+    // Pinned styles.css: menu overrides at 2889 and Midnight phone palette at 2915.
+    const phone = testInfo.project.name === "mobile";
+    const surface =
+      mode === "light" ? "rgb(255, 255, 255)" : phone ? "rgb(44, 44, 46)" : "rgb(31, 31, 31)";
     const rowHeight = testInfo.project.use.hasTouch ? "40px" : "30px";
 
     for (const component of ["dropdown-menu", "context-menu", "menubar", "select", "combobox"]) {
@@ -166,7 +170,10 @@ for (const mode of ["light", "dark"] as const) {
         if (component === "combobox") await example.getByRole("combobox").fill("T");
         const popup = page.locator(`[data-slot="${component}-content"]`);
         await expect(popup).toBeVisible();
-        await expect(popup).toHaveCSS("border-radius", "14px");
+        await expect(popup).toHaveCSS(
+          "border-radius",
+          mode === "light" ? "14px" : phone ? "22px" : "12px",
+        );
         await expect(popup).toHaveCSS("background-color", surface);
         if (["dropdown-menu", "context-menu", "menubar"].includes(component)) {
           await expect

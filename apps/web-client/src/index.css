@@ -60,6 +60,35 @@
 /* Route composition. Shared controls retain their shadcn styles. */
 /* OpenMausBot messenger composition; Ngertiin API state remains authoritative. */
 
+.creation-dialog-overlay {
+  background: #00000066;
+  backdrop-filter: none;
+}
+.source-menu {
+  border-radius: var(--menu-radius);
+  box-shadow:
+    0 0 0 0.5px color-mix(in srgb, var(--foreground) 10%, transparent),
+    var(--menu-shadow);
+}
+.creation-menu {
+  gap: 4px;
+  padding: 6px;
+}
+.creation-menu button {
+  height: auto;
+  min-height: 30px;
+  border: 0;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 14px;
+  line-height: 18px;
+}
+@media (hover: none), (pointer: coarse) {
+  .creation-menu button {
+    min-height: 40px;
+  }
+}
+
 .workspace-sidebar {
   width: 280px;
   @apply shrink-0;
@@ -73,6 +102,13 @@
 .primary-contact[aria-current="page"] {
   background: var(--panel);
 }
+.primary-contact {
+  width: 78px;
+  height: 92px;
+  border: 0;
+  border-radius: 10px;
+  padding: 8px 4px 0;
+}
 
 .contact-row:hover {
   background: var(--panel);
@@ -81,10 +117,17 @@
 .contact-row-active:hover {
   @apply bg-secondary;
 }
+.contact-row {
+  height: auto;
+  min-height: 54px;
+  border: 0;
+  border-radius: 10px;
+  padding: 6px 8px;
+}
 
-.agent-avatar svg {
-  width: 20px;
-  height: 20px;
+.agent-avatar > svg {
+  width: 100%;
+  height: 100%;
 }
 /* Explicit dimensions may be supplied by the avatar's role. */
 .agent-avatar.size-6 {
@@ -127,9 +170,31 @@
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
+.navigation-toggle {
+  display: none;
+}
+@media (min-width: 768px) {
+  .navigation-sheet {
+    width: 280px;
+    max-width: 280px;
+  }
+}
 
-.header-identity:hover {
-  background: var(--accent);
+.header-identity {
+  height: auto;
+  border: 0;
+  border-radius: 999px;
+  padding: 7.5px 13.5px 7.5px 7.5px;
+  font-size: 14px;
+  line-height: 20px;
+  background: var(--composer);
+  box-shadow:
+    0 0 0 0.5px color-mix(in srgb, var(--foreground) 10%, transparent),
+    var(--shadow-float);
+}
+.header-identity:hover,
+.header-identity[aria-expanded="true"] {
+  background: color-mix(in srgb, var(--composer), var(--foreground) 7%);
 }
 .header-identity:disabled {
   opacity: 0.65;
@@ -138,19 +203,56 @@
 .conversation-message [data-slot="message-content"] {
   gap: 7px;
 }
+.conversation-column {
+  max-width: calc(var(--chat-column-max) + 40px);
+}
+.workspace-shell[data-group="true"] {
+  --agent-bubble: var(--primary);
+}
 
 .chat-user-bubble,
+.chat-agent-bubble {
+  max-width: min(var(--chat-bubble-max), 80%, calc(100% - 82px));
+  min-width: 36px;
+  padding: 0;
+  background: transparent;
+}
 .chat-user-bubble > [data-slot="bubble-content"] {
   background: var(--agent-bubble, var(--user-bubble));
   color: #fff;
-  border-radius: 20px;
-  padding: 10px 14px;
+  border-radius: 18px;
+  padding: 7px 12px;
+  border: 0;
 }
 .chat-agent-bubble > [data-slot="bubble-content"] {
   @apply bg-card;
   color: var(--card-foreground);
-  border-radius: 16px;
-  padding: 12px 14px;
+  border-radius: 18px;
+  padding: 7px 12px;
+  border: 0;
+}
+.conversation-message[data-join-above="true"] {
+  margin-top: -12px;
+}
+.conversation-message[data-join-above="true"][data-align="start"]
+  .chat-agent-bubble:where(:first-child)
+  > [data-slot="bubble-content"] {
+  border-start-start-radius: 6px;
+}
+.conversation-message[data-join-below="true"][data-align="start"]
+  .chat-agent-bubble:where(:last-child)
+  > [data-slot="bubble-content"] {
+  border-end-start-radius: 6px;
+}
+.conversation-message[data-join-above="true"][data-align="end"]
+  .chat-user-bubble
+  > [data-slot="bubble-content"] {
+  border-start-end-radius: 6px;
+}
+.conversation-message[data-join-below="true"][data-align="end"]
+  .chat-user-bubble
+  > [data-slot="bubble-content"] {
+  border-end-end-radius: 6px;
 }
 
 .conversation-empty h1 {
@@ -165,20 +267,41 @@
   @apply text-muted-foreground;
 }
 
+.conversation-composer {
+  position: relative;
+  z-index: 1;
+  border-radius: 22px;
+  background: var(--composer);
+  box-shadow:
+    0 0 0 0.5px color-mix(in srgb, var(--foreground) 10%, transparent),
+    0 2px 8px -1px #0000000d,
+    0 1px 2px #00000008,
+    0 0 0 1px #e4e4e40a;
+  transition:
+    border-radius 300ms,
+    box-shadow 150ms;
+}
+.conversation-composer[data-multiline="true"] {
+  border-radius: 18px;
+}
+.conversation-composer:hover,
 .conversation-composer:focus-within {
-  box-shadow: inset 0 0 0 1px var(--input-focus);
+  box-shadow:
+    0 0 0 0.5px color-mix(in srgb, var(--foreground) 22%, transparent),
+    0 2px 8px -1px #0000000d,
+    0 1px 2px #00000008;
 }
 .conversation-composer .composer-input {
-  min-height: 32px;
+  min-height: 28px;
   max-height: 144px;
   @apply flex-1;
   resize: none;
   @apply border-0;
   border-radius: 0;
-  padding: 5px 8px;
+  padding: 4px 2px;
   background: transparent;
-  line-height: 22px;
-  font-size: 15px;
+  line-height: 20px;
+  font-size: 14px;
   @apply shadow-none;
   outline: none;
 }
@@ -194,11 +317,26 @@
   gap: 6px;
 }
 .conversation-composer .composer-send {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
+  border: 0;
+  padding: 0;
   background: var(--agent-bubble, var(--user-bubble));
   color: #fff;
+}
+.conversation-composer .composer-aux {
+  width: 28px;
+  height: 28px;
+  border: 0;
+  padding: 0;
+  background: color-mix(in srgb, var(--foreground) 5%, transparent);
+  box-shadow: inset 0 0 0 0.5px color-mix(in srgb, var(--foreground) 7%, transparent);
+  color: var(--text-tertiary);
+}
+.conversation-composer .composer-aux:hover {
+  background: color-mix(in srgb, var(--foreground) 9%, transparent);
+  color: var(--foreground);
 }
 .conversation-composer .composer-send:hover {
   filter: brightness(1.15);
@@ -215,7 +353,18 @@
   line-height: 16px;
   color: var(--text-tertiary);
 }
+.connection-setup-prompt {
+  height: auto;
+  min-height: 0;
+  padding: 0;
+  white-space: normal;
+  line-height: 18px;
+}
+.navigation-footer button {
+  background: var(--composer);
+}
 .workspace-details {
+  border-left: 0.5px solid color-mix(in srgb, var(--foreground) 6%, transparent);
   animation: context-panel-in var(--duration-enter) var(--ease-panel);
 }
 
@@ -321,6 +470,9 @@
   }
 }
 @media (min-width: 768px) and (max-width: 1279px) {
+  .workspace-main[data-details="true"] .navigation-toggle {
+    display: inline-flex;
+  }
   .workspace-sidebar-with-details {
     @apply hidden;
   }
@@ -329,6 +481,12 @@
   }
 }
 @media (max-width: 767px) {
+  .navigation-toggle {
+    display: inline-flex;
+  }
+  .conversation-navigation {
+    background: var(--background);
+  }
   .workspace-shell {
     padding: 0;
   }
@@ -341,11 +499,8 @@
     gap: 6px;
   }
   .header-identity-position {
-    @apply justify-start;
+    @apply justify-center;
     padding-left: 0;
-  }
-  .header-identity {
-    font-size: 13px;
   }
   .model-selector {
     max-width: 140px;
@@ -356,10 +511,6 @@
     padding: 20px 16px 12px;
     gap: 20px;
   }
-  .chat-user-bubble,
-  .chat-agent-bubble {
-    max-width: 92%;
-  }
   .chat-bubble-content {
     font-size: 15px;
   }
@@ -368,6 +519,60 @@
   }
   .conversation-composer .composer-input {
     font-size: 16px;
+    min-height: 44px;
+    padding: 12px 8px;
+    line-height: 20px;
+    width: 0;
+  }
+  .conversation-composer {
+    position: relative;
+    padding: 0;
+    gap: 8px;
+    background: transparent;
+    box-shadow: none;
+  }
+  .conversation-composer:hover,
+  .conversation-composer:focus-within {
+    box-shadow: none;
+  }
+  .conversation-composer::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 0 48px;
+    border-radius: 22px;
+    background: var(--composer);
+    box-shadow: inset 0 0 0 0.5px var(--composer-ring);
+  }
+  .conversation-composer[data-multiline="true"]::before {
+    border-radius: 18px;
+  }
+  .conversation-composer > textarea,
+  .conversation-composer > .composer-actions {
+    position: relative;
+  }
+  .conversation-composer .composer-actions {
+    margin: 6px 6px 6px 0;
+  }
+  .conversation-composer .composer-aux {
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    box-shadow: none;
+  }
+  .conversation-composer .composer-send {
+    width: 32px;
+    height: 32px;
+  }
+  .conversation-composer .composer-attach {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    margin-bottom: 2px;
+    background: var(--composer);
+    box-shadow: 0 0 0 0.5px var(--border);
+  }
+  .conversation-composer:not(:has(.composer-attach))::before {
+    left: 0;
   }
   .workspace-error {
     margin: 8px 12px;
@@ -377,6 +582,62 @@
   }
   .navigation-heading {
     padding-right: 36px;
+  }
+  .navigation-heading button {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: var(--card);
+  }
+  .primary-contact {
+    width: auto;
+    height: auto;
+    margin-top: 8px;
+    padding: 4px 24px;
+    gap: 6px;
+    border-radius: 16px;
+    background: transparent;
+  }
+  .primary-contact .agent-avatar {
+    width: 88px;
+    height: 88px;
+  }
+  .primary-contact:hover,
+  .primary-contact[aria-current="page"] {
+    background: transparent;
+  }
+  .primary-contact-name {
+    margin-top: 0;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 24px;
+  }
+  .primary-contact-role {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    clip-path: none;
+    white-space: normal;
+    font-size: 13px;
+    line-height: 16px;
+    color: var(--muted-foreground);
+  }
+  .primary-role-badge {
+    width: 25px;
+    height: 25px;
+    border: 2px solid var(--background);
+    padding: 4px;
+    background: var(--secondary);
+    color: var(--primary);
+    box-shadow: none;
+  }
+  .primary-role-badge svg {
+    width: 13px;
+    height: 13px;
+    fill: none;
+    stroke-width: 2.25px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -400,8 +661,24 @@
   @apply min-w-0;
   max-width: min(240px, 100%);
 }
+.workspace-chat-header .header-model-actions .model-selector {
+  max-width: 100%;
+}
+.message-run-state {
+  max-width: min(var(--chat-bubble-max), 80%);
+}
 .conversation-message[data-align="end"] .message-run-state {
   align-self: flex-end;
+}
+.message-run-state .queue-message-action {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  padding: 0;
+}
+.message-diagnostic button {
+  height: auto;
+  min-height: 24px;
 }
 
 @media (max-width: 767px) {

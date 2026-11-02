@@ -1,11 +1,15 @@
+import { Brain, FileText, Pencil, Trash2, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { ConnectionSettings } from "@/features/conversation/components/settings";
+import { AgentModelRow, ConnectionSettings } from "@/features/conversation/components/settings";
 import { command, request } from "@/lib/api-client";
 import type { Agent, Connection, Memory, Skills } from "@/types/workspace";
+import { PanelCard, PanelEmpty, PanelNavRow, PanelPageHeader } from "./panel-primitives";
+
+export type AgentPage = "overview" | "memory" | "skills" | "instructions";
 
 export function AgentPanel({
   agent,
@@ -17,6 +21,8 @@ export function AgentPanel({
   manageProviders,
   configurationOpen,
   setConfigurationOpen,
+  page,
+  navigate,
 }: {
   agent: Agent;
   threadId: string;
@@ -27,6 +33,8 @@ export function AgentPanel({
   manageProviders: () => void;
   configurationOpen: boolean;
   setConfigurationOpen: (open: boolean) => void;
+  page: AgentPage;
+  navigate: (page: AgentPage) => void;
 }) {
   const [memories, setMemories] = useState<Memory[]>([]);
   const [skills, setSkills] = useState<Skills | null>(null);
@@ -78,151 +86,16 @@ export function AgentPanel({
       setBusy(false);
     }
   }
+  function back() {
+    setConfigurationOpen(false);
+    navigate("overview");
+  }
+  const nativeCount = (skills?.harness.length ?? 0) + (skills?.native_catalog.length ?? 0);
   return (
-    <div className="agent-profile-content [padding-block:16px] space-y-5">
-      <section className="space-y-3">
-        <p className="whitespace-pre-wrap text-sm text-muted-foreground">
-          {agent.soul || "Ceritakan bantuan yang kamu butuhkan di chat."}
-        </p>
-        <details>
-          <summary className="cursor-pointer text-sm">Arahan kerja</summary>
-          <p className="mt-2 whitespace-pre-wrap text-sm text-muted-foreground">
-            {agent.instructions || "Belum ada arahan tambahan."}
-          </p>
-        </details>
-        <p className="text-caption text-muted-foreground">
-          Ubah nama, peran, dan cara kerja melalui percakapan.
-        </p>
-      </section>
-      <section className="profile-section [border-top:1px_solid_var(--border-subtle)] pt-4.5 space-y-3">
-        <h3 className="font-medium">Memory</h3>
-        {notice && (
-          <p role="status" className="text-sm text-link">
-            {notice}
-          </p>
-        )}
-        {memories.length === 0 && (
-          <p className="text-sm text-muted-foreground">Belum ada memory dalam percakapan ini.</p>
-        )}
-        {memories.map((memory) => (
-          <div
-            key={memory.id}
-            className="profile-memory [padding-block:12px] [border-bottom:1px_solid_var(--border-subtle)] space-y-2"
-          >
-            {editing?.id === memory.id ? (
-              <>
-                <Label htmlFor="memory-edit">Koreksi memory</Label>
-                <Textarea id="memory-edit" value={text} onChange={(e) => setText(e.target.value)} />
-                <div className="flex gap-2">
-                  <Button
-                    size="sm"
-                    disabled={busy || !text.trim()}
-                    onClick={() => void save(editing)}
-                  >
-                    Simpan
-                  </Button>
-                  <Button size="sm" variant="ghost" onClick={() => setEditing(null)}>
-                    Batal
-                  </Button>
-                </div>
-              </>
-            ) : (
-              <>
-                <p className="whitespace-pre-wrap text-sm">{memory.text}</p>
-                <div className="flex gap-2">
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => {
-                      setEditing(memory);
-                      setText(memory.text);
-                    }}
-                  >
-                    Koreksi
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    disabled={busy}
-                    onClick={() => void save(memory, true)}
-                  >
-                    Hapus memory
-                  </Button>
-                </div>
-              </>
-            )}
-          </div>
-        ))}
-        {more && (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={async () => {
-              try {
-                const query = new URLSearchParams({
-                  agent_id: agent.id,
-                  thread_id: threadId,
-                  after: more,
-                });
-                const next = await request<{ memories: Memory[]; next_after: string | null }>(
-                  `/v1/learning/memories?${query}`,
-                );
-                setMemories((current) => [...current, ...next.memories]);
-                setMore(next.next_after);
-              } catch (error) {
-                report(String(error));
-              }
-            }}
-          >
-            Memory sebelumnya
-          </Button>
-        )}
-      </section>
-      <section className="profile-section [border-top:1px_solid_var(--border-subtle)] pt-4.5 space-y-3">
-        <h3 className="font-medium">Skills</h3>
-        <p className="text-caption text-muted-foreground">
-          Skills aplikasi dapat dibuat dan diperbaiki melalui chat. Skills bawaan harness hanya
-          dibaca.
-        </p>
-        {skills && (
-          <>
-            <p className="text-caption text-muted-foreground">
-              Harness: {skills.harness_state} · Native: {skills.native_state}
-            </p>
-            {skills.harness.map((skill) => (
-              <div key={skill.key} className="text-sm">
-                <Badge variant="outline">Harness · hanya baca</Badge>
-                <p className="mt-1">{skill.name}</p>
-                <p className="text-caption text-muted-foreground">{skill.description}</p>
-              </div>
-            ))}
-            {skills.native_catalog.map((skill) => (
-              <div key={skill.key} className="text-sm">
-                <Badge variant="outline">Native · hanya baca</Badge>
-                <p>
-                  {skill.name} · {skill.enabled ? "Aktif" : "Nonaktif"}
-                </p>
-              </div>
-            ))}
-            {skills.application.map((skill) => (
-              <div key={skill.id} className="text-sm">
-                <Badge variant="secondary">Aplikasi · dapat diperbaiki</Badge>
-                <p>{skill.name}</p>
-              </div>
-            ))}
-            {!skills.application.length && (
-              <p className="text-sm text-muted-foreground">Belum ada paket skill aplikasi.</p>
-            )}
-          </>
-        )}
-      </section>
-      <details
-        className="profile-disclosure rounded-[12px] bg-card"
-        open={configurationOpen}
-        onToggle={(event) => setConfigurationOpen(event.currentTarget.open)}
-      >
-        <summary className="cursor-pointer font-medium">Koneksi & model</summary>
-        <div>
+    <div className="agent-profile-content min-w-0 pb-1 pt-3.5">
+      {configurationOpen ? (
+        <>
+          <PanelPageHeader title="Koneksi & model" onBack={back} />
           <ConnectionSettings
             agent={agent}
             connections={connections}
@@ -230,8 +103,213 @@ export function AgentPanel({
             report={report}
             manageProviders={manageProviders}
           />
-        </div>
-      </details>
+        </>
+      ) : page === "instructions" ? (
+        <>
+          <PanelPageHeader
+            title="Arahan kerja"
+            onBack={back}
+            intro="Ubah nama, peran, dan cara kerja melalui percakapan."
+          />
+          <PanelCard label="Peran">
+            <p className="whitespace-pre-wrap px-3.5 py-3 text-[13px] leading-[1.5]">
+              {agent.soul || "Ceritakan bantuan yang kamu butuhkan di chat."}
+            </p>
+          </PanelCard>
+          <PanelCard label="Arahan tambahan">
+            <p className="whitespace-pre-wrap px-3.5 py-3 text-[13px] leading-[1.5]">
+              {agent.instructions || "Belum ada arahan tambahan."}
+            </p>
+          </PanelCard>
+        </>
+      ) : page === "memory" ? (
+        <>
+          <PanelPageHeader
+            title="Memory"
+            onBack={back}
+            intro="Hal yang diingat dari percakapan ini. Koreksi atau hapus bila perlu."
+          />
+          {notice && (
+            <p role="status" className="mb-3 px-1 text-[13px] text-link">
+              {notice}
+            </p>
+          )}
+          <PanelCard>
+            {memories.length === 0 && (
+              <PanelEmpty>Belum ada memory dalam percakapan ini.</PanelEmpty>
+            )}
+            {memories.map((memory) => (
+              <div key={memory.id} className="profile-memory space-y-2 px-3.5 py-3">
+                {editing?.id === memory.id ? (
+                  <>
+                    <Label htmlFor="memory-edit">Koreksi memory</Label>
+                    <Textarea
+                      id="memory-edit"
+                      value={text}
+                      onChange={(e) => setText(e.target.value)}
+                    />
+                    <div className="flex gap-1.5">
+                      <Button
+                        size="sm"
+                        disabled={busy || !text.trim()}
+                        onClick={() => void save(editing)}
+                      >
+                        Simpan
+                      </Button>
+                      <Button size="sm" variant="ghost" onClick={() => setEditing(null)}>
+                        Batal
+                      </Button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <p className="whitespace-pre-wrap text-[13px] leading-[1.5]">{memory.text}</p>
+                    <div className="flex gap-1">
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="h-7 gap-1.5 px-2 text-[12px] text-muted-foreground"
+                        onClick={() => {
+                          setEditing(memory);
+                          setText(memory.text);
+                        }}
+                      >
+                        <Pencil size={12} strokeWidth={1.5} />
+                        Koreksi
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="h-7 gap-1.5 px-2 text-[12px] text-muted-foreground"
+                        disabled={busy}
+                        onClick={() => void save(memory, true)}
+                      >
+                        <Trash2 size={12} strokeWidth={1.5} />
+                        Hapus memory
+                      </Button>
+                    </div>
+                  </>
+                )}
+              </div>
+            ))}
+          </PanelCard>
+          {more && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="mt-2 text-[13px] text-muted-foreground"
+              onClick={async () => {
+                try {
+                  const query = new URLSearchParams({
+                    agent_id: agent.id,
+                    thread_id: threadId,
+                    after: more,
+                  });
+                  const next = await request<{ memories: Memory[]; next_after: string | null }>(
+                    `/v1/learning/memories?${query}`,
+                  );
+                  setMemories((current) => [...current, ...next.memories]);
+                  setMore(next.next_after);
+                } catch (error) {
+                  report(String(error));
+                }
+              }}
+            >
+              Memory sebelumnya
+            </Button>
+          )}
+        </>
+      ) : page === "skills" ? (
+        <>
+          <PanelPageHeader
+            title="Skills"
+            onBack={back}
+            intro="Skills aplikasi dapat dibuat dan diperbaiki melalui chat. Skills bawaan harness hanya dibaca."
+          />
+          <PanelCard label="Skills aplikasi">
+            {skills?.application.map((skill) => (
+              <div key={skill.id} className="flex items-center gap-2.5 px-3.5 py-3">
+                <Zap size={15} strokeWidth={1.5} className="shrink-0 text-muted-foreground" />
+                <span className="min-w-0 flex-1 text-[14px]">{skill.name}</span>
+                <Badge variant="secondary" className="shrink-0 text-[11px] font-normal">
+                  Aplikasi
+                </Badge>
+              </div>
+            ))}
+            {!skills?.application.length && (
+              <PanelEmpty>Belum ada paket skill aplikasi.</PanelEmpty>
+            )}
+          </PanelCard>
+          <PanelCard label="Bawaan harness">
+            {skills?.harness.map((skill) => (
+              <div key={skill.key} className="px-3.5 py-3">
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-[14px]">{skill.name}</p>
+                  <Badge variant="outline" className="shrink-0 text-[11px] font-normal">
+                    Harness · hanya baca
+                  </Badge>
+                </div>
+                <p className="mt-1 text-[13px] leading-[1.35] text-muted-foreground">
+                  {skill.description}
+                </p>
+              </div>
+            ))}
+            {skills?.native_catalog.map((skill) => (
+              <div key={skill.key} className="px-3.5 py-3">
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-[14px]">{skill.name}</p>
+                  <Badge variant="outline" className="shrink-0 text-[11px] font-normal">
+                    Native · hanya baca
+                  </Badge>
+                </div>
+                <p className="mt-1 text-[13px] text-muted-foreground">
+                  {skill.enabled ? "Aktif" : "Nonaktif"}
+                </p>
+              </div>
+            ))}
+            {!nativeCount && <PanelEmpty>Belum ada skills bawaan yang tersedia.</PanelEmpty>}
+          </PanelCard>
+          {skills && (
+            <p className="px-1 pt-3 text-[12px] leading-[1.4] text-muted-foreground">
+              Harness: {skills.harness_state} · Native: {skills.native_state}
+            </p>
+          )}
+        </>
+      ) : (
+        <>
+          <p className="mx-1 mb-3.5 whitespace-pre-wrap text-center text-[13px] leading-[1.5] text-muted-foreground">
+            {agent.soul || "Ceritakan bantuan yang kamu butuhkan di chat."}
+          </p>
+          <PanelCard>
+            <AgentModelRow
+              agent={agent}
+              connections={connections}
+              refresh={refresh}
+              report={report}
+              manageProviders={manageProviders}
+            />
+            <PanelNavRow
+              title="Arahan kerja"
+              icon={FileText}
+              onClick={() => navigate("instructions")}
+            />
+          </PanelCard>
+          <PanelCard label="Yang dipelajari">
+            <PanelNavRow
+              title="Memory"
+              value={memories.length || undefined}
+              icon={Brain}
+              onClick={() => navigate("memory")}
+            />
+            <PanelNavRow
+              title="Skills"
+              value={(skills?.application.length ?? 0) + nativeCount || undefined}
+              icon={Zap}
+              onClick={() => navigate("skills")}
+            />
+          </PanelCard>
+        </>
+      )}
     </div>
   );
 }

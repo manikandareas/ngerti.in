@@ -1,10 +1,4 @@
-import {
-  ArrowRight01Icon,
-  MoreHorizontalIcon,
-  RefreshIcon,
-  UserCircleIcon,
-} from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
+import { ArrowRight, CircleUser, Ellipsis, RefreshCw } from "lucide-react";
 import { useState } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
@@ -70,10 +64,10 @@ export function ProviderAccount({
     connection.account_id ??
     (native ? `Akun ${definition.name}` : `${provider === "codex" ? "OpenAI" : "Meta"} API key`);
   return (
-    <li className="provider-account">
+    <div className="provider-account">
       <Item className="settings-row provider-account-row min-h-20 gap-4 rounded-none border-0 p-4 flex-wrap">
         <ItemMedia className="provider-account-avatar text-muted-foreground">
-          <HugeiconsIcon icon={UserCircleIcon} size={24} strokeWidth={1.5} />
+          <CircleUser size={24} aria-hidden="true" />
         </ItemMedia>
         <ItemContent className="min-w-0 basis-40">
           <ItemTitle className="line-clamp-none break-words">{label}</ItemTitle>
@@ -89,11 +83,7 @@ export function ProviderAccount({
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button size="icon" variant="ghost" aria-label={`Kelola ${label}`} disabled={!!busy}>
-                {busy === connection.id ? (
-                  <Spinner />
-                ) : (
-                  <HugeiconsIcon icon={MoreHorizontalIcon} strokeWidth={1.5} />
-                )}
+                {busy === connection.id ? <Spinner /> : <Ellipsis size={16} aria-hidden="true" />}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
@@ -101,7 +91,7 @@ export function ProviderAccount({
                 disabled={!!busy || !ready}
                 onSelect={() => void actions.inspect(connection)}
               >
-                <HugeiconsIcon icon={RefreshIcon} />
+                <RefreshCw size={14} aria-hidden="true" />
                 Periksa akun & model
               </DropdownMenuItem>
               {native && (
@@ -161,7 +151,7 @@ export function ProviderAccount({
                 <Button asChild>
                   <a href={login.auth_url} target="_blank" rel="noreferrer">
                     Lanjutkan login
-                    <HugeiconsIcon icon={ArrowRight01Icon} />
+                    <ArrowRight size={14} aria-hidden="true" />
                   </a>
                 </Button>
               )}
@@ -209,6 +199,6 @@ export function ProviderAccount({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </li>
+    </div>
   );
 }

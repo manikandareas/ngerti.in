@@ -1,38 +1,33 @@
-import {
-  ArrowLeft01Icon,
-  BubbleChatIcon,
-  ComputerIcon,
-  InformationCircleIcon,
-  Settings02Icon,
-} from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Link, useSearch } from "@tanstack/react-router";
-import { useState } from "react";
+import { Link, useNavigate, useSearch } from "@tanstack/react-router";
+import { ChevronDown, Info, Settings, Sparkles, X } from "lucide-react";
+import { Dialog as DialogPrimitive } from "radix-ui";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ProviderSettings } from "@/features/settings/components/providers";
 import { SettingsSearch } from "@/features/settings/components/settings-search";
 import { SettingsRow, SettingsSection } from "@/features/settings/components/shared";
 import { ThemeSelect } from "@/features/settings/components/theme-select";
 import { useSettingsWorkspace } from "@/hooks/settings-workspace";
+import "../settings.css";
 
 const sections = [
   {
     id: "general",
     label: "Umum",
     keywords: "tampilan tema terang gelap sistem",
-    icon: Settings02Icon,
+    icon: Settings,
   },
   {
     id: "providers",
     label: "Providers",
     keywords: "chatgpt codex muse akun login api key subscription koneksi model biaya runtime",
-    icon: ComputerIcon,
+    icon: Sparkles,
   },
   {
     id: "about",
     label: "Tentang",
     keywords: "ngertiin bantuan dokumentasi",
-    icon: InformationCircleIcon,
+    icon: Info,
   },
 ] as const;
 export type SettingsPageId = (typeof sections)[number]["id"];
@@ -40,146 +35,203 @@ export type SettingsPageId = (typeof sections)[number]["id"];
 export default function SettingsPage() {
   const { agents, connections, refresh, openAgent } = useSettingsWorkspace();
   const search = useSearch({ from: "/workspace/settings" });
+  const navigate = useNavigate();
   const page = search.section ?? "general";
   const [query, setQuery] = useState("");
+  const dialog = useRef<HTMLDivElement>(null);
+  const returnFocus = useRef(document.activeElement);
+  function restoreFocus() {
+    const workspace = document.querySelector(".workspace-shell");
+    if (!(workspace instanceof HTMLElement)) return;
+    const visible = (element: Element | null): element is HTMLElement =>
+      element instanceof HTMLElement &&
+      element.isConnected &&
+      element.getClientRects().length > 0 &&
+      !element.closest('[inert], [aria-hidden="true"], [role="dialog"][data-state="closed"]');
+    if (document.querySelector('[role="dialog"][data-state="open"]')) return;
+    const previous = returnFocus.current;
+    if (visible(previous) && workspace.contains(previous) && previous.tabIndex >= 0)
+      previous.focus({ preventScroll: true });
+    if (visible(document.activeElement) && workspace.contains(document.activeElement)) return;
+    const target = [
+      workspace.querySelector('button[aria-label="Buka percakapan"]'),
+      workspace.querySelector('textarea[aria-label="Pesan"]'),
+    ].find((element) => visible(element) && element.tabIndex >= 0);
+    if (target instanceof HTMLElement) target.focus({ preventScroll: true });
+  }
+  const q = query.trim().toLowerCase();
   const matches = sections.filter((item) =>
-    `${item.label} ${item.keywords}`.toLowerCase().includes(query.trim().toLowerCase()),
+    `${item.label} ${item.keywords}`.toLowerCase().includes(q),
   );
+  const current = sections.find((item) => item.id === page) ?? sections[0];
+  const firstMatch = matches[0]?.id;
+  const currentMatches = matches.some((item) => item.id === page);
+
+  useEffect(() => {
+    if (q && !currentMatches && firstMatch)
+      void navigate({
+        to: "/settings",
+        search: { section: firstMatch === "general" ? undefined : firstMatch },
+        replace: true,
+      });
+  }, [q, currentMatches, firstMatch, navigate]);
+
+  function close() {
+    void navigate({ to: "/" });
+  }
+
   return (
-    <div className="settings-page flex h-svh min-h-0 w-full flex-col overflow-hidden bg-background text-foreground md:flex-row">
-      <nav
-        className="settings-rail hidden w-16 shrink-0 flex-col items-center gap-4 border-r bg-sidebar p-3 md:flex"
-        aria-label="Navigasi aplikasi"
-      >
-        <Link
-          to="/"
-          className="settings-rail-brand grid size-9 place-items-center rounded-lg text-xl font-semibold [&_span]:hidden"
-          aria-label="Ngertiin"
-        >
-          n<span>.</span>
-        </Link>
-        <Button asChild variant="ghost" size="icon">
-          <Link to="/" activeOptions={{ exact: true }} aria-label="Kembali ke percakapan">
-            <HugeiconsIcon icon={BubbleChatIcon} strokeWidth={1.5} />
-          </Link>
-        </Button>
-        <Button asChild variant="secondary" size="icon" className="mt-auto">
-          <Link to="/settings" aria-label="Pengaturan aplikasi">
-            <HugeiconsIcon icon={Settings02Icon} strokeWidth={1.5} />
-          </Link>
-        </Button>
-      </nav>
-      <aside className="settings-sidebar flex w-full shrink-0 flex-col gap-3 border-b p-4 md:w-60 md:border-r md:border-b-0">
-        <div className="settings-sidebar-header flex min-h-9 items-center gap-2 md:[&>[data-slot=button]]:hidden [&>h1]:text-base [&>h1]:font-semibold">
-          <Button size="icon" variant="ghost" asChild>
-            <Link to="/" activeOptions={{ exact: true }} aria-label="Kembali ke percakapan">
-              <HugeiconsIcon icon={ArrowLeft01Icon} strokeWidth={1.7} />
-            </Link>
-          </Button>
-          <h1>Pengaturan</h1>
-        </div>
-        <p className="sr-only">Tampilan aplikasi dan koneksi provider Ngertiin.</p>
-        <SettingsSearch
-          label="Cari pengaturan"
-          placeholder="Cari pengaturan"
-          value={query}
-          onChange={setQuery}
-        />
-        <nav
-          aria-label="Menu pengaturan"
-          className="flex max-h-[40dvh] flex-wrap gap-1 overflow-y-auto md:max-h-none md:flex-col"
-        >
-          {matches.map((item) => (
-            <Button
-              asChild
-              variant="ghost"
-              key={item.id}
-              className="settings-nav-button w-auto justify-start md:w-full"
-            >
-              <Link
-                key={item.id}
-                to="/settings"
-                search={{ section: item.id === "general" ? undefined : item.id }}
-                activeOptions={{ exact: true, explicitUndefined: true }}
-                className="settings-nav-item aria-[current=page]:bg-accent aria-[current=page]:text-accent-foreground"
-                aria-current={page === item.id ? "page" : undefined}
-                onClick={() => setQuery("")}
-              >
-                <HugeiconsIcon icon={item.icon} size={18} strokeWidth={1.6} />
-                {item.label}
-              </Link>
-            </Button>
-          ))}
-          {!matches.length && (
-            <p className="p-2 text-caption text-muted-foreground" role="status">
-              Tidak ada pengaturan yang cocok.
-            </p>
-          )}
-        </nav>
-      </aside>
-      <main
-        className="settings-scroll min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-contain"
-        key={page}
-        aria-label="Isi pengaturan"
-      >
-        <div className="settings-content mx-auto w-full max-w-3xl p-4 pb-12 sm:p-6 lg:p-8">
-          {page === "general" && (
-            <>
-              <header className="settings-content-header mb-6 space-y-2 [&>h2]:text-xl [&>h2]:font-semibold [&>h2]:tracking-tight [&>p]:text-sm [&>p]:text-muted-foreground">
-                <h2>Umum</h2>
-              </header>
-              <SettingsSection title="Tampilan">
-                <SettingsRow
-                  title="Tema"
-                  description="Pilih tampilan, atau ikuti pengaturan perangkat."
-                >
-                  <ThemeSelect />
-                </SettingsRow>
-              </SettingsSection>
-            </>
-          )}
-          {page === "providers" && (
-            <ProviderSettings
-              connections={connections}
-              agents={agents}
-              refresh={refresh}
-              openAgent={openAgent}
-            />
-          )}
-          {page === "about" && (
-            <>
-              <header className="settings-content-header mb-6 space-y-2 [&>h2]:text-xl [&>h2]:font-semibold [&>h2]:tracking-tight [&>p]:text-sm [&>p]:text-muted-foreground">
-                <h2>Tentang Ngertiin</h2>
-                <p>Ruang kerja bersama agent yang mengenalmu.</p>
-              </header>
-              <SettingsSection title="Ngertiin">
-                <SettingsRow
-                  title="Agent persisten"
-                  description="Lanjutkan pekerjaan melalui percakapan bersama Tobi dan agent milikmu."
-                />
-                <SettingsRow
-                  title="Pengaturan agent"
-                  description="Nama, arahan, memory, skills, model, dan reasoning tersedia di panel Agent dalam percakapan."
-                />
-                <SettingsRow
-                  title="Dokumentasi produk"
-                  description="Scope dan keputusan pengembangan Ngertiin."
-                >
-                  <Button asChild variant="outline">
-                    <a
-                      href="https://app.notion.com/p/402abdd6187381e3a720f4b01d824e1a"
-                      target="_blank"
-                      rel="noreferrer"
+    <DialogPrimitive.Root open onOpenChange={(open) => !open && close()}>
+      <DialogPrimitive.Portal>
+        <DialogPrimitive.Overlay className="settings-scrim" />
+        <div className="settings-frame" data-settings-sheet data-settings-look="simple">
+          <DialogPrimitive.Content
+            ref={dialog}
+            className="settings-page settings-dialog"
+            aria-describedby="settings-description"
+            onEscapeKeyDown={(event) => {
+              const field = event.target;
+              if (field instanceof Element && field.closest("[data-api-key-editor]")) {
+                event.preventDefault();
+                return;
+              }
+              if (
+                field instanceof HTMLInputElement &&
+                field.closest(".settings-search") &&
+                field.value
+              )
+                event.preventDefault();
+            }}
+            onOpenAutoFocus={(event) => {
+              event.preventDefault();
+              dialog.current?.focus();
+            }}
+            onCloseAutoFocus={(event) => {
+              event.preventDefault();
+              requestAnimationFrame(restoreFocus);
+            }}
+          >
+            <DialogPrimitive.Title className="sr-only">Pengaturan</DialogPrimitive.Title>
+            <DialogPrimitive.Description id="settings-description" className="sr-only">
+              Tampilan aplikasi dan koneksi provider Ngertiin.
+            </DialogPrimitive.Description>
+            <aside className="settings-sidebar">
+              <SettingsSearch
+                label="Cari pengaturan"
+                placeholder="Cari pengaturan"
+                value={query}
+                onChange={setQuery}
+              />
+              <nav aria-label="Menu pengaturan" className="settings-navigation">
+                {matches.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <Link
+                      key={item.id}
+                      to="/settings"
+                      search={{ section: item.id === "general" ? undefined : item.id }}
+                      activeOptions={{ exact: true, explicitUndefined: true }}
+                      className="settings-nav-item"
+                      data-settings-page={item.id}
+                      aria-current={page === item.id ? "page" : undefined}
+                      onClick={() => setQuery("")}
                     >
-                      Buka dokumentasi
-                    </a>
-                  </Button>
-                </SettingsRow>
-              </SettingsSection>
-            </>
-          )}
+                      <Icon size={15} aria-hidden="true" />
+                      <span>{item.label}</span>
+                    </Link>
+                  );
+                })}
+                {!matches.length && (
+                  <p className="settings-search-empty" role="status">
+                    Tidak ada pengaturan yang cocok.
+                  </p>
+                )}
+              </nav>
+            </aside>
+            <div className="settings-pane">
+              <header className="settings-content-header">
+                <div className="settings-mobile-section">
+                  <select
+                    aria-label="Menu pengaturan"
+                    value={page}
+                    onChange={(event) => {
+                      setQuery("");
+                      const section = event.target.value as SettingsPageId;
+                      void navigate({
+                        to: "/settings",
+                        search: { section: section === "general" ? undefined : section },
+                      });
+                    }}
+                  >
+                    {sections.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.label}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown size={14} aria-hidden="true" />
+                </div>
+                <h2>{current.label}</h2>
+              </header>
+              <DialogPrimitive.Close
+                className="settings-close"
+                aria-label="Tutup pengaturan"
+                title="Tutup pengaturan (Esc)"
+              >
+                <X size={16} aria-hidden="true" />
+              </DialogPrimitive.Close>
+              <main
+                className="settings-scroll"
+                key={page}
+                aria-label="Isi pengaturan"
+                data-settings-scroll
+              >
+                {page === "general" && (
+                  <SettingsSection title="Tampilan">
+                    <SettingsRow title="Tema">
+                      <ThemeSelect />
+                    </SettingsRow>
+                  </SettingsSection>
+                )}
+                {page === "providers" && (
+                  <ProviderSettings
+                    connections={connections}
+                    agents={agents}
+                    refresh={refresh}
+                    openAgent={openAgent}
+                  />
+                )}
+                {page === "about" && (
+                  <SettingsSection title="Ngertiin">
+                    <SettingsRow
+                      title="Agent persisten"
+                      description="Lanjutkan pekerjaan melalui percakapan bersama Tobi dan agent milikmu."
+                    />
+                    <SettingsRow
+                      title="Pengaturan agent"
+                      description="Nama, arahan, memory, skills, model, dan reasoning tersedia di panel Agent dalam percakapan."
+                    />
+                    <SettingsRow
+                      title="Dokumentasi produk"
+                      description="Scope dan keputusan pengembangan Ngertiin."
+                    >
+                      <Button asChild variant="outline">
+                        <a
+                          href="https://app.notion.com/p/402abdd6187381e3a720f4b01d824e1a"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          Buka dokumentasi
+                        </a>
+                      </Button>
+                    </SettingsRow>
+                  </SettingsSection>
+                )}
+              </main>
+            </div>
+          </DialogPrimitive.Content>
         </div>
-      </main>
-    </div>
+      </DialogPrimitive.Portal>
+    </DialogPrimitive.Root>
   );
 }

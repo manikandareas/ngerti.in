@@ -1,5 +1,8 @@
+import { CalendarClock, FileText, MessageSquare, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Snapshot } from "@/types/workspace";
+import { PanelCard, PanelEmpty, PanelNavRow, PanelPageHeader } from "./panel-primitives";
+import { ResponsibilityControls } from "./responsibility-controls";
 
 const labels: Record<string, string> = {
   active: "Aktif",
@@ -29,6 +32,7 @@ export function Responsibilities({
   openFile,
   openGoal,
   source,
+  refresh,
 }: {
   kind: "goals" | "routine";
   snapshot: Snapshot;
@@ -38,6 +42,7 @@ export function Responsibilities({
   openFile: (id: string) => void;
   openGoal: (id: string) => void;
   source: (id?: string) => void;
+  refresh: () => Promise<unknown>;
 }) {
   const goal = kind === "goals" ? snapshot.goals.find((g) => g.id === selected) : null;
   const routine = kind === "routine" ? snapshot.routines.find((r) => r.id === selected) : null;
@@ -46,76 +51,58 @@ export function Responsibilities({
     snapshot.thread.type === "group" && responsible?.handle ? `@${responsible.handle} ` : "";
   if (goal)
     return (
-      <div className="context-section space-y-5">
-        <Button variant="ghost" size="sm" onClick={() => select(null)}>
-          ← Goals
-        </Button>
+      <div className="context-section space-y-3.5 pt-3.5">
+        <PanelPageHeader title={goal.title} back="Goals" onBack={() => select(null)} />
         <div>
-          <h3 className="font-medium">{goal.title}</h3>
           <p className="mt-1 text-caption text-muted-foreground">
             {labels[goal.state]} · {labels[goal.work_state] ?? goal.work_state} ·{" "}
             {snapshot.agents.find((a) => a.id === goal.agent_id)?.name}
           </p>
         </div>
-        <p className="whitespace-pre-wrap text-sm">{goal.objective || goal.title}</p>
-        <section className="space-y-2">
-          <h4 className="text-caption font-medium text-muted-foreground">Progres dan hambatan</h4>
-          <p className="whitespace-pre-wrap text-sm">
-            {goal.progress || "Progres akan muncul setelah agent melaporkan pekerjaannya."}
+        <PanelCard label="Tujuan">
+          <p className="whitespace-pre-wrap px-3.5 py-3 text-[13px] leading-[1.5]">
+            {goal.objective || goal.title}
           </p>
-          {goal.continuation_at && (
-            <p className="text-caption">Lanjutan: {time(goal.continuation_at)}</p>
-          )}
-        </section>
-        <section className="space-y-2">
-          <h4 className="text-caption font-medium text-muted-foreground">Hasil dan bukti</h4>
+        </PanelCard>
+        <PanelCard label="Progres dan hambatan">
+          <div className="space-y-2 px-3.5 py-3">
+            <p className="whitespace-pre-wrap text-sm">
+              {goal.progress || "Progres akan muncul setelah agent melaporkan pekerjaannya."}
+            </p>
+            {goal.continuation_at && (
+              <p className="text-caption">Lanjutan: {time(goal.continuation_at)}</p>
+            )}
+          </div>
+        </PanelCard>
+        <PanelCard label="Hasil dan bukti">
           {goal.evidence_artifact_ids.length ? (
             goal.evidence_artifact_ids.map((id) => (
-              <Button
+              <PanelNavRow
                 key={id}
-                variant="ghost"
-                className="h-auto w-full justify-start whitespace-normal text-left"
+                icon={FileText}
+                title={snapshot.artifacts.find((a) => a.id === id)?.name ?? "Buka bukti hasil"}
                 onClick={() => openFile(id)}
-              >
-                {snapshot.artifacts.find((a) => a.id === id)?.name ?? "Buka bukti hasil"} →
-              </Button>
+              />
             ))
           ) : (
-            <p className="text-sm text-muted-foreground">Belum ada bukti hasil.</p>
+            <PanelEmpty>Belum ada bukti hasil.</PanelEmpty>
           )}
-        </section>
+        </PanelCard>
         <Button variant="outline" size="sm" onClick={() => source(goal.source_message_ids[0])}>
+          <MessageSquare size={13} strokeWidth={1.5} />
           Lihat percakapan asal
         </Button>
         <p className="text-caption text-muted-foreground">
           Stop run menghentikan satu eksekusi. Pause/stop goal juga menghentikan kelanjutannya.
         </p>
-        {goal.state !== "completed" && goal.state !== "stopped" && (
-          <div className="flex flex-wrap gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() =>
-                compose(
-                  `${address}${goal.state === "paused" ? "Lanjutkan" : "Jeda"} goal "${goal.title}" (ID ${goal.id}).`,
-                )
-              }
-            >
-              {goal.state === "paused" ? "Lanjutkan goal melalui chat" : "Jeda goal melalui chat"}
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() =>
-                compose(
-                  `${address}Hentikan goal "${goal.title}" (ID ${goal.id}) beserta kelanjutan dan Routine terkait.`,
-                )
-              }
-            >
-              Hentikan goal melalui chat
-            </Button>
-          </div>
-        )}
+        <ResponsibilityControls item={goal} kind="goal" refresh={refresh} />
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => compose(`${address}Bantu perbarui goal "${goal.title}" (ID ${goal.id}): `)}
+        >
+          Ubah goal melalui chat
+        </Button>
       </div>
     );
   if (routine) {
@@ -131,26 +118,33 @@ export function Responsibilities({
       .slice(-5)
       .reverse();
     return (
-      <div className="context-section space-y-5">
-        <Button variant="ghost" size="sm" onClick={() => select(null)}>
-          ← Routine
-        </Button>
-        <h3 className="font-medium">{routine.instruction}</h3>
-        <p className="text-caption">{labels[routine.state] ?? routine.state}</p>
-        <dl className="space-y-3 text-sm">
-          <div>
-            <dt className="text-muted-foreground">Jadwal</dt>
-            <dd>{description}</dd>
-          </div>
-          <div>
-            <dt className="text-muted-foreground">Timezone</dt>
-            <dd>{routine.timezone}</dd>
-          </div>
-          <div>
-            <dt className="text-muted-foreground">Berikutnya</dt>
-            <dd>{time(routine.next_run_at, routine.timezone)}</dd>
-          </div>
-        </dl>
+      <div className="context-section space-y-3.5 pt-3.5">
+        <PanelPageHeader title={routine.instruction} back="Routine" onBack={() => select(null)} />
+        <ResponsibilityControls
+          item={routine}
+          kind="routine"
+          refresh={refresh}
+          blocked={
+            !!routine.goal_id &&
+            snapshot.goals.find((item) => item.id === routine.goal_id)?.state !== "active"
+          }
+        />
+        <PanelCard label="Jadwal">
+          <dl className="divide-y divide-foreground/[0.05] text-[13px] [&>div]:px-3.5 [&>div]:py-3 [&_dt]:mb-1">
+            <div>
+              <dt className="text-muted-foreground">Jadwal</dt>
+              <dd>{description}</dd>
+            </div>
+            <div>
+              <dt className="text-muted-foreground">Timezone</dt>
+              <dd>{routine.timezone}</dd>
+            </div>
+            <div>
+              <dt className="text-muted-foreground">Berikutnya</dt>
+              <dd>{time(routine.next_run_at, routine.timezone)}</dd>
+            </div>
+          </dl>
+        </PanelCard>
         {routine.goal_id && (
           <Button
             variant="ghost"
@@ -163,8 +157,7 @@ export function Responsibilities({
             {snapshot.goals.find((g) => g.id === routine.goal_id)?.title ?? "Lihat konteks"}
           </Button>
         )}
-        <section className="space-y-3">
-          <h4 className="text-caption font-medium text-muted-foreground">Hasil sebelumnya</h4>
+        <PanelCard label="Hasil sebelumnya">
           {occurrences.length ? (
             occurrences.map((o) => {
               const run = snapshot.runs.find((r) => r.id === o.run_id);
@@ -172,7 +165,7 @@ export function Responsibilities({
                 (m) => m.run_id === o.run_id && m.author === "agent",
               );
               return (
-                <div key={o.id} className="border-b pb-3 text-sm">
+                <div key={o.id} className="px-3.5 py-3 text-[13px] leading-[1.5]">
                   <p className="text-caption text-muted-foreground">
                     {time(o.scheduled_for, routine.timezone)} · {run?.status ?? "Menunggu"}
                   </p>
@@ -193,14 +186,15 @@ export function Responsibilities({
               );
             })
           ) : (
-            <p className="text-sm text-muted-foreground">Belum ada pelaksanaan.</p>
+            <PanelEmpty>Belum ada pelaksanaan.</PanelEmpty>
           )}
-        </section>
+        </PanelCard>
         <Button
           variant="outline"
           size="sm"
           onClick={() => source(routine.source_message_id ?? undefined)}
         >
+          <MessageSquare size={13} strokeWidth={1.5} />
           Lihat percakapan asal
         </Button>
         <Button
@@ -222,46 +216,80 @@ export function Responsibilities({
           title: g.title,
           state: labels[g.state],
           detail: g.progress || labels[g.work_state],
+          resource: g,
         }))
       : snapshot.routines.map((r) => ({
           id: r.id,
           title: r.instruction,
           state: labels[r.state],
+          resource: r,
           detail: r.next_run_at
             ? `${time(r.next_run_at, r.timezone)} · ${r.timezone}`
             : "Tidak dijadwalkan",
         }));
   return (
-    <div className="context-section space-y-3">
-      <p className="text-caption text-muted-foreground">
+    <div className="context-section pt-3.5">
+      <p className="mx-1 mb-3.5 text-[13px] leading-[1.5] text-muted-foreground">
         {kind === "goals"
           ? "Tanggung jawab dicatat dari percakapan. Progres dan bukti mengikuti pekerjaan agent."
           : "Jadwal dan pemeriksaan dibuat dari kebutuhan yang kamu ceritakan. Backend dan host harness perlu tetap hidup."}
       </p>
-      {items.length ? (
-        items.map((item) => (
-          <Button
-            key={item.id}
-            aria-label={item.title}
-            variant="ghost"
-            className="h-auto min-h-16 w-full justify-start border-b px-1 py-3 text-left whitespace-normal"
-            onClick={() => select(item.id)}
-          >
-            <span className="min-w-0">
-              <span className="block font-medium">{item.title}</span>
-              <span className="mt-1 block text-caption text-muted-foreground">
-                {item.state} · {item.detail}
-              </span>
-            </span>
-          </Button>
-        ))
-      ) : (
-        <p className="py-8 text-sm text-muted-foreground">
-          {kind === "goals"
-            ? "Belum ada tanggung jawab. Ceritakan pekerjaan yang ingin kamu urus bersama."
-            : "Belum ada Routine. Minta jadwal atau pemeriksaan berkala lewat percakapan."}
-        </p>
-      )}
+      <PanelCard>
+        {items.length ? (
+          items.map((item) => {
+            const routineItem = "instruction" in item.resource ? item.resource : null;
+            return routineItem ? (
+              <ResponsibilityControls
+                key={item.id}
+                item={routineItem}
+                kind="routine"
+                refresh={refresh}
+                compact
+                blocked={
+                  !!routineItem.goal_id &&
+                  snapshot.goals.find((goal) => goal.id === routineItem.goal_id)?.state !== "active"
+                }
+              >
+                {(disabled) => (
+                  <button
+                    type="button"
+                    disabled={disabled}
+                    aria-label={item.title}
+                    onClick={() => select(item.id)}
+                    className="block w-full text-left hover:text-link"
+                  >
+                    <span className="block break-words text-[14px] font-medium leading-snug">
+                      {item.title}
+                    </span>
+                    <span className="mt-0.5 block text-[13px] leading-[1.35] text-muted-foreground">
+                      {item.detail}
+                    </span>
+                  </button>
+                )}
+              </ResponsibilityControls>
+            ) : (
+              <PanelNavRow
+                key={item.id}
+                title={item.title}
+                aria-label={item.title}
+                icon={kind === "goals" ? Target : CalendarClock}
+                hint={
+                  <span className="line-clamp-2">
+                    {item.state} · {item.detail}
+                  </span>
+                }
+                onClick={() => select(item.id)}
+              />
+            );
+          })
+        ) : (
+          <PanelEmpty>
+            {kind === "goals"
+              ? "Belum ada tanggung jawab. Ceritakan pekerjaan yang ingin kamu urus bersama."
+              : "Belum ada Routine. Minta jadwal atau pemeriksaan berkala lewat percakapan."}
+          </PanelEmpty>
+        )}
+      </PanelCard>
     </div>
   );
 }

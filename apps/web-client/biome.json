@@ -3,7 +3,14 @@
   "root": false,
   "extends": ["../../biome.json"],
   "files": {
-    "includes": ["**", "!dist", "!node_modules", "!test-results", "!playwright-report"]
+    "includes": [
+      "**",
+      "!dist",
+      "!node_modules",
+      "!test-results",
+      "!playwright-report",
+      "!src/components/openmaus-avatar"
+    ]
   },
   "overrides": [
     {

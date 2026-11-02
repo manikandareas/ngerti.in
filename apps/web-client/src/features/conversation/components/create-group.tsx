@@ -1,3 +1,4 @@
+import { Check } from "lucide-react";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -73,24 +74,32 @@ export function CreateGroup({
   }
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[85svh] overflow-y-auto sm:max-w-md">
+      <DialogContent
+        showCloseButton={false}
+        overlayClassName="creation-dialog-overlay"
+        className="max-h-[85svh] w-[340px] max-w-[calc(100%-32px)] gap-3 overflow-y-auto rounded-2xl border-border/50 bg-card p-4 sm:max-w-[340px]"
+      >
         <DialogHeader>
-          <DialogTitle>Create group</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-[15px] font-semibold">Create group</DialogTitle>
+          <DialogDescription className="sr-only">
             Beri nama dan pilih agent. Satu anggota akan memandu percakapan.
           </DialogDescription>
         </DialogHeader>
         <form
-          className="space-y-5"
+          className="space-y-3"
           onSubmit={(e) => {
             e.preventDefault();
             void submit();
           }}
         >
           <div className="space-y-2">
-            <Label htmlFor="group-name">Nama grup</Label>
+            <Label htmlFor="group-name" className="sr-only">
+              Nama grup
+            </Label>
             <Input
               id="group-name"
+              placeholder="Nama grup"
+              className="h-9 border-0 bg-secondary/70 px-3 text-[14px] dark:bg-secondary/70"
               value={name}
               maxLength={200}
               disabled={pending || busy}
@@ -98,16 +107,16 @@ export function CreateGroup({
               autoFocus
             />
           </div>
-          <fieldset disabled={pending || busy} className="space-y-1">
-            <legend className="mb-2 text-sm font-medium">Anggota</legend>
+          <fieldset disabled={pending || busy} className="max-h-64 space-y-0.5 overflow-y-auto">
+            <legend className="sr-only">Anggota</legend>
             {agents.map((a) => (
               <label
                 key={a.id}
-                className="flex min-h-12 cursor-pointer items-center gap-3 rounded-lg px-2 hover:bg-muted"
+                className="relative flex min-h-10 cursor-pointer items-center gap-2.5 rounded-lg px-2 py-1.5 hover:bg-secondary/50 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-ring"
               >
                 <input
                   type="checkbox"
-                  className="size-4 accent-primary"
+                  className="absolute right-2 size-[18px] cursor-pointer opacity-0"
                   aria-label={a.name}
                   checked={members.includes(a.id)}
                   onChange={(e) =>
@@ -116,8 +125,14 @@ export function CreateGroup({
                     )
                   }
                 />
-                <AgentAvatar agent={a} className="size-8 rounded-lg text-xs" />
-                <span className="min-w-0 truncate">{a.name}</span>
+                <AgentAvatar agent={a} state="happy" className="size-7 rounded-lg text-xs" />
+                <span className="min-w-0 flex-1 truncate text-[14px]">{a.name}</span>
+                <span
+                  aria-hidden="true"
+                  className={`pointer-events-none grid size-[18px] shrink-0 place-items-center rounded-full border ${members.includes(a.id) ? "border-primary bg-primary text-primary-foreground" : "border-border/60"}`}
+                >
+                  {members.includes(a.id) && <Check size={12} />}
+                </span>
               </label>
             ))}
           </fieldset>
@@ -134,7 +149,7 @@ export function CreateGroup({
           )}
           <Button
             type="submit"
-            className="w-full"
+            className="h-9 w-full rounded-lg text-[14px] font-medium"
             disabled={busy || !name.trim() || !members.length}
           >
             {busy ? "Memeriksa…" : pending ? "Periksa pembuatan grup" : "Buat grup"}

@@ -1,24 +1,13 @@
-import { Add01Icon, ArrowRight01Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
+import { ArrowRight, Plus } from "lucide-react";
 import { useRef, useState } from "react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { ApiKeyDialog } from "@/features/settings/components/api-key-dialog";
+import { ApiKeyEntry } from "@/features/settings/components/api-key-entry";
 import { ProviderAccount } from "@/features/settings/components/provider-account";
 import {
-  connectionLabel,
   type ProviderId,
-  ProviderMark,
   providers,
   SettingsRow,
   SettingsSection,
@@ -33,7 +22,6 @@ export function ProviderDetail({
   agents,
   runtime,
   runtimeError,
-  back,
   refresh,
   openAgent,
 }: {
@@ -42,7 +30,6 @@ export function ProviderDetail({
   agents: Agent[];
   runtime?: Availability;
   runtimeError: string;
-  back: () => void;
   refresh: () => Promise<unknown>;
   openAgent: (agent: Agent) => void;
 }) {
@@ -59,7 +46,6 @@ export function ProviderDetail({
   const usedBy = agents.filter((agent) =>
     merged.some((connection) => connection.id === agent.connection_id),
   );
-  const verified = merged.some((connection) => connectionLabel(connection) === "Terhubung");
   const ready = runtime?.state === "supported";
   const supportsLogin = runtime?.manifest.authentication_methods?.includes("native_login") ?? false;
   const supportsKey = runtime?.manifest.authentication_methods?.includes("api_key") ?? false;
@@ -81,46 +67,6 @@ export function ProviderDetail({
   }
   return (
     <>
-      <Breadcrumb aria-label="Lokasi provider" className="provider-breadcrumb mb-6">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Button variant="link" className="h-auto p-0 text-muted-foreground" onClick={back}>
-                Providers
-              </Button>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>{definition.name}</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
-      <header className="provider-detail-heading mb-6 flex items-start gap-3 [&>div]:min-w-0 [&_h2]:text-xl [&_h2]:font-semibold [&_p]:mt-2 [&_p]:text-sm [&_p]:text-muted-foreground">
-        <ProviderMark id={provider} />
-        <div>
-          <div className="flex flex-wrap items-center gap-3">
-            <h2>{definition.name}</h2>
-            <Badge
-              variant="outline"
-              className={verified ? "provider-connected [color:var(--success-foreground)]" : ""}
-            >
-              {verified
-                ? "Terhubung"
-                : merged.length
-                  ? "Belum terverifikasi"
-                  : ready
-                    ? "Belum terhubung"
-                    : runtimeStates[runtime?.state ?? "unknown"]}
-            </Badge>
-          </div>
-          <p>
-            {usedBy.length
-              ? `Digunakan oleh ${usedBy.map((agent) => agent.name).join(", ")}.`
-              : "Belum digunakan oleh agent."}
-          </p>
-        </div>
-      </header>
       {account.error && (
         <Alert
           variant="destructive"
@@ -147,7 +93,7 @@ export function ProviderDetail({
             disabled={!!account.busy || !ready || !supportsLogin}
             onClick={() => void account.addAccount()}
           >
-            {account.busy === "new" ? <Spinner /> : <HugeiconsIcon icon={Add01Icon} />}
+            {account.busy === "new" ? <Spinner /> : <Plus size={14} aria-hidden="true" />}
             {account.uncertainAccount ? "Periksa penambahan" : "Tambah akun"}
           </Button>
         }
@@ -168,20 +114,31 @@ export function ProviderDetail({
       </SettingsSection>
       <SettingsSection title="API key">
         {accounts(keyed)}
-        <SettingsRow
-          title={`${provider === "codex" ? "OpenAI" : "Meta"} API key`}
-          description={`Atau gunakan API key. Biaya API terpisah dari subscription ${definition.name}.`}
-        >
-          <Button
-            ref={keyButton}
-            variant="outline"
-            disabled={!!account.busy || !supportsKey}
-            onClick={() => setAddKey(true)}
+        {addKey ? (
+          <ApiKeyEntry
+            provider={provider}
+            saved={account.saved}
+            close={() => {
+              setAddKey(false);
+              requestAnimationFrame(() => keyButton.current?.focus());
+            }}
+          />
+        ) : (
+          <SettingsRow
+            title={`${provider === "codex" ? "OpenAI" : "Meta"} API key`}
+            description={`Atau gunakan API key. Biaya API terpisah dari subscription ${definition.name}.`}
           >
-            <HugeiconsIcon icon={Add01Icon} />
-            Tambah key
-          </Button>
-        </SettingsRow>
+            <Button
+              ref={keyButton}
+              variant="outline"
+              disabled={!!account.busy || !supportsKey}
+              onClick={() => setAddKey(true)}
+            >
+              <Plus size={14} aria-hidden="true" />
+              Tambah key
+            </Button>
+          </SettingsRow>
+        )}
       </SettingsSection>
       <SettingsSection title="Runtime">
         <SettingsRow
@@ -229,7 +186,7 @@ export function ProviderDetail({
             >
               <Button variant="outline" onClick={() => openAgent(agent)}>
                 Atur agent
-                <HugeiconsIcon icon={ArrowRight01Icon} />
+                <ArrowRight size={14} aria-hidden="true" />
               </Button>
             </SettingsRow>
           ))
@@ -240,16 +197,6 @@ export function ProviderDetail({
           />
         )}
       </SettingsSection>
-      {addKey && (
-        <ApiKeyDialog
-          provider={provider}
-          close={() => {
-            setAddKey(false);
-            requestAnimationFrame(() => keyButton.current?.focus());
-          }}
-          saved={account.saved}
-        />
-      )}
     </>
   );
 }

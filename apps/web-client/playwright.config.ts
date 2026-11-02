@@ -10,7 +10,13 @@ const env = {
 };
 
 export default defineConfig({
-  testIgnore: ["conversation.spec.ts", "settings.spec.ts", "work.spec.ts"],
+  testIgnore: [
+    "conversation.spec.ts",
+    "model-picker.spec.ts",
+    "rich-answer.spec.ts",
+    "settings.spec.ts",
+    "work.spec.ts",
+  ],
   testDir: "./tests",
   fullyParallel: true,
   workers: 2,

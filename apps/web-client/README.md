@@ -1,6 +1,8 @@
 # Web client
 
-Standalone React + TypeScript application built with Vite. The conversation workspace consumes the harness-first API 1.16.0. The visual foundation follows the OpenMausBot Midnight/Daylight research; the component catalog remains available.
+Standalone React + TypeScript application built with Vite. The active conversation workspace consumes the harness-first API 1.18.0. Its visual and interaction reference is OpenMausBot 0.1.137; the component catalog remains available.
+
+The [existing-feature redesign evidence](../../docs/verification/openmaus-fidelity-2026-11-01/README.md) maps 19 surfaces to the pinned reference, with 122 passing unique browser cases and retained screenshots. Provider fixtures, real API persistence and managed-browser verification have separate evidence boundaries.
 
 ## Development
 
@@ -54,7 +56,9 @@ These desktop/mobile checks use the real API and isolated temporary SQLite state
 
 Creation defaults use the configured Tobi connection/model. Configure them in Settings; a missing account/model keeps the new agent and DM available for repair. Pending creation/message operations retain their exact idempotency key and body across reloads. Unknown native outcomes require reconciliation, not a new send.
 
-Create group and contextual File/Goals/Routine tabs are reserved for NMA-062. They do not simulate completed features.
+Create group and contextual Agent/Anggota, File, Goals and Routine panels consume the real API. They include scoped memory/skills, workspace files and artifacts, browser/VNC and Composio access, responsibilities, group membership, native questions and stop/recovery controls. See [NMA-062 evidence](../../docs/verification/nma-062/README.md). Test harnesses and external-provider fixtures are distinguished from native acceptance in each evidence cohort.
+
+Settings opens over the mounted conversation; closing it restores the draft and focus. Providers expand inline, while the selected account/provider remains URL-backed. The header and agent profile share one account/model/reasoning popup, with server-discovered choices and explicit billing.
 
 ## Components
 
@@ -65,7 +69,9 @@ cd apps/web-client
 bunx shadcn@4.23.0 add <component>
 ```
 
-`components.json` selects `hugeicons` for future additions. The AI Elements Conversation component adds `use-stick-to-bottom`; its icon is adapted to Hugeicons and its controls reuse the local Button. Beautiful UI Tool Chips inform the compact tool activity composition. Icons use `@hugeicons/react` and the free stroke-rounded pack `@hugeicons/core-free-icons`; no Lucide dependency remains in this app. Import icons individually so the production bundle includes only used icons.
+`components.json` selects `hugeicons` for future primitive additions. Product compositions use the source-equivalent Lucide 0.539.0 icons. Existing generic primitives retain their public APIs and icon dependencies. The AI Elements Conversation component adds `use-stick-to-bottom`. Import icons individually so the production bundle includes only used icons.
+
+Default agent avatars reuse the pinned OpenMaus vector renderer and exact installed chrome asset; group avatars stack their actual members. [Renderer provenance](src/components/openmaus-avatar/README.md) records the narrow source port and upgrade boundary.
 
 UI components are owned source files. Do not pass `--overwrite` without reviewing the local Midnight/Daylight theme changes. The component inventory is in `src/lib/component-catalog.ts`; refresh it when adding or removing primitives.
 

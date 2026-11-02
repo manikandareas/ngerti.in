@@ -1,4 +1,5 @@
 import type RFB from "@novnc/novnc";
+import { Globe, RefreshCw } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,7 +12,12 @@ import {
 import { request } from "@/lib/api-client";
 import type { BrowserObservation, BrowserSession } from "@/types/work";
 
-export type BrowserView = { profileId: string; agentId: string; threadId: string };
+export type BrowserView = {
+  profileId: string;
+  agentId: string;
+  threadId: string;
+  session?: BrowserSession;
+};
 export function BrowserViewer({
   target,
   close,
@@ -26,9 +32,12 @@ export function BrowserViewer({
         if (!open) close();
       }}
     >
-      <DialogContent className="flex max-h-[94svh] flex-col sm:max-w-5xl">
+      <DialogContent className="flex max-h-[94svh] flex-col gap-3 rounded-[16px] p-4 sm:max-w-5xl">
         <DialogHeader>
-          <DialogTitle>Browser percakapan</DialogTitle>
+          <DialogTitle className="flex items-center gap-2 text-[15px] font-medium">
+            <Globe size={17} strokeWidth={1.5} />
+            Browser percakapan
+          </DialogTitle>
           <DialogDescription>
             Tampilan browser yang sama dengan pekerjaan agent · hanya lihat.
           </DialogDescription>
@@ -45,6 +54,7 @@ export function BrowserViewer({
 }
 function BrowserScreen({ target }: { target: BrowserView }) {
   const screen = useRef<HTMLDivElement>(null);
+  const boundSession = useRef<BrowserSession | null>(target.session ?? null);
   const [attempt, setAttempt] = useState(0);
   const [state, setState] = useState("Menghubungkan tampilan…");
   const [error, setError] = useState("");
@@ -61,14 +71,17 @@ function BrowserScreen({ target }: { target: BrowserView }) {
     async function connect() {
       const [{ default: Client }, session] = await Promise.all([
         import("@novnc/novnc"),
-        request<BrowserSession>(
-          `/v1/browser/profiles/${target.profileId}/open`,
-          scope,
-          undefined,
-          abort.signal,
-        ),
+        boundSession.current
+          ? Promise.resolve(boundSession.current)
+          : request<BrowserSession>(
+              `/v1/browser/profiles/${target.profileId}/open`,
+              scope,
+              undefined,
+              abort.signal,
+            ),
       ]);
       if (abort.signal.aborted || !screen.current) return;
+      boundSession.current = session;
       async function observe() {
         try {
           const result = await request<BrowserObservation>(
@@ -131,6 +144,7 @@ function BrowserScreen({ target }: { target: BrowserView }) {
       <div className="flex flex-wrap items-center justify-between gap-2 text-caption">
         <span role="status">{state}</span>
         <Button variant="outline" size="sm" onClick={() => setAttempt((n) => n + 1)}>
+          <RefreshCw size={13} strokeWidth={1.5} />
           Sambungkan ulang tampilan
         </Button>
       </div>
@@ -151,17 +165,22 @@ function BrowserScreen({ target }: { target: BrowserView }) {
         aria-label="Tampilan browser agent"
       />
       {observation && (
-        <p className="break-all text-caption text-muted-foreground">
-          Sesi {observation.session.id} · Tab{" "}
-          {observation.binding?.tabs.find((t) => t.target_id === observation.binding?.target_id)
-            ?.tab_id ?? "belum diketahui"}{" "}
-          ·{" "}
-          {observation.auth === "authenticated"
-            ? "Situs terautentikasi"
-            : observation.auth === "unknown"
-              ? "Status login situs belum diketahui"
-              : "Login diperlukan"}
-        </p>
+        <details className="text-[12px] text-muted-foreground">
+          <summary className="w-fit cursor-pointer rounded-full px-2 py-1 hover:bg-foreground/[0.05]">
+            Detail sesi browser
+          </summary>
+          <p className="mt-1 break-all rounded-lg bg-foreground/[0.045] px-3 py-2">
+            Sesi {observation.session.id} · Tab{" "}
+            {observation.binding?.tabs.find((t) => t.target_id === observation.binding?.target_id)
+              ?.tab_id ?? "belum diketahui"}{" "}
+            ·{" "}
+            {observation.auth === "authenticated"
+              ? "Situs terautentikasi"
+              : observation.auth === "unknown"
+                ? "Status login situs belum diketahui"
+                : "Login diperlukan"}
+          </p>
+        </details>
       )}
     </>
   );

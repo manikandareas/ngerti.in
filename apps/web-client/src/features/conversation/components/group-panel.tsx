@@ -1,8 +1,10 @@
+import { FileText, Pencil, Users } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { command } from "@/lib/api-client";
 import type { Agent, Snapshot, Thread } from "@/types/workspace";
 import { AgentAvatar } from "./identity";
+import { PanelCard, PanelNavRow, PanelPageHeader } from "./panel-primitives";
 
 export function GroupPanel({
   snapshot,
@@ -10,14 +12,17 @@ export function GroupPanel({
   refresh,
   compose,
   initialMember,
+  selectMember,
 }: {
   snapshot: Snapshot;
   agents: Agent[];
   refresh: () => Promise<unknown>;
   compose: (text: string) => void;
   initialMember?: string | null;
+  selectMember: (id: string | null) => void;
 }) {
-  const [member, setMember] = useState<string | null>(initialMember ?? null);
+  const member = initialMember ?? null;
+  const setMember = selectMember;
   const [selected, setSelected] = useState(snapshot.thread.member_agent_ids);
   const [expectedRevision, setExpectedRevision] = useState(snapshot.thread.revision);
   const [error, setError] = useState("");
@@ -25,59 +30,61 @@ export function GroupPanel({
   const profile = snapshot.agents.find((a) => a.id === member);
   if (profile)
     return (
-      <div className="context-section space-y-4">
-        <Button
-          variant="ghost"
-          size="sm"
-          aria-label="Kembali ke anggota"
-          onClick={() => setMember(null)}
-        >
-          ← Kembali ke anggota
-        </Button>
-        <AgentAvatar agent={profile} />
-        <h3 className="font-medium">{profile.name}</h3>
-        <p className="text-sm">{profile.soul || "Anggota grup"}</p>
-        <p className="text-caption text-muted-foreground">
-          Profil ringkas dalam grup. Memory, riwayat, dan file DM tetap berada di percakapan privat.
-        </p>
+      <div className="context-section pt-3.5">
+        <PanelPageHeader
+          title={profile.name}
+          back="Anggota"
+          onBack={() => {
+            setMember(null);
+          }}
+        />
+        <div className="flex flex-col items-center gap-3 py-4 text-center">
+          <AgentAvatar agent={profile} className="size-16 rounded-[20px] text-2xl" />
+          <p className="text-[13px] leading-[1.5] text-muted-foreground">
+            {profile.soul || "Anggota grup"}
+          </p>
+        </div>
+        <PanelCard>
+          <p className="px-3.5 py-3 text-[13px] leading-[1.5] text-muted-foreground">
+            Profil ringkas dalam grup. Memory, riwayat, dan file DM tetap berada di percakapan
+            privat.
+          </p>
+        </PanelCard>
       </div>
     );
   return (
-    <div className="context-section space-y-6">
-      <section className="space-y-2">
-        <h3 className="text-caption font-medium text-muted-foreground">
-          Tujuan dan arahan bersama
-        </h3>
-        <p className="whitespace-pre-wrap text-sm">
-          {snapshot.thread.shared_instructions ||
-            "Ceritakan apa yang ingin dikerjakan bersama di percakapan."}
-        </p>
-        <Button
-          variant="ghost"
-          size="sm"
+    <div className="context-section space-y-3.5 pt-3.5">
+      <PanelCard>
+        <PanelNavRow
+          title="Tujuan dan arahan bersama"
+          hint={
+            <span className="line-clamp-2">
+              {snapshot.thread.shared_instructions ||
+                "Ceritakan apa yang ingin dikerjakan bersama di percakapan."}
+            </span>
+          }
+          icon={FileText}
+          aria-label="Ubah melalui percakapan"
           onClick={() => compose("Bantu perbarui tujuan dan arahan bersama grup ini: ")}
-        >
-          Ubah melalui percakapan
-        </Button>
-      </section>
-      <section className="space-y-1">
-        <h3 className="mb-2 text-caption font-medium text-muted-foreground">
-          Anggota · {snapshot.agents.length}
-        </h3>
+        />
+      </PanelCard>
+      <PanelCard label={`Anggota · ${snapshot.agents.length}`}>
         {snapshot.agents.map((a) => (
-          <Button
+          <PanelNavRow
             key={a.id}
-            variant="ghost"
-            className="h-auto min-h-12 w-full justify-start gap-3 px-1 text-left"
+            title={a.name}
             aria-label={`Profil anggota ${a.name}`}
-            onClick={() => setMember(a.id)}
+            hint={a.soul || undefined}
+            onClick={() => {
+              setMember(a.id);
+            }}
           >
-            <AgentAvatar agent={a} />
-            <span className="truncate">{a.name}</span>
-          </Button>
+            <AgentAvatar agent={a} className="size-8 rounded-[10px]" />
+          </PanelNavRow>
         ))}
-      </section>
+      </PanelCard>
       <details
+        className="group rounded-[12px] bg-composer ring-1 ring-inset ring-foreground/[0.06]"
         onToggle={(e) => {
           if (e.currentTarget.open) {
             setSelected(snapshot.thread.member_agent_ids);
@@ -85,9 +92,13 @@ export function GroupPanel({
           }
         }}
       >
-        <summary className="cursor-pointer text-sm font-medium">Kelola anggota</summary>
+        <summary className="flex min-h-[46px] cursor-pointer list-none items-center gap-2.5 px-3.5 py-[11px] text-[14px] font-medium [&::-webkit-details-marker]:hidden">
+          <Users size={15} strokeWidth={1.5} className="text-muted-foreground" />
+          Kelola anggota
+          <Pencil size={13} strokeWidth={1.5} className="ml-auto text-muted-foreground" />
+        </summary>
         <form
-          className="mt-3 space-y-3"
+          className="space-y-3 px-3.5 pb-3.5"
           onSubmit={async (e) => {
             e.preventDefault();
             if (busy) return;
@@ -109,7 +120,10 @@ export function GroupPanel({
         >
           <fieldset disabled={busy}>
             {agents.map((a) => (
-              <label key={a.id} className="flex min-h-10 items-center gap-2">
+              <label
+                key={a.id}
+                className="flex min-h-[46px] items-center gap-2.5 border-b border-foreground/[0.05] py-2"
+              >
                 <input
                   type="checkbox"
                   aria-label={`Anggota ${a.name}`}
@@ -120,7 +134,8 @@ export function GroupPanel({
                     )
                   }
                 />
-                <span className="truncate">{a.name}</span>
+                <AgentAvatar agent={a} className="size-7 rounded-lg text-xs" />
+                <span className="truncate text-[13px]">{a.name}</span>
               </label>
             ))}
           </fieldset>

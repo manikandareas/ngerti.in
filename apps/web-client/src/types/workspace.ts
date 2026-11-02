@@ -1,5 +1,6 @@
+import type { NativeInteraction } from "./native-interactions";
 import type { Artifact, Goal, HumanRequest, PeerTask, Routine, Workspace } from "./work";
-// Consumer projections of the published Ngertiin API 1.17.0.
+// Consumer projections of the published Ngertiin API 1.18.0.
 export interface Base {
   id: string;
   revision: number;
@@ -46,6 +47,7 @@ export interface Run extends Base {
   diagnostic: { code: string; category: string; outcome: string } | null;
   product_tools: string[];
   native_tools: { item_id: string; name: string; state: string }[];
+  native_interactions: NativeInteraction[];
   sources: { url: string; title: string; operation: string }[];
   publication: string;
   goal_id: string | null;

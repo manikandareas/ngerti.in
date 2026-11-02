@@ -1,3 +1,13 @@
+import {
+  ArrowUp,
+  ChevronRight,
+  Download,
+  FileText,
+  Folder,
+  FolderOpen,
+  Share2,
+  Upload,
+} from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,6 +18,7 @@ import { artifactUrl, uploadFile } from "@/lib/workspace-files";
 import type { Artifact, Workspace } from "@/types/work";
 import type { Agent, Snapshot, Thread } from "@/types/workspace";
 import { type FileView, FileViewer } from "./file-viewer";
+import { PanelCard, PanelEmpty, PanelNavRow, PanelPageHeader } from "./panel-primitives";
 
 type Files = { entries: { name: string; path: string; type: string }[]; next_after: string | null };
 export function FilesPanel({
@@ -74,7 +85,7 @@ export function FilesPanel({
       );
   }
   return (
-    <div className="context-section space-y-5">
+    <div className="context-section min-w-0 space-y-3.5 pt-3.5">
       {error && (
         <p role="alert" className="text-sm text-destructive">
           {error}
@@ -82,41 +93,42 @@ export function FilesPanel({
       )}
       {artifact ? (
         <>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => {
+          <PanelPageHeader
+            title={artifact.name}
+            back="File"
+            onBack={() => {
               select(null);
               setDestinations(null);
               setShared("");
             }}
-          >
-            ← File
-          </Button>
-          <h3 className="break-all font-medium">{artifact.name}</h3>
+          />
           <p className="text-caption text-muted-foreground">
             {artifact.media_type} · {artifact.size_bytes ?? "?"} byte
           </p>
-          <dl className="space-y-2 break-all text-caption">
-            <div>
-              <dt className="text-muted-foreground">Asal</dt>
-              <dd>
-                {artifact.origin}
-                {artifact.source_artifact_id ? " · salinan dibagikan" : ""}
-              </dd>
-            </div>
-            <div>
-              <dt className="text-muted-foreground">Pekerjaan</dt>
-              <dd>{artifact.run_id ?? "Lampiran pengguna"}</dd>
-            </div>
-          </dl>
+          <PanelCard label="Tentang file">
+            <dl className="divide-y divide-foreground/[0.05] break-all text-[13px] [&>div]:px-3.5 [&>div]:py-3 [&_dt]:mb-1">
+              <div>
+                <dt className="text-muted-foreground">Asal</dt>
+                <dd>
+                  {artifact.origin}
+                  {artifact.source_artifact_id ? " · salinan dibagikan" : ""}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-muted-foreground">Pekerjaan</dt>
+                <dd>{artifact.run_id ?? "Lampiran pengguna"}</dd>
+              </div>
+            </dl>
+          </PanelCard>
           <div className="flex flex-wrap gap-2">
             <Button size="sm" onClick={() => open(artifact)}>
+              <FileText size={14} strokeWidth={1.5} />
               Buka {artifact.name}
             </Button>
             {active.some((w) => w.id === artifact.workspace_id) && (
               <Button variant="outline" size="sm" asChild>
                 <a href={artifactUrl(artifact)} download={artifact.name}>
+                  <Download size={14} strokeWidth={1.5} />
                   Unduh {artifact.name}
                 </a>
               </Button>
@@ -129,6 +141,7 @@ export function FilesPanel({
               )}
           </div>
           <details
+            className="group/share rounded-[12px] bg-composer ring-1 ring-inset ring-foreground/[0.06]"
             onToggle={(e) => {
               if (e.currentTarget.open && !destinations)
                 void act(async () => {
@@ -140,8 +153,16 @@ export function FilesPanel({
                 });
             }}
           >
-            <summary className="cursor-pointer text-sm">Bagikan salinan ke percakapan lain</summary>
-            <div className="mt-3 space-y-3">
+            <summary className="flex min-h-[46px] cursor-pointer list-none items-center gap-2.5 px-3.5 py-[11px] text-[14px] [&::-webkit-details-marker]:hidden">
+              <Share2 size={15} strokeWidth={1.5} className="shrink-0 text-muted-foreground" />
+              <span className="flex-1">Bagikan salinan ke percakapan lain</span>
+              <ChevronRight
+                size={15}
+                strokeWidth={1.5}
+                className="shrink-0 text-muted-foreground group-open/share:rotate-90"
+              />
+            </summary>
+            <div className="space-y-3 px-3.5 pb-3.5">
               <Label htmlFor="share-destination">Folder tujuan</Label>
               <select
                 id="share-destination"
@@ -214,126 +235,171 @@ export function FilesPanel({
             </div>
           )}
           {workspace ? (
-            <section className="space-y-3">
-              <div>
-                <h3 className="text-sm font-medium">{workspace.name}</h3>
-                <p className="break-all text-caption text-muted-foreground">
-                  {workspace.project_path ?? "Folder percakapan terkelola"}
-                </p>
-              </div>
-              <Label htmlFor="file-upload" className="text-link">
-                Unggah file
-              </Label>
-              <input
-                id="file-upload"
-                aria-label="Unggah file"
-                type="file"
-                className="max-w-full text-xs"
-                disabled={busy}
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file)
-                    void act(async () => {
-                      const result = await uploadFile(workspace.id, file);
-                      select(result.id);
-                    });
-                }}
-              />
-              <p className="text-caption text-muted-foreground">
-                Maksimal 16 MB per file. Upload menyimpan file di folder ini.
-              </p>
-              {path && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => {
-                    setPath(path.split("/").slice(0, -1).join("/"));
-                    setAfter("");
+            <PanelCard label="Folder kerja">
+              <div className="space-y-3 px-3.5 py-3">
+                <div className="flex items-start gap-2.5">
+                  <FolderOpen
+                    size={18}
+                    strokeWidth={1.5}
+                    className="mt-0.5 shrink-0 text-muted-foreground"
+                  />
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-sm font-medium">{workspace.name}</h3>
+                    <p className="break-all text-caption text-muted-foreground">
+                      {workspace.project_path ?? "Folder percakapan terkelola"}
+                    </p>
+                  </div>
+                </div>
+                <Label
+                  htmlFor="file-upload"
+                  tabIndex={0}
+                  className="inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-[9px] bg-control px-3.5 text-[13px] font-medium hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring"
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      document.getElementById("file-upload")?.click();
+                    }
                   }}
                 >
-                  ← Folder induk
-                </Button>
-              )}
-              {listing.error ? (
-                <div role="alert" className="text-sm">
-                  <p>{listing.error}</p>
-                  <Button size="sm" variant="outline" onClick={listing.retry}>
-                    Muat file lagi
+                  <Upload size={14} strokeWidth={1.5} />
+                  Unggah file
+                </Label>
+                <input
+                  id="file-upload"
+                  aria-label="Unggah file"
+                  type="file"
+                  className="sr-only"
+                  disabled={busy}
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file)
+                      void act(async () => {
+                        const result = await uploadFile(workspace.id, file);
+                        select(result.id);
+                      });
+                  }}
+                />
+                <p className="text-caption text-muted-foreground">
+                  Maksimal 16 MB per file. Upload menyimpan file di folder ini.
+                </p>
+                {path && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setPath(path.split("/").slice(0, -1).join("/"));
+                      setAfter("");
+                    }}
+                  >
+                    <ArrowUp size={13} strokeWidth={1.5} />
+                    Folder induk
                   </Button>
-                </div>
-              ) : listing.data ? (
-                <div>
-                  {listing.data.entries.length === 0 && (
-                    <p className="py-5 text-sm text-muted-foreground">
-                      Folder ini belum berisi file.
-                    </p>
-                  )}
-                  {listing.data.entries.map((entry) => (
-                    <div key={entry.path} className="flex items-center border-b">
+                )}
+                {listing.error ? (
+                  <div role="alert" className="text-sm">
+                    <p>{listing.error}</p>
+                    <Button size="sm" variant="outline" onClick={listing.retry}>
+                      Muat file lagi
+                    </Button>
+                  </div>
+                ) : listing.data ? (
+                  <div>
+                    {listing.data.entries.length === 0 && (
+                      <p className="py-5 text-sm text-muted-foreground">
+                        Folder ini belum berisi file.
+                      </p>
+                    )}
+                    {listing.data.entries.map((entry) => (
+                      <div
+                        key={entry.path}
+                        className="flex min-h-[46px] items-center gap-1 border-b border-foreground/[0.05] last:border-0"
+                      >
+                        <Button
+                          variant="ghost"
+                          className="h-auto min-h-[46px] min-w-0 flex-1 justify-start gap-2.5 px-0 text-left text-[13px] font-normal"
+                          disabled={entry.type === "unsupported"}
+                          onClick={() => {
+                            if (entry.type === "directory") {
+                              setPath(entry.path);
+                              setAfter("");
+                            } else
+                              setPreview({
+                                name: entry.name,
+                                url: `/v1/workspaces/${workspace.id}/file?path=${encodeURIComponent(entry.path)}`,
+                              });
+                          }}
+                        >
+                          {entry.type === "directory" ? (
+                            <Folder
+                              size={16}
+                              strokeWidth={1.5}
+                              className="shrink-0 text-muted-foreground"
+                            />
+                          ) : (
+                            <FileText
+                              size={16}
+                              strokeWidth={1.5}
+                              className="shrink-0 text-muted-foreground"
+                            />
+                          )}
+                          <span className="truncate">{entry.name}</span>
+                        </Button>
+                        {entry.type === "file" && (
+                          <a
+                            className="px-2 text-caption text-link"
+                            href={`/v1/workspaces/${workspace.id}/file?path=${encodeURIComponent(entry.path)}`}
+                            download={entry.name}
+                            aria-label={`Unduh ${entry.name}`}
+                          >
+                            <Download size={14} strokeWidth={1.5} />
+                          </a>
+                        )}
+                      </div>
+                    ))}
+                    {listing.data.next_after && (
                       <Button
                         variant="ghost"
-                        className="h-auto min-h-10 min-w-0 flex-1 justify-start px-1 text-left"
-                        disabled={entry.type === "unsupported"}
-                        onClick={() => {
-                          if (entry.type === "directory") {
-                            setPath(entry.path);
-                            setAfter("");
-                          } else
-                            setPreview({
-                              name: entry.name,
-                              url: `/v1/workspaces/${workspace.id}/file?path=${encodeURIComponent(entry.path)}`,
-                            });
-                        }}
+                        size="sm"
+                        onClick={() => setAfter(listing.data?.next_after ?? "")}
                       >
-                        <span className="truncate">
-                          {entry.type === "directory" ? "↳ " : ""}
-                          {entry.name}
-                        </span>
+                        File berikutnya
                       </Button>
-                      {entry.type === "file" && (
-                        <a
-                          className="px-2 text-caption text-link"
-                          href={`/v1/workspaces/${workspace.id}/file?path=${encodeURIComponent(entry.path)}`}
-                          download={entry.name}
-                          aria-label={`Unduh ${entry.name}`}
-                        >
-                          ↓
-                        </a>
-                      )}
-                    </div>
-                  ))}
-                  {listing.data.next_after && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setAfter(listing.data?.next_after ?? "")}
-                    >
-                      File berikutnya
-                    </Button>
-                  )}
-                  {after && (
-                    <Button variant="ghost" size="sm" onClick={() => setAfter("")}>
-                      Kembali ke awal
-                    </Button>
-                  )}
-                </div>
-              ) : (
-                <p role="status" className="text-sm text-muted-foreground">
-                  Memuat file…
-                </p>
-              )}
-            </section>
+                    )}
+                    {after && (
+                      <Button variant="ghost" size="sm" onClick={() => setAfter("")}>
+                        Kembali ke awal
+                      </Button>
+                    )}
+                  </div>
+                ) : (
+                  <p role="status" className="text-sm text-muted-foreground">
+                    Memuat file…
+                  </p>
+                )}
+              </div>
+            </PanelCard>
           ) : (
             <p className="text-sm text-muted-foreground">
               Belum ada folder yang terhubung. Gunakan folder percakapan atau hubungkan folder kerja
               saat diperlukan.
             </p>
           )}
-          <details open={!workspace}>
-            <summary className="cursor-pointer text-sm">
-              {workspace ? "Ubah folder yang terhubung" : "Hubungkan folder"}
+          <details
+            open={!workspace}
+            className="group/folder rounded-[12px] bg-composer ring-1 ring-inset ring-foreground/[0.06]"
+          >
+            <summary className="flex min-h-[46px] cursor-pointer list-none items-center gap-2.5 px-3.5 py-[11px] text-[14px] [&::-webkit-details-marker]:hidden">
+              <FolderOpen size={15} strokeWidth={1.5} className="text-muted-foreground" />
+              <span className="flex-1">
+                {workspace ? "Ubah folder yang terhubung" : "Hubungkan folder"}
+              </span>
+              <ChevronRight
+                size={15}
+                strokeWidth={1.5}
+                className="text-muted-foreground group-open/folder:rotate-90"
+              />
             </summary>
-            <div className="mt-3 space-y-3">
+            <div className="space-y-3 px-3.5 pb-3.5">
               {snapshot.thread.type === "group" && (
                 <>
                   <Label htmlFor="workspace-agent">Folder untuk anggota</Label>
@@ -396,32 +462,22 @@ export function FilesPanel({
               </Button>
             </div>
           </details>
-          <section className="space-y-2">
-            <h3 className="text-caption font-medium text-muted-foreground">Lampiran dan hasil</h3>
+          <PanelCard label="Lampiran dan hasil">
             {snapshot.artifacts.length ? (
-              snapshot.artifacts.map((a) => (
-                <Button
-                  key={a.id}
-                  aria-label={`File ${a.name}`}
-                  variant="ghost"
-                  className="h-auto min-h-12 w-full justify-start border-b px-1 text-left"
-                  onClick={() => select(a.id)}
-                >
-                  <span className="min-w-0">
-                    <span className="block truncate">{a.name}</span>
-                    <span className="block text-caption text-muted-foreground">
-                      {a.origin === "upload" ? "Lampiran" : "Hasil"} ·{" "}
-                      {snapshot.agents.find((agent) => agent.id === a.agent_id)?.name}
-                    </span>
-                  </span>
-                </Button>
+              snapshot.artifacts.map((item) => (
+                <PanelNavRow
+                  key={item.id}
+                  title={item.name}
+                  aria-label={`File ${item.name}`}
+                  icon={FileText}
+                  hint={`${item.origin === "upload" ? "Lampiran" : "Hasil"} · ${snapshot.agents.find((agent) => agent.id === item.agent_id)?.name ?? "Agent"}`}
+                  onClick={() => select(item.id)}
+                />
               ))
             ) : (
-              <p className="text-sm text-muted-foreground">
-                Lampiran dan hasil pekerjaan akan muncul di sini.
-              </p>
+              <PanelEmpty>Lampiran dan hasil pekerjaan akan muncul di sini.</PanelEmpty>
             )}
-          </section>
+          </PanelCard>
         </>
       )}
       <FileViewer file={preview} close={() => setPreview(null)} />

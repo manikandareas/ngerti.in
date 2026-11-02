@@ -14,12 +14,19 @@ import { fixtureAdapter } from "./fixture-harness";
 /** Deterministic external app-provider boundary; all HTTP/domain/storage/browser services are real. */
 class FixtureApps implements AppHost {
   accountsCreated: { id: string; toolkit: string; active: boolean }[] = [];
-  async catalog() {
-    return { items: [{ slug: "calendar", name: "Calendar fixture", connected: false }] };
+  async catalog(_user: string, search: string) {
+    const query = search.trim().toLowerCase();
+    return { items: [
+      { slug: "calendar", name: "Calendar fixture" },
+      { slug: "mail", name: "Mail fixture" },
+    ].filter((item) => `${item.slug} ${item.name}`.toLowerCase().includes(query))
+      .map((item) => ({ ...item, connected: this.accountsCreated.some((account) => account.toolkit === item.slug && account.active) })) };
   }
   async connect(_owner: string, toolkit: string) {
     const account_id = crypto.randomUUID();
-    this.accountsCreated.push({ id: account_id, toolkit, active: true });
+    // Each Mail fixture pair requires an explicit reconnect; Calendar keeps its existing behavior.
+    const active = toolkit !== "mail" || this.accountsCreated.filter((account) => account.toolkit === toolkit).length % 2 === 1;
+    this.accountsCreated.push({ id: account_id, toolkit, active });
     return { account_id, connect_url: "https://example.invalid/fixture-connect" };
   }
   async accounts() {

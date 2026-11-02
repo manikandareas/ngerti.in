@@ -1,3 +1,4 @@
+import { Plus } from "lucide-react";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ensureWorkspace, uploadFile } from "@/lib/workspace-files";
@@ -94,14 +95,12 @@ export function AttachInput({
         type="button"
         variant="ghost"
         size="icon"
-        className="shrink-0 rounded-full"
+        className="composer-aux composer-attach size-7 shrink-0 rounded-full"
         aria-label={busy ? "Mengunggah file" : "Tambah lampiran"}
         disabled={disabled || busy || count >= 20}
         onClick={() => input.current?.click()}
       >
-        <span aria-hidden="true" className="text-xl font-normal">
-          +
-        </span>
+        <Plus size={18} strokeWidth={1.5} />
       </Button>
     </>
   );

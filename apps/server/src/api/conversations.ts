@@ -10,6 +10,7 @@ import {
   openingState,
   retryOpening,
 } from "../conversations/creation";
+import { readConversationPreviews } from "../conversations/previews";
 import type { Lifecycle } from "../lifecycle";
 import type { Command } from "./services";
 
@@ -18,6 +19,7 @@ export function registerConversationRoutes(api: Elysia, lifecycle: Lifecycle, co
   const creation = new Creation(lifecycle);
   return api
     .get("/v1/agents/activity", () => readAgentActivities(lifecycle.store))
+    .get("/v1/conversations/previews", () => readConversationPreviews(lifecycle.store))
     .get("/v1/threads/:id/opening", ({ params }) => openingState(lifecycle, params.id), {
       params: z.object({ id }),
     })

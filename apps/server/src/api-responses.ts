@@ -2,6 +2,7 @@ import { z } from "zod";
 import { agentActivities } from "./agents/activity";
 import { browserContent } from "./browser/contracts";
 import { API_READINESS_GATE, agent, domainEvent, id, runStatus, schemas } from "./contracts";
+import { conversationPreviews } from "./conversations/previews";
 import { capabilities } from "./harness/contracts";
 import { nativeInteractionJournal } from "./harness/interaction-contracts";
 import { approval, userInput } from "./harness/muse/protocol";
@@ -22,6 +23,7 @@ const openingConnection = schemas.connection
 /** Operation responses assembled from the same entity contracts used by persistence. */
 export const operationSchemas = {
   agent_activity: agentActivities,
+  conversation_previews: conversationPreviews,
   harness_availability: z.array(
     z.strictObject({
       harness: z.enum(["codex", "muse"]),
@@ -205,6 +207,7 @@ routes(
 routes("POST", ["/v1/creation/agents"], operationSchemas.creation_agent);
 routes("POST", ["/v1/creation/groups"], operationSchemas.creation_group);
 routes("GET", ["/v1/agents/activity"], operationSchemas.agent_activity);
+routes("GET", ["/v1/conversations/previews"], operationSchemas.conversation_previews);
 routes("GET", ["/v1/threads/:id/opening"], operationSchemas.opening);
 routes(
   "POST",

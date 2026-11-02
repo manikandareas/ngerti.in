@@ -1,10 +1,14 @@
-import { command } from "@/lib/api-client";
+import { command, request } from "@/lib/api-client";
 import type { Artifact, Workspace } from "@/types/work";
 
 export function artifactUrl(artifact: Artifact, workspaceId = artifact.workspace_id) {
   return `/v1/artifacts/${artifact.id}/content?workspace_id=${encodeURIComponent(workspaceId ?? "")}`;
 }
-export async function uploadFile(workspaceId: string, file: File): Promise<Artifact> {
+export async function uploadFile(
+  workspaceId: string,
+  file: File,
+  options: { key?: string; signal?: AbortSignal } = {},
+): Promise<Artifact> {
   if (file.size > 16 * 1024 * 1024) throw new Error("Ukuran file maksimal 16 MB.");
   const content = await new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
@@ -12,11 +16,17 @@ export async function uploadFile(workspaceId: string, file: File): Promise<Artif
     reader.onerror = () => reject(new Error("File belum dapat dibaca."));
     reader.readAsDataURL(file);
   });
-  return command<Artifact>(`/v1/workspaces/${workspaceId}/uploads`, {
-    name: file.name,
-    media_type: file.type || "application/octet-stream",
-    content_base64: content,
-  });
+  options.signal?.throwIfAborted();
+  return request<Artifact>(
+    `/v1/workspaces/${workspaceId}/uploads`,
+    {
+      name: file.name,
+      media_type: file.type || "application/octet-stream",
+      content_base64: content,
+    },
+    options.key ?? crypto.randomUUID(),
+    options.signal,
+  );
 }
 export async function ensureWorkspace(agentId: string, threadId: string, workspaces: Workspace[]) {
   return (

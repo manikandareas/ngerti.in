@@ -16,6 +16,7 @@ export default defineConfig({
     "rich-answer.spec.ts",
     "settings.spec.ts",
     "work.spec.ts",
+    "composer.spec.ts",
   ],
   testDir: "./tests",
   fullyParallel: true,

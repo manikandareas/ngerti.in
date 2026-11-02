@@ -37,10 +37,13 @@ import { useIsMobile } from "@/hooks/use-mobile";
 type SettingsPageId = "general" | "providers" | "about";
 
 import { Answer } from "@/features/conversation/components/answer";
-import { AttachInput, attachmentIssue } from "@/features/conversation/components/attach-input";
+import { AttachInput } from "@/features/conversation/components/attach-input";
+import {
+  ComposerInput,
+  type ComposerInputHandle,
+} from "@/features/conversation/components/composer-input";
 import { ContextPanel, type PanelLocation } from "@/features/conversation/components/context-panel";
 import { CreateGroup } from "@/features/conversation/components/create-group";
-import { DraftAttachments } from "@/features/conversation/components/draft-attachments";
 import { HumanReply } from "@/features/conversation/components/human-reply";
 import { AgentAvatar, agentStyle } from "@/features/conversation/components/identity";
 import { ModelPicker } from "@/features/conversation/components/model-picker";
@@ -50,12 +53,15 @@ import {
   type QueuedMessage,
   QueuedMessages,
 } from "@/features/conversation/components/queued-messages";
-import { ToolChips } from "@/features/conversation/components/tool-chips";
+import { UserMessageText } from "@/features/conversation/components/user-message-text";
 import { WorkActivity } from "@/features/conversation/components/work-activity";
+import { attachmentParts } from "@/features/conversation/lib/attachment-references";
+import { messageTimeline } from "@/features/conversation/lib/message-timeline";
 import {
   type NativeTranscriptFragment,
   useNativeTranscript,
 } from "@/features/conversation/lib/native-transcript";
+import { useComposerAttachments } from "@/features/conversation/lib/use-composer-attachments";
 import { SettingsWorkspaceContext } from "@/hooks/settings-workspace";
 import { useWorkspace } from "@/hooks/use-workspace";
 import {
@@ -68,11 +74,10 @@ import {
 } from "@/lib/api-client";
 import { repairMessage } from "@/lib/api-errors";
 import type { NativeInteractionSnapshot } from "@/types/native-interactions";
-import type { Artifact } from "@/types/work";
 import type { Message as MessageEntity, Run, Thread } from "@/types/workspace";
 
 const statusText: Record<string, string> = {
-  queued: "Menunggu",
+  queued: "Menghubungkan",
   dispatching: "Menghubungkan",
   running: "Sedang bekerja",
   cancel_requested: "Stop diminta",
@@ -108,7 +113,16 @@ export default function Workspace() {
     setError,
   } = workspace;
   const [draft, setDraft] = useState("");
-  const composerInput = useRef<HTMLTextAreaElement>(null);
+  const composerInput = useRef<ComposerInputHandle>(null);
+  const pendingComposerFocus = useRef(false);
+  const bindComposerInput = useCallback((input: ComposerInputHandle | null) => {
+    composerInput.current = input;
+    if (input && pendingComposerFocus.current) {
+      pendingComposerFocus.current = false;
+      input.focus();
+    }
+  }, []);
+  const queuedEditInput = useRef<HTMLTextAreaElement>(null);
   const [multiline, setMultiline] = useState(false);
   const [busy, setBusy] = useState(false);
   const lock = useRef(false);
@@ -118,7 +132,6 @@ export default function Workspace() {
   const [createMenu, setCreateMenu] = useState(false);
   const [createGroupOpen, setCreateGroupOpen] = useState(false);
   const [location, locate] = useState<PanelLocation>({ tab: "agent", id: null });
-  const [attachments, setAttachments] = useState<Artifact[]>([]);
   const currentThread = useRef(threadId);
   currentThread.current = threadId;
   const [editing, setEditing] = useState<MessageEntity | null>(null);
@@ -154,9 +167,28 @@ export default function Workspace() {
     });
   }
   const report = useCallback((message: string) => setError(message), [setError]);
+  const composerFiles = useComposerAttachments({
+    threadId,
+    snapshot,
+    connection,
+    draft: pending ?? draft,
+    input: composerInput,
+    disabled: busy || pending !== null || !!editing,
+    report,
+    refresh,
+    attached: () => setDetails(false),
+  });
+  const attachments = composerFiles.referenced(pending ?? draft);
+  const attachmentsBlocked = attachments.some((file) => file.state !== "ready");
+  useLayoutEffect(() => {
+    const input = queuedEditInput.current;
+    if (!input || !editing?.id) return;
+    input.focus();
+    input.setSelectionRange(input.value.length, input.value.length);
+  }, [editing?.id]);
   // biome-ignore lint/correctness/useExhaustiveDependencies: measure after controlled text commits and after a different conversation mounts its textarea.
   useLayoutEffect(() => {
-    const input = composerInput.current;
+    const input = queuedEditInput.current;
     if (!input) return;
     const measure = () => {
       input.style.height = "auto";
@@ -187,7 +219,7 @@ export default function Workspace() {
     setDetails(false);
     setConfigurationOpen(false);
     setDraft("");
-    setAttachments([]);
+    pendingComposerFocus.current = false;
     setEditing(null);
     setEditText("");
     locate({ tab: "agent", id: null });
@@ -234,24 +266,24 @@ export default function Workspace() {
       saveQueuedEdit();
       return;
     }
-    if (!agent || !threadId || !(pending ?? draft).trim()) return;
+    if (!agent || !threadId || !(pending ?? draft).trim() || (!pending && attachmentsBlocked))
+      return;
     const text = pending ?? draft;
     void act(async () => {
+      const content = pending ? { text, artifact_ids: [] } : composerFiles.message(text);
       await durableCommand(
         `message:${threadId}`,
         snapshot?.thread.type === "group" ? `/v1/groups/${threadId}/messages` : "/v1/runs",
         snapshot?.thread.type === "group"
-          ? { text }
+          ? { text: content.text }
           : {
               thread_id: threadId,
               agent_id: agent.id,
-              text,
-              artifact_ids: attachments.map((a) => a.id),
+              ...content,
             },
       );
       if (currentThread.current !== threadId) return;
       setDraft("");
-      setAttachments([]);
     });
   }
 
@@ -271,17 +303,14 @@ export default function Workspace() {
     }
   }
   function focusComposer() {
-    requestAnimationFrame(() => composerInput.current?.focus());
+    const input = composerInput.current;
+    if (input) input.focus();
+    else pendingComposerFocus.current = true;
   }
   function editQueued(message: MessageEntity) {
     if (busy || pending || editing) return;
     setEditing(message);
     setEditText(pendingText(`queued-edit:${message.id}`) ?? message.text);
-    requestAnimationFrame(() => {
-      const input = composerInput.current;
-      input?.focus();
-      input?.setSelectionRange(input.value.length, input.value.length);
-    });
   }
   function cancelQueuedEdit() {
     if (busy || editPending !== null) return;
@@ -364,24 +393,6 @@ export default function Workspace() {
         ?.scrollIntoView({ block: "center", behavior: "instant" }),
     );
   }
-  function attach(a: Artifact) {
-    if (a.thread_id !== currentThread.current) return;
-    const issue = attachmentIssue(a.media_type, connection, agent?.model_id);
-    if (issue) {
-      report(issue);
-      return;
-    }
-    if (
-      attachments.length >= 20 ||
-      (a.media_type.startsWith("image/") &&
-        attachments.filter((item) => item.media_type.startsWith("image/")).length >= 4)
-    ) {
-      report("Batas lampiran pesan tercapai (20 file atau 4 gambar).");
-      return;
-    }
-    setAttachments((v) => (v.some((item) => item.id === a.id) ? v : [...v, a]));
-    setDetails(false);
-  }
   const panel = snapshot ? (
     <ContextPanel
       key={snapshot.thread.id}
@@ -395,7 +406,7 @@ export default function Workspace() {
       report={report}
       compose={compose}
       source={(id) => void source(id).catch((e) => report(e.message))}
-      attach={attach}
+      attach={composerFiles.attachArtifact}
       manageProviders={() => openSettings("providers")}
       configurationOpen={configurationOpen}
       setConfigurationOpen={setConfigurationOpen}
@@ -410,10 +421,8 @@ export default function Workspace() {
       (record) => record.observed_state === "pending" && record.submission?.state !== "submitted",
     );
   }
-  const queued = messages.flatMap((message) => {
-    const run = snapshot?.runs.findLast((run) => run.input_message_id === message.id);
-    if (message.state === "deleted" || message.author !== "user" || run?.status !== "queued")
-      return [];
+  const timeline = messageTimeline(messages, snapshot?.runs ?? []);
+  const queued = timeline.queued.map(({ message, run }) => {
     const active = activeRuns.find((active) => active.agent_id === run.agent_id);
     const nativeConnection = connections.find(
       (connection) =>
@@ -430,7 +439,7 @@ export default function Workspace() {
       nativeConnection?.capabilities.steer === "supported"
         ? active
         : undefined;
-    return [{ message, run, target }];
+    return { message, run, target };
   });
   const editItem = editing ? queued.find((item) => item.message.id === editing.id) : null;
   const editStale = !!editing && (!editItem || editItem.message.revision !== editing.revision);
@@ -468,10 +477,7 @@ export default function Workspace() {
       });
     });
   }
-  const queuedIds = new Set(queued.map((item) => item.message.id));
-  const visibleMessages = messages.filter(
-    (message) => message.state !== "deleted" && !queuedIds.has(message.id),
-  );
+  const visibleMessages = timeline.messages;
   const nativeTranscript = useNativeTranscript(visibleMessages, snapshot?.runs ?? []);
   function canObserveNative(run: Run) {
     const connection = connections.find(
@@ -814,6 +820,15 @@ export default function Workspace() {
                       (run) => run.input_message_id === message.id,
                     );
                     const author = agents.find((a) => a.id === message.author_agent_id);
+                    const inlineAttachmentIds = new Set(
+                      message.author === "user"
+                        ? attachmentParts(message.text).flatMap((part) =>
+                            "id" in part && snapshot.artifacts.some((file) => file.id === part.id)
+                              ? [part.id]
+                              : [],
+                          )
+                        : [],
+                    );
                     return (
                       <Fragment key={message.id}>
                         <Message
@@ -848,23 +863,28 @@ export default function Workspace() {
                             {message.author === "user" ? (
                               <Bubble variant="secondary" className="chat-user-bubble">
                                 <BubbleContent className="chat-bubble-content text-[15px] leading-[22px] whitespace-pre-wrap">
-                                  {message.text}
+                                  <UserMessageText
+                                    message={message}
+                                    artifacts={snapshot.artifacts}
+                                  />
                                 </BubbleContent>
                               </Bubble>
                             ) : (
                               answer(message)
                             )}
-                            {message.artifact_ids?.map((id) => (
-                              <Button
-                                key={id}
-                                variant="outline"
-                                size="sm"
-                                onClick={() => openResource("files", id)}
-                              >
-                                {snapshot.artifacts.find((a) => a.id === id)?.name ??
-                                  "Buka lampiran"}
-                              </Button>
-                            ))}
+                            {message.artifact_ids
+                              ?.filter((id) => !inlineAttachmentIds.has(id))
+                              .map((id) => (
+                                <Button
+                                  key={id}
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => openResource("files", id)}
+                                >
+                                  {snapshot.artifacts.find((a) => a.id === id)?.name ??
+                                    "Buka lampiran"}
+                                </Button>
+                              ))}
                             {snapshot.human_requests
                               .filter((r) => r.message_id === message.id)
                               .map((r) => (
@@ -929,7 +949,6 @@ export default function Workspace() {
                                     </details>
                                   </div>
                                 )}
-                                <ToolChips run={run} />
                               </div>
                             )}
                           </MessageContent>
@@ -1009,13 +1028,6 @@ export default function Workspace() {
                     Pengiriman sebelumnya belum terkonfirmasi. Periksa dengan identitas pesan yang
                     sama sebelum mengirim pesan baru.
                   </p>
-                )}
-                {!editing && (
-                  <DraftAttachments
-                    attachments={attachments}
-                    disabled={pending !== null}
-                    remove={(a) => setAttachments((v) => v.filter((item) => item.id !== a.id))}
-                  />
                 )}
                 {activeRuns.length > 1 && (
                   <div className="mb-2 flex flex-wrap gap-2" aria-label="Run aktif" role="status">
@@ -1103,39 +1115,51 @@ export default function Workspace() {
                   <AttachInput
                     key={snapshot.thread.id}
                     snapshot={snapshot}
-                    connection={connection}
                     disabled={busy || pending !== null || !!editing}
                     count={attachments.length}
-                    imageCount={attachments.filter((a) => a.media_type.startsWith("image/")).length}
-                    attach={attach}
-                    report={report}
-                    refresh={refresh}
+                    addFiles={composerFiles.addFiles}
                   />
-                  <Textarea
-                    ref={composerInput}
-                    aria-label={editing ? "Edit pesan" : "Pesan"}
-                    value={editing ? (editPending ?? editText) : (pending ?? draft)}
-                    readOnly={editing ? editPending !== null : pending !== null}
-                    onChange={(event) =>
-                      editing ? setEditText(event.target.value) : setDraft(event.target.value)
-                    }
-                    placeholder={`Pesan${agent ? ` untuk ${agent.name}` : ""}…`}
-                    className="composer-input"
-                    rows={1}
-                    onKeyDown={(event) => {
-                      if (event.key === "Escape" && editing && !event.nativeEvent.isComposing) {
-                        event.preventDefault();
-                        cancelQueuedEdit();
-                        return;
-                      }
-                      if (
-                        event.key === "Enter" &&
-                        !event.shiftKey &&
-                        !event.nativeEvent.isComposing
-                      ) {
-                        event.preventDefault();
+                  {editing ? (
+                    <Textarea
+                      ref={queuedEditInput}
+                      aria-label="Edit pesan"
+                      value={editPending ?? editText}
+                      readOnly={editPending !== null}
+                      onChange={(event) => setEditText(event.target.value)}
+                      placeholder={`Pesan${agent ? ` untuk ${agent.name}` : ""}…`}
+                      className="composer-input"
+                      rows={1}
+                      onKeyDown={(event) => {
+                        if (event.key === "Escape" && !event.nativeEvent.isComposing) {
+                          event.preventDefault();
+                          cancelQueuedEdit();
+                          return;
+                        }
                         if (
-                          !editing &&
+                          event.key === "Enter" &&
+                          !event.shiftKey &&
+                          !event.nativeEvent.isComposing
+                        ) {
+                          event.preventDefault();
+                          saveQueuedEdit();
+                        }
+                      }}
+                    />
+                  ) : (
+                    <ComposerInput
+                      key={snapshot.thread.id}
+                      ref={bindComposerInput}
+                      value={pending ?? draft}
+                      readOnly={busy || pending !== null}
+                      placeholder={`Pesan${agent ? ` untuk ${agent.name}` : ""}…`}
+                      lookup={composerFiles.lookup}
+                      retry={composerFiles.retry}
+                      onChange={setDraft}
+                      onMultiline={setMultiline}
+                      onFiles={composerFiles.addFiles}
+                      report={report}
+                      onEnter={() => {
+                        if (
                           !pending &&
                           !draft.trim() &&
                           attachments.length === 0 &&
@@ -1146,9 +1170,9 @@ export default function Workspace() {
                           return;
                         }
                         send();
-                      }
-                    }}
-                  />
+                      }}
+                    />
+                  )}
                   <div className="composer-actions gap-2 flex items-end shrink-0">
                     <div className="flex gap-2">
                       {activeRuns.length === 1 && !stopInSlot && activeRun && (
@@ -1208,7 +1232,7 @@ export default function Workspace() {
                             : editing
                               ? (editPending === null && editStale) ||
                                 !(editPending ?? editText).trim()
-                              : !(pending ?? draft).trim())
+                              : !(pending ?? draft).trim() || attachmentsBlocked)
                         }
                       >
                         {stopInSlot ? (

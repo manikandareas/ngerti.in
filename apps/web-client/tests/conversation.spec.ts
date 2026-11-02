@@ -1,5 +1,130 @@
 import { expect, type Page, test } from "@playwright/test";
 
+test.afterEach(async ({ page }) => {
+  await page.unrouteAll({ behavior: "wait" });
+});
+
+async function idleDm(page: Page) {
+  await page.goto("/");
+  await expect(page.getByRole("button", { name: "Detail Tobi", exact: true })).toBeVisible();
+  const headers = () => ({ "Idempotency-Key": crypto.randomUUID() });
+  const agentResponse = await page.request.post("/v1/agents", {
+    headers: headers(),
+    data: {
+      name: `Queue regression ${crypto.randomUUID()}`,
+      harness: "codex",
+      connection_id: null,
+    },
+  });
+  expect(agentResponse.ok(), await agentResponse.text()).toBeTruthy();
+  const agent = await agentResponse.json();
+  const threadResponse = await page.request.post(`/v1/agents/${agent.id}/dm`, {
+    headers: headers(),
+    data: {},
+  });
+  expect(threadResponse.ok()).toBeTruthy();
+  const thread = await threadResponse.json();
+  await page.evaluate((id) => localStorage.setItem("ngertiin:thread", id), thread.id);
+  await page.reload();
+  await expect(
+    page.getByRole("button", { name: `Detail ${agent.name}`, exact: true }),
+  ).toBeVisible();
+  return { agent, thread };
+}
+
+test("an idle DM shows its first admitted message directly in the conversation", async ({
+  page,
+}) => {
+  await idleDm(page);
+  await page
+    .getByRole("textbox", { name: "Pesan", exact: true })
+    .fill("Send directly in an idle DM.");
+  await page.getByRole("button", { name: "Kirim", exact: true }).click();
+  await expect(page.locator(".conversation-message .chat-user-bubble")).toHaveText(
+    "Send directly in an idle DM.",
+  );
+  await expect(page.locator("[data-queued-message]")).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Arahkan sekarang", exact: true })).toHaveCount(0);
+  await expect(page.locator(".message-run-state")).toContainText("Menghubungkan");
+});
+
+test("queued inputs enter the transcript after the preceding answer, including late answers and reload", async ({
+  page,
+}, testInfo) => {
+  const { agent, thread } = await idleDm(page);
+  let phase: "running" | "streaming" | "unknown" | "next" | "complete" = "running";
+  // Admissions and FIFO identity use real HTTP/SQLite. Only native progress/output is a fixture.
+  await page.route(`**/v1/threads/${thread.id}/snapshot`, async (route) => {
+    const response = await route.fetch();
+    const snapshot: { messages: unknown[]; runs: { id: string; created_at: string }[] } =
+      await response.json();
+    const answers: unknown[] = [];
+    const runs = snapshot.runs.map((run, index) => {
+      const done = phase === "complete" || (phase === "next" && index === 0);
+      if (done || (phase === "streaming" && index === 0))
+        answers.push({
+          id: `answer-${run.id}`,
+          revision: 1,
+          created_at: run.created_at,
+          thread_id: thread.id,
+          author: "agent",
+          author_agent_id: agent.id,
+          text: `Answer ${index + 1}`,
+          state: done ? "complete" : "partial",
+          run_id: run.id,
+          artifact_ids: [],
+          purpose: "conversation",
+        });
+      return {
+        ...run,
+        status: done
+          ? "succeeded"
+          : index === 0
+            ? phase === "unknown"
+              ? "unknown"
+              : "running"
+            : "queued",
+      };
+    });
+    await route.fulfill({
+      response,
+      json: { ...snapshot, runs, messages: [...snapshot.messages, ...answers] },
+    });
+  });
+  const composer = page.getByRole("textbox", { name: "Pesan", exact: true });
+  for (const text of ["Input 1", "Input 2", "Input 3"]) {
+    await composer.fill(text);
+    await composer.press("Enter");
+    await expect(composer).toHaveText("");
+  }
+  await expect(page.locator("[data-queued-message]")).toHaveCount(2);
+  phase = "streaming";
+  await page.reload();
+  await expect(page.getByText("Answer 1", { exact: true })).toBeVisible();
+  await expect(page.locator("[data-queued-message]")).toHaveCount(2);
+  phase = "unknown";
+  await page.reload();
+  await expect(page.getByRole("button", { name: "Periksa hasil", exact: true })).toBeVisible();
+  await expect(page.locator("[data-queued-message]")).toHaveCount(2);
+  phase = "next";
+  await page.reload();
+  await expect(
+    page.locator(
+      ".conversation-message .chat-user-bubble, .conversation-message .chat-agent-bubble",
+    ),
+  ).toHaveText(["Input 1", "Answer 1", "Input 2"]);
+  await expect(page.locator("[data-queued-message]")).toHaveCount(1);
+  phase = "complete";
+  await page.reload();
+  await expect(
+    page.locator(
+      ".conversation-message .chat-user-bubble, .conversation-message .chat-agent-bubble",
+    ),
+  ).toHaveText(["Input 1", "Answer 1", "Input 2", "Answer 2", "Input 3", "Answer 3"]);
+  await expect(page.locator("[data-queued-message]")).toHaveCount(0);
+  await page.screenshot({ path: testInfo.outputPath("conversation-turn-order.png") });
+});
+
 async function sidebar(page: Page) {
   const button = page.getByRole("button", { name: "Buka percakapan", exact: true });
   if (await button.isVisible()) await button.click();
@@ -48,7 +173,7 @@ test("real API: create, durable opener, queued edit/delete, memory, panel and re
   await expect(page.getByRole("dialog", { name: "Edit pesan menunggu" })).toHaveCount(0);
   await page.getByRole("textbox", { name: "Edit pesan", exact: true }).fill("Cancel this change.");
   await page.getByRole("textbox", { name: "Edit pesan", exact: true }).press("Escape");
-  await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toHaveValue(
+  await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toHaveText(
     "Keep this unsent draft.",
   );
   await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toBeFocused();
@@ -57,7 +182,7 @@ test("real API: create, durable opener, queued edit/delete, memory, panel and re
   await page.getByRole("textbox", { name: "Edit pesan" }).fill("Keep answers concise and useful.");
   await page.getByRole("textbox", { name: "Edit pesan", exact: true }).press("Enter");
   await expect(page.getByRole("textbox", { name: "Edit pesan", exact: true })).toHaveCount(0);
-  await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toHaveValue(
+  await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toHaveText(
     "Keep this unsent draft.",
   );
   await expect(page.getByText("Keep answers concise and useful.", { exact: true })).toBeVisible();
@@ -179,7 +304,7 @@ test("queued composer edit replays a lost acknowledgement without another messag
   await expect(editor).not.toBeEditable();
   await expect(page.getByRole("button", { name: "Batal edit pesan", exact: true })).toBeDisabled();
   await page.getByRole("button", { name: "Periksa perubahan pesan", exact: true }).click();
-  await expect(composer).toHaveValue("Preserve the separate draft.");
+  await expect(composer).toHaveText("Preserve the separate draft.");
   await expect(composer).toBeFocused();
   expect(operations).toHaveLength(2);
   expect(operations[0].key).toBeTruthy();
@@ -313,9 +438,9 @@ test("a second empty Enter steers only inside the source window and after a fres
   await expect(composer).toBeVisible();
   await composer.fill("Steer this admitted message.");
   await composer.dispatchEvent("keydown", { key: "Enter", code: "Enter", isComposing: true });
-  await expect(composer).toHaveValue("Steer this admitted message.");
+  await expect(composer).toHaveText("Steer this admitted message.");
   await composer.press("Enter");
-  await expect(composer).toHaveValue("");
+  await expect(composer).toHaveText("");
   await expect(page.getByRole("button", { name: "Arahkan sekarang", exact: true })).toBeEnabled();
   await composer.press("Enter");
   await expect.poll(() => sent.length).toBe(1);
@@ -337,7 +462,7 @@ test("a second empty Enter steers only inside the source window and after a fres
 
   await composer.fill("An expired shortcut stays queued.");
   await composer.press("Enter");
-  await expect(composer).toHaveValue("");
+  await expect(composer).toHaveText("");
   await expect(page.getByRole("button", { name: "Arahkan sekarang", exact: true })).toBeEnabled();
   await page.clock.setFixedTime(new Date(now.getTime() + 1501));
   await composer.press("Enter");
@@ -348,7 +473,7 @@ test("a second empty Enter steers only inside the source window and after a fres
 
   await composer.fill("A fresh pending request fences steering.");
   await composer.press("Enter");
-  await expect(composer).toHaveValue("");
+  await expect(composer).toHaveText("");
   await expect(
     page.locator("[data-queued-message]").filter({
       hasText: "A fresh pending request fences steering.",
@@ -428,11 +553,11 @@ test("lost message acknowledgement remains recoverable after reload without dupl
   await expect.poll(() => stored).toBeTruthy();
   await page.unroute("**/v1/runs");
   await page.reload();
-  await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toHaveValue(
+  await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toHaveText(
     "A durable message.",
   );
   await page.getByRole("button", { name: "Periksa pengiriman", exact: true }).click();
-  await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toHaveValue("");
+  await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toHaveText("");
   const state = await page.request
     .get(`/v1/threads/${created.thread.id}/snapshot`)
     .then((r) => r.json());
@@ -458,6 +583,7 @@ test("cancelled opening can continue in the same chat without another opener", a
     .then((r) => r.json());
   expect(state.messages).toHaveLength(1);
   expect(state.runs).toHaveLength(2);
-  await expect(page.getByRole("region", { name: /pesan menunggu$/ })).toBeVisible();
+  await expect(page.getByRole("region", { name: /pesan menunggu$/ })).toHaveCount(0);
+  await expect(page.locator(".message-run-state")).toContainText("Menghubungkan");
   await expect(page.getByText("Dihentikan", { exact: true })).toHaveCount(0);
 });

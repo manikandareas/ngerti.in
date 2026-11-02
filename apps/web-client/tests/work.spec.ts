@@ -232,7 +232,7 @@ test("contextual goals, Routine and files use real scoped state and keep stop re
       .sort(),
   );
   expect(userAdmissions).toEqual([]);
-  await expect(page.locator('textarea[aria-label="Pesan"]')).toHaveValue("");
+  await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toHaveText("");
   await page.getByRole("button", { name: "Kembali ke goals", exact: true }).click();
   await page.getByRole("tab", { name: "File", exact: true }).click();
   await page.getByRole("button", { name: "Gunakan folder percakapan", exact: true }).click();
@@ -720,7 +720,7 @@ test("apps catalog searches live and authorization recovers from blocked popups 
   ).toBeChecked();
 });
 
-test("completed native steps fold together while failed and unverified receipts remain visible", async ({
+test("tool calls stay out of the conversation while native receipts remain persisted", async ({
   page,
 }, testInfo) => {
   test.setTimeout(60000);
@@ -739,37 +739,12 @@ test("completed native steps fold together while failed and unverified receipts 
     "failed",
     "started",
   ]);
-  const group = page.locator("[data-activity-run]");
-  await expect(group).toHaveCount(1);
-  const toggle = group.locator("button[aria-controls]");
-  await expect(toggle).toHaveAttribute("aria-expanded", "false");
-  await expect(toggle).toHaveText("2 langkah · Memeriksa informasi ×2");
-  await expect(page.locator("[data-tool-activity]")).toHaveCount(2);
-  await expect(
-    page.getByRole("button", { name: "Menjalankan perintah · Gagal", exact: true }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole("button", { name: "Menggunakan tool · Belum terverifikasi", exact: true }),
-  ).toBeVisible();
-  await capture(page, testInfo.outputPath("tool-activity-collapsed.png"));
-  await toggle.click();
-  await expect(page.locator("[data-tool-activity]")).toHaveCount(4);
-  const firstStep = group.locator("[data-tool-activity]").first();
-  await firstStep.locator("summary").click();
-  await expect(group.locator("[data-tool-activity]")).toHaveCount(2);
-  await expect(firstStep).toHaveJSProperty("open", true);
-  await expect(group.locator("[data-tool-activity]").nth(1)).toHaveJSProperty("open", false);
-  await expect(firstStep.getByText("fixture_read_source", { exact: true })).toBeVisible();
-  await expect(firstStep.getByText("Selesai", { exact: true })).toBeVisible();
-  await capture(page, testInfo.outputPath("tool-activity-expanded.png"));
+  await expect(page.locator("[data-activity-run], [data-tool-activity]")).toHaveCount(0);
+  await expect(page.getByText("fixture_read_source", { exact: true })).toHaveCount(0);
+  await capture(page, testInfo.outputPath("tool-calls-hidden.png"));
   await page.reload();
-  await expect(toggle).toHaveAttribute("aria-expanded", "false");
-  await expect(
-    page.getByRole("button", { name: "Menjalankan perintah · Gagal", exact: true }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole("button", { name: "Menggunakan tool · Belum terverifikasi", exact: true }),
-  ).toBeVisible();
+  await expect(page.getByText("Fixture ready", { exact: true })).toBeVisible();
+  await expect(page.locator("[data-activity-run], [data-tool-activity]")).toHaveCount(0);
 });
 
 test("native acknowledgements survive lost HTTP replies, completion, reload and connection revocation", async ({

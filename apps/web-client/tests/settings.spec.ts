@@ -91,7 +91,7 @@ test("settings navigation, search, theme and return preserve the conversation dr
     await page.screenshot({ path: info.outputPath(`general-${mode}.png`) });
   }
   await page.getByRole("button", { name: "Tutup pengaturan", exact: true }).click();
-  await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toHaveValue(
+  await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toHaveText(
     "Draft retained while checking settings.",
   );
   const restoredMenu = page.getByRole("button", { name: "Buka percakapan", exact: true });
@@ -104,7 +104,7 @@ test("settings navigation, search, theme and return preserve the conversation dr
   ).toBeTruthy();
   await page.keyboard.press("Escape");
   await expect(page).toHaveURL(/\/$/);
-  await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toHaveValue(
+  await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toHaveText(
     "Draft retained while checking settings.",
   );
   try {

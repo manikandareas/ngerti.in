@@ -11,7 +11,7 @@ const env = {
 export default defineConfig({
   testDir: "./tests",
   outputDir: "../../.dev/nma062-playwright",
-  testMatch: "work.spec.ts",
+  testMatch: ["work.spec.ts", "composer.spec.ts"],
   workers: 1,
   retries: 0,
   reporter: [["list"], ["json", { outputFile: "test-results/work-report.json" }]],

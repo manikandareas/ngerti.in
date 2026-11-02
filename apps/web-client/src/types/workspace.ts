@@ -41,6 +41,7 @@ export interface Run extends Base {
   input_message_id: string;
   agent_id: string;
   status: string;
+  delivery: string;
   activity: string;
   cancellation: string;
   native_run_id: string | null;

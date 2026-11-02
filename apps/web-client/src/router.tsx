@@ -56,6 +56,12 @@ const themePreviewRoute = createRoute({
   component: lazyRouteComponent(() => import("@/pages/home")),
 });
 
+const avatarStudioRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/avatar-studio",
+  component: lazyRouteComponent(() => import("@/features/avatar/components/avatar-studio")),
+});
+
 const designSystemRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/design-system",
@@ -73,6 +79,7 @@ export const router = createRouter({
     homeRoute.addChildren([conversationRoute, settingsRoute]),
     designSystemRoute,
     themePreviewRoute,
+    avatarStudioRoute,
   ]),
   scrollRestoration: true,
 });

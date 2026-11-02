@@ -1,0 +1,17 @@
+.ngertiin-avatar {
+  display: inline-flex;
+  width: var(--avatar-size, 64px);
+  height: var(--avatar-size, 64px);
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  user-select: none;
+}
+
+.ngertiin-avatar > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}

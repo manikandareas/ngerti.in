@@ -11,6 +11,7 @@
     "format": "biome check --write .",
     "preview": "vite preview",
     "test:e2e": "bun run build && playwright test",
+    "test:avatar": "bun test verification/avatar-engine.test.ts && bun run build && playwright test --config playwright.avatar.config.ts",
     "test:conversation": "bun run build && playwright test --config playwright.conversation.config.ts",
     "test:work": "bun run build && playwright test --config playwright.work.config.ts"
   },

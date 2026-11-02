@@ -112,7 +112,7 @@ export function AgentAvatar({
                 agent={member}
                 threadId={threadId}
                 animated={animated}
-                className={largeGroup ? "size-[26px]" : "size-[58%]"}
+                className={largeGroup ? "size-8" : "size-[58%]"}
               />
             ))}
             {members.length > 2 && (

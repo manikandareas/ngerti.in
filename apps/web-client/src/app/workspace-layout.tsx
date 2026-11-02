@@ -28,6 +28,13 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Bubble, BubbleContent } from "@/components/ui/bubble";
 import { Button } from "@/components/ui/button";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components/ui/drawer";
 import { Message, MessageContent, MessageHeader } from "@/components/ui/message";
 import {
   Sheet,
@@ -367,6 +374,9 @@ export default function Workspace() {
     <ConversationNavigation
       agents={agents}
       threads={threads}
+      activities={workspace.activity.items}
+      previews={workspace.previews.items}
+      closeNavigation={mobile ? () => setNavigation(false) : undefined}
       threadId={threadId}
       busy={busy}
       createMenu={createMenu}
@@ -389,6 +399,20 @@ export default function Workspace() {
       }}
     />
   );
+  function restoreNavigationFocus(event: Event) {
+    event.preventDefault();
+    // Another modal may own focus before the navigation exit finishes.
+    if (document.querySelector('[role="dialog"][data-state="open"]')) return;
+    const toggle = document.querySelector<HTMLButtonElement>(
+      '.workspace-shell button[aria-label="Buka percakapan"]',
+    );
+    if (
+      toggle?.isConnected &&
+      toggle.getClientRects().length > 0 &&
+      !toggle.closest('[inert], [aria-hidden="true"]')
+    )
+      toggle.focus({ preventScroll: true });
+  }
   function compose(text: string) {
     setDraft(text);
     setDetails(false);
@@ -674,25 +698,26 @@ export default function Workspace() {
             {nav}
           </aside>
         )}
-        <Sheet open={navigation && narrowNavigation && !isSettings} onOpenChange={setNavigation}>
+        <Drawer open={navigation && mobile && !isSettings} onOpenChange={setNavigation} autoFocus>
+          <DrawerContent
+            className="navigation-drawer gap-0 overflow-hidden border-0 bg-background p-0"
+            onCloseAutoFocus={restoreNavigationFocus}
+          >
+            <DrawerHeader className="sr-only">
+              <DrawerTitle>Percakapan</DrawerTitle>
+              <DrawerDescription>Pilih agent atau percakapan.</DrawerDescription>
+            </DrawerHeader>
+            {nav}
+          </DrawerContent>
+        </Drawer>
+        <Sheet
+          open={navigation && narrowNavigation && !mobile && !isSettings}
+          onOpenChange={setNavigation}
+        >
           <SheetContent
             side="left"
             className="navigation-sheet w-[280px] gap-0 border-0 bg-frame p-0"
-            onCloseAutoFocus={(event) => {
-              event.preventDefault();
-              // Settings can close before this Sheet's exit finishes. Its final
-              // Radix cleanup restores the workspace only when no later modal owns focus.
-              if (document.querySelector('[role="dialog"][data-state="open"]')) return;
-              const toggle = document.querySelector<HTMLButtonElement>(
-                '.workspace-shell button[aria-label="Buka percakapan"]',
-              );
-              if (
-                toggle?.isConnected &&
-                toggle.getClientRects().length > 0 &&
-                !toggle.closest('[inert], [aria-hidden="true"]')
-              )
-                toggle.focus({ preventScroll: true });
-            }}
+            onCloseAutoFocus={restoreNavigationFocus}
           >
             <SheetHeader className="sr-only">
               <SheetTitle>Percakapan</SheetTitle>
@@ -711,7 +736,11 @@ export default function Workspace() {
             <Button
               variant="ghost"
               size="icon"
-              className="navigation-toggle rounded-full"
+              className={
+                mobile
+                  ? "navigation-toggle header-action rounded-full"
+                  : "navigation-toggle rounded-full"
+              }
               aria-label="Buka percakapan"
               onClick={() => setNavigation(true)}
             >

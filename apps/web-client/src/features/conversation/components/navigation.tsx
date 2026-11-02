@@ -1,14 +1,17 @@
 import { Link } from "@tanstack/react-router";
-import { Crown, Plug, Plus, UserRound, Users } from "lucide-react";
+import { Plug, Plus, UserRound, Users, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { AgentAvatar } from "@/features/conversation/components/identity";
+import { conversationSubtitle } from "@/features/conversation/lib/conversation-subtitle";
 import { cn } from "@/lib/utils";
-import type { Agent, Thread } from "@/types/workspace";
+import type { Agent, AgentActivity, ConversationPreview, Thread } from "@/types/workspace";
 
 export function ConversationNavigation({
   agents,
   threads,
+  activities,
+  previews,
   threadId,
   busy,
   createMenu,
@@ -18,9 +21,12 @@ export function ConversationNavigation({
   choose,
   openSettings,
   openApps,
+  closeNavigation,
 }: {
   agents: Agent[];
   threads: Thread[];
+  activities: AgentActivity[];
+  previews: ConversationPreview[];
   threadId: string | null;
   busy: boolean;
   createMenu: boolean;
@@ -30,14 +36,19 @@ export function ConversationNavigation({
   choose: (id: string) => void;
   openSettings: () => void;
   openApps: () => void;
+  closeNavigation?: () => void;
 }) {
-  const tobi = agents.find((agent) => agent.system_role === "tobi");
-  const primary = threads.find(
-    (thread) => thread.type === "dm" && thread.member_agent_ids[0] === tobi?.id,
-  );
+  const agentsById = new Map(agents.map((agent) => [agent.id, agent]));
+  const previewsByThread = new Map(previews.map((preview) => [preview.thread_id, preview]));
+  const activitiesByThread = new Map<string, AgentActivity[]>();
+  for (const activity of activities) {
+    const items = activitiesByThread.get(activity.thread_id) ?? [];
+    items.push(activity);
+    activitiesByThread.set(activity.thread_id, items);
+  }
   return (
     <div className="conversation-navigation relative p-3 flex flex-col h-full min-h-0">
-      <div className="navigation-heading absolute top-2.5 right-3 flex items-center gap-1">
+      <div className="navigation-heading mb-2 flex shrink-0 items-center justify-end gap-1">
         <Link to="/" className="sr-only" aria-label="Ngertiin">
           ngertiin<span>.</span>
         </Link>
@@ -45,8 +56,8 @@ export function ConversationNavigation({
           <PopoverTrigger asChild>
             <Button
               size="icon"
-              variant="ghost"
-              className="size-[26px] rounded-lg text-muted-foreground"
+              variant="secondary"
+              className="navigation-create size-8 rounded-lg text-muted-foreground"
               aria-label="Buat baru"
               disabled={busy}
             >
@@ -54,7 +65,7 @@ export function ConversationNavigation({
             </Button>
           </PopoverTrigger>
           <PopoverContent
-            align="end"
+            align={closeNavigation ? "start" : "end"}
             className="source-menu creation-menu w-52 gap-1 p-1.5"
             onKeyDown={(event) => {
               const items = Array.from(
@@ -85,65 +96,62 @@ export function ConversationNavigation({
             </Button>
           </PopoverContent>
         </Popover>
+        {closeNavigation && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="size-10 rounded-full text-muted-foreground"
+            aria-label="Close"
+            onClick={closeNavigation}
+          >
+            <X size={18} strokeWidth={1.5} />
+          </Button>
+        )}
       </div>
-      {primary && tobi && (
-        <Button
-          variant="ghost"
-          type="button"
-          className="primary-contact mx-auto mb-4 mt-0.5 flex h-[92px] w-[78px] max-w-full shrink-0 flex-col items-center justify-start gap-0 rounded-[10px] px-1 pt-2 pb-0 text-[13px] font-medium leading-4 whitespace-normal"
-          aria-current={primary.id === threadId ? "page" : undefined}
-          onClick={() => choose(primary.id)}
-        >
-          <span className="relative flex">
-            <AgentAvatar agent={tobi} threadId={primary.id} className="size-14" />
-            <span className="primary-role-badge absolute -bottom-px -right-px flex size-4 items-center justify-center rounded-full bg-[#e8993a] text-white ring-2 ring-panel">
-              <Crown size={10} strokeWidth={1.5} fill="currentColor" aria-hidden="true" />
-            </span>
-          </span>
-          <span className="primary-contact-name mt-1.5 w-full truncate text-center">
-            {tobi.name}
-          </span>
-          <span className="primary-contact-role sr-only">Asisten personal</span>
-        </Button>
-      )}
       <nav aria-label="Percakapan" className="min-h-0 flex-1 overflow-y-auto">
-        {threads
-          .filter((thread) => thread.id !== primary?.id)
-          .map((thread) => {
-            const member = agents.find((agent) => agent.id === thread.member_agent_ids[0]);
-            const name = thread.name ?? member?.name ?? "Percakapan";
-            return (
-              <Button
-                variant="ghost"
-                type="button"
-                key={thread.id}
-                aria-current={thread.id === threadId ? "page" : undefined}
-                onClick={() => choose(thread.id)}
-                className={cn(
-                  "contact-row gap-2.5 min-h-[54px] my-0.5 px-2 py-1.5 rounded-[10px] text-left transition-colors duration-150 flex items-center w-full h-auto whitespace-normal",
-                  thread.id === threadId && "contact-row-active",
-                )}
-              >
-                <AgentAvatar
-                  agent={member}
-                  threadId={thread.id}
-                  name={name}
-                  group={thread.type === "group"}
-                  largeGroup
-                  members={agents.filter((agent) => thread.member_agent_ids.includes(agent.id))}
-                />
-                <span className="min-w-0 flex-1">
-                  <span className="block truncate text-[14px] font-medium leading-5">{name}</span>
-                  <span className="contact-description [text-overflow:ellipsis] [white-space:nowrap] mt-0.5 [font-size:13px] [line-height:18px] block overflow-hidden text-muted-foreground">
-                    {thread.type === "group"
-                      ? `${thread.member_agent_ids.length} agent`
-                      : member?.soul ||
-                        (member?.harness === "muse" ? "Muse Code" : "Codex / ChatGPT")}
-                  </span>
+        {threads.map((thread) => {
+          const member = agentsById.get(thread.member_agent_ids[0]);
+          const name = thread.name ?? member?.name ?? "Percakapan";
+          const subtitle = conversationSubtitle(
+            thread,
+            agentsById,
+            activitiesByThread.get(thread.id) ?? [],
+            previewsByThread.get(thread.id),
+          );
+          return (
+            <Button
+              variant="ghost"
+              type="button"
+              key={thread.id}
+              data-thread-id={thread.id}
+              aria-current={thread.id === threadId ? "page" : undefined}
+              onClick={() => choose(thread.id)}
+              className={cn(
+                "contact-row gap-3 min-h-[60px] my-0.5 px-2 py-2 rounded-[10px] text-left transition-colors duration-150 flex items-center w-full h-auto whitespace-normal",
+                thread.id === threadId && "contact-row-active",
+              )}
+            >
+              <AgentAvatar
+                agent={member}
+                threadId={thread.id}
+                name={name}
+                group={thread.type === "group"}
+                largeGroup
+                className="size-11"
+                members={agents.filter((agent) => thread.member_agent_ids.includes(agent.id))}
+              />
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-[14px] font-medium leading-5">{name}</span>
+                <span
+                  title={subtitle}
+                  className="contact-description mt-0.5 block truncate text-[13px] leading-[18px] text-muted-foreground"
+                >
+                  {subtitle}
                 </span>
-              </Button>
-            );
-          })}
+              </span>
+            </Button>
+          );
+        })}
       </nav>
       <div className="navigation-footer pt-4 pb-1 flex flex-col">
         <div className="flex items-center gap-2">

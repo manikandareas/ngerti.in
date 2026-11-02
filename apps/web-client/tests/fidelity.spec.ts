@@ -29,6 +29,29 @@ for (const mode of ["light", "dark"] as const) {
     await expect(page.locator(".header-identity")).toHaveCSS("height", "39px");
     await expect(page.locator(".header-identity")).toHaveCSS("border-radius", "999px");
     await expect(page.locator(".header-identity")).toHaveCSS("font-size", "14px");
+    if (mobile) {
+      for (const width of [320, 390, 767]) {
+        await page.setViewportSize({ width, height: 844 });
+        await expect
+          .poll(async () => {
+            const identity = await page.locator(".header-identity").boundingBox();
+            return identity ? Math.abs(identity.x + identity.width / 2 - width / 2) : Infinity;
+          })
+          .toBeLessThanOrEqual(0.5);
+        const navigation = await page
+          .getByRole("button", { name: "Buka percakapan", exact: true })
+          .boundingBox();
+        const identity = await page.locator(".header-identity").boundingBox();
+        const model = await page
+          .getByRole("button", { name: "Pilih model", exact: true })
+          .boundingBox();
+        expect(
+          navigation && identity && navigation.x + navigation.width <= identity.x,
+        ).toBeTruthy();
+        expect(model && identity && identity.x + identity.width <= model.x).toBeTruthy();
+      }
+      await page.setViewportSize({ width: 390, height: 844 });
+    }
     await expect(page.locator(".conversation-composer")).toHaveCSS("height", "44px");
     const bubble = page.locator('.chat-agent-bubble > [data-slot="bubble-content"]').first();
     await expect(bubble).toHaveCSS("font-size", "15px");
@@ -37,8 +60,8 @@ for (const mode of ["light", "dark"] as const) {
     await expect(bubble).toHaveCSS("padding", "7px 12px");
     if (!mobile) {
       await expect(page.locator(".workspace-sidebar")).toHaveCSS("width", "280px");
-      await expect(page.locator(".primary-contact")).toHaveCSS("height", "92px");
-      await expect(page.locator(".primary-contact")).toHaveCSS("width", "78px");
+      await expect(page.locator(".contact-row").first()).toHaveCSS("min-height", "60px");
+      await expect(page.locator(".contact-row > .agent-avatar").first()).toHaveCSS("width", "44px");
     }
     await expect(page.locator(".workspace-main")).toHaveCSS(
       "background-color",
@@ -48,9 +71,9 @@ for (const mode of ["light", "dark"] as const) {
     await page.screenshot({ path: info.outputPath("conversation.png") });
     if (mobile) {
       await page.getByRole("button", { name: "Buka percakapan", exact: true }).click();
-      await expect(page.locator(".primary-contact .agent-avatar")).toHaveCSS("width", "88px");
-      await expect(page.locator(".primary-contact-name")).toHaveCSS("font-size", "17px");
+      await expect(page.locator(".contact-row > .agent-avatar").first()).toHaveCSS("width", "44px");
     }
+    await expect(page.locator(".primary-contact")).toHaveCount(0);
     await page.getByRole("button", { name: "Buat baru", exact: true }).click();
     await expect(page.getByRole("button", { name: "Create agent", exact: true })).toBeFocused();
     await page.keyboard.press("ArrowDown");

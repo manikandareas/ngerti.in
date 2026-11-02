@@ -1,7 +1,7 @@
 import type { AvatarConfig } from "@ngertiin/avatar/config";
 import type { NativeInteraction } from "./native-interactions";
 import type { Artifact, Goal, HumanRequest, PeerTask, Routine, Workspace } from "./work";
-// Consumer projections of the published Ngertiin API 1.19.0.
+// Consumer projections of the published Ngertiin API 1.20.0.
 export interface Base {
   id: string;
   revision: number;
@@ -67,6 +67,20 @@ export interface AgentActivity {
 export interface AgentActivities {
   cursor: number;
   items: AgentActivity[];
+}
+export interface ConversationPreview {
+  thread_id: string;
+  latest_message: {
+    id: string;
+    text: string;
+    author: string;
+    author_agent_id: string | null;
+    has_attachments: boolean;
+  } | null;
+}
+export interface ConversationPreviews {
+  cursor: number;
+  items: ConversationPreview[];
 }
 export interface Connection extends Base {
   harness: "codex" | "muse";

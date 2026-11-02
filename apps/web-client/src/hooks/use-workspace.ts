@@ -4,6 +4,7 @@ import type {
   Agent,
   AgentActivities,
   Connection,
+  ConversationPreviews,
   Opening,
   Snapshot,
   Thread,
@@ -12,6 +13,7 @@ import type {
 export function useWorkspace() {
   const [agents, setAgents] = useState<Agent[]>([]);
   const [activity, setActivity] = useState<AgentActivities>({ cursor: 0, items: [] });
+  const [previews, setPreviews] = useState<ConversationPreviews>({ cursor: 0, items: [] });
   const [threads, setThreads] = useState<Thread[]>([]);
   const [connections, setConnections] = useState<Connection[]>([]);
   const [threadId, selectThread] = useState<string | null>(() =>
@@ -29,12 +31,14 @@ export function useWorkspace() {
   const refresh = useCallback(
     async (signal?: AbortSignal) => {
       const generation = epoch.current;
-      const [nextAgents, nextThreads, nextConnections, nextActivity] = await Promise.all([
-        request<Agent[]>("/v1/entities/agent", undefined, undefined, signal),
-        request<Thread[]>("/v1/entities/thread", undefined, undefined, signal),
-        request<Connection[]>("/v1/entities/connection", undefined, undefined, signal),
-        request<AgentActivities>("/v1/agents/activity", undefined, undefined, signal),
-      ]);
+      const [nextAgents, nextThreads, nextConnections, nextActivity, nextPreviews] =
+        await Promise.all([
+          request<Agent[]>("/v1/entities/agent", undefined, undefined, signal),
+          request<Thread[]>("/v1/entities/thread", undefined, undefined, signal),
+          request<Connection[]>("/v1/entities/connection", undefined, undefined, signal),
+          request<AgentActivities>("/v1/agents/activity", undefined, undefined, signal),
+          request<ConversationPreviews>("/v1/conversations/previews", undefined, undefined, signal),
+        ]);
       if (signal?.aborted || generation !== epoch.current || selectedThread.current !== threadId)
         return;
       setAgents((current) =>
@@ -46,6 +50,7 @@ export function useWorkspace() {
       setThreads(nextThreads.filter((t) => t.purpose === "conversation"));
       setConnections(nextConnections);
       setActivity((previous) => (nextActivity.cursor >= previous.cursor ? nextActivity : previous));
+      setPreviews((previous) => (nextPreviews.cursor >= previous.cursor ? nextPreviews : previous));
       if (threadId) {
         const [next, state] = await Promise.all([
           request<Snapshot>(`/v1/threads/${threadId}/snapshot`, undefined, undefined, signal),
@@ -58,9 +63,9 @@ export function useWorkspace() {
           setSnapshot(next);
           setOpening(state);
         }
-        return Math.min(next.cursor, nextActivity.cursor);
+        return Math.min(next.cursor, nextActivity.cursor, nextPreviews.cursor);
       }
-      return nextActivity.cursor;
+      return Math.min(nextActivity.cursor, nextPreviews.cursor);
     },
     [threadId],
   );
@@ -131,6 +136,7 @@ export function useWorkspace() {
   return {
     agents,
     activity,
+    previews,
     threads,
     connections,
     snapshot,

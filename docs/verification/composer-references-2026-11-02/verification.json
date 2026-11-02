@@ -1,0 +1,82 @@
+{
+  "date": "2026-11-02",
+  "scope": "Composer typeahead and durable inline agent/skill references; user and assistant message presentation.",
+  "reference": "https://www.beautifului.dev/#prompt-bar",
+  "design": "Prompt Bar interaction and row geometry, using local popover/menu/type tokens, agent avatar palette and identity-purple for skills.",
+  "interaction": "Typing-only triggers; no explicit slash or mention buttons.",
+  "flicker": {
+    "reproduced_query": "/com",
+    "before": {
+      "panel_removals": 3,
+      "animation_restarts": 3
+    },
+    "after": {
+      "panel_removals": 0,
+      "animation_restarts": 0
+    },
+    "fix": "Keep the visible portal under document.body while Lexical repositions its caret anchor. Preserve listbox ownership with aria-owns.",
+    "verified_triggers": [
+      "/",
+      "@"
+    ],
+    "viewports": [
+      "1440x1000",
+      "390x844"
+    ]
+  },
+  "checks": [
+    {
+      "command": "bun run build",
+      "cwd": "apps/web-client",
+      "result": "pass; existing chunk-size advisory remains"
+    },
+    {
+      "command": "bunx biome check <19 changed reference/composer files>",
+      "cwd": "apps/web-client",
+      "result": "19 files pass"
+    },
+    {
+      "command": "bun test verification/inline-references.test.ts",
+      "cwd": "apps/web-client",
+      "passed": 4,
+      "failed": 0,
+      "assertions": 21
+    },
+    {
+      "command": "bunx playwright test --config playwright.references.config.ts",
+      "cwd": "apps/web-client",
+      "passed": 24,
+      "failed": 0
+    },
+    {
+      "command": "bunx playwright test --config playwright.conversation.config.ts conversation.spec.ts -g 'queued edit/delete|queued composer edit'",
+      "cwd": "apps/web-client",
+      "passed": 4,
+      "failed": 0
+    },
+    {
+      "command": "git diff --check",
+      "result": "pass"
+    },
+    {
+      "check": "Chromium-resolved chip foreground/background WCAG contrast for 20 avatar colors in two themes",
+      "cases": 40,
+      "minimum_ratio": 5.012077947886745,
+      "failed": 0
+    }
+  ],
+  "boundaries": [
+    "Browser tests use real HTTP, domain services and SQLite with the existing deterministic harness fixture; no new native-provider inference or billing proof.",
+    "The assistant Markdown fixture is supplied at the snapshot boundary to verify shared rendering and code/link preservation.",
+    "Skills come from the scoped inventory: enabled pinned application assignments, inherited harness packages and enabled native entries.",
+    "Qualified text references request a skill through the existing harness/product-tool behavior; they do not install skills or change assignments.",
+    "Text/reference-only drafts are retained per conversation in sessionStorage. Local files retain their existing submit-time/IndexedDB lifecycle.",
+    "No commit, push, deployment, installer work or unrelated backend changes were performed by this task."
+  ],
+  "screenshots": [
+    "mention-desktop.png",
+    "composer-mobile.png",
+    "skills-desktop.png",
+    "messages-dark-mobile.png"
+  ]
+}

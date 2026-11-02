@@ -2,6 +2,7 @@ import { ArrowTurnForwardIcon, Delete02Icon, PencilEdit01Icon } from "@hugeicons
 import { HugeiconsIcon } from "@hugeicons/react";
 import { repairMessage } from "@/lib/api-errors";
 import type { Message, Run } from "@/types/workspace";
+import { InlineReferenceText } from "./inline-references";
 
 export interface QueuedMessage {
   message: Message;
@@ -67,7 +68,7 @@ export function QueuedMessages({
               className="min-w-0 flex-1 truncate text-[14px] text-foreground"
               title={item.message.text}
             >
-              {item.message.text}
+              <InlineReferenceText text={item.message.text} />
             </span>
             {index === 0 && item.target && (
               <button

@@ -3,9 +3,11 @@ import {
   attachmentParts,
   uploadedAttachment,
 } from "@/features/conversation/lib/attachment-references";
+import { referenceTarget } from "@/features/conversation/lib/inline-references";
 import type { Artifact, AttachmentDocument } from "@/types/work";
 import type { Message } from "@/types/workspace";
 import { AttachmentChip } from "./attachment-chip";
+import { InlineReferenceText } from "./inline-references";
 
 export function UserMessageText({
   message,
@@ -19,7 +21,14 @@ export function UserMessageText({
   preparing?: boolean;
 }) {
   return attachmentParts(message.text).map((part) => {
-    if ("text" in part) return <Fragment key={`text-${part.offset}`}>{part.text}</Fragment>;
+    if ("text" in part)
+      return (
+        <InlineReferenceText
+          key={`text-${part.offset}`}
+          text={part.text}
+          agentId={referenceTarget(message.text)}
+        />
+      );
     const artifact = message.artifact_ids?.includes(part.id)
       ? artifacts.find((file) => file.id === part.id)
       : undefined;

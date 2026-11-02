@@ -9,12 +9,14 @@ import {
   type ComposerAttachment,
   uploadedAttachment,
 } from "./attachment-references";
+import { referenceTarget } from "./inline-references";
 import type { MessageSubmission } from "./message-submission";
 
 interface Options {
   threadId: string | null;
   snapshot: Snapshot | null;
   connection?: Connection;
+  connections: Connection[];
   draft: string;
   pending?: MessageSubmission | null;
   input: RefObject<ComposerInputHandle | null>;
@@ -128,15 +130,32 @@ export function useComposerAttachments(options: Options) {
       return file ? [file] : [];
     });
   }
+  function issue(mediaType: string) {
+    const current = latest.current;
+    if (current.snapshot?.thread.type === "group" && mediaType.startsWith("image/")) {
+      const mention = /^@([a-z][a-z0-9_-]{0,63})(?=\s|$)/u.exec(current.draft.trimStart());
+      const target = referenceTarget(current.draft);
+      const candidates = current.snapshot.agents.filter((a) =>
+        target ? a.id === target : !mention || a.handle === mention[1],
+      );
+      return candidates.some(
+        (a) =>
+          !attachmentIssue(
+            mediaType,
+            current.connections.find((c) => c.id === a.connection_id),
+            a.model_id,
+          ),
+      )
+        ? null
+        : "Belum ada anggota yang dituju dengan koneksi dan model yang mendukung gambar ini.";
+    }
+    return attachmentIssue(mediaType, current.connection, current.snapshot?.agents[0]?.model_id);
+  }
   function allowed(mediaType: string, count: number, images: number) {
     const current = latest.current;
-    const issue = attachmentIssue(
-      mediaType,
-      current.connection,
-      current.snapshot?.agents[0]?.model_id,
-    );
-    if (issue || count >= 20 || (mediaType.startsWith("image/") && images >= 4)) {
-      current.report(issue ?? "Batas lampiran pesan tercapai (20 file atau 4 gambar).");
+    const problem = issue(mediaType);
+    if (problem || count >= 20 || (mediaType.startsWith("image/") && images >= 4)) {
+      current.report(problem ?? "Batas lampiran pesan tercapai (20 file atau 4 gambar).");
       return false;
     }
     return true;
@@ -213,6 +232,8 @@ export function useComposerAttachments(options: Options) {
         const file = lookup(part.id);
         if (!file || (!file.artifact && !file.file))
           throw new Error("Lampiran belum tersedia. Pilih ulang file tersebut.");
+        const problem = issue(file.mediaType);
+        if (problem) throw new Error(problem);
         const id = file.artifact?.id ?? file.id;
         if (!ids.has(id) && file.file) sources.push({ id, file: file.file });
         ids.add(id);

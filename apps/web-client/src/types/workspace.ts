@@ -136,7 +136,10 @@ export interface Memory extends Base {
   visibility: string;
 }
 export interface Skills {
-  application: (Base & { name: string })[];
+  application: (Base & {
+    name: string;
+    assignment: { enabled: boolean; version: number } | null;
+  })[];
   harness: { key: string; name: string; description: string }[];
   native_catalog: { key: string; name: string; description: string; enabled: boolean }[];
   harness_state: string;

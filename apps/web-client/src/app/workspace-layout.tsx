@@ -45,7 +45,6 @@ import {
 } from "@/components/ui/sheet";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
-import { Textarea } from "@/components/ui/textarea";
 import { Answer } from "@/features/conversation/components/answer";
 import { AttachInput } from "@/features/conversation/components/attach-input";
 import {
@@ -68,6 +67,7 @@ import { UserMessageText } from "@/features/conversation/components/user-message
 import { WorkActivity } from "@/features/conversation/components/work-activity";
 import { WorkspaceProviders } from "@/features/conversation/components/workspace-providers";
 import { attachmentParts } from "@/features/conversation/lib/attachment-references";
+import { referenceTarget } from "@/features/conversation/lib/inline-references";
 import {
   prepareSubmission,
   RejectedSubmission,
@@ -78,6 +78,7 @@ import {
   useNativeTranscript,
 } from "@/features/conversation/lib/native-transcript";
 import { useComposerAttachments } from "@/features/conversation/lib/use-composer-attachments";
+import { useConversationDraft } from "@/features/conversation/lib/use-conversation-draft";
 import { useMessageSubmission } from "@/features/conversation/lib/use-message-submission";
 import { useSettingsDialog } from "@/features/settings/hooks/use-settings-dialog";
 import type { SettingsSectionId } from "@/features/settings/lib/settings-search";
@@ -132,7 +133,7 @@ export default function Workspace() {
     error,
     setError,
   } = workspace;
-  const [draft, setDraft] = useState("");
+  const [draft, setDraft] = useConversationDraft(threadId);
   const [composerFocused, setComposerFocused] = useState(false);
   const conversationSurface = useRef<HTMLElement>(null);
   const composerInput = useRef<ComposerInputHandle>(null);
@@ -144,7 +145,7 @@ export default function Workspace() {
       input.focus();
     }
   }, []);
-  const queuedEditInput = useRef<HTMLTextAreaElement>(null);
+  const queuedEditInput = useRef<ComposerInputHandle>(null);
   const [multiline, setMultiline] = useState(false);
   const [busy, setBusy] = useState(false);
   const lock = useRef(false);
@@ -197,6 +198,7 @@ export default function Workspace() {
     threadId,
     snapshot,
     connection,
+    connections,
     draft: pending ?? draft,
     pending: submission.pending,
     input: composerInput,
@@ -233,28 +235,8 @@ export default function Workspace() {
   useLayoutEffect(() => {
     const input = queuedEditInput.current;
     if (!input || !editing?.id) return;
-    input.focus();
-    input.setSelectionRange(input.value.length, input.value.length);
+    input.focus(true);
   }, [editing?.id]);
-  // biome-ignore lint/correctness/useExhaustiveDependencies: measure after controlled text commits and after a different conversation mounts its textarea.
-  useLayoutEffect(() => {
-    const input = queuedEditInput.current;
-    if (!input) return;
-    const measure = () => {
-      input.style.height = "auto";
-      input.style.height = `${Math.min(input.scrollHeight, 144)}px`;
-      const style = getComputedStyle(input);
-      const singleLine =
-        parseFloat(style.lineHeight) +
-        parseFloat(style.paddingTop) +
-        parseFloat(style.paddingBottom);
-      setMultiline(input.scrollHeight > singleLine + 1 || input.value.includes("\n"));
-    };
-    measure();
-    const observer = new ResizeObserver(measure);
-    observer.observe(input);
-    return () => observer.disconnect();
-  }, [draft, pending, editing?.id, editText, editPending, snapshot?.thread.id]);
   function openSettings(page: SettingsSectionId = "providers") {
     setNavigation(false);
     void showSettings(page);
@@ -267,7 +249,6 @@ export default function Workspace() {
     setHistoryLoaded(false);
     setNavigation(false);
     setDetails(false);
-    setDraft("");
     pendingComposerFocus.current = false;
     setEditing(null);
     setEditText("");
@@ -327,6 +308,10 @@ export default function Workspace() {
         const operation =
           submission.pending ??
           prepareSubmission(threadId, agent.id, content.text, content.sources);
+        if (!submission.pending && snapshot?.thread.type === "group") {
+          const target = referenceTarget(content.text);
+          if (target) operation.body.agent_id = target;
+        }
         composerFiles.restore(operation);
         try {
           await submission.send(operation, (id, state) =>
@@ -344,7 +329,7 @@ export default function Workspace() {
           `message:${threadId}`,
           snapshot?.thread.type === "group" ? `/v1/groups/${threadId}/messages` : "/v1/runs",
           snapshot?.thread.type === "group"
-            ? { text: content.text }
+            ? { text: content.text, agent_id: referenceTarget(content.text) }
             : {
                 thread_id: threadId,
                 agent_id: agent.id,
@@ -614,6 +599,7 @@ export default function Workspace() {
     if (!anchors.length)
       return (
         <Answer
+          agentId={author?.id}
           sentAt={message.created_at}
           sender={sender}
           text={message.text || "Sedang menulis…"}
@@ -629,6 +615,7 @@ export default function Workspace() {
         <Fragment key={offset}>
           {text && (
             <Answer
+              agentId={author?.id}
               sentAt={message.created_at}
               sender={sender}
               text={text}
@@ -645,6 +632,7 @@ export default function Workspace() {
         {parts}
         {start < message.text.length && (
           <Answer
+            agentId={author?.id}
             sentAt={message.created_at}
             sender={sender}
             text={message.text.slice(start)}
@@ -690,6 +678,7 @@ export default function Workspace() {
   );
   return (
     <WorkspaceProviders
+      snapshot={snapshot}
       activity={{
         items: workspace.activity.items,
         threadId,
@@ -1266,30 +1255,21 @@ export default function Workspace() {
                     addFiles={composerFiles.addFiles}
                   />
                   {editing ? (
-                    <Textarea
+                    <ComposerInput
                       ref={queuedEditInput}
-                      aria-label="Edit pesan"
+                      label="Edit pesan"
                       value={editPending ?? editText}
                       readOnly={editPending !== null}
-                      onChange={(event) => setEditText(event.target.value)}
+                      onChange={setEditText}
                       placeholder={`Pesan${agent ? ` untuk ${agent.name}` : ""}…`}
-                      className="composer-input"
-                      rows={1}
-                      onKeyDown={(event) => {
-                        if (event.key === "Escape" && !event.nativeEvent.isComposing) {
-                          event.preventDefault();
-                          cancelQueuedEdit();
-                          return;
-                        }
-                        if (
-                          event.key === "Enter" &&
-                          !event.shiftKey &&
-                          !event.nativeEvent.isComposing
-                        ) {
-                          event.preventDefault();
-                          saveQueuedEdit();
-                        }
-                      }}
+                      lookup={composerFiles.lookup}
+                      retry={composerFiles.retry}
+                      onFiles={() => {}}
+                      onMultiline={setMultiline}
+                      report={report}
+                      onEscape={cancelQueuedEdit}
+                      onEnter={saveQueuedEdit}
+                      suggestions={false}
                     />
                   ) : (
                     <ComposerInput

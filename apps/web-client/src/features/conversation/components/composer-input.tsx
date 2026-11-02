@@ -22,6 +22,7 @@ import {
   CUT_COMMAND,
   HISTORY_PUSH_TAG,
   KEY_ENTER_COMMAND,
+  KEY_ESCAPE_COMMAND,
   type LexicalNode,
   PASTE_COMMAND,
   type RangeSelection,
@@ -39,7 +40,10 @@ import {
   attachmentParts,
   type ComposerAttachment,
 } from "@/features/conversation/lib/attachment-references";
+import { referenceParts } from "@/features/conversation/lib/inline-references";
 import { AttachmentNode, ComposerAttachmentContext } from "./attachment-node";
+import { ComposerSuggestions } from "./composer-suggestions";
+import { ReferenceNode } from "./reference-node";
 
 export interface ComposerInputHandle {
   focus: (end?: boolean) => void;
@@ -57,18 +61,25 @@ interface Props {
   onFiles: (files: File[]) => void;
   onMultiline: (multiline: boolean) => void;
   report: (message: string) => void;
+  label?: string;
+  onEscape?: () => void;
+  suggestions?: boolean;
 }
 
 function inlineNodes(value: string, lookup: Props["lookup"], plainUnknown = false): LexicalNode[] {
   return attachmentParts(value).flatMap<LexicalNode>((part) => {
     if ("id" in part && lookup(part.id)) return [new AttachmentNode(part.id, part.name)];
     const text = "text" in part ? part.text : plainUnknown ? part.name : part.reference;
-    return text
-      .split("\n")
-      .flatMap((line, index) => [
-        ...(index ? [$createLineBreakNode()] : []),
-        ...(line ? [$createTextNode(line)] : []),
-      ]);
+    return referenceParts(text).flatMap<LexicalNode>((part) =>
+      "reference" in part
+        ? [new ReferenceNode(part.reference)]
+        : part.text
+            .split("\n")
+            .flatMap((line, index) => [
+              ...(index ? [$createLineBreakNode()] : []),
+              ...(line ? [$createTextNode(line)] : []),
+            ]),
+    );
   });
 }
 
@@ -224,6 +235,7 @@ function ComposerBridge(props: Props) {
         if (!event || event.shiftKey) return false;
         if (event.isComposing || editor.isComposing()) return true;
         event.preventDefault();
+        if (editor.getRootElement()?.dataset.suggestionsOpen === "true") return true;
         latest.current.onEnter();
         return true;
       },
@@ -257,7 +269,13 @@ function ComposerBridge(props: Props) {
       event.clipboardData.setData(
         "text/plain",
         attachmentParts(text)
-          .map((part) => ("text" in part ? part.text : part.name))
+          .map((part) =>
+            "text" in part
+              ? referenceParts(part.text)
+                  .map((item) => ("reference" in item ? item.reference.label : item.text))
+                  .join("")
+              : part.name,
+          )
           .join(""),
       );
       if (cut && !latest.current.readOnly) {
@@ -276,11 +294,22 @@ function ComposerBridge(props: Props) {
       (event) => copy(event, true),
       COMMAND_PRIORITY_HIGH,
     );
+    const offEscape = editor.registerCommand(
+      KEY_ESCAPE_COMMAND,
+      (event) => {
+        if (!latest.current.onEscape || event.isComposing || editor.isComposing()) return false;
+        event.preventDefault();
+        latest.current.onEscape();
+        return true;
+      },
+      COMMAND_PRIORITY_HIGH,
+    );
     return () => {
       offEnter();
       offPaste();
       offCopy();
       offCut();
+      offEscape();
     };
   }, [editor]);
   return null;
@@ -290,7 +319,7 @@ export function ComposerInput(props: Props) {
   const initialConfig = useMemo(
     () => ({
       namespace: "ngertiin-composer",
-      nodes: [AttachmentNode],
+      nodes: [AttachmentNode, ReferenceNode],
       theme: { paragraph: "composer-paragraph" },
       onError: (error: Error) => props.report(error.message),
     }),
@@ -307,7 +336,8 @@ export function ComposerInput(props: Props) {
             contentEditable={
               <ContentEditable
                 className="composer-input"
-                aria-label="Pesan"
+                aria-label={props.label ?? "Pesan"}
+                aria-haspopup="listbox"
                 aria-multiline="true"
                 aria-readonly={props.readOnly}
                 aria-placeholder={props.placeholder}
@@ -323,6 +353,9 @@ export function ComposerInput(props: Props) {
         </div>
         <HistoryPlugin />
         <ComposerBridge {...props} />
+        {props.suggestions !== false && (
+          <ComposerSuggestions value={props.value} readOnly={props.readOnly} />
+        )}
       </LexicalComposer>
     </ComposerAttachmentContext.Provider>
   );

@@ -8,7 +8,7 @@ import {
   useContext,
   useMemo,
 } from "react";
-import Markdown, { type Components } from "react-markdown";
+import Markdown, { type Components, defaultUrlTransform } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Bubble, BubbleContent } from "@/components/ui/bubble";
 import { AnswerCode } from "@/features/conversation/components/answer-code";
@@ -16,10 +16,14 @@ import { MarkdownTable, plainMarkdown } from "@/features/conversation/components
 import { MessageTime } from "@/features/conversation/components/message-time";
 import { parseFenceInfo } from "@/features/conversation/lib/code-snippet";
 import { splitReplyBlocks } from "@/features/conversation/lib/formatted-reply";
+import { referenceFromUrl } from "@/features/conversation/lib/inline-references";
+import { remarkInlineReferences } from "@/features/conversation/lib/remark-inline-references";
 import { blockDirection } from "@/features/conversation/lib/text-direction";
 import type { Snapshot } from "@/types/workspace";
+import { InlineReferenceChip, useInlineReferences } from "./inline-references";
 
 interface AnswerScope {
+  agentId?: string;
   openResource?: (tab: "files" | "goals", id: string) => void;
   snapshot?: Snapshot;
 }
@@ -27,6 +31,8 @@ const AnswerContext = createContext<AnswerScope>({});
 
 function AnswerLink({ children, href }: { children?: ReactNode; href?: string }) {
   const { openResource, snapshot } = useContext(AnswerContext);
+  const reference = href ? referenceFromUrl(href, plainMarkdown(children)) : null;
+  if (reference) return <InlineReferenceChip reference={reference} />;
   const goal = snapshot?.goals.find((item) => href?.endsWith(`/${item.id}`));
   const artifact = snapshot?.artifacts.find((item) => href?.split("?")[0]?.endsWith(`/${item.id}`));
   if (openResource && (goal || artifact))
@@ -123,12 +129,33 @@ const renderers: Components = {
 };
 
 function MarkdownBody({ text }: { text: string }) {
+  const { agents, skills } = useInlineReferences();
+  const { agentId } = useContext(AnswerContext);
+  const plugins = useMemo(
+    () =>
+      [
+        remarkGfm,
+        [
+          remarkInlineReferences,
+          {
+            agents,
+            skills: agentId ? skills.filter((skill) => skill.agent.id === agentId) : skills,
+          },
+        ],
+      ] as import("unified").PluggableList,
+    [agents, skills, agentId],
+  );
   return (
     <div
       data-message-text
       className="chat-answer chat-md min-w-0 whitespace-normal break-words text-[15px] leading-[22px] [&>*+*]:mt-2.5 [&_strong]:font-semibold"
     >
-      <Markdown remarkPlugins={[remarkGfm]} skipHtml components={renderers}>
+      <Markdown
+        remarkPlugins={plugins}
+        urlTransform={(url) => (referenceFromUrl(url, "") ? url : defaultUrlTransform(url))}
+        skipHtml
+        components={renderers}
+      >
         {text}
       </Markdown>
     </div>
@@ -146,6 +173,7 @@ export function MarkdownDocument({ text, openResource, snapshot }: { text: strin
 }
 
 export const Answer = memo(function Answer({
+  agentId,
   text,
   openResource,
   snapshot,
@@ -156,7 +184,10 @@ export const Answer = memo(function Answer({
   sentAt?: string;
   sender?: { name: string; style: CSSProperties; open?: () => void };
 } & AnswerScope) {
-  const scope = useMemo(() => ({ openResource, snapshot }), [openResource, snapshot]);
+  const scope = useMemo(
+    () => ({ openResource, snapshot, agentId }),
+    [openResource, snapshot, agentId],
+  );
   const blocks = useMemo(
     () =>
       splitReplyBlocks(text).map((block, position) => ({

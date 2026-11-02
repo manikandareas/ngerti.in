@@ -15,6 +15,47 @@
 @layer base {
   * {
     @apply border-border outline-ring;
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar) transparent;
+  }
+
+  @media (hover: hover) {
+    *:hover {
+      scrollbar-color: var(--scrollbar-hover) transparent;
+    }
+  }
+
+  /* Older WebKit uses pseudo-elements instead of the standard properties. */
+  @supports not (scrollbar-width: thin) {
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track,
+    ::-webkit-scrollbar-corner {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      border-radius: 999px;
+      background: var(--scrollbar);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--scrollbar-hover);
+    }
+
+    ::-webkit-scrollbar-button {
+      display: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    *,
+    *:hover {
+      scrollbar-color: auto;
+    }
   }
 
   html {
@@ -50,6 +91,38 @@
       scroll-behavior: auto !important;
       transition-duration: 0.01ms !important;
     }
+  }
+}
+
+/* Match Radix's overlay scrollbars to native overflow regions. */
+[data-slot="scroll-area-scrollbar"] {
+  border: 0;
+  padding: 1px;
+  background: transparent;
+}
+
+[data-slot="scroll-area-scrollbar"][data-orientation="vertical"] {
+  width: 8px;
+}
+
+[data-slot="scroll-area-scrollbar"][data-orientation="horizontal"] {
+  height: 8px;
+}
+
+[data-slot="scroll-area-thumb"] {
+  background: var(--scrollbar);
+}
+
+[data-slot="scroll-area-scrollbar"]:hover [data-slot="scroll-area-thumb"],
+[data-slot="scroll-area-thumb"]:active {
+  background: var(--scrollbar-hover);
+}
+
+@media (forced-colors: active) {
+  [data-slot="scroll-area-thumb"],
+  [data-slot="scroll-area-scrollbar"]:hover [data-slot="scroll-area-thumb"],
+  [data-slot="scroll-area-thumb"]:active {
+    background: CanvasText;
   }
 }
 

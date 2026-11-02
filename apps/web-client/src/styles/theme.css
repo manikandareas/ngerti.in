@@ -31,6 +31,7 @@
   --menu-hover: #1c1c1c0f;
   --menu-active: #1c1c1c14;
   --scrollbar: #c4c4c4;
+  --scrollbar-hover: color-mix(in srgb, var(--scrollbar), var(--foreground) 25%);
   --surface-inverse: #1c1c1c;
   --inverse-foreground: #fcfcfc;
   --border-subtle: #e3e3e3;

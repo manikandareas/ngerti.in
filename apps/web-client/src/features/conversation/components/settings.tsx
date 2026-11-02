@@ -72,10 +72,11 @@ export function ConnectionSettings(props: ConnectionSettingsProps) {
           title="Kelola providers"
           icon={KeyRound}
           hint={
-            connection?.account_id ??
-            (connection?.authentication.method === "api_key"
-              ? "API key"
-              : "Hubungkan akun untuk mulai bekerja")
+            connection
+              ? connection.harness === "muse"
+                ? "Muse Code"
+                : "ChatGPT"
+              : "Hubungkan akun untuk mulai bekerja"
           }
           value={connection ? billingLabel(selectedBilling ?? "unknown") : undefined}
           onClick={manageProviders}

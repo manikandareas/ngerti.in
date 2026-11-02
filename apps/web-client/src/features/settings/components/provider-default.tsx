@@ -49,7 +49,7 @@ export function ProviderDefault({
                 <span>Model default</span>
                 <span>
                   {current
-                    ? `${current.account_id ?? provider?.name} · ${requestedBilling}`
+                    ? `${provider?.name} · ${requestedBilling}`
                     : "Pilih akun dan model untuk memulai."}
                 </span>
               </span>
@@ -67,7 +67,7 @@ export function ProviderDefault({
         >
           <SettingsSection title="Pilihan default">
             <SettingsRow title="Akun">
-              <span>{current.account_id ?? provider?.name}</span>
+              <span>{provider?.name}</span>
             </SettingsRow>
             <SettingsRow title="Biaya dipilih">
               <span>{requestedBilling}</span>

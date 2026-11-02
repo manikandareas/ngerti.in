@@ -166,6 +166,11 @@
   background: var(--success-foreground);
 }
 
+.workspace-main {
+  --conversation-edge-fade: 48px;
+  position: relative;
+  isolation: isolate;
+}
 .workspace-main[data-details="true"] {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
@@ -180,21 +185,47 @@
   }
 }
 
-.header-identity {
-  height: auto;
+.workspace-chat-header,
+.composer-dock {
+  background: transparent;
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+}
+.workspace-chat-header button,
+.composer-dock > * {
+  pointer-events: auto;
+}
+.workspace-error {
+  position: relative;
+  z-index: 1;
+}
+.composer-dock {
+  margin-block: auto 0;
+}
+.conversation-viewport {
+  position: absolute;
+  inset: 0;
+}
+.conversation-latest {
+  bottom: calc(var(--conversation-bottom, 0px) + 16px);
+}
+
+.workspace-chat-header .header-action {
+  height: 39px;
   border: 0;
   border-radius: 999px;
+  color: var(--foreground);
+  background: color-mix(in srgb, var(--background), var(--foreground) 5%);
+  box-shadow: none;
+}
+.header-browser-action {
+  width: 39px;
+}
+.header-identity {
   padding: 7.5px 13.5px 7.5px 7.5px;
   font-size: 14px;
   line-height: 20px;
-  background: var(--composer);
-  box-shadow:
-    0 0 0 0.5px color-mix(in srgb, var(--foreground) 10%, transparent),
-    var(--shadow-float);
-}
-.header-identity:hover,
-.header-identity[aria-expanded="true"] {
-  background: color-mix(in srgb, var(--composer), var(--foreground) 7%);
 }
 .header-identity:disabled {
   opacity: 0.65;
@@ -205,6 +236,23 @@
 }
 .conversation-column {
   max-width: calc(var(--chat-column-max) + 40px);
+  padding: calc(var(--conversation-top, 0px) + var(--conversation-edge-fade) + 8px) 20px
+    calc(var(--conversation-bottom, 0px) + var(--conversation-edge-fade) + 8px);
+}
+/* Messages scroll behind both transparent controls, fading across their full
+   height. Resize measurements also keep the first and latest messages clear. */
+.conversation-scroll {
+  scroll-padding-block: calc(var(--conversation-top, 0px) + var(--conversation-edge-fade))
+    calc(var(--conversation-bottom, 0px) + var(--conversation-edge-fade));
+  mask-image: linear-gradient(
+    to bottom,
+    rgb(0 0 0 / 0.25),
+    rgb(0 0 0 / 0.31) var(--conversation-top, 0px),
+    #000 calc(var(--conversation-top, 0px) + var(--conversation-edge-fade)),
+    #000 calc(100% - var(--conversation-bottom, 0px) - var(--conversation-edge-fade)),
+    rgb(0 0 0 / 0.31) calc(100% - var(--conversation-bottom, 0px)),
+    rgb(0 0 0 / 0.25)
+  );
 }
 .workspace-shell[data-group="true"] {
   --agent-bubble: var(--primary);
@@ -272,11 +320,7 @@
   z-index: 1;
   border-radius: 22px;
   background: var(--composer);
-  box-shadow:
-    0 0 0 0.5px color-mix(in srgb, var(--foreground) 10%, transparent),
-    0 2px 8px -1px #0000000d,
-    0 1px 2px #00000008,
-    0 0 0 1px #e4e4e40a;
+  box-shadow: 0 0 0 0.5px color-mix(in srgb, var(--foreground) 10%, transparent);
   transition:
     border-radius 300ms,
     box-shadow 150ms;
@@ -286,10 +330,7 @@
 }
 .conversation-composer:hover,
 .conversation-composer:focus-within {
-  box-shadow:
-    0 0 0 0.5px color-mix(in srgb, var(--foreground) 22%, transparent),
-    0 2px 8px -1px #0000000d,
-    0 1px 2px #00000008;
+  box-shadow: 0 0 0 0.5px color-mix(in srgb, var(--foreground) 22%, transparent);
 }
 .conversation-composer .composer-input {
   min-height: 28px;
@@ -624,6 +665,7 @@
     padding: 0;
   }
   .workspace-main {
+    --conversation-edge-fade: 32px;
     border-radius: 0;
   }
   .workspace-chat-header {
@@ -641,7 +683,7 @@
     padding-inline: 10px;
   }
   .conversation-column {
-    padding: 20px 16px 12px;
+    padding-inline: 16px;
     gap: 20px;
   }
   .chat-bubble-content {
@@ -813,6 +855,7 @@
 }
 .workspace-chat-header .header-model-actions .model-selector {
   max-width: 100%;
+  flex-shrink: 1;
 }
 .message-run-state {
   max-width: min(var(--chat-bubble-max), 80%);

@@ -60,9 +60,9 @@ export function ProviderAccount({
   const definition = providers.find((item) => item.id === provider) ?? providers[0];
   const users = agents.filter((agent) => agent.connection_id === connection.id);
   const native = connection.authentication.method === "native_login";
-  const label =
-    connection.account_id ??
-    (native ? `Akun ${definition.name}` : `${provider === "codex" ? "OpenAI" : "Meta"} API key`);
+  const label = native
+    ? `Akun ${definition.name}`
+    : `${provider === "codex" ? "OpenAI" : "Meta"} API key`;
   return (
     <div className="provider-account">
       <Item className="settings-row provider-account-row min-h-20 gap-4 rounded-none border-0 p-4 flex-wrap">

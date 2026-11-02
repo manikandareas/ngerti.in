@@ -75,7 +75,6 @@ export function ProviderSettings({
       provider.runtime,
       provider.description,
       ...accounts.flatMap((account) => [
-        account.account_id ?? "",
         connectionLabel(account),
         billingLabel(account.authentication.billing_source),
       ]),
@@ -111,10 +110,7 @@ export function ProviderSettings({
                 <p>
                   {accounts.length
                     ? verified
-                      ? accounts
-                          .map((account) => account.account_id)
-                          .filter(Boolean)
-                          .join(", ") || `${verified} akun terhubung`
+                      ? `${verified} akun terhubung`
                       : "Periksa login dan sumber biaya"
                     : runtime?.state === "missing"
                       ? "Belum terpasang"

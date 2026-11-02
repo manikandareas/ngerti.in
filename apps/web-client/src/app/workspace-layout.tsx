@@ -113,6 +113,7 @@ export default function Workspace() {
     setError,
   } = workspace;
   const [draft, setDraft] = useState("");
+  const conversationSurface = useRef<HTMLElement>(null);
   const composerInput = useRef<ComposerInputHandle>(null);
   const pendingComposerFocus = useRef(false);
   const bindComposerInput = useCallback((input: ComposerInputHandle | null) => {
@@ -180,6 +181,26 @@ export default function Workspace() {
   });
   const attachments = composerFiles.referenced(pending ?? draft);
   const attachmentsBlocked = attachments.some((file) => file.state !== "ready");
+  useLayoutEffect(() => {
+    const surface = conversationSurface.current;
+    if (!surface) return;
+    const header = surface.querySelector<HTMLElement>(".workspace-chat-header");
+    const notice = error ? surface.querySelector<HTMLElement>(".workspace-error") : null;
+    const dock = snapshot?.thread.id ? surface.querySelector<HTMLElement>(".composer-dock") : null;
+    const measure = () => {
+      const top = surface.getBoundingClientRect().top;
+      const headerBottom = (notice ?? header)?.getBoundingClientRect().bottom ?? top;
+      const dockHeight = dock?.getBoundingClientRect().height ?? 0;
+      surface.style.setProperty("--conversation-top", `${headerBottom - top}px`);
+      surface.style.setProperty("--conversation-bottom", `${dockHeight}px`);
+    };
+    const observer = new ResizeObserver(measure);
+    for (const element of [header, notice, dock]) {
+      if (element) observer.observe(element);
+    }
+    measure();
+    return () => observer.disconnect();
+  }, [snapshot?.thread.id, error]);
   useLayoutEffect(() => {
     const input = queuedEditInput.current;
     if (!input || !editing?.id) return;
@@ -647,6 +668,7 @@ export default function Workspace() {
           </SheetContent>
         </Sheet>
         <main
+          ref={conversationSurface}
           className="workspace-main rounded-[16px] flex flex-1 flex-col min-w-0 min-h-0 overflow-hidden bg-background"
           aria-label="Percakapan aktif"
           data-details={details && !mobile}
@@ -673,7 +695,7 @@ export default function Workspace() {
                 aria-label={`Detail ${snapshot?.thread.name ?? agent?.name ?? "agent"}`}
                 aria-expanded={details}
                 aria-controls="conversation-details"
-                className="header-identity group gap-2 [max-width:100%] [padding:7.5px_13.5px_7.5px_7.5px] [border-radius:999px] inline-flex items-center min-w-0 font-medium h-auto"
+                className="header-action header-identity group gap-2 [max-width:100%] [padding:7.5px_13.5px_7.5px_7.5px] [border-radius:999px] inline-flex items-center min-w-0 font-medium h-auto"
               >
                 <AgentAvatar
                   agent={agent}
@@ -689,9 +711,9 @@ export default function Workspace() {
                 {!details && (
                   <span
                     aria-hidden="true"
-                    className="-ml-2 flex w-0 shrink-0 overflow-hidden opacity-0 transition-[width,margin,opacity] duration-[140ms] group-hover:ml-0 group-hover:w-2 group-hover:opacity-100 group-focus-visible:ml-0 group-focus-visible:w-2 group-focus-visible:opacity-100"
+                    className="-ml-2 flex w-0 shrink-0 overflow-hidden opacity-0 transition-[width,margin,opacity] duration-[140ms] group-hover:ml-0 group-hover:w-3 group-hover:opacity-100 group-focus-visible:ml-0 group-focus-visible:w-3 group-focus-visible:opacity-100"
                   >
-                    <ChevronRight size={12} className="shrink-0 text-muted-foreground" />
+                    <ChevronRight className="size-3 shrink-0 text-muted-foreground" />
                   </span>
                 )}
                 {activeRun && (
@@ -709,7 +731,7 @@ export default function Workspace() {
               {snapshot?.thread.type === "group" ? (
                 <Button
                   variant="ghost"
-                  className="model-selector rounded-full text-[13px]"
+                  className="header-action model-selector rounded-full text-[13px]"
                   onClick={() => {
                     setDetails(true);
                     locate({ tab: "agent", id: null });
@@ -720,6 +742,7 @@ export default function Workspace() {
               ) : (
                 <ModelPicker
                   key={agent?.id}
+                  className="header-action"
                   agent={agent}
                   connections={connections}
                   refresh={refresh}
@@ -730,7 +753,7 @@ export default function Workspace() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="hidden shrink-0 text-muted-foreground sm:inline-flex"
+                className="header-action header-browser-action hidden shrink-0 sm:inline-flex"
                 aria-label="Browser agent"
                 title="Browser agent"
                 onClick={() => {
@@ -738,7 +761,7 @@ export default function Workspace() {
                   locate({ tab: "files", id: null, page: "browser" });
                 }}
               >
-                <Monitor size={20} strokeWidth={1.5} />
+                <Monitor className="size-[18px]" strokeWidth={1.5} />
               </Button>
             </div>
           </header>
@@ -786,8 +809,11 @@ export default function Workspace() {
             </div>
           ) : (
             <>
-              <Conversation key={threadId} className="min-h-0 flex-1">
-                <ConversationContent className="conversation-column [max-width:var(--chat-column-max)] [margin-inline:auto] gap-4 [padding:20px_20px_16px] w-full">
+              <Conversation key={threadId} className="conversation-viewport min-h-0">
+                <ConversationContent
+                  scrollClassName="conversation-scroll"
+                  className="conversation-column [max-width:var(--chat-column-max)] [margin-inline:auto] gap-4 w-full"
+                >
                   {(historyLoaded ? before : snapshot.next_before) && (
                     <Button
                       variant="ghost"
@@ -1010,7 +1036,7 @@ export default function Workspace() {
                     </Alert>
                   )}
                 </ConversationContent>
-                <ConversationScrollButton />
+                <ConversationScrollButton className="conversation-latest" />
               </Conversation>
               <div className="composer-dock [max-width:calc(var(--chat-column-max)_+_40px)] [margin:auto] [padding:12px_20px_16px] w-full shrink-0">
                 {connection?.login !== "authenticated" && (

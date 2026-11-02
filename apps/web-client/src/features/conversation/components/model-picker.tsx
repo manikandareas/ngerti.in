@@ -49,7 +49,7 @@ function accountGroups(
   return ordered.flatMap((connection) => {
     const ready = connection.state === "active" && connection.login === "authenticated";
     const accountMatches =
-      `${providerName(connection)} ${accountLabel(connection)} ${billingLabel(connection.authentication.billing_source)}`
+      `${providerName(connection)} ${billingLabel(connection.authentication.billing_source)}`
         .toLocaleLowerCase()
         .includes(term);
     const available = connection.models.filter((model) =>
@@ -86,13 +86,6 @@ function Mark({ connection }: { connection?: Connection }) {
 
 function providerName(connection?: Connection) {
   return connection?.harness === "muse" ? "Muse Code" : "ChatGPT";
-}
-
-function accountLabel(connection: Connection) {
-  return (
-    connection.account_id ??
-    (connection.authentication.method === "api_key" ? "API key" : "Akun belum terhubung")
-  );
 }
 
 function unavailable(connection?: Connection) {
@@ -244,7 +237,7 @@ export function ModelPicker({
           <button
             type="button"
             className={cn(
-              "model-selector group flex h-8 min-w-0 items-center rounded-full pl-2.5 pr-2 text-[13px] leading-[18px] text-muted-foreground transition-colors duration-150 hover:bg-menu-hover hover:text-foreground aria-expanded:bg-menu-hover aria-expanded:text-foreground disabled:cursor-not-allowed disabled:opacity-50",
+              "model-selector group flex h-8 min-w-0 items-center rounded-full px-2.5 text-[13px] leading-[18px] text-muted-foreground transition-colors duration-150 hover:bg-menu-hover hover:text-foreground aria-expanded:bg-menu-hover aria-expanded:text-foreground disabled:cursor-not-allowed disabled:opacity-50",
               contained
                 ? "max-w-[58%] bg-transparent"
                 : "shrink-0 bg-composer shadow-[0_4px_12px_-1px_#1c1c1c14,0_2px_4px_-2px_#1c1c1c0f] ring-[0.5px] ring-foreground/10 dark:shadow-none",
@@ -252,8 +245,9 @@ export function ModelPicker({
             )}
             aria-label="Pilih model"
             title={[
-              agent?.model_id ?? providerName(current),
-              current && accountLabel(current),
+              agent?.model_id?.replace(/\b\p{L}/gu, (letter) => letter.toUpperCase()) ??
+                providerName(current),
+              current && providerName(current),
               current && billingLabel(current.authentication.billing_source),
               warning,
             ]
@@ -276,15 +270,9 @@ export function ModelPicker({
                 />
               )}
             </span>
-            <span className="min-w-0 max-w-40 truncate">
+            <span className="min-w-0 max-w-40 truncate capitalize">
               {agent?.model_id ?? (current ? providerName(current) : "Pilih model")}
             </span>
-            <ChevronDown
-              size={12}
-              strokeWidth={2}
-              className="ml-1 shrink-0 text-(--text-tertiary)"
-              aria-hidden="true"
-            />
           </button>
         </PopoverTrigger>
         <PopoverContent
@@ -353,7 +341,7 @@ export function ModelPicker({
                       <Mark connection={current} />
                     </span>
                     <span className="flex min-w-0 flex-1 flex-col">
-                      <span className="truncate">{agent.model_id}</span>
+                      <span className="truncate capitalize">{agent.model_id}</span>
                       <span className={cn(meta, warning && "text-warning-foreground")}>
                         {warning ??
                           `${providerName(current)} · ${current ? billingLabel(current.authentication.billing_source) : "Akun tidak tersedia"}`}
@@ -381,10 +369,7 @@ export function ModelPicker({
                       <span className={gutter}>
                         <Mark connection={connection} />
                       </span>
-                      <span className="min-w-0 truncate" title={accountLabel(connection)}>
-                        {providerName(connection)}
-                        {connection.account_id ? ` · ${connection.account_id}` : ""}
-                      </span>
+                      <span className="min-w-0 truncate">{providerName(connection)}</span>
                       {connection.authentication.billing_source === "api_key" && (
                         <KeyRound size={12} className="ml-auto shrink-0" aria-label="API key" />
                       )}
@@ -434,10 +419,10 @@ export function ModelPicker({
                             disabled={busy !== null}
                             className={row}
                             onClick={() => pick(connection, model)}
-                            title={`${model.id} · ${billingLabel(connection.authentication.billing_source)}`}
+                            title={`${model.id.replace(/\b\p{L}/gu, (letter) => letter.toUpperCase())} · ${billingLabel(connection.authentication.billing_source)}`}
                           >
                             <span className={gutter} />
-                            <span className="min-w-0 flex-1 truncate">{model.id}</span>
+                            <span className="min-w-0 flex-1 truncate capitalize">{model.id}</span>
                             {busy === key ? (
                               <Loader2
                                 size={14}

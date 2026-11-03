@@ -10,6 +10,13 @@ import { type BrowserView, BrowserViewer } from "./browser-viewer";
 import { AgentAvatar } from "./identity";
 import { PanelCard, PanelEmpty } from "./panel-primitives";
 
+const sessionLabels: Record<string, string> = {
+  ready: "Session ready",
+  detached: "View disconnected",
+  closed: "Session closed",
+  unknown: "Session status unknown",
+};
+
 export function BrowserSection({
   agents,
   threadId,
@@ -55,20 +62,20 @@ export function BrowserSection({
       ...(session?.state === "ready" ? { session } : {}),
     });
   }
-  const sessionLabels: Record<string, string> = {
-    ready: "Sesi tersedia",
-    detached: "Tampilan belum terhubung",
-    closed: "Sesi ditutup",
-    unknown: "Status sesi belum diketahui",
-  };
+  let previewLabel = "Browser not set up";
+  if (primary) {
+    previewLabel = "Browser not opened";
+    if (lastSession) previewLabel = sessionLabels[lastSession.state] ?? "Preview unavailable";
+    if (lastSession?.active_run_id) previewLabel = "Agent is using the browser";
+  }
   return (
     <div className="context-section pt-3.5">
       <div className="space-y-3">
         {agents.length > 1 && (
           <label className="block space-y-2 text-sm">
-            Browser anggota
+            Member browser
             <select
-              aria-label="Browser anggota"
+              aria-label="Member browser"
               className="h-9 w-full rounded-md border bg-background px-2"
               value={agentId}
               onChange={(e) => {
@@ -93,7 +100,7 @@ export function BrowserSection({
         <div>
           <button
             type="button"
-            aria-label={`Lihat tampilan browser ${selected?.name ?? "agent"}`}
+            aria-label={`View browser for ${selected?.name ?? "agent"}`}
             disabled={!primary}
             onClick={() => {
               if (primary) watch(primary.profile, lastSession);
@@ -103,7 +110,7 @@ export function BrowserSection({
             {image?.type === "image" ? (
               <img
                 src={`data:${image.mimeType};base64,${image.data}`}
-                alt="Pratinjau dari sesi browser yang sama"
+                alt="Preview of the same browser session"
                 className="absolute inset-0 size-full object-cover"
               />
             ) : (
@@ -116,13 +123,7 @@ export function BrowserSection({
                   />
                 </span>
                 <span className="max-w-[80%] text-center text-[13px] font-medium">
-                  {!primary
-                    ? "Browser belum disiapkan"
-                    : lastSession?.active_run_id
-                      ? "Agent sedang menggunakan browser"
-                      : lastSession
-                        ? (sessionLabels[lastSession.state] ?? "Pratinjau belum tersedia")
-                        : "Browser belum dibuka"}
+                  {previewLabel}
                 </span>
               </>
             )}
@@ -132,17 +133,17 @@ export function BrowserSection({
                 className="absolute bottom-2.5 right-2.5 flex h-7 items-center gap-1.5 rounded-full border border-foreground/10 bg-panel/80 px-2.5 text-[12px] opacity-0 backdrop-blur-sm transition-opacity group-hover/screen:opacity-100 group-focus-within/screen:opacity-100 touch:opacity-100"
               >
                 <HugeiconsIcon icon={ComputerIcon} size={13} strokeWidth={1.5} />
-                Lihat
+                View
               </span>
             )}
           </button>
           <p className="mt-3 text-center text-[13px] text-muted-foreground">
             {image
-              ? "Pratinjau sesi browser yang sama"
-              : "Buka tampilan untuk melihat browser agent"}
+              ? "Preview of the same browser session"
+              : "Open the viewer to see your agent’s browser"}
           </p>
         </div>
-        <PanelCard label="Profil browser">
+        <PanelCard label="Browser profiles">
           {profiles.data?.map(({ profile, sessions }) => (
             <div
               key={profile.id}
@@ -159,18 +160,17 @@ export function BrowserSection({
                 <p className="truncate text-sm">{profile.name}</p>
                 <p className="text-caption text-muted-foreground">
                   {sessions.at(-1)
-                    ? (sessionLabels[sessions.at(-1)?.state ?? "unknown"] ??
-                      "Status belum diketahui")
-                    : "Belum dibuka"}
+                    ? (sessionLabels[sessions.at(-1)?.state ?? "unknown"] ?? "Status unknown")
+                    : "Not opened"}
                 </p>
               </div>
               <Button variant="outline" size="sm" onClick={() => watch(profile, sessions.at(-1))}>
-                Lihat browser
+                View browser
               </Button>
             </div>
           ))}
           {profiles.data?.length === 0 && (
-            <PanelEmpty>Agent belum memiliki browser untuk percakapan ini.</PanelEmpty>
+            <PanelEmpty>No browser is available for this conversation yet.</PanelEmpty>
           )}
         </PanelCard>
         {profiles.data?.length === 0 && (
@@ -184,18 +184,18 @@ export function BrowserSection({
               setError("");
               try {
                 await command("/v1/browser/profiles", {
-                  name: "Browser percakapan",
+                  name: "Conversation browser",
                   grants: [{ agent_id: agentId, thread_id: threadId, actions: true }],
                 });
                 profiles.retry();
               } catch (e) {
-                setError(e instanceof Error ? e.message : "Browser belum tersedia.");
+                setError(e instanceof Error ? e.message : "Browser is not available yet.");
               } finally {
                 setBusy(false);
               }
             }}
           >
-            Aktifkan browser percakapan
+            Enable conversation browser
           </Button>
         )}
         <BrowserViewer target={target} close={() => setTarget(null)} />

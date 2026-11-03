@@ -509,15 +509,14 @@ export default function Workspace() {
       snapshot={snapshot}
       agents={agents}
       threads={threads}
-      connections={connections}
       location={location}
       locate={locate}
       refresh={refresh}
-      report={report}
       compose={compose}
       source={(id) => void source(id).catch((e) => report(e.message))}
       attach={composerFiles.attachArtifact}
-      manageProviders={() => openSettings("providers")}
+      onClose={() => setDetails(false)}
+      closeLabel={mobile ? "Close" : "Tutup detail"}
     />
   ) : null;
   const messages = [
@@ -725,18 +724,6 @@ export default function Workspace() {
       );
     return plain(upper) && plain(lower);
   }
-  const detailToolbar = (
-    <div className="details-toolbar flex shrink-0 items-center justify-end gap-1 p-3">
-      <Button
-        size="icon-sm"
-        variant="ghost"
-        aria-label={mobile ? "Close" : "Tutup detail"}
-        onClick={() => setDetails(false)}
-      >
-        <HugeiconsIcon icon={Cancel01Icon} size={18} strokeWidth={1.5} />
-      </Button>
-    </div>
-  );
   return (
     <WorkspaceProviders
       snapshot={snapshot}
@@ -1505,7 +1492,6 @@ export default function Workspace() {
             className="workspace-details w-80 [border-left:1px_solid_var(--border-subtle)] [border-radius:0_16px_16px_0] shrink-0 min-h-0 overflow-y-auto bg-background"
             aria-label="Detail percakapan"
           >
-            {detailToolbar}
             {panel}
           </aside>
         )}
@@ -1529,7 +1515,6 @@ export default function Workspace() {
               <SheetTitle>Detail percakapan</SheetTitle>
               <SheetDescription>Profil dan konteks percakapan.</SheetDescription>
             </SheetHeader>
-            {detailToolbar}
             {panel}
           </SheetContent>
         </Sheet>

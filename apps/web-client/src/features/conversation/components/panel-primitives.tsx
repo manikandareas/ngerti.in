@@ -1,6 +1,8 @@
 import { ArrowLeft01Icon, ArrowRight01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
-import type { ReactNode } from "react";
+import { createContext, type ReactNode, useContext } from "react";
+import { createPortal } from "react-dom";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 // OpenMausBot 7124ebc4: bot-panel/rows.tsx. Keep contextual pages on one row/card recipe.
@@ -93,9 +95,11 @@ export function PanelNavRow({
   );
 }
 
+export const PanelHeaderSlot = createContext<HTMLDivElement | null>(null);
+
 export function PanelPageHeader({
   title,
-  back = "Detail",
+  back = "Details",
   onBack,
   intro,
 }: {
@@ -104,23 +108,38 @@ export function PanelPageHeader({
   onBack: () => void;
   intro?: ReactNode;
 }) {
+  const slot = useContext(PanelHeaderSlot);
   return (
-    <header className="mb-4 min-w-0">
-      <button
-        type="button"
-        onClick={onBack}
-        data-panel-back=""
-        aria-label={`Kembali ke ${back.toLowerCase()}`}
-        className="mt-0.5 inline-flex items-center gap-0.5 rounded-[7px] py-1 pl-0.5 pr-2 text-[13px] text-muted-foreground hover:bg-foreground/[0.04] hover:text-foreground"
-      >
-        <HugeiconsIcon icon={ArrowLeft01Icon} size={15} strokeWidth={1.5} aria-hidden="true" />
-        {back}
-      </button>
-      <h3 className="mx-1 mt-1.5 break-words text-[18px] font-semibold">{title}</h3>
+    <>
+      {slot &&
+        createPortal(
+          <>
+            <Button
+              type="button"
+              size="icon"
+              variant="secondary"
+              onClick={onBack}
+              data-panel-back=""
+              aria-label={`Back to ${back}`}
+              className="size-8 shrink-0 rounded-lg text-muted-foreground max-md:size-10 max-md:rounded-full max-md:border max-md:border-border max-md:bg-card"
+            >
+              <HugeiconsIcon
+                icon={ArrowLeft01Icon}
+                size={17}
+                strokeWidth={1.5}
+                aria-hidden="true"
+              />
+            </Button>
+            <h3 className="min-w-0 flex-1 truncate text-[18px] font-medium text-foreground">
+              {title}
+            </h3>
+          </>,
+          slot,
+        )}
       {intro && (
-        <p className="mx-1 mt-1.5 text-[13px] leading-normal text-muted-foreground">{intro}</p>
+        <p className="mx-1 mb-4 text-[13px] leading-normal text-muted-foreground">{intro}</p>
       )}
-    </header>
+    </>
   );
 }
 

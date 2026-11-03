@@ -183,7 +183,7 @@ test("group collaboration displays friendly activity and shared goal evidence wi
   ]);
   await verifyTimelineLayout(page, info);
   await page.getByRole("button", { name: "Buka file: summary.txt", exact: true }).click();
-  await page.getByRole("button", { name: "Buka summary.txt", exact: true }).click();
+  await page.getByRole("button", { name: "Open summary.txt", exact: true }).click();
   await expect(page.getByText("Verified campaign summary.", { exact: true })).toBeVisible();
   await page.getByRole("dialog").getByRole("button", { name: "Close", exact: true }).click();
   if (info.project.name === "mobile")
@@ -203,11 +203,12 @@ test("group collaboration displays friendly activity and shared goal evidence wi
   ).json();
   expect(peerView.goals[0].id).toBe(state.goals[0].id);
   await page.getByRole("button", { name: `Detail ${groupName}` }).click();
-  await page.locator('[data-panel-nav="Goals"]').click();
   await page.getByRole("button", { name: "Shared campaign report", exact: true }).click();
-  await expect(page.getByText(`Koordinator: ${members[0].name}`, { exact: false })).toBeVisible();
-  await expect(page.getByText(members[1].name, { exact: false }).last()).toBeVisible();
-  await expect(page.getByRole("button", { name: "summary.txt", exact: true })).toBeVisible();
+  const goalDetail = page.getByRole("dialog", { name: "Shared campaign report", exact: true });
+  await expect(goalDetail.getByRole("heading", { name: "Activity", exact: true })).toBeVisible();
+  await expect(
+    goalDetail.getByRole("button", { name: "summary.txt File", exact: true }),
+  ).toBeVisible();
   await page.screenshot({ path: info.outputPath("shared-goal-and-friendly-handoff.png") });
   const routine = await post(page, "/v1/routines", {
     thread_id: group.id,
@@ -222,12 +223,10 @@ test("group collaboration displays friendly activity and shared goal evidence wi
     agent_id: null,
     execution_target: { type: "auto" },
   });
-  await page.getByRole("button", { name: "Kembali ke goals", exact: true }).click();
-  await page.getByRole("button", { name: "Kembali ke detail", exact: true }).click();
-  await page.locator('[data-panel-nav="Routine"]').click();
+  await page.getByRole("button", { name: "Close detail", exact: true }).click();
   await page.getByRole("button", { name: "Check campaign progress", exact: true }).click();
   await expect(
-    page.getByText("Milik grup · Pelaksana dipilih otomatis", { exact: true }),
+    page.getByRole("dialog", { name: "Check campaign progress", exact: true }),
   ).toBeVisible();
   const toggle = page.getByRole("switch", { name: "Routine Check campaign progress", exact: true });
   await toggle.click();

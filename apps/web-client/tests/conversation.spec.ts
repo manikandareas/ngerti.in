@@ -343,21 +343,13 @@ test("real API: create, durable opener, queued edit/delete, memory, panel and re
   });
   expect(memory.ok()).toBeTruthy();
   await page.getByRole("button", { name: `Detail ${created.agent.name}` }).click();
-  await expect(page.getByRole("tab", { name: "Detail", exact: true })).toBeVisible();
-  await page.getByRole("button", { name: /^Memory/ }).click();
+  await expect(page.getByRole("tab", { name: "Details", exact: true })).toBeVisible();
+  await page.getByRole("tab", { name: "Library", exact: true }).click();
   await expect(page.getByText("Prefers concise explanations.", { exact: true })).toBeVisible();
-  await page.getByRole("button", { name: "Koreksi", exact: true }).click();
-  await page
-    .getByRole("textbox", { name: "Koreksi memory" })
-    .fill("Prefers short Indonesian explanations.");
-  await page.getByRole("button", { name: "Simpan", exact: true }).click();
-  await expect(
-    page.getByText("Prefers short Indonesian explanations.", { exact: true }),
-  ).toBeVisible();
-  await page.getByRole("button", { name: "Hapus memory" }).click();
-  await expect(
-    page.getByText("Prefers short Indonesian explanations.", { exact: true }),
-  ).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Manage", exact: true })).toHaveCount(0);
+  await page.getByRole("button", { name: "About Memory", exact: true }).click();
+  await expect(page.getByRole("tooltip")).toContainText("remember, change, or forget");
+  await page.keyboard.press("Escape");
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
   ).toBeTruthy();

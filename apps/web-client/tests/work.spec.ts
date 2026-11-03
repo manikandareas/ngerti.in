@@ -9,9 +9,54 @@ async function post(page: Page, path: string, data: unknown) {
   expect(response.ok(), await response.text()).toBeTruthy();
   return response.json();
 }
+// Project stored fixture bytes as native outputs to test the result UI without a harness run.
+async function projectOutputs(page: Page, threadId: string, names?: string[]) {
+  await page.route(`**/v1/threads/${threadId}/snapshot`, async (route) => {
+    const response = await route.fetch();
+    const snapshot = await response.json();
+    snapshot.agents[0].instructions =
+      "Keep the instructions visible.\n\nKeep this second paragraph out of the summary.";
+    for (const file of snapshot.artifacts) {
+      if (!names || names.includes(file.name)) file.origin = "native_output";
+    }
+    await route.fulfill({ response, json: snapshot });
+  });
+}
+async function expectPanelHeader(page: Page, title: string) {
+  const panel = page.locator("#conversation-details");
+  const toolbar = panel.locator(".details-toolbar");
+  const heading = toolbar.getByRole("heading", { name: title, exact: true });
+  await expect(heading).toBeVisible();
+  await expect(heading).toHaveCSS("font-size", "18px");
+  await expect(heading).toHaveCSS("font-weight", "500");
+  await expect(toolbar.locator("[data-panel-back]")).toHaveCount(1);
+  await expect(toolbar.locator("[data-panel-close]")).toHaveCount(1);
+  await expect(panel.getByRole("heading", { name: title, exact: true })).toHaveCount(1);
+  await expect
+    .poll(() =>
+      toolbar.evaluate((element) => {
+        const back = element.querySelector<HTMLElement>("[data-panel-back]");
+        const title = element.querySelector("h3");
+        const close = element.querySelector("[data-panel-close]");
+        if (!back || !title || !close) return false;
+        const a = back.getBoundingClientRect();
+        const b = title.getBoundingClientRect();
+        const c = close.getBoundingClientRect();
+        return (
+          Math.abs(a.y + a.height / 2 - c.y - c.height / 2) < 1 &&
+          a.right <= b.left &&
+          b.right <= c.left &&
+          getComputedStyle(back).backgroundColor !== "rgba(0, 0, 0, 0)"
+        );
+      }),
+    )
+    .toBeTruthy();
+}
 async function capture(page: Page, path: string) {
   await page
-    .locator('[data-slot="sheet-content"], [data-slot="dialog-content"]')
+    .locator(
+      '[data-slot="sheet-content"], [data-slot="dialog-content"], [data-slot="drawer-content"], [data-slot="accordion-content"]',
+    )
     .evaluateAll(async (surfaces) => {
       const animations = surfaces
         .flatMap((surface) => surface.getAnimations())
@@ -110,7 +155,7 @@ test("contextual goals, Routine and files use real scoped state and keep stop re
   await chooseAgent(page, a.agent.name);
   await page.getByRole("button", { name: `Detail ${a.agent.name}`, exact: true }).click();
   await expect(page.locator("#conversation-details").getByRole("tab")).toHaveText([
-    "Detail",
+    "Details",
     "Library",
     "Computer",
   ]);
@@ -118,22 +163,11 @@ test("contextual goals, Routine and files use real scoped state and keep stop re
   await expect(page.locator(".context-hero [data-activity-label]")).toHaveCount(0);
   await expect(page.getByRole("link", { name: "Ubah avatar", exact: true })).toHaveCount(0);
   await capture(page, testInfo.outputPath("agent-profile.png"));
-  await page
-    .locator("#conversation-details")
-    .getByRole("button", { name: "Pilih model", exact: true })
-    .click();
-  await expect(page.getByRole("dialog", { name: "Pilih model", exact: true })).toBeVisible();
-  await page.keyboard.press("Escape");
-  await expect(page.getByRole("tab", { name: "Detail", exact: true })).toBeVisible();
-  await page.locator('[data-panel-nav="Goals"]').click();
   await capture(page, testInfo.outputPath("goals-list.png"));
   await page.getByRole("button", { name: "Research progress", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Research progress", exact: true })).toBeVisible();
   await expect(
-    page.getByText(
-      "Stop run menghentikan satu eksekusi. Pause/stop goal juga menghentikan kelanjutannya.",
-      { exact: true },
-    ),
+    page.getByRole("dialog").getByRole("heading", { name: "Activity", exact: true }),
   ).toBeVisible();
   await capture(page, testInfo.outputPath("goal-detail.png"));
   const initial = await (await page.request.get(`/v1/threads/${a.thread.id}/snapshot`)).json();
@@ -151,20 +185,19 @@ test("contextual goals, Routine and files use real scoped state and keep stop re
     committedPause = await response.json();
     await route.abort("failed");
   });
-  await page.getByRole("button", { name: "Jeda goal", exact: true }).click();
-  await expect(page.getByRole("button", { name: "Periksa perubahan", exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Pause goal", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Check change", exact: true })).toBeVisible();
   await page.reload();
   await page.getByRole("button", { name: `Detail ${a.agent.name}`, exact: true }).click();
-  await page.locator('[data-panel-nav="Goals"]').click();
   await page.getByRole("button", { name: "Research progress", exact: true }).click();
-  await expect(page.getByRole("button", { name: "Periksa perubahan", exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Check change", exact: true })).toBeVisible();
   await page.unroute(`**/v1/goals/${goal.id}/control`);
   const retry = page.waitForRequest((request) =>
     request.url().endsWith(`/v1/goals/${goal.id}/control`),
   );
-  await page.getByRole("button", { name: "Periksa perubahan", exact: true }).click();
+  await page.getByRole("button", { name: "Check change", exact: true }).click();
   expect((await retry).headers()["idempotency-key"]).toBe(firstControlKey);
-  await expect(page.getByRole("button", { name: "Periksa perubahan", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Check change", exact: true })).toHaveCount(0);
   let state = await (await page.request.get(`/v1/threads/${a.thread.id}/snapshot`)).json();
   expect(state.goals.find((item: { id: string }) => item.id === goal.id).revision).toBe(
     committedPause?.revision,
@@ -179,11 +212,10 @@ test("contextual goals, Routine and files use real scoped state and keep stop re
   const resume = page.waitForResponse((response) =>
     response.url().endsWith(`/v1/goals/${goal.id}/control`),
   );
-  await page.getByRole("button", { name: "Lanjutkan goal", exact: true }).click();
+  await page.getByRole("button", { name: "Resume goal", exact: true }).click();
   expect((await resume).ok()).toBeTruthy();
-  await page.getByRole("button", { name: "Kembali ke goals", exact: true }).click();
-  await page.getByRole("button", { name: "Kembali ke detail", exact: true }).click();
-  await page.locator('[data-panel-nav="Routine"]').click();
+  await page.getByRole("button", { name: "Close detail", exact: true }).click();
+  await page.getByRole("button", { name: "Check research progress", exact: true }).click();
   const pauseRoutine = page.waitForResponse((response) =>
     response.url().endsWith(`/v1/routines/${routine.id}/control`),
   );
@@ -196,8 +228,7 @@ test("contextual goals, Routine and files use real scoped state and keep stop re
   expect(state.routines.find((item: { id: string }) => item.id === routine.id).state).toBe(
     "paused",
   );
-  await page.getByRole("button", { name: "Check research progress", exact: true }).click();
-  await expect(page.getByText("Asia/Makassar", { exact: true })).toBeVisible();
+  await expect(page.getByText(/Asia\/Makassar/)).toBeVisible();
   const enableRoutine = page.waitForResponse((response) =>
     response.url().endsWith(`/v1/routines/${routine.id}/control`),
   );
@@ -206,13 +237,16 @@ test("contextual goals, Routine and files use real scoped state and keep stop re
   await expect(
     page.getByRole("switch", { name: "Routine Check research progress", exact: true }),
   ).toBeChecked();
+  await expect(
+    page.getByRole("dialog", { name: "Check research progress", exact: true }),
+  ).toBeVisible();
   await capture(page, testInfo.outputPath("routine-detail.png"));
-  await page.getByRole("button", { name: "Terkait goal: Research progress", exact: true }).click();
+  await page.getByRole("button", { name: "Related goal: Research progress", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Research progress", exact: true })).toBeVisible();
   const stopGoal = page.waitForResponse((response) =>
     response.url().endsWith(`/v1/goals/${goal.id}/control`),
   );
-  await page.getByRole("button", { name: "Hentikan goal", exact: true }).click();
+  await page.getByRole("button", { name: "Stop goal", exact: true }).click();
   expect((await stopGoal).ok()).toBeTruthy();
   state = await (await page.request.get(`/v1/threads/${a.thread.id}/snapshot`)).json();
   expect(state.goals.find((item: { id: string }) => item.id === goal.id).state).toBe("stopped");
@@ -243,16 +277,23 @@ test("contextual goals, Routine and files use real scoped state and keep stop re
   );
   expect(userAdmissions).toEqual([]);
   await expect(page.locator('[role="textbox"][aria-label="Pesan"]')).toHaveText("");
-  await page.getByRole("button", { name: "Kembali ke goals", exact: true }).click();
-  await page.getByRole("button", { name: "Kembali ke detail", exact: true }).click();
+  await page.getByRole("button", { name: "Close detail", exact: true }).click();
   await page.getByRole("tab", { name: "Library", exact: true }).click();
-  await page.getByRole("button", { name: "Gunakan folder percakapan", exact: true }).click();
-  await page.getByLabel("Unggah file", { exact: true }).setInputFiles({
-    name: "research.txt",
-    mimeType: "text/plain",
-    buffer: Buffer.from("Verifiable research result."),
+  const workspace = await post(page, "/v1/workspaces", {
+    thread_id: a.thread.id,
+    agent_id: a.agent.id,
   });
-  await page.getByRole("button", { name: "Buka research.txt", exact: true }).click();
+  await post(page, `/v1/workspaces/${workspace.id}/uploads`, {
+    name: "research.txt",
+    media_type: "text/plain",
+    content_base64: Buffer.from("Verifiable research result.").toString("base64"),
+  });
+  await projectOutputs(page, a.thread.id);
+  await page.reload();
+  await page.getByRole("button", { name: `Detail ${a.agent.name}`, exact: true }).click();
+  await page.getByRole("tab", { name: "Library", exact: true }).click();
+  await page.getByRole("button", { name: "File research.txt", exact: true }).click();
+  await page.getByRole("button", { name: "Open research.txt", exact: true }).click();
   await expect(page.getByText("Verifiable research result.", { exact: true })).toBeVisible();
   const download = page.waitForEvent("download");
   await page.getByRole("link", { name: "Unduh file", exact: true }).click();
@@ -298,6 +339,7 @@ test("file previews reuse source tables, code and markdown without executing fil
       media_type: file.media_type,
       content_base64: Buffer.from(file.text).toString("base64"),
     });
+  await projectOutputs(page, a.thread.id);
   const external: string[] = [];
   page.on("request", (request) => {
     if (request.url().includes("example.invalid/preview-network")) external.push(request.url());
@@ -306,11 +348,11 @@ test("file previews reuse source tables, code and markdown without executing fil
   await page.getByRole("button", { name: `Detail ${a.agent.name}`, exact: true }).click();
   await page.getByRole("tab", { name: "Library", exact: true }).click();
   async function open(name: string) {
-    await expect(page.locator('[data-slot="dialog-content"]')).toHaveCount(0);
+    await expect(page.locator("[data-responsibility-detail]")).toHaveCount(0);
     const back = page.locator("#conversation-details [data-panel-back]");
     if (await back.count()) await back.click();
     await page.getByRole("button", { name: `File ${name}`, exact: true }).click();
-    await page.getByRole("button", { name: `Buka ${name}`, exact: true }).click();
+    await page.getByRole("button", { name: `Open ${name}`, exact: true }).click();
     return page.getByRole("dialog", { name, exact: true });
   }
   let preview = await open("records.csv");
@@ -380,14 +422,15 @@ test("group creation recovers a lost acknowledgement, routes messages and keeps 
   await expect(page.getByLabel("Nama grup", { exact: true })).toHaveValue("Research circle");
   await page.getByRole("button", { name: "Periksa pembuatan grup", exact: true }).click();
   await page.getByRole("button", { name: "Detail Research circle", exact: true }).click();
-  await expect(page.getByRole("tab", { name: "Detail", exact: true })).toBeVisible();
+  await expect(page.getByRole("tab", { name: "Details", exact: true })).toBeVisible();
   await capture(page, testInfo.outputPath("group-profile.png"));
-  await page.getByRole("button", { name: `Profil anggota ${a.agent.name}`, exact: true }).click();
+  await page.getByRole("button", { name: `Member profile ${a.agent.name}`, exact: true }).click();
+  await expectPanelHeader(page, a.agent.name);
   await expect(
     page.getByText("Private member memory must stay in its DM.", { exact: true }),
   ).toHaveCount(0);
-  await expect(page.getByRole("button", { name: "Hapus memory", exact: true })).toHaveCount(0);
-  await page.getByRole("button", { name: "Kembali ke anggota", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Delete memory", exact: true })).toHaveCount(0);
+  await page.getByRole("button", { name: "Back to Members", exact: true }).click();
   const close = page.getByRole("button", { name: "Tutup detail", exact: true });
   if (await close.isVisible()) await close.click();
   else await page.getByRole("button", { name: "Close", exact: true }).click();
@@ -442,12 +485,12 @@ test("browser viewer connects to the managed browser and reconnects its view wit
   await page.getByRole("button", { name: `Detail ${a.agent.name}`, exact: true }).click();
   await page.getByRole("tab", { name: "Computer", exact: true }).click();
   await expect(
-    page.getByRole("button", { name: "Aktifkan browser percakapan", exact: true }),
+    page.getByRole("button", { name: "Enable conversation browser", exact: true }),
   ).toBeVisible();
   const created = page.waitForResponse(
     (r) => r.url().endsWith("/v1/browser/profiles") && r.request().method() === "POST",
   );
-  await page.getByRole("button", { name: "Aktifkan browser percakapan", exact: true }).click();
+  await page.getByRole("button", { name: "Enable conversation browser", exact: true }).click();
   const profile = await (await created).json();
   await capture(page, testInfo.outputPath("browser-profiles.png"));
   let sessionId = "";
@@ -455,7 +498,7 @@ test("browser viewer connects to the managed browser and reconnects its view wit
     const opened = page.waitForResponse((r) =>
       r.url().endsWith(`/v1/browser/profiles/${profile.id}/open`),
     );
-    await page.getByRole("button", { name: "Lihat browser", exact: true }).click();
+    await page.getByRole("button", { name: "View browser", exact: true }).click();
     sessionId = (await (await opened).json()).id;
     await expect(page.getByText("Tampilan terhubung", { exact: true })).toBeVisible({
       timeout: 45000,
@@ -491,22 +534,22 @@ test("browser viewer connects to the managed browser and reconnects its view wit
       );
     if (hasRaster)
       await expect(
-        page.getByAltText("Pratinjau dari sesi browser yang sama", { exact: true }),
+        page.getByAltText("Preview of the same browser session", { exact: true }),
       ).toBeVisible();
     else {
       await expect(
-        page.getByAltText("Pratinjau dari sesi browser yang sama", { exact: true }),
+        page.getByAltText("Preview of the same browser session", { exact: true }),
       ).toHaveCount(0);
       await expect(
-        page.getByRole("button", { name: `Lihat tampilan browser ${a.agent.name}`, exact: true }),
-      ).toContainText("Sesi tersedia");
+        page.getByRole("button", { name: `View browser for ${a.agent.name}`, exact: true }),
+      ).toContainText("Session ready");
     }
     await capture(page, testInfo.outputPath("browser-preview.png"));
     const existingView = page.waitForResponse((response) =>
       response.url().endsWith(`/v1/browser/sessions/${sessionId}/view`),
     );
     await page
-      .getByRole("button", { name: `Lihat tampilan browser ${a.agent.name}`, exact: true })
+      .getByRole("button", { name: `View browser for ${a.agent.name}`, exact: true })
       .click();
     await existingView;
     await expect(page.getByText("Tampilan terhubung", { exact: true })).toBeVisible();
@@ -552,8 +595,9 @@ test("application access is assigned explicitly to this context and unsupported 
   expect(
     (await (await page.request.get(`/v1/threads/${a.thread.id}/snapshot`)).json()).artifacts,
   ).toHaveLength(0);
-  await page.getByRole("button", { name: `Detail ${a.agent.name}`, exact: true }).click();
-  await page.getByText("Koneksi aplikasi", { exact: true }).click();
+  const navigation = page.getByRole("button", { name: "Buka percakapan", exact: true });
+  if (await navigation.isVisible()) await navigation.click();
+  await page.getByRole("button", { name: "Hubungkan aplikasi", exact: true }).click();
   await expect(page.getByText("Calendar fixture", { exact: true })).toBeVisible();
   await expect(page.getByText("Mail fixture", { exact: true })).toBeVisible();
   await capture(page, testInfo.outputPath("apps-catalog.png"));
@@ -618,8 +662,9 @@ test("application access is assigned explicitly to this context and unsupported 
     .getByRole("textbox", { name: "Pesan", exact: true })
     .fill(`fixture apps:${created.id}`);
   await page.getByRole("button", { name: "Kirim", exact: true }).click();
-  await page.getByRole("button", { name: `Detail ${a.agent.name}`, exact: true }).click();
-  await page.getByText("Koneksi aplikasi", { exact: true }).click();
+  if (await page.getByRole("button", { name: "Buka percakapan", exact: true }).isVisible())
+    await page.getByRole("button", { name: "Buka percakapan", exact: true }).click();
+  await page.getByRole("button", { name: "Hubungkan aplikasi", exact: true }).click();
   await page.getByText("calendar list events · Berhasil", { exact: true }).click();
   await expect(page.getByText("Receipt: fixture-provider-receipt", { exact: true })).toBeVisible();
 });
@@ -638,8 +683,9 @@ test("apps catalog searches live and authorization recovers from blocked popups 
       await route.abort("failed");
     } else await route.continue();
   });
-  await page.getByRole("button", { name: `Detail ${a.agent.name}`, exact: true }).click();
-  await page.getByText("Koneksi aplikasi", { exact: true }).click();
+  if (await page.getByRole("button", { name: "Buka percakapan", exact: true }).isVisible())
+    await page.getByRole("button", { name: "Buka percakapan", exact: true }).click();
+  await page.getByRole("button", { name: "Hubungkan aplikasi", exact: true }).click();
   await page.getByRole("button", { name: "Muat ulang katalog", exact: true }).click();
   await expect(page.getByText("Calendar fixture", { exact: true })).toBeVisible();
   await expect(page.getByText("Mail fixture", { exact: true })).toBeVisible();
@@ -1169,14 +1215,15 @@ test("sharing copies only the selected file into the explicit destination and pr
     media_type: "text/plain",
     content_base64: Buffer.from("Keep this file private.").toString("base64"),
   });
+  await projectOutputs(page, a.thread.id);
   await chooseAgent(page, a.agent.name);
   await page.getByRole("button", { name: `Detail ${a.agent.name}`, exact: true }).click();
   await page.getByRole("tab", { name: "Library", exact: true }).click();
   await page.getByRole("button", { name: "File share.txt", exact: true }).click();
-  await page.getByText("Bagikan salinan ke percakapan lain", { exact: true }).click();
-  await page.getByLabel("Folder tujuan", { exact: true }).selectOption(destination.id);
-  await page.getByRole("button", { name: "Bagikan file ini", exact: true }).click();
-  await expect(page.getByText("Salinan berhasil dibagikan.", { exact: true })).toBeVisible();
+  await page.getByText("Share a copy to another conversation", { exact: true }).click();
+  await page.getByLabel("Destination folder", { exact: true }).selectOption(destination.id);
+  await page.getByRole("button", { name: "Share this file", exact: true }).click();
+  await expect(page.getByText("Copy shared.", { exact: true })).toBeVisible();
   const snapshot = await (await page.request.get(`/v1/threads/${b.thread.id}/snapshot`)).json();
   expect(snapshot.artifacts).toHaveLength(1);
   expect(snapshot.artifacts[0].sha256).toBe(artifact.sha256);
@@ -1312,22 +1359,22 @@ test("membership editing keeps its original revision and cannot overwrite a conc
   ]);
   await chooseGroup(page, group.name);
   await page.getByRole("button", { name: `Detail ${group.name}`, exact: true }).click();
-  await page.getByText("Kelola anggota", { exact: true }).click();
+  await page.getByText("Manage members", { exact: true }).click();
   await post(page, `/v1/groups/${group.id}/membership`, {
     expected_revision: group.revision,
     member_agent_ids: [a.agent.id],
   });
-  await expect(page.getByRole("heading", { name: "Anggota · 1", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Members · 1", exact: true })).toBeVisible();
   const response = page.waitForResponse(
     (r) => r.url().endsWith(`/v1/groups/${group.id}/membership`) && r.request().method() === "POST",
   );
-  await page.getByRole("button", { name: "Simpan anggota", exact: true }).click();
+  await page.getByRole("button", { name: "Save members", exact: true }).click();
   expect((await response).status()).toBe(409);
   const snapshot = await (await page.request.get(`/v1/threads/${group.id}/snapshot`)).json();
   expect(snapshot.thread.member_agent_ids).toEqual([a.agent.id]);
-  await page.getByRole("button", { name: "Muat anggota terbaru", exact: true }).click();
+  await page.getByRole("button", { name: "Reload members", exact: true }).click();
   await expect(
-    page.getByRole("checkbox", { name: `Anggota ${b.agent.name}`, exact: true }),
+    page.getByRole("checkbox", { name: `Members ${b.agent.name}`, exact: true }),
   ).not.toBeChecked();
 });
 
@@ -1369,5 +1416,255 @@ async function newGroup(page: Page, name: string, ids: string[]) {
   return post(page, `/v1/groups/${thread.id}/configuration`, {
     expected_revision: thread.revision,
     changes: { name },
+  });
+}
+
+test("agent detail list shows essential goals and only agent outputs", async ({
+  page,
+}, testInfo) => {
+  const { a } = await start(page);
+  await post(page, "/v1/goals", {
+    thread_id: a.thread.id,
+    agent_id: a.agent.id,
+    title: "Prepare the report",
+  });
+  await post(page, "/v1/learning/memories/write", {
+    context: { agent_id: a.agent.id, thread_id: a.thread.id },
+    memory_id: crypto.randomUUID(),
+    expected_revision: 0,
+    visibility: "dm_private",
+    text: "Prefers concise reports.",
+  });
+  const workspace = await post(page, "/v1/workspaces", {
+    thread_id: a.thread.id,
+    agent_id: a.agent.id,
+    name: "Hidden workspace",
+  });
+  for (const name of ["input.txt", "report.txt"]) {
+    await post(page, `/v1/workspaces/${workspace.id}/uploads`, {
+      name,
+      media_type: "text/plain",
+      content_base64: Buffer.from(name).toString("base64"),
+    });
+  }
+  await projectOutputs(page, a.thread.id, ["report.txt"]);
+  await chooseAgent(page, a.agent.name);
+  await page.getByRole("button", { name: "Pilih model", exact: true }).click();
+  await expect(page.getByRole("dialog", { name: "Pilih model", exact: true })).toBeVisible();
+  await page.keyboard.press("Escape");
+  await page.getByRole("button", { name: `Detail ${a.agent.name}`, exact: true }).click();
+  const panel = page.locator("#conversation-details");
+  await expect(panel.getByRole("tab", { name: "Details", exact: true })).toBeVisible();
+  await expect(panel.locator("[data-detail-overview] > section")).toHaveCount(2);
+  await expect(panel.locator(".context-hero > .agent-avatar")).toHaveCSS("width", "96px");
+  await expect(panel.locator(".context-hero h2")).toHaveCSS("font-size", "20px");
+  await expect(panel.getByRole("button", { name: "Pilih model", exact: true })).toHaveCount(0);
+  await expect(panel.locator(".grid.grid-cols-2")).toHaveCount(0);
+  await capture(page, testInfo.outputPath("compact-detail.png"));
+  await expect(panel.getByRole("button", { name: "Skills", exact: true })).toHaveCount(0);
+  await expect(panel.locator("details")).toHaveCount(0);
+  await expect(panel.getByText("Keep the instructions visible.", { exact: true })).toHaveCount(0);
+  await expect(panel.getByRole("heading", { name: "Memory", exact: true })).toHaveCount(0);
+  await panel.getByRole("tab", { name: "Library", exact: true }).click();
+  await expect(panel.getByText("Prefers concise reports.", { exact: true })).toBeVisible();
+  await expect(panel.getByRole("button", { name: "Manage", exact: true })).toHaveCount(0);
+  await panel.getByRole("button", { name: "About Memory", exact: true }).click();
+  await expect(page.getByRole("tooltip")).toContainText("remember, change, or forget");
+  await page.keyboard.press("Escape");
+  await panel.getByRole("tab", { name: "Details", exact: true }).click();
+  await panel.getByRole("button", { name: "Prepare the report", exact: true }).click();
+  await expect(
+    page.getByRole("dialog").getByRole("heading", { name: "Prepare the report", exact: true }),
+  ).toBeVisible();
+  await expect(panel.getByText("Belum ada bukti hasil.", { exact: true })).toHaveCount(0);
+  await expect(
+    page.getByRole("dialog").getByRole("button", { name: "Pause goal", exact: true }),
+  ).toBeVisible();
+  await expect(page.getByRole("dialog", { name: "Prepare the report", exact: true })).toBeVisible();
+  await capture(page, testInfo.outputPath("compact-goal.png"));
+  await page.getByRole("button", { name: "Close detail", exact: true }).click();
+  await panel.getByRole("tab", { name: "Library", exact: true }).click();
+  await expect(panel.getByRole("heading", { name: "Files", exact: true })).toBeVisible();
+  await expect(panel.getByRole("button", { name: "File report.txt", exact: true })).toBeVisible();
+  await expect(panel.getByRole("button", { name: "File input.txt", exact: true })).toHaveCount(0);
+  await expect(panel.getByText("Hidden workspace", { exact: true })).toHaveCount(0);
+  await expect(panel.getByText("Hubungkan folder", { exact: true })).toHaveCount(0);
+  await capture(page, testInfo.outputPath("agent-outputs.png"));
+  await panel.getByRole("button", { name: "File report.txt", exact: true }).click();
+  await expectPanelHeader(page, "report.txt");
+  await panel.getByRole("button", { name: "Open report.txt", exact: true }).click();
+  await expect(page.getByRole("dialog")).toBeVisible();
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
+  ).toBeTruthy();
+});
+
+for (const theme of ["light", "dark"] as const) {
+  test(`${theme}: detail lists show all goals and routines with dialogs and library memory`, async ({
+    page,
+  }, info) => {
+    await page.addInitScript(
+      (value) => localStorage.setItem("ngertiin-web-client-theme", value),
+      theme,
+    );
+    const { a } = await start(page);
+    for (let i = 1; i <= 6; i++) {
+      await post(page, "/v1/goals", {
+        thread_id: a.thread.id,
+        agent_id: a.agent.id,
+        title: `Research goal ${i}`,
+      });
+      await post(page, "/v1/routines", {
+        thread_id: a.thread.id,
+        agent_id: a.agent.id,
+        instruction: i === 2 ? "Heartbeat" : `Research check ${i}`,
+        schedule:
+          i === 2
+            ? { type: "heartbeat", every_ms: 1800000, anchor_at: "2035-01-01T00:00:00.000Z" }
+            : { type: "interval", every_ms: 43200000, anchor_at: "2035-01-01T00:00:00.000Z" },
+        timezone: "Asia/Makassar",
+      });
+    }
+    await post(page, "/v1/learning/memories/write", {
+      context: { thread_id: a.thread.id, agent_id: a.agent.id },
+      memory_id: crypto.randomUUID(),
+      expected_revision: 0,
+      visibility: "dm_private",
+      text: "Prefers concise, practical research summaries.",
+    });
+    const workspace = await post(page, "/v1/workspaces", {
+      thread_id: a.thread.id,
+      agent_id: a.agent.id,
+    });
+    const report = await post(page, `/v1/workspaces/${workspace.id}/uploads`, {
+      name: "research-summary.txt",
+      media_type: "text/plain",
+      content_base64: Buffer.from("Research summary for the goal dialog.").toString("base64"),
+    });
+    await page.route(`**/v1/threads/${a.thread.id}/snapshot`, async (route) => {
+      const response = await route.fetch();
+      const snapshot = await response.json();
+      snapshot.agents[0].instructions = "This instruction should not appear in Details.";
+      const goal = snapshot.goals.find(
+        (item: { title: string }) => item.title === "Research goal 6",
+      );
+      goal.objective =
+        "Research relevant opportunities, compare their requirements, and prepare a concise summary of the best matches.";
+      goal.state = "completed";
+      goal.evidence_artifact_ids = [report.id];
+      snapshot.artifacts.find((item: { id: string }) => item.id === report.id).origin =
+        "native_output";
+      const heartbeat = snapshot.routines.find(
+        (item: { instruction: string }) => item.instruction === "Heartbeat",
+      );
+      snapshot.occurrences = Array.from({ length: 12 }, (_, i) => ({
+        id: `history-fixture-${i}`,
+        routine_id: heartbeat.id,
+        run_id: null,
+        state: i === 1 ? "failed" : "completed",
+        selected_agent_id: a.agent.id,
+        scheduled_for: new Date(Date.UTC(2026, 10, 3, 12 - i)).toISOString(),
+      }));
+
+      snapshot.goals[0].progress =
+        "Two new opportunities found. Reviewing the requirements before the next update.";
+      await route.fulfill({ response, json: snapshot });
+    });
+    await chooseAgent(page, a.agent.name);
+    await page.getByRole("button", { name: `Detail ${a.agent.name}`, exact: true }).click();
+    const panel = page.locator("#conversation-details");
+    await expect(panel.locator("[data-detail-overview] > section")).toHaveCount(2);
+    await expect(panel.getByRole("button", { name: /^Research goal/ })).toHaveCount(6);
+    await expect(panel.locator('[data-panel-nav^="routine:"]')).toHaveCount(6);
+    await expect(panel.getByText("Every 12 hours", { exact: true })).toHaveCount(5);
+    await expect(panel.getByText("Every 30 minutes", { exact: true })).toBeVisible();
+    await expect(panel.getByText("This instruction should not appear in Details.")).toHaveCount(0);
+    await expect(panel.getByRole("heading", { name: "Memory", exact: true })).toHaveCount(0);
+    await expect(panel.locator('[data-slot="accordion"]')).toHaveCount(0);
+    for (const topic of ["Goals", "Routine"]) {
+      await panel.getByRole("button", { name: `About ${topic}`, exact: true }).focus();
+      await expect(page.getByRole("tooltip")).toContainText(
+        topic === "Goals" ? "outcomes your agent tracks" : "scheduled tasks or recurring checks",
+      );
+      await page.keyboard.press("Escape");
+      await expect(page.getByRole("tooltip")).toHaveCount(0);
+    }
+    const goalRow = panel.getByRole("button", { name: "Research goal 6", exact: true });
+    await expect(goalRow).toHaveCSS("padding-left", "12px");
+    await expect(goalRow).toHaveCSS("padding-right", "12px");
+    const headingBox = await panel
+      .getByRole("heading", { name: "Goals", exact: true })
+      .boundingBox();
+    const iconBox = await goalRow.locator(":scope > span").first().boundingBox();
+    expect(iconBox?.x).toBe(headingBox?.x);
+    if (info.project.name === "desktop") {
+      const before = await goalRow.boundingBox();
+      await goalRow.hover();
+      expect(await goalRow.boundingBox()).toEqual(before);
+    }
+    await capture(page, info.outputPath("details.png"));
+    await expect(panel.getByRole("button", { name: "View all goals", exact: true })).toHaveCount(0);
+    await expect(panel.getByText("Completed", { exact: true })).toHaveCount(0);
+    await panel.getByRole("button", { name: "Research goal 6", exact: true }).click();
+    let dialog = page.getByRole("dialog", { name: "Research goal 6", exact: true });
+    await expect(dialog).toBeVisible();
+    await expect(dialog).toHaveAttribute(
+      "data-slot",
+      info.project.name === "mobile" ? "drawer-content" : "dialog-content",
+    );
+
+    await expect(dialog.getByRole("heading", { name: "Activity", exact: true })).toBeVisible();
+    await expect(
+      dialog.getByRole("button", { name: "research-summary.txt File", exact: true }),
+    ).toBeVisible();
+    await expect(panel.locator("[data-panel-back]")).toHaveCount(0);
+    await capture(page, info.outputPath("goal-dialog.png"));
+    await page.keyboard.press("Escape");
+    await expect(page.locator("[data-responsibility-detail]")).toHaveCount(0);
+    await expect(panel.getByRole("button", { name: "Research goal 6", exact: true })).toBeFocused();
+    await panel.getByRole("button", { name: "Heartbeat", exact: true }).click();
+    dialog = page.getByRole("dialog", { name: "Heartbeat", exact: true });
+    await expect(dialog).toBeVisible();
+    await expect(dialog).toHaveAttribute(
+      "data-slot",
+      info.project.name === "mobile" ? "drawer-content" : "dialog-content",
+    );
+
+    await expect(dialog.getByText("Run history", { exact: true })).toBeVisible();
+    await expect(dialog.locator("details li")).toHaveCount(12);
+    await expect(dialog.getByText("Failed · scheduled", { exact: true })).toBeVisible();
+    const stop = dialog.getByRole("button", { name: "Stop routine", exact: true });
+    await expect(stop).toHaveAttribute("data-variant", "destructive");
+    await expect(
+      dialog.locator("footer").getByRole("button", { name: "Stop routine", exact: true }),
+    ).toBeVisible();
+    await capture(page, info.outputPath("routine-dialog.png"));
+    await expect(stop).toBeInViewport();
+    const toggle = dialog.getByRole("switch", { name: "Routine Heartbeat", exact: true });
+    await toggle.click();
+    await expect(toggle).not.toBeChecked();
+    await dialog.getByRole("button", { name: "Close detail", exact: true }).click();
+    await expect(page.locator("[data-responsibility-detail]")).toHaveCount(0);
+    await expect(panel.getByRole("button", { name: "Heartbeat", exact: true })).toBeFocused();
+    await panel.getByRole("tab", { name: "Library", exact: true }).click();
+    await expect(panel.getByRole("heading", { name: "Memory", exact: true })).toBeVisible();
+    await expect(
+      panel.getByText("Prefers concise, practical research summaries.", { exact: true }),
+    ).toBeVisible();
+    await expect(panel.getByRole("heading", { name: "Files", exact: true })).toBeVisible();
+    expect(
+      await panel.evaluate((element) => {
+        const headings = [...element.querySelectorAll("h3")].map((heading) => heading.textContent);
+        return headings.indexOf("Memory") < headings.indexOf("Files");
+      }),
+    ).toBeTruthy();
+    await capture(page, info.outputPath("library.png"));
+    await expect(panel.getByRole("button", { name: "Manage", exact: true })).toHaveCount(0);
+    await panel.getByRole("button", { name: "About Memory", exact: true }).click();
+    await expect(page.getByRole("tooltip")).toContainText("remember, change, or forget");
+    await page.keyboard.press("Escape");
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
+    ).toBeTruthy();
   });
 }

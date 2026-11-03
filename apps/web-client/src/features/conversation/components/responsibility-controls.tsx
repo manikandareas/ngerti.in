@@ -8,14 +8,19 @@ import { ApiError, durableCommand } from "@/lib/api-client";
 import type { Goal, Routine } from "@/types/work";
 
 const stateLabels: Record<string, string> = {
-  active: "Aktif",
-  paused: "Dijeda",
-  stopped: "Dihentikan",
-  completed: "Selesai",
+  active: "Active",
+  paused: "Paused",
+  stopped: "Stopped",
+  completed: "Completed",
 };
 
 type ControlState = "active" | "paused" | "stopped";
 type PendingControl = { state: ControlState; expected_revision?: number };
+type ResponsibilityControlsProps = {
+  refresh: () => Promise<unknown>;
+  blocked?: boolean;
+  actions?: ReactNode;
+} & ({ kind: "goal"; item: Goal } | { kind: "routine"; item: Routine });
 function savedControl(slot: string): PendingControl | null {
   try {
     const saved = localStorage.getItem(`ngertiin:pending:${slot}`);
@@ -30,17 +35,9 @@ export function ResponsibilityControls({
   item,
   kind,
   refresh,
-  compact = false,
   blocked = false,
-  children,
-}: {
-  item: Goal | Routine;
-  kind: "goal" | "routine";
-  refresh: () => Promise<unknown>;
-  compact?: boolean;
-  blocked?: boolean;
-  children?: ReactNode | ((disabled: boolean) => ReactNode);
-}) {
+  actions,
+}: ResponsibilityControlsProps) {
   const slot = `responsibility:${kind}:${item.id}`;
   const [pending, setPending] = useState(() => savedControl(slot));
   const [confirmed, setConfirmed] = useState<Goal | Routine | null>(null);
@@ -50,7 +47,7 @@ export function ResponsibilityControls({
   const lock = useRef(false);
   const current = confirmed && confirmed.revision >= item.revision ? confirmed : item;
   const terminal = current.state === "stopped" || current.state === "completed";
-  const name = kind === "goal" ? (item as Goal).title : routineName(item as Routine);
+  const name = kind === "goal" ? item.title : routineName(item);
   async function apply(state: ControlState) {
     if (lock.current) return;
     lock.current = true;
@@ -71,7 +68,7 @@ export function ResponsibilityControls({
       setConfirmed(result);
       setPending(null);
       setNotice(
-        `${kind === "goal" ? "Goal" : "Routine"} ${stateLabels[result.state]?.toLowerCase() ?? "diperbarui"}.`,
+        `${kind === "goal" ? "Goal" : "Routine"} ${stateLabels[result.state]?.toLowerCase() ?? "updated"}.`,
       );
       await refresh();
     } catch (failure) {
@@ -90,13 +87,13 @@ export function ResponsibilityControls({
         setPending(null);
         setError(
           failure.code === "CONFLICT"
-            ? "Status sudah berubah. Muat status terbaru sebelum mengubahnya lagi."
+            ? "The status has changed. Refresh it before making another change."
             : failure.message,
         );
         void refresh().catch(() => {});
       } else {
         setPending(savedControl(slot));
-        setError(failure instanceof Error ? failure.message : "Perubahan belum terkonfirmasi.");
+        setError(failure instanceof Error ? failure.message : "This change is not confirmed yet.");
       }
     } finally {
       lock.current = false;
@@ -104,15 +101,11 @@ export function ResponsibilityControls({
     }
   }
   return (
-    <div className={compact ? "px-3.5 py-3.5" : "space-y-2"}>
+    <div className="space-y-2">
       {kind === "routine" ? (
         <div className="flex items-start gap-3">
           <div className="min-w-0 flex-1">
-            {(typeof children === "function" ? children(busy) : children) ?? (
-              <p className="text-[14px] font-medium">
-                {stateLabels[current.state] ?? current.state}
-              </p>
-            )}
+            <p className="text-[14px] font-medium">{stateLabels[current.state] ?? current.state}</p>
           </div>
           {!terminal && (
             <Switch
@@ -120,9 +113,7 @@ export function ResponsibilityControls({
               checked={current.state === "active"}
               disabled={busy || pending !== null || (blocked && current.state !== "active")}
               title={
-                blocked && current.state !== "active"
-                  ? "Lanjutkan goal terkait terlebih dahulu."
-                  : undefined
+                blocked && current.state !== "active" ? "Resume the linked goal first." : undefined
               }
               onCheckedChange={(enabled) => void apply(enabled ? "active" : "paused")}
               className="mt-0.5 shrink-0"
@@ -149,35 +140,40 @@ export function ResponsibilityControls({
               ) : (
                 <HugeiconsIcon icon={PauseIcon} size={13} strokeWidth={1.5} />
               )}
-              {current.state === "paused" ? "Lanjutkan goal" : "Jeda goal"}
+              {current.state === "paused" ? "Resume goal" : "Pause goal"}
             </Button>
             <Button
-              variant="ghost"
+              variant="destructive"
               size="sm"
               disabled={busy || pending !== null}
               onClick={() => void apply("stopped")}
             >
               <HugeiconsIcon icon={StopIcon} size={12} strokeWidth={1.5} />
-              Hentikan goal
+              Stop goal
             </Button>
           </div>
         )
       )}
-      {kind === "routine" && !compact && !terminal && (
-        <Button
-          variant="ghost"
-          size="sm"
-          className="mt-2"
-          disabled={busy || pending !== null}
-          onClick={() => void apply("stopped")}
-        >
-          <HugeiconsIcon icon={StopIcon} size={12} strokeWidth={1.5} />
-          Hentikan Routine
-        </Button>
+      {kind === "routine" && (
+        <div className="flex flex-wrap gap-2 pt-2">
+          {actions}
+          {!terminal && (
+            <Button
+              variant="destructive"
+              className="flex-1"
+              disabled={busy || pending !== null}
+              onClick={() => void apply("stopped")}
+            >
+              <HugeiconsIcon icon={StopIcon} size={12} strokeWidth={1.5} />
+              Stop routine
+            </Button>
+          )}
+        </div>
       )}
+
       {busy && (
         <p role="status" className="mt-2 text-[12px] text-muted-foreground">
-          Menyimpan perubahan…
+          Saving changes…
         </p>
       )}
       {notice && (
@@ -199,20 +195,20 @@ export function ResponsibilityControls({
             void refresh()
               .then(() => setError(""))
               .catch((failure) =>
-                setError(failure instanceof Error ? failure.message : "Status belum dapat dimuat."),
+                setError(failure instanceof Error ? failure.message : "Could not load the status."),
               )
           }
         >
-          Muat status terbaru
+          Refresh status
         </Button>
       )}
       {pending && !busy && (
         <div className="mt-2 space-y-1">
           <p className="text-[12px] leading-[18px] text-muted-foreground">
-            Perubahan belum terkonfirmasi. Periksa operasi yang sama sebelum mengubah status lagi.
+            This change is not confirmed yet. Check it before changing the status again.
           </p>
           <Button variant="outline" size="sm" onClick={() => void apply(pending.state)}>
-            Periksa perubahan
+            Check change
           </Button>
         </div>
       )}

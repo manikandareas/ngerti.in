@@ -679,7 +679,7 @@ button.group-bubble-author:focus-visible {
   animation: context-panel-in var(--duration-enter) var(--ease-panel);
 }
 
-.details-toolbar button {
+.details-toolbar [data-panel-close] {
   border-radius: 50%;
 }
 

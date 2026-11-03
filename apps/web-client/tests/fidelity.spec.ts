@@ -102,20 +102,15 @@ for (const mode of ["light", "dark"] as const) {
     await page.screenshot({ path: info.outputPath("model-menu.png") });
     await page.keyboard.press("Escape");
     await page.getByRole("button", { name: "Detail Tobi", exact: true }).click();
-    await expect(page.locator(".context-hero h2")).toHaveCSS("font-size", "17px");
-    await expect(page.locator(".context-hero > .agent-avatar")).toHaveCSS("width", "80px");
-    await expect(page.locator('[data-panel-nav="Memory"]')).toHaveCSS(
-      "height",
-      // The first row includes the source Card's1px divider as well as icon+padding.
-      mobile ? "55px" : "51px",
-    );
+    await expect(page.locator(".context-hero h2")).toHaveCSS("font-size", "20px");
+    await expect(page.locator(".context-hero > .agent-avatar")).toHaveCSS("width", "96px");
     await settled();
     await page.screenshot({ path: info.outputPath("agent-panel.png") });
-    await page.getByRole("button", { name: "Memory", exact: true }).click();
-    await expect(page.getByRole("heading", { name: "Memory", exact: true })).toBeVisible();
-    await expect(page.getByRole("tab", { name: "Detail", exact: true })).toBeHidden();
-    await page.keyboard.press("Escape");
-    await expect(page.getByRole("tab", { name: "Detail", exact: true })).toBeVisible();
+    await page.getByRole("tab", { name: "Library", exact: true }).click();
+    await expect(
+      page.getByText("No memories from this conversation yet.", { exact: true }),
+    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Files", exact: true })).toBeVisible();
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
     ).toBeTruthy();

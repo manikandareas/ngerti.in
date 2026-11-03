@@ -76,7 +76,7 @@ const documentFile = (name: string) => ({
   buffer: Buffer.from(`Group source ${name}`),
 });
 
-test("group file-only sends stay local, route through the group API and appear once in the shared File panel", async ({
+test("group file-only sends stay local, route through the group API and keep uploads in chat instead of the results panel", async ({
   page,
 }, info) => {
   const { group, composer } = await setup(page);
@@ -111,13 +111,11 @@ test("group file-only sends stay local, route through the group API and appear o
   await page.getByRole("button", { name: `Detail ${group.name}`, exact: true }).click();
   await page.getByRole("tab", { name: "Library", exact: true }).click();
   await expect(
-    page.getByText("Folder, lampiran, dan hasil dipakai bersama oleh anggota grup ini.", {
-      exact: true,
-    }),
+    page.getByRole("button", { name: "File group-source.txt", exact: true }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByText("Files created by your agent will appear here.", { exact: true }),
   ).toBeVisible();
-  await page.getByRole("button", { name: "File group-source.txt", exact: true }).click();
-  await page.getByRole("button", { name: "Buka group-source.txt", exact: true }).click();
-  await expect(page.getByText("Group source group-source.txt", { exact: true })).toBeVisible();
   await page.screenshot({ path: info.outputPath("group-shared-file.png") });
 });
 

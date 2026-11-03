@@ -34,7 +34,7 @@ export function GroupPanel({
       <div className="context-section pt-3.5">
         <PanelPageHeader
           title={profile.name}
-          back="Anggota"
+          back="Members"
           onBack={() => {
             setMember(null);
           }}
@@ -46,16 +46,15 @@ export function GroupPanel({
             animated
             interactive
             followPointer
-            className="size-16 rounded-[20px] text-2xl"
+            className="size-20 rounded-[24px] text-3xl"
           />
           <p className="text-[13px] leading-[1.5] text-muted-foreground">
-            {profile.soul || "Anggota grup"}
+            {profile.soul || "Group member"}
           </p>
         </div>
         <PanelCard>
           <p className="px-3.5 py-3 text-[13px] leading-[1.5] text-muted-foreground">
-            Profil ringkas dalam grup. Memory, riwayat, dan file DM tetap berada di percakapan
-            privat.
+            This is a group profile. Direct-message history, memory, and files stay private.
           </p>
         </PanelCard>
       </div>
@@ -64,24 +63,24 @@ export function GroupPanel({
     <div className="context-section space-y-3.5 pt-3.5">
       <PanelCard>
         <PanelNavRow
-          title="Tujuan dan arahan bersama"
+          title="Shared goals and instructions"
           hint={
             <span className="line-clamp-2">
               {snapshot.thread.shared_instructions ||
-                "Ceritakan apa yang ingin dikerjakan bersama di percakapan."}
+                "Describe what you want to work on together in chat."}
             </span>
           }
           icon={File02Icon}
-          aria-label="Ubah melalui percakapan"
-          onClick={() => compose("Bantu perbarui tujuan dan arahan bersama grup ini: ")}
+          aria-label="Edit in chat"
+          onClick={() => compose("Help update this group’s shared goals and instructions: ")}
         />
       </PanelCard>
-      <PanelCard label={`Anggota · ${snapshot.agents.length}`}>
+      <PanelCard label={`Members · ${snapshot.agents.length}`}>
         {snapshot.agents.map((a) => (
           <PanelNavRow
             key={a.id}
             title={a.name}
-            aria-label={`Profil anggota ${a.name}`}
+            aria-label={`Member profile ${a.name}`}
             hint={a.soul || undefined}
             onClick={() => {
               setMember(a.id);
@@ -107,7 +106,7 @@ export function GroupPanel({
             strokeWidth={1.5}
             className="text-muted-foreground"
           />
-          Kelola anggota
+          Manage members
           <HugeiconsIcon
             icon={PencilEdit01Icon}
             size={13}
@@ -130,7 +129,7 @@ export function GroupPanel({
               setExpectedRevision(saved.revision);
               await refresh();
             } catch (e) {
-              setError(e instanceof Error ? e.message : "Perubahan gagal");
+              setError(e instanceof Error ? e.message : "Could not save changes.");
             } finally {
               setBusy(false);
             }
@@ -144,7 +143,7 @@ export function GroupPanel({
               >
                 <input
                   type="checkbox"
-                  aria-label={`Anggota ${a.name}`}
+                  aria-label={`Members ${a.name}`}
                   checked={selected.includes(a.id)}
                   onChange={(e) =>
                     setSelected((v) =>
@@ -162,8 +161,7 @@ export function GroupPanel({
             ))}
           </fieldset>
           <p className="text-caption text-muted-foreground">
-            Perubahan akses berlaku untuk pekerjaan berikutnya. Resource privat anggota tidak ikut
-            dibagikan.
+            Access changes apply to future work. Private member resources are not shared.
           </p>
           {error && (
             <div>
@@ -180,12 +178,12 @@ export function GroupPanel({
                   setError("");
                 }}
               >
-                Muat anggota terbaru
+                Reload members
               </Button>
             </div>
           )}
           <Button size="sm" disabled={busy || !selected.length}>
-            Simpan anggota
+            Save members
           </Button>
         </form>
       </details>

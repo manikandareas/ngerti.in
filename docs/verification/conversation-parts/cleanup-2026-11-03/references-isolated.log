@@ -1,0 +1,38 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4423" --strictPort
+[WebServer] (node:59633) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 26 tests using 1 worker
+
+(node:59639) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop] › tests/composer.spec.ts:55:1 › expanded composer keeps full-width text above the attachment and send toolbar (2.2s)
+  ✓   2 [desktop] › tests/composer.spec.ts:113:1 › inline chips align with surrounding text, keep default gaps and allow file-only sends (1.7s)
+  ✓   3 [desktop] › tests/composer.spec.ts:160:1 › long filenames leave only one normal space before the following text (1.7s)
+  ✓   4 [desktop] › tests/composer.spec.ts:199:1 › files stay inline at the cursor and send stable references in sentence order (3.1s)
+  ✓   5 [desktop] › tests/composer.spec.ts:252:1 › files stay local until submit and a lost upload reply retries the same operation (2.3s)
+  ✓   6 [desktop] › tests/composer.spec.ts:307:1 › removing a selected file never uploads it and status stays behind its icon (2.3s)
+  ✓   7 [desktop] › tests/composer.spec.ts:361:1 › image chips preview through shadcn overlays and remove, undo and paste as whole objects (1.8s)
+  ✓   8 [desktop] › tests/composer.spec.ts:424:1 › a rejected second file restores an editable draft without publishing the first file (1.3s)
+  ✓   9 [desktop] › tests/composer.spec.ts:453:1 › pending sends restore inline file references and replay the exact message after reload (1.3s)
+  ✓  10 [desktop] › tests/inline-references.spec.ts:74:1 › group mention and skill use shared chips, preserve routing and survive reload (4.2s)
+  ✓  11 [desktop] › tests/inline-references.spec.ts:130:1 › popover filters at the cursor, fits the viewport, dismisses and never sends an empty result (2.7s)
+  ✓  12 [desktop] › tests/inline-references.spec.ts:168:1 › typing longer queries keeps the same visible popover without restarting its animation (4.5s)
+  ✓  13 [desktop] › tests/inline-references.spec.ts:210:1 › DM skill chips delete atomically and Markdown assistant references share their styling (2.4s)
+(node:59703) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  14 [mobile] › tests/composer.spec.ts:55:1 › expanded composer keeps full-width text above the attachment and send toolbar (1.4s)
+  ✓  15 [mobile] › tests/composer.spec.ts:113:1 › inline chips align with surrounding text, keep default gaps and allow file-only sends (1.8s)
+  ✓  16 [mobile] › tests/composer.spec.ts:160:1 › long filenames leave only one normal space before the following text (920ms)
+  ✓  17 [mobile] › tests/composer.spec.ts:199:1 › files stay inline at the cursor and send stable references in sentence order (1.3s)
+  ✓  18 [mobile] › tests/composer.spec.ts:252:1 › files stay local until submit and a lost upload reply retries the same operation (3.0s)
+  ✓  19 [mobile] › tests/composer.spec.ts:307:1 › removing a selected file never uploads it and status stays behind its icon (2.9s)
+  ✓  20 [mobile] › tests/composer.spec.ts:361:1 › image chips preview through shadcn overlays and remove, undo and paste as whole objects (982ms)
+  ✓  21 [mobile] › tests/composer.spec.ts:424:1 › a rejected second file restores an editable draft without publishing the first file (914ms)
+  ✓  22 [mobile] › tests/composer.spec.ts:453:1 › pending sends restore inline file references and replay the exact message after reload (1.2s)
+  ✓  23 [mobile] › tests/inline-references.spec.ts:74:1 › group mention and skill use shared chips, preserve routing and survive reload (3.8s)
+  ✓  24 [mobile] › tests/inline-references.spec.ts:130:1 › popover filters at the cursor, fits the viewport, dismisses and never sends an empty result (2.7s)
+  ✓  25 [mobile] › tests/inline-references.spec.ts:168:1 › typing longer queries keeps the same visible popover without restarting its animation (3.5s)
+  ✓  26 [mobile] › tests/inline-references.spec.ts:210:1 › DM skill chips delete atomically and Markdown assistant references share their styling (3.7s)
+
+  26 passed (1.1m)

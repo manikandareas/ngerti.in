@@ -1,0 +1,18 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4321" --strictPort
+[WebServer] (node:43114) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 6 tests using 1 worker
+
+(node:43115) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [desktop] › tests/group-responsibilities.spec.ts:101:1 › group collaboration displays friendly activity and shared goal evidence without technical bubbles (8.3s)
+  ✓  2 [desktop] › tests/work.spec.ts:92:1 › contextual goals, Routine and files use real scoped state and keep stop responsibility distinct from stop run (3.7s)
+  ✓  3 [desktop] › tests/work.spec.ts:978:1 › unsafe Markdown cuts and changed prefixes keep complete content beside a labeled native-history fallback (2.6s)
+(node:43133) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  4 [mobile] › tests/group-responsibilities.spec.ts:101:1 › group collaboration displays friendly activity and shared goal evidence without technical bubbles (8.1s)
+  ✓  5 [mobile] › tests/work.spec.ts:92:1 › contextual goals, Routine and files use real scoped state and keep stop responsibility distinct from stop run (4.7s)
+  ✓  6 [mobile] › tests/work.spec.ts:978:1 › unsafe Markdown cuts and changed prefixes keep complete content beside a labeled native-history fallback (4.7s)
+
+  6 passed (35.0s)

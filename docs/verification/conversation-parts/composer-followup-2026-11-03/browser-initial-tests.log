@@ -1,0 +1,223 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4321" --strictPort
+[WebServer] (node:47315) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 20 tests using 1 worker
+
+(node:47317) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   1 [desktop] › tests/composer.spec.ts:55:1 › expanded composer keeps full-width text above the attachment and send toolbar (8.5s)
+(node:47330) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   2 [desktop] › tests/composer.spec.ts:120:1 › inline chips align with surrounding text, keep default gaps and allow file-only sends (2.0s)
+  ✓   3 [desktop] › tests/composer.spec.ts:167:1 › long filenames leave only one normal space before the following text (706ms)
+  ✓   4 [desktop] › tests/composer.spec.ts:206:1 › files stay inline at the cursor and send stable references in sentence order (1.5s)
+  ✓   5 [desktop] › tests/composer.spec.ts:259:1 › files stay local until submit and a lost upload reply retries the same operation (2.1s)
+  ✓   6 [desktop] › tests/composer.spec.ts:314:1 › removing a selected file never uploads it and status stays behind its icon (2.5s)
+  ✓   7 [desktop] › tests/composer.spec.ts:368:1 › image chips preview through shadcn overlays and remove, undo and paste as whole objects (3.1s)
+  ✓   8 [desktop] › tests/composer.spec.ts:431:1 › a rejected second file restores an editable draft without publishing the first file (2.0s)
+  ✓   9 [desktop] › tests/composer.spec.ts:460:1 › pending sends restore inline file references and replay the exact message after reload (3.9s)
+  ✘  10 [desktop] › tests/group-responsibilities.spec.ts:117:1 › group collaboration displays friendly activity and shared goal evidence without technical bubbles (11.2s)
+(node:47413) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  11 [mobile] › tests/composer.spec.ts:55:1 › expanded composer keeps full-width text above the attachment and send toolbar (2.0s)
+  ✓  12 [mobile] › tests/composer.spec.ts:120:1 › inline chips align with surrounding text, keep default gaps and allow file-only sends (1.7s)
+  ✓  13 [mobile] › tests/composer.spec.ts:167:1 › long filenames leave only one normal space before the following text (732ms)
+  ✓  14 [mobile] › tests/composer.spec.ts:206:1 › files stay inline at the cursor and send stable references in sentence order (1.8s)
+  ✓  15 [mobile] › tests/composer.spec.ts:259:1 › files stay local until submit and a lost upload reply retries the same operation (1.9s)
+  ✓  16 [mobile] › tests/composer.spec.ts:314:1 › removing a selected file never uploads it and status stays behind its icon (1.9s)
+  ✘  17 [mobile] › tests/composer.spec.ts:368:1 › image chips preview through shadcn overlays and remove, undo and paste as whole objects (30.3s)
+(node:47452) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  18 [mobile] › tests/composer.spec.ts:431:1 › a rejected second file restores an editable draft without publishing the first file (3.0s)
+  ✓  19 [mobile] › tests/composer.spec.ts:460:1 › pending sends restore inline file references and replay the exact message after reload (1.1s)
+  ✘  20 [mobile] › tests/group-responsibilities.spec.ts:117:1 › group collaboration displays friendly activity and shared goal evidence without technical bubbles (10.8s)
+
+
+  1) [desktop] › tests/composer.spec.ts:55:1 › expanded composer keeps full-width text above the attachment and send toolbar 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('.conversation-composer')
+    Expected: "true"
+    Received: ""
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" locator('.conversation-composer') with timeout 5000ms
+      - waiting for locator('.conversation-composer')
+        14 × locator resolved to <form class="conversation-composer gap-1.5 p-2 flex items-end">…</form>
+           - unexpected value "null"
+
+
+       99 |   });
+      100 |   await composer.fill(boundaryText);
+    > 101 |   await expect(form).toHaveAttribute("data-multiline", "true");
+          |                      ^
+      102 |   const stable = await form.evaluate(async (element) => {
+      103 |     const states = [];
+      104 |     for (let frame = 0; frame < 12; frame++) {
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/composer.spec.ts:101:22
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/composer-expanded-composer-8819f-attachment-and-send-toolbar-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../.dev/nma062-playwright/composer-expanded-composer-8819f-attachment-and-send-toolbar-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/composer-expanded-composer-8819f-attachment-and-send-toolbar-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../.dev/nma062-playwright/composer-expanded-composer-8819f-attachment-and-send-toolbar-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [desktop] › tests/group-responsibilities.spec.ts:117:1 › group collaboration displays friendly activity and shared goal evidence without technical bubbles 
+
+    Error: expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 32
+    Received:    28
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      78 |         await expect.poll(distanceFromBottom).toBeLessThanOrEqual(remaining + 1);
+      79 |       }
+    > 80 |       await expect.poll(readGap).toBeGreaterThanOrEqual(minimumGap);
+         |                                  ^
+      81 |       measurements.push({ phase: "scroll", multiline, remaining, gap: await readGap() });
+      82 |     }
+      83 |   }
+        at verifyTimelineLayout (/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/group-responsibilities.spec.ts:80:34)
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/group-responsibilities.spec.ts:184:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/group-responsibilities-gro-5cd4b-e-without-technical-bubbles-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../.dev/nma062-playwright/group-responsibilities-gro-5cd4b-e-without-technical-bubbles-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/group-responsibilities-gro-5cd4b-e-without-technical-bubbles-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../.dev/nma062-playwright/group-responsibilities-gro-5cd4b-e-without-technical-bubbles-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [mobile] › tests/composer.spec.ts:368:1 › image chips preview through shadcn overlays and remove, undo and paste as whole objects 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.tap: Test timeout of 30000ms exceeded.
+    Browser logs:
+
+    <launching> /Users/vitoandareasmanik/Library/Caches/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,AvoidCorsURLLoaderRestartOnRedirect,Translate,AutoDeElevate,OptimizationHints,NetworkTimeServiceQuerying,AimEnabled,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=/var/folders/j1/p1582yhj20z58phnf_zrzy7w0000gn/T/playwright_chromiumdev_profile-ObkR3N --remote-debugging-pipe --no-startup-window
+    <launched> pid=47415
+    [pid=47415][err] [1103/142355.142328:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=47415][err] [1103/142355.195305:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=47415][err] [1103/142356.476877:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=47415][err] [1103/142357.068668:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=47415][err] [1103/142357.129206:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=47415][err] [1103/142358.299237:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=47415][err] [1103/142358.741019:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=47415][err] [1103/142358.781693:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=47415][err] [1103/142359.223792:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=47415][err] [1103/142359.485654:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=47415][err] [1103/142359.525792:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=47415][err] [1103/142400.672542:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=47415][err] [1103/142401.067349:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=47415][err] [1103/142401.257209:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=47415][err] [1103/142401.298177:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=47415][err] [1103/142402.463580:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=47415][err] [1103/142403.130783:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=47415][err] [1103/142403.197907:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=47415][err] [1103/142404.346885:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=47415][err] [1103/142405.060323:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=47415][err] [1103/142405.099448:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=47415][err] [1103/142406.324688:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=47415] <gracefully close start>
+    Call log:
+      - waiting for getByRole('textbox', { name: 'Pesan', exact: true }).getByRole('button', { name: 'Pratinjau visual-input.png', exact: true })
+        - locator resolved to <button type="button" data-state="closed" aria-expanded="false" aria-haspopup="dialog" data-slot="popover-trigger" class="attachment-chip-preview" aria-label="Pratinjau visual-input.png">…</button>
+      - attempting tap action
+        2 × waiting for element to be visible, enabled and stable
+          - element is not stable
+        - retrying tap action
+        - waiting 20ms
+        2 × waiting for element to be visible, enabled and stable
+          - element is not stable
+        - retrying tap action
+          - waiting 100ms
+        53 × waiting for element to be visible, enabled and stable
+           - element is not stable
+         - retrying tap action
+           - waiting 500ms
+        - waiting for element to be visible, enabled and stable
+
+
+      377 |   await expect(chip).toHaveAttribute("data-upload-state", "local");
+      378 |   const preview = composer.getByRole("button", { name: "Pratinjau visual-input.png", exact: true });
+    > 379 |   if (info.project.name === "mobile") await preview.tap();
+          |                                                     ^
+      380 |   else await preview.hover();
+      381 |   const overlay = page.locator(
+      382 |     info.project.name === "mobile"
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/composer.spec.ts:379:53
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/composer-image-chips-previ-45c39--and-paste-as-whole-objects-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../.dev/nma062-playwright/composer-image-chips-previ-45c39--and-paste-as-whole-objects-mobile/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/composer-image-chips-previ-45c39--and-paste-as-whole-objects-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../.dev/nma062-playwright/composer-image-chips-previ-45c39--and-paste-as-whole-objects-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) [mobile] › tests/group-responsibilities.spec.ts:117:1 › group collaboration displays friendly activity and shared goal evidence without technical bubbles 
+
+    Error: expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 24
+    Received:    8
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      78 |         await expect.poll(distanceFromBottom).toBeLessThanOrEqual(remaining + 1);
+      79 |       }
+    > 80 |       await expect.poll(readGap).toBeGreaterThanOrEqual(minimumGap);
+         |                                  ^
+      81 |       measurements.push({ phase: "scroll", multiline, remaining, gap: await readGap() });
+      82 |     }
+      83 |   }
+        at verifyTimelineLayout (/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/group-responsibilities.spec.ts:80:34)
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/group-responsibilities.spec.ts:184:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/group-responsibilities-gro-5cd4b-e-without-technical-bubbles-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../.dev/nma062-playwright/group-responsibilities-gro-5cd4b-e-without-technical-bubbles-mobile/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/group-responsibilities-gro-5cd4b-e-without-technical-bubbles-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../.dev/nma062-playwright/group-responsibilities-gro-5cd4b-e-without-technical-bubbles-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4 failed
+    [desktop] › tests/composer.spec.ts:55:1 › expanded composer keeps full-width text above the attachment and send toolbar 
+    [desktop] › tests/group-responsibilities.spec.ts:117:1 › group collaboration displays friendly activity and shared goal evidence without technical bubbles 
+    [mobile] › tests/composer.spec.ts:368:1 › image chips preview through shadcn overlays and remove, undo and paste as whole objects 
+    [mobile] › tests/group-responsibilities.spec.ts:117:1 › group collaboration displays friendly activity and shared goal evidence without technical bubbles 
+  16 passed (1.7m)

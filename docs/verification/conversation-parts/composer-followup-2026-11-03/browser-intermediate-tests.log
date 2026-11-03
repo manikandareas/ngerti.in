@@ -1,0 +1,76 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4321" --strictPort
+[WebServer] (node:48113) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 20 tests using 1 worker
+
+(node:48114) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   1 [desktop] › tests/composer.spec.ts:55:1 › expanded composer keeps full-width text above the attachment and send toolbar (7.5s)
+(node:48125) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   2 [desktop] › tests/composer.spec.ts:119:1 › inline chips align with surrounding text, keep default gaps and allow file-only sends (2.7s)
+  ✓   3 [desktop] › tests/composer.spec.ts:166:1 › long filenames leave only one normal space before the following text (2.0s)
+  ✓   4 [desktop] › tests/composer.spec.ts:205:1 › files stay inline at the cursor and send stable references in sentence order (2.6s)
+  ✓   5 [desktop] › tests/composer.spec.ts:258:1 › files stay local until submit and a lost upload reply retries the same operation (2.5s)
+  ✓   6 [desktop] › tests/composer.spec.ts:313:1 › removing a selected file never uploads it and status stays behind its icon (2.2s)
+  ✓   7 [desktop] › tests/composer.spec.ts:367:1 › image chips preview through shadcn overlays and remove, undo and paste as whole objects (2.2s)
+  ✓   8 [desktop] › tests/composer.spec.ts:430:1 › a rejected second file restores an editable draft without publishing the first file (1.4s)
+  ✓   9 [desktop] › tests/composer.spec.ts:459:1 › pending sends restore inline file references and replay the exact message after reload (3.1s)
+  ✓  10 [desktop] › tests/group-responsibilities.spec.ts:117:1 › group collaboration displays friendly activity and shared goal evidence without technical bubbles (10.0s)
+(node:48350) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  11 [mobile] › tests/composer.spec.ts:55:1 › expanded composer keeps full-width text above the attachment and send toolbar (2.2s)
+  ✓  12 [mobile] › tests/composer.spec.ts:119:1 › inline chips align with surrounding text, keep default gaps and allow file-only sends (5.1s)
+  ✓  13 [mobile] › tests/composer.spec.ts:166:1 › long filenames leave only one normal space before the following text (4.3s)
+  ✓  14 [mobile] › tests/composer.spec.ts:205:1 › files stay inline at the cursor and send stable references in sentence order (4.7s)
+  ✓  15 [mobile] › tests/composer.spec.ts:258:1 › files stay local until submit and a lost upload reply retries the same operation (2.4s)
+  ✓  16 [mobile] › tests/composer.spec.ts:313:1 › removing a selected file never uploads it and status stays behind its icon (4.0s)
+  ✓  17 [mobile] › tests/composer.spec.ts:367:1 › image chips preview through shadcn overlays and remove, undo and paste as whole objects (3.1s)
+  ✓  18 [mobile] › tests/composer.spec.ts:430:1 › a rejected second file restores an editable draft without publishing the first file (2.3s)
+  ✓  19 [mobile] › tests/composer.spec.ts:459:1 › pending sends restore inline file references and replay the exact message after reload (1.2s)
+  ✓  20 [mobile] › tests/group-responsibilities.spec.ts:117:1 › group collaboration displays friendly activity and shared goal evidence without technical bubbles (8.5s)
+
+
+  1) [desktop] › tests/composer.spec.ts:55:1 › expanded composer keeps full-width text above the attachment and send toolbar 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('.conversation-composer')
+    Expected: "true"
+    Received: ""
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" locator('.conversation-composer') with timeout 5000ms
+      - waiting for locator('.conversation-composer')
+        14 × locator resolved to <form class="conversation-composer gap-1.5 p-2 flex items-end">…</form>
+           - unexpected value "null"
+
+
+       98 |   });
+       99 |   await composer.fill(boundaryText);
+    > 100 |   await expect(form).toHaveAttribute("data-multiline", "true");
+          |                      ^
+      101 |   const stable = await form.evaluate(async (element) => {
+      102 |     const states = [];
+      103 |     for (let frame = 0; frame < 12; frame++) {
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/composer.spec.ts:100:22
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/composer-expanded-composer-8819f-attachment-and-send-toolbar-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../.dev/nma062-playwright/composer-expanded-composer-8819f-attachment-and-send-toolbar-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/composer-expanded-composer-8819f-attachment-and-send-toolbar-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../.dev/nma062-playwright/composer-expanded-composer-8819f-attachment-and-send-toolbar-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [desktop] › tests/composer.spec.ts:55:1 › expanded composer keeps full-width text above the attachment and send toolbar 
+  19 passed (1.4m)

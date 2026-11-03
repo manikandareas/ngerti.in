@@ -1,0 +1,25 @@
+{
+  "contract_version": "1.24.0",
+  "backend_tests": 315,
+  "web_unit_tests": 14,
+  "full_work_ui_tests": 60,
+  "final_style_ui_tests": 6,
+  "references_ui_tests": 24,
+  "repeated_mobile_tests": 5,
+  "server_typecheck": "passed",
+  "server_lint": "passed",
+  "web_typecheck": "passed",
+  "web_lint": "passed",
+  "web_build": "passed",
+  "native_use_cases": {
+    "group_goal": "completed",
+    "dm_goal": "completed",
+    "group_runs_succeeded": 3,
+    "dm_runs_succeeded": 1,
+    "new_test_routines": "both stopped"
+  },
+  "scope": "Local development; uncommitted and unpushed; native Codex proof and fixture protocol proof are separate.",
+  "captured_at": "2026-11-03",
+  "native_audit_typecheck": "passed",
+  "notion_status": "NMA-056, NMA-061 and NMA-062 Done; NMA-060 Done retained"
+}

@@ -1,0 +1,65 @@
+# Group use case only
+
+    - generic: Kamu
+    - text: Tobi, buat satu goal baru "Catatan RAG terverifikasi". Baca PDF Lewis ini halaman 1–3, tulis dua paragraf dengan nomor halaman dalam catatan-rag-terverifikasi.md. Sampaikan hasilmu dahulu, lalu minta Skinny Vicuna meninjau akurasinya dan menyimpan review satu paragraf dalam review-catatan-rag.md. Selesaikan goal ketika keduanya siap. Gunakan bahasa Indonesia alami, mention @nama dan tautan file yang mudah dibuka.
+    - button "Pratinjau Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks.pdf":
+      - generic: Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks.pdf
+    - generic "Tobi":
+      - generic: Tobi
+    - time: "12.37"
+    - 'button "Goal dibuat: Catatan RAG terverifikasi"':
+      - generic: Goal dibuat
+      - generic: Catatan RAG terverifikasi
+    - button "Profil Tobi":
+    - button "Tobi"
+    - paragraph:
+      - 'button "Buka file: catatan-rag-terverifikasi.md"':
+        - generic: catatan-rag-terverifikasi.md
+      - text: "sudah siap: dua paragraf berdasarkan halaman 1–3 PDF Lewis, mencakup gabungan DPR–BART serta perbedaan RAG-Sequence dan RAG-Token. RAG-Token memarginalkan dokumen per token, bukan melakukan pencarian baru setiap token."
+    - paragraph:
+      - generic "Skinny Vicuna":
+        - generic: Skinny Vicuna
+      - text: ", silakan meninjau akurasinya dan menyimpan review satu paragraf. Goal tetap aktif sampai kedua file siap."
+    - time: "12.42"
+    - generic: Meminta tinjauan
+    - generic "Tobi":
+      - generic: Tobi
+    - generic: →
+    - generic "Skinny Vicuna":
+      - generic: Skinny Vicuna
+    - paragraph: Tinjau akurasi catatan dua paragraf dan simpan review singkat dalam file terpisah.
+    - button "Profil Skinny Vicuna":
+    - button "Skinny Vicuna"
+    - paragraph:
+      - generic "Tobi":
+        - generic: Tobi
+      - text: ","
+      - 'button "Buka file: review-catatan-rag.md"':
+        - generic: review-catatan-rag.md
+      - text: . Tidak ditemukan koreksi substantif setelah seluruh klaim dan nomor halaman dicocokkan dengan PDF hlm. 1–3, termasuk DPR–BART, marginalisasi kedua formulasi RAG, dan batas klaim hasil.
+    - time: "12.42"
+    - button "Profil Tobi":
+    - button "Tobi"
+    - paragraph: "Kedua file sudah siap:"
+    - list:
+      - 'button "Buka file: catatan-rag-terverifikasi.md"':
+        - generic: catatan-rag-terverifikasi.md
+      - text: ": dua paragraf dengan rujukan halaman 1–3."
+      - 'button "Buka file: review-catatan-rag.md"':
+        - generic: review-catatan-rag.md
+      - text: ": review satu paragraf oleh"
+      - generic "Skinny Vicuna":
+        - generic: Skinny Vicuna
+      - text: ", tanpa koreksi substantif."
+    - paragraph: Penyelesaian goal sudah diajukan dengan kedua file sebagai bukti dan menunggu konfirmasi sistem.
+    - time: "12.43"
+    - 'button "Goal selesai: Catatan RAG terverifikasi"':
+      - generic: Goal selesai
+      - generic: Catatan RAG terverifikasi
+  - button "Lampirkan file ke pesan"
+  - button "Tambah lampiran":
+  - textbox "Pesan":
+    - paragraph
+  - generic: Pesan untuk Skinny Vicuna…
+  - button "Kirim" [disabled]:
+- region "Notifications alt+T"

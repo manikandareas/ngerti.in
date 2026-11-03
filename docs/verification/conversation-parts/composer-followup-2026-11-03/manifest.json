@@ -1,0 +1,85 @@
+{
+  "generated_at": "2026-11-03T06:33:59.443032+00:00",
+  "files": [
+    {
+      "path": "docs/verification/conversation-parts/composer-followup-2026-11-03/README.md",
+      "bytes": 3777,
+      "sha256": "3d49f2513b2afc1b6ea47c239551dcce8d5149510062293313e01a21d9e393c6"
+    },
+    {
+      "path": "docs/verification/conversation-parts/composer-followup-2026-11-03/browser-initial-tests.log",
+      "bytes": 20725,
+      "sha256": "ba4104ec3f7edd511ccfd76b8fcde8d21a8855ef1f20c46942fc74cf9ea76c93"
+    },
+    {
+      "path": "docs/verification/conversation-parts/composer-followup-2026-11-03/browser-intermediate-tests.log",
+      "bytes": 6489,
+      "sha256": "37214498cc55c7a020edc842039a76d0a24a2dc455133a0c34996e5e16928e2b"
+    },
+    {
+      "path": "docs/verification/conversation-parts/composer-followup-2026-11-03/browser-tests.log",
+      "bytes": 3586,
+      "sha256": "ad73bf56957fe8e8c3448df26ce18826895e65f49bd6c936432f3bd4a8907b1e"
+    },
+    {
+      "path": "docs/verification/conversation-parts/composer-followup-2026-11-03/build.log",
+      "bytes": 15746,
+      "sha256": "6ef08cf4d5ee772ac637925d416071014b50b20d2b0f9c7319a2fd07944883b2"
+    },
+    {
+      "path": "docs/verification/conversation-parts/composer-followup-2026-11-03/capture-tests.log",
+      "bytes": 920,
+      "sha256": "71e0e0626c9a2c3781c66ec0d769d65e0307eeb23abbfd0ab296d7fdb17916fc"
+    },
+    {
+      "path": "docs/verification/conversation-parts/composer-followup-2026-11-03/desktop-closeup.png",
+      "bytes": 7296,
+      "sha256": "412282f24e2eb747494c4677b2d3ca41c3b6e415629b85423408e5d8ef2756b0"
+    },
+    {
+      "path": "docs/verification/conversation-parts/composer-followup-2026-11-03/desktop-composer.json",
+      "bytes": 164,
+      "sha256": "c57dd816e683a3691f87c14415ecde769ec552eb7d823f6e2b95896f3d3d4aac"
+    },
+    {
+      "path": "docs/verification/conversation-parts/composer-followup-2026-11-03/desktop-expanded.png",
+      "bytes": 41315,
+      "sha256": "fbe2bab80d5011cf49a2e10738ce92fe5efe5ca925584f6d32e595e21b69f4fb"
+    },
+    {
+      "path": "docs/verification/conversation-parts/composer-followup-2026-11-03/desktop-timeline.json",
+      "bytes": 658,
+      "sha256": "b596d75026c25628db617102b896fd102fd21c01ef19b60bc0e8901eed7cf22c"
+    },
+    {
+      "path": "docs/verification/conversation-parts/composer-followup-2026-11-03/lint.log",
+      "bytes": 63,
+      "sha256": "dee392ef60abe488b9b8be8d3be47400b6f4839aa9f308e58cdb690769630132"
+    },
+    {
+      "path": "docs/verification/conversation-parts/composer-followup-2026-11-03/mobile-closeup.png",
+      "bytes": 7263,
+      "sha256": "43f2388504137cedf809a1d68b0471b33179b58e9c91403d61ca662cffb81ebd"
+    },
+    {
+      "path": "docs/verification/conversation-parts/composer-followup-2026-11-03/mobile-composer.json",
+      "bytes": 164,
+      "sha256": "c57dd816e683a3691f87c14415ecde769ec552eb7d823f6e2b95896f3d3d4aac"
+    },
+    {
+      "path": "docs/verification/conversation-parts/composer-followup-2026-11-03/mobile-expanded.png",
+      "bytes": 18740,
+      "sha256": "708eee84abcab513d5093fd4320529809c97b7fc178c73511dd5bca226e228af"
+    },
+    {
+      "path": "docs/verification/conversation-parts/composer-followup-2026-11-03/mobile-timeline.json",
+      "bytes": 668,
+      "sha256": "23f15dcc390f613317ad0d78ba9ee55c5046e7ff6338c8819e2ce0c63e9e8041"
+    },
+    {
+      "path": "docs/verification/conversation-parts/composer-followup-2026-11-03/notion-closure.json",
+      "bytes": 169,
+      "sha256": "ea1272b75b49bfdcf4f54b22153401cf557978eb89458ca8b0a24dbd90c106c3"
+    }
+  ]
+}

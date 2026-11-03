@@ -1,0 +1,15 @@
+{
+  "verified_at": "2026-11-03T06:15:12.060322+00:00",
+  "tickets": [
+    {
+      "ticket": "NMA-061",
+      "status": "Done",
+      "url": "https://app.notion.com/p/409abdd61873816fadd3e28e1d3bbe5d"
+    },
+    {
+      "ticket": "NMA-062",
+      "status": "Done",
+      "url": "https://app.notion.com/p/409abdd618738165877cc6c59f2a8cde"
+    }
+  ]
+}

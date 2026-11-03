@@ -1,0 +1,42 @@
+{
+  "alignment": {
+    "iconLabelOffset": 0,
+    "labelNameOffset": 22,
+    "lineCenterOffsets": [
+      0,
+      0
+    ],
+    "lineCount": 2
+  },
+  "measurements": [
+    {
+      "phase": "scroll",
+      "multiline": false,
+      "remaining": 0,
+      "gap": 104
+    },
+    {
+      "phase": "scroll",
+      "multiline": false,
+      "remaining": 64,
+      "gap": 40
+    },
+    {
+      "phase": "composer-resize",
+      "multiline": true,
+      "gap": 40
+    },
+    {
+      "phase": "scroll",
+      "multiline": true,
+      "remaining": 0,
+      "gap": 104
+    },
+    {
+      "phase": "scroll",
+      "multiline": true,
+      "remaining": 64,
+      "gap": 40
+    }
+  ]
+}

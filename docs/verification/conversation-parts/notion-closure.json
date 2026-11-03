@@ -1,0 +1,26 @@
+{
+  "verified_at": "2026-11-03",
+  "workflow": "ngertiin-ticket",
+  "pages": [
+    {
+      "ticket": "NMA-060",
+      "url": "https://app.notion.com/p/409abdd61873819b80c4dd2b3e593834",
+      "status": "Done"
+    },
+    {
+      "ticket": "NMA-056",
+      "url": "https://app.notion.com/p/409abdd61873813285faf568d52394bc",
+      "status": "Done"
+    },
+    {
+      "ticket": "NMA-061",
+      "url": "https://app.notion.com/p/409abdd61873816fadd3e28e1d3bbe5d",
+      "status": "Done"
+    },
+    {
+      "ticket": "NMA-062",
+      "url": "https://app.notion.com/p/409abdd618738165877cc6c59f2a8cde",
+      "status": "Done"
+    }
+  ]
+}

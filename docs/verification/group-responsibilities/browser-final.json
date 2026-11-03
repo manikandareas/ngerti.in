@@ -1,0 +1,264 @@
+{
+  "config": {
+    "argv": [
+      "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+      "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/node_modules/.bin/playwright",
+      "test",
+      "--config",
+      "playwright.work.config.ts",
+      "tests/group-responsibilities.spec.ts"
+    ],
+    "configFile": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/playwright.work.config.ts",
+    "rootDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma062-playwright",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "desktop",
+        "name": "desktop",
+        "testDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "work.spec.ts",
+          "composer.spec.ts",
+          "group-attachments.spec.ts",
+          "group-responsibilities.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma062-playwright",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "mobile",
+        "name": "mobile",
+        "testDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "work.spec.ts",
+          "composer.spec.ts",
+          "group-attachments.spec.ts",
+          "group-responsibilities.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma062-playwright",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "desktop",
+        "testDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+        "snapshotDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "work.spec.ts",
+          "composer.spec.ts",
+          "group-attachments.spec.ts",
+          "group-responsibilities.spec.ts"
+        ],
+        "timeout": 30000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4321",
+          "screenshot": "only-on-failure",
+          "trace": "retain-on-failure",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "screen": {
+            "width": 1920,
+            "height": 1080
+          },
+          "deviceScaleFactor": 1,
+          "isMobile": false,
+          "hasTouch": false,
+          "defaultBrowserType": "chromium"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "desktop"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma062-playwright",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "mobile",
+        "testDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+        "snapshotDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "work.spec.ts",
+          "composer.spec.ts",
+          "group-attachments.spec.ts",
+          "group-responsibilities.spec.ts"
+        ],
+        "timeout": 30000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4321",
+          "screenshot": "only-on-failure",
+          "trace": "retain-on-failure",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "screen": {
+            "width": 1920,
+            "height": 1080
+          },
+          "deviceScaleFactor": 1,
+          "isMobile": true,
+          "hasTouch": true,
+          "defaultBrowserType": "chromium"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "mobile"
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/work-report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "group-responsibilities.spec.ts",
+      "file": "group-responsibilities.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "group collaboration displays friendly activity and shared goal evidence without technical bubbles",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6727,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:52:41.631Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "438bb336f92c7684dd7e-18ff7c785784d045bc3f",
+          "file": "group-responsibilities.spec.ts",
+          "line": 12,
+          "column": 1
+        },
+        {
+          "title": "group collaboration displays friendly activity and shared goal evidence without technical bubbles",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6413,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:52:49.378Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "438bb336f92c7684dd7e-7301af8e601cd6d806ac",
+          "file": "group-responsibilities.spec.ts",
+          "line": 12,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-02T13:52:39.978Z",
+    "duration": 16256.997,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

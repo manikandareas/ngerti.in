@@ -1,0 +1,2259 @@
+{
+  "config": {
+    "argv": [
+      "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+      "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/node_modules/.bin/playwright",
+      "test",
+      "--config",
+      "playwright.work.config.ts"
+    ],
+    "configFile": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/playwright.work.config.ts",
+    "rootDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma062-playwright",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "desktop",
+        "name": "desktop",
+        "testDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "work.spec.ts",
+          "composer.spec.ts",
+          "group-attachments.spec.ts",
+          "group-responsibilities.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma062-playwright",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "mobile",
+        "name": "mobile",
+        "testDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "work.spec.ts",
+          "composer.spec.ts",
+          "group-attachments.spec.ts",
+          "group-responsibilities.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma062-playwright",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "desktop",
+        "testDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+        "snapshotDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "work.spec.ts",
+          "composer.spec.ts",
+          "group-attachments.spec.ts",
+          "group-responsibilities.spec.ts"
+        ],
+        "timeout": 30000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4321",
+          "screenshot": "only-on-failure",
+          "trace": "retain-on-failure",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "screen": {
+            "width": 1920,
+            "height": 1080
+          },
+          "deviceScaleFactor": 1,
+          "isMobile": false,
+          "hasTouch": false,
+          "defaultBrowserType": "chromium"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "desktop"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma062-playwright",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "mobile",
+        "testDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+        "snapshotDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "work.spec.ts",
+          "composer.spec.ts",
+          "group-attachments.spec.ts",
+          "group-responsibilities.spec.ts"
+        ],
+        "timeout": 30000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4321",
+          "screenshot": "only-on-failure",
+          "trace": "retain-on-failure",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "screen": {
+            "width": 1920,
+            "height": 1080
+          },
+          "deviceScaleFactor": 1,
+          "isMobile": true,
+          "hasTouch": true,
+          "defaultBrowserType": "chromium"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "mobile"
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/work-report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "composer.spec.ts",
+      "file": "composer.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "inline chips align with surrounding text, keep default gaps and allow file-only sends",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3130,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:30:53.935Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1662a082f095f370d3d2-a7c0d08849e9af2f19c9",
+          "file": "composer.spec.ts",
+          "line": 55,
+          "column": 1
+        },
+        {
+          "title": "long filenames leave only one normal space before the following text",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2687,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:30:58.076Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1662a082f095f370d3d2-f7a1e9c65346443e0c1f",
+          "file": "composer.spec.ts",
+          "line": 102,
+          "column": 1
+        },
+        {
+          "title": "files stay inline at the cursor and send stable references in sentence order",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4237,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:31:00.786Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1662a082f095f370d3d2-7ba1fe72c318620c9f0d",
+          "file": "composer.spec.ts",
+          "line": 141,
+          "column": 1
+        },
+        {
+          "title": "files stay local until submit and a lost upload reply retries the same operation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3004,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:31:05.046Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1662a082f095f370d3d2-d0080d0f0a8c3597b839",
+          "file": "composer.spec.ts",
+          "line": 194,
+          "column": 1
+        },
+        {
+          "title": "removing a selected file never uploads it and status stays behind its icon",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2850,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:31:08.352Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1662a082f095f370d3d2-9e63c2b693d4a269d857",
+          "file": "composer.spec.ts",
+          "line": 249,
+          "column": 1
+        },
+        {
+          "title": "image chips preview through shadcn overlays and remove, undo and paste as whole objects",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4542,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:31:11.220Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1662a082f095f370d3d2-b6cb82eeb27a995e519e",
+          "file": "composer.spec.ts",
+          "line": 303,
+          "column": 1
+        },
+        {
+          "title": "a rejected second file restores an editable draft without publishing the first file",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2426,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:31:15.781Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1662a082f095f370d3d2-6689f9c2eebb11b92eda",
+          "file": "composer.spec.ts",
+          "line": 366,
+          "column": 1
+        },
+        {
+          "title": "pending sends restore inline file references and replay the exact message after reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2481,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:31:18.233Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1662a082f095f370d3d2-492bf6a2bf5301ebd4f9",
+          "file": "composer.spec.ts",
+          "line": 395,
+          "column": 1
+        },
+        {
+          "title": "inline chips align with surrounding text, keep default gaps and allow file-only sends",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5913,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:33:55.791Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1662a082f095f370d3d2-f5afc50d479f68de7921",
+          "file": "composer.spec.ts",
+          "line": 55,
+          "column": 1
+        },
+        {
+          "title": "long filenames leave only one normal space before the following text",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6552,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:34:03.172Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1662a082f095f370d3d2-10f54acb0b2ef9673a9a",
+          "file": "composer.spec.ts",
+          "line": 102,
+          "column": 1
+        },
+        {
+          "title": "files stay inline at the cursor and send stable references in sentence order",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5496,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:34:09.735Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1662a082f095f370d3d2-1533a37cfdfa696a6f45",
+          "file": "composer.spec.ts",
+          "line": 141,
+          "column": 1
+        },
+        {
+          "title": "files stay local until submit and a lost upload reply retries the same operation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4787,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:34:15.241Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1662a082f095f370d3d2-7c6ffdd67a090e2b8e54",
+          "file": "composer.spec.ts",
+          "line": 194,
+          "column": 1
+        },
+        {
+          "title": "removing a selected file never uploads it and status stays behind its icon",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5644,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:34:20.042Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1662a082f095f370d3d2-7d80362624bdd1a1835b",
+          "file": "composer.spec.ts",
+          "line": 249,
+          "column": 1
+        },
+        {
+          "title": "image chips preview through shadcn overlays and remove, undo and paste as whole objects",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5462,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:34:25.701Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1662a082f095f370d3d2-6a2a5bdd7ef78d25380d",
+          "file": "composer.spec.ts",
+          "line": 303,
+          "column": 1
+        },
+        {
+          "title": "a rejected second file restores an editable draft without publishing the first file",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4860,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:34:31.170Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1662a082f095f370d3d2-ccd96f77ba17645dbfd2",
+          "file": "composer.spec.ts",
+          "line": 366,
+          "column": 1
+        },
+        {
+          "title": "pending sends restore inline file references and replay the exact message after reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4980,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:34:36.036Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1662a082f095f370d3d2-552aa97cdeca927d1d6b",
+          "file": "composer.spec.ts",
+          "line": 395,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "group-attachments.spec.ts",
+      "file": "group-attachments.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "group file-only sends stay local, route through the group API and appear once in the shared File panel",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6273,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:31:20.752Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "77a8b7933b8bd0a71b3b-0c0bb7d6c76e4526fac7",
+          "file": "group-attachments.spec.ts",
+          "line": 79,
+          "column": 1
+        },
+        {
+          "title": "a lost group-send acknowledgement restores the same submission after reload without publishing twice",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4801,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:31:27.035Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "77a8b7933b8bd0a71b3b-9a1b3c9a2a23b0933c4f",
+          "file": "group-attachments.spec.ts",
+          "line": 124,
+          "column": 1
+        },
+        {
+          "title": "a rejected second group upload restores both local files and can be corrected without partial publication",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5591,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:31:31.847Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "77a8b7933b8bd0a71b3b-4f90a89bee618bad97c0",
+          "file": "group-attachments.spec.ts",
+          "line": 156,
+          "column": 1
+        },
+        {
+          "title": "rejected routing retries the original group message and source attachment",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8770,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:31:37.449Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "77a8b7933b8bd0a71b3b-0dca305f916d1ee596d1",
+          "file": "group-attachments.spec.ts",
+          "line": 187,
+          "column": 1
+        },
+        {
+          "title": "group image eligibility follows the mentioned member and a capable member receives normalized visual input",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6567,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:31:46.228Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "77a8b7933b8bd0a71b3b-b2987beb12ad5da15544",
+          "file": "group-attachments.spec.ts",
+          "line": 223,
+          "column": 1
+        },
+        {
+          "title": "group file-only sends stay local, route through the group API and appear once in the shared File panel",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 17803,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:34:41.030Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "77a8b7933b8bd0a71b3b-9b0f380f7a6a77d32bd7",
+          "file": "group-attachments.spec.ts",
+          "line": 79,
+          "column": 1
+        },
+        {
+          "title": "a lost group-send acknowledgement restores the same submission after reload without publishing twice",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 15236,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:34:58.841Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "77a8b7933b8bd0a71b3b-e4629bad15f2486d2ae6",
+          "file": "group-attachments.spec.ts",
+          "line": 124,
+          "column": 1
+        },
+        {
+          "title": "a rejected second group upload restores both local files and can be corrected without partial publication",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 21470,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:35:14.087Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "77a8b7933b8bd0a71b3b-2114871beb0452796614",
+          "file": "group-attachments.spec.ts",
+          "line": 156,
+          "column": 1
+        },
+        {
+          "title": "rejected routing retries the original group message and source attachment",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 27109,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:35:35.563Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "77a8b7933b8bd0a71b3b-15d7c6d7ccd3973020df",
+          "file": "group-attachments.spec.ts",
+          "line": 187,
+          "column": 1
+        },
+        {
+          "title": "group image eligibility follows the mentioned member and a capable member receives normalized visual input",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 20780,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:36:02.685Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "77a8b7933b8bd0a71b3b-02e9aff3f5e231bb783f",
+          "file": "group-attachments.spec.ts",
+          "line": 223,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "group-responsibilities.spec.ts",
+      "file": "group-responsibilities.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "group collaboration displays friendly activity and shared goal evidence without technical bubbles",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7508,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:31:52.823Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "438bb336f92c7684dd7e-18ff7c785784d045bc3f",
+          "file": "group-responsibilities.spec.ts",
+          "line": 12,
+          "column": 1
+        },
+        {
+          "title": "group collaboration displays friendly activity and shared goal evidence without technical bubbles",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 17306,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:36:23.488Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "438bb336f92c7684dd7e-7301af8e601cd6d806ac",
+          "file": "group-responsibilities.spec.ts",
+          "line": 12,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "work.spec.ts",
+      "file": "work.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "contextual goals, Routine and files use real scoped state and keep stop responsibility distinct from stop run",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4917,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:32:00.363Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-4cf1d5316fecea4328b4",
+          "file": "work.spec.ts",
+          "line": 92,
+          "column": 1
+        },
+        {
+          "title": "file previews reuse source tables, code and markdown without executing file HTML",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5403,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:32:05.288Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-7af7b8aafb2c845fb875",
+          "file": "work.spec.ts",
+          "line": 267,
+          "column": 1
+        },
+        {
+          "title": "group creation recovers a lost acknowledgement, routes messages and keeps member DM resources private",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6626,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:32:10.713Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-12506ea713e3c7197eb6",
+          "file": "work.spec.ts",
+          "line": 353,
+          "column": 1
+        },
+        {
+          "title": "browser viewer connects to the managed browser and reconnects its view without replaying actions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 22179,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:32:17.355Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-9f12808f66e0db5c3957",
+          "file": "work.spec.ts",
+          "line": 431,
+          "column": 1
+        },
+        {
+          "title": "application access is assigned explicitly to this context and unsupported images never upload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9479,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:32:39.546Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-5e3f7a8507aa90149705",
+          "file": "work.spec.ts",
+          "line": 530,
+          "column": 1
+        },
+        {
+          "title": "apps catalog searches live and authorization recovers from blocked popups and failed reads without changing grants",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 13186,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:32:49.044Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-40b7a3e26338fc66122f",
+          "file": "work.spec.ts",
+          "line": 627,
+          "column": 1
+        },
+        {
+          "title": "tool calls stay out of the conversation while native receipts remain persisted",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3405,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:33:02.273Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-d6242c01b33ae1007b7e",
+          "file": "work.spec.ts",
+          "line": 739,
+          "column": 1
+        },
+        {
+          "title": "native acknowledgements survive lost HTTP replies, completion, reload and connection revocation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10822,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:33:05.689Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-3b4df97b7cd61227de25",
+          "file": "work.spec.ts",
+          "line": 775,
+          "column": 1
+        },
+        {
+          "title": "an ambiguous native submission stays fenced through status reads, reload and cancellation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3939,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:33:16.518Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-16a18c8280a530386fff",
+          "file": "work.spec.ts",
+          "line": 912,
+          "column": 1
+        },
+        {
+          "title": "unsafe Markdown cuts and changed prefixes keep complete content beside a labeled native-history fallback",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5180,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:33:20.468Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-290ddbd026b0c0c8d816",
+          "file": "work.spec.ts",
+          "line": 978,
+          "column": 1
+        },
+        {
+          "title": "rejected group membership preserves the draft and allows a corrected operation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1700,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:33:25.657Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-d4355f373394fc6183de",
+          "file": "work.spec.ts",
+          "line": 1117,
+          "column": 1
+        },
+        {
+          "title": "sharing copies only the selected file into the explicit destination and preserves byte identity",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1296,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:33:27.373Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-30b424a5f3477166274a",
+          "file": "work.spec.ts",
+          "line": 1145,
+          "column": 1
+        },
+        {
+          "title": "group writers serialize native questions and free text uses one answer representation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9730,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:33:28.674Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-b4d39f35230bcdacbacc",
+          "file": "work.spec.ts",
+          "line": 1211,
+          "column": 1
+        },
+        {
+          "title": "an unconfirmed human reply is restored verbatim and locked across reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4474,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:33:38.410Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-53bdfe12e8bc10911feb",
+          "file": "work.spec.ts",
+          "line": 1266,
+          "column": 1
+        },
+        {
+          "title": "membership editing keeps its original revision and cannot overwrite a concurrent change",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2818,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:33:42.891Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-bbf70d259d0e88aef6ca",
+          "file": "work.spec.ts",
+          "line": 1302,
+          "column": 1
+        },
+        {
+          "title": "four ordinary file attachments still allow a supported image",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7864,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:33:45.720Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-975d72f5131dbb113865",
+          "file": "work.spec.ts",
+          "line": 1331,
+          "column": 1
+        },
+        {
+          "title": "contextual goals, Routine and files use real scoped state and keep stop responsibility distinct from stop run",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5753,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:36:40.826Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-5a65b53d791293a30f2d",
+          "file": "work.spec.ts",
+          "line": 92,
+          "column": 1
+        },
+        {
+          "title": "file previews reuse source tables, code and markdown without executing file HTML",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6008,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:36:46.590Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-0d731fcaa9c484be4a97",
+          "file": "work.spec.ts",
+          "line": 267,
+          "column": 1
+        },
+        {
+          "title": "group creation recovers a lost acknowledgement, routes messages and keeps member DM resources private",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5896,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:36:52.609Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-20e8a31c017a9cce96bf",
+          "file": "work.spec.ts",
+          "line": 353,
+          "column": 1
+        },
+        {
+          "title": "browser viewer connects to the managed browser and reconnects its view without replaying actions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 13925,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:36:58.512Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-f1386582d5a8fcdecd89",
+          "file": "work.spec.ts",
+          "line": 431,
+          "column": 1
+        },
+        {
+          "title": "application access is assigned explicitly to this context and unsupported images never upload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 16517,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:37:12.452Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-4db2c3940903947111b4",
+          "file": "work.spec.ts",
+          "line": 530,
+          "column": 1
+        },
+        {
+          "title": "apps catalog searches live and authorization recovers from blocked popups and failed reads without changing grants",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 15322,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:37:28.982Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-2a74c1a1833af62265d9",
+          "file": "work.spec.ts",
+          "line": 627,
+          "column": 1
+        },
+        {
+          "title": "tool calls stay out of the conversation while native receipts remain persisted",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9792,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:37:44.312Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-12cb7644fd5d8852b1f5",
+          "file": "work.spec.ts",
+          "line": 739,
+          "column": 1
+        },
+        {
+          "title": "native acknowledgements survive lost HTTP replies, completion, reload and connection revocation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 15241,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:37:54.112Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-50af422ca890b11113c1",
+          "file": "work.spec.ts",
+          "line": 775,
+          "column": 1
+        },
+        {
+          "title": "an ambiguous native submission stays fenced through status reads, reload and cancellation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 11450,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:38:09.365Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-58aef3e5d03072c307ba",
+          "file": "work.spec.ts",
+          "line": 912,
+          "column": 1
+        },
+        {
+          "title": "unsafe Markdown cuts and changed prefixes keep complete content beside a labeled native-history fallback",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 11309,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:38:20.834Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-0f7781c3957967dc47a9",
+          "file": "work.spec.ts",
+          "line": 978,
+          "column": 1
+        },
+        {
+          "title": "rejected group membership preserves the draft and allows a corrected operation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2562,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:38:32.150Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-6afa09351d88f5cf4674",
+          "file": "work.spec.ts",
+          "line": 1117,
+          "column": 1
+        },
+        {
+          "title": "sharing copies only the selected file into the explicit destination and preserves byte identity",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2529,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:38:34.718Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-e216eb906181d2243326",
+          "file": "work.spec.ts",
+          "line": 1145,
+          "column": 1
+        },
+        {
+          "title": "group writers serialize native questions and free text uses one answer representation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 21639,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:38:37.252Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-e9e31dc55f6b98aa041b",
+          "file": "work.spec.ts",
+          "line": 1211,
+          "column": 1
+        },
+        {
+          "title": "an unconfirmed human reply is restored verbatim and locked across reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9642,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:38:58.898Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-3990e5b0b3cf0d38f740",
+          "file": "work.spec.ts",
+          "line": 1266,
+          "column": 1
+        },
+        {
+          "title": "membership editing keeps its original revision and cannot overwrite a concurrent change",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2816,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:39:08.556Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-d86208a2c5078bce4845",
+          "file": "work.spec.ts",
+          "line": 1302,
+          "column": 1
+        },
+        {
+          "title": "four ordinary file attachments still allow a supported image",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6800,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T13:39:11.379Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-650c9f887d1bfa919482",
+          "file": "work.spec.ts",
+          "line": 1331,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-02T13:30:51.495Z",
+    "duration": 507195.71599999996,
+    "expected": 60,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

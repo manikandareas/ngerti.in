@@ -1,0 +1,14 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4321" --strictPort
+[WebServer] (node:42799) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:42820) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [desktop] › tests/group-responsibilities.spec.ts:12:1 › group collaboration displays friendly activity and shared goal evidence without technical bubbles (6.6s)
+(node:43063) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 [mobile] › tests/group-responsibilities.spec.ts:12:1 › group collaboration displays friendly activity and shared goal evidence without technical bubbles (7.0s)
+
+  2 passed (16.9s)

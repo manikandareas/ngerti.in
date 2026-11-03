@@ -1,0 +1,21 @@
+bun test v1.3.10 (30e609e0)
+
+tests/groups/responsibilities.test.ts:
+(pass) shared goals accept exact parent/child evidence after restart and finalize once without a duplicate answer [78.33ms]
+(pass) a definitive report failure is durable through the actual tool transaction and does not start another finalizer [24.04ms]
+(pass) artifact evidence cannot cross an objective generation even when the producer identity is retained [16.48ms]
+(pass) friendly history and event projections preserve technical requests only in owner diagnostics [31.00ms]
+(pass) automatic Routine selection persists one occurrence before routing and one group execution across restart [45.21ms]
+(pass) fixed Routine keeps its group identity when a target leaves and never overlaps unknown work [26.60ms]
+(pass) removing an unknown coordinator holds reassignment until a native receipt resolves the old execution [18.74ms]
+(pass) legacy agent-owned group goals normalize once while original identity and execution provenance survive [21.51ms]
+(pass) pausing a Routine retains an unknown native occurrence without event polling or false stop confirmation [24.59ms]
+(pass) coordinator reassignment returns the committed self-stop receipt and continues only after native stop [17.60ms]
+(pass) owner recovery restores legacy child evidence when the latest goal continuation had no task [43.01ms]
+(pass) an automatic occurrence cannot apply a selected result after membership changes [19.96ms]
+(pass) a coordinator selection that became stale blocks without retrying or admitting work [18.79ms]
+
+ 13 pass
+ 0 fail
+ 53 expect() calls
+Ran 13 tests across 1 file. [669.00ms]

@@ -1,0 +1,52 @@
+{
+  "before": {
+    "contract_version": "1.22.0"
+  },
+  "after": {
+    "status": "foundation_ready",
+    "contract_version": "1.23.0",
+    "persistence": "ready",
+    "scheduler": "running",
+    "dispatcher": "running",
+    "registered_executors": 2,
+    "api_readiness_gate": "ready"
+  },
+  "pid": 59771,
+  "preservation": {
+    "message": {
+      "preserved": 66,
+      "original": 66
+    },
+    "artifact": {
+      "preserved": 26,
+      "original": 26
+    }
+  },
+  "verified_blobs": 26,
+  "goal": {
+    "id": "f8abeeb9-e7e6-46cf-b9fa-46d2c131b8f1",
+    "state": "completed",
+    "scope": "group",
+    "coordinator_agent_id": "e8a77db4-503d-47cf-83e3-bc2d182c7565",
+    "evidence_artifact_ids": [
+      "8e47de03-859e-46a0-8085-f47fd93e792f",
+      "f794c5d3-3cb7-41a0-b4cf-af170c941986"
+    ],
+    "root_task_id": "a75e875c-071f-46ef-b8de-e404b614b7cf"
+  },
+  "recovery": {
+    "command_id": "a911fafa-0668-4578-a159-170850cc7cad",
+    "replayed_without_events": true,
+    "new_model_runs": 0,
+    "new_messages": 0
+  },
+  "backups_private": true,
+  "reset": false,
+  "startup_iteration": "First replacement raced the old authority lock; startup succeeded after graceful release. No lock was bypassed.",
+  "final_restart": {
+    "waited_for_full_authority_exit": true,
+    "goal_preserved_completed": true,
+    "new_model_runs": 0,
+    "contract_version": "1.23.0"
+  }
+}

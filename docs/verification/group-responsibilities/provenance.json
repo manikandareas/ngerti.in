@@ -1,0 +1,21 @@
+{
+  "revision": "01e4b18e238e5de72a3570162c9f4275bb585786",
+  "observed_modules": [
+    {
+      "path": "src/backend/agent/routine-scheduler.ts",
+      "sha256": "f6625378d3c54d8c03934fec3edbdad65b27cc6fd21dfe81adbd48becce9166a"
+    },
+    {
+      "path": "src/backend/agent/routine-quiet-runs.ts",
+      "sha256": "0cad22c7ebf709b5d1ff75f64e55d8e41a6561e85004aec774da320134eb315a"
+    },
+    {
+      "path": "src/backend/agent/plan-continuation.ts",
+      "sha256": "6a3540b8ac3ce4b2d02649b5bdc61ed13933148c367e5fd3634baaa1daa7b35a"
+    }
+  ],
+  "reuse": "Persist schedule occurrence identity before execution, avoid overlapping work, preserve quiet ticks and bound continuation to actual task progress.",
+  "local_changes": "Group-owned responsibilities with separately assigned execution; durable model selection and occurrence receipts; immutable goal-generation evidence; concise collaboration projection.",
+  "excluded": "In-memory-only continuation chains, string no-update marker parsing, private context sharing and a second lifecycle authority.",
+  "upgrade": "Compare the pinned modules, rerun domain/HTTP/restart/native/UI cases, preserve previous evidence."
+}

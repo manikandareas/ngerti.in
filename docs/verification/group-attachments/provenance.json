@@ -1,0 +1,32 @@
+{
+  "repository": "https://github.com/nightly-labs/openbot",
+  "revision": "01e4b18e238e5de72a3570162c9f4275bb585786",
+  "source_observed": [
+    {
+      "path": "src/backend/agent/attachment-gateway.ts",
+      "sha256": "202e466c7562e2cf956feb4437f17e9e71388bde2d861ed3a76d91b7cae91729"
+    },
+    {
+      "path": "src/backend/mailbox-store.ts",
+      "sha256": "8405444b338256dc3e728a3c91e3a83181bd701740b3c97fc873678d6abe3a43"
+    },
+    {
+      "path": "src/backend/agent/workspace-sandbox.ts",
+      "sha256": "e6805cc93ac1b2132f6330ffbdc4656608466018a397b2271e98eec35ac01834"
+    }
+  ],
+  "reuse": "Retain local private staging, durable receipt/queue and descriptor-relative artifact validation. Shared group ownership is a local product amendment.",
+  "local_adaptations": [
+    "One workspace per conversation group rather than a global shared directory",
+    "Immutable attachment bytes and atomic message/route publication",
+    "Membership/revision enforcement at native dispatch and product-tool resource access",
+    "Conservative durable writer serialization and receipt-only recovery"
+  ],
+  "not_adopted": [
+    "Unrestricted host-readable attachment paths",
+    "Prose-driven artifact publication",
+    "Global cross-agent shared filesystem",
+    "Provider or billing fallback"
+  ],
+  "upgrade": "Recheck these pinned flows and local scope/recovery tests before changing dependencies. Source availability is not native acceptance."
+}

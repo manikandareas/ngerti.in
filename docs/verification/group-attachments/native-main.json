@@ -1,0 +1,545 @@
+{
+  "contract": "1.22.0",
+  "started_at": "2026-11-02T11:55:56.366Z",
+  "lanes": [
+    {
+      "harness": "codex",
+      "version": "0.166.0",
+      "agent_id": "7c70d96a-142e-4929-823c-7df446028057",
+      "billing_source": "subscription"
+    },
+    {
+      "harness": "muse",
+      "version": "1.4.14-R7309.1",
+      "agent_id": "38ad6f6f-da6b-4100-9cad-36ec5b368938",
+      "billing_source": "api_key"
+    },
+    {
+      "scenario": "automatic_router_pdf",
+      "selected_agent_id": "38ad6f6f-da6b-4100-9cad-36ec5b368938",
+      "run": {
+        "id": "1bb58e45-7f42-4204-8548-5a889810f37d",
+        "owner_id": "0115d28f-e920-4c94-8fe5-993b47f0bff8",
+        "revision": 10,
+        "created_at": "2026-11-02T11:56:02.500Z",
+        "updated_at": "2026-11-02T11:56:27.989Z",
+        "kind": "run",
+        "thread_id": "a1dbfa58-113f-4783-a3f0-d3ff13efe096",
+        "agent_id": "38ad6f6f-da6b-4100-9cad-36ec5b368938",
+        "input_message_id": "492fc788-f27c-424d-8dfc-ac728dc20f04",
+        "task_id": "97429295-7347-4c37-b34d-b8b80e0da75e",
+        "thread_revision": 1,
+        "goal_id": null,
+        "routine_id": null,
+        "goal_generation": null,
+        "routine_generation": null,
+        "publication": "immediate",
+        "pending_answer": null,
+        "status": "succeeded",
+        "cancellation": "none",
+        "outcome": "succeeded",
+        "delivery": "delivered",
+        "activity": "idle",
+        "diagnostic": null,
+        "native_dispatch_id": "01a19c1d-dd75-7000-b666-9cb92f28bc2b",
+        "grant_revision": 1,
+        "dispatch_token": "9c6d09e3-763a-4ffe-944e-44a1ad982923",
+        "authority_epoch": "da956255-6e60-4ae0-9af6-9b6ba6fb8f64",
+        "binding_id": "eb075f74-63b3-4e03-832d-e5f5dc1d6459",
+        "native_run_id": "01a19c1d-dd75-7000-b666-9cb92f28bc2b",
+        "native_interactions": [],
+        "agent_snapshot": {
+          "name": "Reviewer",
+          "handle": "reviewer",
+          "avatar": null,
+          "avatar_config": {
+            "version": 1,
+            "seed": "38ad6f6f-da6b-4100-9cad-36ec5b368938",
+            "shape": "pentagon",
+            "color": "rose",
+            "face": "curious"
+          },
+          "soul": "Review source documents and check exact PDF page references.",
+          "skills": [],
+          "harness": "muse",
+          "connection_id": "76222ce7-eeae-4387-aa33-675957c4b81c",
+          "billing_source": "api_key",
+          "instructions": "",
+          "workspace_id": null,
+          "model_id": "muse-spark-1.3",
+          "reasoning": null,
+          "agent_id": "38ad6f6f-da6b-4100-9cad-36ec5b368938",
+          "revision": 1
+        },
+        "workspace_id": "1c534e24-fa99-48e5-b26b-88b6d8cbff45",
+        "workspace_revision": 1,
+        "product_tools": [
+          "ngertiin.read_attachment"
+        ],
+        "attachment_observations": [
+          {
+            "artifact_id": "a4045e73-65f3-4b5d-8c89-ea6a4c095a18",
+            "source_sha256": "5726cc139e914677e2fcfd6cd9594f97604b1526f4683d39349426153855c038",
+            "operation": "context",
+            "pages": [
+              1,
+              2
+            ],
+            "truncated": true,
+            "created_at": "2026-11-02T11:56:05.354Z"
+          },
+          {
+            "artifact_id": "a4045e73-65f3-4b5d-8c89-ea6a4c095a18",
+            "source_sha256": "5726cc139e914677e2fcfd6cd9594f97604b1526f4683d39349426153855c038",
+            "operation": "read",
+            "pages": [
+              3
+            ],
+            "truncated": false,
+            "created_at": "2026-11-02T11:56:12.335Z"
+          }
+        ],
+        "sources": [],
+        "visual_inputs": [],
+        "native_tools": []
+      },
+      "answer": "I'll read page 3 of the attached PDF to retrieve the verification key.Verification key: `TURQUOISE-fda96983`\n\nSource: verification.pdf, page 3 — read via `read_attachment` for pages 3–3.\n",
+      "binding": {
+        "id": "eb075f74-63b3-4e03-832d-e5f5dc1d6459",
+        "owner_id": "0115d28f-e920-4c94-8fe5-993b47f0bff8",
+        "revision": 1,
+        "created_at": "2026-11-02T11:56:05.067Z",
+        "updated_at": "2026-11-02T11:56:05.067Z",
+        "kind": "binding",
+        "thread_id": "a1dbfa58-113f-4783-a3f0-d3ff13efe096",
+        "agent_id": "38ad6f6f-da6b-4100-9cad-36ec5b368938",
+        "connection_id": "76222ce7-eeae-4387-aa33-675957c4b81c",
+        "harness": "muse",
+        "native_session_id": "01a19c1d-d87a-7000-acaf-e833268af8c6",
+        "generation": 1,
+        "active": true,
+        "agent_revision": 1,
+        "workspace_id": "1c534e24-fa99-48e5-b26b-88b6d8cbff45",
+        "workspace_revision": 1
+      }
+    },
+    {
+      "scenario": "other_member_followup_after_restart",
+      "run": {
+        "id": "c054b174-81db-40dc-8219-8d41767bfe83",
+        "owner_id": "0115d28f-e920-4c94-8fe5-993b47f0bff8",
+        "revision": 18,
+        "created_at": "2026-11-02T11:56:28.250Z",
+        "updated_at": "2026-11-02T11:56:47.934Z",
+        "kind": "run",
+        "thread_id": "a1dbfa58-113f-4783-a3f0-d3ff13efe096",
+        "agent_id": "7c70d96a-142e-4929-823c-7df446028057",
+        "input_message_id": "8a88765e-f093-4378-924b-c89fc5bad87a",
+        "task_id": "04f9b1e1-bdb0-437c-8802-52e9014647f0",
+        "thread_revision": 1,
+        "goal_id": null,
+        "routine_id": null,
+        "goal_generation": null,
+        "routine_generation": null,
+        "publication": "immediate",
+        "pending_answer": null,
+        "status": "succeeded",
+        "cancellation": "none",
+        "outcome": "succeeded",
+        "delivery": "delivered",
+        "activity": "idle",
+        "diagnostic": null,
+        "native_dispatch_id": null,
+        "grant_revision": 1,
+        "dispatch_token": "1615a07e-ba92-4267-ab02-87a333cb21f0",
+        "authority_epoch": "17ce1a93-2b61-410c-b647-bdd1d4f9a0f0",
+        "binding_id": "68b8e413-eeaf-42d0-b1a0-68e4b0b80db9",
+        "native_run_id": "01a19c1e-3af6-78d3-b1e9-e9a86da90451",
+        "native_interactions": [],
+        "agent_snapshot": {
+          "name": "Coordinator",
+          "handle": "coordinator",
+          "avatar": null,
+          "avatar_config": {
+            "version": 1,
+            "seed": "7c70d96a-142e-4929-823c-7df446028057",
+            "shape": "circle",
+            "color": "rose",
+            "face": "focused"
+          },
+          "soul": "Coordinate immediate document work and delegate requested independent reviews.",
+          "skills": [],
+          "harness": "codex",
+          "connection_id": "138419bc-8b5e-462c-80ee-9c05ae82bc51",
+          "billing_source": "subscription",
+          "instructions": "",
+          "workspace_id": null,
+          "model_id": "gpt-6.1-sol",
+          "reasoning": null,
+          "agent_id": "7c70d96a-142e-4929-823c-7df446028057",
+          "revision": 1
+        },
+        "workspace_id": "1c534e24-fa99-48e5-b26b-88b6d8cbff45",
+        "workspace_revision": 1,
+        "product_tools": [
+          "ngertiin.describe_tools",
+          "ngertiin.list_attachments",
+          "ngertiin.search_attachment",
+          "ngertiin.read_attachment"
+        ],
+        "attachment_observations": [
+          {
+            "artifact_id": "a4045e73-65f3-4b5d-8c89-ea6a4c095a18",
+            "source_sha256": "5726cc139e914677e2fcfd6cd9594f97604b1526f4683d39349426153855c038",
+            "operation": "search",
+            "pages": [
+              4
+            ],
+            "truncated": false,
+            "created_at": "2026-11-02T11:56:40.428Z"
+          },
+          {
+            "artifact_id": "a4045e73-65f3-4b5d-8c89-ea6a4c095a18",
+            "source_sha256": "5726cc139e914677e2fcfd6cd9594f97604b1526f4683d39349426153855c038",
+            "operation": "read",
+            "pages": [
+              4
+            ],
+            "truncated": false,
+            "created_at": "2026-11-02T11:56:44.166Z"
+          }
+        ],
+        "sources": [],
+        "visual_inputs": [],
+        "native_tools": []
+      },
+      "answer": "I’ll find “Final marker” in verification.pdf and read the matching page.Final marker: `indigo otter 7246`\n\nSource: verification.pdf, PDF page 4.",
+      "binding": {
+        "id": "68b8e413-eeaf-42d0-b1a0-68e4b0b80db9",
+        "owner_id": "0115d28f-e920-4c94-8fe5-993b47f0bff8",
+        "revision": 1,
+        "created_at": "2026-11-02T11:56:29.234Z",
+        "updated_at": "2026-11-02T11:56:29.234Z",
+        "kind": "binding",
+        "thread_id": "a1dbfa58-113f-4783-a3f0-d3ff13efe096",
+        "agent_id": "7c70d96a-142e-4929-823c-7df446028057",
+        "connection_id": "138419bc-8b5e-462c-80ee-9c05ae82bc51",
+        "harness": "codex",
+        "native_session_id": "01a19c1e-3a51-7fc2-a91b-0483ea43573f",
+        "generation": 1,
+        "active": true,
+        "agent_revision": 1,
+        "workspace_id": "1c534e24-fa99-48e5-b26b-88b6d8cbff45",
+        "workspace_revision": 1
+      }
+    },
+    {
+      "scenario": "handoff_parent",
+      "run": {
+        "id": "21b3f590-726d-4f76-a7f9-e916459a52ae",
+        "owner_id": "0115d28f-e920-4c94-8fe5-993b47f0bff8",
+        "revision": 8,
+        "created_at": "2026-11-02T11:56:47.968Z",
+        "updated_at": "2026-11-02T11:56:59.166Z",
+        "kind": "run",
+        "thread_id": "a1dbfa58-113f-4783-a3f0-d3ff13efe096",
+        "agent_id": "7c70d96a-142e-4929-823c-7df446028057",
+        "input_message_id": "01c31ae4-4727-4954-b8cc-973ca40c3be2",
+        "task_id": "60c05dbb-fdf9-4edf-9076-54590e5c481a",
+        "thread_revision": 1,
+        "goal_id": null,
+        "routine_id": null,
+        "goal_generation": null,
+        "routine_generation": null,
+        "publication": "immediate",
+        "pending_answer": null,
+        "status": "succeeded",
+        "cancellation": "none",
+        "outcome": "succeeded",
+        "delivery": "delivered",
+        "activity": "idle",
+        "diagnostic": null,
+        "native_dispatch_id": null,
+        "grant_revision": 1,
+        "dispatch_token": "2d71e740-1786-4e5a-8b9c-1bdda81df1fb",
+        "authority_epoch": "17ce1a93-2b61-410c-b647-bdd1d4f9a0f0",
+        "binding_id": "68b8e413-eeaf-42d0-b1a0-68e4b0b80db9",
+        "native_run_id": "01a19c1e-8ab2-7251-aef2-b02d46c81210",
+        "native_interactions": [],
+        "agent_snapshot": {
+          "name": "Coordinator",
+          "handle": "coordinator",
+          "avatar": null,
+          "avatar_config": {
+            "version": 1,
+            "seed": "7c70d96a-142e-4929-823c-7df446028057",
+            "shape": "circle",
+            "color": "rose",
+            "face": "focused"
+          },
+          "soul": "Coordinate immediate document work and delegate requested independent reviews.",
+          "skills": [],
+          "harness": "codex",
+          "connection_id": "138419bc-8b5e-462c-80ee-9c05ae82bc51",
+          "billing_source": "subscription",
+          "instructions": "",
+          "workspace_id": null,
+          "model_id": "gpt-6.1-sol",
+          "reasoning": null,
+          "agent_id": "7c70d96a-142e-4929-823c-7df446028057",
+          "revision": 1
+        },
+        "workspace_id": "1c534e24-fa99-48e5-b26b-88b6d8cbff45",
+        "workspace_revision": 1,
+        "product_tools": [
+          "ngertiin.group_handoff"
+        ],
+        "attachment_observations": [
+          {
+            "artifact_id": "a4045e73-65f3-4b5d-8c89-ea6a4c095a18",
+            "source_sha256": "5726cc139e914677e2fcfd6cd9594f97604b1526f4683d39349426153855c038",
+            "operation": "context",
+            "pages": [
+              1,
+              2
+            ],
+            "truncated": true,
+            "created_at": "2026-11-02T11:56:49.661Z"
+          }
+        ],
+        "sources": [],
+        "visual_inputs": [],
+        "native_tools": []
+      },
+      "answer": "I’ll ask Reviewer to independently read page 3 and report the verification key with its citation.Sent to Reviewer for independent verification of verification.pdf, page 3. Awaiting the review result.",
+      "binding": {
+        "id": "68b8e413-eeaf-42d0-b1a0-68e4b0b80db9",
+        "owner_id": "0115d28f-e920-4c94-8fe5-993b47f0bff8",
+        "revision": 1,
+        "created_at": "2026-11-02T11:56:29.234Z",
+        "updated_at": "2026-11-02T11:56:29.234Z",
+        "kind": "binding",
+        "thread_id": "a1dbfa58-113f-4783-a3f0-d3ff13efe096",
+        "agent_id": "7c70d96a-142e-4929-823c-7df446028057",
+        "connection_id": "138419bc-8b5e-462c-80ee-9c05ae82bc51",
+        "harness": "codex",
+        "native_session_id": "01a19c1e-3a51-7fc2-a91b-0483ea43573f",
+        "generation": 1,
+        "active": true,
+        "agent_revision": 1,
+        "workspace_id": "1c534e24-fa99-48e5-b26b-88b6d8cbff45",
+        "workspace_revision": 1
+      }
+    },
+    {
+      "scenario": "handoff_child",
+      "run": {
+        "id": "907cc493-2c34-42c2-b0e1-bbba430c273d",
+        "owner_id": "0115d28f-e920-4c94-8fe5-993b47f0bff8",
+        "revision": 10,
+        "created_at": "2026-11-02T11:56:56.536Z",
+        "updated_at": "2026-11-02T11:57:20.167Z",
+        "kind": "run",
+        "thread_id": "a1dbfa58-113f-4783-a3f0-d3ff13efe096",
+        "agent_id": "38ad6f6f-da6b-4100-9cad-36ec5b368938",
+        "input_message_id": "f48617fd-3d36-4fb1-88a5-ec96894fa3a1",
+        "task_id": "d2e5b58e-b257-42d0-a536-a251cf9bfe2c",
+        "thread_revision": 1,
+        "goal_id": null,
+        "routine_id": null,
+        "goal_generation": null,
+        "routine_generation": null,
+        "publication": "immediate",
+        "pending_answer": null,
+        "status": "succeeded",
+        "cancellation": "none",
+        "outcome": "succeeded",
+        "delivery": "delivered",
+        "activity": "idle",
+        "diagnostic": null,
+        "native_dispatch_id": "01a19c1e-ba18-7000-8160-28031c2062ba",
+        "grant_revision": 1,
+        "dispatch_token": "7283ac16-73a6-442e-8d4c-2399ba1e8308",
+        "authority_epoch": "17ce1a93-2b61-410c-b647-bdd1d4f9a0f0",
+        "binding_id": "eb075f74-63b3-4e03-832d-e5f5dc1d6459",
+        "native_run_id": "01a19c1e-ba18-7000-8160-28031c2062ba",
+        "native_interactions": [],
+        "agent_snapshot": {
+          "name": "Reviewer",
+          "handle": "reviewer",
+          "avatar": null,
+          "avatar_config": {
+            "version": 1,
+            "seed": "38ad6f6f-da6b-4100-9cad-36ec5b368938",
+            "shape": "pentagon",
+            "color": "rose",
+            "face": "curious"
+          },
+          "soul": "Review source documents and check exact PDF page references.",
+          "skills": [],
+          "harness": "muse",
+          "connection_id": "76222ce7-eeae-4387-aa33-675957c4b81c",
+          "billing_source": "api_key",
+          "instructions": "",
+          "workspace_id": null,
+          "model_id": "muse-spark-1.3",
+          "reasoning": null,
+          "agent_id": "38ad6f6f-da6b-4100-9cad-36ec5b368938",
+          "revision": 1
+        },
+        "workspace_id": "1c534e24-fa99-48e5-b26b-88b6d8cbff45",
+        "workspace_revision": 1,
+        "product_tools": [
+          "ngertiin.read_attachment"
+        ],
+        "attachment_observations": [
+          {
+            "artifact_id": "a4045e73-65f3-4b5d-8c89-ea6a4c095a18",
+            "source_sha256": "5726cc139e914677e2fcfd6cd9594f97604b1526f4683d39349426153855c038",
+            "operation": "context",
+            "pages": [
+              1,
+              2
+            ],
+            "truncated": true,
+            "created_at": "2026-11-02T11:57:01.836Z"
+          },
+          {
+            "artifact_id": "a4045e73-65f3-4b5d-8c89-ea6a4c095a18",
+            "source_sha256": "5726cc139e914677e2fcfd6cd9594f97604b1526f4683d39349426153855c038",
+            "operation": "read",
+            "pages": [
+              3
+            ],
+            "truncated": false,
+            "created_at": "2026-11-02T11:57:08.818Z"
+          }
+        ],
+        "sources": [],
+        "visual_inputs": [],
+        "native_tools": []
+      },
+      "answer": "I'll re-read page 3 independently to verify the key.Verification key: `TURQUOISE-fda96983`\n\nSource: verification.pdf, PDF page 3.\n",
+      "binding": {
+        "id": "eb075f74-63b3-4e03-832d-e5f5dc1d6459",
+        "owner_id": "0115d28f-e920-4c94-8fe5-993b47f0bff8",
+        "revision": 1,
+        "created_at": "2026-11-02T11:56:05.067Z",
+        "updated_at": "2026-11-02T11:56:05.067Z",
+        "kind": "binding",
+        "thread_id": "a1dbfa58-113f-4783-a3f0-d3ff13efe096",
+        "agent_id": "38ad6f6f-da6b-4100-9cad-36ec5b368938",
+        "connection_id": "76222ce7-eeae-4387-aa33-675957c4b81c",
+        "harness": "muse",
+        "native_session_id": "01a19c1d-d87a-7000-acaf-e833268af8c6",
+        "generation": 1,
+        "active": true,
+        "agent_revision": 1,
+        "workspace_id": "1c534e24-fa99-48e5-b26b-88b6d8cbff45",
+        "workspace_revision": 1
+      }
+    },
+    {
+      "scenario": "handoff_continuation",
+      "run": {
+        "id": "f4f7fc51-80f9-402b-ad70-7bfb4b5ff839",
+        "owner_id": "0115d28f-e920-4c94-8fe5-993b47f0bff8",
+        "revision": 7,
+        "created_at": "2026-11-02T11:57:20.275Z",
+        "updated_at": "2026-11-02T11:57:27.156Z",
+        "kind": "run",
+        "thread_id": "a1dbfa58-113f-4783-a3f0-d3ff13efe096",
+        "agent_id": "7c70d96a-142e-4929-823c-7df446028057",
+        "input_message_id": "1406b1fd-93b5-45d0-8393-a8599fbe1205",
+        "task_id": "60c05dbb-fdf9-4edf-9076-54590e5c481a",
+        "thread_revision": 1,
+        "goal_id": null,
+        "routine_id": null,
+        "goal_generation": null,
+        "routine_generation": null,
+        "publication": "deferred",
+        "pending_answer": "Reviewer independently verified the key: `TURQUOISE-fda96983`.\n\nSource: verification.pdf, PDF page 3.",
+        "status": "succeeded",
+        "cancellation": "none",
+        "outcome": "succeeded",
+        "delivery": "delivered",
+        "activity": "idle",
+        "diagnostic": null,
+        "native_dispatch_id": null,
+        "grant_revision": 1,
+        "dispatch_token": "cbb3135b-4957-44ff-863a-7a22e99123f2",
+        "authority_epoch": "17ce1a93-2b61-410c-b647-bdd1d4f9a0f0",
+        "binding_id": "68b8e413-eeaf-42d0-b1a0-68e4b0b80db9",
+        "native_run_id": "01a19c1f-06de-7060-9578-dc124b734d2e",
+        "native_interactions": [],
+        "agent_snapshot": {
+          "name": "Coordinator",
+          "handle": "coordinator",
+          "avatar": null,
+          "avatar_config": {
+            "version": 1,
+            "seed": "7c70d96a-142e-4929-823c-7df446028057",
+            "shape": "circle",
+            "color": "rose",
+            "face": "focused"
+          },
+          "soul": "Coordinate immediate document work and delegate requested independent reviews.",
+          "skills": [],
+          "harness": "codex",
+          "connection_id": "138419bc-8b5e-462c-80ee-9c05ae82bc51",
+          "billing_source": "subscription",
+          "instructions": "",
+          "workspace_id": null,
+          "model_id": "gpt-6.1-sol",
+          "reasoning": null,
+          "agent_id": "7c70d96a-142e-4929-823c-7df446028057",
+          "revision": 1
+        },
+        "workspace_id": "1c534e24-fa99-48e5-b26b-88b6d8cbff45",
+        "workspace_revision": 1,
+        "product_tools": [],
+        "attachment_observations": [
+          {
+            "artifact_id": "a4045e73-65f3-4b5d-8c89-ea6a4c095a18",
+            "source_sha256": "5726cc139e914677e2fcfd6cd9594f97604b1526f4683d39349426153855c038",
+            "operation": "context",
+            "pages": [
+              1,
+              2
+            ],
+            "truncated": true,
+            "created_at": "2026-11-02T11:57:21.436Z"
+          }
+        ],
+        "sources": [],
+        "visual_inputs": [],
+        "native_tools": []
+      },
+      "answer": "Reviewer independently verified the key: `TURQUOISE-fda96983`.\n\nSource: verification.pdf, PDF page 3.",
+      "binding": {
+        "id": "68b8e413-eeaf-42d0-b1a0-68e4b0b80db9",
+        "owner_id": "0115d28f-e920-4c94-8fe5-993b47f0bff8",
+        "revision": 1,
+        "created_at": "2026-11-02T11:56:29.234Z",
+        "updated_at": "2026-11-02T11:56:29.234Z",
+        "kind": "binding",
+        "thread_id": "a1dbfa58-113f-4783-a3f0-d3ff13efe096",
+        "agent_id": "7c70d96a-142e-4929-823c-7df446028057",
+        "connection_id": "138419bc-8b5e-462c-80ee-9c05ae82bc51",
+        "harness": "codex",
+        "native_session_id": "01a19c1e-3a51-7fc2-a91b-0483ea43573f",
+        "generation": 1,
+        "active": true,
+        "agent_revision": 1,
+        "workspace_id": "1c534e24-fa99-48e5-b26b-88b6d8cbff45",
+        "workspace_revision": 1
+      }
+    }
+  ],
+  "pass": true,
+  "cleanup": {
+    "owned_services_stopped": true,
+    "isolated_credentials_removed": true,
+    "original_state_preserved": true
+  }
+}

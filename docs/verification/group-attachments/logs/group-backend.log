@@ -1,0 +1,32 @@
+bun test v1.3.10 (30e609e0)
+
+tests/groups/attachments.test.ts:
+(pass) group members share one workspace and have separate DM, routing and temporary resources [32.80ms]
+50 |       );
+51 |   }
+52 |   private signal(signal: "SIGTERM" | "SIGKILL") {
+53 |     if (this.groupOwned) {
+54 |       try {
+55 |         process.kill(-this.child.pid, signal);
+                     ^
+SystemError: kill() failed: EPERM: Operation not permitted
+ syscall: "kill",
+   errno: 1,
+    code: "EPERM"
+
+      at signal (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/src/harness/process.ts:55:17)
+      at stop (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/src/harness/process.ts:79:48)
+      at async <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/groups/attachments.test.ts:119:15)
+(fail) a shared native writer closes its owned background descendants before releasing the workspace [15.60ms]
+(pass) group submission is atomic and exact HTTP retries reconcile one message, route and artifact after restart [43.14ms]
+(pass) handoff and follow-up use the same source, serialize writers and retain access after restart [38.43ms]
+(pass) unknown group work retains the workspace lease across restart until native reconciliation [17.08ms]
+(pass) foreign attachment admission and removed-member access fail without publishing a message [14.90ms]
+(pass) image routing exposes only capable members and rejects unsupported targets before publication [24.49ms]
+(pass) retrying rejected routing keeps the original source message and cannot duplicate the selected task [21.71ms]
+(pass) existing group lanes are preserved beneath stable directories and retain artifact identity [17.95ms]
+
+ 8 pass
+ 1 fail
+ 57 expect() calls
+Ran 9 tests across 1 file. [413.00ms]

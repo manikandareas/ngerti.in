@@ -1,0 +1,55 @@
+{
+  "health": {
+    "status": "foundation_ready",
+    "contract_version": "1.22.0",
+    "persistence": "ready",
+    "scheduler": "running",
+    "dispatcher": "running",
+    "registered_executors": 2,
+    "api_readiness_gate": "ready"
+  },
+  "original_capture": {
+    "content_sha256": "97b2f23dbecef4416b7a4c85cfa52e0841e4ba015f8bf405cf8f5b2579f5fd04",
+    "counts": {
+      "message": 44,
+      "artifact": 23
+    },
+    "artifact_bytes": {
+      "00a1902d-2e2c-40e6-a86a-c19b9fc0acd8": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+      "050d2a50-6943-4c0e-b323-2a41d958f244": "bd60d9416f40b6392e4d4cc75798b5079e42f48ab70825663a33a38b2374b9a9",
+      "06892505-230a-490f-9ead-80934544c9a1": "34b38677c26b46baa682092e1118b58a43aac90898cd5a7f66c696143115eb01",
+      "2da50124-7ea3-4861-bc7e-b68f360ed3fa": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+      "3829fb52-a0d6-472e-b0bb-609b11f07ea9": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+      "386137eb-8827-4e63-839c-e639b0e96b81": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+      "46855f32-b889-46e4-a48d-1529f049398f": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+      "491c56e9-3e24-489e-bfac-38c3b6a0f66f": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+      "507f2850-053f-4652-942e-2e2726714878": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+      "5a57cb80-9fcc-44b4-a401-c51b1511820a": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+      "62313a1f-88c7-48db-a306-446f4c4d6951": "82ddc208b226d5e93bee3e6528206ba0d804dfab0381b5e966d3ce7e54d41860",
+      "75ed7aa2-653d-4419-b1c8-8e6c08a1a11b": "412f3e0c3181d92ec2f2c22c7e73209efac0e3dd400423519c26c2777a30bb32",
+      "7e52bb7e-750c-4915-bc31-3fa0d735ac9a": "2eafbc5831adbd69983d43ded75430017bf413252177e99912a56a75f98de325",
+      "823334f9-67f0-402c-9671-33734899cc56": "d6f9f7b8036515559ce3e97a2b5d397744467276af461239032c1b418d98187e",
+      "92cf8ee6-ab9f-4d14-8069-fd660468cc4b": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+      "9aac89ce-77a9-4124-9159-2d9d371384e8": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+      "a1dc4498-9822-44a3-b95b-bb721f2508a2": "48f248db3ca7a19d907be023aef7322986e1c77162aa04d838a6d48c5841e0d4",
+      "a4efcff3-985b-40aa-b3bb-fc4413016470": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+      "b56f6039-6939-48f0-bead-7363981eb573": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+      "e5ef83a2-c3df-4858-b8ea-e285b2742cfe": "f4686f3618699a50d13555d28b6eaccf2ba66b229ec37966fef294ff5a3106d5",
+      "ec777dc4-f4e3-4d1c-aed8-b9f012e67807": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+      "f4027d94-fd59-4d66-b04e-2f832b214fc0": "75ed12d4c0a67f4398ec20cfe92755180c14f12360a13c93d7f2809b000dfa71",
+      "fc29b323-f2cd-422c-9719-d3ff4e3def1c": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233"
+    },
+    "unsettled_runs": 0
+  },
+  "original_subset_sha256": "97b2f23dbecef4416b7a4c85cfa52e0841e4ba015f8bf405cf8f5b2579f5fd04",
+  "original_content_unchanged": true,
+  "current_counts": {
+    "message": 52,
+    "artifact": 23
+  },
+  "subsequent_messages_retained": 8,
+  "note": "Newer conversation activity was retained; preservation checks compare the exact original entity subset and all original artifact bytes.",
+  "contract_version": "1.22.0",
+  "retry_route_published": true,
+  "activated_final_backend_revision": true
+}

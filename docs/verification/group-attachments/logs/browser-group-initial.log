@@ -1,0 +1,102 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4321" --strictPort
+[WebServer] (node:21241) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 10 tests using 1 worker
+
+(node:21242) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop] › tests/group-attachments.spec.ts:79:1 › group file-only sends stay local, route through the group API and appear once in the shared File panel (5.3s)
+  ✓   2 [desktop] › tests/group-attachments.spec.ts:124:1 › a lost group-send acknowledgement restores the same submission after reload without publishing twice (4.6s)
+  ✓   3 [desktop] › tests/group-attachments.spec.ts:156:1 › a rejected second group upload restores both local files and can be corrected without partial publication (5.7s)
+  ✘   4 [desktop] › tests/group-attachments.spec.ts:187:1 › rejected routing retries the original group message and source attachment (7.4s)
+(node:21266) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   5 [desktop] › tests/group-attachments.spec.ts:215:1 › group image eligibility follows the mentioned member and a capable member receives normalized visual input (6.8s)
+(node:21453) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   6 [mobile] › tests/group-attachments.spec.ts:79:1 › group file-only sends stay local, route through the group API and appear once in the shared File panel (6.0s)
+  ✓   7 [mobile] › tests/group-attachments.spec.ts:124:1 › a lost group-send acknowledgement restores the same submission after reload without publishing twice (5.7s)
+  ✓   8 [mobile] › tests/group-attachments.spec.ts:156:1 › a rejected second group upload restores both local files and can be corrected without partial publication (4.8s)
+  ✘   9 [mobile] › tests/group-attachments.spec.ts:187:1 › rejected routing retries the original group message and source attachment (7.4s)
+(node:21570) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  10 [mobile] › tests/group-attachments.spec.ts:215:1 › group image eligibility follows the mentioned member and a capable member receives normalized visual input (6.0s)
+
+
+  1) [desktop] › tests/group-attachments.spec.ts:187:1 › rejected routing retries the original group message and source attachment 
+
+    Error: expect(received).toMatchObject(expected)
+
+    - Expected  - 1
+    + Received  + 1
+
+      Object {
+        "message_id": "cdacf6f0-4de2-4cef-80a3-ce6eda9e6e95",
+    -   "state": "selected",
+    +   "state": "pending",
+      }
+
+      201 |   await expect(retry).toHaveCount(0);
+      202 |   const after = await snapshot(page, group.id);
+    > 203 |   expect(after.routes.find((r: { id: string }) => r.id === original.id)).toMatchObject({
+          |                                                                          ^
+      204 |     state: "selected",
+      205 |     message_id: original.message_id,
+      206 |   });
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/group-attachments.spec.ts:203:74
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/group-attachments-rejected-18769-ssage-and-source-attachment-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../.dev/nma062-playwright/group-attachments-rejected-18769-ssage-and-source-attachment-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/group-attachments-rejected-18769-ssage-and-source-attachment-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../.dev/nma062-playwright/group-attachments-rejected-18769-ssage-and-source-attachment-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [mobile] › tests/group-attachments.spec.ts:187:1 › rejected routing retries the original group message and source attachment 
+
+    Error: expect(received).toMatchObject(expected)
+
+    - Expected  - 1
+    + Received  + 1
+
+      Object {
+        "message_id": "ba999f2c-0891-4e63-9ccd-c73af8c5e090",
+    -   "state": "selected",
+    +   "state": "pending",
+      }
+
+      201 |   await expect(retry).toHaveCount(0);
+      202 |   const after = await snapshot(page, group.id);
+    > 203 |   expect(after.routes.find((r: { id: string }) => r.id === original.id)).toMatchObject({
+          |                                                                          ^
+      204 |     state: "selected",
+      205 |     message_id: original.message_id,
+      206 |   });
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/group-attachments.spec.ts:203:74
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/group-attachments-rejected-18769-ssage-and-source-attachment-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../.dev/nma062-playwright/group-attachments-rejected-18769-ssage-and-source-attachment-mobile/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/group-attachments-rejected-18769-ssage-and-source-attachment-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../.dev/nma062-playwright/group-attachments-rejected-18769-ssage-and-source-attachment-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    [desktop] › tests/group-attachments.spec.ts:187:1 › rejected routing retries the original group message and source attachment 
+    [mobile] › tests/group-attachments.spec.ts:187:1 › rejected routing retries the original group message and source attachment 
+  8 passed (1.1m)

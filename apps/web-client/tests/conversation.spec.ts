@@ -32,6 +32,31 @@ async function idleDm(page: Page) {
   return { agent, thread };
 }
 
+test("switching conversations keeps exactly one attachment button and editor", async ({ page }) => {
+  const { agent, thread } = await idleDm(page);
+  for (let index = 0; index < 12; index++) {
+    await sidebar(page);
+    const target =
+      index % 2 === 0
+        ? page.locator("[data-thread-id]").filter({ hasText: "Tobi" }).first()
+        : page.locator(`[data-thread-id="${thread.id}"]`);
+    await target.click();
+    await expect(
+      page.getByRole("button", {
+        name: `Detail ${index % 2 === 0 ? "Tobi" : agent.name}`,
+        exact: true,
+      }),
+    ).toBeVisible();
+    await expect(page.getByRole("button", { name: "Tambah lampiran", exact: true })).toHaveCount(1);
+    await expect(page.getByLabel("Lampirkan file ke pesan", { exact: true })).toHaveCount(1);
+    await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toHaveCount(1);
+  }
+  await page.getByRole("textbox", { name: "Pesan", exact: true }).fill("Composer still works.");
+  const chooser = page.waitForEvent("filechooser");
+  await page.getByRole("button", { name: "Tambah lampiran", exact: true }).click();
+  expect((await chooser).isMultiple()).toBe(true);
+});
+
 test("an idle DM shows its first admitted message directly in the conversation", async ({
   page,
 }) => {

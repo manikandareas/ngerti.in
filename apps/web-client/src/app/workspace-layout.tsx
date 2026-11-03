@@ -1353,7 +1353,7 @@ export default function Workspace() {
                   data-multiline={multiline ? "true" : undefined}
                 >
                   <AttachInput
-                    key={snapshot.thread.id}
+                    key={`attachments:${snapshot.thread.id}`}
                     disabled={busy || pending !== null || !!editing}
                     count={attachments.length}
                     addFiles={composerFiles.addFiles}
@@ -1377,7 +1377,7 @@ export default function Workspace() {
                     />
                   ) : (
                     <ComposerInput
-                      key={snapshot.thread.id}
+                      key={`editor:${snapshot.thread.id}`}
                       ref={bindComposerInput}
                       value={pending ?? draft}
                       readOnly={busy || pending !== null}

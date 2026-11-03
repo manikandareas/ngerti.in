@@ -1,6 +1,7 @@
 import { type AvatarAction, type AvatarState, avatarActions, avatarStates } from "./catalog";
 import { subscribeAvatarFrame } from "./clock";
 import { type AvatarConfig, parseAvatarConfig, seedHash } from "./config";
+import { sampleAvatarLoading } from "./loading";
 import { actionDuration, sampleAvatarPose } from "./motion";
 import { renderAvatarSvg } from "./render";
 import { furTextureKey, loadFurTexture } from "./texture";
@@ -8,6 +9,7 @@ import { furTextureKey, loadFurTexture } from "./texture";
 export interface AvatarController {
   setConfig(config: AvatarConfig): void;
   setState(state: AvatarState): void;
+  setLoading(loading: boolean): void;
   play(action: AvatarAction): void;
   /** Normalized gaze coordinates, clamped to [-1, 1]. */
   lookAt(x: number, y: number): void;
@@ -22,6 +24,7 @@ export function mountAvatar(
   input: AvatarConfig,
   options: {
     state?: AvatarState;
+    loading?: boolean;
     animated?: boolean;
     followPointer?: boolean;
     shadow?: boolean;
@@ -31,6 +34,11 @@ export function mountAvatar(
   let state = options.state ?? "idle";
   if (!Object.hasOwn(avatarStates, state)) throw new Error("Invalid avatar state.");
   const id = `ngertiin-avatar-${++nextId}`;
+  let loading = options.loading ?? false;
+  let loadingStarted = performance.now();
+  let loadingFace = sampleAvatarLoading(0).face;
+  let rings: NodeListOf<SVGElement> | undefined;
+  let veins: SVGElement | null = null;
   let disposed = false;
   let body: SVGGElement | null = null;
   let gaze: SVGGElement | null = null;
@@ -69,13 +77,17 @@ export function mountAvatar(
           // Keep the lightweight shaded fallback usable if image decoding fails.
         });
     }
-    host.innerHTML = renderAvatarSvg(config, {
+    host.innerHTML = renderAvatarSvg(loading ? { ...config, face: loadingFace } : config, {
+      loading,
       id,
-      state,
+      state: loading ? "idle" : state,
       shadow: options.shadow,
       textureHref,
     });
     host.dataset.avatarState = state;
+    rings = host.querySelectorAll("[data-avatar-loading-ring]");
+    veins = host.querySelector("[data-avatar-loading-veins]");
+    host.dataset.avatarLoading = String(loading);
     body = host.querySelector("[data-avatar-body]");
     gaze = host.querySelector("[data-avatar-gaze]");
     left = host.querySelector('[data-avatar-eye="left"]');
@@ -85,6 +97,12 @@ export function mountAvatar(
   }
 
   function draw(now: number, reducedMotion: boolean) {
+    const loadingPose = sampleAvatarLoading(now - loadingStarted, reducedMotion);
+    if (loading && loadingFace !== loadingPose.face) {
+      loadingFace = loadingPose.face;
+      render();
+      return;
+    }
     const elapsed = Math.min(64, lastTime ? now - lastTime : 32);
     lastTime = now;
     if (action && now - action.started >= actionDuration[action.type]) {
@@ -103,6 +121,19 @@ export function mountAvatar(
         : undefined,
       reducedMotion,
     );
+    if (loading) {
+      Object.assign(pose, {
+        x: loadingPose.x,
+        y: loadingPose.y,
+        rotation: loadingPose.rotation,
+        scaleX: loadingPose.scaleX,
+        scaleY: loadingPose.scaleY,
+      });
+      rings?.forEach((ring) => {
+        ring.setAttribute("stroke-dashoffset", String(loadingPose.ringOffset));
+      });
+      veins?.setAttribute("opacity", String(loadingPose.veinOpacity));
+    }
     const smoothing = 1 - Math.exp(-elapsed / 95);
     gazeX = reducedMotion ? 0 : gazeX + (targetX - gazeX) * smoothing;
     gazeY = reducedMotion ? 0 : gazeY + (targetY - gazeY) * smoothing;
@@ -112,7 +143,7 @@ export function mountAvatar(
     );
     gaze?.setAttribute(
       "transform",
-      `translate(${(gazeX * 7).toFixed(2)} ${(gazeY * 5).toFixed(2)})`,
+      `translate(${((loading ? 0 : gazeX) * 7).toFixed(2)} ${((loading ? 0 : gazeY) * 5).toFixed(2)})`,
     );
     left?.setAttribute("transform", `scale(1 ${pose.eyeLeft.toFixed(3)})`);
     right?.setAttribute("transform", `scale(1 ${pose.eyeRight.toFixed(3)})`);
@@ -152,6 +183,15 @@ export function mountAvatar(
   }
 
   return {
+    setLoading(value) {
+      if (disposed || value === loading) return;
+      loading = value;
+      loadingStarted = performance.now();
+      loadingFace = sampleAvatarLoading(0).face;
+      action = undefined;
+      delete host.dataset.avatarAction;
+      render();
+    },
     setConfig(value) {
       if (disposed) return;
       const next = readConfig(value);
@@ -180,6 +220,7 @@ export function mountAvatar(
       document.removeEventListener("pointerleave", resetPointer);
       window.removeEventListener("blur", resetPointer);
       host.replaceChildren();
+      delete host.dataset.avatarLoading;
       delete host.dataset.avatarState;
       delete host.dataset.avatarAction;
     },

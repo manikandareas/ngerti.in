@@ -7,6 +7,7 @@ import "./avatar.css";
 export interface AgentAvatarProps {
   config: AvatarConfig;
   state?: AvatarState;
+  loading?: boolean;
   size?: number | string;
   animated?: boolean;
   followPointer?: boolean;
@@ -20,6 +21,7 @@ export interface AgentAvatarProps {
 export function AgentAvatar({
   config,
   state = "idle",
+  loading = false,
   size = 64,
   animated = true,
   followPointer = false,
@@ -32,11 +34,12 @@ export function AgentAvatar({
   const host = useRef<HTMLSpanElement>(null);
   const controller = useRef<AvatarController | null>(null);
   const [visible, setVisible] = useState(!deferred);
-  const initial = useRef({ config, state });
+  const initial = useRef({ config, state, loading });
   useImperativeHandle(
     ref,
     () => ({
       setConfig: (value) => controller.current?.setConfig(value),
+      setLoading: (value) => controller.current?.setLoading(value),
       setState: (value) => controller.current?.setState(value),
       play: (action) => controller.current?.play(action),
       lookAt: (x, y) => controller.current?.lookAt(x, y),
@@ -45,7 +48,7 @@ export function AgentAvatar({
     [],
   );
 
-  initial.current = { config, state };
+  initial.current = { config, state, loading };
   useEffect(() => {
     if (!deferred) {
       setVisible(true);
@@ -62,6 +65,9 @@ export function AgentAvatar({
     controller.current?.setConfig(config);
   }, [config]);
   useEffect(() => {
+    controller.current?.setLoading(loading);
+  }, [loading]);
+  useEffect(() => {
     controller.current?.setState(state);
   }, [state]);
 
@@ -69,6 +75,7 @@ export function AgentAvatar({
     if (!host.current || !visible) return;
     const instance = mountAvatar(host.current, initial.current.config, {
       state: initial.current.state,
+      loading: initial.current.loading,
       animated,
       followPointer,
       shadow,

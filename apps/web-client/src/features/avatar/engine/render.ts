@@ -1,5 +1,6 @@
 import { type AvatarFace, type AvatarState, avatarColors, avatarShapes } from "./catalog";
 import { type AvatarConfig, parseAvatarConfig, seedRandom } from "./config";
+import { renderLoadingRings, renderLoadingVeins } from "./loading";
 
 export function faceForState(face: AvatarFace, state: AvatarState): AvatarFace {
   switch (state) {
@@ -79,6 +80,7 @@ export function renderAvatarSvg(
     shadow?: boolean;
     textureHref?: string;
     surfaceOnly?: boolean;
+    loading?: boolean;
   } = {},
 ): string {
   const config = parseAvatarConfig(input);
@@ -137,7 +139,7 @@ export function renderAvatarSvg(
 <radialGradient id="${id}-ground"><stop stop-color="#252332" stop-opacity=".17"/><stop offset="1" stop-color="#252332" stop-opacity="0"/></radialGradient>
 </defs>
 ${options.shadow ? `<ellipse data-avatar-shadow="" cx="100" cy="181" rx="60" ry="9" fill="url(#${id}-ground)"/>` : ""}
-${options.surfaceOnly ? "" : `<g data-avatar-body=""><g transform="translate(100 110) rotate(${lean}) scale(${width} ${height}) translate(-100 -110)">`}
+${options.surfaceOnly ? "" : `<g data-avatar-body="">${options.loading ? renderLoadingRings(config, id, false) : ""}<g transform="translate(100 110) rotate(${lean}) scale(${width} ${height}) translate(-100 -110)">`}
 <g data-avatar-surface="">
 ${
   options.textureHref
@@ -154,7 +156,7 @@ ${
     ? ""
     : `<g transform="translate(100 ${body.faceY})"><g data-avatar-gaze="">
 ${plushEye(-spacing, face, false, id)}${plushEye(spacing, face, true, id)}
-</g></g></g></g>`
+</g></g>${options.loading ? renderLoadingVeins(config, id) : ""}</g>${options.loading ? renderLoadingRings(config, id, true) : ""}</g>`
 }
 </svg>`;
 }

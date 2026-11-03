@@ -49,7 +49,7 @@ const initialConfig = createAvatar("tobi-circle", {
   color: "lilac",
   face: "calm",
 });
-const tabs = { shape: "Bentuk", face: "Ekspresi", motion: "Gerak" } as const;
+const tabs = { shape: "Bentuk", face: "Ekspresi", motion: "Gerak", loading: "Loading" } as const;
 const stateLabels: Record<AvatarState, string> = {
   idle: "Santai",
   listening: "Mendengarkan",
@@ -101,6 +101,7 @@ export default function AvatarStudio() {
   const [saved, setSaved] = useState<string | null>(null);
   const [config, setConfig] = useState(loadConfig);
   const [tab, setTab] = useState<keyof typeof tabs>("shape");
+  const [previewLoading, setPreviewLoading] = useState(false);
   const [state, setState] = useState<AvatarState>("idle");
   const [family, setFamily] = useState(makeFamily);
   const [exporting, setExporting] = useState(false);
@@ -305,7 +306,7 @@ export default function AvatarStudio() {
           <div className="studio-stage">
             <div className="studio-stage-top">
               <span className="studio-live">
-                <span /> {stateLabels[state]}
+                <span /> {previewLoading ? "Gravity overthinking" : stateLabels[state]}
               </span>
               <button
                 type="button"
@@ -326,6 +327,7 @@ export default function AvatarStudio() {
                 ref={controller}
                 config={config}
                 state={state}
+                loading={previewLoading}
                 size={360}
                 followPointer={followPointer}
                 shadow
@@ -352,7 +354,10 @@ export default function AvatarStudio() {
                 <select
                   id="avatar-state"
                   value={state}
-                  onChange={(event) => setState(event.target.value as AvatarState)}
+                  onChange={(event) => {
+                    setPreviewLoading(false);
+                    setState(event.target.value as AvatarState);
+                  }}
                 >
                   {Object.keys(avatarStates).map((value) => (
                     <option key={value} value={value}>
@@ -491,6 +496,27 @@ export default function AvatarStudio() {
                   Ekspresi ini dipakai saat santai. State agent menyesuaikan ekspresinya saat aktif.
                 </p>
               </fieldset>
+            ) : null}
+            {tab === "loading" ? (
+              <div className="studio-motion-panel">
+                <h2>Lagi mikir, tetap lucu.</h2>
+                <p>
+                  Gravity overthinking: cincin dan urat pelipis mengikuti satu loop tenang, intens,
+                  lalu mereda.
+                </p>
+                <button
+                  type="button"
+                  className="studio-button"
+                  aria-pressed={previewLoading}
+                  onClick={() => setPreviewLoading((value) => !value)}
+                >
+                  {previewLoading ? "Hentikan loading" : "Coba loading"}
+                </button>
+                <p className="studio-control-hint">
+                  Pratinjau loading tidak disimpan ke resep atau ekspor gambar. Reduced motion
+                  perangkatmu tetap dihormati.
+                </p>
+              </div>
             ) : null}
             {tab === "motion" ? (
               <div className="studio-motion-panel">

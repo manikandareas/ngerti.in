@@ -174,3 +174,15 @@ live before implementation; the gate was Done. This work verifies a local avatar
 not harness inference, installation or production release. Agent integration evidence and
 the distinction between real HTTP persistence and simulated native activity are recorded in
 `docs/verification/avatar-agents-2026-11-02/README.md`.
+
+### Loading animation
+
+Gravity overthinking is the only loading animation. Loading is transient presentation state, separate from the persisted recipe and agent lifecycle state.
+
+```tsx
+<AgentAvatar config={config} loading={isLoading} />
+```
+
+Framework-independent consumers can use `mountAvatar(host, config, { loading: true })`, then `controller.setLoading(false)` to restore the current face/state. `setState` continues to update the underlying state during loading. Dispose the controller when removing its host.
+
+The engine shares one 12-second local timeline across expression, body pose, foreground/background rings and temple veins. It uses the existing visibility-aware frame scheduler, respects reduced motion and `animated: false`, and reuses cached fur textures. `renderAvatarSvg(config, { loading: true })` renders a static loading illustration; Studio PNG/SVG downloads remain recipe/state snapshots without transient loading. Loading is opt-in; this change does not infer backend activity or wire conversation lifecycle events.

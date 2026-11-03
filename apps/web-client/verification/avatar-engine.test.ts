@@ -12,6 +12,7 @@ import {
   avatarStates,
 } from "../src/features/avatar/engine/catalog";
 import { createAvatar, parseAvatarConfig } from "../src/features/avatar/engine/config";
+import { sampleAvatarLoading } from "../src/features/avatar/engine/loading";
 import { sampleAvatarPose } from "../src/features/avatar/engine/motion";
 import { faceForState, renderAvatarSvg } from "../src/features/avatar/engine/render";
 
@@ -118,5 +119,30 @@ describe("Ngertiin avatar engine", () => {
     expect(faceForState("happy", "idle")).toBe("happy");
     expect(faceForState("happy", "sleeping")).toBe("sleepy");
     expect(faceForState("calm", "celebrating")).toBe("excited");
+  });
+});
+
+describe("Gravity overthinking loading", () => {
+  test("one local timeline coordinates calm, intensity, recovery and reduced motion", () => {
+    const calm = sampleAvatarLoading(1000);
+    const peak = sampleAvatarLoading(6000);
+    const recovered = sampleAvatarLoading(11000);
+    expect(calm.face).toBe("calm");
+    expect(peak.face).toBe("focused");
+    expect(peak.veinOpacity).toBeGreaterThan(0.7);
+    expect(recovered.face).toBe("calm");
+    expect(recovered.veinOpacity).toBe(0);
+    expect(sampleAvatarLoading(0)).toEqual(sampleAvatarLoading(12000));
+    expect(sampleAvatarLoading(1000, true)).toEqual(sampleAvatarLoading(6000, true));
+  });
+  test("loading SVG includes both depth layers and veins without modifying the recipe", () => {
+    const config = createAvatar("loading-test");
+    const before = JSON.stringify(config);
+    const svg = renderAvatarSvg(config, { loading: true });
+    expect(svg).toContain('data-avatar-loading-rings="back"');
+    expect(svg).toContain('data-avatar-loading-rings="front"');
+    expect(svg).toContain('data-avatar-loading-veins=""');
+    expect(renderAvatarSvg(config)).not.toContain("data-avatar-loading-veins");
+    expect(JSON.stringify(config)).toBe(before);
   });
 });

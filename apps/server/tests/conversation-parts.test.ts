@@ -124,6 +124,76 @@ test("handoff publishes the useful announcement first, hides instructions, and r
   ).toEqual(actor);
 });
 
+test.each(["persisted", "replayed"])(
+  "%s historical handoff without a summary remains readable through snapshot and timeline HTTP",
+  async (source) => {
+    f = fixture();
+    const peer = f.lifecycle.create("agent", {
+      name: "Reviewer",
+      harness: "codex",
+      connection_id: f.store.get("agent", f.agent.id).connection_id,
+    });
+    const group = f.lifecycle.create("thread", {
+      type: "group",
+      member_agent_ids: [f.agent.id, peer.id],
+    });
+    const groups = new Groups(f.lifecycle);
+    const route = groups.send(group.id, { text: "Review the report", agent_id: f.agent.id });
+    const run = start(f.store.get("peer_task", route.task_id).current_run_id);
+    const task = groups.handoff(run.id, {
+      agent_id: peer.id,
+      instruction: "PRIVATE_HISTORICAL_HANDOFF_INSTRUCTION",
+      purpose: "review",
+    });
+    f.lifecycle.settle(run.id, run.dispatch_token as string, "succeeded");
+    const partId = `handoff_requested:${task.id}`;
+    const original = new Conversations(f.lifecycle).timeline(group.id);
+    const db = new Database(f.store.path);
+    // Simulate historical bytes from before peer tasks and receipts included summary.
+    if (source === "persisted") {
+      db.query("UPDATE conversation_parts SET body=json_remove(body,'$.summary') WHERE id=?").run(
+        partId,
+      );
+    } else {
+      db.query(
+        "UPDATE events SET body=json_remove(body,'$.data.summary') WHERE json_extract(body,'$.entity_id')=?",
+      ).run(task.id);
+      db.exec(
+        "DELETE FROM conversation_parts; DELETE FROM sqlite_sequence WHERE name='conversation_parts'; UPDATE conversation_projection SET cursor=0",
+      );
+    }
+    db.close();
+    f.restart();
+    const events = f.store.events(0, 1000);
+    const entities = f.store.list("message");
+    const token = "z".repeat(64);
+    const app = createApi(f.lifecycle, new Background(f.lifecycle), token);
+    for (const endpoint of ["snapshot", "timeline"]) {
+      const response = await app.handle(
+        new Request(`http://localhost/v1/threads/${group.id}/${endpoint}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+      );
+      expect(response.status).toBe(200);
+      const body = await response.json();
+      const timeline = endpoint === "snapshot" ? body.timeline : body;
+      expect(timeline).toEqual(original);
+      expect(timeline.parts.find((part: { id: string }) => part.id === partId)?.summary).toBeNull();
+      expect(JSON.stringify(body)).not.toContain("PRIVATE_HISTORICAL_HANDOFF_INSTRUCTION");
+    }
+    expect(f.store.events(0, 1000)).toEqual(events);
+    expect(f.store.list("message")).toEqual(entities);
+    const stored = new Database(f.store.path);
+    const receipt = stored
+      .query<{ body: string }, [string]>("SELECT body FROM conversation_parts WHERE id=?")
+      .get(partId);
+    expect(JSON.parse(receipt?.body ?? "{}").summary).toBe(
+      source === "replayed" ? null : undefined,
+    );
+    stored.close();
+  },
+);
+
 test("goal progress stays quiet and completed milestones follow actual settlement in both DM and group", () => {
   f = fixture();
   const admission = f.admit("Prepare a report");

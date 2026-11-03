@@ -213,7 +213,7 @@ export class ConversationJournal {
             resource_id: entity.id,
             source_message_id: null,
             name: request.purpose === "review" ? "review" : "handoff",
-            summary: entity.summary,
+            summary: entity.summary ?? null,
             actors: [...this.actor(entity.source_agent_id, at), ...this.actor(entity.agent_id, at)],
           });
         if (replay && entity.summary) {
@@ -260,7 +260,14 @@ export class ConversationJournal {
               this.read("agent", actor.id, draft.source_cursor)?.system_role === "tobi",
             ),
         }));
-        return conversationPart.parse({ ...draft, name, actors, sequence: row.sequence });
+        // Historical handoff receipts can omit summary; keep the public field explicitly nullable.
+        return conversationPart.parse({
+          ...draft,
+          summary: draft.summary ?? null,
+          name,
+          actors,
+          sequence: row.sequence,
+        });
       });
     return { parts, has_more: more, next_before: more ? (parts[0]?.sequence ?? null) : null };
   }

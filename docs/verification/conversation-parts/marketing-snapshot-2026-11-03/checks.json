@@ -1,0 +1,70 @@
+{
+  "captured_at": "2026-11-03T07:05:10.646Z",
+  "baseline": "4a880d6",
+  "backend_tests": {
+    "passed": 317,
+    "failed": 0,
+    "assertions": 2011
+  },
+  "focused_tests": {
+    "passed": 8,
+    "failed": 0,
+    "assertions": 48
+  },
+  "regression_before_fix": {
+    "failed": 2,
+    "http_status": 422
+  },
+  "static_checks": {
+    "typecheck": "passed",
+    "lint": "passed"
+  },
+  "browser": {
+    "tool": "agent-browser",
+    "desktop": {
+      "width": 1280,
+      "group_opened": true,
+      "contract_error": false,
+      "composer_available": true
+    },
+    "mobile": {
+      "width": 390,
+      "group_opened": true,
+      "contract_error": false,
+      "composer_available": true
+    },
+    "initial_mobile_immediate_evaluation": "Ran before reload completed; successful rendered-state check followed"
+  },
+  "snapshots": [
+    {
+      "thread_id": "3f2d6bad-b8e4-4ebf-b864-272bcd568d00",
+      "snapshot_status": 200,
+      "timeline_status": 200,
+      "parts": 46,
+      "messages": 32
+    },
+    {
+      "thread_id": "e500889c-f720-48eb-9355-7c05d757f3e3",
+      "snapshot_status": 200,
+      "timeline_status": 200,
+      "parts": 20,
+      "messages": 11
+    },
+    {
+      "thread_id": "f2272052-523e-4644-8f64-f1d66e39bcdf",
+      "snapshot_status": 200,
+      "timeline_status": 200,
+      "parts": 20,
+      "messages": 17
+    },
+    {
+      "thread_id": "3e144112-15f2-4b5c-b58f-7e05d5d4a458",
+      "snapshot_status": 200,
+      "timeline_status": 200,
+      "parts": 24,
+      "messages": 16
+    }
+  ],
+  "marketing_artifacts_sha256_verified": 3,
+  "api_readiness_gate": "ready"
+}

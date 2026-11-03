@@ -5,10 +5,11 @@ import { HarnessError } from "./contracts";
 export class OwnedProcess {
   readonly child;
   readonly #drained: Promise<void>;
+  #closing: Promise<void> | undefined;
   constructor(
     executable: string,
     args: string[],
-    context: LaunchContext,
+    private readonly context: LaunchContext,
     diagnostic: (line: string) => void = () => {},
   ) {
     try {
@@ -18,6 +19,7 @@ export class OwnedProcess {
         stdin: "pipe",
         stdout: "pipe",
         stderr: "pipe",
+        detached: context.workspace?.shared === true && process.platform !== "win32",
       });
     } catch {
       throw new HarnessError("SERVICE_UNAVAILABLE");
@@ -47,18 +49,42 @@ export class OwnedProcess {
         { once: true },
       );
   }
-  async close(timeoutMs = 1000) {
+  private signal(signal: "SIGTERM" | "SIGKILL") {
+    if (this.groupOwned) {
+      try {
+        process.kill(-this.child.pid, signal);
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code !== "ESRCH") throw error;
+      }
+    } else if (this.child.exitCode === null) this.child.kill(signal);
+  }
+  private get groupOwned() {
+    return this.context.workspace?.shared === true && process.platform !== "win32";
+  }
+  close(timeoutMs = 1000) {
+    this.#closing ??= this.stop(timeoutMs);
+    return this.#closing;
+  }
+  private async stop(timeoutMs: number) {
+    if (this.groupOwned) {
+      // The shared writer's turn is settled. Terminate its owned group together, including
+      // background commands, rather than racing a second signal after the parent exits.
+      this.signal("SIGKILL");
+      await this.child.exited;
+      await this.#drained;
+      return;
+    }
     let timer: ReturnType<typeof setTimeout> | undefined;
     try {
       if (this.child.exitCode === null) {
-        this.child.kill("SIGTERM");
+        this.signal("SIGTERM");
         await Promise.race([
           this.child.exited,
           new Promise<void>((resolve) => {
             timer = setTimeout(resolve, timeoutMs);
           }),
         ]);
-        if (this.child.exitCode === null) this.child.kill("SIGKILL");
+        if (this.child.exitCode === null) this.signal("SIGKILL");
       }
       await this.child.exited;
       await this.#drained;

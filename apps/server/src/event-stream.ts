@@ -1,3 +1,4 @@
+import { conversationEvent } from "./conversations/projection";
 import type { Store } from "./store";
 
 /** Pull one committed envelope at a time. A slow consumer never accumulates an unbounded queue. */
@@ -23,7 +24,9 @@ export function eventStream(store: Store, after: number, signal: AbortSignal) {
           if (event) {
             cursor = event.cursor;
             controller.enqueue(
-              encoder.encode(`id: ${cursor}\nevent: domain\ndata: ${JSON.stringify(event)}\n\n`),
+              encoder.encode(
+                `id: ${cursor}\nevent: domain\ndata: ${JSON.stringify(conversationEvent(store, event))}\n\n`,
+              ),
             );
             return;
           }

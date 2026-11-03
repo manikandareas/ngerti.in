@@ -13,7 +13,9 @@ import {
   routine as routineSchema,
   threadInput,
 } from "./contracts";
+import { GroupSchedules } from "./goals/group-schedules";
 import { dueWindow, firstDue } from "./goals/schedule";
+import { ResponsibilityScope } from "./goals/scope";
 import { InteractionJournal } from "./runs/interaction-journal";
 import type { Store } from "./store";
 import { Workspaces } from "./workspaces/service";
@@ -26,6 +28,49 @@ export class Lifecycle {
   readonly epoch = crypto.randomUUID();
   constructor(readonly store: Store) {
     this.store.transaction(() => {
+      const scopes = new ResponsibilityScope(store);
+      for (const item of [...store.list("goal"), ...store.list("routine")]) {
+        const thread = store.get("thread", item.thread_id);
+        if (thread.type !== "group" || thread.purpose !== "conversation" || item.scope === "group")
+          continue;
+        const actor = item.agent_id;
+        const valid = actor !== null && thread.member_agent_ids.includes(actor);
+        this.update(item, {
+          ...scopes.ownership({ thread_id: thread.id, agent_id: valid ? actor : null }),
+          created_by_agent_id: actor,
+          ...(item.kind === "goal"
+            ? {
+                coordinator_agent_id: valid ? actor : null,
+                work_state: valid ? item.work_state : "waiting_assignment",
+              }
+            : { execution_target: actor ? { type: "agent", agent_id: actor } : { type: "auto" } }),
+        } as Partial<typeof item>);
+      }
+      for (const task of store.list("peer_task")) {
+        const missing = task.goal_ids.filter((id) => task.goal_generations[id] === undefined);
+        if (missing.length)
+          this.update(task, {
+            goal_generations: {
+              ...task.goal_generations,
+              ...Object.fromEntries(missing.map((id) => [id, store.get("goal", id).generation])),
+            },
+          });
+      }
+      for (const goal of store.list("goal")) {
+        if (!goal.root_task_id) {
+          const run = [
+            ...new Set(
+              [goal.current_run_id, ...goal.source_run_ids].filter(
+                (id): id is string => id !== null,
+              ),
+            ),
+          ]
+            .map((id) => store.get("run", id))
+            .find((run) => run.thread_id === goal.thread_id && run.task_id !== null);
+          if (run?.task_id)
+            this.update(goal, { root_task_id: store.get("peer_task", run.task_id).root_task_id });
+        }
+      }
       for (const run of this.store.list("run")) {
         if (active.has(run.status))
           this.update(run, { status: "unknown", outcome: "unknown", activity: "unknown" });
@@ -104,12 +149,20 @@ export class Lifecycle {
         }
         case "goal": {
           const data = goalInput.parse(input);
-          this.scope(data.thread_id, data.agent_id);
+          const actor =
+            data.agent_id ??
+            (this.store.get("thread", data.thread_id).member_agent_ids[0] as string);
+          this.scope(data.thread_id, actor);
           return this.store.put(
             goalSchema.parse({
               ...base,
               ...data,
               kind,
+              ...new ResponsibilityScope(this.store).ownership({
+                thread_id: data.thread_id,
+                agent_id: actor,
+              }),
+              coordinator_agent_id: actor,
               state: "active",
               generation: 1,
               evidence_artifact_ids: [],
@@ -118,13 +171,27 @@ export class Lifecycle {
         }
         case "routine": {
           const data = routineInput.parse(input);
-          this.scope(data.thread_id, data.agent_id);
-          if (data.goal_id) this.checkGoal(data.goal_id, data.thread_id, data.agent_id);
+          const actor =
+            data.agent_id ??
+            (this.store.get("thread", data.thread_id).member_agent_ids[0] as string);
+          this.scope(data.thread_id, actor);
+          if (data.goal_id) this.checkGoal(data.goal_id, data.thread_id, actor);
+          const shared = this.store.get("thread", data.thread_id).type === "group";
+          const target =
+            data.execution_target ??
+            (shared ? { type: "auto" as const } : { type: "agent" as const, agent_id: actor });
+          if (target.type === "agent") this.scope(data.thread_id, target.agent_id);
+          else if (!shared) throw new DomainError("SCOPE_DENIED", 403);
           return this.store.put(
             routineSchema.parse({
               ...base,
               ...data,
               kind,
+              ...new ResponsibilityScope(this.store).ownership({
+                thread_id: data.thread_id,
+                agent_id: actor,
+              }),
+              execution_target: target,
               state: "active",
               generation: 1,
               next_run_at: firstDue(data.schedule, data.timezone),
@@ -133,6 +200,7 @@ export class Lifecycle {
         }
         case "artifact": {
           const data = artifactInput.parse(input);
+          if (!data.agent_id) throw new DomainError("SCOPE_DENIED", 403);
           this.scope(data.thread_id, data.agent_id);
           if (data.run_id) {
             const run = this.store.get("run", data.run_id);
@@ -152,6 +220,8 @@ export class Lifecycle {
             source_artifact_id: null,
             native_session_id: null,
             native_run_id: null,
+            created_by_agent_id: data.agent_id,
+            goal_generations: {},
           });
         }
       }
@@ -236,8 +306,7 @@ export class Lifecycle {
 
   private checkGoal(goalId: string, threadId: string, agentId: string) {
     const goal = this.store.get("goal", goalId);
-    if (goal.thread_id !== threadId || goal.agent_id !== agentId)
-      throw new DomainError("SCOPE_DENIED", 403);
+    new ResponsibilityScope(this.store).require({ thread_id: threadId, agent_id: agentId }, goal);
     if (goal.state !== "active") throw new DomainError("CONFLICT");
     return goal;
   }
@@ -247,12 +316,20 @@ export class Lifecycle {
       const task = this.store.get("peer_task", run.task_id);
       if (
         task.state === "cancelled" ||
-        task.goal_ids.some((id) => this.store.get("goal", id).state !== "active")
+        task.goal_ids.some((id) => {
+          const goal = this.store.get("goal", id);
+          return goal.state !== "active" || task.goal_generations[id] !== goal.generation;
+        })
       )
         throw new DomainError("STALE_DISPATCH");
     }
     if (run.goal_id) {
       const goal = this.checkGoal(run.goal_id, run.thread_id, run.agent_id);
+      if (
+        run.goal_assignment_revision !== null &&
+        run.goal_assignment_revision !== goal.assignment_revision
+      )
+        throw new DomainError("STALE_DISPATCH");
       if (run.goal_generation !== null && run.goal_generation !== goal.generation)
         throw new DomainError("STALE_DISPATCH");
     }
@@ -274,25 +351,13 @@ export class Lifecycle {
         const routine = this.store.get("routine", data.routine_id);
         if (
           routine.thread_id !== data.thread_id ||
-          routine.agent_id !== data.agent_id ||
+          (routine.scope !== "group" && routine.agent_id !== data.agent_id) ||
           routine.goal_id !== data.goal_id
         )
           throw new DomainError("SCOPE_DENIED", 403);
         if (routine.state !== "active") throw new DomainError("CONFLICT");
       }
-      for (const artifactId of data.artifact_ids) {
-        const item = this.store.get("artifact", artifactId);
-        if (
-          item.thread_id !== data.thread_id ||
-          item.agent_id !== data.agent_id ||
-          !item.workspace_id ||
-          item.source_path === null
-        )
-          throw new DomainError("SCOPE_DENIED", 403);
-        const workspace = new Workspaces(this).get(item.workspace_id);
-        if (workspace.thread_id !== data.thread_id || workspace.agent_id !== data.agent_id)
-          throw new DomainError("SCOPE_DENIED", 403);
-      }
+      new Workspaces(this).authorizeArtifacts(data.thread_id, data.agent_id, data.artifact_ids);
       const runId = crypto.randomUUID();
       const message = this.store.put({
         ...this.base(),
@@ -343,6 +408,9 @@ export class Lifecycle {
       thread_revision: thread.type === "group" ? thread.revision : null,
       goal_id: options.goal_id ?? null,
       routine_id: options.routine_id ?? null,
+      goal_assignment_revision: options.goal_id
+        ? this.store.get("goal", options.goal_id).assignment_revision
+        : null,
       goal_generation: options.goal_id ? this.store.get("goal", options.goal_id).generation : null,
       routine_generation: options.routine_id
         ? this.store.get("routine", options.routine_id).generation
@@ -350,6 +418,8 @@ export class Lifecycle {
       publication:
         options.routine_id || message.purpose === "continuation" ? "deferred" : "immediate",
       pending_answer: null,
+      response_mode: "answer",
+      tool_errors: [],
       status: "queued",
       cancellation: "none",
       outcome: "none",
@@ -420,6 +490,19 @@ export class Lifecycle {
   claimNext(threadId: string, agentId: string): Entity<"run"> | null {
     return this.store.transaction(() => {
       const { agent, thread } = this.scope(threadId, agentId);
+      // Every current group adapter can mutate files. The durable run is the exclusive lease;
+      // unknown work keeps it until native reconciliation, including after an application restart.
+      if (
+        thread.type === "group" &&
+        thread.purpose === "conversation" &&
+        this.store
+          .list("run")
+          .some(
+            (run) =>
+              run.thread_id === threadId && (active.has(run.status) || run.status === "unknown"),
+          )
+      )
+        return null;
       const lane = this.store
         .list("run")
         .filter((run) => run.thread_id === threadId && run.agent_id === agentId);
@@ -520,12 +603,14 @@ export class Lifecycle {
   fireRoutine(routineId: string, now: Date) {
     return this.store.transaction(() => {
       const routine = this.store.get("routine", routineId);
+      if (routine.scope === "group") return new GroupSchedules(this).fire(routine, now);
       if (
         routine.state !== "active" ||
         !routine.next_run_at ||
         Date.parse(routine.next_run_at) > now.getTime()
       )
         return null;
+      if (!routine.agent_id) throw new DomainError("SCOPE_DENIED", 403);
       this.scope(routine.thread_id, routine.agent_id);
       if (routine.goal_id) {
         const goal = this.checkGoal(routine.goal_id, routine.thread_id, routine.agent_id);
@@ -573,6 +658,9 @@ export class Lifecycle {
             routine_generation: routine.generation,
             scheduled_for,
             run_id: receipt.run.id,
+            route_id: null,
+            selected_agent_id: routine.agent_id,
+            state: "queued",
           });
           this.update(routine, { next_run_at: next });
           if (routine.goal_id) {
@@ -635,6 +723,7 @@ export class Lifecycle {
       run.publication !== "deferred" ||
       outcome !== "succeeded" ||
       !text ||
+      run.response_mode === "finalize" ||
       run.cancellation !== "none"
     )
       return;
@@ -680,6 +769,7 @@ export class Lifecycle {
       | "diagnostic"
       | "native_tools"
       | "product_tools"
+      | "tool_errors"
       | "sources"
       | "visual_inputs"
     >,
@@ -796,6 +886,10 @@ export class Lifecycle {
             : goal.current_run_id,
       });
       if (state !== "active") {
+        if (goal.assignment_route_id) {
+          const route = this.store.get("group_route", goal.assignment_route_id);
+          if (route.router_run_id) this.cancel(route.router_run_id);
+        }
         for (const task of this.store.list("peer_task")) {
           if (
             !task.goal_ids.includes(goalId) ||

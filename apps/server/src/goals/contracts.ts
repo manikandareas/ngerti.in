@@ -11,6 +11,14 @@ export const timezone = z.string().refine((value) => {
     return false;
   }
 }, "Invalid timezone.");
+export const executionTarget = z.discriminatedUnion("type", [
+  z.strictObject({ type: z.literal("auto") }),
+  z.strictObject({ type: z.literal("agent"), agent_id: id }),
+]);
+const ownership = {
+  scope: z.enum(["agent", "group"]).default("agent"),
+  created_by_agent_id: id.nullable().default(null),
+};
 const periodic = {
   anchor_at: z.iso.datetime(),
   every_ms: z.int().min(1000).max(31_536_000_000),
@@ -34,7 +42,14 @@ export const goalFields = {
   source_message_ids: z.array(id).max(200).default([]),
   source_run_ids: z.array(id).max(200).default([]),
   progress: z.string().max(100_000).default(""),
-  work_state: z.enum(["ready", "waiting", "blocked", "completion_pending"]).default("ready"),
+  work_state: z
+    .enum(["ready", "waiting", "blocked", "waiting_assignment", "completion_pending"])
+    .default("ready"),
+  coordinator_agent_id: id.nullable().default(null),
+  assignment_revision: z.int().positive().default(1),
+  assignment_route_id: id.nullable().default(null),
+  root_task_id: id.nullable().default(null),
+  last_report_error: z.strictObject({ run_id: id, code: z.string() }).nullable().default(null),
   current_run_id: id.nullable().default(null),
   continuation_at: z.iso.datetime().nullable().default(null),
   continuation_instruction: z.string().max(100_000).default(""),
@@ -77,6 +92,17 @@ export const routineWrite = z.strictObject({
   instruction: text,
   schedule,
   timezone,
+  execution_target: executionTarget.nullable().default(null),
+});
+export const goalAssignment = z.strictObject({
+  goal_id: id,
+  expected_revision: z.int().positive(),
+  agent_id: id,
+});
+export const completionRecovery = z.strictObject({
+  expected_revision: z.int().positive(),
+  evidence_artifact_ids: z.array(id).min(1).max(100),
+  progress: text,
 });
 export const routineControl = z.strictObject({
   routine_id: id,
@@ -87,19 +113,21 @@ export const goalCommands = {
   capture_goal: captureGoal,
   report_goal: reportGoal,
   control_goal: goalControl,
+  assign_goal: goalAssignment,
   write_routine: routineWrite,
   control_routine: routineControl,
 };
 
 export const goalInput = z.strictObject({
   thread_id: id,
-  agent_id: id,
+  agent_id: id.nullable().default(null),
   title: z.string().min(1).max(1000),
 });
 export const goal = goalInput
   .extend({
     ...base,
     kind: z.literal("goal"),
+    ...ownership,
     ...goalFields,
     state: z.enum(["active", "paused", "stopped", "completed"]),
     generation: z.int().positive(),
@@ -111,15 +139,19 @@ export const goal = goalInput
   );
 export const routineInput = z.strictObject({
   thread_id: id,
-  agent_id: id,
+  agent_id: id.nullable().default(null),
   goal_id: id.nullable().default(null),
   instruction: domainText,
   schedule,
   timezone,
+  execution_target: executionTarget.nullable().default(null),
 });
 export const routine = routineInput.extend({
   ...base,
   kind: z.literal("routine"),
+  ...ownership,
+  assignment_state: z.enum(["ready", "waiting_assignment", "blocked"]).default("ready"),
+  error_code: z.string().nullable().default(null),
   source_message_id: id.nullable().default(null),
   source_run_id: id.nullable().default(null),
   paused_by_goal: z.boolean().default(false),
@@ -133,5 +165,21 @@ export const occurrence = z.strictObject({
   routine_id: id,
   routine_generation: z.int().positive(),
   scheduled_for: z.iso.datetime(),
-  run_id: id,
+  run_id: id.nullable(),
+  route_id: id.nullable().default(null),
+  selected_agent_id: id.nullable().default(null),
+  state: z
+    .enum([
+      "pending",
+      "routing",
+      "queued",
+      "running",
+      "completed",
+      "failed",
+      "cancelled",
+      "unknown",
+      "waiting_assignment",
+      "blocked",
+    ])
+    .default("queued"),
 });

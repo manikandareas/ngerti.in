@@ -9,42 +9,49 @@ export const within = (root: string, path: string) => {
   const rest = relative(root, path);
   return rest === "" || (!isAbsolute(rest) && rest !== ".." && !rest.startsWith("../"));
 };
-/** One explicit file authority per owner/agent/thread; no implicit cross-conversation sharing. */
+/** Group conversations own shared files; DM and routing workspaces remain agent scoped. */
 export class Workspaces {
   readonly root: string;
   constructor(readonly lifecycle: Lifecycle) {
     this.root = realpathSync(dirname(resolve(lifecycle.store.path)));
   }
-  private scope(threadId: string, agentId: string) {
-    const agent = this.lifecycle.store.get("agent", agentId);
+  private scope(threadId: string, agentId: string | null) {
     const thread = this.lifecycle.store.get("thread", threadId);
-    if (!thread.member_agent_ids.includes(agentId)) throw new DomainError("SCOPE_DENIED", 403);
-    return { agent, thread };
+    const shared = thread.type === "group" && thread.purpose === "conversation";
+    if (agentId !== null) {
+      this.lifecycle.store.get("agent", agentId);
+      if (!thread.member_agent_ids.includes(agentId)) throw new DomainError("SCOPE_DENIED", 403);
+    } else if (!shared) throw new DomainError("SCOPE_DENIED", 403);
+    return { thread, shared };
   }
-  current(threadId: string, agentId: string) {
-    this.scope(threadId, agentId);
+  current(threadId: string, agentId: string | null) {
+    const { shared } = this.scope(threadId, agentId);
     return (
       this.lifecycle.store
         .list("workspace")
-        .find((w) => w.state === "active" && w.thread_id === threadId && w.agent_id === agentId) ??
-      null
+        .find(
+          (w) =>
+            w.state === "active" &&
+            w.thread_id === threadId &&
+            (shared ? w.scope === "group" : w.scope === "agent" && w.agent_id === agentId),
+        ) ?? null
     );
   }
-  ensure(threadId: string, agentId: string) {
+  ensure(threadId: string, agentId: string | null) {
     const current = this.current(threadId, agentId);
     return current ? this.get(current.id) : this.bind({ agent_id: agentId, thread_id: threadId });
   }
   bind(input: unknown): Entity<"workspace"> {
     const data = workspaceInput.parse(input);
     return this.lifecycle.store.transaction(() => {
-      this.scope(data.thread_id, data.agent_id);
+      const { shared } = this.scope(data.thread_id, data.agent_id);
       if (
         this.lifecycle.store
           .list("run")
           .some(
             (run) =>
               run.thread_id === data.thread_id &&
-              run.agent_id === data.agent_id &&
+              (shared || run.agent_id === data.agent_id) &&
               ["dispatching", "running", "cancel_requested", "unknown"].includes(run.status),
           )
       )
@@ -77,7 +84,11 @@ export class Workspaces {
         for (const part of root.split("/").filter(Boolean)) allowedPath(part);
         if (
           this.lifecycle.store.list("workspace").some((w) => {
-            if (w.thread_id === data.thread_id && w.agent_id === data.agent_id) return false;
+            if (
+              w.thread_id === data.thread_id &&
+              (shared ? w.scope === "group" : w.agent_id === data.agent_id)
+            )
+              return false;
             const other = this.path(w);
             return within(root, other) || within(other, root);
           })
@@ -92,8 +103,10 @@ export class Workspaces {
       const now = new Date().toISOString();
       const current = this.current(data.thread_id, data.agent_id);
       if (current) this.revoke(current.id);
-      return this.lifecycle.store.put({
+      const workspace = this.lifecycle.store.put({
         ...data,
+        scope: shared ? "group" : "agent",
+        agent_id: shared ? null : data.agent_id,
         project_path: data.project_path === null ? null : root,
         id,
         kind: "workspace",
@@ -105,11 +118,18 @@ export class Workspaces {
         root_device: String(info.dev),
         root_inode: String(info.ino),
       });
+      if (shared) this.adoptGroupFiles(workspace);
+      return workspace;
     });
   }
   get(workspaceId: string) {
     const workspace = this.lifecycle.store.get("workspace", workspaceId);
-    this.scope(workspace.thread_id, workspace.agent_id);
+    const { shared } = this.scope(workspace.thread_id, workspace.agent_id);
+    if (
+      (workspace.scope === "group" && (!shared || workspace.agent_id !== null)) ||
+      (workspace.scope === "agent" && workspace.agent_id === null)
+    )
+      throw new DomainError("SCOPE_DENIED", 403);
     if (workspace.state !== "active") throw new DomainError("SCOPE_DENIED", 403);
     const path = this.path(workspace);
     let info: ReturnType<typeof lstatSync>;
@@ -130,9 +150,16 @@ export class Workspaces {
   path(workspace: Entity<"workspace">) {
     return workspace.project_path ?? join(this.root, "workspaces", workspace.id, "files");
   }
-  temporary(workspace: Entity<"workspace">) {
+  temporary(workspace: Entity<"workspace">, agentId = workspace.agent_id) {
     this.get(workspace.id);
-    const path = join(this.root, "runtime-temporary", workspace.id);
+    if (workspace.scope === "group" && agentId === null) throw new DomainError("SCOPE_DENIED", 403);
+    this.scope(workspace.thread_id, agentId);
+    const path = join(
+      this.root,
+      "runtime-temporary",
+      workspace.id,
+      ...(workspace.scope === "group" ? [agentId as string] : []),
+    );
     mkdirSync(path, { recursive: true, mode: 0o700 });
     if (lstatSync(path).isSymbolicLink() || realpathSync(path) !== path)
       throw new DomainError("SCOPE_DENIED", 403);
@@ -146,9 +173,10 @@ export class Workspaces {
     if (!run.workspace_id || run.workspace_revision === null)
       throw new DomainError("SCOPE_DENIED", 403);
     const workspace = this.get(run.workspace_id);
+    this.scope(run.thread_id, run.agent_id);
     if (
       workspace.thread_id !== run.thread_id ||
-      workspace.agent_id !== run.agent_id ||
+      (workspace.scope === "agent" && workspace.agent_id !== run.agent_id) ||
       workspace.revision !== run.workspace_revision
     )
       throw new DomainError("STALE_DISPATCH");
@@ -158,11 +186,85 @@ export class Workspaces {
       if (
         item.workspace_id !== workspace.id ||
         item.thread_id !== run.thread_id ||
-        item.agent_id !== run.agent_id
+        item.agent_id !== workspace.agent_id
       )
         throw new DomainError("SCOPE_DENIED", 403);
     }
     return workspace;
+  }
+  authorizeArtifacts(threadId: string, agentId: string | null, ids: string[]) {
+    this.scope(threadId, agentId);
+    if (new Set(ids).size !== ids.length) throw new DomainError("INVALID_REQUEST", 422);
+    for (const id of ids) {
+      const item = this.lifecycle.store.get("artifact", id);
+      if (item.thread_id !== threadId || !item.workspace_id || !item.source_path)
+        throw new DomainError("SCOPE_DENIED", 403);
+      const workspace = this.get(item.workspace_id);
+      if (
+        workspace.thread_id !== threadId ||
+        item.agent_id !== workspace.agent_id ||
+        (workspace.scope === "agent" && workspace.agent_id !== agentId)
+      )
+        throw new DomainError("SCOPE_DENIED", 403);
+    }
+  }
+  private adoptGroupFiles(target: Entity<"workspace">) {
+    const store = this.lifecycle.store;
+    const previous = store
+      .list("workspace")
+      .filter(
+        (w) => w.thread_id === target.thread_id && w.scope === "agent" && w.state === "active",
+      );
+    for (const source of previous) {
+      // Preserve each former lane beneath its stable workspace identity; never merge by filename.
+      // This owner-authorized upgrade preserves group data even if its former contributor left.
+      const files = new WorkspaceFiles(this.path(source), source.root_device, source.root_inode);
+      const prefix = `previous/${source.id}`;
+      const copy = (path: string) => {
+        let after = "";
+        do {
+          const page = files.list(path, after, 200);
+          for (const entry of page.entries) {
+            const relative = path ? `${path}/${entry.name}` : entry.name;
+            if (entry.type === "directory") copy(relative);
+            else if (entry.type === "file")
+              this.files(target.id).create(`${prefix}/${relative}`, files.read(relative));
+            else throw new DomainError("SCOPE_DENIED", 403);
+          }
+          after = page.next_after ?? "";
+        } while (after);
+      };
+      copy("");
+      for (const item of store.list("artifact")) {
+        if (item.workspace_id !== source.id) continue;
+        store.put(
+          {
+            ...item,
+            workspace_id: target.id,
+            agent_id: null,
+            created_by_agent_id: item.created_by_agent_id ?? item.agent_id,
+            source_path: item.source_path ? `${prefix}/${item.source_path}` : null,
+            revision: item.revision + 1,
+            updated_at: new Date().toISOString(),
+          },
+          item.revision,
+        );
+      }
+      for (const item of store.list("attachment_document")) {
+        if (item.workspace_id !== source.id) continue;
+        store.put(
+          {
+            ...item,
+            workspace_id: target.id,
+            agent_id: null,
+            revision: item.revision + 1,
+            updated_at: new Date().toISOString(),
+          },
+          item.revision,
+        );
+      }
+      this.revoke(source.id);
+    }
   }
   revoke(workspaceId: string) {
     const workspace = this.lifecycle.store.get("workspace", workspaceId);

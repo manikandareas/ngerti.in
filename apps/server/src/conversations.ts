@@ -19,6 +19,7 @@ import {
   thread,
   workspace,
 } from "./contracts";
+import { conversationMessage } from "./conversations/projection";
 import { Connections } from "./harness/connections";
 import type { Lifecycle } from "./lifecycle";
 
@@ -112,7 +113,10 @@ export class Conversations {
     const end = before === undefined ? all.length : all.findIndex((item) => item.id === before);
     if (end < 0) throw new DomainError("SCOPE_DENIED", 403);
     const start = Math.max(0, end - limit);
-    const messages = all.slice(start, end).filter((item) => item.state !== "deleted");
+    const messages = all
+      .slice(start, end)
+      .filter((item) => item.state !== "deleted")
+      .map((item) => conversationMessage(store, item));
     return {
       messages,
       has_more: start > 0,

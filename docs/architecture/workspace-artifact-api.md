@@ -1,18 +1,20 @@
-# Workspace and artifact API v1.21.0
+# Workspace and artifact API v1.22.0
 
 NMA-054 extends the existing application authority with real workspace resources and immutable artifact bytes. Application schemas are **1.5.0**; broker schemas are **1.4.0**. [Conversation controls and recovery](conversation-control-api.md) remain the lifecycle foundation. The API gate NMA-060, file-tree UI, preview and installation remain pending.
 
-The paragraph above records the original foundation capture. Contract **1.21.0** adds the submit-time attachment and document flow below. NMA-060's earlier engine/API gate closure remains separate from this amendment's verification and from distribution or production acceptance.
+The paragraph above records the original foundation capture. Contract **1.21.0** added submit-time attachments and document tools. **1.23.0** adds shared group workspaces and group attachment submission/recovery. NMA-060's earlier engine/API gate closure remains separate from this amendment's verification and from distribution or production acceptance.
 
 ## Submit-time attachments
 
 New composer files stay in the browser until submit. The browser freezes one operation in IndexedDB, including its files and exact message body. Removing a draft attachment sends no upload request. Existing workspace attachments are referenced without copying their bytes again.
 
-After submit, `POST /v1/message-uploads` takes a UUID `Idempotency-Key` as the future artifact identity, plus `submission_id`, `thread_id`, `agent_id`, `name`, `media_type` and `content_base64`. Each request retains the existing 16 MiB decoded limit and 24 MiB transport limit. It creates a private `attachment_upload`, not a workspace artifact. Staging is DM-scoped; group attachment admission remains unsupported.
+After submit, `POST /v1/message-uploads` takes a UUID `Idempotency-Key` as the future artifact identity, plus `submission_id`, `thread_id`, `agent_id`, `name`, `media_type` and `content_base64`. Each request retains the existing 16 MiB decoded limit and 24 MiB transport limit. It creates a private `attachment_upload`, not a workspace artifact. For a group conversation, `agent_id` may be null and staged ownership is normalized to the group. DM staging requires its member agent. Internal routing threads cannot receive user uploads.
 
 `POST /v1/runs` accepts optional `submission_id`, equal to its command key. Its `artifact_ids` may contain matching staged identities and existing scoped artifacts. All selected uploads must validate before artifact metadata, message, run and upload commitment are saved in one SQLite transaction. Durable bytes precede that transaction. Workspace input files are materialized only after commit; pending materialization recovers on startup and before native dispatch. A filesystem write is not described as a SQLite transaction. Projection failures keep the saved message and fence dispatch instead of duplicating admission.
 
-`GET /v1/message-submissions/:id` returns `committed` with the original admission receipt, `pending`, or `missing`. The client reconciles before retrying. An unconfirmed result retains its exact body/key and local file copies across refresh. Definitive rejection restores an editable draft. Successful reconciliation clears the local pending copy. A saved message keeps its files when inference fails or stops.
+`POST /v1/groups/:id/messages` accepts `text`, `artifact_ids`, optional `agent_id`/`router_agent_id`, and `submission_id` equal to its command key. It atomically commits the selected uploads, one group message and one route. File-only messages are allowed. Limits are 20 files and four images per message; unsupported visual targets are rejected before commitment.
+
+`GET /v1/message-submissions/:id` returns `committed` with the original DM admission or group-route receipt, `pending`, or `missing`. The client reconciles before retrying. An unconfirmed result retains its exact body/key and local file copies across refresh. Definitive rejection restores an editable draft. Successful reconciliation clears the local pending copy. A saved message keeps its files when inference fails or stops.
 
 Uncommitted uploads expire after 24 hours. Startup, later staging activity and the background minute sweep remove only expired private bytes with no committed artifact reference. Original user artifacts and earlier unlinked uploads are preserved. The explicit owner workspace-upload API below remains available for deliberate workspace operations.
 
@@ -30,7 +32,7 @@ Snapshots include `attachment_documents`. Runs retain bounded `attachment_observ
 
 ## Scope and binding
 
-A workspace belongs to one installation owner, agent and thread. The same agent has different resources in its DM and each group. Native bindings and admitted execution snapshots retain the workspace ID and revision. Membership, workspace state/root identity, agent/connection grants, settings and native capabilities are checked before dispatch. Input artifact scope and the staging copy's hash are verified against the immutable original before prompting.
+DM and internal-router workspaces have `scope: "agent"` and a member `agent_id`. A group conversation owns one `scope: "group"` workspace with `agent_id: null`; all current members resolve the same workspace. Group artifacts also have null ownership `agent_id`; `created_by_agent_id` and native run/session provenance identify the contributor. DM and other-group resources remain separate. Native bindings and admitted execution snapshots retain the workspace ID and revision. Membership, workspace state/root identity, agent/connection grants, settings and native capabilities are checked before dispatch. Input artifact scope and the staging copy's hash are verified against the immutable original before prompting.
 
 `POST /v1/workspaces` requires installation authentication and a UUID `Idempotency-Key`:
 
@@ -40,7 +42,7 @@ A workspace belongs to one installation owner, agent and thread. The same agent 
 
 It creates a managed directory outside credentials. An optional absolute `project_path` binds an existing, canonical, non-symlink project directory. Installation/credential ancestors and overlapping projects belonging to another lane are refused. An owner must explicitly share individual artifacts; pointing another thread at the same project is not implicit sharing. Revoked foreign project bindings retain this isolation restriction. Rebinding within the same lane preserves existing project files.
 
-Creating another workspace replaces the active lane binding, revokes the previous workspace and invalidates its native binding. Active/unknown runs prevent rebind. Queued inputs carrying artifacts from the previous workspace fail authorization before native dispatch. Opening a session creates a managed workspace automatically when the lane has none. Reads do not create resources.
+Creating another workspace replaces the active conversation binding, revokes the previous workspace and invalidates its native bindings. In groups, this applies to every member sharing the workspace. Active/unknown runs prevent rebind. Queued inputs carrying artifacts from the previous workspace fail authorization before native dispatch. Opening a session creates a managed workspace automatically when the lane has none. Reads do not create resources.
 
 `agent.workspace_id` is a validated same-agent reference, not authority to mount another conversation's resource. The active per-thread workspace and captured native binding determine actual access.
 
@@ -52,6 +54,16 @@ Creating another workspace replaces the active lane binding, revokes the previou
 | `GET /v1/workspaces/:id/file?path=relative/path` | Authenticated bounded binary read. |
 
 These listing/read APIs support a later file-tree panel without implementing that UI now. They are not an arbitrary host-filesystem browser.
+
+## Shared group execution and recovery
+
+Each group conversation serializes native member turns through the authoritative run queue. All current group adapters can mutate workspace files, so they are conservatively treated as writers; parallel read-only turns are not advertised. The durable active/unknown run holds the workspace until settlement/reconciliation. Handoff children start after the parent's native turn has finished; continuations retain the original attachment identities. Native clients close after each group turn and resume their distinct persistent session on later turns. Owned Codex writer processes use a separate process group that is terminated before releasing the workspace; the descendant shutdown check is verified on macOS arm64. Muse native shell/write remain disabled.
+
+Owner-authorized native receipt inspection grants no workspace/tools and remains available after membership/workspace revocation. It does not resume a turn or issue a prompt. Unknown outcomes never expire into an implicit writer takeover.
+
+When an idle existing group first resolves its shared workspace, safe files from older agent-owned group lanes are preserved under `previous/<old-workspace-id>/...`. Artifact identities, immutable hashes and original source directories are retained; metadata moves to the shared workspace and records its former contributor. Existing native bindings are invalidated. Active/unknown group work prevents cutover. Protected names and foreign/DM roots are never imported.
+
+Attachment tools retain the input-message cutoff when listing prior sent files. The shared native filesystem represents current group working files, not a point-in-time snapshot. The immutable artifact blob remains the source for attachment document reads and downloads.
 
 ## Upload, attach and download
 
@@ -73,9 +85,13 @@ Attach explicitly when admitting a run:
 
 `ngertiin.read_run_context` supplies scoped attachment IDs, names, relative paths and hashes. Unknown, foreign, revoked or rebound resources cannot be attached or dispatched. A changed staging copy does not change the immutable download; it fences execution rather than silently supplying different input.
 
-`GET /v1/artifacts/:id/content?workspace_id=<UUID>` returns verified bytes with attachment disposition, media type, SHA-256 ETag, `nosniff` and `no-store`. The artifact must belong to that active workspace and its exact agent/thread. Metadata-only foundation artifacts are not downloadable files.
+`GET /v1/artifacts/:id/content?workspace_id=<UUID>` returns verified bytes with attachment disposition, media type, SHA-256 ETag, `nosniff` and `no-store`. The artifact must belong to that active workspace and its exact ownership scope/thread. Group product-tool access additionally validates the executing member/run lease. Metadata-only foundation artifacts are not downloadable files.
 
 `POST /v1/artifacts/:id/share` with `{"workspace_id":"<target-UUID>"}` is an explicit owner command requiring `Idempotency-Key`. It creates an independent immutable copy and staging path in the target lane, with `source_artifact_id` provenance. Product tools cannot use this owner endpoint or select an arbitrary foreign workspace.
+
+## Responsibility evidence provenance
+
+Contract 1.23.0 also pins `artifact.goal_generations` at native publication from the producing task/run. Group goal completion validates the shared workspace, exact parent/child lineage, successful native settlement and immutable hashes. A contributor's output can prove the same group goal; an unrelated output or prior objective generation cannot. See [group responsibilities](goals-routines-api.md#group-ownership-and-assignment).
 
 ## Structured publication and file tools
 
@@ -99,7 +115,7 @@ Conversation snapshots include `workspaces` and `artifacts`; input messages cont
 
 App file operations walk directory descriptors with `openat`, `O_DIRECTORY` and `O_NOFOLLOW`. Source reads require a bounded regular file with one link and unchanged size/timestamps. The root's device/inode must match its persisted identity. A small fixed C wrapper compiled by Bun's built-in TinyCC handles `openat`'s variadic mode ABI correctly, including Apple arm64. The POSIX shim is exercised on macOS arm64; other-platform distribution is not claimed.
 
-Traversal, symlink ancestors/files, hardlinks, foreign artifacts and credential names/directories are refused. The blob store is outside agent-writeable roots. Native temporary directories are also outside agent-writeable roots, under a private per-workspace parent; an agent-created `.tmp` symlink cannot expand its permissions. Sharing or revocation is validated server-side, independent of model instructions.
+Traversal, symlink ancestors/files, hardlinks, foreign artifacts and credential names/directories are refused. The blob store is outside agent-writeable roots. Native temporary directories are also outside agent-writeable roots, under a private per-workspace parent (separate member directories in shared groups); an agent-created `.tmp` symlink cannot expand its permissions. Sharing or revocation is validated server-side, independent of model instructions.
 
 | Adapter | Scoped file behavior |
 | --- | --- |

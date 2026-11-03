@@ -280,3 +280,11 @@ test("default reasoning omits the native config override and completes a turn", 
   await background.idle();
   expect(f.store.get("run", run.id).status).toBe("succeeded");
 });
+
+test("native commentary and final answer item phases stay separate in live output and receipt recovery", async () => {
+  const lane = setup();
+  const run = await admit(lane, "phase-output");
+  await background.idle();
+  expect(f.store.get("run", run.id).status).toBe("succeeded");
+  expect(f.store.answer(run.id)?.text).toBe("Here is the useful final example.");
+});

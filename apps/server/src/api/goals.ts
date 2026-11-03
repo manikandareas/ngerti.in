@@ -2,7 +2,14 @@ import type { Elysia } from "elysia";
 import { z } from "zod";
 import type { Background } from "../background";
 import { goalInput, id, routineInput } from "../contracts";
-import { captureGoal, reportGoal, routineControl, routineWrite } from "../goals/contracts";
+import {
+  captureGoal,
+  completionRecovery,
+  goalAssignment,
+  reportGoal,
+  routineControl,
+  routineWrite,
+} from "../goals/contracts";
 import { Goals } from "../goals/service";
 import type { Lifecycle } from "../lifecycle";
 import type { Command } from "./services";
@@ -17,8 +24,26 @@ export function registerGoalRoutes(
   return api
     .get(
       "/v1/threads/:id/goals",
-      ({ params, query }) => goals.list({ thread_id: params.id, agent_id: query.agent_id }),
-      { params: z.object({ id }), query: z.strictObject({ agent_id: id }) },
+      ({ params, query }) => goals.list({ thread_id: params.id, agent_id: query.agent_id ?? null }),
+      { params: z.object({ id }), query: z.strictObject({ agent_id: id.optional() }) },
+    )
+    .post(
+      "/v1/goals/:id/assignment",
+      ({ request, params, body }) =>
+        command(request, body, () => {
+          const goal = lifecycle.store.get("goal", params.id);
+          return goals.assign(
+            { thread_id: goal.thread_id, agent_id: null },
+            { ...body, goal_id: params.id },
+          );
+        }),
+      { params: z.object({ id }), body: goalAssignment.omit({ goal_id: true }) },
+    )
+    .post(
+      "/v1/goals/:id/recover-completion",
+      ({ request, params, body }) =>
+        command(request, body, () => goals.recoverCompletion(params.id, body)),
+      { params: z.object({ id }), body: completionRecovery },
     )
     .post(
       "/v1/goals/capture",

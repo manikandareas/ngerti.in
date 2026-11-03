@@ -10,7 +10,7 @@ export function authorizeResponsibilityWork(lifecycle: Lifecycle, runId: string)
       .some(
         (goal) =>
           goal.thread_id === run.thread_id &&
-          goal.agent_id === run.agent_id &&
+          (goal.scope === "group" || goal.agent_id === run.agent_id) &&
           goal.state === "active" &&
           goal.current_run_id === runId &&
           goal.deferred_by_run_id === runId,

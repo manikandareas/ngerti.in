@@ -24,7 +24,11 @@ export class Attachments {
     const ids = new Set(retained.flatMap((m) => m.artifact_ids));
     const outputRuns = new Set(
       retained
-        .filter((m) => m.author === "agent" && m.author_agent_id === run.agent_id)
+        .filter(
+          (m) =>
+            m.author === "agent" &&
+            (workspace.scope === "group" || m.author_agent_id === run.agent_id),
+        )
         .map((m) => m.run_id),
     );
     return this.lifecycle.store
@@ -32,7 +36,7 @@ export class Attachments {
       .filter(
         (a) =>
           a.workspace_id === workspace.id &&
-          a.agent_id === run.agent_id &&
+          a.agent_id === workspace.agent_id &&
           a.thread_id === run.thread_id &&
           (ids.has(a.id) || (a.origin === "native_output" && outputRuns.has(a.run_id))),
       );

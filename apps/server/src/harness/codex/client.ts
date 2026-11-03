@@ -8,6 +8,7 @@ import type { LaunchContext } from "../context";
 import { HarnessError, type Settings } from "../contracts";
 import { productToolNames } from "../product-tool-contracts";
 import { toolContentBlock } from "../tool-results";
+import { AgentOutput } from "./output";
 import { CodexRpc, type RpcMessage } from "./rpc";
 
 export const codexCapabilities = {
@@ -57,6 +58,7 @@ type Active = {
   resolve(value: unknown): void;
   reject(error: HarnessError): void;
   negotiated: Promise<void> | null;
+  output: AgentOutput;
 };
 
 /** Native Codex owns inference and its tool loop; this client maps observations and scoped calls. */
@@ -278,6 +280,7 @@ export class CodexClient implements HarnessClient {
       resolve: complete,
       reject: fail,
       negotiated: null,
+      output: new AgentOutput(),
     };
     this.#active = active;
     // Attach immediately so an event preceding the turn/start response cannot reject unobserved.
@@ -371,6 +374,8 @@ export class CodexClient implements HarnessClient {
             id: nativeId,
             type: z.string(),
             status: z.string().optional(),
+            phase: z.enum(["commentary", "final_answer"]).nullable().optional(),
+            text: z.string().optional(),
             command: z.string().optional(),
             exitCode: z.number().int().nullable().optional(),
             action: z
@@ -381,6 +386,10 @@ export class CodexClient implements HarnessClient {
         })
         .parse(params);
       if (event.turnId !== active.turn) throw new HarnessError("PROTOCOL_ERROR", "unknown");
+      if (event.item.type === "agentMessage") {
+        active.output.item(event.item.id, event.item.phase, event.item.text);
+        active.request.onEvent({ type: "text_snapshot", text: active.output.snapshot() });
+      }
       if (event.item.type === "webSearch" && message.method === "item/completed") {
         active.request.onEvent({
           type: "native_tool",
@@ -421,9 +430,12 @@ export class CodexClient implements HarnessClient {
     } else if (message.method === "turn/started") {
       this.accept(active, z.object({ id: nativeId }).parse(params.turn).id);
     } else if (message.method === "item/agentMessage/delta") {
-      const delta = z.object({ turnId: nativeId, delta: z.string() }).parse(params);
+      const delta = z
+        .object({ turnId: nativeId, itemId: nativeId.optional(), delta: z.string() })
+        .parse(params);
       if (delta.turnId !== active.turn) throw new HarnessError("PROTOCOL_ERROR", "unknown");
-      active.request.onEvent({ type: "text", text: delta.delta });
+      active.output.delta(delta.itemId ?? "legacy-answer", delta.delta);
+      active.request.onEvent({ type: "text_snapshot", text: active.output.snapshot() });
     } else {
       const turn = z
         .object({ id: nativeId, status: z.enum(["completed", "failed", "interrupted"]) })
@@ -531,7 +543,13 @@ export class CodexClient implements HarnessClient {
             z.object({
               id: nativeId,
               status: z.string(),
-              items: z.array(z.object({ type: z.string(), text: z.string().optional() })),
+              items: z.array(
+                z.object({
+                  type: z.string(),
+                  text: z.string().optional(),
+                  phase: z.string().nullable().optional(),
+                }),
+              ),
             }),
           ),
         }),
@@ -558,9 +576,9 @@ export class CodexClient implements HarnessClient {
               : "unknown",
       text:
         turn?.items
-          .filter((value) => value.type === "agentMessage")
+          .filter((value) => value.type === "agentMessage" && value.phase !== "commentary")
           .map((value) => value.text ?? "")
-          .join("") ?? "",
+          .join("\n\n") ?? "",
     };
   }
   async steer(identity: SessionIdentity, runId: string, text: string) {

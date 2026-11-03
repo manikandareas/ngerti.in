@@ -27,6 +27,12 @@ export const run = z
     goal_id: id.nullable(),
     routine_id: id.nullable(),
     goal_generation: z.int().positive().nullable().default(null),
+    goal_assignment_revision: z.int().positive().nullable().default(null),
+    response_mode: z.enum(["answer", "finalize"]).default("answer"),
+    tool_errors: z
+      .array(z.strictObject({ name: z.string(), code: z.string(), created_at: z.iso.datetime() }))
+      .max(50)
+      .default([]),
     routine_generation: z.int().positive().nullable().default(null),
     publication: z.enum(["immediate", "deferred", "quiet"]).default("immediate"),
     pending_answer: z.string().max(100_000).nullable().default(null),

@@ -74,7 +74,7 @@ function historyContext(lifecycle: Lifecycle, threadId: string, agentId: string,
       (message) =>
         message.thread_id === threadId &&
         message.state !== "deleted" &&
-        message.purpose !== "continuation" &&
+        !["continuation", "handoff", "review"].includes(message.purpose) &&
         (message.run_id === null || completed.has(message.run_id)),
     );
   const retained: { author: string; agent_id: string | null; text: string }[] = [];

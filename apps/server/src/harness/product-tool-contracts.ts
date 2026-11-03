@@ -5,6 +5,7 @@ import { agentInput, agentUpdate, id } from "../contracts";
 import { groupConfiguration } from "../conversations/creation";
 import {
   captureGoal,
+  goalAssignment,
   goalControl,
   reportGoal,
   routineControl,
@@ -39,6 +40,7 @@ export const productToolSchemas = {
   "ngertiin.capture_goal": captureGoal.extend({ command_id: id }),
   "ngertiin.report_goal": reportGoal.safeExtend({ command_id: id }),
   "ngertiin.control_goal": goalControl.extend({ command_id: id }),
+  "ngertiin.assign_goal": goalAssignment.extend({ command_id: id }),
   "ngertiin.write_routine": routineWrite.extend({ command_id: id }),
   "ngertiin.control_routine": routineControl.extend({ command_id: id }),
   "ngertiin.routine_no_update": z.strictObject({ command_id: id }),

@@ -22,13 +22,23 @@ let sessions: Record<
     model: string;
     history: string[];
     instructions?: string;
-    turns?: { id: string; status: string; items: { type: string; text: string }[] }[];
+    turns?: {
+      id: string;
+      status: string;
+      items: { type: string; text: string; phase?: string }[];
+    }[];
   }
 > = (await Bun.file(file).exists()) ? await Bun.file(file).json() : {};
 let account = process.env.OPENAI_API_KEY
   ? { type: "apiKey" }
   : { type: "chatgpt", email: "fixture@example.test", planType: "plus" };
-let current: { thread: string; turn: string; text: string; answer: string } | null = null;
+let current: {
+  thread: string;
+  turn: string;
+  text: string;
+  answer: string;
+  phaseItems?: { type: string; text: string; phase: string }[];
+} | null = null;
 const send = (message: Message) => process.stdout.write(`${JSON.stringify(message)}\n`);
 const notify = (method: string, params: Record<string, unknown>) => {
   if (method === "item/agentMessage/delta" && current) current.answer += String(params.delta);
@@ -41,7 +51,7 @@ const finish = (status = "completed", turn = current?.turn) => {
     turns.push({
       id: current.turn,
       status,
-      items: [{ type: "agentMessage", text: current.answer }],
+      items: current.phaseItems ?? [{ type: "agentMessage", text: current.answer }],
     });
     writeFileSync(file, JSON.stringify(sessions));
     if (current.text.startsWith("crash-after-commit:")) process.exit(1);
@@ -166,6 +176,37 @@ async function receive(message: Message) {
       // Deliberately send acceptance, tools and completion before the response is consumed.
       notify("turn/started", { threadId: current.thread, turn: { id: current.turn } });
       reply({ turn: { id: current.turn } });
+      if (text === "phase-output") {
+        current.phaseItems = [
+          { type: "agentMessage", text: "I am preparing the example.", phase: "commentary" },
+          {
+            type: "agentMessage",
+            text: "Here is the useful final example.",
+            phase: "final_answer",
+          },
+        ];
+        for (const [index, item] of current.phaseItems.entries()) {
+          const id = `phase-${index}`;
+          notify("item/started", {
+            threadId: current.thread,
+            turnId: current.turn,
+            item: { id, ...item, text: "" },
+          });
+          notify("item/agentMessage/delta", {
+            threadId: current.thread,
+            turnId: current.turn,
+            itemId: id,
+            delta: item.text,
+          });
+          notify("item/completed", {
+            threadId: current.thread,
+            turnId: current.turn,
+            item: { id, ...item },
+          });
+        }
+        finish();
+        break;
+      }
       if (text === "disconnect") {
         notify("item/agentMessage/delta", {
           threadId: current.thread,

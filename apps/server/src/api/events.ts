@@ -1,6 +1,7 @@
 import type { Elysia } from "elysia";
 import { z } from "zod";
 import { id, kindSchema } from "../contracts";
+import { conversationEvent } from "../conversations/projection";
 import { eventStream } from "../event-stream";
 import type { Lifecycle } from "../lifecycle";
 
@@ -29,7 +30,9 @@ export function registerEventRoutes(api: Elysia, lifecycle: Lifecycle) {
     .get(
       "/v1/events",
       ({ query }) => {
-        const events = lifecycle.store.events(query.after, query.limit);
+        const events = lifecycle.store
+          .events(query.after, query.limit)
+          .map((event) => conversationEvent(lifecycle.store, event));
         return { events, next_cursor: events.at(-1)?.cursor ?? query.after };
       },
       {

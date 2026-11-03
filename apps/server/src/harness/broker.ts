@@ -185,9 +185,10 @@ export class HarnessBroker {
         id: workspace.id,
         root: workspaces.path(workspace),
         revision: workspace.revision,
+        shared: workspace.scope === "group",
       },
     };
-    const temporary = workspaces.temporary(workspace);
+    const temporary = workspaces.temporary(workspace, agentId);
     launch.env = { ...launch.env, TMPDIR: temporary, TMP: temporary, TEMP: temporary };
     let client: HarnessClient | undefined;
     try {
@@ -422,11 +423,7 @@ export class HarnessBroker {
     if (!nativeId || !run.binding_id || !run.agent_snapshot) return run;
     const binding = this.lifecycle.store.get("binding", run.binding_id);
     const connection = this.connections.get(binding.connection_id);
-    if (
-      connection.state !== "active" ||
-      !this.lifecycle.store.get("thread", run.thread_id).member_agent_ids.includes(run.agent_id)
-    )
-      throw new DomainError("SCOPE_DENIED", 403);
+    if (connection.state !== "active") throw new DomainError("SCOPE_DENIED", 403);
     const adapter = this.adapters[binding.harness];
     if (!adapter) throw new HarnessError("ADAPTER_UNAVAILABLE");
     const available = requireAvailable(
@@ -434,25 +431,13 @@ export class HarnessBroker {
     );
     const controller = new AbortController();
     if (this.#closed) throw new HarnessError("ADAPTER_UNAVAILABLE");
-    const workspaces = new Workspaces(this.lifecycle);
-    const workspace = run.workspace_id ? workspaces.authorizeRun(run) : null;
+    // Owner-authorized receipt inspection never resumes a turn or grants filesystem/tools.
+    // It must remain possible after membership/workspace revocation to release unknown work.
     const launch: LaunchContext = {
       ...this.credentials.create(connection),
       signal: controller.signal,
-      ...(workspace
-        ? {
-            workspace: {
-              id: workspace.id,
-              root: workspaces.path(workspace),
-              revision: workspace.revision,
-            },
-          }
-        : {}),
+      purpose: "routing",
     };
-    if (workspace) {
-      const temporary = workspaces.temporary(workspace);
-      launch.env = { ...launch.env, TMPDIR: temporary, TMP: temporary, TEMP: temporary };
-    }
     this.#recoveryControllers.add(controller);
     let client: HarnessClient | undefined;
     try {
@@ -486,11 +471,7 @@ export class HarnessBroker {
       );
       if (this.#closed) throw new HarnessError("ADAPTER_UNAVAILABLE");
       const latest = this.connections.get(connection.id);
-      if (
-        latest.state !== "active" ||
-        latest.grant_revision !== connection.grant_revision ||
-        !this.lifecycle.store.get("thread", run.thread_id).member_agent_ids.includes(run.agent_id)
-      )
+      if (latest.state !== "active" || latest.grant_revision !== connection.grant_revision)
         throw new DomainError("STALE_DISPATCH");
       if (
         receipt.native_session_id !== binding.native_session_id ||
@@ -844,6 +825,20 @@ export class HarnessBroker {
       removeAbort();
       clearTimeout(stopTimer);
       lease?.revoke();
+      const groupWorkspace = run.workspace_id
+        ? this.lifecycle.store.get("workspace", run.workspace_id).scope === "group"
+        : false;
+      if (groupWorkspace) {
+        const session = this.#sessions.get(`${run.thread_id}:${run.agent_id}`);
+        if (session) {
+          // End the writer process before the application's durable workspace lease can settle.
+          try {
+            await bounded(session.client.close(), this.timeouts.close_ms);
+          } catch {
+            outcome = "unknown";
+          }
+        }
+      }
       if (!this.#closed && (text || this.lifecycle.store.answer(run.id))) {
         const session = this.#sessions.get(`${run.thread_id}:${run.agent_id}`);
         if (session && accepted) {
@@ -869,7 +864,7 @@ export class HarnessBroker {
       }
       if (
         !this.#closed &&
-        this.lifecycle.store.get("thread", run.thread_id).purpose === "routing"
+        (groupWorkspace || this.lifecycle.store.get("thread", run.thread_id).purpose === "routing")
       ) {
         const key = `${run.thread_id}:${run.agent_id}`;
         const session = this.#sessions.get(key);

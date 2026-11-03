@@ -3,11 +3,13 @@ import { z } from "zod";
 import { stagedUploadInput } from "../attachments/contracts";
 import { AttachmentSubmissions } from "../attachments/submissions";
 import { id, message, run } from "../contracts";
+import { groupRoute } from "../groups/contracts";
 import type { Lifecycle } from "../lifecycle";
 
 const admission = z.object({ message, run: run.nullable(), control: z.null() });
+const submissionResult = z.union([admission, groupRoute]);
 export const submissionStatus = z.discriminatedUnion("state", [
-  z.strictObject({ state: z.literal("committed"), result: admission }),
+  z.strictObject({ state: z.literal("committed"), result: submissionResult }),
   z.strictObject({ state: z.literal("pending") }),
   z.strictObject({ state: z.literal("missing") }),
 ]);
@@ -25,7 +27,7 @@ export function registerAttachmentRoutes(api: Elysia, lifecycle: Lifecycle) {
     .get(
       "/v1/message-submissions/:id",
       ({ params }) => {
-        const receipt = admission.safeParse(lifecycle.store.receipt(params.id));
+        const receipt = submissionResult.safeParse(lifecycle.store.receipt(params.id));
         if (receipt.success) return { state: "committed" as const, result: receipt.data };
         return {
           state: lifecycle.store

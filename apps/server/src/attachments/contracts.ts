@@ -5,14 +5,14 @@ import { uploadInput } from "../workspaces/contracts";
 export const stagedUploadInput = uploadInput.extend({
   submission_id: id,
   thread_id: id,
-  agent_id: id,
+  agent_id: id.nullable().default(null),
 });
 export const stagedUpload = z.strictObject({
   ...base,
   kind: z.literal("attachment_upload"),
   submission_id: id,
   thread_id: id,
-  agent_id: id,
+  agent_id: id.nullable(),
   name: uploadInput.shape.name,
   media_type: uploadInput.shape.media_type,
   size_bytes: z.int().min(0),
@@ -26,7 +26,7 @@ export const attachmentDocument = z.strictObject({
   kind: z.literal("attachment_document"),
   artifact_id: id,
   thread_id: id,
-  agent_id: id,
+  agent_id: id.nullable(),
   workspace_id: id,
   source_sha256: z.string().length(64),
   parser_version: z.string(),

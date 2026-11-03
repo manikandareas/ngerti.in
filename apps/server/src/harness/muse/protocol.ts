@@ -4,6 +4,7 @@ export const nativeId = z.string().min(1).max(1000);
 export const item = z.object({
   itemId: nativeId,
   kind: z.string(),
+  phase: z.enum(["commentary", "final_answer"]).nullable().optional(),
   turnId: nativeId.nullable().optional(),
   revision: z.int(),
   status: z.string(),

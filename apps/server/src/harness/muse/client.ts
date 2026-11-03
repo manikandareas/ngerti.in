@@ -307,9 +307,9 @@ export class MuseClient implements HarnessClient {
     active.request.onEvent({
       type: "text_snapshot",
       text: [...active.items.values()]
-        .filter((value) => value.kind === "agentMessage")
+        .filter((value) => value.kind === "agentMessage" && value.phase !== "commentary")
         .map((value) => value.text ?? "")
-        .join(""),
+        .join("\n\n"),
     });
   }
   private preview(active: Active) {
@@ -317,9 +317,9 @@ export class MuseClient implements HarnessClient {
     active.request.onEvent({
       type: "text_snapshot",
       text: [...active.items.values()]
-        .filter((value) => value.kind === "agentMessage")
+        .filter((value) => value.kind === "agentMessage" && value.phase !== "commentary")
         .map((value) => value.text ?? "")
-        .join(""),
+        .join("\n\n"),
     });
   }
   private enqueue(method: string, params: unknown) {
@@ -488,9 +488,14 @@ export class MuseClient implements HarnessClient {
       native_run_id: nativeRunId,
       status,
       text: (result.history.items ?? result.history.snapshot?.state.items ?? [])
-        .filter((value) => value.turnId === nativeRunId && value.kind === "agentMessage")
+        .filter(
+          (value) =>
+            value.turnId === nativeRunId &&
+            value.kind === "agentMessage" &&
+            value.phase !== "commentary",
+        )
         .map((value) => value.text ?? "")
-        .join(""),
+        .join("\n\n"),
     };
   }
   async stop(identity: SessionIdentity, runId: string) {

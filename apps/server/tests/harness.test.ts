@@ -5,6 +5,7 @@ import { z } from "zod";
 import { createApi } from "../src/api";
 import { Background } from "../src/background";
 import type { Entity } from "../src/contracts";
+import { Groups } from "../src/groups/service";
 import {
   detectHarness,
   type HarnessId,
@@ -1391,6 +1392,68 @@ test("native receipt reads recheck revocation before committing recovered output
   await expect(recovering).rejects.toThrow("STALE_DISPATCH");
   expect(f.store.get("run", run.id).status).toBe("unknown");
   expect(f.store.answer(run.id)).toBeNull();
+});
+
+test("owner receipt inspection releases revoked group work without restoring its workspace or publishing its output", async () => {
+  const connections = setup();
+  const connection = connections.create({
+    harness: "codex",
+    authentication: { method: "native_login", billing_source: "subscription" },
+  });
+  const lane = assign(connection);
+  const remaining = f.lifecycle.createAgent({
+    name: "Remaining member",
+    harness: "codex",
+    connection_id: connection.id,
+    model_id: "model-a",
+    reasoning: "high",
+  });
+  const group = f.lifecycle.create("thread", {
+    type: "group",
+    member_agent_ids: [lane.agent.id, remaining.id],
+  });
+  let recoveredWithoutWorkspace = false;
+  let prompts = 0;
+  const native = makeBroker({
+    codex: adapter("codex", async (context) =>
+      client({
+        async prompt() {
+          prompts++;
+          throw new Error("Receipt inspection must never prompt.");
+        },
+        async reconcile(identity, nativeRunId) {
+          recoveredWithoutWorkspace = !context.workspace && context.purpose === "routing";
+          return {
+            ...identity,
+            native_run_id: nativeRunId,
+            status: "cancelled",
+            text: "Revoked member output must not publish.",
+          };
+        },
+      }),
+    ),
+  });
+  await native.openSession(group.id, lane.agent.id);
+  f.lifecycle.admit({
+    thread_id: group.id,
+    agent_id: lane.agent.id,
+    text: "Inspect the shared source.",
+  });
+  const run = f.lifecycle.claimNext(group.id, lane.agent.id);
+  if (!run?.dispatch_token) throw new Error("Missing group run.");
+  f.lifecycle.started(run.id, run.dispatch_token, "revoked-native-turn");
+  f.lifecycle.settle(run.id, run.dispatch_token, "unknown");
+  new Groups(f.lifecycle).membership(group.id, {
+    expected_revision: group.revision,
+    member_agent_ids: [remaining.id],
+  });
+  expect((await native.reconcile(run.id)).status).toBe("cancelled");
+  expect(recoveredWithoutWorkspace).toBe(true);
+  expect(prompts).toBe(0);
+  expect(f.store.answer(run.id)).toBeNull();
+  f.lifecycle.admit({ thread_id: group.id, agent_id: remaining.id, text: "Continue group work." });
+  await native.openSession(group.id, remaining.id);
+  expect(f.lifecycle.claimNext(group.id, remaining.id)?.status).toBe("dispatching");
 });
 
 test("an unconfirmed native stop reaches a bounded unknown outcome and fences late events", async () => {

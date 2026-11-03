@@ -15,13 +15,14 @@ export const relativePath = z
     "Use a workspace-relative path without traversal.",
   );
 export const workspaceInput = z.strictObject({
-  agent_id: z.uuid(),
+  agent_id: z.uuid().nullable().default(null),
   thread_id: z.uuid(),
   name: z.string().trim().min(1).max(200).default("Workspace"),
   project_path: z.string().min(1).max(2000).nullable().default(null),
 });
 export const workspaceFields = {
   ...workspaceInput.shape,
+  scope: z.enum(["agent", "group"]).default("agent"),
   state: z.enum(["active", "revoked"]),
   root_device: z.string(),
   root_inode: z.string(),
@@ -55,6 +56,8 @@ export const publicationInput = z.strictObject({
   media_type: uploadInput.shape.media_type,
 });
 export const artifactContentFields = {
+  created_by_agent_id: z.uuid().nullable().default(null),
+  goal_generations: z.record(z.uuid(), z.int().positive()).default({}),
   materialization: z.enum(["pending", "ready"]).default("ready"),
   workspace_id: z.uuid().nullable().default(null),
   name: z.string().max(200).default("artifact"),
@@ -73,7 +76,7 @@ export const fileQuery = z.strictObject({
 
 export const artifactInput = z.strictObject({
   thread_id: id,
-  agent_id: id,
+  agent_id: id.nullable(),
   run_id: id.nullable().default(null),
   media_type: z.string().min(1).max(200),
   sha256: z.string().regex(/^[a-f0-9]{64}$/),

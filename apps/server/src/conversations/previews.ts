@@ -19,7 +19,11 @@ export function readConversationPreviews(store: Store): z.infer<typeof conversat
   return store.transaction(() => {
     const latest = new Map<string, z.infer<typeof latestMessage>>();
     for (const current of store.list("message")) {
-      if (current.state === "deleted" || current.purpose === "continuation") continue;
+      if (
+        current.state === "deleted" ||
+        ["continuation", "handoff", "review"].includes(current.purpose)
+      )
+        continue;
       const text = current.text.replace(/\s+/g, " ").trim();
       if (!text && !current.artifact_ids.length) continue;
       latest.set(current.thread_id, {

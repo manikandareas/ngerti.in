@@ -1,5 +1,6 @@
 import { AttachmentSubmissions } from "./attachments/submissions";
 import { DomainError, type Entity } from "./contracts";
+import { GroupSchedules } from "./goals/group-schedules";
 import { Goals } from "./goals/service";
 import { Groups } from "./groups/service";
 import { diagnostic } from "./harness/contracts";
@@ -60,6 +61,7 @@ export class Background {
     }
     new Groups(this.lifecycle).advance();
     new Goals(this.lifecycle).advance(now);
+    new GroupSchedules(this.lifecycle).advance();
     for (const routine of this.lifecycle.store.list("routine")) {
       try {
         this.lifecycle.fireRoutine(routine.id, now);
@@ -80,6 +82,17 @@ export class Background {
     for (const queued of [...runs.slice(offset), ...runs.slice(0, offset)]) {
       if (this.#work.size + this.#preparing.size >= this.concurrency) break;
       if (queued.status !== "queued" || queued.delivery !== "pending") continue;
+      const thread = this.lifecycle.store.get("thread", queued.thread_id);
+      if (
+        thread.type === "group" &&
+        thread.purpose === "conversation" &&
+        runs.some(
+          (run) =>
+            run.thread_id === thread.id &&
+            ["dispatching", "running", "cancel_requested", "unknown"].includes(run.status),
+        )
+      )
+        continue;
       if (
         this.lifecycle.store
           .list("run")

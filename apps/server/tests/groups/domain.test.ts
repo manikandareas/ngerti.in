@@ -305,6 +305,7 @@ test("self/ancestor handoff cycles and a second unrelated HITL request are rejec
     instruction: "review",
     purpose: "review",
   });
+  finish(run, "The reviewer will continue on the shared workspace.");
   const childRun = start(child.current_run_id);
   expect(() =>
     groups.handoff(childRun.id, { agent_id: f.agent.id, instruction: "loop", purpose: "handoff" }),

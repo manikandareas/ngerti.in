@@ -19,7 +19,7 @@ function setup() {
   f = fixture();
   return new Goals(f.lifecycle);
 }
-function start(runId?: string) {
+function start(runId?: string | null) {
   const queued = runId
     ? f.store.get("run", runId)
     : f.admit("Please prepare the report and its follow-up.").run;
@@ -506,7 +506,7 @@ test("HTTP contracts expose goal/Routine commands, snapshot/replay and authentic
   expect(await (await request("/v1/goals/capture", input)).json()).toEqual(receipt);
   expect(f.store.cursor).toBe(cursor);
   const document = await (await request("/v1/contracts")).json();
-  expect(document.version).toBe("1.21.0");
+  expect(document.version).toBe("1.23.0");
   expect(document.commands.report_goal).toBeDefined();
   const snapshot = await (await request(`/v1/threads/${run.thread_id}/snapshot`)).json();
   expect(snapshot.goals[0].id).toBe(input.goal_id);
@@ -586,7 +586,7 @@ test("explicit resume continues a stopped known run while unknown source receipt
   expect(f.store.list("run")).toHaveLength(2);
 });
 
-test("membership removal and readd cannot revive goal or standalone Routine generations", () => {
+test("membership removal preserves group responsibilities and invalidates the removed assignment", () => {
   const goals = setup();
   const peer = f.lifecycle.createAgent({
     name: "Peer",
@@ -616,9 +616,10 @@ test("membership removal and readd cannot revive goal or standalone Routine gene
     member_agent_ids: [f.agent.id, peer.id],
   });
   new Background(f.lifecycle).tick(new Date("2026-11-01T00:00:00Z"));
-  expect(f.store.get("goal", goal.id).state).toBe("stopped");
-  expect(f.store.get("routine", r.id).state).toBe("stopped");
-  expect(f.store.list("run")).toHaveLength(1);
+  expect(f.store.get("goal", goal.id).state).toBe("active");
+  expect(f.store.get("goal", goal.id).coordinator_agent_id).toBeNull();
+  expect(f.store.get("routine", r.id).state).toBe("active");
+  expect(f.store.list("run").filter((run) => run.thread_id === group.id)).toHaveLength(1);
 });
 
 test("completion rechecks evidence bytes after reporting and blocks a tampered artifact", () => {

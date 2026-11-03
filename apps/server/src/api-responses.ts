@@ -196,6 +196,7 @@ reference("POST", "/v1/setup", "setup");
 reference("POST", "/v1/runs", "admission");
 routes("POST", ["/v1/message-uploads"], schemas.attachment_upload);
 routes("GET", ["/v1/message-submissions/:id"], submissionStatus);
+routes("POST", ["/v1/groups/:id/routes/:routeId/retry"], schemas.group_route);
 reference("GET", "/v1/threads/:id/snapshot", "conversation");
 reference("GET", "/v1/threads/:id/history", "history");
 reference("GET", "/v1/events", "events");
@@ -222,7 +223,17 @@ routes("POST", ["/v1/human-requests/:id/reply"], schemas.human_request);
 routes("POST", ["/v1/messages/:id/edit", "/v1/messages/:id/delete"], schemas.message);
 routes("POST", ["/v1/runs/:id/steer"], schemas.control);
 routes("GET", ["/v1/threads/:id/goals"], operationSchemas.goals);
-routes("POST", ["/v1/goals", "/v1/goals/capture", "/v1/goals/:id/control"], schemas.goal);
+routes(
+  "POST",
+  [
+    "/v1/goals",
+    "/v1/goals/capture",
+    "/v1/goals/:id/control",
+    "/v1/goals/:id/assignment",
+    "/v1/goals/:id/recover-completion",
+  ],
+  schemas.goal,
+);
 routes("POST", ["/v1/goals/:id/progress"], operationSchemas.goal_progress);
 routes("POST", ["/v1/routines", "/v1/routines/write", "/v1/routines/:id/control"], schemas.routine);
 routes(

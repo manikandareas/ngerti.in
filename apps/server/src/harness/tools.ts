@@ -8,6 +8,7 @@ import { type BrowserHost, DockerBrowserHost } from "../browser/host";
 import { Browsers } from "../browser/service";
 import { registerBrowserTools } from "../browser/tools";
 import { DomainError, type Entity } from "../contracts";
+import { Goals } from "../goals/service";
 import { registerGoalTools } from "../goals/tools";
 import { registerGroupTools } from "../groups/tools";
 import type { AppHost } from "../integrations/host";
@@ -214,6 +215,17 @@ export class ProductTools {
       if (entity.id === scope.thread_id) return;
     } else if (entity.kind === "message") {
       if (entity.thread_id === scope.thread_id) return;
+    } else if (
+      entity.kind === "artifact" &&
+      entity.thread_id === scope.thread_id &&
+      entity.agent_id === null
+    ) {
+      const run = this.lifecycle.store.get("run", scope.run_id);
+      if (run.workspace_id && entity.workspace_id === run.workspace_id) {
+        // The active run already revalidated group membership and workspace revision.
+        const workspace = this.lifecycle.store.get("workspace", run.workspace_id);
+        if (workspace.scope === "group" && workspace.state === "active") return;
+      }
     } else if (entity.thread_id === scope.thread_id && entity.agent_id === scope.agent_id) return;
     throw new DomainError("SCOPE_DENIED", 403);
   }
@@ -233,7 +245,29 @@ export class ProductTools {
     authorize();
     // Asynchronous tools must call authorize immediately before committing their effect.
     const before = this.lifecycle.store.get("run", scope.run_id);
-    const result = await tool.execute(parsed, { scope: Object.freeze({ ...scope }), authorize });
+    let result: unknown;
+    try {
+      result = await tool.execute(parsed, { scope: Object.freeze({ ...scope }), authorize });
+    } catch (error) {
+      if (error instanceof DomainError) {
+        const current = this.lifecycle.store.get("run", scope.run_id);
+        if (current.dispatch_token && ["running", "dispatching"].includes(current.status)) {
+          this.lifecycle.observe(current.id, current.dispatch_token, {
+            tool_errors: [
+              ...current.tool_errors,
+              { name, code: error.code, created_at: new Date().toISOString() },
+            ].slice(-50),
+          });
+          if (name === "ngertiin.report_goal")
+            new Goals(this.lifecycle).recordReportFailure(
+              current.id,
+              parsed as { goal_id: string; expected_revision: number },
+              error.code,
+            );
+        }
+      }
+      throw error;
+    }
     const receipt = result as Partial<Entity<"goal"> | Entity<"routine"> | Entity<"run">> | null;
     const endsOwnScope =
       before.cancellation === "none" &&
@@ -242,10 +276,16 @@ export class ProductTools {
         receipt.kind === "run" &&
         receipt.id === before.id &&
         receipt.cancellation === "requested") ||
-        (name === "ngertiin.control_goal" &&
+        ((name === "ngertiin.assign_goal" || name === "ngertiin.control_goal") &&
           receipt.kind === "goal" &&
-          receipt.state !== "active" &&
-          (before.goal_id === receipt.id || receipt.current_run_id === before.id)) ||
+          receipt.id !== undefined &&
+          (name === "ngertiin.assign_goal" || receipt.state !== "active") &&
+          (before.goal_id === receipt.id ||
+            receipt.current_run_id === before.id ||
+            (before.task_id !== null &&
+              this.lifecycle.store
+                .get("peer_task", before.task_id)
+                .goal_ids.includes(receipt.id)))) ||
         (name === "ngertiin.control_routine" &&
           receipt.kind === "routine" &&
           receipt.state !== "active" &&

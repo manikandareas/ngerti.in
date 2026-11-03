@@ -87,6 +87,8 @@ export class Artifacts {
       source_artifact_id?: string;
       native_session_id?: string;
       native_run_id?: string;
+      created_by_agent_id?: string | null;
+      goal_generations?: Record<string, number>;
     },
   ) {
     this.persist(id, bytes);
@@ -272,6 +274,12 @@ export class Artifacts {
           run_id: run.id,
           native_session_id: binding.native_session_id,
           native_run_id: run.native_run_id as string,
+          created_by_agent_id: run.agent_id,
+          goal_generations: run.task_id
+            ? this.lifecycle.store.get("peer_task", run.task_id).goal_generations
+            : run.goal_id && run.goal_generation
+              ? { [run.goal_id]: run.goal_generation }
+              : {},
         });
       },
     );

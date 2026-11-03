@@ -16,6 +16,7 @@ export function registerGoalTools(tools: ProductTools) {
     "ngertiin.capture_goal",
     "ngertiin.report_goal",
     "ngertiin.control_goal",
+    "ngertiin.assign_goal",
     "ngertiin.write_routine",
     "ngertiin.control_routine",
     "ngertiin.routine_no_update",
@@ -42,6 +43,8 @@ export function registerGoalTools(tools: ProductTools) {
                 return goals.capture(access.scope.run_id, input);
               case "ngertiin.report_goal":
                 return goals.report(access.scope.run_id, input);
+              case "ngertiin.assign_goal":
+                return goals.assign(access.scope, input);
               case "ngertiin.control_goal":
                 return goals.control(access.scope, input);
               case "ngertiin.write_routine":

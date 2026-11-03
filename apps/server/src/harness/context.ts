@@ -72,7 +72,7 @@ export type LaunchContext = {
   state_directory: string;
   redactor: Redactor;
   signal?: AbortSignal;
-  workspace?: { id: string; root: string; revision: number };
+  workspace?: { id: string; root: string; revision: number; shared?: boolean };
 };
 export class CredentialContexts {
   constructor(

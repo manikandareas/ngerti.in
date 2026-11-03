@@ -1,5 +1,6 @@
 import { createRequire } from "node:module";
 import { expect, type Page, test } from "@playwright/test";
+import { withTimeline } from "./conversation-fixture.js";
 
 async function post(page: Page, path: string, data: unknown) {
   const response = await page.request.post(path, {
@@ -9,6 +10,69 @@ async function post(page: Page, path: string, data: unknown) {
   expect(response.ok(), await response.text()).toBeTruthy();
   return response.json();
 }
+
+test("a large roster paints the conversation before preparing only visible avatars", async ({
+  page,
+}, info) => {
+  const ids = Array.from({ length: 100 }, () => crypto.randomUUID());
+  await page.route("**/v1/entities/agent", async (route) => {
+    const response = await route.fetch();
+    const agents = await response.json();
+    await route.fulfill({
+      response,
+      json: [
+        ...agents,
+        ...ids.map((id, index) => ({
+          ...agents[0],
+          id,
+          name: `Roster member ${index}`,
+          system_role: null,
+          avatar_config: { ...agents[0].avatar_config, seed: id },
+        })),
+      ],
+    });
+  });
+  await page.route("**/v1/entities/thread", async (route) => {
+    const response = await route.fetch();
+    const threads = await response.json();
+    await route.fulfill({
+      response,
+      json: [
+        ...threads,
+        ...ids.map((id) => ({
+          ...threads[0],
+          id: `thread-${id}`,
+          type: "dm",
+          name: null,
+          member_agent_ids: [id],
+        })),
+      ],
+    });
+  });
+  const started = Date.now();
+  await page.goto("/");
+  await expect(page.getByRole("button", { name: "Detail Tobi", exact: true })).toBeVisible();
+  const paintMs = Date.now() - started;
+  const sidebar = page.getByRole("button", { name: "Buka percakapan", exact: true });
+  if (await sidebar.isVisible()) await sidebar.click();
+  const navigation = page.getByRole("navigation", { name: "Percakapan", exact: true });
+  const last = navigation.locator(`[data-thread-id="thread-${ids.at(-1)}"]`);
+  await expect(last).toHaveCount(1);
+  expect(await navigation.locator(".ngertiin-avatar svg").count()).toBeLessThan(30);
+  await expect(last.locator("svg")).toHaveCount(0);
+  await last.scrollIntoViewIfNeeded();
+  await expect(last.locator(".ngertiin-avatar svg")).toHaveCount(1);
+  await expect.poll(() => navigation.locator(".ngertiin-avatar svg").count()).toBeLessThan(30);
+  await info.attach("large-roster.json", {
+    contentType: "application/json",
+    body: JSON.stringify({
+      synthetic_members: ids.length,
+      paint_ms: paintMs,
+      mounted_avatars: await navigation.locator(".ngertiin-avatar svg").count(),
+      navigation_html_bytes: await navigation.evaluate((element) => element.outerHTML.length),
+    }),
+  });
+});
 
 test("stored message times appear for users and agents in both DM and group", async ({
   page,
@@ -28,7 +92,7 @@ test("stored message times appear for users and agents in both DM and group", as
     const snapshot = await response.json();
     await route.fulfill({
       response,
-      json: {
+      json: withTimeline({
         ...snapshot,
         messages: [
           ...snapshot.messages,
@@ -45,7 +109,7 @@ test("stored message times appear for users and agents in both DM and group", as
             text: "Balasan agent di DM.",
           },
         ],
-      },
+      }),
     });
   });
   await page.evaluate((id) => localStorage.setItem("ngertiin:thread", id), dm.id);
@@ -77,7 +141,7 @@ test("stored message times appear for users and agents in both DM and group", as
     const snapshot = await response.json();
     await route.fulfill({
       response,
-      json: {
+      json: withTimeline({
         ...snapshot,
         messages: [
           ...snapshot.messages,
@@ -95,7 +159,7 @@ test("stored message times appear for users and agents in both DM and group", as
             text: "Jam balasan agent di grup.",
           },
         ],
-      },
+      }),
     });
   });
   await page.evaluate((id) => localStorage.setItem("ngertiin:thread", id), group.id);
@@ -132,7 +196,7 @@ for (const theme of ["light", "dark"] as const) {
       const snapshot = await response.json();
       await route.fulfill({
         response,
-        json: {
+        json: withTimeline({
           ...snapshot,
           messages: [
             {
@@ -149,7 +213,7 @@ for (const theme of ["light", "dark"] as const) {
               text: "Hasil pekerjaan bersama.\n\n| Langkah | Status |\n| --- | --- |\n| Periksa dokumen | Selesai |\n\n```ts\nconst result = 'ready';\n```",
             },
           ],
-        },
+        }),
       });
     });
     await page.evaluate((id) => localStorage.setItem("ngertiin:thread", id), group.id);
@@ -251,7 +315,7 @@ test("saved avatar identity appears outside the left of group replies and surviv
     const snapshot = await response.json();
     await route.fulfill({
       response,
-      json: {
+      json: withTimeline({
         ...snapshot,
         messages: [tobi, peer].map((agent, index) => ({
           id: `avatar-answer-${index}`,
@@ -266,7 +330,7 @@ test("saved avatar identity appears outside the left of group replies and surviv
           artifact_ids: [],
           purpose: "conversation",
         })),
-      },
+      }),
     });
   });
   await page.evaluate((id) => localStorage.setItem("ngertiin:thread", id), group.id);

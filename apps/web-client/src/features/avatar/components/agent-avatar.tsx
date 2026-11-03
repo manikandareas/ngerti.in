@@ -1,4 +1,4 @@
-import { type CSSProperties, useEffect, useImperativeHandle, useRef } from "react";
+import { type CSSProperties, useEffect, useImperativeHandle, useRef, useState } from "react";
 import type { AvatarState } from "../engine/catalog";
 import type { AvatarConfig } from "../engine/config";
 import { type AvatarController, mountAvatar } from "../engine/controller";
@@ -13,6 +13,7 @@ export interface AgentAvatarProps {
   shadow?: boolean;
   label?: string;
   className?: string;
+  deferred?: boolean;
   ref?: React.Ref<AvatarController | null>;
 }
 
@@ -25,10 +26,12 @@ export function AgentAvatar({
   shadow = false,
   label,
   className = "",
+  deferred = false,
   ref,
 }: AgentAvatarProps) {
   const host = useRef<HTMLSpanElement>(null);
   const controller = useRef<AvatarController | null>(null);
+  const [visible, setVisible] = useState(!deferred);
   const initial = useRef({ config, state });
   useImperativeHandle(
     ref,
@@ -44,6 +47,18 @@ export function AgentAvatar({
 
   initial.current = { config, state };
   useEffect(() => {
+    if (!deferred) {
+      setVisible(true);
+      return;
+    }
+    if (!host.current) return;
+    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), {
+      rootMargin: "80px",
+    });
+    observer.observe(host.current);
+    return () => observer.disconnect();
+  }, [deferred]);
+  useEffect(() => {
     controller.current?.setConfig(config);
   }, [config]);
   useEffect(() => {
@@ -51,7 +66,7 @@ export function AgentAvatar({
   }, [state]);
 
   useEffect(() => {
-    if (!host.current) return;
+    if (!host.current || !visible) return;
     const instance = mountAvatar(host.current, initial.current.config, {
       state: initial.current.state,
       animated,
@@ -63,7 +78,7 @@ export function AgentAvatar({
       instance.dispose();
       controller.current = null;
     };
-  }, [animated, followPointer, shadow]);
+  }, [animated, followPointer, shadow, visible]);
 
   return (
     <span

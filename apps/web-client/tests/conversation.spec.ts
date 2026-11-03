@@ -1,4 +1,5 @@
 import { expect, type Page, test } from "@playwright/test";
+import { withTimeline } from "./conversation-fixture.js";
 
 test.afterEach(async ({ page }) => {
   await page.unrouteAll({ behavior: "wait" });
@@ -70,7 +71,85 @@ test("an idle DM shows its first admitted message directly in the conversation",
   ).toHaveText("Send directly in an idle DM.");
   await expect(page.locator("[data-queued-message]")).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Arahkan sekarang", exact: true })).toHaveCount(0);
-  await expect(page.locator(".message-run-state")).toContainText("Menghubungkan");
+  await expect(page.locator(".message-run-state")).toContainText("Menunggu giliran");
+});
+
+test("event bursts update the conversation without repeatedly reloading global catalogs", async ({
+  page,
+}, testInfo) => {
+  const { agent, thread } = await idleDm(page);
+  const admitted = await page.request.post("/v1/runs", {
+    headers: { "Idempotency-Key": crypto.randomUUID() },
+    data: { agent_id: agent.id, thread_id: thread.id, text: "Live revision 0" },
+  });
+  expect(admitted.ok()).toBeTruthy();
+  const receipt = await admitted.json();
+  await expect(page.locator(".chat-user-bubble [data-message-text]")).toHaveText("Live revision 0");
+  const reads = { catalogs: 0, snapshots: 0, opening: 0 };
+  page.on("request", (request) => {
+    if (request.method() !== "GET") return;
+    const path = new URL(request.url()).pathname;
+    if (path.startsWith("/v1/entities/")) reads.catalogs++;
+    if (path === `/v1/threads/${thread.id}/snapshot`) reads.snapshots++;
+    if (path === `/v1/threads/${thread.id}/opening`) reads.opening++;
+  });
+  await page.getByRole("textbox", { name: "Pesan", exact: true }).fill("Keep my unsent draft.");
+  let revision = receipt.message.revision;
+  for (let index = 1; index <= 16; index++) {
+    const response = await page.request.post(`/v1/messages/${receipt.message.id}/edit`, {
+      headers: { "Idempotency-Key": crypto.randomUUID() },
+      data: { expected_revision: revision, text: `Live revision ${index}` },
+    });
+    expect(response.ok()).toBeTruthy();
+    revision = (await response.json()).revision;
+  }
+  await expect(page.locator(".chat-user-bubble [data-message-text]")).toHaveText(
+    "Live revision 16",
+  );
+  await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toHaveText(
+    "Keep my unsent draft.",
+  );
+  expect(reads.catalogs).toBe(0);
+  expect(reads.opening).toBe(0);
+  expect(reads.snapshots).toBeLessThan(16);
+  await testInfo.attach("projection-request-counts", {
+    body: JSON.stringify({ committed_edits: 16, ...reads }),
+    contentType: "application/json",
+  });
+});
+
+test("blocked preparation explains readiness and exposes an exact-input retry", async ({
+  page,
+}) => {
+  const { agent, thread } = await idleDm(page);
+  await page.route(`**/v1/threads/${thread.id}/snapshot`, async (route) => {
+    const response = await route.fetch();
+    const snapshot = await response.json();
+    await route.fulfill({
+      response,
+      json: {
+        ...snapshot,
+        runs: snapshot.runs.map((run: object) => ({
+          ...run,
+          preparation: { state: "blocked", attempts: 1, next_attempt_at: null },
+          diagnostic: {
+            code: "MODEL_UNAVAILABLE",
+            category: "configuration",
+            outcome: "not_dispatched",
+          },
+        })),
+      },
+    });
+  });
+  await page.request.post("/v1/runs", {
+    headers: { "Idempotency-Key": crypto.randomUUID() },
+    data: { agent_id: agent.id, thread_id: thread.id, text: "Keep this original request." },
+  });
+  await expect(page.locator(".message-run-state")).toContainText("Agent belum siap");
+  await expect(
+    page.getByRole("button", { name: "Coba hubungkan lagi", exact: true }),
+  ).toBeVisible();
+  await expect(page.locator(".message-diagnostic")).toContainText("Pilih model yang tersedia");
 });
 
 test("queued inputs enter the transcript after the preceding answer, including late answers and reload", async ({
@@ -111,9 +190,19 @@ test("queued inputs enter the transcript after the preceding answer, including l
             : "queued",
       };
     });
+    const count = phase === "complete" ? 3 : phase === "next" ? 2 : 1;
+    const published = snapshot.messages
+      .slice(0, count)
+      .flatMap((message, index) => [
+        message,
+        ...answers.filter((answer) => (answer as { run_id: string }).run_id === runs[index].id),
+      ]);
     await route.fulfill({
       response,
-      json: { ...snapshot, runs, messages: [...snapshot.messages, ...answers] },
+      json: withTimeline(
+        { ...snapshot, runs, messages: [...snapshot.messages, ...answers] },
+        published,
+      ),
     });
   });
   const composer = page.getByRole("textbox", { name: "Pesan", exact: true });
@@ -610,6 +699,6 @@ test("cancelled opening can continue in the same chat without another opener", a
   expect(state.messages).toHaveLength(1);
   expect(state.runs).toHaveLength(2);
   await expect(page.getByRole("region", { name: /pesan menunggu$/ })).toHaveCount(0);
-  await expect(page.locator(".message-run-state")).toContainText("Menghubungkan");
+  await expect(page.locator(".message-run-state")).toContainText("Menunggu giliran");
   await expect(page.getByText("Dihentikan", { exact: true })).toHaveCount(0);
 });

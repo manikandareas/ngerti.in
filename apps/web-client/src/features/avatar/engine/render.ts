@@ -20,6 +20,8 @@ export function faceForState(face: AvatarFace, state: AvatarState): AvatarFace {
   }
 }
 
+const furCache = new Map<string, string>();
+
 /** Ivory eye shapes remain readable without a mouth, including at small sizes. */
 function plushEye(x: number, face: AvatarFace, right: boolean, id: string): string {
   const side = right ? 1 : -1;
@@ -99,19 +101,28 @@ export function renderAvatarSvg(
   random(); // Preserve the established seeded fur pattern.
   const gradient = `${id}-clay`;
   // Layer short undercoat and longer curved guard hairs in a seeded growth field.
-  const fibers =
-    options.textureHref === undefined
-      ? Array.from({ length: 8500 }, (_, index) => {
-          const x = 15 + random() * 170;
-          const y = 15 + random() * 170;
-          const angle = Math.atan2(y - 72, (x - 90) * 0.85) + Math.sin(y / 17 + x / 23) * 0.35;
-          const length = index < 5500 ? 1.5 + random() * 3 : 4 + random() * 7;
-          const dx = Math.cos(angle) * length;
-          const dy = Math.sin(angle) * length;
-          const light = random() > 0.45;
-          return `<path d="M${x.toFixed(2)} ${y.toFixed(2)}q${(dx * 0.35 - dy * 0.16).toFixed(2)} ${(dy * 0.35 + dx * 0.16).toFixed(2)} ${dx.toFixed(2)} ${dy.toFixed(2)}" stroke="${light ? "#fff7e8" : color.shade}" stroke-opacity="${light ? 0.12 + random() * 0.25 : 0.2 + random() * 0.3}" stroke-width="${index < 5500 ? ".24" : ".36"}" stroke-linecap="round"/>`;
-        }).join("")
-      : "";
+  let fibers = "";
+  if (options.textureHref === undefined) {
+    // Expression and body changes share the same seeded fur field.
+    const key = JSON.stringify([config.seed, config.color]);
+    const cached = furCache.get(key);
+    if (cached !== undefined) fibers = cached;
+    else {
+      fibers = Array.from({ length: 8500 }, (_, index) => {
+        const x = 15 + random() * 170;
+        const y = 15 + random() * 170;
+        const angle = Math.atan2(y - 72, (x - 90) * 0.85) + Math.sin(y / 17 + x / 23) * 0.35;
+        const length = index < 5500 ? 1.5 + random() * 3 : 4 + random() * 7;
+        const dx = Math.cos(angle) * length;
+        const dy = Math.sin(angle) * length;
+        const light = random() > 0.45;
+        return `<path d="M${x.toFixed(2)} ${y.toFixed(2)}q${(dx * 0.35 - dy * 0.16).toFixed(2)} ${(dy * 0.35 + dx * 0.16).toFixed(2)} ${dx.toFixed(2)} ${dy.toFixed(2)}" stroke="${light ? "#fff7e8" : color.shade}" stroke-opacity="${light ? 0.12 + random() * 0.25 : 0.2 + random() * 0.3}" stroke-width="${index < 5500 ? ".24" : ".36"}" stroke-linecap="round"/>`;
+      }).join("");
+      furCache.set(key, fibers);
+      const oldest = furCache.keys().next().value;
+      if (furCache.size > 16 && oldest !== undefined) furCache.delete(oldest);
+    }
+  }
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" fill="none" aria-hidden="true">
 <defs>
 <filter id="${id}-fuzz" x="-15%" y="-15%" width="130%" height="130%">

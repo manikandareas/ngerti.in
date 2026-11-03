@@ -5,11 +5,13 @@ import type { ProductTools } from "../../../apps/server/src/harness/tools";
 /** External protocol fixture; HTTP, leases, tools, persistence and the broker remain real. */
 export function fixtureAdapter(tools: ProductTools): HarnessAdapter {
   const rejectedRoutes = new Set<string>();
+  // A resumed native identity retains its prior question even after the broker
+  // retires the idle transport while the task is waiting for a human.
+  const askedSessions = new Set<string>();
   return {
     harness: "codex",
     async connect(context) {
       let sessionId = crypto.randomUUID();
-      let asked = false;
       let multiple = false;
       let ambiguous = false;
       let pending: {
@@ -180,8 +182,8 @@ export function fixtureAdapter(tools: ProductTools): HarnessAdapter {
               arguments: {},
             });
           }
-          if (input.text.includes("fixture human") && !asked) {
-            asked = true;
+          if (input.text.includes("fixture human") && !askedSessions.has(sessionId)) {
+            askedSessions.add(sessionId);
             await tools.call(input.tools.token, input.tools.scope, "ngertiin.group_ask_user", {
               command_id: crypto.randomUUID(),
               purpose: "input",

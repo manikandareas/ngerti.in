@@ -9,7 +9,7 @@ import type {
   Routine,
   Workspace,
 } from "./work";
-// Consumer projections of the published Ngertiin API 1.24.0.
+// Consumer projections of the published Ngertiin API 1.25.0.
 export interface Base {
   id: string;
   revision: number;
@@ -48,6 +48,22 @@ export interface Message extends Base {
   purpose: string;
 }
 export interface Run extends Base {
+  preparation?: {
+    state: "preparing" | "ready" | "retrying" | "blocked";
+    attempts: number;
+    next_attempt_at: string | null;
+  };
+  timings?: Partial<
+    Record<
+      | "preparing_at"
+      | "ready_at"
+      | "dispatched_at"
+      | "accepted_at"
+      | "first_output_at"
+      | "settled_at",
+      string
+    >
+  >;
   input_message_id: string;
   agent_id: string;
   status: string;
@@ -65,6 +81,7 @@ export interface Run extends Base {
   routine_id: string | null;
 }
 export interface AgentActivity {
+  preparation?: Run["preparation"];
   agent_id: string;
   thread_id: string;
   run_id: string;
@@ -165,6 +182,23 @@ export interface Snapshot {
     message_id: string;
     selected_agent_id: string | null;
     error_code: string | null;
+    clarification?: string | null;
+    execution?: {
+      stage:
+        | "classifying"
+        | "reviewing"
+        | "preparing"
+        | "retrying"
+        | "fallback"
+        | "blocked"
+        | "reconcile"
+        | "selected"
+        | "rejected";
+      run_id: string | null;
+      run_revision: number | null;
+      diagnostic: { code: string; category: string; outcome: string } | null;
+      retry_preparation: boolean;
+    };
   }[];
   occurrences: {
     id: string;
@@ -176,6 +210,7 @@ export interface Snapshot {
   }[];
 }
 export interface Opening {
+  message?: Message | null;
   recovery: string;
   run: Run | null;
 }

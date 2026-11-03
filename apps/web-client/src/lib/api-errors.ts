@@ -1,4 +1,11 @@
 const repairs: Record<string, string> = {
+  LOGIN_REQUIRED: "Akun perlu dihubungkan kembali. Periksa login pada pengaturan koneksi.",
+  SERVICE_UNAVAILABLE:
+    "Koneksi sementara belum tersedia. Sistem akan mencoba kembali secara terbatas.",
+  ROUTING_UNAVAILABLE: "Penjawab belum dapat dipilih. Coba lagi untuk pesan yang sama.",
+  ROUTING_UNRESOLVED: "Penerima belum jelas. Perjelas permintaanmu sebelum mencoba lagi.",
+  ROUTING_CONTEXT_LIMIT: "Konteks permintaan terlalu panjang. Ringkas pesan lalu coba lagi.",
+  ROUTING_STALE: "Anggota atau konteks grup sudah berubah. Coba pilih penjawab kembali.",
   ADAPTER_UNAVAILABLE: "Layanan akun belum tersedia. Periksa service backend, lalu coba lagi.",
   CREDENTIAL_MISSING: "API key belum tersedia pada host. Tambahkan key melalui Providers.",
   VERSION_UNKNOWN: "Versi runtime belum dikenali. Periksa versi yang terpasang pada host backend.",

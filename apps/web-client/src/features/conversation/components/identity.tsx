@@ -48,6 +48,7 @@ export function AgentAvatar({
   interactive = false,
   followPointer = false,
   showActivityLabel = true,
+  deferred = false,
 }: {
   agent?: ReferenceAgent;
   name?: string;
@@ -61,6 +62,7 @@ export function AgentAvatar({
   interactive?: boolean;
   followPointer?: boolean;
   showActivityLabel?: boolean;
+  deferred?: boolean;
 }) {
   const view = useAvatarActivity(agent?.id, threadId);
   const { version, seed, shape, color, face } = agent?.avatar_config ?? {};
@@ -115,6 +117,7 @@ export function AgentAvatar({
                 agent={member}
                 threadId={threadId}
                 animated={animated}
+                deferred={deferred}
                 showActivityLabel={showActivityLabel}
                 className={largeGroup ? "size-8" : "size-[58%]"}
               />
@@ -139,6 +142,7 @@ export function AgentAvatar({
           state={effectiveState}
           size="100%"
           animated={animate}
+          deferred={deferred}
           followPointer={followPointer}
         />
       )}

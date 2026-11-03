@@ -78,6 +78,7 @@ import {
   type NativeTranscriptFragment,
   useNativeTranscript,
 } from "@/features/conversation/lib/native-transcript";
+import { runStatusLabel } from "@/features/conversation/lib/run-status";
 import { useComposerAttachments } from "@/features/conversation/lib/use-composer-attachments";
 import { useConversationDraft } from "@/features/conversation/lib/use-conversation-draft";
 import { useMessageSubmission } from "@/features/conversation/lib/use-message-submission";
@@ -104,17 +105,6 @@ import type {
   Thread,
 } from "@/types/workspace";
 
-const statusText: Record<string, string> = {
-  queued: "Menghubungkan",
-  dispatching: "Menghubungkan",
-  running: "Sedang bekerja",
-  cancel_requested: "Stop diminta",
-  cancelled: "Dihentikan",
-  succeeded: "Selesai",
-  failed: "Gagal",
-  unknown: "Hasil belum diketahui",
-  steered: "Arahan diterima",
-};
 const controlText: Record<string, string> = {
   requested: "Mengirim arahan",
   accepted: "Arahan diterima harness",
@@ -871,7 +861,7 @@ export default function Workspace() {
                     className="flex items-center gap-1 text-caption text-muted-foreground"
                   >
                     <Spinner className="size-3" />
-                    <span className="sr-only">{statusText[activeRun.status]}</span>
+                    <span className="sr-only">{runStatusLabel(activeRun)}</span>
                   </span>
                 )}
               </Button>
@@ -1120,9 +1110,7 @@ export default function Workspace() {
                             {run && (
                               <div className="message-run-state space-y-2">
                                 <div className="flex flex-wrap items-center gap-2 text-caption text-muted-foreground">
-                                  {run.status !== "succeeded" && (
-                                    <span>{statusText[run.status] ?? run.status}</span>
-                                  )}
+                                  {run.status !== "succeeded" && <span>{runStatusLabel(run)}</span>}
                                   {run.status === "cancelled" && (
                                     <span>
                                       {run.cancellation === "confirmed"
@@ -1153,6 +1141,25 @@ export default function Workspace() {
                                   ) && (
                                     <div className="message-diagnostic rounded-xl bg-danger-soft px-3 py-2 text-[13px] leading-5 text-destructive">
                                       <p>{repairMessage(run.diagnostic.code)}</p>
+                                      {run.status === "queued" &&
+                                        run.preparation?.state === "blocked" && (
+                                          <Button
+                                            size="sm"
+                                            variant="outline"
+                                            disabled={busy}
+                                            onClick={() =>
+                                              void act(async () => {
+                                                await queueCommand(
+                                                  `preparation:${run.id}`,
+                                                  `/v1/runs/${run.id}/retry-preparation`,
+                                                  { expected_revision: run.revision },
+                                                );
+                                              })
+                                            }
+                                          >
+                                            Coba hubungkan lagi
+                                          </Button>
+                                        )}
                                       <Button
                                         variant="ghost"
                                         type="button"
@@ -1177,6 +1184,15 @@ export default function Workspace() {
                           message={message}
                           run={run}
                           snapshot={snapshot}
+                          retryPreparation={(runId, revision) =>
+                            void act(async () => {
+                              await queueCommand(
+                                `router-preparation:${runId}`,
+                                `/v1/runs/${runId}/retry-preparation`,
+                                { expected_revision: revision },
+                              );
+                            })
+                          }
                           retryRoute={(route) =>
                             void act(async () => {
                               await queueCommand(

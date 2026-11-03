@@ -70,10 +70,27 @@ export async function durableCommand<T>(slot: string, path: string, body: unknow
 }
 
 /** Complete SSE frames only; UTF-8 and network chunks need not align with events. */
+export interface WorkspaceEvent {
+  conversation_thread_id?: string;
+  cursor: number;
+  entity_kind: string;
+  entity_id: string;
+  revision: number;
+  data: {
+    id: string;
+    kind: string;
+    revision: number;
+    thread_id?: string;
+    input_message_id?: string;
+    message_id?: string;
+    purpose?: string;
+    [key: string]: unknown;
+  };
+}
 export async function followEvents(
   after: number,
   signal: AbortSignal,
-  update: (cursor: number) => Promise<void>,
+  update: (cursor: number, event: WorkspaceEvent) => Promise<void> | void,
 ) {
   const response = await fetch(`/v1/events/stream?after=${after}`, { signal });
   if (!response.ok || !response.body) throw new Error("Event connection unavailable");
@@ -95,9 +112,9 @@ export async function followEvents(
           .map((line) => line.slice(5).trimStart())
           .join("\n");
         if (data) {
-          const event = JSON.parse(data) as { cursor: number };
+          const event = JSON.parse(data) as WorkspaceEvent;
           if (event.cursor > after) {
-            await update(event.cursor);
+            await update(event.cursor, event);
             after = event.cursor;
           }
         }

@@ -141,6 +141,7 @@ export function ConversationNavigation({
             >
               <AgentAvatar
                 agent={member}
+                deferred
                 threadId={thread.id}
                 name={name}
                 group={thread.type === "group"}

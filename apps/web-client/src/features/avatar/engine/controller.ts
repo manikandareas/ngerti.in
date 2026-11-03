@@ -52,7 +52,9 @@ export function mountAvatar(
       textureKey = furTextureKey(config);
       textureHref = "";
       const requestedKey = textureKey;
-      void loadFurTexture(config)
+      const pixels = host.getBoundingClientRect().width * (window.devicePixelRatio || 1);
+      const textureSize = Math.min(768, Math.max(128, 2 ** Math.ceil(Math.log2(pixels || 64))));
+      void loadFurTexture(config, textureSize)
         .then((href) => {
           if (disposed || textureKey !== requestedKey) return;
           textureHref = href;

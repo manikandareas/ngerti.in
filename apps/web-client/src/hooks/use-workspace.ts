@@ -9,9 +9,10 @@ import type {
   Snapshot,
   Thread,
 } from "@/types/workspace";
+import { observePreparation, type SessionPreparation } from "./conversation-preparation";
 import { eventProjections, mergeEntity, type Projection } from "./workspace-events";
 
-export function useWorkspace() {
+export function useWorkspace(composer: HTMLElement | null) {
   const [agents, setAgents] = useState<Agent[]>([]);
   const [activity, setActivity] = useState<AgentActivities>({ cursor: 0, items: [] });
   const [previews, setPreviews] = useState<ConversationPreviews>({ cursor: 0, items: [] });
@@ -239,18 +240,32 @@ export function useWorkspace() {
       !dmAgent?.model_id ||
       !dmAgent.revision ||
       hasPending ||
-      document.visibilityState !== "visible"
+      !composer ||
+      snapshot?.thread.id !== threadId
     )
       return;
-    const abort = new AbortController();
-    void request(
-      `/v1/threads/${threadId}/prepare`,
-      { agent_id: dmAgent.id },
-      undefined,
-      abort.signal,
-    ).catch(() => {});
-    return () => abort.abort();
-  }, [online, threadId, dmAgent?.id, dmAgent?.revision, dmAgent?.model_id, hasPending]);
+    const dispose = observePreparation(
+      composer,
+      () => document.visibilityState === "visible" && selectedThread.current === threadId,
+      (signal) =>
+        request<SessionPreparation>(
+          `/v1/threads/${threadId}/prepare`,
+          { agent_id: dmAgent.id },
+          undefined,
+          signal,
+        ),
+    );
+    return dispose;
+  }, [
+    online,
+    threadId,
+    snapshot?.thread.id,
+    dmAgent?.id,
+    dmAgent?.revision,
+    dmAgent?.model_id,
+    hasPending,
+    composer,
+  ]);
 
   const select = (id: string) => {
     if (id === selectedThread.current) return;

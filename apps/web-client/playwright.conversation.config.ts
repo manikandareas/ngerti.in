@@ -13,6 +13,7 @@ export default defineConfig({
   testDir: "./tests",
   testMatch: [
     "conversation.spec.ts",
+    "preparation.spec.ts",
     "model-picker.spec.ts",
     "rich-answer.spec.ts",
     "agent-avatar.spec.ts",

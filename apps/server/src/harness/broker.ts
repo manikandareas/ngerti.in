@@ -145,11 +145,20 @@ export class HarnessBroker {
     const { agent } = this.member(threadId, agentId);
     if (thread.type !== "dm" || !agent.model_id || this.#closed) return { state: "skipped" };
     const lane = `${threadId}:${agentId}`;
-    if (this.#sessions.has(lane)) return { state: "ready" };
+    const existing = this.#sessions.get(lane);
+    if (existing) {
+      try {
+        this.check(existing, threadId, agentId);
+        this.touch(lane, existing);
+        return { state: "ready" };
+      } catch (error) {
+        // A configuration change needs the ordinary fenced open path below.
+        if (!(error instanceof DomainError) || error.code !== "STALE_DISPATCH") throw error;
+      }
+    }
     if (this.#opening.has(lane)) return { state: "preparing" };
     if (
       this.#warming ||
-      this.#sessions.size >= 3 ||
       this.lifecycle.store
         .list("run")
         .some((run) =>
@@ -157,6 +166,9 @@ export class HarnessBroker {
         )
     )
       return { state: "skipped" };
+    // Only idle transports can reach this point. Keep the selected DM warm within
+    // the existing cap; native bindings and transcripts survive transport eviction.
+    if (!existing) this.retireIdleSessions(2);
     this.#warming = true;
     void this.openSession(threadId, agentId)
       .catch(() => {})

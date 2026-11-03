@@ -116,8 +116,9 @@ const DOUBLE_ENTER_STEER_WINDOW_MS = 1500;
 const SettingsDialog = lazy(() => import("@/features/settings/components/settings-dialog"));
 
 export default function Workspace() {
-  const workspace = useWorkspace();
   const { isOpen: isSettings, open: showSettings, close: closeSettings } = useSettingsDialog();
+  const [composerSurface, setComposerSurface] = useState<HTMLElement | null>(null);
+  const workspace = useWorkspace(isSettings ? null : composerSurface);
   const {
     agents,
     threads,
@@ -1348,6 +1349,7 @@ export default function Workspace() {
                   </div>
                 )}
                 <form
+                  ref={setComposerSurface}
                   onSubmit={(event) => {
                     event.preventDefault();
                     send();

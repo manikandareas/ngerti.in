@@ -190,6 +190,83 @@ test("DM prewarm performs no inference and reuses skills, transport and presenta
   expect(skills).toBe(1);
   expect(prompts).toBe(2);
 });
+
+test("DM prewarm replaces the least recently used idle transport and preserves native identities", async () => {
+  const connections = setup();
+  const connection = connections.create({
+    harness: "codex",
+    authentication: { method: "native_login", billing_source: "subscription" },
+  });
+  const lanes = Array.from({ length: 4 }, (_, i) => assign(connection, `Idle ${i}`));
+  const closed: string[] = [];
+  let prompts = 0;
+  const native = makeBroker({
+    codex: adapter("codex", async (context) =>
+      client({
+        async close() {
+          closed.push(context.thread_id);
+        },
+        async prompt() {
+          prompts++;
+          throw new Error("Unexpected inference.");
+        },
+      }),
+    ),
+  });
+  for (const lane of lanes.slice(0, 3)) {
+    await native.openSession(lane.thread.id, lane.agent.id);
+    await Bun.sleep(2);
+  }
+  const firstBinding = f.store.list("binding").find((b) => b.thread_id === lanes[0].thread.id);
+  if (!firstBinding) throw new Error("Expected the first native binding.");
+  const evictedBinding = f.store.list("binding").find((b) => b.thread_id === lanes[1].thread.id);
+  if (!evictedBinding) throw new Error("Expected the idle native binding.");
+  expect(native.prewarm(lanes[0].thread.id, lanes[0].agent.id).state).toBe("ready");
+  await Bun.sleep(2);
+  expect(native.prewarm(lanes[3].thread.id, lanes[3].agent.id).state).toBe("preparing");
+  await native.openSession(lanes[3].thread.id, lanes[3].agent.id);
+  expect(closed).toEqual([lanes[1].thread.id]);
+  expect(f.store.get("binding", firstBinding.id).native_session_id).toBe(
+    firstBinding.native_session_id,
+  );
+  const resumed = await native.openSession(lanes[1].thread.id, lanes[1].agent.id);
+  expect(resumed.native_session_id).toBe(evictedBinding.native_session_id);
+  expect(f.store.list("run")).toHaveLength(0);
+  expect(prompts).toBe(0);
+});
+
+test("speculative DM preparation never evicts transports while active or unknown work exists", async () => {
+  const connections = setup();
+  const connection = connections.create({
+    harness: "codex",
+    authentication: { method: "native_login", billing_source: "subscription" },
+  });
+  const lanes = Array.from({ length: 4 }, (_, i) => assign(connection, `Busy ${i}`));
+  let closes = 0;
+  const native = makeBroker({
+    codex: adapter("codex", async () =>
+      client({
+        async close() {
+          closes++;
+        },
+      }),
+    ),
+  });
+  for (const lane of lanes.slice(0, 3)) await native.openSession(lane.thread.id, lane.agent.id);
+  f.lifecycle.admit({
+    thread_id: lanes[0].thread.id,
+    agent_id: lanes[0].agent.id,
+    text: "Pending work.",
+  });
+  const run = f.lifecycle.claimNext(lanes[0].thread.id, lanes[0].agent.id);
+  if (!run?.dispatch_token) throw new Error("Expected a claimed run.");
+  const target = lanes[3];
+  expect(native.prewarm(target.thread.id, target.agent.id).state).toBe("skipped");
+  f.lifecycle.settle(run.id, run.dispatch_token, "unknown");
+  expect(native.prewarm(target.thread.id, target.agent.id).state).toBe("skipped");
+  expect(closes).toBe(0);
+  expect(f.store.list("binding").some((b) => b.thread_id === target.thread.id)).toBe(false);
+});
 async function dispatch(lane: ReturnType<typeof assign>, native = broker) {
   if (!native) throw new Error("Broker is required.");
   await native.openSession(lane.thread.id, lane.agent.id);

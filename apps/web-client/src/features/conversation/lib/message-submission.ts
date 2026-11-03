@@ -127,10 +127,15 @@ export async function executeSubmission(
   progress: (id: string, state: "uploading" | "ready") => void,
 ) {
   try {
-    const status = await request<{ state: "committed" | "pending" | "missing"; result?: unknown }>(
-      `/v1/message-submissions/${operation.id}`,
-    );
-    if (status.state === "committed") return status.result;
+    // Upload recovery needs a receipt check to avoid re-uploading committed files.
+    // Without uploads, the command itself replays the durable idempotency receipt.
+    if (operation.files.length) {
+      const status = await request<{
+        state: "committed" | "pending" | "missing";
+        result?: unknown;
+      }>(`/v1/message-submissions/${operation.id}`);
+      if (status.state === "committed") return status.result;
+    }
     for (const source of operation.files) {
       progress(source.id, "uploading");
       await request(

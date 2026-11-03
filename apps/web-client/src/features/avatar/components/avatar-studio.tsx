@@ -30,6 +30,7 @@ import {
   avatarFaces,
   avatarShapes,
   avatarStates,
+  selectableAvatarColors,
 } from "../engine/catalog";
 import {
   type AvatarConfig,
@@ -84,7 +85,7 @@ function makeFamily(): AvatarConfig[] {
   return ["circle", "oval", "squircle", "capsule", "triangle", "hexagon"].map((shape, index) =>
     createAvatar(`little-friends-${index}`, {
       shape: shape as AvatarShape,
-      color: (["lilac", "sky", "rose", "mint", "butter", "tangerine"] as AvatarColor[])[index],
+      color: (["lilac", "sky", "rose", "mint", "peach", "seafoam"] as AvatarColor[])[index],
       face: (["happy", "curious", "shy", "calm", "excited", "happy"] as AvatarFace[])[index],
     }),
   );
@@ -532,7 +533,7 @@ export default function AvatarStudio() {
               Warna<span>{avatarColors[config.color].label}</span>
             </legend>
             <div className="studio-swatches">
-              {Object.entries(avatarColors).map(([color, palette]) => (
+              {Object.entries(selectableAvatarColors).map(([color, palette]) => (
                 <label
                   key={color}
                   className="studio-swatch"

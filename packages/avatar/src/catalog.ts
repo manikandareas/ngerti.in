@@ -64,6 +64,12 @@ export const avatarColors = {
   mist: { label: "Ocean", light: "#a0d5e8", base: "#6fb2ce", shade: "#3b7f9e" },
 } as const;
 
+// Retired colors remain readable for stored recipes, but are not offered for new identities.
+const retiredColors = new Set(["oat", "butter", "tangerine", "pistachio", "lemon", "pearl"]);
+export const selectableAvatarColors = Object.fromEntries(
+  Object.entries(avatarColors).filter(([color]) => !retiredColors.has(color)),
+) as Partial<typeof avatarColors>;
+
 export const avatarFaces = {
   happy: "Happy",
   curious: "Curious",

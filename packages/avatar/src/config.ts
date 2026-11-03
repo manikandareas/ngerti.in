@@ -5,6 +5,7 @@ import {
   avatarColors,
   avatarFaces,
   avatarShapes,
+  selectableAvatarColors,
 } from "./catalog";
 
 export interface AvatarConfig {
@@ -78,7 +79,7 @@ export function createAvatar(
     version: 1,
     seed,
     shape: pick(Object.keys(avatarShapes) as AvatarShape[]),
-    color: pick(Object.keys(avatarColors) as AvatarColor[]),
+    color: pick(Object.keys(selectableAvatarColors) as AvatarColor[]),
     face: pick(Object.keys(avatarFaces) as AvatarFace[]),
     ...overrides,
   });

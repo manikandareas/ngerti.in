@@ -74,6 +74,12 @@ const avatarStudioRoute = createRoute({
   component: lazyRouteComponent(() => import("@/features/avatar/components/avatar-studio")),
 });
 
+const colorStudioRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/color-studio",
+  component: lazyRouteComponent(() => import("@/features/color-studio/color-studio")),
+});
+
 const designSystemRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/design-system",
@@ -93,6 +99,7 @@ export const router = createRouter({
     designSystemRoute,
     themePreviewRoute,
     avatarStudioRoute,
+    colorStudioRoute,
   ]),
   scrollRestoration: true,
 });

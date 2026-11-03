@@ -1,5 +1,6 @@
 /* OpenMausBot Midnight/Daylight adaptation. Provenance and accessibility adjustments: ../../DESIGN_SYSTEM.md. */
-:root {
+:root,
+.theme-light-preview {
   color-scheme: light;
   --background: #fcfcfc;
   --foreground: #1c1c1c;

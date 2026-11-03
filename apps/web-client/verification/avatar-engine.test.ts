@@ -33,7 +33,7 @@ describe("Ngertiin avatar engine", () => {
     expect(renderAvatarSvg(config)).toBe(renderAvatarSvg(createAvatar("agent-42")));
     const identities = Array.from({ length: 400 }, (_, i) => createAvatar(`agent-${i}`));
     expect(new Set(identities.map((value) => value.shape)).size).toBe(8);
-    expect(new Set(identities.map((value) => value.color)).size).toBe(20);
+    expect(new Set(identities.map((value) => value.color)).size).toBe(14);
   });
 
   test("rejects unsupported versions and malformed recipes at import boundaries", () => {

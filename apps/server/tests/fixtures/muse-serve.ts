@@ -174,6 +174,20 @@ async function handle(request: {
         status: "accepted",
         commandId: p.commandId,
       });
+      if (input === "activity-search") {
+        const value = {
+          itemId: "search",
+          kind: "toolCall",
+          turnId: active.id,
+          revision: 1,
+          status: "inProgress",
+        };
+        notify("item/started", { item: value });
+        notify("item/updated", { item: { ...value, tool: "web_search", revision: 2 } });
+        notify("item/updated", { item: { ...value, revision: 3, status: "completed" } });
+        finish("Research completed.");
+        return;
+      }
       if (input === "disconnect") {
         notify("item/started", {
           item: {

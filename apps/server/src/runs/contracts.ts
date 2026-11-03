@@ -3,6 +3,7 @@ import { agentSnapshot } from "../agents/contracts";
 import { attachmentObservation } from "../attachments/contracts";
 import { base, id, text } from "../contracts/base";
 import { nativeInteractionJournal } from "../harness/interaction-contracts";
+import { activeTool } from "./activity";
 
 export const runStatus = z.enum([
   "queued",
@@ -63,6 +64,7 @@ export const run = z
     outcome: z.enum(["none", "succeeded", "failed", "cancelled", "unknown", "steered"]),
     delivery: z.enum(["pending", "steering", "unknown", "delivered", "removed"]).default("pending"),
     activity: z.enum(["idle", "generating", "tool_running", "stopping", "unknown"]).default("idle"),
+    active_tools: z.array(activeTool).max(200).default([]),
     diagnostic: z
       .strictObject({
         code: z.string().regex(/^[A-Z_]+$/),

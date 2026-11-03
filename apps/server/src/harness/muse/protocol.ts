@@ -9,6 +9,7 @@ export const item = z.object({
   revision: z.int(),
   status: z.string(),
   text: z.string().max(100_000).optional(),
+  tool: z.string().max(200).optional(),
 });
 export const approval = z.object({
   approvalId: nativeId,

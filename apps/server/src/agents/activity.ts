@@ -10,6 +10,7 @@ const activity = z.strictObject({
   status: run.shape.status,
   activity: run.shape.activity,
   preparation: run.shape.preparation,
+  active_tools: run.shape.active_tools,
   waiting_for_user: z.boolean(),
 });
 export const agentActivities = z.strictObject({
@@ -74,6 +75,7 @@ export function readAgentActivities(store: Store): z.infer<typeof agentActivitie
         status: current.status,
         activity: current.activity,
         preparation: current.preparation,
+        active_tools: current.active_tools,
         waiting_for_user: waitingForUser,
       },
     });

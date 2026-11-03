@@ -16,6 +16,7 @@ import { Applications } from "../integrations/service";
 import { registerAppTools } from "../integrations/tools";
 import { registerLearningTools } from "../learning/tools";
 import type { Lifecycle } from "../lifecycle";
+import { observeToolActivity, toolActivityKind } from "../runs/activity";
 import { canonical } from "../store";
 import { registerWorkspaceTools } from "../workspaces/tools";
 import { Connections } from "./connections";
@@ -247,6 +248,27 @@ export class ProductTools {
     authorize();
     // Asynchronous tools must call authorize immediately before committing their effect.
     const before = this.lifecycle.store.get("run", scope.run_id);
+    const thread = this.lifecycle.store.get("thread", before.thread_id);
+    const target =
+      name === "ngertiin.group_handoff" ? (parsed as { agent_id: string }).agent_id : null;
+    const operation = {
+      call_id: `product:${crypto.randomUUID()}`,
+      kind:
+        target && thread.type === "group" && thread.member_agent_ids.includes(target)
+          ? ("asking_agent" as const)
+          : toolActivityKind(name),
+      target_agent_id:
+        target && thread.type === "group" && thread.member_agent_ids.includes(target)
+          ? target
+          : null,
+    };
+    observeToolActivity(
+      this.lifecycle,
+      before.id,
+      before.dispatch_token as string,
+      operation,
+      "started",
+    );
     let result: unknown;
     try {
       result = await tool.execute(parsed, { scope: Object.freeze({ ...scope }), authorize });
@@ -269,6 +291,19 @@ export class ProductTools {
         }
       }
       throw error;
+    } finally {
+      const current = this.lifecycle.store.get("run", before.id);
+      if (
+        current.dispatch_token === before.dispatch_token &&
+        ["running", "dispatching", "cancel_requested"].includes(current.status)
+      )
+        observeToolActivity(
+          this.lifecycle,
+          current.id,
+          current.dispatch_token as string,
+          operation,
+          "completed",
+        );
     }
     const receipt = result as Partial<Entity<"goal"> | Entity<"routine"> | Entity<"run">> | null;
     const endsOwnScope =

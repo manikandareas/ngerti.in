@@ -508,7 +508,7 @@ test("HTTP contracts expose goal/Routine commands, snapshot/replay and authentic
   expect(await (await request("/v1/goals/capture", input)).json()).toEqual(receipt);
   expect(f.store.cursor).toBe(cursor);
   const document = await (await request("/v1/contracts")).json();
-  expect(document.version).toBe("1.27.0");
+  expect(document.version).toBe("1.28.0");
   expect(document.commands.report_goal).toBeDefined();
   const snapshot = await (await request(`/v1/threads/${run.thread_id}/snapshot`)).json();
   expect(snapshot.goals[0].id).toBe(input.goal_id);

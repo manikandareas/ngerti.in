@@ -125,6 +125,25 @@ test("Codex JSONL fixture performs an HTTP product-tool round trip and persists 
     inference: "succeeded",
   });
 });
+test("Codex publishes search activity at start and preserves overlapping file work", async () => {
+  const lane = setup();
+  const run = await admit(lane, "activity-search");
+  await background.idle();
+  const observations = f.store
+    .events(0)
+    .filter((event) => event.entity_id === run.id)
+    .map((event) => event.data as Entity<"run">);
+  expect(
+    observations.some((value) => value.active_tools?.some((step) => step.kind === "searching")),
+  ).toBe(true);
+  expect(observations.some((value) => value.active_tools?.length === 2)).toBe(true);
+  expect(
+    observations.some(
+      (value) => value.active_tools?.length === 1 && value.active_tools[0].kind === "updating",
+    ),
+  ).toBe(true);
+  expect(f.store.get("run", run.id)).toMatchObject({ status: "succeeded", active_tools: [] });
+});
 test("native session and separate DM/group histories survive backend and child restart", async () => {
   const lane = setup();
   const group = f.lifecycle.create("thread", {

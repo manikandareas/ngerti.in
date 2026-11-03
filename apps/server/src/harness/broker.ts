@@ -6,6 +6,7 @@ import type { NativeSkillMetadata } from "../learning/contracts";
 import type { Lifecycle } from "../lifecycle";
 import { prepareVisualInputs } from "../multimodal";
 import { RunControls } from "../run-controls";
+import { observeToolActivity } from "../runs/activity";
 import { InteractionJournal } from "../runs/interaction-journal";
 import { canonical } from "../store";
 import { Workspaces } from "../workspaces/service";
@@ -900,10 +901,23 @@ export class HarnessBroker {
                 native_dispatch_id: event.native_run_id,
               });
             } else if (event.type === "activity") {
+              const current = this.lifecycle.store.get("run", run.id);
               this.lifecycle.observe(run.id, run.dispatch_token as string, {
-                activity: event.activity,
+                activity: current.active_tools.length ? "tool_running" : event.activity,
               });
               if (event.activity === "generating") context.controlReady?.();
+            } else if (event.type === "tool_activity") {
+              observeToolActivity(
+                this.lifecycle,
+                run.id,
+                run.dispatch_token as string,
+                {
+                  call_id: event.call_id,
+                  kind: event.kind,
+                  target_agent_id: null,
+                },
+                event.state,
+              );
             } else if (event.type === "web_source") {
               const url = new URL(event.url);
               if (

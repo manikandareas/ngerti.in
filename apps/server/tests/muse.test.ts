@@ -145,6 +145,27 @@ test("official Muse SDK fixture completes an actual scoped HTTP product-tool cal
     effective_billing_source: "api_key",
   });
 });
+test("Muse maps the official tool field and clears terminal updates without a completed notification", async () => {
+  const lane = setup(true);
+  const run = await admit(lane, "activity-search");
+  await background.idle();
+  const observations = f.store
+    .events(0)
+    .filter((event) => event.entity_id === run.id)
+    .map((event) => event.data as Entity<"run">);
+  expect(
+    observations.some((value) => value.active_tools?.some((step) => step.kind === "searching")),
+  ).toBe(true);
+  expect(
+    observations.some(
+      (value) =>
+        value.status === "running" &&
+        value.activity === "generating" &&
+        value.active_tools?.length === 0,
+    ),
+  ).toBe(true);
+  expect(f.store.get("run", run.id)).toMatchObject({ status: "succeeded", active_tools: [] });
+});
 test("native history resumes the exact DM after restart without importing group history", async () => {
   const lane = setup();
   const group = f.lifecycle.create("thread", {

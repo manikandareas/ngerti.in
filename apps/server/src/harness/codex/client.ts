@@ -3,6 +3,7 @@ import { mkdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { z } from "zod";
 import type { Entity } from "../../contracts";
+import { toolActivityKind } from "../../runs/activity";
 import type { HarnessClient, Inspection, RecoveryObservation, SessionIdentity } from "../client";
 import type { LaunchContext } from "../context";
 import { HarnessError, type Settings } from "../contracts";
@@ -377,6 +378,7 @@ export class CodexClient implements HarnessClient {
             phase: z.enum(["commentary", "final_answer"]).nullable().optional(),
             text: z.string().optional(),
             command: z.string().optional(),
+            tool: z.string().optional(),
             exitCode: z.number().int().nullable().optional(),
             action: z
               .object({ type: z.string(), url: z.string().nullable().optional() })
@@ -386,6 +388,19 @@ export class CodexClient implements HarnessClient {
         })
         .parse(params);
       if (event.turnId !== active.turn) throw new HarnessError("PROTOCOL_ERROR", "unknown");
+      if (["webSearch", "commandExecution", "fileChange", "mcpToolCall"].includes(event.item.type))
+        active.request.onEvent({
+          type: "tool_activity",
+          call_id: `native:${event.item.id}`,
+          kind: toolActivityKind(event.item.tool ?? event.item.type),
+          state:
+            message.method === "item/started"
+              ? "started"
+              : event.item.status === "failed"
+                ? "failed"
+                : "completed",
+          target_agent_id: null,
+        });
       if (event.item.type === "agentMessage") {
         active.output.item(event.item.id, event.item.phase, event.item.text);
         active.request.onEvent({ type: "text_snapshot", text: active.output.snapshot() });

@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { mkdirSync } from "node:fs";
 import { z } from "zod";
 import type { Entity } from "../../contracts";
+import { toolActivityKind } from "../../runs/activity";
 import type { HarnessClient, Inspection, RecoveryObservation, SessionIdentity } from "../client";
 import type { LaunchContext } from "../context";
 import { HarnessError, type Settings } from "../contracts";
@@ -362,10 +363,18 @@ export class MuseClient implements HarnessClient {
       if (!old || old.revision < value.revision) {
         active.items.set(value.itemId, value);
         if (value.kind === "agentMessage") this.preview(active);
-        else if (value.kind === "toolCall")
+        else if (["toolCall", "webSearch", "userShell"].includes(value.kind))
           active.request.onEvent({
-            type: "activity",
-            activity: method === "item/completed" ? "generating" : "tool_running",
+            type: "tool_activity",
+            call_id: `native:${value.itemId}`,
+            kind: toolActivityKind(value.tool ?? value.kind),
+            target_agent_id: null,
+            state:
+              value.status === "inProgress"
+                ? "started"
+                : value.status === "failed"
+                  ? "failed"
+                  : "completed",
           });
       }
       return;

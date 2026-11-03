@@ -436,6 +436,7 @@ export class Lifecycle {
       agent_snapshot: null,
       delivery: "pending",
       activity: "idle",
+      active_tools: [],
       diagnostic: null,
       native_dispatch_id: null,
       workspace_id: null,
@@ -701,6 +702,7 @@ export class Lifecycle {
         timings: { ...run.timings, settled_at: new Date().toISOString() },
         cancellation: outcome === "cancelled" ? "confirmed" : run.cancellation,
         activity: outcome === "unknown" ? "unknown" : "idle",
+        active_tools: [],
       });
     });
   }
@@ -780,6 +782,7 @@ export class Lifecycle {
     fields: Pick<
       Partial<Entity<"run">>,
       | "activity"
+      | "active_tools"
       | "native_dispatch_id"
       | "diagnostic"
       | "native_tools"

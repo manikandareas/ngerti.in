@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { base, harness, id } from "../contracts/base";
+import { activeTool } from "../runs/activity";
 
 export const harnessId = z.enum(["codex", "muse"]);
 export const capabilityState = z.enum(["supported", "unsupported", "unknown"]);
@@ -84,6 +85,11 @@ export const terminal = z.strictObject({
   native_run_id: z.string().min(1).max(1000).nullable(),
 });
 export const nativeEvent = z.discriminatedUnion("type", [
+  z.strictObject({
+    type: z.literal("tool_activity"),
+    ...activeTool.shape,
+    state: z.enum(["started", "completed", "failed"]),
+  }),
   z.strictObject({
     type: z.literal("web_source"),
     url: z.url().max(4000),

@@ -176,6 +176,16 @@ async function receive(message: Message) {
       // Deliberately send acceptance, tools and completion before the response is consumed.
       notify("turn/started", { threadId: current.thread, turn: { id: current.turn } });
       reply({ turn: { id: current.turn } });
+      if (text === "activity-search") {
+        const base = { threadId: current.thread, turnId: current.turn };
+        notify("item/started", { ...base, item: { id: "search", type: "webSearch" } });
+        notify("item/started", { ...base, item: { id: "file", type: "fileChange" } });
+        notify("item/completed", { ...base, item: { id: "search", type: "webSearch" } });
+        notify("item/completed", { ...base, item: { id: "file", type: "fileChange" } });
+        notify("item/agentMessage/delta", { ...base, delta: "Research completed." });
+        finish();
+        break;
+      }
       if (text === "phase-output") {
         current.phaseItems = [
           { type: "agentMessage", text: "I am preparing the example.", phase: "commentary" },

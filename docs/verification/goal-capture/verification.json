@@ -1,0 +1,141 @@
+{
+  "completed_at": "2026-11-03T07:52:53.499229+00:00",
+  "scope": "Semantic Goal capture and aligned native tool guidance; no language classifier, additional inference loop, schema payload change or database migration.",
+  "contract_version": "1.24.0",
+  "static_checks": {
+    "backend_tests": {
+      "pass": 318,
+      "fail": 0,
+      "assertions": 2056,
+      "log": "backend-tests-shipped.log"
+    },
+    "server_typecheck": "pass",
+    "server_lint": "pass",
+    "strict_native_verifier_typecheck": "pass",
+    "metadata_discovery": "MCP, exact-schema discovery and Muse catalog covered by the backend test"
+  },
+  "capture_cohort": {
+    "scenarios": 30,
+    "passed": 29,
+    "failed": 1,
+    "false_positive_scenarios": [],
+    "false_negative_scenarios": [],
+    "admitted_runs": 41
+  },
+  "capture_cohort_limit": "29/30 full scenarios passed. The remaining Muse handoff yielded no false capture but polled its queued peer and reached the execution deadline; one run was cancelled and one peer remained undispatched in the captured disposable state. That failure remains retained.",
+  "handoff_followup": {
+    "scenarios": 2,
+    "passed": 2,
+    "failed": 0,
+    "false_positive_scenarios": [],
+    "false_negative_scenarios": [],
+    "admitted_runs": 6
+  },
+  "handoff_followup_limit": "Descriptions only; current source hashes match the 2/2 focused follow-up. The responsibility-selection paragraphs and backend queue are unchanged from the capture cohort.",
+  "historical_data": {
+    "checked": 160,
+    "changed_or_missing": [],
+    "original_goals": 9,
+    "original_routines": 6
+  },
+  "local_runtime": "local-runtime.json",
+  "phase_results": {
+    "native-deliverable-check.json": {
+      "scenarios": 1,
+      "passed": 0,
+      "failed": 1,
+      "false_positive_scenarios": [],
+      "false_negative_scenarios": [],
+      "admitted_runs": 1
+    },
+    "native-final.json": {
+      "scenarios": 30,
+      "passed": 29,
+      "failed": 1,
+      "false_positive_scenarios": [],
+      "false_negative_scenarios": [],
+      "admitted_runs": 41
+    },
+    "native-handoff-final.json": {
+      "scenarios": 2,
+      "passed": 2,
+      "failed": 0,
+      "false_positive_scenarios": [],
+      "false_negative_scenarios": [],
+      "admitted_runs": 6
+    },
+    "native-handoff-guidance.json": {
+      "scenarios": 2,
+      "passed": 2,
+      "failed": 0,
+      "false_positive_scenarios": [],
+      "false_negative_scenarios": [],
+      "admitted_runs": 6
+    },
+    "native-routine-diagnostic.json": {
+      "scenarios": 1,
+      "passed": 0,
+      "failed": 1,
+      "false_positive_scenarios": [],
+      "false_negative_scenarios": [],
+      "admitted_runs": 1
+    },
+    "native-smoke.json": {
+      "scenarios": 6,
+      "passed": 5,
+      "failed": 1,
+      "false_positive_scenarios": [],
+      "false_negative_scenarios": [],
+      "admitted_runs": 6
+    },
+    "native.json": {
+      "scenarios": 30,
+      "passed": 27,
+      "failed": 3,
+      "false_positive_scenarios": [],
+      "false_negative_scenarios": [],
+      "admitted_runs": 40
+    }
+  },
+  "not_adopted": [
+    "native-handoff-guidance.json evaluated additional receipt guidance; no associated domain, response or group-test change remains."
+  ],
+  "shipped_source_sha256": {
+    "apps/server/src/agent-instructions.ts": "5892ebd82650a621083329d57b3961c6898fa763b5e64b2f5d2154878c8232c6",
+    "apps/server/src/goals/instructions.ts": "6f6c0a914e1115051dd8656a1c16096b369489909819cdc996c80b269e6bb645",
+    "apps/server/src/goals/contracts.ts": "d63d868b3a7d4dea04049f7d5de77357d3414fed2ee24e6863320385d5371f2d",
+    "apps/server/src/goals/service.ts": "38dd023f71a9ba5a2a7f85c7d6d0a06eef56f8d5dc8345bef712952197f79774",
+    "apps/server/src/harness/instructions.ts": "6efbf49ace55475d865d3b21cc5eacd6e21de1e73651bdf11c1b4a562cf282de",
+    "apps/server/src/harness/product-tool-contracts.ts": "61cfd91e761d25c6f7baa080584fb3a102145800ed11eb3897d768ea6f458b9f",
+    "apps/server/src/harness/tools.ts": "ad8fa4085ac209174fb2c269826aa13903dfcadc31c530755b98616afe454474",
+    "apps/server/tests/goals/tool-discovery.test.ts": "03129b971e166fd92834c66e934e3e58a0a69552fb1f4851617c81fe6995b3ea",
+    "scripts/verification/goal-capture/cases.ts": "7f59332cafe596c09d0a80ccabcc3627ff084802392b9420667910395e011c09",
+    "scripts/verification/goal-capture/native.ts": "0b7cefc8968c4bb387bee89a78918d30c3c4d869a52882f2927facc47ce8edb5"
+  },
+  "limits": [
+    "Native samples do not guarantee universal model behavior.",
+    "Supplied-source research cases do not re-prove live web research or actual PDF extraction.",
+    "Future schedules were created/edited without executing their scheduled stages.",
+    "No UI, installation, fresh login, Muse subscription or production acceptance is claimed.",
+    "No commit, push or historical-data cleanup was requested."
+  ],
+  "later_concurrent_checkout": {
+    "observed_at": "2026-11-03T07:55:50.785948+00:00",
+    "task_source_hashes_unchanged": true,
+    "scoped_tests": {
+      "pass": 1,
+      "fail": 40,
+      "log": "concurrent-checkout-goals.log"
+    },
+    "global_typecheck": "failed in concurrent configuration, lifecycle and run-timing changes",
+    "global_lint": "failed in concurrent backend changes",
+    "first_failure": "New run.timings record requires preparing_at/ready_at/accepted_at entries that are absent in ordinary test admissions.",
+    "boundary": "Earlier successful checks and native captures apply to the recorded Goals source snapshot. Later concurrent backend edits were not authored, repaired, reverted or activated by this Goals amendment. No current whole-checkout readiness claim is made.",
+    "observed_other_source_sha256": {
+      "apps/server/src/config.ts": "9085843db3d7670bd4771602b2a200e44114c24c95a180c1336339119c861d70",
+      "apps/server/src/lifecycle.ts": "2ca6d83d95b6376ed34900c48124d3ce2b85d91baf87ae8898359a841130b4b7",
+      "apps/server/src/runs/contracts.ts": "ca9732d3257ebec8a1f44bc73283785ba6ae77ab72d29072fb5cf2c1be2699f9",
+      "apps/server/src/store.ts": "722d5d8e882cb64e17fe2442fa45a5849f8f4d696d7ca64912c3670e28e6f516"
+    }
+  }
+}

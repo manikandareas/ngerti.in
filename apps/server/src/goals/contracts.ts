@@ -99,7 +99,12 @@ export const routineWrite = z.strictObject({
   instruction: text,
   schedule,
   timezone,
-  execution_target: executionTarget.nullable().default(null),
+  execution_target: executionTarget
+    .nullable()
+    .default(null)
+    .describe(
+      "Group schedules may select automatically or target an exact current member. For a DM omit this field or use null; the current agent is implicit and auto is invalid.",
+    ),
 });
 export const goalAssignment = z.strictObject({
   goal_id: id,

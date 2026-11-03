@@ -1,0 +1,3473 @@
+{
+  "contract": "1.24.0",
+  "started_at": "2026-11-03T07:34:54.934Z",
+  "prompt_sha256": "94fdae321c52b3d922935655167156419ebaa52baa26ad7436bdf0a42ddbc5ff",
+  "source_sha256": {
+    "apps/server/src/goals/instructions.ts": "94fdae321c52b3d922935655167156419ebaa52baa26ad7436bdf0a42ddbc5ff",
+    "apps/server/src/goals/contracts.ts": "d63d868b3a7d4dea04049f7d5de77357d3414fed2ee24e6863320385d5371f2d",
+    "apps/server/src/harness/instructions.ts": "6efbf49ace55475d865d3b21cc5eacd6e21de1e73651bdf11c1b4a562cf282de",
+    "apps/server/src/harness/product-tool-contracts.ts": "9c8f13dee64d15f824e57697c37388b365348b913a3c22939264052bf52cdd27",
+    "scripts/verification/goal-capture/cases.ts": "7f59332cafe596c09d0a80ccabcc3627ff084802392b9420667910395e011c09"
+  },
+  "lanes": [
+    {
+      "harness": "codex",
+      "version": "0.166.0",
+      "billing_source": "subscription",
+      "model": "gpt-6.1-sol"
+    },
+    {
+      "harness": "muse",
+      "version": "1.4.14-R7309.1",
+      "billing_source": "api_key",
+      "model": "muse-spark-1.3"
+    }
+  ],
+  "results": [
+    {
+      "harness": "codex",
+      "scenario": "summary-audit-wording",
+      "category": "direct",
+      "pass": true,
+      "turns": [
+        {
+          "input": "rangkum isi paper ini\n\nSource excerpt: Retrieval-augmented generation combines a retriever with a generator. The retriever selects passages from a document index. The generator conditions its answer on those passages. Retrieval quality and source attribution need evaluation. Please return a concise summary of this supplied excerpt.",
+          "expected": {
+            "goals": 0,
+            "routines": 0,
+            "artifacts": 0
+          },
+          "goals": [],
+          "routines": [],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "rangkum isi paper ini\n\nSource excerpt: Retrieval-augmented generation combines a retriever with a generator. The retriever selects passages from a document index. The generator conditions its answer on those passages. Retrieval quality and source attribution need evaluation. Please return a concise summary of this supplied excerpt.",
+              "run_id": "8e2a4ba5-ff7e-4886-b9fb-f09f46bce5cf"
+            },
+            {
+              "author": "agent",
+              "text": "Retrieval-augmented generation (RAG) menggabungkan pencari informasi dan pembangkit jawaban. Pencari memilih bagian teks dari indeks dokumen, lalu pembangkit menyusun jawaban berdasarkan teks tersebut. Kualitas pencarian dan ketepatan atribusi sumber perlu dievaluasi.",
+              "run_id": "8e2a4ba5-ff7e-4886-b9fb-f09f46bce5cf"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "8e2a4ba5-ff7e-4886-b9fb-f09f46bce5cf",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:34:55.390Z",
+          "updated_at": "2026-11-03T07:35:02.689Z"
+        }
+      ],
+      "tool_calls": []
+    },
+    {
+      "harness": "codex",
+      "scenario": "summary-paraphrase",
+      "category": "direct",
+      "pass": true,
+      "turns": [
+        {
+          "input": "Give me the gist in two sentences: retrieval supplies relevant passages to a generator; bad retrieval can still produce unsupported answers; evaluation should check the answer and its supporting source.",
+          "expected": {
+            "goals": 0,
+            "routines": 0,
+            "artifacts": 0
+          },
+          "goals": [],
+          "routines": [],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "Give me the gist in two sentences: retrieval supplies relevant passages to a generator; bad retrieval can still produce unsupported answers; evaluation should check the answer and its supporting source.",
+              "run_id": "7db4b2a6-86d5-4c32-a210-1d71b0c8be0a"
+            },
+            {
+              "author": "agent",
+              "text": "Retrieval gives a generator relevant passages, but poor retrieval can still lead to unsupported answers. Evaluation should check both the answer and whether its sources support it.",
+              "run_id": "7db4b2a6-86d5-4c32-a210-1d71b0c8be0a"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "7db4b2a6-86d5-4c32-a210-1d71b0c8be0a",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:34:55.393Z",
+          "updated_at": "2026-11-03T07:35:02.107Z"
+        }
+      ],
+      "tool_calls": []
+    },
+    {
+      "harness": "muse",
+      "scenario": "summary-audit-wording",
+      "category": "direct",
+      "pass": true,
+      "turns": [
+        {
+          "input": "rangkum isi paper ini\n\nSource excerpt: Retrieval-augmented generation combines a retriever with a generator. The retriever selects passages from a document index. The generator conditions its answer on those passages. Retrieval quality and source attribution need evaluation. Please return a concise summary of this supplied excerpt.",
+          "expected": {
+            "goals": 0,
+            "routines": 0,
+            "artifacts": 0
+          },
+          "goals": [],
+          "routines": [],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "rangkum isi paper ini\n\nSource excerpt: Retrieval-augmented generation combines a retriever with a generator. The retriever selects passages from a document index. The generator conditions its answer on those passages. Retrieval quality and source attribution need evaluation. Please return a concise summary of this supplied excerpt.",
+              "run_id": "158f5b68-a479-4cb4-b345-bd4ff73935a7"
+            },
+            {
+              "author": "agent",
+              "text": "Menyimpulkan kutipan yang Anda berikan — saya cek dulu apakah ada file paper terlampir.\n\nTidak ada file paper yang terlampir di percakapan / workspace ini, jadi rangkuman berikut hanya dari kutipan yang Anda sertakan di pesan:\n\nKutipan tersebut menjelaskan **retrieval-augmented generation (RAG)** sebagai gabungan retriever dan generator — retriever memilih potongan teks dari indeks dokumen, lalu generator membuat jawaban berdasarkan potongan tersebut. Poin pentingnya: kualitas retrieval dan atribusi sumber perlu dievaluasi.",
+              "run_id": "158f5b68-a479-4cb4-b345-bd4ff73935a7"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "158f5b68-a479-4cb4-b345-bd4ff73935a7",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [
+            "ngertiin.read_run_context",
+            "ngertiin.list_attachments",
+            "ngertiin.list_files",
+            "ngertiin.get_workspace"
+          ],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:34:55.404Z",
+          "updated_at": "2026-11-03T07:35:37.652Z"
+        }
+      ],
+      "tool_calls": [
+        {
+          "name": "ngertiin.read_run_context",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.list_attachments",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.list_files",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.get_workspace",
+          "input": {}
+        }
+      ]
+    },
+    {
+      "harness": "muse",
+      "scenario": "summary-paraphrase",
+      "category": "direct",
+      "pass": true,
+      "turns": [
+        {
+          "input": "Give me the gist in two sentences: retrieval supplies relevant passages to a generator; bad retrieval can still produce unsupported answers; evaluation should check the answer and its supporting source.",
+          "expected": {
+            "goals": 0,
+            "routines": 0,
+            "artifacts": 0
+          },
+          "goals": [],
+          "routines": [],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "Give me the gist in two sentences: retrieval supplies relevant passages to a generator; bad retrieval can still produce unsupported answers; evaluation should check the answer and its supporting source.",
+              "run_id": "29510433-a181-4020-b149-5f0cdcd179a8"
+            },
+            {
+              "author": "agent",
+              "text": "Retrieval supplies passages for the generator to turn into an answer. When retrieval is poor, evaluation must verify both the answer and that its source actually supports it.",
+              "run_id": "29510433-a181-4020-b149-5f0cdcd179a8"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "29510433-a181-4020-b149-5f0cdcd179a8",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:34:55.409Z",
+          "updated_at": "2026-11-03T07:35:12.383Z"
+        }
+      ],
+      "tool_calls": []
+    },
+    {
+      "harness": "codex",
+      "scenario": "deliverable-with-several-steps",
+      "category": "direct",
+      "pass": true,
+      "turns": [
+        {
+          "input": "Compare these three supplied approaches, recommend one, then provide the result as a downloadable comparison.md file: A costs 2 units and takes 8 seconds; B costs 5 units and takes 3 seconds; C costs 9 units and takes 2 seconds. Our maximum is 5 units and 4 seconds. Explain your filtering and recommendation. Use only these facts.",
+          "expected": {
+            "goals": 0,
+            "routines": 0,
+            "artifacts": 1
+          },
+          "goals": [],
+          "routines": [],
+          "artifacts": [
+            {
+              "id": "d43d58f3-f6ef-4be3-8d91-882bb3f6ae45",
+              "name": "comparison.md",
+              "size_bytes": 827,
+              "run_id": "f2f3bc74-a3f0-42dc-8209-d38decb9c1f1"
+            }
+          ],
+          "messages": [
+            {
+              "author": "user",
+              "text": "Compare these three supplied approaches, recommend one, then provide the result as a downloadable comparison.md file: A costs 2 units and takes 8 seconds; B costs 5 units and takes 3 seconds; C costs 9 units and takes 2 seconds. Our maximum is 5 units and 4 seconds. Explain your filtering and recommendation. Use only these facts.",
+              "run_id": "f2f3bc74-a3f0-42dc-8209-d38decb9c1f1"
+            },
+            {
+              "author": "agent",
+              "text": "Recommend **B**: it meets both limits at 5 units and 3 seconds. A exceeds the time limit; C exceeds the cost limit.\n\n[Download comparison.md](ngertiin://artifact/d43d58f3-f6ef-4be3-8d91-882bb3f6ae45)",
+              "run_id": "f2f3bc74-a3f0-42dc-8209-d38decb9c1f1"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "f2f3bc74-a3f0-42dc-8209-d38decb9c1f1",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [
+            "ngertiin.describe_tools",
+            "ngertiin.create_file",
+            "ngertiin.publish_artifact",
+            "ngertiin.list_files"
+          ],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:35:03.151Z",
+          "updated_at": "2026-11-03T07:35:30.643Z"
+        }
+      ],
+      "tool_calls": [
+        {
+          "name": "ngertiin.describe_tools",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.create_file",
+          "input": {
+            "command_id": "8cf97b21-cb9d-4d38-b946-1e451abfc79c",
+            "path": "comparison.md",
+            "text": "# Comparison of approaches\n\nAn approach must meet both maximums: cost ≤ 5 units and time ≤ 4 seconds. A value equal to a maximum is allowed.\n\n| Approach | Cost (units) | Time (seconds) | Cost ≤ 5? | Time ≤ 4? | Result |\n| --- | ---: | ---: | --- | --- | --- |\n| A | 2 | 8 | Yes | No | Exclude: exceeds the time limit by 4 seconds. |\n| B | 5 | 3 | Yes | Yes | Keep: meets both limits. |\n| C | 9 | 2 | No | Yes | Exclude: exceeds the cost limit by 4 units. |\n\nA is the cheapest but fails the time limit. C is the fastest but fails the cost limit. Filtering out any approach that exceeds either maximum leaves only B.\n\n**Recommendation: choose B.** It costs 5 units, exactly the cost maximum, and takes 3 seconds, leaving 1 second within the time maximum. It is the only supplied approach that satisfies both constraints.\n"
+          }
+        },
+        {
+          "name": "ngertiin.publish_artifact",
+          "input": {
+            "command_id": "d43d58f3-f6ef-4be3-8d91-882bb3f6ae45",
+            "path": "comparison.md",
+            "media_type": "text/markdown"
+          }
+        },
+        {
+          "name": "ngertiin.list_files",
+          "input": {
+            "path": ""
+          }
+        }
+      ]
+    },
+    {
+      "harness": "codex",
+      "scenario": "research-audit-wording",
+      "category": "direct",
+      "pass": true,
+      "turns": [
+        {
+          "input": "research terkait ai agent\n\nFor this request, use only these supplied notes: an agent chooses actions to achieve an outcome; a workflow follows predefined transitions; tools expose actions; execution must handle errors and uncertain results. Explain the distinction and trade-offs in a short answer.",
+          "expected": {
+            "goals": 0,
+            "routines": 0,
+            "artifacts": 0
+          },
+          "goals": [],
+          "routines": [],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "research terkait ai agent\n\nFor this request, use only these supplied notes: an agent chooses actions to achieve an outcome; a workflow follows predefined transitions; tools expose actions; execution must handle errors and uncertain results. Explain the distinction and trade-offs in a short answer.",
+              "run_id": "393ff82d-f1e8-4b70-9d5b-a03b05bf0cd5"
+            },
+            {
+              "author": "agent",
+              "text": "AI agent memilih tindakan untuk mencapai hasil, sedangkan workflow mengikuti perpindahan langkah yang sudah ditentukan. Keduanya dapat memakai tools untuk menjalankan tindakan.\n\nTrade-off utamanya:\n\n- **Agent:** lebih fleksibel dalam memilih langkah, tetapi jalannya eksekusi lebih sulit diprediksi.\n- **Workflow:** lebih terstruktur dan mudah ditelusuri, tetapi kurang fleksibel menghadapi situasi di luar alur.\n\nKeduanya tetap perlu menangani error dan hasil yang belum pasti. Menggunakan tools saja tidak otomatis membuat sebuah sistem menjadi agent; pembeda utamanya adalah cara sistem menentukan tindakan berikutnya.",
+              "run_id": "393ff82d-f1e8-4b70-9d5b-a03b05bf0cd5"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "393ff82d-f1e8-4b70-9d5b-a03b05bf0cd5",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:35:03.741Z",
+          "updated_at": "2026-11-03T07:35:15.959Z"
+        }
+      ],
+      "tool_calls": []
+    },
+    {
+      "harness": "muse",
+      "scenario": "deliverable-with-several-steps",
+      "category": "direct",
+      "pass": true,
+      "turns": [
+        {
+          "input": "Compare these three supplied approaches, recommend one, then provide the result as a downloadable comparison.md file: A costs 2 units and takes 8 seconds; B costs 5 units and takes 3 seconds; C costs 9 units and takes 2 seconds. Our maximum is 5 units and 4 seconds. Explain your filtering and recommendation. Use only these facts.",
+          "expected": {
+            "goals": 0,
+            "routines": 0,
+            "artifacts": 1
+          },
+          "goals": [],
+          "routines": [],
+          "artifacts": [
+            {
+              "id": "223e4567-e89b-42d3-a456-426614174001",
+              "name": "comparison.md",
+              "size_bytes": 701,
+              "run_id": "4bf79e9b-e3da-4dd8-b255-e5e395442067"
+            }
+          ],
+          "messages": [
+            {
+              "author": "user",
+              "text": "Compare these three supplied approaches, recommend one, then provide the result as a downloadable comparison.md file: A costs 2 units and takes 8 seconds; B costs 5 units and takes 3 seconds; C costs 9 units and takes 2 seconds. Our maximum is 5 units and 4 seconds. Explain your filtering and recommendation. Use only these facts.",
+              "run_id": "4bf79e9b-e3da-4dd8-b255-e5e395442067"
+            },
+            {
+              "author": "agent",
+              "text": "Your three options are in — I'll filter them against your limits and publish the comparison file.\n\nRecommend B. It is the only option within both limits.\n\n| Approach | Cost | Time | Fits limits |\n|---|---|---|---|\n| A | 2 units | 8 seconds | No, too slow |\n| B | 5 units | 3 seconds | Yes |\n| C | 9 units | 2 seconds | No, too costly |\n\nFiltering, using only supplied facts:\n- A passes cost (2 within 5) but fails time (8 over 4).\n- B passes both (5 at max, 3 within 4).\n- C fails cost (9 over 5) but passes time (2 within 4).\n\nDetails are in the downloadable file `comparison.md`, published from this run.",
+              "run_id": "4bf79e9b-e3da-4dd8-b255-e5e395442067"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "4bf79e9b-e3da-4dd8-b255-e5e395442067",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [
+            "ngertiin.create_file",
+            "ngertiin.publish_artifact"
+          ],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:35:13.395Z",
+          "updated_at": "2026-11-03T07:36:17.718Z"
+        }
+      ],
+      "tool_calls": [
+        {
+          "name": "ngertiin.read_harness_skill",
+          "input": {
+            "key": "native:muse:bundled:table-fit"
+          },
+          "error": "SCOPE_DENIED"
+        },
+        {
+          "name": "ngertiin.create_file",
+          "input": {
+            "command_id": "123e4567-e89b-42d3-a456-426614174000",
+            "path": "comparison.md",
+            "text": "# Comparison of Approaches A, B, and C\n\nLimits: maximum 5 units and 4 seconds.\n\n## Comparison\n\n| Approach | Cost | Time | Meets limits |\n|---|---|---|---|\n| A | 2 units | 8 seconds | No: time over |\n| B | 5 units | 3 seconds | Yes |\n| C | 9 units | 2 seconds | No: cost over |\n\n## Filtering\n\n- A costs 2 units, within the 5-unit maximum. It takes 8 seconds, over the 4-second maximum. Excluded for time.\n- B costs 5 units, at the 5-unit maximum. It takes 3 seconds, within the 4-second maximum. Passes both.\n- C costs 9 units, over the 5-unit maximum. It takes 2 seconds, within the 4-second maximum. Excluded for cost.\n\n## Recommendation\n\nRecommend B. It is the only approach that meets both limits.\n"
+          }
+        },
+        {
+          "name": "ngertiin.publish_artifact",
+          "input": {
+            "command_id": "223e4567-e89b-42d3-a456-426614174001",
+            "media_type": "text/markdown",
+            "path": "comparison.md"
+          }
+        }
+      ]
+    },
+    {
+      "harness": "codex",
+      "scenario": "quoted-goal-is-data",
+      "category": "direct",
+      "pass": true,
+      "turns": [
+        {
+          "input": "Translate this quoted sentence into English: \"Buat goal untuk mengurus peluncuran sampai selesai.\" The quoted sentence is the entire text to translate.",
+          "expected": {
+            "goals": 0,
+            "routines": 0,
+            "artifacts": 0
+          },
+          "goals": [],
+          "routines": [],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "Translate this quoted sentence into English: \"Buat goal untuk mengurus peluncuran sampai selesai.\" The quoted sentence is the entire text to translate.",
+              "run_id": "5a437529-c17f-435c-ae5d-fa1f0834e91c"
+            },
+            {
+              "author": "agent",
+              "text": "“Create a goal to manage the launch through completion.”",
+              "run_id": "5a437529-c17f-435c-ae5d-fa1f0834e91c"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "5a437529-c17f-435c-ae5d-fa1f0834e91c",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:35:16.947Z",
+          "updated_at": "2026-11-03T07:35:23.949Z"
+        }
+      ],
+      "tool_calls": []
+    },
+    {
+      "harness": "codex",
+      "scenario": "hypothetical-tracking-discussion",
+      "category": "direct",
+      "pass": true,
+      "turns": [
+        {
+          "input": "If we wanted to keep a project moving over several weeks, how would a Goal differ from a Routine? I am comparing the concepts before choosing a project.",
+          "expected": {
+            "goals": 0,
+            "routines": 0,
+            "artifacts": 0
+          },
+          "goals": [],
+          "routines": [],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "If we wanted to keep a project moving over several weeks, how would a Goal differ from a Routine? I am comparing the concepts before choosing a project.",
+              "run_id": "73fa21f7-2a33-460b-997e-99c74ab283bc"
+            },
+            {
+              "author": "agent",
+              "text": "A **Goal** tracks an outcome over time: what you want achieved, who owns it, progress so far, and what needs to happen next. It suits a project that may take several weeks and require changing steps or follow-up.\n\nA **Routine** defines when an action happens: once at a future time or on a recurring schedule. It suits reminders, regular checks, and scheduled work.\n\nFor example:\n\n| | Several-week project example |\n|---|---|\n| **Goal** | “Get the new website ready to launch.” |\n| **Routine** | “Every Monday, review launch readiness and report blockers.” |\n\nThey can work together: the Goal preserves the project’s outcome and progress; the Routine supplies a regular cadence. Either can also exist independently.\n\nWe’re only comparing concepts here—nothing has been created or scheduled.",
+              "run_id": "73fa21f7-2a33-460b-997e-99c74ab283bc"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "73fa21f7-2a33-460b-997e-99c74ab283bc",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:35:24.944Z",
+          "updated_at": "2026-11-03T07:35:39.377Z"
+        }
+      ],
+      "tool_calls": []
+    },
+    {
+      "harness": "codex",
+      "scenario": "missing-input-is-not-ongoing",
+      "category": "direct",
+      "pass": true,
+      "turns": [
+        {
+          "input": "Please translate the sentence I meant to paste.",
+          "expected": {
+            "goals": 0,
+            "routines": 0,
+            "artifacts": 0
+          },
+          "goals": [],
+          "routines": [],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "Please translate the sentence I meant to paste.",
+              "run_id": "7dd06352-f36d-43ce-907b-687664f2f80d"
+            },
+            {
+              "author": "agent",
+              "text": "[@user](ngertiin://user/owner), please paste the sentence and tell me which language to translate it into.",
+              "run_id": "7dd06352-f36d-43ce-907b-687664f2f80d"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "7dd06352-f36d-43ce-907b-687664f2f80d",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:35:31.800Z",
+          "updated_at": "2026-11-03T07:35:50.126Z"
+        }
+      ],
+      "tool_calls": []
+    },
+    {
+      "harness": "muse",
+      "scenario": "research-audit-wording",
+      "category": "direct",
+      "pass": true,
+      "turns": [
+        {
+          "input": "research terkait ai agent\n\nFor this request, use only these supplied notes: an agent chooses actions to achieve an outcome; a workflow follows predefined transitions; tools expose actions; execution must handle errors and uncertain results. Explain the distinction and trade-offs in a short answer.",
+          "expected": {
+            "goals": 0,
+            "routines": 0,
+            "artifacts": 0
+          },
+          "goals": [],
+          "routines": [],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "research terkait ai agent\n\nFor this request, use only these supplied notes: an agent chooses actions to achieve an outcome; a workflow follows predefined transitions; tools expose actions; execution must handle errors and uncertain results. Explain the distinction and trade-offs in a short answer.",
+              "run_id": "16aa3811-c2b5-4e2a-94e2-2c7dcbabc721"
+            },
+            {
+              "author": "agent",
+              "text": "An AI agent chooses among tools — which expose actions — to achieve an outcome, while a workflow follows predefined transitions. Agents suit uncertain tasks but need error handling for uncertain results; workflows are more predictable but less flexible.",
+              "run_id": "16aa3811-c2b5-4e2a-94e2-2c7dcbabc721"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "16aa3811-c2b5-4e2a-94e2-2c7dcbabc721",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:35:38.745Z",
+          "updated_at": "2026-11-03T07:35:59.458Z"
+        }
+      ],
+      "tool_calls": []
+    },
+    {
+      "harness": "codex",
+      "scenario": "one-shot-reminder",
+      "category": "schedule",
+      "pass": true,
+      "turns": [
+        {
+          "input": "Send me a short message to eat at 14:45 Asia/Makassar on 2026-11-05.",
+          "expected": {
+            "goals": 0,
+            "routines": 1,
+            "artifacts": 0
+          },
+          "goals": [],
+          "routines": [
+            {
+              "name": "Time to eat",
+              "thread_id": "7aef9540-a326-45f1-866f-63fe63bf9ea1",
+              "agent_id": "ba6a0384-a601-456d-82f9-19c9849b7f77",
+              "goal_id": null,
+              "instruction": "Send a short reminder in this conversation: '[@user](ngertiin://user/owner), time to eat!' Requested for 2026-11-05 at 14:45 Asia/Makassar.",
+              "schedule": {
+                "type": "once",
+                "at": "2026-11-05T06:45:00Z"
+              },
+              "timezone": "Asia/Makassar",
+              "execution_target": {
+                "type": "agent",
+                "agent_id": "ba6a0384-a601-456d-82f9-19c9849b7f77"
+              },
+              "id": "eac1d103-a323-4a80-a8e4-f3b44a282a9e",
+              "owner_id": "1c73b17d-eeba-4ce7-9c3d-b2a4dd1c0136",
+              "revision": 1,
+              "created_at": "2026-11-03T07:35:50.761Z",
+              "updated_at": "2026-11-03T07:35:50.761Z",
+              "kind": "routine",
+              "scope": "agent",
+              "created_by_agent_id": "ba6a0384-a601-456d-82f9-19c9849b7f77",
+              "assignment_state": "ready",
+              "error_code": null,
+              "source_message_id": "333cf360-2c90-4477-a275-e0d3392f6871",
+              "source_run_id": "021da124-15f6-41d6-b3c8-e49590aae6fa",
+              "paused_by_goal": false,
+              "state": "active",
+              "generation": 1,
+              "next_run_at": "2026-11-05T06:45:00Z"
+            }
+          ],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "Send me a short message to eat at 14:45 Asia/Makassar on 2026-11-05.",
+              "run_id": "021da124-15f6-41d6-b3c8-e49590aae6fa"
+            },
+            {
+              "author": "agent",
+              "text": "Scheduled: I’ll remind you to eat on 5 November 2026 at 14:45 Asia/Makassar.",
+              "run_id": "021da124-15f6-41d6-b3c8-e49590aae6fa"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "021da124-15f6-41d6-b3c8-e49590aae6fa",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [
+            "ngertiin.describe_tools",
+            "ngertiin.write_routine"
+          ],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:35:40.581Z",
+          "updated_at": "2026-11-03T07:35:53.009Z"
+        }
+      ],
+      "tool_calls": [
+        {
+          "name": "ngertiin.describe_tools",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.write_routine",
+          "input": {
+            "name": "Time to eat",
+            "routine_id": "eac1d103-a323-4a80-a8e4-f3b44a282a9e",
+            "expected_revision": 0,
+            "goal_id": null,
+            "instruction": "Send a short reminder in this conversation: '[@user](ngertiin://user/owner), time to eat!' Requested for 2026-11-05 at 14:45 Asia/Makassar.",
+            "schedule": {
+              "type": "once",
+              "at": "2026-11-05T06:45:00Z"
+            },
+            "timezone": "Asia/Makassar",
+            "execution_target": null,
+            "command_id": "a1c25cfb-7357-4ca7-a8d3-0650aa185dcb"
+          }
+        }
+      ]
+    },
+    {
+      "harness": "codex",
+      "scenario": "one-shot-paraphrase-and-edit",
+      "category": "schedule",
+      "pass": true,
+      "turns": [
+        {
+          "input": "At 14:45 Asia/Makassar on 2026-11-05, post a quick hello here.",
+          "expected": {
+            "goals": 0,
+            "routines": 1,
+            "artifacts": 0
+          },
+          "goals": [],
+          "routines": [
+            {
+              "name": "Quick hello",
+              "thread_id": "9d6eef02-c748-491e-a280-b3583a47ef95",
+              "agent_id": "eda86ba5-9d07-405e-b62a-838728282c26",
+              "goal_id": null,
+              "instruction": "Post a quick hello in this conversation at the scheduled time, as requested by the user.",
+              "schedule": {
+                "type": "once",
+                "at": "2026-11-05T06:45:00Z"
+              },
+              "timezone": "Asia/Makassar",
+              "execution_target": {
+                "type": "agent",
+                "agent_id": "eda86ba5-9d07-405e-b62a-838728282c26"
+              },
+              "id": "0d2560bc-c0ec-4244-8dfe-75032307622a",
+              "owner_id": "2432fb50-8063-44db-a9b9-76f773cddeed",
+              "revision": 1,
+              "created_at": "2026-11-03T07:36:07.689Z",
+              "updated_at": "2026-11-03T07:36:07.689Z",
+              "kind": "routine",
+              "scope": "agent",
+              "created_by_agent_id": "eda86ba5-9d07-405e-b62a-838728282c26",
+              "assignment_state": "ready",
+              "error_code": null,
+              "source_message_id": "a79b3589-dd67-4056-b6f0-33104935368f",
+              "source_run_id": "9cde8178-abb7-4077-b699-ca716b251fec",
+              "paused_by_goal": false,
+              "state": "active",
+              "generation": 1,
+              "next_run_at": "2026-11-05T06:45:00Z"
+            }
+          ],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "At 14:45 Asia/Makassar on 2026-11-05, post a quick hello here.",
+              "run_id": "9cde8178-abb7-4077-b699-ca716b251fec"
+            },
+            {
+              "author": "agent",
+              "text": "Scheduled! I’ll post a quick hello here on November 5, 2026, at 14:45 Asia/Makassar.",
+              "run_id": "9cde8178-abb7-4077-b699-ca716b251fec"
+            }
+          ]
+        },
+        {
+          "input": "Move that hello to 15:15 on the same date and in the same timezone.",
+          "expected": {
+            "goals": 0,
+            "routines": 1,
+            "artifacts": 0
+          },
+          "goals": [],
+          "routines": [
+            {
+              "name": "Quick hello",
+              "thread_id": "9d6eef02-c748-491e-a280-b3583a47ef95",
+              "agent_id": "eda86ba5-9d07-405e-b62a-838728282c26",
+              "goal_id": null,
+              "instruction": "Post a quick hello in this conversation at the scheduled time, as requested by the user.",
+              "schedule": {
+                "type": "once",
+                "at": "2026-11-05T07:15:00Z"
+              },
+              "timezone": "Asia/Makassar",
+              "execution_target": {
+                "type": "agent",
+                "agent_id": "eda86ba5-9d07-405e-b62a-838728282c26"
+              },
+              "id": "0d2560bc-c0ec-4244-8dfe-75032307622a",
+              "owner_id": "2432fb50-8063-44db-a9b9-76f773cddeed",
+              "revision": 2,
+              "created_at": "2026-11-03T07:36:07.689Z",
+              "updated_at": "2026-11-03T07:36:19.692Z",
+              "kind": "routine",
+              "scope": "agent",
+              "created_by_agent_id": "eda86ba5-9d07-405e-b62a-838728282c26",
+              "assignment_state": "ready",
+              "error_code": null,
+              "source_message_id": "e81afe5f-3974-4101-b9e4-541dbcd68f43",
+              "source_run_id": "7f977d59-1d37-43e1-a6fe-0ba4da01ec11",
+              "paused_by_goal": false,
+              "state": "active",
+              "generation": 2,
+              "next_run_at": "2026-11-05T07:15:00Z"
+            }
+          ],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "At 14:45 Asia/Makassar on 2026-11-05, post a quick hello here.",
+              "run_id": "9cde8178-abb7-4077-b699-ca716b251fec"
+            },
+            {
+              "author": "agent",
+              "text": "Scheduled! I’ll post a quick hello here on November 5, 2026, at 14:45 Asia/Makassar.",
+              "run_id": "9cde8178-abb7-4077-b699-ca716b251fec"
+            },
+            {
+              "author": "user",
+              "text": "Move that hello to 15:15 on the same date and in the same timezone.",
+              "run_id": "7f977d59-1d37-43e1-a6fe-0ba4da01ec11"
+            },
+            {
+              "author": "agent",
+              "text": "Moved to November 5, 2026, at 15:15 Asia/Makassar.",
+              "run_id": "7f977d59-1d37-43e1-a6fe-0ba4da01ec11"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "9cde8178-abb7-4077-b699-ca716b251fec",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [
+            "ngertiin.describe_tools",
+            "ngertiin.write_routine"
+          ],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:35:51.224Z",
+          "updated_at": "2026-11-03T07:36:12.256Z"
+        },
+        {
+          "id": "7f977d59-1d37-43e1-a6fe-0ba4da01ec11",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [
+            "ngertiin.write_routine"
+          ],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:36:13.140Z",
+          "updated_at": "2026-11-03T07:36:22.913Z"
+        }
+      ],
+      "tool_calls": [
+        {
+          "name": "ngertiin.describe_tools",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.write_routine",
+          "input": {
+            "name": "Quick hello",
+            "routine_id": "0d2560bc-c0ec-4244-8dfe-75032307622a",
+            "expected_revision": 0,
+            "goal_id": null,
+            "instruction": "Post a quick hello in this conversation at the scheduled time, as requested by the user.",
+            "schedule": {
+              "type": "once",
+              "at": "2026-11-05T06:45:00Z"
+            },
+            "timezone": "Asia/Makassar",
+            "execution_target": null,
+            "command_id": "9cfc2786-633b-4cd3-ad39-5cd18d963171"
+          }
+        },
+        {
+          "name": "ngertiin.write_routine",
+          "input": {
+            "name": "Quick hello",
+            "routine_id": "0d2560bc-c0ec-4244-8dfe-75032307622a",
+            "expected_revision": 1,
+            "goal_id": null,
+            "instruction": "Post a quick hello in this conversation at the scheduled time, as requested by the user.",
+            "schedule": {
+              "type": "once",
+              "at": "2026-11-05T07:15:00Z"
+            },
+            "timezone": "Asia/Makassar",
+            "execution_target": null,
+            "command_id": "39ea5616-1286-4bed-912f-e6a290b27992"
+          }
+        }
+      ]
+    },
+    {
+      "harness": "codex",
+      "scenario": "recurring-check-is-not-an-outcome",
+      "category": "schedule",
+      "pass": true,
+      "turns": [
+        {
+          "input": "Every Monday at 09:00 Asia/Makassar, check this thread for a new status note and send a short recap if there is one. If nothing changed, stay quiet.",
+          "expected": {
+            "goals": 0,
+            "routines": 1,
+            "artifacts": 0
+          },
+          "goals": [],
+          "routines": [
+            {
+              "name": "Weekly status recap",
+              "thread_id": "f802ffb6-04a8-42e2-9413-3f170985c19b",
+              "agent_id": "1d5b2651-46c8-4794-a8c1-129319012cff",
+              "goal_id": null,
+              "instruction": "Every Monday at 09:00 Asia/Makassar, check the originating conversation thread for a new status note since the previous check (on the first check, since this schedule was created on 2026-11-03). If there is a new status note with changed information, send a short recap in this same thread. Do not repeat previously recapped notes or treat schedule confirmations and automated recaps as new status notes. If nothing changed or there is no new status note, call ngertiin.routine_no_update and finish quietly without a chat update.",
+              "schedule": {
+                "type": "calendar",
+                "local_time": "09:00",
+                "weekdays": [
+                  1
+                ]
+              },
+              "timezone": "Asia/Makassar",
+              "execution_target": {
+                "type": "agent",
+                "agent_id": "1d5b2651-46c8-4794-a8c1-129319012cff"
+              },
+              "id": "9cf4e818-4e90-4d75-920a-47e3d9e1ba4c",
+              "owner_id": "02ae6b2a-46b1-46df-b175-cb572689b5af",
+              "revision": 1,
+              "created_at": "2026-11-03T07:36:16.749Z",
+              "updated_at": "2026-11-03T07:36:16.749Z",
+              "kind": "routine",
+              "scope": "agent",
+              "created_by_agent_id": "1d5b2651-46c8-4794-a8c1-129319012cff",
+              "assignment_state": "ready",
+              "error_code": null,
+              "source_message_id": "a489d70e-2f84-4261-9712-4519cea46104",
+              "source_run_id": "07652aec-051a-45eb-b894-b700dc848556",
+              "paused_by_goal": false,
+              "state": "active",
+              "generation": 1,
+              "next_run_at": "2026-11-09T01:00:00.000Z"
+            }
+          ],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "Every Monday at 09:00 Asia/Makassar, check this thread for a new status note and send a short recap if there is one. If nothing changed, stay quiet.",
+              "run_id": "07652aec-051a-45eb-b894-b700dc848556"
+            },
+            {
+              "author": "agent",
+              "text": "Scheduled for every Monday at 09:00 Asia/Makassar, starting 9 November. I’ll post a short recap here when there’s a new status note and stay quiet otherwise.",
+              "run_id": "07652aec-051a-45eb-b894-b700dc848556"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "07652aec-051a-45eb-b894-b700dc848556",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [
+            "ngertiin.describe_tools",
+            "ngertiin.write_routine"
+          ],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:35:54.166Z",
+          "updated_at": "2026-11-03T07:36:21.312Z"
+        }
+      ],
+      "tool_calls": [
+        {
+          "name": "ngertiin.describe_tools",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.write_routine",
+          "input": {
+            "name": "Weekly status recap",
+            "routine_id": "9cf4e818-4e90-4d75-920a-47e3d9e1ba4c",
+            "expected_revision": 0,
+            "goal_id": null,
+            "instruction": "Every Monday at 09:00 Asia/Makassar, check the originating conversation thread for a new status note since the previous check (on the first check, since this schedule was created on 2026-11-03). If there is a new status note with changed information, send a short recap in this same thread. Do not repeat previously recapped notes or treat schedule confirmations and automated recaps as new status notes. If nothing changed or there is no new status note, call ngertiin.routine_no_update and finish quietly without a chat update.",
+            "schedule": {
+              "type": "calendar",
+              "local_time": "09:00",
+              "weekdays": [
+                1
+              ]
+            },
+            "timezone": "Asia/Makassar",
+            "execution_target": null,
+            "command_id": "ba3349a3-688b-49d9-8ffb-4922e74a1da6"
+          }
+        }
+      ]
+    },
+    {
+      "harness": "muse",
+      "scenario": "quoted-goal-is-data",
+      "category": "direct",
+      "pass": true,
+      "turns": [
+        {
+          "input": "Translate this quoted sentence into English: \"Buat goal untuk mengurus peluncuran sampai selesai.\" The quoted sentence is the entire text to translate.",
+          "expected": {
+            "goals": 0,
+            "routines": 0,
+            "artifacts": 0
+          },
+          "goals": [],
+          "routines": [],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "Translate this quoted sentence into English: \"Buat goal untuk mengurus peluncuran sampai selesai.\" The quoted sentence is the entire text to translate.",
+              "run_id": "3320d6e3-e041-4198-b541-7309922336a3"
+            },
+            {
+              "author": "agent",
+              "text": "Create a goal to manage the launch until completion.",
+              "run_id": "3320d6e3-e041-4198-b541-7309922336a3"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "3320d6e3-e041-4198-b541-7309922336a3",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:36:00.647Z",
+          "updated_at": "2026-11-03T07:36:13.889Z"
+        }
+      ],
+      "tool_calls": []
+    },
+    {
+      "harness": "muse",
+      "scenario": "hypothetical-tracking-discussion",
+      "category": "direct",
+      "pass": true,
+      "turns": [
+        {
+          "input": "If we wanted to keep a project moving over several weeks, how would a Goal differ from a Routine? I am comparing the concepts before choosing a project.",
+          "expected": {
+            "goals": 0,
+            "routines": 0,
+            "artifacts": 0
+          },
+          "goals": [],
+          "routines": [],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "If we wanted to keep a project moving over several weeks, how would a Goal differ from a Routine? I am comparing the concepts before choosing a project.",
+              "run_id": "fff7d868-971e-4e98-9799-c2cf65fbce56"
+            },
+            {
+              "author": "agent",
+              "text": "Comparing Goal and Routine for a multi-week project — I'll pull the table formatting guidance first, then lay out the differences.\n\nFor a multi-week project, they do different jobs. They often work together.\n\n| Aspect | Goal | Routine |\n|---|---|---|\n| Tracks | Outcome and progress | Scheduled action or check |\n| Lives | Until outcome is done | Until schedule is stopped |\n| Wakes | On progress or handoff | On time tick |\n| Ends | With published result | With pause or stop |\n\nA Goal preserves ownership and follow-through across weeks. A Routine provides the cadence, such as a weekly check.\n\nSo for your comparison: choose a Goal to own the project outcome. Add a Routine only if you want an automatic nudge or check on a schedule. This is just a concept comparison, so I have not tracked anything.",
+              "run_id": "fff7d868-971e-4e98-9799-c2cf65fbce56"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "fff7d868-971e-4e98-9799-c2cf65fbce56",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:36:14.999Z",
+          "updated_at": "2026-11-03T07:36:51.348Z"
+        }
+      ],
+      "tool_calls": [
+        {
+          "name": "ngertiin.read_harness_skill",
+          "input": {
+            "key": "bundled:table-fit"
+          },
+          "error": "SCOPE_DENIED"
+        }
+      ]
+    },
+    {
+      "harness": "muse",
+      "scenario": "missing-input-is-not-ongoing",
+      "category": "direct",
+      "pass": true,
+      "turns": [
+        {
+          "input": "Please translate the sentence I meant to paste.",
+          "expected": {
+            "goals": 0,
+            "routines": 0,
+            "artifacts": 0
+          },
+          "goals": [],
+          "routines": [],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "Please translate the sentence I meant to paste.",
+              "run_id": "95b36545-1098-4d38-8fe6-02e5740bb82f"
+            },
+            {
+              "author": "agent",
+              "text": "I'll check for the sentence you meant to paste.\n\nNo sentence came through with that message — I'll check for older files.\n\nI don't see a sentence attached to your message — could you paste it here, and let me know which language you'd like it translated into?\n\n[@user](ngertiin://user/owner)",
+              "run_id": "95b36545-1098-4d38-8fe6-02e5740bb82f"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "95b36545-1098-4d38-8fe6-02e5740bb82f",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [
+            "ngertiin.read_run_context",
+            "ngertiin.list_attachments",
+            "ngertiin.list_files"
+          ],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:36:18.786Z",
+          "updated_at": "2026-11-03T07:36:58.524Z"
+        }
+      ],
+      "tool_calls": [
+        {
+          "name": "ngertiin.read_run_context",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.list_attachments",
+          "input": {
+            "limit": 20
+          }
+        },
+        {
+          "name": "ngertiin.list_files",
+          "input": {
+            "path": ""
+          }
+        }
+      ]
+    },
+    {
+      "harness": "codex",
+      "scenario": "implicit-ownership-and-correction",
+      "category": "ongoing",
+      "pass": true,
+      "turns": [
+        {
+          "input": "Take responsibility for getting my workshop materials ready through the successive draft and review rounds. Keep track of what remains across our conversations and carry the work forward as I send inputs over the coming days. The first draft arrives tomorrow; for now record what you are responsible for and wait for it.",
+          "expected": {
+            "goals": 1,
+            "routines": 0,
+            "artifacts": 0,
+            "work_state": "waiting"
+          },
+          "goals": [
+            {
+              "thread_id": "d6c28cb4-cb87-4962-8283-a0ab958794d8",
+              "agent_id": "8a24e37a-3277-4648-a6ed-ad39a07861a3",
+              "title": "Get workshop materials ready through draft and review rounds",
+              "id": "b24e5a9b-91c3-4e52-a472-4ba876dfa7e9",
+              "owner_id": "64c60081-3f15-429a-ba49-6bb050ed59d5",
+              "revision": 2,
+              "created_at": "2026-11-03T07:36:36.553Z",
+              "updated_at": "2026-11-03T07:36:40.537Z",
+              "kind": "goal",
+              "scope": "agent",
+              "created_by_agent_id": "8a24e37a-3277-4648-a6ed-ad39a07861a3",
+              "objective": "Take responsibility for getting the user's workshop materials ready through successive draft and review rounds over the coming days. Preserve progress, decisions, review feedback and outstanding work across conversations; carry work forward as the user supplies drafts and inputs. First draft is expected tomorrow, November 4, 2026 (Asia/Makassar). Current step: record the responsibility and wait for the user to provide that draft. Once provided, work through the draft and subsequent review rounds, tracking unresolved items until the materials are ready. No materials have been provided yet.",
+              "source_message_ids": [
+                "7d4bf366-9791-4694-bdc7-c367afff2243"
+              ],
+              "source_run_ids": [
+                "66de3c0a-424b-49d2-a2ff-fff112905f2e"
+              ],
+              "progress": "Recorded responsibility for preparing workshop materials through successive draft and review rounds, retaining decisions, feedback and outstanding items across conversations. No draft has arrived yet. Waiting for the user's first draft, expected November 4, 2026, before beginning review and revision work.",
+              "work_state": "waiting",
+              "coordinator_agent_id": "8a24e37a-3277-4648-a6ed-ad39a07861a3",
+              "assignment_revision": 1,
+              "assignment_route_id": null,
+              "root_task_id": null,
+              "last_report_error": null,
+              "current_run_id": "66de3c0a-424b-49d2-a2ff-fff112905f2e",
+              "continuation_at": null,
+              "continuation_instruction": "",
+              "continuation_sequence": 1,
+              "report_run_id": "66de3c0a-424b-49d2-a2ff-fff112905f2e",
+              "deferred_by_run_id": null,
+              "state": "active",
+              "generation": 1,
+              "evidence_artifact_ids": []
+            }
+          ],
+          "routines": [],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "Take responsibility for getting my workshop materials ready through the successive draft and review rounds. Keep track of what remains across our conversations and carry the work forward as I send inputs over the coming days. The first draft arrives tomorrow; for now record what you are responsible for and wait for it.",
+              "run_id": "66de3c0a-424b-49d2-a2ff-fff112905f2e"
+            },
+            {
+              "author": "agent",
+              "text": "Recorded. I’m responsible for getting your workshop materials ready through successive drafts and reviews, keeping track of feedback, decisions, and remaining work across our conversations.\n\nI’ll wait for your first draft tomorrow, November 4.",
+              "run_id": "66de3c0a-424b-49d2-a2ff-fff112905f2e"
+            }
+          ]
+        },
+        {
+          "input": "Change the outcome we are tracking: prepare the facilitator guide only, rather than all workshop materials. The draft will still arrive tomorrow, so keep waiting for it.",
+          "expected": {
+            "goals": 1,
+            "routines": 0,
+            "artifacts": 0,
+            "work_state": "waiting",
+            "same_goal": true,
+            "objective_changed": true
+          },
+          "goals": [
+            {
+              "thread_id": "d6c28cb4-cb87-4962-8283-a0ab958794d8",
+              "agent_id": "8a24e37a-3277-4648-a6ed-ad39a07861a3",
+              "title": "Prepare the facilitator guide through draft and review rounds",
+              "id": "b24e5a9b-91c3-4e52-a472-4ba876dfa7e9",
+              "owner_id": "64c60081-3f15-429a-ba49-6bb050ed59d5",
+              "revision": 4,
+              "created_at": "2026-11-03T07:36:36.553Z",
+              "updated_at": "2026-11-03T07:36:54.655Z",
+              "kind": "goal",
+              "scope": "agent",
+              "created_by_agent_id": "8a24e37a-3277-4648-a6ed-ad39a07861a3",
+              "objective": "Take responsibility for preparing the user's facilitator guide only through successive draft and review rounds over the coming days. This corrects the previous scope of all workshop materials; other workshop materials are outside this responsibility. Preserve progress, decisions, review feedback and outstanding guide work across conversations, carrying work forward as the user supplies drafts and inputs until the facilitator guide is ready. The first draft remains expected November 4, 2026 (Asia/Makassar). No draft has been provided yet; keep waiting for it before beginning review and revision.",
+              "source_message_ids": [
+                "7d4bf366-9791-4694-bdc7-c367afff2243",
+                "655ed731-5935-4004-ba8a-7af21e3d7dca"
+              ],
+              "source_run_ids": [
+                "66de3c0a-424b-49d2-a2ff-fff112905f2e",
+                "c6e9e4ae-4e0a-4e51-93bc-441baa556110"
+              ],
+              "progress": "Updated the existing responsibility to preparing the facilitator guide only through successive draft and review rounds. Track guide feedback, decisions and remaining work across conversations. No draft has arrived; waiting for the user's first draft, still expected November 4, 2026.",
+              "work_state": "waiting",
+              "coordinator_agent_id": "8a24e37a-3277-4648-a6ed-ad39a07861a3",
+              "assignment_revision": 1,
+              "assignment_route_id": null,
+              "root_task_id": null,
+              "last_report_error": null,
+              "current_run_id": "c6e9e4ae-4e0a-4e51-93bc-441baa556110",
+              "continuation_at": null,
+              "continuation_instruction": "",
+              "continuation_sequence": 3,
+              "report_run_id": "c6e9e4ae-4e0a-4e51-93bc-441baa556110",
+              "deferred_by_run_id": null,
+              "state": "active",
+              "generation": 2,
+              "evidence_artifact_ids": []
+            }
+          ],
+          "routines": [],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "Take responsibility for getting my workshop materials ready through the successive draft and review rounds. Keep track of what remains across our conversations and carry the work forward as I send inputs over the coming days. The first draft arrives tomorrow; for now record what you are responsible for and wait for it.",
+              "run_id": "66de3c0a-424b-49d2-a2ff-fff112905f2e"
+            },
+            {
+              "author": "agent",
+              "text": "Recorded. I’m responsible for getting your workshop materials ready through successive drafts and reviews, keeping track of feedback, decisions, and remaining work across our conversations.\n\nI’ll wait for your first draft tomorrow, November 4.",
+              "run_id": "66de3c0a-424b-49d2-a2ff-fff112905f2e"
+            },
+            {
+              "author": "user",
+              "text": "Change the outcome we are tracking: prepare the facilitator guide only, rather than all workshop materials. The draft will still arrive tomorrow, so keep waiting for it.",
+              "run_id": "c6e9e4ae-4e0a-4e51-93bc-441baa556110"
+            },
+            {
+              "author": "agent",
+              "text": "Updated: I’m responsible for the facilitator guide only, tracking its drafts, review feedback, and remaining work across conversations. I’ll keep waiting for tomorrow’s draft, November 4.",
+              "run_id": "c6e9e4ae-4e0a-4e51-93bc-441baa556110"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "66de3c0a-424b-49d2-a2ff-fff112905f2e",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [
+            "ngertiin.describe_tools",
+            "ngertiin.read_run_context",
+            "ngertiin.capture_goal",
+            "ngertiin.report_goal"
+          ],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:36:22.482Z",
+          "updated_at": "2026-11-03T07:36:42.787Z"
+        },
+        {
+          "id": "c6e9e4ae-4e0a-4e51-93bc-441baa556110",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [
+            "ngertiin.read_run_context",
+            "ngertiin.list_goals",
+            "ngertiin.capture_goal",
+            "ngertiin.report_goal"
+          ],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:36:43.699Z",
+          "updated_at": "2026-11-03T07:36:56.966Z"
+        }
+      ],
+      "tool_calls": [
+        {
+          "name": "ngertiin.describe_tools",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.read_run_context",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.capture_goal",
+          "input": {
+            "goal_id": "b24e5a9b-91c3-4e52-a472-4ba876dfa7e9",
+            "expected_revision": 0,
+            "title": "Get workshop materials ready through draft and review rounds",
+            "objective": "Take responsibility for getting the user's workshop materials ready through successive draft and review rounds over the coming days. Preserve progress, decisions, review feedback and outstanding work across conversations; carry work forward as the user supplies drafts and inputs. First draft is expected tomorrow, November 4, 2026 (Asia/Makassar). Current step: record the responsibility and wait for the user to provide that draft. Once provided, work through the draft and subsequent review rounds, tracking unresolved items until the materials are ready. No materials have been provided yet.",
+            "source_message_id": "7d4bf366-9791-4694-bdc7-c367afff2243",
+            "command_id": "ef711a3c-49b9-4bc4-8146-7c13b1ceaa51"
+          }
+        },
+        {
+          "name": "ngertiin.report_goal",
+          "input": {
+            "goal_id": "b24e5a9b-91c3-4e52-a472-4ba876dfa7e9",
+            "expected_revision": 1,
+            "progress": "Recorded responsibility for preparing workshop materials through successive draft and review rounds, retaining decisions, feedback and outstanding items across conversations. No draft has arrived yet. Waiting for the user's first draft, expected November 4, 2026, before beginning review and revision work.",
+            "disposition": "wait",
+            "evidence_artifact_ids": [],
+            "continuation": null,
+            "command_id": "d0a76db9-4871-4206-9dc7-0c5c28d97422"
+          }
+        },
+        {
+          "name": "ngertiin.read_run_context",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.list_goals",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.capture_goal",
+          "input": {
+            "goal_id": "b24e5a9b-91c3-4e52-a472-4ba876dfa7e9",
+            "expected_revision": 2,
+            "title": "Prepare the facilitator guide through draft and review rounds",
+            "objective": "Take responsibility for preparing the user's facilitator guide only through successive draft and review rounds over the coming days. This corrects the previous scope of all workshop materials; other workshop materials are outside this responsibility. Preserve progress, decisions, review feedback and outstanding guide work across conversations, carrying work forward as the user supplies drafts and inputs until the facilitator guide is ready. The first draft remains expected November 4, 2026 (Asia/Makassar). No draft has been provided yet; keep waiting for it before beginning review and revision.",
+            "source_message_id": "655ed731-5935-4004-ba8a-7af21e3d7dca",
+            "command_id": "9a9cc17d-261b-454c-a558-6459b4fa653d"
+          }
+        },
+        {
+          "name": "ngertiin.report_goal",
+          "input": {
+            "goal_id": "b24e5a9b-91c3-4e52-a472-4ba876dfa7e9",
+            "expected_revision": 3,
+            "progress": "Updated the existing responsibility to preparing the facilitator guide only through successive draft and review rounds. Track guide feedback, decisions and remaining work across conversations. No draft has arrived; waiting for the user's first draft, still expected November 4, 2026.",
+            "disposition": "wait",
+            "evidence_artifact_ids": [],
+            "continuation": null,
+            "command_id": "0a4482ac-69c0-4291-8fde-96dbeacfc449"
+          }
+        }
+      ]
+    },
+    {
+      "harness": "codex",
+      "scenario": "implicit-paraphrase",
+      "category": "ongoing",
+      "pass": true,
+      "turns": [
+        {
+          "input": "I am handing you ownership of bringing the grant application to submission readiness. Maintain its progress through the coming revisions, follow up on unresolved pieces when I return, and keep this responsibility until the application is ready. I will provide the requirements in my next conversation; hold the work pending those inputs.",
+          "expected": {
+            "goals": 1,
+            "routines": 0,
+            "artifacts": 0,
+            "work_state": "waiting"
+          },
+          "goals": [
+            {
+              "thread_id": "26e0311c-8cc1-4df8-be18-9b1551bc54e2",
+              "agent_id": "de0ab740-6a40-451a-a694-927659234b13",
+              "title": "Bring the grant application to submission readiness",
+              "id": "973fc51d-cb7b-4817-a31d-488f18fc2200",
+              "owner_id": "93336200-1831-4278-9c33-205cb3372366",
+              "revision": 2,
+              "created_at": "2026-11-03T07:36:44.347Z",
+              "updated_at": "2026-11-03T07:36:53.419Z",
+              "kind": "goal",
+              "scope": "agent",
+              "created_by_agent_id": "de0ab740-6a40-451a-a694-927659234b13",
+              "objective": "Own bringing the user's grant application to submission readiness. Maintain progress through coming revisions, track unresolved pieces, and follow up when the user returns. Retain responsibility until the application is ready. The user will provide requirements in their next conversation; hold work pending those inputs.",
+              "source_message_ids": [
+                "8d782089-ecd8-4548-ac6e-e422ac68174c"
+              ],
+              "source_run_ids": [
+                "0c94b06e-be7e-4158-b829-e67f89315bdd"
+              ],
+              "progress": "Ownership recorded. Awaiting grant requirements from the user in their next conversation. No application preparation can begin until those inputs arrive. On return, collect the supplied requirements, maintain revision progress and unresolved items, and carry the application through submission readiness.",
+              "work_state": "waiting",
+              "coordinator_agent_id": "de0ab740-6a40-451a-a694-927659234b13",
+              "assignment_revision": 1,
+              "assignment_route_id": null,
+              "root_task_id": null,
+              "last_report_error": null,
+              "current_run_id": "0c94b06e-be7e-4158-b829-e67f89315bdd",
+              "continuation_at": null,
+              "continuation_instruction": "",
+              "continuation_sequence": 1,
+              "report_run_id": "0c94b06e-be7e-4158-b829-e67f89315bdd",
+              "deferred_by_run_id": null,
+              "state": "active",
+              "generation": 1,
+              "evidence_artifact_ids": []
+            }
+          ],
+          "routines": [],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "I am handing you ownership of bringing the grant application to submission readiness. Maintain its progress through the coming revisions, follow up on unresolved pieces when I return, and keep this responsibility until the application is ready. I will provide the requirements in my next conversation; hold the work pending those inputs.",
+              "run_id": "0c94b06e-be7e-4158-b829-e67f89315bdd"
+            },
+            {
+              "author": "agent",
+              "text": "Recorded as an ongoing responsibility. I’ll track revisions and unresolved pieces until the grant application is ready for submission. Work is waiting for the requirements you’ll provide in your next conversation.",
+              "run_id": "0c94b06e-be7e-4158-b829-e67f89315bdd"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "0c94b06e-be7e-4158-b829-e67f89315bdd",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [
+            "ngertiin.describe_tools",
+            "ngertiin.read_run_context",
+            "ngertiin.capture_goal",
+            "ngertiin.report_goal"
+          ],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:36:24.065Z",
+          "updated_at": "2026-11-03T07:36:57.705Z"
+        }
+      ],
+      "tool_calls": [
+        {
+          "name": "ngertiin.describe_tools",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.read_run_context",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.capture_goal",
+          "input": {
+            "goal_id": "973fc51d-cb7b-4817-a31d-488f18fc2200",
+            "expected_revision": 0,
+            "title": "Bring the grant application to submission readiness",
+            "objective": "Own bringing the user's grant application to submission readiness. Maintain progress through coming revisions, track unresolved pieces, and follow up when the user returns. Retain responsibility until the application is ready. The user will provide requirements in their next conversation; hold work pending those inputs.",
+            "source_message_id": "8d782089-ecd8-4548-ac6e-e422ac68174c",
+            "command_id": "225e7ab4-22ce-46ed-a7fc-f513df4d8616"
+          }
+        },
+        {
+          "name": "ngertiin.report_goal",
+          "input": {
+            "goal_id": "973fc51d-cb7b-4817-a31d-488f18fc2200",
+            "expected_revision": 1,
+            "progress": "Ownership recorded. Awaiting grant requirements from the user in their next conversation. No application preparation can begin until those inputs arrive. On return, collect the supplied requirements, maintain revision progress and unresolved items, and carry the application through submission readiness.",
+            "disposition": "wait",
+            "evidence_artifact_ids": [],
+            "continuation": null,
+            "command_id": "e95d80b3-2a91-4e60-a6f0-b14f47d153b0"
+          }
+        }
+      ]
+    },
+    {
+      "harness": "muse",
+      "scenario": "one-shot-reminder",
+      "category": "schedule",
+      "pass": true,
+      "turns": [
+        {
+          "input": "Send me a short message to eat at 14:45 Asia/Makassar on 2026-11-05.",
+          "expected": {
+            "goals": 0,
+            "routines": 1,
+            "artifacts": 0
+          },
+          "goals": [],
+          "routines": [
+            {
+              "name": "Eat reminder",
+              "thread_id": "cd26ea3f-4328-48a0-b864-3174f7a4fb03",
+              "agent_id": "61f8356a-9968-47cb-a874-1a380fc4fce8",
+              "goal_id": null,
+              "instruction": "Send the user a short friendly reminder to eat. Keep it to one brief message in the user's language.",
+              "schedule": {
+                "type": "once",
+                "at": "2026-11-05T06:45:00Z"
+              },
+              "timezone": "Asia/Makassar",
+              "execution_target": {
+                "type": "agent",
+                "agent_id": "61f8356a-9968-47cb-a874-1a380fc4fce8"
+              },
+              "id": "11111111-1111-4111-8111-111111111111",
+              "owner_id": "fa393063-adf4-47ce-89d6-ccd16df5635a",
+              "revision": 1,
+              "created_at": "2026-11-03T07:37:49.625Z",
+              "updated_at": "2026-11-03T07:37:49.625Z",
+              "kind": "routine",
+              "scope": "agent",
+              "created_by_agent_id": "61f8356a-9968-47cb-a874-1a380fc4fce8",
+              "assignment_state": "ready",
+              "error_code": null,
+              "source_message_id": "3665dc65-f5dc-43ac-9f4f-5ee8b43cbc30",
+              "source_run_id": "4469585e-7bab-4a08-abe0-c926bdc2dddf",
+              "paused_by_goal": false,
+              "state": "active",
+              "generation": 1,
+              "next_run_at": "2026-11-05T06:45:00Z"
+            }
+          ],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "Send me a short message to eat at 14:45 Asia/Makassar on 2026-11-05.",
+              "run_id": "4469585e-7bab-4a08-abe0-c926bdc2dddf"
+            },
+            {
+              "author": "agent",
+              "text": "I'll check the exact scheduling requirements to set your reminder.\n\nDone — I'll send you a short eat reminder at 14:45 Asia/Makassar on 2026-11-05.",
+              "run_id": "4469585e-7bab-4a08-abe0-c926bdc2dddf"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "4469585e-7bab-4a08-abe0-c926bdc2dddf",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [
+            "ngertiin.describe_tools",
+            "ngertiin.write_routine"
+          ],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:36:52.429Z",
+          "updated_at": "2026-11-03T07:38:01.599Z"
+        }
+      ],
+      "tool_calls": [
+        {
+          "name": "ngertiin.write_routine",
+          "input": {
+            "command_id": "22222222-2222-4222-8222-222222222222",
+            "execution_target": "null",
+            "expected_revision": 0,
+            "goal_id": "null",
+            "instruction": "Send the user a short friendly reminder to eat. Keep it to one brief message in the user's language.",
+            "name": "Eat reminder",
+            "routine_id": "11111111-1111-4111-8111-111111111111",
+            "schedule": {
+              "at": "2026-11-05T06:45:00Z",
+              "type": "once"
+            },
+            "timezone": "Asia/Makassar"
+          },
+          "error": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"uuid\",\n    \"pattern\": \"/^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/\",\n    \"path\": [\n      \"goal_id\"\n    ],\n    \"message\": \"Invalid UUID\"\n  },\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"object\",\n    \"path\": [\n      \"execution_target\"\n    ],\n    \"message\": \"Invalid input: expected object, received string\"\n  }\n]"
+        },
+        {
+          "name": "ngertiin.describe_tools",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.write_routine",
+          "input": {
+            "command_id": "22222222-2222-4222-8222-222222222222",
+            "expected_revision": 0,
+            "instruction": "Send the user a short friendly reminder to eat. Keep it to one brief message in the user's language.",
+            "name": "Eat reminder",
+            "routine_id": "11111111-1111-4111-8111-111111111111",
+            "schedule": {
+              "at": "2026-11-05T06:45:00Z",
+              "type": "once"
+            },
+            "timezone": "Asia/Makassar"
+          }
+        }
+      ]
+    },
+    {
+      "harness": "codex",
+      "scenario": "explicit-goal-even-for-small-work",
+      "category": "explicit",
+      "pass": true,
+      "turns": [
+        {
+          "input": "Create a tracked Goal named Verified arithmetic. Calculate 19 + 23, publish the calculation as arithmetic.md, and complete that Goal once its result is ready.",
+          "expected": {
+            "goals": 1,
+            "routines": 0,
+            "artifacts": 1,
+            "state": "completed"
+          },
+          "goals": [
+            {
+              "thread_id": "e1226883-c861-4bce-8de3-2d353d81e327",
+              "agent_id": "95973654-e926-43d1-b855-26058346df09",
+              "title": "Verified arithmetic",
+              "id": "8f02b9cd-8969-4f1f-b2f0-237cc6fd9bd1",
+              "owner_id": "3c343b70-e4bc-495a-970c-956817ec570e",
+              "revision": 3,
+              "created_at": "2026-11-03T07:37:11.743Z",
+              "updated_at": "2026-11-03T07:37:27.534Z",
+              "kind": "goal",
+              "scope": "agent",
+              "created_by_agent_id": "95973654-e926-43d1-b855-26058346df09",
+              "objective": "Calculate 19 + 23, publish the calculation as arithmetic.md, and complete the Goal once its result is ready.",
+              "source_message_ids": [
+                "7929fbcf-15ab-468b-85a6-1b402c78667c"
+              ],
+              "source_run_ids": [
+                "79772992-9651-4421-b5d8-93911ca6710e"
+              ],
+              "progress": "Calculated and verified 19 + 23 = 42. Published arithmetic.md with the calculation and verification.",
+              "work_state": "ready",
+              "coordinator_agent_id": "95973654-e926-43d1-b855-26058346df09",
+              "assignment_revision": 1,
+              "assignment_route_id": null,
+              "root_task_id": null,
+              "last_report_error": null,
+              "current_run_id": "79772992-9651-4421-b5d8-93911ca6710e",
+              "continuation_at": null,
+              "continuation_instruction": "",
+              "continuation_sequence": 1,
+              "report_run_id": "79772992-9651-4421-b5d8-93911ca6710e",
+              "deferred_by_run_id": null,
+              "state": "completed",
+              "generation": 2,
+              "evidence_artifact_ids": [
+                "b39c6529-d0b6-435b-9769-fd02cd652208"
+              ]
+            }
+          ],
+          "routines": [],
+          "artifacts": [
+            {
+              "id": "b39c6529-d0b6-435b-9769-fd02cd652208",
+              "name": "arithmetic.md",
+              "size_bytes": 78,
+              "run_id": "79772992-9651-4421-b5d8-93911ca6710e"
+            }
+          ],
+          "messages": [
+            {
+              "author": "user",
+              "text": "Create a tracked Goal named Verified arithmetic. Calculate 19 + 23, publish the calculation as arithmetic.md, and complete that Goal once its result is ready.",
+              "run_id": "79772992-9651-4421-b5d8-93911ca6710e"
+            },
+            {
+              "author": "agent",
+              "text": "19 + 23 = **42**. Published [arithmetic.md](ngertiin://artifact/b39c6529-d0b6-435b-9769-fd02cd652208).\n\n“Verified arithmetic” is awaiting final completion confirmation.",
+              "run_id": "79772992-9651-4421-b5d8-93911ca6710e"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "79772992-9651-4421-b5d8-93911ca6710e",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [
+            "ngertiin.describe_tools",
+            "ngertiin.read_run_context",
+            "ngertiin.capture_goal",
+            "ngertiin.create_file",
+            "ngertiin.publish_artifact",
+            "ngertiin.report_goal"
+          ],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:36:58.101Z",
+          "updated_at": "2026-11-03T07:37:27.455Z"
+        }
+      ],
+      "tool_calls": [
+        {
+          "name": "ngertiin.describe_tools",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.read_run_context",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.capture_goal",
+          "input": {
+            "goal_id": "8f02b9cd-8969-4f1f-b2f0-237cc6fd9bd1",
+            "expected_revision": 0,
+            "title": "Verified arithmetic",
+            "objective": "Calculate 19 + 23, publish the calculation as arithmetic.md, and complete the Goal once its result is ready.",
+            "source_message_id": "7929fbcf-15ab-468b-85a6-1b402c78667c",
+            "command_id": "dfb4fa39-fdc0-44eb-af6f-5ff634375576"
+          }
+        },
+        {
+          "name": "ngertiin.create_file",
+          "input": {
+            "command_id": "c4ea8fe7-71cb-422a-bcea-a85e061a7bd5",
+            "path": "arithmetic.md",
+            "text": "# Verified arithmetic\n\n19 + 23 = 42\n\nVerification: 19 + 20 + 3 = 39 + 3 = 42.\n"
+          }
+        },
+        {
+          "name": "ngertiin.publish_artifact",
+          "input": {
+            "command_id": "b39c6529-d0b6-435b-9769-fd02cd652208",
+            "path": "arithmetic.md",
+            "media_type": "text/markdown"
+          }
+        },
+        {
+          "name": "ngertiin.report_goal",
+          "input": {
+            "goal_id": "8f02b9cd-8969-4f1f-b2f0-237cc6fd9bd1",
+            "expected_revision": 1,
+            "progress": "Calculated and verified 19 + 23 = 42. Published arithmetic.md with the calculation and verification.",
+            "disposition": "completed",
+            "evidence_artifact_ids": [
+              "b39c6529-d0b6-435b-9769-fd02cd652208"
+            ],
+            "continuation": null,
+            "command_id": "bc88cc51-8205-4329-9c68-2aaf6bda9e55"
+          }
+        }
+      ]
+    },
+    {
+      "harness": "codex",
+      "scenario": "promote-when-responsibility-expands",
+      "category": "context",
+      "pass": true,
+      "turns": [
+        {
+          "input": "What are the main sections of a grant application? Answer briefly.",
+          "expected": {
+            "goals": 0,
+            "routines": 0,
+            "artifacts": 0
+          },
+          "goals": [],
+          "routines": [],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "What are the main sections of a grant application? Answer briefly.",
+              "run_id": "11ce104f-10bc-4bbb-a35c-19e79d4cdaed"
+            },
+            {
+              "author": "agent",
+              "text": "Most grant applications include:\n\n- **Executive summary:** A brief overview of the proposal.\n- **Organization background:** Who you are and your qualifications.\n- **Statement of need:** The problem you aim to address.\n- **Goals and objectives:** What you intend to achieve.\n- **Project plan:** Activities, methods, and timeline.\n- **Evaluation plan:** How you’ll measure success.\n- **Budget and justification:** Costs and why they’re necessary.\n- **Sustainability:** How the work will continue after funding.\n- **Supporting documents:** Required attachments and evidence.\n\nFollow the funder’s specific format and requirements.",
+              "run_id": "11ce104f-10bc-4bbb-a35c-19e79d4cdaed"
+            }
+          ]
+        },
+        {
+          "input": "Now take ownership of getting mine ready over our next several conversations. Track outstanding sections and carry it forward until ready for submission. I will bring the eligibility requirements tomorrow; wait for those before drafting.",
+          "expected": {
+            "goals": 1,
+            "routines": 0,
+            "artifacts": 0,
+            "work_state": "waiting"
+          },
+          "goals": [
+            {
+              "thread_id": "9d3fed5b-2f7b-4816-9291-364b93681485",
+              "agent_id": "22b8ab41-8934-4597-a045-34069cb16d8b",
+              "title": "Prepare grant application for submission",
+              "id": "8e6b3a51-cbf5-4d8a-a61e-7322b1c07e24",
+              "owner_id": "176b637c-cf5d-40ee-b56f-3fca4ff6464f",
+              "revision": 2,
+              "created_at": "2026-11-03T07:37:26.846Z",
+              "updated_at": "2026-11-03T07:37:34.905Z",
+              "kind": "goal",
+              "scope": "agent",
+              "created_by_agent_id": "22b8ab41-8934-4597-a045-34069cb16d8b",
+              "objective": "Take ownership of preparing the user's grant application across the next several conversations until it is ready for submission. Track outstanding sections, missing information, progress, and later follow-through. Wait for the eligibility requirements the user plans to bring tomorrow (2026-11-04, Asia/Makassar) before drafting. Once provided, verify eligibility and the funder's actual requirements, tailor the section checklist, gather needed user facts, draft and revise required content, and check the full package for submission readiness. Initial provisional outstanding sections: executive summary; organization background; statement of need; goals and objectives; project plan and timeline; evaluation plan; budget and justification; sustainability; supporting documents. These are generic placeholders to confirm against the funder's instructions, not confirmed requirements. No application content has been drafted, and funder, deadline, project details, and eligibility requirements are not yet supplied. Scope ends at ready for submission; submission is not authorized.",
+              "source_message_ids": [
+                "bf04338c-a05d-49c0-b496-79a1e35392a1"
+              ],
+              "source_run_ids": [
+                "a25e4c7d-9f74-40cd-9406-fbfafba4b491"
+              ],
+              "progress": "Established ongoing ownership and a provisional checklist of nine common application sections, all outstanding and subject to the funder's actual requirements. No drafting has begun. Waiting for the user to provide eligibility requirements tomorrow, 2026-11-04 in Asia/Makassar. Resume when those arrive: assess eligibility and requirements first, confirm the actual required sections and deadline, then gather project information and draft. Do not draft before receiving the requirements. No reminder or periodic check requested.",
+              "work_state": "waiting",
+              "coordinator_agent_id": "22b8ab41-8934-4597-a045-34069cb16d8b",
+              "assignment_revision": 1,
+              "assignment_route_id": null,
+              "root_task_id": null,
+              "last_report_error": null,
+              "current_run_id": "a25e4c7d-9f74-40cd-9406-fbfafba4b491",
+              "continuation_at": null,
+              "continuation_instruction": "",
+              "continuation_sequence": 1,
+              "report_run_id": "a25e4c7d-9f74-40cd-9406-fbfafba4b491",
+              "deferred_by_run_id": null,
+              "state": "active",
+              "generation": 1,
+              "evidence_artifact_ids": []
+            }
+          ],
+          "routines": [],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "What are the main sections of a grant application? Answer briefly.",
+              "run_id": "11ce104f-10bc-4bbb-a35c-19e79d4cdaed"
+            },
+            {
+              "author": "agent",
+              "text": "Most grant applications include:\n\n- **Executive summary:** A brief overview of the proposal.\n- **Organization background:** Who you are and your qualifications.\n- **Statement of need:** The problem you aim to address.\n- **Goals and objectives:** What you intend to achieve.\n- **Project plan:** Activities, methods, and timeline.\n- **Evaluation plan:** How you’ll measure success.\n- **Budget and justification:** Costs and why they’re necessary.\n- **Sustainability:** How the work will continue after funding.\n- **Supporting documents:** Required attachments and evidence.\n\nFollow the funder’s specific format and requirements.",
+              "run_id": "11ce104f-10bc-4bbb-a35c-19e79d4cdaed"
+            },
+            {
+              "author": "user",
+              "text": "Now take ownership of getting mine ready over our next several conversations. Track outstanding sections and carry it forward until ready for submission. I will bring the eligibility requirements tomorrow; wait for those before drafting.",
+              "run_id": "a25e4c7d-9f74-40cd-9406-fbfafba4b491"
+            },
+            {
+              "author": "agent",
+              "text": "I’ve saved this as an ongoing Goal and will carry it across our conversations until your application is ready for submission.\n\nAll nine sections are provisionally outstanding. I’ll tailor the checklist to the funder’s requirements and track missing information and progress. Drafting will wait until you provide the eligibility requirements tomorrow.",
+              "run_id": "a25e4c7d-9f74-40cd-9406-fbfafba4b491"
+            }
+          ]
+        },
+        {
+          "input": "By the way, translate the phrase 'good morning' into French.",
+          "expected": {
+            "goals": 1,
+            "routines": 0,
+            "artifacts": 0,
+            "work_state": "waiting",
+            "same_goal": true
+          },
+          "goals": [
+            {
+              "thread_id": "9d3fed5b-2f7b-4816-9291-364b93681485",
+              "agent_id": "22b8ab41-8934-4597-a045-34069cb16d8b",
+              "title": "Prepare grant application for submission",
+              "id": "8e6b3a51-cbf5-4d8a-a61e-7322b1c07e24",
+              "owner_id": "176b637c-cf5d-40ee-b56f-3fca4ff6464f",
+              "revision": 2,
+              "created_at": "2026-11-03T07:37:26.846Z",
+              "updated_at": "2026-11-03T07:37:34.905Z",
+              "kind": "goal",
+              "scope": "agent",
+              "created_by_agent_id": "22b8ab41-8934-4597-a045-34069cb16d8b",
+              "objective": "Take ownership of preparing the user's grant application across the next several conversations until it is ready for submission. Track outstanding sections, missing information, progress, and later follow-through. Wait for the eligibility requirements the user plans to bring tomorrow (2026-11-04, Asia/Makassar) before drafting. Once provided, verify eligibility and the funder's actual requirements, tailor the section checklist, gather needed user facts, draft and revise required content, and check the full package for submission readiness. Initial provisional outstanding sections: executive summary; organization background; statement of need; goals and objectives; project plan and timeline; evaluation plan; budget and justification; sustainability; supporting documents. These are generic placeholders to confirm against the funder's instructions, not confirmed requirements. No application content has been drafted, and funder, deadline, project details, and eligibility requirements are not yet supplied. Scope ends at ready for submission; submission is not authorized.",
+              "source_message_ids": [
+                "bf04338c-a05d-49c0-b496-79a1e35392a1"
+              ],
+              "source_run_ids": [
+                "a25e4c7d-9f74-40cd-9406-fbfafba4b491"
+              ],
+              "progress": "Established ongoing ownership and a provisional checklist of nine common application sections, all outstanding and subject to the funder's actual requirements. No drafting has begun. Waiting for the user to provide eligibility requirements tomorrow, 2026-11-04 in Asia/Makassar. Resume when those arrive: assess eligibility and requirements first, confirm the actual required sections and deadline, then gather project information and draft. Do not draft before receiving the requirements. No reminder or periodic check requested.",
+              "work_state": "waiting",
+              "coordinator_agent_id": "22b8ab41-8934-4597-a045-34069cb16d8b",
+              "assignment_revision": 1,
+              "assignment_route_id": null,
+              "root_task_id": null,
+              "last_report_error": null,
+              "current_run_id": "a25e4c7d-9f74-40cd-9406-fbfafba4b491",
+              "continuation_at": null,
+              "continuation_instruction": "",
+              "continuation_sequence": 1,
+              "report_run_id": "a25e4c7d-9f74-40cd-9406-fbfafba4b491",
+              "deferred_by_run_id": null,
+              "state": "active",
+              "generation": 1,
+              "evidence_artifact_ids": []
+            }
+          ],
+          "routines": [],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "What are the main sections of a grant application? Answer briefly.",
+              "run_id": "11ce104f-10bc-4bbb-a35c-19e79d4cdaed"
+            },
+            {
+              "author": "agent",
+              "text": "Most grant applications include:\n\n- **Executive summary:** A brief overview of the proposal.\n- **Organization background:** Who you are and your qualifications.\n- **Statement of need:** The problem you aim to address.\n- **Goals and objectives:** What you intend to achieve.\n- **Project plan:** Activities, methods, and timeline.\n- **Evaluation plan:** How you’ll measure success.\n- **Budget and justification:** Costs and why they’re necessary.\n- **Sustainability:** How the work will continue after funding.\n- **Supporting documents:** Required attachments and evidence.\n\nFollow the funder’s specific format and requirements.",
+              "run_id": "11ce104f-10bc-4bbb-a35c-19e79d4cdaed"
+            },
+            {
+              "author": "user",
+              "text": "Now take ownership of getting mine ready over our next several conversations. Track outstanding sections and carry it forward until ready for submission. I will bring the eligibility requirements tomorrow; wait for those before drafting.",
+              "run_id": "a25e4c7d-9f74-40cd-9406-fbfafba4b491"
+            },
+            {
+              "author": "agent",
+              "text": "I’ve saved this as an ongoing Goal and will carry it across our conversations until your application is ready for submission.\n\nAll nine sections are provisionally outstanding. I’ll tailor the checklist to the funder’s requirements and track missing information and progress. Drafting will wait until you provide the eligibility requirements tomorrow.",
+              "run_id": "a25e4c7d-9f74-40cd-9406-fbfafba4b491"
+            },
+            {
+              "author": "user",
+              "text": "By the way, translate the phrase 'good morning' into French.",
+              "run_id": "d1eb574f-f67d-460e-bbc1-ccee0b7d53ed"
+            },
+            {
+              "author": "agent",
+              "text": "Bonjour.",
+              "run_id": "d1eb574f-f67d-460e-bbc1-ccee0b7d53ed"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "11ce104f-10bc-4bbb-a35c-19e79d4cdaed",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:36:58.819Z",
+          "updated_at": "2026-11-03T07:37:10.303Z"
+        },
+        {
+          "id": "a25e4c7d-9f74-40cd-9406-fbfafba4b491",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [
+            "ngertiin.describe_tools",
+            "ngertiin.read_run_context",
+            "ngertiin.list_goals",
+            "ngertiin.capture_goal",
+            "ngertiin.report_goal"
+          ],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:37:11.246Z",
+          "updated_at": "2026-11-03T07:37:40.869Z"
+        },
+        {
+          "id": "d1eb574f-f67d-460e-bbc1-ccee0b7d53ed",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:37:41.874Z",
+          "updated_at": "2026-11-03T07:37:47.113Z"
+        }
+      ],
+      "tool_calls": [
+        {
+          "name": "ngertiin.describe_tools",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.read_run_context",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.list_goals",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.capture_goal",
+          "input": {
+            "goal_id": "8e6b3a51-cbf5-4d8a-a61e-7322b1c07e24",
+            "expected_revision": 0,
+            "title": "Prepare grant application for submission",
+            "objective": "Take ownership of preparing the user's grant application across the next several conversations until it is ready for submission. Track outstanding sections, missing information, progress, and later follow-through. Wait for the eligibility requirements the user plans to bring tomorrow (2026-11-04, Asia/Makassar) before drafting. Once provided, verify eligibility and the funder's actual requirements, tailor the section checklist, gather needed user facts, draft and revise required content, and check the full package for submission readiness. Initial provisional outstanding sections: executive summary; organization background; statement of need; goals and objectives; project plan and timeline; evaluation plan; budget and justification; sustainability; supporting documents. These are generic placeholders to confirm against the funder's instructions, not confirmed requirements. No application content has been drafted, and funder, deadline, project details, and eligibility requirements are not yet supplied. Scope ends at ready for submission; submission is not authorized.",
+            "source_message_id": "bf04338c-a05d-49c0-b496-79a1e35392a1",
+            "command_id": "94576ba3-9495-4d6c-a7f8-46c75a472584"
+          }
+        },
+        {
+          "name": "ngertiin.report_goal",
+          "input": {
+            "goal_id": "8e6b3a51-cbf5-4d8a-a61e-7322b1c07e24",
+            "expected_revision": 1,
+            "progress": "Established ongoing ownership and a provisional checklist of nine common application sections, all outstanding and subject to the funder's actual requirements. No drafting has begun. Waiting for the user to provide eligibility requirements tomorrow, 2026-11-04 in Asia/Makassar. Resume when those arrive: assess eligibility and requirements first, confirm the actual required sections and deadline, then gather project information and draft. Do not draft before receiving the requirements. No reminder or periodic check requested.",
+            "disposition": "wait",
+            "evidence_artifact_ids": [],
+            "continuation": null,
+            "command_id": "d4d86ef2-3aa2-4c79-8bf7-76a3a72ecf61"
+          }
+        }
+      ]
+    },
+    {
+      "harness": "muse",
+      "scenario": "one-shot-paraphrase-and-edit",
+      "category": "schedule",
+      "pass": true,
+      "turns": [
+        {
+          "input": "At 14:45 Asia/Makassar on 2026-11-05, post a quick hello here.",
+          "expected": {
+            "goals": 0,
+            "routines": 1,
+            "artifacts": 0
+          },
+          "goals": [],
+          "routines": [
+            {
+              "name": "Post quick hello",
+              "thread_id": "6f99adde-cdb1-442f-92ce-d17ab12fbf82",
+              "agent_id": "9023187a-f3a8-4694-b7cb-93be1c5c17f0",
+              "goal_id": null,
+              "instruction": "Post a quick hello here in the originating thread.",
+              "schedule": {
+                "type": "once",
+                "at": "2026-11-05T06:45:00Z"
+              },
+              "timezone": "Asia/Makassar",
+              "execution_target": {
+                "type": "agent",
+                "agent_id": "9023187a-f3a8-4694-b7cb-93be1c5c17f0"
+              },
+              "id": "c3d4e5f6-a7b8-4222-9111-def123456789",
+              "owner_id": "c827279b-5216-4157-9f87-dd656078b9db",
+              "revision": 1,
+              "created_at": "2026-11-03T07:38:10.202Z",
+              "updated_at": "2026-11-03T07:38:10.202Z",
+              "kind": "routine",
+              "scope": "agent",
+              "created_by_agent_id": "9023187a-f3a8-4694-b7cb-93be1c5c17f0",
+              "assignment_state": "ready",
+              "error_code": null,
+              "source_message_id": "15ba2de5-15c3-43da-81a5-99b053c497d7",
+              "source_run_id": "4b83364e-44c5-4528-9814-defe29ded581",
+              "paused_by_goal": false,
+              "state": "active",
+              "generation": 1,
+              "next_run_at": "2026-11-05T06:45:00Z"
+            }
+          ],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "At 14:45 Asia/Makassar on 2026-11-05, post a quick hello here.",
+              "run_id": "4b83364e-44c5-4528-9814-defe29ded581"
+            },
+            {
+              "author": "agent",
+              "text": "Got it — I'll set that hello for 14:45 Makassar time on Nov 5.\n\nLet me check the exact scheduling format and retry.\n\nDone — I'll post a quick hello here at 14:45 Asia/Makassar on Nov 5.",
+              "run_id": "4b83364e-44c5-4528-9814-defe29ded581"
+            }
+          ]
+        },
+        {
+          "input": "Move that hello to 15:15 on the same date and in the same timezone.",
+          "expected": {
+            "goals": 0,
+            "routines": 1,
+            "artifacts": 0
+          },
+          "goals": [],
+          "routines": [
+            {
+              "name": "Post quick hello",
+              "thread_id": "6f99adde-cdb1-442f-92ce-d17ab12fbf82",
+              "agent_id": "9023187a-f3a8-4694-b7cb-93be1c5c17f0",
+              "goal_id": null,
+              "instruction": "Post a quick hello here in the originating thread.",
+              "schedule": {
+                "type": "once",
+                "at": "2026-11-05T07:15:00Z"
+              },
+              "timezone": "Asia/Makassar",
+              "execution_target": {
+                "type": "agent",
+                "agent_id": "9023187a-f3a8-4694-b7cb-93be1c5c17f0"
+              },
+              "id": "c3d4e5f6-a7b8-4222-9111-def123456789",
+              "owner_id": "c827279b-5216-4157-9f87-dd656078b9db",
+              "revision": 2,
+              "created_at": "2026-11-03T07:38:10.202Z",
+              "updated_at": "2026-11-03T07:38:38.442Z",
+              "kind": "routine",
+              "scope": "agent",
+              "created_by_agent_id": "9023187a-f3a8-4694-b7cb-93be1c5c17f0",
+              "assignment_state": "ready",
+              "error_code": null,
+              "source_message_id": "b7d57034-0a66-43a9-b623-db3594018068",
+              "source_run_id": "d2fabe4b-a308-47cd-81dc-733a0bae7da2",
+              "paused_by_goal": false,
+              "state": "active",
+              "generation": 2,
+              "next_run_at": "2026-11-05T07:15:00Z"
+            }
+          ],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "At 14:45 Asia/Makassar on 2026-11-05, post a quick hello here.",
+              "run_id": "4b83364e-44c5-4528-9814-defe29ded581"
+            },
+            {
+              "author": "agent",
+              "text": "Got it — I'll set that hello for 14:45 Makassar time on Nov 5.\n\nLet me check the exact scheduling format and retry.\n\nDone — I'll post a quick hello here at 14:45 Asia/Makassar on Nov 5.",
+              "run_id": "4b83364e-44c5-4528-9814-defe29ded581"
+            },
+            {
+              "author": "user",
+              "text": "Move that hello to 15:15 on the same date and in the same timezone.",
+              "run_id": "d2fabe4b-a308-47cd-81dc-733a0bae7da2"
+            },
+            {
+              "author": "agent",
+              "text": "Moving it to 15:15 that same day.\n\nDone — moved to 15:15 Asia/Makassar on Nov 5.",
+              "run_id": "d2fabe4b-a308-47cd-81dc-733a0bae7da2"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "4b83364e-44c5-4528-9814-defe29ded581",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [
+            "ngertiin.describe_tools",
+            "ngertiin.write_routine"
+          ],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:36:59.693Z",
+          "updated_at": "2026-11-03T07:38:22.301Z"
+        },
+        {
+          "id": "d2fabe4b-a308-47cd-81dc-733a0bae7da2",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [
+            "ngertiin.write_routine"
+          ],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:38:23.123Z",
+          "updated_at": "2026-11-03T07:38:46.363Z"
+        }
+      ],
+      "tool_calls": [
+        {
+          "name": "ngertiin.write_routine",
+          "input": {
+            "command_id": "b2c3d4e5-f6a7-4111-b222-bcdef1234567",
+            "execution_target": "null",
+            "expected_revision": 0,
+            "goal_id": "null",
+            "instruction": "Post a quick hello here in the originating thread.",
+            "name": "Post quick hello",
+            "routine_id": "a1b2c3d4-e5f6-4111-a111-abcdef123456",
+            "schedule": {
+              "at": "2026-11-05T06:45:00Z",
+              "type": "once"
+            },
+            "timezone": "Asia/Makassar"
+          },
+          "error": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"uuid\",\n    \"pattern\": \"/^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/\",\n    \"path\": [\n      \"goal_id\"\n    ],\n    \"message\": \"Invalid UUID\"\n  },\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"object\",\n    \"path\": [\n      \"execution_target\"\n    ],\n    \"message\": \"Invalid input: expected object, received string\"\n  }\n]"
+        },
+        {
+          "name": "ngertiin.describe_tools",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.write_routine",
+          "input": {
+            "command_id": "d4e5f6a7-b8c9-4333-a222-ef1234567890",
+            "expected_revision": 0,
+            "instruction": "Post a quick hello here in the originating thread.",
+            "name": "Post quick hello",
+            "routine_id": "c3d4e5f6-a7b8-4222-9111-def123456789",
+            "schedule": {
+              "at": "2026-11-05T06:45:00Z",
+              "type": "once"
+            },
+            "timezone": "Asia/Makassar"
+          }
+        },
+        {
+          "name": "ngertiin.write_routine",
+          "input": {
+            "command_id": "e5f6a7b8-c9d0-4444-b333-f12345678901",
+            "expected_revision": 1,
+            "instruction": "Post a quick hello here in the originating thread.",
+            "name": "Post quick hello",
+            "routine_id": "c3d4e5f6-a7b8-4222-9111-def123456789",
+            "schedule": {
+              "at": "2026-11-05T07:15:00Z",
+              "type": "once"
+            },
+            "timezone": "Asia/Makassar"
+          }
+        }
+      ]
+    },
+    {
+      "harness": "codex",
+      "scenario": "peer-request-is-not-an-outcome",
+      "category": "delegation",
+      "pass": true,
+      "turns": [
+        {
+          "input": "Coordinator, ask Reviewer to say hello to me.",
+          "expected": {
+            "goals": 0,
+            "routines": 0,
+            "artifacts": 0,
+            "handoff": true
+          },
+          "goals": [],
+          "routines": [],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "Coordinator, ask Reviewer to say hello to me.",
+              "run_id": null
+            },
+            {
+              "author": "agent",
+              "text": "Hello, [@user](ngertiin://user/owner)! 👋",
+              "run_id": "1275f76a-dfea-4824-a74f-0a1ac414a9cb"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "06ed3a54-1ccb-4349-9e7c-ef64aea205cc",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": "47929a6c-d3b9-42f5-b3e2-b495755f63e5",
+          "product_tools": [
+            "ngertiin.describe_tools",
+            "ngertiin.group_handoff"
+          ],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:37:28.438Z",
+          "updated_at": "2026-11-03T07:37:44.224Z"
+        },
+        {
+          "id": "1275f76a-dfea-4824-a74f-0a1ac414a9cb",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": "8f34856f-3181-40fb-b075-351a36fa5377",
+          "product_tools": [],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:37:40.735Z",
+          "updated_at": "2026-11-03T07:37:48.994Z"
+        },
+        {
+          "id": "d05d8082-c936-4583-a6fb-502777fc02bd",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": "47929a6c-d3b9-42f5-b3e2-b495755f63e5",
+          "product_tools": [],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:37:49.100Z",
+          "updated_at": "2026-11-03T07:37:56.004Z"
+        }
+      ],
+      "tool_calls": [
+        {
+          "name": "ngertiin.describe_tools",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.group_handoff",
+          "input": {
+            "agent_id": "95935eb1-8f38-4aab-a78f-9e0cdec19f25",
+            "instruction": "Say hello to the owner in this shared thread. Use the readable mention [@user](ngertiin://user/owner). A brief friendly greeting is the entire requested result; finish your task after delivering it. No file or Goal is needed.",
+            "purpose": "handoff",
+            "summary": "Say hello to the user.",
+            "announcement": "[@Reviewer](ngertiin://agent/95935eb1-8f38-4aab-a78f-9e0cdec19f25), please say hello to [@user](ngertiin://user/owner).",
+            "continuation": "finalize",
+            "command_id": "3b29f6e0-b436-4b42-8938-f9d98920f521"
+          }
+        }
+      ]
+    },
+    {
+      "harness": "muse",
+      "scenario": "recurring-check-is-not-an-outcome",
+      "category": "schedule",
+      "pass": true,
+      "turns": [
+        {
+          "input": "Every Monday at 09:00 Asia/Makassar, check this thread for a new status note and send a short recap if there is one. If nothing changed, stay quiet.",
+          "expected": {
+            "goals": 0,
+            "routines": 1,
+            "artifacts": 0
+          },
+          "goals": [],
+          "routines": [
+            {
+              "name": "Monday status recap",
+              "thread_id": "360abd8d-0879-4284-adae-658aaf4a81b5",
+              "agent_id": "b12594a1-3308-4fd3-b139-6cafe2118fd9",
+              "goal_id": null,
+              "instruction": "Check this thread for a new status note since the last check. If there is a new status note, send a short recap of it in this thread. If nothing changed, call routine_no_update and stay quiet with no chat message.",
+              "schedule": {
+                "type": "calendar",
+                "local_time": "09:00",
+                "weekdays": [
+                  1
+                ]
+              },
+              "timezone": "Asia/Makassar",
+              "execution_target": {
+                "type": "agent",
+                "agent_id": "b12594a1-3308-4fd3-b139-6cafe2118fd9"
+              },
+              "id": "c7a3d2e1-4f5a-4b2c-a8d1-9e0f1a2b3c4d",
+              "owner_id": "02fa496b-0399-4493-ab31-73cbf850a77e",
+              "revision": 1,
+              "created_at": "2026-11-03T07:39:02.172Z",
+              "updated_at": "2026-11-03T07:39:02.172Z",
+              "kind": "routine",
+              "scope": "agent",
+              "created_by_agent_id": "b12594a1-3308-4fd3-b139-6cafe2118fd9",
+              "assignment_state": "ready",
+              "error_code": null,
+              "source_message_id": "a90fd09e-65b3-4fd7-a92a-026995734329",
+              "source_run_id": "75cbd369-4fac-4016-a65c-8f0e7d0afef2",
+              "paused_by_goal": false,
+              "state": "active",
+              "generation": 1,
+              "next_run_at": "2026-11-09T01:00:00.000Z"
+            }
+          ],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "Every Monday at 09:00 Asia/Makassar, check this thread for a new status note and send a short recap if there is one. If nothing changed, stay quiet.",
+              "run_id": "75cbd369-4fac-4016-a65c-8f0e7d0afef2"
+            },
+            {
+              "author": "agent",
+              "text": "I'll set up that Monday morning check for status notes.\n\nThat schedule didn't stick, so I'm fixing the setup to get your Monday recap running.\n\nDone. I'll check this thread every Monday at 09:00 Asia/Makassar and send a short recap only when there's a new status note.",
+              "run_id": "75cbd369-4fac-4016-a65c-8f0e7d0afef2"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "75cbd369-4fac-4016-a65c-8f0e7d0afef2",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [
+            "ngertiin.describe_tools",
+            "ngertiin.write_routine"
+          ],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:38:02.706Z",
+          "updated_at": "2026-11-03T07:39:11.359Z"
+        }
+      ],
+      "tool_calls": [
+        {
+          "name": "ngertiin.describe_tools",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.write_routine",
+          "input": {
+            "command_id": "d8b4c3f2-5a6b-4c3d-b9e2-0f1a2b3c4d5e",
+            "execution_target": "null",
+            "expected_revision": 0,
+            "goal_id": "null",
+            "instruction": "Check this thread for a new status note since the last check. If there is a new status note, send a short recap of it in this thread. If nothing changed, call routine_no_update and stay quiet with no chat message.",
+            "name": "Monday status recap",
+            "routine_id": "c7a3d2e1-4f5a-4b2c-a8d1-9e0f1a2b3c4d",
+            "schedule": {
+              "local_time": "09:00",
+              "type": "calendar",
+              "weekdays": [
+                1
+              ]
+            },
+            "timezone": "Asia/Makassar"
+          },
+          "error": "[\n  {\n    \"origin\": \"string\",\n    \"code\": \"invalid_format\",\n    \"format\": \"uuid\",\n    \"pattern\": \"/^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/\",\n    \"path\": [\n      \"goal_id\"\n    ],\n    \"message\": \"Invalid UUID\"\n  },\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"object\",\n    \"path\": [\n      \"execution_target\"\n    ],\n    \"message\": \"Invalid input: expected object, received string\"\n  }\n]"
+        },
+        {
+          "name": "ngertiin.write_routine",
+          "input": {
+            "command_id": "d8b4c3f2-5a6b-4c3d-b9e2-0f1a2b3c4d5e",
+            "expected_revision": 0,
+            "instruction": "Check this thread for a new status note since the last check. If there is a new status note, send a short recap of it in this thread. If nothing changed, call routine_no_update and stay quiet with no chat message.",
+            "name": "Monday status recap",
+            "routine_id": "c7a3d2e1-4f5a-4b2c-a8d1-9e0f1a2b3c4d",
+            "schedule": {
+              "local_time": "09:00",
+              "type": "calendar",
+              "weekdays": [
+                1
+              ]
+            },
+            "timezone": "Asia/Makassar"
+          }
+        }
+      ]
+    },
+    {
+      "harness": "muse",
+      "scenario": "implicit-ownership-and-correction",
+      "category": "ongoing",
+      "pass": true,
+      "turns": [
+        {
+          "input": "Take responsibility for getting my workshop materials ready through the successive draft and review rounds. Keep track of what remains across our conversations and carry the work forward as I send inputs over the coming days. The first draft arrives tomorrow; for now record what you are responsible for and wait for it.",
+          "expected": {
+            "goals": 1,
+            "routines": 0,
+            "artifacts": 0,
+            "work_state": "waiting"
+          },
+          "goals": [
+            {
+              "thread_id": "1115b91f-73ba-4c89-be08-1c8a3a15ea53",
+              "agent_id": "ebb8a87b-425f-406b-8f69-6563a6860809",
+              "title": "Workshop materials ready through review rounds",
+              "id": "a1b2c3d4-e5f6-4a7b-8c9d-e0f1a2b3c4d5",
+              "owner_id": "661b7c51-c5a2-47f5-9d43-6205ceb54276",
+              "revision": 2,
+              "created_at": "2026-11-03T07:39:18.280Z",
+              "updated_at": "2026-11-03T07:39:41.973Z",
+              "kind": "goal",
+              "scope": "agent",
+              "created_by_agent_id": "ebb8a87b-425f-406b-8f69-6563a6860809",
+              "objective": "Own getting the user's workshop materials ready through successive draft and review rounds over the coming days. Keep track of what remains across conversations and carry the work forward as inputs arrive. Current state: no draft yet; first draft expected tomorrow (2026-11-04). Wait for that input; do not produce materials until it arrives.",
+              "source_message_ids": [
+                "8a6c0e54-d5db-44a1-a5dc-0a57ff940af9"
+              ],
+              "source_run_ids": [
+                "0addc7bd-4cb8-409e-b7f9-a2a1b4909a03"
+              ],
+              "progress": "Recorded responsibility for workshop materials through successive draft and review rounds. No draft yet; waiting for first draft expected tomorrow. Will track remaining work across conversations as inputs arrive.",
+              "work_state": "waiting",
+              "coordinator_agent_id": "ebb8a87b-425f-406b-8f69-6563a6860809",
+              "assignment_revision": 1,
+              "assignment_route_id": null,
+              "root_task_id": null,
+              "last_report_error": null,
+              "current_run_id": "0addc7bd-4cb8-409e-b7f9-a2a1b4909a03",
+              "continuation_at": null,
+              "continuation_instruction": "",
+              "continuation_sequence": 1,
+              "report_run_id": "0addc7bd-4cb8-409e-b7f9-a2a1b4909a03",
+              "deferred_by_run_id": null,
+              "state": "active",
+              "generation": 1,
+              "evidence_artifact_ids": []
+            }
+          ],
+          "routines": [],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "Take responsibility for getting my workshop materials ready through the successive draft and review rounds. Keep track of what remains across our conversations and carry the work forward as I send inputs over the coming days. The first draft arrives tomorrow; for now record what you are responsible for and wait for it.",
+              "run_id": "0addc7bd-4cb8-409e-b7f9-a2a1b4909a03"
+            },
+            {
+              "author": "agent",
+              "text": "Got it — I'll record that ongoing responsibility so we can carry it across conversations while you send inputs.\n\nRecorded.\n\nI'm responsible for getting your workshop materials ready through the draft and review rounds, tracking what remains across our conversations as you send inputs.\n\nNo draft yet — I'll wait for the first one tomorrow to start.",
+              "run_id": "0addc7bd-4cb8-409e-b7f9-a2a1b4909a03"
+            }
+          ]
+        },
+        {
+          "input": "Change the outcome we are tracking: prepare the facilitator guide only, rather than all workshop materials. The draft will still arrive tomorrow, so keep waiting for it.",
+          "expected": {
+            "goals": 1,
+            "routines": 0,
+            "artifacts": 0,
+            "work_state": "waiting",
+            "same_goal": true,
+            "objective_changed": true
+          },
+          "goals": [
+            {
+              "thread_id": "1115b91f-73ba-4c89-be08-1c8a3a15ea53",
+              "agent_id": "ebb8a87b-425f-406b-8f69-6563a6860809",
+              "title": "Facilitator guide ready through review rounds",
+              "id": "a1b2c3d4-e5f6-4a7b-8c9d-e0f1a2b3c4d5",
+              "owner_id": "661b7c51-c5a2-47f5-9d43-6205ceb54276",
+              "revision": 4,
+              "created_at": "2026-11-03T07:39:18.280Z",
+              "updated_at": "2026-11-03T07:40:24.839Z",
+              "kind": "goal",
+              "scope": "agent",
+              "created_by_agent_id": "ebb8a87b-425f-406b-8f69-6563a6860809",
+              "objective": "Own preparing the facilitator guide only (not all workshop materials) through successive draft and review rounds over the coming days. Keep track of what remains across conversations and carry the work forward as inputs arrive. Current state: no draft yet; first draft expected tomorrow (2026-11-04). Wait for that input; do not produce the guide until it arrives.",
+              "source_message_ids": [
+                "8a6c0e54-d5db-44a1-a5dc-0a57ff940af9",
+                "b73f9222-4f86-471e-a03d-3ec8063167c1"
+              ],
+              "source_run_ids": [
+                "0addc7bd-4cb8-409e-b7f9-a2a1b4909a03",
+                "80057f22-2702-47b1-b90c-9b8a01936ff1"
+              ],
+              "progress": "Updated scope to facilitator guide only. No draft yet; waiting for first draft expected tomorrow. Will track remaining work across conversations as inputs arrive.",
+              "work_state": "waiting",
+              "coordinator_agent_id": "ebb8a87b-425f-406b-8f69-6563a6860809",
+              "assignment_revision": 1,
+              "assignment_route_id": null,
+              "root_task_id": null,
+              "last_report_error": null,
+              "current_run_id": "80057f22-2702-47b1-b90c-9b8a01936ff1",
+              "continuation_at": null,
+              "continuation_instruction": "",
+              "continuation_sequence": 3,
+              "report_run_id": "80057f22-2702-47b1-b90c-9b8a01936ff1",
+              "deferred_by_run_id": null,
+              "state": "active",
+              "generation": 2,
+              "evidence_artifact_ids": []
+            }
+          ],
+          "routines": [],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "Take responsibility for getting my workshop materials ready through the successive draft and review rounds. Keep track of what remains across our conversations and carry the work forward as I send inputs over the coming days. The first draft arrives tomorrow; for now record what you are responsible for and wait for it.",
+              "run_id": "0addc7bd-4cb8-409e-b7f9-a2a1b4909a03"
+            },
+            {
+              "author": "agent",
+              "text": "Got it — I'll record that ongoing responsibility so we can carry it across conversations while you send inputs.\n\nRecorded.\n\nI'm responsible for getting your workshop materials ready through the draft and review rounds, tracking what remains across our conversations as you send inputs.\n\nNo draft yet — I'll wait for the first one tomorrow to start.",
+              "run_id": "0addc7bd-4cb8-409e-b7f9-a2a1b4909a03"
+            },
+            {
+              "author": "user",
+              "text": "Change the outcome we are tracking: prepare the facilitator guide only, rather than all workshop materials. The draft will still arrive tomorrow, so keep waiting for it.",
+              "run_id": "80057f22-2702-47b1-b90c-9b8a01936ff1"
+            },
+            {
+              "author": "agent",
+              "text": "Understood — I'll narrow the tracked outcome to the facilitator guide and keep waiting for tomorrow's draft.\n\nUpdated — I'm now tracking the facilitator guide only, not all workshop materials.\n\nStill waiting for the first draft tomorrow. Send it when ready and we'll carry forward from there.",
+              "run_id": "80057f22-2702-47b1-b90c-9b8a01936ff1"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "0addc7bd-4cb8-409e-b7f9-a2a1b4909a03",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [
+            "ngertiin.read_run_context",
+            "ngertiin.capture_goal",
+            "ngertiin.describe_tools",
+            "ngertiin.report_goal"
+          ],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:38:47.475Z",
+          "updated_at": "2026-11-03T07:39:50.995Z"
+        },
+        {
+          "id": "80057f22-2702-47b1-b90c-9b8a01936ff1",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [
+            "ngertiin.read_run_context",
+            "ngertiin.capture_goal",
+            "ngertiin.report_goal"
+          ],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:39:51.892Z",
+          "updated_at": "2026-11-03T07:40:47.751Z"
+        }
+      ],
+      "tool_calls": [
+        {
+          "name": "ngertiin.read_run_context",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.capture_goal",
+          "input": {
+            "command_id": "b2c3d4e5-f6a7-4b8c-9d0e-f1a2b3c4d5e6",
+            "expected_revision": 0,
+            "goal_id": "a1b2c3d4-e5f6-4a7b-8c9d-e0f1a2b3c4d5",
+            "objective": "Own getting the user's workshop materials ready through successive draft and review rounds over the coming days. Keep track of what remains across conversations and carry the work forward as inputs arrive. Current state: no draft yet; first draft expected tomorrow (2026-11-04). Wait for that input; do not produce materials until it arrives.",
+            "source_message_id": "8a6c0e54-d5db-44a1-a5dc-0a57ff940af9",
+            "title": "Workshop materials ready through review rounds"
+          }
+        },
+        {
+          "name": "ngertiin.report_goal",
+          "input": {
+            "command_id": "c3d4e5f6-a7b8-4c9d-8e0f-a1b2c3d4e5f6",
+            "continuation": "null",
+            "disposition": "wait",
+            "evidence_artifact_ids": [],
+            "expected_revision": 1,
+            "goal_id": "a1b2c3d4-e5f6-4a7b-8c9d-e0f1a2b3c4d5",
+            "progress": "Recorded responsibility for workshop materials through successive draft and review rounds. No draft yet; waiting for first draft expected tomorrow. Will track remaining work across conversations as inputs arrive."
+          },
+          "error": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"continuation\"\n    ],\n    \"message\": \"Invalid input: expected object, received string\"\n  }\n]"
+        },
+        {
+          "name": "ngertiin.describe_tools",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.report_goal",
+          "input": {
+            "command_id": "c3d4e5f6-a7b8-4c9d-8e0f-a1b2c3d4e5f6",
+            "disposition": "wait",
+            "evidence_artifact_ids": [],
+            "expected_revision": 1,
+            "goal_id": "a1b2c3d4-e5f6-4a7b-8c9d-e0f1a2b3c4d5",
+            "progress": "Recorded responsibility for workshop materials through successive draft and review rounds. No draft yet; waiting for first draft expected tomorrow. Will track remaining work across conversations as inputs arrive."
+          }
+        },
+        {
+          "name": "ngertiin.read_run_context",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.capture_goal",
+          "input": {
+            "command_id": "d4e5f6a7-b8c9-4d0e-8f1a-b2c3d4e5f6a7",
+            "expected_revision": 2,
+            "goal_id": "a1b2c3d4-e5f6-4a7b-8c9d-e0f1a2b3c4d5",
+            "objective": "Own preparing the facilitator guide only (not all workshop materials) through successive draft and review rounds over the coming days. Keep track of what remains across conversations and carry the work forward as inputs arrive. Current state: no draft yet; first draft expected tomorrow (2026-11-04). Wait for that input; do not produce the guide until it arrives.",
+            "source_message_id": "b73f9222-4f86-471e-a03d-3ec8063167c1",
+            "title": "Facilitator guide ready through review rounds"
+          }
+        },
+        {
+          "name": "ngertiin.report_goal",
+          "input": {
+            "command_id": "e5f6a7b8-c9d0-4e1f-8a2b-c3d4e5f6a7b8",
+            "disposition": "wait",
+            "evidence_artifact_ids": [],
+            "expected_revision": 3,
+            "goal_id": "a1b2c3d4-e5f6-4a7b-8c9d-e0f1a2b3c4d5",
+            "progress": "Updated scope to facilitator guide only. No draft yet; waiting for first draft expected tomorrow. Will track remaining work across conversations as inputs arrive."
+          }
+        }
+      ]
+    },
+    {
+      "harness": "muse",
+      "scenario": "implicit-paraphrase",
+      "category": "ongoing",
+      "pass": true,
+      "turns": [
+        {
+          "input": "I am handing you ownership of bringing the grant application to submission readiness. Maintain its progress through the coming revisions, follow up on unresolved pieces when I return, and keep this responsibility until the application is ready. I will provide the requirements in my next conversation; hold the work pending those inputs.",
+          "expected": {
+            "goals": 1,
+            "routines": 0,
+            "artifacts": 0,
+            "work_state": "waiting"
+          },
+          "goals": [
+            {
+              "thread_id": "0d49f319-d5bb-4497-a271-e1baced0731d",
+              "agent_id": "9bdeb7ec-541e-4d87-a6af-451c1874c2b5",
+              "title": "Grant application submission readiness",
+              "id": "a1b2c3d4-e5f6-4a7b-9c8d-e12345678901",
+              "owner_id": "11b76d25-af54-451e-bad4-40e0b21d0ce9",
+              "revision": 2,
+              "created_at": "2026-11-03T07:39:59.295Z",
+              "updated_at": "2026-11-03T07:40:25.546Z",
+              "kind": "goal",
+              "scope": "agent",
+              "created_by_agent_id": "9bdeb7ec-541e-4d87-a6af-451c1874c2b5",
+              "objective": "Own bringing the grant application to submission readiness. Hold pending user requirements expected in next conversation, then maintain progress through coming revisions, follow up on unresolved pieces when user returns, and keep responsibility until application is ready for submission.",
+              "source_message_ids": [
+                "c9694300-7648-4626-a77a-27c13e302c16"
+              ],
+              "source_run_ids": [
+                "5916caee-168e-49e5-a1e7-1c2682b323c8"
+              ],
+              "progress": "Holding for requirements expected in next conversation. No application work started yet; will resume revisions and unresolved follow-ups once inputs arrive.",
+              "work_state": "waiting",
+              "coordinator_agent_id": "9bdeb7ec-541e-4d87-a6af-451c1874c2b5",
+              "assignment_revision": 1,
+              "assignment_route_id": null,
+              "root_task_id": null,
+              "last_report_error": null,
+              "current_run_id": "5916caee-168e-49e5-a1e7-1c2682b323c8",
+              "continuation_at": null,
+              "continuation_instruction": "",
+              "continuation_sequence": 1,
+              "report_run_id": "5916caee-168e-49e5-a1e7-1c2682b323c8",
+              "deferred_by_run_id": null,
+              "state": "active",
+              "generation": 1,
+              "evidence_artifact_ids": []
+            }
+          ],
+          "routines": [],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "I am handing you ownership of bringing the grant application to submission readiness. Maintain its progress through the coming revisions, follow up on unresolved pieces when I return, and keep this responsibility until the application is ready. I will provide the requirements in my next conversation; hold the work pending those inputs.",
+              "run_id": "5916caee-168e-49e5-a1e7-1c2682b323c8"
+            },
+            {
+              "author": "agent",
+              "text": "Taking ownership of the grant application — I'll set up persistent tracking to hold it ready for your requirements.\n\nI've taken ownership of bringing the grant application to submission readiness.\n\nI'm holding work pending the requirements you'll share in your next conversation, and I'll maintain progress through revisions and follow up on unresolved pieces when you return, until it's ready.",
+              "run_id": "5916caee-168e-49e5-a1e7-1c2682b323c8"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "5916caee-168e-49e5-a1e7-1c2682b323c8",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [
+            "ngertiin.read_run_context",
+            "ngertiin.capture_goal",
+            "ngertiin.describe_tools",
+            "ngertiin.report_goal"
+          ],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:39:12.566Z",
+          "updated_at": "2026-11-03T07:40:34.686Z"
+        }
+      ],
+      "tool_calls": [
+        {
+          "name": "ngertiin.read_run_context",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.capture_goal",
+          "input": {
+            "command_id": "b2c3d4e5-f6a7-4b8c-8d9e-f12345678902",
+            "expected_revision": 0,
+            "goal_id": "a1b2c3d4-e5f6-4a7b-9c8d-e12345678901",
+            "objective": "Own bringing the grant application to submission readiness. Hold pending user requirements expected in next conversation, then maintain progress through coming revisions, follow up on unresolved pieces when user returns, and keep responsibility until application is ready for submission.",
+            "source_message_id": "c9694300-7648-4626-a77a-27c13e302c16",
+            "title": "Grant application submission readiness"
+          }
+        },
+        {
+          "name": "ngertiin.report_goal",
+          "input": {
+            "command_id": "c3d4e5f6-a7b8-4c9d-9e8f-a12345678903",
+            "continuation": "null",
+            "disposition": "wait",
+            "evidence_artifact_ids": [],
+            "expected_revision": 1,
+            "goal_id": "a1b2c3d4-e5f6-4a7b-9c8d-e12345678901",
+            "progress": "Holding for requirements expected in next conversation. No application work started yet; will resume revisions and unresolved follow-ups once inputs arrive."
+          },
+          "error": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"continuation\"\n    ],\n    \"message\": \"Invalid input: expected object, received string\"\n  }\n]"
+        },
+        {
+          "name": "ngertiin.describe_tools",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.report_goal",
+          "input": {
+            "command_id": "c3d4e5f6-a7b8-4c9d-9e8f-a12345678903",
+            "disposition": "wait",
+            "evidence_artifact_ids": [],
+            "expected_revision": 1,
+            "goal_id": "a1b2c3d4-e5f6-4a7b-9c8d-e12345678901",
+            "progress": "Holding for requirements expected in next conversation. No application work started yet; will resume revisions and unresolved follow-ups once inputs arrive."
+          }
+        }
+      ]
+    },
+    {
+      "harness": "muse",
+      "scenario": "explicit-goal-even-for-small-work",
+      "category": "explicit",
+      "pass": true,
+      "turns": [
+        {
+          "input": "Create a tracked Goal named Verified arithmetic. Calculate 19 + 23, publish the calculation as arithmetic.md, and complete that Goal once its result is ready.",
+          "expected": {
+            "goals": 1,
+            "routines": 0,
+            "artifacts": 1,
+            "state": "completed"
+          },
+          "goals": [
+            {
+              "thread_id": "fab6085c-4c31-4927-81dd-293f2639144a",
+              "agent_id": "7aa7dfb9-0651-4564-bcdd-bb9d9060d856",
+              "title": "Verified arithmetic",
+              "id": "11111111-1111-4111-8111-111111111111",
+              "owner_id": "f4cf7bb6-8de2-4694-86b0-49ac781c41bf",
+              "revision": 3,
+              "created_at": "2026-11-03T07:41:03.510Z",
+              "updated_at": "2026-11-03T07:42:01.073Z",
+              "kind": "goal",
+              "scope": "agent",
+              "created_by_agent_id": "7aa7dfb9-0651-4564-bcdd-bb9d9060d856",
+              "objective": "Calculate 19 + 23, publish the calculation as arithmetic.md, and complete once its result is ready.",
+              "source_message_ids": [
+                "945d2fc6-f93b-4f19-ab6b-83e140b02e24"
+              ],
+              "source_run_ids": [
+                "c2d6e1b4-daab-429b-9f08-78d53090ac12"
+              ],
+              "progress": "Calculated 19 + 23 = 42 and published arithmetic.md.",
+              "work_state": "ready",
+              "coordinator_agent_id": "7aa7dfb9-0651-4564-bcdd-bb9d9060d856",
+              "assignment_revision": 1,
+              "assignment_route_id": null,
+              "root_task_id": null,
+              "last_report_error": null,
+              "current_run_id": "c2d6e1b4-daab-429b-9f08-78d53090ac12",
+              "continuation_at": null,
+              "continuation_instruction": "",
+              "continuation_sequence": 1,
+              "report_run_id": "c2d6e1b4-daab-429b-9f08-78d53090ac12",
+              "deferred_by_run_id": null,
+              "state": "completed",
+              "generation": 2,
+              "evidence_artifact_ids": [
+                "44444444-4444-4444-8444-444444444444"
+              ]
+            }
+          ],
+          "routines": [],
+          "artifacts": [
+            {
+              "id": "44444444-4444-4444-8444-444444444444",
+              "name": "arithmetic.md",
+              "size_bytes": 36,
+              "run_id": "c2d6e1b4-daab-429b-9f08-78d53090ac12"
+            }
+          ],
+          "messages": [
+            {
+              "author": "user",
+              "text": "Create a tracked Goal named Verified arithmetic. Calculate 19 + 23, publish the calculation as arithmetic.md, and complete that Goal once its result is ready.",
+              "run_id": "c2d6e1b4-daab-429b-9f08-78d53090ac12"
+            },
+            {
+              "author": "agent",
+              "text": "Setting up your verified arithmetic goal and calculation.\n\nDone. Created goal Verified arithmetic, calculated 19 + 23 = 42, and published `arithmetic.md`.\n\nThe goal is reported completed with the published calculation as evidence.",
+              "run_id": "c2d6e1b4-daab-429b-9f08-78d53090ac12"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "c2d6e1b4-daab-429b-9f08-78d53090ac12",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [
+            "ngertiin.read_run_context",
+            "ngertiin.capture_goal",
+            "ngertiin.create_file",
+            "ngertiin.publish_artifact",
+            "ngertiin.report_goal"
+          ],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:40:35.739Z",
+          "updated_at": "2026-11-03T07:42:00.988Z"
+        }
+      ],
+      "tool_calls": [
+        {
+          "name": "ngertiin.read_run_context",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.capture_goal",
+          "input": {
+            "command_id": "22222222-2222-4222-8222-222222222222",
+            "expected_revision": 0,
+            "goal_id": "11111111-1111-4111-8111-111111111111",
+            "objective": "Calculate 19 + 23, publish the calculation as arithmetic.md, and complete once its result is ready.",
+            "source_message_id": "945d2fc6-f93b-4f19-ab6b-83e140b02e24",
+            "title": "Verified arithmetic"
+          }
+        },
+        {
+          "name": "ngertiin.create_file",
+          "input": {
+            "command_id": "33333333-3333-4333-8333-333333333333",
+            "path": "arithmetic.md",
+            "text": "# Verified arithmetic\n\n19 + 23 = 42\n"
+          }
+        },
+        {
+          "name": "ngertiin.publish_artifact",
+          "input": {
+            "command_id": "44444444-4444-4444-8444-444444444444",
+            "media_type": "text/markdown",
+            "path": "arithmetic.md"
+          }
+        },
+        {
+          "name": "ngertiin.report_goal",
+          "input": {
+            "command_id": "55555555-5555-4555-8555-555555555555",
+            "disposition": "completed",
+            "evidence_artifact_ids": [
+              "44444444-4444-4444-8444-444444444444"
+            ],
+            "expected_revision": 1,
+            "goal_id": "11111111-1111-4111-8111-111111111111",
+            "progress": "Calculated 19 + 23 = 42 and published arithmetic.md."
+          }
+        }
+      ]
+    },
+    {
+      "harness": "muse",
+      "scenario": "promote-when-responsibility-expands",
+      "category": "context",
+      "pass": true,
+      "turns": [
+        {
+          "input": "What are the main sections of a grant application? Answer briefly.",
+          "expected": {
+            "goals": 0,
+            "routines": 0,
+            "artifacts": 0
+          },
+          "goals": [],
+          "routines": [],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "What are the main sections of a grant application? Answer briefly.",
+              "run_id": "263ea044-9443-4357-80d1-649a388dcb7b"
+            },
+            {
+              "author": "agent",
+              "text": "Typically: executive summary, needs statement, goals and objectives, methods or project plan, evaluation plan, budget and justification, organizational capacity, and supporting documents.",
+              "run_id": "263ea044-9443-4357-80d1-649a388dcb7b"
+            }
+          ]
+        },
+        {
+          "input": "Now take ownership of getting mine ready over our next several conversations. Track outstanding sections and carry it forward until ready for submission. I will bring the eligibility requirements tomorrow; wait for those before drafting.",
+          "expected": {
+            "goals": 1,
+            "routines": 0,
+            "artifacts": 0,
+            "work_state": "waiting"
+          },
+          "goals": [
+            {
+              "thread_id": "e3e00743-61b2-400e-9e68-13cb0b0f9bba",
+              "agent_id": "992a42f7-1610-41cc-bd6f-9c180304309d",
+              "title": "Prepare grant application for submission",
+              "id": "c4d5e6f7-a8b9-4c5d-8e6f-a7b8c9d0e1f2",
+              "owner_id": "76dd60e6-53bc-4021-a075-9b182c0ede8f",
+              "revision": 2,
+              "created_at": "2026-11-03T07:41:49.251Z",
+              "updated_at": "2026-11-03T07:42:14.556Z",
+              "kind": "goal",
+              "scope": "agent",
+              "created_by_agent_id": "992a42f7-1610-41cc-bd6f-9c180304309d",
+              "objective": "Take ownership of getting user's grant application ready over next several conversations. Track outstanding sections (summary, needs, goals/objectives, methods, evaluation, budget, capacity, supporting docs) and carry state forward until ready for submission. Do not draft until user provides eligibility requirements expected tomorrow; use them to guide drafting when received.",
+              "source_message_ids": [
+                "bceb46f5-dc4b-4ee1-bda8-75a161405abe"
+              ],
+              "source_run_ids": [
+                "5954cf6e-d86d-4dc4-9677-1c3fdbb67e84"
+              ],
+              "progress": "Taking ownership of grant application preparation. Outstanding sections to track: summary, needs, goals, methods, evaluation, budget, capacity, supporting docs. Pausing drafting until eligibility requirements arrive tomorrow.",
+              "work_state": "waiting",
+              "coordinator_agent_id": "992a42f7-1610-41cc-bd6f-9c180304309d",
+              "assignment_revision": 1,
+              "assignment_route_id": null,
+              "root_task_id": null,
+              "last_report_error": null,
+              "current_run_id": "5954cf6e-d86d-4dc4-9677-1c3fdbb67e84",
+              "continuation_at": null,
+              "continuation_instruction": "",
+              "continuation_sequence": 1,
+              "report_run_id": "5954cf6e-d86d-4dc4-9677-1c3fdbb67e84",
+              "deferred_by_run_id": null,
+              "state": "active",
+              "generation": 1,
+              "evidence_artifact_ids": []
+            }
+          ],
+          "routines": [],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "What are the main sections of a grant application? Answer briefly.",
+              "run_id": "263ea044-9443-4357-80d1-649a388dcb7b"
+            },
+            {
+              "author": "agent",
+              "text": "Typically: executive summary, needs statement, goals and objectives, methods or project plan, evaluation plan, budget and justification, organizational capacity, and supporting documents.",
+              "run_id": "263ea044-9443-4357-80d1-649a388dcb7b"
+            },
+            {
+              "author": "user",
+              "text": "Now take ownership of getting mine ready over our next several conversations. Track outstanding sections and carry it forward until ready for submission. I will bring the eligibility requirements tomorrow; wait for those before drafting.",
+              "run_id": "5954cf6e-d86d-4dc4-9677-1c3fdbb67e84"
+            },
+            {
+              "author": "agent",
+              "text": "I'll take ownership of getting your application ready and track it across our conversations.\n\nI'll take ownership of getting your grant application ready.\n\nI'm tracking the outstanding sections — summary, needs, goals, methods, evaluation, budget, capacity, and supporting docs — and I'll carry it forward until it's ready for submission.\n\nI'll wait for the eligibility requirements tomorrow before drafting anything.",
+              "run_id": "5954cf6e-d86d-4dc4-9677-1c3fdbb67e84"
+            }
+          ]
+        },
+        {
+          "input": "By the way, translate the phrase 'good morning' into French.",
+          "expected": {
+            "goals": 1,
+            "routines": 0,
+            "artifacts": 0,
+            "work_state": "waiting",
+            "same_goal": true
+          },
+          "goals": [
+            {
+              "thread_id": "e3e00743-61b2-400e-9e68-13cb0b0f9bba",
+              "agent_id": "992a42f7-1610-41cc-bd6f-9c180304309d",
+              "title": "Prepare grant application for submission",
+              "id": "c4d5e6f7-a8b9-4c5d-8e6f-a7b8c9d0e1f2",
+              "owner_id": "76dd60e6-53bc-4021-a075-9b182c0ede8f",
+              "revision": 2,
+              "created_at": "2026-11-03T07:41:49.251Z",
+              "updated_at": "2026-11-03T07:42:14.556Z",
+              "kind": "goal",
+              "scope": "agent",
+              "created_by_agent_id": "992a42f7-1610-41cc-bd6f-9c180304309d",
+              "objective": "Take ownership of getting user's grant application ready over next several conversations. Track outstanding sections (summary, needs, goals/objectives, methods, evaluation, budget, capacity, supporting docs) and carry state forward until ready for submission. Do not draft until user provides eligibility requirements expected tomorrow; use them to guide drafting when received.",
+              "source_message_ids": [
+                "bceb46f5-dc4b-4ee1-bda8-75a161405abe"
+              ],
+              "source_run_ids": [
+                "5954cf6e-d86d-4dc4-9677-1c3fdbb67e84"
+              ],
+              "progress": "Taking ownership of grant application preparation. Outstanding sections to track: summary, needs, goals, methods, evaluation, budget, capacity, supporting docs. Pausing drafting until eligibility requirements arrive tomorrow.",
+              "work_state": "waiting",
+              "coordinator_agent_id": "992a42f7-1610-41cc-bd6f-9c180304309d",
+              "assignment_revision": 1,
+              "assignment_route_id": null,
+              "root_task_id": null,
+              "last_report_error": null,
+              "current_run_id": "5954cf6e-d86d-4dc4-9677-1c3fdbb67e84",
+              "continuation_at": null,
+              "continuation_instruction": "",
+              "continuation_sequence": 1,
+              "report_run_id": "5954cf6e-d86d-4dc4-9677-1c3fdbb67e84",
+              "deferred_by_run_id": null,
+              "state": "active",
+              "generation": 1,
+              "evidence_artifact_ids": []
+            }
+          ],
+          "routines": [],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "What are the main sections of a grant application? Answer briefly.",
+              "run_id": "263ea044-9443-4357-80d1-649a388dcb7b"
+            },
+            {
+              "author": "agent",
+              "text": "Typically: executive summary, needs statement, goals and objectives, methods or project plan, evaluation plan, budget and justification, organizational capacity, and supporting documents.",
+              "run_id": "263ea044-9443-4357-80d1-649a388dcb7b"
+            },
+            {
+              "author": "user",
+              "text": "Now take ownership of getting mine ready over our next several conversations. Track outstanding sections and carry it forward until ready for submission. I will bring the eligibility requirements tomorrow; wait for those before drafting.",
+              "run_id": "5954cf6e-d86d-4dc4-9677-1c3fdbb67e84"
+            },
+            {
+              "author": "agent",
+              "text": "I'll take ownership of getting your application ready and track it across our conversations.\n\nI'll take ownership of getting your grant application ready.\n\nI'm tracking the outstanding sections — summary, needs, goals, methods, evaluation, budget, capacity, and supporting docs — and I'll carry it forward until it's ready for submission.\n\nI'll wait for the eligibility requirements tomorrow before drafting anything.",
+              "run_id": "5954cf6e-d86d-4dc4-9677-1c3fdbb67e84"
+            },
+            {
+              "author": "user",
+              "text": "By the way, translate the phrase 'good morning' into French.",
+              "run_id": "74d73565-9c4c-474d-a9c1-87992065bc95"
+            },
+            {
+              "author": "agent",
+              "text": "\"Good morning\" in French is \"bonjour.\"",
+              "run_id": "74d73565-9c4c-474d-a9c1-87992065bc95"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "263ea044-9443-4357-80d1-649a388dcb7b",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:40:49.077Z",
+          "updated_at": "2026-11-03T07:41:04.538Z"
+        },
+        {
+          "id": "5954cf6e-d86d-4dc4-9677-1c3fdbb67e84",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [
+            "ngertiin.describe_tools",
+            "ngertiin.read_run_context",
+            "ngertiin.capture_goal",
+            "ngertiin.report_goal"
+          ],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:41:05.448Z",
+          "updated_at": "2026-11-03T07:42:53.338Z"
+        },
+        {
+          "id": "74d73565-9c4c-474d-a9c1-87992065bc95",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": null,
+          "product_tools": [],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:42:54.196Z",
+          "updated_at": "2026-11-03T07:43:06.783Z"
+        }
+      ],
+      "tool_calls": [
+        {
+          "name": "ngertiin.describe_tools",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.read_run_context",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.capture_goal",
+          "input": {
+            "command_id": "d4e5f6a7-b8c9-4d6e-9f0a-b1c2d3e4f5a6",
+            "expected_revision": 0,
+            "goal_id": "c4d5e6f7-a8b9-4c5d-8e6f-a7b8c9d0e1f2",
+            "objective": "Take ownership of getting user's grant application ready over next several conversations. Track outstanding sections (summary, needs, goals/objectives, methods, evaluation, budget, capacity, supporting docs) and carry state forward until ready for submission. Do not draft until user provides eligibility requirements expected tomorrow; use them to guide drafting when received.",
+            "source_message_id": "bceb46f5-dc4b-4ee1-bda8-75a161405abe",
+            "title": "Prepare grant application for submission"
+          }
+        },
+        {
+          "name": "ngertiin.report_goal",
+          "input": {
+            "command_id": "e5f6a7b8-c9d0-4e7f-af1b-c2d3e4f5a6b7",
+            "continuation": "null",
+            "disposition": "wait",
+            "evidence_artifact_ids": [],
+            "expected_revision": 1,
+            "goal_id": "c4d5e6f7-a8b9-4c5d-8e6f-a7b8c9d0e1f2",
+            "progress": "Taking ownership of grant application preparation. Outstanding sections to track: summary, needs, goals, methods, evaluation, budget, capacity, supporting docs. Pausing drafting until eligibility requirements arrive tomorrow."
+          },
+          "error": "[\n  {\n    \"expected\": \"object\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"continuation\"\n    ],\n    \"message\": \"Invalid input: expected object, received string\"\n  }\n]"
+        },
+        {
+          "name": "ngertiin.report_goal",
+          "input": {
+            "command_id": "e5f6a7b8-c9d0-4e7f-af1b-c2d3e4f5a6b7",
+            "disposition": "wait",
+            "evidence_artifact_ids": [],
+            "expected_revision": 1,
+            "goal_id": "c4d5e6f7-a8b9-4c5d-8e6f-a7b8c9d0e1f2",
+            "progress": "Taking ownership of grant application preparation. Outstanding sections to track: summary, needs, goals, methods, evaluation, budget, capacity, supporting docs. Pausing drafting until eligibility requirements arrive tomorrow."
+          }
+        }
+      ]
+    },
+    {
+      "harness": "muse",
+      "scenario": "peer-request-is-not-an-outcome",
+      "category": "delegation",
+      "pass": false,
+      "turns": [],
+      "error": "Native evaluation deadline exceeded; no automatic retry.",
+      "runs": [
+        {
+          "id": "43028dd4-8943-467a-82e7-2b341a77fe7f",
+          "status": "cancelled",
+          "outcome": "cancelled",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": "0b8cc33b-37ae-4ca6-95c6-b63b80be3be8",
+          "product_tools": [
+            "ngertiin.group_handoff",
+            "ngertiin.group_read_task",
+            "ngertiin.group_read_task",
+            "ngertiin.group_read_task",
+            "ngertiin.group_read_task",
+            "ngertiin.group_read_task",
+            "ngertiin.group_read_task",
+            "ngertiin.group_read_task",
+            "ngertiin.group_read_task"
+          ],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:42:02.117Z",
+          "updated_at": "2026-11-03T07:45:02.529Z"
+        },
+        {
+          "id": "b20d05bb-bedc-4a4a-bdc2-ed60c3bf0941",
+          "status": "queued",
+          "outcome": "none",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": "7075fdb5-b77a-40b8-b774-50f6053eaf05",
+          "product_tools": [],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:42:20.460Z",
+          "updated_at": "2026-11-03T07:42:20.460Z"
+        }
+      ],
+      "tool_calls": [
+        {
+          "name": "ngertiin.group_handoff",
+          "input": {
+            "agent_id": "06b2f801-03da-4eea-89f4-d9c2f57c07a2",
+            "announcement": "Passing to Reviewer to say hello.",
+            "command_id": "a1b2c3d4-e5f6-4a7b-8c9d-e0f123456789",
+            "continuation": "synthesize",
+            "instruction": "Please greet the user with a brief friendly hello as Reviewer. This is a simple greeting task.",
+            "purpose": "handoff",
+            "summary": "Reviewer greeting request"
+          }
+        },
+        {
+          "name": "ngertiin.group_read_task",
+          "input": {
+            "offset": 0,
+            "task_id": "0b8cc33b-37ae-4ca6-95c6-b63b80be3be8"
+          }
+        },
+        {
+          "name": "ngertiin.group_read_task",
+          "input": {
+            "offset": 0,
+            "task_id": "7075fdb5-b77a-40b8-b774-50f6053eaf05"
+          }
+        },
+        {
+          "name": "ngertiin.group_read_task",
+          "input": {
+            "offset": 0,
+            "task_id": "7075fdb5-b77a-40b8-b774-50f6053eaf05"
+          }
+        },
+        {
+          "name": "ngertiin.group_read_task",
+          "input": {
+            "offset": 0,
+            "task_id": "7075fdb5-b77a-40b8-b774-50f6053eaf05"
+          }
+        },
+        {
+          "name": "ngertiin.group_read_task",
+          "input": {
+            "offset": 0,
+            "task_id": "7075fdb5-b77a-40b8-b774-50f6053eaf05"
+          }
+        },
+        {
+          "name": "ngertiin.group_read_task",
+          "input": {
+            "offset": 0,
+            "task_id": "7075fdb5-b77a-40b8-b774-50f6053eaf05"
+          }
+        },
+        {
+          "name": "ngertiin.group_read_task",
+          "input": {
+            "offset": 0,
+            "task_id": "7075fdb5-b77a-40b8-b774-50f6053eaf05"
+          }
+        },
+        {
+          "name": "ngertiin.group_read_task",
+          "input": {
+            "offset": 0,
+            "task_id": "7075fdb5-b77a-40b8-b774-50f6053eaf05"
+          }
+        }
+      ]
+    }
+  ],
+  "original_records": {
+    "checked": 160,
+    "changed_or_missing": [],
+    "before_sha256": "69d25885340debbc75d54958d1a9e718cb7455b456232ae3da8eaf9168d45245"
+  },
+  "finished_at": "2026-11-03T07:45:02.625Z",
+  "summary": {
+    "scenarios": 30,
+    "passed": 29,
+    "failed": 1,
+    "false_positive_scenarios": [],
+    "false_negative_scenarios": [],
+    "admitted_runs": 41
+  }
+}

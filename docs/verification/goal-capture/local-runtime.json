@@ -1,0 +1,21 @@
+{
+  "activated_at": "2026-11-03T07:50:42.362Z",
+  "health_http": 200,
+  "ready": {
+    "status": "foundation_ready",
+    "contract_version": "1.24.0",
+    "persistence": "ready",
+    "scheduler": "running",
+    "dispatcher": "running",
+    "registered_executors": 2,
+    "api_readiness_gate": "ready"
+  },
+  "contracts_http": 200,
+  "new_routine_guidance_loaded": true,
+  "prompt_sha256": "6f6c0a914e1115051dd8656a1c16096b369489909819cdc996c80b269e6bb645",
+  "preserved_records": 160,
+  "changed_or_missing": [],
+  "original_goals": 9,
+  "original_routines": 6,
+  "activation_notes": "The first idle-process shutdown stopped listening but retained its authority lock; after verifying zero active runs again, that process was terminated. The final reload stopped the replacement normally. One final application authority is running. No reset or direct database mutation was performed by activation commands."
+}

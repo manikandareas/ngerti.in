@@ -21,7 +21,7 @@ import { registerWorkspaceTools } from "../workspaces/tools";
 import { Connections } from "./connections";
 import { type ToolScope, toolScope } from "./contracts";
 import { ProductToolMcp } from "./mcp";
-import { productToolSchemas } from "./product-tool-contracts";
+import { productToolDefinition, productToolSchemas } from "./product-tool-contracts";
 
 export type Resource = {
   kind: "agent" | "thread" | "run" | "message" | "goal" | "routine" | "artifact";
@@ -44,7 +44,7 @@ export class ProductTools {
       (this.lifecycle.store.get("thread", scope.thread_id).purpose === "routing"
         ? []
         : [...this.#tools]
-      ).map(([name, tool]) => ({ name, inputSchema: z.toJSONSchema(tool.schema) })),
+      ).map(([name, tool]) => productToolDefinition(name, tool.schema)),
     call: (token, scope, name, input) => this.call(token, scope, name, input),
   });
   constructor(
@@ -109,10 +109,7 @@ export class ProductTools {
       execute: (_input, { authorize }) => {
         authorize();
         return {
-          tools: [...this.#tools].map(([name, tool]) => ({
-            name,
-            inputSchema: z.toJSONSchema(tool.schema),
-          })),
+          tools: [...this.#tools].map(([name, tool]) => productToolDefinition(name, tool.schema)),
         };
       },
     });

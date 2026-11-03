@@ -1,0 +1,256 @@
+{
+  "contract": "1.24.0",
+  "started_at": "2026-11-03T07:45:21.255Z",
+  "prompt_sha256": "6f6c0a914e1115051dd8656a1c16096b369489909819cdc996c80b269e6bb645",
+  "source_sha256": {
+    "apps/server/src/goals/instructions.ts": "6f6c0a914e1115051dd8656a1c16096b369489909819cdc996c80b269e6bb645",
+    "apps/server/src/goals/contracts.ts": "d63d868b3a7d4dea04049f7d5de77357d3414fed2ee24e6863320385d5371f2d",
+    "apps/server/src/harness/instructions.ts": "6efbf49ace55475d865d3b21cc5eacd6e21de1e73651bdf11c1b4a562cf282de",
+    "apps/server/src/harness/product-tool-contracts.ts": "61cfd91e761d25c6f7baa080584fb3a102145800ed11eb3897d768ea6f458b9f",
+    "scripts/verification/goal-capture/cases.ts": "7f59332cafe596c09d0a80ccabcc3627ff084802392b9420667910395e011c09"
+  },
+  "lanes": [
+    {
+      "harness": "muse",
+      "version": "1.4.14-R7309.1",
+      "billing_source": "api_key",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "harness": "codex",
+      "version": "0.166.0",
+      "billing_source": "subscription",
+      "model": "gpt-6.1-sol"
+    }
+  ],
+  "results": [
+    {
+      "harness": "muse",
+      "scenario": "peer-request-is-not-an-outcome",
+      "category": "delegation",
+      "pass": true,
+      "turns": [
+        {
+          "input": "Coordinator, ask Reviewer to say hello to me.",
+          "expected": {
+            "goals": 0,
+            "routines": 0,
+            "artifacts": 0,
+            "handoff": true
+          },
+          "goals": [],
+          "routines": [],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "Coordinator, ask Reviewer to say hello to me.",
+              "run_id": null
+            },
+            {
+              "author": "agent",
+              "text": "Hello [@user](ngertiin://user/owner)! I'm Reviewer — nice to meet you!",
+              "run_id": "0a95aa3f-e352-40fd-8939-811f2b32006d"
+            },
+            {
+              "author": "agent",
+              "text": "Done — [@Reviewer](ngertiin://agent/e469ec04-3800-4f2c-b541-222852d53460) says:\n\nHello [@user](ngertiin://user/owner)! I'm Reviewer — nice to meet you!",
+              "run_id": "f520e67e-1954-4771-911f-b9375b81b9c4"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "d774bc84-3fbb-48c1-9b1a-bdc9652b89ce",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": "aee278b8-6870-4fea-939e-06cad2bd960b",
+          "product_tools": [
+            "ngertiin.group_handoff",
+            "ngertiin.group_read_task",
+            "ngertiin.group_read_task",
+            "ngertiin.group_read_task",
+            "ngertiin.group_read_task"
+          ],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:45:21.431Z",
+          "updated_at": "2026-11-03T07:47:33.177Z"
+        },
+        {
+          "id": "0a95aa3f-e352-40fd-8939-811f2b32006d",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": "e943fa3b-9b04-4d64-b21a-891e376ca557",
+          "product_tools": [],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:45:39.184Z",
+          "updated_at": "2026-11-03T07:47:52.134Z"
+        },
+        {
+          "id": "f520e67e-1954-4771-911f-b9375b81b9c4",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": "aee278b8-6870-4fea-939e-06cad2bd960b",
+          "product_tools": [],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:47:52.295Z",
+          "updated_at": "2026-11-03T07:48:06.817Z"
+        }
+      ],
+      "tool_calls": [
+        {
+          "name": "ngertiin.group_handoff",
+          "input": {
+            "agent_id": "e469ec04-3800-4f2c-b541-222852d53460",
+            "announcement": "Got it — I'm asking [@Reviewer](ngertiin://agent/e469ec04-3800-4f2c-b541-222852d53460) to say hello to you now.",
+            "command_id": "11111111-1111-4111-8111-111111111111",
+            "continuation": "synthesize",
+            "instruction": "Please say hello to the user in a brief, friendly way. This is a simple greeting task - just greet @user directly.",
+            "purpose": "handoff",
+            "summary": "Ask Reviewer to greet user"
+          }
+        },
+        {
+          "name": "ngertiin.group_read_task",
+          "input": {
+            "offset": 0,
+            "task_id": "aee278b8-6870-4fea-939e-06cad2bd960b"
+          }
+        },
+        {
+          "name": "ngertiin.group_read_task",
+          "input": {
+            "offset": 0,
+            "task_id": "e943fa3b-9b04-4d64-b21a-891e376ca557"
+          }
+        },
+        {
+          "name": "ngertiin.group_read_task",
+          "input": {
+            "offset": 0,
+            "task_id": "e943fa3b-9b04-4d64-b21a-891e376ca557"
+          }
+        },
+        {
+          "name": "ngertiin.group_read_task",
+          "input": {
+            "offset": 0,
+            "task_id": "e943fa3b-9b04-4d64-b21a-891e376ca557"
+          }
+        }
+      ]
+    },
+    {
+      "harness": "codex",
+      "scenario": "peer-request-is-not-an-outcome",
+      "category": "delegation",
+      "pass": true,
+      "turns": [
+        {
+          "input": "Coordinator, ask Reviewer to say hello to me.",
+          "expected": {
+            "goals": 0,
+            "routines": 0,
+            "artifacts": 0,
+            "handoff": true
+          },
+          "goals": [],
+          "routines": [],
+          "artifacts": [],
+          "messages": [
+            {
+              "author": "user",
+              "text": "Coordinator, ask Reviewer to say hello to me.",
+              "run_id": null
+            },
+            {
+              "author": "agent",
+              "text": "Hello, [@user](ngertiin://user/owner)! 👋",
+              "run_id": "158c1375-e28f-405d-aa97-08ff5c4fb672"
+            }
+          ]
+        }
+      ],
+      "runs": [
+        {
+          "id": "bf5806c4-fc94-4a7c-8a12-cf92c5510d7e",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": "926b8dde-0177-4ca9-9afa-60df931c94c0",
+          "product_tools": [
+            "ngertiin.describe_tools",
+            "ngertiin.group_handoff"
+          ],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:45:21.622Z",
+          "updated_at": "2026-11-03T07:45:38.000Z"
+        },
+        {
+          "id": "158c1375-e28f-405d-aa97-08ff5c4fb672",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": "900f59ca-900d-46e6-b968-83192c589cf4",
+          "product_tools": [],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:45:35.425Z",
+          "updated_at": "2026-11-03T07:45:45.683Z"
+        },
+        {
+          "id": "f2603059-15e9-4f1c-be86-e26ce531f3d8",
+          "status": "succeeded",
+          "outcome": "succeeded",
+          "goal_id": null,
+          "routine_id": null,
+          "task_id": "926b8dde-0177-4ca9-9afa-60df931c94c0",
+          "product_tools": [],
+          "diagnostic": null,
+          "created_at": "2026-11-03T07:45:45.849Z",
+          "updated_at": "2026-11-03T07:45:50.895Z"
+        }
+      ],
+      "tool_calls": [
+        {
+          "name": "ngertiin.describe_tools",
+          "input": {}
+        },
+        {
+          "name": "ngertiin.group_handoff",
+          "input": {
+            "agent_id": "39658c23-b9da-4372-82e3-a3c7e276d501",
+            "instruction": "The user asked Coordinator to ask Reviewer to say hello. Say a brief friendly hello to the user in this shared thread using [@user](ngertiin://user/owner). Finish your task after greeting; no file or Goal is needed.",
+            "purpose": "handoff",
+            "summary": "Ask Reviewer to greet you.",
+            "announcement": "[@Reviewer](ngertiin://agent/39658c23-b9da-4372-82e3-a3c7e276d501), please say hello to [@user](ngertiin://user/owner).",
+            "continuation": "finalize",
+            "command_id": "ecfd85a3-50ab-414a-a590-f2ccb6b6ad6e"
+          }
+        }
+      ]
+    }
+  ],
+  "original_records": {
+    "checked": 160,
+    "changed_or_missing": [],
+    "before_sha256": "69d25885340debbc75d54958d1a9e718cb7455b456232ae3da8eaf9168d45245"
+  },
+  "finished_at": "2026-11-03T07:48:07.869Z",
+  "summary": {
+    "scenarios": 2,
+    "passed": 2,
+    "failed": 0,
+    "false_positive_scenarios": [],
+    "false_negative_scenarios": [],
+    "admitted_runs": 6
+  }
+}

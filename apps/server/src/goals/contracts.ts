@@ -86,6 +86,13 @@ export const goalControl = z.strictObject({
   state: z.enum(["active", "paused", "stopped"]),
 });
 export const routineWrite = z.strictObject({
+  name: z
+    .string()
+    .trim()
+    .min(1)
+    .max(120)
+    .describe("A short, plain-language Routine title, separate from execution instructions.")
+    .optional(),
   routine_id: id,
   expected_revision: z.int().nonnegative(),
   goal_id: id.nullable().default(null),
@@ -138,6 +145,7 @@ export const goal = goalInput
     "Completed goals require evidence.",
   );
 export const routineInput = z.strictObject({
+  name: z.string().trim().min(1).max(120).nullable().default(null),
   thread_id: id,
   agent_id: id.nullable().default(null),
   goal_id: id.nullable().default(null),

@@ -81,6 +81,7 @@ export const handoffInput = z.strictObject({
   instruction: text,
   purpose: z.enum(["handoff", "review"]),
   summary: z.string().trim().min(1).max(240).nullable().default(null),
+  announcement: z.string().trim().min(1).max(16_000).nullable().default(null),
   continuation: z.enum(["synthesize", "finalize"]).default("synthesize"),
 });
 export const askHumanInput = z.strictObject({

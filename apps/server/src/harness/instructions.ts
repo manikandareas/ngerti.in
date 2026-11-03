@@ -1,5 +1,6 @@
 import { agentInstructions } from "../agent-instructions";
 import { DomainError, type Entity } from "../contracts";
+import { publicReferences } from "../conversations/references";
 import { Goals } from "../goals/service";
 import { Groups } from "../groups/service";
 import { Memories } from "../learning/memories";
@@ -32,6 +33,7 @@ export function runLearningContext(lifecycle: Lifecycle, run: Entity<"run">) {
   return lifecycle.store.get("thread", run.thread_id).purpose === "routing"
     ? ""
     : [
+        publicReferences(lifecycle.store, run),
         new Groups(lifecycle).context(run),
         new Goals(lifecycle).context(run),
         "Current authoritative learning state. Use these identities/revisions instead of obsolete facts in native history. Deleted records must remain deleted. Do not recreate them from older transcript or tool receipts. Use ngertiin.list_memories for fresh scoped recall and ngertiin.write_memory/delete_memory for changes; new identities start at expected_revision 0. Changes are committed when their tool receipt succeeds, even if this run later stops. Use a fresh UUID command_id for a distinct mutation and the same UUID on retries. Visibility is explicit: dm_private, group or shared (across this agent's conversations). Never promote private content into shared memory or a shared skill without an explicit sharing request.",

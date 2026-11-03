@@ -24,7 +24,12 @@ export function readConversationPreviews(store: Store): z.infer<typeof conversat
         ["continuation", "handoff", "review"].includes(current.purpose)
       )
         continue;
-      const text = current.text.replace(/\s+/g, " ").trim();
+      const text = current.text
+        .replace(/\[((?:\\.|[^\]\\])*)\]\(ngertiin:\/\/[^\s)]+\)/g, (_, label: string) =>
+          label.replace(/\\(.)/g, "$1"),
+        )
+        .replace(/\s+/g, " ")
+        .trim();
       if (!text && !current.artifact_ids.length) continue;
       latest.set(current.thread_id, {
         id: current.id,

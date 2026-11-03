@@ -564,6 +564,7 @@ export class Lifecycle {
         return this.update(run, {
           status: run.status === "dispatching" ? "running" : run.status,
           native_run_id: nativeRunId ?? run.native_run_id,
+          diagnostic: run.diagnostic?.outcome === "not_dispatched" ? null : run.diagnostic,
           activity: run.cancellation === "requested" ? "stopping" : "generating",
         });
       return run;
@@ -707,7 +708,7 @@ export class Lifecycle {
           .some((g) => g.current_run_id === run.id && g.deferred_by_run_id === run.id)
       )
         return run;
-      if (run.publication !== "immediate") {
+      if (run.publication !== "immediate" || run.response_mode === "finalize") {
         return this.update(run, { pending_answer: text });
       }
       return this.writeAnswer(run, text, state);

@@ -373,7 +373,8 @@ test("coordinator reassignment returns the committed self-stop receipt and conti
   expect(f.store.list("run")).toHaveLength(1);
   f.lifecycle.settle(run.id, run.dispatch_token as string, "cancelled");
   new Groups(f.lifecycle).advance();
-  new Goals(f.lifecycle).advance();
+  // The next scheduler tick observes the freshly recorded continuation time.
+  new Goals(f.lifecycle).advance(new Date(Date.now() + 1000));
   const assigned = f.store.get("goal", goal.id);
   expect(assigned.work_state).toBe("ready");
   expect(f.store.get("run", assigned.current_run_id).agent_id).toBe(peer.id);

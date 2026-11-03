@@ -320,6 +320,7 @@ test("quiet scheduled output has no streamed or final bubble, while relevant out
   const source = start();
   const r = routine(goals, source);
   finish(source);
+  const beforeParts = new Conversations(f.lifecycle).timeline(f.thread.id).parts;
   let occurrence = f.lifecycle.fireRoutine(r.id, new Date("2026-10-31T00:00:00Z"));
   let run = start((occurrence as Entity<"occurrence">).run_id);
   f.lifecycle.appendAnswer(run.id, "Checking...", "partial");
@@ -328,6 +329,7 @@ test("quiet scheduled output has no streamed or final bubble, while relevant out
   f.lifecycle.appendAnswer(run.id, "No changes.");
   finish(run);
   expect(f.store.answer(run.id)).toBeNull();
+  expect(new Conversations(f.lifecycle).timeline(f.thread.id).parts).toEqual(beforeParts);
   occurrence = f.lifecycle.fireRoutine(r.id, new Date("2026-10-31T00:00:01Z"));
   run = start((occurrence as Entity<"occurrence">).run_id);
   f.lifecycle.appendAnswer(run.id, "A meaningful change is ready.");
@@ -506,7 +508,7 @@ test("HTTP contracts expose goal/Routine commands, snapshot/replay and authentic
   expect(await (await request("/v1/goals/capture", input)).json()).toEqual(receipt);
   expect(f.store.cursor).toBe(cursor);
   const document = await (await request("/v1/contracts")).json();
-  expect(document.version).toBe("1.23.0");
+  expect(document.version).toBe("1.24.0");
   expect(document.commands.report_goal).toBeDefined();
   const snapshot = await (await request(`/v1/threads/${run.thread_id}/snapshot`)).json();
   expect(snapshot.goals[0].id).toBe(input.goal_id);

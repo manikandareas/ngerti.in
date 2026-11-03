@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { chmodSync, mkdirSync } from "node:fs";
 import { dirname } from "node:path";
 import { DomainError, type DomainEvent, type Entity, type Kind, schemas } from "./contracts";
+import { ConversationJournal } from "./conversations/journal";
 
 const APPLICATION_ID = 0x4e474831;
 const SCHEMA_VERSION = 1;
@@ -21,6 +22,7 @@ export function canonical(value: unknown): string {
 export class Store {
   readonly #db: Database;
   readonly #lock: Database;
+  readonly journal: ConversationJournal;
   #closed = false;
   constructor(
     readonly path: string,
@@ -112,6 +114,22 @@ export class Store {
         })
         .immediate();
       this.#db.exec("PRAGMA journal_mode=WAL; PRAGMA synchronous=FULL");
+      this.journal = new ConversationJournal(this.#db, (kind, id, cursor) => {
+        const row =
+          cursor === undefined
+            ? this.#db
+                .query<{ body: string }, [string, string]>(
+                  "SELECT body FROM entities WHERE kind=? AND id=?",
+                )
+                .get(kind, id)
+            : this.#db
+                .query<{ body: string }, [string, string, number]>(
+                  "SELECT json_extract(body,'$.data') AS body FROM events WHERE json_extract(body,'$.entity_kind')=? AND json_extract(body,'$.entity_id')=? AND cursor<=? ORDER BY cursor DESC LIMIT 1",
+                )
+                .get(kind, id, cursor);
+        return row ? (JSON.parse(row.body) as Entity<typeof kind>) : null;
+      });
+      this.transaction(() => this.journal.replay());
     } catch (error) {
       this.close();
       throw error;
@@ -180,6 +198,7 @@ export class Store {
     const validated = schemas[entity.kind].parse(entity);
     if (validated.owner_id !== this.ownerId) throw new DomainError("SCOPE_DENIED", 403);
     return this.transaction(() => {
+      const previous = expectedRevision === null ? null : this.get(entity.kind, entity.id);
       const body = JSON.stringify(validated);
       if (expectedRevision === null) {
         this.#db
@@ -204,7 +223,10 @@ export class Store {
         created_at: entity.updated_at,
         data: validated,
       };
-      this.#db.query("INSERT INTO events (body) VALUES (?)").run(JSON.stringify(event));
+      const inserted = this.#db
+        .query("INSERT INTO events (body) VALUES (?)")
+        .run(JSON.stringify(event));
+      this.journal.record(validated as Entity, previous, Number(inserted.lastInsertRowid));
       return validated as T;
     });
   }

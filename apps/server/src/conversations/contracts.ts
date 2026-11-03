@@ -31,7 +31,15 @@ export const message = z
     routine_id: id.nullable(),
     run_id: id.nullable(),
     purpose: z
-      .enum(["conversation", "handoff", "review", "human_request", "human_reply", "continuation"])
+      .enum([
+        "conversation",
+        "announcement",
+        "handoff",
+        "review",
+        "human_request",
+        "human_reply",
+        "continuation",
+      ])
       .default("conversation"),
     source_run_id: id.nullable().default(null),
     creation_operation_id: id.nullable().default(null),

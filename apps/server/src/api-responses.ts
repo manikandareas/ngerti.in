@@ -199,6 +199,7 @@ routes("GET", ["/v1/message-submissions/:id"], submissionStatus);
 routes("POST", ["/v1/groups/:id/routes/:routeId/retry"], schemas.group_route);
 reference("GET", "/v1/threads/:id/snapshot", "conversation");
 reference("GET", "/v1/threads/:id/history", "history");
+reference("GET", "/v1/threads/:id/timeline", "conversation_timeline");
 reference("GET", "/v1/events", "events");
 routes("GET", ["/v1/entities/:kind"], z.array(domainEvent.shape.data));
 routes("GET", ["/v1/entities/:kind/:id"], domainEvent.shape.data);

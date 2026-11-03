@@ -19,6 +19,7 @@ import {
   thread,
   workspace,
 } from "./contracts";
+import { conversationPart } from "./conversations/parts";
 import { conversationMessage } from "./conversations/projection";
 import { Connections } from "./harness/connections";
 import type { Lifecycle } from "./lifecycle";
@@ -26,6 +27,16 @@ import type { Lifecycle } from "./lifecycle";
 export const historyQuery = z.object({
   before: id.optional(),
   limit: z.coerce.number().int().min(1).max(100).default(50),
+});
+export const timelineQuery = z.object({
+  before: z.coerce.number().int().positive().optional(),
+  limit: z.coerce.number().int().min(1).max(100).default(50),
+});
+export const conversationTimeline = z.strictObject({
+  parts: z.array(conversationPart),
+  messages: z.array(message),
+  has_more: z.boolean(),
+  next_before: z.int().positive().nullable(),
 });
 export const conversationSnapshot = z.strictObject({
   cursor: z.int().nonnegative(),
@@ -46,6 +57,7 @@ export const conversationSnapshot = z.strictObject({
   occurrences: z.array(occurrence),
   has_more: z.boolean(),
   next_before: id.nullable(),
+  timeline: conversationTimeline,
 });
 
 /** Product reads never open a native session or admit a model request. */
@@ -149,7 +161,25 @@ export class Conversations {
           .list("occurrence")
           .filter((item) => store.get("routine", item.routine_id).thread_id === threadId),
         ...this.history(threadId),
+        timeline: this.timeline(threadId),
       });
+    });
+  }
+  timeline(threadId: string, input: unknown = {}) {
+    const { before, limit } = timelineQuery.parse(input);
+    const { store } = this.lifecycle;
+    store.get("thread", threadId);
+    return store.transaction(() => {
+      const page = store.journal.page(threadId, before, limit);
+      const ids = new Set(
+        page.parts.flatMap((part) =>
+          part.kind === "message" && part.message_id ? [part.message_id] : [],
+        ),
+      );
+      return {
+        ...page,
+        messages: [...ids].map((id) => conversationMessage(store, store.get("message", id))),
+      };
     });
   }
 }

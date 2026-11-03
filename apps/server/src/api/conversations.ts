@@ -2,7 +2,7 @@ import type { Elysia } from "elysia";
 import { z } from "zod";
 import { readAgentActivities } from "../agents/activity";
 import { agentInput, agentUpdate, id, threadInput } from "../contracts";
-import { Conversations, historyQuery } from "../conversations";
+import { Conversations, historyQuery, timelineQuery } from "../conversations";
 import {
   Creation,
   createAgentConversation,
@@ -49,6 +49,14 @@ export function registerConversationRoutes(api: Elysia, lifecycle: Lifecycle, co
       "/v1/threads/:id/history",
       ({ params, query }) => conversations.history(params.id, query),
       { params: z.object({ id }), query: historyQuery },
+    )
+    .get(
+      "/v1/threads/:id/timeline",
+      ({ params, query }) => conversations.timeline(params.id, query),
+      {
+        params: z.object({ id }),
+        query: timelineQuery,
+      },
     )
     .post(
       "/v1/agents",

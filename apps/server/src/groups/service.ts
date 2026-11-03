@@ -96,6 +96,7 @@ export class Groups {
     source?: Entity<"run">,
     parent?: Entity<"peer_task">,
     existingRun?: Entity<"run">,
+    summary: string | null = null,
   ): Entity<"peer_task"> {
     this.member(message.thread_id, agentId);
     requireAttachmentSupport(this.lifecycle, agentId, message.artifact_ids);
@@ -109,7 +110,7 @@ export class Groups {
       goal_generations:
         parent?.goal_generations ??
         (run.goal_id ? { [run.goal_id]: this.store.get("goal", run.goal_id).generation } : {}),
-      summary: null,
+      summary,
       result_artifact_ids: [],
       continuation_mode: "synthesize",
       thread_id: message.thread_id,
@@ -393,6 +394,10 @@ export class Groups {
         32
       )
         throw new DomainError("CONFLICT");
+      if (data.announcement) {
+        this.message(run.thread_id, data.announcement, "announcement", run);
+        this.update(run, { response_mode: "finalize" });
+      }
       const message = this.message(
         run.thread_id,
         data.instruction,
@@ -400,8 +405,7 @@ export class Groups {
         run,
         this.store.get("message", task.request_message_id).artifact_ids,
       );
-      const child = this.task(message, data.agent_id, run, task);
-      this.update(child, { summary: data.summary });
+      const child = this.task(message, data.agent_id, run, task, undefined, data.summary);
       this.update(task, { state: "waiting_peer", continuation_mode: data.continuation });
       return this.store.get("peer_task", child.id);
     });
@@ -622,7 +626,7 @@ export class Groups {
   context(run: Entity<"run">) {
     const group = this.store.get("thread", run.thread_id);
     if (group.type !== "group" || group.purpose !== "conversation") return "";
-    return `Current group context; use only this shared thread, never private DM history. Only selected agents speak. Use ngertiin.group_handoff for peer work/review and ngertiin.group_ask_user for necessary user input/review/approval. After either tool, finish the current answer and end this turn; the application continues the task with bound results. A child returns results by finishing its task, never by handing back to an ancestor. If a task requests a file deliverable, publish it before returning. A coordinator requesting artifact evidence must include that deliverable requirement in the peer instruction. Keep technical instructions in the handoff instruction field. Supply a short user-friendly summary without UUIDs or bookkeeping. Use continuation=finalize when the requested public answers will already be delivered by you and the peer; use synthesize when a new combined answer is needed. Shared group goals have one coordinator; contributors finish their tasks and return artifact evidence, never create a duplicate goal or a second continuation owner. Do not invent a peer or user response.\n${JSON.stringify(
+    return `Current group context; use only this shared thread, never private DM history. Only selected agents speak. Use ngertiin.group_handoff for peer work/review and ngertiin.group_ask_user for necessary user input/review/approval. For a handoff, put your useful public result in announcement before delegating, including readable file links. The application publishes announcement before the handoff milestone and suppresses a duplicate final answer. Keep announcement separate from the private instruction. After either tool, end this turn; the application continues the task with bound results. A child returns results by finishing its task, never by handing back to an ancestor. If a task requests a file deliverable, publish it before returning. A coordinator requesting artifact evidence must include that deliverable requirement in the peer instruction. Keep technical instructions in the handoff instruction field. Supply a short user-friendly summary without UUIDs or bookkeeping. Use continuation=finalize when the requested public answers will already be delivered by you and the peer; use synthesize when a new combined answer is needed. Shared group goals have one coordinator; contributors finish their tasks and return artifact evidence, never create a duplicate goal or a second continuation owner. Do not invent a peer or user response.\n${JSON.stringify(
       {
         group_id: group.id,
         revision: group.revision,

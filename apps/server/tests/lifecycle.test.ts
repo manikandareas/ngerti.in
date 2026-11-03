@@ -40,6 +40,30 @@ test("changed idempotent command is rejected without writes", () => {
   expect(f.store.events(0)).toHaveLength(count);
 });
 
+test("a native start acknowledgement clears a resolved preflight error and keeps its historical receipt", () => {
+  const f = setup();
+  const { run } = f.admit();
+  f.lifecycle.recordDiagnostic(run.id, {
+    code: "VERSION_TOO_OLD",
+    category: "configuration",
+    outcome: "not_dispatched",
+  });
+  const before = f.store.cursor;
+  f.bind();
+  const claimed = f.lifecycle.claimNext(f.thread.id, f.agent.id);
+  if (!claimed?.dispatch_token) throw new Error("Run not claimed");
+  const started = f.lifecycle.started(run.id, claimed.dispatch_token, crypto.randomUUID());
+  expect(started.diagnostic).toBeNull();
+  expect(
+    f.store
+      .events(0)
+      .filter((event) => event.cursor <= before)
+      .some(
+        (event) => event.data.kind === "run" && event.data.diagnostic?.code === "VERSION_TOO_OLD",
+      ),
+  ).toBeTrue();
+});
+
 test("outer rollback removes projections, event publication and command receipt together", () => {
   const f = setup();
   const key = crypto.randomUUID();

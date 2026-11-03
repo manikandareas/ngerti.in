@@ -358,6 +358,10 @@ test("avatar activity follows live refreshes, celebrates once and keeps DM/group
   await page.reload();
   const header = page.locator(".header-identity .ngertiin-avatar");
   await expect(header).toHaveAttribute("data-avatar-state", "thinking");
+  await expect(header.locator("[data-avatar-surface] image")).toHaveAttribute(
+    "href",
+    /^data:image\/png;base64,/,
+  );
   async function change(next: typeof phase) {
     phase = next;
     const agent = await page.request

@@ -20,52 +20,74 @@ export function faceForState(face: AvatarFace, state: AvatarState): AvatarFace {
   }
 }
 
-function eye(x: number, face: AvatarFace, right: boolean): string {
-  const open = face !== "happy" && face !== "excited" && face !== "sleepy";
-  let drawing: string;
-  if (open) {
-    const radius = face === "surprised" ? 6 : 4.5;
-    const height = face === "focused" ? 5 : face === "shy" ? 6 : 7.5;
-    drawing = `<ellipse cx="0" cy="0" rx="${radius}" ry="${height}" fill="#293239"/><ellipse cx="-1.3" cy="-2.5" rx="1.4" ry="1.8" fill="#fff" opacity=".9"/>`;
-  } else {
-    const d = face === "sleepy" ? "M-6 0Q0 4 6 0" : "M-6 1Q0-8 6 1";
-    drawing = `<path d="${d}" fill="none" stroke="#293239" stroke-width="3.6" stroke-linecap="round"/>`;
-  }
-  const eyebrow =
-    face === "curious" && right
-      ? '<path d="M-5-15Q0-19 5-16" fill="none" stroke="#293239" stroke-width="2.3" stroke-linecap="round"/>'
-      : "";
-  return `<g transform="translate(${x} 0)">${eyebrow}<g data-avatar-eye="${right ? "right" : "left"}">${drawing}</g></g>`;
-}
-
-function mouth(face: AvatarFace): string {
-  const stroke = 'fill="none" stroke="#293239" stroke-width="2.8" stroke-linecap="round"';
+/** Ivory eye shapes remain readable without a mouth, including at small sizes. */
+function plushEye(x: number, face: AvatarFace, right: boolean, id: string): string {
+  const side = right ? 1 : -1;
+  let shape: string;
+  let tilt = side * 7;
+  let lift = 0;
+  const pill = (width: number, height: number) =>
+    `<rect x="${-width / 2}" y="${-height / 2}" width="${width}" height="${height}" rx="${width / 2}"/>`;
   switch (face) {
-    case "surprised":
-      return '<ellipse cx="0" cy="16" rx="4" ry="5.5" fill="#293239"/>';
+    case "happy":
+      shape = '<path d="M-7 3 Q0-9 7 3" fill="none" stroke-width="4.5" stroke-linecap="round"/>';
+      tilt = side * -8;
+      break;
     case "excited":
-      return '<path d="M-9 12Q0 10 9 12Q8 25 0 25Q-8 25-9 12Z" fill="#293239"/><path d="M-5 21Q0 17 5 21Q0 27-5 21" fill="#f3a7b9"/>';
+      shape = `<path d="M${side * 6}-7 L${side * -3} 0 L${side * 6} 7" fill="none" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>`;
+      tilt = 0;
+      lift = -2;
+      break;
     case "curious":
-      return `<path d="M-3 16Q1 12 5 15" ${stroke}/>`;
-    case "sleepy":
-      return `<path d="M-4 17Q0 19 4 17" ${stroke}/>`;
-    case "focused":
-      return `<path d="M-4 16L4 16" ${stroke}/>`;
+      shape = pill(right ? 12 : 8, right ? 22 : 13);
+      lift = right ? -4 : 2;
+      tilt = right ? 16 : 0;
+      break;
     case "shy":
-      return `<path d="M-5 15Q0 20 5 15" ${stroke}/>`;
+      shape = pill(8, 11);
+      tilt = side * -22;
+      lift = 5;
+      break;
+    case "surprised":
+      shape = '<ellipse rx="7.5" ry="12"/>';
+      tilt = 0;
+      lift = -2;
+      break;
+    case "sleepy":
+      shape = '<path d="M-7-1 Q0 6 7-1" fill="none" stroke-width="3.8" stroke-linecap="round"/>';
+      tilt = side * 8;
+      lift = 3;
+      break;
+    case "focused":
+      shape = `<path d="M-6 ${right ? -1 : -5} L6 ${right ? -5 : -1} L6 3 Q0 7-6 3Z"/>`;
+      tilt = 0;
+      break;
     default:
-      return `<path d="M-7 13Q0 22 7 13" ${stroke}/>`;
+      shape = pill(10, 17);
   }
+  return `<g transform="translate(${x} ${lift}) rotate(${tilt})"><g data-avatar-eye="${right ? "right" : "left"}" filter="url(#${id}-eye-shadow)"><g fill="url(#${id}-ivory)" stroke="url(#${id}-ivory)" stroke-width="0">${shape}</g></g></g>`;
 }
 
 /** Render a standalone, transparent SVG. User strings never become SVG markup. */
 export function renderAvatarSvg(
   input: AvatarConfig,
-  options: { id?: string; state?: AvatarState; shadow?: boolean } = {},
+  options: {
+    id?: string;
+    state?: AvatarState;
+    shadow?: boolean;
+    textureHref?: string;
+    surfaceOnly?: boolean;
+  } = {},
 ): string {
   const config = parseAvatarConfig(input);
   if (!config) throw new Error("Invalid avatar recipe.");
   const id = (options.id ?? "ngertiin-avatar").replace(/[^a-zA-Z0-9_-]/g, "");
+  if (
+    options.textureHref &&
+    !/^data:image\/png;base64,[A-Za-z0-9+/=]+$/.test(options.textureHref)
+  ) {
+    throw new Error("Invalid avatar texture.");
+  }
   const body = avatarShapes[config.shape];
   const color = avatarColors[config.color];
   const face = faceForState(config.face, options.state ?? "idle");
@@ -74,22 +96,54 @@ export function renderAvatarSvg(
   const lean = +((random() - 0.5) * 5).toFixed(2);
   const width = +(0.96 + random() * 0.08).toFixed(3);
   const height = +(0.97 + random() * 0.06).toFixed(3);
-  const freckles = random() > 0.55;
+  random(); // Preserve the established seeded fur pattern.
   const gradient = `${id}-clay`;
+  // Layer short undercoat and longer curved guard hairs in a seeded growth field.
+  const fibers =
+    options.textureHref === undefined
+      ? Array.from({ length: 8500 }, (_, index) => {
+          const x = 15 + random() * 170;
+          const y = 15 + random() * 170;
+          const angle = Math.atan2(y - 72, (x - 90) * 0.85) + Math.sin(y / 17 + x / 23) * 0.35;
+          const length = index < 5500 ? 1.5 + random() * 3 : 4 + random() * 7;
+          const dx = Math.cos(angle) * length;
+          const dy = Math.sin(angle) * length;
+          const light = random() > 0.45;
+          return `<path d="M${x.toFixed(2)} ${y.toFixed(2)}q${(dx * 0.35 - dy * 0.16).toFixed(2)} ${(dy * 0.35 + dx * 0.16).toFixed(2)} ${dx.toFixed(2)} ${dy.toFixed(2)}" stroke="${light ? "#fff7e8" : color.shade}" stroke-opacity="${light ? 0.12 + random() * 0.25 : 0.2 + random() * 0.3}" stroke-width="${index < 5500 ? ".24" : ".36"}" stroke-linecap="round"/>`;
+        }).join("")
+      : "";
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" fill="none" aria-hidden="true">
 <defs>
+<filter id="${id}-fuzz" x="-15%" y="-15%" width="130%" height="130%">
+<feTurbulence type="fractalNoise" baseFrequency=".65" numOctaves="3" seed="12" result="noise"/>
+<feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+<filter id="${id}-eye-shadow" x="-100%" y="-70%" width="300%" height="300%"><feDropShadow dx="1" dy="2" stdDeviation="1.5" flood-color="#211624" flood-opacity=".5"/></filter>
+<linearGradient id="${id}-ivory" x2=".8" y2="1"><stop stop-color="#fffef0"/><stop offset=".55" stop-color="#eee8d6"/><stop offset="1" stop-color="#bfb6a4"/></linearGradient>
+<mask id="${id}-fur-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="200" height="200"><path d="${body.path}" fill="white" stroke="white" stroke-width="3" filter="url(#${id}-fuzz)"/></mask>
 <radialGradient id="${gradient}" cx=".32" cy=".2" r=".9"><stop stop-color="${color.base}"/><stop offset=".5" stop-color="${color.base}"/><stop offset="1" stop-color="${color.shade}"/></radialGradient>
 <radialGradient id="${id}-sheen" cx=".28" cy=".15" r=".7"><stop stop-color="#fff" stop-opacity=".4"/><stop offset=".65" stop-color="#fff" stop-opacity="0"/></radialGradient>
 <radialGradient id="${id}-ground"><stop stop-color="#252332" stop-opacity=".17"/><stop offset="1" stop-color="#252332" stop-opacity="0"/></radialGradient>
 </defs>
 ${options.shadow ? `<ellipse data-avatar-shadow="" cx="100" cy="181" rx="60" ry="9" fill="url(#${id}-ground)"/>` : ""}
-<g data-avatar-body=""><g transform="translate(100 110) rotate(${lean}) scale(${width} ${height}) translate(-100 -110)">
-<path d="${body.path}" fill="url(#${gradient})"/>
+${options.surfaceOnly ? "" : `<g data-avatar-body=""><g transform="translate(100 110) rotate(${lean}) scale(${width} ${height}) translate(-100 -110)">`}
+<g data-avatar-surface="">
+${
+  options.textureHref
+    ? `<image href="${options.textureHref}" width="200" height="200"/>`
+    : `
+<path d="${body.path}" fill="url(#${gradient})" ${options.textureHref === undefined ? `filter="url(#${id}-fuzz)"` : ""}/>
 <path d="${body.path}" fill="url(#${id}-sheen)"/>
-<g transform="translate(100 ${body.faceY})"><g data-avatar-gaze="">
-${eye(-spacing, face, false)}${eye(spacing, face, true)}
-${mouth(face)}
-${freckles ? `<g fill="#735f59" opacity=".23"><circle cx="-${spacing + 11}" cy="9" r="1"/><circle cx="-${spacing + 7}" cy="11" r="1"/><circle cx="${spacing + 11}" cy="9" r="1"/><circle cx="${spacing + 7}" cy="11" r="1"/></g>` : ""}
-</g></g></g></g>
+${fibers ? `<g mask="url(#${id}-fur-mask)">${fibers}</g>` : ""}
+`
+}
+</g>
+${
+  options.surfaceOnly
+    ? ""
+    : `<g transform="translate(100 ${body.faceY})"><g data-avatar-gaze="">
+${plushEye(-spacing, face, false, id)}${plushEye(spacing, face, true, id)}
+</g></g></g></g>`
+}
 </svg>`;
 }

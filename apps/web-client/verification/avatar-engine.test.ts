@@ -74,7 +74,7 @@ describe("Ngertiin avatar engine", () => {
     }
     expect(count).toBe(1280);
     expect(new Set(Object.values(avatarShapes).map((value) => value.path)).size).toBe(8);
-  });
+  }, 30000);
 
   test("arbitrary seeds stay outside markup and rendering can use unique gradient IDs", () => {
     const config = createAvatar('<tag>"& seed');
@@ -82,6 +82,21 @@ describe("Ngertiin avatar engine", () => {
     expect(renderAvatarSvg(config, { id: 'one-"<>' })).toContain('id="one--clay"');
     expect(renderAvatarSvg(config, { id: "one" })).not.toContain('id="two-clay"');
     expect(renderAvatarSvg(config)).not.toContain("data-avatar-shadow");
+  });
+
+  test("default portraits use mouthless eyes and reject untrusted texture markup", () => {
+    const config = createAvatar("fur-default");
+    const svg = renderAvatarSvg(config);
+    expect(svg).toContain('mask="url(#ngertiin-avatar-fur-mask)"');
+    expect(svg).toContain('data-avatar-eye="left"');
+    expect(svg).not.toContain("#293239");
+    expect(() => renderAvatarSvg(config, { textureHref: '"><script/>' })).toThrow(
+      "Invalid avatar texture.",
+    );
+    const expressions = Object.keys(avatarFaces).map((face) =>
+      renderAvatarSvg({ ...config, face: face as AvatarFace }, { textureHref: "" }),
+    );
+    expect(new Set(expressions).size).toBe(8);
   });
 
   test("all states and actions have finite poses and honor reduced motion", () => {

@@ -9,15 +9,11 @@ const entries = new Set<Entry>();
 let observer: IntersectionObserver | undefined;
 let media: MediaQueryList | undefined;
 let request = 0;
-let last = 0;
 
 function tick(now: number) {
   request = 0;
-  if (now - last >= 1000 / 30) {
-    last = now;
-    for (const entry of entries) {
-      if (entry.visible) entry.frame(now, false);
-    }
+  for (const entry of entries) {
+    if (entry.visible) entry.frame(now, false);
   }
   schedule();
 }
@@ -39,7 +35,7 @@ function refresh() {
   schedule();
 }
 
-/** One 30fps clock for all visible avatars. No frames while hidden or motion is reduced. */
+/** One display-synchronized clock for all visible avatars. No frames while hidden or motion is reduced. */
 export function subscribeAvatarFrame(element: Element, frame: Frame): () => void {
   if (!entries.size) {
     media = matchMedia("(prefers-reduced-motion: reduce)");

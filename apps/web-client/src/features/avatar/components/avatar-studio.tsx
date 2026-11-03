@@ -400,7 +400,8 @@ export default function AvatarStudio() {
             </div>
           </div>
           <p className="studio-export-note">
-            Gambar transparan 512 × 512. Animasi berjalan di engine.
+            Gambar transparan 512 × 512 dengan bulu dan ekspresi yang sama. Animasi berjalan di
+            aplikasi.
           </p>
         </section>
 

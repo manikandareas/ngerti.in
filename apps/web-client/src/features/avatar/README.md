@@ -7,7 +7,9 @@ The catalog includes exactly eight silhouettes: circle, oval, rounded square, ca
 triangle, diamond, pentagon and hexagon. Their contours are deliberately a little uneven,
 with stable seeded tilt and proportions. There are 20 solid colors, eight expressions,
 seven activity states and six temporary reactions.
-White surface highlights and colored shading preserve volume; faces have no cheek blush.
+Layered fur, colored shading and ivory eyes preserve volume. All eight expressions use
+eye shape, opening, tilt and asymmetry without a mouth. This is the default appearance
+for the studio, conversation identities, profile previews and downloads.
 
 ## Engine API
 
@@ -45,11 +47,17 @@ saved expression. Activity states temporarily choose an appropriate expression w
 changing the recipe: `listening`, `thinking`, `working`, `celebrating`, `sleeping`, `error`.
 Reactions are `boop`, `wave`, `hop`, `wiggle`, `spin`, and `wink`.
 
-All visible animated instances share one 30fps animation clock. Offscreen instances stop
+All visible animated instances share one display-synchronized animation clock. Offscreen instances stop
 drawing, hidden documents suspend the clock, and reduced motion produces a static pose.
 State/expression changes and configuration remain usable with reduced motion. Use
 `animated: false` for static thumbnails. Disposal removes clock subscriptions, observers
 and pointer listeners; the last subscriber also releases shared listeners.
+
+The browser rasterizes the seeded fur once into a transparent 768px texture. A bounded
+16-entry cache shares pending/completed textures by seed, shape and color; expression
+and activity changes reuse the texture. Per-frame work only transforms the texture and
+eyes. Stale async results cannot replace a newer identity or a disposed avatar. If image
+decoding fails, a lightweight shaded body keeps the avatar usable.
 
 ## React integration
 
@@ -104,7 +112,7 @@ it never puts a backend agent to sleep.
 
 `parseAvatarConfig(unknown)` validates imported/stored recipes and rejects unknown
 versions and catalog entries. Recipes include `version: 1`, `seed`, `shape`, `color`,
-and `face`. The seed determines stable face proportions, freckles and character body
+and `face`. The seed determines stable face proportions, fur and character body
 variations. Each silhouette remains recognizable while its contour and seeded proportions
 avoid perfect symmetry.
 
@@ -114,7 +122,9 @@ are hashed and never interpolated into SVG markup. The mounted renderer assigns 
 own unique gradient IDs.
 
 `exportAvatar(config, "png" | "svg", state)` downloads a transparent 512px still portrait
-of the current state. Motion runs in the engine; these exports are static. Studio recipe
+of the current state. Both formats include the same cached fur texture and expressive
+eyes as the mounted avatar; SVG embeds the texture and remains self-contained.
+Motion runs in the engine; these exports are static. Studio recipe
 downloads/imports preserve the identity and remain separate from image exports.
 
 ## Verification
@@ -127,18 +137,34 @@ bun run typecheck
 bun run test:avatar
 ```
 
-The five engine tests cover deterministic identities, recipe validation, all 1,280
+The engine tests cover deterministic identities, recipe validation, all 1,280
 shape/color/face combinations, safe SVG construction, state expressions and finite
 motion samples. The browser suite covers desktop/mobile editing and keyboard control,
 state/reaction behavior, reload/import round trips, PNG dimensions/transparency, SVG
 exports, reduced motion, offscreen suspension, light/dark accessibility and overflow at
-320/390/768/1440px. Screenshots/report are written under `.dev/avatar-playwright*`.
+320/390/768/1440px. Fur regression checks cover distinct mouthless expressions,
+texture reuse across expression/state changes and display-frame animation cadence. Screenshots/report are written under `.dev/avatar-playwright*`.
+
+### Fur adoption verification · 2026-11-03
+
+- Engine: 6/6 tests passed, including all 1,280 full-vector combinations.
+- Studio: 18/18 desktop/mobile browser tests passed, including textured PNG/SVG
+  exports, eye expressions, texture reuse and display-frame cadence.
+- Integration: 4/4 selected desktop/mobile avatar persistence and activity tests
+  passed on an isolated checkout of `4df6a93` plus only these avatar changes.
+- Build/typecheck, scoped Biome checks and whitespace checks passed.
+- The mixed development checkout passed activity tests but failed two older group
+  message fixture checks (zero rendered message portraits). Those same checks passed
+  in the isolated checkout; unrelated conversation edits were not included or changed.
+- This verifies local rendering and API-backed recipe persistence, not native
+  inference, deployment or production performance across devices.
 
 ## Reference and scope
 
 Interaction reference: [Grok Bots Studio](https://grokbots.ai/studio), observed on
 2026-11-02 for shape/face/color controls, pointer response, motion and image export.
-All engine source and silhouette paths here are authored locally; no Grok source code
+The fur and ivory-eye direction follows the user-supplied visual reference accepted on
+2026-11-03. All engine source and silhouette paths here are authored locally; no Grok source code
 or assets are reused. Existing OpenMausBot avatar source remains retained as reference; product identities now
 use this engine. The studio is lazy-loaded and adds no third-party animation dependencies.
 

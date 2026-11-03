@@ -3,6 +3,7 @@ import { subscribeAvatarFrame } from "./clock";
 import { type AvatarConfig, parseAvatarConfig, seedHash } from "./config";
 import { actionDuration, sampleAvatarPose } from "./motion";
 import { renderAvatarSvg } from "./render";
+import { furTextureKey, loadFurTexture } from "./texture";
 
 export interface AvatarController {
   setConfig(config: AvatarConfig): void;
@@ -44,8 +45,34 @@ export function mountAvatar(
   let action: { type: AvatarAction; started: number } | undefined;
   const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  let textureKey = "";
+  let textureHref = "";
   function render() {
-    host.innerHTML = renderAvatarSvg(config, { id, state, shadow: options.shadow });
+    if (textureKey !== furTextureKey(config)) {
+      textureKey = furTextureKey(config);
+      textureHref = "";
+      const requestedKey = textureKey;
+      void loadFurTexture(config)
+        .then((href) => {
+          if (disposed || textureKey !== requestedKey) return;
+          textureHref = href;
+          const surface = host.querySelector("[data-avatar-surface]");
+          const image = document.createElementNS("http://www.w3.org/2000/svg", "image");
+          image.setAttribute("href", href);
+          image.setAttribute("width", "200");
+          image.setAttribute("height", "200");
+          surface?.replaceChildren(image);
+        })
+        .catch(() => {
+          // Keep the lightweight shaded fallback usable if image decoding fails.
+        });
+    }
+    host.innerHTML = renderAvatarSvg(config, {
+      id,
+      state,
+      shadow: options.shadow,
+      textureHref,
+    });
     host.dataset.avatarState = state;
     body = host.querySelector("[data-avatar-body]");
     gaze = host.querySelector("[data-avatar-gaze]");
@@ -125,7 +152,9 @@ export function mountAvatar(
   return {
     setConfig(value) {
       if (disposed) return;
-      config = readConfig(value);
+      const next = readConfig(value);
+      if (JSON.stringify(next) === JSON.stringify(config)) return;
+      config = next;
       render();
     },
     setState(value) {

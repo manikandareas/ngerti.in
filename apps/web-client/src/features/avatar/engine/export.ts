@@ -1,6 +1,7 @@
 import type { AvatarState } from "./catalog";
 import type { AvatarConfig } from "./config";
 import { renderAvatarSvg } from "./render";
+import { loadFurTexture } from "./texture";
 
 export function downloadAvatarFile(blob: Blob, filename: string): void {
   const url = URL.createObjectURL(blob);
@@ -17,7 +18,8 @@ export async function exportAvatar(
   format: "svg" | "png",
   state: AvatarState = "idle",
 ): Promise<void> {
-  const source = renderAvatarSvg(config, { state }).replace(
+  const textureHref = await loadFurTexture(config);
+  const source = renderAvatarSvg(config, { state, textureHref }).replace(
     'width="200" height="200"',
     'width="512" height="512"',
   );

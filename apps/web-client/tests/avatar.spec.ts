@@ -80,6 +80,8 @@ test("PNG/SVG exports are transparent 512px portraits and recipes round trip", a
   expect(svg).not.toContain("data-avatar-shadow");
   expect(svg).not.toContain("-blush");
   expect(svg).toContain("-sheen");
+  expect(svg).toContain('href="data:image/png;base64,');
+  expect(svg).toContain("data-avatar-eye");
   const pngDownload = page.waitForEvent("download");
   await page.getByRole("button", { name: "Unduh PNG", exact: true }).click();
   const pngPath = await (await pngDownload).path();
@@ -188,4 +190,68 @@ test("responsive light/dark layouts have no overflow or accessibility violations
       true,
     );
   }
+});
+
+test("fur expressions stay distinct and reuse the body texture", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  const hero = page.locator(".studio-character");
+  const texture = hero.locator("[data-avatar-surface] image");
+  await expect(texture).toHaveAttribute("href", /^data:image\/png/);
+  const original = await texture.getAttribute("href");
+  await page.getByRole("button", { name: "Ekspresi", exact: true }).click();
+  const expressions = new Set<string>();
+  for (const face of [
+    "Happy",
+    "Curious",
+    "Calm",
+    "Excited",
+    "Shy",
+    "Surprised",
+    "Sleepy",
+    "Focused",
+  ]) {
+    await page.getByRole("radio", { name: face, exact: true }).check();
+    expressions.add(await hero.locator("[data-avatar-gaze]").innerHTML());
+    expect(await texture.getAttribute("href")).toBe(original);
+    expect(await hero.locator("path").count()).toBeLessThan(12);
+  }
+  expect(expressions.size).toBe(8);
+  await page.getByLabel("State agent").selectOption("sleeping");
+  expect(await texture.getAttribute("href")).toBe(original);
+  await page.getByRole("radio", { name: "Mint", exact: true }).check();
+  await page.getByRole("radio", { name: "Sky", exact: true }).check();
+  await expect.poll(() => texture.getAttribute("href")).not.toBe(original);
+});
+
+test("visible fur animation updates on each display frame", async ({ page }) => {
+  const hero = page.locator(".studio-character");
+  await hero.scrollIntoViewIfNeeded();
+  await expect(hero.locator("[data-avatar-surface] image")).toBeVisible();
+  const ratio = await hero.evaluate(
+    (element) =>
+      new Promise<number>((resolve) => {
+        let changes = 0;
+        let frames = 0;
+        const observer = new MutationObserver((records) => {
+          changes += records.filter((record) =>
+            (record.target as Element).hasAttribute("data-avatar-body"),
+          ).length;
+        });
+        observer.observe(element, {
+          subtree: true,
+          attributes: true,
+          attributeFilter: ["transform"],
+        });
+        function frame() {
+          if (++frames < 40) {
+            requestAnimationFrame(frame);
+          } else {
+            observer.disconnect();
+            resolve(changes / frames);
+          }
+        }
+        requestAnimationFrame(frame);
+      }),
+  );
+  expect(ratio).toBeGreaterThan(0.85);
 });

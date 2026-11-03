@@ -32,6 +32,17 @@ const AnswerContext = createContext<AnswerScope>({});
 function AnswerLink({ children, href }: { children?: ReactNode; href?: string }) {
   const { openResource, snapshot } = useContext(AnswerContext);
   const reference = href ? referenceFromUrl(href, plainMarkdown(children)) : null;
+  if (reference?.kind === "file") {
+    const file = snapshot?.artifacts.find((file) => file.id === reference.id);
+    return file ? (
+      <InlineReferenceChip
+        reference={{ ...reference, label: file.name }}
+        onOpenFile={openResource ? () => openResource("files", file.id) : undefined}
+      />
+    ) : (
+      <span className="text-muted-foreground">File tidak tersedia</span>
+    );
+  }
   if (reference) return <InlineReferenceChip reference={reference} />;
   const goal = snapshot?.goals.find((item) => href?.endsWith(`/${item.id}`));
   const artifact = snapshot?.artifacts.find((item) => href?.split("?")[0]?.endsWith(`/${item.id}`));
@@ -129,8 +140,8 @@ const renderers: Components = {
 };
 
 function MarkdownBody({ text }: { text: string }) {
-  const { agents, skills } = useInlineReferences();
-  const { agentId } = useContext(AnswerContext);
+  const { identities, skills } = useInlineReferences();
+  const { agentId, snapshot } = useContext(AnswerContext);
   const plugins = useMemo(
     () =>
       [
@@ -138,12 +149,13 @@ function MarkdownBody({ text }: { text: string }) {
         [
           remarkInlineReferences,
           {
-            agents,
+            agents: identities,
+            files: snapshot?.artifacts ?? [],
             skills: agentId ? skills.filter((skill) => skill.agent.id === agentId) : skills,
           },
         ],
       ] as import("unified").PluggableList,
-    [agents, skills, agentId],
+    [identities, skills, agentId, snapshot?.artifacts],
   );
   return (
     <div

@@ -47,7 +47,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
 import { Answer } from "@/features/conversation/components/answer";
 import { AttachInput } from "@/features/conversation/components/attach-input";
-import { CollaborationActivity } from "@/features/conversation/components/collaboration-activity";
 import {
   ComposerInput,
   type ComposerInputHandle,
@@ -64,16 +63,17 @@ import {
   type QueuedMessage,
   QueuedMessages,
 } from "@/features/conversation/components/queued-messages";
+import { TimelineActivity } from "@/features/conversation/components/timeline-activity";
 import { UserMessageText } from "@/features/conversation/components/user-message-text";
 import { WorkActivity } from "@/features/conversation/components/work-activity";
 import { WorkspaceProviders } from "@/features/conversation/components/workspace-providers";
 import { attachmentParts } from "@/features/conversation/lib/attachment-references";
+import { conversationEntries } from "@/features/conversation/lib/conversation-parts";
 import { referenceTarget } from "@/features/conversation/lib/inline-references";
 import {
   prepareSubmission,
   RejectedSubmission,
 } from "@/features/conversation/lib/message-submission";
-import { messageTimeline } from "@/features/conversation/lib/message-timeline";
 import {
   type NativeTranscriptFragment,
   useNativeTranscript,
@@ -96,7 +96,13 @@ import {
 } from "@/lib/api-client";
 import { repairMessage } from "@/lib/api-errors";
 import type { NativeInteractionSnapshot } from "@/types/native-interactions";
-import type { Message as MessageEntity, Run, Thread } from "@/types/workspace";
+import type {
+  ConversationPart,
+  ConversationTimeline,
+  Message as MessageEntity,
+  Run,
+  Thread,
+} from "@/types/workspace";
 
 const statusText: Record<string, string> = {
   queued: "Menghubungkan",
@@ -160,8 +166,20 @@ export default function Workspace() {
   const [editing, setEditing] = useState<MessageEntity | null>(null);
   const [editText, setEditText] = useState("");
   const [older, setOlder] = useState<MessageEntity[]>([]);
-  const [before, setBefore] = useState<string | null>(null);
+  const [before, setBefore] = useState<number | null>(null);
+  const [olderParts, setOlderParts] = useState<ConversationPart[]>([]);
   const [historyLoaded, setHistoryLoaded] = useState(false);
+  useEffect(() => {
+    if (!snapshot || snapshot.thread.id !== threadId) return;
+    setOlder((current) => [
+      ...new Map(
+        [...current, ...snapshot.timeline.messages].map((message) => [message.id, message]),
+      ).values(),
+    ]);
+    setOlderParts((current) => [
+      ...new Map([...current, ...snapshot.timeline.parts].map((part) => [part.id, part])).values(),
+    ]);
+  }, [snapshot, threadId]);
   const mobile = useIsMobile();
   const narrowNavigation = useMediaQuery("(max-width: 1279.98px)");
   useEffect(() => {
@@ -222,12 +240,22 @@ export default function Workspace() {
     const header = surface.querySelector<HTMLElement>(".workspace-chat-header");
     const notice = error ? surface.querySelector<HTMLElement>(".workspace-error") : null;
     const dock = snapshot?.thread.id ? surface.querySelector<HTMLElement>(".composer-dock") : null;
+    let previousDockHeight: number | null = null;
     const measure = () => {
       const top = surface.getBoundingClientRect().top;
       const headerBottom = (notice ?? header)?.getBoundingClientRect().bottom ?? top;
       const dockHeight = dock?.getBoundingClientRect().height ?? 0;
+      const scroll = surface.querySelector<HTMLElement>(".conversation-scroll");
+      const previousScrollHeight = scroll?.scrollHeight ?? 0;
+      // Match use-stick-to-bottom's near-bottom range. Its content-box observer
+      // does not see padding changes when the overlaid composer resizes.
+      const keepEndPosition =
+        scroll && scroll.scrollHeight - scroll.clientHeight - scroll.scrollTop <= 70;
       surface.style.setProperty("--conversation-top", `${headerBottom - top}px`);
       surface.style.setProperty("--conversation-bottom", `${dockHeight}px`);
+      if (keepEndPosition && previousDockHeight !== null && dockHeight !== previousDockHeight)
+        scroll.scrollTop += scroll.scrollHeight - previousScrollHeight;
+      previousDockHeight = dockHeight;
     };
     const observer = new ResizeObserver(measure);
     for (const element of [header, notice, dock]) {
@@ -249,6 +277,7 @@ export default function Workspace() {
     currentThread.current = id;
     select(id);
     setOlder([]);
+    setOlderParts([]);
     setBefore(null);
     setHistoryLoaded(false);
     setNavigation(false);
@@ -457,20 +486,23 @@ export default function Workspace() {
   async function source(id?: string) {
     setDetails(false);
     if (!id || !threadId) return;
-    let cursor = historyLoaded ? before : snapshot?.next_before;
-    let found = snapshot?.messages.some((m) => m.id === id) || older.some((m) => m.id === id);
+    let cursor = historyLoaded ? before : snapshot?.timeline.next_before;
+    let found = parts.some((part) => part.message_id === id);
     const loaded: MessageEntity[] = [];
+    const loadedParts: ConversationPart[] = [];
     while (!found && cursor) {
-      const page = await request<{ messages: MessageEntity[]; next_before: string | null }>(
-        `/v1/threads/${threadId}/history?before=${cursor}&limit=100`,
+      const page = await request<ConversationTimeline>(
+        `/v1/threads/${threadId}/timeline?before=${cursor}&limit=100`,
       );
       if (currentThread.current !== threadId) return;
       loaded.unshift(...page.messages);
-      found = page.messages.some((m) => m.id === id);
+      loadedParts.unshift(...page.parts);
+      found = page.parts.some((part) => part.message_id === id);
       cursor = page.next_before;
     }
-    if (loaded.length) {
+    if (loadedParts.length) {
       setOlder((v) => [...loaded, ...v]);
+      setOlderParts((v) => [...loadedParts, ...v]);
       setBefore(cursor ?? null);
       setHistoryLoaded(true);
     }
@@ -499,6 +531,7 @@ export default function Workspace() {
   ) : null;
   const messages = [
     ...older.filter((m) => !snapshot?.messages.some((current) => current.id === m.id)),
+    ...(snapshot?.timeline.messages ?? []),
     ...(snapshot?.messages ?? []),
   ];
   function hasPendingNative(run: Run) {
@@ -506,26 +539,44 @@ export default function Workspace() {
       (record) => record.observed_state === "pending" && record.submission?.state !== "submitted",
     );
   }
-  const timeline = messageTimeline(messages, snapshot?.runs ?? []);
-  const queued = timeline.queued.map(({ message, run }) => {
-    const active = activeRuns.find((active) => active.agent_id === run.agent_id);
-    const nativeConnection = connections.find(
-      (connection) =>
-        connection.id ===
-        snapshot?.agents.find((agent) => agent.id === active?.agent_id)?.connection_id,
-    );
-    const target =
-      active?.status === "running" &&
-      active.cancellation === "none" &&
-      active.native_run_id &&
-      !activeRuns.some(hasPendingNative) &&
-      nativeConnection?.state === "active" &&
-      nativeConnection.login === "authenticated" &&
-      nativeConnection?.capabilities.steer === "supported"
-        ? active
-        : undefined;
-    return { message, run, target };
-  });
+  const parts = [...olderParts, ...(snapshot?.timeline.parts ?? [])];
+  const entries = conversationEntries(parts, messages);
+  const published = new Set(parts.flatMap((part) => (part.message_id ? [part.message_id] : [])));
+  const queued = messages
+    .flatMap((message) => {
+      const run = snapshot?.runs.findLast(
+        (run) => run.input_message_id === message.id && run.status === "queued",
+      );
+      return run &&
+        message.author === "user" &&
+        message.state !== "deleted" &&
+        !published.has(message.id)
+        ? [{ message, run }]
+        : [];
+    })
+    .filter(
+      (item, index, items) =>
+        items.findIndex((other) => other.message.id === item.message.id) === index,
+    )
+    .map(({ message, run }) => {
+      const active = activeRuns.find((active) => active.agent_id === run.agent_id);
+      const nativeConnection = connections.find(
+        (connection) =>
+          connection.id ===
+          snapshot?.agents.find((agent) => agent.id === active?.agent_id)?.connection_id,
+      );
+      const target =
+        active?.status === "running" &&
+        active.cancellation === "none" &&
+        active.native_run_id &&
+        !activeRuns.some(hasPendingNative) &&
+        nativeConnection?.state === "active" &&
+        nativeConnection.login === "authenticated" &&
+        nativeConnection?.capabilities.steer === "supported"
+          ? active
+          : undefined;
+      return { message, run, target };
+    });
   const editItem = editing ? queued.find((item) => item.message.id === editing.id) : null;
   const editStale = !!editing && (!editItem || editItem.message.revision !== editing.revision);
   const queueHead = queued[0];
@@ -562,7 +613,9 @@ export default function Workspace() {
       });
     });
   }
-  const visibleMessages = timeline.messages;
+  const visibleMessages = entries.flatMap((entry) =>
+    entry.type === "message" ? [entry.message] : [],
+  );
   const nativeTranscript = useNativeTranscript(visibleMessages, snapshot?.runs ?? []);
   function canObserveNative(run: Run) {
     const connection = connections.find(
@@ -595,8 +648,15 @@ export default function Workspace() {
       </div>
     );
   }
+  function publishedAuthor(message: MessageEntity) {
+    const current = agents.find((agent) => agent.id === message.author_agent_id);
+    const historical = parts.find(
+      (part) => part.kind === "message" && part.message_id === message.id,
+    )?.actors[0];
+    return historical ? { ...historical, system_role: current?.system_role } : current;
+  }
   function answer(message: MessageEntity) {
-    const author = agents.find((agent) => agent.id === message.author_agent_id);
+    const author = publishedAuthor(message);
     const sender =
       snapshot?.thread.type === "group" && message.author === "agent"
         ? {
@@ -618,7 +678,7 @@ export default function Workspace() {
         />
       );
     let start = 0;
-    const parts = anchors.map(({ offset, fragments }) => {
+    const answerParts = anchors.map(({ offset, fragments }) => {
       const text = message.text.slice(start, offset);
       start = offset;
       return (
@@ -639,7 +699,7 @@ export default function Workspace() {
     });
     return (
       <>
-        {parts}
+        {answerParts}
         {start < message.text.length && (
           <Answer
             agentId={author?.id}
@@ -689,6 +749,7 @@ export default function Workspace() {
   return (
     <WorkspaceProviders
       snapshot={snapshot}
+      parts={parts}
       activity={{
         items: workspace.activity.items,
         threadId,
@@ -901,18 +962,16 @@ export default function Workspace() {
                   scrollClassName="conversation-scroll"
                   className="conversation-column [max-width:var(--chat-column-max)] [margin-inline:auto] gap-4 w-full"
                 >
-                  {(historyLoaded ? before : snapshot.next_before) && (
+                  {(historyLoaded ? before : snapshot.timeline.next_before) && (
                     <Button
                       variant="ghost"
                       onClick={() =>
                         void act(async () => {
-                          const result = await request<{
-                            messages: MessageEntity[];
-                            next_before: string | null;
-                          }>(
-                            `/v1/threads/${threadId}/history?before=${historyLoaded ? before : snapshot.next_before}`,
+                          const result = await request<ConversationTimeline>(
+                            `/v1/threads/${threadId}/timeline?before=${historyLoaded ? before : snapshot.timeline.next_before}`,
                           );
                           setOlder((current) => [...result.messages, ...current]);
+                          setOlderParts((current) => [...result.parts, ...current]);
                           setBefore(result.next_before);
                           setHistoryLoaded(true);
                         })
@@ -928,19 +987,22 @@ export default function Workspace() {
                       <p>{agent?.soul || "Apa yang ingin kamu kerjakan bersama?"}</p>
                     </div>
                   )}
-                  {visibleMessages.map((message, index) => {
-                    if (["handoff", "review"].includes(message.purpose))
+                  {entries.map((entry, index) => {
+                    if (entry.type === "activity")
                       return (
-                        <CollaborationActivity
-                          key={message.id}
-                          message={message}
-                          snapshot={snapshot}
+                        <TimelineActivity
+                          key={entry.parts[0].id}
+                          parts={entry.parts}
+                          open={openResource}
                         />
                       );
+                    const { message } = entry;
+                    const previous = entries[index - 1];
+                    const next = entries[index + 1];
                     const run = snapshot.runs.findLast(
                       (run) => run.input_message_id === message.id,
                     );
-                    const author = agents.find((a) => a.id === message.author_agent_id);
+                    const author = publishedAuthor(message);
                     const inlineAttachmentIds = new Set(
                       message.author === "user"
                         ? attachmentParts(message.text).flatMap((part) =>
@@ -953,11 +1015,21 @@ export default function Workspace() {
                     return (
                       <Fragment key={message.id}>
                         <Message
+                          data-timeline-part={entry.part.id}
+                          data-part-sequence={entry.part.sequence}
                           id={`message-${message.id}`}
                           align={message.author === "user" ? "end" : "start"}
                           className="conversation-message"
-                          data-join-above={joins(visibleMessages[index - 1], message) || undefined}
-                          data-join-below={joins(message, visibleMessages[index + 1]) || undefined}
+                          data-join-above={
+                            joins(
+                              previous?.type === "message" ? previous.message : undefined,
+                              message,
+                            ) || undefined
+                          }
+                          data-join-below={
+                            joins(message, next?.type === "message" ? next.message : undefined) ||
+                            undefined
+                          }
                         >
                           {snapshot.thread.type === "group" && message.author === "agent" && (
                             <button
@@ -1014,7 +1086,7 @@ export default function Workspace() {
                                       }
                                     />
                                   </div>
-                                  <MessageTime at={message.created_at} />
+                                  <MessageTime at={entry.part.created_at} />
                                 </BubbleContent>
                               </Bubble>
                             ) : (
@@ -1072,25 +1144,30 @@ export default function Workspace() {
                                     </Button>
                                   )}
                                 </div>
-                                {run.diagnostic && run.status !== "succeeded" && (
-                                  <div className="message-diagnostic rounded-xl bg-danger-soft px-3 py-2 text-[13px] leading-5 text-destructive">
-                                    <p>{repairMessage(run.diagnostic.code)}</p>
-                                    <Button
-                                      variant="ghost"
-                                      type="button"
-                                      className="h-auto px-0 py-0 text-[12px] text-link underline"
-                                      onClick={() => openSettings()}
-                                    >
-                                      Periksa pengaturan
-                                    </Button>
-                                    <details className="mt-1 text-[11px] text-muted-foreground">
-                                      <summary className="w-fit cursor-pointer">
-                                        Detail masalah
-                                      </summary>
-                                      <code>{run.diagnostic.code}</code>
-                                    </details>
-                                  </div>
-                                )}
+                                {run.diagnostic &&
+                                  run.status !== "succeeded" &&
+                                  !(
+                                    run.status === "running" &&
+                                    run.diagnostic.outcome === "not_dispatched"
+                                  ) && (
+                                    <div className="message-diagnostic rounded-xl bg-danger-soft px-3 py-2 text-[13px] leading-5 text-destructive">
+                                      <p>{repairMessage(run.diagnostic.code)}</p>
+                                      <Button
+                                        variant="ghost"
+                                        type="button"
+                                        className="h-auto px-0 py-0 text-[12px] text-link underline"
+                                        onClick={() => openSettings()}
+                                      >
+                                        Periksa pengaturan
+                                      </Button>
+                                      <details className="mt-1 text-[11px] text-muted-foreground">
+                                        <summary className="w-fit cursor-pointer">
+                                          Detail masalah
+                                        </summary>
+                                        <code>{run.diagnostic.code}</code>
+                                      </details>
+                                    </div>
+                                  )}
                               </div>
                             )}
                           </MessageContent>
@@ -1099,7 +1176,6 @@ export default function Workspace() {
                           message={message}
                           run={run}
                           snapshot={snapshot}
-                          open={openResource}
                           retryRoute={(route) =>
                             void act(async () => {
                               await queueCommand(

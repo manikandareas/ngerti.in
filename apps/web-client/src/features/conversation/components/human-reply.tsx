@@ -8,10 +8,10 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import type { ReferenceAgent } from "@/features/conversation/lib/inline-references";
 import { durableCommand, pendingText } from "@/lib/api-client";
 import type { HumanRequest } from "@/types/work";
-import type { Agent } from "@/types/workspace";
-import { AgentAvatar } from "./identity";
+import { InlineReferenceChip } from "./inline-references";
 
 export function HumanReply({
   request,
@@ -21,7 +21,7 @@ export function HumanReply({
 }: {
   request: HumanRequest;
   author: string;
-  agent?: Agent;
+  agent?: ReferenceAgent;
   refresh: () => Promise<unknown>;
 }) {
   const [text, setText] = useState("");
@@ -73,12 +73,18 @@ export function HumanReply({
       }}
     >
       <p className="flex items-center gap-1.5 text-[13px] leading-[18px] text-muted-foreground">
-        {agent ? (
-          <AgentAvatar agent={agent} state="listening" className="size-4" />
-        ) : (
+        {!agent && (
           <HugeiconsIcon icon={BubbleChatIcon} size={14} strokeWidth={1.5} aria-hidden="true" />
         )}
-        {author} ·{" "}
+        {agent ? (
+          <InlineReferenceChip
+            actor={agent}
+            reference={{ kind: "agent", id: agent.id, label: `@${author}` }}
+          />
+        ) : (
+          author
+        )}{" "}
+        ·{" "}
         {request.purpose === "review"
           ? "Menunggu review kamu"
           : request.purpose === "approval"

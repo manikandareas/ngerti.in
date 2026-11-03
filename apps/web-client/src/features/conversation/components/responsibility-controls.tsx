@@ -3,6 +3,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { type ReactNode, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { routineName } from "@/features/conversation/lib/routine-name";
 import { ApiError, durableCommand } from "@/lib/api-client";
 import type { Goal, Routine } from "@/types/work";
 
@@ -49,7 +50,7 @@ export function ResponsibilityControls({
   const lock = useRef(false);
   const current = confirmed && confirmed.revision >= item.revision ? confirmed : item;
   const terminal = current.state === "stopped" || current.state === "completed";
-  const name = kind === "goal" ? (item as Goal).title : (item as Routine).instruction;
+  const name = kind === "goal" ? (item as Goal).title : routineName(item as Routine);
   async function apply(state: ControlState) {
     if (lock.current) return;
     lock.current = true;

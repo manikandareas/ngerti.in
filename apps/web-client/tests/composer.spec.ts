@@ -52,6 +52,64 @@ const documentFile = (name: string, text = "Fixture document") => ({
   buffer: Buffer.from(text),
 });
 
+test("expanded composer keeps full-width text above the attachment and send toolbar", async ({
+  page,
+}, info) => {
+  const { composer } = await setup(page);
+  const form = page.locator(".conversation-composer");
+  await composer.fill("Tinjau ringkasan ini.\nPeriksa rujukan halaman dan simpan catatan review.");
+  await expect(form).toHaveAttribute("data-multiline", "true");
+  const geometry = await form.evaluate((element) => {
+    const box = element.getBoundingClientRect();
+    const editor = element.querySelector(".composer-editor")?.getBoundingClientRect();
+    const attach = element.querySelector(".composer-attach")?.getBoundingClientRect();
+    const send = element.querySelector(".composer-send")?.getBoundingClientRect();
+    if (!editor || !attach || !send) throw new Error("The composer controls are missing.");
+    const style = getComputedStyle(element);
+    return {
+      toolbarCenterOffset: Math.abs(attach.y + attach.height / 2 - send.y - send.height / 2),
+      editorToolbarGap: Math.min(attach.top, send.top) - editor.bottom,
+      textLeftInset: editor.left - box.left,
+      textRightInset: box.right - editor.right,
+      attachLeftInset: attach.left - box.left,
+      sendRightInset: box.right - send.right,
+      padding: parseFloat(style.paddingLeft),
+    };
+  });
+  expect(geometry.toolbarCenterOffset).toBeLessThan(1);
+  expect(geometry.editorToolbarGap).toBeGreaterThanOrEqual(8);
+  expect(geometry.textLeftInset).toBeCloseTo(geometry.padding, 0);
+  expect(geometry.textRightInset).toBeCloseTo(geometry.padding, 0);
+  expect(geometry.attachLeftInset).toBeCloseTo(geometry.padding, 0);
+  expect(geometry.sendRightInset).toBeCloseTo(geometry.padding, 0);
+  await page.screenshot({ path: info.outputPath("expanded-composer-toolbar.png") });
+  await form.screenshot({ path: info.outputPath("expanded-composer-closeup.png") });
+  await composer.press("ControlOrMeta+a");
+  await composer.press("Backspace");
+  await expect(form).not.toHaveAttribute("data-multiline");
+
+  await composer.fill("m");
+  for (let batch = 0; batch < 60 && !(await form.getAttribute("data-multiline")); batch++)
+    await composer.pressSequentially("mmmm");
+  await expect(form).toHaveAttribute("data-multiline", "true");
+  const stable = await form.evaluate(async (element) => {
+    const states = [];
+    for (let frame = 0; frame < 12; frame++) {
+      await new Promise(requestAnimationFrame);
+      states.push(element.getAttribute("data-multiline"));
+    }
+    return states.every((value) => value === "true");
+  });
+  expect(stable).toBe(true);
+  await composer.press("ControlOrMeta+a");
+  await composer.press("Backspace");
+  await expect(form).not.toHaveAttribute("data-multiline");
+  await info.attach("composer-geometry.json", {
+    body: JSON.stringify(geometry, null, 2),
+    contentType: "application/json",
+  });
+});
+
 test("inline chips align with surrounding text, keep default gaps and allow file-only sends", async ({
   page,
 }, info) => {

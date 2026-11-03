@@ -5,8 +5,8 @@ import { AgentAvatar as ProceduralAvatar } from "@/features/avatar/components/ag
 import type { AvatarState } from "@/features/avatar/engine/catalog";
 import { defaultAgentAvatar, parseAvatarConfig } from "@/features/avatar/engine/config";
 import type { AvatarController } from "@/features/avatar/engine/controller";
+import type { ReferenceAgent } from "@/features/conversation/lib/inline-references";
 import { cn } from "@/lib/utils";
-import type { Agent } from "@/types/workspace";
 import { useAvatarActivity } from "./avatar-activity";
 
 const tones = ["pink", "blue", "teal", "purple", "orange"] as const;
@@ -20,14 +20,14 @@ const bubbleFills = {
   silver: "#70757c",
 };
 
-function toneOf(agent?: Agent) {
+function toneOf(agent?: ReferenceAgent) {
   const hash = Array.from(agent?.id ?? "").reduce((value, char) => value + char.charCodeAt(0), 0);
   return agent?.system_role === "tobi" ? "silver" : tones[hash % tones.length];
 }
 
 // A local visual identity, stable across DM/group views and profile renames.
 // This does not add a color field to the published agent contract.
-export function agentStyle(agent?: Agent): CSSProperties {
+export function agentStyle(agent?: ReferenceAgent): CSSProperties {
   const tone = toneOf(agent);
   return {
     "--agent-color": `var(--identity-${tone})`,
@@ -49,11 +49,11 @@ export function AgentAvatar({
   followPointer = false,
   showActivityLabel = true,
 }: {
-  agent?: Agent;
+  agent?: ReferenceAgent;
   name?: string;
   group?: boolean;
   largeGroup?: boolean;
-  members?: Agent[];
+  members?: ReferenceAgent[];
   className?: string;
   state?: AvatarState;
   animated?: boolean;

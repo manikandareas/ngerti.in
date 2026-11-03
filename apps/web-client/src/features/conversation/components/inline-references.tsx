@@ -1,4 +1,4 @@
-import { PuzzleIcon } from "@hugeicons/core-free-icons";
+import { AttachmentIcon, PuzzleIcon, UserIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { avatarColors } from "@ngertiin/avatar/catalog";
 import { defaultAgentAvatar } from "@ngertiin/avatar/config";
@@ -15,18 +15,21 @@ import {
 import {
   type InlineReference,
   plainReferenceParts,
+  type ReferenceAgent,
   referenceParts,
   referenceTarget,
   type SkillOption,
 } from "@/features/conversation/lib/inline-references";
 import { request } from "@/lib/api-client";
-import type { Agent, Skills, Snapshot } from "@/types/workspace";
+import type { Agent, ConversationPart, Skills, Snapshot } from "@/types/workspace";
 import "./inline-references.css";
+import { AgentAvatar } from "./identity";
 
 const emptyAgents: Agent[] = [];
 const emptySkills: SkillOption[] = [];
 const ReferenceContext = createContext({
   agents: emptyAgents,
+  identities: emptyAgents as ReferenceAgent[],
   skills: emptySkills,
   group: false,
   loading: false,
@@ -37,13 +40,21 @@ export const useInlineReferences = () => useContext(ReferenceContext);
 
 export function InlineReferencesProvider({
   snapshot,
+  parts = [],
   children,
 }: {
   snapshot: Snapshot | null;
+  parts?: ConversationPart[];
   children: ReactNode;
 }) {
   const agents = snapshot?.agents ?? emptyAgents;
   const threadId = snapshot?.thread.id;
+  const identities = useMemo(() => {
+    const known = new Map<string, ReferenceAgent>();
+    for (const part of parts) for (const actor of part.actors) known.set(actor.id, actor);
+    for (const agent of agents) known.set(agent.id, agent);
+    return [...known.values()];
+  }, [agents, parts]);
   const [attempt, retry] = useState(0);
   const [inventory, setInventory] = useState<{
     scope: string;
@@ -130,46 +141,85 @@ export function InlineReferencesProvider({
   const value = useMemo(
     () => ({
       agents,
+      identities,
       skills: current ? inventory.skills : emptySkills,
       group: snapshot?.thread.type === "group",
       loading: !!threadId && (!current || inventory.loading),
       error: current ? inventory.error : "",
       refresh: () => retry((value) => value + 1),
     }),
-    [agents, current, inventory, snapshot?.thread.type, threadId],
+    [agents, identities, current, inventory, snapshot?.thread.type, threadId],
   );
   return <ReferenceContext.Provider value={value}>{children}</ReferenceContext.Provider>;
 }
 
-export function referenceColor(agent: Agent): CSSProperties {
+export function referenceColor(agent: ReferenceAgent): CSSProperties {
   const config = agent.avatar_config ?? defaultAgentAvatar(agent.id, agent.system_role === "tobi");
   return { "--reference-color": avatarColors[config.color].base } as CSSProperties;
 }
 
-export function InlineReferenceChip({ reference }: { reference: InlineReference }) {
-  const { agents } = useInlineReferences();
+function referenceLabel(reference: InlineReference, agent?: ReferenceAgent): string {
+  if (reference.kind === "user") return "Kamu";
+  if (reference.kind !== "agent") return reference.label;
+  const usesHandle =
+    reference.label.slice(1).toLocaleLowerCase() === agent?.handle?.toLocaleLowerCase();
+  if (agent && (usesHandle || reference.label.startsWith("@agent_"))) return agent.name;
+  return reference.label.replace(/^@/, "");
+}
+
+const referenceIcons = { user: UserIcon, file: AttachmentIcon, skill: PuzzleIcon };
+
+export function InlineReferenceChip({
+  reference,
+  actor,
+  onOpenFile,
+}: {
+  reference: InlineReference;
+  actor?: ReferenceAgent;
+  onOpenFile?: () => void;
+}) {
+  const { identities } = useInlineReferences();
   const agent =
-    reference.kind === "agent" ? agents.find((agent) => agent.id === reference.id) : undefined;
-  const label = agent ? `@${agent.name}` : reference.label;
-  return (
-    <span
-      data-inline-reference={reference.kind}
-      data-reference-id={reference.id}
-      className="inline-reference"
-      style={agent ? referenceColor(agent) : undefined}
-      title={
-        agent
-          ? `@${agent.handle ?? agent.name}`
-          : reference.kind === "skill"
-            ? `${reference.label} · ${reference.source === "application" ? "Aplikasi" : "Harness"}${reference.version ? ` · v${reference.version}` : ""}`
-            : "Agent tidak tersedia"
-      }
-    >
-      {reference.kind === "skill" && (
-        <HugeiconsIcon icon={PuzzleIcon} size={12} strokeWidth={1.8} aria-hidden="true" />
+    actor ??
+    (reference.kind === "agent"
+      ? identities.find((agent) => agent.id === reference.id)
+      : undefined);
+  const label = referenceLabel(reference, agent);
+  const content = (
+    <>
+      {reference.kind === "agent" && (
+        <AgentAvatar
+          agent={agent ?? { id: reference.id, name: label, handle: null }}
+          animated={false}
+          state="idle"
+          showActivityLabel={false}
+          className="size-[18px]"
+        />
+      )}
+      {reference.kind !== "agent" && (
+        <HugeiconsIcon
+          icon={referenceIcons[reference.kind]}
+          size={13}
+          strokeWidth={1.8}
+          aria-hidden="true"
+        />
       )}
       <span>{label}</span>
-    </span>
+    </>
+  );
+  const props = {
+    "data-inline-reference": reference.kind,
+    "data-reference-id": reference.id,
+    className: "inline-reference",
+    style: agent ? referenceColor(agent) : undefined,
+    title: reference.kind === "user" ? "Kamu" : label,
+  };
+  return reference.kind === "file" && onOpenFile ? (
+    <button {...props} type="button" aria-label={`Buka file: ${label}`} onClick={onOpenFile}>
+      {content}
+    </button>
+  ) : (
+    <span {...props}>{content}</span>
   );
 }
 
@@ -180,13 +230,13 @@ export function InlineReferenceText({
   text: string;
   agentId?: string | null;
 }) {
-  const { agents, skills } = useInlineReferences();
+  const { identities, skills } = useInlineReferences();
   return referenceParts(text).flatMap((part) =>
     "reference" in part
       ? [<InlineReferenceChip key={part.offset} reference={part.reference} />]
       : plainReferenceParts(
           part.text,
-          agents,
+          identities,
           agentId ? skills.filter((skill) => skill.agent.id === agentId) : skills,
         ).map((item) =>
           "reference" in item ? (

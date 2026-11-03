@@ -6,7 +6,10 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Button } from "@/components/ui/button";
+import { routineName } from "@/features/conversation/lib/routine-name";
 import type { Snapshot } from "@/types/workspace";
+import { MarkdownDocument } from "./answer";
+import { InlineReferenceText } from "./inline-references";
 import { PanelCard, PanelEmpty, PanelNavRow, PanelPageHeader } from "./panel-primitives";
 import { ResponsibilityControls } from "./responsibility-controls";
 
@@ -157,7 +160,22 @@ export function Responsibilities({
       .reverse();
     return (
       <div className="context-section space-y-3.5 pt-3.5">
-        <PanelPageHeader title={routine.instruction} back="Routine" onBack={() => select(null)} />
+        <PanelPageHeader
+          title={<InlineReferenceText text={routineName(routine)} />}
+          back="Routine"
+          onBack={() => select(null)}
+        />
+        {routineName(routine) !== routine.instruction && (
+          <PanelCard label="Yang dilakukan">
+            <div className="px-3.5 py-3">
+              <MarkdownDocument
+                text={routine.instruction}
+                snapshot={snapshot}
+                openResource={(kind, id) => (kind === "goals" ? openGoal(id) : openFile(id))}
+              />
+            </div>
+          </PanelCard>
+        )}
         <ResponsibilityControls
           item={routine}
           kind="routine"
@@ -257,7 +275,7 @@ export function Responsibilities({
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => compose(`${address}Ubah Routine "${routine.instruction}": `)}
+          onClick={() => compose(`${address}Ubah Routine "${routineName(routine)}": `)}
         >
           Ubah atau batalkan melalui chat
         </Button>
@@ -275,7 +293,7 @@ export function Responsibilities({
         }))
       : snapshot.routines.map((r) => ({
           id: r.id,
-          title: r.instruction,
+          title: routineName(r),
           state: labels[r.state],
           resource: r,
           detail: r.next_run_at

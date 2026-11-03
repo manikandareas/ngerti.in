@@ -229,6 +229,7 @@
 
 .workspace-main {
   --conversation-edge-fade: 48px;
+  --conversation-end-gap: 1rem;
   position: relative;
   isolation: isolate;
 }
@@ -303,13 +304,21 @@
 .conversation-column {
   max-width: calc(var(--chat-column-max) + 40px);
   padding: calc(var(--conversation-top, 0px) + var(--conversation-edge-fade) + 8px) 20px
-    calc(var(--conversation-bottom, 0px) + var(--conversation-edge-fade) + 8px);
+    calc(
+      var(--conversation-bottom, 0px) +
+      var(--conversation-edge-fade) +
+      var(--conversation-end-gap)
+    );
 }
 /* Messages scroll behind both transparent controls, fading across their full
    height. Resize measurements also keep the first and latest messages clear. */
 .conversation-scroll {
   scroll-padding-block: calc(var(--conversation-top, 0px) + var(--conversation-edge-fade))
-    calc(var(--conversation-bottom, 0px) + var(--conversation-edge-fade));
+    calc(
+      var(--conversation-bottom, 0px) +
+      var(--conversation-edge-fade) +
+      var(--conversation-end-gap)
+    );
   mask-image: linear-gradient(
     to bottom,
     rgb(0 0 0 / 0.25),
@@ -431,7 +440,26 @@ button.group-bubble-author:focus-visible {
     box-shadow 150ms;
 }
 .conversation-composer[data-multiline="true"] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "input input"
+    "attach actions";
+  align-items: center;
+  row-gap: 8px;
   border-radius: 18px;
+}
+.conversation-composer[data-multiline="true"] > .composer-attach {
+  grid-area: attach;
+  justify-self: start;
+  margin: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.conversation-composer[data-multiline="true"] > .composer-actions {
+  grid-area: actions;
+  justify-self: end;
+  margin: 0;
 }
 .conversation-composer:hover,
 .conversation-composer:focus-within {
@@ -467,6 +495,10 @@ button.group-bubble-author:focus-visible {
   overflow-y: auto;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
+}
+.conversation-composer[data-multiline="true"] > .composer-editor {
+  grid-area: input;
+  width: 100%;
 }
 .composer-paragraph {
   margin: 0;
@@ -834,7 +866,11 @@ button.group-bubble-author:focus-visible {
     box-shadow: inset 0 0 0 0.5px var(--composer-ring);
   }
   .conversation-composer[data-multiline="true"]::before {
+    inset: 0;
     border-radius: 18px;
+  }
+  .conversation-composer[data-multiline="true"] {
+    padding: 8px;
   }
   .conversation-composer > textarea,
   .conversation-composer > .composer-editor,

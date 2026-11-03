@@ -99,7 +99,7 @@ export function PanelPageHeader({
   onBack,
   intro,
 }: {
-  title: string;
+  title: ReactNode;
   back?: string;
   onBack: () => void;
   intro?: ReactNode;

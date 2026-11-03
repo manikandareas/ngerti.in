@@ -114,13 +114,23 @@ export function FilesPanel({
               <div>
                 <dt className="text-muted-foreground">Asal</dt>
                 <dd>
-                  {artifact.origin}
+                  {(
+                    {
+                      upload: "Lampiran kamu",
+                      native_output: "Hasil pekerjaan agent",
+                      shared_copy: "File yang dibagikan",
+                      metadata: "Referensi file",
+                    } as Record<string, string>
+                  )[artifact.origin] ?? "File percakapan"}
                   {artifact.source_artifact_id ? " · salinan dibagikan" : ""}
                 </dd>
               </div>
               <div>
                 <dt className="text-muted-foreground">Pekerjaan</dt>
-                <dd>{artifact.run_id ?? "Lampiran pengguna"}</dd>
+                <dd>
+                  {snapshot.agents.find((agent) => agent.id === artifact.created_by_agent_id)
+                    ?.name ?? (artifact.run_id ? "Hasil percakapan ini" : "Dikirim oleh kamu")}
+                </dd>
               </div>
             </dl>
           </PanelCard>

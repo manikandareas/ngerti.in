@@ -40,6 +40,7 @@ import {
   attachmentParts,
   type ComposerAttachment,
 } from "@/features/conversation/lib/attachment-references";
+import { isComposerMultiline } from "@/features/conversation/lib/composer-layout";
 import { referenceParts } from "@/features/conversation/lib/inline-references";
 import { AttachmentNode, ComposerAttachmentContext } from "./attachment-node";
 import { ComposerSuggestions } from "./composer-suggestions";
@@ -197,13 +198,8 @@ function ComposerBridge(props: Props) {
     const measure = () => {
       const root = editor.getRootElement();
       if (!root) return;
-      const style = getComputedStyle(root);
-      const single =
-        parseFloat(style.lineHeight) +
-        parseFloat(style.paddingTop) +
-        parseFloat(style.paddingBottom);
       latest.current.onMultiline(
-        root.scrollHeight > single + 4 ||
+        isComposerMultiline(root) ||
           editor.getEditorState().read(() => $getRoot().getTextContent().includes("\n")),
       );
     };

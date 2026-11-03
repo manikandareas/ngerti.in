@@ -12,7 +12,7 @@
   font-size: 0.9em;
   font-weight: 500;
   line-height: 1.45;
-  vertical-align: baseline;
+  vertical-align: text-bottom;
   white-space: nowrap;
   unicode-bidi: isolate;
   text-decoration: none;
@@ -127,4 +127,36 @@
   .composer-suggestions {
     animation: none;
   }
+}
+
+button.inline-reference {
+  cursor: pointer;
+}
+button.inline-reference:hover {
+  background: color-mix(in srgb, var(--reference-color) 22%, var(--popover));
+}
+button.inline-reference:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+.inline-reference > .agent-avatar {
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+.inline-reference[data-inline-reference="agent"],
+.inline-reference[data-inline-reference="user"] {
+  padding-inline: 1px;
+  background: transparent;
+  box-shadow: none;
+}
+
+[data-conversation-event] .inline-reference {
+  font-size: inherit;
+  line-height: inherit;
+  vertical-align: middle;
+}
+[data-conversation-event] .inline-reference > .agent-avatar {
+  width: 16px;
+  height: 16px;
 }

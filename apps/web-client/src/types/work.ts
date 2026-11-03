@@ -19,6 +19,7 @@ export type Schedule =
   | { type: "interval" | "heartbeat"; anchor_at: string; every_ms: number }
   | { type: "calendar"; local_time: string; weekdays: number[] };
 export interface Routine extends Base {
+  name: string | null;
   thread_id: string;
   agent_id: string | null;
   scope: "agent" | "group";

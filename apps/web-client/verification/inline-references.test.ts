@@ -73,4 +73,46 @@ describe("durable inline references", () => {
     expect(JSON.stringify(tree)).toContain("ngertiin://agent/agent-one");
     expect(JSON.stringify(tree)).toContain("ngertiin://skill/native/");
   });
+  test("owner and multiword aliases resolve without ambiguity or changing routing", () => {
+    const peer = { ...agent, id: "peer", name: "Skinny Vicuna", handle: "skinny" };
+    const parts = plainReferenceParts("@USER cek @skinny vicuna, lalu @NARA.", [agent, peer], []);
+    expect(
+      parts
+        .filter((part) => "reference" in part)
+        .map((part) => "reference" in part && part.reference.kind),
+    ).toEqual(["user", "agent", "agent"]);
+    expect(
+      plainReferenceParts("@Nara", [agent, { ...peer, name: "Nara" }], []).some(
+        (part) => "reference" in part,
+      ),
+    ).toBeFalse();
+    const owner = { kind: "user", id: "owner", label: "@user" } as const;
+    expect(referenceFromUrl("ngertiin://user/owner", "@user")).toEqual(owner);
+    expect(referenceTarget(referenceText(owner))).toBeNull();
+    expect(referenceTarget("[report](ngertiin://file/file-one)")).toBeNull();
+    expect(referenceFromUrl("ngertiin://agent/peer?spoof=true", "@peer")).toBeNull();
+  });
+  test("verified legacy file receipts become scoped readable links while other code and links stay literal", () => {
+    const id = "b6869bf7-af0b-4a32-a96f-d8a823a3deeb";
+    const tree = {
+      type: "root",
+      children: [
+        {
+          type: "paragraph",
+          children: [
+            { type: "inlineCode", value: id },
+            { type: "text", value: `File ${id}` },
+            { type: "code", value: id },
+          ],
+        },
+      ],
+    };
+    remarkInlineReferences({
+      agents: [agent],
+      skills: [],
+      files: [{ id, name: "contoh-tutor-rag.md" }],
+    })(tree);
+    expect(tree.children[0].children.filter((node) => node.type === "link")).toHaveLength(2);
+    expect(tree.children[0].children.at(-1)).toEqual({ type: "code", value: id });
+  });
 });

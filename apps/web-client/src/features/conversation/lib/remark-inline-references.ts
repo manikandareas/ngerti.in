@@ -1,5 +1,10 @@
-import type { Agent } from "@/types/workspace";
-import { plainReferenceParts, referenceUrl, type SkillOption } from "./inline-references";
+import type { Artifact } from "@/types/work";
+import {
+  plainReferenceParts,
+  type ReferenceAgent,
+  referenceUrl,
+  type SkillOption,
+} from "./inline-references";
 
 interface Node {
   type: string;
@@ -8,13 +13,23 @@ interface Node {
   url?: string;
 }
 
+function fileLink(file: Pick<Artifact, "id" | "name">): Node {
+  return {
+    type: "link",
+    url: `ngertiin://file/${file.id}`,
+    children: [{ type: "text", value: file.name }],
+  };
+}
+
 /** Operate on Markdown text nodes so links, code and image URLs keep their original meaning. */
 export function remarkInlineReferences({
   agents,
   skills,
+  files = [],
 }: {
-  agents: Agent[];
+  agents: ReferenceAgent[];
   skills: SkillOption[];
+  files?: Pick<Artifact, "id" | "name">[];
 }) {
   return (tree: Node) => {
     function walk(node: Node) {
@@ -24,19 +39,29 @@ export function remarkInlineReferences({
       )
         return;
       node.children = node.children.flatMap((child): Node[] => {
+        // Legacy artifact receipts can become readable links without rewriting raw history.
+        const file = child.value && files.find((file) => file.id === child.value);
+        if (file && ["text", "inlineCode"].includes(child.type)) return [fileLink(file)];
         if (child.type !== "text" || !child.value) {
           walk(child);
           return [child];
         }
-        return plainReferenceParts(child.value, agents, skills).map((part) =>
-          "reference" in part
-            ? {
-                type: "link",
-                url: referenceUrl(part.reference),
-                children: [{ type: "text", value: part.reference.label }],
-              }
-            : { type: "text", value: part.text },
+        const chunks = child.value.split(
+          /([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/i,
         );
+        return chunks.flatMap((chunk) => {
+          const file = files.find((file) => file.id === chunk);
+          if (file) return [fileLink(file)];
+          return plainReferenceParts(chunk, agents, skills).map((part) =>
+            "reference" in part
+              ? {
+                  type: "link",
+                  url: referenceUrl(part.reference),
+                  children: [{ type: "text", value: part.reference.label }],
+                }
+              : { type: "text", value: part.text },
+          );
+        });
       });
     }
     walk(tree);

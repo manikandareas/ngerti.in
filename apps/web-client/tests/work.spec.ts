@@ -1014,6 +1014,7 @@ test("unsafe Markdown cuts and changed prefixes keep complete content beside a l
     choice_id: "allow-once",
   });
   type AnchorSnapshot = {
+    timeline: { messages: AnchorSnapshot["messages"] };
     messages: {
       id: string;
       run_id: string | null;
@@ -1078,6 +1079,8 @@ test("unsafe Markdown cuts and changed prefixes keep complete content beside a l
     if (!message || !run) throw new Error("Completed fixture projection is missing.");
     message.text = item.text;
     message.revision += 100;
+    const published = projected.timeline.messages.find((value) => value.id === message.id);
+    if (published) Object.assign(published, message);
     run.revision += 100;
     const offset = item.text.indexOf(item.marker);
     const prefix = item.mismatch ? "Original introduction.\n\n" : item.text.slice(0, offset);

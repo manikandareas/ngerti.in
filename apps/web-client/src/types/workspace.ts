@@ -9,7 +9,7 @@ import type {
   Routine,
   Workspace,
 } from "./work";
-// Consumer projections of the published Ngertiin API 1.23.0.
+// Consumer projections of the published Ngertiin API 1.24.0.
 export interface Base {
   id: string;
   revision: number;
@@ -102,7 +102,47 @@ export interface Connection extends Base {
   models: { id: string; reasoning: string[]; input_modalities?: string[] }[];
   capabilities: Record<string, "supported" | "unsupported" | "unknown">;
 }
+export interface ConversationActor {
+  id: string;
+  name: string;
+  handle: string | null;
+  avatar_config: AvatarConfig | null;
+}
+export interface ConversationPart {
+  id: string;
+  sequence: number;
+  source_cursor: number;
+  thread_id: string;
+  created_at: string;
+  kind:
+    | "message"
+    | "goal_created"
+    | "goal_completed"
+    | "goal_blocked"
+    | "goal_paused"
+    | "goal_resumed"
+    | "goal_stopped"
+    | "routine_created"
+    | "routine_paused"
+    | "routine_resumed"
+    | "routine_stopped"
+    | "handoff_requested"
+    | "handoff_failed";
+  message_id: string | null;
+  resource_id: string | null;
+  source_message_id: string | null;
+  actors: ConversationActor[];
+  name: string;
+  summary: string | null;
+}
+export interface ConversationTimeline {
+  parts: ConversationPart[];
+  messages: Message[];
+  has_more: boolean;
+  next_before: number | null;
+}
 export interface Snapshot {
+  timeline: ConversationTimeline;
   cursor: number;
   thread: Thread;
   agents: Agent[];

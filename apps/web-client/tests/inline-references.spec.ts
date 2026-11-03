@@ -83,6 +83,14 @@ test("group mention and skill use shared chips, preserve routing and survive rel
   await composer.press("Enter");
   const mention = composer.locator('[data-inline-reference="agent"]');
   await expect(mention).toHaveAttribute("data-reference-id", agents[1].id);
+  await expect(mention).toHaveText(agents[1].name);
+  await expect(mention.locator(".agent-avatar")).toBeVisible();
+  expect(
+    await mention.evaluate((element) => ({
+      background: getComputedStyle(element).backgroundColor,
+      shadow: getComputedStyle(element).boxShadow,
+    })),
+  ).toEqual({ background: "rgba(0, 0, 0, 0)", shadow: "none" });
   await expect(composer).toBeFocused();
   await page.keyboard.insertText("/");
   await expect(page.getByRole("option")).toHaveCount(1);
@@ -212,7 +220,8 @@ test("DM skill chips delete atomically and Markdown assistant references share t
   await composer.press("Backspace");
   await composer.press("Backspace");
   await expect(composer.locator("[data-inline-reference]")).toHaveCount(0);
-  await composer.fill("/");
+  await expect(composer).toHaveText("");
+  await composer.pressSequentially("/");
   await expect(page.getByRole("option")).toHaveCount(1);
   await composer.press("Enter");
   await page.keyboard.insertText(`Ask @${agents[0].handle} to investigate.`);

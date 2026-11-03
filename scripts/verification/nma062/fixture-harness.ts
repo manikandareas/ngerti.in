@@ -108,6 +108,7 @@ export function fixtureAdapter(tools: ProductTools): HarnessAdapter {
               instruction:
                 "INTERNAL_HANDOFF_CANARY_8472: prepare and publish the reviewed example, then finish the task.",
               summary: "Prepare the reviewed example",
+              announcement: `The campaign summary is ready.\n\n[@${tools.lifecycle.store.get("agent", peer as string).name}](ngertiin://agent/${peer}) please review [summary.txt](ngertiin://file/${tools.lifecycle.store.list("artifact").find(file => file.thread_id === currentRun.thread_id && file.name === "summary.txt")?.id}).`,
               continuation: "finalize",
             });
             input.onEvent({ type: "text", text: "The campaign summary is ready." });
@@ -134,7 +135,7 @@ export function fixtureAdapter(tools: ProductTools): HarnessAdapter {
               path: "example.txt",
               media_type: "text/plain",
             });
-            input.onEvent({ type: "text", text: "The reviewed example is ready." });
+            input.onEvent({ type: "text", text: "The reviewed example is ready.\n\n[@user](ngertiin://user/owner) please check the file." });
             return {
               status: "succeeded",
               native_session_id: sessionId,

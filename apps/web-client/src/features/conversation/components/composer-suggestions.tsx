@@ -113,8 +113,8 @@ export function ComposerSuggestions({ value, readOnly }: { value: string; readOn
         .map(
           (agent) =>
             new ReferenceOption(
-              { kind: "agent", id: agent.id, label: `@${agent.handle}` },
-              `@${agent.handle}`,
+              { kind: "agent", id: agent.id, label: `@${agent.name}` },
+              "Agent di percakapan ini",
               <AgentAvatar
                 agent={agent}
                 animated={false}

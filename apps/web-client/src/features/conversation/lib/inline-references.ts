@@ -2,6 +2,8 @@ import type { Agent } from "@/types/workspace";
 
 export type InlineReference =
   | { kind: "agent"; id: string; label: string }
+  | { kind: "user"; id: "owner"; label: string }
+  | { kind: "file"; id: string; label: string }
   | {
       kind: "skill";
       id: string;
@@ -23,7 +25,7 @@ const encode = (value: string) =>
   encodeURIComponent(value).replace(/[!'()*]/g, (char) => `%${char.charCodeAt(0).toString(16)}`);
 
 export function referenceUrl(reference: InlineReference) {
-  if (reference.kind === "agent") return `ngertiin://agent/${encode(reference.id)}`;
+  if (reference.kind !== "skill") return `ngertiin://${reference.kind}/${encode(reference.id)}`;
   const query = new URLSearchParams({ agent: reference.agentId });
   if (reference.version) query.set("version", String(reference.version));
   return `ngertiin://skill/${reference.source}/${encode(reference.id)}?${query}`;
@@ -34,8 +36,14 @@ export function referenceFromUrl(url: string, label: string): InlineReference | 
     const parsed = new URL(url);
     if (parsed.protocol !== "ngertiin:" || parsed.hash || parsed.username || parsed.password)
       return null;
-    if (parsed.hostname === "agent" && /^\/[\w-]+$/.test(parsed.pathname))
-      return { kind: "agent", id: parsed.pathname.slice(1), label };
+    if (parsed.search === "" && parsed.hostname === "user" && parsed.pathname === "/owner")
+      return { kind: "user", id: "owner", label: "@user" };
+    if (
+      parsed.search === "" &&
+      ["agent", "file"].includes(parsed.hostname) &&
+      /^\/[\w-]+$/.test(parsed.pathname)
+    )
+      return { kind: parsed.hostname as "agent" | "file", id: parsed.pathname.slice(1), label };
     const match = /^\/(application|harness|native)\/([^/]+)$/.exec(parsed.pathname);
     const agentId = parsed.searchParams.get("agent");
     const version = parsed.searchParams.get("version");
@@ -62,7 +70,7 @@ export function referenceText(reference: InlineReference) {
 /** Stable references travel through the existing durable message/draft text field. */
 export function referenceParts(text: string): ReferencePart[] {
   const pattern =
-    /(`+)[\s\S]*?\1|\[((?:\\.|[^\]\\\r\n])*)\]\((ngertiin:\/\/(?:agent|skill)\/[^\s)]+)\)/g;
+    /(`+)[\s\S]*?\1|\[((?:\\.|[^\]\\\r\n])*)\]\((ngertiin:\/\/(?:agent|skill|user)\/[^\s)]+)\)/g;
   const parts: ReferencePart[] = [];
   let offset = 0;
   for (const match of text.matchAll(pattern)) {
@@ -88,26 +96,59 @@ export function referenceTarget(text: string): string | null {
   );
 }
 
-/** Only known names at word boundaries become references; URLs, paths and code stay literal. */
-export function plainReferenceParts(text: string, agents: Agent[], skills: SkillOption[]) {
+export type ReferenceAgent = Pick<Agent, "id" | "name" | "handle" | "avatar_config"> &
+  Partial<Pick<Agent, "system_role">>;
+
+function resolvePlainReference(
+  token: string,
+  aliases: Map<string, ReferenceAgent[]>,
+  skills: SkillOption[],
+): InlineReference | undefined {
+  if (token.toLocaleLowerCase() === "@user") return { kind: "user", id: "owner", label: "@user" };
+  if (token.startsWith("@")) {
+    const agents = aliases.get(token.slice(1).toLocaleLowerCase()) ?? [];
+    if (agents.length === 1)
+      return { kind: "agent", id: agents[0].id, label: `@${agents[0].name}` };
+    return undefined;
+  }
+  if (token.startsWith("/")) {
+    const matches = skills.filter((skill) => skill.reference.label === token);
+    if (matches.length === 1) return matches[0].reference;
+  }
+  return undefined;
+}
+
+/** Resolve only unambiguous known aliases; protected Markdown, URLs and paths stay literal. */
+export function plainReferenceParts(text: string, agents: ReferenceAgent[], skills: SkillOption[]) {
+  const aliases = new Map<string, ReferenceAgent[]>();
+  for (const agent of agents) {
+    for (const alias of new Set(
+      [agent.name, agent.handle]
+        .filter((value): value is string => !!value)
+        .map((value) => value.toLocaleLowerCase()),
+    ))
+      aliases.set(alias, [...(aliases.get(alias) ?? []), agent]);
+  }
+  const escapePattern = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const names = ["user", ...aliases.keys()]
+    .sort((a, b) => b.length - a.length)
+    .map(escapePattern)
+    .join("|");
+  const pattern = new RegExp(
+    "`+[^`]*`+|https?:\\/\\/\\S+|\\[[^\\]]*\\]\\([^)]*\\)|(^|[\\s(])(@(?:" +
+      names +
+      ")|/[\\w-]+)(?=$|[\\s.,!?;:)…])",
+    "giu",
+  );
   const parts: ReferencePart[] = [];
-  const pattern =
-    /`+[^`]*`+|https?:\/\/\S+|\[[^\]]*\]\([^)]*\)|(^|[\s(])([@/])([\w-]+)(?=$|[\s.,!?;:)])/gu;
   let offset = 0;
   for (const match of text.matchAll(pattern)) {
     if (!match[2]) continue;
-    const agent = match[2] === "@" ? agents.find((item) => item.handle === match[3]) : undefined;
-    const candidates =
-      match[2] === "/" ? skills.filter((item) => item.reference.label === `/${match[3]}`) : [];
-    const reference: InlineReference | undefined = agent
-      ? { kind: "agent", id: agent.id, label: `@${agent.handle}` }
-      : candidates.length === 1
-        ? candidates[0].reference
-        : undefined;
+    const token = match[2];
+    const reference = resolvePlainReference(token, aliases, skills);
     if (!reference) continue;
     const start = match.index + match[1].length;
     if (start > offset) parts.push({ offset, text: text.slice(offset, start) });
-    const token = `${match[2]}${match[3]}`;
     parts.push({ offset: start, reference, text: token });
     offset = start + token.length;
   }

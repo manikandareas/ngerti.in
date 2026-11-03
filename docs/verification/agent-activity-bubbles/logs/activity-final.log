@@ -1,0 +1,20 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4311" --strictPort
+[WebServer] (node:82265) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 8 tests using 1 worker
+
+(node:82266) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [desktop] › tests/activity.spec.ts:110:1 › DM activity updates one bubble, follows streaming output and survives reload without technical text (2.9s)
+  ✓  2 [desktop] › tests/activity.spec.ts:202:1 › group activity belongs to each working agent and hands off without idle member bubbles (2.9s)
+  ✓  3 [desktop] › tests/activity.spec.ts:255:1 › a dark tablet DM keeps its avatar and bubble geometry stable when loading stops (1.5s)
+  ✓  4 [desktop] › tests/activity.spec.ts:293:1 › waiting, uncertain results, confirmed stop and reduced motion never imply active thinking (2.0s)
+(node:82311) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  5 [mobile] › tests/activity.spec.ts:110:1 › DM activity updates one bubble, follows streaming output and survives reload without technical text (1.7s)
+  ✓  6 [mobile] › tests/activity.spec.ts:202:1 › group activity belongs to each working agent and hands off without idle member bubbles (1.6s)
+  ✓  7 [mobile] › tests/activity.spec.ts:255:1 › a dark tablet DM keeps its avatar and bubble geometry stable when loading stops (2.0s)
+  ✓  8 [mobile] › tests/activity.spec.ts:293:1 › waiting, uncertain results, confirmed stop and reduced motion never imply active thinking (1.4s)
+
+  8 passed (18.3s)

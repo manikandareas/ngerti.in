@@ -1,0 +1,18 @@
+{
+  "port": 8000,
+  "before_contract": "1.27.0",
+  "after_contract": "1.28.0",
+  "readiness": "ready",
+  "contract_matches_export": true,
+  "activity_projection_has_active_tools": true,
+  "stored_entities": 423,
+  "stored_entity_sha256": "e99eda85a1fa96c6d6c28dbdbdd08e608b084bd0875bc7d18da8d795409cda0e",
+  "all_stored_entities_byte_identical": true,
+  "before_status_counts": {
+    "succeeded": 79,
+    "cancelled": 4
+  },
+  "new_native_runs": 0,
+  "backup_integrity_check": "ok",
+  "backup_directory": ".dev/harness-first/backups/agent-activity-20261103T164439Z"
+}

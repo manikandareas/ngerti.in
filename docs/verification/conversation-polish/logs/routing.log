@@ -1,0 +1,22 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4341" --strictPort
+[WebServer] (node:86100) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 10 tests using 1 worker
+
+(node:86111) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop] › tests/jev-routing-v3.spec.ts:47:1 › a blocked fallback shows its cause and retries the same hidden run across reload (3.7s)
+  ✓   2 [desktop] › tests/jev-routing-v3.spec.ts:86:1 › binary repair refreshes the group from hidden-run events without another message or classifier call (2.7s)
+  ✓   3 [desktop] › tests/jev-routing-v3.spec.ts:109:1 › an unknown native fallback requests reconciliation and exposes no preparation retry (3.2s)
+  ✓   4 [desktop] › tests/jev-routing-v3.spec.ts:130:1 › semantic review progress updates without exposing private routing input (3.4s)
+  ✓   5 [desktop] › tests/jev-routing-v3.spec.ts:166:1 › an unresolved recipient displays the agent's clarification across reload (3.1s)
+(node:86179) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   6 [mobile] › tests/jev-routing-v3.spec.ts:47:1 › a blocked fallback shows its cause and retries the same hidden run across reload (2.5s)
+  ✓   7 [mobile] › tests/jev-routing-v3.spec.ts:86:1 › binary repair refreshes the group from hidden-run events without another message or classifier call (1.8s)
+  ✓   8 [mobile] › tests/jev-routing-v3.spec.ts:109:1 › an unknown native fallback requests reconciliation and exposes no preparation retry (1.4s)
+  ✓   9 [mobile] › tests/jev-routing-v3.spec.ts:130:1 › semantic review progress updates without exposing private routing input (2.3s)
+  ✓  10 [mobile] › tests/jev-routing-v3.spec.ts:166:1 › an unresolved recipient displays the agent's clarification across reload (1.8s)
+
+  10 passed (29.8s)

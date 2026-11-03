@@ -1,0 +1,24 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4321" --strictPort
+[WebServer] (node:80774) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 12 tests using 1 worker
+
+(node:80777) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop] › tests/group-attachments.spec.ts:79:1 › group file-only sends stay local, route through the group API and keep uploads in chat instead of the results panel (5.6s)
+  ✓   2 [desktop] › tests/group-attachments.spec.ts:122:1 › a lost group-send acknowledgement restores the same submission after reload without publishing twice (6.2s)
+  ✓   3 [desktop] › tests/group-attachments.spec.ts:154:1 › a rejected second group upload restores both local files and can be corrected without partial publication (8.9s)
+  ✓   4 [desktop] › tests/group-attachments.spec.ts:185:1 › rejected routing retries the original group message and source attachment (11.2s)
+  ✓   5 [desktop] › tests/group-attachments.spec.ts:221:1 › group image eligibility follows the mentioned member and a capable member receives normalized visual input (11.6s)
+  ✓   6 [desktop] › tests/group-responsibilities.spec.ts:117:1 › group collaboration displays friendly activity and shared goal evidence without technical bubbles (13.3s)
+(node:81050) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   7 [mobile] › tests/group-attachments.spec.ts:79:1 › group file-only sends stay local, route through the group API and keep uploads in chat instead of the results panel (6.1s)
+  ✓   8 [mobile] › tests/group-attachments.spec.ts:122:1 › a lost group-send acknowledgement restores the same submission after reload without publishing twice (4.8s)
+  ✓   9 [mobile] › tests/group-attachments.spec.ts:154:1 › a rejected second group upload restores both local files and can be corrected without partial publication (4.7s)
+  ✓  10 [mobile] › tests/group-attachments.spec.ts:185:1 › rejected routing retries the original group message and source attachment (5.0s)
+  ✓  11 [mobile] › tests/group-attachments.spec.ts:221:1 › group image eligibility follows the mentioned member and a capable member receives normalized visual input (9.0s)
+  ✓  12 [mobile] › tests/group-responsibilities.spec.ts:117:1 › group collaboration displays friendly activity and shared goal evidence without technical bubbles (16.3s)
+
+  12 passed (1.8m)

@@ -1,0 +1,47 @@
+bun test v1.3.10 (30e609e0)
+
+verification/avatar-activity.test.ts:
+(pass) activity presentation preserves waiting, stopping and unknown while separating generation from tools [0.52ms]
+
+verification/inline-references.test.ts:
+(pass) durable inline references > round trips escaped labels, qualified native keys and pinned application versions [1.08ms]
+(pass) durable inline references > a mention takes routing precedence over a skill owner and survives a renamed label
+(pass) durable inline references > known plain names are styled without converting paths, URLs or code [0.69ms]
+(pass) durable inline references > Markdown keeps inline code, fenced code, existing links and image content intact [0.72ms]
+(pass) durable inline references > owner and multiword aliases resolve without ambiguity or changing routing [0.90ms]
+(pass) durable inline references > verified legacy file receipts become scoped readable links while other code and links stay literal [0.40ms]
+
+verification/activity-presentation.test.ts:
+(pass) friendly activity uses observed categories and preserves stop, waiting and unknown precedence
+(pass) activity follows its own latest output, keeps peers separate and never borrows another input [0.34ms]
+(pass) queued work, quiet continuations and superseded failures do not create ghost activity [0.18ms]
+(pass) an interactive group continuation anchors to the user's reply while unrelated deferred work stays quiet [0.10ms]
+(pass) handoff keeps the queued recipient visible while the parent yields [0.06ms]
+(pass) thinking copy varies across runs and stays stable for the same run [0.31ms]
+
+verification/conversation-parts.test.ts:
+(pass) milestones group only across adjacent events and sequence wins over intake timestamps [0.16ms]
+(pass) Routine milestones remain separate and legacy references never become technical titles [0.25ms]
+
+verification/conversation-latency.test.ts:
+(pass) streamed text invalidates its public conversation and preview without global catalog reloads [0.03ms]
+(pass) late global responses cannot replace newer entity configuration
+(pass) queue, preparation and blocked states have distinct actionable user labels
+
+verification/conversation-preparation.test.ts:
+(pass) file-reference submissions skip the status request and retain exact retry keys; uploads retain recovery [1.03ms]
+
+verification/avatar-engine.test.ts:
+(pass) Ngertiin avatar engine > seeded identities and persisted recipes reproduce exactly [11.50ms]
+(pass) Ngertiin avatar engine > rejects unsupported versions and malformed recipes at import boundaries
+(pass) Ngertiin avatar engine > renders all 1280 shape/color/face combinations without invalid coordinates [2316.67ms]
+(pass) Ngertiin avatar engine > arbitrary seeds stay outside markup and rendering can use unique gradient IDs [8.60ms]
+(pass) Ngertiin avatar engine > default portraits use mouthless eyes and reject untrusted texture markup [8.44ms]
+(pass) Ngertiin avatar engine > all states and actions have finite poses and honor reduced motion [0.75ms]
+(pass) Gravity overthinking loading > one local timeline coordinates calm, intensity, recovery and reduced motion
+(pass) Gravity overthinking loading > loading SVG includes both depth layers and veins without modifying the recipe [8.31ms]
+
+ 27 pass
+ 0 fail
+ 8721 expect() calls
+Ran 27 tests across 7 files. [2.38s]

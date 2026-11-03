@@ -1,0 +1,106 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4321" --strictPort
+[WebServer] (node:86232) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 12 tests using 1 worker
+
+(node:86237) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop] › tests/group-attachments.spec.ts:79:1 › group file-only sends stay local, route through the group API and keep uploads in chat instead of the results panel (3.3s)
+  ✓   2 [desktop] › tests/group-attachments.spec.ts:122:1 › a lost group-send acknowledgement restores the same submission after reload without publishing twice (4.5s)
+  ✓   3 [desktop] › tests/group-attachments.spec.ts:154:1 › a rejected second group upload restores both local files and can be corrected without partial publication (4.8s)
+  ✓   4 [desktop] › tests/group-attachments.spec.ts:185:1 › rejected routing retries the original group message and source attachment (3.3s)
+  ✓   5 [desktop] › tests/group-attachments.spec.ts:221:1 › group image eligibility follows the mentioned member and a capable member receives normalized visual input (5.0s)
+  ✘   6 [desktop] › tests/group-responsibilities.spec.ts:117:1 › group collaboration displays friendly activity and shared goal evidence without technical bubbles (8.9s)
+(node:86327) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   7 [mobile] › tests/group-attachments.spec.ts:79:1 › group file-only sends stay local, route through the group API and keep uploads in chat instead of the results panel (4.5s)
+  ✓   8 [mobile] › tests/group-attachments.spec.ts:122:1 › a lost group-send acknowledgement restores the same submission after reload without publishing twice (4.8s)
+  ✓   9 [mobile] › tests/group-attachments.spec.ts:154:1 › a rejected second group upload restores both local files and can be corrected without partial publication (2.2s)
+  ✓  10 [mobile] › tests/group-attachments.spec.ts:185:1 › rejected routing retries the original group message and source attachment (3.5s)
+  ✓  11 [mobile] › tests/group-attachments.spec.ts:221:1 › group image eligibility follows the mentioned member and a capable member receives normalized visual input (3.0s)
+  ✘  12 [mobile] › tests/group-responsibilities.spec.ts:117:1 › group collaboration displays friendly activity and shared goal evidence without technical bubbles (7.8s)
+
+
+  1) [desktop] › tests/group-responsibilities.spec.ts:117:1 › group collaboration displays friendly activity and shared goal evidence without technical bubbles 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('[data-collaboration-activity]')
+    Expected: 1
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" locator('[data-collaboration-activity]') with timeout 5000ms
+      - waiting for locator('[data-collaboration-activity]')
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+      161 |     page.getByRole("button", { name: "Goal selesai: Shared campaign report", exact: true }),
+      162 |   ).toBeVisible();
+    > 163 |   await expect(page.locator("[data-collaboration-activity]")).toHaveCount(1);
+          |                                                               ^
+      164 |   await expect(page.locator("[data-collaboration-activity]")).toContainText(
+      165 |     "Prepare the reviewed example",
+      166 |   );
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/group-responsibilities.spec.ts:163:63
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/group-responsibilities-gro-5cd4b-e-without-technical-bubbles-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../.dev/nma062-playwright/group-responsibilities-gro-5cd4b-e-without-technical-bubbles-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/group-responsibilities-gro-5cd4b-e-without-technical-bubbles-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../.dev/nma062-playwright/group-responsibilities-gro-5cd4b-e-without-technical-bubbles-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [mobile] › tests/group-responsibilities.spec.ts:117:1 › group collaboration displays friendly activity and shared goal evidence without technical bubbles 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('[data-collaboration-activity]')
+    Expected: 1
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" locator('[data-collaboration-activity]') with timeout 5000ms
+      - waiting for locator('[data-collaboration-activity]')
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+      161 |     page.getByRole("button", { name: "Goal selesai: Shared campaign report", exact: true }),
+      162 |   ).toBeVisible();
+    > 163 |   await expect(page.locator("[data-collaboration-activity]")).toHaveCount(0);
+          |                                                               ^
+      164 |   await expect(page.locator("body")).not.toContainText("Prepare the reviewed example");
+      165 |   await expect(page.locator("body")).not.toContainText("INTERNAL_HANDOFF_CANARY_8472");
+      166 |   await expect(page.locator("body")).not.toContainText("INTERNAL_FINALIZATION_CANARY_8472");
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/group-responsibilities.spec.ts:163:63
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/group-responsibilities-gro-5cd4b-e-without-technical-bubbles-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../.dev/nma062-playwright/group-responsibilities-gro-5cd4b-e-without-technical-bubbles-mobile/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/group-responsibilities-gro-5cd4b-e-without-technical-bubbles-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../.dev/nma062-playwright/group-responsibilities-gro-5cd4b-e-without-technical-bubbles-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    [desktop] › tests/group-responsibilities.spec.ts:117:1 › group collaboration displays friendly activity and shared goal evidence without technical bubbles 
+    [mobile] › tests/group-responsibilities.spec.ts:117:1 › group collaboration displays friendly activity and shared goal evidence without technical bubbles 
+  10 passed (1.0m)

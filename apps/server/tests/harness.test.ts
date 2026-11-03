@@ -139,6 +139,57 @@ function adapter(
 ): HarnessAdapter {
   return { harness, connect: factory };
 }
+
+test("DM prewarm performs no inference and reuses skills, transport and presentation-only revisions", async () => {
+  const connections = setup();
+  const lane = assign(
+    connections.create({
+      harness: "codex",
+      authentication: { method: "native_login", billing_source: "subscription" },
+    }),
+  );
+  let opens = 0;
+  let skills = 0;
+  let prompts = 0;
+  const native = makeBroker({
+    codex: adapter("codex", async () => {
+      opens++;
+      return client({
+        async skills() {
+          skills++;
+          return [];
+        },
+        async prompt(request) {
+          prompts++;
+          request.onEvent({
+            type: "accepted",
+            native_session_id: request.identity.native_session_id,
+            native_run_id: request.run_id,
+          });
+          return {
+            status: "succeeded",
+            native_session_id: request.identity.native_session_id,
+            native_run_id: request.run_id,
+          };
+        },
+      });
+    }),
+  });
+  expect(native.prewarm(lane.thread.id, lane.agent.id).state).toBe("preparing");
+  await native.openSession(lane.thread.id, lane.agent.id);
+  expect(f.store.list("run")).toHaveLength(0);
+  expect(prompts).toBe(0);
+  expect(native.prewarm(lane.thread.id, lane.agent.id).state).toBe("ready");
+  await dispatch(lane, native);
+  f.lifecycle.updateAgent(lane.agent.id, {
+    expected_revision: lane.agent.revision,
+    changes: { avatar: "https://example.test/avatar.png" },
+  });
+  await dispatch(lane, native);
+  expect(opens).toBe(1);
+  expect(skills).toBe(1);
+  expect(prompts).toBe(2);
+});
 async function dispatch(lane: ReturnType<typeof assign>, native = broker) {
   if (!native) throw new Error("Broker is required.");
   await native.openSession(lane.thread.id, lane.agent.id);

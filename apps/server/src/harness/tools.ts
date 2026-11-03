@@ -104,12 +104,17 @@ export class ProductTools {
       },
     });
     this.register("ngertiin.describe_tools", {
-      schema: z.strictObject({}),
+      schema: productToolSchemas["ngertiin.describe_tools"],
       resources: () => [],
-      execute: (_input, { authorize }) => {
+      execute: (input, { authorize }) => {
         authorize();
+        const { names } = productToolSchemas["ngertiin.describe_tools"].parse(input);
+        if (names?.some((name) => !this.#tools.has(name)))
+          throw new DomainError("INVALID_REQUEST", 422);
         return {
-          tools: [...this.#tools].map(([name, tool]) => productToolDefinition(name, tool.schema)),
+          tools: [...this.#tools]
+            .filter(([name]) => !names || names.includes(name))
+            .map(([name, tool]) => productToolDefinition(name, tool.schema)),
         };
       },
     });

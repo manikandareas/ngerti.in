@@ -1,14 +1,15 @@
 import { Artifacts } from "../artifacts";
 import { Attachments } from "../attachments/service";
 import type { ExecutorContext, HarnessExecutor } from "../background";
-import { DomainError, type Entity } from "../contracts";
+import { agentInput, DomainError, type Entity } from "../contracts";
+import type { NativeSkillMetadata } from "../learning/contracts";
 import type { Lifecycle } from "../lifecycle";
 import { prepareVisualInputs } from "../multimodal";
 import { RunControls } from "../run-controls";
 import { InteractionJournal } from "../runs/interaction-journal";
 import { canonical } from "../store";
 import { Workspaces } from "../workspaces/service";
-import { type Availability, detectHarness, type HarnessId, requireAvailable } from "./availability";
+import { detectHarness, type HarnessId, requireAvailable } from "./availability";
 import type { HarnessAdapter, HarnessClient, ToolLease } from "./client";
 import { Connections } from "./connections";
 import type { CredentialContexts, LaunchContext } from "./context";
@@ -24,6 +25,7 @@ import {
 } from "./contracts";
 import { persistInheritedSkills } from "./inherited-skills";
 import { runLearningContext, sessionInstructions } from "./instructions";
+import type { HarnessDetector } from "./runtime";
 import type { ProductTools } from "./tools";
 
 type Session = {
@@ -34,7 +36,21 @@ type Session = {
   selected: Settings;
   controller: AbortController;
   agent_revision: number;
+  agent_config: string;
+  touched_at: number;
+  skills?: {
+    at: number;
+    value: { native_catalog: NativeSkillMetadata[]; native_state: "supported" | "unknown" };
+  };
 };
+function executionConfiguration(agent: Entity<"agent">) {
+  const {
+    avatar: _avatar,
+    avatar_config: _avatarConfig,
+    ...execution
+  } = agentInput.strip().parse(agent);
+  return canonical(execution);
+}
 async function bounded<T>(operation: Promise<T>, timeoutMs: number, effect = false) {
   let timer: ReturnType<typeof setTimeout> | undefined;
   try {
@@ -66,12 +82,18 @@ export class HarnessBroker {
   readonly #recovering = new Map<string, Promise<Entity<"run">>>();
   readonly #recoveryControllers = new Set<AbortController>();
   #closed = false;
+  #warming = false;
+  readonly #idleTimers = new Map<string, ReturnType<typeof setTimeout>>();
+  readonly #modelCatalogs = new Map<
+    string,
+    { at: number; grant: number; version: string | null }
+  >();
   constructor(
     readonly lifecycle: Lifecycle,
     readonly credentials: CredentialContexts,
     readonly tools: ProductTools,
     private readonly adapters: Partial<Record<HarnessId, HarnessAdapter>> = {},
-    private readonly detect: (harness: HarnessId) => Promise<Availability> = detectHarness,
+    private readonly detect: HarnessDetector = detectHarness,
     private readonly publish: (
       runId: string,
       event: NativeEvent,
@@ -89,6 +111,7 @@ export class HarnessBroker {
       Object.keys(this.adapters).map((id) => [
         id,
         {
+          preparationRevision: () => this.detect.fingerprint?.(id as HarnessId) ?? "",
           prepare: (threadId: string, agentId: string) => this.openSession(threadId, agentId),
           execute: (run: Entity<"run">, context: ExecutorContext) => this.execute(run, context),
         },
@@ -115,6 +138,87 @@ export class HarnessBroker {
   async openSession(threadId: string, agentId: string): Promise<Entity<"binding">> {
     return (await this.session(threadId, agentId)).binding;
   }
+
+  /** Prepare only an idle DM. No prompt, tool lease or model run is admitted. */
+  prewarm(threadId: string, agentId: string): { state: "ready" | "preparing" | "skipped" } {
+    const thread = this.lifecycle.store.get("thread", threadId);
+    const { agent } = this.member(threadId, agentId);
+    if (thread.type !== "dm" || !agent.model_id || this.#closed) return { state: "skipped" };
+    const lane = `${threadId}:${agentId}`;
+    if (this.#sessions.has(lane)) return { state: "ready" };
+    if (this.#opening.has(lane)) return { state: "preparing" };
+    if (
+      this.#warming ||
+      this.#sessions.size >= 3 ||
+      this.lifecycle.store
+        .list("run")
+        .some((run) =>
+          ["queued", "dispatching", "running", "cancel_requested", "unknown"].includes(run.status),
+        )
+    )
+      return { state: "skipped" };
+    this.#warming = true;
+    void this.openSession(threadId, agentId)
+      .catch(() => {})
+      .finally(() => {
+        this.#warming = false;
+      });
+    return { state: "preparing" };
+  }
+
+  private touch(lane: string, session: Session) {
+    session.touched_at = Date.now();
+    clearTimeout(this.#idleTimers.get(lane));
+    const timer = setTimeout(() => {
+      this.#idleTimers.delete(lane);
+      if (this.#closed || this.lifecycle.store.closed || this.#sessions.get(lane) !== session)
+        return;
+      const busy = this.lifecycle.store
+        .list("run")
+        .some(
+          (run) =>
+            run.thread_id === session.binding.thread_id &&
+            run.agent_id === session.binding.agent_id &&
+            ["queued", "dispatching", "running", "cancel_requested", "unknown"].includes(
+              run.status,
+            ),
+        );
+      if (busy) {
+        this.touch(lane, session);
+        return;
+      }
+      this.#sessions.delete(lane);
+      session.controller.abort();
+      void bounded(session.client.close(), this.timeouts.close_ms).catch(() => {});
+    }, 180_000);
+    timer.unref?.();
+    this.#idleTimers.set(lane, timer);
+  }
+
+  private retireIdleSessions(limit = 3) {
+    const busy = new Set(
+      this.lifecycle.store
+        .list("run")
+        .filter((run) =>
+          ["queued", "dispatching", "running", "cancel_requested", "unknown"].includes(run.status),
+        )
+        .map((run) => `${run.thread_id}:${run.agent_id}`),
+    );
+    const idle = [...this.#sessions]
+      .filter(([lane]) => !busy.has(lane))
+      .sort((a, b) => a[1].touched_at - b[1].touched_at);
+    while (this.#sessions.size > limit && idle.length) {
+      const entry = idle.shift();
+      if (!entry) break;
+      const [lane, session] = entry;
+      this.#sessions.delete(lane);
+      clearTimeout(this.#idleTimers.get(lane));
+      this.#idleTimers.delete(lane);
+      session.controller.abort();
+      void bounded(session.client.close(), this.timeouts.close_ms).catch(() => {});
+    }
+  }
+
   private async session(threadId: string, agentId: string): Promise<Session> {
     if (this.#closed) throw new HarnessError("ADAPTER_UNAVAILABLE");
     const lane = `${threadId}:${agentId}`;
@@ -122,10 +226,30 @@ export class HarnessBroker {
     if (existing) {
       const current = this.member(threadId, agentId);
       if (
+        existing.agent_revision !== current.agent.revision &&
+        existing.agent_config === executionConfiguration(current.agent) &&
+        existing.connection_revision === current.connection.grant_revision
+      ) {
+        const binding = this.lifecycle.store.get("binding", existing.binding.id);
+        if (binding.active && binding.revision === existing.binding.revision) {
+          existing.binding = this.lifecycle.store.put(
+            {
+              ...binding,
+              agent_revision: current.agent.revision,
+              revision: binding.revision + 1,
+              updated_at: new Date().toISOString(),
+            },
+            binding.revision,
+          );
+          existing.agent_revision = current.agent.revision;
+        }
+      }
+      if (
         existing.agent_revision === current.agent.revision &&
         this.lifecycle.store.get("binding", existing.binding.id).active
       ) {
         this.check(existing, threadId, agentId);
+        this.touch(lane, existing);
         return existing;
       }
     }
@@ -134,6 +258,8 @@ export class HarnessBroker {
     const promise = this.serializedOpen(threadId, agentId)
       .then((session) => {
         this.#sessions.set(lane, session);
+        this.touch(lane, session);
+        this.retireIdleSessions();
         return session;
       })
       .finally(() => this.#opening.delete(lane));
@@ -238,13 +364,27 @@ export class HarnessBroker {
         throw new HarnessError(current.login === "rejected" ? "AUTH_REJECTED" : "LOGIN_REQUIRED");
       const beforeDiscovery = current.grant_revision;
       try {
-        const models = await bounded(client.discoverModels(), this.timeouts.request_ms);
+        const cached = this.#modelCatalogs.get(current.id);
+        const fresh =
+          cached &&
+          Date.now() - cached.at < 60_000 &&
+          cached.grant === current.grant_revision &&
+          cached.version === availability.version &&
+          current.models.some((model) => model.id === selected.model_id);
+        const models = fresh
+          ? current.models
+          : await bounded(client.discoverModels(), this.timeouts.request_ms);
         if (this.#closed) throw new HarnessError("ADAPTER_UNAVAILABLE");
         current = this.member(threadId, agentId).connection;
         if (current.grant_revision !== beforeDiscovery) throw new DomainError("STALE_DISPATCH");
         if (launch.redactor.text(JSON.stringify(models)) !== JSON.stringify(models))
           throw new HarnessError("PROTOCOL_ERROR");
         current = this.connections.update(current, { discovery: "succeeded", models });
+        this.#modelCatalogs.set(current.id, {
+          at: fresh ? cached.at : Date.now(),
+          grant: current.grant_revision,
+          version: availability.version,
+        });
       } catch (error) {
         if (!this.#closed) {
           const latest = this.connections.get(current.id);
@@ -296,7 +436,7 @@ export class HarnessBroker {
       workspaces.get(workspace.id);
       const binding = this.lifecycle.bind(threadId, agentId, identity.native_session_id, workspace);
       if (inherited) persistInheritedSkills(this.lifecycle, launch, binding.id, inherited);
-      const session = {
+      const session: Session = {
         client,
         launch,
         binding,
@@ -304,6 +444,9 @@ export class HarnessBroker {
         selected,
         controller,
         agent_revision: initial.agent.revision,
+        agent_config: executionConfiguration(initial.agent),
+        touched_at: Date.now(),
+        skills: inherited ? { at: Date.now(), value: inherited } : undefined,
       };
       this.check(session, threadId, agentId);
       return session;
@@ -567,12 +710,18 @@ export class HarnessBroker {
     if (!client.skills) return { native_catalog: [], native_state: "unknown" as const };
     try {
       return {
-        native_catalog: await bounded(client.skills(), this.timeouts.request_ms),
+        native_catalog: await bounded(client.skills(), Math.min(2000, this.timeouts.request_ms)),
         native_state: "supported" as const,
       };
     } catch {
       return { native_catalog: [], native_state: "unknown" as const };
     }
+  }
+  private async sessionSkills(session: Session) {
+    if (session.skills && Date.now() - session.skills.at < 30_000) return undefined;
+    const value = await this.nativeSkills(session.client);
+    session.skills = { at: Date.now(), value };
+    return value;
   }
   private requireCapability(
     connection: Entity<"connection">,
@@ -655,7 +804,7 @@ export class HarnessBroker {
       if (visual.receipts.length)
         this.lifecycle.observe(run.id, run.dispatch_token, { visual_inputs: visual.receipts });
       const inherited =
-        session.launch.purpose === "routing" ? undefined : await this.nativeSkills(session.client);
+        session.launch.purpose === "routing" ? undefined : await this.sessionSkills(session);
       this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
       this.check(session, run.thread_id, run.agent_id);
       if (inherited)
@@ -738,11 +887,12 @@ export class HarnessBroker {
               this.lifecycle.observe(run.id, run.dispatch_token as string, {
                 native_dispatch_id: event.native_run_id,
               });
-            } else if (event.type === "activity")
+            } else if (event.type === "activity") {
               this.lifecycle.observe(run.id, run.dispatch_token as string, {
                 activity: event.activity,
               });
-            else if (event.type === "web_source") {
+              if (event.activity === "generating") context.controlReady?.();
+            } else if (event.type === "web_source") {
               const url = new URL(event.url);
               if (
                 ["https:", "http:"].includes(url.protocol) &&
@@ -870,6 +1020,8 @@ export class HarnessBroker {
         const session = this.#sessions.get(key);
         if (session) {
           this.#sessions.delete(key);
+          clearTimeout(this.#idleTimers.get(key));
+          this.#idleTimers.delete(key);
           session.controller.abort();
           await bounded(session.client.close(), this.timeouts.close_ms).catch(() => {});
         }
@@ -884,6 +1036,8 @@ export class HarnessBroker {
       if (control.state === "requested")
         new RunControls(this.lifecycle).settleSteer(control.id, "unknown", "NATIVE_UNKNOWN");
     this.#closed = true;
+    for (const timer of this.#idleTimers.values()) clearTimeout(timer);
+    this.#idleTimers.clear();
     for (const controller of this.#recoveryControllers) controller.abort();
     this.tools.revokeAll();
     for (const session of this.#sessions.values()) session.controller.abort();

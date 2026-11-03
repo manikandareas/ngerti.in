@@ -98,6 +98,7 @@ for (const routerHarness of ["codex", "muse"] as const) {
         name: "ngertiin.group_handoff",
         arguments: {
           command_id: crypto.randomUUID(),
+          announcement: "I am asking the peer to review this work.",
           agent_id: peer.id,
           purpose: "review",
           instruction: childInput,

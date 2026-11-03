@@ -63,7 +63,19 @@ export const productToolSchemas = {
     .describe(
       "Read retained task context or results. This does not run a queued peer. After your handoff, finish the current turn instead of polling: group execution is serialized, so the peer cannot start until your turn ends. The application resumes the owner with the settled result.",
     ),
-  "ngertiin.group_handoff": handoffInput.extend({ command_id: id }).describe(handoffDescription),
+  "ngertiin.group_handoff": handoffInput
+    .extend({
+      command_id: id,
+      announcement: z
+        .string()
+        .trim()
+        .min(1)
+        .max(16_000)
+        .describe(
+          "Your concise public message explaining this handoff or sharing the useful result before asking the peer. Write naturally in your own words; keep private execution instructions in instruction.",
+        ),
+    })
+    .describe(handoffDescription),
   "ngertiin.group_ask_user": askHumanInput
     .extend({ command_id: id })
     .describe(
@@ -79,7 +91,11 @@ export const productToolSchemas = {
   "ngertiin.revise_skill": skillRevise.extend({ command_id: id }),
   "ngertiin.assign_skill": skillAssign.extend({ command_id: id }),
   "ngertiin.read_run_context": z.strictObject({}),
-  "ngertiin.describe_tools": z.strictObject({}),
+  "ngertiin.describe_tools": z
+    .strictObject({ names: z.array(z.string().min(1).max(100)).max(20).optional() })
+    .describe(
+      "Read exact schemas. Supply names to retrieve only the tools needed for this step; omit names to inspect the complete catalog.",
+    ),
   "ngertiin.list_agents": z.strictObject({}),
   "ngertiin.create_agent": z.strictObject({ command_id: id, profile: agentInput }),
   "ngertiin.update_agent": agentUpdate.extend({ command_id: id, agent_id: id }),

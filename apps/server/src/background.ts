@@ -2,6 +2,7 @@ import { AttachmentSubmissions } from "./attachments/submissions";
 import { DomainError, type Entity } from "./contracts";
 import { GroupSchedules } from "./goals/group-schedules";
 import { Goals } from "./goals/service";
+import { RoutingWorker } from "./groups/routing-worker";
 import { Groups } from "./groups/service";
 import { diagnostic } from "./harness/contracts";
 import type { Lifecycle } from "./lifecycle";
@@ -10,8 +11,11 @@ export interface ExecutorContext {
   signal: AbortSignal;
   /** Called only after native acceptance. Abort intent alone never confirms native stop. */
   started(nativeRunId?: string): void;
+  /** A structured tool receipt has reached the native transport; self-stop can now interrupt. */
+  controlReady?(): void;
 }
 export interface HarnessExecutor {
+  preparationRevision?(): string;
   prepare?(threadId: string, agentId: string): Promise<unknown>;
   execute(
     run: Entity<"run">,
@@ -29,12 +33,17 @@ export class Background {
   #closed = false;
   #dispatchCursor: string | null = null;
   #lastAttachmentSweep = 0;
+  #unsubscribe: (() => void) | null = null;
+  #wakePending = false;
+  readonly #routing: RoutingWorker;
   constructor(
     readonly lifecycle: Lifecycle,
     private readonly executors: Partial<Record<"codex" | "muse", HarnessExecutor>> = {},
     private readonly report: (code: string) => void = () => {},
     private readonly concurrency = 4,
-  ) {}
+  ) {
+    this.#routing = new RoutingWorker(lifecycle, () => this.wake());
+  }
 
   get executorCount() {
     return Object.keys(this.executors).length;
@@ -45,11 +54,22 @@ export class Background {
 
   start(intervalMs = 1000) {
     if (this.#timer || this.#stopping) return;
+    this.#unsubscribe = this.lifecycle.store.subscribe(() => this.wake());
     this.tick();
     this.#timer = setInterval(() => this.tick(), intervalMs);
   }
 
-  tick(now = new Date()) {
+  /** Coalesce committed changes without reentering the dispatcher or bypassing claim fencing. */
+  wake() {
+    if (!this.#timer || this.#stopping || this.#wakePending) return;
+    this.#wakePending = true;
+    queueMicrotask(() => {
+      this.#wakePending = false;
+      if (!this.#stopping && !this.lifecycle.store.closed) this.tick(new Date(), false);
+    });
+  }
+
+  tick(now = new Date(), checkControls = true) {
     if (this.#stopping) return;
     if (now.getTime() - this.#lastAttachmentSweep >= 60_000) {
       this.#lastAttachmentSweep = now.getTime();
@@ -60,6 +80,7 @@ export class Background {
       }
     }
     new Groups(this.lifecycle).advance();
+    this.#routing.advance();
     new Goals(this.lifecycle).advance(now);
     new GroupSchedules(this.lifecycle).advance();
     for (const routine of this.lifecycle.store.list("routine")) {
@@ -69,19 +90,45 @@ export class Background {
         this.report(error instanceof DomainError ? error.code : "SCHEDULER_ERROR");
       }
     }
-    for (const work of this.#work.values()) {
+    // Owner controls call notifyControls immediately. A commit wake must not abort a native
+    // self-stop tool before its committed receipt has crossed the tool transport.
+    for (const work of checkControls ? this.#work.values() : []) {
       if (this.lifecycle.store.get("run", work.run.id).cancellation === "requested")
         work.controller.abort();
     }
     const runs = this.lifecycle.store.list("run");
+    const heads = new Map<string, string>();
+    for (const run of runs) {
+      const lane = `${run.thread_id}:${run.agent_id}`;
+      if (run.status === "queued" && !heads.has(lane)) heads.set(lane, run.id);
+    }
     const offset =
       this.#dispatchCursor === null
         ? 0
         : runs.findIndex((run) => run.id === this.#dispatchCursor) + 1;
     // A lane that cannot prepare must not starve later, ready lanes on every tick.
-    for (const queued of [...runs.slice(offset), ...runs.slice(0, offset)]) {
+    for (let queued of [...runs.slice(offset), ...runs.slice(0, offset)]) {
       if (this.#work.size + this.#preparing.size >= this.concurrency) break;
       if (queued.status !== "queued" || queued.delivery !== "pending") continue;
+      if (heads.get(`${queued.thread_id}:${queued.agent_id}`) !== queued.id) continue;
+      const executionAgent = this.lifecycle.store.get("agent", queued.agent_id);
+      const execution = this.executors[executionAgent.harness];
+      if (queued.preparation?.state === "blocked") {
+        if (
+          queued.preparation.configuration_revision ===
+            this.lifecycle.preparationConfiguration(queued) &&
+          queued.preparation.runtime_revision === execution?.preparationRevision?.()
+        )
+          continue;
+        // A repaired connection or configuration retries preparation of the same
+        // undispatched input. Native unknown outcomes remain fenced above.
+        queued = this.lifecycle.retryPreparation(queued.id, queued.revision);
+      }
+      if (
+        queued.preparation?.next_attempt_at &&
+        queued.preparation.next_attempt_at > now.toISOString()
+      )
+        continue;
       const thread = this.lifecycle.store.get("thread", queued.thread_id);
       if (
         thread.type === "group" &&
@@ -112,17 +159,28 @@ export class Background {
       if (this.#preparing.has(lane)) continue;
       this.#dispatchCursor = queued.id;
       if (executor.prepare) {
+        this.lifecycle.preparing(queued.id, executor.preparationRevision?.());
         const pending = executor
           .prepare(queued.thread_id, queued.agent_id)
           .then(() => {
-            if (!this.#stopping) this.claim(queued.thread_id, queued.agent_id);
+            if (!this.#stopping && !this.#closed) {
+              this.lifecycle.prepared(queued.id);
+              this.claim(queued.thread_id, queued.agent_id);
+            }
           })
           .catch((error) => {
             if (!this.#closed && !this.#stopping)
-              this.lifecycle.recordDiagnostic(queued.id, diagnostic(error));
+              this.lifecycle.preparationFailed(
+                queued.id,
+                diagnostic(error),
+                executor.preparationRevision?.(),
+              );
             this.report(error instanceof DomainError ? error.code : "SESSION_PREPARATION_FAILED");
           })
-          .finally(() => this.#preparing.delete(lane));
+          .finally(() => {
+            this.#preparing.delete(lane);
+            this.wake();
+          });
         this.#preparing.set(lane, pending);
         continue;
       }
@@ -132,6 +190,7 @@ export class Background {
 
   /** Control requests bypass ordinary work and do not wait for the next scheduler tick. */
   notifyControls() {
+    this.wake();
     for (const work of this.#work.values())
       if (this.lifecycle.store.get("run", work.run.id).cancellation === "requested")
         work.controller.abort();
@@ -150,6 +209,18 @@ export class Background {
       this.#work.set(run.id, work);
       work.done = this.execute(work, executor);
     } catch (error) {
+      const pending = this.lifecycle.store
+        .list("run")
+        .find(
+          (run) =>
+            run.thread_id === threadId && run.agent_id === agentId && run.status === "queued",
+        );
+      if (pending?.preparation)
+        this.lifecycle.preparationFailed(pending.id, {
+          code: error instanceof DomainError ? error.code : "PROTOCOL_ERROR",
+          category: "configuration",
+          outcome: "not_dispatched",
+        });
       this.report(error instanceof DomainError ? error.code : "DISPATCH_ERROR");
     }
   }
@@ -164,6 +235,10 @@ export class Background {
         started: (nativeRunId) => {
           if (!this.#closed) this.lifecycle.started(run.id, token, nativeRunId);
         },
+        controlReady: () => {
+          if (!this.#closed && this.lifecycle.store.get("run", run.id).cancellation === "requested")
+            work.controller.abort();
+        },
       });
       if (this.#closed) return;
       this.lifecycle.settle(run.id, token, outcome);
@@ -176,16 +251,21 @@ export class Background {
       this.report(error instanceof DomainError ? error.code : "EXECUTION_UNKNOWN");
     } finally {
       this.#work.delete(work.run.id);
+      this.wake();
     }
   }
 
   async idle() {
+    await this.#routing.idle();
     await Promise.all([...this.#preparing.values()]);
     await Promise.all([...this.#work.values()].map((work) => work.done));
   }
 
   async stop(timeoutMs = 5000) {
     this.#stopping = true;
+    this.#unsubscribe?.();
+    this.#unsubscribe = null;
+    await this.#routing.close();
     if (this.#timer) clearInterval(this.#timer);
     this.#timer = null;
     for (const work of this.#work.values()) {

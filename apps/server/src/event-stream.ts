@@ -13,7 +13,7 @@ export function eventStream(store: Store, after: number, signal: AbortSignal) {
         controller.enqueue(encoder.encode("retry: 1000\n\n"));
       },
       async pull(controller) {
-        for (let i = 0; i < 40; i++) {
+        for (let i = 0; i < 2; i++) {
           if (closed) return;
           if (signal.aborted || store.closed || Date.now() >= deadline) {
             closed = true;
@@ -30,7 +30,7 @@ export function eventStream(store: Store, after: number, signal: AbortSignal) {
             );
             return;
           }
-          await new Promise((resolve) => setTimeout(resolve, 250));
+          await store.waitForEvents(cursor, signal, Math.min(10_000, deadline - Date.now()));
         }
         if (!closed) controller.enqueue(encoder.encode(": keep-alive\n\n"));
       },

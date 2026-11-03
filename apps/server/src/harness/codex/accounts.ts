@@ -19,13 +19,14 @@ export class CodexAccounts {
   constructor(
     readonly connections: Connections,
     readonly credentials: CredentialContexts,
+    private readonly detect = () => detectHarness("codex"),
   ) {}
   private async client(connectionId: string) {
     if (this.#closed) throw new HarnessError("ADAPTER_UNAVAILABLE");
     const connection = this.connections.get(connectionId);
     if (connection.harness !== "codex" || connection.state !== "active")
       throw new DomainError("SCOPE_DENIED", 403);
-    const available = requireAvailable(await detectHarness("codex"));
+    const available = requireAvailable(await this.detect());
     if (this.#closed) throw new HarnessError("ADAPTER_UNAVAILABLE");
     const launch = this.credentials.create(connection);
     const client = new CodexClient(

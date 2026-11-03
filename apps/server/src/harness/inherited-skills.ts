@@ -9,6 +9,7 @@ import {
   skillPackage,
 } from "../learning/contracts";
 import type { Lifecycle } from "../lifecycle";
+import { canonical } from "../store";
 import { canonicalDirectory, WorkspaceFiles } from "../workspaces/files";
 import type { LaunchContext } from "./context";
 
@@ -133,6 +134,13 @@ export function persistInheritedSkills(
     binding_id: binding.id,
     harness: binding.harness,
   };
+  if (
+    current &&
+    Object.entries(fields).every(
+      ([key, value]) => canonical(current[key as keyof typeof current]) === canonical(value),
+    )
+  )
+    return current;
   return current
     ? service.update(current, fields)
     : lifecycle.store.put({ ...service.base(), ...fields, kind: "harness_inventory" });

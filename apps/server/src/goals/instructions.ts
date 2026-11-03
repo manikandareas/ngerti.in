@@ -5,7 +5,7 @@ export const routineWriteDescription =
   "Create or revise a scheduled action or periodic check. A Routine can stand alone: leave goal_id null unless this schedule advances an existing persistent outcome. In a DM omit execution_target or leave it null; only groups support automatic member selection. Scheduling alone does not require a Goal or an evidence file. Preserve the Routine identity when editing.";
 
 export const handoffDescription =
-  "Delegate work or request a peer review in the current group. The task already retains its result and continuation owner; delegation alone does not require a Goal. Contribute to an existing Goal when applicable. Handoff yields execution: the peer is queued and cannot start while your current group turn is active. Finish this turn after the receipt; do not wait, sleep or poll task status. The application resumes the existing owner after the peer settles.";
+  "Delegate work or request a peer review in the current group. Supply a concise public announcement in your own words; the application publishes it before the peer starts. Put technical execution instructions separately in instruction. The task already retains its result and continuation owner; delegation alone does not require a Goal. Contribute to an existing Goal when applicable. Handoff yields execution: the peer is queued and cannot start while your current group turn is active. Finish this turn after the receipt; do not wait, sleep or poll task status. The application follows the selected continuation mode after the peer settles.";
 
 /** Semantic selection and lifecycle guidance are injected afresh into every working turn. */
 export const responsibilityInstructions = [

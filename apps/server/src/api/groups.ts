@@ -2,7 +2,7 @@ import type { Elysia } from "elysia";
 import { z } from "zod";
 import { AttachmentSubmissions } from "../attachments/submissions";
 import type { Background } from "../background";
-import { id } from "../contracts";
+import { DomainError, id } from "../contracts";
 import { Creation, groupConfiguration } from "../conversations/creation";
 import { groupMessage, humanReply, membershipUpdate, routeRetry } from "../groups/contracts";
 import { Groups } from "../groups/service";
@@ -17,6 +17,22 @@ export function registerGroupRoutes(
 ) {
   const groups = new Groups(lifecycle);
   return api
+    .get(
+      "/v1/groups/:id/routes/:routeId/decision",
+      ({ params }) => {
+        const group = lifecycle.store.get("thread", params.id);
+        const route = lifecycle.store.get("group_route", params.routeId);
+        if (
+          group.type !== "group" ||
+          group.purpose !== "conversation" ||
+          route.thread_id !== group.id
+        )
+          throw new DomainError("SCOPE_DENIED", 403);
+        const trace = lifecycle.store.routingTrace(route.id);
+        return { trace: trace?.attempt_id === route.routing?.attempt_id ? trace : null };
+      },
+      { params: z.object({ id, routeId: id }) },
+    )
     .post(
       "/v1/groups/:id/configuration",
       ({ request, params, body }) =>

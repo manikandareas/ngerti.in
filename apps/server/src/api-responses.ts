@@ -4,6 +4,7 @@ import { submissionStatus } from "./api/attachments";
 import { browserContent } from "./browser/contracts";
 import { API_READINESS_GATE, agent, domainEvent, id, runStatus, schemas } from "./contracts";
 import { conversationPreviews } from "./conversations/previews";
+import { routingDecisionTrace } from "./groups/decision-trace";
 import { capabilities } from "./harness/contracts";
 import { nativeInteractionJournal } from "./harness/interaction-contracts";
 import { approval, userInput } from "./harness/muse/protocol";
@@ -23,6 +24,7 @@ const openingConnection = schemas.connection
 
 /** Operation responses assembled from the same entity contracts used by persistence. */
 export const operationSchemas = {
+  routing_decision: z.strictObject({ trace: routingDecisionTrace.nullable() }),
   agent_activity: agentActivities,
   conversation_previews: conversationPreviews,
   harness_availability: z.array(
@@ -44,6 +46,7 @@ export const operationSchemas = {
     }),
   ),
   live: z.strictObject({ status: z.literal("alive") }),
+  session_preparation: z.strictObject({ state: z.enum(["ready", "preparing", "skipped"]) }),
   ready: z.strictObject({
     status: z.literal("foundation_ready"),
     contract_version: z.string(),
@@ -52,6 +55,16 @@ export const operationSchemas = {
     dispatcher: z.literal("running"),
     registered_executors: z.int().nonnegative(),
     api_readiness_gate: z.literal(API_READINESS_GATE),
+    group_routing: z.enum(["jev", "member"]),
+    harnesses: z.array(
+      z.strictObject({
+        harness: z.enum(["codex", "muse"]),
+        state: z.enum(["supported", "too_old", "missing", "unknown", "probe_failed"]),
+        version: z.string().nullable(),
+        executable: z.string().nullable(),
+        minimum_version: z.string(),
+      }),
+    ),
   }),
   creation_agent: z.strictObject({
     agent,
@@ -187,6 +200,7 @@ function reference(method: string, path: string, name: string) {
   responses[`${method} ${path}`] = { reference: name };
 }
 routes("GET", ["/health/live"], operationSchemas.live);
+routes("POST", ["/v1/threads/:id/prepare"], operationSchemas.session_preparation);
 routes("GET", ["/health/ready"], operationSchemas.ready);
 reference("GET", "/v1/contracts", "contract_document");
 reference("GET", "/v1/harness/contracts", "harness");
@@ -197,6 +211,7 @@ reference("POST", "/v1/runs", "admission");
 routes("POST", ["/v1/message-uploads"], schemas.attachment_upload);
 routes("GET", ["/v1/message-submissions/:id"], submissionStatus);
 routes("POST", ["/v1/groups/:id/routes/:routeId/retry"], schemas.group_route);
+routes("GET", ["/v1/groups/:id/routes/:routeId/decision"], operationSchemas.routing_decision);
 reference("GET", "/v1/threads/:id/snapshot", "conversation");
 reference("GET", "/v1/threads/:id/history", "history");
 reference("GET", "/v1/threads/:id/timeline", "conversation_timeline");
@@ -223,6 +238,7 @@ routes("POST", ["/v1/groups/:id/messages"], schemas.group_route);
 routes("POST", ["/v1/human-requests/:id/reply"], schemas.human_request);
 routes("POST", ["/v1/messages/:id/edit", "/v1/messages/:id/delete"], schemas.message);
 routes("POST", ["/v1/runs/:id/steer"], schemas.control);
+routes("POST", ["/v1/runs/:id/retry-preparation"], schemas.run);
 routes("GET", ["/v1/threads/:id/goals"], operationSchemas.goals);
 routes(
   "POST",

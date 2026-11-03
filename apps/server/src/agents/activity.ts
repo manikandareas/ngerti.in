@@ -9,6 +9,7 @@ const activity = z.strictObject({
   run_id: id,
   status: run.shape.status,
   activity: run.shape.activity,
+  preparation: run.shape.preparation,
   waiting_for_user: z.boolean(),
 });
 export const agentActivities = z.strictObject({
@@ -29,8 +30,14 @@ export function readAgentActivities(store: Store): z.infer<typeof agentActivitie
     string,
     { value: z.infer<typeof activity>; priority: number; at: string }
   >();
+  const routers = new Map(
+    store
+      .list("group_route")
+      .filter((route) => ["pending", "unknown"].includes(route.state) && route.router_run_id)
+      .map((route) => [route.router_run_id, route.thread_id]),
+  );
   for (const current of store.list("run")) {
-    const thread = threads.get(current.thread_id);
+    const thread = threads.get(routers.get(current.id) ?? current.thread_id);
     if (thread?.purpose !== "conversation" || !thread.member_agent_ids.includes(current.agent_id))
       continue;
     const pending =
@@ -66,6 +73,7 @@ export function readAgentActivities(store: Store): z.infer<typeof agentActivitie
         run_id: current.id,
         status: current.status,
         activity: current.activity,
+        preparation: current.preparation,
         waiting_for_user: waitingForUser,
       },
     });

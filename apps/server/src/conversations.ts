@@ -7,7 +7,6 @@ import {
   control,
   DomainError,
   goal,
-  groupRoute,
   humanRequest,
   id,
   message,
@@ -21,6 +20,8 @@ import {
 } from "./contracts";
 import { conversationPart } from "./conversations/parts";
 import { conversationMessage } from "./conversations/projection";
+import { groupRouteView } from "./groups/contracts";
+import { routeView } from "./groups/projection";
 import { Connections } from "./harness/connections";
 import type { Lifecycle } from "./lifecycle";
 
@@ -49,7 +50,7 @@ export const conversationSnapshot = z.strictObject({
   workspaces: z.array(workspace),
   artifacts: z.array(artifact),
   attachment_documents: z.array(schemas.attachment_document).default([]),
-  routes: z.array(groupRoute),
+  routes: z.array(groupRouteView),
   tasks: z.array(peerTask),
   human_requests: z.array(humanRequest),
   goals: z.array(goal),
@@ -152,7 +153,10 @@ export class Conversations {
         attachment_documents: store
           .list("attachment_document")
           .filter((item) => item.thread_id === threadId),
-        routes: store.list("group_route").filter((item) => item.thread_id === threadId),
+        routes: store
+          .list("group_route")
+          .filter((item) => item.thread_id === threadId)
+          .map((item) => routeView(store, item)),
         tasks: store.list("peer_task").filter((item) => item.thread_id === threadId),
         human_requests: store.list("human_request").filter((item) => item.thread_id === threadId),
         goals: store.list("goal").filter((item) => item.thread_id === threadId),

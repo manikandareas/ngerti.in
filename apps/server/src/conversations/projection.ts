@@ -11,6 +11,11 @@ export function conversationMessage(store: Store, message: Entity<"message">) {
 
 /** Public event cursors retain chronology without broadcasting internal instruction bodies. */
 export function conversationEvent(store: Store, event: DomainEvent): DomainEvent {
+  if ("thread_id" in event.data && typeof event.data.thread_id === "string") {
+    const thread = store.get("thread", event.data.thread_id);
+    if (thread.purpose === "routing" && thread.group_thread_id)
+      event = { ...event, conversation_thread_id: thread.group_thread_id };
+  }
   if (event.data.kind !== "message") return event;
   const message = event.data;
   const internal =

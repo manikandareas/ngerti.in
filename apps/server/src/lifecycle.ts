@@ -16,6 +16,7 @@ import {
 import { GroupSchedules } from "./goals/group-schedules";
 import { dueWindow, firstDue } from "./goals/schedule";
 import { ResponsibilityScope } from "./goals/scope";
+import type { GroupRouter } from "./groups/router";
 import { InteractionJournal } from "./runs/interaction-journal";
 import type { Store } from "./store";
 import { Workspaces } from "./workspaces/service";
@@ -26,7 +27,10 @@ const final = new Set(["succeeded", "failed", "cancelled", "steered"]);
 /** Owns admission, identity, queue decisions, stop intent and recovery. Harnesses own execution. */
 export class Lifecycle {
   readonly epoch = crypto.randomUUID();
-  constructor(readonly store: Store) {
+  constructor(
+    readonly store: Store,
+    readonly groupRouter?: GroupRouter,
+  ) {
     this.store.transaction(() => {
       const scopes = new ResponsibilityScope(store);
       for (const item of [...store.list("goal"), ...store.list("routine")]) {
@@ -525,6 +529,7 @@ export class Lifecycle {
         throw new DomainError("STALE_DISPATCH");
       return this.update(next, {
         status: "dispatching",
+        timings: { ...next.timings, dispatched_at: new Date().toISOString() },
         dispatch_token: crypto.randomUUID(),
         authority_epoch: this.epoch,
         binding_id: binding.id,
@@ -563,6 +568,10 @@ export class Lifecycle {
       if (run.status === "dispatching" || (nativeRunId !== undefined && run.native_run_id === null))
         return this.update(run, {
           status: run.status === "dispatching" ? "running" : run.status,
+          timings: {
+            ...run.timings,
+            accepted_at: run.timings?.accepted_at ?? new Date().toISOString(),
+          },
           native_run_id: nativeRunId ?? run.native_run_id,
           diagnostic: run.diagnostic?.outcome === "not_dispatched" ? null : run.diagnostic,
           activity: run.cancellation === "requested" ? "stopping" : "generating",
@@ -689,6 +698,7 @@ export class Lifecycle {
       return this.update(run, {
         status: outcome,
         outcome,
+        timings: { ...run.timings, settled_at: new Date().toISOString() },
         cancellation: outcome === "cancelled" ? "confirmed" : run.cancellation,
         activity: outcome === "unknown" ? "unknown" : "idle",
       });
@@ -697,11 +707,15 @@ export class Lifecycle {
   /** Persist redacted native output in the owning thread before publishing its terminal run. */
   appendAnswer(runId: string, text: string, state: "complete" | "partial" = "complete") {
     return this.store.transaction(() => {
-      const run = this.store.get("run", runId);
+      let run = this.store.get("run", runId);
       if (!active.has(run.status) || !run.native_run_id || run.authority_epoch !== this.epoch)
         throw new DomainError("STALE_DISPATCH");
       if (run.cancellation !== "none") throw new DomainError("STALE_DISPATCH");
       this.authorizeDispatch(run.id, run.dispatch_token as string);
+      if (text && !run.timings?.first_output_at)
+        run = this.update(run, {
+          timings: { ...run.timings, first_output_at: new Date().toISOString() },
+        });
       if (
         this.store
           .list("goal")
@@ -786,6 +800,77 @@ export class Lifecycle {
       const run = this.store.get("run", runId);
       if (JSON.stringify(run.diagnostic) === JSON.stringify(diagnostic)) return run;
       return this.update(run, { diagnostic });
+    });
+  }
+
+  preparationConfiguration(run: Entity<"run">) {
+    const agent = this.store.get("agent", run.agent_id);
+    const connection = agent.connection_id
+      ? this.store.get("connection", agent.connection_id)
+      : null;
+    return `${agent.revision}:${connection?.revision ?? 0}:${this.store.get("thread", run.thread_id).revision}`;
+  }
+
+  preparing(runId: string, runtimeRevision?: string) {
+    return this.store.transaction(() => {
+      const run = this.store.get("run", runId);
+      if (run.status !== "queued" || run.delivery !== "pending") throw new DomainError("CONFLICT");
+      return this.update(run, {
+        timings: {
+          ...run.timings,
+          preparing_at: run.timings?.preparing_at ?? new Date().toISOString(),
+        },
+        preparation: {
+          state: "preparing",
+          attempts: (run.preparation?.attempts ?? 0) + 1,
+          next_attempt_at: null,
+          configuration_revision: this.preparationConfiguration(run),
+          runtime_revision: runtimeRevision,
+        },
+      });
+    });
+  }
+
+  prepared(runId: string) {
+    const run = this.store.get("run", runId);
+    if (run.status !== "queued" || !run.preparation) return run;
+    return this.update(run, {
+      timings: { ...run.timings, ready_at: new Date().toISOString() },
+      preparation: { ...run.preparation, state: "ready", next_attempt_at: null },
+    });
+  }
+
+  preparationFailed(
+    runId: string,
+    failure: NonNullable<Entity<"run">["diagnostic"]>,
+    runtimeRevision?: string,
+  ) {
+    const run = this.store.get("run", runId);
+    if (run.status !== "queued" || !run.preparation) return run;
+    const retry = failure.category === "temporary" && run.preparation.attempts < 3;
+    return this.update(run, {
+      diagnostic: failure,
+      preparation: {
+        ...run.preparation,
+        runtime_revision: runtimeRevision ?? run.preparation.runtime_revision,
+        state: retry ? "retrying" : "blocked",
+        next_attempt_at: retry
+          ? new Date(Date.now() + 1000 * 2 ** (run.preparation.attempts - 1)).toISOString()
+          : null,
+      },
+    });
+  }
+
+  retryPreparation(runId: string, expectedRevision: number) {
+    return this.store.transaction(() => {
+      const run = this.store.get("run", runId);
+      if (
+        run.revision !== expectedRevision ||
+        run.status !== "queued" ||
+        run.preparation?.state !== "blocked"
+      )
+        throw new DomainError("CONFLICT");
+      return this.update(run, { preparation: undefined, diagnostic: null });
     });
   }
 

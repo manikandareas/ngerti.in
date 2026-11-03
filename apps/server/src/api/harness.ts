@@ -78,6 +78,12 @@ export function registerHarnessRoutes(api: Elysia, services: ApiServices, comman
       { params: z.object({ id }) },
     )
     .post(
+      "/v1/threads/:id/prepare",
+      ({ params, body }) =>
+        services.broker?.prewarm(params.id, body.agent_id) ?? { state: "skipped" as const },
+      { params: z.object({ id }), body: z.strictObject({ agent_id: id }) },
+    )
+    .post(
       "/v1/threads/:id/sessions",
       ({ params, body }) => {
         if (!services.broker) throw new HarnessError("ADAPTER_UNAVAILABLE");

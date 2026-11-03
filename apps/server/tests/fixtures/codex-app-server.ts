@@ -222,7 +222,10 @@ async function receive(message: Message) {
         break;
       }
       if (text === "wait") break;
-      if (text.startsWith("Select exactly one responding agent")) {
+      if (
+        text.startsWith("Select exactly one responding agent") ||
+        text.startsWith("Interpret the speaker's current request")
+      ) {
         const packet = JSON.parse(text.slice(text.indexOf("\n") + 1));
         notify("item/agentMessage/delta", {
           threadId: current.thread,

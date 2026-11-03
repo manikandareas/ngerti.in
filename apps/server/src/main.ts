@@ -3,6 +3,7 @@ import { Background } from "./background";
 import { developmentConfig } from "./config";
 import { API_READINESS_GATE } from "./contracts";
 import { Conversations } from "./conversations";
+import { JevRouter } from "./groups/router";
 import { HarnessAccounts } from "./harness/accounts";
 import { HarnessBroker } from "./harness/broker";
 import { CodexAccounts } from "./harness/codex/accounts";
@@ -11,13 +12,17 @@ import { CredentialContexts } from "./harness/context";
 import { CredentialStorage } from "./harness/credential-storage";
 import { MuseAccounts } from "./harness/muse/accounts";
 import { MuseAdapter } from "./harness/muse/adapter";
+import { HarnessRuntime } from "./harness/runtime";
 import { ProductTools } from "./harness/tools";
 import { Lifecycle } from "./lifecycle";
 import { Store } from "./store";
 
 const config = developmentConfig();
 const store = new Store(config.database, config.owner_id);
-const lifecycle = new Lifecycle(store);
+const lifecycle = new Lifecycle(
+  store,
+  config.groupRouter === "jev" ? new JevRouter(config.typesafeApiKey as string) : undefined,
+);
 new Conversations(lifecycle).setup();
 const tools = new ProductTools(lifecycle, (scope, name) => {
   console.log(
@@ -31,12 +36,23 @@ const tools = new ProductTools(lifecycle, (scope, name) => {
   );
 });
 const credentials = new CredentialContexts(config.stateDir);
-const broker = new HarnessBroker(lifecycle, credentials, tools, {
-  codex: new CodexAdapter(() => `http://127.0.0.1:${app.server?.port}/v1/harness/tools`),
-  muse: new MuseAdapter(() => `http://127.0.0.1:${app.server?.port}/v1/harness/tools`),
-});
-const codexAccounts = new CodexAccounts(broker.connections, credentials);
-const museAccounts = new MuseAccounts(broker.connections, credentials);
+const runtime = new HarnessRuntime(config.harnessExecutables);
+const broker = new HarnessBroker(
+  lifecycle,
+  credentials,
+  tools,
+  {
+    codex: new CodexAdapter(() => `http://127.0.0.1:${app.server?.port}/v1/harness/tools`),
+    muse: new MuseAdapter(() => `http://127.0.0.1:${app.server?.port}/v1/harness/tools`),
+  },
+  runtime.detect,
+);
+const codexAccounts = new CodexAccounts(broker.connections, credentials, () =>
+  runtime.detect("codex"),
+);
+const museAccounts = new MuseAccounts(broker.connections, credentials, () =>
+  runtime.detect("muse"),
+);
 const accounts = new HarnessAccounts(broker.connections, {
   codex: codexAccounts,
   muse: museAccounts,
@@ -50,6 +66,7 @@ const app = createApi(lifecycle, background, config.token, {
   broker,
   accounts,
   credentialStorage: new CredentialStorage(config.stateDir),
+  detect: runtime.detect,
 });
 try {
   app.listen({ hostname: "127.0.0.1", port: config.port });
@@ -72,7 +89,8 @@ let stopping = false;
 async function stop() {
   if (stopping) return;
   stopping = true;
-  await app.stop();
+  // Long-lived event streams must not hold the authority lock during a restart.
+  await app.stop(true);
   await background.stop();
   await broker.close();
   await tools.browsers.shutdown();

@@ -4,6 +4,7 @@ import { chmodSync, mkdirSync } from "node:fs";
 import { dirname } from "node:path";
 import { DomainError, type DomainEvent, type Entity, type Kind, schemas } from "./contracts";
 import { ConversationJournal } from "./conversations/journal";
+import { type RoutingDecisionTrace, routingDecisionTrace } from "./groups/decision-trace";
 
 const APPLICATION_ID = 0x4e474831;
 const SCHEMA_VERSION = 1;
@@ -24,6 +25,9 @@ export class Store {
   readonly #lock: Database;
   readonly journal: ConversationJournal;
   #closed = false;
+  #transactionDepth = 0;
+  #notificationPending = false;
+  readonly #listeners = new Set<() => void>();
   constructor(
     readonly path: string,
     readonly ownerId: string,
@@ -77,6 +81,10 @@ export class Store {
           );
           CREATE TABLE IF NOT EXISTS commands (
             id TEXT PRIMARY KEY, fingerprint TEXT NOT NULL, receipt TEXT NOT NULL
+          );
+          CREATE TABLE IF NOT EXISTS routing_traces (
+            seq INTEGER PRIMARY KEY AUTOINCREMENT, route_id TEXT NOT NULL, attempt_id TEXT NOT NULL UNIQUE,
+            body TEXT NOT NULL CHECK(json_valid(body))
           );
           CREATE UNIQUE INDEX IF NOT EXISTS active_lane ON entities (
             json_extract(body, '$.thread_id'), json_extract(body, '$.agent_id')
@@ -137,7 +145,49 @@ export class Store {
   }
 
   transaction<T>(fn: () => T): T {
-    return this.#db.transaction(fn).immediate();
+    const outer = this.#transactionDepth === 0;
+    const before = outer ? this.cursor : 0;
+    this.#transactionDepth++;
+    try {
+      const result = this.#db.transaction(fn).immediate();
+      if (outer && this.cursor > before) this.notify();
+      return result;
+    } finally {
+      this.#transactionDepth--;
+    }
+  }
+
+  /** Notifications only follow the outer commit. The journal remains the source of truth. */
+  subscribe(listener: () => void) {
+    this.#listeners.add(listener);
+    return () => this.#listeners.delete(listener);
+  }
+
+  private notify() {
+    if (this.#notificationPending) return;
+    this.#notificationPending = true;
+    queueMicrotask(() => {
+      this.#notificationPending = false;
+      if (this.#closed) return;
+      for (const listener of this.#listeners) listener();
+    });
+  }
+
+  waitForEvents(after: number, signal: AbortSignal, timeoutMs = 10_000): Promise<void> {
+    if (this.#closed || signal.aborted || this.cursor > after) return Promise.resolve();
+    return new Promise((resolve) => {
+      const finish = () => {
+        clearTimeout(timer);
+        unsubscribe();
+        signal.removeEventListener("abort", finish);
+        resolve();
+      };
+      const unsubscribe = this.subscribe(finish);
+      const timer = setTimeout(finish, timeoutMs);
+      signal.addEventListener("abort", finish, { once: true });
+      // Close the race between the initial read and subscribing.
+      if (this.#closed || signal.aborted || this.cursor > after) finish();
+    });
   }
 
   command<T>(commandId: string, input: unknown, fn: () => T): T {
@@ -165,6 +215,30 @@ export class Store {
       .query<{ receipt: string }, [string]>("SELECT receipt FROM commands WHERE id=?")
       .get(commandId);
     return row ? JSON.parse(row.receipt) : null;
+  }
+
+  recordRoutingTrace(input: RoutingDecisionTrace) {
+    const trace = routingDecisionTrace.parse(input);
+    this.transaction(() => {
+      this.#db
+        .query(
+          "INSERT INTO routing_traces(route_id,attempt_id,body) VALUES(?,?,?) ON CONFLICT(attempt_id) DO UPDATE SET body=excluded.body",
+        )
+        .run(trace.route_id, trace.attempt_id, JSON.stringify(trace));
+      // Bound diagnostic retention without changing domain history or command receipts.
+      this.#db.exec(
+        "DELETE FROM routing_traces WHERE seq NOT IN (SELECT seq FROM routing_traces ORDER BY seq DESC LIMIT 1000)",
+      );
+    });
+  }
+
+  routingTrace(routeId: string): RoutingDecisionTrace | null {
+    const row = this.#db
+      .query<{ body: string }, [string]>(
+        "SELECT body FROM routing_traces WHERE route_id=? ORDER BY seq DESC LIMIT 1",
+      )
+      .get(routeId);
+    return row ? routingDecisionTrace.parse(JSON.parse(row.body)) : null;
   }
 
   get<K extends Kind>(kind: K, id: string | null): Entity<K> {
@@ -250,6 +324,8 @@ export class Store {
 
   close() {
     this.#closed = true;
+    for (const listener of this.#listeners) listener();
+    this.#listeners.clear();
     this.#db.close();
     this.#lock.close();
   }

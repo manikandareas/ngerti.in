@@ -15,6 +15,7 @@ import { registerWorkspaceRoutes } from "./api/workspaces";
 import { consumerContract, httpContract } from "./api-contract";
 import type { Background } from "./background";
 import { API_READINESS_GATE, CONTRACT_VERSION, contractDocument } from "./contracts";
+import { detectHarness } from "./harness/availability";
 import { Connections } from "./harness/connections";
 import { CredentialStorage } from "./harness/credential-storage";
 import { ProductTools } from "./harness/tools";
@@ -34,7 +35,7 @@ export function createApi(
   const command = createCommand(lifecycle);
   const api = createHttp(token, services.tools);
   api
-    .get("/health/ready", () => ({
+    .get("/health/ready", async () => ({
       status: "foundation_ready",
       contract_version: CONTRACT_VERSION,
       persistence: "ready",
@@ -42,6 +43,19 @@ export function createApi(
       dispatcher: "running",
       registered_executors: background.executorCount,
       api_readiness_gate: API_READINESS_GATE,
+      group_routing: lifecycle.groupRouter ? "jev" : "member",
+      harnesses: await Promise.all(
+        (["codex", "muse"] as const).map(async (id) => {
+          const value = await (services.detect ?? detectHarness)(id);
+          return {
+            harness: id,
+            state: value.state,
+            version: value.version,
+            executable: value.executable,
+            minimum_version: value.manifest.minimum_version,
+          };
+        }),
+      ),
     }))
     .get("/v1/contracts", () => ({
       ...contractDocument(),

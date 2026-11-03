@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { base } from "../contracts/base";
+import { run } from "../runs/contracts";
 
 const id = z.uuid();
 const text = z.string().min(1).max(100_000);
@@ -27,17 +28,74 @@ export const membershipUpdate = z.strictObject({
     .max(100)
     .refine((ids) => new Set(ids).size === ids.length),
 });
-export const routeResult = z.strictObject({ agent_id: id });
+export const routeResult = z.union([
+  z.strictObject({ agent_id: id }),
+  z.strictObject({
+    unresolved: z.literal(true),
+    question: z.string().trim().min(1).max(1000).optional(),
+  }),
+]);
 export const routeFields = {
   selection_only: z.boolean().default(false),
   thread_id: id,
   message_id: id,
+  context_message_id: id.optional(),
   thread_revision: z.int().positive(),
   router_run_id: id.nullable(),
   selected_agent_id: id.nullable(),
   task_id: id.nullable(),
   state: z.enum(["pending", "selected", "rejected", "unknown"]),
   error_code: z.string().nullable(),
+  clarification: z.string().max(1000).nullable().optional(),
+  routing: z
+    .strictObject({
+      provider: z.enum(["jev", "member"]),
+      attempt_id: id.nullable(),
+      router_agent_id: id,
+      request_revision: z.int().positive(),
+      candidate_revisions: z.record(id, z.int().positive()),
+      started_at: z.iso.datetime().nullable(),
+      completed_at: z.iso.datetime().nullable(),
+      duration_ms: z.int().nonnegative().nullable(),
+      model: z.string().nullable(),
+      confidence: z.number().min(0).max(1).nullable(),
+      input_tokens: z.int().nonnegative().nullable(),
+      probabilities: z.record(z.string(), z.number().min(0).max(1)).optional(),
+      fallback_reason: z.enum(["ambiguous", "configuration"]).nullable(),
+      policy_version: z.string().optional(),
+      variant: z.enum(["single", "batch", "semantic"]).optional(),
+      input_sha256: z.string().length(64).optional(),
+      routing_kind: z.string().optional(),
+      recipient_probability: z.number().min(0).max(1).optional(),
+      context_version: z.string().optional(),
+      context_scope: z.enum(["focused", "shared"]).optional(),
+      model_calls: z.int().min(1).max(2).optional(),
+      needs_context_probability: z.number().min(0).max(1).optional(),
+      review_support: z.number().min(0).max(1).optional(),
+      review_role: z.string().optional(),
+      requested_peer_id: id.nullable().optional(),
+      selection_basis: z.string().optional(),
+      review_recipient_id: id.nullable().optional(),
+      delegation_probability: z.number().min(0).max(1).optional(),
+      phase: z.enum(["focused", "contextual", "reviewing", "completed"]).optional(),
+      evidence: z
+        .strictObject({
+          top_probability: z.number(),
+          margin: z.number(),
+          reason: z.enum([
+            "unresolved",
+            "confidence",
+            "probability",
+            "margin",
+            "recipient",
+            "review",
+            "context",
+            "accepted",
+          ]),
+        })
+        .optional(),
+    })
+    .optional(),
 };
 export const taskFields = {
   goal_ids: z.array(id).max(100).default([]),
@@ -63,7 +121,7 @@ export const taskFields = {
   ]),
   result_message_id: id.nullable(),
   continuation: z.int().nonnegative(),
-  continuation_mode: z.enum(["synthesize", "finalize"]).default("synthesize"),
+  continuation_mode: z.enum(["synthesize", "finalize", "complete"]).default("synthesize"),
 };
 export const humanRequestFields = {
   thread_id: id,
@@ -82,7 +140,12 @@ export const handoffInput = z.strictObject({
   purpose: z.enum(["handoff", "review"]),
   summary: z.string().trim().min(1).max(240).nullable().default(null),
   announcement: z.string().trim().min(1).max(16_000).nullable().default(null),
-  continuation: z.enum(["synthesize", "finalize"]).default("synthesize"),
+  continuation: z
+    .enum(["synthesize", "finalize", "complete"])
+    .default("synthesize")
+    .describe(
+      "Use complete for an ordinary task without a Goal when the peer will deliver the entire remaining answer; this closes the parent task without another inference if the peer succeeds with useful output. Use synthesize for a combined response or finalize for Goal bookkeeping that requires its coordinator.",
+    ),
 });
 export const askHumanInput = z.strictObject({
   purpose: humanRequestFields.purpose,
@@ -105,6 +168,25 @@ export const groupRoute = z.strictObject({
   ...base,
   ...routeFields,
   kind: z.literal("group_route"),
+});
+export const groupRouteView = groupRoute.extend({
+  execution: z.strictObject({
+    stage: z.enum([
+      "classifying",
+      "reviewing",
+      "preparing",
+      "retrying",
+      "fallback",
+      "blocked",
+      "reconcile",
+      "selected",
+      "rejected",
+    ]),
+    run_id: id.nullable(),
+    run_revision: z.int().positive().nullable(),
+    diagnostic: run.shape.diagnostic,
+    retry_preparation: z.boolean(),
+  }),
 });
 export const peerTask = z.strictObject({ ...base, ...taskFields, kind: z.literal("peer_task") });
 export const humanRequest = z.strictObject({

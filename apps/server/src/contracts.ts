@@ -96,7 +96,7 @@ export {
   workspace,
 };
 
-export const CONTRACT_VERSION = "1.24.0";
+export const CONTRACT_VERSION = "1.27.0";
 export const API_READINESS_GATE = "ready" as const;
 
 export const schemas = {
@@ -133,6 +133,7 @@ export type Kind = keyof typeof schemas;
 export type Entity<K extends Kind = Kind> = z.infer<(typeof schemas)[K]>;
 export const kindSchema = z.enum(Object.keys(schemas) as [Kind, ...Kind[]]);
 export const domainEvent = z.strictObject({
+  conversation_thread_id: z.uuid().optional(),
   schema_version: z.literal(1),
   cursor: z.int().positive(),
   owner_id: id,

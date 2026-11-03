@@ -37,6 +37,28 @@ export const run = z
     publication: z.enum(["immediate", "deferred", "quiet"]).default("immediate"),
     pending_answer: z.string().max(100_000).nullable().default(null),
     status: runStatus,
+    timings: z
+      .partialRecord(
+        z.enum([
+          "preparing_at",
+          "ready_at",
+          "dispatched_at",
+          "accepted_at",
+          "first_output_at",
+          "settled_at",
+        ]),
+        z.iso.datetime(),
+      )
+      .optional(),
+    preparation: z
+      .strictObject({
+        state: z.enum(["preparing", "ready", "retrying", "blocked"]),
+        attempts: z.int().positive(),
+        next_attempt_at: z.iso.datetime().nullable(),
+        configuration_revision: z.string().optional(),
+        runtime_revision: z.string().optional(),
+      })
+      .optional(),
     cancellation: z.enum(["none", "requested", "confirmed"]),
     outcome: z.enum(["none", "succeeded", "failed", "cancelled", "unknown", "steered"]),
     delivery: z.enum(["pending", "steering", "unknown", "delivered", "removed"]).default("pending"),

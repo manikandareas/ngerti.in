@@ -1,0 +1,17 @@
+{
+  "isolated_fixture_containers": [
+    {
+      "container": "ngertiin-browser-e7123b28-8008-40f2-bfef-a9183e64745a-80a9cad0-a2ff-4951-aa9e-b498cefab242",
+      "stopped": true
+    },
+    {
+      "container": "ngertiin-browser-59babaca-31a2-4425-9f29-7d68b32f44b7-7ea39ef2-cd66-4216-bb79-14dff087f587",
+      "stopped": true
+    },
+    {
+      "container": "ngertiin-browser-1863e1d7-a12b-4887-b0dd-e7cf714176f7-f375ca33-9b0c-45d2-9479-866b53995d4b",
+      "stopped": true
+    }
+  ],
+  "user_containers_touched": false
+}

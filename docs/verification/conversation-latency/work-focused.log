@@ -1,0 +1,52 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4321" --strictPort
+[WebServer] (node:92352) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:92355) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [desktop] › tests/work.spec.ts:353:1 › group creation recovers a lost acknowledgement, routes messages and keeps member DM resources private (5.0s)
+  ✘  2 [desktop] › tests/work.spec.ts:530:1 › application access is assigned explicitly to this context and unsupported images never upload (27.8s)
+
+
+  1) [desktop] › tests/work.spec.ts:530:1 › application access is assigned explicitly to this context and unsupported images never upload 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('main', { name: 'Percakapan aktif' }).getByText('Fixture ready', { exact: true })
+    Expected: visible
+    Timeout: 20000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('main', { name: 'Percakapan aktif' }).getByText('Fixture ready', { exact: true }) with timeout 20000ms
+      - waiting for getByRole('main', { name: 'Percakapan aktif' }).getByText('Fixture ready', { exact: true })
+
+
+      614 |       .getByRole("main", { name: "Percakapan aktif" })
+      615 |       .getByText("Fixture ready", { exact: true }),
+    > 616 |   ).toBeVisible({ timeout: 20000 });
+          |     ^
+      617 |   await page
+      618 |     .getByRole("textbox", { name: "Pesan", exact: true })
+      619 |     .fill(`fixture apps:${created.id}`);
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/work.spec.ts:616:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-application-access-is-04af4-pported-images-never-upload-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../.dev/nma062-playwright/work-application-access-is-04af4-pported-images-never-upload-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-application-access-is-04af4-pported-images-never-upload-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../.dev/nma062-playwright/work-application-access-is-04af4-pported-images-never-upload-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [desktop] › tests/work.spec.ts:530:1 › application access is assigned explicitly to this context and unsupported images never upload 
+  1 passed (34.9s)

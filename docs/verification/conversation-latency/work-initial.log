@@ -1,0 +1,685 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4321" --strictPort
+[WebServer] (node:87097) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 62 tests using 1 worker
+
+(node:87108) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop] › tests/composer.spec.ts:55:1 › expanded composer keeps full-width text above the attachment and send toolbar (3.4s)
+  ✓   2 [desktop] › tests/composer.spec.ts:113:1 › inline chips align with surrounding text, keep default gaps and allow file-only sends (3.1s)
+  ✓   3 [desktop] › tests/composer.spec.ts:160:1 › long filenames leave only one normal space before the following text (3.1s)
+  ✓   4 [desktop] › tests/composer.spec.ts:199:1 › files stay inline at the cursor and send stable references in sentence order (5.9s)
+  ✓   5 [desktop] › tests/composer.spec.ts:252:1 › files stay local until submit and a lost upload reply retries the same operation (4.7s)
+  ✓   6 [desktop] › tests/composer.spec.ts:307:1 › removing a selected file never uploads it and status stays behind its icon (4.9s)
+  ✓   7 [desktop] › tests/composer.spec.ts:361:1 › image chips preview through shadcn overlays and remove, undo and paste as whole objects (5.5s)
+  ✓   8 [desktop] › tests/composer.spec.ts:424:1 › a rejected second file restores an editable draft without publishing the first file (4.9s)
+  ✓   9 [desktop] › tests/composer.spec.ts:453:1 › pending sends restore inline file references and replay the exact message after reload (7.3s)
+  ✓  10 [desktop] › tests/group-attachments.spec.ts:79:1 › group file-only sends stay local, route through the group API and appear once in the shared File panel (6.7s)
+  ✓  11 [desktop] › tests/group-attachments.spec.ts:124:1 › a lost group-send acknowledgement restores the same submission after reload without publishing twice (11.3s)
+  ✓  12 [desktop] › tests/group-attachments.spec.ts:156:1 › a rejected second group upload restores both local files and can be corrected without partial publication (10.5s)
+  ✓  13 [desktop] › tests/group-attachments.spec.ts:187:1 › rejected routing retries the original group message and source attachment (14.6s)
+  ✓  14 [desktop] › tests/group-attachments.spec.ts:223:1 › group image eligibility follows the mentioned member and a capable member receives normalized visual input (17.2s)
+  ✓  15 [desktop] › tests/group-responsibilities.spec.ts:117:1 › group collaboration displays friendly activity and shared goal evidence without technical bubbles (31.5s)
+  ✓  16 [desktop] › tests/work.spec.ts:92:1 › contextual goals, Routine and files use real scoped state and keep stop responsibility distinct from stop run (20.5s)
+  ✓  17 [desktop] › tests/work.spec.ts:267:1 › file previews reuse source tables, code and markdown without executing file HTML (14.6s)
+  ✘  18 [desktop] › tests/work.spec.ts:353:1 › group creation recovers a lost acknowledgement, routes messages and keeps member DM resources private (28.0s)
+(node:87641) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  19 [desktop] › tests/work.spec.ts:431:1 › browser viewer connects to the managed browser and reconnects its view without replaying actions (8.4s)
+(node:87656) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  20 [desktop] › tests/work.spec.ts:530:1 › application access is assigned explicitly to this context and unsupported images never upload (41.1s)
+(node:87744) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  21 [desktop] › tests/work.spec.ts:627:1 › apps catalog searches live and authorization recovers from blocked popups and failed reads without changing grants (9.0s)
+(node:87775) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  22 [desktop] › tests/work.spec.ts:739:1 › tool calls stay out of the conversation while native receipts remain persisted (13.0s)
+  ✘  23 [desktop] › tests/work.spec.ts:775:1 › native acknowledgements survive lost HTTP replies, completion, reload and connection revocation (39.1s)
+(node:89861) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  24 [desktop] › tests/work.spec.ts:912:1 › an ambiguous native submission stays fenced through status reads, reload and cancellation (11.7s)
+(node:90589) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  25 [desktop] › tests/work.spec.ts:978:1 › unsafe Markdown cuts and changed prefixes keep complete content beside a labeled native-history fallback (9.1s)
+(node:90604) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  26 [desktop] › tests/work.spec.ts:1120:1 › rejected group membership preserves the draft and allows a corrected operation (8.6s)
+(node:90617) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  27 [desktop] › tests/work.spec.ts:1148:1 › sharing copies only the selected file into the explicit destination and preserves byte identity (8.3s)
+(node:90630) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  28 [desktop] › tests/work.spec.ts:1214:1 › group writers serialize native questions and free text uses one answer representation (8.0s)
+(node:90642) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  29 [desktop] › tests/work.spec.ts:1269:1 › an unconfirmed human reply is restored verbatim and locked across reload (7.9s)
+(node:90653) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  30 [desktop] › tests/work.spec.ts:1305:1 › membership editing keeps its original revision and cannot overwrite a concurrent change (13.0s)
+  ✘  31 [desktop] › tests/work.spec.ts:1334:1 › four ordinary file attachments still allow a supported image (8.6s)
+(node:90677) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  32 [mobile] › tests/composer.spec.ts:55:1 › expanded composer keeps full-width text above the attachment and send toolbar (1.9s)
+  ✓  33 [mobile] › tests/composer.spec.ts:113:1 › inline chips align with surrounding text, keep default gaps and allow file-only sends (1.5s)
+  ✓  34 [mobile] › tests/composer.spec.ts:160:1 › long filenames leave only one normal space before the following text (1.3s)
+  ✓  35 [mobile] › tests/composer.spec.ts:199:1 › files stay inline at the cursor and send stable references in sentence order (2.0s)
+  ✓  36 [mobile] › tests/composer.spec.ts:252:1 › files stay local until submit and a lost upload reply retries the same operation (1.7s)
+  ✓  37 [mobile] › tests/composer.spec.ts:307:1 › removing a selected file never uploads it and status stays behind its icon (1.9s)
+  ✓  38 [mobile] › tests/composer.spec.ts:361:1 › image chips preview through shadcn overlays and remove, undo and paste as whole objects (1.7s)
+  ✓  39 [mobile] › tests/composer.spec.ts:424:1 › a rejected second file restores an editable draft without publishing the first file (1.6s)
+  ✓  40 [mobile] › tests/composer.spec.ts:453:1 › pending sends restore inline file references and replay the exact message after reload (2.0s)
+  ✓  41 [mobile] › tests/group-attachments.spec.ts:79:1 › group file-only sends stay local, route through the group API and appear once in the shared File panel (9.6s)
+  ✓  42 [mobile] › tests/group-attachments.spec.ts:124:1 › a lost group-send acknowledgement restores the same submission after reload without publishing twice (2.8s)
+  ✓  43 [mobile] › tests/group-attachments.spec.ts:156:1 › a rejected second group upload restores both local files and can be corrected without partial publication (2.2s)
+  ✓  44 [mobile] › tests/group-attachments.spec.ts:187:1 › rejected routing retries the original group message and source attachment (2.4s)
+  ✓  45 [mobile] › tests/group-attachments.spec.ts:223:1 › group image eligibility follows the mentioned member and a capable member receives normalized visual input (2.9s)
+  ✓  46 [mobile] › tests/group-responsibilities.spec.ts:117:1 › group collaboration displays friendly activity and shared goal evidence without technical bubbles (27.0s)
+  ✓  47 [mobile] › tests/work.spec.ts:92:1 › contextual goals, Routine and files use real scoped state and keep stop responsibility distinct from stop run (21.2s)
+  ✓  48 [mobile] › tests/work.spec.ts:267:1 › file previews reuse source tables, code and markdown without executing file HTML (19.8s)
+  ✘  49 [mobile] › tests/work.spec.ts:353:1 › group creation recovers a lost acknowledgement, routes messages and keeps member DM resources private (46.9s)
+(node:91006) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  50 [mobile] › tests/work.spec.ts:431:1 › browser viewer connects to the managed browser and reconnects its view without replaying actions (3.1m)
+(node:91576) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  51 [mobile] › tests/work.spec.ts:530:1 › application access is assigned explicitly to this context and unsupported images never upload (42.4s)
+(node:91759) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  52 [mobile] › tests/work.spec.ts:627:1 › apps catalog searches live and authorization recovers from blocked popups and failed reads without changing grants (26.2s)
+  ✓  53 [mobile] › tests/work.spec.ts:739:1 › tool calls stay out of the conversation while native receipts remain persisted (16.2s)
+  ✓  54 [mobile] › tests/work.spec.ts:775:1 › native acknowledgements survive lost HTTP replies, completion, reload and connection revocation (22.6s)
+  ✓  55 [mobile] › tests/work.spec.ts:912:1 › an ambiguous native submission stays fenced through status reads, reload and cancellation (17.0s)
+  ✘  56 [mobile] › tests/work.spec.ts:978:1 › unsafe Markdown cuts and changed prefixes keep complete content beside a labeled native-history fallback (10.4s)
+
+
+  1) [desktop] › tests/work.spec.ts:353:1 › group creation recovers a lost acknowledgement, routes messages and keeps member DM resources private 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'Detail Tobi', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('button', { name: 'Detail Tobi', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Detail Tobi', exact: true })
+
+
+      376 |   await page.unroute("**/v1/creation/groups");
+      377 |   await page.reload();
+    > 378 |   await expect(page.getByRole("button", { name: "Detail Tobi", exact: true })).toBeVisible();
+          |                                                                                ^
+      379 |   await menu(page);
+      380 |   await expect(page.getByLabel("Nama grup", { exact: true })).toHaveValue("Research circle");
+      381 |   await page.getByRole("button", { name: "Periksa pembuatan grup", exact: true }).click();
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/work.spec.ts:378:80
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-group-creation-recove-26d1f-member-DM-resources-private-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../.dev/nma062-playwright/work-group-creation-recove-26d1f-member-DM-resources-private-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-group-creation-recove-26d1f-member-DM-resources-private-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../.dev/nma062-playwright/work-group-creation-recove-26d1f-member-DM-resources-private-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [desktop] › tests/work.spec.ts:431:1 › browser viewer connects to the managed browser and reconnects its view without replaying actions 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'Detail Tobi', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('button', { name: 'Detail Tobi', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Detail Tobi', exact: true })
+
+
+      52 | async function start(page: Page) {
+      53 |   await page.goto("/");
+    > 54 |   await expect(page.getByRole("button", { name: "Detail Tobi", exact: true })).toBeVisible();
+         |                                                                                ^
+      55 |   const a = await post(page, "/v1/creation/agents", {
+      56 |     connection_id: null,
+      57 |     harness: "codex",
+        at start (/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/work.spec.ts:54:80)
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/work.spec.ts:435:17
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-browser-viewer-connec-3006a-w-without-replaying-actions-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../.dev/nma062-playwright/work-browser-viewer-connec-3006a-w-without-replaying-actions-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-browser-viewer-connec-3006a-w-without-replaying-actions-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../.dev/nma062-playwright/work-browser-viewer-connec-3006a-w-without-replaying-actions-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [desktop] › tests/work.spec.ts:530:1 › application access is assigned explicitly to this context and unsupported images never upload 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('main', { name: 'Percakapan aktif' }).getByText('Fixture ready', { exact: true })
+    Expected: visible
+    Timeout: 20000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('main', { name: 'Percakapan aktif' }).getByText('Fixture ready', { exact: true }) with timeout 20000ms
+      - waiting for getByRole('main', { name: 'Percakapan aktif' }).getByText('Fixture ready', { exact: true })
+
+
+      614 |       .getByRole("main", { name: "Percakapan aktif" })
+      615 |       .getByText("Fixture ready", { exact: true }),
+    > 616 |   ).toBeVisible({ timeout: 20000 });
+          |     ^
+      617 |   await page
+      618 |     .getByRole("textbox", { name: "Pesan", exact: true })
+      619 |     .fill(`fixture apps:${created.id}`);
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/work.spec.ts:616:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-application-access-is-04af4-pported-images-never-upload-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../.dev/nma062-playwright/work-application-access-is-04af4-pported-images-never-upload-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-application-access-is-04af4-pported-images-never-upload-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../.dev/nma062-playwright/work-application-access-is-04af4-pported-images-never-upload-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) [desktop] › tests/work.spec.ts:627:1 › apps catalog searches live and authorization recovers from blocked popups and failed reads without changing grants 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'Detail Tobi', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('button', { name: 'Detail Tobi', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Detail Tobi', exact: true })
+
+
+      52 | async function start(page: Page) {
+      53 |   await page.goto("/");
+    > 54 |   await expect(page.getByRole("button", { name: "Detail Tobi", exact: true })).toBeVisible();
+         |                                                                                ^
+      55 |   const a = await post(page, "/v1/creation/agents", {
+      56 |     connection_id: null,
+      57 |     harness: "codex",
+        at start (/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/work.spec.ts:54:80)
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/work.spec.ts:631:17
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-apps-catalog-searches-23c34-ads-without-changing-grants-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../.dev/nma062-playwright/work-apps-catalog-searches-23c34-ads-without-changing-grants-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-apps-catalog-searches-23c34-ads-without-changing-grants-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../.dev/nma062-playwright/work-apps-catalog-searches-23c34-ads-without-changing-grants-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  5) [desktop] › tests/work.spec.ts:775:1 › native acknowledgements survive lost HTTP replies, completion, reload and connection revocation 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('group', { name: 'Status jawaban native', exact: true })
+    Expected substring: "Kamu memilih: Markdown · diterima harness"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toContainText" getByRole('group', { name: 'Status jawaban native', exact: true }) with timeout 5000ms
+      - waiting for getByRole('group', { name: 'Status jawaban native', exact: true })
+
+
+      891 |   });
+      892 |   await page.reload();
+    > 893 |   await expect(questionReceipt).toContainText("Kamu memilih: Markdown · diterima harness");
+          |                                 ^
+      894 |   const approvalReceipt = page.getByRole("group", { name: "Status keputusan native", exact: true });
+      895 |   await expect(approvalReceipt).toHaveAttribute("data-native-state", "submitted");
+      896 |   await expect(approvalReceipt).toContainText("Allow this read");
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/work.spec.ts:893:33
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-native-acknowledgemen-9f586-d-and-connection-revocation-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../.dev/nma062-playwright/work-native-acknowledgemen-9f586-d-and-connection-revocation-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-native-acknowledgemen-9f586-d-and-connection-revocation-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../.dev/nma062-playwright/work-native-acknowledgemen-9f586-d-and-connection-revocation-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  6) [desktop] › tests/work.spec.ts:912:1 › an ambiguous native submission stays fenced through status reads, reload and cancellation 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'Detail Tobi', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('button', { name: 'Detail Tobi', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Detail Tobi', exact: true })
+
+
+      915 |   test.setTimeout(60000);
+      916 |   await page.goto("/");
+    > 917 |   await expect(page.getByRole("button", { name: "Detail Tobi", exact: true })).toBeVisible();
+          |                                                                                ^
+      918 |   const agent = await fixtureAgent(page, "Unknown acknowledgement");
+      919 |   const thread = await post(page, `/v1/agents/${agent.id}/dm`, {});
+      920 |   await chooseAgent(page, agent.name);
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/work.spec.ts:917:80
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-an-ambiguous-native-s-c3f23-ads-reload-and-cancellation-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../.dev/nma062-playwright/work-an-ambiguous-native-s-c3f23-ads-reload-and-cancellation-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-an-ambiguous-native-s-c3f23-ads-reload-and-cancellation-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../.dev/nma062-playwright/work-an-ambiguous-native-s-c3f23-ads-reload-and-cancellation-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  7) [desktop] › tests/work.spec.ts:978:1 › unsafe Markdown cuts and changed prefixes keep complete content beside a labeled native-history fallback 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'Detail Tobi', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('button', { name: 'Detail Tobi', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Detail Tobi', exact: true })
+
+
+      981 |   test.setTimeout(60000);
+      982 |   await page.goto("/");
+    > 983 |   await expect(page.getByRole("button", { name: "Detail Tobi", exact: true })).toBeVisible();
+          |                                                                                ^
+      984 |   const agent = await fixtureAgent(page, "Markdown anchor boundary");
+      985 |   const thread = await post(page, `/v1/agents/${agent.id}/dm`, {});
+      986 |   const admission = await post(page, "/v1/runs", {
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/work.spec.ts:983:80
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-unsafe-Markdown-cuts--99e64-led-native-history-fallback-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../.dev/nma062-playwright/work-unsafe-Markdown-cuts--99e64-led-native-history-fallback-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-unsafe-Markdown-cuts--99e64-led-native-history-fallback-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../.dev/nma062-playwright/work-unsafe-Markdown-cuts--99e64-led-native-history-fallback-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  8) [desktop] › tests/work.spec.ts:1120:1 › rejected group membership preserves the draft and allows a corrected operation 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'Detail Tobi', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('button', { name: 'Detail Tobi', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Detail Tobi', exact: true })
+
+
+      52 | async function start(page: Page) {
+      53 |   await page.goto("/");
+    > 54 |   await expect(page.getByRole("button", { name: "Detail Tobi", exact: true })).toBeVisible();
+         |                                                                                ^
+      55 |   const a = await post(page, "/v1/creation/agents", {
+      56 |     connection_id: null,
+      57 |     harness: "codex",
+        at start (/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/work.spec.ts:54:80)
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/work.spec.ts:1123:17
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-rejected-group-member-f9560-llows-a-corrected-operation-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../.dev/nma062-playwright/work-rejected-group-member-f9560-llows-a-corrected-operation-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-rejected-group-member-f9560-llows-a-corrected-operation-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../.dev/nma062-playwright/work-rejected-group-member-f9560-llows-a-corrected-operation-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  9) [desktop] › tests/work.spec.ts:1148:1 › sharing copies only the selected file into the explicit destination and preserves byte identity 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'Detail Tobi', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('button', { name: 'Detail Tobi', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Detail Tobi', exact: true })
+
+
+      52 | async function start(page: Page) {
+      53 |   await page.goto("/");
+    > 54 |   await expect(page.getByRole("button", { name: "Detail Tobi", exact: true })).toBeVisible();
+         |                                                                                ^
+      55 |   const a = await post(page, "/v1/creation/agents", {
+      56 |     connection_id: null,
+      57 |     harness: "codex",
+        at start (/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/work.spec.ts:54:80)
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/work.spec.ts:1151:20
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-sharing-copies-only-t-9afbc-and-preserves-byte-identity-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../.dev/nma062-playwright/work-sharing-copies-only-t-9afbc-and-preserves-byte-identity-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-sharing-copies-only-t-9afbc-and-preserves-byte-identity-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../.dev/nma062-playwright/work-sharing-copies-only-t-9afbc-and-preserves-byte-identity-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  10) [desktop] › tests/work.spec.ts:1214:1 › group writers serialize native questions and free text uses one answer representation 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'Detail Tobi', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('button', { name: 'Detail Tobi', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Detail Tobi', exact: true })
+
+
+      1217 |   test.setTimeout(60000);
+      1218 |   await page.goto("/");
+    > 1219 |   await expect(page.getByRole("button", { name: "Detail Tobi", exact: true })).toBeVisible();
+           |                                                                                ^
+      1220 |   const a = await fixtureAgent(page, "First lane");
+      1221 |   const b = await fixtureAgent(page, "Second lane");
+      1222 |   const group = await newGroup(page, `Concurrent ${crypto.randomUUID().slice(0, 8)}`, [a.id, b.id]);
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/work.spec.ts:1219:80
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-group-writers-seriali-4b0ed-s-one-answer-representation-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../.dev/nma062-playwright/work-group-writers-seriali-4b0ed-s-one-answer-representation-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-group-writers-seriali-4b0ed-s-one-answer-representation-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../.dev/nma062-playwright/work-group-writers-seriali-4b0ed-s-one-answer-representation-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  11) [desktop] › tests/work.spec.ts:1269:1 › an unconfirmed human reply is restored verbatim and locked across reload 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'Detail Tobi', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('button', { name: 'Detail Tobi', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Detail Tobi', exact: true })
+
+
+      1271 | }) => {
+      1272 |   await page.goto("/");
+    > 1273 |   await expect(page.getByRole("button", { name: "Detail Tobi", exact: true })).toBeVisible();
+           |                                                                                ^
+      1274 |   const agent = await fixtureAgent(page, "Human request");
+      1275 |   const group = await newGroup(page, `Human ${crypto.randomUUID().slice(0, 8)}`, [agent.id]);
+      1276 |   await post(page, `/v1/groups/${group.id}/messages`, {
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/work.spec.ts:1273:80
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-an-unconfirmed-human--1dc35-im-and-locked-across-reload-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../.dev/nma062-playwright/work-an-unconfirmed-human--1dc35-im-and-locked-across-reload-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-an-unconfirmed-human--1dc35-im-and-locked-across-reload-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../.dev/nma062-playwright/work-an-unconfirmed-human--1dc35-im-and-locked-across-reload-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  12) [desktop] › tests/work.spec.ts:1334:1 › four ordinary file attachments still allow a supported image 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'Detail Tobi', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('button', { name: 'Detail Tobi', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Detail Tobi', exact: true })
+
+
+      1334 | test("four ordinary file attachments still allow a supported image", async ({ page }) => {
+      1335 |   await page.goto("/");
+    > 1336 |   await expect(page.getByRole("button", { name: "Detail Tobi", exact: true })).toBeVisible();
+           |                                                                                ^
+      1337 |   const agent = await fixtureAgent(page, "Attachment count");
+      1338 |   await post(page, `/v1/agents/${agent.id}/dm`, {});
+      1339 |   await chooseAgent(page, agent.name);
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/work.spec.ts:1336:80
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-four-ordinary-file-at-1f627-ill-allow-a-supported-image-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../.dev/nma062-playwright/work-four-ordinary-file-at-1f627-ill-allow-a-supported-image-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-four-ordinary-file-at-1f627-ill-allow-a-supported-image-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../.dev/nma062-playwright/work-four-ordinary-file-at-1f627-ill-allow-a-supported-image-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  13) [mobile] › tests/work.spec.ts:353:1 › group creation recovers a lost acknowledgement, routes messages and keeps member DM resources private 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: expect(locator).toHaveValue(expected) failed
+
+    Locator:  getByLabel('Nama grup', { exact: true })
+    Expected: "Research circle"
+    Received: ""
+
+
+      378 |   await expect(page.getByRole("button", { name: "Detail Tobi", exact: true })).toBeVisible();
+      379 |   await menu(page);
+    > 380 |   await expect(page.getByLabel("Nama grup", { exact: true })).toHaveValue("Research circle");
+          |                                                               ^
+      381 |   await page.getByRole("button", { name: "Periksa pembuatan grup", exact: true }).click();
+      382 |   await page.getByRole("button", { name: "Detail Research circle", exact: true }).click();
+      383 |   await expect(page.getByRole("tab", { name: "Detail", exact: true })).toBeVisible();
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/work.spec.ts:380:63
+
+    Error Context: ../../.dev/nma062-playwright/work-group-creation-recove-26d1f-member-DM-resources-private-mobile/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-group-creation-recove-26d1f-member-DM-resources-private-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../.dev/nma062-playwright/work-group-creation-recove-26d1f-member-DM-resources-private-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  14) [mobile] › tests/work.spec.ts:431:1 › browser viewer connects to the managed browser and reconnects its view without replaying actions 
+
+    Test timeout of 180000ms exceeded.
+
+    Error: apiRequestContext.post: Test timeout of 180000ms exceeded.
+
+      3 |
+      4 | async function post(page: Page, path: string, data: unknown) {
+    > 5 |   const response = await page.request.post(path, {
+        |                                       ^
+      6 |     headers: { "Idempotency-Key": crypto.randomUUID() },
+      7 |     data,
+      8 |   });
+        at post (/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/work.spec.ts:5:39)
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/work.spec.ts:522:13
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-browser-viewer-connec-3006a-w-without-replaying-actions-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../.dev/nma062-playwright/work-browser-viewer-connec-3006a-w-without-replaying-actions-mobile/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-browser-viewer-connec-3006a-w-without-replaying-actions-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../.dev/nma062-playwright/work-browser-viewer-connec-3006a-w-without-replaying-actions-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  15) [mobile] › tests/work.spec.ts:530:1 › application access is assigned explicitly to this context and unsupported images never upload 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('main', { name: 'Percakapan aktif' }).getByText('Fixture ready', { exact: true })
+    Expected: visible
+    Timeout: 20000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('main', { name: 'Percakapan aktif' }).getByText('Fixture ready', { exact: true }) with timeout 20000ms
+      - waiting for getByRole('main', { name: 'Percakapan aktif' }).getByText('Fixture ready', { exact: true })
+
+
+      614 |       .getByRole("main", { name: "Percakapan aktif" })
+      615 |       .getByText("Fixture ready", { exact: true }),
+    > 616 |   ).toBeVisible({ timeout: 20000 });
+          |     ^
+      617 |   await page
+      618 |     .getByRole("textbox", { name: "Pesan", exact: true })
+      619 |     .fill(`fixture apps:${created.id}`);
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/work.spec.ts:616:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-application-access-is-04af4-pported-images-never-upload-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../.dev/nma062-playwright/work-application-access-is-04af4-pported-images-never-upload-mobile/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-application-access-is-04af4-pported-images-never-upload-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../.dev/nma062-playwright/work-application-access-is-04af4-pported-images-never-upload-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  16) [mobile] › tests/work.spec.ts:978:1 › unsafe Markdown cuts and changed prefixes keep complete content beside a labeled native-history fallback 
+
+    Test was interrupted.
+
+    Error: locator.click: Target page, context or browser has been closed
+
+      80 |     .getByRole("button")
+      81 |     .filter({ has: page.getByText(name, { exact: true }) })
+    > 82 |     .click();
+         |      ^
+      83 |   await expect(page.getByRole("button", { name: `Detail ${name}`, exact: true })).toBeVisible();
+      84 | }
+      85 | async function revokeFixtureApps(page: Page, toolkit: string) {
+        at chooseAgent (/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/work.spec.ts:82:6)
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/work.spec.ts:1048:3
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-unsafe-Markdown-cuts--99e64-led-native-history-fallback-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../.dev/nma062-playwright/work-unsafe-Markdown-cuts--99e64-led-native-history-fallback-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  15 failed
+    [desktop] › tests/work.spec.ts:353:1 › group creation recovers a lost acknowledgement, routes messages and keeps member DM resources private 
+    [desktop] › tests/work.spec.ts:431:1 › browser viewer connects to the managed browser and reconnects its view without replaying actions 
+    [desktop] › tests/work.spec.ts:530:1 › application access is assigned explicitly to this context and unsupported images never upload 
+    [desktop] › tests/work.spec.ts:627:1 › apps catalog searches live and authorization recovers from blocked popups and failed reads without changing grants 
+    [desktop] › tests/work.spec.ts:775:1 › native acknowledgements survive lost HTTP replies, completion, reload and connection revocation 
+    [desktop] › tests/work.spec.ts:912:1 › an ambiguous native submission stays fenced through status reads, reload and cancellation 
+    [desktop] › tests/work.spec.ts:978:1 › unsafe Markdown cuts and changed prefixes keep complete content beside a labeled native-history fallback 
+    [desktop] › tests/work.spec.ts:1120:1 › rejected group membership preserves the draft and allows a corrected operation 
+    [desktop] › tests/work.spec.ts:1148:1 › sharing copies only the selected file into the explicit destination and preserves byte identity 
+    [desktop] › tests/work.spec.ts:1214:1 › group writers serialize native questions and free text uses one answer representation 
+    [desktop] › tests/work.spec.ts:1269:1 › an unconfirmed human reply is restored verbatim and locked across reload 
+    [desktop] › tests/work.spec.ts:1334:1 › four ordinary file attachments still allow a supported image 
+    [mobile] › tests/work.spec.ts:353:1 › group creation recovers a lost acknowledgement, routes messages and keeps member DM resources private 
+    [mobile] › tests/work.spec.ts:431:1 › browser viewer connects to the managed browser and reconnects its view without replaying actions 
+    [mobile] › tests/work.spec.ts:530:1 › application access is assigned explicitly to this context and unsupported images never upload 
+  1 interrupted
+    [mobile] › tests/work.spec.ts:978:1 › unsafe Markdown cuts and changed prefixes keep complete content beside a labeled native-history fallback 
+  6 did not run
+  40 passed (15.4m)

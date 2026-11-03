@@ -1,0 +1,100 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4331" --strictPort
+[WebServer] (node:4785) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 6 tests using 1 worker
+
+(node:4790) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [desktop] › tests/jev-routing.spec.ts:42:1 › a blocked fallback shows its cause and retries the same hidden run across reload (3.0s)
+  ✘  2 [desktop] › tests/jev-routing.spec.ts:79:1 › binary repair refreshes the group from hidden-run events without another message or classifier call (6.4s)
+(node:4809) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  3 [desktop] › tests/jev-routing.spec.ts:102:1 › an unknown native fallback requests reconciliation and exposes no preparation retry (1.8s)
+(node:4817) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  4 [mobile] › tests/jev-routing.spec.ts:42:1 › a blocked fallback shows its cause and retries the same hidden run across reload (1.2s)
+  ✘  5 [mobile] › tests/jev-routing.spec.ts:79:1 › binary repair refreshes the group from hidden-run events without another message or classifier call (5.9s)
+(node:4831) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  6 [mobile] › tests/jev-routing.spec.ts:102:1 › an unknown native fallback requests reconciliation and exposes no preparation retry (1.1s)
+
+
+  1) [desktop] › tests/jev-routing.spec.ts:79:1 › binary repair refreshes the group from hidden-run events without another message or classifier call 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('Fixture routed answer.', { exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('Fixture routed answer.', { exact: true }) with timeout 5000ms
+      - waiting for getByText('Fixture routed answer.', { exact: true })
+
+
+      86 |   const decisions = (await (await page.request.get("/v1/verification/runtime")).json()).decisions;
+      87 |   await post(page, "/v1/verification/runtime", { ready: true });
+    > 88 |   await expect(page.getByText("Fixture routed answer.", { exact: true })).toBeVisible();
+         |                                                                           ^
+      89 |   const after = await snapshot(page, group.id);
+      90 |   const current = after.routes.find((r: { id: string }) => r.id === route.id);
+      91 |   expect(current.state).toBe("selected");
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/jev-routing.spec.ts:88:75
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../.dev/jev-v2-playwright/jev-routing-binary-repair--375ce--message-or-classifier-call-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../.dev/jev-v2-playwright/jev-routing-binary-repair--375ce--message-or-classifier-call-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../.dev/jev-v2-playwright/jev-routing-binary-repair--375ce--message-or-classifier-call-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../.dev/jev-v2-playwright/jev-routing-binary-repair--375ce--message-or-classifier-call-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [mobile] › tests/jev-routing.spec.ts:79:1 › binary repair refreshes the group from hidden-run events without another message or classifier call 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('Fixture routed answer.', { exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('Fixture routed answer.', { exact: true }) with timeout 5000ms
+      - waiting for getByText('Fixture routed answer.', { exact: true })
+
+
+      86 |   const decisions = (await (await page.request.get("/v1/verification/runtime")).json()).decisions;
+      87 |   await post(page, "/v1/verification/runtime", { ready: true });
+    > 88 |   await expect(page.getByText("Fixture routed answer.", { exact: true })).toBeVisible();
+         |                                                                           ^
+      89 |   const after = await snapshot(page, group.id);
+      90 |   const current = after.routes.find((r: { id: string }) => r.id === route.id);
+      91 |   expect(current.state).toBe("selected");
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/jev-routing.spec.ts:88:75
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../.dev/jev-v2-playwright/jev-routing-binary-repair--375ce--message-or-classifier-call-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../.dev/jev-v2-playwright/jev-routing-binary-repair--375ce--message-or-classifier-call-mobile/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../.dev/jev-v2-playwright/jev-routing-binary-repair--375ce--message-or-classifier-call-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../.dev/jev-v2-playwright/jev-routing-binary-repair--375ce--message-or-classifier-call-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    [desktop] › tests/jev-routing.spec.ts:79:1 › binary repair refreshes the group from hidden-run events without another message or classifier call 
+    [mobile] › tests/jev-routing.spec.ts:79:1 › binary repair refreshes the group from hidden-run events without another message or classifier call 
+  4 passed (23.7s)

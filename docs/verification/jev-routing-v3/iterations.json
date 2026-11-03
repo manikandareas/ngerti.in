@@ -1,0 +1,31 @@
+{
+  "preserved_model_experiments": [
+    "legacy-development.json",
+    "batch-development.json",
+    "semantic-development-1.json",
+    "semantic-development-2.json",
+    "semantic-development-3.json",
+    "semantic-development-4.json",
+    "semantic-development-5.json",
+    "semantic-development-6.json",
+    "semantic-calibration.json",
+    "semantic-validation.json",
+    "semantic-calibration-final.json"
+  ],
+  "final_test_tuning": false,
+  "setup_failures": [
+    {
+      "capture": "fallback-quality-setup-failure.json",
+      "cause": "Verifier attempted internal routing thread fields through public thread input; fixed the isolated verifier to create the internal entity, before any native inference."
+    },
+    {
+      "cause": "Initial native command used the app working directory while verifier source paths are rooted at the repository. No inference occurred; rerun from repository root."
+    }
+  ],
+  "verifier_type_repairs": "Narrowed internal thread/event types and explicit announcement existence assertions; production source remained frozen.",
+  "remaining_observations": [
+    "control-14 and its three dependent perturbations produce an unnecessary native Routine-ownership clarification.",
+    "Consistently renamed historical replay has three wrong low-confidence Jev judgments, all withheld and corrected by actual native fallback.",
+    "Native fallback latency is several seconds; aggregate Jev p95 exceeds 500 ms."
+  ]
+}

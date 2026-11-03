@@ -1,0 +1,13 @@
+{
+  "captured_at": "2026-11-03T09:00:48.987Z",
+  "contract": "1.25.0",
+  "checked_operations": [
+    "POST /v1/threads/:id/prepare",
+    "POST /v1/runs/:id/retry-preparation"
+  ],
+  "declared_routes": 94,
+  "exact_retry_new_events": 0,
+  "preserved_messages": 1,
+  "preserved_runs": 1,
+  "result": "passed"
+}

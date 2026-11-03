@@ -1,0 +1,3511 @@
+{
+  "captured_at": "2026-11-03T13:23:58.684Z",
+  "dataset_sha256": "64d4035d723256f7763352653a70c77c57185316fcae85bfc90a7e8bca3a7e98",
+  "protocol": "520 authored scenarios, split 216 development / 104 diagnostic validation / 40 fresh calibration / 160 frozen final test. Perturbations are dependent checks, not independent scenarios. Parameters and prompts were frozen before final inference. No final-test tuning.",
+  "test": {
+    "cases": 160,
+    "jev_accepted": 133,
+    "jev_accepted_wrong": 0,
+    "fallbacks": 27,
+    "final_correct": 159,
+    "unnecessary_clarifications": 1,
+    "wrong_member_selections": 0,
+    "jev_latency": {
+      "n": 160,
+      "p50_ms": 268,
+      "p95_ms": 519
+    },
+    "single_call_jev_latency": {
+      "n": 91,
+      "p50_ms": 242,
+      "p95_ms": 320
+    },
+    "two_call_jev_latency": {
+      "n": 69,
+      "p50_ms": 490,
+      "p95_ms": 536
+    },
+    "native_fallback_latency": {
+      "n": 27,
+      "p50_ms": 4981,
+      "p95_ms": 7503
+    },
+    "combined_sequential_latency": {
+      "n": 160,
+      "p50_ms": 470,
+      "p95_ms": 5931
+    }
+  },
+  "invariance": {
+    "cases": 444,
+    "jev_accepted": 394,
+    "jev_accepted_wrong": 0,
+    "fallbacks": 50,
+    "final_correct": 441,
+    "unnecessary_clarifications": 3,
+    "wrong_member_selections": 0,
+    "jev_latency": {
+      "n": 444,
+      "p50_ms": 279,
+      "p95_ms": 548
+    },
+    "single_call_jev_latency": {
+      "n": 246,
+      "p50_ms": 252,
+      "p95_ms": 307
+    },
+    "two_call_jev_latency": {
+      "n": 198,
+      "p50_ms": 505,
+      "p95_ms": 570
+    },
+    "native_fallback_latency": {
+      "n": 50,
+      "p50_ms": 5034,
+      "p95_ms": 8738
+    },
+    "combined_sequential_latency": {
+      "n": 444,
+      "p50_ms": 302,
+      "p95_ms": 5581
+    }
+  },
+  "consistency": {
+    "baselines": 160,
+    "unique_actor_baselines": 148,
+    "variants": 444,
+    "raw_jev_consistent": 438,
+    "final_consistent": 444,
+    "rows": [
+      {
+        "id": "absent-17:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "absent-17:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "absent-17:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "absent-19:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "absent-19:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "absent-19:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "absent-22:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "absent-22:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "absent-22:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "absent-24:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "absent-24:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "absent-24:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-01:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-01:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-01:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-02:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-02:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-02:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-03:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-03:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-03:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-04:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-04:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-04:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-05:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-05:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-05:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-06:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-06:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-06:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-07:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-07:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-07:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-08:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-08:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-08:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-17:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-17:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-17:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-18:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-18:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-18:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-19:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-19:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-19:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-20:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-20:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-20:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-21:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-21:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-21:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-22:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-22:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-22:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-23:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-23:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-23:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-24:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-24:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "addressed-24:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "agent_request-21:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "agent_request-21:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "agent_request-21:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "agent_request-22:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "agent_request-22:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "agent_request-22:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "agent_request-23:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "agent_request-23:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "agent_request-23:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "agent_request-24:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "agent_request-24:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "agent_request-24:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "ambiguous-13:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "ambiguous-13:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "ambiguous-13:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "ambiguous-14:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "ambiguous-14:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "ambiguous-14:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "ambiguous-16:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "ambiguous-16:rename",
+        "raw_jev_consistent": false,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "ambiguous-16:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "ambiguous-22:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "ambiguous-22:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "ambiguous-22:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "ambiguous-24:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "ambiguous-24:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "ambiguous-24:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-05:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-05:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-05:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-06:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-06:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-06:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-07:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-07:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-07:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-08:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-08:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-08:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-13:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-13:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-13:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-14:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-14:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-14:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-15:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-15:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-15:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-16:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-16:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-16:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-17:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-17:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-17:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-18:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-18:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-18:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-19:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-19:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-19:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-20:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-20:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-20:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-21:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-21:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-21:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-22:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-22:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-22:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-23:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-23:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-23:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-24:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-24:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "attachment-24:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "conditional-17:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "conditional-17:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "conditional-17:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "conditional-18:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "conditional-18:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "conditional-18:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "conditional-19:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "conditional-19:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "conditional-19:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "conditional-20:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "conditional-20:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "conditional-20:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "conditional-21:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "conditional-21:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "conditional-21:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "conditional-22:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "conditional-22:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "conditional-22:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "conditional-23:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "conditional-23:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "conditional-23:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "conditional-24:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "conditional-24:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "conditional-24:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "continuation-09:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "continuation-09:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "continuation-09:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "continuation-10:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "continuation-10:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "continuation-10:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "continuation-11:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "continuation-11:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "continuation-11:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "continuation-12:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "continuation-12:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "continuation-12:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "continuation-21:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "continuation-21:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "continuation-21:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "continuation-22:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "continuation-22:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "continuation-22:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "continuation-23:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "continuation-23:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "continuation-23:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "continuation-24:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "continuation-24:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "continuation-24:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "control-09:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "control-09:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "control-09:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "control-10:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "control-10:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "control-10:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "control-11:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "control-11:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "control-11:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "control-12:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "control-12:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "control-12:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "control-13:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "control-13:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "control-13:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "control-14:irrelevant_history",
+        "raw_jev_consistent": false,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "control-14:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "control-14:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "control-15:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "control-15:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "control-15:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "control-16:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "control-16:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "control-16:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "control-21:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "control-21:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "control-21:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "control-22:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "control-22:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "control-22:reverse",
+        "raw_jev_consistent": false,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "control-23:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "control-23:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "control-23:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "control-24:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "control-24:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "control-24:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "coordination-01:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "coordination-01:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "coordination-01:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "coordination-02:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "coordination-02:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "coordination-02:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "coordination-03:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "coordination-03:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "coordination-03:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "coordination-05:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "coordination-05:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "coordination-05:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "coordination-06:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "coordination-06:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "coordination-06:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "coordination-07:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "coordination-07:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "coordination-07:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "coordination-21:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "coordination-21:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "coordination-21:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "coordination-22:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "coordination-22:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "coordination-22:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "coordination-23:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "coordination-23:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "coordination-23:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "correction-05:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "correction-05:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "correction-05:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "correction-06:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "correction-06:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "correction-06:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "correction-07:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "correction-07:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "correction-07:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "correction-08:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "correction-08:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "correction-08:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "correction-21:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "correction-21:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "correction-21:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "correction-22:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "correction-22:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "correction-22:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "correction-23:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "correction-23:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "correction-23:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "correction-24:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "correction-24:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "correction-24:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "delegation-21:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "delegation-21:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "delegation-21:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "delegation-22:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "delegation-22:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "delegation-22:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "delegation-23:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "delegation-23:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "delegation-23:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "delegation-24:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "delegation-24:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "delegation-24:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "indirect-21:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "indirect-21:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "indirect-21:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "indirect-22:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "indirect-22:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "indirect-22:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "indirect-23:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "indirect-23:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "indirect-23:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "indirect-24:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "indirect-24:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "indirect-24:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "negation-13:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "negation-13:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "negation-13:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "negation-14:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "negation-14:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "negation-14:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "negation-15:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "negation-15:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "negation-15:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "negation-16:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "negation-16:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "negation-16:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "negation-21:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "negation-21:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "negation-21:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "negation-22:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "negation-22:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "negation-22:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "negation-23:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "negation-23:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "negation-23:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "negation-24:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "negation-24:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "negation-24:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "noisy_history-13:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "noisy_history-13:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "noisy_history-13:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "noisy_history-14:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "noisy_history-14:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "noisy_history-14:reverse",
+        "raw_jev_consistent": false,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "noisy_history-15:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "noisy_history-15:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "noisy_history-15:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "noisy_history-16:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "noisy_history-16:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "noisy_history-16:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "noisy_history-21:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "noisy_history-21:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "noisy_history-21:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "noisy_history-22:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "noisy_history-22:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "noisy_history-22:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "noisy_history-23:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "noisy_history-23:rename",
+        "raw_jev_consistent": false,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "noisy_history-23:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "noisy_history-24:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "noisy_history-24:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "noisy_history-24:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "pronouns-05:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "pronouns-05:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "pronouns-05:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "pronouns-06:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "pronouns-06:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "pronouns-06:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "pronouns-07:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "pronouns-07:rename",
+        "raw_jev_consistent": false,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "pronouns-07:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "pronouns-08:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "pronouns-08:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "pronouns-08:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "pronouns-21:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "pronouns-21:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "pronouns-21:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "pronouns-22:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "pronouns-22:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "pronouns-22:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "pronouns-23:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "pronouns-23:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "pronouns-23:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "pronouns-24:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "pronouns-24:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "pronouns-24:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "quotation-21:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "quotation-21:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "quotation-21:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "quotation-22:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "quotation-22:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "quotation-22:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "quotation-23:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "quotation-23:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "quotation-23:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "quotation-24:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "quotation-24:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "quotation-24:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "review-21:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "review-21:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "review-21:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "review-22:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "review-22:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "review-22:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "review-23:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "review-23:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "review-23:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "review-24:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "review-24:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "review-24:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "role-21:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "role-21:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "role-21:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "role-22:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "role-22:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "role-22:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "role-23:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "role-23:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "role-23:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "role-24:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "role-24:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "role-24:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "status-09:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "status-09:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "status-09:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "status-10:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "status-10:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "status-10:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "status-11:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "status-11:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "status-11:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "status-13:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "status-13:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "status-13:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "status-14:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "status-14:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "status-14:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "status-15:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "status-15:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "status-15:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "status-16:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "status-16:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "status-16:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "status-21:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "status-21:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "status-21:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "status-22:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "status-22:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "status-22:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "status-24:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "status-24:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "status-24:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "topic_change-21:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "topic_change-21:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "topic_change-21:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "topic_change-22:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "topic_change-22:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "topic_change-22:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": null,
+        "final_consistent": true
+      },
+      {
+        "id": "topic_change-23:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "topic_change-23:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "topic_change-23:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "topic_change-24:irrelevant_history",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "topic_change-24:rename",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      },
+      {
+        "id": "topic_change-24:reverse",
+        "raw_jev_consistent": true,
+        "accepted_path_consistent": true,
+        "final_consistent": true
+      }
+    ]
+  },
+  "families": {
+    "absent": {
+      "cases": 8,
+      "jev_accepted": 4,
+      "jev_accepted_wrong": 0,
+      "fallbacks": 4,
+      "final_correct": 8,
+      "unnecessary_clarifications": 0,
+      "wrong_member_selections": 0,
+      "jev_latency": {
+        "n": 8,
+        "p50_ms": 247,
+        "p95_ms": 268
+      },
+      "single_call_jev_latency": {
+        "n": 8,
+        "p50_ms": 247,
+        "p95_ms": 268
+      },
+      "two_call_jev_latency": {
+        "n": 0,
+        "p50_ms": null,
+        "p95_ms": null
+      },
+      "native_fallback_latency": {
+        "n": 4,
+        "p50_ms": 6813,
+        "p95_ms": 7659
+      },
+      "combined_sequential_latency": {
+        "n": 8,
+        "p50_ms": 268,
+        "p95_ms": 7898
+      }
+    },
+    "addressed": {
+      "cases": 16,
+      "jev_accepted": 16,
+      "jev_accepted_wrong": 0,
+      "fallbacks": 0,
+      "final_correct": 16,
+      "unnecessary_clarifications": 0,
+      "wrong_member_selections": 0,
+      "jev_latency": {
+        "n": 16,
+        "p50_ms": 249,
+        "p95_ms": 491
+      },
+      "single_call_jev_latency": {
+        "n": 16,
+        "p50_ms": 249,
+        "p95_ms": 491
+      },
+      "two_call_jev_latency": {
+        "n": 0,
+        "p50_ms": null,
+        "p95_ms": null
+      },
+      "native_fallback_latency": {
+        "n": 0,
+        "p50_ms": null,
+        "p95_ms": null
+      },
+      "combined_sequential_latency": {
+        "n": 16,
+        "p50_ms": 249,
+        "p95_ms": 491
+      }
+    },
+    "agent_request": {
+      "cases": 4,
+      "jev_accepted": 4,
+      "jev_accepted_wrong": 0,
+      "fallbacks": 0,
+      "final_correct": 4,
+      "unnecessary_clarifications": 0,
+      "wrong_member_selections": 0,
+      "jev_latency": {
+        "n": 4,
+        "p50_ms": 236,
+        "p95_ms": 490
+      },
+      "single_call_jev_latency": {
+        "n": 3,
+        "p50_ms": 236,
+        "p95_ms": 261
+      },
+      "two_call_jev_latency": {
+        "n": 1,
+        "p50_ms": 490,
+        "p95_ms": 490
+      },
+      "native_fallback_latency": {
+        "n": 0,
+        "p50_ms": null,
+        "p95_ms": null
+      },
+      "combined_sequential_latency": {
+        "n": 4,
+        "p50_ms": 236,
+        "p95_ms": 490
+      }
+    },
+    "ambiguous": {
+      "cases": 8,
+      "jev_accepted": 3,
+      "jev_accepted_wrong": 0,
+      "fallbacks": 5,
+      "final_correct": 8,
+      "unnecessary_clarifications": 0,
+      "wrong_member_selections": 0,
+      "jev_latency": {
+        "n": 8,
+        "p50_ms": 256,
+        "p95_ms": 501
+      },
+      "single_call_jev_latency": {
+        "n": 6,
+        "p50_ms": 253,
+        "p95_ms": 324
+      },
+      "two_call_jev_latency": {
+        "n": 2,
+        "p50_ms": 460,
+        "p95_ms": 501
+      },
+      "native_fallback_latency": {
+        "n": 5,
+        "p50_ms": 4606,
+        "p95_ms": 5771
+      },
+      "combined_sequential_latency": {
+        "n": 8,
+        "p50_ms": 4327,
+        "p95_ms": 6231
+      }
+    },
+    "attachment": {
+      "cases": 16,
+      "jev_accepted": 16,
+      "jev_accepted_wrong": 0,
+      "fallbacks": 0,
+      "final_correct": 16,
+      "unnecessary_clarifications": 0,
+      "wrong_member_selections": 0,
+      "jev_latency": {
+        "n": 16,
+        "p50_ms": 248,
+        "p95_ms": 547
+      },
+      "single_call_jev_latency": {
+        "n": 11,
+        "p50_ms": 241,
+        "p95_ms": 259
+      },
+      "two_call_jev_latency": {
+        "n": 5,
+        "p50_ms": 484,
+        "p95_ms": 547
+      },
+      "native_fallback_latency": {
+        "n": 0,
+        "p50_ms": null,
+        "p95_ms": null
+      },
+      "combined_sequential_latency": {
+        "n": 16,
+        "p50_ms": 248,
+        "p95_ms": 547
+      }
+    },
+    "conditional": {
+      "cases": 8,
+      "jev_accepted": 8,
+      "jev_accepted_wrong": 0,
+      "fallbacks": 0,
+      "final_correct": 8,
+      "unnecessary_clarifications": 0,
+      "wrong_member_selections": 0,
+      "jev_latency": {
+        "n": 8,
+        "p50_ms": 240,
+        "p95_ms": 498
+      },
+      "single_call_jev_latency": {
+        "n": 6,
+        "p50_ms": 239,
+        "p95_ms": 251
+      },
+      "two_call_jev_latency": {
+        "n": 2,
+        "p50_ms": 476,
+        "p95_ms": 498
+      },
+      "native_fallback_latency": {
+        "n": 0,
+        "p50_ms": null,
+        "p95_ms": null
+      },
+      "combined_sequential_latency": {
+        "n": 8,
+        "p50_ms": 240,
+        "p95_ms": 498
+      }
+    },
+    "continuation": {
+      "cases": 8,
+      "jev_accepted": 8,
+      "jev_accepted_wrong": 0,
+      "fallbacks": 0,
+      "final_correct": 8,
+      "unnecessary_clarifications": 0,
+      "wrong_member_selections": 0,
+      "jev_latency": {
+        "n": 8,
+        "p50_ms": 490,
+        "p95_ms": 558
+      },
+      "single_call_jev_latency": {
+        "n": 0,
+        "p50_ms": null,
+        "p95_ms": null
+      },
+      "two_call_jev_latency": {
+        "n": 8,
+        "p50_ms": 490,
+        "p95_ms": 558
+      },
+      "native_fallback_latency": {
+        "n": 0,
+        "p50_ms": null,
+        "p95_ms": null
+      },
+      "combined_sequential_latency": {
+        "n": 8,
+        "p50_ms": 490,
+        "p95_ms": 558
+      }
+    },
+    "control": {
+      "cases": 12,
+      "jev_accepted": 10,
+      "jev_accepted_wrong": 0,
+      "fallbacks": 2,
+      "final_correct": 11,
+      "unnecessary_clarifications": 1,
+      "wrong_member_selections": 0,
+      "jev_latency": {
+        "n": 12,
+        "p50_ms": 482,
+        "p95_ms": 524
+      },
+      "single_call_jev_latency": {
+        "n": 3,
+        "p50_ms": 273,
+        "p95_ms": 292
+      },
+      "two_call_jev_latency": {
+        "n": 9,
+        "p50_ms": 488,
+        "p95_ms": 524
+      },
+      "native_fallback_latency": {
+        "n": 2,
+        "p50_ms": 4699,
+        "p95_ms": 7357
+      },
+      "combined_sequential_latency": {
+        "n": 12,
+        "p50_ms": 483,
+        "p95_ms": 7630
+      }
+    },
+    "coordination": {
+      "cases": 12,
+      "jev_accepted": 9,
+      "jev_accepted_wrong": 0,
+      "fallbacks": 3,
+      "final_correct": 12,
+      "unnecessary_clarifications": 0,
+      "wrong_member_selections": 0,
+      "jev_latency": {
+        "n": 12,
+        "p50_ms": 481,
+        "p95_ms": 523
+      },
+      "single_call_jev_latency": {
+        "n": 3,
+        "p50_ms": 242,
+        "p95_ms": 270
+      },
+      "two_call_jev_latency": {
+        "n": 9,
+        "p50_ms": 497,
+        "p95_ms": 523
+      },
+      "native_fallback_latency": {
+        "n": 3,
+        "p50_ms": 5748,
+        "p95_ms": 5950
+      },
+      "combined_sequential_latency": {
+        "n": 12,
+        "p50_ms": 505,
+        "p95_ms": 6190
+      }
+    },
+    "correction": {
+      "cases": 8,
+      "jev_accepted": 4,
+      "jev_accepted_wrong": 0,
+      "fallbacks": 4,
+      "final_correct": 8,
+      "unnecessary_clarifications": 0,
+      "wrong_member_selections": 0,
+      "jev_latency": {
+        "n": 8,
+        "p50_ms": 476,
+        "p95_ms": 504
+      },
+      "single_call_jev_latency": {
+        "n": 3,
+        "p50_ms": 233,
+        "p95_ms": 234
+      },
+      "two_call_jev_latency": {
+        "n": 5,
+        "p50_ms": 485,
+        "p95_ms": 504
+      },
+      "native_fallback_latency": {
+        "n": 4,
+        "p50_ms": 4333,
+        "p95_ms": 5207
+      },
+      "combined_sequential_latency": {
+        "n": 8,
+        "p50_ms": 480,
+        "p95_ms": 5692
+      }
+    },
+    "delegation": {
+      "cases": 4,
+      "jev_accepted": 4,
+      "jev_accepted_wrong": 0,
+      "fallbacks": 0,
+      "final_correct": 4,
+      "unnecessary_clarifications": 0,
+      "wrong_member_selections": 0,
+      "jev_latency": {
+        "n": 4,
+        "p50_ms": 475,
+        "p95_ms": 516
+      },
+      "single_call_jev_latency": {
+        "n": 0,
+        "p50_ms": null,
+        "p95_ms": null
+      },
+      "two_call_jev_latency": {
+        "n": 4,
+        "p50_ms": 475,
+        "p95_ms": 516
+      },
+      "native_fallback_latency": {
+        "n": 0,
+        "p50_ms": null,
+        "p95_ms": null
+      },
+      "combined_sequential_latency": {
+        "n": 4,
+        "p50_ms": 475,
+        "p95_ms": 516
+      }
+    },
+    "indirect": {
+      "cases": 4,
+      "jev_accepted": 4,
+      "jev_accepted_wrong": 0,
+      "fallbacks": 0,
+      "final_correct": 4,
+      "unnecessary_clarifications": 0,
+      "wrong_member_selections": 0,
+      "jev_latency": {
+        "n": 4,
+        "p50_ms": 240,
+        "p95_ms": 493
+      },
+      "single_call_jev_latency": {
+        "n": 3,
+        "p50_ms": 240,
+        "p95_ms": 242
+      },
+      "two_call_jev_latency": {
+        "n": 1,
+        "p50_ms": 493,
+        "p95_ms": 493
+      },
+      "native_fallback_latency": {
+        "n": 0,
+        "p50_ms": null,
+        "p95_ms": null
+      },
+      "combined_sequential_latency": {
+        "n": 4,
+        "p50_ms": 240,
+        "p95_ms": 493
+      }
+    },
+    "negation": {
+      "cases": 8,
+      "jev_accepted": 8,
+      "jev_accepted_wrong": 0,
+      "fallbacks": 0,
+      "final_correct": 8,
+      "unnecessary_clarifications": 0,
+      "wrong_member_selections": 0,
+      "jev_latency": {
+        "n": 8,
+        "p50_ms": 241,
+        "p95_ms": 501
+      },
+      "single_call_jev_latency": {
+        "n": 5,
+        "p50_ms": 238,
+        "p95_ms": 242
+      },
+      "two_call_jev_latency": {
+        "n": 3,
+        "p50_ms": 492,
+        "p95_ms": 501
+      },
+      "native_fallback_latency": {
+        "n": 0,
+        "p50_ms": null,
+        "p95_ms": null
+      },
+      "combined_sequential_latency": {
+        "n": 8,
+        "p50_ms": 241,
+        "p95_ms": 501
+      }
+    },
+    "noisy_history": {
+      "cases": 8,
+      "jev_accepted": 6,
+      "jev_accepted_wrong": 0,
+      "fallbacks": 2,
+      "final_correct": 8,
+      "unnecessary_clarifications": 0,
+      "wrong_member_selections": 0,
+      "jev_latency": {
+        "n": 8,
+        "p50_ms": 468,
+        "p95_ms": 515
+      },
+      "single_call_jev_latency": {
+        "n": 3,
+        "p50_ms": 237,
+        "p95_ms": 258
+      },
+      "two_call_jev_latency": {
+        "n": 5,
+        "p50_ms": 497,
+        "p95_ms": 515
+      },
+      "native_fallback_latency": {
+        "n": 2,
+        "p50_ms": 5374,
+        "p95_ms": 5428
+      },
+      "combined_sequential_latency": {
+        "n": 8,
+        "p50_ms": 484,
+        "p95_ms": 5931
+      }
+    },
+    "pronouns": {
+      "cases": 8,
+      "jev_accepted": 7,
+      "jev_accepted_wrong": 0,
+      "fallbacks": 1,
+      "final_correct": 8,
+      "unnecessary_clarifications": 0,
+      "wrong_member_selections": 0,
+      "jev_latency": {
+        "n": 8,
+        "p50_ms": 478,
+        "p95_ms": 599
+      },
+      "single_call_jev_latency": {
+        "n": 1,
+        "p50_ms": 237,
+        "p95_ms": 237
+      },
+      "two_call_jev_latency": {
+        "n": 7,
+        "p50_ms": 480,
+        "p95_ms": 599
+      },
+      "native_fallback_latency": {
+        "n": 1,
+        "p50_ms": 4670,
+        "p95_ms": 4670
+      },
+      "combined_sequential_latency": {
+        "n": 8,
+        "p50_ms": 480,
+        "p95_ms": 5146
+      }
+    },
+    "quotation": {
+      "cases": 4,
+      "jev_accepted": 4,
+      "jev_accepted_wrong": 0,
+      "fallbacks": 0,
+      "final_correct": 4,
+      "unnecessary_clarifications": 0,
+      "wrong_member_selections": 0,
+      "jev_latency": {
+        "n": 4,
+        "p50_ms": 236,
+        "p95_ms": 239
+      },
+      "single_call_jev_latency": {
+        "n": 4,
+        "p50_ms": 236,
+        "p95_ms": 239
+      },
+      "two_call_jev_latency": {
+        "n": 0,
+        "p50_ms": null,
+        "p95_ms": null
+      },
+      "native_fallback_latency": {
+        "n": 0,
+        "p50_ms": null,
+        "p95_ms": null
+      },
+      "combined_sequential_latency": {
+        "n": 4,
+        "p50_ms": 236,
+        "p95_ms": 239
+      }
+    },
+    "review": {
+      "cases": 4,
+      "jev_accepted": 4,
+      "jev_accepted_wrong": 0,
+      "fallbacks": 0,
+      "final_correct": 4,
+      "unnecessary_clarifications": 0,
+      "wrong_member_selections": 0,
+      "jev_latency": {
+        "n": 4,
+        "p50_ms": 245,
+        "p95_ms": 257
+      },
+      "single_call_jev_latency": {
+        "n": 4,
+        "p50_ms": 245,
+        "p95_ms": 257
+      },
+      "two_call_jev_latency": {
+        "n": 0,
+        "p50_ms": null,
+        "p95_ms": null
+      },
+      "native_fallback_latency": {
+        "n": 0,
+        "p50_ms": null,
+        "p95_ms": null
+      },
+      "combined_sequential_latency": {
+        "n": 4,
+        "p50_ms": 245,
+        "p95_ms": 257
+      }
+    },
+    "role": {
+      "cases": 4,
+      "jev_accepted": 3,
+      "jev_accepted_wrong": 0,
+      "fallbacks": 1,
+      "final_correct": 4,
+      "unnecessary_clarifications": 0,
+      "wrong_member_selections": 0,
+      "jev_latency": {
+        "n": 4,
+        "p50_ms": 235,
+        "p95_ms": 256
+      },
+      "single_call_jev_latency": {
+        "n": 4,
+        "p50_ms": 235,
+        "p95_ms": 256
+      },
+      "two_call_jev_latency": {
+        "n": 0,
+        "p50_ms": null,
+        "p95_ms": null
+      },
+      "native_fallback_latency": {
+        "n": 1,
+        "p50_ms": 4003,
+        "p95_ms": 4003
+      },
+      "combined_sequential_latency": {
+        "n": 4,
+        "p50_ms": 243,
+        "p95_ms": 4234
+      }
+    },
+    "status": {
+      "cases": 12,
+      "jev_accepted": 8,
+      "jev_accepted_wrong": 0,
+      "fallbacks": 4,
+      "final_correct": 12,
+      "unnecessary_clarifications": 0,
+      "wrong_member_selections": 0,
+      "jev_latency": {
+        "n": 12,
+        "p50_ms": 470,
+        "p95_ms": 522
+      },
+      "single_call_jev_latency": {
+        "n": 5,
+        "p50_ms": 239,
+        "p95_ms": 283
+      },
+      "two_call_jev_latency": {
+        "n": 7,
+        "p50_ms": 491,
+        "p95_ms": 522
+      },
+      "native_fallback_latency": {
+        "n": 4,
+        "p50_ms": 4713,
+        "p95_ms": 5737
+      },
+      "combined_sequential_latency": {
+        "n": 12,
+        "p50_ms": 470,
+        "p95_ms": 6228
+      }
+    },
+    "topic_change": {
+      "cases": 4,
+      "jev_accepted": 3,
+      "jev_accepted_wrong": 0,
+      "fallbacks": 1,
+      "final_correct": 4,
+      "unnecessary_clarifications": 0,
+      "wrong_member_selections": 0,
+      "jev_latency": {
+        "n": 4,
+        "p50_ms": 245,
+        "p95_ms": 536
+      },
+      "single_call_jev_latency": {
+        "n": 3,
+        "p50_ms": 245,
+        "p95_ms": 320
+      },
+      "two_call_jev_latency": {
+        "n": 1,
+        "p50_ms": 536,
+        "p95_ms": 536
+      },
+      "native_fallback_latency": {
+        "n": 1,
+        "p50_ms": 5171,
+        "p95_ms": 5171
+      },
+      "combined_sequential_latency": {
+        "n": 4,
+        "p50_ms": 245,
+        "p95_ms": 5707
+      }
+    }
+  },
+  "confidence_bins": [
+    {
+      "confidence_min": 0,
+      "confidence_max": 0.5,
+      "cases": 8,
+      "mean_confidence": 0.38999999999999996,
+      "observed_correct": 6
+    },
+    {
+      "confidence_min": 0.5,
+      "confidence_max": 0.6,
+      "cases": 2,
+      "mean_confidence": 0.5549999999999999,
+      "observed_correct": 2
+    },
+    {
+      "confidence_min": 0.6,
+      "confidence_max": 0.7,
+      "cases": 2,
+      "mean_confidence": 0.605,
+      "observed_correct": 2
+    },
+    {
+      "confidence_min": 0.7,
+      "confidence_max": 0.8,
+      "cases": 14,
+      "mean_confidence": 0.7571428571428572,
+      "observed_correct": 14
+    },
+    {
+      "confidence_min": 0.8,
+      "confidence_max": 0.9,
+      "cases": 14,
+      "mean_confidence": 0.8421428571428571,
+      "observed_correct": 13
+    },
+    {
+      "confidence_min": 0.9,
+      "confidence_max": 1,
+      "cases": 108,
+      "mean_confidence": 0.9754629629629626,
+      "observed_correct": 108
+    }
+  ],
+  "uncertainty": {
+    "accepted_wrong": 0,
+    "accepted_cases": 133,
+    "nominal_one_sided_95_percent_binomial_error_upper": 0.02227252461917395,
+    "limitation": "This nominal bound assumes independent representative Bernoulli trials. Authored family-related scenarios do not establish that assumption or a production error rate. Confidence is model self-assessment, not a calibrated success probability."
+  },
+  "remaining": [
+    {
+      "id": "control-14",
+      "expected": [
+        "actor-citra"
+      ],
+      "actual": null,
+      "native": {
+        "id": "control-14",
+        "family": "control",
+        "expected": [
+          "actor-citra"
+        ],
+        "actual": null,
+        "correct": false,
+        "status": "succeeded",
+        "error": null,
+        "clarification": "Siapa yang mengelola Routine pemeriksaan yang ingin diubah intervalnya?",
+        "duration_ms": 7357,
+        "timings": {
+          "preparing_at": "2026-11-03T13:18:08.186Z",
+          "ready_at": "2026-11-03T13:18:08.702Z",
+          "dispatched_at": "2026-11-03T13:18:08.703Z",
+          "accepted_at": "2026-11-03T13:18:08.728Z",
+          "first_output_at": "2026-11-03T13:18:15.179Z",
+          "settled_at": "2026-11-03T13:18:15.525Z"
+        },
+        "tools": [],
+        "answer": "{\"unresolved\":true,\"question\":\"Siapa yang mengelola Routine pemeriksaan yang ingin diubah intervalnya?\"}"
+      }
+    }
+  ],
+  "scope": "Measured Jev wall time plus separately measured isolated native classification time. Not production task latency or a provider SLO. Native fallback classification executed no scenario work or tools."
+}

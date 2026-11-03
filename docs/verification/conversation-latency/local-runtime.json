@@ -1,0 +1,24 @@
+{
+  "captured_at": "2026-11-03T09:12:17.940Z",
+  "health": {
+    "status": "foundation_ready",
+    "contract_version": "1.25.0",
+    "persistence": "ready",
+    "scheduler": "running",
+    "dispatcher": "running",
+    "registered_executors": 2,
+    "api_readiness_gate": "ready",
+    "group_routing": "jev"
+  },
+  "baseline_records": 160,
+  "byte_identical_records": 160,
+  "reset": false,
+  "runs": 62,
+  "active_runs": 0,
+  "source_sha256": {
+    "apps/server/src/main.ts": "39b91fb6551583daf03f5fa44581c3a1f5d2aca80691de82c4e5cf4ce0d439ce",
+    "apps/server/src/background.ts": "aaab5e2809b9c18ebe2d2a9fbf9c1a3c70379fbbe1a1434d575cff9635ed85f1",
+    "apps/server/src/lifecycle.ts": "6ee9b279e1437c6b6d1f4b261daa1c49ea4716bc0e60a2cd2ef502ac5a4ce853",
+    "apps/server/src/runs/contracts.ts": "48079b90110456d46d5634768b138f08e4f9029d5de458edc159cf037df7440e"
+  }
+}

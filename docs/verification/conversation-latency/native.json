@@ -1,0 +1,460 @@
+{
+  "captured_at": "2026-11-03T09:00:02.764Z",
+  "contract": "1.25.0",
+  "scope": "Isolated local native sessions and synthetic work; source state is read-only. Codex subscription and explicitly selected Muse API key remain separate.",
+  "versions": [
+    {
+      "harness": "codex",
+      "manifest": {
+        "executable": "codex",
+        "minimum_version": "0.165.0",
+        "tested_native_version": "0.166.0",
+        "protocol": "app_server",
+        "sdk_version": null,
+        "evidence": "native_subscription_http",
+        "authentication_methods": [
+          "native_login",
+          "api_key"
+        ],
+        "capabilities": {
+          "resume": "unknown",
+          "steer": "unknown",
+          "image_input": "unknown",
+          "video_input": "unknown",
+          "compaction": "unknown",
+          "product_tools": "unknown",
+          "settings": "unknown",
+          "cancel": "unknown",
+          "permission_requests": "unknown",
+          "native_files": "unknown",
+          "native_shell": "unknown",
+          "native_code": "unknown",
+          "native_git": "unknown",
+          "web_search": "unknown",
+          "web_read": "unknown"
+        }
+      },
+      "executable": "/Users/vitoandareasmanik/.nvm/versions/node/v25.8.0/bin/codex",
+      "state": "supported",
+      "version": "0.166.0"
+    },
+    {
+      "harness": "muse",
+      "manifest": {
+        "executable": "muse",
+        "minimum_version": "1.4.14",
+        "tested_native_version": "1.4.14-R7309.1",
+        "protocol": "msp_v1",
+        "sdk_version": "1.4.14",
+        "evidence": "native_api_key_http_subscription_unverified",
+        "authentication_methods": [
+          "native_login",
+          "api_key"
+        ],
+        "capabilities": {
+          "resume": "unknown",
+          "steer": "unknown",
+          "image_input": "unknown",
+          "video_input": "unknown",
+          "compaction": "unknown",
+          "product_tools": "unknown",
+          "settings": "unknown",
+          "cancel": "unknown",
+          "permission_requests": "unknown",
+          "native_files": "unknown",
+          "native_shell": "unknown",
+          "native_code": "unknown",
+          "native_git": "unknown",
+          "web_search": "unknown",
+          "web_read": "unknown"
+        }
+      },
+      "executable": "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma050/muse",
+      "state": "supported",
+      "version": "1.4.14-R7309.1"
+    }
+  ],
+  "samples": [
+    {
+      "label": "codex_cold",
+      "harness": "codex",
+      "status": "succeeded",
+      "total_ms": 17229,
+      "timings": {
+        "preparing_at": "2026-11-03T09:00:04.492Z",
+        "ready_at": "2026-11-03T09:00:16.331Z",
+        "dispatched_at": "2026-11-03T09:00:16.334Z",
+        "accepted_at": "2026-11-03T09:00:16.576Z",
+        "first_output_at": "2026-11-03T09:00:21.497Z",
+        "settled_at": "2026-11-03T09:00:21.501Z"
+      },
+      "native_session_id": "01a1a0a3-3a80-77e2-872c-6af0043432c8",
+      "answer": "LATENCY_OK_codex_cold",
+      "tools": []
+    },
+    {
+      "label": "codex_warm",
+      "harness": "codex",
+      "status": "succeeded",
+      "total_ms": 5352,
+      "timings": {
+        "preparing_at": "2026-11-03T09:00:21.529Z",
+        "ready_at": "2026-11-03T09:00:21.531Z",
+        "dispatched_at": "2026-11-03T09:00:21.532Z",
+        "accepted_at": "2026-11-03T09:00:21.580Z",
+        "first_output_at": "2026-11-03T09:00:26.857Z",
+        "settled_at": "2026-11-03T09:00:26.865Z"
+      },
+      "native_session_id": "01a1a0a3-3a80-77e2-872c-6af0043432c8",
+      "answer": "LATENCY_OK_codex_warm",
+      "tools": []
+    },
+    {
+      "label": "dm_prewarm",
+      "duration_ms": 2492,
+      "inference_runs_before": 2,
+      "inference_runs_after": 2,
+      "inference_runs_added": 0
+    },
+    {
+      "label": "codex_prepared",
+      "harness": "codex",
+      "status": "succeeded",
+      "total_ms": 4319,
+      "timings": {
+        "preparing_at": "2026-11-03T09:00:29.380Z",
+        "ready_at": "2026-11-03T09:00:29.383Z",
+        "dispatched_at": "2026-11-03T09:00:29.387Z",
+        "accepted_at": "2026-11-03T09:00:29.461Z",
+        "first_output_at": "2026-11-03T09:00:33.647Z",
+        "settled_at": "2026-11-03T09:00:33.653Z"
+      },
+      "native_session_id": "01a1a0a3-73b9-7fc0-8fd8-045ec462b0b1",
+      "answer": "LATENCY_OK_codex_prepared",
+      "tools": []
+    },
+    {
+      "label": "muse_cold",
+      "harness": "muse",
+      "status": "succeeded",
+      "total_ms": 14069,
+      "timings": {
+        "preparing_at": "2026-11-03T09:00:33.912Z",
+        "ready_at": "2026-11-03T09:00:37.615Z",
+        "dispatched_at": "2026-11-03T09:00:37.617Z",
+        "accepted_at": "2026-11-03T09:00:37.687Z",
+        "first_output_at": "2026-11-03T09:00:47.969Z",
+        "settled_at": "2026-11-03T09:00:47.974Z"
+      },
+      "native_session_id": "01a1a0a3-8fee-7000-81f6-9900e38f3aa9",
+      "answer": "LATENCY_OK_muse_cold",
+      "tools": []
+    },
+    {
+      "label": "muse_warm",
+      "harness": "muse",
+      "status": "succeeded",
+      "total_ms": 16046,
+      "timings": {
+        "preparing_at": "2026-11-03T09:00:47.991Z",
+        "ready_at": "2026-11-03T09:00:47.996Z",
+        "dispatched_at": "2026-11-03T09:00:47.997Z",
+        "accepted_at": "2026-11-03T09:00:48.061Z",
+        "first_output_at": "2026-11-03T09:01:03.990Z",
+        "settled_at": "2026-11-03T09:01:04.005Z"
+      },
+      "native_session_id": "01a1a0a3-8fee-7000-81f6-9900e38f3aa9",
+      "answer": "LATENCY_OK_muse_warm",
+      "tools": []
+    },
+    {
+      "label": "jev_to_native",
+      "route": {
+        "id": "0e70fe62-262d-49a3-af01-5c19bd1997ec",
+        "owner_id": "725d5194-c985-4ece-b045-bb23eab62a3f",
+        "revision": 3,
+        "created_at": "2026-11-03T09:01:04.283Z",
+        "updated_at": "2026-11-03T09:01:04.959Z",
+        "selection_only": false,
+        "thread_id": "a9cd6e13-79f5-4c45-8f73-65ac4e5c444c",
+        "message_id": "316021fc-fe06-4768-8a2b-1cc414973003",
+        "thread_revision": 1,
+        "router_run_id": null,
+        "selected_agent_id": "c77a706c-af70-4cea-924f-63d0ac924188",
+        "task_id": "25b08527-17a2-4173-a427-c123644f0322",
+        "state": "selected",
+        "error_code": null,
+        "routing": {
+          "provider": "jev",
+          "attempt_id": "b60e5548-2df6-41b7-9b31-b01e7733687e",
+          "router_agent_id": "c77a706c-af70-4cea-924f-63d0ac924188",
+          "request_revision": 1,
+          "candidate_revisions": {
+            "c77a706c-af70-4cea-924f-63d0ac924188": 1,
+            "0e87ff78-9b5d-40dc-b94c-2ea2bf280441": 1
+          },
+          "started_at": "2026-11-03T09:01:04.294Z",
+          "completed_at": "2026-11-03T09:01:04.940Z",
+          "duration_ms": 640,
+          "model": "jev-1.14.0",
+          "confidence": 0.96,
+          "input_tokens": 1114,
+          "probabilities": {
+            "member_0": 0.97,
+            "member_1": 0,
+            "unresolved": 0.03
+          },
+          "fallback_reason": null
+        },
+        "kind": "group_route"
+      },
+      "answer": "LATENCY_ROUTE_OK"
+    },
+    {
+      "label": "native_handoff",
+      "parent": {
+        "id": "16b6913c-dc39-4fd8-bc2d-f31a4bf6e35d",
+        "owner_id": "725d5194-c985-4ece-b045-bb23eab62a3f",
+        "revision": 13,
+        "created_at": "2026-11-03T09:01:15.263Z",
+        "updated_at": "2026-11-03T09:01:39.775Z",
+        "kind": "run",
+        "thread_id": "a9cd6e13-79f5-4c45-8f73-65ac4e5c444c",
+        "agent_id": "c77a706c-af70-4cea-924f-63d0ac924188",
+        "input_message_id": "c32703c7-1326-43dc-9334-953d4b5b539f",
+        "task_id": "53b4990a-a87f-4b96-b54e-7d2a31cf218b",
+        "thread_revision": 1,
+        "goal_id": null,
+        "routine_id": null,
+        "goal_generation": null,
+        "goal_assignment_revision": null,
+        "response_mode": "finalize",
+        "tool_errors": [],
+        "routine_generation": null,
+        "publication": "immediate",
+        "pending_answer": null,
+        "status": "succeeded",
+        "timings": {
+          "preparing_at": "2026-11-03T09:01:15.269Z",
+          "ready_at": "2026-11-03T09:01:20.325Z",
+          "dispatched_at": "2026-11-03T09:01:20.361Z",
+          "accepted_at": "2026-11-03T09:01:21.973Z",
+          "settled_at": "2026-11-03T09:01:39.775Z"
+        },
+        "preparation": {
+          "state": "ready",
+          "attempts": 1,
+          "next_attempt_at": null,
+          "configuration_revision": "1:4:1"
+        },
+        "cancellation": "none",
+        "outcome": "succeeded",
+        "delivery": "delivered",
+        "activity": "idle",
+        "diagnostic": null,
+        "native_dispatch_id": null,
+        "grant_revision": 1,
+        "dispatch_token": "00c27ae8-898f-4178-940e-2b7d56d2fac0",
+        "authority_epoch": "6f11a227-be85-40c3-9691-9b711616d25f",
+        "binding_id": "1a0be561-a3b6-492a-a206-5637bec9872d",
+        "native_run_id": "01a1a0a4-41ca-7a31-a36b-400a08a132ad",
+        "native_interactions": [],
+        "agent_snapshot": {
+          "name": "Writer",
+          "handle": "agent_c77a706caf704cea924f63d0ac924188",
+          "avatar": null,
+          "avatar_config": {
+            "version": 1,
+            "seed": "c77a706c-af70-4cea-924f-63d0ac924188",
+            "shape": "oval",
+            "color": "mist",
+            "face": "sleepy"
+          },
+          "soul": "Writes requested prose and concise final answers from available facts.",
+          "skills": [],
+          "harness": "codex",
+          "connection_id": "0a975006-4ca2-4553-9343-255b45269fd9",
+          "billing_source": "subscription",
+          "instructions": "This is a short synthetic latency check. Follow the user's exact request. Do not create Goals, Routine or files for this check. Do not browse the web.",
+          "workspace_id": null,
+          "model_id": "gpt-6.1-sol",
+          "reasoning": "medium",
+          "agent_id": "c77a706c-af70-4cea-924f-63d0ac924188",
+          "revision": 1
+        },
+        "workspace_id": "9497a9db-9673-4287-8b84-8d82ae3f9a0f",
+        "workspace_revision": 1,
+        "product_tools": [
+          "ngertiin.describe_tools",
+          "ngertiin.group_handoff"
+        ],
+        "attachment_observations": [],
+        "sources": [],
+        "visual_inputs": [],
+        "native_tools": []
+      },
+      "child": {
+        "id": "1636cb0f-0022-48d1-8028-e2f95cd0fc00",
+        "owner_id": "725d5194-c985-4ece-b045-bb23eab62a3f",
+        "revision": 8,
+        "created_at": "2026-11-03T09:01:34.711Z",
+        "updated_at": "2026-11-03T09:02:22.768Z",
+        "kind": "run",
+        "thread_id": "a9cd6e13-79f5-4c45-8f73-65ac4e5c444c",
+        "agent_id": "0e87ff78-9b5d-40dc-b94c-2ea2bf280441",
+        "input_message_id": "4d851604-073d-42e2-83c4-c36407f54a4b",
+        "task_id": "88f91c82-9d2a-4508-81cd-28450eb2edda",
+        "thread_revision": 1,
+        "goal_id": null,
+        "routine_id": null,
+        "goal_generation": null,
+        "goal_assignment_revision": null,
+        "response_mode": "answer",
+        "tool_errors": [],
+        "routine_generation": null,
+        "publication": "immediate",
+        "pending_answer": null,
+        "status": "succeeded",
+        "timings": {
+          "preparing_at": "2026-11-03T09:01:39.810Z",
+          "ready_at": "2026-11-03T09:01:45.067Z",
+          "dispatched_at": "2026-11-03T09:01:45.068Z",
+          "accepted_at": "2026-11-03T09:01:45.111Z",
+          "first_output_at": "2026-11-03T09:02:22.765Z",
+          "settled_at": "2026-11-03T09:02:22.768Z"
+        },
+        "preparation": {
+          "state": "ready",
+          "attempts": 1,
+          "next_attempt_at": null,
+          "configuration_revision": "1:4:1"
+        },
+        "cancellation": "none",
+        "outcome": "succeeded",
+        "delivery": "delivered",
+        "activity": "idle",
+        "diagnostic": null,
+        "native_dispatch_id": "01a1a0a4-9cfc-7000-9a97-dd677e114471",
+        "grant_revision": 1,
+        "dispatch_token": "a5224edf-6e08-4efc-99c3-d0539cb41d44",
+        "authority_epoch": "6f11a227-be85-40c3-9691-9b711616d25f",
+        "binding_id": "982ff54f-acff-459c-b7d3-6a24352f836d",
+        "native_run_id": "01a1a0a4-9cfc-7000-9a97-dd677e114471",
+        "native_interactions": [],
+        "agent_snapshot": {
+          "name": "Reviewer",
+          "handle": "agent_0e87ff789b5d40dcb94c2ea2bf280441",
+          "avatar": null,
+          "avatar_config": {
+            "version": 1,
+            "seed": "0e87ff78-9b5d-40dc-b94c-2ea2bf280441",
+            "shape": "circle",
+            "color": "lavender",
+            "face": "sleepy"
+          },
+          "soul": "Independently reviews and verifies supplied facts and calculations.",
+          "skills": [],
+          "harness": "muse",
+          "connection_id": "0799139a-5b82-43a4-84c6-8499078123a7",
+          "billing_source": "api_key",
+          "instructions": "This is a short synthetic latency check. Follow the user's exact request. Do not create Goals, Routine or files for this check. Do not browse the web.",
+          "workspace_id": null,
+          "model_id": "muse-spark-1.3",
+          "reasoning": "medium",
+          "agent_id": "0e87ff78-9b5d-40dc-b94c-2ea2bf280441",
+          "revision": 1
+        },
+        "workspace_id": "9497a9db-9673-4287-8b84-8d82ae3f9a0f",
+        "workspace_revision": 1,
+        "product_tools": [],
+        "attachment_observations": [],
+        "sources": [],
+        "visual_inputs": [],
+        "native_tools": []
+      },
+      "parent_task": {
+        "id": "53b4990a-a87f-4b96-b54e-7d2a31cf218b",
+        "owner_id": "725d5194-c985-4ece-b045-bb23eab62a3f",
+        "revision": 3,
+        "created_at": "2026-11-03T09:01:15.262Z",
+        "updated_at": "2026-11-03T09:02:22.769Z",
+        "goal_ids": [],
+        "goal_generations": {},
+        "summary": null,
+        "result_artifact_ids": [],
+        "thread_id": "a9cd6e13-79f5-4c45-8f73-65ac4e5c444c",
+        "agent_id": "c77a706c-af70-4cea-924f-63d0ac924188",
+        "source_agent_id": null,
+        "source_run_id": null,
+        "parent_task_id": null,
+        "root_task_id": "53b4990a-a87f-4b96-b54e-7d2a31cf218b",
+        "request_message_id": "c32703c7-1326-43dc-9334-953d4b5b539f",
+        "current_run_id": "16b6913c-dc39-4fd8-bc2d-f31a4bf6e35d",
+        "state": "completed",
+        "result_message_id": "3c0a3485-3bbb-43c3-8a5b-bc4c7faff006",
+        "continuation": 0,
+        "continuation_mode": "complete",
+        "kind": "peer_task"
+      },
+      "child_task": {
+        "id": "88f91c82-9d2a-4508-81cd-28450eb2edda",
+        "owner_id": "725d5194-c985-4ece-b045-bb23eab62a3f",
+        "revision": 2,
+        "created_at": "2026-11-03T09:01:34.711Z",
+        "updated_at": "2026-11-03T09:02:22.768Z",
+        "goal_ids": [],
+        "goal_generations": {},
+        "summary": "Verify the calculation and deliver the requested response.",
+        "result_artifact_ids": [],
+        "thread_id": "a9cd6e13-79f5-4c45-8f73-65ac4e5c444c",
+        "agent_id": "0e87ff78-9b5d-40dc-b94c-2ea2bf280441",
+        "source_agent_id": "c77a706c-af70-4cea-924f-63d0ac924188",
+        "source_run_id": "16b6913c-dc39-4fd8-bc2d-f31a4bf6e35d",
+        "parent_task_id": "53b4990a-a87f-4b96-b54e-7d2a31cf218b",
+        "root_task_id": "53b4990a-a87f-4b96-b54e-7d2a31cf218b",
+        "request_message_id": "4d851604-073d-42e2-83c4-c36407f54a4b",
+        "current_run_id": "1636cb0f-0022-48d1-8028-e2f95cd0fc00",
+        "state": "completed",
+        "result_message_id": "3c0a3485-3bbb-43c3-8a5b-bc4c7faff006",
+        "continuation": 0,
+        "continuation_mode": "synthesize",
+        "kind": "peer_task"
+      },
+      "answer": "VERIFIED_42"
+    }
+  ],
+  "source_sha256": {
+    "apps/server/src/background.ts": "aaab5e2809b9c18ebe2d2a9fbf9c1a3c70379fbbe1a1434d575cff9635ed85f1",
+    "apps/server/src/groups/service.ts": "3ff509a30570403da6d97d03e9ef561bc059722a81c7383d64e43e31cedb89b3",
+    "apps/server/src/groups/router.ts": "53b1a3299a0714a58f78c360006bed74eedefc629a532a5014896e225a73bf56",
+    "apps/server/src/groups/routing-worker.ts": "c83d9f6c3b8e20c1250b0f8ce59099a0643ffee9f78f916bf83adfe3b7654180",
+    "apps/server/src/harness/broker.ts": "4b68bc345dd3e183458b0158aeb14a3085ed717748196b4c41c4bf5cedaa0de5",
+    "apps/server/src/lifecycle.ts": "6ee9b279e1437c6b6d1f4b261daa1c49ea4716bc0e60a2cd2ef502ac5a4ce853",
+    "apps/server/src/runs/contracts.ts": "48079b90110456d46d5634768b138f08e4f9029d5de458edc159cf037df7440e",
+    "apps/server/src/store.ts": "722d5d8e882cb64e17fe2442fa45a5849f8f4d696d7ca64912c3670e28e6f516"
+  },
+  "tool_calls": [
+    {
+      "run_id": "16b6913c-dc39-4fd8-bc2d-f31a4bf6e35d",
+      "name": "ngertiin.describe_tools"
+    },
+    {
+      "run_id": "16b6913c-dc39-4fd8-bc2d-f31a4bf6e35d",
+      "name": "ngertiin.group_handoff"
+    }
+  ],
+  "summary": {
+    "runs": 8,
+    "succeeded": 8,
+    "native_routing_runs": 0,
+    "goals": 0,
+    "routines": 0,
+    "result": "passed"
+  },
+  "finished_at": "2026-11-03T09:02:22.974Z",
+  "cleanup": {
+    "active_runs": 0,
+    "source_database_mode": "readonly",
+    "isolated_credentials_removed": true
+  }
+}

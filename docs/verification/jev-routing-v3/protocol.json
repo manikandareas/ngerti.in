@@ -1,0 +1,42 @@
+{
+  "captured_at": "2026-11-03T13:29:45.205997+00:00",
+  "decision_owner": "Jev typed semantic judgments; Ngertiin owns admission and lifecycle; native harness owns actual work planning and tools.",
+  "model": "jev-1.14.0",
+  "sdk": "0.6.0",
+  "deadline_ms": 1500,
+  "max_calls": 2,
+  "sdk_retries": 0,
+  "dataset_sha256": "64d4035d723256f7763352653a70c77c57185316fcae85bfc90a7e8bca3a7e98",
+  "splits": {
+    "development": 216,
+    "diagnostic_validation": 104,
+    "fresh_calibration": 40,
+    "frozen_final_test": 160
+  },
+  "families": 20,
+  "authorship": "Implementation-agent authored and label reviewed; no independent human adjudication.",
+  "final_test_consumed_once": true,
+  "final_test_used_for_tuning": false,
+  "acceptance": {
+    "confidence": 0.6,
+    "probability": 0.7,
+    "margin": 0.15,
+    "review": 0.6
+  },
+  "explicit_non_goals": [
+    "No name/phrase regex semantic routing",
+    "No preferred candidate position or fixed coordinator",
+    "No Jev tool-plan execution",
+    "No provider/credential/billing routing",
+    "No unknown native replay",
+    "No user-group test messages",
+    "No production SLO guarantee"
+  ],
+  "provenance": {
+    "local": "This amendment adapts existing Ngertiin lifecycle, routing, public announcement and runtime modules. The frozen legacy comparator copies the local v2 router/policy; it is not upstream adoption.",
+    "baseline_head": "7b3be79a8fcb9b51e3001ca18d455c0a804d550c",
+    "upstream_reference": "Openbot 01e4b18e238e5de72a3570162c9f4275bb585786 remains the existing harness-first architectural reference; no new upstream module was copied.",
+    "official_sdk": "@typesafe-ai/sdk 0.6.0 choice/noul/systemOne, pinned after prior Bun compatibility verification.",
+    "upgrade": "Update SDK/model/policy separately; preserve provider error handling and capture request hashes; new untouched final cases are required after using this final set as regression data."
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "captured_at": "2026-11-03T13:35:07.681671+00:00",
+  "files": 141,
+  "verified": 141,
+  "failures": [],
+  "manifest": "SHA256SUMS",
+  "self_excluded": [
+    "SHA256SUMS",
+    "integrity.json"
+  ],
+  "result": "passed"
+}

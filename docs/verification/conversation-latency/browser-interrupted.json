@@ -1,0 +1,781 @@
+{
+  "config": {
+    "argv": [
+      "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+      "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/node_modules/.bin/playwright",
+      "test",
+      "--config",
+      "playwright.conversation.config.ts",
+      "--grep",
+      "stored message times|group bubble|saved avatar identity|avatar activity|queued inputs enter|unified sidebar|event bursts|blocked preparation"
+    ],
+    "configFile": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/playwright.conversation.config.ts",
+    "rootDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "desktop",
+        "name": "desktop",
+        "testDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "conversation.spec.ts",
+          "model-picker.spec.ts",
+          "rich-answer.spec.ts",
+          "agent-avatar.spec.ts",
+          "sidebar.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "mobile",
+        "name": "mobile",
+        "testDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "conversation.spec.ts",
+          "model-picker.spec.ts",
+          "rich-answer.spec.ts",
+          "agent-avatar.spec.ts",
+          "sidebar.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "desktop",
+        "testDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+        "snapshotDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "conversation.spec.ts",
+          "model-picker.spec.ts",
+          "rich-answer.spec.ts",
+          "agent-avatar.spec.ts",
+          "sidebar.spec.ts"
+        ],
+        "timeout": 30000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4311",
+          "screenshot": "only-on-failure",
+          "trace": "retain-on-failure",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "screen": {
+            "width": 1920,
+            "height": 1080
+          },
+          "deviceScaleFactor": 1,
+          "isMobile": false,
+          "hasTouch": false,
+          "defaultBrowserType": "chromium"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "desktop"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "mobile",
+        "testDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+        "snapshotDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "conversation.spec.ts",
+          "model-picker.spec.ts",
+          "rich-answer.spec.ts",
+          "agent-avatar.spec.ts",
+          "sidebar.spec.ts"
+        ],
+        "timeout": 30000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4311",
+          "screenshot": "only-on-failure",
+          "trace": "retain-on-failure",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "screen": {
+            "width": 1920,
+            "height": 1080
+          },
+          "deviceScaleFactor": 1,
+          "isMobile": true,
+          "hasTouch": true,
+          "defaultBrowserType": "chromium"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "mobile"
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/conversation-report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "agent-avatar.spec.ts",
+      "file": "agent-avatar.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "stored message times appear for users and agents in both DM and group",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3352,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-03T08:34:11.528Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "36d1a3dc9c9332301dd5-109fdaf87960fb6730f3",
+          "file": "agent-avatar.spec.ts",
+          "line": 14,
+          "column": 1
+        },
+        {
+          "title": "group bubble contains author and saved time around rich content (light)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2237,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-03T08:34:15.317Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "36d1a3dc9c9332301dd5-7406b8d09c329cc23a22",
+          "file": "agent-avatar.spec.ts",
+          "line": 118,
+          "column": 3
+        },
+        {
+          "title": "group bubble contains author and saved time around rich content (dark)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2573,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-03T08:34:17.562Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "36d1a3dc9c9332301dd5-343b5426a322e31d1e82",
+          "file": "agent-avatar.spec.ts",
+          "line": 118,
+          "column": 3
+        },
+        {
+          "title": "saved avatar identity appears outside the left of group replies and survives reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8064,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-03T08:34:20.143Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "36d1a3dc9c9332301dd5-6475ad9e80d4901dd726",
+          "file": "agent-avatar.spec.ts",
+          "line": 221,
+          "column": 1
+        },
+        {
+          "title": "avatar activity follows live refreshes, celebrates once and keeps DM/group activity separate",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 8720,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.header-identity .ngertiin-avatar')\nExpected: \u001b[32m\"\u001b[7mwor\u001b[27mking\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mthin\u001b[27mking\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" locator('.header-identity .ngertiin-avatar') with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.header-identity .ngertiin-avatar')\u001b[22m\n\u001b[2m    14 × locator resolved to <span role=\"img\" aria-hidden=\"true\" class=\"ngertiin-avatar \" data-avatar-state=\"thinking\">…</span>\u001b[22m\n\u001b[2m       - unexpected value \"thinking\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.header-identity .ngertiin-avatar')\nExpected: \u001b[32m\"\u001b[7mwor\u001b[27mking\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mthin\u001b[27mking\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" locator('.header-identity .ngertiin-avatar') with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.header-identity .ngertiin-avatar')\u001b[22m\n\u001b[2m    14 × locator resolved to <span role=\"img\" aria-hidden=\"true\" class=\"ngertiin-avatar \" data-avatar-state=\"thinking\">…</span>\u001b[22m\n\u001b[2m       - unexpected value \"thinking\"\u001b[22m\n\n    at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/agent-avatar.spec.ts:377:24",
+                    "location": {
+                      "file": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/agent-avatar.spec.ts",
+                      "column": 24,
+                      "line": 377
+                    },
+                    "snippet": "  375 |   }\n  376 |   await change({ ...phase, activity: \"tool_running\" });\n> 377 |   await expect(header).toHaveAttribute(\"data-avatar-state\", \"working\");\n      |                        ^\n  378 |   await change({ ...phase, waiting_for_user: true });\n  379 |   await expect(header).toHaveAttribute(\"data-avatar-state\", \"listening\");\n  380 |   await change({ ...phase, status: \"cancel_requested\" });"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/agent-avatar.spec.ts",
+                        "column": 24,
+                        "line": 377
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.header-identity .ngertiin-avatar')\nExpected: \u001b[32m\"\u001b[7mwor\u001b[27mking\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mthin\u001b[27mking\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" locator('.header-identity .ngertiin-avatar') with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.header-identity .ngertiin-avatar')\u001b[22m\n\u001b[2m    14 × locator resolved to <span role=\"img\" aria-hidden=\"true\" class=\"ngertiin-avatar \" data-avatar-state=\"thinking\">…</span>\u001b[22m\n\u001b[2m       - unexpected value \"thinking\"\u001b[22m\n\n\n  375 |   }\n  376 |   await change({ ...phase, activity: \"tool_running\" });\n> 377 |   await expect(header).toHaveAttribute(\"data-avatar-state\", \"working\");\n      |                        ^\n  378 |   await change({ ...phase, waiting_for_user: true });\n  379 |   await expect(header).toHaveAttribute(\"data-avatar-state\", \"listening\");\n  380 |   await change({ ...phase, status: \"cancel_requested\" });\n    at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/agent-avatar.spec.ts:377:24"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-03T08:34:28.216Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/test-results/agent-avatar-avatar-activi-090f2--DM-group-activity-separate-desktop/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/test-results/agent-avatar-avatar-activi-090f2--DM-group-activity-separate-desktop/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/test-results/agent-avatar-avatar-activi-090f2--DM-group-activity-separate-desktop/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/agent-avatar.spec.ts",
+                    "column": 24,
+                    "line": 377
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "36d1a3dc9c9332301dd5-41bdd4ea725b8dee6c5e",
+          "file": "agent-avatar.spec.ts",
+          "line": 320,
+          "column": 1
+        },
+        {
+          "title": "stored message times appear for users and agents in both DM and group",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "36d1a3dc9c9332301dd5-100ef1c33a509e7871ae",
+          "file": "agent-avatar.spec.ts",
+          "line": 14,
+          "column": 1
+        },
+        {
+          "title": "group bubble contains author and saved time around rich content (light)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "36d1a3dc9c9332301dd5-40c07aa690d04e9ab5cc",
+          "file": "agent-avatar.spec.ts",
+          "line": 118,
+          "column": 3
+        },
+        {
+          "title": "group bubble contains author and saved time around rich content (dark)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "36d1a3dc9c9332301dd5-53c8fc362998dedc6f0b",
+          "file": "agent-avatar.spec.ts",
+          "line": 118,
+          "column": 3
+        },
+        {
+          "title": "saved avatar identity appears outside the left of group replies and survives reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "36d1a3dc9c9332301dd5-27ae50a9403a7121bf6e",
+          "file": "agent-avatar.spec.ts",
+          "line": 221,
+          "column": 1
+        },
+        {
+          "title": "avatar activity follows live refreshes, celebrates once and keeps DM/group activity separate",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "36d1a3dc9c9332301dd5-2ee5494bc08b4dd918d8",
+          "file": "agent-avatar.spec.ts",
+          "line": 320,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "conversation.spec.ts",
+      "file": "conversation.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "event bursts update the conversation without repeatedly reloading global catalogs",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "interrupted",
+                  "duration": 4545,
+                  "error": {
+                    "message": "Error: apiRequestContext.post: Test ended.",
+                    "stack": "Error: apiRequestContext.post: Test ended.\n    at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/conversation.spec.ts:74:41",
+                    "location": {
+                      "file": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/conversation.spec.ts",
+                      "column": 41,
+                      "line": 74
+                    },
+                    "snippet": "  72 |   let revision = receipt.message.revision;\n  73 |   for (let index = 1; index <= 16; index++) {\n> 74 |     const response = await page.request.post(`/v1/messages/${receipt.message.id}/edit`, {\n     |                                         ^\n  75 |       headers: { \"Idempotency-Key\": crypto.randomUUID() },\n  76 |       data: { expected_revision: revision, text: `Live revision ${index}` },\n  77 |     });"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/conversation.spec.ts",
+                        "column": 41,
+                        "line": 74
+                      },
+                      "message": "Error: apiRequestContext.post: Test ended.\n\n  72 |   let revision = receipt.message.revision;\n  73 |   for (let index = 1; index <= 16; index++) {\n> 74 |     const response = await page.request.post(`/v1/messages/${receipt.message.id}/edit`, {\n     |                                         ^\n  75 |       headers: { \"Idempotency-Key\": crypto.randomUUID() },\n  76 |       data: { expected_revision: revision, text: `Live revision ${index}` },\n  77 |     });\n    at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/conversation.spec.ts:74:41"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-03T08:34:38.268Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/test-results/conversation-event-bursts--337ba-y-reloading-global-catalogs-desktop/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/test-results/conversation-event-bursts--337ba-y-reloading-global-catalogs-desktop/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/test-results/conversation-event-bursts--337ba-y-reloading-global-catalogs-desktop/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/conversation.spec.ts",
+                    "column": 41,
+                    "line": 74
+                  }
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "e7085d83df82ab600126-4dbbcb2e780c24362fac",
+          "file": "conversation.spec.ts",
+          "line": 52,
+          "column": 1
+        },
+        {
+          "title": "blocked preparation explains readiness and exposes an exact-input retry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "e7085d83df82ab600126-a1d85e4caf57da8d80ae",
+          "file": "conversation.spec.ts",
+          "line": 96,
+          "column": 1
+        },
+        {
+          "title": "queued inputs enter the transcript after the preceding answer, including late answers and reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "e7085d83df82ab600126-d85aeb427eedc7b1c821",
+          "file": "conversation.spec.ts",
+          "line": 130,
+          "column": 1
+        },
+        {
+          "title": "event bursts update the conversation without repeatedly reloading global catalogs",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "e7085d83df82ab600126-0517374cb865e8e4cbb0",
+          "file": "conversation.spec.ts",
+          "line": 52,
+          "column": 1
+        },
+        {
+          "title": "blocked preparation explains readiness and exposes an exact-input retry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "e7085d83df82ab600126-cca96dbc538127a5f9d8",
+          "file": "conversation.spec.ts",
+          "line": 96,
+          "column": 1
+        },
+        {
+          "title": "queued inputs enter the transcript after the preceding answer, including late answers and reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "e7085d83df82ab600126-76c87e3cb10401d27770",
+          "file": "conversation.spec.ts",
+          "line": 130,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "sidebar.spec.ts",
+      "file": "sidebar.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "light: unified sidebar shows latest messages and live activity in unopened DMs and groups",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "19544871d9648c30f4b7-51986873cf47a0d8fed3",
+          "file": "sidebar.spec.ts",
+          "line": 24,
+          "column": 3
+        },
+        {
+          "title": "dark: unified sidebar shows latest messages and live activity in unopened DMs and groups",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "19544871d9648c30f4b7-c56b46181f4c8cd76c80",
+          "file": "sidebar.spec.ts",
+          "line": 24,
+          "column": 3
+        },
+        {
+          "title": "light: unified sidebar shows latest messages and live activity in unopened DMs and groups",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "19544871d9648c30f4b7-872199695b3c403b7ebe",
+          "file": "sidebar.spec.ts",
+          "line": 24,
+          "column": 3
+        },
+        {
+          "title": "dark: unified sidebar shows latest messages and live activity in unopened DMs and groups",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "19544871d9648c30f4b7-a8b57558f1886505318a",
+          "file": "sidebar.spec.ts",
+          "line": 24,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-03T08:34:10.241Z",
+    "duration": 33867.902,
+    "expected": 4,
+    "skipped": 15,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

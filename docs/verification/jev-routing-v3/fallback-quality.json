@@ -1,0 +1,1827 @@
+{
+  "captured_at": "2026-11-03T13:17:51.928Z",
+  "dataset_sha256": "64d4035d723256f7763352653a70c77c57185316fcae85bfc90a7e8bca3a7e98",
+  "scope": "Classification-only native Codex subscription fallback for every unaccepted final-test and invariance input. Exact production prompt helper; synthetic metadata only, no task execution, no uploaded files, no user group writes.",
+  "cases": 77,
+  "results": [
+    {
+      "id": "absent-18",
+      "family": "absent",
+      "expected": [],
+      "actual": null,
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": "Zefiro is not a current group member. Who should receive this request?",
+      "duration_ms": 6813,
+      "timings": {
+        "preparing_at": "2026-11-03T13:17:52.256Z",
+        "ready_at": "2026-11-03T13:17:54.026Z",
+        "dispatched_at": "2026-11-03T13:17:54.027Z",
+        "accepted_at": "2026-11-03T13:17:54.074Z",
+        "first_output_at": "2026-11-03T13:17:58.537Z",
+        "settled_at": "2026-11-03T13:17:59.031Z"
+      },
+      "tools": [],
+      "answer": "{\"unresolved\":true,\"question\":\"Zefiro is not a current group member. Who should receive this request?\"}"
+    },
+    {
+      "id": "absent-21",
+      "family": "absent",
+      "expected": [],
+      "actual": null,
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": "Zefiro belum menjadi anggota. Siapa dari anggota saat ini yang Anda minta memimpin?",
+      "duration_ms": 7503,
+      "timings": {
+        "preparing_at": "2026-11-03T13:17:52.258Z",
+        "ready_at": "2026-11-03T13:17:55.229Z",
+        "dispatched_at": "2026-11-03T13:17:55.230Z",
+        "accepted_at": "2026-11-03T13:17:55.246Z",
+        "first_output_at": "2026-11-03T13:17:59.275Z",
+        "settled_at": "2026-11-03T13:17:59.717Z"
+      },
+      "tools": [],
+      "answer": "{\"unresolved\":true,\"question\":\"Zefiro belum menjadi anggota. Siapa dari anggota saat ini yang Anda minta memimpin?\"}"
+    },
+    {
+      "id": "absent-20",
+      "family": "absent",
+      "expected": [],
+      "actual": null,
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": "Zefiro berada di luar grup; anggota mana di sini yang Anda minta menyampaikan pertanyaan kepadanya?",
+      "duration_ms": 7659,
+      "timings": {
+        "preparing_at": "2026-11-03T13:17:52.257Z",
+        "ready_at": "2026-11-03T13:17:54.489Z",
+        "dispatched_at": "2026-11-03T13:17:54.490Z",
+        "accepted_at": "2026-11-03T13:17:54.509Z",
+        "first_output_at": "2026-11-03T13:17:59.341Z",
+        "settled_at": "2026-11-03T13:17:59.888Z"
+      },
+      "tools": [],
+      "answer": "{\"unresolved\":true,\"question\":\"Zefiro berada di luar grup; anggota mana di sini yang Anda minta menyampaikan pertanyaan kepadanya?\"}"
+    },
+    {
+      "id": "absent-23",
+      "family": "absent",
+      "expected": [],
+      "actual": null,
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": "Zefiro is not a current group member. Would you like to add Zefiro first?",
+      "duration_ms": 4765,
+      "timings": {
+        "preparing_at": "2026-11-03T13:17:59.064Z",
+        "ready_at": "2026-11-03T13:17:59.732Z",
+        "dispatched_at": "2026-11-03T13:17:59.734Z",
+        "accepted_at": "2026-11-03T13:17:59.769Z",
+        "first_output_at": "2026-11-03T13:18:03.358Z",
+        "settled_at": "2026-11-03T13:18:03.792Z"
+      },
+      "tools": [],
+      "answer": "{\"unresolved\":true,\"question\":\"Zefiro is not a current group member. Would you like to add Zefiro first?\"}"
+    },
+    {
+      "id": "ambiguous-15",
+      "family": "ambiguous",
+      "expected": [],
+      "actual": null,
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": "Raka yang dimaksud Raka Utama atau Raka Pratama?",
+      "duration_ms": 4074,
+      "timings": {
+        "preparing_at": "2026-11-03T13:17:59.764Z",
+        "ready_at": "2026-11-03T13:18:00.308Z",
+        "dispatched_at": "2026-11-03T13:18:00.309Z",
+        "accepted_at": "2026-11-03T13:18:00.331Z",
+        "first_output_at": "2026-11-03T13:18:03.743Z",
+        "settled_at": "2026-11-03T13:18:03.809Z"
+      },
+      "tools": [],
+      "answer": "{\"unresolved\":true,\"question\":\"Raka yang dimaksud Raka Utama atau Raka Pratama?\"}"
+    },
+    {
+      "id": "ambiguous-16",
+      "family": "ambiguous",
+      "expected": [
+        "actor-citra"
+      ],
+      "actual": "actor-citra",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 5771,
+      "timings": {
+        "preparing_at": "2026-11-03T13:17:59.914Z",
+        "ready_at": "2026-11-03T13:18:01.347Z",
+        "dispatched_at": "2026-11-03T13:18:01.348Z",
+        "accepted_at": "2026-11-03T13:18:01.367Z",
+        "first_output_at": "2026-11-03T13:18:05.631Z",
+        "settled_at": "2026-11-03T13:18:05.647Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"1de86c0f-4e5e-4d9f-8fb9-ffba02c7c55a\"}"
+    },
+    {
+      "id": "ambiguous-21",
+      "family": "ambiguous",
+      "expected": [],
+      "actual": null,
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": "Raka yang dimaksud Raka Utama atau Raka Pratama?",
+      "duration_ms": 4333,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:03.831Z",
+        "ready_at": "2026-11-03T13:18:04.398Z",
+        "dispatched_at": "2026-11-03T13:18:04.398Z",
+        "accepted_at": "2026-11-03T13:18:04.426Z",
+        "first_output_at": "2026-11-03T13:18:08.066Z",
+        "settled_at": "2026-11-03T13:18:08.111Z"
+      },
+      "tools": [],
+      "answer": "{\"unresolved\":true,\"question\":\"Raka yang dimaksud Raka Utama atau Raka Pratama?\"}"
+    },
+    {
+      "id": "ambiguous-22",
+      "family": "ambiguous",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4606,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:03.838Z",
+        "ready_at": "2026-11-03T13:18:04.907Z",
+        "dispatched_at": "2026-11-03T13:18:04.908Z",
+        "accepted_at": "2026-11-03T13:18:04.932Z",
+        "first_output_at": "2026-11-03T13:18:08.405Z",
+        "settled_at": "2026-11-03T13:18:08.419Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"c929569f-24c7-480b-adb5-5fc948af7269\"}"
+    },
+    {
+      "id": "ambiguous-23",
+      "family": "ambiguous",
+      "expected": [],
+      "actual": null,
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": "Raka yang dimaksud Raka Utama atau Raka Pratama?",
+      "duration_ms": 5187,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:05.689Z",
+        "ready_at": "2026-11-03T13:18:06.319Z",
+        "dispatched_at": "2026-11-03T13:18:06.320Z",
+        "accepted_at": "2026-11-03T13:18:06.345Z",
+        "first_output_at": "2026-11-03T13:18:10.702Z",
+        "settled_at": "2026-11-03T13:18:10.856Z"
+      },
+      "tools": [],
+      "answer": "{\"unresolved\":true,\"question\":\"Raka yang dimaksud Raka Utama atau Raka Pratama?\"}"
+    },
+    {
+      "id": "control-22",
+      "family": "control",
+      "expected": [
+        "actor-citra"
+      ],
+      "actual": "actor-citra",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4699,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:08.447Z",
+        "ready_at": "2026-11-03T13:18:09.439Z",
+        "dispatched_at": "2026-11-03T13:18:09.440Z",
+        "accepted_at": "2026-11-03T13:18:09.456Z",
+        "first_output_at": "2026-11-03T13:18:13.078Z",
+        "settled_at": "2026-11-03T13:18:13.093Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"4470a0dd-9251-489a-943f-0dfb381a440d\"}"
+    },
+    {
+      "id": "control-14",
+      "family": "control",
+      "expected": [
+        "actor-citra"
+      ],
+      "actual": null,
+      "correct": false,
+      "status": "succeeded",
+      "error": null,
+      "clarification": "Siapa yang mengelola Routine pemeriksaan yang ingin diubah intervalnya?",
+      "duration_ms": 7357,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:08.186Z",
+        "ready_at": "2026-11-03T13:18:08.702Z",
+        "dispatched_at": "2026-11-03T13:18:08.703Z",
+        "accepted_at": "2026-11-03T13:18:08.728Z",
+        "first_output_at": "2026-11-03T13:18:15.179Z",
+        "settled_at": "2026-11-03T13:18:15.525Z"
+      },
+      "tools": [],
+      "answer": "{\"unresolved\":true,\"question\":\"Siapa yang mengelola Routine pemeriksaan yang ingin diubah intervalnya?\"}"
+    },
+    {
+      "id": "coordination-04",
+      "family": "coordination",
+      "expected": [
+        "actor-aruna",
+        "actor-bayu",
+        "actor-citra"
+      ],
+      "actual": "actor-bayu",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 5748,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:10.878Z",
+        "ready_at": "2026-11-03T13:18:11.414Z",
+        "dispatched_at": "2026-11-03T13:18:11.415Z",
+        "accepted_at": "2026-11-03T13:18:11.435Z",
+        "first_output_at": "2026-11-03T13:18:16.590Z",
+        "settled_at": "2026-11-03T13:18:16.613Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"dbfdb25a-9b28-4a1a-8903-208079efb8b3\"}"
+    },
+    {
+      "id": "coordination-08",
+      "family": "coordination",
+      "expected": [
+        "actor-aruna",
+        "actor-bayu",
+        "actor-citra"
+      ],
+      "actual": "actor-bayu",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 5950,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:13.149Z",
+        "ready_at": "2026-11-03T13:18:13.671Z",
+        "dispatched_at": "2026-11-03T13:18:13.672Z",
+        "accepted_at": "2026-11-03T13:18:13.697Z",
+        "first_output_at": "2026-11-03T13:18:19.059Z",
+        "settled_at": "2026-11-03T13:18:19.076Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"f2bc3aac-f429-461d-a947-2e0c9c0670fa\"}"
+    },
+    {
+      "id": "coordination-24",
+      "family": "coordination",
+      "expected": [
+        "actor-aruna",
+        "actor-bayu",
+        "actor-citra"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4176,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:15.546Z",
+        "ready_at": "2026-11-03T13:18:16.144Z",
+        "dispatched_at": "2026-11-03T13:18:16.145Z",
+        "accepted_at": "2026-11-03T13:18:16.168Z",
+        "first_output_at": "2026-11-03T13:18:19.659Z",
+        "settled_at": "2026-11-03T13:18:19.671Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"097aff14-6e51-466f-b6fe-fe642f20d3f7\"}"
+    },
+    {
+      "id": "correction-05",
+      "family": "correction",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 5207,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:16.629Z",
+        "ready_at": "2026-11-03T13:18:17.132Z",
+        "dispatched_at": "2026-11-03T13:18:17.133Z",
+        "accepted_at": "2026-11-03T13:18:17.159Z",
+        "first_output_at": "2026-11-03T13:18:21.766Z",
+        "settled_at": "2026-11-03T13:18:21.783Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"fa611a28-64b7-4440-9360-b0841e6e3c77\"}"
+    },
+    {
+      "id": "correction-06",
+      "family": "correction",
+      "expected": [
+        "actor-citra"
+      ],
+      "actual": "actor-citra",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4333,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:19.102Z",
+        "ready_at": "2026-11-03T13:18:19.574Z",
+        "dispatched_at": "2026-11-03T13:18:19.575Z",
+        "accepted_at": "2026-11-03T13:18:19.594Z",
+        "first_output_at": "2026-11-03T13:18:23.394Z",
+        "settled_at": "2026-11-03T13:18:23.405Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"ce109157-0336-4a27-a918-e05fdfba20a5\"}"
+    },
+    {
+      "id": "correction-21",
+      "family": "correction",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 3866,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:19.724Z",
+        "ready_at": "2026-11-03T13:18:20.178Z",
+        "dispatched_at": "2026-11-03T13:18:20.179Z",
+        "accepted_at": "2026-11-03T13:18:20.197Z",
+        "first_output_at": "2026-11-03T13:18:23.549Z",
+        "settled_at": "2026-11-03T13:18:23.575Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"cdb15a2f-d06b-471a-b232-58fe7fc3c74c\"}"
+    },
+    {
+      "id": "correction-23",
+      "family": "correction",
+      "expected": [
+        "actor-bayu"
+      ],
+      "actual": "actor-bayu",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4372,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:21.841Z",
+        "ready_at": "2026-11-03T13:18:22.446Z",
+        "dispatched_at": "2026-11-03T13:18:22.446Z",
+        "accepted_at": "2026-11-03T13:18:22.468Z",
+        "first_output_at": "2026-11-03T13:18:26.133Z",
+        "settled_at": "2026-11-03T13:18:26.165Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"b459b3da-7ade-4f26-a848-7c37fd764b68\"}"
+    },
+    {
+      "id": "noisy_history-14",
+      "family": "noisy_history",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 5374,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:23.437Z",
+        "ready_at": "2026-11-03T13:18:24.014Z",
+        "dispatched_at": "2026-11-03T13:18:24.015Z",
+        "accepted_at": "2026-11-03T13:18:24.042Z",
+        "first_output_at": "2026-11-03T13:18:28.784Z",
+        "settled_at": "2026-11-03T13:18:28.800Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"25f9c08b-c354-4298-ae8b-6adf5aa7eed9\"}"
+    },
+    {
+      "id": "noisy_history-23",
+      "family": "noisy_history",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 5428,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:23.594Z",
+        "ready_at": "2026-11-03T13:18:24.542Z",
+        "dispatched_at": "2026-11-03T13:18:24.544Z",
+        "accepted_at": "2026-11-03T13:18:24.571Z",
+        "first_output_at": "2026-11-03T13:18:28.964Z",
+        "settled_at": "2026-11-03T13:18:28.981Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"cb7a98ad-1157-4686-9afe-24d2628fe05c\"}"
+    },
+    {
+      "id": "pronouns-07",
+      "family": "pronouns",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4670,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:26.218Z",
+        "ready_at": "2026-11-03T13:18:27.030Z",
+        "dispatched_at": "2026-11-03T13:18:27.031Z",
+        "accepted_at": "2026-11-03T13:18:27.055Z",
+        "first_output_at": "2026-11-03T13:18:30.827Z",
+        "settled_at": "2026-11-03T13:18:30.838Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"cef26702-5be4-4c2c-a5f4-0c6da1eefbdf\"}"
+    },
+    {
+      "id": "role-22",
+      "family": "role",
+      "expected": [
+        "actor-bayu"
+      ],
+      "actual": "actor-bayu",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4003,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:28.815Z",
+        "ready_at": "2026-11-03T13:18:29.372Z",
+        "dispatched_at": "2026-11-03T13:18:29.373Z",
+        "accepted_at": "2026-11-03T13:18:29.397Z",
+        "first_output_at": "2026-11-03T13:18:32.779Z",
+        "settled_at": "2026-11-03T13:18:32.794Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"0ce5bdf1-ab60-4c70-baf2-a620ee79a3e7\"}"
+    },
+    {
+      "id": "status-09",
+      "family": "status",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4981,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:29.026Z",
+        "ready_at": "2026-11-03T13:18:29.871Z",
+        "dispatched_at": "2026-11-03T13:18:29.873Z",
+        "accepted_at": "2026-11-03T13:18:29.893Z",
+        "first_output_at": "2026-11-03T13:18:33.967Z",
+        "settled_at": "2026-11-03T13:18:33.981Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"fcfd6746-1652-4edf-8df2-ee35f691314d\"}"
+    },
+    {
+      "id": "status-11",
+      "family": "status",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 3966,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:30.891Z",
+        "ready_at": "2026-11-03T13:18:31.430Z",
+        "dispatched_at": "2026-11-03T13:18:31.431Z",
+        "accepted_at": "2026-11-03T13:18:31.453Z",
+        "first_output_at": "2026-11-03T13:18:34.801Z",
+        "settled_at": "2026-11-03T13:18:34.816Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"d55eec80-d9ca-476a-8239-c51a32848944\"}"
+    },
+    {
+      "id": "status-12",
+      "family": "status",
+      "expected": [
+        "actor-aruna",
+        "actor-bayu"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 5737,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:32.831Z",
+        "ready_at": "2026-11-03T13:18:33.399Z",
+        "dispatched_at": "2026-11-03T13:18:33.400Z",
+        "accepted_at": "2026-11-03T13:18:33.423Z",
+        "first_output_at": "2026-11-03T13:18:38.517Z",
+        "settled_at": "2026-11-03T13:18:38.529Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"33586b71-23a9-43b1-8b9f-bfa1673af4f8\"}"
+    },
+    {
+      "id": "status-23",
+      "family": "status",
+      "expected": [
+        "actor-aruna",
+        "actor-bayu"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4713,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:34.010Z",
+        "ready_at": "2026-11-03T13:18:34.590Z",
+        "dispatched_at": "2026-11-03T13:18:34.591Z",
+        "accepted_at": "2026-11-03T13:18:34.620Z",
+        "first_output_at": "2026-11-03T13:18:38.691Z",
+        "settled_at": "2026-11-03T13:18:38.701Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"9c736726-aea9-44df-a519-ce1d4e130fa3\"}"
+    },
+    {
+      "id": "topic_change-22",
+      "family": "topic_change",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 5171,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:34.860Z",
+        "ready_at": "2026-11-03T13:18:35.369Z",
+        "dispatched_at": "2026-11-03T13:18:35.371Z",
+        "accepted_at": "2026-11-03T13:18:35.392Z",
+        "first_output_at": "2026-11-03T13:18:40.005Z",
+        "settled_at": "2026-11-03T13:18:40.019Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"a0a82cc2-a65c-4ac7-82c5-4a2797fbc796\"}"
+    },
+    {
+      "id": "addressed-21:rename",
+      "family": "addressed",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 5035,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:38.573Z",
+        "ready_at": "2026-11-03T13:18:39.481Z",
+        "dispatched_at": "2026-11-03T13:18:39.482Z",
+        "accepted_at": "2026-11-03T13:18:39.508Z",
+        "first_output_at": "2026-11-03T13:18:43.566Z",
+        "settled_at": "2026-11-03T13:18:43.593Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"ff3e8fd1-eae1-437d-9fa9-6603f3c65ad5\"}"
+    },
+    {
+      "id": "addressed-21:reverse",
+      "family": "addressed",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 5655,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:38.726Z",
+        "ready_at": "2026-11-03T13:18:39.964Z",
+        "dispatched_at": "2026-11-03T13:18:39.966Z",
+        "accepted_at": "2026-11-03T13:18:39.988Z",
+        "first_output_at": "2026-11-03T13:18:44.341Z",
+        "settled_at": "2026-11-03T13:18:44.353Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"a5215481-9317-44a1-8e72-cf7b82c9f628\"}"
+    },
+    {
+      "id": "ambiguous-16:irrelevant_history",
+      "family": "ambiguous",
+      "expected": [
+        "actor-citra"
+      ],
+      "actual": "actor-citra",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4973,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:40.035Z",
+        "ready_at": "2026-11-03T13:18:40.584Z",
+        "dispatched_at": "2026-11-03T13:18:40.585Z",
+        "accepted_at": "2026-11-03T13:18:40.605Z",
+        "first_output_at": "2026-11-03T13:18:44.959Z",
+        "settled_at": "2026-11-03T13:18:44.983Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"6d9f54d7-88df-4928-815c-fee4cb819f1a\"}"
+    },
+    {
+      "id": "ambiguous-16:reverse",
+      "family": "ambiguous",
+      "expected": [
+        "actor-citra"
+      ],
+      "actual": "actor-citra",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 5170,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:43.615Z",
+        "ready_at": "2026-11-03T13:18:44.180Z",
+        "dispatched_at": "2026-11-03T13:18:44.181Z",
+        "accepted_at": "2026-11-03T13:18:44.207Z",
+        "first_output_at": "2026-11-03T13:18:48.724Z",
+        "settled_at": "2026-11-03T13:18:48.745Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"43c286d2-0ff8-42d8-92de-22f5f32d0329\"}"
+    },
+    {
+      "id": "ambiguous-22:irrelevant_history",
+      "family": "ambiguous",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4501,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:44.385Z",
+        "ready_at": "2026-11-03T13:18:44.931Z",
+        "dispatched_at": "2026-11-03T13:18:44.932Z",
+        "accepted_at": "2026-11-03T13:18:44.982Z",
+        "first_output_at": "2026-11-03T13:18:48.863Z",
+        "settled_at": "2026-11-03T13:18:48.877Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"52bd5ea2-0a94-4472-862b-e3127684a6c5\"}"
+    },
+    {
+      "id": "ambiguous-22:rename",
+      "family": "ambiguous",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 5530,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:45.011Z",
+        "ready_at": "2026-11-03T13:18:45.697Z",
+        "dispatched_at": "2026-11-03T13:18:45.699Z",
+        "accepted_at": "2026-11-03T13:18:45.724Z",
+        "first_output_at": "2026-11-03T13:18:50.517Z",
+        "settled_at": "2026-11-03T13:18:50.532Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"ddae1a1b-e999-4479-b82c-4eae2b1ef20a\"}"
+    },
+    {
+      "id": "attachment-13:rename",
+      "family": "attachment",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4576,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:48.889Z",
+        "ready_at": "2026-11-03T13:18:50.046Z",
+        "dispatched_at": "2026-11-03T13:18:50.048Z",
+        "accepted_at": "2026-11-03T13:18:50.073Z",
+        "first_output_at": "2026-11-03T13:18:53.446Z",
+        "settled_at": "2026-11-03T13:18:53.461Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"a8c043b5-dfa0-497b-b7aa-0657bf160c19\"}"
+    },
+    {
+      "id": "ambiguous-22:reverse",
+      "family": "ambiguous",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 6655,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:48.790Z",
+        "ready_at": "2026-11-03T13:18:49.398Z",
+        "dispatched_at": "2026-11-03T13:18:49.400Z",
+        "accepted_at": "2026-11-03T13:18:49.435Z",
+        "first_output_at": "2026-11-03T13:18:55.404Z",
+        "settled_at": "2026-11-03T13:18:55.431Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"3c95cac1-1b95-4630-bbbe-6e43dccaca57\"}"
+    },
+    {
+      "id": "attachment-15:reverse",
+      "family": "attachment",
+      "expected": [
+        "actor-citra"
+      ],
+      "actual": "actor-citra",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 5061,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:50.546Z",
+        "ready_at": "2026-11-03T13:18:51.030Z",
+        "dispatched_at": "2026-11-03T13:18:51.032Z",
+        "accepted_at": "2026-11-03T13:18:51.055Z",
+        "first_output_at": "2026-11-03T13:18:55.552Z",
+        "settled_at": "2026-11-03T13:18:55.572Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"64888301-12d5-49c1-875b-905960776cd4\"}"
+    },
+    {
+      "id": "conditional-24:rename",
+      "family": "conditional",
+      "expected": [
+        "actor-citra"
+      ],
+      "actual": "actor-citra",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 5771,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:53.470Z",
+        "ready_at": "2026-11-03T13:18:54.514Z",
+        "dispatched_at": "2026-11-03T13:18:54.515Z",
+        "accepted_at": "2026-11-03T13:18:54.538Z",
+        "first_output_at": "2026-11-03T13:18:59.203Z",
+        "settled_at": "2026-11-03T13:18:59.217Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"b3809766-0a0c-4ee4-a018-8ea5454b2d34\"}"
+    },
+    {
+      "id": "control-14:rename",
+      "family": "control",
+      "expected": [
+        "actor-citra"
+      ],
+      "actual": null,
+      "correct": false,
+      "status": "succeeded",
+      "error": null,
+      "clarification": "Siapa yang mengelola Routine pemeriksaan yang ingin diubah intervalnya?",
+      "duration_ms": 8738,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:55.610Z",
+        "ready_at": "2026-11-03T13:18:56.683Z",
+        "dispatched_at": "2026-11-03T13:18:56.684Z",
+        "accepted_at": "2026-11-03T13:18:56.724Z",
+        "first_output_at": "2026-11-03T13:19:04.216Z",
+        "settled_at": "2026-11-03T13:19:04.324Z"
+      },
+      "tools": [],
+      "answer": "{\"unresolved\":true,\"question\":\"Siapa yang mengelola Routine pemeriksaan yang ingin diubah intervalnya?\"}"
+    },
+    {
+      "id": "control-14:reverse",
+      "family": "control",
+      "expected": [
+        "actor-citra"
+      ],
+      "actual": null,
+      "correct": false,
+      "status": "succeeded",
+      "error": null,
+      "clarification": "Siapa yang mengelola Routine pemeriksaan yang ingin diubah intervalnya?",
+      "duration_ms": 7218,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:59.250Z",
+        "ready_at": "2026-11-03T13:18:59.775Z",
+        "dispatched_at": "2026-11-03T13:18:59.777Z",
+        "accepted_at": "2026-11-03T13:18:59.801Z",
+        "first_output_at": "2026-11-03T13:19:06.339Z",
+        "settled_at": "2026-11-03T13:19:06.440Z"
+      },
+      "tools": [],
+      "answer": "{\"unresolved\":true,\"question\":\"Siapa yang mengelola Routine pemeriksaan yang ingin diubah intervalnya?\"}"
+    },
+    {
+      "id": "control-14:irrelevant_history",
+      "family": "control",
+      "expected": [
+        "actor-citra"
+      ],
+      "actual": null,
+      "correct": false,
+      "status": "succeeded",
+      "error": null,
+      "clarification": "Siapa yang mengelola Routine pemeriksaan tersebut?",
+      "duration_ms": 12446,
+      "timings": {
+        "preparing_at": "2026-11-03T13:18:55.449Z",
+        "ready_at": "2026-11-03T13:18:56.038Z",
+        "dispatched_at": "2026-11-03T13:18:56.039Z",
+        "accepted_at": "2026-11-03T13:18:56.068Z",
+        "first_output_at": "2026-11-03T13:19:07.594Z",
+        "settled_at": "2026-11-03T13:19:07.869Z"
+      },
+      "tools": [],
+      "answer": "{\"unresolved\":true,\"question\":\"Siapa yang mengelola Routine pemeriksaan tersebut?\"}"
+    },
+    {
+      "id": "control-22:irrelevant_history",
+      "family": "control",
+      "expected": [
+        "actor-citra"
+      ],
+      "actual": "actor-citra",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4215,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:04.356Z",
+        "ready_at": "2026-11-03T13:19:04.992Z",
+        "dispatched_at": "2026-11-03T13:19:04.994Z",
+        "accepted_at": "2026-11-03T13:19:05.018Z",
+        "first_output_at": "2026-11-03T13:19:08.513Z",
+        "settled_at": "2026-11-03T13:19:08.525Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"5ac2b965-f3d8-4105-8cb0-f1fd97003434\"}"
+    },
+    {
+      "id": "control-22:rename",
+      "family": "control",
+      "expected": [
+        "actor-citra"
+      ],
+      "actual": "actor-citra",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4621,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:06.474Z",
+        "ready_at": "2026-11-03T13:19:07.107Z",
+        "dispatched_at": "2026-11-03T13:19:07.109Z",
+        "accepted_at": "2026-11-03T13:19:07.133Z",
+        "first_output_at": "2026-11-03T13:19:11.062Z",
+        "settled_at": "2026-11-03T13:19:11.079Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"80ec45d9-7b4f-4eeb-85bd-8bb1172fdc8d\"}"
+    },
+    {
+      "id": "control-22:reverse",
+      "family": "control",
+      "expected": [
+        "actor-citra"
+      ],
+      "actual": "actor-citra",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4391,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:07.903Z",
+        "ready_at": "2026-11-03T13:19:08.404Z",
+        "dispatched_at": "2026-11-03T13:19:08.405Z",
+        "accepted_at": "2026-11-03T13:19:08.430Z",
+        "first_output_at": "2026-11-03T13:19:12.259Z",
+        "settled_at": "2026-11-03T13:19:12.278Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"3dc0f067-6c05-447b-b823-f0f1b5588d1c\"}"
+    },
+    {
+      "id": "coordination-02:rename",
+      "family": "coordination",
+      "expected": [
+        "actor-bayu"
+      ],
+      "actual": "actor-bayu",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 5112,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:08.573Z",
+        "ready_at": "2026-11-03T13:19:09.081Z",
+        "dispatched_at": "2026-11-03T13:19:09.082Z",
+        "accepted_at": "2026-11-03T13:19:09.105Z",
+        "first_output_at": "2026-11-03T13:19:13.652Z",
+        "settled_at": "2026-11-03T13:19:13.675Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"18ed75ce-1a9c-4b9d-a27a-2f8cb27f74f8\"}"
+    },
+    {
+      "id": "coordination-03:irrelevant_history",
+      "family": "coordination",
+      "expected": [
+        "actor-citra"
+      ],
+      "actual": "actor-citra",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4366,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:11.108Z",
+        "ready_at": "2026-11-03T13:19:11.646Z",
+        "dispatched_at": "2026-11-03T13:19:11.647Z",
+        "accepted_at": "2026-11-03T13:19:11.674Z",
+        "first_output_at": "2026-11-03T13:19:15.422Z",
+        "settled_at": "2026-11-03T13:19:15.440Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"34beb007-4a5a-4008-9311-b2797b9a7dd8\"}"
+    },
+    {
+      "id": "coordination-03:rename",
+      "family": "coordination",
+      "expected": [
+        "actor-citra"
+      ],
+      "actual": "actor-citra",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4210,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:12.299Z",
+        "ready_at": "2026-11-03T13:19:12.812Z",
+        "dispatched_at": "2026-11-03T13:19:12.813Z",
+        "accepted_at": "2026-11-03T13:19:12.841Z",
+        "first_output_at": "2026-11-03T13:19:16.487Z",
+        "settled_at": "2026-11-03T13:19:16.504Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"daee0339-d3eb-4d2b-ba4f-2a8a2a2b249d\"}"
+    },
+    {
+      "id": "correction-05:irrelevant_history",
+      "family": "correction",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4896,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:13.693Z",
+        "ready_at": "2026-11-03T13:19:14.393Z",
+        "dispatched_at": "2026-11-03T13:19:14.395Z",
+        "accepted_at": "2026-11-03T13:19:14.434Z",
+        "first_output_at": "2026-11-03T13:19:18.524Z",
+        "settled_at": "2026-11-03T13:19:18.542Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"496ef2bd-333a-455a-8509-5c03ff2d5e21\"}"
+    },
+    {
+      "id": "correction-05:rename",
+      "family": "correction",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 6652,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:15.480Z",
+        "ready_at": "2026-11-03T13:19:16.069Z",
+        "dispatched_at": "2026-11-03T13:19:16.070Z",
+        "accepted_at": "2026-11-03T13:19:16.098Z",
+        "first_output_at": "2026-11-03T13:19:22.083Z",
+        "settled_at": "2026-11-03T13:19:22.102Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"c2cba67a-91eb-459e-bec2-86f537d89f54\"}"
+    },
+    {
+      "id": "correction-05:reverse",
+      "family": "correction",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 6241,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:16.514Z",
+        "ready_at": "2026-11-03T13:19:17.015Z",
+        "dispatched_at": "2026-11-03T13:19:17.017Z",
+        "accepted_at": "2026-11-03T13:19:17.049Z",
+        "first_output_at": "2026-11-03T13:19:22.683Z",
+        "settled_at": "2026-11-03T13:19:22.706Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"9604e802-a671-4ab1-92af-e6f1c76f26a2\"}"
+    },
+    {
+      "id": "correction-06:irrelevant_history",
+      "family": "correction",
+      "expected": [
+        "actor-citra"
+      ],
+      "actual": "actor-citra",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4566,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:18.601Z",
+        "ready_at": "2026-11-03T13:19:19.251Z",
+        "dispatched_at": "2026-11-03T13:19:19.252Z",
+        "accepted_at": "2026-11-03T13:19:19.278Z",
+        "first_output_at": "2026-11-03T13:19:23.118Z",
+        "settled_at": "2026-11-03T13:19:23.139Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"f64e15f8-8952-4331-8893-d8ad99bf7b8d\"}"
+    },
+    {
+      "id": "correction-06:rename",
+      "family": "correction",
+      "expected": [
+        "actor-citra"
+      ],
+      "actual": "actor-citra",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4312,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:22.145Z",
+        "ready_at": "2026-11-03T13:19:22.744Z",
+        "dispatched_at": "2026-11-03T13:19:22.746Z",
+        "accepted_at": "2026-11-03T13:19:22.790Z",
+        "first_output_at": "2026-11-03T13:19:26.426Z",
+        "settled_at": "2026-11-03T13:19:26.445Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"8b45515b-d1e4-4317-bc08-fbadbe15f2b3\"}"
+    },
+    {
+      "id": "correction-06:reverse",
+      "family": "correction",
+      "expected": [
+        "actor-citra"
+      ],
+      "actual": "actor-citra",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4265,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:22.758Z",
+        "ready_at": "2026-11-03T13:19:23.430Z",
+        "dispatched_at": "2026-11-03T13:19:23.432Z",
+        "accepted_at": "2026-11-03T13:19:23.461Z",
+        "first_output_at": "2026-11-03T13:19:26.974Z",
+        "settled_at": "2026-11-03T13:19:26.993Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"4e4b3d96-e93d-438d-95d7-d6d117b51678\"}"
+    },
+    {
+      "id": "correction-21:irrelevant_history",
+      "family": "correction",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 6767,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:23.170Z",
+        "ready_at": "2026-11-03T13:19:24.016Z",
+        "dispatched_at": "2026-11-03T13:19:24.018Z",
+        "accepted_at": "2026-11-03T13:19:24.043Z",
+        "first_output_at": "2026-11-03T13:19:29.894Z",
+        "settled_at": "2026-11-03T13:19:29.907Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"dd1a6b36-1b5d-4167-b504-9cbd04e8e551\"}"
+    },
+    {
+      "id": "correction-21:rename",
+      "family": "correction",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4525,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:26.463Z",
+        "ready_at": "2026-11-03T13:19:27.063Z",
+        "dispatched_at": "2026-11-03T13:19:27.065Z",
+        "accepted_at": "2026-11-03T13:19:27.098Z",
+        "first_output_at": "2026-11-03T13:19:30.962Z",
+        "settled_at": "2026-11-03T13:19:30.981Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"19961846-cb51-4f7e-818e-d2278c41da57\"}"
+    },
+    {
+      "id": "correction-21:reverse",
+      "family": "correction",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 7842,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:27.030Z",
+        "ready_at": "2026-11-03T13:19:27.749Z",
+        "dispatched_at": "2026-11-03T13:19:27.751Z",
+        "accepted_at": "2026-11-03T13:19:27.778Z",
+        "first_output_at": "2026-11-03T13:19:34.823Z",
+        "settled_at": "2026-11-03T13:19:34.844Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"c05e1459-4421-4dd4-8643-c3aef708d84c\"}"
+    },
+    {
+      "id": "noisy_history-14:irrelevant_history",
+      "family": "noisy_history",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4682,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:30.995Z",
+        "ready_at": "2026-11-03T13:19:31.634Z",
+        "dispatched_at": "2026-11-03T13:19:31.635Z",
+        "accepted_at": "2026-11-03T13:19:31.689Z",
+        "first_output_at": "2026-11-03T13:19:35.633Z",
+        "settled_at": "2026-11-03T13:19:35.644Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"677d5156-aa5c-48f1-976a-f15283f5b06b\"}"
+    },
+    {
+      "id": "correction-23:irrelevant_history",
+      "family": "correction",
+      "expected": [
+        "actor-bayu"
+      ],
+      "actual": "actor-bayu",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 7429,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:29.945Z",
+        "ready_at": "2026-11-03T13:19:30.461Z",
+        "dispatched_at": "2026-11-03T13:19:30.463Z",
+        "accepted_at": "2026-11-03T13:19:30.492Z",
+        "first_output_at": "2026-11-03T13:19:37.331Z",
+        "settled_at": "2026-11-03T13:19:37.346Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"661c28f3-86fb-4303-84ca-7eaa3bfc43c2\"}"
+    },
+    {
+      "id": "noisy_history-14:rename",
+      "family": "noisy_history",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4112,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:34.883Z",
+        "ready_at": "2026-11-03T13:19:35.389Z",
+        "dispatched_at": "2026-11-03T13:19:35.391Z",
+        "accepted_at": "2026-11-03T13:19:35.437Z",
+        "first_output_at": "2026-11-03T13:19:38.961Z",
+        "settled_at": "2026-11-03T13:19:38.986Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"34a287de-64b9-44e2-877b-3326cbf87e90\"}"
+    },
+    {
+      "id": "noisy_history-14:reverse",
+      "family": "noisy_history",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 5053,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:35.680Z",
+        "ready_at": "2026-11-03T13:19:36.242Z",
+        "dispatched_at": "2026-11-03T13:19:36.244Z",
+        "accepted_at": "2026-11-03T13:19:36.273Z",
+        "first_output_at": "2026-11-03T13:19:40.699Z",
+        "settled_at": "2026-11-03T13:19:40.715Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"1062be8c-76c4-445c-a390-4f6f1f90654d\"}"
+    },
+    {
+      "id": "noisy_history-23:irrelevant_history",
+      "family": "noisy_history",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4477,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:37.384Z",
+        "ready_at": "2026-11-03T13:19:37.966Z",
+        "dispatched_at": "2026-11-03T13:19:37.968Z",
+        "accepted_at": "2026-11-03T13:19:37.996Z",
+        "first_output_at": "2026-11-03T13:19:41.827Z",
+        "settled_at": "2026-11-03T13:19:41.851Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"3cd70f08-c55c-4ed5-b14b-6daf0025a3ed\"}"
+    },
+    {
+      "id": "noisy_history-23:rename",
+      "family": "noisy_history",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 5411,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:39.001Z",
+        "ready_at": "2026-11-03T13:19:39.525Z",
+        "dispatched_at": "2026-11-03T13:19:39.527Z",
+        "accepted_at": "2026-11-03T13:19:39.554Z",
+        "first_output_at": "2026-11-03T13:19:44.336Z",
+        "settled_at": "2026-11-03T13:19:44.358Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"cf753944-3711-441c-b494-c30a88f3b758\"}"
+    },
+    {
+      "id": "noisy_history-23:reverse",
+      "family": "noisy_history",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 5020,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:40.740Z",
+        "ready_at": "2026-11-03T13:19:41.318Z",
+        "dispatched_at": "2026-11-03T13:19:41.320Z",
+        "accepted_at": "2026-11-03T13:19:41.349Z",
+        "first_output_at": "2026-11-03T13:19:45.720Z",
+        "settled_at": "2026-11-03T13:19:45.738Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"a10ef036-9593-4d26-b7bc-7c224b6f6f4a\"}"
+    },
+    {
+      "id": "pronouns-07:irrelevant_history",
+      "family": "pronouns",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4478,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:41.868Z",
+        "ready_at": "2026-11-03T13:19:42.530Z",
+        "dispatched_at": "2026-11-03T13:19:42.532Z",
+        "accepted_at": "2026-11-03T13:19:42.568Z",
+        "first_output_at": "2026-11-03T13:19:46.308Z",
+        "settled_at": "2026-11-03T13:19:46.322Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"bffc964a-0d71-4bf1-9f09-07e3f320f7fc\"}"
+    },
+    {
+      "id": "pronouns-07:rename",
+      "family": "pronouns",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4039,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:44.425Z",
+        "ready_at": "2026-11-03T13:19:44.910Z",
+        "dispatched_at": "2026-11-03T13:19:44.912Z",
+        "accepted_at": "2026-11-03T13:19:44.968Z",
+        "first_output_at": "2026-11-03T13:19:48.403Z",
+        "settled_at": "2026-11-03T13:19:48.423Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"54b610c9-56d5-4813-ab7a-fdc6a16dbf9b\"}"
+    },
+    {
+      "id": "pronouns-22:rename",
+      "family": "pronouns",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4427,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:46.352Z",
+        "ready_at": "2026-11-03T13:19:46.890Z",
+        "dispatched_at": "2026-11-03T13:19:46.892Z",
+        "accepted_at": "2026-11-03T13:19:46.933Z",
+        "first_output_at": "2026-11-03T13:19:50.730Z",
+        "settled_at": "2026-11-03T13:19:50.747Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"4fa9d0a3-fe66-4328-bf0e-2139bc67ea0e\"}"
+    },
+    {
+      "id": "role-22:irrelevant_history",
+      "family": "role",
+      "expected": [
+        "actor-bayu"
+      ],
+      "actual": "actor-bayu",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4158,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:48.470Z",
+        "ready_at": "2026-11-03T13:19:48.984Z",
+        "dispatched_at": "2026-11-03T13:19:48.985Z",
+        "accepted_at": "2026-11-03T13:19:49.018Z",
+        "first_output_at": "2026-11-03T13:19:52.567Z",
+        "settled_at": "2026-11-03T13:19:52.586Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"36c85a59-8a24-4081-bd8b-6e6d7ea2954c\"}"
+    },
+    {
+      "id": "role-22:rename",
+      "family": "role",
+      "expected": [
+        "actor-bayu"
+      ],
+      "actual": "actor-bayu",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 5123,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:50.791Z",
+        "ready_at": "2026-11-03T13:19:51.446Z",
+        "dispatched_at": "2026-11-03T13:19:51.448Z",
+        "accepted_at": "2026-11-03T13:19:51.481Z",
+        "first_output_at": "2026-11-03T13:19:55.838Z",
+        "settled_at": "2026-11-03T13:19:55.856Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"01c18b8a-b651-45b8-9881-38b526ea2408\"}"
+    },
+    {
+      "id": "role-22:reverse",
+      "family": "role",
+      "expected": [
+        "actor-bayu"
+      ],
+      "actual": "actor-bayu",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 5706,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:52.634Z",
+        "ready_at": "2026-11-03T13:19:53.175Z",
+        "dispatched_at": "2026-11-03T13:19:53.178Z",
+        "accepted_at": "2026-11-03T13:19:53.212Z",
+        "first_output_at": "2026-11-03T13:19:58.301Z",
+        "settled_at": "2026-11-03T13:19:58.314Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"3ab1b371-d1ef-44db-989e-46a50793183f\"}"
+    },
+    {
+      "id": "status-09:rename",
+      "family": "status",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 6713,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:55.928Z",
+        "ready_at": "2026-11-03T13:19:56.474Z",
+        "dispatched_at": "2026-11-03T13:19:56.476Z",
+        "accepted_at": "2026-11-03T13:19:56.510Z",
+        "first_output_at": "2026-11-03T13:20:02.567Z",
+        "settled_at": "2026-11-03T13:20:02.584Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"9e1f3e03-7207-4998-832e-330ff4b9c3ee\"}"
+    },
+    {
+      "id": "pronouns-07:reverse",
+      "family": "pronouns",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 16900,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:45.765Z",
+        "ready_at": "2026-11-03T13:19:46.279Z",
+        "dispatched_at": "2026-11-03T13:19:46.280Z",
+        "accepted_at": "2026-11-03T13:19:46.318Z",
+        "first_output_at": "2026-11-03T13:20:02.590Z",
+        "settled_at": "2026-11-03T13:20:02.609Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"9cb8eccc-d022-4cca-a7cb-2f21bf27dfe8\"}"
+    },
+    {
+      "id": "status-09:reverse",
+      "family": "status",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4571,
+      "timings": {
+        "preparing_at": "2026-11-03T13:19:58.354Z",
+        "ready_at": "2026-11-03T13:19:58.965Z",
+        "dispatched_at": "2026-11-03T13:19:58.967Z",
+        "accepted_at": "2026-11-03T13:19:59.002Z",
+        "first_output_at": "2026-11-03T13:20:02.866Z",
+        "settled_at": "2026-11-03T13:20:02.879Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"bb16273e-42f3-4943-abc4-3635cdd6f48c\"}"
+    },
+    {
+      "id": "status-11:rename",
+      "family": "status",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 5034,
+      "timings": {
+        "preparing_at": "2026-11-03T13:20:02.672Z",
+        "ready_at": "2026-11-03T13:20:03.737Z",
+        "dispatched_at": "2026-11-03T13:20:03.739Z",
+        "accepted_at": "2026-11-03T13:20:03.774Z",
+        "first_output_at": "2026-11-03T13:20:07.660Z",
+        "settled_at": "2026-11-03T13:20:07.685Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"ea00154e-3420-4e7e-afcb-c078c99c2535\"}"
+    },
+    {
+      "id": "status-11:irrelevant_history",
+      "family": "status",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 5192,
+      "timings": {
+        "preparing_at": "2026-11-03T13:20:02.646Z",
+        "ready_at": "2026-11-03T13:20:03.172Z",
+        "dispatched_at": "2026-11-03T13:20:03.174Z",
+        "accepted_at": "2026-11-03T13:20:03.215Z",
+        "first_output_at": "2026-11-03T13:20:07.808Z",
+        "settled_at": "2026-11-03T13:20:07.824Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"002ee827-4a1f-4e96-b19b-45848164634e\"}"
+    },
+    {
+      "id": "status-11:reverse",
+      "family": "status",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 6051,
+      "timings": {
+        "preparing_at": "2026-11-03T13:20:02.929Z",
+        "ready_at": "2026-11-03T13:20:04.267Z",
+        "dispatched_at": "2026-11-03T13:20:04.269Z",
+        "accepted_at": "2026-11-03T13:20:04.306Z",
+        "first_output_at": "2026-11-03T13:20:08.939Z",
+        "settled_at": "2026-11-03T13:20:08.956Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"fc12898e-ec70-494b-af17-33e31dd6b121\"}"
+    },
+    {
+      "id": "topic_change-22:irrelevant_history",
+      "family": "topic_change",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4843,
+      "timings": {
+        "preparing_at": "2026-11-03T13:20:07.719Z",
+        "ready_at": "2026-11-03T13:20:08.258Z",
+        "dispatched_at": "2026-11-03T13:20:08.279Z",
+        "accepted_at": "2026-11-03T13:20:08.341Z",
+        "first_output_at": "2026-11-03T13:20:12.485Z",
+        "settled_at": "2026-11-03T13:20:12.506Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"93edf20f-edef-44ae-a48f-b3a71f6ba20d\"}"
+    },
+    {
+      "id": "topic_change-22:rename",
+      "family": "topic_change",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 5697,
+      "timings": {
+        "preparing_at": "2026-11-03T13:20:07.843Z",
+        "ready_at": "2026-11-03T13:20:08.837Z",
+        "dispatched_at": "2026-11-03T13:20:08.839Z",
+        "accepted_at": "2026-11-03T13:20:08.881Z",
+        "first_output_at": "2026-11-03T13:20:13.498Z",
+        "settled_at": "2026-11-03T13:20:13.512Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"a1747bef-a97e-4791-9db6-99c07eca3e73\"}"
+    },
+    {
+      "id": "topic_change-22:reverse",
+      "family": "topic_change",
+      "expected": [
+        "actor-aruna"
+      ],
+      "actual": "actor-aruna",
+      "correct": true,
+      "status": "succeeded",
+      "error": null,
+      "clarification": null,
+      "duration_ms": 4657,
+      "timings": {
+        "preparing_at": "2026-11-03T13:20:08.986Z",
+        "ready_at": "2026-11-03T13:20:10.231Z",
+        "dispatched_at": "2026-11-03T13:20:10.234Z",
+        "accepted_at": "2026-11-03T13:20:10.275Z",
+        "first_output_at": "2026-11-03T13:20:13.604Z",
+        "settled_at": "2026-11-03T13:20:13.617Z"
+      },
+      "tools": [],
+      "answer": "{\"agent_id\":\"6762afa9-d8a7-4684-a001-f4ea6d6708b4\"}"
+    }
+  ],
+  "source_sha256": {
+    "apps/server/src/groups/native-routing.ts": "4667f5a2fab3f49ef302e3636a3226bdc7d36953443bef1c5338b74c7348bc56",
+    "apps/server/src/groups/routing-judgments.ts": "4bc5fd5a75609eaf4a53c7f6bbb987fa37f0526be37eedf700734288653aca60",
+    "apps/server/src/groups/routing-context.ts": "81688935207bf52bffd9d7432b29f744d29791e7712923407a0916e6c69798b9",
+    "apps/server/src/groups/service.ts": "929bf4170e58fa354370f4c63272759f83e1968d0597a91bdc3d7fb26dedcecb"
+  },
+  "runtime": {
+    "harness": "codex",
+    "manifest": {
+      "executable": "codex",
+      "minimum_version": "0.165.0",
+      "tested_native_version": "0.166.0",
+      "protocol": "app_server",
+      "sdk_version": null,
+      "evidence": "native_subscription_http",
+      "authentication_methods": [
+        "native_login",
+        "api_key"
+      ],
+      "capabilities": {
+        "resume": "unknown",
+        "steer": "unknown",
+        "image_input": "unknown",
+        "video_input": "unknown",
+        "compaction": "unknown",
+        "product_tools": "unknown",
+        "settings": "unknown",
+        "cancel": "unknown",
+        "permission_requests": "unknown",
+        "native_files": "unknown",
+        "native_shell": "unknown",
+        "native_code": "unknown",
+        "native_git": "unknown",
+        "web_search": "unknown",
+        "web_read": "unknown"
+      }
+    },
+    "executable": "/opt/homebrew/bin/codex",
+    "state": "supported",
+    "version": "0.166.0"
+  },
+  "tool_calls": [],
+  "summary": {
+    "cases": 77,
+    "correct": 73,
+    "tool_calls": 0,
+    "executed_tasks": 0
+  },
+  "finished_at": "2026-11-03T13:20:13.648Z",
+  "cleanup": {
+    "active_runs": 0,
+    "isolated_credentials_removed": true,
+    "source_database_mode": "readonly"
+  }
+}

@@ -51,7 +51,11 @@ test("a blocked fallback shows its cause and retries the same hidden run across 
       exact: true,
     }),
   ).toBeVisible();
-  await expect(page.getByText("Who’s got this? One sec…", { exact: true })).toHaveCount(0);
+  await expect(
+    page.locator("[data-group-routing] [data-activity-text]").filter({
+      hasText: /Who’s got this|Who’s up|Picking a brain|Finding your partner|Who’s taking the mic/,
+    }),
+  ).toHaveCount(0);
   const before = (await snapshot(page, group.id)).routes.find(
     (r: { id: string }) => r.id === route.id,
   );

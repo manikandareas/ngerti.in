@@ -3,17 +3,14 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { Bubble, BubbleContent } from "@/components/ui/bubble";
 import { Button } from "@/components/ui/button";
 import { Message as ChatMessage, MessageContent } from "@/components/ui/message";
-import { activityGuidance } from "@/features/conversation/lib/activity-presentation";
+import { activityGuidance, routingLabel } from "@/features/conversation/lib/activity-presentation";
 import type { Message, Run, Snapshot } from "@/types/workspace";
 import { ActivityStatus } from "./activity-status";
 import { AgentAvatar } from "./identity";
 
 const routingLabels: Record<string, string> = {
-  classifying: "Who’s got this? One sec…",
-  reviewing: "Who’s got this? One sec…",
   preparing: "Getting ready…",
   retrying: "Reconnecting…",
-  fallback: "Who’s got this? One sec…",
   blocked: "I couldn’t get started.",
 };
 
@@ -68,7 +65,7 @@ export function WorkActivity({
               <BubbleContent>
                 <ActivityStatus
                   name={snapshot.thread.name ?? "Group"}
-                  label={routingLabels[stage] ?? "Who’s got this? One sec…"}
+                  label={routingLabels[stage] ?? routingLabel(route.id)}
                   loading={stage !== "blocked"}
                 />
               </BubbleContent>

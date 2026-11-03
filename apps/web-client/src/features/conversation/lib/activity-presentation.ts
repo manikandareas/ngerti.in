@@ -18,12 +18,24 @@ export const thinkingLabels = [
   "A little brainwork…",
 ];
 
+export const routingLabels = [
+  "Who’s got this? One sec…",
+  "Who’s up? Let’s see…",
+  "Picking a brain to borrow…",
+  "Finding your partner in crime…",
+  "Who’s taking the mic?…",
+];
+
+export function routingLabel(id: string) {
+  return stableLabel(routingLabels, id);
+}
+
 // Random run IDs distribute the copy while keeping it stable across renders and reloads.
-function thinkingLabel(id?: string) {
-  if (!id) return thinkingLabels[0];
+function stableLabel(labels: string[], id?: string) {
+  if (!id) return labels[0];
   let hash = 2166136261;
   for (const character of id) hash = Math.imul(hash ^ character.charCodeAt(0), 16777619);
-  return thinkingLabels[(hash >>> 0) % thinkingLabels.length];
+  return labels[(hash >>> 0) % labels.length];
 }
 
 const guidance: Record<string, string> = {
@@ -90,7 +102,7 @@ export function activityPresentation(
     if (kind || source.activity === "tool_running")
       return view(labels[kind ?? ""] ?? "Working on it…", "working", true);
     return view(
-      source.activity === "generating" ? thinkingLabel(source.id) : "Working on it…",
+      source.activity === "generating" ? stableLabel(thinkingLabels, source.id) : "Working on it…",
       "thinking",
       true,
     );

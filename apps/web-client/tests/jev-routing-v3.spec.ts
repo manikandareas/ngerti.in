@@ -56,7 +56,11 @@ test("a blocked fallback shows its cause and retries the same hidden run across 
       exact: true,
     }),
   ).toBeVisible();
-  await expect(page.getByText("Who’s got this? One sec…", { exact: true })).toHaveCount(0);
+  await expect(
+    page.locator("[data-group-routing] [data-activity-text]").filter({
+      hasText: /Who’s got this|Who’s up|Picking a brain|Finding your partner|Who’s taking the mic/,
+    }),
+  ).toHaveCount(0);
   const before = (await snapshot(page, group.id)).routes.find(
     (r: { id: string }) => r.id === route.id,
   );
@@ -131,9 +135,7 @@ test("semantic review progress updates without exposing private routing input", 
   page,
 }, info) => {
   const { group } = await setup(page, true, false, "reviewing");
-  await expect(
-    page.getByRole("status").filter({ hasText: "Who’s got this? One sec…" }),
-  ).toBeVisible();
+  await expect(page.locator("[data-group-routing] [role=status]")).toBeVisible();
   const routing = page.locator("[data-group-routing]");
   await expect(routing.locator(".agent-activity-avatar .agent-avatar").first()).toBeVisible();
   await expect(routing.locator("[data-activity-text]")).toHaveAttribute("data-shimmer", "true");
@@ -160,7 +162,11 @@ test("semantic review progress updates without exposing private routing input", 
       (message: { text: string }) => message.text === "Keep this original group request.",
     ),
   ).toHaveLength(1);
-  await expect(page.getByText("Who’s got this? One sec…", { exact: true })).toHaveCount(0);
+  await expect(
+    page.locator("[data-group-routing] [data-activity-text]").filter({
+      hasText: /Who’s got this|Who’s up|Picking a brain|Finding your partner|Who’s taking the mic/,
+    }),
+  ).toHaveCount(0);
 });
 
 test("an unresolved recipient displays the agent's clarification across reload", async ({
@@ -169,7 +175,11 @@ test("an unresolved recipient displays the agent's clarification across reload",
   const { group, route } = await setup(page, true, false, "clarification");
   const question = "Anggota mana yang kamu maksud untuk permintaan ini?";
   await expect(page.getByRole("status").filter({ hasText: question })).toBeVisible();
-  await expect(page.getByText("Who’s got this? One sec…", { exact: true })).toHaveCount(0);
+  await expect(
+    page.locator("[data-group-routing] [data-activity-text]").filter({
+      hasText: /Who’s got this|Who’s up|Picking a brain|Finding your partner|Who’s taking the mic/,
+    }),
+  ).toHaveCount(0);
   await page.reload();
   await expect(page.getByRole("status").filter({ hasText: question })).toBeVisible();
   const current = await snapshot(page, group.id);

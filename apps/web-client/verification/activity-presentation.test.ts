@@ -165,3 +165,18 @@ test("thinking copy varies across runs and stays stable for the same run", () =>
   }
   expect(labels.size).toBe(5);
 });
+
+test("routing copy varies by route and stays stable across repeated reads", async () => {
+  const { routingLabel, routingLabels } = await import(
+    "../src/features/conversation/lib/activity-presentation"
+  );
+  const observed = new Set<string>();
+  for (let index = 0; index < 40; index++) {
+    const id = `route-${index}`;
+    const label = routingLabel(id);
+    expect(routingLabels).toContain(label);
+    expect(routingLabel(id)).toBe(label);
+    observed.add(label);
+  }
+  expect(observed.size).toBe(routingLabels.length);
+});

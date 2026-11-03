@@ -142,7 +142,7 @@ export default function Workspace() {
   } = workspace;
   const [draft, setDraft] = useConversationDraft(threadId);
   const [composerFocused, setComposerFocused] = useState(false);
-  const conversationSurface = useRef<HTMLElement>(null);
+  const [conversationSurface, setConversationSurface] = useState<HTMLElement | null>(null);
   const composerInput = useRef<ComposerInputHandle>(null);
   const pendingComposerFocus = useRef(false);
   const bindComposerInput = useCallback((input: ComposerInputHandle | null) => {
@@ -235,7 +235,7 @@ export default function Workspace() {
     submission.loading ||
     !!submission.failure;
   useLayoutEffect(() => {
-    const surface = conversationSurface.current;
+    const surface = conversationSurface;
     if (!surface) return;
     const header = surface.querySelector<HTMLElement>(".workspace-chat-header");
     const notice = error ? surface.querySelector<HTMLElement>(".workspace-error") : null;
@@ -247,6 +247,7 @@ export default function Workspace() {
       const dockHeight = dock?.getBoundingClientRect().height ?? 0;
       const scroll = surface.querySelector<HTMLElement>(".conversation-scroll");
       const previousScrollHeight = scroll?.scrollHeight ?? 0;
+      const previousScrollTop = scroll?.scrollTop ?? 0;
       // Match use-stick-to-bottom's near-bottom range. Its content-box observer
       // does not see padding changes when the overlaid composer resizes.
       const keepEndPosition =
@@ -254,7 +255,7 @@ export default function Workspace() {
       surface.style.setProperty("--conversation-top", `${headerBottom - top}px`);
       surface.style.setProperty("--conversation-bottom", `${dockHeight}px`);
       if (keepEndPosition && previousDockHeight !== null && dockHeight !== previousDockHeight)
-        scroll.scrollTop += scroll.scrollHeight - previousScrollHeight;
+        scroll.scrollTop = previousScrollTop + scroll.scrollHeight - previousScrollHeight;
       previousDockHeight = dockHeight;
     };
     const observer = new ResizeObserver(measure);
@@ -263,7 +264,7 @@ export default function Workspace() {
     }
     measure();
     return () => observer.disconnect();
-  }, [snapshot?.thread.id, error]);
+  }, [conversationSurface, snapshot?.thread.id, error]);
   useLayoutEffect(() => {
     const input = queuedEditInput.current;
     if (!input || !editing?.id) return;
@@ -811,7 +812,7 @@ export default function Workspace() {
           </SheetContent>
         </Sheet>
         <main
-          ref={conversationSurface}
+          ref={setConversationSurface}
           className="workspace-main rounded-[16px] flex flex-1 flex-col min-w-0 min-h-0 overflow-hidden bg-background"
           aria-label="Percakapan aktif"
           data-details={details && !mobile}

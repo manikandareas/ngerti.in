@@ -1,0 +1,39 @@
+{
+  "completed_at": "2026-11-03T01:51:26.137984+00:00",
+  "browser": "Brave",
+  "ui_control": "mcp__cua_repl",
+  "use_case": "Original thesis reference PDFs, group literature review and peer review, shared goal completion, automatic quiet Routine, membership change, schedule cleanup",
+  "outcome": "Core live workflow succeeded; UX defects remain open.",
+  "application_source_changed": false,
+  "commit_or_push": false,
+  "live_summary": {
+    "run_states": {
+      "succeeded": 7
+    },
+    "product_tool_errors": 0,
+    "occurrences": 1,
+    "routine_states": {
+      "stopped": 2
+    },
+    "message_purposes": {
+      "conversation": 10,
+      "review": 1,
+      "continuation": 3
+    },
+    "quiet_run_published_agent_messages": 0
+  },
+  "open_findings": {
+    "high": 2,
+    "medium": 4,
+    "low": 1
+  },
+  "markdown_browser_download": "unverified",
+  "original_pdf_integrity": "2 of 2 match source and stored metadata",
+  "output_integrity": "2 of 2 match stored metadata",
+  "test_routines_left_active": 0,
+  "remaining_limits": [
+    "All application tabs closed was not tested; only the test tab was closed.",
+    "No backend restart or fault/cancellation-race injection in this audit.",
+    "No independent cross-harness or fresh-login claim."
+  ]
+}

@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ca74bf24-a900-46b3-8529-3d0a541fefcc",
+    "name": "M-RAG- Reinforcing Large Language Model Performance through Retrieval-Augmented Generation with Multiple Partitions.pdf",
+    "origin": "upload",
+    "size_bytes": 671084,
+    "sha256": "dab74ac8fcf1e7dbb5636b9b6834c086c45a83f321b4e300a845ad5405e0aeab",
+    "workspace_id": "c7799f79-4a4e-4b01-aab9-853d9a6cb590",
+    "created_by_agent_id": null,
+    "run_id": null,
+    "stored_bytes_verified": true,
+    "original_bytes_match": true
+  },
+  {
+    "id": "f58eeca9-cd9a-4bba-9986-1a313759a8fb",
+    "name": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks.pdf",
+    "origin": "upload",
+    "size_bytes": 885323,
+    "sha256": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+    "workspace_id": "c7799f79-4a4e-4b01-aab9-853d9a6cb590",
+    "created_by_agent_id": null,
+    "run_id": null,
+    "stored_bytes_verified": true,
+    "original_bytes_match": true
+  },
+  {
+    "id": "4cf76d2a-5b10-482e-b5d4-206044a0724d",
+    "name": "ringkasan-m-rag.md",
+    "origin": "native_output",
+    "size_bytes": 7698,
+    "sha256": "311d5c07f9a0021f12a720b10ebf377cd06b303bc7c687acf5133e69c8493a40",
+    "workspace_id": "c7799f79-4a4e-4b01-aab9-853d9a6cb590",
+    "created_by_agent_id": "e8a77db4-503d-47cf-83e3-bc2d182c7565",
+    "run_id": "cee089f5-4e71-4200-97d9-1e602e3c3d5d",
+    "stored_bytes_verified": true,
+    "evidence_copy_method": "Read-only copy of stored artifact bytes after UI preview verification; not a successful browser download claim."
+  },
+  {
+    "id": "b6869bf7-af0b-4a32-a96f-d8a823a3deeb",
+    "name": "contoh-tutor-rag.md",
+    "origin": "native_output",
+    "size_bytes": 14533,
+    "sha256": "3d9cb9b8cf57ab6572a0c2c2b9e975944ee293402e3d8b9eee16e9b1016b489b",
+    "workspace_id": "c7799f79-4a4e-4b01-aab9-853d9a6cb590",
+    "created_by_agent_id": "f10240a3-39fc-40d9-9a60-d070368bd834",
+    "run_id": "a8ebfcfb-dc2a-4c97-9c69-8b1d81085aaf",
+    "stored_bytes_verified": true,
+    "evidence_copy_method": "Read-only copy of stored artifact bytes after UI preview verification; not a successful browser download claim."
+  }
+]

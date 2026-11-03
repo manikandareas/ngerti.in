@@ -1208,7 +1208,7 @@ async function chooseGroup(page: Page, name: string) {
   await expect(page.getByRole("button", { name: `Detail ${name}`, exact: true })).toBeVisible();
 }
 
-test("all concurrent group lanes expose their native questions and free text uses one answer representation", async ({
+test("group writers serialize native questions and free text uses one answer representation", async ({
   page,
 }) => {
   test.setTimeout(60000);
@@ -1233,6 +1233,23 @@ test("all concurrent group lanes expose their native questions and free text use
   ).toBeVisible({ timeout: 20000 });
   await expect(
     second.getByRole("checkbox", { name: "Markdown A concise report", exact: true }),
+  ).toHaveCount(0);
+  const held = await (await page.request.get(`/v1/threads/${group.id}/snapshot`)).json();
+  expect(
+    held.runs.some(
+      (run: { agent_id: string; status: string }) =>
+        run.agent_id === b.id && run.status === "queued",
+    ),
+  ).toBeTruthy();
+  await page.getByRole("button", { name: `Stop ${a.name}`, exact: true }).click();
+  await expect(
+    first.getByRole("radio", { name: "Markdown A concise report", exact: true }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByText("Run dihentikan; jawaban native tidak tercatat", { exact: true }).first(),
+  ).toBeVisible();
+  await expect(
+    second.getByRole("checkbox", { name: "Markdown A concise report", exact: true }),
   ).toBeVisible({ timeout: 20000 });
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
@@ -1243,13 +1260,6 @@ test("all concurrent group lanes expose their native questions and free text use
   await second.getByRole("button", { name: "Allow this read", exact: true }).click();
   await expect(
     page.getByText("Fixture answer: Plain summary; approval: allow-once", { exact: true }),
-  ).toBeVisible();
-  await page.getByRole("button", { name: `Stop ${a.name}`, exact: true }).click();
-  await expect(
-    first.getByRole("radio", { name: "Markdown A concise report", exact: true }),
-  ).toHaveCount(0);
-  await expect(
-    page.getByText("Run dihentikan; jawaban native tidak tercatat", { exact: true }).first(),
   ).toBeVisible();
 });
 

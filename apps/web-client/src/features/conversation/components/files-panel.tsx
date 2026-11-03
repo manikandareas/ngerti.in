@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useApiResource } from "@/hooks/use-api-resource";
 import { command, request } from "@/lib/api-client";
-import { artifactUrl, uploadFile } from "@/lib/workspace-files";
+import { artifactUrl, ensureWorkspace, uploadFile } from "@/lib/workspace-files";
 import type { Artifact, Workspace } from "@/types/work";
 import type { Agent, Snapshot, Thread } from "@/types/workspace";
 import { type FileView, FileViewer } from "./file-viewer";
@@ -40,10 +40,13 @@ export function FilesPanel({
   attach: (a: Artifact) => void;
 }) {
   const active = snapshot.workspaces.filter(
-    (w) => w.state === "active" && snapshot.thread.member_agent_ids.includes(w.agent_id),
+    (w) =>
+      w.state === "active" &&
+      w.thread_id === snapshot.thread.id &&
+      (w.scope === "group" || snapshot.thread.member_agent_ids.includes(w.agent_id ?? "")),
   );
   const [workspaceId, setWorkspaceId] = useState<string | null>(null);
-  const [agentId, setAgentId] = useState(snapshot.agents[0]?.id ?? "");
+  const agentId = snapshot.agents[0]?.id ?? "";
   const workspace =
     active.find((w) => w.id === workspaceId) ??
     active.find((w) => w.agent_id === agentId) ??
@@ -134,12 +137,11 @@ export function FilesPanel({
                 </a>
               </Button>
             )}
-            {snapshot.thread.type === "dm" &&
-              active.some((w) => w.id === artifact.workspace_id) && (
-                <Button variant="ghost" size="sm" onClick={() => attach(artifact)}>
-                  Lampirkan ke pesan
-                </Button>
-              )}
+            {active.some((w) => w.id === artifact.workspace_id) && (
+              <Button variant="ghost" size="sm" onClick={() => attach(artifact)}>
+                Lampirkan ke pesan
+              </Button>
+            )}
           </div>
           <details
             className="group/share rounded-[12px] bg-composer ring-1 ring-inset ring-foreground/[0.06]"
@@ -186,7 +188,11 @@ export function FilesPanel({
                     {threads.find((t) => t.id === w.thread_id)?.name ??
                       agents.find((a) => a.id === w.agent_id)?.name ??
                       "Percakapan"}{" "}
-                    · {agents.find((a) => a.id === w.agent_id)?.name ?? "Agent"} · {w.name}
+                    ·{" "}
+                    {w.scope === "group"
+                      ? "Grup"
+                      : (agents.find((a) => a.id === w.agent_id)?.name ?? "Agent")}{" "}
+                    · {w.name}
                   </option>
                 ))}
               </select>
@@ -218,7 +224,9 @@ export function FilesPanel({
       ) : (
         <>
           <p className="text-caption text-muted-foreground">
-            Folder, lampiran, dan hasil mengikuti percakapan ini.
+            {snapshot.thread.type === "group"
+              ? "Folder, lampiran, dan hasil dipakai bersama oleh anggota grup ini."
+              : "Folder, lampiran, dan hasil mengikuti percakapan ini."}
           </p>
           {active.length > 1 && (
             <div className="space-y-2">
@@ -389,10 +397,28 @@ export function FilesPanel({
               </div>
             </PanelCard>
           ) : (
-            <p className="text-sm text-muted-foreground">
-              Belum ada folder yang terhubung. Gunakan folder percakapan atau hubungkan folder kerja
-              saat diperlukan.
-            </p>
+            <div className="space-y-3">
+              <p className="text-sm text-muted-foreground">
+                Belum ada folder yang terhubung. Gunakan folder percakapan atau hubungkan folder
+                kerja saat diperlukan.
+              </p>
+              <Button
+                size="sm"
+                disabled={busy}
+                onClick={() =>
+                  void act(async () => {
+                    const value = await ensureWorkspace(
+                      agentId,
+                      snapshot.thread.id,
+                      snapshot.workspaces,
+                    );
+                    setWorkspaceId(value.id);
+                  })
+                }
+              >
+                Gunakan folder percakapan
+              </Button>
+            </div>
           )}
           <details
             open={!workspace}
@@ -416,41 +442,6 @@ export function FilesPanel({
               />
             </summary>
             <div className="space-y-3 px-3.5 pb-3.5">
-              {snapshot.thread.type === "group" && (
-                <>
-                  <Label htmlFor="workspace-agent">Folder untuk anggota</Label>
-                  <select
-                    id="workspace-agent"
-                    className="h-9 w-full rounded-md border bg-background px-2"
-                    value={agentId}
-                    onChange={(e) => setAgentId(e.target.value)}
-                  >
-                    {snapshot.agents.map((a) => (
-                      <option key={a.id} value={a.id}>
-                        {a.name}
-                      </option>
-                    ))}
-                  </select>
-                </>
-              )}
-              <Button
-                size="sm"
-                variant="outline"
-                disabled={busy}
-                onClick={() =>
-                  void act(async () => {
-                    const value = await command<Workspace>("/v1/workspaces", {
-                      agent_id: agentId,
-                      thread_id: snapshot.thread.id,
-                    });
-                    setWorkspaceId(value.id);
-                    setPath("");
-                    setAfter("");
-                  })
-                }
-              >
-                Gunakan folder percakapan
-              </Button>
               <Label htmlFor="project-path">Folder lokal pada host backend</Label>
               <Input
                 id="project-path"
@@ -486,7 +477,7 @@ export function FilesPanel({
                   title={item.name}
                   aria-label={`File ${item.name}`}
                   icon={File02Icon}
-                  hint={`${item.origin === "upload" ? "Lampiran" : "Hasil"} · ${snapshot.agents.find((agent) => agent.id === item.agent_id)?.name ?? "Agent"}`}
+                  hint={`${item.origin === "upload" ? "Lampiran" : "Hasil"} · ${snapshot.agents.find((agent) => agent.id === (item.created_by_agent_id ?? item.agent_id))?.name ?? (item.agent_id === null ? "Grup" : "Agent")}`}
                   onClick={() => select(item.id)}
                 />
               ))

@@ -162,12 +162,7 @@ export function useComposerAttachments(options: Options) {
   }
   function addFiles(files: File[]) {
     const current = latest.current;
-    if (
-      current.disabled ||
-      !current.snapshot ||
-      current.snapshot.thread.id !== current.threadId ||
-      current.snapshot.thread.type === "group"
-    )
+    if (current.disabled || !current.snapshot || current.snapshot.thread.id !== current.threadId)
       return;
     const active = referenced(current.draft);
     let count = active.length;
@@ -203,12 +198,7 @@ export function useComposerAttachments(options: Options) {
   }
   function attachArtifact(artifact: Artifact) {
     const current = latest.current;
-    if (
-      current.disabled ||
-      artifact.thread_id !== current.threadId ||
-      current.snapshot?.thread.type === "group"
-    )
-      return;
+    if (current.disabled || artifact.thread_id !== current.threadId) return;
     const active = referenced(current.draft);
     if (
       !allowed(

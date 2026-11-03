@@ -47,6 +47,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
 import { Answer } from "@/features/conversation/components/answer";
 import { AttachInput } from "@/features/conversation/components/attach-input";
+import { CollaborationActivity } from "@/features/conversation/components/collaboration-activity";
 import {
   ComposerInput,
   type ComposerInputHandle,
@@ -204,7 +205,10 @@ export default function Workspace() {
     input: composerInput,
     disabled: busy || submission.loading || !!submission.failure || pending !== null || !!editing,
     report,
-    attached: () => setDetails(false),
+    attached: () => {
+      setDetails(false);
+      setError("");
+    },
   });
   const attachments = composerFiles.referenced(pending ?? draft);
   const attachmentsBlocked =
@@ -307,7 +311,13 @@ export default function Workspace() {
       if (submission.pending || content.artifact_ids.length) {
         const operation =
           submission.pending ??
-          prepareSubmission(threadId, agent.id, content.text, content.sources);
+          prepareSubmission(
+            threadId,
+            agent.id,
+            content.text,
+            content.sources,
+            snapshot?.thread.type ?? "dm",
+          );
         if (!submission.pending && snapshot?.thread.type === "group") {
           const target = referenceTarget(content.text);
           if (target) operation.body.agent_id = target;
@@ -919,6 +929,14 @@ export default function Workspace() {
                     </div>
                   )}
                   {visibleMessages.map((message, index) => {
+                    if (["handoff", "review"].includes(message.purpose))
+                      return (
+                        <CollaborationActivity
+                          key={message.id}
+                          message={message}
+                          snapshot={snapshot}
+                        />
+                      );
                     const run = snapshot.runs.findLast(
                       (run) => run.input_message_id === message.id,
                     );
@@ -1026,12 +1044,6 @@ export default function Workspace() {
                                   refresh={refresh}
                                 />
                               ))}
-                            <WorkActivity
-                              message={message}
-                              run={run}
-                              snapshot={snapshot}
-                              open={openResource}
-                            />
                             {run && (
                               <div className="message-run-state space-y-2">
                                 <div className="flex flex-wrap items-center gap-2 text-caption text-muted-foreground">
@@ -1083,6 +1095,22 @@ export default function Workspace() {
                             )}
                           </MessageContent>
                         </Message>
+                        <WorkActivity
+                          message={message}
+                          run={run}
+                          snapshot={snapshot}
+                          open={openResource}
+                          retryRoute={(route) =>
+                            void act(async () => {
+                              await queueCommand(
+                                `route:${route.id}`,
+                                `/v1/groups/${snapshot.thread.id}/routes/${route.id}/retry`,
+                                { expected_revision: route.revision },
+                              );
+                            })
+                          }
+                          busy={busy}
+                        />
                         {message.author === "user" &&
                           nativeTranscript.anchors
                             .get(message.id)
@@ -1249,7 +1277,6 @@ export default function Workspace() {
                 >
                   <AttachInput
                     key={snapshot.thread.id}
-                    snapshot={snapshot}
                     disabled={busy || pending !== null || !!editing}
                     count={attachments.length}
                     addFiles={composerFiles.addFiles}

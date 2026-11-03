@@ -1,7 +1,10 @@
 import type { Base } from "./workspace";
 export interface Goal extends Base {
   thread_id: string;
-  agent_id: string;
+  agent_id: string | null;
+  scope: "agent" | "group";
+  coordinator_agent_id: string | null;
+  created_by_agent_id: string | null;
   title: string;
   objective: string;
   progress: string;
@@ -17,7 +20,10 @@ export type Schedule =
   | { type: "calendar"; local_time: string; weekdays: number[] };
 export interface Routine extends Base {
   thread_id: string;
-  agent_id: string;
+  agent_id: string | null;
+  scope: "agent" | "group";
+  execution_target: { type: "auto" } | { type: "agent"; agent_id: string } | null;
+  assignment_state: string;
   goal_id: string | null;
   instruction: string;
   state: string;
@@ -28,7 +34,8 @@ export interface Routine extends Base {
 }
 export interface Workspace extends Base {
   thread_id: string;
-  agent_id: string;
+  agent_id: string | null;
+  scope: "agent" | "group";
   name: string;
   project_path: string | null;
   state: "active" | "revoked";
@@ -36,7 +43,8 @@ export interface Workspace extends Base {
 export interface Artifact extends Base {
   materialization?: "pending" | "ready";
   thread_id: string;
-  agent_id: string;
+  agent_id: string | null;
+  created_by_agent_id?: string | null;
   workspace_id: string | null;
   run_id: string | null;
   name: string;
@@ -67,6 +75,7 @@ export interface PeerTask extends Base {
   state: string;
   request_message_id: string;
   current_run_id: string;
+  summary: string | null;
 }
 export interface BrowserProfile extends Base {
   name: string;

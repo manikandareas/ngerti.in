@@ -4,10 +4,11 @@ import type { ProductTools } from "../../../apps/server/src/harness/tools";
 
 /** External protocol fixture; HTTP, leases, tools, persistence and the broker remain real. */
 export function fixtureAdapter(tools: ProductTools): HarnessAdapter {
+  const rejectedRoutes = new Set<string>();
   return {
     harness: "codex",
-    async connect() {
-      const sessionId = crypto.randomUUID();
+    async connect(context) {
+      let sessionId = crypto.randomUUID();
       let asked = false;
       let multiple = false;
       let ambiguous = false;
@@ -43,6 +44,7 @@ export function fixtureAdapter(tools: ProductTools): HarnessAdapter {
           return { native_session_id: sessionId };
         },
         async resume(identity) {
+          sessionId = identity.native_session_id;
           return identity;
         },
         async settings() {},
@@ -53,6 +55,122 @@ export function fixtureAdapter(tools: ProductTools): HarnessAdapter {
             native_session_id: sessionId,
             native_run_id: nativeRunId,
           });
+          if (context.purpose === "routing") {
+            const packet = JSON.parse(input.text.slice(input.text.indexOf("\n") + 1)) as {
+              request: string;
+              request_message_id: string;
+              members: { agent_id: string }[];
+            };
+            const reject =
+              packet.request.includes("fixture reject routing") &&
+              !rejectedRoutes.has(packet.request_message_id);
+            if (reject) rejectedRoutes.add(packet.request_message_id);
+            input.onEvent({
+              type: "text",
+              text: reject
+                ? "invalid routing output"
+                : JSON.stringify({ agent_id: packet.members[0]?.agent_id }),
+            });
+            return {
+              status: "succeeded",
+              native_session_id: sessionId,
+              native_run_id: nativeRunId,
+            };
+          }
+          const currentRun = tools.lifecycle.store.get("run", input.tools.scope.run_id);
+          const call = (name: string, arguments_: Record<string, unknown>) =>
+            tools.call(input.tools.token, input.tools.scope, name, {
+              command_id: crypto.randomUUID(),
+              ...arguments_,
+            });
+          if (input.text === "fixture shared responsibility") {
+            await call("ngertiin.capture_goal", {
+              goal_id: crypto.randomUUID(),
+              expected_revision: 0,
+              title: "Shared campaign report",
+              objective: "Prepare a summary and an independently reviewed example.",
+              source_message_id: currentRun.input_message_id,
+            });
+            await call("ngertiin.create_file", {
+              path: "summary.txt",
+              text: "Verified campaign summary.",
+            });
+            await call("ngertiin.publish_artifact", {
+              path: "summary.txt",
+              media_type: "text/plain",
+            });
+            const peer = tools.lifecycle.store
+              .get("thread", currentRun.thread_id)
+              .member_agent_ids.find((id) => id !== currentRun.agent_id);
+            await call("ngertiin.group_handoff", {
+              agent_id: peer,
+              purpose: "review",
+              instruction:
+                "INTERNAL_HANDOFF_CANARY_8472: prepare and publish the reviewed example, then finish the task.",
+              summary: "Prepare the reviewed example",
+              continuation: "finalize",
+            });
+            input.onEvent({ type: "text", text: "The campaign summary is ready." });
+            return {
+              status: "succeeded",
+              native_session_id: sessionId,
+              native_run_id: nativeRunId,
+            };
+          }
+          if (input.text.startsWith("INTERNAL_HANDOFF_CANARY_8472")) {
+            const shared = (await tools.call(
+              input.tools.token,
+              input.tools.scope,
+              "ngertiin.list_goals",
+              {},
+            )) as { goals: { title: string }[] };
+            if (!shared.goals.some((goal) => goal.title === "Shared campaign report"))
+              throw new Error("The peer cannot see the shared goal.");
+            await call("ngertiin.create_file", {
+              path: "example.txt",
+              text: "An independently reviewed campaign example.",
+            });
+            await call("ngertiin.publish_artifact", {
+              path: "example.txt",
+              media_type: "text/plain",
+            });
+            input.onEvent({ type: "text", text: "The reviewed example is ready." });
+            return {
+              status: "succeeded",
+              native_session_id: sessionId,
+              native_run_id: nativeRunId,
+            };
+          }
+          if (currentRun.response_mode === "finalize") {
+            const shared = (await tools.call(
+              input.tools.token,
+              input.tools.scope,
+              "ngertiin.list_goals",
+              {},
+            )) as { goals: { id: string; revision: number; title: string }[] };
+            const goal = shared.goals.find((goal) => goal.title === "Shared campaign report");
+            if (goal) {
+              const artifacts = tools.lifecycle.store
+                .list("artifact")
+                .filter(
+                  (file) =>
+                    file.thread_id === currentRun.thread_id && file.origin === "native_output",
+                );
+              await call("ngertiin.report_goal", {
+                goal_id: goal.id,
+                expected_revision: goal.revision,
+                progress: "Both requested campaign files are ready.",
+                disposition: "completed",
+                evidence_artifact_ids: artifacts.map((file) => file.id),
+              });
+              input.onEvent({ type: "text", text: "INTERNAL_FINALIZATION_CANARY_8472" });
+              return {
+                status: "succeeded",
+                native_session_id: sessionId,
+                native_run_id: nativeRunId,
+              };
+            }
+          }
           if (input.text.startsWith("fixture apps:")) {
             await tools.call(input.tools.token, input.tools.scope, "ngertiin.execute_app_tool", {
               command_id: crypto.randomUUID(),
@@ -76,7 +194,14 @@ export function fixtureAdapter(tools: ProductTools): HarnessAdapter {
               ["failed-command", "fixture_shell_failure", "failed"],
               ["unverified-step", "fixture_pending", "started"],
             ] as const)
-              input.onEvent({ type: "native_tool", item_id, name, state, command: null, exit_code: null });
+              input.onEvent({
+                type: "native_tool",
+                item_id,
+                name,
+                state,
+                command: null,
+                exit_code: null,
+              });
           }
           if (!input.text.includes("fixture interaction")) {
             input.onEvent({ type: "text", text: "Fixture ready" });

@@ -81,6 +81,8 @@
   --chat-column-max: 60rem;
   --chat-bubble-max: 35rem;
   --chat-prose-max: 44rem;
+  --conversation-event-muted: #5f5f68;
+  --conversation-event-foreground: #18191b;
   --menu-radius: 14px;
   --menu-shadow: 0 8px 24px -6px #0000001f, 0 1px 2px #0000000a;
   --shadow-float: 0 4px 12px -1px #1c1c1c14, 0 2px 4px -2px #1c1c1c0f;
@@ -101,6 +103,8 @@
   --foreground: #f5f5f5;
   --card: #1f1f1f;
   --card-foreground: #f5f5f5;
+  --conversation-event-muted: #ffffffad;
+  --conversation-event-foreground: #ffffff;
   --popover: #1f1f1f;
   --popover-foreground: #f5f5f5;
   --primary: #0b62c4;

@@ -3,10 +3,11 @@ import { attachmentParts, attachmentReference } from "./attachment-references";
 
 export interface MessageSubmission {
   id: string;
+  target?: "dm" | "group";
   body: {
     submission_id: string;
     thread_id: string;
-    agent_id: string;
+    agent_id: string | null;
     text: string;
     artifact_ids: string[];
   };
@@ -75,6 +76,7 @@ export function prepareSubmission(
   agentId: string,
   text: string,
   sources: { id: string; file: File }[],
+  target: "dm" | "group" = "dm",
 ): MessageSubmission {
   const id = crypto.randomUUID();
   const files = sources.map((source) => ({
@@ -94,10 +96,11 @@ export function prepareSubmission(
     .join("");
   return {
     id,
+    target,
     body: {
       submission_id: id,
       thread_id: threadId,
-      agent_id: agentId,
+      agent_id: target === "group" ? null : agentId,
       text: body,
       artifact_ids: [...ids],
     },
@@ -144,6 +147,10 @@ export async function executeSubmission(
       );
       progress(source.id, "ready");
     }
+    if (operation.target === "group") {
+      const { thread_id, ...body } = operation.body;
+      return await request(`/v1/groups/${thread_id}/messages`, body, operation.id);
+    }
     return await request("/v1/runs", operation.body, operation.id);
   } catch (error) {
     if (
@@ -155,6 +162,8 @@ export async function executeSubmission(
         "NOT_FOUND",
         "CONFLICT",
         "IDEMPOTENCY_CONFLICT",
+        "CAPABILITY_UNKNOWN",
+        "CAPABILITY_UNSUPPORTED",
       ].includes(error.code)
     )
       throw new RejectedSubmission(

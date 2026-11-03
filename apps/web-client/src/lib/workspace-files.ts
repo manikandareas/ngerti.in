@@ -31,7 +31,10 @@ export async function uploadFile(
 export async function ensureWorkspace(agentId: string, threadId: string, workspaces: Workspace[]) {
   return (
     workspaces.find(
-      (w) => w.state === "active" && w.agent_id === agentId && w.thread_id === threadId,
+      (w) =>
+        w.state === "active" &&
+        (w.scope === "group" || w.agent_id === agentId) &&
+        w.thread_id === threadId,
     ) ?? command<Workspace>("/v1/workspaces", { agent_id: agentId, thread_id: threadId })
   );
 }

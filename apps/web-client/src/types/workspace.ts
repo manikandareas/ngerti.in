@@ -9,7 +9,7 @@ import type {
   Routine,
   Workspace,
 } from "./work";
-// Consumer projections of the published Ngertiin API 1.21.0.
+// Consumer projections of the published Ngertiin API 1.23.0.
 export interface Base {
   id: string;
   revision: number;
@@ -120,12 +120,20 @@ export interface Snapshot {
   tasks: PeerTask[];
   routes: {
     id: string;
+    revision: number;
     state: string;
     message_id: string;
     selected_agent_id: string | null;
     error_code: string | null;
   }[];
-  occurrences: { id: string; routine_id: string; scheduled_for: string; run_id: string }[];
+  occurrences: {
+    id: string;
+    routine_id: string;
+    scheduled_for: string;
+    run_id: string | null;
+    state: string;
+    selected_agent_id: string | null;
+  }[];
 }
 export interface Opening {
   recovery: string;

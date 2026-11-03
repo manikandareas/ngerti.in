@@ -17,6 +17,13 @@ const labels: Record<string, string> = {
   completed: "Selesai",
   blocked: "Terhambat",
   waiting: "Menunggu",
+  waiting_assignment: "Menunggu penanggung jawab",
+  routing: "Memilih pelaksana",
+  queued: "Menunggu giliran",
+  running: "Sedang bekerja",
+  unknown: "Hasil belum diketahui",
+  cancelled: "Dihentikan",
+  failed: "Terhambat",
   ready: "Siap",
   completion_pending: "Memeriksa hasil",
 };
@@ -52,7 +59,12 @@ export function Responsibilities({
 }) {
   const goal = kind === "goals" ? snapshot.goals.find((g) => g.id === selected) : null;
   const routine = kind === "routine" ? snapshot.routines.find((r) => r.id === selected) : null;
-  const responsible = snapshot.agents.find((a) => a.id === (goal?.agent_id ?? routine?.agent_id));
+  const responsibleId = goal
+    ? (goal.coordinator_agent_id ?? goal.agent_id)
+    : routine?.execution_target?.type === "agent"
+      ? routine.execution_target.agent_id
+      : routine?.agent_id;
+  const responsible = snapshot.agents.find((a) => a.id === responsibleId);
   const address =
     snapshot.thread.type === "group" && responsible?.handle ? `@${responsible.handle} ` : "";
   if (goal)
@@ -61,8 +73,10 @@ export function Responsibilities({
         <PanelPageHeader title={goal.title} back="Goals" onBack={() => select(null)} />
         <div>
           <p className="mt-1 text-caption text-muted-foreground">
-            {labels[goal.state]} · {labels[goal.work_state] ?? goal.work_state} ·{" "}
-            {snapshot.agents.find((a) => a.id === goal.agent_id)?.name}
+            {labels[goal.state]} ·{" "}
+            {goal.state === "active" ? `${labels[goal.work_state] ?? goal.work_state} · ` : ""}
+            {goal.scope === "group" ? "Milik grup · " : ""}
+            {responsible ? `Koordinator: ${responsible.name}` : "Menunggu penanggung jawab"}
           </p>
         </div>
         <PanelCard label="Tujuan">
@@ -80,6 +94,24 @@ export function Responsibilities({
             )}
           </div>
         </PanelCard>
+        {goal.scope === "group" && (
+          <PanelCard label="Kontributor">
+            <p className="px-3.5 py-3 text-[13px]">
+              {[
+                ...new Set(
+                  snapshot.artifacts
+                    .filter((file) => goal.evidence_artifact_ids.includes(file.id))
+                    .map(
+                      (file) =>
+                        snapshot.agents.find((agent) => agent.id === file.created_by_agent_id)
+                          ?.name,
+                    )
+                    .filter(Boolean),
+                ),
+              ].join(", ") || "Hasil dari anggota akan tercatat di sini."}
+            </p>
+          </PanelCard>
+        )}
         <PanelCard label="Hasil dan bukti">
           {goal.evidence_artifact_ids.length ? (
             goal.evidence_artifact_ids.map((id) => (
@@ -105,7 +137,7 @@ export function Responsibilities({
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => compose(`${address}Bantu perbarui goal "${goal.title}" (ID ${goal.id}): `)}
+          onClick={() => compose(`${address}Bantu perbarui goal "${goal.title}": `)}
         >
           Ubah goal melalui chat
         </Button>
@@ -135,6 +167,21 @@ export function Responsibilities({
             snapshot.goals.find((item) => item.id === routine.goal_id)?.state !== "active"
           }
         />
+        <PanelCard label="Penanggung jawab">
+          <div className="space-y-1 px-3.5 py-3 text-[13px]">
+            <p>
+              {routine.scope === "group" ? "Milik grup · " : ""}
+              {routine.execution_target?.type === "auto"
+                ? "Pelaksana dipilih otomatis"
+                : (responsible?.name ?? "Menunggu penanggung jawab")}
+            </p>
+            {routine.assignment_state !== "ready" && (
+              <p className="text-muted-foreground">
+                {labels[routine.assignment_state] ?? "Pelaksanaan membutuhkan perhatian."}
+              </p>
+            )}
+          </div>
+        </PanelCard>
         <PanelCard label="Jadwal">
           <dl className="divide-y divide-foreground/[0.05] text-[13px] [&>div]:px-3.5 [&>div]:py-3 [&_dt]:mb-1">
             <div>
@@ -173,7 +220,11 @@ export function Responsibilities({
               return (
                 <div key={o.id} className="px-3.5 py-3 text-[13px] leading-[1.5]">
                   <p className="text-caption text-muted-foreground">
-                    {time(o.scheduled_for, routine.timezone)} · {run?.status ?? "Menunggu"}
+                    {time(o.scheduled_for, routine.timezone)} ·{" "}
+                    {labels[o.state] ?? labels[run?.status ?? ""] ?? "Menunggu"}
+                    {o.selected_agent_id
+                      ? ` · ${snapshot.agents.find((agent) => agent.id === o.selected_agent_id)?.name ?? "Anggota"}`
+                      : ""}
                   </p>
                   <p className="mt-1 whitespace-pre-wrap">
                     {answer?.text ||
@@ -206,9 +257,7 @@ export function Responsibilities({
         <Button
           variant="ghost"
           size="sm"
-          onClick={() =>
-            compose(`${address}Ubah Routine "${routine.instruction}" (ID ${routine.id}): `)
-          }
+          onClick={() => compose(`${address}Ubah Routine "${routine.instruction}": `)}
         >
           Ubah atau batalkan melalui chat
         </Button>
@@ -221,7 +270,7 @@ export function Responsibilities({
           id: g.id,
           title: g.title,
           state: labels[g.state],
-          detail: g.progress || labels[g.work_state],
+          detail: `${g.scope === "group" ? "Milik grup · " : ""}${g.progress || labels[g.work_state]}`,
           resource: g,
         }))
       : snapshot.routines.map((r) => ({

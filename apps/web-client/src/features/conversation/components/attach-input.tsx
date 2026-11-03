@@ -2,7 +2,7 @@ import { Add01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
-import type { Connection, Snapshot } from "@/types/workspace";
+import type { Connection } from "@/types/workspace";
 
 export function attachmentIssue(
   mediaType: string,
@@ -27,19 +27,15 @@ export function attachmentIssue(
   return null;
 }
 export function AttachInput({
-  snapshot,
   disabled,
   count,
   addFiles,
 }: {
-  snapshot: Snapshot;
   disabled: boolean;
   count: number;
   addFiles: (files: File[]) => void;
 }) {
   const input = useRef<HTMLInputElement>(null);
-  // Routed group messages have no attachment field in the published API. Files remain available in the scoped File tab.
-  if (snapshot.thread.type === "group") return null;
   return (
     <>
       <input

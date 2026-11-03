@@ -45,6 +45,7 @@ import {
 } from "@/components/ui/sheet";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
+import { AgentActivityBubble } from "@/features/conversation/components/agent-activity-bubble";
 import { Answer } from "@/features/conversation/components/answer";
 import { AttachInput } from "@/features/conversation/components/attach-input";
 import {
@@ -68,6 +69,10 @@ import { UserMessageText } from "@/features/conversation/components/user-message
 import { WorkActivity } from "@/features/conversation/components/work-activity";
 import { WorkspaceProviders } from "@/features/conversation/components/workspace-providers";
 import { attachmentParts } from "@/features/conversation/lib/attachment-references";
+import {
+  conversationActivity,
+  waitingForUser,
+} from "@/features/conversation/lib/conversation-activity";
 import { conversationEntries } from "@/features/conversation/lib/conversation-parts";
 import { referenceTarget } from "@/features/conversation/lib/inline-references";
 import {
@@ -532,6 +537,43 @@ export default function Workspace() {
   }
   const parts = [...olderParts, ...(snapshot?.timeline.parts ?? [])];
   const entries = conversationEntries(parts, messages);
+  const activityByEntry = conversationActivity(snapshot, entries);
+  function activityAfter(entryId: string) {
+    if (!snapshot) return null;
+    return activityByEntry.get(entryId)?.map((run) => {
+      const actor = snapshot.agents.find((agent) => agent.id === run.agent_id);
+      if (!actor) return null;
+      const target = snapshot.agents.find(
+        (agent) => agent.id === run.active_tools?.at(-1)?.target_agent_id,
+      );
+      return (
+        <AgentActivityBubble
+          key={run.id}
+          agent={actor}
+          run={run}
+          online={workspace.online}
+          waitingForUser={waitingForUser(run, snapshot)}
+          targetName={target?.name}
+          showName={snapshot.thread.type === "group"}
+          busy={busy}
+          openAgent={() => openResource("agent", actor.id)}
+          openSettings={() => openSettings()}
+          retryPreparation={() =>
+            void act(async () => {
+              await queueCommand(`preparation:${run.id}`, `/v1/runs/${run.id}/retry-preparation`, {
+                expected_revision: run.revision,
+              });
+            })
+          }
+          reconcile={() =>
+            void act(async () => {
+              await request(`/v1/runs/${run.id}/reconcile`, {});
+            })
+          }
+        />
+      );
+    });
+  }
   const published = new Set(parts.flatMap((part) => (part.message_id ? [part.message_id] : [])));
   const queued = messages
     .flatMap((message) => {
@@ -647,6 +689,10 @@ export default function Workspace() {
     return historical ? { ...historical, system_role: current?.system_role } : current;
   }
   function answer(message: MessageEntity) {
+    const streaming =
+      message.author === "agent" &&
+      message.purpose !== "announcement" &&
+      snapshot?.runs.some((run) => run.id === message.run_id && run.status === "running") === true;
     const author = publishedAuthor(message);
     const sender =
       snapshot?.thread.type === "group" && message.author === "agent"
@@ -663,7 +709,8 @@ export default function Workspace() {
           agentId={author?.id}
           sentAt={message.created_at}
           sender={sender}
-          text={message.text || "Sedang menulis…"}
+          streaming={streaming}
+          text={message.text}
           openResource={openResource}
           snapshot={snapshot ?? undefined}
         />
@@ -696,6 +743,7 @@ export default function Workspace() {
             agentId={author?.id}
             sentAt={message.created_at}
             sender={sender}
+            streaming={streaming}
             text={message.text.slice(start)}
             openResource={openResource}
             snapshot={snapshot ?? undefined}
@@ -969,11 +1017,10 @@ export default function Workspace() {
                   {entries.map((entry, index) => {
                     if (entry.type === "activity")
                       return (
-                        <TimelineActivity
-                          key={entry.parts[0].id}
-                          parts={entry.parts}
-                          open={openResource}
-                        />
+                        <Fragment key={entry.parts[0].id}>
+                          <TimelineActivity parts={entry.parts} open={openResource} />
+                          {activityAfter(entry.parts[0].id)}
+                        </Fragment>
                       );
                     const { message } = entry;
                     const previous = entries[index - 1];
@@ -1095,77 +1142,12 @@ export default function Workspace() {
                                   refresh={refresh}
                                 />
                               ))}
-                            {run && (
-                              <div className="message-run-state space-y-2">
-                                <div className="flex flex-wrap items-center gap-2 text-caption text-muted-foreground">
-                                  {run.status !== "succeeded" && <span>{runStatusLabel(run)}</span>}
-                                  {run.status === "cancelled" && (
-                                    <span>
-                                      {run.cancellation === "confirmed"
-                                        ? "Stop terkonfirmasi"
-                                        : "Menunggu konfirmasi"}
-                                    </span>
-                                  )}
-                                  {run.status === "unknown" && (
-                                    <Button
-                                      size="sm"
-                                      variant="outline"
-                                      disabled={busy}
-                                      onClick={() =>
-                                        void act(async () => {
-                                          await request(`/v1/runs/${run.id}/reconcile`, {});
-                                        })
-                                      }
-                                    >
-                                      Periksa hasil
-                                    </Button>
-                                  )}
+                            {run?.status === "queued" &&
+                              (!run.preparation || run.preparation.state === "ready") && (
+                                <div className="message-run-state text-caption text-muted-foreground">
+                                  {runStatusLabel(run)}
                                 </div>
-                                {run.diagnostic &&
-                                  run.status !== "succeeded" &&
-                                  !(
-                                    run.status === "running" &&
-                                    run.diagnostic.outcome === "not_dispatched"
-                                  ) && (
-                                    <div className="message-diagnostic rounded-xl bg-danger-soft px-3 py-2 text-[13px] leading-5 text-destructive">
-                                      <p>{repairMessage(run.diagnostic.code)}</p>
-                                      {run.status === "queued" &&
-                                        run.preparation?.state === "blocked" && (
-                                          <Button
-                                            size="sm"
-                                            variant="outline"
-                                            disabled={busy}
-                                            onClick={() =>
-                                              void act(async () => {
-                                                await queueCommand(
-                                                  `preparation:${run.id}`,
-                                                  `/v1/runs/${run.id}/retry-preparation`,
-                                                  { expected_revision: run.revision },
-                                                );
-                                              })
-                                            }
-                                          >
-                                            Coba hubungkan lagi
-                                          </Button>
-                                        )}
-                                      <Button
-                                        variant="ghost"
-                                        type="button"
-                                        className="h-auto px-0 py-0 text-[12px] text-link underline"
-                                        onClick={() => openSettings()}
-                                      >
-                                        Periksa pengaturan
-                                      </Button>
-                                      <details className="mt-1 text-[11px] text-muted-foreground">
-                                        <summary className="w-fit cursor-pointer">
-                                          Detail masalah
-                                        </summary>
-                                        <code>{run.diagnostic.code}</code>
-                                      </details>
-                                    </div>
-                                  )}
-                              </div>
-                            )}
+                              )}
                           </MessageContent>
                         </Message>
                         <WorkActivity
@@ -1196,6 +1178,7 @@ export default function Workspace() {
                           nativeTranscript.anchors
                             .get(message.id)
                             ?.flatMap(({ fragments }) => fragments.map(nativeFragment))}
+                        {activityAfter(entry.part.id)}
                       </Fragment>
                     );
                   })}

@@ -43,13 +43,15 @@ test("a blocked fallback shows its cause and retries the same hidden run across 
   page,
 }, info) => {
   const { group, route } = await setup(page);
-  await expect(page.getByRole("status").filter({ hasText: "Router belum siap" })).toBeVisible();
   await expect(
-    page.getByText("Versi harness terlalu lama. Perbarui harness pada host backend.", {
+    page.getByRole("status").filter({ hasText: "I couldn’t get started." }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("Update your connected app to continue.", {
       exact: true,
     }),
   ).toBeVisible();
-  await expect(page.getByText("Memilih penjawab…", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("Who’s got this? One sec…", { exact: true })).toHaveCount(0);
   const before = (await snapshot(page, group.id)).routes.find(
     (r: { id: string }) => r.id === route.id,
   );
@@ -58,10 +60,10 @@ test("a blocked fallback shows its cause and retries the same hidden run across 
       r.method() === "POST" &&
       r.url().endsWith(`/v1/runs/${before.execution.run_id}/retry-preparation`),
   );
-  await page.getByRole("button", { name: "Coba hubungkan router lagi", exact: true }).click();
+  await page.getByRole("button", { name: "Try connecting again", exact: true }).click();
   expect((await sent).postDataJSON()).toEqual({ expected_revision: before.execution.run_revision });
   await expect(
-    page.getByRole("button", { name: "Coba hubungkan router lagi", exact: true }),
+    page.getByRole("button", { name: "Try connecting again", exact: true }),
   ).toBeEnabled();
   const after = await snapshot(page, group.id);
   expect(after.routes.find((r: { id: string }) => r.id === route.id).execution.run_id).toBe(
@@ -72,7 +74,7 @@ test("a blocked fallback shows its cause and retries the same hidden run across 
   ).toHaveLength(1);
   expect(after.runs).toHaveLength(0);
   await page.reload();
-  await expect(page.getByText("Router belum siap", { exact: true })).toBeVisible();
+  await expect(page.getByText("I couldn’t get started.", { exact: true })).toBeVisible();
   await page.screenshot({ path: info.outputPath("blocked-router.png") });
 });
 
@@ -80,7 +82,7 @@ test("binary repair refreshes the group from hidden-run events without another m
   page,
 }) => {
   const { group, route } = await setup(page);
-  await expect(page.getByText("Router belum siap", { exact: true })).toBeVisible();
+  await expect(page.getByText("I couldn’t get started.", { exact: true })).toBeVisible();
   const before = await snapshot(page, group.id);
   const router = before.routes.find((r: { id: string }) => r.id === route.id);
   const decisions = (await (await page.request.get("/v1/verification/runtime")).json()).decisions;
@@ -96,7 +98,7 @@ test("binary repair refreshes the group from hidden-run events without another m
   expect((await (await page.request.get("/v1/verification/runtime")).json()).decisions).toBe(
     decisions,
   );
-  await expect(page.getByText("Router belum siap", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("I couldn’t get started.", { exact: true })).toHaveCount(0);
 });
 
 test("an unknown native fallback requests reconciliation and exposes no preparation retry", async ({
@@ -104,19 +106,17 @@ test("an unknown native fallback requests reconciliation and exposes no preparat
 }) => {
   await setup(page, true, true);
   await expect(
-    page.getByText("Hasil routing belum diketahui. Periksa run sebelum melanjutkan.", {
+    page.getByText("I couldn’t confirm who should reply.", {
       exact: true,
     }),
   ).toBeVisible();
-  await expect(
-    page.getByRole("button", { name: "Coba hubungkan router lagi", exact: true }),
-  ).toHaveCount(0);
-  await expect(
-    page.getByRole("button", { name: "Coba pilih penjawab lagi", exact: true }),
-  ).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Try connecting again", exact: true })).toHaveCount(
+    0,
+  );
+  await expect(page.getByRole("button", { name: "Try again", exact: true })).toHaveCount(0);
   await page.reload();
   await expect(
-    page.getByText("Hasil routing belum diketahui. Periksa run sebelum melanjutkan.", {
+    page.getByText("I couldn’t confirm who should reply.", {
       exact: true,
     }),
   ).toBeVisible();

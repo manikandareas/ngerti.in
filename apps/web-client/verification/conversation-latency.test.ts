@@ -41,13 +41,13 @@ test("late global responses cannot replace newer entity configuration", () => {
 });
 
 test("queue, preparation and blocked states have distinct actionable user labels", () => {
-  expect(runStatusLabel({ status: "queued" })).toBe("Menunggu giliran");
+  expect(runStatusLabel({ status: "queued" })).toBe("Waiting to start…");
   expect(
     runStatusLabel({
       status: "queued",
       preparation: { state: "preparing", attempts: 1, next_attempt_at: null },
     }),
-  ).toBe("Menyiapkan agent");
+  ).toBe("Getting ready…");
   const blocked = {
     agent_id: "agent",
     thread_id: "thread",
@@ -57,5 +57,5 @@ test("queue, preparation and blocked states have distinct actionable user labels
     waiting_for_user: false,
     preparation: { state: "blocked" as const, attempts: 1, next_attempt_at: null },
   };
-  expect(avatarActivity(blocked)).toEqual({ state: "error", label: "Agent belum siap" });
+  expect(avatarActivity(blocked)).toEqual({ state: "error", label: "I couldn’t get started." });
 });

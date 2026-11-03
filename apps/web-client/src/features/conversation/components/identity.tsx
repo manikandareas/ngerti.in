@@ -49,6 +49,7 @@ export function AgentAvatar({
   followPointer = false,
   showActivityLabel = true,
   deferred = false,
+  isLoading = false,
 }: {
   agent?: ReferenceAgent;
   name?: string;
@@ -63,6 +64,7 @@ export function AgentAvatar({
   followPointer?: boolean;
   showActivityLabel?: boolean;
   deferred?: boolean;
+  isLoading?: boolean;
 }) {
   const view = useAvatarActivity(agent?.id, threadId);
   const { version, seed, shape, color, face } = agent?.avatar_config ?? {};
@@ -90,7 +92,7 @@ export function AgentAvatar({
   }, [runId, status, waiting]);
   const effectiveState =
     state ?? (celebrating && view.state === "idle" ? "celebrating" : view.state);
-  const animate = animated ?? effectiveState !== "idle";
+  const animate = animated ?? (isLoading || effectiveState !== "idle");
   const Host = interactive && !group ? "button" : "span";
   return (
     <Host
@@ -140,6 +142,7 @@ export function AgentAvatar({
           ref={controller}
           config={config}
           state={effectiveState}
+          loading={isLoading}
           size="100%"
           animated={animate}
           deferred={deferred}

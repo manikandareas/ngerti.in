@@ -1,16 +1,20 @@
-import { ArrowRight01Icon, LinkSquare02Icon, Loading03Icon } from "@hugeicons/core-free-icons";
+import { ArrowRight01Icon, LinkSquare02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { Bubble, BubbleContent } from "@/components/ui/bubble";
 import { Button } from "@/components/ui/button";
-import { repairMessage } from "@/lib/api-errors";
+import { Message as ChatMessage, MessageContent } from "@/components/ui/message";
+import { activityGuidance } from "@/features/conversation/lib/activity-presentation";
 import type { Message, Run, Snapshot } from "@/types/workspace";
+import { ActivityStatus } from "./activity-status";
+import { AgentAvatar } from "./identity";
 
 const routingLabels: Record<string, string> = {
-  classifying: "Memilih penjawab…",
-  reviewing: "Memastikan penerima…",
-  preparing: "Menyiapkan router…",
-  retrying: "Menunggu koneksi router…",
-  fallback: "Memilih penjawab lewat agent…",
-  blocked: "Router belum siap",
+  classifying: "Who’s got this? One sec…",
+  reviewing: "Who’s got this? One sec…",
+  preparing: "Getting ready…",
+  retrying: "Reconnecting…",
+  fallback: "Who’s got this? One sec…",
+  blocked: "I couldn’t get started.",
 };
 
 export function WorkActivity({
@@ -41,20 +45,39 @@ export function WorkActivity({
   return (
     <div className="w-full min-w-0 space-y-2 text-caption text-muted-foreground empty:hidden">
       {route?.state === "pending" && stage && stage !== "reconcile" && (
-        <p role="status" className="flex items-center gap-1.5">
-          {stage !== "blocked" && (
-            <HugeiconsIcon
-              icon={Loading03Icon}
-              size={13}
-              className="motion-safe:animate-spin"
-              aria-hidden="true"
+        <ChatMessage
+          className="agent-activity-row"
+          data-group-routing
+          data-loading={stage !== "blocked"}
+        >
+          <span className="agent-activity-avatar">
+            <AgentAvatar
+              group
+              members={snapshot.thread.member_agent_ids.flatMap((id) => {
+                const member = snapshot.agents.find((agent) => agent.id === id);
+                return member ? [member] : [];
+              })}
+              threadId={snapshot.thread.id}
+              animated={false}
+              showActivityLabel={false}
+              className="size-8"
             />
-          )}
-          {routingLabels[stage] ?? "Memilih penjawab…"}
-        </p>
+          </span>
+          <MessageContent>
+            <Bubble variant="secondary" className="agent-activity-bubble">
+              <BubbleContent>
+                <ActivityStatus
+                  name={snapshot.thread.name ?? "Group"}
+                  label={routingLabels[stage] ?? "Who’s got this? One sec…"}
+                  loading={stage !== "blocked"}
+                />
+              </BubbleContent>
+            </Bubble>
+          </MessageContent>
+        </ChatMessage>
       )}
       {stage === "blocked" && (
-        <p>{repairMessage(execution?.diagnostic?.code ?? "SERVICE_UNAVAILABLE")}</p>
+        <p>{activityGuidance(execution?.diagnostic?.code ?? "SERVICE_UNAVAILABLE")}</p>
       )}
       {retry && (
         <Button
@@ -63,19 +86,19 @@ export function WorkActivity({
           disabled={busy}
           onClick={() => retryPreparation(retry.runId, retry.revision)}
         >
-          Coba hubungkan router lagi
+          Try connecting again
         </Button>
       )}
       {route && (["rejected", "unknown"].includes(route.state) || stage === "reconcile") && (
         <p role="status">
           {route.state === "unknown" || stage === "reconcile"
-            ? "Hasil routing belum diketahui. Periksa run sebelum melanjutkan."
-            : route.clarification || repairMessage(route.error_code ?? "ROUTING_UNAVAILABLE")}
+            ? "I couldn’t confirm who should reply."
+            : route.clarification || activityGuidance(route.error_code ?? "ROUTING_UNAVAILABLE")}
         </p>
       )}
       {route?.state === "rejected" && (
         <Button size="sm" variant="outline" disabled={busy} onClick={() => retryRoute(route)}>
-          Coba pilih penjawab lagi
+          Try again
         </Button>
       )}
       {!!run?.sources?.length && (

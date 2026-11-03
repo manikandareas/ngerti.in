@@ -191,7 +191,7 @@ test("rejected routing retries the original group message and source attachment"
     .getByLabel("Lampirkan file ke pesan", { exact: true })
     .setInputFiles(documentFile("route-source.txt"));
   await page.getByRole("button", { name: "Kirim", exact: true }).click();
-  const retry = page.getByRole("button", { name: "Coba pilih penjawab lagi", exact: true });
+  const retry = page.getByRole("button", { name: "Try again", exact: true });
   await expect(retry).toBeVisible({ timeout: 20_000 });
   const before = await snapshot(page, group.id);
   const original = before.routes.find((r: { state: string }) => r.state === "rejected");

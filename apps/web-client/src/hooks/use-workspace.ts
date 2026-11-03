@@ -130,6 +130,7 @@ export function useWorkspace(composer: HTMLElement | null) {
     let timer: ReturnType<typeof setTimeout> | undefined;
     let retry: ReturnType<typeof setTimeout> | undefined;
     let failures = 0;
+    let connecting = false;
     let refreshError: unknown;
     const flush = async () => {
       timer = undefined;
@@ -151,11 +152,14 @@ export function useWorkspace(composer: HTMLElement | null) {
       }
     };
     async function connect() {
+      if (connecting || abort.signal.aborted) return;
+      connecting = true;
       try {
         refreshError = undefined;
         // Initial connections and failures reconcile snapshots; normal expiry resumes its cursor.
         if (cursor === 0 || failures) cursor = (await refresh(abort.signal)) ?? cursor;
         if (abort.signal.aborted) return;
+        if (!navigator.onLine) throw new Error("Connection lost. Reconnecting…");
         seenCursor = Math.max(seenCursor, cursor);
         connectionAbort = new AbortController();
         setOnline(true);
@@ -192,21 +196,41 @@ export function useWorkspace(composer: HTMLElement | null) {
         if (!abort.signal.aborted) {
           failures++;
           setOnline(false);
-          setError(failure instanceof Error ? failure.message : "Koneksi terputus");
+          setError(
+            !navigator.onLine
+              ? "Connection lost. Reconnecting…"
+              : failure instanceof Error
+                ? failure.message
+                : "Connection lost. Reconnecting…",
+          );
         }
       }
+      connecting = false;
       if (!abort.signal.aborted)
         retry = setTimeout(
           () => void connect(),
           failures ? Math.min(15_000, 500 * 2 ** (failures - 1)) : 0,
         );
     }
+    const offline = () => {
+      setOnline(false);
+      connectionAbort?.abort();
+    };
+    const online = () => {
+      if (connecting) return;
+      clearTimeout(retry);
+      void connect();
+    };
+    window.addEventListener("offline", offline);
+    window.addEventListener("online", online);
     void connect();
     return () => {
       abort.abort();
       connectionAbort?.abort();
       clearTimeout(retry);
       clearTimeout(timer);
+      window.removeEventListener("offline", offline);
+      window.removeEventListener("online", online);
     };
   }, [refresh, ready]);
 

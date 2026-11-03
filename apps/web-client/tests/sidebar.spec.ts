@@ -143,7 +143,7 @@ for (const mode of ["light", "dark"] as const) {
       },
     ];
     await refreshActivity();
-    await expect(preview(dm.id)).toHaveText("Berpikir");
+    await expect(preview(dm.id)).toHaveText("Thinking it through…");
     await expect(preview(group.id)).toHaveText("Kamu: Latest group message");
     activity = [
       { ...activity[0], status: "queued" },
@@ -165,11 +165,11 @@ for (const mode of ["light", "dark"] as const) {
       },
     ];
     await refreshActivity();
-    await expect(preview(dm.id)).toHaveText("Menunggu giliran");
-    await expect(preview(group.id)).toHaveText("Tobi: Sedang bekerja");
+    await expect(preview(dm.id)).toHaveText("Waiting to start…");
+    await expect(preview(group.id)).toHaveText("Tobi: Working on it…");
     activity[1] = { ...activity[1], waiting_for_user: true };
     await refreshActivity();
-    await expect(preview(group.id)).toHaveText("Tobi: Menunggu kamu");
+    await expect(preview(group.id)).toHaveText("Tobi: Waiting for your reply…");
     await settled(page);
     await page.screenshot({ path: info.outputPath(`sidebar-${mode}-working.png`) });
     activity = [];

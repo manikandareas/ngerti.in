@@ -444,7 +444,7 @@ test("avatar activity follows live refreshes, celebrates once and keeps DM/group
   await expect(header).toHaveAttribute("data-avatar-state", "working");
   await expect(page.locator(".header-identity .agent-avatar")).toHaveAttribute(
     "data-activity-label",
-    "Stop diminta",
+    "Stopping…",
   );
   await change({ status: "unknown", activity: "unknown", waiting_for_user: false });
   await expect(header).toHaveAttribute("data-avatar-state", "error");

@@ -20,6 +20,7 @@ import { referenceFromUrl } from "@/features/conversation/lib/inline-references"
 import { remarkInlineReferences } from "@/features/conversation/lib/remark-inline-references";
 import { blockDirection } from "@/features/conversation/lib/text-direction";
 import type { Snapshot } from "@/types/workspace";
+import { useStreamingText } from "../lib/use-streaming-text";
 import { InlineReferenceChip, useInlineReferences } from "./inline-references";
 
 interface AnswerScope {
@@ -186,16 +187,19 @@ export function MarkdownDocument({ text, openResource, snapshot }: { text: strin
 
 export const Answer = memo(function Answer({
   agentId,
-  text,
+  text: incomingText,
+  streaming = false,
   openResource,
   snapshot,
   sender,
   sentAt,
 }: {
   text: string;
+  streaming?: boolean;
   sentAt?: string;
   sender?: { name: string; style: CSSProperties; open?: () => void };
 } & AnswerScope) {
+  const text = useStreamingText(incomingText, streaming);
   const scope = useMemo(
     () => ({ openResource, snapshot, agentId }),
     [openResource, snapshot, agentId],

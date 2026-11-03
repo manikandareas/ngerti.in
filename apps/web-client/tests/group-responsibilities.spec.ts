@@ -4,8 +4,8 @@ async function verifyTimelineLayout(page: Page, info: TestInfo) {
   const originalViewport = page.viewportSize();
   if (!originalViewport) throw new Error("The layout check needs a fixed test viewport.");
   await page.setViewportSize({ width: originalViewport.width, height: 480 });
-  const handoff = page.locator('[data-conversation-event="handoff"]').last();
-  const alignment = await handoff.evaluate((event) => {
+  const milestone = page.locator('[data-conversation-event="goal"]').last();
+  const alignment = await milestone.evaluate((event) => {
     const row = event.querySelector("[data-conversation-event-row]") as HTMLElement;
     const icon = event.querySelector("[data-conversation-event-icon]") as HTMLElement;
     const label = event.querySelector("[data-conversation-event-label]") as HTMLElement;
@@ -160,10 +160,8 @@ test("group collaboration displays friendly activity and shared goal evidence wi
   await expect(
     page.getByRole("button", { name: "Goal selesai: Shared campaign report", exact: true }),
   ).toBeVisible();
-  await expect(page.locator("[data-collaboration-activity]")).toHaveCount(1);
-  await expect(page.locator("[data-collaboration-activity]")).toContainText(
-    "Prepare the reviewed example",
-  );
+  await expect(page.locator("[data-collaboration-activity]")).toHaveCount(0);
+  await expect(page.locator("body")).not.toContainText("Prepare the reviewed example");
   await expect(page.locator("body")).not.toContainText("INTERNAL_HANDOFF_CANARY_8472");
   await expect(page.locator("body")).not.toContainText("INTERNAL_FINALIZATION_CANARY_8472");
   await expect(page.locator('[data-inline-reference="agent"] .agent-avatar').first()).toBeVisible();
@@ -233,7 +231,7 @@ test("group collaboration displays friendly activity and shared goal evidence wi
   await expect(toggle).not.toBeChecked();
   await page.screenshot({ path: info.outputPath("group-routine-assignment.png") });
   await page.reload();
-  await expect(page.locator("[data-collaboration-activity]")).toHaveCount(1);
+  await expect(page.locator("[data-collaboration-activity]")).toHaveCount(0);
   await expect(
     page.getByRole("button", { name: "Routine dibuat: Check campaign progress", exact: true }),
   ).toBeVisible();

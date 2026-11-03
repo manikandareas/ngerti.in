@@ -71,7 +71,7 @@ test("an idle DM shows its first admitted message directly in the conversation",
   ).toHaveText("Send directly in an idle DM.");
   await expect(page.locator("[data-queued-message]")).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Arahkan sekarang", exact: true })).toHaveCount(0);
-  await expect(page.locator(".message-run-state")).toContainText("Menunggu giliran");
+  await expect(page.locator(".message-run-state")).toContainText("Waiting to start…");
 });
 
 test("event bursts update the conversation without repeatedly reloading global catalogs", async ({
@@ -145,11 +145,11 @@ test("blocked preparation explains readiness and exposes an exact-input retry", 
     headers: { "Idempotency-Key": crypto.randomUUID() },
     data: { agent_id: agent.id, thread_id: thread.id, text: "Keep this original request." },
   });
-  await expect(page.locator(".message-run-state")).toContainText("Agent belum siap");
-  await expect(
-    page.getByRole("button", { name: "Coba hubungkan lagi", exact: true }),
-  ).toBeVisible();
-  await expect(page.locator(".message-diagnostic")).toContainText("Pilih model yang tersedia");
+  await expect(page.locator("[data-agent-activity] [data-activity-text]")).toHaveText(
+    "I couldn’t get started.",
+  );
+  await expect(page.getByRole("button", { name: "Try again", exact: true })).toBeVisible();
+  await expect(page.locator(".message-diagnostic")).toContainText("Choose an available model");
 });
 
 test("queued inputs enter the transcript after the preceding answer, including late answers and reload", async ({
@@ -219,7 +219,7 @@ test("queued inputs enter the transcript after the preceding answer, including l
   await expect(page.locator("[data-queued-message]")).toHaveCount(2);
   phase = "unknown";
   await page.reload();
-  await expect(page.getByRole("button", { name: "Periksa hasil", exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Check status", exact: true })).toBeVisible();
   await expect(page.locator("[data-queued-message]")).toHaveCount(2);
   phase = "next";
   await page.reload();
@@ -691,6 +691,6 @@ test("cancelled opening can continue in the same chat without another opener", a
   expect(state.messages).toHaveLength(1);
   expect(state.runs).toHaveLength(2);
   await expect(page.getByRole("region", { name: /pesan menunggu$/ })).toHaveCount(0);
-  await expect(page.locator(".message-run-state")).toContainText("Menunggu giliran");
-  await expect(page.getByText("Dihentikan", { exact: true })).toHaveCount(0);
+  await expect(page.locator(".message-run-state")).toContainText("Waiting to start…");
+  await expect(page.getByText("Stopped.", { exact: true })).toHaveCount(0);
 });

@@ -93,6 +93,8 @@ export function TimelineActivity({
   parts: ConversationPart[];
   open: (tab: "goals" | "routine", id: string) => void;
 }) {
+  parts = parts.filter((part) => part.kind !== "handoff_requested");
+  if (!parts.length) return null;
   if (parts[0].kind.startsWith("routine_"))
     return (
       <div className="space-y-1">

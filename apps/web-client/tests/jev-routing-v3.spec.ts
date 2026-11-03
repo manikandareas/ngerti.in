@@ -48,13 +48,15 @@ test("a blocked fallback shows its cause and retries the same hidden run across 
   page,
 }, info) => {
   const { group, route } = await setup(page);
-  await expect(page.getByRole("status").filter({ hasText: "Router belum siap" })).toBeVisible();
   await expect(
-    page.getByText("Versi harness terlalu lama. Perbarui harness pada host backend.", {
+    page.getByRole("status").filter({ hasText: "I couldn’t get started." }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("Update your connected app to continue.", {
       exact: true,
     }),
   ).toBeVisible();
-  await expect(page.getByText("Memilih penjawab…", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("Who’s got this? One sec…", { exact: true })).toHaveCount(0);
   const before = (await snapshot(page, group.id)).routes.find(
     (r: { id: string }) => r.id === route.id,
   );
@@ -63,10 +65,10 @@ test("a blocked fallback shows its cause and retries the same hidden run across 
       r.method() === "POST" &&
       r.url().endsWith(`/v1/runs/${before.execution.run_id}/retry-preparation`),
   );
-  await page.getByRole("button", { name: "Coba hubungkan router lagi", exact: true }).click();
+  await page.getByRole("button", { name: "Try connecting again", exact: true }).click();
   expect((await sent).postDataJSON()).toEqual({ expected_revision: before.execution.run_revision });
   await expect(
-    page.getByRole("button", { name: "Coba hubungkan router lagi", exact: true }),
+    page.getByRole("button", { name: "Try connecting again", exact: true }),
   ).toBeEnabled();
   const after = await snapshot(page, group.id);
   expect(after.routes.find((r: { id: string }) => r.id === route.id).execution.run_id).toBe(
@@ -77,7 +79,7 @@ test("a blocked fallback shows its cause and retries the same hidden run across 
   ).toHaveLength(1);
   expect(after.runs).toHaveLength(0);
   await page.reload();
-  await expect(page.getByText("Router belum siap", { exact: true })).toBeVisible();
+  await expect(page.getByText("I couldn’t get started.", { exact: true })).toBeVisible();
   await page.screenshot({ path: info.outputPath("blocked-router.png") });
 });
 
@@ -85,7 +87,7 @@ test("binary repair refreshes the group from hidden-run events without another m
   page,
 }) => {
   const { group, route } = await setup(page);
-  await expect(page.getByText("Router belum siap", { exact: true })).toBeVisible();
+  await expect(page.getByText("I couldn’t get started.", { exact: true })).toBeVisible();
   const before = await snapshot(page, group.id);
   const router = before.routes.find((r: { id: string }) => r.id === route.id);
   const decisions = (await (await page.request.get("/v1/verification/runtime")).json()).decisions;
@@ -101,7 +103,7 @@ test("binary repair refreshes the group from hidden-run events without another m
   expect((await (await page.request.get("/v1/verification/runtime")).json()).decisions).toBe(
     decisions,
   );
-  await expect(page.getByText("Router belum siap", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("I couldn’t get started.", { exact: true })).toHaveCount(0);
 });
 
 test("an unknown native fallback requests reconciliation and exposes no preparation retry", async ({
@@ -109,19 +111,17 @@ test("an unknown native fallback requests reconciliation and exposes no preparat
 }) => {
   await setup(page, true, true);
   await expect(
-    page.getByText("Hasil routing belum diketahui. Periksa run sebelum melanjutkan.", {
+    page.getByText("I couldn’t confirm who should reply.", {
       exact: true,
     }),
   ).toBeVisible();
-  await expect(
-    page.getByRole("button", { name: "Coba hubungkan router lagi", exact: true }),
-  ).toHaveCount(0);
-  await expect(
-    page.getByRole("button", { name: "Coba pilih penjawab lagi", exact: true }),
-  ).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Try connecting again", exact: true })).toHaveCount(
+    0,
+  );
+  await expect(page.getByRole("button", { name: "Try again", exact: true })).toHaveCount(0);
   await page.reload();
   await expect(
-    page.getByText("Hasil routing belum diketahui. Periksa run sebelum melanjutkan.", {
+    page.getByText("I couldn’t confirm who should reply.", {
       exact: true,
     }),
   ).toBeVisible();
@@ -131,7 +131,25 @@ test("semantic review progress updates without exposing private routing input", 
   page,
 }, info) => {
   const { group } = await setup(page, true, false, "reviewing");
-  await expect(page.getByRole("status").filter({ hasText: "Memastikan penerima…" })).toBeVisible();
+  await expect(
+    page.getByRole("status").filter({ hasText: "Who’s got this? One sec…" }),
+  ).toBeVisible();
+  const routing = page.locator("[data-group-routing]");
+  await expect(routing.locator(".agent-activity-avatar .agent-avatar").first()).toBeVisible();
+  await expect(routing.locator("[data-activity-text]")).toHaveAttribute("data-shimmer", "true");
+  expect(
+    await routing
+      .locator("[data-activity-text]")
+      .evaluate((element) => getComputedStyle(element, "::after").animationName),
+  ).toBe("agent-activity-shimmer");
+  const geometry = await routing.evaluate((element) => {
+    const avatar = element.querySelector(".agent-activity-avatar")?.getBoundingClientRect();
+    const bubble = element.querySelector(".agent-activity-bubble")?.getBoundingClientRect();
+    if (!avatar || !bubble) throw new Error("Missing routing bubble or avatar");
+    return { gap: bubble.left - avatar.right, top: Math.abs(bubble.top - avatar.top) };
+  });
+  expect(geometry.gap).toBe(9);
+  expect(geometry.top).toBeLessThanOrEqual(4);
   await expect(page.getByText("PRIVATE_REVIEW_CANARY")).toHaveCount(0);
   await page.screenshot({ path: info.outputPath("semantic-review.png") });
   await post(page, "/v1/verification/runtime", { ready: true });
@@ -142,7 +160,7 @@ test("semantic review progress updates without exposing private routing input", 
       (message: { text: string }) => message.text === "Keep this original group request.",
     ),
   ).toHaveLength(1);
-  await expect(page.getByText("Memastikan penerima…", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("Who’s got this? One sec…", { exact: true })).toHaveCount(0);
 });
 
 test("an unresolved recipient displays the agent's clarification across reload", async ({
@@ -151,7 +169,7 @@ test("an unresolved recipient displays the agent's clarification across reload",
   const { group, route } = await setup(page, true, false, "clarification");
   const question = "Anggota mana yang kamu maksud untuk permintaan ini?";
   await expect(page.getByRole("status").filter({ hasText: question })).toBeVisible();
-  await expect(page.getByText("Memilih penjawab…", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("Who’s got this? One sec…", { exact: true })).toHaveCount(0);
   await page.reload();
   await expect(page.getByRole("status").filter({ hasText: question })).toBeVisible();
   const current = await snapshot(page, group.id);

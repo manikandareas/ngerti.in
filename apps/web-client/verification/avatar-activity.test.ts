@@ -15,16 +15,16 @@ test("activity presentation preserves waiting, stopping and unknown while separa
   expect(avatarActivity({ ...activity, activity: "tool_running" }).state).toBe("working");
   expect(avatarActivity({ ...activity, waiting_for_user: true })).toEqual({
     state: "listening",
-    label: "Menunggu kamu",
+    label: "Waiting for your reply…",
   });
   expect(
     avatarActivity({ ...activity, waiting_for_user: true, status: "cancel_requested" }),
-  ).toEqual({ state: "working", label: "Stop diminta" });
+  ).toEqual({ state: "working", label: "Stopping…" });
   expect(avatarActivity({ ...activity, status: "unknown" })).toEqual({
     state: "error",
-    label: "Hasil belum diketahui",
+    label: "The result needs a check.",
   });
   expect(avatarActivity({ ...activity, status: "succeeded", activity: "idle" }).state).toBe("idle");
   expect(avatarActivity(undefined, true, true).state).toBe("listening");
-  expect(avatarActivity(activity, false).label).toBe("Koneksi terputus");
+  expect(avatarActivity(activity, false).label).toBe("Reconnecting…");
 });

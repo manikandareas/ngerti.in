@@ -118,7 +118,7 @@ export function ContextPanel({
                   showActivityLabel={false}
                   key={member.id}
                   agent={member}
-                  className="size-[52px] rounded-2xl ring-[3px] ring-background"
+                  className="size-[52px] rounded-2xl"
                 />
               ))}
             </div>

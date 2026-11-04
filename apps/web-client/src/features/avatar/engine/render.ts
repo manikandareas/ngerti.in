@@ -23,7 +23,7 @@ export function faceForState(face: AvatarFace, state: AvatarState): AvatarFace {
 
 const furCache = new Map<string, string>();
 
-/** Ivory eye shapes remain readable without a mouth, including at small sizes. */
+/** Dark eye shapes remain readable without a mouth, including at small sizes. */
 function plushEye(x: number, face: AvatarFace, right: boolean, id: string): string {
   const side = right ? 1 : -1;
   let shape: string;
@@ -68,7 +68,7 @@ function plushEye(x: number, face: AvatarFace, right: boolean, id: string): stri
     default:
       shape = pill(10, 17);
   }
-  return `<g transform="translate(${x} ${lift}) rotate(${tilt})"><g data-avatar-eye="${right ? "right" : "left"}" filter="url(#${id}-eye-shadow)"><g fill="url(#${id}-ivory)" stroke="url(#${id}-ivory)" stroke-width="0">${shape}</g></g></g>`;
+  return `<g transform="translate(${x} ${lift}) rotate(${tilt}) scale(1.4)"><g data-avatar-eye="${right ? "right" : "left"}" filter="url(#${id}-eye-shadow)"><g fill="url(#${id}-eye-color)" stroke="url(#${id}-eye-color)" stroke-width="0">${shape}</g></g></g>`;
 }
 
 /** Render a standalone, transparent SVG. User strings never become SVG markup. */
@@ -131,8 +131,14 @@ export function renderAvatarSvg(
 <feTurbulence type="fractalNoise" baseFrequency=".65" numOctaves="3" seed="12" result="noise"/>
 <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G"/>
 </filter>
-<filter id="${id}-eye-shadow" x="-100%" y="-70%" width="300%" height="300%"><feDropShadow dx="1" dy="2" stdDeviation="1.5" flood-color="#211624" flood-opacity=".5"/></filter>
-<linearGradient id="${id}-ivory" x2=".8" y2="1"><stop stop-color="#fffef0"/><stop offset=".55" stop-color="#eee8d6"/><stop offset="1" stop-color="#bfb6a4"/></linearGradient>
+<filter id="${id}-eye-shadow" x="-100%" y="-70%" width="300%" height="300%"><feDropShadow dx="0" dy=".35" stdDeviation=".65" flood-color="#100c14" flood-opacity=".8" result="contact-shadow"/>
+<feGaussianBlur in="SourceAlpha" stdDeviation=".85" result="soft-edge"/>
+<feOffset in="soft-edge" dx="0" dy="1" result="inset-offset"/>
+<feComposite in="SourceAlpha" in2="inset-offset" operator="out" result="inset-edge"/>
+<feFlood flood-color="#08060c" flood-opacity=".85" result="inset-color"/>
+<feComposite in="inset-color" in2="inset-edge" operator="in" result="inset-shadow"/>
+<feMerge><feMergeNode in="contact-shadow"/><feMergeNode in="inset-shadow"/></feMerge></filter>
+<radialGradient id="${id}-eye-color" cx=".32" cy=".24" r=".8"><stop stop-color="#625c68"/><stop offset=".22" stop-color="#302b36"/><stop offset=".6" stop-color="#17131d"/><stop offset="1" stop-color="#0c0911"/></radialGradient>
 <mask id="${id}-fur-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="200" height="200"><path d="${body.path}" fill="white" stroke="white" stroke-width="3" filter="url(#${id}-fuzz)"/></mask>
 <radialGradient id="${gradient}" cx=".32" cy=".2" r=".9"><stop stop-color="${color.base}"/><stop offset=".5" stop-color="${color.base}"/><stop offset="1" stop-color="${color.shade}"/></radialGradient>
 <radialGradient id="${id}-sheen" cx=".28" cy=".15" r=".7"><stop stop-color="#fff" stop-opacity=".4"/><stop offset=".65" stop-color="#fff" stop-opacity="0"/></radialGradient>

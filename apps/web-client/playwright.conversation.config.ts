@@ -18,6 +18,7 @@ export default defineConfig({
     "model-picker.spec.ts",
     "rich-answer.spec.ts",
     "agent-avatar.spec.ts",
+    "avatar-motion.spec.ts",
     "sidebar.spec.ts",
   ],
   workers: 1,

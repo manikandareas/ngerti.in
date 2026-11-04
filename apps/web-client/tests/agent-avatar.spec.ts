@@ -422,6 +422,7 @@ test("avatar activity follows live refreshes, celebrates once and keeps DM/group
   await page.reload();
   const header = page.locator(".header-identity .ngertiin-avatar");
   await expect(header).toHaveAttribute("data-avatar-state", "thinking");
+  await expect(header).toHaveAttribute("data-avatar-loading", "true");
   await expect(header.locator("[data-avatar-surface] image")).toHaveAttribute(
     "href",
     /^data:image\/png;base64,/,
@@ -436,18 +437,27 @@ test("avatar activity follows live refreshes, celebrates once and keeps DM/group
       changes: { soul: agent.soul },
     });
   }
+  await page.getByRole("button", { name: "Detail Tobi", exact: true }).click();
+  const profile = page.getByRole("button", { name: "Sapa Tobi", exact: true });
+  await expect(profile).toBeVisible();
+  const portrait = profile.locator(".ngertiin-avatar");
+  await expect(portrait).toHaveAttribute("data-avatar-loading", "true");
   await change({ ...phase, activity: "tool_running" });
   await expect(header).toHaveAttribute("data-avatar-state", "working");
+  await expect(portrait).toHaveAttribute("data-avatar-loading", "true");
   await change({ ...phase, waiting_for_user: true });
   await expect(header).toHaveAttribute("data-avatar-state", "listening");
+  await expect(portrait).toHaveAttribute("data-avatar-loading", "false");
   await change({ ...phase, status: "cancel_requested" });
   await expect(header).toHaveAttribute("data-avatar-state", "working");
+  await expect(portrait).toHaveAttribute("data-avatar-loading", "true");
   await expect(page.locator(".header-identity .agent-avatar")).toHaveAttribute(
     "data-activity-label",
     "Stopping…",
   );
   await change({ status: "unknown", activity: "unknown", waiting_for_user: false });
   await expect(header).toHaveAttribute("data-avatar-state", "error");
+  await expect(portrait).toHaveAttribute("data-avatar-loading", "false");
   await change({ status: "succeeded", activity: "idle", waiting_for_user: false });
   await expect(header).toHaveAttribute("data-avatar-state", "celebrating");
   await expect(header).toHaveAttribute("data-avatar-state", "idle");
@@ -461,4 +471,17 @@ test("avatar activity follows live refreshes, celebrates once and keeps DM/group
   await expect(
     page.locator(`.header-identity [data-agent-id="${peer.id}"] .ngertiin-avatar`),
   ).toHaveAttribute("data-avatar-state", "idle");
+  await page.locator(".header-identity").click();
+  const groupHero = page.locator(".context-hero");
+  await expect(
+    groupHero.locator(`[data-agent-id="${setup.agent_id}"] .ngertiin-avatar`),
+  ).toHaveAttribute("data-avatar-loading", "true");
+  await expect(groupHero.locator(`[data-agent-id="${peer.id}"] .ngertiin-avatar`)).toHaveAttribute(
+    "data-avatar-loading",
+    "false",
+  );
+  await page.getByRole("button", { name: `Member profile Tobi`, exact: true }).click();
+  await expect(
+    page.getByRole("button", { name: "Sapa Tobi", exact: true }).locator(".ngertiin-avatar"),
+  ).toHaveAttribute("data-avatar-loading", "true");
 });

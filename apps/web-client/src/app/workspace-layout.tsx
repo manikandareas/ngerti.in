@@ -884,6 +884,8 @@ export default function Workspace() {
                     agent={agent}
                     group={snapshot?.thread.type === "group"}
                     members={snapshot?.agents}
+                    animated
+                    followPointer
                     className="size-6 rounded-lg text-xs"
                   />
                   <span className="truncate">
@@ -1010,7 +1012,12 @@ export default function Workspace() {
                   )}
                   {visibleMessages.length === 0 && (
                     <div className="conversation-empty gap-3 [margin:auto] [padding:64px_24px] flex items-center flex-col text-center">
-                      <AgentAvatar agent={agent} className="size-16 rounded-2xl text-2xl" />
+                      <AgentAvatar
+                        agent={agent}
+                        animated
+                        followPointer
+                        className="size-16 rounded-2xl text-2xl"
+                      />
                       <h1>{agent?.name ?? "Percakapan"}</h1>
                       <p>{agent?.soul || "Apa yang ingin kamu kerjakan bersama?"}</p>
                     </div>
@@ -1071,7 +1078,10 @@ export default function Workspace() {
                               <AgentAvatar
                                 agent={author}
                                 className="size-8"
-                                animated={message.state === "partial"}
+                                animated
+                                followPointer
+                                deferred
+                                showLoadingActivity={message.state === "partial"}
                                 state={message.state === "partial" ? undefined : "idle"}
                               />
                             </button>

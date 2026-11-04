@@ -12,7 +12,7 @@ test("edits recognizable shapes, colors and expressions with keyboard support", 
 }) => {
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
-  await expect(page.getByRole("radio")).toHaveCount(28);
+  await expect(page.getByRole("radio")).toHaveCount(22);
   await expect(page.locator('input[name="avatar-shape"]')).toHaveCount(8);
   const oval = page.getByRole("radio", { name: "Oval", exact: true });
   await oval.check();
@@ -57,17 +57,33 @@ test("state, pointer setting and temporary reactions preserve identity", async (
   await expect(hero).not.toHaveAttribute("data-avatar-action", "wink", { timeout: 2500 });
 });
 
-test("gaze follows the pointer and returns to neutral when disabled", async ({ page }) => {
+test("gaze follows a fine pointer and returns to small idle glances when disabled", async ({
+  page,
+}) => {
   const avatar = page.getByRole("button", { name: "Sapa avatar" });
   await avatar.scrollIntoViewIfNeeded();
   const gaze = avatar.locator("[data-avatar-gaze]");
   const initial = await gaze.getAttribute("transform");
   await page.mouse.move(5, 5);
-  await expect.poll(() => gaze.getAttribute("transform")).not.toBe(initial);
+  if (await page.evaluate(() => matchMedia("(hover: hover) and (pointer: fine)").matches)) {
+    await expect.poll(() => gaze.getAttribute("transform")).not.toBe(initial);
+  } else {
+    expect(
+      await gaze.evaluate((element) =>
+        Math.abs((element as SVGGElement).transform.baseVal.consolidate()?.matrix.e ?? 0),
+      ),
+    ).toBeLessThanOrEqual(4.5);
+  }
   await page.getByRole("checkbox", { name: "Ikuti kursor" }).uncheck();
   await avatar.scrollIntoViewIfNeeded();
   await page.mouse.move(100, 100);
-  await expect(gaze).toHaveAttribute("transform", "translate(0.00 0.00)");
+  await expect
+    .poll(() =>
+      gaze.evaluate((element) =>
+        Math.abs((element as SVGGElement).transform.baseVal.consolidate()?.matrix.e ?? 0),
+      ),
+    )
+    .toBeLessThanOrEqual(4.5);
 });
 
 test("PNG/SVG exports are transparent 512px portraits and recipes round trip", async ({ page }) => {
@@ -223,7 +239,9 @@ test("fur expressions stay distinct and reuse the body texture", async ({ page }
   await expect.poll(() => texture.getAttribute("href")).not.toBe(original);
 });
 
-test("visible fur animation updates on each display frame", async ({ page }) => {
+test("active fur animation updates on each display frame", async ({ page }) => {
+  // Continuous motion must stay display-synchronized; identical idle poses need no DOM writes.
+  await page.getByLabel("State agent").selectOption("working");
   const hero = page.locator(".studio-character");
   await hero.scrollIntoViewIfNeeded();
   await expect(hero.locator("[data-avatar-surface] image")).toBeVisible();

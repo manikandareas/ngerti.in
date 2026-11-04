@@ -56,7 +56,8 @@ export function AgentActivityBubble({
           agent={agent}
           state={view.state}
           isLoading={view.isLoading}
-          animated={view.isLoading}
+          animated
+          followPointer
           showActivityLabel={false}
           className="size-8"
         />

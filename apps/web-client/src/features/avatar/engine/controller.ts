@@ -18,6 +18,10 @@ export interface AvatarController {
 
 let nextId = 0;
 
+function writeAttribute(element: Element | null | undefined, name: string, value: string) {
+  if (element && element.getAttribute(name) !== value) element.setAttribute(name, value);
+}
+
 /** Mount the framework-independent engine. Dispose it before removing its host. */
 export function mountAvatar(
   host: HTMLElement,
@@ -49,6 +53,9 @@ export function mountAvatar(
   let targetY = 0;
   let gazeX = 0;
   let gazeY = 0;
+  let headX = 0;
+  let headY = 0;
+  let pointerActive = false;
   let lastTime = 0;
   let action: { type: AvatarAction; started: number } | undefined;
   const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -130,25 +137,41 @@ export function mountAvatar(
         scaleY: loadingPose.scaleY,
       });
       rings?.forEach((ring) => {
-        ring.setAttribute("stroke-dashoffset", String(loadingPose.ringOffset));
+        writeAttribute(ring, "stroke-dashoffset", String(loadingPose.ringOffset));
       });
-      veins?.setAttribute("opacity", String(loadingPose.veinOpacity));
+      writeAttribute(veins, "opacity", String(loadingPose.veinOpacity));
     }
-    const smoothing = 1 - Math.exp(-elapsed / 95);
-    gazeX = reducedMotion ? 0 : gazeX + (targetX - gazeX) * smoothing;
-    gazeY = reducedMotion ? 0 : gazeY + (targetY - gazeY) * smoothing;
-    body?.setAttribute(
+    const focusX = pointerActive ? targetX : pose.gazeX;
+    const focusY = pointerActive ? targetY : pose.gazeY;
+    const smoothing = 1 - Math.exp(-elapsed / 65);
+    const headSmoothing = 1 - Math.exp(-elapsed / 180);
+    gazeX = reducedMotion ? 0 : gazeX + (focusX - gazeX) * smoothing;
+    gazeY = reducedMotion ? 0 : gazeY + (focusY - gazeY) * smoothing;
+    // Eyes find the target first; the head catches up with a smaller, slower turn.
+    headX = reducedMotion ? 0 : headX + (focusX - headX) * headSmoothing;
+    headY = reducedMotion ? 0 : headY + (focusY - headY) * headSmoothing;
+    writeAttribute(
+      body,
       "transform",
-      `translate(${pose.x.toFixed(2)} ${pose.y.toFixed(2)}) translate(100 130) rotate(${pose.rotation.toFixed(2)}) scale(${pose.scaleX.toFixed(3)} ${pose.scaleY.toFixed(3)}) translate(-100 -130)`,
+      `translate(${(pose.x + headX * 2).toFixed(2)} ${(pose.y + headY).toFixed(2)}) translate(100 130) rotate(${(pose.rotation + headX * 5).toFixed(2)}) scale(${(pose.scaleX * (1 - Math.abs(headX) * 0.025)).toFixed(3)} ${pose.scaleY.toFixed(3)}) translate(-100 -130)`,
     );
-    gaze?.setAttribute(
+    writeAttribute(
+      gaze,
       "transform",
-      `translate(${((loading ? 0 : gazeX) * 7).toFixed(2)} ${((loading ? 0 : gazeY) * 5).toFixed(2)})`,
+      `translate(${(gazeX * 13).toFixed(2)} ${(gazeY * 8).toFixed(2)})`,
     );
-    left?.setAttribute("transform", `scale(1 ${pose.eyeLeft.toFixed(3)})`);
-    right?.setAttribute("transform", `scale(1 ${pose.eyeRight.toFixed(3)})`);
-    shadow?.setAttribute("opacity", String(Math.max(0.2, 1 + pose.y / 45)));
-    shadow?.setAttribute("rx", String(60 + pose.y / 2));
+    writeAttribute(
+      left,
+      "transform",
+      `scale(${(1 - Math.max(0, headX) * 0.18).toFixed(3)} ${pose.eyeLeft.toFixed(3)})`,
+    );
+    writeAttribute(
+      right,
+      "transform",
+      `scale(${(1 + Math.min(0, headX) * 0.18).toFixed(3)} ${pose.eyeRight.toFixed(3)})`,
+    );
+    writeAttribute(shadow, "opacity", String(Math.max(0.2, 1 + pose.y / 45)));
+    writeAttribute(shadow, "rx", String(60 + pose.y / 2));
   }
 
   function readConfig(value: AvatarConfig) {
@@ -157,30 +180,18 @@ export function mountAvatar(
     return parsed;
   }
 
-  function lookAt(x: number, y: number) {
+  function lookAt(x: number, y: number, active = true) {
     if (disposed) return;
+    pointerActive = active;
     targetX = Number.isFinite(x) ? Math.max(-1, Math.min(1, x)) : 0;
     targetY = Number.isFinite(y) ? Math.max(-1, Math.min(1, y)) : 0;
   }
 
-  function pointer(event: PointerEvent) {
-    const rect = host.getBoundingClientRect();
-    if (!rect.width || !rect.height) return;
-    lookAt(
-      (event.clientX - rect.x - rect.width / 2) / (rect.width / 2),
-      (event.clientY - rect.y - rect.height / 2) / (rect.height / 2),
-    );
-  }
-  function resetPointer() {
-    lookAt(0, 0);
-  }
   render();
-  const unsubscribe = options.animated === false ? () => {} : subscribeAvatarFrame(host, draw);
-  if (options.followPointer && options.animated !== false) {
-    document.addEventListener("pointermove", pointer, { passive: true });
-    document.addEventListener("pointerleave", resetPointer);
-    window.addEventListener("blur", resetPointer);
-  }
+  const unsubscribe =
+    options.animated === false
+      ? () => {}
+      : subscribeAvatarFrame(host, draw, options.followPointer ? lookAt : undefined);
 
   return {
     setLoading(value) {
@@ -216,9 +227,6 @@ export function mountAvatar(
       if (disposed) return;
       disposed = true;
       unsubscribe();
-      document.removeEventListener("pointermove", pointer);
-      document.removeEventListener("pointerleave", resetPointer);
-      window.removeEventListener("blur", resetPointer);
       host.replaceChildren();
       delete host.dataset.avatarLoading;
       delete host.dataset.avatarState;

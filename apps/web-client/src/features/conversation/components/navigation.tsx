@@ -165,6 +165,8 @@ export function ConversationNavigation({
             >
               <AgentAvatar
                 agent={member}
+                animated
+                followPointer={false}
                 deferred
                 showLoadingActivity
                 threadId={thread.id}

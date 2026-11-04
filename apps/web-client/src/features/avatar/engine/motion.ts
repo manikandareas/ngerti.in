@@ -8,6 +8,34 @@ export interface AvatarPose {
   scaleY: number;
   eyeLeft: number;
   eyeRight: number;
+  gazeX: number;
+  gazeY: number;
+}
+
+const ease = (value: number) => {
+  const p = Math.max(0, Math.min(1, value));
+  return p * p * (3 - 2 * p);
+};
+
+function blinkAt(time: number) {
+  const cycle = Math.floor(time / 12000);
+  const phase = time % 12000;
+  const offset = Math.sin(cycle * 7.31) * 550;
+  const starts = [2100 + offset, 6200 - offset, 10000 + offset * 0.5];
+  if (cycle % 3 === 1) starts.push(6460 - offset);
+  for (const start of starts) {
+    const elapsed = phase - start;
+    if (elapsed < 0 || elapsed > 190) continue;
+    // Eyelids close quickly, then reopen more softly. Occasionally blink twice.
+    const open = elapsed < 55 ? 1 - ease(elapsed / 55) : ease((elapsed - 55) / 135);
+    return 0.06 + open * 0.94;
+  }
+  return 1;
+}
+
+function idleFocus(step: number) {
+  if (step % 4 === 0) return { x: 0, y: 0 };
+  return { x: Math.sin(step * 4.73) * 0.34, y: Math.sin(step * 2.37) * 0.2 };
 }
 
 export const actionDuration: Record<AvatarAction, number> = {
@@ -33,6 +61,8 @@ export function sampleAvatarPose(
     scaleY: 1,
     eyeLeft: 1,
     eyeRight: 1,
+    gazeX: 0,
+    gazeY: 0,
   };
   if (reducedMotion) return pose;
   const t = time / 1000;
@@ -63,10 +93,16 @@ export function sampleAvatarPose(
       pose.x = Math.sin(t * 3) * 1.5;
       break;
   }
-  const blinkCycle = (time + 750) % 4700;
-  const blink = blinkCycle < 140 ? Math.max(0.08, Math.abs(blinkCycle - 70) / 70) : 1;
-  pose.eyeLeft = blink;
-  pose.eyeRight = blink;
+  const focusStep = Math.floor(time / 3600);
+  const previous = idleFocus(focusStep - 1);
+  const next = idleFocus(focusStep);
+  const settle = ease((time % 3600) / 220);
+  if (state !== "sleeping") {
+    pose.gazeX = previous.x + (next.x - previous.x) * settle;
+    pose.gazeY = previous.y + (next.y - previous.y) * settle;
+  }
+  pose.eyeLeft = blinkAt(time);
+  pose.eyeRight = blinkAt(time - 8);
   if (!action || action.progress < 0 || action.progress >= 1) return pose;
   const p = action.progress;
   const envelope = Math.sin(Math.PI * p);

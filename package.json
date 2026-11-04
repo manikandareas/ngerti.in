@@ -6,7 +6,8 @@
     "packages/avatar",
     "apps/server",
     "apps/web",
-    "apps/web-client"
+    "apps/web-client",
+    "apps/desktop"
   ],
   "scripts": {
     "dev": "bun run --filter @ngertiin/server dev",
@@ -25,7 +26,13 @@
     "test:server": "bun run --filter @ngertiin/server test",
     "verify:foundation": "bun scripts/verification/nma047/foundation.ts",
     "setup:machine": "bun apps/server/src/machines/setup.ts",
-    "import:machine": "bun apps/server/src/machines/import.ts"
+    "import:machine": "bun apps/server/src/machines/import.ts",
+    "setup:desktop": "bun apps/desktop/scripts/setup.ts",
+    "dev:desktop": "bun apps/desktop/scripts/dev.ts",
+    "package:desktop": "bun --filter @ngertiin/desktop package",
+    "test:desktop": "bun --filter @ngertiin/desktop test",
+    "typecheck:desktop": "bun --filter @ngertiin/desktop typecheck",
+    "lint:desktop": "bun --filter @ngertiin/desktop lint"
   },
   "engines": {
     "node": ">=22.12"
@@ -34,5 +41,8 @@
     "@biomejs/biome": "2.5.15",
     "axe-core": "^4.14.0",
     "playwright": "^1.64.1"
-  }
+  },
+  "trustedDependencies": [
+    "electron"
+  ]
 }

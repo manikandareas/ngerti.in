@@ -43,3 +43,15 @@ The [implementation ADR](docs/architecture/adr-0001-harness-first-foundation.md)
 The retired `apps/backend` and `apps/engine` directories have been removed, including their local virtual environments, caches, bytecode and downloaded runtime archive. Remaining notices and historical READMEs are preserved in the [retired runtime archive](docs/archive/retired-python-runtime/README.md). Obsolete Python/Hermes source, dependency locks and build/configuration tooling were retired earlier. The [retirement manifest](docs/verification/nma-060/completion/retirement.json) records the exact prior Git revision, verified local archive and file hashes. Historical scripts require that separate historical checkout. Databases, Docker resources, `.env`, runtime state, provenance notices and evidence are untouched. The active server has no Hermes fallback.
 
 Development data does not require a migration from the historical runtime. A different `NGERTIIN_STATE_DIR` creates a fresh development installation. Existing new-runtime state must survive normal restarts; incompatible or foreign-owner databases are refused. Rollback uses a previous Git revision and verified backup, rather than a runtime fallback switch. The engine/API gate is complete; UI implementation and installation on other devices remain separate phases.
+
+## Electron development app
+
+The macOS development desktop reuses the web client and manages the local backend lifecycle:
+
+```sh
+bun run setup:desktop
+bun run dev:desktop
+bun run package:desktop
+```
+
+See [desktop setup and lifecycle](docs/architecture/electron-development.md) and [verification boundaries](docs/verification/electron-development/README.md).

@@ -13,3 +13,7 @@ __pycache__/
 dist/
 .dev/
 .DS_Store
+
+apps/desktop/out/
+apps/desktop/test-results/
+apps/desktop/playwright-report/

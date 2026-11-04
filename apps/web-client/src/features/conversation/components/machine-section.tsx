@@ -25,6 +25,12 @@ export function MachineSection({ agents, cursor }: { agents: Agent[]; cursor: nu
     const timer = setInterval(() => setTick((n) => n + 1), 3000);
     return () => clearInterval(timer);
   }, []);
+  useEffect(() => {
+    return window.ngertiinDesktop?.onVisibility((visible) => {
+      if (!visible) setOpen(false);
+      else setTick((value) => value + 1);
+    });
+  }, []);
   const machine = resource.data;
   const human = machine?.lease.holder === "human";
   const uncertain = machine?.lease.state === "unknown";

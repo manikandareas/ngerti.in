@@ -39,6 +39,7 @@ export function MachineScreen({
           revoke(ticket);
           throw new Error("Control changed. Reconnect the desktop.");
         }
+        window.ngertiinDesktop?.reportComputerView(ticket.interactive, ticket.control_revision);
         setView(ticket);
         renewal = setTimeout(
           () => setAttempt((value) => value + 1),
@@ -52,7 +53,10 @@ export function MachineScreen({
     return () => {
       abort.abort();
       clearTimeout(renewal);
-      if (issued) revoke(issued);
+      if (issued) {
+        window.ngertiinDesktop?.reportComputerView(false, issued.control_revision);
+        revoke(issued);
+      }
     };
   }, [interactive, revision, attempt]);
   return (

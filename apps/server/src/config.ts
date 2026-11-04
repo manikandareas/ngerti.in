@@ -12,10 +12,14 @@ const installationSchema = z.strictObject({
 export function developmentConfig() {
   if ((process.env.APP_ENV ?? "development") !== "development")
     throw new Error("This bootstrap supports development only.");
-  const root = fileURLToPath(new URL("../../../", import.meta.url));
+  const root = resolve(
+    process.env.NGERTIIN_PROJECT_ROOT ?? fileURLToPath(new URL("../../../", import.meta.url)),
+  );
   let rootEnvironment: Record<string, string | undefined> = {};
   try {
-    rootEnvironment = parseEnv(readFileSync(resolve(root, ".env"), "utf8"));
+    rootEnvironment = parseEnv(
+      readFileSync(process.env.NGERTIIN_CONFIG_FILE ?? resolve(root, ".env"), "utf8"),
+    );
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
   }

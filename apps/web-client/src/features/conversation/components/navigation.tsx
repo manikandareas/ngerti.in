@@ -16,6 +16,7 @@ import { NavigationSearch } from "@/features/conversation/components/navigation-
 import { conversationSubtitle } from "@/features/conversation/lib/conversation-subtitle";
 import { cn } from "@/lib/utils";
 import type { Agent, AgentActivity, ConversationPreview, Thread } from "@/types/workspace";
+import { ConversationListSkeleton } from "./conversation-loading";
 
 export function ConversationNavigation({
   agents,
@@ -24,6 +25,7 @@ export function ConversationNavigation({
   previews,
   threadId,
   busy,
+  loading = false,
   createMenu,
   setCreateMenu,
   createAgent,
@@ -39,6 +41,7 @@ export function ConversationNavigation({
   previews: ConversationPreview[];
   threadId: string | null;
   busy: boolean;
+  loading?: boolean;
   createMenu: boolean;
   setCreateMenu: (open: boolean) => void;
   createAgent: () => void;
@@ -132,7 +135,8 @@ export function ConversationNavigation({
         )}
       </div>
       <nav aria-label="Percakapan" className="min-h-0 flex-1 overflow-y-auto">
-        {query && filteredThreads.length === 0 && (
+        {loading && <ConversationListSkeleton />}
+        {!loading && query && filteredThreads.length === 0 && (
           <p role="status" className="px-2 py-6 text-center text-sm text-muted-foreground">
             Tidak ada agent atau grup yang cocok.
           </p>
@@ -162,6 +166,7 @@ export function ConversationNavigation({
               <AgentAvatar
                 agent={member}
                 deferred
+                showLoadingActivity
                 threadId={thread.id}
                 name={name}
                 group={thread.type === "group"}

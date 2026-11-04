@@ -1,5 +1,6 @@
 import { createContext, useContext } from "react";
 import type { AgentActivity } from "@/types/workspace";
+import { activityPresentation } from "../lib/activity-presentation";
 import { avatarActivity } from "../lib/avatar-activity";
 
 export const AvatarActivityContext = createContext<{
@@ -17,6 +18,8 @@ export function useAvatarActivity(agentId?: string, threadId?: string) {
   );
   return {
     activity,
+    isLoading: activityPresentation(activity ?? { status: "idle" }, { online: context.online })
+      .isLoading,
     ...avatarActivity(
       activity,
       context.online,

@@ -43,7 +43,6 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
 import { AgentActivityBubble } from "@/features/conversation/components/agent-activity-bubble";
 import { Answer } from "@/features/conversation/components/answer";
@@ -53,6 +52,11 @@ import {
   type ComposerInputHandle,
 } from "@/features/conversation/components/composer-input";
 import { ContextPanel, type PanelLocation } from "@/features/conversation/components/context-panel";
+import {
+  ConversationActionsSkeleton,
+  ConversationIdentitySkeleton,
+  ConversationLoading,
+} from "@/features/conversation/components/conversation-loading";
 import { CreateGroup } from "@/features/conversation/components/create-group";
 import { HumanReply } from "@/features/conversation/components/human-reply";
 import { AgentAvatar, agentStyle } from "@/features/conversation/components/identity";
@@ -426,6 +430,7 @@ export default function Workspace() {
   }
   const nav = (
     <ConversationNavigation
+      loading={threads.length === 0 && !error}
       agents={agents}
       threads={threads}
       activities={workspace.activity.items}
@@ -843,7 +848,10 @@ export default function Workspace() {
           aria-label="Percakapan aktif"
           data-details={details && !mobile}
         >
-          <header className="workspace-chat-header [grid-template-columns:minmax(0,_1fr)_auto_minmax(0,_1fr)] gap-2.5 [padding:10px_20px] grid items-center shrink-0">
+          <header
+            aria-busy={!snapshot && !error}
+            className={`workspace-chat-header [grid-template-columns:minmax(0,_1fr)_auto_minmax(0,_1fr)] gap-2.5 [padding:10px_20px] grid items-center shrink-0 ${!snapshot && error ? "[&_[data-slot=skeleton]]:animate-none" : ""}`}
+          >
             <Button
               variant="ghost"
               size="icon"
@@ -858,86 +866,96 @@ export default function Workspace() {
               <HugeiconsIcon icon={Menu01Icon} size={18} strokeWidth={1.5} />
             </Button>
             <div className="header-identity-position [grid-column:2] [grid-row:1] [padding-left:0] flex justify-center flex-1 min-w-0">
-              <Button
-                variant="ghost"
-                type="button"
-                onClick={() => {
-                  if (!details) locate({ tab: "detail", id: null });
-                  setDetails((value) => !value);
-                }}
-                disabled={!agent}
-                aria-label={`Detail ${snapshot?.thread.name ?? agent?.name ?? "agent"}`}
-                aria-expanded={details}
-                aria-controls="conversation-details"
-                className="header-action header-identity group gap-2 [max-width:100%] [padding:7.5px_13.5px_7.5px_7.5px] [border-radius:999px] inline-flex items-center min-w-0 font-medium h-auto"
-              >
-                <AgentAvatar
-                  agent={agent}
-                  group={snapshot?.thread.type === "group"}
-                  members={snapshot?.agents}
-                  className="size-6 rounded-lg text-xs"
-                />
-                <span className="truncate">
-                  {snapshot?.thread.name ?? agent?.name ?? "Percakapan"}
-                </span>
-                {!details && (
-                  <span
-                    aria-hidden="true"
-                    className="-ml-2 flex w-0 shrink-0 overflow-hidden opacity-0 transition-[width,margin,opacity] duration-[140ms] group-hover:ml-0 group-hover:w-3 group-hover:opacity-100 group-focus-visible:ml-0 group-focus-visible:w-3 group-focus-visible:opacity-100"
-                  >
-                    <HugeiconsIcon
-                      icon={ArrowRight01Icon}
-                      className="size-3 shrink-0 text-muted-foreground"
-                    />
-                  </span>
-                )}
-                {activeRun && (
-                  <span
-                    role="status"
-                    className="flex items-center gap-1 text-caption text-muted-foreground"
-                  >
-                    <Spinner className="size-3" />
-                    <span className="sr-only">{runStatusLabel(activeRun)}</span>
-                  </span>
-                )}
-              </Button>
-            </div>
-            <div className="header-model-actions col-start-3 row-start-1 flex min-w-0 items-center justify-end gap-3">
-              {snapshot?.thread.type === "group" ? (
+              {snapshot ? (
                 <Button
                   variant="ghost"
-                  className="header-action model-selector rounded-full text-[13px]"
+                  type="button"
                   onClick={() => {
-                    setDetails(true);
-                    locate({ tab: "detail", id: null });
+                    if (!details) locate({ tab: "detail", id: null });
+                    setDetails((value) => !value);
                   }}
+                  disabled={!agent}
+                  aria-label={`Detail ${snapshot?.thread.name ?? agent?.name ?? "agent"}`}
+                  aria-expanded={details}
+                  aria-controls="conversation-details"
+                  className="header-action header-identity group gap-2 [max-width:100%] [padding:7.5px_13.5px_7.5px_7.5px] [border-radius:999px] inline-flex items-center min-w-0 font-medium h-auto"
                 >
-                  Routing otomatis
+                  <AgentAvatar
+                    agent={agent}
+                    group={snapshot?.thread.type === "group"}
+                    members={snapshot?.agents}
+                    className="size-6 rounded-lg text-xs"
+                  />
+                  <span className="truncate">
+                    {snapshot?.thread.name ?? agent?.name ?? "Percakapan"}
+                  </span>
+                  {!details && (
+                    <span
+                      aria-hidden="true"
+                      className="-ml-2 flex w-0 shrink-0 overflow-hidden opacity-0 transition-[width,margin,opacity] duration-[140ms] group-hover:ml-0 group-hover:w-3 group-hover:opacity-100 group-focus-visible:ml-0 group-focus-visible:w-3 group-focus-visible:opacity-100"
+                    >
+                      <HugeiconsIcon
+                        icon={ArrowRight01Icon}
+                        className="size-3 shrink-0 text-muted-foreground"
+                      />
+                    </span>
+                  )}
+                  {activeRun && (
+                    <span
+                      role="status"
+                      className="flex items-center gap-1 text-caption text-muted-foreground"
+                    >
+                      <Spinner className="size-3" />
+                      <span className="sr-only">{runStatusLabel(activeRun)}</span>
+                    </span>
+                  )}
                 </Button>
               ) : (
-                <ModelPicker
-                  key={agent?.id}
-                  className="header-action"
-                  agent={agent}
-                  connections={connections}
-                  refresh={refresh}
-                  report={report}
-                  manageProviders={() => openSettings("providers")}
-                />
+                <ConversationIdentitySkeleton />
               )}
-              <Button
-                variant="ghost"
-                size="icon"
-                className="header-action header-browser-action hidden shrink-0 sm:inline-flex"
-                aria-label="Browser agent"
-                title="Browser agent"
-                onClick={() => {
-                  setDetails(true);
-                  locate({ tab: "computer", id: null });
-                }}
-              >
-                <HugeiconsIcon icon={ComputerIcon} className="size-[18px]" strokeWidth={1.5} />
-              </Button>
+            </div>
+            <div className="header-model-actions col-start-3 row-start-1 flex min-w-0 items-center justify-end gap-3">
+              {snapshot ? (
+                <>
+                  {snapshot?.thread.type === "group" ? (
+                    <Button
+                      variant="ghost"
+                      className="header-action model-selector rounded-full text-[13px]"
+                      onClick={() => {
+                        setDetails(true);
+                        locate({ tab: "detail", id: null });
+                      }}
+                    >
+                      Routing otomatis
+                    </Button>
+                  ) : (
+                    <ModelPicker
+                      key={agent?.id}
+                      className="header-action"
+                      agent={agent}
+                      connections={connections}
+                      refresh={refresh}
+                      report={report}
+                      manageProviders={() => openSettings("providers")}
+                    />
+                  )}
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="header-action header-browser-action hidden shrink-0 sm:inline-flex"
+                    aria-label="Browser agent"
+                    title="Browser agent"
+                    onClick={() => {
+                      setDetails(true);
+                      locate({ tab: "computer", id: null });
+                    }}
+                  >
+                    <HugeiconsIcon icon={ComputerIcon} className="size-[18px]" strokeWidth={1.5} />
+                  </Button>
+                </>
+              ) : (
+                <ConversationActionsSkeleton />
+              )}
             </div>
           </header>
           {error && (
@@ -964,24 +982,7 @@ export default function Workspace() {
             </Alert>
           )}
           {!snapshot ? (
-            <div
-              className="conversation-loading [max-width:var(--chat-column-max)] [margin:auto] [padding:60px_24px] w-full flex-1"
-              role="status"
-              aria-label={error ? "Percakapan belum terhubung" : "Membuka percakapan"}
-            >
-              {error ? (
-                <p className="text-sm text-muted-foreground">
-                  Percakapan akan tersedia setelah koneksi pulih.
-                </p>
-              ) : (
-                <>
-                  <Skeleton className="mb-6 h-12 w-3/5 rounded-2xl" />
-                  <Skeleton className="ml-auto h-10 w-2/5 rounded-2xl" />
-                  <Skeleton className="mt-6 h-24 w-4/5 rounded-2xl" />
-                  <span className="sr-only">Membuka percakapan…</span>
-                </>
-              )}
-            </div>
+            <ConversationLoading error={error} />
           ) : (
             <>
               <Conversation key={threadId} className="conversation-viewport min-h-0">

@@ -48,6 +48,7 @@ export function AgentAvatar({
   interactive = false,
   followPointer = false,
   showActivityLabel = true,
+  showLoadingActivity = false,
   deferred = false,
   isLoading = false,
 }: {
@@ -63,6 +64,7 @@ export function AgentAvatar({
   interactive?: boolean;
   followPointer?: boolean;
   showActivityLabel?: boolean;
+  showLoadingActivity?: boolean;
   deferred?: boolean;
   isLoading?: boolean;
 }) {
@@ -92,7 +94,8 @@ export function AgentAvatar({
   }, [runId, status, waiting]);
   const effectiveState =
     state ?? (celebrating && view.state === "idle" ? "celebrating" : view.state);
-  const animate = animated ?? (isLoading || effectiveState !== "idle");
+  const loading = isLoading || (showLoadingActivity && view.isLoading);
+  const animate = animated ?? (loading || effectiveState !== "idle");
   const Host = interactive && !group ? "button" : "span";
   return (
     <Host
@@ -121,6 +124,7 @@ export function AgentAvatar({
                 animated={animated}
                 deferred={deferred}
                 showActivityLabel={showActivityLabel}
+                showLoadingActivity={showLoadingActivity}
                 className={largeGroup ? "size-8" : "size-[58%]"}
               />
             ))}
@@ -142,7 +146,7 @@ export function AgentAvatar({
           ref={controller}
           config={config}
           state={effectiveState}
-          loading={isLoading}
+          loading={loading}
           size="100%"
           animated={animate}
           deferred={deferred}

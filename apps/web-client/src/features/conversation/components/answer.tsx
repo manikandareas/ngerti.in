@@ -10,6 +10,7 @@ import {
 } from "react";
 import Markdown, { type Components, defaultUrlTransform } from "react-markdown";
 import remarkGfm from "remark-gfm";
+import type { PluggableList } from "unified";
 import { Bubble, BubbleContent } from "@/components/ui/bubble";
 import { AnswerCode } from "@/features/conversation/components/answer-code";
 import { MarkdownTable, plainMarkdown } from "@/features/conversation/components/markdown-table";
@@ -17,7 +18,10 @@ import { MessageTime } from "@/features/conversation/components/message-time";
 import { parseFenceInfo } from "@/features/conversation/lib/code-snippet";
 import { splitReplyBlocks } from "@/features/conversation/lib/formatted-reply";
 import { referenceFromUrl } from "@/features/conversation/lib/inline-references";
-import { remarkInlineReferences } from "@/features/conversation/lib/remark-inline-references";
+import {
+  type MarkdownReferenceOptions,
+  remarkInlineReferences,
+} from "@/features/conversation/lib/remark-inline-references";
 import { blockDirection } from "@/features/conversation/lib/text-direction";
 import type { Snapshot } from "@/types/workspace";
 import { useStreamingText } from "../lib/use-streaming-text";
@@ -140,40 +144,57 @@ const renderers: Components = {
   hr: () => <hr className="border-border/40" />,
 };
 
-function MarkdownBody({ text }: { text: string }) {
+interface MarkdownTextProps {
+  text: string;
+  references?: MarkdownReferenceOptions;
+}
+
+const MarkdownText = memo(
+  function MarkdownText({ text, references }: MarkdownTextProps) {
+    const plugins = useMemo<PluggableList>(
+      () => (references ? [remarkGfm, [remarkInlineReferences, references]] : [remarkGfm]),
+      [references],
+    );
+    return (
+      <div
+        data-message-text
+        className="chat-answer chat-md min-w-0 whitespace-normal break-words text-[15px] leading-[22px] [&>*+*]:mt-2.5 [&_strong]:font-semibold"
+      >
+        <Markdown
+          remarkPlugins={plugins}
+          urlTransform={(url) => (referenceFromUrl(url, "") ? url : defaultUrlTransform(url))}
+          skipHtml
+          components={renderers}
+        >
+          {text}
+        </Markdown>
+      </div>
+    );
+  },
+  (previous, next) =>
+    previous.text === next.text &&
+    JSON.stringify(previous.references) === JSON.stringify(next.references),
+);
+
+const MarkdownBody = memo(function MarkdownBody({ text }: { text: string }) {
   const { identities, skills } = useInlineReferences();
   const { agentId, snapshot } = useContext(AnswerContext);
-  const plugins = useMemo(
-    () =>
-      [
-        remarkGfm,
-        [
-          remarkInlineReferences,
-          {
-            agents: identities,
-            files: snapshot?.artifacts ?? [],
-            skills: agentId ? skills.filter((skill) => skill.agent.id === agentId) : skills,
-          },
-        ],
-      ] as import("unified").PluggableList,
-    [identities, skills, agentId, snapshot?.artifacts],
-  );
-  return (
-    <div
-      data-message-text
-      className="chat-answer chat-md min-w-0 whitespace-normal break-words text-[15px] leading-[22px] [&>*+*]:mt-2.5 [&_strong]:font-semibold"
-    >
-      <Markdown
-        remarkPlugins={plugins}
-        urlTransform={(url) => (referenceFromUrl(url, "") ? url : defaultUrlTransform(url))}
-        skipHtml
-        components={renderers}
-      >
-        {text}
-      </Markdown>
-    </div>
-  );
-}
+  // Parsing depends on aliases and reference targets. Inventory loading, avatar activity,
+  // fresh snapshot objects and duplicate historical actors do not change those meanings.
+  const files = snapshot?.artifacts ?? [];
+  const hasReferences =
+    /(^|[\s(])(?:@|\/[\w-])/u.test(text) || files.some(({ id }) => text.includes(id));
+  const references: MarkdownReferenceOptions | undefined = hasReferences
+    ? {
+        agents: identities.map(({ id, name, handle }) => ({ id, name, handle })),
+        files: files.map(({ id, name }) => ({ id, name })),
+        skills: (agentId ? skills.filter((skill) => skill.agent.id === agentId) : skills).map(
+          ({ reference }) => ({ reference }),
+        ),
+      }
+    : undefined;
+  return <MarkdownText text={text} references={references} />;
+});
 
 /** File previews share the same safe renderers without drawing conversation bubbles. */
 export function MarkdownDocument({ text, openResource, snapshot }: { text: string } & AnswerScope) {

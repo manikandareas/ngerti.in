@@ -1,0 +1,15 @@
+d48402a923287391033def1a63888fe97bee6693da9c0d0f22cbc28bfbb547aa  apps/desktop/assets/app-icon.png
+32ed2a86100d8228112c076087cb727d5e94e129563125ecac773dbf8cbe5de9  apps/desktop/assets/app-icon-macos.png
+5623666608be71e5adff80626e51528c4130a9e1263b19ee12b4b8ae3e6c4e68  apps/desktop/assets/macos-icon-mask.svg
+ce8e5dd578ea304ab1f2ec4c96f75284c7e59333be33f6ea38203de9d6c6cf47  apps/desktop/scripts/build.ts
+48abe28a5fa3dc7fe20338e71550ad5c195da2a2991584b1a2593ca09bdde6a3  apps/desktop/dist/app-icon.png
+be5e5e8cad68d260cbe62143e38d0b6625926de908bd4cdd7200a420f7d1bd0e  apps/desktop/dist/app.icns
+496f7a582c2446daa066afef15cfbfad952e86480d476131c3d19ffc5d0d0048  apps/desktop/out/Ngertiin Dev-darwin-arm64/Ngertiin Dev.app/Contents/Resources/app.asar
+496f7a582c2446daa066afef15cfbfad952e86480d476131c3d19ffc5d0d0048  /Users/vitoandareasmanik/Applications/Ngertiin Dev.app/Contents/Resources/app.asar
+22985a4c60bf94b2e7c851d888fd40ac40fe67d4ae7ffdde9e925dccca2c3ab1  apps/web-client/dist/index.html
+e23997d021c74641827a337bdd0534ba47444f23477f4e592aeeada291e7e161  apps/web-client/src/app/workspace-layout.tsx
+485870ecda71e049740818fe79506b9bfc4006ee38a96c1aa247ddfe3e016d42  apps/web-client/src/features/avatar/engine/clock.ts
+359eefc4b9742be735699278c69a44db71ca46ea65ab2832902c7213b2f4eabf  apps/web-client/src/features/avatar/engine/controller.ts
+b59b1d03e4fbb77dab801c4e268ae68362069b4c0e801aaa5353d79674fc8c8b  apps/web-client/src/features/avatar/engine/texture.ts
+454b4b93e84bfd66bbc5c71a4293b6cf2035f4815ee2dff5e14f8df5f254a17c  apps/web-client/src/features/conversation/components/answer.tsx
+64dee8b16dbf145b4339f2f29f7764c3d964477175f36e8b2afbcf552e477353  apps/web-client/src/components/ai-elements/conversation.tsx

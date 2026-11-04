@@ -2,6 +2,24 @@
 
 Date: 2026-11-04. Target: macOS 26.3 ARM64. Electron 45.2.2, Electron Forge 8.0.1, Bun 1.3.10 and build Node 25.8.0. Backend consumer contract remains 1.30.0; no domain route/schema change was required.
 
+## Icon and interaction update
+
+The subsequent native audit, measured improvements, remaining first-open cost and updated application icon are recorded in [Desktop icon and interaction audit](ui-performance-2026-11-04.md). That report identifies the checks run against the newer build. Initial lifecycle cohort hashes below remain historical; [UI-SHA256SUMS](UI-SHA256SUMS) records the updated installed bundle.
+
+## Cleanup verification
+
+The final source cleanup separates icon generation and startup-page rendering from the Electron bootstrap, consolidates Quit handlers, and replaces the Markdown cache's JSON parsing round trip with typed reference projections. Generated application PNG, ICNS and tray PNG hashes are unchanged from the accepted icon. Four existing legacy connection files received formatting/import-order fixes so the repository root check passes.
+
+- `bun run check`: lint/typechecks and **393 backend tests passed**.
+- `bun test verification` in `apps/web-client`: **44 passed**, including real Markdown rendering and the modal avatar clock regression.
+- Desktop typecheck/lint and **6 process/gateway tests passed**; web-client lint and build passed.
+- Fresh-profile Electron source GUI: **3 passed, 1 skipped** (retained Computer configuration not selected).
+- Fresh-profile packaged GUI: **2 passed, 2 skipped** (Vite is source-only; retained Computer configuration not selected).
+- Frozen installation made no dependency changes. Package build passed. UI large-chunk and Vite script-tag warnings remain documented by their original/cleanup cohorts; deliberate renderer faults can abandon an event stream.
+- Documentation validation retains the same **85 historical broken references (75 unique source/target pairs)**, with no additions relative to the captured pre-cleanup baseline. These reference retired source paths and are outside this cleanup slice.
+
+Temporary profiling entrypoints and the CPU trace were removed. This cleanup's GUI runs use disposable profiles; the installed application and its user data were not replaced during cleanup. Historical native icon/performance observations remain attached to their original artifacts. [Cleanup receipt](cleanup.json), [current source/package hashes](CLEANUP-SHA256SUMS), [source GUI log](cleanup-source-e2e.log), and [packaged GUI log](cleanup-packaged-e2e.log) identify this final validation cohort.
+
 ## Initial lifecycle cohort results
 
 | Layer | Final observed result |

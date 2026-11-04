@@ -1,9 +1,9 @@
 import type { Artifact } from "@/types/work";
 import {
   plainReferenceParts,
-  type ReferenceAgent,
+  type ReferenceAlias,
+  type ReferenceSkill,
   referenceUrl,
-  type SkillOption,
 } from "./inline-references";
 
 interface Node {
@@ -11,6 +11,12 @@ interface Node {
   value?: string;
   children?: Node[];
   url?: string;
+}
+
+export interface MarkdownReferenceOptions {
+  agents: ReferenceAlias[];
+  skills: ReferenceSkill[];
+  files?: Pick<Artifact, "id" | "name">[];
 }
 
 function fileLink(file: Pick<Artifact, "id" | "name">): Node {
@@ -22,15 +28,7 @@ function fileLink(file: Pick<Artifact, "id" | "name">): Node {
 }
 
 /** Operate on Markdown text nodes so links, code and image URLs keep their original meaning. */
-export function remarkInlineReferences({
-  agents,
-  skills,
-  files = [],
-}: {
-  agents: ReferenceAgent[];
-  skills: SkillOption[];
-  files?: Pick<Artifact, "id" | "name">[];
-}) {
+export function remarkInlineReferences({ agents, skills, files = [] }: MarkdownReferenceOptions) {
   return (tree: Node) => {
     function walk(node: Node) {
       if (

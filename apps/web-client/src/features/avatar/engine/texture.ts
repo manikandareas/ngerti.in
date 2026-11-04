@@ -32,19 +32,37 @@ export function loadFurTexture(config: AvatarConfig, textureSize = 768): Promise
 }
 
 async function rasterize(config: AvatarConfig, textureSize: number): Promise<string> {
-  const source = renderAvatarSvg(config, { surfaceOnly: true });
+  const source = renderAvatarSvg(config, { surfaceOnly: true }).replace(
+    'width="200" height="200"',
+    `width="${textureSize}" height="${textureSize}"`,
+  );
   const url = URL.createObjectURL(new Blob([source], { type: "image/svg+xml" }));
+  let bitmap: ImageBitmap | undefined;
   try {
     const image = new Image();
     image.src = url;
     await image.decode();
+    if (typeof createImageBitmap === "function")
+      bitmap = await createImageBitmap(image).catch(() => undefined);
     const canvas = document.createElement("canvas");
     canvas.width = canvas.height = textureSize;
     const context = canvas.getContext("2d");
     if (!context) throw new Error("Avatar texture canvas unavailable.");
-    context.drawImage(image, 0, 0, textureSize, textureSize);
-    return canvas.toDataURL("image/png");
+    context.drawImage(bitmap ?? image, 0, 0, textureSize, textureSize);
+    const blob = await new Promise<Blob>((resolve, reject) =>
+      canvas.toBlob(
+        (value) => (value ? resolve(value) : reject(new Error("Avatar texture encoding failed."))),
+        "image/png",
+      ),
+    );
+    return await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = () => reject(new Error("Avatar texture could not be read."));
+      reader.readAsDataURL(blob);
+    });
   } finally {
+    bitmap?.close();
     URL.revokeObjectURL(url);
   }
 }

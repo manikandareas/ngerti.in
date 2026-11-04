@@ -11,6 +11,8 @@ interface Entry {
 
 const entries = new Set<Entry>();
 let observer: IntersectionObserver | undefined;
+let modalObserver: MutationObserver | undefined;
+let modal: Element | undefined;
 let media: MediaQueryList | undefined;
 let pointerMedia: MediaQueryList | undefined;
 let pointer: { x: number; y: number } | undefined;
@@ -37,10 +39,24 @@ function invalidatePointerBounds() {
   pointerVersion++;
 }
 
+function canDraw(entry: Entry) {
+  return entry.visible && (!modal || modal.contains(entry.element));
+}
+
+function refreshModal() {
+  const dialogs = document.querySelectorAll(
+    '[role="dialog"][data-state="open"], [role="alertdialog"][data-state="open"]',
+  );
+  const next = dialogs[dialogs.length - 1];
+  if (next === modal) return;
+  modal = next;
+  refresh();
+}
+
 function drawVisible(now: number, reducedMotion: boolean) {
   // Read all visible bounds before any SVG writes, once per frame rather than per pointer event.
   for (const entry of entries) {
-    if (!entry.visible || !entry.gaze) continue;
+    if (!canDraw(entry) || !entry.gaze) continue;
     if (entry.pointerVersion === pointerVersion && now - entry.boundsReadAt < 250) continue;
     entry.pointerVersion = pointerVersion;
     entry.boundsReadAt = now;
@@ -57,7 +73,7 @@ function drawVisible(now: number, reducedMotion: boolean) {
     );
   }
   for (const entry of entries) {
-    if (entry.visible) entry.frame(now, reducedMotion);
+    if (canDraw(entry)) entry.frame(now, reducedMotion);
   }
 }
 
@@ -70,7 +86,7 @@ function tick(now: number) {
 function schedule() {
   if (request || document.hidden || media?.matches) return;
   for (const entry of entries) {
-    if (entry.visible) {
+    if (canDraw(entry)) {
       request = requestAnimationFrame(tick);
       return;
     }
@@ -91,6 +107,15 @@ export function subscribeAvatarFrame(element: Element, frame: Frame, gaze?: Gaze
     media = matchMedia("(prefers-reduced-motion: reduce)");
     media.addEventListener("change", refresh);
     document.addEventListener("visibilitychange", refresh);
+    // Modal backgrounds remain intersecting. Stop their SVG work behind scrims and blur.
+    modalObserver = new MutationObserver(refreshModal);
+    modalObserver.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["data-state"],
+    });
+    refreshModal();
     if (typeof IntersectionObserver !== "undefined") {
       observer = new IntersectionObserver((changes) => {
         for (const change of changes) {
@@ -124,7 +149,7 @@ export function subscribeAvatarFrame(element: Element, frame: Frame, gaze?: Gaze
   };
   entries.add(entry);
   observer?.observe(element);
-  frame(performance.now(), media?.matches ?? false);
+  if (canDraw(entry)) frame(performance.now(), media?.matches ?? false);
   schedule();
   return () => {
     observer?.unobserve(element);
@@ -144,6 +169,9 @@ export function subscribeAvatarFrame(element: Element, frame: Frame, gaze?: Gaze
       request = 0;
       observer?.disconnect();
       observer = undefined;
+      modalObserver?.disconnect();
+      modalObserver = undefined;
+      modal = undefined;
       media?.removeEventListener("change", refresh);
       document.removeEventListener("visibilitychange", refresh);
       media = undefined;

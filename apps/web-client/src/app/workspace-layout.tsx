@@ -17,6 +17,7 @@ import {
   useCallback,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -475,16 +476,16 @@ export default function Workspace() {
     setDraft(text);
     setDetails(false);
   }
-  function openResource(kind: "agent" | "files" | "goals" | "routine", id: string) {
-    locate(
-      kind === "files"
-        ? { tab: "library", id }
-        : kind === "agent"
-          ? { tab: "detail", id: snapshot?.thread.type === "group" ? id : null }
-          : { tab: "detail", page: kind, id },
-    );
-    setDetails(true);
-  }
+  const openResource = useCallback(
+    (kind: "agent" | "files" | "goals" | "routine", id: string) => {
+      if (kind === "files") locate({ tab: "library", id });
+      else if (kind === "agent")
+        locate({ tab: "detail", id: snapshot?.thread.type === "group" ? id : null });
+      else locate({ tab: "detail", page: kind, id });
+      setDetails(true);
+    },
+    [snapshot?.thread.type],
+  );
   async function source(id?: string) {
     setDetails(false);
     if (!id || !threadId) return;
@@ -530,19 +531,28 @@ export default function Workspace() {
       closeLabel={mobile ? "Close" : "Tutup detail"}
     />
   ) : null;
-  const messages = [
-    ...older.filter((m) => !snapshot?.messages.some((current) => current.id === m.id)),
-    ...(snapshot?.timeline.messages ?? []),
-    ...(snapshot?.messages ?? []),
-  ];
+  const messages = useMemo(
+    () => [
+      ...older.filter((m) => !snapshot?.messages.some((current) => current.id === m.id)),
+      ...(snapshot?.timeline.messages ?? []),
+      ...(snapshot?.messages ?? []),
+    ],
+    [older, snapshot?.messages, snapshot?.timeline.messages],
+  );
   function hasPendingNative(run: Run) {
     return (run.native_interactions ?? []).some(
       (record) => record.observed_state === "pending" && record.submission?.state !== "submitted",
     );
   }
-  const parts = [...olderParts, ...(snapshot?.timeline.parts ?? [])];
-  const entries = conversationEntries(parts, messages);
-  const activityByEntry = conversationActivity(snapshot, entries);
+  const parts = useMemo(
+    () => [...olderParts, ...(snapshot?.timeline.parts ?? [])],
+    [olderParts, snapshot?.timeline.parts],
+  );
+  const entries = useMemo(() => conversationEntries(parts, messages), [parts, messages]);
+  const activityByEntry = useMemo(
+    () => conversationActivity(snapshot, entries),
+    [snapshot, entries],
+  );
   function activityAfter(entryId: string) {
     if (!snapshot) return null;
     return activityByEntry.get(entryId)?.map((run) => {

@@ -98,11 +98,13 @@ export function referenceTarget(text: string): string | null {
 
 export type ReferenceAgent = Pick<Agent, "id" | "name" | "handle" | "avatar_config"> &
   Partial<Pick<Agent, "system_role">>;
+export type ReferenceAlias = Pick<ReferenceAgent, "id" | "name" | "handle">;
+export type ReferenceSkill = Pick<SkillOption, "reference">;
 
 function resolvePlainReference(
   token: string,
-  aliases: Map<string, ReferenceAgent[]>,
-  skills: SkillOption[],
+  aliases: Map<string, ReferenceAlias[]>,
+  skills: ReferenceSkill[],
 ): InlineReference | undefined {
   if (token.toLocaleLowerCase() === "@user") return { kind: "user", id: "owner", label: "@user" };
   if (token.startsWith("@")) {
@@ -119,8 +121,12 @@ function resolvePlainReference(
 }
 
 /** Resolve only unambiguous known aliases; protected Markdown, URLs and paths stay literal. */
-export function plainReferenceParts(text: string, agents: ReferenceAgent[], skills: SkillOption[]) {
-  const aliases = new Map<string, ReferenceAgent[]>();
+export function plainReferenceParts(
+  text: string,
+  agents: ReferenceAlias[],
+  skills: ReferenceSkill[],
+) {
+  const aliases = new Map<string, ReferenceAlias[]>();
   for (const agent of agents) {
     for (const alias of new Set(
       [agent.name, agent.handle]

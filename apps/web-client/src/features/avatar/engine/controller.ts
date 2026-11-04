@@ -56,6 +56,9 @@ export function mountAvatar(
   let headX = 0;
   let headY = 0;
   let pointerActive = false;
+  // Small idle portraits retain blinking and gaze without repainting every body on every frame.
+  const width = host.getBoundingClientRect().width;
+  const compact = width < 48;
   let lastTime = 0;
   let action: { type: AvatarAction; started: number } | undefined;
   const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -67,8 +70,9 @@ export function mountAvatar(
       textureKey = furTextureKey(config);
       textureHref = "";
       const requestedKey = textureKey;
-      const pixels = host.getBoundingClientRect().width * (window.devicePixelRatio || 1);
-      const textureSize = Math.min(768, Math.max(128, 2 ** Math.ceil(Math.log2(pixels || 64))));
+      const pixels = width * (window.devicePixelRatio || 1);
+      // Sidebar, header and detail portraits share a Retina-ready texture for the same identity.
+      const textureSize = Math.min(768, Math.max(256, 2 ** Math.ceil(Math.log2(pixels || 64))));
       void loadFurTexture(config, textureSize)
         .then((href) => {
           if (disposed || textureKey !== requestedKey) return;
@@ -128,6 +132,10 @@ export function mountAvatar(
         : undefined,
       reducedMotion,
     );
+    if (compact && state === "idle" && !action && !loading) {
+      pose.x = pose.y = pose.rotation = 0;
+      pose.scaleX = pose.scaleY = 1;
+    }
     if (loading) {
       Object.assign(pose, {
         x: loadingPose.x,

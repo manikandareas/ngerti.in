@@ -1,4 +1,4 @@
-import { File02Icon, PencilEdit01Icon, UserGroupIcon } from "@hugeicons/core-free-icons";
+import { PencilEdit01Icon, UserGroupIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -11,14 +11,12 @@ export function GroupPanel({
   snapshot,
   agents,
   refresh,
-  compose,
   initialMember,
   selectMember,
 }: {
   snapshot: Snapshot;
   agents: Agent[];
   refresh: () => Promise<unknown>;
-  compose: (text: string) => void;
   initialMember?: string | null;
   selectMember: (id: string | null) => void;
 }) {
@@ -61,20 +59,6 @@ export function GroupPanel({
     );
   return (
     <div className="context-section space-y-3.5 pt-3.5">
-      <PanelCard>
-        <PanelNavRow
-          title="Shared goals and instructions"
-          hint={
-            <span className="line-clamp-2">
-              {snapshot.thread.shared_instructions ||
-                "Describe what you want to work on together in chat."}
-            </span>
-          }
-          icon={File02Icon}
-          aria-label="Edit in chat"
-          onClick={() => compose("Help update this group’s shared goals and instructions: ")}
-        />
-      </PanelCard>
       <PanelCard label={`Members · ${snapshot.agents.length}`}>
         {snapshot.agents.map((a) => (
           <PanelNavRow

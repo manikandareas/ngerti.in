@@ -919,18 +919,7 @@ export default function Workspace() {
             <div className="header-model-actions col-start-3 row-start-1 flex min-w-0 items-center justify-end gap-3">
               {snapshot ? (
                 <>
-                  {snapshot?.thread.type === "group" ? (
-                    <Button
-                      variant="ghost"
-                      className="header-action model-selector rounded-full text-[13px]"
-                      onClick={() => {
-                        setDetails(true);
-                        locate({ tab: "detail", id: null });
-                      }}
-                    >
-                      Routing otomatis
-                    </Button>
-                  ) : (
+                  {snapshot.thread.type === "dm" && (
                     <ModelPicker
                       key={agent?.id}
                       className="header-action"

@@ -81,7 +81,6 @@ export function ContextPanel({
       snapshot={snapshot}
       agents={agents}
       refresh={refresh}
-      compose={compose}
     />
   );
   return (

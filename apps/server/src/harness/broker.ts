@@ -11,7 +11,7 @@ import { InteractionJournal } from "../runs/interaction-journal";
 import { canonical } from "../store";
 import { Workspaces } from "../workspaces/service";
 import { detectHarness, type HarnessId, requireAvailable } from "./availability";
-import type { HarnessAdapter, HarnessClient, ToolLease } from "./client";
+import type { HarnessAdapter, HarnessClient, RecoveryObservation, ToolLease } from "./client";
 import { Connections } from "./connections";
 import type { CredentialContexts, LaunchContext } from "./context";
 import {
@@ -26,6 +26,7 @@ import {
 } from "./contracts";
 import { persistInheritedSkills } from "./inherited-skills";
 import { runLearningContext, sessionInstructions } from "./instructions";
+import { type RecoveryPolicy, RunRecovery } from "./recovery";
 import type { HarnessDetector } from "./runtime";
 import type { ProductTools } from "./tools";
 
@@ -82,6 +83,9 @@ export class HarnessBroker {
   readonly #controls = new Map<string, Promise<Entity<"control">>>();
   readonly #recovering = new Map<string, Promise<Entity<"run">>>();
   readonly #recoveryControllers = new Set<AbortController>();
+  readonly #recovery: RunRecovery;
+  readonly #closingWriters = new Map<string, { client: HarnessClient; done?: Promise<void> }>();
+  #recoveryError: (runId: string, code: string) => void = () => {};
   #closed = false;
   #warming = false;
   readonly #idleTimers = new Map<string, ReturnType<typeof setTimeout>>();
@@ -101,9 +105,21 @@ export class HarnessBroker {
       outcome?: string,
     ) => void = () => {},
     private readonly timeouts = { request_ms: 30_000, close_ms: 1000 },
+    recoveryPolicy: Partial<RecoveryPolicy> = {},
   ) {
     this.connections = new Connections(lifecycle);
     this.#interactionJournal = new InteractionJournal(lifecycle.store);
+    this.#recovery = new RunRecovery(
+      lifecycle.store,
+      (runId) =>
+        this.reconcile(runId).catch((error) => {
+          if (!this.#closed && this.lifecycle.store.get("run", runId).status === "unknown")
+            this.lifecycle.recordDiagnostic(runId, diagnostic(error));
+          throw error;
+        }),
+      recoveryPolicy,
+      (runId, error) => this.#recoveryError(runId, diagnostic(error).code),
+    );
     for (const [id, adapter] of Object.entries(adapters))
       if (adapter?.harness !== id) throw new Error("Adapter identity mismatch.");
   }
@@ -577,11 +593,54 @@ export class HarnessBroker {
       });
     }
   }
+  startRecovery(report: (runId: string, code: string) => void = () => {}) {
+    this.#recoveryError = report;
+    this.#recovery.start();
+  }
   private async readReceipt(runId: string) {
     const run = this.lifecycle.store.get("run", runId);
     if (run.status !== "unknown") return run;
+    await this.closeWriter(runId);
+    const receipt = await this.inspectReceipt(run);
+    const current = this.lifecycle.store.get("run", runId);
+    if (!receipt || current.status !== "unknown") return current;
+    if (receipt.status === "unknown") return current;
+    if (receipt.status === "cancelled" && current.cancellation !== "requested") return current;
+    return this.lifecycle.reconcile(
+      current.id,
+      current.revision,
+      receipt.status,
+      `native-receipt:${current.id}:${receipt.native_run_id}:${receipt.status}`,
+      receipt.text,
+      receipt.native_run_id,
+    );
+  }
+  private async closeWriter(runId: string, client?: HarnessClient) {
+    let writer = this.#closingWriters.get(runId);
+    if (!writer && client) {
+      writer = { client };
+      this.#closingWriters.set(runId, writer);
+    }
+    if (!writer) return;
+    const current = writer;
+    current.done ??= Promise.resolve()
+      .then(() => current.client.close())
+      .then(
+        () => {
+          if (this.#closingWriters.get(runId) === current) this.#closingWriters.delete(runId);
+        },
+        (error) => {
+          current.done = undefined;
+          throw error;
+        },
+      );
+    // A timeout retains the same writer and close promise for the next receipt check.
+    // A terminal model receipt alone cannot release a still-live shared writer.
+    await bounded(current.done, this.timeouts.close_ms);
+  }
+  private async inspectReceipt(run: Entity<"run">): Promise<RecoveryObservation | null> {
     const nativeId = run.native_run_id ?? run.native_dispatch_id;
-    if (!nativeId || !run.binding_id || !run.agent_snapshot) return run;
+    if (!nativeId || !run.binding_id || !run.agent_snapshot) return null;
     const binding = this.lifecycle.store.get("binding", run.binding_id);
     const connection = this.connections.get(binding.connection_id);
     if (connection.state !== "active") throw new DomainError("SCOPE_DENIED", 403);
@@ -636,19 +695,10 @@ export class HarnessBroker {
         throw new DomainError("STALE_DISPATCH");
       if (
         receipt.native_session_id !== binding.native_session_id ||
-        receipt.native_run_id !== nativeId ||
-        receipt.status === "unknown"
+        receipt.native_run_id !== nativeId
       )
-        return this.lifecycle.store.get("run", runId);
-      if (receipt.status === "cancelled" && run.cancellation !== "requested") return run;
-      return this.lifecycle.reconcile(
-        run.id,
-        run.revision,
-        receipt.status,
-        `native-receipt:${run.id}:${nativeId}:${receipt.status}`,
-        launch.redactor.text(receipt.text),
-        nativeId,
-      );
+        return null;
+      return { ...receipt, text: launch.redactor.text(receipt.text) };
     } finally {
       controller.abort();
       this.#recoveryControllers.delete(controller);
@@ -773,6 +823,8 @@ export class HarnessBroker {
     let dispatched = false;
     let accepted: string | null = null;
     let finished = false;
+    let recoveredNative = false;
+    let removeWatch = () => {};
     let outcome: "succeeded" | "failed" | "cancelled" | "unknown" = "unknown";
     let text = "";
     let lastPublishedAt = 0;
@@ -866,9 +918,35 @@ export class HarnessBroker {
         outcome = "cancelled";
         return outcome;
       }
+      let recovered: (receipt: RecoveryObservation) => void = () => {};
+      const recoveryResult = new Promise<RecoveryObservation>((resolve) => {
+        recovered = resolve;
+      });
+      const watch = this.#recovery.watch(run.id, async () => {
+        if (finished || this.#closed) return;
+        const current = this.lifecycle.store.get("run", run.id);
+        if (!["running", "cancel_requested"].includes(current.status)) return;
+        const receipt = await this.inspectReceipt(current);
+        if (finished || this.#closed || !receipt || receipt.status === "unknown") return;
+        const latest = this.lifecycle.store.get("run", run.id);
+        if (
+          latest.dispatch_token !== run.dispatch_token ||
+          !["running", "cancel_requested"].includes(latest.status) ||
+          (receipt.status === "cancelled" && latest.cancellation !== "requested")
+        )
+          return;
+        // Resolve through execute's normal publication/transport-close/settlement path.
+        // A receipt never starts or resumes a model turn, nor cancels a long valid run.
+        recoveredNative = true;
+        finished = true;
+        text = receipt.text;
+        recovered(receipt);
+      });
+      removeWatch = watch.dispose;
       dispatched = true;
       const observation = await Promise.race([
         stopResult,
+        recoveryResult,
         session.client.prompt({
           identity: { native_session_id: session.binding.native_session_id },
           run_id: run.id,
@@ -883,6 +961,7 @@ export class HarnessBroker {
           onEvent: (raw) => {
             if (finished || this.#closed) return;
             const event = nativeEvent.parse(raw);
+            watch.observe();
             if (event.type === "accepted") {
               if (
                 event.native_session_id !== session.binding.native_session_id ||
@@ -1003,18 +1082,19 @@ export class HarnessBroker {
         this.lifecycle.observe(run.id, run.dispatch_token, { diagnostic: diagnostic(error) });
     } finally {
       finished = true;
+      removeWatch();
       removeAbort();
       clearTimeout(stopTimer);
       lease?.revoke();
       const groupWorkspace = run.workspace_id
         ? this.lifecycle.store.get("workspace", run.workspace_id).scope === "group"
         : false;
-      if (groupWorkspace) {
+      if (groupWorkspace || recoveredNative) {
         const session = this.#sessions.get(`${run.thread_id}:${run.agent_id}`);
         if (session) {
           // End the writer process before the application's durable workspace lease can settle.
           try {
-            await bounded(session.client.close(), this.timeouts.close_ms);
+            await this.closeWriter(run.id, session.client);
           } catch {
             outcome = "unknown";
           }
@@ -1045,7 +1125,9 @@ export class HarnessBroker {
       }
       if (
         !this.#closed &&
-        (groupWorkspace || this.lifecycle.store.get("thread", run.thread_id).purpose === "routing")
+        (groupWorkspace ||
+          recoveredNative ||
+          this.lifecycle.store.get("thread", run.thread_id).purpose === "routing")
       ) {
         const key = `${run.thread_id}:${run.agent_id}`;
         const session = this.#sessions.get(key);
@@ -1054,7 +1136,7 @@ export class HarnessBroker {
           clearTimeout(this.#idleTimers.get(key));
           this.#idleTimers.delete(key);
           session.controller.abort();
-          await bounded(session.client.close(), this.timeouts.close_ms).catch(() => {});
+          await this.closeWriter(run.id, session.client).catch(() => {});
         }
       }
     }
@@ -1062,6 +1144,7 @@ export class HarnessBroker {
   }
   async close() {
     if (this.#closed) return;
+    this.#recovery.close();
     this.#interactionJournal.recover();
     for (const control of this.lifecycle.store.list("control"))
       if (control.state === "requested")
@@ -1076,10 +1159,12 @@ export class HarnessBroker {
       () => {},
     );
     await Promise.allSettled(
-      [...this.#sessions.values()].map((session) =>
-        bounded(session.client.close(), this.timeouts.close_ms),
-      ),
+      [
+        ...[...this.#sessions.values()].map((session) => session.client),
+        ...[...this.#closingWriters.values()].map((writer) => writer.client),
+      ].map((client) => bounded(client.close(), this.timeouts.close_ms)),
     );
     this.#sessions.clear();
+    this.#closingWriters.clear();
   }
 }

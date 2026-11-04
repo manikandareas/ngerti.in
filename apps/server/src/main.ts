@@ -74,7 +74,19 @@ const app = createApi(lifecycle, background, config.token, {
 try {
   app.listen({ hostname: "127.0.0.1", port: config.port });
   background.start();
-  void machines.recover().then(() => broker.recover());
+  void machines.recover().then(() =>
+    broker.startRecovery((runId, code) => {
+      const run = store.get("run", runId);
+      console.error(
+        JSON.stringify({
+          event: "harness.recovery.error",
+          run_id: runId,
+          thread_id: run.thread_id,
+          code,
+        }),
+      );
+    }),
+  );
 } catch (error) {
   store.close();
   throw error;

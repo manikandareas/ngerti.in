@@ -967,14 +967,7 @@ export default function Workspace() {
             >
               <AlertDescription className="flex flex-wrap items-center gap-2">
                 <span>{error}</span>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => {
-                    workspace.retry();
-                    void refresh().catch((e) => report(e.message));
-                  }}
-                >
+                <Button size="sm" variant="outline" onClick={workspace.retry}>
                   Coba hubungkan lagi
                 </Button>
                 <Button size="sm" variant="ghost" onClick={() => openSettings()}>

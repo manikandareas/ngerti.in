@@ -13,6 +13,7 @@ export default defineConfig({
   testDir: "./tests",
   testMatch: [
     "conversation.spec.ts",
+    "conversation-recovery.spec.ts",
     "activity.spec.ts",
     "preparation.spec.ts",
     "model-picker.spec.ts",

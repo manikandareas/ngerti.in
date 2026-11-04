@@ -5,29 +5,61 @@ export class ApiError extends Error {
     this.code = code;
   }
 }
+async function withAbort<T>(signal: AbortSignal, operation: () => Promise<T>): Promise<T> {
+  signal.throwIfAborted();
+  let abort = () => {};
+  const cancelled = new Promise<never>((_resolve, reject) => {
+    abort = () => reject(signal.reason);
+    signal.addEventListener("abort", abort, { once: true });
+  });
+  try {
+    return await Promise.race([operation(), cancelled]);
+  } finally {
+    signal.removeEventListener("abort", abort);
+  }
+}
 export async function request<T>(
   path: string,
   body?: unknown,
   key?: string,
   signal?: AbortSignal,
+  timeoutMs = body === undefined ? 15_000 : 30_000,
 ): Promise<T> {
-  const response = await fetch(path, {
-    method: body === undefined ? "GET" : "POST",
-    signal,
-    headers:
-      body === undefined
-        ? {}
-        : { "Content-Type": "application/json", ...(key ? { "Idempotency-Key": key } : {}) },
-    body: body === undefined ? undefined : JSON.stringify(body),
-  });
-  const value = await response.json().catch(() => null);
-  if (!response.ok)
-    throw new ApiError(
-      value?.error?.code ?? "API_UNAVAILABLE",
-      value?.error?.message ??
-        "Backend belum dapat dihubungi. Periksa service lokal lalu coba lagi.",
-    );
-  return value as T;
+  const deadline = new AbortController();
+  const connection = signal ? AbortSignal.any([signal, deadline.signal]) : deadline.signal;
+  const timer = setTimeout(
+    () => deadline.abort(new Error("Request timed out. Reconnecting…")),
+    timeoutMs,
+  );
+  try {
+    return await withAbort(connection, async () => {
+      const response = await fetch(path, {
+        method: body === undefined ? "GET" : "POST",
+        signal: connection,
+        cache: "no-store",
+        headers:
+          body === undefined
+            ? {}
+            : { "Content-Type": "application/json", ...(key ? { "Idempotency-Key": key } : {}) },
+        body: body === undefined ? undefined : JSON.stringify(body),
+      });
+      const value = await response.json().catch(() => {
+        connection.throwIfAborted();
+        if (response.ok)
+          throw new ApiError("INVALID_RESPONSE", "Invalid server response. Reconnecting…");
+        return null;
+      });
+      if (!response.ok)
+        throw new ApiError(
+          value?.error?.code ?? "API_UNAVAILABLE",
+          value?.error?.message ??
+            "Backend belum dapat dihubungi. Periksa service lokal lalu coba lagi.",
+        );
+      return value as T;
+    });
+  } finally {
+    clearTimeout(timer);
+  }
 }
 export function command<T>(path: string, body: unknown = {}) {
   return request<T>(path, body, crypto.randomUUID());
@@ -103,7 +135,7 @@ export async function followEvents(
       inactivityMs,
     );
     try {
-      return await operation();
+      return await withAbort(connection, operation);
     } finally {
       clearTimeout(timer);
     }
@@ -140,7 +172,8 @@ export async function followEvents(
       }
     }
   } finally {
-    await reader.cancel().catch(() => {});
+    // A broken stream's cancellation must not hold the next connection hostage.
+    void reader.cancel().catch(() => {});
     reader.releaseLock();
   }
 }

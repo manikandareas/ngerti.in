@@ -1,0 +1,161 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4311" --strictPort
+[WebServer] (node:73277) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 40 tests using 1 worker
+
+(node:73280) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop] › tests/activity.spec.ts:110:1 › DM activity updates one bubble, follows streaming output and survives reload without technical text (5.2s)
+  ✓   2 [desktop] › tests/activity.spec.ts:214:1 › group activity belongs to each working agent and hands off without idle member bubbles (6.0s)
+  ✓   3 [desktop] › tests/activity.spec.ts:267:1 › a dark tablet DM keeps its avatar and bubble geometry stable when loading stops (6.9s)
+  ✓   4 [desktop] › tests/activity.spec.ts:315:1 › waiting, uncertain results, confirmed stop and reduced motion never imply active thinking (8.2s)
+  ✓   5 [desktop] › tests/activity.spec.ts:367:1 › streamed bursts settle promptly, preserve emoji and flush completed replies (6.0s)
+  ✓   6 [desktop] › tests/conversation.spec.ts:36:1 › switching conversations keeps exactly one attachment button and editor (6.3s)
+  ✓   7 [desktop] › tests/conversation.spec.ts:61:1 › an idle DM shows its first admitted message directly in the conversation (4.2s)
+  ✓   8 [desktop] › tests/conversation.spec.ts:77:1 › event bursts update the conversation without repeatedly reloading global catalogs (4.7s)
+  ✓   9 [desktop] › tests/conversation.spec.ts:121:1 › blocked preparation explains readiness and exposes an exact-input retry (4.4s)
+  ✓  10 [desktop] › tests/conversation.spec.ts:155:1 › queued inputs enter the transcript after the preceding answer, including late answers and reload (14.9s)
+  ✓  11 [desktop] › tests/conversation.spec.ts:263:1 › real API: create, durable opener, queued edit/delete, memory, panel and reload (8.8s)
+  ✓  12 [desktop] › tests/conversation.spec.ts:372:1 › queued composer edit replays a lost acknowledgement without another message or revision (4.8s)
+  ✓  13 [desktop] › tests/conversation.spec.ts:436:1 › a second empty Enter steers only inside the source window and after a fresh native check (7.6s)
+  ✓  14 [desktop] › tests/conversation.spec.ts:610:1 › lost acknowledgement reuses exact creation operation across reload (6.7s)
+  ✓  15 [desktop] › tests/conversation.spec.ts:638:1 › loopback bridge refuses cross-origin requests (216ms)
+  ✓  16 [desktop] › tests/conversation.spec.ts:646:1 › lost message acknowledgement remains recoverable after reload without duplicate admission (7.3s)
+  ✓  17 [desktop] › tests/conversation.spec.ts:677:1 › cancelled opening can continue in the same chat without another opener (4.3s)
+  ✓  18 [desktop] › tests/preparation.spec.ts:58:1 › navigation and Settings do not warm the previous DM; composer activity renews the selected one (7.8s)
+  ✓  19 [desktop] › tests/preparation.spec.ts:93:1 › skipped preparation retries to ready and stops instead of polling indefinitely (11.7s)
+  ✓  20 [desktop] › tests/preparation.spec.ts:127:1 › switching DM cancels scheduled retries from the previous selection (6.5s)
+(node:73524) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  21 [mobile] › tests/activity.spec.ts:110:1 › DM activity updates one bubble, follows streaming output and survives reload without technical text (3.2s)
+  ✓  22 [mobile] › tests/activity.spec.ts:214:1 › group activity belongs to each working agent and hands off without idle member bubbles (4.6s)
+  ✓  23 [mobile] › tests/activity.spec.ts:267:1 › a dark tablet DM keeps its avatar and bubble geometry stable when loading stops (21.9s)
+  ✓  24 [mobile] › tests/activity.spec.ts:315:1 › waiting, uncertain results, confirmed stop and reduced motion never imply active thinking (10.5s)
+  ✓  25 [mobile] › tests/activity.spec.ts:367:1 › streamed bursts settle promptly, preserve emoji and flush completed replies (11.1s)
+  ✘  26 [mobile] › tests/conversation.spec.ts:36:1 › switching conversations keeps exactly one attachment button and editor (36.5s)
+(node:73676) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  27 [mobile] › tests/conversation.spec.ts:61:1 › an idle DM shows its first admitted message directly in the conversation (2.4s)
+  ✓  28 [mobile] › tests/conversation.spec.ts:77:1 › event bursts update the conversation without repeatedly reloading global catalogs (2.2s)
+  ✓  29 [mobile] › tests/conversation.spec.ts:121:1 › blocked preparation explains readiness and exposes an exact-input retry (2.0s)
+  ✓  30 [mobile] › tests/conversation.spec.ts:155:1 › queued inputs enter the transcript after the preceding answer, including late answers and reload (6.0s)
+  ✓  31 [mobile] › tests/conversation.spec.ts:263:1 › real API: create, durable opener, queued edit/delete, memory, panel and reload (5.9s)
+  ✓  32 [mobile] › tests/conversation.spec.ts:372:1 › queued composer edit replays a lost acknowledgement without another message or revision (4.2s)
+  ✓  33 [mobile] › tests/conversation.spec.ts:436:1 › a second empty Enter steers only inside the source window and after a fresh native check (5.6s)
+  ✓  34 [mobile] › tests/conversation.spec.ts:610:1 › lost acknowledgement reuses exact creation operation across reload (6.3s)
+  ✓  35 [mobile] › tests/conversation.spec.ts:638:1 › loopback bridge refuses cross-origin requests (155ms)
+  ✓  36 [mobile] › tests/conversation.spec.ts:646:1 › lost message acknowledgement remains recoverable after reload without duplicate admission (4.4s)
+  ✓  37 [mobile] › tests/conversation.spec.ts:677:1 › cancelled opening can continue in the same chat without another opener (4.0s)
+  ✓  38 [mobile] › tests/preparation.spec.ts:58:1 › navigation and Settings do not warm the previous DM; composer activity renews the selected one (6.9s)
+  ✓  39 [mobile] › tests/preparation.spec.ts:93:1 › skipped preparation retries to ready and stops instead of polling indefinitely (7.6s)
+  ✘  40 [mobile] › tests/preparation.spec.ts:127:1 › switching DM cancels scheduled retries from the previous selection (5.1s)
+
+
+  1) [mobile] › tests/conversation.spec.ts:36:1 › switching conversations keeps exactly one attachment button and editor 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Browser logs:
+
+    <launching> /Users/vitoandareasmanik/Library/Caches/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,AvoidCorsURLLoaderRestartOnRedirect,Translate,AutoDeElevate,OptimizationHints,NetworkTimeServiceQuerying,AimEnabled,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=/var/folders/j1/p1582yhj20z58phnf_zrzy7w0000gn/T/playwright_chromiumdev_profile-cF42Dq --remote-debugging-pipe --no-startup-window
+    <launched> pid=73525
+    [pid=73525][err] [1104/170415.443832:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=73525][err] [1104/170415.450798:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=73525][err] [1104/170416.275908:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=73525][err] [1104/170417.439423:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=73525][err] [1104/170418.411641:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=73525][err] [1104/170418.485459:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=73525][err] [1104/170419.675427:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=73525][err] [1104/170421.583471:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=73525][err] [1104/170423.010633:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=73525][err] [1104/170423.125699:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=73525][err] [1104/170427.041222:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=73525][err] [1104/170445.052951:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=73525][err] [1104/170445.710316:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=73525][err] [1104/170448.807963:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=73525][err] [1104/170455.670349:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=73525][err] [1104/170456.693243:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=73525][err] [1104/170501.469720:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=73525][err] [1104/170504.448936:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=73525][err] [1104/170506.804593:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=73525][err] [1104/170508.467971:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=73525][err] [1104/170513.567969:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+    [pid=73525] <gracefully close start>
+    Call log:
+      - waiting for locator('[data-thread-id="e1f2cfb0-b573-4f2f-b6f9-9ea4ca8f4b93"]')
+        - locator resolved to <button type="button" data-slot="button" data-size="default" data-variant="ghost" data-thread-id="e1f2cfb0-b573-4f2f-b6f9-9ea4ca8f4b93" class="group/button shrink-0 justify-center rounded-control border border-transparent bg-clip-padding text-(length:--text-control-label)/5 font-medium outline-none select-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-100 disabled…>…</button>
+      - attempting click action
+        2 × waiting for element to be visible, enabled and stable
+          - element is not stable
+        - retrying click action
+        - waiting 20ms
+        2 × waiting for element to be visible, enabled and stable
+          - element is not stable
+        - retrying click action
+          - waiting 100ms
+        - waiting for element to be visible, enabled and stable
+        - element is not stable
+      - retrying click action
+        - waiting 500ms
+        - waiting for element to be visible, enabled and stable
+
+
+      42 |         ? page.locator("[data-thread-id]").filter({ hasText: "Tobi" }).first()
+      43 |         : page.locator(`[data-thread-id="${thread.id}"]`);
+    > 44 |     await target.click();
+         |                  ^
+      45 |     await expect(
+      46 |       page.getByRole("button", {
+      47 |         name: `Detail ${index % 2 === 0 ? "Tobi" : agent.name}`,
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/conversation.spec.ts:44:18
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/conversation-switching-con-2f3d9-ttachment-button-and-editor-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/conversation-switching-con-2f3d9-ttachment-button-and-editor-mobile/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/conversation-switching-con-2f3d9-ttachment-button-and-editor-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/conversation-switching-con-2f3d9-ttachment-button-and-editor-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [mobile] › tests/preparation.spec.ts:127:1 › switching DM cancels scheduled retries from the previous selection 
+
+    Error: expect(received).toHaveLength(expected)
+
+    Expected length: 2
+    Received length: 3
+    Received array:  ["d89f4d01-94b0-498a-9d24-668b93d20b62", "d89f4d01-94b0-498a-9d24-668b93d20b62", "d89f4d01-94b0-498a-9d24-668b93d20b62"]
+
+      144 |   await expect.poll(() => calls.filter((id) => id === threads[1].id).length).toBe(1);
+      145 |   await page.clock.fastForward(30_000);
+    > 146 |   expect(calls.filter((id) => id === threads[0].id)).toHaveLength(before + 1);
+          |                                                      ^
+      147 | });
+      148 |
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/preparation.spec.ts:146:54
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/preparation-switching-DM-c-c01d3-from-the-previous-selection-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/preparation-switching-DM-c-c01d3-from-the-previous-selection-mobile/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/preparation-switching-DM-c-c01d3-from-the-previous-selection-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/preparation-switching-DM-c-c01d3-from-the-previous-selection-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    [mobile] › tests/conversation.spec.ts:36:1 › switching conversations keeps exactly one attachment button and editor 
+    [mobile] › tests/preparation.spec.ts:127:1 › switching DM cancels scheduled retries from the previous selection 
+  38 passed (4.9m)

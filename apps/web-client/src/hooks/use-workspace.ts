@@ -11,6 +11,7 @@ import type {
 } from "@/types/workspace";
 import { observePreparation, type SessionPreparation } from "./conversation-preparation";
 import { eventProjections, mergeEntity, type Projection } from "./workspace-events";
+import { WorkspaceSync } from "./workspace-sync";
 
 export function useWorkspace(composer: HTMLElement | null) {
   const [agents, setAgents] = useState<Agent[]>([]);
@@ -33,66 +34,80 @@ export function useWorkspace(composer: HTMLElement | null) {
   const openingMessage = useRef<string | null>(null);
   const snapshots = useRef(new Map<string, Snapshot>());
   const firstSelection = useRef<string | null | undefined>(undefined);
+  const synchronizer = useRef<WorkspaceSync | null>(null);
 
   const refresh = useCallback(async (signal?: AbortSignal, projections?: Set<Projection>) => {
     const generation = epoch.current;
     const selected = selectedThread.current;
     const full = projections === undefined;
-    const [nextAgents, nextThreads, nextConnections, nextActivity, nextPreviews, next, state] =
-      await Promise.all([
-        full ? request<Agent[]>("/v1/entities/agent", undefined, undefined, signal) : undefined,
-        full ? request<Thread[]>("/v1/entities/thread", undefined, undefined, signal) : undefined,
-        full
-          ? request<Connection[]>("/v1/entities/connection", undefined, undefined, signal)
-          : undefined,
-        full || projections.has("activity")
-          ? request<AgentActivities>("/v1/agents/activity", undefined, undefined, signal)
-          : undefined,
-        full || projections.has("previews")
-          ? request<ConversationPreviews>(
-              "/v1/conversations/previews",
-              undefined,
-              undefined,
-              signal,
-            )
-          : undefined,
-        selected && (full || projections.has("conversation"))
-          ? request<Snapshot>(`/v1/threads/${selected}/snapshot`, undefined, undefined, signal)
-          : undefined,
-        selected && (full || projections.has("opening"))
-          ? request<Opening>(`/v1/threads/${selected}/opening`, undefined, undefined, signal)
-          : undefined,
-      ]);
-    if (signal?.aborted) return;
-    if (nextAgents) setAgents((current) => nextAgents.reduce(mergeEntity, current));
-    if (nextThreads)
-      setThreads((current) =>
-        nextThreads
-          .filter((thread) => thread.purpose === "conversation")
-          .reduce(mergeEntity, current),
-      );
-    if (nextConnections) setConnections((current) => nextConnections.reduce(mergeEntity, current));
-    if (nextActivity)
-      setActivity((previous) => (nextActivity.cursor >= previous.cursor ? nextActivity : previous));
-    if (nextPreviews)
-      setPreviews((previous) => (nextPreviews.cursor >= previous.cursor ? nextPreviews : previous));
-    if (generation === epoch.current && selected === selectedThread.current) {
-      if (next && next.cursor >= latestCursor.current) {
-        latestCursor.current = next.cursor;
-        snapshots.current.delete(next.thread.id);
-        snapshots.current.set(next.thread.id, next);
-        const oldest = snapshots.current.keys().next().value;
-        if (snapshots.current.size > 5 && oldest !== undefined) snapshots.current.delete(oldest);
-        setSnapshot(next);
-      }
-      if (state) {
-        openingMessage.current = state.message?.id ?? null;
-        setOpening(state);
-      }
-    }
-    const cursors = [next?.cursor, nextActivity?.cursor, nextPreviews?.cursor].filter(
-      (value): value is number => value !== undefined,
-    );
+    const cursors: number[] = [];
+    const load = async <T>(path: string, apply: (value: T) => void) => {
+      const value = await request<T>(path, undefined, undefined, signal);
+      if (signal?.aborted) return;
+      apply(value);
+      if (
+        value &&
+        typeof value === "object" &&
+        "cursor" in value &&
+        typeof value.cursor === "number"
+      )
+        cursors.push(value.cursor);
+    };
+    const current = () => generation === epoch.current && selected === selectedThread.current;
+    // Apply independent projections as they arrive. A failed read still fails the batch,
+    // so event replay never acknowledges it as fully reconciled.
+    const results = await Promise.allSettled([
+      full
+        ? load<Agent[]>("/v1/entities/agent", (value) =>
+            setAgents((previous) => value.reduce(mergeEntity, previous)),
+          )
+        : undefined,
+      full
+        ? load<Thread[]>("/v1/entities/thread", (value) =>
+            setThreads((previous) =>
+              value
+                .filter((thread) => thread.purpose === "conversation")
+                .reduce(mergeEntity, previous),
+            ),
+          )
+        : undefined,
+      full
+        ? load<Connection[]>("/v1/entities/connection", (value) =>
+            setConnections((previous) => value.reduce(mergeEntity, previous)),
+          )
+        : undefined,
+      full || projections.has("activity")
+        ? load<AgentActivities>("/v1/agents/activity", (value) =>
+            setActivity((previous) => (value.cursor >= previous.cursor ? value : previous)),
+          )
+        : undefined,
+      full || projections.has("previews")
+        ? load<ConversationPreviews>("/v1/conversations/previews", (value) =>
+            setPreviews((previous) => (value.cursor >= previous.cursor ? value : previous)),
+          )
+        : undefined,
+      selected && (full || projections.has("conversation"))
+        ? load<Snapshot>(`/v1/threads/${selected}/snapshot`, (value) => {
+            if (!current() || value.cursor < latestCursor.current) return;
+            latestCursor.current = value.cursor;
+            snapshots.current.delete(value.thread.id);
+            snapshots.current.set(value.thread.id, value);
+            const oldest = snapshots.current.keys().next().value;
+            if (snapshots.current.size > 5 && oldest !== undefined)
+              snapshots.current.delete(oldest);
+            setSnapshot(value);
+          })
+        : undefined,
+      selected && (full || projections.has("opening"))
+        ? load<Opening>(`/v1/threads/${selected}/opening`, (value) => {
+            if (!current()) return;
+            openingMessage.current = value.message?.id ?? null;
+            setOpening(value);
+          })
+        : undefined,
+    ]);
+    const failed = results.find((result) => result.status === "rejected");
+    if (failed?.status === "rejected") throw failed.reason;
     return cursors.length ? Math.min(...cursors) : undefined;
   }, []);
 
@@ -121,116 +136,46 @@ export function useWorkspace(composer: HTMLElement | null) {
 
   useEffect(() => {
     if (!ready) return;
-    const abort = new AbortController();
-    let connectionAbort: AbortController | undefined;
-    let cursor = 0;
-    let seenCursor = 0;
-    let dirty = new Set<Projection>();
-    let refreshing = false;
-    let timer: ReturnType<typeof setTimeout> | undefined;
-    let retry: ReturnType<typeof setTimeout> | undefined;
-    let failures = 0;
-    let connecting = false;
-    let refreshError: unknown;
-    const flush = async () => {
-      timer = undefined;
-      if (refreshing || abort.signal.aborted) return;
-      const selected = dirty;
-      const through = seenCursor;
-      dirty = new Set();
-      refreshing = true;
-      try {
-        await refresh(abort.signal, selected);
-        cursor = Math.max(cursor, through);
-      } catch (failure) {
-        refreshError = failure;
-        connectionAbort?.abort();
-      } finally {
-        refreshing = false;
-        if (!abort.signal.aborted && !refreshError && seenCursor > through)
-          timer = setTimeout(() => void flush(), 0);
-      }
-    };
-    async function connect() {
-      if (connecting || abort.signal.aborted) return;
-      connecting = true;
-      try {
-        refreshError = undefined;
-        // Initial connections and failures reconcile snapshots; normal expiry resumes its cursor.
-        if (cursor === 0 || failures) cursor = (await refresh(abort.signal)) ?? cursor;
-        if (abort.signal.aborted) return;
-        if (!navigator.onLine) throw new Error("Connection lost. Reconnecting…");
-        seenCursor = Math.max(seenCursor, cursor);
-        connectionAbort = new AbortController();
-        setOnline(true);
-        setError("");
-        await followEvents(
-          cursor,
-          AbortSignal.any([abort.signal, connectionAbort.signal]),
-          (next, event) => {
-            if (next <= cursor) return;
-            seenCursor = Math.max(seenCursor, next);
-            if (event.entity_kind === "agent") {
-              setAgents((current) => mergeEntity(current, event.data as unknown as Agent));
-              snapshots.current.clear();
-            } else if (event.entity_kind === "thread" && event.data.purpose === "conversation")
-              setThreads((current) => mergeEntity(current, event.data as unknown as Thread));
-            else if (event.entity_kind === "connection")
-              setConnections((current) =>
-                mergeEntity(current, event.data as unknown as Connection),
-              );
-            if (event.data.thread_id && event.data.thread_id !== selectedThread.current)
-              snapshots.current.delete(event.data.thread_id);
-            for (const projection of eventProjections(
-              event,
-              selectedThread.current,
-              openingMessage.current,
-            ))
-              dirty.add(projection);
-            if (timer === undefined && !refreshing) timer = setTimeout(() => void flush(), 40);
-          },
-        );
-        if (refreshError) throw refreshError;
-        failures = 0;
-      } catch (failure) {
-        if (!abort.signal.aborted) {
-          failures++;
-          setOnline(false);
-          setError(
-            !navigator.onLine
-              ? "Connection lost. Reconnecting…"
-              : failure instanceof Error
-                ? failure.message
-                : "Connection lost. Reconnecting…",
-          );
-        }
-      }
-      connecting = false;
-      if (!abort.signal.aborted)
-        retry = setTimeout(
-          () => void connect(),
-          failures ? Math.min(15_000, 500 * 2 ** (failures - 1)) : 0,
-        );
-    }
-    const offline = () => {
-      setOnline(false);
-      connectionAbort?.abort();
-    };
-    const online = () => {
-      if (connecting) return;
-      clearTimeout(retry);
-      void connect();
+    const sync = new WorkspaceSync({
+      refresh,
+      follow: followEvents,
+      available: () => navigator.onLine,
+      visible: () => document.visibilityState === "visible",
+      status: (connected, failure) => {
+        setOnline(connected);
+        setError(failure);
+      },
+      update: (event) => {
+        if (event.entity_kind === "agent") {
+          setAgents((previous) => mergeEntity(previous, event.data as unknown as Agent));
+          snapshots.current.clear();
+        } else if (event.entity_kind === "thread" && event.data.purpose === "conversation")
+          setThreads((previous) => mergeEntity(previous, event.data as unknown as Thread));
+        else if (event.entity_kind === "connection")
+          setConnections((previous) => mergeEntity(previous, event.data as unknown as Connection));
+        if (event.data.thread_id && event.data.thread_id !== selectedThread.current)
+          snapshots.current.delete(event.data.thread_id);
+        return eventProjections(event, selectedThread.current, openingMessage.current);
+      },
+    });
+    synchronizer.current = sync;
+    const offline = () => sync.disconnect();
+    const online = () => sync.reconnect();
+    const resume = () => {
+      if (document.visibilityState === "visible") sync.resume();
     };
     window.addEventListener("offline", offline);
     window.addEventListener("online", online);
-    void connect();
+    window.addEventListener("focus", resume);
+    document.addEventListener("visibilitychange", resume);
+    sync.start();
     return () => {
-      abort.abort();
-      connectionAbort?.abort();
-      clearTimeout(retry);
-      clearTimeout(timer);
+      synchronizer.current = null;
+      sync.close();
       window.removeEventListener("offline", offline);
       window.removeEventListener("online", online);
+      window.removeEventListener("focus", resume);
+      document.removeEventListener("visibilitychange", resume);
     };
   }, [refresh, ready]);
 
@@ -317,6 +262,9 @@ export function useWorkspace(composer: HTMLElement | null) {
     online,
     error,
     setError,
-    retry: () => setAttempt((value) => value + 1),
+    retry: () => {
+      if (synchronizer.current) synchronizer.current.reconnect();
+      else setAttempt((value) => value + 1);
+    },
   };
 }

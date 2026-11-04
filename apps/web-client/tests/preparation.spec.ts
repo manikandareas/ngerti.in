@@ -142,6 +142,9 @@ test("switching DM cancels scheduled retries from the previous selection", async
   ).toBeVisible();
   await page.clock.runFor(200);
   await expect.poll(() => calls.filter((id) => id === threads[1].id).length).toBe(1);
+  // An old-DM retry may run while the navigation click is still waiting for the
+  // mobile drawer animation. Cancellation starts when the selection actually changes.
+  const previousCalls = calls.filter((id) => id === threads[0].id).length;
   await page.clock.fastForward(30_000);
-  expect(calls.filter((id) => id === threads[0].id)).toHaveLength(before + 1);
+  expect(calls.filter((id) => id === threads[0].id)).toHaveLength(previousCalls);
 });

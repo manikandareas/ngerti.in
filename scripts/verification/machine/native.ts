@@ -1,0 +1,192 @@
+import assert from "node:assert/strict";
+import { mkdirSync } from "node:fs";
+import { chromium } from "playwright";
+import { createApi } from "../../../apps/server/src/api";
+import { Artifacts } from "../../../apps/server/src/artifacts";
+import { Background } from "../../../apps/server/src/background";
+import type { Entity } from "../../../apps/server/src/contracts";
+import { Connections } from "../../../apps/server/src/harness/connections";
+import { ProductTools } from "../../../apps/server/src/harness/tools";
+import { readMachineConfiguration } from "../../../apps/server/src/machines/config";
+import { Machines } from "../../../apps/server/src/machines/service";
+import { fixture } from "../../../apps/server/tests/helpers";
+
+const configuration = readMachineConfiguration(".dev/harness-first");
+assert(configuration, "Run the local machine setup first.");
+const f = fixture();
+let machines = new Machines(f.lifecycle, configuration);
+const tools = new ProductTools(f.lifecycle);
+const connection = f.store.get("connection", f.store.get("agent", f.agent.id).connection_id);
+new Connections(f.lifecycle).update(connection, { capabilities: { ...connection.capabilities, product_tools: "supported" } });
+const peer = f.lifecycle.create("agent", { name: "Machine peer", harness: "codex", connection_id: connection.id });
+const peerThread = f.lifecycle.create("thread", { type: "dm", member_agent_ids: [peer.id] });
+const cohort = crypto.randomUUID();
+const directory = `.ngertiin-verification/${cohort}`;
+const results: { name: string; passed: boolean; detail?: unknown }[] = [];
+const evidence = "docs/verification/shared-machine";
+mkdirSync(evidence, { recursive: true });
+const record = (name: string, detail?: unknown) => { results.push({ name, passed: true, detail }); console.log(JSON.stringify({ check: name, passed: true })); };
+const start = (agentId: string, threadId: string) => {
+  f.lifecycle.bind(threadId, agentId, crypto.randomUUID());
+  f.lifecycle.admit({ thread_id: threadId, agent_id: agentId, text: "Verify the shared local machine." });
+  const claimed = f.lifecycle.claimNext(threadId, agentId) as Entity<"run">;
+  f.lifecycle.started(claimed.id, claimed.dispatch_token as string, crypto.randomUUID());
+  const run = f.store.get("run", claimed.id);
+  const lease = tools.issue(run);
+  return { run, lease, call: (name: string, input: unknown) => tools.call(lease.token, lease.scope, name, input) };
+};
+const a = start(f.agent.id, f.thread.id);
+const b = start(peer.id, peerThread.id);
+const installationToken = "a".repeat(64);
+const app = createApi(f.lifecycle, new Background(f.lifecycle), installationToken);
+app.listen({ hostname: "127.0.0.1", port: 0 });
+const base = `http://127.0.0.1:${app.server?.port}`;
+async function owner(path: string, body?: unknown) {
+  const response = await fetch(`${base}${path}`, { method: body === undefined ? "GET" : "POST", headers: { Authorization: `Bearer ${installationToken}`, "Content-Type": "application/json" }, body: body === undefined ? undefined : JSON.stringify(body) });
+  const value = await response.json();
+  assert(response.ok, `${path}: ${JSON.stringify(value)}`);
+  return value;
+}
+let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined;
+try {
+  await machines.ready();
+  const contract = await owner("/v1/contracts");
+  assert.equal(contract.version, "1.30.0");
+  assert.equal(contract.browser.state, "replaced");
+  assert(contract.product_tools.some((tool: { name: string }) => tool.name === "ngertiin.computer_call"));
+  assert(!contract.product_tools.some((tool: { name: string }) => tool.name.startsWith("ngertiin.browser_")));
+  await Bun.write(`${evidence}/api-contract.json`, JSON.stringify(contract, null, 2));
+  record("actual_machine_api_contract", { version: contract.version, operations: contract.http.length });
+
+  const workspaceA = await a.call("ngertiin.get_workspace", {}) as { machine_id: string; root: string; workspace_id: string };
+  const workspaceB = await b.call("ngertiin.get_workspace", {}) as typeof workspaceA;
+  assert.equal(workspaceA.machine_id, workspaceB.machine_id);
+  assert.equal(workspaceA.root, workspaceB.root);
+  const file = `${directory}/shared.txt`;
+  await a.call("ngertiin.create_file", { command_id: crypto.randomUUID(), path: file, text: "Shared machine bytes.\n" });
+  const read = await b.call("ngertiin.read_file", { path: file }) as { text: string; sha256: string };
+  assert.equal(read.text, "Shared machine bytes.\n");
+  const listing = await owner(`/v1/machine/files?path=${encodeURIComponent(directory)}`);
+  assert(listing.entries.some((entry: { name: string }) => entry.name === "shared.txt"));
+  const output = await a.call("ngertiin.publish_artifact", { command_id: crypto.randomUUID(), path: file, media_type: "text/plain" }) as Entity<"artifact">;
+  await b.call("ngertiin.write_file", { command_id: crypto.randomUUID(), path: file, text: "A later machine edit.\n", expected_sha256: read.sha256 });
+  assert.equal(new Artifacts(f.lifecycle).download(output.id, workspaceA.workspace_id).bytes.toString(), read.text);
+  record("shared_files_and_immutable_artifact", { machine_id: workspaceA.machine_id, artifact_sha256: output.sha256 });
+
+  const timingCommand = "python3 - <<'PY'\nimport time\nprint('start', time.time(), flush=True)\ntime.sleep(1.2)\nprint('end', time.time(), flush=True)\nPY";
+  const [pa, pb] = await Promise.all([a.call("ngertiin.machine_exec", { command_id: crypto.randomUUID(), command: timingCommand, wait_ms: 0 }), b.call("ngertiin.machine_exec", { command_id: crypto.randomUUID(), command: timingCommand, wait_ms: 0 })]) as Entity<"machine_process">[];
+  assert(pa && pb);
+  const [ra, rb] = await Promise.all([machines.processes.read(pa.id, null, 10_000, () => {}), machines.processes.read(pb.id, null, 10_000, () => {})]);
+  assert.equal(ra.state, "exited"); assert.equal(rb.state, "exited");
+  const times = (text: string) => text.trim().split("\n").map((line) => Number(line.split(" ")[1]));
+  const ta = times(ra.stdout); const tb = times(rb.stdout);
+  assert((ta[0] as number) < (tb[1] as number) && (tb[0] as number) < (ta[1] as number));
+  record("parallel_attributed_terminal_processes", { a: ta, b: tb });
+
+  const observed = await a.call("ngertiin.computer_call", { command_id: crypto.randomUUID(), name: "get_desktop_state", arguments: {} }) as { content: { type: string }[]; structuredJson: string };
+  assert(observed.content.some((part) => part.type === "image"));
+  const transport = await tools.rpc(a.lease.token, { jsonrpc: "2.0", id: 1, method: "initialize", params: { protocolVersion: "2025-06-18", capabilities: {}, clientInfo: { name: "machine-native-proof", version: "1" } } });
+  assert(transport);
+  await tools.rpc(a.lease.token, { jsonrpc: "2.0", method: "notifications/initialized" });
+  const multimodal = await tools.rpc(a.lease.token, { jsonrpc: "2.0", id: 2, method: "tools/call", params: { name: "ngertiin.computer_call", arguments: { command_id: crypto.randomUUID(), name: "get_desktop_state", arguments: {} } } }) as { result: { content: { type: string }[] } };
+  assert(multimodal.result.content.some((part) => part.type === "image"));
+  record("native_desktop_and_multimodal_mcp");
+  const desktop = JSON.parse(observed.structuredJson);
+  const chromiumWindow = desktop.windows.find((window: { app_name: string }) => window.app_name === "Chromium");
+  assert(chromiumWindow);
+  const prepared = await a.call("ngertiin.computer_call", { command_id: crypto.randomUUID(), name: "browser_prepare", arguments: { pid: chromiumWindow.pid, window_id: Number(chromiumWindow.window_id), strategy: { kind: "existing_profile" }, delivery_mode: "foreground" } }) as { isError: boolean; structuredJson: string };
+  assert(!prepared.isError, prepared.structuredJson);
+  const state = await a.call("ngertiin.computer_call", { command_id: crypto.randomUUID(), name: "get_browser_state", arguments: { pid: chromiumWindow.pid, window_id: Number(chromiumWindow.window_id) } }) as { isError: boolean; structuredJson: string };
+  assert(!state.isError, state.structuredJson);
+  const binding = JSON.parse(state.structuredJson);
+  assert.equal(binding.binding_quality, "exact");
+  record("native_browser_attaches_existing_desktop_profile_exactly", { binding_quality: binding.binding_quality, pid: chromiumWindow.pid });
+
+
+  await a.call("ngertiin.machine_control", { command_id: crypto.randomUUID(), operation: "acquire", expected_revision: machines.snapshot().lease.revision });
+  await owner("/v1/machine/control", { command_id: crypto.randomUUID(), operation: "acquire", expected_revision: machines.snapshot().lease.revision });
+  assert.equal(machines.snapshot().lease.holder, "human");
+  const viewer = await owner("/v1/machine/view", { interactive: true });
+  const viewerPath = viewer.viewer_url as string;
+  const html = await fetch(`${base}${viewerPath.split("#")[0]}`);
+  assert.equal(html.status, 200);
+  assert(html.headers.get("content-security-policy")?.includes("frame-ancestors 'self'"));
+  browser = await chromium.launch();
+  const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+  const browserErrors: string[] = [];
+  page.on("pageerror", (error) => browserErrors.push(error.message));
+  await page.goto(`${base}/health/live`);
+  await page.setContent(`<iframe title="Machine" src="${viewerPath}" style="width:1360px;height:900px;border:0"></iframe>`);
+  const frame = page.frameLocator("iframe");
+  await frame.locator("canvas").first().waitFor({ timeout: 20_000 });
+  await page.waitForTimeout(3000);
+  const canvas = await frame.locator("canvas").first().evaluate((element) => {
+    const canvas = element as HTMLCanvasElement;
+    return { width: canvas.width, height: canvas.height, image_bytes: canvas.toDataURL().length, text: document.body.innerText.slice(0, 1200) };
+  });
+  assert(canvas.width > 100 && canvas.height > 100 && canvas.image_bytes > 2000, JSON.stringify({ canvas, browserErrors }));
+  await page.screenshot({ path: `${evidence}/cua-viewer-native.png` });
+  record("actual_cua_viewer_iframe_and_media", { canvas, browserErrors });
+  const nativeClient = await machines.host!.client();
+  await frame.locator("canvas").first().click({ position: { x: 240, y: 160 } });
+  await page.waitForTimeout(300);
+  const humanPointer = await nativeClient.cursorPosition();
+  assert(humanPointer.x > 50 && humanPointer.y > 50);
+  record("human_viewer_drives_native_desktop_input", { pointer: humanPointer });
+
+  await owner("/v1/machine/control", { command_id: crypto.randomUUID(), operation: "release", expected_revision: machines.snapshot().lease.revision });
+  const stale = await fetch(`${base}${viewerPath.split("#")[0]}`);
+  assert.equal(stale.status, 401);
+  const oldBase = viewerPath.slice(0, viewerPath.indexOf("viewer/#"));
+  const reopen = await fetch(`${base}${oldBase}cua.env.v1.StreamService/OpenMedia`, { method: "POST", headers: { "Content-Type": "application/grpc-web+proto", "x-cua-env-authorization": `Bearer ${decodeURIComponent(viewerPath.split("#ticket=")[1] as string)}` }, body: new Uint8Array([0, 0, 0, 0, 0]) });
+  assert.equal(reopen.status, 401);
+  record("handback_rejects_unexpired_old_activation_bearer");
+  const watching = await owner("/v1/machine/view", { interactive: false });
+  await page.setContent(`<iframe title="Machine" src="${watching.viewer_url}" style="width:1360px;height:900px;border:0"></iframe>`);
+  await frame.locator("canvas").first().waitFor({ timeout: 20_000 });
+  await page.waitForTimeout(2000);
+  const beforePointer = await nativeClient.cursorPosition();
+  await frame.locator("canvas").first().click({ position: { x: 700, y: 450 } });
+  await page.waitForTimeout(300);
+  assert.deepEqual(await nativeClient.cursorPosition(), beforePointer);
+  record("view_only_ticket_cannot_drive_pointer");
+
+
+  const [cancelled, survivor] = await Promise.all([a.call("ngertiin.machine_exec", { command_id: crypto.randomUUID(), command: "sleep 30", wait_ms: 0 }), b.call("ngertiin.machine_exec", { command_id: crypto.randomUUID(), command: "sleep 2\nprintf survivor", wait_ms: 0 })]) as Entity<"machine_process">[];
+  assert(cancelled && survivor);
+  f.lifecycle.cancel(a.run.id);
+  const [stopped, survived] = await Promise.all([machines.processes.read(cancelled.id, null, 5000, () => {}), machines.processes.read(survivor.id, null, 5000, () => {})]);
+  assert.equal(stopped.state, "exited"); assert.equal(survived.state, "exited"); assert.equal(survived.exit_code, 0); assert(survived.stdout.includes("survivor"));
+  record("per_run_stop_preserves_other_agent_and_machine");
+
+  const retainedProcess = await b.call("ngertiin.machine_exec", { command_id: crypto.randomUUID(), command: "printf before-reconnect; sleep 6; printf after-reconnect", wait_ms: 100 }) as Entity<"machine_process">;
+  console.log(JSON.stringify({ stage: "stopping_native_api", requests: app.server?.pendingRequests, sockets: app.server?.pendingWebSockets }));
+  await Promise.race([app.stop(true), Bun.sleep(8000).then(() => { throw new Error("API shutdown timed out with an active viewer."); })]);
+  console.log(JSON.stringify({ stage: "closing_machine_client" }));
+  tools.revokeAll();
+  await machines.close();
+  console.log(JSON.stringify({ stage: "reopening_domain_store" }));
+  f.restart();
+  machines = new Machines(f.lifecycle, configuration);
+  console.log(JSON.stringify({ stage: "recovering_retained_machine" }));
+  await machines.recover();
+  assert.equal(machines.snapshot().machine_key, configuration.id);
+  assert.equal((await machines.files().read(file)).toString(), "A later machine edit.\n");
+  record("same_machine_and_files_after_backend_module_restart");
+  const recoveredProcess = await machines.processes.read(retainedProcess.id, null, 10_000, () => {});
+  assert.equal(recoveredProcess.state, "exited");
+  assert.equal(recoveredProcess.exit_code, 0);
+  assert(recoveredProcess.stdout.includes("before-reconnect") && recoveredProcess.stdout.includes("after-reconnect"));
+  record("running_process_reconnect_replays_output_without_respawn");
+  const report = { date: "2026-11-04", scope: "Native Cua machine and API with fixture harness identities; no provider inference claimed here.", sdk: "0.10.1", service: machines.snapshot().service_version, driver: machines.snapshot().driver_version, image: "sha256:9ac0d6f6f7dd95392554ec95163f83c5061de3db05b64977696c78d71cd4861c", results };
+  await Bun.write(`${evidence}/native-machine.json`, JSON.stringify(report, null, 2));
+} catch (error) {
+  await Bun.write(`${evidence}/native-machine.json`, JSON.stringify({ scope: "Native machine API; fixture harness identities", results, failure: error instanceof Error ? error.message : "Unknown error" }, null, 2));
+  throw error;
+} finally {
+  await browser?.close();
+  if (app.server) await app.stop(true).catch(() => {});
+  for (const child of machines.processes.list()) if (["running", "starting"].includes(child.state)) await machines.processes.control({ command_id: crypto.randomUUID(), process_id: child.id, operation: "terminate" }, null, () => {}).catch(() => {});
+  await machines.close();
+  f.close();
+}

@@ -1,0 +1,128 @@
+{
+  "date": "2026-11-04",
+  "contract_version": "1.30.0",
+  "machine_id": "7238d007-f098-499a-8e91-97c7aa61d45b",
+  "cohort": "Real Cua SDK/spacesd/native windows and browser; fixture application identities, no provider inference or new login-persistence claim.",
+  "checks": [
+    {
+      "name": "owned_browser_window_with_multiple_native_tabs",
+      "detail": {
+        "tabs": 2
+      }
+    },
+    {
+      "name": "parent_settlement_does_not_close_peer_resources"
+    },
+    {
+      "name": "successful_chain_closes_owned_browser_tabs_and_terminal_only",
+      "detail": {
+        "baseline_windows_preserved": 2
+      }
+    },
+    {
+      "name": "working_file_and_immutable_artifact_survive_cleanup",
+      "detail": {
+        "path": ".ngertiin-verification/cleanup-ab51bd83-06a0-418c-b59b-c22aa813327e/result.txt",
+        "sha256": "2d75060943d0e009440277c8945cc39818440191d80f19c9ab8775c7a4d29b45"
+      }
+    },
+    {
+      "name": "explicit_result_preview_remains_open"
+    },
+    {
+      "name": "versioned_api_and_product_tool_export",
+      "detail": {
+        "version": "1.30.0"
+      }
+    }
+  ],
+  "failed": null,
+  "resources": [
+    {
+      "id": "1145e92e-024f-4787-a940-aec6e8febdcb",
+      "owner_id": "0f4bd2a6-6cfb-4e72-965e-8b4b4f31c3ba",
+      "revision": 4,
+      "created_at": "2026-11-04T10:28:22.193Z",
+      "updated_at": "2026-11-04T10:28:37.456Z",
+      "kind": "machine_window",
+      "machine_id": "0f4bd2a6-6cfb-4e72-965e-8b4b4f31c3ba",
+      "generation": 1,
+      "agent_id": "618fc7b6-d010-4fe0-8227-63087896d3ec",
+      "thread_id": "80f9532e-2fa3-424b-979c-246904b891b6",
+      "run_id": "7ab590f1-49ee-4398-a3e6-ffc82b16a5ea",
+      "task_key": "3eb3461f-dd99-4d23-aeb3-410c3d4d0a25",
+      "application": "browser",
+      "native_ref": {
+        "id": "target-d9f020451ad3d6d95320e59b",
+        "epoch": "1"
+      },
+      "pid": 7068,
+      "keep_open": false,
+      "state": "closed",
+      "close_operation_id": "ca7d24a5-146c-4caf-95cf-d9740d6dd6e9",
+      "error_code": null
+    },
+    {
+      "id": "3548e9b2-c146-4d74-93d1-a9e804217c78",
+      "owner_id": "0f4bd2a6-6cfb-4e72-965e-8b4b4f31c3ba",
+      "revision": 4,
+      "created_at": "2026-11-04T10:28:34.178Z",
+      "updated_at": "2026-11-04T10:28:37.664Z",
+      "kind": "machine_window",
+      "machine_id": "0f4bd2a6-6cfb-4e72-965e-8b4b4f31c3ba",
+      "generation": 1,
+      "agent_id": "618fc7b6-d010-4fe0-8227-63087896d3ec",
+      "thread_id": "80f9532e-2fa3-424b-979c-246904b891b6",
+      "run_id": "7ab590f1-49ee-4398-a3e6-ffc82b16a5ea",
+      "task_key": "3eb3461f-dd99-4d23-aeb3-410c3d4d0a25",
+      "application": "terminal",
+      "native_ref": {
+        "id": "target-4441d89ece0d31cc064fb057",
+        "epoch": "1"
+      },
+      "pid": 9331,
+      "keep_open": false,
+      "state": "closed",
+      "close_operation_id": "a2338725-501b-4dae-9fb3-039bb50e560b",
+      "error_code": null
+    },
+    {
+      "id": "0a39a14a-9e3a-4fe9-825f-cdc7d9ba703a",
+      "owner_id": "0f4bd2a6-6cfb-4e72-965e-8b4b4f31c3ba",
+      "revision": 2,
+      "created_at": "2026-11-04T10:28:38.153Z",
+      "updated_at": "2026-11-04T10:28:43.206Z",
+      "kind": "machine_window",
+      "machine_id": "0f4bd2a6-6cfb-4e72-965e-8b4b4f31c3ba",
+      "generation": 1,
+      "agent_id": "618fc7b6-d010-4fe0-8227-63087896d3ec",
+      "thread_id": "80f9532e-2fa3-424b-979c-246904b891b6",
+      "run_id": "19e66e26-c3d2-4e53-b778-86fad92b4a9f",
+      "task_key": "8f2c01a7-59d2-48fb-993a-4eeee0c8ceff",
+      "application": "browser",
+      "native_ref": {
+        "id": "target-d5e9eea061f1e446597cc6cf",
+        "epoch": "1"
+      },
+      "pid": 7068,
+      "keep_open": true,
+      "state": "open",
+      "close_operation_id": "1a44006e-09f4-49e0-90c9-ffd4688e22f1",
+      "error_code": null
+    }
+  ],
+  "cleanup_receipts": [
+    {
+      "id": "ca7d24a5-146c-4caf-95cf-d9740d6dd6e9",
+      "name": "window.cleanup",
+      "state": "succeeded",
+      "error_code": null
+    },
+    {
+      "id": "a2338725-501b-4dae-9fb3-039bb50e560b",
+      "name": "window.cleanup",
+      "state": "succeeded",
+      "error_code": null
+    }
+  ]
+}

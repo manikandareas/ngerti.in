@@ -471,103 +471,16 @@ test("group creation recovers a lost acknowledgement, routes messages and keeps 
   expect(snapshot.goals).toHaveLength(0);
 });
 
-test("browser viewer connects to the managed browser and reconnects its view without replaying actions", async ({
+test("Computer explains unavailable machine access without launching a conversation browser", async ({
   page,
-}, testInfo) => {
-  test.setTimeout(180000);
+}) => {
   const { a } = await start(page);
-  let openRequests = 0;
-  page.on("request", (request) => {
-    if (/\/v1\/browser\/profiles\/[^/]+\/open$/.test(request.url()) && request.method() === "POST")
-      openRequests++;
-  });
   await chooseAgent(page, a.agent.name);
   await page.getByRole("button", { name: `Detail ${a.agent.name}`, exact: true }).click();
   await page.getByRole("tab", { name: "Computer", exact: true }).click();
-  await expect(
-    page.getByRole("button", { name: "Enable conversation browser", exact: true }),
-  ).toBeVisible();
-  const created = page.waitForResponse(
-    (r) => r.url().endsWith("/v1/browser/profiles") && r.request().method() === "POST",
-  );
-  await page.getByRole("button", { name: "Enable conversation browser", exact: true }).click();
-  const profile = await (await created).json();
-  await capture(page, testInfo.outputPath("browser-profiles.png"));
-  let sessionId = "";
-  try {
-    const opened = page.waitForResponse((r) =>
-      r.url().endsWith(`/v1/browser/profiles/${profile.id}/open`),
-    );
-    await page.getByRole("button", { name: "View browser", exact: true }).click();
-    sessionId = (await (await opened).json()).id;
-    await expect(page.getByText("Tampilan terhubung", { exact: true })).toBeVisible({
-      timeout: 45000,
-    });
-    await expect(
-      page.getByRole("dialog", { name: "Browser percakapan", exact: true }).locator("canvas"),
-    ).toBeVisible();
-    await capture(page, testInfo.outputPath("browser-view.png"));
-    const renewed = page.waitForResponse((response) =>
-      response.url().endsWith(`/v1/browser/sessions/${sessionId}/view`),
-    );
-    await page.getByRole("button", { name: "Sambungkan ulang tampilan", exact: true }).click();
-    await renewed;
-    await expect(page.getByText("Tampilan terhubung", { exact: true })).toBeVisible();
-    expect(openRequests).toBe(1);
-    const previewRead = page.waitForResponse(
-      (response) =>
-        response.request().method() === "GET" &&
-        response.url().includes(`/v1/browser/sessions/${sessionId}?`),
-    );
-    await page
-      .getByRole("dialog", { name: "Browser percakapan", exact: true })
-      .getByRole("button", { name: "Close", exact: true })
-      .click();
-    const observationResponse = await previewRead;
-    const observation = await observationResponse.json();
-    const hasRaster =
-      observationResponse.ok() &&
-      observation.content?.some(
-        (item: { type: string; mimeType?: string }) =>
-          item.type === "image" &&
-          ["image/png", "image/jpeg", "image/webp"].includes(item.mimeType ?? ""),
-      );
-    if (hasRaster)
-      await expect(
-        page.getByAltText("Preview of the same browser session", { exact: true }),
-      ).toBeVisible();
-    else {
-      await expect(
-        page.getByAltText("Preview of the same browser session", { exact: true }),
-      ).toHaveCount(0);
-      await expect(
-        page.getByRole("button", { name: `View browser for ${a.agent.name}`, exact: true }),
-      ).toContainText("Session ready");
-    }
-    await capture(page, testInfo.outputPath("browser-preview.png"));
-    const existingView = page.waitForResponse((response) =>
-      response.url().endsWith(`/v1/browser/sessions/${sessionId}/view`),
-    );
-    await page
-      .getByRole("button", { name: `View browser for ${a.agent.name}`, exact: true })
-      .click();
-    await existingView;
-    await expect(page.getByText("Tampilan terhubung", { exact: true })).toBeVisible();
-    expect(openRequests).toBe(1);
-    const receipts = await (
-      await page.request.get(
-        `/v1/browser/sessions/${sessionId}/receipts?agent_id=${a.agent.id}&thread_id=${a.thread.id}`,
-      )
-    ).json();
-    expect(receipts).toHaveLength(0);
-  } finally {
-    if (sessionId)
-      await post(page, `/v1/browser/sessions/${sessionId}/control`, {
-        agent_id: a.agent.id,
-        thread_id: a.thread.id,
-        operation: "close",
-      });
-  }
+  await expect(page.getByRole("button", { name: "View desktop", exact: true })).toBeDisabled();
+  await expect(page.getByText("Desktop unavailable", { exact: true })).toBeVisible();
+  await expect(page.getByText(/One desktop for you and all your agents/)).toBeVisible();
 });
 
 test("application access is assigned explicitly to this context and unsupported images never upload", async ({

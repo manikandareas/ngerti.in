@@ -1,0 +1,31 @@
+name: ngertiin-machine
+
+services:
+  desktop:
+    hostname: ngertiin-machine
+    image: ghcr.io/trycua/linux:24.04@sha256:9ac0d6f6f7dd95392554ec95163f83c5061de3db05b64977696c78d71cd4861c
+    restart: unless-stopped
+    init: true
+    shm_size: 512m
+    ports:
+      - "127.0.0.1:${NGERTIIN_MACHINE_PORT:-3211}:3211"
+    environment:
+      CUA_ENV_TOKEN: ${CUA_ENV_TOKEN:?Run the Ngertiin machine setup first}
+      CUA_ENV_DATA_DIR: /home/cua/.local/state/ngertiin-spacesd
+      CUA_ENV_DOWNLOADS_DIR: /home/cua/workspace/downloads
+      CUA_SPACESD_CURSOR_PROBE: "0"
+      # Full authority over this dedicated, cooperatively shared OS. Ngertiin's
+      # gateway admits run-scoped tools and coordinates input. A static origin /
+      # PID manifest cannot represent an open-ended machine workspace.
+      CUA_DRIVER_PERMISSION_MODE: unrestricted
+      CUA_DRIVER_DANGEROUSLY_BYPASS_APPROVALS: "1"
+    volumes:
+      - home:/home/cua
+      - ./ngertiin-browser.desktop:/home/cua/.config/autostart/ngertiin-browser.desktop:ro
+      - ./chromium-policy.json:/etc/chromium/policies/managed/ngertiin.json:ro
+      - ./start-browser.sh:/etc/ngertiin/start-browser.sh:ro
+    labels:
+      io.ngertiin.resource: shared-machine
+
+volumes:
+  home:

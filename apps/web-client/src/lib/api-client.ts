@@ -91,15 +91,33 @@ export async function followEvents(
   after: number,
   signal: AbortSignal,
   update: (cursor: number, event: WorkspaceEvent) => Promise<void> | void,
+  inactivityMs = 35_000,
 ) {
-  const response = await fetch(`/v1/events/stream?after=${after}`, { signal });
+  const stalled = new AbortController();
+  const connection = AbortSignal.any([signal, stalled.signal]);
+  // A proxy can leave an old response open across backend restart. Bound only
+  // network waits; processing a batch must not consume the heartbeat budget.
+  const receive = async <T>(operation: () => Promise<T>): Promise<T> => {
+    const timer = setTimeout(
+      () => stalled.abort(new Error("Event connection lost. Reconnecting…")),
+      inactivityMs,
+    );
+    try {
+      return await operation();
+    } finally {
+      clearTimeout(timer);
+    }
+  };
+  const response = await receive(() =>
+    fetch(`/v1/events/stream?after=${after}`, { signal: connection }),
+  );
   if (!response.ok || !response.body) throw new Error("Event connection unavailable");
   const reader = response.body.getReader();
   const decoder = new TextDecoder();
   let buffer = "";
   try {
     while (!signal.aborted) {
-      const chunk = await reader.read();
+      const chunk = await receive(() => reader.read());
       if (chunk.done) break;
       buffer += decoder.decode(chunk.value, { stream: true }).replaceAll("\r\n", "\n");
       let boundary = buffer.indexOf("\n\n");

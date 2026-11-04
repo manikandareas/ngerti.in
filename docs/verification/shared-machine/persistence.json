@@ -1,0 +1,10 @@
+{
+  "date": "2026-11-04",
+  "same_retained_container": true,
+  "shared_file_hash_verified": true,
+  "os_writable_layer_retained": true,
+  "owned_test_site_persistent_cookie_retained": true,
+  "external_account_login_tested": false,
+  "machine_recreation_tested": false,
+  "running_jobs_survive_reboot": false
+}

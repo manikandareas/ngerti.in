@@ -17,6 +17,7 @@ export default defineConfig({
     "settings.spec.ts",
     "work.spec.ts",
     "composer.spec.ts",
+    "machine.spec.ts",
   ],
   testDir: "./tests",
   fullyParallel: true,

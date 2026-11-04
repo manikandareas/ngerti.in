@@ -14,6 +14,7 @@ import type { Artifact, Workspace } from "@/types/work";
 import type { Agent, Snapshot, Thread } from "@/types/workspace";
 import { type FileView, FileViewer } from "./file-viewer";
 import { PanelCard, PanelEmpty, PanelNavRow, PanelPageHeader } from "./panel-primitives";
+import { WorkingFiles } from "./working-files";
 
 export function FilesPanel({
   snapshot,
@@ -187,8 +188,8 @@ export function FilesPanel({
                 ))}
               </select>
               <p className="text-caption text-muted-foreground">
-                Only this file is copied. History, memory, and other files stay in the original
-                conversation.
+                This saved copy is linked to the destination conversation. History and memory stay
+                in the original conversation; machine working files remain shared.
               </p>
               <Button
                 size="sm"
@@ -230,6 +231,7 @@ export function FilesPanel({
           )}
         </PanelCard>
       )}
+      {!artifact && <WorkingFiles cursor={snapshot.cursor} />}
       <FileViewer file={preview} close={() => setPreview(null)} />
     </div>
   );

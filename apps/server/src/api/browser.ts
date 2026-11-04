@@ -6,6 +6,7 @@ import { id } from "../contracts";
 import type { ApiServices, Command } from "./services";
 
 export function registerBrowserRoutes(api: Elysia, services: ApiServices, command: Command) {
+  if (services.tools.machines) return api;
   const browsers = services.tools.browsers;
   let browserViews: BrowserViews | undefined;
   api.onStop(() => browserViews?.close());

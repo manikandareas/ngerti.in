@@ -18,6 +18,7 @@ export class MuseTools {
   constructor(
     private readonly endpoint: () => string,
     private readonly enabled = true,
+    private readonly machine = false,
   ) {
     this.server = Bun.serve({
       hostname: "127.0.0.1",
@@ -56,7 +57,7 @@ export class MuseTools {
             };
           else if (frame.method === "tools/list")
             result = {
-              tools: this.enabled ? productToolCatalog() : [],
+              tools: this.enabled ? productToolCatalog(this.machine ? "machine" : "browser") : [],
             };
           else if (frame.method === "tools/call")
             result = await this.call(toolCall.parse(frame.params));

@@ -16,7 +16,7 @@ async function setup(media = "image/png", bytes?: Buffer) {
     (await sharp({ create: { width: 80, height: 40, channels: 3, background: "red" } })
       .png()
       .toBuffer());
-  const artifact = artifacts.upload(workspace.id, crypto.randomUUID(), {
+  const artifact = await artifacts.upload(workspace.id, crypto.randomUUID(), {
     name: "visual.png",
     media_type: media,
     content_base64: content.toString("base64"),

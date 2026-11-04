@@ -9,6 +9,7 @@ import { registerHarnessRoutes } from "./api/harness";
 import { createCommand, createHttp } from "./api/http";
 import { registerIntegrationRoutes } from "./api/integrations";
 import { registerLearningRoutes } from "./api/learning";
+import { registerMachineRoutes } from "./api/machines";
 import { registerRunRoutes } from "./api/runs";
 import type { ApiServices } from "./api/services";
 import { registerWorkspaceRoutes } from "./api/workspaces";
@@ -20,6 +21,7 @@ import { Connections } from "./harness/connections";
 import { CredentialStorage } from "./harness/credential-storage";
 import { ProductTools } from "./harness/tools";
 import type { Lifecycle } from "./lifecycle";
+import { MachineViews } from "./machines/view";
 
 export function createApi(
   lifecycle: Lifecycle,
@@ -33,7 +35,12 @@ export function createApi(
 ) {
   if (token.length < 32) throw new Error("A private development token is required.");
   const command = createCommand(lifecycle);
-  const api = createHttp(token, services.tools);
+  const views = services.tools.machines ? new MachineViews(services.tools.machines) : undefined;
+  const api = createHttp(
+    token,
+    services.tools,
+    views ? (request) => views.authorize(request) : undefined,
+  );
   api
     .get("/health/ready", async () => ({
       status: "foundation_ready",
@@ -59,7 +66,7 @@ export function createApi(
     }))
     .get("/v1/contracts", () => ({
       ...contractDocument(),
-      ...consumerContract(),
+      ...consumerContract(services.tools.machines !== undefined),
       http: httpContract(api.routes),
     }));
   registerConversationRoutes(api, lifecycle, command);
@@ -72,6 +79,13 @@ export function createApi(
   registerWorkspaceRoutes(api, lifecycle, background, command);
   registerAttachmentRoutes(api, lifecycle);
   registerBrowserRoutes(api, services, command);
+  if (services.tools.machines && views) registerMachineRoutes(api, services.tools.machines, views);
   registerRunRoutes(api, lifecycle, background, services, command);
+  // Abort upstream streaming bodies before Bun waits for the HTTP server to drain.
+  const stop = api.stop.bind(api);
+  api.stop = (closeActiveConnections) => {
+    views?.close();
+    return stop(closeActiveConnections);
+  };
   return api;
 }

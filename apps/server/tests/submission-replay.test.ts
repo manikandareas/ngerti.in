@@ -21,7 +21,7 @@ for (const target of ["dm", "group"] as const) {
     const artifacts = new Artifacts(f.lifecycle);
     const workspace = artifacts.workspaces.ensure(thread.id, f.agent.id);
     const bytes = Buffer.from("Existing source: keep these bytes unchanged.");
-    const file = artifacts.upload(workspace.id, crypto.randomUUID(), {
+    const file = await artifacts.upload(workspace.id, crypto.randomUUID(), {
       name: "existing.txt",
       media_type: "text/plain",
       content_base64: bytes.toString("base64"),

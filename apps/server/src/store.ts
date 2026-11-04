@@ -28,6 +28,7 @@ export class Store {
   #transactionDepth = 0;
   #notificationPending = false;
   readonly #listeners = new Set<() => void>();
+  readonly #pendingCommands = new Map<string, Promise<unknown>>();
   constructor(
     readonly path: string,
     readonly ownerId: string,
@@ -200,9 +201,14 @@ export class Store {
         .get(commandId);
       if (old) {
         if (old.fingerprint !== fingerprint) throw new DomainError("IDEMPOTENCY_CONFLICT");
-        return JSON.parse(old.receipt) as T;
+        const receipt = JSON.parse(old.receipt);
+        if (receipt?.["@ngertiin/command"] === "pending")
+          throw new DomainError("RECONCILIATION_REQUIRED");
+        return receipt as T;
       }
       const result = fn();
+      if (result && typeof (result as { then?: unknown }).then === "function")
+        throw new Error("Use asyncCommand for asynchronous command effects.");
       this.#db
         .query("INSERT INTO commands VALUES (?, ?, ?)")
         .run(commandId, fingerprint, JSON.stringify(result));
@@ -210,11 +216,58 @@ export class Store {
     });
   }
 
+  /** Only for reconcilable file projections: reserve, await I/O, then commit synchronously. */
+  async asyncCommand<T, Prepared>(
+    commandId: string,
+    input: unknown,
+    prepare: () => Promise<Prepared>,
+    commit: (prepared: Prepared) => T,
+    authorize: () => void = () => {},
+  ): Promise<T> {
+    authorize();
+    const fingerprint = createHash("sha256").update(canonical(input)).digest("hex");
+    const previous = this.transaction(() => {
+      const old = this.#db
+        .query<{ fingerprint: string; receipt: string }, [string]>(
+          "SELECT fingerprint, receipt FROM commands WHERE id=?",
+        )
+        .get(commandId);
+      if (old) {
+        if (old.fingerprint !== fingerprint) throw new DomainError("IDEMPOTENCY_CONFLICT");
+        return JSON.parse(old.receipt);
+      }
+      this.#db
+        .query("INSERT INTO commands VALUES (?, ?, ?)")
+        .run(commandId, fingerprint, JSON.stringify({ "@ngertiin/command": "pending" }));
+      return null;
+    });
+    if (previous && previous["@ngertiin/command"] !== "pending") return previous as T;
+    const active = this.#pendingCommands.get(commandId);
+    if (active) return active as Promise<T>;
+    const pending = Promise.resolve()
+      .then(async () => {
+        const prepared = await prepare();
+        return this.transaction(() => {
+          authorize();
+          const result = commit(prepared);
+          this.#db
+            .query("UPDATE commands SET receipt=? WHERE id=? AND fingerprint=?")
+            .run(JSON.stringify(result), commandId, fingerprint);
+          return result;
+        });
+      })
+      .finally(() => this.#pendingCommands.delete(commandId));
+    this.#pendingCommands.set(commandId, pending);
+    return pending;
+  }
+
   receipt(commandId: string): unknown | null {
     const row = this.#db
       .query<{ receipt: string }, [string]>("SELECT receipt FROM commands WHERE id=?")
       .get(commandId);
-    return row ? JSON.parse(row.receipt) : null;
+    if (!row) return null;
+    const result = JSON.parse(row.receipt);
+    return result?.["@ngertiin/command"] === "pending" ? null : result;
   }
 
   recordRoutingTrace(input: RoutingDecisionTrace) {

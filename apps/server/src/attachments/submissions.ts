@@ -122,22 +122,22 @@ export class AttachmentSubmissions {
       }
     }
   }
-  materialize(message: Entity<"message">) {
+  async materialize(message: Entity<"message">) {
     for (const id of message.artifact_ids) {
       try {
-        this.artifacts.materialize(id);
+        await this.artifacts.materialize(id);
       } catch (error) {
         // Admission is already durable. Pending files remain retryable and fence native dispatch.
         if (!(error instanceof DomainError)) throw error;
       }
     }
   }
-  recover() {
+  async recover() {
     this.sweep();
     for (const item of this.lifecycle.store.list("artifact")) {
       if (item.materialization !== "pending") continue;
       try {
-        this.artifacts.materialize(item.id);
+        await this.artifacts.materialize(item.id);
       } catch (error) {
         if (!(error instanceof DomainError)) throw error;
       }

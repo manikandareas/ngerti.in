@@ -1,0 +1,261 @@
+{
+  "date": "2026-11-04",
+  "method": "Native computer use in the user's existing Brave Browser via cua_repl App accessibility and screenshot/pixel input. Backend HTTP and downloaded-file reads were supplementary diagnostics/hash verification, not UI action substitutes.",
+  "browser": "Brave Browser, existing Personal profile, task-owned Ngertiin tab",
+  "application": "http://127.0.0.1:3001",
+  "case": {
+    "name": "Uji Machine · Brave 4 Nov",
+    "thread_id": "c6e61171-58ac-4517-8580-330e2e652552",
+    "task": "Analyze four fictional sales orders using Python documentation opened in the Linux browser, execute the Python program in the Linux desktop terminal, and request a second agent's independent review of the same machine files.",
+    "expected": {
+      "units": 14,
+      "revenue_idr": 255000,
+      "by_product_idr": {
+        "Kopi Senja": 150000,
+        "Teh Melati": 45000,
+        "Roti Cokelat": 60000
+      }
+    },
+    "working_files": [
+      {
+        "path": "projects/brave-realcase-20261104/orders.csv",
+        "bytes": 110,
+        "sha256": "087232f98413d3fe50b3efa40228491393d9baebccf6da7aaad5ecd085396cfb"
+      },
+      {
+        "path": "projects/brave-realcase-20261104/analisis.py",
+        "bytes": 1007,
+        "sha256": "ddc11fadcdbf906a08a9c43f05ede8faa0caa72c6cc6478bbc6baf7758e57c0a"
+      },
+      {
+        "path": "projects/brave-realcase-20261104/ringkasan.md",
+        "bytes": 2136,
+        "sha256": "b34ba36f148b040767ab187041dd1ba935685e69962030844847a08d86820fb6"
+      },
+      {
+        "path": "projects/brave-realcase-20261104/review.md",
+        "bytes": 2933,
+        "sha256": "f879d97308a48b79a9b304567969454b5822b70cb00a93e048043c4d2b0b8c84"
+      }
+    ],
+    "artifacts": [
+      {
+        "id": "7c07ee29-0f15-4946-b386-59c652528ec2",
+        "name": "ringkasan.md",
+        "sha256": "b34ba36f148b040767ab187041dd1ba935685e69962030844847a08d86820fb6",
+        "created_by_agent_id": "e8a77db4-503d-47cf-83e3-bc2d182c7565",
+        "workspace_id": "6a1cc1db-7a29-46c3-a2a3-f0e4e2ca5a8d"
+      },
+      {
+        "id": "232bc3b1-9d9d-4d5c-ae10-21c68054fae9",
+        "name": "review.md",
+        "sha256": "f879d97308a48b79a9b304567969454b5822b70cb00a93e048043c4d2b0b8c84",
+        "created_by_agent_id": "f10240a3-39fc-40d9-9a60-d070368bd834",
+        "workspace_id": "6a1cc1db-7a29-46c3-a2a3-f0e4e2ca5a8d"
+      }
+    ],
+    "runs": [
+      {
+        "id": "1204f1be-73d4-43e3-8556-61f424dfd4a7",
+        "agent_id": "e8a77db4-503d-47cf-83e3-bc2d182c7565",
+        "status": "succeeded",
+        "product_tools": [],
+        "native_tools": [],
+        "diagnostic": null
+      },
+      {
+        "id": "f9fdfe89-72bc-491e-b4bc-04584d396b23",
+        "agent_id": "e8a77db4-503d-47cf-83e3-bc2d182c7565",
+        "status": "succeeded",
+        "product_tools": [
+          "ngertiin.describe_tools",
+          "ngertiin.computer_tools",
+          "ngertiin.machine_status",
+          "ngertiin.computer_tools",
+          "ngertiin.computer_call",
+          "ngertiin.machine_control",
+          "ngertiin.computer_call",
+          "ngertiin.computer_call",
+          "ngertiin.computer_call",
+          "ngertiin.computer_call",
+          "ngertiin.computer_call",
+          "ngertiin.computer_call",
+          "ngertiin.machine_control",
+          "ngertiin.describe_tools",
+          "ngertiin.describe_tools",
+          "ngertiin.computer_tools",
+          "ngertiin.write_file",
+          "ngertiin.machine_status",
+          "ngertiin.write_file",
+          "ngertiin.machine_status",
+          "ngertiin.describe_tools",
+          "ngertiin.group_ask_user"
+        ],
+        "native_tools": [],
+        "diagnostic": null
+      },
+      {
+        "id": "4509cc29-1a52-40c4-8f71-8a699bd3b4bd",
+        "agent_id": "e8a77db4-503d-47cf-83e3-bc2d182c7565",
+        "status": "succeeded",
+        "product_tools": [
+          "ngertiin.machine_status",
+          "ngertiin.machine_control",
+          "ngertiin.computer_call",
+          "ngertiin.computer_call",
+          "ngertiin.computer_call",
+          "ngertiin.computer_call",
+          "ngertiin.computer_call",
+          "ngertiin.computer_call",
+          "ngertiin.computer_call",
+          "ngertiin.computer_call",
+          "ngertiin.write_file",
+          "ngertiin.machine_control",
+          "ngertiin.publish_artifact",
+          "ngertiin.read_run_context",
+          "ngertiin.list_attachments",
+          "ngertiin.group_handoff"
+        ],
+        "native_tools": [],
+        "diagnostic": null
+      },
+      {
+        "id": "c9e9a0aa-3892-45a2-a896-958737f4024c",
+        "agent_id": "f10240a3-39fc-40d9-9a60-d070368bd834",
+        "status": "succeeded",
+        "product_tools": [
+          "ngertiin.describe_tools",
+          "ngertiin.read_harness_skill",
+          "ngertiin.read_file",
+          "ngertiin.read_file",
+          "ngertiin.read_file",
+          "ngertiin.write_file",
+          "ngertiin.publish_artifact"
+        ],
+        "native_tools": [],
+        "diagnostic": null
+      }
+    ],
+    "human_requests": [
+      {
+        "id": "543d219c-11d5-4566-9b97-be9f048b8bad",
+        "state": "answered"
+      }
+    ],
+    "goals_created": 0,
+    "routines_created": 0,
+    "observations": [
+      "Viewed the exact Python CSV documentation page that Tobi opened in the Linux Chromium browser through Ngertiin's viewer inside Brave.",
+      "Took human control while Tobi held the desktop. Saw You have control; native viewer clicks dismissed Chromium's restore-pages popover. Returned control and saw view-only again.",
+      "Tobi used the desktop's GUI terminal, so it requested handback before continuing. Replied through the persisted human-request form. This does not prove a headless-process concurrency or cancellation scenario.",
+      "Viewed the Linux terminal after completion; it showed python3 /home/cua/workspace/projects/brave-realcase-20261104/analisis.py and JSON with 14 units, revenue 255000 and product totals 150000/45000/60000, followed by the shell prompt.",
+      "Skinny read the same orders.csv, analisis.py and ringkasan.md through machine file tools, recalculated independently, wrote review.md and published it. Its report explicitly says it did not rerun the program.",
+      "Opened both immutable Markdown reports from Library. Opened live orders.csv from Working files, saw four rows/three columns, and filtered Kopi to two of four rows.",
+      "Downloaded ringkasan.md through the app, used Brave's native Save dialog with a unique test filename, and verified its SHA-256 against the artifact.",
+      "Reloaded Brave and saw the persisted final messages and both file references without creating another native run."
+    ],
+    "download": {
+      "filename": "ngertiin-brave-sales-20261104-ringkasan.md",
+      "bytes": 2136,
+      "sha256": "b34ba36f148b040767ab187041dd1ba935685e69962030844847a08d86820fb6",
+      "matches_artifact": true
+    }
+  },
+  "restart_and_cross_conversation": {
+    "thread_id": "3ecafb42-4d62-44a3-9dc6-fd11b3d0e94f",
+    "name": "Uji Recovery · Brave 4 Nov",
+    "routes": [
+      {
+        "id": "97cc6b1c-4871-4a03-9053-b821b4ebdfe2",
+        "state": "selected",
+        "error_code": null
+      },
+      {
+        "id": "29c0cf82-4ff4-480a-ba5f-8d2998520854",
+        "state": "selected",
+        "error_code": null
+      }
+    ],
+    "runs": [
+      {
+        "id": "afbb3d7f-3e9d-4d7c-97d5-50ce85582a90",
+        "agent_id": "e8a77db4-503d-47cf-83e3-bc2d182c7565",
+        "status": "succeeded",
+        "product_tools": [],
+        "native_tools": [],
+        "diagnostic": null
+      },
+      {
+        "id": "06613475-5268-450a-b85e-b89850756370",
+        "agent_id": "e8a77db4-503d-47cf-83e3-bc2d182c7565",
+        "status": "succeeded",
+        "product_tools": [
+          "ngertiin.describe_tools",
+          "ngertiin.read_file"
+        ],
+        "native_tools": [],
+        "diagnostic": null
+      }
+    ],
+    "answer": "Total unit: **14**. Omzet: **Rp255.000**.",
+    "observed_in_brave_without_manual_reload_after_final_restart": true,
+    "different_logical_workspaces_same_machine": {
+      "primary": [
+        {
+          "id": "6a1cc1db-7a29-46c3-a2a3-f0e4e2ca5a8d",
+          "machine_id": "bebbefa0-15e0-4cf5-89f1-71febaa2e6ca",
+          "root": "/home/cua/workspace"
+        }
+      ],
+      "recovery": [
+        {
+          "id": "d0abba43-649a-416d-8718-ba7663fdc989",
+          "machine_id": "bebbefa0-15e0-4cf5-89f1-71febaa2e6ca",
+          "root": "/home/cua/workspace"
+        }
+      ]
+    }
+  },
+  "fixes": [
+    {
+      "issue": "Group creation immediately rejected the opener with ROUTING_STALE before inference.",
+      "cause": "The opener's creation metadata incremented message revision after Jev captured the previous revision.",
+      "change": "Creation updates the pending route's expected revision atomically with its known metadata-only annotation. Actual content changes remain fenced.",
+      "test": "New regression failed before the fix, passed after it; fresh two-member group creation succeeded in Brave without retry."
+    },
+    {
+      "issue": "Existing Brave tab kept stale routing status after a development backend restart although new API/SSE requests were healthy.",
+      "cause": "A stalled open response had no client-side inactivity deadline.",
+      "change": "Bound network waits in followEvents to 35 seconds (server heartbeats arrive within 20 seconds), abort the stale fetch, then use existing snapshot reconciliation and reconnect logic. Consumer processing time does not consume the heartbeat budget.",
+      "test": "Stalled-open-stream reproduction failed before the fix; stall and heartbeat tests passed afterward. A subsequent backend restart recovered the actual Brave tab and showed a new read_file-backed answer without a manual reload."
+    }
+  ],
+  "verification": {
+    "backend": {
+      "pass": 369,
+      "fail": 0,
+      "assertions": 2314,
+      "files": 40
+    },
+    "frontend_units": {
+      "pass": 30,
+      "fail": 0,
+      "assertions": 8806,
+      "files": 8
+    },
+    "focused_creation_groups": {
+      "pass": 26,
+      "fail": 0
+    },
+    "server_lint": "passed",
+    "server_typecheck": "passed",
+    "web_lint": "passed",
+    "web_typecheck": "passed",
+    "web_build": "passed; existing large-chunk warning"
+  },
+  "limits": [
+    "Both tested product agents used their existing Codex connection; this Brave cohort is not a new Muse proof.",
+    "No external app communication, login/purchase, remote/VPS enrollment, machine reset, commit or push.",
+    "The transient first group-route failure and initial stale UI after restart are retained as failed observations, not counted as first-attempt successes."
+  ]
+}

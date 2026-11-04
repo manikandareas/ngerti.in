@@ -467,7 +467,8 @@ export class Lifecycle {
           existing.connection_id === agent.connection_id &&
           existing.harness === agent.harness &&
           existing.agent_revision === agent.revision &&
-          existing.workspace_id === (workspace?.id ?? null)
+          existing.workspace_id === (workspace?.id ?? null) &&
+          existing.workspace_revision === (workspace?.revision ?? null)
         ) {
           if (existing.native_session_id !== nativeSessionId) throw new DomainError("CONFLICT");
           return existing;

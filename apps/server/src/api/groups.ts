@@ -61,7 +61,9 @@ export function registerGroupRoutes(
               )
             : groups.send(params.id, body),
         );
-        submissions.materialize(lifecycle.store.get("message", result.message_id));
+        void submissions
+          .materialize(lifecycle.store.get("message", result.message_id))
+          .catch(() => {});
         return result;
       },
       { params: z.object({ id }), body: groupMessage },

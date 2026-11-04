@@ -113,7 +113,17 @@ export class Creation {
         { ...original, creation_operation_id: operationId, revision: original.revision + 1 },
         original.revision,
       );
-      return { thread: saved, message, route };
+      const annotatedRoute = route.routing
+        ? store.put(
+            {
+              ...route,
+              revision: route.revision + 1,
+              routing: { ...route.routing, request_revision: message.revision },
+            },
+            route.revision,
+          )
+        : route;
+      return { thread: saved, message, route: annotatedRoute };
     });
   }
 

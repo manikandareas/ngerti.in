@@ -16,7 +16,9 @@ export const submissionStatus = z.discriminatedUnion("state", [
 
 export function registerAttachmentRoutes(api: Elysia, lifecycle: Lifecycle) {
   const submissions = new AttachmentSubmissions(lifecycle);
-  submissions.recover();
+  void submissions
+    .recover()
+    .catch(() => console.error(JSON.stringify({ event: "attachments.materialization_pending" })));
   return api
     .post(
       "/v1/message-uploads",

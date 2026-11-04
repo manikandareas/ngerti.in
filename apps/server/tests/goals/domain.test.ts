@@ -46,13 +46,13 @@ function capture(goals: Goals, run: Entity<"run">, title = "Prepare the report")
 function finish(run: Entity<"run">, outcome: "succeeded" | "failed" | "unknown" = "succeeded") {
   f.lifecycle.settle(run.id, run.dispatch_token as string, outcome);
 }
-function artifact(run: Entity<"run">) {
+async function artifact(run: Entity<"run">) {
   const files = new Artifacts(f.lifecycle);
   const workspace = files.workspaces.get(run.workspace_id as string);
   files.workspaces
     .files(workspace.id)
     .create(`result-${run.id}.txt`, Buffer.from("Verified: 19 + 23 = 42."));
-  return files.publish(
+  return await files.publish(
     crypto.randomUUID(),
     {
       workspace_id: workspace.id,
@@ -211,7 +211,7 @@ for (const disposition of ["wait", "blocked"] as const) {
   });
 }
 
-test("completion requires verified nonempty produced bytes and successful native settlement", () => {
+test("completion requires verified nonempty produced bytes and successful native settlement", async () => {
   const goals = setup();
   const run = start();
   const goal = capture(goals, run);
@@ -233,7 +233,7 @@ test("completion requires verified nonempty produced bytes and successful native
   expect(() => goals.report(run.id, { ...report, evidence_artifact_ids: [metadata.id] })).toThrow(
     "SCOPE_DENIED",
   );
-  const result = artifact(run);
+  const result = await artifact(run);
   goals.report(run.id, { ...report, evidence_artifact_ids: [result.id] });
   goals.advance();
   expect(f.store.get("goal", goal.id).state).toBe("active");
@@ -248,7 +248,7 @@ test("completion requires verified nonempty produced bytes and successful native
   expect(f.store.list("run")).toHaveLength(1);
 });
 
-test("failed or stopped runs cannot finalize pending completion or publish deferred late results", () => {
+test("failed or stopped runs cannot finalize pending completion or publish deferred late results", async () => {
   const goals = setup();
   const source = start();
   capture(goals, source);
@@ -262,7 +262,7 @@ test("failed or stopped runs cannot finalize pending completion or publish defer
   expect(() => f.lifecycle.appendAnswer(run.id, "Late result")).toThrow("STALE_DISPATCH");
   f.lifecycle.settle(run.id, run.dispatch_token as string, "cancelled");
   expect(f.store.answer(run.id)).toBeNull();
-  expect(() => artifact(source)).toThrow();
+  await expect(artifact(source)).rejects.toThrow();
 });
 
 test("calendar schedules honor IANA wall time and skip DST gaps and repeated fall-back instants", () => {
@@ -343,14 +343,14 @@ test("quiet scheduled output has no streamed or final bubble, while relevant out
   ).toHaveLength(1);
 });
 
-test("quiet cannot hide a result artifact, human request or explicit blocker", () => {
+test("quiet cannot hide a result artifact, human request or explicit blocker", async () => {
   const goals = setup();
   const source = start();
   const r = routine(goals, source);
   finish(source);
   const occurrence = f.lifecycle.fireRoutine(r.id, new Date("2026-10-31T00:00:00Z"));
   const run = start((occurrence as Entity<"occurrence">).run_id);
-  artifact(run);
+  await artifact(run);
   expect(() => goals.noUpdate(run.id)).toThrow("CONFLICT");
   expect(() => goals.noUpdate(source.id)).toThrow("CONFLICT");
 });
@@ -508,7 +508,7 @@ test("HTTP contracts expose goal/Routine commands, snapshot/replay and authentic
   expect(await (await request("/v1/goals/capture", input)).json()).toEqual(receipt);
   expect(f.store.cursor).toBe(cursor);
   const document = await (await request("/v1/contracts")).json();
-  expect(document.version).toBe("1.28.0");
+  expect(document.version).toBe("1.30.0");
   expect(document.commands.report_goal).toBeDefined();
   const snapshot = await (await request(`/v1/threads/${run.thread_id}/snapshot`)).json();
   expect(snapshot.goals[0].id).toBe(input.goal_id);
@@ -546,11 +546,11 @@ test("an active linked Routine owns its wakeups and cannot race a second continu
   expect(f.store.list("run").filter((r) => r.goal_id === goal.id && !r.routine_id)).toHaveLength(0);
 });
 
-test("completion from an unsuccessful native run remains blocked with evidence retained", () => {
+test("completion from an unsuccessful native run remains blocked with evidence retained", async () => {
   const goals = setup();
   const run = start();
   const goal = capture(goals, run);
-  const result = artifact(run);
+  const result = await artifact(run);
   goals.report(run.id, {
     goal_id: goal.id,
     expected_revision: goal.revision,
@@ -624,11 +624,11 @@ test("membership removal preserves group responsibilities and invalidates the re
   expect(f.store.list("run").filter((run) => run.thread_id === group.id)).toHaveLength(1);
 });
 
-test("completion rechecks evidence bytes after reporting and blocks a tampered artifact", () => {
+test("completion rechecks evidence bytes after reporting and blocks a tampered artifact", async () => {
   const goals = setup();
   const run = start();
   const goal = capture(goals, run);
-  const result = artifact(run);
+  const result = await artifact(run);
   goals.report(run.id, {
     goal_id: goal.id,
     expected_revision: goal.revision,
@@ -643,7 +643,7 @@ test("completion rechecks evidence bytes after reporting and blocks a tampered a
   expect(f.store.get("goal", goal.id).progress).toContain("evidence could not be verified");
 });
 
-test("a meaningful artifact after a quiet decision restores final publication", () => {
+test("a meaningful artifact after a quiet decision restores final publication", async () => {
   const goals = setup();
   const source = start();
   const r = routine(goals, source);
@@ -651,7 +651,7 @@ test("a meaningful artifact after a quiet decision restores final publication", 
   const occurrence = f.lifecycle.fireRoutine(r.id, new Date("2026-10-31T00:00:00Z"));
   const run = start((occurrence as Entity<"occurrence">).run_id);
   goals.noUpdate(run.id);
-  artifact(run);
+  await artifact(run);
   expect(f.store.get("run", run.id).publication).toBe("deferred");
   f.lifecycle.appendAnswer(run.id, "A useful result is available.");
   finish(run);
@@ -667,7 +667,7 @@ test("a source run cannot undo its yield, publish future result bytes or complet
   });
   const run = start();
   const goal = capture(goals, run);
-  const result = artifact(run);
+  const result = await artifact(run);
   const deferred = goals.report(run.id, {
     goal_id: goal.id,
     expected_revision: goal.revision,
@@ -706,7 +706,7 @@ test("a source run cannot undo its yield, publish future result bytes or complet
   files.workspaces
     .files(run.workspace_id as string)
     .create("native-early.txt", Buffer.from("Untrusted native early write"));
-  expect(() =>
+  await expect(
     files.publish(
       crypto.randomUUID(),
       {
@@ -717,7 +717,7 @@ test("a source run cannot undo its yield, publish future result bytes or complet
       },
       () => {},
     ),
-  ).toThrow("RESPONSIBILITY_DEFERRED");
+  ).rejects.toThrow("RESPONSIBILITY_DEFERRED");
   f.lifecycle.appendAnswer(run.id, "I already finished the future stage.");
   finish(run);
   expect(f.store.answer(run.id)?.text).toContain("First stage is ready.");
@@ -726,7 +726,7 @@ test("a source run cannot undo its yield, publish future result bytes or complet
   new Goals(f.lifecycle).advance(new Date("2026-11-02T00:00:00Z"));
   const next = start(f.store.get("goal", goal.id).current_run_id as string);
   const current = f.store.get("goal", goal.id);
-  const final = artifact(next);
+  const final = await artifact(next);
   new Goals(f.lifecycle).report(next.id, {
     goal_id: goal.id,
     expected_revision: current.revision,
@@ -739,7 +739,7 @@ test("a source run cannot undo its yield, publish future result bytes or complet
   expect(f.store.get("goal", goal.id).state).toBe("completed");
 });
 
-test("a later conversational schedule edit binds its source run before allowing another occurrence", () => {
+test("a later conversational schedule edit binds its source run before allowing another occurrence", async () => {
   const goals = setup();
   const source = start();
   const goal = capture(goals, source);
@@ -757,7 +757,7 @@ test("a later conversational schedule edit binds its source run before allowing 
   });
   expect(f.store.get("goal", goal.id).current_run_id).toBe(editor.id);
   expect(f.lifecycle.fireRoutine(r.id, new Date("2026-11-02T00:00:01Z"))).toBeNull();
-  expect(() => artifact(editor)).toThrow("RESPONSIBILITY_DEFERRED");
+  await expect(artifact(editor)).rejects.toThrow("RESPONSIBILITY_DEFERRED");
   finish(editor);
   const occurrence = f.lifecycle.fireRoutine(r.id, new Date("2026-11-02T00:00:01Z"));
   expect(occurrence).not.toBeNull();

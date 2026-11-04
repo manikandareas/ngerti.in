@@ -29,7 +29,7 @@ export function workspacePolicy(context: LaunchContext) {
         "**/.env.*": "deny",
         "**/*.p12": "deny",
         "**/*.pfx": "deny",
-        ".": context.purpose === "routing" ? "read" : "write",
+        ".": context.machine || context.purpose === "routing" ? "read" : "write",
         ".codex": "deny",
         ".muse": "deny",
         ".agents": "read",

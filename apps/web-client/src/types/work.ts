@@ -34,6 +34,8 @@ export interface Routine extends Base {
   source_message_id: string | null;
 }
 export interface Workspace extends Base {
+  machine_id?: string | null;
+  machine_root?: string | null;
   thread_id: string;
   agent_id: string | null;
   scope: "agent" | "group";

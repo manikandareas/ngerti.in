@@ -65,7 +65,11 @@ export class MuseClient implements HarnessClient {
     mkdirSync(workspace, { recursive: true, mode: 0o700 });
     this.transport = new MuseTransport(executable, context, args, modelId);
     try {
-      this.tools = new MuseTools(endpoint, context.purpose !== "routing");
+      this.tools = new MuseTools(
+        endpoint,
+        context.purpose !== "routing",
+        context.machine !== undefined,
+      );
       context.redactor.add(this.tools.token);
     } catch {
       void this.transport.close();

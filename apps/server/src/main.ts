@@ -15,6 +15,8 @@ import { MuseAdapter } from "./harness/muse/adapter";
 import { HarnessRuntime } from "./harness/runtime";
 import { ProductTools } from "./harness/tools";
 import { Lifecycle } from "./lifecycle";
+import { readMachineConfiguration } from "./machines/config";
+import { Machines } from "./machines/service";
 import { Store } from "./store";
 
 const config = developmentConfig();
@@ -23,6 +25,7 @@ const lifecycle = new Lifecycle(
   store,
   config.groupRouter === "jev" ? new JevRouter(config.typesafeApiKey as string) : undefined,
 );
+const machines = new Machines(lifecycle, readMachineConfiguration(config.stateDir));
 new Conversations(lifecycle).setup();
 const tools = new ProductTools(lifecycle, (scope, name) => {
   console.log(
@@ -71,7 +74,7 @@ const app = createApi(lifecycle, background, config.token, {
 try {
   app.listen({ hostname: "127.0.0.1", port: config.port });
   background.start();
-  void broker.recover();
+  void machines.recover().then(() => broker.recover());
 } catch (error) {
   store.close();
   throw error;
@@ -93,7 +96,7 @@ async function stop() {
   await app.stop(true);
   await background.stop();
   await broker.close();
-  await tools.browsers.shutdown();
+  await machines.close();
   await Promise.allSettled([codexAccounts.close(), museAccounts.close()]);
   store.close();
   process.exit(0);

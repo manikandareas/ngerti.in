@@ -24,8 +24,10 @@ export const workspaceFields = {
   ...workspaceInput.shape,
   scope: z.enum(["agent", "group"]).default("agent"),
   state: z.enum(["active", "revoked"]),
-  root_device: z.string(),
-  root_inode: z.string(),
+  root_device: z.string().nullable(),
+  root_inode: z.string().nullable(),
+  machine_id: id.nullable().default(null),
+  machine_root: z.string().nullable().default(null),
 };
 export const uploadInput = z.strictObject({
   name: z

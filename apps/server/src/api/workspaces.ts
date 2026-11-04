@@ -4,6 +4,7 @@ import { Artifacts } from "../artifacts";
 import type { Background } from "../background";
 import { DomainError, id } from "../contracts";
 import type { Lifecycle } from "../lifecycle";
+import { machineFor } from "../machines/service";
 import { fileQuery, publicationInput, uploadInput, workspaceInput } from "../workspaces/contracts";
 import type { Command } from "./services";
 
@@ -23,7 +24,12 @@ export function registerWorkspaceRoutes(
     )
     .get(
       "/v1/threads/:id/workspace",
-      ({ params, query }) => Response.json(workspaces.current(params.id, query.agent_id)),
+      ({ params, query }) =>
+        Response.json(
+          machineFor(lifecycle)
+            ? workspaces.ensure(params.id, query.agent_id)
+            : workspaces.current(params.id, query.agent_id),
+        ),
       { params: z.object({ id }), query: z.strictObject({ agent_id: id }) },
     )
     .post(
@@ -37,13 +43,14 @@ export function registerWorkspaceRoutes(
     )
     .get(
       "/v1/workspaces/:id/files",
-      ({ params, query }) => workspaces.files(params.id).list(query.path, query.after, query.limit),
+      ({ params, query }) =>
+        workspaces.workingFiles(params.id).list(query.path, query.after, query.limit),
       { params: z.object({ id }), query: fileQuery },
     )
     .get(
       "/v1/workspaces/:id/file",
-      ({ params, query }) => {
-        const bytes = workspaces.files(params.id).read(query.path);
+      async ({ params, query }) => {
+        const bytes = await workspaces.workingFiles(params.id).read(query.path);
         return new Response(bytes, {
           headers: {
             "Content-Type": "application/octet-stream",

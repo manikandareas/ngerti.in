@@ -1,0 +1,40 @@
+{
+  "results": [
+    {
+      "family": "codex",
+      "version": "0.166.0",
+      "run_status": "succeeded",
+      "diagnostic": null,
+      "product_tools": [
+        "ngertiin.describe_tools",
+        "ngertiin.computer_tools",
+        "ngertiin.describe_tools",
+        "ngertiin.computer_call",
+        "ngertiin.machine_exec",
+        "ngertiin.machine_exec",
+        "ngertiin.read_file"
+      ],
+      "native_tools": [],
+      "billing": "subscription",
+      "answer": "Marker: `MACHINE-7ab2f2d6-7226-4242-8f97-28370f9ce0c2`\nOS: Linux\n\nExact file contents confirmed; desktop inspected successfully. Initial shell requests failed and the first read found no file; subsequent operations succeeded.",
+      "path": ".ngertiin-verification/harness-1fa348ae-b134-4598-98c0-d2efad915996.txt"
+    },
+    {
+      "family": "muse",
+      "version": "1.4.14-R7309.1",
+      "run_status": "succeeded",
+      "diagnostic": null,
+      "product_tools": [
+        "ngertiin.describe_tools",
+        "ngertiin.machine_exec",
+        "ngertiin.read_file",
+        "ngertiin.machine_exec",
+        "ngertiin.computer_call"
+      ],
+      "native_tools": [],
+      "billing": "api_key",
+      "answer": "Verification starting — writing the marker and checking the desktop.\n\nThat write was rejected on schema — retrying without the extra field.\n\nMarker: MACHINE-802cc3c7-2366-4a20-9434-b2062322c3f4\n\nFile verified via read: `.ngertiin-verification/harness-86dac98a-2044-47c7-8408-bb970627dc8f.txt` contains exactly that marker.\n\nOS from shell (`uname -s`): Linux\n\nDesktop check (`get_desktop_state`): OK, platform linux, 1280x800, Chromium open on about:blank.",
+      "path": ".ngertiin-verification/harness-86dac98a-2044-47c7-8408-bb970627dc8f.txt"
+    }
+  ]
+}

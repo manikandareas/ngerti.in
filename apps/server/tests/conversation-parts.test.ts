@@ -194,7 +194,7 @@ test.each(["persisted", "replayed"])(
   },
 );
 
-test("goal progress stays quiet and completed milestones follow actual settlement in both DM and group", () => {
+test("goal progress stays quiet and completed milestones follow actual settlement in both DM and group", async () => {
   f = fixture();
   const admission = f.admit("Prepare a report");
   const run = start(admission.run.id);
@@ -210,7 +210,7 @@ test("goal progress stays quiet and completed milestones follow actual settlemen
   artifacts.workspaces
     .files(run.workspace_id as string)
     .create("report.txt", Buffer.from("Useful report"));
-  const artifact = artifacts.publish(
+  const artifact = await artifacts.publish(
     crypto.randomUUID(),
     {
       workspace_id: run.workspace_id,

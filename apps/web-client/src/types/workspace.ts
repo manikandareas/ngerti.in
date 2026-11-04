@@ -9,7 +9,7 @@ import type {
   Routine,
   Workspace,
 } from "./work";
-// Consumer projections of the published Ngertiin API 1.28.0.
+// Consumer projections of the published Ngertiin API 1.29.0.
 export interface Base {
   id: string;
   revision: number;

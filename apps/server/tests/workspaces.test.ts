@@ -87,14 +87,14 @@ test("authenticated HTTP upload, scoped listing, binary download and exact retry
   expect(f.store.list("artifact")).toHaveLength(1);
   expect(files.workspaces.files(workspace.id).list("", "", 10).entries[0]?.name).toBe("inputs");
 });
-test("same agent has separate DM/group resources; explicit sharing creates a scoped immutable copy", () => {
+test("same agent has separate DM/group resources; explicit sharing creates a scoped immutable copy", async () => {
   const { files, workspace } = setup();
   const group = f.lifecycle.create("thread", {
     type: "group",
     member_agent_ids: [f.agent.id],
   }) as Entity<"thread">;
   const second = files.workspaces.ensure(group.id, f.agent.id);
-  const artifact = files.upload(workspace.id, crypto.randomUUID(), upload());
+  const artifact = await files.upload(workspace.id, crypto.randomUUID(), upload());
   expect(() => files.download(artifact.id, second.id)).toThrow("SCOPE_DENIED");
   expect(() =>
     f.lifecycle.admit({
@@ -104,7 +104,7 @@ test("same agent has separate DM/group resources; explicit sharing creates a sco
       artifact_ids: [artifact.id],
     }),
   ).toThrow("SCOPE_DENIED");
-  const shared = files.share(artifact.id, second.id, crypto.randomUUID());
+  const shared = await files.share(artifact.id, second.id, crypto.randomUUID());
   expect(shared.source_artifact_id).toBe(artifact.id);
   expect(files.download(shared.id, second.id).bytes).toEqual(
     files.download(artifact.id, workspace.id).bytes,
@@ -118,7 +118,7 @@ test("same agent has separate DM/group resources; explicit sharing creates a sco
     }).message.artifact_ids,
   ).toEqual([shared.id]);
 });
-test("path traversal, credential paths, symlink ancestors, symlink files and hardlinks cannot be read or published", () => {
+test("path traversal, credential paths, symlink ancestors, symlink files and hardlinks cannot be read or published", async () => {
   const { files, workspace, root } = setup();
   const privatePath = join(f.dir, "private.txt");
   writeFileSync(privatePath, "private-canary");
@@ -139,17 +139,17 @@ test("path traversal, credential paths, symlink ancestors, symlink files and har
   expect(() => access.create("escape/new.txt", Buffer.from("bad"))).toThrow();
   const { run, authorize } = running(workspace);
   for (const path of ["link.txt", "escape/private.txt", "hard.txt"])
-    expect(() =>
+    await expect(
       files.publish(
         crypto.randomUUID(),
         { workspace_id: workspace.id, run_id: run.id, path },
         authorize,
       ),
-    ).toThrow();
+    ).rejects.toThrow();
   expect(readFileSync(privatePath, "utf8")).toBe("private-canary");
   expect(f.store.list("artifact")).toHaveLength(0);
 });
-test("publication deduplicates by native run/path/hash, keeps provenance and never follows prose", () => {
+test("publication deduplicates by native run/path/hash, keeps provenance and never follows prose", async () => {
   const { files, workspace, root } = setup();
   writeFileSync(join(root, "answer.txt"), "result");
   const { run, authorize } = running(workspace);
@@ -162,9 +162,9 @@ test("publication deduplicates by native run/path/hash, keeps provenance and nev
     media_type: "text/plain",
   };
   const key = crypto.randomUUID();
-  const first = files.publish(key, input, authorize);
-  expect(files.publish(key, input, authorize)).toEqual(first);
-  expect(files.publish(crypto.randomUUID(), input, authorize)).toEqual(first);
+  const first = await files.publish(key, input, authorize);
+  expect(await files.publish(key, input, authorize)).toEqual(first);
+  expect(await files.publish(crypto.randomUUID(), input, authorize)).toEqual(first);
   expect(first).toMatchObject({
     origin: "native_output",
     native_session_id: "native-file-proof",
@@ -174,14 +174,14 @@ test("publication deduplicates by native run/path/hash, keeps provenance and nev
   });
   expect(f.store.events(0, 1000).filter((e) => e.entity_kind === "artifact")).toHaveLength(1);
 });
-test("stop and restart retain one committed artifact without deleting or republishing files", () => {
+test("stop and restart retain one committed artifact without deleting or republishing files", async () => {
   const { files, workspace, root } = setup();
   writeFileSync(join(root, "keep.txt"), "keep");
   const { run, authorize } = running(workspace);
   const input = { workspace_id: workspace.id, run_id: run.id, path: "keep.txt" };
-  const published = files.publish(crypto.randomUUID(), input, authorize);
+  const published = await files.publish(crypto.randomUUID(), input, authorize);
   f.lifecycle.cancel(run.id);
-  expect(() => files.publish(crypto.randomUUID(), input, authorize)).toThrow();
+  await expect(files.publish(crypto.randomUUID(), input, authorize)).rejects.toThrow();
   f.restart();
   const restored = new Artifacts(f.lifecycle);
   expect(restored.download(published.id, workspace.id).bytes.toString()).toBe("keep");
@@ -207,13 +207,13 @@ test("workspace revocation fences active tools, final publication, stale downloa
   const lease = tools.issue(run);
   files.workspaces.revoke(workspace.id);
   expect(f.store.get("run", run.id).cancellation).toBe("requested");
-  expect(() =>
+  await expect(
     files.publish(
       crypto.randomUUID(),
       { workspace_id: workspace.id, run_id: run.id, path: "answer.txt" },
       authorize,
     ),
-  ).toThrow();
+  ).rejects.toThrow();
   await expect(
     tools.call(lease.token, lease.scope, "ngertiin.read_file", { path: "answer.txt" }),
   ).rejects.toThrow();
@@ -233,26 +233,26 @@ test("project binding rejects credential/state ancestors and overlapping foreign
   ).toThrow("SCOPE_DENIED");
   expect(files.workspaces.get(workspace.id)).toEqual(workspace);
 });
-test("replacing a workspace root or corrupting immutable artifact bytes fails closed", () => {
+test("replacing a workspace root or corrupting immutable artifact bytes fails closed", async () => {
   const { files, workspace, root } = setup();
-  const artifact = files.upload(workspace.id, crypto.randomUUID(), upload());
+  const artifact = await files.upload(workspace.id, crypto.randomUUID(), upload());
   writeFileSync(join(files.blobRoot, artifact.storage_key), "tampered");
   expect(() => files.download(artifact.id, workspace.id)).toThrow("CONFLICT");
   renameSync(root, `${root}-old`);
   mkdirSync(root);
   expect(() => files.workspaces.files(workspace.id)).toThrow("SCOPE_DENIED");
 });
-test("upload rejects changed idempotency payload, overwrite, malformed base64 and credential filenames", () => {
+test("upload rejects changed idempotency payload, overwrite, malformed base64 and credential filenames", async () => {
   const { files, workspace } = setup();
   const key = crypto.randomUUID();
-  files.upload(workspace.id, key, upload());
-  expect(() => files.upload(workspace.id, key, upload("input.csv", "different"))).toThrow(
+  await files.upload(workspace.id, key, upload());
+  await expect(files.upload(workspace.id, key, upload("input.csv", "different"))).rejects.toThrow(
     "IDEMPOTENCY_CONFLICT",
   );
-  expect(() =>
+  await expect(
     files.upload(workspace.id, crypto.randomUUID(), { name: "data", content_base64: "not base64" }),
-  ).toThrow();
-  expect(() => files.upload(workspace.id, crypto.randomUUID(), upload(".env"))).toThrow(
+  ).rejects.toThrow();
+  await expect(files.upload(workspace.id, crypto.randomUUID(), upload(".env"))).rejects.toThrow(
     "SCOPE_DENIED",
   );
 });
@@ -283,12 +283,12 @@ test("external project binding is persistent, rejects overlapping DM/group roots
   }
 });
 
-test("final resource recheck refuses a publication revoked after reading the source", () => {
+test("final resource recheck refuses a publication revoked after reading the source", async () => {
   const { files, workspace, root } = setup();
   writeFileSync(join(root, "output.txt"), "result");
   const { run, authorize } = running(workspace);
   let checks = 0;
-  expect(() =>
+  await expect(
     files.publish(
       crypto.randomUUID(),
       { workspace_id: workspace.id, run_id: run.id, path: "output.txt" },
@@ -297,14 +297,14 @@ test("final resource recheck refuses a publication revoked after reading the sou
         if (++checks === 2) files.workspaces.revoke(workspace.id);
       },
     ),
-  ).toThrow();
+  ).rejects.toThrow();
   expect(f.store.list("artifact")).toHaveLength(0);
   expect(readFileSync(join(root, "output.txt"), "utf8")).toBe("result");
 });
 
-test("rebound or modified queued attachments are fenced before native dispatch", () => {
+test("rebound or modified queued attachments are fenced before native dispatch", async () => {
   const { files, workspace, root } = setup();
-  const artifact = files.upload(workspace.id, crypto.randomUUID(), upload());
+  const artifact = await files.upload(workspace.id, crypto.randomUUID(), upload());
   const admitted = f.lifecycle.admit({
     thread_id: f.thread.id,
     agent_id: f.agent.id,
@@ -366,9 +366,9 @@ test("descriptor traversal refuses concurrent symlink swaps without exposing ano
   expect(readFileSync(join(outside, "data.txt"), "utf8")).toBe("private-canary");
 });
 
-test("input integrity is verified against immutable bytes before dispatch", () => {
+test("input integrity is verified against immutable bytes before dispatch", async () => {
   const { files, workspace, root } = setup();
-  const input = files.upload(workspace.id, crypto.randomUUID(), upload());
+  const input = await files.upload(workspace.id, crypto.randomUUID(), upload());
   f.lifecycle.bind(f.thread.id, f.agent.id, "input-native", workspace);
   f.lifecycle.admit({
     thread_id: f.thread.id,
@@ -377,9 +377,9 @@ test("input integrity is verified against immutable bytes before dispatch", () =
     artifact_ids: [input.id],
   });
   const run = f.lifecycle.claimNext(f.thread.id, f.agent.id) as Entity<"run">;
-  files.verifyInputs(run);
+  await files.verifyInputs(run);
   writeFileSync(join(root, input.source_path as string), "changed");
-  expect(() => files.verifyInputs(run)).toThrow("CONFLICT");
+  await expect(files.verifyInputs(run)).rejects.toThrow("CONFLICT");
   expect(files.download(input.id, workspace.id).bytes.toString()).toBe("value\n3\n4\n");
 });
 

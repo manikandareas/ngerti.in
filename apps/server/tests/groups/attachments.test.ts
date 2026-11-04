@@ -232,7 +232,7 @@ test("handoff and follow-up use the same source, serialize writers and retain ac
   currentFiles.workspaces
     .files(childRun.workspace_id as string)
     .create("review.txt", Buffer.from("Shared review"));
-  const output = currentFiles.publish(
+  const output = await currentFiles.publish(
     crypto.randomUUID(),
     { workspace_id: childRun.workspace_id, run_id: childRun.id, path: "review.txt" },
     () => f.lifecycle.authorizeDispatch(childRun.id, childRun.dispatch_token as string),
@@ -269,7 +269,7 @@ test("unknown group work retains the workspace lease across restart until native
 test("foreign attachment admission and removed-member access fail without publishing a message", async () => {
   const { group, peer, groups, files } = setup();
   const dm = files.workspaces.ensure(f.thread.id, f.agent.id);
-  const privateFile = files.upload(dm.id, crypto.randomUUID(), {
+  const privateFile = await files.upload(dm.id, crypto.randomUUID(), {
     name: "private.txt",
     content_base64: Buffer.from("private DM").toString("base64"),
   });
@@ -365,7 +365,7 @@ test("retrying rejected routing keeps the original source message and cannot dup
   ).toHaveLength(1);
 });
 
-test("existing group lanes are preserved beneath stable directories and retain artifact identity", () => {
+test("existing group lanes are preserved beneath stable directories and retain artifact identity", async () => {
   const { group, peer, files, groups } = setup();
   for (const agentId of [f.agent.id, peer.id]) {
     const id = crypto.randomUUID();
@@ -384,12 +384,14 @@ test("existing group lanes are preserved beneath stable directories and retain a
       state: "active",
       root_device: String(info.dev),
       root_inode: String(info.ino),
+      machine_id: null,
+      machine_root: null,
       revision: 1,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     });
     writeFileSync(join(root, "same-name.txt"), agentId);
-    files.upload(id, crypto.randomUUID(), {
+    await files.upload(id, crypto.randomUUID(), {
       name: "source.txt",
       content_base64: Buffer.from(agentId).toString("base64"),
     });

@@ -16,6 +16,8 @@ import { Applications } from "../integrations/service";
 import { registerAppTools } from "../integrations/tools";
 import { registerLearningTools } from "../learning/tools";
 import type { Lifecycle } from "../lifecycle";
+import { type Machines, machineFor } from "../machines/service";
+import { registerMachineTools } from "../machines/tools";
 import { observeToolActivity, toolActivityKind } from "../runs/activity";
 import { canonical } from "../store";
 import { registerWorkspaceTools } from "../workspaces/tools";
@@ -35,7 +37,8 @@ type Tool = {
   execute(input: unknown, access: ToolAccess): unknown | Promise<unknown>;
 };
 export class ProductTools {
-  readonly browsers: Browsers;
+  readonly #browsers: Browsers | undefined;
+  readonly machines: Machines | undefined;
   readonly applications: Applications;
   readonly #leases = new Map<string, ToolScope>();
   readonly #tools = new Map<string, Tool>();
@@ -56,11 +59,16 @@ export class ProductTools {
   ) {
     this.applications = new Applications(lifecycle, appHost);
     registerAppTools(this);
-    this.browsers = new Browsers(
-      lifecycle,
-      browserHost ?? new DockerBrowserHost(dirname(lifecycle.store.path), lifecycle.store.ownerId),
-    );
-    registerBrowserTools(this);
+    this.machines = machineFor(lifecycle);
+    if (this.machines) registerMachineTools(this, this.machines);
+    else {
+      this.#browsers = new Browsers(
+        lifecycle,
+        browserHost ??
+          new DockerBrowserHost(dirname(lifecycle.store.path), lifecycle.store.ownerId),
+      );
+      registerBrowserTools(this);
+    }
     registerLearningTools(this);
     registerGroupTools(this);
     registerGoalTools(this);
@@ -121,6 +129,10 @@ export class ProductTools {
     });
     registerAgentTools(this);
   }
+  get browsers() {
+    if (!this.#browsers) throw new DomainError("BROWSER_UNAVAILABLE");
+    return this.#browsers;
+  }
   register(name: string, tool: Tool) {
     if (!/^[a-z][\w.]{1,100}$/.test(name) || this.#tools.has(name))
       throw new Error("Invalid or duplicate product tool.");
@@ -156,6 +168,7 @@ export class ProductTools {
       revoke: () => {
         this.#leases.delete(token);
         this.#mcp.revoke(token);
+        void this.machines?.releaseRun(run.id).catch(() => {});
       },
     };
   }
@@ -343,6 +356,8 @@ export class ProductTools {
     this.lease(token);
   }
   revokeAll() {
+    for (const scope of this.#leases.values())
+      void this.machines?.releaseRun(scope.run_id).catch(() => {});
     this.#leases.clear();
     this.#mcp.clear();
   }

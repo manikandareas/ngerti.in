@@ -3,8 +3,10 @@ import { createApi } from "../src/api";
 import { Background } from "../src/background";
 import { Conversations } from "../src/conversations";
 import { Creation, openingState, retryOpening } from "../src/conversations/creation";
+import { Groups } from "../src/groups/service";
 import { Connections } from "../src/harness/connections";
 import { ProductTools } from "../src/harness/tools";
+import { Lifecycle } from "../src/lifecycle";
 import { fixture } from "./helpers";
 
 let f: ReturnType<typeof fixture>;
@@ -174,4 +176,43 @@ test("group tool lease cannot rewrite global profiles and can update only its gr
   expect((changed as { name: string }).name).toBe("Scoped group");
   expect(f.store.get("agent", f.agent.id)).toEqual(before);
   expect(f.store.list("goal")).toHaveLength(0);
+});
+
+test("Jev group creation routes the final annotated opener and retains stale-content fencing", async () => {
+  f = fixture();
+  let decisions = 0;
+  const lifecycle = new Lifecycle(f.store, {
+    choose: async () => {
+      decisions++;
+      return {
+        agent_id: f.agent.id,
+        model: "fixture",
+        confidence: 1,
+        probabilities: { [f.agent.id]: 1 },
+        input_tokens: 0,
+      };
+    },
+  });
+  const created = new Creation(lifecycle).group(crypto.randomUUID(), {
+    name: "Opening route",
+    member_agent_ids: [f.agent.id],
+  });
+  const groups = new Groups(lifecycle);
+  expect(groups.routingPacket(created.route.id).request).toBe(created.message.text);
+  const background = new Background(lifecycle);
+  background.tick();
+  await background.idle();
+  expect(decisions).toBe(1);
+  expect(f.store.get("group_route", created.route.id).state).toBe("selected");
+  expect(f.store.list("run")).toHaveLength(1);
+  const changed = new Creation(lifecycle).group(crypto.randomUUID(), {
+    name: "Changed opener",
+    member_agent_ids: [f.agent.id],
+  });
+  const message = f.store.get("message", changed.message.id);
+  f.store.put(
+    { ...message, text: "A different request", revision: message.revision + 1 },
+    message.revision,
+  );
+  expect(() => groups.routingPacket(changed.route.id)).toThrow("ROUTING_STALE");
 });

@@ -56,6 +56,7 @@ export function AttachInput({
         size="icon"
         className="composer-aux composer-attach size-7 shrink-0 rounded-full"
         aria-label="Tambah lampiran"
+        title="Working copies of attachments are shared on your agents’ machine."
         disabled={disabled || count >= 20}
         onMouseDown={(event) => event.preventDefault()}
         onClick={() => input.current?.click()}

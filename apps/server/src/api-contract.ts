@@ -6,8 +6,13 @@ import { conversationSnapshot, conversationTimeline, historyQuery } from "./conv
 import { manifests } from "./harness/availability";
 import { brokerContract, brokerErrorCodes } from "./harness/contracts";
 import { productToolCatalog } from "./harness/product-tool-contracts";
+import { machine, machineOperation, machineProcess, machineWindow } from "./machines/contracts";
 
 export const responseSchemas = {
+  machine,
+  machine_operations: z.strictObject({ operations: z.array(machineOperation) }),
+  machine_processes: z.strictObject({ processes: z.array(machineProcess) }),
+  machine_windows: z.strictObject({ windows: z.array(machineWindow) }),
   ...operationSchemas,
   conversation: conversationSnapshot,
   conversation_timeline: conversationTimeline,
@@ -103,6 +108,9 @@ const operationPaths = new Set([
   "/v1/apps/connections/:id/reconnect",
   "/v1/apps/connections/:id/refresh",
   "/v1/apps/search",
+  "/v1/machine/control",
+  "/v1/machine/view",
+  "/v1/machine/processes/control",
 ]);
 
 type Route = {
@@ -121,14 +129,26 @@ function inputSchema(schema: unknown) {
 export function httpContract(routes: readonly Route[]) {
   return routes.map(({ method, path, hooks }) => {
     const mcp = path === "/v1/harness/tools";
+    const viewer = path.startsWith("/v1/machine/viewer/");
     if (method === "POST" && !mcp && !durablePaths.has(path) && !operationPaths.has(path))
       throw new Error(`HTTP request semantics are missing for ${method} ${path}.`);
     return {
       method,
       path,
       authentication:
-        path === "/health/live" ? "public" : mcp ? "run_lease" : "installation_bearer",
-      idempotency: method === "POST" && durablePaths.has(path) ? "required_uuid" : "not_applicable",
+        path === "/health/live"
+          ? "public"
+          : viewer
+            ? "scoped_viewer_ticket"
+            : mcp
+              ? "run_lease"
+              : "installation_bearer",
+      idempotency:
+        method === "POST" && durablePaths.has(path)
+          ? "required_uuid"
+          : ["/v1/machine/control", "/v1/machine/processes/control"].includes(path)
+            ? "required_body_command_id"
+            : "not_applicable",
       semantics: mcp
         ? "mcp"
         : method === "GET"
@@ -146,15 +166,19 @@ export function httpContract(routes: readonly Route[]) {
           ? "sse"
           : /^\/v1\/(artifacts\/[^/]+\/content|workspaces\/[^/]+\/file)$/.test(path)
             ? "bytes"
-            : mcp
-              ? "json_rpc"
-              : "json",
+            : viewer
+              ? "upstream_viewer"
+              : path === "/v1/machine/file"
+                ? "bytes"
+                : mcp
+                  ? "json_rpc"
+                  : "json",
       response: operationResponse(method, path),
     };
   });
 }
 
-export function consumerContract() {
+export function consumerContract(machineRuntime = false) {
   return {
     projections: Object.fromEntries(
       Object.entries(responseSchemas).map(([name, schema]) => [
@@ -166,9 +190,26 @@ export function consumerContract() {
     ),
     harness: brokerContract(),
     harness_versions: manifests,
-    browser: browserCapabilities(),
-    product_tools: productToolCatalog(),
+    browser: machineRuntime ? { state: "replaced", resource: "machine" } : browserCapabilities(),
+    machine: {
+      cardinality: "one_per_installation",
+      working_files: "shared",
+      input_ownership: "agent_or_human",
+      process_cancellation: "attributed_process_group",
+      unknown_effects: "reconcile_before_new_intent",
+      viewer: "cua_html5_grpc_web_media",
+      host_native_work: "disabled_for_machine_sessions",
+    },
+    product_tools: productToolCatalog(machineRuntime ? "machine" : "browser"),
     protocols: {
+      machine_viewer: {
+        path: "/v1/machine/viewer/:viewerId/*",
+        http: "upstream_static_and_grpc_web",
+        websocket: "Loopback URL returned by StreamService/OpenMedia",
+        credential: "scoped_viewer_ticket",
+        activation: "current_human_lease_revision",
+        revocation: "close_media_and_reject_stale_ticket_reuse",
+      },
       native_interactions: {
         history: "GET /v1/runs/:id/interactions/history",
         coverage: "observed_requests_only",
@@ -227,11 +268,13 @@ export function consumerContract() {
         authentication: "run_lease",
         json_rpc_errors: "protocol_envelope",
       },
-      vnc: {
-        authentication: "single_use_scoped_ticket",
-        transport: "binary_rfb_websocket",
-        mode: "view_only",
-      },
+      vnc: machineRuntime
+        ? { state: "replaced", protocol: "machine_viewer" }
+        : {
+            authentication: "single_use_scoped_ticket",
+            transport: "binary_rfb_websocket",
+            mode: "view_only",
+          },
       errors: {
         invalid_request: [400, 413, 422],
         authentication: 401,
@@ -260,7 +303,9 @@ export function consumerContract() {
       ticket: "NMA-060",
       state: API_READINESS_GATE,
       scope: "engine_backend_api_only",
-      evidence: "docs/verification/nma-060/final-cohort/README.md",
+      evidence: machineRuntime
+        ? "docs/verification/shared-machine/README.md"
+        : "docs/verification/nma-060/final-cohort/README.md",
     },
   };
 }

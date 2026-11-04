@@ -6,12 +6,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Artifact } from "@/types/work";
 import type { Agent, Snapshot, Thread } from "@/types/workspace";
 import { AppConnections } from "./app-connections";
-import { BrowserSection } from "./browser-section";
 import { DetailOverview } from "./detail-overview";
 import { FilesPanel } from "./files-panel";
 import { GroupPanel } from "./group-panel";
 import { AgentAvatar } from "./identity";
 import { LibraryMemory } from "./library-memory";
+import { MachineSection } from "./machine-section";
 import { PanelHeaderSlot } from "./panel-primitives";
 import { Responsibilities } from "./responsibilities";
 
@@ -194,11 +194,7 @@ export function ContextPanel({
           />
         </TabsContent>
         <TabsContent value="computer">
-          <BrowserSection
-            agents={snapshot.agents}
-            threadId={snapshot.thread.id}
-            cursor={snapshot.cursor}
-          />
+          <MachineSection agents={snapshot.agents} cursor={snapshot.cursor} />
         </TabsContent>
         {responsibility && location.id && (
           <Responsibilities

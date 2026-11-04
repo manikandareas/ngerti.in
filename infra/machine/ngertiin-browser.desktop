@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Ngertiin Browser
+Exec=/bin/bash /etc/ngertiin/start-browser.sh
+Terminal=false
+X-GNOME-Autostart-enabled=true

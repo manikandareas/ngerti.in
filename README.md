@@ -6,7 +6,7 @@ The harness-first backend uses **Bun, TypeScript, Elysia and SQLite**. One appli
 
 ## Development
 
-Requirements: Bun **1.3.10** and `make`. PostgreSQL, Docker, Python, provider credentials and a browser are not required for foundation startup.
+Requirements: Bun **1.3.10** and `make` for foundation startup. The shared Linux desktop also requires Docker. Run `bun run setup:machine` once, then `bun run dev:api` and `bun run dev:web-client`. See the [shared-machine setup and verification](docs/verification/shared-machine/README.md). PostgreSQL and Python are not required.
 
 ```sh
 make install
@@ -24,7 +24,7 @@ The bootstrap creates a stable owner UUID and private bearer token in `installat
 - `GET /v1/events?after=0&limit=100`: durable event replay with a cursor.
 - See the [API and lifecycle contract](docs/architecture/harness-first-contract.md) for foundation commands and invariants.
 
-The default bootstrap registers **two native executors: Codex and Muse**. Select a connection, complete its own login and inspect models before admitting work. See the [Codex adapter guide](docs/architecture/codex-adapter.md) and [Muse adapter guide](docs/architecture/muse-adapter.md). The [NMA-060 engine/API gate](docs/verification/nma-060/final-cohort/README.md) is verified for Codex 0.166.0 with ChatGPT subscription and Muse 1.4.14-R7309.1 with explicitly selected API-key billing. Muse subscription remains unverified and is explicitly excluded from this accepted scope. Native interactions, scoped tools, mixed groups, restart/cancellation, [automatic goals and Routine](docs/architecture/goals-routines-api.md), browser/VNC, Composio and supported image input have recorded evidence. Contract 1.16.0 reports API readiness separately from installed harness availability. This opens the UI phase; it does not claim completed UI, installation or production readiness.
+The default bootstrap registers **two native executors: Codex and Muse**. Select a connection, complete its own login and inspect models before admitting work. See the [Codex adapter guide](docs/architecture/codex-adapter.md) and [Muse adapter guide](docs/architecture/muse-adapter.md). The [NMA-060 engine/API gate](docs/verification/nma-060/final-cohort/README.md) is verified for Codex 0.166.0 with ChatGPT subscription and Muse 1.4.14-R7309.1 with explicitly selected API-key billing. Muse subscription remains unverified and is explicitly excluded from this accepted scope. Native interactions, scoped tools, mixed groups, restart/cancellation, [automatic goals and Routine](docs/architecture/goals-routines-api.md), the original browser/VNC path, Composio and supported image input have recorded evidence. The [shared-machine amendment](docs/verification/shared-machine/README.md) verifies contract 1.29.0, Cua desktop/file/process tools, human takeover and the current Computer/Library UI. API readiness remains separate from installed harness availability, remote installation and production readiness.
 
 ## Verification
 

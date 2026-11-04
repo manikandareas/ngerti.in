@@ -36,6 +36,13 @@ import {
   skillRevision,
 } from "./learning/contracts";
 import {
+  machine,
+  machineOperation,
+  machineProcess,
+  machineTarget,
+  machineWindow,
+} from "./machines/contracts";
+import {
   admissionInput,
   control,
   queueDelete,
@@ -96,7 +103,7 @@ export {
   workspace,
 };
 
-export const CONTRACT_VERSION = "1.28.0";
+export const CONTRACT_VERSION = "1.30.0";
 export const API_READINESS_GATE = "ready" as const;
 
 export const schemas = {
@@ -108,6 +115,11 @@ export const schemas = {
   browser_profile: browserProfile,
   browser_session: browserSession,
   browser_action: browserAction,
+  machine,
+  machine_operation: machineOperation,
+  machine_process: machineProcess,
+  machine_target: machineTarget,
+  machine_window: machineWindow,
   group_route: groupRoute,
   peer_task: peerTask,
   human_request: humanRequest,

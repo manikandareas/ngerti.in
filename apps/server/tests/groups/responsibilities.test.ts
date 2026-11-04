@@ -60,21 +60,21 @@ function finish(run: Entity<"run">, text = "The requested result is available.")
   f.lifecycle.appendAnswer(run.id, text);
   f.lifecycle.settle(run.id, run.dispatch_token as string, "succeeded");
 }
-function publish(run: Entity<"run">, path: string) {
+async function publish(run: Entity<"run">, path: string) {
   const files = new Artifacts(f.lifecycle);
   files.workspaces
     .files(run.workspace_id as string)
     .create(path, Buffer.from(`Useful result: ${path}`));
-  return files.publish(
+  return await files.publish(
     crypto.randomUUID(),
     { workspace_id: run.workspace_id, run_id: run.id, path, media_type: "text/plain" },
     () => f.lifecycle.authorizeDispatch(run.id, run.dispatch_token as string),
   );
 }
 
-test("shared goals accept exact parent/child evidence after restart and finalize once without a duplicate answer", () => {
+test("shared goals accept exact parent/child evidence after restart and finalize once without a duplicate answer", async () => {
   const { peer, group, run, goal, goals } = setup();
-  const summary = publish(run, "summary.txt");
+  const summary = await publish(run, "summary.txt");
   expect(goal).toMatchObject({ scope: "group", agent_id: null, coordinator_agent_id: f.agent.id });
   expect(goals.list({ thread_id: group.id, agent_id: peer.id }).goals.map((g) => g.id)).toEqual([
     goal.id,
@@ -97,7 +97,7 @@ test("shared goals accept exact parent/child evidence after restart and finalize
       evidence_artifact_ids: [summary.id],
     }),
   ).toThrow("SCOPE_DENIED");
-  const example = publish(review, "example.txt");
+  const example = await publish(review, "example.txt");
   finish(review, "Here is the example.");
   f.restart();
   new Groups(f.lifecycle).advance();
@@ -133,7 +133,7 @@ test("a definitive report failure is durable through the actual tool transaction
   const { run, goal } = setup();
   const files = new Artifacts(f.lifecycle);
   const workspace = files.workspaces.ensure(f.thread.id, f.agent.id);
-  const privateFile = files.upload(workspace.id, crypto.randomUUID(), {
+  const privateFile = await files.upload(workspace.id, crypto.randomUUID(), {
     name: "private.txt",
     media_type: "text/plain",
     content_base64: Buffer.from("Private evidence").toString("base64"),
@@ -162,9 +162,9 @@ test("a definitive report failure is durable through the actual tool transaction
   expect(f.store.list("run")).toHaveLength(1);
 });
 
-test("artifact evidence cannot cross an objective generation even when the producer identity is retained", () => {
+test("artifact evidence cannot cross an objective generation even when the producer identity is retained", async () => {
   const { run, goal, goals } = setup();
-  const old = publish(run, "old.txt");
+  const old = await publish(run, "old.txt");
   const corrected = goals.capture(run.id, {
     goal_id: goal.id,
     expected_revision: goal.revision,
@@ -383,7 +383,7 @@ test("coordinator reassignment returns the committed self-stop receipt and conti
 
 test("owner recovery restores legacy child evidence when the latest goal continuation had no task", async () => {
   const { peer, group, run, goal } = setup();
-  const summary = publish(run, "summary.txt");
+  const summary = await publish(run, "summary.txt");
   const child = new Groups(f.lifecycle).handoff(run.id, {
     agent_id: peer.id,
     instruction: "Publish the example",
@@ -391,7 +391,7 @@ test("owner recovery restores legacy child evidence when the latest goal continu
   });
   finish(run);
   const review = start(child.current_run_id);
-  const example = publish(review, "example.txt");
+  const example = await publish(review, "example.txt");
   finish(review);
   new Groups(f.lifecycle).advance();
   new Groups(f.lifecycle).advance();

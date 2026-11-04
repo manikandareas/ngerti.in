@@ -76,14 +76,27 @@ export class ProductToolMcp {
             content: toolContent(params.name, value),
             structuredContent: {
               result:
-                params.name === "ngertiin.browser_action" &&
+                params.name === "ngertiin.computer_call" &&
                 value &&
                 typeof value === "object" &&
-                "receipt" in value
-                  ? { receipt: value.receipt }
-                  : value,
+                "content" in value
+                  ? {
+                      structuredJson: "structuredJson" in value ? value.structuredJson : null,
+                      isError: "isError" in value ? value.isError : false,
+                    }
+                  : params.name === "ngertiin.browser_action" &&
+                      value &&
+                      typeof value === "object" &&
+                      "receipt" in value
+                    ? { receipt: value.receipt }
+                    : value,
             },
-            isError: false,
+            isError:
+              params.name === "ngertiin.computer_call" &&
+              value !== null &&
+              typeof value === "object" &&
+              "isError" in value &&
+              value.isError === true,
           };
         } catch (error) {
           result = {
@@ -115,6 +128,24 @@ export class ProductToolMcp {
 }
 
 function toolContent(name: string, value: unknown) {
+  if (
+    name === "ngertiin.computer_call" &&
+    value &&
+    typeof value === "object" &&
+    "content" in value &&
+    Array.isArray(value.content)
+  ) {
+    return [
+      {
+        type: "text",
+        text: JSON.stringify({
+          structuredJson: "structuredJson" in value ? value.structuredJson : null,
+          isError: "isError" in value ? value.isError : false,
+        }),
+      },
+      ...value.content,
+    ];
+  }
   if (
     name === "ngertiin.browser_action" &&
     value &&

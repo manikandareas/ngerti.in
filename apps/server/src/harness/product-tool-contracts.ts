@@ -27,9 +27,45 @@ import {
   skillRead,
   skillRevise,
 } from "../learning/contracts";
+import {
+  computerCall,
+  machineCommand,
+  machineControl,
+  machineProcessInput,
+  machineWindowInput,
+  machineWrite,
+} from "../machines/contracts";
 import { relativePath, uploadInput } from "../workspaces/contracts";
 
 export const productToolSchemas = {
+  "ngertiin.machine_status": z.strictObject({}),
+  "ngertiin.machine_exec": machineCommand.describe(
+    "Run shell work on the shared persistent Linux machine. The returned process can keep running; use machine_process to read output or control it. A host-native terminal is not this machine.",
+  ),
+  "ngertiin.machine_process": machineProcessInput,
+  "ngertiin.machine_window": machineWindowInput.describe(
+    "Open a task-owned browser window (same persistent login profile) or GUI terminal. Temporary windows and their tabs close automatically only after the entire task/handoff chain succeeds and its processes exit. Use keep_open for a preview/result the user should inspect, or retain an existing resource_id before finishing. List returns this task's managed windows. Existing user windows, files and login data are preserved. Human takeover preserves managed windows because human edits cannot be attributed safely.",
+  ),
+  "ngertiin.machine_control": machineControl.describe(
+    "Acquire or release input across a multi-step desktop interaction. Human takeover owns the same input. Reconcile an unknown input lease only after observing current state; this never repeats the uncertain action.",
+  ),
+  "ngertiin.computer_tools": z
+    .strictObject({ names: z.array(z.string().min(1).max(100)).min(1).max(8).optional() })
+    .describe(
+      "List native Cua computer/browser capabilities, or pass names to retrieve exact upstream argument schemas. Ngertiin supplies session identity.",
+    ),
+  "ngertiin.computer_call": computerCall.describe(
+    "Call an available native Cua tool using its exact schema from computer_tools. Distinct actions need fresh command_id. Session identity is server-owned; foreground input requires the shared input lease. Inspect structuredJson for refusal or unverifiable effects and observe before retrying.",
+  ),
+  "ngertiin.machine_receipts": z.strictObject({}),
+  "ngertiin.machine_reconcile": z
+    .strictObject({ command_id: id, operation_id: id })
+    .describe(
+      "Observe a file after an uncertain write and retain its unknown outcome. This does not repeat the write. Use the observed hash for a subsequent distinct edit.",
+    ),
+  "ngertiin.write_file": machineWrite.describe(
+    "Atomically create or update a shared machine text file. Supply its current SHA-256 for an update; null requires a new path. Conflicting or unknown writes require a fresh read/reconciliation.",
+  ),
   "ngertiin.list_attachments": attachmentList,
   "ngertiin.read_attachment": attachmentRead,
   "ngertiin.search_attachment": attachmentSearch,
@@ -129,8 +165,16 @@ export function productToolDefinition(name: string, schema: z.ZodType) {
     inputSchema: z.toJSONSchema(schema),
   };
 }
-export function productToolCatalog() {
-  return Object.entries(productToolSchemas).map(([name, schema]) =>
-    productToolDefinition(name, schema),
-  );
+export function productToolCatalog(mode: "all" | "machine" | "browser" = "all") {
+  return Object.entries(productToolSchemas)
+    .filter(
+      ([name]) =>
+        mode === "all" ||
+        (mode === "machine"
+          ? !name.startsWith("ngertiin.browser_")
+          : !name.startsWith("ngertiin.machine_") &&
+            !name.startsWith("ngertiin.computer_") &&
+            name !== "ngertiin.write_file"),
+    )
+    .map(([name, schema]) => productToolDefinition(name, schema));
 }

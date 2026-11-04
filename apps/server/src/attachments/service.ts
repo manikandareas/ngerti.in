@@ -47,7 +47,7 @@ export class Attachments {
       id: item.id,
       name: item.name,
       media_type: item.media_type,
-      path: item.source_path,
+      path: this.documents.artifacts.inputPath(item),
       sha256: item.sha256,
       document_state:
         document?.state ??

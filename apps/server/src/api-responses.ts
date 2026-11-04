@@ -24,6 +24,14 @@ const openingConnection = schemas.connection
 
 /** Operation responses assembled from the same entity contracts used by persistence. */
 export const operationSchemas = {
+  machine_view: z.strictObject({
+    viewer_id: z.string(),
+    viewer_url: z.string(),
+    expires_at: z.iso.datetime(),
+    interactive: z.boolean(),
+    control_revision: z.int().nonnegative(),
+    machine_id: id,
+  }),
   routing_decision: z.strictObject({ trace: routingDecisionTrace.nullable() }),
   agent_activity: agentActivities,
   conversation_previews: conversationPreviews,
@@ -123,6 +131,7 @@ export const operationSchemas = {
         name: z.string(),
         path: z.string(),
         type: z.enum(["file", "directory", "unsupported"]),
+        size_bytes: z.int().nonnegative().optional(),
       }),
     ),
     next_after: z.string().nullable(),
@@ -317,6 +326,27 @@ routes(
 routes("GET", ["/v1/browser/sessions/:id"], operationSchemas.browser_observation);
 routes("GET", ["/v1/browser/sessions/:id/receipts"], z.array(schemas.browser_action));
 routes("POST", ["/v1/browser/sessions/:id/view"], operationSchemas.browser_view);
+routes("GET", ["/v1/machine"], schemas.machine);
+routes(
+  "GET",
+  ["/v1/machine/windows"],
+  z.strictObject({ windows: z.array(schemas.machine_window) }),
+);
+routes("POST", ["/v1/machine/control"], schemas.machine);
+routes("POST", ["/v1/machine/view"], operationSchemas.machine_view);
+routes("DELETE", ["/v1/machine/views/:viewerId"], z.strictObject({ revoked: z.boolean() }));
+routes(
+  "GET",
+  ["/v1/machine/operations"],
+  z.strictObject({ operations: z.array(schemas.machine_operation) }),
+);
+routes(
+  "GET",
+  ["/v1/machine/processes"],
+  z.strictObject({ processes: z.array(schemas.machine_process) }),
+);
+routes("POST", ["/v1/machine/processes/control"], schemas.machine_process);
+routes("GET", ["/v1/machine/files"], operationSchemas.files);
 
 /** Fail closed when an added route has no reviewed response contract. */
 export function operationResponse(method: string, path: string) {
@@ -326,7 +356,11 @@ export function operationResponse(method: string, path: string) {
       ? { status: 200, schema: z.toJSONSchema(result.schema, { io: "input" }) }
       : { status: 200, reference: result.reference };
   if (path === "/v1/events/stream") return { status: 200, reference: "event", framing: "sse" };
-  if (path === "/v1/workspaces/:id/file" || path === "/v1/artifacts/:id/content")
+  if (
+    path === "/v1/workspaces/:id/file" ||
+    path === "/v1/artifacts/:id/content" ||
+    path === "/v1/machine/file"
+  )
     return {
       status: 200,
       framing: "bytes",
@@ -337,6 +371,12 @@ export function operationResponse(method: string, path: string) {
       status: method === "GET" ? 405 : [200, 202],
       reference: "protocols.mcp",
       framing: "json_rpc_or_empty",
+    };
+  if (path.startsWith("/v1/machine/viewer/"))
+    return {
+      status: [200, 101],
+      framing: "upstream_viewer",
+      reference: "protocols.machine_viewer",
     };
   throw new Error(`HTTP response contract is missing for ${method} ${path}.`);
 }

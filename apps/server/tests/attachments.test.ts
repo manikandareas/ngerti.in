@@ -72,7 +72,7 @@ function running(text: string, ids: string[]) {
   };
 }
 
-test("private uploads appear in neither workspace nor artifacts until one message commits", () => {
+test("private uploads appear in neither workspace nor artifacts until one message commits", async () => {
   f = fixture();
   const service = new AttachmentSubmissions(f.lifecycle);
   const submission = crypto.randomUUID();
@@ -96,7 +96,7 @@ test("private uploads appear in neither workspace nor artifacts until one messag
     throw new Error("Missing artifact projection.");
   const root = service.artifacts.workspaces.path(f.store.get("workspace", artifact.workspace_id));
   expect(existsSync(join(root, artifact.source_path))).toBe(false);
-  service.materialize(result.message);
+  await service.materialize(result.message);
   expect(readFileSync(join(root, artifact.source_path), "utf8")).toContain("turquoise badger");
 });
 
@@ -163,7 +163,7 @@ test("HTTP lost acknowledgement, exact replay and restart publish one message an
   expect(f.store.list("artifact")).toHaveLength(1);
 });
 
-test("restart finishes a committed pending projection and expiry only removes uncommitted bytes", () => {
+test("restart finishes a committed pending projection and expiry only removes uncommitted bytes", async () => {
   f = fixture();
   let service = new AttachmentSubmissions(f.lifecycle);
   const id = crypto.randomUUID();
@@ -181,7 +181,7 @@ test("restart finishes a committed pending projection and expiry only removes un
   const unused = service.stage(crypto.randomUUID(), upload(crypto.randomUUID()));
   f.restart();
   service = new AttachmentSubmissions(f.lifecycle);
-  service.recover();
+  await service.recover();
   expect(f.store.get("artifact", staged.id).materialization).toBe("ready");
   service.sweep(new Date(Date.now() + 25 * 60 * 60 * 1000));
   expect(existsSync(join(service.artifacts.blobRoot, unused.id))).toBe(false);
@@ -192,7 +192,7 @@ test("PDF extraction supplies real page text, search locations and bounded read 
   f = fixture();
   const files = new Artifacts(f.lifecycle);
   const workspace = files.workspaces.ensure(f.thread.id, f.agent.id);
-  const file = files.upload(workspace.id, crypto.randomUUID(), {
+  const file = await files.upload(workspace.id, crypto.randomUUID(), {
     name: "source.pdf",
     media_type: "application/pdf",
     content_base64: pdf([
@@ -228,11 +228,11 @@ test("follow-up context finds prior sent files but excludes drafts, future messa
   f = fixture();
   const files = new Artifacts(f.lifecycle);
   const workspace = files.workspaces.ensure(f.thread.id, f.agent.id);
-  const sent = files.upload(workspace.id, crypto.randomUUID(), {
+  const sent = await files.upload(workspace.id, crypto.randomUUID(), {
     name: "same.txt",
     content_base64: Buffer.from("first content").toString("base64"),
   });
-  const draft = files.upload(workspace.id, crypto.randomUUID(), {
+  const draft = await files.upload(workspace.id, crypto.randomUUID(), {
     name: "same.txt",
     content_base64: Buffer.from("private draft").toString("base64"),
   });
@@ -274,7 +274,7 @@ test("unsupported, empty and invalid documents have explicit failures without a 
     ["empty.txt", "", "NO_TEXT"],
     ["broken.pdf", "not a PDF", "INVALID_DOCUMENT"],
   ] as const) {
-    const file = files.upload(workspace.id, crypto.randomUUID(), {
+    const file = await files.upload(workspace.id, crypto.randomUUID(), {
       name,
       content_base64: Buffer.from(content).toString("base64"),
     });
@@ -286,7 +286,7 @@ test("cached document reads recheck revoked access and immutable source corrupti
   f = fixture();
   const files = new Artifacts(f.lifecycle);
   const workspace = files.workspaces.ensure(f.thread.id, f.agent.id);
-  const file = files.upload(workspace.id, crypto.randomUUID(), {
+  const file = await files.upload(workspace.id, crypto.randomUUID(), {
     name: "source.txt",
     content_base64: Buffer.from("original").toString("base64"),
   });
@@ -307,7 +307,7 @@ test("an interrupted derived text cache is recomputed without changing source by
   f = fixture();
   const files = new Artifacts(f.lifecycle);
   const workspace = files.workspaces.ensure(f.thread.id, f.agent.id);
-  const file = files.upload(workspace.id, crypto.randomUUID(), {
+  const file = await files.upload(workspace.id, crypto.randomUUID(), {
     name: "cache.txt",
     content_base64: Buffer.from("durable original text").toString("base64"),
   });

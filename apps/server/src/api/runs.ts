@@ -77,7 +77,7 @@ export function registerRunRoutes(
             ? submissions.commit(body, id.parse(request.headers.get("Idempotency-Key")))
             : controls.send(body),
         );
-        submissions.materialize(result.message);
+        void submissions.materialize(result.message).catch(() => {});
         background.notifyControls();
         return result;
       },

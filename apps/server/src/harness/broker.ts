@@ -322,10 +322,15 @@ export class HarnessBroker {
       signal: controller.signal,
       workspace: {
         id: workspace.id,
-        root: workspaces.path(workspace),
+        root: workspace.machine_id
+          ? workspaces.controlDirectory(workspace, agentId)
+          : workspaces.path(workspace),
         revision: workspace.revision,
         shared: workspace.scope === "group",
       },
+      ...(workspace.machine_id
+        ? { machine: { id: workspace.machine_id, root: workspaces.path(workspace) } }
+        : {}),
     };
     const temporary = workspaces.temporary(workspace, agentId);
     launch.env = { ...launch.env, TMPDIR: temporary, TMP: temporary, TEMP: temporary };
@@ -337,13 +342,13 @@ export class HarnessBroker {
         connection_id: initial.connection.id,
         agent_id: agentId,
         thread_id: threadId,
-        instructions: sessionInstructions(
+        instructions: await sessionInstructions(
           this.lifecycle,
           initial.agent,
           threadId,
           workspaces,
           workspace.id,
-          launch.workspace?.root,
+          launch.machine?.root ?? launch.workspace?.root,
         ),
         model_id: selected.model_id,
       });
@@ -799,7 +804,7 @@ export class HarnessBroker {
       );
       this.check(session, run.thread_id, run.agent_id);
       this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
-      if (run.workspace_id) new Artifacts(this.lifecycle).verifyInputs(run);
+      if (run.workspace_id) await new Artifacts(this.lifecycle).verifyInputs(run);
       const attachments = new Attachments(this.lifecycle);
       const authorizeAttachments = () => {
         this.check(session, run.thread_id, run.agent_id);

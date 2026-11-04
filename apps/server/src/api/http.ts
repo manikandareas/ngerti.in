@@ -17,7 +17,11 @@ export function createCommand(lifecycle: Lifecycle) {
   };
 }
 
-export function createHttp(token: string, tools: ProductTools) {
+export function createHttp(
+  token: string,
+  tools: ProductTools,
+  viewerAccess?: (request: Request) => unknown,
+) {
   const api = new Elysia({
     name: "ngertiin-foundation",
     serve: { maxRequestBodySize: 24 * 1024 * 1024 },
@@ -50,12 +54,18 @@ export function createHttp(token: string, tools: ProductTools) {
     .onRequest(({ request }) => {
       if (request.method === "GET" && new URL(request.url).pathname === "/health/live") return;
       const size = Number(request.headers.get("Content-Length") ?? 0);
-      const maximum = /^\/v1\/(?:workspaces\/[^/]+\/uploads|message-uploads)$/.test(
-        new URL(request.url).pathname,
-      )
-        ? 24 * 1024 * 1024
-        : 1_048_576;
+      const maximum =
+        /^\/v1\/(?:workspaces\/[^/]+\/uploads|message-uploads|machine\/viewer\/[^/]+\/files(?:\/.*)?)$/.test(
+          new URL(request.url).pathname,
+        )
+          ? 24 * 1024 * 1024
+          : 1_048_576;
       if (!Number.isFinite(size) || size > maximum) throw new DomainError("INVALID_REQUEST", 413);
+      if (new URL(request.url).pathname.startsWith("/v1/machine/viewer/")) {
+        if (!viewerAccess) throw new DomainError("UNAUTHORIZED", 401);
+        viewerAccess(request);
+        return;
+      }
       // The MCP endpoint accepts only a server-issued run lease, never the installation token.
       if (
         ["GET", "POST"].includes(request.method) &&

@@ -1,4 +1,3 @@
-import { ServiceIcon } from "./service-icon";
 import { useAuth } from "@clerk/tanstack-react-start";
 import { Plus, Search } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -19,6 +18,7 @@ import { ApiError, api } from "@/lib/api";
 import { AppInteractions } from "./app-interactions";
 import { base, connectionError, send } from "./client";
 import { GoogleSetup } from "./google-setup";
+import { ServiceIcon } from "./service-icon";
 
 type Application = {
   id: string;
@@ -234,7 +234,9 @@ export function AppConnections({ contextual = false }: { contextual?: boolean })
           </div>
           <p
             className={
-              contextual ? "text-[13px] text-muted-foreground" : "text-sm leading-6 text-muted-foreground"
+              contextual
+                ? "text-[13px] text-muted-foreground"
+                : "text-sm leading-6 text-muted-foreground"
             }
           >
             Connect your tools to let Ngertiin work across your apps.

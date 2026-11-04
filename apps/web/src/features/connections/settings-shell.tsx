@@ -55,21 +55,13 @@ export function SettingsShell({
             {item.label}
           </Button>
         ))}
-        <Button
-          asChild
-          variant="ghost"
-          className="h-9 w-full justify-start gap-2.5 px-3 text-sm"
-        >
+        <Button asChild variant="ghost" className="h-9 w-full justify-start gap-2.5 px-3 text-sm">
           <Link to="/agents">
             <Bot />
             Agents
           </Link>
         </Button>
-        <Button
-          asChild
-          variant="ghost"
-          className="h-9 w-full justify-start gap-2.5 px-3 text-sm"
-        >
+        <Button asChild variant="ghost" className="h-9 w-full justify-start gap-2.5 px-3 text-sm">
           <Link to="/">
             <MessageSquare />
             Chat

@@ -1,4 +1,3 @@
-import { ServiceIcon } from "./service-icon";
 import { useAuth } from "@clerk/tanstack-react-start";
 import { Link } from "@tanstack/react-router";
 import { ChevronRight, KeyRound, Plus } from "lucide-react";
@@ -28,6 +27,7 @@ import {
 import { ConnectionForm, type KeyDraft } from "./connection-form";
 import { MediaSettings } from "./media-settings";
 import { ResearchSettings } from "./research-settings";
+import { ServiceIcon } from "./service-icon";
 import { type SettingsSection, SettingsShell } from "./settings-shell";
 
 export function ConnectionsPage() {

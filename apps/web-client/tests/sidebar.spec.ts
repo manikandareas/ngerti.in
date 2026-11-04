@@ -82,7 +82,11 @@ for (const mode of ["light", "dark"] as const) {
       await settled(page);
       const bounds = await drawer.boundingBox();
       const addBounds = await add.boundingBox();
-      expect(bounds && addBounds && addBounds.x - bounds.x < 24).toBeTruthy();
+      const searchBounds = await drawer.locator(".navigation-search").boundingBox();
+      expect(bounds && searchBounds && searchBounds.x >= bounds.x).toBeTruthy();
+      expect(
+        searchBounds && addBounds && searchBounds.x + searchBounds.width <= addBounds.x,
+      ).toBeTruthy();
       expect(bounds && bounds.y > 0).toBeTruthy();
       await drawer.getByRole("button", { name: "Close", exact: true }).click();
       await expect(drawer).toBeHidden();

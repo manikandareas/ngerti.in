@@ -7,10 +7,12 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link } from "@tanstack/react-router";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { AgentAvatar } from "@/features/conversation/components/identity";
+import { NavigationSearch } from "@/features/conversation/components/navigation-search";
 import { conversationSubtitle } from "@/features/conversation/lib/conversation-subtitle";
 import { cn } from "@/lib/utils";
 import type { Agent, AgentActivity, ConversationPreview, Thread } from "@/types/workspace";
@@ -46,7 +48,19 @@ export function ConversationNavigation({
   openApps: () => void;
   closeNavigation?: () => void;
 }) {
+  const [search, setSearch] = useState("");
+  const query = search.trim().toLocaleLowerCase();
   const agentsById = new Map(agents.map((agent) => [agent.id, agent]));
+  const filteredThreads = query
+    ? threads.filter((thread) => {
+        const agentName = agentsById.get(thread.member_agent_ids[0])?.name ?? "";
+        const name = thread.name ?? agentName;
+        return (
+          name.toLocaleLowerCase().includes(query) ||
+          (thread.type === "dm" && agentName.toLocaleLowerCase().includes(query))
+        );
+      })
+    : threads;
   const previewsByThread = new Map(previews.map((preview) => [preview.thread_id, preview]));
   const activitiesByThread = new Map<string, AgentActivity[]>();
   for (const activity of activities) {
@@ -56,16 +70,17 @@ export function ConversationNavigation({
   }
   return (
     <div className="conversation-navigation relative p-3 flex flex-col h-full min-h-0">
-      <div className="navigation-heading mb-2 flex shrink-0 items-center justify-end gap-1">
+      <div className="navigation-heading mb-2 flex shrink-0 items-center justify-end gap-2">
         <Link to="/" className="sr-only" aria-label="Ngertiin">
           ngertiin<span>.</span>
         </Link>
+        <NavigationSearch value={search} onValueChange={setSearch} />
         <Popover open={createMenu} onOpenChange={setCreateMenu}>
           <PopoverTrigger asChild>
             <Button
               size="icon"
               variant="secondary"
-              className="navigation-create size-8 rounded-lg text-muted-foreground"
+              className="navigation-create size-8 shrink-0 rounded-lg text-muted-foreground"
               aria-label="Buat baru"
               disabled={busy}
             >
@@ -117,7 +132,12 @@ export function ConversationNavigation({
         )}
       </div>
       <nav aria-label="Percakapan" className="min-h-0 flex-1 overflow-y-auto">
-        {threads.map((thread) => {
+        {query && filteredThreads.length === 0 && (
+          <p role="status" className="px-2 py-6 text-center text-sm text-muted-foreground">
+            Tidak ada agent atau grup yang cocok.
+          </p>
+        )}
+        {filteredThreads.map((thread) => {
           const member = agentsById.get(thread.member_agent_ids[0]);
           const name = thread.name ?? member?.name ?? "Percakapan";
           const subtitle = conversationSubtitle(

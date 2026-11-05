@@ -1,5 +1,7 @@
 # Tauri v2 desktop feasibility: primary-source evidence
 
+> Source retirement (2026-11-05): references to `apps/web` and the Electron host under `apps/desktop/src` are historical paths available at Git revision `6de957e7145c0367a52b10f5fd19bbd91c50e458`. The active application uses Tauri and `apps/web-client`.
+
 Date: 2026-11-04. Status: design research; no Tauri application was built, installed, profiled, or accepted in this investigation. This note supports the [desktop architecture proposal](../architecture/tauri-desktop-design-2026-11-04.md); recommendations below require implementation authorization and native verification.
 
 ## Recommended boundary
@@ -12,7 +14,7 @@ The public registries queried on this date reported stable Rust `tauri` **2.12.5
 
 ## Transport and origins
 
-The lowest-change candidate retains the current stable `http://127.0.0.1:<saved-ui-port>` origin. A Rust gateway serves the packaged frontend and proxies HTTP/SSE to the private backend port, injecting the installation token host-side. The Computer media route must preserve the current generated-protocol URL rewriting, WebSocket upgrade/streaming, expiry and control revision behavior. This is a design recommendation based on [the existing Electron host](../../apps/desktop/src/main.ts), [gateway](../../apps/desktop/src/gateway.ts) and [machine evidence](../verification/shared-machine/README.md), not an already-proven Rust implementation.
+The lowest-change candidate retains the current stable `http://127.0.0.1:<saved-ui-port>` origin. A Rust gateway serves the packaged frontend and proxies HTTP/SSE to the private backend port, injecting the installation token host-side. The Computer media route must preserve the current generated-protocol URL rewriting, WebSocket upgrade/streaming, expiry and control revision behavior. This is a design recommendation based on `apps/desktop/src/main.ts`, `apps/desktop/src/gateway.ts` and [machine evidence](../verification/shared-machine/README.md), not an already-proven Rust implementation.
 
 Tauri normally serves frontend assets with its custom protocol. Its localhost plugin explicitly warns that HTTP asset serving adds security risks. Keeping Ngertiin's controlled gateway is consequently an intentional tradeoff: bind only loopback, verify Host/Origin and route ownership, reject occupied/unowned listeners, preserve token separation and stream responses without whole-body buffering. Do not use the localhost plugin in addition to a second gateway. If the WebView is loaded from HTTP, native command access needs a deliberately scoped remote capability; bundled-code access does not automatically transfer to arbitrary remote pages. [Localhost plugin](https://v2.tauri.app/plugin/localhost/), [remote capability rules](https://v2.tauri.app/security/capabilities/#remote-api-access).
 

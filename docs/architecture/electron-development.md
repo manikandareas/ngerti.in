@@ -1,8 +1,8 @@
-# Electron development application
+# Electron development application (historical)
 
 Date: 2026-11-04. The user selected Electron after the Electrobun readiness review and authorized implementation. This is a macOS ARM64 development host, not production distribution or completion of NMA-063/NMA-064. Ngertiin remains the sole application lifecycle authority.
 
-> Default desktop commands now launch the [Tauri development application](tauri-development.md). This document records the retained Electron baseline. Use the explicit `dev:electron`, `build:electron` and `package:electron` scripts in `apps/desktop` for comparison.
+> Retired on 2026-11-05 at the user's request. The active desktop uses the [Tauri development application](tauri-development.md). Electron source, dependencies, scripts and tests were removed; commands below require a separate checkout of Git revision `6de957e7145c0367a52b10f5fd19bbd91c50e458`. Historical observations and local user profiles are preserved.
 
 ## Start and package
 

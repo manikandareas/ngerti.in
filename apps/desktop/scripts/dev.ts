@@ -1,9 +1,9 @@
 import { join } from "node:path";
-import { loadProfile, tauriHome } from "../src/profile";
 import { prepareRuntime } from "./prepare-runtime";
+import { loadProfile } from "./profile";
 import { cargo, native, root, run, toolchainEnv } from "./toolchain";
 
-const profile = loadProfile(tauriHome());
+const profile = loadProfile();
 await run([process.execPath, "run", "build:web-client"], root);
 await prepareRuntime();
 const { createServer } = await import("vite");

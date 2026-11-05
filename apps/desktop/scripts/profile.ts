@@ -1,7 +1,6 @@
 import {
   accessSync,
   constants,
-  existsSync,
   lstatSync,
   mkdirSync,
   readFileSync,
@@ -10,7 +9,6 @@ import {
 } from "node:fs";
 import { homedir } from "node:os";
 import { delimiter, isAbsolute, join, resolve } from "node:path";
-import { parseEnv } from "node:util";
 
 export type Profile = {
   version: 1;
@@ -24,12 +22,6 @@ export type Profile = {
   uiPort: number;
 };
 export function desktopHome(): string {
-  return resolve(
-    process.env.NGERTIIN_DESKTOP_HOME ??
-      join(homedir(), "Library/Application Support/Ngertiin Dev"),
-  );
-}
-export function tauriHome(): string {
   return resolve(
     process.env.NGERTIIN_DESKTOP_HOME ??
       join(homedir(), "Library/Application Support/Ngertiin Tauri"),
@@ -91,27 +83,4 @@ export function prepareHome(home = desktopHome()): string {
   if (!info.isDirectory() || info.isSymbolicLink() || (info.mode & 0o077) !== 0)
     throw new Error("The desktop data directory must be private (0700).");
   return home;
-}
-export function profileEnvironment(profile: Profile, bunExecutable: string): NodeJS.ProcessEnv {
-  let saved: Record<string, string | undefined> = {};
-  if (existsSync(profile.configFile)) saved = parseEnv(readFileSync(profile.configFile, "utf8"));
-  const env = { ...process.env, ...saved };
-  delete env.ELECTRON_RUN_AS_NODE;
-  delete env.NODE_OPTIONS;
-  return {
-    ...env,
-    APP_ENV: "development",
-    NGERTIIN_STATE_DIR: profile.stateDirectory,
-    NGERTIIN_CONFIG_FILE: profile.configFile,
-    NGERTIIN_DESKTOP_MANAGER: profile.managerId,
-    PATH: [
-      resolve(bunExecutable, ".."),
-      "/opt/homebrew/bin",
-      "/usr/local/bin",
-      join(homedir(), ".bun/bin"),
-      env.PATH ?? "/usr/bin:/bin",
-    ].join(delimiter),
-    ...(profile.codexExecutable ? { NGERTIIN_CODEX_EXECUTABLE: profile.codexExecutable } : {}),
-    ...(profile.museExecutable ? { NGERTIIN_MUSE_EXECUTABLE: profile.museExecutable } : {}),
-  };
 }

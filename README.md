@@ -34,7 +34,7 @@ bun run verify:foundation
 make build
 ```
 
-`make check` checks the active backend and retained web source, then runs backend contract/integration tests. The process probe starts `make dev` in temporary state, checks HTTP and scheduling, kills and restarts it, and removes only its own temporary directory. `make build` checks the retained web build; it is not new UI acceptance.
+`make check` lints and typechecks the active backend and `apps/web-client`, then runs backend contract/integration tests. The process probe starts `make dev` in temporary state, checks HTTP and scheduling, kills and restarts it, and removes only its own temporary directory. `make build` builds the shared web client used by Tauri; `bun run package:desktop` builds the native application.
 
 The [implementation ADR](docs/architecture/adr-0001-harness-first-foundation.md) records source provenance, runtime compatibility, storage choices and phase boundaries. [NMA-047 verification](docs/verification/nma-047/README.md) records foundation results. The [broker contract](docs/architecture/harness-broker-contract.md) and [NMA-048 verification](docs/verification/nma-048/README.md) describe executable policies, connection isolation and scoped product tools, with native adapter limitations.
 
@@ -54,4 +54,6 @@ bun run dev:desktop
 bun run package:desktop
 ```
 
-See [desktop setup and lifecycle](docs/architecture/tauri-development.md) and [verification boundaries](docs/verification/tauri-development/README.md). The [Electron baseline](docs/architecture/electron-development.md) remains available through explicit `dev:electron` and `package:electron` scripts.
+See [desktop setup and lifecycle](docs/architecture/tauri-development.md) and [verification boundaries](docs/verification/tauri-development/README.md). Tauri is the only desktop implementation. The retired Electron host and legacy `apps/web` workspace are available in Git at `6de957e7145c0367a52b10f5fd19bbd91c50e458`; historical research and verification evidence retain their original scope.
+
+Run `bun run test:desktop`, `bun run typecheck:desktop` and `bun run lint:desktop` for native lifecycle tests, Rust checks and desktop tooling validation. See the [cleanup verification](docs/verification/tauri-cleanup-2026-11-05.md) for the removal scope and current checks.

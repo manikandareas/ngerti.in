@@ -2,11 +2,9 @@
   "$schema": "https://biomejs.dev/schemas/2.5.15/schema.json",
   "files": {
     "includes": [
-      "apps/web/**",
-      "!apps/web/src/routeTree.gen.ts",
-      "!apps/web/.output",
-      "!apps/web/.tanstack",
-      "!apps/web/node_modules"
+      "apps/web-client/**",
+      "!apps/web-client/dist",
+      "!apps/web-client/node_modules"
     ]
   },
   "formatter": {

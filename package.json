@@ -5,23 +5,21 @@
   "workspaces": [
     "packages/avatar",
     "apps/server",
-    "apps/web",
     "apps/web-client",
     "apps/desktop"
   ],
   "scripts": {
     "dev": "bun run --filter @ngertiin/server dev",
-    "dev:web": "bun --env-file=.env --filter @ngertiin/web dev",
     "dev:web-client": "bun --filter @ngertiin/web-client dev",
     "build:web-client": "bun --filter @ngertiin/web-client build",
     "typecheck:web-client": "bun --filter @ngertiin/web-client typecheck",
     "lint:web-client": "bun --filter @ngertiin/web-client lint",
     "dev:api": "bun run --filter @ngertiin/server dev",
     "setup": "bun apps/server/src/setup.ts",
-    "build": "bun --filter @ngertiin/web build",
-    "typecheck": "bun run --filter @ngertiin/server typecheck && bun --filter @ngertiin/web typecheck",
-    "lint": "biome check apps/web && bun run --filter @ngertiin/server lint",
-    "format": "biome check --write apps/web",
+    "build": "bun run build:web-client",
+    "typecheck": "bun run --filter @ngertiin/server typecheck && bun run typecheck:web-client",
+    "lint": "bun run --filter @ngertiin/server lint && bun run lint:web-client",
+    "format": "bun --filter @ngertiin/web-client format",
     "check": "bun run lint && bun run typecheck && bun run test:server",
     "test:server": "bun run --filter @ngertiin/server test",
     "verify:foundation": "bun scripts/verification/nma047/foundation.ts",
@@ -41,8 +39,5 @@
     "@biomejs/biome": "2.5.15",
     "axe-core": "^4.14.0",
     "playwright": "^1.64.1"
-  },
-  "trustedDependencies": [
-    "electron"
-  ]
+  }
 }

@@ -3,17 +3,10 @@ import { createServer } from "node:net";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseEnv } from "node:util";
-import {
-  findExecutable,
-  loadProfile,
-  type Profile,
-  prepareHome,
-  tauriHome,
-  writePrivate,
-} from "../src/profile";
+import { findExecutable, loadProfile, type Profile, prepareHome, writePrivate } from "./profile";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
-const home = prepareHome(tauriHome());
+const home = prepareHome();
 if (existsSync(join(home, "profile.json"))) {
   loadProfile(home);
   console.log("Desktop profile already exists. Existing data and credentials were preserved.");

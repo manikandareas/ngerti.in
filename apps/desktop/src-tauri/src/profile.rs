@@ -126,7 +126,6 @@ impl Profile {
                 env.insert(key, value);
             }
         }
-        env.remove("ELECTRON_RUN_AS_NODE");
         env.remove("NODE_OPTIONS");
         env.insert("APP_ENV".into(), "development".into());
         env.insert(

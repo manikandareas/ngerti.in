@@ -1,28 +1,32 @@
 import { expect, test } from "bun:test";
-import { chmodSync, readFileSync, symlinkSync } from "node:fs";
+import { chmodSync, mkdirSync, mkdtempSync, rmSync, symlinkSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { createLog } from "../src/log";
-import { loadProfile, privateJson, writePrivate } from "../src/profile";
-import { fixture } from "./fixtures";
+import { loadProfile, type Profile, privateJson, writePrivate } from "../scripts/profile";
 
-test("private profile validation rejects unsafe files and logs redact secrets", async () => {
-  const f = await fixture();
+test("private desktop profile validation rejects unsafe files", () => {
+  const home = mkdtempSync(join(tmpdir(), "ngertiin-desktop-profile-"));
+  const profile: Profile = {
+    version: 1,
+    managerId: crypto.randomUUID(),
+    stateDirectory: join(home, "state"),
+    projectRoot: home,
+    configFile: join(home, "empty.env"),
+    bunExecutable: process.execPath,
+    uiPort: 4311,
+  };
   try {
-    const path = join(f.home, "profile.json");
-    writePrivate(path, f.profile);
-    expect(loadProfile(f.home)).toEqual(f.profile);
+    const path = join(home, "profile.json");
+    writePrivate(path, profile);
+    expect(loadProfile(home)).toEqual(profile);
     chmodSync(path, 0o644);
-    expect(() => loadProfile(f.home)).toThrow();
+    expect(() => loadProfile(home)).toThrow("Private configuration");
     chmodSync(path, 0o600);
-    symlinkSync(path, join(f.home, "link.json"));
-    expect(() => privateJson(join(f.home, "link.json"))).toThrow();
-    const log = createLog(f.home, ["private-installation-token"]);
-    log("test", { token: "another-secret", output: "private-installation-token Bearer foo-bar" });
-    const output = readFileSync(join(f.home, "desktop.log"), "utf8");
-    expect(output).not.toContain("private-installation-token");
-    expect(output).not.toContain("another-secret");
-    expect(output).not.toContain("foo-bar");
+    symlinkSync(path, join(home, "link.json"));
+    expect(() => privateJson(join(home, "link.json"))).toThrow();
+    mkdirSync(join(home, "directory"), { mode: 0o700 });
+    expect(() => privateJson(join(home, "directory"))).toThrow();
   } finally {
-    f.close();
+    rmSync(home, { recursive: true, force: true });
   }
 });

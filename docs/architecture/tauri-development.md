@@ -1,6 +1,6 @@
 # Tauri development application
 
-Date: 2026-11-05. Implemented after the user authorized the Tauri trial. This is a macOS ARM64 development application; it does not close NMA-063/NMA-064 or establish production distribution readiness. The Bun backend remains the sole application lifecycle authority.
+Date: 2026-11-05. Tauri is the sole desktop implementation following the user-authorized removal of Electron and the legacy `apps/web` workspace. This is a macOS ARM64 development application; it does not close NMA-063/NMA-064 or establish production distribution readiness. The Bun backend remains the sole application lifecycle authority.
 
 ## Run and build
 
@@ -21,20 +21,13 @@ bun run package:desktop
 open "apps/desktop/src-tauri/target/release/bundle/macos/Ngertiin Tauri.app"
 ```
 
-The package includes the Rust host, target-specific Bun executable, existing backend source, required production dependencies, and built UI assets. Staging uses `.dev/tauri-stage`, separate from the retained Electron stage. The filtered production dependency closure uses Bun’s hoisted layout and a materialized avatar workspace package so the bundle does not depend on hidden `.bun` directories or workspace directory symlinks. Packaging then starts the shipped Bun/backend with isolated temporary state and no credentials and checks authenticated readiness. No repository `.env`, credentials, installation database, machine state, or profile is bundled. The packaged application references external development state/configuration and existing Codex/Muse executables. It is not a fresh-device installer.
+The package includes the Rust host, target-specific Bun executable, existing backend source, required production dependencies, and built UI assets from `apps/web-client`. Staging uses `.dev/tauri-stage`. The filtered production dependency closure uses Bun’s hoisted layout and a materialized avatar workspace package so the bundle does not depend on hidden `.bun` directories or workspace directory symlinks. Packaging then starts the shipped Bun/backend with isolated temporary state and no credentials and checks authenticated readiness. No repository `.env`, credentials, installation database, machine state, or profile is bundled. The packaged application references external development state/configuration and existing Codex/Muse executables. It is not a fresh-device installer.
 
 The default Tauri profile is `~/Library/Application Support/Ngertiin Tauri/profile.json`. Setup preserves existing profiles and references `.dev/harness-first` and `.env` by default. Its new manager UUID and stable UI port provide separate WKWebView storage. On macOS 14+, the UUID also identifies the native WebKit data store. An explicit absolute `NGERTIIN_DESKTOP_HOME` overrides the home for setup and launch; set `NGERTIIN_STATE_DIR` during setup to select separate backend data.
 
-The existing Electron app/profile are retained for comparison. Both can attach to the same authenticated backend, while UI drafts, scroll positions and pending browser operations remain in separate browser stores. Electron IndexedDB/localStorage is not imported into WebKit; resolve pending Electron submissions before switching clients. Plain Tauri text drafts survive a full Quit/relaunch. Files and pending upload/submission operations retain the existing IndexedDB mechanism.
+Plain Tauri text drafts survive a full Quit/relaunch. Files and pending upload/submission operations retain the existing IndexedDB mechanism. The TypeScript helpers in `apps/desktop/scripts/profile.ts` provide setup and tooling validation; the Rust host owns runtime profile validation and supervision.
 
-The default desktop scripts now target Tauri. The retained Electron scripts are explicit:
-
-```sh
-bun --filter @ngertiin/desktop dev:electron
-bun --filter @ngertiin/desktop package:electron
-```
-
-Electron continues to use `~/Library/Application Support/Ngertiin Dev` unless explicitly overridden. See the historical [Electron architecture](electron-development.md).
+Electron source, dependencies, scripts and tests have been removed. Its historical profile and any separately installed application are untouched; browser storage is not imported into WebKit. The retired implementation is available at Git revision `6de957e7145c0367a52b10f5fd19bbd91c50e458`. See the historical [Electron architecture](electron-development.md) and [original trial evidence](../verification/tauri-development/README.md) for their recorded scope.
 
 ## Runtime and lifecycle
 

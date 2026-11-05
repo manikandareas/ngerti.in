@@ -5,7 +5,7 @@ const CANVAS_SIZE = 1024;
 const TILE_SIZE = 824;
 const TILE_INSET = (CANVAS_SIZE - TILE_SIZE) / 2;
 
-/** Generate application and template icons independently of main/preload compilation. */
+/** Generate application and template icons for the native host. */
 export async function generateIcons(desktop: string): Promise<void> {
   const sharp = (await import("sharp")).default;
   const iconSource = join(desktop, "assets/app-icon-macos.png");

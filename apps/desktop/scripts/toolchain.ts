@@ -2,7 +2,7 @@ import { accessSync, constants } from "node:fs";
 import { homedir } from "node:os";
 import { delimiter, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { findExecutable } from "../src/profile";
+import { findExecutable } from "./profile";
 
 export const root = fileURLToPath(new URL("../../../", import.meta.url));
 export const desktop = join(root, "apps/desktop");

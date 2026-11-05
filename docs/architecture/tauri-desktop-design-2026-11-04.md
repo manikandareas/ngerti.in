@@ -1,5 +1,7 @@
 # Tauri desktop design and performance plan
 
+> Source retirement (2026-11-05): references to `apps/web` and the Electron host under `apps/desktop/src` are historical paths available at Git revision `6de957e7145c0367a52b10f5fd19bbd91c50e458`. The active application uses Tauri and `apps/web-client`.
+
 Date: 2026-11-04. Status: proposed design, requested by the user after using the Electron development app. No Tauri runtime, installation, benchmark, or feature acceptance is claimed. This document proposes a macOS ARM64 development trial; it does not close distribution or other-platform work.
 
 Implementation update (2026-11-05): the user subsequently authorized implementation. See [the implemented development host](tauri-development.md) and [current verification](../verification/tauri-development/README.md). The original proposal and its benchmark gates below remain a design record, not claims that every gate has passed.
@@ -72,7 +74,7 @@ One main WebView does not imply one OS process; WebKit can use separate content/
 
 ### Keep one stable HTTP origin for the first trial
 
-Port [gateway.ts](../../apps/desktop/src/gateway.ts) behavior into the Rust host, using one asynchronous runtime and a streaming HTTP client. Serve built UI assets and proxy `/v1` and `/health` at `http://127.0.0.1:<saved-ui-port>`. Backend discovery still resolves its separate private port. Retain the profile's stable UI port and fail visibly if another unowned listener occupies it.
+Port `apps/desktop/src/gateway.ts` behavior into the Rust host, using one asynchronous runtime and a streaming HTTP client. Serve built UI assets and proxy `/v1` and `/health` at `http://127.0.0.1:<saved-ui-port>`. Backend discovery still resolves its separate private port. Retain the profile's stable UI port and fail visibly if another unowned listener occupies it.
 
 This deliberately retains Ngertiin's controlled local HTTP architecture. Tauri's localhost plugin warns that HTTP asset serving adds risk; do not add that plugin as a second listener. Bind loopback only, enforce exact Host/Origin and route checks, strip untrusted forwarded/authorization headers, and inject installation authentication host-side. Keep secrets out of Vite variables, JavaScript, URLs and generic IPC. Missing fetch-metadata headers in WKWebView must not lead to weakening the exact-origin rules. [Localhost tradeoff](https://v2.tauri.app/plugin/localhost/).
 
@@ -94,7 +96,7 @@ The same-origin Cua iframe is not isolated merely by a main-window capability, n
 
 ### Backend and background lifecycle
 
-Port the behavioral contract of [Supervisor](../../apps/desktop/src/supervisor.ts), rather than only its spawn call. Retain private runtime discovery, compatible authenticated readiness, owner/instance/manager identity checks, the existing authority lock, bounded restarts, redacted rotating logs and managed-versus-external ownership. Rust supervises the process; Bun still decides recovery of domain operations. Never resubmit prompts to recover a process.
+Port the behavioral contract of `apps/desktop/src/supervisor.ts`, rather than only its spawn call. Retain private runtime discovery, compatible authenticated readiness, owner/instance/manager identity checks, the existing authority lock, bounded restarts, redacted rotating logs and managed-versus-external ownership. Rust supervises the process; Bun still decides recovery of domain operations. Never resubmit prompts to recover a process.
 
 | Trigger | Required behavior |
 | --- | --- |

@@ -1,5 +1,7 @@
 # Electron development verification
 
+Historical evidence: Electron source, dependencies, commands and tests were retired on 2026-11-05. Reproducing this cohort requires a separate checkout of Git revision `6de957e7145c0367a52b10f5fd19bbd91c50e458`; the active desktop uses [Tauri](../../architecture/tauri-development.md). Recorded evidence files remain unchanged.
+
 Date: 2026-11-04. Target: macOS 26.3 ARM64. Electron 45.2.2, Electron Forge 8.0.1, Bun 1.3.10 and build Node 25.8.0. Backend consumer contract remains 1.30.0; no domain route/schema change was required.
 
 ## Icon and interaction update

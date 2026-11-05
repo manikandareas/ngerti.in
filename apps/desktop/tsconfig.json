@@ -9,12 +9,5 @@
     "noEmit": true,
     "skipLibCheck": true
   },
-  "include": [
-    "src",
-    "scripts",
-    "tests",
-    "*.ts",
-    "verification",
-    "../web-client/src/types/desktop.d.ts"
-  ]
+  "include": ["scripts", "tests"]
 }

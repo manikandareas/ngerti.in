@@ -1,5 +1,7 @@
 # Tauri development verification
 
+Cleanup update (2026-11-05): the user selected Tauri as the sole desktop host. Electron source, dependencies, scripts and tests, together with the legacy `apps/web` workspace, have been removed. The results below record the original trial before cleanup, including its Electron comparisons and test counts. The retired source remains available at Git revision `6de957e7145c0367a52b10f5fd19bbd91c50e458`.
+
 Recorded 2026-11-05 (Asia/Makassar; raw tools use UTC). Scope: the user-authorized macOS ARM64 Tauri development trial on base commit `807bfa08b984cdbaa3feb9387b661f1e02b2e873`, with uncommitted local implementation. This is not production or NMA-064 acceptance. See [runtime/setup](../../architecture/tauri-development.md), [original design](../../architecture/tauri-desktop-design-2026-11-04.md), and [structured results](verification.json).
 
 ## Automated checks

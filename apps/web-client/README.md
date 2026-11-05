@@ -1,6 +1,6 @@
 # Web client
 
-Standalone React + TypeScript application built with Vite. The active conversation workspace consumes the harness-first API 1.18.0. Its visual and interaction reference is OpenMausBot 0.1.137; the component catalog remains available.
+Shared React + TypeScript application built with Vite, used by the Tauri desktop host and the browser development preview. The active conversation workspace consumes the harness-first API 1.18.0. Its visual and interaction reference is OpenMausBot 0.1.137; the component catalog remains available.
 
 The [existing-feature redesign evidence](../../docs/verification/openmaus-fidelity-2026-11-01/README.md) maps 19 surfaces to the pinned reference, with 122 passing unique browser cases and retained screenshots. Provider fixtures, real API persistence and managed-browser verification have separate evidence boundaries.
 
@@ -17,7 +17,7 @@ bun run dev:web-client
 
 Vite injects the development installation bearer token on the server side from `.dev/harness-first/installation.json`; credentials are never bundled. Set `NGERTIIN_STATE_DIR` (repository-relative or absolute) and `NGERTIIN_API_URL` for another local development instance. Both dev and preview bridges bind to loopback and reject foreign origins. This is a development bridge, not the deferred production login/installer.
 
-The application listens on `http://127.0.0.1:3001`. The existing `apps/web` app keeps its own port and scripts.
+The browser development preview listens on `http://127.0.0.1:3001`. For the native application, use [Tauri setup and development](../../docs/architecture/tauri-development.md).
 
 From the repository root:
 

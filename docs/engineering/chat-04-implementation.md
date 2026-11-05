@@ -1,5 +1,7 @@
 > Catatan historis sebelum reset V1 asisten umum pada 18 Oktober 2026. Kontrak/command pembelajaran, migration head dan hasil acceptance lama di bawah tidak menjadi persyaratan aktif. Lihat [spesifikasi V1](../product/01-produk-dan-paket.md) dan [baseline baru](baseline-v1-acceptance.md).
 
+> Source retirement (2026-11-05): references to `apps/web` and the Electron host under `apps/desktop/src` are historical paths available at Git revision `6de957e7145c0367a52b10f5fd19bbd91c50e458`. The active application uses Tauri and `apps/web-client`.
+
 # Chat personal #04 — implementasi dan penerimaan
 
 Implementasi lokal 16 Oktober 2026 untuk [backlog #04](../backlog/tasks/04-chat-personal-thread-dan-streaming-resumable.md). Rujukan: [riset framework, streaming, dan UI](../research/chat-04-streaming-research-2026-10-16.md) serta [desain Pen](../walkthrough-ux.pen). Catatan ini mencatat hasil implementasi; status mirror Notion tetap mengikuti snapshotnya.
@@ -23,7 +25,7 @@ bunx --bun shadcn@latest init --cwd apps/web --template start --base radix --pre
 bunx --bun shadcn@latest add card sheet drawer textarea input collapsible badge tooltip dropdown-menu avatar --cwd apps/web --yes
 ```
 
-Hasil tersimpan di [components.json](../../apps/web/components.json) dan [components/ui](../../apps/web/src/components/ui). Button ikut dipasang saat init. Kustomisasi menggunakan token Soft Matcha, Nunito Sans, border serta surface Pen. History desktop memakai panel di antara rail dan konten chat; Drawer menjadi daftar chat mobile dan menyediakan akses akun. Button, Input, serta DropdownMenu tetap memakai primitive shadcn yang dipasang di atas.
+Hasil tersimpan di `apps/web/components.json` dan `apps/web/src/components/ui`. Button ikut dipasang saat init. Kustomisasi menggunakan token Soft Matcha, Nunito Sans, border serta surface Pen. History desktop memakai panel di antara rail dan konten chat; Drawer menjadi daftar chat mobile dan menyediakan akses akun. Button, Input, serta DropdownMenu tetap memakai primitive shadcn yang dipasang di atas.
 
 Streamdown merender Markdown yang masih mengalir, KaTeX untuk matematika inline/display, dan plugin code untuk blok kode. Tool dan ringkasan penalaran mempunyai Collapsible tersendiri. Adapter hanya memproyeksikan ringkasan publik yang diberikan provider; encrypted reasoning, instruksi internal, raw checkpoint, dan raw tool result tidak dikirim ke UI. Bila provider tidak memberikan summary, bagian reasoning tidak ditampilkan.
 
@@ -117,7 +119,7 @@ Mengikuti referensi pengguna, history desktop tampil sebagai panel yang menempat
 
 Main chat dipisahkan dan tetap terlihat ketika pencarian memfilter Side chats. Tombol `+` membuat side chat kosong dan membersihkan pencarian. Memilih atau membuat percakapan mempertahankan panel terbuka pada desktop. Tombol rail, menu `…`, dan Escape dari dalam panel dapat menutupnya; penutupan melalui menu/Escape mengembalikan fokus ke tombol rail.
 
-[ThreadList](../../apps/web/src/features/chat/components/thread-list.tsx) dipakai bersama oleh panel desktop dan Drawer mobile. State buka/tutup keduanya dipisahkan agar membuka panel desktop tidak otomatis membuka Drawer ketika viewport menjadi mobile. Judul panjang dipotong satu baris; judul lengkap tetap tersedia lewat label dan tooltip native. Penyesuaian ini direview langsung dalam satu konteks, dibantu scan layout, typecheck, lint, build, dan pemeriksaan browser.
+`apps/web/src/features/chat/components/thread-list.tsx` dipakai bersama oleh panel desktop dan Drawer mobile. State buka/tutup keduanya dipisahkan agar membuka panel desktop tidak otomatis membuka Drawer ketika viewport menjadi mobile. Judul panjang dipotong satu baris; judul lengkap tetap tersedia lewat label dan tooltip native. Penyesuaian ini direview langsung dalam satu konteks, dibantu scan layout, typecheck, lint, build, dan pemeriksaan browser.
 
 ## Cleanup React dan penutupan #04 — 16 Oktober 2026
 

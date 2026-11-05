@@ -180,6 +180,12 @@ export class HarnessError extends Error {
     super(code);
   }
 }
+/** Internal adapter evidence only; public diagnostics retain the existing safe rejection code. */
+export class NativeSessionMissing extends HarnessError {
+  constructor() {
+    super("NATIVE_REJECTED");
+  }
+}
 export function diagnostic(error: unknown) {
   const safe =
     error instanceof HarnessError ? error : new HarnessError("NATIVE_UNKNOWN", "unknown");

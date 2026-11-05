@@ -19,6 +19,7 @@ import {
   diagnostic,
   HarnessError,
   type NativeEvent,
+  NativeSessionMissing,
   nativeEvent,
   type Settings,
   settings,
@@ -446,12 +447,29 @@ export class HarnessBroker {
             binding.workspace_revision === workspace.revision,
         );
       if (previous) this.requireCapability(current, "resume");
-      const identity = await bounded(
-        previous
-          ? client.resume({ native_session_id: previous.native_session_id }, { ...selected })
-          : client.start({ ...selected }),
-        this.timeouts.request_ms,
-      );
+      let replaceUnused: Entity<"binding"> | undefined;
+      let identity: { native_session_id: string };
+      try {
+        identity = await bounded(
+          previous
+            ? client.resume({ native_session_id: previous.native_session_id }, { ...selected })
+            : client.start({ ...selected }),
+          this.timeouts.request_ms,
+        );
+      } catch (error) {
+        // Codex may discard a prewarmed thread before its first turn creates a rollout.
+        // An explicit missing-session response can replace only an unused binding;
+        // unknown acknowledgements and every prior dispatch keep their original identity.
+        if (
+          !(error instanceof NativeSessionMissing) ||
+          current.harness !== "codex" ||
+          !previous ||
+          this.lifecycle.store.list("run").some((run) => run.binding_id === previous.id)
+        )
+          throw error;
+        replaceUnused = previous;
+        identity = await bounded(client.start({ ...selected }), this.timeouts.request_ms);
+      }
       if (
         !identity.native_session_id ||
         launch.redactor.text(identity.native_session_id) !== identity.native_session_id
@@ -468,7 +486,13 @@ export class HarnessBroker {
       )
         throw new DomainError("STALE_DISPATCH");
       workspaces.get(workspace.id);
-      const binding = this.lifecycle.bind(threadId, agentId, identity.native_session_id, workspace);
+      const binding = this.lifecycle.bind(
+        threadId,
+        agentId,
+        identity.native_session_id,
+        workspace,
+        replaceUnused,
+      );
       if (inherited) persistInheritedSkills(this.lifecycle, launch, binding.id, inherited);
       const session: Session = {
         client,

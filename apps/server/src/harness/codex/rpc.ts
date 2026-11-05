@@ -1,5 +1,5 @@
 import type { LaunchContext } from "../context";
-import { HarnessError } from "../contracts";
+import { HarnessError, NativeSessionMissing } from "../contracts";
 import { OwnedProcess } from "../process";
 import { workspacePolicy } from "./workspace-policy";
 
@@ -14,6 +14,7 @@ type Pending = {
   resolve(value: unknown): void;
   reject(error: HarnessError): void;
   timer: ReturnType<typeof setTimeout>;
+  resumeThread?: string;
 };
 /** One owned stdio transport. Never replay a request after a lost acknowledgement. */
 export class CodexRpc {
@@ -82,7 +83,15 @@ export class CodexRpc {
         // A late session/start response cannot safely become a new implicit request.
         void this.close();
       }, timeoutMs);
-      this.#pending.set(id, { resolve, reject, timer });
+      const resumeThread =
+        method === "thread/resume" &&
+        params !== null &&
+        typeof params === "object" &&
+        "threadId" in params &&
+        typeof params.threadId === "string"
+          ? params.threadId
+          : undefined;
+      this.#pending.set(id, { resolve, reject, timer, resumeThread });
       try {
         this.write({ id, method, params });
       } catch {
@@ -111,7 +120,8 @@ export class CodexRpc {
           clearTimeout(pending.timer);
           this.#pending.delete(message.id);
           // Native exception text is never forwarded across the adapter boundary.
-          if (message.error !== undefined) pending.reject(new HarnessError("NATIVE_REJECTED"));
+          if (message.error !== undefined)
+            pending.reject(classifyCodexRpcError(message.error, pending.resumeThread));
           else pending.resolve(message.result);
         } else throw new HarnessError("PROTOCOL_ERROR", "unknown");
       }
@@ -140,4 +150,18 @@ export class CodexRpc {
     this.fail();
     await this.process.close();
   }
+}
+
+export function classifyCodexRpcError(error: unknown, resumeThread?: string): HarnessError {
+  if (
+    resumeThread &&
+    error !== null &&
+    typeof error === "object" &&
+    "code" in error &&
+    error.code === -32600 &&
+    "message" in error &&
+    error.message === `no rollout found for thread id ${resumeThread}`
+  )
+    return new NativeSessionMissing();
+  return new HarnessError("NATIVE_REJECTED");
 }

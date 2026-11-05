@@ -454,6 +454,7 @@ export class Lifecycle {
     agentId: string,
     nativeSessionId: string,
     workspace: Entity<"workspace"> = new Workspaces(this).ensure(threadId, agentId),
+    replaceUnused?: Pick<Entity<"binding">, "id" | "revision">,
   ) {
     return this.store.transaction(() => {
       this.scope(threadId, agentId);
@@ -470,8 +471,14 @@ export class Lifecycle {
           existing.workspace_id === (workspace?.id ?? null) &&
           existing.workspace_revision === (workspace?.revision ?? null)
         ) {
-          if (existing.native_session_id !== nativeSessionId) throw new DomainError("CONFLICT");
-          return existing;
+          if (existing.native_session_id === nativeSessionId) return existing;
+          if (
+            existing.harness !== "codex" ||
+            replaceUnused?.id !== existing.id ||
+            replaceUnused.revision !== existing.revision ||
+            this.store.list("run").some((run) => run.binding_id === existing.id)
+          )
+            throw new DomainError("CONFLICT");
         }
         this.update(existing, { active: false });
       }

@@ -142,14 +142,18 @@ async function receive(message: Message) {
         history: [],
         instructions: String(p.developerInstructions ?? ""),
       };
-      await Bun.write(file, JSON.stringify(sessions));
+      // Like native Codex, an unused prewarmed thread has no durable rollout yet.
       reply({ thread: { id }, model: p.model, modelProvider: "openai" });
       break;
     }
     case "thread/resume": {
-      sessions = await Bun.file(file).json();
+      const persisted = (await Bun.file(file).exists()) ? await Bun.file(file).json() : {};
+      sessions = { ...persisted, ...sessions };
       if (!p.threadId || !sessions[p.threadId]) {
-        send({ id: message.id, error: { code: -1, message: "Missing session." } });
+        send({
+          id: message.id,
+          error: { code: -32600, message: `no rollout found for thread id ${p.threadId}` },
+        });
         break;
       }
       reply({ thread: { id: p.threadId }, model: p.model, modelProvider: "openai" });

@@ -153,6 +153,27 @@ test("native sessions stay separate across DM and group; shared session identity
   expect(groupBinding.agent_id).toBe(privateBinding.agent_id);
 });
 
+test("unused binding replacement rejects stale revisions and any binding claimed for dispatch", () => {
+  const f = setup();
+  const binding = f.bind();
+  const before = f.store.cursor;
+  expect(() =>
+    f.lifecycle.bind(f.thread.id, f.agent.id, "new-pristine-session", undefined, {
+      id: binding.id,
+      revision: binding.revision + 1,
+    }),
+  ).toThrow("CONFLICT");
+  expect(f.store.cursor).toBe(before);
+  f.admit();
+  expect(f.lifecycle.claimNext(f.thread.id, f.agent.id)?.binding_id).toBe(binding.id);
+  const dispatched = f.store.cursor;
+  expect(() =>
+    f.lifecycle.bind(f.thread.id, f.agent.id, "must-not-replay", undefined, binding),
+  ).toThrow("CONFLICT");
+  expect(f.store.cursor).toBe(dispatched);
+  expect(f.store.get("binding", binding.id)).toEqual(binding);
+});
+
 test("grant changes between admission and dispatch are fenced", () => {
   const f = setup();
   f.bind();

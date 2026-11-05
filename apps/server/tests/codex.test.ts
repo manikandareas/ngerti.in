@@ -1,4 +1,5 @@
 import { afterEach, expect, test } from "bun:test";
+import { renameSync } from "node:fs";
 import { join } from "node:path";
 import { createApi } from "../src/api";
 import { Background } from "../src/background";
@@ -6,8 +7,10 @@ import type { Entity } from "../src/contracts";
 import { manifests } from "../src/harness/availability";
 import { HarnessBroker } from "../src/harness/broker";
 import { CodexAdapter } from "../src/harness/codex/adapter";
+import { classifyCodexRpcError } from "../src/harness/codex/rpc";
 import { Connections } from "../src/harness/connections";
 import { CredentialContexts } from "../src/harness/context";
+import { NativeSessionMissing } from "../src/harness/contracts";
 import { ProductTools } from "../src/harness/tools";
 import { fixture } from "./helpers";
 
@@ -107,6 +110,61 @@ async function waitRunning(id: string) {
   }
   throw new Error("Run did not reach native acceptance.");
 }
+test("only an exact missing-rollout response for the requested resume permits pristine recovery", () => {
+  const error = { code: -32600, message: "no rollout found for thread id requested-thread" };
+  expect(classifyCodexRpcError(error, "requested-thread")).toBeInstanceOf(NativeSessionMissing);
+  for (const [value, thread] of [
+    [error, undefined],
+    [error, "different-thread"],
+    [{ ...error, code: -32603 }, "requested-thread"],
+    [{ ...error, message: "Provider rejected sk-private-native-error" }, "requested-thread"],
+  ] as const) {
+    const result = classifyCodexRpcError(value, thread);
+    expect(result).not.toBeInstanceOf(NativeSessionMissing);
+    expect(result.message).toBe("NATIVE_REJECTED");
+  }
+});
+test("an unused prewarmed Codex thread is replaced after its process closes before first dispatch", async () => {
+  const lane = setup();
+  const prepared = await broker.openSession(lane.thread.id, lane.agent.id);
+  expect(f.store.list("run")).toHaveLength(0);
+  await background.stop(100);
+  await broker.close();
+  await app.stop();
+  f.restart();
+  compose();
+  const run = await admit(lane, "First message after unused prewarm closed.");
+  await background.idle();
+  expect(f.store.get("run", run.id).status).toBe("succeeded");
+  const active = f.store.list("binding").find((binding) => binding.active);
+  expect(active?.native_session_id).not.toBe(prepared.native_session_id);
+  expect(active?.generation).toBe(prepared.generation + 1);
+  expect(f.store.get("binding", prepared.id).active).toBe(false);
+  expect(f.store.list("message").filter((message) => message.author === "agent")).toHaveLength(1);
+});
+
+test("a missing Codex rollout used by a prior dispatch is never silently replaced or replayed", async () => {
+  const lane = setup();
+  const run = await admit(lane, "A previously completed native conversation.");
+  await background.idle();
+  const binding = f.store.list("binding").find((item) => item.active);
+  if (!binding) throw new Error("The completed run has no active native binding.");
+  const messages = f.store.list("message");
+  await background.stop(100);
+  await broker.close();
+  await app.stop();
+  const file = join(f.dir, "connections", lane.connection.id, "codex", "fixture-sessions.json");
+  renameSync(file, `${file}.saved`);
+  f.restart();
+  compose();
+  await expect(broker.openSession(lane.thread.id, lane.agent.id)).rejects.toMatchObject({
+    code: "NATIVE_REJECTED",
+  });
+  expect(f.store.get("run", run.id).status).toBe("succeeded");
+  expect(f.store.get("binding", binding.id)).toEqual(binding);
+  expect(f.store.list("message")).toEqual(messages);
+});
+
 test("Codex JSONL fixture performs an HTTP product-tool round trip and persists owned output", async () => {
   const lane = setup();
   const run = await admit(lane, "Private DM input 日本語");

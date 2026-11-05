@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "main",
+  "description": "The HTTP frontend has no native IPC permissions. Desktop actions are owned by Rust.",
+  "windows": ["main"],
+  "permissions": []
+}

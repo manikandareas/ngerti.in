@@ -1,0 +1,144 @@
+{
+  "at": "2026-11-04T16:59:54.862562+00:00",
+  "label": "tauri-visible",
+  "attribution": "Electron bundle paths; native host plus WebKit PID difference against pre-launch snapshot. Inspectors closed. Shared Bun reported separately.",
+  "before_native_launch": {
+    "at": "2026-11-04T16:59:29.831534+00:00",
+    "webkit": [
+      {
+        "pid": 22809,
+        "ppid": 1,
+        "rss_kib": 1568,
+        "name": "/System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.Networking.xpc/Contents/MacOS/com.apple.WebKit.Networking"
+      },
+      {
+        "pid": 45286,
+        "ppid": 1,
+        "rss_kib": 4128,
+        "name": "/System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.GPU.xpc/Contents/MacOS/com.apple.WebKit.GPU"
+      }
+    ]
+  },
+  "groups": {
+    "tauri_ui": {
+      "processes": [
+        {
+          "pid": 46214,
+          "ppid": 1,
+          "rss_kib": 29744,
+          "pcpu": 2.3,
+          "executable": "ngertiin-desktop"
+        },
+        {
+          "pid": 46222,
+          "ppid": 1,
+          "rss_kib": 31616,
+          "pcpu": 53.9,
+          "executable": "com.apple.WebKit.GPU"
+        },
+        {
+          "pid": 46223,
+          "ppid": 1,
+          "rss_kib": 7376,
+          "pcpu": 0.0,
+          "executable": "com.apple.WebKit.Networking"
+        },
+        {
+          "pid": 46224,
+          "ppid": 1,
+          "rss_kib": 63536,
+          "pcpu": 39.2,
+          "executable": "com.apple.WebKit.WebContent"
+        }
+      ],
+      "rss_sum_mib": 129.171875,
+      "footprint_total_bytes": 368075712,
+      "footprint_summary": {
+        "total": {
+          "dirty": 368075712,
+          "swapped": 134561792,
+          "clean": 9584640,
+          "reclaimable": 180355072,
+          "wired": 139657216,
+          "regions": 25268
+        }
+      },
+      "errors": [],
+      "warnings": [],
+      "return_code": 0
+    },
+    "electron_ui": {
+      "processes": [
+        {
+          "pid": 35827,
+          "ppid": 1,
+          "rss_kib": 55152,
+          "pcpu": 0.9,
+          "executable": "Ngertiin Dev"
+        },
+        {
+          "pid": 35831,
+          "ppid": 35827,
+          "rss_kib": 55664,
+          "pcpu": 33.9,
+          "executable": "Ngertiin Dev Helper"
+        },
+        {
+          "pid": 35832,
+          "ppid": 35827,
+          "rss_kib": 19728,
+          "pcpu": 0.0,
+          "executable": "Ngertiin Dev Helper"
+        },
+        {
+          "pid": 35834,
+          "ppid": 35827,
+          "rss_kib": 135856,
+          "pcpu": 25.1,
+          "executable": "Ngertiin Dev Helper (Renderer)"
+        }
+      ],
+      "rss_sum_mib": 260.15625,
+      "footprint_total_bytes": 811907968,
+      "footprint_summary": {
+        "total": {
+          "dirty": 811907968,
+          "swapped": 274464768,
+          "clean": 85131264,
+          "reclaimable": 442368,
+          "wired": 70516736,
+          "regions": 62379
+        }
+      },
+      "errors": [],
+      "warnings": [],
+      "return_code": 0
+    },
+    "shared_bun": {
+      "processes": [
+        {
+          "pid": 35835,
+          "ppid": 35827,
+          "rss_kib": 73552,
+          "pcpu": 2.3,
+          "executable": "bun"
+        }
+      ],
+      "rss_sum_mib": 71.828125,
+      "footprint_total_bytes": 248795200,
+      "footprint_summary": {
+        "total": {
+          "dirty": 248795200,
+          "swapped": 190595072,
+          "clean": 15597568,
+          "reclaimable": 1769472,
+          "wired": 0,
+          "regions": 3882
+        }
+      },
+      "errors": [],
+      "warnings": [],
+      "return_code": 0
+    }
+  }
+}

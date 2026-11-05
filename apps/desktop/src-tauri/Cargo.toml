@@ -1,0 +1,57 @@
+[package]
+name = "ngertiin-desktop"
+version = "0.2.0"
+edition = "2024"
+rust-version = "1.90"
+
+[lib]
+name = "ngertiin_desktop_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[[bin]]
+name = "ngertiin-desktop"
+path = "src/main.rs"
+
+[build-dependencies]
+tauri-build = { version = "=2.7.4", features = [] }
+
+[dependencies]
+anyhow = "1"
+axum = { version = "0.8", features = ["ws"] }
+chrono = { version = "0.4", default-features = false, features = ["clock"] }
+dirs = "6"
+dotenvy = "0.15"
+fs2 = "0.4"
+futures-util = "0.3"
+libc = "0.2"
+mime_guess = "2"
+open = "5"
+percent-encoding = "2"
+regex = "1"
+reqwest = { version = "0.12", default-features = false, features = ["json", "stream", "rustls-tls"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tauri = { version = "=2.12.5", features = ["tray-icon", "image-png", "image-ico", "devtools"] }
+tauri-plugin-dialog = "2"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "process", "net", "time", "sync", "io-util", "fs", "signal"] }
+tokio-tungstenite = "0.28"
+tokio-util = { version = "0.7", features = ["io", "rt"] }
+url = "2"
+uuid = { version = "1", features = ["v4", "serde"] }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+block2 = "0.6.2"
+objc2 = "0.6.3"
+objc2-app-kit = { version = "0.3.2", default-features = false, features = ["std", "NSApplication", "NSWindow", "NSWorkspace"] }
+objc2-foundation = { version = "0.3.2", default-features = false, features = ["std", "NSNotification", "NSOperation", "NSString", "block2"] }
+
+[profile.dev]
+debug = 0
+incremental = false
+
+[profile.release]
+opt-level = "s"
+lto = "thin"
+codegen-units = 8
+strip = true
+panic = "abort"

@@ -29,6 +29,12 @@ export function desktopHome(): string {
       join(homedir(), "Library/Application Support/Ngertiin Dev"),
   );
 }
+export function tauriHome(): string {
+  return resolve(
+    process.env.NGERTIIN_DESKTOP_HOME ??
+      join(homedir(), "Library/Application Support/Ngertiin Tauri"),
+  );
+}
 export function privateJson<T>(path: string): T {
   const info = lstatSync(path);
   if (!info.isFile() || info.isSymbolicLink() || (info.mode & 0o077) !== 0 || info.size > 65536)

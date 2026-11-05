@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { isPageVisible, subscribePageVisibility } from "@/lib/page-visibility";
 
 /** Smooth only arriving text; never replay history or build a typewriter backlog. */
 export function useStreamingText(text: string, streaming: boolean) {
@@ -12,14 +13,15 @@ export function useStreamingText(text: string, streaming: boolean) {
       displayed.current = text;
       setVisible(text);
     };
-    if (!streaming || motion.matches || document.hidden || !text.startsWith(displayed.current)) {
+    if (!streaming || motion.matches || !isPageVisible() || !text.startsWith(displayed.current)) {
       flush();
       return;
     }
     const from = displayed.current.length;
     const started = performance.now();
     const tick = (now: number) => {
-      const progress = Math.min(1, (now - started) / 100);
+      // Projection batching already spends up to 40 ms; keep the combined visual buffer bounded.
+      const progress = Math.min(1, (now - started) / 60);
       if (progress === 1 || now - lastPaint.current >= 32) {
         let end = from + Math.ceil((text.length - from) * progress);
         // Never expose half of a UTF-16 surrogate pair.
@@ -35,11 +37,11 @@ export function useStreamingText(text: string, streaming: boolean) {
       flush();
     };
     if (from < text.length) frame = requestAnimationFrame(tick);
-    document.addEventListener("visibilitychange", finish);
+    const unsubscribe = subscribePageVisibility(finish);
     motion.addEventListener("change", finish);
     return () => {
       cancelAnimationFrame(frame);
-      document.removeEventListener("visibilitychange", finish);
+      unsubscribe();
       motion.removeEventListener("change", finish);
     };
   }, [text, streaming]);

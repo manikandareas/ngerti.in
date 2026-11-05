@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { command, followEvents, request } from "@/lib/api-client";
+import { isPageVisible, subscribePageVisibility } from "@/lib/page-visibility";
 import type {
   Agent,
   AgentActivities,
@@ -140,7 +141,7 @@ export function useWorkspace(composer: HTMLElement | null) {
       refresh,
       follow: followEvents,
       available: () => navigator.onLine,
-      visible: () => document.visibilityState === "visible",
+      visible: isPageVisible,
       status: (connected, failure) => {
         setOnline(connected);
         setError(failure);
@@ -162,12 +163,13 @@ export function useWorkspace(composer: HTMLElement | null) {
     const offline = () => sync.disconnect();
     const online = () => sync.reconnect();
     const resume = () => {
-      if (document.visibilityState === "visible") sync.resume();
+      if (isPageVisible()) sync.resume();
+      else sync.pause();
     };
     window.addEventListener("offline", offline);
     window.addEventListener("online", online);
     window.addEventListener("focus", resume);
-    document.addEventListener("visibilitychange", resume);
+    const unsubscribeVisibility = subscribePageVisibility(resume);
     sync.start();
     return () => {
       synchronizer.current = null;
@@ -175,7 +177,7 @@ export function useWorkspace(composer: HTMLElement | null) {
       window.removeEventListener("offline", offline);
       window.removeEventListener("online", online);
       window.removeEventListener("focus", resume);
-      document.removeEventListener("visibilitychange", resume);
+      unsubscribeVisibility();
     };
   }, [refresh, ready]);
 
@@ -215,7 +217,7 @@ export function useWorkspace(composer: HTMLElement | null) {
       return;
     const dispose = observePreparation(
       composer,
-      () => document.visibilityState === "visible" && selectedThread.current === threadId,
+      () => isPageVisible() && selectedThread.current === threadId,
       (signal) =>
         request<SessionPreparation>(
           `/v1/threads/${threadId}/prepare`,

@@ -4,16 +4,16 @@ import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseEnv } from "node:util";
 import {
-  desktopHome,
   findExecutable,
   loadProfile,
   type Profile,
   prepareHome,
+  tauriHome,
   writePrivate,
 } from "../src/profile";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
-const home = prepareHome();
+const home = prepareHome(tauriHome());
 if (existsSync(join(home, "profile.json"))) {
   loadProfile(home);
   console.log("Desktop profile already exists. Existing data and credentials were preserved.");
@@ -54,4 +54,4 @@ if (existsSync(join(home, "profile.json"))) {
     "Desktop profile created. It references the selected development state without copying credentials.",
   );
 }
-console.log(`Profile: ${join(desktopHome(), "profile.json")}`);
+console.log(`Profile: ${join(home, "profile.json")}`);

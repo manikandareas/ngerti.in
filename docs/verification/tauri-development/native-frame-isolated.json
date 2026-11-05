@@ -1,0 +1,17 @@
+{
+  "recorded_at": "2026-11-05",
+  "method": "Native Inspector rAF probe, Electron hidden; discard initial 5000 ms while closing Inspector. Read result after 25 seconds.",
+  "frames": 1192,
+  "main_document_clicks": 1,
+  "median_ms": 17,
+  "p95_ms": 20,
+  "max_ms": 64,
+  "over_34ms": 3,
+  "elapsed_ms": 25014,
+  "limitations": [
+    "short sample",
+    "only one main-document click during measured period",
+    "native menus/Inspector can perturb timing",
+    "not a matched repeated animation benchmark"
+  ]
+}

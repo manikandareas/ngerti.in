@@ -199,3 +199,35 @@ test("foreground resume reconciles without creating another event connection", a
   expect(reads).toBe(2);
   expect(f.transport.connections[0].signal.aborted).toBe(true);
 });
+
+test("hidden presentation retires its stream and resumes from a fresh authoritative snapshot", async () => {
+  let visible = true;
+  let reads = 0;
+  let cursor = 10;
+  const transport = stream();
+  sync = new WorkspaceSync({
+    refresh: async () => {
+      reads++;
+      return cursor;
+    },
+    follow: transport.follow,
+    update: () => new Set(["conversation"]),
+    status: () => {},
+    visible: () => visible,
+    reconcileMs: 10,
+  });
+  sync.start();
+  await until(() => transport.connections.length === 1);
+  visible = false;
+  sync.pause();
+  cursor = 30;
+  await Bun.sleep(30);
+  expect(transport.connections[0].signal.aborted).toBe(true);
+  expect(reads).toBe(1);
+  sync.reconnect();
+  expect(transport.connections).toHaveLength(1);
+  visible = true;
+  sync.resume();
+  await until(() => transport.connections.length === 2);
+  expect(transport.connections[1].after).toBe(30);
+});

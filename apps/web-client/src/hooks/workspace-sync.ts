@@ -50,6 +50,7 @@ export class WorkspaceSync {
   reconnect() {
     if (this.#closed) return;
     this.retire();
+    if (this.options.visible?.() === false) return;
     if (this.options.available?.() === false) {
       this.options.status(false, "Connection lost. Reconnecting…");
       return;
@@ -72,8 +73,13 @@ export class WorkspaceSync {
     this.options.status(false, "Connection lost. Reconnecting…");
   }
 
+  pause() {
+    if (!this.#closed) this.retire();
+  }
+
   resume() {
-    if (this.#closed || this.options.available?.() === false) return;
+    if (this.#closed || this.options.available?.() === false || this.options.visible?.() === false)
+      return;
     const connection = this.#connection;
     if (!connection || connection.abort.signal.aborted) this.reconnect();
     else {

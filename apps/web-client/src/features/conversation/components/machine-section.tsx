@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { useApiResource } from "@/hooks/use-api-resource";
 import { ApiError, request } from "@/lib/api-client";
+import { isPageVisible, subscribePageVisibility } from "@/lib/page-visibility";
 import type { Machine } from "@/types/machine";
 import type { Agent } from "@/types/workspace";
 import { MachineScreen } from "./machine-viewer";
@@ -22,14 +23,21 @@ export function MachineSection({ agents, cursor }: { agents: Agent[]; cursor: nu
   const [error, setError] = useState("");
   const resource = useApiResource<Machine>("/v1/machine", cursor + tick);
   useEffect(() => {
-    const timer = setInterval(() => setTick((n) => n + 1), 3000);
-    return () => clearInterval(timer);
-  }, []);
-  useEffect(() => {
-    return window.ngertiinDesktop?.onVisibility((visible) => {
-      if (!visible) setOpen(false);
-      else setTick((value) => value + 1);
-    });
+    let timer: ReturnType<typeof setInterval> | undefined;
+    const update = () => {
+      clearInterval(timer);
+      if (!isPageVisible()) setOpen(false);
+      else {
+        setTick((value) => value + 1);
+        timer = setInterval(() => setTick((value) => value + 1), 3000);
+      }
+    };
+    const unsubscribe = subscribePageVisibility(update);
+    update();
+    return () => {
+      clearInterval(timer);
+      unsubscribe();
+    };
   }, []);
   const machine = resource.data;
   const human = machine?.lease.holder === "human";

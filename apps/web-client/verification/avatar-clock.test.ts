@@ -9,6 +9,7 @@ test("modal dialogs suspend background avatars and resume the shared clock on cl
     "cancelAnimationFrame",
     "IntersectionObserver",
     "MutationObserver",
+    "window",
   ];
   const saved = names.map(
     (name) => [name, Object.getOwnPropertyDescriptor(globalThis, name)] as const,
@@ -16,6 +17,7 @@ test("modal dialogs suspend background avatars and resume the shared clock on cl
   const frames = new Map<number, FrameRequestCallback>();
   let next = 0;
   let changed: (() => void) | undefined;
+  let nativeVisibility: ((visible: boolean) => void) | undefined;
   const background = {} as Element;
   const foreground = {} as Element;
   let modal: Element | null = null;
@@ -23,6 +25,16 @@ test("modal dialogs suspend background avatars and resume the shared clock on cl
   let foregroundDraws = 0;
   const unsubscribers: (() => void)[] = [];
   const values: Record<string, unknown> = {
+    window: {
+      ngertiinDesktop: {
+        onVisibility(callback: (visible: boolean) => void) {
+          nativeVisibility = callback;
+          return () => {
+            nativeVisibility = undefined;
+          };
+        },
+      },
+    },
     document: {
       hidden: false,
       body: {},
@@ -66,6 +78,13 @@ test("modal dialogs suspend background avatars and resume the shared clock on cl
     modal = null;
     changed?.();
     expect(backgroundDraws).toBe(before + 1);
+    expect(frames.size).toBe(1);
+    const visibleDraws = backgroundDraws;
+    nativeVisibility?.(false);
+    expect(frames.size).toBe(0);
+    expect(backgroundDraws).toBe(visibleDraws);
+    nativeVisibility?.(true);
+    expect(backgroundDraws).toBe(visibleDraws + 1);
     expect(frames.size).toBe(1);
   } finally {
     for (const unsubscribe of unsubscribers) unsubscribe();

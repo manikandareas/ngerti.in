@@ -1,3 +1,5 @@
+import { isPageVisible, subscribePageVisibility } from "@/lib/page-visibility";
+
 type Frame = (now: number, reducedMotion: boolean) => void;
 type Gaze = (x: number, y: number, active: boolean) => void;
 interface Entry {
@@ -19,13 +21,14 @@ let pointer: { x: number; y: number } | undefined;
 let pointerUsers = 0;
 let pointerVersion = 0;
 let request = 0;
+let unsubscribeVisibility: (() => void) | undefined;
 
 function trackPointer(event: PointerEvent) {
   if (event.pointerType === "touch" || !pointerMedia?.matches) {
     resetPointer();
     return;
   }
-  if (document.hidden || media?.matches) return;
+  if (!isPageVisible() || media?.matches) return;
   pointer = { x: event.clientX, y: event.clientY };
   pointerVersion++;
 }
@@ -40,7 +43,7 @@ function invalidatePointerBounds() {
 }
 
 function canDraw(entry: Entry) {
-  return entry.visible && (!modal || modal.contains(entry.element));
+  return isPageVisible() && entry.visible && (!modal || modal.contains(entry.element));
 }
 
 function refreshModal() {
@@ -84,7 +87,7 @@ function tick(now: number) {
 }
 
 function schedule() {
-  if (request || document.hidden || media?.matches) return;
+  if (request || !isPageVisible() || media?.matches) return;
   for (const entry of entries) {
     if (canDraw(entry)) {
       request = requestAnimationFrame(tick);
@@ -96,7 +99,7 @@ function schedule() {
 function refresh() {
   cancelAnimationFrame(request);
   request = 0;
-  if (document.hidden || media?.matches) resetPointer();
+  if (!isPageVisible() || media?.matches) resetPointer();
   drawVisible(performance.now(), media?.matches ?? false);
   schedule();
 }
@@ -106,7 +109,7 @@ export function subscribeAvatarFrame(element: Element, frame: Frame, gaze?: Gaze
   if (!entries.size) {
     media = matchMedia("(prefers-reduced-motion: reduce)");
     media.addEventListener("change", refresh);
-    document.addEventListener("visibilitychange", refresh);
+    unsubscribeVisibility = subscribePageVisibility(refresh);
     // Modal backgrounds remain intersecting. Stop their SVG work behind scrims and blur.
     modalObserver = new MutationObserver(refreshModal);
     modalObserver.observe(document.body, {
@@ -173,7 +176,8 @@ export function subscribeAvatarFrame(element: Element, frame: Frame, gaze?: Gaze
       modalObserver = undefined;
       modal = undefined;
       media?.removeEventListener("change", refresh);
-      document.removeEventListener("visibilitychange", refresh);
+      unsubscribeVisibility?.();
+      unsubscribeVisibility = undefined;
       media = undefined;
     }
   };

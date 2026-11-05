@@ -1,0 +1,19 @@
+{
+  "recorded_at": "2026-11-05",
+  "engine": "WKWebView in packaged Tauri application",
+  "method": "A bounded rAF probe entered through the native Web Inspector console; close Inspector and interact with the Detail panel, then reopen console to read the result. Excludes first 1500 ms.",
+  "frames": 952,
+  "main_document_clicks": 3,
+  "median_ms": 17,
+  "p95_ms": 34,
+  "max_ms": 205,
+  "over_34ms": 46,
+  "elapsed_ms": 20006.999999999985,
+  "limitations": [
+    "single short sample",
+    "Inspector close/open and native menu operations can perturb timing",
+    "not an isolated animation-only trace",
+    "no matched Electron frame cohort",
+    "does not meet a general 60 fps guarantee"
+  ]
+}

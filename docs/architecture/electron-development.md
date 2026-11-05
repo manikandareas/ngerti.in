@@ -2,22 +2,23 @@
 
 Date: 2026-11-04. The user selected Electron after the Electrobun readiness review and authorized implementation. This is a macOS ARM64 development host, not production distribution or completion of NMA-063/NMA-064. Ngertiin remains the sole application lifecycle authority.
 
+> Default desktop commands now launch the [Tauri development application](tauri-development.md). This document records the retained Electron baseline. Use the explicit `dev:electron`, `build:electron` and `package:electron` scripts in `apps/desktop` for comparison.
+
 ## Start and package
 
 From the repository root:
 
 ```sh
 bun install --frozen-lockfile
-bun run setup:desktop
-bun run dev:desktop
+bun --filter @ngertiin/desktop dev:electron
 ```
 
-`setup:desktop` creates a private profile at `~/Library/Application Support/Ngertiin Dev/profile.json`. It references the current development state (`.dev/harness-first` by default), the repository environment file and absolute executable paths. It does not copy provider credentials, reset data, or replace an existing profile. An existing retained development Muse binary is selected if available and no explicit executable is configured. Harness capability/version checks remain in the backend.
+The historical Electron setup created a private profile at `~/Library/Application Support/Ngertiin Dev/profile.json`. It references the current development state (`.dev/harness-first` by default), the repository environment file and absolute executable paths. It does not copy provider credentials, reset data, or replace an existing profile. An existing retained development Muse binary is selected if available and no explicit executable is configured. Harness capability/version checks remain in the backend.
 
 To create the locally runnable application:
 
 ```sh
-bun run package:desktop
+bun --filter @ngertiin/desktop package:electron
 open "apps/desktop/out/Ngertiin Dev-darwin-arm64/Ngertiin Dev.app"
 ```
 

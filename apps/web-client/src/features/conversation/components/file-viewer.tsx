@@ -9,6 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { readFilePreview } from "@/features/conversation/lib/file-preview";
 import {
   FILE_PREVIEW_MAX_BYTES,
   parseTableFile,
@@ -62,7 +63,6 @@ export function FileViewer({ file, close }: { file: FileView | null; close: () =
       .then(async (response) => {
         if (!response.ok)
           throw new Error("File tidak dapat dibuka. Periksa akses folder dan coba lagi.");
-        const blob = await response.blob();
         const raster =
           /^(image\/(png|jpeg|webp))$/.test(file.mediaType ?? "") ||
           /\.(png|jpe?g|webp)$/i.test(file.name);
@@ -71,21 +71,20 @@ export function FileViewer({ file, close }: { file: FileView | null; close: () =
           /\.(txt|md|json|csv|tsv|log|ts|tsx|js|py|html|css|yaml|yml)$/i.test(file.name);
         if (abort.signal.aborted) return;
         if (raster) {
+          const blob = await response.blob();
+          if (abort.signal.aborted) return;
           objectUrl = URL.createObjectURL(blob);
           setContent({ url: file.url, image: objectUrl });
         } else if (text) {
           const delimiter = tableDelimiter(file.name);
-          if (delimiter && blob.size > FILE_PREVIEW_MAX_BYTES)
+          const preview = await readFilePreview(response, FILE_PREVIEW_MAX_BYTES, abort.signal);
+          if (delimiter && preview.truncated)
             throw new Error(
               "Tabel melewati batas pratinjau 128 KB. Unduh file untuk membaca seluruh tabel.",
             );
           let value: string;
           try {
-            value = delimiter
-              ? new TextDecoder("utf-8", { fatal: true }).decode(
-                  await blob.slice(0, FILE_PREVIEW_MAX_BYTES).arrayBuffer(),
-                )
-              : await blob.slice(0, FILE_PREVIEW_MAX_BYTES).text();
+            value = new TextDecoder("utf-8", { fatal: !!delimiter }).decode(preview.bytes);
           } catch {
             throw new Error("Tabel bukan teks UTF-8 yang valid. Unduh file untuk membukanya.");
           }
@@ -105,13 +104,15 @@ export function FileViewer({ file, close }: { file: FileView | null; close: () =
               text: value,
               language: codeLanguages[extension],
               markdown: extension === "md",
-              truncated: blob.size > FILE_PREVIEW_MAX_BYTES,
+              truncated: preview.truncated,
             });
-        } else
+        } else {
+          void response.body?.cancel().catch(() => {});
           setContent({
             url: file.url,
             text: "Pratinjau belum tersedia untuk format ini. Unduh file untuk membukanya.",
           });
+        }
       })
       .catch((error) => {
         if (!abort.signal.aborted) setContent({ url: file.url, error: error.message });

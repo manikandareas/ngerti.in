@@ -4,7 +4,9 @@ import { attachmentParts } from "./attachment-references";
 const key = (threadId: string) => `ngertiin:draft:${threadId}`;
 function read(threadId: string | null) {
   try {
-    return threadId ? (sessionStorage.getItem(key(threadId)) ?? "") : "";
+    return threadId
+      ? (sessionStorage.getItem(key(threadId)) ?? localStorage.getItem(key(threadId)) ?? "")
+      : "";
   } catch {
     return "";
   }
@@ -19,9 +21,13 @@ export function useConversationDraft(threadId: string | null) {
       if (!threadId) return;
       try {
         // Local files keep their existing submit-time/IndexedDB lifecycle; do not restore orphan chips.
-        if (!value || attachmentParts(value).some((part) => "id" in part))
+        if (!value || attachmentParts(value).some((part) => "id" in part)) {
           sessionStorage.removeItem(key(threadId));
-        else sessionStorage.setItem(key(threadId), value);
+          localStorage.removeItem(key(threadId));
+        } else {
+          sessionStorage.setItem(key(threadId), value);
+          localStorage.setItem(key(threadId), value);
+        }
       } catch {
         /* Editing remains available when browser storage is unavailable. */
       }

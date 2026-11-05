@@ -1,17 +1,13 @@
-import { spawn } from "node:child_process";
 import { join } from "node:path";
-import { fileURLToPath } from "node:url";
-import { loadProfile } from "../src/profile";
+import { loadProfile, tauriHome } from "../src/profile";
+import { prepareRuntime } from "./prepare-runtime";
+import { cargo, native, root, run, toolchainEnv } from "./toolchain";
 
-const root = fileURLToPath(new URL("../../../", import.meta.url));
-const profile = loadProfile();
-const built = Bun.spawn([process.execPath, join(root, "apps/desktop/scripts/build.ts")], {
-  stdout: "inherit",
-  stderr: "inherit",
-});
-if (await built.exited) process.exit(1);
-const vite = await import("vite");
-const server = await vite.createServer({
+const profile = loadProfile(tauriHome());
+await run([process.execPath, "run", "build:web-client"], root);
+await prepareRuntime();
+const { createServer } = await import("vite");
+const server = await createServer({
   root: join(root, "apps/web-client"),
   configFile: join(root, "apps/web-client/vite.config.ts"),
   server: { host: "127.0.0.1", port: 0, strictPort: false },
@@ -19,11 +15,12 @@ const server = await vite.createServer({
 await server.listen();
 const url = server.resolvedUrls?.local[0];
 if (!url) throw new Error("The UI development server did not start.");
-const electron = (await import("electron")).default;
-const child = spawn(electron as unknown as string, [join(root, "apps/desktop")], {
-  stdio: "inherit",
-  detached: process.platform !== "win32",
-  env: { ...process.env, NGERTIIN_DESKTOP_VITE_URL: url },
+const child = Bun.spawn([cargo, "run", "-j", "2"], {
+  cwd: native,
+  env: { ...toolchainEnv, NGERTIIN_DESKTOP_VITE_URL: url },
+  stdin: "ignore",
+  stdout: "inherit",
+  stderr: "inherit",
 });
 let closing = false;
 async function close() {
@@ -34,12 +31,11 @@ async function close() {
 }
 process.on("SIGINT", () => void close());
 process.on("SIGTERM", () => void close());
-child.on("exit", (code) => {
-  void server.close().then(() => process.exit(code ?? 0));
-});
-child.on("error", () => {
-  void close().then(() => process.exit(1));
-});
 console.log(
-  `Ngertiin Dev is opening on its saved profile port ${profile.uiPort}. Close the window to keep agents running; Quit to stop managed services.`,
+  `Opening Tauri on saved profile port ${profile.uiPort}. UI hot reload is enabled; restart this command after Rust/backend changes.`,
 );
+try {
+  process.exitCode = await child.exited;
+} finally {
+  await server.close();
+}

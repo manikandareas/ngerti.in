@@ -1,0 +1,38 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4311" --strictPort
+[WebServer] (node:65836) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 26 tests using 1 worker
+
+(node:65837) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop] › tests/activity.spec.ts:422:1 › message actions stay reachable across the bubble edge and sources belong to the assistant answer (3.0s)
+  ✓   2 [desktop] › tests/activity.spec.ts:509:1 › the web studio uses product interactions and consistent Computer cards without dispatch (2.5s)
+  ✓   3 [desktop] › tests/conversation.spec.ts:36:1 › switching conversations keeps exactly one attachment button and editor (2.1s)
+  ✓   4 [desktop] › tests/conversation.spec.ts:63:1 › an idle DM shows its first admitted message directly in the conversation (1.4s)
+  ✓   5 [desktop] › tests/conversation.spec.ts:160:1 › queued inputs enter the transcript after the preceding answer, including late answers and reload (3.3s)
+  ✓   6 [desktop] › tests/conversation.spec.ts:772:3 › dm opens at the latest message on its first visible frame (2.6s)
+  ✓   7 [desktop] › tests/conversation.spec.ts:809:3 › dm sending a message returns to the bottom after reading older messages (2.2s)
+  ✓   8 [desktop] › tests/conversation.spec.ts:830:3 › dm assistant updates preserve the position while reading history (2.0s)
+  ✓   9 [desktop] › tests/conversation.spec.ts:865:3 › dm queued sends reveal the bottom without publishing pending input (1.8s)
+  ✓  10 [desktop] › tests/conversation.spec.ts:772:3 › group opens at the latest message on its first visible frame (2.8s)
+  ✓  11 [desktop] › tests/conversation.spec.ts:809:3 › group sending a message returns to the bottom after reading older messages (2.2s)
+  ✓  12 [desktop] › tests/conversation.spec.ts:830:3 › group assistant updates preserve the position while reading history (2.1s)
+  ✓  13 [desktop] › tests/conversation.spec.ts:865:3 › group queued sends reveal the bottom without publishing pending input (2.2s)
+(node:65952) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  14 [mobile] › tests/activity.spec.ts:422:1 › message actions stay reachable across the bubble edge and sources belong to the assistant answer (1.3s)
+  ✓  15 [mobile] › tests/activity.spec.ts:509:1 › the web studio uses product interactions and consistent Computer cards without dispatch (2.1s)
+  ✓  16 [mobile] › tests/conversation.spec.ts:36:1 › switching conversations keeps exactly one attachment button and editor (22.8s)
+  ✓  17 [mobile] › tests/conversation.spec.ts:63:1 › an idle DM shows its first admitted message directly in the conversation (1.4s)
+  ✓  18 [mobile] › tests/conversation.spec.ts:160:1 › queued inputs enter the transcript after the preceding answer, including late answers and reload (2.2s)
+  ✓  19 [mobile] › tests/conversation.spec.ts:772:3 › dm opens at the latest message on its first visible frame (5.7s)
+  ✓  20 [mobile] › tests/conversation.spec.ts:809:3 › dm sending a message returns to the bottom after reading older messages (1.7s)
+  ✓  21 [mobile] › tests/conversation.spec.ts:830:3 › dm assistant updates preserve the position while reading history (1.2s)
+  ✓  22 [mobile] › tests/conversation.spec.ts:865:3 › dm queued sends reveal the bottom without publishing pending input (1.3s)
+  ✓  23 [mobile] › tests/conversation.spec.ts:772:3 › group opens at the latest message on its first visible frame (4.6s)
+  ✓  24 [mobile] › tests/conversation.spec.ts:809:3 › group sending a message returns to the bottom after reading older messages (1.3s)
+  ✓  25 [mobile] › tests/conversation.spec.ts:830:3 › group assistant updates preserve the position while reading history (1.3s)
+  ✓  26 [mobile] › tests/conversation.spec.ts:865:3 › group queued sends reveal the bottom without publishing pending input (1.4s)
+
+  26 passed (1.4m)

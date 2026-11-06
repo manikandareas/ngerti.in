@@ -1,0 +1,9 @@
+$ bun --filter @ngertiin/web-client build
+@ngertiin/web-client build: tests/conversation.spec.ts(718,28): error TS2352: Conversion of type 'Window & typeof globalThis' to type 'ScrollRecordingWindow' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+@ngertiin/web-client build:   Type 'Window & typeof globalThis' is missing the following properties from type '{ conversationScrollSamples: number[]; recordConversationScroll: () => void; }': conversationScrollSamples, recordConversationScroll
+@ngertiin/web-client build: tests/conversation.spec.ts(722,12): error TS2352: Conversion of type 'Window & typeof globalThis' to type 'ScrollRecordingWindow' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+@ngertiin/web-client build:   Type 'Window & typeof globalThis' is missing the following properties from type '{ conversationScrollSamples: number[]; recordConversationScroll: () => void; }': conversationScrollSamples, recordConversationScroll
+@ngertiin/web-client build: tests/conversation.spec.ts(804,8): error TS2352: Conversion of type 'Window & typeof globalThis' to type 'ScrollRecordingWindow' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+@ngertiin/web-client build:   Type 'Window & typeof globalThis' is missing the following properties from type '{ conversationScrollSamples: number[]; recordConversationScroll: () => void; }': conversationScrollSamples, recordConversationScroll
+@ngertiin/web-client build: Exited with code 1
+error: script "build:web-client" exited with code 1

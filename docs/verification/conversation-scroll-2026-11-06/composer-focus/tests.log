@@ -1,0 +1,18 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4311" --strictPort
+[WebServer] (node:61562) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 6 tests using 1 worker
+
+(node:61563) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [desktop] › tests/conversation.spec.ts:36:1 › switching conversations keeps exactly one attachment button and editor (4.2s)
+  ✓  2 [desktop] › tests/conversation.spec.ts:743:3 › dm opens at the latest message on its first visible frame (3.6s)
+  ✓  3 [desktop] › tests/conversation.spec.ts:743:3 › group opens at the latest message on its first visible frame (2.9s)
+(node:61586) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  4 [mobile] › tests/conversation.spec.ts:36:1 › switching conversations keeps exactly one attachment button and editor (23.4s)
+  ✓  5 [mobile] › tests/conversation.spec.ts:743:3 › dm opens at the latest message on its first visible frame (5.0s)
+  ✓  6 [mobile] › tests/conversation.spec.ts:743:3 › group opens at the latest message on its first visible frame (5.3s)
+
+  6 passed (48.4s)

@@ -1,0 +1,100 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4411" --strictPort
+[WebServer] (node:58659) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 8 tests using 1 worker
+
+(node:58661) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [webkit] › apps/web-client/tests/conversation.spec.ts:741:3 › dm opens at the latest message on its first visible frame (22.9s)
+  ✘  2 [webkit] › apps/web-client/tests/conversation.spec.ts:805:3 › dm sending a message returns to the bottom after reading older messages (25.2s)
+(node:58861) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  3 [webkit] › apps/web-client/tests/conversation.spec.ts:830:3 › dm assistant updates preserve the position while reading history (22.7s)
+  ✓  4 [webkit] › apps/web-client/tests/conversation.spec.ts:867:3 › dm queued sends reveal the bottom without publishing pending input (25.0s)
+  ✓  5 [webkit] › apps/web-client/tests/conversation.spec.ts:741:3 › group opens at the latest message on its first visible frame (23.4s)
+  ✓  6 [webkit] › apps/web-client/tests/conversation.spec.ts:805:3 › group sending a message returns to the bottom after reading older messages (25.7s)
+  ✓  7 [webkit] › apps/web-client/tests/conversation.spec.ts:830:3 › group assistant updates preserve the position while reading history (23.9s)
+  ✘  8 [webkit] › apps/web-client/tests/conversation.spec.ts:867:3 › group queued sends reveal the bottom without publishing pending input (25.9s)
+
+
+  1) [webkit] › apps/web-client/tests/conversation.spec.ts:805:3 › dm sending a message returns to the bottom after reading older messages 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.conversation-message')
+    Expected: 40
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" locator('.conversation-message') with timeout 5000ms
+      - waiting for locator('.conversation-message')
+        10 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+      809 |     await page.reload();
+      810 |     const scroll = page.locator(".conversation-scroll");
+    > 811 |     await expect(page.locator(".conversation-message")).toHaveCount(40);
+          |                                                         ^
+      812 |     await expect
+      813 |       .poll(() => scroll.evaluate((node) => node.scrollHeight - node.clientHeight - node.scrollTop))
+      814 |       .toBeLessThanOrEqual(2);
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/conversation.spec.ts:811:57
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .dev/scroll-verification/webkit-results/conversation-dm-sending-a--473a0-fter-reading-older-messages-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .dev/scroll-verification/webkit-results/conversation-dm-sending-a--473a0-fter-reading-older-messages-webkit/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    .dev/scroll-verification/webkit-results/conversation-dm-sending-a--473a0-fter-reading-older-messages-webkit/trace.zip
+    Usage:
+
+        npx playwright show-trace .dev/scroll-verification/webkit-results/conversation-dm-sending-a--473a0-fter-reading-older-messages-webkit/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [webkit] › apps/web-client/tests/conversation.spec.ts:867:3 › group queued sends reveal the bottom without publishing pending input 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('[data-queued-message]')
+    Expected substring: "Queued group message while reading history"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toContainText" locator('[data-queued-message]') with timeout 5000ms
+      - waiting for locator('[data-queued-message]')
+
+
+      883 |     await composer.fill(text);
+      884 |     await composer.press("Enter");
+    > 885 |     await expect(page.locator("[data-queued-message]")).toContainText(text);
+          |                                                         ^
+      886 |     await expect(page.locator(".conversation-message")).toHaveCount(40);
+      887 |     await expect
+      888 |       .poll(() => scroll.evaluate((node) => node.scrollHeight - node.clientHeight - node.scrollTop))
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/conversation.spec.ts:885:57
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .dev/scroll-verification/webkit-results/conversation-group-queued--d4855-ut-publishing-pending-input-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .dev/scroll-verification/webkit-results/conversation-group-queued--d4855-ut-publishing-pending-input-webkit/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    .dev/scroll-verification/webkit-results/conversation-group-queued--d4855-ut-publishing-pending-input-webkit/trace.zip
+    Usage:
+
+        npx playwright show-trace .dev/scroll-verification/webkit-results/conversation-group-queued--d4855-ut-publishing-pending-input-webkit/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    [webkit] › apps/web-client/tests/conversation.spec.ts:805:3 › dm sending a message returns to the bottom after reading older messages 
+    [webkit] › apps/web-client/tests/conversation.spec.ts:867:3 › group queued sends reveal the bottom without publishing pending input 
+  6 passed (3.6m)

@@ -1,0 +1,12 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4411" --strictPort
+[WebServer] (node:59323) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:59324) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [webkit] › apps/web-client/tests/conversation.spec.ts:805:3 › dm sending a message returns to the bottom after reading older messages (10.2s)
+  ✓  2 [webkit] › apps/web-client/tests/conversation.spec.ts:867:3 › group queued sends reveal the bottom without publishing pending input (13.1s)
+
+  2 passed (26.6s)

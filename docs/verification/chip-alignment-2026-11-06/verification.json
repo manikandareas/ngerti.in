@@ -1,0 +1,19 @@
+{
+  "change": "Vertically center inline file/attachment chips and source citation chips against surrounding text.",
+  "checks": {
+    "changed_css_lint": "pass",
+    "desktop_mobile_regressions": 4,
+    "visual_review": "CUA native browser, Studio file and citation examples",
+    "desktop_package_and_isolated_smoke": "pass"
+  },
+  "screenshots": [
+    {
+      "file": "citation-chip.png",
+      "sha256": "b0e18d715b165cce1ef8d86640faec4ba98e9a19b13e2141d54e307bcc71e30d"
+    },
+    {
+      "file": "file-chip.png",
+      "sha256": "47c308f3246a8ea85637826f9cb1a04e5a85634ef29b9e7f8ad89ca8d238e219"
+    }
+  ]
+}

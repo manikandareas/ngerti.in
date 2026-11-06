@@ -1,0 +1,254 @@
+{
+  "base_commit": "40d0316b9631872c1a281b39f1b8d67095872f50",
+  "code_commit": "b484cae00466bda57ee4beb08e9eb600bb300f9a",
+  "scope": [
+    "Conversation opening and owner-send scroll positioning",
+    "Composer focus on initial open and conversation switching",
+    "Inline file, attachment and citation vertical alignment",
+    "Shared regression helpers and explicit scroll-state types"
+  ],
+  "checks": {
+    "web_lint": "pass",
+    "web_typecheck": "pass",
+    "web_build": "pass",
+    "frontend_unit": {
+      "pass": 50,
+      "fail": 0
+    },
+    "chromium_desktop_mobile": {
+      "pass": 26,
+      "fail": 0,
+      "first_frame_cases_rechecked": 4
+    },
+    "webkit": {
+      "unique_pass": 8,
+      "remaining_fail": 0,
+      "initial_run": {
+        "pass": 7,
+        "fail": 1
+      },
+      "targeted_rerun": {
+        "pass": 1,
+        "fail": 0
+      }
+    },
+    "desktop_web_resources": {
+      "matching_files": 143,
+      "missing_files": 0,
+      "different_files": 0,
+      "comparison": "byte-for-byte against the final web build",
+      "native_rebuild_after_cleanup": false
+    },
+    "documentation": {
+      "status": "existing broken-link baseline",
+      "broken_occurrences": 85,
+      "unique_broken_links": 75,
+      "affected_source_documents_unchanged_from_base": true
+    }
+  },
+  "commands": {
+    "lint": "bun run lint:web-client",
+    "typecheck": "bun run typecheck:web-client",
+    "build": "bun run build:web-client",
+    "unit": "bun test verification (apps/web-client)",
+    "browser": "bunx playwright test --config playwright.conversation.config.ts conversation.spec.ts activity.spec.ts --grep 'first visible frame|sending a message returns|assistant updates preserve|queued sends|switching conversations keeps|queued inputs enter|idle DM shows|message actions stay reachable|web studio uses' (apps/web-client)",
+    "webkit": "bunx playwright test --config .dev/scroll-verification/playwright.config.ts --grep 'first visible frame|sending a message returns|assistant updates preserve|queued sends'",
+    "docs": "make docs-check"
+  },
+  "iterations": [
+    "Initial cleanup lint/typecheck found test formatting and the test-window intersection type; both were corrected before final validation.",
+    "The group first-frame WebKit case collected nine of twelve samples before the five-second sampling timeout. Its sampling wait now matches the existing 15-second initial-data wait. Twelve-frame and two-pixel position assertions are unchanged; the targeted rerun and all four Chromium first-frame cases passed."
+  ],
+  "proof_limits": [
+    "Browser cases use the real application/API with controlled public timeline fixtures.",
+    "WebKit coverage is browser-engine coverage, not automated interaction with the native Tauri window.",
+    "The desktop package was built and smoke-tested in the preceding fixes; final cleanup output matches its web resources exactly."
+  ],
+  "preserved_uncommitted_paths": [
+    "skills-lock.json",
+    ".agents/skills/tauri-v2/"
+  ],
+  "raw_evidence": [
+    {
+      "file": "docs/verification/chip-alignment-2026-11-06/citation-chip.png",
+      "sha256": "b0e18d715b165cce1ef8d86640faec4ba98e9a19b13e2141d54e307bcc71e30d"
+    },
+    {
+      "file": "docs/verification/chip-alignment-2026-11-06/file-chip.png",
+      "sha256": "47c308f3246a8ea85637826f9cb1a04e5a85634ef29b9e7f8ad89ca8d238e219"
+    },
+    {
+      "file": "docs/verification/chip-alignment-2026-11-06/package.log",
+      "sha256": "86f272c33e610506c9ac0e599aef8107c03c91d3e74565765f342320d04c3061"
+    },
+    {
+      "file": "docs/verification/chip-alignment-2026-11-06/tests.log",
+      "sha256": "8b96e371d23f1d288e052bd90a2fc4569ecf66fc5c0d026ed5d9184258285b5f"
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/cleanup/browser.log",
+      "sha256": "bc98570f258284afe0c7a1efb5c14f9de2d2a9d9aa2fbf87668da5112f96e6e9"
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/cleanup/build-initial.log",
+      "sha256": "49f86c3197f931c1279d3714338de989c08c185b3f9a7866eaa161a7ac13c5e0"
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/cleanup/build.log",
+      "sha256": "6ab90a87540874c5ddf805ce03845a042986a694a135e4b4e56e7e024e93c8cb"
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/cleanup/docs-final.log",
+      "sha256": "26fbd782742eb4ab62b0523b3e710b4211e480f38e4297305c7d5bd442950895"
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/cleanup/docs.log",
+      "sha256": "26fbd782742eb4ab62b0523b3e710b4211e480f38e4297305c7d5bd442950895"
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/cleanup/first-frame-rerun.log",
+      "sha256": "befb5bfc9897faa2e503a63717983037b7bda71dcc4a0020f62e8a91ff861dc2"
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/cleanup/lint-final.log",
+      "sha256": "060c935c30bc36a688aada1b28b526157ceedf7003461c8b7f59b2f00676315a"
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/cleanup/lint-initial.log",
+      "sha256": "5bc218deb51227227d0aad561f810b187c4993d002f55c0d6d830b853f087caf"
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/cleanup/lint.log",
+      "sha256": "5512d41906a18aed0d3962b6b4699fee32d54ea35fd6c5d08c2500e2929c3952"
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/cleanup/typecheck-final.log",
+      "sha256": "da5b35d85cac492dabeca2b0211ef8655aeb1e11c724dc0447945ebe2a866179"
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/cleanup/unit.log",
+      "sha256": "c2d34d25a4c12d83107c3887298129310ace10824063f9246a74f810c93bbdcc"
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/cleanup/webkit-rerun.log",
+      "sha256": "65342adc2e4dc711c4728266ab57d376f25820445bfd737f54030c13a4af5833"
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/cleanup/webkit.log",
+      "sha256": "64f6587f7b25a9de2d65217abad1c3cc287ca9dbc0866656bd863dd0d61661bb"
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/composer-focus/build.log",
+      "sha256": "b4917864eb04677c6fa95c80d3ff88670b01ccd25125b71155d282ac7b640392"
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/composer-focus/groups.log",
+      "sha256": "4e0a4f331c6f724d2bb555ef934a1206e90ead5b4a7bc24318652311997fbe5b"
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/composer-focus/package.log",
+      "sha256": "ae16bc49574dc898612974106be4628197ea7ead0992570c6cc966b2704612a4"
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/composer-focus/tests.log",
+      "sha256": "a6e38de8a6e39bf4c7ba67f4f1b04fffe58e643b20ab515c62d5f8b25a7e61e9"
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/logs/after.log",
+      "sha256": "0847df583074022faf8910b606b07c7b35cf178d6f402c579106d3273a873aab"
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/logs/before.log",
+      "sha256": "159df552f25dcb85fdf8082d84017a9f24a4e4cd5ff9dfaa875424e21977323b"
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/logs/build.log",
+      "sha256": "852c4c964477bc312a8155eb05ff55cb9d29ffe3ccbdcaa523d052162786220c"
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/logs/desktop-package.log",
+      "sha256": "90a7ab59ce07811eee2cbaf77a94c7c0b918f51b0609aff0d5aea73160b15423"
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/logs/lint.log",
+      "sha256": "a02e9cb949da7f6f3d69b6e036494b7314c23fd51a8507a758ddc730b796b0a1"
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/logs/queue-rerun.log",
+      "sha256": "0db062e7bfb1822699f0a34b34714727cc60ab971661408d18fb2d0768cc4491"
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/logs/regression.log",
+      "sha256": "43c983b0fa49b9a62e29b5e5089d4110d7cc1b1d2a036daefaf21935c75e76b1"
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/logs/unit.log",
+      "sha256": "ca49576a49ff5f039bbb724bb42cc70232250d27e9ceafb77c47321955d3fbdd"
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/logs/webkit-rerun.log",
+      "sha256": "454994ecbe20c1aa0bdf56187c2a3668460baca89a70e49ac990f75fdb3209c9"
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/logs/webkit.log",
+      "sha256": "e1288c1145f62ada01bfa158c2f23f014bda480717b37c2bafaa286721b1b0b0"
+    }
+  ],
+  "raw_evidence_whitespace_exceptions": [
+    {
+      "file": "docs/verification/chip-alignment-2026-11-06/package.log",
+      "sha256": "86f272c33e610506c9ac0e599aef8107c03c91d3e74565765f342320d04c3061",
+      "reason": "Preserve immutable raw command output."
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/cleanup/build.log",
+      "sha256": "6ab90a87540874c5ddf805ce03845a042986a694a135e4b4e56e7e024e93c8cb",
+      "reason": "Preserve immutable raw command output."
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/cleanup/lint-initial.log",
+      "sha256": "5bc218deb51227227d0aad561f810b187c4993d002f55c0d6d830b853f087caf",
+      "reason": "Preserve immutable raw command output."
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/cleanup/webkit.log",
+      "sha256": "64f6587f7b25a9de2d65217abad1c3cc287ca9dbc0866656bd863dd0d61661bb",
+      "reason": "Preserve immutable raw command output."
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/composer-focus/build.log",
+      "sha256": "b4917864eb04677c6fa95c80d3ff88670b01ccd25125b71155d282ac7b640392",
+      "reason": "Preserve immutable raw command output."
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/composer-focus/package.log",
+      "sha256": "ae16bc49574dc898612974106be4628197ea7ead0992570c6cc966b2704612a4",
+      "reason": "Preserve immutable raw command output."
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/logs/before.log",
+      "sha256": "159df552f25dcb85fdf8082d84017a9f24a4e4cd5ff9dfaa875424e21977323b",
+      "reason": "Preserve immutable raw command output."
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/logs/build.log",
+      "sha256": "852c4c964477bc312a8155eb05ff55cb9d29ffe3ccbdcaa523d052162786220c",
+      "reason": "Preserve immutable raw command output."
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/logs/desktop-package.log",
+      "sha256": "90a7ab59ce07811eee2cbaf77a94c7c0b918f51b0609aff0d5aea73160b15423",
+      "reason": "Preserve immutable raw command output."
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/logs/regression.log",
+      "sha256": "43c983b0fa49b9a62e29b5e5089d4110d7cc1b1d2a036daefaf21935c75e76b1",
+      "reason": "Preserve immutable raw command output."
+    },
+    {
+      "file": "docs/verification/conversation-scroll-2026-11-06/logs/webkit.log",
+      "sha256": "e1288c1145f62ada01bfa158c2f23f014bda480717b37c2bafaa286721b1b0b0",
+      "reason": "Preserve immutable raw command output."
+    }
+  ]
+}
